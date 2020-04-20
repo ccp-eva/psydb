@@ -1,0 +1,32 @@
+{
+  "name": "psydb-server",
+  "version": "0.1.0-alpha",
+  "description": "",
+  "main": "src/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cdxOo/psydb.git"
+  },
+  "author": "Jan Schwalbe",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cdxOo/psydb/issues"
+  },
+  "homepage": "https://github.com/cdxOo/psydb#readme",
+  "dependencies": {
+    "@cdxoo/koa-plan-b": "^0.1.1-alpha",
+    "collections": "file:../psydb-collections",
+    "db": "file:../psydb-mongo",
+    "koa": "^2.11.0",
+    "koa-compose": "^4.1.0",
+    "koa-session": "^5.13.1",
+    "mongodb": "^3.5.6"
+  },
+  "devDependencies": {
+    "@cdxoo/mongodb-restore": "^1.0.0"
+  }
+}
