@@ -7,10 +7,10 @@ module.exports = () => ({
     },
     set: async (sid, data) => {
         data.sid = sid;
-        data.ttl = (new Date()) + (86400 * 1000); // now + one day
-        await Sessions().update({ sid }, data, { upsert: true })
+        data.ttl = new Date(new Date().getTime() + (86400 * 1000)); // now + one day
+        await Sessions().replaceOne({ sid }, data, { upsert: true })
     },
     destroy: async (sid) => {
-        await Sessions().remove({ sid });
+        await Sessions().deleteOne({ sid });
     }
 });
