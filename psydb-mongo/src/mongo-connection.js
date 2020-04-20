@@ -3,7 +3,7 @@ var MongoClient = require('mongodb').MongoClient;
 
 var globalConnector = undefined;
 module.exports = (config) => {
-    if (connection) {
+    if (config) {
         globalConnector = MongoConnector(config);
     }
     return globalConnector;
@@ -16,7 +16,7 @@ var MongoConnector = ({
 }) => {
     var connector = {},
         dbName = db,
-        connection = undefined;
+        connection = undefined,
         selectedDB = undefined;
 
     connector.getSelectedDB = () => {

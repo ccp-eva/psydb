@@ -1,3 +1,6 @@
+'use strict';
+var MongoConnection = require('./mongo-connection');
+
 module.exports = ({ name }) => {
     var db = MongoConnection().getSelectedDB();
     
