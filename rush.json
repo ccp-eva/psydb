@@ -2,7 +2,7 @@
   "$schema": "https://developer.microsoft.com/json-schemas/rush/v5/rush.schema.json",
 
   "rushVersion": "5.33.2",
-  "pnpmVersion": "4.14.4",
+  "pnpmVersion": "5.5.11",
   "pnpmOptions": {},
   "nodeSupportedVersionRange": ">=12.13.0 <13.0.0",
   "gitPolicy": {},
@@ -21,8 +21,13 @@
   "variants": [],
   "projects": [
     {
-       "packageName": "@mpi-eva/psydb-mongo-adapter",
+       "packageName": "@mpieva/psydb-mongo-adapter",
        "projectFolder": "packages/psydb-mongo-adapter",
+       "reviewCategory": "production"
+    },
+    {
+       "packageName": "@mpieva/json-schema-to-graphql",
+       "projectFolder": "packages/json-schema-to-graphql",
        "reviewCategory": "production"
     }
   ]
