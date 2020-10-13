@@ -7,7 +7,7 @@ module.exports = ({
     jsonSchemaIdToGraphqlRootTypeMap,
     jsonSchemaIdToJsonSchemaDefinitionMap,
 }) => {
-    var result = {};
+    var result = '';
 
     var id = schema['$id'],
         type = schema.type,
@@ -36,15 +36,26 @@ module.exports = ({
                 result[graphqlParentType] = {};
             }
 
-            Object.keys(json.properties)
-                .map(key => ({ key, property: json.properties[key]}))
-                .forEach(({ key, property }) => {
-                    var proptype = property.type;
+            var body = '';
+            
+            var isRequired = false,
+                definitions = json.items || json.properties;
 
-                    if (proptype === 'object' || proptype === 'array') {
-                        var graphqlType = (
+            Object.keys(definitions)
+                .map(key => ({ key, definition: definitions[key]}))
+                .forEach(({ key, definition }) => {
+                    var jsonType = definition.type,
+                        graphqlType = undefined;
+
+                    if (jsonType === 'object' || jsonType === 'array') {
+                        graphqlType = (
                             `${graphqlParentType}${toPascalCase(key)}`
                         );
+                        
+                        stack.push({
+                            json: definition,
+                            graphqlParentType: graphqlType
+                        });
                         
                         if (proptype === 'array') {
                             if (
@@ -63,7 +74,6 @@ module.exports = ({
 
                         }
                         else {
-                            result[graphqlParentType][key] = graphqlType;
                             stack.push({
                                 json: property,
                                 graphqlParentType: graphqlType

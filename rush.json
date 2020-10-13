@@ -29,6 +29,26 @@
        "packageName": "@mpieva/json-schema-to-graphql",
        "projectFolder": "packages/json-schema-to-graphql",
        "reviewCategory": "production"
+    },
+    {
+       "packageName": "@mpieva/event-creator",
+       "projectFolder": "packages/event-creator",
+       "reviewCategory": "production"
+    },
+    {
+       "packageName": "@mpieva/mongo-mq",
+       "projectFolder": "packages/mongo-mq",
+       "reviewCategory": "production"
+    },
+    {
+       "packageName": "@mpieva/switchboard",
+       "projectFolder": "packages/switchboard",
+       "reviewCategory": "production"
+    },
+    {
+       "packageName": "@mpieva/mongo-message-processor",
+       "projectFolder": "packages/mongo-message-processor",
+       "reviewCategory": "production"
     }
   ]
 }
