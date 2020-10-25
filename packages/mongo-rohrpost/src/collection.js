@@ -7,12 +7,14 @@ var Collection = ({
     db,
     correlationId,
     createChannelId,
-    createMessageId,
+    createChannelEventId,
+
     disableChannelLocking,
+    modificationCache,
 }) => {
     var collection = {};
 
-    collection.openChannel = ({ id: maybeId }) => (
+    collection.openChannel = ({ id: maybeId } = {}) => (
         Channel({
             id: maybeId || createChannelId(),
             isNew: !maybeId,
@@ -20,8 +22,10 @@ var Collection = ({
             db,
             collectionName: name,
             correlationId,
-            createMessageId,
+            createChannelEventId,
+
             disableChannelLocking,
+            modificationCache,
         })
     );
 

@@ -1,37 +1,52 @@
 'use strict';
-var Channel = require('./collection');
+var Collection = require('./collection'),
+    ModificationCache = require('./modification-cache');
 
 var Rohrpost = ({
     db,
     correlationId,
     createChannelId,
-    createMessageId,
+    createChannelEventId,
     disableChannelLocking,
 }) => {
     var rohrpost = {},
-        collectionCache = {};
+        modificationCache = ModificationCache();
 
-    rohrpost.openCollection = (name) => {
-        collectionCache[name] = (
-            collectionCache[name] || Collection({
-                name,
+    rohrpost.openCollection = (name) => (
+        Collection({
+            name,
 
-                db,
-                correlationId,
-                createChannelId,
-                createMessageId,
-                disableChannelLocking,
-            })
-        );
-        return collectionCache[name];
-    }
+            db,
+            correlationId,
+            createChannelId,
+            createChannelEventId,
+            disableChannelLocking,
+            modificationCache,
+        })
+    )
 
-    rohrpost.unlockModifiedChannels = () => {
+    rohrpost.unlockModifiedChannels = async () => {
         if (disableChannelLocking) {
-            console.warn('channel locking is disabled this unlockModifiedChannels() should not be called');
+            console.warn('channel locking is disabled thus unlockModifiedChannels() should not be called');
         }
         else {
-            // TODO
+            var modified = modificationCache.all();
+            // FIXME: this could probably done in parrallel
+            for (var i = 0; i < modified.length; i += 1) {
+                var { collectionName, id } = modified[i];
+                await db.collection(collectionName).updateOne(
+                    {
+                        _id: id,
+                    },
+                    { $set: {
+                        //'events.$[event].processed': true,
+                        'events.$[].processed': true,
+                    }},
+                    /*{ arrayFilters: [
+                        { 'event.correlationId': correlationId }
+                    ]}*/
+                );
+            }
         }
     }
 

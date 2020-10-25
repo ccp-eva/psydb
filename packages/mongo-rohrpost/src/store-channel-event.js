@@ -1,8 +1,9 @@
 'use strict';
 var queries = require('./queries'),
-    events = require('./events');
+    events = require('./events'),
+    isThennable = require('./is-thennable');
 
-var storeChannelEvent = async ({
+module.exports = async ({
     db,
     correlationId,
     collectionName,
@@ -14,10 +15,10 @@ var storeChannelEvent = async ({
     timestamp,
     message
 }) => {
-    if (thennable(channelId)) {
+    if (isThennable(channelId)) {
         channelId = await channelId;
     }
-    if (thennable(id)) {
+    if (isThennable(id)) {
         id = await id;
     }
 
