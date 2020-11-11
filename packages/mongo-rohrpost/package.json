@@ -15,5 +15,10 @@
     "mongodb": "~3.6.2",
     "mockdate": "~3.0.2",
     "chai-datetime": "~1.7.0"
+  },
+  "config": {
+    "mongodbMemoryServer": {
+      "downloadDir": "./.mongod-tmp/"
+    }
   }
 }
