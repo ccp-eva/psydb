@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "test": "npx mocha src/*.spec.js"
+    "test": "npx mocha test/*.spec.js"
   },
   "author": "Jan Schwalbe",
   "license": "MIT",
@@ -13,12 +13,13 @@
     "chai": "~4.2.0",
     "mongodb": "~3.6.2",
     "mongodb-memory-server": "~6.9.2",
-    "uuid": "~8.3.1",
-    "bson": "~4.1.0"
+    "mockdate": "~3.0.2",
+    "chai-datetime": "~1.7.0",
+    "@cdxoo/omit": "~1.0.1"
   },
   "config": {
     "mongodbMemoryServer": {
-      "downloadDir": "./mongod-tmp/"
+      "downloadDir": "./.mongod-tmp/"
     }
   }
 }
