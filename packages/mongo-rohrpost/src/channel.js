@@ -40,7 +40,7 @@ var Channel = ({
             )
         });
         
-        console.log(r);
+        //console.log(r);
         return r;
     };
 
