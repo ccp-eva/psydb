@@ -16,7 +16,6 @@
     "mockdate": "~3.0.2",
     "chai-datetime": "~1.7.0",
     "@cdxoo/omit": "~1.0.1",
-    "koa": "~2.13.0",
     "koa-compose": "~4.1.0"
   },
   "config": {
