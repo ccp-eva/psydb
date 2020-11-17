@@ -20,11 +20,10 @@
   "dependencies": {
     "@cdxoo/koa-plan-b": "^0.1.1-alpha",
     "collections": "file:../psydb-collections",
-    "db": "file:../psydb-mongo",
+    "db": "file:../psydb-mongo-adapter",
     "koa": "^2.11.0",
     "koa-compose": "^4.1.0",
-    "koa-session": "^5.13.1",
-    "mongodb": "^3.5.6"
+    "koa-session": "^5.13.1"
   },
   "devDependencies": {
     "@cdxoo/mongodb-restore": "^1.0.0"
