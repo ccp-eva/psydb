@@ -1,10 +1,10 @@
 'use strict';
 var {
-    id: InstitutionId,
-    baserecord: InstitutionBaseRecord
-} = require('../collections/institution/');
+    id: InstituteId,
+    baserecord: InstituteBaseRecord
+} = require('../collections/institute/');
 
-var id = 'psy-db/messages/update-institution-baserecord',
+var id = 'psy-db/messages/update-institute-baserecord',
     ref = `${id}#`;
 
 var schema = {
@@ -12,13 +12,13 @@ var schema = {
     $id: id,
     type: 'object',
     properties: {
-        type: { const: 'update-institution-baserecord' },
-        institutionId: InstitutionId.ref,
-        payload: InstitutionBaseRecord.ref,
+        type: { const: 'update-institute-baserecord' },
+        instituteId: InstituteId.ref,
+        payload: InstituteBaseRecord.ref,
     },
     required: [
         'type',
-        'institutionId',
+        'instituteId',
         'payload',
     ]
 }

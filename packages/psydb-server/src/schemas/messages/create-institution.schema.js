@@ -1,9 +1,9 @@
 'use strict';
 var {
-    baserecord: InstitutionBaseRecord
-} = require('../collections/institution/');
+    baserecord: InstituteBaseRecord
+} = require('../collections/institute/');
 
-var id = 'psy-db/messages/create-institution',
+var id = 'psy-db/messages/create-institute',
     ref = `${id}#`;
 
 var schema = {
@@ -11,8 +11,8 @@ var schema = {
     $id: id,
     type: 'object',
     properties: {
-        type: { const: 'create-institution' },
-        payload: InstitutionBaseRecord.ref,
+        type: { const: 'create-institute' },
+        payload: InstituteBaseRecord.ref,
     },
     required: [
         'type',

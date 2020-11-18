@@ -12,7 +12,7 @@ module.exports = {
     ExternalPeopleScientificId: derive(BaseId, 'psy-db/external-people-scientific-id'),
     ExternalPeopleGDPRId: derive(BaseId, 'psy-db/external-people-gdpr-id'),
 
-    InstitutionId: derive(BaseId, 'psy-db/institution-id'),
+    InstituteId: derive(BaseId, 'psy-db/institute-id'),
     StudyId: derive(BaseId, 'psy-db/study-id'),
     ExperimentId: derive(BaseId, 'psy-db/experiment-id'),
     LocationId: derive(BaseId, 'psy-db/location-id'),

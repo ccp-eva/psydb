@@ -1,7 +1,7 @@
 'use strict';
-var ExperimentId = require('../collection-ids/experiment-id.schema.js').ref,
-    LocationId = require('../collection-ids/location-id.schema.js').ref,
-    Dynamic = require('../dynamic-refs.js');
+var ExperimentId = require('../experiment/').id,
+    LocationId = require('../location/').id,
+    Dynamic = require('../../dynamic-refs.js');
 
 var id = 'psy-db/subject-scientific-state.schema.js',
     ref = { $ref: `${id}#` };
@@ -16,9 +16,9 @@ var schema = {
             properties: {
                 experiments: {
                     type: 'array',
-                    items: ExperimentId,
+                    items: ExperimentId.ref,
                 },
-                location: LocationId,
+                location: LocationId.ref,
             },
         }
     ]
