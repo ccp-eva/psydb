@@ -21,11 +21,6 @@
   "variants": [],
   "projects": [
     {
-       "packageName": "@mpieva/psydb-mongo-adapter",
-       "projectFolder": "packages/psydb-mongo-adapter",
-       "reviewCategory": "production"
-    },
-    {
        "packageName": "@mpieva/json-schema-to-graphql",
        "projectFolder": "packages/json-schema-to-graphql",
        "reviewCategory": "production"
@@ -58,6 +53,21 @@
     {
        "packageName": "@mpieva/koa-mongo-rohrpost",
        "projectFolder": "packages/koa-mongo-rohrpost",
+       "reviewCategory": "production"
+    },
+    {
+       "packageName": "@mpieva/psydb-mongo-adapter",
+       "projectFolder": "packages/psydb-mongo-adapter",
+       "reviewCategory": "production"
+    },
+    {
+       "packageName": "@mpieva/psydb-schema-primitives",
+       "projectFolder": "packages/psydb-schema-primitives",
+       "reviewCategory": "production"
+    },
+    {
+       "packageName": "@mpieva/psydb-schema-fields",
+       "projectFolder": "packages/psydb-schema-fields",
        "reviewCategory": "production"
     }
   ]

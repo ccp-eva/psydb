@@ -1,5 +1,5 @@
 'use strict';
-var id = "psy-db/primitives/mongo-date.schema.js",
+var id = "psy-db/primitives/mongo-date",
     ref = { $ref: `${id}#` };
 
 var strictVariant = {
@@ -28,7 +28,7 @@ var relaxedVariant = {
     ]
 };
 
-var schema = {
+var MongoDate = {
     $schema: "http://json-schema.org/draft-07/schema#",
     $id: id,
     type: "object",
@@ -48,5 +48,5 @@ var schema = {
 module.exports = {
     id,
     ref,
-    schema
+    schema: MongoDate
 };
