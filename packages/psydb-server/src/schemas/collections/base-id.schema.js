@@ -1,2 +1,2 @@
 'use strict';
-module.exports = require('../primitives/mongo-oid.schema.js');
+module.exports = require('@mpieva/psydb-schema-primitives').MongoOID;
