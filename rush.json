@@ -69,6 +69,11 @@
        "packageName": "@mpieva/psydb-schema-fields",
        "projectFolder": "packages/psydb-schema-fields",
        "reviewCategory": "production"
+    },
+    {
+       "packageName": "@mpieva/psydb-schema",
+       "projectFolder": "packages/psydb-schema",
+       "reviewCategory": "production"
     }
   ]
 }
