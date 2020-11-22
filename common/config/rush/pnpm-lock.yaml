@@ -8,6 +8,9 @@ dependencies:
   '@rush-temp/mongo-mq': 'file:projects/mongo-mq.tgz'
   '@rush-temp/mongo-rohrpost': 'file:projects/mongo-rohrpost.tgz'
   '@rush-temp/psydb-mongo-adapter': 'file:projects/psydb-mongo-adapter.tgz'
+  '@rush-temp/psydb-schema': 'file:projects/psydb-schema.tgz'
+  '@rush-temp/psydb-schema-fields': 'file:projects/psydb-schema-fields.tgz'
+  '@rush-temp/psydb-schema-primitives': 'file:projects/psydb-schema-primitives.tgz'
   '@rush-temp/switchboard': 'file:projects/switchboard.tgz'
   chai: 4.2.0
   chai-datetime: 1.7.0
@@ -1820,6 +1823,36 @@ packages:
       integrity: sha512-h5MCDQLBnB3Hc5c2FM2xjnTZHOh0ziyd1mKKgJWRXbdJxeuqMJqQkEB02exxbrohHhJHC29B13Bf1sNI9/LU6g==
       tarball: 'file:projects/psydb-mongo-adapter.tgz'
     version: 0.0.0
+  'file:projects/psydb-schema-fields.tgz':
+    dependencies:
+      chai: 4.2.0
+      mocha: 8.1.3
+    dev: false
+    name: '@rush-temp/psydb-schema-fields'
+    resolution:
+      integrity: sha512-MjR19wkFErzO+O7Q5EpEzFRcwnUUomGUepDauzBKxdAx2Gd8HK2hE7j5cFJ450HvP3dtcvy9y3ploXMOPRfpPw==
+      tarball: 'file:projects/psydb-schema-fields.tgz'
+    version: 0.0.0
+  'file:projects/psydb-schema-primitives.tgz':
+    dependencies:
+      chai: 4.2.0
+      mocha: 8.1.3
+    dev: false
+    name: '@rush-temp/psydb-schema-primitives'
+    resolution:
+      integrity: sha512-ETNEfVBjn1XGNdcMW+NK6Tl4+Ph+/2K8jm2D3KNtgq23SRORA6xxRlbgCAI8aXqxrX03SSAhTlTX0aKJLkU87g==
+      tarball: 'file:projects/psydb-schema-primitives.tgz'
+    version: 0.0.0
+  'file:projects/psydb-schema.tgz':
+    dependencies:
+      chai: 4.2.0
+      mocha: 8.1.3
+    dev: false
+    name: '@rush-temp/psydb-schema'
+    resolution:
+      integrity: sha512-VA8pnmzT1/qUy7d54h1GIR2aX/Xnc8hi1Td/1FAiPIeQxoD4y+ewFjtFA9IRAE+HLx3ZwCVSc+6hBacNN/eVsA==
+      tarball: 'file:projects/psydb-schema.tgz'
+    version: 0.0.0
   'file:projects/switchboard.tgz':
     dependencies:
       chai: 4.2.0
@@ -1841,6 +1874,9 @@ specifiers:
   '@rush-temp/mongo-mq': 'file:./projects/mongo-mq.tgz'
   '@rush-temp/mongo-rohrpost': 'file:./projects/mongo-rohrpost.tgz'
   '@rush-temp/psydb-mongo-adapter': 'file:./projects/psydb-mongo-adapter.tgz'
+  '@rush-temp/psydb-schema': 'file:./projects/psydb-schema.tgz'
+  '@rush-temp/psydb-schema-fields': 'file:./projects/psydb-schema-fields.tgz'
+  '@rush-temp/psydb-schema-primitives': 'file:./projects/psydb-schema-primitives.tgz'
   '@rush-temp/switchboard': 'file:./projects/switchboard.tgz'
   chai: ~4.2.0
   chai-datetime: ~1.7.0
