@@ -1,5 +1,5 @@
 {
-  "name": "@mpieva/psydb-schema-primitives",
+  "name": "@mpieva/psydb-schema-fields",
   "version": "0.1.0-alpha",
   "description": "",
   "main": "src/index.js",
