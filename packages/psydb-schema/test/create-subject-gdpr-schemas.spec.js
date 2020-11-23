@@ -3,13 +3,13 @@ var expect = require('chai').expect,
     inspect = require('./helpers/inspect'),
     custom = require('./fixtures/custom-subject-scientifics/'),
     createSchemas = (
-        require('../src/collection/subject-scientific/create-all-schemas')
+        require('../src/collection/subject-gdpr/create-all-schemas')
     );
 
-describe('createSubjectScientificSchemas()', () => {
+describe('createSubjectGdprSchemas()', () => {
     it('generates full schema structure based on custom schemas', () => {
         var schemas = createSchemas({
-            customAnimalScientificItems: [
+            customAnimalGdprItems: [
                 {
                     key: 'chimpanzee',
                     schema: custom.animal.chimpanzee,
@@ -19,7 +19,7 @@ describe('createSubjectScientificSchemas()', () => {
                     schema: custom.animal.bonobo
                 }
             ],
-            customHumanScientificItems: [
+            customHumanGdprItems: [
                 {
                     key: 'child',
                     schema: custom.human.child,
