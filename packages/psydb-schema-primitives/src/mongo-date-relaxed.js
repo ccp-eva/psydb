@@ -1,7 +1,7 @@
 'use strict';
 var MongoDateRelaxed = ({
     formatMinimum
-}) => ({
+} = {}) => ({
     type: "object",
     properties: {
         $date: {
