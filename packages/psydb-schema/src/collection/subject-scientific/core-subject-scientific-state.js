@@ -1,6 +1,7 @@
 'use strict';
 var {
     DateTime,
+    ExtBool,
     ForeignId
 } = require('@mpieva/psydb-schema-fields');
 
@@ -11,16 +12,38 @@ var coreSubjectState = {
         {
             type: 'object',
             properties: {
-                subjectGDPRId: ForeignId('subjectGDPR'),
+                subjectGdprId: ForeignId('subjectGdpr'),
                 
                 canBeTestedInhouseByInstituteIds: {
                     type: 'array',
-                    items: ForeignId('institute'),
+                    items: {
+                        type: 'object',
+                        properties: {
+                            instituteId: ForeignId('institute'),
+                            canBeTested: ExtBool(),
+                        },
+                        required: [
+                            'instituteId',
+                            'canBeTested',
+                        ]
+                    }
                 },
+
                 canBeTestedExternallyByInstituteIds: {
                     type: 'array',
-                    items: ForeignId('institute'),
+                    items: {
+                        type: 'object',
+                        properties: {
+                            instituteId: ForeignId('institute'),
+                            canBeTested: ExtBool(),
+                        },
+                        required: [
+                            'instituteId',
+                            'canBeTested',
+                        ]
+                    }
                 },
+
                 participatedInStudyIds: {
                     type: 'array',
                     items: ForeignId('study'),
