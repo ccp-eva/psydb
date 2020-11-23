@@ -19,7 +19,9 @@ var createGenericLocationBaseRecord = (key, customInnerSchema) => {
             },
             customInnerSchema,
         ]
-    } 
-};
+    };
+
+    return schema;
+}
 
 module.exports = createGenericLocationBaseRecord;

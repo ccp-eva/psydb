@@ -1,7 +1,11 @@
 'use strict';
 
 var createBuildingState = require('./create-building-state'),
-    createBuildingBaseRecord = require('./create-building-baserecord');
+    createBuildingBaseRecord = require('./create-building-baserecord'),
+    createRoomState = require('./create-room-state'),
+    createRoomBaseRecord = require('./create-room-baserecord'),
+    createGenericLocationState = require('./create-generic-location-state'),
+    createGenericLocationBaseRecord = require('./create-generic-location-baserecord');
 
 /*
     customBuildingSchemaItems = [
@@ -10,13 +14,14 @@ var createBuildingState = require('./create-building-state'),
     ]
 */
 var createAllSchemas = ({
-    customGenericLocationSchemaItems,
-    customBuildingsSchemaItems,
-    customRoomsBaseSchemaItems,
+    customGenericLocationItems,
+    customBuildingItems,
+    customRoomItems,
 }) => {
 
-    var buildingSchemas = customBuildingSchemaItems.reduce(
-        ({ key, schema }, acc) => ({
+    var buildingSchemas = customBuildingItems.reduce(
+        (acc, { key, schema }) => ({
+            ...acc,
             [key]: {
                 state: createBuildingState(key, schema),
                 baserecord: createBuildingBaseRecord(key, schema)
@@ -25,8 +30,9 @@ var createAllSchemas = ({
         {}
     );
 
-    var roomSchemas = customRoomSchemaItems.reduce(
-        ({ key, schema }, acc) => ({
+    var roomSchemas = customRoomItems.reduce(
+        (acc, { key, schema }) => ({
+            ...acc,
             [key]: {
                 state: createRoomState(key, schema),
                 baserecord: createRoomBaseRecord(key, schema)
@@ -35,8 +41,9 @@ var createAllSchemas = ({
         {}
     );
 
-    var genericLocationSchemas = customGenericLocationSchemaItems.reduce(
-        ({ kec, schema }, acc) => ({
+    var genericLocationSchemas = customGenericLocationItems.reduce(
+        (acc, { key, schema }) => ({
+            ...acc,
             [key]: {
                 state: createGenericLocationState(key, schema),
                 baserecord: createGenericLocationBaseRecord(key, schema)
@@ -53,3 +60,5 @@ var createAllSchemas = ({
 
     return schemas;
 }
+
+module.exports = createAllSchemas;

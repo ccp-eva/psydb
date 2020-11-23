@@ -1,28 +1,20 @@
 'use strict';
-var {
-    ForeignId
-} = require('@mpieva/psydb-schema-fields');
-
 var prefix = require('./schema-id-prefix');
 
-var createRoomBaseRecord = (key, customInnerSchema) => {
+var createHumanBaseRecord = (key, customInnerSchema) => {
     var schema = {
         $schema: 'http://json-schema.org/draft-07/schema#',
-        $id: `${prefix}/room/${key}/baserecord`,
+        $id: `${prefix}/animal/${key}/baserecord`,
         allOf: [
             {
                 type: 'object',
                 properties: {
-                    type: { const: 'room' },
+                    type: { const: 'animal' },
                     subtype: { const: key },
-                    name: { type: 'string' },
-                    buildingId: ForeignId('location', { type: 'building' }),
                 },
                 required: [
                     'type',
                     'subtype',
-                    'name',
-                    'buildingId',
                 ]
             },
             customInnerSchema,
@@ -32,4 +24,4 @@ var createRoomBaseRecord = (key, customInnerSchema) => {
     return schema;
 };
 
-module.exports = createRoomBaseRecord;
+module.exports = createHumanBaseRecord;

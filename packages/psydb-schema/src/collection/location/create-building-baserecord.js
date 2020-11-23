@@ -24,7 +24,9 @@ var createBuildingBaseRecord = (key, customInnerSchema) => {
             },
             customInnerSchema,
         ]
-    } 
+    };
+
+    return schema;
 };
 
 module.exports = createBuildingBaseRecord;

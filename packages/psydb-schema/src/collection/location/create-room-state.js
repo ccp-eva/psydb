@@ -1,7 +1,7 @@
 'use strict';
 var prefix = require('./schema-id-prefix'),
     coreLocationState = require('./core-location-state'),
-    createBaseRecord = require('./create-room-baserecord'),
+    createBaseRecord = require('./create-room-baserecord');
 
 var createRoomState = (key, customInnerSchema) => {
     var schema = {
@@ -11,7 +11,9 @@ var createRoomState = (key, customInnerSchema) => {
             createBaseRecord(key, customInnerSchema),
             coreLocationState,
         ]
-    } 
+    };
+
+    return schema;
 };
 
-module.exports = createRoomBaseRecord;
+module.exports = createRoomState;

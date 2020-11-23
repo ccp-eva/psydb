@@ -11,7 +11,9 @@ var createGenericLocationState = (key, customInnerSchema) => {
             createBaseRecord(key, customInnerSchema),
             coreLocationState,
         ]
-    } 
+    }
+
+    return schema;
 };
 
-module.exports = createGenericLocationBaseRecord;
+module.exports = createGenericLocationState;

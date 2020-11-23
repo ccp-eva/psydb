@@ -2,9 +2,9 @@
 var location = require('./location/create-all-schemas');
 
 var createAllCollectionSchemas = ({
-    customGenericLocationBaseRecords,
-    customBuildingsBaseRecords,
-    customRoomsBaseRecords,
+    customGenericLocationItems,
+    customBuildingItems,
+    customRoomItems,
 
     //CustomSubjectSientifics,
     //CustomSubjectGDPRs
@@ -22,8 +22,8 @@ var createAllCollectionSchemas = ({
         }
     },*/
     location: location.createAllSchemas({
-        customGenericLocationsBaseRecords,
-        customBuildingsBaseRecords,
-        customRoomsBaseRecords,
+        customGenericLocationItems,
+        customBuildingItems,
+        customRoomItems,
     }),
 })

@@ -1,2 +1,2 @@
 'use strict';
-module.exports = '@mpieva/psydb/';
+module.exports = '@mpieva/psydb';
