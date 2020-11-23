@@ -1,10 +1,5 @@
 'use strict';
-var id = 'psy-db/primitives/mongo-oid',
-    ref = { $ref: `${id}#` };
-
-var MongoOID = {
-    $schema: 'http://json-schema.org/draft-07/schema#',
-    $id: id,
+var MongoOID = () => ({
     type: 'object',
     properties: {
         $oid: {
@@ -19,10 +14,6 @@ var MongoOID = {
     required: [
         '$oid'
     ]
-}
+});
 
-module.exports = {
-    id,
-    ref,
-    schema: MongoOID
-};
+module.exports = MongoOID;

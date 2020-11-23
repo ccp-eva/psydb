@@ -1,5 +1,6 @@
 'use strict';
 module.exports = {
-    MongoDate: require('./mongo-oid.schema.js'),
-    MongoOID: require('./mongo-date.schema.js')
+    MongoDateRelaxed: require('./mongo-date-relaxed.js'),
+    MongoDateStrict: require('./mongo-date-strict.js'),
+    MongoOID: require('./mongo-oid.js')
 }
