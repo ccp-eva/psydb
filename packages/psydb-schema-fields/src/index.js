@@ -4,9 +4,12 @@ module.exports = {
     BiologicalGender: require('./biological-gender'),
     BlockedWeekdays: require('./blocked-weekdays'),
     DateTime: require('./date-time'),
+    DateTimeInterval: require('./date-time-interval'),
     ExtBool: require('./ext-bool'),
-    FullText: require('./full-text'),
     ForeignId: require('./foreign-id'),
+    FullText: require('./full-text'),
     Id: require('./id'),
     ParticipationStatus: require('./participation-status'),
+    Time: require('./time'),
+    TimeInterval: require('./time-interval'),
 }
