@@ -56,29 +56,17 @@ describe('createLocationSchemas()', () => {
             .that.is.an('object');
 
         expect(schemas.building.kindergarden)
-            .to.have.property('baserecord')
-            .that.is.an('object');
-        expect(schemas.building.kindergarden)
             .to.have.property('state')
             .that.is.an('object');
         
-        expect(schemas.building.school)
-            .to.have.property('baserecord')
-            .that.is.an('object');
         expect(schemas.building.school)
             .to.have.property('state')
             .that.is.an('object');
     
         expect(schemas.room['default-room'])
-            .to.have.property('baserecord')
-            .that.is.an('object');
-        expect(schemas.room['default-room'])
             .to.have.property('state')
             .that.is.an('object');
         
-        expect(schemas.gps)
-            .to.have.property('baserecord')
-            .that.is.an('object');
         expect(schemas.gps)
             .to.have.property('state')
             .that.is.an('object');

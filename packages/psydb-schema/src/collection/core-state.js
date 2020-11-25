@@ -6,17 +6,25 @@ var {
 var coreState = {
     type: 'object',
     properties: {
-        canBeViewedByInstituteIds: {
-            type: 'array',
-            items: ForeignId('institute'),
-        },
-        canBeEditedByInstituteIds: {
-            type: 'array',
-            items: ForeignId('institute'),
+        systemPermissions: {
+            type: 'object',
+            properties: {
+                canBeViewedByInstituteIds: {
+                    type: 'array',
+                    items: ForeignId('institute'),
+                    default: [],
+                },
+                canBeEditedByInstituteIds: {
+                    type: 'array',
+                    items: ForeignId('institute'),
+                    default: [],
+                },
+            }
         },
         isHiddenForInstituteIds: {
             type: 'array',
             items: ForeignId('institute'),
+            default: [],
         }
     }
 }

@@ -1,9 +1,7 @@
 'use strict';
 
 var createAnimalState = require('./create-animal-state'),
-    createAnimalBaseRecord = require('./create-animal-baserecord'),
-    createHumanState = require('./create-human-state'),
-    createHumanBaseRecord = require('./create-human-baserecord');
+    createHumanState = require('./create-human-state');
 
 var createAllSchemas = ({
     customAnimalScientificItems,
@@ -15,7 +13,6 @@ var createAllSchemas = ({
             ...acc,
             [key]: {
                 state: createAnimalState(key, schema),
-                baserecord: createAnimalBaseRecord(key, schema)
             }
         }),
         {}
@@ -26,7 +23,6 @@ var createAllSchemas = ({
             ...acc,
             [key]: {
                 state: createHumanState(key, schema),
-                baserecord: createHumanBaseRecord(key, schema)
             }
         }),
         {}

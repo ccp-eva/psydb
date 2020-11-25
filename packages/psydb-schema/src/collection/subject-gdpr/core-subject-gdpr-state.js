@@ -1,6 +1,5 @@
 'use strict';
 var {
-    DateTime,
     ForeignId
 } = require('@mpieva/psydb-schema-fields');
 

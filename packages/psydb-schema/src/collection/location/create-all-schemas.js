@@ -1,11 +1,8 @@
 'use strict';
 
 var createBuildingState = require('./create-building-state'),
-    createBuildingBaseRecord = require('./create-building-baserecord'),
     createRoomState = require('./create-room-state'),
-    createRoomBaseRecord = require('./create-room-baserecord'),
-    createGenericLocationState = require('./create-generic-location-state'),
-    createGenericLocationBaseRecord = require('./create-generic-location-baserecord');
+    createGenericLocationState = require('./create-generic-location-state');
 
 /*
     customBuildingSchemaItems = [
@@ -24,7 +21,6 @@ var createAllSchemas = ({
             ...acc,
             [key]: {
                 state: createBuildingState(key, schema),
-                baserecord: createBuildingBaseRecord(key, schema)
             }
         }),
         {}
@@ -35,7 +31,6 @@ var createAllSchemas = ({
             ...acc,
             [key]: {
                 state: createRoomState(key, schema),
-                baserecord: createRoomBaseRecord(key, schema)
             }
         }),
         {}
@@ -46,7 +41,6 @@ var createAllSchemas = ({
             ...acc,
             [key]: {
                 state: createGenericLocationState(key, schema),
-                baserecord: createGenericLocationBaseRecord(key, schema)
             }
         }),
         {}
