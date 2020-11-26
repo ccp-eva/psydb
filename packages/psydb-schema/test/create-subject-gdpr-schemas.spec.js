@@ -54,29 +54,17 @@ describe('createSubjectGdprSchemas()', () => {
             .that.is.an('object');
 
         expect(schemas.animal.chimpanzee)
-            .to.have.property('baserecord')
-            .that.is.an('object');
-        expect(schemas.animal.chimpanzee)
             .to.have.property('state')
             .that.is.an('object');
         
-        expect(schemas.animal.bonobo)
-            .to.have.property('baserecord')
-            .that.is.an('object');
         expect(schemas.animal.bonobo)
             .to.have.property('state')
             .that.is.an('object');
         
         expect(schemas.human.child)
-            .to.have.property('baserecord')
-            .that.is.an('object');
-        expect(schemas.human.child)
             .to.have.property('state')
             .that.is.an('object');
         
-        expect(schemas.human.teacher)
-            .to.have.property('baserecord')
-            .that.is.an('object');
         expect(schemas.human.teacher)
             .to.have.property('state')
             .that.is.an('object');

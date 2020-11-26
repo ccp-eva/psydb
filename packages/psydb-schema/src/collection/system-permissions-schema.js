@@ -10,7 +10,7 @@ var systemPermissionsSchema = {
     properties: {
         accessRightsByInstitute: {
             type: 'array',
-            default: [],
+            minItems: 1,
             // unqiueItemProperties requires "ajv-keywords"
             uniqueItemProperties: [ 'instituteId' ],
             items: {
@@ -29,7 +29,8 @@ var systemPermissionsSchema = {
                 the specified institutes have on the data
                 of this database record; to remove the access
                 completely remove the item of that institute from
-                the list
+                the list; this list needs to have at least one
+                item to prevent it becoming invisible on accident
             `
         },
 
@@ -50,6 +51,12 @@ var systemPermissionsSchema = {
             default: [],
             unqiueItems: true,
             items: ForeignId('institute'),
+            description: inline`
+                hides the database record from view for that institute
+                in a soft way, i.e. one can always choose to show
+                hidden records; also this way the permissions are
+                retained to that it can be unhidden again
+            `,
         }
     }
 }

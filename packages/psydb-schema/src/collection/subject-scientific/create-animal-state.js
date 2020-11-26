@@ -21,7 +21,16 @@ var createAnimalState = (key, customInnerSchema) => {
             testingPermissions: testingPermissionsSchema,
             systemPermissions: systemPermissionsSchema,
             internals: internalsSchema,
-        }
+        },
+        required: [
+            'type',
+            'subtype',
+            'dateOfBirth',
+            'custom',
+            'testingPermissions',
+            'systemPermissions',
+            'internals'
+        ]
     }
 
     return schema;
