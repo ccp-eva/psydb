@@ -4,6 +4,9 @@ var prefix = require('./schema-id-prefix'),
     testingPermissionsSchema = require('./testing-permissions-schema'),
     internalsSchema = require('./internals-schema');
 
+var {
+    DateTime,
+} = require('@mpieva/psydb-schema-fields');
 
 var createAnimalState = (key, customInnerSchema) => {
     var schema = {
@@ -11,8 +14,9 @@ var createAnimalState = (key, customInnerSchema) => {
         $id: `${prefix}/animal/${key}/state`,
         type: 'object',
         properties: {
-            type: { const: 'human' },
+            type: { const: 'animal' },
             subtype: { const: key },
+            dateOfBirth: DateTime(),
             custom: customInnerSchema,
             testingPermissions: testingPermissionsSchema,
             systemPermissions: systemPermissionsSchema,

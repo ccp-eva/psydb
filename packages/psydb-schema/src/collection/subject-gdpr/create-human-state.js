@@ -1,7 +1,7 @@
 'use strict';
 var prefix = require('./schema-id-prefix'),
-    coreState = require('./core-subject-gdpr-state'),
-    createBaseRecord = require('./create-human-baserecord');
+    systemPermissionsSchema = require('../system-permissions-schema'),
+    internalsSchema = require('./internals-schema');
 
 var createHumanState = (key, customInnerSchema) => {
     var schema = {
@@ -9,30 +9,20 @@ var createHumanState = (key, customInnerSchema) => {
         $id: `${prefix}/human/${key}/state`,
         type: 'object',
         properties: {
-            type: 'object',
-            properties: {
-                type: { const: 'human' },
-                subtype: { const: key },
-                custom: customInnerSchema,
-                systemPermissions: systemPermissionsSchema,
-                internals: {
-                    type: 'object',
-                    properties: {
-                        subjectScientificId: ForeignId('subjectScientific'),
-                    },
-                    required: [
-                        'subjectScientificId',
-                    ]
-                }
-            },
-            required: [
-                'type',
-                'subtype',
-                'custom',
-                'systemPermissions',
-                'internals'
-            ]
-        }
+            type: { const: 'human' },
+            subtype: { const: key },
+            custom: customInnerSchema,
+            systemPermissions: systemPermissionsSchema,
+            internals: internalsSchema,
+        },
+        required: [
+            'type',
+            'subtype',
+            'custom',
+            'systemPermissions',
+            'internals'
+        ]
+
     }
 
     return schema;

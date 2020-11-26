@@ -4,6 +4,10 @@ var prefix = require('./schema-id-prefix'),
     testingPermissionsSchema = require('./testing-permissions-schema'),
     internalsSchema = require('./internals-schema');
 
+var {
+    DateTime,
+} = require('@mpieva/psydb-schema-fields');
+
 var createHumanState = (key, customInnerSchema) => {
     var schema = {
         $schema: 'http://json-schema.org/draft-07/schema#',
@@ -12,6 +16,7 @@ var createHumanState = (key, customInnerSchema) => {
         properties: {
             type: { const: 'human' },
             subtype: { const: key },
+            dateOfBirth: DateTime(),
             custom: customInnerSchema,
             testingPermissions: testingPermissionsSchema,
             systemPermissions: systemPermissionsSchema,
