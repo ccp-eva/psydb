@@ -18,11 +18,12 @@
 // )
 
 var MongoDate = require('@mpieva/psydb-schema-primitives').MongoDateRelaxed;
+
 // TODO: figure out if we want that to be called "Date" bc reserved
 // TODO: figure out if its better to use mongo-extjson or not
 // we could use json and convert stuff based on its format
 // might be less code that fiddling with ui
-var DateTime = ({
+var Date = ({
     additionalKeywords,
     ...other,
 }) => (
@@ -30,10 +31,10 @@ var DateTime = ({
         ...other,
         additionalKeywords: {
             ...additionalKeywords,
-            'ui:widget': 'mongo-datetime'
+            'ui:widget': 'mongo-date'
         }
     })
 );
 
-module.exports = DateTime;
+module.exports = Date;
 

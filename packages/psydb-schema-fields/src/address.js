@@ -1,17 +1,37 @@
 'use strict';
-var Address = () => ({
+var Address = ({
+    required
+} = {}) => ({
     type: 'object',
     reactType: 'address',
     properties: {
         // country should be code from countries-list npm package
-        country: { type: { enum: [ 'DE' ] }},
-        city: { type: 'string' },
-        postcode: { type: 'string' },
-        street: { type: 'string' },
-        housenumber: { type: 'string' },
-        affix: { type: 'string' },
+        country: {
+            type: { enum: [ 'DE' ] },
+            default: 'DE',
+        },
+        city: {
+            type: 'string',
+            default: '',
+        },
+        postcode: {
+            type: 'string',
+            default: '',
+        },
+        street: {
+            type: 'string',
+            default: '',
+        },
+        housenumber: {
+            type: 'string',
+            default: '',
+        },
+        affix: {
+            type: 'string',
+            default: '',
+        },
     },
-    required: [
+    required: required || [
         'country',
         'city',
         'postcode',

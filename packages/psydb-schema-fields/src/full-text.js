@@ -1,9 +1,13 @@
 'use strict';
-var FullText = () => ({
-    $schema: 'http://json-schema.org/draft-07/schema#',
-    $id: id,
-    reactType: 'full-text',
+var FullText = ({
+    default,
+    additionalKeywords
+}) => ({
     type: 'string',
+    default: default || '',
+    
+    'ui:widget': 'textarea',
+    ...additionalKeywords,
 });
 
 module.exports = FullText;

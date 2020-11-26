@@ -10,6 +10,7 @@ module.exports = {
     FullText: require('./full-text'),
     Id: require('./id'),
     ParticipationStatus: require('./participation-status'),
+    SaneString: require('./sane-string'),
     Time: require('./time'),
     TimeInterval: require('./time-interval'),
 }
