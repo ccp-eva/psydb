@@ -1,6 +1,7 @@
 'use strict';
 var inline = require('@cdxoo/inline-text'),
     prefix = require('./schema-id-prefix'),
+    CollectionPermission = require('./collection-permission'),
     systemPermissionsSchema = require('../system-permissions-schema'),
 
 var {
@@ -13,6 +14,14 @@ var createSystemRoleStateState = () => {
         $id: `${prefix}/state`,
         type: 'object',
         properties: {
+            canSignIn: {
+                type: 'bool',
+                default: false,
+                description: inline`
+                    when set enables the system sign in
+                    via primary email and password
+                `,
+            },
             hasRootAccess: {
                 type: 'bool',
                 default: false,
@@ -55,6 +64,10 @@ var createSystemRoleStateState = () => {
             systemPermissions: systemPermissionsSchema,
         },
         required: [
+            'hasRootAccess',
+            'canSearchArbitrarySubjects',
+            'canSelectSubjectsForTesting',
+            'collectionPermissions',
             'systemPermissions',
         ],
     }

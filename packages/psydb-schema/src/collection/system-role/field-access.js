@@ -4,6 +4,12 @@ var inline = require('@cdxoo/inline-text');
 var FieldAccess = () => ({
     type: 'object',
     properties: {
+        // TODO: we can actually know which paths are valid
+        // when we know chat collection it isi, do we want to do that?
+        fieldPointer: {
+            type: 'string',
+            format: 'json-pointer',
+        },
         read: {
             type: 'bool',
             default: false,
@@ -28,10 +34,11 @@ var FieldAccess = () => ({
         },
     },
     required: [
+        'fieldPointer',
         'read',
         'search',
         'write',
     ],
 });
 
-module.exports = RecordAccess;
+module.exports = FieldAccess;

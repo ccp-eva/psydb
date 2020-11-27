@@ -4,6 +4,8 @@ var inline = require('@cdxoo/inline-text');
 var RecordAccess = () => ({
     type: 'object',
     properties: {
+        type: SaneString(),
+        subtype: SaneString(),
         read: {
             type: 'bool',
             default: false,
@@ -30,6 +32,8 @@ var RecordAccess = () => ({
         },
     },
     required: [
+        'type',
+        // subtype is optional
         'read',
         'search',
         'write',

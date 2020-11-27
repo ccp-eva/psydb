@@ -1,0 +1,3 @@
+'use strict';
+var root = require('../../schema-id-root');
+module.exports = `${root}/collection/expernal-person-gdpr`;
