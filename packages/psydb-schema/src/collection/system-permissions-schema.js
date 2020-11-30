@@ -17,6 +17,9 @@ var systemPermissionsSchema = {
                 type: 'object',
                 properties: {
                     instituteId: ForeignId('institute'),
+                    // TODO: split this since we also need create and delete
+                    // and also we need a param for delete
+                    // since this is not true only for the gdpr collections
                     permission: { enum: [ 'read', 'write' ] }
                 },
                 required: [
