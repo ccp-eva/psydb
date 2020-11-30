@@ -6,6 +6,11 @@ var createAllCollectionSchemas = ({
     customBuildingItems,
     customRoomItems,
 
+    customAnimalScientificItems,
+    customAnimalGdprItems,
+    customHumanScientificItems,
+    customHumanGdprItems
+
     //CustomSubjectSientifics,
     //CustomSubjectGDPRs
 }) => ({
