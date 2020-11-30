@@ -1,22 +1,24 @@
 'use strict';
 var inline = require('@cdxoo/inline-text');
 
-var FieldAccess = () => ({
+var FieldAccess = ({
+    implicitRead
+} = {}) => ({
     type: 'object',
     properties: {
-        // TODO: we can actually know which paths are valid
-        // when we know chat collection it isi, do we want to do that?
-        fieldPointer: {
-            type: 'string',
-            format: 'json-pointer',
-        },
-        read: {
-            type: 'bool',
-            default: false,
-            description: inline`
-                grants the user access to read the field
-            `,
-        },
+        ...(
+            implicitRead 
+            ? undefined
+            : ({
+                read: {
+                    type: 'bool',
+                    default: false,
+                    description: inline`
+                        grants the user access to read the field
+                    `,
+                },
+            })
+        ),
         search: {
             type: 'bool',
             default: false,
@@ -34,7 +36,6 @@ var FieldAccess = () => ({
         },
     },
     required: [
-        'fieldPointer',
         'read',
         'search',
         'write',

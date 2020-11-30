@@ -56,6 +56,10 @@ var createSystemRoleStateState = () => {
                     set by the study, not by the role
                 `,
             },
+            canViewLocationRservations: {
+                type: 'bool',
+                defualt: false,
+            },
             collectionPermissions: {
                 type: 'array',
                 default: [],
