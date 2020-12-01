@@ -8,7 +8,9 @@ var {
     ForeignId
 } = require('@mpieva/psydb-schema-fields');
 
-var createSystemRoleStateState = () => {
+var createSystemRoleState = ({
+    schemaTree
+}) => {
     var schema = {
         $schema: 'http://json-schema.org/draft-07/schema#',
         $id: `${prefix}/state`,
@@ -63,7 +65,7 @@ var createSystemRoleStateState = () => {
             collectionPermissions: {
                 type: 'array',
                 default: [],
-                items: CollectionPermissions(),
+                items: CollectionPermissions({ schemaTree }),
             },
             systemPermissions: systemPermissionsSchema,
         },

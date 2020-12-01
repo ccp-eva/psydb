@@ -1,18 +1,29 @@
 'use strict';
 var expect = require('chai').expect,
-    createRecordTree = require('./create-record-tree');
+    createTree = require('./create-tree');
 
 describe('createRecordTree()', () => {
     it('creates the tree', () => {
-        var records = [
-            { entity: 'subject', type: 'animal', subtype: 'gorilla' },
-            { entity: 'subject', type: 'animal', subtype: 'bonobo' },
-            { entity: 'subject', type: 'human', subtype: 'child' },
-            { entity: 'personnel', type: 'scientist' },
+        var typedSchemas = [
+            { 
+                entity: 'subject', type: 'animal', subtype: 'gorilla',
+                schemas: 'gorilla-schemas',
+            },
+            {
+                entity: 'subject', type: 'animal', subtype: 'bonobo',
+                schemas: 'bonobo-schemas',
+            },
+            {
+                entity: 'subject', type: 'human', subtype: 'child',
+                schemas: 'child-schemas',
+            },
+            {
+                entity: 'personnel', type: 'scientist',
+                schemas: 'scientist-schemas',
+            },
         ];
-        var tree = createRecordTree({
-            customSchemaCollectionRecords: records
-        })
+
+        var tree = createTree(typedSchemas)
         console.log(tree);
 
         expect(tree).to.eql({
@@ -24,11 +35,11 @@ describe('createRecordTree()', () => {
                         children: {
                             gorilla: {
                                 key: 'gorilla',
-                                record: records[0],
+                                schemas: 'gorilla-schemas',
                             },
                             bonobo: {
                                 key: 'bonobo',
-                                record: records[1],
+                                schemas: 'bonobo-schemas',
                             }
                         }
                     },
@@ -37,7 +48,7 @@ describe('createRecordTree()', () => {
                         children: {
                             child: {
                                 key: 'child',
-                                record: records[2],
+                                schemas: 'child-schemas',
                             }
                         }
                     }
@@ -48,7 +59,7 @@ describe('createRecordTree()', () => {
                 children: {
                     scientist: {
                         key: 'scientist',
-                        record: records[3],
+                        schemas: 'scientist-schemas',
                     }
                 }
             }

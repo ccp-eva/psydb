@@ -6,7 +6,8 @@ var createTree = (list) => {
         var {
             entity: entityKey,
             type: typeKey,
-            subtype: subtypeKey
+            subtype: subtypeKey,
+            schemas
         } = item;
 
         if (!tree[entityKey]) {
@@ -30,10 +31,10 @@ var createTree = (list) => {
                 };
             }
 
-            type.children[subtypeKey].record = record;
+            type.children[subtypeKey].schemas = schemas;
         }
         else {
-            type.record = record;
+            type.schemas = schemas;
         }
     });
 

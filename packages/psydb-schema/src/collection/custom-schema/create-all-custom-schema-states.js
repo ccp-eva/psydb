@@ -8,17 +8,18 @@ var CustomSchemaState = ({
     hasCustomSubTypes,
 })
 
-var createAllFixedTypeSchemas = ({
+var createAllFixedTypeEntityMetadata = ({
     entityKey,
     canHaveGdprPortion,
     fixedTypes,
 }) => {
-    
-    return fixedTypeSchemas
+    Object.keys(fixedTypes).reduce((acc, key) => {})
+
+    return fixedTypeEntityMetadata;
 }
 
-var createAllCustomSchemaStates = () => {
-    var states = Object.keys(entityMetadataSkeleton).reduce(
+var createAllCustomEntityMetadata = () => {
+    var metadata = Object.keys(entityMetadataSkeleton).reduce(
         (acc, key) => {
             var {
                 canHaveGdprPortion,

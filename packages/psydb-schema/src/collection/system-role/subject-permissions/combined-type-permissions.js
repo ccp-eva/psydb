@@ -2,55 +2,48 @@
 var FieldAccessMap = require('./field-access-map');
 
 var CombinedTypePermissions = ({
-    scientificStateItems,
-    gdprStateItems,
+    schemaTreeNodes 
 } = {}) => {
-
-    var combined = Object.keys(scientificStateItems).reduce(
+    var combined = Object.keys(schemaTreeNodes).reduce(
         (acc, key) => {
-            var scientificSchema = scientificStateItems[key],
-                gdprSchema = gdprStateItems[key];
+            var {
+                state: stateSchema,
+                scientific: scientificSchema,
+                gdpr: gdprSchema,
+            } = schemaTreeNodes[key].schemas;
 
-            var scientificFieldAccess = FieldAccessMap({
-                schema: scientificSchema,
-            });
-
-            var gdprFieldAccess = (
-                gdprSchema
-                ? (
-                    FieldAccessMap({
-                        schema: gdprSchema
-                    })
-                )
-                : undefined
-            );
-
-            return ({
-                ...acc,
-                [key]: (
-                    gdprFieldAccess
-                    ? ({
+            if (stateSchema) {
+                var stateFieldAccess = FieldAccessMap({
+                    schema: stateSchema
+                });
+                return ({
+                    ...acc,
+                    [key]: {
+                        type: 'object',
+                        properties: { state: stateFieldAccess },
+                        required: [ 'state' ],
+                    }
+                })
+            }
+            else {
+                var scientificFieldAccess = FieldAccessMap({
+                    schema: scientificSchema
+                });
+                var gdprFieldAccess = FieldAccessMap({
+                    schema: gdprSchema
+                });
+                return ({
+                    ...acc,
+                    [key]: {
                         type: 'object',
                         properties: {
                             scientific: scientificFieldAccess,
-                            gdpr: gdprFieldAccess
+                            gdpr: gdprFieldAccess,
                         },
-                        required: [
-                            'scientific',
-                            'gdpr'
-                        ]
-                    })
-                    : ({
-                        type: 'object',
-                        properties: {
-                            scientific: scientificFieldAccess,
-                        },
-                        required: [
-                            'scientific',
-                        ]
-                    })
-                )
-            })
+                        required: [ 'scientific', 'gdpr' ],
+                    }
+                })
+            }
         },
         {}
     );

@@ -1,10 +1,11 @@
 var foo = ({ records }) => {
-    var typedSchemas = createTypedSchemas({ records, instructions });
+    var typedSchemas = createTypedSchemas({ records, instructions }),
+        schemaTree = createTree(typedSchemas);
     return {
-        ...createTree(typedSchemas),
+        ...schemaTree,
         ...staticSchemas,
         systemRole: {
-            state: SystemRoleState({ typodSchemas })
+            state: SystemRoleState({ schemaTree })
         }
     }
 }
