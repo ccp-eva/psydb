@@ -5,26 +5,31 @@ var SubjectScientificState = require('./subject-scientific-state'),
 var entityConstructionData = {
     hasCustomFields: true,
     hasCustomTypes: false,
-    
-    canHaveGdprPortion: true,
+    hasGdprPortion: true,
     
     fixedTypes: {
         human: {
-            hasCustomSubtypes: true,
-            createScientificSchemas: ({ type }) => ({
-                state: SubjectScientificState,
+            hasCustomTypes: true,
+            hasCustomFields: true,
+            hasGdprProtion: true,
+
+            createCustomScientificSchemas: (...args) => ({
+                state: SubjectScientificState(...args),
             }),
-            createGdprSchemas: ({ type }) => ({
-                state: SubjectGdprState,
+            createCustomGdprSchemas: (...args) => ({
+                state: SubjectGdprState(...args),
             }),
         },
         animal: {
-            hasCustomSubtypes: true,
-            createScientificSchemas: ({ type }) => ({
-                state: SubjectScientificState,
+            hasCustomTypes: true,
+            hasCustomFields: true,
+            hasGdprProtion: true,
+
+            createCustomScientificSchemas: (...args) => ({
+                state: SubjectScientificState(...args),
             }),
-            createGdprSchemas: ({ type }) => ({
-                state: SubjectGdprState,
+            createCustomGdprSchemas: (...args) => ({
+                state: SubjectGdprState(...args),
             }),
         },
     },
