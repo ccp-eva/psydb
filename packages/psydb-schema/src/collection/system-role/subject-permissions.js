@@ -1,6 +1,6 @@
 'use strict';
 var inline = require('@cdxoo/inline-text'),
-    CombinedTypePermissions = require('./combined-type-permissions');
+    CombinedTypePermissions = require('./util/combined-type-permissions');
 
 var SubjectPermissions = ({
     schemaTreeNodes,
@@ -20,18 +20,22 @@ var SubjectPermissions = ({
                     foreign key fields pointing to this collection
                 `,
             },
-        
-            animal: CombinedTypePermissions({
-                schemaTreeNodes: animal.children
+            
+            ...(animal && {
+                animal: CombinedTypePermissions({
+                    schemaTreeNodes: animal.children
+                })
             }),
-            human: CombinedTypePermissions({
-                schemaTreeNodes: human.children
+            ...(human && {
+                human: CombinedTypePermissions({
+                    schemaTreeNodes: human.children
+                })
             }),
         },
         required: [
             'enableMinimalReadAccess',
-            'animal',
-            'human',
+            ...(animal ? [ 'animal' ] : []),
+            ...(human ? [ 'human' ] : []),
         ]
     });
 };

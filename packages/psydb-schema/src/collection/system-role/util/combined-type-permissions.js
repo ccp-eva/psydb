@@ -1,5 +1,6 @@
 'use strict';
-var FieldAccessMap = require('./field-access-map');
+var inline = require('@cdxoo/inline-text'),
+    FieldAccessMap = require('./field-access-map');
 
 var CombinedTypePermissions = ({
     schemaTreeNodes 
@@ -11,6 +12,13 @@ var CombinedTypePermissions = ({
                 scientific: scientificSchemas,
                 gdpr: gdprSchemas,
             } = schemaTreeNodes[key].schemas;
+
+            if (!stateSchema && !(scientificSchemas && scientificSchemas.state)) {
+                throw new Error(inline`
+                    either "state" or "scientific.state" must be set
+                    in schema tree node with key "${key}"
+                `)
+            }
 
             if (stateSchema) {
                 var stateFieldAccess = FieldAccessMap({
@@ -45,7 +53,10 @@ var CombinedTypePermissions = ({
                                 gdpr: gdprFieldAccess 
                             })
                         },
-                        required: [ 'scientific', 'gdpr' ],
+                        required: [
+                            'scientific',
+                            ...(gdprFieldAccess ? [ 'gdpr' ] : []),
+                        ],
                     }
                 })
             }

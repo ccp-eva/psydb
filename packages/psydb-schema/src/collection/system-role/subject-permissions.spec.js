@@ -1,7 +1,7 @@
 'use strict';
 var expect = require('chai').expect,
-    createTree = require('../../../entities/create-all-entity-data/create-tree'),
-    CombinedTypePermissions = require('./combined-type-permissions'),
+    createTree = require('../../entities/create-all-entity-data/create-tree'),
+    CombinedTypePermissions = require('./util/combined-type-permissions'),
     SubjectPermissions = require('./subject-permissions');
 
 describe('SubjectPermissions()', () => {

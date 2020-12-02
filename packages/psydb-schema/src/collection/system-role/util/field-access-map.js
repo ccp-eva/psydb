@@ -1,5 +1,5 @@
 'use strict';
-var FieldAccess = require('../field-access');
+var FieldAccess = require('./field-access');
 
 var FieldAccessMap = ({
     schema,

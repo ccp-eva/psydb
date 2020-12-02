@@ -1,6 +1,6 @@
 'use strict';
 var expect = require('chai').expect,
-    FieldAccess = require('../field-access'),
+    FieldAccess = require('./field-access'),
     FieldAccessMap = require('./field-access-map');
 
 describe('FieldAccessMap()', () => {
