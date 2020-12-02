@@ -22,12 +22,12 @@ var LocationPermissions = ({
             },
             
             ...(building && {
-                animal: CombinedTypePermissions({
+                building: CombinedTypePermissions({
                     schemaTreeNodes: building.children
                 })
             }),
             ...(room && {
-                human: CombinedTypePermissions({
+                building: CombinedTypePermissions({
                     schemaTreeNodes: room.children
                 })
             }),

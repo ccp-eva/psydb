@@ -1,6 +1,6 @@
 'use strict';
 var inline = require('@cdxoo/inline-text'),
-    FieldAccessMap = require('./field-access-map');
+    createFieldgroupProps = require('./create-fieldgroup-props');
 
 var CombinedTypePermissions = ({
     schemaTreeNodes 
@@ -13,53 +13,20 @@ var CombinedTypePermissions = ({
                 gdpr: gdprSchemas,
             } = schemaTreeNodes[key].schemas;
 
-            if (!stateSchema && !(scientificSchemas && scientificSchemas.state)) {
-                throw new Error(inline`
-                    either "state" or "scientific.state" must be set
-                    in schema tree node with key "${key}"
-                `)
-            }
+            var fieldgroupProps = createFieldgroupProps({
+                stateSchema,
+                scientificSchemas,
+                gdprSchemas,
+            });
 
-            if (stateSchema) {
-                var stateFieldAccess = FieldAccessMap({
-                    schema: stateSchema
-                });
-                return ({
-                    ...acc,
-                    [key]: {
-                        type: 'object',
-                        properties: { state: stateFieldAccess },
-                        required: [ 'state' ],
-                    }
-                })
-            }
-            else {
-                var scientificFieldAccess = FieldAccessMap({
-                    schema: scientificSchemas.state
-                });
-                var gdprFieldAccess = undefined;
-                if (gdprSchemas) {
-                    gdprFieldAccess = FieldAccessMap({
-                        schema: gdprSchemas.state
-                    });
+            return ({
+                ...acc,
+                [key]: {
+                    type: 'object',
+                    properties: fieldgroupProps,
+                    required: Object.keys(fieldgroupProps),
                 }
-                return ({
-                    ...acc,
-                    [key]: {
-                        type: 'object',
-                        properties: {
-                            scientific: scientificFieldAccess,
-                            ...(gdprFieldAccess && {
-                                gdpr: gdprFieldAccess 
-                            })
-                        },
-                        required: [
-                            'scientific',
-                            ...(gdprFieldAccess ? [ 'gdpr' ] : []),
-                        ],
-                    }
-                })
-            }
+            })
         },
         {}
     );

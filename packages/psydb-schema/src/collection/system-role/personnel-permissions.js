@@ -1,12 +1,18 @@
 'use strict';
 var inline = require('@cdxoo/inline-text'),
-    FieldAccessMap = require('./util/field-access-map');
+    createFieldgroupProps = require('./create-fieldgroup-props');
 
 var PersonnelPermissions = ({
-    stateSchema,
+    scientificSchema,
+    gdprSchema,
 } = {}) => {
     var stateFieldAccess = FieldAccessMap({
         schema: stateSchema
+    });
+
+    var fieldgroupProps = createFieldgroupProps({
+        scientificSchema,
+        gdprSchema,
     });
 
     return ({
@@ -22,12 +28,11 @@ var PersonnelPermissions = ({
                     foreign key fields pointing to this collection
                 `,
             },
-            
-            state: stateFieldAccess,
+            ...fieldgroupProps,
         },
         required: [
             'enableMinimalReadAccess',
-            'state',
+            ...Object.keys(fieldgroupProps)
         ]
     });
 };
