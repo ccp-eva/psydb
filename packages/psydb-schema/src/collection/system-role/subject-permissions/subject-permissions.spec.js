@@ -1,42 +1,53 @@
 'use strict';
 var expect = require('chai').expect,
+    createTree = require('../../../entities/create-all-entity-data/create-tree'),
     CombinedTypePermissions = require('./combined-type-permissions'),
     SubjectPermissions = require('./subject-permissions');
 
 describe('SubjectPermissions()', () => {
     it('creates permission schema that includes all subtypes', () => {
-        var animalScientificStateItems = {
-            dog: {
-                type: 'object',
-                properties: {
-                    foo: { type: 'string' },
+        var typedSchemas = [
+            {
+                entity: 'subject',
+                type: 'animal',
+                subtype: 'dog',
+                schemas: {
+                    scientific: { state: {
+                        type: 'object',
+                        properties: {
+                            foo: { type: 'string' },
+                        }
+                    }}
                 }
             },
-        };
+            {
+                entity: 'subject',
+                type: 'human',
+                subtype: 'child',
+                schemas: {
+                    scientific: { state: {
+                        type: 'object',
+                        properties: {
+                            language: { type: 'string' }
+                        }
+                    }},
+                    gdpr: { state: {
+                        type: 'object',
+                        properties: {
+                            name: { type: 'string' }
+                        }
+                    }}
+                }
+            }
+        ];
+
+        var schemaTree = createTree(typedSchemas);
     
-        var humanScientificStateItems = {
-            child: {
-                type: 'object',
-                properties: {
-                    language: { type: 'string' }
-                }
-            }
-        };
-
-        var humanGdprStateItems = {
-            child: {
-                type: 'object',
-                properties: {
-                    name: { type: 'string' }
-                }
-            }
-        };
-
         var permissions = SubjectPermissions({
-            animalScientificStateItems,
-            humanScientificStateItems,
-            humanGdprStateItems,
+            schemaTreeNodes: schemaTree.subject.children
         });
+
+        //console.dir(permissions, { depth: null });
 
         expect(permissions.properties)
             .to.have.property('enableMinimalReadAccess');
@@ -49,15 +60,13 @@ describe('SubjectPermissions()', () => {
 
         expect(permissions.properties.animal).to.eql(
             CombinedTypePermissions({
-                scientificStateItems: animalScientificStateItems,
-                gdprStateItems: {},
+                schemaTreeNodes: schemaTree.subject.children.animal.children
             }),
         );
 
         expect(permissions.properties.human).to.eql(
             CombinedTypePermissions({
-                scientificStateItems: humanScientificStateItems,
-                gdprStateItems: humanGdprStateItems,
+                schemaTreeNodes: schemaTree.subject.children.human.children
             }),
         );
 

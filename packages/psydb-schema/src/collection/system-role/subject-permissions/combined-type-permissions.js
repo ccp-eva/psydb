@@ -8,8 +8,8 @@ var CombinedTypePermissions = ({
         (acc, key) => {
             var {
                 state: stateSchema,
-                scientific: scientificSchema,
-                gdpr: gdprSchema,
+                scientific: scientificSchemas,
+                gdpr: gdprSchemas,
             } = schemaTreeNodes[key].schemas;
 
             if (stateSchema) {
@@ -27,18 +27,23 @@ var CombinedTypePermissions = ({
             }
             else {
                 var scientificFieldAccess = FieldAccessMap({
-                    schema: scientificSchema
+                    schema: scientificSchemas.state
                 });
-                var gdprFieldAccess = FieldAccessMap({
-                    schema: gdprSchema
-                });
+                var gdprFieldAccess = undefined;
+                if (gdprSchemas) {
+                    gdprFieldAccess = FieldAccessMap({
+                        schema: gdprSchemas.state
+                    });
+                }
                 return ({
                     ...acc,
                     [key]: {
                         type: 'object',
                         properties: {
                             scientific: scientificFieldAccess,
-                            gdpr: gdprFieldAccess,
+                            ...(gdprFieldAccess && {
+                                gdpr: gdprFieldAccess 
+                            })
                         },
                         required: [ 'scientific', 'gdpr' ],
                     }
