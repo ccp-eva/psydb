@@ -3,15 +3,17 @@ var inline = require('@cdxoo/inline-text'),
     createFieldgroupProps = require('./create-fieldgroup-props');
 
 var CombinedTypePermissions = ({
-    schemaTreeNodes 
+    schemaTreeNode,
 } = {}) => {
-    var combined = Object.keys(schemaTreeNodes).reduce(
+    var types = schemaTreeNode ? schemaTreeNode.children : {};
+    
+    var combined = Object.keys(types).reduce(
         (acc, key) => {
             var {
                 state: stateSchema,
                 scientific: scientificSchemas,
                 gdpr: gdprSchemas,
-            } = schemaTreeNodes[key].schemas;
+            } = types[key].schemas;
 
             var fieldgroupProps = createFieldgroupProps({
                 stateSchema,

@@ -10,10 +10,10 @@ var {
     DateTimeInterval,
 } = require('@mpieva/psydb-schema-fields');
 
-var createStudyState = () => {
+var createStudyState = (key, customInnerSchema) => {
     var schema = {
         $schema: 'http://json-schema.org/draft-07/schema#',
-        $id: `${prefix}/state`,
+        $id: `${prefix}/${key}/state`,
         type: 'object',
         properties: {
             name: SaneString(),

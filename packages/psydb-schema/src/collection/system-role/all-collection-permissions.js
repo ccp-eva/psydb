@@ -1,26 +1,41 @@
 'use strict';
-var SubjectPermissions = require('./subject-permissions'),
-    LocationPermissions = require('./location-permissions'),
-    PersonnelPermissions = require('./personnel-permissions');
+var Custom = require('./util/custom-collection-permissions'),
+    Fixed = require('./util/fixed-collection-permissions'),
+    
+    Location = require('./location-permissions');
 
 var AllCollectionPermissions = ({
     schemaTree
 }) => ({
     type: 'object',
     properties: {
-        subject: SubjectPermissions({
-            schemaTreeNodes: schemaTree.subject.children
+        subject: Custom({
+            schemaTreeNode: schemaTree.subject
         }),
-        location: LocationPermissions({
-            schemaTreeNodes: schemaTree.location.children
+        location: Location({
+            schemaTreeNode: schemaTree.location
         }),
-        personnel: PersonnelPermissions({
+        /*study: StudyPermissions({
+            schemaTreeNodes: schemaTree.study.children
+        }),*/
+
+        externalOrganization: Custom({
+            schemaTreeNode: schemaTree.externalOrganization
+        }),
+        externalPerson: Custom({
+            schemaTreeNode: schemaTree.externalPerson
+        }),
+        
+        personnel: Fixed({
             stateSchema: schemaTree.personnel.schemas.state
         }),
     },
     required: [
         'subject',
         'location',
+        'study',
+        'externalOrganization',
+        'externalPerson',
         'personnel',
     ]
 });

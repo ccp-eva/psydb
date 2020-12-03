@@ -1,5 +1,6 @@
 'use strict';
-var FieldAccessMap = require('./field-access-map');
+var inline = require('@cdxoo/inline-text'),
+    FieldAccessMap = require('./field-access-map');
 
 var createFieldgroupProps = ({
     stateSchema,
@@ -9,26 +10,26 @@ var createFieldgroupProps = ({
 
     if (!stateSchema && !(scientificSchemas && scientificSchemas.state)) {
         throw new Error(inline`
-            either "state" or "scientific.state" must be set
+            either "stateSchema" or "scientificSchemas.state" must be set
             when creating fieldgroup properties
         `);
     }
 
     if (stateSchema) {
         return ({
-            state: FieldAccessMap({
+            _state: FieldAccessMap({
                 schema: stateSchema
             })
         });
     }
     else {
         var props = {
-            scientific: FieldAccessMap({
+            _scientific: FieldAccessMap({
                 schema: scientificSchemas.state
             })
         };
         if (gdprSchemas) {
-            props.gdpr = FieldAccessMap({
+            props._gdpr = FieldAccessMap({
                 schema: gdprSchemas.state
             });
         }
