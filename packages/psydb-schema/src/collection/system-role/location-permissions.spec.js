@@ -68,7 +68,7 @@ describe('LocationPermissions()', () => {
             schemaTreeNode: locationNode,
         });
 
-        console.dir(permissions, { depth: 3 });
+        console.dir(permissions, { depth: 6 });
 
         expect(permissions.properties)
             .to.have.property('enableMinimalReadAccess');
@@ -78,7 +78,7 @@ describe('LocationPermissions()', () => {
             'types',
         ]);
 
-        expect(permissions.properties._building).to.eql(
+        expect(permissions.properties.types.properties._building).to.eql(
             CombinedTypePermissions({
                 schemaTreeNode: locationNode.children.building
             }),

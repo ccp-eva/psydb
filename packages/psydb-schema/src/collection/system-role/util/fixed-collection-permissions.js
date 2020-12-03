@@ -18,11 +18,15 @@ var FixedCollectionPermissions = ({
         type: 'object',
         properties: {
             enableMinimalReadAccess: EnableMinimalReadAccess(),
-            ...fieldgroupProps,
+            _state: {
+                type: 'object',
+                properties: fieldgroupProps,
+                required: Object.keys(fieldgroupProps)
+            }
         },
         required: [
             'enableMinimalReadAccess',
-            ...Object.keys(fieldgroupProps)
+            '_state',
         ]
     });
 };

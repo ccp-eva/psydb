@@ -15,10 +15,10 @@ var LocationPermissions = ({
     var { building, room, ...other } = types;
 
     return Custom({
-        customTypes: other,
-        fixedTypes: {
-            building,
-            room,
+        types: {
+            _building: building,
+            _room: room,
+            ...other,
         }
     });
 };
