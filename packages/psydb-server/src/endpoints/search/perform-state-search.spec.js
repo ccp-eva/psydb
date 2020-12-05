@@ -37,11 +37,17 @@ describe('performStateSearch()', function () {
         var records = await performStateSearch({
             db,
             collectionName: 'subject',
-            type: 'cat',
-            searchableFields: [],
+            searchableFields: [
+                'scientific.state.bloodgroup',
+            ],
             readableFields: [
                 'scientific.state.name',
+                'scientific.state.bloodgroup',
             ],
+            query: {
+                'scientific.state.bloodgroup': 'a'
+                //'gdpr.state.ownerName': 'purr owner'
+            }
         });
         console.log(new Date());
 
@@ -77,7 +83,13 @@ var SimplePermissions = (group, perm) => ({
 })
 
 var initCollection = async (db) => {
-    /*await db.collection('subject').createIndex({
+    await db.collection('subject').createIndex({
+        'type': 1,
+    });
+    await db.collection('subject').createIndex({
+        'scientific.state.bloodgroup': 1,
+    });
+    await db.collection('subject').createIndex({
         'scientific.state.systemPermissions.accessRightsByResearchGroup': 1,
     }, { name: 'sci.sysPerm.access' });
     await db.collection('subject').createIndex({
@@ -85,24 +97,26 @@ var initCollection = async (db) => {
     }, { name: 'sci.sysPerm.access.id' });
     await db.collection('subject').createIndex({
         'scientific.state.systemPermissions.accessRightsByResearchGroup.permission': 1,
-    }, { name: 'sci.sysPerm.access.perm' });*/
+    }, { name: 'sci.sysPerm.access.perm' });
+    
+    console.log(await db.collection('subject').indexInformation());
 
     await db.collection('subject').insertMany([
         {
             type: 'dog',
             scientific: { state: {
-                name: 'bark bark', bloodgroop: 'a',
+                name: 'bark bark', bloodgroup: 'a',
                 ...SimplePermissions('bar-group')
             }},
             gdpr: { state: {
                 ownerName: 'bar owner', address: 'bark street',
-                ...SimplePermissions('bar-group')
+                ...SimplePermissions('foo-group')
             }}
         },
         {
             type: 'cat',
             scientific: { state: {
-                name: 'meow meow', bloodgroop: 'b',
+                name: 'meow meow', bloodgroup: 'b',
                 ...SimplePermissions('foo-group', 'write'),
             }},
             gdpr: { state: {
@@ -113,7 +127,7 @@ var initCollection = async (db) => {
         {
             type: 'cat',
             scientific: { state: {
-                name: 'purr purr', bloodgroop: 'b',
+                name: 'purr purr', bloodgroup: 'b',
                 ...SimplePermissions('foo-group', 'write'),
             }},
             gdpr: { state: {
@@ -121,9 +135,12 @@ var initCollection = async (db) => {
                 ...SimplePermissions('foo-group', 'read'),
             }}
         },
-        ...range(1*1000).map(n => ({
+        ...range(500*1000).map(n => ({
             type: 'chimpanzee',
-            scientific: { state: { name: 'bar', bloodgroop: 'b', }},
+            scientific: { state: { 
+                name: 'chimp chimp', bloodgroup: 'b',
+                ...SimplePermissions('bar-group', 'write'),
+            }},
         }))
     ])
 };

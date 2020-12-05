@@ -7,7 +7,8 @@ var wrapInArray = ({ when, then }) => (
 var performStateSearch = async ({
     db,
     collectionName,
-    
+
+    hasRootRights,
     allowedResearchGroupIds,
     // is ['state.foo', ...] 
     // or ['gdpr.state.foo', 'scientific.state.foo', ...]
@@ -21,7 +22,8 @@ var performStateSearch = async ({
     limit,
 }) => {
     var redactPermissions = [
-        'foo-group',
+        'bar-group',
+        //'foo-group',
         // SLOW
         /*{
             researchGroupId: 'foo-group',
@@ -44,31 +46,79 @@ var performStateSearch = async ({
     );
 
     var hasAccess = (prefix) => (
-        { $gt: [
-            { $size: {
-                $ifNull: [
-                    { $setIntersection: [
-                        `$${prefix}.${statePermissionPath}`,
-                        redactPermissions
-                    ]},
-                    []
-                ]
-            }},
-            0
-        ]}
+        hasRootRights
+        ? true
+        : (
+            { $gt: [
+                { $size: {
+                    $ifNull: [
+                        { $setIntersection: [
+                            `$${prefix}.${statePermissionPath}`,
+                            redactPermissions
+                        ]},
+                        []
+                    ]
+                }},
+                0
+            ]}
+        )
     );
 
-    // DOESNT WOORK
     /*var hasAccess = (prefix) => (
-        { 
-            [`${prefix}.${statePermissionPath}`]: { 
-                $in: redactPermissions
-            }
-        }
+        { $in: [
+            'foo-group',
+            `$${prefix}.${statePermissionPath}`,
+        ]}
+    );*/
+
+    /*var hasAccess = (prefix) => (
+        { $eq: [ true, true ] }
     );*/
 
     var wrappedStages = [
+        { $redact: {
+            $cond: {
+                if: { $or: [
+                    { $ifNull: [ '$gdpr', false ]},
+                    { $ifNull: [ '$scientific', false ]},
+                ]},
+                then: '$$DESCEND',
+                else: {
+                    $cond: {
+                        if: hasAccess('state'),
+                        then: '$$KEEP',
+                        else: '$$PRUNE'
+                    }
+                },
+            }
+        }},
+        /*{ $addFields: {
+            __HAS_SCIENTIFIC_ACCESS: hasAccess('scientific.state'),
+        }},
+        { $match: {
+            __HAS_SCIENTIFIC_ACCESS: true,
+        }},
         { $project: {
+            type: true,
+            //scientific: true,
+            'scientific': { $cond: {
+                if: { $eq: [ '$__HAS_SCIENTIFIC_ACCESS', true ]},
+                then: '$scientific',
+                else: '$$REMOVE'
+            }}
+        }},*/
+        /*{ $match: {
+            $or: [
+                //{ __HAS_SCIENTIFIC_ACCESS: true },
+                //{ 'state.systemPermissions.accessRightsByResearchGroup.researchGroupId': 'foo-group' },
+                { 'scientific.state.systemPermissions.accessRightsByResearchGroup.researchGroupId': { $in: ['foo-group'] }},
+                //{ 'gdpr.state.systemPermissions.accessRightsByResearchGroup.researchGroupId': 'foo-group' },
+            ]
+        }},*/
+        
+        //{ $match: { type: 'cat' }},
+        
+        /*{ $project: {
             type: true,
             subtype: true,
             state: { $cond: {
@@ -86,14 +136,17 @@ var performStateSearch = async ({
                 then: '$gdpr',
                 else: '$$REMOVE'
             }},
-        }},
-        { $match: {
+        }},*/
+        /*{ $match: {
             $or: [
                 { state: { $exists: true }},
                 { 'scientific': { $exists: true }},
                 { 'gdpr': { $exists: true }},
             ]
-        }},
+        }},*/
+        
+        //{ $match: { type: 'chimpanzee'}},
+        
         { $project: {
             type: true,
             subtype: true,
@@ -106,20 +159,14 @@ var performStateSearch = async ({
             // to be rejected
             __READ_CLONE: '$$ROOT',
         }},
+
         { $project: {
+            __READ_CLONE: true,
             ...searchableFields.reduce((acc, field) => ({
                 [field]: true,
-            }), {}),
-
-            '__READ_CLONE._id': true,
-            '__READ_CLONE.type': true,
-            '__READ_CLONE.subtype': true,
-            ...readableFields.reduce((acc, field) => ({
-                ...acc,
-                [`__READ_CLONE.${field}`]: true,
-            }), {}),
+            }), {})
         }},
-        
+
         ...wrapInArray({
             when: (query && typeof query === 'object'),
             then: { $match: query }
@@ -145,6 +192,16 @@ var performStateSearch = async ({
             then: { $limit: limit }
         }),
 
+        { $project: {
+            '__READ_CLONE._id': true,
+            '__READ_CLONE.type': true,
+            '__READ_CLONE.subtype': true,
+            ...readableFields.reduce((acc, field) => ({
+                ...acc,
+                [`__READ_CLONE.${field}`]: true,
+            }), {}),
+        }},
+        
         { $replaceRoot: { newRoot: '$__READ_CLONE' }},
     ];
 
@@ -152,6 +209,7 @@ var performStateSearch = async ({
         db.collection(collectionName)
         .aggregate(wrappedStages)
         .toArray()
+        //.explain()
     );
 
     return records;
