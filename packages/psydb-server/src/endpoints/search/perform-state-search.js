@@ -23,22 +23,7 @@ var performStateSearch = async ({
 }) => {
     var redactPermissions = [
         'bar-group',
-        //'foo-group',
-        // SLOW
-        /*{
-            researchGroupId: 'foo-group',
-            permission: 'read'
-        },
-        {
-            researchGroupId: 'foo-group',
-            permission: 'write'
-        }*/
     ];
-
-    // SLOW
-    /*var statePermissionPath = (
-        'systemPermissions.accessRightsByResearchGroup'
-    );*/
 
     // STILL SLOW
     var statePermissionPath = (
@@ -64,17 +49,6 @@ var performStateSearch = async ({
         )
     );
 
-    /*var hasAccess = (prefix) => (
-        { $in: [
-            'foo-group',
-            `$${prefix}.${statePermissionPath}`,
-        ]}
-    );*/
-
-    /*var hasAccess = (prefix) => (
-        { $eq: [ true, true ] }
-    );*/
-
     var wrappedStages = [
         { $redact: {
             $cond: {
@@ -92,60 +66,14 @@ var performStateSearch = async ({
                 },
             }
         }},
-        /*{ $addFields: {
-            __HAS_SCIENTIFIC_ACCESS: hasAccess('scientific.state'),
-        }},
+        
         { $match: {
-            __HAS_SCIENTIFIC_ACCESS: true,
-        }},
-        { $project: {
-            type: true,
-            //scientific: true,
-            'scientific': { $cond: {
-                if: { $eq: [ '$__HAS_SCIENTIFIC_ACCESS', true ]},
-                then: '$scientific',
-                else: '$$REMOVE'
-            }}
-        }},*/
-        /*{ $match: {
-            $or: [
-                //{ __HAS_SCIENTIFIC_ACCESS: true },
-                //{ 'state.systemPermissions.accessRightsByResearchGroup.researchGroupId': 'foo-group' },
-                { 'scientific.state.systemPermissions.accessRightsByResearchGroup.researchGroupId': { $in: ['foo-group'] }},
-                //{ 'gdpr.state.systemPermissions.accessRightsByResearchGroup.researchGroupId': 'foo-group' },
-            ]
-        }},*/
-        
-        //{ $match: { type: 'cat' }},
-        
-        /*{ $project: {
-            type: true,
-            subtype: true,
-            state: { $cond: {
-                if: hasAccess('state'),
-                then: '$state',
-                else: '$$REMOVE'
-            }},
-            'scientific': { $cond: {
-                if: hasAccess('scientific.state'),
-                then: '$scientific',
-                else: '$$REMOVE'
-            }},
-            'gdpr': { $cond: {
-                if: hasAccess('gdpr.state'),
-                then: '$gdpr',
-                else: '$$REMOVE'
-            }},
-        }},*/
-        /*{ $match: {
             $or: [
                 { state: { $exists: true }},
                 { 'scientific': { $exists: true }},
                 { 'gdpr': { $exists: true }},
             ]
-        }},*/
-        
-        //{ $match: { type: 'chimpanzee'}},
+        }},
         
         { $project: {
             type: true,
@@ -166,6 +94,7 @@ var performStateSearch = async ({
                 [field]: true,
             }), {})
         }},
+        
 
         ...wrapInArray({
             when: (query && typeof query === 'object'),
@@ -209,7 +138,6 @@ var performStateSearch = async ({
         db.collection(collectionName)
         .aggregate(wrappedStages)
         .toArray()
-        //.explain()
     );
 
     return records;

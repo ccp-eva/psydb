@@ -38,6 +38,13 @@ describe('performStateSearch()', function () {
             db,
             collectionName: 'subject',
             searchableFields: [
+                // FIXME: if we search fo ra field that
+                // is not enabled here a full table scan ist
+                // performed; thats bad probably we need to
+                // inspect the query beforehand
+                // and throw an error warning th user about accessing
+                // trying to search or a field then
+                // cant access
                 'scientific.state.bloodgroup',
             ],
             readableFields: [
