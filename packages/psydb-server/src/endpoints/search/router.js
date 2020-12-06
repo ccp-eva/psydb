@@ -8,10 +8,11 @@ var router = KoaRouter({
 
 //router.use(secured);
 
-router.post('/',
+router.post('/:collectionName(^(_helper_)?[A-Za-z]+$)',
     mongobody({
         //mimeType: 'application/mongodb-extjson',
-        mimeType: 'application/json',
+        ejsonMimeType: 'application/json',
+        ejsonOptions: { relaxed: true },
     }),
     search,
 )
