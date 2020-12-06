@@ -1,9 +1,8 @@
 'use strict';
-
 var compose = require('koa-compose'),
+    session = require('koa-session'),
     maybeConnectMongoDB = require('db').createMiddleware,
     
-    session = require('./session/').createMiddleware,
     routing = require('./routing').createMiddleware;
 
 var createKoaComposition = (app, config) => {
@@ -12,8 +11,12 @@ var createKoaComposition = (app, config) => {
         maybeConnectMongoDB({
             ...config.db
         }),
-        session(app),
+        session({
+            signed: false, // i think this requires app.keys to be set
+            renew: true, // renew session when close to ttl end
+        }, app),
         routing(config),
     ]);
 
+    return composition;
 }
