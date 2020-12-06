@@ -51,6 +51,11 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/koa-mongo-extjson-body",
+       "projectFolder": "packages/koa-mongo-extjson-body",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-mongo-adapter",
        "projectFolder": "packages/psydb-mongo-adapter",
        "reviewCategory": "production"
