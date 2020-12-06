@@ -1,5 +1,5 @@
 {
-  "name": "psydb-server",
+  "name": "@mpieva/psydb-server",
   "version": "0.1.0-alpha",
   "description": "",
   "main": "src/server.js",
@@ -18,14 +18,20 @@
   },
   "homepage": "https://github.com/cdxOo/psydb#readme",
   "dependencies": {
-    "@cdxoo/koa-plan-b": "^0.1.1-alpha",
-    "collections": "file:../psydb-collections",
-    "db": "file:../psydb-mongo-adapter",
     "koa": "^2.11.0",
     "koa-compose": "^4.1.0",
-    "koa-session": "^5.13.1"
+    "koa-session": "^5.13.1",
+    "@cdxoo/inline-string": "~1.0.0"
   },
   "devDependencies": {
-    "@cdxoo/mongodb-restore": "^1.0.0"
+    "mocha": "~8.1.3",
+    "chai": "~4.2.0",
+    "mongodb-memory-server": "~6.9.2",
+    "mongodb": "~3.6.3"
+  },
+  "config": {
+    "mongodbMemoryServer": {
+      "downloadDir": "./.mongod-tmp/"
+    }
   }
 }

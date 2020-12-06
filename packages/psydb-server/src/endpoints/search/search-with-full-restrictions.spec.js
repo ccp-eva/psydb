@@ -35,8 +35,7 @@ describe('searchWithFullRestrictions()', function () {
         
         console.log(new Date());
         var records = await searchWithFullRestrictions({
-            db,
-            collectionName: 'subject',
+            collection: db.collection('subject'),
             allowedResearchGroupIds: ['bar-group'],
             searchableFields: [
                 // FIXME: if we search fo ra field that
