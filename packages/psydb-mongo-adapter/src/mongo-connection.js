@@ -11,23 +11,22 @@ module.exports = (config) => {
 
 var MongoConnector = ({
     url,
-    db,
+    dbName,
     ...otherOptions
 }) => {
     var connector = {},
-        dbName = db,
         connection = undefined,
-        selectedDB = undefined;
+        selectedDb = undefined;
 
-    connector.getSelectedDB = () => {
+    connector.getSelectedDb = () => {
         if (!connection) {
             throw new Error('mongo client is not connected yet');
         }
-        if (!selectedDB) {
+        if (!selectedDb) {
             throw new Error('no database has been selected');
         }
 
-        return selectedDB;
+        return selectedDb;
     };
 
     connector.connect = async () => {
@@ -36,10 +35,10 @@ var MongoConnector = ({
             otherOptions,
         );
         if (dbName) {
-            selectedDB = connection.db(dbName);
+            selectedDb = connection.db(dbName);
         }
         else {
-            throw new Error('no db name provided; specify "db" property');
+            throw new Error('no db name provided; specify "dbName" property');
         }
     }
 
