@@ -3,9 +3,9 @@ var expect = require('chai').expect,
     Mongod = require('mongodb-memory-server').MongoMemoryServer,
     MongoClient = require('mongodb').MongoClient,
 
-    performStateSearch = require('./perform-state-search');
+    searchWithFullRestrictions = require('./search-with-full-restrictions');
 
-describe('performStateSearch()', function () {
+describe('searchWithFullRestrictions()', function () {
     this.timeout(0);
 
     var server, uri, con, db;
@@ -16,7 +16,7 @@ describe('performStateSearch()', function () {
 
         con = await MongoClient.connect(
             uri,
-            { useUnifiedTopology: true}
+            { useUnifiedTopology: true }
         );
 
         db = con.db('testDB');
@@ -34,9 +34,10 @@ describe('performStateSearch()', function () {
     it('finds all allowed records of the type', async () => {
         
         console.log(new Date());
-        var records = await performStateSearch({
+        var records = await searchWithFullRestrictions({
             db,
             collectionName: 'subject',
+            allowedResearchGroupIds: ['bar-group'],
             searchableFields: [
                 // FIXME: if we search fo ra field that
                 // is not enabled here a full table scan ist
@@ -142,7 +143,7 @@ var initCollection = async (db) => {
                 ...SimplePermissions('foo-group', 'read'),
             }}
         },
-        ...range(500*1000).map(n => ({
+        ...range(50*1000).map(n => ({
             type: 'chimpanzee',
             scientific: { state: { 
                 name: 'chimp chimp', bloodgroup: 'b',
