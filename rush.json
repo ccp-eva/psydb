@@ -31,11 +31,6 @@
        "reviewCategory": "production"
     },
     {
-       "packageName": "@mpieva/switchboard",
-       "projectFolder": "packages/switchboard",
-       "reviewCategory": "production"
-    },
-    {
        "packageName": "@mpieva/mongo-message-processor",
        "projectFolder": "packages/mongo-message-processor",
        "reviewCategory": "production"
@@ -73,6 +68,11 @@
     {
        "packageName": "@mpieva/psydb-schema",
        "projectFolder": "packages/psydb-schema",
+       "reviewCategory": "production"
+    },
+    {
+       "packageName": "@mpieva/psydb-server",
+       "projectFolder": "packages/psydb-server",
        "reviewCategory": "production"
     }
   ]
