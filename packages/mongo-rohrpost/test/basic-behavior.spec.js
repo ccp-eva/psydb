@@ -64,9 +64,9 @@ describe('basic-behavior', () => {
         ];
 
         MockDate.set(now);
-        await rohrpost.openCollection('test').openChannel().dispatch(
+        await rohrpost.openCollection('test').openChannel().dispatch({
             message
-        );
+        });
         MockDate.reset();
         docs = await db.collection('test').find().toArray();
         expect(docs).to.eql(expectedDocs);

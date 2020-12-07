@@ -12,6 +12,7 @@ module.exports = async ({
     disableChannelLocking,
 
     id,
+    subChannelKey,
     timestamp,
     message
 }) => {
@@ -41,6 +42,7 @@ module.exports = async ({
         status = queries.createNewChannel({
             collection,
             channelId,
+            subChannelKey,
             event
         });
     }
@@ -49,6 +51,7 @@ module.exports = async ({
             status = queries.updateAlways({
                 collection,
                 channelId,
+                subChannelKey,
                 event
             });
         }
@@ -56,6 +59,7 @@ module.exports = async ({
             status = queries.updateUnlessLocked({
                 collection,
                 channelId,
+                subChannelKey,
                 correlationId,
                 event
             });

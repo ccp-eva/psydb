@@ -3,54 +3,70 @@
 var createNewChannel = ({
     collection,
     channelId,
+    subChannelKey,
     event
-}) => (
-    collection.insertOne({
+}) => {
+    var path = (
+        subChannelKey
+        ? `${subChannelKey}.events`
+        : 'events'
+    );
+    return collection.insertOne({
         _id: channelId,
-        events: [ event ]
+        [path]: [ event ]
     })
-);
+};
 
 var updateUnlessLocked = ({
     collection,
     channelId,
     correlationId,
     event,
-}) => (
-    collection.updateOne(
+}) => {
+    var path = (
+        subChannelKey
+        ? `${subChannelKey}.events`
+        : 'events'
+    );
+    return collection.updateOne(
         {
             _id: channelId,
             $or: [
-                { 'events.0.correlationId': correlationId },
-                { 'events.0.processed': true }
+                { [`${path}.0.correlationId`]: correlationId },
+                { [`${path}.0.processed`]: true }
             ]
         },
         { $push: {
-            events: {
+            [path]: {
                 $each: [ event ],
                 $position: 0,
             },
         }}
     )
-);
+};
 
 var updateAlways = ({
     collection,
     channelId,
     event,
-}) => (
-    collection.updateOne(
+}) => {
+    var path = (
+        subChannelKey
+        ? `${subChannelKey}.events`
+        : 'events'
+    );
+    return collection.updateOne(
         {
             _id: channelId,
         },
         { $push: {
-            events: {
+            [path]: {
                 $each: [ event ],
                 $position: 0,
             },
         }}
     )
-);
+};
 
 module.exports = {
     createNewChannel,

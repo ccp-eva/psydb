@@ -15,10 +15,12 @@ var Channel = ({
 }) => {
     var channel = {};
 
-    channel.dispatch = async (message) => {
+    channel.dispatch = async ({ message, subChannelKey }) => {
         var r = await storeChannelEvent({
             isNewChannel: isNew,
             channelId: id,
+
+            subChannelKey,
 
             id: createChannelEventId(),
             timestamp: new Date(),
@@ -37,7 +39,8 @@ var Channel = ({
                 isNew
                 ? r.insertedId
                 : id
-            )
+            ),
+            subChannelKey,
         });
         
         //console.log(r);
