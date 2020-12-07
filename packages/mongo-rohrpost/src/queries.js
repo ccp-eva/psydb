@@ -6,15 +6,20 @@ var createNewChannel = ({
     subChannelKey,
     event
 }) => {
-    var path = (
-        subChannelKey
-        ? `${subChannelKey}.events`
-        : 'events'
-    );
-    return collection.insertOne({
-        _id: channelId,
-        [path]: [ event ]
-    })
+    if (subChannelKey) {
+        return collection.insertOne({
+            _id: channelId,
+            [subChannelKey]: {
+                events: [ event ]
+            }
+        });
+    }
+    else {
+        return collection.insertOne({
+            _id: channelId,
+            events: [ event ]
+        });
+    }
 };
 
 var updateUnlessLocked = ({

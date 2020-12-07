@@ -33,14 +33,19 @@ var Rohrpost = ({
             var modified = modificationCache.all();
             // FIXME: this could probably done in parrallel
             for (var i = 0; i < modified.length; i += 1) {
-                var { collectionName, id } = modified[i];
+                var { collectionName, id, subChannelKey } = modified[i];
+                var path = (
+                    subChannelKey
+                    ? `${subChannelKey}.events`
+                    : 'events'
+                );
                 await db.collection(collectionName).updateOne(
                     {
                         _id: id,
                     },
                     { $set: {
                         //'events.$[event].processed': true,
-                        'events.$[].processed': true,
+                        [`${path}.$[].processed`]: true,
                     }},
                     /*{ arrayFilters: [
                         { 'event.correlationId': correlationId }
