@@ -19,7 +19,10 @@ describe('AllTypePermissions()', () => {
             }
         });
 
-        //console.dir(permissions, { depth: 3 });
+        console.dir(permissions, { depth: null });
+
+        // FIXME
+        return;
 
         expect(permissions).to.eql({
             type: 'object',
@@ -76,7 +79,7 @@ describe('AllTypePermissions()', () => {
             types,
         });
 
-        //console.dir(permissions, { depth: 3 });
+        //console.dir(permissions, { depth: 5 });
         
         expect(permissions).to.eql({
             type: 'object',

@@ -1,6 +1,6 @@
 'use strict';
 var inline = require('@cdxoo/inline-text'),
-    EnableMinimalReadAccess = require('./enable-minimal-read-access'),
+    //EnableMinimalReadAccess = require('./enable-minimal-read-access'),
     AllTypePermission = require('./all-type-permission');
 
 var CustomCollectionPermissions = ({
@@ -10,12 +10,12 @@ var CustomCollectionPermissions = ({
     return ({
         type: 'object',
         properties: {
-            enableMinimalReadAccess: EnableMinimalReadAccess(),
+            //enableMinimalReadAccess: EnableMinimalReadAccess(),
             ...additionalProps,
             types: AllTypePermissions({ types }),
         },
         required: [
-            'enableMinimalReadAccess',
+            //'enableMinimalReadAccess',
             ...(additionalProps ? Object.keys(additionalProps) : []),
             'types',
         ]

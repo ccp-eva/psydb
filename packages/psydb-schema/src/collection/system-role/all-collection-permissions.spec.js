@@ -1,9 +1,9 @@
 'use strict';
 var expect = require('chai').expect,
     createTree = require('../../entities/create-all-entity-data/create-tree'),
-    SubjectPermissions = require('./subject-permissions'),
+    Custom = require('./util/custom-collection-permissions'),
+    Fixed = require('./util/fixed-collection-permissions'),
     LocationPermissions = require('./location-permissions'),
-    PersonnelPermissions = require('./personnel-permissions'),
     AllCollectionPermissions = require('./all-collection-permissions');
 
 describe('AllCollectionPermissions()', () => {
@@ -66,7 +66,7 @@ describe('AllCollectionPermissions()', () => {
         ]);
 
         expect(permissions.properties.subject).to.eql(
-            SubjectPermissions({
+            Custom({
                 schemaTreeNodes: schemaTree.subject.children
             }),
         );

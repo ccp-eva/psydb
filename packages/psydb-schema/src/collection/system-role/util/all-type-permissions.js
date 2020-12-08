@@ -1,6 +1,7 @@
 'use strict';
 var inline = require('@cdxoo/inline-text'),
     createFieldgroupProps = require('./create-fieldgroup-props');
+    //createTypeProps = require('./create-type-props');
 
 var AllTypePermissions = ({
     types,
@@ -39,12 +40,24 @@ var AllTypePermissions = ({
                     gdprSchemas,
                 });
 
+                // FIXME wanted to make it just collection level
+                // i.e.: create/read/search/modify/delete by
+                // type/subtype
+                // but decided endpoint level is enough for now
+                /*var typeProps = createTypeProps({
+                    stateSchema,
+                    scientificSchemas,
+                    gdprSchemas,
+                });*/
+
                 return ({
                     ...acc,
                     [key]: {
                         type: 'object',
                         properties: fieldgroupProps,
                         required: Object.keys(fieldgroupProps),
+                        //properties: typeProps,
+                        //required: Object.keys(typeProps),
                     }
                 });
             }

@@ -5,7 +5,7 @@ var EnableMinimalReadAccess = () => ({
     type: 'bool',
     default: false,
     description: inline`
-        grants access to search items by id and
+        grants access to read items by id and
         read the attribute designated as label;
         needs to be enabled in order to read/write
         foreign key fields pointing to this collection
