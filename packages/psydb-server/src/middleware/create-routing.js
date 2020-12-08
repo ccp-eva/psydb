@@ -1,4 +1,5 @@
-var KoaRouter = require('koa-router'),
+var compose = require('koa-compose'),
+    KoaRouter = require('koa-router'),
     withKoaBody = require('koa-body'),
     withMongoBody = require('@mpieva/koa-mongodb-extjson-body'),
     
@@ -35,6 +36,11 @@ var createRouting = ({
     //router.get('/read/:collectionName(...)/:recordId(...)');
     //router.post('/search-for-study')
     //router.post(/event)
+    
+    return compose([
+        router.routes(),
+        router.allowedMethods(),
+    ]);
 }
 
 module.exports = createRouting;
