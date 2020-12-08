@@ -67,12 +67,12 @@ describe('basic-behavior', () => {
         });
 
         var performInnerChecks = async (context, next) => {
-            var { rohrpost, mexxage } = context;
+            var { rohrpost, message } = context;
             expect(rohrpost).to.exist;
 
-            await rohrpost.openCollection('test').openChannel().dispatch(
+            await rohrpost.openCollection('test').openChannel().dispatch({
                 message
-            );
+            });
 
             var docs = await db.collection('test').find().toArray();
             expect(docs).to.eql(expectedDocs);
