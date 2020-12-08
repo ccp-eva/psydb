@@ -12,46 +12,30 @@ var {
     SaneString
 } = require('@mpieva/psydb-schema-fields');
 
-var createExternalPersonScientificState = (key) => {
+var ExternalPersonGdprState = () => {
     var schema = {
         $schema: 'http://json-schema.org/draft-07/schema#',
-        $id: `${prefix}/${key}/state`,
+        $id: `${prefix}/gdpr/state`,
         type: 'object',
         properties: {
-            type: { const: key },
             salutation: SaneString(),
             name: SpecialHumanName(),
             address: Address(),
             emails: EmailList({ minItems: 1 }),
             phones: PhoneList({ minItems: 1 }),
             description: FullText(),
-            systemPermissions: systemPermissionsSchema,
-            internals: {
-                type: 'object',
-                properties: {
-                    externalPersonScientificId: (
-                        ForeignId('externalPersonScientific')
-                    ),
-                },
-                required: [
-                    'externalPersonScientificId',
-                ],
-            }
         },
         required: [
-            'type',
             'salutation',
             'name',
             'address',
             'emails',
             'phones',
             'description',
-            'systemPermissions',
-            'internals',
         ],
     }
 
     return schema;
 };
 
-module.exports = createExternalPersonScientificState;
+module.exports = ExternalPersonGdprState;

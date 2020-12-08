@@ -16,6 +16,9 @@ var createPersonnelScientificState = () => {
             // TODO: decide if that should be more than one
             //  => Yes just one as i decided the roles to be
             //  system wide and _not_ specific to the institute
+            // TODO: figure out if there is personnel that isnt allowed
+            // to login at all i.e. has no permissions na therefor
+            // does not have a system-role
             systemRoleId: ForeignId('systemRole'),
             belongsToInstituteIds: {
                 type: 'array',

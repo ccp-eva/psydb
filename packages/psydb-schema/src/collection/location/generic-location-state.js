@@ -4,27 +4,20 @@ var prefix = require('./schema-id-prefix'),
     reservationSettingsSchema = require('./reservation-settings-schema'),
     internalsSchema = require('./internals-schema');
 
-var createBuildingState = (key, customInnerSchema) => {
+var GenericLocationState = ({ type, customStateSchema }) => {
     var schema = {
         $schema: 'http://json-schema.org/draft-07/schema#',
-        $id: `${prefix}/building/${key}/state`,
+        $id: `${prefix}/${type}/state`,
         type: 'object',
         properties: {
-            type: { const: 'building' },
-            subtype: { const: key },
             name: { type: 'string' },
-            // some scientific buildings in the jungle might not have this
-            //address: Address(),
-            custom: customInnerSchema,
+            custom: customStateSchema,
             reservationSettings: reservationSettingsSchema,
             systemPermissions: systemPermissionsSchema,
             internals: internalsSchema,
         },
         required: [
-            'type',
-            'subtype',
             'name',
-            //'address',
             'custom',
             'reservationSettings',
             'systemPermissions',
@@ -35,4 +28,4 @@ var createBuildingState = (key, customInnerSchema) => {
     return schema;
 };
 
-module.exports = createBuildingState;
+module.exports = GenericLocationState;

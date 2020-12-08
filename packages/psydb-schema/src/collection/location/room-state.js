@@ -8,14 +8,12 @@ var {
     ForeignId
 } = require('@mpieva/psydb-schema-fields');
 
-var createRoomState = (key, customInnerSchema) => {
+var RoomState = ({ subtype, customStateSchema }) => {
     var schema = {
         $schema: 'http://json-schema.org/draft-07/schema#',
-        $id: `${prefix}/room/${key}/state`,
+        $id: `${prefix}/room/${subtype}/state`,
         type: 'object',
         properties: {
-            type: { const: 'room' },
-            subtype: { const: key },
             buildingId: ForeignId('location', { type: 'building' }),
             name: { type: 'string' },
             custom: customInnerSchema,
@@ -24,8 +22,6 @@ var createRoomState = (key, customInnerSchema) => {
             internals: internalsSchema,
         },
         required: [
-            'type',
-            'subtype',
             'name',
             'buildingId',
             'custom',
@@ -38,4 +34,4 @@ var createRoomState = (key, customInnerSchema) => {
     return schema;
 };
 
-module.exports = createRoomState;
+module.exports = RoomState;
