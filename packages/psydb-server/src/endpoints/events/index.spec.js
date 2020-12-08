@@ -40,7 +40,10 @@ describe('handleMessage()', function () {
             type: 'foo',
             payload: { foo: 42 }
         });
-        await handleMessage(context, noop);
+        await handleMessage({
+            disableValidation: true,
+            disableAccessControl: true,
+        })(context, noop);
     });
 
 });
