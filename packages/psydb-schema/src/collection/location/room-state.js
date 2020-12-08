@@ -16,7 +16,7 @@ var RoomState = ({ subtype, customStateSchema }) => {
         properties: {
             buildingId: ForeignId('location', { type: 'building' }),
             name: { type: 'string' },
-            custom: customInnerSchema,
+            custom: customStateSchema,
             reservationSettings: reservationSettingsSchema,
             systemPermissions: systemPermissionsSchema,
             internals: internalsSchema,

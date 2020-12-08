@@ -9,7 +9,8 @@ var {
     EmailList,
     PhoneList,
     FullText,
-    SaneString
+    SaneString,
+    SpecialHumanName,
 } = require('@mpieva/psydb-schema-fields');
 
 var ExternalPersonGdprState = () => {

@@ -1,7 +1,7 @@
 'use strict';
 var inline = require('@cdxoo/inline-text'),
     prefix = require('./schema-id-prefix'),
-    systemPermissionsSchema = require('../system-permissions-schema'),
+    systemPermissionsSchema = require('../system-permissions-schema');
 
 var {
     ForeignId,

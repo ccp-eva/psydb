@@ -215,3 +215,5 @@ var createAllSchemas = ({
         })
     )
 )
+
+module.exports = createAllSchemas;

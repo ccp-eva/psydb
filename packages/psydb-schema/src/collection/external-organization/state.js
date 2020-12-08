@@ -1,30 +1,25 @@
 'use strict';
-var prefix = require('./schema-id-prefix'),
+var prefix = require('../../schema-id-root'),
     systemPermissionsSchema = require('../system-permissions-schema');
 
-var createExternalOrganizationState = (key, customInnerSchema) => {
+var ExternalOrganizationState = ({ type, customStateSchema }) => {
     var schema = {
         $schema: 'http://json-schema.org/draft-07/schema#',
-        $id: `${prefix}/${key}/state`,
+        $id: `${prefix}/collection/external-organization/${type}/state`,
         type: 'object',
         properties: {
-            type: { const: key },
             name: { type: 'string' },
-            custom: customInnerSchema,
+            custom: customStateSchema,
             systemPermissions: systemPermissionsSchema,
-            // TODO: do we need separate gdpr portion for that?
-            //internals: {},
         },
         required: [
-            'type',
             'name',
             'custom',
             'systemPermissions',
-            //'internals',
         ]
     }
 
     return schema;
 };
 
-module.exports = createExternalOrganizationState;
+module.exports = ExternalOrganizationState;
