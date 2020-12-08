@@ -7,10 +7,10 @@ var {
     ForeignId
 } = require('@mpieva/psydb-schema-fields');
 
-var createPersonnelScientificState = () => {
+var PersonnelScientificState = () => {
     var schema = {
         $schema: 'http://json-schema.org/draft-07/schema#',
-        $id: `${prefix}/state`,
+        $id: `${prefix}/scientific/state`,
         type: 'object',
         properties: {
             // TODO: decide if that should be more than one
@@ -42,4 +42,4 @@ var createPersonnelScientificState = () => {
     return schema;
 };
 
-module.exports = createPersonnelScientificState;
+module.exports = PersonnelScientificState;

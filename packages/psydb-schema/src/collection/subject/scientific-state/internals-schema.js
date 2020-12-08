@@ -8,7 +8,6 @@ var {
 var internalsSchema = {
     type: 'object',
     properties: {
-        subjectGdprId: ForeignId('subjectGdpr'),
         participatedInStudyIds: {
             type: 'array',
             default: [],
@@ -16,7 +15,6 @@ var internalsSchema = {
         },
     },
     required: [
-        'subjectGdprId',
         'participatedInStudyIds',
     ],
 };

@@ -1,6 +1,6 @@
 'use strict';
-var prefix = require('./schema-id-prefix'),
-    systemPermissionsSchema = require('../system-permissions-schema'),
+var prefix = require('../../../schema-id-root'),
+    systemPermissionsSchema = require('../../system-permissions-schema'),
     testingPermissionsSchema = require('./testing-permissions-schema'),
     internalsSchema = require('./internals-schema');
 
@@ -8,23 +8,23 @@ var {
     DateTime,
 } = require('@mpieva/psydb-schema-fields');
 
-var createHumanState = (key, customInnerSchema) => {
+var SubjectScientificState = ({
+    type,
+    customScientificStateSchema
+}) => {
     var schema = {
         $schema: 'http://json-schema.org/draft-07/schema#',
-        $id: `${prefix}/human/${key}/state`,
+        $id: `${prefix}/collection/subject/${type}/scientific/state`,
         type: 'object',
         properties: {
-            type: { const: 'human' },
-            subtype: { const: key },
             dateOfBirth: DateTime(),
-            custom: customInnerSchema,
+            custom: customScientificStateSchema,
             testingPermissions: testingPermissionsSchema,
             systemPermissions: systemPermissionsSchema,
             internals: internalsSchema,
         },
         required: [
-            'type',
-            'subtype',
+            'dateOfBirth',
             'custom',
             'testingPermissions',
             'systemPermissions',
@@ -35,4 +35,4 @@ var createHumanState = (key, customInnerSchema) => {
     return schema;
 };
 
-module.exports = createHumanState;
+module.exports = SubjectScientificState;

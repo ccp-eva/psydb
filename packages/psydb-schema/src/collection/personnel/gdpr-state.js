@@ -13,10 +13,10 @@ var {
     SpecialHumanName,
 } = require('@mpieva/psydb-schema-fields');
 
-var createPersonnelGdprState = () => {
+var PersonnelGdprState = () => {
     var schema = {
         $schema: 'http://json-schema.org/draft-07/schema#',
-        $id: `${prefix}/state`,
+        $id: `${prefix}/gdpr/state`,
         type: 'object',
         properties: {
             name: SpecialHumanName(),
@@ -59,4 +59,4 @@ var createPersonnelGdprState = () => {
     return schema;
 };
 
-module.exports = createPersonnelGdprState;
+module.exports = PersonnelGdprState;
