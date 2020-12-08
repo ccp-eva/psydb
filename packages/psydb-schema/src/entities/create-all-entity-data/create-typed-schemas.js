@@ -1,16 +1,16 @@
 'use strict';
 var createTypedSchemas = ({ records, instructions }) => (
     records.map(record => {
-        var { entity, type, subtype } = record.state;
+        var { collection, type, subtype } = record.state;
 
         var createSchemas = (
             subtype
-            ? instructions[entity].children[type].default
-            : instructions[entity].default
+            ? instructions[collection].children[type].default
+            : instructions[collection].default
         );
 
         return ({
-            entity,
+            collection,
             type,
             ...(subtype ? { subtype } : undefined),
             schemas: createSchemas({ record })

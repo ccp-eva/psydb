@@ -6,16 +6,16 @@ describe('createTypedSchemas()', () => {
     it('creates the typed schemas', () => {
         var records = [
             { state: {
-                entity: 'subject', type: 'animal', subtype: 'gorilla'
+                collection: 'subject', type: 'animal', subtype: 'gorilla'
             }},
             { state: {
-                entity: 'subject', type: 'animal', subtype: 'bonobo'
+                collection: 'subject', type: 'animal', subtype: 'bonobo'
             }},
             { state: {
-                entity: 'subject', type: 'human', subtype: 'child'
+                collection: 'subject', type: 'human', subtype: 'child'
             }},
             { state: {
-                entity: 'personnel', type: 'scientist'
+                collection: 'personnel', type: 'scientist'
             }},
         ];
         var instructions = {
@@ -43,19 +43,19 @@ describe('createTypedSchemas()', () => {
 
         expect(items).to.eql([
             { 
-                entity: 'subject', type: 'animal', subtype: 'gorilla',
+                collection: 'subject', type: 'animal', subtype: 'gorilla',
                 schemas: { animal: records[0] },
             },
             { 
-                entity: 'subject', type: 'animal', subtype: 'bonobo',
+                collection: 'subject', type: 'animal', subtype: 'bonobo',
                 schemas: { animal: records[1] },
             },
             {
-                entity: 'subject', type: 'human', subtype: 'child',
+                collection: 'subject', type: 'human', subtype: 'child',
                 schemas: { human: records[2] },
             },
             {
-                entity: 'personnel', type: 'scientist',
+                collection: 'personnel', type: 'scientist',
                 schemas: { personnel: records[3] },
             },
         ])

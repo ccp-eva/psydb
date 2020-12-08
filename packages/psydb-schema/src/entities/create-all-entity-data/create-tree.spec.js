@@ -18,6 +18,10 @@ describe('createRecordTree()', () => {
                 schemas: 'child-schemas',
             },
             {
+                entity: 'subject', type: 'other',
+                schemas: 'other-schemas',
+            },
+            {
                 entity: 'externalPersonnel', type: 'doctor',
                 schemas: 'doctor-schemas',
             },
@@ -51,7 +55,11 @@ describe('createRecordTree()', () => {
                                 schemas: 'child-schemas',
                             }
                         }
-                    }
+                    },
+                    other: {
+                        key: 'other',
+                        schemas: 'other-schemas',
+                    },
                 }
             },
             externalPersonnel: {
