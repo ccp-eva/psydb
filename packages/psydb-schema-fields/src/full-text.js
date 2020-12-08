@@ -1,10 +1,10 @@
 'use strict';
 var FullText = ({
-    default,
+    default: _default,
     additionalKeywords
-}) => ({
+} = {}) => ({
     type: 'string',
-    default: default || '',
+    default: _default || '',
     
     'ui:widget': 'textarea',
     ...additionalKeywords,

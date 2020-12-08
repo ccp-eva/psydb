@@ -1,2 +1,12 @@
 'use strict';
-module.exports = require('@mpieva/psydb-schema-primitives').MongoOID;
+var Id = ({
+    additionalKeywords,
+    ...other
+} = {}) => ({
+    type: 'string',
+    format: 'mongodb-object-id',
+    unmarshalMongodbObjectId: true,
+    ...additionalKeywords,
+});
+
+module.exports = Id;

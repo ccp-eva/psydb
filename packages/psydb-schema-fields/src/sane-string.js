@@ -1,12 +1,12 @@
 'use strict';
 var SaneString = ({
-    default,
+    default: _default,
     additionalKeywords,
-}) => ({
+} = {}) => ({
     type: 'string',
     // TODO: this needs a proper pattern
     pattern: '^[^\\r\\n]*$',
-    default: default || '',
+    default: _default || '',
     
     ...additionalKeywords,
 })

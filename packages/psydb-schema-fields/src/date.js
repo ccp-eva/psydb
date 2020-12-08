@@ -25,7 +25,7 @@ var MongoDate = require('@mpieva/psydb-schema-primitives').MongoDateRelaxed;
 // might be less code that fiddling with ui
 var Date = ({
     additionalKeywords,
-    ...other,
+    ...other
 }) => (
     MongoDate({
         ...other,

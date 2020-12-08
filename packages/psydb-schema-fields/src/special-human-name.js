@@ -3,7 +3,7 @@ var SaneString = require('./sane-string');
 
 var SpecialHumanName = ({
     additionalKeywords
-}) => ({
+} = {}) => ({
     type: 'object',
     properties: {
         lastname: SaneString(),
@@ -19,4 +19,4 @@ var SpecialHumanName = ({
     ...additionalKeywords,
 });
 
-module.exports = FullText;
+module.exports = SpecialHumanName;
