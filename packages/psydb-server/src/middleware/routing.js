@@ -1,12 +1,13 @@
+'use strict';
 var compose = require('koa-compose'),
     KoaRouter = require('koa-router'),
     withKoaBody = require('koa-body'),
     withMongoBody = require('@mpieva/koa-mongodb-extjson-body'),
     
-    withProtection = require('./create-protection-middleware'),
+    withProtection = require('./protection'),
 
-    public = require('./public-endpoints'),
-    protected = require('./protected-endpoints/');
+    public = require('../public-endpoints'),
+    protected = require('../protected-endpoints/');
 
 var createRouting = ({
     prefix = '/',

@@ -1,22 +1,24 @@
 'use strict';
 var compose = require('koa-compose'),
-    session = require('koa-session'),
+    withSession = require('koa-session'),
     maybeConnectMongoDB = require('db').createMiddleware,
     
-    routing = require('./create-routing');
+    withRouting = require('./routing');
 
-var createKoaComposition = (app, config) => {
+var createApi = (app, config) => {
 
     var composition = compose([
         maybeConnectMongoDB(config.db),
-        session({
+        withSession({
             ...(config.session || {}),
             signed: false, // i think this requires app.keys to be set
             //rolling: true, // reset cookie/ttl every request
             renew: true, // renew session when close to ttl end
         }, app),
-        routing(config.routing),
+        withRouting(config.routing),
     ]);
 
     return composition;
 }
+
+module.exports = createApi;

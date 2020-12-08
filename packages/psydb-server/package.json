@@ -26,7 +26,10 @@
     "koa-compose": "^4.1.0",
     "koa-session": "^5.13.1",
     "@cdxoo/inline-string": "~1.0.0",
-    "@mpieva/koa-mongo-extjson-body": "~0.1.0-alpha"
+    "@mpieva/koa-mongo-extjson-body": "~0.1.0-alpha",
+    "@mpieva/koa-mongo-mq": "~0.1.0-alpha",
+    "@mpieva/koa-mongo-rohrpost": "~0.1.0-alpha",
+    "@mpieva/psydb-schema": "~0.1.0-alpha"
   },
   "devDependencies": {
     "mocha": "~8.1.3",
