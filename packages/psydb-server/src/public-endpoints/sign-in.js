@@ -69,6 +69,10 @@ var signIn = async (context, next) => {
         throw new Error(); // TODO: 401
     }
 
+    context.body = {
+        data: { _id: user._id }
+    };
+
     await next();
 }
 
