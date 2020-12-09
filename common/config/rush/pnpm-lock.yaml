@@ -7,7 +7,6 @@ dependencies:
   '@rush-temp/koa-mongo-extjson-body': 'file:projects/koa-mongo-extjson-body.tgz'
   '@rush-temp/koa-mongo-mq': 'file:projects/koa-mongo-mq.tgz'
   '@rush-temp/koa-mongo-rohrpost': 'file:projects/koa-mongo-rohrpost.tgz'
-  '@rush-temp/mongo-message-processor': 'file:projects/mongo-message-processor.tgz'
   '@rush-temp/mongo-mq': 'file:projects/mongo-mq.tgz'
   '@rush-temp/mongo-rohrpost': 'file:projects/mongo-rohrpost.tgz'
   '@rush-temp/psydb-ajv-formats': 'file:projects/psydb-ajv-formats.tgz'
@@ -2370,18 +2369,6 @@ packages:
       integrity: sha512-bEnjPi8HxmcqvVix89O164Z87z2k5fmlnoUbnubhRuekeHP20MtJoDSkuopXi01vcpZmqpc0+rNjUqJliDDCCg==
       tarball: 'file:projects/koa-mongo-rohrpost.tgz'
     version: 0.0.0
-  'file:projects/mongo-message-processor.tgz':
-    dependencies:
-      chai: 4.2.0
-      mocha: 8.1.3
-      mongodb: 3.6.3
-      mongodb-memory-server: 6.9.2
-    dev: false
-    name: '@rush-temp/mongo-message-processor'
-    resolution:
-      integrity: sha512-dAHnQp3Wd58zgJ+iQFaCakrrIQrVX0EFBpl6Y6/uGORIk0MByYD/TqjN3IgdmT+q1zBY0bVrRyFUjNO+Zcqv7w==
-      tarball: 'file:projects/mongo-message-processor.tgz'
-    version: 0.0.0
   'file:projects/mongo-mq.tgz':
     dependencies:
       '@cdxoo/omit': 1.0.1
@@ -2519,7 +2506,6 @@ specifiers:
   '@rush-temp/koa-mongo-extjson-body': 'file:./projects/koa-mongo-extjson-body.tgz'
   '@rush-temp/koa-mongo-mq': 'file:./projects/koa-mongo-mq.tgz'
   '@rush-temp/koa-mongo-rohrpost': 'file:./projects/koa-mongo-rohrpost.tgz'
-  '@rush-temp/mongo-message-processor': 'file:./projects/mongo-message-processor.tgz'
   '@rush-temp/mongo-mq': 'file:./projects/mongo-mq.tgz'
   '@rush-temp/mongo-rohrpost': 'file:./projects/mongo-rohrpost.tgz'
   '@rush-temp/psydb-ajv-formats': 'file:./projects/psydb-ajv-formats.tgz'
