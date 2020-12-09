@@ -7,7 +7,7 @@ var Address = ({
     properties: {
         // country should be code from countries-list npm package
         country: {
-            type: { enum: [ 'DE' ] },
+            enum: [ 'DE' ],
             default: 'DE',
         },
         city: {
