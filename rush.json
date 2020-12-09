@@ -61,6 +61,16 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/psydb-ajv-keywords",
+       "projectFolder": "packages/psydb-ajv-keywords",
+       "reviewCategory": "production"
+    },
+    {
+       "packageName": "@mpieva/psydb-ajv-formats",
+       "projectFolder": "packages/psydb-ajv-formats",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-schema-primitives",
        "projectFolder": "packages/psydb-schema-primitives",
        "reviewCategory": "production"
@@ -73,6 +83,11 @@
     {
        "packageName": "@mpieva/psydb-schema",
        "projectFolder": "packages/psydb-schema",
+       "reviewCategory": "production"
+    },
+    {
+       "packageName": "@mpieva/psydb-fixtures",
+       "projectFolder": "packages/psydb-fixtures",
        "reviewCategory": "production"
     },
     {
