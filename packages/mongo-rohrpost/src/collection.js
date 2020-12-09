@@ -14,10 +14,10 @@ var Collection = ({
 }) => {
     var collection = {};
 
-    collection.openChannel = ({ id: maybeId } = {}) => (
+    collection.openChannel = ({ id: maybeId, isNew } = {}) => (
         Channel({
             id: maybeId || createChannelId(),
-            isNew: !maybeId,
+            isNew: isNew || !maybeId,
 
             db,
             collectionName: name,
