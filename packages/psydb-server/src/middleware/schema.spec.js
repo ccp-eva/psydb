@@ -4,7 +4,8 @@ require('debug').enable('psydb:*');
 var expect = require('chai').expect,
     Mongod = require('mongodb-memory-server').MongoMemoryServer,
     MongoClient = require('mongodb').MongoClient,
-
+    
+    withAjv = require('./ajv'),
     withSchemas = require('./schema');
 
 describe('middleware/schema', function () {
@@ -33,19 +34,32 @@ describe('middleware/schema', function () {
         await server.stop();
     });
 
-    it('handles root role login', async () => {
+    it('adds schemas to context', async () => {
         var calledNext = false,
             next = async () => { calledNext = true; };
 
         var context = { db };
+        await withAjv()(context, noop);
         await withSchemas()(context, next);
-
+        
         console.dir(context.schemas);
+
+        var schemas = context.schemas.findDefinitions({
+            collection: 'personnel'
+        });
+        console.dir(schemas, { depth: null });
+
+        var validators = context.schemas.findValidators({
+            collection: 'personnel'
+        });
+        console.dir(validators, { depth: null });
 
         expect(calledNext).to.eql(true);
     });
 
 });
+
+var noop = async () => {};
 
 var initCollections = async (db) => {
     await db.collection('customEntityType').insertMany([

@@ -1,22 +1,56 @@
 'use strict';
 var {
-    createCollectionSchemas,
-    createMessageSchemas,
+    createAllSchemas,
 } = require('@mpieva/psydb-schema');
 
 var createSchemaMiddleware = () => async (context, next) => {
-    var { db } = context;
+    var { db, ajv } = context;
 
-    var customSchemaRecords = await (
-        db.collection('customSchema').find().toArray()
+    var customEntityTypeRecords = await (
+        db.collection('customEntityType').find().toArray()
     );
 
-    context.schemas = {
-        collections: createCollectionSchemas(customSchemaRecords),
-        messages: createMessageSchemas(customSchemaRecords),
-    };
-
+    context.schemas = (
+        createAllSchemas({ records: customEntityTypeRecords })
+        .map(it => ({
+            ...it,
+            validators: Object.keys(it.schemas).reduce((acc, key) => {
+                console.log(it.collection, it.type, it.subtype, key);
+                return {
+                    ...acc,
+                    [key]: ajv.compile(it.schemas[key]),
+                };
+            }, {})
+        }))
+    );
+    context.schemas.findDefinitions = (
+        createFind(context.schemas, 'schemas')
+    );
+    context.schemas.findValidators = (
+        createFind(context.schemas, 'validators')
+    );
+    
     await next();
+}
+
+var createFind = (list, prop) => ({ collection, type, subtype }) => {
+    var filtered = list.filter(it => (
+        it.collection === collection
+        && it.type === type
+        && it.subtype === subtype
+    ));
+
+    if (filtered.length > 1) {
+        // TODO: decide if thats actually an error
+        // might also return undefined
+        throw new Error('found multiple schemas');
+    }
+    else if (filtered.length === 1) {
+        return filtered[0][prop];
+    }
+    else {
+        return undefined;
+    }
 }
 
 module.exports = createSchemaMiddleware;
