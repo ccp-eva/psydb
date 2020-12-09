@@ -44,12 +44,12 @@ describe('middleware/schema', function () {
         
         //console.dir(context.schemas);
 
-        var schemas = context.schemas.findDefinitions({
+        var schemas = context.schemas.collections.findDefinitions({
             collection: 'personnel'
         });
         //console.dir(schemas, { depth: null });
 
-        var validators = context.schemas.findValidators({
+        var validators = context.schemas.collections.findValidators({
             collection: 'personnel'
         });
         //console.log(validators);

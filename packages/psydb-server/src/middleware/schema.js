@@ -10,8 +10,14 @@ var createSchemaMiddleware = () => async (context, next) => {
         db.collection('customEntityType').find().toArray()
     );
 
-    context.schemas = (
-        createAllSchemas({ records: customEntityTypeRecords })
+    var schemas = createAllSchemas({
+        records: customEntityTypeRecords
+    });
+
+    context.schemas = {};
+
+    context.schemas.collections = (
+        schemas.collections
         .map(it => ({
             ...it,
             validators: Object.keys(it.schemas).reduce((acc, key) => {
@@ -23,11 +29,13 @@ var createSchemaMiddleware = () => async (context, next) => {
             }, {})
         }))
     );
-    context.schemas.findDefinitions = (
-        createFind(context.schemas, 'schemas')
+
+
+    context.schemas.collections.findDefinitions = (
+        createFind(context.schemas.collections, 'schemas')
     );
-    context.schemas.findValidators = (
-        createFind(context.schemas, 'validators')
+    context.schemas.collections.findValidators = (
+        createFind(context.schemas.collections, 'validators')
     );
     
     await next();

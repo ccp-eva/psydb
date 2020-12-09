@@ -10,23 +10,6 @@ var compose = require('koa-compose'),
     parseCollectionMessageType = require('./parse-collection-message-type'),
     createCollectionMessages = require('./create-collection-messages');
 
-var dispatchers = {
-    'collection/systemRole/create': async ({ rohrpost, message }) => {
-        return await handleStateUpdateMessage({
-            collection: 'systemRole',
-            rohrpost,
-            message
-        });
-    },
-    'collection/systemRole/patch': async ({ rohrpost, message }) => {
-        return await handleStateUpdateMessage({
-            collection: 'systemRole',
-            rohrpost,
-            message
-        });
-    }
-}
-
 var dispatchIncomingMessage = async (context, next) => {
     var { db, schemas, rohrpost, message } = context;
     var { type, personnelId, payload } = message;

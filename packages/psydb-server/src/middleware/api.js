@@ -3,6 +3,8 @@ var compose = require('koa-compose'),
     withSession = require('koa-session'),
     maybeConnectMongoDB = require('db').createMiddleware,
     
+    withAjv = require('./ajv'),
+    withSchemas = require('./schema');
     withRouting = require('./routing');
 
 var createApi = (app, config) => {
@@ -15,6 +17,9 @@ var createApi = (app, config) => {
             //rolling: true, // reset cookie/ttl every request
             renew: true, // renew session when close to ttl end
         }, app),
+
+        withAjv(),
+        withSchemas(),
         withRouting(config.routing),
     ]);
 
