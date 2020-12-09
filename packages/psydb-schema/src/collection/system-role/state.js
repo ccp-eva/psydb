@@ -8,9 +8,9 @@ var inline = require('@cdxoo/inline-text'),
     ForeignId
 } = require('@mpieva/psydb-schema-fields');*/
 
-var createSystemRoleState = ({
-    schemaTree
-}) => {
+var SystemRoleState = ({
+    //    schemaTree
+} = {}) => {
     var schema = {
         $schema: 'http://json-schema.org/draft-07/schema#',
         $id: `${prefix}/state`,
@@ -145,4 +145,4 @@ var createSystemRoleState = ({
     return schema;
 };
 
-module.exports = createSystemRoleState;
+module.exports = SystemRoleState;

@@ -42,7 +42,9 @@ var PersonnelGdprState = () => {
                         type: 'string',
                     },
                 },
-                required: 'passwordHash',
+                required: [
+                    'passwordHash'
+                ],
             },
         },
         required: [

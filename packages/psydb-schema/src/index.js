@@ -1,2 +1,4 @@
 'use strict';
-module.exports = require('./create-all/');
+module.exports = {
+    createAllSchemas: require('./create-all/')
+};

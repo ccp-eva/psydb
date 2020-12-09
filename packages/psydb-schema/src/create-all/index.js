@@ -7,6 +7,10 @@ var {
     PersonnelScientificState,
 } = require('../collection/personnel/');
 
+var {
+    SystemRoleState,
+} = require('../collection/system-role/');
+
 var createAll = ({ records }) => {
     var typedSchemas = createTypedSchemas({ records, instructions });
     return [
@@ -14,6 +18,9 @@ var createAll = ({ records }) => {
         { collection: 'personnel', schemas: {
             gdpr: PersonnelGdprState(),
             scientific: PersonnelScientificState(),
+        }},
+        { collection: 'systemRole', schemas: {
+            state: SystemRoleState(),
         }},
         /*{ collection: 'systemRole', schemas: {
             state: SystemRoleState()
