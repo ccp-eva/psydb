@@ -42,17 +42,35 @@ describe('middleware/schema', function () {
         await withAjv()(context, noop);
         await withSchemas()(context, next);
         
-        console.dir(context.schemas);
+        //console.dir(context.schemas);
 
         var schemas = context.schemas.findDefinitions({
             collection: 'personnel'
         });
-        console.dir(schemas, { depth: null });
+        //console.dir(schemas, { depth: null });
 
         var validators = context.schemas.findValidators({
             collection: 'personnel'
         });
-        console.dir(validators, { depth: null });
+        //console.log(validators);
+
+        var data = {
+            name: { firstname: 'bob', lastname: 'bauer' },
+            shorthand: '  BB  ',
+            emails: [
+                { email: 'bob@example.com', isPrimary: true },
+            ],
+            phones: [
+                { number: '0341/123123', type: 'mobile' }
+            ],
+            //systemPermissions: {},
+            //internals: {},
+            myAdditional: 'foo',
+        };
+        var isValid = validators.gdpr(data);
+        console.log(isValid);
+        console.log(validators.gdpr.errors);
+        console.log(data);
 
         expect(calledNext).to.eql(true);
     });
