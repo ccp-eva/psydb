@@ -1,0 +1,10 @@
+{
+  "name": "@mpieva/psydb-fixtures",
+  "version": "0.1.0-alpha",
+  "description": "",
+  "main": "./index.js",
+  "scripts": {
+  },
+  "author": "Jan Schwalbe",
+  "license": "MIT"
+}
