@@ -8,22 +8,19 @@ var {
 var systemPermissionsSchema = {
     type: 'object',
     properties: {
-        accessRightsByInstitute: {
+        accessRightsByResearchGroup: {
             type: 'array',
             minItems: 1,
             // unqiueItemProperties requires "ajv-keywords"
-            uniqueItemProperties: [ 'instituteId' ],
+            uniqueItemProperties: [ 'researchGroupId' ],
             items: {
                 type: 'object',
                 properties: {
-                    instituteId: ForeignId('institute'),
-                    // TODO: split this since we also need create and delete
-                    // and also we need a param for delete
-                    // since this is not true only for the gdpr collections
+                    researchGroupId: ForeignId('researchGroup'),
                     permission: { enum: [ 'read', 'write' ] }
                 },
                 required: [
-                    'instituteId',
+                    'researchGroupId',
                     'permission'
                 ],
             },
@@ -49,11 +46,11 @@ var systemPermissionsSchema = {
         },
         */
 
-        isHiddenForInstituteIds: {
+        isHiddenForResearchGroupIds: {
             type: 'array',
             default: [],
             unqiueItems: true,
-            items: ForeignId('institute'),
+            items: ForeignId('researchGroup'),
             description: inline`
                 hides the database record from view for that institute
                 in a soft way, i.e. one can always choose to show

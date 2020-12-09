@@ -20,13 +20,12 @@ var PersonnelScientificState = () => {
             // to login at all i.e. has no permissions na therefor
             // does not have a system-role
             systemRoleId: ForeignId('systemRole'),
-            belongsToInstituteIds: {
+            researchGroupIds: {
                 type: 'array',
-                default: [],
-                items: ForeignId('institute'),
+                items: ForeignId('researchGroup'),
                 description: inline`
                     items in this array enable the user to access
-                    database records based on that records institute
+                    database records based on that records research group
                     related read/write permissions
                 `,
             },
