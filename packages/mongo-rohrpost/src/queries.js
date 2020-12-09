@@ -25,6 +25,7 @@ var createNewChannel = ({
 var updateUnlessLocked = ({
     collection,
     channelId,
+    subChannelKey,
     correlationId,
     event,
 }) => {

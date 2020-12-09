@@ -43,6 +43,12 @@ var Channel = ({
             subChannelKey,
         });
         
+        // store id for possible next dispatch
+        if (isNew) {
+            id = r.insertedId;
+            isNew = false;
+        }
+
         //console.log(r);
         return r;
     };

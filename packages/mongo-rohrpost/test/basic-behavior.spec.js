@@ -43,8 +43,12 @@ describe('basic-behavior', () => {
         });
 
         var docs = undefined,
-            now = new Date(),
-            message = { type: 'foo-type', payload: { foo: 42 }};
+            now = new Date();
+        
+        var messages = [
+            { type: 'foo-type', payload: { foo: 42 }},
+            { type: 'bar-type', payload: { bar: 43 }},
+        ];
 
         var expectedDocs = [
             {
@@ -56,22 +60,40 @@ describe('basic-behavior', () => {
                         correlationId: 1001,
                         processed: false,
                         message: {
-                            ...message
+                            ...messages[1]
                         }
-                    }
+                    },
+                    {
+                        _id: 3333,
+                        timestamp: now,
+                        correlationId: 1001,
+                        processed: false,
+                        message: {
+                            ...messages[0]
+                        }
+                    },
                 ]
             }
         ];
 
         MockDate.set(now);
-        await rohrpost.openCollection('test').openChannel().dispatch({
-            message
+        var channel = rohrpost.openCollection('test').openChannel()
+        
+        var r = await channel.dispatch({
+            message: messages[0],
         });
+        var s = await channel.dispatch({
+            message: messages[1],
+        });
+
+        console.log(r);
+
         MockDate.reset();
         docs = await db.collection('test').find().toArray();
         expect(docs).to.eql(expectedDocs);
 
         expectedDocs[0].events[0].processed = true;
+        expectedDocs[0].events[1].processed = true;
 
         await rohrpost.unlockModifiedChannels();
         docs = await db.collection('test').find().toArray();
