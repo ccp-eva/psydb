@@ -19,7 +19,7 @@ var SystemRoleState = ({
             // FIXME: im not sure that i need that
             // since system-role ly makes sense when the user can login
             /*canSignIn: {
-                type: 'bool',
+                type: 'boolean',
                 default: false,
                 description: inline`
                     when set enables the system sign in
@@ -27,7 +27,7 @@ var SystemRoleState = ({
                 `,
             },*/
             hasRootAccess: {
-                type: 'bool',
+                type: 'boolean',
                 default: false,
                 description: inline`
                     grants full access to all database records and
@@ -36,7 +36,7 @@ var SystemRoleState = ({
                 `,
             },
             hasResearchGroupAdminAccess: {
-                type: 'bool',
+                type: 'boolean',
                 default: false,
                 description: inline`
                     grants full access to database records of
@@ -50,7 +50,7 @@ var SystemRoleState = ({
             // from the ui/endpoint standpoint its basically the same as
             // "do you have any search permissions on that collection"
             /*canSearchArbitrarySubjects: {
-                type: 'bool',
+                type: 'boolean',
                 default: false,
                 description: inline`
                     when set enables the user to use the arbitrary
@@ -64,7 +64,7 @@ var SystemRoleState = ({
             },*/
 
             canSelectSubjectsForTesting: {
-                type: 'bool',
+                type: 'boolean',
                 default: false,
                 description: inline`
                     when set enables the user to select subjects
@@ -77,7 +77,7 @@ var SystemRoleState = ({
             },
 
             canAccessStudySummary: {
-                type: 'bool',
+                type: 'boolean',
                 default: false,
                 description: inline`
                     suche => studie => summary button
@@ -85,7 +85,7 @@ var SystemRoleState = ({
             },
 
             canAccessLocationReservations: {
-                type: 'bool',
+                type: 'boolean',
                 default: false,
                 description: inline`
                     termine => bestellung
@@ -93,7 +93,7 @@ var SystemRoleState = ({
             },
 
             canAccessExternalExperimentsCalendar: {
-                type: 'bool',
+                type: 'boolean',
                 default: false,
                 description: inline`
                     termine => kigatermine
@@ -103,7 +103,7 @@ var SystemRoleState = ({
             },
 
             canAccessInhouseExperimentsCalendar: {
-                type: 'bool',
+                type: 'boolean',
                 default: false,
                 description: inline`
                     termine => inhouse-termine
@@ -112,7 +112,7 @@ var SystemRoleState = ({
             },
 
             canViewInvitedSubjectSummaryCalendar: {
-                type: 'bool',
+                type: 'boolean',
                 default: false,
                 description: inline`
                     reception view basically
