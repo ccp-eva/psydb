@@ -31,11 +31,6 @@
        "reviewCategory": "production"
     },
     {
-       "packageName": "@mpieva/mongo-message-processor",
-       "projectFolder": "packages/mongo-message-processor",
-       "reviewCategory": "production"
-    },
-    {
        "packageName": "@mpieva/mongo-rohrpost",
        "projectFolder": "packages/mongo-rohrpost",
        "reviewCategory": "production"
