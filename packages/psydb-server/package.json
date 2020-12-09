@@ -32,7 +32,8 @@
     "@mpieva/psydb-schema": "~0.1.0-alpha",
     "ajv-keywords": "~3.5.2",
     "@mpieva/psydb-ajv-formats": "~0.1.0-alpha",
-    "@mpieva/psydb-ajv-keywords": "~0.1.0-alpha"
+    "@mpieva/psydb-ajv-keywords": "~0.1.0-alpha",
+    "nanoid": "~3.1.20"
   },
   "devDependencies": {
     "mocha": "~8.1.3",

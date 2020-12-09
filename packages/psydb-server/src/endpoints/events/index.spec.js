@@ -1,7 +1,8 @@
 'use strict';
 var expect = require('chai').expect,
     Mongod = require('mongodb-memory-server').MongoMemoryServer,
-    MongoClient = require('mongodb').MongoClient,
+    { MongoClient, ObjectId } = require('mongodb'),
+    nanoid = require('nanoid').nanoid,
 
     handleMessage = require('./index');
 
@@ -35,15 +36,25 @@ describe('handleMessage()', function () {
         await server.stop();
     });
 
-    it('finds all allowed records of the type', async () => {
+    it('handle message', async () => {
         var context = createContext({
-            type: 'foo',
-            payload: { foo: 42 }
+            type: 'collection/personnel/create',
+            payload: { id: 42, props: {
+                bar: 42,
+                baz: 43,
+            }}
         });
         await handleMessage({
             disableValidation: true,
             disableAccessControl: true,
+            //forcedPersonnelId: ObjectId('5fcf4481feb7ca0683978b80'),
+            forcedPersonnelId: 'wcy-dSwU4O8WlBWzE_Zap',
         })(context, noop);
+        
+        var h = await db.collection('mqMessageHistory').find().toArray()
+        console.dir(h, { depth: null });
+        var records = await db.collection('personnel').find().toArray()
+        console.dir(records, { depth: null });
     });
 
 });

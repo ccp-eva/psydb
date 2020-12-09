@@ -1,20 +1,24 @@
 'use stirct';
 var compose = require('koa-compose'),
     ObjectId = require('mongodb').ObjectId,
+    nanoid = require('nanoid').nanoid,
 
     withMongoMQ = require('@mpieva/koa-mongo-mq'),
     withRohrpost = require('@mpieva/koa-mongo-rohrpost'),
-    schemas = require('@mpieva/psydb-schema').messages;
+    schemas = require('@mpieva/psydb-schema').messages,
+
+    parseCollectionMessageType = require('./parse-collection-message-type'),
+    createCollectionMessages = require('./create-collection-messages');
 
 var dispatchers = {
-    'systemRole/create': async ({ rohrpost, message }) => {
+    'collection/systemRole/create': async ({ rohrpost, message }) => {
         return await handleStateUpdateMessage({
             collection: 'systemRole',
             rohrpost,
             message
         });
     },
-    'systemRole/patch': async ({ rohrpost, message }) => {
+    'collection/systemRole/patch': async ({ rohrpost, message }) => {
         return await handleStateUpdateMessage({
             collection: 'systemRole',
             rohrpost,
@@ -24,24 +28,49 @@ var dispatchers = {
 }
 
 var dispatchIncomingMessage = async (context, next) => {
-    var { db, rohrpost, message } = context;
-    var { type } = message;
+    var { db, schemas, rohrpost, message } = context;
+    var { type, personnelId, payload } = message;
 
     if (!type) {
         throw new Error(400); // TODO
+        // TODO: validate message schema
+        // then we dont need the guard condition anymore
     }
 
-    var dispatch = dispatchers[type];
-    await dispatch({ rohrpost, message });
+    if (/^collection\//) {
+        var { collection, op } = parseCollectionMessageType(type);
+
+        // FIXME: dispatch silently ignores messages when id is set
+        // but record doesnt exist
+        var channel = (
+            rohrpost
+            .openCollection(collection)
+            .openChannel({ id: payload.id, isNew: op === 'create' })
+        );
+
+        var collectionMessages = createCollectionMessages({
+            personnelId,
+            props: payload.props
+        });
+        for (var it of collectionMessages) {
+            var { subChannelKey, ...message } = it;
+            await channel.dispatch({ subChannelKey, message })
+        }
+    }
+
+     
+
+    //var dispatch = dispatchers[type];
+    //await dispatch({ rohrpost, message });
 
     console.log(message);
     //var records = await db.collection('mqMessageQueue').find().toArray()
     //console.log(records);
-    rohrpost.openCollection('personnel').openChannel().dispatch({
+    /*rohrpost.openCollection('personnel').openChannel().dispatch({
         message,
-    });
+    });*/
     var records = await db.collection('personnel').find().toArray()
-    console.dir(records, { depth: null });
+    //console.dir(records, { depth: 5 });
     await next();
 };
 
@@ -58,6 +87,7 @@ var withAccessControl = async (context, next) => {
 var createMessageHandling = ({
     enableValidation = true,
     enableAccessControl = true,
+    forcedPersonnelId,
 } = {}) => {
     return compose([
         ...(
@@ -71,14 +101,16 @@ var createMessageHandling = ({
             : []
         ),
         async (context, next) => {
+            // TODO: mq needs to accept custom message metadata
             context.message = context.request.body;
             context.message.personnelId = (
-                context.session.personnelId || null
+                context.session.personnelId || forcedPersonnelId
             );
             await next();
         },
         withMongoMQ({
-            createId: () => ObjectId(),
+            //createId: () => ObjectId(),
+            createId: () => nanoid(),
             ephemeralCollectionName: 'mqMessageQueue',
             persistCollectionName: 'mqMessageHistory',
         }),
@@ -87,8 +119,10 @@ var createMessageHandling = ({
             await next();
         },
         withRohrpost({
-            createChannelId: () => ObjectId(),
-            createChannelEventId: () => ObjectId(),
+            createChannelId: () => nanoid(),
+            createChannelEventId: () => nanoid(),
+            //createChannelId: () => ObjectId(),
+            //createChannelEventId: () => ObjectId(),
         }),
         dispatchIncomingMessage,
     ]);
