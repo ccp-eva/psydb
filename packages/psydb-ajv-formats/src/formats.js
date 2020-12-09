@@ -47,6 +47,9 @@ module.exports = {
     mongodbObjectId: {
         validate: regexes.mongodbObjectId,
     },
+    germanPhoneNumber: {
+        validate: regexes.germanPhoneNumber,
+    },
     /*dateTime: {
         validate: dateTime,
         compare: util.compareDateTime,
