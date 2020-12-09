@@ -20,7 +20,7 @@
   },
   "config": {
     "mongodbMemoryServer": {
-      "downloadDir": "./.mongod-tmp/"
+      "downloadDir": "/tmp/mongodb-memory-server/"
     }
   },
   "dependencies": {
