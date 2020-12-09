@@ -18,10 +18,12 @@ var PersonnelGdprState = () => {
         $schema: 'http://json-schema.org/draft-07/schema#',
         $id: `${prefix}/gdpr/state`,
         type: 'object',
+        additionalProperties: false, // TODO: this needs to be everywhere
         properties: {
             name: SpecialHumanName(),
             // TODO: decide if that should be stored in the scientific part
-            shorthand: SaneString(),
+            //shorthand: SaneString(),
+            shorthand: SaneString({ minLength: 2 }),
             // TODO: find out if thats even needed
             address: Address({
                 required: []
@@ -34,7 +36,16 @@ var PersonnelGdprState = () => {
             }),
             // TODO: find out what thats good for
             description: FullText(),
-            systemPermissions: systemPermissionsSchema,
+            // TODO: internals need to be separated
+            // and put here when we read the record
+            // but as they cant be written
+            // ... not sure if that works when
+            // we use prohibited though
+            // => this works but the errors are
+            // wierd, and im still not fully convinced
+            // by the general approach
+            // TODO: prohibited keyword should give
+            // reasonable error message
             internals: {
                 type: 'object',
                 properties: {
@@ -48,12 +59,12 @@ var PersonnelGdprState = () => {
             },
         },
         required: [
-            'lastname',
-            'firstname',
+            'name',
             'shorthand',
             'emails',
             'phones',
-            'systemPermissions',
+        ],
+        prohibited: [
             'internals',
         ],
     }
