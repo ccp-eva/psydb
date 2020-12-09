@@ -11,9 +11,14 @@ var {
     SystemRoleState,
 } = require('../collection/system-role/');
 
+var createCollectionMessageSchemas = (
+    require('../messages/collection-messages.js')
+);
+
 var createAll = ({ records }) => {
     var typedSchemas = createTypedSchemas({ records, instructions });
-    return [
+    
+    var collectionSchemas = [
         ...typedSchemas,
         { collection: 'personnel', schemas: {
             gdpr: PersonnelGdprState(),
@@ -22,11 +27,20 @@ var createAll = ({ records }) => {
         { collection: 'systemRole', schemas: {
             state: SystemRoleState(),
         }},
-        /*{ collection: 'systemRole', schemas: {
-            state: SystemRoleState()
-        }},*/
     ];
-    
+
+    var messageSchemas = [
+        ...createCollectionMessageSchemas({
+            collectionSchemas
+        }),
+        //...createSpecialMessageSchemas()
+    ];
+
+    return {
+        collections: collectionSchemas,
+        messages: messageSchemas,
+    }
+
     //var schemaTree = createTree(typedSchemas);
     /*return {
         ...schemaTree,

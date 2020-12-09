@@ -5,10 +5,10 @@ var expect = require('chai').expect,
 describe('createAll()', () => {
     it('creates the typed schemas', () => {
         var records = [
-            /*{ state: {
+            { state: {
                 collection: 'location', type: 'gps',
             }},
-            { state: {
+            /*{ state: {
                 collection: 'location', type: 'building', subtype: 'kiga',
             }},
             { state: {
@@ -29,7 +29,7 @@ describe('createAll()', () => {
             records,
         })
         
-        console.dir(items, { depth: null });
+        console.dir(items.messages, { depth: 5 });
 
     })
 })
