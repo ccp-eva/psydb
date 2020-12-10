@@ -2,7 +2,7 @@
 
 var createRecordMessageType = ({ op, collection, type, subtype }) => {
     return [
-        `/records/${op}/${collection}`,
+        `records/${op}/${collection}`,
         ...(type ? [type] : []),
         ...(subtype ? [subtype] : []),
     ].join('/');

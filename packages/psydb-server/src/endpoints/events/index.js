@@ -7,21 +7,24 @@ var compose = require('koa-compose'),
     withRohrpost = require('@mpieva/koa-mongo-rohrpost'),
     schemas = require('@mpieva/psydb-schema').messages,
 
-    parseCollectionMessageType = require('./parse-collection-message-type'),
-    createCollectionMessages = require('./create-collection-messages');
+    parseRecordMessageType = require('./parse-record-message-type'),
+    createRecordPropMessages = require('./create-record-prop-messages');
 
 var dispatchIncomingMessage = async (context, next) => {
     var { db, schemas, rohrpost, message } = context;
-    var { type, personnelId, payload } = message;
+    var { type: messageType, personnelId, payload } = message;
 
-    if (!type) {
+    if (!messageType) {
         throw new Error(400); // TODO
         // TODO: validate message schema
         // then we dont need the guard condition anymore
     }
 
-    if (/^collection\//) {
-        var { collection, op } = parseCollectionMessageType(type);
+    if (/^records\//) {
+        var { 
+            op, collection, 
+            recordType, recordSubtype 
+        } = parseRecordMessageType(messageType);
 
         // FIXME: dispatch silently ignores messages when id is set
         // but record doesnt exist
@@ -31,11 +34,11 @@ var dispatchIncomingMessage = async (context, next) => {
             .openChannel({ id: payload.id, isNew: op === 'create' })
         );
 
-        var collectionMessages = createCollectionMessages({
+        var recordPropMessages = createRecordPropMessages({
             personnelId,
             props: payload.props
         });
-        for (var it of collectionMessages) {
+        for (var it of recordPropMessages) {
             var { subChannelKey, ...message } = it;
             await channel.dispatch({ subChannelKey, message })
         }

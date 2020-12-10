@@ -48,17 +48,36 @@ var createSubChannelMessages = ({
     subChannelKey,
     personnelId,
     props,
+    prefix,
 }) => {
-    var propMessages = Object.keys(props).map(key => ({
-        subChannelKey,
-        type: op,
-        // TODO: rohrpost dispatch needs to accept custom message metadata
-        personnelId,
-        payload: {
-            prop: key,
-            value: props[key]
-        }
-    }));
+    var propMessages = Object.keys(props).reduce((acc, key) => ([
+        // NOTE: since custom fields might have individual permissions
+        // in the future we need to split those
+        // TODO: figure out if this is true for other fields such as
+        // systempermissions n such
+        ...acc,
+        ...(
+            key === 'custom'
+            ? (
+                createSubChannelMessages({
+                    op, subChannelKey, personnelId,
+                    props: props[key],
+                    prefix: prefix ? `${prefix}/${key}` : `/${key}`,
+                }) 
+            )
+            : [{
+                subChannelKey,
+                type: op,
+                // TODO: rohrpost dispatch needs to accept custom
+                // message metadata
+                personnelId,
+                payload: {
+                    prop: prefix ? `${prefix}/${key}` : `/${key}`,
+                    value: props[key]
+                }
+            }]
+        )
+    ]), []);
 
     return propMessages;
 };

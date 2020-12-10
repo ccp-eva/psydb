@@ -38,10 +38,14 @@ describe('handleMessage()', function () {
 
     it('handle message', async () => {
         var context = createContext({
-            type: 'collection/personnel/create',
+            type: 'records/create/personnel',
             payload: { id: 42, props: {
                 bar: 42,
                 baz: 43,
+                custom: {
+                    a: 1,
+                    b: 2
+                }
             }}
         });
         await handleMessage({
