@@ -29,7 +29,7 @@ describe('createAll()', () => {
             records,
         })
         
-        console.dir(items.messages, { depth: 5 });
+        console.dir(items.messages, { depth: 3 });
 
     })
 })
