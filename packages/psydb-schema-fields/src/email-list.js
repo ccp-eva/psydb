@@ -1,13 +1,13 @@
 'use strict';
-var inline = require('@cdxoo/inline-text');
+var inline = require('@cdxoo/inline-text'),
+    ExactObject = require('./exact-object');
 
 var EmailList = ({ minItems }) => ({
     type: 'array',
     minItems: (minItems || 0),
     // unqiueItemProperties requires "ajv-keywords"
     uniqueItemProperties: [ 'email' ],
-    items: {
-        type: 'object',
+    items: ExactObject({
         properties: {
             email: {
                 type: 'string',
@@ -27,7 +27,7 @@ var EmailList = ({ minItems }) => ({
             'email',
             'isPrimary',
         ]
-    },
+    }),
 })
 
 module.exports = EmailList;

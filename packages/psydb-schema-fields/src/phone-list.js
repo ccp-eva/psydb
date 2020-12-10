@@ -1,10 +1,10 @@
 'use strict';
+var ExactObject = require('./exact-object');
+
 var PhoneList = ({ minItems, numbertypes }) => ({
-    $schema: 'http://json-schema.org/draft-07/schema#',
     type: 'array',
     minItems: (minItems || 0),
-    items: {
-        type: 'object',
+    items: ExactObject({
         reactType: 'phone',
         properties: {
             number: {
@@ -21,7 +21,7 @@ var PhoneList = ({ minItems, numbertypes }) => ({
             'number',
             'type'
         ]
-    },
+    }),
 })
 
 module.exports = PhoneList;

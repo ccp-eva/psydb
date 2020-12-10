@@ -1,10 +1,10 @@
 'use strict';
-var DateTime = require('./date-time');
+var ExactObject = require('./exact-object'),
+    DateTime = require('./date-time');
 
 var DateTimeInterval = ({
     description
-} = {}) => ({
-    type: 'object',
+} = {}) => ExactObject({
     properties: {
         start: DateTime(),
         end: DateTime({

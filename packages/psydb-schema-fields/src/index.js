@@ -16,4 +16,5 @@ module.exports = {
     Time: require('./time'),
     TimeInterval: require('./time-interval'),
     SpecialHumanName: require('./special-human-name'),
+    ExactObject: require('./exact-object'),
 }

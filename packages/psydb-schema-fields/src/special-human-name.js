@@ -1,10 +1,10 @@
 'use strict';
-var SaneString = require('./sane-string');
+var ExactObject = require('./exact-object'),
+    SaneString = require('./sane-string');
 
 var SpecialHumanName = ({
     additionalKeywords
-} = {}) => ({
-    type: 'object',
+} = {}) => ExactObject({
     properties: {
         lastname: SaneString(),
         firstname: SaneString(),
