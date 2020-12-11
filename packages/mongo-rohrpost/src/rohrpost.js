@@ -25,6 +25,10 @@ var Rohrpost = ({
         })
     )
 
+    rohrpost.getModifiedChannels = () => (
+        modificationCache.all()
+    );
+
     rohrpost.unlockModifiedChannels = async () => {
         if (disableChannelLocking) {
             console.warn('channel locking is disabled thus unlockModifiedChannels() should not be called');
