@@ -11,10 +11,11 @@ var {
     FullText,
     SaneString,
     SpecialHumanName,
+    ExactObject,
 } = require('@mpieva/psydb-schema-fields');
 
 var PersonnelGdprState = () => {
-    var schema = {
+    var schema = ExactObject({
         $schema: 'http://json-schema.org/draft-07/schema#',
         $id: `${prefix}/gdpr/state`,
         type: 'object',
@@ -46,17 +47,17 @@ var PersonnelGdprState = () => {
             // by the general approach
             // TODO: prohibited keyword should give
             // reasonable error message
-            internals: {
-                type: 'object',
+            internals: ExactObject({
                 properties: {
                     passwordHash: {
                         type: 'string',
+                        default: '',
                     },
                 },
                 required: [
                     'passwordHash'
                 ],
-            },
+            }),
         },
         required: [
             'name',
@@ -67,7 +68,7 @@ var PersonnelGdprState = () => {
         prohibited: [
             'internals',
         ],
-    }
+    })
 
     return schema;
 };

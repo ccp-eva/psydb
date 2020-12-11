@@ -5,6 +5,7 @@ var ExactObject = ({
     ...additionalKeywords
 }) => ({
     type: 'object',
+    default: {},
     additionalProperties: false,
     properties,
     required,

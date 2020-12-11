@@ -1,9 +1,9 @@
 'use strict';
+var ExactObject = require('./exact-object');
+
 var Address = ({
     required
-} = {}) => ({
-    type: 'object',
-    reactType: 'address',
+} = {}) => ExactObject({
     properties: {
         // country should be code from countries-list npm package
         country: {

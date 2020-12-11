@@ -2,14 +2,15 @@
 var inline = require('@cdxoo/inline-text');
 
 var {
-    ForeignId
+    ForeignId,
+    ExactObject,
 } = require('@mpieva/psydb-schema-fields');
 
-var systemPermissionsSchema = {
-    type: 'object',
+var systemPermissionsSchema = ExactObject({
     properties: {
         accessRightsByResearchGroup: {
             type: 'array',
+            default: [],
             minItems: 1,
             // unqiueItemProperties requires "ajv-keywords"
             uniqueItemProperties: [ 'researchGroupId' ],
@@ -59,6 +60,6 @@ var systemPermissionsSchema = {
             `,
         }
     }
-}
+});
 
 module.exports = systemPermissionsSchema;

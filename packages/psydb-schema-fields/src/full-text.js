@@ -6,6 +6,7 @@ var FullText = ({
     ...additionalKeywords
 } = {}) => ({
     type: 'string',
+    default: '',
     transform: [ 'trim' ],
     
     // FIXME: in my opinion this is a stupid hacky way of doing that

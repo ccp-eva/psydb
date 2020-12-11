@@ -18,6 +18,7 @@ var SaneString = ({
     );*/
     return {
         type: 'string',
+        default: '',
         // TODO: this needs a proper pattern
         pattern: '^[^\\r\\n]*$',
 

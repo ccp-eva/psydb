@@ -22,6 +22,7 @@ var PersonnelScientificState = () => {
             systemRoleId: ForeignId('systemRole'),
             researchGroupIds: {
                 type: 'array',
+                default: [],
                 items: ForeignId('researchGroup'),
                 description: inline`
                     items in this array enable the user to access
@@ -33,7 +34,7 @@ var PersonnelScientificState = () => {
         },
         required: [
             'systemRoleId',
-            'belongsToInstitute',
+            'researchGroupIds',
             'systemPermissions',
         ],
     }

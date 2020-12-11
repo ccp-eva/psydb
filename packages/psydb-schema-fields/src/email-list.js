@@ -4,6 +4,7 @@ var inline = require('@cdxoo/inline-text'),
 
 var EmailList = ({ minItems }) => ({
     type: 'array',
+    default: [],
     minItems: (minItems || 0),
     // unqiueItemProperties requires "ajv-keywords"
     uniqueItemProperties: [ 'email' ],
