@@ -1,4 +1,6 @@
 'use stirct';
+var debug = require('debug')('psydb:api:endpoints:event');
+    
 var compose = require('koa-compose'),
     ObjectId = require('mongodb').ObjectId,
     nanoid = require('nanoid').nanoid,
@@ -7,20 +9,17 @@ var compose = require('koa-compose'),
     withRohrpost = require('@mpieva/koa-mongo-rohrpost'),
     schemas = require('@mpieva/psydb-schema').messages,
 
+    withContextSetup = require('./context-setup'),
+    withMessageValidation = require('./message-validation'),
+
     parseRecordMessageType = require('./parse-record-message-type'),
     createRecordPropMessages = require('./create-record-prop-messages');
 
-var dispatchIncomingMessage = async (context, next) => {
+var handleIncomingMessage = async (context, next) => {
     var { db, schemas, rohrpost, message } = context;
     var { type: messageType, personnelId, payload } = message;
 
-    if (!messageType) {
-        throw new Error(400); // TODO
-        // TODO: validate message schema
-        // then we dont need the guard condition anymore
-    }
-
-    if (/^records\//) {
+    if (/^records\//.test(messageType)) {
         var { 
             op, collection, 
             recordType, recordSubtype 
@@ -61,46 +60,18 @@ var dispatchIncomingMessage = async (context, next) => {
     await next();
 };
 
-var withMessageValidation = async (context, next) => {
-    throw new Error(400); // TODO
-    await next();
-};
 
 var createMessageHandling = ({
     enableValidation = true,
     forcedPersonnelId,
 } = {}) => {
     return compose([
+        withContextSetup({ forcedPersonnelId }),
         ...(
             enableValidation
             ? [ withMessageValidation ]
             : []
         ),
-        async (context, next) => {
-
-            if (context.request.body) {
-                // TODO: mq needs to accept custom message metadata
-                context.message = context.request.body;
-            }
-            else {
-                throw new Error('no request body') // TODO
-            }
-
-            var personnelId = (
-                context.session && context.session.personnelId
-                ? context.session.personnelId
-                : forcedPersonnelId
-            );
-
-            if (personnelId) {
-                context.message.personnelId = personnelId;
-            }
-            else {
-                throw new Error('no personnelId') // TODO
-            }
-
-            await next();
-        },
         withMongoMQ({
             //createId: () => ObjectId(),
             createId: () => nanoid(),
@@ -117,7 +88,7 @@ var createMessageHandling = ({
             //createChannelId: () => ObjectId(),
             //createChannelEventId: () => ObjectId(),
         }),
-        dispatchIncomingMessage,
+        handleIncomingMessage,
     ]);
 };
 
