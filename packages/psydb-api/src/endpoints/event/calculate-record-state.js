@@ -1,12 +1,12 @@
 'use strict';
-var Ajv = require('../../lib/ajv'),
-    calculateState = require('./calculate-state');
+var calculateState = require('./calculate-state');
 
 // TODO: type/subtype need to be stored alongside
 // _id .... this means that openChannel might need to accept additional
 // props that are used when is new additionalInitProps
 var calculateRecordState = async ({
     db,
+    ajv,
     schemas,
     collection,
     channelId,
@@ -37,14 +37,6 @@ var calculateRecordState = async ({
     var nextState = calculateState({
         events: channelEvents,
         createDefaultState: () => {
-            var ajv = Ajv({
-                // make the validate function create defaults for
-                // missing required values
-                useDefaults: true,
-                // ensure that internals are created
-                disableProhibitedKeyword: true
-            });
-
             // although called validate() it will initialize
             // the default values of required properties 
             // when useDefaults == true
@@ -54,6 +46,8 @@ var calculateRecordState = async ({
             return defaults;
         }
     });
+
+    return nextState;
 }
 
 module.exports = calculateRecordState;

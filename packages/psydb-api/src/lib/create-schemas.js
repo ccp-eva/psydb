@@ -1,11 +1,9 @@
 'use strict';
-// TODO obsolete remove
 var {
     createAllSchemas,
 } = require('@mpieva/psydb-schema');
 
-var createSchemaMiddleware = () => async (context, next) => {
-    var { db } = context;
+var createSchemas = async ({ db }) => {
 
     var customTypeRecords = await (
         db.collection('customRecordTypes').find().toArray()
@@ -23,17 +21,16 @@ var createSchemaMiddleware = () => async (context, next) => {
     // events so that the user can actually have permission denied
     // and know about that it exists but they cant use it
     // this is better than hiding this i think
-    var schemas = createAllSchemas({
+    var _schemas = createAllSchemas({
         records: customTypeRecords
     });
     
-    context.schemas = {};
-
+    var schemas = {};
     // TODO rename collections to records in psydb-schema
-    context.schemas.records = schemas.collections;
-    context.schemas.records.find = (
+    schemas.records = _schemas.collections;
+    schemas.records.find = (
         ({ collection, type, subtype }) => {
-            var filtered = context.schemas.records.filter(
+            var filtered = schemas.records.filter(
                 it => (
                     it.collection === collection
                     && it.type === type
@@ -55,10 +52,10 @@ var createSchemaMiddleware = () => async (context, next) => {
         }
     );
 
-    context.schemas.messages = schemas.messages;
-    context.schemas.messages.find = (
+    schemas.messages = _schemas.messages;
+    schemas.messages.find = (
         (messageType) => {
-            var filtered = context.schemas.messages.filter(
+            var filtered = schemas.messages.filter(
                 it => it.messageType === messageType
             );
 
@@ -75,8 +72,8 @@ var createSchemaMiddleware = () => async (context, next) => {
             }
         }
     );
-    
-    await next();
+
+    return schemas;
 }
 
-module.exports = createSchemaMiddleware;
+module.exports = createSchemas;
