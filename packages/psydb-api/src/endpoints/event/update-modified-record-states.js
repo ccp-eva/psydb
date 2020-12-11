@@ -22,17 +22,36 @@ var updateModifiedRecordStates = async (context, next) => {
     // separate message type and need to go into internals
     var modifiedChannels = rohrpost.getModifiedChannels();
     for (var it of modifiedChannels) {
+        
+        var {
+            collectionName: collection,
+            id: channelId,
+            subChannelKey
+        } = it;
+
         var nextState = await calculateRecordState({
             db,
             ajv,
             schemas: schemas.records,
 
-            collection: it.collectionName,
-            channelId: it.id,
-            subChannelKey: it.subChannelKey
+            collection,
+            channelId,
+            subChannelKey,
         });
 
-        console.dir(nextState, { depth: null });
+        var path = (
+            subChannelKey
+            ? `${subChannelKey}.state`
+            : 'state'
+        );
+        await (
+            db.collection(collection).updateOne(
+                { _id: channelId },
+                { $set: {
+                    [path]: nextState
+                }}
+            )
+        );
     }
     
     await next();
