@@ -1,32 +1,38 @@
-'use stirct';
+'use strict';
+var debug = require('debug')('psydb:api:init-endpoint');
+    
 var compose = require('koa-compose'),
-    events = require('../endpoints/events/');
-
-    withKoaBody = require('koa-body'),
-    withMongoMQ = require('@mpieva/koa-mongo-mq'),
-    withRohrpost = require('@mpieva/koa-mongo-rohrpost');
+    data = require('./data'),
+    createEventMiddleware = require('../protected-endpoints/event/');
 
 var initialize = async (context, next) => {
     var { db, request } = context;
-    var { type, fixtureName } = request.body;
 
-    // TODO: check if there is no user; else 404
+    var personnelRecords = await (
+        db.collection('personnel')
+        .find().toArray()
+    );
 
-    if (type === 'json') {
-        await handleJsonFixture(db, fixturename);
+    if (personnelRecords.length !== 0) {
+        throw new Error(404); // TODO
     }
-    else if (type === 'bson') {
-        throw new Error('bson support not addded yet'); // TODO
-    }
-    else {
-        throw new Error(400)
+
+    var eventMiddleware = createEventMiddleware({
+        enableValidation: false,
+        enableNotifications: false,
+        forcedPersonnelId: data.rootAccountId,
+    })
+    
+    for (var message of data.messages) {
+        await eventMiddleware(
+            { db, request: { body: message }},
+            noop
+        );
     }
 
     await next();
 }
 
-var handleJsonFixture = async (db, fixtureName) => {
-    var fixture = require(`@mpieva/psydb-fixtures/json/${fixtureName}`);
-}
+var noop = async () => {};
 
 module.exports = initialize;;

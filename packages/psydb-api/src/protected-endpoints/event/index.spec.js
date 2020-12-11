@@ -49,8 +49,8 @@ describe('handleMessage()', function () {
             }}
         });
         await handleMessage({
-            disableValidation: true,
-            disableAccessControl: true,
+            enableValidation: false,
+            //disableAccessControl: true,
             //forcedPersonnelId: ObjectId('5fcf4481feb7ca0683978b80'),
             forcedPersonnelId: 'wcy-dSwU4O8WlBWzE_Zap',
         })(context, noop);

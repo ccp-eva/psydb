@@ -61,29 +61,18 @@ var dispatchIncomingMessage = async (context, next) => {
 };
 
 var withMessageValidation = async (context, next) => {
-    // TODO
-    await next();
-};
-
-var withAccessControl = async (context, next) => {
-    // TODO
+    throw new Error(400); // TODO
     await next();
 };
 
 var createMessageHandling = ({
     enableValidation = true,
-    enableAccessControl = true,
     forcedPersonnelId,
 } = {}) => {
     return compose([
         ...(
             enableValidation
             ? [ withMessageValidation ]
-            : []
-        ),
-        ...(
-            enableAccessControl
-            ? [ withAccessControl ]
             : []
         ),
         async (context, next) => {
