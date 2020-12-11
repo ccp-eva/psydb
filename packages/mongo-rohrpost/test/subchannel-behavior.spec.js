@@ -10,7 +10,7 @@ var expect = chai.expect,
 
     MongoRohrpost = require('../src/');
 
-describe('basic-behavior', () => {
+describe('subchannel-behavior', () => {
 
     var server, uri, con, db;
     beforeEach(async () => {
@@ -34,7 +34,7 @@ describe('basic-behavior', () => {
     });
 
 
-    it('core functionality', async () => {
+    it('handles multiple sub channels', async () => {
         var rohrpost = MongoRohrpost({
             db,
             correlationId: 1001,
@@ -45,56 +45,61 @@ describe('basic-behavior', () => {
         var docs = undefined,
             now = new Date();
         
-        var messages = [
-            { type: 'foo-type', payload: { foo: 42 }},
-            { type: 'bar-type', payload: { bar: 43 }},
+        var scientificMessages = [
+            { type: 'sci-foo-type', payload: { foo: 42 }},
+            { type: 'sci-bar-type', payload: { bar: 43 }},
         ];
+
+        var gdprMessages = [
+            { type: 'gdpr-foo-type', payload: { foo: 42 }},
+            { type: 'gdpr-bar-type', payload: { bar: 43 }},
+        ];
+
+        var Event = ({ message }) => ({
+            _id: 3333,
+            timestamp: now,
+            correlationId: 1001,
+            processed: false,
+            message: { ...message }
+        })
 
         var expectedDocs = [
             {
                 _id: 20,
-                events: [
-                    {
-                        _id: 3333,
-                        timestamp: now,
-                        correlationId: 1001,
-                        processed: false,
-                        message: {
-                            ...messages[1]
-                        }
-                    },
-                    {
-                        _id: 3333,
-                        timestamp: now,
-                        correlationId: 1001,
-                        processed: false,
-                        message: {
-                            ...messages[0]
-                        }
-                    },
-                ]
+                gdpr: {
+                    events: [
+                        Event({ message: gdprMessages[0] }),
+                    ],
+                },
+                sci: {
+                    events: [
+                        Event({ message: scientificMessages[0] }),
+                    ],
+                },
             }
         ];
 
         MockDate.set(now);
         var channel = rohrpost.openCollection('test').openChannel()
         
-        var r = await channel.dispatch({
-            message: messages[0],
+        await channel.dispatch({
+            message: gdprMessages[0],
+            subChannelKey: 'gdpr'
         });
-        var s = await channel.dispatch({
-            message: messages[1],
+        
+        await channel.dispatch({
+            message: scientificMessages[0],
+            subChannelKey: 'sci'
         });
-
-        //console.log(r);
 
         MockDate.reset();
         docs = await db.collection('test').find().toArray();
         expect(docs).to.eql(expectedDocs);
 
-        expectedDocs[0].events[0].processed = true;
-        expectedDocs[0].events[1].processed = true;
+        expectedDocs[0].gdpr.events[0].processed = true;
 
+        expectedDocs[0].sci.events[0].processed = true;
+        
         await rohrpost.unlockModifiedChannels();
         docs = await db.collection('test').find().toArray();
         expect(docs).to.eql(expectedDocs);
