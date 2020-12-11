@@ -1,10 +1,9 @@
 'use strict';
-var debug = require('debug')('psydb:api:permission-middleware'),
-    Permissions = require('../permissions');
+var debug = require('debug')('psydb:api:middleware:permissions'),
+    Permissions = require('../lib/permissions');
 
-// TODO: im currently not actually doing stuff with 'enabled'
 var createPermissionMiddleware = ({
-    enabled = true
+    endpoint
 } = {}) => async (context, next) => {
     var { db, session } = context;
 
@@ -48,7 +47,7 @@ var createPermissionMiddleware = ({
         throw new Error(401); // TODO: 401
     }
 
-    if (systemRole.state.hasRootAccess && researchGroupIds.length < 1) {
+    if (!systemRole.state.hasRootAccess && researchGroupIds.length < 1) {
         debug('user has no researchgroups and role has no root acccess');
         throw new Error(401); // TODO: 401
     }
@@ -57,6 +56,17 @@ var createPermissionMiddleware = ({
         systemRole,
         researchGroupIds,
     });
+
+    // TODO: decide if that should be split into separate middleware
+    // => withEndpointProtection
+    if (!endpoint) {
+        debug('no endpoint given, denying access');
+        throw new Error(403) // TODO
+    }
+    if (!context.permissions.canAccessEndpoint(endpoint)) {
+        debug('endpoint access denied');
+        throw new Error(403) // TODO
+    }
 
     await next();
 }

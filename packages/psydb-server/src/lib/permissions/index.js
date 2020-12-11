@@ -1,4 +1,6 @@
 'use strict';
+var debug = require('debug')('psydb:api:lib:permissions');
+
 var checkAllPermissionAcls = require('./check-all-permission-acls'),
     endpointAcls = require('./endpoint-acls'),
     messageTypeAcls = require('./message-type-acls');
@@ -23,6 +25,7 @@ var Permissions = ({
             )
         });
 
+        debug(`message type ${type} allowed: ${isAllowed}`);
         return isAllowed;
     };
 
@@ -37,6 +40,7 @@ var Permissions = ({
             )
         });
 
+        debug(`endpoint ${endpoint} allowed: ${isAllowed}`);
         return isAllowed;
     }
 
