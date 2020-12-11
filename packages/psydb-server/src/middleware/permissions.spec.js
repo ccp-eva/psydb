@@ -7,7 +7,7 @@ var expect = require('chai').expect,
     
     withPermissions = require('./permissions');
 
-describe('middleware/schema', function () {
+describe('middleware/permissions', function () {
     this.timeout(0);
     
     var server, uri, con, db;
@@ -38,17 +38,6 @@ describe('middleware/schema', function () {
             context = { db, session: {}};
         try {
             await withPermissions({ endpoint: '/search' })(context, noop);
-        }
-        catch (e) { error = e }
-
-        expect(error).to.exist
-    });
-
-    it('throws when no endpoint is set', async () => {
-        var error = undefined,
-            context = { db, session: { personnelId: 'root-account' }};
-        try {
-            await withPermissions()(context, noop);
         }
         catch (e) { error = e }
 

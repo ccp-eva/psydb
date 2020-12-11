@@ -57,17 +57,6 @@ var createPermissionMiddleware = ({
         researchGroupIds,
     });
 
-    // TODO: decide if that should be split into separate middleware
-    // => withEndpointProtection
-    if (!endpoint) {
-        debug('no endpoint given, denying access');
-        throw new Error(403) // TODO
-    }
-    if (!context.permissions.canAccessEndpoint(endpoint)) {
-        debug('endpoint access denied');
-        throw new Error(403) // TODO
-    }
-
     await next();
 }
 
