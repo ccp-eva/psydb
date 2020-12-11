@@ -40,11 +40,15 @@ describe('handleMessage()', function () {
         var context = createContext({
             type: 'records/create/personnel',
             payload: { id: 42, props: {
-                bar: 42,
-                baz: 43,
-                custom: {
-                    a: 1,
-                    b: 2
+                gdpr: {
+                    bar: 42,
+                    baz: 43,
+                },
+                scientific: {
+                    custom: {
+                        a: 1,
+                        b: 2
+                    }
                 }
             }}
         });

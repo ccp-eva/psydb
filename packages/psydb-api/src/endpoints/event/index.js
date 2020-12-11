@@ -39,6 +39,7 @@ var dispatchIncomingMessage = async (context, next) => {
             props: payload.props
         });
         for (var it of recordPropMessages) {
+            console.log(it);
             var { subChannelKey, ...message } = it;
             await channel.dispatch({ subChannelKey, message })
         }
