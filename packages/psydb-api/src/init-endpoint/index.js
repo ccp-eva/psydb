@@ -3,7 +3,7 @@ var debug = require('debug')('psydb:api:init-endpoint');
     
 var compose = require('koa-compose'),
     data = require('./data'),
-    createEventMiddleware = require('../protected-endpoints/event/');
+    createEventMiddleware = require('../endpoints/event/');
 
 var createInitEndpoint = ({
     config,

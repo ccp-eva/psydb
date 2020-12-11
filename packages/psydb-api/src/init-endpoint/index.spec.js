@@ -47,6 +47,12 @@ describe('init-endpoint', function () {
 
         await initEndpoint(context, next);
 
+        var personnel = await db.collection('personnel').find().toArray();
+        console.dir(personnel, { depth: null });
+
+        var roles = await db.collection('systemRole').find().toArray();
+        console.dir(roles, { depth: null });
+
         expect(calledNext).to.eql(true);
     });
 

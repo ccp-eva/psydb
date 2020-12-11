@@ -25,6 +25,9 @@ var messages = [
                         { email: 'root@example.com', isPrimary: true }
                     ]
                 },
+                scientific: {
+                    systemRoleId: rootRoleId
+                }
             }
         }
     },
