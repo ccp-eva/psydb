@@ -11,12 +11,12 @@ dependencies:
   '@rush-temp/mongo-rohrpost': 'file:projects/mongo-rohrpost.tgz'
   '@rush-temp/psydb-ajv-formats': 'file:projects/psydb-ajv-formats.tgz'
   '@rush-temp/psydb-ajv-keywords': 'file:projects/psydb-ajv-keywords.tgz'
+  '@rush-temp/psydb-api': 'file:projects/psydb-api.tgz'
   '@rush-temp/psydb-fixtures': 'file:projects/psydb-fixtures.tgz'
   '@rush-temp/psydb-mongo-adapter': 'file:projects/psydb-mongo-adapter.tgz'
   '@rush-temp/psydb-schema': 'file:projects/psydb-schema.tgz'
   '@rush-temp/psydb-schema-fields': 'file:projects/psydb-schema-fields.tgz'
   '@rush-temp/psydb-schema-primitives': 'file:projects/psydb-schema-primitives.tgz'
-  '@rush-temp/psydb-server': 'file:projects/psydb-server.tgz'
   ajv: 6.12.6
   ajv-formats: 0.6.1
   ajv-keywords: 3.5.2_ajv@6.12.6
@@ -2424,6 +2424,29 @@ packages:
       integrity: sha512-MSnWbJ7iSytXmmZEUa545Kizz/TU0Z8czdvR3bV9uq81TiiW2D8yURJNW9sYVuI8tohbc0BYbipBL7uqvjrmpA==
       tarball: 'file:projects/psydb-ajv-keywords.tgz'
     version: 0.0.0
+  'file:projects/psydb-api.tgz':
+    dependencies:
+      '@cdxoo/inline-string': 1.0.0
+      ajv: 6.12.6
+      ajv-keywords: 3.5.2_ajv@6.12.6
+      bcrypt: 5.0.0
+      chai: 4.2.0
+      debug: 4.3.1
+      jsonpointer: 4.1.0
+      koa: 2.13.0
+      koa-body: 4.2.0
+      koa-compose: 4.1.0
+      koa-session: 5.13.1
+      mocha: 8.1.3
+      mongodb: 3.6.3
+      mongodb-memory-server: 6.9.2
+      nanoid: 3.1.20
+    dev: false
+    name: '@rush-temp/psydb-api'
+    resolution:
+      integrity: sha512-Zx95u3WG1XqPPeXVcpnU3R1wVw3kEJS3sGZCGCnvVyVt8r+Y/DiNgtxilC0O5DI6asTSBsOQ3FAXZ2y1jN5JKw==
+      tarball: 'file:projects/psydb-api.tgz'
+    version: 0.0.0
   'file:projects/psydb-fixtures.tgz':
     dev: false
     name: '@rush-temp/psydb-fixtures'
@@ -2473,29 +2496,6 @@ packages:
       integrity: sha512-Gvw8TJEoWkHw0XjAWLXTgMrG5BTPbidnPaIb0Pxvcm/nI2Ivx6z4B+ti+uxUjneQ3kYWMi+9rQ1OuXQo1EO2Xw==
       tarball: 'file:projects/psydb-schema.tgz'
     version: 0.0.0
-  'file:projects/psydb-server.tgz':
-    dependencies:
-      '@cdxoo/inline-string': 1.0.0
-      ajv: 6.12.6
-      ajv-keywords: 3.5.2_ajv@6.12.6
-      bcrypt: 5.0.0
-      chai: 4.2.0
-      debug: 4.3.1
-      koa: 2.13.0
-      koa-body: 4.2.0
-      koa-compose: 4.1.0
-      koa-session: 5.13.1
-      mocha: 8.1.3
-      mongodb: 3.6.3
-      mongodb-memory-server: 6.9.2
-      nanoid: 3.1.20
-      raw-body: 2.4.1
-    dev: false
-    name: '@rush-temp/psydb-server'
-    resolution:
-      integrity: sha512-lP6dvBBrxMWwTaaLCxISOpCAGsnjmEQgw7XuS5UWfcGog26bFKSJEPUamawWXRmloVCA6Dlh8Bd75ShhKyeenQ==
-      tarball: 'file:projects/psydb-server.tgz'
-    version: 0.0.0
 registry: ''
 specifiers:
   '@cdxoo/block-quote': ~1.0.0
@@ -2510,12 +2510,12 @@ specifiers:
   '@rush-temp/mongo-rohrpost': 'file:./projects/mongo-rohrpost.tgz'
   '@rush-temp/psydb-ajv-formats': 'file:./projects/psydb-ajv-formats.tgz'
   '@rush-temp/psydb-ajv-keywords': 'file:./projects/psydb-ajv-keywords.tgz'
+  '@rush-temp/psydb-api': 'file:./projects/psydb-api.tgz'
   '@rush-temp/psydb-fixtures': 'file:./projects/psydb-fixtures.tgz'
   '@rush-temp/psydb-mongo-adapter': 'file:./projects/psydb-mongo-adapter.tgz'
   '@rush-temp/psydb-schema': 'file:./projects/psydb-schema.tgz'
   '@rush-temp/psydb-schema-fields': 'file:./projects/psydb-schema-fields.tgz'
   '@rush-temp/psydb-schema-primitives': 'file:./projects/psydb-schema-primitives.tgz'
-  '@rush-temp/psydb-server': 'file:./projects/psydb-server.tgz'
   ajv: ~6.12.6
   ajv-formats: ~0.6.1
   ajv-keywords: ~3.5.2
