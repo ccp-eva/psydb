@@ -4,7 +4,7 @@ var {
 } = require('@mpieva/psydb-schema');
 
 var createSchemaMiddleware = () => async (context, next) => {
-    var { db, ajv } = context;
+    var { db } = context;
 
     var customEntityTypeRecords = await (
         db.collection('customEntityType').find().toArray()
@@ -17,55 +17,65 @@ var createSchemaMiddleware = () => async (context, next) => {
     // => available message types (this is already the case)
     // => for available types (probably in the future)
     // => for available fields (maybe in the future)
+    //
+    // => i decided that we acually want to show all possible
+    // events so that the user can actually have permission denied
+    // and know about that it exists but they cant use it
+    // this is better than hiding this i think
     var schemas = createAllSchemas({
         records: customEntityTypeRecords
     });
-
+    
     context.schemas = {};
 
-    context.schemas.collections = (
-        schemas.collections
-        .map(it => ({
-            ...it,
-            validators: Object.keys(it.schemas).reduce((acc, key) => {
-                console.log(it.collection, it.type, it.subtype, key);
-                return {
-                    ...acc,
-                    [key]: ajv.compile(it.schemas[key]),
-                };
-            }, {})
-        }))
+    // TODO rename collections to records in psydb-schema
+    context.schemas.records = schemas.collections;
+    context.schemas.records.find = (
+        ({ collection, type, subtype }) => {
+            var filtered = context.schemas.records.filter(
+                it => (
+                    it.collection === collection
+                    && it.type === type
+                    && it.subtype === subtype
+                )
+            );
+
+            if (filtered.length > 1) {
+                // TODO: decide if thats actually an error
+                // might also return undefined
+                throw new Error('found multiple schemas');
+            }
+            else if (filtered.length === 1) {
+                return filtered[0].schemas;
+            }
+            else {
+                return undefined;
+            }
+        }
     );
 
+    context.schemas.messages = schemas.messages;
+    context.schemas.messages.find = (
+        (messageType) => {
+            var filtered = context.schemas.messages.filter(
+                it => it.messageType === messageType
+            );
 
-    context.schemas.collections.findDefinitions = (
-        createFind(context.schemas.collections, 'schemas')
-    );
-    context.schemas.collections.findValidators = (
-        createFind(context.schemas.collections, 'validators')
+            if (filtered.length > 1) {
+                // TODO: decide if thats actually an error
+                // might also return undefined
+                throw new Error('found multiple schemas');
+            }
+            else if (filtered.length === 1) {
+                return filtered[0].schemas;
+            }
+            else {
+                return undefined;
+            }
+        }
     );
     
     await next();
-}
-
-var createFind = (list, prop) => ({ collection, type, subtype }) => {
-    var filtered = list.filter(it => (
-        it.collection === collection
-        && it.type === type
-        && it.subtype === subtype
-    ));
-
-    if (filtered.length > 1) {
-        // TODO: decide if thats actually an error
-        // might also return undefined
-        throw new Error('found multiple schemas');
-    }
-    else if (filtered.length === 1) {
-        return filtered[0][prop];
-    }
-    else {
-        return undefined;
-    }
 }
 
 module.exports = createSchemaMiddleware;

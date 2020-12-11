@@ -11,9 +11,7 @@ var withMessageValidation = async (context, next) => {
         throw new Error(403); // TODO
     }
 
-    var found = schemas.messages.filter(
-        it => it.messageType === messageType
-    );
+    var found = schemas.messages.find(messageType);
 
     if (found < 1) {
         debug(`no schema for message type ${messageType}`);

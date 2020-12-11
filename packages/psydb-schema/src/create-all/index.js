@@ -37,6 +37,7 @@ var createAll = ({ records }) => {
     ];
 
     return {
+        // TODO: rename collections to records
         collections: collectionSchemas,
         messages: messageSchemas,
     }

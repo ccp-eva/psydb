@@ -5,7 +5,6 @@ var expect = require('chai').expect,
     Mongod = require('mongodb-memory-server').MongoMemoryServer,
     MongoClient = require('mongodb').MongoClient,
     
-    withAjv = require('./ajv'),
     withSchemas = require('./schema');
 
 describe('middleware/schema', function () {
@@ -39,22 +38,17 @@ describe('middleware/schema', function () {
             next = async () => { calledNext = true; };
 
         var context = { db };
-        await withAjv()(context, noop);
+        //await withAjv()(context, noop);
         await withSchemas()(context, next);
         
         //console.dir(context.schemas);
 
-        var schemas = context.schemas.collections.findDefinitions({
+        var schemas = context.schemas.records.find({
             collection: 'personnel'
         });
-        //console.dir(schemas, { depth: null });
+        console.dir(schemas, { depth: null });
 
-        var validators = context.schemas.collections.findValidators({
-            collection: 'personnel'
-        });
-        //console.log(validators);
-
-        var data = {
+        /*var data = {
             name: { firstname: 'bob', lastname: 'bauer' },
             shorthand: '  BB  ',
             emails: [
@@ -70,7 +64,7 @@ describe('middleware/schema', function () {
         var isValid = validators.gdpr(data);
         console.log(isValid);
         console.log(validators.gdpr.errors);
-        console.log(data);
+        console.log(data);*/
 
         expect(calledNext).to.eql(true);
     });
