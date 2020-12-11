@@ -4,14 +4,14 @@ var inline = require('@cdxoo/inline-text'),
     //CollectionPermission = require('./collection-permission'),
     //systemPermissionsSchema = require('../system-permissions-schema');
 
-/*var {
-    ForeignId
-} = require('@mpieva/psydb-schema-fields');*/
+var {
+    ExactObject
+} = require('@mpieva/psydb-schema-fields');
 
 var SystemRoleState = ({
     //    schemaTree
 } = {}) => {
-    var schema = {
+    var schema = ExactObject({
         $schema: 'http://json-schema.org/draft-07/schema#',
         $id: `${prefix}/state`,
         type: 'object',
@@ -140,7 +140,7 @@ var SystemRoleState = ({
             //'collectionPermissions',
             //'systemPermissions',
         ],
-    }
+    });
 
     return schema;
 };
