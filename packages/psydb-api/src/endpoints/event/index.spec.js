@@ -60,9 +60,9 @@ describe('handleMessage()', function () {
         })(context, noop);
         
         var h = await db.collection('mqMessageHistory').find().toArray()
-        console.dir(h, { depth: null });
+        //console.dir(h, { depth: null });
         var records = await db.collection('personnel').find().toArray()
-        console.dir(records, { depth: null });
+        //console.dir(records, { depth: null });
     });
 
 });

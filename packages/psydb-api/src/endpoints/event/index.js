@@ -13,7 +13,10 @@ var compose = require('koa-compose'),
     withMessageValidation = require('./message-validation'),
 
     parseRecordMessageType = require('./parse-record-message-type'),
-    createRecordPropMessages = require('./create-record-prop-messages');
+    createRecordPropMessages = require('./create-record-prop-messages'),
+    recalculateState = require('./recalculate-state');
+
+var Ajv = require('../../lib/ajv');
 
 var handleIncomingMessage = async (context, next) => {
     var { db, schemas, rohrpost, message } = context;
@@ -42,6 +45,33 @@ var handleIncomingMessage = async (context, next) => {
             var { subChannelKey, ...message } = it;
             await channel.dispatch({ subChannelKey, message })
         }
+        
+        // TODO: i think personnel email adresses need special handling
+        // to prevent duplicates so i gues sthey have to be a
+        // separate message type and need to go into internals
+        var modifiedChannels = rohrpost.getModifiedChannels();
+        for (var it of modifiedChannels) {
+            var { collectionName, id, subChannelKey } = it;
+
+            var record = await (
+                db.collection(collectionName).findOne({ _id: id })
+            );
+
+            var channelEvents = (
+                subChannelKey
+                ? record[subChannelKey].events
+                : record.events
+            );
+
+            var nextState = recalculateState({
+                events: channelEvents,
+                createDefaultState: () => ({
+                    asdf: [],
+                })
+            });
+
+            console.log(nextState);
+        }
     }
 
      
@@ -49,7 +79,7 @@ var handleIncomingMessage = async (context, next) => {
     //var dispatch = dispatchers[type];
     //await dispatch({ rohrpost, message });
 
-    console.log(message);
+    //console.log(message);
     //var records = await db.collection('mqMessageQueue').find().toArray()
     //console.log(records);
     /*rohrpost.openCollection('personnel').openChannel().dispatch({
