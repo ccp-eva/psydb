@@ -1,5 +1,4 @@
 'use strict';
-
 var checkAllPermissionAcls = ({
     permissionAclMap,
     permissionFlags,
@@ -7,7 +6,7 @@ var checkAllPermissionAcls = ({
 }) => {
     for (var key of Object.keys(permissionFlags)) {
         var enabled = permissionFlags[key],
-            permissionAcl = messageTypeAcl[key];
+            permissionAcl = permissionAclMap[key];
 
         if (enabled && permissionAcl) {
             for (var it of permissionAcl) {
