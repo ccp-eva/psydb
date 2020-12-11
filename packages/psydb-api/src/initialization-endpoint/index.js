@@ -5,15 +5,17 @@ var compose = require('koa-compose'),
     data = require('./data'),
     createEventMiddleware = require('../protected-endpoints/event/');
 
-var initialize = async (context, next) => {
+var createInitEndpoint = ({
+    config,
+} = {}) => async (context, next) => {
     var { db, request } = context;
 
-    var personnelRecords = await (
+    var personnelRecordCount = await (
         db.collection('personnel')
-        .find().toArray()
+        .count()
     );
 
-    if (personnelRecords.length !== 0) {
+    if (personnelRecordCount !== 0) {
         throw new Error(404); // TODO
     }
 
@@ -35,4 +37,4 @@ var initialize = async (context, next) => {
 
 var noop = async () => {};
 
-module.exports = initialize;;
+module.exports = createInitEndpoint;
