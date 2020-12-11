@@ -38,6 +38,7 @@ var updateUnlessLocked = ({
         {
             _id: channelId,
             $or: [
+                { [path]: { $exists: false }},
                 { [`${path}.0.correlationId`]: correlationId },
                 { [`${path}.0.processed`]: true }
             ]
