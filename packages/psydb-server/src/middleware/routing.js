@@ -3,8 +3,9 @@ var compose = require('koa-compose'),
     KoaRouter = require('koa-router'),
     withKoaBody = require('koa-body'),
     withMongoBody = require('@mpieva/koa-mongodb-extjson-body'),
-    
-    withProtection = require('./protection'),
+
+    withPermissions = require('./permissions'),
+    withEndpointProtection = require('./endpoint-protection'),
 
     public = require('../public-endpoints'),
     protected = require('../protected-endpoints/');
@@ -18,6 +19,13 @@ var createRouting = ({
 
     router.post('/sign-in', withKoaBody(), public.signIn);
     router.post('/sign-out', public.signOut);
+
+    router.post('/',
+        withPermissions(),
+        withEndpointProtection({ endpoint: 'event' }),
+        withKoaBody(),
+        protected.event
+    );
 
     /*router.get('/self',
         withProtection(),

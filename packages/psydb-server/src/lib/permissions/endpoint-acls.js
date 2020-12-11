@@ -7,7 +7,7 @@ module.exports = {
         /.*/
     ],
     canSelectSubjectsForTesting: [
-        /^events$/,
+        /^event$/,
         /^search\-for\-testing$/,
         // TODO ...
     ],
