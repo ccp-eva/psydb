@@ -1,5 +1,5 @@
 {
-  "name": "@mpieva/psydb-server",
+  "name": "@mpieva/psydb-api",
   "version": "0.1.0-alpha",
   "description": "",
   "main": "src/server.js",

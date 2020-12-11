@@ -86,8 +86,8 @@
        "reviewCategory": "production"
     },
     {
-       "packageName": "@mpieva/psydb-server",
-       "projectFolder": "packages/psydb-server",
+       "packageName": "@mpieva/psydb-api",
+       "projectFolder": "packages/psydb-api",
        "reviewCategory": "production"
     }
   ]
