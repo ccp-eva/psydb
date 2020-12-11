@@ -14,11 +14,10 @@ var compose = require('koa-compose'),
 
     parseRecordMessageType = require('./parse-record-message-type'),
     createRecordPropMessages = require('./create-record-prop-messages'),
-    recalculateState = require('./recalculate-state');
+    calculateRecordState = require('./calculate-record-state');
 
-var Ajv = require('../../lib/ajv');
-
-var handleIncomingMessage = async (context, next) => {
+// TODO: createEventsFromMessage
+var callMessageHandler = async (context, next) => {
     var { db, schemas, rohrpost, message } = context;
     var { type: messageType, personnelId, payload } = message;
 
@@ -41,41 +40,12 @@ var handleIncomingMessage = async (context, next) => {
             props: payload.props
         });
         for (var it of recordPropMessages) {
-            console.log(it);
+            //console.log(it);
             var { subChannelKey, ...message } = it;
             await channel.dispatch({ subChannelKey, message })
         }
-        
-        // TODO: i think personnel email adresses need special handling
-        // to prevent duplicates so i gues sthey have to be a
-        // separate message type and need to go into internals
-        var modifiedChannels = rohrpost.getModifiedChannels();
-        for (var it of modifiedChannels) {
-            var { collectionName, id, subChannelKey } = it;
-
-            var record = await (
-                db.collection(collectionName).findOne({ _id: id })
-            );
-
-            var channelEvents = (
-                subChannelKey
-                ? record[subChannelKey].events
-                : record.events
-            );
-
-            var nextState = recalculateState({
-                events: channelEvents,
-                createDefaultState: () => ({
-                    asdf: [],
-                })
-            });
-
-            console.log(nextState);
-        }
     }
-
-     
-
+        
     //var dispatch = dispatchers[type];
     //await dispatch({ rohrpost, message });
 
@@ -90,6 +60,26 @@ var handleIncomingMessage = async (context, next) => {
     await next();
 };
 
+var updateModifiedRecordStates = async (context, next) => {
+    var { db, schemas, rohrpost } = context;
+
+    // TODO: i think personnel email adresses need special handling
+    // to prevent duplicates so i gues sthey have to be a
+    // separate message type and need to go into internals
+    var modifiedChannels = rohrpost.getModifiedChannels();
+    for (var it of modifiedChannels) {
+        var nextState = await calculateRecordState({
+            db,
+            schemas: schemas.record,
+
+            collection: it.collectionName,
+            channelId: it.id,
+            subChannelKey: it.subChannelKey
+        })
+    }
+    
+    await next();
+}
 
 var createMessageHandling = ({
     enableValidation = true,
@@ -118,7 +108,11 @@ var createMessageHandling = ({
             //createChannelId: () => ObjectId(),
             //createChannelEventId: () => ObjectId(),
         }),
-        handleIncomingMessage,
+        // TODO: message handlers may not perform write ops
+        // to the database, we might want to prevent that
+        // by passing a modified db handle that only includes read ops
+        callMessageHandler,
+        //updateModifiedRecordStates
     ]);
 };
 

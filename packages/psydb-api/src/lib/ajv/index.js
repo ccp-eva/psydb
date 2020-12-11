@@ -5,6 +5,7 @@ var Ajv = require('ajv'),
     psydbKeywords = require('@mpieva/psydb-ajv-keywords');
 
 var AjvWrapper = ({
+    disableProhibitedKeyword = false,
     ...options
 }) => {
     var ajv = new Ajv({
@@ -26,8 +27,12 @@ var AjvWrapper = ({
     
     ajvKeywords(ajv, [
         'uniqueItemProperties',
-        'prohibited', // to protect internals property
         'transform', // to trim strings
+        ...(
+            !disableProhibitedKeyword
+            ? [ 'prohibited' ] // to protect internals property
+            : []
+        ),
     ]);
 
     return ajv;

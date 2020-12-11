@@ -1,7 +1,7 @@
 'use strict';
 var jsonpointer = require('jsonpointer');
 
-var recalculateState = ({ events, createDefaultState }) => {
+var calculateState = ({ events, createDefaultState }) => {
     var state = (
         createDefaultState
         ? createDefaultState() 
@@ -31,4 +31,4 @@ var typeHandlers = {
     },
 }
 
-module.exports = recalculateState;
+module.exports = calculateState;

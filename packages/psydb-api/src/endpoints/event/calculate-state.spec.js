@@ -1,10 +1,6 @@
 'use strict';
 var expect = require('chai').expect,
-    recalculateState = require('./recalculate-state');
-
-var ex = (op, collection, recordType, recordSubtype) => ({
-    op, collection, recordType, recordSubtype
-})
+    calculateState = require('./calculate-state');
 
 var events = [
     { message: {
@@ -17,10 +13,10 @@ var events = [
     }},
 ];
 
-describe('parse-record-message-type', () => {
+describe('calculate-state', () => {
 
     it('does the thing', () => {
-        var state = recalculateState({
+        var state = calculateState({
             events,
             createDefaultState: () => ({ initial: 1 }),
         });
