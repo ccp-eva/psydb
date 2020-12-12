@@ -1,76 +1,63 @@
 'use strict';
-var debug = require('debug')('psydb:api:sign-in'),
-    bcrypt = require('bcrypt');
+var debug = require('debug')('psydb:api:endpoints:public-sign-in');
+
+var bcrypt = require('bcrypt'),
+    Self = require('../../lib/self');
 
 var signIn = async (context, next) => {
     var { db, session, request } = context;
     var { email, password } = request.body;
 
-    var personnelRecords = await (
-        db.collection('personnel').find({
-            $and: [
-                { 'scientific.state.systemRoleId': {
-                    $exists: true
-                }},
-                { 'scientific.state.systemRoleId': {
-                    $not: { $type: 10 } // bson type of null
-                }},
-            ],
+    var self = await Self({
+        db,
+        query: {
             'gdpr.state.emails': { $elemMatch: {
                 email,
                 isPrimary: true,
             }},
-        }, {
+        },
+        projection: {
             'scientific.state.researchGroupIds': true,
             'gdpr.state.internals.passwordHash': true
-        })
-        .toArray()
-    );
+        }
+    });
 
-    if (personnelRecords.length < 1) {
-        debug('no personnel records found');
-        throw new Error(); // TODO: 401
-    }
-    if (personnelRecords.length > 1) {
-        debug('multiple personnel records found');
-        throw new Error(); // TODO: 401
+    var { record, systemRole } = self;
+
+    if (!record) {
+        debug('personnel record not found');
+        throw new Error(401); // TODO: 401
     }
 
-    var user = personnelRecords[0],
-        storedHash = user.gdpr.state.internals.passwordHash;
-    var { researchGroupIds, systemRoleId } = user.scientific.state;
-
-    if (!systemRoleId) {
+    var researchGroupIds = record.scientific.state.researchGroupIds,
+        storedHash = record.gdpr.state.internals.passwordHash;
+    
+    if (!systemRole) {
         debug('user has no system role');
-        throw new Error(); // TODO: 401
+        throw new Error(401); // TODO: 401
     }
 
     // if the user has no research groups check if their role has
     // root access
     if (researchGroupIds.length < 1) {
-        var role = await (
-            db.collection('systemRole')
-            .findOne({
-                _id: systemRoleId
-            })
-        );
-        if (!(role && role.state.hasRootAccess)) {
+        if (!(systemRole && systemRole.state.hasRootAccess)) {
             debug('user has no researchgroups and role has no root acccess');
-            throw new Error(); // TODO: 401
+            throw new Error(401); // TODO: 401
         }
     }
 
     if (bcrypt.compareSync(password, storedHash)) {
         debug('passwords match, setting session personnelId');
-        session.personnelId = user._id;
+        session.personnelId = record._id;
     }
     else {
         debug('passwords dont match');
-        throw new Error(); // TODO: 401
+        throw new Error(401); // TODO: 401
     }
 
     context.body = {
-        data: { _id: user._id }
+        status: 200,
+        data: {}
     };
 
     await next();
