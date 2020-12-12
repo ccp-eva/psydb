@@ -17,8 +17,8 @@ var signIn = async (context, next) => {
             }},
         },
         projection: {
-            'scientific.state.researchGroupIds': true,
-            'gdpr.state.internals.passwordHash': true
+            'scientific.state': true,
+            'gdpr.state': true
         }
     });
 
@@ -29,8 +29,7 @@ var signIn = async (context, next) => {
         throw new Error(401); // TODO: 401
     }
 
-    var researchGroupIds = record.scientific.state.researchGroupIds,
-        storedHash = record.gdpr.state.internals.passwordHash;
+    var researchGroupIds = record.scientific.state.researchGroupIds;
     
     if (!systemRole) {
         debug('user has no system role');
@@ -46,6 +45,7 @@ var signIn = async (context, next) => {
         }
     }
 
+    var storedHash = record.gdpr.state.internals.passwordHash;
     if (bcrypt.compareSync(password, storedHash)) {
         debug('passwords match, setting session personnelId');
         session.personnelId = record._id;
@@ -55,9 +55,15 @@ var signIn = async (context, next) => {
         throw new Error(401); // TODO: 401
     }
 
+    // we dont want the password hash to be transferred
+    delete self.record.gdpr.state.internals.passwordHash;
+
     context.body = {
-        status: 200,
-        data: {}
+        metadata: { status: 200 },
+        data: {
+            record: self.record,
+            systemRole: self.systemRole,
+        }
     };
 
     await next();
