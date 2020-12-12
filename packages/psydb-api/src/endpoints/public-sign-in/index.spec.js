@@ -6,7 +6,7 @@ var expect = require('chai').expect,
     MongoClient = require('mongodb').MongoClient,
     bcrypt = require('bcrypt'),
 
-    signIn = require('./sign-in');
+    signIn = require('./index');
 
 describe('signIn()', function () {
     this.timeout(0);
