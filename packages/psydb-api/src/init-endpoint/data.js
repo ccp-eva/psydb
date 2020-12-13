@@ -31,13 +31,13 @@ var messages = [
             }
         }
     },
-    /*{
+    {
         type: 'set-personnel-password',
         payload: {
             id: rootAccountId,
             password: 'test1234',
         },
-    },*/
+    },
 ];
 
 module.exports = {

@@ -4,10 +4,10 @@ var handlers = [
         messageType: /^records\//,
         handler: require('./records')
     },
-    /*{
+    {
         messageType: 'set-personnel-password',
         handler: require('./set-personnel-password'),
-    }*/
+    }
 ];
 
 handlers.find = (messageType) => {
