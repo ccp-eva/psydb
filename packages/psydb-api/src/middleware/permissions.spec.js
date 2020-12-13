@@ -4,7 +4,8 @@ require('debug').enable('psydb:*');
 var expect = require('chai').expect,
     Mongod = require('mongodb-memory-server').MongoMemoryServer,
     MongoClient = require('mongodb').MongoClient,
-    
+
+    withSelfAuth = require('./self-auth'),
     withPermissions = require('./permissions');
 
 describe('middleware/permissions', function () {
@@ -37,6 +38,7 @@ describe('middleware/permissions', function () {
         var error = undefined,
             context = { db, session: {}};
         try {
+            await withSelfAuth()(context, noop);
             await withPermissions({ endpoint: '/search' })(context, noop);
         }
         catch (e) { error = e }
@@ -49,6 +51,7 @@ describe('middleware/permissions', function () {
             next = async () => { calledNext = true; };
 
         var context = { db, session: { personnelId: 'root-account' }};
+        await withSelfAuth()(context, noop);
         await withPermissions({ endpoint: '/search' })(context, next);
 
         expect(context.permissions).to.include.keys([
