@@ -3,7 +3,7 @@ var debug = require('debug')('psydb:api:middleware:endpoint-protection');
 
 var createEndpointProtectionMiddleware = ({
     endpoint
-} = {}) = async (context, next) => {
+} = {}) => async (context, next) => {
     var { permissions } = context;
 
     if (!endpoint) {

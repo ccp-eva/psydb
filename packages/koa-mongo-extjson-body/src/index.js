@@ -1,8 +1,10 @@
+'use strict';
+
 var { EJSON } = require('bson'),
     RawBody = require('raw-body'),
     inflate = require('inflation');
 
-var createMiddeware = ({
+var createMiddleware = ({
     patchNode = false,
     patchKoa = true,
 
@@ -30,13 +32,13 @@ var createMiddeware = ({
 
         var ejsonArgs = [ raw ];
         if (ejsonReplacer) {
-            ejsonArgs.push(ejsonReplacer),
+            ejsonArgs.push(ejsonReplacer);
         }
         if (ejsonSpace) {
-            ejsonArgs.push(ejsonSpace),
+            ejsonArgs.push(ejsonSpace);
         }
         if (ejsonOptions) {
-            ejsonArgs.push(ejsonOptions),
+            ejsonArgs.push(ejsonOptions);
         }
 
         var parsed = EJSON.parse(...ejsonArgs);

@@ -1,16 +1,14 @@
 'use strict';
 var compose = require('koa-compose'),
     withSession = require('koa-session'),
-    maybeConnectMongoDB = require('db').createMiddleware,
+    withMongoDB = require('@mpieva/psydb-mongo-adapter').createMiddleware,
     
-    withAjv = require('./ajv'),
-    withSchemas = require('./schema');
     withRouting = require('./routing');
 
 var createApi = (app, config) => {
 
     var composition = compose([
-        maybeConnectMongoDB(config.db),
+        withMongoDB(config.db),
         withSession({
             ...(config.session || {}),
             signed: false, // i think this requires app.keys to be set
@@ -18,8 +16,6 @@ var createApi = (app, config) => {
             renew: true, // renew session when close to ttl end
         }, app),
 
-        withAjv(),
-        withSchemas(),
         withRouting(config.routing),
     ]);
 

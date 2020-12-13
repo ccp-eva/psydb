@@ -42,5 +42,9 @@ var MongoConnector = ({
         }
     }
 
+    connector.close = () => (
+        connection.close()
+    )
+
     return connector;
 }

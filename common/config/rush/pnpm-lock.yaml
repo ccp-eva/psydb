@@ -35,6 +35,7 @@ dependencies:
   graphql: 15.3.0
   jsonpointer: 4.1.0
   koa-body: 4.2.0
+  koa-router: 10.0.0
   koa-session: 5.13.1
   mocha: 8.1.3
   mockdate: 3.0.2
@@ -43,6 +44,7 @@ dependencies:
   pascal-case: 3.1.2
   react: 17.0.1
   react-dom: 17.0.1_react@17.0.1
+  supertest: 6.0.1
   webpack: 5.10.1_webpack@5.10.1
   webpack-dev-middleware: 4.0.2_webpack@5.10.1
 lockfileVersion: 5.1
@@ -1658,6 +1660,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-csOlWGAcRFJaI6m+F2WKdnMKr4HhdhFVBk0H/QbJFMCr+uO2kwohwXQPxw/9OCxp05r5ghVBFSyioixx3gfkNQ==
+  /asynckit/0.4.0:
+    dev: false
+    resolution:
+      integrity: sha1-x57Zf380y48robyXkLzDZkdLS3k=
   /babel-loader/8.2.2_c02fcb4ed137f380e550a6aa04658395:
     dependencies:
       '@babel/core': 7.12.10
@@ -1952,6 +1958,14 @@ packages:
     dev: false
     resolution:
       integrity: sha512-puCDz0CzydiSYOrnXpz/PKd69zRrribezjtE9yd4zvytoRc8+RY/KJPvtPFKZS3E3wP6neGyMe0vOTlHO5L3Pw==
+  /combined-stream/1.0.8:
+    dependencies:
+      delayed-stream: 1.0.0
+    dev: false
+    engines:
+      node: '>= 0.8'
+    resolution:
+      integrity: sha512-FQN4MRfuJeHf7cBbBMJFXhKSDq+2kAArBlmRBvcvFE5BB1HZKXtSFASDhdlz9zOYwxh8lDdnvmMOe/+5cdoEdg==
   /commander/2.20.3:
     dev: false
     resolution:
@@ -1960,6 +1974,10 @@ packages:
     dev: false
     resolution:
       integrity: sha1-3dgA2gxmEnOTzKWVDqloo6rxJTs=
+  /component-emitter/1.3.0:
+    dev: false
+    resolution:
+      integrity: sha512-Rd3se6QB+sO1TwqZjscQrurpEPIfO0/yYnSin6Q/rD3mOutHvUrCAhJub3r90uNb+SESBuE0QYoB90YdfatsRg==
   /concat-map/0.0.1:
     dev: false
     resolution:
@@ -1988,6 +2006,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-4FJkXzKXEDB1snCFZlLP4gpC3JILicCpGbzG9f9G7tGqGCzETQ2hWPrcinA9oU4wtf2biUaEH5065UnMeR33oA==
+  /cookiejar/2.1.2:
+    dev: false
+    resolution:
+      integrity: sha512-Mw+adcfzPxcPeI+0WlvRrr/3lGVO0bD75SxX6811cxSh1Wbxx7xZBGK1eVtDf6si8rg2lhnUjsVLMFMfbRIuwA==
   /cookies/0.8.0:
     dependencies:
       depd: 2.0.0
@@ -2095,6 +2117,12 @@ packages:
       node: '>= 0.4'
     resolution:
       integrity: sha512-3MqfYKj2lLzdMSf8ZIZE/V+Zuy+BgD6f164e8K2w7dgnpKArBDerGYpM46IYYcjnkdPNMjPk9A6VFB8+3SKlXQ==
+  /delayed-stream/1.0.0:
+    dev: false
+    engines:
+      node: '>=0.4.0'
+    resolution:
+      integrity: sha1-3zrhmayt+31ECqrgsp4icrJOxhk=
   /delegates/1.0.0:
     dev: false
     resolution:
@@ -2351,6 +2379,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-lhd/wF+Lk98HZoTCtlVraHtfh5XYijIjalXck7saUtuanSDyLMxnHhSXEDJqHxD7msR8D0uCmqlkwjCV8xvwHw==
+  /fast-safe-stringify/2.0.7:
+    dev: false
+    resolution:
+      integrity: sha512-Utm6CdzT+6xsDk2m8S6uL8VHxNwI6Jub+e9NYTcAms28T84pTa25GJQV9j0CY0N1rM8hK4x6grpF2BQf+2qwVA==
   /fd-slicer/1.1.0:
     dependencies:
       pend: 1.2.0
@@ -2412,6 +2444,16 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-FmTtBsHskrU6FJ2VxCnsDb84wu9zhmO3cUX2kGFb5tuwhfXxGciiT0oRY+cck35QmG+NmGh5eLz6lLCpWTqwpA==
+  /form-data/3.0.0:
+    dependencies:
+      asynckit: 0.4.0
+      combined-stream: 1.0.8
+      mime-types: 2.1.27
+    dev: false
+    engines:
+      node: '>= 6'
+    resolution:
+      integrity: sha512-CKMFDglpbMi6PyN+brwB9Q/GOw0eAnsrEZDgcsH5Krhz5Od/haKHAX0NmQfha2zPPz0JpWzA7GJHGSnvCRLWsg==
   /formidable/1.2.2:
     dev: false
     resolution:
@@ -2935,6 +2977,18 @@ packages:
       node: '>= 4'
     resolution:
       integrity: sha1-2kCHXfSd4FOQmNFwC1CCDOvNIdA=
+  /koa-router/10.0.0:
+    dependencies:
+      debug: 4.3.1
+      http-errors: 1.8.0
+      koa-compose: 4.1.0
+      methods: 1.1.2
+      path-to-regexp: 6.2.0
+    dev: false
+    engines:
+      node: '>= 8.0.0'
+    resolution:
+      integrity: sha512-gAE5J1gBQTvfR8rMMtMUkE26+1MbO3DGpGmvfmM2pR9Z7w2VIb2Ecqeal98yVO7+4ltffby7gWOzpCmdNOQe0w==
   /koa-session/5.13.1:
     dependencies:
       crc: 3.8.0
@@ -3167,6 +3221,12 @@ packages:
     dev: false
     resolution:
       integrity: sha512-abv/qOcuPfk3URPfDzmZU1LKmuw8kT+0nIHvKrKgFrwifol/doWcdA4ZqsWQ8ENrFKkd67Mfpo/LovbIUsbt3w==
+  /methods/1.1.2:
+    dev: false
+    engines:
+      node: '>= 0.6'
+    resolution:
+      integrity: sha1-VSmk1nZUE07cxSZmVoNbD4Ua/O4=
   /mime-db/1.44.0:
     dev: false
     engines:
@@ -3660,6 +3720,10 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-ojmeN0qd+y0jszEtoY48r0Peq5dwMEkIlCOu6Q5f41lfkswXuKtYrhgoTpLnyIcHm24Uhqx+5Tqm2InSwLhE6Q==
+  /path-to-regexp/6.2.0:
+    dev: false
+    resolution:
+      integrity: sha512-f66KywYG6+43afgE/8j/GoiNyygk/bnoCbps++3ErRKsIYkGGupyv07R2Ok5m9i67Iqc+T2g1eAUGUPzWhYTyg==
   /pathval/1.1.0:
     dev: false
     resolution:
@@ -4161,6 +4225,33 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-VTyMAUfdm047mwKl+u79WIdrZxtFtn+nBxHeb844XBQ9uMNTuTHdx2hc5RiAJYqwTj3wc/xe5HLSdJSkJ+WfZw==
+  /superagent/6.1.0:
+    dependencies:
+      component-emitter: 1.3.0
+      cookiejar: 2.1.2
+      debug: 4.3.1
+      fast-safe-stringify: 2.0.7
+      form-data: 3.0.0
+      formidable: 1.2.2
+      methods: 1.1.2
+      mime: 2.4.6
+      qs: 6.9.4
+      readable-stream: 3.6.0
+      semver: 7.3.4
+    dev: false
+    engines:
+      node: '>= 7.0.0'
+    resolution:
+      integrity: sha512-OUDHEssirmplo3F+1HWKUrUjvnQuA+nZI6i/JJBdXb5eq9IyEQwPyPpqND+SSsxf6TygpBEkUjISVRN4/VOpeg==
+  /supertest/6.0.1:
+    dependencies:
+      methods: 1.1.2
+      superagent: 6.1.0
+    dev: false
+    engines:
+      node: '>=6.0.0'
+    resolution:
+      integrity: sha512-8yDNdm+bbAN/jeDdXsRipbq9qMpVF7wRsbwLgsANHqdjPsCoecmlTuqEcLQMGpmojFBhxayZ0ckXmLXYq7e+0g==
   /supports-color/5.5.0:
     dependencies:
       has-flag: 3.0.0
@@ -4752,15 +4843,17 @@ packages:
       koa: 2.13.0
       koa-body: 4.2.0
       koa-compose: 4.1.0
+      koa-router: 10.0.0
       koa-session: 5.13.1
       mocha: 8.1.3
       mongodb: 3.6.3
       mongodb-memory-server: 6.9.2
       nanoid: 3.1.20
+      supertest: 6.0.1
     dev: false
     name: '@rush-temp/psydb-api'
     resolution:
-      integrity: sha512-Zx95u3WG1XqPPeXVcpnU3R1wVw3kEJS3sGZCGCnvVyVt8r+Y/DiNgtxilC0O5DI6asTSBsOQ3FAXZ2y1jN5JKw==
+      integrity: sha512-9TDHiuuUgvpjc7NVXnlEl33eQT926CcFvSFwwYTFyts3r1oJ7dA2Bqfb0Lk9yjbr6TWfrA159R9QldfW3F+tBA==
       tarball: 'file:projects/psydb-api.tgz'
     version: 0.0.0
   'file:projects/psydb-fixtures.tgz':
@@ -4875,6 +4968,7 @@ specifiers:
   graphql: ~15.3.0
   jsonpointer: ~4.1.0
   koa-body: ~4.2.0
+  koa-router: ~10.0.0
   koa-session: ^5.13.1
   mocha: ~8.1.3
   mockdate: ~3.0.2
@@ -4883,5 +4977,6 @@ specifiers:
   pascal-case: ~3.1.1
   react: ~17.0.1
   react-dom: ~17.0.1
+  supertest: ~6.0.1
   webpack: ~5.10.1
   webpack-dev-middleware: ~4.0.2

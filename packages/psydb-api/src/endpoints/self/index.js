@@ -2,7 +2,7 @@
 var debug = require('debug')('psydb:api:endpoints:self');
 
 var self = async (context, next) => {
-    var { self } = context,
+    var { self } = context;
 
     if (!self) {
         debug('self not set in context');
@@ -16,4 +16,4 @@ var self = async (context, next) => {
     await next();
 }
 
-module.exports = signIn;
+module.exports = self;

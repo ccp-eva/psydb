@@ -2,35 +2,38 @@
 var compose = require('koa-compose'),
     KoaRouter = require('koa-router'),
     withKoaBody = require('koa-body'),
-    withMongoBody = require('@mpieva/koa-mongodb-extjson-body'),
+    withMongoBody = require('@mpieva/koa-mongo-extjson-body'),
 
+    withSelfAuth = require('./self-auth'),
     withPermissions = require('./permissions'),
     withEndpointProtection = require('./endpoint-protection'),
 
-    public = require('../public-endpoints'),
-    protected = require('../protected-endpoints/');
+    endpoints = require('../endpoints/');
 
 var createRouting = ({
     prefix = '/',
-}) => {
+} = {}) => {
     var router = KoaRouter({
-        prefix,
+        prefix: prefix.replace(/\/$/, ''),
     });
 
-    router.post('/sign-in', withKoaBody(), public.signIn);
-    router.post('/sign-out', public.signOut);
+    router.post('/sign-in', withKoaBody(), endpoints.publicSignIn);
+    router.post('/sign-out', endpoints.publicSignOut);
 
     router.post('/',
+        withSelfAuth(),
         withPermissions(),
         withEndpointProtection({ endpoint: 'event' }),
         withKoaBody(),
-        protected.event
+        endpoints.event
     );
 
-    /*router.get('/self',
-        withProtection(),
-        protected.self
-    );*/
+    router.get('/self',
+        withSelfAuth(),
+        withPermissions(),
+        withEndpointProtection({ endpoint: 'event' }),
+        endpoints.self
+    );
 
     /*router.post('/search/:collectionName(^(_helper_)?[A-Za-z]+$)',
         withProtection(),
