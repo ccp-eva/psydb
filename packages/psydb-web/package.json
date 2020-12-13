@@ -20,7 +20,8 @@
   "dependencies": {
     "koa": "~2.13.0",
     "@mpieva/psydb-api": "~0.1.0-alpha",
-    "@cdxoo/block-quote": "~1.0.0"
+    "@cdxoo/block-quote": "~1.0.0",
+    "@fluentui/theme": "~1.7.0"
   },
   "devDependencies": {
     "mocha": "~8.1.3",

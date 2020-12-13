@@ -7,6 +7,7 @@ dependencies:
   '@cdxoo/inline-text': 1.0.1
   '@cdxoo/omit': 1.0.1
   '@fluentui/react': 7.154.0_react-dom@17.0.1+react@17.0.1
+  '@fluentui/theme': 1.7.0_react-dom@17.0.1+react@17.0.1
   '@rush-temp/json-schema-to-graphql': 'file:projects/json-schema-to-graphql.tgz'
   '@rush-temp/koa-mongo-extjson-body': 'file:projects/koa-mongo-extjson-body.tgz'
   '@rush-temp/koa-mongo-mq': 'file:projects/koa-mongo-mq.tgz'
@@ -35,7 +36,6 @@ dependencies:
   jsonpointer: 4.1.0
   koa-body: 4.2.0
   koa-session: 5.13.1
-  koa-webpack: 6.0.0_webpack@5.10.1
   mocha: 8.1.3
   mockdate: 3.0.2
   mongodb-memory-server: 6.9.2
@@ -4819,6 +4819,7 @@ packages:
       '@babel/preset-react': 7.12.10_@babel+core@7.12.10
       '@cdxoo/block-quote': 1.0.0
       '@fluentui/react': 7.154.0_react-dom@17.0.1+react@17.0.1
+      '@fluentui/theme': 1.7.0_react-dom@17.0.1+react@17.0.1
       babel-loader: 8.2.2_c02fcb4ed137f380e550a6aa04658395
       chai: 4.2.0
       jsonpointer: 4.1.0
@@ -4833,7 +4834,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-web'
     resolution:
-      integrity: sha512-7EzL+xECuQyVmRYXdsfZNo7WWrY2POqpCy2p0pF3IT9usVUgxUjt5Wa2of5m03Y2T+yLLhE81YGn5iqkuroPdg==
+      integrity: sha512-LkUB32WGYEM5qUyqiO1xkOWdcOwQ87W5YANt1E4zJN7tIbeN62hvnXQbBjtBMYJNVM5BKnRQ6gFId5iWf1sJZQ==
       tarball: 'file:projects/psydb-web.tgz'
     version: 0.0.0
 registry: ''
@@ -4846,6 +4847,7 @@ specifiers:
   '@cdxoo/inline-text': ~1.0.1
   '@cdxoo/omit': ~1.0.1
   '@fluentui/react': ~7.154.0
+  '@fluentui/theme': ~1.7.0
   '@rush-temp/json-schema-to-graphql': 'file:./projects/json-schema-to-graphql.tgz'
   '@rush-temp/koa-mongo-extjson-body': 'file:./projects/koa-mongo-extjson-body.tgz'
   '@rush-temp/koa-mongo-mq': 'file:./projects/koa-mongo-mq.tgz'
@@ -4874,7 +4876,6 @@ specifiers:
   jsonpointer: ~4.1.0
   koa-body: ~4.2.0
   koa-session: ^5.13.1
-  koa-webpack: ~6.0.0
   mocha: ~8.1.3
   mockdate: ~3.0.2
   mongodb-memory-server: ~6.9.2
