@@ -32,6 +32,7 @@ dependencies:
   chai: 4.2.0
   chai-datetime: 1.7.0
   debug: 4.3.1
+  error: 10.4.0
   graphql: 15.3.0
   jsonpointer: 4.1.0
   koa-body: 4.2.0
@@ -44,6 +45,7 @@ dependencies:
   pascal-case: 3.1.2
   react: 17.0.1
   react-dom: 17.0.1_react@17.0.1
+  statuses: 2.0.0
   supertest: 6.0.1
   webpack: 5.10.1_webpack@5.10.1
   webpack-dev-middleware: 4.0.2_webpack@5.10.1
@@ -2208,6 +2210,10 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-MfrRBDWzIWifgq6tJj60gkAwtLNb6sQPlcFrSOflcP1aFmmruKQ2wRnze/8V6kgyz7H3FF8Npzv78mZ7XLLflg==
+  /error/10.4.0:
+    dev: false
+    resolution:
+      integrity: sha512-YxIFEJuhgcICugOUvRx5th0UM+ActZ9sjY0QJmeVwsQdvosZ7kYzc9QqS0Da3R5iUmgU5meGIxh0xBeZpMVeLw==
   /es-abstract/1.17.7:
     dependencies:
       es-to-primitive: 1.2.1
@@ -4134,6 +4140,12 @@ packages:
       node: '>= 0.6'
     resolution:
       integrity: sha1-Fhx9rBd2Wf2YEfQ3cfqZOBR4Yow=
+  /statuses/2.0.0:
+    dev: false
+    engines:
+      node: '>= 0.8'
+    resolution:
+      integrity: sha512-w9jNUUQdpuVoYqXxnyOakhckBbOxRaoYqJscyIBYCS5ixyCnO7nQn7zBZvP9zf5QOPZcz2DLUpE3KsNPbJBOFA==
   /string-width/1.0.2:
     dependencies:
       code-point-at: 1.1.0
@@ -4839,6 +4851,7 @@ packages:
       bcrypt: 5.0.0
       chai: 4.2.0
       debug: 4.3.1
+      error: 10.4.0
       jsonpointer: 4.1.0
       koa: 2.13.0
       koa-body: 4.2.0
@@ -4849,11 +4862,12 @@ packages:
       mongodb: 3.6.3
       mongodb-memory-server: 6.9.2
       nanoid: 3.1.20
+      statuses: 2.0.0
       supertest: 6.0.1
     dev: false
     name: '@rush-temp/psydb-api'
     resolution:
-      integrity: sha512-9TDHiuuUgvpjc7NVXnlEl33eQT926CcFvSFwwYTFyts3r1oJ7dA2Bqfb0Lk9yjbr6TWfrA159R9QldfW3F+tBA==
+      integrity: sha512-UQp6fgltTb6ECMNvZSR1MoRjU1NCX+gVtj/M+dAlzgH8PCCNwImptpjSjyCRF0Bs1hF8ud4qPwOjtmGjT5i1iw==
       tarball: 'file:projects/psydb-api.tgz'
     version: 0.0.0
   'file:projects/psydb-fixtures.tgz':
@@ -4965,6 +4979,7 @@ specifiers:
   chai: ~4.2.0
   chai-datetime: ~1.7.0
   debug: ~4.3.1
+  error: ~10.4.0
   graphql: ~15.3.0
   jsonpointer: ~4.1.0
   koa-body: ~4.2.0
@@ -4977,6 +4992,7 @@ specifiers:
   pascal-case: ~3.1.1
   react: ~17.0.1
   react-dom: ~17.0.1
+  statuses: ~2.0.0
   supertest: ~6.0.1
   webpack: ~5.10.1
   webpack-dev-middleware: ~4.0.2
