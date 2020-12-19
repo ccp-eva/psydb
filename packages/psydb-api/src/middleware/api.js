@@ -3,11 +3,13 @@ var compose = require('koa-compose'),
     withSession = require('koa-session'),
     withMongoDB = require('@mpieva/psydb-mongo-adapter').createMiddleware,
     
+    withErrorHandling = require('./errors'),
     withRouting = require('./routing');
 
 var createApi = (app, config) => {
 
     var composition = compose([
+        withErrorHandling(),
         withMongoDB(config.db),
         withSession({
             ...(config.session || {}),
@@ -15,7 +17,7 @@ var createApi = (app, config) => {
             //rolling: true, // reset cookie/ttl every request
             renew: true, // renew session when close to ttl end
         }, app),
-
+        
         withRouting(config.routing),
     ]);
 

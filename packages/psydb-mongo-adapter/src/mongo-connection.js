@@ -42,9 +42,15 @@ var MongoConnector = ({
         }
     }
 
-    connector.close = () => (
-        connection.close()
-    )
+    connector.close = () => {
+        // removing global connector on close is requred when
+        // using in conjucntion with beforeEach topology creation
+        // via mongodb memory server in unit tests
+        // else it will try to use the existing connector to the
+        // destroyd topology
+        globalConnector = undefined;
+        return connection.close();
+    }
 
     return connector;
 }

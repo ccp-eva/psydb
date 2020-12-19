@@ -30,7 +30,8 @@ var createErrorsMiddleware = () => async (context, next) => {
             statusCode = 500;
             shouldEmitError = true;
         }
-
+        
+        context.status = statusCode,
         context.body = ResponseBody({
             statusCode,
             apiStatus,

@@ -2,21 +2,21 @@
 var debug = require('debug')('psydb:api:init-endpoint');
     
 var compose = require('koa-compose'),
-    data = require('./data'),
-    createEventMiddleware = require('../endpoints/event/');
+    ResponseBody = require('../lib/response-body'),
+    ApiError = require('../lib/api-error'),
+    createEventMiddleware = require('../endpoints/event/'),
+    data = require('./data');
 
-var createInitEndpoint = ({
-    config,
-} = {}) => async (context, next) => {
-    var { db, request } = context;
+var init = async (context, next) => {
+    var { db } = context;
 
     var personnelRecordCount = await (
         db.collection('personnel')
-        .count()
+        .countDocuments()
     );
 
     if (personnelRecordCount !== 0) {
-        throw new Error(404); // TODO
+        throw new ApiError(404);
     }
 
     var eventMiddleware = createEventMiddleware({
@@ -32,9 +32,13 @@ var createInitEndpoint = ({
         );
     }
 
+    var root = await db.collection('personnel').findOne();
+
+    context.body = ResponseBody({ statusCode: 200 });
+
     await next();
 }
 
 var noop = async () => {};
 
-module.exports = createInitEndpoint;
+module.exports = init;

@@ -7,7 +7,8 @@ var compose = require('koa-compose'),
     withSelfAuth = require('./self-auth'),
     withPermissions = require('./permissions'),
     withEndpointProtection = require('./endpoint-protection'),
-
+    
+    init = require('../init-endpoint'),
     endpoints = require('../endpoints/');
 
 var createRouting = ({
@@ -19,6 +20,10 @@ var createRouting = ({
 
     router.post('/sign-in', withKoaBody(), endpoints.publicSignIn);
     router.post('/sign-out', endpoints.publicSignOut);
+
+    router.post('/init',
+        init
+    );
 
     router.post('/',
         withSelfAuth(),
