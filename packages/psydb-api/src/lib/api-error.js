@@ -7,7 +7,9 @@ class ApiError extends Error {
         var status = getHttpStatus(statusCode).replace(/\s+/, '');
 
         var apiStatus,
-            additionalProps;
+            additionalProps,
+            data,
+            rest;
         if (typeof apiStatusOrAdditionalProps === 'object') {
             additionalProps = apiStatusOrAdditionalProps;
         }
@@ -15,15 +17,15 @@ class ApiError extends Error {
             apiStatus = apiStatusOrAdditionalProps;
         }
 
-        apiStatus = apiStatus || status;
-        var { metadata, data } = additionalProps || {};
+        ({ apiStatus, data, ...rest } = additionalProps || {})
 
-        super(`${apiStatus} : http status = ${statusCode}`);
+        apiStatus = apiStatus || status;
+
+        super(`${apiStatus} : http status = ${statusCode} ${status}`);
         this.__info = {
             status,
             statusCode,
             apiStatus,
-            metadata,
             data,
         };
     }

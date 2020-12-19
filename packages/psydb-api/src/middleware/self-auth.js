@@ -1,5 +1,6 @@
 'use strict';
 var debug = require('debug')('psydb:api:middleware:self-auth'),
+    ApiError = require('../lib/api-error'),
     Self = require('../lib/self');
 
 var createSelfAuthMiddleware = ({
@@ -8,7 +9,7 @@ var createSelfAuthMiddleware = ({
 
     if (!session.personnelId) {
         debug('session personnelId not set');
-        throw new Error(401); // TODO
+        throw new ApiError(401); // TODO
     }
 
     var self = await Self({

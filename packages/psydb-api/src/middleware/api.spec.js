@@ -1,5 +1,5 @@
 'use strict';
-require('debug').enable('*');
+require('debug').enable('psydb:*');
 
 var expect = require('chai').expect,
     request = require('supertest'),

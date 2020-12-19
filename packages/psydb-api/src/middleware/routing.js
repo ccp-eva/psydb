@@ -31,7 +31,6 @@ var createRouting = ({
     router.get('/self',
         withSelfAuth(),
         withPermissions(),
-        withEndpointProtection({ endpoint: 'event' }),
         endpoints.self
     );
 
