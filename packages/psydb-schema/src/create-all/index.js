@@ -15,6 +15,10 @@ var createCollectionMessageSchemas = (
     require('../messages/collection-messages.js')
 );
 
+var createStaticMessageSchemas = (
+    require('../messages/static-messages.js')
+);
+
 var createAll = ({ records }) => {
     var typedSchemas = createTypedSchemas({ records, instructions });
     
@@ -33,7 +37,7 @@ var createAll = ({ records }) => {
         ...createCollectionMessageSchemas({
             collectionSchemas
         }),
-        //...createSpecialMessageSchemas()
+        ...createStaticMessageSchemas()
     ];
 
     return {

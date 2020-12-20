@@ -5,6 +5,10 @@ var handlers = [
         handler: require('./records')
     },
     {
+        messageType: /^custom-types\//,
+        handler: require('./custom-types'),
+    }
+    {
         messageType: 'set-personnel-password',
         handler: require('./set-personnel-password'),
     }
