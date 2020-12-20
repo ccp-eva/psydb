@@ -30,7 +30,7 @@ var createRouting = ({
         withPermissions(),
         withEndpointProtection({ endpoint: 'event' }),
         withKoaBody(),
-        endpoints.event
+        endpoints.event()
     );
 
     router.get('/self',

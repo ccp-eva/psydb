@@ -20,6 +20,7 @@ var createMessageHandling = ({
     forcedPersonnelId,
 } = {}) => {
     return compose([
+        async (context, next) => { console.log(context); await next(); },
         withContextSetup({ forcedPersonnelId }),
         ...(
             enableValidation
@@ -46,7 +47,7 @@ var createMessageHandling = ({
         // to the database, we might want to prevent that
         // by passing a modified db handle that only includes read ops
         callMessageHandler,
-        updateModifiedRecordStates
+        updateModifiedRecordStates,
     ]);
 };
 

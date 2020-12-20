@@ -13,6 +13,8 @@
     "chai": "~4.2.0"
   },
   "dependencies": {
-    "bson": "~4.2.2"
+    "bson": "~4.2.2",
+    "raw-body": "~2.4.1",
+    "inflation": "~2.0.0"
   }
 }

@@ -1,6 +1,5 @@
 'use strict';
-var StructuredError = require('error').SError,
-    getHttpStatus = require('statuses');
+var getHttpStatus = require('statuses');
 
 class ApiError extends Error {
     constructor (statusCode, apiStatusOrAdditionalProps) {

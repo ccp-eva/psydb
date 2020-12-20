@@ -11,6 +11,7 @@ module.exports = {
     ForeignId: require('./foreign-id'),
     FullText: require('./full-text'),
     Id: require('./id'),
+    IdentifierString: require('./identifier-string'),
     ParticipationStatus: require('./participation-status'),
     SaneString: require('./sane-string'),
     Time: require('./time'),

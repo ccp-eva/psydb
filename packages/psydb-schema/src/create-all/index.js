@@ -16,7 +16,7 @@ var createCollectionMessageSchemas = (
 );
 
 var createStaticMessageSchemas = (
-    require('../messages/static-messages.js')
+    require('../messages/static')
 );
 
 var createAll = ({ records }) => {

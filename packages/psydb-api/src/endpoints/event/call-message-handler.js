@@ -1,5 +1,6 @@
 'use stirct';
-var handlers = require('../../message-handlers');
+var ResponseBody = require('../../lib/response-body'),
+    handlers = require('../../message-handlers');
 
 var callMessageHandler = async (context, next) => {
     var { db, rohrpost, message } = context;
@@ -19,6 +20,8 @@ var callMessageHandler = async (context, next) => {
     });*/
     //var records = await db.collection('personnel').find().toArray()
     //console.dir(records, { depth: 5 });
+
+    context.body = ResponseBody({ statusCode: 200 });
     await next();
 };
 
