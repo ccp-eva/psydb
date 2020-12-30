@@ -7,7 +7,7 @@ var Ajv = require('ajv'),
 var AjvWrapper = ({
     disableProhibitedKeyword = false,
     ...options
-}) => {
+} = {}) => {
     var ajv = new Ajv({
         allErrors: true,
         strictDefaults: 'log',
