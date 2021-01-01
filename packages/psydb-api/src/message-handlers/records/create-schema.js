@@ -5,7 +5,7 @@ var {
     RecordPropsMessage
 } = require('@mpieva/psydb-schema-helpers');
 
-var createSchema = ({ recordSchemas }) => {
+var createSchema = ({ recordSchemas, messageType }) => {
 
     var messageSchemas = (
         recordSchemas

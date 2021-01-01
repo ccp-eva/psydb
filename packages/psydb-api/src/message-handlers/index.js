@@ -104,21 +104,4 @@ var Registry = () => {
     addAllHandlers(registry);
 }
 
-var r = Registry();
-
-var handlers = [
-    {
-        messageType: /^records\//,
-        handler: require('./records')
-    },
-    {
-        messageType: 'set-personnel-password',
-        handler: require('./set-personnel-password'),
-    },
-    /*{
-        messageType: /^custom-types\//,
-        handler: require('./custom-types'),
-    },*/
-];
-
-module.exports = handlers;
+module.exports = Registry;

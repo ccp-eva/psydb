@@ -5,26 +5,20 @@ var ApiError = require('../../lib/api-error'),
     Ajv = require('../../lib/ajv');
 
 var withMessageValidation = async (context, next) => {
-    var { schemas, permissions, message } = context;
+    var { recordSchemas, permissions, message } = context;
     var { type: messageType } = message;
+
+    var messageHandler = HandlerRegistry().find(messageType);
+    if (!messageHandler) {
+        debug(`no handler for message type ${messageType}`);
+        throw new ApiError(400); // TODO
+    }
 
     // FIXME: this is actually authorization, not validation
     if (!permissions.canUseMessageType(messageType)) {
         debug(`no permission to use message type ${messageType}`);
         throw new ApiError(403); // TODO
     }
-
-    var found = schemas.messages.find(messageType);
-
-    if (found === undefined) {
-        debug(`no schema for message type ${messageType}`);
-        throw new ApiError(400); // TODO
-    }
-
-    /*if (found > 1) {
-        debug(`multiple schemas for message type ${messageType}`);
-        throw new Error(500); // TODO
-    }*/
 
     var ajv = Ajv(),
         isValid = ajv.validate(found, message);

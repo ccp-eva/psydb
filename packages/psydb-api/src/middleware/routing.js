@@ -7,7 +7,7 @@ var compose = require('koa-compose'),
     withSelfAuth = require('./self-auth'),
     withPermissions = require('./permissions'),
     withEndpointProtection = require('./endpoint-protection'),
-    withSchemas = require('./schema'),
+    withRecordSchemas = require('./record-schemas'),
     
     init = require('../init-endpoint'),
     endpoints = require('../endpoints/');
@@ -30,7 +30,7 @@ var createRouting = ({
         withSelfAuth(),
         withPermissions(),
         withEndpointProtection({ endpoint: 'event' }),
-        withSchemas(),
+        withRecordSchemas(),
         withKoaBody(),
         endpoints.event()
     );

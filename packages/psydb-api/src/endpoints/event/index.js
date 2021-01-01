@@ -17,16 +17,25 @@ var compose = require('koa-compose'),
 
 var createMessageHandling = ({
     enableValidation = true,
+    enableCheckAllowedAndPlausible = true,
     forcedPersonnelId,
 } = {}) => {
     return compose([
         async (context, next) => { console.log(context); await next(); },
         withContextSetup({ forcedPersonnelId }),
+        
+        withMessageHandler,
         ...(
             enableValidation
             ? [ withMessageValidation ]
             : []
         ),
+        ...(
+            enableCheckAllowedAndPlausible
+            ? [ withCheckAllowedAndPlausible ]
+            : []
+        ),
+
         withMongoMQ({
             //createId: () => ObjectId(),
             createId: () => nanoid(),
@@ -43,6 +52,7 @@ var createMessageHandling = ({
             //createChannelId: () => ObjectId(),
             //createChannelEventId: () => ObjectId(),
         }),
+        
         // TODO: message handlers may not perform write ops
         // to the database, we might want to prevent that
         // by passing a modified db handle that only includes read ops
