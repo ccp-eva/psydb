@@ -21,6 +21,7 @@ dependencies:
   '@rush-temp/psydb-mongo-adapter': 'file:projects/psydb-mongo-adapter.tgz'
   '@rush-temp/psydb-schema': 'file:projects/psydb-schema.tgz'
   '@rush-temp/psydb-schema-fields': 'file:projects/psydb-schema-fields.tgz'
+  '@rush-temp/psydb-schema-helpers': 'file:projects/psydb-schema-helpers.tgz'
   '@rush-temp/psydb-schema-primitives': 'file:projects/psydb-schema-primitives.tgz'
   '@rush-temp/psydb-web': 'file:projects/psydb-web.tgz'
   ajv: 6.12.6
@@ -4849,6 +4850,7 @@ packages:
   'file:projects/psydb-api.tgz':
     dependencies:
       '@cdxoo/inline-string': 1.0.0
+      '@cdxoo/inline-text': 1.0.1
       ajv: 6.12.6
       ajv-keywords: 3.5.2_ajv@6.12.6
       bcrypt: 5.0.0
@@ -4870,7 +4872,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-api'
     resolution:
-      integrity: sha512-fxpL2b3zTfHkLxuYwVXSG3m6/9ZN/OUUdusyMJkxzyjm74ZpqG2X6IbGK4eciTmGVFcz9U21Z59Pwv37f/iqFQ==
+      integrity: sha512-IEA5HWGmEQo5JV4OaIxmB5Nbz8OWSBQIrWiwHzEai4udtfYxQW8T4zdlf5l4gBRnuWUQn2DXKd4gsehBA6yUNw==
       tarball: 'file:projects/psydb-api.tgz'
     version: 0.0.0
   'file:projects/psydb-fixtures.tgz':
@@ -4899,6 +4901,17 @@ packages:
     resolution:
       integrity: sha512-WgFmdIvkWECG6xKuLzcYOHj971KuKeFfsi0BOav9AeBCW0NHPYTWg0vt665VRM22syY1R7qxLyBhJ5VV1jlAcQ==
       tarball: 'file:projects/psydb-schema-fields.tgz'
+    version: 0.0.0
+  'file:projects/psydb-schema-helpers.tgz':
+    dependencies:
+      '@cdxoo/inline-text': 1.0.1
+      chai: 4.2.0
+      mocha: 8.1.3
+    dev: false
+    name: '@rush-temp/psydb-schema-helpers'
+    resolution:
+      integrity: sha512-QPnXzgJ7E7UReY5l0zQ/He6qJXPInHP08Fs/qm6sJuTbTaXrTLkgurY9ww9kVHsJoMoliBZc0DiYe/xa5dnDkQ==
+      tarball: 'file:projects/psydb-schema-helpers.tgz'
     version: 0.0.0
   'file:projects/psydb-schema-primitives.tgz':
     dependencies:
@@ -4971,6 +4984,7 @@ specifiers:
   '@rush-temp/psydb-mongo-adapter': 'file:./projects/psydb-mongo-adapter.tgz'
   '@rush-temp/psydb-schema': 'file:./projects/psydb-schema.tgz'
   '@rush-temp/psydb-schema-fields': 'file:./projects/psydb-schema-fields.tgz'
+  '@rush-temp/psydb-schema-helpers': 'file:./projects/psydb-schema-helpers.tgz'
   '@rush-temp/psydb-schema-primitives': 'file:./projects/psydb-schema-primitives.tgz'
   '@rush-temp/psydb-web': 'file:./projects/psydb-web.tgz'
   ajv: ~6.12.6

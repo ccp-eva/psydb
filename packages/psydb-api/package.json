@@ -38,7 +38,9 @@
     "@mpieva/psydb-mongo-adapter": "~0.1.0-alpha",
     "koa-router": "~10.0.0",
     "statuses": "~2.0.0",
-    "@cdxoo/inline-text": "~1.0.1"
+    "@cdxoo/inline-text": "~1.0.1",
+    "@mpieva/psydb-schema-helpers": "~0.1.0-alpha",
+    "@mpieva/psydb-schema-fields": "~0.1.0-alpha"
   },
   "devDependencies": {
     "mocha": "~8.1.3",
