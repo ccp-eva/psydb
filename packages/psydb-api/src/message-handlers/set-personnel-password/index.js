@@ -1,11 +1,56 @@
 'use strict';
-var handleMessage = require('./handle-message'),
-    schema = require('./schema'),
-    isAllowed = require('./is-allowed');
+var brypt = require('bcrypt'),
+    messageType = require('./message-type'),
+    createSchema = require('./create-schema');
+
+// throw 400 or 403
+var checkAllowedAndPlausible = async ({
+    db,
+    message,
+    permissions,
+}) => {
+    var personnelRecord = await (
+        db.collection('personnel').findOne({ _id: message.payload.id })
+    );
+
+    if (!personnelRecord) {
+        throw new ApiError(400);
+    }
+
+    if (!permissions.canPatchRecord(personnelRecord)) {
+        throw new ApiError(403);
+    }
+};
+
+var handleMessage = async ({
+    db,
+    rohrpost,
+    message
+}) => {
+    var { type: messageType, personnelId, payload } = message;
+    var { id: targetRecordId, password } = payload;
+
+    var channel = (
+        rohrpost
+        .openCollection('personnel')
+        .openChannel({ id: targetRecordId })
+    );
+
+    var passwordHash = brypt.hashSync(password, 10);
+
+    await channel.dispatch({ subChannelKey: 'gdpr', message: {
+        type: 'put',
+        personnelId,
+        payload: {
+            prop: '/internals/passwordHash',
+            value: passwordHash
+        }
+    }})
+}
 
 module.exports = {
-    type: 'set-personnel-password',
-    isAllowed,
-    schema,
-    handleMessage
+    messageType,
+    createSchema,
+    checkAllowedAndPlausible,
+    handleMessage,
 };

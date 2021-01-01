@@ -45,24 +45,24 @@ var addHandler = (handlerList) => (handler) => {
     }
 
     if (
-        !handler.type 
+        !handler.messageType 
         || (
-            typeof handler.type !== 'string'
-            && !(handler.type instanceof RegExp)
+            typeof handler.messageType !== 'string'
+            && !(handler.messageType instanceof RegExp)
         )
     ) {
         throw new InvalidHandlerInterface(inline`
-            property "type" is undefined
+            property "messageType" is undefined
             or is neither a string nor a RegExp
         `);
     }
 
     [
-        'isAllowed',
-        'isValid',
+        'createSchema',
+        'checkAllowedAndPlausible',
         'handleMessage'
     ].forEach(prop => {
-        if (!handler[prop]) {
+        if (!handler[prop] && typeof handler[prop] !== 'function') {
             throw new InvalidHandlerInterface(inline`
                 property "${prop}" is undefined
                 or is not a function
@@ -73,12 +73,33 @@ var addHandler = (handlerList) => (handler) => {
     handlerList.push(handler);
 };
 
+var findHandler = (handlerList) => (messageType) => {
+    var filtered = handlerList.filter(it => {
+        if (it.messageType instanceof RegExp) {
+            return it.messageType.test(messageType)
+        }
+        else {
+            return it.messageType === messageType
+        }
+    });
+
+    if (filtered.length < 1) {
+        throw new Error(`no message handler for "${messageType}"`);
+    }
+    else if (filtered.length > 1) {
+        throw new Error(`multiple message handlers for "${messageType}"`);
+    }
+    else {
+        return filtered[0].handler;
+    }
+}
+
 var Registry = () => {
     var registry = {},
         handlers = [];
 
     registry.add = addHandler(handlers);
-    //registry.find = findHandler(handlers);
+    registry.find = findHandler(handlers);
 
     addAllHandlers(registry);
 }
@@ -99,26 +120,5 @@ var handlers = [
         handler: require('./custom-types'),
     },*/
 ];
-
-handlers.find = (messageType) => {
-    var filtered = handlers.filter(it => {
-        if (it.messageType instanceof RegExp) {
-            return it.messageType.test(messageType)
-        }
-        else {
-            return it.messageType === messageType
-        }
-    });
-
-    if (filtered.length < 1) {
-        throw new Error(`no message handler "${messageType}"`);
-    }
-    else if (filtered.length > 1) {
-        throw new Error(`multiple message handlers "${messageType}"`);
-    }
-    else {
-        return filtered[0].handler;
-    }
-}
 
 module.exports = handlers;
