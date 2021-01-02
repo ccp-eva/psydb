@@ -28,6 +28,10 @@ var Rohrpost = ({
     rohrpost.getModifiedChannels = () => (
         modificationCache.all()
     );
+    
+    rohrpost.clearModifiedChannels = () => (
+        modificationCache.clear()
+    );
 
     rohrpost.unlockModifiedChannels = async () => {
         if (disableChannelLocking) {
@@ -56,6 +60,8 @@ var Rohrpost = ({
                     ]}*/
                 );
             }
+
+            modificationCache.clear();
         }
     }
 
