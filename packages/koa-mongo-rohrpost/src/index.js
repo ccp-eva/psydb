@@ -6,6 +6,7 @@ var createMongoRohrpostMiddleware = ({
     createChannelEventId,
 
     disableChannelLocking,
+    disableChannelAutoUnlocking,
 }) => {
 
     if (typeof createChannelId !== 'function') {
@@ -38,7 +39,7 @@ var createMongoRohrpostMiddleware = ({
         context.rohrpost = rohrpost;
         await next();
 
-        if (!disableChannelLocking) {
+        if (!disableChannelLocking && !disableChannelAutoUnlocking) {
             await rohrpost.unlockModifiedChannels();
         }
     }
