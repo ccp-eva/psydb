@@ -44,7 +44,7 @@ var createSchema = ({ recordSchemas, messageType }) => {
 var createItem = ({
     createSchemaCallback, schemas, ...other
 }) => ({
-    messageType: createMessageType(other),
+    messageType: createRecordMessageType(other),
     schema: createSchemaCallback({
         schemas, ...other
     }),

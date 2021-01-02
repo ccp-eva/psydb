@@ -25,8 +25,7 @@ var checkAllowedAndPlausible = async ({
             throw new ApiError(403);
         }
     }
-
-    if (op === 'patch') {
+    else if (op === 'patch') {
         var record = await (
             db.collection(collection).findOne({ _id: payload.id })
         );
@@ -37,9 +36,11 @@ var checkAllowedAndPlausible = async ({
             throw new ApiError(403);
         }
     }
-
-    // TODO: delete-gdpr
-    
+    // TODO: deleteGdpr
+    else {
+        // unknown op
+        throw new ApiError(400); // TODO 
+    }
 }
 
 var triggerSystemEvents = async ({

@@ -22,6 +22,11 @@ var checkMessage = async (context, next) => {
         messageType
     });
 
+    if (!schema) {
+        debug(`no schema for ${messageType}`);
+        throw new ApiError(400); // TODO
+    }
+
     var ajv = Ajv(),
         isValid = ajv.validate(schema, message);
 
