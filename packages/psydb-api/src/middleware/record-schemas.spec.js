@@ -5,9 +5,9 @@ var expect = require('chai').expect,
     Mongod = require('mongodb-memory-server').MongoMemoryServer,
     MongoClient = require('mongodb').MongoClient,
     
-    withSchemas = require('./schema');
+    withSchemas = require('./record-schemas');
 
-describe('middleware/schema', function () {
+describe('middleware/record-schemas', function () {
     this.timeout(0);
     
     var server, uri, con, db;
@@ -43,7 +43,7 @@ describe('middleware/schema', function () {
         
         //console.dir(context.schemas);
 
-        var schemas = context.schemas.records.find({
+        var schemas = context.recordSchemas.find({
             collection: 'personnel'
         });
         console.dir(schemas, { depth: null });

@@ -20,7 +20,7 @@ var init = async (context, next) => {
     }
 
     var eventMiddleware = createEventMiddleware({
-        enableValidation: false,
+        enableMessageChecks: false,
         enableNotifications: false,
         forcedPersonnelId: data.rootAccountId,
     })

@@ -5,7 +5,7 @@ var expect = require('chai').expect,
     Mongod = require('mongodb-memory-server').MongoMemoryServer,
     MongoClient = require('mongodb').MongoClient,
     
-    createInitEndpoint = require('./index');
+    initEndpoint = require('./index');
 
 describe('init-endpoint', function () {
     this.timeout(0);
@@ -42,8 +42,7 @@ describe('init-endpoint', function () {
             }
         }
 
-        var context = { db },
-            initEndpoint = createInitEndpoint({ config });
+        var context = { db };
 
         await initEndpoint(context, next);
 

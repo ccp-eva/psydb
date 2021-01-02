@@ -4,7 +4,7 @@ var {
     createAllSchemas,
 } = require('@mpieva/psydb-schema');
 
-var createSchemaMiddleware = () => async (context, next) => {
+var withRecordSchemas = () => async (context, next) => {
     var { db } = context;
 
     var customTypeRecords = await (
@@ -27,13 +27,12 @@ var createSchemaMiddleware = () => async (context, next) => {
         records: customTypeRecords
     });
     
-    context.schemas = {};
+    context.recordSchemas = schemas.collections;
 
     // TODO rename collections to records in psydb-schema
-    context.schemas.records = schemas.collections;
-    context.schemas.records.find = (
+    context.recordSchemas.find = (
         ({ collection, type, subtype }) => {
-            var filtered = context.schemas.records.filter(
+            var filtered = context.recordSchemas.filter(
                 it => (
                     it.collection === collection
                     && it.type === type
@@ -54,29 +53,8 @@ var createSchemaMiddleware = () => async (context, next) => {
             }
         }
     );
-
-    context.schemas.messages = schemas.messages;
-    context.schemas.messages.find = (
-        (messageType) => {
-            var filtered = context.schemas.messages.filter(
-                it => it.messageType === messageType
-            );
-
-            if (filtered.length > 1) {
-                // TODO: decide if thats actually an error
-                // might also return undefined
-                throw new Error('found multiple schemas');
-            }
-            else if (filtered.length === 1) {
-                return filtered[0].schemas;
-            }
-            else {
-                return undefined;
-            }
-        }
-    );
     
     await next();
 }
 
-module.exports = createSchemaMiddleware;
+module.exports = withRecordSchemas;

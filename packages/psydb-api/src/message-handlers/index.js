@@ -3,7 +3,10 @@ var fs = require('fs'),
     fspath = require('path'),
     inline = require('@cdxoo/inline-text');
 
-class InvalidHandlerInterface extends Error {}
+var {
+    InvalidHandlerInterface,
+    InvalidHandlerCount,
+} = require('./errors');
 
 var addAllHandlers = (registry) => {
      var subdirs = (
@@ -85,10 +88,14 @@ var findHandler = (handlerList) => (messageType) => {
     });
 
     if (filtered.length < 1) {
-        throw new Error(`no message handler for "${messageType}"`);
+        throw new InvalidHandlerCount(
+            `no message handler for "${messageType}"`
+        );
     }
     else if (filtered.length > 1) {
-        throw new Error(`multiple message handlers for "${messageType}"`);
+        throw new InvalidHandlerCount(
+            `multiple message handlers for "${messageType}"`
+        );
     }
     else {
         return filtered[0];
