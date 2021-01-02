@@ -60,7 +60,8 @@ var addHandler = (handlerList) => (handler) => {
     [
         'createSchema',
         'checkAllowedAndPlausible',
-        'handleMessage'
+        'triggerSystemEvents',
+        'triggerOtherSideEffects',
     ].forEach(prop => {
         if (!handler[prop] && typeof handler[prop] !== 'function') {
             throw new InvalidHandlerInterface(inline`
@@ -90,7 +91,7 @@ var findHandler = (handlerList) => (messageType) => {
         throw new Error(`multiple message handlers for "${messageType}"`);
     }
     else {
-        return filtered[0].handler;
+        return filtered[0];
     }
 }
 
@@ -102,6 +103,8 @@ var Registry = () => {
     registry.find = findHandler(handlers);
 
     addAllHandlers(registry);
+
+    return registry;
 }
 
 module.exports = Registry;

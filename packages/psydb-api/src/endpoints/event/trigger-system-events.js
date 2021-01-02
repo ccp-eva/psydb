@@ -1,13 +1,12 @@
 'use stirct';
-var ResponseBody = require('../../lib/response-body'),
-    handlers = require('../../message-handlers');
+var triggerSystemEvents = async (context, next) => {
+    var { db, rohrpost, messageHandler, message } = context;
 
-var callMessageHandler = async (context, next) => {
-    var { db, rohrpost, message } = context;
-    var { type: messageType, personnelId, payload } = message;
-
-    var handler = handlers.find(messageType);
-    await handler({ db, rohrpost, message });
+    await messageHandler.triggerSystemEvents({
+        db,
+        rohrpost,
+        message
+    });
 
     //var dispatch = dispatchers[type];
     //await dispatch({ rohrpost, message });
@@ -21,8 +20,8 @@ var callMessageHandler = async (context, next) => {
     //var records = await db.collection('personnel').find().toArray()
     //console.dir(records, { depth: 5 });
 
-    context.body = ResponseBody({ statusCode: 200 });
+    //context.body = ResponseBody({ statusCode: 200 });
     await next();
 };
 
-module.exports = callMessageHandler;
+module.exports = triggerSystemEvents;

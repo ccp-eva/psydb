@@ -42,7 +42,7 @@ var checkAllowedAndPlausible = async ({
     
 }
 
-var handleMessage = async ({
+var triggerSystemEvents = async ({
     db,
     rohrpost,
     message
@@ -74,9 +74,13 @@ var handleMessage = async ({
     }
 }
 
+// no-op
+var triggerOtherSideEffects = async () => {};
+
 module.exports = {
     messageType,
     createSchema,
     checkAllowedAndPlausible,
-    handleMessage,
+    triggerSystemEvents,
+    triggerOtherSideEffects,
 };

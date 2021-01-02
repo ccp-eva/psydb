@@ -1,4 +1,6 @@
 'use strict';
+require('debug').enable('psydb:*');
+
 var expect = require('chai').expect,
     Mongod = require('mongodb-memory-server').MongoMemoryServer,
     { MongoClient, ObjectId } = require('mongodb'),
@@ -53,7 +55,7 @@ describe('handleMessage()', function () {
             }}
         });
         await handleMessage({
-            enableValidation: false,
+            enableMessageChecks: false,
             //disableAccessControl: true,
             //forcedPersonnelId: ObjectId('5fcf4481feb7ca0683978b80'),
             forcedPersonnelId: 'wcy-dSwU4O8WlBWzE_Zap',
@@ -63,6 +65,7 @@ describe('handleMessage()', function () {
         //console.dir(h, { depth: null });
         var records = await db.collection('personnel').find().toArray()
         console.dir(records, { depth: null });
+        console.log(context.body);
     });
 
 });

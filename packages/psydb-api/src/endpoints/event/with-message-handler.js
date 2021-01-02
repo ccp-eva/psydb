@@ -1,6 +1,9 @@
 'use strict';
 var debug = require('debug')('psydb:api:endpoints:event');
 
+var ApiError = require('../../lib/api-error'),
+    HandlerRegistry = require('../../message-handlers/');
+
 var withMessageHandler = async (context, next) => {
     var { type: messageType } = context.message;
     

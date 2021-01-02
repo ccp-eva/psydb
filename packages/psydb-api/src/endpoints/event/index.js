@@ -9,15 +9,18 @@ var compose = require('koa-compose'),
     withRohrpost = require('@mpieva/koa-mongo-rohrpost'),
 
     withContextSetup = require('./context-setup'),
-    withMessageValidation = require('./message-validation'),
-
-    callMessageHandler = require('./call-message-handler'),
-    updateModifiedRecordStates = require('./update-modified-record-states');
+    withMessageHandler = require('./with-message-handler'),
+    withModifiedChannels = require('./with-modified-channels'),
+    withResponseBody = require('./with-response-body'),
+    
+    checkMessage = require('./check-message'),
+    triggerSystemEvents = require('./trigger-system-events'),
+    updateModifiedRecordStates = require('./update-modified-record-states'),
+    unlockModifiedChannels = require('./unlock-modified-channels');
 
 
 var createMessageHandling = ({
-    enableValidation = true,
-    enableCheckAllowedAndPlausible = true,
+    enableMessageChecks = true,
     forcedPersonnelId,
 } = {}) => {
     return compose([
@@ -26,13 +29,8 @@ var createMessageHandling = ({
         
         withMessageHandler,
         ...(
-            enableValidation
-            ? [ withMessageValidation ]
-            : []
-        ),
-        ...(
-            enableCheckAllowedAndPlausible
-            ? [ withCheckAllowedAndPlausible ]
+            enableMessageChecks
+            ? [ checkMessage ]
             : []
         ),
 
@@ -51,13 +49,21 @@ var createMessageHandling = ({
             createChannelEventId: () => nanoid(),
             //createChannelId: () => ObjectId(),
             //createChannelEventId: () => ObjectId(),
+            disableChannelAutoUnlocking: true,
         }),
         
         // TODO: message handlers may not perform write ops
         // to the database, we might want to prevent that
         // by passing a modified db handle that only includes read ops
-        callMessageHandler,
+        triggerSystemEvents,
+
+        withModifiedChannels,
         updateModifiedRecordStates,
+        unlockModifiedChannels,
+
+        // triggerOtherSideEffects // mails etc
+
+        withResponseBody
     ]);
 };
 
