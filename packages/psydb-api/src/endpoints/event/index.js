@@ -8,6 +8,8 @@ var compose = require('koa-compose'),
     withMongoMQ = require('@mpieva/koa-mongo-mq'),
     withRohrpost = require('@mpieva/koa-mongo-rohrpost'),
 
+    withRecordSchemas = require('../../middleware/record-schemas'),
+
     withContextSetup = require('./context-setup'),
     withMessageHandler = require('./with-message-handler'),
     withModifiedChannels = require('./with-modified-channels'),
@@ -26,7 +28,8 @@ var createMessageHandling = ({
     return compose([
         async (context, next) => { console.log(context); await next(); },
         withContextSetup({ forcedPersonnelId }),
-        
+        withRecordSchemas(),
+
         withMessageHandler,
         ...(
             enableMessageChecks

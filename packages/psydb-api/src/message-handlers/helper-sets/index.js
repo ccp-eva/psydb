@@ -35,7 +35,7 @@ var triggerSystemEvents = async ({
     // but record doesnt exist
     var channel = (
         rohrpost
-        .openCollection(collection)
+        .openCollection('helperSet')
         .openChannel({ id: payload.id, isNew: op === 'create' })
     );
     
@@ -43,7 +43,7 @@ var triggerSystemEvents = async ({
         type: 'put',
         personnelId,
         payload: {
-            prop: 'label',
+            prop: '/label',
             value: payload.label
         }
     }})

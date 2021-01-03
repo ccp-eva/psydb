@@ -1,12 +1,12 @@
 'use strict';
 var Ajv = require('../../lib/ajv'),
     createSchemas = require('../../lib/create-schemas'),
-    calculateRecordState = require('./calculate-record-state');
+    calculateState = require('./calculate-state');
 
 var updateModifiedRecordStates = async (context, next) => {
-    var { db, rohrpost } = context;
+    var { db, rohrpost, recordSchemas: allRecordSchemas } = context;
 
-    var schemas = await createSchemas({ db });
+    //var schemas = await createSchemas({ db });
 
     // FIXME: ajv construction is a little slow
     var ajv = Ajv({
@@ -21,22 +21,64 @@ var updateModifiedRecordStates = async (context, next) => {
     // to prevent duplicates so i gues sthey have to be a
     // separate message type and need to go into internals
     var modifiedChannels = rohrpost.getModifiedChannels();
-    for (var it of modifiedChannels) {
-        
+    for (var it of modifiedChannels) {    
         var {
             collectionName: collection,
             id: channelId,
             subChannelKey
         } = it;
 
-        var nextState = await calculateRecordState({
-            db,
-            ajv,
-            schemas: schemas.records,
+        var stored = await (
+            db.collection(collection).findOne({ _id: channelId })
+        );
 
-            collection,
-            channelId,
-            subChannelKey,
+        var channelEvents = (
+            subChannelKey
+            ? stored[subChannelKey].events
+            : stored.events
+        );
+
+        var channelStateSchema = undefined;
+        if (collection === 'helperSet') {
+            channelStateSchema = {
+                properties: {
+                    label: { type: 'string' }
+                },
+                required: [ 'label' ]
+            };
+        }
+        else {
+            var { type, subtype } = stored;
+            var recordSchemas = allRecordSchemas.find({
+                collection, type, subtype
+            });
+            
+            if (!recordSchemas) {
+                throw new Error('record schemas not found');
+                // TODO: rollback in upper middleware
+            }
+            
+            // TODO: i just noticed that we need the full schema
+            // not just the allowed portion when field access is in play
+            channelStateSchema = (
+                subChannelKey
+                ? recordSchemas[subChannelKey]
+                : recordSchemas.state
+            );
+
+        }
+
+        var nextState = await calculateState({
+            events: channelEvents,
+            createDefaultState: () => {
+                // although called validate() it will initialize
+                // the default values of required properties 
+                // when useDefaults == true
+                var defaults = {};
+                ajv.validate(channelStateSchema, defaults);
+
+                return defaults;
+            }
         });
 
         var path = (
