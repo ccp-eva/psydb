@@ -47,6 +47,14 @@ var updateModifiedRecordStates = async (context, next) => {
                 required: [ 'label' ]
             };
         }
+        else if (collection === 'helperSetItem') {
+            channelStateSchema = {
+                properties: {
+                    label: { type: 'string' }
+                },
+                required: [ 'label' ]
+            };
+        }
         else {
             var { type, subtype } = stored;
             var recordSchemas = allRecordSchemas.find({

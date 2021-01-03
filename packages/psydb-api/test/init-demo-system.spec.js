@@ -5,6 +5,7 @@ var expect = require('chai').expect,
     supertest = require('supertest'),
     Koa = require('koa'),
     Mongod = require('mongodb-memory-server').MongoMemoryServer,
+    MongoClient = require('mongodb').MongoClient,
     MongoConnection = require('@mpieva/psydb-mongo-adapter').MongoConnection,
 
     fixture = require('@mpieva/psydb-fixtures/json/demo'),
@@ -13,16 +14,25 @@ var expect = require('chai').expect,
 describe('init-demo-system', function () {
     this.timeout(0);
     
-    var server, mongoUri, db, app, agent;
+    var server, mongoUri, testCon, db, app, agent;
     beforeEach(async () => {
         server = new Mongod();
         await server.start();
         ({ uri: mongoUri } = server.getInstanceInfo());
         
         ({ app, agent } = createAppAndAgent(mongoUri));
+        
+        testCon = await MongoClient.connect(
+            mongoUri,
+            { useUnifiedTopology: true }
+        );
+        
+        db = testCon.db('testDB');
     });
 
     afterEach(async () => {
+        testCon && testCon.close();
+
         var con = MongoConnection();
         con && con.close();
         await server.stop();
@@ -40,6 +50,11 @@ describe('init-demo-system', function () {
                 agent.post('/').send(message)
             );
             expect(status).to.eql(200);
+            
+            var r = await db.collection('helperSetItem').find().toArray();
+            console.log('###########################################');
+            console.log(r);
+            console.log('###########################################');
         }
 
     });

@@ -26,7 +26,7 @@ var createMessageHandling = ({
     forcedPersonnelId,
 } = {}) => {
     return compose([
-        async (context, next) => { console.log(context); await next(); },
+        //async (context, next) => { console.log(context); await next(); },
         withContextSetup({ forcedPersonnelId }),
         withRecordSchemas(),
 

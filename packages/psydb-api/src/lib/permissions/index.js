@@ -52,6 +52,14 @@ var Permissions = ({
         );
     }
 
+    permissions.canCreateHelperSetItem = () => {
+        var permissionFlags = systemRole.state;
+        return (
+            permissionFlags.hasRootAccess
+            || permissionFlags.hasResearchGroupAdminAccess
+        );
+    }
+
     //permissions.canAccessRecords = ({ collection, type, subtype }) => {
     //}
 
