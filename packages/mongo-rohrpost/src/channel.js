@@ -4,6 +4,7 @@ var storeChannelEvent = require('./store-channel-event');
 var Channel = ({
     id,
     isNew,
+    additionalChannelProps,
 
     db,
     collectionName,
@@ -26,6 +27,7 @@ var Channel = ({
             timestamp: new Date(),
             
             message,
+            additionalChannelProps,
 
             db,
             collectionName,

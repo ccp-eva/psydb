@@ -14,7 +14,8 @@ module.exports = async ({
     id,
     subChannelKey,
     timestamp,
-    message
+    message,
+    additionalChannelProps,
 }) => {
     if (isThennable(channelId)) {
         channelId = await channelId;
@@ -43,7 +44,8 @@ module.exports = async ({
             collection,
             channelId,
             subChannelKey,
-            event
+            event,
+            additionalChannelProps,
         });
     }
     else {

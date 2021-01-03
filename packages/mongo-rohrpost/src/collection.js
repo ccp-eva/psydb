@@ -14,7 +14,11 @@ var Collection = ({
 }) => {
     var collection = {};
 
-    collection.openChannel = ({ id: maybeId, isNew } = {}) => (
+    collection.openChannel = ({
+        id: maybeId,
+        isNew,
+        additionalChannelProps,
+    } = {}) => (
         Channel({
             id: maybeId || createChannelId(),
             isNew: isNew || !maybeId,
@@ -23,6 +27,7 @@ var Collection = ({
             collectionName: name,
             correlationId,
             createChannelEventId,
+            additionalChannelProps,
 
             disableChannelLocking,
             modificationCache,

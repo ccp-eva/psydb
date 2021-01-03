@@ -4,11 +4,13 @@ var createNewChannel = ({
     collection,
     channelId,
     subChannelKey,
-    event
+    additionalChannelProps,
+    event,
 }) => {
     if (subChannelKey) {
         return collection.insertOne({
             _id: channelId,
+            ...(additionalChannelProps || {}),
             [subChannelKey]: {
                 events: [ event ]
             }
@@ -17,6 +19,7 @@ var createNewChannel = ({
     else {
         return collection.insertOne({
             _id: channelId,
+            ...(additionalChannelProps || {}),
             events: [ event ]
         });
     }
