@@ -32,6 +32,7 @@ dependencies:
   bson: 4.2.2
   chai: 4.2.0
   chai-datetime: 1.7.0
+  clone-deep: 4.0.1
   debug: 4.3.1
   graphql: 15.3.0
   inflation: 2.0.0
@@ -1914,6 +1915,16 @@ packages:
     dev: false
     resolution:
       integrity: sha512-PYeGSEmmHM6zvoef2w8TPzlrnNpXIjTipYK780YswmIP9vjxmd6Y2a3CB2Ks6/AU8NHjZugXvo8w3oWM2qnwXA==
+  /clone-deep/4.0.1:
+    dependencies:
+      is-plain-object: 2.0.4
+      kind-of: 6.0.3
+      shallow-clone: 3.0.1
+    dev: false
+    engines:
+      node: '>=6'
+    resolution:
+      integrity: sha512-neHB9xuzh/wk0dIHweyAXv2aPGZIVk3pLMe+/RNzINf17fe0OG96QroktYAUm7SM1PBnzTabaLboqqxDyMU+SQ==
   /co-body/5.2.0:
     dependencies:
       inflation: 2.0.0
@@ -2807,6 +2818,14 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-YWnfyRwxL/+SsrWYfOpUtz5b3YD+nyfkHvjbcanzk8zgyO4ASD67uVMRt8k5bM4lLMDnXfriRhOpemw+NfT1eA==
+  /is-plain-object/2.0.4:
+    dependencies:
+      isobject: 3.0.1
+    dev: false
+    engines:
+      node: '>=0.10.0'
+    resolution:
+      integrity: sha512-h5PpgXkWitc38BBMYawTYMWJHFZJVnBquFE57xFpjB8pJFiF6gZ+bU+WyI/yqXiFR5mdLsgYNaPe8uao6Uv9Og==
   /is-regex/1.1.1:
     dependencies:
       has-symbols: 1.0.1
@@ -2853,6 +2872,12 @@ packages:
     dev: false
     resolution:
       integrity: sha1-6PvzdNxVb/iUehDcsFctYz8s+hA=
+  /isobject/3.0.1:
+    dev: false
+    engines:
+      node: '>=0.10.0'
+    resolution:
+      integrity: sha1-TkMekrEalzFjaqH5yNHMvP2reN8=
   /isstream/0.1.2:
     dev: false
     resolution:
@@ -2958,6 +2983,12 @@ packages:
       node: '>= 0.6'
     resolution:
       integrity: sha512-iYSchDJ+liQ8iwbSI2QqsQOvqv58eJCEanyJPJi+Khyu8smkcKSFUCbPwzFcL7YVtZ6eONjqRX/38caJ7QjRAQ==
+  /kind-of/6.0.3:
+    dev: false
+    engines:
+      node: '>=0.10.0'
+    resolution:
+      integrity: sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==
   /koa-body/4.2.0:
     dependencies:
       '@types/formidable': 1.0.31
@@ -4078,6 +4109,14 @@ packages:
     dev: false
     resolution:
       integrity: sha512-E5LDX7Wrp85Kil5bhZv46j8jOeboKq5JMmYM3gVGdGH8xFpPWXUMsNrlODCrkoxMEeNi/XZIwuRvY4XNwYMJpw==
+  /shallow-clone/3.0.1:
+    dependencies:
+      kind-of: 6.0.3
+    dev: false
+    engines:
+      node: '>=8'
+    resolution:
+      integrity: sha512-/6KqX+GVUdqPuPPd2LxDDxzX6CAbjJehAAOKlNpqqUpAqPM6HeL8f+o3a+JsyGjn2lv0WY8UsTgUJjU9Ok55NA==
   /shebang-command/2.0.0:
     dependencies:
       shebang-regex: 3.0.0
@@ -4855,6 +4894,7 @@ packages:
       ajv-keywords: 3.5.2_ajv@6.12.6
       bcrypt: 5.0.0
       chai: 4.2.0
+      clone-deep: 4.0.1
       debug: 4.3.1
       error: 10.4.0
       jsonpointer: 4.1.0
@@ -4872,7 +4912,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-api'
     resolution:
-      integrity: sha512-IEA5HWGmEQo5JV4OaIxmB5Nbz8OWSBQIrWiwHzEai4udtfYxQW8T4zdlf5l4gBRnuWUQn2DXKd4gsehBA6yUNw==
+      integrity: sha512-Ide/lUobX1cHKAvbc5dBsnqeWbuwcBZlmPu+rNl+IcZLtazIKEUPXaVT8qhMQ8LwtXkF+IStV8yxLwxyZmwifQ==
       tarball: 'file:projects/psydb-api.tgz'
     version: 0.0.0
   'file:projects/psydb-fixtures.tgz':
@@ -4995,6 +5035,7 @@ specifiers:
   bson: ~4.2.2
   chai: ~4.2.0
   chai-datetime: ~1.7.0
+  clone-deep: ~4.0.1
   debug: ~4.3.1
   graphql: ~15.3.0
   inflation: ~2.0.0

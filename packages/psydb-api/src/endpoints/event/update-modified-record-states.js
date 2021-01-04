@@ -76,7 +76,7 @@ var updateModifiedRecordStates = async (context, next) => {
 
         }
 
-        var nextState = await calculateState({
+        var { nextState, nextCommit } = await calculateState({
             events: channelEvents,
             createDefaultState: () => {
                 // although called validate() it will initialize
@@ -89,16 +89,19 @@ var updateModifiedRecordStates = async (context, next) => {
             }
         });
 
-        var path = (
-            subChannelKey
-            ? `${subChannelKey}.state`
-            : 'state'
-        );
+        var statePath = createPath(subChannelKey, 'state'),
+            commitPath = createPath(subChannelKey, 'commit');
+
         await (
             db.collection(collection).updateOne(
                 { _id: channelId },
                 { $set: {
-                    [path]: nextState
+                    [statePath]: nextState,
+                    ...(
+                        nextCommit
+                        ? { [commitPath]: nextCommit }
+                        : {}
+                    )
                 }}
             )
         );
@@ -106,5 +109,11 @@ var updateModifiedRecordStates = async (context, next) => {
     
     await next();
 }
+
+var createPath = (subChannelKey, prop) => (
+    subChannelKey
+    ? `${subChannelKey}.${prop}`
+    : prop
+)
 
 module.exports = updateModifiedRecordStates;

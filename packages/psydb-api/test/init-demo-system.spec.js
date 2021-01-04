@@ -51,10 +51,10 @@ describe('init-demo-system', function () {
             );
             expect(status).to.eql(200);
             
-            var r = await db.collection('helperSetItem').find().toArray();
+            /*var r = await db.collection('helperSetItem').find().toArray();
             console.log('###########################################');
             console.log(r);
-            console.log('###########################################');
+            console.log('###########################################');*/
         }
 
     });

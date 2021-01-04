@@ -2,8 +2,8 @@
 var rx = new RegExp(`
     ^
     records\\/
-    (create|patch|deleteGdpr)\\/
-    ((?:_helper_)?[a-zA-Z]+)
+    (create|patch)\\/
+    ([a-zA-Z]+)
     (?:\\/([a-zA-Z]+))?
     (?:\\/([a-zA-Z]+))?
     $
