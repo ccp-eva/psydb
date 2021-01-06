@@ -15,6 +15,14 @@ var MessageHandlerGroup = (handlerList) => {
             }
             else {
                 didRun = await handler(context);
+
+                if (didRun !== true && didRun !=== false) {
+                    throw new Error(inline`
+                        message handler must return "true" or "false"
+                        to indicate if it matched the message type
+                        and performed its operations
+                    `)
+                }
             }
         }
 
