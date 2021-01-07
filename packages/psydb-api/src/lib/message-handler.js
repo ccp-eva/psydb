@@ -1,4 +1,5 @@
 'use strict';
+var inline = require('@cdxoo/inline-text');
 
 var MessageHandler = (spec) => {
     checkHandlerSpec(spec);

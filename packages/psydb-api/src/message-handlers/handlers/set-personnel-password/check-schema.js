@@ -6,8 +6,8 @@ var {
 var MessageSchema = require('@mpieva/psydb-schema-helpers').Message,
     messageType = require('./message-type');
 
-var createSchema = ({ recordSchemas }) => (
-    MessageSchema({
+var checkSchema = ({ recordSchemas, message }) => {
+    var schema = MessageSchema({
         type: messageType,
         payload: {
             id: Id(),
@@ -16,7 +16,7 @@ var createSchema = ({ recordSchemas }) => (
                 minLength: 8
             }
         }
-    })
-);
+    });
+};
 
-module.exports = createSchema;
+module.exports = checkSchema;

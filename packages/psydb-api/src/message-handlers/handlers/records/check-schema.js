@@ -5,7 +5,27 @@ var {
     RecordPropsMessage
 } = require('@mpieva/psydb-schema-helpers');
 
-var createSchema = ({ recordSchemas, messageType }) => {
+var {
+    createAllSchemas,
+} = require('@mpieva/psydb-schema');
+
+var Ajv = require('../../../lib/ajv');
+
+var createSchema = async ({ recordSchemas, message }) => {
+    var {
+        collection,
+        type,
+        subtype
+    } = message.payload;
+
+    var recordSchema = recordSchemas.find({ collection, type, subtype });
+    if (!recordSchema) {
+        throw new ApiError(400, 'RecordSchemaNotFound');
+    }
+
+    console.log(recordSchema);
+
+    var ajv = Ajv();
 
     var messageSchemas = (
         recordSchemas

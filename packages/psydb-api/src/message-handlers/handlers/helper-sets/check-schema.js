@@ -8,7 +8,7 @@ var {
 var { Message } = require('@mpieva/psydb-schema-helpers');
 var parseMessageType = require('./parse-message-type');
 
-var createSchema = ({ messageType }) => {
+var createSchema = ({ message }) => {
     var { op } = parseMessageType(messageType);
     return Message({
         type: `helper-sets/${op}`,

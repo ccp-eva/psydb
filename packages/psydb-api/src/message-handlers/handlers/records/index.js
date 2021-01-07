@@ -1,8 +1,12 @@
 'use strict';
 var messageType = require('./message-type'),
-    createSchema = require('./create-schema'),
+    checkSchema = require('./check-schema'),
     parseRecordMessageType = require('./parse-record-message-type'),
     createRecordPropMessages = require('./create-record-prop-messages');
+
+var shouldRun = (message) => (
+    messageType.test(message.type)
+)
 
 var checkAllowedAndPlausible = async ({
     db,
@@ -79,8 +83,8 @@ var triggerSystemEvents = async ({
 var triggerOtherSideEffects = async () => {};
 
 module.exports = {
-    messageType,
-    createSchema,
+    shouldRun,
+    checkSchema,
     checkAllowedAndPlausible,
     triggerSystemEvents,
     triggerOtherSideEffects,

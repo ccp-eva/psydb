@@ -1,5 +1,4 @@
 'use strict';
-// TODO obsolete remove
 var {
     createAllSchemas,
 } = require('@mpieva/psydb-schema');

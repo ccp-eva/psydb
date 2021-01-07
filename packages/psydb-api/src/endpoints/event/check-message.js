@@ -14,40 +14,41 @@ var checkMessage = async (context, next) => {
         messageHandler,
         message
     } = context;
-    
-    var { type: messageType } = message;
 
-    var schema = messageHandler.createSchema({
-        recordSchemas,
-        messageType
-    });
-
-    if (!schema) {
-        debug(`no schema for ${messageType}`);
-        throw new ApiError(400); // TODO
+    if (!message || typeof message !== 'object') {
+        throw new ApiError(400, 'InvalidMessage');
     }
 
-    var ajv = Ajv(),
-        isValid = ajv.validate(schema, message);
+    if (!message.type || typeof message.type !== 'string') {
+        throw new ApiError(400, 'InvalidMessage');
+    }
+    
+    if (!message.payload || typeof message.payload !== 'object') {
+        throw new ApiError(400, 'InvalidMessage');
+    }
 
-    if (!isValid) {
-        debug(`validation errors for ${messageType}`, ajv.errors);
-        throw new ApiError(400); // TODO
+    if (!messageHandler.shouldRun(message)) {
+        debug(inline`
+            no handler found for message with
+            type ${message.type}`
+        );
+        throw new ApiError(400, 'NoMessageHandler');
     }
 
     try {
+        await messageHandler.checkSchema({
+            recordSchemas, message
+        });
         await messageHandler.checkAllowedAndPlausible({
-            db,
-            permissions,
-            message
+            db, permissions, message
         });
     }
     catch (error) {
         if (error instanceof ApiError) {
             debug(inline`
                 api error with ${error.statusCode}
-                while checking permission/plausibility
-                of message with type ${messageType}`
+                while performing message checks
+                for message with type ${message.type}`
             );
         }
         throw error;

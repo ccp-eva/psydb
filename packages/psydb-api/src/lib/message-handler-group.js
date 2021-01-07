@@ -2,7 +2,7 @@
 var MessageHandler = require('./message-handler');
 
 var MessageHandlerGroup = (specList) => {
-    var handlerList = handlerList.map(MessageHandler);
+    var handlerList = specList.map(MessageHandler);
 
     var findRunnableHandler = (message) => {
         var runnableHandlers = handlerList.filter(handler => (
@@ -14,6 +14,7 @@ var MessageHandlerGroup = (specList) => {
         }
 
         var handler = runnableHandlers.shift();
+        return handler;
     }
 
     var group = {};

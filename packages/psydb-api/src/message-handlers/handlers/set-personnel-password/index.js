@@ -1,7 +1,11 @@
 'use strict';
 var brypt = require('bcrypt'),
     messageType = require('./message-type'),
-    createSchema = require('./create-schema');
+    checkSchema = require('./check-schema');
+
+var shouldRun = (message) => (
+    messageType === message.type
+)
 
 // throw 400 or 403
 var checkAllowedAndPlausible = async ({
@@ -52,8 +56,8 @@ var triggerSystemEvents = async ({
 var triggerOtherSideEffects = async () => {};
 
 module.exports = {
-    messageType,
-    createSchema,
+    shouldRun,
+    checkSchema,
     checkAllowedAndPlausible,
     triggerSystemEvents,
     triggerOtherSideEffects,
