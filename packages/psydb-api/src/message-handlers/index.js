@@ -1,8 +1,8 @@
 'use strict';
 
 var allHandlers = [
-    //require('./handlers/helper-set-items'),
-    //require('./handlers/helper-sets'),
+    require('./helper-set-items'),
+    require('./helper-sets'),
     require('./records'),
     require('./set-personnel-password'),
 ];

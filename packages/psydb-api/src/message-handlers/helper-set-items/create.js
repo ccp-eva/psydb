@@ -6,7 +6,7 @@ var createSchema = require('./create-schema'),
     parseMessageType = require('./parse-message-type');
 
 var shouldRun = (message) => (
-    message.type === 'helper-sets/create'
+    message.type === 'helper-set-items/create'
 )
 
 var checkSchema = async ({ message }) => {
@@ -21,29 +21,56 @@ var checkSchema = async ({ message }) => {
 
 var checkAllowedAndPlausible = async ({
     db,
-    permissions,
-    message
+    message,
+    permissions
 }) => {
-    if (!permissions.canCreateHelperSet()) {
+    var { set } = message.payload;
+    
+    if (!permissions.canCreateHelperSetItem()) {
         throw new ApiError(403);
     }
+
+    var existingSet = await (
+        db.collection('helperSet').findOne({
+            _id: set,
+        })
+    );
+
+    if (!existingSet) {
+        // InvalidHelperSet
+        throw new ApiError(400);
+    }
+
+    /*if (op === 'patch') {
+        var stored = await (
+            db.collection('helperSetItem').findOne({
+                _id: payload.id,
+                'state.set': set
+            })
+        );
+        if (!stored) {
+            // ImplausibleValue
+            throw new ApiError(400);
+        }
+    }*/
 }
 
 var triggerSystemEvents = async ({
-    db,
     rohrpost,
-    message
+    message,
 }) => {
     var { type: messageType, personnelId, payload } = message;
 
-    // FIXME: dispatch silently ignores messages when id is set
-    // but record doesnt exist
     var channel = (
         rohrpost
-        .openCollection('helperSet')
-        .openChannel({ id: payload.id, isNew: true })
+        .openCollection('helperSetItem')
+        .openChannel({
+            id: payload.id,
+            isNew: true,
+            additionalChannelProps: { set: payload.set }
+        })
     );
-    
+
     await channel.dispatch({ message: {
         type: 'put',
         personnelId,
@@ -51,7 +78,8 @@ var triggerSystemEvents = async ({
             prop: '/label',
             value: payload.label
         }
-    }})
+    }});
+
 }
 
 // no-op

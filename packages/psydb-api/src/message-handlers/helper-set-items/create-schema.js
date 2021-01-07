@@ -6,23 +6,30 @@ var {
 } = require('@mpieva/psydb-schema-fields');
 
 var { Message } = require('@mpieva/psydb-schema-helpers');
-var parseMessageType = require('./parse-message-type');
 
-var createSchema = ({ messageType }) => {
-    var { op, set } = parseMessageType(messageType);
-    return Message({
-        type: `helper-set-items/${op}/${set}`,
+var createSchema = ({ op }) => (
+    Message({
+        type: `helper-set-items/${op}`,
         payload: ExactObject({
             properties: {
+                set: IdentifierString(),
                 id: IdentifierString(),
-                label: SaneString(),
+                props: ExactObject({
+                    properties: {
+                        label: SaneString(),
+                    },
+                    required: [
+                        'label'
+                    ]
+                })
             },
             required: [
-                'id',
-                'label'
+                'set',
+                ...(op === 'create' ? [] : [ 'id' ]),
+                'props'
             ]
         })
-    });
-}
+    })
+)
 
 module.exports = createSchema;
