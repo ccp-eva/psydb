@@ -9,7 +9,7 @@ var {
     createAllSchemas,
 } = require('@mpieva/psydb-schema');
 
-var Ajv = require('../../../lib/ajv');
+var Ajv = require('../../lib/ajv');
 
 var createSchema = async ({ recordSchemas, message }) => {
     var {

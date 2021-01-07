@@ -1,5 +1,5 @@
 'use strict';
-var MessageHandlerGroup = require('../../../lib/message-handler-group');
+var MessageHandlerGroup = require('../../lib/message-handler-group');
 
 var HelperSetsGroup = MessageHandlerGroup([
     require('./create'),
