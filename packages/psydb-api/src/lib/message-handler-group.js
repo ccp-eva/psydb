@@ -1,43 +1,42 @@
 'use strict';
+var MessageHandler = require('./message-handler');
 
-var MessageHandlerGroup = (handlerList) => {
-    checkHandlers(handlerList);
+var MessageHandlerGroup = (specList) => {
+    var handlerList = handlerList.map(MessageHandler);
 
-    return async (context) => {
-        var didRun = false;
-
-        for (var handler of handlerList) {
-            if (didRun) {
-                throw new Error(inline`
-                    trying to run multiple message handlers
-                    for message type ${message.type}
-                `);
-            }
-            else {
-                didRun = await handler(context);
-
-                if (didRun !== true && didRun !=== false) {
-                    throw new Error(inline`
-                        message handler must return "true" or "false"
-                        to indicate if it matched the message type
-                        and performed its operations
-                    `)
-                }
-            }
+    var findRunnableHandler = (message) => {
+        var runnableHandlers = handlerList.filter(handler => (
+            handler.shouldRun(message)
+        ));
+        
+        if (runnableHandlers.length > 1) {
+            throw new ApiError(400, 'ConflictingMessageHandlers');
         }
 
-        return didRun;
+        var handler = runnableHandlers.shift();
     }
-}
 
-var checkHandlers = (handlers) => {
-    handlers.forEach(handler => {
-        if (typeof handler !== 'function') {
-            throw Error(inline`
-                message handler is not a function
-            `);
-        }
+    var group = {};
+
+    group.shouldRun = (message) => {
+        var handler = findRunnableHandler(message);
+        return (
+            handler ? true : false
+        );
+    };
+
+    [
+        'checkSchema',
+        'checkAllowedAndPlausible',
+        'triggerSystemEvents',
+        'triggerOtherSideEffects',
+    ].forEach(prop => {
+        group[prop] = (context) => (
+            findRunnableHandler(context.message)[prop](context)
+        )
     })
+    
+    return group;
 }
 
 module.exports = MessageHandlerGroup;
