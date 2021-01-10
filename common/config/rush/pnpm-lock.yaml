@@ -4916,10 +4916,12 @@ packages:
       tarball: 'file:projects/psydb-api.tgz'
     version: 0.0.0
   'file:projects/psydb-fixtures.tgz':
+    dependencies:
+      bson: 4.2.2
     dev: false
     name: '@rush-temp/psydb-fixtures'
     resolution:
-      integrity: sha512-des6ws6i5zR2F7Q0wK/b7xZxejWnCE+b8Pf9Xp/1w5iK5Xn1gCuA1r+2R/dDmaLnSBaeOgx5pFhgBrODiCg4ig==
+      integrity: sha512-a8b3Sp9zm8rTeAflirmNwzqEjkDJ/QoXL7AGz/5l5U7nbtYA4PMXIuPvmEzwhlc4DP63L5D00eO6pdSTKkHa4Q==
       tarball: 'file:projects/psydb-fixtures.tgz'
     version: 0.0.0
   'file:projects/psydb-mongo-adapter.tgz':

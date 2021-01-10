@@ -35,13 +35,14 @@ var triggerSystemEvents = async ({
     message
 }) => {
     var { type: messageType, personnelId, payload } = message;
+    var { id, props } = payload;
 
     // FIXME: dispatch silently ignores messages when id is set
     // but record doesnt exist
     var channel = (
         rohrpost
         .openCollection('helperSet')
-        .openChannel({ id: payload.id, isNew: true })
+        .openChannel({ id, isNew: true })
     );
     
     await channel.dispatch({ message: {
@@ -49,7 +50,7 @@ var triggerSystemEvents = async ({
         personnelId,
         payload: {
             prop: '/label',
-            value: payload.label
+            value: props.label
         }
     }})
 }

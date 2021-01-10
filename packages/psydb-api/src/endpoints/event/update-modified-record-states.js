@@ -55,6 +55,26 @@ var updateModifiedRecordStates = async (context, next) => {
                 required: [ 'label' ]
             };
         }
+        else if (collection === 'customRecordType') {
+            channelStateSchema = {
+                properties: {
+                    label: { type: 'string' },
+                    recordLabelDefinition: {
+                        type: 'object',
+                        properties: {
+                            format: { type: 'string' },
+                            tokens: { type: 'array' },
+                        },
+                        required: [
+                            'format',
+                            'tokens'
+                        ],
+                    },
+                    fields: { type: 'array', default: [] },
+                },
+                required: [ 'label', 'recordLabelDefinitions', 'fields' ]
+            };
+        }
         else {
             var { type, subtype } = stored;
             var recordSchemas = allRecordSchemas.find({

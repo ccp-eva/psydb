@@ -6,5 +6,8 @@
   "scripts": {
   },
   "author": "Jan Schwalbe",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "bson": "~4.2.2"
+  }
 }
