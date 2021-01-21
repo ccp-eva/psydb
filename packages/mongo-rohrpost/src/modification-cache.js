@@ -9,15 +9,30 @@ var ModificationCache = () => {
         items = []
     };
 
-    cache.add = ({ collectionName, id, subChannelKey }) => {
-        var exists = !!(items.filter(it => (
+    cache.add = ({
+        collectionName,
+        channelId,
+        subChannelKey,
+        latestKnownMessageId
+    }) => {
+        var existing = !!(items.filter(it => (
             it.collectionName === collectionName
-            && it.id === id
+            && it.channelId === channelId
             && it.subChannelKey === subChannelKey
-        )).length);
+        )));
 
-        if (!exists) {
-            items.push({ collectionName, id, subChannelKey });
+        if (existing.length) {
+            existing.forEach(item => {
+                item.latestKnownMessageId = latestKnownMessageId;
+            })
+        }
+        else {
+            items.push({
+                collectionName,
+                channelId,
+                subChannelKey,
+                latestKnownMessageId
+            });
         }
     }
 

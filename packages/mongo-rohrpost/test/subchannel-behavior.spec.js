@@ -84,12 +84,12 @@ describe('subchannel-behavior', () => {
         
         await channel.dispatch({
             message: gdprMessages[0],
-            subChannelKey: 'gdpr'
+            subChannelKey: 'gdpr',
         });
         
         await channel.dispatch({
             message: scientificMessages[0],
-            subChannelKey: 'sci'
+            subChannelKey: 'sci',
         });
 
         MockDate.reset();

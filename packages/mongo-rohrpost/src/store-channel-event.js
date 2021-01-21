@@ -7,8 +7,9 @@ module.exports = async ({
     db,
     correlationId,
     collectionName,
-    channelId,
     isNewChannel,
+    channelId,
+    latestKnownMessageId,
     disableChannelLocking,
 
     id,
@@ -53,17 +54,19 @@ module.exports = async ({
             status = queries.updateAlways({
                 collection,
                 channelId,
+                latestKnownMessageId,
                 subChannelKey,
-                event
+                event,
             });
         }
         else {
             status = queries.updateUnlessLocked({
                 collection,
                 channelId,
+                latestKnownMessageId,
                 subChannelKey,
                 correlationId,
-                event
+                event,
             });
         }
     }

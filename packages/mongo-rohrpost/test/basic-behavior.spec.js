@@ -82,8 +82,10 @@ describe('basic-behavior', () => {
         var r = await channel.dispatch({
             message: messages[0],
         });
+        console.dir(await db.collection('test').find().toArray(), { depth: null });
         var s = await channel.dispatch({
             message: messages[1],
+            latestKnownMessageId: 3333,
         });
 
         //console.log(r);
@@ -101,4 +103,71 @@ describe('basic-behavior', () => {
         
     });
 
+    it('update throws when channel with id not exist', async () => {
+        var rohrpost = MongoRohrpost({
+            db,
+            correlationId: 1001,
+            createChannelId: () => ( 20 ),
+            createChannelEventId: () => ( 3333 ),
+        });
+        
+        var channel = (
+            rohrpost
+            .openCollection('test')
+            .openChannel({ id: 1000 })
+        );
+
+        var message = {
+            type: 'foo-type', payload: { foo: 42 }
+        };
+
+        var error = undefined;
+        try {
+            await channel.dispatch({
+                message,
+            });
+        }
+        catch (e) {
+            error = e;
+        }
+        expect(error).to.exist;
+    });
+    
+    it('update throws when latest message id does not match', async () => {
+        
+        var rohrpost = MongoRohrpost({
+            db,
+            correlationId: 1001,
+            createChannelId: () => ( 20 ),
+            createChannelEventId: () => ( 3333 ),
+        });
+        
+        var channel = (
+            rohrpost
+            .openCollection('test')
+            .openChannel()
+        );
+
+        var messages = [
+            { type: 'foo-type', payload: { foo: 42 }},
+            { type: 'bar-type', payload: { bar: 43 }},
+        ];
+
+        await channel.dispatch({
+            message: messages[0],
+        });
+    
+        var error = undefined;
+        try {
+            await channel.dispatch({
+                message: messages[1],
+                latestKnownMessageId: 'invalid-id'
+            });
+        }
+        catch (e) {
+            error = e;
+        }
+        expect(error).to.exist;
+
+    });
 });
