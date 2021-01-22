@@ -10,6 +10,7 @@ var shouldRun = (message) => (
 )
 
 var checkSchema = async ({ message }) => {
+    console.log(message);
     var schema = createSchema({ op: 'create' }),
         ajv = Ajv(),
         isValid = ajv.validate(schema, message);

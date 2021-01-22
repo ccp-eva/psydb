@@ -3,6 +3,7 @@ var MessageHandlerGroup = require('../../lib/message-handler-group');
 
 var CustomTypeGroup = MessageHandlerGroup([
     require('./create'),
+    require('./add-field-definition'),
 ]);
 
 module.exports = CustomTypeGroup;

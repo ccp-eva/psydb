@@ -4,6 +4,7 @@ var rx = (str) => new RegExp(str.replace(/\s*\n\s*/g, ''))
 
 module.exports = {
     mongodbObjectId: /^[a-f0-9]{24}$/i,
+    nanoidDefault: /^[a-z0-9\_\-]{21}$/i,
 
     date: /^(\d\d\d\d)-(\d\d)-(\d\d)$/,
     time: /^(\d\d):(\d\d):(\d\d)(\.\d+)?(z|[+-]\d\d:\d\d)?$/i,

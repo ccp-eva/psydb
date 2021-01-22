@@ -11,12 +11,11 @@ class ApiError extends Error {
             rest;
         if (typeof apiStatusOrAdditionalProps === 'object') {
             additionalProps = apiStatusOrAdditionalProps;
+            ({ apiStatus, data, ...rest } = additionalProps || {})
         }
         else {
             apiStatus = apiStatusOrAdditionalProps;
         }
-
-        ({ apiStatus, data, ...rest } = additionalProps || {})
 
         apiStatus = apiStatus || status;
 

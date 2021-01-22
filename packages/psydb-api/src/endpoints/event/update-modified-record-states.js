@@ -24,13 +24,14 @@ var updateModifiedRecordStates = async (context, next) => {
     for (var it of modifiedChannels) {    
         var {
             collectionName: collection,
-            id: channelId,
+            channelId,
             subChannelKey
         } = it;
 
         var stored = await (
             db.collection(collection).findOne({ _id: channelId })
         );
+
 
         var channelEvents = (
             subChannelKey

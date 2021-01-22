@@ -81,7 +81,14 @@ var Channel = ({
             isNew = false;
         }
 
-        return r;
+        return {
+            channelId: (
+                isNew
+                ? r.insertedId
+                : id
+            ),
+            lastKnownMessageId: nextMessageId
+        };
     };
 
     return channel;

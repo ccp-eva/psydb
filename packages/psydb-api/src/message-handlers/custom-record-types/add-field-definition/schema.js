@@ -2,6 +2,7 @@
 var {
     ExactObject,
     Id,
+    MessageId,
     IdentifierString,
     SaneString,
 } = require('@mpieva/psydb-schema-fields');
@@ -16,14 +17,21 @@ var Schema = () => {
         payload: ExactObject({
             properties: {
                 id: Id(),
+                lastKnownMessageId: MessageId(),
                 props: CustomTypeFieldDefinition(),
             },
             required: [
                 'id',
+                'lastKnownMessageId',
                 'props',
             ]
         })
     });
 }
+
+var CustomTypeFieldDefinition = () => ExactObject({
+    properties: {},
+    required: [],
+})
 
 module.exports = Schema;

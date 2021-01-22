@@ -1,5 +1,6 @@
 'use strict';
-var MessageHandler = require('./message-handler');
+var ApiError = require('./api-error'),
+    MessageHandler = require('./message-handler');
 
 var MessageHandlerGroup = (specList) => {
     var handlerList = specList.map(MessageHandler);
@@ -10,7 +11,7 @@ var MessageHandlerGroup = (specList) => {
         ));
         
         if (runnableHandlers.length > 1) {
-            throw new ApiError(400, 'ConflictingMessageHandlers');
+            throw new ApiError(500, 'ConflictingMessageHandlers');
         }
 
         var handler = runnableHandlers.shift();

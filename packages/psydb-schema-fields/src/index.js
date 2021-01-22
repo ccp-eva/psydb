@@ -7,6 +7,7 @@ module.exports = {
     DateTimeInterval: require('./date-time-interval'),
     ExtBool: require('./ext-bool'),
     EmailList: require('./email-list'),
+    MessageId: require('./message-id'),
     PhoneList: require('./phone-list'),
     ForeignId: require('./foreign-id'),
     FullText: require('./full-text'),

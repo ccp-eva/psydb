@@ -17,12 +17,14 @@ var AjvWrapper = ({
         // values
         //useDefaults: true,
         // TODO: 'all' vs 'failing'; can we error out?
-        removeAdditional: true,
+        // TODO: when sending additional we want to error out
+        //removeAdditional: true,
 
         ...options,
     });
 
     ajv.addFormat('mongodb-object-id', psydbFormats.mongodbObjectId);
+    ajv.addFormat('nanoid-default', psydbFormats.nanoidDefault);
     ajv.addFormat('phone-number', psydbFormats.germanPhoneNumber);
     
     ajvKeywords(ajv, [

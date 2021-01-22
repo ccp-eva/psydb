@@ -47,6 +47,9 @@ module.exports = {
     mongodbObjectId: {
         validate: regexes.mongodbObjectId,
     },
+    nanoidDefault: {
+        validate: regexes.nanoidDefault,
+    },
     germanPhoneNumber: {
         validate: regexes.germanPhoneNumber,
     },

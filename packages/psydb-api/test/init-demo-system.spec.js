@@ -44,11 +44,21 @@ describe('init-demo-system', function () {
         await initApi(agent);
         await signIn(agent);
 
-        for (var message of fixture.messages) {
-            console.log(message);
-            var { status, response } = await (
-                agent.post('/').send(message)
-            );
+        var context = {};
+        var send = context.send = createSend(agent, context);
+        for (var messageOrLambda of fixture.messages) {
+            var status, body;
+            if (typeof messageOrLambda === 'object') {
+                ({ status, body } = await send(messageOrLambda));
+            }
+            else if (typeof messageOrLambda === 'function') {
+                ({ status, body } = await messageOrLambda(context));
+            }
+            else {
+                throw new Error(
+                    'fixture definitions should be function or object'
+                );
+            }
             expect(status).to.eql(200);
             
             /*var r = await db.collection('helperSetItem').find().toArray();
@@ -86,3 +96,32 @@ var signIn = async (agent) => (
         password: 'test1234'
     })
 );
+
+///////////////////
+
+var jsonpointer = require('jsonpointer');
+
+var createSend = (agent, context) => async (message, onSuccess) => {
+    console.log(message.type);
+    var { status, body } = await agent.post('/').send(message);
+    if (status === 200) {
+        var modified = body.data;
+        modified.forEach(it => {
+            jsonpointer.set(
+                context,
+                `/knownMsgIds/${it.collectionName}/${it.channelId}`,
+                it.lastKnownMessageId
+            );
+            jsonpointer.set(
+                context,
+                `/lastChannel/${it.collectionName}`,
+                it.channelId
+            );
+        });
+        if (onSuccess) {
+            onSuccess(body, context);
+        }
+    }
+    return { status, body }
+};
+

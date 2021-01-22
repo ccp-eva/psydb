@@ -45,8 +45,9 @@ var checkMessage = async (context, next) => {
     }
     catch (error) {
         if (error instanceof ApiError) {
+            var info = error.getInfo();
             debug(inline`
-                api error with ${error.statusCode}
+                api error with ${info.apiStatus}
                 while performing message checks
                 for message with type ${message.type}`
             );
