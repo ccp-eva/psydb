@@ -9,7 +9,7 @@ module.exports = async ({
     collectionName,
     isNewChannel,
     channelId,
-    latestKnownMessageId,
+    lastKnownMessageId,
     disableChannelLocking,
 
     id,
@@ -54,7 +54,7 @@ module.exports = async ({
             status = queries.updateAlways({
                 collection,
                 channelId,
-                latestKnownMessageId,
+                lastKnownMessageId,
                 subChannelKey,
                 event,
             });
@@ -63,7 +63,7 @@ module.exports = async ({
             status = queries.updateUnlessLocked({
                 collection,
                 channelId,
-                latestKnownMessageId,
+                lastKnownMessageId,
                 subChannelKey,
                 correlationId,
                 event,

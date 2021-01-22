@@ -28,7 +28,7 @@ var createNewChannel = ({
 var updateUnlessLocked = ({
     collection,
     channelId,
-    latestKnownMessageId,
+    lastKnownMessageId,
     subChannelKey,
     correlationId,
     event,
@@ -45,12 +45,12 @@ var updateUnlessLocked = ({
                 { [path]: { $exists: false }},
                 {
                     [`${path}.0.processed`]: false,
-                    [`${path}.0._id`]: latestKnownMessageId,
+                    [`${path}.0._id`]: lastKnownMessageId,
                     [`${path}.0.correlationId`]: correlationId,
                 },
                 {
                     [`${path}.0.processed`]: true,
-                    [`${path}.0._id`]: latestKnownMessageId,
+                    [`${path}.0._id`]: lastKnownMessageId,
                 },
             ]
         },
@@ -66,7 +66,7 @@ var updateUnlessLocked = ({
 var updateAlways = ({
     collection,
     channelId,
-    latestKnownMessageId,
+    lastKnownMessageId,
     event,
 }) => {
     var path = (
@@ -80,7 +80,7 @@ var updateAlways = ({
             _id: channelId,
             $or: [
                 { [path]: { $exists: false }},
-                { [`${path}.0._id`]: latestKnownMessageId },
+                { [`${path}.0._id`]: lastKnownMessageId },
             ]
         },
         { $push: {

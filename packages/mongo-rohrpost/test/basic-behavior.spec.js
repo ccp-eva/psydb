@@ -85,7 +85,7 @@ describe('basic-behavior', () => {
         console.dir(await db.collection('test').find().toArray(), { depth: null });
         var s = await channel.dispatch({
             message: messages[1],
-            latestKnownMessageId: 3333,
+            lastKnownMessageId: 3333,
         });
 
         //console.log(r);
@@ -133,7 +133,7 @@ describe('basic-behavior', () => {
         expect(error).to.exist;
     });
     
-    it('update throws when latest message id does not match', async () => {
+    it('update throws when last message id does not match', async () => {
         
         var rohrpost = MongoRohrpost({
             db,
@@ -161,7 +161,7 @@ describe('basic-behavior', () => {
         try {
             await channel.dispatch({
                 message: messages[1],
-                latestKnownMessageId: 'invalid-id'
+                lastKnownMessageId: 'invalid-id'
             });
         }
         catch (e) {

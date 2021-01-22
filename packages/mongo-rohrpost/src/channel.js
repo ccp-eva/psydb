@@ -20,7 +20,7 @@ var Channel = ({
     channel.dispatch = async ({
         message,
         subChannelKey,
-        latestKnownMessageId,
+        lastKnownMessageId,
     }) => {
         var channelId = id,
             nextMessageId = createChannelEventId();
@@ -35,7 +35,7 @@ var Channel = ({
         var r = await storeChannelEvent({
             isNewChannel: isNew,
             channelId,
-            latestKnownMessageId,
+            lastKnownMessageId,
 
             subChannelKey,
 
@@ -72,7 +72,7 @@ var Channel = ({
                 : id
             ),
             subChannelKey,
-            latestKnownMessageId: nextMessageId
+            lastKnownMessageId: nextMessageId
         });
         
         // store id for possible next dispatch

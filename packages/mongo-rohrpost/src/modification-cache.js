@@ -13,7 +13,7 @@ var ModificationCache = () => {
         collectionName,
         channelId,
         subChannelKey,
-        latestKnownMessageId
+        lastKnownMessageId
     }) => {
         var existing = !!(items.filter(it => (
             it.collectionName === collectionName
@@ -23,7 +23,7 @@ var ModificationCache = () => {
 
         if (existing.length) {
             existing.forEach(item => {
-                item.latestKnownMessageId = latestKnownMessageId;
+                item.lastKnownMessageId = lastKnownMessageId;
             })
         }
         else {
@@ -31,7 +31,7 @@ var ModificationCache = () => {
                 collectionName,
                 channelId,
                 subChannelKey,
-                latestKnownMessageId
+                lastKnownMessageId
             });
         }
     }
