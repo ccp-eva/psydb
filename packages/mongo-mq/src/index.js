@@ -12,9 +12,13 @@ var MongoMQ = ({
     persistCollectionName,
     createId,
 
+    additionalEnvelopeProps,
     redactMessageOnPersist,
 }) => {
     //createId = createId || () => ( new ObjectId() );
+    additionalEnvelopeProps = (
+        additionalEnvelopeProps || {}
+    );
     redactMessageOnPersist = (
         redactMessageOnPersist || defaultRedactMessageOnPersist
     );
@@ -30,6 +34,8 @@ var MongoMQ = ({
         var correlationMessage = {
             _id,
             timestamp: new Date(),
+            ...additionalEnvelopeProps,
+            // TODO: omit _id/timestamp in additional? _id at least
             message,
         };
 

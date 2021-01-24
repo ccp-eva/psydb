@@ -68,7 +68,7 @@ describe('basic-behavior', () => {
         });
 
         var performInnerChecks = async (context, next) => {
-            expect(context.mqCorrelationId).to.equal(20);
+            expect(context.correlationId).to.equal(20);
 
             var queue = await (
                 db.collection('mqMessageQueue').find().toArray()
