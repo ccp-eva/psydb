@@ -12,13 +12,10 @@ var compose = require('koa-compose'),
 
     withContextSetup = require('./context-setup'),
     withMessageHandler = require('./with-message-handler'),
-    withModifiedChannels = require('./with-modified-channels'),
     withResponseBody = require('./with-response-body'),
     
     checkMessage = require('./check-message'),
-    triggerSystemEvents = require('./trigger-system-events'),
-    updateModifiedRecordStates = require('./update-modified-record-states'),
-    unlockModifiedChannels = require('./unlock-modified-channels');
+    triggerMessageActions = require('./trigger-message-actions');
 
 
 var createMessageHandling = ({
@@ -42,11 +39,11 @@ var createMessageHandling = ({
             createId: () => nanoid(),
             ephemeralCollectionName: 'mqMessageQueue',
             persistCollectionName: 'mqMessageHistory',
+            createAdditionalEnvelopeProps: (context) => ({
+                personnelId: context.personnelId
+            })
         }),
-        async (context, next) => {
-            context.correlationId = context.mqCorrelationId;
-            await next();
-        },
+
         withRohrpost({
             createChannelId: () => nanoid(),
             createChannelEventId: () => nanoid(),
@@ -58,13 +55,7 @@ var createMessageHandling = ({
         // TODO: message handlers may not perform write ops
         // to the database, we might want to prevent that
         // by passing a modified db handle that only includes read ops
-        triggerSystemEvents,
-
-        withModifiedChannels,
-        updateModifiedRecordStates,
-        unlockModifiedChannels,
-
-        // triggerOtherSideEffects // mails etc
+        triggerMessageActions,
 
         withResponseBody
     ]);

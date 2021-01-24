@@ -3,7 +3,7 @@ var Ajv = require('../../lib/ajv'),
     createSchemas = require('../../lib/create-schemas'),
     calculateState = require('./calculate-state');
 
-var updateModifiedRecordStates = async (context, next) => {
+var updateModifiedRecordStates = async (context) => {
     var { db, rohrpost, recordSchemas: allRecordSchemas } = context;
 
     //var schemas = await createSchemas({ db });
@@ -128,7 +128,7 @@ var updateModifiedRecordStates = async (context, next) => {
         );
     }
     
-    await next();
+    //await next();
 }
 
 var createPath = (subChannelKey, prop) => (
