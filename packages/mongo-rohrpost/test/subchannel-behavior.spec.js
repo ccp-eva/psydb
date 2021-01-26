@@ -67,12 +67,12 @@ describe('subchannel-behavior', () => {
             {
                 _id: 20,
                 gdpr: {
-                    messages: [
+                    events: [
                         Event({ message: gdprMessages[0] }),
                     ],
                 },
                 sci: {
-                    messages: [
+                    events: [
                         Event({ message: scientificMessages[0] }),
                     ],
                 },
@@ -96,9 +96,9 @@ describe('subchannel-behavior', () => {
         docs = await db.collection('test').find().toArray();
         expect(docs).to.eql(expectedDocs);
 
-        expectedDocs[0].gdpr.messages[0].processed = true;
+        expectedDocs[0].gdpr.events[0].processed = true;
 
-        expectedDocs[0].sci.messages[0].processed = true;
+        expectedDocs[0].sci.events[0].processed = true;
         
         await rohrpost.unlockModifiedChannels();
         docs = await db.collection('test').find().toArray();

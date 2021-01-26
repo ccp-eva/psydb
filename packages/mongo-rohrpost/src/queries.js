@@ -25,7 +25,7 @@ var createNewChannel = ({
     }
 };
 
-var updateUnlessLocked = ({
+var updateUnlessLocked = async ({
     collection,
     channelId,
     lastKnownMessageId,
@@ -38,12 +38,10 @@ var updateUnlessLocked = ({
         ? `${subChannelKey}.events`
         : 'events'
     );
-    // FIXME: for some reason lastKnownMessageId == undefined
-    // is treated as if it matches any 0._id field
-    if (!lastKnownMessageId) {
-        throw new Error('lastKnownMessageId must be provided when updating and existing channel');
-    }
-    return collection.updateOne(
+    
+    lastKnownMessageId = _handleMongoNullIssue(lastKnownMessageId);
+
+    return await collection.updateOne(
         {
             _id: channelId,
             $or: [
@@ -65,7 +63,8 @@ var updateUnlessLocked = ({
                 $position: 0,
             },
         }}
-    )
+    );
+
 };
 
 var updateAlways = ({
@@ -80,11 +79,8 @@ var updateAlways = ({
         : 'events'
     );
 
-    // FIXME: for some reason lastKnownMessageId == undefined
-    // is treated as if it matches any 0._id field
-    if (!lastKnownMessageId) {
-        throw new Error('lastKnownMessageId must be provided when updating and existing channel');
-    }
+    lastKnownMessageId = _handleMongoNullIssue(lastKnownMessageId);
+    
     return collection.updateOne(
         {
             _id: channelId,
@@ -101,6 +97,16 @@ var updateAlways = ({
         }}
     )
 };
+
+// FIXME: there is some unexpected behavior when using querying
+// arr.0.myfield : null/undefined which finds documents even if
+// the specified field is non-null see:
+// https://stackoverflow.com/q/45818633/1158560
+var _handleMongoNullIssue = (maybeNullOrUndefined) => (
+    maybeNullOrUndefined === null || maybeNullOrUndefined === undefined
+    ? { type: 10 }
+    : maybeNullOrUndefined
+)
 
 module.exports = {
     createNewChannel,
