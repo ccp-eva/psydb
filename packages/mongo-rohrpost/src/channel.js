@@ -17,32 +17,40 @@ var Channel = ({
 }) => {
     var channel = {};
 
-    channel.dispatch = async ({
+    channel.dispatch = ({
         message,
         subChannelKey,
         lastKnownEventId,
     }) => {
-        var channelId = id,
-            nextEventId = createChannelEventId();
-
-        if (isThennable(channelId)) {
-            channelId = await channelId;
-        }
-        if (isThennable(nextEventId)) {
-            nextEventId = await nextEventId;
-        }
-
-        var r = await storeChannelMessage({
-            isNewChannel: isNew,
-            channelId,
+        return channel.dispatchMany({
+            messages: [ message ],
+            subChannelKey,
             lastKnownEventId,
+        });
+    }
+
+    channel.dispatchMany = async ({
+        messages,
+        subChannelKey,
+        lastKnownEventId,
+    }) => {
+        if (!Array.isArray(messages)) {
+            throw new Error('parameter "messages" must be an array');
+        }
+
+        if (isThennable(id)) {
+            id = await id;
+        }
+
+        var { insertedId, lastKnownEventId } = await storeChannelMessage({
+            isNewChannel: isNew,
+            channelId: id,
+            lastKnownEventId,
+            createChannelEventId,
 
             subChannelKey,
 
-            id: nextEventId,
-            timestamp: new Date(),
-            
-            message,
+            messages,
             additionalChannelProps,
 
             db,
@@ -50,44 +58,23 @@ var Channel = ({
             correlationId,
             disableChannelLocking,
         });
-        
-        var { insertedCount, matchedCount } = r;
-        //console.log(r);
+
+        // store id for possible next dispatch
         if (isNew) {
-            if (insertedCount < 1) {
-                throw new Error('could not create channel');
-            }
-        }
-        else {
-            if (!matchedCount) {
-                throw new Error('channel did not match criteria for update');
-            }
+            id = insertedId;
+            isNew = false;
         }
 
         modificationCache.add({
             collectionName,
-            channelId: (
-                isNew
-                ? r.insertedId
-                : id
-            ),
+            channelId: id,
             subChannelKey,
-            lastKnownEventId: nextEventId
+            lastKnownEventId,
         });
         
-        // store id for possible next dispatch
-        if (isNew) {
-            id = r.insertedId;
-            isNew = false;
-        }
-
         return {
-            channelId: (
-                isNew
-                ? r.insertedId
-                : id
-            ),
-            lastKnownEventId: nextEventId
+            channelId: id,
+            lastKnownEventId,
         };
     };
 

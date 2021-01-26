@@ -5,14 +5,14 @@ var createNewChannel = ({
     channelId,
     subChannelKey,
     additionalChannelProps,
-    channelEvent,
+    channelEvents,
 }) => {
     if (subChannelKey) {
         return collection.insertOne({
             _id: channelId,
             ...(additionalChannelProps || {}),
             [subChannelKey]: {
-                events: [ channelEvent ]
+                events: channelEvents
             }
         });
     }
@@ -20,7 +20,7 @@ var createNewChannel = ({
         return collection.insertOne({
             _id: channelId,
             ...(additionalChannelProps || {}),
-            events: [ channelEvent ]
+            events: channelEvents
         });
     }
 };
@@ -31,7 +31,7 @@ var updateUnlessLocked = async ({
     lastKnownEventId,
     subChannelKey,
     correlationId,
-    channelEvent,
+    channelEvents,
 }) => {
     var path = (
         subChannelKey
@@ -59,7 +59,7 @@ var updateUnlessLocked = async ({
         },
         { $push: {
             [path]: {
-                $each: [ channelEvent ],
+                $each: channelEvents,
                 $position: 0,
             },
         }}
@@ -71,7 +71,7 @@ var updateAlways = ({
     collection,
     channelId,
     lastKnownEventId,
-    channelEvent,
+    channelEvents,
 }) => {
     var path = (
         subChannelKey
@@ -91,7 +91,7 @@ var updateAlways = ({
         },
         { $push: {
             [path]: {
-                $each: [ channelEvent ],
+                $each: channelEvents,
                 $position: 0,
             },
         }}

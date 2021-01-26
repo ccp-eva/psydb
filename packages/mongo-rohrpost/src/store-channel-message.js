@@ -7,73 +7,105 @@ var {
     NonLockingChannelEvent
 } = require('./channel-events');
 
+var createChannelEvents = async ({
+    timestamp,
+    correlationId,
+    createChannelEventId,
+    disableChannelLocking,
+    messages
+}) => {
+    var ChannelEvent = (
+        disableChannelLocking 
+        ? NonLockingChannelEvent
+        : LockingChannelEvent
+    );
+
+    var events = [];
+    for (var message of messages) {
+        var id = createChannelEventId();
+        if (isThennable(id)) {
+            id = await id;
+        }
+        events.push(ChannelEvent({
+            id,
+            timestamp,
+            correlationId,
+            message,
+        }));
+    }
+    return { 
+        channelEvents: events,
+        nextEventId: events[events.length - 1]._id,
+    };
+}
+
 module.exports = async ({
     db,
     correlationId,
     collectionName,
     isNewChannel,
     channelId,
+    createChannelEventId,
     lastKnownEventId,
     disableChannelLocking,
 
-    id,
     subChannelKey,
-    timestamp,
-    message,
+    messages,
     additionalChannelProps,
 }) => {
-    if (isThennable(channelId)) {
-        channelId = await channelId;
-    }
-    if (isThennable(id)) {
-        id = await id;
-    }
+    var collection = db.collection(collectionName);
 
-    var collection = db.collection(collectionName),
-        ChannelEvent = (
-            disableChannelLocking 
-            ? NonLockingChannelEvent
-            : LockingChannelEvent
-        );
-
-    var channelEvent = ChannelEvent({
-        id,
-        timestamp,
+    var { channelEvents, nextEventId } = await createChannelEvents({
+        timestamp: new Date(),
         correlationId,
-        message,
+        createChannelEventId,
+
+        messages
     });
 
-    var status = undefined;
+    var args = {
+        collection,
+        channelId,
+        subChannelKey,
+        channelEvents,
+    };
+    var query = undefined;
     if (isNewChannel) {
-        status = queries.createNewChannel({
-            collection,
-            channelId,
-            subChannelKey,
-            channelEvent,
+        query = queries.createNewChannel({
+            ...args,
             additionalChannelProps,
         });
     }
     else {
         if (disableChannelLocking) {
-            status = queries.updateAlways({
-                collection,
-                channelId,
+            query = queries.updateAlways({
+                ...args,
                 lastKnownEventId,
-                subChannelKey,
-                channelEvent,
             });
         }
         else {
-            status = queries.updateUnlessLocked({
-                collection,
-                channelId,
+            query = queries.updateUnlessLocked({
+                ...args,
                 lastKnownEventId,
-                subChannelKey,
-                correlationId,
-                channelEvent,
+                correlationId, // FIXME: not sure if this is still required
             });
         }
     }
-    return await status;
-}
 
+    var { insertedId, insertedCount, matchedCount } = await query;
+    if (isNewChannel) {
+        if (insertedCount < 1) {
+            throw new Error('could not create channel');
+        }
+    }
+    else {
+        if (!matchedCount) {
+            throw new Error('channel did not match criteria for update');
+        }
+    }
+
+    return {
+        insertedId,
+        lastKnownEventId: nextEventId,
+    }
+}
