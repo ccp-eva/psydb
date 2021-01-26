@@ -1,7 +1,11 @@
 'use strict';
 var queries = require('./queries'),
-    events = require('./events'),
     isThennable = require('./is-thennable');
+
+var {
+    LockingChannelEvent,
+    NonLockingChannelEvent
+} = require('./channel-events');
 
 module.exports = async ({
     db,
@@ -26,13 +30,13 @@ module.exports = async ({
     }
 
     var collection = db.collection(collectionName),
-        Event = (
+        ChannelEvent = (
             disableChannelLocking 
-            ? events.NonLockingEvent 
-            : events.LockingEvent
+            ? NonLockingChannelEvent
+            : LockingChannelEvent
         );
 
-    var event = Event({
+    var channelEvent = ChannelEvent({
         id,
         timestamp,
         correlationId,
@@ -45,7 +49,7 @@ module.exports = async ({
             collection,
             channelId,
             subChannelKey,
-            event,
+            channelEvent,
             additionalChannelProps,
         });
     }
@@ -56,7 +60,7 @@ module.exports = async ({
                 channelId,
                 lastKnownMessageId,
                 subChannelKey,
-                event,
+                channelEvent,
             });
         }
         else {
@@ -66,7 +70,7 @@ module.exports = async ({
                 lastKnownMessageId,
                 subChannelKey,
                 correlationId,
-                event,
+                channelEvent,
             });
         }
     }

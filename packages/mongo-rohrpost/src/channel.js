@@ -1,5 +1,5 @@
 'use strict';
-var storeChannelEvent = require('./store-channel-event'),
+var storeChannelMessage = require('./store-channel-message'),
     isThennable = require('./is-thennable');
 
 var Channel = ({
@@ -32,7 +32,7 @@ var Channel = ({
             nextMessageId = await nextMessageId;
         }
 
-        var r = await storeChannelEvent({
+        var r = await storeChannelMessage({
             isNewChannel: isNew,
             channelId,
             lastKnownMessageId,

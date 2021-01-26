@@ -1,11 +1,11 @@
 'use strict';
 
-var LockingEvent = (props) => ({
-    ...NonLockingEvent(props),
+var LockingChannelEvent = (props) => ({
+    ...NonLockingChannelEvent(props),
     processed: false,
 });
 
-var NonLockingEvent = ({
+var NonLockingChannelEvent = ({
     id,
     timestamp,
     correlationId,
@@ -18,6 +18,6 @@ var NonLockingEvent = ({
 });
 
 module.exports = {
-    LockingEvent,
-    NonLockingEvent
+    LockingChannelEvent,
+    NonLockingChannelEvent
 }

@@ -5,14 +5,14 @@ var createNewChannel = ({
     channelId,
     subChannelKey,
     additionalChannelProps,
-    event,
+    channelEvent,
 }) => {
     if (subChannelKey) {
         return collection.insertOne({
             _id: channelId,
             ...(additionalChannelProps || {}),
             [subChannelKey]: {
-                events: [ event ]
+                events: [ channelEvent ]
             }
         });
     }
@@ -20,7 +20,7 @@ var createNewChannel = ({
         return collection.insertOne({
             _id: channelId,
             ...(additionalChannelProps || {}),
-            events: [ event ]
+            events: [ channelEvent ]
         });
     }
 };
@@ -31,13 +31,18 @@ var updateUnlessLocked = ({
     lastKnownMessageId,
     subChannelKey,
     correlationId,
-    event,
+    channelEvent,
 }) => {
     var path = (
         subChannelKey
         ? `${subChannelKey}.events`
         : 'events'
     );
+    // FIXME: for some reason lastKnownMessageId == undefined
+    // is treated as if it matches any 0._id field
+    if (!lastKnownMessageId) {
+        throw new Error('lastKnownMessageId must be provided when updating and existing channel');
+    }
     return collection.updateOne(
         {
             _id: channelId,
@@ -56,7 +61,7 @@ var updateUnlessLocked = ({
         },
         { $push: {
             [path]: {
-                $each: [ event ],
+                $each: [ channelEvent ],
                 $position: 0,
             },
         }}
@@ -67,7 +72,7 @@ var updateAlways = ({
     collection,
     channelId,
     lastKnownMessageId,
-    event,
+    channelEvent,
 }) => {
     var path = (
         subChannelKey
@@ -75,6 +80,11 @@ var updateAlways = ({
         : 'events'
     );
 
+    // FIXME: for some reason lastKnownMessageId == undefined
+    // is treated as if it matches any 0._id field
+    if (!lastKnownMessageId) {
+        throw new Error('lastKnownMessageId must be provided when updating and existing channel');
+    }
     return collection.updateOne(
         {
             _id: channelId,
@@ -85,7 +95,7 @@ var updateAlways = ({
         },
         { $push: {
             [path]: {
-                $each: [ event ],
+                $each: [ channelEvent ],
                 $position: 0,
             },
         }}
