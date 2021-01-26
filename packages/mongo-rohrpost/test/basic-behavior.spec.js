@@ -85,7 +85,7 @@ describe('basic-behavior', () => {
         console.dir(await db.collection('test').find().toArray(), { depth: null });
         var s = await channel.dispatch({
             message: messages[1],
-            lastKnownMessageId: 3333,
+            lastKnownEventId: 3333,
         });
 
         //console.log(r);

@@ -28,7 +28,7 @@ var createNewChannel = ({
 var updateUnlessLocked = async ({
     collection,
     channelId,
-    lastKnownMessageId,
+    lastKnownEventId,
     subChannelKey,
     correlationId,
     channelEvent,
@@ -39,7 +39,7 @@ var updateUnlessLocked = async ({
         : 'events'
     );
     
-    lastKnownMessageId = _handleMongoNullIssue(lastKnownMessageId);
+    lastKnownEventId = _handleMongoNullIssue(lastKnownEventId);
 
     return await collection.updateOne(
         {
@@ -48,12 +48,12 @@ var updateUnlessLocked = async ({
                 { [path]: { $exists: false }},
                 {
                     [`${path}.0.processed`]: false,
-                    [`${path}.0._id`]: lastKnownMessageId,
+                    [`${path}.0._id`]: lastKnownEventId,
                     [`${path}.0.correlationId`]: correlationId,
                 },
                 {
                     [`${path}.0.processed`]: true,
-                    [`${path}.0._id`]: lastKnownMessageId,
+                    [`${path}.0._id`]: lastKnownEventId,
                 },
             ]
         },
@@ -70,7 +70,7 @@ var updateUnlessLocked = async ({
 var updateAlways = ({
     collection,
     channelId,
-    lastKnownMessageId,
+    lastKnownEventId,
     channelEvent,
 }) => {
     var path = (
@@ -79,14 +79,14 @@ var updateAlways = ({
         : 'events'
     );
 
-    lastKnownMessageId = _handleMongoNullIssue(lastKnownMessageId);
+    lastKnownEventId = _handleMongoNullIssue(lastKnownEventId);
     
     return collection.updateOne(
         {
             _id: channelId,
             $or: [
                 { [path]: { $exists: false }},
-                { [`${path}.0._id`]: lastKnownMessageId },
+                { [`${path}.0._id`]: lastKnownEventId },
             ]
         },
         { $push: {

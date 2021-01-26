@@ -20,26 +20,26 @@ var Channel = ({
     channel.dispatch = async ({
         message,
         subChannelKey,
-        lastKnownMessageId,
+        lastKnownEventId,
     }) => {
         var channelId = id,
-            nextMessageId = createChannelEventId();
+            nextEventId = createChannelEventId();
 
         if (isThennable(channelId)) {
             channelId = await channelId;
         }
-        if (isThennable(nextMessageId)) {
-            nextMessageId = await nextMessageId;
+        if (isThennable(nextEventId)) {
+            nextEventId = await nextEventId;
         }
 
         var r = await storeChannelMessage({
             isNewChannel: isNew,
             channelId,
-            lastKnownMessageId,
+            lastKnownEventId,
 
             subChannelKey,
 
-            id: nextMessageId,
+            id: nextEventId,
             timestamp: new Date(),
             
             message,
@@ -72,7 +72,7 @@ var Channel = ({
                 : id
             ),
             subChannelKey,
-            lastKnownMessageId: nextMessageId
+            lastKnownEventId: nextEventId
         });
         
         // store id for possible next dispatch
@@ -87,7 +87,7 @@ var Channel = ({
                 ? r.insertedId
                 : id
             ),
-            lastKnownMessageId: nextMessageId
+            lastKnownEventId: nextEventId
         };
     };
 
