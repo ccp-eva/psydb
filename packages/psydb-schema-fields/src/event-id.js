@@ -1,5 +1,5 @@
 'use strict';
-var MessageId = ({
+var EventId = ({
     additionalKeywords,
     ...other
 } = {}) => ({
@@ -10,4 +10,4 @@ var MessageId = ({
     ...additionalKeywords,
 });
 
-module.exports = MessageId;
+module.exports = EventId;

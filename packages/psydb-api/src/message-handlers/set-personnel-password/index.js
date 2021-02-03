@@ -32,7 +32,7 @@ var triggerSystemEvents = async ({
     message
 }) => {
     var { type: messageType, personnelId, payload } = message;
-    var { id: targetRecordId, password } = payload;
+    var { id: targetRecordId, lastKnownEventId, password } = payload;
 
     var channel = (
         rohrpost
@@ -41,15 +41,18 @@ var triggerSystemEvents = async ({
     );
 
     var passwordHash = brypt.hashSync(password, 10);
-
-    await channel.dispatch({ subChannelKey: 'gdpr', message: {
-        type: 'put',
-        personnelId,
-        payload: {
-            prop: '/internals/passwordHash',
-            value: passwordHash
+    await channel.dispatch({
+        subChannelKey: 'gdpr',
+        lastKnownEventId,
+        message: {
+            type: 'put',
+            personnelId,
+            payload: {
+                prop: '/internals/passwordHash',
+                value: passwordHash
+            }
         }
-    }})
+    });
 }
 
 // no-op

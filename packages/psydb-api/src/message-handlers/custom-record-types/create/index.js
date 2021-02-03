@@ -64,9 +64,9 @@ var triggerSystemEvents = async ({
     db,
     rohrpost,
     message,
+    personnelId,
 }) => {
-    var { personnelId, payload } = message;
-    var { id, collection, type, props } = payload;
+    var { id, collection, type, props } = message.payload;
 
     // FIXME: dispatch silently ignores messages when id is set
     // but record doesnt exist
@@ -74,28 +74,29 @@ var triggerSystemEvents = async ({
         rohrpost
         .openCollection('customRecordType')
         .openChannel({
-            id: payload.id,
+            id,
             isNew: true,
             additionalChannelProps: { collection, type }
         })
     );
 
-    await channel.dispatch({ message: {
-        type: 'put',
-        payload: {
-            prop: '/label',
-            value: props.label
+    await channel.dispatchMany({ messages: [
+        {
+            type: 'put',
+            payload: {
+                prop: '/label',
+                value: props.label
+            }
+        },
+        {
+            type: 'put',
+            payload: {
+                // datensatz-beschriftung
+                prop: '/recordLabelDefinition',
+                value: props.recordLabelDefinition
+            }
         }
-    }});
-
-    // datensatz-beschriftung
-    await channel.dispatch({ message: {
-        type: 'put',
-        payload: {
-            prop: '/recordLabelDefinition',
-            value: props.recordLabelDefinition
-        }
-    }});
+    ]});
 
     // TODO: we need diff here i think
     /*await channel.dispatch({ message: {

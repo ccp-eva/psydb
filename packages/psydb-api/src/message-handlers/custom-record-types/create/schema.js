@@ -25,7 +25,7 @@ var Schema = () => {
                 props: ExactObject({
                     properties: {
                         label: SaneString(),
-                        recordLabelDefintion: CustomTypeLabelDefinition(),
+                        recordLabelDefinition: CustomTypeLabelDefinition(),
                     },
                     required: [
                         'label',

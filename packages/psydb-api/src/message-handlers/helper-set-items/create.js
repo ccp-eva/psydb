@@ -56,10 +56,12 @@ var checkAllowedAndPlausible = async ({
 }
 
 var triggerSystemEvents = async ({
+    db,
     rohrpost,
     message,
+    personnelId,
 }) => {
-    var { type: messageType, personnelId, payload } = message;
+    var { type: messageType, payload } = message;
     var { id, set, props } = payload;
 
     var channel = (

@@ -10,7 +10,6 @@ var shouldRun = (message) => (
 )
 
 var checkSchema = async ({ message }) => {
-    console.log(message);
     var schema = createSchema({ op: 'create' }),
         ajv = Ajv(),
         isValid = ajv.validate(schema, message);
@@ -33,9 +32,10 @@ var checkAllowedAndPlausible = async ({
 var triggerSystemEvents = async ({
     db,
     rohrpost,
-    message
+    message,
+    personnelId,
 }) => {
-    var { type: messageType, personnelId, payload } = message;
+    var { type: messageType, payload } = message;
     var { id, props } = payload;
 
     // FIXME: dispatch silently ignores messages when id is set

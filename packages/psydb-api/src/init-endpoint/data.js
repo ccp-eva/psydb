@@ -31,13 +31,14 @@ var messages = [
             }
         }
     },
-    {
+    ({ send, knownEventIds }) => send({
         type: 'set-personnel-password',
         payload: {
             id: rootAccountId,
+            lastKnownEventId: knownEventIds.personnel.gdpr[rootAccountId],
             password: 'test1234',
-        },
-    },
+        }
+    }),
 ];
 
 module.exports = {

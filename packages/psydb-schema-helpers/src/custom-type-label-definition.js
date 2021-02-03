@@ -22,7 +22,7 @@ var CustomTypeLabelDefinition = () => ExactObject({
         }
     },
     required: [
-        'label',
+        'format',
         'tokens',
     ]
 })

@@ -7,6 +7,8 @@ var compose = require('koa-compose'),
     createEventMiddleware = require('../endpoints/event/'),
     data = require('./data');
 
+var jsonpointer = require('jsonpointer');
+
 var init = async (context, next) => {
     var { db } = context;
 
@@ -24,12 +26,27 @@ var init = async (context, next) => {
         enableNotifications: false,
         forcedPersonnelId: data.rootAccountId,
     })
+
+    var processEvent = createProcessEvent({ db, eventMiddleware });
     
-    for (var message of data.messages) {
-        await eventMiddleware(
+    var context = {};
+    var send = context.send = createSend(processEvent, context);
+    for (var messageOrLambda of data.messages) {
+        if (typeof messageOrLambda === 'object') {
+            await send(messageOrLambda);
+        }
+        else if (typeof messageOrLambda === 'function') {
+            await messageOrLambda(context);
+        }
+        else {
+            throw new Error(
+                'fixture definitions should be function or object'
+            );
+        }
+            /*await eventMiddleware(
             { db, request: { body: message }},
             noop
-        );
+        );*/
     }
 
     var root = await db.collection('personnel').findOne();
@@ -40,5 +57,40 @@ var init = async (context, next) => {
 }
 
 var noop = async () => {};
+
+var createProcessEvent = ({ eventMiddleware, db }) => async (message) => {
+    var context = { db, request: { body: message }};
+    await eventMiddleware(context, noop);
+    return { status: 200, body: context.body };
+};
+
+var createSend = (processEvent, context) => async (message, onSuccess) => {
+    console.log(message.type);
+    var { status, body } = await processEvent(message);
+    if (status === 200) {
+        var modified = body.data;
+        modified.forEach(it => {
+            var path = (
+                it.subChannelKey === undefined
+                ? `/knownEventIds/${it.collectionName}/${it.channelId}`
+                : `/knownEventIds/${it.collectionName}/${it.subChannelKey}/${it.channelId}`
+            );
+            jsonpointer.set(
+                context,
+                path,
+                it.lastKnownEventId
+            );
+            jsonpointer.set(
+                context,
+                `/lastChannel/${it.collectionName}`,
+                it.channelId
+            );
+        });
+        if (onSuccess) {
+            onSuccess(body, context);
+        }
+    }
+    return { status, body }
+};
 
 module.exports = init;

@@ -104,13 +104,19 @@ var jsonpointer = require('jsonpointer');
 var createSend = (agent, context) => async (message, onSuccess) => {
     console.log(message.type);
     var { status, body } = await agent.post('/').send(message);
+    console.log(status, body);
     if (status === 200) {
         var modified = body.data;
         modified.forEach(it => {
+            var path = (
+                it.subChannelKey === undefined
+                ? `/knownEventIds/${it.collectionName}/${it.channelId}`
+                : `/knownEventIds/${it.collectionName}/${it.subChannelKey}/${it.channelId}`
+            );
             jsonpointer.set(
                 context,
-                `/knownMsgIds/${it.collectionName}/${it.channelId}`,
-                it.lastKnownMessageId
+                path,
+                it.lastKnownEventId
             );
             jsonpointer.set(
                 context,

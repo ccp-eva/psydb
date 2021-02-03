@@ -21,12 +21,14 @@ var triggerMessageActions = async (context, next) => {
         throw error;
     }
     
+    context.modifiedChannels = context.rohrpost.getModifiedChannels();
+
     await context.rohrpost.unlockModifiedChannels()
     // TODO
     // await messageHandler.triggerOtherSideEffects({
     //     db, message, personnelId
     // }) // mails etc
-    
+
     await next();
 }
 

@@ -50,9 +50,11 @@ var checkAllowedAndPlausible = async ({
 var triggerSystemEvents = async ({
     db,
     rohrpost,
+    personnelId,
     message
 }) => {
-    var { type: messageType, personnelId, payload } = message;
+    var { type: messageType, payload } = message;
+    //console.log(payload);
 
     var { 
         op, collection, 
@@ -67,16 +69,38 @@ var triggerSystemEvents = async ({
         .openChannel({ id: payload.id, isNew: op === 'create' })
     );
 
+    // TODO: check if personnelId is in the right place in the rohrpost messages
     var recordPropMessages = createRecordPropMessages({
         personnelId,
         props: payload.props
     });
-    
+
+    // FIXME: undefined string shenanigans
+    // when subChannelKey === undefined
+    var subChannelKeys = [],
+        messagesBySubChannel = {};
     for (var it of recordPropMessages) {
         //console.log(it);
         var { subChannelKey, ...message } = it;
-        await channel.dispatch({ subChannelKey, message })
+        if (!messagesBySubChannel[subChannelKey]) {
+            messagesBySubChannel[subChannelKey] = [];
+            subChannelKeys.push(subChannelKey)
+        }
+        messagesBySubChannel[subChannelKey].push(message);
     }
+
+    for (var key of subChannelKeys) {
+        await channel.dispatchMany({
+            subChannelKey: key,
+            messages: messagesBySubChannel[key]
+        });
+        //console.log(it);
+        //var { subChannelKey, ...message } = it;
+        //await channel.dispatch({ subChannelKey, message })
+    }
+
+    var docs = await db.collection(collection).find().toArray();
+    //console.dir(docs, { depth: null });
 }
 
 // no-op
