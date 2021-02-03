@@ -40,7 +40,9 @@ var createChannelEvents = async ({
     }
     return { 
         channelEvents: events,
-        nextEventId: events[events.length - 1]._id,
+        // because of reverse order on
+        // event array first id is latest
+        nextEventId: events[0]._id,
     };
 }
 

@@ -106,4 +106,47 @@ describe('subchannel-behavior', () => {
         
     });
 
+    it('dispatchMany treats subChannelKey = undefined same as no  subchannel', async () => {
+        var rohrpost = MongoRohrpost({
+            db,
+            correlationId: 1001,
+            createChannelId: () => ( 20 ),
+            createChannelEventId: () => ( 3333 ),
+        });
+
+        var docs = undefined,
+            now = new Date();
+
+        var message = { type: 'foo', payload: { foo: 42 }};
+        
+        var Event = ({ message }) => ({
+            _id: 3333,
+            timestamp: now,
+            correlationId: 1001,
+            processed: false,
+            message: { ...message }
+        })
+
+        MockDate.set(now);
+        var channel = rohrpost.openCollection('test').openChannel();
+
+        await channel.dispatchMany({
+            messages: [ message ],
+            subChannelKey: undefined,
+        });
+        
+        var expectedDocs = [
+            {
+                _id: 20,
+                events: [
+                    Event({ message }),
+                ],
+            }
+        ];
+
+        MockDate.reset();
+        docs = await db.collection('test').find().toArray();
+        expect(docs).to.eql(expectedDocs);
+
+    });
 });

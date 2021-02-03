@@ -50,7 +50,11 @@ var Channel = ({
 
             subChannelKey,
 
-            messages,
+            // messages must be in reverse since the latest
+            // is always the latest is always in position 0
+            // of the event array in the mongo doc due to constraints
+            // in mongodb regarding array element queries
+            messages: [ ...messages ].reverse(),
             additionalChannelProps,
 
             db,
