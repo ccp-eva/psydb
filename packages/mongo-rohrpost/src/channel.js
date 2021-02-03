@@ -35,7 +35,7 @@ var Channel = ({
         lastKnownEventId,
     }) => {
         if (!Array.isArray(messages)) {
-            throw new Error('parameter "messages" must be an array');
+            throw new TypeError('parameter "messages" must be an array');
         }
 
         if (isThennable(id)) {

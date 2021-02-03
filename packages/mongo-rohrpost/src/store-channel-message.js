@@ -3,6 +3,11 @@ var queries = require('./queries'),
     isThennable = require('./is-thennable');
 
 var {
+    ChannelCreationFailed,
+    ChannelUpdateFailed
+} = require('./errors');
+
+var {
     LockingChannelEvent,
     NonLockingChannelEvent
 } = require('./channel-events');
@@ -95,12 +100,14 @@ module.exports = async ({
     var { insertedId, insertedCount, matchedCount } = await query;
     if (isNewChannel) {
         if (insertedCount < 1) {
-            throw new Error('could not create channel');
+            throw new ChannelCreationFailed('could not create channel');
         }
     }
     else {
         if (!matchedCount) {
-            throw new Error('channel did not match criteria for update');
+            throw new ChannelUpdateFailed(
+                'channel did not match criteria for update'
+            );
         }
     }
 

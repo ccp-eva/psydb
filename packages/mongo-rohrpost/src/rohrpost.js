@@ -1,6 +1,7 @@
 'use strict';
 var Collection = require('./collection'),
-    ModificationCache = require('./modification-cache');
+    ModificationCache = require('./modification-cache'),
+    errors = require('./errors');
 
 var Rohrpost = ({
     db,
@@ -73,5 +74,7 @@ var Rohrpost = ({
 
     return rohrpost;
 }
+
+Rohrpost.Errors = errors;
 
 module.exports = Rohrpost;
