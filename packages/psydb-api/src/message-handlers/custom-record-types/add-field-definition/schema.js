@@ -29,9 +29,23 @@ var Schema = () => {
     });
 }
 
-var CustomTypeFieldDefinition = () => ExactObject({
-    properties: {},
-    required: [],
-})
+var CustomTypeFieldDefinition = () => ({
+    oneOf: [
+        SimpleFieldDefinition()
+    ]
+});
+
+var SimpleFieldDefinition = () => ExactObject({
+    properties: {
+        key: IdentifierString(),
+        type: {
+            type: 'string',
+            enum: [
+                'SaneString',
+                'Address',
+            ]
+        }
+    }
+});
 
 module.exports = Schema;

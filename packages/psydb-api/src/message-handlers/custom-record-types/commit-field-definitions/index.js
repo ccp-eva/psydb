@@ -7,7 +7,7 @@ var ApiError = require('../../../lib/api-error'),
 var Schema = require('./schema');
 
 var shouldRun = (message) => (
-    message.type === 'custom-record-types/add-field-definition'
+    message.type === 'custom-record-types/commit-field-definitions'
 )
 
 var checkSchema = async ({ message }) => {
@@ -63,21 +63,56 @@ var triggerSystemEvents = async ({
         })
     );
 
-    await channel.dispatch({
-        lastKnownEventId,
-        message: {
-            type: 'push',
-            payload: {
-                prop: '/nextFields',
-                value: {
-                    ...payload.props,
-                    isDirty: true,
+    var record = await (
+        db.collection('customRecordType')
+        .findOne({
+            _id: id,
+            'events.0._id': lastKnownEventId
+        })
+    );
+
+    if (!record) {
+        // FIXME: 409?
+        // FIXME: name of tha status .... mke clear that it as changed
+        // by someone else, and we cann not be sure that we perform the
+        // operation safely (UnsafeRecordUpdate?)
+        throw new ApiError(400, 'RecordHasChanged');
+    }
+
+    var cleaningOps = [],
+        commitedFields = [];
+    for (var [ index, field ] of record.state.nextFields.entries()) {
+        var { isDirty, ...commitableField } = field;
+
+        commitedFields.push(commitableField);
+        
+        if (isDirty) {
+            cleaningOps.push({
+                type: 'put',
+                payload: {
+                    prop: `/nextFields/${index}/isDirty`,
+                    value: false
                 }
-            }
+            })
         }
+    }
+
+    await channel.dispatchMany({
+        lastKnownEventId,
+        messages: [
+            {
+                type: 'put',
+                payload: {
+                    prop: '/fields',
+                    value: commitedFields,
+                }
+            },
+            ...cleaningOps,
+        ]
     });
 
 }
+
 
 // no-op
 var triggerOtherSideEffects = async () => {};

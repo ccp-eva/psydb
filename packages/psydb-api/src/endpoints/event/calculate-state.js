@@ -20,7 +20,7 @@ var calculateState = ({ events, createDefaultState }) => {
 
             if (!handler) {
                 // TODO: log/error // general handler?
-                console.log(`no handler found for "${type}" message type`);
+                throw new Error(`no handler found for "${type}" event type`);
             }
             else {
                 nextState = handler(nextState, payload);
@@ -36,6 +36,10 @@ var typeHandlers = {
         jsonpointer.set(state, prop, value);
         return state;
     },
+    'push': (state, { prop, value }) => {
+        jsonpointer.set(state, `${prop}/-`, value);
+        return state;
+    }
 }
 
 module.exports = calculateState;
