@@ -1,0 +1,12 @@
+{
+  "name": "@mpieva/psydb-driver-nodejs",
+  "version": "0.1.0-alpha",
+  "description": "",
+  "main": "./index.js",
+  "scripts": {
+  },
+  "author": "Jan Schwalbe",
+  "license": "MIT",
+  "dependencies": {"superagent":"~6.1.0","jsonpointer":"~4.1.0"
+  }
+}

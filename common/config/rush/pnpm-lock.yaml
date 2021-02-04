@@ -17,6 +17,7 @@ dependencies:
   '@rush-temp/psydb-ajv-formats': 'file:projects/psydb-ajv-formats.tgz'
   '@rush-temp/psydb-ajv-keywords': 'file:projects/psydb-ajv-keywords.tgz'
   '@rush-temp/psydb-api': 'file:projects/psydb-api.tgz'
+  '@rush-temp/psydb-driver-nodejs': 'file:projects/psydb-driver-nodejs.tgz'
   '@rush-temp/psydb-fixtures': 'file:projects/psydb-fixtures.tgz'
   '@rush-temp/psydb-mongo-adapter': 'file:projects/psydb-mongo-adapter.tgz'
   '@rush-temp/psydb-schema': 'file:projects/psydb-schema.tgz'
@@ -49,6 +50,7 @@ dependencies:
   react: 17.0.1
   react-dom: 17.0.1_react@17.0.1
   statuses: 2.0.0
+  superagent: 6.1.0
   supertest: 6.0.1
   webpack: 5.10.1_webpack@5.10.1
   webpack-dev-middleware: 4.0.2_webpack@5.10.1
@@ -4915,6 +4917,15 @@ packages:
       integrity: sha512-Ide/lUobX1cHKAvbc5dBsnqeWbuwcBZlmPu+rNl+IcZLtazIKEUPXaVT8qhMQ8LwtXkF+IStV8yxLwxyZmwifQ==
       tarball: 'file:projects/psydb-api.tgz'
     version: 0.0.0
+  'file:projects/psydb-driver-nodejs.tgz':
+    dependencies:
+      superagent: 6.1.0
+    dev: false
+    name: '@rush-temp/psydb-driver-nodejs'
+    resolution:
+      integrity: sha512-rImCsRu8f+gecYpW//jqRKLKK65JpT1qgrYvzzeizdqOmETE1gkBC9aPCW5dbnDW+weTJ9iKfM4720MEfHE8Cg==
+      tarball: 'file:projects/psydb-driver-nodejs.tgz'
+    version: 0.0.0
   'file:projects/psydb-fixtures.tgz':
     dependencies:
       bson: 4.2.2
@@ -5022,6 +5033,7 @@ specifiers:
   '@rush-temp/psydb-ajv-formats': 'file:./projects/psydb-ajv-formats.tgz'
   '@rush-temp/psydb-ajv-keywords': 'file:./projects/psydb-ajv-keywords.tgz'
   '@rush-temp/psydb-api': 'file:./projects/psydb-api.tgz'
+  '@rush-temp/psydb-driver-nodejs': 'file:./projects/psydb-driver-nodejs.tgz'
   '@rush-temp/psydb-fixtures': 'file:./projects/psydb-fixtures.tgz'
   '@rush-temp/psydb-mongo-adapter': 'file:./projects/psydb-mongo-adapter.tgz'
   '@rush-temp/psydb-schema': 'file:./projects/psydb-schema.tgz'
@@ -5054,6 +5066,7 @@ specifiers:
   react: ~17.0.1
   react-dom: ~17.0.1
   statuses: ~2.0.0
+  superagent: ~6.1.0
   supertest: ~6.0.1
   webpack: ~5.10.1
   webpack-dev-middleware: ~4.0.2
