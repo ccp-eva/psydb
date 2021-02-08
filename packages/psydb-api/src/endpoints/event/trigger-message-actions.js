@@ -3,12 +3,20 @@ var ResponseBody = require('../../lib/response-body');
 var updateModifiedRecordStates = require('./update-modified-record-states');
 
 var triggerMessageActions = async (context, next) => {
-    var { db, rohrpost, messageHandler, message, personnelId } = context;
+    var {
+        db,
+        rohrpost,
+        messageHandler,
+        cache,
+        message,
+        personnelId
+    } = context;
 
     try {
         await messageHandler.triggerSystemEvents({
             db,
             rohrpost,
+            cache,
             message,
             personnelId,
         });

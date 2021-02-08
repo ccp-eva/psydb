@@ -17,6 +17,7 @@ var createChannelEvents = async ({
     correlationId,
     createChannelEventId,
     disableChannelLocking,
+    disableLastEventIdCheck,
     messages
 }) => {
     var ChannelEvent = (
@@ -55,6 +56,7 @@ module.exports = async ({
     createChannelEventId,
     lastKnownEventId,
     disableChannelLocking,
+    disableLastEventIdCheck,
 
     subChannelKey,
     messages,
@@ -88,6 +90,7 @@ module.exports = async ({
             query = queries.updateAlways({
                 ...args,
                 lastKnownEventId,
+                disableLastEventIdCheck,
             });
         }
         else {
@@ -95,6 +98,7 @@ module.exports = async ({
                 ...args,
                 lastKnownEventId,
                 correlationId, // FIXME: not sure if this is still required
+                disableLastEventIdCheck,
             });
         }
     }

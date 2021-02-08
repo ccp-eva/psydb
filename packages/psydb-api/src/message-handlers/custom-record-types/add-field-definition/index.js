@@ -24,6 +24,7 @@ var checkSchema = async ({ message }) => {
 var checkAllowedAndPlausible = async ({
     db,
     permissions,
+    cache,
     message
 }) => {
     if (!permissions.hasRootAccess) {
@@ -32,29 +33,41 @@ var checkAllowedAndPlausible = async ({
 
     var {
         id,
+        subChannel,
     } = message.payload;
 
-    var existing = await (
+    var records = await (
         db.collection('customRecordType').find({
             _id: id
         }).toArray()
     );
 
-    if (existing.length < 1) {
+    if (records.length < 1) {
         throw new ApiError(404, 'CustomRecordTypeNotFound');
     }
+    
+    var record = cache.record = records[0];
+    cache.lastKnownEventId = record.events[0]._id;
+
+    // TODO: check if subChannel has record state schema
+    // or throw 400 NoSubChannelSupport
+    // <= record type can not have sub channels
+
+    // TODO: check if key exists
+    // in the channel/subchannel nextFields
+    // or throw 400 DuplicateFieldKey
 }
 
 var triggerSystemEvents = async ({
     db,
     rohrpost,
+    cache,
     message,
 }) => {
     var { personnelId, payload } = message;
-    var { id, lastKnownEventId, props } = payload;
+    var { id, props } = payload;
+    var { lastKnownEventId } = cache;
 
-    // FIXME: dispatch silently ignores messages when id is set
-    // but record doesnt exist
     var channel = (
         rohrpost
         .openCollection('customRecordType')
@@ -68,6 +81,7 @@ var triggerSystemEvents = async ({
         message: {
             type: 'push',
             payload: {
+                // TODO: subchannels
                 prop: '/nextFields',
                 value: {
                     ...payload.props,

@@ -9,6 +9,7 @@ var Rohrpost = ({
     createChannelId,
     createChannelEventId,
     disableChannelLocking,
+    disableLastEventIdCheck,
 }) => {
     var rohrpost = {},
         modificationCache = ModificationCache();
@@ -22,6 +23,7 @@ var Rohrpost = ({
             createChannelId,
             createChannelEventId,
             disableChannelLocking,
+            disableLastEventIdCheck,
             modificationCache,
         })
     )
@@ -70,6 +72,14 @@ var Rohrpost = ({
 
             modificationCache.clear();
         }
+    }
+
+    rohrpost.disableLastEventIdCheck = () => {
+        disableLastEventIdCheck = true;
+    }
+
+    rohrpost.enableLastEventIdCheck = () => {
+        disableLastEventIdCheck = false;
     }
 
     return rohrpost;

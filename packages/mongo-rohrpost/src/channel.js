@@ -13,6 +13,7 @@ var Channel = ({
     createChannelEventId, // TODO: rename createChannelMessageId
 
     disableChannelLocking,
+    disableLastEventIdCheck,
     modificationCache,
 }) => {
     var channel = {};
@@ -61,6 +62,7 @@ var Channel = ({
             collectionName,
             correlationId,
             disableChannelLocking,
+            disableLastEventIdCheck,
         });
 
         // store id for possible next dispatch

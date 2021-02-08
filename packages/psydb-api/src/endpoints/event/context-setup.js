@@ -19,6 +19,10 @@ var createContextSetupMiddleware = ({
         throw new Error('no personnelId') // TODO
     }
 
+    // used within message handlers
+    // to cache some values i.e. lastKnownMessageId
+    context.cache = {};
+
     await next();
 };
 

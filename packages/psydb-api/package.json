@@ -41,7 +41,8 @@
     "@cdxoo/inline-text": "~1.0.1",
     "@mpieva/psydb-schema-helpers": "~0.1.0-alpha",
     "@mpieva/psydb-schema-fields": "~0.1.0-alpha",
-    "clone-deep": "~4.0.1"
+    "clone-deep": "~4.0.1",
+    "@mpieva/psydb-driver-nodejs": "~0.1.0-alpha"
   },
   "devDependencies": {
     "mocha": "~8.1.3",

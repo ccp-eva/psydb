@@ -23,14 +23,14 @@ var Cache = () => {
         jsonpointer.set(
             cache.lastKnownEventIds,
             path,
-            eventId
+            lastKnownEventId
         );
     }
 
     cache.setLastChannelId = ({
         collectionName, channelId
     }) => {
-        cache.lastChannelId[collectionName] = channelId;
+        cache.lastChannelIds[collectionName] = channelId;
     }
 
     cache.clear = () => {
@@ -78,7 +78,7 @@ var Driver = ({
     var driver = {},
         cache = Cache();
 
-    writeRequest = customWriteRequest || defaultWriteRequest;
+    var writeRequest = customWriteRequest || defaultWriteRequest;
     agent = agent || createDefaultAgent(server);
 
     driver.signIn = ({ email, password }) => (
@@ -92,7 +92,9 @@ var Driver = ({
     )
 
     driver.sendMessage = async (message) => {
-        var { status, body } = writeRequest({ agent, url: '/', message });
+        var { status, body } = await writeRequest({
+            agent, url: '/', message
+        });
 
         var modified = body.data;
         for (var it of modified) {
@@ -103,12 +105,16 @@ var Driver = ({
         return { status, body };
     }
 
-    driver.lastEventId = ({ collection, channel, subChannel }) => (
-        cache.lastKnownEventIds[collection][channel][subChannel]
-    )
+    driver.lastEventId = ({ collection, channel, subChannel }) => {
+        return (
+            subChannel
+            ? cache.lastKnownEventIds[collection][channel][subChannel]
+            : cache.lastKnownEventIds[collection][channel]
+        );
+    }
 
     driver.lastChannelId = (channel) => (
-        cache.lastChannelId[channel]
+        cache.lastChannelIds[channel]
     )
 
     driver.clearCache = () => (
@@ -117,3 +123,10 @@ var Driver = ({
 
     return driver;
 }
+
+Driver.errors = {
+    DriverError,
+    RequestFailed
+}
+
+module.exports = Driver;

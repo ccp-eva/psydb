@@ -10,6 +10,7 @@ var checkMessage = async (context, next) => {
     var {
         db,
         permissions,
+        cache,
         recordSchemas,
         messageHandler,
         message
@@ -40,7 +41,7 @@ var checkMessage = async (context, next) => {
             recordSchemas, message
         });
         await messageHandler.checkAllowedAndPlausible({
-            db, permissions, message
+            db, permissions, cache, message
         });
     }
     catch (error) {

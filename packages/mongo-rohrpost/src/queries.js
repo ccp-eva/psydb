@@ -32,6 +32,7 @@ var updateUnlessLocked = async ({
     subChannelKey,
     correlationId,
     channelEvents,
+    disableLastEventIdCheck,
 }) => {
     var path = (
         subChannelKey
@@ -39,10 +40,32 @@ var updateUnlessLocked = async ({
         : 'events'
     );
     
-    lastKnownEventId = _handleMongoNullIssue(lastKnownEventId);
+    var filter = undefined;
+    if (disableLastEventIdCheck) {
+        filter = {
+            _id: channelId,
+            $or: [
+                { [path]: { $exists: false }},
+                { [`${path}.0.processed`]: true },
+            ]
+        };
+    }
+    else {
+        lastKnownEventId = _handleMongoNullIssue(lastKnownEventId);
+        filter = {
+            _id: channelId,
+            $or: [
+                { [path]: { $exists: false }},
+                {
+                    [`${path}.0.processed`]: true,
+                    [`${path}.0._id`]: lastKnownEventId
+                }
+            ]
+        };
+    }
 
     return await collection.updateOne(
-        {
+        /*{
             _id: channelId,
             $or: [
                 { [path]: { $exists: false }},
@@ -53,10 +76,11 @@ var updateUnlessLocked = async ({
                 },
                 {
                     [`${path}.0.processed`]: true,
-                    [`${path}.0._id`]: lastKnownEventId,
+                    [`${path}.0._id`]: lastKnownEventId
                 },
             ]
-        },
+        },*/
+        filter,
         { $push: {
             [path]: {
                 $each: channelEvents,
@@ -72,23 +96,33 @@ var updateAlways = ({
     channelId,
     lastKnownEventId,
     channelEvents,
+    disableLastEventIdCheck,
 }) => {
     var path = (
         subChannelKey
         ? `${subChannelKey}.events`
         : 'events'
     );
-
-    lastKnownEventId = _handleMongoNullIssue(lastKnownEventId);
     
-    return collection.updateOne(
-        {
+    var filter = undefined;
+    if (disableLastEventIdCheck) {
+        filter = {
+            _id: channelId
+        };
+    }
+    else {
+        lastKnownEventId = _handleMongoNullIssue(lastKnownEventId);
+        filter = {
             _id: channelId,
             $or: [
                 { [path]: { $exists: false }},
                 { [`${path}.0._id`]: lastKnownEventId },
             ]
-        },
+        };
+    }
+
+    return collection.updateOne(
+        filter,
         { $push: {
             [path]: {
                 $each: channelEvents,

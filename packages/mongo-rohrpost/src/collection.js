@@ -10,6 +10,7 @@ var Collection = ({
     createChannelEventId,
 
     disableChannelLocking,
+    disableLastEventIdCheck,
     modificationCache,
 }) => {
     var collection = {};

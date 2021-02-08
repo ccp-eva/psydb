@@ -9,6 +9,7 @@ var expect = require('chai').expect,
     MongoConnection = require('@mpieva/psydb-mongo-adapter').MongoConnection,
 
     fixture = require('@mpieva/psydb-fixtures/json/demo'),
+    Driver = require('@mpieva/psydb-driver-nodejs'),
     withApi = require('../src/middleware/api');
 
 describe('init-demo-system', function () {
@@ -42,10 +43,26 @@ describe('init-demo-system', function () {
     it('processes the messages', async () => {
 
         await initApi(agent);
-        await signIn(agent);
+        var driver = Driver({ agent });
+        await signIn(driver);
 
         var context = {};
-        var send = context.send = createSend(agent, context);
+        //var send = context.send = createSend(agent, context);
+        
+        context.driver = driver;
+        context.lastEventId = driver.lastEventId;
+        context.lastChannelId = driver.lastChannelId;
+        
+        var send = context.send = async (message, callback) => {
+            console.log(message.type);
+            var { status, body } = await driver.sendMessage(message);
+            console.log(status, body);
+            if (callback) {
+                callback(body, context);
+            }
+            return { status, body };
+        };
+
         for (var messageOrLambda of fixture.messages) {
             var status, body;
             if (typeof messageOrLambda === 'object') {
@@ -90,8 +107,15 @@ var initApi = async (agent) => (
     await agent.post('/init').send()
 );
 
-var signIn = async (agent) => (
+/*var signIn = async (agent) => (
     await agent.post('/sign-in').send({
+        email: 'root@example.com',
+        password: 'test1234'
+    })
+);*/
+
+var signIn = async (driver) => (
+    await driver.signIn({
         email: 'root@example.com',
         password: 'test1234'
     })
