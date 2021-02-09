@@ -4,7 +4,8 @@ var debug = require('debug')('psydb:api:message-handlers');
 var ApiError = require('../../../lib/api-error'),
     Ajv = require('../../../lib/ajv');
 
-var Schema = require('./schema');
+var Schema = require('./schema'),
+    metas = require('@mpieva/psydb-schema').collectionMetadata;
 
 var shouldRun = (message) => (
     message.type === 'custom-record-types/add-field-definition'
@@ -33,7 +34,8 @@ var checkAllowedAndPlausible = async ({
 
     var {
         id,
-        subChannel,
+        subChannelKey,
+        props,
     } = message.payload;
 
     var records = await (
@@ -49,13 +51,40 @@ var checkAllowedAndPlausible = async ({
     var record = cache.record = records[0];
     cache.lastKnownEventId = record.events[0]._id;
 
-    // TODO: check if subChannel has record state schema
-    // or throw 400 NoSubChannelSupport
-    // <= record type can not have sub channels
+    console.dir(record, { depth: null });
+    
+    var subChannels = metas.getSubChannels({ collection: record.collection });
+    if (subChannels.length > 0) {
+        if (!subChannelKey) {
+            throw new ApiError(400, 'SubChannelKeyRequired');
+        }
+        else if (!subChannels.includes(subChannelKey)) {
+            throw new ApiError(400, 'UnsupportedSubChannelKey');
+        }
+    }
+    else {
+        if (subChannelKey) {
+            throw new ApiError(400, 'SubChannelsNotAllowed');
+        }
+    }
 
-    // TODO: check if key exists
-    // in the channel/subchannel nextFields
-    // or throw 400 DuplicateFieldKey
+    var existingField
+    if (subChannelKey) {
+        existingField = (
+            record.state.subChannels[subChannelKey].nextFields
+            .find(it => it.key = props.key)
+        );
+    }
+    else {
+        //TODO: make sure that this is properly set up in the state
+        // defaults
+        existingField = (
+            record.state.nextFields.find(it => it.key === props.key)
+        );
+    }
+    if (existingField) {
+        throw new ApiError(400, 'DuplicateFieldKey');
+    }
 }
 
 var triggerSystemEvents = async ({

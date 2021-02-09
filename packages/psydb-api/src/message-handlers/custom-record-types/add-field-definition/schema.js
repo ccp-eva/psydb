@@ -18,7 +18,7 @@ var Schema = () => {
             properties: {
                 id: Id(),
                 //subChannel: IdentifierString(), 
-                subChannel: {
+                subChannelKey: {
                     type: 'string',
                     enum: [ 'scientific', 'gdpr' ]
                 }, 

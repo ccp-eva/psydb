@@ -3,6 +3,11 @@ var Ajv = require('../../lib/ajv'),
     createSchemas = require('../../lib/create-schemas'),
     calculateState = require('./calculate-state');
 
+var {
+    HelperSetState,
+    HelperSetItemState,
+} = require('@mpieva/psydb-schema');
+
 var updateModifiedRecordStates = async (context) => {
     var { db, rohrpost, recordSchemas: allRecordSchemas } = context;
 
@@ -41,22 +46,16 @@ var updateModifiedRecordStates = async (context) => {
 
         var channelStateSchema = undefined;
         if (collection === 'helperSet') {
-            channelStateSchema = {
-                properties: {
-                    label: { type: 'string' }
-                },
-                required: [ 'label' ]
-            };
+            channelStateSchema = HelperSetState();
         }
         else if (collection === 'helperSetItem') {
-            channelStateSchema = {
-                properties: {
-                    label: { type: 'string' }
-                },
-                required: [ 'label' ]
-            };
+            channelStateSchema = HelperSetItemState();
         }
         else if (collection === 'customRecordType') {
+            // channelStateSchema = CustomRecordTypeState({
+            //     collection: stored.collection
+            // });
+            // 
             channelStateSchema = {
                 properties: {
                     label: { type: 'string' },
@@ -71,6 +70,7 @@ var updateModifiedRecordStates = async (context) => {
                             'tokens'
                         ],
                     },
+                    nextFields: { type: 'array', default: [] },
                     fields: { type: 'array', default: [] },
                 },
                 required: [ 'label', 'recordLabelDefinitions', 'fields' ]

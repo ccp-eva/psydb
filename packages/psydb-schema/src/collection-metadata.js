@@ -7,9 +7,9 @@ var {
     SubjectGdprState,
     LocationState,
     SystemRoleState,
-} = require('@mpieva/psydb-schema');
+} = require('./collection/');
 
-var recordCollectionMeta = {
+var metadata = {
     personnel: {
         customTypes: false,
         subChannels: {
@@ -39,8 +39,8 @@ var recordCollectionMeta = {
 //      you cannot use subchannels in that case
 // => [gdpr, scientific] when there are subchannels
 //      has subchannels, in this case one of them required
-getSubChannels = ({ collection }) => {
-    var meta = recordCollectionMeta[collection];
+var getSubChannels = ({ collection }) => {
+    var meta = metadata[collection];
     if (!meta) {
         // TODO:
         throw new Error('unknown collection');
@@ -54,6 +54,6 @@ getSubChannels = ({ collection }) => {
 }
 
 module.exports = {
-    metadata: recordCollectionMetadata,
+    metadata,
     getSubChannels,
 }
