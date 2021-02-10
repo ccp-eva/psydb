@@ -88,11 +88,12 @@ var triggerSystemEvents = async ({
                 value: props.label
             }
         },
+        // FIXME: record label definition this needs its own action i guess
         {
             type: 'put',
             payload: {
                 // datensatz-beschriftung
-                prop: '/recordLabelDefinition',
+                prop: '/nextSettings/recordLabelDefinition',
                 value: props.recordLabelDefinition
             }
         }

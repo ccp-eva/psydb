@@ -1,38 +1,66 @@
 'use strict';
-// TODO: just provisional for testing some stuff
-var {
+var internals = require('./collection');
+
+/*var {
+    // FIXME: cyclical
+    //CustomRecordTypeState,
+
+    HelperSetState,
+    HelperSetItemState,
     PersonnelScientificState,
     PersonnelGdprState,
     SubjectScientificState,
     SubjectGdprState,
     LocationState,
     SystemRoleState,
-} = require('./collection/');
+} = require('./collection/');*/
 
 var metadata = {
+    // FIXME: cyclical
+    customRecordType: {
+        customTypes: false,
+        createStateSchema: internals.CustomRecordTypeState,
+    },
+    helperSet: {
+        customTypes: false,
+        createStateSchema: internals.HelperSetState,
+    },
+    helperSetItem: {
+        customTypes: false,
+        createStateSchema: internals.HelperSetItemState,
+    },
     personnel: {
         customTypes: false,
         subChannels: {
-            gdpr: { createStateSchema: PersonnelGdprState },
-            scientific: { createStateSchema: PersonnelScientificState }
+            gdpr: { createStateSchema: internals.PersonnelGdprState },
+            scientific: { createStateSchema: internals.PersonnelScientificState }
         }
     },
     systemRole: {
         customTypes: false,
-        createStateSchema: SystemRoleState
+        createStateSchema: internals.SystemRoleState
     },
     subject: {
         customTypes: true,
         subChannels: {
-            gdpr: { createStateSchema: SubjectGdprState },
-            scientific: { createStateSchema: SubjectScientificState }
+            gdpr: { createStateSchema: internals.SubjectGdprState },
+            scientific: { createStateSchema: internals.SubjectScientificState }
         }
     },
     location: {
         customTypes: true,
-        createStateSchema: LocationState
+        createStateSchema: internals.LocationState
     },
 };
+
+var getCollectionMetadata = ({ collection }) => {
+    var meta = metadata[collection];
+    if (!meta) {
+        // TODO:
+        throw new Error(`unknown collection "${collection}"`);
+    }
+    return meta;
+}
 
 //getSubChannels({ collection: 'personnel' });
 // => [] when no subchannels are available
@@ -40,11 +68,7 @@ var metadata = {
 // => [gdpr, scientific] when there are subchannels
 //      has subchannels, in this case one of them required
 var getSubChannels = ({ collection }) => {
-    var meta = metadata[collection];
-    if (!meta) {
-        // TODO:
-        throw new Error('unknown collection');
-    }
+    var meta = getCollectionMetadata({ collection });
 
     return (
         meta.subChannels
@@ -55,5 +79,6 @@ var getSubChannels = ({ collection }) => {
 
 module.exports = {
     metadata,
+    getCollectionMetadata,
     getSubChannels,
 }

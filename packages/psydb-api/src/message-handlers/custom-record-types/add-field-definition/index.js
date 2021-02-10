@@ -68,10 +68,11 @@ var checkAllowedAndPlausible = async ({
         }
     }
 
-    var existingField
+    var existingField;
+
     if (subChannelKey) {
         existingField = (
-            record.state.subChannels[subChannelKey].nextFields
+            record.state.nextSettings[subChannelKey].fields
             .find(it => it.key = props.key)
         );
     }
@@ -79,7 +80,7 @@ var checkAllowedAndPlausible = async ({
         //TODO: make sure that this is properly set up in the state
         // defaults
         existingField = (
-            record.state.nextFields.find(it => it.key === props.key)
+            record.state.nextSettings.fields.find(it => it.key === props.key)
         );
     }
     if (existingField) {
@@ -111,7 +112,7 @@ var triggerSystemEvents = async ({
             type: 'push',
             payload: {
                 // TODO: subchannels
-                prop: '/nextFields',
+                prop: '/nextSettings/fields',
                 value: {
                     ...payload.props,
                     isDirty: true,

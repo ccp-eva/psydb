@@ -1,14 +1,14 @@
 'use strict';
-module.exports = {
-    HelperSetState: require('./helper-set/state'),
-    HelperSetItemState: require('./helper-set-item/state'),
+module.exports.CustomRecordTypeState = require('./custom-record-type/state');
 
-    PersonnelScientificState: require('./personnel/scientific-state'),
-    PersonnelGdprState: require('./personnel/gdpr-state'),
+module.exports.HelperSetState = require('./helper-set/state');
+module.exports.HelperSetItemState = require('./helper-set-item/state');
+
+module.exports.PersonnelScientificState = require('./personnel/scientific-state');
+module.exports.PersonnelGdprState = require('./personnel/gdpr-state');
     
-    SubjectScientificState: require('./subject/scientific-state'),
-    SbjectGdprState: require('./subject/gdpr-state'),
+module.exports.SubjectScientificState = require('./subject/scientific-state');
+module.exports.SbjectGdprState = require('./subject/gdpr-state');
     
-    LocationState: require('./location/generic-location-state'),
-    SystemRoleState: require('./system-role/state'),
-}
+module.exports.LocationState = require('./location/generic-location-state');
+module.exports.SystemRoleState = require('./system-role/state');

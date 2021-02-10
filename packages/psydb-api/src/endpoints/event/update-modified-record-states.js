@@ -4,6 +4,8 @@ var Ajv = require('../../lib/ajv'),
     calculateState = require('./calculate-state');
 
 var {
+    collectionMetadata,
+    CustomRecordTypeState,
     HelperSetState,
     HelperSetItemState,
 } = require('@mpieva/psydb-schema');
@@ -52,11 +54,14 @@ var updateModifiedRecordStates = async (context) => {
             channelStateSchema = HelperSetItemState();
         }
         else if (collection === 'customRecordType') {
+            channelStateSchema = CustomRecordTypeState({
+                collection: stored.collection
+            });
             // channelStateSchema = CustomRecordTypeState({
             //     collection: stored.collection
             // });
             // 
-            channelStateSchema = {
+            /*channelStateSchema = {
                 properties: {
                     label: { type: 'string' },
                     recordLabelDefinition: {
@@ -74,7 +79,7 @@ var updateModifiedRecordStates = async (context) => {
                     fields: { type: 'array', default: [] },
                 },
                 required: [ 'label', 'recordLabelDefinitions', 'fields' ]
-            };
+            };*/
         }
         else {
             var { type, subtype } = stored;
