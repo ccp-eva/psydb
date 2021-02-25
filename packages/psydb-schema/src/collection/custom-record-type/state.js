@@ -2,6 +2,7 @@
 var {
     ExactObject,
     SaneString,
+    IdentifierString,
 } = require('@mpieva/psydb-schema-fields');
 
 var {
@@ -9,7 +10,10 @@ var {
     getSubChannels,
 } = require('../../collection-metadata');
 
-var CustomRecordTypeState = ({ collection }) => {
+var CustomRecordTypeState = ({
+    collection,
+    enableInternalProps = false,
+}) => {
     var meta = getCollectionMetadata({ collection });
     if (!meta.customTypes) {
         throw new Error(`custom types for "${collection}" are disabled`);
@@ -17,8 +21,8 @@ var CustomRecordTypeState = ({ collection }) => {
     var subChannels = getSubChannels({ collection });
     return (
         subChannels.length > 0
-        ? MultiChannelState({ subChannels })
-        : SingleChannelState()
+        ? MultiChannelState({ subChannels, enableInternalProps })
+        : SingleChannelState({ enableInternalProps })
     );
 }
 
@@ -27,10 +31,12 @@ var RecordLabelDefinition = () => ExactObject({
         format: {
             // TODO: format
             type: 'string',
+            default: '${0}',
         },
         tokens: {
             // TODO: items
             type: 'array',
+            default: [ '/_id' ],
         },
     },
     required: [
@@ -39,15 +45,65 @@ var RecordLabelDefinition = () => ExactObject({
     ]
 });
 
-var FieldList = () => ({
+var FieldList = ({
+    enableFlags,
+    enableInternalProps,
+}) => ({
+    // TODO: items,
     type: 'array',
     default: [],
+    items: Field({ enableFlags, enableInternalProps }),
 });
 
-var Settings = () => ExactObject({
+var Field = ({
+    enableFlags,
+    enableInternalProps,
+}) => ExactObject({
+    properties: {
+        key: IdentifierString(),
+        type: {
+            type: 'string',
+            enum: [
+                'SaneString',
+                'Address',
+            ]
+        },
+        // TODO:
+        // props: {},
+        ...(enableFlags && enableInternalProps && ({
+            isNew: { type: 'boolean', default: false },
+            isDirty: { type: 'boolean', default: true },
+        }))
+    },
+    required: [
+        'key',
+        'type',
+        ...(
+            (enableFlags && enableInternalProps)
+            ? ([ 'isNew', 'isDirty' ])
+            : ([])
+        )
+    ],
+});
+
+var Settings = ({ enableInternalProps }) => ExactObject({
     properties: {
         recordLabelDefinition: RecordLabelDefinition(),
-        fields: FieldList()
+        fields: FieldList({ enableInternalProps })
+    },
+    required: [
+        'recordLabelDefinition',
+        'fields',
+    ]
+});
+
+var NextSettings = ({ enableInternalProps }) => ExactObject({
+    properties: {
+        recordLabelDefinition: RecordLabelDefinition(),
+        fields: FieldList({
+            enableFlags: true,
+            enableInternalProps,
+        }),
     },
     required: [
         'recordLabelDefinition',
@@ -59,11 +115,11 @@ var Settings = () => ExactObject({
 // provisional...
 // fixed...
 
-var SubChannelSettings = ({ subChannels }) => ExactObject({
+var SubChannelSettings = ({ subChannels, settings }) => ExactObject({
     properties: {
         ...subChannels.reduce((acc, key) => ({
             ...acc,
-            [key]: Settings()
+            [key]: settings
         }), {})
     },
     required: subChannels
@@ -71,12 +127,15 @@ var SubChannelSettings = ({ subChannels }) => ExactObject({
         
 
 var ChannelState = ({
+    enableInternalProps,
     nextSettings,
     settings
 }) => ExactObject({
     properties: {
         label: SaneString(),
-        // isDirty boolean or nextSettings obj|undefined?
+        ...(enableInternalProps && ({
+            isDirty: { type: 'boolean', default: true },
+        })),
         nextSettings,
         settings,
     },
@@ -87,14 +146,25 @@ var ChannelState = ({
     ],
 });
 
-var SingleChannelState = () => ChannelState({
-    nextSettings: Settings(),
-    settings: Settings(),
+var SingleChannelState = ({ enableInternalProps }) => ChannelState({
+    enableInternalProps,
+    nextSettings: NextSettings({ enableInternalProps }),
+    settings: Settings({ enableInternalProps }),
 });
 
-var MultiChannelState = ({ subChannels }) => ChannelState({
-    nextSettings: SubChannelSettings({ subChannels }),
-    settings: SubChannelSettings({ subChannels }),
+var MultiChannelState = ({
+    subChannels,
+    enableInternalProps,
+}) => ChannelState({
+    enableInternalProps,
+    nextSettings: SubChannelSettings({
+        subChannels,
+        settings: NextSettings({ enableInternalProps }),
+    }),
+    settings: SubChannelSettings({
+        subChannels,
+        settings: Settings({ enableInternalProps }),
+    }),
 });
 
-module.exports = CustomRecordTypeState
+module.exports = CustomRecordTypeState;

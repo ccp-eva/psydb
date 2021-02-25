@@ -34,7 +34,9 @@ dependencies:
   chai: 4.2.0
   chai-datetime: 1.7.0
   clone-deep: 4.0.1
+  copy-anything: 2.0.3
   debug: 4.3.1
+  deep-diff: 1.0.2
   graphql: 15.3.0
   inflation: 2.0.0
   jsonpointer: 4.1.0
@@ -2036,6 +2038,12 @@ packages:
       node: '>= 0.8'
     resolution:
       integrity: sha512-8aPsApQfebXnuI+537McwYsDtjVxGm8gTIzQI3FDW6t5t/DAhERxtnbEPN/8RX+uZthoz4eCOgloXaE5cYyNow==
+  /copy-anything/2.0.3:
+    dependencies:
+      is-what: 3.14.1
+    dev: false
+    resolution:
+      integrity: sha512-GK6QUtisv4fNS+XcI7shX0Gx9ORg7QqIznyfho79JTnX1XhLiyZHfftvGiziqzRiEi/Bjhgpi+D2o7HxJFPnDQ==
   /core-js-compat/3.8.1:
     dependencies:
       browserslist: 4.16.0
@@ -2108,6 +2116,10 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha1-9lNNFRSCabIDUue+4m9QH5oZEpA=
+  /deep-diff/1.0.2:
+    dev: false
+    resolution:
+      integrity: sha512-aWS3UIVH+NPGCD1kki+DCU9Dua032iSsO43LqQpcs4R3+dVv7tX0qBGjiVHJHjplsoUM2XRO/KB92glqc68awg==
   /deep-eql/3.0.1:
     dependencies:
       type-detect: 4.0.8
@@ -2862,6 +2874,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-uK0kyX9LZYhSDS7H2sVJQJop1UnWPWmo5RvR3q2kFH6AUHYs7sOrVg0b4nyBHw29kRRNFofYN/JbHZDlHiItTA==
+  /is-what/3.14.1:
+    dev: false
+    resolution:
+      integrity: sha512-sNxgpk9793nzSs7bA6JQJGeIuRBQhAaNGG77kzYQgMkrID+lS6SlK07K5LaptscDlSaIgH+GPFzf+d75FVxozA==
   /isarray/1.0.0:
     dev: false
     resolution:
@@ -4897,7 +4913,9 @@ packages:
       bcrypt: 5.0.0
       chai: 4.2.0
       clone-deep: 4.0.1
+      copy-anything: 2.0.3
       debug: 4.3.1
+      deep-diff: 1.0.2
       error: 10.4.0
       jsonpointer: 4.1.0
       koa: 2.13.0
@@ -4914,16 +4932,17 @@ packages:
     dev: false
     name: '@rush-temp/psydb-api'
     resolution:
-      integrity: sha512-Ide/lUobX1cHKAvbc5dBsnqeWbuwcBZlmPu+rNl+IcZLtazIKEUPXaVT8qhMQ8LwtXkF+IStV8yxLwxyZmwifQ==
+      integrity: sha512-G/IDKq0+Bt60uOKBWhadqy+vDv1/TP2GFBQtNxr8uoMAPnAUeE6m6kHvR8FktgfMTjJtWWu80+WBDoBIY6mmSg==
       tarball: 'file:projects/psydb-api.tgz'
     version: 0.0.0
   'file:projects/psydb-driver-nodejs.tgz':
     dependencies:
+      jsonpointer: 4.1.0
       superagent: 6.1.0
     dev: false
     name: '@rush-temp/psydb-driver-nodejs'
     resolution:
-      integrity: sha512-rImCsRu8f+gecYpW//jqRKLKK65JpT1qgrYvzzeizdqOmETE1gkBC9aPCW5dbnDW+weTJ9iKfM4720MEfHE8Cg==
+      integrity: sha512-DcF4TPj6v5hkJ+Cb6bEPzjCg8Jca1iP1azGn8GWFmcw9HEMwj3VmF2I/h5m6UMMoTK1k4O0gbX4XlFTBblEMAA==
       tarball: 'file:projects/psydb-driver-nodejs.tgz'
     version: 0.0.0
   'file:projects/psydb-fixtures.tgz':
@@ -5050,7 +5069,9 @@ specifiers:
   chai: ~4.2.0
   chai-datetime: ~1.7.0
   clone-deep: ~4.0.1
+  copy-anything: ~2.0.3
   debug: ~4.3.1
+  deep-diff: ~1.0.2
   graphql: ~15.3.0
   inflation: ~2.0.0
   jsonpointer: ~4.1.0

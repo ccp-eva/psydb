@@ -1,13 +1,17 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
 
+var omit = require('@cdxoo/omit'),
+    createClone = require('copy-anything').copy,
+    createDiff = require('deep-diff');
+
 var ApiError = require('../../../lib/api-error'),
     Ajv = require('../../../lib/ajv');
 
 var Schema = require('./schema');
 
 var shouldRun = (message) => (
-    message.type === 'custom-record-types/commit-field-definitions'
+    message.type === 'custom-record-types/commit-settings'
 )
 
 var checkSchema = async ({ message }) => {
@@ -43,6 +47,12 @@ var checkAllowedAndPlausible = async ({
     if (existing.length < 1) {
         throw new ApiError(404, 'CustomRecordTypeNotFound');
     }
+
+    // TODO: check if record label definition is still valid
+    // TODO: maybe check if every field that is included
+    // in the currently fixed settings is equal to the field
+    // in next Settings .... on the other hand that shouldnt happen
+    // in the first place we should prevent that
 }
 
 var triggerSystemEvents = async ({
@@ -79,7 +89,33 @@ var triggerSystemEvents = async ({
         throw new ApiError(400, 'RecordHasChanged');
     }
 
-    var cleaningOps = [],
+    var nextState = createClone(record.state);
+    nextState.settings = createClone(nextState.nextSettings);
+
+    var { settings, nextSettings } = nextState;
+
+    settings.recordLabelDefinition = omit(
+        'isDirty', settings.recordLabelDefinition
+    );
+    settings.fields = settings.fields.map(it => (
+        omit([ 'isNew', 'isDirty'], it)
+    ));
+
+    nextSettings.recordLabelDefinition.isDirty = false;
+    nextSettings.fields.forEach(it => {
+        it.isNew = false;
+        it.isDirty = false;
+    })
+
+
+    // NOTE: update-hanlders
+    // NOTE: keep rohrpost messages strictly to put etc
+    var diff = createDiff(record.state, nextState);
+    console.dir(diff, { depth: null });
+
+    throw new Error();
+
+    /*var cleaningOps = [],
         commitedFields = [];
     for (var [ index, field ] of record.state.nextFields.entries()) {
         var { isDirty, ...commitableField } = field;
@@ -109,7 +145,7 @@ var triggerSystemEvents = async ({
             },
             ...cleaningOps,
         ]
-    });
+    });*/
 
 }
 

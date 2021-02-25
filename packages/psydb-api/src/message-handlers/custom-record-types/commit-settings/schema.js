@@ -11,7 +11,7 @@ var {
 
 var Schema = () => {
     return Message({
-        type: `custom-record-types/commit-field-definitions`,
+        type: `custom-record-types/commit-settings`,
         payload: ExactObject({
             properties: {
                 id: Id(),

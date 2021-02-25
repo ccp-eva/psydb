@@ -48,14 +48,19 @@ var updateModifiedRecordStates = async (context) => {
 
         var channelStateSchema = undefined;
         if (collection === 'helperSet') {
-            channelStateSchema = HelperSetState();
+            channelStateSchema = HelperSetState({
+                enableInternalProps: true
+            });
         }
         else if (collection === 'helperSetItem') {
-            channelStateSchema = HelperSetItemState();
+            channelStateSchema = HelperSetItemState({
+                enableInternalProps: true
+            });
         }
         else if (collection === 'customRecordType') {
             channelStateSchema = CustomRecordTypeState({
-                collection: stored.collection
+                collection: stored.collection,
+                enableInternalProps: true
             });
             // channelStateSchema = CustomRecordTypeState({
             //     collection: stored.collection

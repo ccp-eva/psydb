@@ -115,6 +115,7 @@ var triggerSystemEvents = async ({
                 prop: '/nextSettings/fields',
                 value: {
                     ...payload.props,
+                    isNew: true,
                     isDirty: true,
                 }
             }
