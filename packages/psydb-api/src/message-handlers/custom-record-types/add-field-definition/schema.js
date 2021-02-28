@@ -17,12 +17,10 @@ var Schema = () => {
         payload: ExactObject({
             properties: {
                 id: Id(),
-                //subChannel: IdentifierString(), 
                 subChannelKey: {
                     type: 'string',
                     enum: [ 'scientific', 'gdpr' ]
                 }, 
-                //lastKnownEventId: EventId(),
                 props: {
                     type: 'object',
                     properties: {
