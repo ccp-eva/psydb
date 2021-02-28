@@ -23,7 +23,22 @@ var Schema = () => {
                     enum: [ 'scientific', 'gdpr' ]
                 }, 
                 //lastKnownEventId: EventId(),
-                props: CustomTypeFieldDefinition(),
+                props: {
+                    type: 'object',
+                    properties: {
+                        key: IdentifierString(),
+                        type: {
+                            type: 'string',
+                            enum: [
+                                'SaneString',
+                                'Address',
+                                'HelperSetItemIdList',
+                                'EmailList',
+                                'ForeignId'
+                            ],
+                        },
+                    }
+                },
             },
             required: [
                 'id',
@@ -33,30 +48,5 @@ var Schema = () => {
         })
     });
 }
-
-var CustomTypeFieldDefinition = () => ({
-    oneOf: [
-        SimpleFieldDefinition()
-    ]
-});
-
-var SimpleFieldDefinition = () => ExactObject({
-    properties: {
-        key: IdentifierString(),
-        type: {
-            type: 'string',
-            enum: [
-                'SaneString',
-                'Address',
-            ]
-        },
-        props: ExactObject({})
-    },
-    required: [
-        'key',
-        'type',
-        'props',
-    ]
-});
 
 module.exports = Schema;

@@ -4,7 +4,8 @@ var debug = require('debug')('psydb:api:message-handlers');
 var ApiError = require('../../../lib/api-error'),
     Ajv = require('../../../lib/ajv');
 
-var Schema = require('./schema'),
+var BaseSchema = require('./schema'),
+    FieldSchemas = require('./field-schemas'),
     metas = require('@mpieva/psydb-schema').collectionMetadata;
 
 var shouldRun = (message) => (
@@ -15,7 +16,14 @@ var checkSchema = async ({ message }) => {
     var ajv = Ajv(),
         isValid = false;
 
-    isValid = ajv.validate(Schema(), message);
+    isValid = ajv.validate(BaseSchema(), message);
+    if (!isValid) {
+        debug('ajv errors', ajv.errors);
+        throw new ApiError(400, 'InvalidMessageSchema');
+    }
+
+    var FieldSchema = FieldSchemas[message.payload.props.type];
+    isValid = ajv.validate(FieldSchema(), message);
     if (!isValid) {
         debug('ajv errors', ajv.errors);
         throw new ApiError(400, 'InvalidMessageSchema');
