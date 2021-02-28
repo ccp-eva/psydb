@@ -48,10 +48,10 @@ var ForeignIdFieldDefinition = () => FieldDefinition({
     props: {
         collection: IdentifierString(),
         recordType: IdentifierString(),
-        /*constraints: {
+        constraints: {
             type: 'object',
             // TODO: { schoolId: { $data: '1/school' }}
-        }*/
+        }
     }
 })
 
@@ -62,6 +62,11 @@ var AddressFieldDefinition = () => FieldDefinition({
 
 var SaneStringFieldDefinition = () => FieldDefinition({
     type: 'SaneString',
+    props: {},
+});
+
+var FullTextFieldDefinition = () => FieldDefinition({
+    type: 'FullText',
     props: {},
 });
 
@@ -80,6 +85,7 @@ var wrapped = (definition) => () => ({
 
 module.exports = {
     SaneString: wrapped(SaneStringFieldDefinition),
+    FullText: wrapped(FullTextFieldDefinition),
     Address: wrapped(AddressFieldDefinition),
     EmailList: wrapped(EmailListFieldDefinition),
     HelperSetItemIdList: wrapped(HelperSetItemIdListFieldDefinition),

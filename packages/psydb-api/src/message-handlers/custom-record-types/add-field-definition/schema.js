@@ -34,7 +34,8 @@ var Schema = () => {
                                 'Address',
                                 'HelperSetItemIdList',
                                 'EmailList',
-                                'ForeignId'
+                                'ForeignId',
+                                'FullText'
                             ],
                         },
                     }
