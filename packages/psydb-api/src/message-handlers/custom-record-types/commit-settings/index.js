@@ -10,7 +10,8 @@ var ApiError = require('../../../lib/api-error'),
 
 var createRohrpostMessagesFromDiff = require('../../../lib/diff-to-rohrpost');
 
-var Schema = require('./schema');
+var Schema = require('./schema'),
+    metas = require('@mpieva/psydb-schema').collectionMetadata;
 
 var shouldRun = (message) => (
     message.type === 'custom-record-types/commit-settings'
@@ -30,7 +31,8 @@ var checkSchema = async ({ message }) => {
 var checkAllowedAndPlausible = async ({
     db,
     permissions,
-    message
+    cache,
+    message,
 }) => {
     if (!permissions.hasRootAccess) {
         throw new ApiError(403);
@@ -38,6 +40,7 @@ var checkAllowedAndPlausible = async ({
 
     var {
         id,
+        lastKnownEventId,
     } = message.payload;
 
     var existing = await (
@@ -49,31 +52,6 @@ var checkAllowedAndPlausible = async ({
     if (existing.length < 1) {
         throw new ApiError(404, 'CustomRecordTypeNotFound');
     }
-
-    // TODO: check if record label definition is still valid
-    // TODO: maybe check if every field that is included
-    // in the currently fixed settings is equal to the field
-    // in next Settings .... on the other hand that shouldnt happen
-    // in the first place we should prevent that
-}
-
-var triggerSystemEvents = async ({
-    db,
-    rohrpost,
-    message,
-}) => {
-    var { personnelId, payload } = message;
-    var { id, lastKnownEventId, props } = payload;
-
-    // FIXME: dispatch silently ignores messages when id is set
-    // but record doesnt exist
-    var channel = (
-        rohrpost
-        .openCollection('customRecordType')
-        .openChannel({
-            id
-        })
-    );
 
     var record = await (
         db.collection('customRecordType')
@@ -91,32 +69,76 @@ var triggerSystemEvents = async ({
         throw new ApiError(400, 'RecordHasChanged');
     }
 
+    cache.record = record;
+
+    // TODO: check if record label definition is still valid
+    // TODO: maybe check if every field that is included
+    // in the currently fixed settings is equal to the field
+    // in next Settings .... on the other hand that shouldnt happen
+    // in the first place we should prevent that
+}
+
+var triggerSystemEvents = async ({
+    db,
+    rohrpost,
+    cache,
+    message,
+}) => {
+    var { personnelId, payload } = message;
+    var { id, lastKnownEventId, props } = payload;
+    var { record } = cache;
+
     var nextState = createClone(record.state);
     nextState.settings = createClone(nextState.nextSettings);
 
     var { settings, nextSettings } = nextState;
 
+    // handle label def
     settings.recordLabelDefinition = omit(
         'isDirty', settings.recordLabelDefinition
     );
-    settings.fields = settings.fields.map(it => (
-        omit([ 'isNew', 'isDirty'], it)
-    ));
-
     nextSettings.recordLabelDefinition.isDirty = false;
-    nextSettings.fields.forEach(it => {
-        it.isNew = false;
-        it.isDirty = false;
-    })
 
+    // handle fields
+    var subChannels = metas.getSubChannels({
+        collection: record.collection
+    });
+    if (subChannels) {
+        subChannels.forEach(key => {
+            settings.subChannelFields[key] = (
+                settings.subChannelFields[key].map(it => (
+                    omit([ 'isNew', 'isDirty'], it)
+                ))
+            );
+            nextSettings.subChannelFields[key].forEach(it => {
+                it.isNew = false;
+                it.isDirty = false;
+            })
+        })
+    }
+    else {
+        settings.fields = settings.fields.map(it => (
+            omit([ 'isNew', 'isDirty'], it)
+        ));
+        nextSettings.fields.forEach(it => {
+            it.isNew = false;
+            it.isDirty = false;
+        })
+    }
 
-    // NOTE: update-hanlders
-    // NOTE: keep rohrpost messages strictly to put etc
     var diff = createDiff(record.state, nextState);
     //console.dir(diff, { depth: null });
 
     var messages = createRohrpostMessagesFromDiff(diff);
     //console.dir(messages, { depth: null });
+
+    var channel = (
+        rohrpost
+        .openCollection('customRecordType')
+        .openChannel({
+            id
+        })
+    );
 
     await channel.dispatchMany({
         lastKnownEventId,
