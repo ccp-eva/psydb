@@ -86,45 +86,45 @@ var Field = ({
     ],
 });
 
-var Settings = ({ enableInternalProps }) => ExactObject({
+var ChannelSettings = ({
+    enableFlags, // for next settings
+    enableInternalProps, // stuff such as isDirty which isnt writable
+    subChannels,
+}) => ExactObject({
     properties: {
         recordLabelDefinition: RecordLabelDefinition(),
-        fields: FieldList({ enableInternalProps })
+        ...(
+            subChannels
+            ? {
+                subChannelFields: ExactObject({
+                    properties: {
+                        ...subChannels.reduce((acc, key) => ({
+                            ...acc,
+                            [key]: FieldList({
+                                enableFlags,
+                                enableInternalProps
+                            })
+                        }), {})
+                    },
+                    required: [
+                        ...subChannels
+                    ]
+                })
+            }
+            : {
+                fields: FieldList({ enableFlags, enableInternalProps })
+            }
+        )
     },
     required: [
         'recordLabelDefinition',
-        'fields',
-    ]
-});
-
-var NextSettings = ({ enableInternalProps }) => ExactObject({
-    properties: {
-        recordLabelDefinition: RecordLabelDefinition(),
-        fields: FieldList({
-            enableFlags: true,
-            enableInternalProps,
-        }),
-    },
-    required: [
-        'recordLabelDefinition',
-        'fields',
-    ]
-});
+        subChannels ? 'subChannelFields' : 'fields',
+    ],
+})
 
 // next..
 // provisional...
 // fixed...
-
-var SubChannelSettings = ({ subChannels, settings }) => ExactObject({
-    properties: {
-        ...subChannels.reduce((acc, key) => ({
-            ...acc,
-            [key]: settings
-        }), {})
-    },
-    required: subChannels
-});
-        
 
 var ChannelState = ({
     enableInternalProps,
@@ -148,8 +148,13 @@ var ChannelState = ({
 
 var SingleChannelState = ({ enableInternalProps }) => ChannelState({
     enableInternalProps,
-    nextSettings: NextSettings({ enableInternalProps }),
-    settings: Settings({ enableInternalProps }),
+    nextSettings: ChannelSettings({
+        enableFlags: true,
+        enableInternalProps
+    }),
+    settings: ChannelSettings({
+        enableInternalProps
+    }),
 });
 
 var MultiChannelState = ({
@@ -157,13 +162,14 @@ var MultiChannelState = ({
     enableInternalProps,
 }) => ChannelState({
     enableInternalProps,
-    nextSettings: SubChannelSettings({
+    nextSettings: ChannelSettings({
+        enableFlags: true,
+        enableInternalProps,
         subChannels,
-        settings: NextSettings({ enableInternalProps }),
     }),
-    settings: SubChannelSettings({
+    settings: ChannelSettings({
+        enableInternalProps,
         subChannels,
-        settings: Settings({ enableInternalProps }),
     }),
 });
 

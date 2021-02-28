@@ -49,8 +49,14 @@ var SimpleFieldDefinition = () => ExactObject({
                 'SaneString',
                 'Address',
             ]
-        }
-    }
+        },
+        props: ExactObject({})
+    },
+    required: [
+        'key',
+        'type',
+        'props',
+    ]
 });
 
 module.exports = Schema;

@@ -51,9 +51,10 @@ var checkAllowedAndPlausible = async ({
     var record = cache.record = records[0];
     cache.lastKnownEventId = record.events[0]._id;
 
-    console.dir(record, { depth: null });
     
-    var subChannels = metas.getSubChannels({ collection: record.collection });
+    var subChannels = metas.getSubChannels({
+        collection: record.collection
+    });
     if (subChannels.length > 0) {
         if (!subChannelKey) {
             throw new ApiError(400, 'SubChannelKeyRequired');
@@ -69,16 +70,13 @@ var checkAllowedAndPlausible = async ({
     }
 
     var existingField;
-
     if (subChannelKey) {
         existingField = (
-            record.state.nextSettings[subChannelKey].fields
-            .find(it => it.key = props.key)
+            record.state.nextSettings.subChannelFields[subChannelKey]
+            .find(it => it.key === props.key)
         );
     }
     else {
-        //TODO: make sure that this is properly set up in the state
-        // defaults
         existingField = (
             record.state.nextSettings.fields.find(it => it.key === props.key)
         );
@@ -95,7 +93,7 @@ var triggerSystemEvents = async ({
     message,
 }) => {
     var { personnelId, payload } = message;
-    var { id, props } = payload;
+    var { id, subChannelKey, props } = payload;
     var { lastKnownEventId } = cache;
 
     var channel = (
@@ -106,13 +104,18 @@ var triggerSystemEvents = async ({
         })
     );
 
+    var pointer = (
+        subChannelKey
+        ? `/nextSettings/subChannelFields/${subChannelKey}`
+        : '/nextSettings/fields'
+    )
+
     await channel.dispatch({
         lastKnownEventId,
         message: {
             type: 'push',
             payload: {
-                // TODO: subchannels
-                prop: '/nextSettings/fields',
+                prop: pointer,
                 value: {
                     ...payload.props,
                     isNew: true,

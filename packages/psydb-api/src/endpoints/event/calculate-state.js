@@ -34,7 +34,7 @@ var calculateState = ({ events, createDefaultState }) => {
         }
     });
 
-    console.dir(nextState, { depth: null });
+    //console.dir(nextState, { depth: null });
     return { nextState, nextCommit };
 };
 

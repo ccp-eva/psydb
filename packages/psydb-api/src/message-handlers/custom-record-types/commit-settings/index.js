@@ -8,6 +8,8 @@ var omit = require('@cdxoo/omit'),
 var ApiError = require('../../../lib/api-error'),
     Ajv = require('../../../lib/ajv');
 
+var createRohrpostMessagesFromDiff = require('../../../lib/diff-to-rohrpost');
+
 var Schema = require('./schema');
 
 var shouldRun = (message) => (
@@ -111,41 +113,15 @@ var triggerSystemEvents = async ({
     // NOTE: update-hanlders
     // NOTE: keep rohrpost messages strictly to put etc
     var diff = createDiff(record.state, nextState);
-    console.dir(diff, { depth: null });
+    //console.dir(diff, { depth: null });
 
-    throw new Error();
-
-    /*var cleaningOps = [],
-        commitedFields = [];
-    for (var [ index, field ] of record.state.nextFields.entries()) {
-        var { isDirty, ...commitableField } = field;
-
-        commitedFields.push(commitableField);
-        
-        if (isDirty) {
-            cleaningOps.push({
-                type: 'put',
-                payload: {
-                    prop: `/nextFields/${index}/isDirty`,
-                    value: false
-                }
-            })
-        }
-    }
+    var messages = createRohrpostMessagesFromDiff(diff);
+    //console.dir(messages, { depth: null });
 
     await channel.dispatchMany({
         lastKnownEventId,
-        messages: [
-            {
-                type: 'put',
-                payload: {
-                    prop: '/fields',
-                    value: commitedFields,
-                }
-            },
-            ...cleaningOps,
-        ]
-    });*/
+        messages,
+    });
 
 }
 

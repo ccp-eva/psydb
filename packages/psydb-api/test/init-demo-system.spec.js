@@ -56,7 +56,7 @@ describe('init-demo-system', function () {
         var send = context.send = async (message, callback) => {
             console.log(message.type);
             var { status, body } = await driver.sendMessage(message);
-            console.log(status, body);
+            //console.log(status, body);
             if (callback) {
                 callback(body, context);
             }
@@ -126,9 +126,9 @@ var signIn = async (driver) => (
 var jsonpointer = require('jsonpointer');
 
 var createSend = (agent, context) => async (message, onSuccess) => {
-    console.log(message.type);
+    //console.log(message.type);
     var { status, body } = await agent.post('/').send(message);
-    console.log(status, body);
+    //console.log(status, body);
     if (status === 200) {
         var modified = body.data;
         modified.forEach(it => {
