@@ -7,8 +7,12 @@ var withRecordSchemas = () => async (context, next) => {
     var { db } = context;
 
     var customTypeRecords = await (
-        db.collection('customRecordTypes').find().toArray()
+        db.collection('customRecordType').find({
+            'state.isNew': false
+        }).toArray()
     );
+
+    console.dir(customTypeRecords, { depth: null });
 
     // TODO: actually we need to pass permissions 
     // to the schema creator since the actual schema

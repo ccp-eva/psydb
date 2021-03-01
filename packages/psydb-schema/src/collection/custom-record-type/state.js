@@ -134,6 +134,7 @@ var ChannelState = ({
     properties: {
         label: SaneString(),
         ...(enableInternalProps && ({
+            isNew: { type: 'boolean', default: true },
             isDirty: { type: 'boolean', default: true },
         })),
         nextSettings,

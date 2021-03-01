@@ -5,13 +5,11 @@ var expect = require('chai').expect,
 var data = [
     ['records/create/foo/bar', true],
     ['records/patch/foo/bar', true],
-    ['records/create/location/room/bar', true],
-    ['records/patch/location/room/bar', true],
-    
-    ['records/create/foo', false],
+    ['records/create/location/school', true],
+    ['records/patch/location/classroom', true],
+    ['records/create/systemRole', true],
+
     ['records/create/foo/bar/baz', false],
-    ['records/create/location/room', false],
-    ['records/create/location/building', false],
     ['records/create/location/building/baz/', false],
     ['records/create/location/building/baz/biz', false],
 ];

@@ -91,6 +91,11 @@ var triggerSystemEvents = async ({
     var nextState = createClone(record.state);
     nextState.settings = createClone(nextState.nextSettings);
 
+    
+    nextState.isNew = false;
+    nextState.isDirty = false;
+
+
     var { settings, nextSettings } = nextState;
 
     // handle label def

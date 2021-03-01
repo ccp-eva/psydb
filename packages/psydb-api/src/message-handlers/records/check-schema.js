@@ -9,7 +9,10 @@ var {
     createAllSchemas,
 } = require('@mpieva/psydb-schema');
 
-var Ajv = require('../../lib/ajv');
+var ApiError = require('../../lib/api-error'),
+    Ajv = require('../../lib/ajv');
+
+var metas = require('@mpieva/psydb-schema').collectionMetadata;
 
 var createSchema = async ({ recordSchemas, message }) => {
     var {
@@ -19,6 +22,7 @@ var createSchema = async ({ recordSchemas, message }) => {
     } = message.payload;
 
     var recordSchema = recordSchemas.find({ collection, type, subtype });
+    console.dir(metas, { depth: null });
     if (!recordSchema) {
         throw new ApiError(400, 'RecordSchemaNotFound');
     }

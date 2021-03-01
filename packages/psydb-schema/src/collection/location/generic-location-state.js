@@ -10,14 +10,12 @@ var GenericLocationState = ({ type, customStateSchema }) => {
         $id: `${prefix}/${type}/state`,
         type: 'object',
         properties: {
-            name: { type: 'string' },
             custom: customStateSchema,
             reservationSettings: reservationSettingsSchema,
             systemPermissions: systemPermissionsSchema,
             internals: internalsSchema,
         },
         required: [
-            'name',
             'custom',
             'reservationSettings',
             'systemPermissions',

@@ -4,9 +4,7 @@ var rx = new RegExp(`
     records\\/
     (?:create|patch)\\/
     (?:
-        location\\/(?:building|room)\\/[a-zA-Z]+
-        |
-        (?!location)(?:[a-zA-Z]+)
+        (?:[a-zA-Z]+)
         (?:\\/[a-zA-Z]+)?
     )
     $

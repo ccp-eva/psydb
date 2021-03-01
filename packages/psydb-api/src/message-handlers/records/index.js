@@ -4,9 +4,9 @@ var messageType = require('./message-type'),
     parseRecordMessageType = require('./parse-record-message-type'),
     createRecordPropMessages = require('./create-record-prop-messages');
 
-var shouldRun = (message) => (
-    messageType.test(message.type)
-)
+var shouldRun = (message) => {
+    return messageType.test(message.type)
+}
 
 var checkAllowedAndPlausible = async ({
     db,

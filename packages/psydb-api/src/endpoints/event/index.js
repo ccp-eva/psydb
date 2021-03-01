@@ -1,4 +1,4 @@
-'use stirct';
+'use strict';
 var debug = require('debug')('psydb:api:endpoints:event');
     
 var compose = require('koa-compose'),
