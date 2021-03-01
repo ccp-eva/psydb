@@ -134,7 +134,12 @@ var triggerSystemEvents = async ({
     var diff = createDiff(record.state, nextState);
     //console.dir(diff, { depth: null });
 
-    var messages = createRohrpostMessagesFromDiff(diff);
+    var messages = createRohrpostMessagesFromDiff(diff, { prefix: '/state'});
+    // FIXME: prefixin because we changed how underlying state
+    // calculation works
+    messages.forEach(m => {
+        m.payload.prop = `/state${m.payload.prop}`;
+    })
     //console.dir(messages, { depth: null });
 
     var channel = (

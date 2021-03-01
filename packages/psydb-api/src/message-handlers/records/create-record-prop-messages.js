@@ -62,7 +62,11 @@ var createSubChannelMessages = ({
                 createSubChannelMessages({
                     op, subChannelKey, personnelId,
                     props: props[key],
-                    prefix: prefix ? `${prefix}/${key}` : `/${key}`,
+                    prefix: (
+                        prefix
+                        ? `${prefix}/state/${key}`
+                        : `/state/${key}`
+                    ),
                 }) 
             )
             : [{
@@ -72,7 +76,11 @@ var createSubChannelMessages = ({
                 // message metadata
                 personnelId,
                 payload: {
-                    prop: prefix ? `${prefix}/${key}` : `/${key}`,
+                    prop: (
+                        prefix 
+                        ? `${prefix}/state/${key}` 
+                        : `/state/${key}`
+                    ),
                     value: props[key]
                 }
             }]

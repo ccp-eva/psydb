@@ -48,7 +48,7 @@ var triggerSystemEvents = async ({
             type: 'put',
             personnelId,
             payload: {
-                prop: '/internals/passwordHash',
+                prop: '/state/internals/passwordHash',
                 value: passwordHash
             }
         }

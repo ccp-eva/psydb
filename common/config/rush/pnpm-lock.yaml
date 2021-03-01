@@ -19,6 +19,7 @@ dependencies:
   '@rush-temp/psydb-api': 'file:projects/psydb-api.tgz'
   '@rush-temp/psydb-driver-nodejs': 'file:projects/psydb-driver-nodejs.tgz'
   '@rush-temp/psydb-fixtures': 'file:projects/psydb-fixtures.tgz'
+  '@rush-temp/psydb-koa-event-middleware': 'file:projects/psydb-koa-event-middleware.tgz'
   '@rush-temp/psydb-mongo-adapter': 'file:projects/psydb-mongo-adapter.tgz'
   '@rush-temp/psydb-schema': 'file:projects/psydb-schema.tgz'
   '@rush-temp/psydb-schema-fields': 'file:projects/psydb-schema-fields.tgz'
@@ -4954,6 +4955,20 @@ packages:
       integrity: sha512-a8b3Sp9zm8rTeAflirmNwzqEjkDJ/QoXL7AGz/5l5U7nbtYA4PMXIuPvmEzwhlc4DP63L5D00eO6pdSTKkHa4Q==
       tarball: 'file:projects/psydb-fixtures.tgz'
     version: 0.0.0
+  'file:projects/psydb-koa-event-middleware.tgz':
+    dependencies:
+      '@cdxoo/inline-text': 1.0.1
+      chai: 4.2.0
+      koa-compose: 4.1.0
+      mocha: 8.1.3
+      mongodb: 3.6.3
+      mongodb-memory-server: 6.9.2
+    dev: false
+    name: '@rush-temp/psydb-koa-event-middleware'
+    resolution:
+      integrity: sha512-PT5k1ff6YDn49c/jWqTawP5g9QgXfS4yZzjtzbmJcEuxKws/EQDlL/UQ0uTDFHuDosHbo2xOCdoP+yfmu35f9w==
+      tarball: 'file:projects/psydb-koa-event-middleware.tgz'
+    version: 0.0.0
   'file:projects/psydb-mongo-adapter.tgz':
     dependencies:
       mongodb: 3.6.3
@@ -5054,6 +5069,7 @@ specifiers:
   '@rush-temp/psydb-api': 'file:./projects/psydb-api.tgz'
   '@rush-temp/psydb-driver-nodejs': 'file:./projects/psydb-driver-nodejs.tgz'
   '@rush-temp/psydb-fixtures': 'file:./projects/psydb-fixtures.tgz'
+  '@rush-temp/psydb-koa-event-middleware': 'file:./projects/psydb-koa-event-middleware.tgz'
   '@rush-temp/psydb-mongo-adapter': 'file:./projects/psydb-mongo-adapter.tgz'
   '@rush-temp/psydb-schema': 'file:./projects/psydb-schema.tgz'
   '@rush-temp/psydb-schema-fields': 'file:./projects/psydb-schema-fields.tgz'

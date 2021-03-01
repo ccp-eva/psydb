@@ -78,7 +78,7 @@ var triggerSystemEvents = async ({
         type: 'put',
         personnelId,
         payload: {
-            prop: '/label',
+            prop: '/state/label',
             value: props.label
         }
     }});

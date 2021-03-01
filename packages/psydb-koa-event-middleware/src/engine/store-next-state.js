@@ -33,21 +33,30 @@ var storeNextState = async ({
         //      'state': { ... },
         //      'commits': [ ... ]
         // }
-        var nextState = createInitialChannelState({
+        // FIXME: not fond of the amount of args
+        // FIXME: let this engine run in a separate context? (engineContext)
+        var nextState = await createInitialChannelState({
             collectionName,
             channelId,
             subChannelKey,
             storedRecord,
+            context
         });
         
         channelEvents.forEach(event => {
             nextState = handleChannelEvent({ nextState, event });
         })
 
-        var updates = Object.keys(next).reduce((acc, containerKey) => ({
-            ...acc,
-            [createPath(subChannelKey, containerKey)]: next[containerKey],
-        }), {});
+        var updates = (
+            Object.keys(nextState)
+            .reduce((acc, containerKey) => {
+                var path = createPath(subChannelKey, containerKey);
+                return {
+                    ...acc,
+                    [path]: nextState[containerKey]
+                };
+            }, {})
+        );
 
         await (
             db.collection(collectionName).updateOne(

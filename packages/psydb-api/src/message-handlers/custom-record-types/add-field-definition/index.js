@@ -114,8 +114,8 @@ var triggerSystemEvents = async ({
 
     var pointer = (
         subChannelKey
-        ? `/nextSettings/subChannelFields/${subChannelKey}`
-        : '/nextSettings/fields'
+        ? `/state/nextSettings/subChannelFields/${subChannelKey}`
+        : '/state/nextSettings/fields'
     )
 
     await channel.dispatch({

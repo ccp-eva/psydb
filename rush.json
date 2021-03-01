@@ -99,8 +99,8 @@
        "reviewCategory": "production"
     },
     {
-       "packageName": "@mpieva/psydb-koa-event-handling",
-       "projectFolder": "packages/psydb-koa-event-handling",
+       "packageName": "@mpieva/psydb-koa-event-middleware",
+       "projectFolder": "packages/psydb-koa-event-middleware",
        "reviewCategory": "production"
     },
     {

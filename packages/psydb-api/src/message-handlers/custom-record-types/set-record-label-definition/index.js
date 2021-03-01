@@ -82,7 +82,7 @@ var triggerSystemEvents = async ({
                 type: 'put',
                 payload: {
                     // datensatz-beschriftung
-                    prop: '/nextSettings/recordLabelDefinition',
+                    prop: '/state/nextSettings/recordLabelDefinition',
                     value: {
                         isDirty: true,
                         ...props

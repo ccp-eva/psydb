@@ -7,6 +7,7 @@ var checkMessage = async (context, next) => {
     var {
         db,
         messageHandler,
+        message,
     } = context;
 
     if (!messageHandler.shouldRun(message)) {

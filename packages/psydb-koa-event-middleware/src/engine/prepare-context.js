@@ -12,20 +12,6 @@ var prepareContext = ({
         message
     } = context;
 
-    if (!db) {
-        throw new InvalidDatabaseHandle(inline`
-            context property "db" is invalid;
-            failed to get database handle from context property "db"
-        `); 
-    }
-
-    if (!message || typeof message !== 'object') {
-        throw new InvalidMessage(inline`
-            context property "message" is invalid;
-            message must be an object
-        `);
-    }
-
     if (!message.type || typeof message.type !== 'string') {
         throw new InvalidMessage(inline`
             context property "message" is invalid;
@@ -43,7 +29,7 @@ var prepareContext = ({
     
     context.messageHandler = rootHandler;
 
-    await next;
+    await next();
 }
 
-
+module.exports = prepareContext;

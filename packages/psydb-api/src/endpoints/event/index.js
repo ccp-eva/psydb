@@ -17,17 +17,45 @@ var compose = require('koa-compose'),
     checkMessage = require('./check-message'),
     triggerMessageActions = require('./trigger-message-actions');
 
+var createEngine = require('@mpieva/psydb-koa-event-middleware').createEngine;
+
+var availableMessageHandlers = require('../../message-handlers/'),
+    createInitialChannelState = require('./create-initial-channel-state'),
+    handleChannelEvent = require('./handle-channel-event');
 
 var createMessageHandling = ({
     enableMessageChecks = true,
     forcedPersonnelId,
 } = {}) => {
+
+    var mqSettings = {
+        createId: () => nanoid(),
+        createAdditionalEnvelopeProps: (context) => ({
+            personnelId: context.personnelId
+        })
+    };
+    var rohrpostSettings = {
+        createChannelId: () => nanoid(),
+        createChannelEventId: () => nanoid(),
+    };
+
     return compose([
-        //async (context, next) => { console.log(context); await next(); },
+        //async (context, next) => { console.dir(context, { depth: 3}); await next(); },
         withContextSetup({ forcedPersonnelId }),
         withRecordSchemas(),
 
-        withMessageHandler,
+        createEngine({
+            mqSettings,
+            rohrpostSettings,
+            availableMessageHandlers,
+
+            createInitialChannelState,
+            handleChannelEvent,
+
+            enableMessageChecks,
+        }),
+
+        /*withMessageHandler,
         ...(
             enableMessageChecks
             ? [ checkMessage ]
@@ -55,9 +83,10 @@ var createMessageHandling = ({
         // TODO: message handlers may not perform write ops
         // to the database, we might want to prevent that
         // by passing a modified db handle that only includes read ops
-        triggerMessageActions,
+        triggerMessageActions,*/
 
-        withResponseBody
+        withResponseBody,
+        //async (context, next) => { console.dir(context, { depth: 3}); await next(); },
     ]);
 };
 

@@ -25,6 +25,7 @@
     "koa-body": "~4.2.0",
     "koa-compose": "^4.1.0",
     "koa-session": "^5.13.1",
+    "mongodb": "~3.6.3",
     "@cdxoo/inline-string": "~1.0.0",
     "@mpieva/koa-mongo-extjson-body": "~0.1.0-alpha",
     "@mpieva/koa-mongo-mq": "~0.1.0-alpha",
@@ -44,13 +45,13 @@
     "clone-deep": "~4.0.1",
     "@mpieva/psydb-driver-nodejs": "~0.1.0-alpha",
     "copy-anything": "~2.0.3",
-    "deep-diff": "~1.0.2"
+    "deep-diff": "~1.0.2",
+    "@mpieva/psydb-koa-event-middleware": "~0.1.0-alpha"
   },
   "devDependencies": {
     "mocha": "~8.1.3",
     "chai": "~4.2.0",
     "mongodb-memory-server": "~6.9.2",
-    "mongodb": "~3.6.3",
     "supertest": "~6.0.1",
     "@mpieva/psydb-fixtures": "~0.1.0-alpha"
   },

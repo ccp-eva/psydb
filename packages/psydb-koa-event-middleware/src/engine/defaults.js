@@ -1,16 +1,15 @@
 'use strict';
-var nanoid = require('nanoid').nanoid;
+var ObjectId = require('mongodb').ObjectId;
 
 var defaultMqSettings = {
-    createId: () => nanoid(),
+    createId: () => ObjectId(),
     ephemeralCollectionName: 'mqMessageQueue',
     persistCollectionName: 'mqMessageHistory',
 }
 
 var defaultRohrpostSettings = {
-    createChannelId: () => nanoid(),
-    createChannelEventId: () => nanoid(),
-    disableChannelAutoUnlocking: true,
+    createChannelId: () => ObjectId(),
+    createChannelEventId: () => ObjectId(),
 }
 
 module.exports = {

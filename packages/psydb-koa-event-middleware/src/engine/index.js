@@ -5,6 +5,7 @@ var compose = require('koa-compose'),
     withRohrpost = require('@mpieva/koa-mongo-rohrpost'),
 
     prepareContext = require('./prepare-context'),
+    checkMessage = require('./check-message'),
     run = require('./run'),
 
     MessageHandlerGroup = require('../helpers/message-handler-group');
@@ -42,7 +43,9 @@ var createMessageHandling = ({
     };
     rohrpostSettings = {
         ...defaultRohrpostSettings,
-        ...rohrpostSettings
+        ...rohrpostSettings,
+        // force auto unlock disabled as we do it manually
+        disableChannelAutoUnlocking: true,
     };
 
     return compose([
