@@ -17,7 +17,7 @@ var checkAllowedAndPlausible = async ({
 
     var { 
         op, collection, 
-        recordType, recordSubtype 
+        recordType, recordSubType 
     } = parseRecordMessageType(messageType);
 
     if (op === 'create') {

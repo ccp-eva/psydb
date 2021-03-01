@@ -1,7 +1,7 @@
 'use strict';
 var createTypedSchemas = ({ records, instructions }) => (
     records.map(record => {
-        var { collection, type, subtype } = record.state;
+        var { collection, type, subtype } = record;
 
         var createSchemas = (
             subtype

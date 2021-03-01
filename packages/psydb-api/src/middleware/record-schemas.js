@@ -12,7 +12,7 @@ var withRecordSchemas = () => async (context, next) => {
         }).toArray()
     );
 
-    console.dir(customTypeRecords.map(it => it.state), { depth: null });
+    //console.dir(customTypeRecords.map(it => it.state), { depth: null });
 
     // TODO: actually we need to pass permissions 
     // to the schema creator since the actual schema

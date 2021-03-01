@@ -4,7 +4,7 @@ module.exports = {
 
     createRecordMessageType: require('./create-record-message-type'),
     RecordIdOnlyMessage: require('./record-id-only-message'),
-    RcordPropsMessage: require('./record-props-message'),
+    RecordPropsMessage: require('./record-props-message'),
 
     CustomTypeRecordCollection: require('./custom-type-record-collection'),
     CustomTypeLabelDefinition: require('./custom-type-label-definition'),
