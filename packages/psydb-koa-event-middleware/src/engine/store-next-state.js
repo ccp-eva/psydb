@@ -43,7 +43,7 @@ var storeNextState = async ({
             context
         });
         
-        channelEvents.forEach(event => {
+        channelEvents.reverse().forEach(event => {
             nextState = handleChannelEvent({ nextState, event });
         })
 
