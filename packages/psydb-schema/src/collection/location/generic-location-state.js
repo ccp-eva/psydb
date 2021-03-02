@@ -4,9 +4,12 @@ var prefix = require('./schema-id-prefix'),
     reservationSettingsSchema = require('./reservation-settings-schema'),
     internalsSchema = require('./internals-schema');
 
+var {
+    ExactObject
+} = require('@mpieva/psydb-schema-fields');
+
 var GenericLocationState = ({ type, customStateSchema }) => {
-    console.log(customStateSchema);
-    var schema = {
+    var schema = ExactObject({
         $schema: 'http://json-schema.org/draft-07/schema#',
         $id: `${prefix}/${type}/state`,
         type: 'object',
@@ -22,7 +25,7 @@ var GenericLocationState = ({ type, customStateSchema }) => {
             'systemPermissions',
             'internals',
         ]
-    }
+    })
 
     return schema;
 };

@@ -10,7 +10,7 @@ var RecordIdOnlyMessage = ({
     subtype,
     op,
 }) => Message({
-    type: createMessageType({ collection, op }),
+    type: createMessageType({ collection, op, type, subtype }),
     payload: ExactObject({
         properties: {
             id: Id(),

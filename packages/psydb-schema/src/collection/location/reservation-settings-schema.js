@@ -10,10 +10,10 @@ var {
 var reservationSettingsSchema = {
     type: 'object',
     properties: {
-        canBeReservedByInstituteIds: {
+        canBeReservedByResearchGroup: {
             type: 'array',
             default: [],
-            items: ForeignId('institute'),
+            items: ForeignId('researchGroup'),
         },
         disabledForReservationIntervals: {
             type: 'array',
@@ -32,6 +32,7 @@ var reservationSettingsSchema = {
     },
     required: [
         'canBeReservedByInstituteIds',
+        'disabledForReservationIntervals',
         'possibleReservationTimeInterval',
         'reservationSlotDuration',
     ],

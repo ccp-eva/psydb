@@ -13,12 +13,12 @@ var RecordPropsMessage = ({
     requiresId
 }) => {
     return Message({
-        type: createMessageType({ collection, op }),
+        type: createMessageType({ collection, op, type, subtype }),
         payload: ExactObject({
             properties: {
                 id: Id(),
-                ...(type && { type: { const: type }}),
-                ...(subtype && { subtype: { const: subtype }}),
+                //...(type && { type: { const: type }}),
+                //...(subtype && { subtype: { const: subtype }}),
                 
                 ...(schemas.state && { props: schemas.state }),
                 ...(schemas.scientific && { props: ExactObject({
@@ -34,8 +34,8 @@ var RecordPropsMessage = ({
             },
             required: [
                 ...(requiresId ? ['id'] : []),
-                ...(type ? ['type'] : []),
-                ...(subtype ? ['subtype'] : []),
+                //...(type ? ['type'] : []),
+                //...(subtype ? ['subtype'] : []),
                 'props',
             ]
         })

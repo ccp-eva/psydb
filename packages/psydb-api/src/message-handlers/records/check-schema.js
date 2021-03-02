@@ -1,4 +1,6 @@
 'use strict';
+var debug = require('debug')('psydb:api:message-handlers');
+
 var {
     createRecordMessageType,
     RecordIdOnlyMessage,
@@ -67,6 +69,24 @@ var createSchema = async ({ getRecordSchemas, message }) => {
 
         ]), [])
     );
+
+    var keyedMessageSchemas = {};
+    for (var it of messageSchemas) {
+        keyedMessageSchemas[it.messageType] = it.schema;
+    }
+
+    console.dir(messageSchemas, { depth: null });
+
+    var isValid = ajv.validate(
+        keyedMessageSchemas[message.type],
+        message
+    )
+    if (!isValid) {
+        debug('ajv errors', ajv.errors);
+        throw new ApiError(400, 'InvalidMessageSchema');
+    }
+
+    throw new Error();
 
     return messageSchemas;
 }
