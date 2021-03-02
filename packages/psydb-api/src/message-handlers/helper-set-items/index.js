@@ -1,5 +1,7 @@
 'use strict';
-var MessageHandlerGroup = require('../../lib/message-handler-group');
+var {
+    MessageHandlerGroup
+} = require('@mpieva/psydb-koa-event-middleware');
 
 var HelperSetItemsGroup = MessageHandlerGroup([
     require('./create'),
