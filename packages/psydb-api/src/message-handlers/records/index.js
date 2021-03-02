@@ -21,13 +21,17 @@ var checkAllowedAndPlausible = async ({
     } = parseRecordMessageType(messageType);
 
     if (op === 'create') {
-        if (!permissions.canCreateRecord({
+        if (!permissions.hasRootAccess) {
+            throw new ApiError(403);
+        }
+        // TODO
+        /*if (!permissions.canCreateRecord({
             collection,
             recordType,
             recordSubType
         })) {
             throw new ApiError(403);
-        }
+        }*/
     }
     else if (op === 'patch') {
         var record = await (
@@ -36,9 +40,13 @@ var checkAllowedAndPlausible = async ({
         if (!record) {
             throw new ApiError(400);
         }
-        if (!permssions.canPatchRecord(record)) {
+        if (!permissions.hasRootAccess) {
             throw new ApiError(403);
         }
+        // TODO
+        /*if (!permssions.canPatchRecord(record)) {
+            throw new ApiError(403);
+        }*/
     }
     // TODO: deleteGdpr
     else {
@@ -58,7 +66,7 @@ var triggerSystemEvents = async ({
 
     var { 
         op, collection, 
-        recordType, recordSubtype 
+        recordType, recordSubType 
     } = parseRecordMessageType(messageType);
 
     // FIXME: dispatch silently ignores messages when id is set
@@ -66,7 +74,18 @@ var triggerSystemEvents = async ({
     var channel = (
         rohrpost
         .openCollection(collection)
-        .openChannel({ id: payload.id, isNew: op === 'create' })
+        .openChannel({
+            id: payload.id,
+            isNew: op === 'create',
+            additionalChannelProps: (
+                op === 'create'
+                ? {
+                    ...(recordType && { type: recordType }),
+                    ...(recordSubType && { subtype: recordSubType })
+                }
+                : undefined
+            )
+        })
     );
 
     // TODO: check if personnelId is in the right place in the rohrpost messages

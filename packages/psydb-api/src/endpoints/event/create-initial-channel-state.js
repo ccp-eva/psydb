@@ -15,8 +15,8 @@ var createInitialChannelState = async ({
     storedRecord: stored,
     context
 }) => {
-    var { db, recordSchemas: allRecordSchemas } = context;
-    
+    var { db, getRecordSchemas } = context;
+
     // FIXME: ajv construction is a little slow
     var ajv = Ajv({
         // make the validate function create defaults for
@@ -45,6 +45,9 @@ var createInitialChannelState = async ({
     }
     else {
         var { type, subtype } = stored;
+        
+        var allRecordSchemas = await getRecordSchemas();
+
         var recordSchemas = allRecordSchemas.find({
             collection, type, subtype
         });
@@ -67,6 +70,7 @@ var createInitialChannelState = async ({
     // the default values of required properties 
     // when useDefaults == true
     var initialState = {};
+    //console.dir(channelStateSchema, { depth: null });
     ajv.validate(channelStateSchema, initialState);
 
     return {

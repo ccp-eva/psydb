@@ -78,12 +78,12 @@ describe('init-demo-system', function () {
             }
             expect(status).to.eql(200);
             
-            /*var r = await db.collection('helperSetItem').find().toArray();
-            console.log('###########################################');
-            console.log(r);
-            console.log('###########################################');*/
         }
 
+        var r = await db.collection('location').find().toArray();
+        console.log('###########################################');
+        console.dir(r.map(it => it.state), { depth: null });
+        console.log('###########################################');
     });
 
 });

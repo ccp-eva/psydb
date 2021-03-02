@@ -102,13 +102,13 @@ var triggerSystemEvents = async ({
     settings.recordLabelDefinition = omit(
         'isDirty', settings.recordLabelDefinition
     );
-    nextSettings.recordLabelDefinition.isDirty = false;
+    //nextSettings.recordLabelDefinition.isDirty = false;
 
     // handle fields
     var subChannels = metas.getSubChannels({
         collection: record.collection
     });
-    if (subChannels) {
+    if (subChannels.length) {
         subChannels.forEach(key => {
             settings.subChannelFields[key] = (
                 settings.subChannelFields[key].map(it => (
@@ -131,8 +131,8 @@ var triggerSystemEvents = async ({
         })
     }
 
+
     var diff = createDiff(record.state, nextState);
-    //console.dir(diff, { depth: null });
 
     var messages = createRohrpostMessagesFromDiff(diff, { prefix: '/state'});
     // FIXME: prefixin because we changed how underlying state
@@ -140,7 +140,14 @@ var triggerSystemEvents = async ({
     messages.forEach(m => {
         m.payload.prop = `/state${m.payload.prop}`;
     })
-    //console.dir(messages, { depth: null });
+
+        /*if (subChannels.length) {
+        console.dir(nextState, { depth: null });
+        console.dir(diff, { depth: null });
+        console.dir(messages, { depth: null });
+
+        //throw new Error();
+    }*/
 
     var channel = (
         rohrpost

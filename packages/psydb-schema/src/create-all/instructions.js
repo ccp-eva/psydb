@@ -21,10 +21,10 @@ var {
 
 var instructions = {
     location: {
-        default: ({ record }) => ({
-            state: GenericLocationState(record.state)
+        default: ({ type, customStateSchema }) => ({
+            state: GenericLocationState({ type, customStateSchema })
         }),
-        children: {
+        /*children: {
             building: {
                 default: ({ record }) => ({
                     state: BuildingState(record.state)
@@ -35,16 +35,16 @@ var instructions = {
                     state: RoomState(record.state)
                 }),
             }
-        }
+        }*/
     },
     
     subject: {
-        default: ({ record }) => ({
+        default: ({ type, customStateSchema }) => ({
             scientific: {
-                state: SubjectScientificState(record.state)
+                state: SubjectScientificState({ type, customStateSchema})
             },
             gdpr: {
-                state: SubjectGdprState(record.state)
+                state: SubjectGdprState({ type, customStateSchema })
             }
         })
     },

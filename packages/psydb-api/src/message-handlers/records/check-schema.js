@@ -16,24 +16,24 @@ var ApiError = require('../../lib/api-error'),
 
 var metas = require('@mpieva/psydb-schema').collectionMetadata;
 
-var createSchema = async ({ recordSchemas, message }) => {
+var createSchema = async ({ getRecordSchemas, message }) => {
     var { 
         op, collection, 
         recordType, recordSubType 
     } = parseRecordMessageType(message.type);
+
+    var recordSchemas = await getRecordSchemas();
+    //console.log(recordSchemas);
 
     var recordSchema = recordSchemas.find({
         collection,
         type: recordType,
         subtype: recordSubType
     });
-    console.dir(metas, { depth: null });
 
     if (!recordSchema) {
         throw new ApiError(400, 'RecordSchemaNotFound');
     }
-
-    console.log(recordSchema);
 
     var ajv = Ajv();
 

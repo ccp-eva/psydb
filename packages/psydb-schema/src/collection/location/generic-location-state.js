@@ -5,6 +5,7 @@ var prefix = require('./schema-id-prefix'),
     internalsSchema = require('./internals-schema');
 
 var GenericLocationState = ({ type, customStateSchema }) => {
+    console.log(customStateSchema);
     var schema = {
         $schema: 'http://json-schema.org/draft-07/schema#',
         $id: `${prefix}/${type}/state`,

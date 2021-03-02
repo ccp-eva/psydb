@@ -9,4 +9,6 @@ module.exports = {
     CustomTypeRecordCollection: require('./custom-type-record-collection'),
     CustomTypeLabelDefinition: require('./custom-type-label-definition'),
     CustomTypeFieldList: require('./custom-type-field-list'),
+
+    fieldDefinitionsToSchema: require('./field-definitions-to-schema'),
 }

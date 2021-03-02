@@ -11,6 +11,7 @@ module.exports = {
     PhoneList: require('./phone-list'),
     ForeignId: require('./foreign-id'),
     FullText: require('./full-text'),
+    HelperSetItemIdList: require('./helper-set-item-id-list'),
     Id: require('./id'),
     IdentifierString: require('./identifier-string'),
     ParticipationStatus: require('./participation-status'),
