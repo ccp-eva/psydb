@@ -8,6 +8,7 @@ var messages = [
         payload: {
             id: rootRoleId,
             props: {
+                name: 'ROOT-ROLE',
                 hasRootAccess: true,
             }
         }

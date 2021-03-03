@@ -10,33 +10,37 @@ var {
     Address,
     FullText,
     SaneString,
-    SpecialHumanName,
     ExactObject,
 } = require('@mpieva/psydb-schema-fields');
 
-var PersonnelGdprState = () => {
+var PersonnelGdprState = ({ enableInternalProps } = {}) => {
     var schema = ExactObject({
         $schema: 'http://json-schema.org/draft-07/schema#',
         $id: `${prefix}/gdpr/state`,
         type: 'object',
         additionalProperties: false, // TODO: this needs to be everywhere
         properties: {
-            name: SpecialHumanName(),
+            firstname: SaneString(),
+            lastname: SaneString(),
             // TODO: decide if that should be stored in the scientific part
             //shorthand: SaneString(),
             shorthand: SaneString({ minLength: 2 }),
+            
             // TODO: find out if thats even needed
-            address: Address({
+            /*address: Address({
                 required: []
-            }),
+            }),*/
+            
             emails: EmailList({
                 minItems: 1
             }),
             phones: PhoneList({
                 minItems: 1
             }),
+            
             // TODO: find out what thats good for
-            description: FullText(),
+            //description: FullText(),
+
             // TODO: internals need to be separated
             // and put here when we read the record
             // but as they cant be written
@@ -47,26 +51,33 @@ var PersonnelGdprState = () => {
             // by the general approach
             // TODO: prohibited keyword should give
             // reasonable error message
-            internals: ExactObject({
-                properties: {
-                    passwordHash: {
-                        type: 'string',
-                        default: '',
+            ...(enableInternalProps && {
+                internals: ExactObject({
+                    properties: {
+                        passwordHash: {
+                            type: 'string',
+                            default: '',
+                        },
                     },
-                },
-                required: [
-                    'passwordHash'
-                ],
-            }),
+                    required: [
+                        'passwordHash'
+                    ],
+                })
+            })
         },
         required: [
-            'name',
+            'firstname',
+            'lastname',
             'shorthand',
+            //'address',
             'emails',
             'phones',
-        ],
-        prohibited: [
-            'internals',
+            //'description',
+            ...(
+                enableInternalProps
+                ? [ 'internals' ]
+                : []
+            )
         ],
     })
 

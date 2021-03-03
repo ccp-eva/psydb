@@ -5,7 +5,8 @@ var inline = require('@cdxoo/inline-text'),
     //systemPermissionsSchema = require('../system-permissions-schema');
 
 var {
-    ExactObject
+    ExactObject,
+    SaneString,
 } = require('@mpieva/psydb-schema-fields');
 
 var SystemRoleState = ({
@@ -16,6 +17,7 @@ var SystemRoleState = ({
         $id: `${prefix}/state`,
         type: 'object',
         properties: {
+            name: SaneString(),
             // FIXME: im not sure that i need that
             // since system-role ly makes sense when the user can login
             /*canSignIn: {
