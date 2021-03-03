@@ -75,7 +75,7 @@ var createSchema = async ({ getRecordSchemas, message }) => {
         keyedMessageSchemas[it.messageType] = it.schema;
     }
 
-    console.dir(messageSchemas, { depth: null });
+    //console.dir(messageSchemas, { depth: null });
 
     var isValid = ajv.validate(
         keyedMessageSchemas[message.type],
