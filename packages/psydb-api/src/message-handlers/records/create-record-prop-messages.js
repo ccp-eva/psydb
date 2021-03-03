@@ -64,7 +64,7 @@ var createSubChannelMessages = ({
                     props: props[key],
                     prefix: (
                         prefix
-                        ? `${prefix}/state/${key}`
+                        ? `${prefix}/${key}`
                         : `/state/${key}`
                     ),
                 }) 
@@ -78,7 +78,7 @@ var createSubChannelMessages = ({
                 payload: {
                     prop: (
                         prefix 
-                        ? `${prefix}/state/${key}` 
+                        ? `${prefix}/${key}` 
                         : `/state/${key}`
                     ),
                     value: props[key]

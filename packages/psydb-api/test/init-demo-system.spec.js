@@ -80,9 +80,11 @@ describe('init-demo-system', function () {
             
         }
 
-        var r = await db.collection('location').find().toArray();
         console.log('###########################################');
-        console.dir(r.map(it => it.state), { depth: null });
+        var r = await db.collection('subject').find().toArray();
+        console.dir(r.map(it => it), { depth: null });
+        //var r = await db.collection('location').find().toArray();
+        //console.dir(r.map(it => it), { depth: null });
         console.log('###########################################');
     });
 
