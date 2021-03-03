@@ -82,11 +82,9 @@ var createSchema = async ({ getRecordSchemas, message }) => {
         message
     )
     if (!isValid) {
-        debug('ajv errors', ajv.errors);
+        debug('ajv errors', message.type, ajv.errors);
         throw new ApiError(400, 'InvalidMessageSchema');
     }
-
-    throw new Error();
 
     return messageSchemas;
 }

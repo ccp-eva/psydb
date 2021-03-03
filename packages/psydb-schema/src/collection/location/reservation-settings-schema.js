@@ -31,7 +31,7 @@ var reservationSettingsSchema = {
         },
     },
     required: [
-        'canBeReservedByInstituteIds',
+        'canBeReservedByResearchGroupIds',
         'disabledForReservationIntervals',
         'possibleReservationTimeInterval',
         'reservationSlotDuration',

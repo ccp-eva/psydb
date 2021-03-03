@@ -40,6 +40,10 @@ var metadata = {
         customTypes: false,
         createStateSchema: internals.SystemRoleState
     },
+    researchGroup: {
+        customTypes: false,
+        createStateSchema: internals.ResearchGroupState
+    },
     subject: {
         customTypes: true,
         subChannels: {

@@ -11,4 +11,6 @@ module.exports.SubjectScientificState = require('./subject/scientific-state');
 module.exports.SbjectGdprState = require('./subject/gdpr-state');
     
 module.exports.LocationState = require('./location/generic-location-state');
+
+module.exports.ResearchGroupState = require('./research-group/state');
 module.exports.SystemRoleState = require('./system-role/state');

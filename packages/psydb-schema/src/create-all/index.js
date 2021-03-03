@@ -2,14 +2,7 @@
 var createTypedSchemas = require('./create-typed-schemas'),
     instructions = require('./instructions');
 
-var {
-    PersonnelGdprState,
-    PersonnelScientificState,
-} = require('../collection/personnel/');
-
-var {
-    SystemRoleState,
-} = require('../collection/system-role/');
+var internals = require('../collection/');
 
 var createCollectionMessageSchemas = (
     require('../messages/collection-messages.js')
@@ -25,11 +18,14 @@ var createAll = ({ records }) => {
     var collectionSchemas = [
         ...typedSchemas,
         { collection: 'personnel', schemas: {
-            gdpr: PersonnelGdprState(),
-            scientific: PersonnelScientificState(),
+            gdpr: internals.PersonnelGdprState(),
+            scientific: internals.PersonnelScientificState(),
         }},
         { collection: 'systemRole', schemas: {
-            state: SystemRoleState(),
+            state: internals.SystemRoleState(),
+        }},
+        { collection: 'researchGroup', schemas: {
+            state: internals.ResearchGroupState(),
         }},
     ];
 
