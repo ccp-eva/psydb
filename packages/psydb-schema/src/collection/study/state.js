@@ -1,8 +1,10 @@
 'use strict';
 var inline = require('@cdxoo/inline-text'),
-    prefix = require('./schema-id-prefix');
+    prefix = require('./schema-id-prefix'),
+    systemPermissionsSchema = require('../system-permissions-schema');
 
 var {
+    ExactObject,
     ForeignId,
 
     SaneString,
@@ -10,18 +12,23 @@ var {
     DateTimeInterval,
 } = require('@mpieva/psydb-schema-fields');
 
-var createStudyState = (key, customInnerSchema) => {
-    var schema = {
+// TODO: stub; needs conditions handling somehow
+// also we need condition templates for study types
+var StudyState = ({
+    type,
+    customStateSchema,
+    enableInternalProps
+}) => {
+    var schema = ExactObject({
         $schema: 'http://json-schema.org/draft-07/schema#',
-        $id: `${prefix}/${key}/state`,
-        type: 'object',
+        $id: `${prefix}/${type}/state`,
         properties: {
             name: SaneString(),
             shorthand: SaneString(),
-            instituteIds: {
+            researchGroupIds: {
                 type: 'array',
                 minItems: 1,
-                items: ForeignId('institute'),
+                items: ForeignId('researchGroup'),
                 description: inline`
                     this list of ids will be used to get the permissions
                     for when we search in this studies context
@@ -31,28 +38,41 @@ var createStudyState = (key, customInnerSchema) => {
                     in certain cases
                 `,
             },
-            custom: customInnerSchema,
-            interals: {
-                type: 'object',
-                properties: {
-                    experimentOperatorTeamIds: {
-                        type: 'array',
-                        default: [],
-                        items: ForeignId('experimentOperatorTeam'),
+            
+            custom: customStateSchema,
+            systemPermissions: systemPermissionsSchema,
+            
+            ...(enableInternalProps && {
+                interals: {
+                    type: 'object',
+                    properties: {
+                        experimentOperatorTeamIds: {
+                            type: 'array',
+                            default: [],
+                            items: ForeignId('experimentOperatorTeam'),
+                        },
                     },
+                    required: [
+                        'experimentOperatorTeamIds',
+                    ],
                 },
-                required: [
-                    'experimentOperatorTeamIds',
-                ],
-            },
+            })
         },
         required: [
             'name',
-            'instituteIds',
+            'shorthand',
+            'researchGroupIds',
+            'custom',
+            'systemPermissions',
+            ...(
+                enableInternalProps
+                ? [ 'internals' ]
+                : []
+            ),
         ],
-    }
+    });
 
     return schema;
 };
 
-module.exports = createExperimentOperatorTeamState;
+module.exports = StudyState;

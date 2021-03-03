@@ -10,13 +10,14 @@ var {
 var FieldDefinition = ({
     type,
     props,
+    required,
 }) => ExactObject({
     properties: {
         key: IdentifierString(),
         type: { const: type },
         props: ExactObject({
             properties: props,
-            required: Object.keys(props)
+            required: required || Object.keys(props)
         })
     },
     required: [
@@ -52,7 +53,11 @@ var ForeignIdFieldDefinition = () => FieldDefinition({
             type: 'object',
             // TODO: { schoolId: { $data: '1/school' }}
         }
-    }
+    },
+    required: [
+        'collection',
+        'constraints',
+    ]
 })
 
 var AddressFieldDefinition = () => FieldDefinition({

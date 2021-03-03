@@ -1,5 +1,5 @@
 'use strict';
-var {
+/*var {
     GenericLocationState,
     BuildingState,
     RoomState,
@@ -17,12 +17,14 @@ var {
 
 var {
     ExternalOrganizationState,
-} = require('../collection/external-organization/');
+} = require('../collection/external-organization/');*/
+
+var internals = require('../collection/');
 
 var instructions = {
     location: {
         default: ({ type, customStateSchema }) => ({
-            state: GenericLocationState({ type, customStateSchema })
+            state: internals.LocationState({ type, customStateSchema })
         }),
         /*children: {
             building: {
@@ -41,10 +43,10 @@ var instructions = {
     subject: {
         default: ({ type, customStateSchema }) => ({
             scientific: {
-                state: SubjectScientificState({ type, customStateSchema})
+                state: internals.SubjectScientificState({ type, customStateSchema})
             },
             gdpr: {
-                state: SubjectGdprState({ type, customStateSchema })
+                state: internals.SubjectGdprState({ type, customStateSchema })
             }
         })
     },
@@ -52,20 +54,25 @@ var instructions = {
     externalPerson: {
         default: ({ record }) => ({
             scientific: {
-                state: ExternalPersonScientificState(record.state)
+                state: internals.ExternalPersonScientificState(record.state)
             },
             gdpr: {
-                state: ExternalPersonGdprState(record.state)
+                state: internals.ExternalPersonGdprState(record.state)
             }
         })
     },
 
     externalOrganization: {
         default: ({ record }) => ({
-            state: ExternalOrganizationState(record.state)
+            state: internals.ExternalOrganizationState(record.state)
         })
     },
 
+    study: {
+        default: ({ type, customStateSchema }) => ({
+            state: internals.StudyState({ type, customStateSchema })
+        })
+    }
 }
 
 module.exports = instructions;

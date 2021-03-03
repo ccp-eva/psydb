@@ -55,6 +55,10 @@ var metadata = {
         customTypes: true,
         createStateSchema: internals.LocationState
     },
+    study: {
+        customTypes: true,
+        createStateSchema: internals.StudyState
+    },
 };
 
 var getCollectionMetadata = ({ collection }) => {
