@@ -3,7 +3,7 @@ var expect = require('chai').expect,
     Ajv = require('ajv'),
     unmarshalDateTime = require('./unmarshal-date-time');
 
-describe('date-time-z', () => {
+describe('unmarchal-date-time', () => {
 
     it('does the thing', () => {
         var schema = {
