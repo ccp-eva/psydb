@@ -59,7 +59,7 @@ var metadata = {
         customTypes: true,
         createStateSchema: internals.StudyState
     },
-    study: {
+    experimentOperatorTeam: {
         customTypes: false,
         createStateSchema: internals.ExperimentOperatorTeamState
     },
