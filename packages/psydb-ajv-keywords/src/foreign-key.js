@@ -1,5 +1,7 @@
 'use strict';
 
+var stripArrayIndicationRegex = /\[\d+\]/g;
+
 var foreignKey = {
     modifying: false,
     schema: true,
@@ -13,7 +15,17 @@ var foreignKey = {
             this.foreignKeys = {}
         }
 
-        this.foreignKeys[path] = keywordProps;
+        var key = path.replace(stripArrayIndicationRegex, '');
+
+        if (!this.foreignKeys[key]) {
+            this.foreignKeys[key] = {
+                ...keywordProps,
+                values: [ data ],
+            };
+        }
+        else {
+            this.foreignKeys[key].values.push(data);
+        }
     }
 }
 

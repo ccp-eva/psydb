@@ -20,7 +20,7 @@ describe('foreign-key', () => {
                                         collection: 'foo',
                                         recordType: 'some-foo',
                                         constraints: {
-                                            '/state/someNumber': { $gt: 10 }
+                                            '.state.someNumber': { $gt: 10 }
                                         }
                                     }
                                 }
@@ -57,11 +57,75 @@ describe('foreign-key', () => {
 
         var context = {};
         var validate = ajv.compile(schema);
-        var isValid = validate.call(context, invalidData);
-        console.log(context);
-        console.log(validate.errors);
+        var isValid = validate.call(context, validData);
+        console.dir(context, { depth: null });
         expect(isValid).to.equal(true);
         console.log(validData);
     });
+
+    it('for arrays', () => {
+        var schema = {
+            type: 'object',
+            properties: {
+                arrayofobjects: {
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        properties: {
+                            someid: {
+                                type: 'string',
+                                foreignKey: {
+                                    collection: 'foo',
+                                    recordType: 'some-foo',
+                                }
+                            }
+                        }
+                    }
+                },
+                arrayofstrings: {
+                    type: 'array',
+                    items: {
+                        type: 'string',
+                        foreignKey: {
+                            collection: 'foo',
+                            recordType: 'some-foo',
+                        }
+                    }
+                }
+            }
+        };
+        
+        var ajv = Ajv({
+            allErrors: true,
+            verbose: true,
+            passContext: true,
+        });
+
+        ajv.addKeyword('foreignKey', foreignKey);
+
+        var validData = {
+            arrayofobjects: [
+                { someid: '123456' },
+                { someid: '234567' },
+            ],
+            arrayofstrings: [
+                '111',
+                '222'
+            ]
+        };
+
+        // =>
+        // db.collection('foo')
+        // .find({
+        //     type: 'some-foo',
+        //     _id: { $in: [ arrayofobjects[0].someid, ...] }
+        // })
+
+        var context = {};
+        var validate = ajv.compile(schema);
+        var isValid = validate.call(context, validData);
+
+        console.dir(context, { depth: null });
+    })
 
 });
