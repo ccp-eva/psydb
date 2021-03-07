@@ -16,3 +16,4 @@ module.exports.ResearchGroupState = require('./research-group/state');
 module.exports.SystemRoleState = require('./system-role/state');
 
 module.exports.StudyState = require('./study/state');
+module.exports.ExperimentOperatorTeamState = require('./experiment-operator-team/state');

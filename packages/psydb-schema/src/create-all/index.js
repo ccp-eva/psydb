@@ -27,6 +27,9 @@ var createAll = ({ records }) => {
         { collection: 'researchGroup', schemas: {
             state: internals.ResearchGroupState(),
         }},
+        { collection: 'experimentOperatorTeam', schemas: {
+            state: internals.ExperimentOperatorTeamState(),
+        }},
     ];
 
     var messageSchemas = [

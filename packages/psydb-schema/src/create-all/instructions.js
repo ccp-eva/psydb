@@ -26,18 +26,6 @@ var instructions = {
         default: ({ type, customStateSchema }) => ({
             state: internals.LocationState({ type, customStateSchema })
         }),
-        /*children: {
-            building: {
-                default: ({ record }) => ({
-                    state: BuildingState(record.state)
-                })
-            },
-            room: {
-                default: ({ record }) => ({
-                    state: RoomState(record.state)
-                }),
-            }
-        }*/
     },
     
     subject: {
@@ -72,7 +60,8 @@ var instructions = {
         default: ({ type, customStateSchema }) => ({
             state: internals.StudyState({ type, customStateSchema })
         })
-    }
+    },
+
 }
 
 module.exports = instructions;

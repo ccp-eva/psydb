@@ -59,6 +59,10 @@ var metadata = {
         customTypes: true,
         createStateSchema: internals.StudyState
     },
+    study: {
+        customTypes: false,
+        createStateSchema: internals.ExperimentOperatorTeamState
+    },
 };
 
 var getCollectionMetadata = ({ collection }) => {
