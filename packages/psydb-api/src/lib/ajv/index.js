@@ -8,10 +8,17 @@ var AjvWrapper = ({
     disableProhibitedKeyword = false,
     ...options
 } = {}) => {
+
+    var wrapper = {
+        errors: [],
+        validateContext: {},
+    };
+
     var ajv = new Ajv({
         allErrors: true,
         strictDefaults: 'log',
         strictKeywords: 'log',
+        passContext: true,
         // NOTE: useDefauls applies to missing _required_ properties
         // what we actually wanted was it being applied to _optional_
         // values
@@ -37,7 +44,24 @@ var AjvWrapper = ({
         ),
     ]);
 
-    return ajv;
+    ajv.addKeyword('foreignKey', psydbKeywords.foreignKey);
+
+    var initializeValidateContext = () => {
+        wrapper.validateContext = {};
+    }
+
+    wrapper.validate = (schema, data) => {
+        var compiledValidate = ajv.compile(schema);
+        
+        initializeValidateContext();
+        var isValid = compiledValidate.call(wrapper.validateContext, data);
+
+        wrapper.errors = ajv.errors;
+
+        return isValid;
+    };
+
+    return wrapper;
 }
 
 module.exports = AjvWrapper;
