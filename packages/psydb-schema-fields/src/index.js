@@ -3,6 +3,7 @@ module.exports = {
     Address: require('./address'),
     BiologicalGender: require('./biological-gender'),
     BlockedWeekdays: require('./blocked-weekdays'),
+    Color: require('./color'),
     DateTime: require('./date-time'),
     DateTimeInterval: require('./date-time-interval'),
     ExtBool: require('./ext-bool'),

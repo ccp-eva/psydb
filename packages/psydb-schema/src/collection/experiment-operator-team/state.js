@@ -28,10 +28,7 @@ var ExperimentOperatorTeamState = ({
                 minItems: 1,
                 items: ForeignId({
                     collection: 'personnel',
-                    constraints: {
-                        // FIXME:
-                        // can test; but thats stored in the role
-                    }
+                    custom: true
                 }),
             },
             ...(enableInternalProps && {

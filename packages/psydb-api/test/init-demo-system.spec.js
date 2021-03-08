@@ -81,9 +81,9 @@ describe('init-demo-system', function () {
         }
 
         console.log('###########################################');
-        var r = await db.collection('subject').find().toArray();
-        console.dir(r.map(it => it), { depth: null });
-        var r = await db.collection('systemRole').find().toArray();
+        //var r = await db.collection('subject').find().toArray();
+        //console.dir(r.map(it => it), { depth: null });
+        var r = await db.collection('experimentOperatorTeam').find().toArray();
         console.dir(r.map(it => it), { depth: null });
         console.log('###########################################');
     });
