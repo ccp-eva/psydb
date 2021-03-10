@@ -1,16 +1,17 @@
 'use strict';
 var traverse = require('json-schema-traverse'),
-    jsonpointer = require('jsonpointer');
+    jsonpointer = require('jsonpointer'),
+    convertPointer = require('@mpieva/json-schema-convert-pointer');
 
-var PointerMapping = require('./pointer-mapping'),
-    OneofResolver = require('./oneof-resolver');
+//var PointerMapping = require('./pointer-mapping');
+var OneofResolver = require('./oneof-resolver');
 
 var lazyResolve = (schema, data) => {
     // this wrapper enables us to replace the schema root if required
     var evilRefHack = { schema };
 
-    var pointerMapping = PointerMapping(),
-        oneofResolver = OneofResolver();
+    //var pointerMapping = PointerMapping();
+    var oneofResolver = OneofResolver();
     var transformations = [];
 
     traverse(schema, { allKeys: false }, (...traverseArgs) => {
@@ -25,9 +26,10 @@ var lazyResolve = (schema, data) => {
             propNameOrIndex
         ] = traverseArgs;
 
-        pointerMapping.addFromTraverse(...traverseArgs);
+        //pointerMapping.addFromTraverse(...traverseArgs);
         
-        var dataPointer = pointerMapping.get(inSchemaPointer);
+        //var dataPointer = pointerMapping.get(inSchemaPointer);
+        var dataPointer = convertPointer(inSchemaPointer);
         var currentData = jsonpointer.get(data, dataPointer);
 
         if (currentSchema.oneOf) {
