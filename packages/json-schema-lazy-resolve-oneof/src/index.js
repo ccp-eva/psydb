@@ -14,22 +14,21 @@ var lazyResolve = (schema, data) => {
     };
     var transformations = [];
 
-    traverse(schema, { allKeys: false }, (
-        currentSchema,
-        inSchemaPointer,
-        rootSchema,
-        parentInSchemaPointer,
-        parentKeyword,
-        parentSchema,
-        propNameOrIndex
-    ) => {
-
-        updatePointerMapping({
-            pointerMapping,
-            parentInSchemaPointer,
+    traverse(schema, { allKeys: false }, (...traverseArgs) => {
+        var [
+            currentSchema,
             inSchemaPointer,
-            propNameOrIndex,
-        });
+            rootSchema,
+            parentInSchemaPointer,
+            parentKeyword,
+            parentSchema,
+            propNameOrIndex
+        ] = traverseArgs;
+
+        updatePointerMapping(
+            pointerMapping,
+            ...traverseArgs,
+        );
 
         var dataPointer = pointerMapping[inSchemaPointer];
         var currentData = jsonpointer.get(data, dataPointer);
@@ -46,8 +45,6 @@ var lazyResolve = (schema, data) => {
             var branches = currentSchema.oneOf,
                 branchWasFound = false;
             for (var [index, branchSchema] of branches.entries()) {
-                console.log(branchSchema);
-                
                 var lazyResolveDataValue = data[lazyResolveProp];
                 var lazyResolveSchema = (
                     branchSchema.properties[lazyResolveProp]
@@ -89,8 +86,6 @@ var lazyResolve = (schema, data) => {
         from = `/schema${from}`;
         to = `/schema${to}`;
 
-        console.log(from, to);
-
         jsonpointer.set(
             evilRefHack,
             from,
@@ -101,12 +96,20 @@ var lazyResolve = (schema, data) => {
     return evilRefHack.schema;
 }
 
-var updatePointerMapping = ({
+var updatePointerMapping = (
     pointerMapping,
-    parentInSchemaPointer,
-    inSchemaPointer,
-    propNameOrIndex,
-}) => {
+    ...traverseArgs
+) => {
+    var [
+        currentSchema,
+        inSchemaPointer,
+        rootSchema,
+        parentInSchemaPointer,
+        parentKeyword,
+        parentSchema,
+        propNameOrIndex
+    ] = traverseArgs;
+
     var mappedParentPointer = pointerMapping[parentInSchemaPointer];
     if (
         pointerMapping[inSchemaPointer] === undefined
@@ -124,6 +127,7 @@ var updatePointerMapping = ({
             : mappedParentPointer
         )
     }
+
 }
 
 var decide = ({
