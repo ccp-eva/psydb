@@ -1,11 +1,14 @@
 'use strict';
 var PointerMapping = () => {
-    var proto = {};
-    
-    var mapping = Object.create(proto);
+    var mapping = {},
+        wrapper = {};
+
     mapping[''] = ''; // static root schema pointer
 
-    proto.addFromTraverse = (
+    wrapper.all = () => ({ ...mapping });
+    wrapper.get = (k) => (mapping[k]);
+
+    wrapper.addFromTraverse = (
         currentSchema,
         inSchemaPointer,
         rootSchema,
@@ -33,7 +36,7 @@ var PointerMapping = () => {
         }
     };
 
-    return mapping;
+    return wrapper;
 }
 
 module.exports = PointerMapping;
