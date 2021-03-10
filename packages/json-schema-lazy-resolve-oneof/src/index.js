@@ -2,16 +2,13 @@
 var traverse = require('json-schema-traverse'),
     jsonpointer = require('jsonpointer');
 
-var convertToDataPointer = (schemaPointer) => {
-    // properties(.*) => (.*)
-}
+var PointerMapping = require('./pointer-mapping');
 
 var lazyResolve = (schema, data) => {
+    // this wrapper enables us to replace the schema root if required
     var evilRefHack = { schema };
-    // FIXME: this is the most navie appraoch i guess
-    var pointerMapping = {
-        '': '', // for root schema pointer
-    };
+
+    var pointerMapping = PointerMapping();
     var transformations = [];
 
     traverse(schema, { allKeys: false }, (...traverseArgs) => {
@@ -25,10 +22,7 @@ var lazyResolve = (schema, data) => {
             propNameOrIndex
         ] = traverseArgs;
 
-        updatePointerMapping(
-            pointerMapping,
-            ...traverseArgs,
-        );
+        pointerMapping.addFromTraverse(...traverseArgs);
 
         var dataPointer = pointerMapping[inSchemaPointer];
         var currentData = jsonpointer.get(data, dataPointer);
@@ -81,6 +75,8 @@ var lazyResolve = (schema, data) => {
 
     });
 
+    console.log(pointerMapping);
+
     for (var i = transformations.length - 1; i >= 0; i -= 1) {
         var { from, to } = transformations[i];
         from = `/schema${from}`;
@@ -94,40 +90,6 @@ var lazyResolve = (schema, data) => {
     }
 
     return evilRefHack.schema;
-}
-
-var updatePointerMapping = (
-    pointerMapping,
-    ...traverseArgs
-) => {
-    var [
-        currentSchema,
-        inSchemaPointer,
-        rootSchema,
-        parentInSchemaPointer,
-        parentKeyword,
-        parentSchema,
-        propNameOrIndex
-    ] = traverseArgs;
-
-    var mappedParentPointer = pointerMapping[parentInSchemaPointer];
-    if (
-        pointerMapping[inSchemaPointer] === undefined
-    ) {
-        var shouldAppendPropName = (
-            // FIXME: this might be evil
-            // oneOf/allOf have numbers in this parameter
-            // real property key are always strings i.e.
-            // { [1]: 'foo' } => { '1': 'foo' }
-            typeof propNameOrIndex === 'string'
-        )
-        pointerMapping[inSchemaPointer] = (
-            shouldAppendPropName
-            ? mappedParentPointer + '/' + propNameOrIndex
-            : mappedParentPointer
-        )
-    }
-
 }
 
 var decide = ({
