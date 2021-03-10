@@ -29,6 +29,21 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/json-schema-convert-pointer",
+       "projectFolder": "packages/json-schema-convert-pointer",
+       "reviewCategory": "production"
+    },
+    {
+       "packageName": "@mpieva/json-schema-lazy-resolve-oneof",
+       "projectFolder": "packages/json-schema-lazy-resolve-oneof",
+       "reviewCategory": "production"
+    },
+    {
+       "packageName": "@mpieva/json-schema-deconstruct-arrays",
+       "projectFolder": "packages/json-schema-deconstruct-arrays",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/mongo-mq",
        "projectFolder": "packages/mongo-mq",
        "reviewCategory": "production"
