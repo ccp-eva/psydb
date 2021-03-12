@@ -8,7 +8,13 @@ var traverse = require('json-schema-traverse'),
 //var PointerMapping = require('./pointer-mapping');
 var OneofResolver = require('./oneof-resolver');
 
-var lazyResolveAll = (schema, data) => {
+// TODO: lazyResolvePropPointers a mapping of pointers within the schema
+// that is used instead of the inschema "lazyResolveProp" when
+// the schema can not be edited by the user
+// e.g.:
+// { '/properties/foo/': 'isEnabled', ... }
+// where the key refers to a prop containing a oneOf declaration
+var lazyResolveAll = (schema, data, lazyResolvePropPointers) => {
     var schemaParts = deconstructArrays(schema);
     //console.dir(schemaParts, { depth: null });
     
