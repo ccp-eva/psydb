@@ -37,32 +37,45 @@ describe('basic-behavior', () => {
             ]
         }
 
-        var resolvedFalseSchema = lazyResolve(schema, { isEnabled: false });
-        expect(resolvedFalseSchema).to.eql({
-            type: 'object',
-            properties: {
-                isEnabled: {
-                    type: 'boolean',
-                    enum: [ false ]
-                },
-            }
-        });
-
-        var resolvedTrueSchema = lazyResolve(schema, { isEnabled: true });
-        expect(resolvedTrueSchema).to.eql({
-            type: 'object',
-            properties: {
-                isEnabled: {
-                    type: 'boolean',
-                    enum: [ true ]
-                },
-                [1]: {
-                    type: 'string',
-                },
-                otherProp: {
-                    type: 'string',
+        var resolvedFalseSchemas = lazyResolve(schema, { isEnabled: false });
+        expect(resolvedFalseSchemas).to.eql([
+            {
+                type: 'schema',
+                inSchemaPointer: '',
+                schema: {
+                    type: 'object',
+                    properties: {
+                        isEnabled: {
+                            type: 'boolean',
+                            enum: [ false ]
+                        },
+                    }
                 }
             }
-        });
+        ]);
+
+        var resolvedTrueSchemas = lazyResolve(schema, { isEnabled: true });
+        expect(resolvedTrueSchemas).to.eql([
+            {
+                type: 'schema',
+                inSchemaPointer: '',
+                schema: {
+                    type: 'object',
+                    properties: {
+                        isEnabled: {
+                            type: 'boolean',
+                            enum: [ true ]
+                        },
+                        [1]: {
+                            type: 'string',
+                        },
+                        otherProp: {
+                            type: 'string',
+                        }
+                    }
+                }
+            }
+        ]);
+
     });
 });

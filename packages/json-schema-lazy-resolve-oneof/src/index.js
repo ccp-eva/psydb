@@ -1,10 +1,65 @@
 'use strict';
 var traverse = require('json-schema-traverse'),
     jsonpointer = require('jsonpointer'),
+    inline = require('@cdxoo/inline-text'),
+    deconstructArrays = require('@mpieva/json-schema-deconstruct-arrays'),
     convertPointer = require('@mpieva/json-schema-convert-pointer');
 
 //var PointerMapping = require('./pointer-mapping');
 var OneofResolver = require('./oneof-resolver');
+
+var lazyResolveAll = (schema, data) => {
+    var schemaParts = deconstructArrays(schema);
+    //console.dir(schemaParts, { depth: null });
+    
+    var resolvedParts = [];
+    for (var part of schemaParts) {
+        var { inSchemaPointer, schema } = part;
+        
+        var dataPointer = convertPointer(inSchemaPointer),
+            partData = jsonpointer.get(data, dataPointer);
+
+        var requiredType = 'array';
+        // we need to check this for the schema root as it might
+        // or might not be an array; other parts are always array
+        if (inSchemaPointer === '') {
+            requiredType = jsonpointer.get(schema, inSchemaPointer).type;
+        }
+
+        //console.log(inSchemaPointer, dataPointer, partData, requiredType);
+        if (requiredType === 'array') {
+            resolvedParts.push({
+                type: 'array',
+                inSchemaPointer,
+                itemSchemas: lazyResolveArrayPart(schema, partData)
+            });
+        }
+        else {
+            resolvedParts.push({
+                type: 'schema',
+                inSchemaPointer,
+                schema: lazyResolve(schema, partData)
+            });
+        }
+    }
+
+    return resolvedParts;
+}
+
+var lazyResolveArrayPart = (schema, data) => {
+    if (!Array.isArray(data)) {
+        return [];
+    }
+    if (!data.length) {
+        return [];
+    }
+
+    var resolved = [];
+    for (var item of data) {
+        resolved.push(lazyResolve(schema, item));
+    }
+    return resolved;
+}
 
 var lazyResolve = (schema, data) => {
     // this wrapper enables us to replace the schema root if required
@@ -15,7 +70,6 @@ var lazyResolve = (schema, data) => {
     var transformations = [];
 
     traverse(schema, { allKeys: false }, (...traverseArgs) => {
-
         var [
             currentSchema,
             inSchemaPointer,
@@ -31,6 +85,16 @@ var lazyResolve = (schema, data) => {
         //var dataPointer = pointerMapping.get(inSchemaPointer);
         var dataPointer = convertPointer(inSchemaPointer);
         var currentData = jsonpointer.get(data, dataPointer);
+
+        // NOTE: this should never happen as we deconstruct schema arrays
+        if (currentSchema.type === 'array' && currentSchema.items) {
+            throw new Error(inline`
+                array with item definition found in "${inSchemaPointer}";
+                its not possible to resolve wihtin array item definitions,
+                the items in the corresponding array must be resolved
+                individially
+            `);
+        }
 
         if (currentSchema.oneOf) {
             oneofResolver.resolve({
@@ -57,4 +121,4 @@ var lazyResolve = (schema, data) => {
     return evilRefHack.schema;
 }
 
-module.exports = lazyResolve;
+module.exports = lazyResolveAll;

@@ -63,59 +63,97 @@ describe('complex-schema-behavior', () => {
                         // individual element
                         // => should be ignored
                         // <= we need a breakable traverse for this
-                        /*ary01: {
+                        ary01: {
                             type: 'array',
                             items: {
+                                lazyResolveProp: 'type',
                                 oneOf: [
                                     { type: 'object', properties: {
-                                        keyword: { const: 'red' },
-                                        redValue: { type: 'string' }
+                                        type: { const: 'a' },
+                                        aValue: { type: 'string' }
+                                    }},
+                                    { type: 'object', properties: {
+                                        type: { const: 'b' },
+                                        bValue: { type: 'string' }
                                     }},
                                 ]
                             }
-                        }*/
+                        }
                     }
                 }
             ]
         }
 
-        var resolvedSchema = lazyResolve(schema, {
+        var resolvedSchemas = lazyResolve(schema, {
             isEnabled: true,
             nested01: {
                 type: 'bar'
             },
             nested02: {
                 keyword: 'blue',
-            }
+            },
+            ary01: [
+                { type: 'b', bValue: 'baz' },
+                { type: 'b', bValue: 'bar' },
+                { type: 'a', bValue: 'foo' },
+            ]
         });
 
-        console.dir(resolvedSchema, { depth: null });
+        console.dir(resolvedSchemas, { depth: null });
         
-        expect(resolvedSchema).to.eql({
-            type: 'object',
-            properties: {
-                isEnabled: {
-                    type: 'boolean',
-                    enum: [ true ]
-                },
-                otherProp: {
-                    type: 'string',
-                },
-                nested01: {
+        expect(resolvedSchemas).to.eql([
+            {
+                type: 'schema',
+                inSchemaPointer: '',
+                schema: {
                     type: 'object',
                     properties: {
-                        type: { const: 'bar' },
-                        barName: { type: 'string' },
-                    }
-                },
-                nested02: {
-                    type: 'object',
-                    properties: {
-                        keyword: { enum: [ 'blue', 'green' ] },
-                        bgValue: { type: 'string' }
+                        isEnabled: {
+                            type: 'boolean',
+                            enum: [ true ]
+                        },
+                        otherProp: {
+                            type: 'string',
+                        },
+                        nested01: {
+                            type: 'object',
+                            properties: {
+                                type: { const: 'bar' },
+                                barName: { type: 'string' },
+                            }
+                        },
+                        nested02: {
+                            type: 'object',
+                            properties: {
+                                keyword: { enum: [ 'blue', 'green' ] },
+                                bgValue: { type: 'string' }
+                            }
+                        },
+                        ary01: {
+                            type: 'array'
+                        }
                     }
                 }
+            },
+
+            {
+                type: 'array',
+                inSchemaPointer: '/oneOf/1/properties/ary01',
+                itemSchemas: [
+                    { type: 'object', properties: {
+                        type: { const: 'b' },
+                        bValue: { type: 'string' }
+                    }},
+                    { type: 'object', properties: {
+                        type: { const: 'b' },
+                        bValue: { type: 'string' }
+                    }},
+                    { type: 'object', properties: {
+                        type: { const: 'a' },
+                        aValue: { type: 'string' }
+                    }},
+                ]
             }
-        });
+        ]);
     });
 });
