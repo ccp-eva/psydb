@@ -30,7 +30,9 @@ var reservationSettingsSchema = {
                 canBeReservedByResearchGroupIds: {
                     type: 'array',
                     default: [],
-                    items: ForeignId('researchGroup'),
+                    items: ForeignId({
+                        collection: 'researchGroup'
+                    }),
                 },
                 disabledForReservationIntervals: {
                     type: 'array',

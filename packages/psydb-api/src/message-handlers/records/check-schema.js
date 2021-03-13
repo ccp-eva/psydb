@@ -34,6 +34,7 @@ var createSchema = async ({ getRecordSchemas, message }) => {
     });
 
     if (!recordSchema) {
+        debug(message);
         throw new ApiError(400, 'RecordSchemaNotFound');
     }
 

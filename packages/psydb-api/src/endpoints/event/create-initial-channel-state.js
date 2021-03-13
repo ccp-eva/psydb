@@ -43,6 +43,11 @@ var createInitialChannelState = async ({
             enableInternalProps: true
         });
     }
+    /*else if (collection === 'teamSchedule') {
+        channelStateSchema = ScheduleState({
+
+        })
+    }*/
     else {
         var { type, subtype } = stored;
         

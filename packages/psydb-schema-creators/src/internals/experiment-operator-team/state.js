@@ -1,10 +1,8 @@
 'use strict';
-var inline = require('@cdxoo/inline-text'),
-    prefix = require('./schema-id-prefix');
+var inline = require('@cdxoo/inline-text');
 
 var {
     ForeignId,
-
     SaneString,
     Color,
     DateTimeInterval,
@@ -14,8 +12,6 @@ var ExperimentOperatorTeamState = ({
     enableInternalProps
 } = {}) => {
     var schema = {
-        $schema: 'http://json-schema.org/draft-07/schema#',
-        $id: `${prefix}/state`,
         type: 'object',
         properties: {
             name: SaneString(),

@@ -7,6 +7,7 @@ var {
     ExactObject,
     ForeignId,
 
+    IdentifierString,
     SaneString,
     Color,
     DateTimeInterval,
@@ -39,6 +40,33 @@ var StudyState = ({
                 `,
             },
             
+            externalLocationTypes: {
+                type: 'array',
+                items: IdentifierString(),
+                // TODO: enum of location types that arent reservable
+                // FIXME: not really possible to exclude some atm
+                // custom types would need to have researchGroupIds
+                // in their permissions ... not sure if they have atm
+                // usableByResearchGroupIds
+                description: inline`
+                    list of location types arent reservable directly;
+                    away teams can be send there to conduct experiments;
+                    e.g. kindergardens, schools etc
+                `
+            },
+            reservableLocationIds: {
+                type: 'array',
+                items: ForeignId({
+                    collection: 'location',
+                    custom: true,
+                }),
+                description: inline`
+                    list of location ids; theese locations that are
+                    directly reservable and will be used to conduct
+                    experiments such as institute rooms
+                ` 
+            },
+
             custom: customStateSchema,
             systemPermissions: systemPermissionsSchema,
             
