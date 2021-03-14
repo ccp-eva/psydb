@@ -43,6 +43,7 @@ dependencies:
   deep-diff: 1.0.2
   graphql: 15.3.0
   inflation: 2.0.0
+  is-what: 3.14.1
   json-schema-traverse: 1.0.0
   jsonpointer: 4.1.0
   koa-body: 4.2.0
@@ -4815,13 +4816,14 @@ packages:
     dependencies:
       '@cdxoo/inline-text': 1.0.1
       chai: 4.2.0
+      copy-anything: 2.0.3
       json-schema-traverse: 1.0.0
       jsonpointer: 4.1.0
       mocha: 8.1.3
     dev: false
     name: '@rush-temp/json-schema-deconstruct-arrays'
     resolution:
-      integrity: sha512-7gIRdYNeNcOcReIhVjq72FCRuKvDOFw76e2+BG77jJ3gw6qtVfCzDA204NlrEpJlFyf1wWlCgWy/bWyLmKtxeA==
+      integrity: sha512-AMMJ+8b8hdA/Cm/aVSD0o/ER7ZXZMZKGTTpcP7dmyyqBf81Kkw9E3DEhOzt61PDuVIHVExjp3a2GAn05/LUVhg==
       tarball: 'file:projects/json-schema-deconstruct-arrays.tgz'
     version: 0.0.0
   'file:projects/json-schema-lazy-resolve-oneof.tgz':
@@ -4834,7 +4836,7 @@ packages:
     dev: false
     name: '@rush-temp/json-schema-lazy-resolve-oneof'
     resolution:
-      integrity: sha512-O+XZR9a+y063MPBpxuBZ9tBrfVu7tnX2omxqdy4IVLaRVfRZ+A7hjDm0hJAt4Mau4TMD8OwssTs8sdU8rgalNg==
+      integrity: sha512-xF+grR7xWrZ/yCakyrkKkscmrUmm8xJh2jyl1kWnYURC2peGHAYy2UkG1DfFcqH3Kb/skIus6H0pI8Ik6FRF/g==
       tarball: 'file:projects/json-schema-lazy-resolve-oneof.tgz'
     version: 0.0.0
   'file:projects/json-schema-to-graphql.tgz':
@@ -5038,11 +5040,12 @@ packages:
     dependencies:
       '@cdxoo/inline-text': 1.0.1
       chai: 4.2.0
+      is-what: 3.14.1
       mocha: 8.1.3
     dev: false
     name: '@rush-temp/psydb-schema-helpers'
     resolution:
-      integrity: sha512-QPnXzgJ7E7UReY5l0zQ/He6qJXPInHP08Fs/qm6sJuTbTaXrTLkgurY9ww9kVHsJoMoliBZc0DiYe/xa5dnDkQ==
+      integrity: sha512-xxEcUzeSdN5R1Uj/iSEZyo88PlhPf5Za3eU8Fs3ZHAdPHb5b9quGhd7RJwoEOZaXCZNpGeBPlQms5zTRjpis/g==
       tarball: 'file:projects/psydb-schema-helpers.tgz'
     version: 0.0.0
   'file:projects/psydb-schema-primitives.tgz':
@@ -5138,6 +5141,7 @@ specifiers:
   deep-diff: ~1.0.2
   graphql: ~15.3.0
   inflation: ~2.0.0
+  is-what: ~3.14.0
   json-schema-traverse: ~1.0.0
   jsonpointer: ~4.1.0
   koa-body: ~4.2.0

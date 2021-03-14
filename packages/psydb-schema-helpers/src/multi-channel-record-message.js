@@ -1,23 +1,31 @@
 'use strict';
 var { isPlainObject } = require('is-what');
 
+var {
+    ExactObject,
+    Id
+} = require('@mpieva/psydb-schema-fields');
+
+var createMessageType = require('./create-record-message-type'),
+    Message = require('./message');
+
 var subChannelKeys = [
     'scientific',
     'gdpr'
 ];
 
 var createPayloadPropsSchema = ({
-    subChannelCustomPropSchemas,
+    subChannelCustomFieldDefinitions,
     subChannelStateSchemaCreators
 }) => {
     var subChannelSchemas = {};
     for (var key of subChannelKeys) {
         var SchemaCreator = subCannelStateSchemaCreators[key],
-            customPropSchemas = subChannelCustomPropSchemas[key];
+            customFieldDefinitions = subChannelCustomFieldDefinitions[key];
         
         subChannelSchemas[key] = SchemaCreator({
             enableInternalProps: false,
-            customPropSchemas
+            customFieldDefinitions
         });
     }
 
@@ -39,7 +47,7 @@ var MultiChannelRecordCreateMessage = ({
 
     staticCreatePropSchemas,
 
-    subChannelCustomPropSchemas,
+    subChannelCustomFieldDefinitions,
     subChannelStateSchemaCreators
 }) => {
     
@@ -56,7 +64,7 @@ var MultiChannelRecordCreateMessage = ({
     var staticCreatePropKeys = Object.keys(staticCreatePropSchemas);
 
     var paylodPropsSchema = createPayloadPropsSchema({
-        subChannelCustomPropSchemas,
+        subChannelCustomFieldDefinitions,
         subChannelStateSchemaCreators
     });
 
@@ -70,7 +78,7 @@ var MultiChannelRecordCreateMessage = ({
                 ...staticCreatePropSchemas,
 
                 required: [
-                    ...staticCreatePropKeys
+                    ...staticCreatePropKeys,
                     'props',
                 ]
             },
@@ -78,16 +86,16 @@ var MultiChannelRecordCreateMessage = ({
     });
 }
 
-var MultiChannelRecordPatchmessage = ({
+var MultiChannelRecordPatchMessage = ({
     collection,
     type,
 
-    subChannelCustomPropSchemas,
+    subChannelCustomFieldDefinitions,
     subChannelStateSchemaCreators
 }) => {
 
     var subChannelSchemas = createSubChannelSchemas({
-        subChannelCustomPropSchemas,
+        subChannelCustomFieldDefinitions,
         subChannelStateSchemaCreators
     });
 
@@ -113,6 +121,22 @@ var MultiChannelRecordPatchmessage = ({
     });
 }
 
+var MultiChannelRecordDeleteGdprMessage = ({
+    collection,
+    type,
+}) => {
+    return Message({
+        type: createMessageType({ collection, type, op: 'deleteGdpr' }),
+        payload: ExactObject({
+            properties: {
+                id: Id(),
+                required: [
+                    'id',
+                ]
+            },
+        })
+    });
+}
 
 var MultiChannelRecordMessage = (options) => {
     var {
@@ -121,7 +145,7 @@ var MultiChannelRecordMessage = (options) => {
         op,
         staticCreatePropSchemas,
 
-        customSubChannelPropSchemas,
+        subChannelCustomFieldDefinitions,
         subChannelStateSchemaCreators
     } = params;
     
@@ -131,14 +155,20 @@ var MultiChannelRecordMessage = (options) => {
     if (!op) {
         throw new Error('param "op" is required');
     }
-    if (!createSubChannelStateSchemaCallback) {
-        throw new Error('param "createSubChannelStateSchemaCallbacks" is required');
+    if (!subChannelStateSchemaCreators) {
+        throw new Error('param "subChannelStateSchemaCreators" is required');
     }
     if (
-        customSubChannelPropSchemas !== undefined
-        && !isPlainObject(customSubChannelPropSchemas)
+        subChannelCustomFieldDefinitions !== undefined
+        && !isPlainObject(subChannelCustomFieldDefinitions)
     ) {
-        throw new Error('param "customSubChannelPropSchema" must be a plain object');
+        throw new Error('param "subChannelCustomFieldDefinitions" must be a plain object');
+    }
+    if (
+        staticCreatePropSchemas !== undefined
+        && !isPlainObject(staticCreatePropSchemas)
+    ) {
+        throw new Error('param "customSubChannelPropSchemas" must be a plain object');
     }
 
     switch (op) {
@@ -147,9 +177,11 @@ var MultiChannelRecordMessage = (options) => {
         case 'patch':
             return MultiChannelRecordPatchMessage(options);
         case 'deleteGdpr':
-            return MiltiChannelRecordDeleteGdprMessage(options);
+            return MultiChannelRecordDeleteGdprMessage(options);
         default:
             throw new Error(`unknown message op "${op}"`);
     }
 
 }
+
+module.exports = MultiChannelRecordMessage;

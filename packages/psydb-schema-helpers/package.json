@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@mpieva/psydb-schema-fields": "~0.1.0-alpha",
-    "@cdxoo/inline-text": "~1.0.1"
+    "@cdxoo/inline-text": "~1.0.1",
+    "is-what": "~3.14.0"
   }
 }
