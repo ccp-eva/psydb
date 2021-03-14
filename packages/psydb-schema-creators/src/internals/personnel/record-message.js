@@ -9,7 +9,7 @@ var internals = require('../');
 var PersonnelRecordMessage = ({
     op, // create/patch/delete
 }) => {
-    return SingleChannelRecordMessage({
+    return MultiChannelRecordMessage({
         op,
         collection: 'personnel',
         subChannelStateSchemaCreators: {

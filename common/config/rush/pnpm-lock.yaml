@@ -25,6 +25,7 @@ dependencies:
   '@rush-temp/psydb-koa-event-middleware': 'file:projects/psydb-koa-event-middleware.tgz'
   '@rush-temp/psydb-mongo-adapter': 'file:projects/psydb-mongo-adapter.tgz'
   '@rush-temp/psydb-schema': 'file:projects/psydb-schema.tgz'
+  '@rush-temp/psydb-schema-creators': 'file:projects/psydb-schema-creators.tgz'
   '@rush-temp/psydb-schema-fields': 'file:projects/psydb-schema-fields.tgz'
   '@rush-temp/psydb-schema-helpers': 'file:projects/psydb-schema-helpers.tgz'
   '@rush-temp/psydb-schema-primitives': 'file:projects/psydb-schema-primitives.tgz'
@@ -5025,6 +5026,18 @@ packages:
       integrity: sha512-h5MCDQLBnB3Hc5c2FM2xjnTZHOh0ziyd1mKKgJWRXbdJxeuqMJqQkEB02exxbrohHhJHC29B13Bf1sNI9/LU6g==
       tarball: 'file:projects/psydb-mongo-adapter.tgz'
     version: 0.0.0
+  'file:projects/psydb-schema-creators.tgz':
+    dependencies:
+      '@cdxoo/inline-text': 1.0.1
+      chai: 4.2.0
+      jsonpointer: 4.1.0
+      mocha: 8.1.3
+    dev: false
+    name: '@rush-temp/psydb-schema-creators'
+    resolution:
+      integrity: sha512-z2jdIL0mviL47U11vbFPKPIXjZMVkqNVcG4RF+4deD9kQYip9zxbCxCaZRh/FlvWzZ/BxTgxyPwLJ+8cZxhMEA==
+      tarball: 'file:projects/psydb-schema-creators.tgz'
+    version: 0.0.0
   'file:projects/psydb-schema-fields.tgz':
     dependencies:
       '@cdxoo/inline-text': 1.0.1
@@ -5123,6 +5136,7 @@ specifiers:
   '@rush-temp/psydb-koa-event-middleware': 'file:./projects/psydb-koa-event-middleware.tgz'
   '@rush-temp/psydb-mongo-adapter': 'file:./projects/psydb-mongo-adapter.tgz'
   '@rush-temp/psydb-schema': 'file:./projects/psydb-schema.tgz'
+  '@rush-temp/psydb-schema-creators': 'file:./projects/psydb-schema-creators.tgz'
   '@rush-temp/psydb-schema-fields': 'file:./projects/psydb-schema-fields.tgz'
   '@rush-temp/psydb-schema-helpers': 'file:./projects/psydb-schema-helpers.tgz'
   '@rush-temp/psydb-schema-primitives': 'file:./projects/psydb-schema-primitives.tgz'

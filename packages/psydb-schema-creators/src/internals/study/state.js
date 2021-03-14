@@ -1,5 +1,6 @@
 'use strict';
 var inline = require('@cdxoo/inline-text'),
+    CustomProps = require('../../common/custom-props'),
     systemPermissionsSchema = require('../../common/system-permissions-schema');
 
 var {

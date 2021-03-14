@@ -8,5 +8,5 @@ module.exports = {
         scientific: internals.PersonnelScientificState,
         gdpr: internals.PersonnelGdprState,
     },
-    RecordMessage: internals.SystemRoleRecordMessage 
+    RecordMessage: internals.PersonnelRecordMessage 
 }

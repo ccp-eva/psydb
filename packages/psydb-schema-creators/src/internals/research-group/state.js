@@ -23,6 +23,12 @@ var ResearchGroupState = ({} = {}) => {
             // or normal read/write by researchgroup?
             //
         },
+        required: [
+            'name',
+            'shorthand',
+            'address',
+            'description'
+        ]
     })
 
     return schema;

@@ -10,7 +10,7 @@ module.exports = {
     CustomTypeLabelDefinition: require('./custom-type-label-definition'),
     CustomTypeFieldList: require('./custom-type-field-list'),
 
-    SingleChannelrecordMesage: require('./single-channel-record-message'),
+    SingleChannelRecordMessage: require('./single-channel-record-message'),
     MultiChannelRecordMessage: require('./multi-channel-record-message'),
 
     fieldDefinitionsToSchema: require('./field-definitions-to-schema'),

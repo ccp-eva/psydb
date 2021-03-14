@@ -1,5 +1,8 @@
 'use strict';
-var { isPlainObject } = require('is-what');
+var {
+    isArray,
+    isPlainObject
+} = require('is-what');
 
 var {
     ExactObject,
@@ -12,16 +15,18 @@ var createMessageType = require('./create-record-message-type'),
 var SingleChannelRecordCreateMessage = ({
     collection,
     type,
+    staticCreatePropSchemas,
     customFieldDefinitions,
     stateSchemaCreator,
 }) => {
+    staticCreatePropSchemas = staticCreatePropSchemas || {};
 
-    if (staticCreatePropKeys.id !== undefined) {
+    if (staticCreatePropSchemas.id !== undefined) {
         throw new Error(
             'staticCreatePropSchemas may not contain key "id"'
         )
     }
-    if (staticCreatePropKeys.props !== undefined) {
+    if (staticCreatePropSchemas.props !== undefined) {
         throw new Error(
             'staticCreatePropSchemas may not contain key "props"'
         )
@@ -39,12 +44,11 @@ var SingleChannelRecordCreateMessage = ({
                 }),
                 
                 ...staticCreatePropSchemas,
-
-                required: [
-                    ...staticCreatePropKeys,
-                    'props',
-                ]
             },
+            required: [
+                ...staticCreatePropKeys,
+                'props',
+            ]
         })
     });
 }
@@ -64,16 +68,16 @@ var SingleChannelRecordPatchMessage = ({
                     enableInternalProps: false,
                     customFieldDefinitions
                 }),
-                required: [
-                    'id',
-                    'props',
-                ]
             },
+            required: [
+                'id',
+                'props',
+            ]
         })
     });
 }
 
-var SingleChannelRecordMessage = (options) => {
+var SingleChannelRecordMessage = (params) => {
     var {
         collection,
         type,
@@ -95,9 +99,9 @@ var SingleChannelRecordMessage = (options) => {
     }
     if (
         customFieldDefinitions !== undefined
-        && !isPlainObject(customFieldDefinitions)
+        && !isArray(customFieldDefinitions)
     ) {
-        throw new Error('param "customFieldDefinitions" must be a plain object');
+        throw new Error('param "customFieldDefinitions" must be an array');
     }
     if (
         staticCreatePropSchemas !== undefined
@@ -108,9 +112,9 @@ var SingleChannelRecordMessage = (options) => {
 
     switch (op) {
         case 'create':
-            return RecordCreateMessage(options);
+            return SingleChannelRecordCreateMessage(params);
         case 'patch':
-            return RecordPatchMessage(options);
+            return SingleChannelRecordPatchMessage(params);
         default:
             throw new Error(`unknown message op "${op}"`);
     }

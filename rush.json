@@ -94,6 +94,11 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/psydb-schema-creators",
+       "projectFolder": "packages/psydb-schema-creators",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-schema-helpers",
        "projectFolder": "packages/psydb-schema-helpers",
        "reviewCategory": "production"

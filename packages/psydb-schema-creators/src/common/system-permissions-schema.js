@@ -63,7 +63,11 @@ var systemPermissionsSchema = ExactObject({
                 retained to that it can be unhidden again
             `,
         }
-    }
+    },
+    required: [
+        'accessRightsByResearchGroup',
+        'isHiddenForresearchGroupIds'
+    ]
 });
 
 module.exports = systemPermissionsSchema;

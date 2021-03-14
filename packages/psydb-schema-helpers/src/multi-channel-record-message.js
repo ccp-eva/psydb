@@ -18,10 +18,13 @@ var createPayloadPropsSchema = ({
     subChannelCustomFieldDefinitions,
     subChannelStateSchemaCreators
 }) => {
+    subChannelCustomFieldDefinitions = subChannelCustomFieldDefinitions || {};
+    
+
     var subChannelSchemas = {};
     for (var key of subChannelKeys) {
-        var SchemaCreator = subCannelStateSchemaCreators[key],
-            customFieldDefinitions = subChannelCustomFieldDefinitions[key];
+        var SchemaCreator = subChannelStateSchemaCreators[key],
+            customFieldDefinitions = subChannelCustomFieldDefinitions[key] || [];
         
         subChannelSchemas[key] = SchemaCreator({
             enableInternalProps: false,
@@ -50,20 +53,21 @@ var MultiChannelRecordCreateMessage = ({
     subChannelCustomFieldDefinitions,
     subChannelStateSchemaCreators
 }) => {
+    staticCreatePropSchemas = staticCreatePropSchemas || {};
     
-    if (staticCreatePropKeys.id !== undefined) {
+    if (staticCreatePropSchemas.id !== undefined) {
         throw new Error(
             'staticCreatePropSchemas may not contain key "id"'
         )
     }
-    if (staticCreatePropKeys.props !== undefined) {
+    if (staticCreatePropSchemas.props !== undefined) {
         throw new Error(
             'staticCreatePropSchemas may not contain key "props"'
         )
     }
     var staticCreatePropKeys = Object.keys(staticCreatePropSchemas);
 
-    var paylodPropsSchema = createPayloadPropsSchema({
+    var payloadPropsSchema = createPayloadPropsSchema({
         subChannelCustomFieldDefinitions,
         subChannelStateSchemaCreators
     });
@@ -76,12 +80,11 @@ var MultiChannelRecordCreateMessage = ({
                 props: payloadPropsSchema,
 
                 ...staticCreatePropSchemas,
-
-                required: [
-                    ...staticCreatePropKeys,
-                    'props',
-                ]
             },
+            required: [
+                ...staticCreatePropKeys,
+                'props',
+            ]
         })
     });
 }
@@ -94,29 +97,23 @@ var MultiChannelRecordPatchMessage = ({
     subChannelStateSchemaCreators
 }) => {
 
-    var subChannelSchemas = createSubChannelSchemas({
+    var payloadPropsSchema = createPayloadPropsSchema({
         subChannelCustomFieldDefinitions,
         subChannelStateSchemaCreators
     });
+
 
     return Message({
         type: createMessageType({ collection, type, op: 'patch' }),
         payload: ExactObject({
             properties: {
                 id: Id(),
-                props: ExactObject({
-                    properties: { ...subChannelSchemas },
-                    required: [
-                        'scientific'
-                        // gdpr is optional in the message
-                        // because that subchannel megth have been removed
-                    ]
-                }),
-                required: [
-                    'id',
-                    'props',
-                ]
+                props: payloadPropsSchema,
             },
+            required: [
+                'id',
+                'props',
+            ]
         })
     });
 }
@@ -130,15 +127,15 @@ var MultiChannelRecordDeleteGdprMessage = ({
         payload: ExactObject({
             properties: {
                 id: Id(),
-                required: [
-                    'id',
-                ]
             },
+            required: [
+                'id',
+            ]
         })
     });
 }
 
-var MultiChannelRecordMessage = (options) => {
+var MultiChannelRecordMessage = (params) => {
     var {
         collection,
         type,
@@ -173,11 +170,11 @@ var MultiChannelRecordMessage = (options) => {
 
     switch (op) {
         case 'create':
-            return MultiChannelRecordCreateMessage(options);
+            return MultiChannelRecordCreateMessage(params);
         case 'patch':
-            return MultiChannelRecordPatchMessage(options);
+            return MultiChannelRecordPatchMessage(params);
         case 'deleteGdpr':
-            return MultiChannelRecordDeleteGdprMessage(options);
+            return MultiChannelRecordDeleteGdprMessage(params);
         default:
             throw new Error(`unknown message op "${op}"`);
     }

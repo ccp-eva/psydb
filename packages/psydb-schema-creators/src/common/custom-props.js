@@ -2,6 +2,7 @@
 var fields = require('@mpieva/psydb-schema-fields');
 
 var CustomProps = ({ customFieldDefinitions }) => {
+    customFieldDefinitions = customFieldDefinitions || [];
 
     var schemaProperties = {};
     for (var definition of customFieldDefinitions) {
