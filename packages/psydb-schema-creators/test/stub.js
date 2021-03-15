@@ -2,6 +2,10 @@
 var expect = require('chai').expect;
 
 var {
+    customRecordType,
+    helperSet,
+    helperSetItem,
+
     experimentOperatorTeam,
     location,
     personnel,
@@ -17,7 +21,11 @@ var customFieldDefinitions = [
 describe('stub', () => {
     it('does stuff', () => {
         var schema;
-        
+
+        schema = customRecordType.State({ collection: 'location' });
+        schema = helperSet.State();
+        schema = helperSetItem.State();
+
         schema = experimentOperatorTeam.State();
         schema = experimentOperatorTeam.RecordMessage({
             op: 'create',
