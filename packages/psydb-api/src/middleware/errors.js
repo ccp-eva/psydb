@@ -9,6 +9,10 @@ var createErrorsMiddleware = () => async (context, next) => {
         await next();
     }
     catch (error) {
+
+        // FIXME: should have condition
+        //debug(error);
+
         var shouldEmitError = false;
         
         var statusCode,

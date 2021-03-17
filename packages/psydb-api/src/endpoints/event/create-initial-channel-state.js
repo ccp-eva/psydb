@@ -150,6 +150,7 @@ var createInitialChannelState = async ({
     }
 }
 
+// FIXME: redundant
 var findCustomRecordType = async ({ db, collection, type }) => {
     var customRecordTypes = await (
         db.collection('customRecordType').find(
@@ -171,7 +172,7 @@ var findCustomRecordType = async ({ db, collection, type }) => {
         `);
     }
 
-    console.log(customRecordTypes);
+    //console.log(customRecordTypes);
     var customRecordType = customRecordTypes[0];
     if (customRecordType.isNew) {
         throw new Error(inline`

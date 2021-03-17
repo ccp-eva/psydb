@@ -6,7 +6,7 @@ var ApiError = require('../../../lib/api-error'),
 
 var BaseSchema = require('./schema'),
     FieldSchemas = require('./field-schemas'),
-    metas = require('@mpieva/psydb-schema').collectionMetadata;
+    allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
 var shouldRun = (message) => (
     message.type === 'custom-record-types/add-field-definition'
@@ -59,15 +59,24 @@ var checkAllowedAndPlausible = async ({
     var record = cache.record = records[0];
     cache.lastKnownEventId = record.events[0]._id;
 
-    
-    var subChannels = metas.getSubChannels({
-        collection: record.collection
-    });
-    if (subChannels.length > 0) {
+    var collectionCreatorData = allSchemaCreators[record.collection];
+    if (!collectionCreatorData) {
+        throw new Error(inline`
+            no creator data found for collection
+            "${record.collection}"
+        `);
+    }
+
+    var {
+        hasSubChannels,
+        subChannelKeys,
+    } = collectionCreatorData;
+
+    if (hasSubChannels) {
         if (!subChannelKey) {
             throw new ApiError(400, 'SubChannelKeyRequired');
         }
-        else if (!subChannels.includes(subChannelKey)) {
+        else if (!subChannelKeys.includes(subChannelKey)) {
             throw new ApiError(400, 'UnsupportedSubChannelKey');
         }
     }

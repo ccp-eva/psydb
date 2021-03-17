@@ -11,7 +11,7 @@ var ApiError = require('../../../lib/api-error'),
 var createRohrpostMessagesFromDiff = require('../../../lib/diff-to-rohrpost');
 
 var Schema = require('./schema'),
-    metas = require('@mpieva/psydb-schema').collectionMetadata;
+    allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
 var shouldRun = (message) => (
     message.type === 'custom-record-types/commit-settings'
@@ -104,12 +104,22 @@ var triggerSystemEvents = async ({
     );
     //nextSettings.recordLabelDefinition.isDirty = false;
 
+    var collectionCreatorData = allSchemaCreators[record.collection];
+    if (!collectionCreatorData) {
+        throw new Error(inline`
+            no creator data found for collection
+            "${record.collection}"
+        `);
+    }
+
+    var {
+        hasSubChannels,
+        subChannelKeys,
+    } = collectionCreatorData;
+
     // handle fields
-    var subChannels = metas.getSubChannels({
-        collection: record.collection
-    });
-    if (subChannels.length) {
-        subChannels.forEach(key => {
+    if (hasSubChannels) {
+        subChannelKeys.forEach(key => {
             settings.subChannelFields[key] = (
                 settings.subChannelFields[key].map(it => (
                     omit([ 'isNew', 'isDirty'], it)
