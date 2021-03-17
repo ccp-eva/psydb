@@ -36,7 +36,7 @@ var testingPermissionsSchema = ExactObject({
             `,
         }),
         
-        canBeTestedExternally: ExtBoolPermissionList({
+        canBeTestedByAwayTeam: ExtBoolPermissionList({
             description: inline`
                 list of items describing if a subject can be tested
                 by an away team belonging to a research group, i.e.

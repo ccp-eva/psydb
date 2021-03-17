@@ -7,11 +7,13 @@ var internals = require('../');
 
 var SubjectRecordMessage = ({
     op, // create/patch/delete
+    type,
     subChannelCustomFieldDefinitions,
 }) => {
     return MultiChannelRecordMessage({
         op,
         collection: 'subject',
+        type,
         subChannelCustomFieldDefinitions,
         subChannelStateSchemaCreators: {
             scientific: internals.SubjectScientificState,

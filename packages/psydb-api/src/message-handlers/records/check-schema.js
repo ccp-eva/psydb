@@ -50,6 +50,8 @@ var checkSchema = async ({ db, getRecordSchemas, message }) => {
             db, collection, type: recordType
         });
 
+        args.type = recordType;
+
         if (hasSubChannels) {
             args.subChannelCustomFieldDefinitions = (
                 customRecordType.state.settings.subChannelFields
