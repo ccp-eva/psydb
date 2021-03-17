@@ -56,7 +56,7 @@ var AjvWrapper = ({
         initializeValidateContext();
         var isValid = compiledValidate.call(wrapper.validateContext, data);
 
-        wrapper.errors = ajv.errors;
+        wrapper.errors = compiledValidate.errors;
 
         return isValid;
     };
