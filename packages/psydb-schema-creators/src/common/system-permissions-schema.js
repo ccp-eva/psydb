@@ -66,7 +66,7 @@ var systemPermissionsSchema = ExactObject({
     },
     required: [
         'accessRightsByResearchGroup',
-        'isHiddenForresearchGroupIds'
+        'isHiddenForResearchGroupIds'
     ]
 });
 
