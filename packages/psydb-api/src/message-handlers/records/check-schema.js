@@ -57,7 +57,7 @@ var checkSchema = async ({ db, getRecordSchemas, message }) => {
         }
         else {
             args.customFieldDefinitions = (
-                customRecordType.state.settings.field   
+                customRecordType.state.settings.fields
             );
         }
     }
@@ -65,7 +65,7 @@ var checkSchema = async ({ db, getRecordSchemas, message }) => {
     var schema = RecordMessage({ ...args });
 
     var ajv = Ajv();
-    
+
     var isValid = ajv.validate(
         schema,
         message
