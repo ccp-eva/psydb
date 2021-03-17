@@ -43,6 +43,14 @@ module.exports = {
         State: internals.StudyState,
         RecordMessage: internals.StudyRecordMessage 
     },
+    subject: {
+        ...metadata.subject,
+        subChannelStateSchemaCreators: {
+            scientific: internals.SubjectScientificState,
+            gdpr: internals.SubjectGdprState,
+        },
+        RecordMessage: internals.SubjectRecordMessage
+    },
     systemRole: {
         ...metadata.systemRole,
         State: internals.SystemRoleState,

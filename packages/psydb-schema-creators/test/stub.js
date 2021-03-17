@@ -11,6 +11,7 @@ var {
     personnel,
     researchGroup,
     study,
+    subject,
     systemRole
 } = require('../src');
 
@@ -59,6 +60,12 @@ describe('stub', () => {
         schema = systemRole.State();
         schema = systemRole.RecordMessage({ op: 'create' });
         schema = systemRole.RecordMessage({ op: 'patch' });
+
+        schema = subject.subChannelStateSchemaCreators.scientific();
+        schema = subject.subChannelStateSchemaCreators.gdpr();
+        schema = subject.RecordMessage({ op: 'create' });
+        schema = subject.RecordMessage({ op: 'patch' });
+        schema = subject.RecordMessage({ op: 'deleteGdpr' });
 
         console.dir(schema, { depth: null });
     })

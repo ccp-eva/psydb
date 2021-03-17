@@ -8,8 +8,9 @@ module.exports.PersonnelScientificState = require('./personnel/scientific-state'
 module.exports.PersonnelGdprState = require('./personnel/gdpr-state');
 module.exports.PersonnelRecordMessage = require('./personnel/record-message');
     
-//module.exports.SubjectScientificState = require('./subject/scientific-state');
-//module.exports.SubjectGdprState = require('./subject/gdpr-state');
+module.exports.SubjectScientificState = require('./subject/scientific-state');
+module.exports.SubjectGdprState = require('./subject/gdpr-state');
+module.exports.SubjectRecordMessage = require('./subject/record-message');
     
 module.exports.LocationState = require('./location/state');
 module.exports.LocationRecordMessage = require('./location/record-message');

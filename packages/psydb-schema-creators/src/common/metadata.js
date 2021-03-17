@@ -43,7 +43,14 @@ module.exports = {
         hasCustomTypes: true,
         hasSubChannels: false,
     },
-    sysstemRole: {
+    subject: {
+        collection: 'subject',
+        isGenericRecord: true,
+        hasCustomTypes: true,
+        hasSubChannels: true,
+        subChannelKeys: ['scientific', 'gdpr'],
+    },
+    systemRole: {
         collection: 'systemRole',
         isGenericRecord: true,
         hasCustomTypes: false,

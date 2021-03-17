@@ -9,8 +9,8 @@ var {
 } = require('@mpieva/psydb-schema-fields');
 
 var GenericLocationState = ({
+    enableInternalProps,
     customFieldDefinitions,
-    enableInternalProps
 } = {}) => {
     var schema = ExactObject({
         type: 'object',
