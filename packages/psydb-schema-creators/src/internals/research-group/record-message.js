@@ -10,7 +10,7 @@ var ResearchGroupRecordMessage = ({
 }) => {
     return SingleChannelRecordMessage({
         op,
-        collection: 'systemRole',
+        collection: 'researchGroup',
         stateSchemaCreator: internals.ResearchGroupState
     })
 }
