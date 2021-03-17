@@ -31,10 +31,11 @@ var testingPermissionsSchema = ExactObject({
         canBeTestedInhouse: ExtBoolPermissionList({
             description: inline`
                 list of items describing if a subject can be tested
-                by a researcg group at a location belonging to the research
+                by a research group at a location belonging to the research
                 group itself
             `,
         }),
+        
         canBeTestedExternally: ExtBoolPermissionList({
             description: inline`
                 list of items describing if a subject can be tested
