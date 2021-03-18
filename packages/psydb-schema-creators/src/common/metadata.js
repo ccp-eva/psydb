@@ -55,5 +55,13 @@ module.exports = {
         isGenericRecord: true,
         hasCustomTypes: false,
         hasSubChannels: false,
-    }
+    },
+    reservation: {
+        collection: 'reservation',
+        isGenericRecord: false,
+        hasCustomTypes: false,
+        hasFixedTypes: true,
+        fixedTypes: [ 'awayTeam', 'inhouse' ],
+        hasSubChannels: false,
+    },
 }

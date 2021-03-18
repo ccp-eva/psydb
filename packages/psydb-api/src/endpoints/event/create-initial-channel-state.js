@@ -36,6 +36,7 @@ var createInitialChannelState = async ({
     var {
         isGenericRecord,
         hasCustomTypes,
+        hasFixedTypes,
         hasSubChannels,
         subChannelStateSchemaCreators,
     } = collectionCreatorData;
@@ -90,11 +91,21 @@ var createInitialChannelState = async ({
         args.collection = stored.collection;
     }
 
-    var StateCreator = (
-        hasSubChannels
-        ? subChannelStateSchemaCreators[subChannelKey]
-        : collectionCreatorData.State
-    );
+    var StateCreator = undefined;
+    if (hasSubChannels) {
+        StateCreator = (
+            subChannelStateSchemaCreators[subChannelKey]
+        );
+    }
+    else if (hasFixedTypes) {
+        StateCreator = (
+            collectionCreatorData
+            .fixedTypeStateSchemaCreators[record.type]
+        );
+    }
+    else {
+        StateCreator = collectionCreatorData.State;
+    }
 
     var channelStateSchema = StateCreator({ ...args });
 

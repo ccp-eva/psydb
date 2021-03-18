@@ -6,7 +6,7 @@ var allHandlers = [
     require('./custom-record-types'),
     require('./records'),
     require('./set-personnel-password'),
-    require('./team-schedule'),
+    require('./reservation'),
 ];
 
 module.exports = allHandlers;

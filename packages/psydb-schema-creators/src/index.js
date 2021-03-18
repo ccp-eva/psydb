@@ -56,4 +56,11 @@ module.exports = {
         State: internals.SystemRoleState,
         RecordMessage: internals.SystemRoleRecordMessage 
     },
+    reservation: {
+        ...metadata.reservation,
+        fixedTypeStateSchemaCreators: {
+            awayTeam: internals.AwayTeamReservationState,
+            inhouse: internals.InhouseReservationState
+        }
+    }
 }

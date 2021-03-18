@@ -69,6 +69,12 @@ var triggerSystemEvents = async ({
         recordType, recordSubType 
     } = parseRecordMessageType(messageType);
 
+    var {
+        id,
+        props,
+        ...additionalCreateProps
+    } = payload;
+
     // FIXME: dispatch silently ignores messages when id is set
     // but record doesnt exist
     var channel = (
@@ -81,7 +87,8 @@ var triggerSystemEvents = async ({
                 op === 'create'
                 ? {
                     ...(recordType && { type: recordType }),
-                    ...(recordSubType && { subtype: recordSubType })
+                    ...(recordSubType && { subtype: recordSubType }),
+                    ...additionalCreateProps
                 }
                 : undefined
             )

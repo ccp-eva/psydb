@@ -4,14 +4,14 @@ var {
     ForeignId,
     IdentifierString,
     SaneString,
-    DateTime,
+    DateTimeInterval,
 } = require('@mpieva/psydb-schema-fields');
 
 var { Message } = require('@mpieva/psydb-schema-helpers');
 
 var createSchema = ({} = {}) => (
     Message({
-        type: `team-schedule/reserve-slot`,
+        type: `reservation/reserve-awayteam-slot`,
         payload: ExactObject({
             properties: {
                 id: IdentifierString(),
@@ -21,13 +21,11 @@ var createSchema = ({} = {}) => (
                             collection: 'experimentOperatorTeam',
                             custom: true
                         }),
-                        start: DateTime(),
-                        end: DateTime(),
+                        interval: DateTimeInterval(),
                     },
                     required: [
                         'experimentOperatorTeamId',
-                        'start',
-                        'end'
+                        'interval'
                     ]
                 })
             },
