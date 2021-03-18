@@ -37,7 +37,6 @@ var ExperimentOperatorTeamState = ({
         required: [
             'name',
             'color',
-            'studyId',
             'personnelIds',
             ...(
                 enableInternalProps
