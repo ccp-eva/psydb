@@ -9,13 +9,16 @@ var ApiError = require('../../../lib/api-error'),
 var {
     checkStudyExists,
     checkExperimentOperatorTeamExists,
+    checkLocationExists,
+
     checkConflictingTeamReservations,
+    checkConflictingLocationReservations,
 } = require('../util');
 
 var createSchema = require('./schema');
 
 var shouldRun = (message) => (
-    message.type === 'reservation/reserve-awayteam-slot'
+    message.type === 'reservation/reserve-inhouse-slot'
 )
 
 var checkSchema = async ({ message }) => {
@@ -42,6 +45,7 @@ var checkAllowedAndPlausible = async ({
     var {
         studyId,
         experimentOperatorTeamId,
+        locationId,
         interval,
     } = message.payload.props;
 
@@ -57,8 +61,18 @@ var checkAllowedAndPlausible = async ({
         experimentOperatorTeamId
     });
 
+    // TODO: use FK to check existance
+    checkLocationExists({
+        db,
+        locationId
+    });
+
     checkConflictingTeamReservations({
         db, experimentOperatorTeamId, interval
+    });
+    
+    checkConflictingLocationReservations({
+        db, locationId, interval
     });
 }
 
@@ -78,7 +92,7 @@ var triggerSystemEvents = async ({
             id,
             isNew: true,
             additionalChannelProps: {
-                type: 'awayTeam'
+                type: 'inhouse'
             }
         })
     );
@@ -115,6 +129,14 @@ var triggerSystemEvents = async ({
             payload: {
                 prop: '/state/experimentOperatorTeamId',
                 value: props.experimentOperatorTeamId,
+            }
+        },
+        {
+            type: 'put',
+            personnelId,
+            payload: {
+                prop: '/state/locationId',
+                value: props.locationId,
             }
         },
         {
