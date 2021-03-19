@@ -1,4 +1,8 @@
 'use strict';
+var debug = require('debug')('psydb:api:message-handlers');
+
+var nanoid = require('nanoid').nanoid;
+
 var ApiError = require('../../../lib/api-error'),
     Ajv = require('../../../lib/ajv');
 
@@ -106,8 +110,16 @@ var triggerSystemEvents = async ({
             type: 'put',
             personnelId,
             payload: {
+                prop: '/state/studyId',
+                value: props.studyId,
+            }
+        },
+        {
+            type: 'put',
+            personnelId,
+            payload: {
                 prop: '/state/experimentOperatorTeamId',
-                value: props.experimentOperatorId,
+                value: props.experimentOperatorTeamId,
             }
         },
         {

@@ -17,6 +17,10 @@ var createSchema = ({} = {}) => (
                 id: IdentifierString(),
                 props: ExactObject({
                     properties: {
+                        studyId: ForeignId({
+                            collection: 'study',
+                            custom: true
+                        }),
                         experimentOperatorTeamId: ForeignId({
                             collection: 'experimentOperatorTeam',
                             custom: true
@@ -24,6 +28,7 @@ var createSchema = ({} = {}) => (
                         interval: DateTimeInterval(),
                     },
                     required: [
+                        'studyId',
                         'experimentOperatorTeamId',
                         'interval'
                     ]

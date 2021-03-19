@@ -5,6 +5,7 @@ var {
     ExactObject,
     ForeignId,
     DateTimeInterval,
+    Id,
 } = require('@mpieva/psydb-schema-fields');
 
 var InhouseReservationState = ({
@@ -25,6 +26,9 @@ var InhouseReservationState = ({
                 },
             }),
 
+            studyId: ForeignId({
+                collection: 'study',
+            }),
             experimentOperatorTeamId: ForeignId({
                 collection: 'experimentOperatorTeam',
             }),

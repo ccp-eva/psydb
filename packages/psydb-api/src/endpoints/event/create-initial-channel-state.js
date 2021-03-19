@@ -100,7 +100,7 @@ var createInitialChannelState = async ({
     else if (hasFixedTypes) {
         StateCreator = (
             collectionCreatorData
-            .fixedTypeStateSchemaCreators[record.type]
+            .fixedTypeStateSchemaCreators[stored.type]
         );
     }
     else {
