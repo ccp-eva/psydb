@@ -2,7 +2,7 @@
 var {
     ExactObject,
     ForeignId,
-    IdentifierString,
+    Id,
     SaneString,
     DateTimeInterval,
 } = require('@mpieva/psydb-schema-fields');
@@ -14,7 +14,7 @@ var createSchema = ({} = {}) => (
         type: `reservation/reserve-awayteam-slot`,
         payload: ExactObject({
             properties: {
-                id: IdentifierString(),
+                id: Id(),
                 props: ExactObject({
                     properties: {
                         studyId: ForeignId({

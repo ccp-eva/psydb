@@ -29,3 +29,5 @@ module.exports.ExperimentOperatorTeamRecordMessage = require('./experiment-opera
 
 module.exports.AwayTeamReservationState = require('./reservation/away-team-state');
 module.exports.InhouseReservationState = require('./reservation/inhouse-state');
+
+module.exports.ExperimentState = require('./experiment/state');

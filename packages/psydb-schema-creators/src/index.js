@@ -62,5 +62,9 @@ module.exports = {
             awayTeam: internals.AwayTeamReservationState,
             inhouse: internals.InhouseReservationState
         }
+    },
+    experiment: {
+        ...metadata.experiment,
+        State: internals.ExperimentState,
     }
 }

@@ -19,6 +19,28 @@ var PersonnelScientificState = () => {
             systemRoleId: ForeignId({
                 collection: 'systemRole'
             }),
+            // TODO: better version; implement before doing
+            // actual permission work
+            /*
+            hasRootAccess: {
+                type: 'boolean',
+                default: false
+            },
+            researchGroups: {
+                type: 'array',
+                default: [],
+                items: ExactObject({
+                    properties: {
+                        researchGroupId: ForeignId({
+                            collection: 'researchGroup',
+                        }),
+                        systemRoleId: ForeignId({
+                            collection:: 'systemRole',
+                        })
+                    }
+                })
+            },
+            */
             researchGroupIds: {
                 type: 'array',
                 default: [],

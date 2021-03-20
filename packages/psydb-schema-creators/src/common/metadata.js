@@ -64,4 +64,11 @@ module.exports = {
         fixedTypes: [ 'awayTeam', 'inhouse' ],
         hasSubChannels: false,
     },
+    experiment: {
+        collection: 'experiment',
+        isGenericRecord: false,
+        hasCustomTypes: false,
+        hasFixedTypes: false,
+        hasSubChannels:false,
+    },
 }
