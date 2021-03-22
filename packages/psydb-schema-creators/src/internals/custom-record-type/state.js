@@ -26,6 +26,14 @@ var CustomRecordTypeState = ({
     if (!collectionMeta.hasCustomTypes) {
         throw new Error(`custom types for "${collection}" are disabled`);
     }
+
+    // NOTE: i hate doing this
+    // TODO
+    var canHaveDateOfBirthField = false;
+    if (collection === 'subject') {
+        canHaveDateOfBirthField = true;
+    }
+
     var subChannels = (
         collectionMeta.hasSubChannels
         ? collectionMeta.subChannelKeys

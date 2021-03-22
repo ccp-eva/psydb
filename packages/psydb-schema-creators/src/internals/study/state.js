@@ -13,11 +13,71 @@ var {
     DateTimeInterval,
 } = require('@mpieva/psydb-schema-fields');
 
+// -> type A (has date of birth)
+//      -> age interval 01
+//              -> condition 01
+//                      -> value 01
+//                      -> value 02
+//              -> condition 02
+//                      -> value 02
+//      -> age interval 02
+//              -> condition 01
+//                      -> value 01
+// -> type B (has _no_ date of birth)
+//      -> condition 01
+//              -> value 01
+//              -> value 02
+
+var AgeFrameSettings = ({
+    customFieldDefinitions
+} = {}) => ExactObject({
+    properties: {
+        ageFrame: AgeFrame(),
+        conditionList: {
+            type: 'array',
+            default: [],
+            items: {
+                // theese form an $and list
+                oneOf: [
+                    customFieldDefinitions.map(fieldDefinition => (
+                        StudySearchCondition({ fieldDefinition })
+                    ))
+                ]
+            }
+        }
+    },
+    required: [
+        'ageFrame',
+        'conditionList',
+    ]
+});
+
+var DoBTypeSettings = ({
+    subjectType,
+    customFieldDefinitions
+} = {}) => ExactObject({
+    properties: {
+        subjectType: { const: subjectType },
+        ageFrameSettingsList: {
+            type: 'array',
+            default: [],
+            items: AgeFrameSettings({
+                customFieldDefinitions
+            })
+        }
+    },
+    required: [
+        'subjectType',
+        'ageFrameSettingsList'
+    ]
+})
+
 // TODO: stub; needs conditions handling somehow
 // also we need condition templates for study types
 var StudyState = ({
     customFieldDefinitions,
-    enableInternalProps
+    customSubjectTypes,
+    enableInternalProps,
 } = {}) => {
     var schema = ExactObject({
         properties: {
@@ -53,6 +113,8 @@ var StudyState = ({
                     e.g. kindergardens, schools etc
                 `
             },
+
+            // FIXME: not sure if that is sufficient we maybe need to select the type first
             reservableLocationIds: {
                 type: 'array',
                 items: ForeignId({
