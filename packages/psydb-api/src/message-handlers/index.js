@@ -7,6 +7,7 @@ var allHandlers = [
     require('./records'),
     require('./set-personnel-password'),
     require('./reservation'),
+    require('./experiment'),
 ];
 
 module.exports = allHandlers;

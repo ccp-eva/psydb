@@ -46,18 +46,18 @@ var checkAllowedAndPlausible = async ({
     } = message.payload.props;
 
     // TODO: use FK to check existance
-    checkStudyExists({
+    await checkStudyExists({
         db,
         studyId
     });
     
     // TODO: use FK to check existance
-    checkExperimentOperatorTeamExists({
+    await  checkExperimentOperatorTeamExists({
         db,
         experimentOperatorTeamId
     });
 
-    checkConflictingTeamReservations({
+    await checkConflictingTeamReservations({
         db, experimentOperatorTeamId, interval
     });
 }

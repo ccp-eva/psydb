@@ -5,7 +5,7 @@ var {
 
 var ExperimentGroup = MessageHandlerGroup([
     require('./create-from-awayteam-reservation'),
-    //require('./create-from-inhouse-reservation'),
+    require('./create-from-inhouse-reservation'),
 ]);
 
 module.exports = ExperimentGroup;

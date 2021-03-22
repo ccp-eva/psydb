@@ -3,9 +3,10 @@ var inline = require('@cdxoo/inline-text');
 
 var {
     ExactObject,
+    Id,
     ForeignId,
     DateTimeInterval,
-    ParticipationStatus
+    ParticipationStatus,
 } = require('@mpieva/psydb-schema-fields');
 
 // TODO: merge adjascent reservations into one? or have a handler?
@@ -42,40 +43,22 @@ var ExperimentState = ({
             // TODO: decide if subject can belong to multiple groups
             // probably should since children/people get older
             // also group relation is might be time based i guess
-            selectedForTesting: {
+            selectedSubjectGroupIds: {
                 type: 'array',
                 default: [],
-                items: {
-                    oneOf: [
-                        ExactObject({
-                            properties: {
-                                type: { const: 'subjectGroup' },
-                                subjectGroupId: ForeignId({
-                                    collection: 'subjectGroup'
-                                })
-                            },
-                            required: [
-                                'type',
-                                'subjectGroupId'
-                            ]
-                        }),
-                        ExactObject({
-                            properties: {
-                                type: { const: 'subject' },
-                                subjectId: ForeignId({
-                                    collection: 'subject'
-                                })
-                            },
-                            required: [
-                                'type',
-                                'subjectId'
-                            ]
-                        }),
-                    ]
-                }
+                items: ForeignId({
+                    collection: 'subjectGroup'
+                })
+            },
+            selectedSubjectIds: {
+                type: 'array',
+                default: [],
+                items: ForeignId({
+                    collection: 'subject'
+                })
             },
 
-            subjects: {
+            subjectData: {
                 type: 'array',
                 default: [],
                 items: ExactObject({
@@ -83,11 +66,23 @@ var ExperimentState = ({
                         subjectId: ForeignId({
                             collecton: 'subject',
                         }),
-                        participationStatus: ParticipationStatus()
+                        participationStatus: ParticipationStatus(),
+                        // TODO: file refs?
                     }
                 })
             }
-        }
+        },
+        required: [
+            'seriesId',
+            'reservationId',
+            'studyId',
+            'experimentOperatorTeamId',
+            'locationId',
+            'interval',
+            'selectedSubjectGroupIds',
+            'selectedSubjectIds',
+            'subjectData',
+        ]
     })
 
     return schema;

@@ -12,7 +12,7 @@ var { Message } = require('@mpieva/psydb-schema-helpers');
 
 var createSchema = ({} = {}) => (
     Message({
-        type: `experiment/create-from-awayteam-reservation`,
+        type: `experiment/create-from-inhouse-reservation`,
         payload: ExactObject({
             properties: {
                 id: Id(),
@@ -22,10 +22,6 @@ var createSchema = ({} = {}) => (
                             collection: 'reservation',
                         }),
                         lastKnownReservationEventId: EventId(),
-
-                        locationId: ForeignId({
-                            collection: 'location',
-                        }),
 
                         subjectIds: {
                             type: 'array',
@@ -46,7 +42,6 @@ var createSchema = ({} = {}) => (
                     required: [
                         'reservationId',
                         'lastKnownReservationEventId',
-                        'locationId',
                         'subjectGroupIds',
                         'subjectIds',
                     ]

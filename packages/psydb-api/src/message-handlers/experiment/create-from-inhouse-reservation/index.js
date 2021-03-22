@@ -7,10 +7,8 @@ var ApiError = require('../../../lib/api-error'),
     Ajv = require('../../../lib/ajv');
 
 var {
-    checkLocationExists,
     checkAllSubjectsExist,
     checkAllSubjectGroupsExist,
-    checkConflictingLocationReservations,
     checkConflictingSubjectExperiments,
 
     dispatchAllChannelMessages,
@@ -19,7 +17,7 @@ var {
 var createSchema = require('./schema');
 
 var shouldRun = (message) => (
-    message.type === 'experiment/create-from-awayteam-reservation'
+    message.type === 'experiment/create-from-inhouse-reservation'
 )
 
 var checkSchema = async ({ message }) => {
@@ -47,7 +45,6 @@ var checkAllowedAndPlausible = async ({
     var {
         reservationId,
         lastKnownReservationEventId,
-        locationId,
         subjectGroupIds,
         subjectIds,
     } = message.payload.props;
@@ -68,15 +65,6 @@ var checkAllowedAndPlausible = async ({
     if (reservation.events[0]._id !== lastKnownReservationEventId) {
         throw new ApiError(400, 'ReservationHasChanged');
     }
-
-    await checkLocationExists({
-        db,
-        locationId,
-    })
-
-    await checkConflictingLocationReservations({
-        db, locationId, interval: reservation.state.interval
-    });
 
     await checkAllSubjectGroupsExist({
         db, subjectGroupIds,
@@ -114,9 +102,9 @@ var triggerSystemEvents = async ({
         seriesId: reservation.state.seriesId,
         studyId: reservation.state.studyId,
         experimentOperatorTeamId: reservation.state.experimentOperatorTeamId,
+        locationId: reservation.state.locationId,
         interval: reservation.state.interval,
 
-        locationId: props.locationId,
         subjectGroupIds: props.subjectGroupIds,
         subjectIds: props.subjectIds,
 
