@@ -1,57 +1,6 @@
 'use strict';
 var ApiError = require('@mpieva/psydb-api-lib/src/api-error');
 
-var checkStudyExists = async ({
-    db,
-    studyId
-}) => {
-    // TODO: what about if the study is hidden?
-    var existing = await (
-        db.collection('study')
-        .findOne(
-            { _id: studyId },
-            { _id: true }
-        )
-    );
-    if (!existing) {
-        throw new ApiError(400, 'InvalidStudy');
-    }
-}
-
-var checkExperimentOperatorTeamExists = async ({
-    db,
-    experimentOperatorTeamId
-}) => {
-    // TODO: what about if the study is hidden?
-    var existing = await (
-        db.collection('experimentOperatorTeam')
-        .findOne(
-            { _id: experimentOperatorTeamId },
-            { _id: true }
-        )
-    );
-    if (!existing) {
-        throw new ApiError(400, 'InvalidExperimentOperatorTeam');
-    }
-}
-
-var checkLocationExists = async ({
-    db,
-    locationId
-}) => {
-    // TODO: what about if the study is hidden?
-    var existing = await (
-        db.collection('location')
-        .findOne(
-            { _id: locationId },
-            { _id: true }
-        )
-    );
-    if (!existing) {
-        throw new ApiError(400, 'InvalidLocation');
-    }
-}
-
 var checkConflictingTeamReservations = async ({
     db,
     experimentOperatorTeamId,
@@ -97,9 +46,6 @@ var checkConflictingLocationReservations = async ({
 }
 
 module.exports = {
-    checkStudyExists,
-    checkExperimentOperatorTeamExists,
-    checkLocationExists,
     checkConflictingTeamReservations,
     checkConflictingLocationReservations,
 };

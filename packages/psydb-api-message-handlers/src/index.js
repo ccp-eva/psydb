@@ -1,13 +1,13 @@
 'use strict';
 
 var allHandlers = [
-    require('./helper-set-items'),
-    require('./helper-sets'),
-    require('./custom-record-types'),
-    require('./records'),
-    require('./set-personnel-password'),
-    require('./reservation'),
-    require('./experiment'),
+    require('./handlers/helper-set-items'),
+    require('./handlers/helper-sets'),
+    require('./handlers/custom-record-types'),
+    require('./handlers/records'),
+    require('./handlers/set-personnel-password'),
+    require('./handlers/reservation'),
+    require('./handlers/experiment'),
 ];
 
 module.exports = allHandlers;
