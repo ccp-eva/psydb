@@ -21,6 +21,7 @@ dependencies:
   '@rush-temp/psydb-ajv-keywords': 'file:projects/psydb-ajv-keywords.tgz'
   '@rush-temp/psydb-api': 'file:projects/psydb-api.tgz'
   '@rush-temp/psydb-api-lib': 'file:projects/psydb-api-lib.tgz'
+  '@rush-temp/psydb-api-message-handlers': 'file:projects/psydb-api-message-handlers.tgz'
   '@rush-temp/psydb-driver-nodejs': 'file:projects/psydb-driver-nodejs.tgz'
   '@rush-temp/psydb-fixtures': 'file:projects/psydb-fixtures.tgz'
   '@rush-temp/psydb-koa-event-middleware': 'file:projects/psydb-koa-event-middleware.tgz'
@@ -4960,14 +4961,33 @@ packages:
       ajv-keywords: 3.5.2_ajv@6.12.6
       chai: 4.2.0
       copy-anything: 2.0.3
+      debug: 4.3.1
       deep-diff: 1.0.2
       mocha: 8.1.3
       statuses: 2.0.0
     dev: false
     name: '@rush-temp/psydb-api-lib'
     resolution:
-      integrity: sha512-uSmAD7SxHpRA+bN4CFpR8mgOzkALBdPO4XfzFhLkDVkuMYJMUWWxT4SyJ+8vbSYZfDt45Z5O6G9TWAz/+NJ3PQ==
+      integrity: sha512-VUGHHQcPBMWfhbb5/nlQEkLm6EqSIMgRKaSWGpJYHkvdEgII7diGh9K4BzewjkHV9k3ppizuBzBAxoCJHjZapQ==
       tarball: 'file:projects/psydb-api-lib.tgz'
+    version: 0.0.0
+  'file:projects/psydb-api-message-handlers.tgz':
+    dependencies:
+      '@cdxoo/inline-text': 1.0.1
+      '@cdxoo/omit': 1.0.1
+      bcrypt: 5.0.0
+      chai: 4.2.0
+      copy-anything: 2.0.3
+      debug: 4.3.1
+      deep-diff: 1.0.2
+      mocha: 8.1.3
+      mongodb-memory-server: 6.9.2
+      nanoid: 3.1.20
+    dev: false
+    name: '@rush-temp/psydb-api-message-handlers'
+    resolution:
+      integrity: sha512-LHjx+tDrBYRAi8Z8KPKcXQ/5kj1NIwt3w5QXG2tMSVL9hmC7adzVoa3OdcfQbSh7zE8Cub1trllmw6lk/8yV7A==
+      tarball: 'file:projects/psydb-api-message-handlers.tgz'
     version: 0.0.0
   'file:projects/psydb-api.tgz':
     dependencies:
@@ -4997,7 +5017,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-api'
     resolution:
-      integrity: sha512-sUOjvyUXDSyYY0PoksoYvgYExijhl4tw8hr1P7qvMnpHNcHi39LYuc4jtRQ2MUbeiqWSc5ELL8kV8wmIsGOTcw==
+      integrity: sha512-9u/JAqi4JpdwFNFg4Za2EawMKOfxCALtaSTCvhY2Xq+k/32BpY2aKiTJnNF4j3sbIVl7rWczOaVSCvtT0zJZhg==
       tarball: 'file:projects/psydb-api.tgz'
     version: 0.0.0
   'file:projects/psydb-driver-nodejs.tgz':
@@ -5148,6 +5168,7 @@ specifiers:
   '@rush-temp/psydb-ajv-keywords': 'file:./projects/psydb-ajv-keywords.tgz'
   '@rush-temp/psydb-api': 'file:./projects/psydb-api.tgz'
   '@rush-temp/psydb-api-lib': 'file:./projects/psydb-api-lib.tgz'
+  '@rush-temp/psydb-api-message-handlers': 'file:./projects/psydb-api-message-handlers.tgz'
   '@rush-temp/psydb-driver-nodejs': 'file:./projects/psydb-driver-nodejs.tgz'
   '@rush-temp/psydb-fixtures': 'file:./projects/psydb-fixtures.tgz'
   '@rush-temp/psydb-koa-event-middleware': 'file:./projects/psydb-koa-event-middleware.tgz'

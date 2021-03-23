@@ -10,7 +10,7 @@ var compose = require('koa-compose'),
     
 var createEngine = require('@mpieva/psydb-koa-event-middleware').createEngine;
 
-var availableMessageHandlers = require('../../message-handlers/'),
+var availableMessageHandlers = require('@mpieva/psydb-api-message-handlers'),
     createInitialChannelState = require('./create-initial-channel-state'),
     handleChannelEvent = require('./handle-channel-event');
 

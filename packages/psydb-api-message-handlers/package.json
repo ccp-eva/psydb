@@ -1,0 +1,35 @@
+{
+  "name": "@mpieva/psydb-api-message-handlers",
+  "version": "0.1.0-alpha",
+  "description": "",
+  "main": "./index.js",
+  "scripts": {
+  },
+  "author": "Jan Schwalbe",
+  "license": "MIT",
+  "dependencies": {
+    "@mpieva/psydb-koa-event-middleware": "~0.1.0-alpha",
+    "@mpieva/psydb-schema-creators": "~0.1.0-alpha",
+    "@mpieva/psydb-schema-fields": "~0.1.0-alpha",
+    "@mpieva/psydb-schema-helpers": "~0.1.0-alpha",
+    "@mpieva/psydb-api-lib": "~0.1.0-alpha",
+    "@cdxoo/omit": "~1.0.1",
+    "@cdxoo/inline-text": "~1.0.1",
+    "debug": "~4.3.1",
+    "nanoid": "~3.1.20",
+    "copy-anything": "~2.0.3",
+    "deep-diff": "~1.0.2",
+    "bcrypt": "~5.0.0"
+  },
+  "devDependencies": {
+    "mocha": "~8.1.3",
+    "chai": "~4.2.0",
+    "mongodb-memory-server": "~6.9.2",
+    "@mpieva/psydb-fixtures": "~0.1.0-alpha"
+  },
+  "config": {
+    "mongodbMemoryServer": {
+      "downloadDir": "/tmp/mongodb-memory-server/"
+    }
+  }
+}
