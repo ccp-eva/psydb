@@ -13,8 +13,8 @@ var parseRecordMessageType = require('./parse-record-message-type');
 
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
-var ApiError = require('../../lib/api-error'),
-    Ajv = require('../../lib/ajv');
+var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
+    Ajv = require('@mpieva/psydb-api-lib/src/ajv');
 
 
 var checkSchema = async ({ db, getRecordSchemas, message }) => {

@@ -1,5 +1,5 @@
 'use strict';
-var ApiError = require('../../lib/api-error');
+var ApiError = require('@mpieva/psydb-api-lib/src/api-error');
 
 var checkStudyExists = async ({
     db,

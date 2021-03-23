@@ -1,7 +1,7 @@
 'use strict';
 var expect = require('chai').expect,
     compose = require('koa-compose'),
-    ApiError = require('../lib/api-error'),
+    ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
     withErrorHandling = require('./errors');
 
 describe('error middleware', () => {

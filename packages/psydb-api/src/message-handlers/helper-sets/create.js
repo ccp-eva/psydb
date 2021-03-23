@@ -1,6 +1,6 @@
 'use strict';
-var ApiError = require('../../lib/api-error'),
-    Ajv = require('../../lib/ajv');
+var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
+    Ajv = require('@mpieva/psydb-api-lib/src/ajv');
 
 var createSchema = require('./create-schema'),
     parseMessageType = require('./parse-message-type');

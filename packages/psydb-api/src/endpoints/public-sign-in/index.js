@@ -2,7 +2,7 @@
 var debug = require('debug')('psydb:api:endpoints:public-sign-in');
 
 var bcrypt = require('bcrypt'),
-    Self = require('../../lib/self');
+    Self = require('@mpieva/psydb-api-lib/src/self');
 
 var signIn = async (context, next) => {
     var { db, session, request } = context;

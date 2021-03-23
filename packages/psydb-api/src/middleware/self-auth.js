@@ -1,7 +1,7 @@
 'use strict';
 var debug = require('debug')('psydb:api:middleware:self-auth'),
-    ApiError = require('../lib/api-error'),
-    Self = require('../lib/self');
+    ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
+    Self = require('@mpieva/psydb-api-lib/src/self');
 
 var createSelfAuthMiddleware = ({
 } = {}) => async(context, next) => {

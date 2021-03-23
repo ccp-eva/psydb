@@ -1,6 +1,6 @@
 'use strict';
-var ApiError = require('../../lib/api-error'),
-    compareIds = require('../../lib/compare-ids');
+var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
+    compareIds = require('@mpieva/psydb-api-lib/src/compare-ids');
 
 var checkLocationExists = async ({
     db,

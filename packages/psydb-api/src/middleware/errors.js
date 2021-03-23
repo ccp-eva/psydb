@@ -1,8 +1,8 @@
 'use strict';
 var debug = require('debug')('psydb:api:middleware:errors'),
     httpStatuses = require('statuses'),
-    ResponseBody = require('../lib/response-body'),
-    ApiError = require('../lib/api-error');
+    ResponseBody = require('@mpieva/psydb-api-lib/src/response-body'),
+    ApiError = require('@mpieva/psydb-api-lib/src/api-error');
 
 var createErrorsMiddleware = () => async (context, next) => {
     try {

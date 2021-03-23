@@ -1,6 +1,6 @@
 'use strict';
 var debug = require('debug')('psydb:api:middleware:permissions'),
-    Permissions = require('../lib/permissions');
+    Permissions = require('@mpieva/psydb-api-lib/src/permissions');
 
 var createPermissionMiddleware = ({
     endpoint

@@ -2,8 +2,8 @@
 var debug = require('debug')('psydb:api:init-endpoint');
     
 var compose = require('koa-compose'),
-    ResponseBody = require('../lib/response-body'),
-    ApiError = require('../lib/api-error'),
+    ResponseBody = require('@mpieva/psydb-api-lib/src/response-body'),
+    ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
     createEventMiddleware = require('../endpoints/event/'),
     data = require('./data');
 

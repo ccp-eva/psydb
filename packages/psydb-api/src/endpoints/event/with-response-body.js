@@ -1,5 +1,5 @@
 'use stirct';
-var ResponseBody = require('../../lib/response-body');
+var ResponseBody = require('@mpieva/psydb-api-lib/src/response-body');
 
 var withResponseBody = async (context, next) => {
     context.body = ResponseBody({

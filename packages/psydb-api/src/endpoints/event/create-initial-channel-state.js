@@ -1,5 +1,5 @@
 'use strict';
-var Ajv = require('../../lib/ajv');
+var Ajv = require('@mpieva/psydb-api-lib/src/ajv');
 
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 

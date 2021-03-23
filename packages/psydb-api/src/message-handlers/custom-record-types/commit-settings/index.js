@@ -5,10 +5,10 @@ var omit = require('@cdxoo/omit'),
     createClone = require('copy-anything').copy,
     createDiff = require('deep-diff');
 
-var ApiError = require('../../../lib/api-error'),
-    Ajv = require('../../../lib/ajv');
+var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
+    Ajv = require('@mpieva/psydb-api-lib/src/ajv');
 
-var createRohrpostMessagesFromDiff = require('../../../lib/diff-to-rohrpost');
+var createRohrpostMessagesFromDiff = require('@mpieva/psydb-api-lib/src/diff-to-rohrpost');
 
 var Schema = require('./schema'),
     allSchemaCreators = require('@mpieva/psydb-schema-creators');

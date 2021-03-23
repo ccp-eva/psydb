@@ -1,8 +1,8 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
 
-var ApiError = require('../../../lib/api-error'),
-    Ajv = require('../../../lib/ajv');
+var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
+    Ajv = require('@mpieva/psydb-api-lib/src/ajv');
 
 var BaseSchema = require('./schema'),
     FieldSchemas = require('./field-schemas'),
