@@ -129,6 +129,11 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/psydb-api-lib",
+       "projectFolder": "packages/psydb-api-lib",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-web",
        "projectFolder": "packages/psydb-web",
        "reviewCategory": "production"

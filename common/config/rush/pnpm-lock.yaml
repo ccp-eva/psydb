@@ -20,6 +20,7 @@ dependencies:
   '@rush-temp/psydb-ajv-formats': 'file:projects/psydb-ajv-formats.tgz'
   '@rush-temp/psydb-ajv-keywords': 'file:projects/psydb-ajv-keywords.tgz'
   '@rush-temp/psydb-api': 'file:projects/psydb-api.tgz'
+  '@rush-temp/psydb-api-lib': 'file:projects/psydb-api-lib.tgz'
   '@rush-temp/psydb-driver-nodejs': 'file:projects/psydb-driver-nodejs.tgz'
   '@rush-temp/psydb-fixtures': 'file:projects/psydb-fixtures.tgz'
   '@rush-temp/psydb-koa-event-middleware': 'file:projects/psydb-koa-event-middleware.tgz'
@@ -4953,6 +4954,21 @@ packages:
       integrity: sha512-MSnWbJ7iSytXmmZEUa545Kizz/TU0Z8czdvR3bV9uq81TiiW2D8yURJNW9sYVuI8tohbc0BYbipBL7uqvjrmpA==
       tarball: 'file:projects/psydb-ajv-keywords.tgz'
     version: 0.0.0
+  'file:projects/psydb-api-lib.tgz':
+    dependencies:
+      ajv: 6.12.6
+      ajv-keywords: 3.5.2_ajv@6.12.6
+      chai: 4.2.0
+      copy-anything: 2.0.3
+      deep-diff: 1.0.2
+      mocha: 8.1.3
+      statuses: 2.0.0
+    dev: false
+    name: '@rush-temp/psydb-api-lib'
+    resolution:
+      integrity: sha512-uSmAD7SxHpRA+bN4CFpR8mgOzkALBdPO4XfzFhLkDVkuMYJMUWWxT4SyJ+8vbSYZfDt45Z5O6G9TWAz/+NJ3PQ==
+      tarball: 'file:projects/psydb-api-lib.tgz'
+    version: 0.0.0
   'file:projects/psydb-api.tgz':
     dependencies:
       '@cdxoo/inline-string': 1.0.0
@@ -4981,7 +4997,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-api'
     resolution:
-      integrity: sha512-4xtGhwAASWw6uQh71NTPiQDjB1+0OVZcw/+pjHUGL02bAksEEgVRkVU18hprdOnjNDoB+fwpDdCMyN9ERmtfNQ==
+      integrity: sha512-sUOjvyUXDSyYY0PoksoYvgYExijhl4tw8hr1P7qvMnpHNcHi39LYuc4jtRQ2MUbeiqWSc5ELL8kV8wmIsGOTcw==
       tarball: 'file:projects/psydb-api.tgz'
     version: 0.0.0
   'file:projects/psydb-driver-nodejs.tgz':
@@ -5035,7 +5051,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-schema-creators'
     resolution:
-      integrity: sha512-z2jdIL0mviL47U11vbFPKPIXjZMVkqNVcG4RF+4deD9kQYip9zxbCxCaZRh/FlvWzZ/BxTgxyPwLJ+8cZxhMEA==
+      integrity: sha512-gP8tgN/ZHqKuO0oVgtRC8Lb5Op6I07VwmzoUUIaLs1acwloT9v+HaqHH8QnypWz9OIxjRkTOIJHEzKFfTIWAEQ==
       tarball: 'file:projects/psydb-schema-creators.tgz'
     version: 0.0.0
   'file:projects/psydb-schema-fields.tgz':
@@ -5131,6 +5147,7 @@ specifiers:
   '@rush-temp/psydb-ajv-formats': 'file:./projects/psydb-ajv-formats.tgz'
   '@rush-temp/psydb-ajv-keywords': 'file:./projects/psydb-ajv-keywords.tgz'
   '@rush-temp/psydb-api': 'file:./projects/psydb-api.tgz'
+  '@rush-temp/psydb-api-lib': 'file:./projects/psydb-api-lib.tgz'
   '@rush-temp/psydb-driver-nodejs': 'file:./projects/psydb-driver-nodejs.tgz'
   '@rush-temp/psydb-fixtures': 'file:./projects/psydb-fixtures.tgz'
   '@rush-temp/psydb-koa-event-middleware': 'file:./projects/psydb-koa-event-middleware.tgz'
