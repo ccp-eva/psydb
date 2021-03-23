@@ -135,16 +135,30 @@ var StudyState = ({
                 interals: {
                     type: 'object',
                     properties: {
-                        experimentOperatorTeamIds: {
+                        /*experimentOperatorTeamIds: {
                             type: 'array',
                             default: [],
                             items: ForeignId({
                                 collection: 'experimentOperatorTeam'
                             }),
-                        },
+                        },*/
+
+                        /*...(enableInternalProps && ({
+                            isNew: { type: 'boolean', default: true },
+                            isDirty: { type: 'boolean', default: true },
+                        })),
+                        nextSettings: StudySettings({
+                            enableFlags: true,
+                            enableInternalProps,
+                        }),
+                        settings: StudySettings({
+                            enableInternalProps,
+                        })*/
                     },
                     required: [
-                        'experimentOperatorTeamIds',
+                        //'experimentOperatorTeamIds',
+                        //'nextSettings',
+                        //'settings',
                     ],
                 },
             })
