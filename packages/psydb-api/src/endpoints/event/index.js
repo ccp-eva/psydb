@@ -5,8 +5,6 @@ var compose = require('koa-compose'),
     ObjectId = require('mongodb').ObjectId,
     nanoid = require('nanoid').nanoid,
 
-    withRecordSchemas = require('../../middleware/record-schemas'),
-
     withContextSetup = require('./context-setup'),
     withResponseBody = require('./with-response-body');
     
@@ -35,7 +33,6 @@ var createMessageHandling = ({
     return compose([
         //async (context, next) => { console.dir(context, { depth: 3}); await next(); },
         withContextSetup({ forcedPersonnelId }),
-        withRecordSchemas(),
 
         createEngine({
             mqSettings,
