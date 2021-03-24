@@ -1,97 +1,11 @@
 'use strict';
+var debug = require('debug')('psydb:api:message-handlers');
+
 var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
     compareIds = require('@mpieva/psydb-api-lib/src/compare-ids');
 
-var checkLocationExists = async ({
-    db,
-    locationId
-}) => {
-    // TODO: what about if the study is hidden?
-    var existing = await (
-        db.collection('location')
-        .findOne(
-            { _id: locationId },
-            { _id: true }
-        )
-    );
-    if (!existing) {
-        throw new ApiError(400, 'InvalidLocation');
-    }
-}
-
-var checkAllSubjectsExist = async ({
-    db,
-    subjectIds
-}) => {
-    var existing = await (
-        db.collection('subject')
-        .find(
-            { _id: { $in: subjectIds }},
-            { _id: true }
-        )
-        .toArray()
-    );
-
-    var existingIds = existing.map(it => it._id),
-        missingIds = [];
-    
-    for (var wantedId of subjectIds) {
-        var exists = false;
-        for (var existingId of existingIds) {
-            if (compareIds(wantedId, existingId)) {
-                exists = true;
-                break;
-            }
-        }
-        if (exists === false) {
-            missingIds.push(wantedId);
-        }
-    }
-
-    if (missingIds.length > 0) {
-        // TODO: missingIds needs to be passed to ResponseBody
-        // TODO: we need to pass the index instead (?)
-        // EDIT: with rsjf this is actually required i think maybe
-        throw new ApiError(400, 'InvalidSubjectIds')
-    }
-}
-
-var checkAllSubjectGroupsExist = async ({
-    db,
-    subjectGroupIds
-}) => {
-    var existing = await (
-        db.collection('subjectGroup')
-        .find(
-            { _id: { $in: subjectGroupIds }},
-            { _id: true }
-        )
-        .toArray()
-    );
-
-    var existingIds = existing.map(it => it._id),
-        missingIds = [];
-    
-    for (var wantedId of subjectGroupIds) {
-        var exists = false;
-        for (var existingId of existingIds) {
-            if (compareIds(wantedId, existingId)) {
-                exists = true;
-                break;
-            }
-        }
-        if (exists === false) {
-            missingIds.push(wantedId);
-        }
-    }
-
-    if (missingIds.length > 0) {
-        // TODO: missingIds needs to be passed to ResponseBody
-        // TODO: we need to pass the index instead (?)
-        // EDIT: with rsjf this is actually required i think maybe
-        throw new ApiError(400, 'InvalidSubjectGroupIds')
-    }
-}
+var PutMaker = require('../../lib/put-maker'),
+    PushMaker = require('../../lib/push-maker');
 
 var checkConflictingLocationReservations = async ({
     db,
@@ -177,37 +91,28 @@ var dispatchAllChannelMessages = async ({
         .toArray()
     );
 
-    var subjectDataMessages = [];
-    for (var group of subjectGroups) {
-        subjectDataMessages = [
-            ...subjectDataMessages,
-            ...group.state.subjectIds.map(id => ({
-                type: 'push',
-                personnelId,
-                payload: {
-                    prop: '/state/subjectData',
-                    value: {
-                        subjectId: id,
-                        perticipationStatus: 'unknown',
-                    }
-                }
-            }))
-        ];
-    }
+    var pusher = PushMaker({ personnelId });
+    
+    var SubjectDataItem = (id) => ({
+        subjectId: id,
+        perticipationStatus: 'unknown',
+    });
 
-    subjectDataMessages = [
-        ...subjectDataMessages,
-        ...subjectIds.map(id => ({
-            type: 'push',
-            personnelId,
-            payload: {
-                prop: '/state/subjectData',
-                value: {
-                    subjectId: id,
-                    perticipationStatus: 'unknown',
-                }
-            }
-        }))
+    var subjectDataMessages = [
+        ...subjectGroups.reduce((acc, group) => ([
+            ...acc,
+            ...pusher.all({
+                '/state/subjectData': group.state.subjectIds.map(
+                    id => SubjectDataItem(id)
+                )
+            })
+        ]), []),
+        
+        ...pusher.all({
+            '/state/subjectData': subjectIds.map(
+                id => SubjectDataItem(id)
+            )
+        })
     ];
 
     // TODO: decide if we want to store experimentId in
@@ -223,17 +128,10 @@ var dispatchAllChannelMessages = async ({
 
     await reservationChannel.dispatchMany({
         lastKnownEventId: lastKnownReservationEventId,
-        messages: [
-            {
-                type: 'put',
-                personnelId,
-                payload: {
-                    prop: '/state/hasExperiment',
-                    value: true
-                }
-            }
-        ]
-    })
+        messages: PutMaker({ personnelId }).all({
+            '/state/hasExperiment': true
+        })
+    });
 
     var experimentChannel = (
         rohrpost
@@ -248,81 +146,20 @@ var dispatchAllChannelMessages = async ({
     );
 
     var channelMessages = [
-        {
-            type: 'put',
-            personnelId,
-            payload: {
-                prop: '/state/seriesId',
-                value: seriesId,
-            }
-        },
-        // FIXME: not sure about this deleted thing
-        {
-            type: 'put',
-            personnelId,
-            payload: {
-                prop: '/state/reservationId',
-                value: reservationId
-            }
-        },
-        {
-            type: 'put',
-            personnelId,
-            payload: {
-                prop: '/state/studyId',
-                value: studyId,
-            }
-        },
-        {
-            type: 'put',
-            personnelId,
-            payload: {
-                prop: '/state/experimentOperatorTeamId',
-                value: experimentOperatorTeamId,
-            }
-        },
-        {
-            type: 'put',
-            personnelId,
-            payload: {
-                prop: '/state/locationId',
-                value: locationId,
-            }
-        },
-        {
-            type: 'put',
-            personnelId,
-            payload: {
-                prop: '/state/interval/start',
-                value: interval.start
-            }
-        },
-        {
-            type: 'put',
-            personnelId,
-            payload: {
-                prop: '/state/interval/end',
-                value: interval.end
-            }
-        },
+        ...PutMaker({ personnelId }).all({
+            '/state/seriesId': seriesId,
+            '/state/reservationId': reservationId,
+            '/state/studyId': studyId,
+            '/state/experimentOperatorTeamId': experimentOperatorTeamId,
+            '/state/locationId': locationId,
+            '/state/interval/start': interval.start,
+            '/state/interval/end': interval.end,
+        }),
 
-        ...subjectGroupIds.map(id => ({
-            type: 'push',
-            personnelid,
-            payload: {
-                prop: '/state/selectedSubjectGroupIds',
-                value: id,
-            }
-        })),
-
-        ...subjectIds.map(id => ({
-            type: 'push',
-            personnelId,
-            payload: {
-                prop: '/state/selectedSubjectIds',
-                value: id,
-            }
-        })),
+        ...pusher.all({
+            '/state/selectedSubjectGroupIds': subjectGroupIds,
+            '/state/selectedSubjectIds': subjectIds,
+        }),
 
         ...subjectDataMessages,
 
@@ -331,9 +168,6 @@ var dispatchAllChannelMessages = async ({
     await experimentChannel.dispatchMany({ messages: channelMessages });
 }
 module.exports = {
-    checkLocationExists,
-    checkAllSubjectsExist,
-    checkAllSubjectGroupsExist,
     checkConflictingLocationReservations,
     checkConflictingSubjectExperiments,
 

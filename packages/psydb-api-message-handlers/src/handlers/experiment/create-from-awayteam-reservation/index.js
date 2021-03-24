@@ -3,37 +3,26 @@ var debug = require('debug')('psydb:api:message-handlers');
 
 var nanoid = require('nanoid').nanoid;
 
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
-    Ajv = require('@mpieva/psydb-api-lib/src/ajv');
+var ApiError = require('@mpieva/psydb-api-lib/src/api-error');
+
+var SimpleHandler = require('../../../lib/simple-handler'),
+    createPuts = require('../../../lib/create-puts'),
+    checkForeignIdsExist = require('../../../lib/check-foreign-ids-exist');
 
 var {
-    checkLocationExists,
-    checkAllSubjectsExist,
-    checkAllSubjectGroupsExist,
     checkConflictingLocationReservations,
     checkConflictingSubjectExperiments,
-
     dispatchAllChannelMessages,
 } = require('../util');
 
 var createSchema = require('./schema');
 
-var shouldRun = (message) => (
-    message.type === 'experiment/create-from-awayteam-reservation'
-)
+var handler = SimpleHandler({
+    messageType: 'experiment/create-from-awayteam-reservation',
+    createSchema,
+});
 
-var checkSchema = async ({ message }) => {
-    var schema = createSchema(),
-        ajv = Ajv(),
-        isValid = ajv.validate(schema, message);
-
-    if (!isValid) {
-        debug(message.type, ajv.errors);
-        throw new ApiError(400, 'InvalidMessageSchema');
-    }
-}
-
-var checkAllowedAndPlausible = async ({
+handler.checkAllowedAndPlausible = async ({
     db,
     permissions,
     cache,
@@ -69,21 +58,15 @@ var checkAllowedAndPlausible = async ({
         throw new ApiError(400, 'ReservationHasChanged');
     }
 
-    await checkLocationExists({
-        db,
-        locationId,
-    })
+    // TODO: use FK to check existance (?)
+    await checkForeignIdsExist(db, {
+        'location': locationId,
+        'subjectGroup': subjectGroupIds,
+        'subject': subjectIds
+    });
 
     await checkConflictingLocationReservations({
         db, locationId, interval: reservation.state.interval
-    });
-
-    await checkAllSubjectGroupsExist({
-        db, subjectGroupIds,
-    });
-
-    await checkAllSubjectsExist({
-        db, subjectIds,
     });
 
     await checkConflictingSubjectExperiments({
@@ -91,7 +74,7 @@ var checkAllowedAndPlausible = async ({
     });
 }
 
-var triggerSystemEvents = async ({
+handler.triggerSystemEvents = async ({
     db,
     rohrpost,
     cache,
@@ -124,13 +107,4 @@ var triggerSystemEvents = async ({
     });
 }
 
-// no-op
-var triggerOtherSideEffects = async () => {};
-
-module.exports = {
-    shouldRun,
-    checkSchema,
-    checkAllowedAndPlausible,
-    triggerSystemEvents,
-    triggerOtherSideEffects,
-}
+module.exports = handler;
