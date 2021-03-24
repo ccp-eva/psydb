@@ -5,9 +5,9 @@ var MessageTypeRegex = require('./message-type'),
     triggerSystemEvents = require('./trigger-system-events'),
     createRecordPropMessages = require('./create-record-prop-messages');
 
-var GenericRecordHandler = ({ op }) => ({
+var GenericRecordHandler = ({ collection, op }) => ({
     shouldRun: (message) => {
-        return MessageTypeRegex(op).test(message.type)
+        return MessageTypeRegex({ collection, op }).test(message.type)
     },
     
     checkSchema,

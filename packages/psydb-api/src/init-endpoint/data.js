@@ -4,7 +4,7 @@ var rootAccountId = '5fcf4481feb7ca0683978b80',
 
 var messages = [
     {
-        type: 'records/create/systemRole',
+        type: 'systemRole/create',
         payload: {
             id: rootRoleId,
             props: {
@@ -14,7 +14,7 @@ var messages = [
         }
     },
     {
-        type: 'records/create/personnel',
+        type: 'personnel/create',
         payload: {
             id: rootAccountId,
             props: {

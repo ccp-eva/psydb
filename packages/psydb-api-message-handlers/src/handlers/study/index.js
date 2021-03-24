@@ -3,8 +3,21 @@ var {
     MessageHandlerGroup
 } = require('@mpieva/psydb-koa-event-middleware');
 
-// TODO
+var GenericRecordHandler = require('../../lib/generic-record-handler');
+
 var StudyGroup = MessageHandlerGroup([
+    GenericRecordHandler({
+        collection: 'study',
+        op: 'create',
+    }),
+    GenericRecordHandler({
+        collection: 'study',
+        op: 'patch',
+    }),
+]);
+
+// TODO
+/*var StudyGroup = MessageHandlerGroup([
     // creates new record and add core attributes
     // such as name etc (all custom record props)
     require('./create-core'),
@@ -34,6 +47,6 @@ var StudyGroup = MessageHandlerGroup([
     // deletes study record that has never been commited
     // and is flagged as "isNew"
     require('./cancel-create'),
-]);
+]);*/
 
 module.exports = StudyGroup;

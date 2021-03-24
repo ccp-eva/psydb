@@ -5,15 +5,15 @@ var {
 
 var GenericRecordHandler = require('../../lib/generic-record-handler');
 
-var RecordGroup = MessageHandlerGroup([
+var PersonnelGroup = MessageHandlerGroup([
     GenericRecordHandler({
+        collection: 'personnel',
         op: 'create',
-        // collection
     }),
     GenericRecordHandler({
+        collection: 'personnel',
         op: 'patch',
-        // collection
     }),
 ]);
 
-module.exports = RecordGroup;
+module.exports = PersonnelGroup;

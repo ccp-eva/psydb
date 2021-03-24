@@ -1,12 +1,9 @@
 'use strict';
-var MessageTypeRegex = (op) => new RegExp(`
+var MessageTypeRegex = ({ collection, op }) => new RegExp(`
     ^
-    records\\/
-    ${op}\\/
-    (?:
-        (?:[a-zA-Z]+)
-        (?:\\/[a-zA-Z]+)?
-    )
+    ${collection}\\/
+    (?:[a-zA-Z]+\\/)?
+    ${op}
     $
 `.replace(/\s*\n\s*/g, ''))
 
