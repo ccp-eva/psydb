@@ -6,7 +6,7 @@ var nanoid = require('nanoid').nanoid;
 var ApiError = require('@mpieva/psydb-api-lib/src/api-error');
 
 var SimpleHandler = require('../../../lib/simple-handler'),
-    createPuts = require('../../../lib/create-puts'),
+    PutMaker = require('../../../lib/put-maker'),
     checkForeignIdsExist = require('../../../lib/check-foreign-ids-exist');
 
 var {
@@ -75,7 +75,7 @@ handler.triggerSystemEvents = async ({
         })
     );
     
-    var messages = createPuts({
+    var messages = PutMaker({ personnelId }).all({
         '/state/seriesId': nanoid(),
         '/state/isDeleted': false,
         '/state/studyId': props.studyId,
@@ -83,7 +83,7 @@ handler.triggerSystemEvents = async ({
         '/state/locationId': props.locationId,
         '/state/interval/start': props.interval.start,
         '/state/interval/end': props.interval.end,
-    }, { personnelId });
+    });
 
     await channel.dispatchMany({ messages });
 }

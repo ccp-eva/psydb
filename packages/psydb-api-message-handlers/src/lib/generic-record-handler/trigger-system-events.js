@@ -1,59 +1,6 @@
 'use strict';
-var messageType = require('./message-type'),
-    checkSchema = require('./check-schema'),
-    parseRecordMessageType = require('./parse-record-message-type'),
+var parseRecordMessageType = require('./parse-record-message-type'),
     createRecordPropMessages = require('./create-record-prop-messages');
-
-var shouldRun = (message) => {
-    return messageType.test(message.type)
-}
-
-var checkAllowedAndPlausible = async ({
-    db,
-    message,
-    permissions,
-}) => {
-    var { type: messageType, payload } = message;
-
-    var { 
-        op, collection, 
-        recordType, recordSubType 
-    } = parseRecordMessageType(messageType);
-
-    if (op === 'create') {
-        if (!permissions.hasRootAccess) {
-            throw new ApiError(403);
-        }
-        // TODO
-        /*if (!permissions.canCreateRecord({
-            collection,
-            recordType,
-            recordSubType
-        })) {
-            throw new ApiError(403);
-        }*/
-    }
-    else if (op === 'patch') {
-        var record = await (
-            db.collection(collection).findOne({ _id: payload.id })
-        );
-        if (!record) {
-            throw new ApiError(400);
-        }
-        if (!permissions.hasRootAccess) {
-            throw new ApiError(403);
-        }
-        // TODO
-        /*if (!permssions.canPatchRecord(record)) {
-            throw new ApiError(403);
-        }*/
-    }
-    // TODO: deleteGdpr
-    else {
-        // unknown op
-        throw new ApiError(400); // TODO 
-    }
-}
 
 var triggerSystemEvents = async ({
     db,
@@ -125,17 +72,8 @@ var triggerSystemEvents = async ({
         //await channel.dispatch({ subChannelKey, message })
     }
 
-    var docs = await db.collection(collection).find().toArray();
+    //var docs = await db.collection(collection).find().toArray();
     //console.dir(docs, { depth: null });
 }
 
-// no-op
-var triggerOtherSideEffects = async () => {};
-
-module.exports = {
-    shouldRun,
-    checkSchema,
-    checkAllowedAndPlausible,
-    triggerSystemEvents,
-    triggerOtherSideEffects,
-};
+module.exports = triggerSystemEvents;

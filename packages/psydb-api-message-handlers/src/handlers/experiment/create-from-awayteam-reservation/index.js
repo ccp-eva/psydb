@@ -6,7 +6,6 @@ var nanoid = require('nanoid').nanoid;
 var ApiError = require('@mpieva/psydb-api-lib/src/api-error');
 
 var SimpleHandler = require('../../../lib/simple-handler'),
-    createPuts = require('../../../lib/create-puts'),
     checkForeignIdsExist = require('../../../lib/check-foreign-ids-exist');
 
 var {

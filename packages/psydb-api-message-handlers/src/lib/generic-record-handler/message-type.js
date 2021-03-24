@@ -1,8 +1,8 @@
 'use strict';
-var rx = new RegExp(`
+var MessageTypeRegex = (op) => new RegExp(`
     ^
     records\\/
-    (?:create|patch)\\/
+    ${op}\\/
     (?:
         (?:[a-zA-Z]+)
         (?:\\/[a-zA-Z]+)?
@@ -10,4 +10,4 @@ var rx = new RegExp(`
     $
 `.replace(/\s*\n\s*/g, ''))
 
-module.exports = rx;
+module.exports = MessageTypeRegex;

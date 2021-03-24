@@ -5,8 +5,6 @@ var inline = require('@cdxoo/inline-text');
 
 var {
     createRecordMessageType,
-    RecordIdOnlyMessage,
-    RecordPropsMessage
 } = require('@mpieva/psydb-schema-helpers');
 
 var parseRecordMessageType = require('./parse-record-message-type');
@@ -25,9 +23,6 @@ var checkSchema = async ({ db, getRecordSchemas, message }) => {
 
     var collectionCreatorData = allSchemaCreators[collection];
     if (!collectionCreatorData) {
-        /*throw new Error(inline`
-            no creator data found for collection "${collection}"
-        `);*/
         throw new ApiError(400, 'InvalidCollection');
     }
     
@@ -73,68 +68,10 @@ var checkSchema = async ({ db, getRecordSchemas, message }) => {
         message
     );
 
-    //var recordSchemas = await getRecordSchemas();
-    //console.log(recordSchemas);
-
-    /*var recordSchema = recordSchemas.find({
-        collection,
-        type: recordType,
-        subtype: recordSubType
-    });
-
-    if (!recordSchema) {
-        debug(message);
-        throw new ApiError(400, 'RecordSchemaNotFound');
-    }
-
-    var messageSchemas = (
-        recordSchemas
-        .reduce((acc, it) => ([
-            ...acc,
-            
-            createItem({
-                ...it, op: 'create',
-                createSchemaCallback: RecordPropsMessage
-            }),
-            
-            createItem({
-                ...it, op: 'patch',
-                createSchemaCallback: (opts) => (
-                    RecordPropsMessage({ ...opts, requiresId: true })
-                )
-            }),
-            
-            ...(
-                it.schemas.gdpr
-                ? [
-                    createItem({
-                        ...it, op: 'deleteGdpr',
-                        createSchemaCallback: RecordIdOnlyMessage
-                    })
-                ]
-                : []
-            )
-
-        ]), [])
-    );
-
-    var keyedMessageSchemas = {};
-    for (var it of messageSchemas) {
-        keyedMessageSchemas[it.messageType] = it.schema;
-    }
-
-    //console.dir(messageSchemas, { depth: null });
-
-    var isValid = ajv.validate(
-        keyedMessageSchemas[message.type],
-        message
-    )*/
     if (!isValid) {
         debug('ajv errors', message.type, ajv.errors);
         throw new ApiError(400, 'InvalidMessageSchema');
     }
-
-    //return messageSchemas;
 }
 
 var createItem = ({
