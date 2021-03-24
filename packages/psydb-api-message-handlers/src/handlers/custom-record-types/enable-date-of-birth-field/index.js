@@ -9,13 +9,14 @@ var SimpleHandler = require('../../../lib/simple-handler'),
 var createSchema = require('./schema');
 
 var handler = SimpleHandler({
-    messageType: 'custom-record-types/create',
+    messageType: 'custom-record-types/enable-date-of-birth-field',
     createSchema,
 });
 
 handler.checkAllowedAndPlausible = async ({
     db,
     permissions,
+    cache,
     message
 }) => {
     if (!permissions.hasRootAccess) {
@@ -23,55 +24,49 @@ handler.checkAllowedAndPlausible = async ({
     }
 
     var {
-        collection,
-        type,
+        id,
+        props,
     } = message.payload;
 
-    var existing = await (
+    var records = await (
         db.collection('customRecordType').find({
-            collection,
-            type
+            _id: id
         }).toArray()
     );
 
-    if (existing.length > 0) {
-        throw new ApiError(400, 'DuplicateCustomRecordType');
+    if (records.length < 1) {
+        throw new ApiError(404, 'CustomRecordTypeNotFound');
     }
+    
+    cache.record = records[0];
 }
 
 handler.triggerSystemEvents = async ({
     db,
     rohrpost,
+    cache,
     message,
-    personnelId,
 }) => {
-    var { id, collection, type, props } = message.payload;
+    var { personnelId, payload } = message;
+    var { id, lastKnownEventId } = payload;
 
     var channel = (
         rohrpost
         .openCollection('customRecordType')
         .openChannel({
-            id,
-            isNew: true,
-            additionalChannelProps: { collection, type }
+            id
         })
     );
 
     var messages = PutMaker({ personnelId }).all({
-        '/state/label': props.label
+        '/state/nextSettings/dateOfBirthField/isDirty': true,
+        '/state/nextSettings/dateOfBirthField/isEnabled': true,
     });
 
-    await channel.dispatchMany({ messages });
-
-    /*{
-        type: 'put',
-        payload: {
-            // datensatz-beschriftung
-            prop: '/nextSettings/recordLabelDefinition',
-            value: props.recordLabelDefinition
-        }
-    }*/
-
+    await channel.dispatchMany({
+        lastKnownEventId,
+        messages,
+    });
 }
 
 module.exports = handler;

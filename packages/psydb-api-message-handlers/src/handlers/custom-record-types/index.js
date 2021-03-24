@@ -5,6 +5,7 @@ var {
 
 var CustomTypeGroup = MessageHandlerGroup([
     require('./create'),
+    require('./enable-date-of-birth-field'),
     require('./add-field-definition'),
     require('./set-record-label-definition'),
     require('./commit-settings'),

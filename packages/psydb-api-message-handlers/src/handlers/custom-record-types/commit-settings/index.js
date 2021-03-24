@@ -5,30 +5,21 @@ var omit = require('@cdxoo/omit'),
     createClone = require('copy-anything').copy,
     createDiff = require('deep-diff');
 
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
-    Ajv = require('@mpieva/psydb-api-lib/src/ajv');
+var ApiError = require('@mpieva/psydb-api-lib/src/api-error');
 
 var createRohrpostMessagesFromDiff = require('@mpieva/psydb-api-lib/src/diff-to-rohrpost');
 
-var Schema = require('./schema'),
+var SimpleHandler = require('../../../lib/simple-handler');
+
+var createSchema = require('./schema'),
     allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
-var shouldRun = (message) => (
-    message.type === 'custom-record-types/commit-settings'
-)
+var handler = SimpleHandler({
+    messageType: 'custom-record-types/commit-settings',
+    createSchema,
+});
 
-var checkSchema = async ({ message }) => {
-    var ajv = Ajv(),
-        isValid = false;
-
-    isValid = ajv.validate(Schema(), message);
-    if (!isValid) {
-        debug('ajv errors', ajv.errors);
-        throw new ApiError(400, 'InvalidMessageSchema');
-    }
-}
-
-var checkAllowedAndPlausible = async ({
+handler.checkAllowedAndPlausible = async ({
     db,
     permissions,
     cache,
@@ -78,7 +69,7 @@ var checkAllowedAndPlausible = async ({
     // in the first place we should prevent that
 }
 
-var triggerSystemEvents = async ({
+handler.triggerSystemEvents = async ({
     db,
     rohrpost,
     cache,
@@ -101,6 +92,9 @@ var triggerSystemEvents = async ({
     // handle label def
     settings.recordLabelDefinition = omit(
         'isDirty', settings.recordLabelDefinition
+    );
+    settings.dateOfBirthField = omit(
+        'isDirty', settings.dateOfBirthField
     );
     //nextSettings.recordLabelDefinition.isDirty = false;
 
@@ -174,14 +168,4 @@ var triggerSystemEvents = async ({
 
 }
 
-
-// no-op
-var triggerOtherSideEffects = async () => {};
-
-module.exports = {
-    shouldRun,
-    checkSchema,
-    checkAllowedAndPlausible,
-    triggerSystemEvents,
-    triggerOtherSideEffects,
-}
+module.exports = handler;

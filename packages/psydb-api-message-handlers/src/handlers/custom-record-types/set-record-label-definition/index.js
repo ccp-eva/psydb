@@ -1,27 +1,19 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
 
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
-    Ajv = require('@mpieva/psydb-api-lib/src/ajv');
+var ApiError = require('@mpieva/psydb-api-lib/src/api-error');
 
-var Schema = require('./schema');
+var SimpleHandler = require('../../../lib/simple-handler'),
+    PutMaker = require('../../../lib/put-maker');
 
-var shouldRun = (message) => (
-    message.type === 'custom-record-types/set-record-label-definition'
-)
+var createSchema = require('./schema');
 
-var checkSchema = async ({ message }) => {
-    var ajv = Ajv(),
-        isValid = false;
+var handler = SimpleHandler({
+    messageType: 'custom-record-types/set-record-label-definition',
+    createSchema,
+});
 
-    isValid = ajv.validate(Schema(), message);
-    if (!isValid) {
-        debug('ajv errors', ajv.errors);
-        throw new ApiError(400, 'InvalidMessageSchema');
-    }
-}
-
-var checkAllowedAndPlausible = async ({
+handler.checkAllowedAndPlausible = async ({
     db,
     permissions,
     cache,
@@ -57,7 +49,7 @@ var checkAllowedAndPlausible = async ({
     // TODO: check format placeholders against token count
 }
 
-var triggerSystemEvents = async ({
+handler.triggerSystemEvents = async ({
     db,
     rohrpost,
     cache,
@@ -75,31 +67,17 @@ var triggerSystemEvents = async ({
         })
     );
 
+    var messages = PutMaker({ personnelId }).all({
+        '/state/nextSettings/recordLabelDefinition': {
+            isDirty: true,
+            ...props
+        }
+    });
+
     await channel.dispatchMany({
         lastKnownEventId,
-        messages: [
-            {
-                type: 'put',
-                payload: {
-                    // datensatz-beschriftung
-                    prop: '/state/nextSettings/recordLabelDefinition',
-                    value: {
-                        isDirty: true,
-                        ...props
-                    }
-                }
-            }
-        ],
+        messages,
     });
 }
 
-// no-op
-var triggerOtherSideEffects = async () => {};
-
-module.exports = {
-    shouldRun,
-    checkSchema,
-    checkAllowedAndPlausible,
-    triggerSystemEvents,
-    triggerOtherSideEffects,
-}
+module.exports = handler;
