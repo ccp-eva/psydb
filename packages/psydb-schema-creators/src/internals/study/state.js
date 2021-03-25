@@ -72,6 +72,12 @@ var DoBTypeSettings = ({
     ]
 })
 
+var Settings = ({
+
+} = {}) => ExactObject({
+    
+})
+
 // TODO: stub; needs conditions handling somehow
 // also we need condition templates for study types
 var StudyState = ({
@@ -130,7 +136,24 @@ var StudyState = ({
 
             custom: CustomProps({ customFieldDefinitions }),
             systemPermissions: systemPermissionsSchema,
-            
+
+            /*...(enableInternalProps && {
+                nextSettings: Settings({
+                    enableInternalProps,
+                    enableFlags
+                }),
+                settings: Settings({
+                    enableInternalProps,
+                    enableFlags
+                }),
+            }),*/
+
+            // TODO: stub
+            subjectTypeSettings: {
+                type: 'array',
+                default: [],
+            }, 
+
             ...(enableInternalProps && {
                 interals: {
                     type: 'object',

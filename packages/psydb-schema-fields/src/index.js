@@ -6,6 +6,8 @@ module.exports = {
     Color: require('./color'),
     DateTime: require('./date-time'),
     DateTimeInterval: require('./date-time-interval'),
+    DaysSinceBirth: require('./days-since-birth'),
+    DaysSinceBirthInterval: require('./days-since-birth-interval'),
     ExtBool: require('./ext-bool'),
     EmailList: require('./email-list'),
     EventId: require('./event-id'),

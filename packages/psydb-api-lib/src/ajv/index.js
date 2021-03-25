@@ -15,6 +15,7 @@ var AjvWrapper = ({
     };
 
     var ajv = new Ajv({
+        $data: true,
         allErrors: true,
         strictDefaults: 'log',
         strictKeywords: 'log',
