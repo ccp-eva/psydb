@@ -34,6 +34,8 @@ var StudyGroup = MessageHandlerGroup([
         op: 'patch',
     }),
 
+    require('./add-location-type'),
+
     // add a subject type that may hold conditions and can be
     // tested in this study
     require('./add-subject-type'),
@@ -51,6 +53,9 @@ var StudyGroup = MessageHandlerGroup([
     //require('./add-general-condition'),
     //require('./update-general-condition'),
     //require('./remove-general-condition'),
+
+    // sets finalize flag to true, activating the study
+    require('./finalize-create'),
 
     // deletes study record that has never been commited
     // and is flagged as "isNew"

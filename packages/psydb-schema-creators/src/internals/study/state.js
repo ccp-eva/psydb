@@ -87,6 +87,11 @@ var StudyState = ({
 } = {}) => {
     var schema = ExactObject({
         properties: {
+            
+            ...(enableInternalProps && {
+                isCreateFinnalized: { type: 'boolean', default: false },
+            }),
+
             name: SaneString(),
             shorthand: SaneString(),
             researchGroupIds: {
@@ -105,7 +110,7 @@ var StudyState = ({
                 `,
             },
             
-            externalLocationTypes: {
+            /*externalLocationTypes: {
                 type: 'array',
                 items: IdentifierString(),
                 // TODO: enum of location types that arent reservable
@@ -132,7 +137,7 @@ var StudyState = ({
                     directly reservable and will be used to conduct
                     experiments such as institute rooms
                 ` 
-            },
+            },*/
 
             custom: CustomProps({ customFieldDefinitions }),
             systemPermissions: systemPermissionsSchema,
@@ -147,6 +152,12 @@ var StudyState = ({
                     enableFlags
                 }),
             }),*/
+
+            // TODO: stub
+            locationTypeSettings: {
+                type: 'array',
+                default: [],
+            },
 
             // TODO: stub
             subjectTypeSettings: {
