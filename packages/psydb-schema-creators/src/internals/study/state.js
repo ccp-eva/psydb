@@ -89,7 +89,7 @@ var StudyState = ({
         properties: {
             
             ...(enableInternalProps && {
-                isCreateFinnalized: { type: 'boolean', default: false },
+                isCreateFinalized: { type: 'boolean', default: false },
             }),
 
             name: SaneString(),
@@ -154,7 +154,13 @@ var StudyState = ({
             }),*/
 
             // TODO: stub
-            locationTypeSettings: {
+            externalTestLocationFields: {
+                type: 'array',
+                default: []
+            },
+
+            // TODO: stub
+            inhouseTestLocationSettings: {
                 type: 'array',
                 default: [],
             },

@@ -34,7 +34,8 @@ var StudyGroup = MessageHandlerGroup([
         op: 'patch',
     }),
 
-    require('./add-location-type'),
+    require('./add-inhouse-location-type'),
+    require('./add-external-location-field'),
 
     // add a subject type that may hold conditions and can be
     // tested in this study

@@ -12,15 +12,11 @@ var {
 
 var Schema = () => {
     return Message({
-        type: `study/add-location-type`,
+        type: `study/add-inhouse-location-type`,
         payload: ExactObject({
             properties: {
                 id: Id(),
                 lastKnownEventId: EventId(),
-                searchType: {
-                    type: 'string',
-                    enaum: [ 'external', 'inhouse' ]
-                },
                 customRecordTypeId: ForeignId({
                     collection: 'customRecordType',
                     constraints: {
@@ -47,7 +43,6 @@ var Schema = () => {
             required: [
                 'id',
                 'lastKnownEventId',
-                'searchType',
                 'customRecordTypeId',
                 'enableAllAvailableLocations',
                 'enabledLocationIds',

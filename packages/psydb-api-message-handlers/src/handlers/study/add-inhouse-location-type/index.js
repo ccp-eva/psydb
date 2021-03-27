@@ -13,7 +13,7 @@ var SimpleHandler = require('../../../lib/simple-handler'),
 var createSchema = require('./schema');
 
 var handler = SimpleHandler({
-    messageType: 'study/add-location-type',
+    messageType: 'study/add-inhouse-location-type',
     createSchema,
 });
 
@@ -60,7 +60,7 @@ handler.checkAllowedAndPlausible = async ({
         throw new ApiError(400, 'InvalidCustomRecordType');
     }
 
-    study.state.locationTypeSettings.forEach(it => {
+    study.state.inhouseTestLocationSettings.forEach(it => {
         if (compareIds(it.customRecordTypeId, customRecordTypeId)) {
             throw new ApiError(400, 'DuplicateLocationType')
         }
@@ -83,7 +83,6 @@ handler.triggerSystemEvents = async ({
     var {
         id,
         lastKnownEventId,
-        searchType,
         customRecordTypeId,
         enableAllAvailableLocations,
         enabledLocationIds,
@@ -98,8 +97,7 @@ handler.triggerSystemEvents = async ({
     );
 
     var messages = PushMaker({ personnelId }).all({
-        '/state/locationTypeSettings': {
-            searchType,
+        '/state/inhouseTestLocationSettings': {
             customRecordTypeId,
             enableAllAvailableLocations,
             enabledLocationIds,
