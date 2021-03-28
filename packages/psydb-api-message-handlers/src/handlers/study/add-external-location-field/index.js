@@ -66,10 +66,8 @@ handler.checkAllowedAndPlausible = async ({
         isFieldLocationFK = false;
     for (var it of subjectTypeRecord.state.settings.subChannelFields.scientific) {
         if (it.key === locationFieldKey) {
-            console.log(it);
             isFieldThere = true;
             if (it.type === 'ForeignId' && it.props.collection === 'location') {
-                console.log(it);
                 isFieldLocationFK = true;
             }
         }

@@ -39,6 +39,13 @@ var createRouting = ({
         endpoints.self
     );
 
+    router.get('/read/:collectionName/:id',
+        withSelfAuth(),
+        withPermissions(),
+        withEndpointProtection({ endpoint: 'read' }),
+        endpoints.read
+    );
+
     /*router.post('/search/:collectionName(^(_helper_)?[A-Za-z]+$)',
         withProtection(),
         withMongoBody({
