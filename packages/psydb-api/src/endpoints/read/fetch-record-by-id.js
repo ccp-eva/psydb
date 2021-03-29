@@ -13,6 +13,11 @@ var fetchRecordById = async ({
 }) => {
     var resultSet = await (
         db.collection(collectionName).aggregate([
+            { $project: {
+                events: false,
+                'gdpr.events': false,
+                'scientific.events': false,
+            }},
             { $match: {
                 _id: id
             }},

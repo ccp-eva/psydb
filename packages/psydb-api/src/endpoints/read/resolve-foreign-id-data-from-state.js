@@ -61,7 +61,7 @@ var resolveFromSubSchema = ({
     data,
     dataPointerPrefix,
 }) => {
-    //console.log(schema);
+    //console.log(schema, data);
     var resolved = [];
     traverse(schema, { allKeys: false }, (...traverseArgs) => {
         var [
@@ -77,22 +77,12 @@ var resolveFromSubSchema = ({
         if (currentSchema.psydbType === 'ForeignId') {
             var currentData = data,
                 dataPointer = '';
-            //console.log('AAAAAAAAAAAAAA');
-            //console.log(data);
             if (typeof data === 'object') {
                 dataPointer = convertPointer(inSchemaPointer);
                 currentData = jsonpointer.get(data, dataPointer);
             }
 
-            var fullDataPointer = dataPointer;
-            if (dataPointerPrefix) {
-                if (dataPointer) {
-                    fullDataPointer = `${dataPointerPrefix}/${dataPointer}`;
-                }
-                else {
-                    fullDataPointer = dataPointerPrefix;
-                }
-            }
+            var fullDataPointer = `${dataPointerPrefix || ''}${dataPointer}`;
             resolved.push({
                 ...currentSchema.psydbProps,
                 dataPointer: fullDataPointer,

@@ -86,6 +86,14 @@ describe('init-demo-system', function () {
         var r = await db.collection('study').find().toArray();
         console.dir(r.map(it => it), { depth: null });
         console.log('###########################################');
+
+        console.log(context);
+
+        var response = await agent.get(`/read/subject/${context.ALICE_TEACHER_ID}`);
+        console.log(response.body);
+
+        var response = await agent.get(`/read/experiment/${context.EXP_INHOUSE_01}`);
+        console.log(response.body);
     });
 
 });

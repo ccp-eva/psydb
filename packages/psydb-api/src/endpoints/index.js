@@ -4,4 +4,5 @@ module.exports = {
     publicSignOut: require('./public-sign-out'),
     event: require('./event'),
     self: require('./self'),
+    read: require('./read'),
 };

@@ -1,5 +1,10 @@
 'use strict';
 
+var {
+    ExactObject,
+    ForeignId
+} = require('@mpieva/psydb-schema-fields');
+
 var resolveForeignIdDataFromState =
     require('./resolve-foreign-id-data-from-state');
 
@@ -25,7 +30,7 @@ var fetchRelatedRecordLabels = async ({
         var customRecordType = await findCustomRecordType({
             db,
             collection: collectionName,
-            type: stored.type
+            type: record.type
         });
     
         if (hasSubChannels) {
@@ -45,27 +50,47 @@ var fetchRelatedRecordLabels = async ({
         args.collection = record.collection;
     }
 
-    var StateCreator = undefined;
+    var SchemaCreator = undefined;
     if (hasSubChannels) {
-        StateCreator = (
-            subChannelStateSchemaCreators[subChannelKey]
-        );
+        SchemaCreator = () => ExactObject({
+            properties: {
+                scientific: ExactObject({
+                    properties: {
+                        state: subChannelStateSchemaCreators.scientific()
+                    }
+                }),
+                gdpr: ExactObject({
+                    properties: {
+                        state: subChannelStateSchemaCreators.gdpr()
+                    }
+                }),
+            }
+        });
     }
     else if (hasFixedTypes) {
-        StateCreator = (
-            collectionCreatorData
-            .fixedTypeStateSchemaCreators[stored.type]
-        );
+        SchemaCreator = () => ExactObject({
+            properties: {
+                state: (
+                    collectionCreatorData
+                    .fixedTypeStateSchemaCreators[stored.type]()
+                )
+            }
+        });
     }
     else {
-        StateCreator = collectionCreatorData.State;
+        SchemaCreator = () => ExactObject({
+            properties: {
+                state: collectionCreatorData.State(),
+            }
+        });
     }
 
-    var channelStateSchema = StateCreator({ ...args });
+    var channelStateSchema = SchemaCreator({ ...args });
+    //console.dir(channelStateSchema, { depth: null });
 
     var foreignIdData = resolveForeignIdDataFromState({
         stateSchema: channelStateSchema,
-        stateData: record.state
+        stateData: record,
     });
 
     console.log(foreignIdData);

@@ -64,7 +64,7 @@ var ExperimentState = ({
                 items: ExactObject({
                     properties: {
                         subjectId: ForeignId({
-                            collecton: 'subject',
+                            collection: 'subject',
                         }),
                         participationStatus: ParticipationStatus(),
                         // TODO: file refs?

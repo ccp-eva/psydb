@@ -5,7 +5,8 @@ var inlineString = require('@cdxoo/inline-string');
 var ApiError = require('@mpieva/psydb-api-lib/src/api-error');
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
-var fetchRecordById = require('./fetch-record-by-id');
+var fetchRecordById = require('./fetch-record-by-id'),
+    fetchRelatedRecordLabels = require('./fetch-related-record-labels');
 
 var read = async (context, next) => {
     var { 
@@ -51,13 +52,34 @@ var read = async (context, next) => {
         throw new ApiError(404, 'NoAccessibleRecordFound');
     }
 
+    /*var {
+        hasCustomTypes
+    } = collectionCreatorData;
+
     console.dir(record, { depth: null });
+
+    if (hasCustomTypes) {
+        // TODO
+        console.log('fetching custom type foreign id labels');
+    }
+
+    await fetchStaticRelationLabels({
+        db,
+        collectionName,
+    });*/
 
     /*var relatedRecordLabels = await fetchRelatedRecordLabels({
         db,
         collectionCreatorData,
         record,
     });*/
+
+    await fetchRelatedRecordLabels({
+        db,
+        collectionName: params.collectionName,
+        collectionCreatorData,
+        record
+    });
 
     await next();
 }
