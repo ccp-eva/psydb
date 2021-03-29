@@ -1,4 +1,6 @@
 'use strict';
+var inline = require('@cdxoo/inline-text');
+
 var OneofResolver = () => {
     var resolver = {},
         transformations = [];

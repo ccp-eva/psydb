@@ -5,7 +5,7 @@ var expect = require('chai').expect,
 
     fetchRecordById = require('./fetch-record-by-id');
 
-describe('read()', function () {
+describe('fetchRecordById()', function () {
     this.timeout(0);
 
     var server, uri, con, db;
@@ -126,6 +126,7 @@ var initCollection = async (db) => {
     console.log(await db.collection('subject').indexInformation());*/
 
     await db.collection('subject').insertMany([
+
         {
             _id: 'barkbark',
             type: 'dog',
@@ -138,6 +139,7 @@ var initCollection = async (db) => {
                 //...SimplePermissions('foo-group')
             }}
         },
+
         {
             _id: 'meowmeow',
             type: 'cat',
@@ -150,6 +152,7 @@ var initCollection = async (db) => {
                 //...SimplePermissions('foo-group', 'read'),
             }}
         },
+
         {
             _id: 'purrpurr',
             type: 'cat',
@@ -162,6 +165,7 @@ var initCollection = async (db) => {
                 //...SimplePermissions('foo-group', 'read'),
             }}
         },
+
         /*...range(50*1000).map(n => ({
             type: 'chimpanzee',
             scientific: { state: { 

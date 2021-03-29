@@ -2,14 +2,18 @@
 var Id = require('./id');
 
 // TODO: separate schema for edge constraints?
-var ForeignId = (collection, constraints) => {
+var ForeignId = ({ collection, recordType, constraints }) => {
     if (!collection) {
         throw new Error('missing collection parameter on foreign key creation');
     }
     return ({
         ...Id(),
-        ['db:collection']: collection,
-        ['db:constraints']: constraints || {},
+        psydbType: 'ForeignId',
+        psydbProps: {
+            collection,
+            recordType: recordType,
+            constraints: constraints || {},
+        }
     });
 }
 

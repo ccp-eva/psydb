@@ -78,6 +78,13 @@ describe('complex-schema-behavior', () => {
                                     }},
                                 ]
                             }
+                        },
+
+                        ary02: {
+                            type: 'array',
+                            items: {
+                                type: 'string',
+                            },
                         }
                     }
                 }
@@ -96,6 +103,11 @@ describe('complex-schema-behavior', () => {
                 { type: 'b', bValue: 'baz' },
                 { type: 'b', bValue: 'bar' },
                 { type: 'a', bValue: 'foo' },
+            ],
+            ary02: [
+                'foo',
+                'bar',
+                'baz',
             ]
         });
 
@@ -131,6 +143,9 @@ describe('complex-schema-behavior', () => {
                         },
                         ary01: {
                             type: 'array'
+                        },
+                        ary02: {
+                            type: 'array'
                         }
                     }
                 }
@@ -153,7 +168,18 @@ describe('complex-schema-behavior', () => {
                         aValue: { type: 'string' }
                     }},
                 ]
-            }
+            },
+
+            {
+                type: 'array',
+                inSchemaPointer: '/oneOf/1/properties/ary02',
+                itemSchemas: [
+                    { type: 'string' },
+                    { type: 'string' },
+                    { type: 'string' },
+                ]
+            },
+
         ]);
     });
 });

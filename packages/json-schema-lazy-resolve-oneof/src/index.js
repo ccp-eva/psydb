@@ -16,7 +16,6 @@ var OneofResolver = require('./oneof-resolver');
 // where the key refers to a prop containing a oneOf declaration
 var lazyResolveAll = (schema, data, lazyResolvePropPointers) => {
     var schemaParts = deconstructArrays(schema);
-    //console.dir(schemaParts, { depth: null });
     
     var resolvedParts = [];
     for (var part of schemaParts) {
@@ -90,7 +89,15 @@ var lazyResolve = (schema, data) => {
         
         //var dataPointer = pointerMapping.get(inSchemaPointer);
         var dataPointer = convertPointer(inSchemaPointer);
-        var currentData = jsonpointer.get(data, dataPointer);
+        //console.log(currentSchema);
+        var currentData = data;
+        if (typeof data === 'object') {
+            currentData = jsonpointer.get(data, dataPointer);
+        }
+        //console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
+        //console.log(currentData);
+        //var currentData = jsonpointer.get(data, dataPointer);
+        //console.log(currentData);
 
         // NOTE: this should never happen as we deconstruct schema arrays
         if (currentSchema.type === 'array' && currentSchema.items) {

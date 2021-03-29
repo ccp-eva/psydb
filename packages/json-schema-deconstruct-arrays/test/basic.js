@@ -31,6 +31,10 @@ describe('basic-behavior', () => {
                 ary02: {
                     type: 'array',
                     items: { type: 'object' }
+                },
+                ary03: {
+                    type: 'array',
+                    items: { type: 'string' }
                 }
             }
         }
@@ -45,6 +49,7 @@ describe('basic-behavior', () => {
                     properties: {
                         ary01: { type: 'array' },
                         ary02: { type: 'array' },
+                        ary03: { type: 'array' },
                     }
                 }
             },
@@ -72,7 +77,14 @@ describe('basic-behavior', () => {
                 schema: {
                     type: 'object'
                 }
-            }
+            },
+
+            {
+                inSchemaPointer: '/properties/ary03',
+                schema: {
+                    type: 'string'
+                }
+            },
         ]);
 
     });
