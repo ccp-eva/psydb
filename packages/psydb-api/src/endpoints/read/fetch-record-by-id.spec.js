@@ -3,7 +3,7 @@ var expect = require('chai').expect,
     Mongod = require('mongodb-memory-server').MongoMemoryServer,
     MongoClient = require('mongodb').MongoClient,
 
-    read = require('./');
+    fetchRecordById = require('./fetch-record-by-id');
 
 describe('read()', function () {
     this.timeout(0);
@@ -32,65 +32,62 @@ describe('read()', function () {
     });
 
     it('root read always works', async () => {
-        var context = {
+        var args = {
             db,
             permissions: {
                 hasRootAccess: true,
             },
-            params: {
-                collectionName: 'subject',
-                id: undefined,
-            },
+            hasSubChannels: true,
+            collectionName: 'subject',
+            id: undefined,
         };
+        var record = undefined;
 
-        context.params.id = 'barkbark';
-        await read(context, noop);
+        args.id = 'barkbark';
+        record = await fetchRecordById(args);
+        console.dir(record, { depth: null });
 
-        context.params.id = 'meowmeow';
-        await read(context, noop);
+        args.id = 'meowmeow';
+        record = await fetchRecordById(args);
+        console.dir(record, { depth: null });
         
-        context.params.id = 'purrpurr';
-        await read(context, noop);
+        args.id = 'purrpurr';
+        record = await fetchRecordById(args);
+        console.dir(record, { depth: null });
 
-        //console.dir(records, { depth: null });
     });
 
     it('read with foo group works correctly', async () => {
-        var context = {
+        var args = {
             db,
             permissions: {
                 hasRootAccess: false,
                 canReadCollection: (name) => (true),
                 allowedResearchGroupIds: [ 'foo-group' ]
             },
-            params: {
-                collectionName: 'subject',
-                id: undefined,
-            },
+            hasSubChannels: true,
+            collectionName: 'subject',
+            id: undefined,
         };
+        var record = undefined;
 
-        var error = undefined;
-        try {
-            context.params.id = 'barkbark';
-            await read(context, noop);
-        }
-        catch (e) {
-            error = e;
-        }
-        expect(error).to.exist;
+        args.id = 'barkbark';
+        record = await fetchRecordById(args);
+        console.dir(record, { depth: null });
 
-        context.params.id = 'meowmeow';
-        await read(context, noop);
+        args.id = 'meowmeow';
+        record = await fetchRecordById(args);
+        console.dir(record, { depth: null });
         
-        context.params.id = 'purrpurr';
-        await read(context, noop);
+        args.id = 'purrpurr';
+        record = await fetchRecordById(args);
+        console.dir(record, { depth: null });
 
     });
 
 });
 
 var range = (n) => ([ ...Array(n).keys() ]);
-var noop = async () => {};
 
 var SimplePermissions = (group, perm) => ({
     systemPermissions: {
