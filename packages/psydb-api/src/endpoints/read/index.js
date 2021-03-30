@@ -10,8 +10,9 @@ var createSchemaForRecord =
 
 var fetchRecordById = require('./fetch-record-by-id');
 
-var resolveForeignIdData =
-    require('./resolve-foreign-id-data');
+var resolveForeignIdData = require('./resolve-foreign-id-data');
+
+var fetchRelatedRecords = require('./fetch-related-records');
 
 
 var read = async (context, next) => {
@@ -58,35 +59,6 @@ var read = async (context, next) => {
         throw new ApiError(404, 'NoAccessibleRecordFound');
     }
 
-    /*var {
-        hasCustomTypes
-    } = collectionCreatorData;
-
-    console.dir(record, { depth: null });
-
-    if (hasCustomTypes) {
-        // TODO
-        console.log('fetching custom type foreign id labels');
-    }
-
-    await fetchStaticRelationLabels({
-        db,
-        collectionName,
-    });*/
-
-    /*var relatedRecordLabels = await fetchRelatedRecordLabels({
-        db,
-        collectionCreatorData,
-        record,
-    });*/
-
-    /*await fetchRelatedRecordLabels({
-        db,
-        collectionName: params.collectionName,
-        collectionCreatorData,
-        record
-    });*/
-
     var recordSchema = await createSchemaForRecord({
         db,
         collectionName: params.collectionName,
@@ -99,7 +71,13 @@ var read = async (context, next) => {
         data: record,
     });
 
-    console.log(foreignIdData);
+    //console.log(foreignIdData);
+
+    await fetchRelatedRecords({
+        db,
+        foreignIdData,
+        labelOnly: true
+    });
 
     await next();
 }
