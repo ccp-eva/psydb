@@ -3,6 +3,9 @@ var Ajv = require('@mpieva/psydb-api-lib/src/ajv');
 
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
+var createSchemaForRecord =
+    require('@mpieva/psydb-api-lib/src/create-schema-for-record');
+
 var createInitialChannelState = async ({
     collectionName: collection,
     channelId,
@@ -21,87 +24,13 @@ var createInitialChannelState = async ({
         disableProhibitedKeyword: true
     });
 
-    var collectionCreatorData = allSchemaCreators[collection];
-    if (!collectionCreatorData) {
-        throw new Error(`no creator data found for collection "${collection}"`);
-    }
+    var channelStateSchema = await createSchemaForRecord({
+        db,
+        collectionName: collection,
+        record: stored,
+        subChannelKey,
+    });
     
-    var {
-        isGenericRecord,
-        hasCustomTypes,
-        hasFixedTypes,
-        hasSubChannels,
-        subChannelStateSchemaCreators,
-    } = collectionCreatorData;
-
-    if (subChannelKey) {
-        if (!hasSubChannels) {
-            throw new Error(inline`
-                collection "${collection}" does not support subchannels
-            `);
-        }
-        if (!subChannelStateSchemaCreators[subChannelKey]) {
-            throw new Error(inline`
-                collection "${collection}" has no schema creator for
-                sub-channel key "${subChannelKey}"
-            `);
-        }
-    }
-    else {
-        if (hasSubChannels) {
-            throw new Error(inline`
-                collection "${collection}" has sub channels but no key
-                was providede
-            `);
-        }
-    }
-
-    var args = {
-        enableInternalProps: true,
-    };
-
-    if (hasCustomTypes) {
-        var customRecordType = await findCustomRecordType({
-            db,
-            collection,
-            type: stored.type
-        });
-    
-        if (hasSubChannels) {
-            args.subChannelCustomRecordFieldDefinitions = (
-                customRecordType.state.settings.subChannelFields
-            );
-        }
-        else {
-            args.customFieldDefinitions = (
-                customRecordType.state.settings.fields
-            );
-        }
-    }
-
-    // this collection needs extra argument
-    if (collection === 'customRecordType') {
-        args.collection = stored.collection;
-    }
-
-    var StateCreator = undefined;
-    if (hasSubChannels) {
-        StateCreator = (
-            subChannelStateSchemaCreators[subChannelKey]
-        );
-    }
-    else if (hasFixedTypes) {
-        StateCreator = (
-            collectionCreatorData
-            .fixedTypeStateSchemaCreators[stored.type]
-        );
-    }
-    else {
-        StateCreator = collectionCreatorData.State;
-    }
-
-    var channelStateSchema = StateCreator({ ...args });
-
     // although called validate() it will initialize
     // the default values of required properties 
     // when useDefaults == true
