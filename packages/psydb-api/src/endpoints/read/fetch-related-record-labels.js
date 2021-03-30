@@ -8,88 +8,25 @@ var {
 var resolveForeignIdDataFromState =
     require('./resolve-foreign-id-data-from-state');
 
+var createSchemaForRecord =
+    require('@mpieva/psydb-api-lib/src/create-schema-for-record');
+
 var fetchRelatedRecordLabels = async ({
     db,
     collectionName,
     collectionCreatorData,
     record
 }) => {
+
+    var recordSchema = await createSchemaForRecord({
+        db,
+        collectionName,
+        record,
+        fullRecord: true
+    });
     
-    var {
-        hasCustomTypes,
-        hasFixedTypes,
-        hasSubChannels,
-        subChannelStateSchemaCreators,
-    } = collectionCreatorData;
-
-    var args = {
-        enableInternalProps: true,
-    };
-
-    if (hasCustomTypes) {
-        var customRecordType = await findCustomRecordType({
-            db,
-            collection: collectionName,
-            type: record.type
-        });
-    
-        if (hasSubChannels) {
-            args.subChannelCustomRecordFieldDefinitions = (
-                customRecordType.state.settings.subChannelFields
-            );
-        }
-        else {
-            args.customFieldDefinitions = (
-                customRecordType.state.settings.fields
-            );
-        }
-    }
-
-    // this collection needs extra argument
-    if (collectionName === 'customRecordType') {
-        args.collection = record.collection;
-    }
-
-    var SchemaCreator = undefined;
-    if (hasSubChannels) {
-        SchemaCreator = () => ExactObject({
-            properties: {
-                scientific: ExactObject({
-                    properties: {
-                        state: subChannelStateSchemaCreators.scientific()
-                    }
-                }),
-                gdpr: ExactObject({
-                    properties: {
-                        state: subChannelStateSchemaCreators.gdpr()
-                    }
-                }),
-            }
-        });
-    }
-    else if (hasFixedTypes) {
-        SchemaCreator = () => ExactObject({
-            properties: {
-                state: (
-                    collectionCreatorData
-                    .fixedTypeStateSchemaCreators[stored.type]()
-                )
-            }
-        });
-    }
-    else {
-        SchemaCreator = () => ExactObject({
-            properties: {
-                state: collectionCreatorData.State(),
-            }
-        });
-    }
-
-    var channelStateSchema = SchemaCreator({ ...args });
-    //console.dir(channelStateSchema, { depth: null });
-
     var foreignIdData = resolveForeignIdDataFromState({
-        stateSchema: channelStateSchema,
+        stateSchema: recordSchema,
         stateData: record,
     });
 
