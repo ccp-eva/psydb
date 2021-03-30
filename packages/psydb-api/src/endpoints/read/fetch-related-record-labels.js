@@ -1,10 +1,5 @@
 'use strict';
 
-var {
-    ExactObject,
-    ForeignId
-} = require('@mpieva/psydb-schema-fields');
-
 var resolveForeignIdDataFromState =
     require('./resolve-foreign-id-data-from-state');
 

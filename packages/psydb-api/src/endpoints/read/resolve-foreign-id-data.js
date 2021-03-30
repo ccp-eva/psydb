@@ -6,11 +6,11 @@ var traverse = require('json-schema-traverse'),
     jsonpointer = require('jsonpointer'),
     convertPointer = require('@mpieva/json-schema-convert-pointer');
 
-var resolveForeignIdDataFromState = ({ stateSchema, stateData }) => {
+var resolveForeignIdData = ({ schema, data }) => {
 
     //console.dir(channelStateSchema, { depth: null });
 
-    var resolvedParts = lazyResolveOneOf(stateSchema, stateData);
+    var resolvedParts = lazyResolveOneOf(schema, data);
 
     //console.dir(resolvedParts, { depth: null });
 
@@ -19,7 +19,7 @@ var resolveForeignIdDataFromState = ({ stateSchema, stateData }) => {
         //console.log(part.type);
         if (part.type === 'schema') {
             var dataPointer = convertPointer(part.inSchemaPointer);
-            var currentData = jsonpointer.get(stateData, dataPointer);
+            var currentData = jsonpointer.get(data, dataPointer);
             
             var foreign = resolveFromSubSchema({
                 schema: part.schema,
@@ -37,7 +37,7 @@ var resolveForeignIdDataFromState = ({ stateSchema, stateData }) => {
                 var dataPointer = convertPointer(
                     part.inSchemaPointer + '/' + index
                 );
-                var currentData = jsonpointer.get(stateData, dataPointer);
+                var currentData = jsonpointer.get(data, dataPointer);
 
                 var foreign = resolveFromSubSchema({
                     schema: itemSchema,
@@ -94,4 +94,4 @@ var resolveFromSubSchema = ({
     return resolved;
 }
 
-module.exports = resolveForeignIdDataFromState;
+module.exports = resolveForeignIdData;

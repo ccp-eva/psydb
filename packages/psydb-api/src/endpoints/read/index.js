@@ -5,8 +5,14 @@ var inlineString = require('@cdxoo/inline-string');
 var ApiError = require('@mpieva/psydb-api-lib/src/api-error');
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
-var fetchRecordById = require('./fetch-record-by-id'),
-    fetchRelatedRecordLabels = require('./fetch-related-record-labels');
+var createSchemaForRecord =
+    require('@mpieva/psydb-api-lib/src/create-schema-for-record');
+
+var fetchRecordById = require('./fetch-record-by-id');
+
+var resolveForeignIdData =
+    require('./resolve-foreign-id-data');
+
 
 var read = async (context, next) => {
     var { 
@@ -74,12 +80,26 @@ var read = async (context, next) => {
         record,
     });*/
 
-    await fetchRelatedRecordLabels({
+    /*await fetchRelatedRecordLabels({
         db,
         collectionName: params.collectionName,
         collectionCreatorData,
         record
+    });*/
+
+    var recordSchema = await createSchemaForRecord({
+        db,
+        collectionName: params.collectionName,
+        record,
+        fullSchema: true
     });
+    
+    var foreignIdData = resolveForeignIdData({
+        schema: recordSchema,
+        data: record,
+    });
+
+    console.log(foreignIdData);
 
     await next();
 }
