@@ -7,16 +7,28 @@ module.exports = {
     helperSet: {
         collection: 'helperSet',
         isGenericRecord: false,
+        recordLabelDefinition: {
+            format: '${0}',
+            tokens: [ '/state/label' ]
+        },
     },
     helperSetItem: {
         collection: 'helperSetItem',
         isGenericRecord: false,
+        recordLabelDefinition: {
+            format: '${0}',
+            tokens: [ '/state/label' ]
+        }
     },
     experimentOperatorTeam: {
         collection: 'experimentOperatorTeam',
         isGenericRecord: true,
         hasCustomTypes: false,
         hasSubChannels: false,
+        recordLabelDefinition: {
+            format: '${0}',
+            tokens: [ '/state/name' ]
+        }
     },
     location: {
         collection: 'location',
@@ -30,12 +42,20 @@ module.exports = {
         hasCustomTypes: false,
         hasSubChannels: true,
         subChannelKeys: ['scientific', 'gdpr'],
+        recordLabelDefinition: {
+            format: '${0} ${1}',
+            tokens: [ '/gdpr/state/firstname', '/gdpr/state/lastname' ]
+        }
     },
     researchGroup: {
         collection: 'researchGroup',
         isGenericRecord: true,
         hasCustomTypes: false,
         hasSubChannels: false,
+        recordLabelDefinition: {
+            format: '${0}',
+            tokens: [ '/state/shorthand' ]
+        }
     },
     study: {
         collection: 'study',
@@ -55,6 +75,10 @@ module.exports = {
         isGenericRecord: true,
         hasCustomTypes: false,
         hasSubChannels: false,
+        recordLabelDefinition: {
+            format: '${0}',
+            tokens: [ '/state/name' ]
+        }
     },
     reservation: {
         collection: 'reservation',

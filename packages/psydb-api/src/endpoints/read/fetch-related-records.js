@@ -18,7 +18,7 @@ var fetchRelatedRecords = async ({
 }) => {
     var collectionGroups = groupBy({
         items: foreignIdData,
-        byPointer: '/collection'
+        byProp: 'collection'
     });
 
     var customRecordTypes = undefined;
@@ -37,12 +37,6 @@ var fetchRelatedRecords = async ({
                 }}
             ]).toArray()
         );
-        /*
-        var keyedCustomRecordTypes = keyBy({
-            items: customRecordTypes,
-            createKey: (item) => (`${item.collection}~~${item.type}`),
-        });
-        */
         
         var labelDefinitionData = gatherLabelDefinitionData({
             collections: Object.keys(collectionGroups),
@@ -56,16 +50,14 @@ var fetchRelatedRecords = async ({
 
         var keyedLabelDefinitionData = {
             ...keyBy({
-                items: typed,
+                items: typed || [],
                 createKey: (it) => (`${it.collection}~~${it.type}`)
             }),
             ...keyBy({
-                items: untyped,
+                items: untyped || [],
                 byProp: 'collection'
             })
         };
-
-
     }
 
     var result = {};
@@ -79,7 +71,7 @@ var fetchRelatedRecords = async ({
                     collectionGroups[collectionName].map(it => it.id)
                 )}
             }},
-            { $addFields: {
+            /*{ $addFields: {
                 'foo': { $cond: {
                     if: { $eq: ['teacher', '$type'] },
                     then: { 
@@ -88,7 +80,7 @@ var fetchRelatedRecords = async ({
                     },
                     else: '$$REMOVE'
                 }}
-            }},
+            }},*/
         ]).toArray();
 
         //console.log('AAAAAAAAAAAAAAAAAAAAA');
@@ -102,46 +94,30 @@ var fetchRelatedRecords = async ({
             } = allSchemaCreators[collectionName];
 
             records = records.map(record => {
+                var key = undefined;
                 if (hasCustomTypes) {
-                    var key = `${collectionName}~~${record.type}`;
-                    var { definition } = keyedLabelDefinitionData[key];
-
-                    /*var {
-                        label: typeLabel,
-                        settings,
-                    } = keyedCustomRecordTypes[key].state;
-                    var {
-                        recordLabelDefinition,
-                        // optionLabelDefinition, // TODO
-                    } = settings;*/
-
-                    // TODO: we need to get the fields itself to
-                    // ensure proper formatting i guess
-                    // alternatively we could decide based
-                    // on the acual data type (i.e. Date)
-                    //console.log(recordLabelDefinition);
-
-                    var recordLabel = createRecordLabel({
-                        definition,
-                        record
-                    });
-
-                    return {
-                        _id: record._id,
-                        //typeLabel,
-                        recordLabel,
-                    };
+                    key = `${collectionName}~~${record.type}`;
                 }
+                // TODO: fixed types?
                 else {
-                    // TODO: fixed types?
-                    return record;
+                    key = collectionName;
                 }
+                
+                var recordLabel = createRecordLabel({
+                    definition: keyedLabelDefinitionData[key].definition,
+                    record
+                });
+
+                return {
+                    _id: record._id,
+                    recordLabel,
+                };
             });
         }
 
         result[collectionName] = keyBy({
             items: records,
-            byPointer: '/_id'
+            byProp: '_id'
         });
     }
 
