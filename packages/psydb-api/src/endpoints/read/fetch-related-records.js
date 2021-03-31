@@ -2,9 +2,12 @@
 
 //var fetchAvailableOptions // TODO
 var jsonpointer = require('jsonpointer');
+var inline = require('@cdxoo/inline-text');
 
 var keyBy = require('@mpieva/psydb-api-lib/src/key-by');
 var groupBy = require('@mpieva/psydb-api-lib/src/group-by');
+
+var createRecordLabel = require('@mpieva/psydb-api-lib/src/create-record-label');
 
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
@@ -34,10 +37,35 @@ var fetchRelatedRecords = async ({
                 }}
             ]).toArray()
         );
+        /*
         var keyedCustomRecordTypes = keyBy({
             items: customRecordTypes,
             createKey: (item) => (`${item.collection}~~${item.type}`),
         });
+        */
+        
+        var labelDefinitionData = gatherLabelDefinitionData({
+            collections: Object.keys(collectionGroups),
+            customRecordTypes
+        });
+
+        var { typed, untyped } = groupBy({
+            items: labelDefinitionData,
+            createKey: (it) => (it.type ? 'typed' : 'untyped')
+        });
+
+        var keyedLabelDefinitionData = {
+            ...keyBy({
+                items: typed,
+                createKey: (it) => (`${it.collection}~~${it.type}`)
+            }),
+            ...keyBy({
+                items: untyped,
+                byProp: 'collection'
+            })
+        };
+
+
     }
 
     var result = {};
@@ -51,7 +79,20 @@ var fetchRelatedRecords = async ({
                     collectionGroups[collectionName].map(it => it.id)
                 )}
             }},
+            { $addFields: {
+                'foo': { $cond: {
+                    if: { $eq: ['teacher', '$type'] },
+                    then: { 
+                        '/gdpr/state/custom/firstname': '$gdpr.state.custom.firstname',
+                        '/gdpr/state/custom/lastname': '$gdpr.state.custom.lastname',
+                    },
+                    else: '$$REMOVE'
+                }}
+            }},
         ]).toArray();
+
+        //console.log('AAAAAAAAAAAAAAAAAAAAA');
+        //console.log(records);
 
         if (labelOnly) {
             var {
@@ -63,14 +104,16 @@ var fetchRelatedRecords = async ({
             records = records.map(record => {
                 if (hasCustomTypes) {
                     var key = `${collectionName}~~${record.type}`;
-                    var {
+                    var { definition } = keyedLabelDefinitionData[key];
+
+                    /*var {
                         label: typeLabel,
                         settings,
                     } = keyedCustomRecordTypes[key].state;
                     var {
                         recordLabelDefinition,
                         // optionLabelDefinition, // TODO
-                    } = settings;
+                    } = settings;*/
 
                     // TODO: we need to get the fields itself to
                     // ensure proper formatting i guess
@@ -79,13 +122,13 @@ var fetchRelatedRecords = async ({
                     //console.log(recordLabelDefinition);
 
                     var recordLabel = createRecordLabel({
-                        definition: recordLabelDefinition,
+                        definition,
                         record
                     });
 
                     return {
                         _id: record._id,
-                        typeLabel,
+                        //typeLabel,
                         recordLabel,
                     };
                 }
@@ -107,33 +150,76 @@ var fetchRelatedRecords = async ({
     return result;
 }
 
-var createRecordLabel = ({ definition, record }) => {
-    var {
-        format,
-        tokens
-    } = definition;
+var gatherLabelDefinitionData = ({
+    collections,
+    customRecordTypes,
+    labelType
+}) => {
 
-    var label = format,
-        tokensRedacted = 0;
-    for (var [index, pointer] of tokens.reverse().entries()) {
-        // reversing index
-        index = tokens.length - index - 1;
-        var value = jsonpointer.get(record, pointer);
-        if (value === undefined) {
-            value = 'REDACTED';
-            tokensRedacted += 1;
+    var groupedCustomRecordTypes = groupBy({
+        items: customRecordTypes,
+        byProp: 'collection',
+    });
+
+    var gathered = [];
+    for (var collectionName of collections) {
+        var {
+            hasCustomTypes,
+            hasFixedTypes,
+            hasSubChannels
+        } = allSchemaCreators[collectionName];
+        
+        if (hasCustomTypes) {
+            var group = groupedCustomRecordTypes[collectionName];
+            if (!group) {
+                throw new Error(inline`
+                    custom record types missing for "${collectionName}"
+                `);
+            }
+
+            for (var customRecordType of group) {
+                var {
+                    type
+                } = customRecordType;
+
+                var {
+                    recordLabelDefinition,
+                    optionLabelDefinition // TODO
+                } = customRecordType.state.settings;
+
+                if (labelType === 'option') {
+                    // TODO
+                    throw new Error('not implemented');
+                }
+                else {
+                    gathered.push({
+                        collection: collectionName,
+                        type,
+                        definition: recordLabelDefinition
+                    });
+                }
+            }
         }
-        label = label.replace(
-            '${' + index + '}',
-            value
-        );
+        // TODO: fixed types
+        else {
+            var definition = undefined;
+            if (labelType ===  'option') {
+                // TODO
+                throw new Error('not implemented');
+            }
+            else {
+                definition = (
+                    allSchemaCreators[collectionName].recordLabelDefinition
+                );
+            }
+            gathered.push({
+                collection: collectionName,
+                definition,
+            })
+        }
     }
 
-    if (tokensRedacted == tokens.length) {
-        label = `${record._id}`;
-    }
-    
-    return label;
+    return gathered;
 }
 
 module.exports = fetchRelatedRecords; 

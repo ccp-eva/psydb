@@ -1,10 +1,21 @@
 'use strict';
 var jsonpointer = require('jsonpointer');
 
-var groupBy = ({ items, byPointer, createKey }) => {
+var groupBy = ({
+    items,
+    byProp,
+    byPointer,
+    createKey
+}) => {
+    if (byProp) {
+        createKey = (item) => item[byProp];
+    }
+    else if (byPointer) {
+        createKey = (item) => jsonpointer.get(item, byPointer);
+    }
     return genericGroupBy({
         items,
-        createKey: createKey || ((item) => jsonpointer.get(item, byPointer))
+        createKey,
     });
 }
 
