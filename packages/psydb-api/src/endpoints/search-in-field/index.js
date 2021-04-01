@@ -4,6 +4,8 @@ var debug = require('debug')('psydb:api:endpoints:searchInField');
 var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
     Ajv = require('@mpieva/psydb-api-lib/src/ajv');
 
+var ResponseBody = require('@mpieva/psydb-api-lib/src/response-body');
+
 var RequestBodySchema = require('./request-body-schema');
 
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
@@ -14,6 +16,7 @@ var createSchemaForRecord =
 var fetchRecordById = require('@mpieva/psydb-api-lib/src/fetch-record-by-id');
 
 var resolveDataPointer = require('./resolve-data-pointer');
+var fetchAvailableFieldRecords = require('./fetch-available-field-records');
 
 var searchInField = async (context, next) => {
     var { 
@@ -79,8 +82,24 @@ var searchInField = async (context, next) => {
         schema: recordSchema,
         pointer: fieldPointer
     });
+    if (!resolved) {
+        throw new ApiError(400, 'UnresolvableDataPointer');
+    }
 
-    console.log(resolved);
+    var availableRecords = await fetchAvailableFieldRecords({
+        db,
+        ...resolved.schema.systemProps,
+        // TODO: manual projection
+        // TODO: projection by customRecordType settings
+    });
+
+    context.body = ResponseBody({
+        data: {
+            records: availableRecords,
+        },
+    });
+
+    await next();
 }
 
 module.exports = searchInField;

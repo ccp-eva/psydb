@@ -101,7 +101,7 @@ describe('init-demo-system', function () {
             fieldPointer: '/scientific/state/systemPermissions/accessRightsByResearchGroup/researchGroupId',
             additionalFilter: {},
         });
-        console.log(response.body);
+        console.dir(response.body, { depth: null });
     });
 
 });
