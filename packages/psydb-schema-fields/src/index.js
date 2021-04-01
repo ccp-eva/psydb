@@ -17,6 +17,7 @@ module.exports = {
     HelperSetItemIdList: require('./helper-set-item-id-list'),
     Id: require('./id'),
     IdentifierString: require('./identifier-string'),
+    JsonPointer: require('./json-pointer'),
     ParticipationStatus: require('./participation-status'),
     SaneString: require('./sane-string'),
     Time: require('./time'),

@@ -8,8 +8,8 @@ var ForeignId = ({ collection, recordType, constraints }) => {
     }
     return ({
         ...Id(),
-        psydbType: 'ForeignId',
-        psydbProps: {
+        systemType: 'ForeignId',
+        systemProps: {
             collection,
             recordType: recordType,
             constraints: constraints || {},

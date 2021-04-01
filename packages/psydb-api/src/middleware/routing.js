@@ -46,6 +46,14 @@ var createRouting = ({
         endpoints.read
     );
 
+    router.post('/search-in-field',
+        withSelfAuth(),
+        withPermissions(),
+        withEndpointProtection({ endpoint: 'search-in-field' }),
+        withKoaBody(),
+        endpoints.searchInField
+    );
+
     /*router.post('/search/:collectionName(^(_helper_)?[A-Za-z]+$)',
         withProtection(),
         withMongoBody({

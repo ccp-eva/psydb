@@ -3,12 +3,13 @@ var debug = require('debug')('psydb:api:endpoints:read');
 
 var inlineString = require('@cdxoo/inline-string');
 var ApiError = require('@mpieva/psydb-api-lib/src/api-error');
+var ResponseBody = require('@mpieva/psydb-api-lib/src/response-body');
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
 var createSchemaForRecord =
     require('@mpieva/psydb-api-lib/src/create-schema-for-record');
 
-var fetchRecordById = require('./fetch-record-by-id');
+var fetchRecordById = require('@mpieva/psydb-api-lib/src/fetch-record-by-id');
 
 var resolveForeignIdData = require('./resolve-foreign-id-data');
 
@@ -23,21 +24,26 @@ var read = async (context, next) => {
         query,
     } = context;
 
+    var {
+        collectionName,
+        id,
+    } = params;
+
     // TODO: check param format
 
     if (
         !permissions.hasRootAccess
-        && !permissions.canReadCollection(params.collectionName)
+        && !permissions.canReadCollection(collectionName)
     ) {
         throw new ApiError(403, 'CollectionAccessDenied');
     }
 
     //console.dir(addSystemPermissionStages({ permissions }), { depth: null });
 
-    var collectionCreatorData = allSchemaCreators[params.collectionName];
+    var collectionCreatorData = allSchemaCreators[collectionName];
     if (!collectionCreatorData) {
         throw new Error(
-            `no creator data found for collection "${params.collectionName}"`
+            `no creator data found for collection "${collectionName}"`
         );
     }
     
@@ -47,8 +53,8 @@ var read = async (context, next) => {
 
     var record = await fetchRecordById({
         db,
-        collectionName: params.collectionName,
-        id: params.id,
+        collectionName: collectionName,
+        id: id,
         hasSubChannels,
         permissions,
     });
@@ -61,7 +67,7 @@ var read = async (context, next) => {
 
     var recordSchema = await createSchemaForRecord({
         db,
-        collectionName: params.collectionName,
+        collectionName: collectionName,
         record,
         fullSchema: true
     });
@@ -73,10 +79,17 @@ var read = async (context, next) => {
 
     //console.log(foreignIdData);
 
-    await fetchRelatedRecords({
+    var relatedRecordLabels = await fetchRelatedRecords({
         db,
         foreignIdData,
         labelOnly: true
+    });
+
+    context.body = ResponseBody({
+        data: {
+            record,
+            relatedRecordLabels,
+        }
     });
 
     await next();

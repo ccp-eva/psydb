@@ -5,4 +5,5 @@ module.exports = {
     event: require('./event'),
     self: require('./self'),
     read: require('./read'),
+    searchInField: require('./search-in-field'),
 };

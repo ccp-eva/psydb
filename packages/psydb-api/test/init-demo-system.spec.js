@@ -94,6 +94,14 @@ describe('init-demo-system', function () {
 
         var response = await agent.get(`/read/experiment/${context.EXP_INHOUSE_01}`);
         console.log(response.body);
+        
+        var response = await agent.post('/search-in-field').send({
+            contextCollectionName: 'subject',
+            contextRecordId: context.ALICE_TEACHER_ID,
+            fieldPointer: '/scientific/state/systemPermissions/accessRightsByResearchGroup/researchGroupId',
+            additionalFilter: {},
+        });
+        console.log(response.body);
     });
 
 });

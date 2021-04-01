@@ -74,7 +74,7 @@ var resolveFromSubSchema = ({
             propNameOrIndex
         ] = traverseArgs;
 
-        if (currentSchema.psydbType === 'ForeignId') {
+        if (currentSchema.systemType === 'ForeignId') {
             var currentData = data,
                 dataPointer = '';
             if (typeof data === 'object') {
@@ -84,7 +84,7 @@ var resolveFromSubSchema = ({
 
             var fullDataPointer = `${dataPointerPrefix || ''}${dataPointer}`;
             resolved.push({
-                ...currentSchema.psydbProps,
+                ...currentSchema.systemProps,
                 dataPointer: fullDataPointer,
                 id: currentData,
             });

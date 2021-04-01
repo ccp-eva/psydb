@@ -14,3 +14,33 @@
 // 
 // for each fks that have values gathered fetch the
 // related values from the target collection
+
+'use strict';
+var debug = require('debug')('psydb:api:endpoints:search');
+
+var search = async (context, next) => {
+    var { 
+        db,
+        permissions,
+        request
+    } = context;
+
+    var {
+    }
+
+    var {
+        filter,
+        field,
+    } = request.body;
+
+    if (
+        !permissions.hasRootAccess
+        && !permissions.canReadCollection(params.collectionName)
+    ) {
+        throw new ApiError(403, 'CollectionAccessDenied');
+    }
+
+    // TODO: check param format
+}
+
+module.exports = search;
