@@ -22,27 +22,16 @@ var signIn = async (context, next) => {
         }
     });
 
-    var { record, systemRole } = self;
+    var { record, researchGroupIds, hasRootAccess } = self;
 
     if (!record) {
         debug('personnel record not found');
         throw new Error(401); // TODO: 401
     }
 
-    var researchGroupIds = record.scientific.state.researchGroupIds;
-    
-    if (!systemRole) {
-        debug('user has no system role');
+    if (!hasRootAccess && researchGroupIds.length < 1) {
+        debug('user has no researchgroup and is not root user');
         throw new Error(401); // TODO: 401
-    }
-
-    // if the user has no research groups check if their role has
-    // root access
-    if (researchGroupIds.length < 1) {
-        if (!(systemRole && systemRole.state.hasRootAccess)) {
-            debug('user has no researchgroups and role has no root acccess');
-            throw new Error(401); // TODO: 401
-        }
     }
 
     var storedHash = record.gdpr.state.internals.passwordHash;

@@ -3,7 +3,7 @@ var rootAccountId = '5fcf4481feb7ca0683978b80',
     rootRoleId = '57c9b1db938b154f8170d837';
 
 var messages = [
-    {
+    /*{
         type: 'systemRole/create',
         payload: {
             id: rootRoleId,
@@ -12,7 +12,7 @@ var messages = [
                 hasRootAccess: true,
             }
         }
-    },
+    },*/
     {
         type: 'personnel/create',
         payload: {
@@ -27,7 +27,7 @@ var messages = [
                     ]
                 },
                 scientific: {
-                    systemRoleId: rootRoleId
+                    hasRootAccess: true,
                 }
             }
         }

@@ -12,11 +12,15 @@ var createPermissionMiddleware = ({
         throw new Error(401); // TODO
     }
 
-    var systemRole = self.systemRole,
-        researchGroupIds = self.record.scientific.state.researchGroupIds;
+    var {
+        hasRootAccess,
+        rolesByResearchGroupId,
+        researchGroupIds,
+    } = self;
 
     context.permissions = Permissions({
-        systemRole,
+        hasRootAccess,
+        rolesByResearchGroupId,
         researchGroupIds,
     });
 

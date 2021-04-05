@@ -5,16 +5,47 @@ var checkAllPermissionAcls = require('./check-all-permission-acls'),
     endpointAcls = require('./endpoint-acls'),
     messageTypeAcls = require('./message-type-acls');
 
-var Permissions = ({
-    systemRole,
-    researchGroupIds,
+var ResearchGroupPermissions = ({
+    systemRole
 }) => {
     var permissions = {
         ...systemRole.state,
+    }
+
+    return permissions;
+}
+
+var mergeFlagsMax = (union, systemRole) => {
+    var clone = { ...union };
+    for (var flag of Object.keys(systemRole)) {
+        union[flag] = union[flag] || systemRole.state[flag];
+    }
+    return clone;
+}
+
+var Permissions = ({
+    hasRootAccess,
+    rolesByResearchGroupId,
+    researchGroupIds,
+}) => {
+    var permissions = {
+        hasRootAccess,
         allowedResearchGroupIds: researchGroupIds,
+        byResearchGroupId: {},
     };
 
-    permissions.canUseMessageType = (type) => {
+    // merged flag is true if any systemrole sets it to true
+    var unionMax = {};
+
+    for (var gid of researchGroupIds) {
+        var systemRole = rolesByResearchGroupId[gid]
+        permissions.byResearchGroupId[gid] = ResearchGroupPermissions({
+            systemRole, 
+        });
+        unionMax = mergeFlagsMax(unionMax, systemRole);
+    }
+
+    /*permissions.canUseMessageType = (type) => {
         type = type || '';
         
         var isAllowed = checkAllPermissionAcls({
@@ -27,36 +58,42 @@ var Permissions = ({
 
         debug(`message type ${type} allowed: ${isAllowed}`);
         return isAllowed;
-    };
+    };*/
 
     permissions.canAccessEndpoint = (endpoint) => {
         endpoint = endpoint || '';
+
+        var isAllowed = false;
+
+        if (hasRootAccess) {
+            isAllowed = true;
+        }
+
+        // TODO
         
-        var isAllowed = checkAllPermissionAcls({
+        /*var isAllowed = checkAllPermissionAcls({
             permissionAclMap: endpointAcls,
             permissionFlags: systemRole.state,
             isAllowed: (regex) => (
                 regex.test(endpoint)
             )
-        });
+        });*/
 
         debug(`endpoint ${endpoint} allowed: ${isAllowed}`);
         return isAllowed;
     }
 
     permissions.canCreateHelperSet = () => {
-        var permissionFlags = systemRole.state;
         return (
-            permissionFlags.hasRootAccess
-            || permissionFlags.hasResearchGroupAdminAccess
+            hasRootAccess
+            || unionMax.hasResearchGroupAdminAccess
         );
     }
 
     permissions.canCreateHelperSetItem = () => {
-        var permissionFlags = systemRole.state;
         return (
-            permissionFlags.hasRootAccess
-            || permissionFlags.hasResearchGroupAdminAccess
+            hasRootAccess
+            || unionMax.hasResearchGroupAdminAccess
         );
     }
 

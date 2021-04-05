@@ -8,12 +8,14 @@ var Self = async ({
 }) => {
     var self = {
         record: undefined,
-        systemRole: undefined
+        hasRootAccess: false,
+        researchGroupIds: [],
+        rolesByResearchGroupId: {},
     }
 
     var requiredProjection = {
-        'scientific.state.systemRoleId': true,
-        'scientific.state.researchGroupIds': true,
+        'scientific.state.hasRootAccess': true,
+        'scientific.state.researchGroupSettings': true,
     };
 
     projection = (
@@ -27,12 +29,10 @@ var Self = async ({
 
     var personnelRecords = await (
         db.collection('personnel').find({
-            $and: [
-                { 'scientific.state.systemRoleId': {
+            $or: [
+                { 'scientific.state.hasRootAccess': true },
+                { 'scientific.state.researchGroupSettings.0': {
                     $exists: true
-                }},
-                { 'scientific.state.systemRoleId': {
-                    $not: { $type: 10 } // bson type of null
                 }},
             ],
             ...query
@@ -48,17 +48,34 @@ var Self = async ({
     }
 
     if (self.record) {
-        var { systemRoleId } = self.record.scientific.state;
+        var {
+            hasRootAccess,
+            researchGroupSettings,
+        } = self.record.scientific.state;
+
+        self.hasRootAccess = hasRootAccess;
         
-        var role = await (
+        var roles = await (
             db.collection('systemRole')
-            .findOne({
-                _id: systemRoleId
-            })
+            .find({
+                _id: { $in: (
+                    researchGroupSettings.map(it => it.researchGroupId)
+                )}
+            }).toArray()
         );
 
-        if (role) {
-            self.systemRole = role;
+        if (roles.length > 0) {
+            var rolesById = keyBy({
+                items: roles,
+                byProp: '_id'
+            });
+
+            for (var it of researchGroupSettings) {
+                var gid = it.researchGroupId,
+                    role = rolesById[it.systemRoleId];
+                self.rolesByResearchGroupId[gid] = role;
+                self.researchGroupIds.push(gid);
+            }
         }
     }
 
