@@ -62,6 +62,25 @@ module.exports = {
         isGenericRecord: true,
         hasCustomTypes: true,
         hasSubChannels: false,
+        // TODO: decide if we want to get rid of this
+        // static list in favor of passing dataPointer
+        // directly
+        // this might conflict with "enableSystemPermission"
+        // flag which removed that field
+        // so we might need to filter this
+        // somehow
+        // TODO: more as a note - maybe we should
+        // rename "internal" to private
+        // since theese are essentially fields we
+        // dont want to search in or manipulate directly
+        //
+        availableDisplayFields: [
+            {
+                key: 'shorthand',
+                type: 'SaneString',
+                dataPointer: '/state/shorthand'
+            }
+        ],
     },
     subject: {
         collection: 'subject',

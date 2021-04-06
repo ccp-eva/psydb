@@ -43,6 +43,8 @@ handler.checkAllowedAndPlausible = async ({
     if (!compareIds(record.events[0]._id, lastKnownEventId)) {
         throw new ApiError(400, 'RecordHasChanged');
     }
+
+    // TODO: check data pointers
 }
 
 handler.triggerSystemEvents = async ({

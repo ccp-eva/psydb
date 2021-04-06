@@ -5,6 +5,7 @@ var {
     EventId,
     IdentifierString,
     SaneString,
+    JsonPointer,
 } = require('@mpieva/psydb-schema-fields');
 
 var {
@@ -41,6 +42,16 @@ var Schema = () => {
                                 required: [
                                     'type',
                                     'fieldKey',
+                                ]
+                            }),
+                            ExactObject({
+                                properties: {
+                                    type: { const: 'fixed' },
+                                    dataPointer: JsonPointer(),
+                                },
+                                required: [
+                                    'type',
+                                    'fieldKey'
                                 ]
                             }),
                             // TODO: static fields?
