@@ -2,6 +2,7 @@
 var debug = require('debug')('psydb:api:message-handlers');
 
 var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
+    compareIds = require('@mpieva/psydb-api-lib/src/compare-ids'),
     Ajv = require('@mpieva/psydb-api-lib/src/ajv');
 
 var BaseSchema = require('./schema'),
@@ -42,22 +43,24 @@ var checkAllowedAndPlausible = async ({
 
     var {
         id,
+        lastKnownEventId,
         subChannelKey,
         props,
     } = message.payload;
 
-    var records = await (
-        db.collection('customRecordType').find({
+    var record = await (
+        db.collection('customRecordType').findOne({
             _id: id
-        }).toArray()
+        })
     );
 
-    if (records.length < 1) {
-        throw new ApiError(404, 'CustomRecordTypeNotFound');
+    if (!record) {
+        throw new ApiError(404, 'RecordNotFound');
     }
     
-    var record = cache.record = records[0];
-    cache.lastKnownEventId = record.events[0]._id;
+    if (!compareIds(record.events[0]._id, lastKnownEventId)) {
+        throw new ApiError(400, 'RecordHasChanged');
+    }
 
     var collectionCreatorData = allSchemaCreators[record.collection];
     if (!collectionCreatorData) {
@@ -141,8 +144,12 @@ var triggerSystemEvents = async ({
     message,
 }) => {
     var { personnelId, payload } = message;
-    var { id, subChannelKey, props } = payload;
-    var { lastKnownEventId } = cache;
+    var {
+        id,
+        lastKnownEventId,
+        subChannelKey,
+        props
+    } = payload;
 
     var channel = (
         rohrpost

@@ -2,6 +2,7 @@
 var {
     ExactObject,
     Id,
+    EventId,
 } = require('@mpieva/psydb-schema-fields');
 
 var {
@@ -15,10 +16,12 @@ var Schema = () => {
         payload: ExactObject({
             properties: {
                 id: Id(),
+                lastKnownEventId: EventId(),
                 props: CustomTypeLabelDefinition(),
             },
             required: [
                 'id',
+                'lastKnownEventId',
                 'props',
             ]
         })

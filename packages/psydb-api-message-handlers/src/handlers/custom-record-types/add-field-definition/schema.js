@@ -17,6 +17,7 @@ var Schema = () => {
         payload: ExactObject({
             properties: {
                 id: Id(),
+                lastKnownEventId: EventId(),
                 subChannelKey: {
                     type: 'string',
                     enum: [ 'scientific', 'gdpr' ]
@@ -42,7 +43,7 @@ var Schema = () => {
             },
             required: [
                 'id',
-                //'lastKnownEventId',
+                'lastKnownEventId',
                 'props',
             ]
         })
