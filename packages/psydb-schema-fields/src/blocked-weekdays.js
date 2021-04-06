@@ -7,6 +7,7 @@ var days = [
 ];
 
 var BlockedWeekdays = () => ExactObject({
+    systemType: 'BlockedWeekdays',
     reactType: 'checkbox-group',
     properties: days.reduce(
         (acc, day) => ({

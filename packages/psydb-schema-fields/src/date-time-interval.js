@@ -5,6 +5,7 @@ var ExactObject = require('./exact-object'),
 var DateTimeInterval = ({
     description
 } = {}) => ExactObject({
+    systemType: 'DateTimeInterval',
     properties: {
         start: DateTime(),
         end: DateTime({

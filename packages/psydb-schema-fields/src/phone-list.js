@@ -2,6 +2,7 @@
 var ExactObject = require('./exact-object');
 
 var PhoneList = ({ minItems, numbertypes }) => ({
+    systemType: 'PhoneList',
     type: 'array',
     default: [],
     minItems: (minItems || 0),

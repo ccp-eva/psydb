@@ -6,6 +6,7 @@ var TimeInterval = ({
     description,
 } = {}) => (
     ExactObject({
+        systemType: 'TimeInterval',
         properties: {
             start: Time(),
             end: Time({

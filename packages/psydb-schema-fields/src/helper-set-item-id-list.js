@@ -4,6 +4,7 @@ var inline = require('@cdxoo/inline-text'),
     IdentifierString = require('./identifier-string');
 
 var HelperSetItemIdList = ({ minItems }) => ({
+    systemType: 'HelperSetItemIdList',
     type: 'array',
     default: [],
     minItems: (minItems || 0),

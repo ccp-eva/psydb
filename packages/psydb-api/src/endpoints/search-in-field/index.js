@@ -15,7 +15,7 @@ var createSchemaForRecord =
 
 var fetchRecordById = require('@mpieva/psydb-api-lib/src/fetch-record-by-id');
 
-var resolveDataPointer = require('./resolve-data-pointer');
+var resolveDataPointer = require('@mpieva/psydb-api-lib/src/resolve-data-pointer');
 var fetchAvailableFieldRecords = require('./fetch-available-field-records');
 
 var searchInField = async (context, next) => {

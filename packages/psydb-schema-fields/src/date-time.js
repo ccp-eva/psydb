@@ -3,6 +3,7 @@ var DateTime = ({
     additionalKeywords,
     ...other
 } = {}) => ({
+    systemType: 'DateTime',
     type: 'string',
     format: 'date-time',
     unmarshalDateTime: true,

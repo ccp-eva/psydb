@@ -4,6 +4,7 @@ var ExactObject = require('./exact-object');
 var Address = ({
     required
 } = {}) => ExactObject({
+    systemType: 'Address',
     properties: {
         // country should be code from countries-list npm package
         country: {

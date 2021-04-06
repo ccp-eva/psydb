@@ -2,9 +2,13 @@
 var debug = require('debug')('psydb:api:message-handlers');
 
 var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
-    compareIds = require('@mpieva/psydb-api-lib/src/compare-ids');
+    compareIds = require('@mpieva/psydb-api-lib/src/compare-ids'),
+    Ajv = require('@mpieva/psydb-api-lib/src/ajv'),
+    createSchemaForRecordType = require('@mpieva/psydb-api-lib/src/create-schema-for-record-type');
 
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
+
+var resolveDataPointer = require('@mpieva/psydb-api-lib/src/resolve-data-pointer');
 
 var SimpleHandler = require('../../../lib/simple-handler'),
     PutMaker = require('../../../lib/put-maker');
@@ -29,7 +33,7 @@ handler.checkAllowedAndPlausible = async ({
     var {
         id,
         lastKnownEventId,
-        fields,
+        fieldPointers,
     } = message.payload;
 
     var record = await (
@@ -46,50 +50,34 @@ handler.checkAllowedAndPlausible = async ({
         throw new ApiError(400, 'RecordHasChanged');
     }
 
-    var {
-        hasSubChannels,
-        subChannelKeys
-    } = allSchemaCreators[record.collection];
+    //console.dir(record, { depth: null });
 
-    for (var field of fields) {
-        var {
-            type,
-            subChannelKey,
-            fieldKey
-        } = field;
+    var targetRecordSchema = await createSchemaForRecordType({
+        db,
+        collectionName: record.collection,
+        recordType: record.type,
+        fullSchema: true
+    });
 
-        if (hasSubChannels) {
-            if (!subChannelKey) {
-                throw new ApiError(400, 'SubChannelKeyRequired');
-            }
-            else if (!subChannelKeys.includes(subChannelKey)) {
-                throw new ApiError(400, 'UnsupportedSubChannelKey');
-            }
+    var gatheredFieldData = [];
+    for (var fieldPointer of fieldPointers) {
+        var resolved = resolveDataPointer({
+            schema: targetRecordSchema,
+            pointer: fieldPointer
+        });
+        if (!resolved) {
+            debug(record.collection, record.type, fieldPointer);
+            throw new ApiError(400, 'InvalidFieldPointer');
         }
-        else {
-            if (subChannelKey) {
-                throw new ApiError(400, 'SubChannelsNotAllowed');
-            }
-        }
-
-        var existing;
-        if (hasSubChannels) {
-            existing = (
-                record.state.settings.subChannelFields[subChannelKey]
-                .find(it => it.key === fieldKey)
-            );
-        }
-        else {
-            existing = (
-                record.state.settings.fields
-                .find(it => it.key === fieldKey)
-            );
-        }
-        if (!existing) {
-            throw new ApiError(400, 'InvalidFieldKey');
-        }
+        gatheredFieldData.push({
+            // FIXME: not sure if we wanna store that
+            //inSchemaPointer: resolved.inSchemaPointer,
+            systemType: resolved.schema.systemType,
+            dataPointer: fieldPointer,
+        });
     }
 
+    cache.gatheredFieldData = gatheredFieldData;
 }
 
 handler.triggerSystemEvents = async ({
@@ -104,8 +92,11 @@ handler.triggerSystemEvents = async ({
         id,
         lastKnownEventId,
         target,
-        fields,
     } = payload;
+
+    var {
+        gatheredFieldData
+    } = cache;
 
     var channel = (
         rohrpost
@@ -122,7 +113,7 @@ handler.triggerSystemEvents = async ({
     );
     
     var messages = PutMaker({ personnelId }).all({
-        [pointer]: fields
+        [pointer]: gatheredFieldData,
     });
 
     await channel.dispatchMany({

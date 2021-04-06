@@ -4,6 +4,7 @@ var ExactObject = ({
     required,
     ...additionalKeywords
 }) => ({
+    systemType: 'ExactObject',
     type: 'object',
     default: {},
     additionalProperties: false,

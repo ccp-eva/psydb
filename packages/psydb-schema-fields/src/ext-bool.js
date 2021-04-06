@@ -1,5 +1,6 @@
 'use strict';
 var ExtBool = () => ({
+    systemType: 'ExtBool',
     reactType: 'radio-group',
     type: 'string',
     enum: [

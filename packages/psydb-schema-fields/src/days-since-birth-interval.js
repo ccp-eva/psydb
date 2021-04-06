@@ -5,6 +5,7 @@ var ExactObject = require('./exact-object'),
 var DaysSinceBirthInterval = ({
     description
 } = {}) => ExactObject({
+    systemType: 'DaysSinceBirthInterval',
     properties: {
         start: DaysSinceBirth(),
         end: DaysSinceBirth({

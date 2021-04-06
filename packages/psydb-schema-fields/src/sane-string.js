@@ -17,6 +17,7 @@ var SaneString = ({
         : undefined
     );*/
     return {
+        systemType: 'SaneString',
         type: 'string',
         default: '',
         // TODO: this needs a proper pattern

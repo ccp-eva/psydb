@@ -44,7 +44,7 @@ handler.checkAllowedAndPlausible = async ({
         throw new ApiError(400, 'RecordHasChanged');
     }
 
-    // TODO: check data pointers
+    // TODO: check data pointers in tokens
 }
 
 handler.triggerSystemEvents = async ({

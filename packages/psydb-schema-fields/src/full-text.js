@@ -5,6 +5,7 @@ var FullText = ({
     maxLength,
     ...additionalKeywords
 } = {}) => ({
+    systemType: 'FullText',
     type: 'string',
     default: '',
     transform: [ 'trim' ],

@@ -3,6 +3,7 @@ var IdentifierString = ({
     ...additionalKeywords
 } = {}) => {
     return {
+        systemType: 'IdentifierString',
         type: 'string',
         default: '',
         pattern: '^[a-zA-Z]*$',

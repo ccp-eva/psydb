@@ -1,5 +1,6 @@
 'use strict';
 var ParticipationStatus = () => ({
+    systemType: 'ParticipationStatus',
     type: 'string',
     enum: [
         'unknown',

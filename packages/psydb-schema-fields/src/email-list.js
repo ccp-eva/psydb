@@ -3,6 +3,7 @@ var inline = require('@cdxoo/inline-text'),
     ExactObject = require('./exact-object');
 
 var EmailList = ({ minItems }) => ({
+    systemType: 'EmailList',
     type: 'array',
     default: [],
     minItems: (minItems || 0),

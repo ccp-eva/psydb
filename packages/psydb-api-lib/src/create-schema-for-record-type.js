@@ -161,35 +161,49 @@ var FullRecordSchemaCreator = ({
 
     var SchemaCreator = undefined;
     if (hasSubChannels) {
-        SchemaCreator = () => ExactObject({
+        SchemaCreator = ({
+            subChannelCustomRecordFieldDefinitions,
+            ...otherArgs
+        }) => ExactObject({
             properties: {
+                // FIXME: hardcoded subchannels
                 scientific: ExactObject({
                     properties: {
-                        state: subChannelStateSchemaCreators.scientific()
+                        state: subChannelStateSchemaCreators.scientific({
+                            customFieldDefinitions: (
+                                subChannelCustomRecordFieldDefinitions.scientific
+                            ),
+                            ...otherArgs
+                        })
                     }
                 }),
                 gdpr: ExactObject({
                     properties: {
-                        state: subChannelStateSchemaCreators.gdpr()
+                        state: subChannelStateSchemaCreators.gdpr({
+                            customFieldDefinitions: (
+                                subChannelCustomRecordFieldDefinitions.gdpr
+                            ),
+                            ...otherArgs
+                        })
                     }
                 }),
             }
         });
     }
     else if (hasFixedTypes) {
-        SchemaCreator = () => ExactObject({
+        SchemaCreator = (...args) => ExactObject({
             properties: {
                 state: (
                     collectionCreatorData
-                    .fixedTypeStateSchemaCreators[recordType]()
+                    .fixedTypeStateSchemaCreators[recordType](...args)
                 )
             }
         });
     }
     else {
-        SchemaCreator = () => ExactObject({
+        SchemaCreator = (...args) => ExactObject({
             properties: {
-                state: collectionCreatorData.State(),
+                state: collectionCreatorData.State(...args),
             }
         });
     }

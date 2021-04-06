@@ -5,6 +5,7 @@ var ExactObject = require('./exact-object'),
 var SpecialHumanName = ({
     additionalKeywords
 } = {}) => ExactObject({
+    systemType: 'SpecialHumanHame',
     properties: {
         lastname: SaneString(),
         firstname: SaneString(),

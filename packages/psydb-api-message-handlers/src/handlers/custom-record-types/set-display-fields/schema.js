@@ -26,44 +26,16 @@ var Schema = () => {
                         'optionlist',
                     ]
                 },
-                fields: {
+                fieldPointers: {
                     type: 'array',
-                    items: {
-                        oneOf: [
-                            ExactObject({
-                                properties: {
-                                    type: { const: 'custom' },
-                                    subChannelKey: {
-                                        type: 'string',
-                                        enum: [ 'scientific', 'gdpr' ]
-                                    },
-                                    fieldKey: IdentifierString(),
-                                },
-                                required: [
-                                    'type',
-                                    'fieldKey',
-                                ]
-                            }),
-                            ExactObject({
-                                properties: {
-                                    type: { const: 'fixed' },
-                                    dataPointer: JsonPointer(),
-                                },
-                                required: [
-                                    'type',
-                                    'fieldKey'
-                                ]
-                            }),
-                            // TODO: static fields?
-                        ]
-                    },
+                    items: JsonPointer(),
                 },
             },
             required: [
                 'id',
                 'lastKnownEventId',
                 'target',
-                'fields',
+                'fieldPointers',
             ]
         })
     });
