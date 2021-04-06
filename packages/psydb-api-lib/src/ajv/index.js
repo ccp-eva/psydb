@@ -18,7 +18,7 @@ var AjvWrapper = ({
         $data: true,
         allErrors: true,
         strictDefaults: 'log',
-        strictKeywords: 'log',
+        //strictKeywords: 'log',
         passContext: true,
         // NOTE: useDefauls applies to missing _required_ properties
         // what we actually wanted was it being applied to _optional_
