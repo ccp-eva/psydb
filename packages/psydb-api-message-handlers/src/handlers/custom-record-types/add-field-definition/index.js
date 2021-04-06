@@ -86,21 +86,52 @@ var checkAllowedAndPlausible = async ({
         }
     }
 
-    var existingField;
+    // TODO: do we have a better idea? since this feels just wrong
+    var hasSpecialAgeFrameFlag = false;
+    if (props.props.isSpecialAgeFrameField) {
+        if (
+            record.collection === 'subject'
+            && subChannelKey === 'scientific'
+        ) {
+            hasSpecialAgeFrameFlag = true;
+        }
+        else {
+            throw new ApiError(400, 'SpecialAgeFrameFieldNotAllowed');
+        }
+    }
+
+    var existingField,
+        existingAgeFrameField;
     if (subChannelKey) {
         existingField = (
             record.state.nextSettings.subChannelFields[subChannelKey]
             .find(it => it.key === props.key)
         );
+        if (hasSpecialAgeFrameFlag === true) {
+            existingAgeFrameField = (
+                record.state.nextSettings.subChannelFields[subChannelKey]
+                .find(it => it.props.isSpecialAgeFrameField === true)
+            );
+        }
     }
     else {
         existingField = (
             record.state.nextSettings.fields.find(it => it.key === props.key)
         );
+        if (hasSpecialAgeFrameFlag === true) {
+            existingAgeFrameField = (
+                record.state.nextSettings.fields
+                .find(it => it.props.isSpecialAgeFrameField === true)
+            );
+        }
     }
     if (existingField) {
         throw new ApiError(400, 'DuplicateFieldKey');
     }
+    if (existingAgeFrameField) {
+        throw new ApiError(400, 'SpecialAgeFrameFieldExists');
+    }
+    
 }
 
 var triggerSystemEvents = async ({

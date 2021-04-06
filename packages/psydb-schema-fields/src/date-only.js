@@ -1,14 +1,14 @@
 'use strict';
-var DateTime = ({
+var DateOnly = ({
     additionalKeywords,
     ...other
 } = {}) => ({
     type: 'string',
-    format: 'date-time',
+    format: 'date',
+    default: '0000-00-00',
     unmarshalDateTime: true,
-    default: '0000-00-00T00:00:00Z',
     ...additionalKeywords,
 });
 
-module.exports = DateTime;
+module.exports = DateOnly;
 

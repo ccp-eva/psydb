@@ -75,6 +75,23 @@ var FullTextFieldDefinition = () => FieldDefinition({
     props: {},
 });
 
+var DateTimeFieldDefinition = () => FieldDefinition({
+    type: 'DateTime',
+    props: {
+        // TODO: figure out ho to solve this:
+        // date fields may exist, bút we need the clients
+        // locatime to properly process them into localtime
+        // as otherwhise this leads to issues where date of birth
+        // is tored as utc moving it one day back
+        // because of how timezones work
+        //treatAsDateOnlyInUI
+        isSpecialAgeFrameField: {
+            type: 'boolean',
+            default: false
+        }
+    },
+})
+
 // to make sure the paths match the real message structure
 var wrapped = (definition) => () => ({
     type: 'object',
@@ -95,4 +112,5 @@ module.exports = {
     EmailList: wrapped(EmailListFieldDefinition),
     HelperSetItemIdList: wrapped(HelperSetItemIdListFieldDefinition),
     ForeignId: wrapped(ForeignIdFieldDefinition),
+    DateTime: wrapped(DateTimeFieldDefinition),
 }

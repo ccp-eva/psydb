@@ -33,7 +33,8 @@ var Schema = () => {
                                 'HelperSetItemIdList',
                                 'EmailList',
                                 'ForeignId',
-                                'FullText'
+                                'FullText',
+                                'DateTime',
                             ],
                         },
                     }

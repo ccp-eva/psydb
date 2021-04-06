@@ -93,9 +93,6 @@ handler.triggerSystemEvents = async ({
     settings.recordLabelDefinition = omit(
         'isDirty', settings.recordLabelDefinition
     );
-    settings.dateOfBirthField = omit(
-        'isDirty', settings.dateOfBirthField
-    );
     //nextSettings.recordLabelDefinition.isDirty = false;
 
     var collectionCreatorData = allSchemaCreators[record.collection];

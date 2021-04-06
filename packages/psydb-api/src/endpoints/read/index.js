@@ -87,6 +87,7 @@ var read = async (context, next) => {
 
     context.body = ResponseBody({
         data: {
+            recordSchema,
             record,
             relatedRecordLabels,
         }

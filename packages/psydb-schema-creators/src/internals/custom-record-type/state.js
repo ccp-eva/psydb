@@ -65,26 +65,6 @@ var RecordLabelDefinition = () => ExactObject({
     ]
 });
 
-var DateOfBirthField = ({
-    enableFlags,
-    enableInternalProps,
-} = {}) => ExactObject({
-    properties: {
-        ...(enableFlags && enableInternalProps && ({
-            isDirty: { type: 'boolean', default: true },
-        })),
-        isEnabled: { type: 'boolean', default: false },
-    },
-    required: [
-        ...(
-            (enableFlags && enableInternalProps)
-            ? ([ 'isDirty' ])
-            : ([])
-        ),
-        'isEnabled'
-    ]
-});
-
 var FieldList = ({
     enableFlags,
     enableInternalProps,
@@ -133,9 +113,6 @@ var ChannelSettings = ({
 }) => ExactObject({
     properties: {
         recordLabelDefinition: RecordLabelDefinition(),
-        dateOfBirthField: DateOfBirthField({
-            enableFlags, enableInternalProps
-        }),
         ...(
             subChannels
             ? {
