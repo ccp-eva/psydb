@@ -18,6 +18,15 @@
 'use strict';
 var debug = require('debug')('psydb:api:endpoints:search');
 
+var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
+    Ajv = require('@mpieva/psydb-api-lib/src/ajv'),
+    ResponseBody = require('@mpieva/psydb-api-lib/src/response-body');
+
+var CollectionNameOnlySchema = require('./collection-name-only-schema'),
+    RequestBodySchema = require('./request-body-schema');
+
+var fetchRecordsByFilter = require('@mpieva/psydb-api-lib/src/fetch-records-by-filter');
+
 var search = async (context, next) => {
     var { 
         db,
@@ -25,8 +34,24 @@ var search = async (context, next) => {
         request
     } = context;
 
-    var ajv = Ajv();
-    var isValid = ajv.validate(RequestBodySchema(), request.body);
+    var ajv = Ajv(),
+        isValid = false;
+
+    isValid = ajv.validate(
+        CollectionNameOnlySchema(),
+        request.body
+    );
+    if (!isValid) {
+        debug('ajv errors', ajv.errors);
+        throw new ApiError(400, 'InvalidRequestSchema');
+    };
+
+    isValid = ajv.validate(
+        RequestBodySchema({
+            availableFilterFields,
+        }),
+        request.body
+    );
     if (!isValid) {
         debug('ajv errors', ajv.errors);
         throw new ApiError(400, 'InvalidRequestSchema');
@@ -36,6 +61,8 @@ var search = async (context, next) => {
         collectionName,
         recordType,
         filter,
+        offset,
+        limit,
     } = request.body;
 
     if (
@@ -55,8 +82,9 @@ var search = async (context, next) => {
     var {
         hasSubChannels,
     } = collectionCreatorData;
-
+    
     var convertedFilter = convertConstraintsToMongoPath(filter);
+
     var records = await fetchRecordsByFilter({
         db,
         collectionName,
@@ -65,6 +93,14 @@ var search = async (context, next) => {
         offset,
         limit
     });
+    
+    context.body = ResponseBody({
+        data: {
+            records,
+        },
+    });
+
+    await next();
 }
 
 module.exports = search;
