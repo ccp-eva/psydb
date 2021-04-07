@@ -81,9 +81,12 @@ describe('init-demo-system', function () {
         }
 
         console.log('###########################################');
+        var r = await db.collection('customRecordType').find({
+            _id: context.TEACHER_TYPE_ID
+        }, { projection: { events: false} }).toArray();
         //var r = await db.collection('subject').find().toArray();
-        //console.dir(r.map(it => it), { depth: null });
-        var r = await db.collection('study').find().toArray();
+        console.dir(r.map(it => it), { depth: null });
+        var r = await db.collection('study').find({}, { projection: { events: false }}).toArray();
         console.dir(r.map(it => it), { depth: null });
         console.log('###########################################');
 

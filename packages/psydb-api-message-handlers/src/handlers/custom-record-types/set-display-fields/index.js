@@ -3,7 +3,6 @@ var debug = require('debug')('psydb:api:message-handlers');
 
 var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
     compareIds = require('@mpieva/psydb-api-lib/src/compare-ids'),
-    Ajv = require('@mpieva/psydb-api-lib/src/ajv'),
     createSchemaForRecordType = require('@mpieva/psydb-api-lib/src/create-schema-for-record-type');
 
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
@@ -69,6 +68,10 @@ handler.checkAllowedAndPlausible = async ({
             debug(record.collection, record.type, fieldPointer);
             throw new ApiError(400, 'InvalidFieldPointer');
         }
+        if (!resolved.schema.systemType) {
+            debug(record.collection, record.type, fieldPointer);
+            throw new ApiError(400, 'InvalidFieldPointer');
+        }
         gatheredFieldData.push({
             // FIXME: not sure if we wanna store that
             //inSchemaPointer: resolved.inSchemaPointer,
@@ -108,7 +111,7 @@ handler.triggerSystemEvents = async ({
 
     var pointer = (
         target === 'optionlist'
-        ? '/state/optionlistDisplayFields'
+        ? '/state/optionListDisplayFields'
         : '/state/tableDisplayFields'
     );
     

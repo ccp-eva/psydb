@@ -90,10 +90,6 @@ handler.triggerSystemEvents = async ({
     var { settings, nextSettings } = nextState;
 
     // handle label def
-    settings.recordLabelDefinition = omit(
-        'isDirty', settings.recordLabelDefinition
-    );
-    //nextSettings.recordLabelDefinition.isDirty = false;
 
     var collectionCreatorData = allSchemaCreators[record.collection];
     if (!collectionCreatorData) {

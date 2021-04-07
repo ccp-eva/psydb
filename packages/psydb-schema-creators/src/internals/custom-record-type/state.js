@@ -56,7 +56,9 @@ var RecordLabelDefinition = () => ExactObject({
         tokens: {
             // TODO: items
             type: 'array',
-            default: [ '/_id' ],
+            default: [
+                { systemType: 'Id', dataPointer: '/_id' }
+            ],
         },
     },
     required: [
@@ -112,7 +114,6 @@ var ChannelSettings = ({
     subChannels,
 }) => ExactObject({
     properties: {
-        recordLabelDefinition: RecordLabelDefinition(),
         ...(
             subChannels
             ? {
@@ -153,6 +154,15 @@ var ChannelState = ({
 }) => ExactObject({
     properties: {
         label: SaneString(),
+        recordLabelDefinition: RecordLabelDefinition(),
+        tableDisplayFields: {
+            type: 'array',
+            default: []
+        },
+        optionListDisplayFields: {
+            type: 'array',
+            default: []
+        },
         ...(enableInternalProps && ({
             isNew: { type: 'boolean', default: true },
             isDirty: { type: 'boolean', default: true },

@@ -2,7 +2,10 @@
 var debug = require('debug')('psydb:api:message-handlers');
 
 var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
-    compareIds = require('@mpieva/psydb-api-lib/src/compare-ids');
+    compareIds = require('@mpieva/psydb-api-lib/src/compare-ids'),
+    createSchemaForRecordType = require('@mpieva/psydb-api-lib/src/create-schema-for-record-type');
+
+var resolveDataPointer = require('@mpieva/psydb-api-lib/src/resolve-data-pointer');
 
 var SimpleHandler = require('../../../lib/simple-handler'),
     PutMaker = require('../../../lib/put-maker');
@@ -44,7 +47,36 @@ handler.checkAllowedAndPlausible = async ({
         throw new ApiError(400, 'RecordHasChanged');
     }
 
-    // TODO: check data pointers in tokens
+    var targetRecordSchema = await createSchemaForRecordType({
+        db,
+        collectionName: record.collection,
+        recordType: record.type,
+        fullSchema: true
+    });
+
+    var gatheredFieldData = [];
+    for (var fieldPointer of props.tokens) {
+        var resolved = resolveDataPointer({
+            schema: targetRecordSchema,
+            pointer: fieldPointer
+        });
+        if (!resolved) {
+            debug(record.collection, record.type, fieldPointer);
+            throw new ApiError(400, 'InvalidFieldPointer');
+        }
+        if (!resolved.schema.systemType) {
+            debug(record.collection, record.type, fieldPointer);
+            throw new ApiError(400, 'InvalidFieldPointer');
+        }
+        gatheredFieldData.push({
+            // FIXME: not sure if we wanna store that
+            //inSchemaPointer: resolved.inSchemaPointer,
+            systemType: resolved.schema.systemType,
+            dataPointer: fieldPointer,
+        });
+    }
+
+    cache.gatheredFieldData = gatheredFieldData;
 }
 
 handler.triggerSystemEvents = async ({
@@ -60,6 +92,10 @@ handler.triggerSystemEvents = async ({
         props
     } = payload;
 
+    var {
+        gatheredFieldData
+    } = cache;
+
     var channel = (
         rohrpost
         .openCollection('customRecordType')
@@ -69,9 +105,9 @@ handler.triggerSystemEvents = async ({
     );
 
     var messages = PutMaker({ personnelId }).all({
-        '/state/nextSettings/recordLabelDefinition': {
-            isDirty: true,
-            ...props
+        '/state/recordLabelDefinition': {
+            format: props.format,
+            tokens: gatheredFieldData
         }
     });
 
