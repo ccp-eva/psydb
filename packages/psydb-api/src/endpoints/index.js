@@ -6,4 +6,5 @@ module.exports = {
     self: require('./self'),
     read: require('./read'),
     searchInField: require('./search-in-field'),
+    search: require('./search'),
 };

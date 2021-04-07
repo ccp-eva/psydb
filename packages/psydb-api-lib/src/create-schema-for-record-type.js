@@ -6,6 +6,8 @@ var {
     ExactObject,
 } = require('@mpieva/psydb-schema-fields');
 
+var fetchCustomRecordType = require('./fetch-custom-record-type');
+
 var createSchemaForRecordType = async ({
     db,
     collectionName,
@@ -74,7 +76,7 @@ var createSchemaForRecordType = async ({
             customRecordType = filtered[0];
         }
         else {
-            customRecordType = await findCustomRecordType({
+            customRecordType = await fetchCustomRecordType({
                 db,
                 collection: collectionName,
                 type: recordType
@@ -212,40 +214,5 @@ var FullRecordSchemaCreator = ({
 
 }
 
-// FIXME: redundant
-var findCustomRecordType = async ({ db, collection, type }) => {
-    var customRecordTypes = await (
-        db.collection('customRecordType').find(
-            { collection, type },
-            { 'state.isNew': true, 'state.settings': true }
-        ).toArray()
-    );
-
-    if (customRecordTypes.length < 1) {
-        throw new Error(inline`
-            no customRecordType entry found for
-            collection "${collection}" with type "${type}"
-        `);
-    }
-    else if (customRecordTypes.length > 1) {
-        throw new Error(inline`
-            multiple customRecordType entries found for
-            collection "${collection}" with type "${type}"
-        `);
-    }
-
-    //console.log(customRecordTypes);
-    var customRecordType = customRecordTypes[0];
-    if (customRecordType.isNew) {
-        throw new Error(inline`
-            custom record type for collection "${collection}"
-            with type "${type}" is flagged as "new" and
-            has never been commited; please create an 
-            initial commit first
-        `);
-    }
-    
-    return customRecordType;
-}
 
 module.exports = createSchemaForRecordType;

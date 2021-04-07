@@ -8,8 +8,11 @@ var {
     JsonPointer,
 } = psydbSchemaFields;
 
+var metadata = require('./field-type-metadata');
 
-var RequestBodySchema = ({ availableFilterFields }) => {
+var FullBodySchema = ({ availableFilterFields }) => {
+
+    console.log(availableFilterFields);
 
     //var variants = [];
     var filters = {};
@@ -60,7 +63,7 @@ var RequestBodySchema = ({ availableFilterFields }) => {
             },*/
             filters: ExactObject({
                 properties: filters,
-                required: Object.keys(filters),
+                required: [],
             }),
             offset: {
                 type: 'integer',
@@ -69,7 +72,7 @@ var RequestBodySchema = ({ availableFilterFields }) => {
             limit: {
                 type: 'integer',
                 minimum: 1,
-                minimum: 100,
+                maximum: 100,
             }
         },
         required: [
@@ -81,4 +84,4 @@ var RequestBodySchema = ({ availableFilterFields }) => {
     });
 };
 
-module.exports = RequestBodySchema;
+module.exports = FullBodySchema;

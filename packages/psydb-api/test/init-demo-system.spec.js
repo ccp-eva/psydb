@@ -104,6 +104,16 @@ describe('init-demo-system', function () {
             fieldPointer: '/scientific/state/systemPermissions/accessRightsByResearchGroup/researchGroupId',
             additionalFilter: {},
         });
+        // console.dir(response.body, { depth: null });
+        var response = await agent.post('/search').send({
+            collectionName: 'subject',
+            recordType: 'teacher',
+            filters: {
+                '/gdpr/state/custom/firstname': 'Alice',
+            },
+            offset: 0,
+            limit: 20,
+        });
         console.dir(response.body, { depth: null });
     });
 
