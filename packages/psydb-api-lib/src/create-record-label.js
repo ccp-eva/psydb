@@ -13,10 +13,10 @@ var createRecordLabel = ({ definition, record }) => {
 
     var label = format,
         tokensRedacted = 0;
-    for (var [index, pointer] of tokens.reverse().entries()) {
+    for (var [index, token] of tokens.reverse().entries()) {
         // reversing index
         index = tokens.length - index - 1;
-        var value = jsonpointer.get(record, pointer);
+        var value = jsonpointer.get(record, token.dataPointer);
         if (value === undefined) {
             value = 'REDACTED';
             tokensRedacted += 1;
@@ -30,7 +30,6 @@ var createRecordLabel = ({ definition, record }) => {
     if (tokensRedacted == tokens.length) {
         label = `${record._id}`;
     }
-    
     return label;
 }
 

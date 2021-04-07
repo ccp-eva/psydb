@@ -9,7 +9,12 @@ module.exports = {
         isGenericRecord: false,
         recordLabelDefinition: {
             format: '${0}',
-            tokens: [ '/state/label' ]
+            tokens: [
+                {
+                    systemType: 'SaneString',
+                    dataPointer: '/state/label'
+                }
+            ]
         },
     },
     helperSetItem: {
@@ -17,7 +22,12 @@ module.exports = {
         isGenericRecord: false,
         recordLabelDefinition: {
             format: '${0}',
-            tokens: [ '/state/label' ]
+            tokens: [
+                {
+                    systemType: 'SaneString',
+                    dataPointer: '/state/label'
+                }
+            ]
         }
     },
     experimentOperatorTeam: {
@@ -27,7 +37,12 @@ module.exports = {
         hasSubChannels: false,
         recordLabelDefinition: {
             format: '${0}',
-            tokens: [ '/state/name' ]
+            tokens: [
+                {
+                    systemType: 'SaneString',
+                    dataPointer: '/state/name'
+                }
+            ]
         }
     },
     location: {
@@ -44,7 +59,16 @@ module.exports = {
         subChannelKeys: ['scientific', 'gdpr'],
         recordLabelDefinition: {
             format: '${0} ${1}',
-            tokens: [ '/gdpr/state/firstname', '/gdpr/state/lastname' ]
+            tokens: [
+                {
+                    systemType: 'SaneString',
+                    dataPointer: '/gdpr/state/firstname',
+                },
+                {
+                    systemType: 'SaneString',
+                    dataPointer: '/gdpr/state/firstname',
+                }
+            ]
         }
     },
     researchGroup: {
@@ -54,7 +78,12 @@ module.exports = {
         hasSubChannels: false,
         recordLabelDefinition: {
             format: '${0}',
-            tokens: [ '/state/shorthand' ]
+            tokens: [
+                {
+                    systemType: 'SaneString',
+                    dataPointer: '/state/shorthand',
+                },
+            ]
         }
     },
     study: {
@@ -82,7 +111,12 @@ module.exports = {
         hasSubChannels: false,
         recordLabelDefinition: {
             format: '${0}',
-            tokens: [ '/state/name' ]
+            tokens: [
+                {
+                    systemType: 'SaneString',
+                    dataPointer: '/state/name'
+                }
+            ]
         }
     },
     reservation: {

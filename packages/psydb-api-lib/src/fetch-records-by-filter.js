@@ -11,19 +11,16 @@ var fetchRecordById = async ({
     collectionName,
     permissions,
     hasSubChannels,
-    id,
+    filter,
 }) => {
     var resultSet = await (
         db.collection(collectionName).aggregate([
+            ...SystemPermissionStages({ permissions, hasSubChannels }),
             { $project: {
                 events: false,
                 'gdpr.events': false,
                 'scientific.events': false,
             }},
-            { $match: {
-                _id: id
-            }},
-            ...SystemPermissionStages({ permissions, hasSubChannels }),
         ]).toArray()
     );
 

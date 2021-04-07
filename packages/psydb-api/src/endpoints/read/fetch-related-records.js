@@ -33,7 +33,7 @@ var fetchRelatedRecords = async ({
                     collection: true,
                     type: true,
                     'state.label': true,
-                    'state.settings': true,
+                    'state.recordLabelDefinition': true,
                 }}
             ]).toArray()
         );
@@ -161,7 +161,9 @@ var gatherLabelDefinitionData = ({
                 var {
                     recordLabelDefinition,
                     optionLabelDefinition // TODO
-                } = customRecordType.state.settings;
+                } = customRecordType.state;
+
+                console.log()
 
                 if (labelType === 'option') {
                     // TODO

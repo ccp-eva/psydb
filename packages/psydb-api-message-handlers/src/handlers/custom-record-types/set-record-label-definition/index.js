@@ -68,6 +68,12 @@ handler.checkAllowedAndPlausible = async ({
             debug(record.collection, record.type, fieldPointer);
             throw new ApiError(400, 'InvalidFieldPointer');
         }
+        if (resolved.schema.systemType === 'ForeignId') {
+            // FIXME: we currently cannot handle foreignId in label
+            // field since it could lead to circles in graph
+            // also depth maybe ...
+            throw new ApiError(400, 'ForeignIdFieldNotSupported');
+        }
         gatheredFieldData.push({
             // FIXME: not sure if we wanna store that
             //inSchemaPointer: resolved.inSchemaPointer,

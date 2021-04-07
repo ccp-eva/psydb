@@ -25,12 +25,17 @@ var search = async (context, next) => {
         request
     } = context;
 
-    var {
+    var ajv = Ajv();
+    var isValid = ajv.validate(RequestBodySchema(), request.body);
+    if (!isValid) {
+        debug('ajv errors', ajv.errors);
+        throw new ApiError(400, 'InvalidRequestSchema');
     }
-
+    
     var {
+        collectionName,
+        recordType,
         filter,
-        field,
     } = request.body;
 
     if (
@@ -40,7 +45,26 @@ var search = async (context, next) => {
         throw new ApiError(403, 'CollectionAccessDenied');
     }
 
-    // TODO: check param format
+    var collectionCreatorData = allSchemaCreators[contextCollectionName];
+    if (!collectionCreatorData) {
+        throw new Error(
+            `no creator data found for collection "${contextCollectionName}"`
+        );
+    }
+
+    var {
+        hasSubChannels,
+    } = collectionCreatorData;
+
+    var convertedFilter = convertConstraintsToMongoPath(filter);
+    var records = await fetchRecordsByFilter({
+        db,
+        collectionName,
+        hasSubChannels,
+        filter,
+        offset,
+        limit
+    });
 }
 
 module.exports = search;

@@ -85,18 +85,18 @@ describe('init-demo-system', function () {
             _id: context.TEACHER_TYPE_ID
         }, { projection: { events: false} }).toArray();
         //var r = await db.collection('subject').find().toArray();
-        console.dir(r.map(it => it), { depth: null });
+        //console.dir(r.map(it => it), { depth: null });
         var r = await db.collection('study').find({}, { projection: { events: false }}).toArray();
-        console.dir(r.map(it => it), { depth: null });
+        //console.dir(r.map(it => it), { depth: null });
         console.log('###########################################');
 
-        console.log(context);
+        //console.log(context);
 
         var response = await agent.get(`/read/subject/${context.ALICE_TEACHER_ID}`);
-        console.log(response.body);
+        //console.dir(response.body, { depth: null });
 
         var response = await agent.get(`/read/experiment/${context.EXP_INHOUSE_01}`);
-        console.log(response.body);
+        //console.dir(response.body, { depth: null });
         
         var response = await agent.post('/search-in-field').send({
             contextCollectionName: 'subject',
