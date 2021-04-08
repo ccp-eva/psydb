@@ -20,7 +20,8 @@ var debug = require('debug')('psydb:api:endpoints:search');
 
 var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
     Ajv = require('@mpieva/psydb-api-lib/src/ajv'),
-    ResponseBody = require('@mpieva/psydb-api-lib/src/response-body');
+    ResponseBody = require('@mpieva/psydb-api-lib/src/response-body'),
+    keyBy = require('@mpieva/psydb-api-lib/src/key-by');
 
 var CoreBodySchema = require('./core-body-schema'),
     FullBodySchema = require('./full-body-schema');
@@ -30,6 +31,8 @@ var fetchRecordsByFilter = require('@mpieva/psydb-api-lib/src/fetch-records-by-f
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
 var convertConstraintsToMongoPath = require('@mpieva/psydb-api-lib/src/convert-constraints-to-mongo-path');
+
+var fieldTypeMetadata = require('./field-type-metadata');
 
 var search = async (context, next) => {
     var { 
@@ -64,13 +67,15 @@ var search = async (context, next) => {
         type: recordType,
     });
 
+    var displayFields = customRecordType.state[
+        target === 'optionlist'
+        ? 'optionListDisplayFields'
+        : 'tableDisplayFields'
+    ];
+
     isValid = ajv.validate(
         FullBodySchema({
-            availableFilterFields: customRecordType.state[
-                target === 'optionlist'
-                ? 'optionListDisplayFields'
-                : 'tableDisplayFields'
-            ]
+            availableFilterFields: displayFields
         }),
         request.body
     );
@@ -82,7 +87,7 @@ var search = async (context, next) => {
     var {
         collectionName,
         recordType,
-        filter,
+        filters,
         offset,
         limit,
     } = request.body;
@@ -104,15 +109,40 @@ var search = async (context, next) => {
     var {
         hasSubChannels,
     } = collectionCreatorData;
-    
-    var convertedFilter = convertConstraintsToMongoPath(filter);
+
+    var displayFieldsByDataPointer = keyBy({
+        items: displayFields,
+        byProp: 'dataPointer'
+    });
+
+    /*var convertedFilters = (
+        convertConstraintsToMongoPath(filters)
+    );*/
+
+    //console.log(convertedFilters);
+
+    var queryFields = [];
+    for (var dataPointer of Object.keys(filters)) {
+        var value = filters[dataPointer];
+        var displayField = displayFieldsByDataPointer[dataPointer];
+        var metadata = fieldTypeMetadata[displayField.systemType];
+
+        queryFields.push({
+            systemType: displayField.systemType,
+            searchType: metadata.searchType,
+            dataPointer,
+            value
+        });
+    }
+
+    console.log(queryFields);
 
     var records = await fetchRecordsByFilter({
         db,
         permissions,
         collectionName,
         hasSubChannels,
-        filter,
+        fields: queryFields,
         offset,
         limit
     });

@@ -109,7 +109,7 @@ describe('init-demo-system', function () {
             collectionName: 'subject',
             recordType: 'teacher',
             filters: {
-                '/gdpr/state/custom/firstname': 'Alice',
+                '/gdpr/state/custom/firstname': 'Ali',
             },
             offset: 0,
             limit: 20,

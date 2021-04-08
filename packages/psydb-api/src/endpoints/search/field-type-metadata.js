@@ -20,22 +20,6 @@ module.exports = {
             .filter(it => !!it)
             .join(' ')
         ),
-        createMongoProjection: (path) => {
-            $concat: (
-                [
-                    'street',
-                    'housenumber',
-                    'affix',
-                    'postcode',
-                    'city',
-                    // omitting country here,
-                ].flatMap((field, index) => (
-                    index === 0
-                    ? `$${path}.${key}`
-                    : [ ' ', `$${path}.${key}` ]
-                ))
-            )
-        },
     },
 
     EmailList: {
