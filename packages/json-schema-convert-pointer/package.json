@@ -12,6 +12,7 @@
     "mocha": "~8.1.3",
     "chai": "~4.2.0"
   },
-  "dependencies": {"@cdxoo/inline-string":"~1.0.0"
+  "dependencies": {
+      "@cdxoo/inline-string": "~1.0.0"
   }
 }
