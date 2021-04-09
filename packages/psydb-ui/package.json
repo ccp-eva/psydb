@@ -38,7 +38,8 @@
     "formik": "~2.2.6",
     "@rjsf/core": "~2.5.1",
     "@mpieva/psydb-api-endpoint-schemas": "~0.1.0-alpha",
-    "axios": "~0.21.1"
+    "axios": "~0.21.1",
+    "compression-webpack-plugin": "~7.1.2"
   },
   "config": {
     "mongodbMemoryServer": {
