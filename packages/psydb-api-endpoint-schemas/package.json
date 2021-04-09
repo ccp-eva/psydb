@@ -1,0 +1,16 @@
+{
+  "name": "@mpieva/psydb-api-endpoint-schemas",
+  "version": "0.1.0-alpha",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "npx mocha test/*.spec.js"
+  },
+  "author": "Jan Schwalbe",
+  "license": "MIT",
+  "devDependencies": {
+  },
+  "dependencies": {
+    "@mpieva/psydb-schema-fields": "~0.1.0-alpha"
+  }
+}

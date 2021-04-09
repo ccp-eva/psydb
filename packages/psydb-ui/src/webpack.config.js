@@ -22,6 +22,20 @@ module.exports = {
         ]
     },
     plugins: [
-        new HtmlWebpackPlugin(),
-    ]
+        new HtmlWebpackPlugin({
+            template: path.resolve(__dirname, './template.html'),
+            title: 'psydb',
+        }),
+    ],
+    devServer: {
+        host: '0.0.0.0',
+        port: 8080,
+        disableHostCheck: true,
+        proxy: {
+            '/api': {
+                target: 'http://localhost:3000',
+                secure: false
+            }
+        }
+    },
 };

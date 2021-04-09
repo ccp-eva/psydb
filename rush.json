@@ -148,5 +148,10 @@
        "projectFolder": "packages/psydb-ui",
        "reviewCategory": "production"
     },
+    {
+       "packageName": "@mpieva/psydb-api-endpoint-schemas",
+       "projectFolder": "packages/psydb-api-endpoint-schemas",
+       "reviewCategory": "production"
+    },
   ]
 }

@@ -1,6 +1,7 @@
 'use strict';
 var inline = require('@cdxoo/inline-text'),
-    ExactObject = require('./exact-object');
+    ExactObject = require('./exact-object'),
+    Email = require('./email');
 
 var EmailList = ({ minItems }) => ({
     systemType: 'EmailList',
@@ -11,10 +12,7 @@ var EmailList = ({ minItems }) => ({
     uniqueItemProperties: [ 'email' ],
     items: ExactObject({
         properties: {
-            email: {
-                type: 'string',
-                format: 'email'
-            },
+            email: Email(),
             isPrimary: {
                 type: 'boolean',
                 default: false,

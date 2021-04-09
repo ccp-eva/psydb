@@ -33,7 +33,12 @@
     "react-router": "~5.2.0",
     "bootstrap": "~4.6.0",
     "react-bootstrap": "~1.5.2",
-    "html-webpack-plugin": "5.1.0"
+    "html-webpack-plugin": "5.1.0",
+    "react-router-dom": "~5.2.0",
+    "formik": "~2.2.6",
+    "@rjsf/core": "~2.5.1",
+    "@mpieva/psydb-api-endpoint-schemas": "~0.1.0-alpha",
+    "axios": "~0.21.1"
   },
   "config": {
     "mongodbMemoryServer": {

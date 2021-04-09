@@ -6,6 +6,7 @@ dependencies:
   '@cdxoo/inline-string': 1.0.0
   '@cdxoo/inline-text': 1.0.1
   '@cdxoo/omit': 1.0.1
+  '@rjsf/core': 2.5.1_react@17.0.2
   '@rush-temp/json-schema-convert-pointer': 'file:projects/json-schema-convert-pointer.tgz'
   '@rush-temp/json-schema-deconstruct-arrays': 'file:projects/json-schema-deconstruct-arrays.tgz'
   '@rush-temp/json-schema-lazy-resolve-oneof': 'file:projects/json-schema-lazy-resolve-oneof.tgz'
@@ -18,6 +19,7 @@ dependencies:
   '@rush-temp/psydb-ajv-formats': 'file:projects/psydb-ajv-formats.tgz'
   '@rush-temp/psydb-ajv-keywords': 'file:projects/psydb-ajv-keywords.tgz'
   '@rush-temp/psydb-api': 'file:projects/psydb-api.tgz'
+  '@rush-temp/psydb-api-endpoint-schemas': 'file:projects/psydb-api-endpoint-schemas.tgz'
   '@rush-temp/psydb-api-lib': 'file:projects/psydb-api-lib.tgz'
   '@rush-temp/psydb-api-message-handlers': 'file:projects/psydb-api-message-handlers.tgz'
   '@rush-temp/psydb-driver-nodejs': 'file:projects/psydb-driver-nodejs.tgz'
@@ -29,11 +31,12 @@ dependencies:
   '@rush-temp/psydb-schema-fields': 'file:projects/psydb-schema-fields.tgz'
   '@rush-temp/psydb-schema-helpers': 'file:projects/psydb-schema-helpers.tgz'
   '@rush-temp/psydb-schema-primitives': 'file:projects/psydb-schema-primitives.tgz'
-  '@rush-temp/psydb-ui': 'file:projects/psydb-ui.tgz'
+  '@rush-temp/psydb-ui': 'file:projects/psydb-ui.tgz_debug@4.3.1'
   '@rush-temp/psydb-web': 'file:projects/psydb-web.tgz'
   ajv: 6.12.6
   ajv-formats: 0.6.1
   ajv-keywords: 3.5.2_ajv@6.12.6
+  axios: 0.21.1_debug@4.3.1
   babel-loader: 8.2.2_97e48a6b0bdb6376f048db1a976e5b3d
   bcrypt: 5.0.1
   bootstrap: 4.6.0
@@ -45,6 +48,7 @@ dependencies:
   debug: 4.3.1
   deep-diff: 1.0.2
   escape-string-regexp: 4.0.0
+  formik: 2.2.6_react@17.0.2
   graphql: 15.3.0
   html-webpack-plugin: 5.1.0_webpack@5.10.1
   inflation: 2.0.0
@@ -64,6 +68,7 @@ dependencies:
   react-bootstrap: 1.5.2_react-dom@17.0.2+react@17.0.2
   react-dom: 17.0.2_react@17.0.2
   react-router: 5.2.0_react@17.0.2
+  react-router-dom: 5.2.0_react@17.0.2
   statuses: 2.0.1
   superagent: 6.1.0
   supertest: 6.0.1
@@ -1004,6 +1009,13 @@ packages:
       '@babel/core': ^7.0.0-0
     resolution:
       integrity: sha512-TYM0V9z6Abb6dj1K7i5NrEhA13oS5ujUYQYDfqIBXYHOc2c2VkFgc+q9kyssIyUfy4/hEwqrgSlJ/Qgv8zJLsA==
+  /@babel/runtime-corejs2/7.13.10:
+    dependencies:
+      core-js: 2.6.12
+      regenerator-runtime: 0.13.7
+    dev: false
+    resolution:
+      integrity: sha512-rZw5P1ZewO6XZTDxtXuAuAFUqfNXyM8HO/9WiaDd34Anka0uFTpo0RvBLeV775AEE/zKw3LQB+poZw/O9lrZBg==
   /@babel/runtime/7.13.10:
     dependencies:
       regenerator-runtime: 0.13.7
@@ -1098,6 +1110,28 @@ packages:
       react: '>=16.8.0'
     resolution:
       integrity: sha512-7Hwk2ZMYm+JLWcb7R9qIXk1OoUg1Z+saKWqZXlrvFwT3w6UArVNWgxYOzf+PJoK9zZejp8okPAKTctthhXLt5g==
+  /@rjsf/core/2.5.1_react@17.0.2:
+    dependencies:
+      '@babel/runtime-corejs2': 7.13.10
+      '@types/json-schema': 7.0.7
+      ajv: 6.12.6
+      core-js: 2.6.12
+      json-schema-merge-allof: 0.6.0
+      jsonpointer: 4.1.0
+      lodash: 4.17.21
+      prop-types: 15.7.2
+      react: 17.0.2
+      react-app-polyfill: 1.0.6
+      react-is: 16.13.1
+      shortid: 2.2.16
+    dev: false
+    engines:
+      node: '>=6'
+      npm: '>=2.14.7'
+    peerDependencies:
+      react: '>=16'
+    resolution:
+      integrity: sha512-km8NYScXNONaL5BiSLS6wyDj49pOLZtn0iXg7Zxlm921uuf3o2AAX5SuZS5kB4Zj2zlrVMrXESexfX6bxdDYHw==
   /@types/classnames/2.2.11:
     dev: false
     resolution:
@@ -1566,6 +1600,10 @@ packages:
       node: '>= 0.4'
     resolution:
       integrity: sha512-nNcb30v0wfDyIe26Yif3PcV1JXQp4zEeEfupG7L4SRjnD6HLbO5b2a7eVSba53bOx4YCHYMBHt+Fp4vYstneRA==
+  /asap/2.0.6:
+    dev: false
+    resolution:
+      integrity: sha1-5QNHYR1+aQlDIIu9r+vLwvuGbUY=
   /assertion-error/1.1.0:
     dev: false
     resolution:
@@ -1601,6 +1639,14 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
+  /axios/0.21.1_debug@4.3.1:
+    dependencies:
+      follow-redirects: 1.13.3_debug@4.3.1
+    dev: false
+    peerDependencies:
+      debug: '*'
+    resolution:
+      integrity: sha512-dKQiRHxGD9PPRIUNIWvZhPTPpl1rf/OxTYKsqKUDjBwYylTvV7SjSHJb9ratfyzM6wCdLCOYLzs73qpg5c4iGA==
   /babel-loader/8.2.2_97e48a6b0bdb6376f048db1a976e5b3d:
     dependencies:
       '@babel/core': 7.12.17
@@ -2126,6 +2172,23 @@ packages:
       node: '>= 0.8.0'
     resolution:
       integrity: sha512-jaSIDzP9pZVS4ZfQ+TzvtiWhdpFhE2RDHz8QJkpX9SIpLq88VueF5jJw6t+6CUQcAoA6t+x89MLrWAqpfDE8iQ==
+  /compute-gcd/1.2.1:
+    dependencies:
+      validate.io-array: 1.0.6
+      validate.io-function: 1.0.2
+      validate.io-integer-array: 1.0.0
+    dev: false
+    resolution:
+      integrity: sha512-TwMbxBNz0l71+8Sc4czv13h4kEqnchV9igQZBi6QUaz09dnz13juGnnaWWJTRsP3brxOoxeB4SA2WELLw1hCtg==
+  /compute-lcm/1.1.2:
+    dependencies:
+      compute-gcd: 1.2.1
+      validate.io-array: 1.0.6
+      validate.io-function: 1.0.2
+      validate.io-integer-array: 1.0.0
+    dev: false
+    resolution:
+      integrity: sha512-OFNPdQAXnQhDSKioX8/XYT6sdUlXwpeMjfd6ApxMJfyZ4GxmLR1xvMERctlYhlHwIiz6CSpBc2+qYKjHGZw4TQ==
   /concat-map/0.0.1:
     dev: false
     resolution:
@@ -2202,6 +2265,17 @@ packages:
     dev: false
     resolution:
       integrity: sha512-ZHQTdTPkqvw2CeHiZC970NNJcnwzT6YIueDMASKt+p3WbZsLXOcoD392SkcWhkC0wBBHhlfhqGKKsNCQUozYtg==
+  /core-js/2.6.12:
+    deprecated: 'core-js@<3 is no longer maintained and not recommended for usage due to the number of issues. Please, upgrade your dependencies to the actual version of core-js@3.'
+    dev: false
+    requiresBuild: true
+    resolution:
+      integrity: sha512-Kb2wC0fvsWfQrgk8HU5lW6U/Lcs8+9aaYcy4ZFc6DDlo4nZ7n70dEgE5rtR0oG6ufKDUnrwfWL1mXR5ljDatrQ==
+  /core-js/3.10.1:
+    dev: false
+    requiresBuild: true
+    resolution:
+      integrity: sha512-pwCxEXnj27XG47mu7SXAwhLP3L5CrlvCB91ANUkIz40P27kUcvNfSdvyZJ9CLHiVoKSp+TTChMQMSKQEH/IQxA==
   /core-util-is/1.0.2:
     dev: false
     resolution:
@@ -2333,6 +2407,12 @@ packages:
     dev: false
     resolution:
       integrity: sha1-9dJgKStmDghO/0zbyfCK0yR0SLU=
+  /deepmerge/2.2.1:
+    dev: false
+    engines:
+      node: '>=0.10.0'
+    resolution:
+      integrity: sha512-R9hc1Xa/NOBi9WRVUWg19rl1UB7Tt4kuPd+thNJgFZoxXsTz7ncaPaeIm+40oSGuP33DfMb4sZt1QIGiJzC4EA==
   /default-gateway/4.2.0:
     dependencies:
       execa: 1.0.0
@@ -2940,7 +3020,7 @@ packages:
       integrity: sha512-FmTtBsHskrU6FJ2VxCnsDb84wu9zhmO3cUX2kGFb5tuwhfXxGciiT0oRY+cck35QmG+NmGh5eLz6lLCpWTqwpA==
   /follow-redirects/1.13.3_debug@4.3.1:
     dependencies:
-      debug: 4.3.1_supports-color@6.1.0
+      debug: 4.3.1
     dev: false
     engines:
       node: '>=4.0'
@@ -2971,6 +3051,21 @@ packages:
     dev: false
     resolution:
       integrity: sha512-V8gLm+41I/8kguQ4/o1D3RIHRmhYFG4pnNyonvua+40rqcEmT4+V71yaZ3B457xbbgCsCfjSPi65u/W6vK1U5Q==
+  /formik/2.2.6_react@17.0.2:
+    dependencies:
+      deepmerge: 2.2.1
+      hoist-non-react-statics: 3.3.2
+      lodash: 4.17.21
+      lodash-es: 4.17.21
+      react: 17.0.2
+      react-fast-compare: 2.0.4
+      tiny-warning: 1.0.3
+      tslib: 1.14.1
+    dev: false
+    peerDependencies:
+      react: '>=16.8.0'
+    resolution:
+      integrity: sha512-Kxk2zQRafy56zhLmrzcbryUpMBvT0tal5IvcifK5+4YNGelKsnrODFJ0sZQRMQboblWNym4lAW3bt+tf2vApSA==
   /forwarded/0.1.2:
     dev: false
     engines:
@@ -3900,6 +3995,20 @@ packages:
     dev: false
     resolution:
       integrity: sha512-mrqyZKfX5EhL7hvqcV6WG1yYjnjeuYDzDhhcAAUrq8Po85NBQBJP+ZDUT75qZQ98IkUoBqdkExkukOU7Ts2wrw==
+  /json-schema-compare/0.2.2:
+    dependencies:
+      lodash: 4.17.21
+    dev: false
+    resolution:
+      integrity: sha512-c4WYmDKyJXhs7WWvAWm3uIYnfyWFoIp+JEoX34rctVvEkMYCPGhXtvmFFXiffBbxfZsvQ0RNnV5H7GvDF5HCqQ==
+  /json-schema-merge-allof/0.6.0:
+    dependencies:
+      compute-lcm: 1.1.2
+      json-schema-compare: 0.2.2
+      lodash: 4.17.21
+    dev: false
+    resolution:
+      integrity: sha512-LEw4VMQVRceOPLuGRWcxW5orTTiR9ZAtqTAe4rQUjNADTeR81bezBVFa0MqIwp0YmHIM1KkhSjZM7o+IQhaPbQ==
   /json-schema-traverse/0.4.1:
     dev: false
     resolution:
@@ -4471,6 +4580,10 @@ packages:
     optional: true
     resolution:
       integrity: sha512-M2ufzIiINKCuDfBSAUr1vWQ+vuVcA9kqx8JJUsbQi6yf1uGRyb7HfpdfUr5qLXf3B/t8dPvcjhKMmlfnP47EzQ==
+  /nanoid/2.1.11:
+    dev: false
+    resolution:
+      integrity: sha512-s/snB+WGm6uwi0WjsZdaVcuf3KJXlfGl2LcxgwkEwJF0D/BWzVWAZW/XY4bFaiR7s0Jk3FPvlnepg1H1b1UwlA==
   /nanoid/3.1.22:
     dev: false
     engines:
@@ -4873,6 +4986,10 @@ packages:
     dev: false
     resolution:
       integrity: sha1-elfrVQpng/kRUzH89GY9XI4AelA=
+  /performance-now/2.1.0:
+    dev: false
+    resolution:
+      integrity: sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
   /picomatch/2.2.2:
     dev: false
     engines:
@@ -4968,6 +5085,12 @@ packages:
       node: '>= 0.4'
     resolution:
       integrity: sha512-UpcYW5S1RaNKT6pd+s9jp9K9rlQge1UXKskec0j6Mmuq7UJCvlS2J2/s/yuPN8ehftf9HXMxWlKiPbGGUzpoRg==
+  /promise/8.1.0:
+    dependencies:
+      asap: 2.0.6
+    dev: false
+    resolution:
+      integrity: sha512-W04AqnILOL/sPRXziNicCjSNRruLAuIHEOVBazepu0545DDNGYHz7ar9ZgZ1fMU8/MA4mVxp5rkBWRi6OXIy3Q==
   /prop-types-extra/1.1.1_react@17.0.2:
     dependencies:
       react: 17.0.2
@@ -5040,6 +5163,12 @@ packages:
     dev: false
     resolution:
       integrity: sha512-FIqgj2EUvTa7R50u0rGsyTftzjYmv/a3hO345bZNrqabNqjtgiDMgmo4mkUjd+nzU5oF3dClKqFIPUKybUyqoQ==
+  /raf/3.4.1:
+    dependencies:
+      performance-now: 2.1.0
+    dev: false
+    resolution:
+      integrity: sha512-Sq4CW4QhwOHE8ucn6J34MqtZCeWFP2aQSmrlroYgqAV1PjStIhJXxYuTgUIfkEk7zTLjmIjLmU5q+fbD1NnOJA==
   /randombytes/2.1.0:
     dependencies:
       safe-buffer: 5.2.1
@@ -5074,6 +5203,19 @@ packages:
       node: '>= 0.8'
     resolution:
       integrity: sha512-9WmIKF6mkvA0SLmA2Knm9+qj89e+j1zqgyn8aXGd7+nAduPoqgI9lO57SAZNn/Byzo5P7JhXTyg9PzaJbH73bA==
+  /react-app-polyfill/1.0.6:
+    dependencies:
+      core-js: 3.10.1
+      object-assign: 4.1.1
+      promise: 8.1.0
+      raf: 3.4.1
+      regenerator-runtime: 0.13.7
+      whatwg-fetch: 3.6.2
+    dev: false
+    engines:
+      node: '>=6'
+    resolution:
+      integrity: sha512-OfBnObtnGgLGfweORmdZbyEz+3dgVePQBb3zipiaDsMHV1NpWm0rDFYIVXFV/AK+x4VIIfWHhrdMIeoTLyRr2g==
   /react-bootstrap/1.5.2_react-dom@17.0.2+react@17.0.2:
     dependencies:
       '@babel/runtime': 7.13.10
@@ -5113,6 +5255,10 @@ packages:
       react: 17.0.2
     resolution:
       integrity: sha512-s4h96KtLDUQlsENhMn1ar8t2bEa+q/YAtj8pPPdIjPDGBDIVNsrD9aXNWqspUe6AzKCIG0C1HZZLqLV7qpOBGA==
+  /react-fast-compare/2.0.4:
+    dev: false
+    resolution:
+      integrity: sha512-suNP+J1VU1MWFKcyt7RtjiSWUjvidmQSlqu+eHslq+342xCbGTYmC0mEhPCOHxlW0CywylOC1u2DFAT+bv4dBw==
   /react-is/16.13.1:
     dev: false
     resolution:
@@ -5139,6 +5285,21 @@ packages:
       react-dom: '>=16.3.0'
     resolution:
       integrity: sha512-TKbqfAv23TFtCJ2lzISdx76p97G/DP8Rp4TOFdqM9n8GTruVYgE3jX7Zgb8+w7YJ18slTVcDTQ1/tFzdCqjVhA==
+  /react-router-dom/5.2.0_react@17.0.2:
+    dependencies:
+      '@babel/runtime': 7.13.10
+      history: 4.10.1
+      loose-envify: 1.4.0
+      prop-types: 15.7.2
+      react: 17.0.2
+      react-router: 5.2.0_react@17.0.2
+      tiny-invariant: 1.1.0
+      tiny-warning: 1.0.3
+    dev: false
+    peerDependencies:
+      react: '>=15'
+    resolution:
+      integrity: sha512-gxAmfylo2QUjcwxI63RhQ5G85Qqt4voZpUXSEqCwykV0baaOTQDR1f0PmY8AELqIyVc0NEZUj0Gov5lNGcXgsA==
   /react-router/5.2.0_react@17.0.2:
     dependencies:
       '@babel/runtime': 7.13.10
@@ -5623,6 +5784,12 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==
+  /shortid/2.2.16:
+    dependencies:
+      nanoid: 2.1.11
+    dev: false
+    resolution:
+      integrity: sha512-Ugt+GIZqvGXCIItnsL+lvFJOiN7RYqlGy7QE41O3YC1xbNSeDGIRO7xg2JJXIAj1cAGnOeC1r7/T9pgrtQbv4g==
   /side-channel/1.0.4:
     dependencies:
       call-bind: 1.0.2
@@ -6090,6 +6257,10 @@ packages:
       node: '>=0.6'
     resolution:
       integrity: sha512-yaOH/Pk/VEhBWWTlhI+qXxDFXlejDGcQipMlyxda9nthulaxLZUNcUqFxokp0vcYnvteJln5FNQDRrxj3YcbVw==
+  /tslib/1.14.1:
+    dev: false
+    resolution:
+      integrity: sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
   /tslib/2.2.0:
     dev: false
     resolution:
@@ -6254,6 +6425,31 @@ packages:
     dev: false
     resolution:
       integrity: sha512-l8lCEmLcLYZh4nbunNZvQCJc5pv7+RCwa8q/LdUx8u7lsWvPDKmpodJAJNwkAhJC//dFY48KuIEmjtd4RViDrA==
+  /validate.io-array/1.0.6:
+    dev: false
+    resolution:
+      integrity: sha1-W1osr9j4uFq7L4hroVPy2Tond00=
+  /validate.io-function/1.0.2:
+    dev: false
+    resolution:
+      integrity: sha1-NDoZgC7TsZaCaceA5VjpNBHAutc=
+  /validate.io-integer-array/1.0.0:
+    dependencies:
+      validate.io-array: 1.0.6
+      validate.io-integer: 1.0.5
+    dev: false
+    resolution:
+      integrity: sha1-LKveAzKTpry+Bj/q/pHq9GsToIk=
+  /validate.io-integer/1.0.5:
+    dependencies:
+      validate.io-number: 1.0.3
+    dev: false
+    resolution:
+      integrity: sha1-FoSWSAuVviJH7EQ/IjPeT4mHgGg=
+  /validate.io-number/1.0.3:
+    dev: false
+    resolution:
+      integrity: sha1-9j/+2iSL8opnqNSODjtGGhZluvg=
   /value-equal/1.0.1:
     dev: false
     resolution:
@@ -6476,6 +6672,10 @@ packages:
       node: '>=0.8.0'
     resolution:
       integrity: sha512-OqedPIGOfsDlo31UNwYbCFMSaO9m9G/0faIHj5/dZFDMFqPTcx6UwqyOy3COEaEOg/9VsGIpdqn62W5KhoKSpg==
+  /whatwg-fetch/3.6.2:
+    dev: false
+    resolution:
+      integrity: sha512-bJlen0FcuU/0EMLrdbJ7zOnW6ITZLrZMIarMUVmdKtsGvZna8vxKYaexICWPfZ8qwf9fzNq+UEIZrnSaApt6RA==
   /which-boxed-primitive/1.0.2:
     dependencies:
       is-bigint: 1.0.1
@@ -6775,6 +6975,13 @@ packages:
       integrity: sha512-MSnWbJ7iSytXmmZEUa545Kizz/TU0Z8czdvR3bV9uq81TiiW2D8yURJNW9sYVuI8tohbc0BYbipBL7uqvjrmpA==
       tarball: 'file:projects/psydb-ajv-keywords.tgz'
     version: 0.0.0
+  'file:projects/psydb-api-endpoint-schemas.tgz':
+    dev: false
+    name: '@rush-temp/psydb-api-endpoint-schemas'
+    resolution:
+      integrity: sha512-SQUebzwLQ/GQkWzpvNLq5VJvTSdl+L/SmQ707A8H8zV3H+M/52f6fOQK3t3Vygkurjp/93mtGOInCezfnHn/9Q==
+      tarball: 'file:projects/psydb-api-endpoint-schemas.tgz'
+    version: 0.0.0
   'file:projects/psydb-api-lib.tgz':
     dependencies:
       ajv: 6.12.6
@@ -6940,14 +7147,17 @@ packages:
       integrity: sha512-Gvw8TJEoWkHw0XjAWLXTgMrG5BTPbidnPaIb0Pxvcm/nI2Ivx6z4B+ti+uxUjneQ3kYWMi+9rQ1OuXQo1EO2Xw==
       tarball: 'file:projects/psydb-schema.tgz'
     version: 0.0.0
-  'file:projects/psydb-ui.tgz':
+  'file:projects/psydb-ui.tgz_debug@4.3.1':
     dependencies:
       '@babel/core': 7.12.17
       '@babel/preset-env': 7.12.17_@babel+core@7.12.17
       '@babel/preset-react': 7.12.13_@babel+core@7.12.17
+      '@rjsf/core': 2.5.1_react@17.0.2
+      axios: 0.21.1_debug@4.3.1
       babel-loader: 8.2.2_97e48a6b0bdb6376f048db1a976e5b3d
       bootstrap: 4.6.0
       chai: 4.2.0
+      formik: 2.2.6_react@17.0.2
       html-webpack-plugin: 5.1.0_webpack@5.10.1
       mocha: 8.1.3
       mongodb-memory-server: 6.9.6
@@ -6955,13 +7165,17 @@ packages:
       react-bootstrap: 1.5.2_react-dom@17.0.2+react@17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-router: 5.2.0_react@17.0.2
+      react-router-dom: 5.2.0_react@17.0.2
       webpack: 5.10.1_webpack-cli@4.5.0+webpack@5.10.1
       webpack-cli: 4.5.0_28b73b3ab44b87fb8fb2e6416e24d761
       webpack-dev-server: 3.11.2_webpack-cli@4.5.0+webpack@5.10.1
     dev: false
+    id: 'file:projects/psydb-ui.tgz'
     name: '@rush-temp/psydb-ui'
+    peerDependencies:
+      debug: '*'
     resolution:
-      integrity: sha512-xctCrke3HojWiTg6kyMIUyTC/uCBkS+oZw9e/iTglELHIGmKdnE+pTV707twsdUNyDXBRklVioannCmL5jpUJg==
+      integrity: sha512-rP/rV+P4yG2FevDAZKCPnzYDzAHVt4gyvaG0goe7RyM4YJ/FnvNMYXh5nl3aMah8GzKuc6yMEUF844bUSJ/J/Q==
       tarball: 'file:projects/psydb-ui.tgz'
     version: 0.0.0
   'file:projects/psydb-web.tgz':
@@ -6995,6 +7209,7 @@ specifiers:
   '@cdxoo/inline-string': ~1.0.0
   '@cdxoo/inline-text': ~1.0.1
   '@cdxoo/omit': ~1.0.1
+  '@rjsf/core': ~2.5.1
   '@rush-temp/json-schema-convert-pointer': 'file:./projects/json-schema-convert-pointer.tgz'
   '@rush-temp/json-schema-deconstruct-arrays': 'file:./projects/json-schema-deconstruct-arrays.tgz'
   '@rush-temp/json-schema-lazy-resolve-oneof': 'file:./projects/json-schema-lazy-resolve-oneof.tgz'
@@ -7007,6 +7222,7 @@ specifiers:
   '@rush-temp/psydb-ajv-formats': 'file:./projects/psydb-ajv-formats.tgz'
   '@rush-temp/psydb-ajv-keywords': 'file:./projects/psydb-ajv-keywords.tgz'
   '@rush-temp/psydb-api': 'file:./projects/psydb-api.tgz'
+  '@rush-temp/psydb-api-endpoint-schemas': 'file:./projects/psydb-api-endpoint-schemas.tgz'
   '@rush-temp/psydb-api-lib': 'file:./projects/psydb-api-lib.tgz'
   '@rush-temp/psydb-api-message-handlers': 'file:./projects/psydb-api-message-handlers.tgz'
   '@rush-temp/psydb-driver-nodejs': 'file:./projects/psydb-driver-nodejs.tgz'
@@ -7023,6 +7239,7 @@ specifiers:
   ajv: ~6.12.6
   ajv-formats: ~0.6.1
   ajv-keywords: ~3.5.2
+  axios: ~0.21.1
   babel-loader: ~8.2.2
   bcrypt: ~5.0.0
   bootstrap: ~4.6.0
@@ -7034,6 +7251,7 @@ specifiers:
   debug: ~4.3.1
   deep-diff: ~1.0.2
   escape-string-regexp: ~4.0.0
+  formik: ~2.2.6
   graphql: ~15.3.0
   html-webpack-plugin: 5.1.0
   inflation: ~2.0.0
@@ -7053,6 +7271,7 @@ specifiers:
   react-bootstrap: ~1.5.2
   react-dom: ~17.0.1
   react-router: ~5.2.0
+  react-router-dom: ~5.2.0
   statuses: ~2.0.0
   superagent: ~6.1.0
   supertest: ~6.0.1

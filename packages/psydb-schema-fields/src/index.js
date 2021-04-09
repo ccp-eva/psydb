@@ -10,6 +10,8 @@ module.exports = {
     DaysSinceBirthInterval: require('./days-since-birth-interval'),
     ExtBool: require('./ext-bool'),
     EmailList: require('./email-list'),
+    Email: require('./email'),
+    Password: require('./password'),
     EventId: require('./event-id'),
     PhoneList: require('./phone-list'),
     ForeignId: require('./foreign-id'),
