@@ -142,6 +142,11 @@
        "packageName": "@mpieva/psydb-web",
        "projectFolder": "packages/psydb-web",
        "reviewCategory": "production"
-    }
+    },
+    {
+       "packageName": "@mpieva/psydb-ui",
+       "projectFolder": "packages/psydb-ui",
+       "reviewCategory": "production"
+    },
   ]
 }
