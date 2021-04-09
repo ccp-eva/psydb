@@ -2,7 +2,8 @@
 var debug = require('debug')('psydb:api:endpoints:public-sign-in');
 
 var bcrypt = require('bcrypt'),
-    Self = require('@mpieva/psydb-api-lib/src/self');
+    Self = require('@mpieva/psydb-api-lib/src/self'),
+    ApiError = require('@mpieva/psydb-api-lib/src/api-error');
 
 var signIn = async (context, next) => {
     var { db, session, request } = context;
@@ -26,12 +27,12 @@ var signIn = async (context, next) => {
 
     if (!record) {
         debug('personnel record not found');
-        throw new Error(401); // TODO: 401
+        throw new ApiError(401); // TODO: 401
     }
 
     if (!hasRootAccess && researchGroupIds.length < 1) {
         debug('user has no researchgroup and is not root user');
-        throw new Error(401); // TODO: 401
+        throw new ApiError(401); // TODO: 401
     }
 
     var storedHash = record.gdpr.state.internals.passwordHash;
@@ -41,7 +42,7 @@ var signIn = async (context, next) => {
     }
     else {
         debug('passwords dont match');
-        throw new Error(401); // TODO: 401
+        throw new ApiError(401); // TODO: 401
     }
 
     // we dont want the password hash to be transferred
