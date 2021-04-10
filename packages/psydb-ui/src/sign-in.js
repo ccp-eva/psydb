@@ -1,10 +1,15 @@
 import React, { useEffect } from 'react';
-import SchemaForm from '@rjsf/core';
-import axios from 'axios';
+
+import { withTheme } from '@rjsf/core';
+import { Theme as Bootstrap4Theme } from '@rjsf/bootstrap-4'
 
 import {
     PublicSignIn
 } from '@mpieva/psydb-api-endpoint-schemas'
+
+import agent from './authenticated-agent';
+
+var SchemaForm = withTheme(Bootstrap4Theme);
 
 var schema = PublicSignIn.RequestBody();
 //var uiSchema = generateUISchema(schema);
@@ -16,8 +21,8 @@ var uiSchema = {
 
 const SignIn = ({ onSignedIn }) => {
     
-    var onSubmit = (formvalue) => (
-        axios.post('/api/sign-in', formvalue)
+    var onSubmit = ({ formData, ...unused }) => (
+        agent.post('/api/sign-in', formData)
         .then(
             (res) => {
                 console.log('signed in', res);

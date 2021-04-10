@@ -39,7 +39,10 @@
     "@rjsf/core": "~2.5.1",
     "@mpieva/psydb-api-endpoint-schemas": "~0.1.0-alpha",
     "axios": "~0.21.1",
-    "compression-webpack-plugin": "~7.1.2"
+    "compression-webpack-plugin": "~7.1.2",
+    "@rjsf/bootstrap-4": "~2.5.1",
+    "css-loader": "~5.2.1",
+    "style-loader": "~2.0.0"
   },
   "config": {
     "mongodbMemoryServer": {

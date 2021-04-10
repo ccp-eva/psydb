@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 
 import {
     BrowserRouter as Router,
@@ -8,40 +7,61 @@ import {
 } from 'react-router-dom';
 
 
+import agent from './public-agent';
+import ErrorBoundary from './error-boundary';
 import SignIn from './sign-in';
+import Main from './main'
 
-export const App = () => {
+
+const App = () => {
 
     var [ isSignedIn, setIsSignedIn ] = useState(false);
+    var [ isInitialized, setIsInitialized ] = useState(false);
+
+    var onSignedIn = () => {
+        setIsSignedIn(true)
+    }
+
+    var onSignedOut = () => {
+        setIsSignedIn(false);
+    }
 
     useEffect(() => {
-        axios.get('//google.com').then(
+        agent.get('/api/self').then(
             (res) => {
                 console.log('fetched stuff')
+                console.log(res);
+                onSignedIn()
+                setIsInitialized(true)
             },
             (error) => {
                 console.log('failed axios')
+                setIsInitialized(true)
             }
         )
-    });
+    }, [ /* noDidUpdate */ ]);
+
+    var View = undefined;
+    if (isInitialized) {
+        View = (
+            isSignedIn
+            ? <Main onSignedOut={ onSignedOut } />
+            : <SignIn onSignedIn={ onSignedIn } />
+        );
+    }
+    else {
+        View = <AppInitializing />
+    }
 
     return (
-        isSignedIn
-        ? <Main />
-        : <SignIn />
+        <ErrorBoundary>
+            { View }
+        </ErrorBoundary>
     );
 }
 
-const Main = () => (
-    <Router>
-        <div>
-            <Link to='/'>Slash</Link>
-            <Link to='/nested'>Nested</Link>
-            <Route path='/nested' component={Nested} />
-        </div>
-    </Router>
+const AppInitializing = () => (
+    <div>Loading</div>
 )
 
-const Nested = () => (
-    <div>Nested</div>
-)
+export default App;
