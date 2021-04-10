@@ -1,0 +1,15 @@
+.flex-core {
+    align-items: stretch;
+    display: flex;
+    flex-basis: auto;
+    flex-direction: column;
+    flex-shrink: 0;
+}
+
+.flex-grow {
+    flex-grow: 1;
+}
+
+.enable-flexbox {
+    flex: 1;
+}

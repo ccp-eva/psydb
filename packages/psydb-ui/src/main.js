@@ -1,12 +1,21 @@
 import React, { useEffect, useState } from 'react';
 
 import {
-    BrowserRouter as Router,
+    HashRouter as Router,
     Route,
-    Link
 } from 'react-router-dom';
 
+import {
+    Container,
+    Row,
+    Col,
+} from 'react-bootstrap';
+
 import agent from './public-agent';
+
+import SideNav from './side-nav';
+import CustomRecordTypes from './custom-record-types';
+import Subjects from './subjects';
 
 const Main = ({ onSignedOut, onSignedIn }) => {
     var onSignOut = () => (
@@ -23,18 +32,38 @@ const Main = ({ onSignedOut, onSignedIn }) => {
     )
     return (
         <Router>
-            <div>
-                <a onClick={ onSignOut }>Sign-Out</a>
-                <Link to='/'>Slash</Link>
-                <Link to='/nested'>Nested</Link>
-                <Route path='/nested' component={Nested} />
+            <div className='enable-flexbox flex-core flex-row'>
+                <header className='flex-core flex-grow flex-row-reverse' style={{
+                    //alignItems: 'flex-end',
+                }}>
+                    <div className='flex-core' style={{
+                        width: '275px'
+                    }}>
+                        <SideNav />
+                    </div>
+                </header>
+                <main className='flex-core flex-grow' style={{
+                    //alignItems: 'flex-start',
+                }}>
+                    <div style={{ width: '990px' }}>
+                        <div className='flex-core flex-row-reverse'>
+                            <div className='flex-core'>
+                                <a onClick={ onSignOut }>Sign-Out</a>
+                            </div>
+                        </div>
+                        <Routing />
+                    </div>
+                </main>
             </div>
         </Router>
     );
 }
 
-const Nested = () => (
-    <div>Nested</div>
+var Routing = () => (
+    <>
+    <Route path='/custom-record-types' component={ CustomRecordTypes } />
+    <Route path='/subjects' component={ Subjects } />
+    </>
 )
 
 export default Main;
