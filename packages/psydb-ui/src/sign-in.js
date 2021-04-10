@@ -24,8 +24,8 @@ const SignIn = ({ onSignedIn }) => {
     var onSubmit = ({ formData, ...unused }) => (
         agent.post('/api/sign-in', formData)
         .then(
-            (res) => {
-                console.log('signed in', res);
+            (response) => {
+                console.log('signed in', response);
                 onSignedIn();
             },
             (error) => {

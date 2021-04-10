@@ -58,20 +58,46 @@ var search = async (context, next) => {
         recordType,
         target,
     } = request.body;
-
+    
     target = target || 'table';
 
-    var customRecordType = await fetchCustomRecordType({
-        db,
-        collection: collectionName,
-        type: recordType,
-    });
+    if (
+        !permissions.hasRootAccess
+        && !permissions.canReadCollection(collectionName)
+    ) {
+        throw new ApiError(403, 'CollectionAccessDenied');
+    }
 
-    var displayFields = customRecordType.state[
-        target === 'optionlist'
-        ? 'optionListDisplayFields'
-        : 'tableDisplayFields'
-    ];
+    var collectionCreatorData = allSchemaCreators[collectionName];
+    if (!collectionCreatorData) {
+        throw new Error(
+            `no creator data found for collection "${collectionName}"`
+        );
+    }
+
+    var {
+        hasCustomTypes,
+        hasSubChannels,
+    } = collectionCreatorData;
+
+    var displayFields = undefined;
+    if (hasCustomTypes) {
+        var customRecordType = await fetchCustomRecordType({
+            db,
+            collection: collectionName,
+            type: recordType,
+        });
+
+        displayFields = customRecordType.state[
+            target === 'optionlist'
+            ? 'optionListDisplayFields'
+            : 'tableDisplayFields'
+        ];
+    }
+    else {
+        // TODO
+        displayFields = [];
+    }
 
     isValid = ajv.validate(
         FullBodySchema({
@@ -91,24 +117,6 @@ var search = async (context, next) => {
         offset,
         limit,
     } = request.body;
-
-    if (
-        !permissions.hasRootAccess
-        && !permissions.canReadCollection(params.collectionName)
-    ) {
-        throw new ApiError(403, 'CollectionAccessDenied');
-    }
-
-    var collectionCreatorData = allSchemaCreators[collectionName];
-    if (!collectionCreatorData) {
-        throw new Error(
-            `no creator data found for collection "${collectionName}"`
-        );
-    }
-
-    var {
-        hasSubChannels,
-    } = collectionCreatorData;
 
     var displayFieldsByDataPointer = keyBy({
         items: displayFields,
@@ -135,7 +143,7 @@ var search = async (context, next) => {
         });
     }
 
-    console.log(queryFields);
+    //console.log(queryFields);
 
     var records = await fetchRecordsByFilter({
         db,

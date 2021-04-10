@@ -105,12 +105,18 @@ describe('init-demo-system', function () {
             additionalFilter: {},
         });
         // console.dir(response.body, { depth: null });
-        var response = await agent.post('/search').send({
+        /*var response = await agent.post('/search').send({
             collectionName: 'subject',
             recordType: 'teacher',
             filters: {
                 '/gdpr/state/custom/firstname': 'Ali',
             },
+            offset: 0,
+            limit: 20,
+        });*/
+        var response = await agent.post('/search').send({
+            collectionName: 'customRecordType',
+            filters: {},
             offset: 0,
             limit: 20,
         });

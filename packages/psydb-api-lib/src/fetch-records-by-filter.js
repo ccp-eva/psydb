@@ -9,7 +9,7 @@ var SystemPermissionStages = require('./fetch-record-helpers/system-permission-s
 var convertPointerToPath = require('./convert-pointer-to-path');
 var fieldTypeConversions = require('./mongodb-field-type-conversions');
 
-var fetchRecordById = async ({
+var fetchRecordByFilter = async ({
     db,
     collectionName,
     recordType,
@@ -35,15 +35,15 @@ var fetchRecordById = async ({
     if (hasSubChannels) {
         stages.push(
             { $project: {
-                events: false,
+                'gdpr.events': false,
+                'scientific.events': false,
             }}
         );
     }
     else {
         stages.push(
             { $project: {
-                'gdpr.events': false,
-                'scientific.events': false,
+                events: false,
             }}
         );
     }
@@ -145,6 +145,10 @@ var fetchRecordById = async ({
         );
     }
 
+    /*console.log(collectionName);
+    console.log(stages);
+    throw new Error();*/
+
     var resultSet = await (
         db.collection(collectionName).aggregate(stages).toArray()
     );
@@ -152,4 +156,4 @@ var fetchRecordById = async ({
     return resultSet;
 }
 
-module.exports = fetchRecordById;
+module.exports = fetchRecordByFilter;
