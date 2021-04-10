@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import agent from '../authenticated-agent';
+import agent from '@mpieva/psydb-ui-request-agents';
 
 import {
     Route,
@@ -9,6 +9,8 @@ import {
 
 import { Button } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
+
+import { NewRecordForm } from '@mpieva/psydb-ui-lib';
 
 const CustomRecordTypes = () => {
     var { path, url } = useRouteMatch();
@@ -86,10 +88,10 @@ var List = ({
     );
 }
 
-const NewRecordForm = () => (
+    /*const NewRecordForm = () => (
     <div>
         AAAAAAAAAAAAAAAAAA
     </div>
-);
+);*/
 
 export default CustomRecordTypes;

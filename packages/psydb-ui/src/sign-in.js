@@ -7,7 +7,7 @@ import {
     PublicSignIn
 } from '@mpieva/psydb-api-endpoint-schemas'
 
-import agent from './authenticated-agent';
+import { simple as agent } from '@mpieva/psydb-ui-request-agents';
 
 var SchemaForm = withTheme(Bootstrap4Theme);
 

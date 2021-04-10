@@ -144,13 +144,23 @@
        "reviewCategory": "production"
     },
     {
-       "packageName": "@mpieva/psydb-ui",
-       "projectFolder": "packages/psydb-ui",
+       "packageName": "@mpieva/psydb-api-endpoint-schemas",
+       "projectFolder": "packages/psydb-api-endpoint-schemas",
        "reviewCategory": "production"
     },
     {
-       "packageName": "@mpieva/psydb-api-endpoint-schemas",
-       "projectFolder": "packages/psydb-api-endpoint-schemas",
+       "packageName": "@mpieva/psydb-ui-request-agents",
+       "projectFolder": "packages/psydb-ui-request-agents",
+       "reviewCategory": "production"
+    },
+    {
+       "packageName": "@mpieva/psydb-ui-lib",
+       "projectFolder": "packages/psydb-ui-lib",
+       "reviewCategory": "production"
+    },
+    {
+       "packageName": "@mpieva/psydb-ui",
+       "projectFolder": "packages/psydb-ui",
        "reviewCategory": "production"
     },
   ]

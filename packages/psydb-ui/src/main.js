@@ -11,7 +11,7 @@ import {
     Col,
 } from 'react-bootstrap';
 
-import agent from './public-agent';
+import agent from '@mpieva/psydb-ui-request-agents';
 
 import SideNav from './side-nav';
 import CustomRecordTypes from './custom-record-types';

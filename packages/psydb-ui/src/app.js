@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import agent from './public-agent';
+import { simple as agent } from '@mpieva/psydb-ui-request-agents';
 import ErrorBoundary from './error-boundary';
 import SignIn from './sign-in';
 import Main from './main'
