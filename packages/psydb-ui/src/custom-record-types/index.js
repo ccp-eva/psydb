@@ -4,16 +4,20 @@ import agent from '@mpieva/psydb-ui-request-agents';
 import {
     Route,
     Switch,
-    useRouteMatch
+    useRouteMatch,
+    useHistory,
+    useParams
 } from 'react-router-dom';
 
 import { Button } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
-import { NewRecordForm } from '@mpieva/psydb-ui-lib';
+import CreateNewType from './create-new-type';
+import EditType from './edit-type';
 
 const CustomRecordTypes = () => {
     var { path, url } = useRouteMatch();
+    var history =  useHistory();
 
     return (
         <div>
@@ -24,10 +28,18 @@ const CustomRecordTypes = () => {
             </header>
             <Switch>
                 <Route exact path={`${path}`}>
-                    <ListContainer collection='customRecordType' />
+                    <ListContainer
+                        linkBasePath={ path }
+                        collection='customRecordType'
+                    />
                 </Route>
                 <Route path={`${path}/new`}>
-                    <NewRecordForm collection='customRecordType' />
+                    <CreateNewType onCreated={
+                        ({ id }) => history.push(`${path}/${id}/edit`)
+                    } />
+                </Route>
+                <Route path={`${path}/:id`}>
+                    <EditType />
                 </Route>
             </Switch>
         </div>
@@ -37,6 +49,10 @@ const CustomRecordTypes = () => {
 const ListContainer = ({
     collection,
     recordType,
+    linkBasePath,
+
+    enableView,
+    enableEdit,
 }) => {
     var { path, url } = useRouteMatch();
 
@@ -45,7 +61,11 @@ const ListContainer = ({
         <LinkContainer to={`${path}/new`}>
             <Button>Neuer Eintrag</Button>
         </LinkContainer>
-        <List collection={ collection } recordType={ recordType } />
+        <List
+            linkBasePath={ linkBasePath }
+            collection={ collection }
+            recordType={ recordType }
+        />
         </>
     );
 }
@@ -56,6 +76,10 @@ var List = ({
     offset,
     limit,
     filters,
+
+    enableView,
+    enableEdit,
+    linkBasePath
 }) => {
     var [ isInitialized, setIsInitialized ] = useState(false);
     var [ records, setRecords ] = useState([]);
@@ -70,7 +94,7 @@ var List = ({
         })
         .then((response) => {
             console.log(response);
-            setRecords(response.data.records);
+            setRecords(response.data.data.records);
             setIsInitialized(true);
         })
     ), [ collection, recordType, offset, limit, filters ])
@@ -81,9 +105,26 @@ var List = ({
         );
     }
 
+    console.log(records);
+
+    if (!records) {
+        return (
+            <div>Empty</div> 
+        );
+    }
+
     return (
         <div>
-            List
+            { records.map(it => (
+                <div key={ it._id }>
+                    { it.collection }
+                    {' '}
+                    { it.type }
+                    <LinkContainer to={`${linkBasePath}/${it._id}`}>
+                        <Button>Edit</Button>
+                    </LinkContainer>
+                </div>
+            )) }
         </div>
     );
 }

@@ -43,7 +43,8 @@
     "style-loader": "~2.0.0",
     "react-router-bootstrap": "~0.25.0",
     "@mpieva/psydb-ui-request-agents": "~0.1.0-alpha",
-    "@mpieva/psydb-ui-lib": "~0.1.0-alpha"
+    "@mpieva/psydb-ui-lib": "~0.1.0-alpha",
+    "@mpieva/psydb-schema-fields": "~0.1.0-alpha"
   },
   "config": {
     "mongodbMemoryServer": {
