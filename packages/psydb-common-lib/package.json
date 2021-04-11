@@ -1,5 +1,5 @@
 {
-  "name": "@mpieva/psydb-api-lib",
+  "name": "@mpieva/psydb-common-lib",
   "version": "0.1.0-alpha",
   "description": "",
   "main": "./index.js",
@@ -8,23 +8,11 @@
   "author": "Jan Schwalbe",
   "license": "MIT",
   "dependencies": {
-    "ajv": "~6.12.6",
-    "ajv-keywords": "~3.5.2",
-    "@mpieva/psydb-ajv-formats": "~0.1.0-alpha",
-    "@mpieva/psydb-ajv-keywords": "~0.1.0-alpha",
-    "statuses": "~2.0.0",
-    "deep-diff": "~1.0.2",
-    "copy-anything": "~2.0.3",
-    "debug": "~4.3.1",
-    "escape-string-regexp": "~4.0.0",
-    "@cdxoo/inline-text": "~1.0.1",
     "@mpieva/psydb-schema-creators": "~0.1.0-alpha",
     "@mpieva/psydb-schema-fields": "~0.1.0-alpha",
-    "@mpieva/psydb-common-lib": "~0.1.0-alpha",
     "json-schema-traverse": "~1.0.0",
     "jsonpointer": "~4.1.0",
-    "@mpieva/json-schema-convert-pointer": "~0.1.0-alpha",
-    "@cdxoo/inline-string": "~1.0.0"
+    "@mpieva/json-schema-convert-pointer": "~0.1.0-alpha"
   },
   "devDependencies": {
     "mocha": "~8.1.3",

@@ -23,6 +23,7 @@ dependencies:
   '@rush-temp/psydb-api-endpoint-schemas': 'file:projects/psydb-api-endpoint-schemas.tgz'
   '@rush-temp/psydb-api-lib': 'file:projects/psydb-api-lib.tgz'
   '@rush-temp/psydb-api-message-handlers': 'file:projects/psydb-api-message-handlers.tgz'
+  '@rush-temp/psydb-common-lib': 'file:projects/psydb-common-lib.tgz'
   '@rush-temp/psydb-driver-nodejs': 'file:projects/psydb-driver-nodejs.tgz'
   '@rush-temp/psydb-fixtures': 'file:projects/psydb-fixtures.tgz'
   '@rush-temp/psydb-koa-event-middleware': 'file:projects/psydb-koa-event-middleware.tgz'
@@ -32,8 +33,8 @@ dependencies:
   '@rush-temp/psydb-schema-fields': 'file:projects/psydb-schema-fields.tgz'
   '@rush-temp/psydb-schema-helpers': 'file:projects/psydb-schema-helpers.tgz'
   '@rush-temp/psydb-schema-primitives': 'file:projects/psydb-schema-primitives.tgz'
-  '@rush-temp/psydb-ui': 'file:projects/psydb-ui.tgz_debug@4.3.1'
-  '@rush-temp/psydb-ui-lib': 'file:projects/psydb-ui-lib.tgz_debug@4.3.1+webpack@5.10.1'
+  '@rush-temp/psydb-ui': 'file:projects/psydb-ui.tgz'
+  '@rush-temp/psydb-ui-lib': 'file:projects/psydb-ui-lib.tgz_webpack@5.10.1'
   '@rush-temp/psydb-ui-request-agents': 'file:projects/psydb-ui-request-agents.tgz_debug@4.3.1'
   '@rush-temp/psydb-web': 'file:projects/psydb-web.tgz'
   ajv: 6.12.6
@@ -7181,7 +7182,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-api-lib'
     resolution:
-      integrity: sha512-Qm4FrEmWGuHzU8/ZXPJZh3M63QWPK49A041NrrKSGwTfXuBj8XdkuXdoTi4CypreiFE2k5grz5Kxx5pX53t2kQ==
+      integrity: sha512-Wc7oAWa3V4rRMrTxLWPMLlPNWZYgP7NiudsIu7LcPRb+6VNcv6WZzZ98/1cFEGHTNpO9HvAQhugHAd3U05EqiA==
       tarball: 'file:projects/psydb-api-lib.tgz'
     version: 0.0.0
   'file:projects/psydb-api-message-handlers.tgz':
@@ -7233,6 +7234,18 @@ packages:
     resolution:
       integrity: sha512-hTmcwmUNXpPgAYfPYQ3AgeAjz8hQwFMFHvOj0h/Ure311KkgRkTje2NdVNvg8utU9GlFrFbGBktpzxe63s+R9A==
       tarball: 'file:projects/psydb-api.tgz'
+    version: 0.0.0
+  'file:projects/psydb-common-lib.tgz':
+    dependencies:
+      chai: 4.2.0
+      json-schema-traverse: 1.0.0
+      jsonpointer: 4.1.0
+      mocha: 8.1.3
+    dev: false
+    name: '@rush-temp/psydb-common-lib'
+    resolution:
+      integrity: sha512-n8a28HUKNEsmJgqIzD64dlaxLOLsud+VdNiY/4bz0Ldt8RNXArn0jaxVNdoUPhKeBFbB5OK6Fh99NIIUTbe6+g==
+      tarball: 'file:projects/psydb-common-lib.tgz'
     version: 0.0.0
   'file:projects/psydb-driver-nodejs.tgz':
     dependencies:
@@ -7333,14 +7346,13 @@ packages:
       integrity: sha512-Gvw8TJEoWkHw0XjAWLXTgMrG5BTPbidnPaIb0Pxvcm/nI2Ivx6z4B+ti+uxUjneQ3kYWMi+9rQ1OuXQo1EO2Xw==
       tarball: 'file:projects/psydb-schema.tgz'
     version: 0.0.0
-  'file:projects/psydb-ui-lib.tgz_debug@4.3.1+webpack@5.10.1':
+  'file:projects/psydb-ui-lib.tgz_webpack@5.10.1':
     dependencies:
       '@babel/core': 7.12.17
       '@babel/preset-env': 7.12.17_@babel+core@7.12.17
       '@babel/preset-react': 7.12.13_@babel+core@7.12.17
       '@rjsf/bootstrap-4': 2.5.1_5dccca4f99fef0089ce8bea6fe035927
       '@rjsf/core': 2.5.1_react@17.0.2
-      axios: 0.21.1_debug@4.3.1
       babel-loader: 8.2.2_97e48a6b0bdb6376f048db1a976e5b3d
       bootstrap: 4.6.0
       chai: 4.2.0
@@ -7356,10 +7368,9 @@ packages:
     id: 'file:projects/psydb-ui-lib.tgz'
     name: '@rush-temp/psydb-ui-lib'
     peerDependencies:
-      debug: '*'
       webpack: '*'
     resolution:
-      integrity: sha512-0duuyUihvyqkJOCjUBL1D94ajsudiY81XApucq586G3++c1Hzk1Io3DHQEaoOxubDLfrxb/o/wC/a8HylaktUA==
+      integrity: sha512-8U6EATdq/mwclglVTM8V7GZVWaDN5woFbaXOJWQcbzKjU+2mjIVD75Ae2VF1ngqG0jze0eokeNhyqoUlv+LknQ==
       tarball: 'file:projects/psydb-ui-lib.tgz'
     version: 0.0.0
   'file:projects/psydb-ui-request-agents.tgz_debug@4.3.1':
@@ -7376,14 +7387,13 @@ packages:
       integrity: sha512-G3/3cMW3qycoGFIwhQqr3G2uRSTJmxXrUkEcNCuMLv3o763vibyflO7lJ36ZRRb00S7weyXI2di08KJhSvhShg==
       tarball: 'file:projects/psydb-ui-request-agents.tgz'
     version: 0.0.0
-  'file:projects/psydb-ui.tgz_debug@4.3.1':
+  'file:projects/psydb-ui.tgz':
     dependencies:
       '@babel/core': 7.12.17
       '@babel/preset-env': 7.12.17_@babel+core@7.12.17
       '@babel/preset-react': 7.12.13_@babel+core@7.12.17
       '@rjsf/bootstrap-4': 2.5.1_5dccca4f99fef0089ce8bea6fe035927
       '@rjsf/core': 2.5.1_react@17.0.2
-      axios: 0.21.1_debug@4.3.1
       babel-loader: 8.2.2_97e48a6b0bdb6376f048db1a976e5b3d
       bootstrap: 4.6.0
       chai: 4.2.0
@@ -7392,7 +7402,6 @@ packages:
       formik: 2.2.6_react@17.0.2
       html-webpack-plugin: 5.1.0_webpack@5.10.1
       mocha: 8.1.3
-      mongodb-memory-server: 6.9.6
       react: 17.0.2
       react-bootstrap: 1.5.2_react-dom@17.0.2+react@17.0.2
       react-dom: 17.0.2_react@17.0.2
@@ -7404,12 +7413,9 @@ packages:
       webpack-cli: 4.5.0_28b73b3ab44b87fb8fb2e6416e24d761
       webpack-dev-server: 3.11.2_webpack-cli@4.5.0+webpack@5.10.1
     dev: false
-    id: 'file:projects/psydb-ui.tgz'
     name: '@rush-temp/psydb-ui'
-    peerDependencies:
-      debug: '*'
     resolution:
-      integrity: sha512-QqCNN+sYRWJCxInvEur95EYT1z/s/C4VdjCg6TJdsVJ8Yvyp9BM22vtbriay7bMsN7LPTdzVVc0L4z+mZ/D3Uw==
+      integrity: sha512-R/X0LeRjZZELsrju5IcvpRL4YA4S5Ep+jFEY0y5NXCr/tvYEbXp1r3NMOqiPzw8gBnU4xWnozTAssDCniLPQjg==
       tarball: 'file:projects/psydb-ui.tgz'
     version: 0.0.0
   'file:projects/psydb-web.tgz':
@@ -7460,6 +7466,7 @@ specifiers:
   '@rush-temp/psydb-api-endpoint-schemas': 'file:./projects/psydb-api-endpoint-schemas.tgz'
   '@rush-temp/psydb-api-lib': 'file:./projects/psydb-api-lib.tgz'
   '@rush-temp/psydb-api-message-handlers': 'file:./projects/psydb-api-message-handlers.tgz'
+  '@rush-temp/psydb-common-lib': 'file:./projects/psydb-common-lib.tgz'
   '@rush-temp/psydb-driver-nodejs': 'file:./projects/psydb-driver-nodejs.tgz'
   '@rush-temp/psydb-fixtures': 'file:./projects/psydb-fixtures.tgz'
   '@rush-temp/psydb-koa-event-middleware': 'file:./projects/psydb-koa-event-middleware.tgz'

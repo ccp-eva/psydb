@@ -10,6 +10,8 @@ import {
 
 import agent from '@mpieva/psydb-ui-request-agents';
 
+import createSchemaForRecordType from '@mpieva/psydb-common-lib/src/create-schema-for-record-type';
+
 
 const EditType = ({}) => {
     var { path, url } = useRouteMatch();
@@ -21,7 +23,14 @@ const EditType = ({}) => {
     useEffect(() => (
         agent.get(`/api/read/customRecordType/${id}`)
         .then((response) => {
-            console.log(response);
+            var record = response.data.data.record;
+            var schema = createSchemaForRecordType({
+                collectionName: record.collection,
+                customRecordTypeCollection: record.type,
+                prefetchedCustomRecordTypes: [ record ]
+            });
+            console.log(record);
+            console.log(schema);
             setRecord(response.data.data.record);
             setIsInitialized(true);
         })
@@ -33,11 +42,11 @@ const EditType = ({}) => {
         );
     }
 
-    var fieldData = gatherFieldData({
+        /*var fieldData = gatherFieldData({
         customRecordTypeData: record,
     });
 
-    console.log(fieldData);
+    console.log(fieldData);*/
 
     return (
         <div>

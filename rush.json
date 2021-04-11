@@ -149,6 +149,11 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/psydb-common-lib",
+       "projectFolder": "packages/psydb-common-lib",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-ui-request-agents",
        "projectFolder": "packages/psydb-ui-request-agents",
        "reviewCategory": "production"
