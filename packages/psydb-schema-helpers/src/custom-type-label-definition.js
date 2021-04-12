@@ -6,9 +6,9 @@ var CustomTypeLabelDefinition = () => ExactObject({
         format: {
             type: 'string',
             default: '',
-            pattern: '^[^\\r\\n]*(?:\\$\\{\\d+\\}[^\\r\\n]*)+$',
+            pattern: '^[^\\r\\n]*(?:\\$\\{\\#\\}[^\\r\\n]*)+$',
             examples: [
-                '${1} ${2}'
+                '${#} ${#}'
             ]
         },
         tokens: {

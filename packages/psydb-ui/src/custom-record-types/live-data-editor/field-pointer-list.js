@@ -4,7 +4,7 @@ const FieldPointerList = ({
     onMoveItem,
     onRemoveItem,
     dataPointers,
-    availableDisplayFieldDataByDataPointer,
+    availableFieldDataByPointer,
 }) => {
     // TODO: andle move/remove
     if (dataPointers.length < 1) {
@@ -19,7 +19,7 @@ const FieldPointerList = ({
         <ol>
             { dataPointers.map(dataPointer => (
                 <li key={dataPointer}>
-                    { availableDisplayFieldDataByDataPointer[dataPointer]
+                    { availableFieldDataByPointer[dataPointer]
                         .displayName
                     }
                 </li>

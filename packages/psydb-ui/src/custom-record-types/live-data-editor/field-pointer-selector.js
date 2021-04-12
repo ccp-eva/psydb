@@ -6,11 +6,11 @@ import { Button, Form, InputGroup } from 'react-bootstrap';
 const FieldPointerSelector = ({
     onSelect,
     selectedDataPointers,
-    availableDisplayFieldDataByDataPointer,
+    availableFieldDataByPointer,
 }) => {
 
     var selectable = (
-        Object.values(availableDisplayFieldDataByDataPointer)
+        Object.values(availableFieldDataByPointer)
         .filter(it => !selectedDataPointers.includes(it.dataPointer))
         .map(it => ({
             dataPointer: it.dataPointer,
@@ -28,29 +28,32 @@ const FieldPointerSelector = ({
     return (
         <Formik onSubmit={ handleSubmit } initialValues={{}}>
             { ({ values, handleSubmit, handleChange }) => (
-                <Form onSubmit={ handleSubmit }>
-                    <InputGroup> 
-                        <Form.Control
-                            as='select'
-                            name='dataPointer'
-                            onChange={ handleChange }
-                        >
-                            { /*!values.dataPointer && (
+                <Form as='fieldset' className='form-group'>
+                        <InputGroup> 
+                            <Form.Control
+                                as='select'
+                                name='dataPointer'
+                                onChange={ handleChange }
+                            >
+                                { /*!values.dataPointer && (
+                                    <option>Please Select</option>
+                                ) FIXME: cant update the state here */}
                                 <option>Please Select</option>
-                            ) FIXME: cant update the state here */}
-                            { selectable.map(it => (
-                                <option
-                                    key={it.dataPointer}
-                                    value={ it.dataPointer }
-                                >
-                                    { it.displayName }
-                                </option>
-                            ))}
-                        </Form.Control>
-                        <InputGroup.Append>
-                            <Button type='submit'>Hinufügen</Button>
-                        </InputGroup.Append>
-                    </InputGroup>
+                                { selectable.map(it => (
+                                    <option
+                                        key={it.dataPointer}
+                                        value={ it.dataPointer }
+                                    >
+                                        { it.displayName }
+                                    </option>
+                                ))}
+                            </Form.Control>
+                            <InputGroup.Append>
+                                <Button onClick={ handleSubmit }>
+                                    Hinufügen
+                                </Button>
+                            </InputGroup.Append>
+                        </InputGroup>
                 </Form>
             )}
         </Formik>

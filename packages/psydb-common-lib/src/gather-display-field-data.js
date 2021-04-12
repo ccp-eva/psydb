@@ -1,6 +1,8 @@
 'use strict';
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
+// TODO: should be renamed to gather "field data by pointer"
+
 // TODO: non-custom fields
 var gatherDisplayFieldData = ({
     customRecordTypeData
@@ -14,8 +16,15 @@ var gatherDisplayFieldData = ({
         // availableStaticDisplayFields // maybe
     } = metadata;
 
-    var fieldData = [],
-        settings = customRecordTypeData.state.settings;
+    var settings = customRecordTypeData.state.settings;
+    var fieldData = [
+        {
+            key: 'ID',
+            systemType: 'Id',
+            dataPointer: '/_id',
+            displayName: 'ID',
+        }
+    ];
     if (hasSubChannels) {
         for (var subChannelKey of subChannelKeys) {
             var fields = settings.subChannelFields[subChannelKey]

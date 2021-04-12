@@ -1,3 +1,5 @@
+require('debug').enable('psydb:*');
+
 var Koa = require('koa'),
     createApi = require('./middleware/api');
 

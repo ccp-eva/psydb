@@ -8,7 +8,7 @@ const EditDisplayFieldForm = ({
     target,
     record,
     currentDataPointers,
-    availableDisplayFieldDataByDataPointer,
+    availableFieldDataByPointer,
     onSuccess,
 }) => {
 
@@ -47,8 +47,8 @@ const EditDisplayFieldForm = ({
         <FieldPointerListControl
             value={ state }
             onChange={ handleChange }
-            availableDisplayFieldDataByDataPointer={
-                availableDisplayFieldDataByDataPointer
+            availableFieldDataByPointer={
+                availableFieldDataByPointer
             }
         />
         <Button onClick={ handleSaveChanges }>Speichern</Button>

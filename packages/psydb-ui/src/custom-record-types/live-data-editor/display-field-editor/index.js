@@ -25,15 +25,11 @@ const DisplayFieldEditor = ({
         setShowEditModal(false);
     }
 
-    var handleSaveChanges = () => {
-        // TODO
-    }
-
     var availableDisplayFieldData = gatherDisplayFieldData({
         customRecordTypeData: record,
     });
 
-    var availableDisplayFieldDataByDataPointer = keyBy({
+    var availableFieldDataByPointer = keyBy({
         items: availableDisplayFieldData,
         byProp: 'dataPointer'
     });
@@ -48,15 +44,12 @@ const DisplayFieldEditor = ({
         currentDisplayFieldData.map(it => it.dataPointer)
     );
 
-    console.log(availableDisplayFieldDataByDataPointer)
-    console.log(currentDataPointers);
-
     return (
         <div>
             <FieldPointerList
                 dataPointers={ currentDataPointers }
-                availableDisplayFieldDataByDataPointer={
-                    availableDisplayFieldDataByDataPointer
+                availableFieldDataByPointer={
+                    availableFieldDataByPointer
                 }
             />
             <Button onClick={ handleShowEditModal }>
@@ -68,8 +61,8 @@ const DisplayFieldEditor = ({
                 target={ target }
                 record={ record }
                 currentDataPointers={ currentDataPointers }
-                availableDisplayFieldDataByDataPointer={
-                    availableDisplayFieldDataByDataPointer
+                availableFieldDataByPointer={
+                    availableFieldDataByPointer
                 }
                 onSuccessfulUpdate={ onSuccessfulUpdate }
             />

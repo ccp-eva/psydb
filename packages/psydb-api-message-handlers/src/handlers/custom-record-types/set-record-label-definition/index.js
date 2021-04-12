@@ -54,6 +54,8 @@ handler.checkAllowedAndPlausible = async ({
         fullSchema: true
     });
 
+    debug(targetRecordSchema);
+
     var gatheredFieldData = [];
     for (var fieldPointer of props.tokens) {
         var resolved = resolveDataPointer({

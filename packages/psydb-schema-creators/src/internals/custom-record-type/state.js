@@ -47,11 +47,12 @@ var CustomRecordTypeState = ({
 }
 
 var RecordLabelDefinition = () => ExactObject({
+    // TODO: see schema helpers
     properties: {
         format: {
             // TODO: format
             type: 'string',
-            default: '${0}',
+            default: '${#}',
         },
         tokens: {
             // TODO: items

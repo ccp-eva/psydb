@@ -18,7 +18,7 @@ const moveInsitu = (ary, fromIndex, toIndex) => {
 const FieldPointerListControl = ({
     value,
     onChange,
-    availableDisplayFieldDataByDataPointer,
+    availableFieldDataByPointer,
 }) => {
 
     var handleMoveItem = ({ from, to }) => {
@@ -38,16 +38,16 @@ const FieldPointerListControl = ({
         <FieldPointerList
             onMoveItem={ handleMoveItem }
             dataPointers={ value }
-            availableDisplayFieldDataByDataPointer={
-                availableDisplayFieldDataByDataPointer
+            availableFieldDataByPointer={
+                availableFieldDataByPointer
             }
         />
         <hr />
         <FieldPointerSelector
             onSelect={ handleAddItem }
             selectedDataPointers={ value }
-            availableDisplayFieldDataByDataPointer={
-                availableDisplayFieldDataByDataPointer
+            availableFieldDataByPointer={
+                availableFieldDataByPointer
             }
         />
         </>

@@ -9,7 +9,7 @@ const EditDisplayFieldsModal = ({
     record,
     target,
     currentDataPointers,
-    availableDisplayFieldDataByDataPointer,
+    availableFieldDataByPointer,
     onSuccessfulUpdate,
 }) => {
     target = target || 'table';
@@ -34,8 +34,8 @@ const EditDisplayFieldsModal = ({
                     target={ target }
                     record={ record }
                     currentDataPointers={ currentDataPointers }
-                    availableDisplayFieldDataByDataPointer={
-                        availableDisplayFieldDataByDataPointer
+                    availableFieldDataByPointer={
+                        availableFieldDataByPointer
                     }
                     onSuccess={ handleSuccess }
                 />

@@ -4,6 +4,7 @@ var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
 var {
     ExactObject,
+    Id,
 } = require('@mpieva/psydb-schema-fields');
 
 var createSchemaForRecordType = ({
@@ -155,6 +156,7 @@ var FullRecordSchemaCreator = ({
             ...otherArgs
         }) => ExactObject({
             properties: {
+                _id: Id(),
                 // FIXME: hardcoded subchannels
                 scientific: ExactObject({
                     properties: {
@@ -182,6 +184,7 @@ var FullRecordSchemaCreator = ({
     else if (hasFixedTypes) {
         SchemaCreator = (...args) => ExactObject({
             properties: {
+                _id: Id(),
                 state: (
                     collectionCreatorData
                     .fixedTypeStateSchemaCreators[recordType](...args)
@@ -192,6 +195,7 @@ var FullRecordSchemaCreator = ({
     else {
         SchemaCreator = (...args) => ExactObject({
             properties: {
+                _id: Id(),
                 state: collectionCreatorData.State(...args),
             }
         });
