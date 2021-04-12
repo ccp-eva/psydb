@@ -5,7 +5,7 @@ import { Button } from 'react-bootstrap';
 import allSchemaCreators from '@mpieva/psydb-schema-creators';
 import NewFieldModal from './new-field-modal';
 
-const FieldEditor = ({ record, onEdited }) => {
+const FieldEditor = ({ record, onSuccessfulUpdate }) => {
     var [ showNewFieldModal, setShowNewFieldModal ] = useState(false);
 
     var handleShowNewFieldModal = () => {
@@ -26,6 +26,7 @@ const FieldEditor = ({ record, onEdited }) => {
                 record={ record }
                 show={ showNewFieldModal }
                 onHide={ handleCloseNewFieldModal }
+                onSuccessfulUpdate={ onSuccessfulUpdate }
             />
         </div>
     )
@@ -57,7 +58,7 @@ const FieldList = ({ record }) => {
     return (
         <div>
             { nextFields.map(field => (
-                <div>
+                <div key={ field.key }>
                     { field.label } { field.key } { field.type } { field.subChannelKey }
                 </div>
             )) }

@@ -13,7 +13,7 @@ import { Button } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
 import CreateNewType from './create-new-type';
-import EditType from './edit-type';
+import CustomRecordTypeEditor from './edit';
 
 const CustomRecordTypes = () => {
     var { path, url } = useRouteMatch();
@@ -39,7 +39,7 @@ const CustomRecordTypes = () => {
                     } />
                 </Route>
                 <Route path={`${path}/:id`}>
-                    <EditType />
+                    <CustomRecordTypeEditor />
                 </Route>
             </Switch>
         </div>

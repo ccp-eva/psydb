@@ -18,7 +18,12 @@ var FieldDefinition = ({
     title: type, // for rjsf option labels
     properties: {
         key: IdentifierString(),
-        type: { const: type },
+        type: {
+            const: type,
+            //FIXME: required because of
+            //https://github.com/rjsf-team/react-jsonschema-form/issues/1241
+            default: type,
+        },
         props: ExactObject({
             properties: props,
             required: required || Object.keys(props)

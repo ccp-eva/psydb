@@ -13,12 +13,34 @@ var fetchRecordById = async ({
     hasSubChannels,
     id,
 }) => {
-    var resultSet = await (
-        db.collection(collectionName).aggregate([
+    var { hasSubChannels } = allSchemaCreators[collectionName];
+
+    var preprocessingStages = (
+        hasSubChannels
+        ? [
+            { $addFields: {
+                'gdpr._lastKnownEventId': { $arrayElemAt: [ '$gdpr.events._id', 0 ]},
+                'scientific._lastKnownEventId': { $arrayElemAt: [ '$gdpr.scientific._id', 0 ]},
+            }},
             { $project: {
-                events: false,
                 'gdpr.events': false,
                 'scientific.events': false,
+            }},
+        ]
+        : [
+            { $addFields: {
+                '_lastKnownEventId': { $arrayElemAt: [ '$events._id', 0 ]},
+            }},
+            { $project: {
+                events: false,
+            }},
+        ]
+    );
+
+    var resultSet = await (
+        db.collection(collectionName).aggregate([
+            { $addFields: {
+                '_lastKnownEventId': { $arrayElemAt: [ '$events._id', 0 ]},
             }},
             { $match: {
                 _id: id

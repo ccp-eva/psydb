@@ -27,7 +27,7 @@ const EditType = ({}) => {
     var [ isInitialized, setIsInitialized ] = useState(false);
     var [ record, setRecord ] = useState([]);
 
-    useEffect(() => (
+    var fetchRecord = () => (
         agent.get(`/api/read/customRecordType/${id}`)
         .then((response) => {
             var record = response.data.data.record;
@@ -42,7 +42,13 @@ const EditType = ({}) => {
             setRecord(response.data.data.record);
             setIsInitialized(true);
         })
-    ), [ id ])
+    )
+
+    var handleSuccessfulUpdate = () => {
+        fetchRecord();
+    }
+
+    useEffect(() => fetchRecord(), [ id ])
 
     if (!isInitialized) {
         return (
@@ -84,7 +90,7 @@ const EditType = ({}) => {
                 <Route path={`${path}/fields`}>
                     <FieldEditor
                         record={ record }
-                        onEdited={ onEdited }
+                        onSuccessfulUpdate={ handleSuccessfulUpdate }
                     />
                 </Route>
             </Switch>
