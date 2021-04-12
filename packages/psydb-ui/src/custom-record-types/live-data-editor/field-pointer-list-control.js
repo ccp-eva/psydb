@@ -28,6 +28,13 @@ const FieldPointerListControl = ({
         onChange(clone);
     }
 
+    var handleRemoveItem = ({ index }) => {
+        console.log(index);
+        var clone = [ ...value ];
+        clone.splice(index, 1);
+        onChange(clone);
+    }
+
     var handleAddItem = (dataPointer) => {
         console.log(dataPointer);
         onChange([ ...value, dataPointer ]);
@@ -37,6 +44,7 @@ const FieldPointerListControl = ({
         <>
         <FieldPointerList
             onMoveItem={ handleMoveItem }
+            onRemoveItem={ handleRemoveItem }
             dataPointers={ value }
             availableFieldDataByPointer={
                 availableFieldDataByPointer
