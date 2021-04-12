@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
-import { Button } from 'react-bootstrap';
+import { Button, Table } from 'react-bootstrap';
+
+import agent from '@mpieva/psydb-ui-request-agents';
 
 import allSchemaCreators from '@mpieva/psydb-schema-creators';
 import NewFieldModal from './new-field-modal';
@@ -16,6 +18,28 @@ const FieldEditor = ({ record, onSuccessfulUpdate }) => {
         setShowNewFieldModal(false);
     }
 
+    var handleCommitSettings = () => {
+        var messageBody = {
+            type: 'custom-record-types/commit-settings',
+            payload: {
+                id: record._id,
+                lastKnownEventId: record._lastKnownEventId,
+            }
+        }
+        return (
+            agent.post('/api/', messageBody)
+            .then(
+                (response) => {
+                    onSuccessfulUpdate()
+                },
+                (error) => {
+                    console.log('ERR:', error)
+                    alert('TODO')
+                }
+            )
+        ) 
+    }
+
     return (
         <div>
             <FieldList record={ record } />
@@ -28,6 +52,10 @@ const FieldEditor = ({ record, onSuccessfulUpdate }) => {
                 onHide={ handleCloseNewFieldModal }
                 onSuccessfulUpdate={ onSuccessfulUpdate }
             />
+            <hr />
+            <Button onClick={ handleCommitSettings }>
+                Felder fixieren
+            </Button>
         </div>
     )
 }
@@ -55,14 +83,33 @@ const FieldList = ({ record }) => {
         nextFields = nextSettings.fields;
     }
 
+    console.log(nextFields);
+
     return (
-        <div>
-            { nextFields.map(field => (
-                <div key={ field.key }>
-                    { field.label } { field.key } { field.type } { field.subChannelKey }
-                </div>
-            )) }
-        </div>
+        <Table bordered striped size='sm'>
+            <thead>
+                <tr>
+                    <th>DisplayName</th>
+                    <th>Internal Key</th>
+                    <th>Type</th>
+                    { hasSubChannels && (
+                        <th>SubChannel</th>
+                    )}
+                </tr>
+            </thead>
+            <tbody>
+                { nextFields.map(field => (
+                    <tr key={ field.key }>
+                        <td>{ field.displayName }</td>
+                        <td>{ field.key }</td>
+                        <td>{ field.type }</td>
+                        { hasSubChannels && (
+                            <td>{ field.subChannelKey }</td>
+                        )}
+                    </tr>
+                )) }
+            </tbody>
+        </Table>
     );
 }
 

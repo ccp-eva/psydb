@@ -12,6 +12,14 @@ var schema = {
     oneOf: Object.values(FieldDefinitionSchemas).map(f => f())
 };
 
+var uiSchema = {
+    'type': {
+        // FIXME: there are some margins still left unfortunately
+        // https://github.com/rjsf-team/react-jsonschema-form/pull/2175
+        'ui:widget': 'hidden'
+    }
+}
+
 var SchemaForm = withTheme(Bootstrap4Theme);
 
 const NewFieldForm = ({ record, onSuccess }) => {
@@ -42,6 +50,7 @@ const NewFieldForm = ({ record, onSuccess }) => {
         <div>
             <SchemaForm
                 schema={ schema }
+                uiSchema={ uiSchema }
                 onSubmit={ onSubmit }
             >
                 <div>

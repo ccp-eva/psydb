@@ -24,6 +24,7 @@ var FieldDefinition = ({
             //https://github.com/rjsf-team/react-jsonschema-form/issues/1241
             default: type,
         },
+        displayName: SaneString(),
         props: ExactObject({
             properties: props,
             required: required || Object.keys(props)
@@ -32,6 +33,7 @@ var FieldDefinition = ({
     required: [
         'key',
         'type',
+        'displayName',
         'props',
     ]
 })
