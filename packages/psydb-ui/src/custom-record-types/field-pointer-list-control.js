@@ -2,8 +2,8 @@ import React, { useState, useReducer } from 'react';
 import { Button } from 'react-bootstrap';
 import agent from '@mpieva/psydb-ui-request-agents';
 
-import DisplayFieldSelector from './display-field-selector';
-import DisplayFieldList from './display-field-list';
+import FieldPointerSelector from './field-pointer-selector';
+import FieldPointerList from './field-pointer-list';
 
 const moveInsitu = (ary, fromIndex, toIndex) => {
     if (toIndex >= ary.length) {
@@ -35,7 +35,7 @@ const FieldPointerListControl = ({
 
     return (
         <>
-        <DisplayFieldList
+        <FieldPointerList
             onMoveItem={ handleMoveItem }
             dataPointers={ value }
             availableDisplayFieldDataByDataPointer={
@@ -43,7 +43,7 @@ const FieldPointerListControl = ({
             }
         />
         <hr />
-        <DisplayFieldSelector
+        <FieldPointerSelector
             onSelect={ handleAddItem }
             selectedDataPointers={ value }
             availableDisplayFieldDataByDataPointer={

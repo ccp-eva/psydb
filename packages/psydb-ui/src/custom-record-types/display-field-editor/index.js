@@ -6,7 +6,7 @@ import keyBy from '@mpieva/psydb-common-lib/src/key-by';
 import gatherDisplayFieldData from '@mpieva/psydb-common-lib/src/gather-display-field-data';
 
 import EditDisplayFieldsModal from './edit-display-fields-modal';
-import DisplayFieldList from './display-field-list';
+import FieldPointerList from '../field-pointer-list';
 
 
 const DisplayFieldEditor = ({
@@ -53,7 +53,7 @@ const DisplayFieldEditor = ({
 
     return (
         <div>
-            <DisplayFieldList
+            <FieldPointerList
                 dataPointers={ currentDataPointers }
                 availableDisplayFieldDataByDataPointer={
                     availableDisplayFieldDataByDataPointer

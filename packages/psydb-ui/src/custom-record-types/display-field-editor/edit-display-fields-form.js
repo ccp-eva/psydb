@@ -2,7 +2,7 @@ import React, { useState, useReducer } from 'react';
 import { Button } from 'react-bootstrap';
 import agent from '@mpieva/psydb-ui-request-agents';
 
-import FieldPointerListControl from './field-pointer-list-control';
+import FieldPointerListControl from '../field-pointer-list-control';
 
 const EditDisplayFieldForm = ({
     target,

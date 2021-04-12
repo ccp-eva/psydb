@@ -1,6 +1,6 @@
 import React, { useState, useReducer } from 'react';
 
-const DisplayFieldList = ({
+const FieldPointerList = ({
     onMoveItem,
     onRemoveItem,
     dataPointers,
@@ -28,4 +28,4 @@ const DisplayFieldList = ({
     );
 }
 
-export default DisplayFieldList;
+export default FieldPointerList;

@@ -3,7 +3,7 @@ import { Formik } from 'formik';
 
 import { Button, Form, InputGroup } from 'react-bootstrap';
 
-const DisplayFieldSelector = ({
+const FieldPointerSelector = ({
     onSelect,
     selectedDataPointers,
     availableDisplayFieldDataByDataPointer,
@@ -57,4 +57,4 @@ const DisplayFieldSelector = ({
     )
 };
 
-export default DisplayFieldSelector;
+export default FieldPointerSelector;
