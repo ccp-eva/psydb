@@ -21,7 +21,7 @@ var debug = require('debug')('psydb:api:endpoints:search');
 var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
     Ajv = require('@mpieva/psydb-api-lib/src/ajv'),
     ResponseBody = require('@mpieva/psydb-api-lib/src/response-body'),
-    keyBy = require('@mpieva/psydb-api-lib/src/key-by');
+    keyBy = require('@mpieva/psydb-common-lib/src/key-by');
 
 var CoreBodySchema = require('./core-body-schema'),
     FullBodySchema = require('./full-body-schema');

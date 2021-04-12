@@ -4,8 +4,8 @@
 var jsonpointer = require('jsonpointer');
 var inline = require('@cdxoo/inline-text');
 
-var keyBy = require('@mpieva/psydb-api-lib/src/key-by');
-var groupBy = require('@mpieva/psydb-api-lib/src/group-by');
+var keyBy = require('@mpieva/psydb-common-lib/src/key-by');
+var groupBy = require('@mpieva/psydb-common-lib/src/group-by');
 
 var createRecordLabel = require('@mpieva/psydb-api-lib/src/create-record-label');
 

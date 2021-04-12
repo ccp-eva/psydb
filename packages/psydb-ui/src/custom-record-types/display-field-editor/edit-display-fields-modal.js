@@ -1,0 +1,44 @@
+import React, { useState, useEffect } from 'react';
+
+import { Modal, Button } from 'react-bootstrap';
+import EditDisplayFieldsForm from './edit-display-fields-form';
+
+const EditDisplayFieldsModal = ({
+    show,
+    onHide,
+    record,
+    target,
+    currentDataPointers,
+    availableDisplayFieldDataByDataPointer,
+    onSuccessfulUpdate,
+}) => {
+    var handleSuccess = () => {
+        onSuccessfulUpdate();
+        onHide()
+    }
+    return (
+        <Modal show={show} onHide={ onHide }>
+            <Modal.Header closeButton>
+                <Modal.Title>
+                    {(
+                        target === 'optionlist'
+                        ? 'Optionsfelder'
+                        : 'Tabellenfelder'
+                    )} bearbeiten
+                </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <EditDisplayFieldsForm
+                    record={ record }
+                    currentDataPointers={ currentDataPointers }
+                    availableDisplayFieldDataByDataPointer={
+                        availableDisplayFieldDataByDataPointer
+                    }
+                    onSuccess={ handleSuccess }
+                />
+            </Modal.Body>
+        </Modal>
+    );
+}
+
+export default EditDisplayFieldsModal;

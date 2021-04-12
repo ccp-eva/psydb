@@ -83,8 +83,6 @@ const FieldList = ({ record }) => {
         nextFields = nextSettings.fields;
     }
 
-    console.log(nextFields);
-
     return (
         <Table bordered striped size='sm'>
             <thead>

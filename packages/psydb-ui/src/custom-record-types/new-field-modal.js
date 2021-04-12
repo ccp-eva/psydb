@@ -11,7 +11,7 @@ const NewFieldModal = ({ show, onHide, record, onSuccessfulUpdate }) => {
     return (
         <Modal show={show} onHide={ onHide }>
             <Modal.Header closeButton>
-                <Modal.Title>Modal heading</Modal.Title>
+                <Modal.Title>Neues Feld</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <NewFieldForm

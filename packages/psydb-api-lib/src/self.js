@@ -1,5 +1,6 @@
 'use strict';
 var debug = require('debug')('psydb:api:lib:self');
+var keyBy = require('@mpieva/psydb-common-lib/src/key-by');
     
 var Self = async ({
     db,
