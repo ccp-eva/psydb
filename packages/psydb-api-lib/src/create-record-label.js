@@ -13,22 +13,20 @@ var createRecordLabel = ({ definition, record }) => {
 
     var label = format,
         tokensRedacted = 0;
-    for (var [index, token] of tokens.reverse().entries()) {
-        // reversing index
-        index = tokens.length - index - 1;
+    for (var [index, token] of tokens.entries()) {
         var value = jsonpointer.get(record, token.dataPointer);
         if (value === undefined) {
-            value = 'REDACTED';
+            value = '[REDACTED]';
             tokensRedacted += 1;
         }
         label = label.replace(
-            '${' + index + '}',
+            '${#}',
             value
         );
     }
 
-    if (tokensRedacted == tokens.length) {
-        label = `${record._id}`;
+    if (tokensRedacted === tokens.length) {
+        label = `${record._id} [REDACTED]`;
     }
     return label;
 }
