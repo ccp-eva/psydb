@@ -1,8 +1,11 @@
 'use strict';
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
-var gatherDisplayFieldData = ({ customRecordTypeData }) => {
-    var collection = customRecordType.collection;
+// TODO: non-custom fields
+var gatherDisplayFieldData = ({
+    customRecordTypeData
+}) => {
+    var collection = customRecordTypeData.collection;
 
     var metadata = allSchemaCreators[collection];
     var {
@@ -12,7 +15,7 @@ var gatherDisplayFieldData = ({ customRecordTypeData }) => {
     } = metadata;
 
     var fieldData = [],
-        settings = customRecordType.state.settings;
+        settings = customRecordTypeData.state.settings;
     if (hasSubChannels) {
         for (var subChannelKey of subChannelKeys) {
             var fields = settings.subChannelFields[subChannelKey]

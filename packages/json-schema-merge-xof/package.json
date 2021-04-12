@@ -1,5 +1,5 @@
 {
-  "name": "@mpieva/json-schema-deconstruct-arrays",
+  "name": "@mpieva/json-schema-merge-xof",
   "version": "0.1.0-alpha",
   "description": "",
   "main": "src/index.js",

@@ -44,6 +44,11 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/json-schema-merge-xof",
+       "projectFolder": "packages/json-schema-merge-xof",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/mongo-mq",
        "projectFolder": "packages/mongo-mq",
        "reviewCategory": "production"

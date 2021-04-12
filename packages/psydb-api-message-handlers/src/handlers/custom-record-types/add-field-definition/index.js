@@ -6,7 +6,7 @@ var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
     Ajv = require('@mpieva/psydb-api-lib/src/ajv');
 
 var BaseSchema = require('./schema'),
-    FieldSchemas = require('./field-schemas'),
+    FieldSchemas = require('./field-payload-schemas'),
     allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
 var shouldRun = (message) => (

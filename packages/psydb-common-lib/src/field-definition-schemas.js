@@ -1,4 +1,7 @@
 'use strict';
+
+// used to define cusom fields per record type
+
 var {
     ExactObject,
     Id,
@@ -12,6 +15,7 @@ var FieldDefinition = ({
     props,
     required,
 }) => ExactObject({
+    title: type, // for rjsf option labels
     properties: {
         key: IdentifierString(),
         type: { const: type },
@@ -92,25 +96,12 @@ var DateTimeFieldDefinition = () => FieldDefinition({
     },
 })
 
-// to make sure the paths match the real message structure
-var wrapped = (definition) => () => ({
-    type: 'object',
-    properties: {
-        payload: {
-            type: 'object',
-            properties: {
-                props: definition(),
-            }
-        }
-    }
-})
-
 module.exports = {
-    SaneString: wrapped(SaneStringFieldDefinition),
-    FullText: wrapped(FullTextFieldDefinition),
-    Address: wrapped(AddressFieldDefinition),
-    EmailList: wrapped(EmailListFieldDefinition),
-    HelperSetItemIdList: wrapped(HelperSetItemIdListFieldDefinition),
-    ForeignId: wrapped(ForeignIdFieldDefinition),
-    DateTime: wrapped(DateTimeFieldDefinition),
+    SaneString: SaneStringFieldDefinition,
+    FullText: FullTextFieldDefinition,
+    Address: AddressFieldDefinition,
+    EmailList: EmailListFieldDefinition,
+    HelperSetItemIdList: HelperSetItemIdListFieldDefinition,
+    ForeignId: ForeignIdFieldDefinition,
+    DateTime: DateTimeFieldDefinition,
 }
