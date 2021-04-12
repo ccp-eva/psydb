@@ -84,7 +84,7 @@ const EditType = ({}) => {
                 <Route exact path={`${path}/live`}>
                     <LiveDataEditor
                         record={ record }
-                        onEdited={ onEdited }
+                        onSuccessfulUpdate={ handleSuccessfulUpdate }
                     />
                 </Route>
                 <Route path={`${path}/fields`}>

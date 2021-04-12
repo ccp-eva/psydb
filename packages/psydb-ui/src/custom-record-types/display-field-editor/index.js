@@ -6,10 +6,13 @@ import keyBy from '@mpieva/psydb-common-lib/src/key-by';
 import gatherDisplayFieldData from '@mpieva/psydb-common-lib/src/gather-display-field-data';
 
 import EditDisplayFieldsModal from './edit-display-fields-modal';
+import DisplayFieldList from './display-field-list';
+
 
 const DisplayFieldEditor = ({
     target,
     record,
+    onSuccessfulUpdate,
 }) => {
 
     var [ showEditModal, setShowEditModal ] = useState(false);
@@ -37,7 +40,7 @@ const DisplayFieldEditor = ({
 
     var currentDisplayFieldData = (
         target === 'optionlist'
-        ? record.state.optionLisDisplayFields
+        ? record.state.optionListDisplayFields
         : record.state.tableDisplayFields
     );
 
@@ -63,19 +66,15 @@ const DisplayFieldEditor = ({
                 show={ showEditModal }
                 onHide={ handleCloseEditModal }
                 target={ target }
+                record={ record }
                 currentDataPointers={ currentDataPointers }
                 availableDisplayFieldDataByDataPointer={
                     availableDisplayFieldDataByDataPointer
                 }
+                onSuccessfulUpdate={ onSuccessfulUpdate }
             />
         </div>
     );
-}
-
-const DisplayFieldList = () => {
-    return (
-        <div>LIST</div>
-    )
 }
 
 export default DisplayFieldEditor;

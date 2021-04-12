@@ -1,6 +1,9 @@
 import React, { useState, useReducer } from 'react';
+import { Button } from 'react-bootstrap';
+import agent from '@mpieva/psydb-ui-request-agents';
 
 import DisplayFieldSelector from './display-field-selector';
+import DisplayFieldList from './display-field-list';
 
 const moveInsitu = (ary, fromIndex, toIndex) => {
     if (toIndex >= ary.length) {
@@ -29,15 +32,41 @@ const reducer = (state, action) => {
 
 const EditDisplayFieldForm = ({
     target,
+    record,
     currentDataPointers,
     availableDisplayFieldDataByDataPointer,
     onSuccess,
 }) => {
+    target = target || 'table';
 
     var [ state, dispatch ] = useReducer(
         reducer,
         currentDataPointers
     );
+
+    var handleSaveChanges = () => {
+        var messageBody = {
+            type: 'custom-record-types/set-display-fields',
+            payload: {
+                target,
+                id: record._id,
+                lastKnownEventId: record._lastKnownEventId,
+                fieldPointers: state,
+            }
+        };
+        return (
+            agent.post('/api/', messageBody)
+            .then(
+                (response) => {
+                    onSuccess()
+                },
+                (error) => {
+                    console.log('ERR:', error)
+                    alert('TODO')
+                }
+            )
+        ) 
+    }
 
     var handleMoveItem = ({ from, to }) => {
         console.log(from, to);
@@ -74,36 +103,11 @@ const EditDisplayFieldForm = ({
                 availableDisplayFieldDataByDataPointer
             }
         />
+        <Button onClick={ handleSaveChanges }>Speichern</Button>
         </>
     )
 }
 
 
-const DisplayFieldList = ({
-    onMoveItem,
-    onRemoveItem,
-    dataPointers,
-    availableDisplayFieldDataByDataPointer,
-}) => {
-    if (dataPointers.length < 1) {
-        return (
-            <div>
-                Keine Anzeigefelder festgelegt
-            </div>
-        )
-    }
-
-    return (
-        <ol>
-            { dataPointers.map(dataPointer => (
-                <li key={dataPointer}>
-                    { availableDisplayFieldDataByDataPointer[dataPointer]
-                        .displayName
-                    }
-                </li>
-            ))}
-        </ol>
-    );
-}
 
 export default EditDisplayFieldForm;

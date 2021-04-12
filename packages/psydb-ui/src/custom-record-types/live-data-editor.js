@@ -2,17 +2,32 @@ import React, { useState, useEffect } from 'react';
 
 import DisplayFieldEditor from './display-field-editor';
 
-const LiveDataEditor = ({ record, onEdited }) => {
+const LiveDataEditor = ({ record, onSuccessfulUpdate }) => {
 
     return (
         <div>
             <div>
                 Anzeigename: { record.state.label } 
             </div>
+
+            <hr />
+            
+            <h3>Anzeigefelder Tabellen</h3>
             <DisplayFieldEditor
                 target='table'
                 record={ record }
+                onSuccessfulUpdate={ onSuccessfulUpdate }
             />
+            
+            <hr />
+
+            <h3>Anzeigefelder Options-Listen</h3>
+            <DisplayFieldEditor
+                target='optionlist'
+                record={ record }
+                onSuccessfulUpdate={ onSuccessfulUpdate }
+            />
+            
         </div>
     );
 }

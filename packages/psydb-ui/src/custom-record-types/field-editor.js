@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-
 import { Button, Table } from 'react-bootstrap';
 
 import agent from '@mpieva/psydb-ui-request-agents';
-
 import allSchemaCreators from '@mpieva/psydb-schema-creators';
+
 import NewFieldModal from './new-field-modal';
+
 
 const FieldEditor = ({ record, onSuccessfulUpdate }) => {
     var [ showNewFieldModal, setShowNewFieldModal ] = useState(false);

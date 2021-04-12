@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Formik } from 'formik';
 
+import { Button, Form, InputGroup } from 'react-bootstrap';
+
 const DisplayFieldSelector = ({
     onSelect,
     selectedDataPointers,
@@ -26,25 +28,30 @@ const DisplayFieldSelector = ({
     return (
         <Formik onSubmit={ handleSubmit } initialValues={{}}>
             { ({ values, handleSubmit, handleChange }) => (
-                <form onSubmit={ handleSubmit }>
-                    <select
-                        name='dataPointer'
-                        onChange={ handleChange }
-                    >
-                        { /*!values.dataPointer && (
-                            <option>Please Select</option>
-                        ) FIXME: cant update the state here */}
-                        { selectable.map(it => (
-                            <option
-                                key={it.dataPointer}
-                                value={ it.dataPointer }
-                            >
-                                { it.displayName }
-                            </option>
-                        ))}
-                    </select>
-                    <button type='submit'>Submit</button>
-                </form>
+                <Form onSubmit={ handleSubmit }>
+                    <InputGroup> 
+                        <Form.Control
+                            as='select'
+                            name='dataPointer'
+                            onChange={ handleChange }
+                        >
+                            { /*!values.dataPointer && (
+                                <option>Please Select</option>
+                            ) FIXME: cant update the state here */}
+                            { selectable.map(it => (
+                                <option
+                                    key={it.dataPointer}
+                                    value={ it.dataPointer }
+                                >
+                                    { it.displayName }
+                                </option>
+                            ))}
+                        </Form.Control>
+                        <InputGroup.Append>
+                            <Button type='submit'>Hinufügen</Button>
+                        </InputGroup.Append>
+                    </InputGroup>
+                </Form>
             )}
         </Formik>
     )

@@ -12,6 +12,8 @@ const EditDisplayFieldsModal = ({
     availableDisplayFieldDataByDataPointer,
     onSuccessfulUpdate,
 }) => {
+    target = target || 'table';
+
     var handleSuccess = () => {
         onSuccessfulUpdate();
         onHide()
@@ -29,6 +31,7 @@ const EditDisplayFieldsModal = ({
             </Modal.Header>
             <Modal.Body>
                 <EditDisplayFieldsForm
+                    target={ target }
                     record={ record }
                     currentDataPointers={ currentDataPointers }
                     availableDisplayFieldDataByDataPointer={
