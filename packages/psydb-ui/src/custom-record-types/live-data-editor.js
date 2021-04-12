@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
+import { LinkButton } from '@mpieva/psydb-ui-lib';
+
 import DisplayFieldEditor from './display-field-editor';
+
 
 const LiveDataEditor = ({ record, onSuccessfulUpdate }) => {
 
@@ -27,7 +30,7 @@ const LiveDataEditor = ({ record, onSuccessfulUpdate }) => {
                 record={ record }
                 onSuccessfulUpdate={ onSuccessfulUpdate }
             />
-            
+
         </div>
     );
 }

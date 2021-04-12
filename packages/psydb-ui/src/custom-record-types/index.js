@@ -9,8 +9,7 @@ import {
     useParams
 } from 'react-router-dom';
 
-import { Button } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
+import { LinkButton } from '@mpieva/psydb-ui-lib';
 
 import CreateNewType from './create-new-type';
 import CustomRecordTypeEditor from './edit';
@@ -26,6 +25,7 @@ const CustomRecordTypes = () => {
                     Datensatz-Typen
                 </h1>
             </header>
+
             <Switch>
                 <Route exact path={`${path}`}>
                     <ListContainer
@@ -58,9 +58,9 @@ const ListContainer = ({
 
     return (
         <>
-        <LinkContainer to={`${path}/new`}>
-            <Button>Neuer Eintrag</Button>
-        </LinkContainer>
+        <LinkButton to={`${path}/new`}>
+            Neuer Eintrag
+        </LinkButton>
         <List
             linkBasePath={ linkBasePath }
             collection={ collection }
@@ -120,9 +120,9 @@ var List = ({
                     { it.collection }
                     {' '}
                     { it.type }
-                    <LinkContainer to={`${linkBasePath}/${it._id}`}>
-                        <Button>Edit</Button>
-                    </LinkContainer>
+                    <LinkButton to={`${linkBasePath}/${it._id}`}>
+                        Edit
+                    </LinkButton>
                 </div>
             )) }
         </div>
