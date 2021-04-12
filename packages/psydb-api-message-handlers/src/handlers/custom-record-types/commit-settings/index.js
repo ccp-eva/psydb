@@ -79,6 +79,11 @@ handler.triggerSystemEvents = async ({
     var { id, lastKnownEventId, props } = payload;
     var { record } = cache;
 
+    // do nothing if record is not dirty
+    if (!record.state.isDirty) {
+        return;
+    }
+
     var nextState = createClone(record.state);
     nextState.settings = createClone(nextState.nextSettings);
 
