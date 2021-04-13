@@ -3,10 +3,20 @@ var inline = require('@cdxoo/inline-text');
 
 var fetchCustomRecordType = async ({ db, collection, type }) => {
     var customRecordTypes = await (
-        db.collection('customRecordType').find(
-            { collection, type },
-            { 'state.isNew': true, 'state.settings': true }
-        ).toArray()
+        db.collection('customRecordType').aggregate([
+            { $match: {
+                collection, type
+            }},
+            { $project: {
+                events: false,
+            }}
+            /*{ $project: {
+                'collection': true,
+                'type': true ,
+                'state.isNew': true,
+                'state.settings': true
+            }}*/
+        ]).toArray()
     );
 
     if (customRecordTypes.length < 1) {

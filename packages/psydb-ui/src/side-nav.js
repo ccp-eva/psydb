@@ -24,8 +24,11 @@ const SideNav = ({
             <Link to='/custom-record-types'>
                 Datensatz-Typen
             </Link>
+            <Link to='/locations'>
+                Locations
+            </Link>
             <Link to='/subjects'>
-                Subjects
+                Probanden
             </Link>
         </div>
     </Nav>

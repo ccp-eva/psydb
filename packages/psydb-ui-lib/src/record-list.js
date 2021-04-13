@@ -6,7 +6,7 @@ import {
 } from 'react-bootstrap';
 
 import agent from '@mpieva/psydb-ui-request-agents';
-import { LinkButton } from '@mpieva/psydb-ui-lib';
+import LinkButton from './link-button';
 
 var RecordList = ({
     collection,

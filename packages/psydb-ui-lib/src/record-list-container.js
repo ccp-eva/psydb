@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useRouteMatch } from 'react-router-dom';
 
-import { LinkButton } from '@mpieva/psydb-ui-lib';
-import RecordList from './record-list'
+import LinkButton from './link-button';
+import RecordList from './record-list';
 
 const RecordListContainer = ({
     collection,
@@ -16,7 +16,7 @@ const RecordListContainer = ({
 
     return (
         <>
-        <LinkButton to={`${path}/new`}>
+        <LinkButton to={`${url}/new`}>
             Neuer Eintrag
         </LinkButton>
         <RecordList

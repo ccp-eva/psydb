@@ -4,6 +4,7 @@ module.exports = {
     publicSignOut: require('./public-sign-out'),
     event: require('./event'),
     self: require('./self'),
+    metadata: require('./metadata'),
     read: require('./read'),
     searchInField: require('./search-in-field'),
     search: require('./search'),

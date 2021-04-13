@@ -98,15 +98,17 @@ var search = async (context, next) => {
             : 'tableDisplayFields'
         ];
 
-        availableDisplayFieldsData = [
-            ...availableStaticDisplayFields,
-            ...gatherDisplayFieldData({ customRecordType })
+        availableDisplayFieldData = [
+            ...(availableStaticDisplayFields || []),
+            ...gatherDisplayFieldData({
+                customRecordTypeData: customRecordType
+            })
         ]
     }
     else {
         // TODO
         displayFields = staticDisplayFields || [];
-        availableDisplayFieldData = availableStaticDisplayFields;
+        availableDisplayFieldData = availableStaticDisplayFields || [];
     }
 
     isValid = ajv.validate(
@@ -159,6 +161,7 @@ var search = async (context, next) => {
         db,
         permissions,
         collectionName,
+        recordType,
         hasSubChannels,
         queryFields,
         displayFields,

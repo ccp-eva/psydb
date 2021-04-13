@@ -15,6 +15,7 @@ import agent from '@mpieva/psydb-ui-request-agents';
 
 import SideNav from './side-nav';
 import CustomRecordTypes from './custom-record-types';
+import Locations from './locations';
 import Subjects from './subjects';
 
 const Main = ({ onSignedOut, onSignedIn }) => {
@@ -62,6 +63,7 @@ const Main = ({ onSignedOut, onSignedIn }) => {
 var Routing = () => (
     <>
     <Route path='/custom-record-types' component={ CustomRecordTypes } />
+    <Route path='/locations' component={ Locations } />
     <Route path='/subjects' component={ Subjects } />
     </>
 )

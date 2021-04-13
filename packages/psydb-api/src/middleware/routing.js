@@ -33,6 +33,12 @@ var createRouting = ({
         endpoints.event()
     );
 
+    // FIXME: split this? any better options?
+    router.get('/metadata',
+        withSelfAuth(),
+        endpoints.metadata
+    );
+
     router.get('/self',
         withSelfAuth(),
         withPermissions(),

@@ -11,7 +11,7 @@ import {
 
 import { LinkButton } from '@mpieva/psydb-ui-lib';
 
-import RecordListContainer from './record-list-container';
+import RecordListContainer from '@mpieva/psydb-ui-lib/src/record-list-container';
 import CreateNewType from './create-new-type';
 import CustomRecordTypeEditor from './edit';
 
