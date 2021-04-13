@@ -20,6 +20,7 @@ import Subjects from './subjects';
 import Personnel from './personnel';
 import ResearchGroups from './research-groups';
 import SystemRoles from './system-roles';
+import LabOperation from './lab-operation';
 
 const Main = ({ onSignedOut, onSignedIn }) => {
     var onSignOut = () => (
@@ -71,6 +72,8 @@ var Routing = () => (
     <Route path='/personnel' component={ Personnel } />
     <Route path='/research-groups' component={ ResearchGroups } />
     <Route path='/system-roles' component={ SystemRoles } />
+
+    <Route path='/lab-operation' component={ LabOperation } />
     </>
 )
 
