@@ -63,7 +63,7 @@ const EditType = ({}) => {
     return (
         <div>
             { /* FIXME: im not sure how this really works but it does */ }
-            <LinkButton to='../'>
+            <LinkButton to='../../'>
                 Up
             </LinkButton>
 

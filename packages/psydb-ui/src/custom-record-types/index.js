@@ -39,7 +39,7 @@ const CustomRecordTypes = () => {
                         ({ id }) => history.push(`${path}/${id}/edit`)
                     } />
                 </Route>
-                <Route path={`${path}/:id`}>
+                <Route path={`${path}/:id/edit`}>
                     <CustomRecordTypeEditor />
                 </Route>
             </Switch>
