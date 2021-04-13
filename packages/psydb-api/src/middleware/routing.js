@@ -34,9 +34,12 @@ var createRouting = ({
     );
 
     // FIXME: split this? any better options?
-    router.get('/metadata',
-        withSelfAuth(),
-        endpoints.metadata
+    // FIXME: nesting routers breaks consistency with our index
+    router.use('/metadata',
+        //withSelfAuth(),
+        ...endpoints.metadata({ middleware: [
+            withSelfAuth(),
+        ]})
     );
 
     router.get('/self',

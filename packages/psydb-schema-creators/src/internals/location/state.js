@@ -29,7 +29,7 @@ var GenericLocationState = ({
             'systemPermissions',
             ...(
                 enableInternalProps
-                ? [ 'internals' ]
+                ? [ /* TODO anything here?*/]
                 : []
             )
         ]

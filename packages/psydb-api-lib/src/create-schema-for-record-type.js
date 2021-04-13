@@ -17,7 +17,7 @@ var createSchemaForRecordTypeWithAutoFetch = async ({
     fullSchema,
     prefetchedCustomRecordTypes,
     customRecordTypeCollection,
-    // additionalSchemaCreatorArgs
+    additionalSchemaCreatorArgs
 }) => {
 
     var collectionCreatorData = allSchemaCreators[collectionName];
@@ -36,6 +36,7 @@ var createSchemaForRecordTypeWithAutoFetch = async ({
 
     var args = {
         enableInternalProps: true,
+        ...(additionalSchemaCreatorArgs || {})
     };
 
     if (hasCustomTypes) {

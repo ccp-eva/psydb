@@ -1,32 +1,23 @@
 'use strict';
-var debug = require('debug')('psydb:api:endpoints:read');
-var ResponseBody = require('@mpieva/psydb-api-lib/src/response-body');
+var compose = require('koa-compose'),
+    KoaRouter = require('koa-router'),
 
-var metadata = async (context, next) => {
-    var { 
-        db,
-    } = context;
+    getCustomRecordTypes = require('./get-custom-record-types'),
+    getSchema = require('./get-schema');
 
-    var customRecordTypes = await (
-        db.collection('customRecordType').aggregate([
-            { $match: {
-                'state.isNew': false
-            }},
-            { $project: {
-                collection: true,
-                type: true,
-                'state.label': true,
-            }}
-        ]).toArray()
-    );
+var createMetadataRouting = ({ middleware }) => {
+    var router = KoaRouter();
 
-    context.body = ResponseBody({
-        data: {
-            customRecordTypes
-        }
-    });
+    router.use(middleware);
 
-    await next();
+    router.get('/custom-record-types', getCustomRecordTypes);
+    router.get('/schema/:collectionName', getSchema);
+    router.get('/schema/:collectionName/:recordType', getSchema);
+
+    return [
+        router.routes(),
+        router.allowedMethods(),
+    ];
 }
 
-module.exports = metadata;
+module.exports = createMetadataRouting;

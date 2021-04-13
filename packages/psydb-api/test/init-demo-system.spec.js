@@ -119,6 +119,7 @@ describe('init-demo-system', function () {
             offset: 0,
             limit: 20,
         });
+        var response = await agent.get('/metadata/schema/location/school');
         console.dir(response.body, { depth: null });
     });
 

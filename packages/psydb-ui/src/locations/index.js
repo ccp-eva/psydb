@@ -22,7 +22,7 @@ const Locations = () => {
     var [ metadata, setMetadata ] = useState();
 
     useEffect(() => {
-        agent.get('/api/metadata').then(
+        agent.get('/api/metadata/custom-record-types').then(
             (response) => {
                 setMetadata(response.data.data);
                 setIsInitialized(true)
