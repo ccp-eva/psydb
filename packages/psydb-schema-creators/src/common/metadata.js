@@ -11,7 +11,7 @@ module.exports = {
                 displayName: 'Collection',
             },
             {
-                key: '_collection',
+                key: '_label',
                 systemType: 'SaneString',
                 dataPointer: '/state/label',
                 displayName: 'Anzeigename',

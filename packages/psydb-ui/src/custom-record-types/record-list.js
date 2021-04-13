@@ -21,7 +21,7 @@ var RecordList = ({
     linkBaseUrl
 }) => {
     var [ isInitialized, setIsInitialized ] = useState(false);
-    var [ records, setRecords ] = useState([]);
+    var [ payload, setPayload ] = useState([]);
 
     useEffect(() => (
         agent.post('/api/search', {
@@ -33,7 +33,7 @@ var RecordList = ({
         })
         .then((response) => {
             console.log(response);
-            setRecords(response.data.data.records);
+            setPayload(response.data.data);
             setIsInitialized(true);
         })
     ), [ collection, recordType, offset, limit, filters ])
@@ -44,9 +44,9 @@ var RecordList = ({
         );
     }
 
-    console.log(records);
+    console.log(payload);
 
-    if (!records) {
+    if (!payload.records) {
         return (
             <div>Empty</div> 
         );
@@ -54,8 +54,9 @@ var RecordList = ({
 
     return (
         <Table>
+            <TableHead displayFieldData={ payload.displayFieldData } />
             <tbody>
-                { records.map(it => (
+                { payload.records.map(it => (
                     <tr key={ it._id }>
                         <td>{ it.collection }</td>
                         <td>{ it.state.label }</td>
@@ -68,6 +69,21 @@ var RecordList = ({
                 )) }
             </tbody>
         </Table>
+    );
+}
+
+const TableHead = ({
+    displayFieldData,
+}) => {
+    return (
+        <thead>
+            <tr>
+                { displayFieldData.map(it => (
+                    <th key={ it.key }>{ it.displayName }</th>
+                ))}
+                <th></th>
+            </tr>
+        </thead>
     );
 }
 

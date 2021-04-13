@@ -21,7 +21,8 @@ var debug = require('debug')('psydb:api:endpoints:search');
 var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
     Ajv = require('@mpieva/psydb-api-lib/src/ajv'),
     ResponseBody = require('@mpieva/psydb-api-lib/src/response-body'),
-    keyBy = require('@mpieva/psydb-common-lib/src/key-by');
+    keyBy = require('@mpieva/psydb-common-lib/src/key-by'),
+    gatherDisplayFieldData = require('@mpieva/psydb-common-lib/src/gather-display-field-data');
 
 var CoreBodySchema = require('./core-body-schema'),
     FullBodySchema = require('./full-body-schema');
@@ -78,10 +79,12 @@ var search = async (context, next) => {
     var {
         hasCustomTypes,
         hasSubChannels,
+        availableStaticDisplayFields,
         staticDisplayFields,
     } = collectionCreatorData;
 
-    var displayFields = undefined;
+    var displayFields = undefined,
+        availableDisplayFieldData = undefined;;
     if (hasCustomTypes) {
         var customRecordType = await fetchCustomRecordType({
             db,
@@ -94,10 +97,16 @@ var search = async (context, next) => {
             ? 'optionListDisplayFields'
             : 'tableDisplayFields'
         ];
+
+        availableDisplayFieldsData = [
+            ...availableStaticDisplayFields,
+            ...gatherDisplayFieldData({ customRecordType })
+        ]
     }
     else {
         // TODO
         displayFields = staticDisplayFields || [];
+        availableDisplayFieldData = availableStaticDisplayFields;
     }
 
     isValid = ajv.validate(
@@ -156,10 +165,20 @@ var search = async (context, next) => {
         offset,
         limit
     });
-    
+
+    var availableDisplayFieldDataByPointer = keyBy({
+        items: availableDisplayFieldData,
+        byProp: 'dataPointer'
+    });
+
+    var displayFieldData = displayFields.map(it => ({
+        ...availableDisplayFieldDataByPointer[it.dataPointer],
+        dataPointer: it.dataPointer,
+    }))
+
     context.body = ResponseBody({
         data: {
-            displayFields,
+            displayFieldData,
             records,
         },
     });
