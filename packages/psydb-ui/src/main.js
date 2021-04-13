@@ -17,6 +17,9 @@ import SideNav from './side-nav';
 import CustomRecordTypes from './custom-record-types';
 import Locations from './locations';
 import Subjects from './subjects';
+import Personnel from './personnel';
+import ResearchGroups from './research-groups';
+import SystemRoles from './system-roles';
 
 const Main = ({ onSignedOut, onSignedIn }) => {
     var onSignOut = () => (
@@ -65,6 +68,9 @@ var Routing = () => (
     <Route path='/custom-record-types' component={ CustomRecordTypes } />
     <Route path='/locations' component={ Locations } />
     <Route path='/subjects' component={ Subjects } />
+    <Route path='/personnel' component={ Personnel } />
+    <Route path='/research-groups' component={ ResearchGroups } />
+    <Route path='/system-roles' component={ SystemRoles } />
     </>
 )
 

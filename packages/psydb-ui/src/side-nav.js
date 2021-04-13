@@ -21,15 +21,12 @@ const SideNav = ({
             <b>Psychology DB</b>
         </Link>
         <div className='navbar-nav'>
-            <Link to='/custom-record-types'>
-                Datensatz-Typen
-            </Link>
-            <Link to='/locations'>
-                Locations
-            </Link>
-            <Link to='/subjects'>
-                Probanden
-            </Link>
+            <Link to='/custom-record-types'>Datensatz-Typen</Link>
+            <Link to='/research-groups'>Forschungsgruppen</Link>
+            <Link to='/system-roles'>System-Rollen</Link>
+            <Link to='/personnel'>Mitarbeiter</Link>
+            <Link to='/locations'>Locations</Link>
+            <Link to='/subjects'>Probanden</Link>
         </div>
     </Nav>
 )

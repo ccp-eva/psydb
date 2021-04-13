@@ -90,10 +90,44 @@ module.exports = {
                 },
                 {
                     systemType: 'SaneString',
-                    dataPointer: '/gdpr/state/firstname',
+                    dataPointer: '/gdpr/state/lastname',
                 }
             ]
-        }
+        },
+        availableStaticDisplayFields: [
+            {
+                key: '_shorthand',
+                systemType: 'SaneString',
+                dataPointer: '/gdpr/state/shorthand',
+                displayName: 'Kürzel',
+            },
+            {
+                key: '_firstname',
+                systemType: 'SaneString',
+                dataPointer: '/gdpr/state/firstname',
+                displayName: 'Vorname',
+            },
+            {
+                key: '_lastname',
+                systemType: 'SaneString',
+                dataPointer: '/gdpr/state/lastname',
+                displayName: 'Nachname',
+            },
+        ],
+        staticDisplayFields: [
+            {
+                systemType: 'SaneString',
+                dataPointer: '/gdpr/state/shorthand',
+            },
+            {
+                systemType: 'SaneString',
+                dataPointer: '/gdpr/state/firstname',
+            },
+            {
+                systemType: 'SaneString',
+                dataPointer: '/gdpr/state/lastname',
+            }
+        ]
     },
     researchGroup: {
         collection: 'researchGroup',
@@ -108,7 +142,31 @@ module.exports = {
                     dataPointer: '/state/shorthand',
                 },
             ]
-        }
+        },
+        availableStaticDisplayFields: [
+            {
+                key: '_shorthand',
+                systemType: 'SaneString',
+                dataPointer: '/state/shorthand',
+                displayName: 'Kürzel',
+            },
+            {
+                key: '_name',
+                systemType: 'SaneString',
+                dataPointer: '/state/name',
+                displayName: 'Name',
+            },
+        ],
+        staticDisplayFields: [
+            {
+                systemType: 'SaneString',
+                dataPointer: '/state/shorthand',
+            },
+            {
+                systemType: 'SaneString',
+                dataPointer: '/state/name',
+            }
+        ]
     },
     study: {
         collection: 'study',
@@ -155,7 +213,21 @@ module.exports = {
                     dataPointer: '/state/name'
                 }
             ]
-        }
+        },
+        availableStaticDisplayFields: [
+            {
+                key: '_label',
+                systemType: 'SaneString',
+                dataPointer: '/state/name',
+                displayName: 'Bezeichnung',
+            },
+        ],
+        staticDisplayFields: [
+            {
+                systemType: 'SaneString',
+                dataPointer: '/state/name',
+            }
+        ]
     },
     reservation: {
         collection: 'reservation',

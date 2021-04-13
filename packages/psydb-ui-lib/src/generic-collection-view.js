@@ -12,6 +12,7 @@ import {
     LinkContainer
 } from 'react-router-bootstrap';
 
+import allSchemaCreators from '@mpieva/psydb-schema-creators';
 import agent from '@mpieva/psydb-ui-request-agents';
 import RecordListContainer from './record-list-container';
 import GenericRecordTypeView from './generic-record-type-view';
@@ -49,14 +50,18 @@ const GenericCollectionView = ({
         );
     }
 
+    var { hasCustomTypes } = allSchemaCreators[collection];
+
     // only if hasCustomRecordTypes
     console.log(metadata);
-    var locationTypes = (
+    var collectionRecordTypes = (
         metadata.customRecordTypes.filter(it => (
             it.collection ===  collection
         ))
     );
 
+
+    // TODO: static types
     return (
         <div>
             <header>
@@ -64,22 +69,49 @@ const GenericCollectionView = ({
                     { collectionDisplayNames[collection] || collection }
                 </h1>
             </header>
-            <Switch>
-                <Route exact path={`${path}`}>
-                    <RecordTypeNavList
-                        items={ locationTypes }
-                        linkBaseUrl={ url }
+            {(
+                hasCustomTypes
+                ? (
+                    <RoutingForCustomTypes
+                        path={ path }
+                        url={ url }
+                        collection={ collection }
+                        collectionRecordTypes={ collectionRecordTypes }
                     />
-                </Route>
-                <Route path={`${path}/:recordType`}>
+                )
+                : (
                     <GenericRecordTypeView
-                        customRecordTypes={ locationTypes }
+                        customRecordTypes={ collectionRecordTypes }
                         collection={ collection }
                     />
-                </Route>
-            </Switch>
+                )
+            )}
         </div>
     );
+}
+
+const RoutingForCustomTypes = ({
+    path,
+    url,
+    collection,
+    collectionRecordTypes
+}) => {
+    return (
+        <Switch>
+            <Route exact path={`${path}`}>
+                <RecordTypeNavList
+                    items={ collectionRecordTypes }
+                    linkBaseUrl={ url }
+                />
+            </Route>
+            <Route path={`${path}/:recordType`}>
+                <GenericRecordTypeView
+                    customRecordTypes={ collectionRecordTypes }
+                    collection={ collection }
+                />
+            </Route>
+        </Switch>
+    )
 }
 
 const RecordTypeNavList = ({ items, linkBaseUrl }) => {

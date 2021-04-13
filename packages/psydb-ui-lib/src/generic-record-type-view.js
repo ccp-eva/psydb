@@ -18,14 +18,19 @@ const GenericRecordTypeView = ({
     var { path, url } = useRouteMatch();
     var { recordType } = useParams();
 
-    var typeData = customRecordTypes.find(it => (
-        it.type === recordType
-        && it.collection === collection
-    ));
+    var typeData = undefined;
+    if (recordType) {
+        typeData = customRecordTypes.find(it => (
+            (it.type === recordType)
+            && it.collection === collection
+        ));
+    }
 
     return (
         <div>
-            <h2>{ typeData.state.label }</h2>
+            { recordType && (
+                <h2>{ typeData.state.label }</h2>
+            )}
             <Switch>
                 <Route exact path={`${path}`}>
                     <RecordListContainer

@@ -162,9 +162,11 @@ var FullRecordSchemaCreator = ({
                 scientific: ExactObject({
                     properties: {
                         state: subChannelStateSchemaCreators.scientific({
-                            customFieldDefinitions: (
-                                subChannelCustomRecordFieldDefinitions.scientific
-                            ),
+                            ...( subChannelCustomRecordFieldDefinitions && {
+                                customFieldDefinitions: (
+                                    subChannelCustomRecordFieldDefinitions.scientific
+                                )
+                            }),
                             ...otherArgs
                         })
                     }
@@ -172,9 +174,11 @@ var FullRecordSchemaCreator = ({
                 gdpr: ExactObject({
                     properties: {
                         state: subChannelStateSchemaCreators.gdpr({
-                            customFieldDefinitions: (
-                                subChannelCustomRecordFieldDefinitions.gdpr
-                            ),
+                            ...( subChannelCustomRecordFieldDefinitions && {
+                                customFieldDefinitions: (
+                                    subChannelCustomRecordFieldDefinitions.gdpr
+                                )
+                            }),
                             ...otherArgs
                         })
                     }

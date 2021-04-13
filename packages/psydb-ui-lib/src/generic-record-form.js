@@ -60,6 +60,19 @@ const GenericRecordForm = ({
     var onSubmit = () => {};
     console.log(schema);
 
+    var formData = {};
+    if (record) {
+        if (hasSubChannels) {
+            formData = {
+                gdpr: record.gdpr.state,
+                scientific: record.gdpr.scientific
+            }
+        }
+        else {
+            formData = record.state;
+        }
+    }
+
     return (
         <div>
             <SchemaForm
@@ -74,7 +87,7 @@ const GenericRecordForm = ({
                     }
                     : schema.properties.state
                 )}
-                formData={ record ? record.state : {}}
+                formData={ formData }
                 onSubmit={ onSubmit }
             >
                 <div>
