@@ -78,6 +78,7 @@ var search = async (context, next) => {
     var {
         hasCustomTypes,
         hasSubChannels,
+        staticDisplayFields,
     } = collectionCreatorData;
 
     var displayFields = undefined;
@@ -96,7 +97,7 @@ var search = async (context, next) => {
     }
     else {
         // TODO
-        displayFields = [];
+        displayFields = staticDisplayFields || [];
     }
 
     isValid = ajv.validate(
@@ -150,13 +151,15 @@ var search = async (context, next) => {
         permissions,
         collectionName,
         hasSubChannels,
-        fields: queryFields,
+        queryFields,
+        displayFields,
         offset,
         limit
     });
     
     context.body = ResponseBody({
         data: {
+            displayFields,
             records,
         },
     });

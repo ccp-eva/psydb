@@ -3,6 +3,30 @@ module.exports = {
     customRecordType: {
         collection: 'customRecordType',
         isGenericRecord: false,
+        availableStaticDisplayFields: [
+            {
+                key: '_collection',
+                systemType: 'SaneString',
+                dataPointer: '/collection',
+                displayName: 'Collection',
+            },
+            {
+                key: '_collection',
+                systemType: 'SaneString',
+                dataPointer: '/state/label',
+                displayName: 'Anzeigename',
+            },
+        ],
+        staticDisplayFields: [
+            {
+                systemType: 'SaneString',
+                dataPointer: '/collection',
+            },
+            {
+                systemType: 'SaneString',
+                dataPointer: '/state/label',
+            }
+        ]
     },
     helperSet: {
         collection: 'helperSet',

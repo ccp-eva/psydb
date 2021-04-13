@@ -15,7 +15,8 @@ var fetchRecordByFilter = async ({
     recordType,
     permissions,
     hasSubChannels,
-    fields,
+    queryFields,
+    displayFields,
 }) => {
     var stages = [];
 
@@ -51,7 +52,7 @@ var fetchRecordByFilter = async ({
     var projectionFields = [],
         vanillaFields = [];
 
-    for (var [ index, field ] of fields.entries()) {
+    for (var [ index, field ] of queryFields.entries()) {
         var {
             systemType,
             searchType,
@@ -134,6 +135,7 @@ var fetchRecordByFilter = async ({
         { $match: matchStageValue }
     );
 
+
     if (projectionFields.length > 0) {
         var cleanupStageValue = {};
         for (var field of projectionFields) {
@@ -142,6 +144,18 @@ var fetchRecordByFilter = async ({
 
         stages.push(
             { $project: cleanupStageValue }
+        );
+    }
+
+    if (displayFields) {
+        var displayFieldProjection = {};
+        for (var field of displayFields) {
+            var mongoPath = convertPointerToPath(field.dataPointer);
+            displayFieldProjection[mongoPath] = true;
+        }
+
+        stages.push(
+            { $project: displayFieldProjection }
         );
     }
 
