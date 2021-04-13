@@ -14,7 +14,7 @@ var createSchemaForRecordType = ({
     fullSchema,
     prefetchedCustomRecordTypes,
     customRecordTypeCollection,
-    // additionalSchemaCreatorArgs
+    additionalSchemaCreatorArgs,
 }) => {
 
     var collectionCreatorData = allSchemaCreators[collectionName];
@@ -57,6 +57,7 @@ var createSchemaForRecordType = ({
 
     var args = {
         enableInternalProps: true,
+        ...(additionalSchemaCreatorArgs || {}),
     };
     
     if (hasCustomTypes) {

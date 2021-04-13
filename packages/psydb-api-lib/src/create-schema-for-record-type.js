@@ -34,11 +34,6 @@ var createSchemaForRecordTypeWithAutoFetch = async ({
         subChannelStateSchemaCreators,
     } = collectionCreatorData;
 
-    var args = {
-        enableInternalProps: true,
-        ...(additionalSchemaCreatorArgs || {})
-    };
-
     if (hasCustomTypes) {
         var customRecordType = undefined;
         if (prefetchedCustomRecordTypes) {
@@ -68,7 +63,7 @@ var createSchemaForRecordTypeWithAutoFetch = async ({
         subChannelKey,
         fullSchema,
         customRecordTypeCollection,
-        // additionalSchemaCreatorArgs
+        additionalSchemaCreatorArgs,
 
         prefetchedCustomRecordTypes: [ customRecordType ]
     });

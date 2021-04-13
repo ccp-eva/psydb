@@ -35,7 +35,8 @@
     "@mpieva/psydb-ui-request-agents": "~0.1.0-alpha",
     "@rjsf/bootstrap-4": "~2.5.1",
     "react-router-bootstrap": "~0.25.0",
-    "jsonpointer": "~4.1.0"
+    "jsonpointer": "~4.1.0",
+    "@mpieva/psydb-schema-creators": "~0.1.0-alpha"
   },
   "config": {
     "mongodbMemoryServer": {
