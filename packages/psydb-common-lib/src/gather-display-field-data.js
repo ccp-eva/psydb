@@ -13,7 +13,7 @@ var gatherDisplayFieldData = ({
     var {
         hasSubChannels,
         subChannelKeys,
-        // availableStaticDisplayFields // maybe
+        availableStaticDisplayFields, // FIXME: not a big fan
     } = metadata;
 
     var settings = customRecordTypeData.state.settings;
@@ -23,7 +23,8 @@ var gatherDisplayFieldData = ({
             systemType: 'Id',
             dataPointer: '/_id',
             displayName: 'ID',
-        }
+        },
+        ...(availableStaticDisplayFields || []),
     ];
     if (hasSubChannels) {
         for (var subChannelKey of subChannelKeys) {

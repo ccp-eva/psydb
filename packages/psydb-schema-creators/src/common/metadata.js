@@ -91,11 +91,25 @@ module.exports = {
         isGenericRecord: true,
         hasCustomTypes: true,
         hasSubChannels: false,
+        // FIXME: not a big fan
+        availableStaticDisplayFields: [
+            {
+                key: 'staticShorthand',
+                systemType: 'SaneString',
+                dataPointer: '/state/shorthand',
+                displayName: 'Kürzel',
+            },
+            {
+                key: 'staticShorthand',
+                systemType: 'SaneString',
+                dataPointer: '/state/name',
+                displayName: 'Studienname',
+            }
+        ]
         // TODO: more as a note - maybe we should
         // rename "internal" to private
         // since theese are essentially fields we
         // dont want to search in or manipulate directly
-        //
     },
     subject: {
         collection: 'subject',
