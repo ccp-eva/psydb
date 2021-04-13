@@ -66,7 +66,7 @@ const CreateNewType = ({ onCreated }) => {
                 onSubmit={ onSubmit }
             >
                 <div>
-                    <button type="submit" className="btn btn-info">
+                    <button type="submit" className="btn btn-primary">
                         Create
                     </button>
                 </div>

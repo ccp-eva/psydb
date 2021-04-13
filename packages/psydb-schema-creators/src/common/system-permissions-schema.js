@@ -7,8 +7,10 @@ var {
 } = require('@mpieva/psydb-schema-fields');
 
 var systemPermissionsSchema = ExactObject({
+    title: 'System-Einstellungen',
     properties: {
         accessRightsByResearchGroup: {
+            title: 'Forschungsgruppen-Berechtigungen',
             type: 'array',
             default: [],
             minItems: 1,
@@ -18,9 +20,15 @@ var systemPermissionsSchema = ExactObject({
                 type: 'object',
                 properties: {
                     researchGroupId: ForeignId({
+                        title: 'Forschungsgruppe',
                         collection: 'researchGroup'
                     }),
-                    permission: { enum: [ 'read', 'write' ] }
+                    permission: {
+                        title: 'Berechtigung',
+                        type: 'string',
+                        enum: [ 'read', 'write' ],
+                        enumNames: [ 'Lesen', 'Schreiben' ]
+                    }
                 },
                 required: [
                     'researchGroupId',
@@ -50,10 +58,12 @@ var systemPermissionsSchema = ExactObject({
         */
 
         isHiddenForResearchGroupIds: {
+            title: 'Ausgeblendet für Forschungsgruppen',
             type: 'array',
             default: [],
             unqiueItems: true,
             items: ForeignId({
+                title: 'Forschungsgruppe',
                 collection: 'researchGroup'
             }),
             description: inline`

@@ -6,12 +6,12 @@ var CustomProps = ({ customFieldDefinitions }) => {
 
     var schemaProperties = {};
     for (var definition of customFieldDefinitions) {
-        var { key, type, props } = definition;
+        var { key, type, displayName, props } = definition;
         
         //console.log(key, type);
         
         schemaProperties[key] = (
-            fields[type](props)
+            fields[type]({ title: displayName, ...props })
         );
     }
 

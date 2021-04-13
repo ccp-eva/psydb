@@ -15,6 +15,9 @@ import {
 import agent from '@mpieva/psydb-ui-request-agents';
 import RecordListContainer from '@mpieva/psydb-ui-lib/src/record-list-container';
 
+import CreateNewRecord from './create-new-record';
+import EditRecord from './edit-record';
+
 const Locations = () => {
     var { path, url } = useRouteMatch();
 
@@ -104,6 +107,24 @@ const RecordTypeView = ({
                         linkBaseUrl={ url }
                         collection={ collection }
                         recordType={ recordType }
+                    />
+                </Route>
+                <Route path={`${path}/new`}>
+                    <CreateNewRecord
+                        collection={ collection }
+                        recordType={ recordType }
+                        onCreated={
+                            ({ id }) => history.push(`${path}/${id}/edit`)
+                        }
+                    />
+                </Route>
+                <Route path={`${path}/:id/edit`}>
+                    <EditRecord
+                        collection={ collection }
+                        recordType={ recordType }
+                        onUpdated={ ({ id }) => {
+                            //history.push(`${path}/${id}`)
+                        }}
                     />
                 </Route>
             </Switch>
