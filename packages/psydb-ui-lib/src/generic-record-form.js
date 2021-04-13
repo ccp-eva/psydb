@@ -8,13 +8,17 @@ import agent from '@mpieva/psydb-ui-request-agents';
 
 var SchemaForm = withTheme(Bootstrap4Theme);
 
-const EditRecord = ({
+const GenericRecordForm = ({
+    type,
     collection,
     recordType,
-    id,
     onSuccessfulUpdate,
 }) => {
-    var { id } = useParams();
+    type = type || 'create';
+    var id = undefined;
+    if (type === 'edit') {
+        ({ id } = useParams());
+    }
 
     var [ isInitialized, setIsInitialized ] = useState(false);
     var [ schema, setSchema ] = useState();
@@ -28,12 +32,17 @@ const EditRecord = ({
         agent.get(`/api/metadata/schema/${suffix}`).then(
             (response) => {
                 setSchema(response.data.data);
-                agent.get(`/api/read/${collection}/${id}`).then(
-                    (response) => {
-                        setRecord(response.data.data.record);
-                        setIsInitialized(true);
-                    }
-                )
+                if (type === 'edit') {
+                    agent.get(`/api/read/${collection}/${id}`).then(
+                        (response) => {
+                            setRecord(response.data.data.record);
+                            setIsInitialized(true);
+                        }
+                    )
+                }
+                else {
+                    setIsInitialized(true);
+                }
             }
         )
     }, [])
@@ -51,7 +60,7 @@ const EditRecord = ({
         <div>
             <SchemaForm
                 schema={ schema.properties.state }
-                formData={ record.state }
+                formData={ record ? record.state : {}}
                 onSubmit={ onSubmit }
             >
                 <div>
@@ -64,4 +73,4 @@ const EditRecord = ({
     )
 }
 
-export default EditRecord;
+export default GenericRecordForm;;

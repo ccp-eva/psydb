@@ -1,0 +1,62 @@
+import React, { useState, useEffect } from 'react';
+
+import {
+    Route,
+    Switch,
+    useRouteMatch,
+    useHistory,
+    useParams
+} from 'react-router-dom';
+
+import RecordListContainer from './record-list-container';
+import GenericRecordForm from './generic-record-form';
+
+const GenericRecordTypeView = ({
+    customRecordTypes,
+    collection,
+}) => {
+    var { path, url } = useRouteMatch();
+    var { recordType } = useParams();
+
+    var typeData = customRecordTypes.find(it => (
+        it.type === recordType
+        && it.collection === collection
+    ));
+
+    return (
+        <div>
+            <h2>{ typeData.state.label }</h2>
+            <Switch>
+                <Route exact path={`${path}`}>
+                    <RecordListContainer
+                        linkBaseUrl={ url }
+                        collection={ collection }
+                        recordType={ recordType }
+                    />
+                </Route>
+                <Route path={`${path}/new`}>
+                    <GenericRecordForm
+                        type='create'
+                        collection={ collection }
+                        recordType={ recordType }
+                        onCreated={
+                            ({ id }) => history.push(`${url}/${id}/edit`)
+                        }
+                    />
+                </Route>
+                <Route path={`${path}/:id/edit`}>
+                    <GenericRecordForm
+                        type='edit'
+                        collection={ collection }
+                        recordType={ recordType }
+                        onUpdated={ ({ id }) => {
+                            //history.push(`${url}`)
+                        }}
+                    />
+                </Route>
+            </Switch>
+        </div>
+    );
+}
+
+export default GenericRecordTypeView;
