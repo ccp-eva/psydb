@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import jsonpointer from 'jsonpointer';
 
 import {
     Table
@@ -55,19 +56,13 @@ var RecordList = ({
     return (
         <Table>
             <TableHead displayFieldData={ payload.displayFieldData } />
-            <tbody>
-                { payload.records.map(it => (
-                    <tr key={ it._id }>
-                        <td>{ it.collection }</td>
-                        <td>{ it.state.label }</td>
-                        <td>
-                            <LinkButton to={`${linkBaseUrl}/${it._id}`}>
-                                Edit
-                            </LinkButton>
-                        </td>
-                    </tr>
-                )) }
-            </tbody>
+            <TableBody
+                records={ payload.records }
+                displayFieldData={ payload.displayFieldData }
+                enableView={ enableView }
+                enableEdit={ enableEdit }
+                linkBaseUrl={ linkBaseUrl }
+            />
         </Table>
     );
 }
@@ -84,6 +79,56 @@ const TableHead = ({
                 <th></th>
             </tr>
         </thead>
+    );
+}
+
+const TableBody = ({
+    displayFieldData,
+    records,
+
+    enableView,
+    enableEdit,
+    linkBaseUrl,
+}) => {
+    return (
+        <tbody>
+            { records.map(it => (
+                <TableRow
+                    key={ it._id }
+                    record={ it }
+                    displayFieldData={ displayFieldData }
+                    enableView={ enableView }
+                    enableEdit={ enableEdit }
+                    linkBaseUrl={ linkBaseUrl }
+                />
+            )) }
+        </tbody>
+    )
+}
+
+const TableRow = ({
+    displayFieldData,
+    record,
+    
+    enableView,
+    enableEdit,
+    linkBaseUrl,
+}) => {
+    return (
+        <tr>
+            { displayFieldData.map(it => {
+                var rawValue = jsonpointer.get(record, it.dataPointer);
+                // TODO use stringifiers from common
+                return (
+                    <td key={ it.key }>{ String(rawValue) }</td>
+                );
+            })}
+            <td>
+                <LinkButton to={`${linkBaseUrl}/${record._id}/edit`}>
+                    Edit
+                </LinkButton>
+            </td>
+        </tr>
     );
 }
 
