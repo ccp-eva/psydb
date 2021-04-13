@@ -1,0 +1,35 @@
+{
+  "name": "@mpieva/psydb-fixture-initializer",
+  "version": "0.1.0-alpha",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cdxOo/psydb.git"
+  },
+  "author": "Jan Schwalbe",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cdxOo/psydb/issues"
+  },
+  "homepage": "https://github.com/cdxOo/psydb#readme",
+  "dependencies": {
+    "debug": "~4.3.1",
+    "@mpieva/psydb-driver-nodejs": "~0.1.0-alpha",
+    "@mpieva/psydb-fixtures": "~0.1.0-alpha",
+    "superagent": "~6.1.0",
+    "superagent-prefix": "~0.0.2"
+  },
+  "devDependencies": {
+    "mocha": "~8.1.3",
+    "chai": "~4.2.0"
+  },
+  "config": {
+    "mongodbMemoryServer": {
+      "downloadDir": "/tmp/mongodb-memory-server/"
+    }
+  }
+}

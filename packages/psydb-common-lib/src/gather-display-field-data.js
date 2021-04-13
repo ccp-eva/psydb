@@ -31,7 +31,7 @@ var gatherDisplayFieldData = ({
             for (var field of fields) {
                 fieldData.push({
                     ...field,
-                    dataPointer: `/state/custom/${subChannelKey}/${field.key}`
+                    dataPointer: `/${subChannelKey}/state/custom/${field.key}`
                 });
             }
         }

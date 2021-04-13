@@ -26,6 +26,7 @@ dependencies:
   '@rush-temp/psydb-api-message-handlers': 'file:projects/psydb-api-message-handlers.tgz'
   '@rush-temp/psydb-common-lib': 'file:projects/psydb-common-lib.tgz'
   '@rush-temp/psydb-driver-nodejs': 'file:projects/psydb-driver-nodejs.tgz'
+  '@rush-temp/psydb-fixture-initializer': 'file:projects/psydb-fixture-initializer.tgz'
   '@rush-temp/psydb-fixtures': 'file:projects/psydb-fixtures.tgz'
   '@rush-temp/psydb-koa-event-middleware': 'file:projects/psydb-koa-event-middleware.tgz'
   '@rush-temp/psydb-mongo-adapter': 'file:projects/psydb-mongo-adapter.tgz'
@@ -81,6 +82,7 @@ dependencies:
   statuses: 2.0.1
   style-loader: 2.0.0_webpack@5.10.1
   superagent: 6.1.0
+  superagent-prefix: 0.0.2
   supertest: 6.0.1
   webpack: 5.10.1_webpack-cli@4.5.0+webpack@5.10.1
   webpack-cli: 4.5.0_28b73b3ab44b87fb8fb2e6416e24d761
@@ -6250,6 +6252,10 @@ packages:
       webpack: ^4.0.0 || ^5.0.0
     resolution:
       integrity: sha512-Z0gYUJmzZ6ZdRUqpg1r8GsaFKypE+3xAzuFeMuoHgjc9KZv3wMyCRjQIWEbhoFSq7+7yoHXySDJyyWQaPajeiQ==
+  /superagent-prefix/0.0.2:
+    dev: false
+    resolution:
+      integrity: sha1-sVu7E1P4ibANJa8QtPEbNQ0gOwY=
   /superagent/6.1.0:
     dependencies:
       component-emitter: 1.3.0
@@ -7253,11 +7259,12 @@ packages:
       mongodb-memory-server: 6.9.6
       nanoid: 3.1.22
       statuses: 2.0.1
+      superagent-prefix: 0.0.2
       supertest: 6.0.1
     dev: false
     name: '@rush-temp/psydb-api'
     resolution:
-      integrity: sha512-kfm/pOBMr27JUURbWvTIoxs+aIkd7M69RNhVBh1aEii8dt8CLGKRiQf+rkPbNX5GILGdDyDFrnI3wIFyCsEiDA==
+      integrity: sha512-NiU5axrW7HrHqchiO5ZUzsILQ7f0ndLg4J+UMc0VQUYnnRiThzRcJcrMnz5FkQ2SfcKZA/j2JfjyRHtLrDS5og==
       tarball: 'file:projects/psydb-api.tgz'
     version: 0.0.0
   'file:projects/psydb-common-lib.tgz':
@@ -7281,6 +7288,18 @@ packages:
     resolution:
       integrity: sha512-DcF4TPj6v5hkJ+Cb6bEPzjCg8Jca1iP1azGn8GWFmcw9HEMwj3VmF2I/h5m6UMMoTK1k4O0gbX4XlFTBblEMAA==
       tarball: 'file:projects/psydb-driver-nodejs.tgz'
+    version: 0.0.0
+  'file:projects/psydb-fixture-initializer.tgz':
+    dependencies:
+      chai: 4.2.0
+      debug: 4.3.1
+      mocha: 8.1.3
+      superagent: 6.1.0
+    dev: false
+    name: '@rush-temp/psydb-fixture-initializer'
+    resolution:
+      integrity: sha512-MLLj04Y2IbbGDLMgY47ZYKHhp31k68S+RRZc204WVQB2bWDL6PC1/jsf5n8wPDBlLPo3AxPIcfc0VprAp2Szzw==
+      tarball: 'file:projects/psydb-fixture-initializer.tgz'
     version: 0.0.0
   'file:projects/psydb-fixtures.tgz':
     dependencies:
@@ -7495,6 +7514,7 @@ specifiers:
   '@rush-temp/psydb-api-message-handlers': 'file:./projects/psydb-api-message-handlers.tgz'
   '@rush-temp/psydb-common-lib': 'file:./projects/psydb-common-lib.tgz'
   '@rush-temp/psydb-driver-nodejs': 'file:./projects/psydb-driver-nodejs.tgz'
+  '@rush-temp/psydb-fixture-initializer': 'file:./projects/psydb-fixture-initializer.tgz'
   '@rush-temp/psydb-fixtures': 'file:./projects/psydb-fixtures.tgz'
   '@rush-temp/psydb-koa-event-middleware': 'file:./projects/psydb-koa-event-middleware.tgz'
   '@rush-temp/psydb-mongo-adapter': 'file:./projects/psydb-mongo-adapter.tgz'
@@ -7550,6 +7570,7 @@ specifiers:
   statuses: ~2.0.0
   style-loader: ~2.0.0
   superagent: ~6.1.0
+  superagent-prefix: ~0.0.2
   supertest: ~6.0.1
   webpack: 5.x.x
   webpack-cli: 4.x.x

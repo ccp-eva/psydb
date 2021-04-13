@@ -34,6 +34,7 @@ const FieldPointerList = ({
             </thead>
             <tbody>
                 { dataPointers.map((dataPointer, index) => {
+                    console.log(dataPointer);
                     var {
                         displayName,
                     } = availableFieldDataByPointer[dataPointer];

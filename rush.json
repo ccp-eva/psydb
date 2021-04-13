@@ -124,6 +124,11 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/psydb-fixture-initializer",
+       "projectFolder": "packages/psydb-fixture-initializer",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-koa-event-middleware",
        "projectFolder": "packages/psydb-koa-event-middleware",
        "reviewCategory": "production"

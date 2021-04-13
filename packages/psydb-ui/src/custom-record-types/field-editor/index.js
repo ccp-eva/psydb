@@ -71,12 +71,13 @@ const FieldList = ({ record }) => {
     var nextFields = [];
     if (hasSubChannels) {
         for (var key of subChannelKeys) {
-            nextFields.append([
+            nextFields = [
+                ...nextFields,
                 ...nextSettings.subChannelFields[key].map(it => ({
                     ...it,
                     subChannelKey: key
                 }))
-            ])
+            ]
         }
     }
     else {

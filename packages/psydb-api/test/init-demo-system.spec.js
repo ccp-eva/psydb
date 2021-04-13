@@ -77,7 +77,6 @@ describe('init-demo-system', function () {
                 );
             }
             expect(status).to.eql(200);
-            
         }
 
         console.log('###########################################');
