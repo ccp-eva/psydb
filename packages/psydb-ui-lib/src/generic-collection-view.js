@@ -14,6 +14,7 @@ import {
 
 import allSchemaCreators from '@mpieva/psydb-schema-creators';
 import agent from '@mpieva/psydb-ui-request-agents';
+import RecordTypeNav from './record-type-nav';
 import RecordListContainer from './record-list-container';
 import GenericRecordTypeView from './generic-record-type-view';
 
@@ -99,9 +100,8 @@ const RoutingForCustomTypes = ({
     return (
         <Switch>
             <Route exact path={`${path}`}>
-                <RecordTypeNavList
+                <RecordTypeNav
                     items={ collectionRecordTypes }
-                    linkBaseUrl={ url }
                 />
             </Route>
             <Route path={`${path}/:recordType`}>
@@ -113,20 +113,5 @@ const RoutingForCustomTypes = ({
         </Switch>
     )
 }
-
-const RecordTypeNavList = ({ items, linkBaseUrl }) => {
-    return (
-        <div>
-            { items.map(it => (
-                <h2 key={ it._id } style={{ border: '1px solid lightgrey'}}>
-                    <LinkContainer to={`${linkBaseUrl}/${it.type}`}>
-                        <a>{ it.state.label } {'->'}</a>
-                    </LinkContainer>
-                </h2>
-            ))}
-        </div>
-    )
-}
-
 
 export default GenericCollectionView;
