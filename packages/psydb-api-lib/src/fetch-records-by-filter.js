@@ -8,6 +8,7 @@ var SystemPermissionStages = require('./fetch-record-helpers/system-permission-s
 
 var convertPointerToPath = require('./convert-pointer-to-path');
 var fieldTypeConversions = require('./mongodb-field-type-conversions');
+var createRecordLabel = require('./create-record-label');
 
 var fetchRecordByFilter = async ({
     db,
@@ -17,6 +18,7 @@ var fetchRecordByFilter = async ({
     hasSubChannels,
     queryFields,
     displayFields,
+    recordLabelDefinition,
 }) => {
     var stages = [];
 
@@ -147,11 +149,28 @@ var fetchRecordByFilter = async ({
         );
     }
 
+    if (recordLabelDefinition) {
+        var recordLabelFieldProjection = {};
+        for (var field of recordLabelDefinition.tokens) {
+            var mongoPath = convertPointerToPath(field.dataPointer);
+            var key = `_recordLabelDefinitionFields.${mongoPath}`;
+            recordLabelFieldProjection[key] = '$' + mongoPath;
+        }
+
+        stages.push(
+            { $addFields: recordLabelFieldProjection }
+        );
+    }
+
     if (displayFields) {
         var displayFieldProjection = {};
         for (var field of displayFields) {
             var mongoPath = convertPointerToPath(field.dataPointer);
             displayFieldProjection[mongoPath] = true;
+        }
+
+        if (recordLabelDefinition) {
+            displayFieldProjection._recordLabelDefinitionFields = true;
         }
 
         stages.push(
@@ -166,6 +185,18 @@ var fetchRecordByFilter = async ({
     var resultSet = await (
         db.collection(collectionName).aggregate(stages).toArray()
     );
+
+    console.dir(resultSet);
+
+    if (recordLabelDefinition) {
+        resultSet.forEach(it => {
+            it._recordLabel = createRecordLabel({
+                record: it._recordLabelDefinitionFields,
+                definition: recordLabelDefinition,
+            });
+            delete it._recordLabelDefinitionFields;
+        })
+    }
 
     return resultSet;
 }

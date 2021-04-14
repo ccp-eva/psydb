@@ -79,6 +79,7 @@ var search = async (context, next) => {
     var {
         hasCustomTypes,
         hasSubChannels,
+        recordLabelDefinition,
         availableStaticDisplayFields,
         staticDisplayFields,
     } = collectionCreatorData;
@@ -91,6 +92,10 @@ var search = async (context, next) => {
             collection: collectionName,
             type: recordType,
         });
+
+        recordLabelDefinition = (
+            customRecordType.state.recordLabelDefinition
+        );
 
         displayFields = customRecordType.state[
             target === 'optionlist'
@@ -105,8 +110,9 @@ var search = async (context, next) => {
             })
         ]
     }
+    // TODO: fixed types maybe
     else {
-        // TODO
+        // recodLabelDefinition is already set
         displayFields = staticDisplayFields || [];
         availableDisplayFieldData = availableStaticDisplayFields || [];
     }
@@ -165,6 +171,7 @@ var search = async (context, next) => {
         hasSubChannels,
         queryFields,
         displayFields,
+        recordLabelDefinition,
         offset,
         limit
     });
