@@ -32,6 +32,8 @@ const CustomRecordTypes = () => {
                     <RecordListContainer
                         linkBaseUrl={ url }
                         collection='customRecordType'
+                        enableNew={ true }
+                        enableEdit={ true }
                     />
                 </Route>
                 <Route path={`${path}/new`}>

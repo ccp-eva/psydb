@@ -44,7 +44,8 @@ var FullBodySchema = ({ availableFilterFields }) => {
             // FIXME: props needed i guess
             // are stored in custom field settings
             // can be mapped
-            filters[dataPointer] = FieldSchema();
+            // FIXME: on foreign id ... do we need collection and other props here?
+            filters[dataPointer] = FieldSchema({ collection: '__NONE' });
         }
     }
 

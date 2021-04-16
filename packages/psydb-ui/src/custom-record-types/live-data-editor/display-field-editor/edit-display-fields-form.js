@@ -25,7 +25,7 @@ const EditDisplayFieldForm = ({
             }
         };
         return (
-            agent.post('/api/', messageBody)
+            agent.send({ message: messageBody })
             .then(
                 (response) => {
                     onSuccess()

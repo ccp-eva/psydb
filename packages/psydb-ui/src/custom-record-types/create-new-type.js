@@ -40,7 +40,7 @@ const CreateNewType = ({ onCreated }) => {
         };
 
         return (
-            agent.post('/api/', messageBody)
+            agent.send({ message: messageBody })
             .then(
                 (response) => {
                     var body = response.data;

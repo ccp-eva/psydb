@@ -28,7 +28,10 @@ const EditType = ({}) => {
     var [ record, setRecord ] = useState([]);
 
     var fetchRecord = () => (
-        agent.get(`/api/read/customRecordType/${id}`)
+        agent.readRecord({
+            collection: 'customRecordType',
+            id,
+        })
         .then((response) => {
             var record = response.data.data.record;
 

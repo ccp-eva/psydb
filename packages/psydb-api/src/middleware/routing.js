@@ -55,6 +55,13 @@ var createRouting = ({
         endpoints.read
     );
 
+    router.get('/read/:collectionName/:recordType/:id',
+        withSelfAuth(),
+        withPermissions(),
+        withEndpointProtection({ endpoint: 'read' }),
+        endpoints.read
+    );
+
     router.post('/search-in-field',
         withSelfAuth(),
         withPermissions(),

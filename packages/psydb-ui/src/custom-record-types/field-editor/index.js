@@ -19,7 +19,7 @@ const FieldEditor = ({ record, onSuccessfulUpdate }) => {
     }
 
     var handleCommitSettings = () => {
-        var messageBody = {
+        var message = {
             type: 'custom-record-types/commit-settings',
             payload: {
                 id: record._id,
@@ -27,7 +27,7 @@ const FieldEditor = ({ record, onSuccessfulUpdate }) => {
             }
         }
         return (
-            agent.post('/api/', messageBody)
+            agent.send({ message })
             .then(
                 (response) => {
                     onSuccessfulUpdate()

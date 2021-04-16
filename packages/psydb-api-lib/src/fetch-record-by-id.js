@@ -5,15 +5,18 @@ var inlineString = require('@cdxoo/inline-string');
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
 var SystemPermissionStages = require('./fetch-record-helpers/system-permission-stages');
+var createRecordLabel = require('./create-record-label');
 
 var fetchRecordById = async ({
     db,
     collectionName,
     permissions,
     hasSubChannels,
+    recordLabelDefinition,
     id,
+    labelOnly,
 }) => {
-    var { hasSubChannels } = allSchemaCreators[collectionName];
+    //var { hasSubChannels } = allSchemaCreators[collectionName];
 
     var preprocessingStages = (
         hasSubChannels
@@ -39,9 +42,7 @@ var fetchRecordById = async ({
 
     var resultSet = await (
         db.collection(collectionName).aggregate([
-            { $addFields: {
-                '_lastKnownEventId': { $arrayElemAt: [ '$events._id', 0 ]},
-            }},
+            ...preprocessingStages,
             { $match: {
                 _id: id
             }},
@@ -49,7 +50,21 @@ var fetchRecordById = async ({
         ]).toArray()
     );
 
-    return resultSet[0];
+    var record = resultSet[0];
+
+    if (recordLabelDefinition) {
+        record._recordLabel = createRecordLabel({
+            record: record,
+            definition: recordLabelDefinition,
+        });
+    }
+
+    return (
+        labelOnly
+        ? record._recordLabel
+        : record
+    );
+
 }
 
 module.exports = fetchRecordById;

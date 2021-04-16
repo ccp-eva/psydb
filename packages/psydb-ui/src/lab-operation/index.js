@@ -22,7 +22,7 @@ const LabOperation = () => {
     var [ metadata, setMetadata ] = useState();
 
     useEffect(() => {
-        agent.get('/api/metadata/custom-record-types').then(
+        agent.readCustomRecordTypeMetadata().then(
             (response) => {
                 setMetadata(response.data.data);
                 setIsInitialized(true)

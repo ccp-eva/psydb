@@ -32,11 +32,18 @@ const GenericRecordForm = ({
         if (recordType) {
             suffix = `${suffix}/${recordType}`;
         }
-        agent.get(`/api/metadata/schema/${suffix}`).then(
+        agent.readRecordSchema({
+            collection,
+            recordType
+        }).then(
             (response) => {
                 setSchema(response.data.data);
                 if (type === 'edit') {
-                    agent.get(`/api/read/${collection}/${id}`).then(
+                    agent.readRecord({
+                        collection,
+                        recordType,
+                        id
+                    }).then(
                         (response) => {
                             setRecord(response.data.data.record);
                             setIsInitialized(true);

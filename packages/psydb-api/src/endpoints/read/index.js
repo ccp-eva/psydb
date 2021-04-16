@@ -9,6 +9,7 @@ var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 var createSchemaForRecord =
     require('@mpieva/psydb-api-lib/src/create-schema-for-record');
 
+var fetchCustomRecordType = require('@mpieva/psydb-api-lib/src/fetch-custom-record-type');
 var fetchRecordById = require('@mpieva/psydb-api-lib/src/fetch-record-by-id');
 
 var resolveForeignIdData = require('./resolve-foreign-id-data');
@@ -26,6 +27,7 @@ var read = async (context, next) => {
 
     var {
         collectionName,
+        recordType,
         id,
     } = params;
 
@@ -48,8 +50,18 @@ var read = async (context, next) => {
     }
     
     var {
+        hasCustomTypes,
         hasSubChannels,
+        recordLabelDefinition,
     } = collectionCreatorData;
+
+    if (hasCustomTypes) {
+        var customRecordType = await fetchCustomRecordType({
+            db,
+            collection: collectionName,
+            type: recordType,
+        });
+    }
 
     var record = await fetchRecordById({
         db,
@@ -87,7 +99,7 @@ var read = async (context, next) => {
 
     context.body = ResponseBody({
         data: {
-            recordSchema,
+            //recordSchema,
             record,
             relatedRecordLabels,
         }

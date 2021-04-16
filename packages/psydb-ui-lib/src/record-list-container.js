@@ -11,20 +11,29 @@ const RecordListContainer = ({
     enableNew,
     enableView,
     enableEdit,
+
+    onSelectRecord,
 }) => {
     var { path, url } = useRouteMatch();
 
     return (
-        <>
-        <LinkButton to={`${url}/new`}>
-            Neuer Eintrag
-        </LinkButton>
-        <RecordList
-            linkBaseUrl={ url }
-            collection={ collection }
-            recordType={ recordType }
-        />
-        </>
+        <div>
+            { enableNew && (
+                <LinkButton to={`${url}/new`}>
+                    Neuer Eintrag
+                </LinkButton>
+            )}
+            <RecordList
+                linkBaseUrl={ url }
+                collection={ collection }
+                recordType={ recordType }
+
+                enableView={ enableView }
+                enableEdit={ enableEdit }
+
+                onSelectRecord={ onSelectRecord }
+            />
+        </div>
     );
 }
 

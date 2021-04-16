@@ -97,14 +97,14 @@ describe('init-demo-system', function () {
         var response = await agent.get(`/read/experiment/${context.EXP_INHOUSE_01}`);
         //console.dir(response.body, { depth: null });
         
-        var response = await agent.post('/search-in-field').send({
+        /*var response = await agent.post('/search-in-field').send({
             contextCollectionName: 'subject',
             contextRecordId: context.ALICE_TEACHER_ID,
             fieldPointer: '/scientific/state/systemPermissions/accessRightsByResearchGroup/researchGroupId',
             additionalFilter: {},
-        });
+        });*/
         // console.dir(response.body, { depth: null });
-        var response = await agent.post('/search').send({
+        /*var response = await agent.post('/search').send({
             collectionName: 'subject',
             recordType: 'teacher',
             filters: {
@@ -112,7 +112,7 @@ describe('init-demo-system', function () {
             },
             offset: 0,
             limit: 20,
-        });
+        });*/
         /*var response = await agent.post('/search').send({
             collectionName: 'customRecordType',
             filters: {},

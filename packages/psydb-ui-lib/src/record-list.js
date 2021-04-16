@@ -19,18 +19,19 @@ var RecordList = ({
 
     enableView,
     enableEdit,
+    onSelectRecord,
     linkBaseUrl
 }) => {
     var [ isInitialized, setIsInitialized ] = useState(false);
     var [ payload, setPayload ] = useState([]);
 
     useEffect(() => (
-        agent.post('/api/search', {
-            collectionName: collection,
+        agent.searchRecords({
+            collection,
             recordType,
-            offset: offset || 0,
-            limit: offset || 50,
-            filters: filters || {}
+            offset,
+            limit,
+            filters,
         })
         .then((response) => {
             console.log(response);
@@ -54,13 +55,16 @@ var RecordList = ({
     }
 
     return (
-        <Table>
+        <Table hover={ onSelectRecord ? true : false }>
             <TableHead displayFieldData={ payload.displayFieldData } />
             <TableBody
                 records={ payload.records }
                 displayFieldData={ payload.displayFieldData }
+                
                 enableView={ enableView }
                 enableEdit={ enableEdit }
+                onSelectRecord={ onSelectRecord }
+
                 linkBaseUrl={ linkBaseUrl }
             />
         </Table>
@@ -88,6 +92,8 @@ const TableBody = ({
 
     enableView,
     enableEdit,
+    onSelectRecord,
+    
     linkBaseUrl,
 }) => {
     return (
@@ -99,6 +105,7 @@ const TableBody = ({
                     displayFieldData={ displayFieldData }
                     enableView={ enableView }
                     enableEdit={ enableEdit }
+                    onSelectRecord={ onSelectRecord }
                     linkBaseUrl={ linkBaseUrl }
                 />
             )) }
@@ -112,10 +119,11 @@ const TableRow = ({
     
     enableView,
     enableEdit,
+    onSelectRecord,
     linkBaseUrl,
 }) => {
     return (
-        <tr>
+        <tr onClick={ onSelectRecord && (() => onSelectRecord(record)) }>
             { displayFieldData.map(it => {
                 var rawValue = jsonpointer.get(record, it.dataPointer);
                 // TODO use stringifiers from common
@@ -124,9 +132,11 @@ const TableRow = ({
                 );
             })}
             <td>
-                <LinkButton to={`${linkBaseUrl}/${record._id}/edit`}>
-                    Edit
-                </LinkButton>
+                { enableEdit && (
+                    <LinkButton to={`${linkBaseUrl}/${record._id}/edit`}>
+                        Edit
+                    </LinkButton>
+                )}
             </td>
         </tr>
     );

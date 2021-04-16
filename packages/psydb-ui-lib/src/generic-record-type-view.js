@@ -37,6 +37,8 @@ const GenericRecordTypeView = ({
                         linkBaseUrl={ url }
                         collection={ collection }
                         recordType={ recordType }
+                        enableNew={ true }
+                        enableEdit={ true }
                     />
                 </Route>
                 <Route path={`${path}/new`}>

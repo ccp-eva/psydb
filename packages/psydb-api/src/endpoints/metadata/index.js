@@ -11,8 +11,8 @@ var createMetadataRouting = ({ middleware }) => {
     router.use(middleware);
 
     router.get('/custom-record-types', getCustomRecordTypes);
-    router.get('/schema/:collectionName', getSchema);
-    router.get('/schema/:collectionName/:recordType', getSchema);
+    router.get('/record-schema/:collectionName', getSchema);
+    router.get('/record-schema/:collectionName/:recordType', getSchema);
 
     return [
         router.routes(),

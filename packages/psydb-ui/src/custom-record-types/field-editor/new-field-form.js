@@ -24,7 +24,7 @@ var SchemaForm = withTheme(Bootstrap4Theme);
 
 const NewFieldForm = ({ record, onSuccess }) => {
     var onSubmit = ({ formData, ...unused }) => {
-        var messageBody = {
+        var message = {
             type: 'custom-record-types/add-field-definition',
             payload: {
                 id: record._id,
@@ -33,7 +33,7 @@ const NewFieldForm = ({ record, onSuccess }) => {
             }
         }
         return (
-            agent.post('/api/', messageBody)
+            agent.send({ message })
             .then(
                 (response) => {
                     console.log(response);

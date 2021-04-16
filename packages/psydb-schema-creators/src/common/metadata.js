@@ -176,13 +176,13 @@ module.exports = {
         // FIXME: not a big fan
         availableStaticDisplayFields: [
             {
-                key: 'staticShorthand',
+                key: '_shorthand',
                 systemType: 'SaneString',
                 dataPointer: '/state/shorthand',
                 displayName: 'Kürzel',
             },
             {
-                key: 'staticShorthand',
+                key: '_name',
                 systemType: 'SaneString',
                 dataPointer: '/state/name',
                 displayName: 'Studienname',

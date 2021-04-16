@@ -24,7 +24,7 @@ import LabOperation from './lab-operation';
 
 const Main = ({ onSignedOut, onSignedIn }) => {
     var onSignOut = () => (
-        agent.post('/api/sign-out')
+        agent.signOut()
         .then(
             (res) => {
                 console.log('logged out');
