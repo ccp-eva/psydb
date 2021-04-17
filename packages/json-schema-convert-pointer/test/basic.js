@@ -119,6 +119,23 @@ var testSet = [
     
     {
         pointer:'/properties/arys/items',
+        data: { arys: [ [1] ] },
+        expected: [
+            '/arys/0',
+        ]
+    },
+    {
+        pointer:'/properties/arys/items',
+        data: { arys: [ [1,2], [ 'a', 'b' ] ] },
+        expected: [
+            '/arys/0',
+            '/arys/1',
+        ]
+    },
+
+
+    /*{
+        pointer:'/properties/arys/items/items',
         data: { arys: [ [1,2], ['a','b'] ] },
         expected: [
             '/arys/0/0',
@@ -126,7 +143,7 @@ var testSet = [
             '/arys/1/0',
             '/arys/1/1',
         ]
-    },
+    },*/
 
     /*{
         pointer: '/properties/myprop/items/properties/myitemprop',

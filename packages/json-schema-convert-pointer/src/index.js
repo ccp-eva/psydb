@@ -19,8 +19,13 @@ var convertPointer = (pointer, data) => {
                 data argument required
             `);
         }
-        var tokens = pointer.split(arrayItemsRegex);
-        //console.log(tokens);
+        //console.log('pointer', pointer);
+        var tokens = pointer.split(/(?<!properties)\/items/);
+        if (tokens.length > 0 && tokens[tokens.length - 1] === '') {
+            // when it splits we get an empty string in the end for strings
+            // that end on /items that needs to be removed
+            tokens.pop();
+        }
         var dataPointers = traverseArrayPointers(tokens, data);
         //console.log(dataPointers);
         return dataPointers;
@@ -28,11 +33,16 @@ var convertPointer = (pointer, data) => {
 }
 
 var traverseArrayPointers = (pointerSet, data) => {
+    //console.log('start traverseArrayPointers()');
     //console.log('pointerset', pointerSet);
     var [ currentPointer, ...nextPointerSet ] = pointerSet;
-    //console.dir([currentPointer, data]);
+    
+    //currentPointer = currentPointer + '/items';
+
+    //console.dir([ 'currentPointer', currentPointer ]);
+    //console.dir([ 'data', currentPointer ]);
     if (currentPointer === undefined) {
-        currentPointer = '';
+        currentPointer = [];
     }
 
     //console.dir(['fooo', data, currentPointer]);
@@ -62,13 +72,19 @@ var traverseArrayPointers = (pointerSet, data) => {
         for (var [ index, it ] of currentData.entries()) {
             //console.log(index);
             var nextPointerSet = pointerSet.slice(1);
-            dataPointers = [
-                ...dataPointers,
-                ...traverseArrayPointers(
-                    nextPointerSet,
-                    currentData[index]
-                ).map(it => `${currentDataPointer}/${index}${it}`),
-            ];
+            if (nextPointerSet.length > 0) {
+                //console.log('nextPointerSet', nextPointerSet);
+                dataPointers = [
+                    ...dataPointers,
+                    ...traverseArrayPointers(
+                        nextPointerSet,
+                        currentData[index]
+                    ).map(it => `${currentDataPointer}/${index}${it}`),
+                ];
+            }
+            else {
+                dataPointers.push(`${currentDataPointer}/${index}`)
+            }
         }
     }
     else {
@@ -77,6 +93,7 @@ var traverseArrayPointers = (pointerSet, data) => {
     }
 
     //console.log('DP', dataPointers);
+    //console.log('end traverseArrayPointers()');
     return dataPointers;
 }
 
