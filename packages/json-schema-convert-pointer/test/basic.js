@@ -3,34 +3,99 @@ var expect = require('chai').expect;
 
 var convertPointer = require('../src/');
 
-var expectedConversions = {
-    '': '',
-    '/oneOf/1': '',
-    '/allOf/1': '',
+var testSet = [
+    {
+        pointer: '',
+        data: undefined,
+        expected: '',
+    },
+    {
+        pointer: '/oneOf/1',
+        data: undefined,
+        expected: '',
+    },
+    {
+        pointer: '/allOf/1',
+        data: undefined,
+        expected: '',
+    },
     
-    '/properties/myprop': '/myprop',
-    '/oneOf/1/properties/myprop': '/myprop',
-    '/allOf/1/properties/myprop': '/myprop',
+    {
+        pointer: '/properties/myprop',
+        data: undefined,
+        expected: '/myprop',
+    },
+    {
+        pointer: '/oneOf/1/properties/myprop',
+        expected: '/myprop'
+    },
+    {
+        pointer: '/allOf/1/properties/myprop',
+        expected: '/myprop',
+    },
     
-    '/properties/properties': '/properties',
-    '/properties/oneOf': '/oneOf',
-    '/properties/allOf': '/allOf',
+    {
+        pointer: '/properties/properties',
+        expected: '/properties',
+    },
+    {
+        pointer: '/properties/oneOf',
+        expected: '/oneOf',
+    },
+    {
+        pointer: '/properties/allOf',
+        expected: '/allOf',
+    },
 
-    '/properties/properties/properties/properties': '/properties/properties',
-    '/properties/properties/oneOf/0': '/properties',
-    '/properties/properties/oneOf/0/myprop': '/properties/myprop',
-
-    '/properties/myprop/items/properties/myitemprop': '/myprop/myitemprop'
-};
+    {
+        pointer: '/properties/properties/properties/properties',
+        expected: '/properties/properties',
+    },
+    {
+        pointer: '/properties/properties/oneOf/0',
+        expected: '/properties',
+    },
+    {
+        pointer: '/properties/properties/oneOf/0/myprop',
+        expected: '/properties/myprop',
+    },
+    /*{
+        pointer:'/items',
+        data: [ 'a', 'b' ],
+        expected: [ '/0', '/1' ]
+    },
+    {
+        pointer:'/items/items',
+        data: [ [ 1, 2 ], [ 'a', 'b' ]],
+        expected: [ '/0/0', '/0/1', '/1/0', '/1/1' ]
+    },
+    {
+        pointer:'/foo/items',
+        data: { foo: [ 'a', 'b' ] },
+        expected: [ '/foo/0', '/foo/1' ]
+    },*/
+    {
+        pointer:'/foo/items/bar',
+        data: { foo: [ { bar: 'a' }, { bar: 'b' } ] },
+        expected: [ '/foo/0/bar', '/foo/1/bar' ]
+    },
+    /*{
+        pointer: '/properties/myprop/items/properties/myitemprop',
+        data: [],
+        expected: [
+            '/myprop/0/myitemprop',
+            '/myprop/1/myitemprop'
+        ],
+    },*/
+];
 
 describe('basic cases', () => {
     it('converts pointers properly', () => {
-        var actualConversions = (
-            Object.keys(expectedConversions).reduce((acc, pointer) => ({
-                ...acc,
-                [pointer]: convertPointer(pointer),
-            }), {})
-        );
+        testSet.forEach(it => {
+            it.actual = convertPointer(it.pointer, it.data);
+        })
+        var expectedConversions = testSet.map(it => it.expected);
+        var actualConversions = testSet.map(it => it.actual);
         expect(actualConversions).to.eql(expectedConversions);
     })
 })
