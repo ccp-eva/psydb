@@ -46,15 +46,18 @@ agent.readRecordSchema = ({
 agent.readRecord = ({
     collection,
     recordType,
-    id
+    id,
+
+    additionalParams,
 }) => {
+
     var url = (
         recordType
         ? `/api/read/${collection}/${recordType}/${id}`
         : `/api/read/${collection}/${id}`
     );
 
-    return axios.get(url);
+    return axios.get(url, additionalParams);
 }
 
 agent.searchRecords = ({

@@ -13,7 +13,7 @@ import agent from '@mpieva/psydb-ui-request-agents';
 import BigNav from '@mpieva/psydb-ui-lib/src/big-nav';
 import RecordTypeNav from '@mpieva/psydb-ui-lib/src/record-type-nav';
 
-import Reservation from './reservation';
+import ReservationRouting from './reservation';
 
 const LabOperation = () => {
     var { path, url } = useRouteMatch();
@@ -85,10 +85,7 @@ const LabOperation = () => {
                     ]} />
                 </Route>
                 <Route path={`${path}/:studyType/reservation`}>
-                    <>
-                        <h2>Reservierung</h2>
-                        <Reservation />
-                    </>
+                    <ReservationRouting />
                 </Route>
                 <Route path={`${path}/:studyType/subject-selection`}>
                     <div>

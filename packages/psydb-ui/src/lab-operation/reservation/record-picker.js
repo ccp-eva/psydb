@@ -12,14 +12,12 @@ const RecordPicker = ({
     collection,
     recordType,
     baseConstraints,
-    value,
+    value: record,
     onChange,
 }) => {
-    var [ record, setRecord ] = useState();
     var [ showModal, setShowModal ] = useState(false);
 
     var handleSelect = (record) => {
-        setRecord(record);
         onChange(record);
         handleCloseModal();
     }

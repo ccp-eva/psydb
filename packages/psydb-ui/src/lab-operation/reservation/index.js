@@ -12,6 +12,38 @@ import {
 import agent from '@mpieva/psydb-ui-request-agents';
 import RecordPicker from './record-picker';
 
+const ReservationRouting = () => {
+    var { path, url } = useRouteMatch();
+    return (
+        <>
+            <h2>Reservierung</h2>
+            <Switch>
+                <Route exact path={`${path}`}>
+                    <ReservationIndex />
+                </Route>
+                <Route path={`${path}/:studyId`}>
+                    <Reservation />
+                </Route>
+            </Switch>
+        </>
+    )
+}
+
+const ReservationIndex = () => {
+    var { path, url } = useRouteMatch();
+    var { studyType } = useParams();
+    var history =  useHistory();
+    return (
+        <RecordPicker
+            collection='study'
+            recordType={ studyType }
+            onChange={ (nextStudyRecord) => {
+                    history.push(`${url}/${nextStudyRecord._id}`)
+            }}
+        />
+    )
+}
+
 const Reservation = () => {
     var { path, url } = useRouteMatch();
     var { studyType, studyId } = useParams();
@@ -23,17 +55,18 @@ const Reservation = () => {
     );
 
     useEffect(() => {
-        if (studyId) {
-            agent.readRecord({
-                collection: 'study',
-                recordType: studyType,
-                studyId: studyId,
-            })
-            .then((response) => {
-                setStudyRecord(response.data.data.record);
-                setIsInitalized(true)
-            });
-        }
+        agent.readRecord({
+            collection: 'study',
+            recordType: studyType,
+            id: studyId,
+            additionalParams: {
+                labelOnly: true
+            }
+        })
+        .then((response) => {
+            setStudyRecord(response.data.data.record);
+            setIsInitialized(true)
+        });
     }, [ studyType, studyId ]);
 
     if (!isInitialized) {
@@ -42,17 +75,32 @@ const Reservation = () => {
         );
     }
 
-
     return (
         <>
+
             <RecordPicker
                 collection='study'
                 recordType={ studyType }
                 value={ studyRecord }
                 onChange={ (nextStudyRecord) => {
-                    history.push(`${url}/${nextStudyRecord._id}`)
-                } }
+                    history.push(`${nextStudyRecord._id}`)
+                }}
             />
+
+            <ReservationTypeNav />
+            <Switch>
+                <Route exact path={ path }>
+                    <Redirect to={`${url}/locations`} />
+                </Route>
+                <Route path={ `${path}/locations`}>
+                    <LocationReservation />
+                </Route>
+                <Route path={ `${path}/away-teams`}>
+                    <AwayTeamReservation />
+                </Route>
+            </Switch>
+
+
             <div>select study</div>
             <div>show tabs teams/rooms</div>
             <div>if rooms select room</div>
@@ -61,4 +109,36 @@ const Reservation = () => {
     );
 }
 
-export default Reservation;
+const LocationReservation = () => {
+    var { path, url } = useRouteMatch();
+    var { studyType, studyId } = useParams();
+    var history =  useHistory();
+
+    return (
+        <div>fof</div>
+    )
+}
+
+const AwayTeamReservation = () => {
+    return (
+        <div>at</div>
+    )
+}
+
+import LinkButton from '@mpieva/psydb-ui-lib/src/link-button';
+const ReservationTypeNav = () => {
+    var { path, url } = useRouteMatch();
+    var history =  useHistory();
+    return (
+        <div>
+            <LinkButton to={`locations`}>
+                Räumlichkeiten
+            </LinkButton>
+            <LinkButton to={`away-teams`}>
+                Aussen-Teams
+            </LinkButton>
+        </div>
+    )
+}
+
+export default ReservationRouting;
