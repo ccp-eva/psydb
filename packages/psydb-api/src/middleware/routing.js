@@ -78,6 +78,14 @@ var createRouting = ({
         endpoints.search
     );
 
+    router.get('/available-test-locations-for-study/:studyId/:locationRecordTypeId',
+        withSelfAuth(),
+        withPermissions(),
+        withEndpointProtection({ endpoint: 'available-test-locations-for-study' }),
+        withKoaBody(),
+        endpoints.special.availableTestLocationsForStudy
+    );
+
     /*router.post('/search/:collectionName(^(_helper_)?[A-Za-z]+$)',
         withProtection(),
         withMongoBody({

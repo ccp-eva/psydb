@@ -53,6 +53,7 @@ dependencies:
   compression-webpack-plugin: 7.1.2_webpack@5.10.1
   copy-anything: 2.0.3
   css-loader: 5.2.1_webpack@5.10.1
+  date-fns: 2.21.1
   debug: 4.3.1
   deep-diff: 1.0.2
   escape-string-regexp: 4.0.0
@@ -2393,6 +2394,12 @@ packages:
     dev: false
     resolution:
       integrity: sha512-KxnUB0ZMlnUWCsx2Z8MUsr6qV6ja1w9ArPErJaJaF8a5SOWoHLIszeCTKGRGRgtLgYrs1E8CHkNSP1VZTTPc9g==
+  /date-fns/2.21.1:
+    dev: false
+    engines:
+      node: '>=0.11'
+    resolution:
+      integrity: sha512-m1WR0xGiC6j6jNFAyW4Nvh4WxAi4JF4w9jRJwSI8nBmNcyZXPcP9VUQG+6gHQXAmqaGEKDKhOqAtENDC941UkA==
   /debug/2.6.9:
     dependencies:
       ms: 2.0.0
@@ -7026,12 +7033,14 @@ packages:
   'file:projects/json-schema-convert-pointer.tgz':
     dependencies:
       '@cdxoo/inline-string': 1.0.0
+      '@cdxoo/inline-text': 1.0.1
       chai: 4.2.0
+      jsonpointer: 4.1.0
       mocha: 8.1.3
     dev: false
     name: '@rush-temp/json-schema-convert-pointer'
     resolution:
-      integrity: sha512-Ik5uRnzdtXL2+adfnAWhAoVigHtJERK3HOD+B38sMPpPDBcOXnSphiLkkahycMI6brtuPORpzgjGzpZgzOwJwA==
+      integrity: sha512-IHbdR6tASdlcwgv15fS9MOPrwwf11Evceamz6MMv4Ephn8BK3+NJUPTwGNHZac1sDmOm6HAH12vdgccKH0b/Sg==
       tarball: 'file:projects/json-schema-convert-pointer.tgz'
     version: 0.0.0
   'file:projects/json-schema-deconstruct-arrays.tgz':
@@ -7295,10 +7304,11 @@ packages:
       debug: 4.3.1
       mocha: 8.1.3
       superagent: 6.1.0
+      superagent-prefix: 0.0.2
     dev: false
     name: '@rush-temp/psydb-fixture-initializer'
     resolution:
-      integrity: sha512-MLLj04Y2IbbGDLMgY47ZYKHhp31k68S+RRZc204WVQB2bWDL6PC1/jsf5n8wPDBlLPo3AxPIcfc0VprAp2Szzw==
+      integrity: sha512-QsLgLljhmVGNgGYIwiUr9l8SsRVjSdDCRvjPzlH1qVEoYeJLiGEGk/ENcXwXMsRGC592Mp8xyzp3QB+FPIbOdg==
       tarball: 'file:projects/psydb-fixture-initializer.tgz'
     version: 0.0.0
   'file:projects/psydb-fixtures.tgz':
@@ -7401,6 +7411,7 @@ packages:
       bootstrap: 4.6.0
       chai: 4.2.0
       formik: 2.2.6_react@17.0.2
+      jsonpointer: 4.1.0
       mocha: 8.1.3
       react: 17.0.2
       react-bootstrap: 1.5.2_react-dom@17.0.2+react@17.0.2
@@ -7414,7 +7425,7 @@ packages:
     peerDependencies:
       webpack: '*'
     resolution:
-      integrity: sha512-8U6EATdq/mwclglVTM8V7GZVWaDN5woFbaXOJWQcbzKjU+2mjIVD75Ae2VF1ngqG0jze0eokeNhyqoUlv+LknQ==
+      integrity: sha512-vIus9HOzr+DUdtr9idAfsUdcx9fRqGCG6Kq3QqspYmZ77NIYFhmDKJZ43jmdImluZmY1HYf3DdQFkaJ1YytbRg==
       tarball: 'file:projects/psydb-ui-lib.tgz'
     version: 0.0.0
   'file:projects/psydb-ui-request-agents.tgz_debug@4.3.1':
@@ -7443,8 +7454,10 @@ packages:
       chai: 4.2.0
       compression-webpack-plugin: 7.1.2_webpack@5.10.1
       css-loader: 5.2.1_webpack@5.10.1
+      date-fns: 2.21.1
       formik: 2.2.6_react@17.0.2
       html-webpack-plugin: 5.1.0_webpack@5.10.1
+      jsonpointer: 4.1.0
       mocha: 8.1.3
       react: 17.0.2
       react-bootstrap: 1.5.2_react-dom@17.0.2+react@17.0.2
@@ -7460,7 +7473,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-ui'
     resolution:
-      integrity: sha512-XS8adkmQQMZ/aJgaCDqcX2BvZt1gf35evFoASzDeOuAHMI2wUsz3RgFstozuq9vgb6Hi++7/5zpO0n9p+K6HuQ==
+      integrity: sha512-0wReKSd2iHUhofM3cnwfuWNDQKoUlO+oD2j31a+eleBB22FjnjpVC3fAUqwzXugwTZVA+fhsXQyP5ElQtQYHvQ==
       tarball: 'file:projects/psydb-ui.tgz'
     version: 0.0.0
   'file:projects/psydb-web.tgz':
@@ -7541,6 +7554,7 @@ specifiers:
   compression-webpack-plugin: ~7.1.2
   copy-anything: ~2.0.3
   css-loader: ~5.2.1
+  date-fns: ~2.21.1
   debug: ~4.3.1
   deep-diff: ~1.0.2
   escape-string-regexp: ~4.0.0

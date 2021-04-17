@@ -153,13 +153,24 @@ var StudyState = ({
                 }),
             }),*/
 
-            // TODO: stub
+            // grouping
             externalTestLocationFields: {
                 type: 'array',
-                default: []
+                default: [],
+                items: ExactObject({
+                    properties: {
+                        subjectType: IdentifierString(),
+                        // thats the custom location field we do
+                        // the grouping by
+                        locationFieldKey: IdentifierString(), 
+                    },
+                    required: [
+                        'subjectType',
+                        'locationFieldKey',
+                    ]
+                })
             },
 
-            // TODO: stub
             inhouseTestLocationSettings: {
                 type: 'array',
                 default: [],

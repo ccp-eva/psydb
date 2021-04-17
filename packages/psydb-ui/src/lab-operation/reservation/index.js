@@ -11,8 +11,16 @@ import {
 
 import agent from '@mpieva/psydb-ui-request-agents';
 import RecordPicker from './record-picker';
+import LocationCalendar from './location-calendar';
 
-const ReservationRouting = () => {
+var up = (url, levels = 0) => {
+    for (var i = 0; i < levels; i += 1) {
+        url = url.replace(/[\/]?[^/]+$/, '');
+    }
+    return url;
+}
+
+const ReservationRouting = ({ customRecordTypes }) => {
     var { path, url } = useRouteMatch();
     return (
         <>
@@ -22,7 +30,7 @@ const ReservationRouting = () => {
                     <ReservationIndex />
                 </Route>
                 <Route path={`${path}/:studyId`}>
-                    <Reservation />
+                    <Reservation customRecordTypes={ customRecordTypes } />
                 </Route>
             </Switch>
         </>
@@ -38,13 +46,13 @@ const ReservationIndex = () => {
             collection='study'
             recordType={ studyType }
             onChange={ (nextStudyRecord) => {
-                    history.push(`${url}/${nextStudyRecord._id}`)
+                history.push(`${url}/${nextStudyRecord._id}`)
             }}
         />
     )
 }
 
-const Reservation = () => {
+const Reservation = ({ customRecordTypes }) => {
     var { path, url } = useRouteMatch();
     var { studyType, studyId } = useParams();
     var history =  useHistory();
@@ -83,7 +91,8 @@ const Reservation = () => {
                 recordType={ studyType }
                 value={ studyRecord }
                 onChange={ (nextStudyRecord) => {
-                    history.push(`${nextStudyRecord._id}`)
+                    var nextUrl = up(url, 1) + '/' + nextStudyRecord._id;;
+                    history.push(nextUrl)
                 }}
             />
 
@@ -93,31 +102,152 @@ const Reservation = () => {
                     <Redirect to={`${url}/locations`} />
                 </Route>
                 <Route path={ `${path}/locations`}>
-                    <LocationReservation />
+                    <LocationReservationContainer
+                        customRecordTypes={ customRecordTypes }
+                        studyRecord={ studyRecord }
+                    />
                 </Route>
                 <Route path={ `${path}/away-teams`}>
-                    <AwayTeamReservation />
+                    <AwayTeamReservation
+                        customRecordTypes={ customRecordTypes }
+                        studyRecord={ studyRecord }
+                    />
                 </Route>
             </Switch>
-
-
-            <div>select study</div>
-            <div>show tabs teams/rooms</div>
-            <div>if rooms select room</div>
-            <div>show reservation calendar(s)</div>
         </>
     );
 }
 
-const LocationReservation = () => {
+const LocationReservationContainer = ({
+    customRecordTypes,
+    studyRecord
+}) => {
     var { path, url } = useRouteMatch();
-    var { studyType, studyId } = useParams();
-    var history =  useHistory();
+    var { inhouseTestLocationSettings } = studyRecord.state;
+   
+    if (inhouseTestLocationSettings.length < 1) {
+        return (
+            <div>no locations available</div>
+        )
+    }
+
+    var { customRecordTypeId } = inhouseTestLocationSettings[0];
+    var { type: locationRecordType } = customRecordTypes.find(it => (
+        it._id === customRecordTypeId
+    ));
+
+    return (
+        <div>
+            <LocationTypeNav
+                customRecordTypes={ customRecordTypes }
+                settingsList={ inhouseTestLocationSettings }
+            />
+            <Switch> 
+                <Route exact path={ path }>
+                    <Redirect to={`${url}/${locationRecordType}`} />
+                </Route>
+                <Route path={ `${path}/:locationRecordType`}>
+                    <LocationTypeContainer
+                        customRecordTypes={ customRecordTypes }
+                        studyRecord={ studyRecord }
+                    />
+                </Route>
+            </Switch>
+        </div>
+    );
+}
+
+const LocationTypeContainer = ({
+    customRecordTypes,
+    studyRecord,
+}) => {
+    var { path, url } = useRouteMatch();
+    var { locationRecordType } = useParams();
+
+    var locationTypeMetadata = customRecordTypes.find(it => (
+        it.type === locationRecordType
+    ));
+    
+    var { inhouseTestLocationSettings } = studyRecord.state;
+    /*var locationTypeSettings = inhouseTestLocationSettings.find(it => (
+        it.customRecordTypeId === locationTypeMetadata._id
+    ));
+
+    console.log(locationTypeSettings)*/
+
+    /*var {
+        customRecordTypeId,
+        enableAllAvailableLocations,
+        enabledLocationIds,
+    } = locationTypeSettings;*/
+
+    var [ isInitialized, setIsInitialized ] = useState(false);
+    var [ locationRecords, setLocationRecords ] = useState([]);
+    useEffect(() => {
+        agent.fetchAvailableTestLocationsForStudy({
+            studyId: studyRecord._id,
+            locationRecordTypeId: locationTypeMetadata._id
+        })
+        .then((response) => {
+            setLocationRecords(response.data.data.records);
+        })
+    }, [ studyRecord, locationRecordType ]);
+
+    if (locationRecords.length < 1) {
+        return (
+            <div>no locations available</div>
+        )
+    }
+
+    return (
+        <Switch>
+            <Route exact path={ path }>
+                <Redirect to={`${url}/${locationRecords[0]._id}`} />
+            </Route>
+            <Route path={ `${path}/:locationId`}>
+                <LocationContainer
+                    customRecordTypes={ customRecordTypes }
+                    studyRecord={ studyRecord }
+                    locationRecords={ locationRecords }
+                />
+            </Route>
+        </Switch>
+    );
+}
+const LocationContainer = ({
+    customRecordTypes,
+    locationRecords,
+}) => {
+    var { path, url } = useRouteMatch();
+    var { studyId, locationId } = useParams();
+
+    var locationRecord = locationRecords.find(it => (
+        it._id === locationId
+    ));
+
+    return (
+        <>
+            <header>
+                <b>{ locationRecord._recordLabel }</b>
+            </header>
+
+            <LocationCalendar
+                locationRecord={ locationRecord }
+                studyId={ studyId }
+            />
+        </>
+    );
+}
+
+/*
+                <Route exact path={ path }>
+                    <Redirect to={`${url}/locations`} />
+                </Route>
 
     return (
         <div>fof</div>
     )
-}
+}*/
 
 const AwayTeamReservation = () => {
     return (
@@ -126,6 +256,34 @@ const AwayTeamReservation = () => {
 }
 
 import LinkButton from '@mpieva/psydb-ui-lib/src/link-button';
+const LocationTypeNav = ({
+    customRecordTypes,
+    settingsList,
+}) => {
+    var { path, url } = useRouteMatch();
+    var history =  useHistory();
+    return (
+        <div>
+            { settingsList.map(
+                ({ customRecordTypeId }) => {
+                    var metadata = customRecordTypes.find(it => (
+                        it._id === customRecordTypeId
+                    ));
+                    return (
+                        <LinkButton
+                            key={ metadata.type }
+                            to={ metadata.type }
+                        >
+                            { metadata.state.label }
+                        </LinkButton>
+                    );
+                }
+            )}
+        </div>
+    )
+}
+
+//import LinkButton from '@mpieva/psydb-ui-lib/src/link-button';
 const ReservationTypeNav = () => {
     var { path, url } = useRouteMatch();
     var history =  useHistory();

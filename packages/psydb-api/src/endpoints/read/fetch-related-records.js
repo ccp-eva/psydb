@@ -163,8 +163,6 @@ var gatherLabelDefinitionData = ({
                     optionLabelDefinition // TODO
                 } = customRecordType.state;
 
-                console.log()
-
                 if (labelType === 'option') {
                     // TODO
                     throw new Error('not implemented');

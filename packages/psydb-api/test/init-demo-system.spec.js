@@ -128,7 +128,10 @@ describe('init-demo-system', function () {
             limit: 20,
         });*/
         //var response = await agent.get('/metadata/schema/location/school');
-        response = await agent.get(`/read/study/default/${context.STUDY_01_ID}`);
+        //response = await agent.get(`/read/study/default/${context.STUDY_01_ID}`);
+        console.log('###############')
+        response = await agent.get(`/available-test-locations-for-study/${context.STUDY_01_ID}/${context.INSTITUTEROOM_TYPE_ID}`);
+        console.dir(response.status, { depth: null });
         console.dir(response.body, { depth: null });
     });
 

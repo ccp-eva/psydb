@@ -78,4 +78,12 @@ agent.searchRecords = ({
     )
 }
 
+agent.fetchAvailableTestLocationsForStudy = ({
+    studyId,
+    locationRecordTypeId,
+}) => {
+    var baseUrl = '/api/available-test-locations-for-study';
+    return axios.get(`${baseUrl}/${studyId}/${locationRecordTypeId}`);
+}
+
 export default agent;

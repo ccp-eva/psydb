@@ -85,7 +85,9 @@ const LabOperation = () => {
                     ]} />
                 </Route>
                 <Route path={`${path}/:studyType/reservation`}>
-                    <ReservationRouting />
+                    <ReservationRouting
+                        customRecordTypes={ metadata.customRecordTypes }
+                    />
                 </Route>
                 <Route path={`${path}/:studyType/subject-selection`}>
                     <div>
