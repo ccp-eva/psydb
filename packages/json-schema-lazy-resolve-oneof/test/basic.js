@@ -38,6 +38,7 @@ describe('basic-behavior', () => {
         }
 
         var resolvedFalseSchemas = lazyResolve(schema, { isEnabled: false });
+        console.dir(resolvedFalseSchemas);
         expect(resolvedFalseSchemas).to.eql([
             {
                 type: 'schema',
@@ -55,6 +56,7 @@ describe('basic-behavior', () => {
         ]);
 
         var resolvedTrueSchemas = lazyResolve(schema, { isEnabled: true });
+        console.dir(resolvedTrueSchemas);
         expect(resolvedTrueSchemas).to.eql([
             {
                 type: 'schema',

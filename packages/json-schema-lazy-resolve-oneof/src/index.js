@@ -20,9 +20,20 @@ var lazyResolveAll = (schema, data, lazyResolvePropPointers) => {
     var resolvedParts = [];
     for (var part of schemaParts) {
         var { inSchemaPointer, schema } = part;
-        
-        var dataPointer = convertPointer(inSchemaPointer),
+       
+        //console.log('AAAAAAAAAAAAAAAAAAAAAAAAAA');
+        //console.log('converting', inSchemaPointer);
+        var dataPointer = convertPointer(inSchemaPointer, data);
+        //console.dir([ 'conversion', inSchemaPointer, dataPointer ]);
+        //console.dir(data, { depth: null })
+
+        var partData = undefined;
+        if (Array.isArray(dataPointer)) {
+            partData = dataPointer.map(it => jsonpointer.get(data, it));
+        }
+        else {
             partData = jsonpointer.get(data, dataPointer);
+        }
 
         var requiredType = 'array';
         // we need to check this for the schema root as it might
@@ -31,6 +42,7 @@ var lazyResolveAll = (schema, data, lazyResolvePropPointers) => {
             requiredType = jsonpointer.get(schema, inSchemaPointer).type;
         }
 
+        //console.log('PART')
         //console.log(inSchemaPointer, dataPointer, partData, requiredType);
         if (requiredType === 'array') {
             resolvedParts.push({
@@ -52,6 +64,8 @@ var lazyResolveAll = (schema, data, lazyResolvePropPointers) => {
 }
 
 var lazyResolveArrayPart = (schema, data) => {
+    //console.log('LRAP', schema, data);
+    // TODO data is wrong here for nested array
     if (!Array.isArray(data)) {
         return [];
     }
@@ -89,17 +103,19 @@ var lazyResolve = (schema, data) => {
         
         //var dataPointer = pointerMapping.get(inSchemaPointer);
         var dataPointer = convertPointer(inSchemaPointer);
-        //console.log(currentSchema);
         var currentData = data;
         if (typeof data === 'object') {
             currentData = jsonpointer.get(data, dataPointer);
         }
-        //console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
-        //console.log(currentData);
+        /*console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
+        console.log(currentSchema);
+        console.log(dataPointer); // 0 1 2
+        console.log(currentData);*/
         //var currentData = jsonpointer.get(data, dataPointer);
         //console.log(currentData);
 
         // NOTE: this should never happen as we deconstruct schema arrays
+        // TODO: this can happen when root schema is an array
         if (currentSchema.type === 'array' && currentSchema.items) {
             throw new Error(inline`
                 array with item definition found in "${inSchemaPointer}";

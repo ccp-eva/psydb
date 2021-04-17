@@ -85,6 +85,16 @@ describe('complex-schema-behavior', () => {
                             items: {
                                 type: 'string',
                             },
+                        },
+
+                        ary03: {
+                            type: 'object',
+                            properties: {
+                                nestedArray: {
+                                    type: 'array',
+                                    items: { type: 'string' }
+                                }
+                            }
                         }
                     }
                 }
@@ -108,10 +118,14 @@ describe('complex-schema-behavior', () => {
                 'foo',
                 'bar',
                 'baz',
-            ]
+            ],
+            ary03: {
+                nestedArray: ['a','b']
+            }
         });
 
         console.dir(resolvedSchemas, { depth: null });
+        return;
         
         expect(resolvedSchemas).to.eql([
             {
