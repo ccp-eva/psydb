@@ -19,7 +19,7 @@ var deconstructArrays = (schema) => {
     for (var i = arrayPointers.length - 1; i >= 0; i -= 1) {
         var inSchemaPointer = arrayPointers[i];
         parts.push({
-            inSchemaPointer,
+            inSchemaPointer: `${inSchemaPointer}/items`,
             schema: jsonpointer.get(schema, inSchemaPointer).items,
         });
         // this operation mutates the schema object
