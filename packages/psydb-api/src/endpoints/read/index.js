@@ -61,6 +61,10 @@ var read = async (context, next) => {
             collection: collectionName,
             type: recordType,
         });
+        
+        recordLabelDefinition = (
+            customRecordType.state.recordLabelDefinition
+        );
     }
 
     var record = await fetchRecordById({
@@ -69,6 +73,7 @@ var read = async (context, next) => {
         id: id,
         hasSubChannels,
         permissions,
+        recordLabelDefinition,
     });
 
     // FIXME: question is should we 404 or 403 when access is denied?
@@ -83,6 +88,8 @@ var read = async (context, next) => {
         record,
         fullSchema: true
     });
+
+    //console.dir(recordSchema, { depth: null });
     
     var foreignIdData = resolveForeignIdData({
         schema: recordSchema,

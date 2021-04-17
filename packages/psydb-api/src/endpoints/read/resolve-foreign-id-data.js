@@ -16,6 +16,7 @@ var resolveForeignIdData = ({ schema, data }) => {
 
     var resolvedForeignIdData = [];
     for (var part of resolvedParts) {
+        //console.log(part);
         //console.log(part.type);
         if (part.type === 'schema') {
             var dataPointer = convertPointer(part.inSchemaPointer);
@@ -33,16 +34,19 @@ var resolveForeignIdData = ({ schema, data }) => {
             ];
         }
         else if (part.type === 'array') {
+            var dataPointers = convertPointer(
+                part.inSchemaPointer,
+                data
+            );
+
             for (var [index, itemSchema] of part.itemSchemas.entries()) {
-                var dataPointer = convertPointer(
-                    part.inSchemaPointer + '/' + index
-                );
-                var currentData = jsonpointer.get(data, dataPointer);
+                //console.log(dataPointers[index]);
+                var currentData = jsonpointer.get(data, dataPointers[index]);
 
                 var foreign = resolveFromSubSchema({
                     schema: itemSchema,
                     data: currentData,
-                    dataPointerPrefix: dataPointer
+                    dataPointerPrefix: dataPointers[index]
                 });
 
                 resolvedForeignIdData = [
@@ -53,6 +57,8 @@ var resolveForeignIdData = ({ schema, data }) => {
         }
     }
 
+    //console.dir(resolvedForeignIdData);
+    //throw new Error();
     return resolvedForeignIdData;
 }
 
@@ -61,7 +67,7 @@ var resolveFromSubSchema = ({
     data,
     dataPointerPrefix,
 }) => {
-    //console.log(schema, data);
+    //console.log(dataPointerPrefix, schema, data);
     var resolved = [];
     traverse(schema, { allKeys: false }, (...traverseArgs) => {
         var [

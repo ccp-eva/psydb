@@ -163,6 +163,29 @@ var StudyState = ({
             inhouseTestLocationSettings: {
                 type: 'array',
                 default: [],
+                items: ExactObject({
+                    properties: {
+                        customRecordTypeId: ForeignId({
+                            collection: 'customRecordType',
+                        }),
+                        enableAllAvailableLocations: {
+                            type: 'boolean',
+                            default: false
+                        },
+                        enabledLocationIds: {
+                            type: 'array',
+                            default: [],
+                            items: ForeignId({
+                                collection: 'location',
+                            })
+                        }
+                    },
+                    required: [
+                        'customRecordTypeId',
+                        'enableAllAvailableLocations',
+                        'enabledLocationIds',
+                    ]
+                })
             },
 
             // TODO: stub
