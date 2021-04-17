@@ -20,50 +20,63 @@ var convertPointer = (pointer, data) => {
             `);
         }
         var tokens = pointer.split(arrayItemsRegex);
-        console.log(tokens);
+        //console.log(tokens);
         var dataPointers = traverseArrayPointers(tokens, data);
-        console.log(dataPointers);
+        //console.log(dataPointers);
         return dataPointers;
     }
 }
 
 var traverseArrayPointers = (pointerSet, data) => {
-    console.log('pointerset', pointerSet);
+    //console.log('pointerset', pointerSet);
     var [ currentPointer, ...nextPointerSet ] = pointerSet;
-    console.dir(currentPointer);
+    //console.dir([currentPointer, data]);
     if (currentPointer === undefined) {
-        return [];
+        currentPointer = '';
     }
 
-    console.dir(['fooo', data, currentPointer]);
+    //console.dir(['fooo', data, currentPointer]);
 
+    if (data === undefined) {
+        return [];
+    }
     // TODO: breaks on Date() objects etc
     // might check against null, string, number, undefined
     if (typeof data !== 'object') {
         return [ currentPointer ];
     }
 
-    var currentData = jsonpointer.get(data, currentPointer);
+    //console.log('converting lazy');
+    var currentDataPointer = convertLazy(currentPointer);
+    //console.log(currentPointer, ' => ', currentDataPointer)
+    var currentData = jsonpointer.get(data, currentDataPointer);
+    //console.log(currentData);
+
+    if (currentData === undefined) {
+        return [];
+    }
 
     var dataPointers = [];
     if (Array.isArray(currentData)) {
+        //console.log('its an array');
         for (var [ index, it ] of currentData.entries()) {
+            //console.log(index);
             var nextPointerSet = pointerSet.slice(1);
             dataPointers = [
                 ...dataPointers,
                 ...traverseArrayPointers(
                     nextPointerSet,
                     currentData[index]
-                ).map(it => `${currentPointer}/${index}${it}`),
+                ).map(it => `${currentDataPointer}/${index}${it}`),
             ];
         }
     }
     else {
-        console.dir('pshing', currentPointer);
-        dataPointers.push(currentPointer);
+        //console.dir('pshing', currentDataPointer);
+        dataPointers.push(currentDataPointer);
     }
 
-    console.log('DP', dataPointers);
+    //console.log('DP', dataPointers);
     return dataPointers;
 }
 
