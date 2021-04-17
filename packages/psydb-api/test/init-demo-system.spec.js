@@ -91,10 +91,10 @@ describe('init-demo-system', function () {
 
         //console.log(context);
 
-        var response = await agent.get(`/read/subject/${context.ALICE_TEACHER_ID}`);
+        var response = await agent.get(`/read/subject/teacher/${context.ALICE_TEACHER_ID}`);
         //console.dir(response.body, { depth: null });
 
-        var response = await agent.get(`/read/experiment/${context.EXP_INHOUSE_01}`);
+        //var response = await agent.get(`/read/experiment/${context.EXP_INHOUSE_01}`);
         //console.dir(response.body, { depth: null });
         
         /*var response = await agent.post('/search-in-field').send({
@@ -103,6 +103,14 @@ describe('init-demo-system', function () {
             fieldPointer: '/scientific/state/systemPermissions/accessRightsByResearchGroup/researchGroupId',
             additionalFilter: {},
         });*/
+
+        /*var response = await agent.post('/search-in-field').send({
+            contextCollectionName: 'study',
+            contextRecordId: context.STUDY_01_ID,
+            fieldPointer: '/state/inhouseTestLocationSettings',
+            additionalFilter: {},
+        });*/
+
         // console.dir(response.body, { depth: null });
         /*var response = await agent.post('/search').send({
             collectionName: 'subject',
@@ -120,6 +128,7 @@ describe('init-demo-system', function () {
             limit: 20,
         });*/
         //var response = await agent.get('/metadata/schema/location/school');
+        response = await agent.get(`/read/study/default/${context.STUDY_01_ID}`);
         console.dir(response.body, { depth: null });
     });
 
