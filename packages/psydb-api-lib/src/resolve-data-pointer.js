@@ -20,7 +20,8 @@ var resolveDataPointer = ({
             propNameOrIndex
         ] = traverseArgs;
 
-        if (!resolved) {
+        // skipping arrays as those cant be resolved without data
+        if (!resolved && !/(?<!properties)\/items/.test(inSchemaPointer)) {
             var currentDataPointer = convertPointer(inSchemaPointer)
             if (pointer === currentDataPointer) {
                 resolved = {
