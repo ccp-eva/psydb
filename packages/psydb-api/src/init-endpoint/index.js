@@ -18,7 +18,7 @@ var init = async (context, next) => {
     );
 
     if (personnelRecordCount !== 0) {
-        throw new ApiError(404);
+        throw new ApiError(404, 'personnelRecordCount is not zero');
     }
 
     var eventMiddleware = createEventMiddleware({
@@ -29,14 +29,14 @@ var init = async (context, next) => {
 
     var processEvent = createProcessEvent({ db, eventMiddleware });
     
-    var context = {};
-    var send = context.send = createSend(processEvent, context);
+    var messageContext = {};
+    var send = messageContext.send = createSend(processEvent, messageContext);
     for (var messageOrLambda of data.messages) {
         if (typeof messageOrLambda === 'object') {
             await send(messageOrLambda);
         }
         else if (typeof messageOrLambda === 'function') {
-            await messageOrLambda(context);
+            await messageOrLambda(messageContext);
         }
         else {
             throw new Error(
@@ -49,7 +49,7 @@ var init = async (context, next) => {
         );*/
     }
 
-    var root = await db.collection('personnel').findOne();
+    //var root = await db.collection('personnel').findOne();
 
     context.body = ResponseBody({ statusCode: 200 });
 

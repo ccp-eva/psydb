@@ -86,20 +86,6 @@ var createRouting = ({
         endpoints.special.availableTestLocationsForStudy
     );
 
-    /*router.post('/search/:collectionName(^(_helper_)?[A-Za-z]+$)',
-        withProtection(),
-        withMongoBody({
-            //mimeType: 'application/mongodb-extjson',
-            ejsonMimeType: 'application/json',
-            ejsonOptions: { relaxed: true },
-        }),
-        protected.search,
-    );*/
-
-    //router.get('/read/:collectionName(...)/:recordId(...)');
-    //router.post('/search-for-study')
-    //router.post(/event)
-    
     return compose([
         router.routes(),
         router.allowedMethods(),

@@ -8,6 +8,7 @@
   "author": "Jan Schwalbe",
   "license": "MIT",
   "dependencies": {
-    "bson": "~4.2.2"
+    "bson": "~4.2.2",
+    "@mpieva/psydb-common-lib": "~0.1.0-alpha"
   }
 }
