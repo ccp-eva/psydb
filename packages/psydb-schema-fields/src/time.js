@@ -1,12 +1,11 @@
 'use strict';
 var Time = ({
     description,
-    formatMinimum,
+    minimum,
 } = {}) => ({
     systemType: 'Time',
-    type: 'string',
-    format: 'time',
-    ...(formatMinimum ? { formatMinimum } : {}),
+    type: 'integer',
+    ...(minimum ? { minimum } : {}),
     ...(description ? { description } : {}),
 });
 

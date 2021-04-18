@@ -4,13 +4,14 @@ var ExactObject = require('./exact-object'),
 
 var TimeInterval = ({
     description,
+    minStart = 0,
 } = {}) => (
     ExactObject({
         systemType: 'TimeInterval',
         properties: {
-            start: Time(),
+            start: Time({ minimum: minStart }),
             end: Time({
-                formatMinimum: { $data: '1/start' }
+                minimum: { $data: '1/start' }
             }),
         },
         required: [
