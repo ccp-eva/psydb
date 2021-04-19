@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from 'react';
 
 import {
+    Form
+} from 'react-bootstrap';
+
+import {
     Duration,
     FormattedDuration,
     HOUR,
     MINUTE
 } from '@mpieva/psydb-common-lib/src/durations';
+
+import withFormDecorations from './with-form-decorations';
 
 const TimeSlotWidget = (ps) => {
     const {
@@ -26,8 +32,6 @@ const TimeSlotWidget = (ps) => {
     var max = 24 * HOUR - 1;
     var step = 1 * HOUR;
 
-    console.log(schema);
-
     if (schema.formatMinimum) {
         min = Duration(schema.formatMinimum);
     }
@@ -44,14 +48,15 @@ const TimeSlotWidget = (ps) => {
     }
 
     return (
-        <select>
+        <Form.Control as='select'>
             { slots.map(it => (
                 <option key={ it }>
                     { FormattedDuration(it, { resolution: 'MINUTE'}) }
                 </option>
             ))}
-        </select>
+        </Form.Control>
     )
 }
 
-export default TimeSlotWidget;
+const WrappedTimeSlotWidget = withFormDecorations(TimeSlotWidget);
+export default WrappedTimeSlotWidget;

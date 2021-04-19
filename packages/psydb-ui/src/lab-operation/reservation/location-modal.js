@@ -15,7 +15,10 @@ import {
     FormattedDuration
 } from '@mpieva/psydb-common-lib/src/durations';
 
-import { TimeSlotWidget } from '@mpieva/psydb-ui-lib/src/rjsf-components';
+import {
+    ConstWidget,
+    TimeSlotWidget
+} from '@mpieva/psydb-ui-lib/src/rjsf-components';
 
 const extractTime = (dateIsoString) => (
     NaN !== (new Date(dateIsoString)).getTime()
@@ -43,9 +46,13 @@ var createSchema = ({
             default: extractTime(start)
         },
         end: {
+            title: 'Bis',
             type: 'string',
             format: 'time',
-            formatMinimum: extractTime(start),
+            formatMinimum: extractTime(
+                new Date(start.getTime() + (slotDuration || 0))
+                //start
+            ),
             formatMaximum: extractTime(maxEnd),
             formatStep: FormattedDuration(slotDuration),
         }
@@ -56,6 +63,12 @@ var createSchema = ({
 })
 
 var uiSchema = {
+    'date': {
+        'ui:widget': ConstWidget,
+    },
+    'start': {
+        'ui:widget': ConstWidget,
+    },
     'end': {
         'ui:widget': TimeSlotWidget
     }
@@ -77,7 +90,7 @@ const LocationModal = ({
     start = start || fallbackDate;
     maxEnd = maxEnd || fallbackDate;
     console.log(slotDuration);
-    slotDuration = slotDuration || '0:30'
+    slotDuration = slotDuration || Duration('0:30')
 
     var schema = createSchema({
         start,
@@ -85,7 +98,7 @@ const LocationModal = ({
         maxEnd,
     });
     return (
-        <Modal show={show} onHide={ onHide } size='lg'>
+        <Modal show={show} onHide={ onHide } size='sm'>
             <Modal.Header closeButton>
                 <Modal.Title>Reservierung</Modal.Title>
             </Modal.Header>
