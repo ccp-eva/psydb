@@ -36,7 +36,10 @@
     "@rjsf/bootstrap-4": "~2.5.1",
     "react-router-bootstrap": "~0.25.0",
     "jsonpointer": "~4.1.0",
-    "@mpieva/psydb-schema-creators": "~0.1.0-alpha"
+    "@mpieva/psydb-schema-creators": "~0.1.0-alpha",
+    "moment": "~2.29.1",
+    "react-datetime": "~3.0.4",
+    "@mpieva/psydb-common-lib": "~0.1.0-alpha"
   },
   "config": {
     "mongodbMemoryServer": {
@@ -59,5 +62,8 @@
     "ignore": [
       "src/server"
     ]
+  },
+  "dependencies": {
+    "date-fns": "~2.21.1"
   }
 }

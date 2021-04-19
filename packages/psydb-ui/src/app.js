@@ -5,7 +5,6 @@ import ErrorBoundary from './error-boundary';
 import SignIn from './sign-in';
 import Main from './main'
 
-
 const App = () => {
 
     var [ isSignedIn, setIsSignedIn ] = useState(false);

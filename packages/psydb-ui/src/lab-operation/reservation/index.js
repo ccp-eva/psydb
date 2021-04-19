@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 
 import {
     Route,
@@ -214,6 +214,7 @@ const LocationTypeContainer = ({
         </Switch>
     );
 }
+
 const LocationContainer = ({
     customRecordTypes,
     locationRecords,
@@ -238,16 +239,6 @@ const LocationContainer = ({
         </>
     );
 }
-
-/*
-                <Route exact path={ path }>
-                    <Redirect to={`${url}/locations`} />
-                </Route>
-
-    return (
-        <div>fof</div>
-    )
-}*/
 
 const AwayTeamReservation = () => {
     return (
