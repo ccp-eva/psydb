@@ -58,6 +58,7 @@ const Reservation = ({ customRecordTypes }) => {
     var history =  useHistory();
 
     var [ studyRecord, setStudyRecord ] = useState();
+    var [ teamRecords, setTeamRecords ] = useState([]);
     var [ isInitialized, setIsInitialized ] = (
         useState(studyId ? false : true)
     );
@@ -76,6 +77,20 @@ const Reservation = ({ customRecordTypes }) => {
             setIsInitialized(true)
         });
     }, [ studyType, studyId ]);
+
+    useEffect(() => {
+        if (studyRecord) {
+            agent.fetchExperimentOperatorTeamsForStudy({
+                studyId: studyRecord._id,
+            })
+            .then((response) => {
+                setTeamRecords(response.data.data.records);
+            })
+        }
+        else {
+            setTeamRecords([]);
+        }
+    }, [ studyRecord ])
 
     if (!isInitialized) {
         return (
@@ -105,12 +120,14 @@ const Reservation = ({ customRecordTypes }) => {
                     <LocationReservationContainer
                         customRecordTypes={ customRecordTypes }
                         studyRecord={ studyRecord }
+                        teamRecords={ teamRecords }
                     />
                 </Route>
                 <Route path={ `${path}/away-teams`}>
                     <AwayTeamReservation
                         customRecordTypes={ customRecordTypes }
                         studyRecord={ studyRecord }
+                        teamRecords={ teamRecords }
                     />
                 </Route>
             </Switch>
@@ -120,7 +137,8 @@ const Reservation = ({ customRecordTypes }) => {
 
 const LocationReservationContainer = ({
     customRecordTypes,
-    studyRecord
+    studyRecord,
+    teamRecords,
 }) => {
     var { path, url } = useRouteMatch();
     var { inhouseTestLocationSettings } = studyRecord.state;
@@ -150,6 +168,7 @@ const LocationReservationContainer = ({
                     <LocationTypeContainer
                         customRecordTypes={ customRecordTypes }
                         studyRecord={ studyRecord }
+                        teamRecords={ teamRecords }
                     />
                 </Route>
             </Switch>
@@ -160,6 +179,7 @@ const LocationReservationContainer = ({
 const LocationTypeContainer = ({
     customRecordTypes,
     studyRecord,
+    teamRecords,
 }) => {
     var { path, url } = useRouteMatch();
     var { locationRecordType } = useParams();
@@ -209,6 +229,7 @@ const LocationTypeContainer = ({
                     customRecordTypes={ customRecordTypes }
                     studyRecord={ studyRecord }
                     locationRecords={ locationRecords }
+                    teamRecords={ teamRecords }
                 />
             </Route>
         </Switch>
@@ -218,6 +239,7 @@ const LocationTypeContainer = ({
 const LocationContainer = ({
     customRecordTypes,
     locationRecords,
+    teamRecords,
 }) => {
     var { path, url } = useRouteMatch();
     var { studyId, locationId } = useParams();
@@ -233,6 +255,7 @@ const LocationContainer = ({
             </header>
 
             <LocationCalendar
+                teamRecords={ teamRecords }
                 locationRecord={ locationRecord }
                 studyId={ studyId }
             />

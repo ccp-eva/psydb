@@ -35,6 +35,7 @@ const reservationModalReducer = (state, action) => {
 
 const LocationCalendar = ({
     locationRecord,
+    teamRecords,
     studyId,
 }) => {
     var { path, url } = useRouteMatch();
@@ -95,6 +96,7 @@ const LocationCalendar = ({
                 start={ modalState.date }
                 slotDuration={ modalState.slotDuration }
                 maxEnd={ modalState.maxEnd }
+                teamRecords={ teamRecords }
             />
 
             <div>actions</div>

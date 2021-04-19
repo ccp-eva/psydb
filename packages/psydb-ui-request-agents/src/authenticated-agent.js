@@ -86,4 +86,11 @@ agent.fetchAvailableTestLocationsForStudy = ({
     return axios.get(`${baseUrl}/${studyId}/${locationRecordTypeId}`);
 }
 
+agent.fetchExperimentOperatorTeamsForStudy = ({
+    studyId,
+}) => {
+    var baseUrl = '/api/experiment-operator-teams-for-study';
+    return axios.get(`${baseUrl}/${studyId}`);
+}
+
 export default agent;

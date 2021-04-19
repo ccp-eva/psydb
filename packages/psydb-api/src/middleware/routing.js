@@ -82,8 +82,14 @@ var createRouting = ({
         withSelfAuth(),
         withPermissions(),
         withEndpointProtection({ endpoint: 'available-test-locations-for-study' }),
-        withKoaBody(),
         endpoints.special.availableTestLocationsForStudy
+    );
+
+    router.get('/experiment-operator-teams-for-study/:studyId',
+        withSelfAuth(),
+        withPermissions(),
+        withEndpointProtection({ endpoint: 'experiment-operator-teams-for-study' }),
+        endpoints.special.experimentOperatorTeamsForStudy
     );
 
     return compose([

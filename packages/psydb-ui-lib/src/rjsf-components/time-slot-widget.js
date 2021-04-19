@@ -48,7 +48,16 @@ const TimeSlotWidget = (ps) => {
     }
 
     return (
-        <Form.Control as='select'>
+        <Form.Control
+            as='select'
+            { ...{
+                name,
+                onChange,
+                onBlur,
+                onFocus,
+                value
+            }}
+        >
             { slots.map(it => (
                 <option key={ it }>
                     { FormattedDuration(it, { resolution: 'MINUTE'}) }

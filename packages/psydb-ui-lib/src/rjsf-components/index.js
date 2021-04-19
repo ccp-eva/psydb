@@ -6,3 +6,7 @@ require('moment/locale/de');
 export { default as TimeWidget } from './time-widget';
 export { default as TimeSlotWidget } from './time-slot-widget';
 export { default as ConstWidget } from './const-widget';
+export { default as ForeignIdWidget } from './foreign-id-widget';
+export {
+    default as ExperimentOperatorTeamIdWidget
+} from './experiment-operator-team-id-widget';

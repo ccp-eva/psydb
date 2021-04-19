@@ -17,7 +17,8 @@ import {
 
 import {
     ConstWidget,
-    TimeSlotWidget
+    TimeSlotWidget,
+    ExperimentOperatorTeamIdWidget,
 } from '@mpieva/psydb-ui-lib/src/rjsf-components';
 
 const extractTime = (dateIsoString) => (
@@ -55,6 +56,14 @@ var createSchema = ({
             ),
             formatMaximum: extractTime(maxEnd),
             formatStep: FormattedDuration(slotDuration),
+        },
+        experimentOperatorTeamId: {
+            title: 'Team',
+            type: 'string',
+            systemType: 'ForeignId',
+            systemProps: {
+                collection: 'experimentOperatorTeam',
+            },
         }
     },
     required: [
@@ -71,6 +80,9 @@ var uiSchema = {
     },
     'end': {
         'ui:widget': TimeSlotWidget
+    },
+    'experimentOperatorTeamId': {
+        'ui:widget': ExperimentOperatorTeamIdWidget,
     }
 }
 
@@ -81,6 +93,7 @@ const LocationModal = ({
     onHide,
     studyId,
     locationId,
+    teamRecords,
     start,
     slotDuration,
     maxEnd,
@@ -107,6 +120,11 @@ const LocationModal = ({
                     schema={ schema }
                     uiSchema={ uiSchema }
                     onSubmit={ () => {} }
+                    formContext={{
+                        relatedRecords: {
+                            experimentOperatorTeam: teamRecords
+                        }
+                    }}
                 />
             </Modal.Body>
         </Modal>
