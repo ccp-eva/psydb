@@ -20,7 +20,7 @@ durations.Duration = (string) => {
     }
 
     var matched = string.match(
-        /^(\d+):([0-5][0-9])(?::([0-5][0-9]))?$/
+        /^(\d+):([0-5][0-9])(?::([0-5][0-9])(?:\.([0-9]{3}))?)?$/
     );
     if (!matched) {
         throw new Error(`invalid duration string "${string}"`);
@@ -51,10 +51,53 @@ durations.Duration = (string) => {
     );
 }
 
-/*
- * TODO: String.prototype.padStart(4, '0') => '0003'
-durations.toDurationString = (duration) => {
-    var str = '';
+// TODO: String.prototype.padStart(4, '0') => '0003'
+durations.FormattedDuration = (durationInt, { resolution } = {}) => {
+    var isNegative = (
+        durationInt < 0
+        ? true
+        : false
+    );
+
+    if (isNegative) {
+        durationInt *= -1;
+    }
+
+    var resolutions = {
+        HOUR: 0,
+        MINUTE: 1,
+        SECOND: 2,
+        MILLISECOND: 3,
+    };
+    var resolutionIndex = resolutions[(resolution || 'MILLISECOND')];
+
+    var rest = durationInt;
+    var segments = {};
+    ['HOUR', 'MINUTE', 'SECOND'].forEach((segmentKey) => {
+        var timeConstant = durations[segmentKey];
+        var segmentValue = Math.floor(rest / timeConstant);
+        segments[segmentKey] = segmentValue;
+        rest -= segmentValue * timeConstant
+    });
+
+    segments.MILLISECOND = rest;
+
+    var acc = zeroPad(segments.HOUR, 2);
+    acc += `:${zeroPad(segments.MINUTE, 2)}`;
+    if (resolutionIndex >= resolutions.SECOND) {
+        acc += `:${zeroPad(segments.SECOND, 2)}`;
+    }
+    if (resolutionIndex >= resolutions.MILLISECOND) {
+        acc += `.${zeroPad(segments.MILLISECOND, 3)}`;
+    }
+
+    if (isNegative) {
+        acc = `-${acc}`;
+    }
+
+    return acc;
+
+    /*var str = '';
 
     if (duration < 0) {
         str += '-';
@@ -68,5 +111,9 @@ durations.toDurationString = (duration) => {
     str += ':';
     str += sprintf('%02d', Math.floor( duration / durations.MINUTE ));
 
-    return str;
-}*/
+    return str;*/
+}
+
+var zeroPad = (value, n) => (
+    String(value).padStart(n, '0')
+)

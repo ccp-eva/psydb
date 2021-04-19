@@ -9,6 +9,12 @@ import { withTheme } from '@rjsf/core';
 import { Theme as Bootstrap4Theme } from '@rjsf/bootstrap-4'
 
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
+
+import {
+    Duration,
+    FormattedDuration
+} from '@mpieva/psydb-common-lib/src/durations';
+
 import { TimeSlotWidget } from '@mpieva/psydb-ui-lib/src/rjsf-components';
 
 const extractTime = (dateIsoString) => (
@@ -41,7 +47,7 @@ var createSchema = ({
             format: 'time',
             formatMinimum: extractTime(start),
             formatMaximum: extractTime(maxEnd),
-            formatTimeStep: slotDuration,
+            formatStep: FormattedDuration(slotDuration),
         }
     },
     required: [
@@ -50,7 +56,7 @@ var createSchema = ({
 })
 
 var uiSchema = {
-    'start': {
+    'end': {
         'ui:widget': TimeSlotWidget
     }
 }
@@ -70,6 +76,8 @@ const LocationModal = ({
     
     start = start || fallbackDate;
     maxEnd = maxEnd || fallbackDate;
+    console.log(slotDuration);
+    slotDuration = slotDuration || '0:30'
 
     var schema = createSchema({
         start,
