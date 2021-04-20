@@ -80,7 +80,7 @@ var createRouting = ({
         endpoints.search
     );
 
-    router.get('/available-test-locations-for-study/:studyId/:locationRecordTypeId',
+    /*router.get('/available-test-locations-for-study/:studyId/:locationRecordTypeId',
         withSelfAuth(),
         withPermissions(),
         withEndpointProtection({ endpoint: 'available-test-locations-for-study' }),
@@ -92,7 +92,7 @@ var createRouting = ({
         withPermissions(),
         withEndpointProtection({ endpoint: 'experiment-operator-teams-for-study' }),
         endpoints.special.experimentOperatorTeamsForStudy
-    );
+    );*/
 
     router.get(
         inline`
@@ -108,6 +108,14 @@ var createRouting = ({
             'study-location-reservation-calendar'
         )}),
         endpoints.special.studyLocationReservationCalendar
+    );
+
+    router.post('/testable-subjects-inhouse',
+        withSelfAuth(),
+        withPermissions(),
+        withEndpointProtection({ endpoint: 'testable-subjects-inhouse' }),
+        withKoaBody(),
+        endpoints.special.testableSubjectsInhouse
     );
 
     return compose([

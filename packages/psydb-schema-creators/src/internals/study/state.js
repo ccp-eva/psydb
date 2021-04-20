@@ -203,6 +203,8 @@ var StudyState = ({
                 default: [],
             }, 
 
+            // TODO: excluded study ids
+
             ...(enableInternalProps && {
                 interals: {
                     type: 'object',

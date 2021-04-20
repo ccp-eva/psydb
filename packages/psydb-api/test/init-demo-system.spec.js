@@ -134,13 +134,22 @@ describe('init-demo-system', function () {
         console.log('###############')
         //response = await agent.get(`/available-test-locations-for-study/${context.STUDY_01_ID}/${context.INSTITUTEROOM_TYPE_ID}`);
         //response = await agent.get(`/experiment-operator-teams-for-study/${context.STUDY_01_ID}`);
-        response = await agent.get(inline`
+        /*response = await agent.get(inline`
             /study-location-reservation-calendar
             /2021-01-01T00:00:00.000Z
             /2021-12-12T00:00:00.000Z
             /${context.STUDY_01_ID}
             /instituteroom
-        `);
+        `);*/
+        response = await agent.post('/testable-subjects-inhouse/').send({
+            subjectRecordType: 'teacher',
+            studyIds: [ context.STUDY_01_ID ],
+            timeFrameStart: '2021-04-01T00:00:00.000Z',
+            timeFrameEnd: '2021-04-15T00:00:00.000Z',
+            customAgeFrameConditions: [],
+            offset: 0,
+            limit: 100,
+        });
         console.dir(response.status, { depth: null });
         console.dir(response.body, { depth: null });
     });

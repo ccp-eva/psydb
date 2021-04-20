@@ -4,6 +4,7 @@ var {
     Id,
     EventId,
     ForeignId,
+    IdentifierString,
 } = require('@mpieva/psydb-schema-fields');
 
 var {
@@ -17,17 +18,12 @@ var Schema = () => {
             properties: {
                 id: Id(),
                 lastKnownEventId: EventId(),
-                customRecordTypeId: ForeignId({
-                    collection: 'customRecordType',
-                    constraints: {
-                        '/collection': 'subject'
-                    }
-                })
+                customRecordType: IdentifierString(),
             },
             required: [
                 'id',
                 'lastKnownEventId',
-                'customRecordTypeId',
+                'customRecordType',
             ]
         })
     });

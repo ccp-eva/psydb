@@ -29,7 +29,7 @@ handler.checkAllowedAndPlausible = async ({
     var {
         id,
         lastKnownEventId,
-        customRecordTypeId,
+        customRecordType,
     } = message.payload;
 
     var study = await (
@@ -45,22 +45,22 @@ handler.checkAllowedAndPlausible = async ({
         throw new ApiError(400, 'RecordHasChanged');
     }
 
-    var customRecordType = await (
+    var customRecordTypeRecord = await (
         db.collection('customRecordType')
-        .findOne({ _id: customRecordTypeId })
+        .findOne({ type: customRecordType })
     );
 
-    if (!customRecordType) {
-        throw new ApiError(400, 'ForeignIdNotFound');
+    if (!customRecordTypeRecord) {
+        throw new ApiError(400, 'InvalidSubjectRecordType');
     }
 
-    if (customRecordType.collection !== 'subject') {
-        throw new ApiError(400, 'InvalidCustomRecordType');
+    if (customRecordTypeRecord.collection !== 'subject') {
+        throw new ApiError(400, 'InvalidSubjectRecordType');
     }
 
     study.state.subjectTypeSettings.forEach(it => {
-        if (compareIds(it.customRecordTypeId, customRecordTypeId)) {
-            throw new ApiError(400, 'DuplicateSubjectType')
+        if (it.customRecordType === customRecordType) {
+            throw new ApiError(400, 'DuplicateSubjectRecordType')
         }
     })
 
@@ -73,7 +73,7 @@ handler.triggerSystemEvents = async ({
     personnelId,
 }) => {
     var { type: messageType, payload } = message;
-    var { id, lastKnownEventId, customRecordTypeId } = payload;
+    var { id, lastKnownEventId, customRecordType } = payload;
 
     var channel = (
         rohrpost
@@ -85,7 +85,7 @@ handler.triggerSystemEvents = async ({
 
     var messages = PushMaker({ personnelId }).all({
         '/state/subjectTypeSettings': {
-            customRecordTypeId,
+            customRecordType,
             ageFrameSettings: [],
             generalConditionList: []
         },

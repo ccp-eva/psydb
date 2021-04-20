@@ -30,7 +30,7 @@ handler.checkAllowedAndPlausible = async ({
     var {
         id,
         lastKnownEventId,
-        customRecordTypeId,
+        customRecordType,
         ageFrame,
         props,
     } = message.payload;
@@ -53,11 +53,15 @@ handler.checkAllowedAndPlausible = async ({
     var ageFrameSettings = undefined,
         subjectTypeSettingsIndex = undefined;
     for (var [index, it] of subjectTypeSettings.entries()) {
-        if (compareIds(it.customRecordTypeId, customRecordTypeId)) {
+        if (it.customRecordType === customRecordType) {
             ageFrameSettings = it.ageFrameSettings;
             subjectTypeSettingsIndex = index;
             break;
         }
+    }
+
+    if (!ageFrameSettings) {
+        throw new ApiError(400, 'InvalidSubjectRecordType')
     }
 
     var conditionList = undefined,
@@ -94,7 +98,7 @@ handler.triggerSystemEvents = async ({
     var { 
         id,
         lastKnownEventId,
-        customRecordTypeId,
+        customRecordType,
         ageFrame,
         props,
     } = payload;
