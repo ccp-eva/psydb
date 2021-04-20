@@ -92,6 +92,7 @@ handler.triggerSystemEvents = async ({
 
         forcedExperimentId: id,
 
+        type: 'away-team',
         reservationId: reservation._id,
         seriesId: reservation.state.seriesId,
         studyId: reservation.state.studyId,

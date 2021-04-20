@@ -133,7 +133,7 @@ const LocationModal = ({
                     interval: {
                         start: start.toISOString(),
                         end: (
-                            new Date(startOfDay + Duration(end))
+                            new Date(startOfDay + Duration(end) - 1)
                             .toISOString()
                         ),
                     }

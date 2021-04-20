@@ -16,7 +16,10 @@ var checkConflictingLocationReservations = async ({
         db.collection('reservation')
         .find({
             'state.locationId': locationId,
-            'state.interval.start': { $lte: interval.end },
+            // we are switching to half open intervals
+            // i.e. ends are set on .000Z
+            // therefor $lt is the way to go
+            'state.interval.start': { $lt: interval.end },
             'state.interval.end': { $gt: interval.start }
         })
         .toArray()
@@ -38,7 +41,10 @@ var checkConflictingSubjectExperiments = async ({
         db.collection('experiment')
         .aggregate([
             { $match: {
-                'state.interval.start': { $lte: interval.end },
+                // we are switching to half open intervals
+                // i.e. ends are set on .000Z
+                // therefor $lt is the way to go
+                'state.interval.start': { $lt: interval.end },
                 'state.interval.end': { $gt: interval.start }
             }},
             { $unwind: '$state.subjects' },
@@ -64,6 +70,7 @@ var dispatchAllChannelMessages = async ({
     personnelId,
 
     forcedExperimentId,
+    type,
     seriesId,
     reservationId,
     studyId,
@@ -140,6 +147,7 @@ var dispatchAllChannelMessages = async ({
             id: forcedExperimentId,
             isNew: true,
             additionalChannelProps: {
+                type,
                 //reservationId: reservation._id
             }
         })

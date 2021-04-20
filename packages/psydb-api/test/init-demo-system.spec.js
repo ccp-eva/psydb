@@ -12,6 +12,8 @@ var expect = require('chai').expect,
     Driver = require('@mpieva/psydb-driver-nodejs'),
     withApi = require('../src/middleware/api');
 
+var inline = require('@cdxoo/inline-string');
+
 describe('init-demo-system', function () {
     this.timeout(0);
     
@@ -131,7 +133,14 @@ describe('init-demo-system', function () {
         //response = await agent.get(`/read/study/default/${context.STUDY_01_ID}`);
         console.log('###############')
         //response = await agent.get(`/available-test-locations-for-study/${context.STUDY_01_ID}/${context.INSTITUTEROOM_TYPE_ID}`);
-        response = await agent.get(`/experiment-operator-teams-for-study/${context.STUDY_01_ID}`);
+        //response = await agent.get(`/experiment-operator-teams-for-study/${context.STUDY_01_ID}`);
+        response = await agent.get(inline`
+            /study-location-reservation-calendar
+            /2021-01-01T00:00:00.000Z
+            /2021-12-12T00:00:00.000Z
+            /${context.STUDY_01_ID}
+            /${context.INSTITUTEROOM_TYPE_ID}
+        `);
         console.dir(response.status, { depth: null });
         console.dir(response.body, { depth: null });
     });

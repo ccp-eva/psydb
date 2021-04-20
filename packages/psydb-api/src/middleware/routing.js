@@ -11,6 +11,8 @@ var compose = require('koa-compose'),
     init = require('../init-endpoint'),
     endpoints = require('../endpoints/');
 
+var inline = require('@cdxoo/inline-string');
+
 var createRouting = ({
     prefix = '/',
 } = {}) => {
@@ -90,6 +92,22 @@ var createRouting = ({
         withPermissions(),
         withEndpointProtection({ endpoint: 'experiment-operator-teams-for-study' }),
         endpoints.special.experimentOperatorTeamsForStudy
+    );
+
+    router.get(
+        inline`
+            /study-location-reservation-calendar
+            /:start
+            /:end
+            /:studyId
+            /:locationRecordTypeId
+        `,
+        withSelfAuth(),
+        withPermissions(),
+        withEndpointProtection({ endpoint: (
+            'study-location-reservation-calendar'
+        )}),
+        endpoints.special.studyLocationReservationCalendar
     );
 
     return compose([
