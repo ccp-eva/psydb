@@ -7,9 +7,9 @@ var MatchIntervalOverlapStage = ({
 }) => {
     recordIntervalPath = recordIntervalPath || 'state.interval';
     return ({ $match: {
-        $or: [
+        $and: [
             { [`${recordIntervalPath}.start`]: { $lt: end } },
-            { [`${recordIntervalPath}.end`]: { $gt: start } },
+            { [`${recordIntervalPath}.start`]: { $gte: start } },
         ]
     }})
 }

@@ -1,19 +1,27 @@
 import {
     format,
+    add,
+    sub,
     set,
     setDay,
     startOfWeek,
+    endOfWeek,
     startOfDay,
+    endOfDay,
 } from 'date-fns';
 
 import de from 'date-fns/locale/de';
 
 // using subset; adding additional stuff
 const custom = {
+    add,
+    sub,
     set,
     setDay,
     startOfWeek,
+    endOfWeek,
     startOfDay,
+    endOfDay,
 }
 
 custom.format = (date, fmt, options = {}) => (
@@ -23,13 +31,13 @@ custom.format = (date, fmt, options = {}) => (
     })
 );
 
-custom.startOfUTCDay = (date) => {
+/*custom.startOfUTCDay = (date) => {
     return custom.set(date, {
         hours: 0,
         minutes: 0,
         seconds: 0,
         miliseconds: 0,
     })
-};
+};*/
 
 export default custom;

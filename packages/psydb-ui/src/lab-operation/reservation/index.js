@@ -11,7 +11,7 @@ import {
 
 import agent from '@mpieva/psydb-ui-request-agents';
 import RecordPicker from './record-picker';
-import LocationCalendar from './location-calendar';
+import LocationCalendarList from './location-calendar-list';
 
 var up = (url, levels = 0) => {
     for (var i = 0; i < levels; i += 1) {
@@ -188,55 +188,16 @@ const LocationTypeContainer = ({
         it.type === locationRecordType
     ));
     
-    var { inhouseTestLocationSettings } = studyRecord.state;
-    /*var locationTypeSettings = inhouseTestLocationSettings.find(it => (
-        it.customRecordTypeId === locationTypeMetadata._id
-    ));
-
-    console.log(locationTypeSettings)*/
-
-    /*var {
-        customRecordTypeId,
-        enableAllAvailableLocations,
-        enabledLocationIds,
-    } = locationTypeSettings;*/
-
-    var [ isInitialized, setIsInitialized ] = useState(false);
-    var [ locationRecords, setLocationRecords ] = useState([]);
-    useEffect(() => {
-        agent.fetchAvailableTestLocationsForStudy({
-            studyId: studyRecord._id,
-            locationRecordTypeId: locationTypeMetadata._id
-        })
-        .then((response) => {
-            setLocationRecords(response.data.data.records);
-        })
-    }, [ studyRecord, locationRecordType ]);
-
-    if (locationRecords.length < 1) {
-        return (
-            <div>no locations available</div>
-        )
-    }
-
     return (
-        <Switch>
-            <Route exact path={ path }>
-                <Redirect to={`${url}/${locationRecords[0]._id}`} />
-            </Route>
-            <Route path={ `${path}/:locationId`}>
-                <LocationContainer
-                    customRecordTypes={ customRecordTypes }
-                    studyRecord={ studyRecord }
-                    locationRecords={ locationRecords }
-                    teamRecords={ teamRecords }
-                />
-            </Route>
-        </Switch>
+        <LocationCalendarList
+            teamRecords={ teamRecords }
+            studyId={ studyRecord._id }
+            locationRecordTypeId={ locationTypeMetadata._id }
+        />
     );
 }
 
-const LocationContainer = ({
+/*const LocationContainer = ({
     customRecordTypes,
     locationRecords,
     teamRecords,
@@ -259,9 +220,10 @@ const LocationContainer = ({
                 locationRecord={ locationRecord }
                 studyId={ studyId }
             />
+
         </>
     );
-}
+}*/
 
 const AwayTeamReservation = () => {
     return (

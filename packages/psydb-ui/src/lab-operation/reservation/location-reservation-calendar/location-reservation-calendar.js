@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect, useReducer, useMemo } from 'react';
 
 import {
     useRouteMatch,
@@ -10,8 +10,10 @@ import {
     Row,
 } from 'react-bootstrap';
 
+import agent from '@mpieva/psydb-ui-request-agents';
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 import LocationModal from './location-modal';
+import TimeSlotList from './time-slot-list';
 
 var range = n => [ ...Array(n).keys() ]
 
@@ -34,19 +36,16 @@ const reservationModalReducer = (state, action) => {
 }
 
 const LocationCalendar = ({
-    locationRecord,
-    teamRecords,
     studyId,
+    locationRecord,
+    reservationRecords,
+    experimentRecords,
+    teamRecords,
+    currentPageStart,
+    currentPageEnd,
+    onPageChange,
 }) => {
     var { path, url } = useRouteMatch();
-
-    var [ currentWeekStart, setCurrentWeekStart ] = (
-        useState(datefns.startOfWeek(new Date()))
-    );
-
-    var handleDateChange = ({ nextDate }) => {
-        setCurrentWeekStart(nextDate);
-    }
 
     var [ modalState, dispatchModalAction ] = (
         useReducer(reservationModalReducer, {
@@ -71,8 +70,6 @@ const LocationCalendar = ({
         });
     }
 
-    console.log(locationRecord);
-
     var {
         canBeReserved,
         canBeReservedByResearchGroupIds,
@@ -86,8 +83,18 @@ const LocationCalendar = ({
         end: endTimeInt
     } = possibleReservationTimeInterval;
 
+    var allDayStarts = useMemo(() => (
+        getDayStartsInInterval({
+            start: currentPageStart,
+            end: currentPageEnd
+        })
+    ), [ currentPageStart, currentPageEnd ]);
+
     return (
-        <>
+        <div>
+            <header>
+                { locationRecord._recordLabel }
+            </header>
             <LocationModal
                 show={ modalState.showModal }
                 onHide={ handleCloseModal }
@@ -102,78 +109,39 @@ const LocationCalendar = ({
             <div>actions</div>
             <Container>
                 <Row>
-                    { range(7).map(it => (
-                        <Col key={ it }>
-                            <TimeSlots
-                                studyId={ studyId }
-                                weekStart={ currentWeekStart  }
-                                weekdayIndex={ it }
-                                startTimeInt={ startTimeInt }
-                                endTimeInt={ endTimeInt }
-                                slotDuration={ reservationSlotDuration }
-                                onSelectSlot={ handleShowModal }
-                            />
+                    { allDayStarts.map(dayStart => (
+                        <Col key={ dayStart.getTime() }>
+                            <TimeSlotList { ...({
+                                studyId,
+                                dayStart,
+                                startTimeInt,
+                                endTimeInt,
+                                slotDuration: reservationSlotDuration,
+                                onSelectSlot: handleShowModal,
+                            })} />
                         </Col>
                     )) }
                 </Row>
             </Container>
-        </>
+        </div>
     );
 }
 
-const TimeSlots = ({
-    studyId,
-    weekStart,
-    weekdayIndex,
-    startTimeInt,
-    endTimeInt,
-    slotDuration,
-    onSelectSlot,
-}) => {
-    var day = datefns.setDay(weekStart, weekdayIndex + 1);
-    var dayStart = datefns.startOfDay(day);
-    var start = new Date(dayStart.getTime() + startTimeInt);
-    var end = new Date(dayStart.getTime() + endTimeInt);
+const getDayStartsInInterval = ({ start, end }) => {
+    var startList = [];
 
-    var slots = [];
-    for (var t = start.getTime(); t < end.getTime(); t += slotDuration) {
-        slots.push(new Date(t));
+    var currentStart = datefns.startOfDay(start);
+    while (currentStart.getTime() < end.getTime()) {
+        startList.push(currentStart);
+        currentStart = (
+            // FIXME: start of day is here for safety since im unsure
+            // if dst is properly handled in that case in momentjs it
+            // doesnt work for adding weeks and above units
+            datefns.startOfDay(datefns.add(currentStart, { days: 1 }))
+        );
     }
-
-    return (
-        <div>
-            <header>
-                <div>{ datefns.format(start, 'cccccc dd.MM.') }</div>
-                <div>Uhrzeit</div>
-            </header>
-            { slots.map((date) => (
-                <Slot
-                    key={ date.getTime() }
-                    date={ date }
-                    slotDuration={ slotDuration }
-                    studyId={ studyId }
-                    onSelect={ (props) => onSelectSlot({
-                        ...props,
-                        maxEnd: end,
-                    }) }
-                />
-            ))}
-        </div>
-    )
-}
-
-const Slot = ({
-    date,
-    slotDuration,
-    studyId,
-    onSelect,
-}) => {
-
-    return (
-        <div onClick={ () => onSelect({ date, slotDuration }) }>
-            { datefns.format(date, 'p') }
-        </div>
-    );
+    
+    return startList;
 }
 
 export default LocationCalendar;

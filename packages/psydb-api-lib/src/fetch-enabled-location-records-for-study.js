@@ -1,5 +1,5 @@
 'use strict';
-var compareIds = require('@mpieva/psydb-api-lib/src/compare-ids');
+var compareIds = require('./compare-ids');
 var createRecordLabel = require('./create-record-label');
 
 var fetchEnabledLocationRecordsForStudy = async ({

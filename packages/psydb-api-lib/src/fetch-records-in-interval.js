@@ -2,7 +2,7 @@
 var { 
     MatchIntervalOverlapStage,
     StripEventsStage,
-} = require('@mpieva/psydb-api-lib/src/fetch-record-helpers');
+} = require('./fetch-record-helpers');
 
 var fetchRecordsInInterval = async ({
     db,

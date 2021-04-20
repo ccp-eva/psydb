@@ -93,4 +93,21 @@ agent.fetchExperimentOperatorTeamsForStudy = ({
     return axios.get(`${baseUrl}/${studyId}`);
 }
 
+agent.fetchStudyLocationReservationCalendar = ({
+    studyId,
+    locationRecordTypeId,
+    start,
+    end
+}) => {
+    
+    var baseUrl = '/api/study-location-reservation-calendar';
+    return axios.get([
+        baseUrl,
+        start.toISOString(),
+        end.toISOString(),
+        studyId,
+        locationRecordTypeId
+    ].join('/'));
+}
+
 export default agent;
