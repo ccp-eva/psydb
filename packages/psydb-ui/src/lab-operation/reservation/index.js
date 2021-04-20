@@ -149,10 +149,7 @@ const LocationReservationContainer = ({
         )
     }
 
-    var { customRecordTypeId } = inhouseTestLocationSettings[0];
-    var { type: locationRecordType } = customRecordTypes.find(it => (
-        it._id === customRecordTypeId
-    ));
+    var { customRecordType } = inhouseTestLocationSettings[0];
 
     return (
         <div>
@@ -162,11 +159,10 @@ const LocationReservationContainer = ({
             />
             <Switch> 
                 <Route exact path={ path }>
-                    <Redirect to={`${url}/${locationRecordType}`} />
+                    <Redirect to={`${url}/${customRecordType}`} />
                 </Route>
                 <Route path={ `${path}/:locationRecordType`}>
                     <LocationTypeContainer
-                        customRecordTypes={ customRecordTypes }
                         studyRecord={ studyRecord }
                         teamRecords={ teamRecords }
                     />
@@ -177,22 +173,17 @@ const LocationReservationContainer = ({
 }
 
 const LocationTypeContainer = ({
-    customRecordTypes,
     studyRecord,
     teamRecords,
 }) => {
     var { path, url } = useRouteMatch();
     var { locationRecordType } = useParams();
 
-    var locationTypeMetadata = customRecordTypes.find(it => (
-        it.type === locationRecordType
-    ));
-    
     return (
         <LocationCalendarList
             teamRecords={ teamRecords }
             studyId={ studyRecord._id }
-            locationRecordTypeId={ locationTypeMetadata._id }
+            locationRecordType={ locationRecordType }
         />
     );
 }
@@ -241,9 +232,9 @@ const LocationTypeNav = ({
     return (
         <div>
             { settingsList.map(
-                ({ customRecordTypeId }) => {
+                ({ customRecordType }) => {
                     var metadata = customRecordTypes.find(it => (
-                        it._id === customRecordTypeId
+                        it.type === customRecordType
                     ));
                     return (
                         <LinkButton

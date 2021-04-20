@@ -8,7 +8,7 @@ import LocationReservationCalendar from './location-reservation-calendar';
 
 const LocationCalendarList = ({
     studyId,
-    locationRecordTypeId,
+    locationRecordType,
     teamRecords,
     currentPageStart,
     currentPageEnd,
@@ -19,7 +19,7 @@ const LocationCalendarList = ({
     useEffect(() => {
         agent.fetchStudyLocationReservationCalendar({
             studyId,
-            locationRecordTypeId,
+            locationRecordType,
             start: currentPageStart,
             end: currentPageEnd,
         })
@@ -28,7 +28,7 @@ const LocationCalendarList = ({
         })
     }, [
         studyId,
-        locationRecordTypeId,
+        locationRecordType,
         teamRecords,
         currentPageStart,
         currentPageEnd,

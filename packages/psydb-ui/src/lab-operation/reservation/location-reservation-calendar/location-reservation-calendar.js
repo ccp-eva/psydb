@@ -12,12 +12,13 @@ import {
 
 import agent from '@mpieva/psydb-ui-request-agents';
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
-import LocationModal from './location-modal';
+import CreateModal from './create-modal';
+import DeleteModal from './delete-modal';
 import TimeSlotList from './time-slot-list';
 
 var range = n => [ ...Array(n).keys() ]
 
-const reservationModalReducer = (state, action) => {
+const createModalReducer = (state, action) => {
     switch(action.type) {
         case 'open':
             return ({
@@ -26,6 +27,22 @@ const reservationModalReducer = (state, action) => {
                 date: action.payload.date,
                 slotDuration: action.payload.slotDuration,
                 maxEnd: action.payload.maxEnd,
+            });
+        case 'close':
+            return ({
+                ...state,
+                showModal: false
+            })
+    }
+}
+
+const deleteModalReducer = (state, action) => {
+    switch(action.type) {
+        case 'open':
+            return ({
+                ...state,
+                showModal: true,
+                date: action.payload.date,
             });
         case 'close':
             return ({
@@ -47,25 +64,40 @@ const LocationCalendar = ({
 }) => {
     var { path, url } = useRouteMatch();
 
-    var [ modalState, dispatchModalAction ] = (
-        useReducer(reservationModalReducer, {
+    var [ createModalState, dispatchCreateModalAction ] = (
+        useReducer(createModalReducer, {
             showModal: false
         })
     );
 
-    var handleShowModal = ({ date, slotDuration, maxEnd }) => {
-        dispatchModalAction({
+    var handleShowCreateModal = ({ date, slotDuration, maxEnd }) => {
+        dispatchCreateModalAction({
             type: 'open',
-            payload: {
-                date,
-                slotDuration,
-                maxEnd
-            }
+            payload: { date, slotDuration, maxEnd }
         })
     }
 
-    var handleCloseModal = () => {
-        dispatchModalAction({
+    var handleCloseCreateModal = () => {
+        dispatchCreateModalAction({
+            type: 'close',
+        });
+    }
+
+    var [ deleteModalState, dispatchDeleteModalAction ] = (
+        useReducer(deleteModalReducer, {
+            showModal: false
+        })
+    );
+
+    var handleShowDeleteModal = ({ date }) => {
+        dispatchDeleteModalAction({
+            type: 'open',
+            payload: { date }
+        })
+    }
+
+    var handleCloseDeleteModal = () => {
+        dispatchDeleteModalAction({
             type: 'close',
         });
     }
@@ -95,37 +127,68 @@ const LocationCalendar = ({
             <header>
                 { locationRecord._recordLabel }
             </header>
-            <LocationModal
-                show={ modalState.showModal }
-                onHide={ handleCloseModal }
+
+            <CreateModal
+                show={ createModalState.showModal }
+                onHide={ handleCloseCreateModal }
                 studyId={ studyId }
                 locationId={ locationRecord._id }
-                start={ modalState.date }
-                slotDuration={ modalState.slotDuration }
-                maxEnd={ modalState.maxEnd }
+                start={ createModalState.date }
+                slotDuration={ createModalState.slotDuration }
+                maxEnd={ createModalState.maxEnd }
                 teamRecords={ teamRecords }
+                onSuccessfulCreate={ () => {} }
+            />
+
+            <DeleteModal
+                show={ deleteModalState.showModal }
+                onHide={ handleCloseDeleteModal }
+                studyId={ studyId }
+                locationId={ locationRecord._id }
+                date={ deleteModalState.date }
+                reservationRecords={ reservationRecords }
+                teamRecords={ teamRecords }
+                onSuccessfulDelete={ () => {} }
             />
 
             <div>actions</div>
-            <Container>
-                <Row>
-                    { allDayStarts.map(dayStart => (
-                        <Col key={ dayStart.getTime() }>
-                            <TimeSlotList { ...({
-                                studyId,
-                                dayStart,
-                                startTimeInt,
-                                endTimeInt,
-                                slotDuration: reservationSlotDuration,
-                                onSelectSlot: handleShowModal,
-                            })} />
-                        </Col>
-                    )) }
-                </Row>
-            </Container>
+
+            <TimeTable { ...({
+                studyId,
+                teamRecords,
+                reservationRecords,
+                experimentRecords,
+                allDayStarts,
+                startTimeInt,
+                endTimeInt,
+                slotDuration: reservationSlotDuration,
+                onSelectEmptySlot: handleShowCreateModal,
+                onSelectReservationSlot: handleShowDeleteModal,
+            })} />
+
         </div>
     );
 }
+
+const TimeTable = ({ allDayStarts, ...other }) => (
+
+    <Container>
+        <Row>
+            { allDayStarts.map(dayStart => (
+                <Col
+                    key={ dayStart.getTime() }
+                    className='p-0'
+                >
+                    <TimeSlotList
+                        { ...other }
+                        dayStart={ dayStart }
+                    />
+                </Col>
+            )) }
+        </Row>
+    </Container>
+
+)
 
 const getDayStartsInInterval = ({ start, end }) => {
     var startList = [];

@@ -95,7 +95,7 @@ agent.fetchExperimentOperatorTeamsForStudy = ({
 
 agent.fetchStudyLocationReservationCalendar = ({
     studyId,
-    locationRecordTypeId,
+    locationRecordType,
     start,
     end
 }) => {
@@ -106,7 +106,7 @@ agent.fetchStudyLocationReservationCalendar = ({
         start.toISOString(),
         end.toISOString(),
         studyId,
-        locationRecordTypeId
+        locationRecordType
     ].join('/'));
 }
 

@@ -92,7 +92,7 @@ var uiSchema = {
 
 var SchemaForm = withTheme(Bootstrap4Theme);
 
-const LocationModal = ({
+const CreateModal = ({
     show,
     onHide,
     studyId,
@@ -167,4 +167,4 @@ const LocationModal = ({
     );
 }
 
-export default LocationModal;
+export default CreateModal;

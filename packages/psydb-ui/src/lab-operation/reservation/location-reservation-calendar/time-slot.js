@@ -1,15 +1,48 @@
 import React, { useState, useEffect, useReducer, useMemo } from 'react';
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
+import getTextColor from '@mpieva/psydb-ui-lib/src/bw-text-color-for-background';
 
 const TimeSlot = ({
-    date,
+    timestamp,
+    reservationRecord,
+    experimentRecord,
+
     slotDuration,
     studyId,
-    onSelect,
+    teamRecords,
+    onSelectEmptySlot,
+    onSelectReservationSlot,
 }) => {
+    var date = new Date(timestamp);
+    if (experimentRecord) {
+        return (
+            // TODO
+            <div>E</div>
+        )
+    }
+    if (reservationRecord) {
+        var teamRecord = teamRecords.find(it => (
+            it._id === reservationRecord.state.experimentOperatorTeamId
+        ));
+        return (
+            <div
+                style={{
+                    background: teamRecord.state.color,
+                    color: getTextColor(teamRecord.state.color)
+                }}
+                onClick={ () => onSelectReservationSlot({
+                    date
+                })}
+            >
+                { datefns.format(date, 'p') }
+            </div>
+        );
+    }
     return (
-        <div onClick={ () => onSelect({ date, slotDuration }) }>
+        <div onClick={ () => onSelectEmptySlot({ date, slotDuration }) }>
             { datefns.format(date, 'p') }
+            { reservationRecord ? 'R' : '' }
+            { experimentRecord ? 'E' : '' }
         </div>
     );
 }
