@@ -30,7 +30,7 @@ handler.checkAllowedAndPlausible = async ({
     var {
         id,
         lastKnownEventId,
-        customRecordTypeId,
+        customRecordType,
         enabledLocationIds
     } = message.payload;
 
@@ -49,7 +49,10 @@ handler.checkAllowedAndPlausible = async ({
 
     var customRecordType = await (
         db.collection('customRecordType')
-        .findOne({ _id: customRecordTypeId })
+        .findOne({
+            collection: 'location',
+            type: customRecordType
+        })
     );
 
     if (!customRecordType) {
@@ -61,7 +64,7 @@ handler.checkAllowedAndPlausible = async ({
     }
 
     study.state.inhouseTestLocationSettings.forEach(it => {
-        if (compareIds(it.customRecordTypeId, customRecordTypeId)) {
+        if (it.customRecordType, customRecordType) {
             throw new ApiError(400, 'DuplicateLocationType')
         }
     })
@@ -83,7 +86,7 @@ handler.triggerSystemEvents = async ({
     var {
         id,
         lastKnownEventId,
-        customRecordTypeId,
+        customRecordType,
         enableAllAvailableLocations,
         enabledLocationIds,
     } = payload;
@@ -98,7 +101,7 @@ handler.triggerSystemEvents = async ({
 
     var messages = PushMaker({ personnelId }).all({
         '/state/inhouseTestLocationSettings': {
-            customRecordTypeId,
+            customRecordType,
             enableAllAvailableLocations,
             enabledLocationIds,
         },

@@ -63,6 +63,10 @@ handler.triggerSystemEvents = async ({
     var { type: messageType, payload } = message;
     var { id, props } = payload;
 
+    var locationRecord = await (
+        db.collection('location').findOne({ _id: props.locationId })
+    );
+
     var channel = (
         rohrpost
         .openCollection('reservation')
@@ -81,6 +85,7 @@ handler.triggerSystemEvents = async ({
         '/state/studyId': props.studyId,
         '/state/experimentOperatorTeamId': props.experimentOperatorTeamId,
         '/state/locationId': props.locationId,
+        '/state/locationRecordType': locationRecord.type,
         '/state/interval/start': props.interval.start,
         '/state/interval/end': props.interval.end,
     });

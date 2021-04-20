@@ -139,7 +139,7 @@ describe('init-demo-system', function () {
             /2021-01-01T00:00:00.000Z
             /2021-12-12T00:00:00.000Z
             /${context.STUDY_01_ID}
-            /${context.INSTITUTEROOM_TYPE_ID}
+            /instituteroom
         `);
         console.dir(response.status, { depth: null });
         console.dir(response.body, { depth: null });

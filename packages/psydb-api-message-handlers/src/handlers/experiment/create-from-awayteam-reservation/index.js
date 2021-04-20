@@ -85,6 +85,10 @@ handler.triggerSystemEvents = async ({
 
     var { reservation } = cache;
 
+    var locationRecord = await (
+        db.collection('location').findOne({ _id: props.locationId })
+    );
+
     await dispatchAllChannelMessages({
         db,
         rohrpost,
@@ -100,6 +104,7 @@ handler.triggerSystemEvents = async ({
         interval: reservation.state.interval,
 
         locationId: props.locationId,
+        locationRecordType: locationRecord.type,
         subjectGroupIds: props.subjectGroupIds,
         subjectIds: props.subjectIds,
 

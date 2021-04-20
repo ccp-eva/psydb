@@ -100,7 +100,7 @@ var createRouting = ({
             /:start
             /:end
             /:studyId
-            /:locationRecordTypeId
+            /:locationRecordType
         `,
         withSelfAuth(),
         withPermissions(),

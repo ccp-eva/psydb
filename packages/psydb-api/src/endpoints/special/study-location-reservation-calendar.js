@@ -17,19 +17,20 @@ var fetchEnabledLocationRecordsForStudy = require('@mpieva/psydb-api-lib/src/fet
 var {
     ExactObject,
     Id,
+    IdentifierString,
     DateTime,
 } = require('@mpieva/psydb-schema-fields');
 
 var ParamsSchema = () => ExactObject({
     properties: {
         studyId: Id(),
-        locationRecordTypeId: Id(),
+        locationRecordType: IdentifierString(),
         start: DateTime(),
         end: DateTime(),
     },
     required: [
         'studyId',
-        'locationRecordTypeId',
+        'locationRecordType',
         'start',
         'end'
     ]
@@ -51,7 +52,7 @@ var studyLocationReservationCalendar = async (context, next) => {
 
     var {
         studyId,
-        locationRecordTypeId,
+        locationRecordType,
         start,
         end
     } = params;
@@ -69,10 +70,18 @@ var studyLocationReservationCalendar = async (context, next) => {
         throw new ApiError(404, 'NoAccessibleStudyRecordFound');
     }
 
+    var { inhouseTestLocationSettings } = studyRecord.state;
+    var locationTypeSettings = inhouseTestLocationSettings.find(it => (
+        it.customRecordType, locationRecordType
+    ));
+
+    if (!locationTypeSettings) {
+        throw new ApiError(400, 'LocationRecordTypeNotFound');
+    }
+
     var locationRecords = await fetchEnabledLocationRecordsForStudy({
         db,
-        studyRecord,
-        locationRecordTypeId
+        locationTypeSettings,
     });
 
     var reservationRecords = await fetchRecordsInInterval({

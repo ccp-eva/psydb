@@ -176,9 +176,7 @@ var StudyState = ({
                 default: [],
                 items: ExactObject({
                     properties: {
-                        customRecordTypeId: ForeignId({
-                            collection: 'customRecordType',
-                        }),
+                        customRecordType: IdentifierString(),
                         enableAllAvailableLocations: {
                             type: 'boolean',
                             default: false

@@ -4,28 +4,19 @@ var createRecordLabel = require('./create-record-label');
 
 var fetchEnabledLocationRecordsForStudy = async ({
     db,
-    studyRecord,
-    locationRecordTypeId,
+    locationTypeSettings,
 }) => {
 
-    var { inhouseTestLocationSettings } = studyRecord.state;
-    var locationTypeSettings = inhouseTestLocationSettings.find(it => (
-        compareIds(it.customRecordTypeId, locationRecordTypeId)
-    ));
-
-    if (!locationTypeSettings) {
-        throw new ApiError(400, 'LocationRecordTypeNotFound');
-    }
-
     var {
-        customRecordTypeId,
+        customRecordType,
         enableAllAvailableLocations, // TODO: maybe remove this feature?
         enabledLocationIds,
     } = locationTypeSettings;
 
     var customRecordTypeRecord = await (
         db.collection('customRecordType').findOne({
-            _id: customRecordTypeId
+            collection: 'location',
+            type: customRecordType
         })
     );
 

@@ -91,6 +91,7 @@ handler.triggerSystemEvents = async ({
         studyId: reservation.state.studyId,
         experimentOperatorTeamId: reservation.state.experimentOperatorTeamId,
         locationId: reservation.state.locationId,
+        locationRecordType: reservation.state.locationRecordType,
         interval: reservation.state.interval,
 
         subjectGroupIds: props.subjectGroupIds,
