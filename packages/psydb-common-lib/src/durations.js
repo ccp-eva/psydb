@@ -20,7 +20,7 @@ durations.Duration = (string) => {
     }
 
     var matched = string.match(
-        /^(\d+):([0-5][0-9])(?::([0-5][0-9])(?:\.([0-9]{3}))?)?$/
+        /^(\d+):([0-5][0-9])(?::([0-5][0-9])(?:\.([0-9]{3}))?)?Z?$/
     );
     if (!matched) {
         throw new Error(`invalid duration string "${string}"`);

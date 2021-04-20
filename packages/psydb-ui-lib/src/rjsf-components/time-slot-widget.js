@@ -18,7 +18,8 @@ const TimeSlotWidget = (ps) => {
         registry: { widgets: { BaseInput }},
         schema,
         uiSchema,
-        
+    
+        id,
         name,
         value,
         onChange,
@@ -51,15 +52,21 @@ const TimeSlotWidget = (ps) => {
         <Form.Control
             as='select'
             { ...{
+                id,
                 name,
-                onChange,
+                onChange: (event) => {
+                    onChange(event);
+                },
                 onBlur,
                 onFocus,
                 value
             }}
         >
             { slots.map(it => (
-                <option key={ it }>
+                <option
+                    key={ it }
+                    value={ FormattedDuration(it) + 'Z' }
+                >
                     { FormattedDuration(it, { resolution: 'MINUTE'}) }
                 </option>
             ))}

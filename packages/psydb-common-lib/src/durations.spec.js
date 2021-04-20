@@ -29,7 +29,7 @@ describe('durations', () => {
                 '0:00:30': 30000,
                 '0:00:30': 30000,
                 '100:00': 3600000 * 100,
-                '00:00:30.123': 30123, 
+                '00:00:30.123Z': 30123, 
             }
             Object.keys(mapping).forEach(str => {
                 var int = Duration(str);

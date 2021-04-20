@@ -31,6 +31,10 @@ const ExperimentOperatorTeamIdWidget = (ps) => {
                         backgroundColor: state.color,
                         color: getTextColor(state.color)
                     }}
+                    onClick={ (event) => {
+                        // FIXME: i hate this so much
+                        onChange({ target: { value: _id }})
+                    }}
                 >
                     <Form.Check>
                         <Form.Check.Input
@@ -38,13 +42,7 @@ const ExperimentOperatorTeamIdWidget = (ps) => {
                             type='radio'
                             name={ name }
                             checked={ _id === value }
-                            onChange={ (event) => {
-                                // FIXME: i hate this so much
-                                var { target: { value }} = event;
-                                onChange({ target: { value: _id }})
-                            }}
-                            onBlur={ onBlur }
-                            onFocus={ onFocus }
+                            onChange={ () => { /*noop */}}
                         />
                         <Form.Check.Label htmlFor={ `${id}~${_id}` }>
                             { state.name }

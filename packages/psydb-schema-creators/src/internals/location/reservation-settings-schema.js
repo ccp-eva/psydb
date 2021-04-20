@@ -59,6 +59,12 @@ var reservationSettingsSchema = {
                     maximum: 4*60*60*1000, // 4 hours (arbitrary)
                     multipleOf: 15*60*1000, // 15 minutes
                 },
+                timezone: {
+                    title: 'Zeitzone',
+                    type: 'string',
+                    const: 'Europe/Berlin',
+                    default: 'Europe/Berlin',
+                }
             },
             required: [
                 'canBeReserved',
@@ -66,6 +72,7 @@ var reservationSettingsSchema = {
                 'disabledForReservationIntervals',
                 'possibleReservationTimeInterval',
                 'reservationSlotDuration',
+                'timezone',
             ],
         })
     ]

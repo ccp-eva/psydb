@@ -130,8 +130,8 @@ const TimeSlots = ({
     slotDuration,
     onSelectSlot,
 }) => {
-    var day = datefns.setDay(weekStart, weekdayIndex);
-    var dayStart = datefns.startOfUTCDay(day);
+    var day = datefns.setDay(weekStart, weekdayIndex + 1);
+    var dayStart = datefns.startOfDay(day);
     var start = new Date(dayStart.getTime() + startTimeInt);
     var end = new Date(dayStart.getTime() + endTimeInt);
 
