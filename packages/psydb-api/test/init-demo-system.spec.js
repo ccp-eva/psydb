@@ -114,7 +114,7 @@ describe('init-demo-system', function () {
         });*/
 
         // console.dir(response.body, { depth: null });
-        /*var response = await agent.post('/search').send({
+        var response = await agent.post('/search').send({
             collectionName: 'subject',
             recordType: 'teacher',
             filters: {
@@ -122,7 +122,7 @@ describe('init-demo-system', function () {
             },
             offset: 0,
             limit: 20,
-        });*/
+        });
         /*var response = await agent.post('/search').send({
             collectionName: 'customRecordType',
             filters: {},
@@ -141,7 +141,7 @@ describe('init-demo-system', function () {
             /${context.STUDY_01_ID}
             /instituteroom
         `);*/
-        response = await agent.post('/testable-subjects-inhouse/').send({
+        /*response = await agent.post('/testable-subjects-inhouse/').send({
             subjectRecordType: 'teacher',
             studyIds: [ context.STUDY_01_ID ],
             timeFrameStart: '1979-04-01T00:00:00.000Z',
@@ -149,7 +149,7 @@ describe('init-demo-system', function () {
             customAgeFrameConditions: [],
             offset: 0,
             limit: 100,
-        });
+        });*/
         console.dir(response.status, { depth: null });
         console.dir(response.body, { depth: null });
     });
