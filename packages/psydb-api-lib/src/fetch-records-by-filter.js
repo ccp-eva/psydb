@@ -85,7 +85,7 @@ var fetchRecordByFilter = async ({
         db.collection(collectionName).aggregate(stages).toArray()
     );
 
-    console.dir(resultSet);
+    //console.dir(resultSet);
 
     if (recordLabelDefinition) {
         resultSet.forEach(it => {

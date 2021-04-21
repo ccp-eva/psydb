@@ -4,6 +4,9 @@ module.exports = {
     MatchIntervalOverlapStage: require('./match-interval-overlap-stage'),
     StripEventsStage: require('./strip-events-stage'),
 
+    AddSubjectTestabilityFieldsStage: require('./add-subject-testability-fields-stage'),
+    HasAnyTestabilityStage: require('./has-any-testability-stage'),
+
     QuickSearchStages: require('./quick-search-stages'),
     SeperateRecordLabelDefinitionFieldsStage: require('./seperate-record-label-definition-fields-stage'),
 }
