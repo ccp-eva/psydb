@@ -69,7 +69,7 @@ var testableSubjectsInhouse = async (context, next) => {
 
     var conditionsByStudy = {};
     for (var study of studyRecords) {
-        conditionsByStudy[study._id] = makeCondition({
+        conditionsByStudy[`_testableIn_${study._id}`] = makeCondition({
             timeFrameStart,
             timeFrameEnd,
             subjectRecordTypeRecord,
@@ -77,6 +77,25 @@ var testableSubjectsInhouse = async (context, next) => {
             studyRecord: study,
         });
     }
+
+    var subjectRecords = await db.collection('subject').aggregate([
+        { $match: {
+            type: subjectRecordType,
+        }},
+        // TODO: optimization
+        // first match children that ar in any of the timeshifted
+        // age frames; this should reduce the size enough most of the time
+        { $addFields: conditionsByStudy },
+        // at least on of the condition fields must be true
+        { $match: { $or: Object.keys(conditionsByStudy).map(key => ({
+            [key]: true,
+        }))}},
+        StripEventsStage({ subChannels: ['gdpr', 'scientific']}),
+    ]).toArray();
+
+    console.dir(subjectRecords, { depth: null });
+
+
     
     /*var p = { $addFields: {
         _convertedAgeFrameField: {
@@ -108,18 +127,45 @@ var makeCondition = ({
     ))
 
     var base = {
+        $and: [
         // exclude study itself
-        'state.participatedInStudyIds': { $nin: [
-            studyRecord._id,
-            // ... exlcuded studies
-        ]},
+            { $not: { $in: [
+                '$scientific.state.participatedInStudyIds',
+                [ 
+                    studyRecord._id,
+                    // ... exlcuded studies
+                ]
+            ]}},
+        ]
+    };
+
+    var testingPermissions = {
+        // is the child allowed to be tested by the studies researchgroups
+        // we currently require at least one group
+        $or: studyRecord.state.researchGroupIds.map(groupId => ({
+            $gt: [
+                { $size: {
+                    $filter: {
+                        input: '$scientific.state.testingPermissions.canBeTestedInhouse',
+                        as: 'item',
+                        cond: { $and: [
+                            { $eq: [ '$$item.researchGroupId', groupId ]},
+                            { $eq: [ '$$item.permission', 'yes' ]}
+                        ]}
+                    }
+                }},
+                0,
+            ]
+        }))
+
         // TODO: global conditions
-    }
+    };
 
     if (ageFrameField) {
         console.log(subjectTypeSettings);
-        var ageFrameConditions = [];
+        var combinedAgeFrameConditions = [];
         for (var item of subjectTypeSettings.ageFrameSettings) {
+            var ageFrameConditions = []
             var { ageFrame, conditionList } = item;
 
             var timeShifted = {
@@ -134,21 +180,46 @@ var makeCondition = ({
                 end: datefns.sub(timeFrameEnd, { days: ageFrame.start }),
             }
 
-            var ageFrameFieldPath = `custom.${ageFrameField.key}`;
+            var ageFrameFieldPath = (
+                `$scientific.state.custom.${ageFrameField.key}`
+            );
             ageFrameConditions.push({
                 $and: [
-                    { [ageFrameFieldPath]: { $gte: timeShifted.start }},
-                    { [ageFrameFieldPath]: { $lt: timeShifted.end }},
+                    { $gte: [ ageFrameFieldPath, timeShifted.start ]},
+                    { $lt: [ ageFrameFieldPath, timeShifted.end ]},
                 ]
             })
 
             for (var condition of conditionList) {
-                //ageFrameConditions.push()
+                console.log(condition);
+                var conditionFieldPath = (
+                    `$scientific.state.custom.${condition.field}`
+                );
+                ageFrameConditions.push({
+                    [conditionFieldPath]: { $in: condition.values }
+                })
             }
-
+            
+            combinedAgeFrameConditions.push({ $and: ageFrameConditions });
         }
-        console.dir(ageFrameConditions, { depth: null });
     }
+
+    var mongoCondOperation = {
+        $cond: {
+            if: {
+                $and: [
+                    base,
+                    testingPermissions,
+                    //{ $or: combinedAgeFrameConditions }
+                ]
+            },
+            then: true,
+            else: false
+        }
+    }
+
+    console.dir(mongoCondOperation, { depth: null });
+    return mongoCondOperation;
 };
 
 module.exports = testableSubjectsInhouse;

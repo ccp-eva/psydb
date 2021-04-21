@@ -144,8 +144,8 @@ describe('init-demo-system', function () {
         response = await agent.post('/testable-subjects-inhouse/').send({
             subjectRecordType: 'teacher',
             studyIds: [ context.STUDY_01_ID ],
-            timeFrameStart: '2021-04-01T00:00:00.000Z',
-            timeFrameEnd: '2021-04-15T00:00:00.000Z',
+            timeFrameStart: '1979-04-01T00:00:00.000Z',
+            timeFrameEnd: '1981-04-15T00:00:00.000Z',
             customAgeFrameConditions: [],
             offset: 0,
             limit: 100,
