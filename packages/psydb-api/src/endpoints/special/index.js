@@ -3,4 +3,6 @@ module.exports = {
     experimentOperatorTeamsForStudy: require('./experiment-operator-teams-for-study'),
     studyLocationReservationCalendar: require('./study-location-reservation-calendar'),
     testableSubjectsInhouse: require('./testable-subjects-inhouse'),
+
+    testableSubjectTypesForStudies: require('./testable-subject-types-for-studies'),
 }

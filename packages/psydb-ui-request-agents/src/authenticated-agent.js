@@ -99,7 +99,6 @@ agent.fetchStudyLocationReservationCalendar = ({
     start,
     end
 }) => {
-    
     var baseUrl = '/api/study-location-reservation-calendar';
     return axios.get([
         baseUrl,
@@ -108,6 +107,40 @@ agent.fetchStudyLocationReservationCalendar = ({
         studyId,
         locationRecordType
     ].join('/'));
+}
+
+agent.fetchTestableSubjectTypesForStudies = ({
+    studyIds,
+}) => {
+    return axios.post(
+        '/api/testable-subject-types-for-studies',
+        { studyIds }
+    );
+}
+
+agent.searchTestableSubjectsInhouse = ({
+    studyRecordType,
+    subjectRecordType,
+    studyIds,
+    timeFrameStart,
+    timeFrameEnd,
+    customAgeFrameConditions = [],
+    offset = 0,
+    limit = 100,
+}) => {
+    return axios.post(
+        '/api/testable-subjects-inhouse',
+        {
+            studyRecordType,
+            subjectRecordType,
+            studyIds,
+            timeFrameStart,
+            timeFrameEnd,
+            customAgeFrameConditions,
+            offset,
+            limit,
+        }
+    );
 }
 
 export default agent;

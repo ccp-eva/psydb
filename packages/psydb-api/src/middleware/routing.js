@@ -110,6 +110,16 @@ var createRouting = ({
         endpoints.special.studyLocationReservationCalendar
     );
 
+    router.post('/testable-subject-types-for-studies',
+        withSelfAuth(),
+        withPermissions(),
+        withEndpointProtection({
+            endpoint: 'testable-subject-types-for-studies'
+        }),
+        withKoaBody(),
+        endpoints.special.testableSubjectTypesForStudies
+    );
+
     router.post('/testable-subjects-inhouse',
         withSelfAuth(),
         withPermissions(),

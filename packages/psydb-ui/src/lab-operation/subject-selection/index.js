@@ -15,6 +15,7 @@ import {
 
 import agent from '@mpieva/psydb-ui-request-agents';
 
+import LinkButton from '@mpieva/psydb-ui-lib/src/link-button';
 import RecordListContainer from '@mpieva/psydb-ui-lib/src/record-list-container';
 
 const reducer = (state, action) => {
@@ -64,9 +65,14 @@ const SubjectSelectionRouting = () => {
                     background: '#ffffff',
                 }}
             >
-                Ausgewählt: { selectedStudyIds.length }
+                <b>Ausgewählt: { selectedStudyIds.length }</b>
                 {' '}
-                <Button>Suchen</Button>
+                <LinkButton
+                    to={ `${url}/${selectedStudyIds.join(',')}`}
+                    disabled={ selectedStudyIds.length < 1 }
+                >
+                    Suchen
+                </LinkButton>
             </div>
 
             <RecordListContainer
