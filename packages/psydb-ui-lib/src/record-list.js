@@ -5,6 +5,11 @@ import {
     Table
 } from 'react-bootstrap';
 
+import {
+    CheckSquareFill,
+    Square
+} from 'react-bootstrap-icons';
+
 import agent from '@mpieva/psydb-ui-request-agents';
 import LinkButton from './link-button';
 
@@ -19,7 +24,12 @@ var RecordList = ({
 
     enableView,
     enableEdit,
+
+    enableSelectRecords,
+    showSelectionIndicator,
+    selectedRecordIds,
     onSelectRecord,
+    
     linkBaseUrl
 }) => {
     var [ isInitialized, setIsInitialized ] = useState(false);
@@ -54,29 +64,54 @@ var RecordList = ({
         );
     }
 
+    var wrappedOnSelectRecord = (record) => {
+        if (!onSelectRecord) {
+            return
+        }
+
+        var action = (
+            selectedRecordIds.includes(record._id)
+            ? ({ type: 'remove', payload: { id: record._id } })
+            : ({ type: 'add', payload: { id: record._id } })
+        );
+
+        return onSelectRecord(action);
+    }
+
     return (
         <Table hover={ onSelectRecord ? true : false }>
-            <TableHead displayFieldData={ payload.displayFieldData } />
-            <TableBody
-                records={ payload.records }
+            <TableHead
                 displayFieldData={ payload.displayFieldData }
-                
-                enableView={ enableView }
-                enableEdit={ enableEdit }
-                onSelectRecord={ onSelectRecord }
-
-                linkBaseUrl={ linkBaseUrl }
+                showSelectionIndicator={ showSelectionIndicator }
             />
+            <TableBody { ...({
+                records: payload.records,
+                displayFieldData: payload.displayFieldData,
+
+                enableView,
+                enableEdit,
+
+                enableSelectRecords,
+                showSelectionIndicator,
+                onSelectRecord: wrappedOnSelectRecord,
+                selectedRecordIds,
+
+                linkBaseUrl
+            })} />
         </Table>
     );
 }
 
 const TableHead = ({
     displayFieldData,
+    showSelectionIndicator,
 }) => {
     return (
         <thead>
             <tr>
+                { showSelectionIndicator && (
+                    <th></th>
+                )}
                 { displayFieldData.map(it => (
                     <th key={ it.key }>{ it.displayName }</th>
                 ))}
@@ -92,22 +127,31 @@ const TableBody = ({
 
     enableView,
     enableEdit,
+    
+    enableSelectRecord,
+    showSelectionIndicator,
     onSelectRecord,
+    selectedRecordIds,
     
     linkBaseUrl,
 }) => {
     return (
         <tbody>
             { records.map(it => (
-                <TableRow
-                    key={ it._id }
-                    record={ it }
-                    displayFieldData={ displayFieldData }
-                    enableView={ enableView }
-                    enableEdit={ enableEdit }
-                    onSelectRecord={ onSelectRecord }
-                    linkBaseUrl={ linkBaseUrl }
-                />
+                <TableRow { ...({
+                    key: it._id,
+                    record: it,
+
+                    displayFieldData,
+                    enableView,
+                    enableEdit,
+                    linkBaseUrl,
+                
+                    enableSelectRecord,
+                    showSelectionIndicator,
+                    onSelectRecord,
+                    selectedRecordIds,
+                })} />
             )) }
         </tbody>
     )
@@ -119,11 +163,25 @@ const TableRow = ({
     
     enableView,
     enableEdit,
+
+    enableSelectRecord,
+    showSelectionIndicator,
     onSelectRecord,
+    selectedRecordIds,
+
     linkBaseUrl,
 }) => {
     return (
         <tr onClick={ onSelectRecord && (() => onSelectRecord(record)) }>
+            { showSelectionIndicator && (
+                <td>
+                    {
+                        selectedRecordIds.includes(record._id)
+                        ? <CheckSquareFill />
+                        : <Square />
+                    }
+                </td>
+            )}
             { displayFieldData.map(it => {
                 var rawValue = jsonpointer.get(record, it.dataPointer);
                 // TODO use stringifiers from common

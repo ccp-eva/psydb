@@ -39,7 +39,8 @@
     "@mpieva/psydb-schema-creators": "~0.1.0-alpha",
     "moment": "~2.29.1",
     "react-datetime": "~3.0.4",
-    "@mpieva/psydb-common-lib": "~0.1.0-alpha"
+    "@mpieva/psydb-common-lib": "~0.1.0-alpha",
+    "react-bootstrap-icons": "~1.4.0"
   },
   "config": {
     "mongodbMemoryServer": {

@@ -11,13 +11,13 @@ const BigNav = ({ items }) => {
 
     return (
         <nav>
-            { items.map(it => (
+            { items.map(({ linkUrl, linkTo, label }) => (
                 <h2
-                    key={ it.linkTo }
+                    key={ linkUrl || linkTo }
                     style={{ border: '1px solid lightgrey'}}
                 >
-                    <LinkContainer to={`${url}/${strip(it.linkTo)}`}>
-                        <a>{ it.label } {'->'}</a>
+                    <LinkContainer to={ linkUrl || `${url}/${strip(linkTo)}`}>
+                        <a>{ label } {'->'}</a>
                     </LinkContainer>
                 </h2>
             ))}

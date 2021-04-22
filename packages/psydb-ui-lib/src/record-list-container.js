@@ -12,6 +12,9 @@ const RecordListContainer = ({
     enableView,
     enableEdit,
 
+    enableSelectRecords,
+    showSelectionIndicator,
+    selectedRecordIds,
     onSelectRecord,
 }) => {
     var { path, url } = useRouteMatch();
@@ -23,16 +26,19 @@ const RecordListContainer = ({
                     Neuer Eintrag
                 </LinkButton>
             )}
-            <RecordList
-                linkBaseUrl={ url }
-                collection={ collection }
-                recordType={ recordType }
+            <RecordList { ...({
+                linkBaseUrl: url,
+                collection,
+                recordType,
 
-                enableView={ enableView }
-                enableEdit={ enableEdit }
+                enableView,
+                enableEdit,
 
-                onSelectRecord={ onSelectRecord }
-            />
+                enableSelectRecords,
+                showSelectionIndicator,
+                selectedRecordIds,
+                onSelectRecord,
+            }) } />
         </div>
     );
 }

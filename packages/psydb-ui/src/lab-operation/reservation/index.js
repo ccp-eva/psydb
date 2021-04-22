@@ -10,15 +10,9 @@ import {
 } from 'react-router-dom';
 
 import agent from '@mpieva/psydb-ui-request-agents';
+import up from '@mpieva/psydb-ui-lib/src/url-up';
 import RecordPicker from './record-picker';
 import LocationCalendarList from './location-calendar-list';
-
-var up = (url, levels = 0) => {
-    for (var i = 0; i < levels; i += 1) {
-        url = url.replace(/[\/]?[^/]+$/, '');
-    }
-    return url;
-}
 
 const ReservationRouting = ({ customRecordTypes }) => {
     var { path, url } = useRouteMatch();

@@ -10,10 +10,12 @@ import {
 } from 'react-router-dom';
 
 import agent from '@mpieva/psydb-ui-request-agents';
+import up from '@mpieva/psydb-ui-lib/src/url-up';
 import BigNav from '@mpieva/psydb-ui-lib/src/big-nav';
 import RecordTypeNav from '@mpieva/psydb-ui-lib/src/record-type-nav';
 
 import ReservationRouting from './reservation';
+import SubjectSelectionRouting from './subject-selection';
 
 const LabOperation = () => {
     var { path, url } = useRouteMatch();
@@ -51,56 +53,94 @@ const LabOperation = () => {
             </header>
             <Switch>
                 <Route exact path={`${path}`}>
-                    {( 
-                        studyTypes.length === 1
-                        ? (
-                            <Redirect to={ `${url}/${studyTypes[0].type}` }/>
-                        )
-                        : ( 
-                            <>
-                                <h2>Studientypen</h2>
-                                <RecordTypeNav items={ studyTypes } />
-                            </>
-                        )
-                    )}
+                    <RedirectOrTypeNav
+                        baseUrl={ `${url}/index` }
+                        studyTypes={ studyTypes }
+                    />
                 </Route>
-                <Route exact path={`${path}/:studyType`}>
-                    <BigNav items={[
-                        { 
-                            label: 'Reservierung',
-                            linkTo: '/reservation'
-                        },
-                        { 
-                            label: 'Probandenauswahl',
-                            linkTo: '/subject-selection'
-                        },
-                        {
-                            label: 'Terminbestätigung',
-                            linkTo: '/experiment-confirmation'
-                        },
-                        {
-                            label: 'Nachbereitung',
-                            linkTo: '/experiment-postprocessing'
-                        },
-                    ]} />
+                <Route exact path={`${path}/index/:studyType`}>
+                    <OperationNav />
                 </Route>
-                <Route path={`${path}/:studyType/reservation`}>
+
+                <Route exact path={`${path}/reservation`}>
+                    <RedirectOrTypeNav
+                        baseUrl={ `${url}/reservation` }
+                        studyTypes={ studyTypes }
+                    />
+                </Route>
+                <Route path={`${path}/reservation/:studyType`}>
                     <ReservationRouting
                         customRecordTypes={ metadata.customRecordTypes }
                     />
                 </Route>
-                <Route path={`${path}/:studyType/subject-selection`}>
-                    <div>
-                        <div>have tabs for inhouse/away</div>
-                        <div>select studies (multiple)</div>
-                        <div>select subject type</div>
-                        <div>select age-windows</div>
-                    </div>
+
+                <Route exact path={`${path}/subject-selection`}>
+                    <RedirectOrTypeNav
+                        baseUrl={ `${url}/subject-selection` }
+                        studyTypes={ studyTypes }
+                    />
+                </Route>
+                <Route path={`${path}/subject-selection/:studyType`}>
+                    <SubjectSelectionRouting />
                 </Route>
             </Switch>
         </div>
 
     )
+}
+
+const RedirectOrTypeNav = ({
+    baseUrl,
+    studyTypes,
+    title,
+}) => {
+    if (studyTypes.length === 1) {
+        return (
+            <Redirect to={
+                `${baseUrl}/${studyTypes[0].type}`
+            } />
+        )
+    }
+    else {
+        return (
+            <>
+                { title && (
+                    <h2>{ title }</h2>
+                )}
+                <RecordTypeNav items={ studyTypes } />
+            </>
+        )
+    }
+}
+
+const OperationNav = () => {
+    var { path, url } = useRouteMatch();
+    var { studyType } = useParams();
+
+    console.log(url);
+    var baseUrl = up(url, 2);
+    console.log(baseUrl);
+
+    return (
+        <BigNav items={[
+            { 
+                label: 'Reservierung',
+                linkUrl: `${baseUrl}/reservation/${studyType}`,
+            },
+            { 
+                label: 'Probandenauswahl',
+                linkUrl: `${baseUrl}/subject-selection/${studyType}`,
+            },
+            {
+                label: 'Terminbestätigung',
+                linkUrl: `${baseUrl}/experiment-confirmation/${studyType}`,
+            },
+            {
+                label: 'Nachbereitung',
+                linkUrl: `${baseUrl}/experiment-postprocessing/${studyType}`,
+            },
+        ]} />
+    );
 }
 
 export default LabOperation;

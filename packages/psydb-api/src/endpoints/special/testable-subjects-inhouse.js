@@ -85,6 +85,7 @@ var testableSubjectsInhouse = async (context, next) => {
 
     var subjectRecords = await db.collection('subject').aggregate([
         { $match: { type: subjectRecordType }},
+        // TODO: quicksearch
         /*...QuickSearchStages({
             queryFields,
             fieldTypeConversions,
@@ -97,6 +98,8 @@ var testableSubjectsInhouse = async (context, next) => {
             timeFrameEnd,
             subjectRecordTypeRecord,
             studyRecords,
+            // TODO: ageframe custom verrides
+            // TODO: global study settings filters in stage itself
         }),
         HasAnyTestabilityStage({
             studyIds
