@@ -21,16 +21,17 @@ var debug = require('debug')('psydb:api:endpoints:search');
 var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
     Ajv = require('@mpieva/psydb-api-lib/src/ajv'),
     ResponseBody = require('@mpieva/psydb-api-lib/src/response-body'),
-    keyBy = require('@mpieva/psydb-common-lib/src/key-by'),
-    gatherDisplayFieldData = require('@mpieva/psydb-common-lib/src/gather-display-field-data');
+    keyBy = require('@mpieva/psydb-common-lib/src/key-by');
 
 var CoreBodySchema = require('./core-body-schema'),
     FullBodySchema = require('./full-body-schema');
 
 var fetchCustomRecordType = require('@mpieva/psydb-api-lib/src/fetch-custom-record-type');
+var gatherDisplayFieldsForRecordType = require('@mpieva/psydb-api-lib/src/gather-display-fields-for-record-type');
 var fetchRecordsByFilter = require('@mpieva/psydb-api-lib/src/fetch-records-by-filter');
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
+var convertFiltersToQueryFields = require('@mpieva/psydb-api-lib/src/convert-filters-to-query-fields');
 var convertConstraintsToMongoPath = require('@mpieva/psydb-api-lib/src/convert-constraints-to-mongo-path');
 
 var fieldTypeMetadata = require('./field-type-metadata');
@@ -77,45 +78,13 @@ var search = async (context, next) => {
     }
 
     var {
-        hasCustomTypes,
-        hasSubChannels,
-        recordLabelDefinition,
-        availableStaticDisplayFields,
-        staticDisplayFields,
-    } = collectionCreatorData;
-
-    var displayFields = undefined,
-        availableDisplayFieldData = undefined;;
-    if (hasCustomTypes) {
-        var customRecordType = await fetchCustomRecordType({
-            db,
-            collection: collectionName,
-            type: recordType,
-        });
-
-        recordLabelDefinition = (
-            customRecordType.state.recordLabelDefinition
-        );
-
-        displayFields = customRecordType.state[
-            target === 'optionlist'
-            ? 'optionListDisplayFields'
-            : 'tableDisplayFields'
-        ];
-
-        availableDisplayFieldData = [
-            ...(availableStaticDisplayFields || []),
-            ...gatherDisplayFieldData({
-                customRecordTypeData: customRecordType
-            })
-        ]
-    }
-    // TODO: fixed types maybe
-    else {
-        // recodLabelDefinition is already set
-        displayFields = staticDisplayFields || [];
-        availableDisplayFieldData = availableStaticDisplayFields || [];
-    }
+        displayFields,
+        availableDisplayFieldData,
+    } = await gatherDisplayFieldsForRecordType({
+        db,
+        collectionName,
+        customRecordType: recordType
+    });
 
     isValid = ajv.validate(
         FullBodySchema({
@@ -136,32 +105,16 @@ var search = async (context, next) => {
         limit,
     } = request.body;
 
-    var displayFieldsByDataPointer = keyBy({
-        items: displayFields,
-        byProp: 'dataPointer'
+    var queryFields = convertFiltersToQueryFields({
+        filters,
+        displayFields,
+        fieldTypeMetadata,
     });
 
-    /*var convertedFilters = (
-        convertConstraintsToMongoPath(filters)
-    );*/
-
-    //console.log(convertedFilters);
-
-    var queryFields = [];
-    for (var dataPointer of Object.keys(filters)) {
-        var value = filters[dataPointer];
-        var displayField = displayFieldsByDataPointer[dataPointer];
-        var metadata = fieldTypeMetadata[displayField.systemType];
-
-        queryFields.push({
-            systemType: displayField.systemType,
-            searchType: metadata.searchType,
-            dataPointer,
-            value
-        });
-    }
-
-    //console.log(queryFields);
+    var {
+        hasSubChannels,
+        recordLabelDefinition,
+    } = collectionCreatorData;
 
     var records = await fetchRecordsByFilter({
         db,

@@ -13,7 +13,10 @@ var {
     StripEventsStage,
     AddSubjectTestabilityFieldsStage,
     HasAnyTestabilityStage,
+    ProjectDisplayFieldsStage,
 } = require('@mpieva/psydb-api-lib/src/fetch-record-helpers');
+
+var gatherDisplayFieldsForRecordType = require('@mpieva/psydb-api-lib/src/gather-display-fields-for-record-type');
 
 var testableSubjectsInhouse = async (context, next) => {
     var { 
@@ -35,6 +38,13 @@ var testableSubjectsInhouse = async (context, next) => {
     // TODO: check body + unmarshal
     timeFrameStart = new Date(timeFrameStart);
     timeFrameEnd = new Date(timeFrameEnd);
+
+    // TODO: not sure might be don via endpoint check
+    /*if (
+        !permissions.hasRootAccess
+    ) {
+        throw new ApiError(403, 'PermissionDenied');
+    }*/
 
     var subjectRecordTypeRecord = await (
         db.collection('customRecordType').findOne(
@@ -66,8 +76,19 @@ var testableSubjectsInhouse = async (context, next) => {
         }
     }
 
+    var {
+        displayFields,
+        availableDisplayFieldData,
+    } = await gatherDisplayFieldsForRecordType({
+        prefetched: subjectRecordTypeRecord,
+    });
+
     var subjectRecords = await db.collection('subject').aggregate([
         { $match: { type: subjectRecordType }},
+        /*...QuickSearchStages({
+            queryFields,
+            fieldTypeConversions,
+        }),*/
         // TODO: optimization
         // first match children that ar in any of the timeshifted
         // age frames; this should reduce the size enough most of the time
@@ -81,6 +102,14 @@ var testableSubjectsInhouse = async (context, next) => {
             studyIds
         }),
         StripEventsStage({ subChannels: ['gdpr', 'scientific']}),
+        ProjectDisplayFieldsStage({
+            displayFields,
+            additionalProjection: {
+                ...( studyIds.reduce((acc, id) => ({
+                    ...acc, [`_testableIn_${id}`]: true,
+                }), {}))
+            }
+        }),
     ]).toArray();
 
     console.dir(subjectRecords, { depth: null });
