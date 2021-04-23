@@ -31,7 +31,7 @@ var testableSubjectTypesForStudies = async (context, next) => {
         }},
         StripEventsStage(),
     ]).toArray()
-    
+
     var subjectRecordTypes = [];
     for (var study of studyRecords) {
         var { subjectTypeSettings } = study.state;
@@ -39,10 +39,24 @@ var testableSubjectTypesForStudies = async (context, next) => {
             subjectRecordTypes.push(item.customRecordType);
         } 
     }
+
+    var subjectRecordTypeRecords = await (
+        db.collection('customRecordType').aggregate([
+            { $match: {
+                collection: 'subject',
+                type: { $in: subjectRecordTypes }
+            }},
+            { $project: {
+                collection: true,
+                type: true,
+                'state.label': true,
+            }}
+        ]).toArray()
+    );
     
     context.body = ResponseBody({
         data: {
-            subjectRecordTypes
+            subjectRecordTypeRecords,
         }
     });
 
