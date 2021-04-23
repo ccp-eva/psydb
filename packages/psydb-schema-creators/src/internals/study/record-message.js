@@ -8,14 +8,16 @@ var internals = require('../');
 var StudyRecordMessage = ({
     op, // create/patch/delete
     type,
-    customFieldDefinitions,
+    //customFieldDefinitions,
+    propsSchema,
 }) => {
     return SingleChannelRecordMessage({
         op,
+        propsSchema,
         collection: 'study',
         type,
-        customFieldDefinitions,
-        stateSchemaCreator: internals.StudyState
+        /*customFieldDefinitions,
+        stateSchemaCreator: internals.StudyState*/
     })
 }
 

@@ -1,5 +1,5 @@
 'use strict';
-var IndentifierString = require('./identifier-string');
+var IdentifierString = require('./identifier-string');
 
 var CustomRecordTypeFieldKey = ({ collection, type, ...other }) => {
     return ({

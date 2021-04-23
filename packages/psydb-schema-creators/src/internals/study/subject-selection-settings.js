@@ -7,24 +7,32 @@ var ExternalLocationGroupingsItem = (
     require('./external-location-groupings-item')
 );
 
-var SubjectSelectionSettingsItem = (
-    require('./subject-selection-settings-item')
+var SubjectTypeSettingsItem = (
+    require('./subject-type-settings-item')
 );
 
-var SubjectSelectionSettings = ({} = {}) => ExactObject({
-    systemType: 'SubjectSelectionSettings',
-    externalLocationGroupings: {
-        systemType: 'ExternalLocationGroupings',
-        type: 'array',
-        default: [],
-        items: ExternalLocationGroupingsItem()
-    },
-    subjectTypeSettings: {
-        systemType: 'SubjectTypeSettings',
-        type: 'array',
-        default: [],
-        items: SubjectTypeSettingsItem()
-    }
-});
+var SubjectSelectionSettings = ({
+    subjectRecordTypeRecords,
+} = {}) => (
+    ExactObject({
+        systemType: 'SubjectSelectionSettings',
+        externalLocationGroupings: {
+            systemType: 'ExternalLocationGroupings',
+            type: 'array',
+            default: [],
+            items: ExternalLocationGroupingsItem({
+                subjectRecordTypeRecords,
+            })
+        },
+        /*subjectTypeSettings: {
+            systemType: 'SubjectTypeSettings',
+            type: 'array',
+            default: [],
+            items: SubjectTypeSettingsItem({
+                subjectRecordTypeRecords,
+            })
+        }*/
+    })
+);
 
 module.exports = SubjectSelectionSettings;

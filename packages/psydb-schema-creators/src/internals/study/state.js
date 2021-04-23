@@ -3,6 +3,10 @@ var inline = require('@cdxoo/inline-text'),
     CustomProps = require('../../common/custom-props'),
     systemPermissionsSchema = require('../../common/system-permissions-schema');
 
+var SubjectSelectionSettings = (
+    require('./subject-selection-settings')
+);
+
 var {
     ExactObject,
     ForeignId,
@@ -52,39 +56,15 @@ var AgeFrameSettings = ({
     ]
 });
 
-var DoBTypeSettings = ({
-    subjectType,
-    customFieldDefinitions
-} = {}) => ExactObject({
-    properties: {
-        subjectType: { const: subjectType },
-        ageFrameSettingsList: {
-            type: 'array',
-            default: [],
-            items: AgeFrameSettings({
-                customFieldDefinitions
-            })
-        }
-    },
-    required: [
-        'subjectType',
-        'ageFrameSettingsList'
-    ]
-})
-
-var Settings = ({
-
-} = {}) => ExactObject({
-    
-})
-
 // TODO: stub; needs conditions handling somehow
 // also we need condition templates for study types
-var StudyState = ({
-    customFieldDefinitions,
-    customSubjectTypes,
-    enableInternalProps,
-} = {}) => {
+var StudyState = (ps = {}) => {
+    var {
+        customFieldDefinitions,
+        subjectRecordTypeRecords,
+        enableInternalProps,
+    } = ps;
+
     var schema = ExactObject({
         properties: {
             
@@ -154,6 +134,7 @@ var StudyState = ({
             }),*/
 
             // grouping
+            // TODO: moved
             externalTestLocationFields: {
                 type: 'array',
                 default: [],
@@ -198,12 +179,17 @@ var StudyState = ({
             },
 
             // TODO: stub
+            // TODO: moved
             subjectTypeSettings: {
                 type: 'array',
                 default: [],
             }, 
 
             // TODO: excluded study ids
+
+            subjectSelectionSettings: SubjectSelectionSettings({
+                subjectRecordTypeRecords,
+            }),
 
             ...(enableInternalProps && {
                 interals: {

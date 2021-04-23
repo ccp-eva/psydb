@@ -7,6 +7,7 @@ var {
 } = require('@mpieva/psydb-schema-fields');
 
 var fetchOneCustomRecordType = require('./fetch-one-custom-record-type');
+var fetchCustomRecordTypes = require('./fetch-custom-record-types');
 var createSchemaForRecordType = require('@mpieva/psydb-common-lib/src/create-schema-for-record-type');
 
 var createSchemaForRecordTypeWithAutoFetch = async ({
@@ -16,9 +17,9 @@ var createSchemaForRecordTypeWithAutoFetch = async ({
     subChannelKey,
     fullSchema,
     prefetchedCustomRecordTypes,
-    customRecordTypeCollection,
     additionalSchemaCreatorArgs
 }) => {
+    additionalSchemaCreatorArgs = additionalSchemaCreatorArgs || {};
 
     var collectionCreatorData = allSchemaCreators[collectionName];
     if (!collectionCreatorData) {
@@ -55,6 +56,17 @@ var createSchemaForRecordTypeWithAutoFetch = async ({
                 type: recordType
             });
         }
+    }
+
+    switch (collectionName) {
+        case 'study':
+            additionalSchemaCreatorArgs = {
+                ...additionalSchemaCreatorArgs,
+                subjectRecordTypeRecords: await fetchCustomRecordTypes({
+                    db,
+                    collection: 'subject',
+                })
+            }
     }
 
     var schema = createSchemaForRecordType({

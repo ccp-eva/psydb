@@ -1,5 +1,11 @@
 'use strict';
 
+var {
+    ExactObject,
+    CustomRecordTypeFieldKey,
+    DaysSinceBirthInterval,
+} = require('@mpieva/psydb-schema-fields');
+
 var AgeFrameSettingsItem = ({
     //subjectRecordTypeDataPointer, // required for generic solutiona
     // TODO: pass subjectRecord Type data and use oneOf
@@ -7,7 +13,7 @@ var AgeFrameSettingsItem = ({
     subjectRecordTypeFieldData,
 }) => ExactObject({
     properties: {
-        ageFrame: AgeFrame(),
+        ageFrame: DaysSinceBirthInterval(),
         conditionList: {
             type: 'array',
             default: [],

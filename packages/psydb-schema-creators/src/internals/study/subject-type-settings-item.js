@@ -6,7 +6,7 @@ var {
 
 var AgeFrameSettingsItem = require('./age-frame-settings-item');
 
-var SubjectSelectionSettingsItem = () => ExactObject({
+var SubjectTypeSettingsItem = () => ExactObject({
     systemType: 'SubjectSelectionSettingsItem',
     properties: {
         subjectRecordType: CustomRecordTypeName({ collection: 'subject' }),
@@ -28,4 +28,4 @@ var SubjectSelectionSettingsItem = () => ExactObject({
     ],
 })
 
-module.exports = SubjectSelectionSettingsItem;
+module.exports = SubjectTypeSettingsItem;

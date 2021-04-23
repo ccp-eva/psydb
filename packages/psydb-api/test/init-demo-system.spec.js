@@ -129,7 +129,7 @@ describe('init-demo-system', function () {
             offset: 0,
             limit: 20,
         });*/
-        //var response = await agent.get('/metadata/schema/location/school');
+        var response = await agent.get('/metadata/record-schema/study/default');
         //response = await agent.get(`/read/study/default/${context.STUDY_01_ID}`);
         console.log('###############')
         //response = await agent.get(`/available-test-locations-for-study/${context.STUDY_01_ID}/${context.INSTITUTEROOM_TYPE_ID}`);
@@ -154,8 +154,8 @@ describe('init-demo-system', function () {
             limit: 100,
         });*/
         
-        //console.dir(response.status, { depth: null });
-        //console.dir(response.body, { depth: null });
+        console.dir(response.status, { depth: null });
+        console.dir(response.body, { depth: null });
     });
 
 });

@@ -14,6 +14,7 @@ var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
     Ajv = require('@mpieva/psydb-api-lib/src/ajv');
 
+var createSchemaForRecordType = require('@mpieva/psydb-api-lib/src/create-schema-for-record-type');
 
 var checkSchema = async ({ db, getRecordSchemas, message }) => {
     var { 
@@ -37,29 +38,55 @@ var checkSchema = async ({ db, getRecordSchemas, message }) => {
         throw new ApiError(400, 'InvalidCollection');
     }
 
-    var args = {
-        op,
-    };
-    if (hasCustomTypes) {
-        var customRecordType = await findCustomRecordType({
-            db, collection, type: recordType
+    var schema = undefined;
+    if (collection === 'study') {
+        // FIXME; thats a hack we need combinedStateSchemas flag
+        // to be recognized in utility function to make this work
+        // properly
+        var fullDocumentSchema = await createSchemaForRecordType({
+            db,
+            collectionName: collection,
+            recordType: recordType,
+            fullSchema: true,
+            additionalSchemaCreatorArgs: {
+                enableInternalProps: false,
+            }
         });
+        
+        schema = RecordMessage({
+            op,
+            type: recordType,
+            // FIXME: see above
+            propsSchema: fullDocumentSchema.properties.state,
+        });
+    }
+    else {
+        var args = {
+            op,
+        };
+        if (hasCustomTypes) {
+            var customRecordType = await findCustomRecordType({
+                db, collection, type: recordType
+            });
 
-        args.type = recordType;
+            args.type = recordType;
 
-        if (hasSubChannels) {
-            args.subChannelCustomFieldDefinitions = (
-                customRecordType.state.settings.subChannelFields
-            );
+            if (hasSubChannels) {
+                args.subChannelCustomFieldDefinitions = (
+                    customRecordType.state.settings.subChannelFields
+                );
+            }
+            else {
+                args.customFieldDefinitions = (
+                    customRecordType.state.settings.fields
+                );
+            }
         }
-        else {
-            args.customFieldDefinitions = (
-                customRecordType.state.settings.fields
-            );
-        }
+
+        schema = RecordMessage({ ...args });
     }
 
-    var schema = RecordMessage({ ...args });
+    //console.dir(schema, { depth: null })
 
     var ajv = Ajv();
 
@@ -74,14 +101,14 @@ var checkSchema = async ({ db, getRecordSchemas, message }) => {
     }
 }
 
-var createItem = ({
+/*var createItem = ({
     createSchemaCallback, schemas, ...other
 }) => ({
     messageType: createRecordMessageType(other),
     schema: createSchemaCallback({
         schemas, ...other
     }),
-})
+})*/
 
 // FIXME: redundant
 var findCustomRecordType = async ({ db, collection, type }) => {

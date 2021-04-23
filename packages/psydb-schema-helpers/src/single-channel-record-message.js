@@ -18,6 +18,7 @@ var SingleChannelRecordCreateMessage = ({
     staticCreatePropSchemas,
     customFieldDefinitions,
     stateSchemaCreator,
+    propsSchema,
 }) => {
     staticCreatePropSchemas = staticCreatePropSchemas || {};
 
@@ -38,9 +39,9 @@ var SingleChannelRecordCreateMessage = ({
         payload: ExactObject({
             properties: {
                 id: Id(), // user can optionally force create id
-                props: stateSchemaCreator({
+                props: propsSchema || stateSchemaCreator({
                     enableInternalProps: false,
-                    customFieldDefinitions
+                    customFieldDefinitions,
                 }),
                 
                 ...staticCreatePropSchemas,
@@ -58,13 +59,14 @@ var SingleChannelRecordPatchMessage = ({
     type,
     customFieldDefinitions,
     stateSchemaCreator,
+    propsSchema,
 }) => {
     return Message({
         type: createMessageType({ collection, type, op: 'patch' }),
         payload: ExactObject({
             properties: {
                 id: Id(),
-                props: stateSchemaCreator({
+                props: propsSchema || stateSchemaCreator({
                     enableInternalProps: false,
                     customFieldDefinitions
                 }),
@@ -86,28 +88,32 @@ var SingleChannelRecordMessage = (params) => {
 
         customFieldDefinitions,
         stateSchemaCreator,
+
+        propsSchema,
     } = params;
 
-    if (!collection) {
-        throw new Error('param "collection" is required');
-    }
     if (!op) {
         throw new Error('param "op" is required');
     }
-    if (!stateSchemaCreator) {
-        throw new Error('param "stateSchemaCreator" is required');
-    }
-    if (
-        customFieldDefinitions !== undefined
-        && !isArray(customFieldDefinitions)
-    ) {
-        throw new Error('param "customFieldDefinitions" must be an array');
-    }
-    if (
-        staticCreatePropSchemas !== undefined
-        && !isPlainObject(staticCreatePropSchemas)
-    ) {
-        throw new Error('param "customSubChannelPropSchemas" must be a plain object');
+    if (!propsSchema) {
+        if (!collection) {
+            throw new Error('param "collection" is required');
+        }
+        if (!stateSchemaCreator) {
+            throw new Error('param "stateSchemaCreator" is required');
+        }
+        if (
+            customFieldDefinitions !== undefined
+            && !isArray(customFieldDefinitions)
+        ) {
+            throw new Error('param "customFieldDefinitions" must be an array');
+        }
+        if (
+            staticCreatePropSchemas !== undefined
+            && !isPlainObject(staticCreatePropSchemas)
+        ) {
+            throw new Error('param "customSubChannelPropSchemas" must be a plain object');
+        }
     }
 
     switch (op) {

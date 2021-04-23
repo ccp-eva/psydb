@@ -135,6 +135,7 @@ var MultiChannelRecordDeleteGdprMessage = ({
     });
 }
 
+// FIXME: additional creator props when needed
 var MultiChannelRecordMessage = (params) => {
     var {
         collection,
