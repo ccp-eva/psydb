@@ -1,0 +1,22 @@
+'use strict';
+var inline = require('@cdxoo/inline-text');
+
+var { 
+    StripEventsStage,
+} = require('./fetch-record-helpers');
+
+var fetchCustomRecordTypes = async ({ db, collection, type }) => {
+    var customRecordTypes = await (
+        db.collection('customRecordType').aggregate([
+            { $match: {
+                collection, type,
+                isNew: false,
+            }},
+            StripEventsStage(),
+        ]).toArray()
+    );
+
+    return customRecordTypes;
+}
+
+module.exports = fetchCustomRecordTypes;

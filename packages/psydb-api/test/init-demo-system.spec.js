@@ -81,7 +81,7 @@ describe('init-demo-system', function () {
             expect(status).to.eql(200);
         }
 
-        console.log('###########################################');
+        /*console.log('###########################################');
         var r = await db.collection('customRecordType').find({
             _id: context.TEACHER_TYPE_ID
         }, { projection: { events: false} }).toArray();
@@ -89,11 +89,11 @@ describe('init-demo-system', function () {
         //console.dir(r.map(it => it), { depth: null });
         var r = await db.collection('study').find({}, { projection: { events: false }}).toArray();
         //console.dir(r.map(it => it), { depth: null });
-        console.log('###########################################');
+        console.log('###########################################');*/
 
         //console.log(context);
 
-        var response = await agent.get(`/read/subject/teacher/${context.ALICE_TEACHER_ID}`);
+        //var response = await agent.get(`/read/subject/teacher/${context.ALICE_TEACHER_ID}`);
         //console.dir(response.body, { depth: null });
 
         //var response = await agent.get(`/read/experiment/${context.EXP_INHOUSE_01}`);
@@ -114,7 +114,7 @@ describe('init-demo-system', function () {
         });*/
 
         // console.dir(response.body, { depth: null });
-        var response = await agent.post('/search').send({
+        /*var response = await agent.post('/search').send({
             collectionName: 'subject',
             recordType: 'teacher',
             filters: {
@@ -122,7 +122,7 @@ describe('init-demo-system', function () {
             },
             offset: 0,
             limit: 20,
-        });
+        });*/
         /*var response = await agent.post('/search').send({
             collectionName: 'customRecordType',
             filters: {},
@@ -141,9 +141,9 @@ describe('init-demo-system', function () {
             /${context.STUDY_01_ID}
             /instituteroom
         `);*/
-        response = await agent.post('/testable-subject-types-for-studies/').send({
+        /*response = await agent.post('/testable-subject-types-for-studies/').send({
             studyIds: [ context.STUDY_01_ID ],
-        });
+        });*/
         /*response = await agent.post('/testable-subjects-inhouse/').send({
             subjectRecordType: 'teacher',
             studyIds: [ context.STUDY_01_ID ],
@@ -154,8 +154,8 @@ describe('init-demo-system', function () {
             limit: 100,
         });*/
         
-        console.dir(response.status, { depth: null });
-        console.dir(response.body, { depth: null });
+        //console.dir(response.status, { depth: null });
+        //console.dir(response.body, { depth: null });
     });
 
 });

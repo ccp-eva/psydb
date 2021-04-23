@@ -30,6 +30,8 @@ var createInitialChannelState = async ({
         record: stored,
         subChannelKey,
     });
+
+    //console.dir(channelStateSchema, { depth: null });
     
     // although called validate() it will initialize
     // the default values of required properties 

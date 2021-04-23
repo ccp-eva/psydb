@@ -13,7 +13,6 @@ var createSchemaForRecordType = ({
     subChannelKey,
     fullSchema,
     prefetchedCustomRecordTypes,
-    customRecordTypeCollection,
     additionalSchemaCreatorArgs,
 }) => {
 
@@ -84,10 +83,17 @@ var createSchemaForRecordType = ({
         }
     }
 
-    // this collection needs extra argument
-    if (collectionName === 'customRecordType') {
-        args.collection = customRecordTypeCollection;
+    // theese collection need extra argument
+    /*if (collectionName === 'customRecordType') {
+        args.collection = (
+            additionalSchemaCreatorArgs.customRecordTypeCollection
+        );
     }
+    if (collectionName === 'study') {
+        args.subjectRecordTypeRecords = (
+            additionalSchemaCreatorArgs.subjectRecordTypeRecords
+        );
+    }*/
 
     var SchemaCreator = (
         fullSchema === true

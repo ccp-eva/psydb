@@ -12,7 +12,8 @@ import {
 import agent from '@mpieva/psydb-ui-request-agents';
 
 var reducer = (state, action) => {
-    var { type, payload } = state;
+
+    var { type, payload } = action;
     switch (type) {
         case 'change-experiment-time-interval':
             return ({
@@ -23,17 +24,32 @@ var reducer = (state, action) => {
             return ({
                 ...state,
                 // TODO: descie how to structure that
-                ageFrameSettingsByStudy: payload
+                ageFrameSettingsByStudyId: payload
             })
     }
+
 };
 
 const SearchContainer = () => {
     var { path, url } = useRouteMatch();
+    var { studyIds, subjectRecordType } = useParams();
+
+    var [ state, dispatch ] = useReducer(reducer, {
+        experimentTimeInterval: {
+            start: new Date(), // TODO reasonable defaults
+            end: new Date(),
+        },
+        ageFrameSettingsByStudyId: {}
+    });
+
+    var {
+        experimentTimeInterval,
+        ageFrameSettingsByStudyId,
+    } = state;
 
     useEffect(() => {
         agent.fetchAgeFrameSettings({
-            studyIds,
+            studyIds: studyIds.split(','),
             subjectRecordType,
         })
         .then(response => {
@@ -59,8 +75,8 @@ const SearchContainer = () => {
                         })
                     }}
                 />
-                <AgeFrameSettingsEditor
-                    settings={ settings }
+                <AgeFrameSettingsEditorList
+                    ageFrameSettingsByStudyId={ ageFrameSettingsByStudyId }
                     onChange={ (...args) => {
                         console.log(args);
                     }}
@@ -82,12 +98,14 @@ const ExperimentTimeIntervalEditor = ({
     )
 }
 
-const AgeFrameSettingsEditor = ({
-    settings,
+const AgeFrameSettingsEditorList = ({
+    ageFrameSettingsEditorList,
     onChange
 }) => {
+    // per item
+    // onChange = (nextSettings) => { onChange(studyId, nextSettings )}
     return (
-        <div>Age frame ditor</div>
+        <div>Age frame editor list </div>
     )
 }
 

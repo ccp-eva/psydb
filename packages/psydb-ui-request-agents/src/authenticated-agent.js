@@ -118,6 +118,20 @@ agent.fetchTestableSubjectTypesForStudies = ({
     );
 }
 
+// FIXME: that name is maybe a little ambigous
+agent.fetchAgeFrameSettings = ({
+    studyIds,
+    subjectRecordType
+}) => {
+    return axios.post(
+        '/api/age-frame-settings',
+        {
+            studyIds,
+            subjectRecordType
+        }
+    );
+}
+
 agent.searchTestableSubjectsInhouse = ({
     studyRecordType,
     subjectRecordType,

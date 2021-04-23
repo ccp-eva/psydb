@@ -2,7 +2,7 @@
 var gatherDisplayFieldData = require('@mpieva/psydb-common-lib/src/gather-display-field-data');
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
-var fetchCustomRecordType = require('./fetch-custom-record-type');
+var fetchOneCustomRecordType = require('./fetch-one-custom-record-type');
 
 var gatherDisplayFieldsForRecordType =  async ({
     db,
@@ -42,7 +42,7 @@ var gatherDisplayFieldsForRecordType =  async ({
             customRecordTypeRecord = prefetched;
         }
         else {
-            customRecordTypeRecord = await fetchCustomRecordType({
+            customRecordTypeRecord = await fetchOneCustomRecordType({
                 db,
                 collection: collectionName,
                 type: customRecordType,

@@ -26,7 +26,6 @@ var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
 var CoreBodySchema = require('./core-body-schema'),
     FullBodySchema = require('./full-body-schema');
 
-var fetchCustomRecordType = require('@mpieva/psydb-api-lib/src/fetch-custom-record-type');
 var gatherDisplayFieldsForRecordType = require('@mpieva/psydb-api-lib/src/gather-display-fields-for-record-type');
 var fetchRecordsByFilter = require('@mpieva/psydb-api-lib/src/fetch-records-by-filter');
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');

@@ -32,7 +32,7 @@ var testableSubjectTypesForStudies = async (context, next) => {
         StripEventsStage(),
     ]).toArray()
 
-    var subjectRecordTypes = [];
+    var subjectSelectionSettings = [];
     for (var study of studyRecords) {
         var { subjectTypeSettings } = study.state;
         for (var item of subjectTypeSettings) {
@@ -56,7 +56,11 @@ var testableSubjectTypesForStudies = async (context, next) => {
     
     context.body = ResponseBody({
         data: {
-            subjectRecordTypeRecords,
+            subjectSelectionSettingsByStudyId,
+            related: {
+                
+            },
+            //subjectRecordTypeRecords,
         }
     });
 

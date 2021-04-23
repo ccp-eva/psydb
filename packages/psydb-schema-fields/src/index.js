@@ -4,7 +4,11 @@ module.exports = {
     BiologicalGender: require('./biological-gender'),
     BlockedWeekdays: require('./blocked-weekdays'),
     Color: require('./color'),
+
     CustomRecordTypeCollectionEnum: require('./custom-record-type-collection-enum'),
+    CustomRecordTypeName: require('./custom-record-type-name'),
+    CustomRecordTypeFieldKey: require('./custom-record-type-field-key'),
+
     DateTime: require('./date-time'),
     DateTimeInterval: require('./date-time-interval'),
     DaysSinceBirth: require('./days-since-birth'),
