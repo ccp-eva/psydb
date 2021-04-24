@@ -3,8 +3,8 @@ var inline = require('@cdxoo/inline-text'),
     CustomProps = require('../../common/custom-props'),
     systemPermissionsSchema = require('../../common/system-permissions-schema');
 
-var SubjectSelectionSettings = (
-    require('./subject-selection-settings')
+var SubjectSelectionSettingsList = (
+    require('./subject-selection-settings-list')
 );
 
 var {
@@ -187,7 +187,7 @@ var StudyState = (ps = {}) => {
 
             // TODO: excluded study ids
 
-            selectionSettingsBySubjectType: SubjectSelectionSettings({
+            selectionSettingsBySubjectType: SubjectSelectionSettingsList({
                 subjectRecordTypeRecords,
             }),
 
