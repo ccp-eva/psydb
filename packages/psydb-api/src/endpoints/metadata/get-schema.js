@@ -45,9 +45,9 @@ var getSchema = async (context, next) => {
         collectionName: collectionName,
         recordType: recordType,
         fullSchema: true,
-        additionaSchemaCreatorArgs: {
+        /*additionaSchemaCreatorArgs: {
             enableInternalProps: false,
-        }
+        }*/ // FIXME: determine by request
     });
 
     context.body = ResponseBody({

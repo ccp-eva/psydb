@@ -1,5 +1,5 @@
 {
-  "name": "@mpieva/psydb-schema-creators",
+  "name": "@mpieva/psydb-schema-fields-special",
   "version": "0.1.0-alpha",
   "description": "",
   "main": "src/index.js",
@@ -15,9 +15,6 @@
   "dependencies": {
     "@mpieva/psydb-schema-fields": "~0.1.0-alpha",
     "@cdxoo/inline-text": "~1.0.1",
-    "jsonpointer": "~4.1.0",
-    "@mpieva/psydb-schema-helpers": "~0.1.0-alpha",
-    "@cdxoo/omit": "~1.0.1",
-    "@mpieva/psydb-schema-fields-special": "~0.1.0-alpha"
+    "@cdxoo/omit": "~1.0.1"
   }
 }

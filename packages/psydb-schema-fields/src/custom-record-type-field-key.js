@@ -1,13 +1,13 @@
 'use strict';
 var IdentifierString = require('./identifier-string');
 
-var CustomRecordTypeFieldKey = ({ collection, type, ...other }) => {
+var CustomRecordTypeFieldKey = ({ collection, recordType, ...other }) => {
     return ({
         ...IdentifierString(other),
         systemType: 'CustomRecordTypeFieldKey',
         systemProps: {
             collection,
-            type, // TODO: we need to handle { $data: '/foo' } for this
+            recordType, // only statics no $data
         }
     })
 }

@@ -1,7 +1,7 @@
 'use strict';
 var IdentifierString = require('./identifier-string');
 
-var CustomRecordTypeName = ({collection, ...other }) => {
+var CustomRecordTypeName = ({ collection, ...other }) => {
     return ({
         ...IdentifierString(other),
         systemType: 'CustomRecordTypeName',

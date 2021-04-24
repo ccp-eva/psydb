@@ -14,11 +14,15 @@ var ExternalLocationGroupingsItem = ({
     type: 'object',
     lazyResolveProp: 'subjectRecordType',
     oneOf: subjectRecordTypeRecords.map(it => (
-        ExternalLocationGroupingItemOption(it)
+        ExternalLocationGroupingItemOption({
+            subjectRecordTypeRecord: it
+        })
     )),
 });
 
-var ExternalLocationGroupingItemOption = (subjectRecordTypeRecord) => {
+var ExternalLocationGroupingItemOption = ({
+    subjectRecordTypeRecord
+}) => {
     var {
         type,
         state: { settings: { subChannelFields: { scientific: { fields }}}}

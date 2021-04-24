@@ -33,6 +33,7 @@ dependencies:
   '@rush-temp/psydb-schema': 'file:projects/psydb-schema.tgz'
   '@rush-temp/psydb-schema-creators': 'file:projects/psydb-schema-creators.tgz'
   '@rush-temp/psydb-schema-fields': 'file:projects/psydb-schema-fields.tgz'
+  '@rush-temp/psydb-schema-fields-special': 'file:projects/psydb-schema-fields-special.tgz'
   '@rush-temp/psydb-schema-helpers': 'file:projects/psydb-schema-helpers.tgz'
   '@rush-temp/psydb-schema-primitives': 'file:projects/psydb-schema-primitives.tgz'
   '@rush-temp/psydb-ui': 'file:projects/psydb-ui.tgz'
@@ -7229,6 +7230,7 @@ packages:
       ajv-keywords: 3.5.2_ajv@6.12.6
       chai: 4.2.0
       copy-anything: 2.0.3
+      date-fns: 2.21.1
       debug: 4.3.1
       deep-diff: 1.0.2
       escape-string-regexp: 4.0.0
@@ -7239,7 +7241,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-api-lib'
     resolution:
-      integrity: sha512-Wc7oAWa3V4rRMrTxLWPMLlPNWZYgP7NiudsIu7LcPRb+6VNcv6WZzZ98/1cFEGHTNpO9HvAQhugHAd3U05EqiA==
+      integrity: sha512-nLvMBwaq3oqFDPMfQbls8X1K0ojKJDv3f1ReEuprf/JwDt7l36rWqbK9YstHcRebxwRP/f4w7Ijfcox8f9OXAg==
       tarball: 'file:projects/psydb-api-lib.tgz'
     version: 0.0.0
   'file:projects/psydb-api-message-handlers.tgz':
@@ -7270,6 +7272,7 @@ packages:
       chai: 4.2.0
       clone-deep: 4.0.1
       copy-anything: 2.0.3
+      date-fns: 2.21.1
       debug: 4.3.1
       deep-diff: 1.0.2
       is-what: 3.14.1
@@ -7290,7 +7293,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-api'
     resolution:
-      integrity: sha512-NiU5axrW7HrHqchiO5ZUzsILQ7f0ndLg4J+UMc0VQUYnnRiThzRcJcrMnz5FkQ2SfcKZA/j2JfjyRHtLrDS5og==
+      integrity: sha512-3/L+P5a1qlCb2eBYeNBYsQJcuU23sDgZ1DxFQ7n0l/SyZw96m6Xd/UJGPxbQhD8VYgT1vt2HZc3Zp+S5vVXFHQ==
       tarball: 'file:projects/psydb-api.tgz'
     version: 0.0.0
   'file:projects/psydb-common-lib.tgz':
@@ -7363,14 +7366,27 @@ packages:
   'file:projects/psydb-schema-creators.tgz':
     dependencies:
       '@cdxoo/inline-text': 1.0.1
+      '@cdxoo/omit': 1.0.1
       chai: 4.2.0
       jsonpointer: 4.1.0
       mocha: 8.1.3
     dev: false
     name: '@rush-temp/psydb-schema-creators'
     resolution:
-      integrity: sha512-gP8tgN/ZHqKuO0oVgtRC8Lb5Op6I07VwmzoUUIaLs1acwloT9v+HaqHH8QnypWz9OIxjRkTOIJHEzKFfTIWAEQ==
+      integrity: sha512-KyIr7RZe7vbzX42IxUzsbss1JxKkOuPPa1MLv808Sa8zLo+weHc4jrJJFltzoPoVlde3d76n2N6HezvreySiMA==
       tarball: 'file:projects/psydb-schema-creators.tgz'
+    version: 0.0.0
+  'file:projects/psydb-schema-fields-special.tgz':
+    dependencies:
+      '@cdxoo/inline-text': 1.0.1
+      '@cdxoo/omit': 1.0.1
+      chai: 4.2.0
+      mocha: 8.1.3
+    dev: false
+    name: '@rush-temp/psydb-schema-fields-special'
+    resolution:
+      integrity: sha512-InO02+C3pHcAYpQ0wD9FS++4wVkn7UJRewTZHiJsishFzSdSHh5TxVetIrecr2Q9X9mVStqv6ckLOG1GglCCBw==
+      tarball: 'file:projects/psydb-schema-fields-special.tgz'
     version: 0.0.0
   'file:projects/psydb-schema-fields.tgz':
     dependencies:
@@ -7434,6 +7450,7 @@ packages:
       moment: 2.29.1
       react: 17.0.2
       react-bootstrap: 1.5.2_react-dom@17.0.2+react@17.0.2
+      react-bootstrap-icons: 1.4.0_react@17.0.2
       react-datetime: 3.0.4_moment@2.29.1+react@17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-router: 5.2.0_react@17.0.2
@@ -7445,7 +7462,7 @@ packages:
     peerDependencies:
       webpack: '*'
     resolution:
-      integrity: sha512-T61akQAAvDPFWfyAMwE6l6bTo51qB1L5OYHkc12QMc4UedrJExPw4blyYzRu3vXzYMvpaR0uHtmEGF3o/fyIbw==
+      integrity: sha512-SH9Qxa2SoCsTGgLDgIb+65GNA2tyNORARjcFImiLQ1cWkEGZUYL0BU2tsI7Jnha9gHCQ2G1JornzDgBWqKtz+w==
       tarball: 'file:projects/psydb-ui-lib.tgz'
     version: 0.0.0
   'file:projects/psydb-ui-request-agents.tgz_debug@4.3.1':
@@ -7554,6 +7571,7 @@ specifiers:
   '@rush-temp/psydb-schema': 'file:./projects/psydb-schema.tgz'
   '@rush-temp/psydb-schema-creators': 'file:./projects/psydb-schema-creators.tgz'
   '@rush-temp/psydb-schema-fields': 'file:./projects/psydb-schema-fields.tgz'
+  '@rush-temp/psydb-schema-fields-special': 'file:./projects/psydb-schema-fields-special.tgz'
   '@rush-temp/psydb-schema-helpers': 'file:./projects/psydb-schema-helpers.tgz'
   '@rush-temp/psydb-schema-primitives': 'file:./projects/psydb-schema-primitives.tgz'
   '@rush-temp/psydb-ui': 'file:./projects/psydb-ui.tgz'

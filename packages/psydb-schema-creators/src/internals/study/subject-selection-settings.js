@@ -24,14 +24,14 @@ var SubjectSelectionSettings = ({
                 subjectRecordTypeRecords,
             })
         },
-        /*subjectTypeSettings: {
+        subjectTypeSettings: {
             systemType: 'SubjectTypeSettings',
             type: 'array',
             default: [],
             items: SubjectTypeSettingsItem({
                 subjectRecordTypeRecords,
             })
-        }*/
+        }
     })
 );
 
