@@ -55,7 +55,8 @@
     "is-what": "~3.14.0",
     "json-schema-traverse": "~1.0.0",
     "superagent-prefix": "~0.0.2",
-    "date-fns": "~2.21.1"
+    "date-fns": "~2.21.1",
+    "@mpieva/psydb-schema-fields-special": "~0.1.0-alpha"
   },
   "devDependencies": {
     "mocha": "~8.1.3",

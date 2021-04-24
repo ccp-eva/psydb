@@ -142,9 +142,13 @@ describe('init-demo-system', function () {
             /${context.STUDY_01_ID}
             /instituteroom
         `);*/
-        /*response = await agent.post('/testable-subject-types-for-studies/').send({
+        /*response = await agent.post('/testable-subject-types-for-studies').send({
             studyIds: [ context.STUDY_01_ID ],
         });*/
+        response = await agent.post('/selection-settings-for-subject-type-and-studies').send({
+            subjectRecordType: 'teacher',
+            studyIds: [ context.STUDY_01_ID ],
+        });
         /*response = await agent.post('/testable-subjects-inhouse/').send({
             subjectRecordType: 'teacher',
             studyIds: [ context.STUDY_01_ID ],

@@ -14,6 +14,11 @@ var FieldConditionListItemOption = ({
     fieldKey,
     fieldType,
     fieldProps,
+
+    // FIXME: all the other instances of additionalProps in schema creators
+    // should be renamed to "additionalKeywords",
+    // FIXME: we could use additionalFieldProps
+    enableCanChangePerSearch,
 }) => {
     var FieldSchema = allFieldSchemas[fieldType];
     return (
@@ -30,13 +35,13 @@ var FieldConditionListItemOption = ({
                     type: 'array',
                     default: [],
                     items: FieldSchema({
-                        ...omit('systemProps', fieldProps),
+                        ...omit('constraints', fieldProps),
                     })
                 },
-                canChangePerSearch: {
+                ...(enableCanChangePerSearch && { canChangePerSearch: {
                     type: 'boolean',
                     default: false,
-                },
+                }}),
             },
             required: [
                 'fieldKey',

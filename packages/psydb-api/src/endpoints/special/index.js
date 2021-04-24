@@ -1,8 +1,22 @@
 module.exports = {
-    availableTestLocationsForStudy: require('./available-test-locations-for-study'),
-    experimentOperatorTeamsForStudy: require('./experiment-operator-teams-for-study'),
-    studyLocationReservationCalendar: require('./study-location-reservation-calendar'),
+    availableTestLocationsForStudy: (
+        require('./available-test-locations-for-study')
+    ),
+    experimentOperatorTeamsForStudy: (
+        require('./experiment-operator-teams-for-study')
+    ),
+    studyLocationReservationCalendar: (
+        require('./study-location-reservation-calendar')
+    ),
+
+
     testableSubjectsInhouse: require('./testable-subjects-inhouse'),
 
-    testableSubjectTypesForStudies: require('./testable-subject-types-for-studies'),
+    selectionSettingsForSubjectTypeAndStudies: (
+        require('./selection-settings-for-subject-type-and-studies')
+    ),
+
+    testableSubjectTypesForStudies: (
+        require('./testable-subject-types-for-studies')
+    ),
 }

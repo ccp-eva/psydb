@@ -9,6 +9,8 @@ var FieldConditionList = require('./field-condition-list');
 var AgeFrameSettingsListItem = ({
     subjectRecordType,
     subjectRecordTypeScientificFields,
+
+    enableCanChangePerSearch = true,
 }) => (
     ExactObject({
         systemType: 'AgeFrameSettingsItem',
@@ -18,6 +20,8 @@ var AgeFrameSettingsListItem = ({
                 collection: 'subject',
                 recordType: subjectRecordType,
                 fields: subjectRecordTypeScientificFields,
+
+                enableCanChangePerSearch,
             })
         },
         required: [

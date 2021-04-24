@@ -120,6 +120,16 @@ var createRouting = ({
         endpoints.special.testableSubjectTypesForStudies
     );
 
+    router.post('/selection-settings-for-subject-type-and-studies',
+        withSelfAuth(),
+        withPermissions(),
+        withEndpointProtection({
+            endpoint: 'selection-settings-for-subject-type-and-studies'
+        }),
+        withKoaBody(),
+        endpoints.special.selectionSettingsForSubjectTypeAndStudies
+    );
+
     router.post('/testable-subjects-inhouse',
         withSelfAuth(),
         withPermissions(),

@@ -7,6 +7,8 @@ var FieldConditionListItem = ({
     collection,
     recordType,
     fields,
+
+    enableCanChangePerSearch,
 }) => ({
     systemType: 'FieldConditionListItem',
     type: 'object',
@@ -18,6 +20,8 @@ var FieldConditionListItem = ({
             fieldKey: it.key,
             fieldType: it.type,
             fieldProps: it.props,
+
+            enableCanChangePerSearch,
         })
     ))
 })

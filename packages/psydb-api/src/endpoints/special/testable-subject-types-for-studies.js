@@ -9,6 +9,7 @@ var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
 var ResponseBody = require('@mpieva/psydb-api-lib/src/response-body');
 
 var {
+    SystemPermissionStages,
     StripEventsStage,
 } = require('@mpieva/psydb-api-lib/src/fetch-record-helpers');
 
@@ -29,14 +30,15 @@ var testableSubjectTypesForStudies = async (context, next) => {
         { $match: {
             _id: { $in: studyIds }
         }},
+        ...SystemPermissionStages({ permissions }),
         StripEventsStage(),
     ]).toArray()
 
-    var subjectSelectionSettings = [];
+    var subjectRecordTypes = [];
     for (var study of studyRecords) {
-        var { subjectTypeSettings } = study.state;
-        for (var item of subjectTypeSettings) {
-            subjectRecordTypes.push(item.customRecordType);
+        var { selectionSettingsBySubjectType } = study.state;
+        for (var item of selectionSettingsBySubjectType) {
+            subjectRecordTypes.push(item.subjectRecordType);
         } 
     }
 
@@ -56,11 +58,7 @@ var testableSubjectTypesForStudies = async (context, next) => {
     
     context.body = ResponseBody({
         data: {
-            subjectSelectionSettingsByStudyId,
-            related: {
-                
-            },
-            //subjectRecordTypeRecords,
+            subjectRecordTypeRecords,
         }
     });
 

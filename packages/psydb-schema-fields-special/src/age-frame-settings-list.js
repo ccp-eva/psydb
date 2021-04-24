@@ -4,6 +4,8 @@ var AgeFrameSettingsListItem = require('./age-frame-settings-list-item');
 var AgeFrameSettingsList = ({
     subjectRecordType,
     subjectRecordTypeScientificFields,
+
+    enableCanChangePerSearch = true,
 }) => ({
     systemType: 'AgeFrameSettingsList',
     type: 'array',
@@ -11,6 +13,8 @@ var AgeFrameSettingsList = ({
     items: AgeFrameSettingsListItem({
         subjectRecordType,
         subjectRecordTypeScientificFields,
+
+        enableCanChangePerSearch,
     })
 });
 

@@ -5,6 +5,8 @@ var FieldConditionList = ({
     collection,
     recordType,
     fields,
+
+    enableCanChangePerSearch,
 }) => ({
     systemType: 'FieldConditionList',
     type: 'array',
@@ -12,7 +14,9 @@ var FieldConditionList = ({
     items: FieldConditionListItem({
         collection,
         recordType,
-        fields
+        fields,
+
+        enableCanChangePerSearch,
     })    
 });
 
