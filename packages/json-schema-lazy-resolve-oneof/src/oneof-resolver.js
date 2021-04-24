@@ -86,7 +86,8 @@ var decide = ({
             shouldUse = true;
         }
     }
-    else if (schema.const) {
+    // FIXME: we should check if the key exists
+    else if (schema.const !== undefined) {
         var schemaValue = schema.const;
         if (schemaValue === dataValue) {
             shouldUse = true;
