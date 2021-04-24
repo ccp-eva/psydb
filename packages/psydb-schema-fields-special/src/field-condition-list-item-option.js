@@ -32,8 +32,17 @@ var FieldConditionListItemOption = ({
                     items: FieldSchema({
                         ...omit('systemProps', fieldProps),
                     })
-                }
-            }
+                },
+                canChangePerSearch: {
+                    type: 'boolean',
+                    default: false,
+                },
+            },
+            required: [
+                'fieldKey',
+                'values',
+                'canChangePerSearch',
+            ]
         })
     );
 }

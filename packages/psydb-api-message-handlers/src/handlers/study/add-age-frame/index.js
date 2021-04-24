@@ -1,4 +1,5 @@
 'use strict';
+// TODO: redesign this to gtet the whole conditions object
 var debug = require('debug')('psydb:api:message-handlers');
 
 var nanoid = require('nanoid').nanoid;
@@ -47,23 +48,23 @@ handler.checkAllowedAndPlausible = async ({
         throw new ApiError(400, 'RecordHasChanged');
     }
 
-    var subjectTypeSettings = study.state.subjectTypeSettings;
+    var { selectionSettingsBySubjectType } = study.state;
 
-    var ageFrameSettings = undefined,
-        subjectTypeSettingsIndex = undefined;
-    for (var [index, it] of subjectTypeSettings.entries()) {
-        if (it.customRecordType === customRecordType) {
-            ageFrameSettings = it.ageFrameSettings;
-            subjectTypeSettingsIndex = index;
+    var conditionsByAgeFrame = undefined,
+        settingsIndex = undefined;
+    for (var [index, it] of selectionSettingsBySubjectType.entries()) {
+        if (it.subjectRecordType === customRecordType) {
+            conditionsByAgeFrame = it.conditionsByAgeFrame;
+            settingsIndex = index;
             break;
         }
     }
 
-    if (!ageFrameSettings) {
+    if (!conditionsByAgeFrame) {
         throw new ApiError(400, 'InvalidSubjectRecordType');
     }
 
-    ageFrameSettings.forEach((it, index) => {
+    conditionsByAgeFrame.forEach((it, index) => {
         if (
             it.ageFrame.start === ageFrame.start
             && it.ageFrame.end === ageFrame.end
@@ -72,7 +73,7 @@ handler.checkAllowedAndPlausible = async ({
         }
     });
 
-    cache.subjectTypeSettingsIndex = subjectTypeSettingsIndex;
+    cache.settingsIndex = settingsIndex;
 }
 
 handler.triggerSystemEvents = async ({
@@ -98,12 +99,13 @@ handler.triggerSystemEvents = async ({
         })
     );
 
-    var path = `/state/subjectTypeSettings/${cache.subjectTypeSettingsIndex}/ageFrameSettings`;
+    var i = cache.settingsIndex;
+    var path = `/state/selectionSettingsBySubjectType/${i}/conditionsByAgeFrame`;
 
     var messages = PushMaker({ personnelId }).all({
         [path]: {
             ageFrame,
-            conditionList: [],
+            conditions: [],
         },
     });
 

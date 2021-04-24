@@ -23,7 +23,7 @@ var Schema = () => {
                 ageFrame: DaysSinceBirthInterval(),
                 props: ExactObject({
                     properties: {
-                        field: IdentifierString(),
+                        fieldKey: IdentifierString(),
                         values: {
                             type: 'array',
                             default: [],
@@ -36,7 +36,7 @@ var Schema = () => {
                         },
                     },
                     required: [
-                        'field',
+                        'fieldKey',
                         'values',
                         'canChangePerSearch',
                     ]

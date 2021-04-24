@@ -1,4 +1,5 @@
 'use strict';
+// TODO: obsolete
 var debug = require('debug')('psydb:api:message-handlers');
 
 var nanoid = require('nanoid').nanoid;

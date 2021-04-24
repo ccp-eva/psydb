@@ -1,4 +1,5 @@
 'use strict';
+// TODO: obsolete
 var debug = require('debug')('psydb:api:message-handlers');
 
 var nanoid = require('nanoid').nanoid;
@@ -48,43 +49,43 @@ handler.checkAllowedAndPlausible = async ({
         throw new ApiError(400, 'RecordHasChanged');
     }
 
-    var subjectTypeSettings = study.state.subjectTypeSettings;
+    var { selectionSettingsBySubjectType } = study.state;
 
-    var ageFrameSettings = undefined,
-        subjectTypeSettingsIndex = undefined;
-    for (var [index, it] of subjectTypeSettings.entries()) {
-        if (it.customRecordType === customRecordType) {
-            ageFrameSettings = it.ageFrameSettings;
-            subjectTypeSettingsIndex = index;
+    var conditionsByAgeFrame = undefined,
+        settingsIndex = undefined;
+    for (var [index, it] of selectionSettingsBySubjectType.entries()) {
+        if (it.subjectRecordType === customRecordType) {
+            conditionsByAgeFrame = it.conditionsByAgeFrame;
+            settingsIndex = index;
             break;
         }
     }
 
-    if (!ageFrameSettings) {
-        throw new ApiError(400, 'InvalidSubjectRecordType')
+    if (!conditionsByAgeFrame) {
+        throw new ApiError(400, 'InvalidSubjectRecordType');
     }
 
-    var conditionList = undefined,
-        ageFrameSettingsIndex = undefined;
-    for (var [index,it] of ageFrameSettings.entries()) {
+    var conditions = undefined,
+        ageFrameIndex = undefined;
+    for (var [index,it] of conditionsByAgeFrame.entries()) {
         if (
             it.ageFrame.start === ageFrame.start
             && it.ageFrame.end === ageFrame.end
         ) {
-            conditionList = it.conditionList;
-            ageFrameSettingsIndex = index;
+            conditions = it.conditions;
+            ageFrameIndex = index;
             break;
         }
     };
 
-    for (var it of conditionList) {
-        if (it.field === props.field) {
+    for (var it of conditions) {
+        if (it.fieldKey === props.field) {
              throw new ApiError(400, 'DuplicateConditionField');
         }
     }
 
-    cache.subjectTypeSettingsIndex = subjectTypeSettingsIndex;
-    cache.ageFrameSettingsIndex = ageFrameSettingsIndex;
+    cache.settingsIndex = settingsIndex;
+    cache.ageFrameIndex = ageFrameIndex;
 }
 
 handler.triggerSystemEvents = async ({
@@ -111,7 +112,9 @@ handler.triggerSystemEvents = async ({
         })
     );
 
-    var path = `/state/subjectTypeSettings/${cache.subjectTypeSettingsIndex}/ageFrameSettings/${cache.ageFrameSettingsIndex}/conditionList`;
+    var i = cache.settingsIndex;
+    var j = cache.ageFrameIndex;
+    var path = `/state/selectionSettingsBySubjectType/${i}/conditionsByAgeFrame/${j}/conditions`;
 
     var messages = PushMaker({ personnelId }).all({
         [path]: props,

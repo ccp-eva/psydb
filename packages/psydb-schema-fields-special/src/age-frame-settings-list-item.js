@@ -14,7 +14,7 @@ var AgeFrameSettingsListItem = ({
         systemType: 'AgeFrameSettingsItem',
         properties: {
             ageFrame: DaysSinceBirthInterval(),
-            conditionList: FieldConditionList({
+            conditions: FieldConditionList({
                 collection: 'subject',
                 recordType: subjectRecordType,
                 fields: subjectRecordTypeScientificFields,
@@ -22,7 +22,7 @@ var AgeFrameSettingsListItem = ({
         },
         required: [
             'ageFrame',
-            'conditionList',
+            'conditions',
         ]
     })
 );

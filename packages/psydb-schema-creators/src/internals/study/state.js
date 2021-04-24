@@ -187,7 +187,7 @@ var StudyState = (ps = {}) => {
 
             // TODO: excluded study ids
 
-            subjectSelectionSettings: SubjectSelectionSettings({
+            selectionSettingsBySubjectType: SubjectSelectionSettings({
                 subjectRecordTypeRecords,
             }),
 

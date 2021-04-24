@@ -58,8 +58,8 @@ handler.checkAllowedAndPlausible = async ({
         throw new ApiError(400, 'InvalidSubjectRecordType');
     }
 
-    study.state.subjectTypeSettings.forEach(it => {
-        if (it.customRecordType === customRecordType) {
+    study.state.selectionSettingsBySubjectType.forEach(it => {
+        if (it.subjectRecordType === customRecordType) {
             throw new ApiError(400, 'DuplicateSubjectRecordType')
         }
     })
@@ -84,10 +84,15 @@ handler.triggerSystemEvents = async ({
     );
 
     var messages = PushMaker({ personnelId }).all({
-        '/state/subjectTypeSettings': {
-            customRecordType,
-            ageFrameSettings: [],
-            generalConditionList: []
+        // NOTE: this structure has to exist so we can push into the
+        // nested arrays
+        '/state/selectionSettingsBySubjectType': {
+            subjectRecordType: customRecordType,
+            generalConditions: [],
+            conditionsByAgeFrame: [],
+            externalLocationGrouping: {
+                enabled: false,
+            }
         },
     });
 

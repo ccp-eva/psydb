@@ -7,31 +7,20 @@ var ExternalLocationGroupingsItem = (
     require('./external-location-groupings-item')
 );
 
-var SubjectTypeSettingsItem = (
-    require('./subject-type-settings-item')
+var SubjectSelectConditionsListItem = (
+    require('./subject-select-conditions-list-item')
 );
 
 var SubjectSelectionSettings = ({
     subjectRecordTypeRecords,
 } = {}) => (
     ExactObject({
-        systemType: 'SubjectSelectionSettings',
-        externalLocationGroupings: {
-            systemType: 'ExternalLocationGroupings',
-            type: 'array',
-            default: [],
-            items: ExternalLocationGroupingsItem({
-                subjectRecordTypeRecords,
-            })
-        },
-        subjectTypeSettings: {
-            systemType: 'SubjectTypeSettings',
-            type: 'array',
-            default: [],
-            items: SubjectTypeSettingsItem({
-                subjectRecordTypeRecords,
-            })
-        }
+        systemType: 'SubjectSelectionSettingsList',
+        type: 'array',
+        default: [],
+        items: SubjectSelectConditionsListItem({
+            subjectRecordTypeRecords,
+        })
     })
 );
 

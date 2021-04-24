@@ -9,7 +9,7 @@ var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 var createSchemaForRecord =
     require('@mpieva/psydb-api-lib/src/create-schema-for-record');
 
-var fetchONeCustomRecordType = require('@mpieva/psydb-api-lib/src/fetch-one-custom-record-type');
+var fetchOneCustomRecordType = require('@mpieva/psydb-api-lib/src/fetch-one-custom-record-type');
 var fetchRecordById = require('@mpieva/psydb-api-lib/src/fetch-record-by-id');
 
 var resolveForeignIdData = require('./resolve-foreign-id-data');
