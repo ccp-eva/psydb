@@ -1,14 +1,13 @@
 'use strict';
-var inline = require('@cdxoo/inline-text'),
-    ExactObject = require('./exact-object'),
-    IdentifierString = require('./identifier-string');
+var DefaultArray = require('./default-array'),
+    HelperSetItemId = require('./helper-set-item-id');
 
-var HelperSetItemIdList = ({ minItems }) => ({
-    systemType: 'HelperSetItemIdList',
-    type: 'array',
-    default: [],
-    minItems: (minItems || 0),
-    items: IdentifierString(),
-})
+var HelperSetItemIdList = ({ set, minItems, ...additionalKeywords }) => (
+    DefaultArray({
+        systemType: 'HelperSetItemIdList',
+        minItems: (minItems || 0),
+        items: HelperSetItemId({ set }),
+    })
+)
 
 module.exports = HelperSetItemIdList;

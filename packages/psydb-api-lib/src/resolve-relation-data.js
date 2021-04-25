@@ -14,7 +14,8 @@ var resolveForeignIdData = ({ schema, data }) => {
 
     //console.dir(resolvedParts, { depth: null });
 
-    var resolvedForeignIdData = [];
+    var foreignIdRelationData = [];
+    var helperSetItemIdRelationData = [];
     for (var part of resolvedParts) {
         //console.log(part);
         //console.log(part.type);
@@ -22,15 +23,20 @@ var resolveForeignIdData = ({ schema, data }) => {
             var dataPointer = convertPointer(part.inSchemaPointer);
             var currentData = jsonpointer.get(data, dataPointer);
             
-            var foreign = resolveFromSubSchema({
+            var resolved = resolveFromSubSchema({
                 schema: part.schema,
                 data: currentData,
                 dataPointerPrefix: dataPointer
             });
 
-            resolvedForeignIdData = [
-                ...resolvedForeignIdData,
-                ...foreign,
+            helperSetItemIdRelationData = [
+                ...helperSetItemIdRelationData,
+                ...resolved.helperSetItemIdRelationData,
+            ];
+
+            foreignIdRelationData = [
+                ...foreignIdRelationData,
+                ...resolved.foreignIdRelationData,
             ];
         }
         else if (part.type === 'array') {
@@ -43,15 +49,20 @@ var resolveForeignIdData = ({ schema, data }) => {
                 //console.log(dataPointers[index]);
                 var currentData = jsonpointer.get(data, dataPointers[index]);
 
-                var foreign = resolveFromSubSchema({
+                var resolved = resolveFromSubSchema({
                     schema: itemSchema,
                     data: currentData,
                     dataPointerPrefix: dataPointers[index]
                 });
 
-                resolvedForeignIdData = [
-                    ...resolvedForeignIdData,
-                    ...foreign,
+                helperSetItemIdRelationData = [
+                    ...helperSetItemIdRelationData,
+                    ...resolved.helperSetItemIdRelationData,
+                ];
+
+                foreignIdRelationData = [
+                    ...foreignIdRelationData,
+                    ...resolved.foreignIdRelationData,
                 ];
             }
         }
@@ -59,7 +70,10 @@ var resolveForeignIdData = ({ schema, data }) => {
 
     //console.dir(resolvedForeignIdData);
     //throw new Error();
-    return resolvedForeignIdData;
+    return {
+        foreignIdRelationData,
+        helperSetItemIdRelationData,
+    };
 }
 
 var resolveFromSubSchema = ({
@@ -68,8 +82,8 @@ var resolveFromSubSchema = ({
     dataPointerPrefix,
 }) => {
     //console.log(dataPointerPrefix, schema, data);
-    var resolvedForeignIds = [];
-    var resolvedHelperSetItemIds = [];
+    var foreignIdRelationData = [];
+    var helperSetItemIdRelationData = [];
     traverse(schema, { allKeys: false }, (...traverseArgs) => {
         var [
             currentSchema,
@@ -81,7 +95,10 @@ var resolveFromSubSchema = ({
             propNameOrIndex
         ] = traverseArgs;
 
-        if (currentSchema.systemType === 'ForeignId') {
+        if (
+            currentSchema.systemType === 'ForeignId'
+            || currentSchema.systemType === 'HelperSetItemId'
+        ) {
             var currentData = data,
                 dataPointer = '';
             if (typeof data === 'object') {
@@ -90,15 +107,25 @@ var resolveFromSubSchema = ({
             }
 
             var fullDataPointer = `${dataPointerPrefix || ''}${dataPointer}`;
-            resolved.push({
+
+            var dataBucket = (
+                currentSchema.systemType === 'ForeignId'
+                ? foreignIdRelationData
+                : helperSetItemIdRelationData
+            );
+
+            dataBucket.push({
                 ...currentSchema.systemProps,
                 dataPointer: fullDataPointer,
-                id: currentData,
+                value: currentData,
             });
             //console.log(currentData);
         }
     });
-    return resolved;
+    return {
+        foreignIdRelationData,
+        helperSetItemIdRelationData,
+    };
 }
 
 module.exports = resolveForeignIdData;

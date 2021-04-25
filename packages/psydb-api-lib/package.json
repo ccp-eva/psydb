@@ -25,7 +25,8 @@
     "jsonpointer": "~4.1.0",
     "@mpieva/json-schema-convert-pointer": "~0.1.0-alpha",
     "@cdxoo/inline-string": "~1.0.0",
-    "date-fns": "~2.21.1"
+    "date-fns": "~2.21.1",
+    "@mpieva/json-schema-lazy-resolve-oneof": "~0.1.0-alpha"
   },
   "devDependencies": {
     "mocha": "~8.1.3",

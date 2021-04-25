@@ -10,7 +10,7 @@ var fetchRelatedLabels = async ({
 }) => {
     
     var {
-        helperSetItemData,
+        helperSetItemIdRelationData,
         foreignIdRelationData
     } = resolveRelationData({
         schema,
