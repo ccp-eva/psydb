@@ -6,7 +6,7 @@ var traverse = require('json-schema-traverse'),
     jsonpointer = require('jsonpointer'),
     convertPointer = require('@mpieva/json-schema-convert-pointer');
 
-var resolveForeignIdData = ({ schema, data }) => {
+var resolveRelationData = ({ schema, data }) => {
 
     //console.dir(channelStateSchema, { depth: null });
 
@@ -128,4 +128,4 @@ var resolveFromSubSchema = ({
     };
 }
 
-module.exports = resolveForeignIdData;
+module.exports = resolveRelationData;
