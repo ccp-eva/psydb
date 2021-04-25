@@ -14,11 +14,12 @@ var {
 } = require('@mpieva/psydb-api-lib/src/fetch-record-helpers');
 
 var fetchOneCustomRecordType = require('@mpieva/psydb-api-lib/src/fetch-one-custom-record-type');
+var fetchRelatedRecordLabels = require('@mpieva/psydb-api-lib/src/fetch-related-record-labels');
 
 var {
-    AgeFrameSettingsList,
-    AgeFrameSettingsListItem
+    SelectionSettingsListItem,
 } = require('@mpieva/psydb-schema-fields-special');
+
 
 var selectionSettingsForSubjectTypeAndStudies = async (context, next) => {
     var { 
@@ -77,25 +78,38 @@ var selectionSettingsForSubjectTypeAndStudies = async (context, next) => {
         type: subjectRecordType,
     });
 
+    var {
+        relatedRecords,
+        relatedHelperSetItems
+    } = fetchRelatedRecordLabels({
+        data: {
+            items: studySelectionSettings.map(it => (
+                it.selectionSettingsBySubjectType
+            ))
+        },
+        schema: {
+            // FIXME: wrapping object is only because
+            // resolver cant handle root level array
+            type: 'object',
+            properties: {
+                items: {
+                    type: 'array',
+                    items: SubjectSelectionSettingsListItem({
+                        subjectRecordTypeRecord
+                    })
+                }
+            }
+        }
+    });
+
     context.body = ResponseBody({
         data: {
             studySelectionSettings,
-            // FIXME: i currently dont want the user to add new age frames
-            // im not sure if this is required in the future though
-            /*conditionsByAgeFrameSchema: AgeFrameSettingsList({
-                subjectRecordType,
-                subjectRecordTypeScientificFields: (
-                    subjectRecordTypeRecord.state.settings.subChannelFields.scientific
-                ),
-                enableCanChangePerSearch: false,
-            })*/
-            conditionsByAgeFrameItemSchema: AgeFrameSettingsListItem({
-                subjectRecordType,
-                subjectRecordTypeScientificFields: (
-                    subjectRecordTypeRecord.state.settings.subChannelFields.scientific
-                ),
-                enableCanChangePerSearch: false,
-            }),
+            scientificFieldDefinitions: (
+                subjectRecordTypeRecord.state.settings.subChannelFields.scientific
+            ),
+            relatedRecords: {},
+            relatedHelperSetItems: {}
         }
     })
 

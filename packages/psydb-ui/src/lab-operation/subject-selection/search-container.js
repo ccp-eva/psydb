@@ -50,32 +50,23 @@ var reducer = (state, action) => {
         case 'init':
             var {
                 studySelectionSettings,
-                conditionsByAgeFrameItemSchema
+                scientificFieldDefinitions,
+                relatedRecords,
             } = payload;
 
-            var formData = {
-                timeFrame: {
+            var schema = SelectionSettingsFormSchema({
+                timeFrameDefaults: {
                     start: datefns.format(new Date(), 'yyyy-MM-dd'),
                     end: datefns.format(new Date(), 'yyyy-MM-dd')
                 },
-                subjectSelectionSettingsByStudyId: (
-                    studySelectionSettings.reduce((acc, item) => ({
-                        ...acc,
-                        [item.studyId]: (
-                            item.selectionSettingsBySubjectType
-                        ),
-                    }), {})
-                )
-            }
-
-            var schema = SelectionSettingsFormSchema({
-                studySelectionSettings
+                studySelectionSettings,
+                scientificFieldDefinitions,
+                relatedRecords,
             });
 
             return ({
                 ...state,
                 isInitialized: true,
-                formData,
                 schema,
             })
     }
@@ -94,7 +85,6 @@ const SearchContainer = () => {
 
     var {
         isInitialized,
-        formData,
         schema,
     } = state;
 
@@ -122,7 +112,6 @@ const SearchContainer = () => {
         <Switch>
             <Route exact path={ `${path}` }>
                 <SelectionSettingsForm { ...({
-                    formData,
                     schema,
                 }) } />
             </Route>
@@ -139,14 +128,11 @@ import { Theme as Bootstrap4Theme } from '@rjsf/bootstrap-4'
 var SchemaForm = withTheme(Bootstrap4Theme);
 
 const SelectionSettingsForm = ({
-    formData,
     schema,
 }) => {
-    console.log(formData);
     return (
         <SchemaForm
             schema={ schema }
-            formData={ formData }
         />
     );
 }

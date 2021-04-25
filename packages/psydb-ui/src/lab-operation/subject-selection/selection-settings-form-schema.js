@@ -1,35 +1,17 @@
 import {
+    BasicObject,
+    BasicArray,
+    BasicBool,
     DateOnlyInterval,
 } from '@mpieva/psydb-schema-fields';
-
-const BasicObject = (properties, additionalKeywords = {}) => ({
-    type: 'object',
-    properties,
-    ...additionalKeywords
-});
-
-const BasicArray = (items, additionalKeywords = {}) => ({
-    type: 'object',
-    items,
-    ...additionalKeywords
-});
-
-const BasicBool = ({ ...additionalKeywords } = {}) => ({
-    type: 'boolean',
-    ...additionalKeywords
-});
 
 const BoolTrue = ({ ...additionalKeywords } = {}) => BasicBool({
     default: true,
     ...additionalKeywords
 });
 
-const BoolFalse = ({ ...additionalKeywords } = {}) => BasicBool({
-    default: false,
-    ...additionalKeywords
-});
-
 const SelectionSettingsFormSchema = ({
+    timeFrameDefaults,
     studySelectionSettings,
 
     customFieldDefinitions,
@@ -37,8 +19,14 @@ const SelectionSettingsFormSchema = ({
 }) => BasicObject({
     timeFrame: DateOnlyInterval({
         title: 'Zeitfenster für Termin',
-        additionalStartKeywords: { title: 'Beginn' },
-        additionalEndKeywords: { title: 'Ende' },
+        additionalStartKeywords: {
+            title: 'Beginn',
+            default: timeFrameDefaults.start,
+        },
+        additionalEndKeywords: {
+            title: 'Ende',
+            default: timeFrameDefaults.start,
+        },
     }),
     selectionSettings: BasicObject(
         studySelectionSettings.reduce((acc, item) => ({

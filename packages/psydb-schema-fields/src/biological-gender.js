@@ -1,12 +1,18 @@
 'use strict';
 var BiologicalGender = () => ({
     systemType: 'BiologicalGender',
-    reactType: 'radio-group',
-    type: { enum: [
+    type: 'string',
+    enum: [
         'male',
         'female',
         'unknown',
-    ]}
+    ],
+    // FIXME: @rjsf/intl
+    enumNames: [
+        'Männlich',
+        'Weiblich',
+        'Unbekannt',
+    ]
 });
 
 module.exports = BiologicalGender;

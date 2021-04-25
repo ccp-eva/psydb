@@ -36,6 +36,7 @@ var Schema = () => {
                                 'ForeignId',
                                 'FullText',
                                 'DateTime',
+                                'BiologicalGender',
                             ],
                         },
                     }

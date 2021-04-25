@@ -103,6 +103,13 @@ var DateTimeFieldDefinition = () => FieldDefinition({
     },
 })
 
+var BiologicalGenderFieldDefinition = () => FieldDefinition({
+    type: 'BiologicalGender',
+    props: {
+        // enableUnknwonValue
+    },
+});
+
 module.exports = {
     SaneString: SaneStringFieldDefinition,
     FullText: FullTextFieldDefinition,
@@ -111,4 +118,5 @@ module.exports = {
     HelperSetItemIdList: HelperSetItemIdListFieldDefinition,
     ForeignId: ForeignIdFieldDefinition,
     DateTime: DateTimeFieldDefinition,
+    BiologicalGender: BiologicalGenderFieldDefinition,
 }

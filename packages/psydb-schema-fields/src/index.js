@@ -1,5 +1,12 @@
 'use strict';
 module.exports = {
+    BasicObject: require('./basic-object'),
+    BasicArray: require('./basic-array'),
+    BasicBool: require('./basic-bool'),
+
+    DefaltArray: require('./default-array'),
+    DefaultBool: require('./default-bool'),
+
     Address: require('./address'),
     BiologicalGender: require('./biological-gender'),
     BlockedWeekdays: require('./blocked-weekdays'),
