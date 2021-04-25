@@ -1,11 +1,11 @@
 'use strict';
 
 var resolveRelationData = require('./resolve-relation-data');
-var fetchRelatedRecords = require('./')
+var fetchRelatedRecords = require('./fetch-related-records');
 
 var fetchRelatedLabels = async ({
     db,
-    schema
+    schema,
     data,
 }) => {
     
@@ -17,7 +17,7 @@ var fetchRelatedLabels = async ({
         data,
     });
 
-    var relatedRecord = await fetchRelatedRecords({
+    var relatedRecords = await fetchRelatedRecords({
         db,
         foreignIdRelationData,
         labelOnly: true,
@@ -30,7 +30,7 @@ var fetchRelatedLabels = async ({
 
     return ({
         relatedRecords,
-        relatedHelperSetItems,
+        //relatedHelperSetItems,
         /*relatedHelperSetItems: keyBy({
             items: relatedHelperSetItems.map(it => ({
                 _id: it._id,
@@ -40,4 +40,4 @@ var fetchRelatedLabels = async ({
     });
 }
 
-module.exports = fetchRelatedlabels;
+module.exports = fetchRelatedLabels;

@@ -6,4 +6,10 @@ module.exports = {
     
     AgeFrameSettingsListItem: require('./age-frame-settings-list-item'),
     AgeFrameSettingsList: require('./age-frame-settings-list'),
+
+    ExternalLocationGrouping: require('./external-location-grouping'),
+    
+    SubjectSelectionSettingsListItemOption: require('./subject-selection-settings-list-item-option'),
+    SubjectSelectionSettingsListItem: require('./subject-selection-settings-list-item'),
+    SubjectSelectionSettingsList: require('./subject-selection-settings-list'),
 }

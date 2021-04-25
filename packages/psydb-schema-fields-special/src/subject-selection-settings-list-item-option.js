@@ -4,24 +4,8 @@ var {
     CustomRecordTypeName,
 } = require('@mpieva/psydb-schema-fields');
 
-var {
-    AgeFrameSettingsList
-} = require('@mpieva/psydb-schema-fields-special');
-
+var AgeFrameSettingsList = require('./age-frame-settings-list');
 var ExternalLocationGrouping = require('./external-location-grouping');
-
-var SubjectSelectionSettingsListItem = ({
-    subjectRecordTypeRecords
-}) => ({
-    systemType: 'SubjectSelectionSettingsListItem',
-    type: 'object',
-    lazyResolveProp: 'subjectRecordType',
-    oneOf: subjectRecordTypeRecords.map(it => (
-        SubjectSelectionSettingsListItemOption({
-            subjectRecordTypeRecord: it
-        })
-    ))
-});
 
 var SubjectSelectionSettingsListItemOption = ({
     subjectRecordTypeRecord
@@ -64,4 +48,4 @@ var SubjectSelectionSettingsListItemOption = ({
     );
 };
 
-module.exports = SubjectSelectionSettingsListItem;
+module.exports = SubjectSelectionSettingsListItemOption;

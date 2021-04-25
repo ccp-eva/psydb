@@ -3,9 +3,9 @@ var inline = require('@cdxoo/inline-text'),
     CustomProps = require('../../common/custom-props'),
     systemPermissionsSchema = require('../../common/system-permissions-schema');
 
-var SubjectSelectionSettingsList = (
-    require('./subject-selection-settings-list')
-);
+ var {
+     SubjectSelectionSettingsList
+ } = require('@mpieva/psydb-schema-fields-special');
 
 var {
     ExactObject,

@@ -14,10 +14,10 @@ var {
 } = require('@mpieva/psydb-api-lib/src/fetch-record-helpers');
 
 var fetchOneCustomRecordType = require('@mpieva/psydb-api-lib/src/fetch-one-custom-record-type');
-var fetchRelatedRecordLabels = require('@mpieva/psydb-api-lib/src/fetch-related-record-labels');
+var fetchRelatedLabels = require('@mpieva/psydb-api-lib/src/fetch-related-labels');
 
 var {
-    SelectionSettingsListItem,
+    SubjectSelectionSettingsListItemOption,
 } = require('@mpieva/psydb-schema-fields-special');
 
 
@@ -81,7 +81,8 @@ var selectionSettingsForSubjectTypeAndStudies = async (context, next) => {
     var {
         relatedRecords,
         relatedHelperSetItems
-    } = fetchRelatedRecordLabels({
+    } = await fetchRelatedLabels({
+        db,
         data: {
             items: studySelectionSettings.map(it => (
                 it.selectionSettingsBySubjectType
@@ -94,13 +95,16 @@ var selectionSettingsForSubjectTypeAndStudies = async (context, next) => {
             properties: {
                 items: {
                     type: 'array',
-                    items: SubjectSelectionSettingsListItem({
+                    items: SubjectSelectionSettingsListItemOption({
                         subjectRecordTypeRecord
                     })
                 }
             }
         }
     });
+
+    console.log(relatedRecords);
+    console.log(relatedHelperSetItems);
 
     context.body = ResponseBody({
         data: {

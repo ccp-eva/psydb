@@ -11,11 +11,11 @@ var createRecordLabel = require('./create-record-label');
 
 var fetchRelatedRecords = async ({
     db,
-    foreignIdData,
+    foreignIdRelationData,
     labelOnly,
 }) => {
     var collectionGroups = groupBy({
-        items: foreignIdData,
+        items: foreignIdRelationData,
         byProp: 'collection'
     });
 

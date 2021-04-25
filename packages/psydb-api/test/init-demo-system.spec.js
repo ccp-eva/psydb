@@ -131,7 +131,7 @@ describe('init-demo-system', function () {
         });*/
         var response;
         //response = await agent.get('/metadata/record-schema/study/default');
-        response = await agent.get(`/read/study/default/${context.STUDY_01_ID}`);
+        //response = await agent.get(`/read/study/default/${context.STUDY_01_ID}`);
         console.log('###############')
         //response = await agent.get(`/available-test-locations-for-study/${context.STUDY_01_ID}/${context.INSTITUTEROOM_TYPE_ID}`);
         //response = await agent.get(`/experiment-operator-teams-for-study/${context.STUDY_01_ID}`);
@@ -145,10 +145,10 @@ describe('init-demo-system', function () {
         /*response = await agent.post('/testable-subject-types-for-studies').send({
             studyIds: [ context.STUDY_01_ID ],
         });*/
-        /*response = await agent.post('/selection-settings-for-subject-type-and-studies').send({
+        response = await agent.post('/selection-settings-for-subject-type-and-studies').send({
             subjectRecordType: 'teacher',
             studyIds: [ context.STUDY_01_ID ],
-        });*/
+        });
         /*response = await agent.post('/testable-subjects-inhouse/').send({
             subjectRecordType: 'teacher',
             studyIds: [ context.STUDY_01_ID ],
