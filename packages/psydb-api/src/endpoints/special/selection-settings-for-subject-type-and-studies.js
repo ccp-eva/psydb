@@ -53,7 +53,9 @@ var selectionSettingsForSubjectTypeAndStudies = async (context, next) => {
         { $group: {
             _id: '$_id',
             'studyName': { $first: '$state.name' },
-            'selectionSettingsBySubjectType': { $addToSet: (
+            // NOTE: we use first here since there can only be one
+            // item per type
+            'selectionSettingsBySubjectType': { $first: (
                 '$state.selectionSettingsBySubjectType'
             )}
         }},

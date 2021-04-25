@@ -9,22 +9,74 @@ import {
     useParams
 } from 'react-router-dom';
 
+import {
+    DateOnlyInterval,
+} from '@mpieva/psydb-schema-fields';
+
 import agent from '@mpieva/psydb-ui-request-agents';
+import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
+
+import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
+import SelectionSettingsFormSchema from './selection-settings-form-schema';
+
+var FormSettingsItemSchema = ({
+    studyName,
+    selectionSettings,
+    conditionsByAgeFrameItemSchema,
+}) => ({
+    type: 'object',
+    title: studyName,
+    properties: {
+        conditionsByAgeFrame: {
+            type: 'array',
+            items: conditionsByAgeFrameItemSchema
+        }
+    }
+    /*properties: selectionSettings.conditionsByAgeFrame.reduce(
+        (acc, item) => {
+            var key = `${item.ageFrame.start}_${item.ageFrame.end}`;
+            return ({
+                ...acc,
+                [key]: conditionsByAgeFrameItemSchema,
+            })
+        },
+        {}
+    )*/
+});
 
 var reducer = (state, action) => {
-
     var { type, payload } = action;
     switch (type) {
-        case 'change-experiment-time-interval':
-            return ({
-                ...state,
-                experimentTimeInterval: payload
+        case 'init':
+            var {
+                studySelectionSettings,
+                conditionsByAgeFrameItemSchema
+            } = payload;
+
+            var formData = {
+                timeFrame: {
+                    start: datefns.format(new Date(), 'yyyy-MM-dd'),
+                    end: datefns.format(new Date(), 'yyyy-MM-dd')
+                },
+                subjectSelectionSettingsByStudyId: (
+                    studySelectionSettings.reduce((acc, item) => ({
+                        ...acc,
+                        [item.studyId]: (
+                            item.selectionSettingsBySubjectType
+                        ),
+                    }), {})
+                )
+            }
+
+            var schema = SelectionSettingsFormSchema({
+                studySelectionSettings
             });
-        case 'init-ageframe-settings':
+
             return ({
                 ...state,
-                // TODO: descie how to structure that
-                ageFrameSettingsByStudyId: payload
+                isInitialized: true,
+                formData,
+                schema,
             })
     }
 
@@ -35,52 +87,44 @@ const SearchContainer = () => {
     var { studyIds, subjectRecordType } = useParams();
 
     var [ state, dispatch ] = useReducer(reducer, {
-        experimentTimeInterval: {
-            start: new Date(), // TODO reasonable defaults
-            end: new Date(),
-        },
-        ageFrameSettingsByStudyId: {}
+        isInitialized: false,
+        schema: undefined,
+        formData: undefined,
     });
 
     var {
-        experimentTimeInterval,
-        ageFrameSettingsByStudyId,
+        isInitialized,
+        formData,
+        schema,
     } = state;
 
     useEffect(() => {
-        agent.fetchAgeFrameSettings({
+        agent.fetchSelectionSettingsForSubjectTypeAndStudies({
             studyIds: studyIds.split(','),
             subjectRecordType,
         })
         .then(response => {
             dispatch({
-                type: 'init-ageframe-settings',
-                payload: response.data.data.ageFrameSettingsByStudy
+                type: 'init',
+                payload: response.data.data
                 // [studyId]: [
                 //    { ageFrame: {}, conditionList }
                 // ]
             })
         })
-    })
+    }, [ studyIds, subjectRecordType ])
+
+    if (!isInitialized) {
+        return <LoadingIndicator size='lg' />
+    }
 
     return (
         <Switch>
             <Route exact path={ `${path}` }>
-                <ExperimentTimeIntervalEditor
-                    interval={ experimentTimeInterval }
-                    onChange={ (nextInterval) => {
-                        dispatch({
-                            type: 'change-experiment-time-interval',
-                            payload: nextInterval
-                        })
-                    }}
-                />
-                <AgeFrameSettingsEditorList
-                    ageFrameSettingsByStudyId={ ageFrameSettingsByStudyId }
-                    onChange={ (...args) => {
-                        console.log(args);
-                    }}
-                />
+                <SelectionSettingsForm { ...({
+                    formData,
+                    schema,
+                }) } />
             </Route>
             <Route exact path={ `${path}/search`}>
                 <TestableSubjectList />
@@ -89,24 +133,22 @@ const SearchContainer = () => {
     )
 }
 
-const ExperimentTimeIntervalEditor = ({
-    interval,
-    onChange,
-}) => {
-    return (
-        <div>Interval editor</div>
-    )
-}
+import { withTheme } from '@rjsf/core';
+import { Theme as Bootstrap4Theme } from '@rjsf/bootstrap-4'
 
-const AgeFrameSettingsEditorList = ({
-    ageFrameSettingsEditorList,
-    onChange
+var SchemaForm = withTheme(Bootstrap4Theme);
+
+const SelectionSettingsForm = ({
+    formData,
+    schema,
 }) => {
-    // per item
-    // onChange = (nextSettings) => { onChange(studyId, nextSettings )}
+    console.log(formData);
     return (
-        <div>Age frame editor list </div>
-    )
+        <SchemaForm
+            schema={ schema }
+            formData={ formData }
+        />
+    );
 }
 
 const TestableSubjectList = ({

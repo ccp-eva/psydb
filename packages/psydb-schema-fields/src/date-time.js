@@ -1,7 +1,6 @@
 'use strict';
 var DateTime = ({
-    additionalKeywords,
-    ...other
+    ...additionalKeywords
 } = {}) => ({
     systemType: 'DateTime',
     type: 'string',

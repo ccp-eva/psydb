@@ -1,7 +1,6 @@
 'use strict';
 var DateOnly = ({
-    additionalKeywords,
-    ...other
+    ...additionalKeywords
 } = {}) => ({
     systemType: 'DateOnly',
     type: 'string',

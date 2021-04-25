@@ -3,22 +3,25 @@ var ExactObject = require('./exact-object'),
     DateTime = require('./date-time');
 
 var DateTimeInterval = ({
-    description
+    additionalStartKeywords,
+    additionalEndKeywords,
+    ...additionalKeywords
 } = {}) => ExactObject({
     systemType: 'DateTimeInterval',
     properties: {
-        start: DateTime(),
+        start: DateTime({ ...additionalStartKeywords, }),
         end: DateTime({
             formatMinimum: {
                 $data: '2/start/$date'
-            }
+            },
+            ...additionalEndKeywords,
         })
     },
     required: [
         'start',
         'end',
     ],
-    ...(description ? { description } : {})
+    ...additionalKeywords,
 });
 
 module.exports = DateTimeInterval;
