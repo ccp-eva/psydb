@@ -28,7 +28,7 @@ const SelectionSettingsFormSchema = ({
         },
         additionalEndKeywords: {
             title: 'Ende',
-            default: timeFrameDefaults.start,
+            default: timeFrameDefaults.end,
         },
     }),
     selectionSettings: BasicObject(
@@ -151,7 +151,8 @@ const ConditionValues = ({
 }) => BasicObject(
     values.reduce((acc, value, index) => ({
         ...acc,
-        [`${prefix}.${index}`]: BoolTrue({
+        //NOTE: value could be a number
+        [`value_${index}`]: BoolTrue({
             title: stringifyFieldValue({
                 fieldKey,
                 value,

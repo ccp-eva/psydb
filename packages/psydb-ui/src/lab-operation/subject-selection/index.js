@@ -36,7 +36,7 @@ const SubjectSelectionRouting = () => {
                 <Route exact path={ `${path}/:studyIds` }>
                     <SubjectTypeSelect />
                 </Route>
-                <Route exact path={ `${path}/:studyIds/:subjectRecordType` }>
+                <Route path={ `${path}/:studyIds/:subjectRecordType` }>
                     <SearchContainer />
                 </Route>
             </Switch>

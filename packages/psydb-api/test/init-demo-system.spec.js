@@ -149,7 +149,7 @@ describe('init-demo-system', function () {
             subjectRecordType: 'teacher',
             studyIds: [ context.STUDY_01_ID ],
         });
-        /*response = await agent.post('/testable-subjects-inhouse/').send({
+        response = await agent.post('/testable-subjects-inhouse/').send({
             subjectRecordType: 'teacher',
             studyIds: [ context.STUDY_01_ID ],
             timeFrameStart: '1979-04-01T00:00:00.000Z',
@@ -157,7 +157,7 @@ describe('init-demo-system', function () {
             customAgeFrameConditions: [],
             offset: 0,
             limit: 100,
-        });*/
+        });
         
         console.dir(response.status, { depth: null });
         console.dir(response.body, { depth: null });

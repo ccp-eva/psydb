@@ -208,10 +208,12 @@ var SchemaForm = withTheme(Bootstrap4Theme);
 
 const SelectionSettingsForm = ({
     schema,
+    onSubmit,
 }) => {
     return (
         <SchemaForm
             schema={ schema }
+            onSubmit={ onSubmit }
         />
     );
 }
