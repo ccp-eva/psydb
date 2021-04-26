@@ -2,6 +2,7 @@
 
 var resolveRelationData = require('./resolve-relation-data');
 var fetchRelatedRecords = require('./fetch-related-records');
+var fetchRelatedHelperSetItems = require('./fetch-related-helper-set-items');
 
 var fetchRelatedLabels = async ({
     db,
@@ -17,20 +18,25 @@ var fetchRelatedLabels = async ({
         data,
     });
 
+    //console.dir(schema, { depth: null });
+    //console.dir(data, { depth: null });
+    console.dir(helperSetItemIdRelationData, { depth: null });
+    throw new Error();
+
     var relatedRecords = await fetchRelatedRecords({
         db,
         foreignIdRelationData,
         labelOnly: true,
     });
 
-    /*var relatedHelperSetItems = await fetchRelatedHelperSetItems({
+    var relatedHelperSetItems = await fetchRelatedHelperSetItems({
         db,
-        helperSetItemRelationData,
-    });*/
+        helperSetItemIdRelationData,
+    });
 
     return ({
         relatedRecords,
-        //relatedHelperSetItems,
+        relatedHelperSetItems,
         /*relatedHelperSetItems: keyBy({
             items: relatedHelperSetItems.map(it => ({
                 _id: it._id,

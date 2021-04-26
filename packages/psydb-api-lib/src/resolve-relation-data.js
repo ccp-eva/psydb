@@ -11,6 +11,8 @@ var resolveRelationData = ({ schema, data }) => {
     //console.dir(channelStateSchema, { depth: null });
 
     var resolvedParts = lazyResolveOneOf(schema, data);
+    //console.dir(resolvedParts, { depth: null });
+    //throw new Error();
 
     //console.dir(resolvedParts, { depth: null });
 
@@ -40,6 +42,8 @@ var resolveRelationData = ({ schema, data }) => {
             ];
         }
         else if (part.type === 'array') {
+            //console.log('#########PART')
+            //console.log(part);
             var dataPointers = convertPointer(
                 part.inSchemaPointer,
                 data
@@ -95,10 +99,14 @@ var resolveFromSubSchema = ({
             propNameOrIndex
         ] = traverseArgs;
 
+        //console.log(currentSchema.systemType);
         if (
             currentSchema.systemType === 'ForeignId'
             || currentSchema.systemType === 'HelperSetItemId'
         ) {
+            //console.log(currentSchema);
+            //console.log(data)
+            //console.log('PUSHING ####################')
             var currentData = data,
                 dataPointer = '';
             if (typeof data === 'object') {

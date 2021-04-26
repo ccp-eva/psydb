@@ -5,7 +5,7 @@ var OneofResolver = () => {
     var resolver = {},
         transformations = [];
 
-    resolver.transformations = () => (transformations);
+    resolver.transformations = () => ([ ...transformations ]);
 
     resolver.resolve = ({
         currentData,
@@ -80,17 +80,21 @@ var decide = ({
 }) => {
     var shouldUse = false;
 
-    if (schema.enum) {
-        var schemaValue = schema.enum;
-        if (schemaValue.includes(dataValue)) {
-            shouldUse = true;
-        }
-    }
     // FIXME: we should check if the key exists
-    else if (schema.const !== undefined) {
+    if (schema.const !== undefined) {
         var schemaValue = schema.const;
         if (schemaValue === dataValue) {
             shouldUse = true;
+            //console.log(schema, dataValue);
+            //console.log('shouldUSE CONST')
+        }
+    }
+    else if (schema.enum) {
+        var schemaValue = schema.enum;
+        if (schemaValue.includes(dataValue)) {
+            shouldUse = true;
+            //console.log(schema, dataValue);
+            //console.log('shouldUSE ENUM')
         }
     }
     else {

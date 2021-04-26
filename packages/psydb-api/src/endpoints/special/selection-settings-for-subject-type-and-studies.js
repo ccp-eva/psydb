@@ -78,33 +78,42 @@ var selectionSettingsForSubjectTypeAndStudies = async (context, next) => {
         type: subjectRecordType,
     });
 
+
+    var data = {
+        items: studySelectionSettings.map(it => (
+            it.selectionSettingsBySubjectType
+        ))
+    };
+    console.dir(data, { depth: null });
+
+    var schema = {
+        // FIXME: wrapping object is only because
+        // resolver cant handle root level array
+        type: 'object',
+        properties: {
+            items: {
+                type: 'array',
+                items: SubjectSelectionSettingsListItemOption({
+                    subjectRecordTypeRecord
+                })
+            }
+        }
+    }
+    //console.dir(schema, { depth: null });
+    //throw new Error();
+
     var {
         relatedRecords,
         relatedHelperSetItems
     } = await fetchRelatedLabels({
         db,
-        data: {
-            items: studySelectionSettings.map(it => (
-                it.selectionSettingsBySubjectType
-            ))
-        },
-        schema: {
-            // FIXME: wrapping object is only because
-            // resolver cant handle root level array
-            type: 'object',
-            properties: {
-                items: {
-                    type: 'array',
-                    items: SubjectSelectionSettingsListItemOption({
-                        subjectRecordTypeRecord
-                    })
-                }
-            }
-        }
+        data,
+        schema,
     });
 
-    console.log(relatedRecords);
-    console.log(relatedHelperSetItems);
+    //console.log(relatedRecords);
+    //console.log(relatedHelperSetItems);
+    throw new Error();
 
     context.body = ResponseBody({
         data: {

@@ -16,16 +16,25 @@ var OneofResolver = require('./oneof-resolver');
 // where the key refers to a prop containing a oneOf declaration
 var lazyResolveAll = (schema, data, lazyResolvePropPointers) => {
     var schemaParts = deconstructArrays(schema);
-    
+    //console.log(schemaParts);
+
     var resolvedParts = [];
+    lazyResolveZero({
+        resolvedParts,
+        schemaParts,
+        currentData: data,
+        currentPart: schemaParts[0]
+    });
+
+    return resolvedParts;
+
+    var resolvedTransformations = [];
     for (var part of schemaParts) {
+        //console.log(part);
+        //console.log(resolvedParts);
         var { inSchemaPointer, schema } = part;
        
-        //console.log('AAAAAAAAAAAAAAAAAAAAAAAAAA');
-        //console.log('converting', inSchemaPointer);
-        var dataPointer = convertPointer(inSchemaPointer, data);
-        //console.dir([ 'conversion', inSchemaPointer, dataPointer ]);
-        //console.dir(data, { depth: null })
+        /*var dataPointer = convertPointer(inSchemaPointer, data);
 
         var partData = undefined;
         if (Array.isArray(dataPointer)) {
@@ -33,7 +42,7 @@ var lazyResolveAll = (schema, data, lazyResolvePropPointers) => {
         }
         else {
             partData = jsonpointer.get(data, dataPointer);
-        }
+        }*/
 
         var requiredType = 'array';
         // we need to check this for the schema root as it might
@@ -45,39 +54,289 @@ var lazyResolveAll = (schema, data, lazyResolvePropPointers) => {
         //console.log('PART')
         //console.log(inSchemaPointer, dataPointer, partData, requiredType);
         if (requiredType === 'array') {
-            resolvedParts.push({
+
+            /*var { itemSchemas, itemTransformations } = (
+                lazyResolveArrayPart(schema, partData, inSchemaPointer)
+            );*/
+            /*resolvedTransformations = [
+                ...resolvedTransformations,
+                ...itemTransformations,
+            ];*/
+
+            console.log(schema);
+            console.log(itemSchemas);
+
+            for (var [ index, it ] of itemSchemas.entries()) {
+                console.log('###############')
+                console.log(it, partData[index]);
+                console.log(itemTransformations[index]);
+                //var { schema } = lazyResolve(it, partData[index]);
+                //console.log('aaa',schema);
+            }
+            /*resolvedParts.push({
                 type: 'array',
                 inSchemaPointer,
-                itemSchemas: lazyResolveArrayPart(schema, partData)
-            });
+                itemSchemas,
+            });*/
+
+            /*if (/\/oneOf\/\d+/.test(part.inSchemaPointer)) {
+                var proceedWith = undefined;
+                var maxLen = 0;
+                for (var t of resolvedTransformations) {
+                    if (part.inSchemaPointer.startsWith(t.to) && t.to.length > maxLen) {
+                        maxLen = t.to.length;
+                        proceedWith = t.to;
+                        
+                    }
+                }
+                if (proceedWith) {
+                    console.log('=>', proceedWith)
+                   
+                    var dataPointer = convertPointer(inSchemaPointer, data);
+                    var partData = (
+                        dataPointer
+                        .map(it => jsonpointer.get(data, it))
+                    );
+
+                    var { itemSchemas, itemTransformations } = (
+                        lazyResolveArrayPart(schema, partData)
+                    );
+                    resolvedTransformations = [
+                        ...resolvedTransformations,
+                        ...itemTransformations,
+                    ];
+                    resolvedParts.push({
+                        type: 'array',
+                        inSchemaPointer,
+                        itemSchemas,
+                    });
+                }
+            }
+            else {
+                var dataPointer = convertPointer(inSchemaPointer, data);
+                var partData = dataPointer.map(it => (
+                    jsonpointer.get(data, it))
+                );
+                var { itemSchemas, itemTransformations } = (
+                    lazyResolveArrayPart(schema, partData, inSchemaPointer)
+                );
+                resolvedTransformations = [
+                    ...resolvedTransformations,
+                    ...itemTransformations,
+                ];
+                resolvedParts.push({
+                    type: 'array',
+                    inSchemaPointer,
+                    itemSchemas,
+                });
+            }*/
         }
         else {
+
+            var dataPointer = convertPointer(inSchemaPointer, data);
+            var partData = jsonpointer.get(data, dataPointer);
+
+            var { transformations, schema } = lazyResolve(schema, partData);
+            resolvedTransformations = [
+                ...resolvedTransformations,
+                ...transformations.map(it => ({
+                    from: `${part.inSchemaPointer}${it.from}`,
+                    to: `${part.inSchemaPointer}${it.to}`,
+                })),
+            ];
             resolvedParts.push({
                 type: 'schema',
                 inSchemaPointer,
-                schema: lazyResolve(schema, partData)
+                schema,
             });
+
         }
     }
+
+    //console.log('#########################')
+    //console.log(resolvedTransformations);
+    //console.log('#########################')
 
     return resolvedParts;
 }
 
-var lazyResolveArrayPart = (schema, data) => {
-    //console.log('LRAP', schema, data);
-    // TODO data is wrong here for nested array
-    if (!Array.isArray(data)) {
-        return [];
-    }
-    if (!data.length) {
-        return [];
+var lazyResolveZero = ({
+    resolvedParts,
+    schemaParts,
+    currentData,
+    currentPart,
+}) => {
+    //console.log('lazyResolveZero');
+    var { inSchemaPointer, schema } = currentPart;
+
+    var requiredType = 'array';
+    if (inSchemaPointer === '') {
+        requiredType = jsonpointer.get(schema, inSchemaPointer).type;
     }
 
-    var resolved = [];
-    for (var item of data) {
-        resolved.push(lazyResolve(schema, item));
+    //console.log('#############requiredType', requiredType);
+    //console.log(currentData);
+    
+    if (requiredType === 'array') {
+        /*var dataPointer = convertPointer(inSchemaPointer, currentData);
+        var partData = dataPointer.map(it => (
+            jsonpointer.get(data, it))
+        );*/
+
+        var buffer = [];
+        //console.log('currentData', currentData);
+        for (var [index, dataItem] of currentData.entries()) {
+            //console.log(dataItem);
+            var out = lazyResolve(schema, dataItem);
+            buffer.push(out);
+            //console.log('out', out)
+
+            var includedArrays = resolveIncludedArrays(schema);
+            includedArrays = filterOneOfPointers({
+                pointers: includedArrays,
+                oneOfTransformations: out.transformations,
+            });
+            console.log('AAAAAAAAAAAAAa', schema);
+            console.log('insludedArrays', includedArrays);
+            //console.log(out.transformations);
+            for (var arrayPointer of includedArrays) {
+                var nextPointer = `${inSchemaPointer}${arrayPointer}/items`;
+                var nextPart = schemaParts.find(it => (
+                    it.inSchemaPointer === nextPointer
+                ));
+
+                //console.log(it);
+                var dataPointer = convertPointer(arrayPointer);
+                //console.log('dataPointer', dataPointer);
+                console.log('dataItem', dataItem);
+                var nextData = jsonpointer.get(dataItem, dataPointer);
+                //console.log('nextData', nextData);
+                //console.log('nextPart', nextPart);
+
+                //console.log('ary next part', nextPart);
+                //console.log(nextData);
+
+                //console.log('CALLING FROM INSIDE')
+                lazyResolveZero({
+                    resolvedParts,
+                    schemaParts,
+                    currentData: nextData,
+                    currentPart: nextPart
+                })
+            }
+        }
+
+        resolvedParts.push({
+            type: 'array',
+            inSchemaPointer,
+            itemSchemas: buffer.map(it => it.schema)
+        });
     }
-    return resolved;
+    else {
+
+        //var dataPointer = convertPointer(inSchemaPointer, currentData);
+        //var partData = jsonpointer.get(data, dataPointer);
+
+        var out = lazyResolve(schema, currentData);
+        /*resolvedTransformations = [
+            ...resolvedTransformations,
+            ...out.transformations.map(it => ({
+                from: `${part.inSchemaPointer}${it.from}`,
+                to: `${part.inSchemaPointer}${it.to}`,
+            })),
+        ];*/
+        resolvedParts.push({
+            type: 'schema',
+            inSchemaPointer,
+            schema: out.schema,
+        });
+
+        var includedArrays = resolveIncludedArrays(schema);
+        for (var arrayPointer of includedArrays) {
+            var nextPointer = `${inSchemaPointer}${arrayPointer}/items`;
+            var nextPart = schemaParts.find(it => (
+                it.inSchemaPointer === nextPointer
+            ));
+            var dataPointer = convertPointer(arrayPointer, currentData);
+            var nextData = jsonpointer.get(currentData, dataPointer);
+
+            //console.log('NEXT', nextPart, nextPointer);
+            //console.log('NEXT DATA', nextData);
+            //console.log('CALLING FROM OUTSIDE')
+            lazyResolveZero({
+                resolvedParts,
+                schemaParts,
+                currentData: nextData,
+                currentPart: nextPart
+            })
+        }
+
+    }
+}
+
+var resolveIncludedArrays = (schema) => {
+    var includedArrays = [];
+    traverse(schema, { allKeys: false }, (...traverseArgs) => {
+        var [
+            currentSchema,
+            currentInSchemaPointer,
+        ] = traverseArgs;
+
+        if (currentSchema.type === 'array') {
+            includedArrays.push(currentInSchemaPointer)
+        }
+    })
+    return includedArrays;
+}
+
+var filterOneOfPointers = ({
+    pointers,
+    oneOfTransformations,
+}) => {
+    var included = [];
+
+    for (var ptr of pointers) {
+        var match = ptr.match(/^(.*\/oneOf\/\d+)(.*?)$/)
+        if (match) {
+            var [ _ununsed, head, tail] = match;
+            for (var trans of oneOfTransformations) {
+                if (head === trans.to) {
+                    included.push(ptr);
+                } 
+            }
+        }
+        else {
+            included.push(ptr);
+        }
+    }
+
+    return included;
+}
+
+var lazyResolveArrayPart = (schema, data, inSchemaPointer) => {
+    //console.log('LRAP', schema, data);
+    // TODO data is wrong here for nested array
+    if (!Array.isArray(data) || !data.length) {
+        return {
+            itemSchemas: [],
+            itemTransformations: [],
+        };
+    }
+
+    var itemSchemas = [];
+    var itemTransformations = [];
+    for (var item of data) {
+        var { transformations, schema } = lazyResolve(schema, item);
+        itemSchemas.push(schema);
+        itemTransformations = [
+            ...itemTransformations,
+            ...transformations.map(it => ({
+                from: `${inSchemaPointer}${it.from}`,
+                to: `${inSchemaPointer}${it.to}`,
+            })),
+        ]
+    }
+    return { itemSchemas, itemTransformations };
 }
 
 var lazyResolve = (schema, data) => {
@@ -140,6 +399,8 @@ var lazyResolve = (schema, data) => {
         from = `/schema${from}`;
         to = `/schema${to}`;
 
+        //console.log('fromto', from, to);
+
         jsonpointer.set(
             evilRefHack,
             from,
@@ -147,7 +408,10 @@ var lazyResolve = (schema, data) => {
         );
     }
 
-    return evilRefHack.schema;
+    return {
+        transformations,
+        schema: evilRefHack.schema
+    };
 }
 
 module.exports = lazyResolveAll;
