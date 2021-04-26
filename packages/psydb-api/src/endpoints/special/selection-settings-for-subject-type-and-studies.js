@@ -44,6 +44,7 @@ var selectionSettingsForSubjectTypeAndStudies = async (context, next) => {
         { $unwind: '$state.selectionSettingsBySubjectType' },
         { $project: {
             'state.name': true,
+            'state.shorthand': true,
             'state.selectionSettingsBySubjectType': true
         }},
         { $match: {
@@ -54,6 +55,7 @@ var selectionSettingsForSubjectTypeAndStudies = async (context, next) => {
         { $group: {
             _id: '$_id',
             'studyName': { $first: '$state.name' },
+            'studyShorthand': { $first: '$state.shorthand' },
             // NOTE: we use first here since there can only be one
             // item per type
             'selectionSettingsBySubjectType': { $first: (

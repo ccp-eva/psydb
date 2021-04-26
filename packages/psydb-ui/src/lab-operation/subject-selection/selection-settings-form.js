@@ -163,7 +163,7 @@ const ObjectFieldTemplate = (ps) => {
     } = ps;
 
     var { systemType } = schema;
-    console.log(systemType);
+    //console.log(systemType);
     switch (systemType) {
         case 'DateOnlyInterval':
             return (
@@ -189,18 +189,14 @@ const ObjectFieldTemplate = (ps) => {
             return (
                 <SearchStudySettingsFieldTemplate { ...ps} />
             )
-        /*case 'SearchConditionValues':
-            return (
-                <div>FOO</div>
-            );*/
         default:
             return (
                 <PlainObjectFieldTemplate { ...ps} />
-                //<DefaultObjectFieldTemplate { ...ps} />
             )
     }
 }
 
+// XXX: this is so wierrd
 Bootstrap4Theme.FieldTemplate = (ps) => {
     var { children } = ps;
     return (
@@ -213,7 +209,6 @@ var SchemaForm = withTheme(Bootstrap4Theme);
 const SelectionSettingsForm = ({
     schema,
 }) => {
-    console.log(schema);
     return (
         <SchemaForm
             schema={ schema }

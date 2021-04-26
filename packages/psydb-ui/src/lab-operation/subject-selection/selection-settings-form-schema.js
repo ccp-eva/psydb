@@ -10,6 +10,8 @@ const BoolTrue = ({ ...additionalKeywords } = {}) => BasicBool({
     ...additionalKeywords
 });
 
+import * as stringifiers from '@mpieva/psydb-ui-lib/src/field-stringifiers';
+
 const SelectionSettingsFormSchema = ({
     timeFrameDefaults,
     studySelectionSettings,
@@ -62,6 +64,7 @@ const SelectionSettingsFormSchema = ({
 const StudySettings = ({
     prefix,
     studyName,
+    studyShorthand,
     selectionSettingsBySubjectType: {
         generalConditions,
         conditionsByAgeFrame,
@@ -94,7 +97,7 @@ const StudySettings = ({
             }
         }, {})
     )
-}, { title: studyName, systemType: 'SearchStudySettings' });
+}, { title: studyShorthand, systemType: 'SearchStudySettings' });
 
 const AgeFrameSettings = ({
     prefix,
@@ -105,7 +108,8 @@ const AgeFrameSettings = ({
     relatedRecords,
     relatedHelperSetItems,
 }) => {
-    var title = `Altersfenster: ${ageFrame.start}_${ageFrame.end}`;
+    var stringifiedAgeFrame = stringifiers.AgeFrame(ageFrame);
+    var title = `Altersfenster: ${stringifiedAgeFrame} (J/M/T)`;
     return (
         BasicObject({
             enabled: BoolTrue({ title }),
@@ -189,10 +193,28 @@ var stringifyFieldValue = ({
     relatedHelperSetItems,
 }) => {
     var definition = customFieldDefinitions.find(it => it.key === fieldKey);
-    console.log(definition);
-    console.log(relatedRecords);
-    console.log(relatedHelperSetItems);
-    return String(value)
+    switch (definition.type) {
+        case 'ForeignId':
+        case 'ForeignIdList':
+            var collection = definition.props.collection;
+            var record = relatedRecords[collection][value];
+            return record._recordLabel;
+        
+        case 'HelperSetItemId':
+        case 'HelperSetItemIdList':
+            var set = definition.props.set;
+            var helperSetItem = relatedHelperSetItems[set][value];
+            return helperSetItem.state.label;
+
+        default: 
+            var stringify = stringifiers[definition.type];
+            var str = (
+                stringify
+                ? stringify(value)
+                : String(value)
+            )
+            return str;
+    }
 }
 
 export default SelectionSettingsFormSchema;
