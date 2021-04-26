@@ -18,6 +18,7 @@ import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 
 import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
 import SelectionSettingsFormSchema from './selection-settings-form-schema';
+import SelectionSettingsForm from './selection-settings-form';
 
 var FormSettingsItemSchema = ({
     studyName,
@@ -32,16 +33,6 @@ var FormSettingsItemSchema = ({
             items: conditionsByAgeFrameItemSchema
         }
     }
-    /*properties: selectionSettings.conditionsByAgeFrame.reduce(
-        (acc, item) => {
-            var key = `${item.ageFrame.start}_${item.ageFrame.end}`;
-            return ({
-                ...acc,
-                [key]: conditionsByAgeFrameItemSchema,
-            })
-        },
-        {}
-    )*/
 });
 
 var reducer = (state, action) => {
@@ -51,6 +42,7 @@ var reducer = (state, action) => {
             var {
                 studySelectionSettings,
                 scientificFieldDefinitions,
+                relatedHelperSetItems,
                 relatedRecords,
             } = payload;
 
@@ -60,8 +52,9 @@ var reducer = (state, action) => {
                     end: datefns.format(new Date(), 'yyyy-MM-dd')
                 },
                 studySelectionSettings,
-                scientificFieldDefinitions,
+                customFieldDefinitions: scientificFieldDefinitions,
                 relatedRecords,
+                relatedHelperSetItems,
             });
 
             return ({
@@ -120,21 +113,6 @@ const SearchContainer = () => {
             </Route>
         </Switch>
     )
-}
-
-import { withTheme } from '@rjsf/core';
-import { Theme as Bootstrap4Theme } from '@rjsf/bootstrap-4'
-
-var SchemaForm = withTheme(Bootstrap4Theme);
-
-const SelectionSettingsForm = ({
-    schema,
-}) => {
-    return (
-        <SchemaForm
-            schema={ schema }
-        />
-    );
 }
 
 const TestableSubjectList = ({

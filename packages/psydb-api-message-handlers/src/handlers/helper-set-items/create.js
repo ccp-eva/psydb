@@ -24,7 +24,7 @@ var checkAllowedAndPlausible = async ({
     message,
     permissions
 }) => {
-    var { set } = message.payload;
+    var { set, id } = message.payload;
     
     if (!permissions.canCreateHelperSetItem()) {
         throw new ApiError(403);
@@ -38,6 +38,16 @@ var checkAllowedAndPlausible = async ({
 
     if (!existingSet) {
         // InvalidHelperSet
+        throw new ApiError(400);
+    }
+
+    var existingByKey = await (
+        db.collection('helperSetItems').findOne({
+            key: id,
+        })
+    );
+
+    if (existingByKey) {
         throw new ApiError(400);
     }
 
@@ -68,9 +78,7 @@ var triggerSystemEvents = async ({
         rohrpost
         .openCollection('helperSetItem')
         .openChannel({
-            id,
-            isNew: true,
-            additionalChannelProps: { set }
+            additionalChannelProps: { key: id, set }
         })
     );
 

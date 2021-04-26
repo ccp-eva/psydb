@@ -16,6 +16,7 @@ const SelectionSettingsFormSchema = ({
 
     customFieldDefinitions,
     relatedRecords,
+    relatedHelperSetItems,
 }) => BasicObject({
     timeFrame: DateOnlyInterval({
         title: 'Zeitfenster für Termin',
@@ -37,6 +38,7 @@ const SelectionSettingsFormSchema = ({
 
                 customFieldDefinitions,
                 relatedRecords,
+                relatedHelperSetItems,
             })
         }), {}),
         /*id_1: BasicObject({
@@ -53,7 +55,7 @@ const SelectionSettingsFormSchema = ({
                 }, { title: 'Altersfenster: 1/0/0 - 2/0/0 (J/M/T)' })
             })
          },{ title: 'tolle studie '}) */
-        { title: 'Suchbedingungen' }
+        { title: 'Suchbedingungen', systemType: 'SearchSelectionSettings' }
     )
 })
 
@@ -67,6 +69,7 @@ const StudySettings = ({
 
     customFieldDefinitions,
     relatedRecords,
+    relatedHelperSetItems,
 }) => BasicObject({
     conditionsByAgeFrame: BasicObject(
         conditionsByAgeFrame.reduce((acc, item) => {
@@ -86,11 +89,12 @@ const StudySettings = ({
 
                     customFieldDefinitions,
                     relatedRecords,
+                    relatedHelperSetItems,
                 })
             }
         }, {})
     )
-}, { title: studyName });
+}, { title: studyName, systemType: 'SearchStudySettings' });
 
 const AgeFrameSettings = ({
     prefix,
@@ -99,6 +103,7 @@ const AgeFrameSettings = ({
 
     customFieldDefinitions,
     relatedRecords,
+    relatedHelperSetItems,
 }) => {
     var title = `Altersfenster: ${ageFrame.start}_${ageFrame.end}`;
     return (
@@ -119,13 +124,15 @@ const AgeFrameSettings = ({
 
                                 customFieldDefinitions,
                                 relatedRecords,
+                                relatedHelperSetItems,
                             })
                         }
                         : acc
                     )
-                }, {})
+                }, {}),
+                { systemType: 'SearchConditionList'}
             )
-        })
+        }, { systemType: 'SearchAgeFrame'})
     )
 }
 
@@ -136,21 +143,27 @@ const ConditionValues = ({
 
     customFieldDefinitions,
     relatedRecords,
+    relatedHelperSetItems,
 }) => BasicObject(
     values.reduce((acc, value, index) => ({
+        ...acc,
         [`${prefix}.${index}`]: BoolTrue({
             title: stringifyFieldValue({
                 fieldKey,
                 value,
                 customFieldDefinitions,
                 relatedRecords,
+                relatedHelperSetItems,
             }),
         })
     }), {}),
-    { title: stringifyFieldKey({
-        fieldKey,
-        customFieldDefinitions
-    }) }
+    { 
+        title: stringifyFieldKey({
+            fieldKey,
+            customFieldDefinitions
+        }),
+        systemType: 'SearchConditionValues'
+    }
 )
 
 // TODO: to this needs to hit agains related
@@ -163,17 +176,23 @@ const ConditionValues = ({
 var stringifyFieldKey = ({
     fieldKey,
     customFieldDefinitions,
-}) => (
-    String(fieldKey)
-);
+}) => {
+    var definition = customFieldDefinitions.find(it => it.key === fieldKey);
+    return definition.displayName
+};
 
 var stringifyFieldValue = ({
     fieldKey,
     value,
     customFieldDefinitions,
     relatedRecords,
-}) => (
-    String(value)
-)
+    relatedHelperSetItems,
+}) => {
+    var definition = customFieldDefinitions.find(it => it.key === fieldKey);
+    console.log(definition);
+    console.log(relatedRecords);
+    console.log(relatedHelperSetItems);
+    return String(value)
+}
 
 export default SelectionSettingsFormSchema;

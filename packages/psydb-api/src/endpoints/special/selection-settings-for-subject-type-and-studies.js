@@ -84,7 +84,6 @@ var selectionSettingsForSubjectTypeAndStudies = async (context, next) => {
             it.selectionSettingsBySubjectType
         ))
     };
-    console.dir(data, { depth: null });
 
     var schema = {
         // FIXME: wrapping object is only because
@@ -113,7 +112,7 @@ var selectionSettingsForSubjectTypeAndStudies = async (context, next) => {
 
     //console.log(relatedRecords);
     //console.log(relatedHelperSetItems);
-    throw new Error();
+    //throw new Error();
 
     context.body = ResponseBody({
         data: {
@@ -121,8 +120,8 @@ var selectionSettingsForSubjectTypeAndStudies = async (context, next) => {
             scientificFieldDefinitions: (
                 subjectRecordTypeRecord.state.settings.subChannelFields.scientific
             ),
-            relatedRecords: {},
-            relatedHelperSetItems: {}
+            relatedRecords,
+            relatedHelperSetItems,
         }
     })
 

@@ -20,8 +20,8 @@ var fetchRelatedLabels = async ({
 
     //console.dir(schema, { depth: null });
     //console.dir(data, { depth: null });
-    console.dir(helperSetItemIdRelationData, { depth: null });
-    throw new Error();
+    //console.dir(helperSetItemIdRelationData, { depth: null });
+    //throw new Error();
 
     var relatedRecords = await fetchRelatedRecords({
         db,
