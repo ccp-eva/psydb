@@ -191,9 +191,8 @@ var lazyResolveZero = ({
             buffer.push(out);
             //console.log('out', out)
 
-            var includedArrays = resolveIncludedArrays(schema);
-            includedArrays = filterOneOfPointers({
-                pointers: includedArrays,
+            var includedArrays = resolveIncludedArrays({
+                schema,
                 oneOfTransformations: out.transformations,
             });
             console.log('AAAAAAAAAAAAAa', schema);
@@ -211,7 +210,7 @@ var lazyResolveZero = ({
                 console.log('dataItem', dataItem);
                 var nextData = jsonpointer.get(dataItem, dataPointer);
                 //console.log('nextData', nextData);
-                //console.log('nextPart', nextPart);
+                console.log('nextPart', nextPart);
 
                 //console.log('ary next part', nextPart);
                 //console.log(nextData);
@@ -251,7 +250,7 @@ var lazyResolveZero = ({
             schema: out.schema,
         });
 
-        var includedArrays = resolveIncludedArrays(schema);
+        var includedArrays = resolveIncludedArrays({ schema });
         for (var arrayPointer of includedArrays) {
             var nextPointer = `${inSchemaPointer}${arrayPointer}/items`;
             var nextPart = schemaParts.find(it => (
@@ -274,22 +273,45 @@ var lazyResolveZero = ({
     }
 }
 
-var resolveIncludedArrays = (schema) => {
-    var includedArrays = [];
+var resolveIncludedArrays = ({ schema, oneOfTransformations }) => {
+    var foundArrays = [];
     traverse(schema, { allKeys: false }, (...traverseArgs) => {
         var [
             currentSchema,
             currentInSchemaPointer,
         ] = traverseArgs;
 
+        //if (currentSchema.type === 'array' && currentInSchemaPointer !== '') {
         if (currentSchema.type === 'array') {
-            includedArrays.push(currentInSchemaPointer)
+            foundArrays.push(currentInSchemaPointer)
         }
     })
-    return includedArrays;
+
+    if (!oneOfTransformations) {
+        return foundArrays;
+    }
+
+    var included = [];
+
+    for (var ptr of foundArrays) {
+        var match = ptr.match(/^(.*\/oneOf\/\d+)(.*?)$/)
+        if (match) {
+            var [ _ununsed, head, tail] = match;
+            for (var trans of oneOfTransformations) {
+                if (head === trans.to) {
+                    included.push(ptr);
+                } 
+            }
+        }
+        else {
+            included.push(ptr);
+        }
+    }
+
+    return included;
 }
 
-var filterOneOfPointers = ({
+/*var filterOneOfPointers = ({
     pointers,
     oneOfTransformations,
 }) => {
@@ -311,7 +333,7 @@ var filterOneOfPointers = ({
     }
 
     return included;
-}
+}*/
 
 var lazyResolveArrayPart = (schema, data, inSchemaPointer) => {
     //console.log('LRAP', schema, data);

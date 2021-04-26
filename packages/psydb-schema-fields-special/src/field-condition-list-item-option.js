@@ -21,6 +21,16 @@ var FieldConditionListItemOption = ({
     enableCanChangePerSearch,
 }) => {
     var FieldSchema = allFieldSchemas[fieldType];
+    var valueItemsSchema = FieldSchema({
+        ...omit('constraints', fieldProps),
+    });
+
+    // we dont whant lists here we want the individual
+    // items of those lists
+    if (valueItemsSchema.type === 'array') {
+        valueItemsSchema = valueItemsSchema.items;
+    }
+
     return (
         ExactObject({
             systemType: 'FieldConditionListItemOption',
@@ -34,9 +44,7 @@ var FieldConditionListItemOption = ({
                 values: {
                     type: 'array',
                     default: [],
-                    items: FieldSchema({
-                        ...omit('constraints', fieldProps),
-                    })
+                    items: valueItemsSchema,
                 },
                 ...(enableCanChangePerSearch && { canChangePerSearch: {
                     type: 'boolean',

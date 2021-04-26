@@ -11,7 +11,7 @@ var resolveRelationData = ({ schema, data }) => {
     //console.dir(channelStateSchema, { depth: null });
 
     var resolvedParts = lazyResolveOneOf(schema, data);
-    //console.dir(resolvedParts, { depth: null });
+    console.dir(resolvedParts, { depth: null });
     //throw new Error();
 
     //console.dir(resolvedParts, { depth: null });
