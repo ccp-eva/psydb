@@ -143,8 +143,8 @@ const CreateModal = ({
             }
         }
         agent.send({ message }).then((response) => {
-            onSuccessfulCreate && onSuccessfulCreate(response);
             onHide();
+            onSuccessfulCreate && onSuccessfulCreate(response);
         });
     }
 

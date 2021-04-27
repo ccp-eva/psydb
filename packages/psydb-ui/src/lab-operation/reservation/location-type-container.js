@@ -27,6 +27,8 @@ const LocationTypeContainer = ({
         createModalData,
         showDeleteModal,
         deleteModalData,
+
+        calendarRevision,
     } = state;
 
     var [
@@ -35,11 +37,15 @@ const LocationTypeContainer = ({
 
         handleShowDeleteModal,
         handleHideDeleteModal,
+
+        handleReservationCreated,
     ] = useMemo(() => ([
         (payload) => dispatch({ type: 'show-create-modal', payload }),
         () => dispatch({ type: 'hide-create-modal' }),
         (payload) => dispatch({ type: 'show-delete-modal', payload }),
         () => dispatch({ type: 'hide-delete-modal', payload }),
+
+        () => dispatch({ type: 'increase-calendar-revision' }),
     ]))
 
     return (
@@ -47,7 +53,7 @@ const LocationTypeContainer = ({
             <CreateModal
                 show={ showCreateModal }
                 onHide={ handleHideCreateModal }
-                onSuccessfulCreate={ () => {} }
+                onSuccessfulCreate={ handleReservationCreated}
                 { ...createModalData }
             />
 
@@ -64,6 +70,8 @@ const LocationTypeContainer = ({
                 activeLocationType={ locationRecordType }
 
                 onSelectEmptySlot={ handleShowCreateModal }
+
+                calendarRevision={ calendarRevision }
             />
         </>
     );
@@ -97,6 +105,11 @@ var reducer = (state, action) => {
             return {
                 ...state,
                 showDeleteModal: false
+            }
+        case 'increase-calendar-revision':
+            return {
+                ...state,
+                calendarRevision: (state.calendarRevision || 0) + 1
             }
     }
 } 
