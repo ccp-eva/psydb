@@ -166,7 +166,7 @@ var testableSubjectsInhouse = async (context, next) => {
     // TODO: fetch relatedRecords and merrge selectedStudyLabels
     //
 
-    /*context.body = ResponseBody({
+    context.body = ResponseBody({
         data: {
             relatedRecords: {
                 study: keyBy({ items: selectedStudyLabels, byProp: '_id' })
@@ -175,7 +175,7 @@ var testableSubjectsInhouse = async (context, next) => {
             displayFieldData,
             records: subjectRecords,
         },
-    });*/
+    });
     
     await next();
 }
@@ -201,17 +201,16 @@ var postprocessSubjectRecords = ({
         var testableInStudies = [];
         for (var { _id: studyId } of studyRecords) {
             if (record[`_testableIn_${studyId}`]) {
-                console.log(record.scientific.state.custom);
+                // TODO
+                /*console.log(record.scientific.state.custom);
                 var ageFrameData = gatheredAgeFrameDataByStudyId[studyId]
                 for (var it of ageFrameData) {
                     var min = datefns.add(record._ageFrameField, { days: it.ageFrame.start });
                     var max = datefns.add(record._ageFrameField, { days: it.ageFrame.end });
 
                     console.log(min, max);
-                }
-                testableInStudies.push({
-                    studyId,
-                });
+                }*/
+                testableInStudies.push(studyId);
             }
         }
         record._testableInStudies = testableInStudies;

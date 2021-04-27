@@ -5,6 +5,8 @@ import TableRow from './table-row';
 const TableBody = ({
     displayFieldData,
     records,
+    relatedRecords,
+    relatedHelperSetItems,
 
     enableView,
     enableEdit,
@@ -22,6 +24,8 @@ const TableBody = ({
                 <TableRow { ...({
                     key: it._id,
                     record: it,
+                    relatedRecords,
+                    relatedHelperSetItems,
 
                     displayFieldData,
                     enableView,

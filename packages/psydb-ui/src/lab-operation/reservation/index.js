@@ -11,8 +11,12 @@ import {
 
 import agent from '@mpieva/psydb-ui-request-agents';
 import up from '@mpieva/psydb-ui-lib/src/url-up';
+
+import StudyInhouseLocationTypeNav from '@mpieva/psydb-ui-lib/src/study-inhouse-location-type-nav';
+import StudyInhouseLocations from '@mpieva/psydb-ui-lib/src/study-inhouse-locations';
+
 import RecordPicker from './record-picker';
-import LocationCalendarList from './location-calendar-list';
+//import LocationCalendarList from './location-calendar-list';
 
 const ReservationRouting = ({ customRecordTypes }) => {
     var { path, url } = useRouteMatch();
@@ -147,10 +151,6 @@ const LocationReservationContainer = ({
 
     return (
         <div>
-            <LocationTypeNav
-                customRecordTypes={ customRecordTypes }
-                settingsList={ inhouseTestLocationSettings }
-            />
             <Switch> 
                 <Route exact path={ path }>
                     <Redirect to={`${url}/${customRecordType}`} />
@@ -159,6 +159,7 @@ const LocationReservationContainer = ({
                     <LocationTypeContainer
                         studyRecord={ studyRecord }
                         teamRecords={ teamRecords }
+                        customRecordTypeData={ customRecordTypes }
                     />
                 </Route>
             </Switch>
@@ -169,17 +170,38 @@ const LocationReservationContainer = ({
 const LocationTypeContainer = ({
     studyRecord,
     teamRecords,
+    customRecordTypeData,
 }) => {
     var { path, url } = useRouteMatch();
-    var { locationRecordType } = useParams();
+    var { studyType, locationRecordType } = useParams();
+    var history = useHistory();
 
     return (
-        <LocationCalendarList
-            teamRecords={ teamRecords }
+        <StudyInhouseLocations
             studyId={ studyRecord._id }
-            locationRecordType={ locationRecordType }
+            studyRecordType={ studyType }
+
+            activeLocationType={ locationRecordType }
         />
     );
+
+    /*return (
+        <>
+            <StudyInhouseLocationTypeNav
+                studyRecord={ studyRecord }
+                customRecordTypeData={ customRecordTypeData }
+                activeType={ locationRecordType }
+                onSelect={ (nextType) => {
+                    history.push(`${up(url, 1)}/${nextType}`)
+                }}
+            />
+            <LocationCalendarList
+                teamRecords={ teamRecords }
+                studyId={ studyRecord._id }
+                locationRecordType={ locationRecordType }
+            />
+        </>
+    );*/
 }
 
 /*const LocationContainer = ({

@@ -11,9 +11,11 @@ import {
 } from 'react-bootstrap';
 
 import agent from '@mpieva/psydb-ui-request-agents';
-import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
-import CreateModal from './create-modal';
-import DeleteModal from './delete-modal';
+
+import datefns from '../../date-fns';
+
+//import CreateModal from './create-modal';
+//import DeleteModal from './delete-modal';
 import TimeSlotList from './time-slot-list';
 
 var range = n => [ ...Array(n).keys() ]
@@ -128,7 +130,7 @@ const LocationCalendar = ({
                 { locationRecord._recordLabel }
             </header>
 
-            <CreateModal
+            { /*<CreateModal
                 show={ createModalState.showModal }
                 onHide={ handleCloseCreateModal }
                 studyId={ studyId }
@@ -149,7 +151,7 @@ const LocationCalendar = ({
                 reservationRecords={ reservationRecords }
                 teamRecords={ teamRecords }
                 onSuccessfulDelete={ () => {} }
-            />
+            />*/}
 
             <div>actions</div>
 

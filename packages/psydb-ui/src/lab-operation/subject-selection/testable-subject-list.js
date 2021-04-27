@@ -21,6 +21,8 @@ import {
     TableBody
 } from '@mpieva/psydb-ui-lib/src/record-list';
 
+import InhouseSelectionModal from './inhouse-selection-modal';
+
 const reducer = (state, action) => {
     var { type, payload } = action;
     switch (type) {
@@ -28,13 +30,13 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 isInitialized: true,
-                records: payload.records,
-                displayFieldData: payload.displayFieldData
+                ...payload,
             }
     }
 }
 
 const TestableSubjectList = ({
+    studyLabelItems,
     userSearchSettings
 }) => {
     var { path, url } = useRouteMatch();
@@ -54,6 +56,8 @@ const TestableSubjectList = ({
         isInitialized,
         records,
         displayFieldData,
+        relatedRecords,
+        relatedHelperSetItems,
     } = state;
 
     useEffect(
@@ -82,22 +86,26 @@ const TestableSubjectList = ({
                 var {
                     records,
                     displayFieldData,
-                    relatedRecords
+                    relatedRecords,
+                    relatedHelperIdItems,
                 } = response.data.data;
 
-                var studyIdsArray = studyIds.split(',');
 
-                    /*displayFieldData.push({
-                        key: studyId,
-                        displayName: 'S',
-                        dataPointer: `/_testableIn_${studyId}`,
-                    })*/
-
-                console.log(displayFieldData);
+                displayFieldData.push({
+                    key: '_testableInStudies',
+                    displayName: 'Mögliche Studien',
+                    type: 'ForeignIdList',
+                    props: {
+                        collection: 'study',
+                    },
+                    dataPointer: '/_testableInStudies'
+                })
 
                 dispatch({ type: 'init', payload: {
                     records,
-                    displayFieldData
+                    displayFieldData,
+                    relatedRecords,
+                    relatedHelperIdItems,
                 }})
             })
         },
@@ -113,16 +121,33 @@ const TestableSubjectList = ({
     }
 
     console.log(userSearchSettings);
+    console.log(relatedRecords);
     return (
-        <Table>
-            <TableHead 
-                displayFieldData={ displayFieldData }
+        <>
+            <InhouseSelectionModal
+                show={ true }
+                studyNavItems={ studyLabelItems }
             />
-            <TableBody
-                records={ records }
-                displayFieldData={ displayFieldData }
-            />
-        </Table>
+            <Table hover>
+                <TableHead 
+                    displayFieldData={ displayFieldData }
+                />
+                <TableBody { ...({
+                    records,
+                    displayFieldData,
+                    relatedRecords,
+                    relatedHelperSetItems,
+
+                    onSelectRecord: (record) => {
+                        console.log(args);
+                        dispatch({
+                            type: 'open-modal',
+                            payload: record._id,
+                        })
+                    }
+                }) } />
+            </Table>
+        </>
     );
 }
 

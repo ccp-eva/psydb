@@ -131,7 +131,7 @@ describe('init-demo-system', function () {
         });*/
         var response;
         //response = await agent.get('/metadata/record-schema/study/default');
-        //response = await agent.get(`/read/study/default/${context.STUDY_01_ID}`);
+        response = await agent.get(`/read/study/default/${context.STUDY_01_ID}`);
         console.log('###############')
         //response = await agent.get(`/available-test-locations-for-study/${context.STUDY_01_ID}/${context.INSTITUTEROOM_TYPE_ID}`);
         //response = await agent.get(`/experiment-operator-teams-for-study/${context.STUDY_01_ID}`);
@@ -149,7 +149,7 @@ describe('init-demo-system', function () {
             subjectRecordType: 'teacher',
             studyIds: [ context.STUDY_01_ID ],
         });*/
-        response = await agent.post('/testable-subjects-inhouse/').send({
+        /*response = await agent.post('/testable-subjects-inhouse/').send({
             subjectRecordType: 'teacher',
             studyRecordType: 'default',
             studyIds: [ context.STUDY_01_ID ],
@@ -160,7 +160,7 @@ describe('init-demo-system', function () {
             customAgeFrameConditions: [],
             offset: 0,
             limit: 100,
-        });
+        });*/
         
         console.dir(response.status, { depth: null });
         console.dir(response.body, { depth: null });

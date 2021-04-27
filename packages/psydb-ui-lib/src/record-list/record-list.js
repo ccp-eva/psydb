@@ -59,9 +59,14 @@ var RecordList = ({
         );
     }
 
-    console.log(payload);
-
-    if (!payload.records) {
+    var {
+        records,
+        displayFieldData,
+        relatedRecords,
+        relatedHelperSetItems
+    } = payload;
+   
+    if (!records) {
         return (
             <div>Empty</div> 
         );
@@ -72,24 +77,30 @@ var RecordList = ({
             return
         }
 
-        var action = (
-            selectedRecordIds.includes(record._id)
-            ? ({ type: 'remove', payload: { id: record._id } })
-            : ({ type: 'add', payload: { id: record._id } })
-        );
-
-        return onSelectRecord(action);
+        if (selectedRecordIds) {
+            var action = (
+                selectedRecordIds.includes(record._id)
+                ? ({ type: 'remove', payload: { id: record._id } })
+                : ({ type: 'add', payload: { id: record._id } })
+            );
+            return onSelectRecord(action);
+        }
+        else {
+            return onSelectRecord(record);
+        }
     }
 
     return (
         <Table hover={ onSelectRecord ? true : false }>
             <TableHead
-                displayFieldData={ payload.displayFieldData }
+                displayFieldData={ displayFieldData }
                 showSelectionIndicator={ showSelectionIndicator }
             />
             <TableBody { ...({
-                records: payload.records,
-                displayFieldData: payload.displayFieldData,
+                records,
+                displayFieldData,
+                relatedRecords,
+                relatedHelperSetItems,
 
                 enableView,
                 enableEdit,

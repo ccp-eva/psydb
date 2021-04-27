@@ -18,8 +18,6 @@ const custom = {
     sub,
     set,
     setDay,
-    startOfWeek,
-    endOfWeek,
     startOfDay,
     endOfDay,
 }
@@ -30,6 +28,21 @@ custom.format = (date, fmt, options = {}) => (
         locale: options.locale || de
     })
 );
+
+custom.startOfWeek = (date, options = {}) => (
+    startOfWeek(date, {
+        ...options,
+        locale: options.locale || de
+    })
+);
+
+custom.endOfWeek = (date, options = {}) => (
+    endOfWeek(date, {
+        ...options,
+        locale: options.locale || de
+    })
+);
+
 
 /*custom.startOfUTCDay = (date) => {
     return custom.set(date, {

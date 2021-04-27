@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useReducer, useMemo } from 'react';
-import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
-import getTextColor from '@mpieva/psydb-ui-lib/src/bw-text-color-for-background';
+import datefns from '../../date-fns';
+import getTextColor from '../../bw-text-color-for-background';
 
 const TimeSlot = ({
     timestamp,

@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useReducer, useMemo } from 'react';
 
 import agent from '@mpieva/psydb-ui-request-agents';
-import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
-import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
+import datefns from '../date-fns';
+import LoadingIndicator from '../loading-indicator';
+import CalendarNav from '../calendar-nav';
 
+import withWeeklyCalendarPages from '../with-weekly-calendar-pages';
 import LocationReservationCalendar from './location-reservation-calendar';
 
 const LocationCalendarList = ({
@@ -50,6 +52,16 @@ const LocationCalendarList = ({
 
     return (
         <>
+            <CalendarNav { ...({
+                className: 'mt-3',
+                currentPageStart,
+                currentPageEnd,
+                onPageChange,
+            })} />
+            <hr className='mt-1 mb-1' style={{
+                marginLeft: '15em',
+                marginRight: '15em',
+            }}/>
             { calendarData.locationRecords.map(locationRecord => (
                 <LocationReservationCalendar
                     key={ locationRecord._id }
@@ -68,41 +80,5 @@ const LocationCalendarList = ({
         </>
     )
 }
-
-const withWeeklyPages = (Component) => (ps) => {
-    
-    var [ currentPageStart, setCurrentPageStart ] = (
-        useState(datefns.startOfWeek(new Date()))
-    );
-
-    var handlePageChange = ({ nextIndex, relativeChange }) => {
-        var nextWeekStart = undefined;
-        if (relativeChange === 'next') {
-            nextWeekStart = (
-                new Date(datefns.endOfWeek(currentWeekStart.getTime()) + 1)
-            )
-        }
-        else {
-            nextWeekStart = datefns.startOfWeek(
-                new Date(currentWeekStart.getTime() - 1)
-            )
-        }
-        setCurrentPageStart(currentWeekStart);
-    }
-
-    const currentPageEnd = useMemo(() => (
-        datefns.endOfWeek(currentPageStart)
-    ), [ currentPageStart ]);
-
-    return (
-        <Component { ...({
-            ...ps,
-            currentPageStart,
-            currentPageEnd,
-            onPageChange: handlePageChange,
-        })} />
-    )
-}
-
-const WrappedLocationCalendarList = withWeeklyPages(LocationCalendarList);
+const WrappedLocationCalendarList = withWeeklyCalendarPages(LocationCalendarList);
 export default WrappedLocationCalendarList;

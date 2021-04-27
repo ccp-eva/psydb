@@ -181,7 +181,8 @@ var makeCondition = ({
                 $and: [
                     base,
                     testingPermissions,
-                    { $or: combinedAgeFrameConditions }
+                    // XXX reenable
+                    //{ $or: combinedAgeFrameConditions }
                 ]
             },
             then: true,

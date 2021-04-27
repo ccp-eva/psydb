@@ -76,6 +76,10 @@ var reducer = (state, action) => {
                 schema,
                 valueMap,
                 searchSettings: undefined,
+                studyLabelItems: studySelectionSettings.map(it => ({
+                    key: it.studyId,
+                    label: it.studyShorthand
+                }))
             })
         case 'update-search-settings':
             return ({
@@ -103,6 +107,7 @@ const SearchContainer = () => {
         ageFrameMap,
         valueMap,
         searchSettings,
+        studyLabelItems,
     } = state;
 
     useEffect(() => {
@@ -188,7 +193,10 @@ const SearchContainer = () => {
                 }) } />
             </Route>
             <Route exact path={ `${path}/search` }>
-                <TestableSubjectList userSearchSettings={ searchSettings } />
+                <TestableSubjectList
+                    studyLabelItems={ studyLabelItems }
+                    userSearchSettings={ searchSettings }
+                />
             </Route>
         </Switch>
     )
