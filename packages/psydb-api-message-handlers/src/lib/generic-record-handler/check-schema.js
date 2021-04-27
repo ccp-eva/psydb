@@ -86,14 +86,18 @@ var checkSchema = async ({ db, getRecordSchemas, message }) => {
         schema = RecordMessage({ ...args });
     }
 
-    //console.dir(schema, { depth: null })
-
     var ajv = Ajv();
 
     var isValid = ajv.validate(
         schema,
         message
     );
+
+    /*if (collection === 'subject') {
+        console.dir(schema, { depth: null })
+        console.dir(message, { depth: null })
+        throw new Error();
+    }*/
 
     if (!isValid) {
         debug('ajv errors', message.type, ajv.errors);

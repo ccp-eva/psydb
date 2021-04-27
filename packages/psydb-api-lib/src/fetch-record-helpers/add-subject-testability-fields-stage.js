@@ -13,9 +13,18 @@ var AddSubjectTestabilityFieldsStage = ({
         subjectRecordTypeRecord,
     });
 
+    var customFields = (
+        subjectRecordTypeRecord.state.settings.subChannelFields.scientific
+    );
+
+    var ageFrameField = customFields.find(field => (
+        field.props.isSpecialAgeFrameField === true
+    ))
+
     var conditionsByStudy = {};
     for (var study of studyRecords) {
         conditionsByStudy[`_testableIn_${study._id}`] = makeCondition({
+            ageFrameFieldKey: ageFrameField && ageFrameField.key,
             timeFrameStart,
             timeFrameEnd,
             subjectRecordTypeRecord,
@@ -24,7 +33,12 @@ var AddSubjectTestabilityFieldsStage = ({
         });
     }
 
-    return ({ $addFields: conditionsByStudy });
+    return ({ $addFields: {
+        ...(ageFrameField && {
+            _ageFrameField: `$scientific.state.custom.${ageFrameField.key}`,
+        }),
+        ...conditionsByStudy
+    }});
 }
 
 var prepareSubjectTypeSettings = ({
@@ -50,19 +64,13 @@ var prepareSubjectTypeSettings = ({
 }
 
 var makeCondition = ({
+    ageFrameFieldKey,
     timeFrameStart,
     timeFrameEnd,
     subjectRecordTypeRecord,
     studyRecord,
     subjectTypeSettings,
 }) => {
-    var customFields = (
-        subjectRecordTypeRecord.state.settings.subChannelFields.scientific
-    );
-
-    var ageFrameField = customFields.find(field => (
-        field.props.isSpecialAgeFrameField === true
-    ))
 
     var base = {
         $and: [
@@ -99,7 +107,7 @@ var makeCondition = ({
         // TODO: global conditions
     };
 
-    if (ageFrameField) {
+    if (ageFrameFieldKey) {
         console.log(subjectTypeSettings);
         var combinedAgeFrameConditions = [];
         for (var item of subjectTypeSettings.conditionsByAgeFrame) {
@@ -119,7 +127,7 @@ var makeCondition = ({
             }
 
             var ageFrameFieldPath = (
-                `$scientific.state.custom.${ageFrameField.key}`
+                `$scientific.state.custom.${ageFrameFieldKey}`
             );
             ageFrameConditions.push({
                 $and: [
@@ -128,13 +136,38 @@ var makeCondition = ({
                 ]
             })
 
+            console.dir({
+                $and: [
+                    { $gte: [ ageFrameFieldPath, timeShifted.start ]},
+                    { $lt: [ ageFrameFieldPath, timeShifted.end ]},
+                ]
+            }, { depth: null });
+
+
             for (var condition of conditions) {
                 console.log(condition);
                 var conditionFieldPath = (
-                    `$scientific.state.custom.${condition.field}`
+                    `$scientific.state.custom.${condition.fieldKey}`
                 );
                 ageFrameConditions.push({
-                    [conditionFieldPath]: { $in: condition.values }
+                    $cond: {
+                        if: { $isArray: conditionFieldPath },
+                        then: { $gt: [
+                            { $size: {
+                                $ifNull: [
+                                    { $setIntersection: [
+                                        conditionFieldPath,
+                                        condition.values,
+                                    ]},
+                                    []
+                                ]
+                            }},
+                            0
+                        ]},
+                        else: { $in: [
+                            conditionFieldPath, condition.values
+                        ]}
+                    }
                 })
             }
             
@@ -148,7 +181,7 @@ var makeCondition = ({
                 $and: [
                     base,
                     testingPermissions,
-                    //{ $or: combinedAgeFrameConditions }
+                    { $or: combinedAgeFrameConditions }
                 ]
             },
             then: true,

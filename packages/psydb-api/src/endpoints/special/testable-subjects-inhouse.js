@@ -126,6 +126,7 @@ var testableSubjectsInhouse = async (context, next) => {
         ProjectDisplayFieldsStage({
             displayFields,
             additionalProjection: {
+                '_ageFrameField': true,
                 'scientific.state.studyParticipation': true,
                 ...( studyIds.reduce((acc, id) => ({
                     ...acc, [`_testableIn_${id}`]: true,
@@ -200,7 +201,14 @@ var postprocessSubjectRecords = ({
         var testableInStudies = [];
         for (var { _id: studyId } of studyRecords) {
             if (record[`_testableIn_${studyId}`]) {
+                console.log(record.scientific.state.custom);
                 var ageFrameData = gatheredAgeFrameDataByStudyId[studyId]
+                for (var it of ageFrameData) {
+                    var min = datefns.add(record._ageFrameField, { days: it.ageFrame.start });
+                    var max = datefns.add(record._ageFrameField, { days: it.ageFrame.end });
+
+                    console.log(min, max);
+                }
                 testableInStudies.push({
                     studyId,
                 });

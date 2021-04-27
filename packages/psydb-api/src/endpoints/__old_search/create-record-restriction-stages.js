@@ -14,6 +14,7 @@ var createRecordRestrictionStages = ({
     `;
 
     var hasResearchGroupIntersections = (
+
         { $gt: [
             { $size: {
                 $ifNull: [
@@ -26,6 +27,7 @@ var createRecordRestrictionStages = ({
             }},
             0
         ]}
+
     );
 
     var isRecordRoot = (

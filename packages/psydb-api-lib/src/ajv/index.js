@@ -17,7 +17,7 @@ var AjvWrapper = ({
     var ajv = new Ajv({
         $data: true,
         allErrors: true,
-        strictDefaults: 'log',
+        //strictDefaults: 'log',
         //strictKeywords: 'log',
         passContext: true,
         // NOTE: useDefauls applies to missing _required_ properties
@@ -45,7 +45,8 @@ var AjvWrapper = ({
         ),
     ]);
 
-    ajv.addKeyword('foreignKey', psydbKeywords.foreignKey);
+    //ajv.addKeyword('foreignKey', psydbKeywords.foreignKey);
+    ajv.addKeyword('unmarshalDateTime', psydbKeywords.unmarshalDateTime);
 
     var initializeValidateContext = () => {
         wrapper.validateContext = {};
