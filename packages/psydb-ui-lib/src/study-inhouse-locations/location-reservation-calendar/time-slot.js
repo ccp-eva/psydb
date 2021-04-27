@@ -32,14 +32,16 @@ const TimeSlot = ({
                     borderColor: getTextColor(teamRecord.state.color),
                     boxSizing: 'border-box'
                 }}
-                onClick={ () => onSelectExperimentSlot({
-                    studyId,
-                    locationRecord,
-                    experimentRecord,
-                    start: date,
-                    slotDuration,
-                    // maxEnd
-                })}
+                onClick={ () => {
+                    onSelectExperimentSlot && onSelectExperimentSlot({
+                        studyId,
+                        locationRecord,
+                        experimentRecord,
+                        start: date,
+                        slotDuration,
+                        // maxEnd
+                    })
+                }}
             >
                 <b className='d-inline-block pl-1 pr-1' style={{
                     //borderLeft: '4px solid',
@@ -66,14 +68,16 @@ const TimeSlot = ({
                     borderStyle: 'solid',
                     borderColor: teamRecord.state.color
                 }}
-                onClick={ () => onSelectReservationSlot({
-                    studyId,
-                    locationRecord,
-                    reservationId: reservationRecord._id,
-                    start: date,
-                    slotDuration,
-                    // maxEnd
-                })}
+                onClick={ () => {
+                    onSelectReservationSlot && onSelectReservationSlot({
+                        studyId,
+                        locationRecord,
+                        reservationId: reservationRecord._id,
+                        start: date,
+                        slotDuration,
+                        // maxEnd
+                    })
+                }}
             >
                 { datefns.format(date, 'p') }
             </div>
@@ -83,15 +87,17 @@ const TimeSlot = ({
         <div
             className='border text-center m-1'
             style={{ height: '26px' }}
-            onClick={ () => onSelectEmptySlot({
-                studyId,
-                locationRecord,
-                teamRecords,
+            onClick={ () => {
+                onSelectEmptySlot && onSelectEmptySlot({
+                    studyId,
+                    locationRecord,
+                    teamRecords,
 
-                start: date,
-                slotDuration,
-                //maxEnd,
-            }) }
+                    start: date,
+                    slotDuration,
+                    //maxEnd,
+                })
+            }}
         >
             { datefns.format(date, 'p') }
             { reservationRecord ? 'R' : '' }
