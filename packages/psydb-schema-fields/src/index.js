@@ -4,7 +4,7 @@ module.exports = {
     BasicArray: require('./basic-array'),
     BasicBool: require('./basic-bool'),
 
-    DefaltArray: require('./default-array'),
+    DefaultArray: require('./default-array'),
     DefaultBool: require('./default-bool'),
 
     Address: require('./address'),

@@ -9,7 +9,10 @@ var inline = require('@cdxoo/inline-text'),
 
 var {
     ExactObject,
+    DefaultArray,
+    DefaultBool,
     ForeignId,
+    ForeignIdList,
 
     IdentifierString,
     SaneString,
@@ -37,9 +40,7 @@ var AgeFrameSettings = ({
 } = {}) => ExactObject({
     properties: {
         ageFrame: AgeFrame(),
-        conditionList: {
-            type: 'array',
-            default: [],
+        conditionList: DefaultArray({
             items: {
                 // theese form an $and list
                 oneOf: [
@@ -48,7 +49,7 @@ var AgeFrameSettings = ({
                     ))
                 ]
             }
-        }
+        })
     },
     required: [
         'ageFrame',
@@ -69,13 +70,12 @@ var StudyState = (ps = {}) => {
         properties: {
             
             ...(enableInternalProps && {
-                isCreateFinalized: { type: 'boolean', default: false },
+                isCreateFinalized: DefaultBool(),
             }),
 
             name: SaneString(),
             shorthand: SaneString(),
-            researchGroupIds: {
-                type: 'array',
+            researchGroupIds: DefaultArray({
                 minItems: 1,
                 items: ForeignId({
                     collection: 'researchGroup'
@@ -88,87 +88,21 @@ var StudyState = (ps = {}) => {
                     i.e. it overrides the user role permission
                     in certain cases
                 `,
-            },
+            }),
             
-            /*externalLocationTypes: {
-                type: 'array',
-                items: IdentifierString(),
-                // TODO: enum of location types that arent reservable
-                // FIXME: not really possible to exclude some atm
-                // custom types would need to have researchGroupIds
-                // in their permissions ... not sure if they have atm
-                // usableByResearchGroupIds
-                description: inline`
-                    list of location types arent reservable directly;
-                    away teams can be send there to conduct experiments;
-                    e.g. kindergardens, schools etc
-                `
-            },
-
-            // FIXME: not sure if that is sufficient we maybe need to select the type first
-            reservableLocationIds: {
-                type: 'array',
-                items: ForeignId({
-                    collection: 'location',
-                    custom: true,
-                }),
-                description: inline`
-                    list of location ids; theese locations that are
-                    directly reservable and will be used to conduct
-                    experiments such as institute rooms
-                ` 
-            },*/
-
             custom: CustomProps({ customFieldDefinitions }),
             systemPermissions: systemPermissionsSchema,
 
-            /*...(enableInternalProps && {
-                nextSettings: Settings({
-                    enableInternalProps,
-                    enableFlags
-                }),
-                settings: Settings({
-                    enableInternalProps,
-                    enableFlags
-                }),
-            }),*/
-
-            // grouping
-            // TODO: moved
-            externalTestLocationFields: {
-                type: 'array',
-                default: [],
-                items: ExactObject({
-                    properties: {
-                        subjectType: IdentifierString(),
-                        // thats the custom location field we do
-                        // the grouping by
-                        locationFieldKey: IdentifierString(), 
-                    },
-                    required: [
-                        'subjectType',
-                        'locationFieldKey',
-                    ]
-                })
-            },
-
-            inhouseTestLocationSettings: {
-                type: 'array',
-                default: [],
+            inhouseTestLocationSettings: DefaultArray({
                 items: ExactObject({
                     properties: {
                         customRecordType: IdentifierString(),
-                        enableAllAvailableLocations: {
-                            type: 'boolean',
-                            default: false
-                        },
-                        enabledLocationIds: {
-                            type: 'array',
-                            default: [],
-                            items: ForeignId({
-                                collection: 'location',
-                            })
-                        }
+                        // FIXME: maybe remove this
+                        enableAllAvailableLocations: DefaultBool(),
+                        // FIXME: ForeignIdLIst
+                        enabledLocationIds: ForeignIdList({
+                            collection: 'location',
+                        })
                     },
                     required: [
                         'customRecordTypeId',
@@ -176,16 +110,12 @@ var StudyState = (ps = {}) => {
                         'enabledLocationIds',
                     ]
                 })
-            },
-
-            // TODO: stub
-            // TODO: moved
-            subjectTypeSettings: {
-                type: 'array',
-                default: [],
-            }, 
+            }),
 
             // TODO: excluded study ids
+            excludedOtherStudyIds: ForeignIdList({
+                collection: 'study',
+            }),
 
             selectionSettingsBySubjectType: SubjectSelectionSettingsList({
                 subjectRecordTypeRecords,

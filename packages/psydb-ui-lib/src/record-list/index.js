@@ -1,0 +1,6 @@
+export { default as TableHead } from './table-head';
+export { default as TableBody } from './table-body';
+export { default as TableRow } from './table-row'
+
+import { default as RecordList } from './record-list';
+export default RecordList;

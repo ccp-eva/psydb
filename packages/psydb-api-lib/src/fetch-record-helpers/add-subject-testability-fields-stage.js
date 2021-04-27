@@ -34,8 +34,8 @@ var prepareSubjectTypeSettings = ({
     var subjectTypeSettingsByStudy = {};
     for (var study of studyRecords) {
         var subjectTypeSettingsItem = (
-            study.state.subjectTypeSettings.find(it => (
-                it.customRecordType === subjectRecordTypeRecord.type
+            study.state.selectionSettingsBySubjectType.find(it => (
+                it.subjectRecordType === subjectRecordTypeRecord.type
             ))
         )
         
@@ -102,9 +102,9 @@ var makeCondition = ({
     if (ageFrameField) {
         console.log(subjectTypeSettings);
         var combinedAgeFrameConditions = [];
-        for (var item of subjectTypeSettings.ageFrameSettings) {
+        for (var item of subjectTypeSettings.conditionsByAgeFrame) {
             var ageFrameConditions = []
-            var { ageFrame, conditionList } = item;
+            var { ageFrame, conditions } = item;
 
             var timeShifted = {
                 // shifting time frame pack by the age frame boundaries
@@ -128,7 +128,7 @@ var makeCondition = ({
                 ]
             })
 
-            for (var condition of conditionList) {
+            for (var condition of conditions) {
                 console.log(condition);
                 var conditionFieldPath = (
                     `$scientific.state.custom.${condition.field}`

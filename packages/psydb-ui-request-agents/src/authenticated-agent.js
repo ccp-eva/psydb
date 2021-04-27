@@ -137,7 +137,8 @@ agent.searchTestableSubjectsInhouse = ({
     studyIds,
     timeFrameStart,
     timeFrameEnd,
-    customAgeFrameConditions = [],
+    enabledAgeFrames,
+    enabledvalues,
     offset = 0,
     limit = 100,
 }) => {
@@ -149,7 +150,8 @@ agent.searchTestableSubjectsInhouse = ({
             studyIds,
             timeFrameStart,
             timeFrameEnd,
-            customAgeFrameConditions,
+            enabledAgeFrames,
+            enabledvalues,
             offset,
             limit,
         }

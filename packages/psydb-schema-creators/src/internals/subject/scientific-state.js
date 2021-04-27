@@ -5,7 +5,10 @@ var CustomProps = require('../../common/custom-props'),
     internalsSchema = require('./internals-schema');
 
 var {
+    DefaultArray,
     ExactObject,
+    ForeignId,
+    DateTimeInterval,
 } = require('@mpieva/psydb-schema-fields');
 
 var SubjectScientificState = ({
@@ -18,14 +21,29 @@ var SubjectScientificState = ({
             testingPermissions: testingPermissionsSchema,
             systemPermissions: systemPermissionsSchema,
             ...(enableInternalProps && {
-                internals: internalsSchema,
+                studyParticipation: DefaultArray({
+                    items: ExactObject({
+                        properties: {
+                            studyId: ForeignId({
+                                collection: 'study',
+                            }),
+                            interval: DateTimeInterval()
+                        },
+                        required: [
+                            'studyId',
+                            'interval',
+                        ]
+                    })
+                })
             })
         },
         required: [
             'custom',
             'testingPermissions',
             'systemPermissions',
-            ...(enableInternalProps ? [ 'internals' ] : [])
+            ...(enableInternalProps ? [
+                'participatedInStudyIds'
+            ] : [])
         ]
     });
 

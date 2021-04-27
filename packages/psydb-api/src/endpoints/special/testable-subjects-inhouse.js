@@ -5,8 +5,13 @@ var debug = require('debug')(
 
 var datefns = require('date-fns');
 
+var keyBy = require('@mpieva/psydb-common-lib/src/key-by');
 var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
-    Ajv = require('@mpieva/psydb-api-lib/src/ajv');
+    Ajv = require('@mpieva/psydb-api-lib/src/ajv'),
+    ResponseBody = require('@mpieva/psydb-api-lib/src/response-body');
+
+var createRecordLabel = require('@mpieva/psydb-api-lib/src/create-record-label');
+var gatherAgeFrameDataOfStudy = require('@mpieva/psydb-api-lib/src/gather-age-frame-data-of-study');
 
 var {
     MatchIntervalOverlapStage,
@@ -26,8 +31,9 @@ var testableSubjectsInhouse = async (context, next) => {
     } = context;
 
     var {
-        subjectRecordType,
+        studyRecordType,
         studyIds,
+        subjectRecordType,
         timeFrameStart,
         timeFrameEnd,
         customAgeFrameConditions,
@@ -45,6 +51,17 @@ var testableSubjectsInhouse = async (context, next) => {
     ) {
         throw new ApiError(403, 'PermissionDenied');
     }*/
+
+    var studyRecordTypeRecord = await (
+        db.collection('customRecordType').findOne(
+            { collection: 'study', type: studyRecordType },
+            { projection: { events: false }}
+        )
+    );
+
+    if (!studyRecordTypeRecord) {
+        throw new ApiError(400, 'InvalidStudyRecordType');
+    }
 
     var subjectRecordTypeRecord = await (
         db.collection('customRecordType').findOne(
@@ -66,9 +83,10 @@ var testableSubjectsInhouse = async (context, next) => {
 
     for (var study of studyRecords) {
         var subjectTypeSettingsItem = (
-            study.state.subjectTypeSettings.find(it => (
-                it.customRecordType === subjectRecordType
-            ))
+            study.state.selectionSettingsBySubjectType.find(it => {
+                console.log(it, subjectRecordType)
+                return it.subjectRecordType === subjectRecordType
+            })
         )
         
         if (!subjectTypeSettingsItem) {
@@ -108,6 +126,7 @@ var testableSubjectsInhouse = async (context, next) => {
         ProjectDisplayFieldsStage({
             displayFields,
             additionalProjection: {
+                'scientific.state.studyParticipation': true,
                 ...( studyIds.reduce((acc, id) => ({
                     ...acc, [`_testableIn_${id}`]: true,
                 }), {}))
@@ -115,22 +134,83 @@ var testableSubjectsInhouse = async (context, next) => {
         }),
     ]).toArray();
 
-    console.dir(subjectRecords, { depth: null });
+    postprocessSubjectRecords({
+        subjectRecords,
+        subjectRecordType,
+        studyRecords,
+        timeFrame: {
+            start: timeFrameStart,
+            end: timeFrameEnd
+        }
+    })
 
+    var availableDisplayFieldDataByPointer = keyBy({
+        items: availableDisplayFieldData,
+        byProp: 'dataPointer'
+    });
 
+    var displayFieldData = displayFields.map(it => ({
+        ...availableDisplayFieldDataByPointer[it.dataPointer],
+        dataPointer: it.dataPointer,
+    }))
+
+    var selectedStudyLabels = studyRecords.map(it => ({
+        _id: it._id,
+        _recordLabel: createRecordLabel({
+            record: it,
+            definition: studyRecordTypeRecord.state.recordLabelDefinition
+        })
+    }))
+
+    // TODO: fetch relatedRecords and merrge selectedStudyLabels
+    //
+
+    /*context.body = ResponseBody({
+        data: {
+            relatedRecords: {
+                study: keyBy({ items: selectedStudyLabels, byProp: '_id' })
+            },
+            selectedStudyLabels,
+            displayFieldData,
+            records: subjectRecords,
+        },
+    });*/
     
-    /*var p = { $addFields: {
-        _convertedAgeFrameField: {
-            $trunc: {
-                $divide: [
-                    { $subtract: [new Date(), '$custom.FOO'] },
-                    24 * HOUR
-                ]
+    await next();
+}
+
+var postprocessSubjectRecords = ({
+    subjectRecords,
+    subjectRecordType,
+    studyRecords,
+    timeFrame,
+}) => {
+
+    var gatheredAgeFrameDataByStudyId = {};
+    for (var study of studyRecords) {
+        var out = gatherAgeFrameDataOfStudy({
+            studyRecord: study,
+            subjectRecordType,
+            timeFrame,
+        });
+        gatheredAgeFrameDataByStudyId[study._id] = out;
+    }
+
+    subjectRecords.forEach(record => {
+        var testableInStudies = [];
+        for (var { _id: studyId } of studyRecords) {
+            if (record[`_testableIn_${studyId}`]) {
+                var ageFrameData = gatheredAgeFrameDataByStudyId[studyId]
+                testableInStudies.push({
+                    studyId,
+                });
             }
         }
-    }};*/
+        record._testableInStudies = testableInStudies;
+    })
 
-    await next();
+    console.dir(subjectRecords, { depth: null });
+
 }
 
 module.exports = testableSubjectsInhouse;
