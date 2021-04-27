@@ -8,6 +8,7 @@ import TimeSlot from './time-slot';
 
 const TimeSlotList = ({
     studyId,
+    locationRecord,
     teamRecords,
     reservationRecords,
     experimentRecords,
@@ -55,8 +56,8 @@ const TimeSlotList = ({
 
     return (
         <div>
-            <header>
-                <div>{ datefns.format(start, 'cccccc dd.MM.') }</div>
+            <header className='text-center bg-light border-bottom'>
+                <div><b>{ datefns.format(start, 'cccccc dd.MM.') }</b></div>
                 <div>Uhrzeit</div>
             </header>
             { slots.map(
@@ -73,6 +74,7 @@ const TimeSlotList = ({
 
                         slotDuration={ slotDuration }
                         studyId={ studyId }
+                        locationRecord={ locationRecord }
                         teamRecords={ teamRecords }
                         onSelectEmptySlot={ (props) => onSelectEmptySlot({
                             ...props,

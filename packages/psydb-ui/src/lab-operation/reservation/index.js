@@ -12,9 +12,10 @@ import {
 import agent from '@mpieva/psydb-ui-request-agents';
 import up from '@mpieva/psydb-ui-lib/src/url-up';
 
+import TabNav from '@mpieva/psydb-ui-lib/src/tab-nav';
 import StudyInhouseLocationTypeNav from '@mpieva/psydb-ui-lib/src/study-inhouse-location-type-nav';
-import StudyInhouseLocations from '@mpieva/psydb-ui-lib/src/study-inhouse-locations';
 
+import LocationTypeContainer from './location-type-container';
 import RecordPicker from './record-picker';
 //import LocationCalendarList from './location-calendar-list';
 
@@ -109,28 +110,50 @@ const Reservation = ({ customRecordTypes }) => {
                 }}
             />
 
-            <ReservationTypeNav />
             <Switch>
                 <Route exact path={ path }>
                     <Redirect to={`${url}/locations`} />
                 </Route>
-                <Route path={ `${path}/locations`}>
-                    <LocationReservationContainer
+                <Route path={`${path}/:navItem`}>
+                    <ReservationTypeContainer
                         customRecordTypes={ customRecordTypes }
                         studyRecord={ studyRecord }
                         teamRecords={ teamRecords }
                     />
                 </Route>
-                <Route path={ `${path}/away-teams`}>
-                    <AwayTeamReservation
-                        customRecordTypes={ customRecordTypes }
-                        studyRecord={ studyRecord }
-                        teamRecords={ teamRecords }
-                    />
-                </Route>
+
             </Switch>
         </>
     );
+}
+
+const ReservationTypeContainer = (ps) => {
+    var { path, url } = useRouteMatch();
+    var { navItem } = useParams();
+    var history =  useHistory();
+
+    return (
+        <>
+            <TabNav
+                className='d-flex'
+                itemClassName='flex-grow'
+                items={[
+                    { key: 'locations', label: 'Räumlichkeiten' },
+                    { key: 'away-teams', label: 'Aussen-Teams' },
+                ]}
+                activeKey={ navItem }
+                onItemClick={ (nextKey) => {
+                    history.push(`${up(url, 1)}/${nextKey}`);
+                }}
+            />
+            { navItem === 'locations' && (
+                <LocationReservationContainer { ...ps } />
+            )}
+            { navItem === 'away-teams' && (
+                <AwayTeamReservation { ...ps } />
+            )}
+        </>
+    )
 }
 
 const LocationReservationContainer = ({
@@ -150,7 +173,7 @@ const LocationReservationContainer = ({
     var { customRecordType } = inhouseTestLocationSettings[0];
 
     return (
-        <div>
+        <div className='border p-2 border-top-0'>
             <Switch> 
                 <Route exact path={ path }>
                     <Redirect to={`${url}/${customRecordType}`} />
@@ -167,118 +190,11 @@ const LocationReservationContainer = ({
     );
 }
 
-const LocationTypeContainer = ({
-    studyRecord,
-    teamRecords,
-    customRecordTypeData,
-}) => {
-    var { path, url } = useRouteMatch();
-    var { studyType, locationRecordType } = useParams();
-    var history = useHistory();
 
-    return (
-        <StudyInhouseLocations
-            studyId={ studyRecord._id }
-            studyRecordType={ studyType }
-
-            activeLocationType={ locationRecordType }
-        />
-    );
-
-    /*return (
-        <>
-            <StudyInhouseLocationTypeNav
-                studyRecord={ studyRecord }
-                customRecordTypeData={ customRecordTypeData }
-                activeType={ locationRecordType }
-                onSelect={ (nextType) => {
-                    history.push(`${up(url, 1)}/${nextType}`)
-                }}
-            />
-            <LocationCalendarList
-                teamRecords={ teamRecords }
-                studyId={ studyRecord._id }
-                locationRecordType={ locationRecordType }
-            />
-        </>
-    );*/
-}
-
-/*const LocationContainer = ({
-    customRecordTypes,
-    locationRecords,
-    teamRecords,
-}) => {
-    var { path, url } = useRouteMatch();
-    var { studyId, locationId } = useParams();
-
-    var locationRecord = locationRecords.find(it => (
-        it._id === locationId
-    ));
-
-    return (
-        <>
-            <header>
-                <b>{ locationRecord._recordLabel }</b>
-            </header>
-
-            <LocationCalendar
-                teamRecords={ teamRecords }
-                locationRecord={ locationRecord }
-                studyId={ studyId }
-            />
-
-        </>
-    );
-}*/
 
 const AwayTeamReservation = () => {
     return (
-        <div>at</div>
-    )
-}
-
-import LinkButton from '@mpieva/psydb-ui-lib/src/link-button';
-const LocationTypeNav = ({
-    customRecordTypes,
-    settingsList,
-}) => {
-    var { path, url } = useRouteMatch();
-    var history =  useHistory();
-    return (
-        <div>
-            { settingsList.map(
-                ({ customRecordType }) => {
-                    var metadata = customRecordTypes.find(it => (
-                        it.type === customRecordType
-                    ));
-                    return (
-                        <LinkButton
-                            key={ metadata.type }
-                            to={ metadata.type }
-                        >
-                            { metadata.state.label }
-                        </LinkButton>
-                    );
-                }
-            )}
-        </div>
-    )
-}
-
-//import LinkButton from '@mpieva/psydb-ui-lib/src/link-button';
-const ReservationTypeNav = () => {
-    var { path, url } = useRouteMatch();
-    var history =  useHistory();
-    return (
-        <div>
-            <LinkButton to={`locations`}>
-                Räumlichkeiten
-            </LinkButton>
-            <LinkButton to={`away-teams`}>
-                Aussen-Teams
-            </LinkButton>
-        </div>
+        <div>away teams</div>
     )
 }
 

@@ -5,16 +5,19 @@ import {
 } from 'react-bootstrap';
 
 const TabNav = ({
+    className,
+    itemClassName,
     items,
     activeKey,
     onItemClick,
 }) => {
     return (
-        <Nav variant='tabs'>
+        <Nav variant='tabs' className={ className }>
             { items.map(it => (
                 <Nav.Item
+                    className={ itemClassName }
                     key={ it.key }
-                    onClick={ onItemClick }
+                    onClick={ () => onItemClick(it.key) }
                 >
                     <Nav.Link
                         active={ it.key === activeKey }

@@ -56,7 +56,9 @@ const Main = ({ onSignedOut, onSignedIn }) => {
                                 <a onClick={ onSignOut }>Sign-Out</a>
                             </div>
                         </div>
-                        <Routing />
+                        <div className='p-3'>
+                            <Routing />
+                        </div>
                     </div>
                 </main>
             </div>

@@ -96,7 +96,7 @@ const CreateModal = ({
     show,
     onHide,
     studyId,
-    locationId,
+    locationRecord,
     teamRecords,
     start,
     slotDuration,
@@ -106,6 +106,8 @@ const CreateModal = ({
     if (!show) {
         return null;
     }
+
+    var locationId = locationRecord._id;
     //var fallbackDate = new Date(0);
     
     /*start = start || fallbackDate;

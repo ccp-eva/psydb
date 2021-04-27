@@ -14,12 +14,18 @@ const StudyInhouseLocations = ({
     onSelectLocationType,
 
     onSelectEmptySlot,
-    onSelectReservedSlot,
+    onSelectReservationSlot,
     onSelectExperimentSlot,
 
     /*currentPageStart,
     currentPageEnd,
     onPageChange,*/
+
+    // used to force reloading the whole component
+    revision = 0,
+
+    // used to force update of the calendar
+    calendarRevision = 0,
 }) => {
     
     var [ state, dispatch ] = useReducer(reducer, {});
@@ -59,7 +65,7 @@ const StudyInhouseLocations = ({
             }})
         });
 
-    }, [ studyId, studyRecordType ])
+    }, [ studyId, studyRecordType, revision ])
 
     if (!(customRecordTypeData && studyRecord && teamRecords )) {
         return (
@@ -81,6 +87,12 @@ const StudyInhouseLocations = ({
                 teamRecords={ teamRecords }
                 studyId={ studyId }
                 locationRecordType={ activeLocationType }
+
+                onSelectEmptySlot={ onSelectEmptySlot }
+                onSelectReservationSlot={ onSelectReservationSlot }
+                onSelectExperimentSlot={ onSelectExperimentSlot }
+
+                revision={ calendarRevision }
             />
         </>
     )

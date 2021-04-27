@@ -14,8 +14,6 @@ import agent from '@mpieva/psydb-ui-request-agents';
 
 import datefns from '../../date-fns';
 
-//import CreateModal from './create-modal';
-//import DeleteModal from './delete-modal';
 import TimeSlotList from './time-slot-list';
 
 var range = n => [ ...Array(n).keys() ]
@@ -60,9 +58,14 @@ const LocationCalendar = ({
     reservationRecords,
     experimentRecords,
     teamRecords,
+
     currentPageStart,
     currentPageEnd,
     onPageChange,
+
+    onSelectEmptySlot,
+    onSelectReservationSlot,
+    onSelectExperimentSlot,
 }) => {
     var { path, url } = useRouteMatch();
 
@@ -126,37 +129,12 @@ const LocationCalendar = ({
 
     return (
         <div>
-            <header>
-                { locationRecord._recordLabel }
-            </header>
-
-            { /*<CreateModal
-                show={ createModalState.showModal }
-                onHide={ handleCloseCreateModal }
-                studyId={ studyId }
-                locationId={ locationRecord._id }
-                start={ createModalState.date }
-                slotDuration={ createModalState.slotDuration }
-                maxEnd={ createModalState.maxEnd }
-                teamRecords={ teamRecords }
-                onSuccessfulCreate={ () => {} }
-            />
-
-            <DeleteModal
-                show={ deleteModalState.showModal }
-                onHide={ handleCloseDeleteModal }
-                studyId={ studyId }
-                locationId={ locationRecord._id }
-                date={ deleteModalState.date }
-                reservationRecords={ reservationRecords }
-                teamRecords={ teamRecords }
-                onSuccessfulDelete={ () => {} }
-            />*/}
-
-            <div>actions</div>
-
+            <h5 className='pl-3 pt-2 pb-2 m-0 bg-light'>
+                <u>Raum: { locationRecord._recordLabel }</u>
+            </h5>
             <TimeTable { ...({
                 studyId,
+                locationRecord,
                 teamRecords,
                 reservationRecords,
                 experimentRecords,
@@ -164,8 +142,9 @@ const LocationCalendar = ({
                 startTimeInt,
                 endTimeInt,
                 slotDuration: reservationSlotDuration,
-                onSelectEmptySlot: handleShowCreateModal,
-                onSelectReservationSlot: handleShowDeleteModal,
+                onSelectEmptySlot,
+                onSelectReservationSlot,
+                onSelectExperimentSlot,
             })} />
 
         </div>

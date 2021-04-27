@@ -12,9 +12,17 @@ const LocationCalendarList = ({
     studyId,
     locationRecordType,
     teamRecords,
+    
     currentPageStart,
     currentPageEnd,
     onPageChange,
+   
+    onSelectEmptySlot,
+    onSelectReservationSlot,
+    onSelectExperimentSlot,
+
+    // used to force reloading the calendar data
+    revision = 0,
 }) => {
     
     var [ calendarData, setCalendarData ] = useState();
@@ -34,6 +42,7 @@ const LocationCalendarList = ({
         teamRecords,
         currentPageStart,
         currentPageEnd,
+        revision,
     ]);
 
     if (!calendarData) {
@@ -71,9 +80,14 @@ const LocationCalendarList = ({
                         reservationRecords,
                         experimentRecords,
                         teamRecords,
+
                         currentPageStart,
                         currentPageEnd,
                         onPageChange,
+    
+                        onSelectEmptySlot,
+                        onSelectReservationSlot,
+                        onSelectExperimentSlot,
                     })}
                 />
             ))}
