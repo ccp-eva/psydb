@@ -66,7 +66,7 @@ const GenericCollectionView = ({
     return (
         <div>
             <header>
-                <h1 style={{ borderBottom: '1px solid lightgrey' }}>
+                <h1 className='m-0 border-bottom'>
                     { collectionDisplayNames[collection] || collection }
                 </h1>
             </header>

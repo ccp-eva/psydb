@@ -13,3 +13,38 @@
 .enable-flexbox {
     flex: 1;
 }
+
+.btn {
+    border-radius: 0;
+}
+
+/* removes wierd bootstrap outlines */
+*:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.btn-primary {
+    background-color: #006066!important;
+    border-color: #006066!important;
+}
+
+.btn-primary:hover {
+    background-color: #007077!important;
+    border-color: #007077!important;
+}
+
+.btn-primary:disabled, .btn-primary.disabled {
+    background-color: #227277!important;
+    border-color: #227277!important;
+}
+
+.btn-primary:not(:disabled):not(.disabled).active,
+.btn-primary:not(:disabled):not(.disabled):active {
+    background-color: #006066;
+    border-color: #006066;
+}
+
+.text-primary {
+    color: #006066;
+}

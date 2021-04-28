@@ -11,10 +11,15 @@ import {
     Col,
 } from 'react-bootstrap';
 
+import {
+    DoorClosedFill
+} from 'react-bootstrap-icons';
+
 import agent from '@mpieva/psydb-ui-request-agents';
 
 import SideNav from './side-nav';
 import CustomRecordTypes from './custom-record-types';
+import Studies from './studies';
 import Locations from './locations';
 import Subjects from './subjects';
 import Personnel from './personnel';
@@ -51,12 +56,19 @@ const Main = ({ onSignedOut, onSignedIn }) => {
                     //alignItems: 'flex-start',
                 }}>
                     <div style={{ width: '990px' }}>
-                        <div className='flex-core flex-row-reverse'>
+                        <div className='flex-core flex-row-reverse pt-2 pb-1'>
                             <div className='flex-core'>
-                                <a onClick={ onSignOut }>Sign-Out</a>
+                                <a
+                                    onClick={ onSignOut }
+                                >
+                                    <DoorClosedFill className='align-middle' />
+                                    <u className='d-inline-block ml-2 align-middle'>
+                                        Abmelden
+                                    </u>
+                                </a>
                             </div>
                         </div>
-                        <div className='p-3'>
+                        <div className='pl-3'>
                             <Routing />
                         </div>
                     </div>
@@ -69,6 +81,7 @@ const Main = ({ onSignedOut, onSignedIn }) => {
 var Routing = () => (
     <>
     <Route path='/custom-record-types' component={ CustomRecordTypes } />
+    <Route path='/studies' component={ Studies } />
     <Route path='/locations' component={ Locations } />
     <Route path='/subjects' component={ Subjects } />
     <Route path='/personnel' component={ Personnel } />

@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { withTheme } from '@rjsf/core';
-import { Theme as Bootstrap4Theme } from '@rjsf/bootstrap-4'
+//import { Theme as Bootstrap4Theme } from '@rjsf/bootstrap-4'
+
+import RJSFCustomTheme from './rjsf-theme';
+
 import { Button } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 
 import allSchemaCreators from '@mpieva/psydb-schema-creators';
 import agent from '@mpieva/psydb-ui-request-agents';
 
-var SchemaForm = withTheme(Bootstrap4Theme);
+var SchemaForm = withTheme(RJSFCustomTheme);
 
 const GenericRecordForm = ({
     type,
@@ -65,14 +68,14 @@ const GenericRecordForm = ({
 
     // TODO
     var onSubmit = () => {};
-    console.log(schema);
+    //console.log(schema);
 
     var formData = {};
     if (record) {
         if (hasSubChannels) {
             formData = {
                 gdpr: record.gdpr.state,
-                scientific: record.gdpr.scientific
+                scientific: record.scientific.state
             }
         }
         else {
@@ -81,7 +84,15 @@ const GenericRecordForm = ({
     }
 
     return (
-        <div>
+        <div className='border p-3'>
+            <h5>
+                { 
+                    type === 'edit'
+                    ? 'Datensatz bearbeiten'
+                    : 'Neuer Datensatz'
+                }
+            </h5>
+            <hr />
             <SchemaForm
                 schema={(
                     hasSubChannels

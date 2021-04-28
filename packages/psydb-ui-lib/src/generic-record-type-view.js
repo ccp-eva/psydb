@@ -29,7 +29,9 @@ const GenericRecordTypeView = ({
     return (
         <div>
             { recordType && (
-                <h2>{ typeData.state.label }</h2>
+                <h5 className='mt-0 mb-3 text-muted'>
+                    Typ: { typeData.state.label }
+                </h5>
             )}
             <Switch>
                 <Route exact path={`${path}`}>
