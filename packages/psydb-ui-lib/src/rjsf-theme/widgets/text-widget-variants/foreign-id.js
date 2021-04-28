@@ -3,33 +3,47 @@ import React, { useCallback } from 'react';
 import { Form, InputGroup, Button } from 'react-bootstrap';
 import { PencilFill } from 'react-bootstrap-icons';
 
+import RecordPicker from '../../../record-picker';
+
 const ForeignId = ({
     id,
     className,
-    value,
+    value: recordId,
     onChange,
     hasErrors,
+    schema,
+    formContext,
     ...other
 }) => {
+    var { systemProps } = schema;
+    var { collection, recordType, constraints } = systemProps;
+
+    var { relatedRecords } = formContext;
+    var record;
+    if (relatedRecords) {
+        record = relatedRecords[collection][recordId]
+    }
+
+    if (recordId && !record) {
+        // create erroneous record
+        record = { _id: recordId };
+    }
+
+    var _onChange = (record) => {
+        // FIXME: meh
+        onChange({ target: { value: record._id }});
+    };
+
     return (
-        <div className={ className }>
-            <InputGroup>
-                <Form.Control
-                    className={ 
-                        `${hasErrors ? 'is-invalid' : ''} border pl-3 bg-white`
-                    }
-                    value={ value }
-                    placeholder='Bitte Datensatz wählen'
-                    plaintext
-                    readOnly
-                />
-                <InputGroup.Append>
-                    <Button>
-                        <PencilFill style={{ marginTop: '-3px' }}/>
-                    </Button>
-                </InputGroup.Append>
-            </InputGroup>
-        </div>
+        <RecordPicker { ...({
+            collection,
+            recordType,
+            constraints,
+            
+            value: record,
+            onChange: _onChange,
+            hasErrors,
+        })} />
     )
 }
 

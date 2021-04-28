@@ -16,7 +16,7 @@ import TabNav from '@mpieva/psydb-ui-lib/src/tab-nav';
 import StudyInhouseLocationTypeNav from '@mpieva/psydb-ui-lib/src/study-inhouse-location-type-nav';
 
 import LocationTypeContainer from './location-type-container';
-import RecordPicker from './record-picker';
+import RecordPicker from '@mpieva/psydb-ui-lib/src/record-picker';
 //import LocationCalendarList from './location-calendar-list';
 
 const ReservationRouting = ({ customRecordTypes }) => {
