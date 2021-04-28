@@ -84,7 +84,7 @@ const GenericRecordForm = ({
     }
 
     return (
-        <div className='border p-3'>
+        <div className='border p-3 bg-light'>
             <h5>
                 { 
                     type === 'edit'

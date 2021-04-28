@@ -8,16 +8,18 @@ const ForeignId = ({
     className,
     value,
     onChange,
+    hasErrors,
     ...other
 }) => {
-    // NOTE: w/o the wrapper div the input group freaks out
     return (
         <div className={ className }>
             <InputGroup>
                 <Form.Control
-                    className={ `border pl-3` }
+                    className={ 
+                        `${hasErrors ? 'is-invalid' : ''} border pl-3 bg-white`
+                    }
                     value={ value }
-                    placeholder='Bitte Eintrag wählen'
+                    placeholder='Bitte Datensatz wählen'
                     plaintext
                     readOnly
                 />

@@ -1,5 +1,7 @@
 import React, { useCallback } from 'react';
 import { Form } from 'react-bootstrap';
+
+import { InlineWrapper } from '../utility-components';
 import * as variants from './text-widget-variants';
 
 const TextWidget = (ps) => {
@@ -44,18 +46,13 @@ const TextWidget = (ps) => {
     }, [ onChange ])
 
     return (
-        <Form.Group className='row ml-0 mr-0'>
-            <Form.Label
-                htmlFor={ id }
-                className={ `${hasErrors ? 'text-danger' : ''} col-sm-3 col-form-label`}
-            >
-                { label || schema.title }
-                {' '}
-                {(label || schema.title) && required ? '*' : null}
-            </Form.Label>
+        <InlineWrapper { ...({
+            id, label, required, schema, rawErrors
+        }) }>
             <Variant
                 id={ id }
-                className={ `${hasErrors ? 'is-invalid' : ''} col-sm-9`}
+                hasErrors={ hasErrors }
+                className={ `${hasErrors ? 'is-invalid' : ''}`}
                 required={ required }
                 type={ inputType }
                 value={value || value === 0 ? value : ''}
@@ -64,7 +61,7 @@ const TextWidget = (ps) => {
                 schema={ schema }
                 formContext={ formContext }
             />
-        </Form.Group>
+        </InlineWrapper>
     );
 
 }
