@@ -34,6 +34,17 @@
     border-color: #007077!important;
 }
 
+.btn-outline-primary {
+    background-color: white!important;
+    color: #006066!important;
+    border-color: #006066!important;
+}
+
+.btn-outline-primary:hover {
+    color: white!important;
+    background-color: #006066!important;
+}
+
 .btn-primary:disabled, .btn-primary.disabled {
     background-color: #227277!important;
     border-color: #227277!important;

@@ -47,7 +47,9 @@ const Main = ({ onSignedOut, onSignedIn }) => {
                     //alignItems: 'flex-end',
                 }}>
                     <div className='flex-core' style={{
-                        width: '275px'
+                        //width: '275px'
+                        width: '225px'
+
                     }}>
                         <SideNav />
                     </div>
@@ -55,7 +57,11 @@ const Main = ({ onSignedOut, onSignedIn }) => {
                 <main className='flex-core flex-grow' style={{
                     //alignItems: 'flex-start',
                 }}>
-                    <div style={{ width: '990px' }}>
+                    <div style={{
+                        //width: '990px' // => min size: 1280
+                        //width: '1076px' // => min size: 1366
+                        width: '1040px' // => min size: 1280
+                    }}>
                         <div className='flex-core flex-row-reverse pt-2 pb-1'>
                             <div className='flex-core'>
                                 <a

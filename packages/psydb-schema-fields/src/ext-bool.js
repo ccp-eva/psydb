@@ -1,13 +1,21 @@
 'use strict';
-var ExtBool = () => ({
+var ExtBool = ({
+    ...additionalKeywords
+}) => ({
     systemType: 'ExtBool',
-    reactType: 'radio-group',
     type: 'string',
     enum: [
         'yes',
         'no',
         'unknown',
-    ]
+    ],
+    // FIXME: this is rjsf
+    enumNames: [
+        'Ja',
+        'Nein',
+        'Unbekannt',
+    ],
+    ...additionalKeywords,
 });
 
 module.exports = ExtBool;

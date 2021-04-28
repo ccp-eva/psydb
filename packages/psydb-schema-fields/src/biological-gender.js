@@ -1,5 +1,5 @@
 'use strict';
-var BiologicalGender = () => ({
+var BiologicalGender = ({ ...additionalKeywords }) => ({
     systemType: 'BiologicalGender',
     type: 'string',
     enum: [
@@ -12,7 +12,8 @@ var BiologicalGender = () => ({
         'Männlich',
         'Weiblich',
         'Unbekannt',
-    ]
+    ],
+    ...additionalKeywords
 });
 
 module.exports = BiologicalGender;

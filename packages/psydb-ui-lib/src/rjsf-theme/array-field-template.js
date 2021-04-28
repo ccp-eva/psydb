@@ -37,7 +37,7 @@ const DefaultArrayItem = (ps) => {
     return (
         <div className='border p-3' style={{
             position: 'relative',
-            marginBottom: '33px'
+            marginBottom: '35px'
         }}>
             { children }
             
@@ -83,8 +83,9 @@ const AddButtonWrapper = ({ children }) => (
         role='button'
         className='d-flex'
         style={{
-            background: '#006066',
-            bottom: -23,
+            background: 'white',
+            //background: '#006066',
+            bottom: -24,
             left: -1,
             position: 'absolute',
         }}
@@ -112,7 +113,7 @@ const AddButton = ({ children, onClick, style }) => (
     <div
         onClick={ onClick }
         style={{
-            color: '#ffffff',
+            color: '#006066',
             paddingTop: '3px',
             paddingBottom: '3px',
             width: '100px',
@@ -162,13 +163,17 @@ const Plain = (ps) => {
         schema,
         formData,
         onAddClick,
+        rawErrors = [],
     } = ps;
 
+    console.log(ps);
+
+    var hasErrors = !!rawErrors.length;
     var itemsCount = items.length;
 
     return (
         <div className='row mr-0 ml-0'>
-            <header className='col-sm-3'>
+            <header className={ `col-sm-3 ${hasErrors ? 'text-danger' : ''}` }>
                 { title }
             </header>
             <div className='col-sm-9 p-0'>

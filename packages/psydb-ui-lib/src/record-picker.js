@@ -58,7 +58,7 @@ const RecordPicker = ({
                 />
                 <InputGroup.Append>
                     <Button
-                        variant={ hasErrors ? 'danger' : 'primary' }
+                        variant={ hasErrors ? 'danger' : 'outline-primary' }
                         onClick={ handleShowModal }
                     >
                         <PencilFill style={{ marginTop: '-3px' }}/>

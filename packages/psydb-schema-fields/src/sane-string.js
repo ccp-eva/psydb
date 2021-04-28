@@ -19,12 +19,15 @@ var SaneString = ({
     return {
         systemType: 'SaneString',
         type: 'string',
-        default: '',
+        // FIXME: rjsf interprets this default as if the user isnt required
+        // to put something in
+        //default: '',
         // TODO: this needs a proper pattern
         pattern: '^[^\\r\\n]*$',
 
         // FIXME: in my opinion this is a stupid hacky way of doing that
         // but its the only way to transform bevore validation
+        // TODO; rjsf does not suport costum ajv keywords for some reason
         allOf: [
             { transform: [ 'trim' ] },
             ...(

@@ -18,8 +18,8 @@ var reservationSettingsSchema = {
             properties: {
                 canBeReserved: {
                     type: 'boolean',
-                    enum: [ false ],
-                    default: false, // because rjsf
+                    const: false,
+                    //default: false, // because rjsf
                 },
             },
             required: [ 'canBeReserved' ]
@@ -29,8 +29,8 @@ var reservationSettingsSchema = {
             properties: {
                 canBeReserved: {
                     type: 'boolean',
-                    enum: [ true ],
-                    default: true, // because rjsf
+                    const: true,
+                    //default: true, // because rjsf
                 },
                 canBeReservedByResearchGroupIds: {
                     title: 'Reservierbar durch Forschungsgruppen',

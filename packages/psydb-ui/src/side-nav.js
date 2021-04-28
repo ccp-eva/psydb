@@ -22,7 +22,7 @@ const SideNav = ({
             style={{ background: '#006c66'}}
         >
             <Link to='/'>
-                <b className='text-white'>Psychology DB</b>
+                <b className='text-white'>PsyDB</b>
             </Link>
         </h2>
         <Nav

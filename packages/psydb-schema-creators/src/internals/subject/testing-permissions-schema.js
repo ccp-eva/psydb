@@ -3,32 +3,41 @@ var inline = require('@cdxoo/inline-text');
 
 var {
     ExactObject,
+    DefaultArray,
     ForeignId,
     DateTimeInterval,
     ExtBool,
 } = require('@mpieva/psydb-schema-fields');
 
-var ExtBoolPermissionList = ({ description } = {}) => ({
-    type: 'array',
-    default: [],
-    items: ExactObject({
-        properties: {
-            researchGroupId: ForeignId({
-                collection: 'researchGroup'
-            }),
-            permission: ExtBool(),
-        },
-        required: [
-            'researchGroupId',
-            'permission',
-        ]
+var ExtBoolPermissionList = ({
+    ...additionalKeywords
+} = {}) => (
+    DefaultArray({
+        systemType: 'ExtBoolPermissionList',
+        items: ExactObject({
+            properties: {
+                researchGroupId: ForeignId({
+                    title: 'Forschungsgruppe',
+                    collection: 'researchGroup'
+                }),
+                permission: ExtBool({
+                    title: 'Erlaubnis',
+                }),
+            },
+            required: [
+                'researchGroupId',
+                'permission',
+            ]
+        }),
+        ...additionalKeywords
     })
-});
+);
 
 var testingPermissionsSchema = ExactObject({
     properties: {
         
         canBeTestedInhouse: ExtBoolPermissionList({
+            title: 'Testen In-House erlaubt für',
             description: inline`
                 list of items describing if a subject can be tested
                 by a research group at a location belonging to the research
@@ -37,6 +46,7 @@ var testingPermissionsSchema = ExactObject({
         }),
         
         canBeTestedByAwayTeam: ExtBoolPermissionList({
+            title: 'Testen via Außen-Team erlaubt für',
             description: inline`
                 list of items describing if a subject can be tested
                 by an away team belonging to a research group, i.e.
@@ -44,6 +54,7 @@ var testingPermissionsSchema = ExactObject({
             `,
         }),
 
+        // TODO: replace with a single interval
         disabledForTestingIntervals: {
             type: 'array',
             default: [],

@@ -6,7 +6,8 @@ var DateTime = ({
     type: 'string',
     format: 'date-time',
     unmarshalDateTime: true,
-    default: '0000-00-00T00:00:00Z',
+    // @rjsf treats this default as if the user has set it
+    //default: '0000-00-00T00:00:00Z',
     ...additionalKeywords,
 });
 

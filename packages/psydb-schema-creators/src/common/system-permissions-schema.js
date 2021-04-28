@@ -8,9 +8,10 @@ var {
 
 var systemPermissionsSchema = ExactObject({
     title: 'System-Einstellungen',
+    systemType: 'SystemPermissions',
     properties: {
         accessRightsByResearchGroup: {
-            title: 'Forschungsgruppen-Berechtigungen',
+            title: 'Zugriff auf diesen Datensatz für',
             type: 'array',
             default: [],
             minItems: 1,
@@ -58,7 +59,7 @@ var systemPermissionsSchema = ExactObject({
         */
 
         isHiddenForResearchGroupIds: {
-            title: 'Ausgeblendet für Forschungsgruppen',
+            title: 'Ausgeblendet für',
             type: 'array',
             default: [],
             unqiueItems: true,

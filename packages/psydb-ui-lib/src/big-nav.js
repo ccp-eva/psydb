@@ -16,10 +16,12 @@ const BigNav = ({ items }) => {
     return (
         <nav>
             { items.map(({ linkUrl, linkTo, label }) => (
-                <LinkContainer to={ linkUrl || `${url}/${strip(linkTo)}`}>
+                <LinkContainer
+                    key={ linkUrl || linkTo }
+                    to={ linkUrl || `${url}/${strip(linkTo)}`}
+                >
                     <h2
                         className='bg-light p-3 border mt-2 mb-2 d-flex justify-content-between align-items-center'
-                        key={ linkUrl || linkTo }
                         role='button'
                     >
                         <span>{ label }</span>

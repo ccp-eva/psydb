@@ -92,6 +92,18 @@ const GenericRecordForm = ({
         }
     }
 
+    var formSchema = (
+        hasSubChannels
+        ? {
+            type: 'object',
+            properties: {
+                gdpr: schema.properties.gdpr.properties.state,
+                scientific: schema.properties.scientific.properties.state
+            }
+        }
+        : schema.properties.state
+    );
+
     return (
         <div className='border p-3 bg-light'>
             <h5>
@@ -103,17 +115,9 @@ const GenericRecordForm = ({
             </h5>
             <hr />
             <SchemaForm
-                schema={(
-                    hasSubChannels
-                    ? {
-                        type: 'object',
-                        properties: {
-                            gdpr: schema.properties.gdpr.properties.state,
-                            scientific: schema.properties.scientific.properties.state
-                        }
-                    }
-                    : schema.properties.state
-                )}
+                noHtml5Validate={ true }
+                showErrorList={ false }
+                schema={ formSchema }
                 formData={ formData }
                 formContext={ formContext }
                 onSubmit={ onSubmit }
