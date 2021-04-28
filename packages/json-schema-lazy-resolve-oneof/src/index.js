@@ -1,6 +1,7 @@
 'use strict';
 var traverse = require('json-schema-traverse'),
     jsonpointer = require('jsonpointer'),
+    clone = require('copy-anything').copy,
     inline = require('@cdxoo/inline-text'),
     deconstructArrays = require('@mpieva/json-schema-deconstruct-arrays'),
     convertPointer = require('@mpieva/json-schema-convert-pointer');
@@ -35,7 +36,6 @@ var lazyResolveZero = ({
     currentData,
     currentPart,
 }) => {
-    //console.log('lazyResolveZero');
     var { inSchemaPointer, schema } = currentPart;
 
     var requiredType = 'array';
@@ -85,6 +85,7 @@ var lazyResolveZero = ({
                 //console.log(nextData);
 
                 //console.log('CALLING FROM INSIDE')
+                //console.log('nextPointer', nextPointer);
                 lazyResolveZero({
                     resolvedParts,
                     schemaParts,
@@ -118,8 +119,16 @@ var lazyResolveZero = ({
             inSchemaPointer,
             schema: out.schema,
         });
+       
+        //console.log('schema')
+        //console.dir(schema, { depth: null });
 
-        var includedArrays = resolveIncludedArrays({ schema });
+        var includedArrays = resolveIncludedArrays({
+            schema,
+            oneOfTransformations: out.transformations,
+        });
+        //console.log('################');
+        //console.log(includedArrays, out.transformations);
         for (var arrayPointer of includedArrays) {
             var nextPointer = `${inSchemaPointer}${arrayPointer}/items`;
             var nextPart = schemaParts.find(it => (
@@ -131,6 +140,7 @@ var lazyResolveZero = ({
             //console.log('NEXT', nextPart, nextPointer);
             //console.log('NEXT DATA', nextData);
             //console.log('CALLING FROM OUTSIDE')
+            //console.log('nextPointer', nextPointer);
             lazyResolveZero({
                 resolvedParts,
                 schemaParts,
@@ -143,6 +153,7 @@ var lazyResolveZero = ({
 }
 
 var resolveIncludedArrays = ({ schema, oneOfTransformations }) => {
+    //console.log('resolveIncludedArray');
     var foundArrays = [];
     traverse(schema, { allKeys: false }, (...traverseArgs) => {
         var [
@@ -155,17 +166,20 @@ var resolveIncludedArrays = ({ schema, oneOfTransformations }) => {
             foundArrays.push(currentInSchemaPointer)
         }
     })
+    //console.log(foundArrays);
 
     if (!oneOfTransformations) {
         return foundArrays;
     }
 
+    //console.log('OK');
     var included = [];
 
     for (var ptr of foundArrays) {
         var match = ptr.match(/^(.*\/oneOf\/\d+)(.*?)$/)
         if (match) {
             var [ _ununsed, head, tail] = match;
+            //console.log(head, tail)
             for (var trans of oneOfTransformations) {
                 if (head === trans.to) {
                     included.push(ptr);
@@ -182,7 +196,7 @@ var resolveIncludedArrays = ({ schema, oneOfTransformations }) => {
 
 var lazyResolve = (schema, data) => {
     // this wrapper enables us to replace the schema root if required
-    var evilRefHack = { schema };
+    var evilRefHack = { schema: clone(schema) };
 
     //var pointerMapping = PointerMapping();
     var oneofResolver = OneofResolver();
