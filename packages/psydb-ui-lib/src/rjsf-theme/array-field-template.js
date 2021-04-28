@@ -5,7 +5,7 @@ const ArrayFieldTemplate = (ps) => {
     var {
         schema
     } = ps;
-    console.log(ps);
+    //console.log(ps);
 
     var Variant = subTemplates[schema.systemType];
     if (!Variant) {
@@ -18,7 +18,7 @@ const ArrayFieldTemplate = (ps) => {
 }
 
 const DefaultArrayItem = (ps) => {
-    console.log(ps);
+    //console.log(ps);
     var {
         index,
         hasMoveUp,

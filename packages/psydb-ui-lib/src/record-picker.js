@@ -15,8 +15,13 @@ const RecordPicker = ({
     hasErrors,
 }) => {
     var [ showModal, setShowModal ] = useState(false);
+    // FIXME: im not sure how to best reset the state in case
+    // it gets out of sync i could do it manually by checking the
+    // record ids and foribly update the state
+    var [ cachedRecord, setCachedRecord ] = useState(record);
 
     var handleSelect = (record) => {
+        setCachedRecord(record);
         onChange(record);
         handleCloseModal();
     }
@@ -30,15 +35,15 @@ const RecordPicker = ({
     }
     
     var displayValue = (
-        record
-        ? record._recordLabel || record._id
+        cachedRecord
+        ? cachedRecord._recordLabel || cachedRecord._id
         : ''
     )
 
     var classes = [
         'border pl-3 bg-white',
         hasErrors ? 'border-danger' : '',
-        (record && !record._recordLabel) ? 'text-danger' : '',
+        (cachedRecord && !cachedRecord._recordLabel) ? 'text-danger' : '',
     ].join(' ')
 
     return (

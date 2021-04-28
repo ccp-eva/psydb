@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import { withTheme } from '@rjsf/core';
 //import { Theme as Bootstrap4Theme } from '@rjsf/bootstrap-4'
 
@@ -26,41 +26,45 @@ const GenericRecordForm = ({
 
     var { hasSubChannels } = allSchemaCreators[collection];
 
-    var [ isInitialized, setIsInitialized ] = useState(false);
-    var [ schema, setSchema ] = useState();
-    var [ record, setRecord ] = useState();
-    
+    var [ state, dispatch ] = useReducer(reducer, {});
+    var {
+        record,
+        relatedRecordLabels,
+        relatedHelperSetItems,
+        schema
+    } = state;
+
     useEffect(() => {
         var suffix = `${collection}`;
         if (recordType) {
             suffix = `${suffix}/${recordType}`;
         }
+
         agent.readRecordSchema({
             collection,
             recordType
-        }).then(
-            (response) => {
-                setSchema(response.data.data);
-                if (type === 'edit') {
-                    agent.readRecord({
-                        collection,
-                        recordType,
-                        id
-                    }).then(
-                        (response) => {
-                            setRecord(response.data.data.record);
-                            setIsInitialized(true);
-                        }
-                    )
-                }
-                else {
-                    setIsInitialized(true);
-                }
-            }
-        )
-    }, [])
+        }).then((response) => {
+            dispatch({ type: 'init-schema', payload: {
+                schema: response.data.data
+            }})
+            //setSchema(response.data.data);
+        })
 
-    if (!isInitialized) {
+        if (type === 'edit') {
+            agent.readRecord({
+                collection,
+                recordType,
+                id
+            }).then((response) => {
+                dispatch({ type: 'init-data', payload: {
+                    ...response.data.data
+                }})
+                //setRecord(response.data.data.record);
+            })
+        }
+    }, [ type, id, collection, recordType ])
+
+    if (!schema || (type === 'edit' && !record)) {
         return (
             <div>Loading...</div>
         );
@@ -68,9 +72,9 @@ const GenericRecordForm = ({
 
     // TODO
     var onSubmit = () => {};
-    //console.log(schema);
 
     var formData = {};
+    var formContext = {};
     if (record) {
         if (hasSubChannels) {
             formData = {
@@ -80,6 +84,11 @@ const GenericRecordForm = ({
         }
         else {
             formData = record.state;
+        }
+
+        formContext = {
+            relatedRecordLabels,
+            relatedHelperSetItems
         }
     }
 
@@ -106,6 +115,7 @@ const GenericRecordForm = ({
                     : schema.properties.state
                 )}
                 formData={ formData }
+                formContext={ formContext }
                 onSubmit={ onSubmit }
             >
                 <div>
@@ -118,4 +128,22 @@ const GenericRecordForm = ({
     )
 }
 
-export default GenericRecordForm;;
+var reducer = (state, action) => {
+    var { type, payload } = action;
+    switch (type) {
+        case 'init-data':
+            return {
+                ...state,
+                record: payload.record,
+                relatedRecordLabels: payload.relatedRecordLabels,
+                relatedHelperSetItems: payload.relatedHelperSetItems
+            }
+        case 'init-schema':
+            return {
+                ...state,
+                schema: payload.schema
+            }
+    }
+}
+
+export default GenericRecordForm;

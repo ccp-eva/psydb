@@ -18,10 +18,12 @@ const ForeignId = ({
     var { systemProps } = schema;
     var { collection, recordType, constraints } = systemProps;
 
-    var { relatedRecords } = formContext;
+    console.log(formContext);
+    var { relatedRecordLabels } = formContext;
     var record;
-    if (relatedRecords) {
-        record = relatedRecords[collection][recordId]
+    if (relatedRecordLabels) {
+        record = relatedRecordLabels[collection][recordId]
+        console.log(record);
     }
 
     if (recordId && !record) {

@@ -110,7 +110,7 @@ var fetchRelatedRecords = async ({
 
                 return {
                     _id: record._id,
-                    recordLabel,
+                    _recordLabel: recordLabel,
                 };
             });
         }

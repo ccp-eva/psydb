@@ -32,7 +32,7 @@ module.exports = {
         collection: 'helperSet',
         isGenericRecord: false,
         recordLabelDefinition: {
-            format: '${0}',
+            format: '${#}',
             tokens: [
                 {
                     systemType: 'SaneString',
@@ -45,7 +45,7 @@ module.exports = {
         collection: 'helperSetItem',
         isGenericRecord: false,
         recordLabelDefinition: {
-            format: '${0}',
+            format: '${#}',
             tokens: [
                 {
                     systemType: 'SaneString',
@@ -60,7 +60,7 @@ module.exports = {
         hasCustomTypes: false,
         hasSubChannels: false,
         recordLabelDefinition: {
-            format: '${0}',
+            format: '${#}',
             tokens: [
                 {
                     systemType: 'SaneString',
@@ -82,7 +82,7 @@ module.exports = {
         hasSubChannels: true,
         subChannelKeys: ['scientific', 'gdpr'],
         recordLabelDefinition: {
-            format: '${0} ${1}',
+            format: '${#} ${#}',
             tokens: [
                 {
                     systemType: 'SaneString',
@@ -135,7 +135,7 @@ module.exports = {
         hasCustomTypes: false,
         hasSubChannels: false,
         recordLabelDefinition: {
-            format: '${0}',
+            format: '${#}',
             tokens: [
                 {
                     systemType: 'SaneString',
@@ -206,7 +206,7 @@ module.exports = {
         hasCustomTypes: false,
         hasSubChannels: false,
         recordLabelDefinition: {
-            format: '${0}',
+            format: '${#}',
             tokens: [
                 {
                     systemType: 'SaneString',
