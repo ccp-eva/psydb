@@ -2,22 +2,39 @@
 // monkey patch the ajv instance
 import toPath from "lodash/toPath";
 import Ajv from "ajv";
+
+import ajvKeywords from 'ajv-keywords';
+import psydbFormats from '@mpieva/psydb-ajv-formats';
+
 let ajv = createAjvInstance();
-import { deepEquals, getDefaultFormState } from "./utils";
+
+import { utils } from '@rjsf/core';
+const {
+    deepEquals,
+    getDefaultFormState,
+    isObject,
+    mergeObjects
+} = utils;
+//import { deepEquals, getDefaultFormState } from "./utils";
 
 let formerCustomFormats = null;
 let formerMetaSchema = null;
 const ROOT_SCHEMA_PREFIX = "__rjsf_rootSchema";
 
-import { isObject, mergeObjects } from "./utils";
+//import { isObject, mergeObjects } from "./utils";
 
 function createAjvInstance() {
     const ajv = new Ajv({
-        errorDataPath: "property",
+        errorDataPath: "property", // FIXME: this is actually an issue
         allErrors: true,
         multipleOfPrecision: 8,
         schemaId: "auto",
         unknownFormats: "ignore",
+
+        // patched
+        $data: true,
+        passContext: true,
+        //
     });
 
     // add custom formats
@@ -29,6 +46,17 @@ function createAjvInstance() {
         "color",
         /^(#?([0-9A-Fa-f]{3}){1,2}\b|aqua|black|blue|fuchsia|gray|green|lime|maroon|navy|olive|orange|purple|red|silver|teal|white|yellow|(rgb\(\s*\b([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\b\s*,\s*\b([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\b\s*,\s*\b([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\b\s*\))|(rgb\(\s*(\d?\d%|100%)+\s*,\s*(\d?\d%|100%)+\s*,\s*(\d?\d%|100%)+\s*\)))$/
     );
+
+    // patched
+    ajv.addFormat('mongodb-object-id', psydbFormats.mongodbObjectId);
+    ajv.addFormat('nanoid-default', psydbFormats.nanoidDefault);
+    ajv.addFormat('phone-number', psydbFormats.phoneNumber);
+    ajvKeywords(ajv, [
+        'uniqueItemProperties',
+        'transform', // to trim strings
+    ]);
+    //
+
     return ajv;
 }
 
@@ -177,7 +205,10 @@ export default function validateFormData(
 ) {
     // Include form data with undefined values, which is required for validation.
     const rootSchema = schema;
+    // FIXME: this cant hanyle oneOf stuff properly
     formData = getDefaultFormState(schema, formData, rootSchema, true);
+    console.log('AAAAAAAAAAAAAAAAAAAAAAAA')
+    console.log(formData)
 
     const newMetaSchemas = !deepEquals(formerMetaSchema, additionalMetaSchemas);
     const newFormats = !deepEquals(formerCustomFormats, customFormats);
@@ -247,6 +278,8 @@ export default function validateFormData(
             },
         };
     }
+
+    console.log(errorSchema)
 
     if (typeof customValidate !== "function") {
         return { errors, errorSchema };

@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react';
 import { default as RJSF, utils } from '@rjsf/core';
-
+import validateFormData from './validate';
 const {
   retrieveSchema,
 } = utils;
@@ -19,6 +19,8 @@ class RJSFMonkey extends RJSF {
         const { validate, transformErrors } = this.props;
         const { rootSchema } = this.getRegistry();
         const resolvedSchema = retrieveSchema(schema, rootSchema, formData);
+        console.log(formData);
+        console.log(resolvedSchema);
         return validateFormData(
             formData,
             resolvedSchema,

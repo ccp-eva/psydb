@@ -16,12 +16,15 @@ var SaneString = ({
         ? '{}'
         : undefined
     );*/
+
+    minLength = minLength || 1;
+
     return {
         systemType: 'SaneString',
         type: 'string',
         // FIXME: rjsf interprets this default as if the user isnt required
         // to put something in
-        //default: '',
+        default: '',
         // TODO: this needs a proper pattern
         pattern: '^[^\\r\\n]*$',
 
