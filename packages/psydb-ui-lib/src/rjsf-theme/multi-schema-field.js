@@ -150,6 +150,10 @@ class AnyOfField extends Component {
             onFocus={onFocus}
             value={selectedOption}
             options={{ enumOptions }}
+            //patched
+            isMultiSchemaSelector={ true }
+            baseSchema={ schema }
+            //
             {...uiOptions}
           />
         </div>
