@@ -40,6 +40,7 @@ dependencies:
   '@rush-temp/psydb-ui-lib': 'file:projects/psydb-ui-lib.tgz_webpack@5.10.1'
   '@rush-temp/psydb-ui-request-agents': 'file:projects/psydb-ui-request-agents.tgz_debug@4.3.1'
   '@rush-temp/psydb-web': 'file:projects/psydb-web.tgz'
+  '@rush-temp/rjsf-monkey-patch': 'file:projects/rjsf-monkey-patch.tgz_react@17.0.2'
   ajv: 6.12.6
   ajv-formats: 0.6.1
   ajv-keywords: 3.5.2_ajv@6.12.6
@@ -80,6 +81,7 @@ dependencies:
   react-bootstrap-icons: 1.4.0_react@17.0.2
   react-datetime: 3.0.4_moment@2.29.1+react@17.0.2
   react-dom: 17.0.2_react@17.0.2
+  react-jsonschema-form: 1.8.1_react@17.0.2
   react-router: 5.2.0_react@17.0.2
   react-router-bootstrap: 0.25.0_520bc78b4ba4065e7cfe4fe506865769
   react-router-dom: 5.2.0_react@17.0.2
@@ -5456,6 +5458,25 @@ packages:
     dev: false
     resolution:
       integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
+  /react-jsonschema-form/1.8.1_react@17.0.2:
+    dependencies:
+      '@babel/runtime-corejs2': 7.13.10
+      ajv: 6.12.6
+      core-js: 2.6.12
+      lodash: 4.17.21
+      prop-types: 15.7.2
+      react: 17.0.2
+      react-is: 16.13.1
+      react-lifecycles-compat: 3.0.4
+      shortid: 2.2.16
+    dev: false
+    engines:
+      node: '>=6'
+      npm: '>=2.14.7'
+    peerDependencies:
+      react: '>=15'
+    resolution:
+      integrity: sha512-aaDloxNAcGXOOOcdKOxxqEEn5oDlPUZgWcs8unXXB9vjBRgCF8rCm/wVSv1u2G5ih0j/BX6Ewd/WjI2g00lPdg==
   /react-lifecycles-compat/3.0.4:
     dev: false
     resolution:
@@ -7079,13 +7100,14 @@ packages:
     dependencies:
       '@cdxoo/inline-text': 1.0.1
       chai: 4.2.0
+      copy-anything: 2.0.3
       json-schema-traverse: 1.0.0
       jsonpointer: 4.1.0
       mocha: 8.1.3
     dev: false
     name: '@rush-temp/json-schema-lazy-resolve-oneof'
     resolution:
-      integrity: sha512-xF+grR7xWrZ/yCakyrkKkscmrUmm8xJh2jyl1kWnYURC2peGHAYy2UkG1DfFcqH3Kb/skIus6H0pI8Ik6FRF/g==
+      integrity: sha512-4NTzPfTX3UYJKlV/EmOFWWHeo+ri6pU3DX2zc1VRFHpQTrgxYhS1weyiV4UK1/5cp+hI2BsqU9L6b0QzwuI5lA==
       tarball: 'file:projects/json-schema-lazy-resolve-oneof.tgz'
     version: 0.0.0
   'file:projects/json-schema-merge-xof.tgz':
@@ -7241,7 +7263,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-api-lib'
     resolution:
-      integrity: sha512-nLvMBwaq3oqFDPMfQbls8X1K0ojKJDv3f1ReEuprf/JwDt7l36rWqbK9YstHcRebxwRP/f4w7Ijfcox8f9OXAg==
+      integrity: sha512-5dotgikOZPCs/1hD+cpXFXFKxjOz6ee42i7FH6HsyrspvF4EkGkVw36JjNhTiD7FlHur/pEXwMyye/iXwvWmAw==
       tarball: 'file:projects/psydb-api-lib.tgz'
     version: 0.0.0
   'file:projects/psydb-api-message-handlers.tgz':
@@ -7293,7 +7315,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-api'
     resolution:
-      integrity: sha512-3/L+P5a1qlCb2eBYeNBYsQJcuU23sDgZ1DxFQ7n0l/SyZw96m6Xd/UJGPxbQhD8VYgT1vt2HZc3Zp+S5vVXFHQ==
+      integrity: sha512-7Pe5tWFsKjoKYGlw9ccBnV68VXHY6GCyDlxSVAyGILm5+gF8fH30SMWvngCDkLMPNnfpSZZHYLQVQvJvbzoecQ==
       tarball: 'file:projects/psydb-api.tgz'
     version: 0.0.0
   'file:projects/psydb-common-lib.tgz':
@@ -7373,7 +7395,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-schema-creators'
     resolution:
-      integrity: sha512-KyIr7RZe7vbzX42IxUzsbss1JxKkOuPPa1MLv808Sa8zLo+weHc4jrJJFltzoPoVlde3d76n2N6HezvreySiMA==
+      integrity: sha512-rJsqklhjGkbYRwbWGWTIv70edW3/B7doJq5P8qPHgNjNbd6Vdb/tyucqVWXcc5tjNzIvyvd21iqXf4Ft2zW/8w==
       tarball: 'file:projects/psydb-schema-creators.tgz'
     version: 0.0.0
   'file:projects/psydb-schema-fields-special.tgz':
@@ -7535,6 +7557,20 @@ packages:
       integrity: sha512-nXQ1MYKK6o0g4bnc6RtxF1crOwoHtUdfTZPv/s+WvpnJK0DknhVfZEdJkByXpCZAphMsiD27rbeZsluRBxa+qg==
       tarball: 'file:projects/psydb-web.tgz'
     version: 0.0.0
+  'file:projects/rjsf-monkey-patch.tgz_react@17.0.2':
+    dependencies:
+      chai: 4.2.0
+      mocha: 8.1.3
+      react-jsonschema-form: 1.8.1_react@17.0.2
+    dev: false
+    id: 'file:projects/rjsf-monkey-patch.tgz'
+    name: '@rush-temp/rjsf-monkey-patch'
+    peerDependencies:
+      react: '*'
+    resolution:
+      integrity: sha512-gzIJBcCRLcuJrSCBhVi841rUqcEJw9wncuhyHnCSeIZHnV2HuGC86Mszz/MU15ikDChHDdng/m8iT+0mLbggVw==
+      tarball: 'file:projects/rjsf-monkey-patch.tgz'
+    version: 0.0.0
 registry: ''
 specifiers:
   '@babel/core': ~7.12.10
@@ -7578,6 +7614,7 @@ specifiers:
   '@rush-temp/psydb-ui-lib': 'file:./projects/psydb-ui-lib.tgz'
   '@rush-temp/psydb-ui-request-agents': 'file:./projects/psydb-ui-request-agents.tgz'
   '@rush-temp/psydb-web': 'file:./projects/psydb-web.tgz'
+  '@rush-temp/rjsf-monkey-patch': 'file:./projects/rjsf-monkey-patch.tgz'
   ajv: ~6.12.6
   ajv-formats: ~0.6.1
   ajv-keywords: ~3.5.2
@@ -7618,6 +7655,7 @@ specifiers:
   react-bootstrap-icons: ~1.4.0
   react-datetime: ~3.0.4
   react-dom: ~17.0.1
+  react-jsonschema-form: ~1.8.1
   react-router: ~5.2.0
   react-router-bootstrap: ~0.25.0
   react-router-dom: ~5.2.0

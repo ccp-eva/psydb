@@ -1,14 +1,13 @@
-import React, { useState, useEffect, useReducer } from 'react';
-import { withTheme } from '@rjsf/core';
-//import { Theme as Bootstrap4Theme } from '@rjsf/bootstrap-4'
-
-import RJSFCustomTheme from './rjsf-theme';
+import React, { useState, useEffect, useReducer, forwardRef } from 'react';
 
 import { Button } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 
 import allSchemaCreators from '@mpieva/psydb-schema-creators';
 import agent from '@mpieva/psydb-ui-request-agents';
+
+import { withTheme } from '@mpieva/rjsf-monkey-patch';
+import RJSFCustomTheme from './rjsf-theme';
 
 var SchemaForm = withTheme(RJSFCustomTheme);
 
@@ -18,6 +17,9 @@ const GenericRecordForm = ({
     recordType,
     onSuccessfulUpdate,
 }) => {
+    //console.log('form')
+    //console.log(RJSFForm);
+
     type = type || 'create';
     var id = undefined;
     if (type === 'edit') {
