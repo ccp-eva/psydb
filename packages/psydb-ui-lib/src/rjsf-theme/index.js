@@ -4,16 +4,18 @@ import { Theme as Bootstrap4Theme } from '@rjsf/bootstrap-4';
 import ObjectFieldTemplate from './object-field-template';
 import ArrayFieldTemplate from './array-field-template';
 
-import * as widgets from './widgets';
 import MultiSchemaField from './multi-schema-field';
+import allWidgets from './widget-aggregator';
 
-console.log(Bootstrap4Theme.fields);
+//console.log(Bootstrap4Theme.fields);
+console.log(allWidgets);
 
 var CustomTheme = {
     ...Bootstrap4Theme,
     ObjectFieldTemplate,
     ArrayFieldTemplate,
-    widgets: { ...Bootstrap4Theme.widgets, ...widgets },
+    //widgets: { ...Bootstrap4Theme.widgets, ...widgets },
+    widgets: allWidgets,
     fields: { ...Bootstrap4Theme.fields, OneOfField: MultiSchemaField }
 }
 

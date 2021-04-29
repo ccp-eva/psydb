@@ -49,7 +49,8 @@
     "@mpieva/psydb-common-lib": "~0.1.0-alpha",
     "react-bootstrap-icons": "~1.4.0",
     "jsonpointer": "~4.1.0",
-    "date-fns": "~2.21.1"
+    "date-fns": "~2.21.1",
+    "@babel/plugin-proposal-class-properties": "~7.13.0"
   },
   "config": {
     "mongodbMemoryServer": {
@@ -68,6 +69,9 @@
           "targets": "> 0.25%, not dead"
         }
       ]
+    ],
+    "plugins": [
+        "@babel/plugin-proposal-class-properties"
     ],
     "ignore": [
       "src/server"

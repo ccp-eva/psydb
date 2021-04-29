@@ -56,8 +56,10 @@ const SelectWidget = (ps) => {
         onChange,
         placeholder,
         rawErrors = [],
+
+        isMultiSchemaSelector,
+        baseSchema,
     } = ps;
-    console.log(ps);
 
     const { enumOptions, enumDisabled } = options;
 
@@ -75,11 +77,14 @@ const SelectWidget = (ps) => {
         }
     }, [])
 
+    if (isMultiSchemaSelector) {
+        label = label || baseSchema.title || '';   
+    }
+
     return (
         <InlineWrapper { ...({
             id, label, required, schema, rawErrors
         }) }>
-            FOOO
             <Form.Control
                 as="select"
                 custom

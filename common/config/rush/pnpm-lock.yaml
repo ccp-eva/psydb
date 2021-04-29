@@ -1,5 +1,6 @@
 dependencies:
   '@babel/core': 7.12.17
+  '@babel/plugin-proposal-class-properties': 7.13.0_@babel+core@7.12.17
   '@babel/preset-env': 7.12.17_@babel+core@7.12.17
   '@babel/preset-react': 7.12.13_@babel+core@7.12.17
   '@cdxoo/block-quote': 1.0.0
@@ -7202,7 +7203,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-ajv-formats'
     resolution:
-      integrity: sha512-spEPXfQ+O/sa3XpVqPwnkM5IozYX+46cI2CBr0MSi0Ko6iMq2zdgX+lUyWzdoV8HVe/NsQzXU0D7NG6kGvZ0QQ==
+      integrity: sha512-jRHM9qOttigUXtNs5/RKfbPFdCArHrtjyJa7L61Ll4JggUi/CSxh4e7I5WD5XEdHLnoW3vmR4V93FSDukLJgUA==
       tarball: 'file:projects/psydb-ajv-formats.tgz'
     version: 0.0.0
   'file:projects/psydb-ajv-keywords.tgz':
@@ -7485,6 +7486,7 @@ packages:
   'file:projects/psydb-ui.tgz':
     dependencies:
       '@babel/core': 7.12.17
+      '@babel/plugin-proposal-class-properties': 7.13.0_@babel+core@7.12.17
       '@babel/preset-env': 7.12.17_@babel+core@7.12.17
       '@babel/preset-react': 7.12.13_@babel+core@7.12.17
       '@rjsf/bootstrap-4': 2.5.1_5dccca4f99fef0089ce8bea6fe035927
@@ -7513,7 +7515,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-ui'
     resolution:
-      integrity: sha512-0wReKSd2iHUhofM3cnwfuWNDQKoUlO+oD2j31a+eleBB22FjnjpVC3fAUqwzXugwTZVA+fhsXQyP5ElQtQYHvQ==
+      integrity: sha512-WCVZWlBjQcdFUSvV5ocITUG16ONWCjtIp393eP2p4jWm2BzRSGk6sYZJXguy5xLLCZDOteEpGS+J1qr8Hd0lXw==
       tarball: 'file:projects/psydb-ui.tgz'
     version: 0.0.0
   'file:projects/psydb-web.tgz':
@@ -7551,12 +7553,13 @@ packages:
     dev: false
     name: '@rush-temp/rjsf-monkey-patch'
     resolution:
-      integrity: sha512-IHZB3MHOhWhjpoZVGHxwGDo8hMfy29Dh0M+8QNQ1pk2i0osG3UQ4FXpAdqlPEd5Ba2Ev5icOCkaPQhXQyYR5cQ==
+      integrity: sha512-hktqOYues/DW11Db/7fscMsNzkXAs+x1E1vJ7DHqu94XomhK1qaE/oZPKklkeQAchJcluWAA2pUBjgkrR3p6qA==
       tarball: 'file:projects/rjsf-monkey-patch.tgz'
     version: 0.0.0
 registry: ''
 specifiers:
   '@babel/core': ~7.12.10
+  '@babel/plugin-proposal-class-properties': ~7.13.0
   '@babel/preset-env': ~7.12.10
   '@babel/preset-react': ~7.12.10
   '@cdxoo/block-quote': ~1.0.0
