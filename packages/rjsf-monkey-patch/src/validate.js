@@ -205,10 +205,7 @@ export default function validateFormData(
 ) {
     // Include form data with undefined values, which is required for validation.
     const rootSchema = schema;
-    // FIXME: this cant hanyle oneOf stuff properly
     formData = getDefaultFormState(schema, formData, rootSchema, true);
-    console.log('AAAAAAAAAAAAAAAAAAAAAAAA')
-    console.log(formData)
 
     const newMetaSchemas = !deepEquals(formerMetaSchema, additionalMetaSchemas);
     const newFormats = !deepEquals(formerCustomFormats, customFormats);
@@ -266,7 +263,12 @@ export default function validateFormData(
         errors = transformErrors(errors);
     }
 
+    //console.log(errors);
+    // TODO: we need to fix this oneof nonsense
+    // reproduce : enable reservable and fill in everythin except
+    // slot duration => everythin in that oneof is marked red
     let errorSchema = toErrorSchema(errors);
+    //console.log(errorSchema);
 
     if (noProperMetaSchema) {
         errorSchema = {
@@ -279,7 +281,7 @@ export default function validateFormData(
         };
     }
 
-    console.log(errorSchema)
+    //console.log(errorSchema)
 
     if (typeof customValidate !== "function") {
         return { errors, errorSchema };
