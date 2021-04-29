@@ -1,3 +1,5 @@
+// XXX: this is code from @rjsf/core as i needed to patch
+// the downstream props see 'patched' comment
 import React, { Component } from "react";
 //import PropTypes from "prop-types";
 //import * as types from "../../types";

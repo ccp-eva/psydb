@@ -5,12 +5,16 @@ import ObjectFieldTemplate from './object-field-template';
 import ArrayFieldTemplate from './array-field-template';
 
 import * as widgets from './widgets';
+import MultiSchemaField from './multi-schema-field';
+
+console.log(Bootstrap4Theme.fields);
 
 var CustomTheme = {
     ...Bootstrap4Theme,
     ObjectFieldTemplate,
     ArrayFieldTemplate,
-    widgets: { ...Bootstrap4Theme.widgets, ...widgets}
+    widgets: { ...Bootstrap4Theme.widgets, ...widgets },
+    fields: { ...Bootstrap4Theme.fields, OneOfField: MultiSchemaField }
 }
 
 CustomTheme.FieldTemplate = (ps) => {

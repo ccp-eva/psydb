@@ -43,19 +43,22 @@ const processValue = (schema, value) => {
     return value;
 };
 
-const SelectWidget = ({
-    schema,
-    id,
-    options,
-    label,
-    required,
-    value,
-    multiple,
-    autofocus,
-    onChange,
-    placeholder,
-    rawErrors = [],
-}) => {
+const SelectWidget = (ps) => {
+    var {
+        schema,
+        id,
+        options,
+        label,
+        required,
+        value,
+        multiple,
+        autofocus,
+        onChange,
+        placeholder,
+        rawErrors = [],
+    } = ps;
+    console.log(ps);
+
     const { enumOptions, enumDisabled } = options;
 
     const emptyValue = multiple ? [] : "";
@@ -76,6 +79,7 @@ const SelectWidget = ({
         <InlineWrapper { ...({
             id, label, required, schema, rawErrors
         }) }>
+            FOOO
             <Form.Control
                 as="select"
                 custom

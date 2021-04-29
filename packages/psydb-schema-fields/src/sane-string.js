@@ -17,7 +17,8 @@ var SaneString = ({
         : undefined
     );*/
 
-    minLength = minLength || 1;
+    // TODO: this needs to be done in custom field props
+    //minLength = minLength || 1;
 
     return {
         systemType: 'SaneString',

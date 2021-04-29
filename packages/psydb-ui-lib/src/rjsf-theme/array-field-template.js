@@ -166,7 +166,7 @@ const Plain = (ps) => {
         rawErrors = [],
     } = ps;
 
-    console.log(ps);
+    //console.log(ps);
 
     var hasErrors = !!rawErrors.length;
     var itemsCount = items.length;
