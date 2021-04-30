@@ -15,6 +15,7 @@ var EmailList = ({ minItems, ...additionalProperties }) => DefaultArray({
         properties: {
             email: Email(),
             isPrimary: DefaultBool({
+                title: 'primäre Adresse',
                 description: inline`
                     controls if this email is the primary
                     one this is relevant when the system

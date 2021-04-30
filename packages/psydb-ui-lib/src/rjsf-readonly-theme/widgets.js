@@ -1,6 +1,11 @@
 import React, { useState, useEffect, useReducer } from 'react';
-import { InlineWrapper } from './wrapper-components';
 
+import {
+    CheckSquare,
+    Square
+} from 'react-bootstrap-icons';
+
+import { InlineWrapper } from './wrapper-components';
 import * as textWidgetVariants from './text-widget-variants';
 
 const styles = {
@@ -55,4 +60,24 @@ export const SelectWidget = (ps) => {
             }
         </InlineWrapper>
     );
+}
+
+export const CheckboxWidget = (ps) => {
+    var { label, value } = ps;
+    return (
+        <InlineWrapper>
+            <div className='d-flex'>
+                <div>
+                    {
+                        value
+                        ? <CheckSquare />
+                        : <Square />
+                    }
+                </div>
+                <span className='pl-2 align-middle'>
+                    { label }
+                </span>
+            </div>
+        </InlineWrapper>
+    )
 }

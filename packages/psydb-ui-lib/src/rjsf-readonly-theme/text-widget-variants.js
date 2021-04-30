@@ -1,5 +1,6 @@
 import React from 'react';
 import { InlineWrapper } from './wrapper-components';
+import datefns from '../date-fns';
 
 const styles = {
     bold: { fontWeight: '500' }
@@ -18,9 +19,11 @@ export const ForeignId = ({
     formContext,
 }) => {
     if (!recordId) {
-        <i className='text-muted'>
-            Nicht gewählt
-        </i>
+        <InlineWrapper label={ label }>
+            <i className='text-muted'>
+                Nicht gewählt
+            </i>
+        </InlineWrapper>
     }
     
     var { systemProps } = schema;
@@ -52,4 +55,55 @@ export const ForeignId = ({
             </InlineWrapper>
         )
     )
+}
+
+export const HelperSetItemId = ({
+    label,
+    value: itemKey,
+    schema,
+    formContext,
+}) => {
+    if (!itemKey) {
+        <InlineWrapper label={ label }>
+            <i className='text-muted'>
+                Nicht gewählt
+            </i>
+        </InlineWrapper>
+    }
+
+    var { systemProps } = schema;
+    var { set } = systemProps;
+
+    var { relatedHelperSetItems } = formContext;
+   
+    var item;
+    if (relatedHelperSetItems) {
+        item = relatedHelperSetItems[set][itemKey]
+    }
+
+    return (
+        <InlineWrapper label={ label }>
+            {
+                item
+                ? (
+                    <b style={ styles.bold }>{ item.state.label }</b>
+                )
+                : (
+                    <b style={ styles.bold } className='text-danger'>
+                        { itemKey }
+                    </b>
+                )
+            }
+        </InlineWrapper>
+    )
+}
+
+export const DateTime = ({ label, value, schema }) => {
+    return (
+        <InlineWrapper label={ label }>
+            <b style={ styles.bold }>{
+                datefns.format(new Date(value), 'P p')
+            }</b>
+        </InlineWrapper>
+    );
 }

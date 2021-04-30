@@ -6,7 +6,7 @@ export const Plain = ({
     schema,
     ...other
 }) => {
-    console.log(other);
+    //console.log(other);
     return (
         <>
             { properties.map((element, index) => {
