@@ -8,8 +8,10 @@ import agent from '@mpieva/psydb-ui-request-agents';
 
 import { withTheme } from '@mpieva/rjsf-monkey-patch';
 import RJSFCustomTheme from './rjsf-theme';
+import RJSFReadonlyTheme from './rjsf-readonly-theme';
 
-var SchemaForm = withTheme(RJSFCustomTheme);
+var SchemaForm = withTheme(RJSFReadonlyTheme);
+//var SchemaForm = withTheme(RJSFCustomTheme);
 
 const GenericRecordForm = ({
     type,

@@ -21,7 +21,7 @@ var SystemRoleState = ({
             }),
 
             hasResearchGroupAdminAccess: DefaultBool({
-                title: 'hat Forschungsgruppen-Administrator Berechtigungen',
+                title: 'ist Administrator der Forschungsgruppe',
                 description: inline`
                     grants full access to database records of
                     the research groups the user belongs to;

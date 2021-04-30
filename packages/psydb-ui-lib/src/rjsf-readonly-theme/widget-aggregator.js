@@ -16,7 +16,7 @@ const WidgetAggregator = (type) => {
             return null;
         }
 
-        const Widget = widgets[type] || Bootstrap4Theme.widgets[type];
+        const Widget = widgets[type] || widgets.TextWidget;
         return (
             <Widget { ...ps } />
         )

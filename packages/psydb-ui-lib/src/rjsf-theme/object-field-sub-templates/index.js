@@ -41,8 +41,6 @@ export const Address = (ps) => {
         affix,
     ] = properties;
 
-    console.log(country)
-
     return (
         <InlineWrapper { ...({
             id, schema, rawErrors,
