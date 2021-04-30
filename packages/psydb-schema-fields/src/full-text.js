@@ -23,8 +23,6 @@ var FullText = ({
             : []
         ),
     ],
-    
-    'ui:widget': 'textarea',
     ...additionalKeywords,
 });
 

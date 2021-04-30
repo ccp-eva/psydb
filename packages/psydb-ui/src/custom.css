@@ -24,6 +24,10 @@
     box-shadow: none !important;
 }
 
+.form-control:focus {
+    border-color: #779799!important;
+}
+
 .btn-primary {
     background-color: #006066!important;
     border-color: #006066!important;

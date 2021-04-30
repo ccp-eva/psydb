@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 
 import { Form } from 'react-bootstrap';
 import { utils } from "@rjsf/core";
-import { InlineWrapper } from '../utility-components';
+import * as wrappers from '../utility-components/wrappers';
 
 const { asNumber, guessType } = utils;
 
@@ -81,8 +81,18 @@ const SelectWidget = (ps) => {
         label = label || baseSchema.title || '';   
     }
 
+    var {
+        systemType,
+        systemProps = {}
+    } = schema;
+
+    var Wrapper = wrappers[systemProps.uiWrapper];
+    if (!Wrapper) {
+        Wrapper = wrappers.InlineWrapper;
+    }
+    
     return (
-        <InlineWrapper { ...({
+        <Wrapper { ...({
             id, label, required, schema, rawErrors
         }) }>
             <Form.Control
@@ -119,7 +129,7 @@ const SelectWidget = (ps) => {
                     );
                 })}
             </Form.Control>
-        </InlineWrapper>
+        </Wrapper>
     );
 };
 

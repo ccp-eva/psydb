@@ -11,17 +11,26 @@ var {
 var ResearchGroupState = ({} = {}) => {
     var schema = ExactObject({
         properties: {
-            name: SaneString(),
-            shorthand: SaneString({ minLength: 2 }),
+            name: SaneString({
+                title: 'Bezeichnung',
+                minLength: 1
+            }),
+            shorthand: SaneString({
+                title: 'Kürzel',
+                minLength: 1
+            }),
             address: Address({
+                title: 'Adresse',
                 required: []
             }),
-            description: FullText(),
+            description: FullText({
+                title: 'Beschreibung',
+            }),
             // TODO: permissions????
             // should they be readable to all?
             // and writable only to root accounts?
             // or normal read/write by researchgroup?
-            //
+            // => readable to all writable to root
         },
         required: [
             'name',

@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { Form } from 'react-bootstrap';
 
-import { InlineWrapper } from '../utility-components';
+import * as wrappers from '../utility-components/wrappers';
 import * as variants from './text-widget-variants';
 
 const TextWidget = (ps) => {
@@ -20,11 +20,21 @@ const TextWidget = (ps) => {
         rawErrors = [],
     } = ps;
    
-    var { systemType } = schema;
+    var {
+        systemType,
+        systemProps = {}
+    } = schema;
+
     var Variant = variants[systemType];
     if (!Variant) {
         Variant = variants.PlainText;
     }
+
+    var Wrapper = wrappers[systemProps.uiWrapper];
+    if (!Wrapper) {
+        Wrapper = wrappers.InlineWrapper;
+    }
+    
 
     var hasErrors = rawErrors.length > 0;
     var inputType = (
@@ -46,7 +56,7 @@ const TextWidget = (ps) => {
     }, [ onChange ])
 
     return (
-        <InlineWrapper { ...({
+        <Wrapper { ...({
             id, label, required, schema, rawErrors
         }) }>
             <Variant
@@ -61,7 +71,7 @@ const TextWidget = (ps) => {
                 schema={ schema }
                 formContext={ formContext }
             />
-        </InlineWrapper>
+        </Wrapper>
     );
 
 }
