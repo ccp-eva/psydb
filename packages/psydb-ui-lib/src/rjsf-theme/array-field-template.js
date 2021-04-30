@@ -192,7 +192,7 @@ const Plain = (ps) => {
                         marginBottom: '33px'
                     }}>
                         <div className='text-muted' style={{ paddingLeft: '15px' }}>
-                            Keine Einträge
+                            <i>Keine Einträge</i>
                         </div>
                         <AddButtonWrapper>
                             <AddButton onClick={ onAddClick }>

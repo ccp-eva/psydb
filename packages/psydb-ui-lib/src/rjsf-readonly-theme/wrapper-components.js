@@ -15,7 +15,7 @@ const styles = {
 }
 
 export const InlineWrapper = (ps) => {
-    var { label, children } = ps;
+    var { label, children, valueStyle } = ps;
     return (
         <div className='row mr-0 ml-0'>
             <header className='col-sm-3'>
@@ -24,7 +24,7 @@ export const InlineWrapper = (ps) => {
                 </div>
             </header>
             <div className='col-sm-9 p-0'>
-                <div style={ styles.value }>
+                <div style={ valueStyle || styles.value }>
                     { children }
                 </div>
             </div>

@@ -4,7 +4,7 @@ import { Theme as Bootstrap4Theme } from '@rjsf/bootstrap-4';
 import ObjectFieldTemplate from './object-field-template';
 import ArrayFieldTemplate from './array-field-template';
 
-//import MultiSchemaField from './multi-schema-field';
+import MultiSchemaField from './multi-schema-field';
 import allWidgets from './widget-aggregator';
 
 var CustomTheme = {
@@ -14,7 +14,7 @@ var CustomTheme = {
     widgets: allWidgets,
     fields: {
         ...Bootstrap4Theme.fields,
-        //OneOfField: MultiSchemaField
+        OneOfField: MultiSchemaField
     }
 }
 

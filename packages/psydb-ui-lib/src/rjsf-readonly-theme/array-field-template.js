@@ -1,4 +1,13 @@
 import React, { useState, useEffect, useReducer } from 'react';
+import { InlineWrapper } from './wrapper-components';
+
+var styles = {
+    wrapper: {},
+    list: {},
+    item: {
+        borderLeft: '3px solid #dee2e6'
+    }
+}
 
 const ArrayFieldTemplate = (ps) => {
     var {
@@ -14,13 +23,18 @@ const ArrayFieldTemplate = (ps) => {
         Variant = subTemplates.Plain
     }*/
 
+    if (!items || items.length < 1) {
+        return (
+            <InlineWrapper label={ title }>
+                <i className='text-muted'>Keine Einträge</i>
+            </InlineWrapper>
+        )
+    }
+
     return (
         //<Variant { ...ps } />
-        <div className='row mr-0 ml-0'>
-            <header className='col-sm-3'>
-                { title }
-            </header>
-            <div className='col-sm-9 p-0'>
+        <InlineWrapper label={ title } valueStyle={ styles.wrapper }>
+            <ol className='mb-0' style={ styles.list }>
                 { items.map(itemProps => (
                     <ArrayItem { ...({
                         ...itemProps,
@@ -28,8 +42,8 @@ const ArrayFieldTemplate = (ps) => {
                         formData,
                     })} />
                 ))}
-            </div>
-        </div>
+            </ol>
+        </InlineWrapper>
     )
 }
 
@@ -37,9 +51,11 @@ const ArrayItem = ({
     children
 }) => {
     return (
-        <>
-            { children }
-        </>
+        <li className='mb-2 pl-2'>
+            <div style={ styles.item }>
+                { children }
+            </div>
+        </li>
     );
 }
 
