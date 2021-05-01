@@ -68,7 +68,7 @@ export const CheckboxWidget = (ps) => {
     var { label, value } = ps;
     return (
         <InlineWrapper>
-            <div className='d-flex'>
+            <div className='@rjsf-checkbox-widget d-flex'>
                 <div>
                     {
                         value

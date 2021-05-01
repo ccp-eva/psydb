@@ -351,6 +351,8 @@ class ArrayField extends Component {
                     autofocus: autofocus && index === 0,
                     onBlur,
                     onFocus,
+
+                    maxIndex: formData.length - 1,
                 });
             }),
             className: `field field-array field-array-of-${itemsSchema.type}`,
@@ -547,6 +549,8 @@ class ArrayField extends Component {
                     autofocus: autofocus && index === 0,
                     onBlur,
                     onFocus,
+
+                    maxIndex: formData.length - 1,
                 });
             }),
             onAddClick: this.onAddClick,
@@ -588,6 +592,8 @@ class ArrayField extends Component {
             onBlur,
             onFocus,
             rawErrors,
+
+            maxIndex,
         } = props;
         const {
             disabled,
@@ -630,6 +636,7 @@ class ArrayField extends Component {
                     rawErrors={rawErrors}
 
                     isArrayItem={ true }
+                    maxIndex={ maxIndex }
                 />
             ),
             className: "array-item",

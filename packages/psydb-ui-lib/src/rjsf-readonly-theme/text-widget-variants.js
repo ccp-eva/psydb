@@ -62,42 +62,55 @@ export const HelperSetItemId = ({
     value: itemKey,
     schema,
     formContext,
+    isArrayItem,
+    index,
+    maxIndex,
     ...other
 }) => {
-    console.log('other', other);
-    if (!itemKey) {
-        <InlineWrapper label={ label }>
+    console.log('HELPERSETITEM')
+    console.log(other);
+
+    var renderedTextValue = undefined;
+    if (itemKey) {
+        var { systemProps } = schema;
+        var { set } = systemProps;
+
+        var { relatedHelperSetItems } = formContext;
+
+        var item;
+        if (relatedHelperSetItems) {
+            item = relatedHelperSetItems[set][itemKey]
+        }
+
+        renderedTextValue = (
+            <b style={ styles.bold } className={ item ? '' : 'text-danger'}>
+                { item ? item.state.label : itemKey }
+            </b>
+        )
+    }
+    else {
+        renderedTextValue = (
             <i className='text-muted'>
                 Nicht gewählt
             </i>
-        </InlineWrapper>
+        )
     }
 
-    var { systemProps } = schema;
-    var { set } = systemProps;
-
-    var { relatedHelperSetItems } = formContext;
-   
-    var item;
-    if (relatedHelperSetItems) {
-        item = relatedHelperSetItems[set][itemKey]
+    if (isArrayItem) {
+        return (
+            <span>
+                { renderedTextValue }
+                { index < maxIndex ? ', ' : ''}
+            </span>
+        );
     }
-
-    return (
-        <InlineWrapper label={ label }>
-            {
-                item
-                ? (
-                    <b style={ styles.bold }>{ item.state.label }</b>
-                )
-                : (
-                    <b style={ styles.bold } className='text-danger'>
-                        { itemKey }
-                    </b>
-                )
-            }
-        </InlineWrapper>
-    )
+    else {
+        return (
+            <InlineWrapper label={ label }>
+                { wrappedTextValue }
+            </InlineWrapper>
+        )
+    }
 }
 
 export const DateTime = ({ label, value, schema }) => {

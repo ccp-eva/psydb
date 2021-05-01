@@ -34,11 +34,18 @@ const ArrayFieldTemplate = (ps) => {
     console.log(schema.items);
     if (schema.items && schema.items.type !== 'object') {
         // TODO: garble garble garble
-        return <div>
-            { items.map(itemProps => (
-                <div key={ itemProps.key }>{ itemProps.children }</div>
-            ))}
-        </div>
+        return (
+            <InlineWrapper label={ title }>
+                { items.map(itemProps => (
+                    /*<div key={ itemProps.key }>
+                        { itemProps.children }
+                    </div>*/
+                    <React.Fragment key={ itemProps.key }>
+                        { itemProps.children }
+                    </React.Fragment>
+                ))}
+            </InlineWrapper>
+        )
     }
 
     return (
