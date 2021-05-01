@@ -31,15 +31,12 @@ const ArrayFieldTemplate = (ps) => {
         )
     }
 
-    console.log(schema.items);
+    //console.log(schema.items);
     if (schema.items && schema.items.type !== 'object') {
         // TODO: garble garble garble
         return (
             <InlineWrapper label={ title }>
                 { items.map(itemProps => (
-                    /*<div key={ itemProps.key }>
-                        { itemProps.children }
-                    </div>*/
                     <React.Fragment key={ itemProps.key }>
                         { itemProps.children }
                     </React.Fragment>

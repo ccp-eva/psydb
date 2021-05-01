@@ -45,17 +45,21 @@ class AnyOfField extends Component {
     }
   }
 
-  getMatchingOption(formData, options) {
-    const { rootSchema } = this.props.registry;
+    getMatchingOption(formData, options) {
+        const { rootSchema } = this.props.registry;
 
-    let option = getMatchingOption(formData, options, rootSchema);
-    if (option !== 0) {
-      return option;
+        console.log('AAAAAAAAAAAAA');
+        let option = getMatchingOption(formData, options, rootSchema);
+        console.log(formData);
+        console.log(options);
+        console.log(option);
+        if (option !== 0) {
+            return option;
+        }
+        // If the form data matches none of the options, use the currently selected
+        // option, assuming it's available; otherwise use the first option
+        return this && this.state ? this.state.selectedOption : 0;
     }
-    // If the form data matches none of the options, use the currently selected
-    // option, assuming it's available; otherwise use the first option
-    return this && this.state ? this.state.selectedOption : 0;
-  }
 
   onOptionChange = option => {
     const selectedOption = parseInt(option, 10);

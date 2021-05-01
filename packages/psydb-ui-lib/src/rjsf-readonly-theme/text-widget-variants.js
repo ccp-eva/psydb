@@ -67,9 +67,6 @@ export const HelperSetItemId = ({
     maxIndex,
     ...other
 }) => {
-    console.log('HELPERSETITEM')
-    console.log(other);
-
     var renderedTextValue = undefined;
     if (itemKey) {
         var { systemProps } = schema;
