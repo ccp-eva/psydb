@@ -31,6 +31,16 @@ const ArrayFieldTemplate = (ps) => {
         )
     }
 
+    console.log(schema.items);
+    if (schema.items && schema.items.type !== 'object') {
+        // TODO: garble garble garble
+        return <div>
+            { items.map(itemProps => (
+                <div key={ itemProps.key }>{ itemProps.children }</div>
+            ))}
+        </div>
+    }
+
     return (
         //<Variant { ...ps } />
         <InlineWrapper label={ title }>

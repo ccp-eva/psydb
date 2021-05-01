@@ -38,8 +38,10 @@ export const SelectWidget = (ps) => {
         isMultiSchemaSelector,
         baseSchema,
     } = ps;
+
+
     var { enumOptions } = options;
-    var selectedOption = enumOptions[0];
+    var selectedOption = enumOptions.find(it => it.value === value);
 
     if (isMultiSchemaSelector) {
         label = label || baseSchema.title || '';   

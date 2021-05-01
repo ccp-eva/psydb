@@ -62,7 +62,9 @@ export const HelperSetItemId = ({
     value: itemKey,
     schema,
     formContext,
+    ...other
 }) => {
+    console.log('other', other);
     if (!itemKey) {
         <InlineWrapper label={ label }>
             <i className='text-muted'>
