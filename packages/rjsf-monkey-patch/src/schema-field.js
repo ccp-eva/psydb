@@ -1,9 +1,8 @@
-import IconButton from "../IconButton";
 import React from "react";
-import PropTypes from "prop-types";
-import * as types from "../../types";
+//import IconButton from "../IconButton";
 
-import {
+import { utils } from '@rjsf/core';
+const {
     ADDITIONAL_PROPERTY_FLAG,
     isSelect,
     retrieveSchema,
@@ -13,7 +12,7 @@ import {
     deepEquals,
     getSchemaType,
     getDisplayLabel,
-} from "../../utils";
+} = utils;
 
 const REQUIRED_FIELD_SYMBOL = "*";
 const COMPONENT_TYPES = {
@@ -143,26 +142,6 @@ function DefaultTemplate(props) {
         </WrapIfAdditional>
     );
 }
-if (process.env.NODE_ENV !== "production") {
-    DefaultTemplate.propTypes = {
-        id: PropTypes.string,
-        classNames: PropTypes.string,
-        label: PropTypes.string,
-        children: PropTypes.node.isRequired,
-        errors: PropTypes.element,
-        rawErrors: PropTypes.arrayOf(PropTypes.string),
-        help: PropTypes.element,
-        rawHelp: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
-        description: PropTypes.element,
-        rawDescription: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
-        hidden: PropTypes.bool,
-        required: PropTypes.bool,
-        readonly: PropTypes.bool,
-        displayLabel: PropTypes.bool,
-        fields: PropTypes.object,
-        formContext: PropTypes.object,
-    };
-}
 
 DefaultTemplate.defaultProps = {
     hidden: false,
@@ -207,6 +186,7 @@ function WrapIfAdditional(props) {
                 <div className="form-additional form-group col-xs-5">
                     {props.children}
                 </div>
+                {/*
                 <div className="col-xs-2">
                     <IconButton
                         type="danger"
@@ -218,6 +198,7 @@ function WrapIfAdditional(props) {
                         onClick={onDropPropertyClick(label)}
                     />
                 </div>
+                */}
             </div>
         </div>
     );
@@ -264,10 +245,15 @@ function SchemaFieldRender(props) {
 
     const { __errors, ...fieldErrorSchema } = errorSchema;
 
+    //if (props.isArrayItem) {
+    //    console.log('SCHEMA_FiELD')
+    //    console.log(props);
+    //    console.log(FieldComponent)
+    //}
     // See #439: uiSchema: Don't pass consumed class names to child components
     const field = (
         <FieldComponent
-            {...props}
+            { ...props }
             idSchema={idSchema}
             schema={schema}
             uiSchema={{ ...uiSchema, classNames: undefined }}
@@ -414,16 +400,5 @@ SchemaField.defaultProps = {
     readonly: false,
     autofocus: false,
 };
-
-if (process.env.NODE_ENV !== "production") {
-    SchemaField.propTypes = {
-        schema: PropTypes.object.isRequired,
-        uiSchema: PropTypes.object,
-        idSchema: PropTypes.object,
-        formData: PropTypes.any,
-        errorSchema: PropTypes.object,
-        registry: types.registry.isRequired,
-    };
-}
 
 export default SchemaField;

@@ -1,14 +1,14 @@
-import AddButton from "../AddButton";
 import React, { Component } from "react";
-import * as types from "../../types";
+//import AddButton from "../AddButton";
 
-import {
+import { utils } from '@rjsf/core';
+const {
     orderProperties,
     retrieveSchema,
     getDefaultRegistry,
     canExpand,
     ADDITIONAL_PROPERTY_FLAG,
-} from "../../utils";
+} = utils;
 
 function DefaultObjectFieldTemplate(props) {
     const { TitleField, DescriptionField } = props;
@@ -30,13 +30,13 @@ function DefaultObjectFieldTemplate(props) {
                 />
             )}
             {props.properties.map(prop => prop.content)}
-            {canExpand(props.schema, props.uiSchema, props.formData) && (
+            {/*canExpand(props.schema, props.uiSchema, props.formData) && (
                 <AddButton
                     className="object-property-expand"
                     onClick={props.onAddClick(props.schema)}
                     disabled={props.disabled || props.readonly}
                 />
-            )}
+            )*/}
         </fieldset>
     );
 }
@@ -220,6 +220,11 @@ class ObjectField extends Component {
             registry.ObjectFieldTemplate ||
             DefaultObjectFieldTemplate;
 
+        //if (this.props.isArrayItem) {
+        //    console.log('OBJECTFIELD')
+        //    console.log(this.props);
+        //}
+
         const templateProps = {
             title: uiSchema["ui:title"] || title,
             description,
@@ -232,6 +237,9 @@ class ObjectField extends Component {
                 return {
                     content: (
                         <SchemaField
+                            // patched
+                            { ...this.props}
+                            //
                             key={name}
                             name={name}
                             required={this.isRequired(name)}
@@ -276,10 +284,6 @@ class ObjectField extends Component {
         };
         return <Template {...templateProps} onAddClick={this.handleAddClick} />;
     }
-}
-
-if (process.env.NODE_ENV !== "production") {
-    ObjectField.propTypes = types.fieldProps;
 }
 
 export default ObjectField;
