@@ -20,6 +20,7 @@ var fetchRelatedLabels = async ({
 
     //console.dir(schema, { depth: null });
     //console.dir(data, { depth: null });
+    //console.dir(foreignIdRelationData, { depth: null });
     //console.dir(helperSetItemIdRelationData, { depth: null });
     //throw new Error();
 

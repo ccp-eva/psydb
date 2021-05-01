@@ -33,7 +33,7 @@ const ArrayFieldTemplate = (ps) => {
 
     return (
         //<Variant { ...ps } />
-        <InlineWrapper label={ title } valueStyle={ styles.wrapper }>
+        <InlineWrapper label={ title }>
             <ol className='mb-0' style={ styles.list }>
                 { items.map(itemProps => (
                     <ArrayItem { ...({

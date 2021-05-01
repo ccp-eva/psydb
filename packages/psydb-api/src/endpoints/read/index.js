@@ -12,9 +12,7 @@ var createSchemaForRecord =
 var fetchOneCustomRecordType = require('@mpieva/psydb-api-lib/src/fetch-one-custom-record-type');
 var fetchRecordById = require('@mpieva/psydb-api-lib/src/fetch-record-by-id');
 
-var resolveForeignIdData = require('./resolve-foreign-id-data');
-
-var fetchRelatedRecords = require('./fetch-related-records');
+var fetchRelatedLabels = require('@mpieva/psydb-api-lib/src/fetch-related-labels');
 
 
 var read = async (context, next) => {
@@ -89,26 +87,20 @@ var read = async (context, next) => {
         fullSchema: true
     });
 
-    //console.dir(recordSchema, { depth: null });
-    
-    var foreignIdData = resolveForeignIdData({
-        schema: recordSchema,
-        data: record,
-    });
-
-    //console.log(foreignIdData);
-
-    var relatedRecordLabels = await fetchRelatedRecords({
+    var {
+        relatedRecords,
+        relatedHelperSetItems
+    } = await fetchRelatedLabels({
         db,
-        foreignIdData,
-        labelOnly: true
+        data: record,
+        schema: recordSchema,
     });
 
     context.body = ResponseBody({
         data: {
-            //recordSchema,
             record,
-            relatedRecordLabels,
+            relatedRecordLabels: relatedRecords,
+            relatedHelperSetItems
         }
     });
 

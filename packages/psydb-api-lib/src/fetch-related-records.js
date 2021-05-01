@@ -66,7 +66,7 @@ var fetchRelatedRecords = async ({
             }},
             { $match: {
                 _id: { $in: (
-                    collectionGroups[collectionName].map(it => it.id)
+                    collectionGroups[collectionName].map(it => it.value)
                 )}
             }},
             /*{ $addFields: {
@@ -108,7 +108,7 @@ var fetchRelatedRecords = async ({
 
                 return {
                     _id: record._id,
-                    recordLabel,
+                    _recordLabel: recordLabel,
                 };
             });
         }

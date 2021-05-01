@@ -10,6 +10,10 @@ var fetchRelatedHelperSetItems = async ({
     helperSetItemIdRelationData,
 }) => {
 
+    if (helperSetItemIdRelationData.length < 1) {
+        return {};
+    }
+
     var matchSetGroups = groupBy({
         items: helperSetItemIdRelationData,
         byProp: 'set',
