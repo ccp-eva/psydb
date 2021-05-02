@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useReducer } from 'react';
 import { Theme as Bootstrap4Theme } from '@rjsf/bootstrap-4';
 
+import MultiSchemaField from '@mpieva/rjsf-monkey-patch/src/multi-schema-field';
 import ObjectFieldTemplate from './object-field-template';
 import ArrayFieldTemplate from './array-field-template';
 
-import MultiSchemaField from './multi-schema-field';
 import allWidgets from './widget-aggregator';
 
 //console.log(Bootstrap4Theme.fields);

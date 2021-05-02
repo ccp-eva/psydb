@@ -17,44 +17,52 @@ export const ForeignId = ({
     value: recordId,
     schema,
     formContext,
+
+    isArrayItem,
+    index,
+    maxIndex,
 }) => {
-    if (!recordId) {
-        <InlineWrapper label={ label }>
+    var renderedTextValue = undefined;
+    if (recordId) {
+        var { systemProps } = schema;
+        var { collection, recordType, constraints } = systemProps;
+
+        var { relatedRecordLabels } = formContext;
+        var record;
+        if (relatedRecordLabels) {
+            record = relatedRecordLabels[collection][recordId]
+        }
+
+        renderedTextValue = (
+            <b style={ styles.bold } className={ record ? '' : 'text-danger'}>
+                { record ? record._recordLabel : recordId }
+            </b>
+        )
+    }
+    else {
+        renderedTextValue = (
             <i className='text-muted'>
                 Nicht gewählt
             </i>
-        </InlineWrapper>
-    }
-    
-    var { systemProps } = schema;
-    var { collection, recordType, constraints } = systemProps;
-
-    var { relatedRecordLabels } = formContext;
-    var record;
-    if (relatedRecordLabels) {
-        record = relatedRecordLabels[collection][recordId]
+        )
     }
 
-    if (recordId && !record) {
-        // create erroneous record
-        record = { _id: recordId };
+    if (isArrayItem) {
+        return (
+            <span>
+                { renderedTextValue }
+                { index < maxIndex ? ', ' : ''}
+            </span>
+        );
     }
-
-    return (
-        record._recordLabel
-        ? (
+    else {
+        return (
             <InlineWrapper label={ label }>
-                <b style={ styles.bold }>{ record._recordLabel }</b>
+                { renderedTextValue }
             </InlineWrapper>
         )
-        : (
-            <InlineWrapper label={ label }>
-                <b className='text-danger' style={ styles.bold }>
-                    { recordId }
-                </b>
-            </InlineWrapper>
-        )
-    )
+    }
+
 }
 
 export const HelperSetItemId = ({
@@ -104,10 +112,11 @@ export const HelperSetItemId = ({
     else {
         return (
             <InlineWrapper label={ label }>
-                { wrappedTextValue }
+                { renderedTextValue }
             </InlineWrapper>
         )
     }
+
 }
 
 export const DateTime = ({ label, value, schema }) => {
