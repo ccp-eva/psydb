@@ -1,4 +1,5 @@
 import React from 'react';
+import { FormattedDuration } from '@mpieva/psydb-common-lib/src/durations';
 import { InlineWrapper } from './wrapper-components';
 import datefns from '../date-fns';
 
@@ -125,6 +126,16 @@ export const DateTime = ({ label, value, schema }) => {
             <b style={ styles.bold }>{
                 datefns.format(new Date(value), 'P p')
             }</b>
+        </InlineWrapper>
+    );
+}
+
+export const Time = ({ label, value, schema }) => {
+    return (
+        <InlineWrapper label={ label }>
+            <b style={ styles.bold }>
+                { FormattedDuration(value, { resolution: 'MINUTE' }) }
+            </b>
         </InlineWrapper>
     );
 }

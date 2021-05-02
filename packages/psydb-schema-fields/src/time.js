@@ -1,12 +1,12 @@
 'use strict';
 var Time = ({
-    description,
     minimum,
+    ...additionalKeywords
 } = {}) => ({
     systemType: 'Time',
     type: 'integer',
-    ...(minimum ? { minimum } : {}),
-    ...(description ? { description } : {}),
+    minimum: minimum || 0,
+    ...additionalKeywords,
 });
 
 module.exports = Time;

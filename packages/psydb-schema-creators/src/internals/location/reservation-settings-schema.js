@@ -6,6 +6,7 @@ var {
     ForeignId,
     DateTimeInterval,
     TimeInterval,
+    Time,
 } = require('@mpieva/psydb-schema-fields');
 
 var reservationSettingsSchema = {
@@ -33,34 +34,25 @@ var reservationSettingsSchema = {
                     default: true, // because rjsf
                 },
                 
-                canBeReservedByResearchGroupIds: {
+                /*canBeReservedByResearchGroupIds: {
                     title: 'Reservierbar durch Forschungsgruppen',
                     type: 'array',
                     default: [],
                     items: ForeignId({
                         collection: 'researchGroup'
                     }),
-                },
-
-                /*disabledForReservationIntervals: {
-                    title: 'Nicht reservierbar im Zeitraum',
-                    description: 'zum Beispiel bei Bauarbeiten',
-                    type: 'array',
-                    default: [],
-                    items: DateTimeInterval(),
                 },*/
 
                 possibleReservationTimeInterval: TimeInterval({
                     title: 'Reserverierbarer Zetraum pro Tag',
                 }),
 
-                reservationSlotDuration: {
+                reservationSlotDuration: Time({
                     title: 'Länge der Reservierungs-Slots',
-                    type: 'integer',
                     minimum: 15*60*1000, // 15 minutes
                     maximum: 4*60*60*1000, // 4 hours (arbitrary)
                     multipleOf: 15*60*1000, // 15 minutes
-                },
+                }),
                 
                 timezone: {
                     title: 'Zeitzone',
@@ -71,7 +63,7 @@ var reservationSettingsSchema = {
             },
             required: [
                 'canBeReserved',
-                'canBeReservedByResearchGroupIds',
+                //'canBeReservedByResearchGroupIds',
                 //'disabledForReservationIntervals',
                 'possibleReservationTimeInterval',
                 'reservationSlotDuration',
