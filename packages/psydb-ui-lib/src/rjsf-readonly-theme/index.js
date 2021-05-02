@@ -5,11 +5,11 @@ import ArrayField from '@mpieva/rjsf-monkey-patch/src/array-field';
 import SchemaField from '@mpieva/rjsf-monkey-patch/src/schema-field';
 import ObjectField from '@mpieva/rjsf-monkey-patch/src/object-field';
 import StringField from '@mpieva/rjsf-monkey-patch/src/string-field';
+import MultiSchemaField from '@mpieva/rjsf-monkey-patch/src/multi-schema-field';
 
 import ObjectFieldTemplate from './object-field-template';
 import ArrayFieldTemplate from './array-field-template';
 
-import MultiSchemaField from './multi-schema-field';
 import allWidgets from './widget-aggregator';
 
 var CustomTheme = {

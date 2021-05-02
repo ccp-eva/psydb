@@ -3,8 +3,7 @@
 import React, { Component } from "react";
 //import PropTypes from "prop-types";
 //import * as types from "../../types";
-import { utils } from "@rjsf/core";
-var {
+import {
   getUiOptions,
   getWidget,
   guessType,
@@ -12,7 +11,7 @@ var {
   getDefaultFormState,
   getMatchingOption,
   deepEquals,
-} = utils;
+} from './utils';
 
 class AnyOfField extends Component {
   constructor(props) {
@@ -48,11 +47,11 @@ class AnyOfField extends Component {
     getMatchingOption(formData, options) {
         const { rootSchema } = this.props.registry;
 
-        console.log('AAAAAAAAAAAAA');
+        //console.log('AAAAAAAAAAAAA');
         let option = getMatchingOption(formData, options, rootSchema);
-        console.log(formData);
-        console.log(options);
-        console.log(option);
+        //console.log(formData);
+        //console.log(options);
+        //console.log(option);
         if (option !== 0) {
             return option;
         }

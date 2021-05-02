@@ -1,11 +1,17 @@
 import React from "react";
-import * as ReactIs from "react-is";
+import { utils as originalRJSFutils } from '@rjsf/core';
+
+import { isForwardRef, isMemo } from "react-is";
+const ReactIs = { isForwardRef, isMemo };
+
 import mergeAllOf from "json-schema-merge-allof";
-import fill from "core-js-pure/features/array/fill";
+//import fill from "core-js-pure/features/array/fill";
 import union from "lodash/union";
 import jsonpointer from "jsonpointer";
-import fields from "./components/fields";
-import widgets from "./components/widgets";
+//import fields from "./components/fields";
+//import widgets from "./components/widgets";
+
+// NOTE this is our modified validate
 import validateFormData, { isValid } from "./validate";
 
 export const ADDITIONAL_PROPERTY_FLAG = "__additional_property";
@@ -78,7 +84,8 @@ export function canExpand(schema, uiSchema, formData) {
     return true;
 }
 
-export function getDefaultRegistry() {
+export const getDefaultRegistry = originalRJSFutils.getDefaultRegistry;
+/*export function getDefaultRegistry() {
     return {
         fields,
         widgets,
@@ -86,7 +93,7 @@ export function getDefaultRegistry() {
         rootSchema: {},
         formContext: {},
     };
-}
+}*/
 
 /* Gets the type of a given schema. */
 export function getSchemaType(schema) {
@@ -282,9 +289,14 @@ function computeDefaults(
                         const fillerSchema = Array.isArray(schema.items)
                             ? schema.additionalItems
                             : schema.items;
-                        const fillerEntries = fill(
-                            new Array(schema.minItems - defaultsLength),
-                            computeDefaults(fillerSchema, fillerSchema.defaults, rootSchema)
+                        const fillerEntries = (
+                            new Array(schema.minItems - defaultsLength).fill(
+                                computeDefaults(
+                                    fillerSchema,
+                                    fillerSchema.defaults,
+                                    rootSchema
+                                )
+                            )
                         );
                         // then fill up the rest with either the item default or empty, up to minItems
 

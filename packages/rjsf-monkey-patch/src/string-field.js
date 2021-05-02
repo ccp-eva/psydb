@@ -1,14 +1,13 @@
 import React from "react";
 
-import { utils } from '@rjsf/core';
-const {
+import {
     getWidget,
     getUiOptions,
     isSelect,
     optionsList,
     getDefaultRegistry,
     hasWidget,
-} = utils;
+} from './utils';
 
 function StringField(props) {
     const {

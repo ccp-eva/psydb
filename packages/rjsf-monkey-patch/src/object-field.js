@@ -1,14 +1,13 @@
 import React, { Component } from "react";
 //import AddButton from "../AddButton";
 
-import { utils } from '@rjsf/core';
-const {
+import {
     orderProperties,
     retrieveSchema,
     getDefaultRegistry,
     canExpand,
     ADDITIONAL_PROPERTY_FLAG,
-} = utils;
+} from './utils';
 
 function DefaultObjectFieldTemplate(props) {
     const { TitleField, DescriptionField } = props;

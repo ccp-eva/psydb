@@ -65,6 +65,7 @@ dependencies:
   html-webpack-plugin: 5.1.0_webpack@5.10.1
   inflation: 2.0.0
   is-what: 3.14.1
+  json-schema-merge-allof: 0.8.1
   json-schema-traverse: 1.0.0
   jsonpointer: 4.1.0
   koa-body: 4.2.0
@@ -75,7 +76,6 @@ dependencies:
   mockdate: 3.0.5
   moment: 2.29.1
   mongodb-memory-server: 6.9.6
-  nanoid: 3.1.22
   pascal-case: 3.1.2
   raw-body: 2.4.1
   react: 17.0.2
@@ -83,6 +83,7 @@ dependencies:
   react-bootstrap-icons: 1.4.0_react@17.0.2
   react-datetime: 3.0.4_moment@2.29.1+react@17.0.2
   react-dom: 17.0.2_react@17.0.2
+  react-is: 17.0.2
   react-router: 5.2.0_react@17.0.2
   react-router-bootstrap: 0.25.0_520bc78b4ba4065e7cfe4fe506865769
   react-router-dom: 5.2.0_react@17.0.2
@@ -4102,6 +4103,16 @@ packages:
     dev: false
     resolution:
       integrity: sha512-LEw4VMQVRceOPLuGRWcxW5orTTiR9ZAtqTAe4rQUjNADTeR81bezBVFa0MqIwp0YmHIM1KkhSjZM7o+IQhaPbQ==
+  /json-schema-merge-allof/0.8.1:
+    dependencies:
+      compute-lcm: 1.1.2
+      json-schema-compare: 0.2.2
+      lodash: 4.17.21
+    dev: false
+    engines:
+      node: '>=12.0.0'
+    resolution:
+      integrity: sha512-CTUKmIlPJbsWfzRRnOXz+0MjIqvnleIXwFTzz+t9T86HnYX/Rozria6ZVGLktAU9e+NygNljveP+yxqtQp/Q4w==
   /json-schema-traverse/0.4.1:
     dev: false
     resolution:
@@ -5459,6 +5470,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
+  /react-is/17.0.2:
+    dev: false
+    resolution:
+      integrity: sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
   /react-lifecycles-compat/3.0.4:
     dev: false
     resolution:
@@ -7546,14 +7561,18 @@ packages:
       ajv: 6.12.6
       ajv-keywords: 3.5.2_ajv@6.12.6
       chai: 4.2.0
+      json-schema-merge-allof: 0.8.1
+      jsonpointer: 4.1.0
       lodash: 4.17.21
       lodash-es: 4.17.21
       mocha: 8.1.3
+      nanoid: 3.1.22
       react: 17.0.2
+      react-is: 17.0.2
     dev: false
     name: '@rush-temp/rjsf-monkey-patch'
     resolution:
-      integrity: sha512-hktqOYues/DW11Db/7fscMsNzkXAs+x1E1vJ7DHqu94XomhK1qaE/oZPKklkeQAchJcluWAA2pUBjgkrR3p6qA==
+      integrity: sha512-jIKGNtcsjzsoPYu84y1pc724CpXj/gYMH3kDSlcm9yB9u9aXzWMa05AvwtwEQVx/cXQ5A6AN3I9YDmvuuCuTxg==
       tarball: 'file:projects/rjsf-monkey-patch.tgz'
     version: 0.0.0
 registry: ''
@@ -7624,6 +7643,7 @@ specifiers:
   html-webpack-plugin: 5.1.0
   inflation: ~2.0.0
   is-what: ~3.14.0
+  json-schema-merge-allof: ~0.8.1
   json-schema-traverse: ~1.0.0
   jsonpointer: ~4.1.0
   koa-body: ~4.2.0
@@ -7634,7 +7654,6 @@ specifiers:
   mockdate: ~3.0.2
   moment: ~2.29.1
   mongodb-memory-server: ~6.9.2
-  nanoid: ~3.1.20
   pascal-case: ~3.1.1
   raw-body: ~2.4.1
   react: ~17.0.1
@@ -7642,6 +7661,7 @@ specifiers:
   react-bootstrap-icons: ~1.4.0
   react-datetime: ~3.0.4
   react-dom: ~17.0.1
+  react-is: ~17.0.2
   react-router: ~5.2.0
   react-router-bootstrap: ~0.25.0
   react-router-dom: ~5.2.0

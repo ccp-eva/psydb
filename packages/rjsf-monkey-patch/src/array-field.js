@@ -2,8 +2,7 @@
 import React, { Component } from "react";
 import { nanoid } from "nanoid";
 
-import { utils } from '@rjsf/core';
-const {
+import {
     getWidget,
     getDefaultFormState,
     getUiOptions,
@@ -15,7 +14,7 @@ const {
     retrieveSchema,
     toIdSchema,
     getDefaultRegistry,
-} = utils;
+} from './utils';
 
 
 function generateRowId() {

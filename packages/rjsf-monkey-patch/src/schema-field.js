@@ -1,8 +1,7 @@
 import React from "react";
 //import IconButton from "../IconButton";
 
-import { utils } from '@rjsf/core';
-const {
+import {
     ADDITIONAL_PROPERTY_FLAG,
     isSelect,
     retrieveSchema,
@@ -12,7 +11,7 @@ const {
     deepEquals,
     getSchemaType,
     getDisplayLabel,
-} = utils;
+} from './utils';
 
 const REQUIRED_FIELD_SYMBOL = "*";
 const COMPONENT_TYPES = {
