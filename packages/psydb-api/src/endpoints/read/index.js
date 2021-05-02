@@ -84,7 +84,16 @@ var read = async (context, next) => {
         db,
         collectionName: collectionName,
         record,
-        fullSchema: true
+        fullSchema: true,
+        additionalSchemaCreatorArgs: {
+            // FIXME: so i kinda wanna disable it some of the times
+            // because we dont want to update them directly
+            // but there are instances where i need to read them
+            // so this is a bit inconsistent since with the metadata
+            // endpoint since we deliver data that is not in the
+            // schema retrieved from that endpoint
+            //enableInternalProps: false,
+        }
     });
 
     var {

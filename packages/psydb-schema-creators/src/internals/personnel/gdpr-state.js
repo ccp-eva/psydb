@@ -49,13 +49,13 @@ var PersonnelGdprState = ({ enableInternalProps } = {}) => {
             ...(enableInternalProps && {
                 internals: ExactObject({
                     properties: {
-                        passwordHash: {
+                        /*passwordHash: {
                             type: 'string',
                             default: '',
-                        },
+                        },*/
                     },
                     required: [
-                        'passwordHash'
+                        //'passwordHash'
                     ],
                 })
             })

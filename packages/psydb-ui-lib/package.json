@@ -41,7 +41,8 @@
     "react-datetime": "~3.0.4",
     "@mpieva/psydb-common-lib": "~0.1.0-alpha",
     "react-bootstrap-icons": "~1.4.0",
-    "@mpieva/rjsf-monkey-patch": "~0.1.0-alpha"
+    "@mpieva/rjsf-monkey-patch": "~0.1.0-alpha",
+    "@cdxoo/omit": "~1.0.1"
   },
   "config": {
     "mongodbMemoryServer": {

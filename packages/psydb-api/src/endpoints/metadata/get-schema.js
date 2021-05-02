@@ -37,6 +37,11 @@ var getSchema = async (context, next) => {
     }
 
     var additionalSchemaCreatorArgs = {
+        // FIXME: so i kinda wanna disable it some of the times
+        // because we dont want to update them directly
+        // but there are instances where i need to read them
+        // so this is a bit inconsistent since we actually
+        // get the internals data from reading the record
         enableInternalProps: false,
     };
     
@@ -45,9 +50,7 @@ var getSchema = async (context, next) => {
         collectionName: collectionName,
         recordType: recordType,
         fullSchema: true,
-        /*additionaSchemaCreatorArgs: {
-            enableInternalProps: false,
-        }*/ // FIXME: determine by request
+        additionalSchemaCreatorArgs,
     });
 
     context.body = ResponseBody({

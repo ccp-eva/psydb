@@ -26,6 +26,8 @@ var fetchRecordById = async ({
                 'scientific._lastKnownEventId': { $arrayElemAt: [ '$scientific.events._id', 0 ]},
             }},
             { $project: {
+                // FIXME: any way to not hardcode that?
+                'gdpr.internals.passwordHash': false,
                 'gdpr.events': false,
                 'scientific.events': false,
             }},

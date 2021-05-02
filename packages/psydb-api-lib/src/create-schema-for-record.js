@@ -14,14 +14,16 @@ var createSchemaForRecord = async ({
     record,
     subChannelKey,
     fullSchema,
-    prefetchedCustomRecordTypes
+    prefetchedCustomRecordTypes,
+    additionalSchemaCreatorArgs,
 }) => {
+    additionalSchemaCreatorArgs = additionalSchemaCreatorArgs || {};
 
-    var additionalSchemaCreatorArgs = undefined;
     switch (collectionName) {
         case 'customRecordType':
             additionalSchemaCreatorArgs = {
-                collection: record.collection
+                collection: record.collection,
+                ...additionalSchemaCreatorArgs,
             }
             break;
     }

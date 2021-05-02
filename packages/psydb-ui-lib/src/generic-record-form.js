@@ -3,6 +3,8 @@ import React, { useState, useEffect, useReducer, forwardRef } from 'react';
 import { Button } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 
+import jsonpointer from 'jsonpointer';
+
 import allSchemaCreators from '@mpieva/psydb-schema-creators';
 import agent from '@mpieva/psydb-ui-request-agents';
 
@@ -179,9 +181,29 @@ var reducer = (state, action) => {
     var { type, payload } = action;
     switch (type) {
         case 'init-data':
+            // FIXME: how to best remove additional stuff?
+            var record = payload.record;
+            if (record.state) {
+                delete record.state.internals;
+            }
+            if (record.gdpr) {
+                delete record.gdpr.state.internals;
+            }
+            if (record.scientific) {
+                delete record.scientific.state.internals;
+            }
+
+            // TODO: depends on wther the editing user is root themselves
+            // TODO: needs to be removed in the schema too
+            /*if (record.scientific) {
+                delete record.scientific.hasRootAccess;
+            }*/
+
+            console.log(record);
+
             return {
                 ...state,
-                record: payload.record,
+                record,
                 relatedRecordLabels: payload.relatedRecordLabels,
                 relatedHelperSetItems: payload.relatedHelperSetItems,
                 relatedCustomRecordTypeLabels: payload.relatedCustomRecordTypeLabels,
