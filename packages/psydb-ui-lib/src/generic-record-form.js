@@ -199,8 +199,6 @@ var reducer = (state, action) => {
                 delete record.scientific.hasRootAccess;
             }*/
 
-            console.log(record);
-
             return {
                 ...state,
                 record,

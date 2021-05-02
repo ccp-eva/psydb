@@ -50,7 +50,8 @@
     "react-bootstrap-icons": "~1.4.0",
     "jsonpointer": "~4.1.0",
     "date-fns": "~2.21.1",
-    "@babel/plugin-proposal-class-properties": "~7.13.0"
+    "@babel/plugin-proposal-class-properties": "~7.13.0",
+    "@mpieva/rjsf-monkey-patch": "~0.1.0-alpha"
   },
   "config": {
     "mongodbMemoryServer": {

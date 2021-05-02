@@ -6,13 +6,13 @@ import allSchemaCreators from '@mpieva/psydb-schema-creators';
 import agent from '@mpieva/psydb-ui-request-agents';
 
 import { withTheme } from '@mpieva/rjsf-monkey-patch';
-import RJSFReadonlyTheme from './rjsf-readonly-theme';
+import RJSFReadonlyTheme from '@mpieva/psydb-ui-lib/src/rjsf-readonly-theme';
 
-import LinkButton from './link-button';
+import LinkButton from '@mpieva/psydb-ui-lib/src/link-button';
 
 var SchemaForm = withTheme(RJSFReadonlyTheme);
 
-const GenericRecordDetails = ({
+const StudyRecordDetails = ({
     type,
     collection,
     recordType,
@@ -137,4 +137,4 @@ var reducer = (state, action) => {
     }
 }
 
-export default GenericRecordDetails;
+export default StudyRecordDetails;
