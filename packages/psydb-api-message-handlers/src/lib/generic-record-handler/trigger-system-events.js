@@ -2,6 +2,8 @@
 var parseRecordMessageType = require('./parse-record-message-type'),
     createRecordPropMessages = require('./create-record-prop-messages');
 
+var allSchemaCreators = require('@mpieva/psydb-schema-creators');
+
 var triggerSystemEvents = async ({
     db,
     rohrpost,
@@ -13,14 +15,20 @@ var triggerSystemEvents = async ({
 
     var { 
         op, collection, 
-        recordType, recordSubType 
+        recordType
     } = parseRecordMessageType(messageType);
 
     var {
         id,
+        lastKnownEventId,
+        lastKnownSubChannelEventIds,
         props,
         ...additionalCreateProps
     } = payload;
+
+    var {
+        hasSubChannels
+    } = allSchemaCreators[collection];
 
     // FIXME: dispatch silently ignores messages when id is set
     // but record doesnt exist
@@ -34,7 +42,6 @@ var triggerSystemEvents = async ({
                 op === 'create'
                 ? {
                     ...(recordType && { type: recordType }),
-                    ...(recordSubType && { subtype: recordSubType }),
                     ...additionalCreateProps
                 }
                 : undefined
@@ -48,28 +55,41 @@ var triggerSystemEvents = async ({
         props: payload.props
     });
 
-    // FIXME: undefined string shenanigans
-    // when subChannelKey === undefined
-    var subChannelKeys = [],
-        messagesBySubChannel = {};
-    for (var it of recordPropMessages) {
-        //console.log(it);
-        var { subChannelKey, ...message } = it;
-        if (!messagesBySubChannel[subChannelKey]) {
-            messagesBySubChannel[subChannelKey] = [];
-            subChannelKeys.push(subChannelKey)
+    if (hasSubChannels) {
+        // FIXME: undefined string shenanigans
+        // when subChannelKey === undefined
+        var subChannelKeys = [],
+            messagesBySubChannel = {};
+        for (var it of recordPropMessages) {
+            //console.log(it);
+            var { subChannelKey, ...message } = it;
+            if (!messagesBySubChannel[subChannelKey]) {
+                messagesBySubChannel[subChannelKey] = [];
+                subChannelKeys.push(subChannelKey)
+            }
+            messagesBySubChannel[subChannelKey].push(message);
         }
-        messagesBySubChannel[subChannelKey].push(message);
-    }
 
-    for (var key of subChannelKeys) {
+        for (var key of subChannelKeys) {
+            await channel.dispatchMany({
+                lastKnownEventId: (
+                    op !== 'create'
+                    ? lastKnownSubChannelEventIds[key]
+                    : undefined
+                ),
+                subChannelKey: key,
+                messages: messagesBySubChannel[key]
+            });
+            //console.log(it);
+            //var { subChannelKey, ...message } = it;
+            //await channel.dispatch({ subChannelKey, message })
+        }
+    }
+    else {
         await channel.dispatchMany({
-            subChannelKey: key,
-            messages: messagesBySubChannel[key]
+            lastKnownEventId,
+            messages: recordPropMessages
         });
-        //console.log(it);
-        //var { subChannelKey, ...message } = it;
-        //await channel.dispatch({ subChannelKey, message })
     }
 
     //var docs = await db.collection(collection).find().toArray();

@@ -3,7 +3,8 @@ var { isPlainObject } = require('is-what');
 
 var {
     ExactObject,
-    Id
+    Id,
+    EventId,
 } = require('@mpieva/psydb-schema-fields');
 
 var createMessageType = require('./create-record-message-type'),
@@ -108,10 +109,18 @@ var MultiChannelRecordPatchMessage = ({
         payload: ExactObject({
             properties: {
                 id: Id(),
+                lastKnownSubChannelEventIds: ExactObject({
+                    properties: subChannelKeys.reduce((acc, key) => ({
+                        ...acc,
+                        [key]: EventId()
+                    }), {}),
+                    required: subChannelKeys,
+                }),
                 props: payloadPropsSchema,
             },
             required: [
                 'id',
+                'lastKnownSubChannelEventIds',
                 'props',
             ]
         })

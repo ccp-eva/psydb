@@ -23,7 +23,7 @@ var fetchRecordById = async ({
         ? [
             { $addFields: {
                 'gdpr._lastKnownEventId': { $arrayElemAt: [ '$gdpr.events._id', 0 ]},
-                'scientific._lastKnownEventId': { $arrayElemAt: [ '$gdpr.scientific._id', 0 ]},
+                'scientific._lastKnownEventId': { $arrayElemAt: [ '$scientific.events._id', 0 ]},
             }},
             { $project: {
                 'gdpr.events': false,

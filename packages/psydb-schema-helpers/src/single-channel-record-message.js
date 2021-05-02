@@ -6,7 +6,8 @@ var {
 
 var {
     ExactObject,
-    Id
+    Id,
+    EventId,
 } = require('@mpieva/psydb-schema-fields');
 
 var createMessageType = require('./create-record-message-type'),
@@ -66,6 +67,7 @@ var SingleChannelRecordPatchMessage = ({
         payload: ExactObject({
             properties: {
                 id: Id(),
+                lastKnownEventId: EventId(),
                 props: propsSchema || stateSchemaCreator({
                     enableInternalProps: false,
                     customFieldDefinitions
@@ -73,6 +75,7 @@ var SingleChannelRecordPatchMessage = ({
             },
             required: [
                 'id',
+                'lastKnownEventId',
                 'props',
             ]
         })

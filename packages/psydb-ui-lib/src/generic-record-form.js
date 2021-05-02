@@ -26,7 +26,10 @@ const GenericRecordForm = ({
         ({ id } = useParams());
     }
 
-    var { hasSubChannels } = allSchemaCreators[collection];
+    var {
+        hasSubChannels,
+        hasCustomRecordTypes,
+    } = allSchemaCreators[collection];
 
     var [ state, dispatch ] = useReducer(reducer, {});
     var {
@@ -80,11 +83,35 @@ const GenericRecordForm = ({
             ? 'patch'
             : 'create'
         );
-        agent.send({ message: {
-            type: `${collection}/${recordType}/${messageAction}`,
-            payload: {
+        var messageType = (
+            hasCustomRecordTypes
+            ? `${collection}/${recordType}/${messageAction}`
+            : `${collection}/${messageAction}`
+        );
+
+        var payload = (
+            hasSubChannels
+            ? {
+                ...(type === 'edit' ? {
+                    id,
+                    lastKnownSubChannelEventIds: {
+                        scientific: record.scientific._lastKnownEventId,
+                        gdpr: record.gdpr._lastKnownEventId,
+                    }
+                } : {}),
                 props: formData
             }
+            : {
+                ...(type === 'edit' ? {
+                    id,
+                    lastKnownEventId: record._lastKnownEventId,
+                } : {}),
+                props: formData
+            }
+        )
+        agent.send({ message: {
+            type: messageType,
+            payload,
         }})
     };
 

@@ -108,7 +108,7 @@ var Driver = ({
     driver.lastEventId = ({ collection, channel, subChannel }) => {
         return (
             subChannel
-            ? cache.lastKnownEventIds[collection][channel][subChannel]
+            ? cache.lastKnownEventIds[collection][subChannel][channel]
             : cache.lastKnownEventIds[collection][channel]
         );
     }
