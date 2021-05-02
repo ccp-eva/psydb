@@ -67,6 +67,11 @@ const TableRow = ({
                 );
             })}
             <td>
+                { enableView && (
+                    <LinkButton to={`${linkBaseUrl}/${record._id}`}>
+                        Details
+                    </LinkButton>
+                )}
                 { enableEdit && (
                     <LinkButton to={`${linkBaseUrl}/${record._id}/edit`}>
                         Edit

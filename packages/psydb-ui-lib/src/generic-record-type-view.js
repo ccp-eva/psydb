@@ -9,6 +9,7 @@ import {
 } from 'react-router-dom';
 
 import RecordListContainer from './record-list-container';
+import GenericRecordDetails from './generic-record-details';
 import GenericRecordForm from './generic-record-form';
 
 const GenericRecordTypeView = ({
@@ -39,11 +40,12 @@ const GenericRecordTypeView = ({
                         linkBaseUrl={ url }
                         collection={ collection }
                         recordType={ recordType }
+                        enableView={ true }
                         enableNew={ true }
                         enableEdit={ true }
                     />
                 </Route>
-                <Route path={`${path}/new`}>
+                <Route exact path={`${path}/new`}>
                     <GenericRecordForm
                         type='create'
                         collection={ collection }
@@ -53,6 +55,14 @@ const GenericRecordTypeView = ({
                         }
                     />
                 </Route>
+
+                <Route exact path={`${path}/:id`}>
+                    <GenericRecordDetails
+                        collection={ collection }
+                        recordType={ recordType }
+                    />
+                </Route>
+
                 <Route path={`${path}/:id/edit`}>
                     <GenericRecordForm
                         type='edit'

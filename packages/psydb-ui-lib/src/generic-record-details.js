@@ -1,15 +1,16 @@
 import React, { useState, useEffect, useReducer, forwardRef } from 'react';
 
-import { Button } from 'react-bootstrap';
-import { useParams } from 'react-router-dom';
+import { useRouteMatch, useParams } from 'react-router-dom';
 
 import allSchemaCreators from '@mpieva/psydb-schema-creators';
 import agent from '@mpieva/psydb-ui-request-agents';
 
 import { withTheme } from '@mpieva/rjsf-monkey-patch';
-import RJSFCustomTheme from './rjsf-theme';
+import RJSFReadonlyTheme from './rjsf-readonly-theme';
 
-var SchemaForm = withTheme(RJSFCustomTheme);
+import LinkButton from './link-button';
+
+var SchemaForm = withTheme(RJSFReadonlyTheme);
 
 const GenericRecordForm = ({
     type,
@@ -17,14 +18,8 @@ const GenericRecordForm = ({
     recordType,
     onSuccessfulUpdate,
 }) => {
-    //console.log('form')
-    //console.log(RJSFForm);
-
-    type = type || 'create';
-    var id = undefined;
-    if (type === 'edit') {
-        ({ id } = useParams());
-    }
+    var { path, url } = useRouteMatch();
+    var { id } = useParams();
 
     var { hasSubChannels } = allSchemaCreators[collection];
 
@@ -50,43 +45,24 @@ const GenericRecordForm = ({
             dispatch({ type: 'init-schema', payload: {
                 schema: response.data.data
             }})
-            //setSchema(response.data.data);
         })
 
-        if (type === 'edit') {
-            agent.readRecord({
-                collection,
-                recordType,
-                id
-            }).then((response) => {
-                dispatch({ type: 'init-data', payload: {
-                    ...response.data.data
-                }})
-                //setRecord(response.data.data.record);
-            })
-        }
+        agent.readRecord({
+            collection,
+            recordType,
+            id
+        }).then((response) => {
+            dispatch({ type: 'init-data', payload: {
+                ...response.data.data
+            }})
+        })
     }, [ type, id, collection, recordType ])
 
-    if (!schema || (type === 'edit' && !record)) {
+    if (!schema || !record) {
         return (
             <div>Loading...</div>
         );
     }
-
-    var onSubmit = ({ formData }) => {
-        console.log('submitting');
-        var messageAction = (
-            type === 'edit'
-            ? 'patch'
-            : 'create'
-        );
-        agent.send({ message: {
-            type: `${collection}/${recordType}/${messageAction}`,
-            payload: {
-                props: formData
-            }
-        }})
-    };
 
     var formData = {};
     var formContext = {};
@@ -121,13 +97,12 @@ const GenericRecordForm = ({
     );
 
     return (
-        <div className='border p-3 bg-light'>
-            <h5>
-                { 
-                    type === 'edit'
-                    ? 'Datensatz bearbeiten'
-                    : 'Neuer Datensatz'
-                }
+        <div className='border pl-3 bg-light'>
+            <h5 className='d-flex justify-content-between align-items-end'>
+                <span>Datensatz-Details</span>
+                <LinkButton to={ `${url}/edit` }>
+                    Bearbeiten
+                </LinkButton>
             </h5>
             <hr />
             <SchemaForm
@@ -136,13 +111,8 @@ const GenericRecordForm = ({
                 schema={ formSchema }
                 formData={ formData }
                 formContext={ formContext }
-                onSubmit={ onSubmit }
             >
-                <div>
-                    <Button type="submit" className="btn btn-primary">
-                        Update
-                    </Button>
-                </div>
+                <div></div>
             </SchemaForm>
         </div>
     )
