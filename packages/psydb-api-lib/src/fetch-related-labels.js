@@ -3,6 +3,7 @@
 var resolveRelationData = require('./resolve-relation-data');
 var fetchRelatedRecords = require('./fetch-related-records');
 var fetchRelatedHelperSetItems = require('./fetch-related-helper-set-items');
+var fetchRelatedCustomRecordTypes = require('./fetch-related-custom-record-types');
 
 var fetchRelatedLabels = async ({
     db,
@@ -12,7 +13,8 @@ var fetchRelatedLabels = async ({
     
     var {
         helperSetItemIdRelationData,
-        foreignIdRelationData
+        foreignIdRelationData,
+        customRecordTypeRelationData,
     } = resolveRelationData({
         schema,
         data,
@@ -22,6 +24,7 @@ var fetchRelatedLabels = async ({
     //console.dir(data, { depth: null });
     //console.dir(foreignIdRelationData, { depth: null });
     //console.dir(helperSetItemIdRelationData, { depth: null });
+    //console.dir(customRecordTypeRelationData, { depth: null });
     //throw new Error();
 
     var relatedRecords = await fetchRelatedRecords({
@@ -35,9 +38,16 @@ var fetchRelatedLabels = async ({
         helperSetItemIdRelationData,
     });
 
+    var relatedCustomRecordTypes = await fetchRelatedCustomRecordTypes({
+        db,
+        customRecordTypeRelationData,
+        labelOnly: true
+    });
+
     return ({
         relatedRecords,
         relatedHelperSetItems,
+        relatedCustomRecordTypes,
         /*relatedHelperSetItems: keyBy({
             items: relatedHelperSetItems.map(it => ({
                 _id: it._id,

@@ -1,25 +1,25 @@
 'use strict';
 var ExactObject = require('./exact-object');
+var DefaultBool = require('./default-bool');
 
 var days = [
     'mon', 'tue', 'wed', 'thu',
     'fri', 'sat', 'sun'
 ];
 
-var BlockedWeekdays = () => ExactObject({
-    systemType: 'BlockedWeekdays',
-    reactType: 'checkbox-group',
+var WeekdayBoolObject = ({
+    ...additionalKeywords
+}) => ExactObject({
+    systemType: 'WeekdayBoolObject',
     properties: days.reduce(
         (acc, day) => ({
             ...acc,
-            [day]: {
-                type: 'boolean',
-                default: false 
-            }
+            [day]: DefaultBool(),
         }),
         {}
     ),
     required: days,
+    ...additionalKeywords,
 })
 
-module.exports = BlockedWeekdays;
+module.exports = WeekdayBoolObject;

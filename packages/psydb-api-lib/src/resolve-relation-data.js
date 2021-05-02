@@ -18,6 +18,7 @@ var resolveRelationData = ({ schema, data }) => {
 
     var foreignIdRelationData = [];
     var helperSetItemIdRelationData = [];
+    var customRecordTypeRelationData = [];
     for (var part of resolvedParts) {
         //console.log(part);
         //console.log(part.type);
@@ -39,6 +40,11 @@ var resolveRelationData = ({ schema, data }) => {
             foreignIdRelationData = [
                 ...foreignIdRelationData,
                 ...resolved.foreignIdRelationData,
+            ];
+            
+            customRecordTypeRelationData = [
+                ...customRecordTypeRelationData,
+                ...resolved.customRecordTypeRelationData,
             ];
         }
         else if (part.type === 'array') {
@@ -68,6 +74,11 @@ var resolveRelationData = ({ schema, data }) => {
                     ...foreignIdRelationData,
                     ...resolved.foreignIdRelationData,
                 ];
+            
+                customRecordTypeRelationData = [
+                    ...customRecordTypeRelationData,
+                    ...resolved.customRecordTypeRelationData,
+                ];
             }
         }
     }
@@ -77,6 +88,7 @@ var resolveRelationData = ({ schema, data }) => {
     return {
         foreignIdRelationData,
         helperSetItemIdRelationData,
+        customRecordTypeRelationData,
     };
 }
 
@@ -88,6 +100,7 @@ var resolveFromSubSchema = ({
     //console.log(dataPointerPrefix, schema, data);
     var foreignIdRelationData = [];
     var helperSetItemIdRelationData = [];
+    var customRecordTypeRelationData = [];
     traverse(schema, { allKeys: false }, (...traverseArgs) => {
         var [
             currentSchema,
@@ -103,6 +116,7 @@ var resolveFromSubSchema = ({
         if (
             currentSchema.systemType === 'ForeignId'
             || currentSchema.systemType === 'HelperSetItemId'
+            || currentSchema.systemType === 'CustomRecordTypeKey'
         ) {
             //console.log(currentSchema);
             //console.log(data)
@@ -116,23 +130,34 @@ var resolveFromSubSchema = ({
 
             var fullDataPointer = `${dataPointerPrefix || ''}${dataPointer}`;
 
-            var dataBucket = (
-                currentSchema.systemType === 'ForeignId'
-                ? foreignIdRelationData
-                : helperSetItemIdRelationData
-            );
+            var dataBucket = undefined;
+            //console.log(currentSchema.systemType);
+            switch (currentSchema.systemType) {
+                case 'ForeignId':
+                    dataBucket = foreignIdRelationData;
+                    break;
+                case 'HelperSetItemId':
+                    dataBucket = helperSetItemIdRelationData;
+                    break;
+                case 'CustomRecordTypeKey':
+                    dataBucket = customRecordTypeRelationData;
+                    break;
+            }
 
-            dataBucket.push({
-                ...currentSchema.systemProps,
-                dataPointer: fullDataPointer,
-                value: currentData,
-            });
+            if (dataBucket) {
+                dataBucket.push({
+                    ...currentSchema.systemProps,
+                    dataPointer: fullDataPointer,
+                    value: currentData,
+                });
+            }
             //console.log(currentData);
         }
     });
     return {
         foreignIdRelationData,
         helperSetItemIdRelationData,
+        customRecordTypeRelationData,
     };
 }
 

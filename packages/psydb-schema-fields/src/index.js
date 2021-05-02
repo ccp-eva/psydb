@@ -9,11 +9,12 @@ module.exports = {
 
     Address: require('./address'),
     BiologicalGender: require('./biological-gender'),
-    BlockedWeekdays: require('./blocked-weekdays'),
     Color: require('./color'),
 
     CustomRecordTypeCollectionEnum: require('./custom-record-type-collection-enum'),
-    CustomRecordTypeName: require('./custom-record-type-name'),
+    // FIXME: duplicate
+    CustomRecordTypeName: require('./custom-record-type-key'),
+    CustomRecordTypeKey: require('./custom-record-type-key'),
     CustomRecordTypeFieldKey: require('./custom-record-type-field-key'),
 
     DateTime: require('./date-time'),
@@ -42,4 +43,6 @@ module.exports = {
     TimeInterval: require('./time-interval'),
     SpecialHumanName: require('./special-human-name'),
     ExactObject: require('./exact-object'),
+    
+    WeekdayBoolObject: require('./weekday-bool-object'),
 }

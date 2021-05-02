@@ -1,5 +1,11 @@
 import React, { useState, useEffect, useReducer } from 'react';
+import { FormattedDuration } from '@mpieva/psydb-common-lib/src/durations';
+import datefns from '../date-fns';
 import { InlineWrapper } from './wrapper-components';
+
+const styles = {
+    bold: { fontWeight: '500' }
+}
 
 export const Plain = ({
     properties,
@@ -25,14 +31,14 @@ export const Address = ({
 }) => {
     return (
         <InlineWrapper label={ title }>
-            <div>
+            <div style={ styles.bold }>
                 { formData.street }
                 {' '}
                 { formData.housenumber }
                 {' '}
                 { formData.affix }
             </div>
-            <div>
+            <div style={ styles.bold }>
                 { formData.postcode }
                 {' '}
                 { formData.city }
@@ -41,4 +47,93 @@ export const Address = ({
             </div>
         </InlineWrapper>
     )
+}
+
+export const DateTimeInterval = ({
+    title,
+    schema,
+    formData,
+}) => {
+    var formattedStart = datefns.format(new Date(formData.start), 'P p');
+    var formattedEnd = datefns.format(new Date(formData.end), 'P p');
+    return (
+        <InlineWrapper label={ title }>
+            <b style={ styles.bold }>
+                { formattedStart } - { formattedEnd }
+            </b>
+        </InlineWrapper>
+    )
+}
+
+export const BlockedFromTesting = ({
+    title,
+    schema,
+    formData,
+}) => {
+    var start = new Date(formData.start);
+    var end = new Date(formData.end);
+    var now = new Date();
+
+
+    var text;
+    if (end < now) {
+        text = 'Nein'
+    }
+    else {
+        var formattedStart = datefns.format(start, 'P p');
+        var formattedEnd = datefns.format(end, 'P p');
+        text = `${formattedStart} - ${formattedEnd}`
+    }
+    return (
+        <InlineWrapper label={ title }>
+            <b style={ styles.bold }>
+                { text }
+            </b>
+        </InlineWrapper>
+    )
+}
+
+export const TimeInterval = ({
+    title,
+    schema,
+    formData,
+}) => {
+    var resolution = 'MINUTE';
+    return (
+        <InlineWrapper label={ title }>
+            <b style={ styles.bold }>
+                { FormattedDuration(formData.start, { resolution })}
+                {' - '}
+                { FormattedDuration(formData.end, { resolution })}
+            </b>
+        </InlineWrapper>
+    )
+}
+
+export const WeekdayBoolObject = ({
+    title,
+    schema,
+    formData
+}) => {
+    var wd = {
+        'mon': 'Montag',
+        'tue': 'Dienstag',
+        'wed': 'Mittwoch',
+        'thu': 'Donnerstag',
+        'fri': 'Freitag',
+        'sat': 'Samstag',
+        'sun': 'Sonntag',
+    }
+    return (
+        <InlineWrapper label={ title }>
+            <b style={ styles.bold }>
+                { 
+                    Object.keys(wd)
+                        .filter(key => formData[key] === true)
+                        .map(key => wd[key])
+                        .join(', ')
+                }
+            </b>
+        </InlineWrapper>
+    );
 }

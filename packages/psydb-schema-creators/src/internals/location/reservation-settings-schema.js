@@ -7,6 +7,7 @@ var {
     DateTimeInterval,
     TimeInterval,
     Time,
+    WeekdayBoolObject,
 } = require('@mpieva/psydb-schema-fields');
 
 var reservationSettingsSchema = {
@@ -34,17 +35,11 @@ var reservationSettingsSchema = {
                     default: true, // because rjsf
                 },
                 
-                /*canBeReservedByResearchGroupIds: {
-                    title: 'Reservierbar durch Forschungsgruppen',
-                    type: 'array',
-                    default: [],
-                    items: ForeignId({
-                        collection: 'researchGroup'
-                    }),
-                },*/
-
+                possibleReservationWeekdays: WeekdayBoolObject({
+                    title: 'Reservierbare Tage',
+                }),
                 possibleReservationTimeInterval: TimeInterval({
-                    title: 'Reserverierbarer Zetraum pro Tag',
+                    title: 'Reservierbar Von/Bis',
                 }),
 
                 reservationSlotDuration: Time({

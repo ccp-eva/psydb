@@ -54,24 +54,25 @@ var testingPermissionsSchema = ExactObject({
             `,
         }),
 
-        // TODO: replace with a single interval
-        disabledForTestingIntervals: {
-            type: 'array',
-            default: [],
-            items: DateTimeInterval(),
-            description: inline`
-                list of items describing if the subject should not be
-                tested in a certain date-time period, for example
-                when a human subject is on holidays or something or 
-                an animal is ill and one wants to wait for recovery
-            `,
-        },
+        blockedFromTesting: DateTimeInterval({
+            systemType: 'BlockedFromTesting',
+            title: 'Gesperrt',
+            // FIXME: thats a bit hacky,
+            additionalStartKeywords: {
+                title: 'Von',
+                default: '1970-01-01T00:00:00.000Z'
+            },
+            additionalEndKeywords: {
+                title: 'Bis',
+                default: '1970-01-01T00:00:00.001Z'
+            },
+        })
 
     },
     required: [
         'canBeTestedInhouse',
         'canBeTestedByAwayTeam',
-        'disabledForTestingIntervals'
+        'blockedFromTesting'
     ]
     
 });

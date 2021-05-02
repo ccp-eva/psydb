@@ -5,6 +5,7 @@ var ExactObject = require('./exact-object'),
 var TimeInterval = ({
     description,
     minStart = 0,
+    ...additionalKeywords
 } = {}) => (
     ExactObject({
         systemType: 'TimeInterval',
@@ -18,7 +19,7 @@ var TimeInterval = ({
             'start',
             'end'
         ],
-        ...(description ? { description } : {}),
+        ...additionalKeywords,
     })
 );
 

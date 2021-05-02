@@ -35,6 +35,7 @@ const GenericRecordForm = ({
         record,
         relatedRecordLabels,
         relatedHelperSetItems,
+        relatedCustomRecordTypeLabels,
         schema
     } = state;
 
@@ -92,7 +93,8 @@ const GenericRecordForm = ({
 
         formContext = {
             relatedRecordLabels,
-            relatedHelperSetItems
+            relatedHelperSetItems,
+            relatedCustomRecordTypeLabels,
         }
     }
 
@@ -144,7 +146,8 @@ var reducer = (state, action) => {
                 ...state,
                 record: payload.record,
                 relatedRecordLabels: payload.relatedRecordLabels,
-                relatedHelperSetItems: payload.relatedHelperSetItems
+                relatedHelperSetItems: payload.relatedHelperSetItems,
+                relatedCustomRecordTypeLabels: payload.relatedCustomRecordTypeLabels,
             }
         case 'init-schema':
             return {

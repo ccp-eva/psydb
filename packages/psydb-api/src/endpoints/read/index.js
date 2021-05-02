@@ -89,7 +89,8 @@ var read = async (context, next) => {
 
     var {
         relatedRecords,
-        relatedHelperSetItems
+        relatedHelperSetItems,
+        relatedCustomRecordTypes,
     } = await fetchRelatedLabels({
         db,
         data: record,
@@ -100,7 +101,8 @@ var read = async (context, next) => {
         data: {
             record,
             relatedRecordLabels: relatedRecords,
-            relatedHelperSetItems
+            relatedHelperSetItems,
+            relatedCustomRecordTypeLabels: relatedCustomRecordTypes,
         }
     });
 

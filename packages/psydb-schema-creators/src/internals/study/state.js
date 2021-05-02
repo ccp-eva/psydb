@@ -18,6 +18,7 @@ var {
     SaneString,
     Color,
     DateTimeInterval,
+    CustomRecordTypeKey,
 } = require('@mpieva/psydb-schema-fields');
 
 // -> type A (has date of birth)
@@ -35,28 +36,6 @@ var {
 //              -> value 01
 //              -> value 02
 
-var AgeFrameSettings = ({
-    customFieldDefinitions
-} = {}) => ExactObject({
-    properties: {
-        ageFrame: AgeFrame(),
-        conditionList: DefaultArray({
-            items: {
-                // theese form an $and list
-                oneOf: [
-                    customFieldDefinitions.map(fieldDefinition => (
-                        StudySearchCondition({ fieldDefinition })
-                    ))
-                ]
-            }
-        })
-    },
-    required: [
-        'ageFrame',
-        'conditionList',
-    ]
-});
-
 // TODO: stub; needs conditions handling somehow
 // also we need condition templates for study types
 var StudyState = (ps = {}) => {
@@ -73,13 +52,16 @@ var StudyState = (ps = {}) => {
                 isCreateFinalized: DefaultBool(),
             }),
 
-            name: SaneString(),
-            shorthand: SaneString(),
-            researchGroupIds: DefaultArray({
+            name: SaneString({
+                title: 'Bezeichnung',
+            }),
+            shorthand: SaneString({
+                title: 'Kürzel',
+            }),
+            researchGroupIds: ForeignIdList({
+                title: 'Forschungsgruppen',
                 minItems: 1,
-                items: ForeignId({
-                    collection: 'researchGroup'
-                }),
+                collection: 'researchGroup',
                 description: inline`
                     this list of ids will be used to get the permissions
                     for when we search in this studies context
@@ -94,19 +76,24 @@ var StudyState = (ps = {}) => {
             systemPermissions: systemPermissionsSchema,
 
             inhouseTestLocationSettings: DefaultArray({
+                systemType: 'InhouseTestLocationSettings',
                 items: ExactObject({
+                    systemType: 'InhouseTestLocationSettingsItem',
+                    title: 'Test-Locations',
                     properties: {
-                        customRecordType: IdentifierString(),
-                        // FIXME: maybe remove this
-                        enableAllAvailableLocations: DefaultBool(),
+                        customRecordType: CustomRecordTypeKey({
+                            title: 'Location-Typ',
+                            collection: 'location',
+                        }),
                         // FIXME: ForeignIdLIst
                         enabledLocationIds: ForeignIdList({
+                            title: 'Zugewiesen',
                             collection: 'location',
+                            // TODO: record type $data ??
                         })
                     },
                     required: [
                         'customRecordTypeId',
-                        'enableAllAvailableLocations',
                         'enabledLocationIds',
                     ]
                 })
@@ -114,6 +101,7 @@ var StudyState = (ps = {}) => {
 
             // TODO: excluded study ids
             excludedOtherStudyIds: ForeignIdList({
+                title: 'Ausgeschlossene Studien',
                 collection: 'study',
             }),
 

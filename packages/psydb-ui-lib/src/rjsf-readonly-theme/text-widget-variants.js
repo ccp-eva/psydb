@@ -120,6 +120,60 @@ export const HelperSetItemId = ({
 
 }
 
+export const CustomRecordTypeKey = ({
+    label,
+    value: typeKey,
+    schema,
+    formContext,
+    isArrayItem,
+    index,
+    maxIndex,
+    ...other
+}) => {
+    var renderedTextValue = undefined;
+    if (typeKey) {
+        var { systemProps } = schema;
+        var { collection } = systemProps;
+
+        var { relatedCustomRecordTypeLabels } = formContext;
+
+        var recordType;
+        if (relatedCustomRecordTypeLabels) {
+            recordType = relatedCustomRecordTypeLabels[collection][typeKey]
+        }
+
+        renderedTextValue = (
+            <b style={ styles.bold } className={ recordType ? '' : 'text-danger'}>
+                { recordType ? recordType.state.label : typeKey }
+            </b>
+        )
+    }
+    else {
+        renderedTextValue = (
+            <i className='text-muted'>
+                Nicht gewählt
+            </i>
+        )
+    }
+
+    if (isArrayItem) {
+        return (
+            <span>
+                { renderedTextValue }
+                { index < maxIndex ? ', ' : ''}
+            </span>
+        );
+    }
+    else {
+        return (
+            <InlineWrapper label={ label }>
+                { renderedTextValue }
+            </InlineWrapper>
+        )
+    }
+
+}
+
 export const DateTime = ({ label, value, schema }) => {
     return (
         <InlineWrapper label={ label }>
