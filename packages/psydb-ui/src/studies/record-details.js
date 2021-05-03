@@ -13,13 +13,13 @@ import LinkButton from '@mpieva/psydb-ui-lib/src/link-button';
 var SchemaForm = withTheme(RJSFReadonlyTheme);
 
 const StudyRecordDetails = ({
-    type,
-    collection,
     recordType,
     onSuccessfulUpdate,
 }) => {
     var { path, url } = useRouteMatch();
     var { id } = useParams();
+
+    var collection = 'study';
 
     var { hasSubChannels } = allSchemaCreators[collection];
 
@@ -56,7 +56,7 @@ const StudyRecordDetails = ({
                 ...response.data.data
             }})
         })
-    }, [ type, id, collection, recordType ])
+    }, [ id, collection, recordType ])
 
     if (!schema || !record) {
         return (
@@ -97,14 +97,7 @@ const StudyRecordDetails = ({
     );
 
     return (
-        <div className='border pl-3 bg-light'>
-            <h5 className='d-flex justify-content-between align-items-end'>
-                <span>Datensatz-Details</span>
-                <LinkButton to={ `${url}/edit` }>
-                    Bearbeiten
-                </LinkButton>
-            </h5>
-            <hr />
+        <div className='pt-3'>
             <SchemaForm
                 noHtml5Validate={ true }
                 showErrorList={ false }

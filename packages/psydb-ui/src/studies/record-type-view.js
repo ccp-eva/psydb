@@ -10,6 +10,7 @@ import {
 
 import RecordListContainer from '@mpieva/psydb-ui-lib/src/record-list-container';
 import StudyRecordDetails from './record-details';
+import StudyRecordContainer from './record-container';
 import GenericRecordForm from '@mpieva/psydb-ui-lib/src/generic-record-form';
 
 const StudyRecordTypeView = ({
@@ -56,14 +57,14 @@ const StudyRecordTypeView = ({
                     />
                 </Route>
 
-                <Route exact path={`${path}/:id`}>
-                    <StudyRecordDetails
+                <Route path={`${path}/:id`}>
+                    <StudyRecordContainer
                         collection={ collection }
                         recordType={ recordType }
                     />
                 </Route>
 
-                <Route path={`${path}/:id/edit`}>
+                {/*<Route path={`${path}/:id/edit`}>
                     <GenericRecordForm
                         type='edit'
                         collection={ collection }
@@ -72,7 +73,7 @@ const StudyRecordTypeView = ({
                             //history.push(`${url}`)
                         }}
                     />
-                </Route>
+                </Route>*/}
             </Switch>
         </div>
     );
