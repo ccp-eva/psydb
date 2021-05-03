@@ -24,10 +24,17 @@ const StudyTeamListItem = ({
             </div>
             <div className='flex-grow p-3'>
                 <div>
-                    { record.state.name }
+                    <b>{ record.state.name }</b>
                 </div>
                 <div>
-                    { record.state.personnelIds.join(', ') }
+                    <span className='d-inline-block pr-2'>Experimenter:</span>
+                    {
+                        record.state.personnelIds
+                        .map(id => (
+                            relatedRecordLabels.personnel[id]._recordLabel
+                        ))
+                        .join(', ')
+                    }
                 </div>
 
             </div>

@@ -11,6 +11,11 @@ var compareIds = require('@mpieva/psydb-api-lib/src/compare-ids');
 var createRecordLabel = require('@mpieva/psydb-api-lib/src/create-record-label');
 var fetchRecordById = require('@mpieva/psydb-api-lib/src/fetch-record-by-id');
 
+var createSchemaForRecordType =
+    require('@mpieva/psydb-api-lib/src/create-schema-for-record-type');
+
+var fetchRelatedLabels = require('@mpieva/psydb-api-lib/src/fetch-related-labels');
+
 var experimentOperatorTeamsForStudy = async (context, next) => {
     var { 
         db,
@@ -48,16 +53,37 @@ var experimentOperatorTeamsForStudy = async (context, next) => {
         ]).toArray()
     );
 
-    /*locationRecords.forEach(it => {
-        it._recordLabel = createRecordLabel({
-            record: it,
-            definition: customRecordTypeRecord.state.recordLabelDefinition
-        })
-    })*/
+    var recordSchema = await createSchemaForRecordType({
+        db,
+        collectionName: 'experimentOperatorTeam',
+        fullSchema: true
+    });
+
+    // FIXME: this is really hacky
+    var resolveSchema = {
+        type: 'object',
+        properties: {
+            records: {
+                type: 'array',
+                items: recordSchema,
+            }
+        }
+    }
+
+    var {
+        relatedRecords,
+        relatedHelperSetItems,
+        relatedCustomRecordTypes,
+    } = await fetchRelatedLabels({
+        db,
+        data: { records: experimentOperatorTeamRecords },
+        schema: resolveSchema,
+    });
 
     context.body = ResponseBody({
         data: {
             records: experimentOperatorTeamRecords,
+            relatedRecordLabels: relatedRecords,
         },
     });
 

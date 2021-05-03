@@ -130,14 +130,14 @@ describe('init-demo-system', function () {
             limit: 20,
         });*/
         var response;
-        response = await agent.get('/metadata/record-schema/personnel');
+        //response = await agent.get('/metadata/record-schema/personnel');
         //response = await agent.get(`/read/study/default/${context.STUDY_01_ID}`);
         //response = await agent.get(`/read/location/instituteroom/${context.INSTITUTEROOM_01_ID}`);
         //response = await agent.get(`/read/subject/teacher/${context.ALICE_TEACHER_ID}`);
         //response = await agent.get(`/read/personnel/${context.EVE_RA_ID}`);
         console.log('###############')
         //response = await agent.get(`/available-test-locations-for-study/${context.STUDY_01_ID}/${context.INSTITUTEROOM_TYPE_ID}`);
-        //response = await agent.get(`/experiment-operator-teams-for-study/${context.STUDY_01_ID}`);
+        response = await agent.get(`/experiment-operator-teams-for-study/${context.STUDY_01_ID}`);
         /*response = await agent.get(inline`
             /study-location-reservation-calendar
             /2021-01-01T00:00:00.000Z

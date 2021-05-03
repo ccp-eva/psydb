@@ -6,6 +6,7 @@ export const InlineWrapper = ({
     label,
     required,
     schema,
+    valueClassName,
 
     rawErrors = [], 
     children,
@@ -17,11 +18,11 @@ export const InlineWrapper = ({
                 htmlFor={ id }
                 className={ `${hasErrors ? 'text-danger' : ''} col-sm-3 col-form-label`}
             >
-                { label || schema.title }
+                { label }
                 {' '}
-                {(label || schema.title) && required ? '*' : null}
+                {label && required ? '*' : null}
             </Form.Label>
-            <div className='col-sm-9 pl-0 pr-0'>
+            <div className={`col-sm-9 pl-0 pr-0 ${valueClassName}`}>
                 { children }
             </div>
         </Form.Group>

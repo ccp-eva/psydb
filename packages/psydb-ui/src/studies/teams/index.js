@@ -37,6 +37,8 @@ const StudyTeams = ({
         editModalData,
         deleteModalData,
 
+        showHidden,
+
         listRevision,
     } = state;
 
@@ -52,6 +54,8 @@ const StudyTeams = ({
         handleTeamCreated,
         handleTeamUpdated,
         handleTeamDeleted,
+
+        handleToggleHidden,
     ] = useMemo(() => ([
         () => dispatch({
             type: 'show-create-modal',
@@ -72,6 +76,8 @@ const StudyTeams = ({
         () => dispatch({ type: 'increase-list-revision' }),
         () => dispatch({ type: 'increase-list-revision' }),
         () => dispatch({ type: 'increase-list-revision' }),
+
+        () => dispatch({ type: 'toggle-hidden' }),
     ]))
 
     useEffect(() => {
@@ -93,9 +99,14 @@ const StudyTeams = ({
 
     return (
         <div className='pt-3'>
-            <div className='d-flex justify-content-end mb-3'>
+            <div className='d-flex justify-content-between mb-3'>
                 <Button onClick={ handleShowCreateModal }>
                     Neues Team
+                </Button>
+                <Button
+                    variant={ showHidden ? 'secondary' : 'outline-secondary'}
+                    onClick={ handleToggleHidden }>
+                    Ausgeblendete anzeigen
                 </Button>
             </div>
 
@@ -114,17 +125,21 @@ const StudyTeams = ({
                 studyId={ id }
             />
 
-            { records.map(record => (
-                <StudyTeamListItem {...({
-                    key: record._id,
-                    studyId: id,
-                    record,
-                    relatedRecordLabels,
-                    onEditClick: handleShowEditModal,
-                    //onDeleteClick,
-                    //enableDelete
-                })} />
-            ))}
+            { 
+                records
+                .filter(it => showHidden || it.state.hidden !== true)
+                .map(record => (
+                    <StudyTeamListItem {...({
+                        key: record._id,
+                        studyId: id,
+                        record,
+                        relatedRecordLabels,
+                        onEditClick: handleShowEditModal,
+                        //onDeleteClick,
+                        //enableDelete
+                    })} />
+                ))
+            }
         </div>
     )
 }
@@ -177,6 +192,13 @@ const reducer = (state, action) => {
                 ...state,
                 showDeleteModal: false
             }
+
+        case 'toggle-hidden':
+            return {
+                ...state,
+                showHidden: !state.showHidden
+            }
+
         case 'increase-list-revision':
             return {
                 ...state,

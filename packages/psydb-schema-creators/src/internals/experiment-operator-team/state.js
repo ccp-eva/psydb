@@ -6,6 +6,7 @@ var {
     SaneString,
     Color,
     DateTimeInterval,
+    DefaultBool,
 } = require('@mpieva/psydb-schema-fields');
 
 var ExperimentOperatorTeamState = ({
@@ -31,6 +32,10 @@ var ExperimentOperatorTeamState = ({
                 title: 'Experimenter',
                 collection: 'personnel',
                 minItems: 1,
+            }),
+            hidden: DefaultBool({
+                title: 'Ausgeblendet',
+                //systemType: 'SelectBool',
             }),
             ...(enableInternalProps && {
                 // anything here?
