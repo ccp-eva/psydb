@@ -43,6 +43,10 @@ const TextWidget = (ps) => {
         : `${type || schema.type}`
     );
 
+    if (schema.format === 'hex-color') {
+        inputType = 'color';
+    }
+
     var _onChange = useCallback((event) => {
         var { target: { value }} = event;
         var sanitizedValue = (

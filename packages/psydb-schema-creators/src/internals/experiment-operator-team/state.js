@@ -2,7 +2,7 @@
 var inline = require('@cdxoo/inline-text');
 
 var {
-    ForeignId,
+    ForeignIdList,
     SaneString,
     Color,
     DateTimeInterval,
@@ -14,22 +14,24 @@ var ExperimentOperatorTeamState = ({
     var schema = {
         type: 'object',
         properties: {
-            name: SaneString(),
-            color: Color(),
+            name: SaneString({
+                title: 'Bezeichnung',
+                minLength: 1,
+            }),
+            color: Color({
+                title: 'Farbe',
+            }),
             // is now kept outside of state as it should
             // probably be immutable
             // TODO: should i handle the immutability via enableInternalProps?
             /*studyId: ForeignId({
                 collection: 'study',
             }),*/
-            personnelIds: {
-                type: 'array',
+            personnelIds: ForeignIdList({
+                title: 'Experimenter',
+                collection: 'personnel',
                 minItems: 1,
-                items: ForeignId({
-                    collection: 'personnel',
-                    custom: true
-                }),
-            },
+            }),
             ...(enableInternalProps && {
                 // anything here?
             })

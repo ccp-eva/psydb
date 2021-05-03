@@ -51,6 +51,7 @@ function createAjvInstance() {
     ajv.addFormat('mongodb-object-id', psydbFormats.mongodbObjectId);
     ajv.addFormat('nanoid-default', psydbFormats.nanoidDefault);
     ajv.addFormat('phone-number', psydbFormats.phoneNumber);
+    ajv.addFormat('hex-color', psydbFormats.hexColor);
     ajvKeywords(ajv, [
         'uniqueItemProperties',
         'transform', // to trim strings

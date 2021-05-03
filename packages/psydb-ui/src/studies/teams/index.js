@@ -17,6 +17,7 @@ import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
 
 import StudyTeamListItem from './team-list-item';
 import StudyTeamCreateModal from './team-create-modal';
+import StudyTeamEditModal from './team-edit-modal';
 
 const StudyTeams = ({
 }) => {
@@ -30,24 +31,33 @@ const StudyTeams = ({
         relatedRecordLabels,
 
         showCreateModal,
-        createModalData,
+        showEditModal,
         showDeleteModal,
+        
+        editModalData,
         deleteModalData,
 
+        listRevision,
     } = state;
 
     var [
         handleShowCreateModal,
+        handleShowEditModal,
         handleShowDeleteModal,
         
         handleHideCreateModal,
+        handleHideEditModal,
         handleHideDeleteModal,
 
         handleTeamCreated,
+        handleTeamUpdated,
         handleTeamDeleted,
     ] = useMemo(() => ([
-        (teamId) => dispatch({
+        () => dispatch({
             type: 'show-create-modal',
+        }),
+        (teamId) => dispatch({
+            type: 'show-edit-modal',
             payload: { teamId }
         }),
         (teamId) => dispatch({
@@ -56,8 +66,10 @@ const StudyTeams = ({
         }),
 
         () => dispatch({ type: 'hide-create-modal' }),
+        () => dispatch({ type: 'hide-edit-modal' }),
         () => dispatch({ type: 'hide-delete-modal' }),
 
+        () => dispatch({ type: 'increase-list-revision' }),
         () => dispatch({ type: 'increase-list-revision' }),
         () => dispatch({ type: 'increase-list-revision' }),
     ]))
@@ -71,7 +83,7 @@ const StudyTeams = ({
                 ...response.data.data
             }})
         })
-    }, [ id ])
+    }, [ id, listRevision ])
 
     if (!records) {
         return (
@@ -81,7 +93,7 @@ const StudyTeams = ({
 
     return (
         <div className='pt-3'>
-            <div>
+            <div className='d-flex justify-content-end mb-3'>
                 <Button onClick={ handleShowCreateModal }>
                     Neues Team
                 </Button>
@@ -91,7 +103,15 @@ const StudyTeams = ({
                 show={ showCreateModal }
                 onHide={ handleHideCreateModal }
                 onSuccessfulCreate={ handleTeamCreated }
-                createModalData={ createModalData }
+                studyId={ id }
+            />
+
+            <StudyTeamEditModal
+                show={ showEditModal }
+                onHide={ handleHideEditModal }
+                onSuccessfulUpdate={ handleTeamUpdated }
+                editModalData={ editModalData }
+                studyId={ id }
             />
 
             { records.map(record => (
@@ -100,7 +120,7 @@ const StudyTeams = ({
                     studyId: id,
                     record,
                     relatedRecordLabels,
-                    //onEditClick,
+                    onEditClick: handleShowEditModal,
                     //onDeleteClick,
                     //enableDelete
                 })} />
@@ -118,19 +138,32 @@ const reducer = (state, action) => {
                 records: payload.records,
                 relatedRecordLabels: payload.relatedRecordLabels,
             })
+        
         case 'show-create-modal':
             return {
                 ...state,
                 showCreateModal: true,
-                createModalData: {
-                    ...payload
-                }
             }
         case 'hide-create-modal':
             return {
                 ...state,
                 showCreateModal: false,
             }
+
+        case 'show-edit-modal':
+            return {
+                ...state,
+                showEditModal: true,
+                editModalData: {
+                    ...payload
+                }
+            }
+        case 'hide-edit-modal':
+            return {
+                ...state,
+                showEditModal: false,
+            }
+
         case 'show-delete-modal':
             return {
                 ...state,

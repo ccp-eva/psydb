@@ -53,6 +53,9 @@ module.exports = {
     germanPhoneNumber: {
         validate: regexes.germanPhoneNumber,
     },
+    hexColor: {
+        validate: regexes.hexColor,
+    },
     /*dateTime: {
         validate: dateTime,
         compare: util.compareDateTime,

@@ -10,7 +10,7 @@ import {
 
 import RecordListContainer from './record-list-container';
 import GenericRecordDetails from './generic-record-details';
-import GenericRecordForm from './generic-record-form';
+import GenericRecordFormContainer from './generic-record-form-container';
 
 const GenericRecordTypeView = ({
     customRecordTypes,
@@ -46,7 +46,7 @@ const GenericRecordTypeView = ({
                     />
                 </Route>
                 <Route exact path={`${path}/new`}>
-                    <GenericRecordForm
+                    <GenericRecordFormContainer
                         type='create'
                         collection={ collection }
                         recordType={ recordType }
@@ -64,7 +64,7 @@ const GenericRecordTypeView = ({
                 </Route>
 
                 <Route path={`${path}/:id/edit`}>
-                    <GenericRecordForm
+                    <GenericRecordFormContainer
                         type='edit'
                         collection={ collection }
                         recordType={ recordType }

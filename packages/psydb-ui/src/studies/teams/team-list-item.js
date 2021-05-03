@@ -34,11 +34,11 @@ const StudyTeamListItem = ({
 
             <div className='d-flex flex-column justify-content-between ml-2'>
                 <TeamEditButton
-                    onClick={ onEditClick }
+                    onClick={ () => onEditClick(record._id) }
                 />
                 { enableDelete && (
                     <TeamDeleteButton
-                        onDeleteClick={ onDeleteClick }
+                        onDeleteClick={ () => onDeleteClick(record._id) }
                     />
                 )}
             </div>

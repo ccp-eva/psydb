@@ -5,6 +5,7 @@ var Color = ({
 } = {}) => ({
     systemType: 'Color',
     type: 'string',
+    format: 'hex-color',
     default: '',
     ...additionalKeywords,
 });

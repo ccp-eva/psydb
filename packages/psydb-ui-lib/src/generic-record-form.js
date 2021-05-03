@@ -17,16 +17,14 @@ const GenericRecordForm = ({
     type,
     collection,
     recordType,
+    id,
+    additionalPayloadProps,
     onSuccessfulUpdate,
 }) => {
     //console.log('form')
     //console.log(RJSFForm);
 
     type = type || 'create';
-    var id = undefined;
-    if (type === 'edit') {
-        ({ id } = useParams());
-    }
 
     var {
         hasSubChannels,
@@ -101,20 +99,26 @@ const GenericRecordForm = ({
                         gdpr: record.gdpr._lastKnownEventId,
                     }
                 } : {}),
-                props: formData
+                props: formData,
+                ...additionalPayloadProps,
             }
             : {
                 ...(type === 'edit' ? {
                     id,
                     lastKnownEventId: record._lastKnownEventId,
                 } : {}),
-                props: formData
+                props: formData,
+                ...additionalPayloadProps,
             }
         )
+        
         agent.send({ message: {
             type: messageType,
             payload,
         }})
+        .then(response => {
+            onSuccessfulUpdate && onSuccessfulUpdate(response);
+        })
     };
 
     var formData = {};
@@ -150,30 +154,20 @@ const GenericRecordForm = ({
     );
 
     return (
-        <div className='border p-3 bg-light'>
-            <h5>
-                { 
-                    type === 'edit'
-                    ? 'Datensatz bearbeiten'
-                    : 'Neuer Datensatz'
-                }
-            </h5>
-            <hr />
-            <SchemaForm
-                noHtml5Validate={ true }
-                showErrorList={ false }
-                schema={ formSchema }
-                formData={ formData }
-                formContext={ formContext }
-                onSubmit={ onSubmit }
-            >
-                <div>
-                    <Button type="submit" className="btn btn-primary">
-                        Update
-                    </Button>
-                </div>
-            </SchemaForm>
-        </div>
+        <SchemaForm
+            noHtml5Validate={ true }
+            showErrorList={ false }
+            schema={ formSchema }
+            formData={ formData }
+            formContext={ formContext }
+            onSubmit={ onSubmit }
+        >
+            <div>
+                <Button type="submit" className="btn btn-primary">
+                    Update
+                </Button>
+            </div>
+        </SchemaForm>
     )
 }
 

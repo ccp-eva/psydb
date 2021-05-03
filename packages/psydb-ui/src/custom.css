@@ -63,3 +63,12 @@
 .text-primary {
     color: #006066;
 }
+
+
+/* FIXME: this is so wierd*/
+.team-modal-backdrop {
+    z-index: 1010;
+}
+.team-modal {
+    z-index: 1011;
+}
