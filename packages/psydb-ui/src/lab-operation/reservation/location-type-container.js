@@ -68,11 +68,10 @@ const LocationTypeContainer = ({
                 studyRecordType={ studyType }
 
                 activeLocationType={ locationRecordType }
-
                 onSelectEmptySlot={ handleShowCreateModal }
-
                 calendarRevision={ calendarRevision }
             />
+
         </>
     );
 }

@@ -9,7 +9,7 @@ import {
 } from 'react-router-dom';
 
 import RecordListContainer from './record-list-container';
-import GenericRecordDetails from './generic-record-details';
+import GenericRecordDetailsContainer from './generic-record-details-container';
 import GenericRecordFormContainer from './generic-record-form-container';
 
 const GenericRecordTypeView = ({
@@ -57,7 +57,7 @@ const GenericRecordTypeView = ({
                 </Route>
 
                 <Route exact path={`${path}/:id`}>
-                    <GenericRecordDetails
+                    <GenericRecordDetailsContainer
                         collection={ collection }
                         recordType={ recordType }
                     />

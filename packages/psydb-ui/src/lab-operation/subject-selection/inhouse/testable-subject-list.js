@@ -84,7 +84,7 @@ const TestableSubjectList = ({
                     ...response.data.data
                 }});
             })
-        }, [ studyIds, subjectRecordType, userSearchSettings ]
+        }, [ studyIds, subjectRecordType, searchSettings64 ]
     )
     
     var [
@@ -110,8 +110,12 @@ const TestableSubjectList = ({
             <SubjectModal
                 show={ showSubjectModal }
                 onHide={ handleHideSubjectModal }
-                subjectModalData={ subjectModalData }
+                
                 studyNavItems={ studyLabelItems }
+                studyRecordType={ studyType }
+                
+                subjectRecordType={ subjectRecordType }
+                subjectModalData={ subjectModalData }
             />
             <Table hover>
                 <TableHead 

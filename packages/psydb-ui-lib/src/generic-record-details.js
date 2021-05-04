@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useReducer, forwardRef } from 'react';
-
 import { useRouteMatch, useParams } from 'react-router-dom';
 
 import allSchemaCreators from '@mpieva/psydb-schema-creators';
@@ -13,14 +12,10 @@ import LinkButton from './link-button';
 var SchemaForm = withTheme(RJSFReadonlyTheme);
 
 const GenericRecordDetails = ({
-    type,
     collection,
     recordType,
-    onSuccessfulUpdate,
+    id,
 }) => {
-    var { path, url } = useRouteMatch();
-    var { id } = useParams();
-
     var { hasSubChannels } = allSchemaCreators[collection];
 
     var [ state, dispatch ] = useReducer(reducer, {});
@@ -56,7 +51,7 @@ const GenericRecordDetails = ({
                 ...response.data.data
             }})
         })
-    }, [ type, id, collection, recordType ])
+    }, [ id, collection, recordType ])
 
     if (!schema || !record) {
         return (
@@ -97,24 +92,15 @@ const GenericRecordDetails = ({
     );
 
     return (
-        <div className='border pl-3 bg-light'>
-            <h5 className='d-flex justify-content-between align-items-end'>
-                <span>Datensatz-Details</span>
-                <LinkButton to={ `${url}/edit` }>
-                    Bearbeiten
-                </LinkButton>
-            </h5>
-            <hr />
-            <SchemaForm
-                noHtml5Validate={ true }
-                showErrorList={ false }
-                schema={ formSchema }
-                formData={ formData }
-                formContext={ formContext }
-            >
-                <div></div>
-            </SchemaForm>
-        </div>
+        <SchemaForm
+            noHtml5Validate={ true }
+            showErrorList={ false }
+            schema={ formSchema }
+            formData={ formData }
+            formContext={ formContext }
+        >
+            <div></div>
+        </SchemaForm>
     )
 }
 

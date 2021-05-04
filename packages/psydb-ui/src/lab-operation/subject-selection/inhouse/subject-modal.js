@@ -5,40 +5,39 @@ import {
 } from 'react-bootstrap';
 
 import TabNav from '@mpieva/psydb-ui-lib/src/tab-nav';
-
-var reducer = (state, action) => {
-    var { type, payload } = action;
-    switch (type) {
-        case 'select-main-nav':
-            return ({
-                ...state,
-                activeMainNavKey: payload
-            })
-    }
-}
+import SubjectModalDetails from './subject-modal-details';
+import SubjectModalSchedule from './subject-modal-schedule';
 
 const SubjectModal = ({
     show,
     onHide,
     studyNavItems,
+    studyRecordType,
+    subjectRecordType,
+    subjectModalData,
 }) => {
+    if (!subjectModalData) {
+        return null;
+    }
+
+    var {
+        record
+    } = subjectModalData;
 
     var [ state, dispatch ] = useReducer(reducer, {
         activeMainNavKey: 'subjectDetails',
-        activeStudyNavKey: studyNavItems[0].key,
     })
 
     var {
         activeMainNavKey,
-        activeStudyNavKey,
     } = state;
 
     return (
-        <Modal show={show} onHide={ onHide } size='lg'>
+        <Modal show={show} onHide={ onHide } size='xl'>
             <Modal.Header closeButton>
                 <Modal.Title>Details/Einladung</Modal.Title>
             </Modal.Header>
-            <Modal.Body>
+            <Modal.Body className='bg-light'>
 
                 <TabNav
                     items={[
@@ -52,24 +51,54 @@ const SubjectModal = ({
                         }
                     ]}
                     activeKey={ activeMainNavKey }
-                    onItemClick={ (...args) => {
-                        console.log(args);
+                    onItemClick={ (nextKey) => {
+                        dispatch({ type: 'select-nav-item', payload: {
+                            key: nextKey
+                        }})
                     }}
                 />
+
+                { activeMainNavKey === 'subjectDetails' && (
+                    <SubjectModalDetails
+                        recordType={ subjectRecordType }
+                        id={ record._id }
+                    />
+
+                )}
+
+                { activeMainNavKey === 'scheduleExperiment' && (
+                    <SubjectModalSchedule
+                        studyNavItems={ studyNavItems }
+                        subjectId={ record._id }
+                        subjectLabel={ record._recordLabel }
+                        studyRecordType={ studyRecordType }
+                    />
+                )}
                 
-                <TabNav
+                { /*<TabNav
                     items={studyNavItems}
                     activeKey={ activeStudyNavKey }
                     onItemClick={ (...args) => {
                         console.log(args);
                     }}
-                />
+                />*/ }
                 
 
 
             </Modal.Body>
         </Modal>
     );
+}
+
+var reducer = (state, action) => {
+    var { type, payload } = action;
+    switch (type) {
+        case 'select-nav-item':
+            return ({
+                ...state,
+                activeMainNavKey: payload.key
+            })
+    }
 }
 
 export default SubjectModal;
