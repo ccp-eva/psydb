@@ -29,7 +29,11 @@ var fetchRelatedLabels = async ({
 
     var relatedRecords = await fetchRelatedRecords({
         db,
-        foreignIdRelationData,
+        // XXX when data is incomplete when generating
+        // the relation data some values may be undefined
+        foreignIdRelationData: (
+            foreignIdRelationData.filter(it => it.value !== undefined)
+        ),
         labelOnly: true,
     });
 

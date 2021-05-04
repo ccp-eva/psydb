@@ -1,5 +1,5 @@
 'use strict';
-
+var inline = require('@cdxoo/inline-text');
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
 var {
@@ -34,12 +34,12 @@ var createSchemaForRecordType = ({
         if (subChannelKey) {
             if (!hasSubChannels) {
                 throw new Error(inline`
-                    collection "${collection}" does not support subchannels
+                    collection "${collectionName}" does not support subchannels
                 `);
             }
             if (!subChannelStateSchemaCreators[subChannelKey]) {
                 throw new Error(inline`
-                    collection "${collection}" has no schema creator for
+                    collection "${collectionName}" has no schema creator for
                     sub-channel key "${subChannelKey}"
                 `);
             }
@@ -47,7 +47,7 @@ var createSchemaForRecordType = ({
         else {
             if (hasSubChannels) {
                 throw new Error(inline`
-                    collection "${collection}" has sub channels but no key
+                    collection "${collectionName}" has sub channels but no key
                     was providede
                 `);
             }

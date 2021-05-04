@@ -5,6 +5,9 @@ module.exports = {
     experimentOperatorTeamsForStudy: (
         require('./experiment-operator-teams-for-study')
     ),
+    participatedSubjectsForStudy: (
+        require('./participated-subjects-for-study')
+    ),
     studyLocationReservationCalendar: (
         require('./study-location-reservation-calendar')
     ),

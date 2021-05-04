@@ -21,20 +21,7 @@ var SubjectScientificState = ({
             testingPermissions: testingPermissionsSchema,
             systemPermissions: systemPermissionsSchema,
             ...(enableInternalProps && {
-                studyParticipation: DefaultArray({
-                    items: ExactObject({
-                        properties: {
-                            studyId: ForeignId({
-                                collection: 'study',
-                            }),
-                            interval: DateTimeInterval()
-                        },
-                        required: [
-                            'studyId',
-                            'interval',
-                        ]
-                    })
-                })
+                internals: internalsSchema,
             })
         },
         required: [
@@ -42,7 +29,7 @@ var SubjectScientificState = ({
             'testingPermissions',
             'systemPermissions',
             ...(enableInternalProps ? [
-                'participatedInStudyIds'
+                'internals',
             ] : [])
         ]
     });

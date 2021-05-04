@@ -54,6 +54,13 @@ var lazyResolveZero = ({
 
         var buffer = [];
         //console.log('currentData', currentData);
+        
+        // XXX: when data is incomplete and we encounter an empty array
+        if (!currentData) {
+            console.log('returning empty', inSchemaPointer);
+            return;
+        }
+
         for (var [index, dataItem] of currentData.entries()) {
             //console.log(dataItem);
             var out = lazyResolve(schema, dataItem);
@@ -82,7 +89,7 @@ var lazyResolveZero = ({
                 //console.log('nextPart', nextPart);
 
                 //console.log('ary next part', nextPart);
-                //console.log(nextData);
+                console.log(nextData);
 
                 //console.log('CALLING FROM INSIDE')
                 //console.log('nextPointer', nextPointer);

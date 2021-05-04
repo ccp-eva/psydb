@@ -14,6 +14,8 @@ var SubjectGroup = MessageHandlerGroup([
         collection: 'subject',
         op: 'patch',
     }),
+
+    require('./add-manual-participation'),
 ]);
 
 module.exports = SubjectGroup;
