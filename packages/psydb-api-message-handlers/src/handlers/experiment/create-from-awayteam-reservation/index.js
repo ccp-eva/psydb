@@ -60,7 +60,7 @@ handler.checkAllowedAndPlausible = async ({
     // TODO: use FK to check existance (?)
     await checkForeignIdsExist(db, {
         'location': locationId,
-        'subjectGroup': subjectGroupIds,
+        //'subjectGroup': subjectGroupIds,
         'subject': subjectIds
     });
 
@@ -105,7 +105,7 @@ handler.triggerSystemEvents = async ({
 
         locationId: props.locationId,
         locationRecordType: locationRecord.type,
-        subjectGroupIds: props.subjectGroupIds,
+        //subjectGroupIds: props.subjectGroupIds,
         subjectIds: props.subjectIds,
 
         lastKnownReservationEventId: props.lastKnownReservationEventId,

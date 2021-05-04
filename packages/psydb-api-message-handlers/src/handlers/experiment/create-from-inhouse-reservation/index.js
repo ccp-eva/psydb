@@ -9,6 +9,7 @@ var SimpleHandler = require('../../../lib/simple-handler'),
     checkForeignIdsExist = require('../../../lib/check-foreign-ids-exist');
 
 var {
+    checkIntervalHasReservation,
     checkConflictingSubjectExperiments,
     dispatchAllChannelMessages,
 } = require('../util');
@@ -32,37 +33,29 @@ handler.checkAllowedAndPlausible = async ({
     }
 
     var {
-        reservationId,
-        lastKnownReservationEventId,
-        subjectGroupIds,
+        studyId,
+        experimentOperatorTeamId,
+        locationId,
+        interval,
+        //subjectGroupIds,
         subjectIds,
     } = message.payload.props;
 
-    var reservation = cache.reservation = await (
-        db.collection('reservation')
-        .findOne(
-            { _id: reservationId },
-        )
-    );
-
-    if (!reservation) {
-        throw new ApiError(400, 'InvalidReservation');
-    }
-    if (reservation.state.hasExperiment === true) {
-        throw new ApiError(400, 'ReservationHasExperiment');
-    }
-    if (reservation.events[0]._id !== lastKnownReservationEventId) {
-        throw new ApiError(400, 'ReservationHasChanged');
-    }
-
     // TODO: use FK to check existance (?)
     await checkForeignIdsExist(db, {
-        'subjectGroup': subjectGroupIds,
-        'subject': subjectIds
+        //'subjectGroup': subjectGroupIds,
+        'subject': subjectIds,
+        'study': [ studyId ],
+        'experimentOperatorTeam': [ experimentOperatorTeamId ],
+        'location': [ locationId ]
+    });
+
+    await checkIntervalHasReservation({
+        db, interval, locationId, experimentOperatorTeamId
     });
 
     await checkConflictingSubjectExperiments({
-        db, subjectIds, interval: reservation.state.interval
+        db, subjectIds, interval
     });
 }
 
@@ -76,7 +69,10 @@ handler.triggerSystemEvents = async ({
     var { type: messageType, payload } = message;
     var { id, props } = payload;
 
-    var { reservation } = cache;
+    //var { reservation } = cache;
+    var locationRecord = await db.collection('location').findOne({
+        _id: props.locationId,
+    }, { projection: { type: true }});
 
     await dispatchAllChannelMessages({
         db,
@@ -86,18 +82,18 @@ handler.triggerSystemEvents = async ({
         forcedExperimentId: id,
 
         type: 'inhouse',
-        reservationId: reservation._id,
-        seriesId: reservation.state.seriesId,
-        studyId: reservation.state.studyId,
-        experimentOperatorTeamId: reservation.state.experimentOperatorTeamId,
-        locationId: reservation.state.locationId,
-        locationRecordType: reservation.state.locationRecordType,
-        interval: reservation.state.interval,
+        //reservationId: reservation._id,
+        seriesId: nanoid(), // FIXME: id format
+        studyId: props.studyId,
+        experimentOperatorTeamId: props.experimentOperatorTeamId,
+        locationId: props.locationId,
+        locationRecordType: locationRecord.type,
+        interval: props.interval,
 
-        subjectGroupIds: props.subjectGroupIds,
+        //subjectGroupIds: props.subjectGroupIds,
         subjectIds: props.subjectIds,
 
-        lastKnownReservationEventId: props.lastKnownReservationEventId,
+        //lastKnownReservationEventId: props.lastKnownReservationEventId,
     });
 }
 

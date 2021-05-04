@@ -1,8 +1,16 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
 
+var intervalUtils = require('@mpieva/psydb-common-lib/src/interval-utils');
+
 var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
     compareIds = require('@mpieva/psydb-api-lib/src/compare-ids');
+
+var {
+    StripEventsStage
+} = require('@mpieva/psydb-api-lib/src/fetch-record-helpers');
+
+
 
 var PutMaker = require('../../lib/put-maker'),
     PushMaker = require('../../lib/push-maker');
@@ -29,6 +37,71 @@ var checkConflictingLocationReservations = async ({
         throw new ApiError(
             400, 'DuplicateLocationReservation'
         );
+    }
+}
+
+var checkIntervalHasReservation = async ({
+    db,
+    interval,
+    locationId,
+    experimentOperatorTeamId
+}) => {
+    var reservations = await (
+        db.collection('reservation').aggregate([
+            { $match: {
+                $or: [
+                    // our interval is completely contained
+                    { $and: [
+                        { 'state.interval.start': { $lte: interval.start }},
+                        { 'state.interval.end': { $gte: interval.end }},
+                    ]},
+                    // overlaps on the start
+                    { $and: [
+                        { 'state.interval.start': { $lte: interval.start }},
+                        { 'state.interval.end': { $gte: interval.start }},
+                    ]},
+                    // overlaps on the end
+                    { $and: [
+                        { 'state.interval.start': { $lte: interval.end }},
+                        { 'state.interval.end': { $gte: interval.end }},
+                    ]},
+                ],
+                'state.experimentOperatorTeamId': experimentOperatorTeamId,
+                'state.locationId': locationId,
+            }}
+        ]).toArray()
+    );
+
+    console.log(reservations);
+
+    var merged = intervalUtils.merge({
+        intervals: reservations.map(it => ({
+            start: it.state.interval.start.getTime(),
+            end: it.state.interval.end.getTime() + 1, // NOTE: close for merge
+        }))
+    });
+
+    console.log(merged);
+
+    var intersections = intervalUtils.intersect({
+        setA: merged,
+        setB: [{
+            start: interval.start.getTime(),
+            end: interval.end.getTime()
+        }]
+    });
+
+    console.log(intersections);
+
+    if (intersections.length !== 1) {
+        throw new ApiError(400, 'ReservationConflict');
+    }
+
+    if (
+        intersections[0].start !== interval.start.getTime()
+        || intersections[0].end !== interval.end.getTime()
+    ) {
+        throw new ApiError(400, 'ReservationConflict');
     }
 }
 
@@ -77,14 +150,16 @@ var dispatchAllChannelMessages = async ({
     experimentOperatorTeamId,
     locationId,
     locationRecordType,
-    subjectGroupIds,
+    //subjectGroupIds,
     subjectIds,
     interval,
 
     lastKnownReservationEventId,
 }) => {
 
-    var subjectGroups = await (
+    // subjectGroups
+    // XXX: keep this around in case we are actually using
+    /*var subjectGroups = await (
         db.collection('subjectGroups')
         .aggregate([
             { $match: {
@@ -97,7 +172,7 @@ var dispatchAllChannelMessages = async ({
             }}
         ])
         .toArray()
-    );
+    );*/
 
     var pusher = PushMaker({ personnelId });
     
@@ -107,14 +182,15 @@ var dispatchAllChannelMessages = async ({
     });
 
     var subjectDataMessages = [
-        ...subjectGroups.reduce((acc, group) => ([
+        // XXX: keep this around in case we are actually using
+        /*...subjectGroups.reduce((acc, group) => ([
             ...acc,
             ...pusher.all({
                 '/state/subjectData': group.state.subjectIds.map(
                     id => SubjectDataItem(id)
                 )
             })
-        ]), []),
+        ]), []),*/
         
         ...pusher.all({
             '/state/subjectData': subjectIds.map(
@@ -126,20 +202,20 @@ var dispatchAllChannelMessages = async ({
     // TODO: decide if we want to store experimentId in
     // reservation
     //var experimentId = await createId('experiment');
-    var reservationChannel = (
+    /*var reservationChannel = (
         rohrpost
         .openCollection('reservation')
         .openChannel({
             id: reservationId
         })
-    );
+    );*/
 
-    await reservationChannel.dispatchMany({
+    /*await reservationChannel.dispatchMany({
         lastKnownEventId: lastKnownReservationEventId,
         messages: PutMaker({ personnelId }).all({
             '/state/hasExperiment': true
         })
-    });
+    });*/
 
     var experimentChannel = (
         rohrpost
@@ -157,7 +233,7 @@ var dispatchAllChannelMessages = async ({
     var channelMessages = [
         ...PutMaker({ personnelId }).all({
             '/state/seriesId': seriesId,
-            '/state/reservationId': reservationId,
+            //'/state/reservationId': reservationId,
             '/state/studyId': studyId,
             '/state/experimentOperatorTeamId': experimentOperatorTeamId,
             '/state/locationId': locationId,
@@ -167,7 +243,7 @@ var dispatchAllChannelMessages = async ({
         }),
 
         ...pusher.all({
-            '/state/selectedSubjectGroupIds': subjectGroupIds,
+            //'/state/selectedSubjectGroupIds': subjectGroupIds,
             '/state/selectedSubjectIds': subjectIds,
         }),
 
@@ -178,6 +254,7 @@ var dispatchAllChannelMessages = async ({
     await experimentChannel.dispatchMany({ messages: channelMessages });
 }
 module.exports = {
+    checkIntervalHasReservation,
     checkConflictingLocationReservations,
     checkConflictingSubjectExperiments,
 

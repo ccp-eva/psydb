@@ -35,19 +35,19 @@ var createSchema = ({} = {}) => (
                             }),
                         },
 
-                        subjectGroupIds: {
+                        /*subjectGroupIds: {
                             type: 'array',
                             default: [],
                             items: ForeignId({
                                 collection: 'subjectGroup',
                             }),
-                        }
+                        }*/
                     },
                     required: [
                         'reservationId',
                         'lastKnownReservationEventId',
                         'locationId',
-                        'subjectGroupIds',
+                        //'subjectGroupIds',
                         'subjectIds',
                     ]
                 })
