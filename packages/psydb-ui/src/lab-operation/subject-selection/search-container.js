@@ -10,6 +10,7 @@ import {
 } from 'react-router-dom';
 
 import jsonpointer from 'jsonpointer';
+import { Base64 } from 'js-base64';
 
 import {
     DateOnlyInterval,
@@ -23,7 +24,7 @@ import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
 import createValueMap from './create-value-map';
 import SelectionSettingsFormSchema from './selection-settings-form-schema';
 import SelectionSettingsForm from './selection-settings-form';
-import TestableSubjectList from './testable-subject-list';
+import InhouseSubjectList from './inhouse/testable-subject-list';
 
 var FormSettingsItemSchema = ({
     studyName,
@@ -90,7 +91,9 @@ var reducer = (state, action) => {
 
 };
 
-const SearchContainer = () => {
+const SearchContainer = ({
+    experimentType,
+}) => {
     var { path, url } = useRouteMatch();
     var history = useHistory();
     var { studyIds, subjectRecordType } = useParams();
@@ -173,15 +176,21 @@ const SearchContainer = () => {
             out[basePtr].push(remapped[ptr]);
         }
 
-        dispatch({ type: 'update-search-settings', payload: {
+        var payload = {
             timeFrame: {
                 start: new Date(formData.timeFrame.start),
                 end: new Date(formData.timeFrame.end),
             },
             ageFrames: enabledAgeFrames,
             values: out,
-        } });
-        history.push(`${url}/search`);
+        };
+
+        var json = JSON.stringify(payload);
+        var base64 = Base64.encode(json);
+        console.log(base64);
+
+        dispatch({ type: 'update-search-settings', payload });
+        history.push(`${url}/search/${base64}`);
     };
 
     return (
@@ -192,10 +201,9 @@ const SearchContainer = () => {
                     onSubmit: handleSubmit,
                 }) } />
             </Route>
-            <Route exact path={ `${path}/search` }>
-                <TestableSubjectList
+            <Route exact path={ `${path}/search/:searchSettings64` }>
+                <InhouseSubjectList
                     studyLabelItems={ studyLabelItems }
-                    userSearchSettings={ searchSettings }
                 />
             </Route>
         </Switch>

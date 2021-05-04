@@ -17,7 +17,7 @@ var reducer = (state, action) => {
     }
 }
 
-const InhouseSelectionModal = ({
+const SubjectModal = ({
     show,
     onHide,
     studyNavItems,
@@ -72,4 +72,4 @@ const InhouseSelectionModal = ({
     );
 }
 
-export default InhouseSelectionModal;
+export default SubjectModal;

@@ -47,7 +47,7 @@ const LabOperation = () => {
     return (
         <div>
             <header>
-                <h1 style={{ borderBottom: '1px solid lightgrey' }}>
+                <h1 className='mb-0 border-bottom'>
                     Studienbetrieb
                 </h1>
             </header>

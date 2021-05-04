@@ -11,6 +11,8 @@ import {
 
 import agent from '@mpieva/psydb-ui-request-agents';
 
+import BigNav from '@mpieva/psydb-ui-lib/src/big-nav';
+import TabNav from '@mpieva/psydb-ui-lib/src/tab-nav';
 import LinkButton from '@mpieva/psydb-ui-lib/src/link-button';
 import RecordListContainer from '@mpieva/psydb-ui-lib/src/record-list-container';
 
@@ -18,26 +20,60 @@ import StudySelect from './study-select';
 import SubjectTypeSelect from './subject-type-select';
 import SearchContainer from './search-container';
 
+// FIXME: to prevent the user from having to select
+// away-team/inhouse in case where there are no inhouse studies
+// we could hav an endpoint to determine if there are studies
+// that are enabled for that type of testing
+// and decide based on that
 const SubjectSelectionRouting = () => {
     var { path, url } = useRouteMatch();
-    var { studyType } = useParams();
+    
+    return (
+        <>
+            <h5 className='mt-0 mb-3 text-muted'>
+                Probandenauswahl
+            </h5>
+
+            <Switch>
+                <Route exact path={ path }>
+                    <BigNav items={[
+                        {
+                            key: 'inhouse',
+                            label: 'In-House',
+                            linkTo: 'inhouse'
+                        }, 
+                        {
+                            key: 'away-team',
+                            label: 'via Aussen-Team',
+                            linkTo: 'away-team'
+                        },
+                    ]} />
+                </Route>
+                <Route path={ `${path}/inhouse`}>
+                    <InhouseSelectionContainer />
+                </Route>
+            </Switch>
+        </>
+    )
+}
+
+const InhouseSelectionContainer = () => {
+    var { path, url } = useRouteMatch();
 
     return (
         <div>
-            <div>have tabs for inhouse/away</div>
-            <div>select studies (multiple)</div>
-            <div>select subject type</div>
-            <div>select age-frame</div>
-
+            <h4 className='border-bottom'>
+                Für Inhouse-Experiment
+            </h4>
             <Switch>
                 <Route exact path={ `${path}` }>
-                    <StudySelect />
+                    <StudySelect experimentType='inhouse' />
                 </Route>
                 <Route exact path={ `${path}/:studyIds` }>
-                    <SubjectTypeSelect />
+                    <SubjectTypeSelect experimentType='inhouse' />
                 </Route>
                 <Route path={ `${path}/:studyIds/:subjectRecordType` }>
-                    <SearchContainer />
+                    <SearchContainer experimentType='inhouse' />
                 </Route>
             </Switch>
         </div>
