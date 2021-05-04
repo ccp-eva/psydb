@@ -1,5 +1,7 @@
 'use strict';
-var ParticipationStatus = () => ({
+var ParticipationStatus = ({
+    ...additionalKeywords
+} = {}) => ({
     systemType: 'ParticipationStatus',
     type: 'string',
     enum: [
@@ -11,7 +13,20 @@ var ParticipationStatus = () => ({
         'canceled-by-participant',
         'canceled-by-institute', // aka we uninvited the subject
     ],
-    default: 'unknown'
+
+    // FIXME: rjsf
+    enumNames: [
+        'unbekannt',
+        'teilgenommen',
+        'nicht teilgenommen',
+        'nur erschienen',
+        'nicht erschienen',
+        'abgesagt',
+        'ausgeladen'
+    ],
+
+    default: 'unknown',
+    ...additionalKeywords,
 })
 
 module.exports = ParticipationStatus;

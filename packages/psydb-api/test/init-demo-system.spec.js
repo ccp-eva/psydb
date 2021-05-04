@@ -114,7 +114,7 @@ describe('init-demo-system', function () {
         });*/
 
         // console.dir(response.body, { depth: null });
-        /*var response = await agent.post('/search').send({
+        var response = await agent.post('/search').send({
             collectionName: 'subject',
             recordType: 'teacher',
             filters: {
@@ -122,7 +122,7 @@ describe('init-demo-system', function () {
             },
             offset: 0,
             limit: 20,
-        });*/
+        });
         /*var response = await agent.post('/search').send({
             collectionName: 'customRecordType',
             filters: {},
@@ -138,7 +138,7 @@ describe('init-demo-system', function () {
         //response = await agent.get(`/available-test-locations-for-study/${context.STUDY_01_ID}/${context.INSTITUTEROOM_TYPE_ID}`);
         //response = await agent.get(`/experiment-operator-teams-for-study/${context.STUDY_01_ID}`);
         //console.log('###############')
-        response = await agent.get(`/participated-subjects-for-study/${context.STUDY_01_ID}`);
+        //response = await agent.get(`/participated-subjects-for-study/${context.STUDY_01_ID}`);
         /*response = await agent.get(inline`
             /study-location-reservation-calendar
             /2021-01-01T00:00:00.000Z

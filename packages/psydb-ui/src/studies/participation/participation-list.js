@@ -14,6 +14,8 @@ const ParticipationList = ({
     relatedHelperSetItems,
     relatedCustomRecordTypeLabels,
     displayFieldData,
+
+    className,
 }) => {
 
     var dateOfBirthField = displayFieldData.find(it => (
@@ -21,7 +23,7 @@ const ParticipationList = ({
     ));
 
     return (
-        <Table>
+        <Table className={ className }>
             <thead>
                 <tr>
                     <FieldDataHeadCols
@@ -97,7 +99,6 @@ const ParticipationListRow = ({
 }
 
 var formatStatus = (status) => {
-    console.log(status)
     return {
         'unknown': 'unb.',
         'participated': 't.g.',

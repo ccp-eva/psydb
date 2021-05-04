@@ -179,20 +179,6 @@ const reducer = (state, action) => {
                 showEditModal: false,
             }
 
-        case 'show-delete-modal':
-            return {
-                ...state,
-                showDeleteModal: true,
-                deleteModalData: {
-                    ...payload
-                }
-            }
-        case 'hide-delete-modal':
-            return {
-                ...state,
-                showDeleteModal: false
-            }
-
         case 'toggle-hidden':
             return {
                 ...state,

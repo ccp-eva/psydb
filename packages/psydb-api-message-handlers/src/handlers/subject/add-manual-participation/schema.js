@@ -19,7 +19,6 @@ var Schema = () => {
         payload: ExactObject({
             properties: {
                 id: Id(),
-                lastKnownScientificEventId: EventId(),
                 studyId: ForeignId({
                     collection: 'study',
                 }),
@@ -28,7 +27,6 @@ var Schema = () => {
             },
             required: [
                 'id',
-                'lastKnownScientificEventId',
                 'studyId',
                 'timestamp',
                 'status',

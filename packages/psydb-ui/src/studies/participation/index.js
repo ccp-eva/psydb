@@ -9,6 +9,8 @@ import {
     useParams
 } from 'react-router-dom';
 
+import { Button } from 'react-bootstrap';
+
 import keyBy from '@mpieva/psydb-common-lib/src/key-by';
 import agent from '@mpieva/psydb-ui-request-agents';
 
@@ -16,6 +18,7 @@ import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
 import TabNav from '@mpieva/psydb-ui-lib/src/tab-nav';
 
 import ParticipationList from './participation-list';
+import ParticipationCreateModal from './participation-create-modal';
 
 const StudyParticipation = ({}) => {
     var { path, url } = useRouteMatch();
@@ -27,6 +30,9 @@ const StudyParticipation = ({}) => {
         subjectRecordTypes,
         dataBySubjectType,
         selectedSubjectType,
+
+        showCreateModal,
+
         listRevision
     } = state;
 
@@ -48,6 +54,18 @@ const StudyParticipation = ({}) => {
         })
     }, [ id, listRevision ])
 
+    var [
+        handleShowCreateModal,
+        handleHideCreateModal,
+        
+        handleParticipationCreated,
+    ] = useMemo(() => ([
+        () => dispatch({ type: 'show-create-modal' }),
+        () => dispatch({ type: 'hide-create-modal' }),
+
+        () => dispatch({ type: 'increase-list-revision' }),
+    ]));
+
     if (!dataBySubjectType || !subjectRecordTypes) {
         return (
             <LoadingIndicator size='lg' />
@@ -61,6 +79,14 @@ const StudyParticipation = ({}) => {
     return (
         <div className='mt-3'>
 
+            <ParticipationCreateModal
+                show={ showCreateModal }
+                onHide={ handleHideCreateModal }
+                onSuccessfulCreate={ handleParticipationCreated }
+                studyId={ id }
+                subjectRecordType={ selectedSubjectType }
+            />
+
             <TabNav
                 activeKey={ selectedSubjectType }
                 items={ Object.keys(dataBySubjectType).map(type => ({
@@ -73,9 +99,15 @@ const StudyParticipation = ({}) => {
                     }})
                 }}
             />
-           
-            <div className='mt-2'>
+
+            <div className='mt-3'>
+
+                <Button onClick={ handleShowCreateModal }>
+                    Probanden hinzufügen
+                </Button>
+
                 <ParticipationList
+                    className='mt-1 bg-white'
                     { ...dataBySubjectType[selectedSubjectType] } 
                 />
             </div>
@@ -109,6 +141,23 @@ const reducer = (state, action) => {
                 ...state,
                 selectedSubjectType: payload
             })
+        
+        case 'show-create-modal':
+            return {
+                ...state,
+                showCreateModal: true,
+            }
+        case 'hide-create-modal':
+            return {
+                ...state,
+                showCreateModal: false,
+            }
+
+        case 'increase-list-revision':
+            return {
+                ...state,
+                listRevision: (state.listRevision || 0) + 1
+            }
     }
 }
         

@@ -60,7 +60,10 @@ const StudyRecordContainer = ({
     return (
         <>
             <div className='border pl-3 bg-light'>
-                <h5 className='d-flex justify-content-between align-items-end'>
+                <h5
+                    className='d-flex justify-content-between align-items-end'
+                    style={{ minHeight: '38px' }}
+                >
                     <span>Studien-Details</span>
                     { tabKey === 'details' && (
                         <EditLinkButton

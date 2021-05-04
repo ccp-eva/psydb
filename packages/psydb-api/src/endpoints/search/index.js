@@ -27,6 +27,7 @@ var CoreBodySchema = require('./core-body-schema'),
     FullBodySchema = require('./full-body-schema');
 
 var gatherDisplayFieldsForRecordType = require('@mpieva/psydb-api-lib/src/gather-display-fields-for-record-type');
+var fetchOneCustomRecordType = require('@mpieva/psydb-api-lib/src/fetch-one-custom-record-type');
 var fetchRecordsByFilter = require('@mpieva/psydb-api-lib/src/fetch-records-by-filter');
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
@@ -114,6 +115,18 @@ var search = async (context, next) => {
         hasSubChannels,
         recordLabelDefinition,
     } = collectionCreatorData;
+
+    if (recordType) {
+        var customRecordTypeData = await fetchOneCustomRecordType({
+            db,
+            collection: collectionName,
+            type: recordType,
+        });
+
+        recordLabelDefinition = (
+            customRecordTypeData.state.recordLabelDefinition
+        );
+    }
 
     var records = await fetchRecordsByFilter({
         db,

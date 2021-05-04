@@ -20,7 +20,8 @@ var handler = SimpleHandler({
 handler.checkAllowedAndPlausible = async ({
     db,
     permissions,
-    message
+    message,
+    cache,
 }) => {
     // TODO
     if (!permissions.hasRootAccess) {
@@ -56,12 +57,14 @@ handler.checkAllowedAndPlausible = async ({
         throw new ApiError(404, 'SubjectNotFound');
     }
 
-    if (!compareIds(
+    cache.subject = subject;
+
+    /*if (!compareIds(
         subject.scientific.events[0]._id,
         lastKnownScientificEventId
     )) {
         throw new ApiError(400, 'SubjectRecordHasChanged');
-    }
+    }*/
 }
 
 handler.triggerSystemEvents = async ({
@@ -69,11 +72,11 @@ handler.triggerSystemEvents = async ({
     rohrpost,
     message,
     personnelId,
+    cache,
 }) => {
     var { type: messageType, payload } = message;
     var {
         id,
-        lastKnownScientificEventId,
         studyId,
         timestamp,
         status,
@@ -99,7 +102,9 @@ handler.triggerSystemEvents = async ({
     await channel.dispatchMany({
         messages,
         subChannelKey: 'scientific',
-        lastKnownEventId: lastKnownScientificEventId,
+        // NOTE: this is intentional since there is no way of knowing the id
+        // beforehand in certain cases
+        lastKnownEventId: cache.subject.scientific.events[0]._id,
     });
 }
 
