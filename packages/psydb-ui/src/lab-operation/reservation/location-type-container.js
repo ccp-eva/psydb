@@ -70,6 +70,8 @@ const LocationTypeContainer = ({
                 activeLocationType={ locationRecordType }
                 onSelectEmptySlot={ handleShowCreateModal }
                 calendarRevision={ calendarRevision }
+
+                locationCalendarListClassName='bg-white'
             />
 
         </>

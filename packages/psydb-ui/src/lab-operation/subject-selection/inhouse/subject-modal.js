@@ -33,7 +33,13 @@ const SubjectModal = ({
     } = state;
 
     return (
-        <Modal show={show} onHide={ onHide } size='xl'>
+        <Modal
+            show={show}
+            onHide={ onHide }
+            size='xl'
+            className='team-modal'
+            backdropClassName='team-modal-backdrop'
+        >
             <Modal.Header closeButton>
                 <Modal.Title>Details/Einladung</Modal.Title>
             </Modal.Header>

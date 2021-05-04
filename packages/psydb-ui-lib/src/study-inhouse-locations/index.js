@@ -21,6 +21,8 @@ const StudyInhouseLocations = ({
     currentPageEnd,
     onPageChange,*/
 
+    locationCalendarListClassName,
+
     // used to force reloading the whole component
     revision = 0,
 
@@ -73,6 +75,15 @@ const StudyInhouseLocations = ({
         )
     }
 
+    if (!activeLocationType) {
+        activeLocationType = (
+            studyRecord.state
+            .inhouseTestLocationSettings[0].customRecordType
+        )
+    }
+
+    console.log('L', locationCalendarListClassName);
+
     return (
         <>
             <StudyInhouseLocationTypeNav
@@ -84,6 +95,7 @@ const StudyInhouseLocations = ({
                 }}
             />
             <LocationCalendarList
+                className={ locationCalendarListClassName }
                 teamRecords={ teamRecords }
                 studyId={ studyId }
                 locationRecordType={ activeLocationType }

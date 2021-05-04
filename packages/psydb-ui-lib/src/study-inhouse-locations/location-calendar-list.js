@@ -21,6 +21,8 @@ const LocationCalendarList = ({
     onSelectReservationSlot,
     onSelectExperimentSlot,
 
+    className,
+
     // used to force reloading the calendar data
     revision = 0,
 }) => {
@@ -60,7 +62,7 @@ const LocationCalendarList = ({
     } = calendarData;
 
     return (
-        <>
+        <div className={ className }>
             <CalendarNav { ...({
                 className: 'mt-3',
                 currentPageStart,
@@ -91,7 +93,7 @@ const LocationCalendarList = ({
                     })}
                 />
             ))}
-        </>
+        </div>
     )
 }
 const WrappedLocationCalendarList = withWeeklyCalendarPages(LocationCalendarList);

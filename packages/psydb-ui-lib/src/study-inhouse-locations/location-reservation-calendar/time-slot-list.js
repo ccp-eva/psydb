@@ -54,6 +54,33 @@ const TimeSlotList = ({
 
     //console.log(slots);
 
+    var wrappedOnSelectEmptySlot = undefined;
+    if (onSelectEmptySlot) {
+        wrappedOnSelectEmptySlot = (props) => onSelectEmptySlot({
+            ...props,
+            maxEnd: getNewReservationMaxEnd({
+                start: props.start,
+                reservationRecords,
+                upperBoundary: end,
+                slotDuration,
+            }),
+        }) 
+    }
+
+    var wrappedOnSelectReservationSlot = undefined;
+    if (onSelectReservationSlot) {
+        wrappedOnSelectReservationSlot = (props) => onSelectReservationSlot({
+            ...props,
+            maxEnd: getNewExperimentMaxEnd({
+                start: props.start,
+                selectedReservationRecord: props.reservationRecord,
+                reservationRecords,
+                upperBoundary: end,
+                slotDuration,
+            }),
+        }) 
+    }
+
     return (
         <div>
             <header className='text-center bg-light border-bottom'>
@@ -76,16 +103,12 @@ const TimeSlotList = ({
                         studyId={ studyId }
                         locationRecord={ locationRecord }
                         teamRecords={ teamRecords }
-                        onSelectEmptySlot={ (props) => onSelectEmptySlot({
-                            ...props,
-                            maxEnd: getNewReservationMaxEnd({
-                                start: props.start,
-                                reservationRecords,
-                                upperBoundary: end,
-                                slotDuration,
-                            }),
-                        }) }
-                        onSelectReservationSlot={ onSelectReservationSlot }
+                        onSelectEmptySlot={
+                            wrappedOnSelectEmptySlot
+                        }
+                        onSelectReservationSlot={
+                            wrappedOnSelectReservationSlot
+                        }
                     />
                 )
             )}
@@ -112,6 +135,47 @@ const getNewReservationMaxEnd = ({
     }
     console.log(found);
     return new Date((found || upperBoundary).getTime() + slotDuration);
+}
+
+
+const getNewExperimentMaxEnd = ({
+    start,
+    selectedReservationRecord,
+    reservationRecords,
+    upperBoundary,
+    slotDuration,
+}) => {
+    var maxEnd = new Date(selectedReservationRecord.state.interval.end);
+    
+    for (var item of reservationRecords) {
+        var reservationStart = new Date(item.state.interval.start);
+        var reservationEnd = new Date(item.state.interval.end);
+        
+        if (
+            maxEnd > reservationEnd
+            || reservationEnd > upperBoundary
+        ) {
+            continue;
+        }
+        
+        if (
+            item.state.experimentOperatorTeamId
+            !== selectedReservationRecord.state.experimentOperatorTeamId
+        ) {
+            continue;
+        }
+
+        // check if continous
+        if (maxEnd.getTime() + 1 !== reservationStart.getTime()) {
+            continue;
+        }
+
+        maxEnd = reservationEnd;
+    }
+
+    console.log(maxEnd);
+
+    return new Date(maxEnd.getTime() + slotDuration);
 }
 
 const slotifyRecords = ({

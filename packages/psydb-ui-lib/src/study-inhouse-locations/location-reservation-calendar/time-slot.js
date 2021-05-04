@@ -14,6 +14,7 @@ const TimeSlot = ({
 
     onSelectEmptySlot,
     onSelectReservationSlot,
+    onSelectExperimentSlot,
 }) => {
     var date = new Date(timestamp);
     if (experimentRecord) {
@@ -22,12 +23,13 @@ const TimeSlot = ({
         ));
         return (
             <div
+                role={ onSelectExperimentSlot ? 'button' : undefined }
                 className='text-center m-1'
                 style={{
                     height: '26px',
                     background: teamRecord.state.color,
                     color: getTextColor(teamRecord.state.color),
-                    borderWidth: '1px',
+                    borderWidth: '2px',
                     borderStyle: 'dashed',
                     borderColor: getTextColor(teamRecord.state.color),
                     boxSizing: 'border-box'
@@ -59,6 +61,7 @@ const TimeSlot = ({
         ));
         return (
             <div
+                role={ onSelectReservationSlot ? 'button' : undefined }
                 className='text-center m-1'
                 style={{
                     height: '26px',
@@ -71,8 +74,9 @@ const TimeSlot = ({
                 onClick={ () => {
                     onSelectReservationSlot && onSelectReservationSlot({
                         studyId,
+                        teamRecords,
                         locationRecord,
-                        reservationId: reservationRecord._id,
+                        reservationRecord,
                         start: date,
                         slotDuration,
                         // maxEnd
@@ -85,6 +89,7 @@ const TimeSlot = ({
     }
     return (
         <div
+            role={ onSelectEmptySlot ? 'button' : undefined }
             className='border text-center m-1'
             style={{ height: '26px' }}
             onClick={ () => {

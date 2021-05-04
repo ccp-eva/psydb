@@ -12,12 +12,14 @@ var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
 
 var createRecordLabel = require('@mpieva/psydb-api-lib/src/create-record-label');
 var gatherAgeFrameDataOfStudy = require('@mpieva/psydb-api-lib/src/gather-age-frame-data-of-study');
+var fetchOneCustomRecordType = require('@mpieva/psydb-api-lib/src/fetch-one-custom-record-type');
 
 var {
     MatchIntervalOverlapStage,
     StripEventsStage,
     AddSubjectTestabilityFieldsStage,
     HasAnyTestabilityStage,
+    SeperateRecordLabelDefinitionFieldsStage,
     ProjectDisplayFieldsStage,
 } = require('@mpieva/psydb-api-lib/src/fetch-record-helpers');
 
@@ -101,6 +103,16 @@ var testableSubjectsInhouse = async (context, next) => {
         prefetched: subjectRecordTypeRecord,
     });
 
+    var customRecordTypeData = await fetchOneCustomRecordType({
+        db,
+        collection: 'subject',
+        type: subjectRecordType,
+    });
+
+    var recordLabelDefinition = (
+        customRecordTypeData.state.recordLabelDefinition
+    );
+
     var subjectRecords = await db.collection('subject').aggregate([
         { $match: { type: subjectRecordType }},
         // TODO: quicksearch
@@ -123,9 +135,13 @@ var testableSubjectsInhouse = async (context, next) => {
             studyIds
         }),
         StripEventsStage({ subChannels: ['gdpr', 'scientific']}),
+        SeperateRecordLabelDefinitionFieldsStage({
+            recordLabelDefinition
+        }),
         ProjectDisplayFieldsStage({
             displayFields,
             additionalProjection: {
+                '_recordLabelDefinitionFields': true,
                 '_ageFrameField': true,
                 'scientific.state.studyParticipation': true,
                 ...( studyIds.reduce((acc, id) => ({
@@ -142,7 +158,8 @@ var testableSubjectsInhouse = async (context, next) => {
         timeFrame: {
             start: timeFrameStart,
             end: timeFrameEnd
-        }
+        },
+        recordLabelDefinition,
     })
 
     var availableDisplayFieldDataByPointer = keyBy({
@@ -185,6 +202,7 @@ var postprocessSubjectRecords = ({
     subjectRecordType,
     studyRecords,
     timeFrame,
+    recordLabelDefinition,
 }) => {
 
     var gatheredAgeFrameDataByStudyId = {};
@@ -198,6 +216,12 @@ var postprocessSubjectRecords = ({
     }
 
     subjectRecords.forEach(record => {
+        record._recordLabel = createRecordLabel({
+            record: record._recordLabelDefinitionFields,
+            definition: recordLabelDefinition,
+        });
+        delete record._recordLabelDefinitionFields;
+
         var testableInStudies = [];
         for (var { _id: studyId } of studyRecords) {
             if (record[`_testableIn_${studyId}`]) {

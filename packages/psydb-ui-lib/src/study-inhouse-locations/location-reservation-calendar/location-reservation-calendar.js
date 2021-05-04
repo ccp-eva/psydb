@@ -66,6 +66,8 @@ const LocationCalendar = ({
     onSelectEmptySlot,
     onSelectReservationSlot,
     onSelectExperimentSlot,
+
+    className,
 }) => {
     var { path, url } = useRouteMatch();
 
@@ -128,7 +130,7 @@ const LocationCalendar = ({
     ), [ currentPageStart, currentPageEnd ]);
 
     return (
-        <div>
+        <div className={ className }>
             <h5 className='pl-3 pt-2 pb-2 m-0 bg-light'>
                 <u>Raum: { locationRecord._recordLabel }</u>
             </h5>
