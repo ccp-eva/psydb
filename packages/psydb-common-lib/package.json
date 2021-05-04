@@ -12,7 +12,8 @@
     "@mpieva/psydb-schema-fields": "~0.1.0-alpha",
     "json-schema-traverse": "~1.0.0",
     "jsonpointer": "~4.1.0",
-    "@mpieva/json-schema-convert-pointer": "~0.1.0-alpha"
+    "@mpieva/json-schema-convert-pointer": "~0.1.0-alpha",
+    "@cdxoo/inline-text": "~1.0.1"
   },
   "devDependencies": {
     "mocha": "~8.1.3",

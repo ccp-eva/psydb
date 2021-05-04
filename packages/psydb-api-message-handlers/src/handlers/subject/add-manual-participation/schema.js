@@ -6,6 +6,7 @@ var {
     ForeignId,
     IdentifierString,
     DateTime,
+    ParticipationStatus,
 } = require('@mpieva/psydb-schema-fields');
 
 var {
@@ -23,12 +24,14 @@ var Schema = () => {
                     collection: 'study',
                 }),
                 timestamp: DateTime(),
+                status: ParticipationStatus(),
             },
             required: [
                 'id',
                 'lastKnownScientificEventId',
                 'studyId',
                 'timestamp',
+                'status',
             ]
         })
     });

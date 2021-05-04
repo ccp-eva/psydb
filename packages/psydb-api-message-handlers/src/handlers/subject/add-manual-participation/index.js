@@ -76,6 +76,7 @@ handler.triggerSystemEvents = async ({
         lastKnownScientificEventId,
         studyId,
         timestamp,
+        status,
     } = payload;
 
     var channel = (
@@ -91,6 +92,7 @@ handler.triggerSystemEvents = async ({
             type: 'manual',
             studyId,
             timestamp,
+            status,
         },
     });
 

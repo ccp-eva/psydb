@@ -17,6 +17,7 @@ import LinkButton from '@mpieva/psydb-ui-lib/src/link-button';
 
 import StudyRecordDetails from './record-details';
 import StudyTeams from './teams';
+import StudyParticipation from './participation';
 
 const StudyRecordRouting = ({
     recordType,
@@ -100,6 +101,12 @@ const StudyRecordContainer = ({
 
                     { tabKey === 'teams' && (        
                         <StudyTeams
+                            recordType={ recordType }
+                        />
+                    )}
+
+                    { tabKey === 'participation' && (        
+                        <StudyParticipation
                             recordType={ recordType }
                         />
                     )}

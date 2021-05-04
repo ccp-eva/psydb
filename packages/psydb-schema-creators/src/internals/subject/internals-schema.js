@@ -5,6 +5,7 @@ var {
     ExactObject,
     ForeignId,
     DateTime,
+    ParticipationStatus,
 } = require('@mpieva/psydb-schema-fields');
 
 var ManualParticipation = () => ExactObject({
@@ -17,12 +18,14 @@ var ManualParticipation = () => ExactObject({
         studyId: ForeignId({
             collection: 'study',
         }),
-        timestamp: DateTime()
+        timestamp: DateTime(),
+        status: ParticipationStatus(),
     },
     require: [
         'type',
         'studyId',
         'timestamp',
+        'status'
     ]
 });
 
@@ -39,13 +42,15 @@ var ExperimentParticipation = () => ExactObject({
         experimentId: ForeignId({
             collection: 'experiment',
         }),
-        timestamp: DateTime()
+        timestamp: DateTime(),
+        status: ParticipationStatus(),
     },
     require: [
         'type',
         'studyId',
         'experimentId',
         'timestamp',
+        'status',
     ]
 });
 

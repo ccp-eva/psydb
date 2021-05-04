@@ -93,6 +93,13 @@ agent.fetchExperimentOperatorTeamsForStudy = ({
     return axios.get(`${baseUrl}/${studyId}`);
 }
 
+agent.fetchParticipatedSubjectsForStudy = ({
+    studyId,
+}) => {
+    var baseUrl = '/api/participated-subjects-for-study';
+    return axios.get(`${baseUrl}/${studyId}`);
+}
+
 agent.fetchStudyLocationReservationCalendar = ({
     studyId,
     locationRecordType,

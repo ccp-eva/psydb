@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import FieldDataHeadCols from './field-data-head-cols';
 
 const TableHead = ({
     displayFieldData,
@@ -10,9 +11,7 @@ const TableHead = ({
                 { showSelectionIndicator && (
                     <th></th>
                 )}
-                { displayFieldData.map(it => (
-                    <th key={ it.key }>{ it.displayName }</th>
-                ))}
+                <FieldDataHeadCols displayFieldData={ displayFieldData } />
                 <th></th>
             </tr>
         </thead>

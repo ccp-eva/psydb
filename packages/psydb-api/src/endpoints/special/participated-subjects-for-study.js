@@ -70,14 +70,13 @@ var participatedSubjectsForStudy = async (context, next) => {
         dataBySubjectType[subjectType] = data;
     }
 
-    console.log(dataBySubjectType);
+    //console.log(dataBySubjectType);
 
-    /*context.body = ResponseBody({
+    context.body = ResponseBody({
         data: {
-            records: experimentOperatorTeamRecords,
-            relatedRecordLabels: relatedRecords,
+            dataBySubjectType,
         },
-    });*/
+    });
 
     await next();
 };
