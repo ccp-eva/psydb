@@ -1,20 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import jsonpointer from 'jsonpointer';
-
-import {
-    Table
-} from 'react-bootstrap';
-
-import {
-    CheckSquareFill,
-    Square
-} from 'react-bootstrap-icons';
 
 import agent from '@mpieva/psydb-ui-request-agents';
-import LinkButton from '../link-button';
 
-import TableHead from './table-head';
-import TableBody from './table-body';
+import Table from './table';
 
 var RecordList = ({
     collection,
@@ -62,58 +50,30 @@ var RecordList = ({
     var {
         records,
         displayFieldData,
-        relatedRecords,
-        relatedHelperSetItems
+        relatedRecordLabels,
+        relatedHelperSetItems,
+        relatedCustomRecordTypeLabels
     } = payload;
-   
-    if (!records) {
-        return (
-            <div>Empty</div> 
-        );
-    }
-
-    var wrappedOnSelectRecord = (record) => {
-        if (!onSelectRecord) {
-            return
-        }
-
-        if (selectedRecordIds) {
-            var action = (
-                selectedRecordIds.includes(record._id)
-                ? ({ type: 'remove', payload: { id: record._id } })
-                : ({ type: 'add', payload: { id: record._id } })
-            );
-            return onSelectRecord(action);
-        }
-        else {
-            return onSelectRecord(record);
-        }
-    }
-
+  
     return (
-        <Table hover={ onSelectRecord ? true : false }>
-            <TableHead
-                displayFieldData={ displayFieldData }
-                showSelectionIndicator={ showSelectionIndicator }
-            />
-            <TableBody { ...({
-                records,
-                displayFieldData,
-                relatedRecords,
-                relatedHelperSetItems,
+        <Table { ...({
+            records,
+            displayFieldData,
+            relatedRecordLabels,
+            relatedHelperSetItems,
+            relatedCustomRecordTypeLabels,
 
-                enableView,
-                enableEdit,
+            enableView,
+            enableEdit,
 
-                enableSelectRecords,
-                showSelectionIndicator,
-                onSelectRecord: wrappedOnSelectRecord,
-                selectedRecordIds,
+            enableSelectRecords,
+            showSelectionIndicator,
+            onSelectRecord,
+            selectedRecordIds,
 
-                linkBaseUrl
-            })} />
-        </Table>
-    );
+            linkBaseUrl
+        })} />
+    )
 }
 
 

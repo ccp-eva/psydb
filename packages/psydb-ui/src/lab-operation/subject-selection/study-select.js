@@ -11,53 +11,64 @@ import RecordListContainer from '@mpieva/psydb-ui-lib/src/record-list-container'
 const reducer = (state, action) => {
     var { type, payload } = action;
     switch (type) {
-        case 'selected-study-ids/add':
-            var nextSelectedStudyIds = [
-                ...state.selectedStudyIds,
-                payload.id,
+        case 'selected-studies/set':
+            return ({
+                ...state,
+                selectedStudies: [ payload.record ]
+            })
+        case 'selected-studies/add':
+            var nextSelectedStudies = [
+                ...state.selectedStudies,
+                payload.record,
             ];
             return ({
                 ...state,
-                selectedStudyIds: nextSelectedStudyIds
+                selectedStudies: nextSelectedStudies
             });
-        case 'selected-study-ids/remove':
-            var nextSelectedStudyIds = state.selectedStudyIds.filter(id => (
-                id !== payload.id
+        case 'selected-studies/remove':
+            var nextSelectedStudies = state.selectedStudies.filter(it => (
+                it._id !== payload.id
             ));
             return ({
                 ...state,
-                selectedStudyIds: nextSelectedStudyIds
+                selectedStudies: nextSelectedStudies
             });
     }
 }
 
-const StudySelect = () => {
+const StudySelect = ({
+    experimentType,
+    singleStudy,
+}) => {
     var { path, url } = useRouteMatch();
     var { studyType } = useParams();
 
     var [ state, dispatch ] = useReducer(reducer, {
-        selectedStudyIds: [],
+        selectedStudies: [],
     });
 
-    var { selectedStudyIds } = state;
+    var { selectedStudies } = state;
 
     return (
         <div>
             <div
-                className='p-2'
+                className='p-2 d-flex justify-content-between align-items-center'
                 style={{
                     position: 'sticky',
                     top: 0,
                     background: '#ffffff',
                 }}
             >
-                <b>Ausgewählt: { selectedStudyIds.length }</b>
-                {' '}
+                <b>{
+                    singleStudy
+                    ? '' 
+                    : `Ausgewählt: ${selectedStudies.length}`
+                }</b>
                 <LinkButton
-                    to={ `${url}/${selectedStudyIds.join(',')}`}
-                    disabled={ selectedStudyIds.length < 1 }
+                    to={ `${url}/${selectedStudies.map(it => it._id).join(',')}`}
+                    disabled={ selectedStudies.length < 1 }
                 >
-                    Suchen
+                    Weiter
                 </LinkButton>
             </div>
 
@@ -66,9 +77,20 @@ const StudySelect = () => {
                 recordType={ studyType }
                 linkBaseUrl={ url }
                 showSelectionIndicator={ true }
-                selectedRecordIds={ selectedStudyIds }
+                selectedRecordIds={ selectedStudies.map(it => it._id) }
                 onSelectRecord={ ({ type, payload }) => {
-                    dispatch({ type: `selected-study-ids/${type}`, payload });
+                    if (singleStudy) {
+                        dispatch({
+                            type: `selected-studies/set`,
+                            payload
+                        });
+                    }
+                    else {
+                        dispatch({
+                            type: `selected-studies/${type}`,
+                            payload
+                        });
+                    }
                 }}
             />
 

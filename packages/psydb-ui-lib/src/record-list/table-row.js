@@ -14,7 +14,7 @@ import FieldDataBodyCols from './field-data-body-cols';
 const TableRow = ({
     displayFieldData,
     record,
-    relatedRecords,
+    relatedRecordLabels,
     relatedHelperSetItems,
     relatedCustomRecordTypeLabels,
     
@@ -50,7 +50,7 @@ const TableRow = ({
             )}
             <FieldDataBodyCols { ...({
                 record,
-                relatedRecordLabels: relatedRecords,
+                relatedRecordLabels,
                 relatedHelperSetItems,
                 relatedCustomRecordTypeLabels,
                 displayFieldData,

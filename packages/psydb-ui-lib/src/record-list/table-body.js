@@ -5,7 +5,6 @@ import TableRow from './table-row';
 const TableBody = ({
     displayFieldData,
     records,
-    relatedRecords, // FIXME
     relatedRecordLabels,
     relatedHelperSetItems,
 
@@ -19,14 +18,13 @@ const TableBody = ({
     
     linkBaseUrl,
 }) => {
-    relatedRecords = relatedRecords || relatedRecordLabels; // FIXME
     return (
         <tbody>
             { records.map(it => (
                 <TableRow { ...({
                     key: it._id,
                     record: it,
-                    relatedRecords,
+                    relatedRecordLabels,
                     relatedHelperSetItems,
 
                     displayFieldData,
