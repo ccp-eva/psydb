@@ -14,9 +14,7 @@ var convertPointerToPath = require('@mpieva/psydb-api-lib/src/convert-pointer-to
 var fetchOneCustomRecordType = require('@mpieva/psydb-api-lib/src/fetch-one-custom-record-type');
 var gatherDisplayFieldsForRecordType = require('@mpieva/psydb-api-lib/src/gather-display-fields-for-record-type');
 
-var createSchemaForRecordType =
-    require('@mpieva/psydb-api-lib/src/create-schema-for-record-type');
-var fetchRelatedLabels = require('@mpieva/psydb-api-lib/src/fetch-related-labels');
+var fetchRelatedLabelsForMany = require('@mpieva/psydb-api-lib/src/fetch-related-labels-for-many');
 
 var {
     MatchIntervalOverlapStage,
@@ -183,50 +181,8 @@ var inviteConfirmationList = async (context, next) => {
         },
     });
 
-
     await next();
 }
 
-var fetchRelatedLabelsForMany = async ({
-    db,
-    collectionName,
-    recordType,
-    records,
-}) => {
-
-    var recordSchema = await createSchemaForRecordType({
-        db,
-        collectionName,
-        recordType,
-        fullSchema: true
-    });
-
-    // FIXME: this is really hacky
-    var resolveSchema = {
-        type: 'object',
-        properties: {
-            records: {
-                type: 'array',
-                items: recordSchema,
-            }
-        }
-    }
-
-    var {
-        relatedRecords: relatedRecordLabels,
-        relatedHelperSetItems,
-        relatedCustomRecordTypes: relatedCustomRecordTypeLabels,
-    } = await fetchRelatedLabels({
-        db,
-        data: { records },
-        schema: resolveSchema,
-    });
-
-    return ({
-        relatedRecordLabels,
-        relatedHelperSetItems,
-        relatedCustomRecordTypeLabels,
-    });
-}
 
 module.exports = inviteConfirmationList;

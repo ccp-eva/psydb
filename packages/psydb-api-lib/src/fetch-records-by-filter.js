@@ -25,6 +25,7 @@ var fetchRecordByFilter = async ({
     queryFields,
     displayFields,
     recordLabelDefinition,
+    additionalPreprocessStages,
 }) => {
     var stages = [];
 
@@ -38,6 +39,7 @@ var fetchRecordByFilter = async ({
     
     stages = [
         ...stages,
+        ...(additionalPreprocessStages || []),
         ...SystemPermissionStages({ permissions, hasSubChannels }),
         StripEventsStage({
             subChannels: (
@@ -48,7 +50,7 @@ var fetchRecordByFilter = async ({
         })
     ];
 
-    if (queryFields.length > 0) {
+    if (queryFields && queryFields.length > 0) {
         stages = [
             ...stages,
             ...QuickSearchStages({

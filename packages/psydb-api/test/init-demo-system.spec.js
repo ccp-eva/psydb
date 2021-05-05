@@ -173,6 +173,11 @@ describe('init-demo-system', function () {
             end: '2025-01-01T00:00:00.000Z',
         });*/
 
+        response = await agent.post(`/selectable-studies`).send({
+            studyRecordType: 'default',
+            experimentType: 'inhouse',
+        });
+
         console.dir(response.status, { depth: null });
         console.dir(response.body, { depth: null });
     });

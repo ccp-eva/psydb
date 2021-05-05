@@ -27,4 +27,8 @@ module.exports = {
         require('./invite-confirmation-list')
     ),
 
+    selectableStudies: (
+        require('./selectable-studies')
+    ),
+
 }

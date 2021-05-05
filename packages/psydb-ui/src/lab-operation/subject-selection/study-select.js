@@ -6,7 +6,7 @@ import {
 } from 'react-router-dom';
 
 import LinkButton from '@mpieva/psydb-ui-lib/src/link-button';
-import RecordListContainer from '@mpieva/psydb-ui-lib/src/record-list-container';
+import StudySelectList from '@mpieva/psydb-ui-lib/src/study-select-list';
 
 const reducer = (state, action) => {
     var { type, payload } = action;
@@ -72,10 +72,10 @@ const StudySelect = ({
                 </LinkButton>
             </div>
 
-            <RecordListContainer
-                collection='study'
-                recordType={ studyType }
-                linkBaseUrl={ url }
+            <StudySelectList
+                studyRecordType={ studyType }
+                experimentType={ experimentType }
+
                 showSelectionIndicator={ true }
                 selectedRecordIds={ selectedStudies.map(it => it._id) }
                 onSelectRecord={ ({ type, payload }) => {

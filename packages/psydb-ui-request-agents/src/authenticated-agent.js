@@ -182,4 +182,17 @@ agent.fetchInviteConfirmationList = ({
     );
 }
 
+agent.fetchSelectableStudies = ({
+    studyRecordType,
+    experimentType,
+}) => {
+    return axios.post(
+        '/api/selectable-studies',
+        {
+            studyRecordType,
+            experimentType
+        }
+    );
+}
+
 export default agent;

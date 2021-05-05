@@ -153,6 +153,14 @@ var createRouting = ({
         endpoints.special.inviteConfirmationList
     );
 
+    router.post('/selectable-studies',
+        withSelfAuth(),
+        withPermissions(),
+        withEndpointProtection({ endpoint: 'selectable-studies' }),
+        withKoaBody(),
+        endpoints.special.selectableStudies
+    );
+
     return compose([
         router.routes(),
         router.allowedMethods(),
