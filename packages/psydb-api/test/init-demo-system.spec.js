@@ -96,7 +96,7 @@ describe('init-demo-system', function () {
         //var response = await agent.get(`/read/subject/teacher/${context.ALICE_TEACHER_ID}`);
         //console.dir(response.body, { depth: null });
 
-        //var response = await agent.get(`/read/experiment/${context.EXP_INHOUSE_01}`);
+        var response = await agent.get(`/read/experiment/${context.EXP_INHOUSE_01}`);
         //console.dir(response.body, { depth: null });
         
         /*var response = await agent.post('/search-in-field').send({
@@ -133,7 +133,7 @@ describe('init-demo-system', function () {
         //response = await agent.get('/metadata/record-schema/personnel');
         //response = await agent.get(`/read/study/default/${context.STUDY_01_ID}`);
         //response = await agent.get(`/read/location/instituteroom/${context.INSTITUTEROOM_01_ID}`);
-        //response = await agent.get(`/read/subject/teacher/${context.BOB_TEACHER_ID}`);
+        //response = await agent.get(`/read/subject/teacher/${context.ALICE_TEACHER_ID}`);
         //response = await agent.get(`/read/personnel/${context.EVE_RA_ID}`);
         //response = await agent.get(`/available-test-locations-for-study/${context.STUDY_01_ID}/${context.INSTITUTEROOM_TYPE_ID}`);
         //response = await agent.get(`/experiment-operator-teams-for-study/${context.STUDY_01_ID}`);
@@ -153,7 +153,7 @@ describe('init-demo-system', function () {
             subjectRecordType: 'teacher',
             studyIds: [ context.STUDY_01_ID ],
         });*/
-        response = await agent.post('/testable-subjects-inhouse/').send({
+        /*response = await agent.post('/testable-subjects-inhouse/').send({
             subjectRecordType: 'teacher',
             studyRecordType: 'default',
             studyIds: [ context.STUDY_01_ID ],
@@ -164,7 +164,7 @@ describe('init-demo-system', function () {
             customAgeFrameConditions: [],
             offset: 0,
             limit: 100,
-        });
+        });*/
         
         console.dir(response.status, { depth: null });
         console.dir(response.body, { depth: null });

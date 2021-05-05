@@ -38,6 +38,7 @@ module.exports = {
     IdentifierString: require('./identifier-string'),
     JsonPointer: require('./json-pointer'),
     ParticipationStatus: require('./participation-status'),
+    InvitationStatus: require('./invitation-status'),
     SaneString: require('./sane-string'),
     Time: require('./time'),
     TimeInterval: require('./time-interval'),

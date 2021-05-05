@@ -7,6 +7,7 @@ var {
     ForeignId,
     DateTimeInterval,
     ParticipationStatus,
+    InvitationStatus,
 } = require('@mpieva/psydb-schema-fields');
 
 // TODO: merge adjascent reservations into one? or have a handler?
@@ -66,9 +67,15 @@ var ExperimentState = ({
                         subjectId: ForeignId({
                             collection: 'subject',
                         }),
+                        invitatonStatus: InvitationStatus(),
                         participationStatus: ParticipationStatus(),
                         // TODO: file refs?
-                    }
+                    },
+                    required: [
+                        'studyId',
+                        'invitationStatus',
+                        'participationStatus',
+                    ]
                 })
             }
         },

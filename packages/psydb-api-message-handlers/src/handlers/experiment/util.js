@@ -4,6 +4,7 @@ var debug = require('debug')('psydb:api:message-handlers');
 var intervalUtils = require('@mpieva/psydb-common-lib/src/interval-utils');
 
 var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
+    createId = require('@mpieva/psydb-api-lib/src/create-id'),
     compareIds = require('@mpieva/psydb-api-lib/src/compare-ids');
 
 var {
@@ -178,7 +179,8 @@ var dispatchAllChannelMessages = async ({
     
     var SubjectDataItem = (id) => ({
         subjectId: id,
-        perticipationStatus: 'unknown',
+        invitationStatus: 'scheduled',
+        participationStatus: 'unknown',
     });
 
     var subjectDataMessages = [
@@ -217,11 +219,13 @@ var dispatchAllChannelMessages = async ({
         })
     });*/
 
+    var experimentId = forcedExperimentId || await createId('experiment');
+
     var experimentChannel = (
         rohrpost
         .openCollection('experiment')
         .openChannel({
-            id: forcedExperimentId,
+            id: experimentId,
             isNew: true,
             additionalChannelProps: {
                 type,
@@ -244,6 +248,8 @@ var dispatchAllChannelMessages = async ({
 
         ...pusher.all({
             //'/state/selectedSubjectGroupIds': subjectGroupIds,
+            // TODO: this needs to store invitation status as well
+            // as perticipationstatus
             '/state/selectedSubjectIds': subjectIds,
         }),
 
@@ -252,6 +258,41 @@ var dispatchAllChannelMessages = async ({
     ];
 
     await experimentChannel.dispatchMany({ messages: channelMessages });
+    
+    var now = new Date();
+    if (type === 'inhouse') {
+        // TODO: the last known ids should be in payload
+        for (var subjectId of subjectIds) {
+            var subjectRecord = await (
+                db.collection('subject').findOne({
+                    _id: subjectId,
+                })
+            );
+
+            var lastKnownEventId = subjectRecord.scientific.events[0]._id;
+
+            var subjectChannel = (
+                rohrpost
+                .openCollection('subject')
+                .openChannel({ id: subjectId })
+            );
+
+            await subjectChannel.dispatchMany({
+                subChannelKey: 'scientific',
+                lastKnownEventId,
+                messages: [
+                    ...pusher.all({
+                        '/state/internals/invitedForExperiments': [{
+                            studyId,
+                            experimentId,
+                            timestamp: now,
+                            status: 'scheduled',
+                        }]
+                    })
+                ],
+            })
+        }
+    }
 }
 module.exports = {
     checkIntervalHasReservation,

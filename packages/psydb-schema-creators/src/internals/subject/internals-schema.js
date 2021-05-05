@@ -6,6 +6,7 @@ var {
     ForeignId,
     DateTime,
     ParticipationStatus,
+    InvitationStatus,
 } = require('@mpieva/psydb-schema-fields');
 
 var ManualParticipation = () => ExactObject({
@@ -54,8 +55,32 @@ var ExperimentParticipation = () => ExactObject({
     ]
 });
 
+var ExperimentInvitation = () => ExactObject({
+    properties: {
+        studyId: ForeignId({
+            collection: 'study',
+        }),
+        experimentId: ForeignId({
+            collection: 'experiment',
+        }),
+        timestamp: DateTime(),
+        status: InvitationStatus(),
+    },
+    required: [
+        'studyId',
+        'experimentId',
+        'timestamp',
+        'status',
+    ]
+})
+
 var internalsSchema = ExactObject({
     properties: {
+        invitedForExperiments: {
+            type: 'array',
+            default: [],
+            items: ExperimentInvitation(),
+        },
         participatedInStudies: {
             type: 'array',
             default: [],
@@ -70,6 +95,7 @@ var internalsSchema = ExactObject({
         },
     },
     required: [
+        'invitedForExperiments',
         'participatedInStudies',
     ],
 });
