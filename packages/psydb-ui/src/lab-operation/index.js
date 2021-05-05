@@ -16,6 +16,7 @@ import RecordTypeNav from '@mpieva/psydb-ui-lib/src/record-type-nav';
 
 import ReservationRouting from './reservation';
 import SubjectSelectionRouting from './subject-selection';
+import InviteConfirmationRouting from './invite-confirmation';
 
 const LabOperation = () => {
     var { path, url } = useRouteMatch();
@@ -41,6 +42,12 @@ const LabOperation = () => {
     var studyTypes = (
         metadata.customRecordTypes.filter(it => (
             it.collection ===  'study'
+        ))
+    );
+
+    var subjectTypes = (
+        metadata.customRecordTypes.filter(it => (
+            it.collection ===  'subject'
         ))
     );
 
@@ -83,6 +90,19 @@ const LabOperation = () => {
                 <Route path={`${path}/subject-selection/:studyType`}>
                     <SubjectSelectionRouting />
                 </Route>
+
+                <Route exact path={`${path}/invite-confirmation`}>
+                    <RedirectOrTypeNav
+                        baseUrl={ `${url}/invite-confirmation` }
+                        studyTypes={ studyTypes }
+                    />
+                </Route>
+                <Route path={`${path}/invite-confirmation/:studyType`}>
+                    <InviteConfirmationRouting
+                        subjectRecordTypes={ subjectTypes }
+                    />
+                </Route>
+
             </Switch>
         </div>
 
@@ -133,7 +153,7 @@ const OperationNav = () => {
             },
             {
                 label: 'Terminbestätigung',
-                linkUrl: `${baseUrl}/experiment-confirmation/${studyType}`,
+                linkUrl: `${baseUrl}/invite-confirmation/${studyType}`,
             },
             {
                 label: 'Nachbereitung',

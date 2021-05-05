@@ -165,4 +165,21 @@ agent.searchTestableSubjectsInhouse = ({
     );
 }
 
+agent.fetchInviteConfirmationList = ({
+    subjectRecordType,
+    studyIds,
+    start,
+    end
+}) => {
+    return axios.post(
+        '/api/invite-confirmation-list',
+        {
+            subjectRecordType,
+            studyIds,
+            start,
+            end
+        }
+    );
+}
+
 export default agent;

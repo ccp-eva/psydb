@@ -42,7 +42,7 @@ const SideNav = ({
                     <Link to='/lab-operation/subject-selection'>
                         Probandenauswahl
                     </Link>
-                    <Link to='/lab-operation/experiment-confirmation'>
+                    <Link to='/lab-operation/invite-confirmation'>
                         Terminbestätigung
                     </Link>
                     <Link to='/lab-operation/experiment-postprocessing'>
