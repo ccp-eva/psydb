@@ -30,7 +30,7 @@ const ResearchGroupNav = () => {
                 ...response.data.data
             }})
         })
-    }, [ /* TODO: anything here?*/ ])
+    }, [ /* FIXME: anything here?*/ ])
 
     if (!records) {
         return <LoadingIndicator size='lg' />
@@ -45,6 +45,7 @@ const ResearchGroupNav = () => {
         } />
     )
 }
+
 const reducer = (state, action) => {
     var { type, payload } = action;
     switch (type) {

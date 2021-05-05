@@ -7,6 +7,7 @@ var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
     ResponseBody = require('@mpieva/psydb-api-lib/src/response-body');
 
 var groupBy = require('@mpieva/psydb-common-lib/src/group-by');
+var keyBy = require('@mpieva/psydb-common-lib/src/key-by');
 var compareIds = require('@mpieva/psydb-api-lib/src/compare-ids');
 var convertPointerToPath = require('@mpieva/psydb-api-lib/src/convert-pointer-to-path');
 
@@ -133,6 +134,12 @@ var inviteConfirmationList = async (context, next) => {
         records: subjectRecords
     })
 
+    var experimentRelated = await fetchRelatedLabelsForMany({
+        db,
+        collectionName: 'experiment',
+        records: experimentRecords
+    })
+
     //console.dir(subjectRelated, { depth: null });
 
     //console.log(experimentRecords);
@@ -148,17 +155,31 @@ var inviteConfirmationList = async (context, next) => {
         ]).toArray()
     );
 
-    var subjectRecordsById = groupBy({
+    var subjectRecordsById = keyBy({
         items: subjectRecords,
         byProp: '_id'
     })
+
+    var availableDisplayFieldDataByPointer = keyBy({
+        items: availableDisplayFieldData,
+        byProp: 'dataPointer'
+    });
+
+    var displayFieldData = displayFields.map(it => ({
+        ...availableDisplayFieldDataByPointer[it.dataPointer],
+        dataPointer: it.dataPointer,
+    }))
+
 
     context.body = ResponseBody({
         data: {
             experimentRecords,
             experimentOperatorTeamRecords,
+            experimentRelated,
             subjectRecordsById,
             subjectRelated,
+            subjectDisplayFieldData: displayFieldData,
+            phoneListField,
         },
     });
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import jsonpointer from 'jsonpointer';
+import applyValueToDisplayFields from '../apply-value-to-display-fields';
 
 const FieldDataBodyCols = ({
     record,
@@ -8,29 +8,19 @@ const FieldDataBodyCols = ({
     relatedCustomRecordTypeLabels,
     displayFieldData,
 }) => {
+
+    var withValue = applyValueToDisplayFields({
+        record,
+        relatedRecordLabels,
+        relatedHelperSetItems,
+        relatedCustomRecordTypeLabels,
+        displayFieldData,
+    });
+
     return (
-        displayFieldData.map(it => {
-            var { key, type, displayName, props, dataPointer } = it;
-            var rawValue = jsonpointer.get(record, dataPointer);
-
-            var str = rawValue;
-            if (relatedRecordLabels) {
-                if (type === 'ForeignId') {
-                    str = relatedRecordLabels[props.collection][rawValue]._recordLabel;
-                }
-                else if (type === 'ForeignIdList') {
-                    str = rawValue.map(id => (
-                        relatedRecordLabels[props.collection][id]._recordLabel
-                    )).join();
-                }
-            }
-
-            // TODO use stringifiers from common
-            return (
-                <td key={ key }>{ str }</td>
-            );
-        })
-
+        withValue.map(it => (
+            <td key={ it.key }>{ it.value }</td>
+        ))
     );
 }
 
