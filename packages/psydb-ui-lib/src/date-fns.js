@@ -8,6 +8,7 @@ import {
     endOfWeek,
     startOfDay,
     endOfDay,
+    isSameDay,
 } from 'date-fns';
 
 import de from 'date-fns/locale/de';
@@ -20,6 +21,7 @@ const custom = {
     setDay,
     startOfDay,
     endOfDay,
+    isSameDay,
 }
 
 custom.format = (date, fmt, options = {}) => (

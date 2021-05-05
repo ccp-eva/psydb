@@ -11,10 +11,16 @@ import {
 
 import agent from '@mpieva/psydb-ui-request-agents';
 import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
+import CalendarNav from '@mpieva/psydb-ui-lib/src/calendar-nav';
+import withDailyCalendarPages from '@mpieva/psydb-ui-lib/src/with-daily-calendar-pages';
 
 import InviteConfirmationListItem from './invite-confirmation-list-item';
 
-const InviteConfirmationList = () => {
+const InviteConfirmationList = ({
+    currentPageStart,
+    currentPageEnd,
+    onPageChange,
+}) => {
     var { path, url } = useRouteMatch();
 
     var {
@@ -41,15 +47,18 @@ const InviteConfirmationList = () => {
         agent.fetchInviteConfirmationList({
             subjectRecordType: subjectType,
             researchGroupId,
-            start: '2000-01-01T00:00:00.000Z',
-            end: '2025-01-01T00:00:00.000Z',
+            start: currentPageStart,
+            end: currentPageEnd,
         })
         .then(response => {
             dispatch({ type: 'init', payload: {
                 ...response.data.data
             }})
         })
-    }, [ studyType, subjectType, researchGroupId ])
+    }, [ 
+        studyType, subjectType, researchGroupId,
+        currentPageStart, currentPageEnd
+    ])
 
     if (!experimentRecords) {
         return <LoadingIndicator size='lg' />
@@ -57,6 +66,18 @@ const InviteConfirmationList = () => {
 
     return (
         <div>
+            <CalendarNav { ...({
+                className: 'mt-3',
+                currentPageStart,
+                currentPageEnd,
+                onPageChange,
+            })} />
+
+            <hr className='mt-1 mb-3' style={{
+                marginLeft: '15em',
+                marginRight: '15em',
+            }}/>
+
             { experimentRecords.map(it => (
                 <InviteConfirmationListItem { ...({
                     key: it._id,
@@ -97,4 +118,7 @@ const reducer = (state, action) => {
     }
 }
 
-export default InviteConfirmationList;
+const WrappedInviteConfirmationList = (
+    withDailyCalendarPages(InviteConfirmationList)
+);
+export default WrappedInviteConfirmationList;

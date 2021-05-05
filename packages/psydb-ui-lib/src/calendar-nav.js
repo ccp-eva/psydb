@@ -14,6 +14,10 @@ const CalendarNav = ({
     onPageChange,
     showCalendarWeek = true,
 }) => {
+    var isSameDay = false
+    if (datefns.isSameDay(currentPageStart, currentPageEnd)) {
+        isSameDay = true;
+    }
     return (
         <>
             <div className={`d-flex justify-content-between ${className}`}>
@@ -30,11 +34,21 @@ const CalendarNav = ({
 
                 <div>
                     <div className='text-center'>
-                        <b>{ datefns.format(currentPageStart, 'P') }</b>
-                        {' '}
-                        bis
-                        {' '}
-                        <b>{ datefns.format(currentPageEnd, 'P') }</b>
+                        { 
+                            !isSameDay
+                            ? (
+                                <>
+                                    <b>{ datefns.format(currentPageStart, 'P') }</b>
+                                    {' '}
+                                    bis
+                                    {' '}
+                                    <b>{ datefns.format(currentPageEnd, 'P') }</b>
+                                </>
+                            )
+                            : (
+                                <b>{ datefns.format(currentPageStart, 'P') }</b>
+                            )
+                        }
                     </div>
                     <div className='text-center'>
                         {showCalendarWeek && (
