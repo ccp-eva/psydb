@@ -1,0 +1,211 @@
+'use strict';
+var debug = require('debug')(
+    'psydb:api:endpoints:invitedInhouseSubjects'
+);
+
+var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
+    ResponseBody = require('@mpieva/psydb-api-lib/src/response-body');
+
+var groupBy = require('@mpieva/psydb-common-lib/src/group-by');
+var compareIds = require('@mpieva/psydb-api-lib/src/compare-ids');
+var convertPointerToPath = require('@mpieva/psydb-api-lib/src/convert-pointer-to-path');
+
+var fetchOneCustomRecordType = require('@mpieva/psydb-api-lib/src/fetch-one-custom-record-type');
+var gatherDisplayFieldsForRecordType = require('@mpieva/psydb-api-lib/src/gather-display-fields-for-record-type');
+
+var createSchemaForRecordType =
+    require('@mpieva/psydb-api-lib/src/create-schema-for-record-type');
+var fetchRelatedLabels = require('@mpieva/psydb-api-lib/src/fetch-related-labels');
+
+var {
+    MatchIntervalOverlapStage,
+    StripEventsStage,
+    ProjectDisplayFieldsStage,
+} = require('@mpieva/psydb-api-lib/src/fetch-record-helpers');
+
+var inviteConfirmationList = async (context, next) => {
+    var { 
+        db,
+        permissions,
+        request,
+    } = context;
+
+    // FIXME: maybe unmarshal researchGroupId
+    // FIXME: we should maybe add subjectRecordtype and studyRecordType
+    var {
+        researchGroupId,
+        subjectRecordType,
+        start,
+        end,
+    } = request.body;
+
+    // TODO: unmarshal date
+    start = new Date(start);
+    end = new Date(end);
+    
+    if (!permissions.hasRootAccess) {
+        var allowed = permissions.allowedResearchGroupIds.find(id => {
+            return compareIds(id, researchGroupId)
+        })
+        if (!allowed) {
+            throw new ApiError(403)
+        }
+    }
+
+    var studyRecords = await (
+        db.collection('study').aggregate([
+            { $match: {
+                'state.researchGroupIds': researchGroupId,
+            }}
+        ]).toArray()
+    );
+
+    var experimentRecords = await (
+        db.collection('experiment').aggregate([
+            MatchIntervalOverlapStage({ start, end }),
+            { $match: {
+                type: 'inhouse',
+                // TODO: only for invitation
+                'state.subjectData.invitationStatus': 'scheduled',
+            }},
+            StripEventsStage(),
+        ]).toArray()
+    );
+
+    var subjectIds = [];
+    for (var it of experimentRecords) {
+        subjectIds = [
+            ...subjectIds,
+            ...(
+                it.state.subjectData
+                .filter(it => it.invitationStatus === 'scheduled')
+                .map(it => it.subjectId)
+            )
+        ]
+    }
+
+    //console.log(subjectIds);
+
+    var subjectRecordTypeData = await fetchOneCustomRecordType({
+        db,
+        collection: 'subject',
+        type: subjectRecordType,
+    });
+
+    var {
+        displayFields,
+        availableDisplayFieldData,
+    } = await gatherDisplayFieldsForRecordType({
+        prefetched: subjectRecordTypeData,
+    });
+
+    // TODO: theese fields needs a flag of some kind so that they are allowed
+    // to be shown here
+    // find the first PhoneList field
+    var phoneListField = (
+        subjectRecordTypeData.state.settings.subChannelFields.gdpr
+        .find(field => {
+            return (field.type === 'PhoneList');
+        })
+    );
+
+    var subjectRecords = await (
+        db.collection('subject').aggregate([
+            { $match: {
+                _id: { $in: subjectIds }
+            }},
+            StripEventsStage({ subChannels: ['gdpr', 'scientific' ]}),
+
+            ProjectDisplayFieldsStage({
+                displayFields,
+                additionalProjection: {
+                    [`gdpr.state.custom.${phoneListField.key}`]: true,
+                    //'scientific.state.internals.invitedForExperiments': true,
+                }
+            }),
+        ]).toArray()
+    );
+
+    var subjectRelated = await fetchRelatedLabelsForMany({
+        db,
+        collectionName: 'subject',
+        recordType: subjectRecordType,
+        records: subjectRecords
+    })
+
+    //console.dir(subjectRelated, { depth: null });
+
+    //console.log(experimentRecords);
+
+    var experimentOperatorTeamRecords = await (
+        db.collection('experimentOperatorTeam').aggregate([
+            { $match: {
+                _id: { $in: experimentRecords.map(it => (
+                    it.state.experimentOperatorTeamId
+                ))},
+            }},
+            StripEventsStage(),
+        ]).toArray()
+    );
+
+    var subjectRecordsById = groupBy({
+        items: subjectRecords,
+        byProp: '_id'
+    })
+
+    context.body = ResponseBody({
+        data: {
+            experimentRecords,
+            experimentOperatorTeamRecords,
+            subjectRecordsById,
+            subjectRelated,
+        },
+    });
+
+
+    await next();
+}
+
+var fetchRelatedLabelsForMany = async ({
+    db,
+    collectionName,
+    recordType,
+    records,
+}) => {
+
+    var recordSchema = await createSchemaForRecordType({
+        db,
+        collectionName,
+        recordType,
+        fullSchema: true
+    });
+
+    // FIXME: this is really hacky
+    var resolveSchema = {
+        type: 'object',
+        properties: {
+            records: {
+                type: 'array',
+                items: recordSchema,
+            }
+        }
+    }
+
+    var {
+        relatedRecords: relatedRecordLabels,
+        relatedHelperSetItems,
+        relatedCustomRecordTypes: relatedCustomRecordTypeLabels,
+    } = await fetchRelatedLabels({
+        db,
+        data: { records },
+        schema: resolveSchema,
+    });
+
+    return ({
+        relatedRecordLabels,
+        relatedHelperSetItems,
+        relatedCustomRecordTypeLabels,
+    });
+}
+
+module.exports = inviteConfirmationList;

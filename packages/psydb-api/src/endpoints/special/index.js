@@ -22,4 +22,9 @@ module.exports = {
     testableSubjectTypesForStudies: (
         require('./testable-subject-types-for-studies')
     ),
+    
+    inviteConfirmationList: (
+        require('./invite-confirmation-list')
+    ),
+
 }

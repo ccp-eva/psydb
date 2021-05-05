@@ -61,6 +61,10 @@ var lazyResolveZero = ({
             return;
         }
 
+        if (!currentData.entries) {
+            console.log(inSchemaPointer);
+            console.log(currentData);
+        }
         for (var [index, dataItem] of currentData.entries()) {
             //console.log(dataItem);
             var out = lazyResolve(schema, dataItem);
@@ -89,7 +93,7 @@ var lazyResolveZero = ({
                 //console.log('nextPart', nextPart);
 
                 //console.log('ary next part', nextPart);
-                console.log(nextData);
+                //console.log(nextData);
 
                 //console.log('CALLING FROM INSIDE')
                 //console.log('nextPointer', nextPointer);

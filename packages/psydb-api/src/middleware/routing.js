@@ -145,6 +145,14 @@ var createRouting = ({
         endpoints.special.testableSubjectsInhouse
     );
 
+    router.post('/invite-confirmation-list',
+        withSelfAuth(),
+        withPermissions(),
+        withEndpointProtection({ endpoint: 'invite-confirmation-list' }),
+        withKoaBody(),
+        endpoints.special.inviteConfirmationList
+    );
+
     return compose([
         router.routes(),
         router.allowedMethods(),

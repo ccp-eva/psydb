@@ -48,6 +48,16 @@ var EmailListFieldDefinition = () => FieldDefinition({
     },
 })
 
+var PhoneListFieldDefinition = () => FieldDefinition({
+    type: 'PhoneList',
+    props: {
+        minItems: {
+            type: 'integer',
+            minimum: 0
+        }
+    },
+})
+
 var HelperSetItemIdListFieldDefinition = () => FieldDefinition({
     type: 'HelperSetItemIdList',
     props: {
@@ -115,6 +125,7 @@ module.exports = {
     FullText: FullTextFieldDefinition,
     Address: AddressFieldDefinition,
     EmailList: EmailListFieldDefinition,
+    PhoneList: PhoneListFieldDefinition,
     HelperSetItemIdList: HelperSetItemIdListFieldDefinition,
     ForeignId: ForeignIdFieldDefinition,
     DateTime: DateTimeFieldDefinition,

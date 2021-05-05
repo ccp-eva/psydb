@@ -143,7 +143,7 @@ var testableSubjectsInhouse = async (context, next) => {
             additionalProjection: {
                 '_recordLabelDefinitionFields': true,
                 '_ageFrameField': true,
-                'scientific.state.studyParticipation': true,
+                'scientific.state.internals.participatedInStudies': true,
                 ...( studyIds.reduce((acc, id) => ({
                     ...acc, [`_testableIn_${id}`]: true,
                 }), {}))
