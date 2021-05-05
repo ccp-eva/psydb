@@ -73,7 +73,7 @@ handler.triggerSystemEvents = async ({
     personnelId,
 }) => {
     var { type: messageType, payload } = message;
-    var { id, lastKnownEventId, customRecordType } = payload;
+    var { id, lastKnownEventId, customRecordType, enableOnlineTesting } = payload;
 
     var channel = (
         rohrpost
@@ -90,6 +90,7 @@ handler.triggerSystemEvents = async ({
             subjectRecordType: customRecordType,
             generalConditions: [],
             conditionsByAgeFrame: [],
+            enableOnlineTesting: enableOnlineTesting,
             externalLocationGrouping: {
                 enabled: false,
             }

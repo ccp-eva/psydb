@@ -1,6 +1,7 @@
 'use strict';
 var {
     ExactObject,
+    DefaultBool,
     Id,
     EventId,
     ForeignId,
@@ -19,6 +20,7 @@ var Schema = () => {
                 id: Id(),
                 lastKnownEventId: EventId(),
                 customRecordType: IdentifierString(),
+                enableOnlineTesting: DefaultBool(),
             },
             required: [
                 'id',

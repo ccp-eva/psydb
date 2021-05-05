@@ -1,6 +1,7 @@
 'use strict';
 var {
     ExactObject,
+    DefaultBool,
     CustomRecordTypeName,
 } = require('@mpieva/psydb-schema-fields');
 
@@ -19,6 +20,7 @@ var SubjectSelectionSettingsListItemOption = ({
         ExactObject({
             systemType: 'SubjectSelectionSettingsListItemOption',
             properties: {
+                enableOnlineTesting: DefaultBool(),
                 subjectRecordType: CustomRecordTypeName({
                     collection: 'subject',
                     const: type,
