@@ -57,8 +57,28 @@ const InviteConfirmationList = ({
         })
     }, [ 
         studyType, subjectType, researchGroupId,
-        currentPageStart, currentPageEnd
+        currentPageStart, currentPageEnd, listRevision
     ])
+
+    var [
+        handleChangeStatus
+    ] = useMemo(() => ([
+        ({ experimentRecord, subjectRecord, status }) => {
+            var message = {
+                type: 'experiment/change-invitation-status',
+                payload: {
+                    experimentId: experimentRecord._id,
+                    subjectId: subjectRecord._id,
+                    invitationStatus: status
+                }
+            }
+
+            agent.send({ message })
+            .then(response => {
+                dispatch({ type: 'increase-list-revision'})
+            })
+        }
+    ]), [])
 
     if (!experimentRecords) {
         return <LoadingIndicator size='lg' />
@@ -88,6 +108,8 @@ const InviteConfirmationList = ({
                     subjectRelated,
                     subjectDisplayFieldData,
                     phoneListField,
+
+                    onChangeStatus: handleChangeStatus,
                 }) } />
             )) }
         </div>
