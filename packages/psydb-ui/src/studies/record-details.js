@@ -96,6 +96,13 @@ const StudyRecordDetails = ({
         : schema.properties.state
     );
 
+    // TODO: it blows up when i have more than one subject type
+    delete formSchema.properties.selectionSettingsBySubjectType;
+    delete formData.selectionSettingsBySubjectType;
+
+    console.log(formSchema);
+    console.log(formData);
+
     return (
         <div className='pt-3'>
             <SchemaForm

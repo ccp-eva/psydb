@@ -30,7 +30,7 @@ const StudyRecordRouting = ({
                 <Redirect to={ `${url}/details` } />
             </Route>
             <Route path={`${path}/:tabKey`}>
-                <StudyRecordContainer recordType={ recordType} />
+                <StudyRecordContainer recordType={ recordType } />
             </Route>
         </Switch>
     )
@@ -96,10 +96,19 @@ const StudyRecordContainer = ({
                         }}
                     />
 
-                    { tabKey === 'details' && (        
-                        <StudyRecordDetails
-                            recordType={ recordType }
-                        />
+                    { tabKey === 'details' && (
+                        <Switch>
+                            <Route exact path={path}>
+                                <StudyRecordDetails
+                                    recordType={ recordType }
+                                />
+                            </Route>
+                            {/*<Route exact path={`${path}/edit`}>
+                                <StudyRecordForm
+                                    recordType={ recordType }
+                                />
+                            </Route>*/}
+                        </Switch>
                     )}
 
                     { tabKey === 'teams' && (        
