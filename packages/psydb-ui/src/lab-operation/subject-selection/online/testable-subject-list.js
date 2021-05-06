@@ -25,7 +25,7 @@ import {
 
 import SubjectModal from './subject-modal';
 
-const InhouseTestableSubjectList = ({
+const OnlineTestableSubjectList = ({
     studyLabelItems,
 }) => {
     var { path, url } = useRouteMatch();
@@ -127,7 +127,11 @@ const InhouseTestableSubjectList = ({
                     relatedRecordLabels,
                     relatedHelperSetItems,
 
-                    onSelectRecord: handleShowSubjectModal
+                    onSelectRecord: handleShowSubjectModal,
+
+                    CustomActionListComponent: () => {
+                        return <div>FOO</div>
+                    }
                 }) } />
             </Table>
         </>
@@ -185,4 +189,4 @@ const reducer = (state, action) => {
     }
 }
         
-export default InhouseTestableSubjectList;
+export default OnlineTestableSubjectList;

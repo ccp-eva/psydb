@@ -20,8 +20,9 @@ var RecordList = ({
     showSelectionIndicator,
     selectedRecordIds,
     onSelectRecord,
-    
-    linkBaseUrl
+
+    linkBaseUrl,
+    CustomActionListComponent,
 }) => {
     var [ isInitialized, setIsInitialized ] = useState(false);
     var [ payload, setPayload ] = useState([]);
@@ -71,7 +72,8 @@ var RecordList = ({
             onSelectRecord,
             selectedRecordIds,
 
-            linkBaseUrl
+            linkBaseUrl,
+            CustomActionListComponent,
         })} />
     )
 }

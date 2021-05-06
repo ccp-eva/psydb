@@ -25,7 +25,8 @@ var RecordListTable = ({
     enableFilters,
     onFilterSubmit,
 
-    linkBaseUrl
+    linkBaseUrl,
+    CustomActionListComponent,
 }) => {
     if (!records.length) {
         return (
@@ -78,7 +79,8 @@ var RecordListTable = ({
                 onSelectRecord: wrappedOnSelectRecord,
                 selectedRecordIds,
 
-                linkBaseUrl
+                linkBaseUrl,
+                CustomActionListComponent,
             })} />
         </Table>
     );

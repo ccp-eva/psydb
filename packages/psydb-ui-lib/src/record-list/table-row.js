@@ -27,6 +27,7 @@ const TableRow = ({
     selectedRecordIds,
 
     linkBaseUrl,
+    CustomActionListComponent,
 }) => {
     return (
         <tr
@@ -56,16 +57,29 @@ const TableRow = ({
                 displayFieldData,
             })} />
             <td>
-                { enableView && (
-                    <LinkButton to={`${linkBaseUrl}/${record._id}`}>
-                        Details
-                    </LinkButton>
-                )}
-                { enableEdit && (
-                    <LinkButton to={`${linkBaseUrl}/${record._id}/edit`}>
-                        Edit
-                    </LinkButton>
-                )}
+                {
+                    CustomActionListComponent
+                    ? (
+                        <CustomActionListComponent { ...({
+                            record,
+                        }) } />
+                    )
+                    : (
+                        <>
+                            { enableView && (
+                                <LinkButton to={`${linkBaseUrl}/${record._id}`}>
+                                    Details
+                                </LinkButton>
+                            )}
+                            { enableEdit && (
+                                <LinkButton to={`${linkBaseUrl}/${record._id}/edit`}>
+                                    Edit
+                                </LinkButton>
+                            )}
+                        </>
+                    )
+                }
+
             </td>
         </tr>
     );

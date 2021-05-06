@@ -17,6 +17,7 @@ const TableBody = ({
     selectedRecordIds,
     
     linkBaseUrl,
+    CustomActionListComponent,
 }) => {
     return (
         <tbody>
@@ -36,6 +37,8 @@ const TableBody = ({
                     showSelectionIndicator,
                     onSelectRecord,
                     selectedRecordIds,
+                    
+                    CustomActionListComponent,
                 })} />
             )) }
         </tbody>

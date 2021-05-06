@@ -25,6 +25,7 @@ import createValueMap from './create-value-map';
 import SelectionSettingsFormSchema from './selection-settings-form-schema';
 import SelectionSettingsForm from './selection-settings-form';
 import InhouseSubjectList from './inhouse/testable-subject-list';
+import OnlineSubjectList from './online/testable-subject-list';
 
 var FormSettingsItemSchema = ({
     studyName,
@@ -195,6 +196,12 @@ const SearchContainer = ({
         history.push(`${url}/search/${base64}`);
     };
 
+    var SubjectListComponent = {
+        'inhouse': InhouseSubjectList,
+        'online': OnlineSubjectList,
+        //'away-team': AwayTeamSubjectList,
+    }[experimentType];
+
     return (
         <Switch>
             <Route exact path={ `${path}` }>
@@ -204,7 +211,7 @@ const SearchContainer = ({
                 }) } />
             </Route>
             <Route exact path={ `${path}/search/:searchSettings64` }>
-                <InhouseSubjectList
+                <SubjectListComponent
                     studyLabelItems={ studyLabelItems }
                 />
             </Route>
