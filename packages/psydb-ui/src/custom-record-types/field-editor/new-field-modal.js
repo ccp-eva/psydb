@@ -9,11 +9,11 @@ const NewFieldModal = ({ show, onHide, record, onSuccessfulUpdate }) => {
         onHide()
     }
     return (
-        <Modal show={show} onHide={ onHide }>
+        <Modal show={show} onHide={ onHide } size='lg'>
             <Modal.Header closeButton>
                 <Modal.Title>Neues Feld</Modal.Title>
             </Modal.Header>
-            <Modal.Body>
+            <Modal.Body className='bg-light'>
                 <NewFieldForm
                     record={ record }
                     onSuccess={ handleSuccess }

@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
+import {
+    Button
+} from 'react-bootstrap'
+
 import { withTheme } from '@mpieva/rjsf-monkey-patch';
-import { Theme as Bootstrap4Theme } from '@rjsf/bootstrap-4'
+import RJSFCustomTheme from '@mpieva/psydb-ui-lib/src/rjsf-theme';
 
 
 import agent from '@mpieva/psydb-ui-request-agents';
@@ -30,7 +34,7 @@ var uiSchema = {
     }
 }
 
-var SchemaForm = withTheme(Bootstrap4Theme);
+var SchemaForm = withTheme(RJSFCustomTheme);
 
 const NewFieldForm = ({ record, onSuccess }) => {
     var hasSubChannels = false;
@@ -70,14 +74,16 @@ const NewFieldForm = ({ record, onSuccess }) => {
     return (
         <div>
             <SchemaForm
+                noHtml5Validate={ true }
+                showErrorList={ false }
                 schema={ schema }
                 uiSchema={ uiSchema }
                 onSubmit={ onSubmit }
             >
                 <div>
-                    <button type="submit" className="btn btn-info">
+                    <Button type='submit'>
                         Save
-                    </button>
+                    </Button>
                 </div>
             </SchemaForm>
         </div>

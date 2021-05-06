@@ -17,14 +17,20 @@ var FieldDefinition = ({
 }) => ExactObject({
     title: type, // for rjsf option labels
     properties: {
-        key: IdentifierString(),
+        key: IdentifierString({
+            title: 'Interner-Key',
+            minLength: 1
+        }),
         type: {
             const: type,
             //FIXME: required because of
             //https://github.com/rjsf-team/react-jsonschema-form/issues/1241
             default: type,
         },
-        displayName: SaneString(),
+        displayName: SaneString({
+            title: 'Anzeigename',
+            minLength: 1
+        }),
         props: {
             // so for some wierd reason RJSF explodes when this is an
             // ExactObject that prohibits additionalProps
