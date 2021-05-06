@@ -5,23 +5,14 @@ import {
 } from 'react-bootstrap';
 
 import TabNav from '@mpieva/psydb-ui-lib/src/tab-nav';
-import SubjectModalDetails from './subject-modal-details';
 
-const SubjectModal = ({
+const MailInviteModal = ({
     show,
     onHide,
     studyRecordType,
     subjectRecordType,
     subjectModalData,
 }) => {
-    if (!subjectModalData) {
-        return null;
-    }
-
-    var {
-        record
-    } = subjectModalData;
-
     return (
         <Modal
             show={show}
@@ -31,19 +22,13 @@ const SubjectModal = ({
             backdropClassName='team-modal-backdrop'
         >
             <Modal.Header closeButton>
-                <Modal.Title>Details</Modal.Title>
+                <Modal.Title>Mails Senden</Modal.Title>
             </Modal.Header>
             <Modal.Body className='bg-light'>
-
-                <SubjectModalDetails
-                    recordType={ subjectRecordType }
-                    id={ record._id }
-                />
-
-
+                hallo
             </Modal.Body>
         </Modal>
     );
 }
 
-export default SubjectModal;
+export default MailInviteModal;

@@ -6,11 +6,11 @@ import {
     useParams
 } from 'react-router-dom';
 
-import {
-    Table
-} from 'react-bootstrap';
-
 import { Base64 } from 'js-base64';
+
+import {
+    Button
+} from 'react-bootstrap';
 
 import agent from '@mpieva/psydb-ui-request-agents';
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
@@ -19,11 +19,11 @@ import up from '@mpieva/psydb-ui-lib/src/url-up';
 import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
 
 import {
-    TableHead,
-    TableBody
+    Table
 } from '@mpieva/psydb-ui-lib/src/record-list';
 
 import SubjectModal from './subject-modal';
+import MailInviteModal from './mail-invite-modal';
 
 const OnlineTestableSubjectList = ({
     studyLabelItems,
@@ -44,17 +44,25 @@ const OnlineTestableSubjectList = ({
         )
     }
 
-    var [ state, dispatch ] = useReducer(reducer, {});
+    var [ state, dispatch ] = useReducer(reducer, {
+        selectedSubjects: [],
+    });
 
     var {
         records,
+        count,
         displayFieldData,
         relatedRecordLabels,
         relatedHelperSetItems,
         relatedCustomRecordTypeLabels,
 
+        selectedSubjects,
+
         showSubjectModal,
         subjectModalData,
+
+        showMailInviteModal,
+
         listRevision,
     } = state;
 
@@ -91,15 +99,38 @@ const OnlineTestableSubjectList = ({
         handleShowSubjectModal,
         handleHideSubjectModal,
         
-        handleSubjectSelected,
+        handleShowMailInviteModal,
+        handleHideMailInviteModal,
+
+        handleSelectSubject,
+        handleMailsSend,
     ] = useMemo(() => ([
         (selectedRecord) => dispatch({ type: 'show-subject-modal', payload: {
             record: selectedRecord
         }}),
         () => dispatch({ type: 'hide-subject-modal' }),
+        () => dispatch({ type: 'show-mail-invite-modal' }),
+        () => dispatch({ type: 'hide-mail-invite-modal' }),
 
+
+        ({ type, payload }) => {
+            dispatch({
+                type: `selected-subjects/${type}`,
+                payload
+            });
+        },
         () => dispatch({ type: 'increase-list-revision' }),
     ]));
+
+    var CustomActionListComponent = useMemo(() => (
+        ({ record }) => {
+            return (
+                <Button onClick={ () => handleShowSubjectModal(record) }>
+                    Details
+                </Button>
+            )
+        }
+    ), [])
 
     if (!records) {
         return <LoadingIndicator size='lg' />
@@ -117,23 +148,56 @@ const OnlineTestableSubjectList = ({
                 subjectRecordType={ subjectRecordType }
                 subjectModalData={ subjectModalData }
             />
-            <Table hover>
-                <TableHead 
-                    displayFieldData={ displayFieldData }
-                />
-                <TableBody { ...({
-                    records,
-                    displayFieldData,
-                    relatedRecordLabels,
-                    relatedHelperSetItems,
 
-                    onSelectRecord: handleShowSubjectModal,
+            <MailInviteModal
+                show={ showMailInviteModal }
+                onHide={ handleHideMailInviteModal }
+                selectedSubjects={ selectedSubjects }
+                onMailsSend={ handleMailsSend }
+            />
+            
+            <div
+                className='p-2 d-flex justify-content-between align-items-center'
+                style={{
+                    position: 'sticky',
+                    top: 0,
+                    background: '#ffffff',
+                }}
+            >
+                <b>Ausgewählt: { selectedSubjects.length }</b>
 
-                    CustomActionListComponent: () => {
-                        return <div>FOO</div>
+                <Button
+                    variant={
+                        selectedSubjects.length < 1
+                        ? 'danger'
+                        : 'primary'
                     }
-                }) } />
-            </Table>
+                    onClick={ handleShowMailInviteModal }
+                >
+                    { 
+                        selectedSubjects.length < 1
+                        ? 'Alle Einladen'
+                        : 'Gewählte Einladen'
+                    }
+                </Button>
+
+            </div>
+
+            <Table { ...({
+                records,
+                displayFieldData,
+                relatedRecordLabels,
+                relatedHelperSetItems,
+               
+                showSelectionIndicator: true,
+                selectedRecordIds: (
+                    selectedSubjects.map(it => it._id)
+                ),
+                onSelectRecord: handleSelectSubject,
+
+                CustomActionListComponent,
+            }) } />
+        
         </>
     );
 }
@@ -144,25 +208,27 @@ const reducer = (state, action) => {
         case 'init':
             var {
                 records,
+                count,
                 relatedRecordLabels,
                 relatedHelperSetItems,
                 relatedCustomRecordTypeLabels,
                 displayFieldData,
             } = payload;
 
-            displayFieldData.push({
-                key: '_testableInStudies',
+            /*displayFieldData.push({
+                key: '_testableInSubjects',
                 displayName: 'Mögliche Studien',
                 type: 'ForeignIdList',
                 props: {
                     collection: 'study',
                 },
                 dataPointer: '/_testableInStudies'
-            })
+            })*/
 
             return {
                 ...state,
                 records,
+                count,
                 relatedRecordLabels,
                 relatedHelperSetItems,
                 relatedCustomRecordTypeLabels,
@@ -180,6 +246,40 @@ const reducer = (state, action) => {
                 ...state,
                 showSubjectModal: false,
             }
+
+        case 'show-mail-invite-modal':
+            return {
+                ...state,
+                showMailInviteModal: true,
+            }
+        case 'hide-mail-invite-modal':
+            return {
+                ...state,
+                showMailInviteModal: false,
+            }
+
+        case 'selected-subjects/set':
+            return ({
+                ...state,
+                selectedSubjects: [ payload.record ]
+            })
+        case 'selected-subjects/add':
+            var nextSelectedSubjects = [
+                ...state.selectedSubjects,
+                payload.record,
+            ];
+            return ({
+                ...state,
+                selectedSubjects: nextSelectedSubjects
+            });
+        case 'selected-subjects/remove':
+            var nextSelectedSubjects = state.selectedSubjects.filter(it => (
+                it._id !== payload.id
+            ));
+            return ({
+                ...state,
+                selectedSubjects: nextSelectedSubjects
+            });
 
         case 'increase-list-revision':
             return {

@@ -27,6 +27,7 @@ var RecordListTable = ({
 
     linkBaseUrl,
     CustomActionListComponent,
+    bsTableProps,
 }) => {
     if (!records.length) {
         return (
@@ -53,7 +54,7 @@ var RecordListTable = ({
     }
 
     return (
-        <Table hover={ onSelectRecord ? true : false }>
+        <Table { ...bsTableProps }>
             { enableFilters && (
                 <TableFilters
                     displayFieldData={ displayFieldData }

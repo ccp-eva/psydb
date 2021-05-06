@@ -38,10 +38,30 @@ const TableRow = ({
                     }
                 )
             }}
-            onClick={ onSelectRecord && (() => onSelectRecord(record)) }
+            role={(
+                !showSelectionIndicator && onSelectRecord
+                ? 'button'
+                : undefined
+            )}
+            onClick={ (
+                !showSelectionIndicator && onSelectRecord
+                ? () => onSelectRecord(record)
+                : undefined
+            )}
         >
             { showSelectionIndicator && (
-                <td>
+                <td
+                    role={(
+                        showSelectionIndicator && onSelectRecord
+                        ? 'button'
+                        : undefined
+                    )}
+                    onClick={ (
+                        showSelectionIndicator && onSelectRecord
+                        ? () => onSelectRecord(record)
+                        : undefined
+                    )}
+                >
                     {
                         selectedRecordIds.includes(record._id)
                         ? <CheckSquareFill />
