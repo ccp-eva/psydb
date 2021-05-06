@@ -31,3 +31,9 @@ module.exports.AwayTeamReservationState = require('./reservation/away-team-state
 module.exports.InhouseReservationState = require('./reservation/inhouse-state');
 
 module.exports.ExperimentState = require('./experiment/state');
+
+module.exports.ExternalOrganizationState = require('./external-organization/state');
+module.exports.ExternalOrganizationMessage = require('./external-organization/record-message');
+
+module.exports.ExternalPersonState = require('./external-person/state');
+module.exports.ExternalPersonMessage = require('./external-person/record-message');

@@ -88,12 +88,24 @@ var AddressFieldDefinition = () => FieldDefinition({
 
 var SaneStringFieldDefinition = () => FieldDefinition({
     type: 'SaneString',
-    props: {},
+    required: [],
+    props: {
+        minLength: {
+            type: 'integer',
+            minimum: 0
+        }
+    }
 });
 
 var FullTextFieldDefinition = () => FieldDefinition({
     type: 'FullText',
-    props: {},
+    required: [],
+    props: {
+        minLength: {
+            type: 'integer',
+            minimum: 0
+        }
+    },
 });
 
 var DateTimeFieldDefinition = () => FieldDefinition({

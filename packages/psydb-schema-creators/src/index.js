@@ -66,5 +66,18 @@ module.exports = {
     experiment: {
         ...metadata.experiment,
         State: internals.ExperimentState,
-    }
+    },
+
+    externalOrganization: {
+        ...metadata.externalOrganization,
+        State: internals.ExternalOrganizationState,
+        RecordMessage: internals.ExternalOrganizationMessage 
+    },
+
+    externalPerson: {
+        ...metadata.externalPerson,
+        State: internals.ExternalPersonState,
+        RecordMessage: internals.ExternalPersonMessage 
+    },
+
 }

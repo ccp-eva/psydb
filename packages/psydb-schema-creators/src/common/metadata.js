@@ -244,4 +244,19 @@ module.exports = {
         hasFixedTypes: false,
         hasSubChannels:false,
     },
+    
+    externalOrganization: {
+        collection: 'externalOrganization',
+        isGenericRecord: true,
+        hasCustomTypes: true,
+        hasSubChannels: false,
+    },
+
+    externalPerson: {
+        collection: 'externalPerson',
+        isGenericRecord: true,
+        hasCustomTypes: true,
+        hasSubChannels: false,
+    },
+
 }
