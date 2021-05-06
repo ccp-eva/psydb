@@ -2,7 +2,7 @@
 var CustomProps = require('../../common/custom-props'),
     systemPermissionsSchema = require('../../common/system-permissions-schema'),
     testingPermissionsSchema = require('./testing-permissions-schema'),
-    internalsSchema = require('./internals-schema');
+    InternalsSchema = require('./internals-schema');
 
 var {
     DefaultArray,
@@ -21,7 +21,7 @@ var SubjectScientificState = ({
             testingPermissions: testingPermissionsSchema,
             systemPermissions: systemPermissionsSchema,
             ...(enableInternalProps && {
-                internals: internalsSchema,
+                internals: InternalsSchema(),
             })
         },
         required: [

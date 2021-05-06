@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
+import {
+    HashRouter as Router,
+} from 'react-router-dom';
+
 import { simple as agent } from '@mpieva/psydb-ui-request-agents';
 import ErrorBoundary from './error-boundary';
 import SignIn from './sign-in';
@@ -47,7 +51,9 @@ const App = () => {
 
     return (
         <ErrorBoundary>
-            { View }
+            <Router>
+                { View }
+            </Router>
         </ErrorBoundary>
     );
 }

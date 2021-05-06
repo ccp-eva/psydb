@@ -38,7 +38,7 @@ const MailInviteModal = ({
         })),
         {
             key: 'onlineId',
-            dataPointer: '/scientific/state/onlineId',
+            dataPointer: '/scientific/state/internals/onlineId',
         }
     ]), []);
 

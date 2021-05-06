@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
 import {
-    HashRouter as Router,
     Route,
+    useHistory
 } from 'react-router-dom';
 
 import {
@@ -31,59 +31,60 @@ import ExternalOrganizations from './external-organizations';
 import LabOperation from './lab-operation';
 
 const Main = ({ onSignedOut, onSignedIn }) => {
+    var history = useHistory();
+
     var onSignOut = () => (
         agent.signOut()
         .then(
             (res) => {
-                console.log('logged out');
+                //console.log('logged out');
                 onSignedOut();
+                history.push('/');
             },
             (error) => {
-                console.log('error on logout');
+                //console.log('error on logout');
             }
         )
     )
     return (
-        <Router>
-            <div className='enable-flexbox flex-core flex-row'>
-                <header className='flex-core flex-grow flex-row-reverse' style={{
-                    //alignItems: 'flex-end',
-                }}>
-                    <div className='flex-core' style={{
-                        //width: '275px'
-                        width: '225px'
+        <div className='enable-flexbox flex-core flex-row'>
+            <header className='flex-core flex-grow flex-row-reverse' style={{
+                //alignItems: 'flex-end',
+            }}>
+                <div className='flex-core' style={{
+                    //width: '275px'
+                    width: '225px'
 
-                    }}>
-                        <SideNav />
-                    </div>
-                </header>
-                <main className='flex-core flex-grow' style={{
-                    //alignItems: 'flex-start',
                 }}>
-                    <div style={{
-                        //width: '990px' // => min size: 1280
-                        //width: '1076px' // => min size: 1366
-                        width: '1040px' // => min size: 1280
-                    }}>
-                        <div className='flex-core flex-row-reverse pt-2 pb-1'>
-                            <div className='flex-core'>
-                                <a
-                                    onClick={ onSignOut }
-                                >
-                                    <DoorClosedFill className='align-middle' />
-                                    <u className='d-inline-block ml-2 align-middle'>
-                                        Abmelden
-                                    </u>
-                                </a>
-                            </div>
-                        </div>
-                        <div className='pl-3'>
-                            <Routing />
+                    <SideNav />
+                </div>
+            </header>
+            <main className='flex-core flex-grow' style={{
+                //alignItems: 'flex-start',
+            }}>
+                <div style={{
+                    //width: '990px' // => min size: 1280
+                    //width: '1076px' // => min size: 1366
+                    width: '1040px' // => min size: 1280
+                }}>
+                    <div className='flex-core flex-row-reverse pt-2 pb-1'>
+                        <div className='flex-core'>
+                            <a
+                                onClick={ onSignOut }
+                            >
+                                <DoorClosedFill className='align-middle' />
+                                <u className='d-inline-block ml-2 align-middle'>
+                                    Abmelden
+                                </u>
+                            </a>
                         </div>
                     </div>
-                </main>
-            </div>
-        </Router>
+                    <div className='pl-3'>
+                        <Routing />
+                    </div>
+                </div>
+            </main>
+        </div>
     );
 }
 

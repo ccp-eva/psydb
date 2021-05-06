@@ -18,6 +18,7 @@
     "jsonpointer": "~4.1.0",
     "@mpieva/psydb-schema-helpers": "~0.1.0-alpha",
     "@cdxoo/omit": "~1.0.1",
-    "@mpieva/psydb-schema-fields-special": "~0.1.0-alpha"
+    "@mpieva/psydb-schema-fields-special": "~0.1.0-alpha",
+    "nanoid": "~3.1.22"
   }
 }

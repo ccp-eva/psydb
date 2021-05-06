@@ -1,4 +1,5 @@
 'use strict';
+var { nanoid } = require('nanoid');
 var inline = require('@cdxoo/inline-text');
 
 var {
@@ -74,30 +75,41 @@ var ExperimentInvitation = () => ExactObject({
     ]
 })
 
-var internalsSchema = ExactObject({
-    properties: {
-        invitedForExperiments: {
-            type: 'array',
-            default: [],
-            items: ExperimentInvitation(),
-        },
-        participatedInStudies: {
-            type: 'array',
-            default: [],
-            items: {
-                type: 'object',
-                lazyResolveProp: 'type',
-                oneOf: [
-                    ManualParticipation(),
-                    ExperimentParticipation(),
-                ]
-            }
-        },
-    },
-    required: [
-        'invitedForExperiments',
-        'participatedInStudies',
-    ],
-});
+var InternalsSchema = () => {
+    var onlineId = nanoid();
+    return (
+        ExactObject({
+            properties: {
+                invitedForExperiments: {
+                    type: 'array',
+                    default: [],
+                    items: ExperimentInvitation(),
+                },
+                participatedInStudies: {
+                    type: 'array',
+                    default: [],
+                    items: {
+                        type: 'object',
+                        lazyResolveProp: 'type',
+                        oneOf: [
+                            ManualParticipation(),
+                            ExperimentParticipation(),
+                        ]
+                    }
+                },
+                onlineId: {
+                    // FIXME: this needs to be nanoid specifically
+                    type: 'string',
+                    const: onlineId,
+                    default: onlineId,
+                }
+            },
+            required: [
+                'invitedForExperiments',
+                'participatedInStudies',
+            ],
+        })
+    )
+}
 
-module.exports = internalsSchema;
+module.exports = InternalsSchema;

@@ -36,6 +36,15 @@ var ExtBoolPermissionList = ({
 var testingPermissionsSchema = ExactObject({
     properties: {
         
+        canBeTestedOnline: ExtBoolPermissionList({
+            title: 'Online-Tests erlaubt für',
+            description: inline`
+                list of items describing if a subject can be tested
+                by a research group at a location belonging to the research
+                group itself
+            `,
+        }),
+        
         canBeTestedInhouse: ExtBoolPermissionList({
             title: 'Testen In-House erlaubt für',
             description: inline`
