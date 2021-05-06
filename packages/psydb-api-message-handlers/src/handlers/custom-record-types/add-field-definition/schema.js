@@ -38,6 +38,7 @@ var Schema = () => {
                                 'FullText',
                                 'DateTime',
                                 'BiologicalGender',
+                                'ExtBool',
                             ],
                         },
                     }

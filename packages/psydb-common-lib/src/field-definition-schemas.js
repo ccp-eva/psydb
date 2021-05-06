@@ -132,6 +132,13 @@ var BiologicalGenderFieldDefinition = () => FieldDefinition({
     },
 });
 
+var ExtBoolFieldDefinition = () => FieldDefinition({
+    type: 'ExtBool',
+    props: {
+        // enableUnknwonValue
+    },
+});
+
 module.exports = {
     SaneString: SaneStringFieldDefinition,
     FullText: FullTextFieldDefinition,
@@ -142,4 +149,5 @@ module.exports = {
     ForeignId: ForeignIdFieldDefinition,
     DateTime: DateTimeFieldDefinition,
     BiologicalGender: BiologicalGenderFieldDefinition,
+    ExtBool: ExtBoolFieldDefinition,
 }
