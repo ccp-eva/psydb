@@ -1,21 +1,50 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect, useReducer, useMemo } from 'react';
 
 import {
-    Modal
+    Modal,
+    Button
 } from 'react-bootstrap';
 
-import TabNav from '@mpieva/psydb-ui-lib/src/tab-nav';
+import MailEditor from './mail-editor';
+import MailTextPreview from './mail-text-preview';
 
 const MailInviteModal = ({
     show,
     onHide,
+
     studyRecordType,
     subjectRecordType,
-    subjectModalData,
+
+    totalSubjectCount,
+
+    previewSubject,
+    selectedSubjects,
+    studyId,
+    displayFieldData,
+    
+    onMailsSend,
 }) => {
+    var [ editorState, setEditorState ] = useState({})
+
+    if (selectedSubjects.length > 0) {
+        previewSubject = selectedSubjects[0];
+        totalSubjectCount = selectedSubjects.length;
+    }
+
+    var allSubjectPlaceholders = useMemo(() => ([
+        ...displayFieldData.map(it => ({
+            key: it.key,
+            dataPointer: it.dataPointer
+        })),
+        {
+            key: 'onlineId',
+            dataPointer: '/scientific/state/onlineId',
+        }
+    ]), []);
+
     return (
         <Modal
-            show={show}
+            show={ show }
             onHide={ onHide }
             size='xl'
             className='team-modal'
@@ -25,7 +54,43 @@ const MailInviteModal = ({
                 <Modal.Title>Mails Senden</Modal.Title>
             </Modal.Header>
             <Modal.Body className='bg-light'>
-                hallo
+                <div>
+                    <MailEditor
+                        onChange={ (value) => {
+                            setEditorState({
+                                ...value,
+                                mailText: (
+                                    value.mailText
+                                    .replaceAll('<p>', '<div>')
+                                    .replaceAll('</p>', '</div>')
+                                    .replaceAll(
+                                        '{{link}}',
+                                        `<a href="${value.link}">${value.link}</a>`
+                                    )
+                                    .replaceAll('{{studyId}}', studyId)
+                                )
+                            })
+                        }}
+                    />
+                    { previewSubject && (
+                        <>
+                            <hr className='mt-4 mb-3'/>
+                            <MailTextPreview
+                                allSubjectPlaceholders={ allSubjectPlaceholders }
+                                previewSubject={ previewSubject }
+                                mailText={ editorState.mailText }
+                            />
+                        </>
+                    )}
+                    <div className='d-flex justify-content-end mt-3'>
+                        <Button>
+                            <b className='d-inline-block mr-2'>
+                                { totalSubjectCount }
+                            </b>
+                            Probanden per Mail benachrichtigen
+                        </Button>
+                    </div>
+                </div>
             </Modal.Body>
         </Modal>
     );

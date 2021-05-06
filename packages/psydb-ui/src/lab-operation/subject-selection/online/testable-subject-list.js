@@ -36,6 +36,9 @@ const OnlineTestableSubjectList = ({
         searchSettings64
     } = useParams();
 
+    // FIXME
+    var studyId = studyIds;
+
     var userSearchSettings = JSON.parse(Base64.decode(searchSettings64));
 
     if (!userSearchSettings) {
@@ -148,12 +151,20 @@ const OnlineTestableSubjectList = ({
                 subjectRecordType={ subjectRecordType }
                 subjectModalData={ subjectModalData }
             />
-
+            
             <MailInviteModal
                 show={ showMailInviteModal }
                 onHide={ handleHideMailInviteModal }
+        
+                totalSubjectCount={ count }
+
+                studyId={ studyId }
                 selectedSubjects={ selectedSubjects }
+                previewSubject={ records[0] }
+                displayFieldData={ displayFieldData }
+
                 onMailsSend={ handleMailsSend }
+
             />
             
             <div
