@@ -153,18 +153,22 @@ describe('init-demo-system', function () {
             subjectRecordType: 'teacher',
             studyIds: [ context.STUDY_01_ID ],
         });*/
-        /*response = await agent.post('/testable-subjects-inhouse/').send({
+        response = await agent.post('/testable-subjects-inhouse/').send({
             subjectRecordType: 'teacher',
             studyRecordType: 'default',
             studyIds: [ context.STUDY_01_ID ],
-            timeFrameStart: '1979-04-01T00:00:00.000Z',
-            timeFrameEnd: '1981-04-15T00:00:00.000Z',
+            timeFrameStart: '2021-05-01T00:00:00.000Z',
+            timeFrameEnd: '2021-05-30T00:00:00.000Z',
             //timeFrameStart: '2079-04-01T00:00:00.000Z',
             //timeFrameEnd: '2081-04-15T00:00:00.000Z',
-            customAgeFrameConditions: [],
+            enabledAgeFrames: [`${context.STUDY_01_ID}/360_35640`],
+            enabledValues: {
+                [`${context.STUDY_01_ID}/360_35640/conditions/biologicalGender`]: [ 'male' ],
+                //[`${context.STUDY_01_ID}/360_35640/conditions/schoolSubjects`]: []
+            },
             offset: 0,
             limit: 100,
-        });*/
+        });
         
         /*response = await agent.post(`/invite-confirmation-list`).send({
             researchGroupId: context.RESEARCH_GROUP_ALPHA_ID,
@@ -173,10 +177,10 @@ describe('init-demo-system', function () {
             end: '2025-01-01T00:00:00.000Z',
         });*/
 
-        response = await agent.post(`/selectable-studies`).send({
+        /*response = await agent.post(`/selectable-studies`).send({
             studyRecordType: 'default',
             experimentType: 'inhouse',
-        });
+        });*/
 
         console.dir(response.status, { depth: null });
         console.dir(response.body, { depth: null });

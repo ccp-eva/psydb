@@ -145,7 +145,7 @@ agent.searchTestableSubjectsInhouse = ({
     timeFrameStart,
     timeFrameEnd,
     enabledAgeFrames,
-    enabledvalues,
+    enabledValues,
     offset = 0,
     limit = 100,
 }) => {
@@ -158,7 +158,7 @@ agent.searchTestableSubjectsInhouse = ({
             timeFrameStart,
             timeFrameEnd,
             enabledAgeFrames,
-            enabledvalues,
+            enabledValues,
             offset,
             limit,
         }

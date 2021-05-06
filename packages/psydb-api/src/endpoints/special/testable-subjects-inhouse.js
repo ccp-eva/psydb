@@ -38,7 +38,10 @@ var testableSubjectsInhouse = async (context, next) => {
         subjectRecordType,
         timeFrameStart,
         timeFrameEnd,
-        customAgeFrameConditions,
+        
+        enabledAgeFrames,
+        enabledValues,
+        
         offset,
         limit,
     } = request.body;
@@ -128,6 +131,9 @@ var testableSubjectsInhouse = async (context, next) => {
             timeFrameEnd,
             subjectRecordTypeRecord,
             studyRecords,
+
+            enabledAgeFrames,
+            enabledValues,
             // TODO: ageframe custom verrides
             // TODO: global study settings filters in stage itself
         }),

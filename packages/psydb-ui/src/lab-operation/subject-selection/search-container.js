@@ -178,12 +178,14 @@ const SearchContainer = ({
 
         var payload = {
             timeFrame: {
-                start: new Date(formData.timeFrame.start),
-                end: new Date(formData.timeFrame.end),
+                start: new Date(formData.timeFrame.start).getTime(),
+                end: new Date(formData.timeFrame.end).getTime(),
             },
             ageFrames: enabledAgeFrames,
             values: out,
         };
+
+        console.log(payload);
 
         var json = JSON.stringify(payload);
         var base64 = Base64.encode(json);
