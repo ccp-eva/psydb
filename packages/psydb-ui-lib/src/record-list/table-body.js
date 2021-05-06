@@ -9,7 +9,7 @@ const TableBody = ({
     relatedHelperSetItems,
 
     enableView,
-    enableEdit,
+    enableEdit_old,
     
     enableSelectRecord,
     showSelectionIndicator,
@@ -30,7 +30,7 @@ const TableBody = ({
 
                     displayFieldData,
                     enableView,
-                    enableEdit,
+                    enableEdit_old,
                     linkBaseUrl,
                 
                     enableSelectRecord,

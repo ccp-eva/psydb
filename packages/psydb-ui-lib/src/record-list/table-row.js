@@ -19,7 +19,7 @@ const TableRow = ({
     relatedCustomRecordTypeLabels,
     
     enableView,
-    enableEdit,
+    enableEdit_old,
 
     enableSelectRecord,
     showSelectionIndicator,
@@ -91,6 +91,13 @@ const TableRow = ({
                                     size='sm'
                                     to={`${linkBaseUrl}/${record._id}`}>
                                     Details
+                                </LinkButton>
+                            )}
+                            { enableEdit_old && (
+                                <LinkButton
+                                    size='sm'
+                                    to={`${linkBaseUrl}/${record._id}/edit`}>
+                                    Edit
                                 </LinkButton>
                             )}
                         </>

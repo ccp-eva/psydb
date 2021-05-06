@@ -14,7 +14,7 @@ var RecordList = ({
     displayFields,
 
     enableView,
-    enableEdit,
+    enableEdit_old,
 
     enableSelectRecords,
     showSelectionIndicator,
@@ -65,7 +65,7 @@ var RecordList = ({
             relatedCustomRecordTypeLabels,
 
             enableView,
-            enableEdit,
+            enableEdit_old,
 
             enableSelectRecords,
             showSelectionIndicator,

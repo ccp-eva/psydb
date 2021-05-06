@@ -25,10 +25,14 @@ var FieldDefinition = ({
             default: type,
         },
         displayName: SaneString(),
-        props: ExactObject({
+        props: {
+            // so for some wierd reason RJSF explodes when this is an
+            // ExactObject that prohibits additionalProps
+            // in custom record type field create
+            type: 'object',
             properties: props,
             required: required || Object.keys(props)
-        })
+        }
     },
     required: [
         'key',

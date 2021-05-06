@@ -15,7 +15,7 @@ var RecordListTable = ({
     relatedCustomRecordTypeLabels,
     
     enableView,
-    enableEdit,
+    enableEdit_old,
     
     enableSelectRecords,
     showSelectionIndicator,
@@ -73,7 +73,7 @@ var RecordListTable = ({
                 relatedCustomRecordTypeLabels,
 
                 enableView,
-                enableEdit,
+                enableEdit_old,
 
                 enableSelectRecords,
                 showSelectionIndicator,

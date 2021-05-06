@@ -33,7 +33,7 @@ const CustomRecordTypes = () => {
                         linkBaseUrl={ url }
                         collection='customRecordType'
                         enableNew={ true }
-                        enableEdit={ true }
+                        enableEdit_old={ true }
                     />
                 </Route>
                 <Route path={`${path}/new`}>

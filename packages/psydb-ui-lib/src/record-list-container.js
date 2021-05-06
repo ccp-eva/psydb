@@ -10,7 +10,7 @@ const RecordListContainer = ({
 
     enableNew,
     enableView,
-    enableEdit,
+    enableEdit_old,
 
     enableSelectRecords,
     showSelectionIndicator,
@@ -32,7 +32,7 @@ const RecordListContainer = ({
                 recordType,
 
                 enableView,
-                enableEdit,
+                enableEdit_old,
 
                 enableSelectRecords,
                 showSelectionIndicator,
