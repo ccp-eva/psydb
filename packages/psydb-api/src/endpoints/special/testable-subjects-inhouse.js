@@ -116,7 +116,7 @@ var testableSubjectsInhouse = async (context, next) => {
         customRecordTypeData.state.recordLabelDefinition
     );
 
-    var subjectRecords = await db.collection('subject').aggregate([
+    var result = await db.collection('subject').aggregate([
         { $match: { type: subjectRecordType }},
         // TODO: quicksearch
         /*...QuickSearchStages({
@@ -155,7 +155,18 @@ var testableSubjectsInhouse = async (context, next) => {
                 }), {}))
             }
         }),
+        { $facet: {
+            subjectRecords: [{ $skip: offset }, { $limit: limit }],
+            subjectRecordsCount: [{ $count: 'COUNT' }]
+        }}
     ]).toArray();
+
+    var {
+        subjectRecords,
+        subjectRecordsCount
+    } = result[0];
+
+    subjectRecordsCount = subjectRecordsCount[0].COUNT
 
     postprocessSubjectRecords({
         subjectRecords,
@@ -197,6 +208,7 @@ var testableSubjectsInhouse = async (context, next) => {
             selectedStudyLabels,
             displayFieldData,
             records: subjectRecords,
+            count: subjectRecordsCount,
         },
     });
     

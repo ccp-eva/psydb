@@ -161,7 +161,7 @@ describe('init-demo-system', function () {
             timeFrameEnd: '2021-05-30T00:00:00.000Z',
             //timeFrameStart: '2079-04-01T00:00:00.000Z',
             //timeFrameEnd: '2081-04-15T00:00:00.000Z',
-            enabledAgeFrames: [`${context.STUDY_01_ID}/360_35640`],
+            enabledAgeFrames: [`/${context.STUDY_01_ID}/360_35640`],
             enabledValues: {
                 [`/${context.STUDY_01_ID}/360_35640/conditions/biologicalGender`]: [ 'male' ],
                 //[`/${context.STUDY_01_ID}/360_35640/conditions/schoolSubjects`]: []
