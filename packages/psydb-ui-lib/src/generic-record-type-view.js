@@ -8,6 +8,8 @@ import {
     useParams
 } from 'react-router-dom';
 
+import { LinkContainer } from 'react-router-bootstrap';
+
 import RecordListContainer from './record-list-container';
 import GenericRecordDetailsContainer from './generic-record-details-container';
 import GenericRecordFormContainer from './generic-record-form-container';
@@ -18,6 +20,7 @@ const GenericRecordTypeView = ({
 }) => {
     var { path, url } = useRouteMatch();
     var { recordType } = useParams();
+    var history = useHistory();
 
     var typeData = undefined;
     if (recordType) {
@@ -30,9 +33,11 @@ const GenericRecordTypeView = ({
     return (
         <div>
             { recordType && (
-                <h5 className='mt-0 mb-3 text-muted'>
-                    Typ: { typeData.state.label }
-                </h5>
+                <LinkContainer to={ url }>
+                    <h5 className='mt-0 mb-3 text-muted' role='button'>
+                        Typ: { typeData.state.label }
+                    </h5>
+                </LinkContainer>
             )}
             <Switch>
                 <Route exact path={`${path}`}>
@@ -68,8 +73,8 @@ const GenericRecordTypeView = ({
                         type='edit'
                         collection={ collection }
                         recordType={ recordType }
-                        onUpdated={ ({ id }) => {
-                            //history.push(`${url}`)
+                        onSuccessfulUpdate={ ({ id }) => {
+                            history.push(`${url}/${id}`)
                         }}
                     />
                 </Route>

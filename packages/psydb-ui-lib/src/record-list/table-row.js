@@ -76,7 +76,7 @@ const TableRow = ({
                 relatedCustomRecordTypeLabels,
                 displayFieldData,
             })} />
-            <td>
+            <td className='d-flex justify-content-end pb-0 pt-2'>
                 {
                     CustomActionListComponent
                     ? (
@@ -87,13 +87,10 @@ const TableRow = ({
                     : (
                         <>
                             { enableView && (
-                                <LinkButton to={`${linkBaseUrl}/${record._id}`}>
+                                <LinkButton
+                                    size='sm'
+                                    to={`${linkBaseUrl}/${record._id}`}>
                                     Details
-                                </LinkButton>
-                            )}
-                            { enableEdit && (
-                                <LinkButton to={`${linkBaseUrl}/${record._id}/edit`}>
-                                    Edit
                                 </LinkButton>
                             )}
                         </>

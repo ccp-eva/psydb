@@ -165,21 +165,29 @@ var triggerSystemEvents = async ({
         : '/state/nextSettings/fields'
     )
 
-    await channel.dispatch({
+    await channel.dispatchMany({
         lastKnownEventId,
-        message: {
-            type: 'push',
-            payload: {
-                prop: pointer,
-                value: {
-                    ...payload.props,
-                    isNew: true,
-                    isDirty: true,
+        messages: [
+            {
+                type: 'push',
+                payload: {
+                    prop: pointer,
+                    value: {
+                        ...payload.props,
+                        isNew: true,
+                        isDirty: true,
+                    }
+                }
+            },
+            {
+                type: 'put',
+                payload: {
+                    prop: '/state/isDirty',
+                    value: true,
                 }
             }
-        }
+        ]
     });
-
 }
 
 // no-op

@@ -28,8 +28,12 @@ const GenericRecordForm = ({
 
     var {
         hasSubChannels,
-        hasCustomRecordTypes,
+        hasCustomTypes,
     } = allSchemaCreators[collection];
+
+    console.log('AAAAAAAAAAAAAAA');
+    console.log(collection);
+    console.log(hasCustomTypes)
 
     var [ state, dispatch ] = useReducer(reducer, {});
     var {
@@ -84,7 +88,7 @@ const GenericRecordForm = ({
             : 'create'
         );
         var messageType = (
-            hasCustomRecordTypes
+            hasCustomTypes
             ? `${collection}/${recordType}/${messageAction}`
             : `${collection}/${messageAction}`
         );
@@ -117,7 +121,7 @@ const GenericRecordForm = ({
             payload,
         }})
         .then(response => {
-            onSuccessfulUpdate && onSuccessfulUpdate(response);
+            onSuccessfulUpdate && onSuccessfulUpdate({ id, response });
         })
     };
 

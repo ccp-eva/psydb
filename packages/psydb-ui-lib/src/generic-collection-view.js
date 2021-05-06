@@ -26,6 +26,8 @@ var collectionDisplayNames = {
     'researchGroup': 'Forschungsgruppen',
     'personnel': 'Mitarbeiter',
     'systemRole': 'System-Rollen',
+    'externalPerson': 'Externe Personen',
+    'externalOrganization': 'Externe Organisationen',
 }
 
 const GenericCollectionView = ({
@@ -54,7 +56,7 @@ const GenericCollectionView = ({
     var { hasCustomTypes } = allSchemaCreators[collection];
 
     // only if hasCustomRecordTypes
-    console.log(metadata);
+    //console.log(metadata);
     var collectionRecordTypes = (
         metadata.customRecordTypes.filter(it => (
             it.collection ===  collection
@@ -66,9 +68,11 @@ const GenericCollectionView = ({
     return (
         <div>
             <header>
-                <h1 className='m-0 border-bottom'>
-                    { collectionDisplayNames[collection] || collection }
-                </h1>
+                <LinkContainer to={ url }>
+                    <h1 className='m-0 border-bottom' role='button'>
+                        { collectionDisplayNames[collection] || collection }
+                    </h1>
+                </LinkContainer>
             </header>
             {(
                 hasCustomTypes

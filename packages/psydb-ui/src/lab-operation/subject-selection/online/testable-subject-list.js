@@ -128,7 +128,10 @@ const OnlineTestableSubjectList = ({
     var CustomActionListComponent = useMemo(() => (
         ({ record }) => {
             return (
-                <Button onClick={ () => handleShowSubjectModal(record) }>
+                <Button
+                    size='sm'
+                    onClick={ () => handleShowSubjectModal(record) }
+                >
                     Details
                 </Button>
             )
