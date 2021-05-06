@@ -163,8 +163,8 @@ describe('init-demo-system', function () {
             //timeFrameEnd: '2081-04-15T00:00:00.000Z',
             enabledAgeFrames: [`${context.STUDY_01_ID}/360_35640`],
             enabledValues: {
-                [`${context.STUDY_01_ID}/360_35640/conditions/biologicalGender`]: [ 'male' ],
-                //[`${context.STUDY_01_ID}/360_35640/conditions/schoolSubjects`]: []
+                [`/${context.STUDY_01_ID}/360_35640/conditions/biologicalGender`]: [ 'male' ],
+                //[`/${context.STUDY_01_ID}/360_35640/conditions/schoolSubjects`]: []
             },
             offset: 0,
             limit: 100,

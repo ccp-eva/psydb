@@ -35,8 +35,8 @@ var AddSubjectTestabilityFieldsStage = ({
         if (ageFrameField) {
             var enabledStudyAgeFrames = (
                 enabledAgeFrames
-                .filter(it => it.startsWith(`${study._id}/`))
-                .map(it => it.replace(`${study._id}/`, ''))
+                .filter(it => it.startsWith(`/${study._id}/`))
+                .map(it => it.replace(`/${study._id}/`, ''))
             );
 
             var filteredConditionsByAgeFrame = [];
@@ -48,7 +48,7 @@ var AddSubjectTestabilityFieldsStage = ({
                 if (cbafEnabled) {
                     var cbafEnabledValues = (
                         Object.keys(enabledValues).reduce((acc, key) => {
-                            var prefix = `${study._id}/${start}_${end}/conditions/`;
+                            var prefix = `/${study._id}/${start}_${end}/conditions/`;
                             if (key.startsWith(prefix)) {
                                 var pointer = key.replace(prefix, '');
                                 return ({
@@ -74,12 +74,22 @@ var AddSubjectTestabilityFieldsStage = ({
 
                         filteredConditionsByAgeFrame.push(cbaf)
                     }
+
+                    //console.log(cbafEnabledValues);
+                    //console.log(cbaf);
                 }
             }
 
             subjectTypeSettings.conditionsByAgeFrame = (
                 filteredConditionsByAgeFrame
             );
+
+            /*subjectTypeSettings.conditionsByAgeFrame = (
+                subjectTypeSettings.conditionsByAgeFrame.filter(it => {
+                    var { start, end } = it.ageFrame;
+                    return enabledStudyAgeFrames.includes(`${start}_${end}`)
+                })
+            )*/
 
             //console.dir(subjectTypeSettings, { depth: null });
         }
