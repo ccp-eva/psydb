@@ -43,7 +43,15 @@ export const BiologicalGender = (value) => {
     return {
         'male': 'Männlich',
         'female': 'Weiblich',
-        'unknown': 'Unbekant',
+        'unknown': 'Unbekannt',
+    }[value];
+}
+
+export const ExtBool = (value) => {
+    return {
+        'yes': 'Ja',
+        'no': 'Nein',
+        'unknown': 'Unbekannt',
     }[value];
 }
 

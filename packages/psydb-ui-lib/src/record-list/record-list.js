@@ -22,6 +22,7 @@ var RecordList = ({
     onSelectRecord,
 
     linkBaseUrl,
+    bsTableProps,
     CustomActionListComponent,
 }) => {
     var [ isInitialized, setIsInitialized ] = useState(false);
@@ -73,6 +74,7 @@ var RecordList = ({
             selectedRecordIds,
 
             linkBaseUrl,
+            bsTableProps,
             CustomActionListComponent,
         })} />
     )

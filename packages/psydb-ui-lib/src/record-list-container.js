@@ -16,11 +16,14 @@ const RecordListContainer = ({
     showSelectionIndicator,
     selectedRecordIds,
     onSelectRecord,
+
+    className,
+    bsTableProps,
 }) => {
     var { path, url } = useRouteMatch();
 
     return (
-        <div>
+        <div className={ className }>
             { enableNew && (
                 <LinkButton to={`${url}/new`}>
                     Neuer Eintrag
@@ -38,6 +41,8 @@ const RecordListContainer = ({
                 showSelectionIndicator,
                 selectedRecordIds,
                 onSelectRecord,
+
+                bsTableProps,
             }) } />
         </div>
     );

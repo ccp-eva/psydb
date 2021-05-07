@@ -1,4 +1,5 @@
 import jsonpointer from 'jsonpointer';
+import * as stringifiers from './field-stringifiers'
 
 const applyValueToDisplayFields = ({
     record,
@@ -13,16 +14,45 @@ const applyValueToDisplayFields = ({
             var rawValue = jsonpointer.get(record, dataPointer);
 
             var str = rawValue;
-            if (relatedRecordLabels) {
-                if (type === 'ForeignId') {
+
+            if (type === 'ForeignId') {
+                if (relatedRecordLabels) {
                     str = relatedRecordLabels[props.collection][rawValue]._recordLabel;
                 }
-                else if (type === 'ForeignIdList') {
+                else {
+                    str = rawValue;
+                }
+            }
+            else if (type === 'ForeignIdList') {
+                if (relatedRecordLabels) {
                     str = rawValue.map(id => (
                         relatedRecordLabels[props.collection][id]._recordLabel
                     )).join();
                 }
+                else {
+                    str = (rawValue || []).join(', ')
+                }
             }
+            else if (type === 'HelperSetItemIdList') {
+                if (relatedHelperSetItems) {
+                    str = rawValue.map(id => (
+                        relatedHelperSetItems[props.set][id].state.label
+                    )).join();
+                }
+                else {
+                    str = (rawValue || []).join(', ')
+                }
+            }
+            else {
+                var stringify = stringifiers[type];
+                if (stringify) {
+                    str = stringify(rawValue)
+                }
+                else {
+                    str = String(rawValue);
+                }
+            }
+
 
             // TODO use stringifiers from common
             return {

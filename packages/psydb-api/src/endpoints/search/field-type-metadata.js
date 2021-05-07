@@ -65,9 +65,12 @@ module.exports = {
 
     ...[
         'ExtBool',
-        'ForeignId',
         'SaneString',
         'BiologicalGender',
+        'ForeignId',
+        'ForeignIdList',
+        'HelperSetItemId',
+        'HelperSetItemIdList',
     ].reduce((acc, fieldType) => ({
         ...acc,
         [fieldType]: {

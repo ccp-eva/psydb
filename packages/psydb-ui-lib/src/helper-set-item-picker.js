@@ -3,26 +3,24 @@ import React, { useState, useEffect } from 'react';
 import { Form, InputGroup, Button, Modal } from 'react-bootstrap';
 import { PencilFill } from 'react-bootstrap-icons';
 
-import RecordListContainer from './record-list-container';
+import HelperSetItemListContainer from './helperSetItem-list-container';
 
-const RecordPicker = ({
-    collection,
-    recordType,
-    constraints,
+const HelperSetItemPicker = ({
+    set,
 
-    value: record,
+    value: helperSetItem,
     onChange,
     hasErrors,
 }) => {
     var [ showModal, setShowModal ] = useState(false);
     // FIXME: im not sure how to best reset the state in case
     // it gets out of sync i could do it manually by checking the
-    // record ids and foribly update the state
-    var [ cachedRecord, setCachedRecord ] = useState(record);
+    // helperSetItem ids and foribly update the state
+    var [ cachedHelperSetItem, setCachedHelperSetItem ] = useState(helperSetItem);
 
-    var handleSelect = (record) => {
-        setCachedRecord(record);
-        onChange(record);
+    var handleSelect = (helperSetItem) => {
+        setCachedHelperSetItem(helperSetItem);
+        onChange(helperSetItem);
         handleCloseModal();
     }
 
@@ -35,15 +33,15 @@ const RecordPicker = ({
     }
     
     var displayValue = (
-        cachedRecord
-        ? cachedRecord._recordLabel || cachedRecord._id
+        cachedHelperSetItem
+        ? cachedHelperSetItem._helperSetItemLabel || cachedHelperSetItem._id
         : ''
     )
 
     var classes = [
         'border pl-3 bg-white',
         hasErrors ? 'border-danger' : '',
-        (cachedRecord && !cachedRecord._recordLabel) ? 'text-danger' : '',
+        (cachedHelperSetItem && !cachedHelperSetItem._helperSetItemLabel) ? 'text-danger' : '',
     ].join(' ')
 
     return (
@@ -65,22 +63,22 @@ const RecordPicker = ({
                     </Button>
                 </InputGroup.Append>
             </InputGroup>
-            <RecordPickerModal
+            <HelperSetItemPickerModal
                 show={ showModal }
                 onHide={ handleCloseModal }
 
                 collection={ collection }
-                recordType={ recordType }
+                helperSetItemType={ helperSetItemType }
                 constraints={ constraints }
-                onSelectRecord={ handleSelect }
+                onSelectHelperSetItem={ handleSelect }
             />
         </div>
     )
     /*return (
         <div>
             {(
-                record
-                    ? record._recordLabel
+                helperSetItem
+                    ? helperSetItem._helperSetItemLabel
                     : 'Keine ausgewählt'
             )}
             <Button
@@ -92,29 +90,25 @@ const RecordPicker = ({
     )*/
 }
 
-const RecordPickerModal = ({
+const HelperSetItemPickerModal = ({
     show,
     onHide,
 
     collection,
-    recordType,
+    helperSetItemType,
     constraints,
-    onSelectRecord,
+    onSelectHelperSetItem,
 }) => {
     return (
         <Modal show={show} onHide={ onHide } size='lg'>
             <Modal.Header closeButton>
                 <Modal.Title>Auswahlliste</Modal.Title>
             </Modal.Header>
-            <Modal.Body className='bg-light'>
-                <RecordListContainer
-                    className='bg-white border-left border-right'
-                    bsTableProps={{ hover: true }}
-                    collection={ collection }
-                    recordType={ recordType }
-                    baseConstraints={ constraints }
+            <Modal.Body>
+                <HelperSetItemListContainer
+                    set={ set }
 
-                    onSelectRecord={ onSelectRecord }
+                    onSelectHelperSetItem={ onSelectHelperSetItem }
 
                     enableNew={ false }
                     enableView={ false }
@@ -126,4 +120,4 @@ const RecordPickerModal = ({
     );
 }
 
-export default RecordPicker;
+export default HelperSetItemPicker;
