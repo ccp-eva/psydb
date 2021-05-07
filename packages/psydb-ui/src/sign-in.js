@@ -59,7 +59,7 @@ const SignIn = ({ onSignedIn }) => {
             }}
         >
             <h5
-                className='pt-3 pb-3 pl-4 text-white'
+                className='pt-3 pb-3 pl-4 text-white m-0'
                 style={{ background: '#006c66'}}
             >
                 PsyDB Login

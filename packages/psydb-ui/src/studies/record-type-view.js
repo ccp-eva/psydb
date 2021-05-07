@@ -8,6 +8,8 @@ import {
     useParams
 } from 'react-router-dom';
 
+import { LinkContainer } from 'react-router-bootstrap';
+
 import RecordListContainer from '@mpieva/psydb-ui-lib/src/record-list-container';
 import StudyRecordDetails from './record-details';
 import StudyRecordContainer from './record-container';
@@ -31,9 +33,11 @@ const StudyRecordTypeView = ({
     return (
         <div>
             { recordType && (
-                <h5 className='mt-0 mb-3 text-muted'>
-                    Typ: { typeData.state.label }
-                </h5>
+                <LinkContainer to={ url }>
+                    <h5 className='mt-0 mb-3 text-muted' role='button'>
+                        Typ: { typeData.state.label }
+                    </h5>
+                </LinkContainer>
             )}
             <Switch>
                 <Route exact path={`${path}`}>

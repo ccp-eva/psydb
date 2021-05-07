@@ -39,6 +39,9 @@ const GenericRecordTypeView = ({
                     </h5>
                 </LinkContainer>
             )}
+            { !recordType && (
+                <div className='mb-3'></div>
+            )}
             <Switch>
                 <Route exact path={`${path}`}>
                     <RecordListContainer
@@ -55,8 +58,8 @@ const GenericRecordTypeView = ({
                         type='create'
                         collection={ collection }
                         recordType={ recordType }
-                        onCreated={
-                            ({ id }) => history.push(`${url}/${id}/edit`)
+                        onSuccessfulUpdate={
+                            ({ id }) => history.push(`${url}/${id}`)
                         }
                     />
                 </Route>

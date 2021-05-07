@@ -31,10 +31,6 @@ const GenericRecordForm = ({
         hasCustomTypes,
     } = allSchemaCreators[collection];
 
-    console.log('AAAAAAAAAAAAAAA');
-    console.log(collection);
-    console.log(hasCustomTypes)
-
     var [ state, dispatch ] = useReducer(reducer, {});
     var {
         record,
@@ -121,7 +117,17 @@ const GenericRecordForm = ({
             payload,
         }})
         .then(response => {
-            onSuccessfulUpdate && onSuccessfulUpdate({ id, response });
+            console.log(response.data.data);
+            var recordId = id;
+            if (type !== 'edit') {
+                var recordId = response.data.data.find(it => (
+                    it.collectionName === collection
+                )).channelId;
+            }
+            onSuccessfulUpdate && onSuccessfulUpdate({
+                id: recordId,
+                response
+            });
         })
     };
 

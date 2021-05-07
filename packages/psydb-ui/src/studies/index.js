@@ -69,9 +69,11 @@ const GenericCollectionView = ({
     return (
         <div>
             <header>
-                <h1 className='m-0 border-bottom'>
-                    { collectionDisplayNames[collection] || collection }
-                </h1>
+                <LinkContainer to={ url }>
+                    <h1 className='m-0 border-bottom' role='button'>
+                        { collectionDisplayNames[collection] || collection }
+                    </h1>
+                </LinkContainer>
             </header>
             {(
                 hasCustomTypes
