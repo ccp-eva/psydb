@@ -20,9 +20,9 @@ const SubjectModalSchedule = ({
         studyId,
         showCreateModal,
         createModalData,
+        
+        calendarRevision,
     } = state;
-
-    console.log(createModalData);
 
     var [
         handleShowCreateModal,
@@ -33,7 +33,9 @@ const SubjectModalSchedule = ({
         (payload) => dispatch({ type: 'show-create-modal', payload }),
         () => dispatch({ type: 'hide-create-modal' }),
 
-        () => { console.log('created')},
+        () => {
+            dispatch({ type: 'increase-calendar-revision' })
+        },
     ]))
 
     return (
@@ -62,8 +64,12 @@ const SubjectModalSchedule = ({
                 studyRecordType={ studyRecordType }
 
                 //activeLocationType={ 'instituteroom' }
-                onSelectReservationSlot={ handleShowCreateModal }
-                calendarRevision={ 0 }
+                onSelectReservationSlot={ 
+                    calendarRevision > 0
+                    ? undefined
+                    : handleShowCreateModal
+                }
+                calendarRevision={ calendarRevision }
                 
                 locationCalendarListClassName='bg-white p-2 border-left border-bottom border-right'
             />
@@ -93,6 +99,11 @@ var reducer = (state, action) => {
             return {
                 ...state,
                 showCreateModal: false,
+            }
+        case 'increase-calendar-revision':
+            return {
+                ...state,
+                calendarRevision: (state.calendarRevision || 0) + 1
             }
     }
 }
