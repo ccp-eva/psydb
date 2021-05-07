@@ -24,6 +24,8 @@ const applyValueToDisplayFields = ({
                 }
             }
             else if (type === 'ForeignIdList') {
+                console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+                console.log(relatedRecordLabels);
                 if (relatedRecordLabels) {
                     str = rawValue.map(id => (
                         relatedRecordLabels[props.collection][id]._recordLabel

@@ -14,6 +14,8 @@ var createRecordLabel = require('@mpieva/psydb-api-lib/src/create-record-label')
 var gatherAgeFrameDataOfStudy = require('@mpieva/psydb-api-lib/src/gather-age-frame-data-of-study');
 var fetchOneCustomRecordType = require('@mpieva/psydb-api-lib/src/fetch-one-custom-record-type');
 
+var fetchRelatedLabelsForMany = require('@mpieva/psydb-api-lib/src/fetch-related-labels-for-many');
+
 var {
     MatchIntervalOverlapStage,
     StripEventsStage,
@@ -197,13 +199,22 @@ var testableSubjectsInhouse = async (context, next) => {
         })
     }))
 
-    // TODO: fetch relatedRecords and merrge selectedStudyLabels
-    //
+    var subjectRelated = await fetchRelatedLabelsForMany({
+        db,
+        collectionName: 'subject',
+        recordType: subjectRecordType,
+        records: subjectRecords
+    })
 
     context.body = ResponseBody({
         data: {
-            relatedRecords: {
-                study: keyBy({ items: selectedStudyLabels, byProp: '_id' })
+            ...subjectRelated,
+            relatedRecordLabels: {
+                ...subjectRelated.relatedRecordLabels,
+                study: {
+                    ...subjectRelated.relatedRecordLabels.study,
+                    ...keyBy({ items: selectedStudyLabels, byProp: '_id' })
+                }
             },
             selectedStudyLabels,
             displayFieldData,

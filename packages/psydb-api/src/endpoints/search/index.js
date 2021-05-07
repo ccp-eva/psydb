@@ -33,6 +33,7 @@ var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
 var convertFiltersToQueryFields = require('@mpieva/psydb-api-lib/src/convert-filters-to-query-fields');
 var convertConstraintsToMongoPath = require('@mpieva/psydb-api-lib/src/convert-constraints-to-mongo-path');
+var fetchRelatedLabelsForMany = require('@mpieva/psydb-api-lib/src/fetch-related-labels-for-many');
 
 var fieldTypeMetadata = require('./field-type-metadata');
 
@@ -141,6 +142,13 @@ var search = async (context, next) => {
         limit
     });
 
+    var related = await fetchRelatedLabelsForMany({
+        db,
+        collectionName,
+        recordType,
+        records: records,
+    });
+
     var availableDisplayFieldDataByPointer = keyBy({
         items: availableDisplayFieldData,
         byProp: 'dataPointer'
@@ -153,6 +161,7 @@ var search = async (context, next) => {
 
     context.body = ResponseBody({
         data: {
+            ...related,
             displayFieldData,
             records,
         },
