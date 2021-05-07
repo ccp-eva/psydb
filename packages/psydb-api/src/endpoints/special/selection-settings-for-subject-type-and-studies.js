@@ -100,6 +100,7 @@ var selectionSettingsForSubjectTypeAndStudies = async (context, next) => {
             }
         }
     }
+
     //console.dir(schema, { depth: null });
     //throw new Error();
 

@@ -48,21 +48,30 @@ var resolveRelationData = ({ schema, data }) => {
             ];
         }
         else if (part.type === 'array') {
-            //console.log('#########PART')
+            console.log('#########PART')
+            //console.log(part.inSchemaPointer);
             //console.log(part);
-            var dataPointers = convertPointer(
+            /*var dataPointers = convertPointer(
                 part.inSchemaPointer,
                 data
-            );
+            );*/
+            // XXX 2 data pointers bbut only one schema
+            // XXX 2 data pointers bbut only one schema
+            // XXX 2 data pointers bbut only one schema
+            // XXX 2 data pointers bbut only one schema
+            //console.log('===================>')
+            //console.log('dataPointers', dataPointers);
 
-            for (var [index, itemSchema] of part.itemSchemas.entries()) {
-                //console.log(dataPointers[index]);
-                var currentData = jsonpointer.get(data, dataPointers[index]);
+            for (var [index, itemSchemaContainer] of part.itemSchemas.entries()) {
+                var itemSchema = itemSchemaContainer.schema;
+                var dataPointer = itemSchemaContainer.fullDataPointer;
+
+                var currentData = jsonpointer.get(data, dataPointer);
 
                 var resolved = resolveFromSubSchema({
                     schema: itemSchema,
                     data: currentData,
-                    dataPointerPrefix: dataPointers[index]
+                    dataPointerPrefix: dataPointer
                 });
 
                 helperSetItemIdRelationData = [
@@ -98,6 +107,7 @@ var resolveFromSubSchema = ({
     dataPointerPrefix,
 }) => {
     //console.log(dataPointerPrefix, schema, data);
+    console.log(dataPointerPrefix);
     var foreignIdRelationData = [];
     var helperSetItemIdRelationData = [];
     var customRecordTypeRelationData = [];
@@ -118,9 +128,10 @@ var resolveFromSubSchema = ({
             || currentSchema.systemType === 'HelperSetItemId'
             || currentSchema.systemType === 'CustomRecordTypeKey'
         ) {
-            //console.log(currentSchema);
-            //console.log(data)
-            //console.log('PUSHING ####################')
+            console.log('AAAAAAAAAA');
+            console.log(currentSchema);
+            console.log(data)
+            console.log('PUSHING ####################')
             var currentData = data,
                 dataPointer = '';
             if (typeof data === 'object') {

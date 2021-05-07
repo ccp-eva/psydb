@@ -194,6 +194,8 @@ var stringifyFieldValue = ({
     relatedHelperSetItems,
 }) => {
     var definition = customFieldDefinitions.find(it => it.key === fieldKey);
+    console.log(fieldKey, value);
+    console.log(relatedHelperSetItems);
     switch (definition.type) {
         case 'ForeignId':
         case 'ForeignIdList':

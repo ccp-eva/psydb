@@ -35,7 +35,11 @@ var lazyResolveZero = ({
     schemaParts,
     currentData,
     currentPart,
+
+    fullDataPointer = '',
 }) => {
+    console.log('LLLLLLLLLLLLLL');
+    console.log(fullDataPointer);
     var { inSchemaPointer, schema } = currentPart;
 
     var requiredType = 'array';
@@ -68,7 +72,10 @@ var lazyResolveZero = ({
         for (var [index, dataItem] of currentData.entries()) {
             //console.log(dataItem);
             var out = lazyResolve(schema, dataItem);
-            buffer.push(out);
+            buffer.push({
+                ...out,
+                fullDataPointer: `${fullDataPointer}/${index}`
+            });
             //console.log('out', out)
 
             var includedArrays = resolveIncludedArrays({
@@ -101,7 +108,9 @@ var lazyResolveZero = ({
                     resolvedParts,
                     schemaParts,
                     currentData: nextData,
-                    currentPart: nextPart
+                    currentPart: nextPart,
+
+                    fullDataPointer: `${fullDataPointer}/${index}${dataPointer}`,
                 })
             }
         }
@@ -109,7 +118,7 @@ var lazyResolveZero = ({
         resolvedParts.push({
             type: 'array',
             inSchemaPointer,
-            itemSchemas: buffer.map(it => it.schema)
+            itemSchemas: buffer
         });
     }
     else {
@@ -128,7 +137,9 @@ var lazyResolveZero = ({
         resolvedParts.push({
             type: 'schema',
             inSchemaPointer,
-            schema: out.schema,
+            ...out,
+
+            fullDataPointer,
         });
        
         //console.log('schema')
@@ -156,7 +167,9 @@ var lazyResolveZero = ({
                 resolvedParts,
                 schemaParts,
                 currentData: nextData,
-                currentPart: nextPart
+                currentPart: nextPart,
+
+                fullDataPointer: `${fullDataPointer}${dataPointer}`,
             })
         }
 

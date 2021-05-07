@@ -27,11 +27,15 @@ export const Address = (value) => (
     .filter(it => !!it)
     .join(' ')
 );
-export const EmailList = (value) => (value.join(', '));
+export const EmailList = (value) => (
+    value.map(it => it.email).join(', ')
+);
 
 // TODO: decide if we want to separate stringify stuff into
 // label/display
-export const PhoneList = (value) => (value.join(', '));
+export const PhoneList = (value) => (
+    value.map(it => it.number).join(', ')
+);
 export const DateTime = (value) => (datefns.format(new Date(value), 'P p'));
 export const AgeFrame = (value) => {
     var start = AgeFrameEdge(value.start);

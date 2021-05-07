@@ -32,7 +32,7 @@ var convertPointer = (pointer, data) => {
     }
 }
 
-var traverseArrayPointers = (pointerSet, data) => {
+var traverseArrayPointers = (pointerSet, data, __debugPath = '') => {
     //console.log('start traverseArrayPointers()');
     //console.log('pointerset', pointerSet);
     var [ currentPointer, ...nextPointerSet ] = pointerSet;
@@ -70,21 +70,25 @@ var traverseArrayPointers = (pointerSet, data) => {
     if (Array.isArray(currentData)) {
         //console.log('its an array');
         for (var [ index, it ] of currentData.entries()) {
-            //console.log(index);
+            //console.log('__debugPath', __debugPath, index);
             var nextPointerSet = pointerSet.slice(1);
+            //console.log(nextPointerSet);
             if (nextPointerSet.length > 0) {
                 //console.log('nextPointerSet', nextPointerSet);
                 dataPointers = [
                     ...dataPointers,
                     ...traverseArrayPointers(
                         nextPointerSet,
-                        currentData[index]
+                        currentData[index],
+                        `${__debugPath}${currentDataPointer}/${index}`
                     ).map(it => `${currentDataPointer}/${index}${it}`),
                 ];
             }
             else {
+                //console.log(' => ', index, `${currentDataPointer}/${index}`, currentData);
                 dataPointers.push(`${currentDataPointer}/${index}`)
             }
+            //console.log('done',__debugPath, index);
         }
     }
     else {

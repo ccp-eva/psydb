@@ -149,10 +149,10 @@ describe('init-demo-system', function () {
         /*response = await agent.post('/testable-subject-types-for-studies').send({
             studyIds: [ context.STUDY_01_ID ],
         });*/
-        /*response = await agent.post('/selection-settings-for-subject-type-and-studies').send({
-            subjectRecordType: 'teacher',
-            studyIds: [ context.STUDY_01_ID ],
-        });*/
+        response = await agent.post('/selection-settings-for-subject-type-and-studies').send({
+            subjectRecordType: 'child',
+            studyIds: [ context.STUDY_02_ID ],
+        });
         
         /*response = await agent.post('/testable-subjects-inhouse/').send({
             subjectRecordType: 'teacher',
@@ -183,7 +183,7 @@ describe('init-demo-system', function () {
             experimentType: 'inhouse',
         });*/
 
-        //console.dir(response.status, { depth: null });
+        console.dir(response.status, { depth: null });
         //console.dir(response.body, { depth: null });
     });
 

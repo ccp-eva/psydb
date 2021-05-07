@@ -29,6 +29,7 @@ module.exports = {
     Password: require('./password'),
     EventId: require('./event-id'),
     PhoneList: require('./phone-list'),
+    Phone: require('./phone'),
     ForeignId: require('./foreign-id'),
     ForeignIdList: require('./foreign-id-list'),
     FullText: require('./full-text'),

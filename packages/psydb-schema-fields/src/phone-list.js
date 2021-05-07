@@ -1,23 +1,34 @@
 'use strict';
 var ExactObject = require('./exact-object');
+var Phone = require('./phone');
 
-var PhoneList = ({ minItems, numbertypes }) => ({
+var PhoneList = ({ minItems, numbertypes, numbertypeNames }) => ({
+    title: 'Telefon',
     systemType: 'PhoneList',
     type: 'array',
     default: [],
     minItems: (minItems || 0),
     items: ExactObject({
-        reactType: 'phone',
         properties: {
-            number: {
+            number: Phone({
+                title: 'Nummer',
+            }),
+            type: {
+                title: 'Typ',
                 type: 'string',
-                format: 'phone-number', // custom format
-            },
-            type: { enum: (numbertypes || [
-                'business',
-                'private',
-                'mobile', // is that still a thing?
-            ])}
+                enum: (numbertypes || [
+                    'business',
+                    'private',
+                    'mobile', // is that still a thing?
+                    'fax', // is this still a thing?
+                ]),
+                enumNames: (numbertypeNames || [
+                    'geschäftlich',
+                    'privat',
+                    'mobil',
+                    'Fax',
+                ])
+            }
         },
         required: [
             'number',
