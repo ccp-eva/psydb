@@ -184,7 +184,7 @@ describe('init-demo-system', function () {
         });*/
 
         console.dir(response.status, { depth: null });
-        //console.dir(response.body, { depth: null });
+        console.dir(response.body, { depth: null });
     });
 
 });

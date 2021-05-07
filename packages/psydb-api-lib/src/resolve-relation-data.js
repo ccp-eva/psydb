@@ -48,7 +48,7 @@ var resolveRelationData = ({ schema, data }) => {
             ];
         }
         else if (part.type === 'array') {
-            console.log('#########PART')
+            //console.log('#########PART')
             //console.log(part.inSchemaPointer);
             //console.log(part);
             /*var dataPointers = convertPointer(
@@ -107,7 +107,7 @@ var resolveFromSubSchema = ({
     dataPointerPrefix,
 }) => {
     //console.log(dataPointerPrefix, schema, data);
-    console.log(dataPointerPrefix);
+    //console.log(dataPointerPrefix);
     var foreignIdRelationData = [];
     var helperSetItemIdRelationData = [];
     var customRecordTypeRelationData = [];
@@ -128,10 +128,10 @@ var resolveFromSubSchema = ({
             || currentSchema.systemType === 'HelperSetItemId'
             || currentSchema.systemType === 'CustomRecordTypeKey'
         ) {
-            console.log('AAAAAAAAAA');
-            console.log(currentSchema);
-            console.log(data)
-            console.log('PUSHING ####################')
+            //console.log('AAAAAAAAAA');
+            //console.log(currentSchema);
+            //console.log(data)
+            //console.log('PUSHING ####################')
             var currentData = data,
                 dataPointer = '';
             if (typeof data === 'object') {

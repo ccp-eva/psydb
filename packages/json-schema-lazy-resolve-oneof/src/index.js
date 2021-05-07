@@ -38,8 +38,8 @@ var lazyResolveZero = ({
 
     fullDataPointer = '',
 }) => {
-    console.log('LLLLLLLLLLLLLL');
-    console.log(fullDataPointer);
+    //console.log('LLLLLLLLLLLLLL');
+    //console.log(fullDataPointer);
     var { inSchemaPointer, schema } = currentPart;
 
     var requiredType = 'array';
