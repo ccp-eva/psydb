@@ -40,6 +40,21 @@ module.exports = {
                 }
             ]
         },
+        availableStaticDisplayFields: [
+            {
+                key: '_label',
+                systemType: 'SaneString',
+                dataPointer: '/state/label',
+                displayName: 'Bezeichnung',
+            },
+        ],
+        staticDisplayFields: [
+            {
+                systemType: 'SaneString',
+                dataPointer: '/state/label',
+            },
+        ]
+
     },
     helperSetItem: {
         collection: 'helperSetItem',

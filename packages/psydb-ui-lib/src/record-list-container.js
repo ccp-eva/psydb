@@ -19,6 +19,7 @@ const RecordListContainer = ({
 
     className,
     bsTableProps,
+    CustomActionListComponent,
 }) => {
     var { path, url } = useRouteMatch();
 
@@ -43,6 +44,7 @@ const RecordListContainer = ({
                 onSelectRecord,
 
                 bsTableProps,
+                CustomActionListComponent,
             }) } />
         </div>
     );

@@ -81,6 +81,7 @@ const TableRow = ({
                     CustomActionListComponent
                     ? (
                         <CustomActionListComponent { ...({
+                            linkBaseUrl,
                             record,
                         }) } />
                     )

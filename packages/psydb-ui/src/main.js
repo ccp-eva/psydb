@@ -27,6 +27,7 @@ import ResearchGroups from './research-groups';
 import SystemRoles from './system-roles';
 import ExternalPersons from './external-persons';
 import ExternalOrganizations from './external-organizations';
+import HelperSets from './helper-sets';
 
 import LabOperation from './lab-operation';
 
@@ -99,6 +100,7 @@ var Routing = () => (
     <Route path='/system-roles' component={ SystemRoles } />
     <Route path='/external-persons' component={ ExternalPersons } />
     <Route path='/external-organizations' component={ ExternalOrganizations } />
+    <Route path='/helper-sets' component={ HelperSets } />
 
     <Route path='/lab-operation' component={ LabOperation } />
     </>

@@ -28,10 +28,12 @@ var collectionDisplayNames = {
     'systemRole': 'System-Rollen',
     'externalPerson': 'Externe Personen',
     'externalOrganization': 'Externe Organisationen',
+    'helperSet': 'Hilfstabellen'
 }
 
 const GenericCollectionView = ({
     collection,
+    CustomRoutingComponent,
 }) => {
     var { path, url } = useRouteMatch();
 
@@ -77,18 +79,22 @@ const GenericCollectionView = ({
             {(
                 hasCustomTypes
                 ? (
-                    <RoutingForCustomTypes
-                        path={ path }
-                        url={ url }
-                        collection={ collection }
-                        collectionRecordTypes={ collectionRecordTypes }
-                    />
+                    <RoutingForCustomTypes { ...({
+                        path,
+                        url,
+                        collection,
+                        collectionRecordTypes,
+                        
+                        CustomRoutingComponent,
+                    }) } />
                 )
                 : (
-                    <GenericRecordTypeView
-                        customRecordTypes={ collectionRecordTypes }
-                        collection={ collection }
-                    />
+                    <GenericRecordTypeView { ...({
+                        customRecordTypes: collectionRecordTypes,
+                        collection,
+                        
+                        CustomRoutingComponent,
+                    }) } />
                 )
             )}
         </div>
@@ -99,7 +105,9 @@ const RoutingForCustomTypes = ({
     path,
     url,
     collection,
-    collectionRecordTypes
+    collectionRecordTypes,
+
+    CustomRoutingComponent,
 }) => {
     return (
         <Switch>
@@ -109,10 +117,11 @@ const RoutingForCustomTypes = ({
                 />
             </Route>
             <Route path={`${path}/:recordType`}>
-                <GenericRecordTypeView
-                    customRecordTypes={ collectionRecordTypes }
-                    collection={ collection }
-                />
+                <GenericRecordTypeView { ...({
+                    customRecordTypes: collectionRecordTypes,
+                    collection,
+                    CustomRoutingComponent,
+                }) } />
             </Route>
         </Switch>
     )

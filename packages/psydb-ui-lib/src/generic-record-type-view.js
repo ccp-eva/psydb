@@ -17,10 +17,11 @@ import GenericRecordFormContainer from './generic-record-form-container';
 const GenericRecordTypeView = ({
     customRecordTypes,
     collection,
+
+    CustomRoutingComponent,
 }) => {
     var { path, url } = useRouteMatch();
     var { recordType } = useParams();
-    var history = useHistory();
 
     var typeData = undefined;
     if (recordType) {
@@ -42,48 +43,84 @@ const GenericRecordTypeView = ({
             { !recordType && (
                 <div className='mb-3'></div>
             )}
-            <Switch>
-                <Route exact path={`${path}`}>
-                    <RecordListContainer
-                        linkBaseUrl={ url }
-                        collection={ collection }
-                        recordType={ recordType }
-                        enableView={ true }
-                        enableNew={ true }
-                        enableEdit={ true }
-                    />
-                </Route>
-                <Route exact path={`${path}/new`}>
-                    <GenericRecordFormContainer
-                        type='create'
-                        collection={ collection }
-                        recordType={ recordType }
-                        onSuccessfulUpdate={
-                            ({ id }) => history.push(`${url}/${id}`)
-                        }
-                    />
-                </Route>
 
-                <Route exact path={`${path}/:id`}>
-                    <GenericRecordDetailsContainer
-                        collection={ collection }
-                        recordType={ recordType }
-                    />
-                </Route>
 
-                <Route path={`${path}/:id/edit`}>
-                    <GenericRecordFormContainer
-                        type='edit'
-                        collection={ collection }
-                        recordType={ recordType }
-                        onSuccessfulUpdate={ ({ id }) => {
-                            history.push(`${url}/${id}`)
-                        }}
-                    />
-                </Route>
-            </Switch>
+            { 
+                CustomRoutingComponent
+                ? (
+                    <CustomRoutingComponent { ...({
+                        path,
+                        url,
+                        collection,
+                        recordType,
+                    }) } />
+                )
+                : (
+                    <DefaultRouting { ...({
+                        path,
+                        url,
+                        collection,
+                        recordType,
+                    }) } />
+                )
+            }
+
         </div>
     );
+}
+
+const DefaultRouting = ({
+    path,
+    url,
+
+    collection,
+    recordType
+}) => {
+    var history = useHistory();
+    return (
+        <Switch>
+            <Route exact path={`${path}`}>
+                <RecordListContainer
+                    linkBaseUrl={ url }
+                    collection={ collection }
+                    recordType={ recordType }
+                    enableView={ true }
+                    enableNew={ true }
+                    enableEdit={ true }
+                />
+            </Route>
+
+            <Route exact path={`${path}/new`}>
+                <GenericRecordFormContainer
+                    type='create'
+                    collection={ collection }
+                    recordType={ recordType }
+                    onSuccessfulUpdate={
+                        ({ id }) => history.push(`${url}/${id}`)
+                    }
+                />
+            </Route>
+
+            <Route exact path={`${path}/:id`}>
+                <GenericRecordDetailsContainer
+                    collection={ collection }
+                    recordType={ recordType }
+                />
+            </Route>
+
+            <Route path={`${path}/:id/edit`}>
+                <GenericRecordFormContainer
+                    type='edit'
+                    collection={ collection }
+                    recordType={ recordType }
+                    onSuccessfulUpdate={ ({ id }) => {
+                        history.push(`${url}/${id}`)
+                    }}
+                />
+            </Route>
+
+        </Switch>
+    )
 }
 
 export default GenericRecordTypeView;
