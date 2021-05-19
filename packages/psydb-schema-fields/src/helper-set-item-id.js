@@ -1,11 +1,11 @@
 'use strict';
-var IdentifierString = require('./identifier-string');
+var Id = require('./id');
 
-var HelperSetItemId = ({ set, ...additionalKeywords}) => ({
-    ...IdentifierString(),
+var HelperSetItemId = ({ setId, ...additionalKeywords}) => ({
+    ...Id(),
     systemType: 'HelperSetItemId',
     systemProps: {
-        set,
+        setId,
     },
     ...additionalKeywords
 })

@@ -5,6 +5,7 @@
 var {
     ExactObject,
     Id,
+    ForeignId,
     EventId,
     IdentifierString,
     SaneString,
@@ -71,7 +72,9 @@ var PhoneListFieldDefinition = () => FieldDefinition({
 var HelperSetItemIdListFieldDefinition = () => FieldDefinition({
     type: 'HelperSetItemIdList',
     props: {
-        set: IdentifierString()
+        setId: ForeignId({
+            collection: 'helperSet'
+        })
     },
 })
 

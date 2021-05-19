@@ -1,7 +1,6 @@
 'use strict';
 var {
     ExactObject,
-    IdentifierString,
     SaneString,
 } = require('@mpieva/psydb-schema-fields');
 
@@ -12,7 +11,6 @@ var createSchema = ({ op }) => (
         type: `helper-sets/${op}`,
         payload: ExactObject({
             properties: {
-                id: IdentifierString(),
                 props: ExactObject({
                     properties: {
                         label: SaneString(),
@@ -23,7 +21,6 @@ var createSchema = ({ op }) => (
                 })
             },
             required: [
-                ...(op === 'create' ? [] : [ 'id' ]),
                 'props'
             ]
         })

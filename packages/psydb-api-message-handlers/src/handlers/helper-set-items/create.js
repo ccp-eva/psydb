@@ -24,7 +24,7 @@ var checkAllowedAndPlausible = async ({
     message,
     permissions
 }) => {
-    var { set, id } = message.payload;
+    var { setId, props } = message.payload;
     
     if (!permissions.canCreateHelperSetItem()) {
         throw new ApiError(403);
@@ -32,23 +32,23 @@ var checkAllowedAndPlausible = async ({
 
     var existingSet = await (
         db.collection('helperSet').findOne({
-            _id: set,
+            _id: setId,
         })
     );
 
     if (!existingSet) {
         // InvalidHelperSet
-        throw new ApiError(400);
+        throw new ApiError(400, 'HelperSetNotFound');
     }
 
-    var existingByKey = await (
+    var existingByLabel = await (
         db.collection('helperSetItems').findOne({
-            key: id,
+            label: props.label
         })
     );
 
-    if (existingByKey) {
-        throw new ApiError(400);
+    if (existingByLabel) {
+        throw new ApiError(400, 'DuplicateLabel');
     }
 
     /*if (op === 'patch') {
@@ -72,13 +72,13 @@ var triggerSystemEvents = async ({
     personnelId,
 }) => {
     var { type: messageType, payload } = message;
-    var { id, set, props } = payload;
+    var { setId, props } = payload;
 
     var channel = (
         rohrpost
         .openCollection('helperSetItem')
         .openChannel({
-            additionalChannelProps: { key: id, set }
+            additionalChannelProps: { setId }
         })
     );
 

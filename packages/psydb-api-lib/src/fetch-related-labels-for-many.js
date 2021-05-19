@@ -10,21 +10,67 @@ var fetchRelatedLabelsForMany = async ({
     recordType,
     records,
 }) => {
+    var resolveSchema = undefined;
 
-    var recordSchema = await createSchemaForRecordType({
-        db,
-        collectionName,
-        recordType,
-        fullSchema: true
-    });
+    if (collectionName === 'customRecordType') {
+        var targetCollections = [];
+        for (var it of records) {
+            if (!targetCollections.includes(it.collection)) {
+                targetCollections.push(it.collection);
+            }
+        }
 
-    // FIXME: this is really hacky
-    var resolveSchema = {
-        type: 'object',
-        properties: {
-            records: {
-                type: 'array',
-                items: recordSchema,
+        var possibleRecordSchemas = [];
+        for (var it of targetCollections) {
+            var recordSchema = await createSchemaForRecordType({
+                db,
+                collectionName,
+                recordType,
+                fullSchema: true,
+                additionalSchemaCreatorArgs: {
+                    collection: it
+                }
+            });
+            // adding collection prop as full schema dos not recorgnize
+            // customRecordTypeCollection specifics
+            recordSchema.properties.collection = {
+                type: 'string',
+                const: it
+            };
+            possibleRecordSchemas.push(recordSchema);
+        }
+
+        // FIXME: this is really hacky
+        resolveSchema = {
+            type: 'object',
+            properties: {
+                records: {
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        lazyResolveProp: 'collection',
+                        oneOf: possibleRecordSchemas
+                    }
+                }
+            }
+        }
+    }
+    else {
+        var recordSchema = await createSchemaForRecordType({
+            db,
+            collectionName,
+            recordType,
+            fullSchema: true
+        });
+
+        // FIXME: this is really hacky
+        resolveSchema = {
+            type: 'object',
+            properties: {
+                records: {
+                    type: 'array',
+                    items: recordSchema,
+                }
             }
         }
     }
