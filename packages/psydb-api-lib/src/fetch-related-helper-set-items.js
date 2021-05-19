@@ -14,17 +14,20 @@ var fetchRelatedHelperSetItems = async ({
         return {};
     }
 
+    console.log('AAAAAAAAAAAAAAAAA');
+    console.log(helperSetItemIdRelationData);
+
     var matchSetGroups = groupBy({
         items: helperSetItemIdRelationData,
-        byProp: 'set',
+        byProp: 'setId',
     })
 
     var helperSetItems = await (
         db.collection('helperSetItem').aggregate([
             { $match: {
-                $or: Object.keys(matchSetGroups).map(set => ({
-                    set,
-                    key: { $in: matchSetGroups[set].map(it => it.value )}
+                $or: Object.keys(matchSetGroups).map(setId => ({
+                    setId,
+                    _id: { $in: matchSetGroups[setId].map(it => it.value )}
                 }))
             }},
             { $project: {
@@ -35,13 +38,13 @@ var fetchRelatedHelperSetItems = async ({
 
     var setGroups = groupBy({
         items: helperSetItems,
-        byProp: 'set',
+        byProp: 'setId',
     });
 
-    for (var key of Object.keys(setGroups)) {
-        setGroups[key] = keyBy({
-            items: setGroups[key],
-            byProp: 'key',
+    for (var setId of Object.keys(setGroups)) {
+        setGroups[setId] = keyBy({
+            items: setGroups[setId],
+            byProp: '_id',
         })
     }
 
