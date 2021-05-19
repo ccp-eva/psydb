@@ -31,3 +31,16 @@ export const InlineWrapper = (ps) => {
         </div>
     )
 }
+
+export const OneLineWrapper = (ps) => {
+    var { label, children, valueStyle } = ps;
+    return (
+        <div className='row mr-0 ml-0'>
+            <div className='p-0'>
+                <div style={ valueStyle || styles.value }>
+                    { children }
+                </div>
+            </div>
+        </div>
+    )
+}

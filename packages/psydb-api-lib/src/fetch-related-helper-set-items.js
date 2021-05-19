@@ -14,9 +14,6 @@ var fetchRelatedHelperSetItems = async ({
         return {};
     }
 
-    console.log('AAAAAAAAAAAAAAAAA');
-    console.log(helperSetItemIdRelationData);
-
     var matchSetGroups = groupBy({
         items: helperSetItemIdRelationData,
         byProp: 'setId',

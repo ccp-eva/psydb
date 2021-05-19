@@ -9,6 +9,7 @@ var PhoneList = ({ minItems, numbertypes, numbertypeNames }) => ({
     default: [],
     minItems: (minItems || 0),
     items: ExactObject({
+        systemType: 'PhoneListItem',
         properties: {
             number: Phone({
                 title: 'Nummer',

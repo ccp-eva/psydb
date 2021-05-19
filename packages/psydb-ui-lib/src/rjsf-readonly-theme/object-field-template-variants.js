@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useReducer } from 'react';
 import { FormattedDuration } from '@mpieva/psydb-common-lib/src/durations';
 import datefns from '../date-fns';
-import { InlineWrapper } from './wrapper-components';
+import { InlineWrapper, OneLineWrapper } from './wrapper-components';
 
 const styles = {
     bold: { fontWeight: '500' }
@@ -46,6 +46,47 @@ export const Address = ({
                 ({ formData.country})
             </div>
         </InlineWrapper>
+    )
+}
+
+export const EmailListItem = ({
+    title,
+    formData,
+}) => {
+    return (
+        <OneLineWrapper>
+            <b style={ styles.bold }>
+                { formData.email }
+            </b>
+            {' '}
+            { formData.isPrimary && (
+                <b style={ styles.bold } className='text-primary'>
+                    (primär)
+                </b>
+            )}
+        </OneLineWrapper>
+    )
+}
+
+export const PhoneListItem = ({
+    title,
+    schema,
+    formData,
+}) => {
+
+    var typeIndex = schema.properties.type.enum.findIndex(it => (
+        it === formData.type
+    ));
+    var typeDisplayName = schema.properties.type.enumNames[typeIndex]
+
+    return (
+        <OneLineWrapper>
+            <b style={ styles.bold }>
+                { formData.number }
+                {' '}
+                ({ typeDisplayName })
+            </b>
+        </OneLineWrapper>
     )
 }
 

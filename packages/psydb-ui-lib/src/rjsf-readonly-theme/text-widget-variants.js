@@ -79,13 +79,13 @@ export const HelperSetItemId = ({
     var renderedTextValue = undefined;
     if (itemKey) {
         var { systemProps } = schema;
-        var { set } = systemProps;
+        var { setId } = systemProps;
 
         var { relatedHelperSetItems } = formContext;
 
         var item;
         if (relatedHelperSetItems) {
-            item = relatedHelperSetItems[set][itemKey]
+            item = relatedHelperSetItems[setId][itemKey]
         }
 
         renderedTextValue = (
