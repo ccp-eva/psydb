@@ -2,6 +2,7 @@
 var psydbSchemaFields = require('@mpieva/psydb-schema-fields');
 
 var {
+    BasicObject,
     ExactObject,
     Id,
     IdentifierString,
@@ -10,9 +11,13 @@ var {
 
 var metadata = require('./field-type-metadata');
 
-var FullBodySchema = ({ availableFilterFields }) => {
+var FullBodySchema = ({
+    availableConstraints,
+    availableFilterFields
+}) => {
 
-    console.log(availableFilterFields);
+    console.log('av-constraints', availableConstraints);
+    console.log('av-filters', availableFilterFields);
 
     //var variants = [];
     var filters = {};
@@ -65,6 +70,9 @@ var FullBodySchema = ({ availableFilterFields }) => {
             filters: ExactObject({
                 properties: filters,
                 required: [],
+            }),
+            constraints: BasicObject({
+                ...availableConstraints
             }),
             offset: {
                 type: 'integer',

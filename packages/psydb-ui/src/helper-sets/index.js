@@ -14,6 +14,8 @@ import {
     useHistory,
 } from 'react-router-dom';
 
+import HelperSetItems from './helper-set-items';
+
 const HelperSets = () => {
     return (
         <GenericCollectionView
@@ -42,10 +44,6 @@ const HelperSetRouting = ({
                 />
             </Route>
 
-            <Route path={ `${path}/:id/items` }>
-                <div>FOO</div>
-            </Route>
-            
             <Route path={`${path}/:id/edit`}>
                 <GenericRecordFormContainer
                     type='edit'
@@ -57,6 +55,10 @@ const HelperSetRouting = ({
                 />
             </Route>
 
+            <Route path={ `${path}/:setId/items` }>
+                <HelperSetItems />
+            </Route>
+            
         </Switch>
     )
 }
@@ -85,6 +87,5 @@ const HelperSetRecordActions = ({
         </>
     )
 }
-
 
 export default HelperSets;

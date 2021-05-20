@@ -8,8 +8,8 @@ var canConvertLazy = (pointer) => {
     return !arrayItemsRegex.test(pointer);
 }
 
-var convertPointer = (pointer, data) => {
-    if (canConvertLazy(pointer)) {
+var convertPointer = (pointer, data, options = {}) => {
+    if (options.forceLazy || canConvertLazy(pointer)) {
         return convertLazy(pointer)
     }
     else {

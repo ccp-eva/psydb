@@ -26,6 +26,7 @@ var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
 var CoreBodySchema = require('./core-body-schema'),
     FullBodySchema = require('./full-body-schema');
 
+var gatherAvailableConstraintsForRecordType = require('@mpieva/psydb-api-lib/src/gather-available-constraints-for-record-type');
 var gatherDisplayFieldsForRecordType = require('@mpieva/psydb-api-lib/src/gather-display-fields-for-record-type');
 var fetchOneCustomRecordType = require('@mpieva/psydb-api-lib/src/fetch-one-custom-record-type');
 var fetchRecordsByFilter = require('@mpieva/psydb-api-lib/src/fetch-records-by-filter');
@@ -78,6 +79,13 @@ var search = async (context, next) => {
         );
     }
 
+    var availableConstraints = await (
+        gatherAvailableConstraintsForRecordType({
+            collectionName,
+            recordType,
+        })
+    );
+
     var {
         displayFields,
         availableDisplayFieldData,
@@ -89,6 +97,7 @@ var search = async (context, next) => {
 
     isValid = ajv.validate(
         FullBodySchema({
+            availableConstraints,
             availableFilterFields: displayFields
         }),
         request.body

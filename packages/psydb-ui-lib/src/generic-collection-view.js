@@ -33,6 +33,7 @@ var collectionDisplayNames = {
 
 const GenericCollectionView = ({
     collection,
+    showTitle = true,
     CustomRoutingComponent,
 }) => {
     var { path, url } = useRouteMatch();
@@ -69,13 +70,15 @@ const GenericCollectionView = ({
     // TODO: static types
     return (
         <div>
-            <header>
-                <LinkContainer to={ url }>
-                    <h1 className='m-0 border-bottom' role='button'>
-                        { collectionDisplayNames[collection] || collection }
-                    </h1>
-                </LinkContainer>
-            </header>
+            { showTitle && (
+                <header>
+                    <LinkContainer to={ url }>
+                        <h1 className='m-0 border-bottom' role='button'>
+                            { collectionDisplayNames[collection] || collection }
+                        </h1>
+                    </LinkContainer>
+                </header>
+            )}
             {(
                 hasCustomTypes
                 ? (

@@ -54,7 +54,6 @@ module.exports = {
                 dataPointer: '/state/label',
             },
         ]
-
     },
     helperSetItem: {
         collection: 'helperSetItem',
@@ -67,7 +66,21 @@ module.exports = {
                     dataPointer: '/state/label'
                 }
             ]
-        }
+        },
+        availableStaticDisplayFields: [
+            {
+                key: '_label',
+                systemType: 'SaneString',
+                dataPointer: '/state/label',
+                displayName: 'Bezeichnung',
+            },
+        ],
+        staticDisplayFields: [
+            {
+                systemType: 'SaneString',
+                dataPointer: '/state/label',
+            },
+        ]
     },
     experimentOperatorTeam: {
         collection: 'experimentOperatorTeam',

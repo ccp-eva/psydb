@@ -14,6 +14,7 @@ module.exports = {
     helperSetItem: {
         ...metadata.helperSetItem,
         State: internals.HelperSetItemState,
+        FullSchema: internals.HelperSetItemFullSchema,
     },
     experimentOperatorTeam: {
         ...metadata.experimentOperatorTeam,

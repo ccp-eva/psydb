@@ -154,62 +154,86 @@ var FullRecordSchemaCreator = ({
         hasFixedTypes,
         hasSubChannels,
         subChannelStateSchemaCreators,
+        FullSchema
     } = collectionCreatorData;
 
     var SchemaCreator = undefined;
-    if (hasSubChannels) {
-        SchemaCreator = ({
-            subChannelCustomRecordFieldDefinitions,
-            ...otherArgs
-        }) => ExactObject({
-            properties: {
-                _id: Id(),
-                // FIXME: hardcoded subchannels
-                scientific: ExactObject({
-                    properties: {
-                        state: subChannelStateSchemaCreators.scientific({
-                            ...( subChannelCustomRecordFieldDefinitions && {
-                                customFieldDefinitions: (
-                                    subChannelCustomRecordFieldDefinitions.scientific
-                                )
-                            }),
-                            ...otherArgs
-                        })
-                    }
-                }),
-                gdpr: ExactObject({
-                    properties: {
-                        state: subChannelStateSchemaCreators.gdpr({
-                            ...( subChannelCustomRecordFieldDefinitions && {
-                                customFieldDefinitions: (
-                                    subChannelCustomRecordFieldDefinitions.gdpr
-                                )
-                            }),
-                            ...otherArgs
-                        })
-                    }
-                }),
-            }
-        });
+
+    // when we defined full schema manually
+    if (FullSchema) {
+        if (hasSubChannels) {
+            SchemaCreator = ({
+                subChannelCustomRecordFieldDefinitions,
+                ...otherArgs
+            }) => (
+                FullSchema({
+                    subChannelCustomRecordFieldDefinitions,
+                    ...otherArgs
+                })
+            );
+        }
+        else {
+            SchemaCreator = (...args) => FullSchema(...args);
+        }
     }
-    else if (hasFixedTypes) {
-        SchemaCreator = (...args) => ExactObject({
-            properties: {
-                _id: Id(),
-                state: (
-                    collectionCreatorData
-                    .fixedTypeStateSchemaCreators[recordType](...args)
-                )
-            }
-        });
-    }
+    // when not defined manually: auto-generate
     else {
-        SchemaCreator = (...args) => ExactObject({
-            properties: {
-                _id: Id(),
-                state: collectionCreatorData.State(...args),
-            }
-        });
+
+        if (hasSubChannels) {
+            SchemaCreator = ({
+                subChannelCustomRecordFieldDefinitions,
+                ...otherArgs
+            }) => ExactObject({
+                properties: {
+                    _id: Id(),
+                    // FIXME: hardcoded subchannels
+                    scientific: ExactObject({
+                        properties: {
+                            state: subChannelStateSchemaCreators.scientific({
+                                ...( subChannelCustomRecordFieldDefinitions && {
+                                    customFieldDefinitions: (
+                                        subChannelCustomRecordFieldDefinitions.scientific
+                                    )
+                                }),
+                                ...otherArgs
+                            })
+                        }
+                    }),
+                    gdpr: ExactObject({
+                        properties: {
+                            state: subChannelStateSchemaCreators.gdpr({
+                                ...( subChannelCustomRecordFieldDefinitions && {
+                                    customFieldDefinitions: (
+                                        subChannelCustomRecordFieldDefinitions.gdpr
+                                    )
+                                }),
+                                ...otherArgs
+                            })
+                        }
+                    }),
+                }
+            });
+        }
+        else if (hasFixedTypes) {
+            SchemaCreator = (...args) => ExactObject({
+                properties: {
+                    _id: Id(),
+                    state: (
+                        collectionCreatorData
+                        .fixedTypeStateSchemaCreators[recordType](...args)
+                    )
+                }
+            });
+        }
+        else {
+            SchemaCreator = (...args) => ExactObject({
+                properties: {
+                    _id: Id(),
+                    state: collectionCreatorData.State(...args),
+                }
+            });
+        }
+    
     }
 
     return SchemaCreator;

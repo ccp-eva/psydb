@@ -113,7 +113,6 @@ describe('init-demo-system', function () {
             additionalFilter: {},
         });*/
 
-        // console.dir(response.body, { depth: null });
         /*var response = await agent.post('/search').send({
             collectionName: 'subject',
             recordType: 'teacher',
@@ -123,6 +122,7 @@ describe('init-demo-system', function () {
             offset: 0,
             limit: 20,
         });*/
+
         /*var response = await agent.post('/search').send({
             collectionName: 'customRecordType',
             filters: {},
@@ -154,7 +154,7 @@ describe('init-demo-system', function () {
             subjectRecordType: 'child',
             studyIds: [ context.STUDY_02_ID ],
         });*/
-        response = await agent.get(`/read/subject/child/${context.ALICE_CHILD_ID}`);
+        //response = await agent.get(`/read/subject/child/${context.ALICE_CHILD_ID}`);
         
         /*response = await agent.post('/testable-subjects-inhouse/').send({
             subjectRecordType: 'teacher',
@@ -184,6 +184,16 @@ describe('init-demo-system', function () {
             studyRecordType: 'default',
             experimentType: 'inhouse',
         });*/
+
+        var response = await agent.post('/search').send({
+            collectionName: 'helperSetItem',
+            constraints: {
+                '/setId': context.HS_LANG
+            },
+            filters: {},
+            offset: 0,
+            limit: 20,
+        });
 
         console.dir(response.status, { depth: null });
         console.dir(response.body, { depth: null });
