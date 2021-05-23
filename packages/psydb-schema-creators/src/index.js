@@ -10,11 +10,13 @@ module.exports = {
     helperSet: {
         ...metadata.helperSet,
         State: internals.HelperSetState,
+        RecordMessage: internals.HelperSetRecordMessage 
     },
     helperSetItem: {
         ...metadata.helperSetItem,
         State: internals.HelperSetItemState,
         FullSchema: internals.HelperSetItemFullSchema,
+        RecordMessage: internals.HelperSetItemRecordMessage 
     },
     experimentOperatorTeam: {
         ...metadata.experimentOperatorTeam,

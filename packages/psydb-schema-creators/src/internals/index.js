@@ -2,8 +2,11 @@
 module.exports.CustomRecordTypeState = require('./custom-record-type/state');
 
 module.exports.HelperSetState = require('./helper-set/state');
+module.exports.HelperSetRecordMessage = require('./helper-set/record-message');
+
 module.exports.HelperSetItemState = require('./helper-set-item/state');
 module.exports.HelperSetItemFullSchema = require('./helper-set-item/full-schema');
+module.exports.HelperSetItemRecordMessage = require('./helper-set-item/record-message');
 
 module.exports.PersonnelScientificState = require('./personnel/scientific-state');
 module.exports.PersonnelGdprState = require('./personnel/gdpr-state');

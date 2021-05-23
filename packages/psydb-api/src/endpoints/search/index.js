@@ -81,6 +81,7 @@ var search = async (context, next) => {
 
     var availableConstraints = await (
         gatherAvailableConstraintsForRecordType({
+            db,
             collectionName,
             recordType,
         })

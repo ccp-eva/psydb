@@ -18,6 +18,8 @@ const GenericRecordTypeView = ({
     customRecordTypes,
     collection,
 
+    noSpacer,
+
     CustomRoutingComponent,
 }) => {
     var { path, url } = useRouteMatch();
@@ -40,7 +42,7 @@ const GenericRecordTypeView = ({
                     </h5>
                 </LinkContainer>
             )}
-            { !recordType && (
+            { (!recordType && !noSpacer) && (
                 <div className='mb-3'></div>
             )}
 

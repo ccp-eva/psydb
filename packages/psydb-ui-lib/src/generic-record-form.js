@@ -111,6 +111,8 @@ const GenericRecordForm = ({
                 ...additionalPayloadProps,
             }
         )
+
+        console.log(payload);
         
         agent.send({ message: {
             type: messageType,

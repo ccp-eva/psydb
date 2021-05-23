@@ -7,6 +7,7 @@ const GenericRecordFormContainer = ({
     type,
     collection,
     recordType,
+    additionalPayloadProps,
     onSuccessfulUpdate,
 }) => {
     
@@ -30,6 +31,7 @@ const GenericRecordFormContainer = ({
                 collection,
                 recordType,
                 id,
+                additionalPayloadProps,
                 onSuccessfulUpdate,
             })} />
         </div>

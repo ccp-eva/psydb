@@ -34,6 +34,7 @@ var collectionDisplayNames = {
 const GenericCollectionView = ({
     collection,
     showTitle = true,
+    noSpacer,
     CustomRoutingComponent,
 }) => {
     var { path, url } = useRouteMatch();
@@ -95,6 +96,8 @@ const GenericCollectionView = ({
                     <GenericRecordTypeView { ...({
                         customRecordTypes: collectionRecordTypes,
                         collection,
+
+                        noSpacer,
                         
                         CustomRoutingComponent,
                     }) } />

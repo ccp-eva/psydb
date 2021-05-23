@@ -6,11 +6,13 @@ var traverse = require('json-schema-traverse'),
 var createSchemaForRecordType = require('./create-schema-for-record-type');
 
 var gatherAvailableConstraintsForRecordType = async ({
+    db,
     collectionName,
     recordType
 }) => {
     
     var fullRecordSchema = await createSchemaForRecordType({
+        db,
         collectionName,
         recordType,
         fullSchema: true

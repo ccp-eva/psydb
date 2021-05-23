@@ -34,9 +34,9 @@ var checkSchema = async ({ db, getRecordSchemas, message }) => {
         RecordMessage
     } = collectionCreatorData;
 
-    if (!isGenericRecord) {
+    /*if (!isGenericRecord) {
         throw new ApiError(400, 'InvalidCollection');
-    }
+    }*/
 
     var schema = undefined;
     if (collection === 'study') {

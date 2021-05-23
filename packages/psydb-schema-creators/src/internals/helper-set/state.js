@@ -6,7 +6,9 @@ var {
 
 var HelperSetState = () => ExactObject({
     properties: {
-        label: SaneString(),
+        label: SaneString({
+            title: 'Bezeichnung',
+        }),
     },
     required: [
         'label',

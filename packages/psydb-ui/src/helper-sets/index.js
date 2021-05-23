@@ -20,6 +20,7 @@ const HelperSets = () => {
     return (
         <GenericCollectionView
             collection='helperSet'
+            noSpacer={ true }
             CustomRoutingComponent={ HelperSetRouting }
         />
     );
@@ -41,6 +42,17 @@ const HelperSetRouting = ({
                     collection={ collection }
                     enableNew={ true }
                     CustomActionListComponent={ HelperSetRecordActions }
+                />
+            </Route>
+
+            <Route path={`${path}/new`}>
+                <GenericRecordFormContainer
+                    type='create'
+                    collection={ collection }
+                    recordType={ recordType }
+                    onSuccessfulUpdate={ ({ id }) => {
+                        history.push(`${url}`)
+                    }}
                 />
             </Route>
 
