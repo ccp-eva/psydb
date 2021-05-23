@@ -8,10 +8,7 @@ import jsonpointer from 'jsonpointer';
 import allSchemaCreators from '@mpieva/psydb-schema-creators';
 import agent from '@mpieva/psydb-ui-request-agents';
 
-import { withTheme } from '@mpieva/rjsf-monkey-patch';
-import RJSFCustomTheme from './rjsf-theme';
-
-var SchemaForm = withTheme(RJSFCustomTheme);
+import SchemaForm from './default-schema-form';
 
 const GenericRecordForm = ({
     type,
@@ -77,7 +74,6 @@ const GenericRecordForm = ({
     }
 
     var onSubmit = ({ formData }) => {
-        console.log('submitting');
         var messageAction = (
             type === 'edit'
             ? 'patch'
@@ -121,7 +117,6 @@ const GenericRecordForm = ({
             payload,
         }})
         .then(response => {
-            console.log(response.data.data);
             var recordId = id;
             if (type !== 'edit') {
                 var recordId = response.data.data.find(it => (
@@ -177,19 +172,11 @@ const GenericRecordForm = ({
 
     return (
         <SchemaForm
-            noHtml5Validate={ true }
-            showErrorList={ false }
             schema={ formSchema }
             formData={ formData }
             formContext={ formContext }
             onSubmit={ onSubmit }
-        >
-            <div>
-                <Button type="submit" className="btn btn-primary">
-                    Update
-                </Button>
-            </div>
-        </SchemaForm>
+        />
     )
 }
 

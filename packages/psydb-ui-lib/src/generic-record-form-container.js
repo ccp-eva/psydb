@@ -1,6 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 
+import FormBox from './form-box';
 import GenericRecordForm from './generic-record-form';
 
 const GenericRecordFormContainer = ({
@@ -17,15 +18,11 @@ const GenericRecordFormContainer = ({
     }
 
     return (
-        <div className='border p-3 bg-light'>
-            <h5>
-                { 
-                    type === 'edit'
-                    ? 'Datensatz bearbeiten'
-                    : 'Neuer Datensatz'
-                }
-            </h5>
-            <hr />
+        <FormBox title={
+            type === 'edit'
+            ? 'Datensatz bearbeiten'
+            : 'Neuer Datensatz'
+        }>
             <GenericRecordForm { ...({
                 type,
                 collection,
@@ -34,7 +31,7 @@ const GenericRecordFormContainer = ({
                 additionalPayloadProps,
                 onSuccessfulUpdate,
             })} />
-        </div>
+        </FormBox>
     )
 }
 

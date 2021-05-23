@@ -1,10 +1,8 @@
 import React, { useEffect } from 'react';
 import agent from '@mpieva/psydb-ui-request-agents';
 
-import { withTheme } from '@rjsf/core';
-import { Theme as Bootstrap4Theme } from '@rjsf/bootstrap-4'
-
-var SchemaForm = withTheme(Bootstrap4Theme);
+import FormBox from '@mpieva/psydb-ui-lib/src/form-box';
+import SchemaForm from '@mpieva/psydb-ui-lib/src/default-schema-form';
 
 import {
     ExactObject,
@@ -16,8 +14,14 @@ import {
 const schema = ExactObject({
     properties: {
         collection: CustomRecordTypeCollectionEnum({ title: 'Collection' }),
-        type: IdentifierString({ title: 'Interner Type-Key' }),
-        label: SaneString({ title: 'Anzeigename' }),
+        type: IdentifierString({
+            title: 'Interner Type-Key',
+            minLength: 1,
+        }),
+        label: SaneString({
+            title: 'Anzeigename',
+            minLength: 1,
+        }),
     },
     required: [
         'collection',
@@ -60,18 +64,12 @@ const CreateNewType = ({ onCreated }) => {
     };
 
     return (
-        <div>
+        <FormBox title='Neuer Datensatz-Typ'>
             <SchemaForm
                 schema={ schema }
                 onSubmit={ onSubmit }
-            >
-                <div>
-                    <button type="submit" className="btn btn-primary">
-                        Create
-                    </button>
-                </div>
-            </SchemaForm>
-        </div>
+            />
+        </FormBox>
     )
 }
 

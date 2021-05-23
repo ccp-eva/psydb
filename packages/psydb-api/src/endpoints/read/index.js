@@ -98,10 +98,10 @@ var read = async (context, next) => {
 
     // FIXME: thats too hacky
     // we might need to pass the schema down to the fetcher or something
-    if (record.gdpr._lastKnownEventId === null) {
+    if (record.gdpr && record.gdpr._lastKnownEventId === null) {
         delete record.gdpr;
     }
-    if (record.scientific._lastKnownEventId === null) {
+    if (record.scientific && record.scientific._lastKnownEventId === null) {
         delete record.scientific;
     }
 
