@@ -104,17 +104,29 @@ var MultiChannelRecordPatchMessage = ({
     });
 
 
-    return Message({
+    var schema =  Message({
         type: createMessageType({ collection, type, op: 'patch' }),
         payload: ExactObject({
             properties: {
                 id: Id(),
                 lastKnownSubChannelEventIds: ExactObject({
-                    properties: subChannelKeys.reduce((acc, key) => ({
-                        ...acc,
-                        [key]: EventId()
-                    }), {}),
-                    required: subChannelKeys,
+                    properties: (
+                        subChannelKeys
+                        .filter(key => (
+                            subChannelCustomFieldDefinitions[key].length > 0
+                        ))
+                        .reduce((acc, key) => ({
+                            ...acc,
+                            [key]: EventId()
+                        }), {})
+                    ),
+                    required: (
+                        // FIXME: redundant see above
+                        subChannelKeys
+                        .filter(key => (
+                            subChannelCustomFieldDefinitions[key].length > 0
+                        ))
+                    ),
                 }),
                 props: payloadPropsSchema,
             },
@@ -125,6 +137,8 @@ var MultiChannelRecordPatchMessage = ({
             ]
         })
     });
+
+    return schema;
 }
 
 var MultiChannelRecordDeleteGdprMessage = ({

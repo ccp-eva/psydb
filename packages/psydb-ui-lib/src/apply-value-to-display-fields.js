@@ -13,6 +13,13 @@ const applyValueToDisplayFields = ({
             var { key, type, displayName, props, dataPointer } = it;
             var rawValue = jsonpointer.get(record, dataPointer);
 
+            if (rawValue === undefined) {
+                return {
+                    ...it,
+                    value: '-'
+                }
+            }
+
             var str = rawValue;
 
             if (type === 'ForeignId') {
@@ -24,10 +31,8 @@ const applyValueToDisplayFields = ({
                 }
             }
             else if (type === 'ForeignIdList') {
-                console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
-                console.log(relatedRecordLabels);
                 if (relatedRecordLabels) {
-                    str = rawValue.map(id => (
+                    str = (rawValue || []).map(id => (
                         relatedRecordLabels[props.collection][id]._recordLabel
                     )).join();
                 }
@@ -37,7 +42,7 @@ const applyValueToDisplayFields = ({
             }
             else if (type === 'HelperSetItemIdList') {
                 if (relatedHelperSetItems) {
-                    str = rawValue.map(id => (
+                    str = (rawValue || []).map(id => (
                         relatedHelperSetItems[props.set][id].state.label
                     )).join();
                 }
@@ -56,7 +61,6 @@ const applyValueToDisplayFields = ({
             }
 
 
-            // TODO use stringifiers from common
             return {
                 ...it,
                 value: str

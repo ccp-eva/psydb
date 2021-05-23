@@ -64,8 +64,12 @@ const GenericRecordDetails = ({
     if (record) {
         if (hasSubChannels) {
             formData = {
-                gdpr: record.gdpr.state,
-                scientific: record.scientific.state
+                ...(record.gdpr && {
+                    gdpr: record.gdpr.state
+                }),
+                ...(record.scientific && {
+                    scientific: record.scientific.state
+                }),
             }
         }
         else {
@@ -84,8 +88,12 @@ const GenericRecordDetails = ({
         ? {
             type: 'object',
             properties: {
-                gdpr: schema.properties.gdpr.properties.state,
-                scientific: schema.properties.scientific.properties.state
+                ...( schema.properties.gdpr && {
+                    gdpr: schema.properties.gdpr.properties.state,
+                }),
+                ...( schema.properties.scientific && {
+                    scientific: schema.properties.scientific.properties.state,
+                }),
             }
         }
         : schema.properties.state

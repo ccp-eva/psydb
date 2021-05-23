@@ -95,8 +95,12 @@ const GenericRecordForm = ({
                 ...(type === 'edit' ? {
                     id,
                     lastKnownSubChannelEventIds: {
-                        scientific: record.scientific._lastKnownEventId,
-                        gdpr: record.gdpr._lastKnownEventId,
+                        ...(record.scientific && {
+                            scientific: record.scientific._lastKnownEventId,
+                        }),
+                        ...(record.gdpr && {
+                            gdpr: record.gdpr._lastKnownEventId,
+                        }),
                     }
                 } : {}),
                 props: formData,
@@ -111,8 +115,6 @@ const GenericRecordForm = ({
                 ...additionalPayloadProps,
             }
         )
-
-        console.log(payload);
         
         agent.send({ message: {
             type: messageType,
@@ -138,8 +140,12 @@ const GenericRecordForm = ({
     if (record) {
         if (hasSubChannels) {
             formData = {
-                gdpr: record.gdpr.state,
-                scientific: record.scientific.state
+                ...(record.gdpr && {
+                    gdpr: record.gdpr.state
+                }),
+                ...(record.scientific && {
+                    scientific: record.scientific.state
+                }),
             }
         }
         else {
@@ -158,8 +164,12 @@ const GenericRecordForm = ({
         ? {
             type: 'object',
             properties: {
-                gdpr: schema.properties.gdpr.properties.state,
-                scientific: schema.properties.scientific.properties.state
+                ...( schema.properties.gdpr && {
+                    gdpr: schema.properties.gdpr.properties.state,
+                }),
+                ...( schema.properties.scientific && {
+                    scientific: schema.properties.scientific.properties.state,
+                }),
             }
         }
         : schema.properties.state
@@ -192,10 +202,10 @@ var reducer = (state, action) => {
             if (record.state) {
                 delete record.state.internals;
             }
-            if (record.gdpr) {
+            if (record.gdpr && record.gdpr.state) {
                 delete record.gdpr.state.internals;
             }
-            if (record.scientific) {
+            if (record.scientific && record.scientific.state) {
                 delete record.scientific.state.internals;
             }
 

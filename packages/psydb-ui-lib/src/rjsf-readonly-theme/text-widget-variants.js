@@ -178,7 +178,9 @@ export const DateTime = ({ label, value, schema }) => {
     return (
         <InlineWrapper label={ label }>
             <b style={ styles.bold }>{
-                datefns.format(new Date(value), 'P p')
+                value === undefined
+                ? '-' 
+                : datefns.format(new Date(value), 'P p')
             }</b>
         </InlineWrapper>
     );
