@@ -186,31 +186,36 @@ var FullRecordSchemaCreator = ({
             }) => ExactObject({
                 properties: {
                     _id: Id(),
-                    // FIXME: hardcoded subchannels
-                    scientific: ExactObject({
-                        properties: {
-                            state: subChannelStateSchemaCreators.scientific({
-                                ...( subChannelCustomRecordFieldDefinitions && {
-                                    customFieldDefinitions: (
-                                        subChannelCustomRecordFieldDefinitions.scientific
-                                    )
-                                }),
-                                ...otherArgs
+                    ...Object.keys(
+                        subChannelCustomRecordFieldDefinitions
+                    )
+                    .map(k => ({
+                        subChannelKey: k,
+                        fieldDefinitions: (
+                            subChannelCustomRecordFieldDefinitions[k]
+                        )
+                    }))
+                    .filter(({ fieldDefinitions }) => (
+                        fieldDefinitions.length > 0
+                    ))
+                    .reduce((acc, { subChannelKey, fieldDefinitions }) => {
+                        var SCStateSchema = (
+                            subChannelStateSchemaCreators[subChannelKey]
+                        );
+                        return {
+                            ...acc,
+                            [subChannelKey]: ExactObject({
+                                properties: {
+                                    state: SCStateSchema({
+                                        customFieldDefinitions: (
+                                            fieldDefinitions
+                                        ),
+                                        ...otherArgs
+                                    })
+                                }
                             })
-                        }
-                    }),
-                    gdpr: ExactObject({
-                        properties: {
-                            state: subChannelStateSchemaCreators.gdpr({
-                                ...( subChannelCustomRecordFieldDefinitions && {
-                                    customFieldDefinitions: (
-                                        subChannelCustomRecordFieldDefinitions.gdpr
-                                    )
-                                }),
-                                ...otherArgs
-                            })
-                        }
-                    }),
+                        };
+                    }, {}),
                 }
             });
         }
