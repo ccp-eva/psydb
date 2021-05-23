@@ -10,6 +10,10 @@ var gatherAvailableConstraintsForRecordType = async ({
     collectionName,
     recordType
 }) => {
+
+    if (collectionName === 'customRecordType') {
+        return {};
+    }
     
     var fullRecordSchema = await createSchemaForRecordType({
         db,
