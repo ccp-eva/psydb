@@ -111,6 +111,7 @@ var search = async (context, next) => {
         collectionName,
         recordType,
         filters,
+        constraints,
         offset,
         limit,
     } = request.body;
@@ -144,7 +145,10 @@ var search = async (context, next) => {
         collectionName,
         recordType,
         hasSubChannels,
+
+        constraints,
         queryFields,
+
         displayFields,
         recordLabelDefinition,
         offset,

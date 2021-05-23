@@ -10,6 +10,7 @@ var {
     SeperateRecordLabelDefinitionFieldsStage,
     StripEventsStage,
     QuickSearchStages,
+    MatchConstraintsStage,
 } = require('./fetch-record-helpers');
 
 var convertPointerToPath = require('./convert-pointer-to-path');
@@ -22,7 +23,10 @@ var fetchRecordByFilter = async ({
     recordType,
     permissions,
     hasSubChannels,
+
+    constraints,
     queryFields,
+
     displayFields,
     recordLabelDefinition,
     additionalPreprocessStages,
@@ -49,6 +53,13 @@ var fetchRecordByFilter = async ({
             )
         })
     ];
+
+    if (constraints) {
+        stages = [
+            ...stages,
+            MatchConstraintsStage({ constraints })
+        ]
+    }
 
     if (queryFields && queryFields.length > 0) {
         stages = [

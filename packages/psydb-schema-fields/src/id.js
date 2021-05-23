@@ -1,7 +1,6 @@
 'use strict';
 var Id = ({
-    additionalKeywords,
-    ...other
+    ...additionalKeywords
 } = {}) => ({
     systemType: 'Id',
     type: 'string',

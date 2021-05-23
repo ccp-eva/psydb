@@ -9,4 +9,6 @@ module.exports = {
 
     QuickSearchStages: require('./quick-search-stages'),
     SeperateRecordLabelDefinitionFieldsStage: require('./seperate-record-label-definition-fields-stage'),
+    
+    MatchConstraintsStage: require('./match-constraints-stage'),
 }

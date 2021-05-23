@@ -65,6 +65,7 @@ agent.searchRecords = ({
     recordType,
     offset,
     limit,
+    constraints,
     filters,
 }) => {
     return (
@@ -73,7 +74,8 @@ agent.searchRecords = ({
             recordType,
             offset: offset || 0,
             limit: limit || 50,
-            filters: filters || {}
+            filters: filters || {},
+            constraints: constraints || {},
         })
     )
 }

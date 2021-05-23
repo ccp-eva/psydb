@@ -9,6 +9,7 @@ var RecordList = ({
     recordType,
     offset,
     limit,
+    constraints,
     filters,
 
     displayFields,
@@ -34,10 +35,11 @@ var RecordList = ({
             recordType,
             offset,
             limit,
+            constraints,
             filters,
         })
         .then((response) => {
-            console.log(response);
+            //console.log(response);
             setPayload(response.data.data);
             setIsInitialized(true);
         })

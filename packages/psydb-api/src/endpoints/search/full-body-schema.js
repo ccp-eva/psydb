@@ -16,9 +16,6 @@ var FullBodySchema = ({
     availableFilterFields
 }) => {
 
-    console.log('av-constraints', availableConstraints);
-    console.log('av-filters', availableFilterFields);
-
     //var variants = [];
     var filters = {};
     for (var field of availableFilterFields) {

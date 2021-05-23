@@ -1,7 +1,7 @@
 'use strict';
+var inline = require('@cdxoo/inline-text');
 var Id = require('./id');
 
-// TODO: separate schema for edge constraints?
 var ForeignId = ({
     collection,
     recordType,
@@ -11,8 +11,7 @@ var ForeignId = ({
     if (!collection) {
         throw new Error('missing collection parameter on foreign key creation');
     }
-    return ({
-        ...Id(),
+    return Id({
         systemType: 'ForeignId',
         systemProps: {
             collection,

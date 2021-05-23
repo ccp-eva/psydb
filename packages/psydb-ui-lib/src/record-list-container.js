@@ -7,6 +7,7 @@ import RecordList from './record-list';
 const RecordListContainer = ({
     collection,
     recordType,
+    constraints,
 
     enableNew,
     enableView,
@@ -34,6 +35,7 @@ const RecordListContainer = ({
                 linkBaseUrl: url,
                 collection,
                 recordType,
+                constraints,
 
                 enableView,
                 enableEdit_old,
