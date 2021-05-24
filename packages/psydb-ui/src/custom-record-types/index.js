@@ -9,11 +9,12 @@ import {
     useParams
 } from 'react-router-dom';
 
+import { LinkContainer } from 'react-router-bootstrap';
 import { LinkButton } from '@mpieva/psydb-ui-lib';
 
 import RecordListContainer from '@mpieva/psydb-ui-lib/src/record-list-container';
 import CreateNewType from './create-new-type';
-import CustomRecordTypeEditor from './edit';
+import EditType from './edit';
 
 const CustomRecordTypes = () => {
     var { path, url } = useRouteMatch();
@@ -22,27 +23,33 @@ const CustomRecordTypes = () => {
     return (
         <div>
             <header>
-                <h1 style={{ borderBottom: '1px solid lightgrey' }}>
-                    Datensatz-Typen
-                </h1>
+                <LinkContainer to={ url }>
+                    <h1 className='border-bottom mb-0' role='button'>
+                        Datensatz-Typen
+                    </h1>
+                </LinkContainer>
             </header>
 
             <Switch>
                 <Route exact path={`${path}`}>
-                    <RecordListContainer
-                        linkBaseUrl={ url }
-                        collection='customRecordType'
-                        enableNew={ true }
-                        enableEdit_old={ true }
-                    />
+                    <div className='mt-3'>
+                        <RecordListContainer
+                            linkBaseUrl={ url }
+                            collection='customRecordType'
+                            enableNew={ true }
+                            enableEdit_old={ true }
+                        />
+                    </div>
                 </Route>
                 <Route path={`${path}/new`}>
-                    <CreateNewType onCreated={
-                        ({ id }) => history.push(`${path}/${id}/edit`)
-                    } />
+                    <div className='mt-3'>
+                        <CreateNewType onCreated={
+                            ({ id }) => history.push(`${path}/${id}/edit`)
+                        } />
+                    </div>
                 </Route>
                 <Route path={`${path}/:id/edit`}>
-                    <CustomRecordTypeEditor />
+                    <EditType />
                 </Route>
             </Switch>
         </div>

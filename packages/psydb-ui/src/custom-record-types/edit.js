@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer, useCallback } from 'react';
 
 import {
     Route,
@@ -11,6 +11,10 @@ import {
 
 import agent from '@mpieva/psydb-ui-request-agents';
 
+import up from '@mpieva/psydb-ui-lib/src/url-up';
+import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
+import TabNav from '@mpieva/psydb-ui-lib/src/tab-nav';
+
 //import createSchemaForRecordType from '@mpieva/psydb-common-lib/src/create-schema-for-record-type';
 
 
@@ -21,100 +25,145 @@ import FieldEditor from './field-editor';
 
 const EditType = ({}) => {
     var { path, url } = useRouteMatch();
-    console.log(path, url);
     var { id } = useParams();
-    
-    var [ isInitialized, setIsInitialized ] = useState(false);
-    var [ record, setRecord ] = useState([]);
 
-    var fetchRecord = () => (
+    var [ state, dispatch ] = useReducer(reducer, {});
+    var {
+        record
+    } = state;
+
+    var fetchRecord = useCallback(() => {
         agent.readRecord({
             collection: 'customRecordType',
             id,
         })
         .then((response) => {
-            var record = response.data.data.record;
-
-            /*var schema = createSchemaForRecordType({
-                collectionName: record.collection,
-                customRecordTypeCollection: record.type,
-                prefetchedCustomRecordTypes: [ record ]
-            });*/
-
-            console.log(record);
-            setRecord(response.data.data.record);
-            setIsInitialized(true);
+            dispatch({ type: 'init-data', payload: {
+                ...response.data.data
+            }})
         })
-    )
+    }, [ id ])
 
     var handleSuccessfulUpdate = () => {
         fetchRecord();
     }
 
-    useEffect(() => fetchRecord(), [ id ])
+    useEffect(() => {
+        fetchRecord();
+    }, [ id ]);
 
-    if (!isInitialized) {
+    if (!record) {
         return (
-            <div>Loading...</div>
+            <LoadingIndicator size='lg' />
         );
-    }
-
-    var onEdited = (...args) => {
-        console.log(args);
     }
 
     return (
         <div>
-            { /* FIXME: im not sure how this really works but it does */ }
-            {/*<LinkButton to='../../'>
-                Up
-            </LinkButton>*/}
+            <h5 className='mt-0 mb-3 text-muted'>
+                Typ: { record.state.label }
+            </h5>
+
+            <div>
+                <div className='d-flex'>
+                    <div style={{ width: '25%'}}>Collection</div>
+                    <div><b>{ record.collection }</b></div>
+                </div>
+                <div className='d-flex'>
+                    <div style={{ width: '25%'}}>Interner Type-Key</div>
+                    <div><b>{ record.type }</b></div>
+                </div>
+            </div>
 
             { record.state.isNew && (
                 <div>NEW RECORD TYPE</div>
             )}
-            <div>
-                { record.collection } { record.type }
-            </div>
+            { record.state.isDirty && (
+                <div>DIRTY</div>
+            )}
+            
             <hr />
-            <div>
-                <LinkButton to={`${url}/live`}>
-                    Live Settings
-                </LinkButton>
-                <LinkButton to={`${url}/fields`}>
-                    Fields
-                </LinkButton>
-            </div>
+
             <Switch>
                 <Route exact path={`${path}`}>
                     <Redirect to={`${url}/live`} />
                 </Route>
-                <Route exact path={`${path}/live`}>
-                    <LiveDataEditor
-                        record={ record }
-                        onSuccessfulUpdate={ handleSuccessfulUpdate }
-                    />
+                <Route path={ `${path}/:tabKey` }>
+                    <EditTypePanel { ...({
+                        id,
+                        record,
+                        onSuccessfulUpdate: handleSuccessfulUpdate
+                    }) } />
                 </Route>
-                <Route path={`${path}/fields`}>
-                    <FieldEditor
-                        record={ record }
-                        onSuccessfulUpdate={ handleSuccessfulUpdate }
-                    />
-                </Route>
-            </Switch>
+        </Switch>
         </div>
     )
 }
 
-const DisplayFieldsList = ({ items, fieldDataByPointer }) => {
+var reducer = (state, action) => {
+    var { type, payload } = action;
+    switch (type) {
+        case 'init-data':
+            return {
+                ...state,
+                record: payload.record,
+                //relatedRecordLabels: payload.relatedRecordLabels,
+                //relatedHelperSetItems: payload.relatedHelperSetItems,
+                //relatedCustomRecordTypeLabels: payload.relatedCustomRecordTypeLabels,
+            }
+    }
+}
+
+const EditTypePanel = ({
+    id,
+    record,
+    onSuccessfulUpdate
+}) => {
+    var { path, url } = useRouteMatch();
+    var { tabKey } = useParams();
+    var history = useHistory();
+    
+    var onEdited = (...args) => {
+        console.log(args);
+    }
+
+    var content = (
+        tabKey === 'fields'
+        ? (
+            <FieldEditor
+                record={ record }
+                onSuccessfulUpdate={ onSuccessfulUpdate }
+            />
+        )
+        : (
+            <LiveDataEditor
+                record={ record }
+                onSuccessfulUpdate={ onSuccessfulUpdate }
+            />
+        )
+    )
+
     return (
         <div>
-            { items.map(it => (
-                <div>
-                </div>
-            )) }
+            <TabNav
+                className='d-flex'
+                itemClassName='flex-grow'
+                activeKey={ tabKey }
+                onItemClick={ (key) => {
+                    history.push(`${up(url, 1)}/${key}`);
+                }}
+                items={[
+                    { key: 'live', label: 'Live-Settings' },
+                    { key: 'fields', label: 'Feld-Editor' },
+                ]}
+            />
+            
+            <div className='p-3 border-left border-bottom border-right'>
+                { content }
+            </div>
+
         </div>
-    );
+    )
 }
 
 export default EditType;
