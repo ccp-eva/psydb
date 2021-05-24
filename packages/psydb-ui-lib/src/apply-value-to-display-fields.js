@@ -43,7 +43,7 @@ const applyValueToDisplayFields = ({
             else if (type === 'HelperSetItemIdList') {
                 if (relatedHelperSetItems) {
                     str = (rawValue || []).map(id => (
-                        relatedHelperSetItems[props.set][id].state.label
+                        relatedHelperSetItems[props.setId][id].state.label
                     )).join();
                 }
                 else {

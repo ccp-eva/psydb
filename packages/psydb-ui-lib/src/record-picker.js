@@ -112,7 +112,7 @@ const RecordPickerModal = ({
                     bsTableProps={{ hover: true }}
                     collection={ collection }
                     recordType={ recordType }
-                    baseConstraints={ constraints }
+                    constraints={ constraints }
 
                     onSelectRecord={ onSelectRecord }
 

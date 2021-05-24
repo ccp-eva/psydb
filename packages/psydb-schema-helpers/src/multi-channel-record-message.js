@@ -113,7 +113,10 @@ var MultiChannelRecordPatchMessage = ({
                     properties: (
                         subChannelKeys
                         .filter(key => (
-                            subChannelCustomFieldDefinitions[key].length > 0
+                            // staticly defined collections
+                            // dont have custom field defs
+                            !subChannelCustomFieldDefinitions
+                            || subChannelCustomFieldDefinitions[key].length > 0
                         ))
                         .reduce((acc, key) => ({
                             ...acc,
@@ -124,7 +127,10 @@ var MultiChannelRecordPatchMessage = ({
                         // FIXME: redundant see above
                         subChannelKeys
                         .filter(key => (
-                            subChannelCustomFieldDefinitions[key].length > 0
+                            // staticly defined collections
+                            // dont have custom field defs
+                            !subChannelCustomFieldDefinitions
+                            || subChannelCustomFieldDefinitions[key].length > 0
                         ))
                     ),
                 }),
