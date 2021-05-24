@@ -17,7 +17,6 @@ const HelperSetItemId = ({
 }) => {
     var { systemProps } = schema;
     var { setId } = systemProps;
-    console.log(schema);
 
     var { relatedHelperSetItems } = formContext;
     
