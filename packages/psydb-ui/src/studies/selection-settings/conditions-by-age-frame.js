@@ -35,10 +35,15 @@ const AgeFrameContainer = ({
     relatedHelperSetItems,
     relatedCustomRecordTypeLabels,
 }) => {
+    var stringifiedAgeFrame = stringifyFieldValue({
+        rawValue: ageFrame,
+        fieldDefinition: { type: 'AgeFrame' }
+    });
+
     return (
         <div>
             <div>
-                { ageFrame.start } { ageFrame.end }
+                { stringifiedAgeFrame }
             </div>
             { conditions.map((it, index) => (
                 <Condition { ...({
@@ -64,7 +69,6 @@ const Condition = ({
     relatedHelperSetItems,
     relatedCustomRecordTypeLabels,
 }) => {
-    console.log(subjectTypeData);
     
     var fieldDefinition = (
         subjectTypeData.state.settings.subChannelFields.scientific
@@ -80,7 +84,6 @@ const Condition = ({
         realType = 'ForeignId';
     }
 
-    console.log(fieldDefinition);
     return (
         <div>
             { fieldDefinition.displayName }
