@@ -1,9 +1,10 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
+import GeneralSubjectTypeSettings from './general-subject-type-settings';
 import ConditionsByAgeFrame from './conditions-by-age-frame';
 
 const SelectionSettingsBySubjectType = ({
-    record,
+    record: studyRecord,
     settings,
 
     subjectTypeData,
@@ -21,6 +22,8 @@ const SelectionSettingsBySubjectType = ({
                     subjectTypeData: subjectTypeData.find(td => (
                         td.type === it.subjectRecordType
                     )),
+
+                    studyRecord,
                     relatedRecordLabels,
                     relatedHelperSetItems,
                     relatedCustomRecordTypeLabels,
@@ -43,22 +46,35 @@ const SubjectType = ({
     externalLocationGrouping,
     enableOnlineTesting,
     
+    studyRecord,
     subjectTypeData,
     relatedRecordLabels,
     relatedHelperSetItems,
     relatedCustomRecordTypeLabels,
 }) => {
-    console.log(conditionsByAgeFrame)
     return (
         <div>
             <h5 className='border-bottom mb-2'>Probandentyp: { 
                 relatedCustomRecordTypeLabels
                 .subject[subjectRecordType].state.label
             }</h5>
+            
+            <GeneralSubjectTypeSettings { ...({
+                subjectRecordType,
+                externalLocationGrouping,
+                enableOnlineTesting,
+
+                studyRecord,
+                subjectTypeData,
+            }) } />
+
             <div className=''>
+                <header><b>Altersfenster-Einstellungen</b></header>
                 <ConditionsByAgeFrame { ...({
+                    subjectRecordType,
                     conditionsByAgeFrame, 
                     
+                    studyRecord,
                     subjectTypeData,
                     relatedRecordLabels,
                     relatedHelperSetItems,

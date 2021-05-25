@@ -67,6 +67,13 @@ export const SelectWidget = (ps) => {
 export const CheckboxWidget = (ps) => {
     var { label, value } = ps;
     return (
+        <InlineWrapper label={ label }>
+            <b className='d-block' style={ styles.bold }>
+                { value ? 'Ja' : 'Nein' }
+            </b>
+        </InlineWrapper>
+    )
+    /*return (
         <InlineWrapper>
             <div className='@rjsf-checkbox-widget d-flex'>
                 <div>
@@ -81,5 +88,5 @@ export const CheckboxWidget = (ps) => {
                 </span>
             </div>
         </InlineWrapper>
-    )
+    )*/
 }

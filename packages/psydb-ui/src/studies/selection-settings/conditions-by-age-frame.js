@@ -4,8 +4,10 @@ import EditIconButton from '@mpieva/psydb-ui-lib/src/edit-icon-button';
 import stringifyFieldValue from '@mpieva/psydb-ui-lib/src/stringify-field-value';
 
 const ConditionsByAgeFrame = ({
+    subjectRecordType,
     conditionsByAgeFrame, 
-                
+
+    studyRecord,
     subjectTypeData,
     relatedRecordLabels,
     relatedHelperSetItems,
@@ -18,6 +20,8 @@ const ConditionsByAgeFrame = ({
                     key: index,
                     ...it,
                     
+                    subjectRecordType,
+                    studyRecord,
                     subjectTypeData,
                     relatedRecordLabels,
                     relatedHelperSetItems,
@@ -37,6 +41,8 @@ const AgeFrameContainer = ({
     ageFrame,
     conditions,
 
+    subjectRecordType,
+    studyRecord,
     subjectTypeData,
     relatedRecordLabels,
     relatedHelperSetItems,
@@ -62,6 +68,8 @@ const AgeFrameContainer = ({
                                 key: index,
                                 ...it,
                         
+                                subjectRecordType,
+                                studyRecord,
                                 subjectTypeData,
                                 relatedRecordLabels,
                                 relatedHelperSetItems,
@@ -82,6 +90,8 @@ const Condition = ({
     fieldKey,
     values,
 
+    subjectRecordType,
+    studyRecord,
     subjectTypeData,
     relatedRecordLabels,
     relatedHelperSetItems,

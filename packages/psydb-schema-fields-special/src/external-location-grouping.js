@@ -22,9 +22,11 @@ var ExternalLocationGrouping = ({
     return ({
         type: 'object',
         lazyResolveProp: 'enabled',
+        title: 'Tests via Aussen-Team',
         oneOf: [
 
             ExactObject({
+                title: 'Nein',
                 properties: {
                     enabled: {
                         type: 'boolean',
@@ -38,6 +40,7 @@ var ExternalLocationGrouping = ({
             }),
             
             ExactObject({
+                title: 'Ja',
                 properties: {
                     enabled: {
                         type: 'boolean',
