@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import { Button } from 'react-bootstrap';
 import EditIconButton from '@mpieva/psydb-ui-lib/src/edit-icon-button';
 import stringifyFieldValue from '@mpieva/psydb-ui-lib/src/stringify-field-value';
+
+import ConditionsByAgeFrameModal from './conditions-by-age-frame-modal';
 
 const ConditionsByAgeFrame = ({
     subjectRecordType,
@@ -13,6 +15,16 @@ const ConditionsByAgeFrame = ({
     relatedHelperSetItems,
     relatedCustomRecordTypeLabels,
 }) => {
+
+    var [ showModal, setShowModal ] = useState(false);
+    var [
+        handleShowModal,
+        handleHideModal
+    ] = useMemo(() => ([
+        () => setShowModal(true),
+        () => setShowModal(false),
+    ]), []);
+
     return (
         <>
             { conditionsByAgeFrame.map((it, index) => (
@@ -48,6 +60,16 @@ const AgeFrameContainer = ({
     relatedHelperSetItems,
     relatedCustomRecordTypeLabels,
 }) => {
+    
+    var [ showModal, setShowModal ] = useState(false);
+    var [
+        handleShowModal,
+        handleHideModal
+    ] = useMemo(() => ([
+        () => setShowModal(true),
+        () => setShowModal(false),
+    ]), []);
+
     var stringifiedAgeFrame = stringifyFieldValue({
         rawValue: ageFrame,
         fieldDefinition: { type: 'AgeFrame' }
@@ -80,7 +102,23 @@ const AgeFrameContainer = ({
                 </div>
             </div>
             <div style={{ position: 'absolute', top: '-1px', right: '-1px'}}>
-                <EditIconButton />
+                <EditIconButton
+                    onClick={ handleShowModal }
+                />
+                <ConditionsByAgeFrameModal { ...({
+                    show: showModal,
+                    onHide: handleHideModal,
+
+                    ageFrame,
+                    conditions,
+
+                    subjectRecordType,
+                    subjectTypeData,
+                    studyRecord,
+                    relatedRecordLabels,
+                    relatedHelperSetItems,
+                    relatedCustomRecordTypeLabels,
+                }) } />
             </div>
         </div>
     );
