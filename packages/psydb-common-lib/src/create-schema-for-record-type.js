@@ -187,7 +187,7 @@ var FullRecordSchemaCreator = ({
                 properties: {
                     _id: Id(),
                     ...Object.keys(
-                        subChannelCustomRecordFieldDefinitions
+                        subChannelCustomRecordFieldDefinitions || {}
                     )
                     .map(k => ({
                         subChannelKey: k,

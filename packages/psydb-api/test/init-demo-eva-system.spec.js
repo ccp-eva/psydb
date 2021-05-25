@@ -197,9 +197,17 @@ describe('init-demo-system', function () {
 
         //response = await agent.get(`/subject-type-data-for-study/${context.STUDY_01_ID}`);
 
-        var response = await agent.post('/search').send({
+        /*response = await agent.post('/search').send({
             collectionName: 'location',
             recordType: 'instituteroom',
+            constraints: {},
+            filters: {},
+            offset: 0,
+            limit: 20,
+        });*/
+
+        var response = await agent.post('/search').send({
+            collectionName: 'personnel',
             constraints: {},
             filters: {},
             offset: 0,
