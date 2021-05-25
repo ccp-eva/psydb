@@ -9,6 +9,10 @@ import {
     useParams
 } from 'react-router-dom';
 
+import {
+    Alert
+} from 'react-bootstrap';
+
 import agent from '@mpieva/psydb-ui-request-agents';
 
 import up from '@mpieva/psydb-ui-lib/src/url-up';
@@ -79,7 +83,7 @@ const EditType = ({}) => {
                 <div>NEW RECORD TYPE</div>
             )}
             { record.state.isDirty && (
-                <div>DIRTY</div>
+                <DirtyAlert />
             )}
             
             <hr />
@@ -164,6 +168,19 @@ const EditTypePanel = ({
 
         </div>
     )
+}
+
+const DirtyAlert = ({}) => {
+    return (
+        <div className='text-danger small mt-3'>
+            <header><b>Unfixierte Felder</b></header>
+            <div>
+                Datensatz-Typ enthält noch unfixierte Feldänderungen,
+                bevor diese in den Live-Settings und in den Datensätzen
+                verfügbar sind müssen sie vorher im Feld-Editor fixiert werden.
+            </div>
+        </div>
+    );
 }
 
 export default EditType;
