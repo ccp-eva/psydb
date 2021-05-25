@@ -8,6 +8,8 @@ var traverse = require('json-schema-traverse'),
 
 var resolveRelationData = ({ schema, data }) => {
 
+    //console.dir(schema, { depth: null });
+    //console.dir(data, { depth: null });
     //console.dir(channelStateSchema, { depth: null });
 
     var resolvedParts = lazyResolveOneOf(schema, data);

@@ -195,7 +195,16 @@ describe('init-demo-system', function () {
             limit: 20,
         });*/
 
-        response = await agent.get(`/subject-type-data-for-study/${context.STUDY_01_ID}`);
+        //response = await agent.get(`/subject-type-data-for-study/${context.STUDY_01_ID}`);
+
+        var response = await agent.post('/search').send({
+            collectionName: 'location',
+            recordType: 'instituteroom',
+            constraints: {},
+            filters: {},
+            offset: 0,
+            limit: 20,
+        });
 
         console.dir(response.status, { depth: null });
         console.dir(response.body, { depth: null });

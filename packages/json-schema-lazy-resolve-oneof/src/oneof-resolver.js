@@ -21,6 +21,13 @@ var OneofResolver = () => {
             propNameOrIndex
         ] = traverseArgs;
 
+        if (currentData === undefined) {
+            console.log(
+                `skipping as data is undefined for ${inSchemaPointer}`
+            );
+            return;
+        }
+
         if (!currentSchema.oneOf) {
             throw new Error(inline`
                 oneOf keyword not found in "${inSchemaPointer}"
