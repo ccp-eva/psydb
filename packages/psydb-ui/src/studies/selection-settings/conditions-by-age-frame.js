@@ -1,4 +1,6 @@
 import React from 'react';
+import { Button } from 'react-bootstrap';
+import EditIconButton from '@mpieva/psydb-ui-lib/src/edit-icon-button';
 import stringifyFieldValue from '@mpieva/psydb-ui-lib/src/stringify-field-value';
 
 const ConditionsByAgeFrame = ({
@@ -22,6 +24,11 @@ const ConditionsByAgeFrame = ({
                     relatedCustomRecordTypeLabels,
                 }) } />
             ))}
+            <div className='mt-2 d-flex justify-content-end'>
+                <Button size='sm'>
+                    + Altersfenster
+                </Button>
+            </div>
         </>
     );
 }
@@ -41,21 +48,32 @@ const AgeFrameContainer = ({
     });
 
     return (
-        <div>
-            <div>
-                { stringifiedAgeFrame }
+        <div className='bg-white border mb-2 position-relative'>
+            <div className='p-3 d-flex'>
+                <div style={{ width: '33%' }}>
+                    <b className='d-block'>Altersfenster</b>
+                    { stringifiedAgeFrame }
+                </div>
+                <div className='flex-grow'>
+                    <b className='d-block'>Bedingungen</b>
+                    <div>
+                        { conditions.map((it, index) => (
+                            <Condition { ...({
+                                key: index,
+                                ...it,
+                        
+                                subjectTypeData,
+                                relatedRecordLabels,
+                                relatedHelperSetItems,
+                                relatedCustomRecordTypeLabels,
+                            }) } />
+                        ))}
+                    </div>
+                </div>
             </div>
-            { conditions.map((it, index) => (
-                <Condition { ...({
-                    key: index,
-                    ...it,
-                    
-                    subjectTypeData,
-                    relatedRecordLabels,
-                    relatedHelperSetItems,
-                    relatedCustomRecordTypeLabels,
-                }) } />
-            ))}
+            <div style={{ position: 'absolute', top: '-1px', right: '-1px'}}>
+                <EditIconButton />
+            </div>
         </div>
     );
 }
@@ -85,20 +103,23 @@ const Condition = ({
     }
 
     return (
-        <div>
-            { fieldDefinition.displayName }
-            {' '}
-            { values.map(rawValue => stringifyFieldValue({
-                rawValue,
-                fieldDefinition: {
-                    ...fieldDefinition,
-                    type: realType
-                },
-                
-                relatedRecordLabels,
-                relatedHelperSetItems,
-                relatedCustomRecordTypeLabels,
-            }))}
+        <div className='d-flex'>
+            <div style={{ width: '20%' }}>
+                { fieldDefinition.displayName }:
+            </div>
+            <div className='flex-grow'>
+                { values.map(rawValue => stringifyFieldValue({
+                    rawValue,
+                    fieldDefinition: {
+                        ...fieldDefinition,
+                        type: realType
+                    },
+                    
+                    relatedRecordLabels,
+                    relatedHelperSetItems,
+                    relatedCustomRecordTypeLabels,
+                })).join(', ') }
+            </div>
         </div>
     );
 }

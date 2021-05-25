@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from 'react-bootstrap';
 import ConditionsByAgeFrame from './conditions-by-age-frame';
 
 const SelectionSettingsBySubjectType = ({
@@ -25,6 +26,12 @@ const SelectionSettingsBySubjectType = ({
                     relatedCustomRecordTypeLabels,
                 }) } />
             )) }
+            <hr />
+            <div className='mt-3'>
+                <Button size='sm'>
+                    + Probandentyp
+                </Button>
+            </div>
         </>
     )
 }
@@ -44,18 +51,20 @@ const SubjectType = ({
     console.log(conditionsByAgeFrame)
     return (
         <div>
-            { 
+            <h5 className='border-bottom mb-2'>Probandentyp: { 
                 relatedCustomRecordTypeLabels
                 .subject[subjectRecordType].state.label
-            }
-            <ConditionsByAgeFrame { ...({
-                conditionsByAgeFrame, 
-                
-                subjectTypeData,
-                relatedRecordLabels,
-                relatedHelperSetItems,
-                relatedCustomRecordTypeLabels,
-            }) } />
+            }</h5>
+            <div className=''>
+                <ConditionsByAgeFrame { ...({
+                    conditionsByAgeFrame, 
+                    
+                    subjectTypeData,
+                    relatedRecordLabels,
+                    relatedHelperSetItems,
+                    relatedCustomRecordTypeLabels,
+                }) } />
+            </div>
         </div>
     )
 }

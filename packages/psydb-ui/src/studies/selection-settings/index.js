@@ -63,7 +63,7 @@ const StudySelectionSettings = ({
     var { selectionSettingsBySubjectType } = record.state;
 
     return (
-        <div>
+        <div className='mt-3 mb-3'>
             <SelectionSettingsBySubjectType { ...({
                 settings: selectionSettingsBySubjectType,
 
