@@ -48,6 +48,7 @@ var ExternalLocationGrouping = ({
                         default: true,
                     },
                     fieldKey: {
+                        title: 'gruppiert nach',
                         type: 'string',
                         enum: locationFieldKeys,
                         // FIXME: enumNames is rjsf not sure if we
