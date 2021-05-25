@@ -16,6 +16,7 @@ import TabNav from '@mpieva/psydb-ui-lib/src/tab-nav';
 import LinkButton from '@mpieva/psydb-ui-lib/src/link-button';
 
 import StudyRecordDetails from './record-details';
+import StudySelectionSettings from './selection-settings';
 import StudyTeams from './teams';
 import StudyParticipation from './participation';
 
@@ -109,6 +110,12 @@ const StudyRecordContainer = ({
                                 />
                             </Route>*/}
                         </Switch>
+                    )}
+
+                    { tabKey === 'selection-settings' && (
+                        <StudySelectionSettings
+                            recordType={ recordType }
+                        />
                     )}
 
                     { tabKey === 'teams' && (        
