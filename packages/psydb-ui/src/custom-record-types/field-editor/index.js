@@ -137,6 +137,7 @@ const FieldList = ({
                     { hasSubChannels && (
                         <th>SubChannel</th>
                     )}
+                    <th></th>
                 </tr>
             </thead>
             <tbody>

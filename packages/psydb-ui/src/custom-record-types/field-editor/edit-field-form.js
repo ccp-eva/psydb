@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import omit from '@cdxoo/omit';
 
 import {
     Button
@@ -40,6 +41,8 @@ var uiSchema = {
 
 const EditFieldForm = ({ record, field, onSuccess }) => {
 
+    console.log(field);
+
     var schema = createSchema({ field });
 
     var onSubmit = ({ formData, ...unused }) => {
@@ -77,11 +80,14 @@ const EditFieldForm = ({ record, field, onSuccess }) => {
                 uiSchema={ uiSchema }
                 formData={
                     field.isNew
-                    ? field
-                    : {
+                    ? omit(
+                        [ 'isDirty', 'isNew', 'subChannelKey'],
+                        field
+                    )
+                    : ({
                         // FIXME
                         displayName: field.displayName
-                    }
+                    })
                 }
                 onSubmit={ onSubmit }
             />
