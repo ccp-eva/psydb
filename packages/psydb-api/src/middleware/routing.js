@@ -161,10 +161,18 @@ var createRouting = ({
         endpoints.special.selectableStudies
     );
 
+    router.get('/subject-type-data-for-study/:studyId',
+        withSelfAuth(),
+        withPermissions(),
+        withEndpointProtection({ endpoint: 'subject-type-data-for-study' }),
+        endpoints.special.subjectTypeDataForStudy
+    );
+
     return compose([
         router.routes(),
         router.allowedMethods(),
     ]);
+    
 }
 
 module.exports = createRouting;

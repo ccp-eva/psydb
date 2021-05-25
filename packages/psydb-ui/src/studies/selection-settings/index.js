@@ -21,26 +21,40 @@ const StudySelectionSettings = ({
 
     var [ state, dispatch ] = useReducer(reducer, {});
     var {
+        revision,
+
         record,
+        subjectTypeData,
         relatedRecordLabels,
         relatedHelperSetItems,
         relatedCustomRecordTypeLabels,
     } = state;
 
     useEffect(() => {
+
         agent.readRecord({
             collection: 'study',
             recordType,
             id,
         })
         .then((response) => {
-            dispatch({ type: 'init', payload: {
+            dispatch({ type: 'init-data', payload: {
                 ...response.data.data
             }})
         })
-    }, [ id ])
 
-    if (!record) {
+        agent.fetchSubjectTypeDataForStudy({
+            studyId: id,
+        })
+        .then((response) => {
+            dispatch({ type: 'init-subject-type-data', payload: {
+                ...response.data.data
+            }})
+        })
+
+    }, [ id, revision ])
+
+    if (!record || !subjectTypeData) {
         return (
             <LoadingIndicator size='lg' />
         );
@@ -50,10 +64,15 @@ const StudySelectionSettings = ({
 
     return (
         <div>
-            <SelectionSettingsBySubjectType
-                record={ record }
-                settings={ selectionSettingsBySubjectType }
-            />
+            <SelectionSettingsBySubjectType { ...({
+                settings: selectionSettingsBySubjectType,
+
+                record,
+                subjectTypeData,
+                relatedRecordLabels,
+                relatedHelperSetItems,
+                relatedCustomRecordTypeLabels,
+            }) } />
         </div>
     )
 }
@@ -61,7 +80,8 @@ const StudySelectionSettings = ({
 const reducer = (state, action) => {
     var { type, payload } = action;
     switch (type) {
-        case 'init':
+
+        case 'init-data':
             return ({
                 ...state,
                 record: payload.record,
@@ -69,6 +89,13 @@ const reducer = (state, action) => {
                 relatedHelperSetItems: payload.relatedHelperSetItems,
                 relatedCustomRecordTypeLabels: payload.relatedCustomRecordTypeLabels,
             })
+
+        case 'init-subject-type-data':
+            return ({
+                ...state,
+                subjectTypeData: payload.records,
+            })
+
     }
 }
 

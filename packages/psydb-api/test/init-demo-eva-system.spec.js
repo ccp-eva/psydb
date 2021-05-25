@@ -185,7 +185,7 @@ describe('init-demo-system', function () {
             experimentType: 'inhouse',
         });*/
 
-        var response = await agent.post('/search').send({
+        /*var response = await agent.post('/search').send({
             collectionName: 'helperSetItem',
             constraints: {
                 '/setId': context.HS_LANG
@@ -193,7 +193,9 @@ describe('init-demo-system', function () {
             filters: {},
             offset: 0,
             limit: 20,
-        });
+        });*/
+
+        response = await agent.get(`/subject-type-data-for-study/${context.STUDY_01_ID}`);
 
         console.dir(response.status, { depth: null });
         console.dir(response.body, { depth: null });

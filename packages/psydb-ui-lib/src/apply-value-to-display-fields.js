@@ -1,5 +1,5 @@
 import jsonpointer from 'jsonpointer';
-import * as stringifiers from './field-stringifiers'
+import stringifyFieldValue from './stringify-field-value';
 
 const applyValueToDisplayFields = ({
     record,
@@ -13,53 +13,14 @@ const applyValueToDisplayFields = ({
             var { key, type, displayName, props, dataPointer } = it;
             var rawValue = jsonpointer.get(record, dataPointer);
 
-            if (rawValue === undefined) {
-                return {
-                    ...it,
-                    value: '-'
-                }
-            }
-
-            var str = rawValue;
-
-            if (type === 'ForeignId') {
-                if (relatedRecordLabels) {
-                    str = relatedRecordLabels[props.collection][rawValue]._recordLabel;
-                }
-                else {
-                    str = rawValue;
-                }
-            }
-            else if (type === 'ForeignIdList') {
-                if (relatedRecordLabels) {
-                    str = (rawValue || []).map(id => (
-                        relatedRecordLabels[props.collection][id]._recordLabel
-                    )).join();
-                }
-                else {
-                    str = (rawValue || []).join(', ')
-                }
-            }
-            else if (type === 'HelperSetItemIdList') {
-                if (relatedHelperSetItems) {
-                    str = (rawValue || []).map(id => (
-                        relatedHelperSetItems[props.setId][id].state.label
-                    )).join();
-                }
-                else {
-                    str = (rawValue || []).join(', ')
-                }
-            }
-            else {
-                var stringify = stringifiers[type];
-                if (stringify) {
-                    str = stringify(rawValue)
-                }
-                else {
-                    str = String(rawValue);
-                }
-            }
-
+            var str = stringifyFieldValue({
+                rawValue,
+                fieldDefinition: it,
+    
+                relatedRecordLabels,
+                relatedHelperSetItems,
+                relatedCustomRecordTypeLabels,
+            });
 
             return {
                 ...it,

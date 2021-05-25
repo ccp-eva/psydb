@@ -80,6 +80,13 @@ agent.searchRecords = ({
     )
 }
 
+agent.fetchSubjectTypeDataForStudy = ({
+    studyId,
+}) => {
+    var baseUrl = '/api/subject-type-data-for-study';
+    return axios.get(`${baseUrl}/${studyId}`);
+}
+
 agent.fetchAvailableTestLocationsForStudy = ({
     studyId,
     locationRecordTypeId,
