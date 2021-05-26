@@ -63,12 +63,12 @@ const ConditionsByAgeFrameModal = ({
 
         if (type === 'edit') {
             message = {
-                type: 'study/patch-conditions-by-age-frame',
+                type: 'study/update-age-frame',
                 payload: {
                     id: studyRecord._id,
                     lastKnownEventId: studyRecord._lastKnownEventId,
                     customRecordType: subjectRecordType,
-                    ageFrame: ageFrame, // original frame so we can find stuff
+                    originalAgeFrame: ageFrame,
                     props: formData,
                 }
             };

@@ -44,7 +44,7 @@ var StudyGroup = MessageHandlerGroup([
     //require('./remove-subject-type'),
 
     require('./add-age-frame'),
-    //require('./update-age-frame'),
+    require('./update-age-frame'),
     //require('./remove-age-frame'),
 
     //require('./add-general-condition'),
