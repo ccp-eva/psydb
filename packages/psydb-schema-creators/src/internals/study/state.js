@@ -85,7 +85,6 @@ var StudyState = (ps = {}) => {
                             title: 'Location-Typ',
                             collection: 'location',
                         }),
-                        // FIXME: ForeignIdLIst
                         enabledLocationIds: ForeignIdList({
                             title: 'Zugewiesen',
                             collection: 'location',
@@ -93,7 +92,7 @@ var StudyState = (ps = {}) => {
                         })
                     },
                     required: [
-                        'customRecordTypeId',
+                        'customRecordType',
                         'enabledLocationIds',
                     ]
                 })

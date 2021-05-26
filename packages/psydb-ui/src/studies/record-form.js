@@ -7,25 +7,9 @@ import { ArrowRightShort } from 'react-bootstrap-icons';
 import allSchemaCreators from '@mpieva/psydb-schema-creators';
 import agent from '@mpieva/psydb-ui-request-agents';
 
-import ROSchemaForm from '@mpieva/psydb-ui-lib/src/ro-schema-form';
+import SchemaForm from '@mpieva/psydb-ui-lib/src/default-schema-form';
 
-import LinkButton from '@mpieva/psydb-ui-lib/src/link-button';
-
-const EditLinkButton = ({
-    to,
-    label
-}) => {
-    return (
-        <LinkButton
-            className='d-flex align-items-center'
-            to={ to }>
-            <span className='d-inline-block mr-2'>{ label }</span>
-            <ArrowRightShort style={{ height: '24px', width: '24px' }} />
-        </LinkButton>
-    );
-}
-
-const StudyRecordDetails = ({
+const StudyRecordForm = ({
     recordType,
     onSuccessfulUpdate,
 }) => {
@@ -77,6 +61,41 @@ const StudyRecordDetails = ({
         );
     }
 
+    var onSubmit = ({ formData }) => {
+        var messageAction = (
+            type === 'edit'
+            ? 'patch'
+            : 'create'
+        );
+        var messageType = `${collection}/${recordType}/${messageAction}`
+
+        var payload = ({
+            ...(type === 'edit' ? {
+                id,
+                lastKnownEventId: record._lastKnownEventId,
+            } : {}),
+            props: formData,
+            ...additionalPayloadProps,
+        })
+        
+        agent.send({ message: {
+            type: messageType,
+            payload,
+        }})
+        .then(response => {
+            var recordId = id;
+            if (type !== 'edit') {
+                var recordId = response.data.data.find(it => (
+                    it.collectionName === collection
+                )).channelId;
+            }
+            onSuccessfulUpdate && onSuccessfulUpdate({
+                id: recordId,
+                response
+            });
+        })
+    };
+
     var formData = {};
     var formContext = {};
     if (record) {
@@ -113,22 +132,19 @@ const StudyRecordDetails = ({
     delete formSchema.properties.selectionSettingsBySubjectType;
     delete formData.selectionSettingsBySubjectType;
 
+    delete formData.isCreateFinalized;
+
     //console.log(formSchema);
     //console.log(formData);
 
     return (
         <div className='mt-3 position-relative'>
-            <ROSchemaForm
+            <SchemaForm
                 schema={ formSchema }
                 formData={ formData }
                 formContext={ formContext }
+                onSubmit={ onSubmit }
             />
-            <div style={{ position: 'absolute', right: '0px', top: '0px'}}>
-                <EditLinkButton
-                    label='Bearbeiten'
-                    to={ `${url}/edit` }
-                />
-            </div>
         </div>
     )
 }
@@ -152,4 +168,4 @@ var reducer = (state, action) => {
     }
 }
 
-export default StudyRecordDetails;
+export default StudyRecordForm;
