@@ -32,8 +32,13 @@ handler.checkAllowedAndPlausible = async ({
         id,
         lastKnownEventId,
         customRecordType,
-        ageFrame,
+        props,
     } = message.payload;
+
+    var {
+        ageFrame,
+        conditions,
+    } = props;
 
     var study = await (
         db.collection('study')
@@ -88,8 +93,13 @@ handler.triggerSystemEvents = async ({
         id,
         lastKnownEventId,
         customRecordType,
-        ageFrame,
+        props,
     } = payload;
+
+    var {
+        ageFrame,
+        conditions,
+    } = props;
 
     var channel = (
         rohrpost
@@ -105,7 +115,7 @@ handler.triggerSystemEvents = async ({
     var messages = PushMaker({ personnelId }).all({
         [path]: {
             ageFrame,
-            conditions: [],
+            conditions,
         },
     });
 

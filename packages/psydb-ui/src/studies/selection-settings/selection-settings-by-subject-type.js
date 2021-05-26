@@ -11,6 +11,8 @@ const SelectionSettingsBySubjectType = ({
     relatedRecordLabels,
     relatedHelperSetItems,
     relatedCustomRecordTypeLabels,
+
+    onSuccessfulUpdate,
 }) => {
     return (
         <>
@@ -27,6 +29,8 @@ const SelectionSettingsBySubjectType = ({
                     relatedRecordLabels,
                     relatedHelperSetItems,
                     relatedCustomRecordTypeLabels,
+                    
+                    onSuccessfulUpdate,
                 }) } />
             )) }
             <hr />
@@ -51,6 +55,8 @@ const SubjectType = ({
     relatedRecordLabels,
     relatedHelperSetItems,
     relatedCustomRecordTypeLabels,
+    
+    onSuccessfulUpdate,
 }) => {
     return (
         <div>
@@ -66,6 +72,8 @@ const SubjectType = ({
 
                 studyRecord,
                 subjectTypeData,
+    
+                onSuccessfulUpdate,
             }) } />
 
             <div className=''>
@@ -79,6 +87,8 @@ const SubjectType = ({
                     relatedRecordLabels,
                     relatedHelperSetItems,
                     relatedCustomRecordTypeLabels,
+    
+                    onSuccessfulUpdate,
                 }) } />
             </div>
         </div>

@@ -14,6 +14,8 @@ const ConditionsByAgeFrame = ({
     relatedRecordLabels,
     relatedHelperSetItems,
     relatedCustomRecordTypeLabels,
+    
+    onSuccessfulUpdate,
 }) => {
 
     var [ showModal, setShowModal ] = useState(false);
@@ -38,12 +40,28 @@ const ConditionsByAgeFrame = ({
                     relatedRecordLabels,
                     relatedHelperSetItems,
                     relatedCustomRecordTypeLabels,
+                    
+                    onSuccessfulUpdate,
                 }) } />
             ))}
             <div className='mt-2 d-flex justify-content-end'>
-                <Button size='sm'>
+                <Button size='sm' onClick={ handleShowModal }>
                     + Altersfenster
                 </Button>
+                <ConditionsByAgeFrameModal { ...({
+                    type: 'create',
+                    show: showModal,
+                    onHide: handleHideModal,
+
+                    subjectRecordType,
+                    subjectTypeData,
+                    studyRecord,
+                    relatedRecordLabels,
+                    relatedHelperSetItems,
+                    relatedCustomRecordTypeLabels,
+    
+                    onSuccessfulUpdate,
+                }) } />
             </div>
         </>
     );
@@ -59,6 +77,8 @@ const AgeFrameContainer = ({
     relatedRecordLabels,
     relatedHelperSetItems,
     relatedCustomRecordTypeLabels,
+    
+    onSuccessfulUpdate,
 }) => {
     
     var [ showModal, setShowModal ] = useState(false);
@@ -106,6 +126,7 @@ const AgeFrameContainer = ({
                     onClick={ handleShowModal }
                 />
                 <ConditionsByAgeFrameModal { ...({
+                    type: 'edit',
                     show: showModal,
                     onHide: handleHideModal,
 
@@ -118,6 +139,8 @@ const AgeFrameContainer = ({
                     relatedRecordLabels,
                     relatedHelperSetItems,
                     relatedCustomRecordTypeLabels,
+                    
+                    onSuccessfulUpdate,
                 }) } />
             </div>
         </div>

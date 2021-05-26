@@ -11,6 +11,7 @@
     "@mpieva/psydb-koa-event-middleware": "~0.1.0-alpha",
     "@mpieva/psydb-schema-creators": "~0.1.0-alpha",
     "@mpieva/psydb-schema-fields": "~0.1.0-alpha",
+    "@mpieva/psydb-schema-fields-special": "~0.1.0-alpha",
     "@mpieva/psydb-schema-helpers": "~0.1.0-alpha",
     "@mpieva/psydb-common-lib": "~0.1.0-alpha",
     "@mpieva/psydb-api-lib": "~0.1.0-alpha",

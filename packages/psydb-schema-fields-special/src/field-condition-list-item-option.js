@@ -49,10 +49,10 @@ var FieldConditionListItemOption = ({
                     title: 'Werte',
                     items: valueItemsSchema,
                 },
-                ...(enableCanChangePerSearch && { canChangePerSearch: {
+                /*...(enableCanChangePerSearch && { canChangePerSearch: {
                     type: 'boolean',
                     default: false,
-                }}),
+                }}),*/
             },
             required: [
                 'fieldKey',

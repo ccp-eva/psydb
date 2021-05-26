@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useMemo } from 'react';
+import React, { useEffect, useReducer, useMemo, useCallback } from 'react';
 
 import {
     Route,
@@ -29,6 +29,10 @@ const StudySelectionSettings = ({
         relatedHelperSetItems,
         relatedCustomRecordTypeLabels,
     } = state;
+
+    var handleSuccessfulUpdate = useCallback((response) => {
+        dispatch({ type: 'increase-revision' });
+    }, [])
 
     useEffect(() => {
 
@@ -66,6 +70,7 @@ const StudySelectionSettings = ({
         <div className='mt-3 mb-3'>
             <SelectionSettingsBySubjectType { ...({
                 settings: selectionSettingsBySubjectType,
+                onSuccessfulUpdate: handleSuccessfulUpdate,
 
                 record,
                 subjectTypeData,
@@ -96,6 +101,11 @@ const reducer = (state, action) => {
                 subjectTypeData: payload.records,
             })
 
+        case 'increase-revision':
+            return ({
+                ...state,
+                revision: (state.revision || 0) + 1
+            })
     }
 }
 

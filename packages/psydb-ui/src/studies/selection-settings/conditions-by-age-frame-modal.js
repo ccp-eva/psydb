@@ -30,6 +30,7 @@ const createSchema = ({ subjectTypeData }) => {
 
 
 const ConditionsByAgeFrameModal = ({
+    type,
     show,
     onHide,
 
@@ -48,17 +49,41 @@ const ConditionsByAgeFrameModal = ({
 
     var schema = createSchema({ subjectTypeData });
 
+    var formData = (
+        type === 'edit'
+        ? {
+            ageFrame,
+            conditions,
+        }
+        : undefined
+    );
+
     var handleSubmit = ({ formData }) => {
-        var message = {
-            type: 'study/patch-conditions-by-age-frame',
-            payload: {
-                id: studyRecord._id,
-                lastKnownEventId: studyRecord._lastKnownEventId,
-                subjectRecordType: subjectRecordType,
-                ageFrame: ageFrame, // original frame so we can find stuff
-                props: formData,
-            }
-        };
+        var message = undefined;
+
+        if (type === 'edit') {
+            message = {
+                type: 'study/patch-conditions-by-age-frame',
+                payload: {
+                    id: studyRecord._id,
+                    lastKnownEventId: studyRecord._lastKnownEventId,
+                    customRecordType: subjectRecordType,
+                    ageFrame: ageFrame, // original frame so we can find stuff
+                    props: formData,
+                }
+            };
+        }
+        else {
+            message = {
+                type: 'study/add-age-frame',
+                payload: {
+                    id: studyRecord._id,
+                    lastKnownEventId: studyRecord._lastKnownEventId,
+                    customRecordType: subjectRecordType,
+                    props: formData,
+                }
+            };
+        }
 
         agent.send({ message }).then(response => {
             onHide();
@@ -86,10 +111,7 @@ const ConditionsByAgeFrameModal = ({
                             relatedHelperSetItems,
                             relatedCustomRecordTypeLabels,
                         }}
-                        formData={{
-                            ageFrame,
-                            conditions,
-                        }}
+                        formData={ formData }
                         onSubmit={ handleSubmit }
                     />
                 </div>
