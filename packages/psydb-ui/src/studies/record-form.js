@@ -10,6 +10,7 @@ import agent from '@mpieva/psydb-ui-request-agents';
 import SchemaForm from '@mpieva/psydb-ui-lib/src/default-schema-form';
 
 const StudyRecordForm = ({
+    type,
     recordType,
     onSuccessfulUpdate,
 }) => {
@@ -75,7 +76,6 @@ const StudyRecordForm = ({
                 lastKnownEventId: record._lastKnownEventId,
             } : {}),
             props: formData,
-            ...additionalPayloadProps,
         })
         
         agent.send({ message: {

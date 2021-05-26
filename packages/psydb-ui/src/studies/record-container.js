@@ -80,6 +80,7 @@ const StudyRecordContainer = ({
                             </Route>
                             <Route exact path={`${path}/edit`}>
                                 <StudyRecordForm
+                                    type='edit'
                                     recordType={ recordType }
                                     onSuccessfulUpdate={ () => {
                                         history.push(`${url}`)
