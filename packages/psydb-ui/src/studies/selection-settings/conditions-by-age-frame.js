@@ -164,6 +164,7 @@ const Condition = ({
         .find(it => it.key === fieldKey )
     );
 
+    // FIXME: this is lab-operation/../selection-settings-form-schema.js
     var realType = fieldDefinition.type;
     // FIXME: maybe we can just cut the "List" suffix via regex
     if (fieldDefinition.type === 'HelperSetItemIdList') {

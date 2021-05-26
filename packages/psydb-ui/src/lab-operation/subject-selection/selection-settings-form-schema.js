@@ -11,6 +11,8 @@ const BoolTrue = ({ ...additionalKeywords } = {}) => BasicBool({
 });
 
 import * as stringifiers from '@mpieva/psydb-ui-lib/src/field-stringifiers';
+import stringifyFieldValue from '@mpieva/psydb-ui-lib/src/stringify-field-value';
+
 
 const SelectionSettingsFormSchema = ({
     timeFrameDefaults,
@@ -149,19 +151,38 @@ const ConditionValues = ({
     relatedRecords,
     relatedHelperSetItems,
 }) => BasicObject(
-    values.reduce((acc, value, index) => ({
-        ...acc,
-        //NOTE: value could be a number
-        [`value_${index}`]: BoolTrue({
-            title: stringifyFieldValue({
-                fieldKey,
-                value,
-                customFieldDefinitions,
-                relatedRecords,
-                relatedHelperSetItems,
-            }),
-        })
-    }), {}),
+    values.reduce((acc, value, index) => {
+        var fieldDefinition = customFieldDefinitions.find(it => (
+            it.key === fieldKey
+        ));
+    
+        // FIXME: this is redundant with studies/selection-settings/conditions-by-age-frame.js
+        var realType = fieldDefinition.type;
+        // FIXME: maybe we can just cut the "List" suffix via regex
+        if (fieldDefinition.type === 'HelperSetItemIdList') {
+            realType = 'HelperSetItemId';
+        }
+        if (fieldDefinition.type === 'ForeignIdList') {
+            realType = 'ForeignId';
+        }
+
+        return {
+            ...acc,
+            //NOTE: value could be a number
+            [`value_${index}`]: BoolTrue({
+                title: stringifyFieldValue({
+                    rawValue: value,
+                    fieldDefinition: {
+                        ...fieldDefinition,
+                        type: realType,
+                    },
+                    // FIXME related
+                    relatedRecordLabels: relatedRecords,
+                    relatedHelperSetItems,
+                }),
+            })
+        };
+    }, {}),
     { 
         title: stringifyFieldKey({
             fieldKey,
@@ -186,7 +207,7 @@ var stringifyFieldKey = ({
     return definition.displayName
 };
 
-var stringifyFieldValue = ({
+/*var stringifyFieldValue = ({
     fieldKey,
     value,
     customFieldDefinitions,
@@ -218,6 +239,6 @@ var stringifyFieldValue = ({
             )
             return str;
     }
-}
+}*/
 
 export default SelectionSettingsFormSchema;
