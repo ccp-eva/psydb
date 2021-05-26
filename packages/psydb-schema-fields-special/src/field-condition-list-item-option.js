@@ -57,7 +57,7 @@ var FieldConditionListItemOption = ({
             required: [
                 'fieldKey',
                 'values',
-                'canChangePerSearch',
+                //'canChangePerSearch',
             ]
         })
     );
