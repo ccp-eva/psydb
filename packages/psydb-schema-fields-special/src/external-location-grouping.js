@@ -50,10 +50,20 @@ var ExternalLocationGrouping = ({
                     fieldKey: {
                         title: 'gruppiert nach',
                         type: 'string',
-                        enum: locationFieldKeys,
-                        // FIXME: enumNames is rjsf not sure if we
-                        // want that here
-                        enumNames: locationFieldDisplayNames,
+                        // FIXME: there is an issue
+                        // when gathering constraints for studies
+                        // since we cant known the location
+                        // field keys available
+                        // so this produces an invalid schema
+                        // which we need when searching for studies
+                        // maybe we want to remove fieldKey entirely
+                        // when we dont have proper data?
+                        ...(locationFieldKeys.length > 0 && ({
+                            enum: locationFieldKeys,
+                            // FIXME: enumNames is rjsf not sure if we
+                            // want that here
+                            enumNames: locationFieldDisplayNames,
+                        }))
                     }
                 },
                 required: [

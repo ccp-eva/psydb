@@ -51,7 +51,7 @@ var FullBodySchema = ({
         }
     }
 
-    return ExactObject({
+    var schema = ExactObject({
         properties: {
             collectionName: IdentifierString(),
             recordType: IdentifierString(), // FIXME: enum
@@ -88,6 +88,10 @@ var FullBodySchema = ({
             'limit',
         ]
     });
+
+    //console.dir(schema, { depth: null })
+
+    return schema;
 };
 
 module.exports = FullBodySchema;
