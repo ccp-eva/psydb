@@ -14,6 +14,7 @@ var FieldConditionListItemOption = ({
     fieldKey,
     fieldType,
     fieldProps,
+    title,
 
     // FIXME: all the other instances of additionalProps in schema creators
     // should be renamed to "additionalKeywords",
@@ -34,6 +35,7 @@ var FieldConditionListItemOption = ({
     return (
         ExactObject({
             systemType: 'FieldConditionListItemOption',
+            title,
             properties: {
                 fieldKey: CustomRecordTypeFieldKey({
                     collection: collection,
@@ -44,6 +46,7 @@ var FieldConditionListItemOption = ({
                 values: {
                     type: 'array',
                     default: [],
+                    title: 'Werte',
                     items: valueItemsSchema,
                 },
                 ...(enableCanChangePerSearch && { canChangePerSearch: {

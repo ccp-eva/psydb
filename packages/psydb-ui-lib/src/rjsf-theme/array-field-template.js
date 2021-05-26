@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useReducer } from 'react';
 import { ArrowUpShort, ArrowDownShort, Plus, X } from 'react-bootstrap-icons';
 
+import * as wrappers from './utility-components/wrappers';
+
 const ArrayFieldTemplate = (ps) => {
     var {
         schema
@@ -158,6 +160,7 @@ const RemoveButton = ({ children, onClick }) => (
 
 const Plain = (ps) => {
     var {
+        id,
         items,
         title,
         schema,
@@ -166,17 +169,28 @@ const Plain = (ps) => {
         rawErrors = [],
     } = ps;
 
+    var {
+        systemType,
+        systemProps = {}
+    } = schema;
+
+    var Wrapper = wrappers[systemProps.uiWrapper];
+    if (!Wrapper) {
+        Wrapper = wrappers.InlineArrayWrapper;
+    }
+
     //console.log(ps);
 
     var hasErrors = !!rawErrors.length;
     var itemsCount = items.length;
 
     return (
-        <div className='row mr-0 ml-0'>
-            <header className={ `col-sm-3 ${hasErrors ? 'text-danger' : ''}` }>
-                { title }
-            </header>
-            <div className='col-sm-9 p-0'>
+        <Wrapper { ...({
+            id, schema, rawErrors,
+            label: title,
+            required: false
+        }) }>
+            <div>
                 { items && items.map((itemProps) => (
                     <DefaultArrayItem
                         { ...itemProps }
@@ -202,7 +216,7 @@ const Plain = (ps) => {
                     </div>
                 )}
             </div>
-        </div>
+        </Wrapper>
     )
 }
 

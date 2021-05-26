@@ -7,14 +7,26 @@ import {
     AgeFrameSettingsListItem,
 } from '@mpieva/psydb-schema-fields-special';
 
-const createSchema = ({ subjectTypeData }) => (
-    AgeFrameSettingsListItem({
+const createSchema = ({ subjectTypeData }) => {
+    var schema = AgeFrameSettingsListItem({
         subjectRecordType: subjectTypeData.type,
         subjectRecordTypeScientificFields: (
             subjectTypeData.state.settings.subChannelFields.scientific
         )
-    })
-);
+    });
+
+    schema.properties.ageFrame.systemProps = {
+        ...schema.properties.ageFrame.systemProps,
+        uiWrapper: 'MultiLineWrapper'
+    };
+
+    schema.properties.conditions.systemProps = {
+        ...schema.properties.conditions.systemProps,
+        uiWrapper: 'MultiLineWrapper'
+    };
+
+    return schema;
+};
 
 
 const ConditionsByAgeFrameModal = ({

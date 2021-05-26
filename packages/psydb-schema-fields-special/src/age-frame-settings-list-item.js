@@ -11,11 +11,16 @@ var AgeFrameSettingsListItem = ({
     subjectRecordTypeScientificFields,
 
     enableCanChangePerSearch = true,
+    ...additionalKeywords
 }) => (
     ExactObject({
         systemType: 'AgeFrameSettingsItem',
         properties: {
-            ageFrame: DaysSinceBirthInterval(),
+            ageFrame: DaysSinceBirthInterval({
+                title: 'Altersfenster',
+                startKeywords: { title: 'Beginn' },
+                endKeywords: { title: 'Ende' },
+            }),
             conditions: FieldConditionList({
                 collection: 'subject',
                 recordType: subjectRecordType,
@@ -27,7 +32,8 @@ var AgeFrameSettingsListItem = ({
         required: [
             'ageFrame',
             'conditions',
-        ]
+        ],
+        ...additionalKeywords
     })
 );
 

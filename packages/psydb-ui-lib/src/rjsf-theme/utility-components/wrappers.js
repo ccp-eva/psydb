@@ -1,6 +1,14 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
 
+export const PlainWrapper = ({ children }) => {
+    return (
+        <>
+            { children }
+        </>
+    );
+}
+
 export const InlineWrapper = ({
     id,
     label,
@@ -29,6 +37,25 @@ export const InlineWrapper = ({
     );
 }
 
+export const InlineArrayWrapper = ({
+    label,
+
+    rawErrors = [], 
+    children,
+}) => {
+    var hasErrors = rawErrors.length > 0;
+    return (
+        <div className='row mr-0 ml-0'>
+            <header className={ `col-sm-3 ${hasErrors ? 'text-danger' : ''}` }>
+                { label }
+            </header>
+            <div className='col-sm-9 p-0'>
+                { children }
+            </div>
+        </div>
+    );
+}
+
 export const MultiLineWrapper = ({
     id,
     label,
@@ -43,11 +70,13 @@ export const MultiLineWrapper = ({
         <Form.Group>
             <Form.Label
                 htmlFor={ id }
-                className={ `${hasErrors ? 'text-danger' : ''}`}
+                className={ `${hasErrors ? 'text-danger' : ''} border-bottom d-block`}
             >
-                { label || schema.title }
-                {' '}
-                {(label || schema.title) && required ? '*' : null}
+                <b>
+                    { label || schema.title }
+                    {' '}
+                    {(label || schema.title) && required ? '*' : null}
+                </b>
             </Form.Label>
             <div>
                 { children }

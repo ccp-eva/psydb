@@ -13,6 +13,7 @@ var FieldConditionListItem = ({
     systemType: 'FieldConditionListItem',
     type: 'object',
     lazyResolveProp: 'fieldKey',
+    title: 'Zeilfeld',
     oneOf: fields.map(it => (
         FieldConditionListItemOption({
             collection,
@@ -20,6 +21,7 @@ var FieldConditionListItem = ({
             fieldKey: it.key,
             fieldType: it.type,
             fieldProps: it.props,
+            title: it.displayName,
 
             enableCanChangePerSearch,
         })

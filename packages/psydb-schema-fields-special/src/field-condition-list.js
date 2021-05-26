@@ -11,6 +11,7 @@ var FieldConditionList = ({
     systemType: 'FieldConditionList',
     type: 'array',
     default: [],
+    title: 'Bedingungen',
     items: FieldConditionListItem({
         collection,
         recordType,

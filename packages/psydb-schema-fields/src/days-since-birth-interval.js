@@ -3,22 +3,25 @@ var ExactObject = require('./exact-object'),
     DaysSinceBirth = require('./days-since-birth');
 
 var DaysSinceBirthInterval = ({
-    description
+    startKeywords,
+    endKeywords,
+    ...additionalKeywords
 } = {}) => ExactObject({
     systemType: 'DaysSinceBirthInterval',
     properties: {
-        start: DaysSinceBirth(),
+        start: DaysSinceBirth({ ...startKeywords }),
         end: DaysSinceBirth({
             minimum: {
                 $data: '1/start'
-            }
+            },
+            ...endKeywords
         })
     },
     required: [
         'start',
         'end',
     ],
-    ...(description ? { description } : {})
+    ...additionalKeywords,
 });
 
 module.exports = DaysSinceBirthInterval;
