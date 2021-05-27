@@ -50,7 +50,7 @@ function createAjvInstance() {
     // patched
     ajv.addFormat('mongodb-object-id', psydbFormats.mongodbObjectId);
     ajv.addFormat('nanoid-default', psydbFormats.nanoidDefault);
-    ajv.addFormat('phone-number', psydbFormats.phoneNumber);
+    ajv.addFormat('phone-number', psydbFormats.germanPhoneNumber);
     ajv.addFormat('hex-color', psydbFormats.hexColor);
     ajvKeywords(ajv, [
         'uniqueItemProperties',
