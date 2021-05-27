@@ -17,6 +17,8 @@ import {
 
 import agent from '@mpieva/psydb-ui-request-agents';
 
+import ErrorBoundary from './error-boundary';
+
 import SideNav from './side-nav';
 import CustomRecordTypes from './custom-record-types';
 import Studies from './studies';
@@ -81,7 +83,9 @@ const Main = ({ onSignedOut, onSignedIn }) => {
                         </div>
                     </div>
                     <div className='pl-3'>
-                        <Routing />
+                        <ErrorBoundary>
+                            <Routing />
+                        </ErrorBoundary>
                     </div>
                 </div>
             </main>
