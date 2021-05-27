@@ -1,4 +1,5 @@
 'use strict';
+var ApiError = require('@mpieva/psydb-api-lib/src/api-error');
 var parseRecordMessageType = require('./parse-record-message-type');
 
 var checkAllowedAndPlausible = async ({

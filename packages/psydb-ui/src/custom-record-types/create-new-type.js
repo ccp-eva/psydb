@@ -54,10 +54,6 @@ const CreateNewType = ({ onCreated }) => {
                             it => it.collectionName === 'customRecordType'
                         ).channelId
                     });
-                },
-                (error) => {
-                    console.log('ERR:', error)
-                    alert('TODO')
                 }
             )
         )

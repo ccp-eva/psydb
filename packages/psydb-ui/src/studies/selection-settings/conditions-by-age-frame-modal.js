@@ -85,7 +85,7 @@ const ConditionsByAgeFrameModal = ({
             };
         }
 
-        agent.send({ message }).then(response => {
+        return agent.send({ message }).then(response => {
             onHide();
             onSuccessfulUpdate && onSuccessfulUpdate(response);
         })

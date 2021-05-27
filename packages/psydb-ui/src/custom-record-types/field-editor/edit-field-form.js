@@ -66,10 +66,6 @@ const EditFieldForm = ({ record, field, onSuccess }) => {
                     console.log(response);
                     onSuccess();
                 },
-                (error) => {
-                    console.log('ERR:', error)
-                    alert('ERROR')
-                }
             )
         )
     };

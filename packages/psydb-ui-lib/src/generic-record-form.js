@@ -112,7 +112,7 @@ const GenericRecordForm = ({
             }
         )
         
-        agent.send({ message: {
+        return agent.send({ message: {
             type: messageType,
             payload,
         }})

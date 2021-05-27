@@ -23,7 +23,7 @@ const ParticipationCreateModal = ({
             }
         };
 
-        agent.send({ message }).then(response => {
+        return agent.send({ message }).then(response => {
             onHide();
             onSuccessfulCreate && onSuccessfulCreate(response);
         })

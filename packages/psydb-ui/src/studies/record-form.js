@@ -78,7 +78,7 @@ const StudyRecordForm = ({
             props: formData,
         })
         
-        agent.send({ message: {
+        return agent.send({ message: {
             type: messageType,
             payload,
         }})

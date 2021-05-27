@@ -9,11 +9,7 @@ import {
 } from '@mpieva/psydb-schema-fields';
 
 import agent from '@mpieva/psydb-ui-request-agents';
-
-import { withTheme } from '@mpieva/rjsf-monkey-patch';
-import RJSFCustomTheme from '@mpieva/psydb-ui-lib/src/rjsf-theme';
-
-var SchemaForm = withTheme(RJSFCustomTheme);
+import SchemaForm from '@mpieva/psydb-ui-lib/src/default-schema-form';
 
 var createFormSchema = ({
     subjectRecordType,
@@ -55,8 +51,6 @@ const ParticipationCreateForm = ({
 
     return (
         <SchemaForm
-            noHtml5Validate={ true }
-            showErrorList={ false }
             schema={ schema }
             onSubmit={ onSubmit }
         >

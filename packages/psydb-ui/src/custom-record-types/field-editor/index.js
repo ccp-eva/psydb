@@ -4,6 +4,7 @@ import { Button, Table } from 'react-bootstrap';
 import agent from '@mpieva/psydb-ui-request-agents';
 import allSchemaCreators from '@mpieva/psydb-schema-creators';
 
+import ErrorResponseModal from '@mpieva/psydb-ui-lib/src/error-response-modal';
 import EditIconButton from '@mpieva/psydb-ui-lib/src/edit-icon-button';
 import NewFieldModal from './new-field-modal';
 import EditFieldModal from './edit-field-modal';
@@ -15,7 +16,10 @@ const FieldEditor = ({ record, onSuccessfulUpdate }) => {
     var {
         showNewFieldModal,
         showEditFieldModal,
-        editFieldModalData
+        editFieldModalData,
+
+        apiError,
+        showErrorModal,
     } = state;
 
     var [
@@ -24,6 +28,8 @@ const FieldEditor = ({ record, onSuccessfulUpdate }) => {
 
         handleShowEditFieldModal,
         handleHideEditFieldModal,
+
+        handleHideErrorModal,
     ] = useMemo(() => ([
         () => dispatch({ type: 'show-new-field-modal' }),
         () => dispatch({ type: 'hide-new-field-modal' }),
@@ -32,6 +38,8 @@ const FieldEditor = ({ record, onSuccessfulUpdate }) => {
             field
         }}),
         () => dispatch({ type: 'hide-edit-field-modal' }),
+
+        () => dispatch({ type: 'hide-error-modal' }),
     ]));
 
     var handleCommitSettings = () => {
@@ -49,8 +57,10 @@ const FieldEditor = ({ record, onSuccessfulUpdate }) => {
                     onSuccessfulUpdate()
                 },
                 (error) => {
-                    console.log('ERR:', error)
-                    alert('TODO')
+                    dispatch({
+                        type: 'set-api-error',
+                        payload: error.response
+                    })
                 }
             )
         ) 
@@ -77,6 +87,12 @@ const FieldEditor = ({ record, onSuccessfulUpdate }) => {
                 onSuccessfulUpdate={ onSuccessfulUpdate }
             />
             
+            <ErrorResponseModal
+                show={ showErrorModal }
+                onHide={ handleHideErrorModal }
+                errorResponse={ apiError }
+            />
+
             <FieldList
                 record={ record }
                 onEditField={
@@ -214,6 +230,18 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 showEditFieldModal: false,
+            }
+
+        case 'set-api-error':
+            return {
+                ...state,
+                apiError: action.payload,
+                showErrorModal: true,
+            }
+        case 'hide-error-modal':
+            return {
+                ...state,
+                showErrorModal: false,
             }
 
     }

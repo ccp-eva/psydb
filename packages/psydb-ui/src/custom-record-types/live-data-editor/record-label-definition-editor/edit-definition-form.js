@@ -76,10 +76,10 @@ const EditDefinitionForm = ({
                 (response) => {
                     onSuccess()
                 },
-                (error) => {
+                /*(error) => {
                     console.log('ERR:', error)
                     alert('TODO')
-                }
+                }*/
             )
         ) 
     }
