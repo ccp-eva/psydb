@@ -2,17 +2,10 @@
 var formatDate = require('date-fns/format');
 var deLocale = require('date-fns/locale/de');
 
+var ageFrameUtils = require('./age-frame-utils');
+
 var AgeFrameEdge = (value) => {
-    var tmp = value;
-
-    var years = Math.floor(tmp / 360);
-    tmp %= 360;
-
-    var months = Math.floor(tmp / 30);
-    tmp %= 30;
-
-    var days = tmp;
-
+    var { years, months, days } = ageFrameUtils.split(value);
     return `${years}/${months}/${days}`;
 }
 

@@ -47,12 +47,19 @@ const TextWidget = (ps) => {
         inputType = 'color';
     }
 
-    var _onChange = useCallback((event) => {
-        var { target: { value }} = event;
+    var _onChange = useCallback((eventOrValue) => {
+        var rawValue;
+        // FIXME: this check might not be sufficient
+        if (eventOrValue.target) {
+            rawValue = eventOrValue.target.value;
+        }
+        else {
+            rawValue = eventOrValue
+        }
         var sanitizedValue = (
             value === ''
             ? options.emptyValue
-            : value
+            : rawValue
         );
         return (
             onChange(sanitizedValue)
