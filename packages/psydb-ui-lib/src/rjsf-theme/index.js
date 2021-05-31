@@ -1,7 +1,15 @@
 import React, { useState, useEffect, useReducer } from 'react';
 import { Theme as Bootstrap4Theme } from '@rjsf/bootstrap-4';
 
+import ArrayField from '@mpieva/rjsf-monkey-patch/src/array-field';
+import SchemaField from '@mpieva/rjsf-monkey-patch/src/schema-field';
+import ObjectField from '@mpieva/rjsf-monkey-patch/src/object-field';
+
+import BooleanField from '@mpieva/rjsf-monkey-patch/src/boolean-field';
+import StringField from '@mpieva/rjsf-monkey-patch/src/string-field';
+
 import MultiSchemaField from '@mpieva/rjsf-monkey-patch/src/multi-schema-field';
+
 import ObjectFieldTemplate from './object-field-template';
 import ArrayFieldTemplate from './array-field-template';
 
@@ -16,7 +24,15 @@ var CustomTheme = {
     ArrayFieldTemplate,
     //widgets: { ...Bootstrap4Theme.widgets, ...widgets },
     widgets: allWidgets,
-    fields: { ...Bootstrap4Theme.fields, OneOfField: MultiSchemaField }
+    fields: {
+        ...Bootstrap4Theme.fields,
+        SchemaField,
+        ArrayField,
+        ObjectField,
+        StringField,
+        BooleanField,
+        OneOfField: MultiSchemaField
+    }
 }
 
 CustomTheme.FieldTemplate = (ps) => {

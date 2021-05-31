@@ -28,6 +28,11 @@ const CheckboxWidget = (ps) => {
     if (!Wrapper) {
         Wrapper = wrappers.InlineWrapper;
     }
+
+    // FIXME: this is is really hacky
+    if (ps.parentSchema.systemType === 'WeekdayBoolObject') {
+        Wrapper = ({ children }) => ( <div>{ children }</div> )
+    }
     
     return (
         <Wrapper { ...({

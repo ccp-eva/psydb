@@ -7,6 +7,16 @@ var days = [
     'fri', 'sat', 'sun'
 ];
 
+var labels = {
+    'mon': 'Montag',
+    'tue': 'Dienstag',
+    'wed': 'Mittwoch',
+    'thu': 'Donnerstag',
+    'fri': 'Freitag',
+    'sat': 'Samstag',
+    'sun': 'Sonntag',
+}
+
 var WeekdayBoolObject = ({
     ...additionalKeywords
 }) => ExactObject({
@@ -14,7 +24,7 @@ var WeekdayBoolObject = ({
     properties: days.reduce(
         (acc, day) => ({
             ...acc,
-            [day]: DefaultBool(),
+            [day]: DefaultBool({ title: labels[day] }),
         }),
         {}
     ),

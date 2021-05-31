@@ -36,14 +36,19 @@ var reservationSettingsSchema = {
                 },
                 
                 possibleReservationWeekdays: WeekdayBoolObject({
-                    title: 'Reservierbare Tage',
+                    title: 'Wochentage',
                 }),
                 possibleReservationTimeInterval: TimeInterval({
-                    title: 'Reservierbar Von/Bis',
+                    startKeywords: {
+                        title: 'Reservierbar Von',
+                    },
+                    endKeywords: {
+                        title: 'Reservierbar Bis'
+                    }
                 }),
 
                 reservationSlotDuration: Time({
-                    title: 'Länge der Reservierungs-Slots',
+                    title: 'Länge der Zeit-Slots',
                     minimum: 15*60*1000, // 15 minutes
                     maximum: 4*60*60*1000, // 4 hours (arbitrary)
                     multipleOf: 15*60*1000, // 15 minutes
