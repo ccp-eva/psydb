@@ -1,7 +1,8 @@
 'use strict';
-import datefns from './date-fns';
+var formatDate = require('date-fns/format');
+var deLocale = require('date-fns/locale/de');
 
-export const AgeFrameEdge = (value) => {
+var AgeFrameEdge = (value) => {
     var tmp = value;
 
     var years = Math.floor(tmp / 360);
@@ -15,7 +16,7 @@ export const AgeFrameEdge = (value) => {
     return `${years}/${months}/${days}`;
 }
 
-export const Address = (value) => (
+var Address = (value) => (
     [
         value.street,
         value.housenumber,
@@ -27,23 +28,28 @@ export const Address = (value) => (
     .filter(it => !!it)
     .join(' ')
 );
-export const EmailList = (value) => (
+
+var EmailList = (value) => (
     value.map(it => it.email).join(', ')
 );
 
 // TODO: decide if we want to separate stringify stuff into
 // label/display
-export const PhoneList = (value) => (
+var PhoneList = (value) => (
     value.map(it => it.number).join(', ')
 );
-export const DateTime = (value) => (datefns.format(new Date(value), 'P p'));
-export const AgeFrame = (value) => {
+
+var DateTime = (value) => (
+    format(new Date(value), 'P p', { locale: deLocale })
+);
+
+var AgeFrame = (value) => {
     var start = AgeFrameEdge(value.start);
     var end = AgeFrameEdge(value.end)
     return `${start} - ${end}`;
 }
 
-export const BiologicalGender = (value) => {
+var BiologicalGender = (value) => {
     return {
         'male': 'Männlich',
         'female': 'Weiblich',
@@ -51,7 +57,7 @@ export const BiologicalGender = (value) => {
     }[value];
 }
 
-export const ExtBool = (value) => {
+var ExtBool = (value) => {
     return {
         'yes': 'Ja',
         'no': 'Nein',
@@ -59,3 +65,13 @@ export const ExtBool = (value) => {
     }[value];
 }
 
+module.exports = {
+    Address,
+    AgeFrameEdge,
+    AgeFrame,
+    EmailList,
+    PhoneList,
+    DateTime,
+    BiologicalGender,
+    ExtBool
+}

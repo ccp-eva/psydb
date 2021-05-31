@@ -1,4 +1,4 @@
-import * as stringifiers from './field-stringifiers'
+import * as stringifiers from '@mpieva/psydb-common-lib/src/field-stringifiers'
 
 const stringifyFieldValue = ({
     rawValue,

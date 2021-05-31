@@ -6,7 +6,7 @@ import {
     Square
 } from 'react-bootstrap-icons';
 
-import * as stringifiers from '../field-stringifiers';
+import * as stringifiers from '@mpieva/psydb-common-lib/src/field-stringifiers';
 import LinkButton from '../link-button';
 
 import FieldDataBodyCols from './field-data-body-cols';

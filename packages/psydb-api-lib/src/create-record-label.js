@@ -1,5 +1,6 @@
 'use strict';
 var jsonpointer = require('jsonpointer');
+var stringifiers = require('@mpieva/psydb-common-lib/src/field-stringifiers');
 
 var createRecordLabel = ({ definition, record }) => {
     if (!definition) {
@@ -14,10 +15,17 @@ var createRecordLabel = ({ definition, record }) => {
     var label = format,
         tokensRedacted = 0;
     for (var [index, token] of tokens.entries()) {
-        var value = jsonpointer.get(record, token.dataPointer);
+        var { systemType, dataPointer } = token;
+        var value = jsonpointer.get(record, dataPointer);
         if (value === undefined) {
             value = '[REDACTED]';
             tokensRedacted += 1;
+        }
+        else {
+            var stringify = stringifiers[systemType];
+            if (stringify) {
+                value = stringify(value);
+            }
         }
         label = label.replace(
             '${#}',

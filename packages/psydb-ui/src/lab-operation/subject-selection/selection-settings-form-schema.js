@@ -10,7 +10,7 @@ const BoolTrue = ({ ...additionalKeywords } = {}) => BasicBool({
     ...additionalKeywords
 });
 
-import * as stringifiers from '@mpieva/psydb-ui-lib/src/field-stringifiers';
+import * as stringifiers from '@mpieva/psydb-common-lib/src/field-stringifiers';
 import stringifyFieldValue from '@mpieva/psydb-ui-lib/src/stringify-field-value';
 
 
