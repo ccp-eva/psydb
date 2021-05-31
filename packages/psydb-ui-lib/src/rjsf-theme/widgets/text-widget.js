@@ -71,6 +71,7 @@ const TextWidget = (ps) => {
                 type={ inputType }
                 value={value || value === 0 ? value : ''}
                 onChange={ _onChange }
+                options={ options }
                 
                 schema={ schema }
                 formContext={ formContext }

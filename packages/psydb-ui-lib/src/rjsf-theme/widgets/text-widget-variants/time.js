@@ -15,9 +15,9 @@ const Time = ({
     options,
     ...other
 }) => {
+
     var wrappedOnChange = useCallback((event) => {
         var { target: { value }} = event;
-        console.log(value);
         var sanitizedValue = (
             value === ''
             ? options.emptyValue
