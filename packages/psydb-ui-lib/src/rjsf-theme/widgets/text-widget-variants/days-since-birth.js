@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { Form } from 'react-bootstrap';
+import { Form, InputGroup } from 'react-bootstrap';
 
 import ageFrameUtils from '@mpieva/psydb-common-lib/src/age-frame-utils';
 
@@ -31,11 +31,9 @@ const DaysSinceBirth = ({
 
     var { years, months, days } = ageFrameUtils.split(value);
     return (
-        <div>
-            DaysSinceBirth
-
+        <InputGroup>
             <Form.Control {...({
-                id,
+                id: `${id}_years`,
                 className,
                 type: 'number',
                 min: 0,
@@ -43,21 +41,17 @@ const DaysSinceBirth = ({
                 value: String(years), // this is so dump
                 onChange: onChangeYears,
             })} />
-
             <Form.Control {...({
-                id,
-                className,
+                id: `${id}_months`,
                 type: 'number',
                 min: 0,
-                max: 11,
+                //max: 11,
                 step: 1,
                 value: String(months),
                 onChange: onChangeMonths,
             })} />
-
             <Form.Control {...({
-                id,
-                className,
+                id: `${id}_days`,
                 type: 'number',
                 min: 0,
                 //max: 29,
@@ -65,8 +59,10 @@ const DaysSinceBirth = ({
                 value: String(days),
                 onChange: onChangeDays,
             })} />
-
-        </div>
+            <InputGroup.Append>
+                <InputGroup.Text>Jahre / Monate / Tage</InputGroup.Text>
+            </InputGroup.Append>
+        </InputGroup>
     )
 }
 
