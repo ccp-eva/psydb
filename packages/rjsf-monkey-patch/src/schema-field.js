@@ -246,6 +246,7 @@ function SchemaFieldRender(props) {
 
     //if (props.isArrayItem) {
     //    console.log('SCHEMA_FiELD')
+    //    console.log(idSchema)
     //    console.log(props);
     //    console.log(FieldComponent)
     //}

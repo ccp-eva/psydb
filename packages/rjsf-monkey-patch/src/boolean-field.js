@@ -51,6 +51,7 @@ function BooleanField(props) {
 
     return (
         <Widget
+            { ...props }
             options={{ ...options, enumOptions }}
             schema={schema}
             id={idSchema && idSchema.$id}

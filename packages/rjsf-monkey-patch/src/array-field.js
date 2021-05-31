@@ -634,8 +634,11 @@ class ArrayField extends Component {
                     autofocus={autofocus}
                     rawErrors={rawErrors}
 
+                    // patched
+                    parentSchema={ this.props.schema }
                     isArrayItem={ true }
                     maxIndex={ maxIndex }
+                    // patched
                 />
             ),
             className: "array-item",

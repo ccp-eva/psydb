@@ -239,6 +239,7 @@ class ObjectField extends Component {
                             // patched
                             { ...this.props}
                             isArrayItem={ false }
+                            parentSchema={ this.props.schema }
                             //
                             key={name}
                             name={name}
