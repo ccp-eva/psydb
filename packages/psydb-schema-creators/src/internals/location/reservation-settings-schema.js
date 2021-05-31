@@ -39,6 +39,7 @@ var reservationSettingsSchema = {
                     title: 'Wochentage',
                 }),
                 possibleReservationTimeInterval: TimeInterval({
+                    title: 'Reservierbar Von/Bis',
                     startKeywords: {
                         title: 'Reservierbar Von',
                     },
