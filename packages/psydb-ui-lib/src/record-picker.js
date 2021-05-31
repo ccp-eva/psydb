@@ -55,6 +55,7 @@ const RecordPicker = ({
                     placeholder='Bitte Datensatz wählen'
                     plaintext
                     readOnly
+                    onClick={ handleShowModal }
                 />
                 <InputGroup.Append>
                     <Button
