@@ -2,6 +2,7 @@ import React, { useState, useEffect, useReducer } from 'react';
 import { ArrowUpShort, ArrowDownShort, Plus, X } from 'react-bootstrap-icons';
 
 import * as wrappers from './utility-components/wrappers';
+import * as variants from './array-field-template-variants';
 
 const ArrayFieldTemplate = (ps) => {
     var {
@@ -9,9 +10,9 @@ const ArrayFieldTemplate = (ps) => {
     } = ps;
     //console.log(ps);
 
-    var Variant = subTemplates[schema.systemType];
+    var Variant = variants[schema.systemType];
     if (!Variant) {
-        Variant = subTemplates.Plain
+        Variant = variants.DefaultVariant
     }
 
     return (
@@ -19,209 +20,6 @@ const ArrayFieldTemplate = (ps) => {
     )
 }
 
-const DefaultArrayItem = (ps) => {
-    //console.log(ps);
-    var {
-        index,
-        hasMoveUp,
-        hasMoveDown,
-        hasRemove,
-        onAddClick,
-        onReorderClick,
-        onDropIndexClick,
 
-        itemsCount,
-
-        children,
-        ...other
-    } = ps;
-
-    return (
-        <div className='border p-3' style={{
-            position: 'relative',
-            marginBottom: '35px'
-        }}>
-            { children }
-            
-            { (index === itemsCount - 1) && (
-                <AddButtonWrapper>
-                    <AddButton onClick={ onAddClick }>
-                        <Plus />
-                    </AddButton>
-                </AddButtonWrapper>
-            )}
-
-            { (hasMoveUp || hasMoveDown || hasRemove) && ( 
-                <MoveButtonWrapper>
-                    { hasMoveUp && (
-                        <MoveButton onClick={
-                            onReorderClick(index, index - 1)
-                        }>
-                            <ArrowUpShort />
-                        </MoveButton>
-                    )}
-                    { hasMoveDown && (
-                        <MoveButton onClick={
-                            onReorderClick(index, index + 1)
-                        }>
-                            <ArrowDownShort />
-                        </MoveButton>
-                    )}
-                    { hasRemove && (
-                        <RemoveButton
-                            onClick={ onDropIndexClick(index) }
-                        >
-                            <X />
-                        </RemoveButton>
-                    )}
-                </MoveButtonWrapper>
-            )}
-        </div>
-    )
-}
-
-const AddButtonWrapper = ({ children }) => (
-    <div
-        role='button'
-        className='d-flex'
-        style={{
-            background: 'white',
-            //background: '#006066',
-            bottom: -24,
-            left: -1,
-            position: 'absolute',
-        }}
-    >
-        { children }
-    </div>
-);
-
-const MoveButtonWrapper = ({ children }) => (
-    <div
-        role='button'
-        className='d-flex'
-        style={{
-            background: 'white',
-            bottom: -1,
-            right: -1,
-            position: 'absolute',
-        }}
-    >
-        { children }
-    </div>
-);
-
-const AddButton = ({ children, onClick, style }) => (
-    <div
-        onClick={ onClick }
-        style={{
-            color: '#006066',
-            paddingTop: '3px',
-            paddingBottom: '3px',
-            width: '100px',
-            ...style,
-        }}
-        className=' border d-flex align-items-center justify-content-center'
-    >
-        { children }
-    </div>
-)
-
-const MoveButton = ({ children, onClick }) => (
-    <div
-        onClick={ onClick }
-        style={{
-            color: '#006066',
-            paddingTop: '3px',
-            paddingBottom: '3px',
-            width: '100px',
-        }}
-        className=' border d-flex align-items-center justify-content-center'
-    >
-        { children }
-    </div>
-)
-
-const RemoveButton = ({ children, onClick }) => (
-    <div
-        className='border d-flex align-items-center justify-content-center'
-        style={{
-            color: '#c00',
-            //border: '1px solid #c00',
-            paddingTop: '3px',
-            paddingBottom: '3px',
-            width: '100px',
-        }}
-        onClick={ onClick }
-    >
-        { children }
-    </div>
-)
-
-const Plain = (ps) => {
-    var {
-        id,
-        items,
-        title,
-        schema,
-        formData,
-        onAddClick,
-        rawErrors = [],
-    } = ps;
-
-    var {
-        systemType,
-        systemProps = {}
-    } = schema;
-
-    var Wrapper = wrappers[systemProps.uiWrapper];
-    if (!Wrapper) {
-        Wrapper = wrappers.InlineArrayWrapper;
-    }
-
-    //console.log(ps);
-
-    var hasErrors = !!rawErrors.length;
-    var itemsCount = items.length;
-
-    return (
-        <Wrapper { ...({
-            id, schema, rawErrors,
-            label: title,
-            required: false
-        }) }>
-            <div>
-                { items && items.map((itemProps) => (
-                    <DefaultArrayItem
-                        { ...itemProps }
-                        schema={ schema }
-                        formData={ formData }
-                        itemsCount={ itemsCount }
-                        onAddClick={ onAddClick }
-                    />
-                ))}
-                { itemsCount === 0 && (
-                    <div className='border p-3' style={{
-                        position: 'relative',
-                        marginBottom: '33px'
-                    }}>
-                        <div className='text-muted' style={{ paddingLeft: '15px' }}>
-                            <i>Keine Einträge</i>
-                        </div>
-                        <AddButtonWrapper>
-                            <AddButton onClick={ onAddClick }>
-                                <Plus />
-                            </AddButton>
-                        </AddButtonWrapper>
-                    </div>
-                )}
-            </div>
-        </Wrapper>
-    )
-}
-
-const subTemplates = {
-    Plain,
-};
 
 export default ArrayFieldTemplate;
