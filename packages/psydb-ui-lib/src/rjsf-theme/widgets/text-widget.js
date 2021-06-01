@@ -64,7 +64,7 @@ const TextWidget = (ps) => {
             rawValue = eventOrValue
         }
         var sanitizedValue = (
-            value === ''
+            rawValue === ''
             ? options.emptyValue
             : rawValue
         );
