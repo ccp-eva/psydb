@@ -51,8 +51,7 @@ const AddSubjectTypeModal = ({
             payload: {
                 id: studyRecord._id,
                 lastKnownEventId: studyRecord._lastKnownEventId,
-                customRecordType: subjectRecordType,
-                ...formData,
+                ...formData
             }
         };
 
@@ -82,7 +81,6 @@ const AddSubjectTypeModal = ({
                             //relatedHelperSetItems,
                             //relatedCustomRecordTypeLabels,
                         }}
-                        formData={ undefined }
                         onSubmit={ handleSubmit }
                     />
                 </div>
