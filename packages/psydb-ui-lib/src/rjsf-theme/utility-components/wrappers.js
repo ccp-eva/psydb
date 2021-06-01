@@ -84,3 +84,12 @@ export const MultiLineWrapper = ({
         </Form.Group>
     );
 }
+
+export const OneLineWrapper = (ps) => {
+    var { children } = ps;
+    return (
+        <div className=''>
+            { children }
+        </div>
+    );
+}

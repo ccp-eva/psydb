@@ -12,7 +12,13 @@ const ArrayFieldTemplate = (ps) => {
 
     var Variant = variants[schema.systemType];
     if (!Variant) {
-        Variant = variants.DefaultVariant
+        // FIXME: schema.items.type actually can be an array itself
+        if (schema.items && ['object', 'array'].includes(schema.items.type)) {
+            Variant = variants.DefaultVariant;
+        }
+        else {
+            Variant = variants.ScalarVariant;
+        }
     }
 
     return (

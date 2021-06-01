@@ -18,6 +18,8 @@ const TextWidget = (ps) => {
         schema,
         formContext,
         rawErrors = [],
+
+        isArrayItem,
     } = ps;
    
     var {
@@ -32,7 +34,12 @@ const TextWidget = (ps) => {
 
     var Wrapper = wrappers[systemProps.uiWrapper];
     if (!Wrapper) {
-        Wrapper = wrappers.InlineWrapper;
+        if (isArrayItem) {
+            Wrapper = wrappers.OneLineWrapper;
+        }
+        else {
+            Wrapper = wrappers.InlineWrapper;
+        }
     }
     
 

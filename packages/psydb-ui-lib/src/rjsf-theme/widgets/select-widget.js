@@ -59,6 +59,8 @@ const SelectWidget = (ps) => {
 
         isMultiSchemaSelector,
         baseSchema,
+
+        isArrayItem,
     } = ps;
 
     const { enumOptions, enumDisabled } = options;
@@ -88,7 +90,12 @@ const SelectWidget = (ps) => {
 
     var Wrapper = wrappers[systemProps.uiWrapper];
     if (!Wrapper) {
-        Wrapper = wrappers.InlineWrapper;
+        if (isArrayItem) {
+            Wrapper = wrappers.OneLineWrapper;
+        }
+        else {
+            Wrapper = wrappers.InlineWrapper;
+        }
     }
     
     return (
