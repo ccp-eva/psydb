@@ -26,7 +26,16 @@ module.exports = {
                 systemType: 'SaneString',
                 dataPointer: '/state/label',
             }
-        ]
+        ],
+        recordLabelDefinition: {
+            format: '${#}',
+            tokens: [
+                {
+                    systemType: 'SaneString',
+                    dataPointer: '/state/label'
+                }
+            ]
+        },
     },
     helperSet: {
         collection: 'helperSet',

@@ -10,6 +10,7 @@ const RecordPicker = ({
     recordType,
     constraints,
 
+    idLabelProp = '_id',
     value: record,
     onChange,
     hasErrors,
@@ -36,7 +37,7 @@ const RecordPicker = ({
     
     var displayValue = (
         cachedRecord
-        ? cachedRecord._recordLabel || cachedRecord._id
+        ? cachedRecord._recordLabel || cachedRecord[idLabelProp]
         : ''
     )
 

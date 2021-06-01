@@ -13,7 +13,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 import RecordListContainer from '@mpieva/psydb-ui-lib/src/record-list-container';
 import StudyRecordDetails from './record-details';
 import StudyRecordContainer from './record-container';
-import GenericRecordForm from '@mpieva/psydb-ui-lib/src/generic-record-form';
+import GenericRecordFormContainer from '@mpieva/psydb-ui-lib/src/generic-record-form-container';
 
 const StudyRecordTypeView = ({
     customRecordTypes,
@@ -21,6 +21,7 @@ const StudyRecordTypeView = ({
 }) => {
     var { path, url } = useRouteMatch();
     var { recordType } = useParams();
+    var history= useHistory();
 
     var typeData = undefined;
     if (recordType) {
@@ -51,12 +52,12 @@ const StudyRecordTypeView = ({
                     />
                 </Route>
                 <Route exact path={`${path}/new`}>
-                    <GenericRecordForm
+                    <GenericRecordFormContainer
                         type='create'
                         collection={ collection }
                         recordType={ recordType }
-                        onCreated={
-                            ({ id }) => history.push(`${url}/${id}/edit`)
+                        onSuccessfulUpdate={
+                            ({ id }) => history.push(`${url}/${id}/selection-settings`)
                         }
                     />
                 </Route>

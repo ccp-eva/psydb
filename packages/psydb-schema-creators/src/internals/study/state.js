@@ -49,7 +49,10 @@ var StudyState = (ps = {}) => {
         properties: {
             
             ...(enableInternalProps && {
-                isCreateFinalized: DefaultBool(),
+                // TODO: remove this property
+                // we currently just keep it around to
+                // not need to update the database
+                isCreateFinalized: DefaultBool({ default: true}),
             }),
 
             name: SaneString({

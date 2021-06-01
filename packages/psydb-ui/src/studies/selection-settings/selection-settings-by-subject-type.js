@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import { Button } from 'react-bootstrap';
 import GeneralSubjectTypeSettings from './general-subject-type-settings';
 import ConditionsByAgeFrame from './conditions-by-age-frame';
+import AddSubjectTypeModal from './add-subject-type-modal';
 
 const SelectionSettingsBySubjectType = ({
     record: studyRecord,
@@ -14,8 +15,22 @@ const SelectionSettingsBySubjectType = ({
 
     onSuccessfulUpdate,
 }) => {
+    var [ showModal, setShowModal ] = useState(false);
+    var [
+        handleShowModal,
+        handleHideModal
+    ] = useMemo(() => ([
+        () => setShowModal(true),
+        () => setShowModal(false),
+    ]), []);
+
     return (
         <>
+            { settings.length === 0 && (
+                <div className='p-3 text-muted'>
+                    <i>Keine Probandentypen vorhanden</i>
+                </div>
+            )}
             { settings.map(it => (
                 <SubjectType { ...({
                     key: it.subjectRecordType,
@@ -35,9 +50,24 @@ const SelectionSettingsBySubjectType = ({
             )) }
             <hr />
             <div className='mt-3'>
-                <Button size='sm'>
+                <Button size='sm' onClick={ handleShowModal }>
                     + Probandentyp
                 </Button>
+                <AddSubjectTypeModal { ...({
+                    show: showModal,
+                    onHide: handleHideModal,
+                    
+                    existingSubjectTypeKeys: !settings.map(it => (
+                        it.subjectRecordType
+                    )),
+
+                    studyRecord,
+                    relatedRecordLabels,
+                    relatedHelperSetItems,
+                    relatedCustomRecordTypeLabels,
+
+                    onSuccessfulUpdate,
+                })} />
             </div>
         </>
     )

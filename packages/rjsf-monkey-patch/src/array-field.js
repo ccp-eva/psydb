@@ -323,6 +323,8 @@ class ArrayField extends Component {
         const { TitleField, DescriptionField } = fields;
         const itemsSchema = retrieveSchema(schema.items, rootSchema);
         const formData = keyedToPlainFormData(this.state.keyedFormData);
+        //console.log('AAAAAAAAAAAAAAAa');
+        //console.log(this.state.keyedFormData);
         const arrayProps = {
             canAdd: this.canAddItem(formData),
             items: this.state.keyedFormData.map((keyedItem, index) => {

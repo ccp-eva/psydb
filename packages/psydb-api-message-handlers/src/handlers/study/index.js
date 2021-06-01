@@ -49,13 +49,6 @@ var StudyGroup = MessageHandlerGroup([
     //require('./add-general-condition'),
     //require('./update-general-condition'),
     //require('./remove-general-condition'),
-
-    // sets finalize flag to true, activating the study
-    require('./finalize-create'),
-
-    // deletes study record that has never been commited
-    // and is flagged as "isNew"
-    //require('./cancel-create'),
 ]);
 
 module.exports = StudyGroup;
