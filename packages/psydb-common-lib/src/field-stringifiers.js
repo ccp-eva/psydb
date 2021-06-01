@@ -1,6 +1,9 @@
 'use strict';
-var formatDate = require('date-fns/format');
-var deLocale = require('date-fns/locale/de');
+var formatDate_ESM = require('date-fns/format');
+var formatDate = formatDate_ESM.default || formatDate_ESM;
+
+var deLocale_ESM = require('date-fns/locale/de');
+var deLocale = deLocale_ESM.default || deLocale_ESM;
 
 var ageFrameUtils = require('./age-frame-utils');
 
@@ -32,9 +35,9 @@ var PhoneList = (value) => (
     value.map(it => it.number).join(', ')
 );
 
-var DateTime = (value) => (
-    format(new Date(value), 'P p', { locale: deLocale })
-);
+var DateTime = (value) => {
+    return formatDate(new Date(value), 'P p', { locale: deLocale })
+};
 
 var AgeFrame = (value) => {
     var start = AgeFrameEdge(value.start);
