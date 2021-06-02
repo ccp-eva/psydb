@@ -15,7 +15,7 @@ const createSchema = ({ existingSubjectTypeKeys }) => {
         properties: {
             customRecordType: CustomRecordTypeKey({
                 title: 'Typ',
-                collection: 'subject',
+                collection: 'location',
                 constraints: {
                     //'/key': { $nin: existingSubjectTypeKeys }
                 }
@@ -27,7 +27,7 @@ const createSchema = ({ existingSubjectTypeKeys }) => {
 };
 
 
-const AddSubjectTypeModal = ({
+const AddLocationTypeModal = ({
     type,
     show,
     onHide,
@@ -47,7 +47,7 @@ const AddSubjectTypeModal = ({
     var handleSubmit = ({ formData }) => {
 
         var message = {
-            type: 'study/add-inhouse-test-location-type',
+            type: 'study/add-subject-type',
             payload: {
                 id: studyRecord._id,
                 lastKnownEventId: studyRecord._lastKnownEventId,
@@ -89,4 +89,4 @@ const AddSubjectTypeModal = ({
     );
 }
 
-export default AddSubjectTypeModal;
+export default AddLocationTypeModal;

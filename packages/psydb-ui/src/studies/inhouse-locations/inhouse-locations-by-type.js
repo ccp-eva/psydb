@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Button } from 'react-bootstrap';
 import EditIconButton from '@mpieva/psydb-ui-lib/src/edit-icon-button';
+import AddLocationTypeModal from './add-location-type-modal';
 import EditEnabledLocationsModal from './edit-enabled-locations-modal';
 
 const InhouseLocationsByType = ({
@@ -48,21 +49,17 @@ const InhouseLocationsByType = ({
                 <Button size='sm' onClick={ handleShowModal }>
                     + Location-Typ
                 </Button>
-                { /*<AddSubjectTypeModal { ...({
+                <AddLocationTypeModal { ...({
                     show: showModal,
                     onHide: handleHideModal,
                     
-                    existingSubjectTypeKeys: !settings.map(it => (
-                        it.subjectRecordType
-                    )),
-
                     studyRecord,
                     relatedRecordLabels,
                     relatedHelperSetItems,
                     relatedCustomRecordTypeLabels,
 
                     onSuccessfulUpdate,
-                })} />*/ }
+                })} />
             </div>
         </>
     )
