@@ -34,11 +34,16 @@ var StudyGroup = MessageHandlerGroup([
         op: 'patch',
     }),
 
+    require('./add-inhouse-test-location-type'),
+    require('./update-inhouse-test-location-type-settings'),
+
+    // FIXME: this might be obsolete
     require('./add-external-location-field'),
 
     // add a subject type that may hold conditions and can be
     // tested in this study
     require('./add-subject-type'),
+    //require('./update-subject-type-settings'),
     // removes subject type 
     //require('./remove-subject-type'),
 

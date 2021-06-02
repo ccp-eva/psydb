@@ -47,7 +47,7 @@ const AddLocationTypeModal = ({
     var handleSubmit = ({ formData }) => {
 
         var message = {
-            type: 'study/add-subject-type',
+            type: 'study/add-inhouse-test-location-type',
             payload: {
                 id: studyRecord._id,
                 lastKnownEventId: studyRecord._lastKnownEventId,
