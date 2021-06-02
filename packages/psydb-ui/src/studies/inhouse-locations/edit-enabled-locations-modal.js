@@ -5,17 +5,18 @@ import SchemaForm from '@mpieva/psydb-ui-lib/src/default-schema-form';
 
 import {
     ExactObject,
-    CustomRecordTypeKey,
-    DefaultBool,
+    ForeignIdList,
 } from '@mpieva/psydb-schema-fields'
 
-const createSchema = ({ existingSubjectTypeKeys }) => {
+const createSchema = ({ locationType }) => {
     var schema = {
         type: 'object',
         properties: {
-            customRecordType: CustomRecordTypeKey({
-                title: 'Typ',
-                collection: 'subject',
+            enabledLocationIds: ForeignIdList({
+                title: 'Ausgewählt',
+                collection: 'location',
+                recordType: locationType,
+
                 constraints: {
                     //'/key': { $nin: existingSubjectTypeKeys }
                 }
@@ -27,12 +28,12 @@ const createSchema = ({ existingSubjectTypeKeys }) => {
 };
 
 
-const AddSubjectTypeModal = ({
-    type,
+const EditEnabledLocationsModal = ({
     show,
     onHide,
 
-    existingSubjectTypeKeys,
+    locationType,
+    enabledLocationIds,
 
     studyRecord,
     relatedRecordLabels,
@@ -42,10 +43,9 @@ const AddSubjectTypeModal = ({
     onSuccessfulUpdate,
 }) => {
 
-    var schema = createSchema({ existingSubjectTypeKeys });
+    var schema = createSchema({ locationType });
 
     var handleSubmit = ({ formData }) => {
-
         var message = {
             type: 'study/add-subject-type',
             payload: {
@@ -70,16 +70,17 @@ const AddSubjectTypeModal = ({
             backdropClassName='team-modal-backdrop'
         >
             <Modal.Header closeButton>
-                <Modal.Title>Probandentyp Hinzufügen</Modal.Title>
+                <Modal.Title>Rümlichkeiten auswählen</Modal.Title>
             </Modal.Header>
             <Modal.Body className='bg-light'>
                 <div>
                     <SchemaForm
                         schema={ schema }
+                        formData={{ enabledLocationIds }}
                         formContext={{
-                            //relatedRecordLabels,
-                            //relatedHelperSetItems,
-                            //relatedCustomRecordTypeLabels,
+                            relatedRecordLabels,
+                            relatedHelperSetItems,
+                            relatedCustomRecordTypeLabels,
                         }}
                         onSubmit={ handleSubmit }
                     />
@@ -89,4 +90,4 @@ const AddSubjectTypeModal = ({
     );
 }
 
-export default AddSubjectTypeModal;
+export default EditEnabledLocationsModal;

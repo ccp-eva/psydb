@@ -10,9 +10,11 @@ import {
 
 import { LinkContainer } from 'react-router-bootstrap';
 
+import FormBox from '@mpieva/psydb-ui-lib/src/form-box';
 import RecordListContainer from '@mpieva/psydb-ui-lib/src/record-list-container';
 import StudyRecordDetails from './record-details';
 import StudyRecordContainer from './record-container';
+import StudyRecordForm from './record-form';
 import GenericRecordFormContainer from '@mpieva/psydb-ui-lib/src/generic-record-form-container';
 
 const StudyRecordTypeView = ({
@@ -52,14 +54,15 @@ const StudyRecordTypeView = ({
                     />
                 </Route>
                 <Route exact path={`${path}/new`}>
-                    <GenericRecordFormContainer
-                        type='create'
-                        collection={ collection }
-                        recordType={ recordType }
-                        onSuccessfulUpdate={
-                            ({ id }) => history.push(`${url}/${id}/selection-settings`)
-                        }
-                    />
+                    <FormBox title='Neuer Datensatz'>
+                        <StudyRecordForm
+                            type='create'
+                            recordType={ recordType }
+                            onSuccessfulUpdate={
+                                ({ id }) => history.push(`${url}/${id}/selection-settings`)
+                            }
+                        />
+                    </FormBox>
                 </Route>
 
                 <Route path={`${path}/:id`}>

@@ -17,6 +17,7 @@ import LinkButton from '@mpieva/psydb-ui-lib/src/link-button';
 import StudyRecordDetails from './record-details';
 import StudyRecordForm from './record-form';
 import StudySelectionSettings from './selection-settings';
+import StudyInhouseLocations from './inhouse-locations';
 import StudyTeams from './teams';
 import StudyParticipation from './participation';
 
@@ -63,6 +64,7 @@ const StudyRecordContainer = ({
                         items={[
                             { key: 'details', label: 'Allgemein' },
                             { key: 'selection-settings', label: 'Auswahlbedingungen' },
+                            { key: 'inhouse-locations', label: 'Räumlichkeiten' },
                             { key: 'teams', label: 'Teams' },
                             { key: 'participation', label: 'Probanden' },
                         ]}
@@ -92,6 +94,12 @@ const StudyRecordContainer = ({
 
                     { tabKey === 'selection-settings' && (
                         <StudySelectionSettings
+                            recordType={ recordType }
+                        />
+                    )}
+
+                    { tabKey === 'inhouse-locations' && (
+                        <StudyInhouseLocations
                             recordType={ recordType }
                         />
                     )}

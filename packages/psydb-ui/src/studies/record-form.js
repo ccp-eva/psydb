@@ -44,19 +44,21 @@ const StudyRecordForm = ({
                 schema: response.data.data
             }})
         })
-
-        agent.readRecord({
-            collection,
-            recordType,
-            id
-        }).then((response) => {
-            dispatch({ type: 'init-data', payload: {
-                ...response.data.data
-            }})
-        })
+        
+        if (type !== 'create') {
+            agent.readRecord({
+                collection,
+                recordType,
+                id
+            }).then((response) => {
+                dispatch({ type: 'init-data', payload: {
+                    ...response.data.data
+                }})
+            })
+        }
     }, [ id, collection, recordType ])
 
-    if (!schema || !record) {
+    if (!schema || (type === 'edit' && !record)) {
         return (
             <div>Loading...</div>
         );
@@ -129,8 +131,11 @@ const StudyRecordForm = ({
     );
 
     // TODO: it blows up when i have more than one subject type
-    delete formSchema.properties.selectionSettingsBySubjectType;
     delete formData.selectionSettingsBySubjectType;
+    delete formSchema.properties.selectionSettingsBySubjectType;
+
+    delete formData.inhouseTestLocationSettings;
+    delete formSchema.properties.inhouseTestLocationSettings;
 
     delete formData.isCreateFinalized;
 
