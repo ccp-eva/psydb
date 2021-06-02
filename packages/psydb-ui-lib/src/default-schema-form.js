@@ -52,7 +52,7 @@ const DefaultSchemaForm = ({
                 noHtml5Validate={ true }
                 showErrorList={ false }
                 onSubmit={ wrappedOnSubmit }
-                onError={ handleValidationError }
+                onError={ /*handleValidationError*/ () => {} }
                 { ...downstream }
             >
                 <div className='d-flex align-items-center'>
