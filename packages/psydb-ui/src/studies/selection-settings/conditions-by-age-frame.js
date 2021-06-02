@@ -29,6 +29,11 @@ const ConditionsByAgeFrame = ({
 
     return (
         <>
+            { conditionsByAgeFrame.length === 0 && (
+                <div className='p-3 text-muted'>
+                    Keine Altersfenster vorhanden
+                </div>
+            )}
             { conditionsByAgeFrame.map((it, index) => (
                 <AgeFrameContainer { ...({
                     key: index,
@@ -44,7 +49,7 @@ const ConditionsByAgeFrame = ({
                     onSuccessfulUpdate,
                 }) } />
             ))}
-            <div className='mt-2 d-flex justify-content-end'>
+            <div className='mt-2 d-flex justify-content-start'>
                 <Button size='sm' onClick={ handleShowModal }>
                     + Altersfenster
                 </Button>

@@ -130,7 +130,7 @@ const GenericRecordForm = ({
         })
     };
 
-    var formData = {};
+    var formData = undefined;
     var formContext = {};
     if (record) {
         if (hasSubChannels) {

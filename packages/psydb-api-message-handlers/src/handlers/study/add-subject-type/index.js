@@ -90,7 +90,7 @@ handler.triggerSystemEvents = async ({
             subjectRecordType: customRecordType,
             generalConditions: [],
             conditionsByAgeFrame: [],
-            enableOnlineTesting: enableOnlineTesting,
+            enableOnlineTesting: enableOnlineTesting || false,
             externalLocationGrouping: {
                 enabled: false,
             }

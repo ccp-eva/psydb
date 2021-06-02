@@ -57,7 +57,7 @@ const GenericCollectionView = ({
     var { hasCustomTypes } = allSchemaCreators[collection];
 
     // only if hasCustomRecordTypes
-    console.log(metadata);
+    //console.log(metadata);
     var collectionRecordTypes = (
         metadata.customRecordTypes.filter(it => (
             it.collection ===  collection

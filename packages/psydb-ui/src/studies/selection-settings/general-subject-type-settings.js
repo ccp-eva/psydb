@@ -39,7 +39,7 @@ const GeneralSubjectTypeSettings = ({
     studyRecord,
     subjectTypeData,
 }) => {
-    console.log(subjectTypeData);
+    //console.log(subjectTypeData);
     
     var [ showModal, setShowModal ] = useState(false);
     var [

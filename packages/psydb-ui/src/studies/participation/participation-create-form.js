@@ -47,7 +47,7 @@ const ParticipationCreateForm = ({
         }), [ subjectRecordType ]
     );
 
-    console.log(schema);
+    //console.log(schema);
 
     return (
         <SchemaForm
