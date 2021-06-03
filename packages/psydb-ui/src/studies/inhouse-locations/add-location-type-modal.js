@@ -18,9 +18,13 @@ const createSchema = ({ existingSubjectTypeKeys }) => {
                 collection: 'location',
                 constraints: {
                     //'/key': { $nin: existingSubjectTypeKeys }
-                }
+                },
+                minLength: 1,
             })
-        }
+        },
+        required: [
+            'customRecordType',
+        ]
     };
 
     return schema;

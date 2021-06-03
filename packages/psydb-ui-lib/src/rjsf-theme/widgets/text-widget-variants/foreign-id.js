@@ -20,7 +20,7 @@ const ForeignId = ({
 
     var { relatedRecordLabels } = formContext;
     var record;
-    if (relatedRecordLabels) {
+    if (relatedRecordLabels && relatedRecordLabels[collection]) {
         record = relatedRecordLabels[collection][recordId]
     }
 

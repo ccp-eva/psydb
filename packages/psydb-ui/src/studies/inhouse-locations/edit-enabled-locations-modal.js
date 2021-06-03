@@ -47,11 +47,12 @@ const EditEnabledLocationsModal = ({
 
     var handleSubmit = ({ formData }) => {
         var message = {
-            type: 'study/add-subject-type',
+            type: 'study/update-inhouse-test-location-type-settings',
             payload: {
                 id: studyRecord._id,
                 lastKnownEventId: studyRecord._lastKnownEventId,
-                ...formData
+                customRecordType: locationType,
+                props: formData
             }
         };
 

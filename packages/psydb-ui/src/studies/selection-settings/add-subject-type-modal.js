@@ -18,9 +18,13 @@ const createSchema = ({ existingSubjectTypeKeys }) => {
                 collection: 'subject',
                 constraints: {
                     //'/key': { $nin: existingSubjectTypeKeys }
-                }
+                },
+                minLength: 1,
             })
-        }
+        },
+        required: [
+            'customRecordType',
+        ]
     };
 
     return schema;
@@ -47,8 +51,8 @@ const AddSubjectTypeModal = ({
     var handleSubmit = ({ formData }) => {
 
         var message = {
-            payload: {
             type: 'study/add-subject-type',
+            payload: {
                 id: studyRecord._id,
                 lastKnownEventId: studyRecord._lastKnownEventId,
                 ...formData

@@ -92,6 +92,11 @@ const LocationType = ({
                 .location[customRecordType].state.label
             }</b></header>
             <div className='bg-white border mb-2 p-3 position-relative'>
+                { enabledLocationIds.length === 0 && (
+                    <div className='text-muted'>
+                        Keine zugewiesenen Räumlichkeiten vohanden
+                    </div>
+                )}
                 <ul className='mb-0'>
                     { enabledLocationIds.map(it => (
                         <li key={ it }>
@@ -114,6 +119,8 @@ const LocationType = ({
                         relatedRecordLabels,
                         relatedHelperSetItems,
                         relatedCustomRecordTypeLabels,
+                        
+                        onSuccessfulUpdate,
                     }) } />
                 </div>
             </div>

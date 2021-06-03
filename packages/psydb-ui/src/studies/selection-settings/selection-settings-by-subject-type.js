@@ -31,22 +31,27 @@ const SelectionSettingsBySubjectType = ({
                     <i>Keine Probandentypen vorhanden</i>
                 </div>
             )}
-            { settings.map(it => (
-                <SubjectType { ...({
-                    key: it.subjectRecordType,
+            { settings.map((it, index) => (
+                <>
+                    { index !== 0 && (
+                        <hr />
+                    )}
+                    <SubjectType { ...({
+                        key: it.subjectRecordType,
 
-                    ...it,
-                    subjectTypeData: subjectTypeData.find(td => (
-                        td.type === it.subjectRecordType
-                    )),
+                        ...it,
+                        subjectTypeData: subjectTypeData.find(td => (
+                            td.type === it.subjectRecordType
+                        )),
 
-                    studyRecord,
-                    relatedRecordLabels,
-                    relatedHelperSetItems,
-                    relatedCustomRecordTypeLabels,
-                    
-                    onSuccessfulUpdate,
-                }) } />
+                        studyRecord,
+                        relatedRecordLabels,
+                        relatedHelperSetItems,
+                        relatedCustomRecordTypeLabels,
+                        
+                        onSuccessfulUpdate,
+                    }) } />
+                </>
             )) }
             <hr />
             <div className='mt-3'>
