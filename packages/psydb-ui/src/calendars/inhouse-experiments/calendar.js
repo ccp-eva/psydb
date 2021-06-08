@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useMemo } from 'react';
+import React, { useReducer, useEffect, useMemo, useState } from 'react';
 
 import {
     Route,
@@ -193,8 +193,19 @@ const WrappedCalendar = (
 );
 
 const CalendarVariantContainer = (ps) => {
+    var [ calendarVariant, setCalendarVariant ] = useState('3-day');
     return (
-        <WrappedCalendar calendarVariant='weekly' { ...ps } />
+        <>
+            <a onClick={ () => setCalendarVariant('daily') }>daily</a>
+            {' '}
+            <a onClick={ () => setCalendarVariant('weekly') }>weekly</a>
+            {' '}
+            <a onClick={ () => setCalendarVariant('3-day') }>3-day</a>
+            <WrappedCalendar { ...({
+                calendarVariant,
+                ...ps
+            }) } />
+        </>
     )
 }
 

@@ -43,13 +43,23 @@ const ExperimentsInDay = ({ start, experiments, ...other }) => {
             <header className='text-center border-bottom mb-2'>
                 <div><b>{ datefns.format(start, 'cccccc dd.MM.') }</b></div>
             </header>
-            { experiments.map(it => (
-                <Experiment { ...({
-                    key: it._id,
-                    experimentRecord: it,
-                    ...other,
-                }) } />
-            ))}
+            { 
+                (!experiments || experiments.length < 1)
+                ? (
+                    <div className='text-muted text-center'>
+                        <i>Keine Termine</i>
+                    </div>
+                )
+                : (
+                    experiments.map(it => (
+                        <Experiment { ...({
+                            key: it._id,
+                            experimentRecord: it,
+                            ...other,
+                        }) } />
+                    ))
+                )
+            }
         </div>
     );
 }
