@@ -31,6 +31,7 @@ import ExternalPersons from './external-persons';
 import ExternalOrganizations from './external-organizations';
 import HelperSets from './helper-sets';
 
+import Calendars from './calendars';
 import LabOperation from './lab-operation';
 
 const Main = ({ onSignedOut, onSignedIn }) => {
@@ -106,6 +107,7 @@ var Routing = () => (
     <Route path='/external-organizations' component={ ExternalOrganizations } />
     <Route path='/helper-sets' component={ HelperSets } />
 
+    <Route path='/calendars' component={ Calendars } />
     <Route path='/lab-operation' component={ LabOperation } />
     </>
 )
