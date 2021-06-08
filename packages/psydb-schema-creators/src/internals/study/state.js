@@ -65,8 +65,8 @@ var StudyState = (ps = {}) => {
             runningPeriod: DateTimeInterval({
                 title: 'Laufzeit',
                 required: [ 'start' ],
-                startKeywords: { title: 'Beginn' },
-                endKeywords: { title: 'End' },
+                additionalStartKeywords: { title: 'Beginn' },
+                additionalEndKeywords: { title: 'End' },
             }),
 
             researchGroupIds: ForeignIdList({
