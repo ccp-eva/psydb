@@ -95,8 +95,16 @@ export const DateTimeInterval = ({
     schema,
     formData,
 }) => {
-    var formattedStart = datefns.format(new Date(formData.start), 'P p');
-    var formattedEnd = datefns.format(new Date(formData.end), 'P p');
+    var formattedStart = (
+        formData.start === undefined
+        ? undefined
+        : datefns.format(new Date(formData.start), 'P p')
+    );
+    var formattedEnd = (
+        formData.end === undefined
+        ? undefined
+        : datefns.format(new Date(formData.end), 'P p')
+    );
     return (
         <InlineWrapper label={ title }>
             <b style={ styles.bold }>

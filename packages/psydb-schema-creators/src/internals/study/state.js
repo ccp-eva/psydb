@@ -61,6 +61,14 @@ var StudyState = (ps = {}) => {
             shorthand: SaneString({
                 title: 'Kürzel',
             }),
+
+            runningPeriod: DateTimeInterval({
+                title: 'Laufzeit',
+                required: [ 'start' ],
+                startKeywords: { title: 'Beginn' },
+                endKeywords: { title: 'End' },
+            }),
+
             researchGroupIds: ForeignIdList({
                 title: 'Forschungsgruppen',
                 minItems: 1,
@@ -146,6 +154,7 @@ var StudyState = (ps = {}) => {
         required: [
             'name',
             'shorthand',
+            'runningPeriod',
             'researchGroupIds',
             'custom',
             'systemPermissions',
