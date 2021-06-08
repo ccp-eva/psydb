@@ -21,6 +21,7 @@ var {
     MatchIntervalOverlapStage,
     StripEventsStage,
     ProjectDisplayFieldsStage,
+    SystemPermissionStages,
 } = require('@mpieva/psydb-api-lib/src/fetch-record-helpers');
 
 var {
@@ -32,7 +33,7 @@ var {
 
 var RequestBodySchema = () => ExactObject({
     properties: {
-        researchGroupId: ForeignId({ collection: 'researchGroup' }),
+        //researchGroupId: ForeignId({ collection: 'researchGroup' }),
         subjectRecordType: CustomRecordTypeKey({ collection: 'subject' }),
         interval: DateTimeInterval(),
         studyId: ForeignId({ collection: 'study' }),
@@ -42,9 +43,10 @@ var RequestBodySchema = () => ExactObject({
         }
     },
     required: [
-        'researchGroupId',
+        //'researchGroupId',
         'subjectRecordType',
         'interval',
+        'experimentType',
     ]
 })
 
@@ -68,10 +70,7 @@ var experimentCalendar = async (context, next) => {
     };
 
 
-    // FIXME: maybe unmarshal researchGroupId
-    // FIXME: we should maybe add subjectRecordtype and studyRecordType
     var {
-        researchGroupId,
         subjectRecordType,
         interval,
         studyId,
@@ -100,8 +99,8 @@ var experimentCalendar = async (context, next) => {
     else {
         studyRecords = await (
             db.collection('study').aggregate([
+                ...SystemPermissionStages({ permissions }),
                 { $match: {
-                    'state.researchGroupIds': researchGroupId,
                     $or: [
                         {
                             'state.runningPeriod.start': { $lte: start },

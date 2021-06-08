@@ -215,7 +215,7 @@ describe('init-demo-system', function () {
         });*/
 
         response = await agent.post(`/experiment-calendar`).send({
-            researchGroupId: context.RESEARCH_GROUP_ALPHA_ID,
+            //researchGroupId: context.RESEARCH_GROUP_ALPHA_ID,
             subjectRecordType: 'child',
             experimentType: 'inhouse',
             interval: {
