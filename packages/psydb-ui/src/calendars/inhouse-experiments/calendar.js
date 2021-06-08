@@ -10,11 +10,13 @@ import {
 } from 'react-router-dom';
 
 import agent from '@mpieva/psydb-ui-request-agents';
+import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
 import CalendarNav from '@mpieva/psydb-ui-lib/src/calendar-nav';
-import withDailyCalendarPages from '@mpieva/psydb-ui-lib/src/with-daily-calendar-pages';
+import withVariableCalendarPages from '@mpieva/psydb-ui-lib/src/with-variable-calendar-pages';
+import getDayStartsInInterval from '@mpieva/psydb-ui-lib/src/get-day-starts-in-interval';
 
-//import InviteConfirmationListItem from './invite-confirmation-list-item';
+import DaysContainer from './days-container';
 
 const Calendar = ({
     currentPageStart,
@@ -84,6 +86,34 @@ const Calendar = ({
         }
     ]), [])
 
+    var allDayStarts = useMemo(() => (
+        getDayStartsInInterval({
+            start: currentPageStart,
+            end: currentPageEnd
+        })
+    ), [ currentPageStart, currentPageEnd ]);
+
+    var experimentsByDayStart = useMemo(() => {
+        var groups = {};
+        for (var start of allDayStarts) {
+            var startT = start.getTime();
+            var endT = datefns.endOfDay(start).getTime();
+            groups[startT] = [];
+            if (experimentRecords) {
+                groups[startT] = experimentRecords.filter(it => {
+                    var expStartT = (
+                        new Date(it.state.interval.start).getTime()
+                    )
+                    return (
+                        expStartT >= startT
+                        && expStartT <= endT
+                    )
+                })
+            }
+        }
+        return groups;
+    }, [ experimentRecords ])
+
     if (!experimentRecords) {
         return <LoadingIndicator size='lg' />
     }
@@ -101,11 +131,25 @@ const Calendar = ({
                 marginLeft: '15em',
                 marginRight: '15em',
             }}/>
+            
+            <DaysContainer { ...({
+                allDayStarts,
+                experimentsByDayStart,
+
+                experimentRelated,
+                experimentOperatorTeamRecords,
+                subjectRecordsById,
+                subjectRelated,
+                subjectDisplayFieldData,
+
+                url,
+            }) }/>
 
             { /*experimentRecords.map(it => (
                 <InviteConfirmationListItem { ...({
                     key: it._id,
                     experimentRecord: it,
+
                     experimentOperatorTeamRecords,
                     experimentRelated,
                     subjectRecordsById,
@@ -145,6 +189,13 @@ const reducer = (state, action) => {
 }
 
 const WrappedCalendar = (
-    withDailyCalendarPages(Calendar)
+    withVariableCalendarPages(Calendar)
 );
-export default WrappedCalendar;
+
+const CalendarVariantContainer = (ps) => {
+    return (
+        <WrappedCalendar calendarVariant='weekly' { ...ps } />
+    )
+}
+
+export default CalendarVariantContainer;
