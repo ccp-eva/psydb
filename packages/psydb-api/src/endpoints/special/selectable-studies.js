@@ -44,23 +44,44 @@ var selectableStudies = async (context, next) => {
         customRecordTypeData.state.recordLabelDefinition
     );
 
-    var additionalPreprocessStages = {
-        'online': [
-            { $match: {
-                'state.selectionSettingsBySubjectType.enableOnlineTesting': true,
-            }}
-        ],
-        'inhouse': [
-            { $match: {
-                'state.inhouseTestLocationSettings': { $not: { $size: 0 }}
-            }}
-        ],
-        'away-team': [
-            { $match: {
-                'state.selectionSettingsBySubjectType.externalLocationGrouping.enabled': true,
-            }}
-        ]
-    }[experimentType];
+    var now = new Date();
+    var additionalPreprocessStages = [
+        { $match: {
+            $or: [
+                {
+                    'state.runningPeriod.start': { $lte: now },
+                    'state.runningPeriod.end': { $gte: now }
+                },
+                {
+                    'state.runningPeriod.start': { $lte: now },
+                    'state.runningPeriod.end': { $exists: false },
+                }
+            ]
+        }},
+    ];
+
+    if (experimentType) {
+        additionalPreprocessStages = [
+            ...additionalPreprocessStages,
+            ...({
+                'online': [
+                    { $match: {
+                        'state.selectionSettingsBySubjectType.enableOnlineTesting': true,
+                    }}
+                ],
+                'inhouse': [
+                    { $match: {
+                        'state.inhouseTestLocationSettings': { $not: { $size: 0 }}
+                    }}
+                ],
+                'away-team': [
+                    { $match: {
+                        'state.selectionSettingsBySubjectType.externalLocationGrouping.enabled': true,
+                    }}
+                ]
+            }[experimentType])
+        ];
+    }
 
     var records = await fetchRecordsByFilter({
         db,

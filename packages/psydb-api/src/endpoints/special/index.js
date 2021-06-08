@@ -32,6 +32,10 @@ module.exports = {
         require('./invite-confirmation-list')
     ),
 
+    experimentCalendar: (
+        require('./experiment-calendar')
+    ),
+
     selectableStudies: (
         require('./selectable-studies')
     ),

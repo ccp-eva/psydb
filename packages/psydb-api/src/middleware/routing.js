@@ -153,6 +153,14 @@ var createRouting = ({
         endpoints.special.inviteConfirmationList
     );
 
+    router.post('/experiment-calendar',
+        withSelfAuth(),
+        withPermissions(),
+        withEndpointProtection({ endpoint: 'iexperiment-calendar' }),
+        withKoaBody(),
+        endpoints.special.experimentCalendar
+    );
+
     router.post('/selectable-studies',
         withSelfAuth(),
         withPermissions(),

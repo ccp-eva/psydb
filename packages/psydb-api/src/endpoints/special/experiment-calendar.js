@@ -1,9 +1,10 @@
 'use strict';
 var debug = require('debug')(
-    'psydb:api:endpoints:invitedInhouseSubjects'
+    'psydb:api:endpoints:inhouseExperimentCalendar'
 );
 
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
+var Ajv = require('@mpieva/psydb-api-lib/src/ajv'),
+    ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
     ResponseBody = require('@mpieva/psydb-api-lib/src/response-body');
 
 var groupBy = require('@mpieva/psydb-common-lib/src/group-by');
@@ -22,26 +23,63 @@ var {
     ProjectDisplayFieldsStage,
 } = require('@mpieva/psydb-api-lib/src/fetch-record-helpers');
 
-var inviteConfirmationList = async (context, next) => {
+var {
+    ExactObject,
+    ForeignId,
+    CustomRecordTypeKey,
+    DateTimeInterval,
+} = require('@mpieva/psydb-schema-fields');
+
+var RequestBodySchema = () => ExactObject({
+    properties: {
+        researchGroupId: ForeignId({ collection: 'researchGroup' }),
+        subjectRecordType: CustomRecordTypeKey({ collection: 'subject' }),
+        interval: DateTimeInterval(),
+        studyId: ForeignId({ collection: 'study' }),
+        experimentType: {
+            type: 'string',
+            enum: ['inhouse', 'away-team'],
+        }
+    },
+    required: [
+        'researchGroupId',
+        'subjectRecordType',
+        'interval',
+    ]
+})
+
+var experimentCalendar = async (context, next) => {
     var { 
         db,
         permissions,
         request,
     } = context;
 
+    var ajv = Ajv(),
+        isValid = false;
+
+    isValid = ajv.validate(
+        RequestBodySchema(),
+        request.body
+    );
+    if (!isValid) {
+        debug('ajv errors', ajv.errors);
+        throw new ApiError(400, 'InvalidRequestSchema');
+    };
+
+
     // FIXME: maybe unmarshal researchGroupId
     // FIXME: we should maybe add subjectRecordtype and studyRecordType
     var {
         researchGroupId,
         subjectRecordType,
-        start,
-        end,
+        interval,
+        studyId,
+        experimentType,
     } = request.body;
 
-    // TODO: unmarshal date
-    start = new Date(start);
-    end = new Date(end);
-    
+    var { start, end } = interval;
+
     if (!permissions.hasRootAccess) {
         var allowed = permissions.allowedResearchGroupIds.find(id => {
             return compareIds(id, researchGroupId)
@@ -51,25 +89,45 @@ var inviteConfirmationList = async (context, next) => {
         }
     }
 
-    var studyRecords = await (
-        db.collection('study').aggregate([
-            { $match: {
-                'state.researchGroupIds': researchGroupId,
-            }},
-            MatchIntervalOverlapStage({
-                start, end,
-                recordIntervalPath: 'state.runningPeriod'
-            }),
-        ]).toArray()
-    );
+    var studyRecords = []
+    if (studyId) {
+        studyRecords = await (
+            db.collection('study').find({
+                _id: studyId,
+            }).toArray()
+        );
+    }
+    else {
+        studyRecords = await (
+            db.collection('study').aggregate([
+                { $match: {
+                    'state.researchGroupIds': researchGroupId,
+                    $or: [
+                        {
+                            'state.runningPeriod.start': { $lte: start },
+                            'state.runningPeriod.end': { $gte: start }
+                        },
+                        {
+                            'state.runningPeriod.start': { $lte: end },
+                            'state.runningPeriod.end': { $gte: end },
+                        },
+                        {
+                            'state.runningPeriod.start': { $lte: end },
+                            'state.runningPeriod.end': { $exists: false },
+                        }
+                    ]
+                }},
+            ]).toArray()
+        );
+    }
 
+    var studyIds = studyRecords.map(it => it._id);
     var experimentRecords = await (
         db.collection('experiment').aggregate([
             MatchIntervalOverlapStage({ start, end }),
             { $match: {
-                type: 'inhouse',
-                // TODO: only for invitation
-                'state.subjectData.invitationStatus': 'scheduled',
+                type: experimentType,
+                'state.studyId': { $in: studyIds }
             }},
             StripEventsStage(),
         ]).toArray()
@@ -121,10 +179,6 @@ var inviteConfirmationList = async (context, next) => {
 
             ProjectDisplayFieldsStage({
                 displayFields,
-                additionalProjection: {
-                    [`gdpr.state.custom.${phoneListField.key}`]: true,
-                    //'scientific.state.internals.invitedForExperiments': true,
-                }
             }),
         ]).toArray()
     );
@@ -189,4 +243,4 @@ var inviteConfirmationList = async (context, next) => {
 }
 
 
-module.exports = inviteConfirmationList;
+module.exports = experimentCalendar;
