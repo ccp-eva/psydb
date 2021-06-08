@@ -214,7 +214,7 @@ describe('init-demo-system', function () {
             limit: 20,
         });*/
 
-        response = await agent.post(`/experiment-calendar`).send({
+        /*response = await agent.post(`/experiment-calendar`).send({
             //researchGroupId: context.RESEARCH_GROUP_ALPHA_ID,
             subjectRecordType: 'child',
             experimentType: 'inhouse',
@@ -222,6 +222,11 @@ describe('init-demo-system', function () {
                 start: '2000-01-01T00:00:00.000Z',
                 end: '2025-01-01T00:00:00.000Z',
             },
+        });*/
+
+        response = await agent.post(`/selectable-studies-for-calendar`).send({
+            subjectRecordType: 'child',
+            experimentType: 'inhouse',
         });
 
         console.dir(response.status, { depth: null });

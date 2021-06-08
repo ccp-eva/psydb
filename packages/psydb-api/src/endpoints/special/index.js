@@ -40,4 +40,8 @@ module.exports = {
         require('./selectable-studies')
     ),
 
+    selectableStudiesForCalendar: (
+        require('./selectable-studies-for-calendar')
+    ),
+
 }

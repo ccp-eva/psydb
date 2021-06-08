@@ -5,7 +5,7 @@ var {
     StripEventsStage,
 } = require('./fetch-record-helpers');
 
-var fetchCustomRecordTypes = async ({ db, collection }) => {
+var fetchCustomRecordTypes = async ({ db, collection, additionalStages }) => {
     var customRecordTypes = await (
         db.collection('customRecordType').aggregate([
             { $match: {
@@ -13,6 +13,7 @@ var fetchCustomRecordTypes = async ({ db, collection }) => {
                 'state.isNew': false,
             }},
             StripEventsStage(),
+            ...(additionalStages ? additionalStages : [])
         ]).toArray()
     );
 

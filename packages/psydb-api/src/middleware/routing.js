@@ -169,6 +169,14 @@ var createRouting = ({
         endpoints.special.selectableStudies
     );
 
+    router.post('/selectable-studies-for-calendar',
+        withSelfAuth(),
+        withPermissions(),
+        withEndpointProtection({ endpoint: 'selectable-studies-for-calendar' }),
+        withKoaBody(),
+        endpoints.special.selectableStudiesForCalendar
+    );
+
     router.get('/subject-type-data-for-study/:studyId',
         withSelfAuth(),
         withPermissions(),

@@ -16,12 +16,16 @@ import CalendarNav from '@mpieva/psydb-ui-lib/src/calendar-nav';
 import withVariableCalendarPages from '@mpieva/psydb-ui-lib/src/with-variable-calendar-pages';
 import getDayStartsInInterval from '@mpieva/psydb-ui-lib/src/get-day-starts-in-interval';
 
+import CalRangePillNav from '../cal-range-pill-nav';
+import StudyPillNav from '../study-pill-nav';
+
 import DaysContainer from './days-container';
 
 const Calendar = ({
     currentPageStart,
     currentPageEnd,
     onPageChange,
+    selectedStudyId,
 }) => {
     var { path, url } = useRouteMatch();
 
@@ -54,6 +58,9 @@ const Calendar = ({
                 end: currentPageEnd,
             },
             experimentType: 'inhouse',
+            ...(selectedStudyId && {
+                studyId: selectedStudyId
+            })
         })
         .then(response => {
             dispatch({ type: 'init', payload: {
@@ -63,7 +70,8 @@ const Calendar = ({
 
     }, [ 
         studyType, subjectType, researchGroupId,
-        currentPageStart, currentPageEnd, listRevision
+        currentPageStart, currentPageEnd, listRevision,
+        selectedStudyId,
     ])
 
     var [
@@ -144,22 +152,6 @@ const Calendar = ({
 
                 url,
             }) }/>
-
-            { /*experimentRecords.map(it => (
-                <InviteConfirmationListItem { ...({
-                    key: it._id,
-                    experimentRecord: it,
-
-                    experimentOperatorTeamRecords,
-                    experimentRelated,
-                    subjectRecordsById,
-                    subjectRelated,
-                    subjectDisplayFieldData,
-                    phoneListField,
-
-                    onChangeStatus: handleChangeStatus,
-                }) } />
-            )) */}
         </div>
     )
 }
@@ -193,16 +185,42 @@ const WrappedCalendar = (
 );
 
 const CalendarVariantContainer = (ps) => {
-    var [ calendarVariant, setCalendarVariant ] = useState('3-day');
+    var [ calendarVariant, handleSelectCalendarVariant ] = useState('3-day');
+    var [ selectedStudyId, handleSelectStudyId ] = useState(null);
     return (
         <>
-            <a onClick={ () => setCalendarVariant('daily') }>daily</a>
-            {' '}
-            <a onClick={ () => setCalendarVariant('weekly') }>weekly</a>
-            {' '}
-            <a onClick={ () => setCalendarVariant('3-day') }>3-day</a>
+
+            <div className='d-flex mb-2'>
+                <div style={{ width: '100px', paddingTop: '.2rem' }}>
+                    <b>Ansicht</b>
+                </div>
+                <div className='flex-grow'>
+                    <CalRangePillNav { ...({
+                        selectedVariant: calendarVariant,
+                        onSelectVariant: handleSelectCalendarVariant
+                    }) } />
+                </div>
+            </div>
+
+            <div className='d-flex mb-2'>
+                <div style={{ width: '100px', paddingTop: '.2rem' }}>
+                    <b>Studien</b>
+                </div>
+                <div className='flex-grow'>
+                    <StudyPillNav { ...({
+                        subjectRecordType: ps.subjectRecordType,
+                        experimentType: 'inhouse',
+                        selectedStudyId,
+                        onSelectStudy:  handleSelectStudyId
+                    }) } />
+
+                </div>
+            </div>
+            
             <WrappedCalendar { ...({
                 calendarVariant,
+                selectedStudyId,
+                onSelectStudy: handleSelectStudyId,
                 ...ps
             }) } />
         </>

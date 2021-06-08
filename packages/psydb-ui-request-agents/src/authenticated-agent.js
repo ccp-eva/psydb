@@ -193,7 +193,6 @@ agent.fetchInviteConfirmationList = ({
 
 agent.fetchExperimentCalendar = ({
     subjectRecordType,
-    studyIds,
     interval,
     experimentType,
     studyId,
@@ -202,7 +201,7 @@ agent.fetchExperimentCalendar = ({
         '/api/experiment-calendar',
         {
             subjectRecordType,
-            studyIds,
+            studyId,
             interval,
             experimentType,
         }
@@ -217,6 +216,19 @@ agent.fetchSelectableStudies = ({
         '/api/selectable-studies',
         {
             studyRecordType,
+            experimentType
+        }
+    );
+}
+
+agent.fetchSelectableStudiesForCalendar = ({
+    subjectRecordType,
+    experimentType,
+}) => {
+    return axios.post(
+        '/api/selectable-studies-for-calendar',
+        {
+            subjectRecordType,
             experimentType
         }
     );
