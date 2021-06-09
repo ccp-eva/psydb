@@ -1,11 +1,36 @@
 import React, { useState, useEffect, useReducer, useMemo } from 'react';
 import datefns from './date-fns';
 
-const withDailyCalendarPages = (Component) => (ps) => {
-    
-    var [ currentPageStart, setCurrentPageStart ] = (
-        useState(datefns.startOfDay(new Date()))
-    );
+import { useURLSearchParams } from '@cdxoo/react-router-url-search-params';
+
+const withDailyCalendarPages = (
+    Component,
+    { withURLSearchParams } = {}
+) => (ps) => {
+ 
+    if (withURLSearchParams) {
+        var [ query, updateQuery ] = useURLSearchParams();
+        
+        var currentPageStart = (
+            query.d
+            ? new Date(parseInt(query.d))
+            : new Date()
+        );
+
+        currentPageStart = datefns.startOfDay(currentPageStart);
+
+        var setCurrentPageStart = (next) => {
+            updateQuery({
+                ...query,
+                d: next.getTime()
+            })
+        }
+    }
+    else {
+        var [ currentPageStart, setCurrentPageStart ] = (
+            useState(datefns.startOfDay(new Date()))
+        );
+    }
 
     var handlePageChange = ({ nextIndex, relativeChange }) => {
         var nextDayStart = undefined;

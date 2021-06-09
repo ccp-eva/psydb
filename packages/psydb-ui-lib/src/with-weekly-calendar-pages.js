@@ -1,11 +1,36 @@
 import React, { useState, useEffect, useReducer, useMemo } from 'react';
 import datefns from './date-fns';
 
-const withWeeklyCalendarPages = (Component) => (ps) => {
+import { useURLSearchParams } from '@cdxoo/react-router-url-search-params';
+
+const withWeeklyCalendarPages = (
+    Component,
+    { withURLSearchParams } = {}
+) => (ps) => {
     
-    var [ currentPageStart, setCurrentPageStart ] = (
-        useState(datefns.startOfWeek(new Date()))
-    );
+    if (withURLSearchParams) {
+        var [ query, updateQuery ] = useURLSearchParams();
+        
+        var currentPageStart = (
+            query.d
+            ? new Date(parseInt(query.d))
+            : new Date()
+        );
+
+        currentPageStart = datefns.startOfWeek(currentPageStart);
+
+        var setCurrentPageStart = (next) => {
+            updateQuery({
+                ...query,
+                d: next.getTime()
+            })
+        }
+    }
+    else {
+        var [ currentPageStart, setCurrentPageStart ] = (
+            useState(datefns.startOfWeek(new Date()))
+        );
+    }
 
     var handlePageChange = ({ nextIndex, relativeChange }) => {
         var nextWeekStart = undefined;

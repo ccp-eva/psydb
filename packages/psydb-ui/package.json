@@ -56,7 +56,7 @@
     "js-base64": "~3.6.0",
     "react-quill": "~1.3.5",
     "@cdxoo/omit": "~1.0.1",
-    "@cdxoo/react-router-url-search-params": "~1.0.3"
+    "@cdxoo/react-router-url-search-params": "~1.0.4"
   },
   "config": {
     "mongodbMemoryServer": {

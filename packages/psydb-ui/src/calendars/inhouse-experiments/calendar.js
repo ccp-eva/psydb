@@ -26,6 +26,7 @@ const Calendar = ({
     currentPageEnd,
     onPageChange,
     selectedStudyId,
+    calendarVariant,
 }) => {
     var { path, url } = useRouteMatch();
 
@@ -151,6 +152,7 @@ const Calendar = ({
                 subjectDisplayFieldData,
 
                 url,
+                calendarVariant,
             }) }/>
         </div>
     )
@@ -181,16 +183,23 @@ const reducer = (state, action) => {
 }
 
 const WrappedCalendar = (
-    withVariableCalendarPages(Calendar)
+    withVariableCalendarPages(Calendar, { withURLSearchParams: true })
 );
 
-import useURLSearchParams from '@cdxoo/react-router-url-search-params';
+import { useURLSearchParams } from '@cdxoo/react-router-url-search-params';
+import omit from '@cdxoo/omit';
 
 const CalendarVariantContainer = (ps) => {
     var [ query, updateQuery ] = useURLSearchParams();
-    console.log(query);
-    var [ calendarVariant, handleSelectCalendarVariant ] = useState('3-day');
-    var [ selectedStudyId, handleSelectStudyId ] = useState(null);
+    
+    var {
+        cal: calendarVariant,
+        study: selectedStudyId,
+    } = query;
+
+    calendarVariant = calendarVariant || '3-day';
+    selectedStudyId = selectedStudyId || null;
+
     return (
         <>
 
@@ -201,7 +210,9 @@ const CalendarVariantContainer = (ps) => {
                 <div className='flex-grow'>
                     <CalRangePillNav { ...({
                         selectedVariant: calendarVariant,
-                        onSelectVariant: handleSelectCalendarVariant
+                        onSelectVariant: (next) => updateQuery({
+                            ...query, cal: next
+                        })
                     }) } />
                 </div>
             </div>
@@ -215,7 +226,16 @@ const CalendarVariantContainer = (ps) => {
                         subjectRecordType: ps.subjectRecordType,
                         experimentType: 'inhouse',
                         selectedStudyId,
-                        onSelectStudy:  handleSelectStudyId
+                        onSelectStudy: (next) => {
+                            if (next) {
+                                updateQuery({
+                                    ...query, study: next
+                                })
+                            }
+                            else {
+                                updateQuery(omit('study', query));
+                            }
+                        }
                     }) } />
 
                 </div>
@@ -224,7 +244,7 @@ const CalendarVariantContainer = (ps) => {
             <WrappedCalendar { ...({
                 calendarVariant,
                 selectedStudyId,
-                onSelectStudy: handleSelectStudyId,
+                //onSelectStudy: handleSelectStudyId,
                 ...ps
             }) } />
         </>

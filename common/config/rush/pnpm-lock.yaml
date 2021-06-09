@@ -7,7 +7,7 @@ dependencies:
   '@cdxoo/inline-string': 1.0.0
   '@cdxoo/inline-text': 1.0.1
   '@cdxoo/omit': 1.0.1
-  '@cdxoo/react-router-url-search-params': 1.0.3_react-router@5.2.0+react@17.0.2
+  '@cdxoo/react-router-url-search-params': 1.0.4_react-router@5.2.0+react@17.0.2
   '@rjsf/bootstrap-4': 2.5.1_5dccca4f99fef0089ce8bea6fe035927
   '@rjsf/core': 2.5.1_react@17.0.2
   '@rush-temp/json-schema-convert-pointer': 'file:projects/json-schema-convert-pointer.tgz'
@@ -1090,7 +1090,7 @@ packages:
     dev: false
     resolution:
       integrity: sha512-2LM0fbRTixVTCE7qF4pLFZXlLeO0C0o7N7x0HzIbQNgDey8dcFxCOUblUpPfxIw8eGyHxBc4Sba4l6nlnXbO1A==
-  /@cdxoo/react-router-url-search-params/1.0.2_react-router@5.2.0+react@17.0.2:
+  /@cdxoo/react-router-url-search-params/1.0.4_react-router@5.2.0+react@17.0.2:
     dependencies:
       react: 17.0.2
       react-router: 5.2.0_react@17.0.2
@@ -1100,18 +1100,7 @@ packages:
       react: '>=16.8'
       react-router: 5.x
     resolution:
-      integrity: sha512-RMeA4srW7My//yWgvNpTzGO27mhGUGk2xrbCXJ3k5+XNac6uCYM1CSuGtqgD0P9YSQABvSQ832myjs0VhdPjzQ==
-  /@cdxoo/react-router-url-search-params/1.0.3_react-router@5.2.0+react@17.0.2:
-    dependencies:
-      react: 17.0.2
-      react-router: 5.2.0_react@17.0.2
-      url-search-params-polyfill: 8.1.1
-    dev: false
-    peerDependencies:
-      react: '>=16.8'
-      react-router: 5.x
-    resolution:
-      integrity: sha512-Ucci2sS0wVIPgSfjv2qrHtFB6IC6A4I9vK/FTexUJ8y6GUOGvwOw5Dfu/4FCw7AwoCiRh5taJehyZPJ2iyzHuw==
+      integrity: sha512-sQqT4qpIChOn8pSG1Z29J3eScLPoz6eFYVTvYPZC+ODm1QvT14Mxh4Utyb9L1rB05PrMbynZjFxBEMXyy8VAeA==
   /@discoveryjs/json-ext/0.5.2:
     dev: false
     engines:
@@ -7581,7 +7570,7 @@ packages:
       '@babel/preset-env': 7.12.17_@babel+core@7.12.17
       '@babel/preset-react': 7.12.13_@babel+core@7.12.17
       '@cdxoo/omit': 1.0.1
-      '@cdxoo/react-router-url-search-params': 1.0.2_react-router@5.2.0+react@17.0.2
+      '@cdxoo/react-router-url-search-params': 1.0.4_react-router@5.2.0+react@17.0.2
       '@rjsf/bootstrap-4': 2.5.1_5dccca4f99fef0089ce8bea6fe035927
       '@rjsf/core': 2.5.1_react@17.0.2
       babel-loader: 8.2.2_97e48a6b0bdb6376f048db1a976e5b3d
@@ -7606,7 +7595,7 @@ packages:
     peerDependencies:
       webpack: '*'
     resolution:
-      integrity: sha512-hux6VOaShxp43ZgKvapl7Ls6DU9KaloizJqxZ42AbAsLinnB4I7vctVyOfuc5/nBLbkBa2YrdzozHw2VUXjnCw==
+      integrity: sha512-0qO1uOkktzfuQ/6aDY9C79/WivbDaj7cA2HPgdmE7/TxVi3sK2PZR1GbGW0IG+TAEN1qDyFKgIdI87+fgPy2qg==
       tarball: 'file:projects/psydb-ui-lib.tgz'
     version: 0.0.0
   'file:projects/psydb-ui-request-agents.tgz_debug@4.3.1':
@@ -7630,7 +7619,7 @@ packages:
       '@babel/preset-env': 7.12.17_@babel+core@7.12.17
       '@babel/preset-react': 7.12.13_@babel+core@7.12.17
       '@cdxoo/omit': 1.0.1
-      '@cdxoo/react-router-url-search-params': 1.0.3_react-router@5.2.0+react@17.0.2
+      '@cdxoo/react-router-url-search-params': 1.0.4_react-router@5.2.0+react@17.0.2
       '@rjsf/bootstrap-4': 2.5.1_5dccca4f99fef0089ce8bea6fe035927
       '@rjsf/core': 2.5.1_react@17.0.2
       babel-loader: 8.2.2_97e48a6b0bdb6376f048db1a976e5b3d
@@ -7662,7 +7651,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-ui'
     resolution:
-      integrity: sha512-KDFM4IQ/cymBwOp+gSDj/AdHYyngjDiIOXadQCHabIkzWR1VZB1A6NinKTC1uO7vkbsTqspUMZNMvRknaoWsvw==
+      integrity: sha512-hYuHA09JLEpzpsA7nWRlycWAneeEMTVjDZuZohbCLoEV1ZfSY8EPDSwXZRHJxfPLzJSPWMU/PCVOfE3GgJgfuA==
       tarball: 'file:projects/psydb-ui.tgz'
     version: 0.0.0
   'file:projects/psydb-web.tgz':
@@ -7717,7 +7706,7 @@ specifiers:
   '@cdxoo/inline-string': ~1.0.0
   '@cdxoo/inline-text': ~1.0.1
   '@cdxoo/omit': ~1.0.1
-  '@cdxoo/react-router-url-search-params': ~1.0.3
+  '@cdxoo/react-router-url-search-params': ~1.0.4
   '@rjsf/bootstrap-4': ~2.5.1
   '@rjsf/core': ~2.5.1
   '@rush-temp/json-schema-convert-pointer': 'file:./projects/json-schema-convert-pointer.tgz'
