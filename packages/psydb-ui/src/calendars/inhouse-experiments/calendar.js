@@ -184,7 +184,11 @@ const WrappedCalendar = (
     withVariableCalendarPages(Calendar)
 );
 
+import useURLSearchParams from '@cdxoo/react-router-url-search-params';
+
 const CalendarVariantContainer = (ps) => {
+    var [ query, updateQuery ] = useURLSearchParams();
+    console.log(query);
     var [ calendarVariant, handleSelectCalendarVariant ] = useState('3-day');
     var [ selectedStudyId, handleSelectStudyId ] = useState(null);
     return (

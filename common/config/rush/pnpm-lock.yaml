@@ -7,6 +7,7 @@ dependencies:
   '@cdxoo/inline-string': 1.0.0
   '@cdxoo/inline-text': 1.0.1
   '@cdxoo/omit': 1.0.1
+  '@cdxoo/react-router-url-search-params': 1.0.3_react-router@5.2.0+react@17.0.2
   '@rjsf/bootstrap-4': 2.5.1_5dccca4f99fef0089ce8bea6fe035927
   '@rjsf/core': 2.5.1_react@17.0.2
   '@rush-temp/json-schema-convert-pointer': 'file:projects/json-schema-convert-pointer.tgz'
@@ -1089,6 +1090,28 @@ packages:
     dev: false
     resolution:
       integrity: sha512-2LM0fbRTixVTCE7qF4pLFZXlLeO0C0o7N7x0HzIbQNgDey8dcFxCOUblUpPfxIw8eGyHxBc4Sba4l6nlnXbO1A==
+  /@cdxoo/react-router-url-search-params/1.0.2_react-router@5.2.0+react@17.0.2:
+    dependencies:
+      react: 17.0.2
+      react-router: 5.2.0_react@17.0.2
+      url-search-params-polyfill: 8.1.1
+    dev: false
+    peerDependencies:
+      react: '>=16.8'
+      react-router: 5.x
+    resolution:
+      integrity: sha512-RMeA4srW7My//yWgvNpTzGO27mhGUGk2xrbCXJ3k5+XNac6uCYM1CSuGtqgD0P9YSQABvSQ832myjs0VhdPjzQ==
+  /@cdxoo/react-router-url-search-params/1.0.3_react-router@5.2.0+react@17.0.2:
+    dependencies:
+      react: 17.0.2
+      react-router: 5.2.0_react@17.0.2
+      url-search-params-polyfill: 8.1.1
+    dev: false
+    peerDependencies:
+      react: '>=16.8'
+      react-router: 5.x
+    resolution:
+      integrity: sha512-Ucci2sS0wVIPgSfjv2qrHtFB6IC6A4I9vK/FTexUJ8y6GUOGvwOw5Dfu/4FCw7AwoCiRh5taJehyZPJ2iyzHuw==
   /@discoveryjs/json-ext/0.5.2:
     dev: false
     engines:
@@ -6718,6 +6741,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-HOfCOUJt7iSYzEx/UqgtwKRMC6EU91NFhsCHMv9oM03VJcVo2Qrp8T8kI9D7amFf1cu+/3CEhgb3rF9zL7k85Q==
+  /url-search-params-polyfill/8.1.1:
+    dev: false
+    resolution:
+      integrity: sha512-KmkCs6SjE6t4ihrfW9JelAPQIIIFbJweaaSLTh/4AO+c58JlDcb+GbdPt8yr5lRcFg4rPswRFRRhBGpWwh0K/Q==
   /url/0.11.0:
     dependencies:
       punycode: 1.3.2
@@ -7371,7 +7398,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-api-message-handlers'
     resolution:
-      integrity: sha512-5qe5SG/hEUEinc663nWtvhF0lqUtmVMIafYuzP3f4L+F31bblOVWTXDfhQ8jWj3BTa9AK7GvXBI50Jhe1K4Qow==
+      integrity: sha512-1Nv+Vi9yFQ0Ji4CykeFORa2Go0my9NxUgMGXaZ2kxn1xI8NqKPaqaMphu5jt2RZEaRimL/HcY0+ED9rUhFe0TA==
       tarball: 'file:projects/psydb-api-message-handlers.tgz'
     version: 0.0.0
   'file:projects/psydb-api.tgz':
@@ -7412,13 +7439,14 @@ packages:
     dependencies:
       '@cdxoo/inline-text': 1.0.1
       chai: 4.2.0
+      date-fns: 2.21.1
       json-schema-traverse: 1.0.0
       jsonpointer: 4.1.0
       mocha: 8.1.3
     dev: false
     name: '@rush-temp/psydb-common-lib'
     resolution:
-      integrity: sha512-U9xKWnrEaujAEWPyGYR9pFtz6CxdirGbyP363oP9ETEG/SAS0NY8UE8PbBgTjhj7dUA0FRdI/S0hAiBs9r068w==
+      integrity: sha512-5RCsNTa1EaH7E7FXq1OVrkv6ZEHfPxdYTqPtU2CpiDRyJdk+IO+9tRFLd73n6c+JvkDwmgh/rV4gOBbWo9/JsA==
       tarball: 'file:projects/psydb-common-lib.tgz'
     version: 0.0.0
   'file:projects/psydb-driver-nodejs.tgz':
@@ -7483,10 +7511,11 @@ packages:
       chai: 4.2.0
       jsonpointer: 4.1.0
       mocha: 8.1.3
+      nanoid: 3.1.22
     dev: false
     name: '@rush-temp/psydb-schema-creators'
     resolution:
-      integrity: sha512-rJsqklhjGkbYRwbWGWTIv70edW3/B7doJq5P8qPHgNjNbd6Vdb/tyucqVWXcc5tjNzIvyvd21iqXf4Ft2zW/8w==
+      integrity: sha512-QQrf0lD76+SLhI4vF7ksYQeTBkjMI49qXQRmdTSuiUHXwyYDgpdM0YTbBcTElJxQWskXLGu/sjqPWwWeO3ee4A==
       tarball: 'file:projects/psydb-schema-creators.tgz'
     version: 0.0.0
   'file:projects/psydb-schema-fields-special.tgz':
@@ -7552,6 +7581,7 @@ packages:
       '@babel/preset-env': 7.12.17_@babel+core@7.12.17
       '@babel/preset-react': 7.12.13_@babel+core@7.12.17
       '@cdxoo/omit': 1.0.1
+      '@cdxoo/react-router-url-search-params': 1.0.2_react-router@5.2.0+react@17.0.2
       '@rjsf/bootstrap-4': 2.5.1_5dccca4f99fef0089ce8bea6fe035927
       '@rjsf/core': 2.5.1_react@17.0.2
       babel-loader: 8.2.2_97e48a6b0bdb6376f048db1a976e5b3d
@@ -7599,6 +7629,8 @@ packages:
       '@babel/plugin-proposal-class-properties': 7.13.0_@babel+core@7.12.17
       '@babel/preset-env': 7.12.17_@babel+core@7.12.17
       '@babel/preset-react': 7.12.13_@babel+core@7.12.17
+      '@cdxoo/omit': 1.0.1
+      '@cdxoo/react-router-url-search-params': 1.0.3_react-router@5.2.0+react@17.0.2
       '@rjsf/bootstrap-4': 2.5.1_5dccca4f99fef0089ce8bea6fe035927
       '@rjsf/core': 2.5.1_react@17.0.2
       babel-loader: 8.2.2_97e48a6b0bdb6376f048db1a976e5b3d
@@ -7623,13 +7655,14 @@ packages:
       react-router-bootstrap: 0.25.0_520bc78b4ba4065e7cfe4fe506865769
       react-router-dom: 5.2.0_react@17.0.2
       style-loader: 2.0.0_webpack@5.10.1
+      url-search-params-polyfill: 8.1.1
       webpack: 5.10.1_webpack-cli@4.5.0+webpack@5.10.1
       webpack-cli: 4.5.0_28b73b3ab44b87fb8fb2e6416e24d761
       webpack-dev-server: 3.11.2_webpack-cli@4.5.0+webpack@5.10.1
     dev: false
     name: '@rush-temp/psydb-ui'
     resolution:
-      integrity: sha512-2CAKFPjNpuol8pAo6n3MszuTngSgJwlT9SFOhotQXgt8vG3WLFNjtCOkW7pRQjNO7FANPTl4vH0ahETJumCaRg==
+      integrity: sha512-KDFM4IQ/cymBwOp+gSDj/AdHYyngjDiIOXadQCHabIkzWR1VZB1A6NinKTC1uO7vkbsTqspUMZNMvRknaoWsvw==
       tarball: 'file:projects/psydb-ui.tgz'
     version: 0.0.0
   'file:projects/psydb-web.tgz':
@@ -7684,6 +7717,7 @@ specifiers:
   '@cdxoo/inline-string': ~1.0.0
   '@cdxoo/inline-text': ~1.0.1
   '@cdxoo/omit': ~1.0.1
+  '@cdxoo/react-router-url-search-params': ~1.0.3
   '@rjsf/bootstrap-4': ~2.5.1
   '@rjsf/core': ~2.5.1
   '@rush-temp/json-schema-convert-pointer': 'file:./projects/json-schema-convert-pointer.tgz'
