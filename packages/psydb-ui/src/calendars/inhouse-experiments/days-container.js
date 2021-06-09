@@ -48,6 +48,7 @@ const ExperimentsInDay = ({
     start,
     experiments,
     calendarVariant,
+    onSelectDay,
     ...other
 }) => {
 
@@ -67,7 +68,9 @@ const ExperimentsInDay = ({
     return (
         <div>
             <header className='text-center border-bottom mb-2'>
-                <div><b>{ datefns.format(start, 'cccccc dd.MM.') }</b></div>
+                <div role='button' onClick={ () => onSelectDay(start) }>
+                    <b>{ datefns.format(start, 'cccccc dd.MM.') }</b>
+                </div>
             </header>
             { 
                 (!experiments || experiments.length < 1)

@@ -9,6 +9,10 @@ import {
     useParams
 } from 'react-router-dom';
 
+import {
+    LinkContainer
+} from 'react-router-bootstrap';
+
 import agent from '@mpieva/psydb-ui-request-agents';
 import RecordTypeNav from '@mpieva/psydb-ui-lib/src/record-type-nav';
 import ResearchGroupNav from './research-group-nav';
@@ -21,9 +25,11 @@ const InhouseExperimentsRouting = ({
 
     return (
         <>
-            <h5 className='mt-0 mb-3 text-muted'>
-                Inhouse-Termine
-            </h5>
+            <LinkContainer to={ url }>
+                <h5 className='mt-0 mb-3 text-muted' role='button'>
+                    Inhouse-Termine
+                </h5>
+            </LinkContainer>
                 
             <Switch>
                 <Route exact path={`${path}`}>

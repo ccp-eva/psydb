@@ -27,6 +27,7 @@ const Calendar = ({
     onPageChange,
     selectedStudyId,
     calendarVariant,
+    onSelectDay,
 }) => {
     var { path, url } = useRouteMatch();
 
@@ -153,6 +154,7 @@ const Calendar = ({
 
                 url,
                 calendarVariant,
+                onSelectDay,
             }) }/>
         </div>
     )
@@ -245,6 +247,13 @@ const CalendarVariantContainer = (ps) => {
                 calendarVariant,
                 selectedStudyId,
                 //onSelectStudy: handleSelectStudyId,
+                onSelectDay: (date) => {
+                    updateQuery({
+                        ...query,
+                        cal: 'daily',
+                        d: date.getTime()
+                    })
+                },
                 ...ps
             }) } />
         </>

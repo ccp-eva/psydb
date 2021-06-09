@@ -32,9 +32,9 @@ const SideNav = ({
             <div className='navbar-nav'>
                 <Link to='/calendars'>Kalender</Link>
                 <Nav className='flex-column pl-3'>
-                    <Link to='/calendars'>Rezeption</Link>
-                    <Link to='/calendars'>Inhouse Termine</Link>
-                    <Link to='/calendars'>Externe Termine</Link>
+                    <Link to='/calendars/reception'>Rezeption</Link>
+                    <Link to='/calendars/inhouse'>Inhouse Termine</Link>
+                    <Link to='/calendars/away-team'>Externe Termine</Link>
                 </Nav>
                 <Link to='/lab-operation'>Studienbetrieb</Link>
                 <Nav className='flex-column pl-3'>

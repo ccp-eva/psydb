@@ -9,6 +9,10 @@ import {
     useParams
 } from 'react-router-dom';
 
+import {
+    LinkContainer
+} from 'react-router-bootstrap';
+
 import agent from '@mpieva/psydb-ui-request-agents';
 import up from '@mpieva/psydb-ui-lib/src/url-up';
 import BigNav from '@mpieva/psydb-ui-lib/src/big-nav';
@@ -52,9 +56,11 @@ const Calendars = () => {
     return (
         <div>
             <header>
-                <h1 className='mb-0 border-bottom'>
-                    Kalender
-                </h1>
+                <LinkContainer to={ url }>
+                    <h1 className='mb-0 border-bottom' role='button'>
+                        Kalender
+                    </h1>
+                </LinkContainer>
             </header>
             <Switch>
                 <Route exact path={`${path}`}>
