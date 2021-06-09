@@ -40,7 +40,10 @@ var RequestBodySchema = () => ExactObject({
         experimentType: {
             type: 'string',
             enum: ['inhouse', 'away-team'],
-        }
+        },
+        researchGroupId: ForeignId({
+            collection: 'researchGroup',
+        }),
     },
     required: [
         //'researchGroupId',
@@ -75,6 +78,7 @@ var experimentCalendar = async (context, next) => {
         interval,
         studyId,
         experimentType,
+        researchGroupId,
     } = request.body;
 
     var { start, end } = interval;
@@ -114,7 +118,10 @@ var experimentCalendar = async (context, next) => {
                             'state.runningPeriod.start': { $lte: end },
                             'state.runningPeriod.end': { $exists: false },
                         }
-                    ]
+                    ],
+                    ...(researchGroupId && {
+                        'state.researchGroupIds': researchGroupId
+                    })
                 }},
             ]).toArray()
         );

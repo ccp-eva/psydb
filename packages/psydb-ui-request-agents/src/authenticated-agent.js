@@ -196,6 +196,7 @@ agent.fetchExperimentCalendar = ({
     interval,
     experimentType,
     studyId,
+    researchGroupId,
 }) => {
     return axios.post(
         '/api/experiment-calendar',
@@ -204,6 +205,7 @@ agent.fetchExperimentCalendar = ({
             studyId,
             interval,
             experimentType,
+            researchGroupId,
         }
     );
 }
@@ -224,12 +226,14 @@ agent.fetchSelectableStudies = ({
 agent.fetchSelectableStudiesForCalendar = ({
     subjectRecordType,
     experimentType,
+    researchGroupId,
 }) => {
     return axios.post(
         '/api/selectable-studies-for-calendar',
         {
             subjectRecordType,
-            experimentType
+            experimentType,
+            researchGroupId,
         }
     );
 }

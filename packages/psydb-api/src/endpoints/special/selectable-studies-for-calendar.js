@@ -26,6 +26,7 @@ var selectableStudiesForCalendar = async (context, next) => {
     var {
         experimentType,
         subjectRecordType,
+        researchGroupId,
     } = request.body
 
     var now = new Date();
@@ -40,7 +41,10 @@ var selectableStudiesForCalendar = async (context, next) => {
                     'state.runningPeriod.start': { $lte: now },
                     'state.runningPeriod.end': { $exists: false },
                 }
-            ]
+            ],
+            ...(researchGroupId && {
+                'state.researchGroupIds': researchGroupId
+            })
         }},
     ];
 

@@ -62,7 +62,8 @@ const Calendar = ({
             experimentType: 'inhouse',
             ...(selectedStudyId && {
                 studyId: selectedStudyId
-            })
+            }),
+            researchGroupId,
         })
         .then(response => {
             dispatch({ type: 'init', payload: {
@@ -192,6 +193,12 @@ import { useURLSearchParams } from '@cdxoo/react-router-url-search-params';
 import omit from '@cdxoo/omit';
 
 const CalendarVariantContainer = (ps) => {
+    var {
+        studyType,
+        subjectType,
+        researchGroupId,
+    } = useParams();
+
     var [ query, updateQuery ] = useURLSearchParams();
     
     var {
@@ -227,6 +234,7 @@ const CalendarVariantContainer = (ps) => {
                     <StudyPillNav { ...({
                         subjectRecordType: ps.subjectRecordType,
                         experimentType: 'inhouse',
+                        researchGroupId,
                         selectedStudyId,
                         onSelectStudy: (next) => {
                             if (next) {

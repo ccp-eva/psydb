@@ -7,6 +7,7 @@ import PillNav from '@mpieva/psydb-ui-lib/src/pill-nav';
 const StudyPillNav = ({
     subjectRecordType,
     experimentType,
+    researchGroupId,
 
     selectedStudyId,
     onSelectStudy,
@@ -19,7 +20,8 @@ const StudyPillNav = ({
     useEffect(() => {
         agent.fetchSelectableStudiesForCalendar({
             subjectRecordType,
-            experimentType
+            experimentType,
+            researchGroupId,
         })
         .then(response => {
             dispatch({ type: 'init', payload: {
