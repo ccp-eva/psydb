@@ -111,8 +111,6 @@ const DateTimeWidget = (ps) => {
         var time = cachedTime;
         var fraction = cachedFraction;
 
-        console.log('propagate');
-        console.log(date, time, fraction)
         if (date && time && fraction) {
             // if resolution is only minute append seconds
             if (/^\d\d:\d\d$/.test(time)) {
