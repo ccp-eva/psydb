@@ -25,6 +25,17 @@ const addTimezone = (str) => {
     return str;
 }
 
+// because firefox wants to display seconds
+// if set in value
+const stripSeconds = (str) => {
+    if (typeof str === 'string') {
+        if (/^\d\d:\d\d:\d\d$/.test(str)) {
+            str = str.substr(0, 5);
+        }
+    }
+    return str
+}
+
 const splitISO = (value) => {
     var date, time, fraction;
     if (typeof value === 'string') {
@@ -78,7 +89,7 @@ const DateTimeWidget = (ps) => {
     // controlled to uncontrolled, and when i use null it complains
     // about that too
     var [ cachedDate, setCachedDate ] = useState(date || '');
-    var [ cachedTime, setCachedTime ] = useState(time || '');
+    var [ cachedTime, setCachedTime ] = useState(time ? stripSeconds(time) : '');
     var [ cachedFraction, setCachedFraction ] = useState(fraction || '000');
   
     var {
