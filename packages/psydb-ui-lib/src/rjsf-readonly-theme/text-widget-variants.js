@@ -4,7 +4,7 @@ import { InlineWrapper } from './wrapper-components';
 import datefns from '../date-fns';
 
 const styles = {
-    bold: { fontWeight: '500' }
+    bold: { fontWeight: '600' }
 }
 
 export const PlainText = ({ label, value }) => (

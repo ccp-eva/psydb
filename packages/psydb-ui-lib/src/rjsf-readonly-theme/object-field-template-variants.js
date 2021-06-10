@@ -4,7 +4,7 @@ import datefns from '../date-fns';
 import { InlineWrapper, OneLineWrapper } from './wrapper-components';
 
 const styles = {
-    bold: { fontWeight: '500' }
+    bold: { fontWeight: '600' }
 }
 
 export const Plain = ({

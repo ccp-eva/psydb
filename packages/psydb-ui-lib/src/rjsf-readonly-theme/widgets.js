@@ -9,7 +9,7 @@ import { InlineWrapper } from './wrapper-components';
 import * as textWidgetVariants from './text-widget-variants';
 
 const styles = {
-    bold: { fontWeight: '500' }
+    bold: { fontWeight: '600' }
 }
 
 export const TextWidget = (ps) => {
