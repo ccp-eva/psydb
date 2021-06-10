@@ -1,14 +1,149 @@
-import React from 'react';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { utils } from "@rjsf/core";
-import TextWidget from './text-widget';
+import { Form, InputGroup } from 'react-bootstrap';
+import * as wrappers from '../utility-components/wrappers';
 
-const DateTimeWidget = ({ value, onChange, ...other }) => (
-    <TextWidget
-        { ...other }
-        type='datetime-local'
-        value={ utils.utcToLocal(value) }
-        onChange={ (value) => onChange(utils.localToUTC(value))}
-    />
-);
+const removeTimezone = (str) => {
+    if (typeof str === 'string') {
+        var date = new Date(str);
+        if (!isNaN(date.getTime())) {
+            var offset = date.getTimezoneOffset() * -1 * 60000;
+            str = new Date(date.getTime() + offset).toISOString();
+        }
+    }
+    return str;
+}
+
+const addTimezone = (str) => {
+    if (typeof str === 'string') {
+        var date = new Date(str);
+        if (!isNaN(date.getTime())) {
+            var offset = date.getTimezoneOffset() * +1 * 60000;
+            str = new Date(date.getTime() + offset).toISOString();
+        }
+    }
+    return str;
+}
+
+const splitISO = (value) => {
+    var date, time, fraction;
+    if (typeof value === 'string') {
+        var match = value.match(/^(.*)T(\d\d:\d\d:\d\d)\.(\d{3})Z$/);
+        if (match) {
+            ([ date, time, fraction ] = match.slice(1))
+        }
+    }
+
+    return { date, time, fraction };
+}
+
+const DateTimeWidget = (ps) => {
+
+    var {
+        id,
+        type,
+        label,
+        value,
+        required,
+        onChange,
+        options,
+        schema,
+        formContext,
+        rawErrors = [],
+
+        isArrayItem,
+    } = ps;
+   
+    var {
+        systemType,
+        systemProps = {}
+    } = schema;
+
+    var Wrapper = wrappers[systemProps.uiWrapper];
+    if (!Wrapper) {
+        if (isArrayItem) {
+            Wrapper = wrappers.OneLineWrapper;
+        }
+        else {
+            Wrapper = wrappers.InlineWrapper;
+        }
+    }
+    
+    var hasErrors = rawErrors.length > 0;
+    var className = hasErrors ? 'is-invalid' : '';
+
+    var { date, time, fraction } = splitISO(removeTimezone(value));
+    
+    // usin empty defaults or else react complains about switching
+    // controlled to uncontrolled, and when i use null it complains
+    // about that too
+    var [ cachedDate, setCachedDate ] = useState(date || '');
+    var [ cachedTime, setCachedTime ] = useState(time || '');
+    var [ cachedFraction, setCachedFraction ] = useState(fraction || '000');
+  
+    var {
+        handleChangeDate,
+        handleChangeTime
+    } = useMemo(() => ({
+        handleChangeDate: (event) => {
+            var { target: { value }} = event;
+            setCachedDate(value);
+        },
+        handleChangeTime: (event) => {
+            var { target: { value }} = event;
+            setCachedTime(value);
+        }
+    }), []);
+
+    useEffect(() => {
+        var date = cachedDate;
+        var time = cachedTime;
+        var fraction = cachedFraction;
+
+        console.log('propagate');
+        console.log(date, time, fraction)
+        if (date && time && fraction) {
+            // if resolution is only minute append seconds
+            if (/^\d\d:\d\d$/.test(time)) {
+                time += ':00';
+            }
+
+            var fakeISOString = `${date}T${time}.${fraction}Z`;
+            var fakeDate = new Date(fakeISOString);
+
+            if (!isNaN(fakeDate.getTime())) {
+                var iso = addTimezone(fakeISOString);
+                onChange(iso);
+            }
+            else {
+                console.log('INVALID');
+                onChange('INVALID');
+            }
+        }
+    }, [ cachedDate, cachedTime, cachedFraction, onChange ])
+
+    return (
+        <Wrapper { ...({
+            id, label, required, schema, rawErrors
+        }) }>
+            <InputGroup>
+                <Form.Control {...({
+                    id: `${id}_DATE`,
+                    className,
+                    type: 'date',
+                    value: cachedDate,
+                    onChange: handleChangeDate,
+                })} />
+                <Form.Control {...({
+                    id: `${id}_DATE`,
+                    className,
+                    type: 'time',
+                    value: cachedTime,
+                    onChange: handleChangeTime,
+                })} />
+            </InputGroup>
+        </Wrapper>
+    )
+};
 
 export default DateTimeWidget;
