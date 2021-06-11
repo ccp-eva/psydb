@@ -3,11 +3,7 @@ import React from 'react';
 class ErrorBoundary extends React.Component {
     constructor (ps) {
         super(ps);
-        this.state = { hasError: false };
-    }
-
-    static getDerivedStateFromError (error) {
-        return { hasError: true };
+        this.state = { error: null, errorInfo: null };
     }
 
     componentDidCatch(error, errorInfo) {

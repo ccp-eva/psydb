@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import {
     Route,
+    Switch,
     useHistory
 } from 'react-router-dom';
 
@@ -33,6 +34,7 @@ import HelperSets from './helper-sets';
 
 import Calendars from './calendars';
 import LabOperation from './lab-operation';
+import Experiments from './experiments';
 
 const Main = ({ onSignedOut, onSignedIn }) => {
     var history = useHistory();
@@ -84,9 +86,7 @@ const Main = ({ onSignedOut, onSignedIn }) => {
                         </div>
                     </div>
                     <div className='pl-3'>
-                        <ErrorBoundary>
-                            <Routing />
-                        </ErrorBoundary>
+                        <Routing />
                     </div>
                 </div>
             </main>
@@ -94,21 +94,28 @@ const Main = ({ onSignedOut, onSignedIn }) => {
     );
 }
 
+var withEB = (Component) => (ps) => (
+    <ErrorBoundary>
+        <Component { ...ps } />
+    </ErrorBoundary>
+);
+
 var Routing = () => (
     <>
-    <Route path='/custom-record-types' component={ CustomRecordTypes } />
-    <Route path='/studies' component={ Studies } />
-    <Route path='/locations' component={ Locations } />
-    <Route path='/subjects' component={ Subjects } />
-    <Route path='/personnel' component={ Personnel } />
-    <Route path='/research-groups' component={ ResearchGroups } />
-    <Route path='/system-roles' component={ SystemRoles } />
-    <Route path='/external-persons' component={ ExternalPersons } />
-    <Route path='/external-organizations' component={ ExternalOrganizations } />
-    <Route path='/helper-sets' component={ HelperSets } />
+    <Route path='/custom-record-types' component={ withEB(CustomRecordTypes) } />
+    <Route path='/studies' component={ withEB(Studies) } />
+    <Route path='/locations' component={ withEB(Locations) } />
+    <Route path='/subjects' component={ withEB(Subjects) } />
+    <Route path='/personnel' component={ withEB(Personnel) } />
+    <Route path='/research-groups' component={ withEB(ResearchGroups) } />
+    <Route path='/system-roles' component={ withEB(SystemRoles) } />
+    <Route path='/external-persons' component={ withEB(ExternalPersons) } />
+    <Route path='/external-organizations' component={ withEB(ExternalOrganizations) } />
+    <Route path='/helper-sets' component={ withEB(HelperSets) } />
 
-    <Route path='/calendars' component={ Calendars } />
-    <Route path='/lab-operation' component={ LabOperation } />
+    <Route path='/calendars' component={ withEB(Calendars) } />
+    <Route path='/lab-operation' component={ withEB(LabOperation) } />
+    <Route path='/experiments' component={ withEB(Experiments) } />
     </>
 )
 
