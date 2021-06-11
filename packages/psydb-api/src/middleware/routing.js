@@ -184,6 +184,13 @@ var createRouting = ({
         endpoints.special.subjectTypeDataForStudy
     );
 
+    router.get('/extended-experiment-data/:experimentType/:experimentId',
+        withSelfAuth(),
+        withPermissions(),
+        withEndpointProtection({ endpoint: 'extended-experiment-data' }),
+        endpoints.special.extendedExperimentData
+    );
+
     return compose([
         router.routes(),
         router.allowedMethods(),

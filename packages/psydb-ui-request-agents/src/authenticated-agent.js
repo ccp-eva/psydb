@@ -238,4 +238,13 @@ agent.fetchSelectableStudiesForCalendar = ({
     );
 }
 
+agent.fetchExtendedExperimentData = ({
+    experimentType,
+    experimentId,
+}) => {
+    return axios.get(
+        `/api/extended-experiment-data/${experimentType}/${experimentId}`,
+    );
+}
+
 export default agent;

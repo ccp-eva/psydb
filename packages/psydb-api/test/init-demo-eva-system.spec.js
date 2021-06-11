@@ -224,10 +224,12 @@ describe('init-demo-system', function () {
             },
         });*/
 
-        response = await agent.post(`/selectable-studies-for-calendar`).send({
+        /*response = await agent.post(`/selectable-studies-for-calendar`).send({
             subjectRecordType: 'child',
             experimentType: 'inhouse',
-        });
+        });*/
+
+        response = await agent.get(`/extended-experiment-data/inhouse/${context.EXP_INHOUSE_01}`)
 
         console.dir(response.status, { depth: null });
         console.dir(response.body, { depth: null });

@@ -44,4 +44,8 @@ module.exports = {
         require('./selectable-studies-for-calendar')
     ),
 
+    extendedExperimentData: (
+        require('./extended-experiment-data')
+    ),
+
 }

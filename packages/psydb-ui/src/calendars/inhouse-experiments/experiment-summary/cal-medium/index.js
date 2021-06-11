@@ -77,7 +77,7 @@ const ExperimentSummaryMedium = ({
                     style={{
                         color: getTextColor(teamRecord.state.color),
                     }}
-                    to={ `/experiments/${experimentRecord._id}` }
+                    to={ `/experiments/inhouse/${experimentRecord._id}` }
                 >
                     <a><u>details</u></a>
                 </LinkContainer>

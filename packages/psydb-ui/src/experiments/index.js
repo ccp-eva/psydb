@@ -25,7 +25,7 @@ const Experiments = () => {
                 Details
             </h5>
             <Switch>
-                <Route path={ `${path}/:id` }>
+                <Route path={ `${path}/:experimentType/:id` }>
                     <ExperimentDetails />
                 </Route>
             </Switch>
