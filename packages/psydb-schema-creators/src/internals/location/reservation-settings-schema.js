@@ -4,7 +4,6 @@ var inline = require('@cdxoo/inline-text');
 var {
     ExactObject,
     ForeignId,
-    DateTimeInterval,
     TimeInterval,
     Time,
     WeekdayBoolObject,

@@ -1,16 +1,16 @@
 'use strict';
 var ExactObject = require('./exact-object'),
-    DateOnly = require('./date-only');
+    DateOnlyServerSide = require('./date-only-server-side');
 
-var DateOnlyInterval = ({
+var DateOnlyServerSideInterval = ({
     additionalStartKeywords,
     additionalEndKeywords,
     ...additionalKeywords
 } = {}) => ExactObject({
-    systemType: 'DateOnlyInterval',
+    systemType: 'DateOnlyServerSideInterval',
     properties: {
-        start: DateOnly({ ...additionalStartKeywords }),
-        end: DateOnly({
+        start: DateOnlyServerSide({ ...additionalStartKeywords }),
+        end: DateOnlyServerSide({
             formatMinimum: {
                 $data: '2/start/$date'
             },
@@ -24,4 +24,4 @@ var DateOnlyInterval = ({
     ...additionalKeywords,
 });
 
-module.exports = DateOnlyInterval;
+module.exports = DateOnlyServerSideInterval;

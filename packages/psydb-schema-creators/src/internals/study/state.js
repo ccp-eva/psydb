@@ -17,7 +17,7 @@ var {
     IdentifierString,
     SaneString,
     Color,
-    DateTimeInterval,
+    DateOnlyServerSideInterval,
     CustomRecordTypeKey,
 } = require('@mpieva/psydb-schema-fields');
 
@@ -62,7 +62,7 @@ var StudyState = (ps = {}) => {
                 title: 'Kürzel',
             }),
 
-            runningPeriod: DateTimeInterval({
+            runningPeriod: DateOnlyServerSideInterval({
                 title: 'Laufzeit',
                 required: [ 'start' ],
                 additionalStartKeywords: { title: 'Beginn' },

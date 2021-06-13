@@ -5,7 +5,6 @@ var {
     ForeignIdList,
     SaneString,
     Color,
-    DateTimeInterval,
     DefaultBool,
 } = require('@mpieva/psydb-schema-fields');
 

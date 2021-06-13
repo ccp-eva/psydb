@@ -37,6 +37,7 @@ var Schema = () => {
                                 'ForeignId',
                                 'FullText',
                                 'DateTime',
+                                'DateOnlyServerSide',
                                 'BiologicalGender',
                                 'ExtBool',
                             ],

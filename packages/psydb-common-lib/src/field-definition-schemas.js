@@ -124,13 +124,16 @@ var FullTextFieldDefinition = () => FieldDefinition({
 var DateTimeFieldDefinition = () => FieldDefinition({
     type: 'DateTime',
     props: {
-        // TODO: figure out ho to solve this:
-        // date fields may exist, bút we need the clients
-        // locatime to properly process them into localtime
-        // as otherwhise this leads to issues where date of birth
-        // is tored as utc moving it one day back
-        // because of how timezones work
-        //treatAsDateOnlyInUI
+        isSpecialAgeFrameField: {
+            type: 'boolean',
+            default: false
+        }
+    },
+})
+
+var DateOnlyServerSideFieldDefinition = () => FieldDefinition({
+    type: 'DateOnlyServerSide',
+    props: {
         isSpecialAgeFrameField: {
             type: 'boolean',
             default: false
@@ -161,6 +164,7 @@ module.exports = {
     HelperSetItemIdList: HelperSetItemIdListFieldDefinition,
     ForeignId: ForeignIdFieldDefinition,
     DateTime: DateTimeFieldDefinition,
+    DateOnlyServerSide: DateOnlyServerSideFieldDefinition,
     BiologicalGender: BiologicalGenderFieldDefinition,
     ExtBool: ExtBoolFieldDefinition,
 }

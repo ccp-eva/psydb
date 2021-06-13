@@ -19,8 +19,8 @@ module.exports = {
 
     DateTime: require('./date-time'),
     DateTimeInterval: require('./date-time-interval'),
-    DateOnly: require('./date-only'),
-    DateOnlyInterval: require('./date-only-interval'),
+    DateOnlyServerSide: require('./date-only-server-side'),
+    DateOnlyServerSideInterval: require('./date-only-server-side-interval'),
     DaysSinceBirth: require('./days-since-birth'),
     DaysSinceBirthInterval: require('./days-since-birth-interval'),
     ExtBool: require('./ext-bool'),

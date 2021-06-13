@@ -8,7 +8,6 @@ var {
     Id,
 } = require('@mpieva/psydb-schema-fields');
 
-// TODO: merge adjascent reservations into one? or have a handler?
 var AwayTeamReservationState = ({
     enableInternalProps
 } = {}) => {
