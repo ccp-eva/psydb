@@ -45,6 +45,8 @@ module.exports = {
     TimeInterval: require('./time-interval'),
     SpecialHumanName: require('./special-human-name'),
     ExactObject: require('./exact-object'),
+    OpenObject: require('./open-object'),
+    Integer: require('./integer'),
     
     WeekdayBoolObject: require('./weekday-bool-object'),
 }

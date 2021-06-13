@@ -43,6 +43,7 @@ var StudyGroup = MessageHandlerGroup([
     // add a subject type that may hold conditions and can be
     // tested in this study
     require('./add-subject-type'),
+    require('./update-subject-type-base-settings'),
     //require('./update-subject-type-settings'),
     // removes subject type 
     //require('./remove-subject-type'),

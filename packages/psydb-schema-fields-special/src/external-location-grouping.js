@@ -4,7 +4,7 @@ var {
 } = require('@mpieva/psydb-schema-fields');
 
 var ExternalLocationGrouping = ({
-    subjectRecordType,
+    //subjectRecordType,
     subjectRecordTypeScientificFields,
 }) => {
     var locationFieldKeys = [],

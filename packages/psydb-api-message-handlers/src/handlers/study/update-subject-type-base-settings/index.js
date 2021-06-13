@@ -1,4 +1,5 @@
 'use strict';
+// TODO: redesign this to gtet the whole conditions object
 var debug = require('debug')('psydb:api:message-handlers');
 
 var nanoid = require('nanoid').nanoid;
@@ -7,7 +8,7 @@ var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
     compareIds = require('@mpieva/psydb-api-lib/src/compare-ids'),
     Ajv = require('@mpieva/psydb-api-lib/src/ajv');
 
-var PushMaker = require('../../../lib/push-maker');
+var PutMaker = require('../../../lib/put-maker');
 
 var BaseSchema = require('./base-schema');
 var FullSchema = require('./full-schema');
@@ -15,7 +16,7 @@ var FullSchema = require('./full-schema');
 var handler = {};
 
 handler.shouldRun = (message) => (
-    message.type === 'study/add-subject-type'
+    message.type === 'study/update-subject-type-base-settings'
 )
 
 handler.checkSchema = async ({ db, message }) => {
@@ -58,10 +59,12 @@ handler.checkSchema = async ({ db, message }) => {
     }
 }
 
+
 handler.checkAllowedAndPlausible = async ({
     db,
     permissions,
-    message
+    message,
+    cache,
 }) => {
     // TODO
     if (!permissions.hasRootAccess) {
@@ -72,6 +75,8 @@ handler.checkAllowedAndPlausible = async ({
         id,
         lastKnownEventId,
         customRecordType,
+        enabledOnlineTesting,
+        subjectsPerExperiment
     } = message.payload;
 
     var study = await (
@@ -87,25 +92,21 @@ handler.checkAllowedAndPlausible = async ({
         throw new ApiError(400, 'RecordHasChanged');
     }
 
-    var customRecordTypeRecord = await (
-        db.collection('customRecordType')
-        .findOne({ type: customRecordType })
-    );
+    var { selectionSettingsBySubjectType } = study.state;
 
-    if (!customRecordTypeRecord) {
-        throw new ApiError(400, 'InvalidSubjectRecordType');
-    }
-
-    if (customRecordTypeRecord.collection !== 'subject') {
-        throw new ApiError(400, 'InvalidSubjectRecordType');
-    }
-
-    study.state.selectionSettingsBySubjectType.forEach(it => {
+    var settingsIndex = undefined;
+    for (var [index, it] of selectionSettingsBySubjectType.entries()) {
         if (it.subjectRecordType === customRecordType) {
-            throw new ApiError(400, 'DuplicateSubjectRecordType')
+            settingsIndex = index;
+            break;
         }
-    })
+    }
 
+    if (settingsIndex === undefined) {
+        throw new ApiError(400, 'InvalidSubjectRecordType');
+    }
+
+    cache.settingsIndex = settingsIndex;
 }
 
 handler.triggerSystemEvents = async ({
@@ -113,13 +114,15 @@ handler.triggerSystemEvents = async ({
     rohrpost,
     message,
     personnelId,
+    cache,
 }) => {
     var { type: messageType, payload } = message;
-    var {
+    var { 
         id,
         lastKnownEventId,
         customRecordType,
         enableOnlineTesting,
+        subjectsPerExperiment,
         externalLocationGrouping,
     } = payload;
 
@@ -131,16 +134,13 @@ handler.triggerSystemEvents = async ({
         })
     );
 
-    var messages = PushMaker({ personnelId }).all({
-        // NOTE: this structure has to exist so we can push into the
-        // nested arrays
-        '/state/selectionSettingsBySubjectType': {
-            subjectRecordType: customRecordType,
-            generalConditions: [],
-            conditionsByAgeFrame: [],
-            enableOnlineTesting: enableOnlineTesting || false,
-            externalLocationGrouping,
-        },
+    var si = cache.settingsIndex;
+    var path = `/state/selectionSettingsBySubjectType/${si}`;
+
+    var messages = PutMaker({ personnelId }).all({
+        [`${path}/enableOnlineTesting`]: enableOnlineTesting,
+        [`${path}/subjectsPerExperiment`]: subjectsPerExperiment,
+        [`${path}/externalLocationGrouping`]: externalLocationGrouping,
     });
 
     await channel.dispatchMany({ messages, lastKnownEventId });

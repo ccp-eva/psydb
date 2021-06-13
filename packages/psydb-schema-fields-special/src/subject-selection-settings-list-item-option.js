@@ -3,6 +3,7 @@ var {
     ExactObject,
     DefaultBool,
     CustomRecordTypeName,
+    Integer,
 } = require('@mpieva/psydb-schema-fields');
 
 var AgeFrameSettingsList = require('./age-frame-settings-list');
@@ -21,6 +22,11 @@ var SubjectSelectionSettingsListItemOption = ({
             systemType: 'SubjectSelectionSettingsListItemOption',
             properties: {
                 enableOnlineTesting: DefaultBool(),
+                subjectsPerExperiment: Integer({
+                    title: 'Probanden pro Experiment',
+                    default: 1,
+                    minimum: 1,
+                }),
                 subjectRecordType: CustomRecordTypeName({
                     collection: 'subject',
                     const: type,
@@ -41,6 +47,8 @@ var SubjectSelectionSettingsListItemOption = ({
                 })
             },
             required: [
+                'enableOnlineTesting',
+                'subjectsPerExperiment',
                 'subjectRecordType',
                 'conditionsByAgeFrame',
                 'generalConditions',
