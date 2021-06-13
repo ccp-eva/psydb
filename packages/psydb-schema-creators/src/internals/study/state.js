@@ -69,6 +69,10 @@ var StudyState = (ps = {}) => {
                 additionalEndKeywords: { title: 'End' },
             }),
 
+            enableFollowUpExperiments: DefaultBool({
+                title: 'Folge-Experimente anschalten'
+            }),
+
             researchGroupIds: ForeignIdList({
                 title: 'Forschungsgruppen',
                 minItems: 1,
