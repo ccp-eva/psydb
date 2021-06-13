@@ -11,7 +11,7 @@ var createErrorsMiddleware = () => async (context, next) => {
     catch (error) {
 
         // FIXME: should have condition
-        //debug(error);
+        debug(error);
 
         var shouldEmitError = false;
         
@@ -34,7 +34,7 @@ var createErrorsMiddleware = () => async (context, next) => {
             statusCode = 500;
             shouldEmitError = true;
         }
-        
+       
         context.status = statusCode,
         context.body = ResponseBody({
             statusCode,
