@@ -46,12 +46,12 @@ var createSchema = ({} = {}) => (
                 experimentId: ForeignId({
                     collection: 'experiment',
                 }),
-                lastKnownExperimentEventId: EventId(),
+                //lastKnownExperimentEventId: EventId(),
                 
                 subjectId: ForeignId({
                     collection: 'subject',
                 }),
-                lastKnownSubjectScientificEventId: EventId(),
+                //lastKnownSubjectScientificEventId: EventId(),
 
                 unparticipateStatus: UnparticipateStatus(),
                 //experimentComment: FullText(),
@@ -82,9 +82,9 @@ var createSchema = ({} = {}) => (
             },
             required: [
                 'experimentId',
-                'lastKnownExperimentEventId',
+                //'lastKnownExperimentEventId',
                 'subjectId',
-                'lastKnownSubjectScientificEventId',
+                //'lastKnownSubjectScientificEventId',
                 
                 'unparticipateStatus',
                 //'experimentComment',

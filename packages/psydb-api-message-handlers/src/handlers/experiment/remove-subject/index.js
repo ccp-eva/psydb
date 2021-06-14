@@ -49,9 +49,9 @@ handler.checkAllowedAndPlausible = async ({
     if (!experimentRecord) {
         throw new ApiError(400, 'InvalidExperimentId');
     }
-    if (!compareIds(experimentRecord.events[0]._id, lastKnownExperimentEventId)) {
+    /*if (!compareIds(experimentRecord.events[0]._id, lastKnownExperimentEventId)) {
         throw new ApiError(400, 'ExperimentRecordHasChanged');
-    }
+    }*/
 
     var {
         selectedSubjectIds,
@@ -90,9 +90,9 @@ handler.checkAllowedAndPlausible = async ({
     if (!subjectRecord) {
         throw new ApiError(400, 'InvalidSubjectId');
     }
-    if (!compareIds(subjectRecord.scientific.events[0]._id, lastKnownSubjectScientificEventId)) {
+    /*if (!compareIds(subjectRecord.scientific.events[0]._id, lastKnownSubjectScientificEventId)) {
         throw new ApiError(400, 'SubjectRecordHasChanged');
-    }
+    }*/
 
     var {
         invitedForExperiments
@@ -123,9 +123,9 @@ handler.triggerSystemEvents = async ({
     var { type: messageType, payload } = message;
     var {
         experimentId,
-        lastKnownExperimentEventId,
+        //lastKnownExperimentEventId,
         subjectId,
-        lastKnownSubjectScientificEventId,
+        //lastKnownSubjectScientificEventId,
 
         unparticipateStatus,
         //experimentComment,
@@ -163,6 +163,9 @@ handler.triggerSystemEvents = async ({
         })
     )
 
+    // FIXME
+    var lastKnownExperimentEventId = experimentRecord.events[0]._id;
+
     var ePath = `/state/subjectData/${subjectDataIndex}`;
     await experimentChannel.dispatchMany({
         lastKnownEventId: lastKnownExperimentEventId,
@@ -186,6 +189,9 @@ handler.triggerSystemEvents = async ({
         })
     )
 
+    /// FIXME
+    var lastKnownSubjectScientificEventId = subjectRecord.scientific.events[0]._id;
+
     await subjectChannel.dispatchMany({
         subChannelKey: 'scientific',
         lastKnownEventId: lastKnownSubjectScientificEventId,
@@ -205,6 +211,16 @@ handler.triggerSystemEvents = async ({
                 })
                 : []
             ),
+            ...(
+                blockSubjectFromTesting.shouldBlock === true
+                ? PutMaker({ personnelId }).all({
+                    '/state/internals/blockedFromTesting': {
+                        isBlocked: true,
+                        blockUntil: blockSubjectFromTesting.blockUntil
+                    },
+                })
+                : []
+            )
         ]
     })
 
