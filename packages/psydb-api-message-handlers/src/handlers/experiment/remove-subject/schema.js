@@ -7,7 +7,8 @@ var {
     ForeignId,
     ParticipationStatus,
     FullText,
-    DateOnlyServerSide
+    DateOnlyServerSide,
+    DefaultBool,
 } = require('@mpieva/psydb-schema-fields');
 
 var { Message } = require('@mpieva/psydb-schema-helpers');
@@ -15,9 +16,9 @@ var { Message } = require('@mpieva/psydb-schema-helpers');
 var UnparticipateStatus = ({ ...additionalKeywords } = {}) => {
     var schema = ParticipationStatus({ ...additionalKeywords });
     
-    var enum = [],
-        enumNames = [];
-    for (var [index, it] of schema.enum) {
+    var _enum = [],
+        _enumNames = [];
+    for (var [index, it] of schema.enum.entries()) {
         var shouldUse = (
             [
                 'canceled-by-participant',
@@ -26,13 +27,13 @@ var UnparticipateStatus = ({ ...additionalKeywords } = {}) => {
             ].includes(it)
         );
         if (shouldUse) {
-            enum.push(it);
-            enumNames.push(schema.enumNames[index]);
+            _enum.push(it);
+            _enumNames.push(schema.enumNames[index]);
         }
     }
 
-    schema.enum = enum;
-    schema.enumNames = enumNames;
+    schema.enum = _enum;
+    schema.enumNames = _enumNames;
 
     return schema;
 }
@@ -50,23 +51,45 @@ var createSchema = ({} = {}) => (
                 subjectId: ForeignId({
                     collection: 'subject',
                 }),
-                lastKnownSubjectEventId: EventId(),
+                lastKnownSubjectScientificEventId: EventId(),
 
                 unparticipateStatus: UnparticipateStatus(),
-                experimentComment: FullText(),
+                //experimentComment: FullText(),
                 subjectComment: FullText(),
-                blockSubjectFromTestingUntil: DateOnlyServerSide()
+
+                blockSubjectFromTesting: {
+                    oneOf: [
+                        ExactObject({
+                            properties: {
+                                shouldBlock: DefaultBool({ const: false }),
+                            },
+                            required: [
+                                'shouldBlock'
+                            ]
+                        }),
+                        ExactObject({
+                            properties: {
+                                shouldBlock: DefaultBool({ const: true, default: true }),
+                                blockUntil: DateOnlyServerSide()
+                            },
+                            required: [
+                                'shouldBlock',
+                                'blockUntil',
+                            ]
+                        })
+                    ]
+                }
             },
             required: [
                 'experimentId',
                 'lastKnownExperimentEventId',
                 'subjectId',
-                'lastKnownSubjectEventId',
+                'lastKnownSubjectScientificEventId',
                 
                 'unparticipateStatus',
-                'experimentComment',
+                //'experimentComment',
                 'subjectComment',
-                //'blockSubjectFromTestingUntil',
+                'blockSubjectFromTesting',
             ]
         })
     })

@@ -10,6 +10,8 @@ var ExperimentGroup = MessageHandlerGroup([
 
     require('./change-experiment-operator-team'),
     require('./move-inhouse'),
+
+    require('./remove-subject'),
 ]);
 
 module.exports = ExperimentGroup;

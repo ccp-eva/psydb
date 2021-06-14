@@ -8,6 +8,8 @@ var {
     DateTimeInterval,
     ParticipationStatus,
     InvitationStatus,
+    DefaultBool,
+    FullText,
 } = require('@mpieva/psydb-schema-fields');
 
 // TODO: merge adjascent reservations into one? or have a handler?
@@ -23,6 +25,7 @@ var ExperimentState = ({
                 `,
             }), // foreign id w/ custom handler??
 
+            // FIXME: why that?
             reservationId: ForeignId({
                 collection: 'reservation',
             }),
@@ -38,6 +41,7 @@ var ExperimentState = ({
             }),
             
             interval: DateTimeInterval(),
+            isCanceled: DefaultBool(),
 
             // this enableds us to trakc which subject group was selected
             // in case the subject belongs to multiple groups
@@ -69,12 +73,14 @@ var ExperimentState = ({
                         }),
                         invitatonStatus: InvitationStatus(),
                         participationStatus: ParticipationStatus(),
+                        comment: FullText(),
                         // TODO: file refs?
                     },
                     required: [
                         'studyId',
                         'invitationStatus',
                         'participationStatus',
+                        'comment',
                     ]
                 })
             }
@@ -89,6 +95,7 @@ var ExperimentState = ({
             'selectedSubjectGroupIds',
             'selectedSubjectIds',
             'subjectData',
+            //'isCanceled',
         ]
     })
 

@@ -9,6 +9,7 @@ var {
     ExactObject,
     ForeignId,
     DateTimeInterval,
+    FullText
 } = require('@mpieva/psydb-schema-fields');
 
 var SubjectScientificState = ({
@@ -20,6 +21,9 @@ var SubjectScientificState = ({
             custom: CustomProps({ customFieldDefinitions }),
             testingPermissions: testingPermissionsSchema,
             systemPermissions: systemPermissionsSchema,
+            comment: FullText({
+                title: 'Kommentar',
+            }),
             ...(enableInternalProps && {
                 internals: InternalsSchema(),
             })
@@ -28,6 +32,7 @@ var SubjectScientificState = ({
             'custom',
             'testingPermissions',
             'systemPermissions',
+            'comment',
             ...(enableInternalProps ? [
                 'internals',
             ] : [])

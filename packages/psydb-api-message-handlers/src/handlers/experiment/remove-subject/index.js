@@ -1,18 +1,14 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
 
-var nanoid = require('nanoid').nanoid;
-
 var ApiError = require('@mpieva/psydb-api-lib/src/api-error');
+var compareIds = require('@mpieva/psydb-api-lib/src/compare-ids');
 
 var SimpleHandler = require('../../../lib/simple-handler'),
     checkForeignIdsExist = require('../../../lib/check-foreign-ids-exist');
 
-var {
-    checkIntervalHasReservation,
-    checkConflictingSubjectExperiments,
-    dispatchAllChannelMessages,
-} = require('../util');
+var PutMaker = require('../../../lib/put-maker'),
+    PushMaker = require('../../../lib/push-maker');
 
 var createSchema = require('./schema');
 
@@ -36,13 +32,13 @@ handler.checkAllowedAndPlausible = async ({
         experimentId,
         lastKnownExperimentEventId,
         subjectId,
-        lastKnownSubjectEventId,
+        lastKnownSubjectScientificEventId,
 
         unparticipateStatus,
-        experimentComment,
+        //experimentComment,
         subjectComment,
-        blockSubjectFromTestingUntil,
-    } = message.payload.props;
+        blockSubjectFromTesting,
+    } = message.payload;
 
     var experimentRecord = cache.experimentRecord = await (
         db.collection('experiment').findOne({
@@ -51,7 +47,7 @@ handler.checkAllowedAndPlausible = async ({
     );
 
     if (!experimentRecord) {
-        throw new ApiError('InvalidExperimentId');
+        throw new ApiError(400, 'InvalidExperimentId');
     }
     if (!compareIds(experimentRecord.events[0]._id, lastKnownExperimentEventId)) {
         throw new ApiError(400, 'ExperimentRecordHasChanged');
@@ -69,20 +65,20 @@ handler.checkAllowedAndPlausible = async ({
         }
     }
     if (selectedSubjectIdsIndex === undefined) {
-        throw new ApiError('InvalidSubjectId');
+        throw new ApiError(400, 'InvalidSubjectId');
     }
 
     var subjectDataIndex = undefined;
-    for (var [index, it] of selectedData.entries()) {
+    for (var [index, it] of subjectData.entries()) {
         if (
             compareIds(it.subjectId, subjectId)
             && it.participationStatus === 'unknown'
         ) {
-            selectedSubjectIdsIndex = index;
+            subjectDataIndex = index;
         }
     }
     if (subjectDataIndex === undefined) {
-        throw new ApiError('InvalidSubjectId');
+        throw new ApiError(400, 'InvalidSubjectId');
     }
 
     var subjectRecord = cache.subjectRecord = await (
@@ -92,12 +88,29 @@ handler.checkAllowedAndPlausible = async ({
     );
 
     if (!subjectRecord) {
-        throw new ApiError('InvalidSubjectId');
+        throw new ApiError(400, 'InvalidSubjectId');
     }
-    if (!compareIds(subjectRecord.events[0]._id, lastKnownSubjectEventId)) {
+    if (!compareIds(subjectRecord.scientific.events[0]._id, lastKnownSubjectScientificEventId)) {
         throw new ApiError(400, 'SubjectRecordHasChanged');
     }
 
+    var {
+        invitedForExperiments
+    } = subjectRecord.scientific.state.internals;
+
+    var subjectInvitationIndex = undefined;
+    for (var [index, it] of invitedForExperiments.entries()) {
+        if (compareIds(it.experimentId, experimentId)) {
+            subjectInvitationIndex = index;
+        }
+    }
+    if (subjectInvitationIndex === undefined) {
+        throw new ApiError(400, 'InvalidSubjectId'); // FIXME: status?
+    }
+
+    cache.selectedSubjectIdsIndex = selectedSubjectIdsIndex;
+    cache.subjectDataIndex = subjectDataIndex;
+    cache.subjectInvitationIndex = subjectInvitationIndex;
 }
 
 handler.triggerSystemEvents = async ({
@@ -108,34 +121,93 @@ handler.triggerSystemEvents = async ({
     personnelId,
 }) => {
     var { type: messageType, payload } = message;
-    var { id, props } = payload;
+    var {
+        experimentId,
+        lastKnownExperimentEventId,
+        subjectId,
+        lastKnownSubjectScientificEventId,
 
-    //var { reservation } = cache;
-    var locationRecord = await db.collection('location').findOne({
-        _id: props.locationId,
-    }, { projection: { type: true }});
+        unparticipateStatus,
+        //experimentComment,
+        subjectComment,
+        blockSubjectFromTesting,
+    } = payload;
 
-    await dispatchAllChannelMessages({
-        db,
-        rohrpost,
-        personnelId,
+    var {
+        experimentRecord,
+        subjectRecord,
+        subjectDataIndex,
+    } = cache;
 
-        forcedExperimentId: id,
+    var canceledSubjectCount = 1; // because we will cancel one now
+    for (var it of experimentRecord.state.subjectData) {
+        var isSubjectCanceled = (
+            [
+                'canceled-by-participant',
+                'canceled-by-institute',
+                'deleted-by-institute'
+            ].includes(it.participationStatus)
+        );
+        if (isSubjectCanceled) {
+            canceledSubjectCount += 1;
+        }
+    }
 
-        type: 'inhouse',
-        //reservationId: reservation._id,
-        seriesId: nanoid(), // FIXME: id format
-        studyId: props.studyId,
-        experimentOperatorTeamId: props.experimentOperatorTeamId,
-        locationId: props.locationId,
-        locationRecordType: locationRecord.type,
-        interval: props.interval,
+    var shouldCancelExperiment = (
+        experimentRecord.state.subjectData.length === canceledSubjectCount
+    );
 
-        //subjectGroupIds: props.subjectGroupIds,
-        subjectIds: props.subjectIds,
+    var experimentChannel = (
+        rohrpost.openCollection('experiment').openChannel({
+            id: experimentId
+        })
+    )
 
-        //lastKnownReservationEventId: props.lastKnownReservationEventId,
-    });
+    var ePath = `/state/subjectData/${subjectDataIndex}`;
+    await experimentChannel.dispatchMany({
+        lastKnownEventId: lastKnownExperimentEventId,
+        messages: [
+            ...PutMaker({ personnelId }).all({
+                [`${ePath}/participationStatus`]: unparticipateStatus,
+                ...(shouldCancelExperiment && {
+                    '/state/isCanceled': true
+                }),
+            })
+        ]
+    })
+
+    var shouldUpdateSubjectComment = (
+        subjectRecord.scientific.state.comment !== subjectComment
+    );
+
+    var subjectChannel = (
+        rohrpost.openCollection('subject').openChannel({
+            id: subjectId
+        })
+    )
+
+    await subjectChannel.dispatchMany({
+        subChannelKey: 'scientific',
+        lastKnownEventId: lastKnownSubjectScientificEventId,
+        messages: [
+            ...PushMaker({ personnelId }).all({
+                '/state/internals/participatedInStudies': {
+                    type: 'experiment',
+                    studyId: experimentRecord.state.studyId,
+                    timestamp: experimentRecord.state.interval.start,
+                    status: unparticipateStatus,
+                }
+            }),
+            ...(
+                shouldUpdateSubjectComment
+                ? PutMaker({ personnelId }).all({
+                    '/state/comment': subjectComment,
+                })
+                : []
+            ),
+        ]
+    })
+
 }
 
 module.exports = handler;
