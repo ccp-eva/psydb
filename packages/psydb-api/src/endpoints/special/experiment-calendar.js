@@ -133,7 +133,8 @@ var experimentCalendar = async (context, next) => {
             MatchIntervalOverlapStage({ start, end }),
             { $match: {
                 type: experimentType,
-                'state.studyId': { $in: studyIds }
+                'state.studyId': { $in: studyIds },
+                'state.isCanceled': false,
             }},
             StripEventsStage(),
         ]).toArray()

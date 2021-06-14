@@ -41,6 +41,9 @@ var checkConflictingLocationReservations = async ({
     }
 }
 
+// FIXME: since we disconnected experiments from reservation kinda
+// we need to check if there are conflicting experiment in add addition
+// to this i think
 var checkIntervalHasReservation = async ({
     db,
     interval,
@@ -125,7 +128,8 @@ var checkConflictingSubjectExperiments = async ({
                 // i.e. ends are set on .000Z
                 // therefor $lt is the way to go
                 'state.interval.start': { $lt: interval.end },
-                'state.interval.end': { $gt: interval.start }
+                'state.interval.end': { $gt: interval.start },
+                'state.isCanceled': false,
             }},
             { $unwind: '$state.subjects' },
             { $match: {

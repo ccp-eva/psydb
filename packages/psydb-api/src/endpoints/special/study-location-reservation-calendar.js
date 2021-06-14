@@ -105,7 +105,10 @@ var studyLocationReservationCalendar = async (context, next) => {
         start,
         end,
         additionalStages: [
-            { $match: { type: 'inhouse' }}
+            { $match: {
+                type: 'inhouse',
+                'state.isCanceled': false,
+            }}
         ]
     });
     

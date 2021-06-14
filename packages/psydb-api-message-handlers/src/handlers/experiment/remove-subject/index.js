@@ -198,7 +198,7 @@ handler.triggerSystemEvents = async ({
         messages: [
             ...PushMaker({ personnelId }).all({
                 '/state/internals/participatedInStudies': {
-                    type: 'experiment',
+                    type: 'inhouse',
                     studyId: experimentRecord.state.studyId,
                     timestamp: experimentRecord.state.interval.start,
                     status: unparticipateStatus,
