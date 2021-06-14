@@ -48,6 +48,10 @@ var AjvWrapper = ({
 
     //ajv.addKeyword('foreignKey', psydbKeywords.foreignKey);
     ajv.addKeyword('unmarshalDateTime', psydbKeywords.unmarshalDateTime);
+    ajv.addKeyword(
+        'unmarshalDateOnlyServerSide',
+        psydbKeywords.unmarshalDateOnlyServerSide
+    );
 
     var initializeValidateContext = () => {
         wrapper.validateContext = {};

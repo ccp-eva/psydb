@@ -57,7 +57,15 @@ const ExperimentSummarySmall = ({
             </div>
             <ul className='m-0' style={{ paddingLeft: '20px', fontSize: '80%' }}>
                 { 
-                    subjectData.map(it => (
+                    subjectData
+                    .filter(it => (
+                        ![
+                            'canceled-by-participant',
+                            'canceled-by-institute',
+                            'deleted-by-institute'
+                        ].includes(it.participationStatus)
+                    ))
+                    .map(it => (
                         <SubjectItem { ...({
                             key: it.subjectId,
                             subjectDataItem: it,
