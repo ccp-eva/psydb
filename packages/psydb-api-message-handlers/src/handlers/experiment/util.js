@@ -191,6 +191,7 @@ var dispatchAllChannelMessages = async ({
         subjectId: id,
         invitationStatus: 'scheduled',
         participationStatus: 'unknown',
+        comment: '',
     });
 
     var subjectDataMessages = [

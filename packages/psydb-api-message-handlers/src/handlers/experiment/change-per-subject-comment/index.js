@@ -13,7 +13,7 @@ var PutMaker = require('../../../lib/put-maker'),
 var createSchema = require('./schema');
 
 var handler = SimpleHandler({
-    messageType: 'experiment/change-invitation-status',
+    messageType: 'experiment/change-per-subject-comment',
     createSchema,
 });
 
@@ -31,7 +31,7 @@ handler.checkAllowedAndPlausible = async ({
     var {
         experimentId,
         subjectId,
-        invitationStatus,
+        comment,
     } = message.payload;
 
     var experimentRecord = cache.experimentRecord = await (
@@ -44,16 +44,6 @@ handler.checkAllowedAndPlausible = async ({
         throw new ApiError(400, 'InvalidExperimentId');
     }
 
-    var subjectRecord = cache.subjectRecord = await (
-        db.collection('subject').findOne({
-            _id: subjectId
-        })
-    )
-
-    if (!subjectRecord) {
-        throw new ApiError(400, 'InvalidSubjectId');
-    }
-    
     var subjectDataIndex = (
         experimentRecord.state.subjectData.findIndex(it => {
             return compareIds(it.subjectId, subjectId)
@@ -63,6 +53,7 @@ handler.checkAllowedAndPlausible = async ({
         throw new ApiError(400, 'InvalidSubjectId');
     }
 
+    cache.subjectDataIndex = subjectDataIndex;
 }
 
 handler.triggerSystemEvents = async ({
@@ -76,33 +67,16 @@ handler.triggerSystemEvents = async ({
     var {
         experimentId,
         subjectId,
-        invitationStatus
+        comment
     } = payload;
 
     var {
         experimentRecord,
-        subjectRecord,
+        subjectDataIndex,
     } = cache;
 
-    var experimentInvitationIndex = (
-        experimentRecord.state.subjectData.findIndex(it => {
-            return compareIds(it.subjectId, subjectId)
-        })
-    )
-
-    var subjectInvitationIndex = (
-        subjectRecord.scientific.state.internals.invitedForExperiments
-        .findIndex(it => {
-            return compareIds(it.experimentId, experimentId)
-        })
-    )
-
-    var experimentInvitationStatusPath = (
-        `/state/subjectData/${experimentInvitationIndex}/invitationStatus`
-    );
-
-    var subjectInvitationStatusPath = (
-        `/state/internals/invitedForExperiments/${subjectInvitationIndex}/status`
+    var commentPath = (
+        `/state/subjectData/${subjectDataIndex}/comment`
     );
 
     var experimentChannel = (
@@ -115,23 +89,7 @@ handler.triggerSystemEvents = async ({
         lastKnownEventId: experimentRecord.events[0]._id,
         messages: [
             ...PutMaker({ personnelId }).all({
-                [experimentInvitationStatusPath]: invitationStatus
-            })
-        ]
-    })
-
-    var subjectChannel = (
-        rohrpost.openCollection('subject').openChannel({
-            id: subjectId
-        })
-    )
-
-    await subjectChannel.dispatchMany({
-        subChannelKey: 'scientific',
-        lastKnownEventId: subjectRecord.scientific.events[0]._id,
-        messages: [
-            ...PutMaker({ personnelId }).all({
-                [subjectInvitationStatusPath]: invitationStatus
+                [commentPath]: comment
             })
         ]
     })

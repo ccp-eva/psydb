@@ -40,7 +40,7 @@ handler.checkAllowedAndPlausible = async ({
     );
 
     if (!experimentRecord) {
-        throw new ApiError('InvalidExperimentId');
+        throw new ApiError(400, 'InvalidExperimentId');
     }
 
     var teamRecord = cache.teamRecord = await (
@@ -51,7 +51,7 @@ handler.checkAllowedAndPlausible = async ({
     )
 
     if (!teamRecord) {
-        throw new ApiError('InvalidTeamId');
+        throw new ApiError(400, 'InvalidTeamId');
     }
 }
 

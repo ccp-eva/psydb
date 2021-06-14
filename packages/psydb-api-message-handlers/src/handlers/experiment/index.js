@@ -6,9 +6,11 @@ var {
 var ExperimentGroup = MessageHandlerGroup([
     require('./create-from-awayteam-reservation'),
     require('./create-from-inhouse-reservation'),
-    require('./change-invitation-status'),
-
+    
     require('./change-experiment-operator-team'),
+    require('./change-invitation-status'),
+    require('./change-per-subject-comment'),
+    
     require('./move-inhouse'),
 
     require('./add-subject'),
