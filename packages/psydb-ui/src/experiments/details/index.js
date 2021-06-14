@@ -12,6 +12,10 @@ import {
 import agent from '@mpieva/psydb-ui-request-agents';
 import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
 
+import General from './general';
+import GeneralFunctions from './general-functions';
+import Subjects from './subjects';
+
 const ExperimentDetails = () => {
     var { path, url } = useRouteMatch();
     var { experimentType, id } = useParams();
@@ -46,7 +50,22 @@ const ExperimentDetails = () => {
 
     return (
         <div>
-            fooo
+            <div className='border bg-light p-3'>
+                <General { ...({ experimentData, studyData }) } />
+                <hr />
+                <div className='mt-3 d-flex justify-content-end'>
+                    <GeneralFunctions { ...({
+                        experimentData, studyData
+                    }) } />
+                </div>
+            </div>
+            <div>
+                <Subjects { ...({
+                    experimentData,
+                    studyData,
+                    subjectDataByType
+                }) } />
+            </div>
         </div>
     );
 }

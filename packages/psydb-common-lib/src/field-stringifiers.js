@@ -39,6 +39,10 @@ var DateTime = (value) => {
     return formatDate(new Date(value), 'P p', { locale: deLocale })
 };
 
+var DateOnlyServerSide = (value) => {
+    return formatDate(new Date(value), 'P', { locale: deLocale })
+};
+
 var AgeFrame = (value) => {
     var start = AgeFrameEdge(value.start);
     var end = AgeFrameEdge(value.end)
@@ -68,6 +72,7 @@ module.exports = {
     EmailList,
     PhoneList,
     DateTime,
+    DateOnlyServerSide,
     BiologicalGender,
     ExtBool
 }

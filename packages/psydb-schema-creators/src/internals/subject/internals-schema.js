@@ -31,12 +31,12 @@ var ManualParticipation = () => ExactObject({
     ]
 });
 
-var ExperimentParticipation = () => ExactObject({
+var ExperimentParticipation = ({ type }) => ExactObject({
     properties: {
         type: {
             type: 'string',
-            const: 'experiment',
-            default: 'experiment'
+            const: type,
+            default: type,
         },
         studyId: ForeignId({
             collection: 'study',
@@ -93,7 +93,9 @@ var InternalsSchema = () => {
                         lazyResolveProp: 'type',
                         oneOf: [
                             ManualParticipation(),
-                            ExperimentParticipation(),
+                            ExperimentParticipation({ type: 'inhouse' }),
+                            ExperimentParticipation({ type: 'away-team' }),
+                            ExperimentParticipation({ type: 'online' }),
                         ]
                     }
                 },

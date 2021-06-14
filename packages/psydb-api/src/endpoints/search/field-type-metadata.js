@@ -62,6 +62,20 @@ module.exports = {
 
     //BiologicalGender,
 
+    DateOnlyServerSide: {
+        canBeCustomField: true,
+        canBeDisplayField: true,
+        canBeLabelField: true,
+        canSearch: true,
+        searchType: 'DateOnlyServerSideInterval'
+    },
+
+    Id: {
+        canBeCustomField: true,
+        canBeDisplayField: true,
+        canBeLabelField: true,
+        canSearch: false,
+    },
 
     ...[
         'ExtBool',
