@@ -68,6 +68,19 @@ var extendedExperimentData = async (context, next) => {
         }, { projection: { events: false }})
     );
 
+    var studyRecordSchema = await createSchemaForRecordType({
+        db,
+        collectionName: 'study',
+        recordType: studyRecord.type,
+        fullSchema: true
+    });
+
+    var studyRelated = await fetchRelatedLabels({
+        db,
+        data: studyRecord,
+        schema: studyRecordSchema,
+    });
+
     var subjectTypeKeys = (
         studyRecord.state.selectionSettingsBySubjectType.map(it => (
             it.subjectRecordType
@@ -140,6 +153,10 @@ var extendedExperimentData = async (context, next) => {
             experimentData: {
                 record: experimentRecord,
                 ...experimentRelated,
+            },
+            studyData: {
+                record: studyRecord,
+                ...studyRelated,
             },
             subjectDataByType,
         },

@@ -229,10 +229,11 @@ describe('init-demo-system', function () {
             experimentType: 'inhouse',
         });*/
 
-        //response = await agent.get(`/extended-experiment-data/inhouse/${context.EXP_INHOUSE_01}`)
 
-        response = await agent.get(`/read/experiment/${context.EXP_INHOUSE_01}`);
+        //response = await agent.get(`/read/experiment/${context.EXP_INHOUSE_01}`);
         //response = await agent.get(`/read/study/default/${context.STUDY_01_ID}`);
+
+        response = await agent.get(`/extended-experiment-data/inhouse/${context.EXP_INHOUSE_01}`)
 
         console.dir(response.status, { depth: null });
         console.dir(response.body, { depth: null });

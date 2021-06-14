@@ -19,13 +19,10 @@ const ExperimentDetails = () => {
     var [ state, dispatch ] = useReducer(reducer, {});
     var {
         revision,
-
-        record,
-        relatedRecordLabels,
-        relatedHelperSetItems,
-        relatedCustomRecordTypeLabels,
-
-
+        
+        experimentData,
+        studyData,
+        subjectDataByType,
     } = state;
 
 
@@ -41,14 +38,16 @@ const ExperimentDetails = () => {
         })
     }, [ experimentType, id ]);
 
-    if (!record) {
+    if (!experimentData) {
         return (
             <LoadingIndicator size='lg' />
         );
     }
 
     return (
-        <div>fooo</div>
+        <div>
+            fooo
+        </div>
     );
 }
 
@@ -59,10 +58,9 @@ const reducer = (state, action) => {
         case 'init-data':
             return ({
                 ...state,
-                record: payload.record,
-                relatedRecordLabels: payload.relatedRecordLabels,
-                relatedHelperSetItems: payload.relatedHelperSetItems,
-                relatedCustomRecordTypeLabels: payload.relatedCustomRecordTypeLabels,
+                experimentData: payload.experimentData,
+                studyData: payload.studyData,
+                subjectDataByType: payload.subjectDataByType,
             })
 
         case 'init-extended-experiment-data':
