@@ -123,6 +123,11 @@ handler.triggerSystemEvents = async ({
         subjectRecord,
     } = cache;
 
+    /*dispatchAddSubjectEvents({
+        experimentRecord,
+        subjectRecord
+    });*/
+
     var experimentChannel = (
         rohrpost.openCollection('experiment').openChannel({
             id: experimentId

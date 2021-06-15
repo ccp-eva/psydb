@@ -11,7 +11,7 @@ var SimpleHandler = require('../../../lib/simple-handler'),
 var {
     checkIntervalHasReservation,
     checkConflictingSubjectExperiments,
-    dispatchAllChannelMessages,
+    dispatchCreateEvents,
 } = require('../util');
 
 var createSchema = require('./schema');
@@ -74,7 +74,7 @@ handler.triggerSystemEvents = async ({
         _id: props.locationId,
     }, { projection: { type: true }});
 
-    await dispatchAllChannelMessages({
+    await dispatchCreateEvents({
         db,
         rohrpost,
         personnelId,

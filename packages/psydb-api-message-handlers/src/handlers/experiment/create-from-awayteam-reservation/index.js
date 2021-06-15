@@ -11,7 +11,7 @@ var SimpleHandler = require('../../../lib/simple-handler'),
 var {
     checkConflictingLocationReservations,
     checkConflictingSubjectExperiments,
-    dispatchAllChannelMessages,
+    dispatchCreateEvents,
 } = require('../util');
 
 var createSchema = require('./schema');
@@ -89,7 +89,7 @@ handler.triggerSystemEvents = async ({
         db.collection('location').findOne({ _id: props.locationId })
     );
 
-    await dispatchAllChannelMessages({
+    await dispatchCreateEvents({
         db,
         rohrpost,
         personnelId,
