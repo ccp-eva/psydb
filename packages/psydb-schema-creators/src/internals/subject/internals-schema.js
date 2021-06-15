@@ -31,6 +31,26 @@ var ManualParticipation = () => ExactObject({
     ]
 });
 
+var OnlineParticipation = () => ExactObject({
+    properties: {
+        type: {
+            type: 'string',
+            const: 'online',
+        },
+        studyId: ForeignId({
+            collection: 'study',
+        }),
+        timestamp: DateTime(),
+        status: ParticipationStatus(),
+    },
+    require: [
+        'type',
+        'studyId',
+        'timestamp',
+        'status',
+    ]
+});
+
 var ExperimentParticipation = ({ type }) => ExactObject({
     properties: {
         type: {
@@ -56,8 +76,13 @@ var ExperimentParticipation = ({ type }) => ExactObject({
     ]
 });
 
-var ExperimentInvitation = () => ExactObject({
+var ExperimentInvitation = ({ type }) => ExactObject({
     properties: {
+        type: {
+            type: 'string',
+            const: type,
+            default: type,
+        },
         studyId: ForeignId({
             collection: 'study',
         }),
@@ -68,6 +93,7 @@ var ExperimentInvitation = () => ExactObject({
         status: InvitationStatus(),
     },
     required: [
+        'type',
         'studyId',
         'experimentId',
         'timestamp',
@@ -80,10 +106,22 @@ var InternalsSchema = () => {
     return (
         ExactObject({
             properties: {
+                // FIXME: this should actually be scheduledForExperiments
+                // since it probably inludes away team based testing as well
+                // im not sure about that though (online has to be handled
+                // differently i guess cuz that are too many)
                 invitedForExperiments: {
                     type: 'array',
                     default: [],
-                    items: ExperimentInvitation(),
+                    items: {
+                        type: 'object',
+                        lazyResolveProp: 'type',
+                        oneOf: [
+                            ExperimentInvitation({ type: 'inhouse' }),
+                            // TODO: should that be stored?
+                            //ExperimentInvitation({ type: 'away-team' }),
+                        ],
+                    }
                 },
                 participatedInStudies: {
                     type: 'array',
@@ -93,9 +131,9 @@ var InternalsSchema = () => {
                         lazyResolveProp: 'type',
                         oneOf: [
                             ManualParticipation(),
+                            OnlineParticipation(),
                             ExperimentParticipation({ type: 'inhouse' }),
                             ExperimentParticipation({ type: 'away-team' }),
-                            ExperimentParticipation({ type: 'online' }),
                         ]
                     }
                 },

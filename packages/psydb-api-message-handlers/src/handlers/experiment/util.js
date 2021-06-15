@@ -185,9 +185,16 @@ var dispatchAllChannelMessages = async ({
         .toArray()
     );*/
 
+    var subjectRecords = await (
+        db.collection('subject').find({
+            _id: { $in: subjectIds },
+        }, { projection: { type: true }}).toArray()
+    );
+
     var pusher = PushMaker({ personnelId });
     
-    var SubjectDataItem = (id) => ({
+    var SubjectDataItem = (id, type) => ({
+        subjectType: type,
         subjectId: id,
         invitationStatus: 'scheduled',
         participationStatus: 'unknown',
@@ -206,8 +213,8 @@ var dispatchAllChannelMessages = async ({
         ]), []),*/
         
         ...pusher.all({
-            '/state/subjectData': subjectIds.map(
-                id => SubjectDataItem(id)
+            '/state/subjectData': subjectRecords.map(
+                it => SubjectDataItem(it._id, it.type)
             )
         })
     ];
@@ -294,6 +301,7 @@ var dispatchAllChannelMessages = async ({
                 messages: [
                     ...pusher.all({
                         '/state/internals/invitedForExperiments': [{
+                            type: 'inhouse',
                             studyId,
                             experimentId,
                             timestamp: now,

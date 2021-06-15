@@ -137,6 +137,7 @@ handler.triggerSystemEvents = async ({
             ...PushMaker({ personnelId }).all({
                 '/state/selectedSubjectIds': subjectId,
                 '/state/subjectData': {
+                    subjectType: subjectRecord.type,
                     subjectId,
                     invitationStatus: 'scheduled',
                     participationStatus: 'unknown'
