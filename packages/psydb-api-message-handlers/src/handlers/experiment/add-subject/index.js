@@ -135,7 +135,7 @@ handler.triggerSystemEvents = async ({
         lastKnownEventId: lastKnownExperimentEventId,
         messages: [
             ...PushMaker({ personnelId }).all({
-                '/state/selectedSubjecIds': subjectId,
+                '/state/selectedSubjectIds': subjectId,
                 '/state/subjectData': {
                     subjectId,
                     invitationStatus: 'scheduled',

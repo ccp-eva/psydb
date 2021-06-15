@@ -2,7 +2,7 @@
 var {
     ExactObject,
     DefaultBool,
-    CustomRecordTypeName,
+    CustomRecordTypeKey,
     Integer,
 } = require('@mpieva/psydb-schema-fields');
 
@@ -27,7 +27,7 @@ var SubjectSelectionSettingsListItemOption = ({
                     default: 1,
                     minimum: 1,
                 }),
-                subjectRecordType: CustomRecordTypeName({
+                subjectRecordType: CustomRecordTypeKey({
                     collection: 'subject',
                     const: type,
                     default: type,

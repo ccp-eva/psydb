@@ -10,6 +10,7 @@ var {
     InvitationStatus,
     DefaultBool,
     FullText,
+    CustomRecordTypeKey,
 } = require('@mpieva/psydb-schema-fields');
 
 // TODO: merge adjascent reservations into one? or have a handler?
@@ -37,6 +38,9 @@ var ExperimentState = ({
                 collection: 'experimentOperatorTeam',
             }),
             locationId: ForeignId({
+                collection: 'location',
+            }),
+            locationRecordType: CustomRecordTypeKey({
                 collection: 'location',
             }),
             
@@ -91,6 +95,7 @@ var ExperimentState = ({
             'studyId',
             'experimentOperatorTeamId',
             'locationId',
+            'locationRecordType',
             'interval',
             'selectedSubjectGroupIds',
             'selectedSubjectIds',

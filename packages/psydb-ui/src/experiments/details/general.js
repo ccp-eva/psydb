@@ -8,29 +8,7 @@ import {
 } from 'react-bootstrap';
 
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
-import stringifyFieldValue from '@mpieva/psydb-ui-lib/src/stringify-field-value';
-
-const createStringifier = ({
-    record,
-    relatedRecords: relatedRecordLabels,
-    relatedHelperSetItems,
-    relatedCustomRecordTypeLabels,
-}) => (
-    ({ ptr, type, collection, setId }) => {
-        var rawValue = jsonpointer.get(record, ptr);
-        var fieldDefinition = {
-            type,
-            props: { collection, setId }
-        };
-        return stringifyFieldValue({
-            rawValue,
-            fieldDefinition,
-            relatedRecordLabels,
-            relatedHelperSetItems,
-            relatedCustomRecordTypeLabels,
-        })
-    }
-)
+import createStringifier from './record-field-stringifier';
 
 const Pair = ({ label, children }) => {
     return (
@@ -108,7 +86,8 @@ const General = ({
                     <Pair label='Location-Typ'>
                         { stringifyExperimentValue({
                             ptr: '/state/locationRecordType',
-                            type: 'CustomRecordType',
+                            collection: 'location',
+                            type: 'CustomRecordTypeKey',
                         })}
                     </Pair>
                 </Split>

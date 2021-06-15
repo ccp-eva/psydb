@@ -60,6 +60,16 @@ const stringifyFieldValue = ({
             str = (rawValue || []).join(', ')
         }
     }
+    else if (type === 'CustomRecordTypeKey') {
+        if (relatedCustomRecordTypeLabels) {
+            str = (
+                relatedCustomRecordTypeLabels[props.collection][rawValue].state.label
+            );
+        }
+        else {
+            str = rawValue;
+        }
+    }
     else {
         var stringify = stringifiers[type];
         if (stringify) {
