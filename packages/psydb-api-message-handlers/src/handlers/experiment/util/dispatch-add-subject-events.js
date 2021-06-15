@@ -10,7 +10,8 @@ var dispatchAddSubjectEvents = async ({
     personnelId,
 
     experimentRecord,
-    subjectRecord
+    subjectRecord,
+    lastKnownSubjectScientificEventId,
 }) => {
 
     var experimentChannel = (
@@ -19,6 +20,7 @@ var dispatchAddSubjectEvents = async ({
         })
     )
 
+    console.log('AAAAAAAAAAAAA');
     // FIXME
     var lastKnownExperimentEventId = experimentRecord.events[0]._id;
     await experimentChannel.dispatchMany({
@@ -42,8 +44,14 @@ var dispatchAddSubjectEvents = async ({
         })
     )
 
+    console.log('BBBBBBB');
+    console.log(lastKnownSubjectScientificEventId);
     // FIXME
-    var lastKnownSubjectScientificEventId = subjectRecord.scientific.events[0]._id;
+    if (!lastKnownSubjectScientificEventId) {
+        lastKnownSubjectScientificEventId = (
+            subjectRecord.scientific.events[0]._id
+        );
+    }
     await subjectChannel.dispatchMany({
         subChannelKey: 'scientific',
         lastKnownEventId: lastKnownSubjectScientificEventId,

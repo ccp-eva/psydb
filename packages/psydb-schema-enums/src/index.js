@@ -21,8 +21,8 @@ module.exports = {
             // in invitation status
             'canceled-by-participant',
             'canceled-by-institute', // aka we uninvited the subject
-            'deleted-by-institute', // XXX: we deleted the thing i guess??
-            'moved-by-institute',
+            'deleted', // XXX: we deleted the thing i guess??
+            'moved',
         ],
         names: [
             'abgesagt',

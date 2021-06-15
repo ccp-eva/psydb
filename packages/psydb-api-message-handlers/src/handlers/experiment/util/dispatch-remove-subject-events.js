@@ -69,7 +69,8 @@ var dispatchRemoveSubjectEvents = async ({
     })
 
     var shouldUpdateSubjectComment = (
-        subjectRecord.scientific.state.comment !== subjectComment
+        subjectComment !== undefined
+        && subjectRecord.scientific.state.comment !== subjectComment
     );
 
     var subjectChannel = (

@@ -1,6 +1,7 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
 
+var compareIds = require('@mpieva/psydb-api-lib/src/compare-ids');
 var ApiError = require('@mpieva/psydb-api-lib/src/api-error');
 
 var SimpleHandler = require('../../../lib/simple-handler'),
@@ -9,13 +10,15 @@ var SimpleHandler = require('../../../lib/simple-handler'),
 var {
     checkIntervalHasReservation,
     checkConflictingSubjectExperiments,
-    dispatchAllChannelMessages,
+    dispatchCreateEvents,
+    dispatchAddSubjectEvents,
+    dispatchRemoveSubjectEvents,
 } = require('../util');
 
 var createSchema = require('./schema');
 
 var handler = SimpleHandler({
-    messageType: 'experiment/move-sibject-inhouse',
+    messageType: 'experiment/move-subject-inhouse',
     createSchema,
 });
 
@@ -47,6 +50,9 @@ handler.checkAllowedAndPlausible = async ({
     if (!experimentRecord) {
         throw new ApiError(400, 'InvalidExperimentId');
     }
+    if (experimentRecord.type !== 'inhouse') {
+        throw new ApiError(400, 'InvalidExperimentId');
+    }
     if (experimentRecord.state.isCanceled) {
         throw new ApiError(400, 'InvalidExperimentId');
     }
@@ -60,6 +66,15 @@ handler.checkAllowedAndPlausible = async ({
         throw new ApiError(400, 'InvalidSubjectId');
     }
 
+    var subjectExistsInSource = (
+        experimentRecord.state.subjectData.find(it => (
+            compareIds(it.subjectId, subjectId)
+        ))
+    )
+    if (!subjectExistsInSource) {
+        throw new ApiError(400, 'SubjectMissingInSource');
+    }
+
     if (target.experimentId) {
         
         var targetExperimentRecord = targetCache.experimentRecord = await (
@@ -71,8 +86,19 @@ handler.checkAllowedAndPlausible = async ({
         if (!targetExperimentRecord) {
             throw new ApiError(400, 'InvalidTargetExperimentId');
         }
+        if (targetExperimentRecord.type !== 'inhouse') {
+            throw new ApiError(400, 'InvalidTargetExperimentId');
+        }
         if (targetExperimentRecord.state.isCanceled) {
             throw new ApiError(400, 'InvalidTargetExperimentId');
+        }
+
+        var isSameStudy = compareIds(
+            experimentRecord.state.studyId,
+            targetExperimentRecord.state.studyId,
+        )
+        if (!isSameStudy) {
+            throw new ApiError(400, 'StudiesDontMatch');
         }
 
         var subjectExistsInTarget = (
@@ -88,7 +114,7 @@ handler.checkAllowedAndPlausible = async ({
 
         var targetLocationRecord = targetCache.locationRecord = await (
             db.collection('location').findOne({
-                _id: locationId
+                _id: target.locationId
             })
         );
         if (!targetLocationRecord) {
@@ -97,7 +123,7 @@ handler.checkAllowedAndPlausible = async ({
 
         var targetTeamRecord = targetCache.teamRecord = await (
             db.collection('experimentOperatorTeam').findOne({
-                _id: locationId
+                _id: target.experimentOperatorTeamId
             })
         );
         if (!targetTeamRecord) {
@@ -105,11 +131,14 @@ handler.checkAllowedAndPlausible = async ({
         }
 
         await checkIntervalHasReservation({
-            db, interval, locationId, experimentOperatorTeamId
+            db,
+            interval: target.interval,
+            locationId: target.locationId,
+            experimentOperatorTeamId: target.experimentOperatorTeamId
         });
 
         await checkConflictingSubjectExperiments({
-            db, subjectIds, interval
+            db, subjectIds: [ subjectId ], interval: target.interval
         });
     }
 };
@@ -131,16 +160,55 @@ handler.triggerSystemEvents = async ({
     } = cache;
 
     if (target.experimentId) {
-        dispatchRemoveSubjectEvents({
+        await dispatchRemoveSubjectEvents({
+            db,
+            rohrpost,
+            personnelId,
+
             experimentRecord,
             subjectRecord,
+
+            unparticipateStatus: 'moved',
+            subjectComment: undefined,
+            blockSubjectFromTesting: { shouldBlock: false },
         });
-        dispatchAddSubjectEvents({
+
+        var [ experimentMod, subjectMod ] = rohrpost.getModifiedChannels();
+        var lastKnownExperimentEventId = experimentMod.lastKnownEvenId;
+        var lastKnownSubjectScientificEventId = subjectMod.lastKnownEventId;
+
+
+        // FIXME: this unlocks the specific channel so i can dispatch
+        // more stuff into that thing ... im not happy with that
+        await db.collection('subject').updateOne(
+            { _id: subjectId },
+            { $set: {
+                'scientific.events.$[].processed': true,
+            }},
+        );
+
+        var subjectRecord = await (
+            db.collection('subject').findOne({
+                _id: subjectId
+            })
+        );
+        console.log(subjectMod);
+        console.log(subjectRecord.scientific.events[0]);
+
+        await dispatchAddSubjectEvents({
+            db,
+            rohrpost,
+            personnelId,
+
             experimentRecord: targetCache.experimentRecord,
+            
             subjectRecord,
+            lastKnownSubjectScientificEventId,
         });
     }
     else {
-        
+        throw new Error();        
     }
+}
 
+module.exports = handler;

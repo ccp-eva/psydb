@@ -12,6 +12,7 @@ var ExperimentGroup = MessageHandlerGroup([
     require('./change-per-subject-comment'),
     
     require('./move-inhouse'),
+    require('./move-subject-inhouse'),
 
     require('./add-subject'),
     require('./remove-subject'),
