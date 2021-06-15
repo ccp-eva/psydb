@@ -1,6 +1,8 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
 
+var enums = require('@mpieva/psydb-schema-enums');
+
 var ApiError = require('@mpieva/psydb-api-lib/src/api-error');
 var compareIds = require('@mpieva/psydb-api-lib/src/compare-ids');
 
@@ -9,6 +11,10 @@ var SimpleHandler = require('../../../lib/simple-handler'),
 
 var PutMaker = require('../../../lib/put-maker'),
     PushMaker = require('../../../lib/push-maker');
+
+var {
+    dispatchAddSubjectEvents,
+} = require('../util');
 
 var createSchema = require('./schema');
 
@@ -67,11 +73,9 @@ handler.checkAllowedAndPlausible = async ({
             _id: { $in: (
                 experimentRecord.state.subjectData
                 .filter(it => (
-                    ![
-                        'canceled-by-participant',
-                        'canceled-by-institute',
-                        'deleted-by-institute'
-                    ].includes(it.participationStatus)
+                    !enums.unparticipationStatus.keys.includes(
+                        it.participationStatus
+                    )
                 ))
                 .map(it => (
                     it.subjectId
@@ -123,57 +127,14 @@ handler.triggerSystemEvents = async ({
         subjectRecord,
     } = cache;
 
-    /*dispatchAddSubjectEvents({
+    await dispatchAddSubjectEvents({
+        db,
+        rohrpost,
+        personnelId,
         experimentRecord,
         subjectRecord
-    });*/
-
-    var experimentChannel = (
-        rohrpost.openCollection('experiment').openChannel({
-            id: experimentId
-        })
-    )
-
-    // FIXME
-    var lastKnownExperimentEventId = experimentRecord.events[0]._id;
-    await experimentChannel.dispatchMany({
-        lastKnownEventId: lastKnownExperimentEventId,
-        messages: [
-            ...PushMaker({ personnelId }).all({
-                '/state/selectedSubjectIds': subjectId,
-                '/state/subjectData': {
-                    subjectType: subjectRecord.type,
-                    subjectId,
-                    invitationStatus: 'scheduled',
-                    participationStatus: 'unknown'
-                }
-            })
-        ]
     });
-
-    var subjectChannel = (
-        rohrpost.openCollection('subject').openChannel({
-            id: subjectId
-        })
-    )
-
-    // FIXME
-    var lastKnownSubjectScientificEventId = subjectRecord.scientific.events[0]._id;
-    await subjectChannel.dispatchMany({
-        subChannelKey: 'scientific',
-        lastKnownEventId: lastKnownSubjectScientificEventId,
-        messages: [
-            ...PushMaker({ personnelId }).all({
-                '/state/internals/invitedForExperiments': {
-                    experimentId,
-                    studyId: experimentRecord.state.studyId,
-                    timestamp: new Date(),
-                    status: 'scheduled',
-                }
-            }),
-        ]
-    })
-
+    
 }
 
 module.exports = handler;

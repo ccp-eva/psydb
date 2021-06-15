@@ -99,6 +99,11 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/psydb-schema-enums",
+       "projectFolder": "packages/psydb-schema-enums",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-schema-fields",
        "projectFolder": "packages/psydb-schema-fields",
        "reviewCategory": "production"

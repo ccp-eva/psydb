@@ -1,4 +1,6 @@
 'use strict';
+var debug = require('debug')('psydb:api:message-handlers');
+var enums = require('@mpieva/psydb-schema-enums');
 
 var {
     ExactObject,
@@ -20,11 +22,7 @@ var UnparticipateStatus = ({ ...additionalKeywords } = {}) => {
         _enumNames = [];
     for (var [index, it] of schema.enum.entries()) {
         var shouldUse = (
-            [
-                'canceled-by-participant',
-                'canceled-by-institute',
-                'deleted-by-institute'
-            ].includes(it)
+            enums.unparticipationStatus.keys.includes(it)
         );
         if (shouldUse) {
             _enum.push(it);

@@ -15,4 +15,10 @@ module.exports = {
     dispatchCreateEvents: (
         require('./dispatch-create-events')
     ),
+    dispatchAddSubjectEvents: (
+        require('./dispatch-add-subject-events')
+    ),
+    dispatchRemoveSubjectEvents: (
+        require('./dispatch-remove-subject-events')
+    ),
 };

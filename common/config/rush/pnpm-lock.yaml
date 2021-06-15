@@ -34,6 +34,7 @@ dependencies:
   '@rush-temp/psydb-mongo-adapter': 'file:projects/psydb-mongo-adapter.tgz'
   '@rush-temp/psydb-schema': 'file:projects/psydb-schema.tgz'
   '@rush-temp/psydb-schema-creators': 'file:projects/psydb-schema-creators.tgz'
+  '@rush-temp/psydb-schema-enums': 'file:projects/psydb-schema-enums.tgz'
   '@rush-temp/psydb-schema-fields': 'file:projects/psydb-schema-fields.tgz'
   '@rush-temp/psydb-schema-fields-special': 'file:projects/psydb-schema-fields-special.tgz'
   '@rush-temp/psydb-schema-helpers': 'file:projects/psydb-schema-helpers.tgz'
@@ -7507,6 +7508,16 @@ packages:
       integrity: sha512-QQrf0lD76+SLhI4vF7ksYQeTBkjMI49qXQRmdTSuiUHXwyYDgpdM0YTbBcTElJxQWskXLGu/sjqPWwWeO3ee4A==
       tarball: 'file:projects/psydb-schema-creators.tgz'
     version: 0.0.0
+  'file:projects/psydb-schema-enums.tgz':
+    dependencies:
+      chai: 4.2.0
+      mocha: 8.1.3
+    dev: false
+    name: '@rush-temp/psydb-schema-enums'
+    resolution:
+      integrity: sha512-XQYvfOIsyw7xJoQPsdkUkutjE3qCOdKpLOXrBlkl29VoaxuLtKbquQ++ewYgrLuwMzVdQ96nCetKxP/YkLH6XA==
+      tarball: 'file:projects/psydb-schema-enums.tgz'
+    version: 0.0.0
   'file:projects/psydb-schema-fields-special.tgz':
     dependencies:
       '@cdxoo/inline-text': 1.0.1
@@ -7527,7 +7538,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-schema-fields'
     resolution:
-      integrity: sha512-WgFmdIvkWECG6xKuLzcYOHj971KuKeFfsi0BOav9AeBCW0NHPYTWg0vt665VRM22syY1R7qxLyBhJ5VV1jlAcQ==
+      integrity: sha512-87wGWtPhBVxvmV+LpZ7FLYgRf8ktM+2h0lFX/C0XqFiJlvomZXiBep3DV2kBX5DOwtxOtPaQvQOjs/hMelNETQ==
       tarball: 'file:projects/psydb-schema-fields.tgz'
     version: 0.0.0
   'file:projects/psydb-schema-helpers.tgz':
@@ -7733,6 +7744,7 @@ specifiers:
   '@rush-temp/psydb-mongo-adapter': 'file:./projects/psydb-mongo-adapter.tgz'
   '@rush-temp/psydb-schema': 'file:./projects/psydb-schema.tgz'
   '@rush-temp/psydb-schema-creators': 'file:./projects/psydb-schema-creators.tgz'
+  '@rush-temp/psydb-schema-enums': 'file:./projects/psydb-schema-enums.tgz'
   '@rush-temp/psydb-schema-fields': 'file:./projects/psydb-schema-fields.tgz'
   '@rush-temp/psydb-schema-fields-special': 'file:./projects/psydb-schema-fields-special.tgz'
   '@rush-temp/psydb-schema-helpers': 'file:./projects/psydb-schema-helpers.tgz'

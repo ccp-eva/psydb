@@ -1,5 +1,5 @@
 {
-  "name": "@mpieva/psydb-schema-fields",
+  "name": "@mpieva/psydb-schema-enums",
   "version": "0.1.0-alpha",
   "description": "",
   "main": "src/index.js",
@@ -13,8 +13,5 @@
     "chai": "~4.2.0"
   },
   "dependencies": {
-    "@mpieva/psydb-schema-primitives": "~0.1.0-alpha",
-    "@mpieva/psydb-schema-enums": "~0.1.0-alpha",
-    "@cdxoo/inline-text": "~1.0.1"
   }
 }
