@@ -8,36 +8,10 @@ import {
 } from 'react-bootstrap';
 
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
-import createStringifier from './record-field-stringifier';
+import Pair from '@mpieva/psydb-ui-lib/src/pair';
+import Split from '@mpieva/psydb-ui-lib/src/split';
 
-const Pair = ({ label, children }) => {
-    return (
-        <Row>
-            <Col sm={4}>
-                <Text>{ label }</Text>
-            </Col>
-            <Col sm={8}>
-                <Text><b style={{ fontWeight: 600 }}>{ children }</b></Text>
-            </Col>
-        </Row>
-    );
-}
-
-const Split = ({ num, children }) => {
-    if (!Array.isArray(children)) {
-        children = [ children ];
-    }
-    var sm = 12 / (num || children.length);
-    return (
-        <Row>
-            { children.map((it, index) => (
-                <Col key={ index } sm={sm}>
-                    { it }
-                </Col>
-            ))}
-        </Row>
-    );
-}
+import createStringifier from '@mpieva/psydb-ui-lib/src/record-field-stringifier';
 
 const experimentTypeNames = {
     'inhouse': 'Inhouse',
@@ -123,15 +97,6 @@ const General = ({
                 </Split>
 
             </Container>
-    );
-}
-
-const Text = ({ children }) => {
-    return (
-        <div style={{
-            paddingTop: 'calc(0.375rem + 1px)',
-            paddingBottom: 'calc(0.375rem + 1px)',
-        }}>{ children }</div>
     );
 }
 

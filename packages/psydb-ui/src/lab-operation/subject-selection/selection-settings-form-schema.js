@@ -2,7 +2,7 @@ import {
     BasicObject,
     BasicArray,
     BasicBool,
-    DateOnlyInterval,
+    DateOnlyServerSideInterval,
 } from '@mpieva/psydb-schema-fields';
 
 const BoolTrue = ({ ...additionalKeywords } = {}) => BasicBool({
@@ -22,7 +22,7 @@ const SelectionSettingsFormSchema = ({
     relatedRecords,
     relatedHelperSetItems,
 }) => BasicObject({
-    timeFrame: DateOnlyInterval({
+    timeFrame: DateOnlyServerSideInterval({
         title: 'Zeitfenster für Termin',
         additionalStartKeywords: {
             title: 'Beginn',

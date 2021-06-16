@@ -20,7 +20,6 @@ var dispatchAddSubjectEvents = async ({
         })
     )
 
-    console.log('AAAAAAAAAAAAA');
     // FIXME
     var lastKnownExperimentEventId = experimentRecord.events[0]._id;
     await experimentChannel.dispatchMany({
@@ -44,8 +43,6 @@ var dispatchAddSubjectEvents = async ({
         })
     )
 
-    console.log('BBBBBBB');
-    console.log(lastKnownSubjectScientificEventId);
     // FIXME
     if (!lastKnownSubjectScientificEventId) {
         lastKnownSubjectScientificEventId = (

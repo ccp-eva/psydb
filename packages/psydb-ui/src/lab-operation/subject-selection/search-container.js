@@ -13,7 +13,7 @@ import jsonpointer from 'jsonpointer';
 import { Base64 } from 'js-base64';
 
 import {
-    DateOnlyInterval,
+    DateOnlyServerSideInterval,
 } from '@mpieva/psydb-schema-fields';
 
 import agent from '@mpieva/psydb-ui-request-agents';

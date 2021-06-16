@@ -18,7 +18,7 @@ import FieldDataBodyCols from '@mpieva/psydb-ui-lib/src/record-list/field-data-b
 
 import TableButton from './table-button';
 
-import createStringifier from './record-field-stringifier';
+import createStringifier from '@mpieva/psydb-ui-lib/src/record-field-stringifier';
 
 const Subjects = ({
     experimentData,
