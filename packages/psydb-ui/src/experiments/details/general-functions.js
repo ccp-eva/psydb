@@ -5,6 +5,7 @@ import {
 } from 'react-bootstrap';
 
 import ChangeTeamModal from './change-team-modal';
+import MoveExperimentModal from './move-experiment-modal';
 
 const GeneralFunctions = ({
     experimentData,
@@ -13,6 +14,7 @@ const GeneralFunctions = ({
 }) => {
     return (
         <>
+
             <ChangeTeamContainer { ...({
                 experimentId: experimentData.record._id,
                 studyId: studyData.record._id,
@@ -21,9 +23,12 @@ const GeneralFunctions = ({
                 ),
                 onSuccessfulUpdate,
             }) } />
-            <Button size='sm'>
-                Verschieben
-            </Button>
+
+            <MoveExperimentContainer { ...({
+                experimentData,
+                studyData,
+                onSuccessfulUpdate,
+            }) } />
         </>
     );
 }
@@ -49,6 +54,31 @@ const ChangeTeamContainer = ({
                 experimentId,
                 studyId,
                 currentTeamId,
+                onSuccessfulUpdate
+            }) } />
+        </>
+    );
+};
+
+const MoveExperimentContainer = ({
+    experimentData,
+    studyData,
+    onSuccessfulUpdate,
+}) => {
+    var [ show, setShow ] = useState(false);
+    var handleShow = useCallback(() => setShow(true), []);
+    var handleHide = useCallback(() => setShow(false), []);
+    return (
+        <>
+            <Button size='sm' className='mr-3' onClick={ handleShow }>
+                Verschieben
+            </Button>
+            <MoveExperimentModal { ...({
+                show,
+                onHide: handleHide,
+
+                experimentData,
+                studyData,
                 onSuccessfulUpdate
             }) } />
         </>

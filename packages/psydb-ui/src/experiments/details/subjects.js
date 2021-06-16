@@ -234,13 +234,13 @@ var SubjectDropdown = ({
                 }} />
             </Dropdown.Toggle>
             <Dropdown.Menu>
-                <Dropdown.Item onClick={ wrappedOnClickComment }>
+                <Dropdown.Item as='button' onClick={ wrappedOnClickComment }>
                     Kommentar
                 </Dropdown.Item>
-                <Dropdown.Item onClick={ wrappedOnClickMove }>
+                <Dropdown.Item as='button' onClick={ wrappedOnClickMove }>
                     Verschieben
                 </Dropdown.Item>
-                <Dropdown.Item onClick={ wrappedOnClickRemove }>
+                <Dropdown.Item as='button' onClick={ wrappedOnClickRemove }>
                     Entfernen
                 </Dropdown.Item>
             </Dropdown.Menu>

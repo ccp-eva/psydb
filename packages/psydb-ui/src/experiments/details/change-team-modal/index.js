@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, useReducer, useCallback } from 'react';
+import React, { useMemo, useEffect, useReducer, useCallback, useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
 import agent from '@mpieva/psydb-ui-request-agents';
@@ -15,20 +15,7 @@ const ChangeTeamModal = ({
 
     onSuccessfulUpdate,
 }) => {
-    var [ state, dispatch ] = useReducer(reducer, {
-        selectedTeamId: currentTeamId,
-    });
-    var {
-        records,
-        relatedRecordLabels,
-        selectedTeamId,
-
-        listRevision,
-    } = state;
-
-    var handleSelectTeam = useCallback((teamId) => {
-        dispatch({ type: 'select-team', payload: { teamId }});
-    }, [])
+    var [ selectedTeamId, handleSelectTeam ] = useState(currentTeamId);
 
     var handleSubmit = useCallback(() => {
         var message = {
@@ -43,27 +30,10 @@ const ChangeTeamModal = ({
             onHide();
             onSuccessfulUpdate && onSuccessfulUpdate(response);
         })
-    }, [ experimentId, selectedTeamId ])
+    }, [ experimentId, selectedTeamId, onSuccessfulUpdate ])
 
     if (!experimentId || !studyId) {
         return null;
-    }
-
-    useEffect(() => {
-        agent.fetchExperimentOperatorTeamsForStudy({
-            studyId,
-        })
-        .then(response => {
-            dispatch({ type: 'init', payload: {
-                ...response.data.data
-            }})
-        })
-    }, [ studyId, listRevision ])
-
-    if (!records) {
-        return (
-            <LoadingIndicator size='lg' />
-        ) 
     }
 
     return (
@@ -79,23 +49,12 @@ const ChangeTeamModal = ({
                 <Modal.Title>Team ändern</Modal.Title>
             </Modal.Header>
             <Modal.Body className='bg-light'>
-                { 
-                    records
-                    .filter(it => it.state.hidden !== true)
-                    .map(record => (
-                        <StudyTeamListItem {...({
-                            key: record._id,
-                            studyId,
-                            record,
-                            relatedRecordLabels,
-                            onClick: handleSelectTeam,
-                            active: record._id === selectedTeamId
-                            //onEditClick: handleShowEditModal,
-                            //onDeleteClick,
-                            //enableDelete
-                        })} />
-                    ))
-                }
+                <TeamList {...({
+                    experimentId,
+                    studyId,
+                    selectedTeamId,
+                    onSelectTeam: handleSelectTeam,
+                }) } />
                 <hr />
                 <div className='d-flex justify-content-end'>
                     <Button onClick={ handleSubmit }>
@@ -104,6 +63,58 @@ const ChangeTeamModal = ({
                 </div>
             </Modal.Body>
         </Modal>
+    );
+}
+
+const TeamList = ({
+    studyId,
+    selectedTeamId,
+    onSelectTeam,
+}) => {
+
+    var [ state, dispatch ] = useReducer(reducer, {});
+    var {
+        records,
+        relatedRecordLabels,
+    } = state;
+
+    useEffect(() => {
+        agent.fetchExperimentOperatorTeamsForStudy({
+            studyId,
+        })
+        .then(response => {
+            dispatch({ type: 'init', payload: {
+                ...response.data.data
+            }})
+        })
+    }, [ studyId ])
+
+    if (!records) {
+        return (
+            <LoadingIndicator size='lg' />
+        ) 
+    }
+
+    return (
+        <>
+            { 
+                records
+                .filter(it => it.state.hidden !== true)
+                .map(record => (
+                    <StudyTeamListItem {...({
+                        key: record._id,
+                        studyId,
+                        record,
+                        relatedRecordLabels,
+                        onClick: onSelectTeam,
+                        active: record._id === selectedTeamId
+                        //onEditClick: handleShowEditModal,
+                        //onDeleteClick,
+                        //enableDelete
+                    })} />
+                ))
+            }
+        </>
     );
 }
 
@@ -121,12 +132,6 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 selectedTeamId: payload.teamId
-            }
-
-        case 'increase-list-revision':
-            return {
-                ...state,
-                listRevision: (state.listRevision || 0) + 1
             }
 
     }

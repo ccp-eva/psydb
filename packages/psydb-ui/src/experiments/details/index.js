@@ -39,7 +39,7 @@ const ExperimentDetails = () => {
                 ...response.data.data
             }})
         })
-    }, [ experimentType, id ]);
+    }, [ experimentType, id, revision ]);
 
     var onSuccessfulUpdate = useCallback(() => {
         dispatch({ type: 'increase-revision' });
