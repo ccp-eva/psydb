@@ -65,7 +65,7 @@ const MoveExperimentContainer = ({
     studyData,
     onSuccessfulUpdate,
 }) => {
-    var [ show, setShow ] = useState(true);
+    var [ show, setShow ] = useState(false);
     var handleShow = useCallback(() => setShow(true), []);
     var handleHide = useCallback(() => setShow(false), []);
     return (

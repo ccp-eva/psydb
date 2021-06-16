@@ -1,92 +1,12 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import jsonpointer from 'jsonpointer';
-
-import {
-    Table,
-    Dropdown,
-    DropdownButton,
-    DropdownType,
-} from 'react-bootstrap';
-
-import {
-    GearFill
-} from 'react-bootstrap-icons';
+import { Table } from 'react-bootstrap';
 
 import calculateAge from '@mpieva/psydb-ui-lib/src/calculate-age';
 import FieldDataHeadCols from '@mpieva/psydb-ui-lib/src/record-list/field-data-head-cols';
 import FieldDataBodyCols from '@mpieva/psydb-ui-lib/src/record-list/field-data-body-cols';
 
-import TableButton from './table-button';
-
-import createStringifier from '@mpieva/psydb-ui-lib/src/record-field-stringifier';
-
-const Subjects = ({
-    experimentData,
-    studyData,
-    subjectDataByType,
-    onSuccessfulUpdate,
-}) => {
-    var { selectionSettingsBySubjectType } = studyData.record.state;
-    var stringifyStudyValue = createStringifier(studyData);
-    return (
-        <div className='p-3'>
-            { selectionSettingsBySubjectType.map((it, index) => {
-                var {
-                    subjectRecordType,
-                    subjectsPerExperiment
-                } = it;
-                
-                var subjectTypeLabel = stringifyStudyValue({
-                    ptr: `/state/selectionSettingsBySubjectType/${index}/subjectRecordType`,
-                    collection: 'subject',
-                    type: 'CustomRecordTypeKey',
-                });
-
-                var fullSubjectData = subjectDataByType[subjectRecordType];
-                if (fullSubjectData.records.length < 1) {
-                    return null;
-                }
-                
-                return (
-                    <SubjectsOfType { ...({
-                        key: subjectRecordType,
-                        subjectTypeKey: subjectRecordType,
-                        subjectTypeLabel,
-                        subjectsPerExperiment,
-                        experimentData,
-                        fullSubjectData,
-                    })} />
-                );
-            })}
-        </div>
-    )
-}
-
-const SubjectsOfType = ({
-    subjectTypeKey,
-    subjectTypeLabel,
-    subjectsPerExperiment,
-    experimentData,
-    fullSubjectData,
-}) => {
-    return (
-        <div>
-            <h5 className=''>
-                { subjectTypeLabel }
-                {' '}
-                (
-                    { fullSubjectData.records.length }
-                    /
-                    { subjectsPerExperiment }
-                )
-            </h5>
-            <SubjectList { ...({
-                experimentRecord: experimentData.record,
-                ...fullSubjectData
-            }) } />
-        </div>
-    )
-}
+import SubjectDropdown from '@mpieva/psydb-ui-lib/src/experiment-subject-dropdown';
 
 const SubjectList = ({
     experimentRecord,
@@ -98,11 +18,12 @@ const SubjectList = ({
     displayFieldData,
 
     className,
+    ...other
 }) => {
     var dateOfBirthField = displayFieldData.find(it => (
         it.props.isSpecialAgeFrameField
     ));
-    
+   
     return (
         <Table className={ className }>
             <thead>
@@ -131,6 +52,8 @@ const SubjectList = ({
                         relatedCustomRecordTypeLabels,
                         displayFieldData,
                         dateOfBirthField,
+
+                        ...other
                     })} />
                 ))}
             </tbody>
@@ -193,58 +116,13 @@ const SubjectListRow = ({
             <td><i>{ comment }</i></td>
             <td>
                 <SubjectDropdown { ...({
-                    subjectId: record._id,
+                    subjectRecord: record,
                     onClickComment,
                     onClickMove,
                     onClickRemove,
                 }) } />
             </td>
         </tr>
-    );
-}
-
-var SubjectDropdown = ({
-    subjectId,
-    onClickComment,
-    onClickMove,
-    onClickRemove,
-}) => {
-    var wrappedOnClickComment = useCallback(() => (
-        onClickComment({ subjectId })
-    ), [ onClickComment ]);
-
-    var wrappedOnClickMove = useCallback(() => (
-        onClickMove({ subjectId })
-    ), [ onClickMove ]);
-
-    var wrappedOnClickRemove = useCallback(() => (
-        onClickRemove({ subjectId })
-    ), [ onClickRemove ]);
-
-    return (
-        <Dropdown>
-            <Dropdown.Toggle size='sm' variant='outline-primary' style={{
-                borderRadius: '.2rem',
-                border: 0,
-            }} bsPrefix='dropdown-toggle-no-caret'>
-                <GearFill style={{
-                    width: '18px',
-                    height: '18px',
-                    marginTop: '-3px',
-                }} />
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-                <Dropdown.Item as='button' onClick={ wrappedOnClickComment }>
-                    Kommentar
-                </Dropdown.Item>
-                <Dropdown.Item as='button' onClick={ wrappedOnClickMove }>
-                    Verschieben
-                </Dropdown.Item>
-                <Dropdown.Item as='button' onClick={ wrappedOnClickRemove }>
-                    Entfernen
-                </Dropdown.Item>
-            </Dropdown.Menu>
-        </Dropdown>
     );
 }
 
@@ -274,4 +152,4 @@ var formatParticipationStatus = (status) => {
     }[status] || 'ERROR'
 }
 
-export default Subjects;
+export default SubjectList;
