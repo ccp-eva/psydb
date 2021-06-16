@@ -82,7 +82,7 @@ const StudyInhouseLocations = ({
         )
     }
 
-    console.log('L', locationCalendarListClassName);
+    //console.log('L', locationCalendarListClassName);
 
     return (
         <>

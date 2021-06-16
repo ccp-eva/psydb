@@ -33,6 +33,11 @@ const MoveExperimentModal = ({
         dispatch({ type: 'hide-confirm' })
     ), []);
 
+    var wrappedOnSuccessfulUpdate = (...args) => {
+        onHide(),
+        onSuccessfulUpdate && onSuccessfulUpdate(...args);
+    };
+
     return (
         <Modal
             show={show}
@@ -54,7 +59,7 @@ const MoveExperimentModal = ({
                     studyData,
                     confirmData,
 
-                    onSuccessfulUpdate,
+                    onSuccessfulUpdate: wrappedOnSuccessfulUpdate,
                 }) } />
 
                 <StudyInhouseLocations

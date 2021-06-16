@@ -95,7 +95,8 @@ handler.checkAllowedAndPlausible = async ({
         interval,
         locationId,
         experimentOperatorTeamId: (
-            experimentRecord.state.experimentOperatorTeamId
+            //experimentRecord.state.experimentOperatorTeamId
+            experimentOperatorTeamId
         )
     });
 
