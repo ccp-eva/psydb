@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from 'react';
+import React, { useEffect, useReducer, useCallback } from 'react';
 
 import {
     Route,
@@ -29,7 +29,6 @@ const ExperimentDetails = () => {
         subjectDataByType,
     } = state;
 
-
     useEffect(() => {
         agent.fetchExtendedExperimentData({
             experimentType,
@@ -41,6 +40,10 @@ const ExperimentDetails = () => {
             }})
         })
     }, [ experimentType, id ]);
+
+    var onSuccessfulUpdate = useCallback(() => {
+        dispatch({ type: 'increase-revision' });
+    }, []);
 
     if (!experimentData) {
         return (
@@ -55,7 +58,9 @@ const ExperimentDetails = () => {
                 <hr />
                 <div className='mt-3 d-flex justify-content-end'>
                     <GeneralFunctions { ...({
-                        experimentData, studyData
+                        experimentData,
+                        studyData,
+                        onSuccessfulUpdate,
                     }) } />
                 </div>
             </div>
@@ -63,7 +68,8 @@ const ExperimentDetails = () => {
                 <Subjects { ...({
                     experimentData,
                     studyData,
-                    subjectDataByType
+                    subjectDataByType,
+                    onSuccessfulUpdate,
                 }) } />
             </div>
         </div>

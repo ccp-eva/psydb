@@ -23,7 +23,8 @@ import createStringifier from './record-field-stringifier';
 const Subjects = ({
     experimentData,
     studyData,
-    subjectDataByType
+    subjectDataByType,
+    onSuccessfulUpdate,
 }) => {
     var { selectionSettingsBySubjectType } = studyData.record.state;
     var stringifyStudyValue = createStringifier(studyData);

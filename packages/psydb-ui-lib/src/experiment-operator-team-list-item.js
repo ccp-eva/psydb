@@ -7,15 +7,30 @@ import {
 import { PencilFill, X } from 'react-bootstrap-icons';
 
 const StudyTeamListItem = ({
-    studyId,
     record,
     relatedRecordLabels,
+    
+    active,
+    onClick,
     onEditClick,
+
+    // FIXME: decide if obsolete
     onDeleteClick,
     enableDelete,
 }) => {
+    var cls = [
+        'd-flex mb-3 border bg-white',
+        'experiment-operator-team-list-item',
+        ...(active ? ['active'] : []),
+        ...(onClick ? ['hover'] : []),
+    ].join(' ');
+
     return (
-        <div className='d-flex mb-3 border bg-white'>
+        <div
+            className={ cls }
+            onClick={ onClick && (() => onClick(record._id)) }
+            role={ onClick ? 'button' : '' }
+        >
             <div style={{
                 width: '30px',
                 background: record.state.color,
@@ -40,9 +55,11 @@ const StudyTeamListItem = ({
             </div>
 
             <div className='d-flex flex-column justify-content-between ml-2'>
-                <TeamEditButton
-                    onClick={ () => onEditClick(record._id) }
-                />
+                { onEditClick && (
+                    <TeamEditButton
+                        onClick={ () => onEditClick(record._id) }
+                    />
+                )}
                 { enableDelete && (
                     <TeamDeleteButton
                         onDeleteClick={ () => onDeleteClick(record._id) }

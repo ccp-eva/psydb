@@ -15,7 +15,8 @@ import agent from '@mpieva/psydb-ui-request-agents';
 import LinkButton from '@mpieva/psydb-ui-lib/src/link-button';
 import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
 
-import StudyTeamListItem from './team-list-item';
+import StudyTeamListItem from '@mpieva/psydb-ui-lib/src/experiment-operator-team-list-item';
+
 import StudyTeamCreateModal from './team-create-modal';
 import StudyTeamEditModal from './team-edit-modal';
 

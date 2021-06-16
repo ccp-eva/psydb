@@ -64,6 +64,14 @@
     color: #006c66!important;
 }
 
+.experiment-operator-team-list-item.active {
+    color: #006c66!important;
+    border-color: #006c66!important;
+}
+
+.experiment-operator-team-list-item.hover:hover {
+    color: #006c66!important;
+}
 
 /* FIXME: this is so wierd*/
 .team-modal-backdrop {
