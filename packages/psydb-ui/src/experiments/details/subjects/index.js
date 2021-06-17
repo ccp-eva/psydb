@@ -31,6 +31,7 @@ const Subjects = ({
 
                 experimentData,
                 studyData,
+                subjectDataByType,
             }) } />
 
             <div className='p-3'>

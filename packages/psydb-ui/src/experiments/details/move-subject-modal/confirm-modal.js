@@ -20,7 +20,7 @@ const extractTime = (dateIsoString) => (
     : dateIsoString
 );
 
-const FormContainer = ({
+const ReservationFormContainer = ({
     onHide,
     experimentData,
     studyData,
@@ -149,7 +149,14 @@ const ConfirmModal = ({
         onHide(),
         onSuccessfulUpdate && onSuccessfulUpdate(...args);
     };
+
+
     console.log(confirmData);
+    var FormContainer = (
+        confirmData.experimentRecord
+        ? ExperimentFormContainer
+        : ReservationFormContainer
+    );
 
     return (
         <Modal

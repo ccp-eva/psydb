@@ -83,13 +83,13 @@ var fetchRecordByFilter = async ({
         stages.push(ProjectDisplayFieldsStage({
             displayFields,
             additionalProjection: {
+                type: true,
                 ...( recordLabelDefinition && {
                     '_recordLabelDefinitionFields': true 
                 }),
                 // FIXME: not sure if thats good
                 ...(collectionName === 'customRecordType' && {
                     'collection': true,
-                    'type': true,
                 })
             }
         }))

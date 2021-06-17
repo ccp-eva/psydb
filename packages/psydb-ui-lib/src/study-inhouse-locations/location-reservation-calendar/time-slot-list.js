@@ -18,6 +18,7 @@ const TimeSlotList = ({
     slotDuration,
     onSelectEmptySlot,
     onSelectReservationSlot,
+    onSelectExperimentSlot,
 }) => {
     const start = new Date(dayStart.getTime() + startTimeInt);
     const end = new Date(dayStart.getTime() + endTimeInt);
@@ -81,6 +82,13 @@ const TimeSlotList = ({
         }) 
     }
 
+    var wrappedOnSelectExperimentSlot = undefined;
+    if (onSelectExperimentSlot) {
+        wrappedOnSelectExperimentSlot = (props) => onSelectExperimentSlot({
+            ...props,
+        }) 
+    }
+
     return (
         <div>
             <header className='text-center bg-light border-bottom'>
@@ -108,6 +116,9 @@ const TimeSlotList = ({
                         }
                         onSelectReservationSlot={
                             wrappedOnSelectReservationSlot
+                        }
+                        onSelectExperimentSlot={
+                            wrappedOnSelectExperimentSlot
                         }
                     />
                 )
