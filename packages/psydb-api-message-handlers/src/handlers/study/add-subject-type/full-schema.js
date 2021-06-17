@@ -41,9 +41,9 @@ var FullSchema = ({
                 'id',
                 'lastKnownEventId',
                 'customRecordType',
-                'enableOnlineTesting',
-                'subjectsPerExperiment',
-                'externalLocationGrouping',
+                //'enableOnlineTesting',
+                //'subjectsPerExperiment',
+                //'externalLocationGrouping',
             ]
         })
     });

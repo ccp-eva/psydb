@@ -139,7 +139,9 @@ handler.triggerSystemEvents = async ({
             generalConditions: [],
             conditionsByAgeFrame: [],
             enableOnlineTesting: enableOnlineTesting || false,
-            externalLocationGrouping,
+            externalLocationGrouping: (
+                externalLocationGrouping || { enabled: false }
+            ),
         },
     });
 
