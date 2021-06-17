@@ -8,6 +8,8 @@ var ExperimentSubjectDropdown = ({
     onClickComment,
     onClickMove,
     onClickRemove,
+
+    disabled
 }) => {
 
     var {
@@ -37,6 +39,7 @@ var ExperimentSubjectDropdown = ({
                     border: 0,
                 }}
                 bsPrefix='dropdown-toggle-no-caret'
+                disabled={ disabled }
             >
                 <GearFill style={{
                     width: '18px',

@@ -44,7 +44,7 @@
     border-color: #006c66!important;
 }
 
-.btn-outline-primary:hover {
+.btn-outline-primary:not(:disabled):not(.disabled):hover {
     color: white!important;
     background-color: #006c66!important;
 }

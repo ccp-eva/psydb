@@ -1,4 +1,5 @@
 import React from 'react';
+import enums from '@mpieva/psydb-schema-enums';
 
 import SubjectList from './subject-list';
 
@@ -12,13 +13,18 @@ const SubjectTypeContainer = ({
     
     ...other
 }) => {
+    var realSubjectCount = (
+        experimentData.record.state.subjectData.filter(it => (
+            !enums.unparticipationStatus.keys.includes(it.participationStatus)
+        )).length
+    )
     return (
         <div>
             <h5 className=''>
                 { subjectTypeLabel }
                 {' '}
                 (
-                    { fullSubjectData.records.length }
+                    { realSubjectCount }
                     /
                     { subjectsPerExperiment }
                 )

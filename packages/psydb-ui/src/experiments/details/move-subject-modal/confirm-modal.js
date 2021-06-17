@@ -7,6 +7,9 @@ import Pair from '@mpieva/psydb-ui-lib/src/pair';
 import Split from '@mpieva/psydb-ui-lib/src/split';
 import SchemaForm from '@mpieva/psydb-ui-lib/src/default-schema-form';
 
+import ReservationFormContainer from './reservation-form-container';
+import ExperimentFormContainer from './experiment-form-container';
+
 import {
     Duration,
     FormattedDuration,
@@ -20,116 +23,6 @@ const extractTime = (dateIsoString) => (
     : dateIsoString
 );
 
-const ReservationFormContainer = ({
-    onHide,
-    experimentData,
-    studyData,
-    confirmData,
-
-    onSuccessfulUpdate,
-}) => {
-
-    var studyId = studyData.record._id;
-    var studyRecordType = studyData.record.type;
-    var experimentState = experimentData.record.state;
-
-    var minEnd = new Date(
-        confirmData.start.getTime() + confirmData.slotDuration
-    );
-    var [ selectedEnd, setSelectedEnd ] = useState(minEnd.toISOString());
-    var handleSelectEnd = useCallback((event) => {
-        var { target: { value }} = event;
-        setSelectedEnd(value);
-    }, [])
-
-    var handleSubmit = () => {
-        var message = {
-            type: 'experiment/move-inhouse',
-            payload: {
-                experimentId: experimentData.record._id,
-                locationId: confirmData.locationRecord._id,
-                experimentOperatorTeamId: (
-                    confirmData.reservationRecord.state.experimentOperatorTeamId
-                ),
-                interval: {
-                    start: confirmData.start.toISOString(),
-                    end: new Date(selectedEnd).toISOString(),
-                }
-            }
-        };
-
-        return agent.send({ message }).then(response => {
-            onSuccessfulUpdate && onSuccessfulUpdate(response);
-        })
-    }
-
-    return (
-        <div>
-            <header className='pb-1'><b>Aktuell</b></header>
-            <div className='p-2 bg-white border'>
-                <Container>
-                    <Pair label='Datum'>
-                        { datefns.format(
-                            new Date(experimentState.interval.start),
-                            'P'
-                        ) }
-                    </Pair>
-
-                    <Pair label='Beginn'>
-                        { datefns.format(
-                            new Date(experimentState.interval.start),
-                            'p'
-                        ) }
-                    </Pair>
-                    <Pair label='Ende'>
-                        { datefns.format(
-                            new Date(experimentState.interval.end).getTime() + 1,
-                            'p'
-                        ) }
-                    </Pair>
-
-                </Container>
-            </div>
-
-            <header className='pb-1 mt-3'><b>Verschieben Nach</b></header>
-            <div className='p-2 bg-white border'>
-                <Container>
-                    <Pair label='Datum'>
-                        { datefns.format(
-                            new Date(confirmData.start),
-                            'P'
-                        ) }
-                    </Pair>
-                    <Pair label='Beginn'>
-                        { datefns.format(
-                            new Date(confirmData.start),
-                            'p'
-                        ) }
-                    </Pair>
-                    <Row>
-                        <Form.Label className='col-sm-4 col-form-label'>
-                            Bis
-                        </Form.Label>
-                        <Col sm={8}>
-                            <SlotControl
-                                value={ selectedEnd  }
-                                onChange={ handleSelectEnd }
-                                min={ minEnd }
-                                max={ confirmData.maxEnd }
-                                step={ confirmData.slotDuration }
-                            />
-                        </Col>
-                    </Row>
-                </Container>
-            </div>
-            <div className='d-flex justify-content-end mt-3'>
-                <Button onClick={ handleSubmit }>Verschieben</Button>
-            </div>
-        </div>
-    )
-
-}
-
 const ConfirmModal = ({
     show,
     onHide,
@@ -137,6 +30,8 @@ const ConfirmModal = ({
     experimentData,
     studyData,
     confirmData,
+
+    subjectData,
 
     onSuccessfulUpdate,
 }) => {
@@ -151,7 +46,6 @@ const ConfirmModal = ({
     };
 
 
-    console.log(confirmData);
     var FormContainer = (
         confirmData.experimentRecord
         ? ExperimentFormContainer
@@ -171,6 +65,7 @@ const ConfirmModal = ({
                 <FormContainer { ...({
                     experimentData,
                     studyData,
+                    subjectData,
                     confirmData,
 
                     onSuccessfulUpdate: wrappedOnSuccessfulUpdate,

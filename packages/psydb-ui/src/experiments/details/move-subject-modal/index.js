@@ -62,7 +62,7 @@ const MoveSubjectModal = ({
                     experimentData,
                     studyData,
 
-                    subjectRecord,
+                    subjectData: { record: subjectRecord },
 
                     onSuccessfulUpdate: wrappedOnSuccessfulUpdate,
                 }) } />

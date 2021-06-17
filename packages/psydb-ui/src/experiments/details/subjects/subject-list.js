@@ -2,6 +2,7 @@ import React from 'react';
 import jsonpointer from 'jsonpointer';
 import { Table } from 'react-bootstrap';
 
+import enums from '@mpieva/psydb-schema-enums';
 import calculateAge from '@mpieva/psydb-ui-lib/src/calculate-age';
 import FieldDataHeadCols from '@mpieva/psydb-ui-lib/src/record-list/field-data-head-cols';
 import FieldDataBodyCols from '@mpieva/psydb-ui-lib/src/record-list/field-data-body-cols';
@@ -93,8 +94,12 @@ const SubjectListRow = ({
         : formatParticipationStatus(participationStatus)
     );
 
+    var isUnparticipated = (
+        enums.unparticipationStatus.keys.includes(participationStatus)
+    )
+
     return (
-        <tr>
+        <tr className={ isUnparticipated ? 'text-danger' : '' }>
             <FieldDataBodyCols { ...({
                 record,
                 relatedRecordLabels,
@@ -120,6 +125,8 @@ const SubjectListRow = ({
                     onClickComment,
                     onClickMove,
                     onClickRemove,
+
+                    disabled: isUnparticipated,
                 }) } />
             </td>
         </tr>
@@ -149,6 +156,8 @@ var formatParticipationStatus = (status) => {
         'didnt-show-up': 'n. ersch.',
         'canceled-by-participant': 'abg.',
         'canceled-by-institute': 'ausg.',
+        'removed': 'entf.',
+        'moved': 'versch.',
     }[status] || 'ERROR'
 }
 

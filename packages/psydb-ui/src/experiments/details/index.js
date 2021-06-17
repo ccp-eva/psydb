@@ -54,15 +54,24 @@ const ExperimentDetails = () => {
     return (
         <div>
             <div className='border bg-light p-3'>
+                { experimentData.record.state.isCanceled && (
+                    <h5 className='text-danger'>
+                        Abgesagt
+                    </h5>
+                )}
                 <General { ...({ experimentData, studyData }) } />
-                <hr />
-                <div className='mt-3 d-flex justify-content-end'>
-                    <GeneralFunctions { ...({
-                        experimentData,
-                        studyData,
-                        onSuccessfulUpdate,
-                    }) } />
-                </div>
+                { !experimentData.record.state.isCanceled && (
+                    <>
+                        <hr />
+                        <div className='mt-3 d-flex justify-content-end'>
+                            <GeneralFunctions { ...({
+                                experimentData,
+                                studyData,
+                                onSuccessfulUpdate,
+                            }) } />
+                        </div>
+                    </>
+                )}
             </div>
             <div>
                 <Subjects { ...({
