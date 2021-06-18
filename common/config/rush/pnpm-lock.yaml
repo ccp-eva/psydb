@@ -6,6 +6,8 @@ dependencies:
   '@cdxoo/block-quote': 1.0.0
   '@cdxoo/inline-string': 1.0.0
   '@cdxoo/inline-text': 1.0.1
+  '@cdxoo/koa-mongo-mq': 1.0.0
+  '@cdxoo/koa-mongo-rohrpost': 1.0.0
   '@cdxoo/omit': 1.0.1
   '@cdxoo/react-router-url-search-params': 1.0.4_react-router@5.2.0+react@17.0.2
   '@rjsf/bootstrap-4': 2.5.1_5dccca4f99fef0089ce8bea6fe035927
@@ -16,10 +18,6 @@ dependencies:
   '@rush-temp/json-schema-merge-xof': 'file:projects/json-schema-merge-xof.tgz'
   '@rush-temp/json-schema-to-graphql': 'file:projects/json-schema-to-graphql.tgz'
   '@rush-temp/koa-mongo-extjson-body': 'file:projects/koa-mongo-extjson-body.tgz'
-  '@rush-temp/koa-mongo-mq': 'file:projects/koa-mongo-mq.tgz'
-  '@rush-temp/koa-mongo-rohrpost': 'file:projects/koa-mongo-rohrpost.tgz'
-  '@rush-temp/mongo-mq': 'file:projects/mongo-mq.tgz'
-  '@rush-temp/mongo-rohrpost': 'file:projects/mongo-rohrpost.tgz'
   '@rush-temp/psydb-ajv-formats': 'file:projects/psydb-ajv-formats.tgz'
   '@rush-temp/psydb-ajv-keywords': 'file:projects/psydb-ajv-keywords.tgz'
   '@rush-temp/psydb-api': 'file:projects/psydb-api.tgz'
@@ -53,7 +51,6 @@ dependencies:
   bootstrap: 4.6.0
   bson: 4.2.3
   chai: 4.2.0
-  chai-datetime: 1.7.0
   clone-deep: 4.0.1
   compression-webpack-plugin: 7.1.2_webpack@5.10.1
   copy-anything: 2.0.3
@@ -72,11 +69,11 @@ dependencies:
   json-schema-traverse: 1.0.0
   jsonpointer: 4.1.0
   koa-body: 4.2.0
+  koa-compose: 4.1.0
   koa-router: 10.0.0
   koa-session: 5.13.1
   lodash: 4.17.21
   mocha: 8.1.3
-  mockdate: 3.0.5
   moment: 2.29.1
   mongodb-memory-server: 6.9.6
   pascal-case: 3.1.2
@@ -1087,6 +1084,26 @@ packages:
     dev: false
     resolution:
       integrity: sha512-UYVmRQpEXRbpVFXkOgNoosN1nTNLu1qkn5tdDL8vLO1eMxEtWHIPq1IE/UWUs5v274oZUWQXclShBQDKEt0sbQ==
+  /@cdxoo/koa-mongo-mq/1.0.0:
+    dependencies:
+      '@cdxoo/mongo-mq': 1.0.0
+    dev: false
+    resolution:
+      integrity: sha512-uXBu0isDCft2E+kF9GNnNHMm6gMqrMaWkwnVQum3zW9154CCZzq3eWkMxySqi5PzH7SYAe7FooV/LfjjJPmsDQ==
+  /@cdxoo/koa-mongo-rohrpost/1.0.0:
+    dependencies:
+      '@cdxoo/mongo-rohrpost': 1.0.0
+    dev: false
+    resolution:
+      integrity: sha512-uVHEMWX8uhuNC0SmX1iunrIzYEJwFE1mge24VojdUay+l2O6sXITcIMzNkVWeqfFnpZsqL5lAhYDSpi/FRvbFw==
+  /@cdxoo/mongo-mq/1.0.0:
+    dev: false
+    resolution:
+      integrity: sha512-jMI1TJM+6kh5D0wqQl4ROHu0hoXoR9y31JZ7E/1wOG0iIixzpANY8FHjXi5QD13DEo1eeDoW2mgUbyMRiGIWYQ==
+  /@cdxoo/mongo-rohrpost/1.0.0:
+    dev: false
+    resolution:
+      integrity: sha512-N13Pz8WcMX/KLc5dL5c+wh+llxqUr6FkI5YB1vmqcRry85m43vrI+q6ufqj06868Dcp1IfkUaH5uBhhq5jCNOQ==
   /@cdxoo/omit/1.0.1:
     dev: false
     resolution:
@@ -1985,12 +2002,6 @@ packages:
     dev: false
     resolution:
       integrity: sha512-OE5UE4+nBOro8Dyvv0lfx+SRtfVIOM9uhKqFmJeUbGriqhhStgp1A0OyBpgy3OUF8AhYCT+PVwPC1gMl2ZcQMA==
-  /chai-datetime/1.7.0:
-    dependencies:
-      chai: 4.2.0
-    dev: false
-    resolution:
-      integrity: sha512-4kPT3R1tr0ujZ+xRTOzvGiZOzC30URFT+28/gd/vusOhumSH/o6TVI4yZMsQTwc+UUGpvIdx1wChQQVZkTbq/g==
   /chai/4.2.0:
     dependencies:
       assertion-error: 1.1.0
@@ -4631,10 +4642,6 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-ZbaYib4hT4PpF4bdSO2DohooKXIn4lDeiYqB+vTmCdr6l2woW0b6H3pf5x4sM5nwQMru9RvjjHYWVGltR50ZBw==
-  /mockdate/3.0.5:
-    dev: false
-    resolution:
-      integrity: sha512-iniQP4rj1FhBdBYS/+eQv7j1tadJ9lJtdzgOpvsOHng/GbcDh2Fhdeq+ZRldrPYdXvCyfFUmFeEwEGXZB5I/AQ==
   /moment/2.29.1:
     dev: false
     resolution:
@@ -7256,67 +7263,6 @@ packages:
       integrity: sha512-zfXJk7Vq3dYB+mbO7XfXA/+9M2+LQM98zpM38n3rSo/kibwhM+gwwzz1iMwmlbTgdiEpAlWeWesBvbh8FPrIWA==
       tarball: 'file:projects/koa-mongo-extjson-body.tgz'
     version: 0.0.0
-  'file:projects/koa-mongo-mq.tgz':
-    dependencies:
-      '@cdxoo/omit': 1.0.1
-      chai: 4.2.0
-      chai-datetime: 1.7.0
-      koa-compose: 4.1.0
-      mocha: 8.1.3
-      mockdate: 3.0.5
-      mongodb: 3.6.6
-      mongodb-memory-server: 6.9.6
-    dev: false
-    name: '@rush-temp/koa-mongo-mq'
-    resolution:
-      integrity: sha512-aO54eAz5vsYIaZLrk+A6v+x38ITLzkg5MLUDNSvClpNIs57ieU/hkcPprUbvbz9GGR/CEGHg873YLFEuFy7nhQ==
-      tarball: 'file:projects/koa-mongo-mq.tgz'
-    version: 0.0.0
-  'file:projects/koa-mongo-rohrpost.tgz':
-    dependencies:
-      '@cdxoo/omit': 1.0.1
-      chai: 4.2.0
-      chai-datetime: 1.7.0
-      koa-compose: 4.1.0
-      mocha: 8.1.3
-      mockdate: 3.0.5
-      mongodb: 3.6.6
-      mongodb-memory-server: 6.9.6
-    dev: false
-    name: '@rush-temp/koa-mongo-rohrpost'
-    resolution:
-      integrity: sha512-bEnjPi8HxmcqvVix89O164Z87z2k5fmlnoUbnubhRuekeHP20MtJoDSkuopXi01vcpZmqpc0+rNjUqJliDDCCg==
-      tarball: 'file:projects/koa-mongo-rohrpost.tgz'
-    version: 0.0.0
-  'file:projects/mongo-mq.tgz':
-    dependencies:
-      '@cdxoo/omit': 1.0.1
-      chai: 4.2.0
-      chai-datetime: 1.7.0
-      mocha: 8.1.3
-      mockdate: 3.0.5
-      mongodb: 3.6.6
-      mongodb-memory-server: 6.9.6
-    dev: false
-    name: '@rush-temp/mongo-mq'
-    resolution:
-      integrity: sha512-UJLrZFG4Q2ThYRq3uHZ+Fxs+w/kjmhmVw1KMNOluIK/ZbbFj2CBWELDAtkS3kbN4+0zJGmYoi42bG/6fnac9vQ==
-      tarball: 'file:projects/mongo-mq.tgz'
-    version: 0.0.0
-  'file:projects/mongo-rohrpost.tgz':
-    dependencies:
-      chai: 4.2.0
-      chai-datetime: 1.7.0
-      mocha: 8.1.3
-      mockdate: 3.0.5
-      mongodb: 3.6.6
-      mongodb-memory-server: 6.9.6
-    dev: false
-    name: '@rush-temp/mongo-rohrpost'
-    resolution:
-      integrity: sha512-6ZX64n6fGEs+q7P8l8Jg3nr0zEfL0Hwu/si4YezQrflThguF7HvkNz1kYnCVPWSLpvqdZk/5ThR9+D5r1rA9Qg==
-      tarball: 'file:projects/mongo-rohrpost.tgz'
-    version: 0.0.0
   'file:projects/psydb-ajv-formats.tgz':
     dependencies:
       ajv: 6.12.6
@@ -7388,7 +7334,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-api-message-handlers'
     resolution:
-      integrity: sha512-1Nv+Vi9yFQ0Ji4CykeFORa2Go0my9NxUgMGXaZ2kxn1xI8NqKPaqaMphu5jt2RZEaRimL/HcY0+ED9rUhFe0TA==
+      integrity: sha512-IuYJF5VeD9v8dqLtuorDGl4435RyhEK65wNRjHujdftzwZbqt3iv+qaueY950w179c1XZigWoEvL+XHpYL35Ng==
       tarball: 'file:projects/psydb-api-message-handlers.tgz'
     version: 0.0.0
   'file:projects/psydb-api.tgz':
@@ -7422,7 +7368,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-api'
     resolution:
-      integrity: sha512-7Pe5tWFsKjoKYGlw9ccBnV68VXHY6GCyDlxSVAyGILm5+gF8fH30SMWvngCDkLMPNnfpSZZHYLQVQvJvbzoecQ==
+      integrity: sha512-UnvvusdEj9mLBmBDtwXiUF73wxzUxH32H/blKxFtWBMUWKRn8/GzekttX84JNCtmB5ut6Ng1wFnGrjoy4v5H7w==
       tarball: 'file:projects/psydb-api.tgz'
     version: 0.0.0
   'file:projects/psydb-common-lib.tgz':
@@ -7474,6 +7420,8 @@ packages:
   'file:projects/psydb-koa-event-middleware.tgz':
     dependencies:
       '@cdxoo/inline-text': 1.0.1
+      '@cdxoo/koa-mongo-mq': 1.0.0
+      '@cdxoo/koa-mongo-rohrpost': 1.0.0
       chai: 4.2.0
       koa-compose: 4.1.0
       mocha: 8.1.3
@@ -7482,7 +7430,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-koa-event-middleware'
     resolution:
-      integrity: sha512-PT5k1ff6YDn49c/jWqTawP5g9QgXfS4yZzjtzbmJcEuxKws/EQDlL/UQ0uTDFHuDosHbo2xOCdoP+yfmu35f9w==
+      integrity: sha512-+7KwpReTrGkBRidW0Q5VAAZormiKownloGGZG26/OlCTa00bSG2cUPsuwjQtNQ2t/SJC16FOSU1RL7irU4na7g==
       tarball: 'file:projects/psydb-koa-event-middleware.tgz'
     version: 0.0.0
   'file:projects/psydb-mongo-adapter.tgz':
@@ -7662,7 +7610,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-ui'
     resolution:
-      integrity: sha512-hYuHA09JLEpzpsA7nWRlycWAneeEMTVjDZuZohbCLoEV1ZfSY8EPDSwXZRHJxfPLzJSPWMU/PCVOfE3GgJgfuA==
+      integrity: sha512-s5se1WSmlzadvrwyG2HOwp6JdmnXmC3mgMJCLJJ2RifjC3yuzZ9IPUFQGpfJmxlLV4m9tcdJY3MsS541XfAj8A==
       tarball: 'file:projects/psydb-ui.tgz'
     version: 0.0.0
   'file:projects/psydb-web.tgz':
@@ -7716,6 +7664,8 @@ specifiers:
   '@cdxoo/block-quote': ~1.0.0
   '@cdxoo/inline-string': ~1.0.0
   '@cdxoo/inline-text': ~1.0.1
+  '@cdxoo/koa-mongo-mq': ~1.0.0
+  '@cdxoo/koa-mongo-rohrpost': ~1.0.0
   '@cdxoo/omit': ~1.0.1
   '@cdxoo/react-router-url-search-params': ~1.0.4
   '@rjsf/bootstrap-4': ~2.5.1
@@ -7726,10 +7676,6 @@ specifiers:
   '@rush-temp/json-schema-merge-xof': 'file:./projects/json-schema-merge-xof.tgz'
   '@rush-temp/json-schema-to-graphql': 'file:./projects/json-schema-to-graphql.tgz'
   '@rush-temp/koa-mongo-extjson-body': 'file:./projects/koa-mongo-extjson-body.tgz'
-  '@rush-temp/koa-mongo-mq': 'file:./projects/koa-mongo-mq.tgz'
-  '@rush-temp/koa-mongo-rohrpost': 'file:./projects/koa-mongo-rohrpost.tgz'
-  '@rush-temp/mongo-mq': 'file:./projects/mongo-mq.tgz'
-  '@rush-temp/mongo-rohrpost': 'file:./projects/mongo-rohrpost.tgz'
   '@rush-temp/psydb-ajv-formats': 'file:./projects/psydb-ajv-formats.tgz'
   '@rush-temp/psydb-ajv-keywords': 'file:./projects/psydb-ajv-keywords.tgz'
   '@rush-temp/psydb-api': 'file:./projects/psydb-api.tgz'
@@ -7763,7 +7709,6 @@ specifiers:
   bootstrap: ~4.6.0
   bson: ~4.2.2
   chai: ~4.2.0
-  chai-datetime: ~1.7.0
   clone-deep: ~4.0.1
   compression-webpack-plugin: ~7.1.2
   copy-anything: ~2.0.3
@@ -7782,11 +7727,11 @@ specifiers:
   json-schema-traverse: ~1.0.0
   jsonpointer: ~4.1.0
   koa-body: ~4.2.0
+  koa-compose: ^4.1.0
   koa-router: ~10.0.0
   koa-session: ^5.13.1
   lodash: ~4.17.21
   mocha: ~8.1.3
-  mockdate: ~3.0.2
   moment: ~2.29.1
   mongodb-memory-server: ~6.9.2
   pascal-case: ~3.1.1

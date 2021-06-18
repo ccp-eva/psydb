@@ -11,8 +11,8 @@
     "koa-compose": "^4.1.0",
     "mongodb": "~3.6.3",
     "@cdxoo/inline-text": "~1.0.1",
-    "@mpieva/koa-mongo-mq": "~0.1.0-alpha",
-    "@mpieva/koa-mongo-rohrpost": "~0.1.0-alpha"
+    "@cdxoo/koa-mongo-mq": "~1.0.0",
+    "@cdxoo/koa-mongo-rohrpost": "~1.0.0"
   },
   "devDependencies": {
     "mocha": "~8.1.3",

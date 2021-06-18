@@ -49,26 +49,6 @@
        "reviewCategory": "production"
     },
     {
-       "packageName": "@mpieva/mongo-mq",
-       "projectFolder": "packages/mongo-mq",
-       "reviewCategory": "production"
-    },
-    {
-       "packageName": "@mpieva/mongo-rohrpost",
-       "projectFolder": "packages/mongo-rohrpost",
-       "reviewCategory": "production"
-    },
-    {
-       "packageName": "@mpieva/koa-mongo-mq",
-       "projectFolder": "packages/koa-mongo-mq",
-       "reviewCategory": "production"
-    },
-    {
-       "packageName": "@mpieva/koa-mongo-rohrpost",
-       "projectFolder": "packages/koa-mongo-rohrpost",
-       "reviewCategory": "production"
-    },
-    {
        "packageName": "@mpieva/koa-mongo-extjson-body",
        "projectFolder": "packages/koa-mongo-extjson-body",
        "reviewCategory": "production"

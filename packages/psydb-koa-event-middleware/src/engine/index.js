@@ -1,8 +1,8 @@
 'use strict';
 var compose = require('koa-compose'),
     
-    withMongoMQ = require('@mpieva/koa-mongo-mq'),
-    withRohrpost = require('@mpieva/koa-mongo-rohrpost'),
+    withMongoMQ = require('@cdxoo/koa-mongo-mq'),
+    withRohrpost = require('@cdxoo/koa-mongo-rohrpost'),
 
     prepareContext = require('./prepare-context'),
     checkMessage = require('./check-message'),

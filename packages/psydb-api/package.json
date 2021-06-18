@@ -28,8 +28,6 @@
     "mongodb": "~3.6.3",
     "@cdxoo/inline-string": "~1.0.0",
     "@mpieva/koa-mongo-extjson-body": "~0.1.0-alpha",
-    "@mpieva/koa-mongo-mq": "~0.1.0-alpha",
-    "@mpieva/koa-mongo-rohrpost": "~0.1.0-alpha",
     "ajv-keywords": "~3.5.2",
     "@mpieva/psydb-ajv-formats": "~0.1.0-alpha",
     "@mpieva/psydb-ajv-keywords": "~0.1.0-alpha",
