@@ -2,6 +2,7 @@ import React, { useMemo, useEffect, useReducer, useCallback } from 'react';
 import { Modal } from 'react-bootstrap';
 
 import agent from '@mpieva/psydb-ui-request-agents';
+import useModalReducer from '@mpieva/psydb-ui-lib/src/use-modal-reducer';
 import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
 import StudyInhouseLocations from '@mpieva/psydb-ui-lib/src/study-inhouse-locations';
 
@@ -19,19 +20,12 @@ const MoveExperimentModal = ({
     var studyId = studyData.record._id;
     var studyRecordType = studyData.record.type;
 
+    var confirmModal = useModalReducer({ show: false });
+
     var [ state, dispatch ] = useReducer(reducer, {});
     var {
-        showConfirm,
-        confirmData,
         calendarRevision,
     } = state;
-
-    var handleShowConfirm = useCallback((payload) => (
-        dispatch({ type: 'show-confirm', payload })
-    ), []);
-    var handleHideConfirm = useCallback(() => (
-        dispatch({ type: 'hide-confirm' })
-    ), []);
 
     var wrappedOnSuccessfulUpdate = (...args) => {
         onHide(),
@@ -52,12 +46,12 @@ const MoveExperimentModal = ({
             <Modal.Body className='bg-light'>
 
                 <ConfirmModal { ...({
-                    show: showConfirm,
-                    onHide: handleHideConfirm,
+                    show: confirmModal.show,
+                    onHide: confirmModal.handleHide,
 
                     experimentData,
                     studyData,
-                    confirmData,
+                    confirmData: confirmModal.data,
 
                     onSuccessfulUpdate: wrappedOnSuccessfulUpdate,
                 }) } />
@@ -68,7 +62,7 @@ const MoveExperimentModal = ({
 
                     //activeLocationType={ 'instituteroom' }
                     onSelectReservationSlot={ 
-                        handleShowConfirm
+                        confirmModal.handleShow
                     }
                     calendarRevision={ calendarRevision }
                     
@@ -84,19 +78,6 @@ const MoveExperimentModal = ({
 var reducer = (state, action) => {
     var { type, payload } = action;
     switch (type) {
-        case 'show-confirm':
-            return {
-                ...state,
-                showConfirm: true,
-                confirmData: {
-                    ...payload
-                }
-            }
-        case 'hide-confirm':
-            return {
-                ...state,
-                showConfirm: false,
-            }
         case 'increase-calendar-revision':
             return {
                 ...state,

@@ -8,6 +8,7 @@ import SubjectTypeContainer from './subject-type-container';
 import useModalReducer from '@mpieva/psydb-ui-lib/src/use-modal-reducer';
 
 import MoveModal from '../move-subject-modal';
+import CommentModal from '../per-subject-comment-modal';
 
 const Subjects = ({
     experimentData,
@@ -32,6 +33,16 @@ const Subjects = ({
                 experimentData,
                 studyData,
                 subjectDataByType,
+
+                onSuccessfulUpdate,
+            }) } />
+
+            <CommentModal { ...({
+                show: commentModal.show,
+                onHide: commentModal.handleHide,
+                payloadData: commentModal.data,
+
+                experimentData,
 
                 onSuccessfulUpdate,
             }) } />
