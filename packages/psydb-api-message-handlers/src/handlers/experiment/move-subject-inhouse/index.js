@@ -161,6 +161,7 @@ handler.triggerSystemEvents = async ({
     } = cache;
 
     if (target.experimentId) {
+
         await dispatchRemoveSubjectEvents({
             db,
             rohrpost,
@@ -177,8 +178,6 @@ handler.triggerSystemEvents = async ({
         var [ experimentMod, subjectMod ] = rohrpost.getModifiedChannels();
         var lastKnownExperimentEventId = experimentMod.lastKnownEvenId;
         var lastKnownSubjectScientificEventId = subjectMod.lastKnownEventId;
-
-
         // FIXME: this unlocks the specific channel so i can dispatch
         // more stuff into that thing ... im not happy with that
         await db.collection('subject').updateOne(
@@ -213,6 +212,32 @@ handler.triggerSystemEvents = async ({
             _id: target.locationId,
         }, { projection: { type: true }});
 
+        await dispatchRemoveSubjectEvents({
+            db,
+            rohrpost,
+            personnelId,
+
+            experimentRecord,
+            subjectRecord,
+
+            unparticipateStatus: 'moved',
+            subjectComment: undefined,
+            blockSubjectFromTesting: { shouldBlock: false },
+        });
+
+        var [ experimentMod, subjectMod ] = rohrpost.getModifiedChannels();
+        var lastKnownExperimentEventId = experimentMod.lastKnownEvenId;
+        var lastKnownSubjectScientificEventId = subjectMod.lastKnownEventId;
+        // FIXME: this unlocks the specific channel so i can dispatch
+        // more stuff into that thing ... im not happy with that
+        await db.collection('subject').updateOne(
+            { _id: subjectId },
+            { $set: {
+                'scientific.events.$[].processed': true,
+            }},
+        );
+
+
         await dispatchCreateEvents({
             db,
             rohrpost,
@@ -227,12 +252,14 @@ handler.triggerSystemEvents = async ({
             studyId: experimentRecord.state.studyId,
             experimentOperatorTeamId: target.experimentOperatorTeamId,
             locationId: locationRecord._id,
-            locationRecordType: locationRecord._type,
+            locationRecordType: locationRecord.type,
             interval: target.interval,
             subjectIds: [
                 subjectRecord._id,
             ]
-        })
+        });
+
+
     }
 }
 
