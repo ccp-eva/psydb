@@ -35,7 +35,6 @@ const StudySelectionSettings = ({
     }, [])
 
     useEffect(() => {
-
         agent.readRecord({
             collection: 'study',
             recordType,

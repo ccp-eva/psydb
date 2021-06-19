@@ -10,6 +10,7 @@ const GeneralSubjectTypeSettingsModal = ({
     schema,
     externalLocationGrouping,
     enableOnlineTesting,
+    subjectsPerExperiment,
     subjectRecordType,
     studyRecord,
 
@@ -18,12 +19,12 @@ const GeneralSubjectTypeSettingsModal = ({
 
     var handleSubmit = ({ formData }) => {
         var message = {
-            type: 'study/patch-selection-settings-by-subject-type',
+            type: 'study/update-subject-type-base-settings',
             payload: {
                 id: studyRecord._id,
                 lastKnownEventId: studyRecord._lastKnownEventId,
-                subjectRecordType: subjectRecordType,
-                props: formData,
+                customRecordType: subjectRecordType,
+                ...formData,
             }
         };
 
@@ -50,7 +51,8 @@ const GeneralSubjectTypeSettingsModal = ({
                         schema={ schema }
                         formData={{
                             externalLocationGrouping,
-                            enableOnlineTesting
+                            enableOnlineTesting,
+                            subjectsPerExperiment,
                         }}
                         onSubmit={ handleSubmit }
                     />

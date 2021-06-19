@@ -3,7 +3,8 @@ import ROSchemaForm from '@mpieva/psydb-ui-lib/src/ro-schema-form';
 
 import {
     ExactObject,
-    DefaultBool
+    DefaultBool,
+    Integer
 } from '@mpieva/psydb-schema-fields';
 
 import {
@@ -23,23 +24,31 @@ const createSchema = ({ subjectTypeData }) => ExactObject({
             subjectRecordTypeScientificFields: (
                 subjectTypeData.state.settings.subChannelFields.scientific
             )
+        }),
+        subjectsPerExperiment: Integer({
+            title: 'Probanden pro Experiment',
+            default: 1,
+            minimum: 1,
         })
     },
     required: [
         'enableOnlineTesting',
-        'externalLocationGrouping'
+        'externalLocationGrouping',
+        'subjectsPerExperiment'
     ]
 })
 
 const GeneralSubjectTypeSettings = ({
     externalLocationGrouping,
     enableOnlineTesting,
+    subjectsPerExperiment,
 
     subjectRecordType,
     studyRecord,
     subjectTypeData,
+    
+    onSuccessfulUpdate,
 }) => {
-    //console.log(subjectTypeData);
     
     var [ showModal, setShowModal ] = useState(false);
     var [
@@ -63,7 +72,8 @@ const GeneralSubjectTypeSettings = ({
                     schema={ schema }
                     formData={{
                         externalLocationGrouping,
-                        enableOnlineTesting
+                        enableOnlineTesting,
+                        subjectsPerExperiment,
                     }}
                 />
                 <div style={{ position: 'absolute', top: '-1px', right: '-1px'}}>
@@ -77,8 +87,12 @@ const GeneralSubjectTypeSettings = ({
                         schema,
                         externalLocationGrouping,
                         enableOnlineTesting,
+                        subjectsPerExperiment,
+
                         subjectRecordType,
                         studyRecord,
+                        
+                        onSuccessfulUpdate,
                     }) } />
                 </div>
             </div>

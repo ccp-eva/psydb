@@ -32,12 +32,12 @@ const SelectionSettingsBySubjectType = ({
                 </div>
             )}
             { settings.map((it, index) => (
-                <>
+                <div key={ it.subjectRecordType }>
                     { index !== 0 && (
                         <hr />
                     )}
                     <SubjectType { ...({
-                        key: it.subjectRecordType,
+                        //key: it.subjectRecordType,
 
                         ...it,
                         subjectTypeData: subjectTypeData.find(td => (
@@ -51,7 +51,7 @@ const SelectionSettingsBySubjectType = ({
                         
                         onSuccessfulUpdate,
                     }) } />
-                </>
+                </div>
             )) }
             <hr />
             <div className='mt-3'>
@@ -82,8 +82,10 @@ const SubjectType = ({
     subjectRecordType,
     generalConditions,
     conditionsByAgeFrame,
+    
     externalLocationGrouping,
     enableOnlineTesting,
+    subjectsPerExperiment,
     
     studyRecord,
     subjectTypeData,
@@ -104,6 +106,7 @@ const SubjectType = ({
                 subjectRecordType,
                 externalLocationGrouping,
                 enableOnlineTesting,
+                subjectsPerExperiment,
 
                 studyRecord,
                 subjectTypeData,
