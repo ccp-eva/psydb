@@ -1,5 +1,6 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
+var nanoid = require('nanoid').nanoid;
 
 var compareIds = require('@mpieva/psydb-api-lib/src/compare-ids');
 var ApiError = require('@mpieva/psydb-api-lib/src/api-error');
@@ -207,7 +208,31 @@ handler.triggerSystemEvents = async ({
         });
     }
     else {
-        throw new Error();        
+        //var { reservation } = cache;
+        var locationRecord = await db.collection('location').findOne({
+            _id: target.locationId,
+        }, { projection: { type: true }});
+
+        await dispatchCreateEvents({
+            db,
+            rohrpost,
+            personnelId,
+
+            type: 'inhouse',
+            // FIXME: id format; fixme when study uses follow up
+            // appointments we need to reuse the original id when
+            // this is not the first appointment of this child in
+            // this study
+            seriesId: nanoid(),
+            studyId: experimentRecord.state.studyId,
+            experimentOperatorTeamId: target.experimentOperatorTeamId,
+            locationId: locationRecord._id,
+            locationRecordType: locationRecord._type,
+            interval: target.interval,
+            subjectIds: [
+                subjectRecord._id,
+            ]
+        })
     }
 }
 
