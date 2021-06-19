@@ -32,6 +32,8 @@ const Subjects = ({
                 experimentData,
                 studyData,
                 subjectDataByType,
+
+                onSuccessfulUpdate,
             }) } />
 
             <div className='p-3'>
@@ -65,7 +67,7 @@ const Subjects = ({
 
                             onClickComment: commentModal.handleShow,
                             onClickMove: moveModal.handleShow,
-                            onClickRemove: removeModal.handleShow
+                            onClickRemove: removeModal.handleShow,
                         })} />
                     );
                 })}
