@@ -5,9 +5,14 @@ import { GearFill } from 'react-bootstrap-icons';
 
 var ExperimentSubjectDropdown = ({
     subjectRecord,
+    
     onClickComment,
     onClickMove,
     onClickRemove,
+
+    onClickConfirm,
+    onClickMailbox,
+    onClickContactFailed,
 
     disabled
 }) => {
@@ -29,6 +34,18 @@ var ExperimentSubjectDropdown = ({
         onClickRemove({ subjectId, subjectType })
     ), [ onClickRemove ]);
 
+    var wrappedOnClickConfirm = useCallback(() => (
+        onClickConfirm({ subjectId, subjectType })
+    ), [ onClickConfirm ]);
+
+    var wrappedOnClickMailbox = useCallback(() => (
+        onClickMailbox({ subjectId, subjectType })
+    ), [ onClickMailbox ]);
+
+    var wrappedOnClickContactFailed = useCallback(() => (
+        onClickContactFailed({ subjectId, subjectType })
+    ), [ onClickContactFailed ]);
+
     return (
         <Dropdown>
             <Dropdown.Toggle
@@ -48,15 +65,54 @@ var ExperimentSubjectDropdown = ({
                 }} />
             </Dropdown.Toggle>
             <Dropdown.Menu>
-                <Dropdown.Item as='button' onClick={ wrappedOnClickComment }>
+                <Dropdown.Item
+                    as='button'
+                    disabled={ !onClickComment }
+                    onClick={ wrappedOnClickComment }
+                >
                     Kommentar
                 </Dropdown.Item>
-                <Dropdown.Item as='button' onClick={ wrappedOnClickMove }>
+                <Dropdown.Item
+                    as='button'
+                    disabled={ !onClickMove }
+                    onClick={ wrappedOnClickMove }
+                >
                     Verschieben
                 </Dropdown.Item>
-                <Dropdown.Item as='button' onClick={ wrappedOnClickRemove }>
+                <Dropdown.Item
+                    as='button'
+                    disabled={ !onClickRemove }
+                    onClick={ wrappedOnClickRemove }
+                >
                     Entfernen
                 </Dropdown.Item>
+
+                <Dropdown.Divider />
+                
+                <Dropdown.Item
+                    as='button'
+                    disabled={ !onClickConfirm }
+                    onClick={ wrappedOnClickConfirm }
+                >
+                    Bestätigen
+                </Dropdown.Item>
+
+                <Dropdown.Item
+                    as='button'
+                    disabled={ !onClickMailbox }
+                    onClick={ wrappedOnClickMailbox }
+                >
+                    Anrufbeantworter
+                </Dropdown.Item>
+
+                <Dropdown.Item
+                    as='button'
+                    disabled={ !onClickContactFailed }
+                    onClick={ wrappedOnClickContactFailed }
+                >
+                    Nicht Erreicht
+                </Dropdown.Item>
+
             </Dropdown.Menu>
         </Dropdown>
     );
