@@ -98,12 +98,24 @@ const SubjectListRow = ({
         : formatParticipationStatus(participationStatus)
     );
 
+    var hasContactIssue = (
+        [ 'mailbox', 'contact-failed' ].includes(invitationStatus)
+    );
+
     var isUnparticipated = (
         enums.unparticipationStatus.keys.includes(participationStatus)
-    )
+    );
+
+    var rowClass = '';
+    if (hasContactIssue) {
+        rowClass = 'text-orange';
+    }
+    if (isUnparticipated) {
+        rowClass = 'text-danger';
+    }
 
     return (
-        <tr className={ isUnparticipated ? 'text-danger' : '' }>
+        <tr className={ rowClass }>
             <FieldDataBodyCols { ...({
                 record,
                 relatedRecordLabels,
