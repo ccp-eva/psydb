@@ -75,6 +75,10 @@ const SubjectListRow = ({
     onClickComment,
     onClickMove,
     onClickRemove,
+
+    onClickConfirm,
+    onClickMailbox,
+    onClickContactFailed,
 }) => {
     var experimentSubjectData = (
         experimentRecord.state.subjectData.find(it => (
@@ -122,10 +126,15 @@ const SubjectListRow = ({
             <td>
                 <SubjectDropdown { ...({
                     subjectRecord: record,
+                    
                     onClickComment,
                     onClickMove,
                     onClickRemove,
 
+                    onClickConfirm,
+                    onClickMailbox,
+                    onClickContactFailed,
+                    
                     disabled: isUnparticipated,
                 }) } />
             </td>

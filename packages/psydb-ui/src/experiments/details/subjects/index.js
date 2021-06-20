@@ -1,15 +1,17 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import jsonpointer from 'jsonpointer';
 
 import createStringifier from '@mpieva/psydb-ui-lib/src/record-field-stringifier';
 
-import SubjectTypeContainer from './subject-type-container';
-
+import agent from '@mpieva/psydb-ui-request-agents';
 import useModalReducer from '@mpieva/psydb-ui-lib/src/use-modal-reducer';
+
+import SubjectTypeContainer from './subject-type-container';
 
 import CommentModal from '../per-subject-comment-modal';
 import MoveModal from '../move-subject-modal';
 import RemoveModal from '../remove-subject-modal';
+
 
 const Subjects = ({
     experimentData,
@@ -23,6 +25,26 @@ const Subjects = ({
     var commentModal = useModalReducer({ show: false });
     var moveModal = useModalReducer({ show: false });
     var removeModal = useModalReducer({ show: false });
+
+    var changeStatusThunk = (status) => ({ subjectId }) => {
+        var message = {
+            type: 'experiment/change-invitation-status',
+            payload: {
+                experimentId: experimentData.record._id,
+                subjectId: subjectId,
+                invitationStatus: status
+            }
+        }
+
+        agent.send({ message })
+        .then(response => {
+            onSuccessfulUpdate && onSuccessfulUpdate({ response });
+        })
+    };
+    
+    var onClickConfirm = changeStatusThunk('confirmed');
+    var onClickMailbox = changeStatusThunk('mailbox');
+    var onClickContactFailed = changeStatusThunk('contact-failed');
 
     return (
         <>
@@ -91,6 +113,10 @@ const Subjects = ({
                             onClickComment: commentModal.handleShow,
                             onClickMove: moveModal.handleShow,
                             onClickRemove: removeModal.handleShow,
+
+                            onClickConfirm,
+                            onClickMailbox,
+                            onClickContactFailed,
                         })} />
                     );
                 })}
