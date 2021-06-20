@@ -48,4 +48,8 @@ module.exports = {
         require('./extended-experiment-data')
     ),
 
+    experimentPostprocessing: (
+        require('./experiment-postprocessing')
+    ),
+
 }

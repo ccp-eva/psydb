@@ -230,10 +230,14 @@ describe('init-demo-system', function () {
         });*/
 
 
-        response = await agent.get(`/read/experiment/${context.EXP_INHOUSE_02}`);
+        //response = await agent.get(`/read/experiment/${context.EXP_INHOUSE_02}`);
         //response = await agent.get(`/read/study/default/${context.STUDY_01_ID}`);
 
         //response = await agent.get(`/extended-experiment-data/inhouse/${context.EXP_INHOUSE_02}`);
+
+        response = await agent.post(`/experiment-postprocessing`).send({
+            researchGroupId: context.RESEARCH_GROUP_ALPHA_ID,
+        });
 
         console.dir(response.status, { depth: null });
         console.dir(response.body, { depth: null });

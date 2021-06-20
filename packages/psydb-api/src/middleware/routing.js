@@ -156,7 +156,7 @@ var createRouting = ({
     router.post('/experiment-calendar',
         withSelfAuth(),
         withPermissions(),
-        withEndpointProtection({ endpoint: 'iexperiment-calendar' }),
+        withEndpointProtection({ endpoint: 'experiment-calendar' }),
         withKoaBody(),
         endpoints.special.experimentCalendar
     );
@@ -189,6 +189,14 @@ var createRouting = ({
         withPermissions(),
         withEndpointProtection({ endpoint: 'extended-experiment-data' }),
         endpoints.special.extendedExperimentData
+    );
+
+    router.post('/experiment-postprocessing',
+        withSelfAuth(),
+        withPermissions(),
+        withEndpointProtection({ endpoint: 'experiment-postprocessing' }),
+        withKoaBody(),
+        endpoints.special.experimentPostprocessing
     );
 
     return compose([

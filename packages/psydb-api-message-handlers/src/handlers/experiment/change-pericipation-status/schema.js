@@ -1,0 +1,34 @@
+'use strict';
+var {
+    ExactObject,
+    Id,
+    EventId,
+    ForeignId,
+    InvitationStatus
+} = require('@mpieva/psydb-schema-fields');
+
+var { Message } = require('@mpieva/psydb-schema-helpers');
+
+var createSchema = ({} = {}) => (
+    Message({
+        type: `experiment/change-participation-status`,
+        payload: ExactObject({
+            properties: {
+                experimentId: ForeignId({
+                    collection: 'experiment',
+                }),
+                subjectId: ForeignId({
+                    collection: 'subject',
+                }),
+                participationStatus: ParticipationStatus()
+            },
+            required: [
+                'experimentId',
+                'subjectId',
+                'participationStatus'
+            ]
+        })
+    })
+)
+
+module.exports = createSchema;
