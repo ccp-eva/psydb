@@ -2,6 +2,7 @@ import React, { useMemo, useEffect, useReducer, useCallback } from 'react';
 import { Modal, Form, Container, Col, Row, Button } from 'react-bootstrap';
 
 import agent from '@mpieva/psydb-ui-request-agents';
+import useFetch from './use-fetch';
 import SchemaForm from './default-schema-form';
 
 import {
@@ -22,15 +23,31 @@ const PerSubjectCommentModal = ({
     show,
     onHide,
 
+    shouldFetch,
+    experimentId,
+    experimentType,
+
     experimentData,
     payloadData,
 
     onSuccessfulUpdate,
 }) => {
-    if (!show) {
+
+    var [ didFetch, fetched ] = useFetch((agent) => {
+        if (shouldFetch) {
+            return agent.fetchExtendedExperimentData({
+                experimentType,
+                experimentId,
+            })
+        }
+    }, [ experimentId ]);
+
+    if (shouldFetch && !didFetch) {
         return null;
     }
-   
+
+    experimentData = experimentData || fetched.data.experimentData;
+
     var {
         subjectId,
         subjectType
@@ -86,5 +103,15 @@ const PerSubjectCommentModal = ({
     )
 }
 
+const PerSubjectCommentModalWrapper = (ps) => {
+    if (!ps.show) {
+        return null;
+    }
+    return (
+        <PerSubjectCommentModal { ...ps } />
+    );
+}
 
-export default PerSubjectCommentModal;
+
+
+export default PerSubjectCommentModalWrapper;

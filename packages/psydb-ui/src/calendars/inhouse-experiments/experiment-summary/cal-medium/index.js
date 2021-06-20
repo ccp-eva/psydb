@@ -81,14 +81,14 @@ const ExperimentSummaryMedium = ({
             color: getTextColor(teamRecord.state.color),
         }}>
 
-            {/*<CommentModal { ...({
+            <CommentModal { ...({
                 show: commentModal.show,
                 onHide: commentModal.handleHide,
                 payloadData: commentModal.data,
 
-                experimentId: experimentRecord._id,
+                experimentData: { record: experimentRecord },
                 onSuccessfulUpdate,
-            }) } />*/}
+            }) } />
 
             <MoveModal { ...({
                 show: moveModal.show,
@@ -98,17 +98,21 @@ const ExperimentSummaryMedium = ({
                 shouldFetch: true,
                 experimentId: experimentRecord._id,
                 experimentType: 'inhouse',
+
                 onSuccessfulUpdate,
             }) } />
 
-            {/*<RemoveModal { ...({
+            <RemoveModal { ...({
                 show: removeModal.show,
                 onHide: removeModal.handleHide,
                 payloadData: removeModal.data,
 
+                shouldFetch: true,
                 experimentId: experimentRecord._id,
+                experimentType: 'inhouse',
+
                 onSuccessfulUpdate,
-            }) } />*/}
+            }) } />
 
 
 

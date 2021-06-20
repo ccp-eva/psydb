@@ -13,7 +13,6 @@ const MoveSubjectModalWrapper = (ps) => {
     if (!ps.show) {
         return null;
     }
-
     return (
         <MoveSubjectModal { ...ps } />
     );
@@ -51,9 +50,6 @@ const MoveSubjectModal = ({
 
     if (shouldFetch && !didFetch) {
         return null;
-        /*return (
-            <LoadingIndicator size='lg' />
-        );*/
     }
 
     experimentData = experimentData || fetched.data.experimentData;

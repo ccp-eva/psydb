@@ -2,6 +2,7 @@ import React, { useMemo, useEffect, useReducer, useCallback } from 'react';
 import { Modal, Form, Container, Col, Row, Button } from 'react-bootstrap';
 
 import agent from '@mpieva/psydb-ui-request-agents';
+import useFetch from './use-fetch';
 import SchemaForm from './default-schema-form';
 import Split from './split';
 import ExperimentIntervalSummary from './experiment-interval-summary';
@@ -35,16 +36,32 @@ const RemoveSubjectModal = ({
     show,
     onHide,
 
+    shouldFetch,
+    experimentId,
+    experimentType,
+
     experimentData,
     subjectDataByType,
     payloadData,
 
     onSuccessfulUpdate,
 }) => {
-    if (!show) {
+    var [ didFetch, fetched ] = useFetch((agent) => {
+        if (shouldFetch) {
+            return agent.fetchExtendedExperimentData({
+                experimentType,
+                experimentId,
+            })
+        }
+    }, [ experimentId ]);
+
+    if (shouldFetch && !didFetch) {
         return null;
     }
-   
+
+    experimentData = experimentData || fetched.data.experimentData;
+    subjectDataByType = subjectDataByType || fetched.data.subjectDataByType;
+
     var {
         subjectId,
         subjectType
@@ -128,5 +145,14 @@ const RemoveSubjectModal = ({
     )
 }
 
+const RemoveSubjectModalWrapper = (ps) => {
+    if (!ps.show) {
+        return null;
+    }
+    return (
+        <RemoveSubjectModal { ...ps } />
+    );
+}
 
-export default RemoveSubjectModal;
+
+export default RemoveSubjectModalWrapper;

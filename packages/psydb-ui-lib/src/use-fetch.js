@@ -18,10 +18,7 @@ const useFetch = (createPromise, triggerProps) => {
 
     useEffect(wrappedCreatePromise, triggerProps);
 
-    var r = [ state.didFetch, state ];
-
-    console.log(r);
-    return r;
+    return [ state.didFetch, state ];
 }
 
 const reducer = (state, action) => {
