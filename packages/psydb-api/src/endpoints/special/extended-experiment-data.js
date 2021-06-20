@@ -119,6 +119,9 @@ var extendedExperimentData = async (context, next) => {
                     _id: { $in: experimentRecord.state.selectedSubjectIds }
                 }}
             ],
+            additionalProjection: {
+                'scientific.state.comment': true
+            }
             //offset,
             //limit
         });

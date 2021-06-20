@@ -30,6 +30,7 @@ var fetchRecordByFilter = async ({
     displayFields,
     recordLabelDefinition,
     additionalPreprocessStages,
+    additionalProjection
 }) => {
     var stages = [];
 
@@ -79,6 +80,8 @@ var fetchRecordByFilter = async ({
         );
     }
 
+    //console.log(additionalProjection);
+
     if (displayFields) {
         stages.push(ProjectDisplayFieldsStage({
             displayFields,
@@ -90,20 +93,21 @@ var fetchRecordByFilter = async ({
                 // FIXME: not sure if thats good
                 ...(collectionName === 'customRecordType' && {
                     'collection': true,
-                })
+                }),
+                ...additionalProjection
             }
         }))
     }
 
-    /*console.log(collectionName);
-    console.log(stages);
-    throw new Error();*/
+    //console.log(collectionName);
+    //console.dir(stages, { depth: null });
+    //throw new Error();*/
 
     var resultSet = await (
         db.collection(collectionName).aggregate(stages).toArray()
     );
 
-    //console.dir(resultSet);
+    //console.dir(resultSet, { depth: null });
 
     if (recordLabelDefinition) {
         resultSet.forEach(it => {
