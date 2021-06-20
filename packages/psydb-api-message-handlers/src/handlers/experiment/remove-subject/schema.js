@@ -8,33 +8,17 @@ var {
     EventId,
     ForeignId,
     ParticipationStatus,
+    UnparticipationStatus,
     FullText,
     DateOnlyServerSide,
     DefaultBool,
 } = require('@mpieva/psydb-schema-fields');
 
+var {
+    BlockFromTesting
+} = require('@mpieva/psydb-schema-fields-special');
+
 var { Message } = require('@mpieva/psydb-schema-helpers');
-
-var UnparticipateStatus = ({ ...additionalKeywords } = {}) => {
-    var schema = ParticipationStatus({ ...additionalKeywords });
-    
-    var _enum = [],
-        _enumNames = [];
-    for (var [index, it] of schema.enum.entries()) {
-        var shouldUse = (
-            enums.unparticipationStatus.keys.includes(it)
-        );
-        if (shouldUse) {
-            _enum.push(it);
-            _enumNames.push(schema.enumNames[index]);
-        }
-    }
-
-    schema.enum = _enum;
-    schema.enumNames = _enumNames;
-
-    return schema;
-}
 
 var createSchema = ({} = {}) => (
     Message({
@@ -51,32 +35,10 @@ var createSchema = ({} = {}) => (
                 }),
                 //lastKnownSubjectScientificEventId: EventId(),
 
-                unparticipateStatus: UnparticipateStatus(),
+                unparticipateStatus: UnparticipationStatus(),
                 //experimentComment: FullText(),
                 subjectComment: FullText(),
-
-                blockSubjectFromTesting: {
-                    oneOf: [
-                        ExactObject({
-                            properties: {
-                                shouldBlock: DefaultBool({ const: false }),
-                            },
-                            required: [
-                                'shouldBlock'
-                            ]
-                        }),
-                        ExactObject({
-                            properties: {
-                                shouldBlock: DefaultBool({ const: true, default: true }),
-                                blockUntil: DateOnlyServerSide()
-                            },
-                            required: [
-                                'shouldBlock',
-                                'blockUntil',
-                            ]
-                        })
-                    ]
-                }
+                blockSubjectFromTesting: BlockFromTesting()
             },
             required: [
                 'experimentId',

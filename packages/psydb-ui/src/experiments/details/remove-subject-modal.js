@@ -9,16 +9,27 @@ import {
     DefaultBool,
     FullText,
     SaneString,
+    UnparticipationStatus,
 } from '@mpieva/psydb-schema-fields';
+
+import {
+    BlockFromTesting
+} from '@mpieva/psydb-schema-fields-special';
 
 var schema = ExactObject({
     properties: {
-        comment: SaneString({ title: 'Kommentar' })
+
+        subjectComment: SaneString({ title: 'Kommentar' }),
+        unparticipateStatus: UnparticipationStatus({ title: 'Grund' }),
+        blockFromTesting: BlockFromTesting({ title: 'Proband sperren' }),
     },
-    required: [ 'comment' ],
+    required: [
+        'subjectComment',
+        'blockFromTesting'
+    ],
 })
 
-const PerSubjectCommentModal = ({
+const RemoveSubjectModal = ({
     show,
     onHide,
 
@@ -42,11 +53,10 @@ const PerSubjectCommentModal = ({
 
     var handleSubmit = ({ formData }) => {
         var message = {
-            type: 'experiment/change-per-subject-comment',
+            type: 'experiment/remove-subject',
             payload: {
                 experimentId: experimentData.record._id,
                 subjectId,
-                ...formData,
             }
         };
 
@@ -70,7 +80,7 @@ const PerSubjectCommentModal = ({
             backdropClassName='team-modal-backdrop'
         >
             <Modal.Header closeButton>
-                <Modal.Title>Termin-Kommentar</Modal.Title>
+                <Modal.Title>Proband austragen</Modal.Title>
             </Modal.Header>
             <Modal.Body className='bg-light'>
                 <SchemaForm
@@ -80,11 +90,10 @@ const PerSubjectCommentModal = ({
                     }}
                     onSubmit={ handleSubmit }
                 />
-
             </Modal.Body>
         </Modal>
     )
 }
 
 
-export default PerSubjectCommentModal;
+export default RemoveSubjectModal;

@@ -12,4 +12,6 @@ module.exports = {
     SubjectSelectionSettingsListItemOption: require('./subject-selection-settings-list-item-option'),
     SubjectSelectionSettingsListItem: require('./subject-selection-settings-list-item'),
     SubjectSelectionSettingsList: require('./subject-selection-settings-list'),
+
+    BlockFromTesting: require('./block-from-testing'),
 }

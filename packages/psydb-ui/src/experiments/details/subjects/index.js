@@ -7,8 +7,9 @@ import SubjectTypeContainer from './subject-type-container';
 
 import useModalReducer from '@mpieva/psydb-ui-lib/src/use-modal-reducer';
 
-import MoveModal from '../move-subject-modal';
 import CommentModal from '../per-subject-comment-modal';
+import MoveModal from '../move-subject-modal';
+import RemoveModal from '../remove-subject-modal';
 
 const Subjects = ({
     experimentData,
@@ -25,6 +26,16 @@ const Subjects = ({
 
     return (
         <>
+            <CommentModal { ...({
+                show: commentModal.show,
+                onHide: commentModal.handleHide,
+                payloadData: commentModal.data,
+
+                experimentData,
+
+                onSuccessfulUpdate,
+            }) } />
+
             <MoveModal { ...({
                 show: moveModal.show,
                 onHide: moveModal.handleHide,
@@ -37,10 +48,10 @@ const Subjects = ({
                 onSuccessfulUpdate,
             }) } />
 
-            <CommentModal { ...({
-                show: commentModal.show,
-                onHide: commentModal.handleHide,
-                payloadData: commentModal.data,
+            <RemoveModal { ...({
+                show: removeModal.show,
+                onHide: removeModal.handleHide,
+                payloadData: removeModal.data,
 
                 experimentData,
 

@@ -33,7 +33,7 @@ const SubjectList = ({
                         displayFieldData={ displayFieldData }
                     />
                     { dateOfBirthField && (
-                        <th>Alter im Test</th>
+                        <th>Alter</th>
                     )}
                     <th>Status</th>
                     <th>Kommentar</th>
