@@ -54,6 +54,7 @@ const Subjects = ({
                 payloadData: removeModal.data,
 
                 experimentData,
+                subjectDataByType,
 
                 onSuccessfulUpdate,
             }) } />

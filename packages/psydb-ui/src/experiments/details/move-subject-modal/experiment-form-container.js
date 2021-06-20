@@ -1,11 +1,11 @@
-import React, { useMemo, useEffect, useReducer, useCallback, useState } from 'react';
+import React  from 'react';
 import { Modal, Form, Container, Col, Row, Button } from 'react-bootstrap';
 
 import agent from '@mpieva/psydb-ui-request-agents';
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
-import Pair from '@mpieva/psydb-ui-lib/src/pair';
-import Split from '@mpieva/psydb-ui-lib/src/split';
 import SchemaForm from '@mpieva/psydb-ui-lib/src/default-schema-form';
+
+import ExperimentIntervalSummary from '@mpieva/psydb-ui-lib/src/experiment-interval-summary';
 
 const ExperimentFormContainer = ({
     onHide,
@@ -19,7 +19,7 @@ const ExperimentFormContainer = ({
 
     var studyId = studyData.record._id;
     var studyRecordType = studyData.record.type;
-    var experimentState = experimentData.record.state;
+    var experimentRecord = experimentData.record;
     var target = confirmData.experimentRecord;
 
     var handleSubmit = () => {
@@ -48,52 +48,16 @@ const ExperimentFormContainer = ({
 
             <header className='pb-1'><b>Aktuell</b></header>
             <div className='p-2 bg-white border'>
-                <Container>
-                    <Pair label='Datum'>
-                        { datefns.format(
-                            new Date(experimentState.interval.start),
-                            'P'
-                        ) }
-                    </Pair>
-
-                    <Pair label='Beginn'>
-                        { datefns.format(
-                            new Date(experimentState.interval.start),
-                            'p'
-                        ) }
-                    </Pair>
-                    <Pair label='Ende'>
-                        { datefns.format(
-                            new Date(experimentState.interval.end).getTime() + 1,
-                            'p'
-                        ) }
-                    </Pair>
-
-                </Container>
+                <ExperimentIntervalSummary
+                    experimentRecord={ experimentRecord }
+                />
             </div>
 
             <header className='pb-1 mt-3'><b>Verschieben Nach</b></header>
             <div className='p-2 bg-white border'>
-                <Container>
-                    <Pair label='Datum'>
-                        { datefns.format(
-                            new Date(target.state.interval.start),
-                            'P'
-                        ) }
-                    </Pair>
-                    <Pair label='Beginn'>
-                        { datefns.format(
-                            new Date(target.state.interval.start),
-                            'p'
-                        ) }
-                    </Pair>
-                    <Pair label='Bis'>
-                        { datefns.format(
-                            new Date(target.state.interval.end).getTime() + 1,
-                            'p'
-                        ) }
-                    </Pair>
-                </Container>
+                <ExperimentIntervalSummary
+                    experimentRecord={ target }
+                />
             </div>
             <div className='d-flex justify-content-end mt-3'>
                 <Button onClick={ handleSubmit }>Verschieben</Button>

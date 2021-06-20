@@ -3,6 +3,8 @@ import { Modal, Form, Container, Col, Row, Button } from 'react-bootstrap';
 
 import agent from '@mpieva/psydb-ui-request-agents';
 import SchemaForm from '@mpieva/psydb-ui-lib/src/default-schema-form';
+import Split from '@mpieva/psydb-ui-lib/src/split';
+import ExperimentIntervalSummary from '@mpieva/psydb-ui-lib/src/experiment-interval-summary';
 
 import {
     ExactObject,
@@ -19,13 +21,13 @@ import {
 var schema = ExactObject({
     properties: {
 
-        subjectComment: SaneString({ title: 'Kommentar' }),
         unparticipateStatus: UnparticipationStatus({ title: 'Grund' }),
-        blockFromTesting: BlockFromTesting({ title: 'Proband sperren' }),
+        blockSubjectFromTesting: BlockFromTesting({ title: 'Proband sperren' }),
+        subjectComment: FullText({ title: 'Kommentar zum Probanden' }),
     },
     required: [
         'subjectComment',
-        'blockFromTesting'
+        'blockSubjectFromTesting'
     ],
 })
 
@@ -34,6 +36,7 @@ const RemoveSubjectModal = ({
     onHide,
 
     experimentData,
+    subjectDataByType,
     payloadData,
 
     onSuccessfulUpdate,
@@ -51,12 +54,17 @@ const RemoveSubjectModal = ({
         it.subjectId === subjectId
     ));
 
+    var subjectRecord = subjectDataByType[subjectType].records.find(it => (
+        it._id === subjectId
+    ));
+
     var handleSubmit = ({ formData }) => {
         var message = {
             type: 'experiment/remove-subject',
             payload: {
                 experimentId: experimentData.record._id,
                 subjectId,
+                ...formData
             }
         };
 
@@ -83,10 +91,35 @@ const RemoveSubjectModal = ({
                 <Modal.Title>Proband austragen</Modal.Title>
             </Modal.Header>
             <Modal.Body className='bg-light'>
+                
+                <Split>
+                    <div>
+                        <header><b>Proband</b></header>
+                        <div className='pt-2 pb-2 pl-4 mb-1'>{
+                            subjectRecord._recordLabel
+                        }</div>
+                        <header><b>Kommentar im Experiment</b></header>
+                        <div className='pt-2 pb-2 pl-4 mb-1'><i>{
+                            subjectData.comment
+                        }</i></div>
+                    </div>
+                    
+                    <div>
+                        <header className='pb-1'><b>Zeitpunkt</b></header>
+                        <div className='p-2 bg-white border'>
+                            <ExperimentIntervalSummary
+                                experimentRecord={ experimentData.record }
+                            />
+                        </div>
+                    </div>
+                </Split>
+                
+                <hr />
+
                 <SchemaForm
                     schema={ schema }
                     formData={{
-                        comment: subjectData.comment,
+                        subjectComment: subjectRecord.scientific.state.comment,
                     }}
                     onSubmit={ handleSubmit }
                 />
