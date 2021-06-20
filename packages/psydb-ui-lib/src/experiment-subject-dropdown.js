@@ -3,6 +3,16 @@ import React, { useCallback } from 'react';
 import { Dropdown } from 'react-bootstrap';
 import { GearFill } from 'react-bootstrap-icons';
 
+var calendarStyle = {
+    background: 'transparent',
+    color: 'inherit',
+}
+
+var listStyle = {
+    borderRadius: '.2rem',
+    border: 0,
+}
+
 var ExperimentSubjectDropdown = ({
     subjectRecord,
     
@@ -14,7 +24,8 @@ var ExperimentSubjectDropdown = ({
     onClickMailbox,
     onClickContactFailed,
 
-    disabled
+    disabled,
+    variant,
 }) => {
 
     var {
@@ -46,15 +57,22 @@ var ExperimentSubjectDropdown = ({
         onClickContactFailed({ subjectId, subjectType })
     ), [ onClickContactFailed ]);
 
+    var style = (
+        variant === 'calendar'
+        ? calendarStyle
+        : listStyle
+    )
+
+    if (variant === 'calendar') {
+        style = { ...style, }
+    }
+
     return (
         <Dropdown>
             <Dropdown.Toggle
                 size='sm'
-                variant='outline-primary'
-                style={{
-                    borderRadius: '.2rem',
-                    border: 0,
-                }}
+                variant={ variant === 'calendar' ? 'other' : 'outline-primary' }
+                style={ style }
                 bsPrefix='dropdown-toggle-no-caret'
                 disabled={ disabled }
             >

@@ -1,12 +1,22 @@
-import React, { useReducer, useEffect, useMemo } from 'react';
+import React, { useReducer, useEffect, useMemo, useCallback } from 'react';
 
 import {
     LinkContainer
 } from 'react-router-bootstrap';
 
+import enums from '@mpieva/psydb-schema-enums';
+
+import agent from '@mpieva/psydb-ui-request-agents';
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
+import useModalReducer from '@mpieva/psydb-ui-lib/src/use-modal-reducer';
 import getTextColor from '@mpieva/psydb-ui-lib/src/bw-text-color-for-background';
 import applyValueToDisplayFields from '@mpieva/psydb-ui-lib/src/apply-value-to-display-fields';
+
+import ExperimentSubjectDropdown from '@mpieva/psydb-ui-lib/src/experiment-subject-dropdown';
+
+import CommentModal from '@mpieva/psydb-ui-lib/src/per-subject-comment-modal';
+import MoveModal from '@mpieva/psydb-ui-lib/src/move-subject-modal';
+import RemoveModal from '@mpieva/psydb-ui-lib/src/remove-subject-modal';
 
 const ExperimentSummaryMedium = ({
     experimentRecord,
@@ -18,7 +28,38 @@ const ExperimentSummaryMedium = ({
     subjectDisplayFieldData,
 
     url,
+    onSuccessfulUpdate,
 }) => {
+
+    var commentModal = useModalReducer({ show: false });
+    var moveModal = useModalReducer({ show: false });
+    var removeModal = useModalReducer({ show: false });
+
+    var changeStatusThunk = (status) => ({ subjectId }) => {
+        var message = {
+            type: 'experiment/change-invitation-status',
+            payload: {
+                experimentId: experimentData.record._id,
+                subjectId: subjectId,
+                invitationStatus: status
+            }
+        }
+
+        agent.send({ message })
+        .then(response => {
+            onSuccessfulUpdate && onSuccessfulUpdate({ response });
+        })
+    };
+    
+    var onClickConfirm = changeStatusThunk('confirmed');
+    var onClickMailbox = changeStatusThunk('mailbox');
+    var onClickContactFailed = changeStatusThunk('contact-failed');
+
+    var experimentData = {
+        record: experimentRecord,
+        ...experimentRelated,
+    };
+
     var { state: {
         studyId,
         locationId,
@@ -39,6 +80,38 @@ const ExperimentSummaryMedium = ({
             background: teamRecord.state.color,
             color: getTextColor(teamRecord.state.color),
         }}>
+
+            {/*<CommentModal { ...({
+                show: commentModal.show,
+                onHide: commentModal.handleHide,
+                payloadData: commentModal.data,
+
+                experimentId: experimentRecord._id,
+                onSuccessfulUpdate,
+            }) } />*/}
+
+            <MoveModal { ...({
+                show: moveModal.show,
+                onHide: moveModal.handleHide,
+                payloadData: moveModal.data,
+
+                shouldFetch: true,
+                experimentId: experimentRecord._id,
+                experimentType: 'inhouse',
+                onSuccessfulUpdate,
+            }) } />
+
+            {/*<RemoveModal { ...({
+                show: removeModal.show,
+                onHide: removeModal.handleHide,
+                payloadData: removeModal.data,
+
+                experimentId: experimentRecord._id,
+                onSuccessfulUpdate,
+            }) } />*/}
+
+
+
             <div>
                 <b>
                     { datefns.format(start, 'p') }
@@ -60,11 +133,9 @@ const ExperimentSummaryMedium = ({
                 { 
                     subjectData
                     .filter(it => (
-                        ![
-                            'canceled-by-participant',
-                            'canceled-by-institute',
-                            'deleted-by-institute'
-                        ].includes(it.participationStatus)
+                        !enums.unparticipationStatus.keys.includes(
+                            it.participationStatus
+                        )
                     ))
                     .map(it => (
                         <SubjectItem { ...({
@@ -76,18 +147,27 @@ const ExperimentSummaryMedium = ({
     
                             experimentRecord,
                             experimentRelated,
+
+                            onClickComment: commentModal.handleShow,
+                            onClickMove: moveModal.handleShow,
+                            onClickRemove: removeModal.handleShow,
+
+                            onClickConfirm,
+                            onClickMailbox,
+                            onClickContactFailed,
+
                         }) } />
                     ))
                 }
             </ul>
-            <div className='mt-2 d-flex justify-content-end'>
+            <div className='mt-3 d-flex justify-content-end'>
                 <LinkContainer
                     style={{
                         color: getTextColor(teamRecord.state.color),
                     }}
                     to={ `/experiments/inhouse/${experimentRecord._id}` }
                 >
-                    <a><u>details</u></a>
+                    <a><u>... Details</u></a>
                 </LinkContainer>
             </div>
         </div>
@@ -104,7 +184,13 @@ const SubjectItem = ({
     
     experimentRecord,
 
-    onChangeStatus,
+    onClickComment,
+    onClickMove,
+    onClickRemove,
+
+    onClickConfirm,
+    onClickMailbox,
+    onClickContactFailed,
 }) => {
     var {
         subjectId,
@@ -121,7 +207,7 @@ const SubjectItem = ({
 
     return (
         <li>
-            <div className='d-flex'>
+            <div className='d-flex mb-1'>
                 <div className='flex-grow'>
                     { withValue.map(it => (
                         <div className='d-flex' key={ it.key }>
@@ -132,11 +218,41 @@ const SubjectItem = ({
                         </div>
                     )) }
                 </div>
+                <div
+                    style={{ width: '35px' }}
+                    className='d-flex flex-column align-items-center'
+                >
+                    <ExperimentSubjectDropdown { ...({
+                        variant: 'calendar',
+                        subjectRecord,
+                        
+                        onClickComment,
+                        onClickMove,
+                        onClickRemove,
+
+                        onClickConfirm,
+                        onClickMailbox,
+                        onClickContactFailed,
+                    }) } />
+                    { invitationStatus !== 'scheduled' && (
+                        <b 
+                            className='pl-2 pr-2'
+                            style={{ fontSize: '120%', border: '1px solid' }}
+                        >
+                            { invitationStatusLabels[invitationStatus]}
+                        </b>
+                    )}
+                </div>
             </div>
         </li>
     )
 }
 
-
+const invitationStatusLabels = {
+    'scheduled': '',
+    'confirmed': 'B',
+    'mailbox': 'AB',
+    'contact-failed': 'NE',
+}
 
 export default ExperimentSummaryMedium;

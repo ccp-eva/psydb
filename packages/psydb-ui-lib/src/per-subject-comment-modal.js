@@ -2,7 +2,7 @@ import React, { useMemo, useEffect, useReducer, useCallback } from 'react';
 import { Modal, Form, Container, Col, Row, Button } from 'react-bootstrap';
 
 import agent from '@mpieva/psydb-ui-request-agents';
-import SchemaForm from '@mpieva/psydb-ui-lib/src/default-schema-form';
+import SchemaForm from './default-schema-form';
 
 import {
     ExactObject,

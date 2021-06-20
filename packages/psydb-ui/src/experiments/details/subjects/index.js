@@ -8,9 +8,9 @@ import useModalReducer from '@mpieva/psydb-ui-lib/src/use-modal-reducer';
 
 import SubjectTypeContainer from './subject-type-container';
 
-import CommentModal from '../per-subject-comment-modal';
-import MoveModal from '../move-subject-modal';
-import RemoveModal from '../remove-subject-modal';
+import CommentModal from '@mpieva/psydb-ui-lib/src/per-subject-comment-modal';
+import MoveModal from '@mpieva/psydb-ui-lib/src/move-subject-modal';
+import RemoveModal from '@mpieva/psydb-ui-lib/src/remove-subject-modal';
 
 
 const Subjects = ({

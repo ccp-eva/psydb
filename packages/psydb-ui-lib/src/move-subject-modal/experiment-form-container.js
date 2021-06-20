@@ -2,10 +2,10 @@ import React  from 'react';
 import { Modal, Form, Container, Col, Row, Button } from 'react-bootstrap';
 
 import agent from '@mpieva/psydb-ui-request-agents';
-import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
-import SchemaForm from '@mpieva/psydb-ui-lib/src/default-schema-form';
+import datefns from '../date-fns';
+import SchemaForm from '../default-schema-form';
 
-import ExperimentIntervalSummary from '@mpieva/psydb-ui-lib/src/experiment-interval-summary';
+import ExperimentIntervalSummary from '../experiment-interval-summary';
 
 const ExperimentFormContainer = ({
     onHide,

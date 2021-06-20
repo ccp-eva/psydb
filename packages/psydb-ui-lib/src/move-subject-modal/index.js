@@ -2,15 +2,30 @@ import React, { useMemo, useEffect, useReducer, useCallback } from 'react';
 import { Modal } from 'react-bootstrap';
 
 import agent from '@mpieva/psydb-ui-request-agents';
-import useModalReducer from '@mpieva/psydb-ui-lib/src/use-modal-reducer';
-import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
-import StudyInhouseLocations from '@mpieva/psydb-ui-lib/src/study-inhouse-locations';
+import useFetch from '../use-fetch';
+import useModalReducer from '../use-modal-reducer';
+import LoadingIndicator from '../loading-indicator';
+import StudyInhouseLocations from '../study-inhouse-locations';
 
 import ConfirmModal from './confirm-modal';
+
+const MoveSubjectModalWrapper = (ps) => {
+    if (!ps.show) {
+        return null;
+    }
+
+    return (
+        <MoveSubjectModal { ...ps } />
+    );
+}
 
 const MoveSubjectModal = ({
     show,
     onHide,
+
+    shouldFetch,
+    experimentId,
+    experimentType,
 
     experimentData,
     studyData,
@@ -19,9 +34,31 @@ const MoveSubjectModal = ({
 
     onSuccessfulUpdate,
 }) => {
-    if (!show) {
+    
+    var [ didFetch, fetched ] = useFetch((agent) => {
+        if (shouldFetch) {
+            return agent.fetchExtendedExperimentData({
+                experimentType,
+                experimentId,
+            })
+        }
+    }, [ experimentId ]);
+
+    var [ state, dispatch ] = useReducer(reducer, {});
+    var { calendarRevision } = state;
+
+    var confirmModal = useModalReducer({ show: false });
+
+    if (shouldFetch && !didFetch) {
         return null;
+        /*return (
+            <LoadingIndicator size='lg' />
+        );*/
     }
+
+    experimentData = experimentData || fetched.data.experimentData;
+    studyData = studyData || fetched.data.studyData;
+    subjectDataByType = subjectDataByType || fetched.data.subjectDataByType;
 
     var studyId = studyData.record._id;
     var studyRecordType = studyData.record.type;
@@ -30,11 +67,6 @@ const MoveSubjectModal = ({
     var subjectRecord = subjectDataByType[subjectType].records.find(it => (
         it._id === subjectId
     ));
-
-    var [ state, dispatch ] = useReducer(reducer, {});
-    var { calendarRevision } = state;
-
-    var confirmModal = useModalReducer({ show: false });
 
     var wrappedOnSuccessfulUpdate = (...args) => {
         onHide(),
@@ -100,4 +132,4 @@ var reducer = (state, action) => {
     }
 }
 
-export default MoveSubjectModal;
+export default MoveSubjectModalWrapper;

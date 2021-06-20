@@ -2,9 +2,9 @@ import React, { useMemo, useEffect, useReducer, useCallback } from 'react';
 import { Modal, Form, Container, Col, Row, Button } from 'react-bootstrap';
 
 import agent from '@mpieva/psydb-ui-request-agents';
-import SchemaForm from '@mpieva/psydb-ui-lib/src/default-schema-form';
-import Split from '@mpieva/psydb-ui-lib/src/split';
-import ExperimentIntervalSummary from '@mpieva/psydb-ui-lib/src/experiment-interval-summary';
+import SchemaForm from './default-schema-form';
+import Split from './split';
+import ExperimentIntervalSummary from './experiment-interval-summary';
 
 import {
     ExactObject,

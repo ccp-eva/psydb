@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useMemo, useState } from 'react';
+import React, { useReducer, useEffect, useMemo, useState, useCallback } from 'react';
 
 import {
     Route,
@@ -11,6 +11,7 @@ import {
 
 import agent from '@mpieva/psydb-ui-request-agents';
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
+
 import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
 import CalendarNav from '@mpieva/psydb-ui-lib/src/calendar-nav';
 import withVariableCalendarPages from '@mpieva/psydb-ui-lib/src/with-variable-calendar-pages';
@@ -48,7 +49,7 @@ const Calendar = ({
         subjectDisplayFieldData,
         phoneListField,
 
-        listRevision,
+        revision,
     } = state;
 
     useEffect(() => {
@@ -73,29 +74,9 @@ const Calendar = ({
 
     }, [ 
         studyType, subjectType, researchGroupId,
-        currentPageStart, currentPageEnd, listRevision,
+        currentPageStart, currentPageEnd, revision,
         selectedStudyId,
     ])
-
-    var [
-        handleChangeStatus
-    ] = useMemo(() => ([
-        ({ experimentRecord, subjectRecord, status }) => {
-            var message = {
-                type: 'experiment/change-invitation-status',
-                payload: {
-                    experimentId: experimentRecord._id,
-                    subjectId: subjectRecord._id,
-                    invitationStatus: status
-                }
-            }
-
-            agent.send({ message })
-            .then(response => {
-                dispatch({ type: 'increase-list-revision'})
-            })
-        }
-    ]), [])
 
     var allDayStarts = useMemo(() => (
         getDayStartsInInterval({
@@ -125,12 +106,17 @@ const Calendar = ({
         return groups;
     }, [ experimentRecords ])
 
+    var handleSuccessfulUpdate = useCallback(() => {
+        dispatch({ type: 'increase-revision' });
+    }, []);
+
     if (!experimentRecords) {
         return <LoadingIndicator size='lg' />
     }
 
     return (
         <div>
+
             <CalendarNav { ...({
                 className: 'mt-3',
                 currentPageStart,
@@ -156,6 +142,7 @@ const Calendar = ({
                 url,
                 calendarVariant,
                 onSelectDay,
+                onSuccessfulUpdate: handleSuccessfulUpdate
             }) }/>
         </div>
     )
@@ -177,10 +164,10 @@ const reducer = (state, action) => {
 
             }
         
-        case 'increase-list-revision':
+        case 'increase-revision':
             return {
                 ...state,
-                listRevision: (state.listRevision || 0) + 1
+                revision: (state.revision || 0) + 1
             }
     }
 }

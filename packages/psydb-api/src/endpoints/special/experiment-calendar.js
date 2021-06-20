@@ -7,6 +7,8 @@ var Ajv = require('@mpieva/psydb-api-lib/src/ajv'),
     ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
     ResponseBody = require('@mpieva/psydb-api-lib/src/response-body');
 
+var enums = require('@mpieva/psydb-schema-enums');
+
 var groupBy = require('@mpieva/psydb-common-lib/src/group-by');
 var keyBy = require('@mpieva/psydb-common-lib/src/key-by');
 var compareIds = require('@mpieva/psydb-api-lib/src/compare-ids');
@@ -146,7 +148,11 @@ var experimentCalendar = async (context, next) => {
             ...subjectIds,
             ...(
                 it.state.subjectData
-                .filter(it => it.invitationStatus === 'scheduled')
+                .filter(it => (
+                    !enums.unparticipationStatus.keys.includes(
+                        it.participationStatus
+                    )
+                ))
                 .map(it => it.subjectId)
             )
         ]
@@ -186,6 +192,9 @@ var experimentCalendar = async (context, next) => {
 
             ProjectDisplayFieldsStage({
                 displayFields,
+                additionalProjection: {
+                    type: true,
+                }
             }),
         ]).toArray()
     );
