@@ -2,9 +2,10 @@ import React, { useMemo, useEffect, useReducer, useCallback } from 'react';
 import { Modal } from 'react-bootstrap';
 
 import agent from '@mpieva/psydb-ui-request-agents';
-import useModalReducer from '@mpieva/psydb-ui-lib/src/use-modal-reducer';
-import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
-import StudyInhouseLocations from '@mpieva/psydb-ui-lib/src/study-inhouse-locations';
+import useFetch from '../use-fetch';
+import useModalReducer from '../use-modal-reducer';
+import LoadingIndicator from '../loading-indicator';
+import StudyInhouseLocations from '../study-inhouse-locations';
 
 import ConfirmModal from './confirm-modal';
 
@@ -12,14 +13,15 @@ const MoveExperimentModal = ({
     show,
     onHide,
 
+    shouldFetch,
+    experimentId,
+    experimentType,
+
     experimentData,
     studyData,
 
     onSuccessfulUpdate,
 }) => {
-    var studyId = studyData.record._id;
-    var studyRecordType = studyData.record.type;
-
     var confirmModal = useModalReducer({ show: false });
 
     var [ state, dispatch ] = useReducer(reducer, {});
@@ -31,6 +33,25 @@ const MoveExperimentModal = ({
         onHide(),
         onSuccessfulUpdate && onSuccessfulUpdate(...args);
     };
+
+    var [ didFetch, fetched ] = useFetch((agent) => {
+        if (shouldFetch) {
+            return agent.fetchExtendedExperimentData({
+                experimentType,
+                experimentId,
+            })
+        }
+    }, [ experimentId ]);
+
+    if (shouldFetch && !didFetch) {
+        return null;
+    }
+
+    experimentData = experimentData || fetched.data.experimentData;
+    studyData = studyData || fetched.data.studyData;
+
+    var studyId = studyData.record._id;
+    var studyRecordType = studyData.record.type;
 
     return (
         <Modal
@@ -86,4 +107,14 @@ var reducer = (state, action) => {
     }
 }
 
-export default MoveExperimentModal;
+const MoveExperimentModalWrapper = (ps) => {
+    if (!ps.show) {
+        return null;
+    }
+    return (
+        <MoveExperimentModal { ...ps } />
+    );
+}
+
+
+export default MoveExperimentModalWrapper;

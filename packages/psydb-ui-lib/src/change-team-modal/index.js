@@ -2,8 +2,9 @@ import React, { useMemo, useEffect, useReducer, useCallback, useState } from 're
 import { Modal, Button } from 'react-bootstrap';
 
 import agent from '@mpieva/psydb-ui-request-agents';
-import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
-import StudyTeamListItem from '@mpieva/psydb-ui-lib/src/experiment-operator-team-list-item';
+import useFetch from '../use-fetch';
+import LoadingIndicator from '../loading-indicator';
+import StudyTeamListItem from '../experiment-operator-team-list-item';
 
 const ChangeTeamModal = ({
     show,
@@ -136,5 +137,15 @@ const reducer = (state, action) => {
 
     }
 }
+
+const ChangeTeamModalWrapper = (ps) => {
+    if (!ps.show) {
+        return null;
+    }
+    return (
+        <ChangeTeamModal { ...ps } />
+    );
+}
+
 
 export default ChangeTeamModal;

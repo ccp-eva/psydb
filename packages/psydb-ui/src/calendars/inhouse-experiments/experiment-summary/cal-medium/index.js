@@ -12,11 +12,15 @@ import useModalReducer from '@mpieva/psydb-ui-lib/src/use-modal-reducer';
 import getTextColor from '@mpieva/psydb-ui-lib/src/bw-text-color-for-background';
 import applyValueToDisplayFields from '@mpieva/psydb-ui-lib/src/apply-value-to-display-fields';
 
+import ExperimentDropdown from '@mpieva/psydb-ui-lib/src/experiment-dropdown';
 import ExperimentSubjectDropdown from '@mpieva/psydb-ui-lib/src/experiment-subject-dropdown';
 
-import CommentModal from '@mpieva/psydb-ui-lib/src/per-subject-comment-modal';
-import MoveModal from '@mpieva/psydb-ui-lib/src/move-subject-modal';
-import RemoveModal from '@mpieva/psydb-ui-lib/src/remove-subject-modal';
+import MoveExperimentModal from '@mpieva/psydb-ui-lib/src/move-experiment-modal';
+import ChangeTeamModal from '@mpieva/psydb-ui-lib/src/change-team-modal';
+
+import CommentPerSubjectModal from '@mpieva/psydb-ui-lib/src/per-subject-comment-modal';
+import MoveSubjectModal from '@mpieva/psydb-ui-lib/src/move-subject-modal';
+import RemoveSubjectModal from '@mpieva/psydb-ui-lib/src/remove-subject-modal';
 
 const ExperimentSummaryMedium = ({
     experimentRecord,
@@ -31,9 +35,12 @@ const ExperimentSummaryMedium = ({
     onSuccessfulUpdate,
 }) => {
 
-    var commentModal = useModalReducer({ show: false });
-    var moveModal = useModalReducer({ show: false });
-    var removeModal = useModalReducer({ show: false });
+    var moveExperimentModal = useModalReducer({ show: false });
+    var changeTeamModal = useModalReducer({ show: false });
+
+    var commentPerSubjectModal = useModalReducer({ show: false });
+    var moveSubjectModal = useModalReducer({ show: false });
+    var removeSubjectModal = useModalReducer({ show: false });
 
     var changeStatusThunk = (status) => ({ subjectId }) => {
         var message = {
@@ -81,19 +88,44 @@ const ExperimentSummaryMedium = ({
             color: getTextColor(teamRecord.state.color),
         }}>
 
-            <CommentModal { ...({
-                show: commentModal.show,
-                onHide: commentModal.handleHide,
-                payloadData: commentModal.data,
+            <MoveExperimentModal { ...({
+                show: moveExperimentModal.show,
+                onHide: moveExperimentModal.handleHide,
+                payloadData: moveExperimentModal.data,
+
+                shouldFetch: true,
+                experimentId: experimentRecord._id,
+                experimentType: 'inhouse',
+
+                onSuccessfulUpdate,
+            }) } />
+
+            <ChangeTeamModal { ...({
+                show: changeTeamModal.show,
+                onHide: changeTeamModal.handleHide,
+                payloadData: changeTeamModal.data,
+
+                experimentId: experimentRecord._id,
+                studyId: experimentRecord.state.studyId,
+                currentTeamId: experimentRecord.state.experimentOperatorTeamId,
+
+                onSuccessfulUpdate,
+            }) } />
+
+
+            <CommentPerSubjectModal { ...({
+                show: commentPerSubjectModal.show,
+                onHide: commentPerSubjectModal.handleHide,
+                payloadData: commentPerSubjectModal.data,
 
                 experimentData: { record: experimentRecord },
                 onSuccessfulUpdate,
             }) } />
 
-            <MoveModal { ...({
-                show: moveModal.show,
-                onHide: moveModal.handleHide,
-                payloadData: moveModal.data,
+            <MoveSubjectModal { ...({
+                show: moveSubjectModal.show,
+                onHide: moveSubjectModal.handleHide,
+                payloadData: moveSubjectModal.data,
 
                 shouldFetch: true,
                 experimentId: experimentRecord._id,
@@ -102,10 +134,10 @@ const ExperimentSummaryMedium = ({
                 onSuccessfulUpdate,
             }) } />
 
-            <RemoveModal { ...({
-                show: removeModal.show,
-                onHide: removeModal.handleHide,
-                payloadData: removeModal.data,
+            <RemoveSubjectModal { ...({
+                show: removeSubjectModal.show,
+                onHide: removeSubjectModal.handleHide,
+                payloadData: removeSubjectModal.data,
 
                 shouldFetch: true,
                 experimentId: experimentRecord._id,
@@ -115,21 +147,38 @@ const ExperimentSummaryMedium = ({
             }) } />
 
 
+            
+            <div className='d-flex'>
+                <div className='flex-grow'>
+                    <div>
+                        <b>
+                            { datefns.format(start, 'p') }
+                            {' - '}
+                            { datefns.format(end, 'p') }
+                        </b>
+                    </div>
+                    <div>
+                        { teamRecord.state.name }
+                        {' '}
+                        ({
+                            experimentRelated.relatedRecordLabels.study[studyId]._recordLabel
+                        })
+                    </div>
+                </div>
+                <div
+                    style={{ width: '35px' }}
+                    className='d-flex flex-column align-items-center'
+                >
+                    <ExperimentDropdown { ...({
+                        variant: 'calendar',
+                        detailsLink: `/experiments/inhouse/${experimentRecord._id}`,
+                        onClickMove: moveExperimentModal.handleShow,
+                        onClickChangeTeam: changeTeamModal.handleShow
+                    })} />
+                </div>
+            </div>
 
-            <div>
-                <b>
-                    { datefns.format(start, 'p') }
-                    {' - '}
-                    { datefns.format(end, 'p') }
-                </b>
-            </div>
-            <div>
-                { teamRecord.state.name }
-                {' '}
-                ({
-                    experimentRelated.relatedRecordLabels.study[studyId]._recordLabel
-                })
-            </div>
+
             <div className='mt-2'>
                 <small><b>Probanden:</b></small>
             </div>
@@ -152,9 +201,9 @@ const ExperimentSummaryMedium = ({
                             experimentRecord,
                             experimentRelated,
 
-                            onClickComment: commentModal.handleShow,
-                            onClickMove: moveModal.handleShow,
-                            onClickRemove: removeModal.handleShow,
+                            onClickComment: commentPerSubjectModal.handleShow,
+                            onClickMove: moveSubjectModal.handleShow,
+                            onClickRemove: removeSubjectModal.handleShow,
 
                             onClickConfirm,
                             onClickMailbox,
@@ -164,7 +213,7 @@ const ExperimentSummaryMedium = ({
                     ))
                 }
             </ul>
-            <div className='mt-3 d-flex justify-content-end'>
+            {/*<div className='mt-3 d-flex justify-content-end'>
                 <LinkContainer
                     style={{
                         color: getTextColor(teamRecord.state.color),
@@ -173,7 +222,7 @@ const ExperimentSummaryMedium = ({
                 >
                     <a><u>... Details</u></a>
                 </LinkContainer>
-            </div>
+            </div>*/}
         </div>
     )
 }

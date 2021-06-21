@@ -4,8 +4,8 @@ import {
     Button
 } from 'react-bootstrap';
 
-import ChangeTeamModal from './change-team-modal';
-import MoveExperimentModal from './move-experiment-modal';
+import ChangeTeamModal from '@mpieva/psydb-ui-lib/src/change-team-modal';
+import MoveExperimentModal from '@mpieva/psydb-ui-lib/src/move-experiment-modal';
 
 const GeneralFunctions = ({
     experimentData,

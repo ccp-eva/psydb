@@ -2,7 +2,7 @@ import calculatePerceivedBrightness from '@mpieva/psydb-common-lib/src/perceived
 
 const bwTextColorForBackground = (bgColor) => (
     calculatePerceivedBrightness(bgColor) > 150
-    ? '#000000'
+    ? '#212529'
     : '#ffffff'
 );
 

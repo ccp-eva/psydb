@@ -24,7 +24,6 @@ const useModalReducer = (defaults) => {
 
 var reducer = (state, action) => {
     var { type, payload } = action;
-    console.log(action);
     switch (type) {
         case 'show-modal':
             return {
