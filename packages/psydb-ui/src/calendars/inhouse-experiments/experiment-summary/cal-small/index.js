@@ -5,7 +5,12 @@ import {
 } from 'react-router-bootstrap';
 
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
+import useModalReducer from '@mpieva/psydb-ui-lib/src/use-modal-reducer';
 import getTextColor from '@mpieva/psydb-ui-lib/src/bw-text-color-for-background';
+
+import ExperimentDropdown from '@mpieva/psydb-ui-lib/src/experiment-dropdown';
+import MoveExperimentModal from '@mpieva/psydb-ui-lib/src/move-experiment-modal';
+import ChangeTeamModal from '@mpieva/psydb-ui-lib/src/change-team-modal';
 
 const ExperimentSummarySmall = ({
     experimentRecord,
@@ -17,7 +22,11 @@ const ExperimentSummarySmall = ({
     subjectDisplayFieldData,
 
     url,
+    onSuccessfulUpdate,
 }) => {
+    var moveExperimentModal = useModalReducer({ show: false });
+    var changeTeamModal = useModalReducer({ show: false });
+
     var { state: {
         studyId,
         locationId,
@@ -38,6 +47,32 @@ const ExperimentSummarySmall = ({
             background: teamRecord.state.color,
             color: getTextColor(teamRecord.state.color),
         }}>
+            
+            <MoveExperimentModal { ...({
+                show: moveExperimentModal.show,
+                onHide: moveExperimentModal.handleHide,
+                payloadData: moveExperimentModal.data,
+
+                shouldFetch: true,
+                experimentId: experimentRecord._id,
+                experimentType: 'inhouse',
+
+                onSuccessfulUpdate,
+            }) } />
+
+            <ChangeTeamModal { ...({
+                show: changeTeamModal.show,
+                onHide: changeTeamModal.handleHide,
+                payloadData: changeTeamModal.data,
+
+                experimentId: experimentRecord._id,
+                studyId: experimentRecord.state.studyId,
+                currentTeamId: experimentRecord.state.experimentOperatorTeamId,
+
+                onSuccessfulUpdate,
+            }) } />
+
+
             <div>
                 <b>
                     { datefns.format(start, 'p') }
@@ -80,14 +115,12 @@ const ExperimentSummarySmall = ({
                 }
             </ul>
             <div className='mt-2 d-flex justify-content-end'>
-                <LinkContainer
-                    style={{
-                        color: getTextColor(teamRecord.state.color),
-                    }}
-                    to={ `/experiments/inhouse/${experimentRecord._id}` }
-                >
-                    <a><u>details</u></a>
-                </LinkContainer>
+                <ExperimentDropdown { ...({
+                    variant: 'calendar',
+                    detailsLink: `/experiments/inhouse/${experimentRecord._id}`,
+                    onClickMove: moveExperimentModal.handleShow,
+                    onClickChangeTeam: changeTeamModal.handleShow
+                })} />
             </div>
         </div>
     )

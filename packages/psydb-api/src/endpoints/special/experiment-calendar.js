@@ -139,6 +139,7 @@ var experimentCalendar = async (context, next) => {
                 'state.isCanceled': false,
             }},
             StripEventsStage(),
+            { $sort: { 'state.interval.start': 1 }}
         ]).toArray()
     );
 
