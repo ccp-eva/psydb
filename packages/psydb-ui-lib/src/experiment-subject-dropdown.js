@@ -11,6 +11,7 @@ var calendarStyle = {
 var listStyle = {
     borderRadius: '.2rem',
     border: 0,
+    marginTop: '-3px',
 }
 
 var ExperimentSubjectDropdown = ({

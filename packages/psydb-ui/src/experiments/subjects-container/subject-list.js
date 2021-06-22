@@ -72,13 +72,7 @@ const SubjectListRow = ({
     displayFieldData,
     dateOfBirthField,
 
-    onClickComment,
-    onClickMove,
-    onClickRemove,
-
-    onClickConfirm,
-    onClickMailbox,
-    onClickContactFailed,
+    ActionsComponent,
 }) => {
     var experimentSubjectData = (
         experimentRecord.state.subjectData.find(it => (
@@ -136,19 +130,15 @@ const SubjectListRow = ({
             <td>{ formattedStatus }</td>
             <td><i>{ comment }</i></td>
             <td>
-                <SubjectDropdown { ...({
-                    subjectRecord: record,
-                    
-                    onClickComment,
-                    onClickMove,
-                    onClickRemove,
+                { ActionsComponent && (
+                    <ActionsComponent { ...({
+                        experimentSubjectData,
+                        subjectRecord: record,
 
-                    onClickConfirm,
-                    onClickMailbox,
-                    onClickContactFailed,
-                    
-                    disabled: isUnparticipated,
-                }) } />
+                        hasContactIssue,
+                        isUnparticipated
+                    }) } />
+                )}
             </td>
         </tr>
     );

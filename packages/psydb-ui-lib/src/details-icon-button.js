@@ -18,7 +18,7 @@ var buttonProps = {
 var iconStyle = {
     width: '20px',
     height: '20px',
-    marginTop: '-3px'
+    marginTop: '-2px'
 }
 
 var DetailsIconButton = ({

@@ -1,17 +1,14 @@
-import React, { useCallback, useMemo } from 'react';
-import jsonpointer from 'jsonpointer';
+import React, { createContext, useContext } from 'react';
 
-import createStringifier from '@mpieva/psydb-ui-lib/src/record-field-stringifier';
-
-import agent from '@mpieva/psydb-ui-request-agents';
+import useSend from '@mpieva/psydb-ui-lib/src/use-send';
 import useModalReducer from '@mpieva/psydb-ui-lib/src/use-modal-reducer';
+import DetailsIconButton from '@mpieva/psydb-ui-lib/src/details-icon-button';
+import SubjectDropdown from '@mpieva/psydb-ui-lib/src/experiment-subject-dropdown';
 
-import SubjectTypeContainer from './subject-type-container';
+import SubjectsContainer from '../../subjects-container';
+import Modals from './modals';
 
-import CommentModal from '@mpieva/psydb-ui-lib/src/per-subject-comment-modal';
-import MoveModal from '@mpieva/psydb-ui-lib/src/move-subject-modal';
-import RemoveModal from '@mpieva/psydb-ui-lib/src/remove-subject-modal';
-
+const ActionsContext = createContext({});
 
 const Subjects = ({
     experimentData,
@@ -19,159 +16,102 @@ const Subjects = ({
     subjectDataByType,
     onSuccessfulUpdate,
 }) => {
-    var { selectionSettingsBySubjectType } = studyData.record.state;
-    var stringifyStudyValue = createStringifier(studyData);
-
     var commentModal = useModalReducer({ show: false });
     var moveModal = useModalReducer({ show: false });
     var removeModal = useModalReducer({ show: false });
 
-    var changeStatusThunk = (status) => ({ subjectId }) => {
-        var message = {
-            type: 'experiment/change-invitation-status',
-            payload: {
-                experimentId: experimentData.record._id,
-                subjectId: subjectId,
-                invitationStatus: status
-            }
+    var handleChangeStatus = useSend(({ subjectId, status }) => ({
+        type: 'experiment/change-invitation-status',
+        payload: {
+            experimentId: experimentData.record._id,
+            subjectId: subjectId,
+            invitationStatus: status
         }
+    }), { onSuccessfulUpdate });
 
-        agent.send({ message })
-        .then(response => {
-            onSuccessfulUpdate && onSuccessfulUpdate({ response });
-        })
-    };
-    
-    var onClickConfirm = changeStatusThunk('confirmed');
-    var onClickMailbox = changeStatusThunk('mailbox');
-    var onClickContactFailed = changeStatusThunk('contact-failed');
+    var wrap = (status) => ({ subjectId }) => (
+        handleChangeStatus({ subjectId, status })
+    )
+
+    var onClickConfirm = wrap('confirmed');
+    var onClickMailbox = wrap('mailbox');
+    var onClickContactFailed = wrap('contact-failed');
 
     return (
         <>
-            <CommentModal { ...({
-                show: commentModal.show,
-                onHide: commentModal.handleHide,
-                payloadData: commentModal.data,
-
-                experimentData,
-
-                onSuccessfulUpdate,
-            }) } />
-
-            <MoveModal { ...({
-                show: moveModal.show,
-                onHide: moveModal.handleHide,
-                payloadData: moveModal.data,
-
+            <Modals { ...({
                 experimentData,
                 studyData,
                 subjectDataByType,
 
-                onSuccessfulUpdate,
-            }) } />
-
-            <RemoveModal { ...({
-                show: removeModal.show,
-                onHide: removeModal.handleHide,
-                payloadData: removeModal.data,
-
-                experimentData,
-                subjectDataByType,
+                commentModal,
+                moveModal,
+                removeModal,
 
                 onSuccessfulUpdate,
             }) } />
+            
+            <ActionsContext.Provider value={{
+                onClickComment: commentModal.handleShow,
+                onClickMove: moveModal.handleShow,
+                onClickRemove: removeModal.handleShow,
 
-            <div className='p-3'>
-                { selectionSettingsBySubjectType.map((it, index) => {
-                    var {
-                        subjectRecordType,
-                        subjectsPerExperiment
-                    } = it;
+                onClickConfirm,
+                onClickMailbox,
+                onClickContactFailed,
+            }}>
+                <SubjectsContainer { ...({
+                    experimentData,
+                    studyData,
+                    subjectDataByType,
                     
-                    var subjectTypeLabel = stringifyStudyValue({
-                        ptr: `/state/selectionSettingsBySubjectType/${index}/subjectRecordType`,
-                        collection: 'subject',
-                        type: 'CustomRecordTypeKey',
-                    });
-
-                    var fullSubjectData = subjectDataByType[subjectRecordType];
-                    if (fullSubjectData.records.length < 1) {
-                        return null;
-                    }
-                    
-                    return (
-                        <SubjectTypeContainer { ...({
-                            key: subjectRecordType,
-                            
-                            subjectTypeKey: subjectRecordType,
-                            subjectTypeLabel,
-                            subjectsPerExperiment,
-
-                            experimentData,
-                            fullSubjectData,
-
-                            onClickComment: commentModal.handleShow,
-                            onClickMove: moveModal.handleShow,
-                            onClickRemove: removeModal.handleShow,
-
-                            onClickConfirm,
-                            onClickMailbox,
-                            onClickContactFailed,
-                        })} />
-                    );
-                })}
-            </div>
+                    ActionsComponent,
+                }) } />
+            </ActionsContext.Provider>
         </>
     )
 }
 
-/*var createModalReducer = (tag) => (state, action) => {
-    var { type, payload } = action;
-    
-    var showProp = `show${ucfirst(tag)}`,
-        dataProp = `${tag}Data`;
+const ActionsComponent = ({
+    experimentSubjectData,
+    subjectRecord,
 
-    var showType = `show-${tag}`,
-        hideType = `hide-${tag}`;
+    hasContactIssue,
+    isUnparticipated,
+}) => {
+    var context = useContext(ActionsContext);
+    var {
+        onClickComment,
+        onClickMove,
+        onClickRemove,
 
-    switch (type) {
-        case showType:
-            return {
-                ...state,
-                [showProp]: true,
-                [dataProp]: {
-                    ...payload
-                }
-            }
-        case hideType:
-            return {
-                ...state,
-                [showProp]: false,
-            }
+        onClickConfirm,
+        onClickMailbox,
+        onClickContactFailed,
+    } = context;
+
+    return (
+        <div className='d-flex justify-content-end'>
+            <DetailsIconButton
+                to={`/subjects/${subjectRecord.type}/${subjectRecord._id}`}
+            />
+
+            <SubjectDropdown { ...({
+                subjectRecord,
+                
+                onClickComment,
+                onClickMove,
+                onClickRemove,
+
+                onClickConfirm,
+                onClickMailbox,
+                onClickContactFailed,
+                    
+                disabled: isUnparticipated,
+            }) } />
+        </div>
+    )
 }
 
-var commentReducer = createModalReducer('comment');
-var moveReducer = createModalReducer('move');
-var removeReducer = createModalReducer('remove')
-
-var reducer = (state, action) => {
-    var subStates = [
-        commentReducer(state, action),
-        moveReducer(state, action),
-        removeReducer(state, action),
-    ];
-
-    if (subStates.findIndex(it => it === undefined) !== -1) {
-        return undefined;
-    }
-
-    return subStates.reduce((acc, it) => ({
-        ...acc, ...it
-    }), {});
-}
-
-var ucfirst = ([ initial, ...rest ]) => (
-    [ initial.toUpperCase(), ...rest ].join('')
-);*/
 
 export default Subjects;

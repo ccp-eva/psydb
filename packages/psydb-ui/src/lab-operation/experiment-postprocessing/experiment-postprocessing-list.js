@@ -120,7 +120,7 @@ const ExperimentPostprocessingList = ({
                         endTime
                     } = formatInterval(state.interval);
 
-                    return <tr>
+                    return <tr key={ it._id }>
                         <td>{ getExperimentTypeLabel(type) }</td>
                         <td>
                             { stringifyExperimentValue({

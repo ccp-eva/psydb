@@ -1,6 +1,6 @@
 import React, { useEffect, useReducer, useCallback } from 'react';
 import GeneralInfo from '../general-info';
-import Subjects from './subjects';
+import AllSubjects from './all-subjects';
 
 const ExperimentPostprocessing = ({
     experimentData,
@@ -21,11 +21,10 @@ const ExperimentPostprocessing = ({
                 }) } />
             </div>
             <div>
-                <Subjects { ...({
+                <AllSubjects { ...({
                     experimentData,
                     studyData,
                     subjectDataByType,
-                    onSuccessfulUpdate,
                 }) } />
             </div>
         </div>
