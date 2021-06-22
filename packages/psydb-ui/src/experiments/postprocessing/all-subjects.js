@@ -1,8 +1,6 @@
-import React, { createContext, useContext } from 'react';
+import React from 'react';
 import DetailsIconButton from '@mpieva/psydb-ui-lib/src/details-icon-button';
 import SubjectsContainer from '../subjects-container';
-
-const ActionsContext = createContext({});
 
 const AllSubjects = ({
     experimentData,
@@ -11,15 +9,13 @@ const AllSubjects = ({
 }) => {
 
     return (
-        <ActionsContext.Provider>
-            <SubjectsContainer { ...({
-                experimentData,
-                studyData,
-                subjectDataByType,
-                
-                ActionsComponent,
-            }) } />
-        </ActionsContext.Provider>
+        <SubjectsContainer { ...({
+            experimentData,
+            studyData,
+            subjectDataByType,
+            
+            ActionsComponent,
+        }) } />
     )
 }
 
@@ -30,13 +26,12 @@ const ActionsComponent = ({
     hasContactIssue,
     isUnparticipated,
 }) => {
-    var context = useContext(ActionsContext);
     return (
-        <>
+        <div className='d-flex justify-content-end'>
             <DetailsIconButton
                 to={`/subjects/${subjectRecord.type}/${subjectRecord._id}`}
             />
-        </>
+        </div>
     )
 }
 
