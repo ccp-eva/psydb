@@ -17,6 +17,7 @@ import RecordTypeNav from '@mpieva/psydb-ui-lib/src/record-type-nav';
 import ReservationRouting from './reservation';
 import SubjectSelectionRouting from './subject-selection';
 import InviteConfirmationRouting from './invite-confirmation';
+import ExperimentPostprocessingRouting from './experiment-postprocessing';
 
 const LabOperation = () => {
     var { path, url } = useRouteMatch();
@@ -99,6 +100,18 @@ const LabOperation = () => {
                 </Route>
                 <Route path={`${path}/invite-confirmation/:studyType`}>
                     <InviteConfirmationRouting
+                        subjectRecordTypes={ subjectTypes }
+                    />
+                </Route>
+
+                <Route exact path={`${path}/experiment-postprocessing`}>
+                    <RedirectOrTypeNav
+                        baseUrl={ `${url}/experiment-postprocessing` }
+                        studyTypes={ studyTypes }
+                    />
+                </Route>
+                <Route path={`${path}/experiment-postprocessing/:studyType`}>
+                    <ExperimentPostprocessingRouting
                         subjectRecordTypes={ subjectTypes }
                     />
                 </Route>

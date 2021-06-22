@@ -237,6 +237,7 @@ describe('init-demo-system', function () {
 
         response = await agent.post(`/experiment-postprocessing`).send({
             researchGroupId: context.RESEARCH_GROUP_ALPHA_ID,
+            subjectRecordType: 'child',
         });
 
         console.dir(response.status, { depth: null });

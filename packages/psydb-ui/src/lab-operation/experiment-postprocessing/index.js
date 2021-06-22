@@ -12,9 +12,9 @@ import {
 import agent from '@mpieva/psydb-ui-request-agents';
 import RecordTypeNav from '@mpieva/psydb-ui-lib/src/record-type-nav';
 import ResearchGroupNav from '@mpieva/psydb-ui-lib/src/research-group-nav';
-import InviteConfirmationList from './invite-confirmation-list';
+import ExperimentPostprocessingList from './experiment-postprocessing-list';
 
-const InviteConfirmationRouting = ({
+const ExperimentPostprocessingRouting = ({
     subjectRecordTypes
 }) => {
     var { path, url } = useRouteMatch();
@@ -22,7 +22,7 @@ const InviteConfirmationRouting = ({
     return (
         <>
             <h5 className='mt-0 mb-3 text-muted'>
-                Terminbestätigung
+                Nachbereitung
             </h5>
                 
             <Switch>
@@ -36,7 +36,7 @@ const InviteConfirmationRouting = ({
                     <ResearchGroupNav />
                 </Route>
                 <Route path={`${path}/:subjectType/:researchGroupId`}>
-                    <InviteConfirmationList />
+                    <ExperimentPostprocessingList />
                 </Route>
             </Switch>
         </>
@@ -68,4 +68,4 @@ const RedirectOrTypeNav = ({
     }
 }
 
-export default InviteConfirmationRouting;
+export default ExperimentPostprocessingRouting;

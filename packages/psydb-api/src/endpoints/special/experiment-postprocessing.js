@@ -26,11 +26,13 @@ var {
 
 var RequestBodySchema = () => ExactObject({
     properties: {
+        subjectRecordType: CustomRecordTypeKey({ collection: 'subject' }),
         researchGroupId: ForeignId({
             collection: 'researchGroup',
         }),
     },
     required: [
+        'subjectRecordType',
         'researchGroupId',
     ]
 })
@@ -57,6 +59,7 @@ var experimentPostprocessing = async (context, next) => {
 
     var {
         researchGroupId,
+        subjectRecordType,
     } = request.body;
 
     if (!permissions.hasRootAccess) {
@@ -87,9 +90,13 @@ var experimentPostprocessing = async (context, next) => {
                 'state.studyId': { $in: studyIds },
                 'state.interval.end': { $lte: new Date() },
                 'state.isCanceled': false,
-                'state.subjectData.participationStatus': 'unknown'
+                'state.subjectData': { $elemMatch: {
+                    participationStatus: 'unknown',
+                    subjectType: subjectRecordType,
+                }}
             }},
             StripEventsStage(),
+            { $sort: { 'state.interval.start': 1 }}
         ]).toArray()
     );
 

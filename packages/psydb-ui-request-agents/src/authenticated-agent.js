@@ -247,4 +247,17 @@ agent.fetchExtendedExperimentData = ({
     );
 }
 
+agent.fetchExperimentPostprocessing = ({
+    subjectRecordType,
+    researchGroupId,
+}) => {
+    return axios.post(
+        '/api/experiment-postprocessing',
+        {
+            subjectRecordType,
+            researchGroupId
+        }
+    );
+}
+
 export default agent;
