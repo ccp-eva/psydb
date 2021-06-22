@@ -5,17 +5,17 @@ import { LinkContainer } from 'react-router-bootstrap';
 
 import { FileText, JournalText, CardList } from 'react-bootstrap-icons';
 
-var buttonProps = {
+var defaultButtonProps = {
     size: 'sm',
     variant: 'outline-primary',
-    style: {
-        marginTop: '-3px', // FIXME: in lists only
-        borderRadius: '.2rem',
-        border: 0,
-    }
+}
+var defaultButtonStyle = {
+    marginTop: '-3px', // FIXME: in lists only
+    borderRadius: '.2rem',
+    border: 0,
 }
 
-var iconStyle = {
+var defaultIconStyle = {
     width: '20px',
     height: '20px',
     marginTop: '-2px'
@@ -23,21 +23,28 @@ var iconStyle = {
 
 var DetailsIconButton = ({
     to,
-    onClick
+    onClick,
+    buttonStyle,
+    iconStyle,
 }) => {
     if (to) {
         return (
-            <LinkContainer to={ to } style={ buttonProps.style }>
-                <Button { ...buttonProps }>
-                    <CardList style={ iconStyle } />
+            <LinkContainer to={ to } style={{
+                ...defaultButtonStyle,
+                ...buttonStyle,
+            }}>
+                <Button { ...defaultButtonProps }>
+                    <CardList style={{ ...defaultIconStyle, ...iconStyle }} />
                 </Button>
             </LinkContainer>
         )    
     }
     else {
         return (
-            <Button { ...buttonProps }>
-                <FileText style={ iconStyle } />
+            <Button { ...buttonProps } style={{
+                ...defaultButtonStyle, ...buttonStyle
+            }}>
+                <CardList style={{ ...defaultIconStyle, ...iconStyle }} />
             </Button>
         )
     }

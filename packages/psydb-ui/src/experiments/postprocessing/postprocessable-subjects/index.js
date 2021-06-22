@@ -4,7 +4,7 @@ import createStringifier from '@mpieva/psydb-ui-lib/src/record-field-stringifier
 
 import SubjectTypeContainer from './subject-type-container';
 
-const Subjects = ({
+const PostprocessableSubjects = ({
     experimentData,
     studyData,
     subjectDataByType,
@@ -44,14 +44,14 @@ const Subjects = ({
                 return (
                     <SubjectTypeContainer { ...({
                         key: subjectRecordType,
-                        
+
                         subjectTypeKey: subjectRecordType,
                         subjectTypeLabel,
                         subjectsPerExperiment,
 
                         experimentData,
                         fullSubjectData,
-                        
+
                         onChangeStatus: handleChangeStatus
                     })} />
                 );
@@ -60,4 +60,4 @@ const Subjects = ({
     );
 }
 
-export default Subjects;
+export default PostprocessableSubjects;
