@@ -46,6 +46,7 @@ var ExperimentState = ({
             
             interval: DateTimeInterval(),
             isCanceled: DefaultBool(),
+            isPostprocessed: DefaultBool(),
 
             // this enableds us to trakc which subject group was selected
             // in case the subject belongs to multiple groups

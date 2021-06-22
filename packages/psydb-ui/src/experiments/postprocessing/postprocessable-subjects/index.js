@@ -1,5 +1,4 @@
 import React, { useCallback, useMemo } from 'react';
-import useSend from '@mpieva/psydb-ui-lib/src/use-send';
 import createStringifier from '@mpieva/psydb-ui-lib/src/record-field-stringifier';
 
 import SubjectTypeContainer from './subject-type-container';
@@ -10,15 +9,6 @@ const PostprocessableSubjects = ({
     subjectDataByType,
     onSuccessfulUpdate,
 }) => {
-    var handleChangeStatus = useSend(({ subjectId, status }) => ({
-        type: 'experiment/change-invitation-status',
-        payload: {
-            experimentId: experimentData.record._id,
-            subjectId: subjectId,
-            invitationStatus: status
-        }
-    }), { onSuccessfulUpdate });
-
     var { selectionSettingsBySubjectType } = studyData.record.state;
     var stringifyStudyValue = createStringifier(studyData);
 
@@ -52,7 +42,7 @@ const PostprocessableSubjects = ({
                         experimentData,
                         fullSubjectData,
 
-                        onChangeStatus: handleChangeStatus
+                        onSuccessfulUpdate
                     })} />
                 );
             })}

@@ -6,11 +6,11 @@ import useSend from '@mpieva/psydb-ui-lib/src/use-send';
 
 const options = {
     keys: [
-        ...enums.participationStatus.keys,
+        ...enums.safeParticipationStatus.keys,
         ...enums.safeUnparticipationStatus.keys,
     ],
     names: [
-        ...enums.participationStatus.names,
+        ...enums.safeParticipationStatus.names,
         ...enums.safeUnparticipationStatus.names,
     ]
 }
@@ -27,7 +27,7 @@ const PostprocessSubjectForm = ({
         payload: {
             experimentId: experimentRecord._id,
             subjectId: subjectRecord._id,
-            status: selectedStatus,
+            participationStatus: selectedStatus,
         }
     }), { onSuccessfulUpdate });
 
@@ -42,7 +42,10 @@ const PostprocessSubjectForm = ({
                 as='select'
                 value={ selectedStatus }
                 onChange={ handleSelectionChange }
-            >
+            >   
+                { selectedStatus === 'unknown' && (
+                    <option>Bitte wählen...</option>
+                )}
                 { options.keys.map((k, i) => (
                     <option key={k} value={k}>
                         { options.names[i] }

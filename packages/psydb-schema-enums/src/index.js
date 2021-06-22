@@ -1,20 +1,3 @@
-var participationStatus = {
-    keys: [
-        'unknown',
-        'participated',
-        'showed-up-but-didnt-participate',
-        'did-show-up', // XXX is that even a thing?
-        'didnt-show-up',
-    ],
-    names: [
-        'unbekannt',
-        'teilgenommen',
-        'nicht teilgenommen',
-        'nur erschienen',
-        'nicht erschienen',
-    ],
-};
-
 var safeUnparticipationStatus = {
     keys: [
         // FIXME: im not sure if that should actually be
@@ -27,6 +10,33 @@ var safeUnparticipationStatus = {
         'ausgeladen',
     ]
 }
+
+var safeParticipationStatus = {
+    keys: [
+        'participated',
+        'showed-up-but-didnt-participate',
+        'did-show-up', // XXX is that even a thing?
+        'didnt-show-up',
+    ],
+    names: [
+        'teilgenommen',
+        'nicht teilgenommen',
+        'nur erschienen',
+        'nicht erschienen',
+    ]
+}
+
+
+var participationStatus = {
+    keys: [
+        'unknown',
+        ...safeParticipationStatus.keys,
+    ],
+    names: [
+        'unbekannt',
+        ...safeParticipationStatus.names,
+    ],
+};
 
 var unparticipationStatus = {
     keys: [
@@ -42,6 +52,7 @@ var unparticipationStatus = {
 }
 
 module.exports = {
+    safeParticipationStatus,
     participationStatus,
     safeUnparticipationStatus,
     unparticipationStatus,

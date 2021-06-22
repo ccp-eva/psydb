@@ -4,7 +4,7 @@ var {
     Id,
     EventId,
     ForeignId,
-    InvitationStatus
+    ProcessedParticipationStatus
 } = require('@mpieva/psydb-schema-fields');
 
 var { Message } = require('@mpieva/psydb-schema-helpers');
@@ -20,7 +20,7 @@ var createSchema = ({} = {}) => (
                 subjectId: ForeignId({
                     collection: 'subject',
                 }),
-                participationStatus: ParticipationStatus()
+                participationStatus: ProcessedParticipationStatus()
             },
             required: [
                 'experimentId',

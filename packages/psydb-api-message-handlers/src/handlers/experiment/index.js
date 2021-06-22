@@ -9,6 +9,7 @@ var ExperimentGroup = MessageHandlerGroup([
     
     require('./change-experiment-operator-team'),
     require('./change-invitation-status'),
+    require('./change-participation-status'),
     require('./change-per-subject-comment'),
     
     require('./move-inhouse'),

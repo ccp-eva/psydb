@@ -57,6 +57,7 @@ handler.checkAllowedAndPlausible = async ({
     var subjectDataIndex = (
         experimentRecord.state.subjectData.findIndex(it => {
             return compareIds(it.subjectId, subjectId)
+            && it.participationStatus === 'unknown'
         })
     );
     if (subjectDataIndex === undefined) {
@@ -105,6 +106,16 @@ handler.triggerSystemEvents = async ({
         `/state/internals/invitedForExperiments/${subjectParticipationIndex}/status`
     );
 
+    var unprocessedSubjects = (
+        experimentRecord.state.subjectData.filter(it => (
+            it.participationStatus === 'unknown'
+        ))
+    )
+    var shouldSetPostprocessedFlag = (
+        // subtract 1 since we are processing one right now
+        unprocessedSubjects.length - 1 > 0
+    )
+
     var experimentChannel = (
         rohrpost.openCollection('experiment').openChannel({
             id: experimentId
@@ -131,7 +142,10 @@ handler.triggerSystemEvents = async ({
         lastKnownEventId: subjectRecord.scientific.events[0]._id,
         messages: [
             ...PutMaker({ personnelId }).all({
-                [subjectParticipationStatusPath]: participationStatus
+                [subjectParticipationStatusPath]: participationStatus,
+                ...(shouldSetPostprocessedFlag && {
+                    '/state/isPostprocessed': true
+                }),
             })
         ]
     })

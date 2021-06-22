@@ -20,6 +20,9 @@ const SubjectTypeContainer = ({
     );
 
     var todoSubjectCount = todoSubjects.length;
+    if (todoSubjectCount < 1) {
+        return null;
+    }
 
     return (
         <div>

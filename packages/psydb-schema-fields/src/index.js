@@ -41,6 +41,7 @@ module.exports = {
 
     ParticipationStatus: require('./participation-status'),
     UnparticipationStatus: require('./unparticipation-status'),
+    ProcessedParticipationStatus: require('./processed-participation-status'),
     
     InvitationStatus: require('./invitation-status'),
     SaneString: require('./sane-string'),
