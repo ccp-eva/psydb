@@ -9,7 +9,7 @@ import {
     useParams
 } from 'react-router-dom';
 
-import ExperimentDetails from './details';
+import ExperimentContainer from './experiment-container';
 
 const Experiments = () => {
     var { path, url } = useRouteMatch();
@@ -26,7 +26,7 @@ const Experiments = () => {
             </h5>
             <Switch>
                 <Route path={ `${path}/:experimentType/:id` }>
-                    <ExperimentDetails />
+                    <ExperimentContainer />
                 </Route>
             </Switch>
         </div>

@@ -143,7 +143,7 @@ const ExperimentPostprocessingList = ({
                             : ''
                         }</td>
                         <td className='d-flex justify-content-end'>
-                            <DetailsIconButton to={`/experiments/${type}/${_id}/postprocess`} />
+                            <DetailsIconButton to={`/experiments/${type}/${_id}`} />
                         </td>
                     </tr>
                 }) }

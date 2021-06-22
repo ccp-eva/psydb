@@ -9,48 +9,22 @@ import {
     useParams
 } from 'react-router-dom';
 
-import agent from '@mpieva/psydb-ui-request-agents';
-import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
-
-import General from './general';
+import GeneralInfo from '../general-info';
 import GeneralFunctions from './general-functions';
 import Subjects from './subjects';
 
-const ExperimentDetails = () => {
-    var { path, url } = useRouteMatch();
-    var { experimentType, id } = useParams();
-    
-    var [ state, dispatch ] = useReducer(reducer, {});
-    var {
-        revision,
-        
-        experimentData,
-        studyData,
-        subjectDataByType,
-    } = state;
+const ExperimentDetails = ({
+    path,
+    url,
+    experimentType,
+    id,
 
-    useEffect(() => {
-        agent.fetchExtendedExperimentData({
-            experimentType,
-            experimentId: id,
-        })
-        .then((response) => {
-            dispatch({ type: 'init-data', payload: {
-                ...response.data.data
-            }})
-        })
-    }, [ experimentType, id, revision ]);
+    experimentData,
+    studyData,
+    subjectDataByType,
 
-    var onSuccessfulUpdate = useCallback(() => {
-        dispatch({ type: 'increase-revision' });
-    }, []);
-
-    if (!experimentData) {
-        return (
-            <LoadingIndicator size='lg' />
-        );
-    }
-
+    onSuccessfulUpdate,
+}) => {
     return (
         <div>
             <div className='border bg-light p-3'>
@@ -59,7 +33,10 @@ const ExperimentDetails = () => {
                         Abgesagt
                     </h5>
                 )}
-                <General { ...({ experimentData, studyData }) } />
+                <GeneralInfo { ...({
+                    experimentData,
+                    studyData
+                }) } />
                 { !experimentData.record.state.isCanceled && (
                     <>
                         <hr />
@@ -83,32 +60,6 @@ const ExperimentDetails = () => {
             </div>
         </div>
     );
-}
-
-const reducer = (state, action) => {
-    var { type, payload } = action;
-    switch (type) {
-
-        case 'init-data':
-            return ({
-                ...state,
-                experimentData: payload.experimentData,
-                studyData: payload.studyData,
-                subjectDataByType: payload.subjectDataByType,
-            })
-
-        case 'init-extended-experiment-data':
-            return ({
-                ...state,
-                subjectTypeData: payload.records,
-            })
-
-        case 'increase-revision':
-            return ({
-                ...state,
-                revision: (state.revision || 0) + 1
-            })
-    }
 }
 
 export default ExperimentDetails;
