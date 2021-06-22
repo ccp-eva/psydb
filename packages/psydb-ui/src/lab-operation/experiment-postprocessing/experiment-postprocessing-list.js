@@ -16,7 +16,9 @@ import formatInterval from '@mpieva/psydb-ui-lib/src/format-date-interval';
 import useFetch from '@mpieva/psydb-ui-lib/src/use-fetch';
 import useRevision from '@mpieva/psydb-ui-lib/src/use-revision';
 import createStringifier from '@mpieva/psydb-ui-lib/src/record-field-stringifier';
+
 import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
+import DetailsIconButton from '@mpieva/psydb-ui-lib/src/details-icon-button';
 
 const ExperimentPostprocessingListLoader = ({
 }) => {
@@ -140,7 +142,8 @@ const ExperimentPostprocessingList = ({
                             ? `${startTime} - ${endTime}`
                             : ''
                         }</td>
-                        <td>
+                        <td className='d-flex justify-content-end'>
+                            <DetailsIconButton to={`/experiments/${type}/${_id}/postprocess`} />
                         </td>
                     </tr>
                 }) }
