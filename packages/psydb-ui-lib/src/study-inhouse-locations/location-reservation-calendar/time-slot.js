@@ -21,6 +21,19 @@ const TimeSlot = ({
         var teamRecord = teamRecords.find(it => (
             it._id === experimentRecord.state.experimentOperatorTeamId
         ));
+        
+        // this reservation does not belong to any of the study teams
+        if (!teamRecord) {
+            return (
+                <div
+                    className='border text-center m-1'
+                    style={{
+                        height: '26px',
+                    }}
+                >-</div>
+            )
+        }
+
         return (
             <div
                 role={ onSelectExperimentSlot ? 'button' : undefined }
@@ -59,6 +72,19 @@ const TimeSlot = ({
         var teamRecord = teamRecords.find(it => (
             it._id === reservationRecord.state.experimentOperatorTeamId
         ));
+
+        // this reservation does not belong to any of the study teams
+        if (!teamRecord) {
+            return (
+                <div
+                    className='border text-center m-1'
+                    style={{
+                        height: '26px',
+                    }}
+                >-</div>
+            )
+        }
+
         return (
             <div
                 role={ onSelectReservationSlot ? 'button' : undefined }
