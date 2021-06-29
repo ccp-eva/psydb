@@ -1,4 +1,5 @@
 'use strict';
+var copy = require('copy-anything').copy;
 var inline = require('@cdxoo/inline-text');
 
 var {
@@ -30,6 +31,9 @@ var prepareContext = ({
 
     
     context.messageHandler = rootHandler;
+    // FIXME: ajv modified the message body when transformations are in play
+    // mq would archive that, which we need to prevent
+    context.originalMessage = copy(context.message);
 
     await next();
 }

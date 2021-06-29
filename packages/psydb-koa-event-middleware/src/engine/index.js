@@ -58,8 +58,20 @@ var createMessageHandling = ({
             ? [ checkMessage ]
             : []
         ),
-        
+
+        async (context, next) => {
+            context.potentiallyModifiedMessage = context.message;
+            context.message = context.originalMessage;
+            await next();
+        },
+
         withMongoMQ(mqSettings),
+        
+        async (context, next) => {
+            context.message = context.potentiallyModifiedMessage
+            await next();
+        },
+
         withRohrpost(rohrpostSettings),
         
         run({
