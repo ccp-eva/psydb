@@ -11,7 +11,7 @@
     "koa-compose": "^4.1.0",
     "mongodb": "~3.6.3",
     "@cdxoo/inline-text": "~1.0.1",
-    "@cdxoo/koa-mongo-mq": "~1.0.0",
+    "@cdxoo/koa-mongo-mq": "~1.1.0",
     "@cdxoo/koa-mongo-rohrpost": "~1.0.0"
   },
   "devDependencies": {

@@ -23,7 +23,21 @@ var createMessageHandling = ({
         createId: () => nanoid(),
         createAdditionalEnvelopeProps: (context) => ({
             personnelId: context.personnelId
-        })
+        }),
+        redactMessageOnQueue: (incomingMessage) => {
+            // we dont want to store password in text form
+            // see handlers/set-personnel-password
+            var { password, ...redactedPayload } = incomingMessage.payload;
+            return {
+                ...incomingMessage,
+                payload: redactedPayload
+            }
+        },
+        redactMessageOnPersist: (ephemeralMessage) => {
+            // TODO: only while developing stuff
+            var persistentMessage = ephemeralMessage;
+            return persistentMessage;
+        }
     };
     var rohrpostSettings = {
         createChannelId: () => nanoid(),

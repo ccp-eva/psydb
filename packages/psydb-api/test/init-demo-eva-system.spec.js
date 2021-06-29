@@ -242,6 +242,8 @@ describe('init-demo-system', function () {
 
         console.dir(response.status, { depth: null });
         console.dir(response.body, { depth: null });
+        var h = await db.collection('mqMessageHistory').find().limit(3).toArray();
+        console.dir(h, { depth: null });
     });
 
 });

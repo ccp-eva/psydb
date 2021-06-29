@@ -6,7 +6,7 @@ dependencies:
   '@cdxoo/block-quote': 1.0.0
   '@cdxoo/inline-string': 1.0.0
   '@cdxoo/inline-text': 1.0.1
-  '@cdxoo/koa-mongo-mq': 1.0.0
+  '@cdxoo/koa-mongo-mq': 1.1.0
   '@cdxoo/koa-mongo-rohrpost': 1.0.0
   '@cdxoo/omit': 1.0.1
   '@cdxoo/react-router-url-search-params': 1.0.4_react-router@5.2.0+react@17.0.2
@@ -1084,22 +1084,22 @@ packages:
     dev: false
     resolution:
       integrity: sha512-UYVmRQpEXRbpVFXkOgNoosN1nTNLu1qkn5tdDL8vLO1eMxEtWHIPq1IE/UWUs5v274oZUWQXclShBQDKEt0sbQ==
-  /@cdxoo/koa-mongo-mq/1.0.0:
+  /@cdxoo/koa-mongo-mq/1.1.0:
     dependencies:
-      '@cdxoo/mongo-mq': 1.0.0
+      '@cdxoo/mongo-mq': 1.1.0
     dev: false
     resolution:
-      integrity: sha512-uXBu0isDCft2E+kF9GNnNHMm6gMqrMaWkwnVQum3zW9154CCZzq3eWkMxySqi5PzH7SYAe7FooV/LfjjJPmsDQ==
+      integrity: sha512-hBH5KaruZd3OOlfTlNn5TwwudhbgQIrhYeTKfpL+Yql3eQMGLV/gbKmq0e4haYixKFHuhj4UiXJ+g+3s5Qpnbw==
   /@cdxoo/koa-mongo-rohrpost/1.0.0:
     dependencies:
       '@cdxoo/mongo-rohrpost': 1.0.0
     dev: false
     resolution:
       integrity: sha512-uVHEMWX8uhuNC0SmX1iunrIzYEJwFE1mge24VojdUay+l2O6sXITcIMzNkVWeqfFnpZsqL5lAhYDSpi/FRvbFw==
-  /@cdxoo/mongo-mq/1.0.0:
+  /@cdxoo/mongo-mq/1.1.0:
     dev: false
     resolution:
-      integrity: sha512-jMI1TJM+6kh5D0wqQl4ROHu0hoXoR9y31JZ7E/1wOG0iIixzpANY8FHjXi5QD13DEo1eeDoW2mgUbyMRiGIWYQ==
+      integrity: sha512-h9vNoOXyrBM5g3xbcNlzq507NUucOSNhrgYfVrYixan8DXCggmsEkdzrQIfIfNfBGmo9+e/MHm8QKuwlzXo0Zg==
   /@cdxoo/mongo-rohrpost/1.0.0:
     dev: false
     resolution:
@@ -7368,7 +7368,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-api'
     resolution:
-      integrity: sha512-UnvvusdEj9mLBmBDtwXiUF73wxzUxH32H/blKxFtWBMUWKRn8/GzekttX84JNCtmB5ut6Ng1wFnGrjoy4v5H7w==
+      integrity: sha512-R7r/6lxH0OJ9aO9EoLRZmBpcqOYbNRDtpeBXuDdsa7MtZzu2whmXo3tVoxnOvf59cXCnb1HpH6seYVsDtztMiA==
       tarball: 'file:projects/psydb-api.tgz'
     version: 0.0.0
   'file:projects/psydb-common-lib.tgz':
@@ -7420,7 +7420,7 @@ packages:
   'file:projects/psydb-koa-event-middleware.tgz':
     dependencies:
       '@cdxoo/inline-text': 1.0.1
-      '@cdxoo/koa-mongo-mq': 1.0.0
+      '@cdxoo/koa-mongo-mq': 1.1.0
       '@cdxoo/koa-mongo-rohrpost': 1.0.0
       chai: 4.2.0
       koa-compose: 4.1.0
@@ -7430,7 +7430,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-koa-event-middleware'
     resolution:
-      integrity: sha512-+7KwpReTrGkBRidW0Q5VAAZormiKownloGGZG26/OlCTa00bSG2cUPsuwjQtNQ2t/SJC16FOSU1RL7irU4na7g==
+      integrity: sha512-V3ctDx/mSPwKsofiyYh33xZXT8EGsez+fRrmD6hTyF4BLAooXqKK6a4/Dl/ZzSL6uLiZnb1bZBOmUlKbCwjjJw==
       tarball: 'file:projects/psydb-koa-event-middleware.tgz'
     version: 0.0.0
   'file:projects/psydb-mongo-adapter.tgz':
@@ -7554,7 +7554,7 @@ packages:
     peerDependencies:
       webpack: '*'
     resolution:
-      integrity: sha512-0qO1uOkktzfuQ/6aDY9C79/WivbDaj7cA2HPgdmE7/TxVi3sK2PZR1GbGW0IG+TAEN1qDyFKgIdI87+fgPy2qg==
+      integrity: sha512-KBW/x7URrN4+nxq9QrNyQMbxPEZ8ZHcUUUMzM0AV47qkTMCJ+VkBk0pgskNktaYm0mWCH5SRlYJCUoC5f3TO0g==
       tarball: 'file:projects/psydb-ui-lib.tgz'
     version: 0.0.0
   'file:projects/psydb-ui-request-agents.tgz_debug@4.3.1':
@@ -7664,7 +7664,7 @@ specifiers:
   '@cdxoo/block-quote': ~1.0.0
   '@cdxoo/inline-string': ~1.0.0
   '@cdxoo/inline-text': ~1.0.1
-  '@cdxoo/koa-mongo-mq': ~1.0.0
+  '@cdxoo/koa-mongo-mq': ~1.1.0
   '@cdxoo/koa-mongo-rohrpost': ~1.0.0
   '@cdxoo/omit': ~1.0.1
   '@cdxoo/react-router-url-search-params': ~1.0.4
