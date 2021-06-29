@@ -8,7 +8,7 @@ var expect = require('chai').expect,
     MongoClient = require('mongodb').MongoClient,
     MongoConnection = require('@mpieva/psydb-mongo-adapter').MongoConnection,
 
-    fixture = require('@mpieva/psydb-fixtures/json/demo-eva'),
+    fixture = require('@mpieva/psydb-fixtures/json/eva-testing'),
     Driver = require('@mpieva/psydb-driver-nodejs'),
     withApi = require('../src/middleware/api');
 
