@@ -71,12 +71,14 @@ var triggerSystemEvents = async ({
     personnelId,
 }) => {
     var { type: messageType, payload } = message;
-    var { setId, props } = payload;
+    var { id, setId, props } = payload;
 
     var channel = (
         rohrpost
         .openCollection('helperSetItem')
         .openChannel({
+            id,
+            isNew: true,
             additionalChannelProps: { setId }
         })
     );

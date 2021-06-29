@@ -1,6 +1,7 @@
 'use strict';
 var {
     ExactObject,
+    Id,
     ForeignId,
     IdentifierString,
     SaneString,
@@ -14,7 +15,7 @@ var createSchema = ({} = {}) => (
         type: `reservation/reserve-inhouse-slot`,
         payload: ExactObject({
             properties: {
-                id: IdentifierString(),
+                id: Id(),
                 props: ExactObject({
                     properties: {
                         studyId: ForeignId({

@@ -17,6 +17,7 @@ var HelperSetRecordMessage = ({ op }) => {
     if (op === 'create') {
         payload = ExactObject({
             properties: {
+                id: Id(),
                 props: HelperSetState(),
             },
             required: [

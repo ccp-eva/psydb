@@ -1,6 +1,7 @@
 'use strict';
 var {
     ExactObject,
+    Id,
     ForeignId,
     SaneString,
 } = require('@mpieva/psydb-schema-fields');
@@ -12,6 +13,7 @@ var createSchema = ({ op }) => (
         type: `helperSetItem/${op}`,
         payload: ExactObject({
             properties: {
+                id: Id(),
                 setId: ForeignId({
                     collection: 'helperSet'
                 }),

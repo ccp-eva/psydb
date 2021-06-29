@@ -9,6 +9,7 @@ var createDefaultAgent = (server) => (
 var Cache = () => {
     var cache = {};
     
+    cache.lastKnownEventIds_short = {};
     cache.lastKnownEventIds = {};
     cache.lastChannelIds = {};
 
@@ -23,6 +24,16 @@ var Cache = () => {
         jsonpointer.set(
             cache.lastKnownEventIds,
             path,
+            lastKnownEventId
+        );
+        var path_short = (
+            subChannelKey === undefined
+            ? `/${channelId}`
+            : `/${channelId}/${subChannelKey}`
+        );
+        jsonpointer.set(
+            cache.lastKnownEventIds_short,
+            path_short,
             lastKnownEventId
         );
     }
@@ -110,6 +121,14 @@ var Driver = ({
             subChannel
             ? cache.lastKnownEventIds[collection][subChannel][channel]
             : cache.lastKnownEventIds[collection][channel]
+        );
+    }
+
+    driver.lastEventId_short = ({ channel, subChannel }) => {
+        return (
+            subChannel
+            ? cache.lastKnownEventIds_short[channel][subChannel]
+            : cache.lastKnownEventIds_short[channel]
         );
     }
 

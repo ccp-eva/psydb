@@ -8,7 +8,7 @@ var expect = require('chai').expect,
     MongoClient = require('mongodb').MongoClient,
     MongoConnection = require('@mpieva/psydb-mongo-adapter').MongoConnection,
 
-    fixture = require('@mpieva/psydb-fixtures/json/eva-testing'),
+    fixture = require('@mpieva/psydb-fixtures/json/eva-test-history'),
     Driver = require('@mpieva/psydb-driver-nodejs'),
     withApi = require('../src/middleware/api');
 
@@ -53,6 +53,7 @@ describe('init-demo-system', function () {
         
         context.driver = driver;
         context.lastEventId = driver.lastEventId;
+        context.lastEventId_short = driver.lastEventId_short;
         context.lastChannelId = driver.lastChannelId;
         
         var send = context.send = async (message, callback) => {
@@ -244,6 +245,8 @@ describe('init-demo-system', function () {
         console.dir(response.body, { depth: null });
         var h = await db.collection('mqMessageHistory').find().limit(3).toArray();
         console.dir(h, { depth: null });
+        //var m = await db.collection('modifiedByMessage').find().limit(3).toArray();
+        //console.dir(m, { depth: null });
     });
 
 });
@@ -297,9 +300,19 @@ var createSend = (agent, context) => async (message, onSuccess) => {
                 ? `/knownEventIds/${it.collectionName}/${it.channelId}`
                 : `/knownEventIds/${it.collectionName}/${it.subChannelKey}/${it.channelId}`
             );
+            var path_short = (
+                it.subChannelKey === undefined
+                ? `/lastKnownEventIds/${it.channelId}`
+                : `/lastKnownEventIds/${it.channelId}/${it.subChannelKey}`
+            );
             jsonpointer.set(
                 context,
                 path,
+                it.lastKnownEventId
+            );
+            jsonpointer.set(
+                context,
+                path_short,
                 it.lastKnownEventId
             );
             jsonpointer.set(

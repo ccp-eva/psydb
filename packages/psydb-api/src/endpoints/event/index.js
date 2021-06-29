@@ -60,7 +60,19 @@ var createMessageHandling = ({
         }),
 
         withResponseBody,
-        //async (context, next) => { console.dir(context, { depth: 3}); await next(); },
+
+        // TODO: until we have a spearete event collection
+        // we need this to track what stuff has changed
+        // by a message
+        async (context, next) => {
+            //console.dir(context, { depth: 3 });
+            var { db, correlationId, modifiedChannels } = context;
+            await db.collection('modifiedByMessage').insertOne({
+                correlationId,
+                modifiedChannels
+            });
+            await next();
+        },
     ]);
 };
 
