@@ -16,6 +16,9 @@ module.exports = {
     studyLocationReservationCalendar: (
         require('./study-location-reservation-calendar')
     ),
+    studyAwayTeamReservationCalendar: (
+        require('./study-away-team-reservation-calendar')
+    ),
 
 
     testableSubjectsInhouse: require('./testable-subjects-inhouse'),

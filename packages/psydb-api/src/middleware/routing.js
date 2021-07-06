@@ -117,6 +117,21 @@ var createRouting = ({
         endpoints.special.studyLocationReservationCalendar
     );
 
+    router.get(
+        inline`
+            /study-away-team-reservation-calendar
+            /:start
+            /:end
+            /:studyId
+        `,
+        withSelfAuth(),
+        withPermissions(),
+        withEndpointProtection({ endpoint: (
+            'study-away-team-reservation-calendar'
+        )}),
+        endpoints.special.studyAwayTeamReservationCalendar
+    );
+
     router.post('/testable-subject-types-for-studies',
         withSelfAuth(),
         withPermissions(),

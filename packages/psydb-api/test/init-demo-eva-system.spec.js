@@ -8,7 +8,8 @@ var expect = require('chai').expect,
     MongoClient = require('mongodb').MongoClient,
     MongoConnection = require('@mpieva/psydb-mongo-adapter').MongoConnection,
 
-    fixture = require('@mpieva/psydb-fixtures/json/eva-test-history'),
+    //fixture = require('@mpieva/psydb-fixtures/json/eva-test-history'),
+    fixture = require('@mpieva/psydb-fixtures/json/demo-eva'),
     Driver = require('@mpieva/psydb-driver-nodejs'),
     withApi = require('../src/middleware/api');
 
@@ -140,6 +141,7 @@ describe('init-demo-system', function () {
         //response = await agent.get(`/experiment-operator-teams-for-study/${context.STUDY_01_ID}`);
         //console.log('###############')
         //response = await agent.get(`/participated-subjects-for-study/${context.STUDY_01_ID}`);
+        
         /*response = await agent.get(inline`
             /study-location-reservation-calendar
             /2021-01-01T00:00:00.000Z
@@ -147,6 +149,7 @@ describe('init-demo-system', function () {
             /${context.STUDY_01_ID}
             /instituteroom
         `);*/
+
         /*response = await agent.post('/testable-subject-types-for-studies').send({
             studyIds: [ context.STUDY_01_ID ],
         });*/
@@ -247,6 +250,25 @@ describe('init-demo-system', function () {
         //console.dir(h, { depth: null });
         //var m = await db.collection('modifiedByMessage').find().limit(3).toArray();
         //console.dir(m, { depth: null });
+        
+
+        console.log('----------------');
+
+        console.log(inline`
+            /study-away-team-reservation-calendar
+            /2000-01-01T00:00:00.000Z
+            /2021-12-12T00:00:00.000Z
+            /${context.STUDY_01_ID}
+        `);
+        response = await agent.get(inline`
+            /study-away-team-reservation-calendar
+            /2000-01-01T00:00:00.000Z
+            /2021-12-12T00:00:00.000Z
+            /${context.STUDY_01_ID}
+        `);
+        console.dir(response.status, { depth: null });
+        console.dir(response.body, { depth: null });
+
     });
 
 });
