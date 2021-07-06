@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import useFetch from '../use-fetch';
+import getDayStartsInInterval from '../get-day-starts-in-interval';
 import withWeeklyCalendarPages from '../with-weekly-calendar-pages';
+
 import CalendarNav from '../calendar-nav';
 import LoadingIndicator from '../loading-indicator';
 
-import TeamSlots from './team-slots';
+import TimeTableHead from './time-table-head';
+import TeamTimeTable from './team-time-table';
 
 export const Calendar = ({
     studyData,
@@ -23,13 +26,20 @@ export const Calendar = ({
 }) => {
     var studyId = studyData.record._id;
 
+    var allDayStarts = useMemo(() => (
+        getDayStartsInInterval({
+            start: currentPageStart,
+            end: currentPageEnd
+        })
+    ), [ currentPageStart, currentPageEnd ]);
+
     var [ didFetch, state ] = useFetch((agent) => {
         return agent.fetchStudyAwayTeamReservationCalendar({
             studyId,
             start: currentPageStart,
             end: currentPageEnd,
         })
-    }, [ studyId ]);
+    }, [ studyId, currentPageStart, currentPageEnd ]);
 
     if (!didFetch) {
         return (
@@ -38,7 +48,7 @@ export const Calendar = ({
     }
 
     var {
-        reservationRecord,
+        reservationRecords,
         experimentRecords
     } = state;
 
@@ -55,10 +65,17 @@ export const Calendar = ({
                 marginRight: '15em',
             }}/>
             
+            <TimeTableHead { ...({
+                allDayStarts,
+            }) }/>
             { teamData.records.map(teamRecord => {
-                return <TeamSlots { ...({
+                return <TeamTimeTable { ...({
                     key: teamRecord._id,
                     teamRecord,
+
+                    allDayStarts,
+                    reservationRecords,
+                    experimentRecords,
 
                     onSelectEmptySlot,
                     onSelectReservationSlot,

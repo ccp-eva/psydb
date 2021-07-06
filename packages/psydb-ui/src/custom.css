@@ -84,3 +84,13 @@
 .text-orange {
     color: #f90;
 }
+
+.team-time-slot.empty {
+    border: 1px solid;
+    border-color: #dee2e6;
+}
+/*.team-time-slot.empty:not(:hover) {
+}*/
+.team-time-slot.empty.selectable:hover {
+    border-color: #7c8c9c;
+}

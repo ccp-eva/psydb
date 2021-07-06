@@ -1,0 +1,37 @@
+import React from 'react';
+import { Container, Row, Col } from 'react-bootstrap';
+
+import datefns from '../date-fns';
+
+const TimeTableHead = ({
+    allDayStarts,
+}) => {
+    return (
+        <Container>
+            <Row>
+                <Col className='p-0 border-bottom bg-light' style={{
+                    flexGrow: 0,
+                }}>
+                    <div
+                        className='m-1'
+                        style={{
+                            width: '30px',
+                        }}
+                    >
+                    </div>
+                </Col>
+                
+                { allDayStarts.map(dayStart => (
+                    <Col
+                        key={ dayStart.getTime() }
+                        className='p-0 text-center bg-light border-bottom'
+                    >
+                        <b>{ datefns.format(dayStart, 'cccccc dd.MM.') }</b>
+                    </Col>
+                )) }
+            </Row>
+        </Container>
+    )
+}
+
+export default TimeTableHead;

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useReducer, useMemo } from 'react';
 import keyBy from '@mpieva/psydb-common-lib/src/key-by';
 import slotify from '@mpieva/psydb-common-lib/src/slotify-items';
 
-import datefns from '../..//date-fns';
+import datefns from '../../date-fns';
 
 import TimeSlot from './time-slot';
 
