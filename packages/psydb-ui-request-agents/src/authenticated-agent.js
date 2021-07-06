@@ -125,6 +125,20 @@ agent.fetchStudyLocationReservationCalendar = ({
     ].join('/'));
 }
 
+agent.fetchStudyAwayTeamReservationCalendar = ({
+    studyId,
+    start,
+    end
+}) => {
+    var baseUrl = '/api/study-away-team-reservation-calendar';
+    return axios.get([
+        baseUrl,
+        start.toISOString(),
+        end.toISOString(),
+        studyId,
+    ].join('/'));
+}
+
 agent.fetchTestableSubjectTypesForStudies = ({
     studyIds,
 }) => {
