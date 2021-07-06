@@ -19,6 +19,8 @@ import LocationTypeContainer from './location-type-container';
 import RecordPicker from '@mpieva/psydb-ui-lib/src/record-picker';
 //import LocationCalendarList from './location-calendar-list';
 
+import AwayTeamContainer from './away-team-container';
+
 const ReservationRouting = ({ customRecordTypes }) => {
     var { path, url } = useRouteMatch();
     return (
@@ -194,7 +196,7 @@ const LocationReservationContainer = ({
 
 const AwayTeamReservation = () => {
     return (
-        <div>away teams</div>
+        <AwayTeamContainer />
     )
 }
 
