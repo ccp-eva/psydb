@@ -6,6 +6,7 @@ var expect = require('chai').expect,
 describe('makeCondition()', function () {
     it('does stuff', () => {
         var cond = makeCondition({
+            experimentVariant: 'inhouse',
             ageFrameFieldKey: 'dateOfBirth',
             timeFrameStart: new Date('2020-12-31T23:00:00.000Z'),
             timeFrameEnd: new Date('2021-05-31T21:59:59.999Z'),
@@ -48,7 +49,7 @@ describe('makeCondition()', function () {
             }
         });
 
-        console.dir(cond, { depth: null });
+        //console.dir(cond, { depth: null });
         snapshot(cond);
     })
 })

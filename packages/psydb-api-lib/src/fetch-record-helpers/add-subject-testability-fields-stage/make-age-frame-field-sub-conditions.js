@@ -1,7 +1,11 @@
 'use strict';
+var datefns = require('date-fns');
 
 var makeAgeFrameFieldSubConditions = ({
-    conditionsByAgeFrameList
+    ageFrameFieldKey,
+    conditionsByAgeFrameList,
+    timeFrameStart,
+    timeFrameEnd,
 }) => {
     var combinedAgeFrameConditions = [];
     for (var item of conditionsByAgeFrameList) {
@@ -9,7 +13,7 @@ var makeAgeFrameFieldSubConditions = ({
         var { ageFrame, conditions } = item;
 
         var timeShifted = {
-            // shifting time frame pack by the age frame boundaries
+            // shifting time frame back by the age frame boundaries
             // ... on the first test day whats the oldest child
             // we can test ? and on the last day of the testing
             // whats the youngest child we can test?
@@ -19,11 +23,6 @@ var makeAgeFrameFieldSubConditions = ({
             start: datefns.sub(timeFrameStart, { days: ageFrame.end }),
             end: datefns.sub(timeFrameEnd, { days: ageFrame.start }),
         }
-
-        //console.log('AAAAAAAAAAAA');
-        //console.log(ageFrame);
-        //console.log(timeShifted);
-        //throw new Error();
 
         var ageFrameFieldPath = (
             `$scientific.state.custom.${ageFrameFieldKey}`
@@ -35,16 +34,7 @@ var makeAgeFrameFieldSubConditions = ({
             ]
         })
 
-        /*console.dir({
-                $and: [
-                    { $gte: [ ageFrameFieldPath, timeShifted.start ]},
-                    { $lt: [ ageFrameFieldPath, timeShifted.end ]},
-                ]
-            }, { depth: null });*/
-
-
         for (var condition of conditions) {
-            //console.log(condition);
             var conditionFieldPath = (
                 `$scientific.state.custom.${condition.fieldKey}`
             );
