@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
+import datefns from '../date-fns';
 
 const TeamTimeTable = ({
     teamRecord,
@@ -40,6 +41,7 @@ const TeamTimeTable = ({
                     >
                         <TimeSlot {...({
                             teamRecord,
+                            dayStart,
 
                             onSelectEmptySlot,
                             onSelectReservationSlot,
@@ -54,6 +56,8 @@ const TeamTimeTable = ({
 
 const TimeSlot = ({
     teamRecord,
+    dayStart,
+
     reservationRecord,
     experimentRecord,
     
@@ -71,6 +75,7 @@ const TimeSlot = ({
         return (
             <EmptySlot { ...({
                 teamRecord,
+                dayStart,
                 onSelectEmptySlot,
             }) } />
         );
@@ -79,6 +84,7 @@ const TimeSlot = ({
 
 const EmptySlot = ({
     teamRecord,
+    dayStart,
     onSelectEmptySlot,
 }) => {
     var classNames = [
@@ -88,12 +94,21 @@ const EmptySlot = ({
         'empty',
     ];
     var role = '';
-    var onClick = undefined;
     
     if (onSelectEmptySlot) {
         classNames.push('selectable');
         role = 'button';
     }
+
+    var onClick = useCallback(() => {
+        onSelectEmptySlot && onSelectEmptySlot({
+            teamRecord,
+            interval: {
+                start: dayStart,
+                end: datefns.endOfDay(dayStart)
+            }
+        })
+    })
 
     return (
         <div
@@ -102,6 +117,7 @@ const EmptySlot = ({
             style={{
                 height: '26px',
             }}
+            onClick={ onClick }
         />
     )
 }
