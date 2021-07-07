@@ -15,6 +15,11 @@ const CreateModal = ({
 }) => {
     var { teamRecord, interval } = modalPayloadData;
 
+    var wrappedOnSuccessfulUpdate = (...args) => {
+        onSuccessfulUpdate && onSuccessfulUpdate(...args);
+        onHide();
+    }
+
     var handleSubmit = useSend(() => ({
         type: 'reservation/reserve-awayteam-slot',
         payload: {
@@ -24,7 +29,7 @@ const CreateModal = ({
                 interval
             }
         }
-    }), { onSuccessfulUpdate });
+    }), { onSuccessfulUpdate: wrappedOnSuccessfulUpdate });
 
     return (
         <Modal

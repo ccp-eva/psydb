@@ -19,6 +19,7 @@ export const Calendar = ({
     onSelectExperimentSlot,
 
     className,
+    revision = 0,
 
     currentPageStart,
     currentPageEnd,
@@ -39,7 +40,7 @@ export const Calendar = ({
             start: currentPageStart,
             end: currentPageEnd,
         })
-    }, [ studyId, currentPageStart, currentPageEnd ]);
+    }, [ studyId, currentPageStart, currentPageEnd, revision ]);
 
     if (!didFetch) {
         return (
@@ -50,7 +51,7 @@ export const Calendar = ({
     var {
         reservationRecords,
         experimentRecords
-    } = state;
+    } = state.data;
 
     return (
         <div className={ className }>

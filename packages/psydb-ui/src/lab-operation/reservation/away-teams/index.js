@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom';
 
 import useModalReducer from '@mpieva/psydb-ui-lib/src/use-modal-reducer';
+import useRevision from '@mpieva/psydb-ui-lib/src/use-revision';
 import StudyAwayTeams from '@mpieva/psydb-ui-lib/src/study-away-teams';
 
 import CreateModal from './create-modal';
@@ -16,6 +17,11 @@ const AwayTeamContainer = ({}) => {
     var { studyId, studyType } = useParams();
 
     var createModal = useModalReducer();
+    var [ revision, incrementRevision ] = useRevision();
+
+    var handleSuccessfulUpdate = () => {
+        incrementRevision();
+    }
 
     return (
         <>
@@ -23,6 +29,8 @@ const AwayTeamContainer = ({}) => {
                 show: createModal.show,
                 onHide: createModal.handleHide,
                 modalPayloadData: createModal.data,
+
+                onSuccessfulUpdate: handleSuccessfulUpdate,
 
                 studyId,
                 studyRecordType: studyType,
@@ -32,7 +40,8 @@ const AwayTeamContainer = ({}) => {
                 studyId,
                 studyRecordType: studyType,
 
-                onSelectEmptySlot: createModal.handleShow
+                onSelectEmptySlot: createModal.handleShow,
+                calendarRevision: revision
             }) } />
         </>
     )

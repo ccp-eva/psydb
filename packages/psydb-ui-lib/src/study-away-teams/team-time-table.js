@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
+import keyBy from '@mpieva/psydb-common-lib/src/key-by';
 import datefns from '../date-fns';
 
 const TeamTimeTable = ({
@@ -13,10 +14,20 @@ const TeamTimeTable = ({
     onSelectReservationSlot,
     onSelectExperimentSlot,
 }) => {
-    /*var keyedExperiments = keyBy({
-        items: experimentRecords,
-        pointer: '/state/interval/start'
-    });*/
+
+    var keyedExperiments = keyBy({
+        items: experimentRecords.filter(it => (
+            it.state.experimentOperatorTeamId === teamRecord._id
+        )),
+        byPointer: '/state/interval/start'
+    });
+
+    var keyedReservations = keyBy({
+        items: reservationRecords.filter(it => (
+            it.state.experimentOperatorTeamId === teamRecord._id
+        )),
+        byPointer: '/state/interval/start'
+    });
 
     return (
         <Container>
@@ -34,8 +45,11 @@ const TeamTimeTable = ({
                     >
                     </div>
                 </Col>
-                { allDayStarts.map(dayStart => (
-                    <Col
+                { allDayStarts.map(dayStart => {
+                    var k = dayStart.toISOString();
+                    var reservationRecord = keyedReservations[k];
+
+                    return <Col
                         key={ dayStart.getTime() }
                         className='p-0'
                     >
@@ -43,12 +57,14 @@ const TeamTimeTable = ({
                             teamRecord,
                             dayStart,
 
+                            reservationRecord,
+
                             onSelectEmptySlot,
                             onSelectReservationSlot,
                             onSelectExperimentSlot,
                         }) } />
                     </Col>
-                )) }
+                }) }
             </Row>
         </Container>
     )
@@ -69,7 +85,14 @@ const TimeSlot = ({
         return ( <div>EXP</div> );
     }
     else if (reservationRecord) {
-        return ( <div>RES</div> );
+        return (
+            <ReservationSlot { ...({
+                teamRecord,
+                reservationRecord,
+                dayStart,
+                onSelectReservationSlot,
+            }) } />
+        );
     }
     else {
         return (
@@ -80,6 +103,49 @@ const TimeSlot = ({
             }) } />
         );
     }
+}
+
+const ReservationSlot = ({
+    teamRecord,
+    reservationRecord,
+    dayStart,
+    onSelectReservationSlot,
+}) => {
+    var classNames = [
+        'text-center',
+        'm-1',
+        'team-time-slot',
+        'empty',
+    ];
+    var role = '';
+    
+    if (onSelectReservationSlot) {
+        classNames.push('selectable');
+        role = 'button';
+    }
+
+    var onClick = useCallback(() => {
+        onSelectReservationSlot && onSelectReservationSlot({
+            teamRecord,
+            reservationRecord,
+            interval: {
+                start: dayStart,
+                end: datefns.endOfDay(dayStart)
+            }
+        })
+    })
+
+    return (
+        <div
+            role={ role }
+            className={ classNames.join(' ') }
+            style={{
+                height: '26px',
+                backgroundColor: teamRecord.state.color
+            }}
+            onClick={ onClick }
+        />
+    )
 }
 
 const EmptySlot = ({

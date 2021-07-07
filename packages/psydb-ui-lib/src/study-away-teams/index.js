@@ -15,7 +15,8 @@ const StudyAwayTeams = ({
     onSelectExperimentSlot,
 
     className,
-    revision = 0
+    revision = 0,
+    calendarRevision = 0,
 }) => {
     var [ didFetch, state ] = useFetchAll((agent) => {
         
@@ -55,7 +56,7 @@ const StudyAwayTeams = ({
             onSelectReservationSlot,
             onSelectExperimentSlot,
 
-            className,
+            revision: calendarRevision,
         }) } />
     )
 }
