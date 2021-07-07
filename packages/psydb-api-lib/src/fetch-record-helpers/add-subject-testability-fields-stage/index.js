@@ -6,6 +6,8 @@ var prepareSubjectTypeSettings = require('./prepare-subject-type-settings');
 var makeCondition = require('./make-condition');
 
 var AddSubjectTestabilityFieldsStage = ({
+    experimentVariant,
+
     timeFrameStart,
     timeFrameEnd,
 
@@ -15,8 +17,6 @@ var AddSubjectTestabilityFieldsStage = ({
     subjectRecordTypeRecord,
     studyRecords,
 }) => {
-    console.log(enabledAgeFrames);
-    console.log(enabledValues);
 
     var subjectTypeSettingsByStudy = prepareSubjectTypeSettings({
         studyRecords,
@@ -26,7 +26,7 @@ var AddSubjectTestabilityFieldsStage = ({
     var customFields = (
         subjectRecordTypeRecord.state.settings.subChannelFields.scientific
     );
-
+    
     var ageFrameField = customFields.find(field => (
         field.props.isSpecialAgeFrameField === true
     ))
@@ -100,6 +100,7 @@ var AddSubjectTestabilityFieldsStage = ({
         //throw new Error();
 
         conditionsByStudy[`_testableIn_${study._id}`] = makeCondition({
+            experimentVariant,
             ageFrameFieldKey: ageFrameField && ageFrameField.key,
             timeFrameStart,
             timeFrameEnd,
