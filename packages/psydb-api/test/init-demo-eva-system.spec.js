@@ -254,7 +254,7 @@ describe('init-demo-system', function () {
 
         console.log('----------------');
 
-        console.log(inline`
+        /*console.log(inline`
             /study-away-team-reservation-calendar
             /2000-01-01T00:00:00.000Z
             /2021-12-12T00:00:00.000Z
@@ -265,7 +265,26 @@ describe('init-demo-system', function () {
             /2000-01-01T00:00:00.000Z
             /2021-12-12T00:00:00.000Z
             /${context.STUDY_01_ID}
-        `);
+        `);*/
+
+        response = await agent.post('/testable-subjects-inhouse/').send({
+            subjectRecordType: 'child',
+            studyRecordType: 'default',
+            studyIds: [ context.STUDY_01_ID ],
+            timeFrameStart: '2021-05-01T00:00:00.000Z',
+            timeFrameEnd: '2021-05-30T00:00:00.000Z',
+            //timeFrameStart: '2079-04-01T00:00:00.000Z',
+            //timeFrameEnd: '2081-04-15T00:00:00.000Z',
+            enabledAgeFrames: [`/${context.STUDY_01_ID}/360_35640`],
+            enabledValues: {
+                [`/${context.STUDY_01_ID}/360_35640/conditions/biologicalGender`]: [ 'male' ],
+                //[`/${context.STUDY_01_ID}/360_35640/conditions/schoolSubjects`]: []
+            },
+            offset: 0,
+            limit: 100,
+        });
+        
+
         console.dir(response.status, { depth: null });
         console.dir(response.body, { depth: null });
 

@@ -138,6 +138,8 @@ var testableSubjectsInhouse = async (context, next) => {
             enabledValues,
             // TODO: ageframe custom verrides
             // TODO: global study settings filters in stage itself
+            // TODO: target
+            //testTarget: 'inhouse',
         }),
         HasAnyTestabilityStage({
             studyIds
@@ -168,7 +170,11 @@ var testableSubjectsInhouse = async (context, next) => {
         subjectRecordsCount
     } = result[0];
 
-    subjectRecordsCount = subjectRecordsCount[0].COUNT
+    subjectRecordsCount = (
+        subjectRecordsCount.length
+        ? subjectRecordsCount[0].COUNT
+        : 0
+    );
 
     postprocessSubjectRecords({
         subjectRecords,

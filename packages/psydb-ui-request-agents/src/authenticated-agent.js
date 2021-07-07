@@ -161,6 +161,33 @@ agent.fetchSelectionSettingsForSubjectTypeAndStudies = ({
     );
 }
 
+agent.searchSubjectsTestableViaAwayTeam = ({
+    studyRecordType,
+    subjectRecordType,
+    studyIds,
+    timeFrameStart,
+    timeFrameEnd,
+    enabledAgeFrames,
+    enabledValues,
+    offset = 0,
+    limit = 100,
+}) => {
+    return axios.post(
+        '/api/search-subjects-testable-via-away-team',
+        {
+            studyRecordType,
+            subjectRecordType,
+            studyIds,
+            timeFrameStart,
+            timeFrameEnd,
+            enabledAgeFrames,
+            enabledValues,
+            offset,
+            limit,
+        }
+    );
+}
+
 agent.searchTestableSubjectsInhouse = ({
     studyRecordType,
     subjectRecordType,

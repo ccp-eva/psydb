@@ -57,6 +57,9 @@ const SubjectSelectionRouting = () => {
                 <Route path={ `${path}/inhouse`}>
                     <InhouseSelectionContainer />
                 </Route>
+                <Route path={ `${path}/away-team`}>
+                    <AwayTeamSelectionContainer />
+                </Route>
                 <Route path={ `${path}/online`}>
                     <OnlineSelectionContainer />
                 </Route>
@@ -82,6 +85,36 @@ const InhouseSelectionContainer = () => {
                 </Route>
                 <Route path={ `${path}/:studyIds/:subjectRecordType` }>
                     <SearchContainer experimentType='inhouse' />
+                </Route>
+            </Switch>
+        </div>
+    )
+}
+
+const AwayTeamSelectionContainer = () => {
+    var { path, url } = useRouteMatch();
+
+    return (
+        <div>
+            <h4 className='border-bottom'>
+                Via Außen-Team
+            </h4>
+            <Switch>
+                <Route exact path={ `${path}` }>
+                    <StudySelect
+                        experimentType='away-team'
+                        singleStudy={ true }
+                    />
+                </Route>
+                <Route exact path={ `${path}/:studyIds` }>
+                    <SubjectTypeSelect
+                        experimentType='away-team'
+                    />
+                </Route>
+                <Route path={ `${path}/:studyIds/:subjectRecordType` }>
+                    <SearchContainer
+                        experimentType='away-team'
+                    />
                 </Route>
             </Switch>
         </div>

@@ -26,6 +26,7 @@ import SelectionSettingsFormSchema from './selection-settings-form-schema';
 import SelectionSettingsForm from './selection-settings-form';
 import InhouseSubjectList from './inhouse/testable-subject-list';
 import OnlineSubjectList from './online/testable-subject-list';
+import AwayTeamTargetLocationList from './away-team/target-location-list';
 
 var FormSettingsItemSchema = ({
     studyName,
@@ -199,7 +200,7 @@ const SearchContainer = ({
     var SubjectListComponent = {
         'inhouse': InhouseSubjectList,
         'online': OnlineSubjectList,
-        //'away-team': AwayTeamSubjectList,
+        'away-team': AwayTeamTargetLocationList,
     }[experimentType];
 
     return (
