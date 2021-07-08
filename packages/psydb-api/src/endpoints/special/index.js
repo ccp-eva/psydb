@@ -26,10 +26,10 @@ module.exports = {
     ),
     /*searchSubjectsTestableOnline: (
         require('./search-subjects-testable/online')
-    ),
+    ),*/
     searchSubjectsTestableViaAwayTeam: (
         require('./search-subjects-testable/away-team')
-    ),*/
+    ),
 
 
     selectionSettingsForSubjectTypeAndStudies: (

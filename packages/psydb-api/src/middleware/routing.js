@@ -160,6 +160,16 @@ var createRouting = ({
         endpoints.special.testableSubjectsInhouse
     );
 
+    router.post('/search-subjects-testable-via-away-team',
+        withSelfAuth(),
+        withPermissions(),
+        withEndpointProtection({
+            endpoint: 'search-subjects-testable-via-away-team'
+        }),
+        withKoaBody(),
+        endpoints.special.searchSubjectsTestableViaAwayTeam
+    );
+
     router.post('/invite-confirmation-list',
         withSelfAuth(),
         withPermissions(),
