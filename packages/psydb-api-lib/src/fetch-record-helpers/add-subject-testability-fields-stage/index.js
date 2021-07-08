@@ -3,6 +3,7 @@ var datefns = require('date-fns');
 var jsonpointer = require('jsonpointer');
 
 var prepareSubjectTypeSettings = require('./prepare-subject-type-settings');
+var filterAgeFrameConditions = require('./filter-age-frame-conditions');
 var makeCondition = require('./make-condition');
 
 var AddSubjectTestabilityFieldsStage = ({
@@ -36,68 +37,20 @@ var AddSubjectTestabilityFieldsStage = ({
         var subjectTypeSettings = subjectTypeSettingsByStudy[study._id];
         
         if (ageFrameField) {
-            var enabledStudyAgeFrames = (
-                enabledAgeFrames
-                .filter(it => it.startsWith(`/${study._id}/`))
-                .map(it => it.replace(`/${study._id}/`, ''))
-            );
 
-            var filteredConditionsByAgeFrame = [];
-            for (var cbaf of subjectTypeSettings.conditionsByAgeFrame) {
-                var { start, end } = cbaf.ageFrame;
-                var cbafEnabled = (
-                    enabledStudyAgeFrames.includes(`${start}_${end}`)
+            var filteredConditionsByAgeFrame = filterAgeFrameConditions({
+                studyId: study._id,
+                enabledAgeFrames,
+                enabledValues,
+                conditionsByAgeFrameList: (
+                    subjectTypeSettings.conditionsByAgeFrame
                 )
-                if (cbafEnabled) {
-                    var cbafEnabledValues = (
-                        Object.keys(enabledValues).reduce((acc, key) => {
-                            var prefix = `/${study._id}/${start}_${end}/conditions/`;
-                            if (key.startsWith(prefix)) {
-                                var pointer = key.replace(prefix, '');
-                                return ({
-                                    ...acc,
-                                    [pointer]: enabledValues[key]
-                                })
-                            }
-                            else {
-                                return acc;
-                            }
-                        }, {})
-                    )
-
-                    if (Object.keys(cbafEnabledValues).length > 0) {
-                        for (var fieldKey of Object.keys(cbafEnabledValues)) {
-                            var values = cbafEnabledValues[fieldKey];
-                            for (var condition of cbaf.conditions) {
-                                if (condition.fieldKey === fieldKey) {
-                                    condition.values = values;
-                                }
-                            }
-                        }
-
-                        filteredConditionsByAgeFrame.push(cbaf)
-                    }
-
-                    //console.log(cbafEnabledValues);
-                    //console.log(cbaf);
-                }
-            }
+            })
 
             subjectTypeSettings.conditionsByAgeFrame = (
                 filteredConditionsByAgeFrame
             );
-
-            /*subjectTypeSettings.conditionsByAgeFrame = (
-                subjectTypeSettings.conditionsByAgeFrame.filter(it => {
-                    var { start, end } = it.ageFrame;
-                    return enabledStudyAgeFrames.includes(`${start}_${end}`)
-                })
-            )*/
-
-            //console.dir(subjectTypeSettings, { depth: null });
         }
-
-        //throw new Error();
 
         conditionsByStudy[`_testableIn_${study._id}`] = makeCondition({
             experimentVariant,

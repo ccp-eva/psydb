@@ -21,7 +21,16 @@ module.exports = {
     ),
 
 
-    testableSubjectsInhouse: require('./testable-subjects-inhouse'),
+    testableSubjectsInhouse: (
+        require('./search-subjects-testable/inhouse')
+    ),
+    /*searchSubjectsTestableOnline: (
+        require('./search-subjects-testable/online')
+    ),
+    searchSubjectsTestableViaAwayTeam: (
+        require('./search-subjects-testable/away-team')
+    ),*/
+
 
     selectionSettingsForSubjectTypeAndStudies: (
         require('./selection-settings-for-subject-type-and-studies')
