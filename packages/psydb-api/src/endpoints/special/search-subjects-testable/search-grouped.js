@@ -24,6 +24,8 @@ var {
 var initAndCheck = require('./init-and-check');
 var postprocessSubjectRecords = require('./postprocess-subject-records');
 var combineSubjectResponseData = require('./combine-subject-response-data');
+var fetchParentDataForGroups = require('./fetch-parent-data-for-groups');
+
 var fromFacets = require('./from-facets');
 
 var searchGrouped = async (context, next) => {
@@ -211,15 +213,38 @@ var searchGrouped = async (context, next) => {
         studyRecordLabelDefinition,
     });
 
+    var groupIds = groupedSubjectRecords.map(it => it._id);
+
+    // FIXME: its actually possible to fetch locations that the RG has
+    // no permissions on when it contains subjects that are permitted
+    var locationData = await fetchParentDataForGroups({
+        db,
+        groupByField,
+        groupIds,
+    });
+
+    var now = new Date();
+    var upcomingLocationExperiments = await (
+        db.collection('experiment').aggregate([
+            { $match: {
+                'state.locationId': { $in: groupIds },
+                'state.interval.start': { $gt: now },
+            }},
+            { $sort: { 'state.interval.start': 1 }},
+            { $group: {
+                _id: '$state.locationId',
+                items: { $push: '$$ROOT' }
+            }}
+        ]).toArray()
+    );
+
     context.body = ResponseBody({
         data: {
             subjectData: {
                 ...omit('subjectRecords', combinedSubjectResponseData),
                 groupedSubjectRecords,
             },
-            locationData: {
-
-            }
+            locationData,
         }
     });
 

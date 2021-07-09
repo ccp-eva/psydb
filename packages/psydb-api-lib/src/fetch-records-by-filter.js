@@ -30,7 +30,9 @@ var fetchRecordByFilter = async ({
     displayFields,
     recordLabelDefinition,
     additionalPreprocessStages,
-    additionalProjection
+    additionalProjection,
+
+    disablePermissionCheck,
 }) => {
     var stages = [];
 
@@ -45,7 +47,11 @@ var fetchRecordByFilter = async ({
     stages = [
         ...stages,
         ...(additionalPreprocessStages || []),
-        ...SystemPermissionStages({ permissions, hasSubChannels }),
+        ...(
+            disablePermissionCheck
+            ? []
+            : SystemPermissionStages({ permissions, hasSubChannels })
+        ),
         StripEventsStage({
             subChannels: (
                 hasSubChannels

@@ -22,8 +22,14 @@ var reservationSettingsSchema = {
                     const: false,
                     default: false, // because rjsf
                 },
+                excludedExperimentWeekdays: WeekdayBoolObject({
+                    title: 'Termine nicht am',
+                }),
             },
-            required: [ 'canBeReserved' ]
+            required: [
+                'canBeReserved',
+                'excludedExperimentWeekdays'
+            ]
         }),
         ExactObject({
             title: 'reservierbar',
