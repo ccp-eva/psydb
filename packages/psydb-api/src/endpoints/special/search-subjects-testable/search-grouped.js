@@ -7,6 +7,8 @@ var inline = require('@cdxoo/inline-text');
 var omit = require('@cdxoo/omit');
 var datefns = require('date-fns');
 
+var keyBy = require('@mpieva/psydb-common-lib/src/key-by');
+
 var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
     Ajv = require('@mpieva/psydb-api-lib/src/ajv'),
     ResponseBody = require('@mpieva/psydb-api-lib/src/response-body');
@@ -25,7 +27,7 @@ var initAndCheck = require('./init-and-check');
 var postprocessSubjectRecords = require('./postprocess-subject-records');
 var combineSubjectResponseData = require('./combine-subject-response-data');
 var fetchParentDataForGroups = require('./fetch-parent-data-for-groups');
-var fetchNextExperimentData = require('./fetch-next-experiment-data');
+var fetchUpcomingExperimentData = require('./fetch-upcoming-experiment-data');
 
 var fromFacets = require('./from-facets');
 
@@ -226,20 +228,44 @@ var searchGrouped = async (context, next) => {
 
     var now = new Date();
 
-    var nextExperimentData = await fetchNextExperimentData({
+    var upcomingExperimentData = await fetchUpcomingExperimentData({
         db,
         locationIds: groupIds,
-        after: now
+        after: now,
     });
+
+    var groupedById = keyBy({
+        items: groupedSubjectRecords,
+        byProp: '_id',
+    });
+
+    var upcomingById = keyBy({
+        items: upcomingExperimentData.upcomingForIds,
+        byProp: '_id',
+    })
+
+    var merged = locationData.records.map(it => ({
+        ...it,
+        _subjectRecords: groupedById[it._id].items,
+        _upcomingExperiments: (
+            upcomingById[it._id]
+            ? upcomingById[it._id].upcoming
+            : []
+        )
+    }))
 
     context.body = ResponseBody({
         data: {
-            subjectData: {
-                ...omit('subjectRecords', combinedSubjectResponseData),
-                groupedSubjectRecords,
+            mergedRecords: merged,
+            subjectMetadata: {
+                ...omit('records', combinedSubjectResponseData),
             },
-            locationData,
-            nextExperimentData,
+            locationMetadata: {
+                ...omit('records', locationData),
+            },
+            experimentMetadata: {
+                ...omit('upcomingForIds', upcomingExperimentData),
+            },
         }
     });
 

@@ -1,7 +1,7 @@
 'use strict';
 var fetchRelatedLabelsForMany = require('@mpieva/psydb-api-lib/src/fetch-related-labels-for-many');
 
-var fetchNextExperimentData = async ({
+var fetchUpcomingExperimentData = async ({
     db,
     locationIds,
     subjectIds,
@@ -12,7 +12,7 @@ var fetchNextExperimentData = async ({
             'cannot use both subjectIds and locationIds combined'
         );
     }
-    var nextExperiments = await (
+    var upcomingExperiments = await (
         db.collection('experiment').aggregate([
             { $match: {
                 ...( locationIds && {
@@ -35,8 +35,8 @@ var fetchNextExperimentData = async ({
                 ...( subjectIds && {
                     _id: '$state.subjectData.subjectId',
                 }),
-                next: { $first: '$$ROOT' }
-                //items: { $push: '$$ROOT' }
+                //next: { $first: '$$ROOT' }
+                upcoming: { $push: '$$ROOT' }
             }}
         ]).toArray()
     );
@@ -44,13 +44,15 @@ var fetchNextExperimentData = async ({
     var experimentRelated = await fetchRelatedLabelsForMany({
         db,
         collectionName: 'experiment',
-        records: nextExperiments.map(it => it.next)
+        records: upcomingExperiments.reduce((acc, it) => ([
+            ...acc, ...it.upcoming
+        ]), [])
     });
 
     return {
-        nextForIds: nextExperiments,
+        upcomingForIds: upcomingExperiments,
         ...experimentRelated
     }
 }
 
-module.exports = fetchNextExperimentData;
+module.exports = fetchUpcomingExperimentData;

@@ -48,6 +48,7 @@ var fetchParentDataForGroups = async ({
         ],
         additionalProjection: {
             'state.reservationSettings': true,
+            'state.comment': true,
         },
         disablePermissionCheck: true
     });
