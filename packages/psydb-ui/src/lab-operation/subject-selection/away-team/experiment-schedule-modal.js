@@ -2,47 +2,73 @@ import React, { useState, useEffect, useReducer } from 'react';
 
 import { Modal } from 'react-bootstrap';
 
+import useModalReducer from '@mpieva/psydb-ui-lib/src/use-modal-reducer';
+import StudyAwayTeams from '@mpieva/psydb-ui-lib/src/study-away-teams';
+
+import ConfirmModal from './confirm-modal';
+
 const ExperimentScheduleModal = ({
     show,
     onHide,
 
-    modalPayload,
+    studyId,
+    studyType,
+    modalPayloadData,
 
     onSuccessfulUpdate,
 }) => {
-    console.log(modalPayload);
+    var {
+        locationRecord,
+        selectedSubjectRecords
+    } = modalPayloadData;
+
+    var confirmModal = useModalReducer();
+
+    var wrappedOnSuccessfulUpdate = (...args) => {
+        onSuccessfulUpdate(...args);
+        onHide();
+    };
+
     return (
-        <Modal
-            show={show}
-            onHide={ onHide }
-            size='xl'
-            className='team-modal'
-            backdropClassName='team-modal-backdrop'
-        >
-            <Modal.Header closeButton>
-                <Modal.Title>Experiment verschieben</Modal.Title>
-            </Modal.Header>
-            <Modal.Body className='bg-light'>
-                FOOO
-            </Modal.Body>
-        </Modal>
+        <>
+            
+            <ConfirmModal { ...({
+                show: confirmModal.show,
+                onHide: confirmModal.handleHide,
+                
+                modalPayloadData: confirmModal.data,
+                
+                studyId,
+                locationRecord,
+                selectedSubjectRecords,
+            }) } />
+
+            <Modal
+                show={show}
+                onHide={ onHide }
+                size='xl'
+                className='team-modal'
+                backdropClassName='team-modal-backdrop'
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title>Experiment eintragen</Modal.Title>
+                </Modal.Header>
+                <Modal.Body className='bg-light'>
+                    <StudyAwayTeams { ...({
+                        studyId,
+                        studyRecordType: studyType,
+                        
+                        onSelectReservationSlot: confirmModal.handleShow
+                    }) } />
+                </Modal.Body>
+            </Modal>
+        </>
     )
 }
 
 
-var reducer = (state, action) => {
-    var { type, payload } = action;
-    switch (type) {
-        case 'increase-calendar-revision':
-            return {
-                ...state,
-                calendarRevision: (state.calendarRevision || 0) + 1
-            }
-    }
-}
-
 const ExperimentScheduleModalWrapper = (ps) => {
-    if (!ps.show) {
+    if (!ps.modalPayloadData) {
         return null;
     }
     return (

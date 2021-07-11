@@ -132,7 +132,9 @@ const TargetLocationList = ({
             <ExperimentScheduleModal { ...({
                 show: createExperimentModal.show,
                 onHide: createExperimentModal.handleHide,
-                modalPayload: createExperimentModal.data
+                modalPayloadData: createExperimentModal.data,
+                studyId: studyIds.split(',')[0],
+                studyType,
             }) } />
             <TargetLocationTable { ...({
                 mergedRecords,
