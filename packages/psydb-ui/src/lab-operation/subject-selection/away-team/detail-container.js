@@ -68,6 +68,7 @@ const DetailContainer = ({
             <div className='mt-3 mb-3'>
                 <Button
                     size='sm'
+                    disabled={ selectedSubjectIds.length < 1 }
                     onClick={ () => onCreateExperiment({ locationRecord }) }
                 >
                     Termin eintragen

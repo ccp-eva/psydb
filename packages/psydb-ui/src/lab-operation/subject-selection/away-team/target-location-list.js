@@ -18,6 +18,7 @@ import useModalReducer from '@mpieva/psydb-ui-lib/src/use-modal-reducer';
 import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
 
 import TargetLocationTable from './target-location-table';
+import ExperimentScheduleModal from './experiment-schedule-modal';
 
 const TargetLocationList = ({
     studyLabelItems
@@ -127,21 +128,33 @@ const TargetLocationList = ({
     } = fetched.data;
 
     return (
-        <TargetLocationTable { ...({
-            mergedRecords,
-            subjectMetadata,
-            locationMetadata,
-            experimentMetadata,
+        <>
+            <ExperimentScheduleModal { ...({
+                show: createExperimentModal.show,
+                onHide: createExperimentModal.handleHide,
+                modalPayload: createExperimentModal.data
+            }) } />
+            <TargetLocationTable { ...({
+                mergedRecords,
+                subjectMetadata,
+                locationMetadata,
+                experimentMetadata,
 
-            onToggleDetails: handleToggleDetails,
-            selectedLocationId,
+                onToggleDetails: handleToggleDetails,
+                selectedLocationId,
 
-            onSelectSubject: handleSelectSubject,
-            onSelectManySubjects: handleSelectManySubjects,
-            selectedSubjectIds,
+                onSelectSubject: handleSelectSubject,
+                onSelectManySubjects: handleSelectManySubjects,
+                selectedSubjectIds,
 
-            onCreateExperiment: createExperimentModal.handleShow
-        }) } />
+                onCreateExperiment: ({ locationRecord }) => (
+                    createExperimentModal.handleShow({
+                        locationRecord,
+                        selectedSubjectRecords: state.selectedSubjects,
+                    })
+                )
+            }) } />
+        </>
     );
 }
 
