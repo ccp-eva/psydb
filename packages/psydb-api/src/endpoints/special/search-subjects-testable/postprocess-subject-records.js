@@ -11,6 +11,7 @@ var postprocessSubjectRecords = ({
     subjectRecordType,
     studyRecords,
     timeFrame,
+    upcomingBySubjectId,
     recordLabelDefinition,
 }) => {
 
@@ -30,6 +31,12 @@ var postprocessSubjectRecords = ({
             definition: recordLabelDefinition,
         });
         delete record._recordLabelDefinitionFields;
+
+        record._upcomingExperiments = (
+            upcomingBySubjectId[it._id]
+            ? upcomingBySubjectId[it._id].upcoming
+            : []
+        )
 
         var testableInStudies = [];
         for (var { _id: studyId } of studyRecords) {

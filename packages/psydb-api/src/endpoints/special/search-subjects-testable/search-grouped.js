@@ -40,6 +40,8 @@ var searchGrouped = async (context, next) => {
         experimentVariant,
     } = context;
 
+    var now = new Date();
+
     var {
         timeFrameStart,
         timeFrameEnd,
@@ -193,6 +195,18 @@ var searchGrouped = async (context, next) => {
         ...acc, ...it.items
     ]), []);
 
+    var subjectIds = flatSubjects.map(it => it._id);
+    var upcomingSubjectExperimentData = await fetchUpcomingExperimentData({
+        db,
+        subjectIds: subjectIds,
+        after: now,
+    });
+
+    var upcomingBySubjectId = keyBy({
+        items: upcomingSubjectExperimentData.upcomingForIds,
+        byProp: '_id',
+    })
+
     postprocessSubjectRecords({
         subjectRecords: flatSubjects,
         subjectRecordType,
@@ -201,6 +215,7 @@ var searchGrouped = async (context, next) => {
             start: timeFrameStart,
             end: timeFrameEnd
         },
+        upcomingBySubjectId,
         recordLabelDefinition: subjectRecordLabelDefinition,
     })
 
@@ -227,9 +242,7 @@ var searchGrouped = async (context, next) => {
         groupIds,
     });
 
-    var now = new Date();
-
-    var upcomingExperimentData = await fetchUpcomingExperimentData({
+    var upcomingLocationExperimentData = await fetchUpcomingExperimentData({
         db,
         locationIds: groupIds,
         after: now,
@@ -240,8 +253,8 @@ var searchGrouped = async (context, next) => {
         byProp: '_id',
     });
 
-    var upcomingById = keyBy({
-        items: upcomingExperimentData.upcomingForIds,
+    var upcomingByLocationId = keyBy({
+        items: upcomingLocationExperimentData.upcomingForIds,
         byProp: '_id',
     })
 
@@ -249,8 +262,8 @@ var searchGrouped = async (context, next) => {
         ...it,
         _subjectRecords: groupedById[it._id].items,
         _upcomingExperiments: (
-            upcomingById[it._id]
-            ? upcomingById[it._id].upcoming
+            upcomingByLocationId[it._id]
+            ? upcomingByLocationId[it._id].upcoming
             : []
         )
     }))
@@ -261,11 +274,14 @@ var searchGrouped = async (context, next) => {
             subjectMetadata: {
                 ...omit('records', combinedSubjectResponseData),
             },
+            subjectExperimentMetadata: {
+                ...omit('upcomingForIds', upcomingSubjectExperimentData),
+            },
             locationMetadata: {
                 ...omit('records', locationData),
             },
-            experimentMetadata: {
-                ...omit('upcomingForIds', upcomingExperimentData),
+            locationExperimentMetadata: {
+                ...omit('upcomingForIds', upcomingLocationExperimentData),
             },
         }
     });
