@@ -5,7 +5,8 @@ var inline = require('@cdxoo/inline-text'),
     reservationSettingsSchema = require('./reservation-settings-schema');
 
 var {
-    ExactObject
+    ExactObject,
+    FullText,
 } = require('@mpieva/psydb-schema-fields');
 
 var GenericLocationState = ({
@@ -16,6 +17,7 @@ var GenericLocationState = ({
         type: 'object',
         properties: {
             custom: CustomProps({ customFieldDefinitions }),
+            comment: FullText({ title: 'Kommentar' }),
             reservationSettings: reservationSettingsSchema,
             systemPermissions: systemPermissionsSchema,
             

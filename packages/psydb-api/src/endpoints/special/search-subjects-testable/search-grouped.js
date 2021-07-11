@@ -25,6 +25,7 @@ var initAndCheck = require('./init-and-check');
 var postprocessSubjectRecords = require('./postprocess-subject-records');
 var combineSubjectResponseData = require('./combine-subject-response-data');
 var fetchParentDataForGroups = require('./fetch-parent-data-for-groups');
+var fetchNextExperimentData = require('./fetch-next-experiment-data');
 
 var fromFacets = require('./from-facets');
 
@@ -224,19 +225,12 @@ var searchGrouped = async (context, next) => {
     });
 
     var now = new Date();
-    var upcomingLocationExperiments = await (
-        db.collection('experiment').aggregate([
-            { $match: {
-                'state.locationId': { $in: groupIds },
-                'state.interval.start': { $gt: now },
-            }},
-            { $sort: { 'state.interval.start': 1 }},
-            { $group: {
-                _id: '$state.locationId',
-                items: { $push: '$$ROOT' }
-            }}
-        ]).toArray()
-    );
+
+    var nextExperimentData = await fetchNextExperimentData({
+        db,
+        locationIds: groupIds,
+        after: now
+    });
 
     context.body = ResponseBody({
         data: {
@@ -245,6 +239,7 @@ var searchGrouped = async (context, next) => {
                 groupedSubjectRecords,
             },
             locationData,
+            nextExperimentData,
         }
     });
 

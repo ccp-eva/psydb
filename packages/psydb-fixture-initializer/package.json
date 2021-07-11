@@ -20,6 +20,8 @@
     "debug": "~4.3.1",
     "@mpieva/psydb-driver-nodejs": "~0.1.0-alpha",
     "@mpieva/psydb-fixtures": "~0.1.0-alpha",
+    "@mpieva/psydb-api-config": "~0.1.0-alpha",
+    "@mpieva/psydb-mongo-adapter": "~0.1.0-alpha",
     "superagent": "~6.1.0",
     "superagent-prefix": "~0.0.2"
   },
