@@ -8,13 +8,16 @@ import {
 
 import PaddedText from './padded-text';
 
-const Pair = ({ label, children }) => {
+const Pair = ({ label, children, wLeft, wRight }) => {
+    wLeft = wLeft || 4;
+    wRight = wRight || ( 12 - wLeft );
+
     return (
         <Row>
-            <Col sm={4}>
+            <Col sm={ wLeft }>
                 <PaddedText>{ label }</PaddedText>
             </Col>
-            <Col sm={8}>
+            <Col sm={ wRight }>
                 <PaddedText>
                     <b style={{ fontWeight: 600 }}>{ children }</b>
                 </PaddedText>

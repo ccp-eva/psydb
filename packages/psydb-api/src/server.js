@@ -1,7 +1,7 @@
 require('debug').enable('psydb:*');
 
 var Koa = require('koa'),
-    psydbConfig = require('@mpieva/psydb-config'),
+    psydbConfig = require('@mpieva/psydb-api-config'),
     createApi = require('./middleware/api');
 
 var app = new Koa();

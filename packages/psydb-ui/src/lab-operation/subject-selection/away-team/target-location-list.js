@@ -7,15 +7,13 @@ import {
     useParams
 } from 'react-router-dom';
 
-import {
-    Table
-} from 'react-bootstrap';
-
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 import up from '@mpieva/psydb-ui-lib/src/url-up';
 import useFetch from '@mpieva/psydb-ui-lib/src/use-fetch';
 
 import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
+
+import TargetLocationTable from './target-location-table';
 
 const TargetLocationList = ({
     studyLabelItems
@@ -63,8 +61,26 @@ const TargetLocationList = ({
         })
     }, [ studyIds, subjectRecordType, searchSettings64 ]);
 
+    if (!didFetch) {
+        return (
+            <LoadingIndicator size='lg' />
+        )
+    }
+
+    var {
+        mergedRecords,
+        subjectMetadata,
+        locationMetadata,
+        experimentMetadata,
+    } = fetched.data;
+
     return (
-        <div>FOO</div>
+        <TargetLocationTable { ...({
+            mergedRecords,
+            subjectMetadata,
+            locationMetadata,
+            experimentMetadata
+        }) } />
     );
 }
 
