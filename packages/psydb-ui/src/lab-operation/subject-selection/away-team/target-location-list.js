@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useReducer } from 'react';
 import { Base64 } from 'js-base64';
 
 import {
@@ -6,6 +6,9 @@ import {
     useRouteMatch,
     useParams
 } from 'react-router-dom';
+
+import omit from '@cdxoo/omit';
+import { useURLSearchParams } from '@cdxoo/react-router-url-search-params';
 
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 import up from '@mpieva/psydb-ui-lib/src/url-up';
@@ -61,6 +64,45 @@ const TargetLocationList = ({
         })
     }, [ studyIds, subjectRecordType, searchSettings64 ]);
 
+    var [ query, updateQuery ] = useURLSearchParams();
+    var { location: selectedLocationId } = query;
+    var handleToggleDetails = ({ locationId }) => {
+        console.log(locationId);
+        if (selectedLocationId === locationId) {
+            updateQuery({ ...omit('location', query) });
+        }
+        else {
+            updateQuery({ ...query, location: locationId });
+        }
+    }
+
+    var [ state, dispatch ] = useReducer(reducer, {
+        selectedSubjectsLocationId: undefined,
+        selectedSubjects: []
+    });
+
+    var selectedSubjectIds = state.selectedSubjects.map(it => it._id);
+
+    var handleSelectSubject = ({ locationId, subjectRecord }) => {
+        var exists = selectedSubjectIds.includes(subjectRecord._id);
+        if (!exists) {
+            dispatch({ type: 'selected-subjects/add', payload: {
+                locationId, subjectRecord
+            }});
+        }
+        else {
+            dispatch({ type: 'selected-subjects/remove', payload: {
+                subjectRecord
+            }});
+        }
+    }
+
+    var handleSelectManySubjects = ({ locationId, subjectRecords }) => {
+        dispatch({ type: 'selected-subjects/set', payload: {
+            locationId, subjectRecords
+        }});
+    }
+
     if (!didFetch) {
         return (
             <LoadingIndicator size='lg' />
@@ -79,9 +121,60 @@ const TargetLocationList = ({
             mergedRecords,
             subjectMetadata,
             locationMetadata,
-            experimentMetadata
+            experimentMetadata,
+
+            onToggleDetails: handleToggleDetails,
+            selectedLocationId,
+
+            onSelectSubject: handleSelectSubject,
+            onSelectManySubjects: handleSelectManySubjects,
+            selectedSubjectIds,
         }) } />
     );
+}
+
+const reducer = (state, action) => {
+    var { type, payload } = action;
+    switch (type) {
+        case 'selected-subjects/set':
+            var { locationId, subjectRecords } = payload;
+            return ({
+                ...state,
+                selectedSubjectsLocationId: locationId,
+                selectedSubjects: subjectRecords
+            });
+            break;
+        case 'selected-subjects/add':
+            var { locationId, subjectRecord } = payload;
+            
+            var nextSelectedSubjects;
+            if (state.selectedSubjectsLocationId === locationId) {
+                nextSelectedSubjects = [
+                    ...state.selectedSubjects,
+                    subjectRecord
+                ];
+            }
+            else {
+                nextSelectedSubjects = [ subjectRecord ];
+            }
+            return ({
+                ...state,
+                selectedSubjectsLocationId: locationId,
+                selectedSubjects: nextSelectedSubjects
+            });
+
+            break;
+
+        case 'selected-subjects/remove':
+            var nextSelectedSubjects = state.selectedSubjects.filter(it => (
+                it._id !== payload.subjectRecord._id
+            ));
+            return ({
+                ...state,
+                selectedSubjects: nextSelectedSubjects
+            });
+            break;
+    }
 }
 
 export default TargetLocationList;

@@ -8,6 +8,7 @@ import {
 
 import * as stringifiers from '@mpieva/psydb-common-lib/src/field-stringifiers';
 import LinkButton from '../link-button';
+import CheckColumn from '../check-column';
 
 import FieldDataBodyCols from './field-data-body-cols';
 
@@ -50,24 +51,11 @@ const TableRow = ({
             )}
         >
             { showSelectionIndicator && (
-                <td
-                    role={(
-                        showSelectionIndicator && onSelectRecord
-                        ? 'button'
-                        : undefined
-                    )}
-                    onClick={ (
-                        showSelectionIndicator && onSelectRecord
-                        ? () => onSelectRecord(record)
-                        : undefined
-                    )}
-                >
-                    {
-                        selectedRecordIds.includes(record._id)
-                        ? <CheckSquareFill />
-                        : <Square />
-                    }
-                </td>
+                <CheckColumn { ...({
+                    record,
+                    onSelectRecord,
+                    selectedRecordIds,
+                }) } />
             )}
             <FieldDataBodyCols { ...({
                 record,

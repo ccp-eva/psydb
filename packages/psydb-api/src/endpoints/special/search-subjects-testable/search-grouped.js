@@ -168,6 +168,7 @@ var searchGrouped = async (context, next) => {
                 '_ageFrameField': true,
                 '_groupByField': true,
                 'scientific.state.internals.participatedInStudies': true,
+                'scientific.state.comment': true,
                 ...( studyIds.reduce((acc, id) => ({
                     ...acc, [`_testableIn_${id}`]: true,
                 }), {}))

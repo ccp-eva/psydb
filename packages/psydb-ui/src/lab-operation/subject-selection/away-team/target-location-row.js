@@ -14,9 +14,15 @@ const TargetLocationRow = ({
     locationMetadata,
     experimentMetadata,
 
+    onToggleDetails,
     selectedLocationId,
+
+    onSelectSubject,
+    onSelectManySubjects,
+    selectedSubjectIds,
 }) => {
     var colspan = locationMetadata.displayFieldData.length + 2;
+    var showDetails = selectedLocationId === record._id;
 
     return (
         <>
@@ -41,13 +47,25 @@ const TargetLocationRow = ({
                         <div className='pr-5'>
                             Details:
                             {' '}
-                            <UncollapseButton direction='down' />
+                            <UncollapseButton
+                                onClick={ () => onToggleDetails({
+                                    locationId: record._id
+                                })}
+                                direction={ showDetails ? 'up': 'down' }
+                            />
                         </div>
-                        <DetailContainer { ...({
-                            locationComment: record.state.comment,
-                            subjectRecords: record._subjectRecords,
-                            subjectMetadata,
-                        }) }/>
+                        { showDetails&& (
+                            <DetailContainer { ...({
+                                locationId: record._id,
+                                locationComment: record.state.comment,
+                                subjectRecords: record._subjectRecords,
+                                subjectMetadata,
+
+                                onSelectSubject,
+                                onSelectManySubjects,
+                                selectedSubjectIds,
+                            }) }/>
+                        )}
                     </div>
                 </td>
             </tr>
@@ -101,7 +119,6 @@ const dayLabels = {
 const ExcludedWeekdays = ({
     excluded
 }) => {
-    console.log(excluded);
     var labels = Object.keys(excluded).reduce((acc, key) => [
         ...acc, ...( excluded[key] === true ? [ dayLabels[key] ] : [] )
     ], [])

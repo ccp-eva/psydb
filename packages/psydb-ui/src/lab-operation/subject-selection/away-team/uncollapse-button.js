@@ -22,7 +22,6 @@ var defaultIconStyle = {
 }
 
 var UncollapseButton = ({
-    onClick,
     buttonStyle,
     iconStyle,
     direction,

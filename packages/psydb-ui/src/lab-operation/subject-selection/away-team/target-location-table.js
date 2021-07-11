@@ -14,7 +14,14 @@ const TargetLocationTable = ({
     mergedRecords,
     subjectMetadata,
     locationMetadata,
-    experimentMetadata
+    experimentMetadata,
+
+    onToggleDetails,
+    selectedLocationId,
+
+    onSelectSubject,
+    onSelectManySubjects,
+    selectedSubjectIds,
 }) => {
     return (
         <Table>
@@ -35,7 +42,14 @@ const TargetLocationTable = ({
                             record,
                             subjectMetadata,
                             locationMetadata,
-                            experimentMetadata
+                            experimentMetadata,
+
+                            onToggleDetails,
+                            selectedLocationId,
+
+                            onSelectSubject,
+                            onSelectManySubjects,
+                            selectedSubjectIds,
                         }) } />
                     );
                 })}
