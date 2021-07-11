@@ -5,38 +5,27 @@ import { LinkContainer } from 'react-router-bootstrap';
 
 import { CaretUpFill, CaretDownFill } from 'react-bootstrap-icons';
 
-var defaultButtonProps = {
-    size: 'sm',
-    variant: 'outline-primary',
-}
-var defaultButtonStyle = {
-    marginTop: '-3px', // FIXME: in lists only
-    borderRadius: '.2rem',
-    border: 0,
-}
-
 var defaultIconStyle = {
     width: '16px',
     height: '16px',
-    marginTop: '-2px'
+    marginLeft: '7px',
+    color: '#006c66',
 }
 
 var UncollapseButton = ({
-    buttonStyle,
+    onClick,
     iconStyle,
     direction,
-    ...buttonProps
 }) => {
     return (
-        <Button { ...defaultButtonProps } { ...buttonProps } style={{
-            ...defaultButtonStyle, ...buttonStyle
-        }}>
+        <a role='button' onClick={ onClick }>
+            <b style={{ color: '#006c66' }}>Details:</b>
             {
                 direction === 'down'
                 ? <CaretDownFill style={{ ...defaultIconStyle, ...iconStyle }} />
                 : <CaretUpFill style={{ ...defaultIconStyle, ...iconStyle }} />
             }
-        </Button>
+        </a>
     )
 }
 

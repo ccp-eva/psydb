@@ -1,4 +1,7 @@
 import React from 'react';
+
+import { CaretUpFill, CaretDownFill } from 'react-bootstrap-icons';
+
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 
 import {
@@ -41,8 +44,6 @@ const TargetLocationRow = ({
                     <div className=''>
                         <div className='d-flex'>
                             <div className='pr-5'>
-                                Details:
-                                {' '}
                                 <UncollapseButton
                                     onClick={ () => onToggleDetails({
                                         locationId: record._id
