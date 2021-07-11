@@ -39,22 +39,25 @@ const TargetLocationRow = ({
             <tr>
                 <td colSpan={ colspan } className='border-0 pt-0'>
                     <div className=''>
-                        <ExcludedWeekdays {...({
-                            excluded: record.state.reservationSettings.excludedExperimentWeekdays
-                        })} />
-                        <UpcomingExperiments { ...({
-                            records: record._upcomingExperiments,
-                            ...experimentMetadata
-                        })} />
-                        <div className='pr-5'>
-                            Details:
-                            {' '}
-                            <UncollapseButton
-                                onClick={ () => onToggleDetails({
-                                    locationId: record._id
-                                })}
-                                direction={ showDetails ? 'up': 'down' }
-                            />
+                        <div className='d-flex'>
+                            <div className='pr-5'>
+                                Details:
+                                {' '}
+                                <UncollapseButton
+                                    onClick={ () => onToggleDetails({
+                                        locationId: record._id
+                                    })}
+                                    direction={ showDetails ? 'up': 'down' }
+                                />
+                            </div>
+
+                            <ExcludedWeekdays {...({
+                                excluded: record.state.reservationSettings.excludedExperimentWeekdays
+                            })} />
+                            <UpcomingExperiments { ...({
+                                records: record._upcomingExperiments,
+                                ...experimentMetadata
+                            })} />
                         </div>
                         { showDetails&& (
                             <DetailContainer { ...({
@@ -129,7 +132,7 @@ const ExcludedWeekdays = ({
     ], [])
     return (
         labels.length > 0
-        ? <div>nicht am: <b>{ labels.join(', ') }</b></div>
+        ? <div className='mr-5'>nicht am: <b>{ labels.join(', ') }</b></div>
         : null
     );
 }
