@@ -22,6 +22,8 @@ const TargetLocationTable = ({
     onSelectSubject,
     onSelectManySubjects,
     selectedSubjectIds,
+
+    onCreateExperiment,
 }) => {
     return (
         <Table>
@@ -50,6 +52,8 @@ const TargetLocationTable = ({
                             onSelectSubject,
                             onSelectManySubjects,
                             selectedSubjectIds,
+                            
+                            onCreateExperiment,
                         }) } />
                     );
                 })}

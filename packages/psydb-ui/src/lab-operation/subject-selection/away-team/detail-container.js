@@ -1,8 +1,14 @@
 import React from 'react';
 
 import {
-    Table
+    Table,
+    Button
 } from 'react-bootstrap';
+
+import {
+    CheckSquareFill,
+    Square
+} from 'react-bootstrap-icons';
 
 import {
     FieldDataHeadCols,
@@ -17,12 +23,15 @@ import CheckColumn from '@mpieva/psydb-ui-lib/src/check-column';
 const DetailContainer = ({
     locationId,
     locationComment,
+    locationRecord,
     subjectRecords,
     subjectMetadata,
 
     onSelectSubject,
     onSelectManySubjects,
-    selectedSubjectIds
+    selectedSubjectIds,
+
+    onCreateExperiment
 }) => {
     return (
         <div className='border bg-light pr-3 pl-3'>
@@ -46,6 +55,9 @@ const DetailContainer = ({
                     subjectRecords,
                     subjectMetadata,
 
+                    onSelectManySubjects: (records) => onSelectManySubjects({
+                        locationId, subjectRecords: records,
+                    }),
                     onSelectSubject: (record) => onSelectSubject({
                         locationId,
                         subjectRecord: record
@@ -53,6 +65,14 @@ const DetailContainer = ({
                     selectedSubjectIds,
                 }) } />
             </Table>
+            <div className='mt-3 mb-3'>
+                <Button
+                    size='sm'
+                    onClick={ () => onCreateExperiment({ locationRecord }) }
+                >
+                    Termin eintragen
+                </Button>
+            </div>
         </div>
     );
 }
@@ -61,6 +81,7 @@ const SubjectTableBody = ({
     subjectRecords,
     subjectMetadata,
 
+    onSelectManySubjects,
     onSelectSubject,
     selectedSubjectIds,
 }) => {
@@ -110,6 +131,24 @@ const SubjectTableBody = ({
                     </tr>
                 )
             })}
+            <tr>
+                <td
+                    role='button'
+                    onClick={ () => onSelectManySubjects(subjectRecords)}
+                >
+                    {
+                        selectedSubjectIds.length > 0 
+                        ? <CheckSquareFill />
+                        : <Square />
+                    }
+                </td>
+                <td 
+                    colSpan={ subjectMetadata.displayFieldData.length + 4 }
+                    style={{ color: '#006c66' }}
+                >
+                    Alle auswählen
+                </td>
+            </tr>
         </tbody>
 
     );

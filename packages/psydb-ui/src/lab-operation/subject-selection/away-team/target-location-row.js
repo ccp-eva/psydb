@@ -20,6 +20,8 @@ const TargetLocationRow = ({
     onSelectSubject,
     onSelectManySubjects,
     selectedSubjectIds,
+
+    onCreateExperiment
 }) => {
     var colspan = locationMetadata.displayFieldData.length + 2;
     var showDetails = selectedLocationId === record._id;
@@ -58,12 +60,15 @@ const TargetLocationRow = ({
                             <DetailContainer { ...({
                                 locationId: record._id,
                                 locationComment: record.state.comment,
+                                locationRecord: record,
                                 subjectRecords: record._subjectRecords,
                                 subjectMetadata,
 
                                 onSelectSubject,
                                 onSelectManySubjects,
                                 selectedSubjectIds,
+                                
+                                onCreateExperiment,
                             }) }/>
                         )}
                     </div>
