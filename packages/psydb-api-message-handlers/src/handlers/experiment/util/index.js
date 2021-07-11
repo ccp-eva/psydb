@@ -8,6 +8,9 @@ module.exports = {
     checkConflictingLocationReservations: (
         require('./check-conflicting-location-reservations')
     ),
+    checkConflictingLocationExperiments: (
+        require('./check-conflicting-location-experiments')
+    ),
     checkConflictingSubjectExperiments: (
         require('./check-conflicting-subject-experiments')
     ),

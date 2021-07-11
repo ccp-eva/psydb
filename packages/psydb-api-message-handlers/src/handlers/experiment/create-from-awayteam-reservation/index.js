@@ -9,8 +9,10 @@ var SimpleHandler = require('../../../lib/simple-handler'),
     checkForeignIdsExist = require('../../../lib/check-foreign-ids-exist');
 
 var {
+    checkIntervalHasReservation,
     checkConflictingLocationReservations,
     checkConflictingSubjectExperiments,
+    checkConflictingLocationExperiments,
     dispatchCreateEvents,
 } = require('../util');
 
@@ -33,43 +35,38 @@ handler.checkAllowedAndPlausible = async ({
     }
 
     var {
-        reservationId,
-        lastKnownReservationEventId,
+        studyId,
         locationId,
-        subjectGroupIds,
+        experimentOperatorTeamId,
         subjectIds,
+        interval,
     } = message.payload.props;
-
-    var reservation = cache.reservation = await (
-        db.collection('reservation')
-        .findOne(
-            { _id: reservationId },
-        )
-    );
-
-    if (!reservation) {
-        throw new ApiError(400, 'InvalidReservation');
-    }
-    if (reservation.state.hasExperiment === true) {
-        throw new ApiError(400, 'ReservationHasExperiment');
-    }
-    if (reservation.events[0]._id !== lastKnownReservationEventId) {
-        throw new ApiError(400, 'ReservationHasChanged');
-    }
 
     // TODO: use FK to check existance (?)
     await checkForeignIdsExist(db, {
+        'study': [ studyId ],
+        'experimentOperatorTeam': [ experimentOperatorTeamId ],
         'location': locationId,
-        //'subjectGroup': subjectGroupIds,
         'subject': subjectIds
+        //'subjectGroup': subjectGroupIds,
+    });
+
+    await checkIntervalHasReservation({
+        db,
+        interval,
+        experimentOperatorTeamId,
     });
 
     await checkConflictingLocationReservations({
-        db, locationId, interval: reservation.state.interval
+        db, locationId, interval
     });
 
     await checkConflictingSubjectExperiments({
-        db, subjectIds, interval: reservation.state.interval
+        db, subjectIds, interval
+    });
+    
+    await checkConflictingLocationExperiments({
+        db, locationId, interval
     });
 }
 
@@ -83,8 +80,6 @@ handler.triggerSystemEvents = async ({
     var { type: messageType, payload } = message;
     var { id, props } = payload;
 
-    var { reservation } = cache;
-
     var locationRecord = await (
         db.collection('location').findOne({ _id: props.locationId })
     );
@@ -97,18 +92,15 @@ handler.triggerSystemEvents = async ({
         forcedExperimentId: id,
 
         type: 'away-team',
-        reservationId: reservation._id,
-        seriesId: reservation.state.seriesId,
-        studyId: reservation.state.studyId,
-        experimentOperatorTeamId: reservation.state.experimentOperatorTeamId,
-        interval: reservation.state.interval,
+        seriesId: nanoid(), // FIXME: id format
+        studyId: props.studyId,
+        experimentOperatorTeamId: props.experimentOperatorteamId,
+        interval: props.interval,
 
         locationId: props.locationId,
         locationRecordType: locationRecord.type,
         //subjectGroupIds: props.subjectGroupIds,
         subjectIds: props.subjectIds,
-
-        lastKnownReservationEventId: props.lastKnownReservationEventId,
     });
 }
 

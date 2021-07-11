@@ -13,11 +13,11 @@ var checkIntervalHasReservation = async ({
     locationId,
     experimentOperatorTeamId
 }) => {
-    console.log({
+    /*console.log({
         interval,
         locationId,
         experimentOperatorTeamId
-    });
+    });*/
 
     var reservations = await (
         db.collection('reservation').aggregate([
@@ -40,7 +40,15 @@ var checkIntervalHasReservation = async ({
                     ]},
                 ],
                 'state.experimentOperatorTeamId': experimentOperatorTeamId,
-                'state.locationId': locationId,
+                ...(
+                    locationId
+                    ? { 
+                        'type': 'inhouse',
+                        'state.locationId': locationId }
+                    : {
+                        'type': 'awayTeam'
+                    }
+                )
             }}
         ]).toArray()
     );

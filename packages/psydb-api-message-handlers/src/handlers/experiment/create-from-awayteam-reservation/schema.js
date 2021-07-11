@@ -18,14 +18,17 @@ var createSchema = ({} = {}) => (
                 id: Id(),
                 props: ExactObject({
                     properties: {
-                        reservationId: ForeignId({
-                            collection: 'reservation',
+                        studyId: ForeignId({
+                            collection: 'study',
                         }),
-                        lastKnownReservationEventId: EventId(),
-
+                        experimentOperatorTeamId: ForeignId({
+                            collection: 'experimentOperatorTeam',
+                        }),
                         locationId: ForeignId({
                             collection: 'location',
                         }),
+
+                        interval: DateTimeInterval(),
 
                         subjectIds: {
                             type: 'array',
@@ -44,9 +47,9 @@ var createSchema = ({} = {}) => (
                         }*/
                     },
                     required: [
-                        'reservationId',
-                        'lastKnownReservationEventId',
+                        'studyId',
                         'locationId',
+                        'experimentOperatorTeamId',
                         //'subjectGroupIds',
                         'subjectIds',
                     ]
