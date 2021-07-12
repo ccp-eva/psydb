@@ -14,6 +14,7 @@ import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 import up from '@mpieva/psydb-ui-lib/src/url-up';
 import useFetch from '@mpieva/psydb-ui-lib/src/use-fetch';
 import useModalReducer from '@mpieva/psydb-ui-lib/src/use-modal-reducer';
+import useRevision from '@mpieva/psydb-ui-lib/src/use-revision';
 
 import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
 
@@ -44,6 +45,8 @@ const TargetLocationList = ({
         )
     }
 
+    var [ revision, increaseRevision ] = useRevision();
+
     var [ didFetch, fetched ] = useFetch((agent) => {
         var {
             timeFrame,
@@ -64,7 +67,7 @@ const TargetLocationList = ({
             enabledAgeFrames: ageFrames,
             enabledValues: values,
         })
-    }, [ studyIds, subjectRecordType, searchSettings64 ]);
+    }, [ studyIds, subjectRecordType, searchSettings64, revision ]);
 
     var [ state, dispatch ] = useReducer(reducer, {
         selectedSubjectsLocationId: undefined,
@@ -136,6 +139,8 @@ const TargetLocationList = ({
                 modalPayloadData: createExperimentModal.data,
                 studyId: studyIds.split(',')[0],
                 studyType,
+                
+                onSuccessfulUpdate: increaseRevision
             }) } />
             <TargetLocationTable { ...({
                 mergedRecords,

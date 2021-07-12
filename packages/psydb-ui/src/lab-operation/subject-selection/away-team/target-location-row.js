@@ -101,11 +101,11 @@ const UpcomingExperiments = ({
     var upcoming = (
         records.length > 0
         ? (
-            records.map((record) => {
+            records.map((record, index) => {
                 var start = datefns.format(new Date(record.state.interval.start), 'P');
                 var study = relatedRecordLabels.study[record.state.studyId]._recordLabel;
                 return (
-                    <b className='d-inline-block mr-3'>
+                    <b key={ index } className='d-inline-block mr-3'>
                         { start } - { study }
                     </b>
                 );

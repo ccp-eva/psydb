@@ -41,6 +41,7 @@ const ExperimentScheduleModal = ({
                 studyId,
                 locationRecord,
                 selectedSubjectRecords,
+                onSuccessfulUpdate: wrappedOnSuccessfulUpdate,
             }) } />
 
             <Modal
