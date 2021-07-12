@@ -173,11 +173,16 @@ handler.triggerSystemEvents = async ({
             unparticipateStatus: 'moved',
             subjectComment: undefined,
             blockSubjectFromTesting: { shouldBlock: false },
+
+            dontTrackSubjectParticipatedInStudies : true,
         });
 
         var [ experimentMod, subjectMod ] = rohrpost.getModifiedChannels();
-        var lastKnownExperimentEventId = experimentMod.lastKnownEvenId;
-        var lastKnownSubjectScientificEventId = subjectMod.lastKnownEventId;
+        var lastKnownSubjectScientificEventId = (
+            subjectMod
+            ? subbjectMod.lastKnownEventId
+            : subjectRecord.scientific.events[0]._id
+        );
         // FIXME: this unlocks the specific channel so i can dispatch
         // more stuff into that thing ... im not happy with that
         await db.collection('subject').updateOne(
@@ -192,8 +197,6 @@ handler.triggerSystemEvents = async ({
                 _id: subjectId
             })
         );
-        console.log(subjectMod);
-        console.log(subjectRecord.scientific.events[0]);
 
         await dispatchAddSubjectEvents({
             db,
@@ -223,11 +226,11 @@ handler.triggerSystemEvents = async ({
             unparticipateStatus: 'moved',
             subjectComment: undefined,
             blockSubjectFromTesting: { shouldBlock: false },
+            
+            dontTrackSubjectParticipatedInStudies : true,
         });
 
         var [ experimentMod, subjectMod ] = rohrpost.getModifiedChannels();
-        var lastKnownExperimentEventId = experimentMod.lastKnownEvenId;
-        var lastKnownSubjectScientificEventId = subjectMod.lastKnownEventId;
         // FIXME: this unlocks the specific channel so i can dispatch
         // more stuff into that thing ... im not happy with that
         await db.collection('subject').updateOne(

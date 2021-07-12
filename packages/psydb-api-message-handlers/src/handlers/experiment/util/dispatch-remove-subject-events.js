@@ -17,7 +17,9 @@ var dispatchRemoveSubjectEvents = async ({
 
     unparticipateStatus,
     subjectComment,
-    blockSubjectFromTesting
+    blockSubjectFromTesting,
+
+    dontTrackSubjectParticipatedInStudies,
 }) => {
     
     var subjectDataIndex = undefined;
@@ -82,37 +84,47 @@ var dispatchRemoveSubjectEvents = async ({
     /// FIXME
     var lastKnownSubjectScientificEventId = subjectRecord.scientific.events[0]._id;
 
-    await subjectChannel.dispatchMany({
-        subChannelKey: 'scientific',
-        lastKnownEventId: lastKnownSubjectScientificEventId,
-        messages: [
-            ...PushMaker({ personnelId }).all({
-                '/state/internals/participatedInStudies': {
-                    type: 'inhouse',
-                    studyId: experimentRecord.state.studyId,
-                    timestamp: experimentRecord.state.interval.start,
-                    status: unparticipateStatus,
-                }
-            }),
-            ...(
-                shouldUpdateSubjectComment
-                ? PutMaker({ personnelId }).all({
-                    '/state/comment': subjectComment,
+    var subjectMessages = [
+        ...(
+            !dontTrackSubjectParticipatedInStudies
+            ? (
+                PushMaker({ personnelId }).all({
+                    '/state/internals/participatedInStudies': {
+                        type: 'inhouse',
+                        studyId: experimentRecord.state.studyId,
+                        timestamp: experimentRecord.state.interval.start,
+                        status: unparticipateStatus,
+                    }
                 })
-                : []
-            ),
-            ...(
-                blockSubjectFromTesting.shouldBlock === true
-                ? PutMaker({ personnelId }).all({
-                    '/state/internals/blockedFromTesting': {
-                        isBlocked: true,
-                        blockUntil: blockSubjectFromTesting.blockUntil
-                    },
-                })
-                : []
             )
-        ]
-    })
+            : []
+        ),
+        ...(
+            shouldUpdateSubjectComment
+            ? PutMaker({ personnelId }).all({
+                '/state/comment': subjectComment,
+            })
+            : []
+        ),
+        ...(
+            blockSubjectFromTesting.shouldBlock === true
+            ? PutMaker({ personnelId }).all({
+                '/state/internals/blockedFromTesting': {
+                    isBlocked: true,
+                    blockUntil: blockSubjectFromTesting.blockUntil
+                },
+            })
+            : []
+        )
+    ];
+    
+    if (subjectMessages.length) {
+        await subjectChannel.dispatchMany({
+            subChannelKey: 'scientific',
+            lastKnownEventId: lastKnownSubjectScientificEventId,
+            messages: subjectMessages,
+        })
+    }
 
 
 }

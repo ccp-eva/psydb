@@ -104,7 +104,7 @@ handler.triggerSystemEvents = async ({
     
     var subjectParticipation = {
         ...subjectInvitation,
-        participationStatus,
+        status: participationStatus,
     };
 
     console.log(subjectInvitation)

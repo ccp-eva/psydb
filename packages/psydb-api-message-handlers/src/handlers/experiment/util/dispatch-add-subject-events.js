@@ -55,6 +55,7 @@ var dispatchAddSubjectEvents = async ({
         messages: [
             ...PushMaker({ personnelId }).all({
                 '/state/internals/invitedForExperiments': {
+                    type: experimentRecord.type,
                     experimentId: experimentRecord._id,
                     studyId: experimentRecord.state.studyId,
                     timestamp: new Date(),

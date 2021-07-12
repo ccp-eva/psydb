@@ -119,7 +119,7 @@ var InternalsSchema = () => {
                         oneOf: [
                             ExperimentInvitation({ type: 'inhouse' }),
                             // TODO: should that be stored?
-                            //ExperimentInvitation({ type: 'away-team' }),
+                            ExperimentInvitation({ type: 'away-team' }),
                         ],
                     }
                 },
