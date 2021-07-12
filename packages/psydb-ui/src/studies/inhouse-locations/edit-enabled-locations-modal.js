@@ -18,6 +18,7 @@ const createSchema = ({ locationType }) => {
                 recordType: locationType,
 
                 constraints: {
+                    '/state/reservationSettings/canBeReserved': true,
                     //'/key': { $nin: existingSubjectTypeKeys }
                 }
             })
