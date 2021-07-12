@@ -72,7 +72,7 @@ var studyLocationReservationCalendar = async (context, next) => {
 
     var { inhouseTestLocationSettings } = studyRecord.state;
     var locationTypeSettings = inhouseTestLocationSettings.find(it => (
-        it.customRecordType, locationRecordType
+        it.customRecordType === locationRecordType
     ));
 
     if (!locationTypeSettings) {

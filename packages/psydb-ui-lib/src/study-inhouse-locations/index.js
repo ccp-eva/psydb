@@ -67,7 +67,7 @@ const StudyInhouseLocations = ({
             }})
         });
 
-    }, [ studyId, studyRecordType, revision ])
+    }, [ studyId, studyRecordType, activeLocationType, revision ])
 
     if (!(customRecordTypeData && studyRecord && teamRecords )) {
         return (

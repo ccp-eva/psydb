@@ -6,6 +6,7 @@ import {
     useParams
 } from 'react-router-dom';
 
+import up from '@mpieva/psydb-ui-lib/src/url-up';
 import StudyInhouseLocations from '@mpieva/psydb-ui-lib/src/study-inhouse-locations';
 
 import CreateModal from './create-modal';
@@ -48,6 +49,10 @@ const LocationTypeContainer = ({
         () => dispatch({ type: 'increase-calendar-revision' }),
     ]))
 
+    var onSelectLocationType = (nextType) => {
+        history.push(`${up(url, 1)}/${nextType}`);
+    }
+
     return (
         <>
             <CreateModal
@@ -66,6 +71,7 @@ const LocationTypeContainer = ({
             <StudyInhouseLocations
                 studyId={ studyRecord._id }
                 studyRecordType={ studyType }
+                onSelectLocationType={ onSelectLocationType }
 
                 activeLocationType={ locationRecordType }
                 onSelectEmptySlot={ handleShowCreateModal }

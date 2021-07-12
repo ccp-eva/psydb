@@ -148,7 +148,7 @@ const getNewReservationMaxEnd = ({
             found = reservationStart;
         }
     }
-    console.log(found);
+    //console.log(found);
     return new Date((found || upperBoundary).getTime() + slotDuration);
 }
 
@@ -188,7 +188,7 @@ const getNewExperimentMaxEnd = ({
         maxEnd = reservationEnd;
     }
 
-    console.log(maxEnd);
+    //console.log(maxEnd);
 
     return new Date(maxEnd.getTime() + slotDuration);
 }

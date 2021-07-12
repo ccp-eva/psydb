@@ -30,7 +30,7 @@ const StudyInhouseLocationTypeNav = ({
         <TabNav
             items={ items }
             activeKey={ activeType }
-            onSelect={ onSelect }
+            onItemClick={ onSelect }
         />
     )
 }
