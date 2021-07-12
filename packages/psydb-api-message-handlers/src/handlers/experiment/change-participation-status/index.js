@@ -91,19 +91,31 @@ handler.triggerSystemEvents = async ({
         })
     )
 
-    var subjectParticipationIndex = (
+    var subjectInvitationIndex = (
         subjectRecord.scientific.state.internals.invitedForExperiments
         .findIndex(it => {
             return compareIds(it.experimentId, experimentId)
         })
     )
+    var subjectInvitation = (
+        subjectRecord.scientific
+        .state.internals.invitedForExperiments[subjectInvitationIndex]
+    );
+    
+    var subjectParticipation = {
+        ...subjectInvitation,
+        participationStatus,
+    };
+
+    console.log(subjectInvitation)
+    console.log(subjectParticipation)
 
     var experimentParticipationStatusPath = (
         `/state/subjectData/${experimentParticipationIndex}/participationStatus`
     );
 
-    var subjectParticipationStatusPath = (
-        `/state/internals/invitedForExperiments/${subjectParticipationIndex}/status`
+    var subjectParticipationPath = (
+        `/state/internals/participatedInStudies`
     );
 
     var unprocessedSubjects = (
@@ -113,7 +125,7 @@ handler.triggerSystemEvents = async ({
     )
     var shouldSetPostprocessedFlag = (
         // subtract 1 since we are processing one right now
-        unprocessedSubjects.length - 1 > 0
+        (unprocessedSubjects.length - 1) === 0
     )
 
     var experimentChannel = (
@@ -126,7 +138,10 @@ handler.triggerSystemEvents = async ({
         lastKnownEventId: experimentRecord.events[0]._id,
         messages: [
             ...PutMaker({ personnelId }).all({
-                [experimentParticipationStatusPath]: participationStatus
+                [experimentParticipationStatusPath]: participationStatus,
+                ...(shouldSetPostprocessedFlag && {
+                    '/state/isPostprocessed': true
+                }),
             })
         ]
     })
@@ -141,11 +156,8 @@ handler.triggerSystemEvents = async ({
         subChannelKey: 'scientific',
         lastKnownEventId: subjectRecord.scientific.events[0]._id,
         messages: [
-            ...PutMaker({ personnelId }).all({
-                [subjectParticipationStatusPath]: participationStatus,
-                ...(shouldSetPostprocessedFlag && {
-                    '/state/isPostprocessed': true
-                }),
+            ...PushMaker({ personnelId }).all({
+                [subjectParticipationPath]: subjectParticipation,
             })
         ]
     })
