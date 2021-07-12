@@ -30,9 +30,15 @@ const TargetLocationRow = ({
     var colspan = locationMetadata.displayFieldData.length + 2;
     var showDetails = selectedLocationId === record._id;
 
+    var isRed = (
+        record._upcomingExperiments.length > 0
+    );
+
     return (
         <>
-            <tr>
+            <tr
+                className={ isRed ? 'bg-light-red' : '' }
+            >
                 <FieldDataBodyCols { ...({
                     record,
                     ...locationMetadata,
@@ -40,7 +46,9 @@ const TargetLocationRow = ({
                 <td>{ record._subjectRecords.length }</td>
                 <td />
             </tr>
-            <tr>
+            <tr
+                className={ isRed ? 'bg-light-red' : '' }
+            >
                 <td colSpan={ colspan } className='border-0 pt-0'>
                     <div className=''>
                         <div className='d-flex'>

@@ -25,7 +25,7 @@ const ExperimentScheduleModal = ({
     var confirmModal = useModalReducer();
 
     var wrappedOnSuccessfulUpdate = (...args) => {
-        onSuccessfulUpdate(...args);
+        onSuccessfulUpdate && onSuccessfulUpdate(...args);
         onHide();
     };
 

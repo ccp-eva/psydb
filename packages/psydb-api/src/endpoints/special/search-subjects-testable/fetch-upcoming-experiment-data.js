@@ -26,6 +26,7 @@ var fetchUpcomingExperimentData = async ({
             }},
             { $sort: { 'state.interval.start': 1 }},
             { $project: {
+                'state.locationId': true,
                 'state.studyId': true,
                 'state.interval.start': true,
                 ...( subjectIds && {
@@ -44,10 +45,10 @@ var fetchUpcomingExperimentData = async ({
             }},
             { $project: {
                 'upcoming.state.subjectData': false,
+                'upcoming.state.locationId': false,
             }},
         ]).toArray()
     );
-    console.dir(upcomingExperiments, { depth: null });
     
     var experimentRelated = await fetchRelatedLabelsForMany({
         db,

@@ -29,7 +29,9 @@ const ConfirmModal = ({
             props: {
                 studyId,
                 experimentOperatorTeamId: teamRecord._id,
-                interval
+                interval,
+                locationId: locationRecord._id,
+                subjectIds: selectedSubjectRecords.map(it => it._id)
             }
         }
     }), { onSuccessfulUpdate: wrappedOnSuccessfulUpdate });
@@ -69,8 +71,14 @@ const ConfirmModal = ({
                         </tr>
                     </thead>
                     <tbody>
-                        { selectedSubjectRecords.map(record => (
-                            <tr>
+                        { selectedSubjectRecords.map(record => {
+                            var isRed = (
+                                record._upcomingExperiments.length > 0
+                            );
+                            return <tr
+                                key={ record._id }
+                                className={ isRed ? 'bg-light-red' : '' }
+                            >
                                 <td>
                                     { record._recordLabel }
                                 </td>
@@ -81,7 +89,7 @@ const ConfirmModal = ({
                                     })}
                                 </td>
                             </tr>
-                        ))}
+                        })}
                     </tbody>
                 </Table>
 
