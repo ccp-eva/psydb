@@ -33,8 +33,8 @@ var postprocessSubjectRecords = ({
         delete record._recordLabelDefinitionFields;
 
         record._upcomingExperiments = (
-            upcomingBySubjectId[it._id]
-            ? upcomingBySubjectId[it._id].upcoming
+            upcomingBySubjectId[record._id]
+            ? upcomingBySubjectId[record._id].upcoming
             : []
         )
 
@@ -56,7 +56,7 @@ var postprocessSubjectRecords = ({
         record._testableInStudies = testableInStudies;
     })
 
-    console.dir(subjectRecords, { depth: null });
+    //console.dir(subjectRecords, { depth: null });
 
 }
 

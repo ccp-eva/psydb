@@ -14,6 +14,7 @@ var fetchUpcomingExperimentData = async ({
     }
     var upcomingExperiments = await (
         db.collection('experiment').aggregate([
+            ...(subjectIds ? [{ $unwind: '$state.subjectData' }] : []),
             { $match: {
                 ...( locationIds && {
                     'state.locationId': { $in: locationIds },
@@ -27,6 +28,9 @@ var fetchUpcomingExperimentData = async ({
             { $project: {
                 'state.studyId': true,
                 'state.interval.start': true,
+                ...( subjectIds && {
+                    'state.subjectData.subjectId': true,
+                }),
             }},
             { $group: {
                 ...( locationIds && {
@@ -37,9 +41,13 @@ var fetchUpcomingExperimentData = async ({
                 }),
                 //next: { $first: '$$ROOT' }
                 upcoming: { $push: '$$ROOT' }
-            }}
+            }},
+            { $project: {
+                'upcoming.state.subjectData': false,
+            }},
         ]).toArray()
     );
+    console.dir(upcomingExperiments, { depth: null });
     
     var experimentRelated = await fetchRelatedLabelsForMany({
         db,

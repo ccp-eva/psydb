@@ -5,6 +5,7 @@ var debug = require('debug')(
 
 var datefns = require('date-fns');
 
+var keyBy = require('@mpieva/psydb-common-lib/src/key-by');
 var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
     Ajv = require('@mpieva/psydb-api-lib/src/ajv'),
     ResponseBody = require('@mpieva/psydb-api-lib/src/response-body');
@@ -22,6 +23,8 @@ var {
 var initAndCheck = require('./init-and-check');
 var postprocessSubjectRecords = require('./postprocess-subject-records');
 var combineSubjectResponseData = require('./combine-subject-response-data');
+var fetchUpcomingExperimentData = require('./fetch-upcoming-experiment-data');
+
 var fromFacets = require('./from-facets');
 
 var searchUngrouped = async (context, next) => {
@@ -106,6 +109,19 @@ var searchUngrouped = async (context, next) => {
     ]).toArray();
 
     var [ subjectRecords, subjectRecordsCount ] = fromFacets(result);
+    
+    var now = new Date();
+    var subjectIds = subjectRecords.map(it => it._id);
+    var upcomingSubjectExperimentData = await fetchUpcomingExperimentData({
+        db,
+        subjectIds: subjectIds,
+        after: now,
+    });
+
+    var upcomingBySubjectId = keyBy({
+        items: upcomingSubjectExperimentData.upcomingForIds,
+        byProp: '_id',
+    })
 
     postprocessSubjectRecords({
         subjectRecords,
@@ -115,6 +131,7 @@ var searchUngrouped = async (context, next) => {
             start: timeFrameStart,
             end: timeFrameEnd
         },
+        upcomingBySubjectId,
         recordLabelDefinition: subjectRecordLabelDefinition,
     })
 

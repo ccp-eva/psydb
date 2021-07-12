@@ -123,8 +123,9 @@ const TargetLocationList = ({
     var {
         mergedRecords,
         subjectMetadata,
+        subjectExperimentMetadata,
         locationMetadata,
-        experimentMetadata,
+        locationExperimentMetadata,
     } = fetched.data;
 
     return (
@@ -139,8 +140,9 @@ const TargetLocationList = ({
             <TargetLocationTable { ...({
                 mergedRecords,
                 subjectMetadata,
+                subjectExperimentMetadata,
                 locationMetadata,
-                experimentMetadata,
+                locationExperimentMetadata,
 
                 onToggleDetails: handleToggleDetails,
                 selectedLocationId,

@@ -13,8 +13,9 @@ import TargetLocationRow from './target-location-row';
 const TargetLocationTable = ({
     mergedRecords,
     subjectMetadata,
+    subjectExperimentMetadata,
     locationMetadata,
-    experimentMetadata,
+    locationExperimentMetadata,
 
     onToggleDetails,
     selectedLocationId,
@@ -43,8 +44,9 @@ const TargetLocationTable = ({
                             key: record._id,
                             record,
                             subjectMetadata,
+                            subjectExperimentMetadata,
                             locationMetadata,
-                            experimentMetadata,
+                            locationExperimentMetadata,
 
                             onToggleDetails,
                             selectedLocationId,

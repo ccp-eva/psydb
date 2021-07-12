@@ -14,8 +14,9 @@ import DetailContainer from './detail-container';
 const TargetLocationRow = ({
     record,
     subjectMetadata,
+    subjectExperimentMetadata,
     locationMetadata,
-    experimentMetadata,
+    locationExperimentMetadata,
 
     onToggleDetails,
     selectedLocationId,
@@ -57,16 +58,17 @@ const TargetLocationRow = ({
                             })} />
                             <UpcomingExperiments { ...({
                                 records: record._upcomingExperiments,
-                                ...experimentMetadata
+                                ...locationExperimentMetadata
                             })} />
                         </div>
-                        { showDetails&& (
+                        { showDetails && (
                             <DetailContainer { ...({
                                 locationId: record._id,
                                 locationComment: record.state.comment,
                                 locationRecord: record,
                                 subjectRecords: record._subjectRecords,
                                 subjectMetadata,
+                                subjectExperimentMetadata,
 
                                 onSelectSubject,
                                 onSelectManySubjects,
@@ -92,10 +94,10 @@ const UpcomingExperiments = ({
         records.length > 0
         ? (
             records.map((record) => {
-                var start = datefns.format(record.state.interval.start, 'P');
-                var study = relatedRecordLabels.study[record.state.studyId];
+                var start = datefns.format(new Date(record.state.interval.start), 'P');
+                var study = relatedRecordLabels.study[record.state.studyId]._recordLabel;
                 return (
-                    <b>
+                    <b className='d-inline-block mr-3'>
                         { start } - { study }
                     </b>
                 );

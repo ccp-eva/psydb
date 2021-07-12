@@ -15,6 +15,7 @@ import {
     FieldDataBodyCols,
 } from '@mpieva/psydb-ui-lib/src/record-list';
 
+import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 import calculateAge from '@mpieva/psydb-ui-lib/src/calculate-age';
 import Pair from '@mpieva/psydb-ui-lib/src/pair';
 import CheckColumn from '@mpieva/psydb-ui-lib/src/check-column';
@@ -26,6 +27,7 @@ const DetailContainer = ({
     locationRecord,
     subjectRecords,
     subjectMetadata,
+    subjectExperimentMetadata,
 
     onSelectSubject,
     onSelectManySubjects,
@@ -54,6 +56,7 @@ const DetailContainer = ({
                 <SubjectTableBody {...({
                     subjectRecords,
                     subjectMetadata,
+                    subjectExperimentMetadata,
 
                     onSelectManySubjects: (records) => onSelectManySubjects({
                         locationId, subjectRecords: records,
@@ -81,6 +84,7 @@ const DetailContainer = ({
 const SubjectTableBody = ({
     subjectRecords,
     subjectMetadata,
+    subjectExperimentMetadata,
 
     onSelectManySubjects,
     onSelectSubject,
@@ -89,8 +93,14 @@ const SubjectTableBody = ({
     return (
         <tbody>
             { subjectRecords.map(record => {
+                var isRed = (
+                    record._upcomingExperiments.length > 0
+                );
                 return (
-                    <tr key={record._id}>
+                    <tr
+                        key={record._id}
+                        className={ isRed ? 'bg-light-red' : '' }
+                    >
 
                         <CheckColumn { ...({
                             record,
@@ -124,7 +134,10 @@ const SubjectTableBody = ({
                             } 
                         </td>
                         <td>
-                            TODO
+                            <UpcomingExperiments { ...({
+                                records: record._upcomingExperiments,
+                                ...subjectExperimentMetadata
+                            }) } />
                         </td>
                         <td>
                             { record.scientific.state.comment }
@@ -153,6 +166,27 @@ const SubjectTableBody = ({
         </tbody>
 
     );
+}
+
+const UpcomingExperiments = ({
+    records,
+    relatedRecordLabels,
+    relatedHelperSetItems,
+    relatedCustomRecordTypeLabels,
+}) => {
+    var upcoming = (
+        records.map((record) => {
+            var start = datefns.format(new Date(record.state.interval.start), 'P');
+            var study = relatedRecordLabels.study[record.state.studyId]._recordLabel;
+            return `${study} ${start}`;
+        })
+    );
+
+    return (
+        records.length > 0
+        ? <span>{ upcoming.join(', ') }</span>
+        : null
+    )
 }
 
 export default DetailContainer;
