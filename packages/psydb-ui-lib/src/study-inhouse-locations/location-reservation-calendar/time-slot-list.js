@@ -25,7 +25,9 @@ const TimeSlotList = ({
 
     const slottedReservationRecords = useMemo(() => (
         slotifyRecords({
-            records: reservationRecords,
+            records: reservationRecords.filter(it => (
+                it.state.locationId === locationRecord._id
+            )),
             start,
             end,
             slotDuration,
@@ -34,7 +36,9 @@ const TimeSlotList = ({
 
     const slottedExperimentRecords = useMemo(() => (
         slotifyRecords({
-            records: experimentRecords,
+            records: experimentRecords.filter(it => (
+                it.state.locationId === locationRecord._id
+            )),
             start,
             end,
             slotDuration,
