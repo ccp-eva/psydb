@@ -94,7 +94,7 @@ handler.triggerSystemEvents = async ({
         type: 'away-team',
         seriesId: nanoid(), // FIXME: id format
         studyId: props.studyId,
-        experimentOperatorTeamId: props.experimentOperatorteamId,
+        experimentOperatorTeamId: props.experimentOperatorTeamId,
         interval: props.interval,
 
         locationId: props.locationId,
