@@ -1,7 +1,11 @@
 import React, { useCallback } from 'react';
+
 import { Container, Row, Col } from 'react-bootstrap';
+import { CheckCircleFill } from 'react-bootstrap-icons';
+
 import keyBy from '@mpieva/psydb-common-lib/src/key-by';
 import datefns from '../date-fns';
+import getTextColor from '../bw-text-color-for-background';
 
 const TeamTimeTable = ({
     teamRecord,
@@ -29,6 +33,7 @@ const TeamTimeTable = ({
         byPointer: '/state/interval/start'
     });
 
+
     return (
         <Container>
             <Row>
@@ -48,6 +53,7 @@ const TeamTimeTable = ({
                 { allDayStarts.map(dayStart => {
                     var k = dayStart.toISOString();
                     var reservationRecord = keyedReservations[k];
+                    var experimentRecord = keyedExperiments[k];
 
                     return <Col
                         key={ dayStart.getTime() }
@@ -58,6 +64,7 @@ const TeamTimeTable = ({
                             dayStart,
 
                             reservationRecord,
+                            experimentRecord,
 
                             onSelectEmptySlot,
                             onSelectReservationSlot,
@@ -82,7 +89,14 @@ const TimeSlot = ({
     onSelectExperimentSlot,
 }) => {
     if (experimentRecord) {
-        return ( <div>EXP</div> );
+        return (
+            <ExperimentSlot { ...({
+                teamRecord,
+                reservationRecord,
+                dayStart,
+                onSelectExperimentSlot,
+            }) } />
+        );
     }
     else if (reservationRecord) {
         return (
@@ -103,6 +117,56 @@ const TimeSlot = ({
             }) } />
         );
     }
+}
+
+const ExperimentSlot = ({
+    teamRecord,
+    reservationRecord,
+    dayStart,
+    onSelectReservationSlot,
+}) => {
+    var classNames = [
+        'text-center',
+        'm-1',
+        'team-time-slot',
+        'empty',
+    ];
+    var role = '';
+    
+    if (onSelectReservationSlot) {
+        classNames.push('selectable');
+        role = 'button';
+    }
+
+    var onClick = useCallback(() => {
+        onSelectReservationSlot && onSelectReservationSlot({
+            teamRecord,
+            reservationRecord,
+            interval: {
+                start: dayStart,
+                end: datefns.endOfDay(dayStart)
+            }
+        })
+    })
+
+    return (
+        <div
+            role={ role }
+            className={ classNames.join(' ') }
+            style={{
+                height: '26px',
+                backgroundColor: teamRecord.state.color,
+            }}
+            onClick={ onClick }
+        >
+            <CheckCircleFill style={{
+                color: getTextColor(teamRecord.state.color),
+                width: '16px',
+                height: '16px',
+                marginTop: '-5px'
+            }} />
+        </div>
+    )
 }
 
 const ReservationSlot = ({
