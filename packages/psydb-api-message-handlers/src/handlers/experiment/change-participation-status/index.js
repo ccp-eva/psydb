@@ -104,11 +104,9 @@ handler.triggerSystemEvents = async ({
     
     var subjectParticipation = {
         ...subjectInvitation,
+        timestamp: experimentRecord.state.interval.start,
         status: participationStatus,
     };
-
-    console.log(subjectInvitation)
-    console.log(subjectParticipation)
 
     var experimentParticipationStatusPath = (
         `/state/subjectData/${experimentParticipationIndex}/participationStatus`
