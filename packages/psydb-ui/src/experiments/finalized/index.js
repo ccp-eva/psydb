@@ -1,9 +1,8 @@
 import React, { useEffect, useReducer, useCallback } from 'react';
 import GeneralInfo from '../general-info';
 import AllSubjects from './all-subjects';
-import PostprocessableSubjects from './postprocessable-subjects';
 
-const ExperimentPostprocessing = ({
+const ExperimentFinalized = ({
     experimentData,
     experimentOperatorTeamData,
     locationData,
@@ -15,8 +14,8 @@ const ExperimentPostprocessing = ({
     return (
         <div>
             <div className='border bg-light p-3'>
-                <h5 className='text-orange'>
-                    In Nachbereitung
+                <h5 className='text-success'>
+                    Abgeschlossen
                 </h5>
                 <GeneralInfo { ...({
                     experimentData,
@@ -25,21 +24,7 @@ const ExperimentPostprocessing = ({
                     studyData
                 }) } />
             </div>
-            <div className='mt-3'>
-                <h4 className='border-bottom'>
-                    Nachzubereitende Probanden
-                </h4>
-                <PostprocessableSubjects { ...({
-                    experimentData,
-                    studyData,
-                    subjectDataByType,
-                    onSuccessfulUpdate,
-                })} />
-            </div>
-            <div className='mt-3'>
-                <h4 className='border-bottom'>
-                    Alle Probanden
-                </h4>
+            <div>
                 <AllSubjects { ...({
                     experimentData,
                     studyData,
@@ -51,4 +36,4 @@ const ExperimentPostprocessing = ({
     );
 }
 
-export default ExperimentPostprocessing;
+export default ExperimentFinalized;

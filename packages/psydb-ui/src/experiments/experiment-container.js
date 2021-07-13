@@ -16,6 +16,7 @@ import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
 
 import Details from './details';
 import Postprocessing from './postprocessing';
+import Finalized from './finalized';
 
 const ExperimentContainer = () => {
     var { path, url } = useRouteMatch();
@@ -55,7 +56,10 @@ const ExperimentContainer = () => {
         ...fetched.data,
     };
 
-    if (shouldDisplayPostprocessing) {
+    if (isPostprocessed) {
+        return <Finalized { ...downstream } />
+    }
+    else if (shouldDisplayPostprocessing) {
         return <Postprocessing { ...downstream } />
     }
     else {

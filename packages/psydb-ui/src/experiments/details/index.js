@@ -47,6 +47,7 @@ const ExperimentDetails = ({
                         <div className='mt-3 d-flex justify-content-end'>
                             <GeneralFunctions { ...({
                                 experimentData,
+                                experimentOperatorTeamData,
                                 studyData,
                                 onSuccessfulUpdate,
                             }) } />

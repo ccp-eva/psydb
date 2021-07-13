@@ -148,7 +148,8 @@ var extendedExperimentData = async (context, next) => {
                 }}
             ],
             additionalProjection: {
-                'scientific.state.comment': true
+                'scientific.state.comment': true,
+                'scientific.state.internals.participatedInStudies': true,
             }
             //offset,
             //limit

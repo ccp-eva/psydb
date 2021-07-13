@@ -9,6 +9,7 @@ import MoveExperimentModal from '@mpieva/psydb-ui-lib/src/move-experiment-modal'
 
 const GeneralFunctions = ({
     experimentData,
+    experimentOperatorTeamData,
     studyData,
     onSuccessfulUpdate,
 }) => {
@@ -26,6 +27,7 @@ const GeneralFunctions = ({
 
             <MoveExperimentContainer { ...({
                 experimentData,
+                experimentOperatorTeamData,
                 studyData,
                 onSuccessfulUpdate,
             }) } />
@@ -62,6 +64,7 @@ const ChangeTeamContainer = ({
 
 const MoveExperimentContainer = ({
     experimentData,
+    experimentOperatorTeamData,
     studyData,
     onSuccessfulUpdate,
 }) => {
@@ -76,8 +79,10 @@ const MoveExperimentContainer = ({
             <MoveExperimentModal { ...({
                 show,
                 onHide: handleHide,
-
+                
+                experimentType: experimentData.record.type,
                 experimentData,
+                teamData: experimentOperatorTeamData,
                 studyData,
                 onSuccessfulUpdate
             }) } />

@@ -18,16 +18,17 @@ const SubjectTypeContainer = ({
             !enums.unparticipationStatus.keys.includes(it.participationStatus)
         )).length
     )
+    var showSubjectCount = (
+        experimentData.record.type === 'inhouse'
+    );
+
     return (
         <div>
             <h5 className=''>
                 { subjectTypeLabel }
-                {' '}
-                (
-                    { realSubjectCount }
-                    /
-                    { subjectsPerExperiment }
-                )
+                { showSubjectCount && (
+                    ` (${realSubjectCount}/${subjectsPerExperiment})`
+                )}
             </h5>
             <SubjectList { ...({
                 experimentRecord: experimentData.record,

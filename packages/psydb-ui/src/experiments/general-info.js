@@ -124,8 +124,11 @@ const LocationInfo = ({
                 <div className='ml-3 pl-3' style={{
                     borderLeft: '3px solid #dfe0e1'
                 }}>
-                    { withValue.map(it => (
-                        <Pair wLeft={ 2 } label={ it.displayName }>
+                    { withValue.map((it, index) => (
+                        <Pair
+                            key={ index } wLeft={ 2 }
+                            label={ it.displayName }
+                        >
                             { it.value }
                         </Pair>
                     )) }

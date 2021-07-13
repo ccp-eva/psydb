@@ -35,6 +35,7 @@ const SubjectList = ({
                     { dateOfBirthField && (
                         <th>Alter</th>
                     )}
+                    <th>Teilg. Stud.</th>
                     <th>Status</th>
                     <th>Kommentar</th>
                     <th></th>
@@ -127,6 +128,21 @@ const SubjectListRow = ({
                     })
                 }
             </td>
+            <td>
+                { 
+                    record.scientific.state
+                    .internals.participatedInStudies
+                    .filter(it => (
+                        it.status === 'participated'
+                    ))
+                    .map(it => (
+                        relatedRecordLabels
+                        .study[it.studyId]._recordLabel
+                    ))
+                    .join(', ')
+                } 
+            </td>
+
             <td>{ formattedStatus }</td>
             <td><i>{ comment }</i></td>
             <td>
