@@ -98,23 +98,26 @@ handler.checkAllowedAndPlausible = async ({
         throw new ApiError(400, 'SubjectRecordHasChanged');
     }*/
 
-    var {
-        invitedForExperiments
-    } = subjectRecord.scientific.state.internals;
+    if (experimentRecord.type === 'inhouse') {
+        var {
+            invitedForExperiments
+        } = subjectRecord.scientific.state.internals;
 
-    var subjectInvitationIndex = undefined;
-    for (var [index, it] of invitedForExperiments.entries()) {
-        if (compareIds(it.experimentId, experimentId)) {
-            subjectInvitationIndex = index;
+        var subjectInvitationIndex = undefined;
+        for (var [index, it] of invitedForExperiments.entries()) {
+            if (compareIds(it.experimentId, experimentId)) {
+                subjectInvitationIndex = index;
+            }
         }
-    }
-    if (subjectInvitationIndex === undefined) {
-        throw new ApiError(400, 'InvalidSubjectId'); // FIXME: status?
+        if (subjectInvitationIndex === undefined) {
+            throw new ApiError(400, 'InvalidSubjectId'); // FIXME: status?
+        }
+        
+        cache.subjectInvitationIndex = subjectInvitationIndex;
     }
 
     cache.selectedSubjectIdsIndex = selectedSubjectIdsIndex;
     cache.subjectDataIndex = subjectDataIndex;
-    cache.subjectInvitationIndex = subjectInvitationIndex;
 }
 
 handler.triggerSystemEvents = async ({
