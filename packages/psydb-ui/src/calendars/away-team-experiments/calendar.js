@@ -22,6 +22,7 @@ import withWeeklyCalendarPages from '@mpieva/psydb-ui-lib/src/with-weekly-calend
 import CalendarNav from '@mpieva/psydb-ui-lib/src/calendar-nav';
 
 import DaysHeader from './days-header';
+import EmptyDaysRow from './empty-days-row';
 import StudyRow from './study-row';
 
 const headerStyle = {
@@ -86,7 +87,7 @@ const AwayTeamCalendar = ({
     return (
         <div>
             <div className='bg-light'>
-                <LinkButton to={ `/calendars/away-team/${ locationType }` }>
+                <LinkButton to={ `/calendars/away-team` }>
                     <ArrowLeftShort style={{
                         height: '25px',
                         width: '25px',
@@ -113,7 +114,14 @@ const AwayTeamCalendar = ({
                 allDayStarts,
                 style: headerStyle,
             }) } />
-    
+
+            { studyRecordLabels.length < 1 && (
+                <EmptyDaysRow { ...({
+                    allDayStarts,
+                    style: headerStyle,
+                }) } />
+            )}
+
             { studyRecordLabels.map(it => (
                 <StudyRow key={ it._id } { ...({
                     allDayStarts,

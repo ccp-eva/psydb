@@ -135,9 +135,7 @@ var locationExperimentCalendar = async (context, next) => {
         db.collection('experiment').aggregate([
             MatchIntervalOverlapStage({ start, end }),
             { $match: {
-                ...(experimentType && {
-                     type: experimentType,
-                }),
+                'type': 'away-team',
                 'state.studyId': { $in: studyIds },
                 'state.isCanceled': false,
             }},
@@ -182,7 +180,8 @@ var locationExperimentCalendar = async (context, next) => {
     var locationRecords = await (
         db.collection('location').aggregate([
             { $match: {
-                _id: { $in: locationIds }
+                _id: { $in: locationIds },
+                type: locationType,
             }},
             StripEventsStage(),
 
@@ -208,6 +207,12 @@ var locationExperimentCalendar = async (context, next) => {
         });
         delete it._recordLabelDefinitionFields;
     });
+
+    // XXX: this is hacky
+    if (locationRecords.length < 1) {
+        experimentRecords = [];
+        reservationRecords = [];
+    }
 
     var locationRelated = await fetchRelatedLabelsForMany({
         db,
