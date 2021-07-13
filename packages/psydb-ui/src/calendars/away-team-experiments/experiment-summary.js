@@ -28,6 +28,8 @@ const ExperimentSummary = ({
 
     url,
     onSuccessfulUpdate,
+
+    style,
 }) => {
 
     var moveExperimentModal = useModalReducer({ show: false });
@@ -58,6 +60,7 @@ const ExperimentSummary = ({
         <div className='pl-2 pr-2 pb-1 pt-1 mb-2' style={{
             background: teamRecord.state.color,
             color: getTextColor(teamRecord.state.color),
+            ...style
         }}>
 
             <MoveExperimentModal { ...({
@@ -144,78 +147,6 @@ const LocationInfo = ({
             )) }
         </div>
     )
-}
-
-const SubjectItem = ({
-    subjectDataItem,
-    experimentOperatorTeamRecords,
-    subjectRecordsById,
-    subjectRelated,
-    subjectDisplayFieldData,
-    phoneListField,
-    
-    experimentRecord,
-
-    onClickComment,
-    onClickMove,
-    onClickRemove,
-
-    onClickConfirm,
-    onClickMailbox,
-    onClickContactFailed,
-}) => {
-    var {
-        subjectId,
-        invitationStatus,
-    } = subjectDataItem;
-
-    var subjectRecord = subjectRecordsById[subjectId];
-
-    var withValue = applyValueToDisplayFields({
-        displayFieldData: subjectDisplayFieldData,
-        record: subjectRecord,
-        ...subjectRelated,
-    });
-
-    return (
-        <li>
-            <div className='d-flex mb-1'>
-
-                <div
-                    style={{ width: '35px' }}
-                    className='d-flex flex-column align-items-center'
-                >
-                    <ExperimentSubjectDropdown { ...({
-                        variant: 'calendar',
-                        subjectRecord,
-                        
-                        onClickComment,
-                        onClickMove,
-                        onClickRemove,
-
-                        onClickConfirm,
-                        onClickMailbox,
-                        onClickContactFailed,
-                    }) } />
-                    { invitationStatus !== 'scheduled' && (
-                        <b 
-                            className='pl-2 pr-2'
-                            style={{ fontSize: '120%', border: '1px solid' }}
-                        >
-                            { invitationStatusLabels[invitationStatus]}
-                        </b>
-                    )}
-                </div>
-            </div>
-        </li>
-    )
-}
-
-const invitationStatusLabels = {
-    'scheduled': '',
-    'confirmed': 'B',
-    'mailbox': 'AB',
-    'contact-failed': 'NE',
 }
 
 export default ExperimentSummary;

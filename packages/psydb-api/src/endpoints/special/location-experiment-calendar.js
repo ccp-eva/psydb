@@ -220,9 +220,14 @@ var locationExperimentCalendar = async (context, next) => {
     var experimentOperatorTeamRecords = await (
         db.collection('experimentOperatorTeam').aggregate([
             { $match: {
-                _id: { $in: experimentRecords.map(it => (
-                    it.state.experimentOperatorTeamId
-                ))},
+                _id: { $in: [
+                    ...experimentRecords.map(it => (
+                        it.state.experimentOperatorTeamId
+                    )),
+                    ...reservationRecords.map(it => (
+                        it.state.experimentOperatorTeamId
+                    ))
+                ]},
             }},
             StripEventsStage(),
         ]).toArray()

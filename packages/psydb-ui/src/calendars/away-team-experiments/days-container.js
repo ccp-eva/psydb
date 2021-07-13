@@ -14,11 +14,13 @@ import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 import getTextColor from '@mpieva/psydb-ui-lib/src/bw-text-color-for-background';
 import applyValueToDisplayFields from '@mpieva/psydb-ui-lib/src/apply-value-to-display-fields';
 
+import ReservationSlot from './reservation-slot';
 import ExperimentSummary from './experiment-summary';
 
 const DaysContainer = ({
     allDayStarts,
     experimentsByDayStart,
+    reservationsByDayStart,
     ...other
 }) => {
     return (
@@ -29,10 +31,13 @@ const DaysContainer = ({
                         key={ dayStart.getTime() }
                         className='p-1'
                     >
-                        <ExperimentsInDay { ...({
+                        <ItemsInDay { ...({
                             start: dayStart,
                             experiments: (
                                 experimentsByDayStart[dayStart.getTime()]
+                            ),
+                            reservations: (
+                                reservationsByDayStart[dayStart.getTime()]
                             ),
                             ...other
                         }) } />
@@ -43,13 +48,51 @@ const DaysContainer = ({
     );
 }
 
-const ExperimentsInDay = ({
+const mergeItems = ({ experiments, reservations }) => {
+    var merged = reservations.map(record => ({
+        type: 'reservation', record
+    }));
+    
+    for (var exp of experiments) {
+        var index = merged.findIndex(({ type, record}) => (
+            type === 'reservation' &&
+            record.state.interval.start === exp.state.interval.start &&
+            record.state.interval.end === exp.state.interval.end &&
+            record.state.experimentOperatorTeamId === (
+                exp.state.experimentOperatorTeamid
+            )
+        ))
+        if (index === -1) {
+            merged.push({ type: 'experiment', record: exp });
+        }
+        else {
+            merged[index] = { type: 'experiment', record: exp };
+        }
+    }
+
+    merged = merged.sort((a, b) => (
+        a.record.state.experimentOperatorTeamId < b.record.state.experimentOperatorTeamId
+        ? -1
+        : 1
+    ));
+    return merged;
+}
+
+const ItemsInDay = ({
     start,
     experiments,
-    calendarVariant,
-    onSelectDay,
+    reservations,
     ...other
 }) => {
+
+    var hasItems = (
+        ( experiments && experiments.length > 0 ) ||
+        ( reservations && reservations.length > 0 )
+    )
+
+    var merged = useMemo(() => (
+        !hasItems ? [] : mergeItems({ experiments, reservations })
+    ), [ experiments, reservations ]);
 
     return (
         <div>
@@ -59,24 +102,40 @@ const ExperimentsInDay = ({
                 </div>
             </header>
             { 
-                (!experiments || experiments.length < 1)
+                !hasItems
                 ? (
                     <div className='text-muted text-center'>
                         <i>Keine Termine</i>
                     </div>
                 )
                 : (
-                    experiments.map(it => (
-                        <ExperimentSummary { ...({
-                            key: it._id,
-                            experimentRecord: it,
-                            ...other,
-                        }) } />
+                    merged.map((it, index) => (
+                        it.type === 'experiment'
+                        ? (
+                            <ExperimentSummary { ...({
+                                key: index,
+                                style: itemStyle,
+                                experimentRecord: it.record,
+                                ...other,
+                            }) } />
+                        )
+                        : (
+                            <ReservationSlot { ...({
+                                key: index,
+                                style: itemStyle,
+                                reservationRecord: it.record,
+                                ...other
+                            })} />
+                        )
                     ))
                 )
             }
         </div>
     );
+}
+
+const itemStyle = {
+    minHeight: '100px'
 }
 
 export default DaysContainer;

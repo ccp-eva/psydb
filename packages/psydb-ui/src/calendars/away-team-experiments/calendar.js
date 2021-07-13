@@ -20,7 +20,7 @@ import CalendarNav from '@mpieva/psydb-ui-lib/src/calendar-nav';
 import DaysContainer from './days-container';
 
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
-const groupExperimentsByDayStart = ({ allDayStarts, records }) => {
+const groupRecordsByDayStart = ({ allDayStarts, records }) => {
     var groups = {};
     for (var start of allDayStarts) {
         var startT = start.getTime();
@@ -80,6 +80,10 @@ const AwayTeamCalendar = ({
     var {
         experimentRecords,
         experimentRelated,
+
+        reservationRecords,
+        reservationRelated,
+
         experimentOperatorTeamRecords,
         
         locationRecordsById,
@@ -87,9 +91,14 @@ const AwayTeamCalendar = ({
         locationDisplayFieldData
     } = fetched.data;
 
-    var experimentsByDayStart = groupExperimentsByDayStart({
+    var experimentsByDayStart = groupRecordsByDayStart({
         allDayStarts,
         records: experimentRecords
+    });
+
+    var reservationsByDayStart = groupRecordsByDayStart({
+        allDayStarts,
+        records: reservationRecords
     });
 
     return (
@@ -110,8 +119,10 @@ const AwayTeamCalendar = ({
             <DaysContainer { ...({
                 allDayStarts,
                 experimentsByDayStart,
+                reservationsByDayStart,
 
                 experimentRelated,
+                reservationRelated,
                 experimentOperatorTeamRecords,
                 locationRecordsById,
                 locationRelated,
