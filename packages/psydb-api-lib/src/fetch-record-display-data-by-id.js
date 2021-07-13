@@ -4,6 +4,7 @@ var keyBy = require('@mpieva/psydb-common-lib/src/key-by');
 var fetchOneCustomRecordType = require('./fetch-one-custom-record-type');
 var gatherDisplayFieldsForRecordType = require('./gather-display-fields-for-record-type');
 var fetchRelatedLabelsForMany = require('./fetch-related-labels-for-many');
+var createRecordLabel = require('./create-record-label');
 
 var {
     StripEventsStage,
@@ -70,10 +71,19 @@ var fetchRecordDisplayDataById = async ({
         dataPointer: it.dataPointer,
     }))
 
+    records.forEach(it => {
+        it._recordLabel = createRecordLabel({
+            record: it._recordLabelDefinitionFields,
+            definition: recordLabelDefinition
+        });
+        delete it._recordLabelDefinitionFields;
+    });
+
     return ({
         record: records[0],
         ...related,
         displayFieldData,
+        recordTypeLabel: recordTypeData.state.label,
     });
 }
 

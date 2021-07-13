@@ -20,6 +20,8 @@ const ExperimentDetails = ({
     id,
 
     experimentData,
+    experimentOperatorTeamData,
+    locationData,
     studyData,
     subjectDataByType,
 
@@ -35,7 +37,9 @@ const ExperimentDetails = ({
                 )}
                 <GeneralInfo { ...({
                     experimentData,
-                    studyData
+                    experimentOperatorTeamData,
+                    locationData,
+                    studyData,
                 }) } />
                 { !experimentData.record.state.isCanceled && (
                     <>
