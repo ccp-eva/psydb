@@ -264,6 +264,12 @@ var locationExperimentCalendar = async (context, next) => {
         dataPointer: it.dataPointer,
     }))
 
+    // FIXME: is hacky
+    var studyRecordLabelsById = {
+        ...experimentRelated.relatedRecordLabels.study,
+        ...reservationRelated.relatedRecordLabels.study,
+    };
+    var studyRecordLabels = Object.values(studyRecordLabelsById);
 
     context.body = ResponseBody({
         data: {
@@ -278,6 +284,8 @@ var locationExperimentCalendar = async (context, next) => {
             locationRecordsById,
             locationRelated,
             locationDisplayFieldData: displayFieldData,
+
+            studyRecordLabels,
         },
     });
 

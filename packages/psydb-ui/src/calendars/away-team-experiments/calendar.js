@@ -6,6 +6,8 @@ import {
     useParams
 } from 'react-router-dom';
 
+import { ArrowLeftShort } from 'react-bootstrap-icons';
+
 import { useURLSearchParams } from '@cdxoo/react-router-url-search-params';
 import omit from '@cdxoo/omit';
 
@@ -15,27 +17,15 @@ import useRevision from '@mpieva/psydb-ui-lib/src/use-revision';
 import getDayStartsInInterval from '@mpieva/psydb-ui-lib/src/get-day-starts-in-interval';
 
 import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
+import LinkButton from '@mpieva/psydb-ui-lib/src/link-button';
 import withWeeklyCalendarPages from '@mpieva/psydb-ui-lib/src/with-weekly-calendar-pages';
 import CalendarNav from '@mpieva/psydb-ui-lib/src/calendar-nav';
-import DaysContainer from './days-container';
 
-import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
-const groupRecordsByDayStart = ({ allDayStarts, records }) => {
-    var groups = {};
-    for (var start of allDayStarts) {
-        var startT = start.getTime();
-        var endT = datefns.endOfDay(start).getTime();
-        groups[startT] = records.filter(it => {
-            var expStartT = (
-                new Date(it.state.interval.start).getTime()
-            )
-            return (
-                expStartT >= startT
-                && expStartT <= endT
-            )
-        })
-    }
-    return groups;
+import DaysHeader from './days-header';
+import StudyRow from './study-row';
+
+const headerStyle = {
+    marginLeft: '35px',
 }
 
 const AwayTeamCalendar = ({
@@ -88,21 +78,24 @@ const AwayTeamCalendar = ({
         
         locationRecordsById,
         locationRelated,
-        locationDisplayFieldData
+        locationDisplayFieldData,
+
+        studyRecordLabels,
     } = fetched.data;
-
-    var experimentsByDayStart = groupRecordsByDayStart({
-        allDayStarts,
-        records: experimentRecords
-    });
-
-    var reservationsByDayStart = groupRecordsByDayStart({
-        allDayStarts,
-        records: reservationRecords
-    });
 
     return (
         <div>
+            <div className='bg-light'>
+                <LinkButton to={ `/calendars/away-team/${ locationType }` }>
+                    <ArrowLeftShort style={{
+                        height: '25px',
+                        width: '25px',
+                        merginLeft: '-10px',
+                        marginTop: '-3px',
+                    }} />
+                    Zurück
+                </LinkButton>
+            </div>
 
             <CalendarNav { ...({
                 className: 'mt-3 mr-5 ml-5',
@@ -115,22 +108,33 @@ const AwayTeamCalendar = ({
                 marginLeft: '15em',
                 marginRight: '15em',
             }}/>
-            
-            <DaysContainer { ...({
-                allDayStarts,
-                experimentsByDayStart,
-                reservationsByDayStart,
 
-                experimentRelated,
-                reservationRelated,
-                experimentOperatorTeamRecords,
-                locationRecordsById,
-                locationRelated,
-                locationDisplayFieldData,
-                
-                url,
-                onSuccessfulUpdate: increaseRevision
+            <DaysHeader { ...({
+                allDayStarts,
+                style: headerStyle,
             }) } />
+    
+            { studyRecordLabels.map(it => (
+                <StudyRow key={ it._id } { ...({
+                    allDayStarts,
+
+                    studyId: it._id,
+                    studyLabel: it._recordLabel,
+                    experimentRecords,
+                    reservationRecords,
+                    
+                    experimentRelated,
+                    reservationRelated,
+                    experimentOperatorTeamRecords,
+                    locationRecordsById,
+                    locationRelated,
+                    locationDisplayFieldData,
+                    
+                    url,
+                    onSuccessfulUpdate: increaseRevision
+                }) } />
+            ))}
+
         </div>
     )
 }

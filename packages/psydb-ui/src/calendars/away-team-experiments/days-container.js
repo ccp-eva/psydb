@@ -96,11 +96,13 @@ const ItemsInDay = ({
 
     return (
         <div>
-            <header className='text-center border-bottom mb-2'>
+
+            { /*<header className='text-center border-bottom mb-2'>
                 <div role='button' onClick={ () => onSelectDay(start) }>
                     <b>{ datefns.format(start, 'cccccc dd.MM.') }</b>
                 </div>
-            </header>
+            </header>*/ }
+
             { 
                 !hasItems
                 ? (
