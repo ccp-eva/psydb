@@ -36,6 +36,8 @@ import Calendars from './calendars';
 import LabOperation from './lab-operation';
 import Experiments from './experiments';
 
+import AwayTeamCalendar from './calendars/away-team-experiments/calendar';
+
 const Main = ({ onSignedOut, onSignedIn }) => {
     var history = useHistory();
 
@@ -51,7 +53,22 @@ const Main = ({ onSignedOut, onSignedIn }) => {
                 //console.log('error on logout');
             }
         )
+    );
+
+    return (
+        <Switch>
+            <Route
+                path='/calendars/away-team/:locationType/:researchGroupId'
+                component={ withEB(AwayTeamCalendar) }
+            />
+            <Route>
+                <LayoutedRoutes { ...({ onSignOut }) }/>
+            </Route>
+        </Switch>
     )
+}
+
+const LayoutedRoutes = ({ onSignOut }) => {
     return (
         <div className='enable-flexbox flex-core flex-row'>
             <header className='flex-core flex-grow flex-row-reverse' style={{

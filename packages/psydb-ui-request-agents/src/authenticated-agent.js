@@ -278,6 +278,27 @@ agent.fetchExperimentCalendar = ({
     );
 }
 
+agent.fetchLocationExperimentCalendar = ({
+    locationType,
+    researchGroupId,
+    interval,
+
+    experimentType,
+    studyId,
+}) => {
+    return axios.post(
+        '/api/location-experiment-calendar',
+        {
+            locationType,
+            researchGroupId,
+            interval,
+
+            experimentType,
+            studyId,
+        }
+    );
+}
+
 agent.fetchSelectableStudies = ({
     studyRecordType,
     experimentType,

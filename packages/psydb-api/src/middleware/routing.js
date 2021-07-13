@@ -186,6 +186,14 @@ var createRouting = ({
         endpoints.special.experimentCalendar
     );
 
+    router.post('/location-experiment-calendar',
+        withSelfAuth(),
+        withPermissions(),
+        withEndpointProtection({ endpoint: 'location-experiment-calendar' }),
+        withKoaBody(),
+        endpoints.special.locationExperimentCalendar
+    );
+
     router.post('/selectable-studies',
         withSelfAuth(),
         withPermissions(),

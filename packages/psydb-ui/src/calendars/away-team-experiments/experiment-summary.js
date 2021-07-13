@@ -1,0 +1,221 @@
+import React, { useReducer, useEffect, useMemo, useCallback } from 'react';
+
+import {
+    LinkContainer
+} from 'react-router-bootstrap';
+
+import enums from '@mpieva/psydb-schema-enums';
+
+import agent from '@mpieva/psydb-ui-request-agents';
+import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
+import useModalReducer from '@mpieva/psydb-ui-lib/src/use-modal-reducer';
+import getTextColor from '@mpieva/psydb-ui-lib/src/bw-text-color-for-background';
+import applyValueToDisplayFields from '@mpieva/psydb-ui-lib/src/apply-value-to-display-fields';
+
+import ExperimentDropdown from '@mpieva/psydb-ui-lib/src/experiment-dropdown';
+
+import MoveExperimentModal from '@mpieva/psydb-ui-lib/src/move-experiment-modal';
+import ChangeTeamModal from '@mpieva/psydb-ui-lib/src/change-team-modal';
+
+const ExperimentSummary = ({
+    experimentRecord,
+    experimentRelated,
+    experimentOperatorTeamRecords,
+
+    locationRecordsById,
+    locationRelated,
+    locationDisplayFieldData,
+
+    url,
+    onSuccessfulUpdate,
+}) => {
+
+    var moveExperimentModal = useModalReducer({ show: false });
+    var changeTeamModal = useModalReducer({ show: false });
+
+    var experimentData = {
+        record: experimentRecord,
+        ...experimentRelated,
+    };
+
+    var { state: {
+        studyId,
+        locationId,
+        interval: { start, end },
+        experimentOperatorTeamId,
+    }} = experimentRecord;
+
+    var locationRecord = locationRecordsById[locationId];
+
+    var teamRecord = experimentOperatorTeamRecords.find(it => (
+        it._id === experimentOperatorTeamId
+    ));
+    
+    start = new Date(start);
+    end = new Date(new Date(end).getTime() + 1); // FIXME: 1ms offset
+
+    return (
+        <div className='pl-2 pr-2 pb-1 pt-1 mb-2' style={{
+            background: teamRecord.state.color,
+            color: getTextColor(teamRecord.state.color),
+        }}>
+
+            <MoveExperimentModal { ...({
+                show: moveExperimentModal.show,
+                onHide: moveExperimentModal.handleHide,
+                payloadData: moveExperimentModal.data,
+
+                shouldFetch: true,
+                experimentId: experimentRecord._id,
+                experimentType: 'inhouse',
+
+                onSuccessfulUpdate,
+            }) } />
+
+            <ChangeTeamModal { ...({
+                show: changeTeamModal.show,
+                onHide: changeTeamModal.handleHide,
+                payloadData: changeTeamModal.data,
+
+                experimentId: experimentRecord._id,
+                studyId: experimentRecord.state.studyId,
+                currentTeamId: experimentRecord.state.experimentOperatorTeamId,
+
+                onSuccessfulUpdate,
+            }) } />
+
+
+            <div className='d-flex'>
+                <div className='flex-grow'>
+                    <div>
+                        { teamRecord.state.name }
+                        {' '}
+                        ({
+                            experimentRelated.relatedRecordLabels.study[studyId]._recordLabel
+                        })
+                    </div>
+                </div>
+                <div
+                    style={{ width: '35px' }}
+                    className='d-flex flex-column align-items-center'
+                >
+                    <ExperimentDropdown { ...({
+                        variant: 'calendar',
+                        detailsLink: `/experiments/away-team/${experimentRecord._id}`,
+                        onClickMove: moveExperimentModal.handleShow,
+                        onClickChangeTeam: changeTeamModal.handleShow
+                    })} />
+                </div>
+            </div>
+            
+            <div className='mt-2 mb-2'>
+                <u className='d-block'>Location:</u>
+                <LocationInfo { ...({
+                    locationRecord,
+                    locationRelated,
+                    locationDisplayFieldData,
+                }) } />
+            </div>
+        </div>
+    )
+}
+
+const LocationInfo = ({
+    locationRecord,
+    locationRelated,
+    locationDisplayFieldData,
+}) => {
+
+    var withValue = applyValueToDisplayFields({
+        displayFieldData: locationDisplayFieldData,
+        record: locationRecord,
+        ...locationRelated,
+    });
+
+    return (
+        <div style={{ fontSize: '80%' }}>
+            { withValue.map(it => (
+                <div className='d-flex' key={ it.key }>
+                    <span style={{ width: '90px' }}>
+                        { it.displayName }
+                    </span>
+                    <b className='flex-grow ml-3'>{ it.value }</b>
+                </div>
+            )) }
+        </div>
+    )
+}
+
+const SubjectItem = ({
+    subjectDataItem,
+    experimentOperatorTeamRecords,
+    subjectRecordsById,
+    subjectRelated,
+    subjectDisplayFieldData,
+    phoneListField,
+    
+    experimentRecord,
+
+    onClickComment,
+    onClickMove,
+    onClickRemove,
+
+    onClickConfirm,
+    onClickMailbox,
+    onClickContactFailed,
+}) => {
+    var {
+        subjectId,
+        invitationStatus,
+    } = subjectDataItem;
+
+    var subjectRecord = subjectRecordsById[subjectId];
+
+    var withValue = applyValueToDisplayFields({
+        displayFieldData: subjectDisplayFieldData,
+        record: subjectRecord,
+        ...subjectRelated,
+    });
+
+    return (
+        <li>
+            <div className='d-flex mb-1'>
+
+                <div
+                    style={{ width: '35px' }}
+                    className='d-flex flex-column align-items-center'
+                >
+                    <ExperimentSubjectDropdown { ...({
+                        variant: 'calendar',
+                        subjectRecord,
+                        
+                        onClickComment,
+                        onClickMove,
+                        onClickRemove,
+
+                        onClickConfirm,
+                        onClickMailbox,
+                        onClickContactFailed,
+                    }) } />
+                    { invitationStatus !== 'scheduled' && (
+                        <b 
+                            className='pl-2 pr-2'
+                            style={{ fontSize: '120%', border: '1px solid' }}
+                        >
+                            { invitationStatusLabels[invitationStatus]}
+                        </b>
+                    )}
+                </div>
+            </div>
+        </li>
+    )
+}
+
+const invitationStatusLabels = {
+    'scheduled': '',
+    'confirmed': 'B',
+    'mailbox': 'AB',
+    'contact-failed': 'NE',
+}
+
+export default ExperimentSummary;

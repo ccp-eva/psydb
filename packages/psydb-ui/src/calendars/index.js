@@ -19,6 +19,7 @@ import BigNav from '@mpieva/psydb-ui-lib/src/big-nav';
 import RecordTypeNav from '@mpieva/psydb-ui-lib/src/record-type-nav';
 
 import InhouseExperimentsRouting from './inhouse-experiments';
+import AwayTeamExperimentsRouting from './away-team-experiments';
 
 const Calendars = () => {
     var { path, url } = useRouteMatch();
@@ -53,6 +54,12 @@ const Calendars = () => {
         ))
     );
 
+    var locationTypes = (
+        metadata.customRecordTypes.filter(it => (
+            it.collection ===  'location'
+        ))
+    );
+
     return (
         <div>
             <header>
@@ -69,6 +76,11 @@ const Calendars = () => {
                 <Route path={ `${path}/inhouse` }>
                     <InhouseExperimentsRouting
                         subjectRecordTypes={ subjectTypes }
+                    />
+                </Route>
+                <Route path={ `${path}/away-team` }>
+                    <AwayTeamExperimentsRouting
+                        locationTypes={ locationTypes }
                     />
                 </Route>
             </Switch>
