@@ -88,7 +88,9 @@ var ExperimentState = ({
                         'comment',
                     ]
                 })
-            }
+            },
+
+            generalComment: FullText(),
         },
         required: [
             'seriesId',
@@ -101,6 +103,7 @@ var ExperimentState = ({
             'selectedSubjectGroupIds',
             'selectedSubjectIds',
             'subjectData',
+            'generalComment',
             //'isCanceled',
         ]
     })

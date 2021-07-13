@@ -52,16 +52,16 @@ const mergeItems = ({ experiments, reservations }) => {
     var merged = reservations.map(record => ({
         type: 'reservation', record
     }));
-    
+   
     for (var exp of experiments) {
-        var index = merged.findIndex(({ type, record}) => (
+        var index = merged.findIndex(({ type, record }) => (
             type === 'reservation' &&
             record.state.interval.start === exp.state.interval.start &&
             record.state.interval.end === exp.state.interval.end &&
             record.state.experimentOperatorTeamId === (
-                exp.state.experimentOperatorTeamid
+                exp.state.experimentOperatorTeamId
             )
-        ))
+        ));
         if (index === -1) {
             merged.push({ type: 'experiment', record: exp });
         }
@@ -75,6 +75,7 @@ const mergeItems = ({ experiments, reservations }) => {
         ? -1
         : 1
     ));
+
     return merged;
 }
 
