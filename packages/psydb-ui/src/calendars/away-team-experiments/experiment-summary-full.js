@@ -17,7 +17,7 @@ import ExperimentDropdown from '@mpieva/psydb-ui-lib/src/experiment-dropdown';
 import MoveExperimentModal from '@mpieva/psydb-ui-lib/src/move-experiment-modal';
 import ChangeTeamModal from '@mpieva/psydb-ui-lib/src/change-team-modal';
 
-const ExperimentSummary = ({
+const ExperimentSummaryFull = ({
     experimentRecord,
     experimentRelated,
     experimentOperatorTeamRecords,
@@ -112,6 +112,7 @@ const ExperimentSummary = ({
             </div>
             
             <div className='mt-2 mb-2'>
+                <u className='d-block'>Location:</u>
                 <LocationInfo { ...({
                     locationRecord,
                     locationRelated,
@@ -128,11 +129,24 @@ const LocationInfo = ({
     locationDisplayFieldData,
 }) => {
 
+    var withValue = applyValueToDisplayFields({
+        displayFieldData: locationDisplayFieldData,
+        record: locationRecord,
+        ...locationRelated,
+    });
+
     return (
-        <div style={{ fontSize: '100%' }}>
-            <b>{ locationRecord._recordLabel }</b>
+        <div style={{ fontSize: '80%' }}>
+            { withValue.map(it => (
+                <div className='d-flex' key={ it.key }>
+                    <span style={{ width: '90px' }}>
+                        { it.displayName }
+                    </span>
+                    <b className='flex-grow ml-3'>{ it.value }</b>
+                </div>
+            )) }
         </div>
     )
 }
 
-export default ExperimentSummary;
+export default ExperimentSummaryFull;

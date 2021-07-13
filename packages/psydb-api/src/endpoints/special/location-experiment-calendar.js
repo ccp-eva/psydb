@@ -17,6 +17,7 @@ var convertPointerToPath = require('@mpieva/psydb-api-lib/src/convert-pointer-to
 var fetchOneCustomRecordType = require('@mpieva/psydb-api-lib/src/fetch-one-custom-record-type');
 var gatherDisplayFieldsForRecordType = require('@mpieva/psydb-api-lib/src/gather-display-fields-for-record-type');
 
+var createRecordLabel = require('@mpieva/psydb-api-lib/src/create-record-label');
 var fetchRelatedLabelsForMany = require('@mpieva/psydb-api-lib/src/fetch-related-labels-for-many');
 
 var {
@@ -24,6 +25,7 @@ var {
     StripEventsStage,
     ProjectDisplayFieldsStage,
     SystemPermissionStages,
+    SeperateRecordLabelDefinitionFieldsStage,
 } = require('@mpieva/psydb-api-lib/src/fetch-record-helpers');
 
 var {
@@ -184,14 +186,28 @@ var locationExperimentCalendar = async (context, next) => {
             }},
             StripEventsStage(),
 
+            SeperateRecordLabelDefinitionFieldsStage({
+                recordLabelDefinition: (
+                    locationTypeData.state.recordLabelDefinition
+                ),
+            }),
             ProjectDisplayFieldsStage({
                 displayFields,
                 additionalProjection: {
                     'type': true,
+                    '_recordLabelDefinitionFields': true,
                 }
             }),
         ]).toArray()
     );
+
+    locationRecords.forEach(it => {
+        it._recordLabel = createRecordLabel({
+            record: it._recordLabelDefinitionFields,
+            definition: locationTypeData.state.recordLabelDefinition
+        });
+        delete it._recordLabelDefinitionFields;
+    });
 
     var locationRelated = await fetchRelatedLabelsForMany({
         db,
