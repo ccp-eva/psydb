@@ -18,6 +18,8 @@ var gatherDisplayFieldsForRecordType = require('@mpieva/psydb-api-lib/src/gather
 var fetchOneCustomRecordType = require('@mpieva/psydb-api-lib/src/fetch-one-custom-record-type');
 var fetchRelatedLabelsForMany = require('@mpieva/psydb-api-lib/src/fetch-related-labels-for-many');
 
+var fetchRecordDisplayDataById = require('@mpieva/psydb-api-lib/src/fetch-record-display-data-by-id');
+
 var keyBy = require('@mpieva/psydb-common-lib/src/key-by');
 var groupBy = require('@mpieva/psydb-common-lib/src/group-by');
 
@@ -79,6 +81,13 @@ var extendedExperimentData = async (context, next) => {
         db,
         data: studyRecord,
         schema: studyRecordSchema,
+    });
+
+    var locationData = await fetchRecordDisplayDataById({
+        db,
+        collection: 'location',
+        recordType: experimentRecord.state.locationRecordType,
+        id: experimentRecord.state.locationId,
     });
 
     var experimentOperatorTeamRecord = await (
@@ -184,6 +193,7 @@ var extendedExperimentData = async (context, next) => {
                 record: studyRecord,
                 ...studyRelated,
             },
+            locationData,
             subjectDataByType,
         },
     });
