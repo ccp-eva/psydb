@@ -15,6 +15,8 @@ var ExperimentGroup = MessageHandlerGroup([
     require('./move-inhouse'),
     require('./move-subject-inhouse'),
 
+    require('./move-away-team'),
+
     require('./add-subject'),
     require('./remove-subject'),
 ]);

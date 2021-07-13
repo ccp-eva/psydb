@@ -25,8 +25,6 @@ const FormContainer = ({
         type: 'experiment/move-away-team',
         payload: {
             experimentId: experimentData.record._id,
-
-            locationId: nextReservationRecord.locationId,
             experimentOperatorTeamId: nextTeamRecord._id,
             interval: nextInterval,
         }
