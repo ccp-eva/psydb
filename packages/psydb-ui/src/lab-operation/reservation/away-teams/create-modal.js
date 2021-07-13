@@ -52,7 +52,7 @@ const CreateModal = ({
                     }} />
                     { teamRecord.state.name }
                 </Pair>
-                <Pair label='Tag'>
+                <Pair label='Datum'>
                     { datefns.format(interval.start, 'cccc P')}
                 </Pair>
                 <hr />

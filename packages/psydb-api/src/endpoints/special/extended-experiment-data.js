@@ -81,6 +81,25 @@ var extendedExperimentData = async (context, next) => {
         schema: studyRecordSchema,
     });
 
+    var experimentOperatorTeamRecord = await (
+        db.collection('experimentOperatorTeam').findOne({
+            _id: experimentRecord.state.experimentOperatorTeamId
+        }, { projection: { events: false }})
+    );
+
+    var teamRecordSchema = await createSchemaForRecordType({
+        db,
+        collectionName: 'experimentOperatorTeam',
+        recordType: experimentOperatorTeamRecord.type,
+        fullSchema: true
+    });
+
+    var experimentOperatorTeamRelated = await fetchRelatedLabels({
+        db,
+        data: experimentOperatorTeamRecord,
+        schema: teamRecordSchema,
+    });
+
     var subjectTypeKeys = (
         studyRecord.state.selectionSettingsBySubjectType.map(it => (
             it.subjectRecordType
@@ -156,6 +175,10 @@ var extendedExperimentData = async (context, next) => {
             experimentData: {
                 record: experimentRecord,
                 ...experimentRelated,
+            },
+            experimentOperatorTeamData: {
+                record: experimentOperatorTeamRecord,
+                ...experimentOperatorTeamRelated
             },
             studyData: {
                 record: studyRecord,

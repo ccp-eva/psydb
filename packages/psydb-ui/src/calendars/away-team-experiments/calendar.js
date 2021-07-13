@@ -64,7 +64,7 @@ const AwayTeamCalendar = ({
                 end: currentPageEnd,
             },
         });
-    }, [ currentPageStart, currentPageEnd ])
+    }, [ currentPageStart, currentPageEnd, revision ])
 
     var allDayStarts = useMemo(() => (
         getDayStartsInInterval({
@@ -118,7 +118,7 @@ const AwayTeamCalendar = ({
                 locationDisplayFieldData,
                 
                 url,
-                //onSuccessfulUpdate: handleSuccessfulUpdate
+                onSuccessfulUpdate: increaseRevision
             }) } />
         </div>
     )

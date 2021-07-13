@@ -128,6 +128,7 @@ var locationExperimentCalendar = async (context, next) => {
     }
 
     var studyIds = studyRecords.map(it => it._id);
+
     var experimentRecords = await (
         db.collection('experiment').aggregate([
             MatchIntervalOverlapStage({ start, end }),
@@ -137,6 +138,18 @@ var locationExperimentCalendar = async (context, next) => {
                 }),
                 'state.studyId': { $in: studyIds },
                 'state.isCanceled': false,
+            }},
+            StripEventsStage(),
+            { $sort: { 'state.interval.start': 1 }}
+        ]).toArray()
+    );
+
+    var reservationRecords = await (
+        db.collection('reservation').aggregate([
+            MatchIntervalOverlapStage({ start, end }),
+            { $match: {
+                'type': 'awayTeam',
+                'state.studyId': { $in: studyIds },
             }},
             StripEventsStage(),
             { $sort: { 'state.interval.start': 1 }}
@@ -193,6 +206,13 @@ var locationExperimentCalendar = async (context, next) => {
         records: experimentRecords
     })
 
+    var reservationRelated = await fetchRelatedLabelsForMany({
+        db,
+        collectionName: 'reservation',
+        recordType: 'awayTeam',
+        records: reservationRecords
+    })
+
     //console.dir(locationRelated, { depth: null });
 
     //console.log(experimentRecords);
@@ -227,8 +247,13 @@ var locationExperimentCalendar = async (context, next) => {
     context.body = ResponseBody({
         data: {
             experimentRecords,
-            experimentOperatorTeamRecords,
             experimentRelated,
+
+            reservationRecords,
+            reservationRelated,
+
+            experimentOperatorTeamRecords,
+
             locationRecordsById,
             locationRelated,
             locationDisplayFieldData: displayFieldData,

@@ -5,9 +5,12 @@ import agent from '@mpieva/psydb-ui-request-agents';
 import useFetch from '../use-fetch';
 import useModalReducer from '../use-modal-reducer';
 import LoadingIndicator from '../loading-indicator';
-import StudyInhouseLocations from '../study-inhouse-locations';
 
-import ConfirmModal from './confirm-modal';
+import StudyInhouseLocations from '../study-inhouse-locations';
+import StudyAwayTeams from '../study-away-teams';
+
+import InhouseConfirmModal from './inhouse-confirm-modal';
+import AwayTeamConfirmModal from './away-team-confirm-modal';
 
 const MoveExperimentModal = ({
     show,
@@ -18,6 +21,7 @@ const MoveExperimentModal = ({
     experimentType,
 
     experimentData,
+    teamData,
     studyData,
 
     onSuccessfulUpdate,
@@ -48,10 +52,65 @@ const MoveExperimentModal = ({
     }
 
     experimentData = experimentData || fetched.data.experimentData;
+    teamData = teamData || fetched.data.experimentOperatorTeamData;
     studyData = studyData || fetched.data.studyData;
 
     var studyId = studyData.record._id;
     var studyRecordType = studyData.record.type;
+
+    var prerenderedCalendar = null;
+    var prerenderedConfirmModal = null;
+    if (experimentType === 'away-team') {
+        prerenderedCalendar = (
+            <StudyAwayTeams { ...({
+                studyId,
+                studyRecordType,
+                onSelectReservationSlot: confirmModal.handleShow,
+                calendarRevision,
+            }) } />
+        );
+        prerenderedConfirmModal = (
+            <AwayTeamConfirmModal { ...({
+                show: confirmModal.show,
+                onHide: confirmModal.handleHide,
+
+                experimentData,
+                teamData,
+                studyData,
+                modalPayloadData: confirmModal.data,
+
+                onSuccessfulUpdate: wrappedOnSuccessfulUpdate,
+            })} />
+        )
+    }
+    else if (experimentType === 'inhouse') {
+         prerenderedCalendar = (
+            <StudyInhouseLocations { ...({
+                studyId,
+                studyRecordType,
+
+                //activeLocationType={ 'instituteroom' }
+                onSelectReservationSlot: confirmModal.handleShow,
+
+                calendarRevision,
+                locationCalendarListClassName: (
+                    'bg-white p-2 border-left border-bottom border-right'
+                )
+             }) } />
+        );
+        prerenderedConfirmModal = (
+            <InhouseConfirmModal { ...({
+                show: confirmModal.show,
+                onHide: confirmModal.handleHide,
+
+                experimentData,
+                studyData,
+                confirmData: confirmModal.data,
+
+                onSuccessfulUpdate: wrappedOnSuccessfulUpdate,
+            }) } />
+        );
+    }
 
     return (
         <Modal
@@ -66,30 +125,9 @@ const MoveExperimentModal = ({
             </Modal.Header>
             <Modal.Body className='bg-light'>
 
-                <ConfirmModal { ...({
-                    show: confirmModal.show,
-                    onHide: confirmModal.handleHide,
-
-                    experimentData,
-                    studyData,
-                    confirmData: confirmModal.data,
-
-                    onSuccessfulUpdate: wrappedOnSuccessfulUpdate,
-                }) } />
-
-                <StudyInhouseLocations
-                    studyId={ studyId }
-                    studyRecordType={ studyRecordType }
-
-                    //activeLocationType={ 'instituteroom' }
-                    onSelectReservationSlot={ 
-                        confirmModal.handleShow
-                    }
-                    calendarRevision={ calendarRevision }
-                    
-                    locationCalendarListClassName='bg-white p-2 border-left border-bottom border-right'
-                />
-
+                { prerenderedConfirmModal }
+                { prerenderedCalendar }
+       
             </Modal.Body>
         </Modal>
     )

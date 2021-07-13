@@ -67,7 +67,7 @@ const ExperimentSummary = ({
 
                 shouldFetch: true,
                 experimentId: experimentRecord._id,
-                experimentType: 'inhouse',
+                experimentType: 'away-team',
 
                 onSuccessfulUpdate,
             }) } />

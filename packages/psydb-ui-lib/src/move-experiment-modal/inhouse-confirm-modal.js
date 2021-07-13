@@ -91,7 +91,7 @@ const FormContainer = ({
                 </Container>
             </div>
 
-            <header className='pb-1 mt-3'><b>Verschieben Nach</b></header>
+            <header className='pb-1 mt-3'><b>nach Verschiebung</b></header>
             <div className='p-2 bg-white border'>
                 <Container>
                     <Pair label='Datum'>
@@ -130,7 +130,7 @@ const FormContainer = ({
 
 }
 
-const ConfirmModal = ({
+const InhouseConfirmModal = ({
     show,
     onHide,
 
@@ -203,4 +203,4 @@ const SlotControl = ({
     )
 }
 
-export default ConfirmModal;
+export default InhouseConfirmModal;
