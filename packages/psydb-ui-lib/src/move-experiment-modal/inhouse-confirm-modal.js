@@ -149,7 +149,7 @@ const InhouseConfirmModal = ({
         onHide(),
         onSuccessfulUpdate && onSuccessfulUpdate(...args);
     };
-    console.log(confirmData);
+    //console.log(confirmData);
 
     return (
         <Modal

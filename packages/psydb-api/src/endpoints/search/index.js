@@ -178,6 +178,7 @@ var search = async (context, next) => {
             ...related,
             displayFieldData,
             records,
+            recordsCount: records.totalRecordCount
         },
     });
 

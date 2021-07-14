@@ -1,18 +1,3 @@
 'use strict';
+module.exports = require('@mpieva/psydb-api-lib/src/from-facets');
 
-var fromFacets = (result) => {
-    var {
-        records,
-        recordsCount
-    } = result[0];
-
-    recordsCount = (
-        recordsCount.length
-        ? recordsCount[0].COUNT
-        : 0
-    );
-
-    return [ records, recordsCount ];
-}
-
-module.exports = fromFacets;

@@ -16,6 +16,7 @@ var {
 var convertPointerToPath = require('./convert-pointer-to-path');
 var fieldTypeConversions = require('./mongodb-field-type-conversions');
 var createRecordLabel = require('./create-record-label');
+var fromFacets = require('./from-facets');
 
 var fetchRecordByFilter = async ({
     db,
@@ -33,7 +34,12 @@ var fetchRecordByFilter = async ({
     additionalProjection,
 
     disablePermissionCheck,
+    offset,
+    limit,
 }) => {
+    offset = offset ||0;
+    limit = limit || 0;
+
     var stages = [];
 
     if (recordType) {
@@ -105,13 +111,24 @@ var fetchRecordByFilter = async ({
         }))
     }
 
+    stages.push({
+        $facet: {
+            records: [
+                { $skip: offset },
+                ...(limit ? [{ $limit: limit }] : [])
+            ],
+            recordsCount: [{ $count: 'COUNT' }]
+        }
+    })
+
     //console.log(collectionName);
     //console.dir(stages, { depth: null });
     //throw new Error();*/
 
-    var resultSet = await (
+    var facets = await (
         db.collection(collectionName).aggregate(stages).toArray()
     );
+    var [ resultSet, totalRecordCount ] = fromFacets(facets);
 
     //console.dir(resultSet, { depth: null });
 
@@ -124,7 +141,10 @@ var fetchRecordByFilter = async ({
             delete it._recordLabelDefinitionFields;
         })
     }
-
+    
+    // FIXME: this is bad; return them seperately as []
+    resultSet.totalRecordCount = totalRecordCount
+    
     return resultSet;
 }
 

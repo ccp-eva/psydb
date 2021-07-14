@@ -2,13 +2,15 @@ import React, { useState, useEffect } from 'react';
 
 import agent from '@mpieva/psydb-ui-request-agents';
 
+import usePaginationReducer from '../use-pagination-reducer';
+import Pagination from '../pagination';
 import Table from './table';
 
 var RecordList = ({
     collection,
     recordType,
-    offset,
-    limit,
+    //offset,
+    //limit,
     constraints,
     filters,
 
@@ -22,12 +24,17 @@ var RecordList = ({
     selectedRecordIds,
     onSelectRecord,
 
+    useURLSearchParams,
+
     linkBaseUrl,
     bsTableProps,
     CustomActionListComponent,
 }) => {
     var [ isInitialized, setIsInitialized ] = useState(false);
     var [ payload, setPayload ] = useState([]);
+
+    var pagination = usePaginationReducer({ offset: 0, limit: 50 })
+    var { offset, limit } = pagination;
 
     useEffect(() => (
         agent.searchRecords({
@@ -40,6 +47,7 @@ var RecordList = ({
         })
         .then((response) => {
             //console.log(response);
+            pagination.setTotal(response.data.data.recordsCount);
             setPayload(response.data.data);
             setIsInitialized(true);
         })
@@ -53,6 +61,7 @@ var RecordList = ({
 
     var {
         records,
+        recordsCount,
         displayFieldData,
         relatedRecordLabels,
         relatedHelperSetItems,
@@ -60,25 +69,29 @@ var RecordList = ({
     } = payload;
   
     return (
-        <Table { ...({
-            records,
-            displayFieldData,
-            relatedRecordLabels,
-            relatedHelperSetItems,
-            relatedCustomRecordTypeLabels,
+        <>
+            <Pagination { ...pagination } />
 
-            enableView,
-            enableEdit_old,
+            <Table { ...({
+                records,
+                displayFieldData,
+                relatedRecordLabels,
+                relatedHelperSetItems,
+                relatedCustomRecordTypeLabels,
 
-            enableSelectRecords,
-            showSelectionIndicator,
-            onSelectRecord,
-            selectedRecordIds,
+                enableView,
+                enableEdit_old,
 
-            linkBaseUrl,
-            bsTableProps,
-            CustomActionListComponent,
-        })} />
+                enableSelectRecords,
+                showSelectionIndicator,
+                onSelectRecord,
+                selectedRecordIds,
+
+                linkBaseUrl,
+                bsTableProps,
+                CustomActionListComponent,
+            })} />
+        </>
     )
 }
 

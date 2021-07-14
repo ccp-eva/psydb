@@ -1,10 +1,11 @@
 import React from 'react';
 
-const PaddedText = ({ children }) => {
+const PaddedText = ({ className, style, children }) => {
     return (
-        <div style={{
+        <div className={ className } style={{
             paddingTop: 'calc(0.375rem + 1px)',
             paddingBottom: 'calc(0.375rem + 1px)',
+            ...style
         }}>{ children }</div>
     );
 }
