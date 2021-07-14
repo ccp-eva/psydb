@@ -3,6 +3,7 @@ var debug = require('debug')(
     'psydb:api:endpoints:searchSubjectsUngrouped'
 );
 
+var omit = require('@cdxoo/omit');
 var datefns = require('date-fns');
 
 var keyBy = require('@mpieva/psydb-common-lib/src/key-by');
@@ -144,6 +145,10 @@ var searchUngrouped = async (context, next) => {
             subjectRecordsCount,
             subjectAvailableDisplayFieldData,
             subjectDisplayFields,
+
+            subjectExperimentMetadata: {
+                ...omit('upcomingForIds', upcomingSubjectExperimentData),
+            },
 
             studyRecords,
             studyRecordLabelDefinition,
