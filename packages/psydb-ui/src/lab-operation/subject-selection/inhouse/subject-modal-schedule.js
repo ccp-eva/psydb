@@ -6,10 +6,14 @@ import StudyInhouseLocations from '@mpieva/psydb-ui-lib/src/study-inhouse-locati
 import ExperimentCreateModal from './experiment-create-modal';
 
 const SubjectModalSchedule = ({
+    onHide,
+
     subjectId,
     subjectLabel,
     studyNavItems,
     studyRecordType,
+
+    onSuccessfulUpdate,
 }) => {
 
     var [ state, dispatch ] = useReducer(reducer, {
@@ -33,8 +37,9 @@ const SubjectModalSchedule = ({
         (payload) => dispatch({ type: 'show-create-modal', payload }),
         () => dispatch({ type: 'hide-create-modal' }),
 
-        () => {
-            dispatch({ type: 'increase-calendar-revision' })
+        (...args) => {
+            //dispatch({ type: 'increase-calendar-revision' });
+            onSuccessfulUpdate && onSuccessfulUpdate(...args);
         },
     ]))
 

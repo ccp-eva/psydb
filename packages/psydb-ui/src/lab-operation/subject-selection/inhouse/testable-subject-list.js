@@ -16,13 +16,19 @@ import agent from '@mpieva/psydb-ui-request-agents';
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 import up from '@mpieva/psydb-ui-lib/src/url-up';
 
+
+import useFetch from '@mpieva/psydb-ui-lib/src/use-fetch';
+import useModalReducer from '@mpieva/psydb-ui-lib/src/use-modal-reducer';
+import useRevision from '@mpieva/psydb-ui-lib/src/use-revision';
+import usePaginationReducer from '@mpieva/psydb-ui-lib/src/use-pagination-reducer';
+
 import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
 
 import {
-    TableHead,
-    TableBody
+    FieldDataHeadCols,
 } from '@mpieva/psydb-ui-lib/src/record-list';
 
+import TableBody from './table-body';
 import SubjectModal from './subject-modal';
 
 const InhouseTestableSubjectList = ({
@@ -44,28 +50,15 @@ const InhouseTestableSubjectList = ({
         )
     }
 
-    var [ state, dispatch ] = useReducer(reducer, {});
+    var [ revision, increaseRevision ] = useRevision();
+    var [ didFetch, fetched ] = useFetch((agent) => {
+        var {
+            timeFrame,
+            ageFrames,
+            values,
+        } = userSearchSettings
 
-    var {
-        records,
-        displayFieldData,
-        relatedRecordLabels,
-        relatedHelperSetItems,
-        relatedCustomRecordTypeLabels,
-
-        showSubjectModal,
-        subjectModalData,
-        listRevision,
-    } = state;
-
-    useEffect(
-        () => {
-            var {
-                timeFrame,
-                ageFrames,
-                values,
-            } = userSearchSettings
-
+        return (
             agent.searchTestableSubjectsInhouse({
                 studyRecordType: studyType,
                 subjectRecordType,
@@ -78,111 +71,71 @@ const InhouseTestableSubjectList = ({
                 ),
                 enabledAgeFrames: ageFrames,
                 enabledValues: values,
+
+                offset: 0,
+                limit: 100,
             })
             .then((response) => {
-                dispatch({ type: 'init', payload: {
-                    ...response.data.data
-                }});
+                // set pagination total
+                return response;
             })
-        }, [ studyIds, subjectRecordType, searchSettings64 ]
-    )
-    
-    var [
-        handleShowSubjectModal,
-        handleHideSubjectModal,
-        
-        handleSubjectSelected,
-    ] = useMemo(() => ([
-        (selectedRecord) => dispatch({ type: 'show-subject-modal', payload: {
-            record: selectedRecord
-        }}),
-        () => dispatch({ type: 'hide-subject-modal' }),
+        )
+    }, [ studyIds, subjectRecordType, searchSettings64, revision ])
+   
+    var subjectModal = useModalReducer();
 
-        () => dispatch({ type: 'increase-list-revision' }),
-    ]));
-
-    if (!records) {
+    if (!didFetch) {
         return <LoadingIndicator size='lg' />
     }
+
+    var {
+        subjectData,
+        subjectExperimentMetadata,
+    } = fetched.data;
+
+    var {
+        records,
+        displayFieldData,
+        relatedRecordLabels,
+        relatedHelperSetItems,
+        relatedCustomRecordTypeLabels,
+    } = subjectData;
 
     return (
         <>
             <SubjectModal
-                show={ showSubjectModal }
-                onHide={ handleHideSubjectModal }
+                show={ subjectModal.show }
+                onHide={ subjectModal.handleHide }
                 
                 studyNavItems={ studyLabelItems }
                 studyRecordType={ studyType }
                 
                 subjectRecordType={ subjectRecordType }
-                subjectModalData={ subjectModalData }
-            />
-            <Table hover>
-                <TableHead 
-                    displayFieldData={ displayFieldData }
-                />
-                <TableBody { ...({
-                    records,
-                    displayFieldData,
-                    relatedRecordLabels,
-                    relatedHelperSetItems,
+                subjectModalData={ subjectModal.data }
 
-                    onSelectRecord: handleShowSubjectModal
+                onSuccessfulUpdate={ increaseRevision }
+            />
+            <Table>
+                <thead>
+                    <tr>
+                        <FieldDataHeadCols { ...({
+                            displayFieldData: subjectData.displayFieldData
+                        })}/>
+                        <th>Teilg. Stud.</th>
+                        <th>Termine</th>
+                        <th>Mögl. Stud.</th>
+                        <th />
+                    </tr>
+                </thead>
+
+                <TableBody { ...({
+                    subjectData,
+                    subjectExperimentMetadata,
+                    onSelectSubject: subjectModal.handleShow,
                 }) } />
             </Table>
         </>
     );
 }
 
-const reducer = (state, action) => {
-    var { type, payload } = action;
-    switch (type) {
-        case 'init':
-            var {
-                records,
-                relatedRecordLabels,
-                relatedHelperSetItems,
-                relatedCustomRecordTypeLabels,
-                displayFieldData,
-            } = payload;
-
-            displayFieldData.push({
-                key: '_testableInStudies',
-                displayName: 'Mögliche Studien',
-                type: 'ForeignIdList',
-                props: {
-                    collection: 'study',
-                },
-                dataPointer: '/_testableInStudies'
-            })
-
-            return {
-                ...state,
-                records,
-                relatedRecordLabels,
-                relatedHelperSetItems,
-                relatedCustomRecordTypeLabels,
-                displayFieldData,
-            }
-
-        case 'show-subject-modal':
-            return {
-                ...state,
-                showSubjectModal: true,
-                subjectModalData: payload
-            }
-        case 'hide-subject-modal':
-            return {
-                ...state,
-                showSubjectModal: false,
-            }
-
-        case 'increase-list-revision':
-            return {
-                ...state,
-                listRevision: (state.listRevision || 0) + 1
-            }
-    }
-}
-        
 export default InhouseTestableSubjectList;

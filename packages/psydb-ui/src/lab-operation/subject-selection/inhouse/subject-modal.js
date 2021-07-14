@@ -15,6 +15,8 @@ const SubjectModal = ({
     studyRecordType,
     subjectRecordType,
     subjectModalData,
+
+    onSuccessfulUpdate,
 }) => {
     if (!subjectModalData) {
         return null;
@@ -31,6 +33,11 @@ const SubjectModal = ({
     var {
         activeMainNavKey,
     } = state;
+
+    var wrappedOnSuccessfulUpdate = (...args) => {
+        onHide();
+        onSuccessfulUpdate && onSuccessfulUpdate(...args);
+    }
 
     return (
         <Modal
@@ -78,6 +85,9 @@ const SubjectModal = ({
                         subjectId={ record._id }
                         subjectLabel={ record._recordLabel }
                         studyRecordType={ studyRecordType }
+                        onSuccessfulUpdate={
+                            wrappedOnSuccessfulUpdate
+                        }
                     />
                 )}
                 

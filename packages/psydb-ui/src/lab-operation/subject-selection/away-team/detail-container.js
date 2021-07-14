@@ -20,6 +20,7 @@ import calculateAge from '@mpieva/psydb-ui-lib/src/calculate-age';
 import Pair from '@mpieva/psydb-ui-lib/src/pair';
 import CheckColumn from '@mpieva/psydb-ui-lib/src/check-column';
 
+import UpcomingExperiments from '../upcoming-experiments';
 
 const DetailContainer = ({
     locationId,
@@ -41,6 +42,7 @@ const DetailContainer = ({
                 { locationComment || '-' }
             </Pair>
             <Table size='sm' className='border bg-white'>
+
                 <thead>
                     <tr>
                         <th />
@@ -53,6 +55,7 @@ const DetailContainer = ({
                         <th>Kommentar</th>
                     </tr>
                 </thead>
+
                 <SubjectTableBody {...({
                     subjectRecords,
                     subjectMetadata,
@@ -168,25 +171,5 @@ const SubjectTableBody = ({
     );
 }
 
-const UpcomingExperiments = ({
-    records,
-    relatedRecordLabels,
-    relatedHelperSetItems,
-    relatedCustomRecordTypeLabels,
-}) => {
-    var upcoming = (
-        records.map((record) => {
-            var start = datefns.format(new Date(record.state.interval.start), 'P');
-            var study = relatedRecordLabels.study[record.state.studyId]._recordLabel;
-            return `${study} ${start}`;
-        })
-    );
-
-    return (
-        records.length > 0
-        ? <span>{ upcoming.join(', ') }</span>
-        : null
-    )
-}
 
 export default DetailContainer;

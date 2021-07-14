@@ -137,22 +137,23 @@ var searchUngrouped = async (context, next) => {
     })
 
     context.body = ResponseBody({
-        data: await combineSubjectResponseData({
-            db,
+        data: {
+            subjectData: await combineSubjectResponseData({
+                db,
 
-            subjectRecordType,
-            subjectRecords,
-            subjectRecordsCount,
-            subjectAvailableDisplayFieldData,
-            subjectDisplayFields,
+                subjectRecordType,
+                subjectRecords,
+                subjectRecordsCount,
+                subjectAvailableDisplayFieldData,
+                subjectDisplayFields,
 
+                studyRecords,
+                studyRecordLabelDefinition,
+            }),
             subjectExperimentMetadata: {
                 ...omit('upcomingForIds', upcomingSubjectExperimentData),
             },
-
-            studyRecords,
-            studyRecordLabelDefinition,
-        }),
+        }
     });
     
     await next();
