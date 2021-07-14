@@ -1,4 +1,4 @@
-import React, { useReducer }from 'react';
+import React, { useReducer, useMemo }from 'react';
 
 import { Button } from 'react-bootstrap';
 
@@ -6,13 +6,18 @@ import { withTheme } from '@mpieva/rjsf-monkey-patch';
 import RJSFCustomTheme from './rjsf-theme';
 import ErrorResponseModal from './error-response-modal';
 
-var SchemaForm = withTheme(RJSFCustomTheme);
-
 const DefaultSchemaForm = ({
     buttonLabel,
     onSubmit,
     ...downstream
 }) => {
+
+    // XXX record list is used in rjsf custom theme picker
+    // so we have a cyclical dependency when using quicksearch
+    // in record-list; which will throw
+    // "cannot access '__WEBPACK_DEFAULT_EXPORT__' before initialization"
+    var SchemaForm = useMemo(() => withTheme(RJSFCustomTheme), []);
+
     var [ state, dispatch ] = useReducer(reducer, {});
     var {
         validationErrors,
