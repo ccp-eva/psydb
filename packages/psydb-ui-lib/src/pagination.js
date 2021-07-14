@@ -4,6 +4,8 @@ import { Form } from 'react-bootstrap';
 import PaddedText from './padded-text';
 
 const Pagination = ({
+    totalLabel,
+
     offset,
     limit,
     total,
@@ -19,7 +21,9 @@ const Pagination = ({
 }) => {
     return (
         <div className='bg-light pt-2 pb-2 pr-3 pl-3 d-flex align-items-center'>
-            <span style={{ width: '150px' }}><b>Gesamt:</b> { total }</span>
+            <span style={{ width: '150px' }}>
+                <b>{ totalLabel || 'Gesamt:' }</b> { total }
+            </span>
             <b className='mr-3'>pro Seite:</b>
             <LimitControl
                 value={ limit }

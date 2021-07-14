@@ -125,7 +125,9 @@ const InhouseTestableSubjectList = ({
 
                 onSuccessfulUpdate={ increaseRevision }
             />
+
             <Pagination { ...pagination } />
+
             <Table>
                 <thead>
                     <tr>

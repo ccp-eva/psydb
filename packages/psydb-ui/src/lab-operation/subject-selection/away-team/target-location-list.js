@@ -141,8 +141,11 @@ const TargetLocationList = ({
         mergedRecords,
         subjectMetadata,
         subjectExperimentMetadata,
+        subjectCount,
+
         locationMetadata,
         locationExperimentMetadata,
+        locationCount,
     } = fetched.data;
 
     return (
@@ -156,8 +159,14 @@ const TargetLocationList = ({
                 
                 onSuccessfulUpdate: increaseRevision
             }) } />
-            
-            <Pagination { ...pagination } />
+           
+            <div className='bg-light pt-2 pb-2 pr-3 pl-3 border-bottom'>
+                <b>gefundene Probanden:</b> { subjectCount }
+            </div>
+            <Pagination
+                totalLabel='Locations:'
+                { ...pagination }
+            />
             
             <TargetLocationTable { ...({
                 mergedRecords,
