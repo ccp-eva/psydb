@@ -186,6 +186,18 @@ export const DateTime = ({ label, value, schema }) => {
     );
 }
 
+export const DateOnlyServerSide = ({ label, value, schema }) => {
+    return (
+        <InlineWrapper label={ label }>
+            <b style={ styles.bold }>{
+                value === undefined
+                ? '-' 
+                : datefns.format(new Date(value), 'P')
+            }</b>
+        </InlineWrapper>
+    );
+}
+
 export const Time = ({ label, value, schema }) => {
     return (
         <InlineWrapper label={ label }>
