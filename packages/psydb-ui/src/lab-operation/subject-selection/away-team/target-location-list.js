@@ -12,11 +12,14 @@ import { useURLSearchParams } from '@cdxoo/react-router-url-search-params';
 
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 import up from '@mpieva/psydb-ui-lib/src/url-up';
+
 import useFetch from '@mpieva/psydb-ui-lib/src/use-fetch';
 import useModalReducer from '@mpieva/psydb-ui-lib/src/use-modal-reducer';
 import useRevision from '@mpieva/psydb-ui-lib/src/use-revision';
+import usePaginationReducer from '@mpieva/psydb-ui-lib/src/use-pagination-reducer';
 
 import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
+import Pagination from '@mpieva/psydb-ui-lib/src/pagination';
 
 import TargetLocationTable from './target-location-table';
 import ExperimentScheduleModal from './experiment-schedule-modal';
@@ -47,6 +50,9 @@ const TargetLocationList = ({
 
     var [ revision, increaseRevision ] = useRevision();
 
+    var pagination = usePaginationReducer();
+    var { offset, limit } = pagination;
+    
     var [ didFetch, fetched ] = useFetch((agent) => {
         var {
             timeFrame,
@@ -66,8 +72,16 @@ const TargetLocationList = ({
             ),
             enabledAgeFrames: ageFrames,
             enabledValues: values,
+            limit,
+            offset,
+        }).then(response => {
+            pagination.setTotal(response.data.data.locationCount)
+            return response;
         })
-    }, [ studyIds, subjectRecordType, searchSettings64, revision ]);
+    }, [
+        studyIds, subjectRecordType, searchSettings64,
+        revision, offset, limit
+    ]);
 
     var [ state, dispatch ] = useReducer(reducer, {
         selectedSubjectsLocationId: undefined,
@@ -142,6 +156,9 @@ const TargetLocationList = ({
                 
                 onSuccessfulUpdate: increaseRevision
             }) } />
+            
+            <Pagination { ...pagination } />
+            
             <TargetLocationTable { ...({
                 mergedRecords,
                 subjectMetadata,

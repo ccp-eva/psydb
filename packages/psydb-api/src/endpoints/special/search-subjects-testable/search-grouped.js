@@ -176,20 +176,43 @@ var searchGrouped = async (context, next) => {
                 }), {}))
             }
         }),
+        // FIXME: i bet this is not the way to do that counting
+        // i have double group stage id like to avoid that
         { $facet: {
-            records: [
+            groupedSubjectRecords: [
                 { $group: {
                     _id: '$_groupByField',
                     items: { $push: '$$ROOT' }
                 }},
+                { $sort: { '_id': 1 }},
                 { $skip: offset },
                 { $limit: limit }
             ],
-            recordsCount: [{ $count: 'COUNT' }]
+            locationCount: [
+                { $group: {
+                    _id: '$_groupByField',
+                    items: { $push: '$$ROOT' }
+                }},
+                { $count: 'COUNT' }
+            ],
+            subjectCount: [{ $count: 'COUNT' }]
         }}
     ]).toArray();
 
-    var [ groupedSubjectRecords, subjectRecordsCount ] = fromFacets(result);
+    var { groupedSubjectRecords, subjectCount, locationCount } = result[0];
+    console.log(groupedSubjectRecords);
+
+    subjectCount = (
+        subjectCount.length
+        ? subjectCount[0].COUNT
+        : 0
+    );
+
+    locationCount = (
+        locationCount.length
+        ? locationCount[0].COUNT
+        : 0
+    );
 
     var flatSubjects = groupedSubjectRecords.reduce((acc, it) => ([
         ...acc, ...it.items
@@ -224,7 +247,7 @@ var searchGrouped = async (context, next) => {
 
         subjectRecordType,
         subjectRecords: flatSubjects,
-        subjectRecordsCount,
+        subjectRecordsCount: subjectCount,
         subjectAvailableDisplayFieldData,
         subjectDisplayFields,
 
@@ -283,6 +306,9 @@ var searchGrouped = async (context, next) => {
             locationExperimentMetadata: {
                 ...omit('upcomingForIds', upcomingLocationExperimentData),
             },
+
+            locationCount,
+            subjectCount,
         }
     });
 

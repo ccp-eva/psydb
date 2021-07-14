@@ -52,8 +52,10 @@ const InhouseTestableSubjectList = ({
     }
 
     var [ revision, increaseRevision ] = useRevision();
+    
     var pagination = usePaginationReducer();
     var { offset, limit } = pagination;
+    
     var [ didFetch, fetched ] = useFetch((agent) => {
         var {
             timeFrame,
