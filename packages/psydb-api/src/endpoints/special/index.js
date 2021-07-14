@@ -24,9 +24,9 @@ module.exports = {
     testableSubjectsInhouse: (
         require('./search-subjects-testable/inhouse')
     ),
-    /*searchSubjectsTestableOnline: (
+    searchSubjectsTestableOnline: (
         require('./search-subjects-testable/online')
-    ),*/
+    ),
     searchSubjectsTestableViaAwayTeam: (
         require('./search-subjects-testable/away-team')
     ),

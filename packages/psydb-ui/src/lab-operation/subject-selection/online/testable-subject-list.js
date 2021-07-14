@@ -77,7 +77,7 @@ const OnlineTestableSubjectList = ({
                 values,
             } = userSearchSettings
 
-            agent.searchTestableSubjectsInhouse({
+            agent.searchSubjectsTestableOnline({
                 studyRecordType: studyType,
                 subjectRecordType,
                 studyIds: studyIds.split(','),
