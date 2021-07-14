@@ -65,14 +65,20 @@ var reducer = (state, action) => {
             return {
                 ...state,
                 total: payload,
-                maxPage: Math.floor(payload / state.limit)
+                maxPage: Math.ceil(payload / state.limit)
             }
         case 'set-limit':
+            var limit = payload;
+            var offset = state.offset;
+            if (limit >= state.total) {
+                offset = 0;
+            }
             return {
                 ...state,
-                limit: payload,
-                page: Math.floor(state.offset / payload),
-                maxPage: Math.floor(state.total / payload)
+                limit,
+                offset,
+                page: Math.floor(offset / limit),
+                maxPage: Math.ceil(state.total / limit)
             }
         case 'set-offset':
             return {

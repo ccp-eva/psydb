@@ -23,6 +23,7 @@ import useRevision from '@mpieva/psydb-ui-lib/src/use-revision';
 import usePaginationReducer from '@mpieva/psydb-ui-lib/src/use-pagination-reducer';
 
 import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
+import Pagination from '@mpieva/psydb-ui-lib/src/pagination';
 
 import {
     FieldDataHeadCols,
@@ -51,6 +52,8 @@ const InhouseTestableSubjectList = ({
     }
 
     var [ revision, increaseRevision ] = useRevision();
+    var pagination = usePaginationReducer();
+    var { offset, limit } = pagination;
     var [ didFetch, fetched ] = useFetch((agent) => {
         var {
             timeFrame,
@@ -72,15 +75,20 @@ const InhouseTestableSubjectList = ({
                 enabledAgeFrames: ageFrames,
                 enabledValues: values,
 
-                offset: 0,
-                limit: 100,
+                offset,
+                limit,
             })
             .then((response) => {
-                // set pagination total
+                pagination.setTotal(
+                    response.data.data.subjectData.count
+                );
                 return response;
             })
         )
-    }, [ studyIds, subjectRecordType, searchSettings64, revision ])
+    }, [
+        studyIds, subjectRecordType, searchSettings64,
+        revision, offset, limit
+    ])
    
     var subjectModal = useModalReducer();
 
@@ -115,6 +123,7 @@ const InhouseTestableSubjectList = ({
 
                 onSuccessfulUpdate={ increaseRevision }
             />
+            <Pagination { ...pagination } />
             <Table>
                 <thead>
                     <tr>
