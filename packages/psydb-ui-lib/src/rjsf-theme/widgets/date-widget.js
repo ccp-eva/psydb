@@ -10,7 +10,11 @@ const DateWidget = (ps) => {
     // also we are sending data doesnt actually conform to the schema
     if (value && value.endsWith('Z')) {
         var d = new Date(value);
-        value = datefns.format(d, 'yyyy-MM-dd')
+        value = datefns.format(d, 'yyyy-MM-dd');
+        // I also need to call onChange since otherwise the form data
+        // is invalid
+        ps.onChange(value);
+        return null;
     }
     return <TextWidget
         { ...ps }
