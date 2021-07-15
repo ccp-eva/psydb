@@ -9,7 +9,7 @@ import SchemaForm from './default-schema-form';
 
 const createSchema = (displayFieldData) => {
     var properties = {};
-    for (var it of displayFieldData.slice(0,5)) {
+    for (var it of displayFieldData.slice(0,4)) {
         //console.log(displayFieldData);
         // FIXME: there is an issue with static fields
         // having a different key for their type
