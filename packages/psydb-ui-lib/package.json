@@ -42,7 +42,7 @@
     "@mpieva/psydb-common-lib": "~0.1.0-alpha",
     "@mpieva/psydb-schema-fields": "~0.1.0-alpha",
     "@mpieva/psydb-schema-fields-special": "~0.1.0-alpha",
-    "react-bootstrap-icons": "~1.4.0",
+    "react-bootstrap-icons": "~1.5.0",
     "@mpieva/rjsf-monkey-patch": "~0.1.0-alpha",
     "@cdxoo/omit": "~1.0.1",
     "@cdxoo/react-router-url-search-params": "~1.0.4"

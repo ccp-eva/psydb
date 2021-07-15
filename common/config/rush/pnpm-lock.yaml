@@ -21,6 +21,7 @@ dependencies:
   '@rush-temp/psydb-ajv-formats': 'file:projects/psydb-ajv-formats.tgz'
   '@rush-temp/psydb-ajv-keywords': 'file:projects/psydb-ajv-keywords.tgz'
   '@rush-temp/psydb-api': 'file:projects/psydb-api.tgz'
+  '@rush-temp/psydb-api-config': 'file:projects/psydb-api-config.tgz'
   '@rush-temp/psydb-api-endpoint-schemas': 'file:projects/psydb-api-endpoint-schemas.tgz'
   '@rush-temp/psydb-api-lib': 'file:projects/psydb-api-lib.tgz'
   '@rush-temp/psydb-api-message-handlers': 'file:projects/psydb-api-message-handlers.tgz'
@@ -80,7 +81,7 @@ dependencies:
   raw-body: 2.4.1
   react: 17.0.2
   react-bootstrap: 1.5.2_react-dom@17.0.2+react@17.0.2
-  react-bootstrap-icons: 1.4.0_react@17.0.2
+  react-bootstrap-icons: 1.5.0_react@17.0.2
   react-datetime: 3.0.4_moment@2.29.1+react@17.0.2
   react-dom: 17.0.2_react@17.0.2
   react-is: 17.0.2
@@ -5591,7 +5592,7 @@ packages:
       node: '>=6'
     resolution:
       integrity: sha512-OfBnObtnGgLGfweORmdZbyEz+3dgVePQBb3zipiaDsMHV1NpWm0rDFYIVXFV/AK+x4VIIfWHhrdMIeoTLyRr2g==
-  /react-bootstrap-icons/1.4.0_react@17.0.2:
+  /react-bootstrap-icons/1.5.0_react@17.0.2:
     dependencies:
       prop-types: 15.7.2
       react: 17.0.2
@@ -5599,7 +5600,7 @@ packages:
     peerDependencies:
       react: ^16.8.6 || ^17
     resolution:
-      integrity: sha512-rxT8IxIU3Cnnj4y+rDJvlj5qITNfQP0jdw0e1gGCuyNDQDxvRvrA6QEFSLmWBgMqC/hig3CnZ+Snx2GwXbPxmQ==
+      integrity: sha512-QC5q4meHQG0cO9RJzeDLSqZ1gbVa9jxFCpONCE3GYl2FkbAKSyJAEsONlzTApbZ8/oG87gPWq0xAyn5SZ/Jafw==
   /react-bootstrap/1.5.2_react-dom@17.0.2+react@17.0.2:
     dependencies:
       '@babel/runtime': 7.13.10
@@ -7470,6 +7471,13 @@ packages:
       integrity: sha512-MSnWbJ7iSytXmmZEUa545Kizz/TU0Z8czdvR3bV9uq81TiiW2D8yURJNW9sYVuI8tohbc0BYbipBL7uqvjrmpA==
       tarball: 'file:projects/psydb-ajv-keywords.tgz'
     version: 0.0.0
+  'file:projects/psydb-api-config.tgz':
+    dev: false
+    name: '@rush-temp/psydb-api-config'
+    resolution:
+      integrity: sha512-xlD/1GJ7cc6OgxXEAJvloSlZqRb3WUoGZVXOrY/RF+kO6UQ3CdLK+6pWX2L7+k91EZRRxgc7FsQgatJFZCh++w==
+      tarball: 'file:projects/psydb-api-config.tgz'
+    version: 0.0.0
   'file:projects/psydb-api-endpoint-schemas.tgz':
     dev: false
     name: '@rush-temp/psydb-api-endpoint-schemas'
@@ -7523,6 +7531,7 @@ packages:
     dependencies:
       '@cdxoo/inline-string': 1.0.0
       '@cdxoo/inline-text': 1.0.1
+      '@cdxoo/omit': 1.0.1
       ajv: 6.12.6
       ajv-keywords: 3.5.2_ajv@6.12.6
       bcrypt: 5.0.1
@@ -7550,7 +7559,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-api'
     resolution:
-      integrity: sha512-R7r/6lxH0OJ9aO9EoLRZmBpcqOYbNRDtpeBXuDdsa7MtZzu2whmXo3tVoxnOvf59cXCnb1HpH6seYVsDtztMiA==
+      integrity: sha512-3mxoOfXoR8PsFdI6woFfdRrZc20RgnpF3PxoBw+9GKGDDp8d5UHVLze5W+BNDCUp73IU6GZvBdCNOhkiujvYEA==
       tarball: 'file:projects/psydb-api.tgz'
     version: 0.0.0
   'file:projects/psydb-common-lib.tgz':
@@ -7587,7 +7596,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-fixture-initializer'
     resolution:
-      integrity: sha512-QsLgLljhmVGNgGYIwiUr9l8SsRVjSdDCRvjPzlH1qVEoYeJLiGEGk/ENcXwXMsRGC592Mp8xyzp3QB+FPIbOdg==
+      integrity: sha512-kLI42iR1RT7JnLCyOJlw8MYUu3qUSyJPZnZv4whwX5rnPVm1kokNvvT9mxLJt8tO1p60RiDOVtMP8DkePg3UJw==
       tarball: 'file:projects/psydb-fixture-initializer.tgz'
     version: 0.0.0
   'file:projects/psydb-fixtures.tgz':
@@ -7725,7 +7734,7 @@ packages:
       moment: 2.29.1
       react: 17.0.2
       react-bootstrap: 1.5.2_react-dom@17.0.2+react@17.0.2
-      react-bootstrap-icons: 1.4.0_react@17.0.2
+      react-bootstrap-icons: 1.5.0_react@17.0.2
       react-datetime: 3.0.4_moment@2.29.1+react@17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-router: 5.2.0_react@17.0.2
@@ -7737,7 +7746,7 @@ packages:
     peerDependencies:
       webpack: '*'
     resolution:
-      integrity: sha512-KBW/x7URrN4+nxq9QrNyQMbxPEZ8ZHcUUUMzM0AV47qkTMCJ+VkBk0pgskNktaYm0mWCH5SRlYJCUoC5f3TO0g==
+      integrity: sha512-Z9A/lw4DlY8HT6P8OnVuq5cDO3DOeEW0HQ8Ub3LtqFDMv6paIcLAezXPQBqta/z93dz+EZK+9IiPF1L4uariyA==
       tarball: 'file:projects/psydb-ui-lib.tgz'
     version: 0.0.0
   'file:projects/psydb-ui-request-agents.tgz_debug@4.3.1':
@@ -7778,7 +7787,7 @@ packages:
       quill: 1.3.7
       react: 17.0.2
       react-bootstrap: 1.5.2_react-dom@17.0.2+react@17.0.2
-      react-bootstrap-icons: 1.4.0_react@17.0.2
+      react-bootstrap-icons: 1.5.0_react@17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-quill: 1.3.5_react@17.0.2
       react-quilljs: 1.2.14_quill@1.3.7+react@17.0.2
@@ -7793,7 +7802,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-ui'
     resolution:
-      integrity: sha512-s5se1WSmlzadvrwyG2HOwp6JdmnXmC3mgMJCLJJ2RifjC3yuzZ9IPUFQGpfJmxlLV4m9tcdJY3MsS541XfAj8A==
+      integrity: sha512-r8mvklEX4iRXjHmQDwvOkdX3EFv8EQKaRx9qa6GD+oDziGxoY42izVQ7v3D0WdAtBvlQUH43wSIsXrKT0xBCEw==
       tarball: 'file:projects/psydb-ui.tgz'
     version: 0.0.0
   'file:projects/psydb-web.tgz':
@@ -7862,6 +7871,7 @@ specifiers:
   '@rush-temp/psydb-ajv-formats': 'file:./projects/psydb-ajv-formats.tgz'
   '@rush-temp/psydb-ajv-keywords': 'file:./projects/psydb-ajv-keywords.tgz'
   '@rush-temp/psydb-api': 'file:./projects/psydb-api.tgz'
+  '@rush-temp/psydb-api-config': 'file:./projects/psydb-api-config.tgz'
   '@rush-temp/psydb-api-endpoint-schemas': 'file:./projects/psydb-api-endpoint-schemas.tgz'
   '@rush-temp/psydb-api-lib': 'file:./projects/psydb-api-lib.tgz'
   '@rush-temp/psydb-api-message-handlers': 'file:./projects/psydb-api-message-handlers.tgz'
@@ -7921,7 +7931,7 @@ specifiers:
   raw-body: ~2.4.1
   react: ~17.0.1
   react-bootstrap: ~1.5.2
-  react-bootstrap-icons: ~1.4.0
+  react-bootstrap-icons: ~1.5.0
   react-datetime: ~3.0.4
   react-dom: ~17.0.1
   react-is: ~17.0.2
