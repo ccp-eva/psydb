@@ -3,23 +3,27 @@ import React, { useMemo } from 'react';
 import * as fieldSchemas from '@mpieva/psydb-schema-fields';
 import fieldMetadata from '@mpieva/psydb-common-lib/src/field-type-metadata'
 
-import SchemaForm from './default-schema-form';
+import SchemaForm from './inline-schema-form';
 
 const createSchema = (displayFieldData) => {
-    console.log(displayFieldData);
-    
     var properties = {};
     for (var it of displayFieldData) {
-        var meta = fieldMetadata[it.type];
+        // FIXME: there is an issue with static fields
+        // having a different key for their type
+        var type = it.type || it.systemType;
+
+        var meta = fieldMetadata[type];
         if (meta && meta.canSearch) {
             var realType = (
-                meta.searchDisplayType || meta.searchType || it.type
+                meta.searchDisplayType || meta.searchType || type
             );
             properties[it.dataPointer] = fieldSchemas[realType]({
                 title: it.displayName,
-                
-                collection: it.props.collection,
-                set: it.props.set,
+               
+                ...(it.props && {
+                    collection: it.props.collection,
+                    set: it.props.set,
+                })
             });
         }
     }
