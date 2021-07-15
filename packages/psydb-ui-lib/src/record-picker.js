@@ -21,6 +21,12 @@ const RecordPicker = ({
     // record ids and foribly update the state
     var [ cachedRecord, setCachedRecord ] = useState(record);
 
+    useEffect(() => {
+        if (!record) {
+            setCachedRecord(undefined);
+        }
+    }, [ record ])
+
     var handleSelect = (record) => {
         setCachedRecord(record);
         onChange(record);
