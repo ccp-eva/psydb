@@ -6,6 +6,7 @@ var ForeignId = ({
     collection,
     recordType,
     constraints,
+    systemProps,
     ...additionalKeywords
 }) => {
     if (!collection) {
@@ -17,6 +18,7 @@ var ForeignId = ({
             collection,
             recordType: recordType,
             constraints: constraints || {},
+            ...systemProps
         },
         ...additionalKeywords
     });

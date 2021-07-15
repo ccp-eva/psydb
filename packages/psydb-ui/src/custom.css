@@ -98,3 +98,14 @@
 .bg-light-red {
     background-color: #fbdddd;
 }
+
+.quick-search-fixes .form-group {
+    margin-bottom: 0px;
+    margin-right: .5rem;
+}
+
+.quick-search-fixes label {
+    border-bottom: 0!important;
+    /*margin-bottom: .25rem;*/
+    margin-bottom: 0;
+}
