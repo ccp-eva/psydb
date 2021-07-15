@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { utils } from "@rjsf/core";
 import TextWidget from './text-widget';
 import datefns from '../../date-fns';
@@ -6,16 +6,22 @@ import datefns from '../../date-fns';
 const DateWidget = (ps) => {
     var { value } = ps;
 
+
     // FIXME: this is hacky
     // also we are sending data doesnt actually conform to the schema
+    useEffect(() => {
+        if (value && value.endsWith('Z')) {
+            var d = new Date(value);
+            value = datefns.format(d, 'yyyy-MM-dd');
+            // I also need to call onChange since otherwise the form data
+            // is invalid
+            ps.onChange(value);
+        }
+    })
     if (value && value.endsWith('Z')) {
-        var d = new Date(value);
-        value = datefns.format(d, 'yyyy-MM-dd');
-        // I also need to call onChange since otherwise the form data
-        // is invalid
-        ps.onChange(value);
         return null;
     }
+
     return <TextWidget
         { ...ps }
         value={ value }
