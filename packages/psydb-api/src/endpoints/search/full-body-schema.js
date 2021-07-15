@@ -22,11 +22,12 @@ var FullBodySchema = ({
         var { systemType, dataPointer } = field;
         var {
             canSearch,
-            searchType
+            searchType,
+            searchDisplayType,
         } = metadata[systemType];
 
         if (canSearch) {
-            var realType = searchType || systemType;
+            var realType = searchDisplayType || searchType || systemType;
             var FieldSchema = psydbSchemaFields[realType];
             
             /*variants.push(ExactObject({

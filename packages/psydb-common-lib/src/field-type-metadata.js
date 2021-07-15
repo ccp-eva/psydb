@@ -15,7 +15,7 @@ module.exports = {
         canBeDisplayField: true,
         canBeLabelField: false,
         canSearch: true,
-        searchType: 'SaneString',
+        searchDisplayType: 'SaneString',
     },
 
     PhoneList: {
@@ -23,7 +23,7 @@ module.exports = {
         canBeDisplayField: true,
         canBeLabelField: false,
         canSearch: true,
-        searchType: 'SaneString',
+        searchDisplayType: 'SaneString',
     },
 
     FullText: {

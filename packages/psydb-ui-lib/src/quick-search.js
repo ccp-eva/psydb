@@ -12,7 +12,9 @@ const createSchema = (displayFieldData) => {
     for (var it of displayFieldData) {
         var meta = fieldMetadata[it.type];
         if (meta && meta.canSearch) {
-            var realType = meta.searchType || it.type;
+            var realType = (
+                meta.searchDisplayType || meta.searchType || it.type
+            );
             properties[it.dataPointer] = fieldSchemas[realType]({
                 title: it.displayName,
                 
