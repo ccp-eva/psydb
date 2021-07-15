@@ -56,7 +56,7 @@ const QuickSearch = ({
             <SchemaForm
                 className='d-flex align-items-end quick-search-fixes'
                 buttonLabel='Suchen'
-                showResetButton={ true }
+                noErrorIndicator={ true }
                 schema={ schema }
                 formData={ filters }
                 onSubmit={
@@ -77,7 +77,7 @@ const QuickSearch = ({
                 }
             >
                 <Button
-                    className='mr-2'
+                    className='ml-2'
                     variant='outline-secondary'
                     onClick={ () => onSubmit({}) }
                 >

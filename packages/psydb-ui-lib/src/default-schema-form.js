@@ -9,6 +9,7 @@ import ErrorResponseModal from './error-response-modal';
 const DefaultSchemaForm = ({
     buttonLabel,
     onSubmit,
+    noErrorIndicator,
     children,
     ...downstream
 }) => {
@@ -66,13 +67,15 @@ const DefaultSchemaForm = ({
                         { buttonLabel || 'Speichern' }
                     </Button>
                     { children }
-                    <div className='pl-3 pr-3'>
-                        { validationErrors && (
-                            <b className='text-danger'>
-                                Ungültige Eingabedaten!
-                            </b>
-                        )}
-                    </div>
+                    { !noErrorIndicator && (
+                        <div className='pl-3 pr-3'>
+                            { validationErrors && (
+                                <b className='text-danger'>
+                                    Ungültige Eingabedaten!
+                                </b>
+                            )}
+                        </div>
+                    )}
                 </div>
             </SchemaForm>
         </>
