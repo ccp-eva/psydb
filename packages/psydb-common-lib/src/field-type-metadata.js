@@ -51,6 +51,22 @@ module.exports = {
         //searchType: 'DateOnlyServerSideInterval',
     },
 
+    ForeignIdList : {
+        canBeCustomField: true,
+        canBeLabelToken: false,
+        canBeDisplayField: true,
+        canSearch: true,
+        searchDisplayType: 'ForeignId',
+    },
+
+    HelperSetItemIdList : {
+        canBeCustomField: true,
+        canBeLabelToken: false,
+        canBeDisplayField: true,
+        canSearch: true,
+        searchDisplayType: 'HelperSetItemId',
+    },
+
     Id: {
         canBeCustomField: true,
         canBeDisplayField: true,
@@ -63,9 +79,7 @@ module.exports = {
         'SaneString',
         'BiologicalGender',
         'ForeignId',
-        'ForeignIdList',
         'HelperSetItemId',
-        'HelperSetItemIdList',
     ].reduce((acc, fieldType) => ({
         ...acc,
         [fieldType]: {

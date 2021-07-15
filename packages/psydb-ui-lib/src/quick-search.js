@@ -10,6 +10,7 @@ import SchemaForm from './default-schema-form';
 const createSchema = (displayFieldData) => {
     var properties = {};
     for (var it of displayFieldData.slice(0,5)) {
+        //console.log(displayFieldData);
         // FIXME: there is an issue with static fields
         // having a different key for their type
         var type = it.type || it.systemType;
@@ -29,7 +30,7 @@ const createSchema = (displayFieldData) => {
                     collection: it.props.collection,
                     recordType: it.props.recordType,
                     constraints: it.props.constraints,
-                    set: it.props.set,
+                    setId: it.props.setId,
                 })),
             });
         }
