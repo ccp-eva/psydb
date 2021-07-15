@@ -22,9 +22,6 @@ var RecordListTable = ({
     selectedRecordIds,
     onSelectRecord,
     
-    enableFilters,
-    onFilterSubmit,
-
     linkBaseUrl,
     CustomActionListComponent,
     bsTableProps,
@@ -55,12 +52,6 @@ var RecordListTable = ({
 
     return (
         <Table { ...bsTableProps }>
-            { enableFilters && (
-                <TableFilters
-                    displayFieldData={ displayFieldData }
-                    onSubmit={ onFilterSubmit }
-                />
-            )}
             <TableHead
                 displayFieldData={ displayFieldData }
                 showSelectionIndicator={ showSelectionIndicator }

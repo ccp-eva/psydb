@@ -9,7 +9,7 @@ var {
     JsonPointer,
 } = psydbSchemaFields;
 
-var metadata = require('./field-type-metadata');
+var metadata = require('@mpieva/psydb-common-lib/src/field-type-metadata');
 
 var FullBodySchema = ({
     availableConstraints,

@@ -4,6 +4,7 @@ import agent from '@mpieva/psydb-ui-request-agents';
 
 import usePaginationReducer from '../use-pagination-reducer';
 import Pagination from '../pagination';
+import QuickSearch from '../quick-search';
 import Table from './table';
 
 var RecordList = ({
@@ -12,7 +13,7 @@ var RecordList = ({
     //offset,
     //limit,
     constraints,
-    filters,
+    //filters,
 
     displayFields,
 
@@ -33,6 +34,7 @@ var RecordList = ({
     var [ isInitialized, setIsInitialized ] = useState(false);
     var [ payload, setPayload ] = useState([]);
 
+    var [ filters, setFilters ] = useState({});
     var pagination = usePaginationReducer({ offset: 0, limit: 50 })
     var { offset, limit } = pagination;
 
@@ -70,6 +72,11 @@ var RecordList = ({
   
     return (
         <>
+            <QuickSearch
+                filters={ filters }
+                displayFieldData={ displayFieldData }
+                onSubmit={ ({ filters }) => setFilters(filters) }
+            />
             <Pagination { ...pagination } />
 
             <Table { ...({

@@ -36,7 +36,7 @@ var convertFiltersToQueryFields = require('@mpieva/psydb-api-lib/src/convert-fil
 var convertConstraintsToMongoPath = require('@mpieva/psydb-api-lib/src/convert-constraints-to-mongo-path');
 var fetchRelatedLabelsForMany = require('@mpieva/psydb-api-lib/src/fetch-related-labels-for-many');
 
-var fieldTypeMetadata = require('./field-type-metadata');
+var fieldTypeMetadata = require('@mpieva/psydb-common-lib/src/field-type-metadata');
 
 var search = async (context, next) => {
     var { 

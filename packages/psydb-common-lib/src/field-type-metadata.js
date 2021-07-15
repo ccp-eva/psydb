@@ -1,4 +1,5 @@
 'use strict';
+
 module.exports = {
     
     Address: {
@@ -7,19 +8,6 @@ module.exports = {
         canBeLabelField: true,
         canSearch: true,
         searchType: 'SaneString',
-
-        stringify: (value) => (
-            [
-                value.street,
-                value.housenumber,
-                value.affix,
-                value.postcode,
-                value.city,
-                // omitting country here,
-            ]
-            .filter(it => !!it)
-            .join(' ')
-        ),
     },
 
     EmailList: {
@@ -27,11 +15,7 @@ module.exports = {
         canBeDisplayField: true,
         canBeLabelField: false,
         canSearch: true,
-        searchType: 'Email',
-
-        stringify: (value) => (value.join(', ')),
-        // TODO: decide if we want to separate stringify stuff into
-        // label/display
+        searchType: 'SaneString',
     },
 
     PhoneList: {
@@ -39,9 +23,7 @@ module.exports = {
         canBeDisplayField: true,
         canBeLabelField: false,
         canSearch: true,
-        searchType: 'Phone',
-        
-        stringify: (value) => (value.join(', ')),
+        searchType: 'SaneString',
     },
 
     FullText: {
@@ -56,18 +38,16 @@ module.exports = {
         canBeCustomField: true,
         canBeDisplayField: true,
         canBeLabelField: true,
-        canSearch: true,
-        searchType: 'DateTimeInterval'
+        canSearch: false,
+        searchType: 'DateTimeInterval',
     },
-
-    //BiologicalGender,
 
     DateOnlyServerSide: {
         canBeCustomField: true,
         canBeDisplayField: true,
         canBeLabelField: true,
-        canSearch: true,
-        searchType: 'DateOnlyServerSideInterval'
+        canSearch: false,
+        searchType: 'DateOnlyServerSideInterval',
     },
 
     Id: {

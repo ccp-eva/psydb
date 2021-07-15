@@ -3,7 +3,7 @@ var escape = require('escape-string-regexp');
 
 module.exports = {
     Address: {
-        createProjection: (path) => {
+        createProjection: (path) => ({
             $concat: (
                 [
                     'street',
@@ -14,11 +14,11 @@ module.exports = {
                     // omitting country here,
                 ].flatMap((field, index) => (
                     index === 0
-                    ? `$${path}.${key}`
-                    : [ ' ', `$${path}.${key}` ]
+                    ? `$${path}.${field}`
+                    : [ ' ', `$${path}.${field}` ]
                 ))
             )
-        },
+        }),
     },
     SaneString: {
         alterValue: (value) => new RegExp(escape(value))
