@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import { Button } from 'react-bootstrap';
 
 import * as fieldSchemas from '@mpieva/psydb-schema-fields';
 import fieldMetadata from '@mpieva/psydb-common-lib/src/field-type-metadata'
@@ -7,7 +8,7 @@ import SchemaForm from './default-schema-form';
 
 const createSchema = (displayFieldData) => {
     var properties = {};
-    for (var it of displayFieldData) {
+    for (var it of displayFieldData.slice(0,5)) {
         // FIXME: there is an issue with static fields
         // having a different key for their type
         var type = it.type || it.systemType;
@@ -20,15 +21,20 @@ const createSchema = (displayFieldData) => {
             properties[it.dataPointer] = fieldSchemas[realType]({
                 title: it.displayName,
                 systemProps: { uiWrapper: 'MultiLineWrapper' },
-               
+              
+                // cannot pass all props since the might include
+                // string constraints like minLength
                 ...(it.props && ({
-                    ...it.props,
+                    collection: it.props.collection,
+                    recordType: it.props.recordType,
+                    constraints: it.props.constraints,
+                    set: it.props.set,
                 })),
             });
         }
     }
 
-    console.log(properties);
+    //console.log(properties);
 
     return fieldSchemas.ExactObject({
         properties,
@@ -45,10 +51,11 @@ const QuickSearch = ({
     ), [ displayFieldData ]);
 
     return (
-        <div className='bg-light border-bottom pr-3 pl-3 pt-2 pb-2'>
+        <div className='bg-light border-bottom pr-3 pl-3 pt-2 pb-2 d-flex justify-content-start'>
             <SchemaForm
                 className='d-flex align-items-end quick-search-fixes'
                 buttonLabel='Suchen'
+                showResetButton={ true }
                 schema={ schema }
                 formData={ filters }
                 onSubmit={
@@ -67,7 +74,15 @@ const QuickSearch = ({
                         return Promise.resolve();
                     }
                 }
-            />
+            >
+                <Button
+                    className='mr-2'
+                    variant='outline-secondary'
+                    onClick={ () => onSubmit({}) }
+                >
+                    X
+                </Button>
+            </SchemaForm>
         </div>
     )
 }

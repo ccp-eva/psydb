@@ -9,6 +9,7 @@ import ErrorResponseModal from './error-response-modal';
 const DefaultSchemaForm = ({
     buttonLabel,
     onSubmit,
+    children,
     ...downstream
 }) => {
 
@@ -64,6 +65,7 @@ const DefaultSchemaForm = ({
                     <Button type="submit" className="btn btn-primary">
                         { buttonLabel || 'Speichern' }
                     </Button>
+                    { children }
                     <div className='pl-3 pr-3'>
                         { validationErrors && (
                             <b className='text-danger'>

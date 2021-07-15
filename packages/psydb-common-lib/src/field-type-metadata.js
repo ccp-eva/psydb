@@ -46,8 +46,9 @@ module.exports = {
         canBeCustomField: true,
         canBeDisplayField: true,
         canBeLabelField: true,
-        canSearch: false,
-        searchType: 'DateOnlyServerSideInterval',
+        canSearch: true,
+        searchDisplayType: 'SaneString',
+        //searchType: 'DateOnlyServerSideInterval',
     },
 
     Id: {
