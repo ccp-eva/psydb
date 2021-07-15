@@ -8,6 +8,8 @@ import TableHead from './table-head';
 import TableBody from './table-body';
 
 var RecordListTable = ({
+    className,
+
     records,
     displayFieldData,
     relatedRecordLabels,
@@ -51,7 +53,7 @@ var RecordListTable = ({
     }
 
     return (
-        <Table { ...bsTableProps }>
+        <Table className={ className } { ...bsTableProps }>
             <TableHead
                 displayFieldData={ displayFieldData }
                 showSelectionIndicator={ showSelectionIndicator }

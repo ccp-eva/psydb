@@ -19,6 +19,7 @@ const RecordListContainer = ({
     onSelectRecord,
 
     className,
+    tableClassName,
     bsTableProps,
     CustomActionListComponent,
 }) => {
@@ -45,6 +46,7 @@ const RecordListContainer = ({
                 selectedRecordIds,
                 onSelectRecord,
 
+                tableClassName,
                 bsTableProps,
                 CustomActionListComponent,
             }) } />

@@ -108,9 +108,10 @@ const RecordPickerModal = ({
             <Modal.Header closeButton>
                 <Modal.Title>Auswahlliste</Modal.Title>
             </Modal.Header>
-            <Modal.Body className='bg-light'>
+            <Modal.Body className='bg-light pt-0 pr-3 pl-3'>
                 <RecordListContainer
-                    className='bg-white border-left border-right'
+                    className='bg-white'
+                    tableClassName='border-left border-bottom border-right mb-0'
                     bsTableProps={{ hover: true }}
                     collection={ collection }
                     recordType={ recordType }

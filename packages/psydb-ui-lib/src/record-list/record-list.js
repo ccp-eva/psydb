@@ -28,6 +28,7 @@ var RecordList = ({
     useURLSearchParams,
 
     linkBaseUrl,
+    tableClassName,
     bsTableProps,
     CustomActionListComponent,
 }) => {
@@ -80,6 +81,8 @@ var RecordList = ({
             <Pagination { ...pagination } />
 
             <Table { ...({
+                className: tableClassName,
+
                 records,
                 displayFieldData,
                 relatedRecordLabels,
