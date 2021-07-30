@@ -15,7 +15,6 @@ import {
 import allSchemaCreators from '@mpieva/psydb-schema-creators';
 import agent from '@mpieva/psydb-ui-request-agents';
 import RecordTypeNav from './record-type-nav';
-import RecordListContainer from './record-list-container';
 import GenericRecordTypeView from './generic-record-type-view';
 
 // TODO: put this somewhere
