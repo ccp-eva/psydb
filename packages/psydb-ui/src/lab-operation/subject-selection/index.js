@@ -39,12 +39,12 @@ const SubjectSelectionRouting = () => {
                     <BigNav items={[
                         {
                             key: 'inhouse',
-                            label: 'In-House',
+                            label: 'Interne Studie',
                             linkTo: 'inhouse'
                         }, 
                         {
                             key: 'away-team',
-                            label: 'via Aussen-Team',
+                            label: 'Externe Studie',
                             linkTo: 'away-team'
                         },
                         {
@@ -74,7 +74,7 @@ const InhouseSelectionContainer = () => {
     return (
         <div>
             <h4 className='border-bottom'>
-                Für Inhouse-Experiment
+                Für Interne Studie
             </h4>
             <Switch>
                 <Route exact path={ `${path}` }>
@@ -97,7 +97,7 @@ const AwayTeamSelectionContainer = () => {
     return (
         <div>
             <h4 className='border-bottom'>
-                Via Außen-Team
+                Für Externe Studie
             </h4>
             <Switch>
                 <Route exact path={ `${path}` }>
@@ -127,7 +127,7 @@ const OnlineSelectionContainer = () => {
     return (
         <div>
             <h4 className='border-bottom'>
-                Für Online-Experiment
+                Für Online-Studie
             </h4>
             <Switch>
                 <Route exact path={ `${path}` }>

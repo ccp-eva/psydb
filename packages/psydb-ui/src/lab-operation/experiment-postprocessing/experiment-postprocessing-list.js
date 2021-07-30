@@ -155,7 +155,7 @@ const ExperimentPostprocessingList = ({
 const getExperimentTypeLabel = (type) => (
     {
         'away-team': 'Extern',
-        'inhouse': 'Inhouse',
+        'inhouse': 'Intern',
     }[type] || 'UNKNOWN'
 )
 

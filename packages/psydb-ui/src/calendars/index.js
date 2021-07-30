@@ -125,7 +125,7 @@ const CalendarNav = () => {
                 linkUrl: `${url}/reception`,
             },
             { 
-                label: 'Inhouse Termine',
+                label: 'Interne Termine',
                 linkUrl: `${url}/inhouse`,
             },
             {

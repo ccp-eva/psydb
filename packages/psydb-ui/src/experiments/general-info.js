@@ -17,7 +17,7 @@ import createStringifier from '@mpieva/psydb-ui-lib/src/record-field-stringifier
 import applyValueToDisplayFields from '@mpieva/psydb-ui-lib/src/apply-value-to-display-fields';
 
 const experimentTypeNames = {
-    'inhouse': 'Inhouse',
+    'inhouse': 'Intern',
     'away-team': 'Aussen-Team',
 }
 

@@ -115,7 +115,7 @@ const RemoveSubjectModal = ({
                         <div className='pt-2 pb-2 pl-4 mb-1'>{
                             subjectRecord._recordLabel
                         }</div>
-                        <header><b>Kommentar im Experiment</b></header>
+                        <header><b>Kommentar im Termin</b></header>
                         <div className='pt-2 pb-2 pl-4 mb-1'><i>{
                             subjectData.comment
                         }</i></div>
