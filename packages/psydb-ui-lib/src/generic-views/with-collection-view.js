@@ -4,9 +4,11 @@ import allSchemaCreators from '@mpieva/psydb-schema-creators';
 
 import withRecordTypeView from './with-record-type-view';
 import withRoutingForCustomTypes from './with-routing-for-custom-types';
+import CollectionHeader from './collection-header';
 
 
 const withCollectionView = ({
+    collection: staticCollection,
     RoutingForCustomTypes,
     RecordTypeView
 }) => {
@@ -29,6 +31,8 @@ const withCollectionView = ({
         showTitle = true,
         noSpacer
     }) => {
+        collection = collection || staticCollection;
+
         var { url } = useRouteMatch();
         var { hasCustomTypes } = allSchemaCreators[collection];
 

@@ -109,6 +109,13 @@ agent.fetchParticipatedSubjectsForStudy = ({
     return axios.get(`${baseUrl}/${studyId}`);
 }
 
+agent.fetchParticipatedStudiesForSubject = ({
+    subjectId,
+}) => {
+    var baseUrl = '/api/participated-studies-for-subject';
+    return axios.get(`${baseUrl}/${subjectId}`);
+}
+
 agent.fetchStudyLocationReservationCalendar = ({
     studyId,
     locationRecordType,

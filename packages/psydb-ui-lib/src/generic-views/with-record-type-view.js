@@ -2,11 +2,15 @@ import React from 'react';
 
 import {
     Route,
+    Redirect,
     Switch,
     useRouteMatch,
     useHistory,
     useParams
 } from 'react-router-dom';
+
+import useFetch from '../use-fetch';
+import LoadingIndicator from '../loading-indicator';
 
 import GenericRecordListContainer from '../record-list-container';
 import GenericRecordDetailsContainer from '../generic-record-details-container';
@@ -18,26 +22,30 @@ import RecordTypeHeader from './record-type-header';
 const withRecordTypeView = ({
     RecordList,
     RecordDetails,
-    RecordForm,
+    RecordCreator,
+    RecordEditor,
 
     shouldFetchCollectionTypes,
 }) => {
     RecordList = RecordList || GenericRecordListContainer;
     RecordDetails = RecordDetails || GenericRecordDetailsContainer;
-    RecordForm = RecordForm || GenericRecordFormContainer;
+    RecordEditor = RecordEditor || GenericRecordFormContainer;
+    RecordCreator = RecordCreator || GenericRecordFormContainer;
 
     const RecordTypeView = ({
         collection,
         collectionRecordTypes,
         noSpacer
     }) => {
+        collectionRecordTypes = collectionRecordTypes || [];
+
         var { path, url } = useRouteMatch();
         var { recordType } = useParams();
 
         if (shouldFetchCollectionTypes) {
-             var [ didFetch, fetched ] = useFetch((agent) => (
+            var [ didFetch, fetched ] = useFetch((agent) => (
                 agent.readCustomRecordTypeMetadata()
-            ));
+            ), [ collection ]);
 
             if (!didFetch) {
                 return (
@@ -54,7 +62,7 @@ const withRecordTypeView = ({
 
         var typeData = undefined;
         if (recordType) {
-            typeData = customRecordTypes.find(it => (
+            typeData = collectionRecordTypes.find(it => (
                 (it.type === recordType)
                 && it.collection === collection
             ));
@@ -85,7 +93,7 @@ const withRecordTypeView = ({
                     </Route>
 
                     <Route exact path={`${path}/new`}>
-                        <RecordForm
+                        <RecordCreator
                             type='create'
                             collection={ collection }
                             recordType={ recordType }
@@ -95,7 +103,16 @@ const withRecordTypeView = ({
                         />
                     </Route>
 
-                    <Route exact path={`${path}/:id`}>
+                    <Route
+                        exact path={`${path}/:id`}
+                        render={ (ps) => (
+                            <Redirect to={
+                                `${url}/${ps.match.params.id}/details`
+                            } />
+                        )}
+                    />
+
+                    <Route path={`${path}/:id/details`}>
                         <RecordDetails
                             collection={ collection }
                             recordType={ recordType }
@@ -103,7 +120,7 @@ const withRecordTypeView = ({
                     </Route>
 
                     <Route path={`${path}/:id/edit`}>
-                        <RecordForm
+                        <RecordEditor
                             type='edit'
                             collection={ collection }
                             recordType={ recordType }

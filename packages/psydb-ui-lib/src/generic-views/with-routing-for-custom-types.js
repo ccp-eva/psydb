@@ -8,6 +8,7 @@ import {
 
 import useFetch from '../use-fetch';
 import LoadingIndicator from '../loading-indicator';
+import RecordTypeNav from '../record-type-nav';
 
 
 const withRoutingForCustomTypes = ({
@@ -25,11 +26,13 @@ const withRoutingForCustomTypes = ({
         collectionRecordTypes,
     }) => {
         var { path } = useRouteMatch();
-    
-        if (!shouldFetchCollectionTypes) {
-             var [ didFetch, fetched ] = useFetch((agent) => (
+
+        collectionRecordTypes = collectionRecordTypes || [];
+
+        if (shouldFetchCollectionTypes) {
+            var [ didFetch, fetched ] = useFetch((agent) => (
                 agent.readCustomRecordTypeMetadata()
-            ));
+            ), [ collection ]);
 
             if (!didFetch) {
                 return (
@@ -53,8 +56,8 @@ const withRoutingForCustomTypes = ({
                 </Route>
                 <Route path={`${path}/:recordType`}>
                     <RecordTypeView { ...({
-                        customRecordTypes: collectionRecordTypes,
-                        collection
+                        collection,
+                        collectionRecordTypes,
                     }) } />
                 </Route>
             </Switch>
@@ -62,4 +65,4 @@ const withRoutingForCustomTypes = ({
     }
 }
 
-export default RoutingForCustomTypes;
+export default withRoutingForCustomTypes;
