@@ -13,6 +13,9 @@ module.exports = {
     participatedSubjectsForStudy: (
         require('./participated-subjects-for-study')
     ),
+    participatedStudiesForSubject: (
+        require('./participated-studies-for-subject')
+    ),
     studyLocationReservationCalendar: (
         require('./study-location-reservation-calendar')
     ),

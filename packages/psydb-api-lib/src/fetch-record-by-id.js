@@ -16,7 +16,7 @@ var fetchRecordById = async ({
     id,
     labelOnly,
 }) => {
-    //var { hasSubChannels } = allSchemaCreators[collectionName];
+    var { hasSubChannels } = allSchemaCreators[collectionName];
 
     var preprocessingStages = (
         hasSubChannels
@@ -28,6 +28,7 @@ var fetchRecordById = async ({
             { $project: {
                 // FIXME: any way to not hardcode that?
                 'gdpr.internals.passwordHash': false,
+
                 'gdpr.events': false,
                 'scientific.events': false,
             }},

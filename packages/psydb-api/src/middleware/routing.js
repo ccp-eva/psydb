@@ -101,6 +101,13 @@ var createRouting = ({
         endpoints.special.participatedSubjectsForStudy
     );
 
+    router.get('/participated-studies-for-subject/:subjectId',
+        withSelfAuth(),
+        withPermissions(),
+        withEndpointProtection({ endpoint: 'participated-studies-for-subject' }),
+        endpoints.special.participatedStudiesForSubject
+    );
+
     router.get(
         inline`
             /study-location-reservation-calendar

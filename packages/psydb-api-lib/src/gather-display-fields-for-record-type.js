@@ -1,4 +1,5 @@
 'use strict';
+var keyBy = require('@mpieva/psydb-common-lib/src/key-by');
 var gatherDisplayFieldData = require('@mpieva/psydb-common-lib/src/gather-display-field-data');
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
@@ -73,9 +74,20 @@ var gatherDisplayFieldsForRecordType =  async ({
         availableDisplayFieldData = availableStaticDisplayFields || [];
     }
 
+    var availableDisplayFieldDataByPointer = keyBy({
+        items: availableDisplayFieldData,
+        byProp: 'dataPointer'
+    });
+
+    var mergedDisplayFieldData = displayFields.map(it => ({
+        ...availableDisplayFieldDataByPointer[it.dataPointer],
+        dataPointer: it.dataPointer,
+    }))
+
     return ({
         displayFields,
         availableDisplayFieldData,
+        mergedDisplayFieldData,
     });
 }
 
