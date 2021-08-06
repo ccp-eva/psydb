@@ -344,13 +344,17 @@ export function isValid(schema, data, rootSchema) {
         // then rewrite the schema ref's to point to the rootSchema
         // this accounts for the case where schema have references to models
         // that lives in the rootSchema but not in the schema in question.
-        return ajv
+        var valid = ajv
             .addSchema(rootSchema, ROOT_SCHEMA_PREFIX)
             .validate(withIdRefPrefix(schema), data);
+        if (!valid) {
+            console.log(ajv.errors);
+        }
     } catch (e) {
         return false;
     } finally {
         // make sure we remove the rootSchema from the global ajv instance
         ajv.removeSchema(ROOT_SCHEMA_PREFIX);
     }
+    return valid;
 }
