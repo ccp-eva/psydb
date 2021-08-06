@@ -22,7 +22,7 @@ var ExternalLocationGrouping = ({
     return ({
         type: 'object',
         lazyResolveProp: 'enabled',
-        title: 'Tests via Aussen-Team',
+        title: 'Externe Studie',
         oneOf: [
 
             ExactObject({

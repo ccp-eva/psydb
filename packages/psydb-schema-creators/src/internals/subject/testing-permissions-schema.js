@@ -37,7 +37,7 @@ var testingPermissionsSchema = ExactObject({
     properties: {
         
         canBeTestedOnline: ExtBoolPermissionList({
-            title: 'Online-Tests erlaubt für',
+            title: 'Online-Studien erlaubt für',
             description: inline`
                 list of items describing if a subject can be tested
                 by a research group at a location belonging to the research
@@ -46,7 +46,7 @@ var testingPermissionsSchema = ExactObject({
         }),
         
         canBeTestedInhouse: ExtBoolPermissionList({
-            title: 'Testen In-House erlaubt für',
+            title: 'Interne Studie erlaubt für',
             description: inline`
                 list of items describing if a subject can be tested
                 by a research group at a location belonging to the research
@@ -55,7 +55,7 @@ var testingPermissionsSchema = ExactObject({
         }),
         
         canBeTestedByAwayTeam: ExtBoolPermissionList({
-            title: 'Testen via Außen-Team erlaubt für',
+            title: 'Externe Studien erlaubt für',
             description: inline`
                 list of items describing if a subject can be tested
                 by an away team belonging to a research group, i.e.

@@ -59,7 +59,7 @@ const ChangeTeamModal = ({
                 <hr />
                 <div className='d-flex justify-content-end'>
                     <Button onClick={ handleSubmit }>
-                        Seichern
+                        Speichern
                     </Button>
                 </div>
             </Modal.Body>
