@@ -237,8 +237,8 @@ export default function validateFormData(
     let validationError = null;
     try {
         ajv.validate(schema, formData);
-        console.log(formData);
-        console.log(ajv.errors);
+        console.log('validateFormData() - formData', formData);
+        console.log('validateFormData() - ajv.errors', ajv.errors);
     } catch (err) {
         validationError = err;
     }
@@ -348,7 +348,7 @@ export function isValid(schema, data, rootSchema) {
             .addSchema(rootSchema, ROOT_SCHEMA_PREFIX)
             .validate(withIdRefPrefix(schema), data);
         if (!valid) {
-            console.log(ajv.errors);
+            console.log('isValid() - ajv.errors', ajv.errors);
         }
     } catch (e) {
         return false;

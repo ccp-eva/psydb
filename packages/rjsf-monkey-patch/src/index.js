@@ -11,7 +11,7 @@ import {
 class RJSFMonkey extends RJSF {
     constructor (ps) {
         super(ps);
-        console.log('COSNTRUCTOR', ps.formData.reservationSettings);
+        //console.log('COSNTRUCTOR', ps.formData.reservationSettings);
     }
 
     validate(
