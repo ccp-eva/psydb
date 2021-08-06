@@ -66,7 +66,7 @@ const StudyRecordContainer = ({
                             { key: 'selection-settings', label: 'Auswahlbedingungen' },
                             { key: 'inhouse-locations', label: 'Räumlichkeiten' },
                             { key: 'teams', label: 'Teams' },
-                            { key: 'participation', label: 'Probanden' },
+                            { key: 'participation', label: 'Studienteilnahme' },
                         ]}
                         onItemClick={ (nextKey) => {
                             history.push(`${up(url, 1)}/${nextKey}`)
