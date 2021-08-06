@@ -75,6 +75,10 @@ const StudyParticipation = ({}) => {
     if (!selectedSubjectType) {
         selectedSubjectType = Object.keys(dataBySubjectType)[0];
     }
+    else {
+        // FIXME: what?
+        selectedSubjectType = selectedSubjectType.subjectType;
+    }
 
     return (
         <div className='mt-3'>

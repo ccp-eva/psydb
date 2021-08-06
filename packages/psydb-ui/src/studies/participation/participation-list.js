@@ -37,9 +37,9 @@ const ParticipationList = ({
                 </tr>
             </thead>
             <tbody>
-                { records.map(it => (
+                { records.map((it, index) => (
                     <ParticipationListRow { ...({
-                        key: it._id,
+                        key: index,
                         record: it,
                         relatedRecordLabels,
                         relatedHelperSetItems,
