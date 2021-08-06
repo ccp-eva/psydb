@@ -316,7 +316,7 @@ export function getDefaultFormState(
     rootSchema = {},
     includeUndefinedValues = false
 ) {
-    console.log('getDefaulktFormDstate()');
+    //console.log('getDefaulktFormDstate()');
     if (!isObject(_schema)) {
         throw new Error("Invalid schema: " + _schema);
     }
@@ -328,7 +328,7 @@ export function getDefaultFormState(
         formData,
         includeUndefinedValues
     );
-    console.log('computed defaults', defaults);
+    //console.log('computed defaults', defaults);
     if (typeof formData === "undefined") {
         // No form data? Use schema defaults.
         return defaults;

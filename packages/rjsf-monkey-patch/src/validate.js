@@ -8,13 +8,12 @@ import psydbFormats from '@mpieva/psydb-ajv-formats';
 
 let ajv = createAjvInstance();
 
-import { utils } from '@rjsf/core';
-const {
+import {
     deepEquals,
     getDefaultFormState,
     isObject,
     mergeObjects
-} = utils;
+} from './utils';
 //import { deepEquals, getDefaultFormState } from "./utils";
 
 let formerCustomFormats = null;

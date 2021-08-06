@@ -48,7 +48,7 @@ class RJSFMonkey extends RJSF {
         const mustValidate = edit && !props.noValidate && liveValidate;
         const rootSchema = schema;
         const formData = getDefaultFormState(schema, inputFormData, rootSchema);
-        console.log('defaultFormStata', formData);
+        //console.log('defaultFormStata', formData);
         
         const retrievedSchema = retrieveSchema(schema, rootSchema, formData);
         const customFormats = props.customFormats;
@@ -122,91 +122,6 @@ class RJSFMonkey extends RJSF {
         }
         return nextState;
     }
-
-    onSubmit = event => {
-        event.preventDefault();
-        if (event.target !== event.currentTarget) {
-            return;
-        }
-
-        event.persist();
-        let newFormData = this.state.formData;
-
-        if (this.props.omitExtraData === true) {
-            const retrievedSchema = retrieveSchema(
-                this.state.schema,
-                this.state.schema,
-                newFormData
-            );
-            const pathSchema = toPathSchema(
-                retrievedSchema,
-                "",
-                this.state.schema,
-                newFormData
-            );
-
-            const fieldNames = this.getFieldNames(pathSchema, newFormData);
-
-            newFormData = this.getUsedFormData(newFormData, fieldNames);
-        }
-
-        if (!this.props.noValidate) {
-            let schemaValidation = this.validate(newFormData);
-            let errors = schemaValidation.errors;
-            let errorSchema = schemaValidation.errorSchema;
-            const schemaValidationErrors = errors;
-            const schemaValidationErrorSchema = errorSchema;
-            if (Object.keys(errors).length > 0) {
-                if (this.props.extraErrors) {
-                    errorSchema = mergeObjects(
-                        errorSchema,
-                        this.props.extraErrors,
-                        !!"concat arrays"
-                    );
-                    errors = toErrorList(errorSchema);
-                }
-                this.setState(
-                    {
-                        errors,
-                        errorSchema,
-                        schemaValidationErrors,
-                        schemaValidationErrorSchema,
-                    },
-                    () => {
-                        if (this.props.onError) {
-                            this.props.onError(errors);
-                        } else {
-                            console.error("Form validation failed", errors);
-                        }
-                    }
-                );
-                return;
-            }
-        }
-
-        let errorSchema;
-        let errors;
-        if (this.props.extraErrors) {
-            errorSchema = this.props.extraErrors;
-            errors = toErrorList(errorSchema);
-        } else {
-            errorSchema = {};
-            errors = [];
-        }
-
-        this.setState(
-            { formData: newFormData, errors: errors, errorSchema: errorSchema },
-            () => {
-                if (this.props.onSubmit) {
-                    this.props.onSubmit(
-                        { ...this.state, formData: newFormData, status: "submitted" },
-                        event
-                    );
-                }
-            }
-        );
-    };
-
 
 }
 
