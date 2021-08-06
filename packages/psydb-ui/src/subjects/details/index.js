@@ -36,7 +36,7 @@ const SubjectDetailsContainer = ({
 
     return (
         <>
-            <h3>Kinder-Details</h3>
+            <h3 className='border-bottom'>Kinder-Details</h3>
             <div className='border pl-3 bg-light'>
                 <Header
                     title='Erfasste Daten'
@@ -57,7 +57,9 @@ const SubjectDetailsContainer = ({
                     editUrl={ `${up(url, 1)}/edit` }
                 />
                 <hr />
-                <Participation id={ id } />
+                <div className='mr-3'>
+                    <Participation id={ id } />
+                </div>
             </div>
 
         </>

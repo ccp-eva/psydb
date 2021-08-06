@@ -95,6 +95,8 @@ var participatedStudiesForSubject = async (context, next) => {
     await next();
 };
 
+
+
 var gatherStudyTypeGroups = async ({ db, studyIds }) => {
     var studyShorts = await db.collection('study').aggregate([
         { $match: {
@@ -197,11 +199,7 @@ var fetchStudyDataForType = async ({
         disablePermissionCheck: true,
     });
 
-    var {
-        relatedRecords,
-        relatedHelperSetItems,
-        relatedCustomRecordTypes,
-    } = await fetchRelatedLabelsForMany({
+    var related = await fetchRelatedLabelsForMany({
         db,
         collectionName: 'study',
         recordType: studyType,
@@ -210,9 +208,7 @@ var fetchStudyDataForType = async ({
 
     return ({
         records: studyRecords,
-        relatedRecordLabels: relatedRecords,
-        relatedHelperSetItems: relatedHelperSetItems,
-        relatedCustomRecordTypeLabels: relatedCustomRecordTypes,
+        ...related,
         displayFieldData: mergedDisplayFieldData,
     })
 }

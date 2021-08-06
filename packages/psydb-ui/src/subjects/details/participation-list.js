@@ -1,5 +1,4 @@
-import React, { useEffect, useReducer, useMemo } from 'react';
-import jsonpointer from 'jsonpointer';
+import React from 'react';
 import { Table } from 'react-bootstrap';
 
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
@@ -9,44 +8,45 @@ import FieldDataHeadCols from '@mpieva/psydb-ui-lib/src/record-list/field-data-h
 import FieldDataBodyCols from '@mpieva/psydb-ui-lib/src/record-list/field-data-body-cols';
 
 const ParticipationList = ({
-    records,
+    ageFrameField,
+    ageFrameFieldValue,
+
+    participation,
+    studyRecordsById,
     relatedRecordLabels,
     relatedHelperSetItems,
     relatedCustomRecordTypeLabels,
-    displayFieldData,
-
-    className,
+    displayFieldData
 }) => {
-
-    var dateOfBirthField = displayFieldData.find(it => (
-        it.props.isSpecialAgeFrameField
-    ));
-
     return (
-        <Table className={ className }>
+        <Table className='bg-white border'>
             <thead>
                 <tr>
                     <FieldDataHeadCols
                         displayFieldData={ displayFieldData }
                     />
                     <th>Zeitpunkt</th>
-                    { dateOfBirthField && (
+                    { ageFrameField && (
                         <th>Alter</th>
                     )}
                     <th>Status</th>
                 </tr>
             </thead>
             <tbody>
-                { records.map(it => (
+                { participation.map((it, index) => (
                     <ParticipationListRow { ...({
-                        key: it._id,
-                        record: it,
+                        key: index,
+                        item: it,
+
+                        ageFrameField,
+                        ageFrameFieldValue,
+                        
+                        studyRecordsById,
                         relatedRecordLabels,
                         relatedHelperSetItems,
                         relatedCustomRecordTypeLabels,
-                        displayFieldData,
-                        dateOfBirthField,
-                    })} />
+                        displayFieldData
+                    }) } />
                 ))}
             </tbody>
         </Table>
@@ -54,45 +54,42 @@ const ParticipationList = ({
 }
 
 const ParticipationListRow = ({
-    record,
+    item,
+
+    ageFrameField,
+    ageFrameFieldValue,
+    studyRecordsById,
     relatedRecordLabels,
     relatedHelperSetItems,
     relatedCustomRecordTypeLabels,
-    displayFieldData,
-    dateOfBirthField,
+    displayFieldData
 }) => {
-
-    var participationData = (
-        record.scientific.state.internals.participatedInStudies[0]
-    );
-
     return (
         <tr>
             <FieldDataBodyCols { ...({
-                record,
+                record: studyRecordsById[item.studyId],
                 relatedRecordLabels,
                 relatedHelperSetItems,
                 relatedCustomRecordTypeLabels,
                 displayFieldData,
             })} />
+
             <td>{ 
                 datefns.format(
-                    new Date(participationData.timestamp),
+                    new Date(item.timestamp),
                     'P p'
                 )
             }</td>
+            { ageFrameField && (
+                <td>
+                    { calculateAge({
+                        base: ageFrameFieldValue,
+                        relativeTo: item.timestamp
+                    }) }
+                </td>
+            )}
             <td>
-                { 
-                    calculateAge({
-                        base: jsonpointer.get(
-                            record, dateOfBirthField.dataPointer
-                        ),
-                        relativeTo: participationData.timestamp
-                    })
-                }
-            </td>
-            <td>
-                { formatStatus(participationData.status) }
+                { formatStatus(item.status) }
             </td>
         </tr>
     );
