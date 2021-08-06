@@ -81,16 +81,18 @@ const ParticipationListRow = ({
                     'P p'
                 )
             }</td>
-            <td>
-                { 
-                    calculateAge({
-                        base: jsonpointer.get(
-                            record, dateOfBirthField.dataPointer
-                        ),
-                        relativeTo: participationData.timestamp
-                    })
-                }
-            </td>
+            { dateOfBirthField && (
+                <td>
+                    { 
+                        calculateAge({
+                            base: jsonpointer.get(
+                                record, dateOfBirthField.dataPointer
+                            ),
+                            relativeTo: participationData.timestamp
+                        })
+                    }
+                </td>
+            )}
             <td>
                 { formatStatus(participationData.status) }
             </td>

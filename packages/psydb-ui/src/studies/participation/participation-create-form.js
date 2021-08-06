@@ -54,11 +54,6 @@ const ParticipationCreateForm = ({
             schema={ schema }
             onSubmit={ onSubmit }
         >
-            <div>
-                <Button type="submit" className="btn btn-primary">
-                    Speichern
-                </Button>
-            </div>
         </SchemaForm>
     );
 }
