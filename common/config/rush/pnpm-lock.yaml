@@ -8,7 +8,7 @@ dependencies:
   '@cdxoo/inline-text': 1.0.1
   '@cdxoo/koa-mongo-mq': 1.1.0
   '@cdxoo/koa-mongo-rohrpost': 1.0.0
-  '@cdxoo/mongo-test-helpers': 0.2.0
+  '@cdxoo/mongo-test-helpers': 0.3.0
   '@cdxoo/mongodb-restore': 1.1.2
   '@cdxoo/omit': 1.0.1
   '@cdxoo/react-router-url-search-params': 1.0.4_react-router@5.2.0+react@17.0.2
@@ -1126,6 +1126,13 @@ packages:
     dev: false
     resolution:
       integrity: sha512-Ahhf9ugSTWT51gv89VuQkO6o/BgTirAP74IEu5YeVVMLRMCQuwJbLcCXZG3TszPjIC82FA6foFDXODWail4PaA==
+  /@cdxoo/mongo-test-helpers/0.3.0:
+    dependencies:
+      bson: 4.4.1
+      mongodb-memory-server: 7.3.6
+    dev: false
+    resolution:
+      integrity: sha512-4n7Z/iTYO+Gzp78wFpE1qjSUkohrCDNFnkEbHahFwYcZEy2/ZeP2+OMuwr460x9I11SFGeirAUqI4WDAsz62mw==
   /@cdxoo/mongodb-restore/1.1.2:
     dependencies:
       bson: 4.4.1
@@ -3764,7 +3771,7 @@ packages:
   /https-proxy-agent/5.0.0:
     dependencies:
       agent-base: 6.0.2
-      debug: 4.3.1
+      debug: 4.3.2
     dev: false
     engines:
       node: '>= 6'
@@ -4823,7 +4830,7 @@ packages:
       '@types/tmp': 0.2.0
       async-mutex: 0.3.1
       camelcase: 6.2.0
-      debug: 4.3.1
+      debug: 4.3.2
       find-cache-dir: 3.3.1
       get-port: 5.1.1
       https-proxy-agent: 5.0.0
@@ -7628,7 +7635,7 @@ packages:
     version: 0.0.0
   'file:projects/psydb-api-integration-test-helpers.tgz':
     dependencies:
-      '@cdxoo/mongo-test-helpers': 0.2.0
+      '@cdxoo/mongo-test-helpers': 0.3.0
       '@cdxoo/mongodb-restore': 1.1.2
       koa: 2.13.1
       snap-shot-it: 7.9.6
@@ -7636,7 +7643,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-api-integration-test-helpers'
     resolution:
-      integrity: sha512-wzZlKCu1rcqQE2/lfMKzw7zxKTEqbSiRN2+czsi4dfEz6o+p8fRckzkbINm2W80EufeGTdeejU84cROnXRiNXA==
+      integrity: sha512-dK5JXoa8KYw/UsisgqxOeF7fpo0QRk+84OzbI0NnFQrs2Qsxfu9CzMAgy3H/ZJOOmPgFf52ZsLl1nueqdIUk0g==
       tarball: 'file:projects/psydb-api-integration-test-helpers.tgz'
     version: 0.0.0
   'file:projects/psydb-api-integration-tests.tgz':
@@ -7644,6 +7651,7 @@ packages:
       '@cdxoo/mongo-test-helpers': 0.2.0
       '@cdxoo/mongodb-restore': 1.1.2
       chai: 4.2.0
+      debug: 4.3.1
       koa: 2.13.1
       mocha: 8.1.3
       snap-shot-it: 7.9.6
@@ -7651,7 +7659,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-api-integration-tests'
     resolution:
-      integrity: sha512-D/l9/6ayJDgdReFu+uENbWfSnYMahnyJWt3Nya//8DP5ObKqvkTjbs5sWhq19rKQgVIPtMcq4JjdLd7dImoflQ==
+      integrity: sha512-dAhlw1Q/b2nzZTLTVD7UQYJIbZXZIYio1ZARriIlCQxSI0U3vb4XGo9TWAOIaXdyLAeZTgKg/PDFxbPzjmQUZg==
       tarball: 'file:projects/psydb-api-integration-tests.tgz'
     version: 0.0.0
   'file:projects/psydb-api-lib.tgz':
@@ -8028,7 +8036,7 @@ specifiers:
   '@cdxoo/inline-text': ~1.0.1
   '@cdxoo/koa-mongo-mq': ~1.1.0
   '@cdxoo/koa-mongo-rohrpost': ~1.0.0
-  '@cdxoo/mongo-test-helpers': ~0.2.0
+  '@cdxoo/mongo-test-helpers': ~0.3.0
   '@cdxoo/mongodb-restore': ~1.1.2
   '@cdxoo/omit': ~1.0.1
   '@cdxoo/react-router-url-search-params': ~1.0.4
