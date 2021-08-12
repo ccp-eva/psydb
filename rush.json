@@ -178,5 +178,12 @@
        "projectFolder": "packages/psydb-ui",
        "reviewCategory": "production"
     },
+    
+    
+    {
+       "packageName": "@mpieva/psydb-api-integration-tests",
+       "projectFolder": "packages/psydb-api-integration-tests",
+       "reviewCategory": "production"
+    },
   ]
 }
