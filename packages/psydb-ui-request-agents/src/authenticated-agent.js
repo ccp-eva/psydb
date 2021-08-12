@@ -344,12 +344,14 @@ agent.fetchExtendedExperimentData = ({
 }
 
 agent.fetchExperimentPostprocessing = ({
+    experimentType,
     subjectRecordType,
     researchGroupId,
 }) => {
     return axios.post(
         '/api/experiment-postprocessing',
         {
+            experimentType,
             subjectRecordType,
             researchGroupId
         }

@@ -26,6 +26,7 @@ const ExperimentPostprocessingListLoader = ({
 
     var {
         studyType,
+        experimentType,
         subjectType,
         researchGroupId,
     } = useParams();
@@ -34,6 +35,7 @@ const ExperimentPostprocessingListLoader = ({
 
     var [ didFetch, fetched ] = useFetch((agent) => {
         return agent.fetchExperimentPostprocessing({
+            experimentType,
             subjectRecordType: subjectType,
             researchGroupId,
         })
@@ -50,16 +52,80 @@ const ExperimentPostprocessingListLoader = ({
         relatedRecordLabels,
     } = fetched.data;
 
-    return (
-        <ExperimentPostprocessingList {...({
-            records,
-            relatedCustomRecordTypeLabels,
-            relatedHelperSetItems,
-            relatedRecordLabels,
+    if (experimentType === 'inhouse') {
+        return (
+            <InhouseExperimentPostprocessingList {...({
+                subjectType,
 
-            onSuccessfulUpdate: incrementRevision
-        }) } />
-    );
+                records,
+                relatedCustomRecordTypeLabels,
+                relatedHelperSetItems,
+                relatedRecordLabels,
+
+                onSuccessfulUpdate: incrementRevision
+            }) } />
+        );
+    }
+    else if (experimentType === 'away-team') {
+        return (
+            <ExperimentPostprocessingList {...({
+                records,
+                relatedCustomRecordTypeLabels,
+                relatedHelperSetItems,
+                relatedRecordLabels,
+
+                onSuccessfulUpdate: incrementRevision
+            }) } />
+        );
+    }
+}
+
+const InhouseExperimentPostprocessingList = ({
+    subjectType,
+
+    records,
+    relatedCustomRecordTypeLabels,
+    relatedHelperSetItems,
+    relatedRecordLabels,
+
+    onSuccessfulUpdate
+}) => {
+    return (
+        <div>
+            { records.map((experimentRecord, index) => {
+                var { subjectData } = experimentRecord.state;
+                subjectData = subjectData.filter(it => (
+                    it.subjectType === subjectType
+                ))
+                var studyLabel = (
+                    relatedRecordLabels
+                    .study[experimentRecord.state.studyId]._recordLabel
+                );
+                var formattedDate = datefns.format(new Date(experimentRecord.state.interval.start), 'P');
+                var formattedStartTime = datefns.format(new Date(experimentRecord.state.interval.start), 'p');
+                var formattedEndTime = datefns.format(new Date(experimentRecord.state.interval.end).getTime() + 1, 'p');
+                return (
+                    <>
+                        { subjectData.map(it => {
+                            var subjectLabel = (
+                                relatedRecordLabels
+                                .subject[it.subjectId]._recordLabel
+                            );
+                            return (
+                                <div>
+                                    { subjectLabel }
+                                    { formattedDate }
+                                    { formattedStartTime }
+                                    { formattedEndTime }
+                                    { studyLabel }
+                                </div>
+                            );
+                        })}
+                    </>
+                );
+            }) }
+        </div>
+    )
 }
 
 const ExperimentPostprocessingList = ({

@@ -72,8 +72,8 @@ const SubjectListRow = ({
                     </Col>
                     <Col sm={7}>
                         <PostprocessSubjectForm { ...({
-                            experimentRecord,
-                            subjectRecord: record,
+                            experimentId: experimentRecord._id,
+                            subjectId: record._id,
                             onSuccessfulUpdate
                         }) } />
                     </Col>

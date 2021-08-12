@@ -26,12 +26,14 @@ var {
 
 var RequestBodySchema = () => ExactObject({
     properties: {
+        experimentType: { type: 'string', enum: [ 'inhouse', 'away-team' ] },
         subjectRecordType: CustomRecordTypeKey({ collection: 'subject' }),
         researchGroupId: ForeignId({
             collection: 'researchGroup',
         }),
     },
     required: [
+        'experimentType',
         'subjectRecordType',
         'researchGroupId',
     ]
@@ -58,6 +60,7 @@ var experimentPostprocessing = async (context, next) => {
     };
 
     var {
+        experimentType,
         researchGroupId,
         subjectRecordType,
     } = request.body;
@@ -87,6 +90,7 @@ var experimentPostprocessing = async (context, next) => {
     var experimentRecords = await (
         db.collection('experiment').aggregate([
             { $match: {
+                'type': experimentType,
                 'state.studyId': { $in: studyIds },
                 'state.interval.end': { $lte: new Date() },
                 'state.isCanceled': false,

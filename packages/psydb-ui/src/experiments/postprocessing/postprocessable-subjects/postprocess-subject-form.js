@@ -16,8 +16,8 @@ const options = {
 }
 
 const PostprocessSubjectForm = ({
-    experimentRecord,
-    subjectRecord,
+    experimentId,
+    subjectId,
     onSuccessfulUpdate
 }) => {
     var [ selectedStatus, setSelectedStatus ] = useState('unknown');
@@ -25,8 +25,8 @@ const PostprocessSubjectForm = ({
     var handleChangeStatus = useSend(() => ({
         type: 'experiment/change-participation-status',
         payload: {
-            experimentId: experimentRecord._id,
-            subjectId: subjectRecord._id,
+            experimentId: experimentId,
+            subjectId: subjectId,
             participationStatus: selectedStatus,
         }
     }), { onSuccessfulUpdate });

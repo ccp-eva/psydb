@@ -19,14 +19,18 @@ const BigNav = ({ items }) => {
                 <LinkContainer
                     key={ linkUrl || linkTo }
                     to={ linkUrl || `${url}/${strip(linkTo)}`}
+                    style={{ color: '#212529' }}
+                    className='big-nav'
                 >
-                    <h2
-                        className='bg-light p-3 border mt-2 mb-2 d-flex justify-content-between align-items-center'
-                        role='button'
-                    >
-                        <span>{ label }</span>
-                        <ChevronDoubleRight />
-                    </h2>
+                    <a>
+                        <h2
+                            className='bg-light p-3 border mt-2 mb-2 d-flex justify-content-between align-items-center'
+                            role='button'
+                        >
+                            <span>{ label }</span>
+                            <ChevronDoubleRight />
+                        </h2>
+                    </a>
                 </LinkContainer>
             ))}
         </nav>
