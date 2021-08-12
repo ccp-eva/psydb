@@ -26,8 +26,9 @@ var DetailsIconButton = ({
     onClick,
     buttonStyle,
     iconStyle,
+    target,
 }) => {
-    if (to) {
+    if (to && !target) {
         return (
             <LinkContainer to={ to } style={{
                 ...defaultButtonStyle,
@@ -38,6 +39,20 @@ var DetailsIconButton = ({
                 </Button>
             </LinkContainer>
         )    
+    }
+    else if (to && target) {
+        return (
+            <Button
+                as='a' target={ target }
+                href={ '/#' + to }
+                style={{
+                    ...defaultButtonStyle,
+                    ...buttonStyle,
+                }}
+                { ...defaultButtonProps }>
+                <CardList style={{ ...defaultIconStyle, ...iconStyle }} />
+            </Button>
+        )
     }
     else {
         return (
