@@ -91,19 +91,24 @@ handler.triggerSystemEvents = async ({
         })
     )
 
-    var subjectInvitationIndex = (
+    /*var subjectInvitationIndex = (
         subjectRecord.scientific.state.internals.invitedForExperiments
         .findIndex(it => {
             return compareIds(it.experimentId, experimentId)
         })
-    )
-    var subjectInvitation = (
+    )*/
+    //console.log(subjectRecord.scientific.state.internals);
+    //console.log(subjectInvitationIndex);
+
+    /*var subjectInvitation = (
         subjectRecord.scientific
         .state.internals.invitedForExperiments[subjectInvitationIndex]
-    );
+    );*/
     
     var subjectParticipation = {
-        ...subjectInvitation,
+        type: experimentRecord.type,
+        expermentId: experimentRecord._id,
+        studyId: experimentRecord.state.studyId,
         timestamp: experimentRecord.state.interval.start,
         status: participationStatus,
     };
