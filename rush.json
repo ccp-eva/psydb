@@ -181,6 +181,11 @@
     
     
     {
+       "packageName": "@mpieva/psydb-api-integration-test-helpers",
+       "projectFolder": "packages/psydb-api-integration-test-helpers",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-api-integration-tests",
        "projectFolder": "packages/psydb-api-integration-tests",
        "reviewCategory": "production"
