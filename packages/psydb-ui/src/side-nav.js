@@ -33,7 +33,7 @@ const SideNav = ({
                 <Link to='/calendars'>Kalender</Link>
                 <Nav className='flex-column pl-3'>
                     <Link to='/calendars/reception'>Rezeption</Link>
-                    <Link to='/calendars/inhouse'>Inhouse Termine</Link>
+                    <Link to='/calendars/inhouse'>Interne Termine</Link>
                     <Link to='/calendars/away-team'>Externe Termine</Link>
                 </Nav>
                 <Link to='/lab-operation'>Studienbetrieb</Link>
