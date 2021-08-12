@@ -1,6 +1,6 @@
 'use strict';
 var debug = require('debug')(
-    'psydb:api:endpoints:experimentOperatorTeamsForStudy'
+    'psydb:api:endpoints:extendedExperimentData'
 );
 
 var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
@@ -24,6 +24,7 @@ var keyBy = require('@mpieva/psydb-common-lib/src/key-by');
 var groupBy = require('@mpieva/psydb-common-lib/src/group-by');
 
 var extendedExperimentData = async (context, next) => {
+    debug('__START__')
     var { 
         db,
         permissions,
@@ -37,6 +38,7 @@ var extendedExperimentData = async (context, next) => {
 
     // TODO: check params
 
+    debug('fetch experiment record');
     var experimentRecord = await fetchRecordById({
         db,
         collectionName: 'experiment',
@@ -48,9 +50,11 @@ var extendedExperimentData = async (context, next) => {
     // FIXME: question is should we 404 or 403 when access is denied?
     // well 404 for now and treat it as if it wasnt found kinda
     if (!experimentRecord) {
+        debug('=> 404');
         throw new ApiError(404, 'NoAccessibleExperimentRecordFound');
     }
 
+    debug('fetch experiment record schema');
     var experimentRecordSchema = await createSchemaForRecordType({
         db,
         collectionName: 'experiment',
@@ -58,18 +62,21 @@ var extendedExperimentData = async (context, next) => {
         fullSchema: true
     });
 
+    debug('fetch experiment related labels');
     var experimentRelated = await fetchRelatedLabels({
         db,
         data: experimentRecord,
         schema: experimentRecordSchema,
     });
 
+    debug('fetch study record');
     var studyRecord = await (
         db.collection('study').findOne({
             _id: experimentRecord.state.studyId
         }, { projection: { events: false }})
     );
 
+    debug('fetch study record schema');
     var studyRecordSchema = await createSchemaForRecordType({
         db,
         collectionName: 'study',
@@ -77,12 +84,14 @@ var extendedExperimentData = async (context, next) => {
         fullSchema: true
     });
 
+    debug('fetch study related labels');
     var studyRelated = await fetchRelatedLabels({
         db,
         data: studyRecord,
         schema: studyRecordSchema,
     });
 
+    debug('fetch location display data');
     var locationData = await fetchRecordDisplayDataById({
         db,
         collection: 'location',
@@ -90,12 +99,14 @@ var extendedExperimentData = async (context, next) => {
         id: experimentRecord.state.locationId,
     });
 
+    debug('fetch operator team record');
     var experimentOperatorTeamRecord = await (
         db.collection('experimentOperatorTeam').findOne({
             _id: experimentRecord.state.experimentOperatorTeamId
         }, { projection: { events: false }})
     );
 
+    debug('fetch operator team record schema');
     var teamRecordSchema = await createSchemaForRecordType({
         db,
         collectionName: 'experimentOperatorTeam',
@@ -103,6 +114,7 @@ var extendedExperimentData = async (context, next) => {
         fullSchema: true
     });
 
+    debug('fetch operator team record related labels');
     var experimentOperatorTeamRelated = await fetchRelatedLabels({
         db,
         data: experimentOperatorTeamRecord,
@@ -115,9 +127,12 @@ var extendedExperimentData = async (context, next) => {
         ))
     );
 
+    debug('iterating contained subject types...');
     var subjectDataByType = {};
     for (var typeKey of subjectTypeKeys) {
+        debug('subject type key:', typeKey);
 
+        debug('fetch subject type record');
         var customRecordTypeData = await fetchOneCustomRecordType({
             db,
             collection: 'subject',
@@ -128,6 +143,7 @@ var extendedExperimentData = async (context, next) => {
             customRecordTypeData.state.recordLabelDefinition
         );
 
+        debug('gathering subject type display field data');
         var {
             displayFields,
             availableDisplayFieldData,
@@ -135,6 +151,7 @@ var extendedExperimentData = async (context, next) => {
             prefetched: customRecordTypeData,
         });
 
+        debug('fetching subject records');
         var records = await fetchRecordsByFilter({
             db,
             permissions,
@@ -155,6 +172,7 @@ var extendedExperimentData = async (context, next) => {
             //limit
         });
 
+        debug('fetching subject related labels');
         var related = await fetchRelatedLabelsForMany({
             db,
             collectionName: 'subject',
@@ -178,6 +196,7 @@ var extendedExperimentData = async (context, next) => {
             ...related
         };
     }
+    debug('...done iterating contained subject types');
 
 
     context.body = ResponseBody({
@@ -199,6 +218,7 @@ var extendedExperimentData = async (context, next) => {
         },
     });
 
+    debug('__NEXT__')
     await next();
 };
 
