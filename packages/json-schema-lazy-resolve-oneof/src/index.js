@@ -1,4 +1,6 @@
 'use strict';
+var debug = require('debug')('json-schema-lazy-resolve-oneof:main');
+
 var traverse = require('json-schema-traverse'),
     jsonpointer = require('jsonpointer'),
     clone = require('copy-anything').copy,
@@ -41,6 +43,7 @@ var lazyResolveZero = ({
     //console.log('LLLLLLLLLLLLLL');
     //console.log(fullDataPointer);
     var { inSchemaPointer, schema } = currentPart;
+    debug('lazyResolveZero in:', inSchemaPointer);
 
     var requiredType = 'array';
     if (inSchemaPointer === '') {
@@ -61,7 +64,7 @@ var lazyResolveZero = ({
         
         // XXX: when data is incomplete and we encounter an empty array
         if (!currentData) {
-            console.log('returning empty', inSchemaPointer);
+            debug('returning empty', inSchemaPointer);
             return;
         }
 

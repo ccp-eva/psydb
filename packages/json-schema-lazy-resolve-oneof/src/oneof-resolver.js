@@ -1,4 +1,5 @@
 'use strict';
+var debug = require('debug')('json-schema-lazy-resolve-oneof:OneofResolver');
 var inline = require('@cdxoo/inline-text');
 
 var OneofResolver = () => {
@@ -41,10 +42,11 @@ var OneofResolver = () => {
             `)
         }
 
+        var lazyResolveDataValue = currentData[lazyResolveProp];
+
         var branches = currentSchema.oneOf,
             branchWasFound = false;
         for (var [index, branchSchema] of branches.entries()) {
-            var lazyResolveDataValue = currentData[lazyResolveProp];
             var lazyResolveSchema = (
                 branchSchema.properties[lazyResolveProp]
             );
@@ -71,8 +73,11 @@ var OneofResolver = () => {
         }
 
         if (!branchWasFound) {
+            debug('erroneous data:', currentData);
             throw new Error(inline`
-                no valid branch was found in ${inSchemaPointer}
+                no valid branch was found in pointer: "${inSchemaPointer}"
+                for resolveProp "${lazyResolveProp}" with value
+                "${lazyResolveDataValue}"
             `);
         }
 
