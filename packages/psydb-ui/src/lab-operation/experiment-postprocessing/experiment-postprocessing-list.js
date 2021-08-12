@@ -19,6 +19,9 @@ import createStringifier from '@mpieva/psydb-ui-lib/src/record-field-stringifier
 
 import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
 import DetailsIconButton from '@mpieva/psydb-ui-lib/src/details-icon-button';
+import PostprocessSubjectForm from '@mpieva/psydb-ui-lib/src/experiments/postprocess-subject-form';
+
+import InhouseList from './inhouse-list';
 
 const ExperimentPostprocessingListLoader = ({
 }) => {
@@ -39,7 +42,7 @@ const ExperimentPostprocessingListLoader = ({
             subjectRecordType: subjectType,
             researchGroupId,
         })
-    }, [ researchGroupId, subjectType ]);
+    }, [ researchGroupId, subjectType, revision ]);
 
     if (!didFetch) {
         return <LoadingIndicator size='lg' />
@@ -54,7 +57,7 @@ const ExperimentPostprocessingListLoader = ({
 
     if (experimentType === 'inhouse') {
         return (
-            <InhouseExperimentPostprocessingList {...({
+            <InhouseList {...({
                 subjectType,
 
                 records,
@@ -80,53 +83,6 @@ const ExperimentPostprocessingListLoader = ({
     }
 }
 
-const InhouseExperimentPostprocessingList = ({
-    subjectType,
-
-    records,
-    relatedCustomRecordTypeLabels,
-    relatedHelperSetItems,
-    relatedRecordLabels,
-
-    onSuccessfulUpdate
-}) => {
-    return (
-        <div>
-            { records.map((experimentRecord, index) => {
-                var { subjectData } = experimentRecord.state;
-                subjectData = subjectData.filter(it => (
-                    it.subjectType === subjectType
-                ))
-                var studyLabel = (
-                    relatedRecordLabels
-                    .study[experimentRecord.state.studyId]._recordLabel
-                );
-                var formattedDate = datefns.format(new Date(experimentRecord.state.interval.start), 'P');
-                var formattedStartTime = datefns.format(new Date(experimentRecord.state.interval.start), 'p');
-                var formattedEndTime = datefns.format(new Date(experimentRecord.state.interval.end).getTime() + 1, 'p');
-                return (
-                    <>
-                        { subjectData.map(it => {
-                            var subjectLabel = (
-                                relatedRecordLabels
-                                .subject[it.subjectId]._recordLabel
-                            );
-                            return (
-                                <div>
-                                    { subjectLabel }
-                                    { formattedDate }
-                                    { formattedStartTime }
-                                    { formattedEndTime }
-                                    { studyLabel }
-                                </div>
-                            );
-                        })}
-                    </>
-                );
-            }) }
-        </div>
-    )
-}
 
 const ExperimentPostprocessingList = ({
     records,

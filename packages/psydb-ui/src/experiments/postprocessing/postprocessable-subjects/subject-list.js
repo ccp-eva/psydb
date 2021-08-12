@@ -2,7 +2,7 @@ import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 
 import DetailsIconButton from '@mpieva/psydb-ui-lib/src/details-icon-button';
-import PostprocessSubjectForm from './postprocess-subject-form';
+import PostprocessSubjectRow from '@mpieva/psydb-ui-lib/src/experiments/postprocess-subject-row';
 
 const SubjectList = ({
     experimentRecord,
@@ -32,13 +32,14 @@ const SubjectList = ({
                     var subjectRecord = records.find(record => (
                         record._id === it.subjectId
                     ));
-                    return <SubjectListRow { ...({
+                    return <PostprocessSubjectRow { ...({
                         key: it.subjectId,
 
-                        experimentRecord,
-                        experimentSubjectData: it,
+                        experimentId: experimentRecord._id,
+                        subjectId: subjectRecord._id,
+                        subjectType: subjectRecord.type,
+                        subjectRecordLabel: subjectRecord._recordLabel,
                         
-                        record: subjectRecord,
                         ...other
                     })} />
                 })}
@@ -46,41 +47,5 @@ const SubjectList = ({
     )
 }
 
-const SubjectListRow = ({
-    experimentRecord,
-    experimentSubjectData,
-
-    record,
-    onSuccessfulUpdate,
-}) => {
-    return (
-        <div className='bg-light border mb-2 p-3'>
-            <Container>
-                <Row className='align-items-center'>
-                    <Col sm={5} className='d-flex align-items-center'>
-                        <span className='d-inline-block mr-2'>
-                            { record._recordLabel }
-                        </span>
-                        
-                        <DetailsIconButton
-                            buttonStyle={{
-                                background: 'transparent',
-                                marginTop: '0px'
-                            }}
-                            to={`/subjects/${record.type}/${record._id}`}
-                        />
-                    </Col>
-                    <Col sm={7}>
-                        <PostprocessSubjectForm { ...({
-                            experimentId: experimentRecord._id,
-                            subjectId: record._id,
-                            onSuccessfulUpdate
-                        }) } />
-                    </Col>
-                </Row>
-            </Container>
-        </div>
-    );
-}
 
 export default SubjectList;
