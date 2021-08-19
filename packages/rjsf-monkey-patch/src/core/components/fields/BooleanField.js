@@ -1,3 +1,6 @@
+/**
+ * vim: shiftwidth=2
+ */
 import React from "react";
 import * as types from "../../types";
 
@@ -52,6 +55,7 @@ function BooleanField(props) {
 
   return (
     <Widget
+      { ...props }
       options={{ ...options, enumOptions }}
       schema={schema}
       id={idSchema && idSchema.$id}
