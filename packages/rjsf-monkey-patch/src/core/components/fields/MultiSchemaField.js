@@ -1,3 +1,6 @@
+/**
+ * vim: shiftwidth=2
+ */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import * as types from "../../types";
@@ -18,7 +21,9 @@ class AnyOfField extends Component {
     const { formData, options } = this.props;
 
     this.state = {
-      selectedOption: this.getMatchingOption(formData, options),
+      // patched
+      selectedOption: this.getMatchingOption(formData, options) || 0,
+      //
     };
   }
 
@@ -32,7 +37,12 @@ class AnyOfField extends Component {
         this.props.options
       );
 
-      if (!prevState || matchingOption === this.state.selectedOption) {
+      if (
+        !prevState || matchingOption === this.state.selectedOption
+        // patched
+        || matchingOption === undefined
+        //
+      ) {
         return;
       }
 
