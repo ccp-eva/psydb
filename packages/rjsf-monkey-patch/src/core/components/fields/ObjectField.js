@@ -1,4 +1,7 @@
-import AddButton from "../AddButton";
+/**
+ * vim: shiftwidth=2
+ */
+//import AddButton from "../AddButton";
 import React, { Component } from "react";
 import * as types from "../../types";
 
@@ -30,13 +33,13 @@ function DefaultObjectFieldTemplate(props) {
         />
       )}
       {props.properties.map(prop => prop.content)}
-      {canExpand(props.schema, props.uiSchema, props.formData) && (
+      {/* patched // canExpand(props.schema, props.uiSchema, props.formData) && (
         <AddButton
           className="object-property-expand"
           onClick={props.onAddClick(props.schema)}
           disabled={props.disabled || props.readonly}
         />
-      )}
+      )*/}
     </fieldset>
   );
 }
@@ -220,6 +223,11 @@ class ObjectField extends Component {
       registry.ObjectFieldTemplate ||
       DefaultObjectFieldTemplate;
 
+    //if (this.props.isArrayItem) {
+    //    console.log('OBJECTFIELD')
+    //    console.log(this.props);
+    //}
+
     const templateProps = {
       title: uiSchema["ui:title"] || title,
       description,
@@ -237,6 +245,11 @@ class ObjectField extends Component {
         return {
           content: (
             <SchemaField
+              // patched
+              { ...this.props }
+              isArrayItem={ false }
+              parentSchema={ this.props.schema }
+              //
               key={name}
               name={name}
               required={this.isRequired(name)}
