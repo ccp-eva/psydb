@@ -1,17 +1,12 @@
 import React from "react";
-import { isForwardRef, isMemo } from "react-is";
-const ReactIs = { isForwardRef, isMemo };
-
+import * as ReactIs from "react-is";
 import mergeAllOf from "json-schema-merge-allof";
-//import fill from "core-js-pure/features/array/fill";
-// NOTE this is our modified validate
-import validateFormData, { isValid } from "./validate";
-
+import fill from "core-js-pure/features/array/fill";
 import union from "lodash/union";
 import jsonpointer from "jsonpointer";
-//import fields from "./components/fields";
-//import widgets from "./components/widgets";
-
+import fields from "./components/fields";
+import widgets from "./components/widgets";
+import validateFormData, { isValid } from "./validate";
 
 export const ADDITIONAL_PROPERTY_FLAG = "__additional_property";
 
@@ -225,7 +220,7 @@ function computeDefaults(
         );
     } else if ("oneOf" in schema) {
         schema =
-            schema.oneOf[getMatchingOption(formData, schema.oneOf, rootSchema)];
+            schema.oneOf[getMatchingOption(undefined, schema.oneOf, rootSchema)];
     } else if ("anyOf" in schema) {
         schema =
             schema.anyOf[getMatchingOption(undefined, schema.anyOf, rootSchema)];
@@ -287,14 +282,9 @@ function computeDefaults(
                         const fillerSchema = Array.isArray(schema.items)
                             ? schema.additionalItems
                             : schema.items;
-                        const fillerEntries = (
-                            new Array(schema.minItems - defaultsLength).fill(
-                                computeDefaults(
-                                    fillerSchema,
-                                    fillerSchema.defaults,
-                                    rootSchema
-                                )
-                            )
+                        const fillerEntries = fill(
+                            new Array(schema.minItems - defaultsLength),
+                            computeDefaults(fillerSchema, fillerSchema.defaults, rootSchema)
                         );
                         // then fill up the rest with either the item default or empty, up to minItems
 
@@ -314,7 +304,6 @@ export function getDefaultFormState(
     rootSchema = {},
     includeUndefinedValues = false
 ) {
-    //console.log('getDefaulktFormDstate()');
     if (!isObject(_schema)) {
         throw new Error("Invalid schema: " + _schema);
     }
@@ -326,7 +315,6 @@ export function getDefaultFormState(
         formData,
         includeUndefinedValues
     );
-    //console.log('computed defaults', defaults);
     if (typeof formData === "undefined") {
         // No form data? Use schema defaults.
         return defaults;
@@ -380,7 +368,6 @@ export function getUiOptions(uiSchema) {
         .filter(key => key.indexOf("ui:") === 0)
         .reduce((options, key) => {
             const value = uiSchema[key];
-
             if (key === "ui:widget" && isObject(value)) {
                 console.warn(
                     "Setting options via ui:widget object is deprecated, use ui:options instead"
@@ -401,15 +388,18 @@ export function getUiOptions(uiSchema) {
 export function getDisplayLabel(schema, uiSchema, rootSchema) {
     const uiOptions = getUiOptions(uiSchema);
     let { label: displayLabel = true } = uiOptions;
-    if (schema.type === "array") {
+    const schemaType = getSchemaType(schema);
+
+    if (schemaType === "array") {
         displayLabel =
             isMultiSelect(schema, rootSchema) ||
             isFilesArray(schema, uiSchema, rootSchema);
     }
-    if (schema.type === "object") {
+
+    if (schemaType === "object") {
         displayLabel = false;
     }
-    if (schema.type === "boolean" && !uiSchema["ui:widget"]) {
+    if (schemaType === "boolean" && !uiSchema["ui:widget"]) {
         displayLabel = false;
     }
     if (uiSchema["ui:field"]) {
@@ -1238,7 +1228,6 @@ export function getMatchingOption(formData, options, rootSchema) {
             delete augmentedSchema.required;
 
             if (isValid(augmentedSchema, formData, rootSchema)) {
-                //console.log('isValid', i);
                 return i;
             }
         } else if (isValid(option, formData, rootSchema)) {

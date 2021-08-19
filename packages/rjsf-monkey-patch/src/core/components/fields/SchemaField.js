@@ -85,14 +85,22 @@ function LabelInput(props) {
 }
 
 function Help(props) {
-  const { help } = props;
+  const { id, help } = props;
   if (!help) {
     return null;
   }
   if (typeof help === "string") {
-    return <p className="help-block">{help}</p>;
+    return (
+      <p id={id} className="help-block">
+        {help}
+      </p>
+    );
   }
-  return <div className="help-block">{help}</div>;
+  return (
+    <div id={id} className="help-block">
+      {help}
+    </div>
+  );
 }
 
 function ErrorList(props) {
@@ -316,7 +324,7 @@ function SchemaFieldRender(props) {
       />
     ),
     rawDescription: description,
-    help: <Help help={help} />,
+    help: <Help id={id + "__help"} help={help} />,
     rawHelp: typeof help === "string" ? help : undefined,
     errors: <ErrorList errors={errors} />,
     rawErrors: errors,
@@ -362,7 +370,9 @@ function SchemaFieldRender(props) {
             onBlur={props.onBlur}
             onChange={props.onChange}
             onFocus={props.onFocus}
-            options={schema.anyOf}
+            options={schema.anyOf.map(_schema =>
+              retrieveSchema(_schema, rootSchema, formData)
+            )}
             baseType={schema.type}
             registry={registry}
             schema={schema}
@@ -380,7 +390,9 @@ function SchemaFieldRender(props) {
             onBlur={props.onBlur}
             onChange={props.onChange}
             onFocus={props.onFocus}
-            options={schema.oneOf}
+            options={schema.oneOf.map(_schema =>
+              retrieveSchema(_schema, rootSchema, formData)
+            )}
             baseType={schema.type}
             registry={registry}
             schema={schema}
