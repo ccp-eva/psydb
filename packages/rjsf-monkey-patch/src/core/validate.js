@@ -1,21 +1,35 @@
 import toPath from "lodash/toPath";
 import Ajv from "ajv";
+
+import ajvKeywords from 'ajv-keywords';
+import psydbFormats from '@mpieva/psydb-ajv-formats';
+
 let ajv = createAjvInstance();
-import { deepEquals, getDefaultFormState } from "./utils";
+
+import {
+    deepEquals,
+    getDefaultFormState,
+    isObject,
+    mergeObjects
+} from './utils';
 
 let formerCustomFormats = null;
 let formerMetaSchema = null;
 const ROOT_SCHEMA_PREFIX = "__rjsf_rootSchema";
 
-import { isObject, mergeObjects } from "./utils";
 
 function createAjvInstance() {
     const ajv = new Ajv({
-        errorDataPath: "property",
+        errorDataPath: "property", // FIXME: this is actually an issue
         allErrors: true,
         multipleOfPrecision: 8,
         schemaId: "auto",
         unknownFormats: "ignore",
+
+        // patched
+        $data: true,
+        passContext: true,
+        //
     });
 
     // add custom formats
@@ -27,6 +41,18 @@ function createAjvInstance() {
         "color",
         /^(#?([0-9A-Fa-f]{3}){1,2}\b|aqua|black|blue|fuchsia|gray|green|lime|maroon|navy|olive|orange|purple|red|silver|teal|white|yellow|(rgb\(\s*\b([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\b\s*,\s*\b([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\b\s*,\s*\b([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\b\s*\))|(rgb\(\s*(\d?\d%|100%)+\s*,\s*(\d?\d%|100%)+\s*,\s*(\d?\d%|100%)+\s*\)))$/
     );
+
+    // patched
+    ajv.addFormat('mongodb-object-id', psydbFormats.mongodbObjectId);
+    ajv.addFormat('nanoid-default', psydbFormats.nanoidDefault);
+    ajv.addFormat('phone-number', psydbFormats.germanPhoneNumber);
+    ajv.addFormat('hex-color', psydbFormats.hexColor);
+    ajvKeywords(ajv, [
+        'uniqueItemProperties',
+        'transform', // to trim strings
+    ]);
+    //
+
     return ajv;
 }
 
@@ -206,6 +232,8 @@ export default function validateFormData(
     let validationError = null;
     try {
         ajv.validate(schema, formData);
+        console.log('validateFormData() - formData', formData);
+        console.log('validateFormData() - ajv.errors', ajv.errors);
     } catch (err) {
         validationError = err;
     }
@@ -233,7 +261,9 @@ export default function validateFormData(
         errors = transformErrors(errors);
     }
 
+    //console.log(errors);
     let errorSchema = toErrorSchema(errors);
+    //console.log(errorSchema);
 
     if (noProperMetaSchema) {
         errorSchema = {
@@ -245,6 +275,8 @@ export default function validateFormData(
             },
         };
     }
+
+    //console.log(errorSchema)
 
     if (typeof customValidate !== "function") {
         return { errors, errorSchema };
@@ -304,13 +336,17 @@ export function isValid(schema, data, rootSchema) {
         // then rewrite the schema ref's to point to the rootSchema
         // this accounts for the case where schema have references to models
         // that lives in the rootSchema but not in the schema in question.
-        return ajv
+        var valid = ajv
             .addSchema(rootSchema, ROOT_SCHEMA_PREFIX)
             .validate(withIdRefPrefix(schema), data);
+        if (!valid) {
+            console.log('isValid() - ajv.errors', ajv.errors);
+        }
     } catch (e) {
         return false;
     } finally {
         // make sure we remove the rootSchema from the global ajv instance
         ajv.removeSchema(ROOT_SCHEMA_PREFIX);
     }
+    return valid;
 }
