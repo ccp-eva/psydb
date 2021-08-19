@@ -476,6 +476,8 @@ class ArrayField extends Component {
         const { TitleField, DescriptionField } = fields;
         const itemsSchema = retrieveSchema(schema.items, rootSchema);
         const formData = keyedToPlainFormData(this.state.keyedFormData);
+        //console.log('AAAAAAAAAAAAAAAa');
+        //console.log(this.state.keyedFormData);
         const arrayProps = {
             canAdd: this.canAddItem(formData),
             items: this.state.keyedFormData.map((keyedItem, index) => {
@@ -503,6 +505,8 @@ class ArrayField extends Component {
                     autofocus: autofocus && index === 0,
                     onBlur,
                     onFocus,
+
+                    maxIndex: formData.length - 1, // patched
                 });
             }),
             className: `field field-array field-array-of-${itemsSchema.type}`,
@@ -696,6 +700,8 @@ class ArrayField extends Component {
                     autofocus: autofocus && index === 0,
                     onBlur,
                     onFocus,
+
+                    maxIndex: formData.length - 1, // patched
                 });
             }),
             onAddClick: this.onAddClick,
@@ -733,6 +739,8 @@ class ArrayField extends Component {
             onBlur,
             onFocus,
             rawErrors,
+
+            maxIndex, // patched
         } = props;
         const {
             disabled,
@@ -773,6 +781,12 @@ class ArrayField extends Component {
                     readonly={this.props.readonly}
                     autofocus={autofocus}
                     rawErrors={rawErrors}
+                    
+                    // patched
+                    parentSchema={ this.props.schema }
+                    isArrayItem={ true }
+                    maxIndex={ maxIndex }
+                    // patched
                 />
             ),
             className: "array-item",
