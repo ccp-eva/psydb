@@ -1,7 +1,8 @@
 import React from "react";
-import * as ReactIs from "react-is";
+import { isForwardRef, isMemo } from "react-is";
+const ReactIs = { isForwardRef, isMemo };
+
 import mergeAllOf from "json-schema-merge-allof";
-import fill from "core-js-pure/features/array/fill";
 import union from "lodash/union";
 import jsonpointer from "jsonpointer";
 import fields from "./components/fields";
@@ -219,8 +220,10 @@ function computeDefaults(
             )
         );
     } else if ("oneOf" in schema) {
+        // patched
         schema =
-            schema.oneOf[getMatchingOption(undefined, schema.oneOf, rootSchema)];
+            schema.oneOf[getMatchingOption(formData, schema.oneOf, rootSchema)];
+        //
     } else if ("anyOf" in schema) {
         schema =
             schema.anyOf[getMatchingOption(undefined, schema.anyOf, rootSchema)];
@@ -282,10 +285,18 @@ function computeDefaults(
                         const fillerSchema = Array.isArray(schema.items)
                             ? schema.additionalItems
                             : schema.items;
-                        const fillerEntries = fill(
-                            new Array(schema.minItems - defaultsLength),
-                            computeDefaults(fillerSchema, fillerSchema.defaults, rootSchema)
+                        // patched
+                        const fillerEntries = (
+                            new Array(schema.minItems - defaultsLength).fill(
+                                computeDefaults(
+                                    fillerSchema,
+                                    fillerSchema.defaults,
+                                    rootSchema
+                                )
+                            )
                         );
+                        //
+
                         // then fill up the rest with either the item default or empty, up to minItems
 
                         return defaultEntries.concat(fillerEntries);
@@ -304,6 +315,7 @@ export function getDefaultFormState(
     rootSchema = {},
     includeUndefinedValues = false
 ) {
+    //console.log('getDefaulktFormDstate()');
     if (!isObject(_schema)) {
         throw new Error("Invalid schema: " + _schema);
     }
@@ -315,6 +327,7 @@ export function getDefaultFormState(
         formData,
         includeUndefinedValues
     );
+    //console.log('computed defaults', defaults);
     if (typeof formData === "undefined") {
         // No form data? Use schema defaults.
         return defaults;
@@ -368,6 +381,7 @@ export function getUiOptions(uiSchema) {
         .filter(key => key.indexOf("ui:") === 0)
         .reduce((options, key) => {
             const value = uiSchema[key];
+
             if (key === "ui:widget" && isObject(value)) {
                 console.warn(
                     "Setting options via ui:widget object is deprecated, use ui:options instead"
@@ -395,7 +409,6 @@ export function getDisplayLabel(schema, uiSchema, rootSchema) {
             isMultiSelect(schema, rootSchema) ||
             isFilesArray(schema, uiSchema, rootSchema);
     }
-
     if (schemaType === "object") {
         displayLabel = false;
     }
@@ -1228,6 +1241,7 @@ export function getMatchingOption(formData, options, rootSchema) {
             delete augmentedSchema.required;
 
             if (isValid(augmentedSchema, formData, rootSchema)) {
+                //console.log('isValid', i);
                 return i;
             }
         } else if (isValid(option, formData, rootSchema)) {
