@@ -104,11 +104,6 @@
        "reviewCategory": "production"
     },
     {
-       "packageName": "@mpieva/psydb-schema",
-       "projectFolder": "packages/psydb-schema",
-       "reviewCategory": "production"
-    },
-    {
        "packageName": "@mpieva/psydb-fixtures",
        "projectFolder": "packages/psydb-fixtures",
        "reviewCategory": "production"
