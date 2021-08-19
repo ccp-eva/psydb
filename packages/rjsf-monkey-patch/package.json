@@ -21,5 +21,8 @@
     "json-schema-merge-allof": "~0.8.1",
     "jsonpointer": "~4.1.0",
     "react-is": "~17.0.2"
+  },
+  "dependencies": {
+    "prop-types": "~15.7.2"
   }
 }
