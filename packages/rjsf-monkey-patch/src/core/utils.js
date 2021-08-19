@@ -1,10 +1,17 @@
 import React from "react";
-import * as ReactIs from "react-is";
+import { isForwardRef, isMemo } from "react-is";
+const ReactIs = { isForwardRef, isMemo };
+
 import mergeAllOf from "json-schema-merge-allof";
-import fill from "core-js/library/fn/array/fill";
+//import fill from "core-js-pure/features/array/fill";
+// NOTE this is our modified validate
 import validateFormData, { isValid } from "./validate";
+
 import union from "lodash/union";
 import jsonpointer from "jsonpointer";
+//import fields from "./components/fields";
+//import widgets from "./components/widgets";
+
 
 export const ADDITIONAL_PROPERTY_FLAG = "__additional_property";
 
@@ -78,8 +85,8 @@ export function canExpand(schema, uiSchema, formData) {
 
 export function getDefaultRegistry() {
     return {
-        fields: require("./components/fields").default,
-        widgets: require("./components/widgets").default,
+        fields,
+        widgets,
         definitions: {},
         rootSchema: {},
         formContext: {},
@@ -218,7 +225,7 @@ function computeDefaults(
         );
     } else if ("oneOf" in schema) {
         schema =
-            schema.oneOf[getMatchingOption(undefined, schema.oneOf, rootSchema)];
+            schema.oneOf[getMatchingOption(formData, schema.oneOf, rootSchema)];
     } else if ("anyOf" in schema) {
         schema =
             schema.anyOf[getMatchingOption(undefined, schema.anyOf, rootSchema)];
@@ -280,9 +287,14 @@ function computeDefaults(
                         const fillerSchema = Array.isArray(schema.items)
                             ? schema.additionalItems
                             : schema.items;
-                        const fillerEntries = fill(
-                            new Array(schema.minItems - defaultsLength),
-                            computeDefaults(fillerSchema, fillerSchema.defaults, rootSchema)
+                        const fillerEntries = (
+                            new Array(schema.minItems - defaultsLength).fill(
+                                computeDefaults(
+                                    fillerSchema,
+                                    fillerSchema.defaults,
+                                    rootSchema
+                                )
+                            )
                         );
                         // then fill up the rest with either the item default or empty, up to minItems
 
@@ -302,6 +314,7 @@ export function getDefaultFormState(
     rootSchema = {},
     includeUndefinedValues = false
 ) {
+    //console.log('getDefaulktFormDstate()');
     if (!isObject(_schema)) {
         throw new Error("Invalid schema: " + _schema);
     }
@@ -313,6 +326,7 @@ export function getDefaultFormState(
         formData,
         includeUndefinedValues
     );
+    //console.log('computed defaults', defaults);
     if (typeof formData === "undefined") {
         // No form data? Use schema defaults.
         return defaults;
@@ -571,7 +585,11 @@ export function optionsList(schema) {
         return altSchemas.map((schema, i) => {
             const value = toConstant(schema);
             const label = schema.title || String(value);
-            return { label, value };
+            return {
+                schema,
+                label,
+                value,
+            };
         });
     }
 }
@@ -1219,10 +1237,11 @@ export function getMatchingOption(formData, options, rootSchema) {
             // been filled in yet, which will mean that the schema is not valid
             delete augmentedSchema.required;
 
-            if (isValid(augmentedSchema, formData)) {
+            if (isValid(augmentedSchema, formData, rootSchema)) {
+                //console.log('isValid', i);
                 return i;
             }
-        } else if (isValid(options[i], formData)) {
+        } else if (isValid(option, formData, rootSchema)) {
             return i;
         }
     }
