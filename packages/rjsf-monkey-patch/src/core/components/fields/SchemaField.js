@@ -1,4 +1,7 @@
-import IconButton from "../IconButton";
+/**
+ * vim: shiftwidth=2
+ */
+//import IconButton from "../IconButton";
 import React from "react";
 import PropTypes from "prop-types";
 import * as types from "../../types";
@@ -215,7 +218,7 @@ function WrapIfAdditional(props) {
         <div className="form-additional form-group col-xs-5">
           {props.children}
         </div>
-        <div className="col-xs-2">
+        {/* patched // <div className="col-xs-2">
           <IconButton
             type="danger"
             icon="remove"
@@ -225,7 +228,7 @@ function WrapIfAdditional(props) {
             disabled={disabled || readonly}
             onClick={onDropPropertyClick(label)}
           />
-        </div>
+        </div> */}
       </div>
     </div>
   );
@@ -272,6 +275,12 @@ function SchemaFieldRender(props) {
 
   const { __errors, ...fieldErrorSchema } = errorSchema;
 
+  //if (props.isArrayItem) {
+  //    console.log('SCHEMA_FiELD')
+  //    console.log(idSchema)
+  //    console.log(props);
+  //    console.log(FieldComponent)
+  //}
   // See #439: uiSchema: Don't pass consumed class names to child components
   const field = (
     <FieldComponent
