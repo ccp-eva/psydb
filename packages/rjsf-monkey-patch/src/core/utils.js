@@ -221,8 +221,12 @@ function computeDefaults(
         );
     } else if ("oneOf" in schema) {
         // patched
-        schema =
-            schema.oneOf[getMatchingOption(formData, schema.oneOf, rootSchema)];
+        var matchingOption = getMatchingOption(formData, schema.oneOf, rootSchema);
+        schema = (
+            matchingOption !== undefined
+            ? schema.oneOf[matchingOption]
+            : {}
+        )
         //
     } else if ("anyOf" in schema) {
         schema =
@@ -1248,7 +1252,10 @@ export function getMatchingOption(formData, options, rootSchema) {
             return i;
         }
     }
-    return 0;
+
+    // patched
+    return undefined;
+    //
 }
 
 // Check to see if a schema specifies that a value must be true
