@@ -1,3 +1,6 @@
+/**
+ * vim: shiftwidth=2
+ */
 import React from "react";
 import * as types from "../../types";
 
@@ -40,6 +43,7 @@ function StringField(props) {
   const Widget = getWidget(schema, widget, widgets);
   return (
     <Widget
+      { ...props }
       options={{ ...options, enumOptions }}
       schema={schema}
       uiSchema={uiSchema}
