@@ -121,7 +121,6 @@ const ExperimentPostprocessingList = ({
                     <th>Studie</th>
                     <th>Ort</th>
                     <th>Datum</th>
-                    <th>Uhrzeit</th>
                     <th></th>
                 </tr>
             </thead>
@@ -159,11 +158,6 @@ const ExperimentPostprocessingList = ({
                             })}
                         </td>
                         <td>{ startDate }</td>
-                        <td>{
-                            type === 'inhouse'
-                            ? `${startTime} - ${endTime}`
-                            : ''
-                        }</td>
                         <td className='d-flex justify-content-end'>
                             <DetailsIconButton to={`/experiments/${type}/${_id}`} />
                         </td>
