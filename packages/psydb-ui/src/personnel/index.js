@@ -1,9 +1,17 @@
 import React from 'react';
-import GenericCollectionView from '@mpieva/psydb-ui-lib/src/generic-collection-view';
+
+import {
+    withCollectionView,
+    withRecordTypeView
+} from '@mpieva/psydb-ui-lib/src/generic-views'
+
+const PersonnelCollectionView = withCollectionView({
+    collection: 'personnel',
+});
 
 const Personnel = () => {
     return (
-        <GenericCollectionView collection='personnel' />
+        <PersonnelCollectionView />
     );
 }
 

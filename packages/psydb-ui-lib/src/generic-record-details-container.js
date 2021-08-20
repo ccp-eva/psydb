@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useReducer, forwardRef } from 'react';
 import { useRouteMatch, useParams } from 'react-router-dom';
 
+import up from './url-up';
 import LinkButton from './link-button';
 import GenericRecordDetails from './generic-record-details';
 
@@ -16,7 +17,7 @@ const GenericRecordDetailsContainer = ({
         <div className='border pl-3 bg-light'>
             <h5 className='d-flex justify-content-between align-items-end'>
                 <span>Datensatz-Details</span>
-                <LinkButton to={ `${url}/edit` }>
+                <LinkButton to={ `${up(url, 1)}/edit` }>
                     Bearbeiten
                 </LinkButton>
             </h5>

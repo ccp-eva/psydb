@@ -1,9 +1,17 @@
 import React from 'react';
-import GenericCollectionView from '@mpieva/psydb-ui-lib/src/generic-collection-view';
+
+import {
+    withCollectionView,
+    withRecordTypeView
+} from '@mpieva/psydb-ui-lib/src/generic-views'
+
+const SystemRoleCollectionView = withCollectionView({
+    collection: 'systemRole',
+});
 
 const SystemRoles = () => {
     return (
-        <GenericCollectionView collection='systemRole' />
+        <SystemRoleCollectionView />
     );
 }
 

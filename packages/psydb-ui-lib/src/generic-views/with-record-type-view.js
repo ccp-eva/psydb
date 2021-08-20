@@ -41,6 +41,7 @@ const withRecordTypeView = ({
 
         var { path, url } = useRouteMatch();
         var { recordType } = useParams();
+        var history = useHistory();
 
         if (shouldFetchCollectionTypes) {
             var [ didFetch, fetched ] = useFetch((agent) => (
