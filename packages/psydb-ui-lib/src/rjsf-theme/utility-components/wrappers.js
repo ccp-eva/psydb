@@ -1,6 +1,9 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
 
+// TODO: move elsewhere
+const NBSP = () => ('\u00A0');
+
 export const PlainWrapper = ({ children }) => {
     return (
         <>
@@ -27,7 +30,7 @@ export const InlineWrapper = ({
                 className={ `${hasErrors ? 'text-danger' : ''} col-sm-3 col-form-label`}
             >
                 { label }
-                {' '}
+                <NBSP />
                 {label && required ? '*' : null}
             </Form.Label>
             <div className={`col-sm-9 pl-0 pr-0 ${valueClassName}`}>
@@ -74,7 +77,7 @@ export const MultiLineWrapper = ({
             >
                 <b>
                     { label || schema.title }
-                    {' '}
+                    <NBSP />
                     {(label || schema.title) && required ? '*' : null}
                 </b>
             </Form.Label>
