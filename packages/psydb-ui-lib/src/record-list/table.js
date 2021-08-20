@@ -21,6 +21,7 @@ var RecordListTable = ({
     
     enableSelectRecords,
     showSelectionIndicator,
+    wholeRowIsClickable,
     selectedRecordIds,
     onSelectRecord,
     
@@ -34,23 +35,27 @@ var RecordListTable = ({
         );
     }
 
-    var wrappedOnSelectRecord = (record) => {
-        if (!onSelectRecord) {
-            return
-        }
+    var wrappedOnSelectRecord = (
+        onSelectRecord
+        ? (record) => {
+            if (!onSelectRecord) {
+                return
+            }
 
-        if (selectedRecordIds) {
-            var action = (
-                selectedRecordIds.includes(record._id)
-                ? ({ type: 'remove', payload: { id: record._id, record } })
-                : ({ type: 'add', payload: { id: record._id, record } })
-            );
-            return onSelectRecord(action);
+            if (selectedRecordIds) {
+                var action = (
+                    selectedRecordIds.includes(record._id)
+                    ? ({ type: 'remove', payload: { id: record._id, record } })
+                    : ({ type: 'add', payload: { id: record._id, record } })
+                );
+                return onSelectRecord(action);
+            }
+            else {
+                return onSelectRecord(record);
+            }
         }
-        else {
-            return onSelectRecord(record);
-        }
-    }
+        : undefined
+    );
 
     return (
         <Table className={ className } { ...bsTableProps }>
@@ -70,6 +75,7 @@ var RecordListTable = ({
 
                 enableSelectRecords,
                 showSelectionIndicator,
+                wholeRowIsClickable,
                 onSelectRecord: wrappedOnSelectRecord,
                 selectedRecordIds,
 

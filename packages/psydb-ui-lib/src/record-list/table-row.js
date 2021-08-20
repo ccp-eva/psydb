@@ -24,6 +24,7 @@ const TableRow = ({
 
     enableSelectRecord,
     showSelectionIndicator,
+    wholeRowIsClickable,
     onSelectRecord,
     selectedRecordIds,
 
@@ -40,12 +41,12 @@ const TableRow = ({
                 )
             }}
             role={(
-                !showSelectionIndicator && onSelectRecord
+                (!showSelectionIndicator || wholeRowIsClickable) && onSelectRecord
                 ? 'button'
                 : undefined
             )}
             onClick={ (
-                !showSelectionIndicator && onSelectRecord
+                (!showSelectionIndicator || wholeRowIsClickable) && onSelectRecord
                 ? () => onSelectRecord(record)
                 : undefined
             )}

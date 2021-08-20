@@ -13,6 +13,7 @@ const TableBody = ({
     
     enableSelectRecord,
     showSelectionIndicator,
+    wholeRowIsClickable,
     onSelectRecord,
     selectedRecordIds,
     
@@ -35,6 +36,7 @@ const TableBody = ({
                 
                     enableSelectRecord,
                     showSelectionIndicator,
+                    wholeRowIsClickable,
                     onSelectRecord,
                     selectedRecordIds,
                     

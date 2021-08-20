@@ -77,6 +77,8 @@ const StudySelect = ({
                 experimentType={ experimentType }
 
                 showSelectionIndicator={ true }
+                wholeRowIsClickable={ true }
+
                 selectedRecordIds={ selectedStudies.map(it => it._id) }
                 onSelectRecord={ ({ type, payload }) => {
                     if (singleStudy) {

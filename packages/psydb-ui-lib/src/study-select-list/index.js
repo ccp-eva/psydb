@@ -10,6 +10,7 @@ const StudySelectList = ({
 
     enableSelectRecords,
     showSelectionIndicator,
+    wholeRowIsClickable,
     selectedRecordIds,
     onSelectRecord,
    
@@ -51,6 +52,7 @@ const StudySelectList = ({
 
             enableSelectRecords,
             showSelectionIndicator,
+            wholeRowIsClickable,
             onSelectRecord,
             selectedRecordIds,
         })} />
