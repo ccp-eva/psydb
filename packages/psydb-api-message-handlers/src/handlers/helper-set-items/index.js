@@ -5,6 +5,7 @@ var {
 
 var HelperSetItemsGroup = MessageHandlerGroup([
     require('./create'),
+    require('./patch'),
 ]);
 
 module.exports = HelperSetItemsGroup;
