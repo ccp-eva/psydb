@@ -15,7 +15,6 @@ import {
 
 import agent from '@mpieva/psydb-ui-request-agents';
 
-import GenericCollectionView from '@mpieva/psydb-ui-lib/src/generic-collection-view';
 import GenericRecordFormContainer from '@mpieva/psydb-ui-lib/src/generic-record-form-container';
 import RecordListContainer from '@mpieva/psydb-ui-lib/src/record-list-container';
 import LinkButton from '@mpieva/psydb-ui-lib/src/link-button';
