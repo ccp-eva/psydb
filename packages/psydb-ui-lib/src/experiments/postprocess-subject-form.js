@@ -20,7 +20,7 @@ const PostprocessSubjectForm = ({
     subjectId,
     onSuccessfulUpdate
 }) => {
-    var [ selectedStatus, setSelectedStatus ] = useState('unknown');
+    var [ selectedStatus, setSelectedStatus ] = useState('participated');
 
     var handleChangeStatus = useSend(() => ({
         type: 'experiment/change-participation-status',
@@ -43,9 +43,9 @@ const PostprocessSubjectForm = ({
                 value={ selectedStatus }
                 onChange={ handleSelectionChange }
             >   
-                { selectedStatus === 'unknown' && (
+                { /*selectedStatus === 'unknown' && (
                     <option>Bitte wählen...</option>
-                )}
+                )*/ }
                 { options.keys.map((k, i) => (
                     <option key={k} value={k}>
                         { options.names[i] }
