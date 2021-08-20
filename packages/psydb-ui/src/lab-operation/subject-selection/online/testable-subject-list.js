@@ -16,7 +16,14 @@ import agent from '@mpieva/psydb-ui-request-agents';
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 import up from '@mpieva/psydb-ui-lib/src/url-up';
 
+
+import useFetch from '@mpieva/psydb-ui-lib/src/use-fetch';
+import useModalReducer from '@mpieva/psydb-ui-lib/src/use-modal-reducer';
+import useRevision from '@mpieva/psydb-ui-lib/src/use-revision';
+import usePaginationReducer from '@mpieva/psydb-ui-lib/src/use-pagination-reducer';
+
 import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
+import Pagination from '@mpieva/psydb-ui-lib/src/pagination';
 
 import {
     Table
@@ -51,32 +58,19 @@ const OnlineTestableSubjectList = ({
         selectedSubjects: [],
     });
 
-    var {
-        records,
-        count,
-        displayFieldData,
-        relatedRecordLabels,
-        relatedHelperSetItems,
-        relatedCustomRecordTypeLabels,
+    var [ revision, increaseRevision ] = useRevision();
+    
+    var pagination = usePaginationReducer();
+    var { offset, limit, total } = pagination;
+    
+    var [ didFetch, fetched ] = useFetch((agent) => {
+        var {
+            timeFrame,
+            ageFrames,
+            values,
+        } = userSearchSettings
 
-        selectedSubjects,
-
-        showSubjectModal,
-        subjectModalData,
-
-        showMailInviteModal,
-
-        listRevision,
-    } = state;
-
-    useEffect(
-        () => {
-            var {
-                timeFrame,
-                ageFrames,
-                values,
-            } = userSearchSettings
-
+        return (
             agent.searchSubjectsTestableOnline({
                 studyRecordType: studyType,
                 subjectRecordType,
@@ -89,33 +83,29 @@ const OnlineTestableSubjectList = ({
                 ),
                 enabledAgeFrames: ageFrames,
                 enabledValues: values,
+            
+                offset,
+                limit,
             })
             .then((response) => {
-                dispatch({ type: 'init', payload: {
-                    ...response.data.data
-                }});
+                pagination.setTotal(
+                    response.data.data.subjectData.count
+                );
+                return response;
             })
-        }, [ studyIds, subjectRecordType, searchSettings64 ]
-    )
-    
-    var [
-        handleShowSubjectModal,
-        handleHideSubjectModal,
-        
-        handleShowMailInviteModal,
-        handleHideMailInviteModal,
+        );
+    }, [
+        studyIds, subjectRecordType, searchSettings64,
+        revision, offset, limit
+    ])
+   
+    var subjectModal = useModalReducer();
+    var mailInviteModal = useModalReducer();
 
+    var [
         handleSelectSubject,
         handleMailsSend,
     ] = useMemo(() => ([
-        (selectedRecord) => dispatch({ type: 'show-subject-modal', payload: {
-            record: selectedRecord
-        }}),
-        () => dispatch({ type: 'hide-subject-modal' }),
-        () => dispatch({ type: 'show-mail-invite-modal' }),
-        () => dispatch({ type: 'hide-mail-invite-modal' }),
-
-
         ({ type, payload }) => {
             dispatch({
                 type: `selected-subjects/${type}`,
@@ -130,7 +120,7 @@ const OnlineTestableSubjectList = ({
             return (
                 <Button
                     size='sm'
-                    onClick={ () => handleShowSubjectModal(record) }
+                    onClick={ () => subjectModal.handleShow({ record }) }
                 >
                     Details
                 </Button>
@@ -138,28 +128,47 @@ const OnlineTestableSubjectList = ({
         }
     ), [])
 
-    if (!records) {
+    if (!didFetch) {
         return <LoadingIndicator size='lg' />
     }
+
+    var {
+        subjectData,
+        subjectExperimentMetadata,
+    } = fetched.data;
+
+    var {
+        records,
+        displayFieldData,
+        relatedRecordLabels,
+        relatedHelperSetItems,
+        relatedCustomRecordTypeLabels,
+    } = subjectData;
+
+    var {
+        selectedSubjects,
+    } = state;
 
     return (
         <>
             <SubjectModal
-                show={ showSubjectModal }
-                onHide={ handleHideSubjectModal }
+                show={ subjectModal.show }
+                onHide={ subjectModal.handleHide }
                 
                 studyNavItems={ studyLabelItems }
                 studyRecordType={ studyType }
                 
                 subjectRecordType={ subjectRecordType }
-                subjectModalData={ subjectModalData }
+                subjectModalData={ subjectModal.data }
+                
+                onSuccessfulUpdate={ increaseRevision }
             />
             
             <MailInviteModal
-                show={ showMailInviteModal }
-                onHide={ handleHideMailInviteModal }
+                show={ mailInviteModal.show }
+                onHide={ mailInviteModal.handleHide }
         
-                totalSubjectCount={ count }
+                totalSubjectCount={ total }
 
                 studyId={ studyId }
                 selectedSubjects={ selectedSubjects }
@@ -186,7 +195,7 @@ const OnlineTestableSubjectList = ({
                         ? 'danger'
                         : 'primary'
                     }
-                    onClick={ handleShowMailInviteModal }
+                    onClick={ mailInviteModal.handleShow }
                 >
                     { 
                         selectedSubjects.length < 1
@@ -219,59 +228,6 @@ const OnlineTestableSubjectList = ({
 const reducer = (state, action) => {
     var { type, payload } = action;
     switch (type) {
-        case 'init':
-            var {
-                records,
-                count,
-                relatedRecordLabels,
-                relatedHelperSetItems,
-                relatedCustomRecordTypeLabels,
-                displayFieldData,
-            } = payload;
-
-            /*displayFieldData.push({
-                key: '_testableInSubjects',
-                displayName: 'Mögliche Studien',
-                type: 'ForeignIdList',
-                props: {
-                    collection: 'study',
-                },
-                dataPointer: '/_testableInStudies'
-            })*/
-
-            return {
-                ...state,
-                records,
-                count,
-                relatedRecordLabels,
-                relatedHelperSetItems,
-                relatedCustomRecordTypeLabels,
-                displayFieldData,
-            }
-
-        case 'show-subject-modal':
-            return {
-                ...state,
-                showSubjectModal: true,
-                subjectModalData: payload
-            }
-        case 'hide-subject-modal':
-            return {
-                ...state,
-                showSubjectModal: false,
-            }
-
-        case 'show-mail-invite-modal':
-            return {
-                ...state,
-                showMailInviteModal: true,
-            }
-        case 'hide-mail-invite-modal':
-            return {
-                ...state,
-                showMailInviteModal: false,
-            }
-
         case 'selected-subjects/set':
             return ({
                 ...state,
@@ -294,12 +250,6 @@ const reducer = (state, action) => {
                 ...state,
                 selectedSubjects: nextSelectedSubjects
             });
-
-        case 'increase-list-revision':
-            return {
-                ...state,
-                listRevision: (state.listRevision || 0) + 1
-            }
     }
 }
         
