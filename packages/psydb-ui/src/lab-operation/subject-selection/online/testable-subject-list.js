@@ -206,6 +206,8 @@ const OnlineTestableSubjectList = ({
 
             </div>
 
+            <Pagination { ...pagination } />
+
             <Table { ...({
                 records,
                 displayFieldData,
