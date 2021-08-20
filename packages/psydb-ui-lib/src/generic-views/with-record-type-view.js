@@ -17,7 +17,7 @@ import GenericRecordDetailsContainer from '../generic-record-details-container';
 import GenericRecordFormContainer from '../generic-record-form-container';
 
 import RecordTypeHeader from './record-type-header';
-
+import RecordTypeRouting from './record-type-routing';
 
 const withRecordTypeView = ({
     RecordList,
@@ -25,12 +25,15 @@ const withRecordTypeView = ({
     RecordCreator,
     RecordEditor,
 
+    CustomRouting,
     shouldFetchCollectionTypes,
 }) => {
     RecordList = RecordList || GenericRecordListContainer;
     RecordDetails = RecordDetails || GenericRecordDetailsContainer;
     RecordEditor = RecordEditor || GenericRecordFormContainer;
     RecordCreator = RecordCreator || GenericRecordFormContainer;
+
+    const Routing = CustomRouting || RecordTypeRouting;
 
     const RecordTypeView = ({
         collection,
@@ -80,58 +83,20 @@ const withRecordTypeView = ({
                 { (!recordType && !noSpacer) && (
                     <div className='mb-3'></div>
                 )}
-            
-                <Switch>
-                    <Route exact path={`${path}`}>
-                        <RecordList
-                            linkBaseUrl={ url }
-                            collection={ collection }
-                            recordType={ recordType }
-                            enableView={ true }
-                            enableNew={ true }
-                            enableEdit={ true }
-                        />
-                    </Route>
+                
+                <Routing { ...({
+                    collection,
+                    recordType,
+                    
+                    url,
+                    path,
+                    history,
 
-                    <Route exact path={`${path}/new`}>
-                        <RecordCreator
-                            type='create'
-                            collection={ collection }
-                            recordType={ recordType }
-                            onSuccessfulUpdate={
-                                ({ id }) => history.push(`${url}/${id}`)
-                            }
-                        />
-                    </Route>
-
-                    <Route
-                        exact path={`${path}/:id`}
-                        render={ (ps) => (
-                            <Redirect to={
-                                `${url}/${ps.match.params.id}/details`
-                            } />
-                        )}
-                    />
-
-                    <Route path={`${path}/:id/details`}>
-                        <RecordDetails
-                            collection={ collection }
-                            recordType={ recordType }
-                        />
-                    </Route>
-
-                    <Route path={`${path}/:id/edit`}>
-                        <RecordEditor
-                            type='edit'
-                            collection={ collection }
-                            recordType={ recordType }
-                            onSuccessfulUpdate={ ({ id }) => {
-                                history.push(`${url}/${id}`)
-                            }}
-                        />
-                    </Route>
-
-                </Switch>
+                    RecordList,
+                    RecordDetails,
+                    RecordCreator,
+                    RecordEditor,
+                }) } />
             </div>
         );
     }
