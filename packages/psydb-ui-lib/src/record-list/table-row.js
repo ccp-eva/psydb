@@ -51,7 +51,7 @@ const TableRow = ({
                 : undefined
             )}
         >
-            { showSelectionIndicator && (
+            { (showSelectionIndicator && !wholeRowIsClickable) && (
                 <CheckColumn { ...({
                     record,
                     onSelectRecord,

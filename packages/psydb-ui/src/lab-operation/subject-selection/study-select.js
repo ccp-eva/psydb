@@ -5,36 +5,9 @@ import {
     useParams
 } from 'react-router-dom';
 
+import useSelectionReducer from '@mpieva/psydb-ui-lib/src/use-selection-reducer';
 import LinkButton from '@mpieva/psydb-ui-lib/src/link-button';
 import StudySelectList from '@mpieva/psydb-ui-lib/src/study-select-list';
-
-const reducer = (state, action) => {
-    var { type, payload } = action;
-    switch (type) {
-        case 'selected-studies/set':
-            return ({
-                ...state,
-                selectedStudies: [ payload.record ]
-            })
-        case 'selected-studies/add':
-            var nextSelectedStudies = [
-                ...state.selectedStudies,
-                payload.record,
-            ];
-            return ({
-                ...state,
-                selectedStudies: nextSelectedStudies
-            });
-        case 'selected-studies/remove':
-            var nextSelectedStudies = state.selectedStudies.filter(it => (
-                it._id !== payload.id
-            ));
-            return ({
-                ...state,
-                selectedStudies: nextSelectedStudies
-            });
-    }
-}
 
 const StudySelect = ({
     experimentType,
@@ -43,11 +16,14 @@ const StudySelect = ({
     var { path, url } = useRouteMatch();
     var { studyType } = useParams();
 
-    var [ state, dispatch ] = useReducer(reducer, {
-        selectedStudies: [],
-    });
+    var selection = useSelectionReducer({
+        selected: [],
+        checkEqual: (existing, payload) => (
+            existing._id === payload._id
+        )
+    })
 
-    var { selectedStudies } = state;
+    var selectedStudies = selection.value;
 
     return (
         <div>
@@ -77,21 +53,15 @@ const StudySelect = ({
                 experimentType={ experimentType }
 
                 showSelectionIndicator={ true }
-                wholeRowIsClickable={ true }
+                wholeRowIsClickable={ singleStudy ? true : false }
 
                 selectedRecordIds={ selectedStudies.map(it => it._id) }
                 onSelectRecord={ ({ type, payload }) => {
                     if (singleStudy) {
-                        dispatch({
-                            type: `selected-studies/set`,
-                            payload
-                        });
+                        selection.set(payload.record);
                     }
                     else {
-                        dispatch({
-                            type: `selected-studies/${type}`,
-                            payload
-                        });
+                        selection[type](payload.record);
                     }
                 }}
             />
