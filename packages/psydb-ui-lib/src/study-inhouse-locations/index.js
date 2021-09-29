@@ -76,14 +76,12 @@ const StudyInhouseLocations = ({
                 studyRecord={ studyRecord }
                 customRecordTypeData={ customRecordTypeData }
                 activeType={ activeLocationType }
-                onSelect={ (nextType) => {
-                    onSelectLocationType(nextType);
-                }}
+                onSelect={ onSelectLocationType }
             />
             <LocationCalendarList
                 className={ locationCalendarListClassName }
                 teamRecords={ teamRecords }
-                studyId={ studyId }
+                studyRecord={ studyRecord }
                 locationRecordType={ activeLocationType }
 
                 onSelectEmptySlot={ onSelectEmptySlot }

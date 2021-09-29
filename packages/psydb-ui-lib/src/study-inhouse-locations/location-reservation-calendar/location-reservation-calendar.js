@@ -1,60 +1,11 @@
-import React, { useState, useEffect, useReducer, useMemo } from 'react';
+import React, { useMemo } from 'react';
+import { useRouteMatch } from 'react-router-dom';
 
-import {
-    useRouteMatch,
-} from 'react-router-dom';
-
-import {
-    Container,
-    Col,
-    Row,
-} from 'react-bootstrap';
-
-import agent from '@mpieva/psydb-ui-request-agents';
-
-import datefns from '../../date-fns';
 import getDayStartsInInterval from '../../get-day-starts-in-interval';
-
-import TimeSlotList from './time-slot-list';
-
-var range = n => [ ...Array(n).keys() ]
-
-const createModalReducer = (state, action) => {
-    switch(action.type) {
-        case 'open':
-            return ({
-                ...state,
-                showModal: true,
-                date: action.payload.date,
-                slotDuration: action.payload.slotDuration,
-                maxEnd: action.payload.maxEnd,
-            });
-        case 'close':
-            return ({
-                ...state,
-                showModal: false
-            })
-    }
-}
-
-const deleteModalReducer = (state, action) => {
-    switch(action.type) {
-        case 'open':
-            return ({
-                ...state,
-                showModal: true,
-                date: action.payload.date,
-            });
-        case 'close':
-            return ({
-                ...state,
-                showModal: false
-            })
-    }
-}
+import TimeTable from '../location-time-table';
 
 const LocationCalendar = ({
-    studyId,
+    studyRecord,
     locationRecord,
     reservationRecords,
     experimentRecords,
@@ -71,44 +22,6 @@ const LocationCalendar = ({
     className,
 }) => {
     var { path, url } = useRouteMatch();
-
-    var [ createModalState, dispatchCreateModalAction ] = (
-        useReducer(createModalReducer, {
-            showModal: false
-        })
-    );
-
-    var handleShowCreateModal = ({ date, slotDuration, maxEnd }) => {
-        dispatchCreateModalAction({
-            type: 'open',
-            payload: { date, slotDuration, maxEnd }
-        })
-    }
-
-    var handleCloseCreateModal = () => {
-        dispatchCreateModalAction({
-            type: 'close',
-        });
-    }
-
-    var [ deleteModalState, dispatchDeleteModalAction ] = (
-        useReducer(deleteModalReducer, {
-            showModal: false
-        })
-    );
-
-    var handleShowDeleteModal = ({ date }) => {
-        dispatchDeleteModalAction({
-            type: 'open',
-            payload: { date }
-        })
-    }
-
-    var handleCloseDeleteModal = () => {
-        dispatchDeleteModalAction({
-            type: 'close',
-        });
-    }
 
     var {
         canBeReserved,
@@ -136,7 +49,7 @@ const LocationCalendar = ({
                 <u>Raum: { locationRecord._recordLabel }</u>
             </h5>
             <TimeTable { ...({
-                studyId,
+                studyRecord,
                 locationRecord,
                 teamRecords,
                 reservationRecords,
@@ -153,25 +66,5 @@ const LocationCalendar = ({
         </div>
     );
 }
-
-const TimeTable = ({ allDayStarts, ...other }) => (
-
-    <Container>
-        <Row>
-            { allDayStarts.map(dayStart => (
-                <Col
-                    key={ dayStart.getTime() }
-                    className='p-0'
-                >
-                    <TimeSlotList
-                        { ...other }
-                        dayStart={ dayStart }
-                    />
-                </Col>
-            )) }
-        </Row>
-    </Container>
-
-)
 
 export default LocationCalendar;

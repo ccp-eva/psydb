@@ -10,7 +10,7 @@ const TimeSlot = ({
     experimentRecord,
 
     slotDuration,
-    studyId,
+    studyRecord,
     locationRecord,
     teamRecords,
 
@@ -18,7 +18,9 @@ const TimeSlot = ({
     onSelectReservationSlot,
     onSelectExperimentSlot,
 }) => {
+    var { _id: studyId } = studyRecord;
     var date = new Date(timestamp);
+
     if (experimentRecord) {
         var teamRecord = teamRecords.find(it => (
             it._id === experimentRecord.state.experimentOperatorTeamId

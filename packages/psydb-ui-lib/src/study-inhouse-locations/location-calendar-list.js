@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useReducer, useMemo } from 'react';
+import React from 'react';
+import { useFetch } from '@mpieva/psydb-ui-hooks';
 
-import agent from '@mpieva/psydb-ui-request-agents';
 import datefns from '../date-fns';
 import LoadingIndicator from '../loading-indicator';
 import CalendarNav from '../calendar-nav';
@@ -9,7 +9,7 @@ import withWeeklyCalendarPages from '../with-weekly-calendar-pages';
 import LocationReservationCalendar from './location-reservation-calendar';
 
 const LocationCalendarList = ({
-    studyId,
+    studyRecord,
     locationRecordType,
     teamRecords,
     
@@ -26,20 +26,15 @@ const LocationCalendarList = ({
     // used to force reloading the calendar data
     revision = 0,
 }) => {
-    
-    var [ calendarData, setCalendarData ] = useState();
-    useEffect(() => {
-        agent.fetchStudyLocationReservationCalendar({
-            studyId,
+    var [ didFetch, fetched ] = useFetch((agent) => {
+        return agent.fetchStudyLocationReservationCalendar({
             locationRecordType,
+            studyId: studyRecord._id,
             start: currentPageStart,
             end: currentPageEnd,
         })
-        .then((response) => {
-            setCalendarData(response.data.data);
-        })
     }, [
-        studyId,
+        studyRecord,
         locationRecordType,
         teamRecords,
         currentPageStart,
@@ -47,19 +42,17 @@ const LocationCalendarList = ({
         revision,
     ]);
 
-    if (!calendarData) {
+    if (!didFetch) {
         return (
             <LoadingIndicator size='lg' />
         );
     }
 
-    //console.log(currentPageStart, currentPageEnd);
-
-    const {
+    var {
         locationRecords,
         reservationRecords,
         experimentRecords
-    } = calendarData;
+    } = fetched.data;
 
     return (
         <div className={ className }>
@@ -73,11 +66,11 @@ const LocationCalendarList = ({
                 marginLeft: '15em',
                 marginRight: '15em',
             }}/>
-            { calendarData.locationRecords.map(locationRecord => (
+            { locationRecords.map(locationRecord => (
                 <LocationReservationCalendar
                     key={ locationRecord._id }
                     { ...({
-                        studyId,
+                        studyRecord,
                         locationRecord,
                         reservationRecords,
                         experimentRecords,
