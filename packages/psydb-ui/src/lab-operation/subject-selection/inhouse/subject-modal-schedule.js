@@ -1,9 +1,14 @@
-import React, { useMemo, useEffect, useReducer } from 'react';
+import React, { useState } from 'react';
 
 import TabNav from '@mpieva/psydb-ui-lib/src/tab-nav';
 import StudyInhouseLocations from '@mpieva/psydb-ui-lib/src/study-inhouse-locations';
 
 import ExperimentCreateModal from './experiment-create-modal';
+
+import {
+    useModalReducer,
+    useCallbackMaybe
+} from '@mpieva/psydb-ui-hooks';
 
 const SubjectModalSchedule = ({
     onHide,
@@ -16,52 +21,26 @@ const SubjectModalSchedule = ({
     onSuccessfulUpdate,
 }) => {
 
-    var [ state, dispatch ] = useReducer(reducer, {
-        studyId: studyNavItems[0].key
-    });
-
-    var {
-        studyId,
-        showCreateModal,
-        createModalData,
-        
-        calendarRevision,
-    } = state;
-
-    var [
-        handleShowCreateModal,
-        handleHideCreateModal,
-
-        handleExperimentCreated,
-    ] = useMemo(() => ([
-        (payload) => dispatch({ type: 'show-create-modal', payload }),
-        () => dispatch({ type: 'hide-create-modal' }),
-
-        (...args) => {
-            //dispatch({ type: 'increase-calendar-revision' });
-            onSuccessfulUpdate && onSuccessfulUpdate(...args);
-        },
-    ]))
+    var [ studyId, setStudyId ] = useState(studyNavItems[0].key);
+    
+    var experimentCreateModal = useModalReducer();
+    var handleExperimentCreated = useCallbackMaybe(onSuccessfulUpdate);
 
     return (
         <div>
             <ExperimentCreateModal
-                show={ showCreateModal }
-                onHide={ handleHideCreateModal }
+                show={ experimentCreateModal.show }
+                onHide={ experimentCreateModal.handleHide }
                 onSuccessfulCreate={ handleExperimentCreated }
                 subjectId={ subjectId }
                 subjectLabel={ subjectLabel }
-                { ...createModalData }
+                { ...experimentCreateModal.data }
             />
 
             <TabNav
                 items={ studyNavItems }
                 activeKey={ studyId }
-                onItemClick={ (nextKey) => {
-                    dispatch({ type: 'select-study', payload: {
-                        studyId: nextKey
-                    }})
-                }}
+                onItemClick={ setStudyId }
             />
 
             <StudyInhouseLocations
@@ -69,48 +48,14 @@ const SubjectModalSchedule = ({
                 studyRecordType={ studyRecordType }
 
                 //activeLocationType={ 'instituteroom' }
-                onSelectReservationSlot={ 
-                    calendarRevision > 0
-                    ? undefined
-                    : handleShowCreateModal
-                }
-                calendarRevision={ calendarRevision }
+                onSelectReservationSlot={ experimentCreateModal.handleShow }
+                calendarRevision={ 0 }
                 
                 locationCalendarListClassName='bg-white p-2 border-left border-bottom border-right'
             />
         </div>
 
     )
-}
-
-var reducer = (state, action) => {
-    var { type, payload } = action;
-    switch (type) {
-        case 'select-study':
-            return ({
-                ...state,
-                studyId: payload.studyId
-            })
-        
-        case 'show-create-modal':
-            return {
-                ...state,
-                showCreateModal: true,
-                createModalData: {
-                    ...payload
-                }
-            }
-        case 'hide-create-modal':
-            return {
-                ...state,
-                showCreateModal: false,
-            }
-        case 'increase-calendar-revision':
-            return {
-                ...state,
-                calendarRevision: (state.calendarRevision || 0) + 1
-            }
-    }
 }
 
 export default SubjectModalSchedule;
