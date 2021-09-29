@@ -1,10 +1,10 @@
-import React, { useMemo, useEffect, useReducer } from 'react';
-
-import agent from '@mpieva/psydb-ui-request-agents';
+import React from 'react';
+import { useFetchAll } from '@mpieva/psydb-ui-hooks';
 
 import LoadingIndicator from '../loading-indicator';
 import StudyInhouseLocationTypeNav from '../study-inhouse-location-type-nav';
 import LocationCalendarList from './location-calendar-list';
+
 
 const StudyInhouseLocations = ({
     studyId,
@@ -30,50 +30,36 @@ const StudyInhouseLocations = ({
     calendarRevision = 0,
 }) => {
     
-    var [ state, dispatch ] = useReducer(reducer, {});
-    
-    var {
-        customRecordTypeData,
-        studyRecord,
-        teamRecords,
-    } = state;
-
-    useEffect(() => {
+    var [ didFetch, fetched ] = useFetchAll((agent) => {
+        var customTypes = agent.readCustomRecordTypeMetadata();
         
-        agent.readCustomRecordTypeMetadata()
-        .then(response => {
-            dispatch({ type: 'init-custom-record-type-data', payload: {
-                customRecordTypeData: response.data.data.customRecordTypes,
-            }})
-        });
-
-        agent.readRecord({
+        var study = agent.readRecord({
             collection: 'study',
             recordType: studyRecordType,
             id: studyId,
-        })
-        .then(response => {
-            dispatch({ type: 'init-study', payload: {
-                studyRecord: response.data.data.record,
-            }})
         });
-
-        agent.fetchExperimentOperatorTeamsForStudy({
+        
+        var teams = agent.fetchExperimentOperatorTeamsForStudy({
             studyId,
         })
-        .then(response => {
-            dispatch({ type: 'init-teams', payload: {
-                teamRecords: response.data.data.records,
-            }})
-        });
 
+        var promises = {
+            customTypes,
+            study,
+            teams
+        };
+        return promises;
     }, [ studyId, studyRecordType, activeLocationType, revision ])
 
-    if (!(customRecordTypeData && studyRecord && teamRecords )) {
+    if (!didFetch) {
         return (
             <LoadingIndicator size='lg' />
         )
     }
+
+    var customRecordTypeData = fetched.customTypes.data.customRecordTypes;
+    var studyRecord = fetched.study.data.record;
+    var teamRecords = fetched.teams.data.records;
 
     if (!activeLocationType) {
         activeLocationType = (
@@ -108,27 +94,6 @@ const StudyInhouseLocations = ({
             />
         </>
     )
-}
-
-const reducer = (state, action) => {
-    var { type, payload } = action;
-    switch (type) {
-        case 'init-custom-record-type-data':
-            return {
-                ...state,
-                customRecordTypeData: payload.customRecordTypeData,
-            }
-        case 'init-study':
-            return {
-                ...state,
-                studyRecord: payload.studyRecord
-            };
-        case 'init-teams':
-            return {
-                ...state,
-                teamRecords: payload.teamRecords
-            }
-    }
 }
 
 export default StudyInhouseLocations;
