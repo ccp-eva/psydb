@@ -5,7 +5,7 @@ import {
     useParams
 } from 'react-router-dom';
 
-import useSelectionReducer from '@mpieva/psydb-ui-lib/src/use-selection-reducer';
+import { useSelectionReducer } from '@mpieva/psydb-ui-hooks';
 import LinkButton from '@mpieva/psydb-ui-lib/src/link-button';
 import StudySelectList from '@mpieva/psydb-ui-lib/src/study-select-list';
 

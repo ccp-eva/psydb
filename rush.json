@@ -164,6 +164,11 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/psydb-ui-hooks",
+       "projectFolder": "packages/psydb-ui-hooks",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-ui-lib",
        "projectFolder": "packages/psydb-ui-lib",
        "reviewCategory": "production"

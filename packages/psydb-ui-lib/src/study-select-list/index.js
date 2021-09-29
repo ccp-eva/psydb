@@ -4,6 +4,8 @@ import agent from '@mpieva/psydb-ui-request-agents';
 import { Table } from '../record-list';
 import LoadingIndicator from '../loading-indicator';
 
+import { useFetch } from '@mpieva/psydb-ui-hooks';
+
 const StudySelectList = ({
     studyRecordType,
     experimentType,
@@ -15,32 +17,26 @@ const StudySelectList = ({
     onSelectRecord,
    
 }) => {
-    var [ state, dispatch ] = useReducer(reducer, {});
+    var [ didFetch, fetched ] = useFetch((agent) => {
+        return agent.fetchSelectableStudies({
+            studyRecordType,
+            experimentType
+        })
+    }, [ studyRecordType, experimentType ]);
+
+    if (!didFetch) {
+        return (
+            <LoadingIndicator size='lg' />
+        );
+    }
+
     var {
         records,
         displayFieldData,
         relatedRecordLabels,
         relatedHelperSetItems,
         relatedCustomRecordTypeLabels,
-    } = state;
-
-    useEffect(() => {
-        agent.fetchSelectableStudies({
-            studyRecordType,
-            experimentType
-        })
-        .then(response => {
-            dispatch({ type: 'init', payload: {
-                ...response.data.data
-            }})
-        })
-    }, [ studyRecordType, experimentType ])
-
-    if (!records) {
-        return (
-            <LoadingIndicator size='lg' />
-        );
-    }
+    } = fetched.data;
 
     return (
         <Table { ...({
@@ -58,20 +54,5 @@ const StudySelectList = ({
         })} />
     )
 };
-
-var reducer = (state, action) => {
-    var { type, payload } = action;
-    switch (type) {
-        case 'init':
-            return {
-                ...state,
-                records: payload.records,
-                displayFieldData: payload.displayFieldData,
-                relatedRecordLabels: payload.relatedRecordLabels,
-                relatedHelperSetItems: payload.relatedHelperSetItems,
-                relatedCustomRecordTypeLabels: payload.relatedCustomRecordTypeLabels,
-            }
-    }
-}
 
 export default StudySelectList;
