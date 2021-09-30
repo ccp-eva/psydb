@@ -7,6 +7,7 @@ import Pair from '../pair';
 import Split from '../split';
 import SchemaForm from '../default-schema-form';
 import ExperimentIntervalSummary from '../experiment-interval-summary';
+import ExperimentShortControls from '../experiment-short-controls';
 
 const CreateByReservationFormContainer = ({
     onHide,
@@ -86,7 +87,7 @@ const CreateByReservationFormContainer = ({
                     </Pair>
                     <Row>
                         <Form.Label className='col-sm-4 col-form-label'>
-                            Bis
+                            Ende
                         </Form.Label>
                         <Col sm={8}>
                             <SlotControl
@@ -103,6 +104,18 @@ const CreateByReservationFormContainer = ({
             <div className='d-flex justify-content-end mt-3'>
                 <Button onClick={ handleSubmit }>Verschieben</Button>
             </div>
+            <hr />
+            <ExperimentShortControls {...({
+                subjectLabel: subjectData.record._recordLabel,
+                start: confirmData.start,
+                end: selectedEnd,
+                minEnd,
+                maxEnd: confirmData.maxEnd,
+                slotDuration: confirmData.slotDuration,
+                comment: 'foofofof',
+                onChangeEnd: handleSelectEnd,
+                onChangeAutoConfirm: () => {}
+            })} />
         </div>
     )
 

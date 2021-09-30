@@ -108,7 +108,7 @@ const FormContainer = ({
                     </Pair>
                     <Row>
                         <Form.Label className='col-sm-4 col-form-label'>
-                            Bis
+                            Ende
                         </Form.Label>
                         <Col sm={8}>
                             <SlotControl
