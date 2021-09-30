@@ -7,7 +7,6 @@ import Pair from '../pair';
 import Split from '../split';
 import SchemaForm from '../default-schema-form';
 import ExperimentIntervalSummary from '../experiment-interval-summary';
-import ExperimentShortControls from '../experiment-short-controls';
 
 const CreateByReservationFormContainer = ({
     onHide,
@@ -105,7 +104,8 @@ const CreateByReservationFormContainer = ({
                 <Button onClick={ handleSubmit }>Verschieben</Button>
             </div>
             <hr />
-            <ExperimentShortControls {...({
+
+            {/*<ExperimentShortControls {...({
                 subjectLabel: subjectData.record._recordLabel,
                 start: confirmData.start,
                 end: selectedEnd,
@@ -115,7 +115,7 @@ const CreateByReservationFormContainer = ({
                 comment: 'foofofof',
                 onChangeEnd: handleSelectEnd,
                 onChangeAutoConfirm: () => {}
-            })} />
+            })} />*/}
         </div>
     )
 

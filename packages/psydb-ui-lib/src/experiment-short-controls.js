@@ -3,6 +3,12 @@ import { Container, Row, Col, Form } from 'react-bootstrap';
 
 import datefns from './date-fns';
 import Pair from './pair';
+import StudyTeamListItem from './experiment-operator-team-list-item';
+
+const wrapOnChange = (onChange) => (event) => {
+    var { target: { value }} = event;
+    return onChange(value);
+}
 
 //FIXME: not sure about this name
 const ExperimentShortControls = (ps) => {
@@ -18,13 +24,14 @@ const ExperimentShortControls = (ps) => {
         autoConfirm,
 
         teamRecords,
-        selectedTeamId,
+        teamId,
 
         onChangeEnd,
         onChangeComment,
         onChangeAutoConfirm,
-        onChangeTeam
+        onChangeTeamId
     } = ps;
+
 
     return (
         <div>
@@ -45,11 +52,11 @@ const ExperimentShortControls = (ps) => {
                 </>
             )}
             <Container>
-                <Pair label='Datum'>
+                <Pair className='mb-2' label='Datum'>
                     { datefns.format(new Date(start), 'P') }
                 </Pair>
 
-                <Pair label='Beginn'>
+                <Pair className='mb-2'label='Beginn'>
                     { datefns.format(new Date(start), 'p') }
                 </Pair>
 
@@ -62,8 +69,9 @@ const ExperimentShortControls = (ps) => {
                 })} />
 
                 <TeamControl { ...({
+                    teamId,
                     teamRecords,
-                    onChangeTeam
+                    onChangeTeamId
                 })} />
 
             </Container>
@@ -74,8 +82,9 @@ const ExperimentShortControls = (ps) => {
 const CommentControl = (ps) => {
     var { comment, onChangeComment } = ps;
     if (onChangeComment) {
+        var onChange = wrapOnChange(onChangeComment);
         return (
-            <Row>
+            <Row className='mb-2'>
                 <Form.Label className='col-sm-4 col-form-label'>
                     Kommentar
                 </Form.Label>
@@ -87,7 +96,7 @@ const CommentControl = (ps) => {
     }
     else {
         return (
-            <Pair label="Kommentar" textWrap='span'>
+            <Pair className='mb-2' label="Kommentar" textWrap='span'>
                 <i className='text-muted'>{ comment }</i>
             </Pair>
         )
@@ -97,15 +106,16 @@ const CommentControl = (ps) => {
 const AutoConfirmControl = (ps) => {
     var { autoConfirm, onChangeAutoConfirm } = ps;
     if (onChangeAutoConfirm) {
+        var onChange = wrapOnChange(onChangeAutoConfirm);
          return (
-            <Row>
+            <Row className='mb-2'>
                 <Form.Label className='col-sm-4 col-form-label'>
                     Bestätigen
                 </Form.Label>
                 <Col sm={8}>
                     <BoolControl
                         value={ autoConfirm }
-                        onChange={ onChangeAutoConfirm }
+                        onChange={ onChange }
                     />
                 </Col>
             </Row>
@@ -127,15 +137,16 @@ const EndControl = (ps) => {
     } = ps;
 
     if (onChangeEnd) {
+        var onChange = wrapOnChange(onChangeEnd);
         return (
-            <Row>
+            <Row className='mb-2'>
                 <Form.Label className='col-sm-4 col-form-label'>
                     Ende
                 </Form.Label>
                 <Col sm={8}>
                     <SlotControl
                         value={ end  }
-                        onChange={ onChangeEnd }
+                        onChange={ onChange }
                         min={ minEnd }
                         max={ maxEnd }
                         step={ slotDuration }
@@ -145,11 +156,59 @@ const EndControl = (ps) => {
         )
     }
     else {
-        <Pair label='Ende'>
+        <Pair className='mb-2' label='Ende'>
             { datefns.format(new Date(end), 'p') }
         </Pair>
     }
 
+}
+
+const TeamControl = (ps) => {
+    var {
+        teamId,
+        teamRecords,
+        onChangeTeamId
+    } = ps;
+
+    if (onChangeTeamId) {
+        return (
+            <Row className='mb-2'>
+                <Form.Label className='col-sm-4 col-form-label'>
+                    Team
+                </Form.Label>
+                <Col sm={8}>
+                    {
+                        teamRecords
+                            .filter(it => it.state.hidden !== true)
+                            .map(it => (
+                                <StudyTeamListItem { ...({
+                                    key: it._id,
+                                    record: it,
+                                    active: it._id === teamId,
+                                    onClick: onChangeTeamId
+                                   // studyId,
+                                   // record,
+                                   // relatedRecordLabels,
+                                   // onClick: onSelectTeam,
+                                }) } />
+                            ))
+                    }
+                </Col>
+            </Row>
+        )
+    }
+    else {
+        return (
+            <Row className='mb-2'>
+                <Form.Label className='col-sm-4 col-form-label'>
+                    Team
+                </Form.Label>
+                <Col sm={8}>
+                    <StudyTeamListItem record={ teamRecords[0] } />
+                </Col>
+            </Row>
+        );
+    }
 }
 
 const BoolControl = ({
@@ -166,7 +225,7 @@ const BoolControl = ({
         var { target: { value }} = event;
         setInternalValue(value);
         var realValue = options[value];
-        return { target: { value: realValue }};
+        return onChange({ target: { value: realValue }});
     };
 
     return (
@@ -199,26 +258,31 @@ const SlotControl = ({
         slots.push(new Date(t));
     }
 
+    var [ internalValue, setInternalValue ] = useState(0);
+    var wrappedOnChange = (event) => {
+        var { target: { value }} = event;
+        setInternalValue(value);
+        var realValue = slots[value];
+        return onChange({ target: { value: realValue }});
+    };
+
+
     return (
         <Form.Control { ...({
             as: 'select',
-            onChange,
-            value
+            onChange: wrappedOnChange,
+            value: internalValue,
         }) } >
-            { slots.map(it => (
+            { slots.map((it, index) => (
                 <option
                     key={ it }
-                    value={ it }
+                    value={ index }
                 >
                     { datefns.format(it, 'p') }
                 </option>
             ))}
         </Form.Control>
     )
-}
-
-const TeamControl = (ps) => {
-    return null;
 }
 
 export default ExperimentShortControls;

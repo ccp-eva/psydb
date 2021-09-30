@@ -19,8 +19,9 @@ const StudyTeamListItem = ({
     enableDelete,
 }) => {
     var cls = [
-        'd-flex mb-3 border bg-white',
+        'd-flex border bg-white',
         'experiment-operator-team-list-item',
+        relatedRecordLabels ? 'mb-3' : 'mb-1',
         ...(active ? ['active'] : []),
         ...(onClick ? ['hover'] : []),
     ].join(' ');
@@ -37,20 +38,31 @@ const StudyTeamListItem = ({
                 border: `1px solid ${record.state.color}`,
             }}>
             </div>
-            <div className='flex-grow p-3'>
+            <div 
+                className={[
+                    'flex-grow',
+                    relatedRecordLabels ? 'p-3' : 'pl-3'
+                ].join(' ')}
+                style={relatedRecordLabels ? {} : {
+                    paddingTop: '0.375rem',
+                    paddingBottom: '0.375rem',
+                }}
+            >
                 <div>
                     <b>{ record.state.name }</b>
                 </div>
-                <div>
-                    <span className='d-inline-block pr-2'>Experimenter:</span>
-                    {
-                        record.state.personnelIds
-                        .map(id => (
-                            relatedRecordLabels.personnel[id]._recordLabel
-                        ))
-                        .join(', ')
-                    }
-                </div>
+                { relatedRecordLabels && (
+                    <div>
+                        <span className='d-inline-block pr-2'>Experimenter:</span>
+                        {
+                            record.state.personnelIds
+                            .map(id => (
+                                relatedRecordLabels.personnel[id]._recordLabel
+                            ))
+                            .join(', ')
+                        }
+                    </div>
+                )}
 
             </div>
 
