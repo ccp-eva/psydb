@@ -21,6 +21,7 @@ const LocationCalendar = ({
 
     className,
 }) => {
+    console.log(studyRecord);
     var { path, url } = useRouteMatch();
 
     var {
