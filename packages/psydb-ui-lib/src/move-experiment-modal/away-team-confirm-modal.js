@@ -106,7 +106,7 @@ const AwayTeamConfirmModal = ({
     } = modalPayloadData;
 
     var wrappedOnSuccessfulUpdate = (...args) => {
-        onHide(),
+        onHide();
         onSuccessfulUpdate && onSuccessfulUpdate(...args);
     };
 

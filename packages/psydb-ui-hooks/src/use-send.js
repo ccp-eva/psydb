@@ -1,7 +1,26 @@
 import React, { useCallback } from 'react';
 import agent from '@mpieva/psydb-ui-request-agents';
 
-const useSend = (createMessage, { onSuccessfulUpdate, onFailedUpdate }) => {
+// FIXME: since introducing dependencies i dont rally like the
+// signature of that function anmoyre
+// useSend({ createMessage, onXXX, dependencies }) is probably more readable
+const useSend = (
+    createMessage,
+    options = {}
+) => {
+    var {
+        onSuccessfulUpdate,
+        onFailedUpdate,
+        dependencies = [],
+    } = options;
+   
+    dependencies = [
+        createMessage, onSuccessfulUpdate, onFailedUpdate,
+        ...dependencies
+    ]
+
+    // FIXME: createMessage will change on every render
+    // probably; so curretly the dependency checks do nothing
     var send = useCallback((...args) => {
         var message = createMessage(...args);
         
@@ -17,7 +36,7 @@ const useSend = (createMessage, { onSuccessfulUpdate, onFailedUpdate }) => {
                 throw error;
             }
         })
-    }, [ createMessage, onSuccessfulUpdate, onFailedUpdate ])
+    }, dependencies)
 
     return send;
 }

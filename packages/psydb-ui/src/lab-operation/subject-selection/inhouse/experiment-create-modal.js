@@ -163,7 +163,7 @@ const CreateModal = ({
     return (
         <Modal show={show} onHide={ onHide } size='sm'>
             <Modal.Header closeButton>
-                <Modal.Title>Experiment</Modal.Title>
+                <Modal.Title>Termin</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <SchemaForm

@@ -4,6 +4,7 @@ import TabNav from '@mpieva/psydb-ui-lib/src/tab-nav';
 import StudyInhouseLocations from '@mpieva/psydb-ui-lib/src/study-inhouse-locations';
 
 import ExperimentCreateModal from './experiment-create-modal';
+import ExperimentUpdateModal from './experiment-update-modal';
 
 import {
     useModalReducer,
@@ -25,6 +26,8 @@ const SubjectModalSchedule = ({
     var [ studyId, setStudyId ] = useState(studyNavItems[0].key);
     
     var experimentCreateModal = useModalReducer();
+    var experimentUpdateModal = useModalReducer();
+
     var handleExperimentCreated = useCallbackMaybe(onSuccessfulUpdate);
 
     return (
@@ -36,6 +39,15 @@ const SubjectModalSchedule = ({
                 subjectId={ subjectId }
                 subjectLabel={ subjectLabel }
                 { ...experimentCreateModal.data }
+            />
+
+            <ExperimentUpdateModal
+                { ...experimentUpdateModal.passthrough }
+                
+                subjectId={ subjectId }
+                subjectLabel={ subjectLabel }
+                
+                onSuccessfulUpdate={ onSuccessfulUpdate }
             />
 
             <TabNav
@@ -51,6 +63,7 @@ const SubjectModalSchedule = ({
 
                 //activeLocationType={ 'instituteroom' }
                 onSelectReservationSlot={ experimentCreateModal.handleShow }
+                onSelectExperimentSlot={ experimentUpdateModal.handleShow}
                 calendarRevision={ 0 }
                 
                 locationCalendarListClassName='bg-white p-2 border-left border-bottom border-right'

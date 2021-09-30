@@ -1,6 +1,7 @@
 import { useReducer, useCallback } from 'react';
 
-const useModalReducer = (defaults) => {
+const useModalReducer = (defaults, options = {}) => {
+
     var [ state, dispatch ] = useReducer(reducer, defaults || {});
     var {
         show,
@@ -18,7 +19,13 @@ const useModalReducer = (defaults) => {
         show,
         data,
         handleShow,
-        handleHide
+        handleHide,
+
+        passthrough: {
+            show,
+            onHide: handleHide,
+            modalPayloadData: data
+        }
     }
 }
 
