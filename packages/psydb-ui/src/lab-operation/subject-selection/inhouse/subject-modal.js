@@ -83,6 +83,7 @@ const SubjectModal = ({
                     <SubjectModalSchedule
                         studyNavItems={ studyNavItems }
                         subjectId={ record._id }
+                        subjectRecordType={ subjectRecordType }
                         subjectLabel={ record._recordLabel }
                         studyRecordType={ studyRecordType }
                         onSuccessfulUpdate={

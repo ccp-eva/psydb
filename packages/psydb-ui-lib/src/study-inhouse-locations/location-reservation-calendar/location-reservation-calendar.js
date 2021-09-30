@@ -15,13 +15,14 @@ const LocationCalendar = ({
     currentPageEnd,
     onPageChange,
 
+    subjectRecordType,
+
     onSelectEmptySlot,
     onSelectReservationSlot,
     onSelectExperimentSlot,
 
     className,
 }) => {
-    console.log(studyRecord);
     var { path, url } = useRouteMatch();
 
     var {
@@ -59,6 +60,9 @@ const LocationCalendar = ({
                 startTimeInt,
                 endTimeInt,
                 slotDuration: reservationSlotDuration,
+
+                subjectRecordType,
+
                 onSelectEmptySlot,
                 onSelectReservationSlot,
                 onSelectExperimentSlot,

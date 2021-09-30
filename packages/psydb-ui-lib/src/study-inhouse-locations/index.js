@@ -10,6 +10,8 @@ const StudyInhouseLocations = ({
     studyId,
     studyRecordType,
 
+    subjectRecordType,
+
     activeLocationType,
     onSelectLocationType,
 
@@ -78,18 +80,20 @@ const StudyInhouseLocations = ({
                 activeType={ activeLocationType }
                 onSelect={ onSelectLocationType }
             />
-            <LocationCalendarList
-                className={ locationCalendarListClassName }
-                teamRecords={ teamRecords }
-                studyRecord={ studyRecord }
-                locationRecordType={ activeLocationType }
+            <LocationCalendarList { ...({
+                className: locationCalendarListClassName,
+                teamRecords,
+                studyRecord,
+                
+                subjectRecordType,
+                locationRecordType: activeLocationType,
 
-                onSelectEmptySlot={ onSelectEmptySlot }
-                onSelectReservationSlot={ onSelectReservationSlot }
-                onSelectExperimentSlot={ onSelectExperimentSlot }
+                onSelectEmptySlot,
+                onSelectReservationSlot,
+                onSelectExperimentSlot,
 
-                revision={ calendarRevision }
-            />
+                revision: calendarRevision,
+            })} />
         </>
     )
 }

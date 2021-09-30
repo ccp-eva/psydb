@@ -14,6 +14,7 @@ const SubjectModalSchedule = ({
     onHide,
 
     subjectId,
+    subjectRecordType,
     subjectLabel,
     studyNavItems,
     studyRecordType,
@@ -46,6 +47,7 @@ const SubjectModalSchedule = ({
             <StudyInhouseLocations
                 studyId={ studyId }
                 studyRecordType={ studyRecordType }
+                subjectRecordType={ subjectRecordType }
 
                 //activeLocationType={ 'instituteroom' }
                 onSelectReservationSlot={ experimentCreateModal.handleShow }

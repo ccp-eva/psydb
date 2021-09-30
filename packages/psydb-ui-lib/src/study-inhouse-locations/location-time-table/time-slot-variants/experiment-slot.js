@@ -14,6 +14,8 @@ const ExperimentSlot = (ps) => {
         locationRecord,
         teamRecords,
 
+        subjectRecordType,
+
         onSelectExperimentSlot,
     } = ps;
 
@@ -69,23 +71,74 @@ const ExperimentSlot = (ps) => {
                 }}>
                     <span>{ datefns.format(date, 'p') }</span>
                 </b>
-                <span
-                    className={
-                        'bg-white text-center'
-                    }
-                    style={{
-                        color: '#333',
-
-                        border: '1px solid #333',
-
-                        height: '26px',
-                        width: '30px'
-                    }}
-                >
-                    <PersonFill style={{ width: '20px', height: '20px', marginTop: '-3px' }} />
-                </span>
+                <SubjectCountIndicator { ...({
+                    experimentRecord,
+                    studyRecord,
+                    subjectRecordType,
+                })} />
             </div>
         </div>
+    );
+}
+
+const SubjectCountIndicator = (ps) => {
+    var {
+        experimentRecord,
+        studyRecord,
+        subjectRecordType,
+    } = ps;
+
+    var { state: { subjectData }} = experimentRecord;
+    var { state: { selectionSettingsBySubjectType }} = studyRecord;
+
+    var missingCountByType = (
+        selectionSettingsBySubjectType.reduce((acc, it) => ({
+            ...acc,
+            [it.subjectRecordType]: it.subjectsPerExperiment
+        }), {})
+    );
+
+    for (var it of subjectData) {
+        if (missingCountByType[it.subjectType]) {
+            missingCountByType[it.subjectType] -= 1;
+        }
+    }
+
+    // FIXME: currently we dont rally have proper experiment
+    // settings that determine if subjects types can be mixed
+    // so we just test if any subject type requirement
+    // is fulfilled
+    var missingCount = (
+        subjectRecordType
+        ? missingCountByType[subjectRecordType]
+        : (
+            Object.keys(missingCountByType).reduce((acc, it) => (
+                acc === 0 ? 0 : it
+            ), Infinity)
+        )
+    )
+
+    var Indication = (
+        subjectRecordType && missingCount !== 0
+        ? <b>-{ missingCount }</b>
+        : <PersonFill style={{ width: '20px', height: '20px', marginTop: '-3px' }} />
+    )
+
+    var textClass = missingCount === 0 ? 'text-success' : 'text-danger'
+
+    return (
+        <span
+            className={`bg-white text-center ${textClass}`}
+            style={{
+
+                border: '1px solid #333',
+
+                height: '26px',
+                width: '30px'
+            }}
+        >
+            { Indication }
+        </span>
     );
 }
 

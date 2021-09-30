@@ -10,6 +10,7 @@ import LocationReservationCalendar from './location-reservation-calendar';
 
 const LocationCalendarList = ({
     studyRecord,
+    subjectRecordType,
     locationRecordType,
     teamRecords,
     
@@ -80,6 +81,8 @@ const LocationCalendarList = ({
                         currentPageEnd,
                         onPageChange,
     
+                        subjectRecordType,
+
                         onSelectEmptySlot,
                         onSelectReservationSlot,
                         onSelectExperimentSlot,

@@ -18,6 +18,9 @@ const TimeSlotList = ({
     startTimeInt,
     endTimeInt,
     slotDuration,
+    
+    subjectRecordType,
+
     onSelectEmptySlot,
     onSelectReservationSlot,
     onSelectExperimentSlot,
@@ -63,6 +66,9 @@ const TimeSlotList = ({
         studyRecord,
         locationRecord,
         teamRecords,
+        
+        subjectRecordType,
+        
         onSelectEmptySlot: wrapped.onSelectEmptySlot,
         onSelectReservationSlot: wrapped.onSelectReservationSlot,
         onSelectExperimentSlot: wrapped.onSelectExperimentSlot,
@@ -80,14 +86,13 @@ const TimeSlotList = ({
                     reservationRecord,
                     experimentRecord
                 }) => (
-                    <TimeSlot
-                        key={ timestamp }
-                        timestamp={ timestamp }
-                        reservationRecord={ reservationRecord }
-                        experimentRecord={ experimentRecord }
+                    <TimeSlot key={ timestamp } { ...({
+                        timestamp,
+                        reservationRecord,
+                        experimentRecord,
 
-                        { ...sharedSlotProps }
-                    />
+                        ...sharedSlotProps
+                    })} />
                 )
             )}
         </div>
