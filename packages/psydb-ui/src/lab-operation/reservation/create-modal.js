@@ -45,7 +45,7 @@ const CreateModal = ({
                 locationId,
                 interval: {
                     start: start.toISOString(),
-                    end: end.toISOString(),
+                    end: new Date(end.getTime() - 1).toISOString(),
                 }
             }
         }

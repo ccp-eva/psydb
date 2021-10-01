@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { Modal, Button } from 'react-bootstrap';
+import { useSend } from '@mpieva/psydb-ui-hooks';
 
-import {
-    Button,
-    Modal
-} from 'react-bootstrap';
+import ExperimentShortControls from '@mpieva/psydb-ui-lib/src/experiment-short-controls';
 
 import { withTheme } from '@rjsf/core';
 import { Theme as Bootstrap4Theme } from '@rjsf/bootstrap-4'
@@ -132,8 +131,14 @@ const CreateModal = ({
 
     var startOfDay = datefns.startOfDay(start).getTime();
 
+    var [ comment, setComment ] = useState('');
+    var [ autoConfirm, setAutoConfirm ] = useState(false);
+
+    var minEnd = new Date(start.getTime() + slotDuration);
+    var [ end, setEnd ] = useState(minEnd);
+
     var handleSubmit = ({ formData }) => {
-        var { end, comment, autoConfirmInvitation } = formData;
+        //var { end, comment, autoConfirmInvitation } = formData;
 
         var message = {
             type: 'experiment/create-from-inhouse-reservation',
@@ -142,14 +147,12 @@ const CreateModal = ({
                     studyId,
                     experimentOperatorTeamId,
                     locationId,
-                    subjectIds: [ subjectId ],
+                    //subjectIds: [ subjectId ],
+                    subjectData: [{ subjectId, comment, autoConfirm }],
 
                     interval: {
                         start: start.toISOString(),
-                        end: (
-                            new Date(startOfDay + Duration(end) - 1)
-                            .toISOString()
-                        ),
+                        end: new Date(end.getTime() - 1).toISOString()
                     }
                 }
             }
@@ -161,16 +164,39 @@ const CreateModal = ({
     }
 
     return (
-        <Modal show={show} onHide={ onHide } size='sm'>
+        <Modal show={show} onHide={ onHide } size='md'>
             <Modal.Header closeButton>
                 <Modal.Title>Termin</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <SchemaForm
+                <ExperimentShortControls { ...({
+                    subjectLabel,
+
+                    start,
+                    end,
+                    minEnd,
+                    maxEnd,
+                    slotDuration,
+
+                    comment,
+                    autoConfirm,
+
+                    onChangeComment: setComment,
+                    onChangeAutoConfirm: setAutoConfirm,
+                    onChangeEnd: setEnd,
+                })} />
+                
+                <hr />
+                <div className='d-flex justify-content-end'>
+                    <Button size='sm' onClick={ handleSubmit }>
+                        Speichern
+                    </Button>
+                </div>
+                {/*<SchemaForm
                     schema={ schema }
                     uiSchema={ uiSchema }
                     onSubmit={ handleSubmit }
-                />
+                />*/}
             </Modal.Body>
         </Modal>
     );

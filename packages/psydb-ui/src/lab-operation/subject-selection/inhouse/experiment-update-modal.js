@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { useSend } from '@mpieva/psydb-ui-hooks';
 
-import Pair from '@mpieva/psydb-ui-lib/src/pair';
-import ExperimentIntervalSummary from '@mpieva/psydb-ui-lib/src/experiment-interval-summary';
 import ExperimentShortControls from '@mpieva/psydb-ui-lib/src/experiment-short-controls';
 
 const ExperimentUpdateModal = (ps) => {

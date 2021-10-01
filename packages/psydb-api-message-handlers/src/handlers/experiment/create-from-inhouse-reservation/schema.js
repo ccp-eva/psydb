@@ -6,6 +6,8 @@ var {
     ForeignId,
     SaneString,
     DateTimeInterval,
+    FullText,
+    DefaultBool,
 } = require('@mpieva/psydb-schema-fields');
 
 var { Message } = require('@mpieva/psydb-schema-helpers');
@@ -30,12 +32,19 @@ var createSchema = ({} = {}) => (
 
                         interval: DateTimeInterval(),
 
-                        subjectIds: {
+                        subjectData: {
                             type: 'array',
                             default: [],
-                            items: ForeignId({
-                                collection: 'subject',
-                            }),
+                            items: ExactObject({
+                                properties: {
+                                    subjectId: ForeignId({
+                                        collection: 'subject',
+                                    }),
+                                    comment: FullText(),
+                                    autoConfirm: DefaultBool(),
+                                },
+                                required: [ 'subjectId' ]
+                            })
                         },
 
                         /*subjectGroupIds: {
@@ -51,7 +60,7 @@ var createSchema = ({} = {}) => (
                         'locationId',
                         'experimentOperatorTeamId',
                         //'subjectGroupIds',
-                        'subjectIds',
+                        'subjectData',
                     ]
                 })
             },

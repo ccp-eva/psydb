@@ -1,6 +1,8 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
 
+var keyBy = require('@mpieva/psydb-common-lib/src/key-by');
+
 var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
     createId = require('@mpieva/psydb-api-lib/src/create-id'),
     compareIds = require('@mpieva/psydb-api-lib/src/compare-ids');
@@ -22,7 +24,7 @@ var dispatchCreateEvents = async ({
     locationId,
     locationRecordType,
     //subjectGroupIds,
-    subjectIds,
+    subjectData,
     interval,
 
     lastKnownReservationEventId,
@@ -45,20 +47,27 @@ var dispatchCreateEvents = async ({
         .toArray()
     );*/
 
+    var subjectIds = subjectData.map(it => it.subjectId);
+
     var subjectRecords = await (
         db.collection('subject').find({
             _id: { $in: subjectIds },
         }, { projection: { type: true }}).toArray()
     );
 
+    var subjectRecordsById = keyBy({
+        items: subjectRecords,
+        byProp: '_id'
+    });
+
     var pusher = PushMaker({ personnelId });
     
-    var SubjectDataItem = (id, type) => ({
-        subjectType: type,
-        subjectId: id,
-        invitationStatus: 'scheduled',
+    var SubjectDataItem = ({ subjectId, comment, autoConfirm }) => ({
+        subjectId,
+        subjectType: subjectRecordsById[subjectId],
+        invitationStatus: autoConfirm ? 'confirmed': 'scheduled',
         participationStatus: 'unknown',
-        comment: '',
+        comment: comment || '',
     });
 
     var subjectDataMessages = [
@@ -73,8 +82,8 @@ var dispatchCreateEvents = async ({
         ]), []),*/
         
         ...pusher.all({
-            '/state/subjectData': subjectRecords.map(
-                it => SubjectDataItem(it._id, it.type)
+            '/state/subjectData': subjectData.map(
+                it => SubjectDataItem(it)
             )
         })
     ];
@@ -140,7 +149,9 @@ var dispatchCreateEvents = async ({
     var now = new Date();
     if (type === 'inhouse') {
         // TODO: the last known ids should be in payload
-        for (var subjectId of subjectIds) {
+        for (var it of subjectData) {
+            var { subjectId, comment, autoConfirm } = it;
+
             var subjectRecord = await (
                 db.collection('subject').findOne({
                     _id: subjectId,
@@ -165,7 +176,7 @@ var dispatchCreateEvents = async ({
                             studyId,
                             experimentId,
                             timestamp: now,
-                            status: 'scheduled',
+                            status: autoConfirm ? 'confrmed' : 'scheduled',
                         }]
                     })
                 ],

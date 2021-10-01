@@ -100,7 +100,7 @@ handler.triggerSystemEvents = async ({
         locationId: props.locationId,
         locationRecordType: locationRecord.type,
         //subjectGroupIds: props.subjectGroupIds,
-        subjectIds: props.subjectIds,
+        subjectData: props.subjectIds.map(subjectId => ({ subjectId })),
     });
 }
 

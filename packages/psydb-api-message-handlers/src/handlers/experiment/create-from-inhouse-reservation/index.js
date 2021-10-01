@@ -38,8 +38,10 @@ handler.checkAllowedAndPlausible = async ({
         locationId,
         interval,
         //subjectGroupIds,
-        subjectIds,
+        subjectData,
     } = message.payload.props;
+
+    var subjectIds = subjectData.map(it => it.subjectId);
 
     // TODO: use FK to check existance (?)
     await checkForeignIdsExist(db, {
@@ -91,7 +93,7 @@ handler.triggerSystemEvents = async ({
         interval: props.interval,
 
         //subjectGroupIds: props.subjectGroupIds,
-        subjectIds: props.subjectIds,
+        subjectData: props.subjectData,
 
         //lastKnownReservationEventId: props.lastKnownReservationEventId,
     });
