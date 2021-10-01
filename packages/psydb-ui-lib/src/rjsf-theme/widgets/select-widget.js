@@ -97,7 +97,9 @@ const SelectWidget = (ps) => {
             Wrapper = wrappers.InlineWrapper;
         }
     }
-    
+   
+    console.log(ps);
+
     return (
         <Wrapper { ...({
             id, label, required, schema, rawErrors
