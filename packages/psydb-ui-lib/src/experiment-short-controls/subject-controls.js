@@ -1,5 +1,4 @@
 import React from 'react';
-import { Container } from 'react-bootstrap';
 import Pair from '../pair';
 
 import {
@@ -7,7 +6,7 @@ import {
     AutoConfirmControl
 } from './subject-container-fields';
 
-const SubjectContainer = (ps) => {
+const SubjectControls = (ps) => {
     var {
         subjectLabel,
         comment,
@@ -17,7 +16,7 @@ const SubjectContainer = (ps) => {
     } = ps;
 
     return (
-        <Container>
+        <>
             <Pair className='mb-2' label="Proband">
                 { subjectLabel }
             </Pair>
@@ -29,8 +28,8 @@ const SubjectContainer = (ps) => {
                 autoConfirm,
                 onChangeAutoConfirm
             })} />
-        </Container>
+        </>
     );
 }
 
-export default SubjectContainer;
+export default SubjectControls;

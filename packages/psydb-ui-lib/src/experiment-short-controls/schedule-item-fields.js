@@ -3,6 +3,7 @@ import { Row, Col, Form } from 'react-bootstrap';
 
 import datefns from '../date-fns';
 import Pair from '../pair';
+import StudyTeamListItem from '../experiment-operator-team-list-item';
 import {
     wrapOnChange,
     SlotControl

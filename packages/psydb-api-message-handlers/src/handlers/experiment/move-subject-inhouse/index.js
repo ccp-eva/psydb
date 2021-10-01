@@ -102,11 +102,20 @@ handler.checkAllowedAndPlausible = async ({
             throw new ApiError(400, 'StudiesDontMatch');
         }
 
-        var subjectExistsInTarget = (
-            targetExperimentRecord.state.subjectData.find(it => (
+        var subjectExistsInTargetIndex = (
+            targetExperimentRecord.state.subjectData.findIndex(it => (
                 compareIds(it.subjectId, subjectId)
             ))
-        )
+        );
+        var subjectExistsInTarget = (
+            targetExperimentRecord
+            .state.subjectData[subjectExistsInTargetIndex]
+        );
+        // TODO: move back to where subject came from fails
+        // since subject is still in that experiment technically
+        /*if (['moved'].includes(subjectExistsInTarget.participationStatus)) {
+            cache.subjectExistsInTargetIndex = subjectExistsInTargetIndex;
+        }*/
         if (subjectExistsInTarget) {
             throw new ApiError(400, 'SubjectExistsInTarget');
         }
@@ -156,8 +165,8 @@ handler.triggerSystemEvents = async ({
         experimentId,
         target,
         subjectId,
-        comment,
-        autoConfirm,
+        comment = '',
+        autoConfirm = false,
     } = payload;
 
     var {

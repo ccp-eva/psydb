@@ -1,11 +1,9 @@
-import React  from 'react';
-import { Modal, Form, Container, Col, Row, Button } from 'react-bootstrap';
-
-import agent from '@mpieva/psydb-ui-request-agents';
-import datefns from '../date-fns';
-import SchemaForm from '../default-schema-form';
+import React, { useState }  from 'react';
+import { Container, Button } from 'react-bootstrap';
+import { useSend } from '@mpieva/psydb-ui-hooks';
 
 import ExperimentIntervalSummary from '../experiment-interval-summary';
+import { SubjectControls } from '../experiment-short-controls';
 
 const ExperimentFormContainer = ({
     onHide,
@@ -22,29 +20,42 @@ const ExperimentFormContainer = ({
     var experimentRecord = experimentData.record;
     var target = confirmData.experimentRecord;
 
-    var handleSubmit = () => {
-        var message = {
-            type: 'experiment/move-subject-inhouse',
-            payload: {
-                experimentId: experimentData.record._id,
-                subjectId: subjectData.record._id,
-                target: {
-                    experimentId: target._id
-                }
-            }
-        };
+    var [ comment, setComment ] = useState('');
+    var [ autoConfirm, setAutoConfirm ] = useState(false);
 
-        return agent.send({ message }).then(response => {
-            onSuccessfulUpdate && onSuccessfulUpdate(response);
-        })
-    }
+    var handleSubmit = useSend(() => ({
+        type: 'experiment/move-subject-inhouse',
+        payload: {
+            experimentId: experimentData.record._id,
+            subjectId: subjectData.record._id,
+            target: {
+                experimentId: target._id
+            },
+            comment,
+            autoConfirm,
+        }
+    }), {
+        onSuccessfulUpdate,
+        dependencies: [
+            experimentData, subjectData, target,
+            comment, autoConfirm
+        ]
+    })
 
     return (
         <div>
-            <header><b>Proband</b></header>
-            <div className='pt-2 pb-2 pl-4 mb-1'>{
-                subjectData.record._recordLabel
-            }</div>
+            <Container>
+                <SubjectControls { ...({
+                    subjectLabel: subjectData.record._recordLabel,
+                    comment,
+                    autoConfirm,
+
+                    onChangeComment: setComment,
+                    onChangeAutoConfirm: setAutoConfirm,
+                })} />
+            </Container>
+
+            <hr />
 
             <header className='pb-1'><b>Aktuell</b></header>
             <div className='p-2 bg-white border'>
@@ -60,7 +71,9 @@ const ExperimentFormContainer = ({
                 />
             </div>
             <div className='d-flex justify-content-end mt-3'>
-                <Button onClick={ handleSubmit }>Verschieben</Button>
+                <Button size="sm" onClick={ handleSubmit }>
+                    Verschieben
+                </Button>
             </div>
         </div>
     )

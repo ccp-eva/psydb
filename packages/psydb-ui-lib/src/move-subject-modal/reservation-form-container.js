@@ -1,14 +1,20 @@
 import React, { useMemo, useEffect, useReducer, useCallback, useState } from 'react';
 import { Modal, Form, Container, Col, Row, Button } from 'react-bootstrap';
 
+import { useSend } from '@mpieva/psydb-ui-hooks';
+
 import agent from '@mpieva/psydb-ui-request-agents';
 import datefns from '../date-fns';
 import Pair from '../pair';
 import Split from '../split';
 import SchemaForm from '../default-schema-form';
 import ExperimentIntervalSummary from '../experiment-interval-summary';
+import {
+    SubjectControls,
+    ScheduleItemControls
+} from '../experiment-short-controls';
 
-const CreateByReservationFormContainer = ({
+const ReservationFormContainer = ({
     onHide,
     experimentData,
     studyData,
@@ -22,45 +28,60 @@ const CreateByReservationFormContainer = ({
     var studyRecordType = studyData.record.type;
     var experimentState = experimentData.record.state;
 
-    var minEnd = new Date(
-        confirmData.start.getTime() + confirmData.slotDuration
-    );
-    var [ selectedEnd, setSelectedEnd ] = useState(minEnd.toISOString());
-    var handleSelectEnd = useCallback((event) => {
-        var { target: { value }} = event;
-        setSelectedEnd(value);
-    }, [])
+    var {
+        reservationRecord,
+        locationRecord,
+        start,
+        maxEnd,
+        slotDuration
+    } = confirmData;
 
-    var handleSubmit = () => {
-        var message = {
-            type: 'experiment/move-subject-inhouse',
-            payload: {
-                experimentId: experimentData.record._id,
-                subjectId: subjectData.record._id,
-                target: {
-                    locationId: confirmData.locationRecord._id,
-                    experimentOperatorTeamId: (
-                        confirmData.reservationRecord.state.experimentOperatorTeamId
-                    ),
-                    interval: {
-                        start: confirmData.start.toISOString(),
-                        end: new Date(selectedEnd).toISOString(),
-                    }
-                }
-            }
-        };
+    var [ comment, setComment ] = useState('');
+    var [ autoConfirm, setAutoConfirm ] = useState(false);
 
-        return agent.send({ message }).then(response => {
-            onSuccessfulUpdate && onSuccessfulUpdate(response);
-        })
-    }
+    var minEnd = new Date(start.getTime() + slotDuration);
+    var [ end, setEnd ] = useState(minEnd);
+
+    var handleSubmit = useSend(() => ({
+        type: 'experiment/move-subject-inhouse',
+        payload: {
+            experimentId: experimentData.record._id,
+            subjectId: subjectData.record._id,
+            target: {
+                locationId: locationRecord._id,
+                experimentOperatorTeamId: (
+                    reservationRecord.state.experimentOperatorTeamId
+                ),
+                interval: {
+                    start: start.toISOString(),
+                    end: new Date(end).toISOString(),
+                },
+            },
+            comment,
+            autoConfirm,
+        }
+    }), {
+        onSuccessfulUpdate,
+        dependencies: [
+            experimentData, subjectData. confirmData,
+            end, comment, autoConfirm
+        ]
+    });
 
     return (
         <div>
-            <header><b>Proband</b></header>
-            <div className='pt-2 pb-2 pl-4 mb-1'>{
-                subjectData.record._recordLabel
-            }</div>
+            <Container>
+                <SubjectControls { ...({
+                    subjectLabel: subjectData.record._recordLabel,
+                    comment,
+                    autoConfirm,
+
+                    onChangeComment: setComment,
+                    onChangeAutoConfirm: setAutoConfirm
+                })} />
+            </Container>
+
+            <hr />
 
             <header className='pb-1'><b>Aktuell</b></header>
             <div className='p-2 bg-white border'>
@@ -72,36 +93,21 @@ const CreateByReservationFormContainer = ({
             <header className='pb-1 mt-3'><b>Verschieben Nach</b></header>
             <div className='p-2 bg-white border'>
                 <Container>
-                    <Pair label='Datum'>
-                        { datefns.format(
-                            new Date(confirmData.start),
-                            'P'
-                        ) }
-                    </Pair>
-                    <Pair label='Beginn'>
-                        { datefns.format(
-                            new Date(confirmData.start),
-                            'p'
-                        ) }
-                    </Pair>
-                    <Row>
-                        <Form.Label className='col-sm-4 col-form-label'>
-                            Ende
-                        </Form.Label>
-                        <Col sm={8}>
-                            <SlotControl
-                                value={ selectedEnd  }
-                                onChange={ handleSelectEnd }
-                                min={ minEnd }
-                                max={ confirmData.maxEnd }
-                                step={ confirmData.slotDuration }
-                            />
-                        </Col>
-                    </Row>
+                    <ScheduleItemControls { ...({
+                        start,
+                        end,
+                        minEnd,
+                        maxEnd,
+                        slotDuration,
+
+                        onChangeEnd: setEnd,
+                    })} />
                 </Container>
             </div>
             <div className='d-flex justify-content-end mt-3'>
-                <Button onClick={ handleSubmit }>Verschieben</Button>
+                <Button size='sm' onClick={ handleSubmit }>
+                    Verschieben
+                </Button>
             </div>
             <hr />
 
@@ -151,4 +157,4 @@ const SlotControl = ({
     )
 }
 
-export default CreateByReservationFormContainer;
+export default ReservationFormContainer;

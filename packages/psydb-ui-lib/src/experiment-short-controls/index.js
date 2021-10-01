@@ -3,10 +3,9 @@ import { Container, Row, Col, Form } from 'react-bootstrap';
 
 import datefns from '../date-fns';
 import Pair from '../pair';
-import StudyTeamListItem from '../experiment-operator-team-list-item';
 
-import SubjectContainer from './subject-container';
-import ScheduleItemContainer from './schedule-item-container';
+import SubjectControls from './subject-controls';
+import ScheduleItemControls from './schedule-item-controls';
 
 //FIXME: not sure about this name
 const ExperimentShortControls = (ps) => {
@@ -35,31 +34,35 @@ const ExperimentShortControls = (ps) => {
         <div>
             { subjectLabel && (
                 <>
-                    <SubjectContainer {...({
-                        subjectLabel,
-                        comment,
-                        autoConfirm,
+                    <Container>
+                        <SubjectControls {...({
+                            subjectLabel,
+                            comment,
+                            autoConfirm,
 
-                        onChangeComment,
-                        onChangeAutoConfirm,
-                    })} />
+                            onChangeComment,
+                            onChangeAutoConfirm,
+                        })} />
+                    </Container>
                     <hr />
                 </>
             )}
 
-            <ScheduleItemContainer { ...({
-                start,
-                end,
-                minEnd,
-                maxEnd,
-                slotDuration,
-                
-                teamId,
-                teamRecords,
+            <Container>
+                <ScheduleItemControls { ...({
+                    start,
+                    end,
+                    minEnd,
+                    maxEnd,
+                    slotDuration,
+                    
+                    teamId,
+                    teamRecords,
 
-                onChangeEnd,
-                onChangeTeamId,
-            })} />
+                    onChangeEnd,
+                    onChangeTeamId,
+                })} />
+            </Container>
         </div>
     );
 }
@@ -68,6 +71,6 @@ const ExperimentShortControls = (ps) => {
 export default ExperimentShortControls;
 export {
     ExperimentShortControls,
-    SubjectContainer,
-    ScheduleItemContainer
+    SubjectControls,
+    ScheduleItemControls
 }

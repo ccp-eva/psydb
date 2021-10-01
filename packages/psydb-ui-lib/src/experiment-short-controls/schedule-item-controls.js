@@ -1,5 +1,4 @@
 import React from 'react';
-import { Container } from 'react-bootstrap';
 
 import datefns from '../date-fns';
 import Pair from '../pair';
@@ -9,7 +8,7 @@ import {
     TeamControl
 } from './schedule-item-fields';
 
-const ScheduleItemContainer = (ps) => {
+const ScheduleItemControls = (ps) => {
     var {
         start,
         end,
@@ -25,7 +24,7 @@ const ScheduleItemContainer = (ps) => {
     } = ps;
 
     return (
-        <Container>
+        <>
             <Pair className='mb-2' label='Datum'>
                 { datefns.format(new Date(start), 'P') }
             </Pair>
@@ -49,8 +48,8 @@ const ScheduleItemContainer = (ps) => {
                     onChangeTeamId
                 })} />
             )}
-        </Container>
+        </>
     );
 }
 
-export default ScheduleItemContainer;
+export default ScheduleItemControls;
