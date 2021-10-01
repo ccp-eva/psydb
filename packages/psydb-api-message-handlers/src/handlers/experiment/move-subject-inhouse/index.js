@@ -152,7 +152,13 @@ handler.triggerSystemEvents = async ({
     personnelId,
 }) => {
     var { type: messageType, payload } = message;
-    var { experimentId, subjectId, target } = payload;
+    var {
+        experimentId,
+        target,
+        subjectId,
+        comment,
+        autoConfirm,
+    } = payload;
 
     var {
         experimentRecord,
@@ -257,8 +263,8 @@ handler.triggerSystemEvents = async ({
             locationId: locationRecord._id,
             locationRecordType: locationRecord.type,
             interval: target.interval,
-            subjectIds: [
-                subjectRecord._id,
+            subjectData: [
+                { subjectId: subjectRecord._id, comment, autoConfirm },
             ]
         });
 

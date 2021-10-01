@@ -137,31 +137,31 @@ const CreateModal = ({
     var minEnd = new Date(start.getTime() + slotDuration);
     var [ end, setEnd ] = useState(minEnd);
 
-    var handleSubmit = ({ formData }) => {
-        //var { end, comment, autoConfirmInvitation } = formData;
+    var wrappedOnSuccessfulUpdate = (...args) => {
+        onHide();
+        onSuccessfulCreate && onSuccessfulCreate(...args);
+    };
 
-        var message = {
-            type: 'experiment/create-from-inhouse-reservation',
-            payload: {
-                props: {
-                    studyId,
-                    experimentOperatorTeamId,
-                    locationId,
-                    //subjectIds: [ subjectId ],
-                    subjectData: [{ subjectId, comment, autoConfirm }],
+    var handleSubmit = useSend(() => ({
+        type: 'experiment/create-from-inhouse-reservation',
+        payload: {
+            props: {
+                studyId,
+                experimentOperatorTeamId,
+                locationId,
+                //subjectIds: [ subjectId ],
+                subjectData: [{ subjectId, comment, autoConfirm }],
 
-                    interval: {
-                        start: start.toISOString(),
-                        end: new Date(end.getTime() - 1).toISOString()
-                    }
+                interval: {
+                    start: start.toISOString(),
+                    end: end.toISOString()
                 }
             }
         }
-        return agent.send({ message }).then((response) => {
-            onHide();
-            onSuccessfulCreate && onSuccessfulCreate(response);
-        });
-    }
+    }), {
+        onSuccessfulUpdate: wrappedOnSuccessfulUpdate,
+        dependencies: [ subjectId, comment, autoConfirm ]
+    });
 
     return (
         <Modal show={show} onHide={ onHide } size='md'>
@@ -185,7 +185,7 @@ const CreateModal = ({
                     onChangeAutoConfirm: setAutoConfirm,
                     onChangeEnd: setEnd,
                 })} />
-                
+
                 <hr />
                 <div className='d-flex justify-content-end'>
                     <Button size='sm' onClick={ handleSubmit }>
