@@ -31,8 +31,6 @@ const CreateModal = ({
         reservationRecord.state.experimentOperatorTeamId
     );
 
-    var startOfDay = datefns.startOfDay(start).getTime();
-
     var [ comment, setComment ] = useState('');
     var [ autoConfirm, setAutoConfirm ] = useState(false);
 

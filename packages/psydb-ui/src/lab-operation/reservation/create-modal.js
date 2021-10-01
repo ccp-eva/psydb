@@ -25,7 +25,6 @@ const CreateModal = ({
     }
 
     var locationId = locationRecord._id;
-    var startOfDay = datefns.startOfDay(start).getTime();
 
     var minEnd = new Date(start.getTime() + slotDuration);
     var [ end, setEnd ] = useState(minEnd);
