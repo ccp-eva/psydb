@@ -153,6 +153,7 @@ var FullRecordSchemaCreator = ({
         hasCustomTypes,
         hasFixedTypes,
         hasSubChannels,
+        subChannelKeys,
         subChannelStateSchemaCreators,
         FullSchema
     } = collectionCreatorData;
@@ -179,7 +180,25 @@ var FullRecordSchemaCreator = ({
     // when not defined manually: auto-generate
     else {
 
-        if (hasSubChannels) {
+        if (hasSubChannels && !hasCustomTypes) {
+            SchemaCreator = ({ ...otherArgs }) => ExactObject({
+                properties: {
+                    _id: Id(),
+                    ...subChannelKeys.reduce((acc, key) => {
+                        var SCStateSchema = (
+                            subChannelStateSchemaCreators[key]
+                        );
+                        return {
+                            ...acc,
+                            [key]: ExactObject({ properties: {
+                                state: SCStateSchema({ ...otherArgs })
+                            }})
+                        };
+                    }, {})
+                }
+            });
+        }
+        else if (hasSubChannels) {
             SchemaCreator = ({
                 subChannelCustomRecordFieldDefinitions,
                 ...otherArgs
