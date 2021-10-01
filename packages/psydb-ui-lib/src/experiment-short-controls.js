@@ -144,7 +144,10 @@ const EndControl = (ps) => {
     } = ps;
 
     if (onChangeEnd) {
-        var onChange = wrapOnChange(onChangeEnd);
+        var onChange = wrapOnChange((nextEnd) => {
+            // since intervals shouldn overlap i.e. [...)
+            onChangeEnd(new Date(nextEnd.getTime() - 1));
+        });
         return (
             <Row className='mb-2'>
                 <Form.Label className='col-sm-4 col-form-label'>
