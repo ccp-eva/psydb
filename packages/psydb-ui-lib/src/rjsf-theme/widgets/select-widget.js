@@ -98,8 +98,6 @@ const SelectWidget = (ps) => {
         }
     }
    
-    console.log(ps);
-
     return (
         <Wrapper { ...({
             id, label, required, schema, rawErrors
