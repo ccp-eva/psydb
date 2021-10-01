@@ -38,7 +38,9 @@ const ExperimentShortControls = (ps) => {
             { subjectLabel && (
                 <>
                     <Container>
-                        <Pair label="Proband">{ subjectLabel }</Pair>
+                        <Pair className='mb-2' label="Proband">
+                            { subjectLabel }
+                        </Pair>
                         <CommentControl { ...({
                             comment,
                             onChangeComment
@@ -68,12 +70,13 @@ const ExperimentShortControls = (ps) => {
                     onChangeEnd,
                 })} />
 
-                <TeamControl { ...({
-                    teamId,
-                    teamRecords,
-                    onChangeTeamId
-                })} />
-
+                { teamRecords && (
+                    <TeamControl { ...({
+                        teamId,
+                        teamRecords,
+                        onChangeTeamId
+                    })} />
+                )}
             </Container>
         </div>
     );
@@ -89,7 +92,11 @@ const CommentControl = (ps) => {
                     Kommentar
                 </Form.Label>
                 <Col sm={8}>
-                    FORMCONTROL
+                    <Form.Control
+                        type="text"
+                        value={ comment }
+                        onChange={ onChange}
+                    />
                 </Col>
             </Row>
         )
@@ -107,7 +114,7 @@ const AutoConfirmControl = (ps) => {
     var { autoConfirm, onChangeAutoConfirm } = ps;
     if (onChangeAutoConfirm) {
         var onChange = wrapOnChange(onChangeAutoConfirm);
-         return (
+        return (
             <Row className='mb-2'>
                 <Form.Label className='col-sm-4 col-form-label'>
                     Bestätigen
@@ -156,9 +163,11 @@ const EndControl = (ps) => {
         )
     }
     else {
-        <Pair className='mb-2' label='Ende'>
-            { datefns.format(new Date(end), 'p') }
-        </Pair>
+        return (
+            <Pair className='mb-2' label='Ende'>
+                { datefns.format(new Date(end), 'p') }
+            </Pair>
+        )
     }
 
 }
@@ -224,7 +233,7 @@ const BoolControl = ({
     var wrappedOnChange = (event) => {
         var { target: { value }} = event;
         setInternalValue(value);
-        var realValue = options[value];
+        var realValue = options[value].value;
         return onChange({ target: { value: realValue }});
     };
 

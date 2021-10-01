@@ -12,6 +12,9 @@ var dispatchAddSubjectEvents = async ({
     experimentRecord,
     subjectRecord,
     lastKnownSubjectScientificEventId,
+
+    comment,
+    autoConfirm,
 }) => {
 
     var experimentChannel = (
@@ -30,8 +33,9 @@ var dispatchAddSubjectEvents = async ({
                 '/state/subjectData': {
                     subjectType: subjectRecord.type,
                     subjectId: subjectRecord._id,
-                    invitationStatus: 'scheduled',
-                    participationStatus: 'unknown'
+                    invitationStatus: autoConfirm ? 'confirmed' : 'scheduled',
+                    participationStatus: 'unknown',
+                    comment: comment || '',
                 }
             })
         ]
@@ -59,7 +63,7 @@ var dispatchAddSubjectEvents = async ({
                     experimentId: experimentRecord._id,
                     studyId: experimentRecord.state.studyId,
                     timestamp: new Date(),
-                    status: 'scheduled',
+                    dtatus: autoConfirm ? 'confirmed' : 'scheduled',
                 }
             }),
         ]

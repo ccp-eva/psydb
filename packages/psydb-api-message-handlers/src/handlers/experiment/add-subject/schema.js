@@ -5,6 +5,8 @@ var {
     Id,
     EventId,
     ForeignId,
+    FullText,
+    DefaultBool,
 } = require('@mpieva/psydb-schema-fields');
 
 var { Message } = require('@mpieva/psydb-schema-helpers');
@@ -20,6 +22,8 @@ var createSchema = ({} = {}) => (
                 subjectId: ForeignId({
                     collection: 'subject',
                 }),
+                comment: FullText(),
+                autoConfirm: DefaultBool(),
             },
             required: [
                 'experimentId',

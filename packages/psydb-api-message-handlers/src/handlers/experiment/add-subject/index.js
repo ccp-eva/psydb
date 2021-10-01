@@ -120,6 +120,8 @@ handler.triggerSystemEvents = async ({
     var {
         experimentId,
         subjectId,
+        comment = '',
+        autoConfirm = false,
     } = payload;
 
     var {
@@ -132,7 +134,10 @@ handler.triggerSystemEvents = async ({
         rohrpost,
         personnelId,
         experimentRecord,
-        subjectRecord
+        subjectRecord,
+
+        comment,
+        autoConfirm,
     });
     
 }

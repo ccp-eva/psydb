@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { useSend } from '@mpieva/psydb-ui-hooks';
 
 import Pair from '@mpieva/psydb-ui-lib/src/pair';
 import ExperimentIntervalSummary from '@mpieva/psydb-ui-lib/src/experiment-interval-summary';
+import ExperimentShortControls from '@mpieva/psydb-ui-lib/src/experiment-short-controls';
 
 const ExperimentUpdateModal = (ps) => {
     var {
@@ -35,29 +36,33 @@ const ExperimentUpdateModal = (ps) => {
         payload: {
             experimentId: experimentRecord._id,
             subjectId,
+            comment,
+            autoConfirm,
         }
     }), {
         onSuccessfulUpdate: wrappedOnSuccessfulUpdate,
         dependencies: [ experimentRecord, subjectId ]
     });
 
+    var [ comment, setComment ] = useState('');
+    var [ autoConfirm, setAutoConfirm ] = useState(false);
+
     var body = null;
     if (show) {
+        var { start, end } = experimentRecord.state.interval;
+        end = new Date(end.getTime() + 1);
+
         body = (
             <>
-                <ExperimentIntervalSummary { ...({ experimentRecord })} />
+                <ExperimentShortControls {...({
+                    start,
+                    end,
+                    subjectLabel,
+                    onChangeComment: setComment,
+                    onChangeAutoConfirm: setAutoConfirm,
+                })} />
                 <hr />
-                {/*<Pair label="Gewählter Proband">{ subjectLabel }</Pair>*/}
-                <div style={{ paddingLeft: '15px', paddingRight: '15px' }}>
-                    <div className="mb-1">
-                        Gewählter Proband
-                    </div>
-                    <div className="pl-3">
-                        <b style={{ fontWeight: 600 }}>{ subjectLabel }</b>
-                    </div>
-                </div>
-                <hr />
-                <div>
+                <div className='d-flex justify-content-end'>
                     <Button size="sm" onClick={ handleSubmit }>
                         Hinzufügen
                     </Button>
@@ -67,7 +72,7 @@ const ExperimentUpdateModal = (ps) => {
     }
 
     return (
-        <Modal show={ show } onHide={ onHide } size='sm'>
+        <Modal show={ show } onHide={ onHide } size='md'>
             <Modal.Header closeButton>
                 <Modal.Title>Termin</Modal.Title>
             </Modal.Header>
