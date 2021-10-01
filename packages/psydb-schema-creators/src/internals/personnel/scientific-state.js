@@ -15,18 +15,22 @@ var PersonnelScientificState = () => {
             // does not have a system-role
 
             hasRootAccess: {
+                title: 'Admin-Zugriff',
                 type: 'boolean',
                 default: false
             },
             researchGroupSettings: {
+                title: 'Forschungsgruppen',
                 type: 'array',
                 default: [],
                 items: ExactObject({
                     properties: {
                         researchGroupId: ForeignId({
+                            title: 'Gruppe',
                             collection: 'researchGroup',
                         }),
                         systemRoleId: ForeignId({
+                            title: 'Zugriff',
                             collection: 'systemRole',
                         })
                     }

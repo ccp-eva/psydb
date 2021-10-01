@@ -15,11 +15,11 @@ var PersonnelGdprState = ({ enableInternalProps } = {}) => {
     var schema = ExactObject({
         type: 'object',
         properties: {
-            firstname: SaneString(),
-            lastname: SaneString(),
+            firstname: SaneString({ title: 'Vorname' }),
+            lastname: SaneString({ title: 'Nachname' }),
             // TODO: decide if that should be stored in the scientific part
             //shorthand: SaneString(),
-            shorthand: SaneString({ minLength: 2 }),
+            shorthand: SaneString({ title: 'Kürzel', minLength: 2 }),
             
             // TODO: find out if thats even needed
             /*address: Address({
@@ -27,9 +27,11 @@ var PersonnelGdprState = ({ enableInternalProps } = {}) => {
             }),*/
             
             emails: EmailList({
+                title: 'E-Mail',
                 minItems: 1
             }),
             phones: PhoneList({
+                title: 'Telefon',
                 minItems: 1
             }),
             
