@@ -23,6 +23,10 @@ const ScheduleItemControls = (ps) => {
         onChangeTeamId,
     } = ps;
 
+    if (minEnd === undefined) {
+        minEnd = new Date(start.getTime() + slotDuration - 1);
+    }
+
     return (
         <>
             <Pair className='mb-2' label='Datum'>

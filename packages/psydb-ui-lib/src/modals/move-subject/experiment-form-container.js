@@ -1,6 +1,6 @@
 import React, { useState }  from 'react';
 import { Container, Button } from 'react-bootstrap';
-import { useSend } from '@mpieva/psydb-ui-hooks';
+import { createSend } from '@mpieva/psydb-ui-hooks';
 
 import ExperimentIntervalSummary from '../experiment-interval-summary';
 import { SubjectControls } from '../experiment-short-controls';
@@ -23,7 +23,7 @@ const ExperimentFormContainer = ({
     var [ comment, setComment ] = useState('');
     var [ autoConfirm, setAutoConfirm ] = useState(false);
 
-    var handleSubmit = useSend(() => ({
+    var handleSubmit = createSend(() => ({
         type: 'experiment/move-subject-inhouse',
         payload: {
             experimentId: experimentData.record._id,

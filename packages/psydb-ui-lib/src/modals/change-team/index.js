@@ -1,8 +1,7 @@
-import React, { useMemo, useEffect, useReducer, useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
-import agent from '@mpieva/psydb-ui-request-agents';
-import useFetch from '../use-fetch';
+import { useFetch, createSend } from '@mpieva/psydb-ui-hooks';
 import LoadingIndicator from '../loading-indicator';
 import StudyTeamListItem from '../experiment-operator-team-list-item';
 
@@ -18,24 +17,17 @@ const ChangeTeamModal = ({
 }) => {
     var [ selectedTeamId, handleSelectTeam ] = useState(currentTeamId);
 
-    var handleSubmit = useCallback(() => {
-        var message = {
-            type: 'experiment/change-experiment-operator-team',
-            payload: {
-                experimentId,
-                experimentOperatorTeamId: selectedTeamId
-            }
-        };
-
-        return agent.send({ message }).then(response => {
-            onHide();
-            onSuccessfulUpdate && onSuccessfulUpdate(response);
-        })
-    }, [ experimentId, selectedTeamId, onSuccessfulUpdate ])
-
     if (!experimentId || !studyId) {
         return null;
     }
+
+    var handleSubmit = createSend(() => ({
+        type: 'experiment/change-experiment-operator-team',
+        payload: {
+            experimentId,
+            experimentOperatorTeamId: selectedTeamId
+        }
+    }), { onSuccessfulUpdate: [ onHide, onSuccessfulUpdate ] });
 
     return (
 
@@ -73,28 +65,22 @@ const TeamList = ({
     onSelectTeam,
 }) => {
 
-    var [ state, dispatch ] = useReducer(reducer, {});
-    var {
-        records,
-        relatedRecordLabels,
-    } = state;
-
-    useEffect(() => {
-        agent.fetchExperimentOperatorTeamsForStudy({
+    var [ didFetch, fetched ] = useFetch((agent) => {
+        return agent.fetchExperimentOperatorTeamsForStudy({
             studyId,
-        })
-        .then(response => {
-            dispatch({ type: 'init', payload: {
-                ...response.data.data
-            }})
-        })
-    }, [ studyId ])
+        });
+    }, [ studyId ]);
 
-    if (!records) {
+    if (!didFetch) {
         return (
             <LoadingIndicator size='lg' />
         ) 
     }
+
+    var {
+        records,
+        relatedRecordLabels
+    } = fetched.data;
 
     return (
         <>
@@ -117,25 +103,6 @@ const TeamList = ({
             }
         </>
     );
-}
-
-const reducer = (state, action) => {
-    var { type, payload } = action;
-    switch (type) {
-        case 'init':
-            return {
-                ...state,
-                records: payload.records,
-                relatedRecordLabels: payload.relatedRecordLabels,
-            }
-        
-        case 'select-team':
-            return {
-                ...state,
-                selectedTeamId: payload.teamId
-            }
-
-    }
 }
 
 const ChangeTeamModalWrapper = (ps) => {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
-import { useSend } from '@mpieva/psydb-ui-hooks';
+import { createSend } from '@mpieva/psydb-ui-hooks';
 import ExperimentShortControls from '@mpieva/psydb-ui-lib/src/experiment-short-controls';
 
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
@@ -42,7 +42,7 @@ const CreateModal = ({
         onSuccessfulCreate && onSuccessfulCreate(...args);
     };
 
-    var handleSubmit = useSend(() => ({
+    var handleSubmit = createSend(() => ({
         type: 'experiment/create-from-inhouse-reservation',
         payload: {
             props: {

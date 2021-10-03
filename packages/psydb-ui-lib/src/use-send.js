@@ -1,1 +1,1 @@
-export { useSend as default } from '@mpieva/psydb-ui-hooks';
+export { createSend as default } from '@mpieva/psydb-ui-hooks';

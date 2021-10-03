@@ -14,8 +14,10 @@ import applyValueToDisplayFields from '@mpieva/psydb-ui-lib/src/apply-value-to-d
 
 import ExperimentDropdown from '@mpieva/psydb-ui-lib/src/experiment-dropdown';
 
-import MoveExperimentModal from '@mpieva/psydb-ui-lib/src/move-experiment-modal';
-import ChangeTeamModal from '@mpieva/psydb-ui-lib/src/change-team-modal';
+import {
+    MoveExperimentModal,
+    ChangeTeamModal,
+} from '@mpieva/psydb-ui-lib/src/modals';
 
 const ExperimentSummary = ({
     experimentRecord,

@@ -2,7 +2,7 @@ import React, { useMemo, useEffect, useReducer, useCallback, useState } from 're
 import { Modal, Form, Container, Col, Row, Button } from 'react-bootstrap';
 
 import datefns from '../date-fns';
-import useSend from '../use-send';
+import createSend from '../use-send';
 
 import Pair from '../pair';
 import Split from '../split';
@@ -21,7 +21,7 @@ const FormContainer = ({
     onSuccessfulUpdate,
 }) => {
 
-    var handleSubmit = useSend(() => ({
+    var handleSubmit = createSend(() => ({
         type: 'experiment/move-away-team',
         payload: {
             experimentId: experimentData.record._id,

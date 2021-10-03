@@ -1,9 +1,8 @@
 import React, { useMemo, useEffect, useReducer, useCallback } from 'react';
 import { Modal, Form, Container, Col, Row, Button } from 'react-bootstrap';
 
-import agent from '@mpieva/psydb-ui-request-agents';
-import useFetch from './use-fetch';
-import SchemaForm from './default-schema-form';
+import { useFetch, createSend } from '@mpieva/psydb-ui-hooks';
+import SchemaForm from '../default-schema-form';
 
 import {
     ExactObject,
@@ -57,26 +56,14 @@ const PerSubjectCommentModal = ({
         it.subjectId === subjectId
     ));
 
-    var handleSubmit = ({ formData }) => {
-        var message = {
-            type: 'experiment/change-per-subject-comment',
-            payload: {
-                experimentId: experimentData.record._id,
-                subjectId,
-                ...formData,
-            }
-        };
-
-        return agent.send({ message }).then(response => {
-            onHide();
-            onSuccessfulUpdate && onSuccessfulUpdate(response);
-        })
-    }
-
-    var wrappedOnSuccessfulUpdate = (...args) => {
-        onHide(),
-        onSuccessfulUpdate && onSuccessfulUpdate(...args);
-    };
+    var handleSubmit = createSend(({ formData }) => ({
+        type: 'experiment/change-per-subject-comment',
+        payload: {
+            experimentId: experimentData.record._id,
+            subjectId,
+            ...formData,
+        }
+    }), { onSuccessfulUpdate: [ onHide, onSuccessfulUpdate ] });
 
     return (
         <Modal

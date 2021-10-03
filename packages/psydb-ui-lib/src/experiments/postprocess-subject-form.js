@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { Form, Button, InputGroup } from 'react-bootstrap';
 import enums from '@mpieva/psydb-schema-enums';
 
-import useSend from '../use-send';
+import createSend from '../use-send';
 
 const options = {
     keys: [
@@ -22,7 +22,7 @@ const PostprocessSubjectForm = ({
 }) => {
     var [ selectedStatus, setSelectedStatus ] = useState('participated');
 
-    var handleChangeStatus = useSend(() => ({
+    var handleChangeStatus = createSend(() => ({
         type: 'experiment/change-participation-status',
         payload: {
             experimentId: experimentId,

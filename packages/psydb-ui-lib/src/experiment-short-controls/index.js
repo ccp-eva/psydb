@@ -6,6 +6,7 @@ import Pair from '../pair';
 
 import SubjectControls from './subject-controls';
 import ScheduleItemControls from './schedule-item-controls';
+import useControlStates from './state-hook';
 
 //FIXME: not sure about this name
 const ExperimentShortControls = (ps) => {
@@ -72,5 +73,6 @@ export default ExperimentShortControls;
 export {
     ExperimentShortControls,
     SubjectControls,
-    ScheduleItemControls
+    ScheduleItemControls,
+    useControlStates
 }

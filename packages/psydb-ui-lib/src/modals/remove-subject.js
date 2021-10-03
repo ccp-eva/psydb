@@ -1,11 +1,10 @@
 import React, { useMemo, useEffect, useReducer, useCallback } from 'react';
 import { Modal, Form, Container, Col, Row, Button } from 'react-bootstrap';
 
-import agent from '@mpieva/psydb-ui-request-agents';
-import useFetch from './use-fetch';
-import SchemaForm from './default-schema-form';
-import Split from './split';
-import ExperimentIntervalSummary from './experiment-interval-summary';
+import { useFetch, createSend } from '@mpieva/psydb-ui-hooks';
+import SchemaForm from '../default-schema-form';
+import Split from '../split';
+import ExperimentIntervalSummary from '../experiment-interval-summary';
 
 import {
     ExactObject,
@@ -75,26 +74,19 @@ const RemoveSubjectModal = ({
         it._id === subjectId
     ));
 
-    var handleSubmit = ({ formData }) => {
-        var message = {
-            type: 'experiment/remove-subject',
-            payload: {
-                experimentId: experimentData.record._id,
-                subjectId,
-                ...formData
-            }
-        };
-
-        return agent.send({ message }).then(response => {
-            onHide();
-            onSuccessfulUpdate && onSuccessfulUpdate(response);
-        })
-    }
-
     var wrappedOnSuccessfulUpdate = (...args) => {
         onHide(),
         onSuccessfulUpdate && onSuccessfulUpdate(...args);
     };
+
+    var handleSubmit = createSend(({ formData }) => ({
+        type: 'experiment/remove-subject',
+        payload: {
+            experimentId: experimentData.record._id,
+            subjectId,
+            ...formData
+        }
+    }), { onSuccessfulUpdate: wrappedOnSuccessfulUpdate });
 
     return (
         <Modal

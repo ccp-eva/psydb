@@ -15,12 +15,13 @@ import applyValueToDisplayFields from '@mpieva/psydb-ui-lib/src/apply-value-to-d
 import ExperimentDropdown from '@mpieva/psydb-ui-lib/src/experiment-dropdown';
 import ExperimentSubjectDropdown from '@mpieva/psydb-ui-lib/src/experiment-subject-dropdown';
 
-import MoveExperimentModal from '@mpieva/psydb-ui-lib/src/move-experiment-modal';
-import ChangeTeamModal from '@mpieva/psydb-ui-lib/src/change-team-modal';
-
-import CommentPerSubjectModal from '@mpieva/psydb-ui-lib/src/per-subject-comment-modal';
-import MoveSubjectModal from '@mpieva/psydb-ui-lib/src/move-subject-modal';
-import RemoveSubjectModal from '@mpieva/psydb-ui-lib/src/remove-subject-modal';
+import {
+    MoveExperimentModal,
+    ChangeTeamModal,
+    MoveSubjectModal,
+    RemoveSubjectModal,
+    PerSubjectCommentModal,
+} from '@mpieva/psydb-ui-lib/src/modals';
 
 const ExperimentSummaryMedium = ({
     experimentRecord,
@@ -113,7 +114,7 @@ const ExperimentSummaryMedium = ({
             }) } />
 
 
-            <CommentPerSubjectModal { ...({
+            <PerSubjectCommentModal { ...({
                 show: commentPerSubjectModal.show,
                 onHide: commentPerSubjectModal.handleHide,
                 payloadData: commentPerSubjectModal.data,

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
-import { useSend } from '@mpieva/psydb-ui-hooks';
+import { createSend } from '@mpieva/psydb-ui-hooks';
 
 import ExperimentShortControls from '@mpieva/psydb-ui-lib/src/experiment-short-controls';
 
@@ -29,7 +29,7 @@ const ExperimentUpdateModal = (ps) => {
         onSuccessfulUpdate && onSuccessfulUpdate(...args);
     };
 
-    var handleSubmit = useSend(() => ({
+    var handleSubmit = createSend(() => ({
         type: 'experiment/add-subject',
         payload: {
             experimentId: experimentRecord._id,

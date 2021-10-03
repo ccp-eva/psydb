@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
-import useSend from '@mpieva/psydb-ui-lib/src/use-send';
+import createSend from '@mpieva/psydb-ui-lib/src/use-send';
 import Pair from '@mpieva/psydb-ui-lib/src/pair';
 
 const CreateModal = ({
@@ -20,7 +20,7 @@ const CreateModal = ({
         onHide();
     }
 
-    var handleSubmit = useSend(() => ({
+    var handleSubmit = createSend(() => ({
         type: 'reservation/reserve-awayteam-slot',
         payload: {
             props: {

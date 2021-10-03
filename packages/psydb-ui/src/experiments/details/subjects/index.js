@@ -1,6 +1,6 @@
 import React, { createContext, useContext } from 'react';
 
-import useSend from '@mpieva/psydb-ui-lib/src/use-send';
+import createSend from '@mpieva/psydb-ui-lib/src/use-send';
 import useModalReducer from '@mpieva/psydb-ui-lib/src/use-modal-reducer';
 import DetailsIconButton from '@mpieva/psydb-ui-lib/src/details-icon-button';
 import SubjectDropdown from '@mpieva/psydb-ui-lib/src/experiment-subject-dropdown';
@@ -20,7 +20,7 @@ const Subjects = ({
     var moveModal = useModalReducer({ show: false });
     var removeModal = useModalReducer({ show: false });
 
-    var handleChangeStatus = useSend(({ subjectId, status }) => ({
+    var handleChangeStatus = createSend(({ subjectId, status }) => ({
         type: 'experiment/change-invitation-status',
         payload: {
             experimentId: experimentData.record._id,

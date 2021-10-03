@@ -3,7 +3,7 @@ import { Modal, Button, Table } from 'react-bootstrap';
 
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 import calculateAge from '@mpieva/psydb-ui-lib/src/calculate-age';
-import useSend from '@mpieva/psydb-ui-lib/src/use-send';
+import createSend from '@mpieva/psydb-ui-lib/src/use-send';
 import Pair from '@mpieva/psydb-ui-lib/src/pair';
 
 const ConfirmModal = ({
@@ -23,7 +23,7 @@ const ConfirmModal = ({
         onHide();
     }
 
-    var handleSubmit = useSend(() => ({
+    var handleSubmit = createSend(() => ({
         type: 'experiment/create-from-awayteam-reservation',
         payload: {
             props: {

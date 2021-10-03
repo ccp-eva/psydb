@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSend } from '@mpieva/psydb-ui-hooks';
+import { createSend } from '@mpieva/psydb-ui-hooks';
 
 import {
     Button,
@@ -35,7 +35,7 @@ const CreateModal = ({
         onSuccessfulCreate && onSuccessfulCreate(...args);
     };
 
-    var handleSubmit = useSend(() => ({
+    var handleSubmit = createSend(() => ({
         type: 'reservation/reserve-inhouse-slot',
         payload: {
             props: {
