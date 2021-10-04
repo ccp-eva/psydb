@@ -7,9 +7,9 @@ import { SubjectControls } from '../../experiment-short-controls';
 
 const ExperimentFormContainer = ({
     onHide,
+    confirmData,
     experimentData,
     studyData,
-    confirmData,
     subjectData,
 
     onSuccessfulUpdate,

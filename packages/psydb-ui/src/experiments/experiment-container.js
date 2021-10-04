@@ -9,8 +9,10 @@ import {
     useParams
 } from 'react-router-dom';
 
-import useFetch from '@mpieva/psydb-ui-lib/src/use-fetch';
-import useRevision from '@mpieva/psydb-ui-lib/src/use-revision';
+import {
+    useFetch,
+    useRevision
+} from '@mpieva/psydb-ui-hooks';
 
 import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
 

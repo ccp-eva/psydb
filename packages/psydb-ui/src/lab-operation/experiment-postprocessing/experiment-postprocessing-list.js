@@ -10,11 +10,14 @@ import {
     useParams
 } from 'react-router-dom';
 
+import {
+    useFetch,
+    useRevision
+} from '@mpieva/psydb-ui-hooks';
+
 import agent from '@mpieva/psydb-ui-request-agents';
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 import formatInterval from '@mpieva/psydb-ui-lib/src/format-date-interval';
-import useFetch from '@mpieva/psydb-ui-lib/src/use-fetch';
-import useRevision from '@mpieva/psydb-ui-lib/src/use-revision';
 import createStringifier from '@mpieva/psydb-ui-lib/src/record-field-stringifier';
 
 import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';

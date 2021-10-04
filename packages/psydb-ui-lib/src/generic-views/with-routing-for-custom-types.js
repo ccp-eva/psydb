@@ -6,7 +6,7 @@ import {
     useRouteMatch,
 } from 'react-router-dom';
 
-import useFetch from '../use-fetch';
+import { useFetch } from '@mpieva/psydb-ui-hooks';
 import LoadingIndicator from '../loading-indicator';
 import RecordTypeNav from '../record-type-nav';
 

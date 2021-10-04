@@ -16,11 +16,12 @@ import agent from '@mpieva/psydb-ui-request-agents';
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 import up from '@mpieva/psydb-ui-lib/src/url-up';
 
-
-import useFetch from '@mpieva/psydb-ui-lib/src/use-fetch';
-import useModalReducer from '@mpieva/psydb-ui-lib/src/use-modal-reducer';
-import useRevision from '@mpieva/psydb-ui-lib/src/use-revision';
-import usePaginationReducer from '@mpieva/psydb-ui-lib/src/use-pagination-reducer';
+import {
+    useFetch,
+    useModalReducer,
+    useRevision,
+    usePaginationReducer
+} from '@mpieva/psydb-ui-hooks';
 
 import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
 import Pagination from '@mpieva/psydb-ui-lib/src/pagination';

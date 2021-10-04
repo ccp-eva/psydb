@@ -11,8 +11,10 @@ import { ArrowLeftShort } from 'react-bootstrap-icons';
 import { useURLSearchParams } from '@cdxoo/react-router-url-search-params';
 import omit from '@cdxoo/omit';
 
-import useFetch from '@mpieva/psydb-ui-lib/src/use-fetch';
-import useRevision from '@mpieva/psydb-ui-lib/src/use-revision';
+import {
+    useFetch,
+    useRevision,
+} from '@mpieva/psydb-ui-hooks';
 
 import getDayStartsInInterval from '@mpieva/psydb-ui-lib/src/get-day-starts-in-interval';
 

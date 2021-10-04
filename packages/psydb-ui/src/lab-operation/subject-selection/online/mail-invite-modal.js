@@ -11,6 +11,7 @@ import MailTextPreview from './mail-text-preview';
 const MailInviteModal = ({
     show,
     onHide,
+    modalPayloadData,
 
     studyRecordType,
     subjectRecordType,

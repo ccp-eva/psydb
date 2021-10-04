@@ -1,6 +1,6 @@
 const demuxed = (callbacks) => (...args) => {
     var out = [];
-    for (var it of onSuccessfulUpdate) {
+    for (var it of callbacks) {
         it && out.push(it(...args));
     }
     return out;

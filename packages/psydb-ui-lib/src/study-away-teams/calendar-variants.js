@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 
-import useFetch from '../use-fetch';
+import { useFetch } from '@mpieva/psydb-ui-hooks';
 import getDayStartsInInterval from '../get-day-starts-in-interval';
 import withWeeklyCalendarPages from '../with-weekly-calendar-pages';
 

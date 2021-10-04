@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useMemo } from 'react';
+import React, { useEffect, useReducer, useMemo, useCallback } from 'react';
 
 import {
     Redirect,
@@ -16,11 +16,13 @@ import agent from '@mpieva/psydb-ui-request-agents';
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 import up from '@mpieva/psydb-ui-lib/src/url-up';
 
-
-import useFetch from '@mpieva/psydb-ui-lib/src/use-fetch';
-import useModalReducer from '@mpieva/psydb-ui-lib/src/use-modal-reducer';
-import useRevision from '@mpieva/psydb-ui-lib/src/use-revision';
-import usePaginationReducer from '@mpieva/psydb-ui-lib/src/use-pagination-reducer';
+import {
+    useFetch,
+    useRevision,
+    useSelectionReducer,
+    useModalReducer,
+    usePaginationReducer,
+} from '@mpieva/psydb-ui-hooks';
 
 import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
 import Pagination from '@mpieva/psydb-ui-lib/src/pagination';
@@ -43,9 +45,27 @@ const OnlineTestableSubjectList = ({
         searchSettings64
     } = useParams();
 
+    var subjectModal = useModalReducer();
+    var mailInviteModal = useModalReducer();
+
+    var subjectSelection = useSelectionReducer({
+        selected: [],
+        checkEqual: (existing, payload) => (
+            existing._id === payload._id
+        )
+    });
+
+    var handleSelectSubject = useCallback(({ type, payload }) => {
+        subjectSelection[type](payload.record)
+    });
+
+    var pagination = usePaginationReducer();
+    var { offset, limit, total } = pagination;
+
+    var [ revision, increaseRevision ] = useRevision();
+    
     // FIXME
     var studyId = studyIds;
-
     var userSearchSettings = JSON.parse(Base64.decode(searchSettings64));
 
     if (!userSearchSettings) {
@@ -53,15 +73,6 @@ const OnlineTestableSubjectList = ({
             <Redirect to={`${up(url, 1)}`} />
         )
     }
-
-    var [ state, dispatch ] = useReducer(reducer, {
-        selectedSubjects: [],
-    });
-
-    var [ revision, increaseRevision ] = useRevision();
-    
-    var pagination = usePaginationReducer();
-    var { offset, limit, total } = pagination;
     
     var [ didFetch, fetched ] = useFetch((agent) => {
         var {
@@ -99,22 +110,6 @@ const OnlineTestableSubjectList = ({
         revision, offset, limit
     ])
    
-    var subjectModal = useModalReducer();
-    var mailInviteModal = useModalReducer();
-
-    var [
-        handleSelectSubject,
-        handleMailsSend,
-    ] = useMemo(() => ([
-        ({ type, payload }) => {
-            dispatch({
-                type: `selected-subjects/${type}`,
-                payload
-            });
-        },
-        () => dispatch({ type: 'increase-list-revision' }),
-    ]));
-
     var CustomActionListComponent = useMemo(() => (
         ({ record }) => {
             return (
@@ -145,37 +140,27 @@ const OnlineTestableSubjectList = ({
         relatedCustomRecordTypeLabels,
     } = subjectData;
 
-    var {
-        selectedSubjects,
-    } = state;
-
     return (
         <>
             <SubjectModal
-                show={ subjectModal.show }
-                onHide={ subjectModal.handleHide }
+                { ...subjectModal.passthrough }
                 
                 studyNavItems={ studyLabelItems }
                 studyRecordType={ studyType }
-                
                 subjectRecordType={ subjectRecordType }
-                subjectModalData={ subjectModal.data }
-                
                 onSuccessfulUpdate={ increaseRevision }
             />
             
             <MailInviteModal
-                show={ mailInviteModal.show }
-                onHide={ mailInviteModal.handleHide }
+                { ...mailInviteModal.passthrough }
         
                 totalSubjectCount={ total }
-
                 studyId={ studyId }
-                selectedSubjects={ selectedSubjects }
+                selectedSubjects={ subjectSelection.value }
                 previewSubject={ records[0] }
                 displayFieldData={ displayFieldData }
 
-                onMailsSend={ handleMailsSend }
+                onMailsSend={ increaseRevision }
 
             />
             
@@ -187,18 +172,18 @@ const OnlineTestableSubjectList = ({
                     background: '#ffffff',
                 }}
             >
-                <b>Ausgewählt: { selectedSubjects.length }</b>
+                <b>Ausgewählt: { subjectSelection.value.length }</b>
 
                 <Button
                     variant={
-                        selectedSubjects.length < 1
+                        subjectSelection.value.length < 1
                         ? 'danger'
                         : 'primary'
                     }
                     onClick={ mailInviteModal.handleShow }
                 >
                     { 
-                        selectedSubjects.length < 1
+                        subjectSelection.value.length < 1
                         ? 'Alle Einladen'
                         : 'Gewählte Einladen'
                     }
@@ -216,7 +201,7 @@ const OnlineTestableSubjectList = ({
                
                 showSelectionIndicator: true,
                 selectedRecordIds: (
-                    selectedSubjects.map(it => it._id)
+                    subjectSelection.value.map(it => it._id)
                 ),
                 onSelectRecord: handleSelectSubject,
 
@@ -227,32 +212,4 @@ const OnlineTestableSubjectList = ({
     );
 }
 
-const reducer = (state, action) => {
-    var { type, payload } = action;
-    switch (type) {
-        case 'selected-subjects/set':
-            return ({
-                ...state,
-                selectedSubjects: [ payload.record ]
-            })
-        case 'selected-subjects/add':
-            var nextSelectedSubjects = [
-                ...state.selectedSubjects,
-                payload.record,
-            ];
-            return ({
-                ...state,
-                selectedSubjects: nextSelectedSubjects
-            });
-        case 'selected-subjects/remove':
-            var nextSelectedSubjects = state.selectedSubjects.filter(it => (
-                it._id !== payload.id
-            ));
-            return ({
-                ...state,
-                selectedSubjects: nextSelectedSubjects
-            });
-    }
-}
-        
 export default OnlineTestableSubjectList;

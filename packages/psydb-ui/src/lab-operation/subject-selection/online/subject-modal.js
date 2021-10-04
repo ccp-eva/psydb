@@ -10,17 +10,16 @@ import SubjectModalDetails from './subject-modal-details';
 const SubjectModal = ({
     show,
     onHide,
+    modalPayloadData,
+
     studyRecordType,
     subjectRecordType,
-    subjectModalData,
 }) => {
-    if (!subjectModalData) {
+    if (!show) {
         return null;
     }
 
-    var {
-        record
-    } = subjectModalData;
+    var { record } = modalPayloadData;
 
     return (
         <Modal
@@ -39,7 +38,6 @@ const SubjectModal = ({
                     recordType={ subjectRecordType }
                     id={ record._id }
                 />
-
 
             </Modal.Body>
         </Modal>

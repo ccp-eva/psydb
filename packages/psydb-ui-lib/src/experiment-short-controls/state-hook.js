@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const useControlStates = (defaults = {}) => {
+const useControlStates = ({ start, slotDuration, defaults = {} }) => {
     var [ comment, setComment ] = useState(defaults.comment || '');
     var [
         autoConfirm, setAutoConfirm

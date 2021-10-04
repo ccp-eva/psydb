@@ -44,7 +44,7 @@ const CreateModal = ({
             }
         }
     }), {
-        onSuccessfulUpdate: [ onHide, onSuccessfulUpdate ],
+        onSuccessfulUpdate: [ onHide, onSuccessfulCreate ],
     })
 
     return (

@@ -28,7 +28,8 @@ const useSelectionReducer = (options = {}) => {
         value: selected,
         set: handleSet,
         add: handleAdd,
-        remove: handleRemove
+        remove: handleRemove,
+        dispatchAction: dispatch,
     }
 }
 

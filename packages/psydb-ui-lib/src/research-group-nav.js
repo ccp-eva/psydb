@@ -10,7 +10,8 @@ import {
 } from 'react-router-dom';
 
 import agent from '@mpieva/psydb-ui-request-agents';
-import useFetch from './use-fetch';
+import { useFetch } from '@mpieva/psydb-ui-hooks';
+
 import LoadingIndicator from './loading-indicator';
 import BigNav from './big-nav';
 

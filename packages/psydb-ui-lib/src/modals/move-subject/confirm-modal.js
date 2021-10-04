@@ -48,10 +48,10 @@ const ConfirmModal = ({
             </Modal.Header>
             <Modal.Body className='bg-light'>
                 <FormContainer { ...({
+                    confirmData: modalPayloadData,
                     experimentData,
                     studyData,
                     subjectData,
-                    confirmData: modalPayloadData,
 
                     onSuccessfulUpdate: wrappedOnSuccessfulUpdate,
                 }) } />

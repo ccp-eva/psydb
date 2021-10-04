@@ -19,7 +19,7 @@ const createSend = (
     var send = (...args) => {
         var message = createMessage(...args);
         
-        agent.send({ message })
+        return agent.send({ message })
         .then((response) => {
             if (onSuccessfulUpdate) {
                 demuxed(arrify(onSuccessfulUpdate))(response);

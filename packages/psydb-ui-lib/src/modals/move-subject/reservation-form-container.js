@@ -12,9 +12,9 @@ import {
 
 const ReservationFormContainer = ({
     onHide,
+    confirmData,
     experimentData,
     studyData,
-    confirmData,
     subjectData,
 
     onSuccessfulUpdate,
@@ -33,12 +33,14 @@ const ReservationFormContainer = ({
     } = confirmData;
 
     var {
+        end,
         comment,
         autoConfirm,
 
+        onChangeEnd,
         onChangeComment,
         onChangeAutoConfirm,
-    } = useControlStates();
+    } = useControlStates({ start, slotDuration });
 
     var handleSubmit = createSend(() => ({
         type: 'experiment/move-subject-inhouse',
@@ -88,11 +90,10 @@ const ReservationFormContainer = ({
                     <ScheduleItemControls { ...({
                         start,
                         end,
-                        minEnd,
                         maxEnd,
                         slotDuration,
 
-                        onChangeEnd: setEnd,
+                        onChangeEnd,
                     })} />
                 </Container>
             </div>

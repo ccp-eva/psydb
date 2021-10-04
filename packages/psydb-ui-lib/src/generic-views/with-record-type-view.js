@@ -9,7 +9,7 @@ import {
     useParams
 } from 'react-router-dom';
 
-import useFetch from '../use-fetch';
+import { useFetch } from '@mpieva/psydb-ui-hooks';
 import LoadingIndicator from '../loading-indicator';
 
 import GenericRecordListContainer from '../record-list-container';
