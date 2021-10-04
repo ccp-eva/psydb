@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { Form, Button, InputGroup } from 'react-bootstrap';
 import enums from '@mpieva/psydb-schema-enums';
 
-import createSend from '../use-send';
+import { createSend } from '@mpieva/psydb-ui-utils';
 
 const options = {
     keys: [

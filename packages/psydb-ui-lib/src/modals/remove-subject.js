@@ -1,7 +1,9 @@
 import React, { useMemo, useEffect, useReducer, useCallback } from 'react';
 import { Modal, Form, Container, Col, Row, Button } from 'react-bootstrap';
 
-import { useFetch, createSend } from '@mpieva/psydb-ui-hooks';
+import { useFetch } from '@mpieva/psydb-ui-hooks';
+import { createSend } from '@mpieva/psydb-ui-utils';
+
 import SchemaForm from '../default-schema-form';
 import Split from '../split';
 import ExperimentIntervalSummary from '../experiment-interval-summary';

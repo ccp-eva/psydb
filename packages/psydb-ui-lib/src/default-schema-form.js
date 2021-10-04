@@ -1,10 +1,10 @@
-import React, { useReducer, useMemo }from 'react';
+import React, { useReducer, useMemo } from 'react';
 
 import { Button } from 'react-bootstrap';
 
 import { withTheme } from '@mpieva/rjsf-monkey-patch';
 import RJSFCustomTheme from './rjsf-theme';
-import ErrorResponseModal from './error-response-modal';
+import { ErrorResponseModal } from './modals';
 
 const DefaultSchemaForm = ({
     buttonLabel,

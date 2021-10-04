@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
-import { useFetch, createSend } from '@mpieva/psydb-ui-hooks';
-import LoadingIndicator from '../loading-indicator';
-import StudyTeamListItem from '../experiment-operator-team-list-item';
+import { useFetch } from '@mpieva/psydb-ui-hooks';
+import { createSend } from '@mpieva/psydb-ui-utils';
+import LoadingIndicator from '../../loading-indicator';
+import StudyTeamListItem from '../../experiment-operator-team-list-item';
 
 const ChangeTeamModal = ({
     show,
@@ -32,7 +33,7 @@ const ChangeTeamModal = ({
     return (
 
         <Modal
-            show={show}
+            show={ show }
             onHide={ onHide }
             size='md'
             className='team-modal'

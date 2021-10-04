@@ -1,7 +1,8 @@
 import React, { createContext, useContext } from 'react';
 
-import createSend from '@mpieva/psydb-ui-lib/src/use-send';
-import useModalReducer from '@mpieva/psydb-ui-lib/src/use-modal-reducer';
+import { createSend } from '@mpieva/psydb-ui-utils';
+import { useModalReducer } from '@mpieva/psydb-ui-hooks';
+
 import DetailsIconButton from '@mpieva/psydb-ui-lib/src/details-icon-button';
 import SubjectDropdown from '@mpieva/psydb-ui-lib/src/experiment-subject-dropdown';
 

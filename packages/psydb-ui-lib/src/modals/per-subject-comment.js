@@ -1,7 +1,8 @@
-import React, { useMemo, useEffect, useReducer, useCallback } from 'react';
-import { Modal, Form, Container, Col, Row, Button } from 'react-bootstrap';
+import React from 'react';
+import { Modal, Button } from 'react-bootstrap';
 
-import { useFetch, createSend } from '@mpieva/psydb-ui-hooks';
+import { useFetch } from '@mpieva/psydb-ui-hooks';
+import { createSend } from '@mpieva/psydb-ui-utils';
 import SchemaForm from '../default-schema-form';
 
 import {
@@ -67,7 +68,7 @@ const PerSubjectCommentModal = ({
 
     return (
         <Modal
-            show={show}
+            show={ show }
             onHide={ onHide }
             size='lg'
             className='team-modal'
@@ -84,7 +85,6 @@ const PerSubjectCommentModal = ({
                     }}
                     onSubmit={ handleSubmit }
                 />
-
             </Modal.Body>
         </Modal>
     )

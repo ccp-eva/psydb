@@ -1,8 +1,8 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
+import { createSend } from '@mpieva/psydb-ui-utils';
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
-import createSend from '@mpieva/psydb-ui-lib/src/use-send';
 import Pair from '@mpieva/psydb-ui-lib/src/pair';
 
 const CreateModal = ({
@@ -15,11 +15,6 @@ const CreateModal = ({
 }) => {
     var { teamRecord, interval } = modalPayloadData;
 
-    var wrappedOnSuccessfulUpdate = (...args) => {
-        onSuccessfulUpdate && onSuccessfulUpdate(...args);
-        onHide();
-    }
-
     var handleSubmit = createSend(() => ({
         type: 'reservation/reserve-awayteam-slot',
         payload: {
@@ -29,7 +24,7 @@ const CreateModal = ({
                 interval
             }
         }
-    }), { onSuccessfulUpdate: wrappedOnSuccessfulUpdate });
+    }), { onSuccessfulUpdate: [ onHide, onSuccessfulUpdate ] });
 
     return (
         <Modal

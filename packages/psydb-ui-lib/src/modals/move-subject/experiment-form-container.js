@@ -1,9 +1,9 @@
 import React, { useState }  from 'react';
 import { Container, Button } from 'react-bootstrap';
-import { createSend } from '@mpieva/psydb-ui-hooks';
+import { createSend } from '@mpieva/psydb-ui-utils';
 
-import ExperimentIntervalSummary from '../experiment-interval-summary';
-import { SubjectControls } from '../experiment-short-controls';
+import ExperimentIntervalSummary from '../../experiment-interval-summary';
+import { SubjectControls } from '../../experiment-short-controls';
 
 const ExperimentFormContainer = ({
     onHide,

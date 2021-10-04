@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Button } from 'react-bootstrap';
 
-import { createSend } from '@mpieva/psydb-ui-hooks';
+import { createSend } from '@mpieva/psydb-ui-utils';
 
 import ExperimentIntervalSummary from '../../experiment-interval-summary';
 import {

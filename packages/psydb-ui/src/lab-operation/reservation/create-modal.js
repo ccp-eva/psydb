@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { createSend } from '@mpieva/psydb-ui-hooks';
+import { createSend } from '@mpieva/psydb-ui-utils';
 
 import {
     Button,
@@ -30,11 +30,6 @@ const CreateModal = ({
     var [ end, setEnd ] = useState(minEnd);
     var [ teamId, setTeamId ] = useState(teamRecords[0]._id);
 
-    var wrappedOnSuccessfulUpdate = (...args) => {
-        onHide();
-        onSuccessfulCreate && onSuccessfulCreate(...args);
-    };
-
     var handleSubmit = createSend(() => ({
         type: 'reservation/reserve-inhouse-slot',
         payload: {
@@ -49,8 +44,7 @@ const CreateModal = ({
             }
         }
     }), {
-        onSuccessfulUpdate: wrappedOnSuccessfulUpdate,
-        dependencies: [ start, end, teamId ]
+        onSuccessfulUpdate: [ onHide, onSuccessfulUpdate ],
     })
 
     return (

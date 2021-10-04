@@ -1,9 +1,9 @@
 import React from 'react';
 import { Modal, Button, Table } from 'react-bootstrap';
 
+import { createSend, demuxed } from '@mpieva/psydb-ui-utils';
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 import calculateAge from '@mpieva/psydb-ui-lib/src/calculate-age';
-import createSend from '@mpieva/psydb-ui-lib/src/use-send';
 import Pair from '@mpieva/psydb-ui-lib/src/pair';
 
 const ConfirmModal = ({
@@ -18,10 +18,9 @@ const ConfirmModal = ({
 }) => {
     var { teamRecord, interval } = modalPayloadData;
 
-    var wrappedOnSuccessfulUpdate = (...args) => {
-        onSuccessfulUpdate && onSuccessfulUpdate(...args);
-        onHide();
-    }
+    var wrappedOnSuccessfulUpdate = demuxed([
+        onHide, onSuccessulUpdate,
+    ]);
 
     var handleSubmit = createSend(() => ({
         type: 'experiment/create-from-awayteam-reservation',

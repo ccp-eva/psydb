@@ -1,8 +1,6 @@
 import agent from '@mpieva/psydb-ui-request-agents';
-
-const arrify = (a) => (
-    Array.isArray(a) ? a : [ a ]
-);
+import arrify from './arrify';
+import demuxed from './demuxed';
 
 // FIXME: since introducing dependencies i dont rally like the
 // signature of that function anmoyre
@@ -24,18 +22,12 @@ const createSend = (
         agent.send({ message })
         .then((response) => {
             if (onSuccessfulUpdate) {
-                onSuccessfulUpdate = arrify(onSuccessfulUpdate);
-                for (var fn of onSuccessfulUpdate) {
-                    fn(response);
-                }
+                demuxed(arrify(onSuccessfulUpdate))(response);
             }
         })
         .catch((error) => {
             if (onFailedUpdate) {
-                onFailedUpdate = arrify(onFailedUpdate);
-                for (var fn of onFailedUpdate) {
-                    fn(error)
-                }
+                demuxed(arrify(onFailedUpdate))(error);
             }
             else {
                 throw error;

@@ -1,5 +1,3 @@
-export { default as createSend } from './create-send';
-
 export { default as useFetch } from './use-fetch';
 export { default as useFetchAll } from './use-fetch-all';
 

@@ -45,6 +45,7 @@ dependencies:
   '@rush-temp/psydb-ui-hooks': 'file:projects/psydb-ui-hooks.tgz_webpack@5.10.1'
   '@rush-temp/psydb-ui-lib': 'file:projects/psydb-ui-lib.tgz_webpack@5.10.1'
   '@rush-temp/psydb-ui-request-agents': 'file:projects/psydb-ui-request-agents.tgz_debug@4.3.1'
+  '@rush-temp/psydb-ui-utils': 'file:projects/psydb-ui-utils.tgz_webpack@5.10.1'
   '@rush-temp/psydb-web': 'file:projects/psydb-web.tgz'
   '@rush-temp/rjsf-monkey-patch': 'file:projects/rjsf-monkey-patch.tgz'
   ajv: 6.12.6
@@ -7948,6 +7949,22 @@ packages:
       integrity: sha512-G3/3cMW3qycoGFIwhQqr3G2uRSTJmxXrUkEcNCuMLv3o763vibyflO7lJ36ZRRb00S7weyXI2di08KJhSvhShg==
       tarball: 'file:projects/psydb-ui-request-agents.tgz'
     version: 0.0.0
+  'file:projects/psydb-ui-utils.tgz_webpack@5.10.1':
+    dependencies:
+      '@babel/core': 7.12.17
+      '@babel/preset-env': 7.12.17_@babel+core@7.12.17
+      babel-loader: 8.2.2_97e48a6b0bdb6376f048db1a976e5b3d
+      chai: 4.2.0
+      mocha: 8.1.3
+    dev: false
+    id: 'file:projects/psydb-ui-utils.tgz'
+    name: '@rush-temp/psydb-ui-utils'
+    peerDependencies:
+      webpack: '*'
+    resolution:
+      integrity: sha512-5Lq8NdJrZotiOfMO7Ea1vHChOfnXASYxNU5yymDVfdQpK0kj2I2c7as3RqgJXbYCRRerJp8bnAGRHZ1yRRYN2A==
+      tarball: 'file:projects/psydb-ui-utils.tgz'
+    version: 0.0.0
   'file:projects/psydb-ui.tgz':
     dependencies:
       '@babel/core': 7.12.17
@@ -7987,7 +8004,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-ui'
     resolution:
-      integrity: sha512-r8mvklEX4iRXjHmQDwvOkdX3EFv8EQKaRx9qa6GD+oDziGxoY42izVQ7v3D0WdAtBvlQUH43wSIsXrKT0xBCEw==
+      integrity: sha512-HAlrUI3YDFxYLtSRMF/kQfpQSgyScAk1JFGuYndAPnMnLq+niCDdRrdhICXU91EUv+hZOgvZnVxTxgYIExwDUQ==
       tarball: 'file:projects/psydb-ui.tgz'
     version: 0.0.0
   'file:projects/psydb-web.tgz':
@@ -8081,6 +8098,7 @@ specifiers:
   '@rush-temp/psydb-ui-hooks': 'file:./projects/psydb-ui-hooks.tgz'
   '@rush-temp/psydb-ui-lib': 'file:./projects/psydb-ui-lib.tgz'
   '@rush-temp/psydb-ui-request-agents': 'file:./projects/psydb-ui-request-agents.tgz'
+  '@rush-temp/psydb-ui-utils': 'file:./projects/psydb-ui-utils.tgz'
   '@rush-temp/psydb-web': 'file:./projects/psydb-web.tgz'
   '@rush-temp/rjsf-monkey-patch': 'file:./projects/rjsf-monkey-patch.tgz'
   ajv: ~6.12.6

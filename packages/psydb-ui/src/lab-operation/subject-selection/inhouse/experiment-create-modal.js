@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
-import { createSend } from '@mpieva/psydb-ui-hooks';
+import { createSend } from '@mpieva/psydb-ui-utils';
 import ExperimentShortControls from '@mpieva/psydb-ui-lib/src/experiment-short-controls';
 
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';

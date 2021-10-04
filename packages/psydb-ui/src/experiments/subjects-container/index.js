@@ -1,5 +1,4 @@
 import React, { useCallback, useMemo } from 'react';
-import createSend from '@mpieva/psydb-ui-lib/src/use-send';
 import createStringifier from '@mpieva/psydb-ui-lib/src/record-field-stringifier';
 
 import SubjectTypeContainer from './subject-type-container';

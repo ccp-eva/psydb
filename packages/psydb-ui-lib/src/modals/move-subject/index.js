@@ -1,11 +1,13 @@
-import React, { useMemo, useEffect, useReducer, useCallback } from 'react';
+import React from 'react';
 import { Modal } from 'react-bootstrap';
 
-import agent from '@mpieva/psydb-ui-request-agents';
-import useFetch from '../use-fetch';
-import useModalReducer from '../use-modal-reducer';
-import LoadingIndicator from '../loading-indicator';
-import StudyInhouseLocations from '../study-inhouse-locations';
+import {
+    useFetch,
+    useModalReducer
+} from '@mpieva/psydb-ui-hooks';
+
+import LoadingIndicator from '../../loading-indicator';
+import StudyInhouseLocations from '../../study-inhouse-locations';
 
 import ConfirmModal from './confirm-modal';
 
@@ -41,10 +43,7 @@ const MoveSubjectModal = ({
                 experimentId,
             })
         }
-    }, [ experimentId ]);
-
-    var [ state, dispatch ] = useReducer(reducer, {});
-    var { calendarRevision } = state;
+    }, [ experimentType, experimentId ]);
 
     var confirmModal = useModalReducer({ show: false });
 
@@ -83,13 +82,10 @@ const MoveSubjectModal = ({
             <Modal.Body className='bg-light'>
 
                 <ConfirmModal { ...({
-                    show: confirmModal.show,
-                    onHide: confirmModal.handleHide,
-                    confirmData: confirmModal.data,
+                    ...confirmModal.passthrough,
 
                     experimentData,
                     studyData,
-
                     subjectData: { record: subjectRecord },
 
                     onSuccessfulUpdate: wrappedOnSuccessfulUpdate,
@@ -106,7 +102,7 @@ const MoveSubjectModal = ({
                     onSelectExperimentSlot={
                         confirmModal.handleShow
                     }
-                    calendarRevision={ calendarRevision }
+                    calendarRevision={ 0 }
                     
                     locationCalendarListClassName='bg-white p-2 border-left border-bottom border-right'
                 />
@@ -116,16 +112,5 @@ const MoveSubjectModal = ({
     )
 }
 
-
-var reducer = (state, action) => {
-    var { type, payload } = action;
-    switch (type) {
-        case 'increase-calendar-revision':
-            return {
-                ...state,
-                calendarRevision: (state.calendarRevision || 0) + 1
-            }
-    }
-}
 
 export default MoveSubjectModalWrapper;

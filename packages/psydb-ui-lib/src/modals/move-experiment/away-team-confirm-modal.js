@@ -1,11 +1,11 @@
 import React, { useMemo, useEffect, useReducer, useCallback, useState } from 'react';
 import { Modal, Form, Container, Col, Row, Button } from 'react-bootstrap';
 
-import datefns from '../date-fns';
-import createSend from '../use-send';
+import datefns from '../../date-fns';
+import { createSend } from '@mpieva/psydb-ui-utils';
 
-import Pair from '../pair';
-import Split from '../split';
+import Pair from '../../pair';
+import Split from '../../split';
 
 const FormContainer = ({
     onHide,

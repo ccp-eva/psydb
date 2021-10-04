@@ -1,13 +1,16 @@
 import React, { useMemo, useEffect, useReducer, useCallback } from 'react';
 import { Modal } from 'react-bootstrap';
 
-import agent from '@mpieva/psydb-ui-request-agents';
-import useFetch from '../use-fetch';
-import useModalReducer from '../use-modal-reducer';
-import LoadingIndicator from '../loading-indicator';
+import { demuxed } from '@mpieva/psydb-ui-utils';
+import {
+    useFetch,
+    useModalReducer,
+    useRevision
+} from '@mpieva/psydb-ui-hooks';
 
-import StudyInhouseLocations from '../study-inhouse-locations';
-import StudyAwayTeams from '../study-away-teams';
+import LoadingIndicator from '../../loading-indicator';
+import StudyInhouseLocations from '../../study-inhouse-locations';
+import StudyAwayTeams from '../../study-away-teams';
 
 import InhouseConfirmModal from './inhouse-confirm-modal';
 import AwayTeamConfirmModal from './away-team-confirm-modal';
@@ -27,16 +30,11 @@ const MoveExperimentModal = ({
     onSuccessfulUpdate,
 }) => {
     var confirmModal = useModalReducer({ show: false });
+    var [ revision, increaseRevision ] = useRevision();
 
-    var [ state, dispatch ] = useReducer(reducer, {});
-    var {
-        calendarRevision,
-    } = state;
-
-    var wrappedOnSuccessfulUpdate = (...args) => {
-        onHide(),
-        onSuccessfulUpdate && onSuccessfulUpdate(...args);
-    };
+    var wrappedOnSuccessfulUpdate = demuxed([
+        onHide, onSuccessfulUpdate
+    ]);
 
     var [ didFetch, fetched ] = useFetch((agent) => {
         if (shouldFetch) {
@@ -66,18 +64,16 @@ const MoveExperimentModal = ({
                 studyId,
                 studyRecordType,
                 onSelectReservationSlot: confirmModal.handleShow,
-                calendarRevision,
+                calendarRevision: revision
             }) } />
         );
         prerenderedConfirmModal = (
             <AwayTeamConfirmModal { ...({
-                show: confirmModal.show,
-                onHide: confirmModal.handleHide,
+                ...confirmModal.passthrough,
 
                 experimentData,
                 teamData,
                 studyData,
-                modalPayloadData: confirmModal.data,
 
                 onSuccessfulUpdate: wrappedOnSuccessfulUpdate,
             })} />
@@ -92,7 +88,7 @@ const MoveExperimentModal = ({
                 //activeLocationType={ 'instituteroom' }
                 onSelectReservationSlot: confirmModal.handleShow,
 
-                calendarRevision,
+                calendarRevision: revision,
                 locationCalendarListClassName: (
                     'bg-white p-2 border-left border-bottom border-right'
                 )
@@ -100,12 +96,10 @@ const MoveExperimentModal = ({
         );
         prerenderedConfirmModal = (
             <InhouseConfirmModal { ...({
-                show: confirmModal.show,
-                onHide: confirmModal.handleHide,
+                ...confirmModal.passthrough,
 
                 experimentData,
                 studyData,
-                confirmData: confirmModal.data,
 
                 onSuccessfulUpdate: wrappedOnSuccessfulUpdate,
             }) } />
@@ -133,17 +127,6 @@ const MoveExperimentModal = ({
     )
 }
 
-
-var reducer = (state, action) => {
-    var { type, payload } = action;
-    switch (type) {
-        case 'increase-calendar-revision':
-            return {
-                ...state,
-                calendarRevision: (state.calendarRevision || 0) + 1
-            }
-    }
-}
 
 const MoveExperimentModalWrapper = (ps) => {
     if (!ps.show) {
