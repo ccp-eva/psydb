@@ -40,12 +40,6 @@ const ReservationFormContainer = ({
         onChangeAutoConfirm,
     } = useControlStates();
 
-    /*var [ comment, setComment ] = useState('');
-    var [ autoConfirm, setAutoConfirm ] = useState(false);
-
-    var minEnd = new Date(start.getTime() + slotDuration - 1);
-    var [ end, setEnd ] = useState(minEnd);*/
-
     var handleSubmit = createSend(() => ({
         type: 'experiment/move-subject-inhouse',
         payload: {
