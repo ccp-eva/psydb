@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Button } from 'react-bootstrap';
-import EditIconButton from '@mpieva/psydb-ui-lib/src/edit-icon-button';
+import { EditIconButton } from '@mpieva/psydb-ui-layout';
 import stringifyFieldValue from '@mpieva/psydb-ui-lib/src/stringify-field-value';
 
 import ConditionsByAgeFrameModal from './conditions-by-age-frame-modal';

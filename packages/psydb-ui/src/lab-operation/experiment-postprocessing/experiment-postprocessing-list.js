@@ -15,13 +15,16 @@ import {
     useRevision
 } from '@mpieva/psydb-ui-hooks';
 
+import {
+    LoadingIndicator,
+    DetailsIconButton
+} from '@mpieva/psydb-ui-layout';
+
 import agent from '@mpieva/psydb-ui-request-agents';
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 import formatInterval from '@mpieva/psydb-ui-lib/src/format-date-interval';
 import createStringifier from '@mpieva/psydb-ui-lib/src/record-field-stringifier';
 
-import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
-import DetailsIconButton from '@mpieva/psydb-ui-lib/src/details-icon-button';
 import PostprocessSubjectForm from '@mpieva/psydb-ui-lib/src/experiments/postprocess-subject-form';
 
 import InhouseList from './inhouse-list';

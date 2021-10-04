@@ -10,11 +10,8 @@ import {
     Container,
     Row,
     Col,
-} from 'react-bootstrap';
-
-import {
-    DoorClosedFill
-} from 'react-bootstrap-icons';
+    Icons
+} from '@mpieva/psydb-ui-layout';
 
 import agent from '@mpieva/psydb-ui-request-agents';
 
@@ -95,7 +92,7 @@ const LayoutedRoutes = ({ onSignOut }) => {
                             <a
                                 onClick={ onSignOut }
                             >
-                                <DoorClosedFill className='align-middle' />
+                                <Icons.DoorClosedFill className='align-middle' />
                                 <u className='d-inline-block ml-2 align-middle'>
                                     Abmelden
                                 </u>

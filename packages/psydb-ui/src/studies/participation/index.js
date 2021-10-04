@@ -14,8 +14,10 @@ import { Button } from 'react-bootstrap';
 import keyBy from '@mpieva/psydb-common-lib/src/key-by';
 import agent from '@mpieva/psydb-ui-request-agents';
 
-import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
-import TabNav from '@mpieva/psydb-ui-lib/src/tab-nav';
+import {
+    LoadingIndicator,
+    TabNav,
+} from '@mpieva/psydb-ui-layout';
 
 import ParticipationList from './participation-list';
 import ParticipationCreateModal from './participation-create-modal';

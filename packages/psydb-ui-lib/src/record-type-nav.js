@@ -1,5 +1,5 @@
 import React from 'react';
-import BigNav from './big-nav';
+import { BigNav } from '@mpieva/psydb-ui-layout';
 
 const RecordTypeNav = ({ items }) => {
     var navItems = items.map(it => ({

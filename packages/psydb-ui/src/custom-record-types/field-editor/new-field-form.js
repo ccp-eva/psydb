@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
-import {
-    Button
-} from 'react-bootstrap'
+import { Button } from '@mpieva/psydb-ui-layout';
 
 import { withTheme } from '@mpieva/rjsf-monkey-patch';
-import RJSFCustomTheme from '@mpieva/psydb-ui-lib/src/rjsf-theme';
+import { RJSFCustomTheme } from '@mpieva/psydb-ui-schema-form';
 
 
 import agent from '@mpieva/psydb-ui-request-agents';

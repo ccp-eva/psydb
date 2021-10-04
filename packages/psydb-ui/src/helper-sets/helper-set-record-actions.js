@@ -1,6 +1,8 @@
 import React from 'react';
-import { PencilFill, List } from 'react-bootstrap-icons';
-import LinkButton from '@mpieva/psydb-ui-lib/src/link-button';
+import {
+    LinkButton,
+    Icons,
+} from '@mpieva/psydb-ui-layout';
 
 const HelperSetRecordActions = ({
     linkBaseUrl,
@@ -13,7 +15,7 @@ const HelperSetRecordActions = ({
                 variant='outline-primary'
                 to={ `${linkBaseUrl}/${record._id}/edit`}
             >
-                <PencilFill style={{ width: '20px', marginTop: '-3px' }} />
+                <Icons.PencilFill style={{ width: '20px', marginTop: '-3px' }} />
             </LinkButton>
             <LinkButton
                 className='ml-2'
@@ -21,7 +23,7 @@ const HelperSetRecordActions = ({
                 variant='outline-primary'
                 to={ `${linkBaseUrl}/${record._id}/items`}
             >
-                <List style={{ height: '20px', width: '20px', marginTop: '-3px' }} />
+                <Icons.List style={{ height: '20px', width: '20px', marginTop: '-3px' }} />
             </LinkButton>
         </>
     )

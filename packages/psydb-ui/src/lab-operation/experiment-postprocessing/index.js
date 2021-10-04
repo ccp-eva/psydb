@@ -12,7 +12,7 @@ import {
 import agent from '@mpieva/psydb-ui-request-agents';
 import ResearchGroupNav from '@mpieva/psydb-ui-lib/src/research-group-nav';
 import RedirectOrTypeNav from '@mpieva/psydb-ui-lib/src/redirect-or-type-nav';
-import BigNav from '@mpieva/psydb-ui-lib/src/big-nav';
+import { BigNav } from '@mpieva/psydb-ui-layout';
 import ExperimentPostprocessingList from './experiment-postprocessing-list';
 
 var experimentTypeNavItems = [

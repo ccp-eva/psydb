@@ -10,7 +10,9 @@ import {
 } from 'react-router-dom';
 
 import agent from '@mpieva/psydb-ui-request-agents';
-import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
+import {
+    LoadingIndicator
+} from '@mpieva/psydb-ui-layout';
 
 import InhouseLocationsByType from './inhouse-locations-by-type';
 

@@ -9,8 +9,7 @@ import {
     useParams
 } from 'react-router-dom';
 
-import { LinkContainer } from 'react-router-bootstrap';
-import { LinkButton } from '@mpieva/psydb-ui-lib';
+import { LinkContainer, LinkButton } from '@mpieva/psydb-ui-layout';
 
 import RecordListContainer from '@mpieva/psydb-ui-lib/src/record-list-container';
 import CreateNewType from './create-new-type';

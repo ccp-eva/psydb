@@ -1,11 +1,9 @@
 import React, { useReducer, useEffect, useMemo } from 'react';
 
-import {
-    LinkContainer
-} from 'react-router-bootstrap';
+import { useModalReducer } from '@mpieva/psydb-ui-hooks';
+import { LinkContainer } from '@mpieva/psydb-ui-layout';
 
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
-import { useModalReducer } from '@mpieva/psydb-ui-hooks';
 import getTextColor from '@mpieva/psydb-ui-lib/src/bw-text-color-for-background';
 
 import ExperimentDropdown from '@mpieva/psydb-ui-lib/src/experiment-dropdown';

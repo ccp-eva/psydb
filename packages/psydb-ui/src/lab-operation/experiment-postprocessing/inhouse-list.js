@@ -2,7 +2,7 @@ import React from 'react';
 import { Table } from 'react-bootstrap';
 
 import formatInterval from '@mpieva/psydb-ui-lib/src/format-date-interval';
-import DetailsIconButton from '@mpieva/psydb-ui-lib/src/details-icon-button';
+import { DetailsIconButton } from '@mpieva/psydb-ui-layout';
 import PostprocessSubjectForm from '@mpieva/psydb-ui-lib/src/experiments/postprocess-subject-form';
 
 const InhouseList = ({

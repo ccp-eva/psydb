@@ -2,14 +2,15 @@ import React, { useState, useEffect, useReducer, forwardRef } from 'react';
 
 import { useRouteMatch, useParams } from 'react-router-dom';
 
-import { ArrowRightShort } from 'react-bootstrap-icons';
-
 import allSchemaCreators from '@mpieva/psydb-schema-creators';
 import agent from '@mpieva/psydb-ui-request-agents';
 
-import ROSchemaForm from '@mpieva/psydb-ui-lib/src/ro-schema-form';
+import { ROSchemaForm } from '@mpieva/psydb-ui-schema-form';
 
-import LinkButton from '@mpieva/psydb-ui-lib/src/link-button';
+import {
+    LinkButton,
+    Icons
+} from '@mpieva/psydb-ui-utils';
 
 const EditLinkButton = ({
     to,
@@ -20,7 +21,7 @@ const EditLinkButton = ({
             className='d-flex align-items-center'
             to={ to }>
             <span className='d-inline-block mr-2'>{ label }</span>
-            <ArrowRightShort style={{ height: '24px', width: '24px' }} />
+            <Icons.ArrowRightShort style={{ height: '24px', width: '24px' }} />
         </LinkButton>
     );
 }

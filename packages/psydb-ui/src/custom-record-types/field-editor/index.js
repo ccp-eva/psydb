@@ -1,5 +1,9 @@
 import React, { useState, useEffect, useReducer, useMemo } from 'react';
-import { Button, Table } from 'react-bootstrap';
+import {
+    Button,
+    Table,
+    EditIconButton
+} from '@mpieva/psydb-ui-layout';
 
 import agent from '@mpieva/psydb-ui-request-agents';
 import allSchemaCreators from '@mpieva/psydb-schema-creators';
@@ -8,7 +12,6 @@ import {
     ErrorResponseModal
 } from '@mpieva/psydb-ui-lib/src/modals';
 
-import EditIconButton from '@mpieva/psydb-ui-lib/src/edit-icon-button';
 import NewFieldModal from './new-field-modal';
 import EditFieldModal from './edit-field-modal';
 

@@ -2,13 +2,10 @@ import React from 'react';
 
 import {
     Table,
-    Button
-} from 'react-bootstrap';
-
-import {
-    CheckSquareFill,
-    Square
-} from 'react-bootstrap-icons';
+    Button,
+    Pair,
+    Icons
+} from '@mpieva/psydb-ui-layout';
 
 import {
     FieldDataHeadCols,
@@ -17,7 +14,7 @@ import {
 
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 import calculateAge from '@mpieva/psydb-ui-lib/src/calculate-age';
-import Pair from '@mpieva/psydb-ui-lib/src/pair';
+
 import CheckColumn from '@mpieva/psydb-ui-lib/src/check-column';
 
 import UpcomingExperiments from '../upcoming-experiments';
@@ -155,8 +152,8 @@ const SubjectTableBody = ({
                 >
                     {
                         selectedSubjectIds.length > 0 
-                        ? <CheckSquareFill />
-                        : <Square />
+                        ? <Icons.CheckSquareFill />
+                        : <Icons.Square />
                     }
                 </td>
                 <td 

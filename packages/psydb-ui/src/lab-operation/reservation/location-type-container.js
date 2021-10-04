@@ -6,7 +6,7 @@ import {
     useParams
 } from 'react-router-dom';
 
-import up from '@mpieva/psydb-ui-lib/src/url-up';
+import { urlUp as up } from '@mpieva/psydb-ui-utils';
 import StudyInhouseLocations from '@mpieva/psydb-ui-lib/src/study-inhouse-locations';
 
 import CreateModal from './create-modal';

@@ -9,9 +9,7 @@ import {
     useParams
 } from 'react-router-dom';
 
-import {
-    LinkContainer
-} from 'react-router-bootstrap';
+import { LinkContainer } from '@mpieva/psydb-ui-layout';
 
 import RecordTypeNav from '@mpieva/psydb-ui-lib/src/record-type-nav';
 import ResearchGroupNav from './research-group-nav';

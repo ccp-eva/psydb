@@ -10,8 +10,8 @@ import {
 } from 'react-router-dom';
 
 import agent from '@mpieva/psydb-ui-request-agents';
-import up from '@mpieva/psydb-ui-lib/src/url-up';
-import BigNav from '@mpieva/psydb-ui-lib/src/big-nav';
+import { urlUp as up } from '@mpieva/psydb-ui-utils';
+import { BigNav } from '@mpieva/psydb-ui-layout';
 import RecordTypeNav from '@mpieva/psydb-ui-lib/src/record-type-nav';
 
 import ReservationRouting from './reservation';

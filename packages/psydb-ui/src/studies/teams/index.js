@@ -12,8 +12,10 @@ import {
 import { Button } from 'react-bootstrap';
 
 import agent from '@mpieva/psydb-ui-request-agents';
-import LinkButton from '@mpieva/psydb-ui-lib/src/link-button';
-import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
+import {
+    LinkButton,
+    LoadingIndicator
+} from '@mpieva/psydb-ui-layout';
 
 import StudyTeamListItem from '@mpieva/psydb-ui-lib/src/experiment-operator-team-list-item';
 

@@ -3,7 +3,7 @@ import React, { createContext, useContext } from 'react';
 import { createSend } from '@mpieva/psydb-ui-utils';
 import { useModalReducer } from '@mpieva/psydb-ui-hooks';
 
-import DetailsIconButton from '@mpieva/psydb-ui-lib/src/details-icon-button';
+import { DetailsIconButton } from '@mpieva/psydb-ui-layout';
 import SubjectDropdown from '@mpieva/psydb-ui-lib/src/experiment-subject-dropdown';
 
 import SubjectsContainer from '../../subjects-container';

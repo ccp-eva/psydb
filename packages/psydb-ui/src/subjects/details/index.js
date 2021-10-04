@@ -1,8 +1,8 @@
 import React from 'react';
 import { useRouteMatch, useParams } from 'react-router-dom';
 
-import up from '@mpieva/psydb-ui-lib/src/url-up';
-import LinkButton from '@mpieva/psydb-ui-lib/src/link-button';
+import { urlUp as up } from '@mpieva/psydb-ui-utils';
+import { LinkButton } from '@mpieva/psydb-ui-layout';
 import GenericRecordDetails from '@mpieva/psydb-ui-lib/src/generic-record-details';
 import Participation from './participation';
 

@@ -10,9 +10,9 @@ import {
 } from 'react-router-dom';
 
 import agent from '@mpieva/psydb-ui-request-agents';
-import up from '@mpieva/psydb-ui-lib/src/url-up';
+import { urlUp as up } from '@mpieva/psydb-ui-utils';
 
-import TabNav from '@mpieva/psydb-ui-lib/src/tab-nav';
+import { TabNav } from '@mpieva/psydb-ui-layout';
 import StudyInhouseLocationTypeNav from '@mpieva/psydb-ui-lib/src/study-inhouse-location-type-nav';
 
 import LocationTypeContainer from './location-type-container';

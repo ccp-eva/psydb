@@ -4,7 +4,7 @@ import { Modal, Button, Table } from 'react-bootstrap';
 import { createSend, demuxed } from '@mpieva/psydb-ui-utils';
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 import calculateAge from '@mpieva/psydb-ui-lib/src/calculate-age';
-import Pair from '@mpieva/psydb-ui-lib/src/pair';
+import { Pair } from '@mpieva/psydb-ui-layout';
 
 const ConfirmModal = ({
     show,

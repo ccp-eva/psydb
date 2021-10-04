@@ -1,5 +1,5 @@
 import React from 'react';
-import DetailsIconButton from '@mpieva/psydb-ui-lib/src/details-icon-button';
+import { DetailsIconButton } from '@mpieva/psydb-ui-layout';
 import SubjectsContainer from '../subjects-container';
 
 const AllSubjects = ({

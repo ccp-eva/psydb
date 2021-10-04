@@ -10,7 +10,7 @@ import {
 } from 'react-router-dom';
 
 import agent from '@mpieva/psydb-ui-request-agents';
-import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
+import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 import SelectionSettingsBySubjectType from './selection-settings-by-subject-type';
 
 const StudySelectionSettings = ({

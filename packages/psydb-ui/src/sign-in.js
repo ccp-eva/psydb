@@ -5,7 +5,7 @@ import {
 } from 'react-bootstrap'
 
 import { withTheme } from '@mpieva/rjsf-monkey-patch';
-import RJSFCustomTheme from '@mpieva/psydb-ui-lib/src/rjsf-theme';
+import { RJSFCustomTheme } from '@mpieva/psydb-ui-schema-form';
 
 import {
     PublicSignIn

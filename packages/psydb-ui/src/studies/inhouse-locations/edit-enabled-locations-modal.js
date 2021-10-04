@@ -1,7 +1,7 @@
 import React, { useEffect, useReducer } from 'react';
 import { Modal } from 'react-bootstrap';
 import agent from '@mpieva/psydb-ui-request-agents';
-import SchemaForm from '@mpieva/psydb-ui-lib/src/default-schema-form';
+import { SchemaForm } from '@mpieva/psydb-ui-schema-form';
 
 import {
     ExactObject,

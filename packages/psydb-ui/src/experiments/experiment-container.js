@@ -14,7 +14,7 @@ import {
     useRevision
 } from '@mpieva/psydb-ui-hooks';
 
-import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
+import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
 import Details from './details';
 import Postprocessing from './postprocessing';

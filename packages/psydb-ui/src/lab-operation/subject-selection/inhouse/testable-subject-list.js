@@ -14,7 +14,7 @@ import { Base64 } from 'js-base64';
 
 import agent from '@mpieva/psydb-ui-request-agents';
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
-import up from '@mpieva/psydb-ui-lib/src/url-up';
+import { urlUp as up } from '@mpieva/psydb-ui-utils';
 
 import {
     useFetch,
@@ -23,8 +23,10 @@ import {
     usePaginationReducer
 } from '@mpieva/psydb-ui-hooks';
 
-import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
-import Pagination from '@mpieva/psydb-ui-lib/src/pagination';
+import {
+    LoadingIndicator,
+    Pagination,
+} from '@mpieva/psydb-ui-layout';
 
 import {
     FieldDataHeadCols,

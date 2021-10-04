@@ -1,10 +1,10 @@
 import React, { Fragment, useState, useReducer } from 'react';
-import { Table, Button } from 'react-bootstrap';
+
 import {
-    ArrowUp,
-    ArrowDown,
-    XCircle
-} from 'react-bootstrap-icons';
+    Table,
+    Button,
+    Icons
+} from '@mpieva/psydb-ui-layout';
 
 const FieldPointerList = ({
     onMoveItem,
@@ -77,16 +77,16 @@ const ItemActions = ({
             { onMoveItem && (
                 <Fragment>
                     <Button onClick={ handleUp }>
-                        <ArrowUp />
+                        <Icons.ArrowUp />
                     </Button>
                     <Button onClick={ handleDown }>
-                        <ArrowDown />
+                        <Icons.ArrowDown />
                     </Button>
                 </Fragment>
             )}
             { onRemoveItem && (
                 <Button onClick={ handleRemove }>
-                    <XCircle />
+                    <Icons.XCircle />
                 </Button>
             )}
         </Fragment>

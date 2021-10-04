@@ -12,7 +12,7 @@ import {
 import agent from '@mpieva/psydb-ui-request-agents';
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 
-import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
+import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 import CalendarNav from '@mpieva/psydb-ui-lib/src/calendar-nav';
 import withVariableCalendarPages from '@mpieva/psydb-ui-lib/src/with-variable-calendar-pages';
 import getDayStartsInInterval from '@mpieva/psydb-ui-lib/src/get-day-starts-in-interval';
@@ -176,7 +176,7 @@ const WrappedCalendar = (
     withVariableCalendarPages(Calendar, { withURLSearchParams: true })
 );
 
-import { useURLSearchParams } from '@cdxoo/react-router-url-search-params';
+import { useURLSearchParams } from '@mpieva/psydb-ui-hooks';
 import omit from '@cdxoo/omit';
 
 const CalendarVariantContainer = (ps) => {

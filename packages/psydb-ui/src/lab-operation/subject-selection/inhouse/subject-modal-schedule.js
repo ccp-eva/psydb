@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
 
-import TabNav from '@mpieva/psydb-ui-lib/src/tab-nav';
-import StudyInhouseLocations from '@mpieva/psydb-ui-lib/src/study-inhouse-locations';
-
-import ExperimentCreateModal from './experiment-create-modal';
-import ExperimentUpdateModal from './experiment-update-modal';
+import {
+    TabNav
+} from '@mpieva/psydb-ui-layout';
 
 import {
     useModalReducer,
     useCallbackMaybe
 } from '@mpieva/psydb-ui-hooks';
+
+import StudyInhouseLocations from '@mpieva/psydb-ui-lib/src/study-inhouse-locations';
+
+import ExperimentCreateModal from './experiment-create-modal';
+import ExperimentUpdateModal from './experiment-update-modal';
 
 const SubjectModalSchedule = ({
     onHide,

@@ -1,9 +1,10 @@
 import React from 'react';
 
-import { Button } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
-
-import { CaretUpFill, CaretDownFill } from 'react-bootstrap-icons';
+import {
+    Button,
+    LinkContainer,
+    Icons,
+} from '@mpieva/psydb-ui-layout';
 
 var defaultIconStyle = {
     width: '16px',
@@ -22,8 +23,8 @@ var UncollapseButton = ({
             <b style={{ color: '#006c66' }}>Details:</b>
             {
                 direction === 'down'
-                ? <CaretDownFill style={{ ...defaultIconStyle, ...iconStyle }} />
-                : <CaretUpFill style={{ ...defaultIconStyle, ...iconStyle }} />
+                ? <Icons.CaretDownFill style={{ ...defaultIconStyle, ...iconStyle }} />
+                : <Icons.CaretUpFill style={{ ...defaultIconStyle, ...iconStyle }} />
             }
         </a>
     )

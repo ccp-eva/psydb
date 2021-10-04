@@ -1,7 +1,10 @@
 import React from 'react';
 
-import { Nav, NavBar } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
+import {
+    Nav,
+    NavBar,
+    LinkContainer
+} from '@mpieva/psydb-ui-layout';
 
 const Link = ({
     to,

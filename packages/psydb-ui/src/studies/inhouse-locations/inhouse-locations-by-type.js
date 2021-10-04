@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Button } from 'react-bootstrap';
-import EditIconButton from '@mpieva/psydb-ui-lib/src/edit-icon-button';
+import { EditIconButton } from '@mpieva/psydb-ui-layout';
 import AddLocationTypeModal from './add-location-type-modal';
 import EditEnabledLocationsModal from './edit-enabled-locations-modal';
 

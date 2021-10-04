@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import ROSchemaForm from '@mpieva/psydb-ui-lib/src/ro-schema-form';
+import { ROSchemaForm } from '@mpieva/psydb-ui-schema-form';
 
 import {
     ExactObject,
@@ -11,7 +11,7 @@ import {
     ExternalLocationGrouping,
 } from '@mpieva/psydb-schema-fields-special';
 
-import EditIconButton from '@mpieva/psydb-ui-lib/src/edit-icon-button';
+import { EditIconButton } from '@mpieva/psydb-ui-layout';
 import GeneralSubjectTypeSettingsModal from './general-subject-type-settings-modal';
 
 const createSchema = ({ subjectTypeData }) => ExactObject({

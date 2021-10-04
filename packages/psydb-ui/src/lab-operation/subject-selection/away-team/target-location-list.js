@@ -8,20 +8,22 @@ import {
 } from 'react-router-dom';
 
 import omit from '@cdxoo/omit';
-import { useURLSearchParams } from '@cdxoo/react-router-url-search-params';
 
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
-import up from '@mpieva/psydb-ui-lib/src/url-up';
+import { urlUp as up } from '@mpieva/psydb-ui-utils';
 
 import {
     useFetch,
     useRevision,
     useModalReducer,
     usePaginationReducer,
+    useURLSearchParams,
 } from '@mpieva/psydb-ui-hooks';
 
-import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
-import Pagination from '@mpieva/psydb-ui-lib/src/pagination';
+import {
+    LoadingIndicator,
+    Pagination
+} from '@mpieva/psydb-ui-layout';
 
 import TargetLocationTable from './target-location-table';
 import ExperimentScheduleModal from './experiment-schedule-modal';

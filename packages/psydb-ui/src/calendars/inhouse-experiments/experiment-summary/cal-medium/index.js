@@ -1,8 +1,6 @@
 import React, { useReducer, useEffect, useMemo, useCallback } from 'react';
 
-import {
-    LinkContainer
-} from 'react-router-bootstrap';
+import { LinkContainer } from '@mpieva/psydb-ui-layout';
 
 import enums from '@mpieva/psydb-schema-enums';
 

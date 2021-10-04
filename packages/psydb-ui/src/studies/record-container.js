@@ -9,10 +9,12 @@ import {
 } from 'react-router-dom';
 
 import agent from '@mpieva/psydb-ui-request-agents';
-import up from '@mpieva/psydb-ui-lib/src/url-up';
+import { urlUp as up } from '@mpieva/psydb-ui-utils';
 
-import TabNav from '@mpieva/psydb-ui-lib/src/tab-nav';
-import LinkButton from '@mpieva/psydb-ui-lib/src/link-button';
+import {
+    TabNav,
+    LinkButton,
+} from '@mpieva/psydb-ui-layout';
 
 import StudyRecordDetails from './record-details';
 import StudyRecordForm from './record-form';

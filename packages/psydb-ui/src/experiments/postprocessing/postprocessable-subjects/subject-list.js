@@ -1,7 +1,11 @@
 import React from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import {
+    Container,
+    Row,
+    Col,
+    DetailsIconButton,
+} from '@mpieva/psydb-ui-layout';
 
-import DetailsIconButton from '@mpieva/psydb-ui-lib/src/details-icon-button';
 import PostprocessSubjectRow from '@mpieva/psydb-ui-lib/src/experiments/postprocess-subject-row';
 
 const SubjectList = ({

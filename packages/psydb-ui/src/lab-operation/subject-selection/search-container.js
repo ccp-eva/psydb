@@ -19,7 +19,7 @@ import {
 import agent from '@mpieva/psydb-ui-request-agents';
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 
-import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
+import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
 import createValueMap from './create-value-map';
 import SelectionSettingsFormSchema from './selection-settings-form-schema';

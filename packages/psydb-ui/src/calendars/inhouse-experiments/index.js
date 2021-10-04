@@ -11,7 +11,7 @@ import {
 
 import {
     LinkContainer
-} from 'react-router-bootstrap';
+} from '@mpieva/psydb-ui-layout';
 
 import agent from '@mpieva/psydb-ui-request-agents';
 import RecordTypeNav from '@mpieva/psydb-ui-lib/src/record-type-nav';

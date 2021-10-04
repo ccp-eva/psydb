@@ -1,5 +1,5 @@
 {
-  "name": "@mpieva/psydb-ui-lib",
+  "name": "@mpieva/psydb-ui-layout",
   "version": "0.1.0-alpha",
   "description": "",
   "main": "src/index.js",
@@ -23,28 +23,11 @@
     "react-dom": "~17.0.1",
     "@babel/core": "~7.12.10",
     "@babel/preset-env": "~7.12.10",
-    "babel-loader": "~8.2.2",
     "@babel/preset-react": "~7.12.10",
-    "react-router": "~5.2.0",
-    "bootstrap": "~4.6.0",
+    "babel-loader": "~8.2.2",
     "react-bootstrap": "~1.5.2",
-    "react-router-dom": "~5.2.0",
-    "formik": "~2.2.6",
-    "@mpieva/psydb-api-endpoint-schemas": "~0.1.0-alpha",
-    "@mpieva/psydb-ui-request-agents": "~0.1.0-alpha",
-    "jsonpointer": "~4.1.0",
-    "@mpieva/psydb-schema-creators": "~0.1.0-alpha",
-    "moment": "~2.29.1",
-    "react-datetime": "~3.0.4",
-    "@mpieva/psydb-common-lib": "~0.1.0-alpha",
-    "@mpieva/psydb-schema-fields": "~0.1.0-alpha",
-    "@mpieva/psydb-schema-enums": "~0.1.0-alpha",
-    "@mpieva/psydb-schema-fields-special": "~0.1.0-alpha",
-    "@mpieva/psydb-ui-utils": "~0.1.0-alpha",
-    "@mpieva/psydb-ui-hooks": "~0.1.0-alpha",
-    "@mpieva/psydb-ui-layout": "~0.1.0-alpha",
-    "@mpieva/psydb-ui-schema-form": "~0.1.0-alpha",
-    "@cdxoo/omit": "~1.0.1"
+    "react-bootstrap-icons": "~1.5.0",
+    "react-router-bootstrap": "~0.25.0"
   },
   "config": {
     "mongodbMemoryServer": {

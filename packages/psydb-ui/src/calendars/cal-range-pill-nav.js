@@ -1,6 +1,6 @@
 import React from 'react';
 
-import PillNav from '@mpieva/psydb-ui-lib/src/pill-nav';
+import { PillNav } from '@mpieva/psydb-ui-layout';
 
 const CalRangePillNav = ({
     selectedVariant,

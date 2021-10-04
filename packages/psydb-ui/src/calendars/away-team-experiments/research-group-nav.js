@@ -10,8 +10,10 @@ import {
 } from 'react-router-dom';
 
 import agent from '@mpieva/psydb-ui-request-agents';
-import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
-import BigNav from '@mpieva/psydb-ui-lib/src/big-nav';
+import {
+    LoadingIndicator,
+    BigNav
+} from '@mpieva/psydb-ui-layout';
 
 const ResearchGroupNav = () => {
 

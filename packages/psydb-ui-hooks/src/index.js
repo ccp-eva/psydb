@@ -7,3 +7,5 @@ export { default as usePaginationReducer } from './use-pagination-reducer';
 export { default as useSelectionReducer } from './use-selection-reducer';
 
 export { default as useCallbackMaybe } from './use-callback-maybe';
+
+export { useURLSearchParams } from '@cdxoo/react-router-url-search-params';

@@ -10,7 +10,7 @@ import {
 } from 'react-router-dom';
 
 import agent from '@mpieva/psydb-ui-request-agents';
-import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
+import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 import CalendarNav from '@mpieva/psydb-ui-lib/src/calendar-nav';
 import withDailyCalendarPages from '@mpieva/psydb-ui-lib/src/with-daily-calendar-pages';
 

@@ -11,9 +11,12 @@ import {
 
 import agent from '@mpieva/psydb-ui-request-agents';
 
-import BigNav from '@mpieva/psydb-ui-lib/src/big-nav';
-import TabNav from '@mpieva/psydb-ui-lib/src/tab-nav';
-import LinkButton from '@mpieva/psydb-ui-lib/src/link-button';
+import {
+    BigNav,
+    TabNav,
+    LinkButton
+} from '@mpieva/psydb-ui-layout';
+
 import RecordListContainer from '@mpieva/psydb-ui-lib/src/record-list-container';
 
 import StudySelect from './study-select';

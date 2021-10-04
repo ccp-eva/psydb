@@ -8,7 +8,7 @@ import {
 import jsonpointer from 'jsonpointer';
 
 import { useFetchAll } from '@mpieva/psydb-ui-hooks';
-import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
+import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
 import ParticipationList from './participation-list';
 

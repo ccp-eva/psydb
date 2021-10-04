@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import {
     Button,
     Modal
-} from 'react-bootstrap';
+} from '@mpieva/psydb-ui-layout';
 
 import agent from '@mpieva/psydb-ui-request-agents';
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
@@ -17,7 +17,7 @@ import {
     ConstWidget,
     TimeSlotWidget,
     ExperimentOperatorTeamIdWidget,
-} from '@mpieva/psydb-ui-lib/src/rjsf-components';
+} from '@mpieva/psydb-ui-schema-form/src/rjsf-components';
 
 const extractTime = (dateIsoString) => (
     NaN !== (new Date(dateIsoString)).getTime()

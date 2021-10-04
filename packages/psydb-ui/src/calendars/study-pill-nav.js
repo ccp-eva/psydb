@@ -1,8 +1,10 @@
 import React, { useReducer, useEffect } from 'react';
 
 import agent from '@mpieva/psydb-ui-request-agents';
-import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
-import PillNav from '@mpieva/psydb-ui-lib/src/pill-nav';
+import {
+    LoadingIndicator,
+    PillNav,
+} from '@mpieva/psydb-ui-layout';
 
 const StudyPillNav = ({
     subjectRecordType,

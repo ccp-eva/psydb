@@ -4,7 +4,7 @@ import {
     Modal
 } from 'react-bootstrap';
 
-import TabNav from '@mpieva/psydb-ui-lib/src/tab-nav';
+import { TabNav } from '@mpieva/psydb-ui-layout';
 import SubjectModalDetails from './subject-modal-details';
 
 const SubjectModal = ({

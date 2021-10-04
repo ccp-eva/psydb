@@ -1,5 +1,4 @@
 import React, { useEffect, useReducer } from 'react';
-import { PencilFill } from 'react-bootstrap-icons';
 
 import {
     Route,
@@ -10,15 +9,16 @@ import {
 } from 'react-router-dom';
 
 import {
-    LinkContainer
-} from 'react-router-bootstrap';
+    LinkButton,
+    LoadingIndicator,
+    LinkContainer,
+    Icons
+} from '@mpieva/psydb-ui-layout';
 
 import agent from '@mpieva/psydb-ui-request-agents';
 
 import GenericRecordFormContainer from '@mpieva/psydb-ui-lib/src/generic-record-form-container';
 import RecordListContainer from '@mpieva/psydb-ui-lib/src/record-list-container';
-import LinkButton from '@mpieva/psydb-ui-lib/src/link-button';
-import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
 
 
 const HelperSetItems = () => {
@@ -112,7 +112,7 @@ const HelperSetItemRecordActions = ({
                 variant='outline-primary'
                 to={ `${linkBaseUrl}/${record._id}/edit`}
             >
-                <PencilFill style={{ width: '20px', marginTop: '-3px' }} />
+                <Icons.PencilFill style={{ width: '20px', marginTop: '-3px' }} />
             </LinkButton>
         </>
     )

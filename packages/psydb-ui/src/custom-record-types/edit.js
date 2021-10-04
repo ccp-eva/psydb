@@ -9,20 +9,17 @@ import {
     useParams
 } from 'react-router-dom';
 
-import {
-    Alert
-} from 'react-bootstrap';
-
 import agent from '@mpieva/psydb-ui-request-agents';
 
-import up from '@mpieva/psydb-ui-lib/src/url-up';
-import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
-import TabNav from '@mpieva/psydb-ui-lib/src/tab-nav';
+import { urlUp as up } from '@mpieva/psydb-ui-utils';
+import {
+    Alert,
+    LinkButton,
+    LoadingIndicator,
+    TabNav,
+} from '@mpieva/psydb-ui-layout';
 
 //import createSchemaForRecordType from '@mpieva/psydb-common-lib/src/create-schema-for-record-type';
-
-
-import { LinkButton } from '@mpieva/psydb-ui-lib';
 
 import LiveDataEditor from './live-data-editor';
 import FieldEditor from './field-editor';

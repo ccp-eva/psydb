@@ -10,7 +10,7 @@ import {
 
 import {
     LinkContainer
-} from 'react-router-bootstrap';
+} from '@mpieva/psydb-ui-layout';
 
 import allSchemaCreators from '@mpieva/psydb-schema-creators';
 import agent from '@mpieva/psydb-ui-request-agents';

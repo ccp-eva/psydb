@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { CaretUpFill, CaretDownFill } from 'react-bootstrap-icons';
-
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 
 import {

@@ -3,7 +3,7 @@ import { Modal, Button } from 'react-bootstrap';
 
 import { createSend } from '@mpieva/psydb-ui-utils';
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
-import Pair from '@mpieva/psydb-ui-lib/src/pair';
+import { Pair } from '@mpieva/psydb-ui-layout';
 
 const CreateModal = ({
     show,

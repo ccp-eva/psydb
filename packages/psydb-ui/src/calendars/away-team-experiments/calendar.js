@@ -6,20 +6,22 @@ import {
     useParams
 } from 'react-router-dom';
 
-import { ArrowLeftShort } from 'react-bootstrap-icons';
-
-import { useURLSearchParams } from '@cdxoo/react-router-url-search-params';
-import omit from '@cdxoo/omit';
-
 import {
     useFetch,
     useRevision,
+    useURLSearchParams,
 } from '@mpieva/psydb-ui-hooks';
+
+import {
+    LoadingIndicator,
+    LinkButton,
+    Icons,
+} from '@mpieva/psydb-ui-layout';
+
+import omit from '@cdxoo/omit';
 
 import getDayStartsInInterval from '@mpieva/psydb-ui-lib/src/get-day-starts-in-interval';
 
-import LoadingIndicator from '@mpieva/psydb-ui-lib/src/loading-indicator';
-import LinkButton from '@mpieva/psydb-ui-lib/src/link-button';
 import withWeeklyCalendarPages from '@mpieva/psydb-ui-lib/src/with-weekly-calendar-pages';
 import CalendarNav from '@mpieva/psydb-ui-lib/src/calendar-nav';
 
@@ -90,7 +92,7 @@ const AwayTeamCalendar = ({
         <div>
             <div className='bg-light'>
                 <LinkButton to={ `/calendars/away-team` }>
-                    <ArrowLeftShort style={{
+                    <Icons.ArrowLeftShort style={{
                         height: '25px',
                         width: '25px',
                         merginLeft: '-10px',

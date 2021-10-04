@@ -4,13 +4,13 @@ import jsonpointer from 'jsonpointer';
 import {
     Container,
     Row,
-    Col
-} from 'react-bootstrap';
+    Col,
+    Pair,
+    Split,
+    PaddedText,
+} from '@mpieva/psydb-ui-layout';
 
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
-import Pair from '@mpieva/psydb-ui-lib/src/pair';
-import Split from '@mpieva/psydb-ui-lib/src/split';
-import PaddedText from '@mpieva/psydb-ui-lib/src/padded-text';
 import TeamNameAndColor from '@mpieva/psydb-ui-lib/src/team-name-and-color';
 
 import createStringifier from '@mpieva/psydb-ui-lib/src/record-field-stringifier';

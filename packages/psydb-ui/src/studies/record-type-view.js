@@ -8,7 +8,7 @@ import {
     useParams
 } from 'react-router-dom';
 
-import { LinkContainer } from 'react-router-bootstrap';
+import { LinkContainer } from '@mpieva/psydb-ui-layout';
 
 import FormBox from '@mpieva/psydb-ui-lib/src/form-box';
 import RecordListContainer from '@mpieva/psydb-ui-lib/src/record-list-container';
