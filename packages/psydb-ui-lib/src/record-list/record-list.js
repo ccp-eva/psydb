@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import agent from '@mpieva/psydb-ui-request-agents';
 
-import usePaginationReducer from '../use-pagination-reducer';
+import { usePaginationReducer } from '@mpieva/psydb-ui-hooks';
 import Pagination from '../pagination';
 import QuickSearch from '../quick-search';
 import Table from './table';

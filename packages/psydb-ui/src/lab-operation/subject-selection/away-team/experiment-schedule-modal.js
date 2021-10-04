@@ -2,7 +2,7 @@ import React, { useState, useEffect, useReducer } from 'react';
 
 import { Modal } from 'react-bootstrap';
 
-import useModalReducer from '@mpieva/psydb-ui-lib/src/use-modal-reducer';
+import { useModalReducer } from '@mpieva/psydb-ui-hooks';
 import StudyAwayTeams from '@mpieva/psydb-ui-lib/src/study-away-teams';
 
 import ConfirmModal from './confirm-modal';

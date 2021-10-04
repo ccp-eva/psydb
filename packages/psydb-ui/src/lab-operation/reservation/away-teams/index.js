@@ -6,10 +6,12 @@ import {
     useParams
 } from 'react-router-dom';
 
-import useModalReducer from '@mpieva/psydb-ui-lib/src/use-modal-reducer';
-import useRevision from '@mpieva/psydb-ui-lib/src/use-revision';
-import StudyAwayTeams from '@mpieva/psydb-ui-lib/src/study-away-teams';
+import {
+    useRevision,
+    useModalReducer
+} from '@mpieva/psydb-ui-hooks';
 
+import StudyAwayTeams from '@mpieva/psydb-ui-lib/src/study-away-teams';
 import CreateModal from './create-modal';
 
 const AwayTeamContainer = ({}) => {

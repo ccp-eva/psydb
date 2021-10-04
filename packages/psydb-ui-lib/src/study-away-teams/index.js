@@ -1,5 +1,5 @@
 import React from 'react';
-import useFetchAll from '../use-fetch-all';
+import { useFetchAll } from '@mpieva/psydb-ui-hooks';
 
 import LoadingIndicator from '../loading-indicator';
 import {

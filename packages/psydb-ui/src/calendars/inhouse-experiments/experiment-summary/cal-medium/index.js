@@ -8,7 +8,7 @@ import enums from '@mpieva/psydb-schema-enums';
 
 import agent from '@mpieva/psydb-ui-request-agents';
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
-import useModalReducer from '@mpieva/psydb-ui-lib/src/use-modal-reducer';
+import { useModalReducer } from '@mpieva/psydb-ui-hooks';
 import getTextColor from '@mpieva/psydb-ui-lib/src/bw-text-color-for-background';
 import applyValueToDisplayFields from '@mpieva/psydb-ui-lib/src/apply-value-to-display-fields';
 

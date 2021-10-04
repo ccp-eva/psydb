@@ -5,7 +5,7 @@ import {
 } from 'react-router-bootstrap';
 
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
-import useModalReducer from '@mpieva/psydb-ui-lib/src/use-modal-reducer';
+import { useModalReducer } from '@mpieva/psydb-ui-hooks';
 import getTextColor from '@mpieva/psydb-ui-lib/src/bw-text-color-for-background';
 
 import ExperimentDropdown from '@mpieva/psydb-ui-lib/src/experiment-dropdown';
