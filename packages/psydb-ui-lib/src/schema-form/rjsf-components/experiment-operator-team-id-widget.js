@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
-import {
-    Form
-} from 'react-bootstrap';
+import { Form } from '@mpieva/psydb-ui-layout';
 
-import getTextColor from '../bw-text-color-for-background';
+import getTextColor from '../../bw-text-color-for-background';
 import withFormDecorations from './with-form-decorations';
 
 const ExperimentOperatorTeamIdWidget = (ps) => {

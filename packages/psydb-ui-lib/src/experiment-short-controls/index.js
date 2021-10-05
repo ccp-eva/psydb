@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { Container, Row, Col, Form } from 'react-bootstrap';
+import { Container } from '@mpieva/psydb-ui-layout';
 
 import datefns from '../date-fns';
-import Pair from '../pair';
 
 import SubjectControls from './subject-controls';
 import ScheduleItemControls from './schedule-item-controls';

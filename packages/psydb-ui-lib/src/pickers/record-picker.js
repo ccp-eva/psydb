@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react';
 
-import { Form, InputGroup, Button, Modal } from 'react-bootstrap';
-import { PencilFill } from 'react-bootstrap-icons';
+import {
+    Form,
+    InputGroup,
+    Button,
+    Modal,
+    Icons
+} from '@mpieva/psydb-ui-layout';
 
-import RecordListContainer from './record-list-container';
+import RecordListContainer from '../record-list-container';
 
 const RecordPicker = ({
     collection,
@@ -69,7 +74,7 @@ const RecordPicker = ({
                         variant={ hasErrors ? 'danger' : 'outline-primary' }
                         onClick={ handleShowModal }
                     >
-                        <PencilFill style={{ marginTop: '-3px' }}/>
+                        <Icons.PencilFill style={{ marginTop: '-3px' }}/>
                     </Button>
                 </InputGroup.Append>
             </InputGroup>

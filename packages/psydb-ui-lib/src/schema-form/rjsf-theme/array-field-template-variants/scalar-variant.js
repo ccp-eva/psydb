@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
-import { ArrowUpShort, ArrowDownShort, X, Plus } from 'react-bootstrap-icons';
+import { Icons } from '@mpieva/psydb-ui-layout';
 import * as wrappers from '../utility-components/wrappers';
 
 const ScalarVariant = (ps) => {
@@ -49,7 +49,7 @@ const ScalarVariant = (ps) => {
                 )}
                 <div className='mt-3'>
                     <AddButton onClick={ onAddClick }>
-                        <Plus />
+                        <Icons.Plus />
                     </AddButton>
                 </div>
             </ol>
@@ -109,7 +109,7 @@ var ArrayItem = (ps) => {
                         <MoveButton onClick={
                             onReorderClick(index, index - 1)
                         }>
-                            <ArrowUpShort style={{
+                            <Icons.ArrowUpShort style={{
                                 width: '24px',
                                 height: '24px',
                                 marginTop: '1px'
@@ -120,7 +120,7 @@ var ArrayItem = (ps) => {
                         <MoveButton onClick={
                             onReorderClick(index, index + 1)
                         }>
-                            <ArrowDownShort style={{
+                            <Icons.ArrowDownShort style={{
                                 width: '24px',
                                 height: '24px',
                                 marginTop: '1px'
@@ -131,7 +131,7 @@ var ArrayItem = (ps) => {
                         <RemoveButton onClick={
                             onDropIndexClick(index)
                         }>
-                            <X style={{
+                            <Icons.X style={{
                                 width: '24px',
                                 height: '24px',
                                 marginTop: '1px'

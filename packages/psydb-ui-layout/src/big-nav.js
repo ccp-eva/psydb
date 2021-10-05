@@ -1,4 +1,6 @@
 import React from 'react';
+// FIXME: not sure f we want rozuter dom here
+// maybe its pulled with react.router-bootstrap anyway
 import { useRouteMatch } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
 

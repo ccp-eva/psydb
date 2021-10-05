@@ -1,4 +1,4 @@
-export { LinkContainer } from 'react-router-dom';
+export { LinkContainer } from 'react-router-bootstrap';
 
 export { default as LinkButton } from './link-button';
 export { default as LoadingIndicator } from './loading-indicator';
@@ -15,12 +15,10 @@ export { default as PaddedText } from './padded-text';
 export { default as Split } from './split';
 export { default as Pair } from './pair';
 
-import * as Icons from './icons';
-export Icons;
+export * as Icons from './icons';
 
 export {
     Nav,
-    NavBar,
     Modal,
     Button,
     Table,
@@ -28,4 +26,7 @@ export {
     Row,
     Col,
     Alert,
+    Dropdown,
+    Form,
+    InputGroup,
 } from 'react-bootstrap';

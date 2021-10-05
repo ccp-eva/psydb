@@ -9,7 +9,7 @@ import {
 } from '@mpieva/psydb-schema-fields';
 
 import agent from '@mpieva/psydb-ui-request-agents';
-import { SchemaForm } from '@mpieva/psydb-ui-schema-form';
+import { SchemaForm } from '@mpieva/psydb-ui-lib';
 
 var createFormSchema = ({
     subjectRecordType,

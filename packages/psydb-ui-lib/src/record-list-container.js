@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouteMatch } from 'react-router-dom';
 
-import LinkButton from './link-button';
+import { LinkButton } from '@mpieva/psydb-ui-layout';
 import RecordList from './record-list';
 
 const RecordListContainer = ({

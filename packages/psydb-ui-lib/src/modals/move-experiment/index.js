@@ -1,5 +1,4 @@
 import React, { useMemo, useEffect, useReducer, useCallback } from 'react';
-import { Modal } from 'react-bootstrap';
 
 import { demuxed } from '@mpieva/psydb-ui-utils';
 import {
@@ -8,7 +7,11 @@ import {
     useRevision
 } from '@mpieva/psydb-ui-hooks';
 
-import LoadingIndicator from '../../loading-indicator';
+import {
+    Modal,
+    LoadingIndicator
+} from '@mpieva/psydb-ui-layout';
+
 import StudyInhouseLocations from '../../study-inhouse-locations';
 import StudyAwayTeams from '../../study-away-teams';
 

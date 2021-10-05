@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useReducer } from 'react';
-import { Plus } from 'react-bootstrap-icons';
+import { Icons } from '@mpieva/psydb-ui-layout';
 
 import { DefaultArrayItem } from '../array-field-item-variants';
 import * as wrappers from '../utility-components/wrappers';
@@ -57,7 +57,7 @@ const DefaultVariant = (ps) => {
                 )}
                 <AddButtonWrapper>
                     <AddButton onClick={ onAddClick }>
-                        <Plus />
+                        <Icons.Plus />
                     </AddButton>
                 </AddButtonWrapper>
             </div>

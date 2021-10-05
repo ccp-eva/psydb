@@ -1,10 +1,5 @@
 import React, { useEffect, useReducer } from 'react';
-
-import {
-    Button
-} from 'react-bootstrap';
-
-import { PencilFill, X } from 'react-bootstrap-icons';
+import { Button, Icons } from '@mpieva/psydb-ui-layout';
 
 const StudyTeamListItem = ({
     record,
@@ -91,7 +86,7 @@ const TeamEditButton = ({
             style={{ color: '#006066', borderRight: 0, borderTop: 0 }}
             onClick={ onClick }
         >
-            <PencilFill style={{ marginTop: '-2px' }} />
+            <Icons.PencilFill style={{ marginTop: '-2px' }} />
         </TeamButton>
     )
 }
@@ -105,7 +100,7 @@ const TeamDeleteButton = ({
             style={{ borderRight: 0, borderBottom: 0 }}
             onClick={ onClick }
         >
-            <X style={{ marginTop: '-2px', width: '18px', height: '18px' }} />
+            <Icons.X style={{ marginTop: '-2px', width: '18px', height: '18px' }} />
         </TeamButton>
     )
 }

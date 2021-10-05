@@ -1,8 +1,8 @@
 import React from 'react';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
+import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
 import datefns from '../date-fns';
-import LoadingIndicator from '../loading-indicator';
 import CalendarNav from '../calendar-nav';
 
 import withWeeklyCalendarPages from '../with-weekly-calendar-pages';

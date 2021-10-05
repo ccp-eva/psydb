@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import omit from '@cdxoo/omit';
 
 import { Button } from '@mpieva/psydb-ui-layout';
-import { SchemaForm } from '@mpieva/psydb-ui-schema-form';
+import { SchemaForm } from '@mpieva/psydb-ui-lib';
 
 import agent from '@mpieva/psydb-ui-request-agents';
 import FieldDefinitionSchemas from '@mpieva/psydb-common-lib/src/field-definition-schemas';

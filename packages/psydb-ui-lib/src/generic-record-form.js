@@ -8,7 +8,7 @@ import jsonpointer from 'jsonpointer';
 import allSchemaCreators from '@mpieva/psydb-schema-creators';
 import agent from '@mpieva/psydb-ui-request-agents';
 
-import SchemaForm from './default-schema-form';
+import { SchemaForm } from './schema-form';
 
 const GenericRecordForm = ({
     type,

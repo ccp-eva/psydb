@@ -42,11 +42,10 @@ dependencies:
   '@rush-temp/psydb-schema-helpers': 'file:projects/psydb-schema-helpers.tgz'
   '@rush-temp/psydb-schema-primitives': 'file:projects/psydb-schema-primitives.tgz'
   '@rush-temp/psydb-ui': 'file:projects/psydb-ui.tgz'
-  '@rush-temp/psydb-ui-hooks': 'file:projects/psydb-ui-hooks.tgz_01ce3a72e6315676e6c639e91dcaea50'
+  '@rush-temp/psydb-ui-hooks': 'file:projects/psydb-ui-hooks.tgz_webpack@5.10.1'
   '@rush-temp/psydb-ui-layout': 'file:projects/psydb-ui-layout.tgz_16525b877c073cf08d462b7c9c13ce00'
   '@rush-temp/psydb-ui-lib': 'file:projects/psydb-ui-lib.tgz_webpack@5.10.1'
   '@rush-temp/psydb-ui-request-agents': 'file:projects/psydb-ui-request-agents.tgz_debug@4.3.1'
-  '@rush-temp/psydb-ui-schema-form': 'file:projects/psydb-ui-schema-form.tgz_webpack@5.10.1'
   '@rush-temp/psydb-ui-utils': 'file:projects/psydb-ui-utils.tgz_webpack@5.10.1'
   '@rush-temp/psydb-web': 'file:projects/psydb-web.tgz'
   '@rush-temp/rjsf-monkey-patch': 'file:projects/rjsf-monkey-patch.tgz'
@@ -7885,7 +7884,7 @@ packages:
       integrity: sha512-ETNEfVBjn1XGNdcMW+NK6Tl4+Ph+/2K8jm2D3KNtgq23SRORA6xxRlbgCAI8aXqxrX03SSAhTlTX0aKJLkU87g==
       tarball: 'file:projects/psydb-schema-primitives.tgz'
     version: 0.0.0
-  'file:projects/psydb-ui-hooks.tgz_01ce3a72e6315676e6c639e91dcaea50':
+  'file:projects/psydb-ui-hooks.tgz_webpack@5.10.1':
     dependencies:
       '@babel/core': 7.12.17
       '@babel/preset-env': 7.12.17_@babel+core@7.12.17
@@ -7895,14 +7894,14 @@ packages:
       chai: 4.2.0
       mocha: 8.1.3
       react: 17.0.2
+      react-router: 5.2.0_react@17.0.2
     dev: false
     id: 'file:projects/psydb-ui-hooks.tgz'
     name: '@rush-temp/psydb-ui-hooks'
     peerDependencies:
-      react-router: '*'
       webpack: '*'
     resolution:
-      integrity: sha512-g68iwsiU37xUe1qrEr1lij9wMUR1X5rTl2b7kyoa73LFLIkzq9es+gFy6B4/yCD/w6829gL/b+sAs+mX3Ov6Gg==
+      integrity: sha512-P6zcofFQu2bJ8aiVmD1nWJUXjiwYpuHTqs1e2JBVb9jtFdmMCWA047UnFazuEPK9NcWtMrg7Az8USMfKfUi0ng==
       tarball: 'file:projects/psydb-ui-hooks.tgz'
     version: 0.0.0
   'file:projects/psydb-ui-layout.tgz_16525b877c073cf08d462b7c9c13ce00':
@@ -7960,7 +7959,7 @@ packages:
     peerDependencies:
       webpack: '*'
     resolution:
-      integrity: sha512-bFTvffPtynfJrJT6MWIjbhV8fVBbOK/aSVARSt/569dmYHX1Ijz1YfJAJp+kymFi64YtJlOaBFj8SLCXSYgEIQ==
+      integrity: sha512-5sHtMjEUfd0YJ1rBJb3wABLdaOY9V0fhlb/KSmI9XoT0EPpr7NkDymkduntVQGXiurZT+6wl0Pv9f58ek6i0Aw==
       tarball: 'file:projects/psydb-ui-lib.tgz'
     version: 0.0.0
   'file:projects/psydb-ui-request-agents.tgz_debug@4.3.1':
@@ -7976,30 +7975,6 @@ packages:
     resolution:
       integrity: sha512-G3/3cMW3qycoGFIwhQqr3G2uRSTJmxXrUkEcNCuMLv3o763vibyflO7lJ36ZRRb00S7weyXI2di08KJhSvhShg==
       tarball: 'file:projects/psydb-ui-request-agents.tgz'
-    version: 0.0.0
-  'file:projects/psydb-ui-schema-form.tgz_webpack@5.10.1':
-    dependencies:
-      '@babel/core': 7.12.17
-      '@babel/preset-env': 7.12.17_@babel+core@7.12.17
-      '@babel/preset-react': 7.12.13_@babel+core@7.12.17
-      '@rjsf/bootstrap-4': 2.5.1_5dccca4f99fef0089ce8bea6fe035927
-      '@rjsf/core': 2.5.1_react@17.0.2
-      babel-loader: 8.2.2_97e48a6b0bdb6376f048db1a976e5b3d
-      chai: 4.2.0
-      date-fns: 2.21.1
-      jsonpointer: 4.1.0
-      mocha: 8.1.3
-      react: 17.0.2
-      react-bootstrap: 1.5.2_react-dom@17.0.2+react@17.0.2
-      react-dom: 17.0.2_react@17.0.2
-    dev: false
-    id: 'file:projects/psydb-ui-schema-form.tgz'
-    name: '@rush-temp/psydb-ui-schema-form'
-    peerDependencies:
-      webpack: '*'
-    resolution:
-      integrity: sha512-JLU6dp+WdvkfT6Lp+NmIKWtdit/Qe/TiCsB31cdbxJJvgS0SA4Xyt+5Br058F1WhU+E+/8i4wXCl2U2EJOZf1A==
-      tarball: 'file:projects/psydb-ui-schema-form.tgz'
     version: 0.0.0
   'file:projects/psydb-ui-utils.tgz_webpack@5.10.1':
     dependencies:
@@ -8151,7 +8126,6 @@ specifiers:
   '@rush-temp/psydb-ui-layout': 'file:./projects/psydb-ui-layout.tgz'
   '@rush-temp/psydb-ui-lib': 'file:./projects/psydb-ui-lib.tgz'
   '@rush-temp/psydb-ui-request-agents': 'file:./projects/psydb-ui-request-agents.tgz'
-  '@rush-temp/psydb-ui-schema-form': 'file:./projects/psydb-ui-schema-form.tgz'
   '@rush-temp/psydb-ui-utils': 'file:./projects/psydb-ui-utils.tgz'
   '@rush-temp/psydb-web': 'file:./projects/psydb-web.tgz'
   '@rush-temp/rjsf-monkey-patch': 'file:./projects/rjsf-monkey-patch.tgz'

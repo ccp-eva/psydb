@@ -2,7 +2,7 @@ import React, { useState, useEffect, useReducer, forwardRef } from 'react';
 import { useRouteMatch, useParams } from 'react-router-dom';
 
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
-import LinkButton from './link-button';
+import { LinkButton } from '@mpieva/psydb-ui-layout';
 import GenericRecordDetails from './generic-record-details';
 
 const GenericRecordDetailsContainer = ({

@@ -179,11 +179,6 @@
        "reviewCategory": "production"
     },
     {
-       "packageName": "@mpieva/psydb-ui-schema-form",
-       "projectFolder": "packages/psydb-ui-schema-form",
-       "reviewCategory": "production"
-    },
-    {
        "packageName": "@mpieva/psydb-ui-lib",
        "projectFolder": "packages/psydb-ui-lib",
        "reviewCategory": "production"

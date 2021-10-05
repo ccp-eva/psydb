@@ -4,7 +4,7 @@ import { Button } from 'react-bootstrap';
 
 import { withTheme } from '@mpieva/rjsf-monkey-patch';
 import RJSFCustomTheme from './rjsf-theme';
-import { ErrorResponseModal } from './modals';
+import { ErrorResponseModal } from '../modals';
 
 const DefaultSchemaForm = ({
     buttonLabel,

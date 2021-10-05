@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { ROSchemaForm } from '@mpieva/psydb-ui-schema-form';
+import { ROSchemaForm } from '@mpieva/psydb-ui-lib';
 
 import {
     ExactObject,

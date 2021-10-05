@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowUpShort, ArrowDownShort, X } from 'react-bootstrap-icons';
+import { Icons } from '@mpieva/psydb-ui-layout';
 
 import {
     AddButtonWrapper,
@@ -44,21 +44,21 @@ const DefaultArrayItem = (ps) => {
                         <MoveButton onClick={
                             onReorderClick(index, index - 1)
                         }>
-                            <ArrowUpShort />
+                            <Icons.ArrowUpShort />
                         </MoveButton>
                     )}
                     { hasMoveDown && (
                         <MoveButton onClick={
                             onReorderClick(index, index + 1)
                         }>
-                            <ArrowDownShort />
+                            <Icons.ArrowDownShort />
                         </MoveButton>
                     )}
                     { hasRemove && (
                         <RemoveButton
                             onClick={ onDropIndexClick(index) }
                         >
-                            <X />
+                            <Icons.X />
                         </RemoveButton>
                     )}
                 </MoveButtonWrapper>

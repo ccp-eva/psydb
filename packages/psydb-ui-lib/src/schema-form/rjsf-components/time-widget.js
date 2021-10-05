@@ -9,7 +9,7 @@ import {
     MINUTE
 } from '@mpieva/psydb-common-lib/src/durations';
 
-import datefns from '../date-fns';
+import datefns from '../../date-fns';
 
 const extractTime = (dateIsoString) => {
     var date = new Date(dateIsoString);

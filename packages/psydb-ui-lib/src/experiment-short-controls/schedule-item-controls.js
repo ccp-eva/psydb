@@ -1,7 +1,7 @@
 import React from 'react';
+import { Pair } from '@mpieva/psydb-ui-layout';
 
 import datefns from '../date-fns';
-import Pair from '../pair';
 
 import {
     EndControl,

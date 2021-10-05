@@ -5,9 +5,9 @@ import allSchemaCreators from '@mpieva/psydb-schema-creators';
 import agent from '@mpieva/psydb-ui-request-agents';
 
 import { withTheme } from '@mpieva/rjsf-monkey-patch';
-import RJSFReadonlyTheme from './rjsf-readonly-theme';
+import { RJSFReadonlyTheme } from './schema-form';
 
-import LinkButton from './link-button';
+import { LinkButton } from '@mpieva/psydb-ui-layout';
 
 var SchemaForm = withTheme(RJSFReadonlyTheme);
 

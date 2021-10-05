@@ -1,11 +1,8 @@
 import React, { useEffect, useReducer } from 'react';
 
-import {
-    Button
-} from 'react-bootstrap'
-
+import { Button } from '@mpieva/psydb-ui-layout'
+import { RJSFCustomTheme } from '@mpieva/psydb-ui-lib';
 import { withTheme } from '@mpieva/rjsf-monkey-patch';
-import { RJSFCustomTheme } from '@mpieva/psydb-ui-schema-form';
 
 import {
     PublicSignIn

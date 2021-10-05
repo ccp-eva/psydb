@@ -1,7 +1,7 @@
 import React, { useEffect, useReducer } from 'react';
-import { Modal } from 'react-bootstrap';
 import agent from '@mpieva/psydb-ui-request-agents';
-import { SchemaForm } from '@mpieva/psydb-ui-layout';
+import { Modal } from '@mpieva/psydb-ui-layout';
+import { SchemaForm } from '@mpieva/psydb-ui-lib';
 
 import {
     AgeFrameSettingsListItem,

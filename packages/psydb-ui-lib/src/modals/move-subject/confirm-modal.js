@@ -1,11 +1,12 @@
 import React, { useMemo, useEffect, useReducer, useCallback, useState } from 'react';
-import { Modal, Form, Container, Col, Row, Button } from 'react-bootstrap';
+import {
+    Modal,
+    Button,
+    Pair,
+    Split
+} from '@mpieva/psydb-ui-layout';
 
-import agent from '@mpieva/psydb-ui-request-agents';
-import datefns from '../../date-fns';
-import Pair from '../../pair';
-import Split from '../../split';
-import SchemaForm from '../../default-schema-form';
+import { SchemaForm } from '../../schema-form';
 
 import ReservationFormContainer from './reservation-form-container';
 import ExperimentFormContainer from './experiment-form-container';

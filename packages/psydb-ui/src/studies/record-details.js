@@ -5,12 +5,12 @@ import { useRouteMatch, useParams } from 'react-router-dom';
 import allSchemaCreators from '@mpieva/psydb-schema-creators';
 import agent from '@mpieva/psydb-ui-request-agents';
 
-import { ROSchemaForm } from '@mpieva/psydb-ui-schema-form';
+import { ROSchemaForm } from '@mpieva/psydb-ui-lib';
 
 import {
     LinkButton,
     Icons
-} from '@mpieva/psydb-ui-utils';
+} from '@mpieva/psydb-ui-layout';
 
 const EditLinkButton = ({
     to,

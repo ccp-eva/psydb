@@ -1,10 +1,5 @@
 import React, { useState, useEffect, useReducer } from 'react';
 
-import {
-    CheckSquare,
-    Square
-} from 'react-bootstrap-icons';
-
 import { InlineWrapper } from './wrapper-components';
 import * as textWidgetVariants from './text-widget-variants';
 

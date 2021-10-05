@@ -17,7 +17,7 @@ import {
     ConstWidget,
     TimeSlotWidget,
     ExperimentOperatorTeamIdWidget,
-} from '@mpieva/psydb-ui-schema-form/src/rjsf-components';
+} from '@mpieva/psydb-ui-lib/src/schema-form/rjsf-components';
 
 const extractTime = (dateIsoString) => (
     NaN !== (new Date(dateIsoString)).getTime()

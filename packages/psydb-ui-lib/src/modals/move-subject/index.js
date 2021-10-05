@@ -1,12 +1,14 @@
 import React from 'react';
-import { Modal } from 'react-bootstrap';
+import {
+    Modal,
+    LoadingIndicator
+} from '@mpieva/psydb-ui-layout';
 
 import {
     useFetch,
     useModalReducer
 } from '@mpieva/psydb-ui-hooks';
 
-import LoadingIndicator from '../../loading-indicator';
 import StudyInhouseLocations from '../../study-inhouse-locations';
 
 import ConfirmModal from './confirm-modal';

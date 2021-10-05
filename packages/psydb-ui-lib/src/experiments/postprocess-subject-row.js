@@ -1,7 +1,12 @@
 import React from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import {
+    Container,
+    Row,
+    Col,
+    LinkButton,
+    DetailsIconButton
+} from '@mpieva/psydb-ui-layout';
 
-import DetailsIconButton from '../details-icon-button';
 import PostprocessSubjectForm from './postprocess-subject-form';
 
 const PostprocessSubjectRow = ({

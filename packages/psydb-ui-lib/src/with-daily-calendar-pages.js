@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useReducer, useMemo } from 'react';
 import datefns from './date-fns';
 
-import { useURLSearchParams } from '@cdxoo/react-router-url-search-params';
+import { useURLSearchParams } from '@mpieva/psydb-ui-hooks';
 
 const withDailyCalendarPages = (
     Component,

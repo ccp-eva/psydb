@@ -1,7 +1,9 @@
 import React, { useCallback } from 'react';
 
-import { Dropdown } from 'react-bootstrap';
-import { GearFill } from 'react-bootstrap-icons';
+import {
+    Dropdown,
+    Icons,
+} from '@mpieva/psydb-ui-layout';
 
 var calendarStyle = {
     background: 'transparent',
@@ -77,7 +79,7 @@ var ExperimentSubjectDropdown = ({
                 bsPrefix='dropdown-toggle-no-caret'
                 disabled={ disabled }
             >
-                <GearFill style={{
+                <Icons.GearFill style={{
                     width: '18px',
                     height: '18px',
                     marginTop: '-3px',

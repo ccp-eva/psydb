@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import agent from '@mpieva/psydb-ui-request-agents';
 
 import FormBox from '@mpieva/psydb-ui-lib/src/form-box';
-import { SchemaForm } from '@mpieva/psydb-ui-schema-form';
+import { SchemaForm } from '@mpieva/psydb-ui-lib';
 
 import {
     ExactObject,

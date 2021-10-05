@@ -1,9 +1,12 @@
 import React, { useCallback } from 'react';
 
-import { Form, InputGroup, Button } from 'react-bootstrap';
-import { PencilFill } from 'react-bootstrap-icons';
+import {
+    Form,
+    InputGroup,
+    Button,
+} from '@mpieva/psydb-ui-layout';
 
-import RecordPicker from '../../../record-picker';
+import { RecordPicker } from '../../../../pickers';
 
 const CustomRecordTypeKey = ({
     id,

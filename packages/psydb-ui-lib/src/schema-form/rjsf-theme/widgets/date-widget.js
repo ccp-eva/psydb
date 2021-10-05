@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { utils } from "@rjsf/core";
 import TextWidget from './text-widget';
-import datefns from '../../date-fns';
+import datefns from '../../../date-fns';
 
 const DateWidget = (ps) => {
     var { value } = ps;

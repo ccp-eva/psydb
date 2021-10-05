@@ -5,7 +5,7 @@ import { useRouteMatch, useParams } from 'react-router-dom';
 import allSchemaCreators from '@mpieva/psydb-schema-creators';
 import agent from '@mpieva/psydb-ui-request-agents';
 
-import { SchemaForm } from '@mpieva/psydb-ui-schema-form';
+import { SchemaForm } from '@mpieva/psydb-ui-lib';
 
 const StudyRecordForm = ({
     type,

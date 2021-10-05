@@ -1,9 +1,5 @@
 import React from 'react';
-
-import {
-    CheckSquareFill,
-    Square
-} from 'react-bootstrap-icons';
+import { Icons } from '@mpieva/psydb-ui-layout';
 
 const CheckColumn = ({
     record,
@@ -22,8 +18,8 @@ const CheckColumn = ({
         >
             {
                 selectedRecordIds.includes(record._id)
-                ? <CheckSquareFill />
-                : <Square />
+                ? <Icons.CheckSquareFill />
+                : <Icons.Square />
             }
         </td>
     );

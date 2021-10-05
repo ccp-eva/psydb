@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useReducer } from 'react';
-import { ArrowUpShort, ArrowDownShort, Plus, X } from 'react-bootstrap-icons';
 
 import * as wrappers from './utility-components/wrappers';
 import * as variants from './array-field-template-variants';

@@ -2,7 +2,6 @@ import React from 'react';
 
 import {
     Nav,
-    NavBar,
     LinkContainer
 } from '@mpieva/psydb-ui-layout';
 

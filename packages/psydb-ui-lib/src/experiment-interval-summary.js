@@ -1,9 +1,7 @@
 import React from 'react';
-import { Container} from 'react-bootstrap';
+import { Container, Pair } from '@mpieva/psydb-ui-layout';
 
 import datefns from './date-fns';
-import Pair from './pair';
-import Split from './split';
 
 const ExperimentIntervalSummary = ({ experimentRecord }) => {
     var { start, end } = experimentRecord.state.interval;

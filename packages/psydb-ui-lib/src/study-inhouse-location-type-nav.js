@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 
-import TabNav from './tab-nav';
+import { TabNav } from '@mpieva/psydb-ui-layout';
 
 const StudyInhouseLocationTypeNav = ({
     studyRecord,

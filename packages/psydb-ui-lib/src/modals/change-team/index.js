@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
-import { Modal, Button } from 'react-bootstrap';
 
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 import { createSend } from '@mpieva/psydb-ui-utils';
-import LoadingIndicator from '../../loading-indicator';
+import {
+    Modal,
+    Button,
+    LoadingIndicator
+} from '@mpieva/psydb-ui-layout';
+
 import StudyTeamListItem from '../../experiment-operator-team-list-item';
 
 const ChangeTeamModal = ({

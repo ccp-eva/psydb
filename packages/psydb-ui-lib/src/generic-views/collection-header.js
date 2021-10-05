@@ -1,5 +1,5 @@
 import React from 'react';
-import { LinkContainer } from 'react-router-bootstrap';
+import { LinkContainer } from '@mpieva/psydb-ui-layout';
 
 // TODO: put this somewhere
 var collectionDisplayNames = {

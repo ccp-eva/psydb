@@ -12,8 +12,10 @@ import {
 import agent from '@mpieva/psydb-ui-request-agents';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 
-import LoadingIndicator from './loading-indicator';
-import BigNav from './big-nav';
+import {
+    LoadingIndicator,
+    BigNav
+} from '@mpieva/psydb-ui-layout';
 
 const ResearchGroupNav = () => {
 

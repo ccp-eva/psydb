@@ -1,11 +1,10 @@
 import React, { useMemo } from 'react';
-import { Button } from 'react-bootstrap';
-import { XLg } from 'react-bootstrap-icons';
+import { Button, Icons } from '@mpieva/psydb-ui-layout';
 
 import * as fieldSchemas from '@mpieva/psydb-schema-fields';
 import fieldMetadata from '@mpieva/psydb-common-lib/src/field-type-metadata'
 
-import SchemaForm from './default-schema-form';
+import { SchemaForm } from './schema-form';
 
 const createSchema = (displayFieldData) => {
     var properties = {};
@@ -82,7 +81,7 @@ const QuickSearch = ({
                     variant='outline-secondary'
                     onClick={ () => onSubmit({}) }
                 >
-                    <XLg style={{
+                    <Icons.XLg style={{
                         height: '13px',
                         width: '13px',
                         marginTop: '-2px'

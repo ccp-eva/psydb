@@ -1,7 +1,11 @@
 import React, { useCallback } from 'react';
 
-import { Container, Row, Col } from 'react-bootstrap';
-import { CheckCircleFill } from 'react-bootstrap-icons';
+import {
+    Container,
+    Row,
+    Col,
+    Icons
+} from '@mpieva/psydb-ui-layout';
 
 import keyBy from '@mpieva/psydb-common-lib/src/key-by';
 import datefns from '../date-fns';
@@ -159,7 +163,7 @@ const ExperimentSlot = ({
             }}
             onClick={ onClick }
         >
-            <CheckCircleFill style={{
+            <Icons.CheckCircleFill style={{
                 color: getTextColor(teamRecord.state.color),
                 width: '16px',
                 height: '16px',

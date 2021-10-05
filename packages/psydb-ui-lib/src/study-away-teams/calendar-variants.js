@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react';
 
 import { useFetch } from '@mpieva/psydb-ui-hooks';
+import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 import getDayStartsInInterval from '../get-day-starts-in-interval';
 import withWeeklyCalendarPages from '../with-weekly-calendar-pages';
 
 import CalendarNav from '../calendar-nav';
-import LoadingIndicator from '../loading-indicator';
 
 import TimeTableHead from './time-table-head';
 import TeamTimeTable from './team-time-table';

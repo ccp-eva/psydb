@@ -1,5 +1,5 @@
 import React from 'react';
-import { PersonFill } from 'react-bootstrap-icons';
+import { Icons } from '@mpieva/psydb-ui-layout';
 
 import datefns from '../../../date-fns';
 import getTextColor from '../../../bw-text-color-for-background';
@@ -121,7 +121,7 @@ const SubjectCountIndicator = (ps) => {
     var Indication = (
         subjectRecordType && missingCount !== 0
         ? <b>-{ missingCount }</b>
-        : <PersonFill style={{ width: '20px', height: '20px', marginTop: '-3px' }} />
+        : <Icons.PersonFill style={{ width: '20px', height: '20px', marginTop: '-3px' }} />
     )
 
     var textClass = missingCount === 0 ? 'text-success' : 'text-danger'

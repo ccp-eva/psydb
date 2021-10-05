@@ -3,9 +3,9 @@ import { Modal, Form, Container, Col, Row, Button } from 'react-bootstrap';
 
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 import { createSend } from '@mpieva/psydb-ui-utils';
+import { Split } from '@mpieva/psydb-ui-layout';
 
-import SchemaForm from '../default-schema-form';
-import Split from '../split';
+import { SchemaForm } from '../schema-form';
 import ExperimentIntervalSummary from '../experiment-interval-summary';
 
 import {

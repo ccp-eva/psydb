@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import jsonpointer from 'jsonpointer';
 
-import {
-    CheckSquareFill,
-    Square
-} from 'react-bootstrap-icons';
+import { LinkButton } from '@mpieva/psydb-ui-layout';
 
 import * as stringifiers from '@mpieva/psydb-common-lib/src/field-stringifiers';
-import LinkButton from '../link-button';
 import CheckColumn from '../check-column';
 
 import FieldDataBodyCols from './field-data-body-cols';

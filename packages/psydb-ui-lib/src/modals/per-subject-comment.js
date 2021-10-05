@@ -1,9 +1,9 @@
 import React from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button } from '@mpieva/psydb-ui-layout';
 
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 import { createSend } from '@mpieva/psydb-ui-utils';
-import SchemaForm from '../default-schema-form';
+import { SchemaForm } from '../schema-form';
 
 import {
     ExactObject,

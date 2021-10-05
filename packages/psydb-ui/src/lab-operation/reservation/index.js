@@ -16,7 +16,7 @@ import { TabNav } from '@mpieva/psydb-ui-layout';
 import StudyInhouseLocationTypeNav from '@mpieva/psydb-ui-lib/src/study-inhouse-location-type-nav';
 
 import LocationTypeContainer from './location-type-container';
-import RecordPicker from '@mpieva/psydb-ui-lib/src/record-picker';
+import { RecordPicker } from '@mpieva/psydb-ui-lib';
 //import LocationCalendarList from './location-calendar-list';
 
 import AwayTeams from './away-teams';

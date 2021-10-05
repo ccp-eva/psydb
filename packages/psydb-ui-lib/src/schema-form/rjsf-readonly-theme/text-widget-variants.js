@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormattedDuration } from '@mpieva/psydb-common-lib/src/durations';
 import { InlineWrapper } from './wrapper-components';
-import datefns from '../date-fns';
+import datefns from '../../date-fns';
 
 const styles = {
     bold: { fontWeight: '600' }

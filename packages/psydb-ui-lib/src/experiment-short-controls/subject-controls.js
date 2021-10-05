@@ -1,5 +1,5 @@
 import React from 'react';
-import Pair from '../pair';
+import { Pair } from '@mpieva/psydb-ui-layout';
 
 import {
     CommentControl,

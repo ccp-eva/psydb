@@ -1,9 +1,5 @@
 import React, { useState, useEffect, useReducer, useMemo } from 'react';
-
-import {
-    ChevronRight,
-    ChevronLeft
-} from 'react-bootstrap-icons';
+import { Icons } from '@mpieva/psydb-ui-layout';
 
 import datefns from './date-fns';
 
@@ -26,7 +22,7 @@ const CalendarNav = ({
                     style={{ cursor: 'pointer' }}
                     onClick={ () => onPageChange({ relativeChange: 'prev' }) }
                 >
-                    <ChevronLeft />
+                    <Icons.ChevronLeft />
                     <span className='d-inline-block ml-2'>
                         Vorherige Seite
                     </span>
@@ -65,7 +61,7 @@ const CalendarNav = ({
                     <span className='d-inline-block mr-2'>
                         Nächste Seite
                     </span>
-                    <ChevronRight />
+                    <Icons.ChevronRight />
                 </div>
             </div>
         </>

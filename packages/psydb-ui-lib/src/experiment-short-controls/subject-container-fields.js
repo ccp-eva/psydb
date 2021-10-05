@@ -1,7 +1,11 @@
 import React from 'react';
-import { Row, Col, Form } from 'react-bootstrap';
+import {
+    Row,
+    Col,
+    Form,
+    Pair,
+} from '@mpieva/psydb-ui-layout';
 
-import Pair from '../pair';
 import {
     wrapOnChange,
     BoolControl

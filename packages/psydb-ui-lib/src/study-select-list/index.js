@@ -2,7 +2,7 @@ import React, { useReducer, useEffect } from 'react';
 
 import agent from '@mpieva/psydb-ui-request-agents';
 import { Table } from '../record-list';
-import LoadingIndicator from '../loading-indicator';
+import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 

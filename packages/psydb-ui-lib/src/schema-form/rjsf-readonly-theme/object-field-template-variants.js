@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useReducer } from 'react';
 import { FormattedDuration } from '@mpieva/psydb-common-lib/src/durations';
-import datefns from '../date-fns';
+import datefns from '../../date-fns';
 import { InlineWrapper, OneLineWrapper } from './wrapper-components';
 
 const styles = {

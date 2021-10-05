@@ -1,7 +1,7 @@
 import React from 'react';
 import { useFetchAll } from '@mpieva/psydb-ui-hooks';
+import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
-import LoadingIndicator from '../loading-indicator';
 import {
     WeeklyCalendar
 } from './calendar-variants';

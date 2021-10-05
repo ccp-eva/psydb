@@ -1,8 +1,4 @@
-import React, { useState, useEffect, useReducer, useMemo } from 'react';
-import { PersonFill } from 'react-bootstrap-icons';
-
-import datefns from '../../date-fns';
-import getTextColor from '../../bw-text-color-for-background';
+import React from 'react';
 
 import {
     ExperimentSlot,
