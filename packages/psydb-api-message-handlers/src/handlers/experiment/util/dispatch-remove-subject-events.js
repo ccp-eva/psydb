@@ -5,7 +5,8 @@ var enums = require('@mpieva/psydb-schema-enums');
 var compareIds = require('@mpieva/psydb-api-lib/src/compare-ids');
 
 var PutMaker = require('../../../lib/put-maker'),
-    PushMaker = require('../../../lib/push-maker');
+    PushMaker = require('../../../lib/push-maker'),
+    RemoveMaker = require('../../../lib/remove-maker');
 
 var dispatchRemoveSubjectEvents = async ({
     db,
@@ -82,7 +83,17 @@ var dispatchRemoveSubjectEvents = async ({
     )
 
     /// FIXME
-    var lastKnownSubjectScientificEventId = subjectRecord.scientific.events[0]._id;
+    var lastKnownSubjectScientificEventId = (
+        subjectRecord.scientific.events[0]._id
+    );
+
+    var {
+        invitedForExperiments,
+    } = subjectRecord.scientific.state.internals;
+
+    var oldInviteIndex = invitedForExperiments.findIndex(it => (
+        compareIds(it.experimentId, experimentRecord._id)
+    ));
 
     var subjectMessages = [
         ...(
@@ -115,6 +126,13 @@ var dispatchRemoveSubjectEvents = async ({
                 },
             })
             : []
+        ),
+        ...(
+            RemoveMaker({ personnelId }).all({
+                '/state/internals/invitedForExperiments': [
+                    oldInviteIndex,
+                ]
+            })
         )
     ];
     
