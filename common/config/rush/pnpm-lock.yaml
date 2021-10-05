@@ -82,6 +82,7 @@ dependencies:
   koa-session: 5.13.1
   lodash: 4.17.21
   mocha: 8.1.3
+  mockdate: 3.0.5
   moment: 2.29.1
   mongodb-memory-server: 6.9.6
   pascal-case: 3.1.2
@@ -6104,6 +6105,10 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-ZbaYib4hT4PpF4bdSO2DohooKXIn4lDeiYqB+vTmCdr6l2woW0b6H3pf5x4sM5nwQMru9RvjjHYWVGltR50ZBw==
+  /mockdate/3.0.5:
+    dev: false
+    resolution:
+      integrity: sha512-iniQP4rj1FhBdBYS/+eQv7j1tadJ9lJtdzgOpvsOHng/GbcDh2Fhdeq+ZRldrPYdXvCyfFUmFeEwEGXZB5I/AQ==
   /moment/2.29.1:
     dev: false
     resolution:
@@ -9369,12 +9374,13 @@ packages:
       jest: 27.2.4
       koa: 2.13.1
       mocha: 8.1.3
+      mockdate: 3.0.5
       snap-shot-it: 7.9.6
       supertest: 6.0.1
     dev: false
     name: '@rush-temp/psydb-api-integration-tests'
     resolution:
-      integrity: sha512-WA5l5tyDsB2CK77shfdjqTJ2Gb6i/kj/2cRHmXuin7y4O6NUT8KwfCFK7gKpxf644OcWrqAUkQlP9sCtBrBiUQ==
+      integrity: sha512-kYT8VQLiJ1BqUaZ2/kZ87Xp1uS5f27+PQs2UX9nh6+4pj2oNgeQxQ/JaFi4TanxJjj04O4N3M9zI629VFZWzTg==
       tarball: 'file:projects/psydb-api-integration-tests.tgz'
     version: 0.0.0
   'file:projects/psydb-api-lib.tgz':
@@ -9874,6 +9880,7 @@ specifiers:
   koa-session: ^5.13.1
   lodash: ~4.17.21
   mocha: ~8.1.3
+  mockdate: ~3.0.5
   moment: ~2.29.1
   mongodb-memory-server: ~6.9.2
   pascal-case: ~3.1.1
