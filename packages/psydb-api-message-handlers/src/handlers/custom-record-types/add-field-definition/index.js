@@ -142,8 +142,9 @@ var triggerSystemEvents = async ({
     rohrpost,
     cache,
     message,
+    personnelId,
 }) => {
-    var { personnelId, payload } = message;
+    var { payload } = message;
     var {
         id,
         lastKnownEventId,
@@ -170,6 +171,7 @@ var triggerSystemEvents = async ({
         messages: [
             {
                 type: 'push',
+                personnelId,
                 payload: {
                     prop: pointer,
                     value: {
@@ -181,6 +183,7 @@ var triggerSystemEvents = async ({
             },
             {
                 type: 'put',
+                personnelId,
                 payload: {
                     prop: '/state/isDirty',
                     value: true,

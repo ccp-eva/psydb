@@ -68,9 +68,9 @@ handler.triggerSystemEvents = async ({
     rohrpost,
     cache,
     message,
+    personnelId,
 }) => {
-    var { personnelId, payload } = message;
-    console.log(message);
+    var { payload } = message;
     var { id, lastKnownEventId, subChannelKey, key } = payload;
     var { record } = cache;
 
