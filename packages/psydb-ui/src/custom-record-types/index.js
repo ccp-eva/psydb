@@ -15,6 +15,17 @@ import RecordListContainer from '@mpieva/psydb-ui-lib/src/record-list-container'
 import CreateNewType from './create-new-type';
 import EditType from './edit';
 
+const EditButton = (ps) => {
+    var { linkBaseUrl, record } = ps;
+    return (
+        <LinkButton
+            size='sm'
+            to={`${linkBaseUrl}/${record._id}/edit`}>
+            Bearbeiten
+        </LinkButton>
+    )
+}
+
 const CustomRecordTypes = () => {
     var { path, url } = useRouteMatch();
     var history =  useHistory();
@@ -36,7 +47,12 @@ const CustomRecordTypes = () => {
                             linkBaseUrl={ url }
                             collection='customRecordType'
                             enableNew={ true }
-                            enableEdit_old={ true }
+                            defaultSort={{
+                                path: 'state.label',
+                                direction: 'asc',
+                            }}
+
+                            CustomActionListComponent={ EditButton }
                         />
                     </div>
                 </Route>

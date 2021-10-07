@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from 'react';
 
-import agent from '@mpieva/psydb-ui-request-agents';
+import {
+    useFetch,
+    usePaginationReducer,
+} from '@mpieva/psydb-ui-hooks';
 
-import { usePaginationReducer } from '@mpieva/psydb-ui-hooks';
-import { Pagination } from '@mpieva/psydb-ui-layout';
+import {
+    Pagination,
+    LoadingIndicator
+} from '@mpieva/psydb-ui-layout';
+
 import QuickSearch from '../quick-search';
 import Table from './table';
 
@@ -14,6 +20,7 @@ var RecordList = ({
     //limit,
     constraints,
     //filters,
+    defaultSort,
 
     displayFields,
 
@@ -39,26 +46,25 @@ var RecordList = ({
     var pagination = usePaginationReducer({ offset: 0, limit: 50 })
     var { offset, limit } = pagination;
 
-    useEffect(() => (
-        agent.searchRecords({
+    var [ didFetch, fetched ] = useFetch((agent) => {
+        return agent.searchRecords({
             collection,
             recordType,
             offset,
             limit,
             constraints,
             filters,
+            sort: defaultSort || undefined
         })
         .then((response) => {
-            //console.log(response);
             pagination.setTotal(response.data.data.recordsCount);
-            setPayload(response.data.data);
-            setIsInitialized(true);
-        })
-    ), [ collection, recordType, offset, limit, filters ])
+            return response;
+        });
+    }, [ collection, recordType, offset, limit, filters ]);
 
-    if (!isInitialized) {
+    if (!didFetch) {
         return (
-            <div>Loading...</div>
+            <LoadingIndicator size='lg' />
         );
     }
 
@@ -69,7 +75,7 @@ var RecordList = ({
         relatedRecordLabels,
         relatedHelperSetItems,
         relatedCustomRecordTypeLabels
-    } = payload;
+    } = fetched.data;
   
     return (
         <>

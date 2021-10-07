@@ -36,6 +36,8 @@ var fetchRecordByFilter = async ({
     disablePermissionCheck,
     offset,
     limit,
+    
+    sort,
 }) => {
     offset = offset ||0;
     limit = limit || 0;
@@ -109,6 +111,14 @@ var fetchRecordByFilter = async ({
                 ...additionalProjection
             }
         }))
+    }
+
+    if (sort) {
+        stages.push({
+            $sort: {
+                [sort.path]: sort.direction === 'desc' ? -1 : 1
+            }
+        })
     }
 
     stages.push({

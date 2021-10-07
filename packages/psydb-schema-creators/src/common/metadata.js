@@ -5,27 +5,27 @@ module.exports = {
         isGenericRecord: false,
         availableStaticDisplayFields: [
             {
-                key: '_collection',
-                systemType: 'SaneString',
-                dataPointer: '/collection',
-                displayName: 'Collection',
-            },
-            {
                 key: '_label',
                 systemType: 'SaneString',
                 dataPointer: '/state/label',
                 displayName: 'Anzeigename',
             },
+            {
+                key: '_collection',
+                systemType: 'SaneString',
+                dataPointer: '/collection',
+                displayName: 'Collection',
+            },
         ],
         staticDisplayFields: [
             {
                 systemType: 'SaneString',
-                dataPointer: '/collection',
+                dataPointer: '/state/label',
             },
             {
                 systemType: 'SaneString',
-                dataPointer: '/state/label',
-            }
+                dataPointer: '/collection',
+            },
         ],
         recordLabelDefinition: {
             format: '${#}',

@@ -88,7 +88,6 @@ const DefaultRouting = ({
                     recordType={ recordType }
                     enableView={ true }
                     enableNew={ true }
-                    enableEdit={ true }
                 />
             </Route>
 

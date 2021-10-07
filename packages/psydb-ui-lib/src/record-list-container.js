@@ -8,6 +8,7 @@ const RecordListContainer = ({
     collection,
     recordType,
     constraints,
+    defaultSort,
 
     enableNew,
     enableView,
@@ -37,6 +38,7 @@ const RecordListContainer = ({
                 collection,
                 recordType,
                 constraints,
+                defaultSort,
 
                 enableView,
                 enableEdit_old,

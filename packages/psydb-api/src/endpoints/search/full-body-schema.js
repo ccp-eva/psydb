@@ -80,7 +80,20 @@ var FullBodySchema = ({
                 type: 'integer',
                 minimum: 1,
                 maximum: 100,
-            }
+            },
+            sort: ExactObject({
+                properties: {
+                    path: {
+                        type: 'string',
+                        minLength: 1,
+                    },
+                    direction: {
+                        type: 'string',
+                        enum: [ 'asc', 'desc' ]
+                    }
+                },
+                required: [ 'path', 'direction' ]
+            }),
         },
         required: [
             'collectionName',

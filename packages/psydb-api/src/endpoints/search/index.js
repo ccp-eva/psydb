@@ -115,6 +115,7 @@ var search = async (context, next) => {
         constraints,
         offset,
         limit,
+        sort,
     } = request.body;
 
     var queryFields = convertFiltersToQueryFields({
@@ -153,7 +154,8 @@ var search = async (context, next) => {
         displayFields,
         recordLabelDefinition,
         offset,
-        limit
+        limit,
+        sort,
     });
 
     var related = await fetchRelatedLabelsForMany({
