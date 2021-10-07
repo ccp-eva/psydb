@@ -99,6 +99,11 @@ var AddressFieldDefinition = () => FieldDefinition({
     props: {},
 });
 
+var GeoCoordsFieldDefinition = () => FieldDefinition({
+    type: 'GeoCoords',
+    props: {},
+});
+
 var SaneStringFieldDefinition = () => FieldDefinition({
     type: 'SaneString',
     required: [],
@@ -158,7 +163,10 @@ var ExtBoolFieldDefinition = () => FieldDefinition({
 module.exports = {
     SaneString: SaneStringFieldDefinition,
     FullText: FullTextFieldDefinition,
+    
     Address: AddressFieldDefinition,
+    GeoCoords: GeoCoordsFieldDefinition,
+
     EmailList: EmailListFieldDefinition,
     PhoneList: PhoneListFieldDefinition,
     HelperSetItemIdList: HelperSetItemIdListFieldDefinition,

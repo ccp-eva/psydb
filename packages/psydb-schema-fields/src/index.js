@@ -33,6 +33,7 @@ module.exports = {
     ForeignId: require('./foreign-id'),
     ForeignIdList: require('./foreign-id-list'),
     FullText: require('./full-text'),
+    GeoCoords: require('./geo-coords'),
     HelperSetItemId: require('./helper-set-item-id'),
     HelperSetItemIdList: require('./helper-set-item-id-list'),
     Id: require('./id'),

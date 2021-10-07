@@ -10,6 +10,14 @@ module.exports = {
         searchType: 'SaneString',
     },
 
+    GeoCoords: {
+        canBeCustomField: true,
+        canBeDisplayField: true,
+        canBeLabelField: false,
+        canSearch: false,
+        //searchType: 'SaneString', // TODO: how to search for that?
+    },
+
     EmailList: {
         canBeCustomField: true,
         canBeDisplayField: true,
