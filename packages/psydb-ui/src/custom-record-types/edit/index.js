@@ -12,17 +12,12 @@ import {
 import agent from '@mpieva/psydb-ui-request-agents';
 
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
-import {
-    Alert,
-    LinkButton,
-    LoadingIndicator,
-    TabNav,
-} from '@mpieva/psydb-ui-layout';
+import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
 //import createSchemaForRecordType from '@mpieva/psydb-common-lib/src/create-schema-for-record-type';
 
-import LiveDataEditor from './live-data-editor';
-import FieldEditor from './field-editor';
+import DirtyAlert from './dirty-alert';
+import EditTypePanel from './edit-type-panel';
 
 const EditType = ({}) => {
     var { path, url } = useRouteMatch();
@@ -115,69 +110,5 @@ var reducer = (state, action) => {
     }
 }
 
-const EditTypePanel = ({
-    id,
-    record,
-    onSuccessfulUpdate
-}) => {
-    var { path, url } = useRouteMatch();
-    var { tabKey } = useParams();
-    var history = useHistory();
-    
-    var onEdited = (...args) => {
-        console.log(args);
-    }
-
-    var content = (
-        tabKey === 'fields'
-        ? (
-            <FieldEditor
-                record={ record }
-                onSuccessfulUpdate={ onSuccessfulUpdate }
-            />
-        )
-        : (
-            <LiveDataEditor
-                record={ record }
-                onSuccessfulUpdate={ onSuccessfulUpdate }
-            />
-        )
-    )
-
-    return (
-        <div>
-            <TabNav
-                className='d-flex'
-                itemClassName='flex-grow'
-                activeKey={ tabKey }
-                onItemClick={ (key) => {
-                    history.push(`${up(url, 1)}/${key}`);
-                }}
-                items={[
-                    { key: 'live', label: 'Live-Settings' },
-                    { key: 'fields', label: 'Feld-Editor' },
-                ]}
-            />
-            
-            <div className='p-3 border-left border-bottom border-right'>
-                { content }
-            </div>
-
-        </div>
-    )
-}
-
-const DirtyAlert = ({}) => {
-    return (
-        <div className='text-danger small mt-3'>
-            <header><b>Unfixierte Felder</b></header>
-            <div>
-                Datensatz-Typ enthält noch unfixierte Feldänderungen,
-                bevor diese in den Live-Settings und in den Datensätzen
-                verfügbar sind müssen sie vorher im Feld-Editor fixiert werden.
-            </div>
-        </div>
-    );
-}
 
 export default EditType;

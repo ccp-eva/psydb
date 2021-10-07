@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
-import agent from '@mpieva/psydb-ui-request-agents';
+import React from 'react';
 
+import { createSend } from '@mpieva/psydb-ui-utils';
 import FormBox from '@mpieva/psydb-ui-lib/src/form-box';
 import { SchemaForm } from '@mpieva/psydb-ui-lib';
 
@@ -31,33 +31,27 @@ const schema = ExactObject({
 })
 
 const CreateNewType = ({ onCreated }) => {
-    var onSubmit = ({ formData, ...unused }) => {
-        var messageBody = {
-            type: 'custom-record-types/create',
-            payload: {
-                collection: formData.collection,
-                type: formData.type,
-                props: {
-                    label: formData.label
-                }
-            }
-        };
+    var onSuccessfulUpdate = (response) => {
+        var recordId = response.data.data.find(it => (
+            it.collectionName === 'customRecordType'
+        )).channelId;
 
-        return (
-            agent.send({ message: messageBody })
-            .then(
-                (response) => {
-                    var body = response.data;
-                    console.log(response);
-                    onCreated && onCreated({
-                        id: body.data.find(
-                            it => it.collectionName === 'customRecordType'
-                        ).channelId
-                    });
-                }
-            )
-        )
-    };
+        onCreated && onCreated({
+            id: recordId,
+            response
+        });
+    }
+
+    var onSubmit = createSend(({ formData }) => ({
+        type: 'custom-record-types/create',
+        payload: {
+            collection: formData.collection,
+            type: formData.type,
+            props: {
+                label: formData.label
+            }
+        }
+    }), { onSuccessfulUpdate });
 
     return (
         <FormBox title='Neuer Datensatz-Typ'>
