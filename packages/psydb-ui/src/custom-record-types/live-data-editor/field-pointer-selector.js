@@ -12,6 +12,9 @@ const FieldPointerSelector = ({
     var selectable = (
         Object.values(availableFieldDataByPointer)
         .filter(it => !selectedDataPointers.includes(it.dataPointer))
+        .filter(it => {
+            return it.type !== 'ListOfObjects'
+        })
         .map(it => ({
             dataPointer: it.dataPointer,
             displayName: it.displayName
