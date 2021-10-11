@@ -79,7 +79,7 @@ var Permissions = ({
             )
         });*/
 
-        debug(`endpoint ${endpoint} allowed: ${isAllowed}`);
+        debug(`endpoint "${endpoint}" allowed: ${isAllowed}`);
         return isAllowed;
     }
 

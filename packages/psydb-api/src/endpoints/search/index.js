@@ -39,6 +39,7 @@ var fetchRelatedLabelsForMany = require('@mpieva/psydb-api-lib/src/fetch-related
 var fieldTypeMetadata = require('@mpieva/psydb-common-lib/src/field-type-metadata');
 
 var search = async (context, next) => {
+    debug('endpoints/search');
     var { 
         db,
         permissions,

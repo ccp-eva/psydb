@@ -27,6 +27,8 @@ handler.checkAllowedAndPlausible = async ({
     var {
         id,
         lastKnownEventId,
+        subChannelKey,
+        key
     } = message.payload;
 
     var existing = await (
@@ -55,26 +57,6 @@ handler.checkAllowedAndPlausible = async ({
         throw new ApiError(400, 'RecordHasChanged');
     }
 
-    cache.record = record;
-
-    // TODO: check if record label definition is still valid
-    // TODO: maybe check if every field that is included
-    // in the currently fixed settings is equal to the field
-    // in next Settings .... on the other hand that shouldnt happen
-    // in the first place we should prevent that
-}
-
-handler.triggerSystemEvents = async ({
-    db,
-    rohrpost,
-    cache,
-    message,
-    personnelId,
-}) => {
-    var { payload } = message;
-    var { id, lastKnownEventId, subChannelKey, key } = payload;
-    var { record } = cache;
-
     var fieldsPath = (
         subChannelKey
         ? `/state/settings/subChannelFields/${subChannelKey}`
@@ -98,6 +80,67 @@ handler.triggerSystemEvents = async ({
     if (fieldIndex !== -1) {
         isCommited = true;
     }
+
+    if (isCommited) {
+        var tableDisplayFields = jsonpointer.get(
+            record, '/state/tableDisplayFields'
+        );
+        var includedInTable = isIncludedInDisplayFields({
+            displayFields: tableDisplayFields,
+            subChannelKey, key
+        });
+        if (includedInTable) {
+            throw new ApiError(400, 'FieldExistsInTableDisplayFields');
+        }
+
+        var optionDisplayFields = jsonpointer.get(
+            record, '/state/optionListDisplayFields'
+        );
+        var includedInOptionList = isIncludedInDisplayFields({
+            displayFields: optionDisplayFields,
+            subChannelKey, key
+        })
+        if (includedInTable) {
+            throw new ApiError(400, 'FieldExistsInOptionListDisplayFields');
+        }
+
+        var recordLabelTokens = jsonpointer.get(
+            record, '/state/recordLabelDefinition/tokens'
+        );
+        var includedInLabelTokens = isIncludedInDisplayFields({
+            displayFields: recordLabelTokens,
+            subChannelKey, key
+        });
+        if (includedInLabelTokens) {
+            throw new ApiError(400, 'FieldExistsInRecordLabelTokens');
+        }
+    }
+
+    cache.isCommited = isCommited;
+    cache.nextFieldsPath = nextFieldsPath;
+    cache.nextFieldIndex = nextFieldIndex
+    // TODO: check if record label definition is still valid
+
+    // TODO: maybe check if every field that is included
+    // in the currently fixed settings is equal to the field
+    // in next Settings .... on the other hand that shouldnt happen
+    // in the first place we should prevent that
+}
+
+handler.triggerSystemEvents = async ({
+    db,
+    rohrpost,
+    cache,
+    message,
+    personnelId,
+}) => {
+    var { payload } = message;
+    var { id, lastKnownEventId, subChannelKey, key } = payload;
+    var {
+        isCommited,
+        nextFieldsPath,
+        nextFieldIndex
+    } = cache;
 
     var messages = undefined;
     if (isCommited) {
@@ -131,6 +174,20 @@ handler.triggerSystemEvents = async ({
         messages,
     });
 
+}
+
+var isIncludedInDisplayFields = ({ displayFields, subChannelKey, key }) => {
+    var target = (
+        subChannelKey
+        ? `/${subChannelKey}/state/custom/${key}`
+        : `/state/custom/${key}`
+    );
+
+    var field = displayFields.find(it => {
+        return it.dataPointer === target
+    })
+
+    return field ? true : false
 }
 
 module.exports = handler;
