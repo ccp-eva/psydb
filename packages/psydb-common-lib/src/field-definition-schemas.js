@@ -229,16 +229,18 @@ var ListOfObjectsFieldDefinition = () => FieldDefinition({
     props: {
         minItems: {
             type: 'integer',
-            minimum: 0
+            minimum: 0,
         },
         fields: DefaultArray({
             items: {
                 type: 'object',
                 oneOf: [
                     ...Object.values(ScalarFields).map(it => it())
-                ]
+                ],
             },
-            minItems: 1
+            minItems: 1,
+            // FIXME: to prevent wierd rjsf behavior
+            default: [{ type: 'SaneString' }]
         })
     },
     required: [

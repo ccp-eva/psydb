@@ -9,6 +9,7 @@ import {
     useParams
 } from 'react-router-dom';
 
+import { urlUp as up } from '@mpieva/psydb-ui-utils';
 import { TabNav } from '@mpieva/psydb-ui-layout';
 
 import LiveDataEditor from '../live-data-editor';
