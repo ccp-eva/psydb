@@ -331,6 +331,7 @@ export function withIdRefPrefix(schemaNode) {
  * false.
  */
 export function isValid(schema, data, rootSchema) {
+    // FIXME: why is this validated on every onChange??
     try {
         // add the rootSchema ROOT_SCHEMA_PREFIX as id.
         // then rewrite the schema ref's to point to the rootSchema
@@ -340,7 +341,9 @@ export function isValid(schema, data, rootSchema) {
             .addSchema(rootSchema, ROOT_SCHEMA_PREFIX)
             .validate(withIdRefPrefix(schema), data);
         if (!valid) {
-            console.log('isValid() - ajv.errors', ajv.errors);
+            // FIXME: this is a mess since it gets called within a loop
+            // in getMatchingOption()
+            //console.log('isValid() - ajv.errors', ajv.errors);
         }
     } catch (e) {
         return false;

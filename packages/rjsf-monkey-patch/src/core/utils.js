@@ -1200,6 +1200,7 @@ export function rangeSpec(schema) {
 }
 
 export function getMatchingOption(formData, options, rootSchema) {
+    //console.log('start getMatchingOption()');
     for (let i = 0; i < options.length; i++) {
         const option = options[i];
 
@@ -1246,14 +1247,17 @@ export function getMatchingOption(formData, options, rootSchema) {
 
             if (isValid(augmentedSchema, formData, rootSchema)) {
                 //console.log('isValid', i);
+                //console.log('end getMatchingOption()');
                 return i;
             }
         } else if (isValid(option, formData, rootSchema)) {
+            //console.log('end getMatchingOption()');
             return i;
         }
     }
 
     // patched
+    //console.log('end getMatchingOption()');
     return undefined;
     //
 }

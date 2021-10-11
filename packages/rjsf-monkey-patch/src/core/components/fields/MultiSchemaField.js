@@ -32,6 +32,8 @@ class AnyOfField extends Component {
       !deepEquals(this.props.formData, prevProps.formData) &&
       this.props.idSchema.$id === prevProps.idSchema.$id
     ) {
+      // TODO: this triggers even when the mactuing option didnt change
+      // and leeds to unnesseccary revalidates
       const matchingOption = this.getMatchingOption(
         this.props.formData,
         this.props.options

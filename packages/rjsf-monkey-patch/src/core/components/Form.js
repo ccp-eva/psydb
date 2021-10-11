@@ -54,6 +54,7 @@ export default class Form extends Component {
   }
 
   getStateFromProps(props, inputFormData) {
+    //console.log('start getStateFromProps');
     const state = this.state || {};
     const schema = "schema" in props ? props.schema : this.props.schema;
     const uiSchema = "uiSchema" in props ? props.uiSchema : this.props.uiSchema;
@@ -62,8 +63,25 @@ export default class Form extends Component {
       "liveValidate" in props ? props.liveValidate : this.props.liveValidate;
     const mustValidate = edit && !props.noValidate && liveValidate;
     const rootSchema = schema;
-    const formData = getDefaultFormState(schema, inputFormData, rootSchema);
-    const retrievedSchema = retrieveSchema(schema, rootSchema, formData);
+    
+    let formData = undefined;
+    if (this.cachedFormData) {
+      //console.log('using cached data');
+      formData = this.cachedFormData = inputFormData;
+    }
+    else {
+      formData = this.cachedFormData = getDefaultFormState(schema, inputFormData, rootSchema);
+    }
+
+    let retrievedSchema = undefined;
+    if (this.cachedRetrievedSchema) {
+      //console.log('using cached schema');
+      retrievedSchema = this.cachedRetrievedSchema;
+    }
+    else {
+      retrievedSchema = this.cachedRetrievedSchema =  retrieveSchema(schema, rootSchema, formData);
+    }
+
     const customFormats = props.customFormats;
     const additionalMetaSchemas = props.additionalMetaSchemas;
 
@@ -133,6 +151,7 @@ export default class Form extends Component {
       nextState.schemaValidationErrors = schemaValidationErrors;
       nextState.schemaValidationErrorSchema = schemaValidationErrorSchema;
     }
+    //console.log('end getStateFromProps');
     return nextState;
   }
 
@@ -221,6 +240,7 @@ export default class Form extends Component {
   };
 
   onChange = (formData, newErrorSchema) => {
+    //console.log('start Form.onChange()');
     if (isObject(formData) || Array.isArray(formData)) {
       const newState = this.getStateFromProps(this.props, formData);
       formData = newState.formData;
@@ -289,6 +309,7 @@ export default class Form extends Component {
       state,
       () => this.props.onChange && this.props.onChange(this.state)
     );
+    //console.log('end Form.onChange()');
   };
 
   onBlur = (...args) => {
