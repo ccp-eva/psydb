@@ -5,6 +5,7 @@ var jsonpointer = require('jsonpointer');
 var ApiError = require('@mpieva/psydb-api-lib/src/api-error');
 
 var SimpleHandler = require('../../../lib/simple-handler');
+var PutMaker = require('../../../lib/put-maker');
 var RemoveMaker = require('../../../lib/remove-maker');
 var createSchema = require('./schema');
 
@@ -100,7 +101,14 @@ handler.triggerSystemEvents = async ({
 
     var messages = undefined;
     if (isCommited) {
-        // TODO
+        messages = PutMaker({ personnelId }).all({
+            '/state/isDirty': true,
+            [`${nextFieldsPath}/${nextFieldIndex}/isDirty`]: true,
+            [`${nextFieldsPath}/${nextFieldIndex}/isRemoved`]: true,
+        });
+        
+        // TODO maybe we could allow to actually remove the field when
+        // there are no records of that in db yet
     }
     else {
         messages = RemoveMaker({ personnelId }).all({
