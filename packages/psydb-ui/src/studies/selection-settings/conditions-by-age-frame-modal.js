@@ -11,7 +11,9 @@ const createSchema = ({ subjectTypeData }) => {
     var schema = AgeFrameSettingsListItem({
         subjectRecordType: subjectTypeData.type,
         subjectRecordTypeScientificFields: (
+            // FIXME: can we even search for other list fields?
             subjectTypeData.state.settings.subChannelFields.scientific
+            .filter(it => it.type !== 'ListOfObjects')
         )
     });
 
