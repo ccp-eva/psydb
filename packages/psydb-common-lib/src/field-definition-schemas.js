@@ -9,6 +9,8 @@ var {
     EventId,
     IdentifierString,
     SaneString,
+
+    DefaultArray,
 } = require('@mpieva/psydb-schema-fields');
 
 var FieldDefinition = ({
@@ -76,6 +78,47 @@ var HelperSetItemIdListFieldDefinition = () => FieldDefinition({
             collection: 'helperSet'
         })
     },
+    required: [
+        'setId'
+    ]
+})
+
+var HelperSetItemIdFieldDefinition = () => FieldDefinition({
+    type: 'HelperSetItemId',
+    props: {
+        setId: ForeignId({
+            collection: 'helperSet'
+        }),
+        minItems: {
+            type: 'integer',
+            minimum: 0,
+        },
+    },
+    required: [
+        'setId',
+        'minItems',
+    ],
+})
+
+var ForeignIdListFieldDefinition = () => FieldDefinition({
+    type: 'ForeignIdList',
+    props: {
+        collection: IdentifierString(),
+        recordType: IdentifierString(),
+        constraints: {
+            type: 'object',
+            // TODO: { schoolId: { $data: '1/school' }}
+        },
+        minItems: {
+            type: 'integer',
+            minimum: 0,
+        },
+    },
+    required: [
+        'collection',
+        'constraints',
+        'minItems',
+    ]
 })
 
 var ForeignIdFieldDefinition = () => FieldDefinition({
@@ -153,6 +196,27 @@ var BiologicalGenderFieldDefinition = () => FieldDefinition({
     },
 });
 
+var EmailFieldDefinition = () => FieldDefinition({
+    type: 'Email',
+    props: {
+        // enableUnknwonValue
+    },
+});
+
+var PhoneFieldDefinition = () => FieldDefinition({
+    type: 'Phone',
+    props: {
+        // enableUnknwonValue
+    },
+});
+
+var DefaultBoolFieldDefinition = () => FieldDefinition({
+    type: 'DefaultBool',
+    props: {
+        // enableUnknwonValue
+    },
+});
+
 var ExtBoolFieldDefinition = () => FieldDefinition({
     type: 'ExtBool',
     props: {
@@ -160,19 +224,62 @@ var ExtBoolFieldDefinition = () => FieldDefinition({
     },
 });
 
-module.exports = {
+var ListOfObjectsFieldDefinition = () => FieldDefinition({
+    type: 'ListOfObjects',
+    props: {
+        minItems: {
+            type: 'integer',
+            minimum: 0
+        },
+        fields: DefaultArray({
+            items: {
+                type: 'object',
+                oneOf: [
+                    ...Object.values(ScalarFields).map(it => it())
+                ]
+            },
+            minItems: 1
+        })
+    },
+    required: [
+        'minItems',
+        'fields',
+    ]
+});
+
+var ScalarFields = {
     SaneString: SaneStringFieldDefinition,
     FullText: FullTextFieldDefinition,
-    
-    Address: AddressFieldDefinition,
-    GeoCoords: GeoCoordsFieldDefinition,
 
-    EmailList: EmailListFieldDefinition,
-    PhoneList: PhoneListFieldDefinition,
-    HelperSetItemIdList: HelperSetItemIdListFieldDefinition,
     ForeignId: ForeignIdFieldDefinition,
+    HelperSetItemId: HelperSetItemIdFieldDefinition,
+
     DateTime: DateTimeFieldDefinition,
     DateOnlyServerSide: DateOnlyServerSideFieldDefinition,
     BiologicalGender: BiologicalGenderFieldDefinition,
+    DefaultBool: DefaultBoolFieldDefinition,
     ExtBool: ExtBoolFieldDefinition,
+
+    Email: EmailFieldDefinition,
+    Phone: PhoneFieldDefinition,
+};
+
+var ObjectFields = {
+    Address: AddressFieldDefinition,
+    GeoCoords: GeoCoordsFieldDefinition,
+}
+
+var ListFields = {
+    EmailList: EmailListFieldDefinition,
+    PhoneList: PhoneListFieldDefinition,
+    ForeignIdList: ForeignIdListFieldDefinition,
+    HelperSetItemIdList: HelperSetItemIdListFieldDefinition,
+
+    ListOfObjects: ListOfObjectsFieldDefinition,
+}
+
+module.exports = {
+    ...ScalarFields,
+    ...ObjectFields,
+    ...ListFields,
 }

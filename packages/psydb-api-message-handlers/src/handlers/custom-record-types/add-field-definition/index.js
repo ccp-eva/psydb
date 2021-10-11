@@ -1,5 +1,6 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
+var util = require('util'); // because debug depth
 
 var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
     compareIds = require('@mpieva/psydb-api-lib/src/compare-ids'),
@@ -19,14 +20,14 @@ var checkSchema = async ({ message }) => {
 
     isValid = ajv.validate(BaseSchema(), message);
     if (!isValid) {
-        debug('ajv errors', ajv.errors);
+        debug('ajv errors', util.inspect(ajv.errors, { depth: null }));
         throw new ApiError(400, 'InvalidMessageSchema');
     }
 
     var FieldSchema = FieldSchemas[message.payload.props.type];
     isValid = ajv.validate(FieldSchema(), message);
     if (!isValid) {
-        debug('ajv errors', ajv.errors);
+        debug('ajv errors', util.inspect(ajv.errors, { depth: null }));
         throw new ApiError(400, 'InvalidMessageSchema');
     }
 }

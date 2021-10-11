@@ -54,4 +54,6 @@ module.exports = {
     Integer: require('./integer'),
     
     WeekdayBoolObject: require('./weekday-bool-object'),
+
+    ListOfObjects: require('./list-of-objects'),
 }

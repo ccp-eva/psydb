@@ -40,6 +40,7 @@ var Schema = () => {
                                 'DateOnlyServerSide',
                                 'BiologicalGender',
                                 'ExtBool',
+                                'ListOfObjects',
                             ],
                         },
                     }
