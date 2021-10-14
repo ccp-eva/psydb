@@ -34,7 +34,12 @@ const ForeignId = ({
 
     var _onChange = (record) => {
         // FIXME: meh
-        onChange({ target: { value: record._id }});
+        var value = (
+            record && typeof record === 'object'
+            ? record._id
+            : record
+        )
+        onChange({ target: { value }});
     };
 
     return (

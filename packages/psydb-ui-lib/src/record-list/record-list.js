@@ -14,6 +14,7 @@ import QuickSearch from '../quick-search';
 import Table from './table';
 
 var RecordList = ({
+    target,
     collection,
     recordType,
     //offset,
@@ -21,8 +22,6 @@ var RecordList = ({
     constraints,
     //filters,
     defaultSort,
-
-    displayFields,
 
     enableView,
     enableEdit_old,
@@ -48,6 +47,7 @@ var RecordList = ({
 
     var [ didFetch, fetched ] = useFetch((agent) => {
         return agent.searchRecords({
+            target,
             collection,
             recordType,
             offset,

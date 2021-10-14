@@ -94,7 +94,8 @@ var search = async (context, next) => {
     } = await gatherDisplayFieldsForRecordType({
         db,
         collectionName,
-        customRecordType: recordType
+        customRecordType: recordType,
+        target,
     });
 
     isValid = ajv.validate(

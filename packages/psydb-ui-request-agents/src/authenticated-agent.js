@@ -61,6 +61,7 @@ agent.readRecord = ({
 }
 
 agent.searchRecords = ({
+    target,
     collection,
     recordType,
     offset,
@@ -71,6 +72,7 @@ agent.searchRecords = ({
 }) => {
     return (
         axios.post('/api/search', {
+            target,
             collectionName: collection,
             recordType,
             offset: offset || 0,

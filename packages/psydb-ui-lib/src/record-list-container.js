@@ -5,6 +5,7 @@ import { LinkButton } from '@mpieva/psydb-ui-layout';
 import RecordList from './record-list';
 
 const RecordListContainer = ({
+    target,
     collection,
     recordType,
     constraints,
@@ -35,6 +36,7 @@ const RecordListContainer = ({
             )}
             <RecordList { ...({
                 linkBaseUrl: url,
+                target,
                 collection,
                 recordType,
                 constraints,

@@ -56,6 +56,13 @@ var FullBodySchema = ({
         properties: {
             collectionName: IdentifierString(),
             recordType: IdentifierString(), // FIXME: enum
+            target: {
+                type: 'string',
+                enum: [
+                    'table',
+                    'optionlist',
+                ]
+            },
             /*filters: {
                 type: 'array',
                 // TODO: the idea is to push/pull empty values

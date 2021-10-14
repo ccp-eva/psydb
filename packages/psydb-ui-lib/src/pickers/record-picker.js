@@ -28,7 +28,7 @@ const RecordPicker = ({
 
     useEffect(() => {
         if (!record) {
-            setCachedRecord(undefined);
+            setCachedRecord(null);
         }
     }, [ record ])
 
@@ -36,6 +36,11 @@ const RecordPicker = ({
         setCachedRecord(record);
         onChange(record);
         handleCloseModal();
+    }
+
+    var handleClear = () => {
+        setCachedRecord(null);
+        onChange(null);
     }
 
     var handleShowModal = () => {
@@ -77,6 +82,20 @@ const RecordPicker = ({
                         <Icons.PencilFill style={{ marginTop: '-3px' }}/>
                     </Button>
                 </InputGroup.Append>
+                { cachedRecord && (
+                    <InputGroup.Append>
+                        <Button
+                            variant={ 'outline-secondary' }
+                            onClick={ handleClear }
+                        >
+                            <Icons.XLg style={{
+                                height: '13px',
+                                width: '13px',
+                                marginTop: '-2px'
+                            }} />
+                        </Button>
+                    </InputGroup.Append>
+                )}
             </InputGroup>
             <RecordPickerModal
                 show={ showModal }
@@ -124,6 +143,7 @@ const RecordPickerModal = ({
                     className='bg-white'
                     tableClassName='border-left border-bottom border-right mb-0'
                     bsTableProps={{ hover: true }}
+                    target='optionlist'
                     collection={ collection }
                     recordType={ recordType }
                     constraints={ constraints }
