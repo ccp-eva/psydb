@@ -71,14 +71,30 @@ var checkSchema = async ({ db, getRecordSchemas, message }) => {
 
             args.type = recordType;
 
+            var { settings } = customRecordType.state;
             if (hasSubChannels) {
+                var { subChannelFields } = settings;
                 args.subChannelCustomFieldDefinitions = (
-                    customRecordType.state.settings.subChannelFields
+                    Object.keys(subChannelFields).reduce((acc, key) => {
+                        var fields = subChannelFields[key];
+                        var filtered = (
+                            Array.isArray(fields) && fields.length > 0
+                            ? fields.filter(it => !it.isRemoved)
+                            : fields
+                        )
+                        return {
+                            ...acc,
+                            [key]: filtered
+                        }
+                    }, {})
                 );
             }
             else {
+                var { fields } = settings;
                 args.customFieldDefinitions = (
-                    customRecordType.state.settings.fields
+                    Array.isArray(fields) && fields.length > 0
+                    ? fields.filter(it => !it.isRemoved)
+                    : fields
                 );
             }
         }
