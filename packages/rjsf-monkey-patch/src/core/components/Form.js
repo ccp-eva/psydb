@@ -347,8 +347,10 @@ export default class Form extends Component {
       );
 
       const fieldNames = this.getFieldNames(pathSchema, newFormData);
+        console.log({ fieldNames });
 
       newFormData = this.getUsedFormData(newFormData, fieldNames);
+        console.log({ newFormData });
     }
 
     if (!this.props.noValidate) {
