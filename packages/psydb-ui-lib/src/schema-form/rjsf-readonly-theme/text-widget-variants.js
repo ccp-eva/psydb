@@ -21,7 +21,7 @@ var collectionMapping = {
     'study': 'studies',
     'personnel': 'personnel',
     'externalPerson': 'external-persons',
-    'externalOrganizations': 'external-organizations',
+    'externalOrganization': 'external-organizations',
     'systemRole': 'systemRoles',
 }
 
