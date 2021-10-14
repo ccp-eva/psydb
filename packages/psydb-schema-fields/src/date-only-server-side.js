@@ -3,19 +3,25 @@ var DateOnlyServerSide = ({
     isNullable,
     ...additionalKeywords
 } = {}) => {
-    var type = (
-        isNullable
-        ? [ 'null', 'string' ]
-        : 'string'
-    );
-
-    return {
+    var base = {
         systemType: 'DateOnlyServerSide',
-        type,
+        type: (
+            isNullable
+            ? ['null', 'string']
+            : 'string'
+        ),
         format: 'date',
         // @rjsf treats this default as if the user has set it
         //default: '0000-00-00',
         unmarshalDateOnlyServerSide: true,
+    }
+    
+    if (isNullable) {
+        base.default = null;
+    }
+
+    return {
+        ...base,
         ...additionalKeywords,
     }
 };

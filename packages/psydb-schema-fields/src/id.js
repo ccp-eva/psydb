@@ -4,18 +4,24 @@ var Id = ({
     ...additionalKeywords
 } = {}) => {
     
-    var type = (
-        isNullable
-        ? ['null', 'string']
-        : 'string'
-    );
-
-    return {
+    var base = {
         systemType: 'Id',
-        type,
+        type: (
+            isNullable
+            ? ['null', 'string']
+            : 'string'
+        ),
         format: 'nanoid-default',
         //format: 'mongodb-object-id',
         //unmarshalMongodbObjectId: true,
+    };
+
+    if (isNullable) {
+        base.default = null;
+    }
+
+    return {
+        ...base,
         ...additionalKeywords,
     }
 };
