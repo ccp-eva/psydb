@@ -1,8 +1,26 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
+import { arrify } from '@mpieva/psydb-ui-utils';
 
 // TODO: move elsewhere
 const NBSP = () => ('\u00A0');
+
+const checkReallyRequired = ({ schema, required }) => {
+
+    var { type, minLength } = schema;
+    type = arrify(type);
+
+    var isReallyRequired = (
+        required
+        && !type.includes('null')
+        && (
+            type.includes('string') && !!minLength
+        )
+    );
+    console.log({ schema, isReallyRequired });
+
+    return isReallyRequired;
+}
 
 export const PlainWrapper = ({ children }) => {
     return (
@@ -15,13 +33,15 @@ export const PlainWrapper = ({ children }) => {
 export const InlineWrapper = ({
     id,
     label,
-    required,
     schema,
+    required,
     valueClassName,
 
     rawErrors = [], 
     children,
 }) => {
+    var isReallyRequired = checkReallyRequired({ schema, required });
+
     var hasErrors = rawErrors.length > 0;
     return (
         <Form.Group className='row ml-0 mr-0'>
@@ -31,7 +51,7 @@ export const InlineWrapper = ({
             >
                 { label }
                 <NBSP />
-                {label && required ? '*' : null}
+                {label && isReallyRequired ? '*' : null}
             </Form.Label>
             <div className={`col-sm-9 pl-0 pr-0 ${valueClassName}`}>
                 { children }
@@ -68,6 +88,8 @@ export const MultiLineWrapper = ({
     rawErrors = [], 
     children,
 }) => {
+    var isReallyRequired = checkReallyRequired({ schema, required });
+
     var hasErrors = rawErrors.length > 0;
     return (
         <Form.Group>
@@ -78,7 +100,7 @@ export const MultiLineWrapper = ({
                 <b>
                     { label || schema.title }
                     <NBSP />
-                    {(label || schema.title) && required ? '*' : null}
+                    {(label || schema.title) && isReallyRequired ? '*' : null}
                 </b>
             </Form.Label>
             <div>

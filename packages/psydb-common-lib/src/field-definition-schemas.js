@@ -9,10 +9,27 @@ var {
     EventId,
     IdentifierString,
     SaneString,
+    CollectionEnum,
 
     DefaultArray,
     DefaultBool,
 } = require('@mpieva/psydb-schema-fields');
+
+var MinItemsProp = () => ({
+    type: 'integer',
+    minimum: 0,
+    title: 'Mindestanzahl'
+});
+
+var MinLengthProp = () => ({
+    type: 'integer',
+    minimum: 0,
+    title: 'Zeichen (mindestens)'
+});
+
+var IsNullableProp = () => DefaultBool({
+    title: 'Optional'
+});
 
 var FieldDefinition = ({
     type,
@@ -55,20 +72,14 @@ var FieldDefinition = ({
 var EmailListFieldDefinition = () => FieldDefinition({
     type: 'EmailList',
     props: {
-        minItems: {
-            type: 'integer',
-            minimum: 0
-        }
+        minItems: MinItemsProp(),
     },
 })
 
 var PhoneListFieldDefinition = () => FieldDefinition({
     type: 'PhoneList',
     props: {
-        minItems: {
-            type: 'integer',
-            minimum: 0
-        }
+        minItems: MinItemsProp(),
     },
 })
 
@@ -90,7 +101,7 @@ var HelperSetItemIdFieldDefinition = () => FieldDefinition({
         setId: ForeignId({
             collection: 'helperSet'
         }),
-        isNullable: DefaultBool(),
+        isNullable: IsNullableProp(),
     },
     required: [
         'setId',
@@ -101,16 +112,13 @@ var HelperSetItemIdFieldDefinition = () => FieldDefinition({
 var ForeignIdListFieldDefinition = () => FieldDefinition({
     type: 'ForeignIdList',
     props: {
-        collection: IdentifierString(),
+        collection: CollectionEnum({ title: 'Referenz-Tabelle' }),
         recordType: IdentifierString(),
         constraints: {
             type: 'object',
             // TODO: { schoolId: { $data: '1/school' }}
         },
-        minItems: {
-            type: 'integer',
-            minimum: 0,
-        },
+        minItems: MinItemsProp(),
     },
     required: [
         'collection',
@@ -122,13 +130,13 @@ var ForeignIdListFieldDefinition = () => FieldDefinition({
 var ForeignIdFieldDefinition = () => FieldDefinition({
     type: 'ForeignId',
     props: {
-        collection: IdentifierString(),
+        collection: CollectionEnum({ title: 'Referenz-Tabelle' }),
         recordType: IdentifierString(),
         constraints: {
             type: 'object',
             // TODO: { schoolId: { $data: '1/school' }}
         },
-        isNullable: DefaultBool(),
+        isNullable: IsNullableProp(),
     },
     required: [
         'collection',
@@ -151,10 +159,7 @@ var SaneStringFieldDefinition = () => FieldDefinition({
     type: 'SaneString',
     required: [],
     props: {
-        minLength: {
-            type: 'integer',
-            minimum: 0
-        }
+        minLength: MinLengthProp(),
     }
 });
 
@@ -162,10 +167,7 @@ var FullTextFieldDefinition = () => FieldDefinition({
     type: 'FullText',
     required: [],
     props: {
-        minLength: {
-            type: 'integer',
-            minimum: 0
-        }
+        minLength: MinLengthProp(),
     },
 });
 
@@ -173,7 +175,7 @@ var DateTimeFieldDefinition = () => FieldDefinition({
     type: 'DateTime',
     props: {
         isSpecialAgeFrameField: DefaultBool(),
-        isNullable: DefaultBool(),
+        isNullable: IsNullableProp(),
     },
     required: [
         'isSpecialAgeFrameField',
@@ -185,7 +187,7 @@ var DateOnlyServerSideFieldDefinition = () => FieldDefinition({
     type: 'DateOnlyServerSide',
     props: {
         isSpecialAgeFrameField: DefaultBool(),
-        isNullable: DefaultBool(),
+        isNullable: IsNullableProp(),
     },
     required: [
         'isSpecialAgeFrameField',
@@ -231,10 +233,7 @@ var ExtBoolFieldDefinition = () => FieldDefinition({
 var ListOfObjectsFieldDefinition = () => FieldDefinition({
     type: 'ListOfObjects',
     props: {
-        minItems: {
-            type: 'integer',
-            minimum: 0,
-        },
+        minItems: MinItemsProp(),
         fields: DefaultArray({
             items: {
                 type: 'object',

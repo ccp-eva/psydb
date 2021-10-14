@@ -51,9 +51,42 @@ var unparticipationStatus = {
     ]
 }
 
+var customRecordTypeCollections = {
+    keys: [
+        'location',
+        'subject',
+        'study',
+        'externalPerson',
+        'externalOrganization',
+    ],
+    names: [
+        'Locations',
+        'Probanden',
+        'Studien',
+        'Externe Personen',
+        'Externe Organinsationen'
+    ]
+}
+
+var collections = {
+    keys: [
+        ...customRecordTypeCollections.keys,
+        'personnel',
+        'researchGroups',
+    ],
+    names: [
+        ...customRecordTypeCollections.names,
+        'Mitarbeiter',
+        'Forschungs-Gruppen'
+    ]
+}
+
 module.exports = {
     safeParticipationStatus,
     participationStatus,
     safeUnparticipationStatus,
     unparticipationStatus,
+
+    customRecordTypeCollections,
+    collections
 }

@@ -11,6 +11,7 @@ module.exports = {
     BiologicalGender: require('./biological-gender'),
     Color: require('./color'),
 
+    CollectionEnum: require('./collection-enum'),
     CustomRecordTypeCollectionEnum: require('./custom-record-type-collection-enum'),
     // FIXME: duplicate
     CustomRecordTypeName: require('./custom-record-type-key'),

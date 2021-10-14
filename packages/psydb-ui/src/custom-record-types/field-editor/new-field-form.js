@@ -12,7 +12,13 @@ import FieldDefinitionSchemas from '@mpieva/psydb-common-lib/src/field-definitio
 var createSchema = ({ hasSubChannels }) => ({
     type: 'object',
     properties: {
-        ...(hasSubChannels && { subChannelKey: { enum: ['scientific', 'gdpr'] }}),
+        ...(hasSubChannels && {
+            subChannelKey: {
+                title: 'Daten-Kanal',
+                enum: ['scientific', 'gdpr'],
+                enumNames: [ 'Normal', 'Datenschutz' ] 
+            }
+        }),
         fieldData: {
             type: 'object',
             title: 'Feld-Typ',

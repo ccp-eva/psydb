@@ -1,13 +1,11 @@
 'use strict';
+var { customRecordTypeCollections } = require('@mpieva/psydb-schema-enums');
+
 var CustomRecordTypeCollectionEnum = ({ ...additionalProps }) => ({
+    systemType: 'CustomRecordTypeCollectionEnum',
     type: 'string',
-    enum: [
-        'location',
-        'subject',
-        'study',
-        'externalPerson',
-        'externalOrganization',
-    ],
+    enum: customRecordTypeCollections.keys,
+    enumNames: customRecordTypeCollections.names,
     ...additionalProps,
 });
 
