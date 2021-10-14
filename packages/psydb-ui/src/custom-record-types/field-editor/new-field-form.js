@@ -15,13 +15,14 @@ var createSchema = ({ hasSubChannels }) => ({
         ...(hasSubChannels && { subChannelKey: { enum: ['scientific', 'gdpr'] }}),
         fieldData: {
             type: 'object',
+            title: 'Feld-Typ',
             /*oneOf: [
                 FieldDefinitionSchemas.SaneString(),
                 FieldDefinitionSchemas.BiologicalGender(),
             ]*/
-            oneOf: Object.values(FieldDefinitionSchemas).map(f => f())
-        }
-    }
+            oneOf: Object.values(FieldDefinitionSchemas).map(f => f()),
+        },
+    },
 });
 
 var uiSchema = {
@@ -77,6 +78,13 @@ const NewFieldForm = ({ record, onSuccess }) => {
                 schema={ schema }
                 uiSchema={ uiSchema }
                 onSubmit={ onSubmit }
+                formData={{
+                    // FIXME: to prevent wierd rjsf behavior
+                    // and default doesnt work for object fields
+                    // for some reason
+                    // default: { type: 'SaneString' }
+                    fieldData: { type: 'SaneString' }
+                }}
             >
                 <div>
                     <Button type='submit'>

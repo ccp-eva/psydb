@@ -7,7 +7,7 @@ var Id = ({
     var type = (
         isNullable
         ? ['null', 'string']
-        : 'string',
+        : 'string'
     );
 
     return {
