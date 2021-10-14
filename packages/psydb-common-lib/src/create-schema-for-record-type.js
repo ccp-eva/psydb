@@ -228,6 +228,7 @@ var FullRecordSchemaCreator = ({
                                     state: SCStateSchema({
                                         customFieldDefinitions: (
                                             fieldDefinitions
+                                            .filter(it => !it.isRemoved)
                                         ),
                                         ...otherArgs
                                     })
@@ -250,10 +251,18 @@ var FullRecordSchemaCreator = ({
             });
         }
         else {
-            SchemaCreator = (...args) => ExactObject({
+            SchemaCreator = (options, ...args) => ExactObject({
                 properties: {
                     _id: Id(),
-                    state: collectionCreatorData.State(...args),
+                    state: collectionCreatorData.State({
+                        ...options,
+                        ...(options.customFieldDefinitions && ({
+                            customFieldDefinitions: (
+                                options.customFieldDefinitions
+                                .filter(it => !it.isRemoved)
+                            )
+                        }))
+                    }, ...args),
                 }
             });
         }
