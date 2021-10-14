@@ -5,8 +5,15 @@ import { Modal, Button } from 'react-bootstrap';
 const ErrorResponseModal = ({
     show,
     onHide,
+    modalPayloadData,
     errorResponse
 }) => {
+    errorResponse = (
+        modalPayloadData
+        ? modalPayloadData.errorResponse
+        : errorResponse
+    );
+
     return (
         <Modal show={show} onHide={ onHide } size='lg'>
             <Modal.Header closeButton>

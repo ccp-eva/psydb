@@ -1,109 +1,84 @@
-import React, { useState, useEffect, useReducer, useMemo } from 'react';
+import React from 'react';
+
 import {
     Button,
-    Table,
-    EditIconButton
 } from '@mpieva/psydb-ui-layout';
 
-import agent from '@mpieva/psydb-ui-request-agents';
-import allSchemaCreators from '@mpieva/psydb-schema-creators';
+import { useModalReducer } from '@mpieva/psydb-ui-hooks';
+import { createSend } from '@mpieva/psydb-ui-utils';
 
-import {
-    ErrorResponseModal
-} from '@mpieva/psydb-ui-lib/src/modals';
+import { ErrorResponseModal } from '@mpieva/psydb-ui-lib/src/modals';
 
 import NewFieldModal from './new-field-modal';
 import EditFieldModal from './edit-field-modal';
 
+import FieldList from './field-list';
 
 const FieldEditor = ({ record, onSuccessfulUpdate }) => {
 
-    var [ state, dispatch ] = useReducer(reducer, {});
-    var {
-        showNewFieldModal,
-        showEditFieldModal,
-        editFieldModalData,
+    var newFieldModal = useModalReducer();
+    var editFieldModal = useModalReducer();
+    var errorModal = useModalReducer();
 
-        apiError,
-        showErrorModal,
-    } = state;
+    var onFailedUpdate = (error) => {
+        errorModal.handleShow({ errorResponse: error.response });
+    };
 
-    var [
-        handleShowNewFieldModal,
-        handleHideNewFieldModal,
-
-        handleShowEditFieldModal,
-        handleHideEditFieldModal,
-
-        handleHideErrorModal,
-    ] = useMemo(() => ([
-        () => dispatch({ type: 'show-new-field-modal' }),
-        () => dispatch({ type: 'hide-new-field-modal' }),
-
-        (field) => dispatch({ type: 'show-edit-field-modal', payload: {
-            field
-        }}),
-        () => dispatch({ type: 'hide-edit-field-modal' }),
-
-        () => dispatch({ type: 'hide-error-modal' }),
-    ]));
-
-    var handleCommitSettings = () => {
-        var message = {
-            type: 'custom-record-types/commit-settings',
-            payload: {
-                id: record._id,
-                lastKnownEventId: record._lastKnownEventId,
-            }
+    var handleCommitSettings = createSend(() => ({
+        type: 'custom-record-types/commit-settings',
+        payload: {
+            id: record._id,
+            lastKnownEventId: record._lastKnownEventId,
         }
-        return (
-            agent.send({ message })
-            .then(
-                (response) => {
-                    onSuccessfulUpdate()
-                },
-                (error) => {
-                    dispatch({
-                        type: 'set-api-error',
-                        payload: error.response
-                    })
-                }
-            )
-        ) 
-    }
+    }), { onSuccessfulUpdate, onFailedUpdate });
+
+    var handleRemoveField = createSend(({ field }) => ({
+        type: 'custom-record-types/remove-field-definition',
+        payload: {
+            id: record._id,
+            lastKnownEventId: record._lastKnownEventId,
+            subChannelKey: field.subChannelKey,
+            key: field.key
+        }
+    }), { onSuccessfulUpdate, onFailedUpdate });
+
+    var handleRestoreField = createSend(({ field }) => ({
+        type: 'custom-record-types/restore-field-definition',
+        payload: {
+            id: record._id,
+            lastKnownEventId: record._lastKnownEventId,
+            subChannelKey: field.subChannelKey,
+            key: field.key
+        }
+    }), { onSuccessfulUpdate, onFailedUpdate });
 
     return (
         <div>
-            <Button onClick={ handleShowNewFieldModal }>
+            <Button onClick={ newFieldModal.handleShow }>
                 Neues Feld
             </Button>
 
             <NewFieldModal
+                { ...newFieldModal.passthrough }
                 record={ record }
-                show={ showNewFieldModal }
-                onHide={ handleHideNewFieldModal }
                 onSuccessfulUpdate={ onSuccessfulUpdate }
             />
             
             <EditFieldModal
+                { ...editFieldModal.passthrough }
                 record={ record }
-                show={ showEditFieldModal }
-                onHide={ handleHideEditFieldModal }
-                { ...editFieldModalData }
                 onSuccessfulUpdate={ onSuccessfulUpdate }
             />
             
             <ErrorResponseModal
-                show={ showErrorModal }
-                onHide={ handleHideErrorModal }
-                errorResponse={ apiError }
+                { ...errorModal.passthrough }
             />
 
             <FieldList
                 record={ record }
-                onEditField={
-                    handleShowEditFieldModal
-                }
+                onEditField={ editFieldModal.handleShow }
+                onRemoveField={ handleRemoveField }
+                onRestoreField={ handleRestoreField }
             />
 
             <hr />
@@ -121,137 +96,5 @@ const FieldEditor = ({ record, onSuccessfulUpdate }) => {
         </div>
     )
 }
-
-const FieldList = ({
-    record,
-    onEditField
-}) => {
-
-    var {
-        hasSubChannels,
-        subChannelKeys,
-    } = allSchemaCreators[record.collection];
-
-    var nextSettings = record.state.nextSettings;
-    var nextFields = [];
-    if (hasSubChannels) {
-        for (var key of subChannelKeys) {
-            nextFields = [
-                ...nextFields,
-                ...nextSettings.subChannelFields[key].map(it => ({
-                    ...it,
-                    subChannelKey: key
-                }))
-            ]
-        }
-    }
-    else {
-        nextFields = nextSettings.fields;
-    }
-
-    return (
-        <Table size='md'>
-            <thead>
-                <tr>
-                    <th>DisplayName</th>
-                    <th>Internal Key</th>
-                    <th>Type</th>
-                    { hasSubChannels && (
-                        <th>SubChannel</th>
-                    )}
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                { nextFields.map(field => (
-                    <Row { ...({
-                        key: field.key,
-                        field,
-                        hasSubChannels,
-                        onEditField
-                    }) }/>
-                )) }
-            </tbody>
-        </Table>
-    );
-}
-
-const Row = ({
-    field,
-    hasSubChannels,
-    onEditField
-}) => {
-    var className = [];
-    if (field.isDirty) {
-        className.push('text-danger');
-    }
-    className = className.join(' ');
-
-    return (
-        <tr className={ className }>
-            <td>
-                { field.displayName }
-                { field.isDirty && (
-                    field.isNew
-                    ? ' (neu)'
-                    : ' (bearbeitet)'
-                )}
-            </td>
-            <td>{ field.key }</td>
-            <td>{ field.type }</td>
-            { hasSubChannels && (
-                <td>{ field.subChannelKey }</td>
-            )}
-            <td className='d-flex justify-content-end'>
-                <EditIconButton
-                    onClick={ () => onEditField(field) }
-                />
-            </td>
-        </tr>
-    )
-}
-
-const reducer = (state, action) => {
-    var { type, payload } = action;
-    switch (type) {
-
-        case 'show-new-field-modal':
-            return {
-                ...state,
-                showNewFieldModal: true,
-            }
-        case 'hide-new-field-modal':
-            return {
-                ...state,
-                showNewFieldModal: false,
-            }
-
-        case 'show-edit-field-modal':
-            return {
-                ...state,
-                showEditFieldModal: true,
-                editFieldModalData: payload
-            }
-        case 'hide-edit-field-modal':
-            return {
-                ...state,
-                showEditFieldModal: false,
-            }
-
-        case 'set-api-error':
-            return {
-                ...state,
-                apiError: action.payload,
-                showErrorModal: true,
-            }
-        case 'hide-error-modal':
-            return {
-                ...state,
-                showErrorModal: false,
-            }
-
-    }
-}
- 
 
 export default FieldEditor;

@@ -6,6 +6,7 @@ export { default as Pagination } from './pagination';
 
 export { default as DetailsIconButton } from './details-icon-button';
 export { default as EditIconButton } from './edit-icon-button';
+export { default as RemoveIconButton } from './remove-icon-button';
 
 export { default as BigNav } from './big-nav';
 export { default as PillNav } from './pill-nav';
