@@ -21,7 +21,10 @@ const stringifyFieldValue = ({
     var str = undefined;
 
     if (type === 'ForeignId') {
-        if (relatedRecordLabels) {
+        if (rawValue === null) {
+            str = '';
+        }
+        else if (relatedRecordLabels) {
             str = (
                 relatedRecordLabels[props.collection][rawValue]._recordLabel
             );
@@ -41,7 +44,10 @@ const stringifyFieldValue = ({
         }
     }
     else if (type === 'HelperSetItemId') {
-        if (relatedHelperSetItems) {
+        if (rawValue === null) {
+            str = '';
+        }
+        else if (relatedHelperSetItems) {
             str = (
                 relatedHelperSetItems[props.setId][rawValue].state.label
             );

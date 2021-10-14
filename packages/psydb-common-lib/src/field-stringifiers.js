@@ -36,11 +36,19 @@ var PhoneList = (value) => (
 );
 
 var DateTime = (value) => {
-    return formatDate(new Date(value), 'P p', { locale: deLocale })
+    return (
+        value === null
+        ? 'Keine Angabe'
+        : formatDate(new Date(value), 'P p', { locale: deLocale })
+    )
 };
 
 var DateOnlyServerSide = (value) => {
-    return formatDate(new Date(value), 'P', { locale: deLocale })
+    return (
+        value === null
+        ? 'Keine Angabe'
+        : formatDate(new Date(value), 'P', { locale: deLocale })
+    )
 };
 
 var AgeFrame = (value) => {
