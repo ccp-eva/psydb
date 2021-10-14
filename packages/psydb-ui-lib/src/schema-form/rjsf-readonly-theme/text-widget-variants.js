@@ -1,5 +1,6 @@
 import React from 'react';
 import { FormattedDuration } from '@mpieva/psydb-common-lib/src/durations';
+import { LinkContainer } from '@mpieva/psydb-ui-layout';
 import { InlineWrapper } from './wrapper-components';
 import datefns from '../../date-fns';
 
@@ -13,6 +14,17 @@ export const PlainText = ({ label, value }) => (
     </InlineWrapper>
 )
 
+var collectionMapping = {
+    'subject': 'subjects',
+    'researchGroup': 'research-groups',
+    'location': 'locations',
+    'study': 'studies',
+    'personnel': 'personnel',
+    'externalPerson': 'external-persons',
+    'externalOrganizations': 'external-organizations',
+    'systemRole': 'systemRoles',
+}
+
 export const ForeignId = ({
     label,
     value: recordId,
@@ -23,7 +35,7 @@ export const ForeignId = ({
     index,
     maxIndex,
 }) => {
-    var renderedTextValue = undefined;
+    var renderedValue = undefined;
     if (recordId) {
         var { systemProps } = schema;
         var { collection, recordType, constraints } = systemProps;
@@ -34,14 +46,28 @@ export const ForeignId = ({
             record = relatedRecordLabels[collection][recordId]
         }
 
-        renderedTextValue = (
+        var renderedText = (
             <b style={ styles.bold } className={ record ? '' : 'text-danger'}>
                 { record ? record._recordLabel : recordId }
             </b>
-        )
+        );
+
+        var collectionUI = collectionMapping[collection];
+
+        var uri = (
+            recordType
+            ? `/${collectionUI}/${recordType}/${recordId}`
+            : `/${collectionUI}/${recordId}`
+        );
+
+        renderedValue = (
+            <LinkContainer to={ uri }>
+                <a>{ renderedText }</a>
+            </LinkContainer>
+        );
     }
     else {
-        renderedTextValue = (
+        renderedValue = (
             <i className='text-muted'>
                 Nicht gewählt
             </i>
@@ -51,7 +77,7 @@ export const ForeignId = ({
     if (isArrayItem) {
         return (
             <span>
-                { renderedTextValue }
+                { renderedValue }
                 { index < maxIndex ? ', ' : ''}
             </span>
         );
@@ -59,7 +85,7 @@ export const ForeignId = ({
     else {
         return (
             <InlineWrapper label={ label }>
-                { renderedTextValue }
+                { renderedValue }
             </InlineWrapper>
         )
     }
