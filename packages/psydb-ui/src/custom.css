@@ -18,6 +18,13 @@
     border-radius: 0;
 }
 
+a {
+    color: #006c66;
+}
+a:hover {
+    color: #228e88;
+}
+
 /* removes wierd bootstrap outlines */
 *:focus {
     outline: none !important;
@@ -36,6 +43,10 @@
 .btn-primary:hover {
     background-color: #007d77!important;
     border-color: #007d77!important;
+}
+
+.btn-outline-secondary {
+    background-color: white;
 }
 
 .btn-outline-primary {
