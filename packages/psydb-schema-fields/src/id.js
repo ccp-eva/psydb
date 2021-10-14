@@ -1,13 +1,23 @@
 'use strict';
 var Id = ({
+    isNullable,
     ...additionalKeywords
-} = {}) => ({
-    systemType: 'Id',
-    type: 'string',
-    format: 'nanoid-default',
-    //format: 'mongodb-object-id',
-    //unmarshalMongodbObjectId: true,
-    ...additionalKeywords,
-});
+} = {}) => {
+    
+    var type = (
+        isNullable
+        ? ['null', 'string']
+        : 'string',
+    );
+
+    return {
+        systemType: 'Id',
+        type,
+        format: 'nanoid-default',
+        //format: 'mongodb-object-id',
+        //unmarshalMongodbObjectId: true,
+        ...additionalKeywords,
+    }
+};
 
 module.exports = Id;

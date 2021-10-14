@@ -11,6 +11,7 @@ var {
     SaneString,
 
     DefaultArray,
+    DefaultBool,
 } = require('@mpieva/psydb-schema-fields');
 
 var FieldDefinition = ({
@@ -89,14 +90,11 @@ var HelperSetItemIdFieldDefinition = () => FieldDefinition({
         setId: ForeignId({
             collection: 'helperSet'
         }),
-        minItems: {
-            type: 'integer',
-            minimum: 0,
-        },
+        isNullable: DefaultBool(),
     },
     required: [
         'setId',
-        'minItems',
+        'isNullable',
     ],
 })
 
@@ -129,11 +127,13 @@ var ForeignIdFieldDefinition = () => FieldDefinition({
         constraints: {
             type: 'object',
             // TODO: { schoolId: { $data: '1/school' }}
-        }
+        },
+        isNullable: DefaultBool(),
     },
     required: [
         'collection',
         'constraints',
+        'isNullable',
     ]
 })
 
@@ -172,21 +172,25 @@ var FullTextFieldDefinition = () => FieldDefinition({
 var DateTimeFieldDefinition = () => FieldDefinition({
     type: 'DateTime',
     props: {
-        isSpecialAgeFrameField: {
-            type: 'boolean',
-            default: false
-        }
+        isSpecialAgeFrameField: DefaultBool(),
+        isNullable: DefaultBool(),
     },
+    required: [
+        'isSpecialAgeFrameField',
+        'isNullable',
+    ]
 })
 
 var DateOnlyServerSideFieldDefinition = () => FieldDefinition({
     type: 'DateOnlyServerSide',
     props: {
-        isSpecialAgeFrameField: {
-            type: 'boolean',
-            default: false
-        }
+        isSpecialAgeFrameField: DefaultBool(),
+        isNullable: DefaultBool(),
     },
+    required: [
+        'isSpecialAgeFrameField',
+        'isNullable',
+    ]
 })
 
 var BiologicalGenderFieldDefinition = () => FieldDefinition({
