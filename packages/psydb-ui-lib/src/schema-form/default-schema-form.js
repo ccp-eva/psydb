@@ -58,7 +58,6 @@ const DefaultSchemaForm = ({
             <SchemaForm
                 noHtml5Validate={ true }
                 showErrorList={ false }
-                omitExtraData={ true }
                 onSubmit={ wrappedOnSubmit }
                 onError={ /*handleValidationError*/ () => {} }
                 { ...downstream }
