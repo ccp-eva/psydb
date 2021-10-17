@@ -16,6 +16,7 @@ var allHandlers = [
     require('./handlers/experiment-operator-team'),
     require('./handlers/reservation'),
     require('./handlers/experiment'),
+    require('./handlers/experiment-variant'),
     
     require('./handlers/external-organization'),
     require('./handlers/external-person'),

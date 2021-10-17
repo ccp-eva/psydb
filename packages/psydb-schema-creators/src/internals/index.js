@@ -35,9 +35,25 @@ module.exports.AwayTeamReservationState = require('./reservation/away-team-state
 module.exports.InhouseReservationState = require('./reservation/inhouse-state');
 
 module.exports.ExperimentState = require('./experiment/state');
+module.exports.ExperimentVariantState = require('./experiment-variant/state');
+module.exports.ExperimentVariantRecordMessage = require('./experiment-variant/record-message');
 
 module.exports.ExternalOrganizationState = require('./external-organization/state');
 module.exports.ExternalOrganizationMessage = require('./external-organization/record-message');
 
 module.exports.ExternalPersonState = require('./external-person/state');
 module.exports.ExternalPersonMessage = require('./external-person/record-message');
+            
+
+module.exports.OnlineSurveyExperimentVariantSettingState = (
+    require('./experiment-variant-setting/online-survey-state')
+);
+module.exports.OnlineVideoCallExperimentVariantSettingState = (
+    require('./experiment-variant-setting/online-video-call-state')
+);
+module.exports.InhouseExperimentVariantSettingState = (
+    require('./experiment-variant-setting/inhouse-state')
+);
+module.exports.AwayTeamExperimentVariantSettingState = (
+    require('./experiment-variant-setting/away-team-state')
+)

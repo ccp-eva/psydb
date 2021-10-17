@@ -274,6 +274,29 @@ module.exports = {
         fixedTypes: [ 'awayTeam', 'inhouse' ],
         hasSubChannels: false,
     },
+    
+    experimentVariant: {
+        collection: 'experimentVariant',
+        isGenericRecord: true,
+        hasCustomTypes: false,
+        hasFixedTypes: false,
+        hasSubChannels: false,
+    },
+
+    experimentVariantSetting: {
+        collection: 'experimentVariantSetting',
+        isGenericRecord: true,
+        hasCustomTypes: false,
+        hasFixedTypes: true,
+        fixedTypes: [
+            'online-survey',
+            'online-video-call',
+            'inhouse',
+            'away-team',
+        ],
+        hasSubChannels: false,
+    },
+
     experiment: {
         collection: 'experiment',
         isGenericRecord: false,

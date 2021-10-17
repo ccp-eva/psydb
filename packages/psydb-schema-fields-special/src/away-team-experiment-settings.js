@@ -29,7 +29,7 @@ var AwayTeamExperimentSettings = () => {
                     enabled: DefaultBool({ const: true }),
                     subjectLocationFieldPointer: JsonPointer({
                         systemType: 'SubjectLocationFieldPointer',
-                    });
+                    })
                 },
                 required: [
                     'enabled',

@@ -1,0 +1,62 @@
+'use strict';
+var inline = require('@cdxoo/inline-text');
+
+var {
+    ExactObject,
+    CustomRecordTypeKey,
+    Integer,
+    DefaultArray,
+    JsonPointer,
+    ForeignId,
+} = require('@mpieva/psydb-schema-fields');
+
+var InhouseState = () => {
+    return ExactObject({
+        properties: {
+            subjectTypeKey: CustomRecordTypeKey({
+                title: 'Probandentyp',
+                collection: 'subject',
+            }),
+            subjectsPerExperiment: Integer({
+                title: 'Probanden pro Experiment',
+                default: 1,
+                minimum: 1,
+            }),
+            subjectEqualityInFields: DefaultArray({
+                // this has to be checked later on
+                // in the message handler
+                items: JsonPointer(),
+            }),
+            locations: DefaultArray({
+                title: 'Räumlichkeiten',
+                items: ExactObject({
+                    systemType: 'TypedInhouseLocationId',
+                    properties: {
+                        // FIXME: InhouseLocationTypeKey
+                        customRecordType: CustomRecordTypeKey({
+                            title: 'Typ',
+                            collection: 'location',
+                        }),
+                        enabledLocationIds: ForeignId({
+                            title: 'Raum',
+                            collection: 'location',
+                            // TODO: record type $data ??
+                        })
+                    },
+                    required: [
+                        'customRecordType',
+                        'enabledLocationIds',
+                    ]
+                })
+            })
+        },
+        required: [
+            'subjectTypeKey',
+            'subjectsPerExperiment',
+            'subjectEqualityInFields',
+            'locations',
+        ]
+    });
+}
+
+module.exports = InhouseState;

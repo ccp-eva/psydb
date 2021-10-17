@@ -57,4 +57,6 @@ module.exports = {
     WeekdayBoolObject: require('./weekday-bool-object'),
 
     ListOfObjects: require('./list-of-objects'),
+    StringEnum: require('./string-enum'),
+    ExperimentVariantEnum: require('./experiment-variant-enum'),
 }

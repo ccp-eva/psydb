@@ -66,6 +66,23 @@ module.exports = {
             inhouse: internals.InhouseReservationState
         }
     },
+
+    experimentVariant: {
+        ...metadata.experimentVariant,
+        State: internals.ExperimentVariantState,
+        RecordMessage: internals.ExperimentVariantRecordMessage,
+    },
+
+    experimentVariantSetting: {
+        ...metadata.experimentVariantSetting,
+        fixedTypeStateSchemaCreators: {
+            'online-survey': internals.OnlineSurveyExperimentVariantSettingState,
+            'online-video-call': internals.OnlineVideoCallExperimentVariantSettingState,
+            'inhouse': internals.InhouseExperimentVariantSettingState,
+            'away-team': internals.AwayTeamExperimentVariantSettingState,
+        }
+    },
+
     experiment: {
         ...metadata.experiment,
         State: internals.ExperimentState,
