@@ -285,7 +285,7 @@ module.exports = {
 
     experimentVariantSetting: {
         collection: 'experimentVariantSetting',
-        isGenericRecord: true,
+        isGenericRecord: false,
         hasCustomTypes: false,
         hasFixedTypes: true,
         fixedTypes: [

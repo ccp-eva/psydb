@@ -17,6 +17,7 @@ var allHandlers = [
     require('./handlers/reservation'),
     require('./handlers/experiment'),
     require('./handlers/experiment-variant'),
+    require('./handlers/experiment-variant-setting'),
     
     require('./handlers/external-organization'),
     require('./handlers/external-person'),
