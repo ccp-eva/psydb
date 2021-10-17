@@ -167,6 +167,12 @@ var triggerSystemEvents = async ({
         : '/state/nextSettings/fields'
     )
 
+    var fieldPointer = (
+        subChannelKey
+        ? `/${subChannelKey}/state/custom/${props.key}`
+        : `/state/custom/${props.key}`
+    )
+
     await channel.dispatchMany({
         lastKnownEventId,
         messages: [
@@ -177,6 +183,7 @@ var triggerSystemEvents = async ({
                     prop: pointer,
                     value: {
                         ...payload.props,
+                        pointer: fieldPointer,
                         isNew: true,
                         isDirty: true,
                     }

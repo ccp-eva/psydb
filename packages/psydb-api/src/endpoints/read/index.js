@@ -14,6 +14,10 @@ var fetchRecordById = require('@mpieva/psydb-api-lib/src/fetch-record-by-id');
 
 var fetchRelatedLabels = require('@mpieva/psydb-api-lib/src/fetch-related-labels');
 
+var {
+    gatherRemovedFields
+} = require('@mpieva/psydb-api-lib/src/crt-utils');
+
 
 var read = async (context, next) => {
     var { 
@@ -53,6 +57,8 @@ var read = async (context, next) => {
         recordLabelDefinition,
     } = collectionCreatorData;
 
+    var removedCustomFields = [];
+
     if (hasCustomTypes) {
         var customRecordType = await fetchOneCustomRecordType({
             db,
@@ -63,6 +69,8 @@ var read = async (context, next) => {
         recordLabelDefinition = (
             customRecordType.state.recordLabelDefinition
         );
+
+        removedCustomFields = gatherRemovedFields(customRecordType);
     }
 
     var record = await fetchRecordById({
@@ -72,6 +80,7 @@ var read = async (context, next) => {
         hasSubChannels,
         permissions,
         recordLabelDefinition,
+        removedCustomFields,
     });
 
     // FIXME: question is should we 404 or 403 when access is denied?

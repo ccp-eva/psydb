@@ -4,14 +4,32 @@ var debug = require('debug')('psydb:api:lib:fetch-record-by-id');
 var inlineString = require('@cdxoo/inline-string');
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
+var convertPointerToPath = require('./convert-pointer-to-path');
 var SystemPermissionStages = require('./fetch-record-helpers/system-permission-stages');
 var createRecordLabel = require('./create-record-label');
+
+var OmitRemovedCustomFieldsStage = ({
+    removedCustomFields
+}) => {
+    var stages = [
+        { $project: removedCustomFields.reduce((acc, it) => {
+            var path = convertPointerToPath(it.pointer);
+            return {
+                ...acc,
+                [path]: false
+            }
+        }, {})}
+    ];
+
+    return stages;
+}
 
 var fetchRecordById = async ({
     db,
     collectionName,
     permissions,
     hasSubChannels,
+    removedCustomFields,
     recordLabelDefinition,
     id,
     labelOnly,
@@ -46,6 +64,7 @@ var fetchRecordById = async ({
     var resultSet = await (
         db.collection(collectionName).aggregate([
             ...preprocessingStages,
+            ...OmitRemovedCustomFieldsStage({ removedCustomFields }),
             { $match: {
                 _id: id
             }},

@@ -41,6 +41,7 @@ var Schema = () => {
                                 'DateTime',
                                 'DateOnlyServerSide',
                                 'BiologicalGender',
+                                'DefaultBool',
                                 'ExtBool',
                                 'GeoCoords',
                                 'ListOfObjects',
