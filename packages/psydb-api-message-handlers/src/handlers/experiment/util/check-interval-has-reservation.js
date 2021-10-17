@@ -53,7 +53,7 @@ var checkIntervalHasReservation = async ({
         ]).toArray()
     );
 
-    console.log(reservations);
+    //console.log(reservations);
 
     var merged = intervalUtils.merge({
         intervals: reservations.map(it => ({
@@ -62,7 +62,7 @@ var checkIntervalHasReservation = async ({
         }))
     });
 
-    console.log(merged);
+    //console.log(merged);
 
     var intersections = intervalUtils.intersect({
         setA: merged,
@@ -72,7 +72,7 @@ var checkIntervalHasReservation = async ({
         }]
     });
 
-    console.log(intersections);
+    //console.log(intersections);
 
     if (intersections.length !== 1) {
         throw new ApiError(400, 'ReservationConflict');

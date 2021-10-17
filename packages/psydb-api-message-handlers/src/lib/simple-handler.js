@@ -16,7 +16,10 @@ var SimpleHandler = ({ messageType, createSchema }) => ({
 
         if (!isValid) {
             debug(message.type, ajv.errors);
-            throw new ApiError(400, 'InvalidMessageSchema');
+            throw new ApiError(400, {
+                apiStatus: 'InvalidMessageSchema',
+                data: ajv.errors,
+            });
         }
     },
 

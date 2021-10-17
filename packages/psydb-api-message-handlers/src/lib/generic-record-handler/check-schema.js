@@ -117,7 +117,10 @@ var checkSchema = async ({ db, getRecordSchemas, message }) => {
 
     if (!isValid) {
         debug('ajv errors', message.type, ajv.errors);
-        throw new ApiError(400, 'InvalidMessageSchema');
+        throw new ApiError(400, {
+            apiStatus: 'InvalidMessageSchema',
+            data: ajv.errors,
+        });
     }
 }
 

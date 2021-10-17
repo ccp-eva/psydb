@@ -63,6 +63,7 @@ class RequestFailed extends DriverError {
     constructor ({ status, body }) {
         super(body.data.message);
         this.name = 'RequestFailed';
+        console.dir(body, { depth: null });
     }
 }
 
