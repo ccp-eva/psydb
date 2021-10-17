@@ -7,7 +7,11 @@ var {
 } = require('@mpieva/psydb-schema-fields');
 
 var AgeFrameSettingsList = require('./age-frame-settings-list');
-var ExternalLocationGrouping = require('./external-location-grouping');
+
+var OnlineSurveySettings = require('./online-survey-settings');
+var OnlineVideoCallSettings = require('./online-video-call-settings');
+var InhouseExperimentSettings = require('./inhouse-experiment-settings');
+var AwayTeamExperimentSettings = require('./away-team-experiment-settings');
 
 var SubjectSelectionSettingsListItemOption = ({
     subjectRecordTypeRecord
@@ -32,15 +36,22 @@ var SubjectSelectionSettingsListItemOption = ({
                     const: type,
                     default: type,
                 }),
-                conditionsByAgeFrame: AgeFrameSettingsList({
-                    subjectRecordType: type,
-                    subjectRecordTypeScientificFields: scientific,
-                }),
                 generalConditions: {
                     // TODO: flash this out
                     type: 'array',
                     default: [],
                 },
+                conditionsByAgeFrame: AgeFrameSettingsList({
+                    subjectRecordType: type,
+                    subjectRecordTypeScientificFields: scientific,
+                }),
+
+                onlineSurveySettings: OnlineSurveySettings(),
+                onlineVideoCallSettings: OnlineVideoCallSettings(),
+
+                inhouseExperimentSettings: InhouseExperimentSettings(),
+                awayTeamExperimentSettings: AwayTeamExperimentSettings(),
+
                 externalLocationGrouping: ExternalLocationGrouping({
                     subjectRecordType: type,
                     subjectRecordTypeScientificFields: scientific,

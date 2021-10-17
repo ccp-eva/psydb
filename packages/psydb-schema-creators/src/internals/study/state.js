@@ -64,9 +64,9 @@ var StudyState = (ps = {}) => {
 
             runningPeriod: DateOnlyServerSideInterval({
                 title: 'Laufzeit',
-                required: [ 'start' ],
+                required: [ 'start', 'end' ],
                 additionalStartKeywords: { title: 'Beginn' },
-                additionalEndKeywords: { title: 'End' },
+                additionalEndKeywords: { title: 'End', isNullable: true },
             }),
 
             enableFollowUpExperiments: DefaultBool({
@@ -119,6 +119,7 @@ var StudyState = (ps = {}) => {
                 collection: 'study',
             }),
 
+            // FIXME: should probably be in internals
             selectionSettingsBySubjectType: SubjectSelectionSettingsList({
                 subjectRecordTypeRecords,
             }),
