@@ -11,6 +11,13 @@ var createRecordLabel = require('./create-record-label');
 var OmitRemovedCustomFieldsStage = ({
     removedCustomFields
 }) => {
+    if (!(
+        Array.isArray(removedCustomFields)
+        && removedCustomFields.length
+    )) {
+        return [];
+    }
+
     var stages = [
         { $project: removedCustomFields.reduce((acc, it) => {
             var path = convertPointerToPath(it.pointer);
