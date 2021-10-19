@@ -5,6 +5,7 @@ var {
 
 var ExperimentVariantSettingGroup = MessageHandlerGroup([
     require('./online-survey'),
+    require('./online-video-call'),
 ]);
 
 module.exports = ExperimentVariantSettingGroup;

@@ -10,6 +10,8 @@ var {
     ForeignId,
 } = require('@mpieva/psydb-schema-fields');
 
+var { SubjectFieldRequirementList } = require('./utils');
+
 var InhouseState = () => {
     return ExactObject({
         properties: {
@@ -22,11 +24,7 @@ var InhouseState = () => {
                 default: 1,
                 minimum: 1,
             }),
-            subjectEqualityInFields: DefaultArray({
-                // this has to be checked later on
-                // in the message handler
-                items: JsonPointer(),
-            }),
+            subjectFieldRequirements: SubjectFieldRequirements(),
             locations: DefaultArray({
                 title: 'Räumlichkeiten',
                 items: ExactObject({
@@ -53,7 +51,7 @@ var InhouseState = () => {
         required: [
             'subjectTypeKey',
             'subjectsPerExperiment',
-            'subjectEqualityInFields',
+            'subjectFieldRequirements',
             'locations',
         ]
     });

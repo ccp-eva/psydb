@@ -7,10 +7,11 @@ var SimpleHandler = require('../../../../lib/simple-handler'),
     createEvents = require('../../../../lib/create-event-messages-from-props');
 
 var checkBasics = require('../../utils/check-create-basics');
+var checkCRTFieldPointers = require('../../utils/check-crt-field-pointers');
 var createSchema = require('./schema');
 
 var handler = SimpleHandler({
-    messageType: 'experiment-variant-setting/online-survey/create',
+    messageType: 'experiment-variant-setting/online-video-call/create',
     createSchema,
 });
 
@@ -20,12 +21,22 @@ handler.checkAllowedAndPlausible = async ({
     message,
     cache
 }) => {
+
     await checkBasics({
         db,
         permissions,
         cache,
         message,
-        type: 'online-survey'
+        type: 'online-video-call'
+    });
+
+    var { subjectTypeRecord } = cache;
+    var { subjectFieldRequirements } = message.payload.props;
+    
+    var pointers = subjectFieldRequirements.map(it => it.pointer);
+    checkCRTFieldPointers({
+        crt: subjectTypeRecord,
+        pointers,
     });
 }
 
@@ -45,7 +56,7 @@ handler.triggerSystemEvents = async ({
             id,
             isNew: true,
             additionalChannelProps: {
-                type: 'online-survey',
+                type: 'online-video-call',
                 studyId,
                 experimentVariantId
             }

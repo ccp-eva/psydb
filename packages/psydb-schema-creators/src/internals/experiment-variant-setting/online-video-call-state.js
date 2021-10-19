@@ -9,6 +9,8 @@ var {
     JsonPointer,
 } = require('@mpieva/psydb-schema-fields');
 
+var { SubjectFieldRequirementList } = require('./utils');
+
 var OnlineVideoCallState = () => {
     return ExactObject({
         properties: {
@@ -21,16 +23,12 @@ var OnlineVideoCallState = () => {
                 default: 1,
                 minimum: 1,
             }),
-            subjectEqualityInFields: DefaultArray({
-                // this has to be checked later on
-                // in the message handler
-                items: JsonPointer(),
-            })
+            subjectFieldRequirements: SubjectFieldRequirementList(),
         },
         required: [
             'subjectTypeKey',
             'subjectsPerExperiment',
-            'subjectEqualityInFields',
+            'subjectFieldRequirements',
         ]
     });
 }
