@@ -16,6 +16,7 @@ export { default as PaddedText } from './padded-text';
 export { default as Split } from './split';
 export { default as Pair } from './pair';
 
+export * as FormHelpers from './form';
 export * as Icons from './icons';
 
 export {

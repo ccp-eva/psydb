@@ -1,9 +1,7 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
 import { arrify } from '@mpieva/psydb-ui-utils';
-
-// TODO: move elsewhere
-const NBSP = () => ('\u00A0');
+import { FormHelpers } from '@mpieva/psydb-ui-layout';
 
 const checkReallyRequired = ({ schema, required }) => {
 
@@ -41,22 +39,16 @@ export const InlineWrapper = ({
     children,
 }) => {
     var isReallyRequired = checkReallyRequired({ schema, required });
-
     var hasErrors = rawErrors.length > 0;
     return (
-        <Form.Group className='row ml-0 mr-0'>
-            <Form.Label
-                htmlFor={ id }
-                className={ `${hasErrors ? 'text-danger' : ''} col-sm-3 col-form-label`}
-            >
-                { label }
-                <NBSP />
-                {label && isReallyRequired ? '*' : null}
-            </Form.Label>
-            <div className={`col-sm-9 pl-0 pr-0 ${valueClassName}`}>
-                { children }
-            </div>
-        </Form.Group>
+        <FormHelpers.InlineWrapper { ...({
+            id,
+            label,
+            required: isReallyRequired,
+            labelClassName: hasErrors ? 'text-danger': '',
+            valueClassName,
+            children
+        })} />
     );
 }
 
@@ -68,14 +60,11 @@ export const InlineArrayWrapper = ({
 }) => {
     var hasErrors = rawErrors.length > 0;
     return (
-        <div className='row mr-0 ml-0'>
-            <header className={ `col-sm-3 ${hasErrors ? 'text-danger' : ''}` }>
-                { label }
-            </header>
-            <div className='col-sm-9 p-0'>
-                { children }
-            </div>
-        </div>
+        <FormHelpers.InlineArrayWrapper { ...({
+            label,
+            labelClassName: hasErrors ? 'text-danger': '',
+            children
+        })} />
     );
 }
 
@@ -89,24 +78,15 @@ export const MultiLineWrapper = ({
     children,
 }) => {
     var isReallyRequired = checkReallyRequired({ schema, required });
-
     var hasErrors = rawErrors.length > 0;
     return (
-        <Form.Group>
-            <Form.Label
-                htmlFor={ id }
-                className={ `${hasErrors ? 'text-danger' : ''} border-bottom d-block`}
-            >
-                <b>
-                    { label || schema.title }
-                    <NBSP />
-                    {(label || schema.title) && isReallyRequired ? '*' : null}
-                </b>
-            </Form.Label>
-            <div>
-                { children }
-            </div>
-        </Form.Group>
+        <FormHelpers.InlineWrapper { ...({
+            id,
+            label: label || schema.title,
+            required: isReallyRequired,
+            labelClassName: hasErrors ? 'text-danger': '',
+            children
+        })} />
     );
 }
 
