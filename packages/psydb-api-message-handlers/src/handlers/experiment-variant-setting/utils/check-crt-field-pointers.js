@@ -1,4 +1,5 @@
 'use strict';
+var isSubset = require('is-subset');
 var ApiError = require('@mpieva/psydb-api-lib/src/api-error');
 
 var intersect = (a, b) => (
@@ -8,24 +9,30 @@ var intersect = (a, b) => (
 var checkCRTFieldPointers = ({
     crt,
     pointers,
+    filters
 }) => {
     var { fields, subChannelFields } = crt.state.settings;
 
-    var available = [];
+    var getFieldPointer,
+        targetFields;
     if (subChannelFields) {
-        available = (
-            subChannelFields.scientific.map(it => (
-                `/scientific/state/custom/${it.key}`
-            ))
+        getFieldPointer = (field) => (
+            `/scientific/state/custom/${field.key}`
         );
-    } 
-    else {
-        available = (
-            fields.map(it => (
-                `/state/custom/${it.key}`
-            ))
-        );
+        targetFields = subChannelFields.scientific;
     }
+    else {
+        getFieldPointer = (field) => (
+            `/state/custom/${field.key}`
+        );
+        targetFields = fields;
+    }
+
+    var available = (
+        subChannelFields.scientific
+        .filter(field => !filters || isSubset(field, filters))
+        .map(getFieldPointer)
+    );
 
     var intersection = intersect(available, pointers);
     if (intersection.length !== pointers.length) {
