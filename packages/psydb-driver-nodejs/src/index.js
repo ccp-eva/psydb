@@ -60,9 +60,12 @@ class DriverError extends Error {
 }
 
 class RequestFailed extends DriverError {
-    constructor ({ status, body }) {
+    constructor (response) {
+        var { body, status } = response;
         super(body.data.message);
         this.name = 'RequestFailed';
+        this.response = response;
+
         console.dir(body, { depth: null });
     }
 }
