@@ -29,6 +29,16 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/convert-ajv-to-formik-errors",
+       "projectFolder": "packages/convert-ajv-to-formik-errors",
+       "reviewCategory": "production"
+    },
+    {
+       "packageName": "@mpieva/json-schema-create-defaults",
+       "projectFolder": "packages/json-schema-create-defaults",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/json-schema-convert-pointer",
        "projectFolder": "packages/json-schema-convert-pointer",
        "reviewCategory": "production"

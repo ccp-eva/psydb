@@ -1,0 +1,17 @@
+{
+  "name": "@mpieva/convert-ajv-to-formik-errors",
+  "version": "0.1.0-alpha",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "npx jest"
+  },
+  "author": "Jan Schwalbe",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^27.1.0"
+  },
+  "dependencies": {
+      "jsonpointer": "~4.1.0"
+  }
+}

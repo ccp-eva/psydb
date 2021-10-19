@@ -6,6 +6,10 @@ var intersect = (a, b) => (
     a.filter(it => b.includes(it))
 )
 
+var without = (a, b) => (
+    a.filter(it => !b.includes(it))
+)
+
 var checkCRTFieldPointers = ({
     crt,
     pointers,

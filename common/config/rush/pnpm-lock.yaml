@@ -14,7 +14,9 @@ dependencies:
   '@cdxoo/react-router-url-search-params': 1.0.4_react-router@5.2.0+react@17.0.2
   '@rjsf/bootstrap-4': 2.5.1_5dccca4f99fef0089ce8bea6fe035927
   '@rjsf/core': 2.5.1_react@17.0.2
+  '@rush-temp/convert-ajv-to-formik-errors': 'file:projects/convert-ajv-to-formik-errors.tgz'
   '@rush-temp/json-schema-convert-pointer': 'file:projects/json-schema-convert-pointer.tgz'
+  '@rush-temp/json-schema-create-defaults': 'file:projects/json-schema-create-defaults.tgz'
   '@rush-temp/json-schema-deconstruct-arrays': 'file:projects/json-schema-deconstruct-arrays.tgz'
   '@rush-temp/json-schema-lazy-resolve-oneof': 'file:projects/json-schema-lazy-resolve-oneof.tgz'
   '@rush-temp/json-schema-merge-xof': 'file:projects/json-schema-merge-xof.tgz'
@@ -72,7 +74,6 @@ dependencies:
   inflation: 2.0.0
   is-subset: 0.1.1
   is-what: 3.14.1
-  jest: 27.2.4
   js-base64: 3.6.0
   json-schema-merge-allof: 0.8.1
   json-schema-traverse: 1.0.0
@@ -2209,7 +2210,7 @@ packages:
       integrity: sha512-jZVI+s9Zg3IqA/kdi0i6UDCybUI3aSBLnglhYbSSjKlV7yF1F/5LWv8MakQmvYpnbJDS6fcBL2KzHSxNCMtWSQ==
   /babel-plugin-istanbul/6.0.0:
     dependencies:
-      '@babel/helper-plugin-utils': 7.13.0
+      '@babel/helper-plugin-utils': 7.14.5
       '@istanbuljs/load-nyc-config': 1.1.0
       '@istanbuljs/schema': 0.1.3
       istanbul-lib-instrument: 4.0.3
@@ -9235,6 +9236,16 @@ packages:
       node: '>=10'
     resolution:
       integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
+  'file:projects/convert-ajv-to-formik-errors.tgz':
+    dependencies:
+      jest: 27.2.4
+      jsonpointer: 4.1.0
+    dev: false
+    name: '@rush-temp/convert-ajv-to-formik-errors'
+    resolution:
+      integrity: sha512-jn+aPU4QZToOh484xzBg0ftZy4JsOrJN6zvQUx6040WnL1jg2gctVOTfCLOXCIKjrDVZVf7kq7HkOOEOGZcelQ==
+      tarball: 'file:projects/convert-ajv-to-formik-errors.tgz'
+    version: 0.0.0
   'file:projects/json-schema-convert-pointer.tgz':
     dependencies:
       '@cdxoo/inline-string': 1.0.0
@@ -9247,6 +9258,16 @@ packages:
     resolution:
       integrity: sha512-IHbdR6tASdlcwgv15fS9MOPrwwf11Evceamz6MMv4Ephn8BK3+NJUPTwGNHZac1sDmOm6HAH12vdgccKH0b/Sg==
       tarball: 'file:projects/json-schema-convert-pointer.tgz'
+    version: 0.0.0
+  'file:projects/json-schema-create-defaults.tgz':
+    dependencies:
+      jest: 27.2.4
+      jsonpointer: 4.1.0
+    dev: false
+    name: '@rush-temp/json-schema-create-defaults'
+    resolution:
+      integrity: sha512-125dmEiCeeHvZV9t30XtJnEfOkmv2sRYriRkgner6hZyQkyU5HjdeM7Lf0caYhKPvTlgsos4llTHwSdd1E6rRg==
+      tarball: 'file:projects/json-schema-create-defaults.tgz'
     version: 0.0.0
   'file:projects/json-schema-deconstruct-arrays.tgz':
     dependencies:
@@ -9819,7 +9840,9 @@ specifiers:
   '@cdxoo/react-router-url-search-params': ~1.0.4
   '@rjsf/bootstrap-4': ~2.5.1
   '@rjsf/core': ~2.5.1
+  '@rush-temp/convert-ajv-to-formik-errors': 'file:./projects/convert-ajv-to-formik-errors.tgz'
   '@rush-temp/json-schema-convert-pointer': 'file:./projects/json-schema-convert-pointer.tgz'
+  '@rush-temp/json-schema-create-defaults': 'file:./projects/json-schema-create-defaults.tgz'
   '@rush-temp/json-schema-deconstruct-arrays': 'file:./projects/json-schema-deconstruct-arrays.tgz'
   '@rush-temp/json-schema-lazy-resolve-oneof': 'file:./projects/json-schema-lazy-resolve-oneof.tgz'
   '@rush-temp/json-schema-merge-xof': 'file:./projects/json-schema-merge-xof.tgz'
@@ -9877,7 +9900,6 @@ specifiers:
   inflation: ~2.0.0
   is-subset: ~0.1.1
   is-what: ~3.14.0
-  jest: ~27.2.4
   js-base64: ~3.6.0
   json-schema-merge-allof: ~0.8.1
   json-schema-traverse: ~1.0.0
