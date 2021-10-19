@@ -62,11 +62,11 @@ class DriverError extends Error {
 class RequestFailed extends DriverError {
     constructor (response) {
         var { body, status } = response;
-        super(body.data.message);
+        super(JSON.stringify(body, null, '\t'));
         this.name = 'RequestFailed';
         this.response = response;
 
-        console.dir(body, { depth: null });
+        //console.dir(body, { depth: null });
     }
 }
 

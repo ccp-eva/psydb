@@ -39,7 +39,11 @@ handler.checkAllowedAndPlausible = async ({
     
     checkCRTFieldPointers({
         crt: subjectTypeRecord,
-        pointers: [ subjectLocationFieldPointer ]
+        pointers: [ subjectLocationFieldPointer ],
+        filters: {
+            type: 'ForeignId',
+            props: { collection: 'location' }
+        }
     });
 
 }

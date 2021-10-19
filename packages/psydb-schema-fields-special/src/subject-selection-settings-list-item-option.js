@@ -8,11 +8,6 @@ var {
 
 var AgeFrameSettingsList = require('./age-frame-settings-list');
 
-var OnlineSurveySettings = require('./online-survey-settings');
-var OnlineVideoCallSettings = require('./online-video-call-settings');
-var InhouseExperimentSettings = require('./inhouse-experiment-settings');
-var AwayTeamExperimentSettings = require('./away-team-experiment-settings');
-
 var SubjectSelectionSettingsListItemOption = ({
     subjectRecordTypeRecord
 }) => {
@@ -45,17 +40,6 @@ var SubjectSelectionSettingsListItemOption = ({
                     subjectRecordType: type,
                     subjectRecordTypeScientificFields: scientific,
                 }),
-
-                onlineSurveySettings: OnlineSurveySettings(),
-                onlineVideoCallSettings: OnlineVideoCallSettings(),
-
-                inhouseExperimentSettings: InhouseExperimentSettings(),
-                awayTeamExperimentSettings: AwayTeamExperimentSettings(),
-
-                externalLocationGrouping: ExternalLocationGrouping({
-                    subjectRecordType: type,
-                    subjectRecordTypeScientificFields: scientific,
-                })
             },
             required: [
                 'enableOnlineTesting',

@@ -42,7 +42,10 @@ var createErrorsMiddleware = () => async (context, next) => {
             // FIXME: data = error.message?
             //  => conflicts when we actually want to send
             // the stack
-            data: data || { message: error.message }
+            data: {
+                message: error.message,
+                ...data,
+            }
         });
 
         if (shouldEmitError) {
