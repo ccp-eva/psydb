@@ -24,26 +24,26 @@ var InhouseState = () => {
                 default: 1,
                 minimum: 1,
             }),
-            subjectFieldRequirements: SubjectFieldRequirements(),
+            subjectFieldRequirements: SubjectFieldRequirementList(),
             locations: DefaultArray({
                 title: 'Räumlichkeiten',
                 items: ExactObject({
                     systemType: 'TypedInhouseLocationId',
                     properties: {
                         // FIXME: InhouseLocationTypeKey
-                        customRecordType: CustomRecordTypeKey({
+                        customRecordTypeKey: CustomRecordTypeKey({
                             title: 'Typ',
                             collection: 'location',
                         }),
-                        enabledLocationIds: ForeignId({
+                        locationId: ForeignId({
                             title: 'Raum',
                             collection: 'location',
                             // TODO: record type $data ??
                         })
                     },
                     required: [
-                        'customRecordType',
-                        'enabledLocationIds',
+                        'customRecordTypeKey',
+                        'locationId',
                     ]
                 })
             })

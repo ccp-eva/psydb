@@ -44,7 +44,7 @@ var checkCreateBasics = async ({
         subjectTypeKey,
     } = props;
 
-    var customRecordTypeRecord = await (
+    var subjectTypeRecord = await (
         db.collection('customRecordType')
         .findOne(
             { type: subjectTypeKey },
@@ -52,11 +52,11 @@ var checkCreateBasics = async ({
         )
     );
 
-    if (!customRecordTypeRecord) {
+    if (!subjectTypeRecord) {
         throw new ApiError(400, 'InvalidSubjectRecordType');
     }
 
-    if (customRecordTypeRecord.collection !== 'subject') {
+    if (subjectTypeRecord.collection !== 'subject') {
         throw new ApiError(400, 'InvalidSubjectRecordType');
     }
 
@@ -75,7 +75,7 @@ var checkCreateBasics = async ({
         throw new ApiError(400, 'SubjectTypeConflictsWithOtherSetting');
     }
 
-    cache.subjectTypeRecord = customRecordTypeRecord;
+    cache.subjectTypeRecord = subjectTypeRecord;
 }
 
 module.exports = checkCreateBasics;

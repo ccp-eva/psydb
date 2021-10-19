@@ -4,18 +4,27 @@ var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
 
 var checkForeignIdsExist = async (db, mapping) => {
     for (var collection of Object.keys(mapping)) {
-        var arrayOrId = mapping[collection];
+        var data = mapping[collection];
 
-        var ids = (
-            Array.isArray(arrayOrId)
-            ? arrayOrId
-            : [ arrayOrId ]
-        );
+        var ids = undefined,
+            filters = {};
+        if (data.ids) {
+            ids = data.ids;
+            filters = data.filters || {};
+        }
+        else {
+            ids = (
+                Array.isArray(data)
+                ? data
+                : [ data ]
+            );
+        }
         
         await checkOne({
             db,
             collection,
-            wantedIds: ids
+            wantedIds: ids,
+            filters,
         });
     }
 }
@@ -23,12 +32,15 @@ var checkForeignIdsExist = async (db, mapping) => {
 var checkOne = async ({
     db,
     collection,
-    wantedIds
+    wantedIds,
+    filters
 }) => {
+    filters = filters || {};
+
     var existing = await (
         db.collection(collection)
         .find(
-            { _id: { $in: wantedIds }},
+            { _id: { $in: wantedIds }, ...filters},
             { _id: true }
         )
         .toArray()
