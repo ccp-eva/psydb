@@ -249,6 +249,22 @@ var createRouting = ({
         endpoints.special.experimentPostprocessing
     );
 
+    router.post('/experiment-variants',
+        withSelfAuth(),
+        withPermissions(),
+        withEndpointProtection({ endpoint: 'experiment-variants' }),
+        withKoaBody(),
+        endpoints.special.experimentVariants
+    );
+
+    router.post('/experiment-variant-settings',
+        withSelfAuth(),
+        withPermissions(),
+        withEndpointProtection({ endpoint: 'experiment-variant-settingss' }),
+        withKoaBody(),
+        endpoints.special.experimentVariantSettings
+    );
+
     return compose([
         router.routes(),
         router.allowedMethods(),

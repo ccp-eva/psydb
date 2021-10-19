@@ -20,6 +20,8 @@ import StudyRecordDetails from './record-details';
 import StudyRecordForm from './record-form';
 import StudySelectionSettings from './selection-settings';
 import StudyInhouseLocations from './inhouse-locations';
+
+import ExperimentSettings from './experiment-settings';
 import StudyTeams from './teams';
 import StudyParticipation from './participation';
 
@@ -66,7 +68,8 @@ const StudyRecordContainer = ({
                         items={[
                             { key: 'details', label: 'Allgemein' },
                             { key: 'selection-settings', label: 'Auswahlbedingungen' },
-                            { key: 'inhouse-locations', label: 'Räumlichkeiten' },
+                            //{ key: 'inhouse-locations', label: 'Räumlichkeiten' },
+                            { key: 'experiment-settings', label: 'Ablauf-Einstellungen' },
                             { key: 'teams', label: 'Teams' },
                             { key: 'participation', label: 'Studienteilnahme' },
                         ]}
@@ -100,8 +103,14 @@ const StudyRecordContainer = ({
                         />
                     )}
 
-                    { tabKey === 'inhouse-locations' && (
+                    {/* tabKey === 'inhouse-locations' && (
                         <StudyInhouseLocations
+                            recordType={ recordType }
+                        />
+                    )*/}
+
+                    { tabKey === 'experiment-settings' && (        
+                        <ExperimentSettings
                             recordType={ recordType }
                         />
                     )}

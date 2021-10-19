@@ -70,4 +70,10 @@ module.exports = {
         require('./experiment-postprocessing')
     ),
 
+    experimentVariants: (
+        require('./experiment-variants')
+    ),
+    experimentVariantSettings: (
+        require('./experiment-variant-settings')
+    ),
 }

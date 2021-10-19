@@ -362,4 +362,25 @@ agent.fetchExperimentPostprocessing = ({
     );
 }
 
+agent.fetchExperimentVariants = ({
+    studyId,
+}) => {
+    return axios.post(
+        '/api/experiment-variants',
+        {
+            studyId,
+        }
+    );
+}
+
+agent.fetchExperimentVariantSettings = ({
+    studyId,
+}) => {
+    return axios.post(
+        '/api/experiment-variant-settings',
+        {
+            studyId,
+        }
+    );
+}
 export default agent;
