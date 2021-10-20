@@ -10,7 +10,8 @@ export const GenericEnumField = WithField({ Control: (ps) => {
         formikField,
         formikForm,
         options,
-        allowedValues
+        allowedValues,
+        disabled,
     } = ps;
 
     allowedValues = allowedValues || Object.keys(options);
@@ -23,7 +24,7 @@ export const GenericEnumField = WithField({ Control: (ps) => {
     });
 
     return (
-        <Form.Control as="select" { ...controlProps }>
+        <Form.Control as="select" disabled={ disabled } { ...controlProps }>
             { controlProps.value === -1 && (
                 <option></option>
             )}

@@ -39,6 +39,7 @@ const NewSettingModalBody = (ps) => {
 
     return (
         <SettingForm {...({
+            op: 'create',
             studyId,
             variantId,
             allowedSubjectTypes,

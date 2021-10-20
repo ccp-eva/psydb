@@ -13,9 +13,7 @@ var getCustomRecordTypes = async (context, next) => {
                 'state.isNew': false
             }},
             { $project: {
-                collection: true,
-                type: true,
-                'state.label': true,
+                events: false,
             }}
         ]).toArray()
     );

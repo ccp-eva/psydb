@@ -24,17 +24,6 @@ const InhouseSetting = (ps) => {
     )
 };
 
-const AwayTeamSetting = (ps) => {
-    var {
-        variantId,
-        allowedSubjectTypes,
-        onSuccessfulUpdate
-    } = ps;
-    return (
-        <div>AWAY</div>
-    )
-};
-
 const OnlineVideoCallSetting = (ps) => {
     var {
         variantId,
@@ -46,45 +35,9 @@ const OnlineVideoCallSetting = (ps) => {
     )
 };
 
-const OnlineSurveySetting = (ps) => {
-    var {
-        studyId,
-        variantId,
-        allowedSubjectTypes,
-        onSuccessfulUpdate
-    } = ps;
-
-    var handleSubmit = createSend((formData, formikProps) => ({
-        type: 'experiment-variant-setting/online-survey/create',
-        payload: {
-            studyId,
-            experimentVariantId: variantId,
-            props: formData['$']
-        } 
-    }), { onSuccessfulUpdate });
-
-    return (
-        <div>
-            <DefaultForm onSubmit={ handleSubmit }>
-                {(formikProps) => (
-                    <>
-                        <GenericEnumField { ...({
-                            dataXPath: '$.subjectTypeKey',
-                            label: 'Probandentyp',
-                            required: true,
-                            options: allowedSubjectTypes
-                        })} />
-                        <Button type='submit'>Hinzufügen</Button>
-                    </>
-                )}
-            </DefaultForm>
-        </div>
-    )
-};
-
+export * from './away-team-setting';
+export * from './online-survey-setting';
 export {
     InhouseSetting,
-    AwayTeamSetting,
     OnlineVideoCallSetting,
-    OnlineSurveySetting
 }
