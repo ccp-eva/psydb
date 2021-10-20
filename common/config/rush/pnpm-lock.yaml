@@ -60,6 +60,7 @@ dependencies:
   bootstrap: 4.6.0
   bson: 4.2.3
   chai: 4.2.0
+  classnames: 2.3.1
   clone-deep: 4.0.1
   compression-webpack-plugin: 7.1.2_webpack@5.10.1
   copy-anything: 2.0.3
@@ -9688,6 +9689,7 @@ packages:
       chai: 4.2.0
       date-fns: 2.21.1
       formik: 2.2.6_react@17.0.2
+      is-what: 3.14.1
       jsonpointer: 4.1.0
       mocha: 8.1.3
       moment: 2.29.1
@@ -9705,7 +9707,7 @@ packages:
     peerDependencies:
       webpack: '*'
     resolution:
-      integrity: sha512-5sHtMjEUfd0YJ1rBJb3wABLdaOY9V0fhlb/KSmI9XoT0EPpr7NkDymkduntVQGXiurZT+6wl0Pv9f58ek6i0Aw==
+      integrity: sha512-cY4XfDoKoRSS2SQhMvh+Z3UmqkNDsB85cEK4D/+dAMouR39BAV9iGY12IUaWB573pVtAUOaC6ZfDMOLSi6bsZg==
       tarball: 'file:projects/psydb-ui-lib.tgz'
     version: 0.0.0
   'file:projects/psydb-ui-request-agents.tgz_debug@4.3.1':
@@ -9751,6 +9753,7 @@ packages:
       babel-loader: 8.2.2_97e48a6b0bdb6376f048db1a976e5b3d
       bootstrap: 4.6.0
       chai: 4.2.0
+      classnames: 2.3.1
       compression-webpack-plugin: 7.1.2_webpack@5.10.1
       css-loader: 5.2.1_webpack@5.10.1
       date-fns: 2.21.1
@@ -9777,7 +9780,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-ui'
     resolution:
-      integrity: sha512-fPak8xJDdDitQSQ7OYKreH75N7N7TfrSEw8MR9kEXykJvvk4XcYiTyqAWTixiJW+bkKXME7wn4QDOOZIBxqATQ==
+      integrity: sha512-zSyyD8d1RMP99WB0BE6G+UUClKLUMxj9os6WtOZxYuB0zvATHIOJg7oQFXRebCO91et3bpey40hJI6AsUDv4Yw==
       tarball: 'file:projects/psydb-ui.tgz'
     version: 0.0.0
   'file:projects/psydb-web.tgz':
@@ -9886,6 +9889,7 @@ specifiers:
   bootstrap: ~4.6.0
   bson: ~4.2.2
   chai: ~4.2.0
+  classnames: ~2.3.1
   clone-deep: ~4.0.1
   compression-webpack-plugin: ~7.1.2
   copy-anything: ~2.0.3

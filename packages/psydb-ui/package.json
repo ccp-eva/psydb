@@ -63,7 +63,8 @@
 
     "@rjsf/core": "~2.5.1",
     "@rjsf/bootstrap-4": "~2.5.1",
-    "@mpieva/rjsf-monkey-patch": "~0.1.0-alpha"
+    "@mpieva/rjsf-monkey-patch": "~0.1.0-alpha",
+    "classnames": "~2.3.1"
   },
   "config": {
     "mongodbMemoryServer": {

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import classnames from 'classnames';
 
 import {
     Form,
@@ -19,6 +20,9 @@ const RecordPicker = ({
     value: record,
     onChange,
     hasErrors,
+    disabled,
+
+    isFormik = false,
 }) => {
     var [ showModal, setShowModal ] = useState(false);
     // FIXME: im not sure how to best reset the state in case
@@ -34,7 +38,7 @@ const RecordPicker = ({
 
     var handleSelect = (record) => {
         setCachedRecord(record);
-        onChange(record);
+        onChange(isFormik ? record._id : record);
         handleCloseModal();
     }
 
@@ -57,27 +61,31 @@ const RecordPicker = ({
         : ''
     )
 
-    var classes = [
-        'border pl-3 bg-white',
-        hasErrors ? 'border-danger' : '',
-        (cachedRecord && !cachedRecord._recordLabel) ? 'text-danger' : '',
-    ].join(' ')
+    var className = classnames([
+        'border pl-3',
+        !disabled && 'bg-white',
+        hasErrors && 'border-danger',
+        (cachedRecord && !cachedRecord._recordLabel) && 'text-danger',
+    ]);
 
     return (
         <div>
             <InputGroup>
                 <Form.Control
-                    className={ classes }
+                    className={ className }
                     value={ displayValue }
                     placeholder='Bitte Datensatz wählen'
                     plaintext
                     readOnly
                     onClick={ handleShowModal }
+                    disabled={ disabled }
                 />
                 <InputGroup.Append>
                     <Button
+                        className={ disabled ? '' : 'bg-white' }
                         variant={ hasErrors ? 'danger' : 'outline-primary' }
                         onClick={ handleShowModal }
+                        disabled={ disabled }
                     >
                         <Icons.PencilFill style={{ marginTop: '-3px' }}/>
                     </Button>
@@ -85,8 +93,10 @@ const RecordPicker = ({
                 { cachedRecord && (
                     <InputGroup.Append>
                         <Button
+                            className={ disabled ? '' : 'bg-white' }
                             variant={ 'outline-secondary' }
                             onClick={ handleClear }
+                            disabled={ disabled }
                         >
                             <Icons.XLg style={{
                                 height: '13px',

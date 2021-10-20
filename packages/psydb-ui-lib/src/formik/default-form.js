@@ -6,7 +6,7 @@ var isFunction = (it) => (typeof it === 'function');
 const createFormikConfig = (ps) => {
     // TODO ????
     return {
-        initialValues: {}
+        initialValues: { '$': {}}
     };
 }
 

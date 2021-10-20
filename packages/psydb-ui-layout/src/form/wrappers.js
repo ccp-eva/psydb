@@ -1,4 +1,5 @@
 import React from 'react';
+import classnames from 'classnames';
 import { Form } from 'react-bootstrap';
 
 // TODO: move elsewhere
@@ -12,10 +13,17 @@ const InlineWrapper = (ps) => {
         labelClassName,
         valueClassName,
         children,
+
+        error
     } = ps;
     
+    var className = classnames([
+        'row ml-0 mr-0',
+        error && 'has-error'
+    ])
+
     return (
-        <Form.Group className='row ml-0 mr-0'>
+        <Form.Group className={ className }>
             <Form.Label
                 htmlFor={ id }
                 className={ `col-sm-3 col-form-label ${labelClassName}`}

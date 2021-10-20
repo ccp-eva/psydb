@@ -20,6 +20,34 @@ import NewVariantModal from './new-variant-modal';
 import NewSettingModal from './new-setting-modal';
 import VariantList from './variant-list';
 
+import {
+    DefaultForm,
+    SaneStringField,
+    GenericEnumField,
+    IntegerField,
+    ForeignIdField
+} from '@mpieva/psydb-ui-lib/src/formik';
+
+const getAllowedSubjectTypes = (studyData) => {
+    var { selectionSettingsBySubjectType } = studyData.record.state;
+    var {
+        subject: subjectTypeLabels
+    } = studyData.relatedCustomRecordTypeLabels;
+
+    var allowedSubjectTypes = (
+        selectionSettingsBySubjectType.reduce(
+            (acc, it) => ({
+                ...acc,
+                [it.subjectRecordType]: (
+                    subjectTypeLabels[it.subjectRecordType].state.label
+                )
+            }), {}
+        )
+    );
+
+    return allowedSubjectTypes;
+}
+
 const ExperimentSettings = ({
     studyType,
 }) => {
@@ -53,19 +81,56 @@ const ExperimentSettings = ({
         );
     }
 
-    var studyRecord = fetched.study.data.record;
+    var studyData = fetched.study.data;
     var variantRecords = fetched.variants.data.records;
     var settingRecords = fetched.settings.data.records;
 
-    var allowedSubjectTypes = (
-        studyRecord.state.selectionSettingsBySubjectType.map(it => (
-            it.subjectRecordType
-        ))
-    );
+    var allowedSubjectTypes = getAllowedSubjectTypes(studyData);
 
     return (
         <div className='mt-3 mb-3'>
-            
+
+            <DefaultForm>
+                {(formikProps) => {
+                    var { getFieldProps } = formikProps;
+                    return <div>
+                        <SaneStringField label='Foo' dataXPath='$.foo' />
+                        <GenericEnumField { ...({
+                            dataXPath: '$.subjectTypeKey',
+                            label: 'Probandentyp',
+                            required: true,
+                            options: allowedSubjectTypes
+                        })} />
+                        <IntegerField { ...({
+                            dataXPath: '$.subjectsPerExperiment',
+                            label: 'Probanden pro Termin',
+                            required: true,
+                            min: 1
+                        })} />
+                        
+                        <GenericEnumField { ...({
+                            dataXPath: '$.locationType',
+                            label: 'Typ',
+                            required: true,
+                            options: {
+                                'instituteroom': 'Raum',
+                                'kiga': 'Kiga',
+                            }
+                        })} />
+                        <ForeignIdField { ...({
+                            dataXPath: '$.locationId',
+                            label: 'Location',
+                            required: true,
+                            collection: 'location',
+                            recordType: getFieldProps('$.locationType').value,
+                            disabled: !getFieldProps('$.locationType').value
+                        })} />
+                    </div>
+                }}
+            </DefaultForm>
+
+            <hr />
+
             <NewVariantModal { ...({
                 ...newVariantModal.passthrough,
                 studyId,
