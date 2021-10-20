@@ -39,6 +39,7 @@ const NewSettingModalBody = (ps) => {
 
     return (
         <SettingForm {...({
+            studyId,
             variantId,
             allowedSubjectTypes,
             onSuccessfulUpdate: demuxed([ onHide, onSuccessfulUpdate ])
@@ -47,8 +48,8 @@ const NewSettingModalBody = (ps) => {
 }
 
 const NewSettingModal = WithDefaultModal({
-    title: 'Probandentype hinzufügen',
-    size: 'md',
+    title: 'Probandentyp hinzufügen',
+    size: 'lg',
 
     Body: NewSettingModalBody
 });

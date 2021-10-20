@@ -1,8 +1,9 @@
 import React from 'react';
 import { createSend } from '@mpieva/psydb-ui-utils';
+import { Button } from '@mpieva/psydb-ui-layout';
 import {
     DefaultForm,
-    SaneStringField
+    GenericEnumField,
 } from '@mpieva/psydb-ui-lib/src/formik';
 
 const InhouseSetting = (ps) => {
@@ -47,16 +48,34 @@ const OnlineVideoCallSetting = (ps) => {
 
 const OnlineSurveySetting = (ps) => {
     var {
+        studyId,
         variantId,
         allowedSubjectTypes,
         onSuccessfulUpdate
     } = ps;
 
+    var handleSubmit = createSend((formData, formikProps) => ({
+        type: 'experiment-variant-setting/online-survey/create',
+        payload: {
+            studyId,
+            experimentVariantId: variantId,
+            props: formData['$']
+        } 
+    }), { onSuccessfulUpdate });
+
     return (
         <div>
-            <DefaultForm>
+            <DefaultForm onSubmit={ handleSubmit }>
                 {(formikProps) => (
-                    <SaneStringField />
+                    <>
+                        <GenericEnumField { ...({
+                            dataXPath: '$.subjectTypeKey',
+                            label: 'Probandentyp',
+                            required: true,
+                            options: allowedSubjectTypes
+                        })} />
+                        <Button type='submit'>Hinzufügen</Button>
+                    </>
                 )}
             </DefaultForm>
         </div>

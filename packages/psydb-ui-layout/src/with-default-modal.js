@@ -37,6 +37,7 @@ const WithDefaultModal = (options) => (ps) => {
         <Modal { ...({
             show,
             onHide,
+            size,
             className,
             backdropClassName
         }) }>

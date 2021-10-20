@@ -90,7 +90,7 @@ const ExperimentSettings = ({
     return (
         <div className='mt-3 mb-3'>
 
-            <DefaultForm>
+            <DefaultForm onSubmit={(...args) => { console.log({ args })}}>
                 {(formikProps) => {
                     var { getFieldProps } = formikProps;
                     return <div>
@@ -122,9 +122,11 @@ const ExperimentSettings = ({
                             label: 'Location',
                             required: true,
                             collection: 'location',
-                            recordType: getFieldProps('$.locationType').value,
-                            disabled: !getFieldProps('$.locationType').value
+                            recordType: 'kiga',
+                            //recordType: getFieldProps('$.locationType').value,
+                            //disabled: !getFieldProps('$.locationType').value
                         })} />
+                        <Button type='submit'>Submit</Button>
                     </div>
                 }}
             </DefaultForm>

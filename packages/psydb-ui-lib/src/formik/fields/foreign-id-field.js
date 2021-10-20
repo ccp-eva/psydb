@@ -4,8 +4,10 @@ import RecordPicker from '../../pickers/record-picker';
 
 export const ForeignIdField = WithField({ Control: (ps) => {
     var {
+        dataXPath,
         formikField,
         formikMeta,
+        formikForm,
         
         collection,
         recordType,
@@ -14,9 +16,16 @@ export const ForeignIdField = WithField({ Control: (ps) => {
         disabled,
     } = ps;
 
+    var { setFieldValue } = formikForm;
+
+    var onChange = (record) => {
+        setFieldValue(dataXPath, record._id);
+    }
+
     return (
         <RecordPicker { ...({
             ...formikField,
+            onChange,
             hasError: !!formikMeta.error,
 
             collection,

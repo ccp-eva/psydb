@@ -21,8 +21,6 @@ const RecordPicker = ({
     onChange,
     hasErrors,
     disabled,
-
-    isFormik = false,
 }) => {
     var [ showModal, setShowModal ] = useState(false);
     // FIXME: im not sure how to best reset the state in case
@@ -38,7 +36,7 @@ const RecordPicker = ({
 
     var handleSelect = (record) => {
         setCachedRecord(record);
-        onChange(isFormik ? record._id : record);
+        onChange(record);
         handleCloseModal();
     }
 
