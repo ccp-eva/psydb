@@ -111,7 +111,7 @@ const StudyRecordContainer = ({
 
                     { tabKey === 'experiment-settings' && (        
                         <ExperimentSettings
-                            recordType={ recordType }
+                            studyType={ recordType }
                         />
                     )}
 

@@ -12,7 +12,6 @@ const WithDefaultModal = (options) => (ps) => {
         title,
     } = options;
 
-    console.log(ps);
     var {
         show,
         onHide,
