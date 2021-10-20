@@ -7,8 +7,8 @@ var StringEnum = (enumKeys, {
     type: 'string',
     ...(
         constValue
-        ? { enum: enumKeys }
-        : { const: constValue }
+        ? { const: constValue }
+        : { enum: enumKeys }
     ),
     ...additionalKeywords,
 });

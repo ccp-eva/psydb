@@ -10,9 +10,14 @@ import {
     useParams
 } from 'react-router-dom';
 
+import { useModalReducer } from '@mpieva/psydb-ui-hooks';
 import {
+    Button,
     LoadingIndicator
 } from '@mpieva/psydb-ui-layout';
+
+import NewVariantModal from './new-variant-modal';
+import VariantList from './variant-list';
 
 const ExperimentSettings = ({
     recordType,
@@ -21,6 +26,7 @@ const ExperimentSettings = ({
     var { id } = useParams();
     
     var [ revision, increaseRevision ] = useRevision();
+    var newVariantModal = useModalReducer();
 
     var [ didFetch, fetched ] = useFetchAll((agent) => {
         var promises = {
@@ -45,7 +51,23 @@ const ExperimentSettings = ({
 
     return (
         <div className='mt-3 mb-3'>
-            Foo
+            
+            <NewVariantModal { ...({
+                ...newVariantModal.passthrough,
+                studyId: id,
+                onSuccessfulUpdate: increaseRevision
+            })} />
+
+            <Button onClick={ () => newVariantModal.handleShow() }>
+                + Neuer Ablauf
+            </Button>
+            <hr />
+            <VariantList { ...({
+                variantRecords,
+                settingRecords,
+
+                onAddSetting: () => {}
+            })} />
         </div>
     )
 }

@@ -1,3 +1,21 @@
+'use strict';
+var createEnum = (mapping) => {
+    var en = {
+        mapping,
+        keys: [],
+        names: []
+    }
+    
+    // since the order within the object is technically not
+    // deterministic we do it the safe way
+    for (var k of Object.keys(mapping)) {
+        en.keys.push(k);
+        en.names.push(mapping[k]);
+    }
+
+    return en;
+};
+
 var safeUnparticipationStatus = {
     keys: [
         // FIXME: im not sure if that should actually be
@@ -81,6 +99,13 @@ var collections = {
     ]
 }
 
+var experimentVariants = createEnum({
+    'inhouse': 'Interne Termine',
+    'away-team': 'Externe Termine',
+    'online-video-call': 'Online-Video-Termine',
+    'online-survey': 'Online-Umfrage',
+});
+
 module.exports = {
     safeParticipationStatus,
     participationStatus,
@@ -88,5 +113,7 @@ module.exports = {
     unparticipationStatus,
 
     customRecordTypeCollections,
-    collections
+    collections,
+
+    experimentVariants,
 }
