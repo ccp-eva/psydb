@@ -58,16 +58,22 @@ const ExperimentSettings = ({
                 onSuccessfulUpdate: increaseRevision
             })} />
 
-            <Button onClick={ () => newVariantModal.handleShow() }>
+            <div className='mb-3'>
+                <VariantList { ...({
+                    variantRecords,
+                    settingRecords,
+
+                    onAddSetting: () => {}
+                })} />
+            </div>
+            
+            <Button
+                size='sm'
+                onClick={ () => newVariantModal.handleShow() }
+            >
                 + Neuer Ablauf
             </Button>
-            <hr />
-            <VariantList { ...({
-                variantRecords,
-                settingRecords,
-
-                onAddSetting: () => {}
-            })} />
+    
         </div>
     )
 }

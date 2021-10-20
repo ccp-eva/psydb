@@ -18,7 +18,7 @@ const VariantList = (ps) => {
         )
     }
 
-    var settingRecordsByVariantId = groupBy({
+    var groupedSettings = groupBy({
         items: settingRecords,
         byProp: 'experimentVariantId'
     });
@@ -27,9 +27,10 @@ const VariantList = (ps) => {
         <div>
             { variantRecords.map((it, index) => {
                 return (
-                    <VariantListItem {...({
+                    <VariantListItem key={ index } {...({
+                        index,
                         variantRecord: it,
-                        settingRecords: settingRecordsByVariantId[it._id],
+                        settingRecords: groupedSettings[it._id] || [],
                         onAddSetting
                     })} />
                 )
