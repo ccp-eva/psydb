@@ -1,31 +1,40 @@
 import React from 'react';
-import {
-    subjectFieldRequirementChecks as checksEnum,
-} from '@mpieva/psydb-schema-enums';
-import {
-    Pair,
-    EditIconButton,
-    RemoveIconButton,
-} from '@mpieva/psydb-ui-layout';
+import { Pair } from '@mpieva/psydb-ui-layout';
+import { DefaultSettingWrapper } from './utils';
+
 
 export const AwayTeamSetting = (ps) => {
     var {
         settingRecord,
         settingRelated,
+        customRecordTypes,
     } = ps;
 
-    var { subjectTypeKey } = settingRecord.state;
-    var { relatedCustomRecordTypes } = settingRelated;
-    var { label } = relatedCustomRecordTypes.subject[subjectTypeKey].state;
+    var {
+        subjectTypeKey,
+        subjectLocationFieldPointer,
+    } = settingRecord.state;
+
+    var subjectType = customRecordTypes.find(it => (
+        it.collection === 'subject' && it.type === subjectTypeKey
+    ));
+
+    var fieldLabels = (
+        subjectType.state.settings.subChannelFields.scientific
+        .reduce((acc, field) => {
+            var { key, displayName } = field;
+            var pointer = (
+                `/scientific/state/custom/${key}`
+            );
+            return { ...acc, [pointer]: displayName };
+        }, {})
+    );
 
     return (
-        <div className='p-3 mb-2 border d-flex justify-content-between'>
-            <div className='flex-grow-1 mr-4'>
-                <header className='mb-2 border-bottom'>
-                    { label }
-                </header>
-            </div>
-            <EditIconButton />
-        </div>
+        <DefaultSettingWrapper { ...ps }>
+            <Pair label='Termine in'>
+                { fieldLabels[subjectLocationFieldPointer] }
+            </Pair>
+        </DefaultSettingWrapper>
     )
 }

@@ -112,7 +112,7 @@ export const AwayTeamSetting = (ps) => {
                             })} />
                             <GenericEnumField { ...({
                                 dataXPath: '$.subjectLocationFieldPointer',
-                                label: 'Location',
+                                label: 'Termine in',
                                 required: true,
                                 options: fieldOptions,
                                 disabled: !selectedType

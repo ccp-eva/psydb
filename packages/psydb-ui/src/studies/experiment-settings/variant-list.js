@@ -12,8 +12,8 @@ const VariantList = (ps) => {
 
     if (variantRecords.length < 1) {
         return (
-            <div className='p-3 text-muted'>
-                <i>Keine Ablauf-Einstellungen vorhanden</i>
+            <div className='p-3 text-danger'>
+                <b>Keine Ablauf-Einstellungen vorhanden</b>
             </div>
         )
     }

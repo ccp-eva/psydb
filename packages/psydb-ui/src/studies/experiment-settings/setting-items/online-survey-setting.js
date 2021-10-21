@@ -12,6 +12,8 @@ export const OnlineSurveySetting = (ps) => {
     var {
         settingRecord,
         settingRelated,
+        showButtons = true,
+        onRemove,
     } = ps;
 
     var { subjectTypeKey } = settingRecord.state;
@@ -21,10 +23,13 @@ export const OnlineSurveySetting = (ps) => {
     return (
         <div className='p-3 mb-2 border d-flex justify-content-between align-items-center'>
             <div>{ label }</div>
-            <div>
-                <EditIconButton className='mr-2' />
-                <RemoveIconButton />
-            </div>
+            { showButtons && (
+                <div>
+                    <RemoveIconButton onClick={ () => (
+                        onRemove({ settingRecord, settingRelated })
+                    )}/>
+                </div>
+            )}
         </div>
     )
 }

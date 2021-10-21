@@ -1,21 +1,17 @@
 import React from 'react';
+
 import {
     subjectFieldRequirementChecks as checksEnum,
 } from '@mpieva/psydb-schema-enums';
-import {
-    Pair,
-    EditIconButton,
-    RemoveIconButton,
-} from '@mpieva/psydb-ui-layout';
+
+import { Pair } from '@mpieva/psydb-ui-layout';
+import { DefaultSettingWrapper } from './utils';
 
 export const InhouseSetting = (ps) => {
     var {
         settingRecord,
         settingRelated,
         customRecordTypes,
-        showButtons = true,
-        onEdit,
-        onRemove,
     } = ps;
 
     var {
@@ -25,11 +21,8 @@ export const InhouseSetting = (ps) => {
         locations,
     } = settingRecord.state;
 
-    var {
-        relatedCustomRecordTypes,
-        relatedRecords,
-    } = settingRelated;
-    var { label } = relatedCustomRecordTypes.subject[subjectTypeKey].state;
+    var { relatedRecords } = settingRelated;
+
     var subjectType = customRecordTypes.find(it => (
         it.collection === 'subject' && it.type === subjectTypeKey
     ));
@@ -45,60 +38,38 @@ export const InhouseSetting = (ps) => {
         }, {})
     );
 
-    var actionProps = {
-        settingRecord,
-        settingRelated,
-        customRecordTypes
-    };
-
     return (
-        <div className='p-3 mb-2 border d-flex justify-content-between align-items-start'>
-            <div className='flex-grow-1 mr-4'>
-                <header className='mb-2 border-bottom'>
-                    <b>{ label }</b>
-                </header>
-
-                <Pair label='Anzahl pro Termin'>
-                    { subjectsPerExperiment }
-                </Pair>
-                <Pair label='Terminbedingungen' textWrap='div'>
-                    { subjectFieldRequirements.map((req, index) => {
-                        var { pointer, check } = req;
-                        return (
-                            <div className='d-flex' key={ index }>
-                                <div className='mr-2'>
-                                    <b style={{ fontWeight: 600 }}>
-                                        { index + 1 }.
-                                    </b>
-                                </div>
+        <DefaultSettingWrapper { ...ps }>
+            <Pair label='Anzahl pro Termin'>
+                { subjectsPerExperiment }
+            </Pair>
+            <Pair label='Terminbedingungen' textWrap='div'>
+                { subjectFieldRequirements.map((req, index) => {
+                    var { pointer, check } = req;
+                    return (
+                        <div className='d-flex' key={ index }>
+                            <div className='mr-2'>
                                 <b style={{ fontWeight: 600 }}>
-                                    { fieldLabels[pointer] }
-                                    {' - '}
-                                    { checksEnum.mapping[check] }
+                                    { index + 1 }.
                                 </b>
                             </div>
-                        )
-                    }) }
-                </Pair>
-                <Pair label='Räumlichkeiten'>
-                    { locations.map(it => {
-                        return (
-                            relatedRecords
-                            .location[it.locationId]._recordLabel
-                        );
-                    }).join(', ')}
-                </Pair>
-            </div>
-            { showButtons && (
-                <div className='d-flex flex-column'>
-                    <EditIconButton className='mb-2' onClick={ () => (
-                        onEdit(actionProps)
-                    )} />
-                    <RemoveIconButton onClick={ () => (
-                        onRemove(actionProps)
-                    )} />
-                </div>
-            )}
-        </div>
+                            <b style={{ fontWeight: 600 }}>
+                                { fieldLabels[pointer] }
+                                {' - '}
+                                { checksEnum.mapping[check] }
+                            </b>
+                        </div>
+                    )
+                }) }
+            </Pair>
+            <Pair label='Räumlichkeiten'>
+                { locations.map(it => {
+                    return (
+                        relatedRecords
+                        .location[it.locationId]._recordLabel
+                    );
+                }).join(', ')}
+            </Pair>
+        </DefaultSettingWrapper>
     )
 }
