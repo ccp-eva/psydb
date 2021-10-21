@@ -25,7 +25,8 @@ import {
     SaneStringField,
     GenericEnumField,
     IntegerField,
-    ForeignIdField
+    ForeignIdField,
+    SubjectFieldRequirementListField
 } from '@mpieva/psydb-ui-lib/src/formik';
 
 const getAllowedSubjectTypes = (studyData) => {
@@ -95,37 +96,13 @@ const ExperimentSettings = ({
                     var { getFieldProps } = formikProps;
                     return <div>
                         <SaneStringField label='Foo' dataXPath='$.foo' />
-                        <GenericEnumField { ...({
-                            dataXPath: '$.subjectTypeKey',
-                            label: 'Probandentyp',
-                            required: true,
-                            options: allowedSubjectTypes
-                        })} />
-                        <IntegerField { ...({
-                            dataXPath: '$.subjectsPerExperiment',
-                            label: 'Probanden pro Termin',
-                            required: true,
-                            min: 1
-                        })} />
-                        
-                        <GenericEnumField { ...({
-                            dataXPath: '$.locationType',
-                            label: 'Typ',
-                            required: true,
-                            options: {
-                                'instituteroom': 'Raum',
-                                'kiga': 'Kiga',
-                            }
-                        })} />
-                        <ForeignIdField { ...({
-                            dataXPath: '$.locationId',
-                            label: 'Location',
-                            required: true,
-                            collection: 'location',
-                            recordType: 'kiga',
-                            //recordType: getFieldProps('$.locationType').value,
-                            //disabled: !getFieldProps('$.locationType').value
-                        })} />
+                        <SubjectFieldRequirementListField
+                            label='Req'
+                            dataXPath='$.req'
+                            subjectScientificFields={[
+                                { key: 'foo', displayName: 'Foo'}
+                            ]}
+                        />
                         <Button type='submit'>Submit</Button>
                     </div>
                 }}

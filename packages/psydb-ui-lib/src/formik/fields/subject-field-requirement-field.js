@@ -75,5 +75,5 @@ const Control = (ps) => {
 
 export const SubjectFieldRequirementField = WithField({
     Control,
-    Wrapper: ({ children }) => (<>{ children }</>),
+    DefaultWrapper: ({ children }) => (<>{ children }</>),
 });

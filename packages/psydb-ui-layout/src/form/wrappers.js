@@ -5,7 +5,7 @@ import { Form } from 'react-bootstrap';
 // TODO: move elsewhere
 const NBSP = () => ('\u00A0');
 
-const InlineWrapper = (ps) => {
+export const InlineWrapper = (ps) => {
     var {
         id,
         label,
@@ -39,7 +39,7 @@ const InlineWrapper = (ps) => {
     );
 }
 
-const MultiLineWrapper = (ps) => {
+export const MultiLineWrapper = (ps) => {
     var {
         id,
         label,
@@ -68,7 +68,7 @@ const MultiLineWrapper = (ps) => {
     );
 }
 
-const InlineArrayWrapper = (ps) => {
+export const InlineArrayWrapper = (ps) => {
     var {
         label,
         labelClassName,
@@ -88,8 +88,11 @@ const InlineArrayWrapper = (ps) => {
 }
 
 
-export {
-    InlineWrapper,
-    MultiLineWrapper,
-    InlineArrayWrapper,
+export const ScalarArrayItemWrapper = (ps) => {
+    var { children } = ps;
+    return (
+        <div>
+            { children }
+        </div>
+    );
 }

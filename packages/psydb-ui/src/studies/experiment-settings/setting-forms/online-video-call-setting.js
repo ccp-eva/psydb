@@ -9,7 +9,7 @@ import {
     DefaultForm,
     GenericEnumField,
     IntegerField,
-    SubjectFieldRequirementField
+    SubjectFieldRequirementListField
 } from '@mpieva/psydb-ui-lib/src/formik';
 
 export const OnlineVideoCallSetting = (ps) => {
@@ -92,7 +92,7 @@ export const OnlineVideoCallSetting = (ps) => {
                                 min: 1,
                                 disabled: !selectedType
                             })} />
-                            <SubjectFieldRequirementField { ...({
+                            <SubjectFieldRequirementListField { ...({
                                 dataXPath: '$.req',
                                 label: 'Req',
                                 subjectScientificFields: (
