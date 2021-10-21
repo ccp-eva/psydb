@@ -4,9 +4,13 @@ import WithField from '../with-field';
 
 export const SaneStringField = WithField({
     Control: (ps) => {
-        var { formikField } = ps;
+        var { formikField, disabled } = ps;
         return (
-            <Form.Control type='text' { ...formikField } />
+            <Form.Control
+                type='text'
+                disabled={ disabled }
+                { ...formikField }
+            />
         )
     }
 })
@@ -16,10 +20,11 @@ export const IntegerField = WithField({
     fakeDefault: Infinity,
 
     Control: (ps) => {
-        var { formikField, min, max, step } = ps;
+        var { formikField, disabled, min, max, step } = ps;
         return (
             <Form.Control
                 type='number'
+                disabled={ disabled }
                 min={ min }
                 max={ max }
                 step={ step }

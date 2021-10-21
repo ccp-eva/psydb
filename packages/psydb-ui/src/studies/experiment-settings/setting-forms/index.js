@@ -24,20 +24,9 @@ const InhouseSetting = (ps) => {
     )
 };
 
-const OnlineVideoCallSetting = (ps) => {
-    var {
-        variantId,
-        allowedSubjectTypes,
-        onSuccessfulUpdate
-    } = ps;
-    return (
-        <div>Video</div>
-    )
-};
-
 export * from './away-team-setting';
+export * from './online-video-call-setting';
 export * from './online-survey-setting';
 export {
     InhouseSetting,
-    OnlineVideoCallSetting,
 }
