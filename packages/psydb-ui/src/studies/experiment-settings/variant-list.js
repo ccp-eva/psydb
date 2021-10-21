@@ -6,10 +6,7 @@ const VariantList = (ps) => {
     var {
         variantRecords,
         settingRecords,
-        settingRelated,
-        customRecordTypes,
-
-        onAddSetting
+        ...downstream
     } = ps;
 
     if (variantRecords.length < 1) {
@@ -33,9 +30,7 @@ const VariantList = (ps) => {
                         index,
                         variantRecord: it,
                         settingRecords: groupedSettings[it._id] || [],
-                        settingRelated,
-                        customRecordTypes,
-                        onAddSetting
+                        ...downstream,
                     })} />
                 )
             })}

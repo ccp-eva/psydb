@@ -17,7 +17,10 @@ import {
 } from '@mpieva/psydb-ui-layout';
 
 import NewVariantModal from './new-variant-modal';
+
 import NewSettingModal from './new-setting-modal';
+import RemoveSettingModal from './remove-setting-modal';
+
 import VariantList from './variant-list';
 
 const getAllowedSubjectTypes = (studyData) => {
@@ -48,7 +51,9 @@ const ExperimentSettings = ({
     
     var [ revision, increaseRevision ] = useRevision();
     var newVariantModal = useModalReducer();
+    
     var newSettingModal = useModalReducer();
+    var removeSettingModal = useModalReducer();
 
     var [ didFetch, fetched ] = useFetchAll((agent) => {
         var promises = {
@@ -100,6 +105,11 @@ const ExperimentSettings = ({
                 onSuccessfulUpdate: increaseRevision
             })} />
 
+            <RemoveSettingModal { ...({
+                ...removeSettingModal.passthrough,
+                onSuccessfulUpdate: increaseRevision
+            })} />
+
             <div className='mb-3'>
                 <VariantList { ...({
                     variantRecords,
@@ -107,7 +117,8 @@ const ExperimentSettings = ({
                     settingRelated,
                     customRecordTypes,
 
-                    onAddSetting: newSettingModal.handleShow
+                    onAddSetting: newSettingModal.handleShow,
+                    onRemoveSetting: removeSettingModal.handleShow,
                 })} />
             </div>
             

@@ -47,7 +47,7 @@ const VariantListItem = (ps) => {
                     size='sm'
                     onClick={ () => onAddSetting({ variantRecord })}
                 >
-                    + Probandentyp
+                    + Einstellungen
                 </Button>
             </div>
         </div>
@@ -58,13 +58,15 @@ const SettingList = (ps) => {
     var {
         variantType,
         settingRecords,
+        onRemoveSetting,
+        onEditSetting,
         ...downstream
     } = ps;
 
     if (settingRecords.length < 1) {
         return (
             <div className='p-3 text-danger'>
-                <i>Keine Probanden-Typen</i>
+                <i>Keine Probanden-Einstellungen</i>
             </div>
         )
     }
@@ -81,6 +83,8 @@ const SettingList = (ps) => {
             { settingRecords.map((settingRecord, index) => (
                 <SettingComponent key={ index } { ...({
                     settingRecord,
+                    onEdit: onEditSetting,
+                    onRemove: onRemoveSetting,
                     ...downstream
                 })} />
             ))}

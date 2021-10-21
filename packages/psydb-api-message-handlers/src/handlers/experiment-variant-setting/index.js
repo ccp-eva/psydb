@@ -8,6 +8,7 @@ var ExperimentVariantSettingGroup = MessageHandlerGroup([
     require('./online-video-call'),
     require('./inhouse'),
     require('./away-team'),
+    require('./remove')
 ]);
 
 module.exports = ExperimentVariantSettingGroup;

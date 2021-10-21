@@ -13,6 +13,9 @@ export const InhouseSetting = (ps) => {
         settingRecord,
         settingRelated,
         customRecordTypes,
+        showButtons = true,
+        onEdit,
+        onRemove,
     } = ps;
 
     var {
@@ -41,6 +44,12 @@ export const InhouseSetting = (ps) => {
             return { ...acc, [pointer]: displayName };
         }, {})
     );
+
+    var actionProps = {
+        settingRecord,
+        settingRelated,
+        customRecordTypes
+    };
 
     return (
         <div className='p-3 mb-2 border d-flex justify-content-between align-items-start'>
@@ -80,10 +89,16 @@ export const InhouseSetting = (ps) => {
                     }).join(', ')}
                 </Pair>
             </div>
-            <div className='d-flex flex-column'>
-                <EditIconButton className='mb-2' />
-                <RemoveIconButton />
-            </div>
+            { showButtons && (
+                <div className='d-flex flex-column'>
+                    <EditIconButton className='mb-2' onClick={ () => (
+                        onEdit(actionProps)
+                    )} />
+                    <RemoveIconButton onClick={ () => (
+                        onRemove(actionProps)
+                    )} />
+                </div>
+            )}
         </div>
     )
 }
