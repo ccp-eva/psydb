@@ -77,16 +77,10 @@ const ExperimentSettings = ({
     var { customRecordTypes } = fetched.crts.data;
     var studyData = fetched.study.data;
     var variantRecords = fetched.variants.data.records;
-    var { settingRecords ...settingRelated } = fetched.settings.data;
-
-    var subjectTypeLabels = (
-        customRecordTypes
-        .filter(it => it.collection === 'subject')
-        .reduce((acc, it) => ({
-            ...acc,
-            [it.type]: it.state.label
-        }), {})
-    );
+    var {
+        records: settingRecords,
+        ...settingRelated
+    } = fetched.settings.data;
 
     var allowedSubjectTypes = getAllowedSubjectTypes(studyData);
 
@@ -111,7 +105,7 @@ const ExperimentSettings = ({
                     variantRecords,
                     settingRecords,
                     settingRelated,
-                    subjectTypeLabels,
+                    customRecordTypes,
 
                     onAddSetting: newSettingModal.handleShow
                 })} />

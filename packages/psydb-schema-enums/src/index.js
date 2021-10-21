@@ -106,6 +106,10 @@ var experimentVariants = createEnum({
     'online-survey': 'Online-Umfrage',
 });
 
+var subjectFieldRequirementChecks = createEnum({
+    'inter-subject-equality': 'ist Gleich im Termin'
+})
+
 module.exports = {
     safeParticipationStatus,
     participationStatus,
@@ -116,4 +120,5 @@ module.exports = {
     collections,
 
     experimentVariants,
+    subjectFieldRequirementChecks,
 }

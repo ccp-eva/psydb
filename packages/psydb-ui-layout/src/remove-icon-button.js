@@ -16,6 +16,7 @@ var iconStyle = {
 }
 
 const RemoveIconButton = ({
+    className,
     to,
     onClick
 }) => {
@@ -23,6 +24,7 @@ const RemoveIconButton = ({
         return (
             <LinkButton
                 { ...buttonProps }
+                className={ className }
                 to={ to }
             >
                 <XLg style={ iconStyle } />
@@ -33,6 +35,7 @@ const RemoveIconButton = ({
         return (
             <Button
                 { ...buttonProps }
+                className={ className }
                 onClick={ onClick }
             >
                 <XLg style={ iconStyle } />

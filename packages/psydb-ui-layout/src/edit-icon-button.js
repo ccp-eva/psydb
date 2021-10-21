@@ -14,6 +14,7 @@ var iconStyle = {
 }
 
 const EditIconButton = ({
+    className,
     to,
     onClick
 }) => {
@@ -21,6 +22,7 @@ const EditIconButton = ({
         return (
             <LinkButton
                 { ...buttonProps }
+                className={ className }
                 to={ to }
             >
                 <PencilFill style={ iconStyle } />
@@ -31,6 +33,7 @@ const EditIconButton = ({
         return (
             <Button
                 { ...buttonProps }
+                className={ className }
                 onClick={ onClick }
             >
                 <PencilFill style={ iconStyle } />

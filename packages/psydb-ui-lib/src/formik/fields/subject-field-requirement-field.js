@@ -1,4 +1,5 @@
 import React from 'react';
+import { subjectFieldRequirementChecks } from '@mpieva/psydb-schema-enums';
 import WithField from '../with-field';
 import { GenericEnumField } from './generic-enum-field';
 
@@ -18,10 +19,7 @@ const prohibitedFieldTypes = [
     'Password',
 ];
 
-var checkOptions = {
-    'inter-subject-equality': 'ist Gleich im Termin'
-}
-
+var checkOptions = subjectFieldRequirementChecks.mapping;
 
 const Control = (ps) => {
     var {

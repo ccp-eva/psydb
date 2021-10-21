@@ -6,8 +6,8 @@ const VariantList = (ps) => {
     var {
         variantRecords,
         settingRecords,
-        subjectTypeLabels,
         settingRelated,
+        customRecordTypes,
 
         onAddSetting
     } = ps;
@@ -33,8 +33,8 @@ const VariantList = (ps) => {
                         index,
                         variantRecord: it,
                         settingRecords: groupedSettings[it._id] || [],
-                        subjectTypeLabels,
                         settingRelated,
+                        customRecordTypes,
                         onAddSetting
                     })} />
                 )
