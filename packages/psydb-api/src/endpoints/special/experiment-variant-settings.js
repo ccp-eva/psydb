@@ -7,6 +7,9 @@ var Ajv = require('@mpieva/psydb-api-lib/src/ajv'),
     ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
     ResponseBody = require('@mpieva/psydb-api-lib/src/response-body');
 
+var fetchRelatedLabels = require('@mpieva/psydb-api-lib/src/fetch-related-labels');
+var allSchemaCreators = require('@mpieva/psydb-schema-creators');
+
 var {
     ExactObject,
     ForeignId,
@@ -48,9 +51,38 @@ var experimentVariantSettings = async (context, next) => {
         studyId
     }).toArray();
 
+    var creators = (
+        allSchemaCreators
+        .experimentVariantSetting.fixedTypeStateSchemaCreators
+    );
+
+    var recordSchema = { type: 'object', properties: {
+        records: {
+            type: 'array', items: {
+                lazyResolveProp: 'type',
+                oneOf: (
+                    Object.keys(creators).map(key => ({
+                        type: 'object',
+                        properties: {
+                            type: { const: key },
+                            state: creators[key]()
+                        }
+                    }))
+                )
+            }
+        }
+    }};
+
+    var related = await fetchRelatedLabels({
+        db,
+        data: { records },
+        schema: recordSchema,
+    });
+
     context.body = ResponseBody({
         data: {
             records,
+            ...related
         },
     });
 

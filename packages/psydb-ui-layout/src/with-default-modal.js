@@ -6,8 +6,8 @@ const WithDefaultModal = (options) => (ps) => {
         Component,
         Body,
         size,
-        className,
-        backdropClassName,
+        className = 'team-modal',
+        backdropClassName = 'team-modal-backdrop',
 
         title,
     } = options;

@@ -20,16 +20,6 @@ import NewVariantModal from './new-variant-modal';
 import NewSettingModal from './new-setting-modal';
 import VariantList from './variant-list';
 
-import {
-    DefaultForm,
-    SaneStringField,
-    GenericEnumField,
-    IntegerField,
-    ForeignIdField,
-    SubjectFieldRequirementListField,
-    TypedLocationIdListField,
-} from '@mpieva/psydb-ui-lib/src/formik';
-
 const getAllowedSubjectTypes = (studyData) => {
     var { selectionSettingsBySubjectType } = studyData.record.state;
     var {
@@ -62,6 +52,7 @@ const ExperimentSettings = ({
 
     var [ didFetch, fetched ] = useFetchAll((agent) => {
         var promises = {
+            crts: agent.readCustomRecordTypeMetadata(),
             study: agent.readRecord({
                 collection: 'study',
                 recordType: studyType,
@@ -83,35 +74,24 @@ const ExperimentSettings = ({
         );
     }
 
+    var { customRecordTypes } = fetched.crts.data;
     var studyData = fetched.study.data;
     var variantRecords = fetched.variants.data.records;
     var settingRecords = fetched.settings.data.records;
+
+    var subjectTypeLabels = (
+        customRecordTypes
+        .filter(it => it.collection === 'subject')
+        .reduce((acc, it) => ({
+            ...acc,
+            [it.type]: it.state.label
+        }), {})
+    );
 
     var allowedSubjectTypes = getAllowedSubjectTypes(studyData);
 
     return (
         <div className='mt-3 mb-3'>
-
-            <DefaultForm onSubmit={(...args) => { console.log({ args })}}>
-                {(formikProps) => {
-                    var { getFieldProps } = formikProps;
-                    return <div>
-                        <SaneStringField label='Foo' dataXPath='$.foo' />
-                        <TypedLocationIdListField
-                            label='Loc'
-                            dataXPath='$.loc'
-                            typeOptions={{
-                                'kiga': 'Kiga'
-                            }}
-                            disabled={ false }
-                        />
-
-                        <Button type='submit'>Submit</Button>
-                    </div>
-                }}
-            </DefaultForm>
-
-            <hr />
 
             <NewVariantModal { ...({
                 ...newVariantModal.passthrough,
@@ -130,6 +110,7 @@ const ExperimentSettings = ({
                 <VariantList { ...({
                     variantRecords,
                     settingRecords,
+                    subjectTypeLabels,
 
                     onAddSetting: newSettingModal.handleShow
                 })} />
