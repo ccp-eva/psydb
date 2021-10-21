@@ -2,7 +2,7 @@ import React from 'react';
 import {
     experimentVariants as variantsEnum,
 } from '@mpieva/psydb-schema-enums';
-import { Button } from '@mpieva/psydb-ui-layout';
+import { Button, RemoveIconButton } from '@mpieva/psydb-ui-layout';
 
 import {
     InhouseSetting,
@@ -14,8 +14,9 @@ import {
 const VariantListItem = (ps) => {
     var {
         index,
-        onAddSetting,
         variantRecord,
+        onRemove,
+        onAddSetting,
         ...downstream
     } = ps;
 
@@ -43,12 +44,18 @@ const VariantListItem = (ps) => {
 
                 <hr />
 
-                <Button
-                    size='sm'
-                    onClick={ () => onAddSetting({ variantRecord })}
-                >
-                    + Einstellungen
-                </Button>
+                <div className='d-flex justify-content-between pr-3'>
+                    <Button
+                        size='sm'
+                        onClick={ () => onAddSetting({ variantRecord })}
+                    >
+                        + Einstellungen
+                    </Button>
+                    <RemoveIconButton onClick={ () => onRemove({
+                        index,
+                        variantRecord,
+                    }) } />
+                </div>
             </div>
         </div>
     )

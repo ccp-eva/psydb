@@ -17,6 +17,7 @@ import {
 } from '@mpieva/psydb-ui-layout';
 
 import NewVariantModal from './new-variant-modal';
+import RemoveVariantModal from './remove-variant-modal';
 
 import NewSettingModal from './new-setting-modal';
 import RemoveSettingModal from './remove-setting-modal';
@@ -50,7 +51,9 @@ const ExperimentSettings = ({
     var { id: studyId } = useParams();
     
     var [ revision, increaseRevision ] = useRevision();
+    
     var newVariantModal = useModalReducer();
+    var removeVariantModal = useModalReducer();
     
     var newSettingModal = useModalReducer();
     var removeSettingModal = useModalReducer();
@@ -98,6 +101,11 @@ const ExperimentSettings = ({
                 onSuccessfulUpdate: increaseRevision
             })} />
 
+            <RemoveVariantModal { ...({
+                ...removeVariantModal.passthrough,
+                onSuccessfulUpdate: increaseRevision
+            })} />
+
             <NewSettingModal { ...({
                 ...newSettingModal.passthrough,
                 studyId,
@@ -116,6 +124,8 @@ const ExperimentSettings = ({
                     settingRecords,
                     settingRelated,
                     customRecordTypes,
+
+                    onRemoveVariant: removeVariantModal.handleShow,
 
                     onAddSetting: newSettingModal.handleShow,
                     onRemoveSetting: removeSettingModal.handleShow,

@@ -10,6 +10,7 @@ var ExperimentVariantGroup = MessageHandlerGroup([
         collection: 'experimentVariant',
         op: 'create',
     }),
+    require('./remove'),
 ]);
 
 module.exports = ExperimentVariantGroup;

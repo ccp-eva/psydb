@@ -6,6 +6,7 @@ const VariantList = (ps) => {
     var {
         variantRecords,
         settingRecords,
+        onRemoveVariant,
         ...downstream
     } = ps;
 
@@ -30,6 +31,7 @@ const VariantList = (ps) => {
                         index,
                         variantRecord: it,
                         settingRecords: groupedSettings[it._id] || [],
+                        onRemove: onRemoveVariant,
                         ...downstream,
                     })} />
                 )
