@@ -1,6 +1,11 @@
 import React from 'react';
 import { experimentVariants as evEnum } from '@mpieva/psydb-schema-enums';
-import { Button, Pair, EditIconButton } from '@mpieva/psydb-ui-layout';
+import {
+    Button,
+    Pair,
+    EditIconButton,
+    RemoveIconButton,
+} from '@mpieva/psydb-ui-layout';
 
 const VariantListItem = (ps) => {
     var {
@@ -8,6 +13,7 @@ const VariantListItem = (ps) => {
         subjectTypeLabels,
         variantRecord,
         settingRecords,
+        settingRelated,
         onAddSetting
     } = ps;
 
@@ -28,6 +34,7 @@ const VariantListItem = (ps) => {
                     variantType,
                     settingRecords,
                     subjectTypeLabels,
+                    settingRelated,
                 })} />
 
                 <hr />
@@ -48,6 +55,7 @@ const SettingList = (ps) => {
         variantType,
         settingRecords,
         subjectTypeLabels,
+        settingRelated,
     } = ps;
 
     if (settingRecords.length < 1) {
@@ -71,6 +79,7 @@ const SettingList = (ps) => {
                 <SettingComponent
                     settingRecord={ record }
                     subjectTypeLabels={ subjectTypeLabels }
+                    settingRelated={ settingRelated }
                 />
             ))}
         </div>
@@ -82,6 +91,7 @@ const InhouseSetting = (ps) => {
         settingRecord,
         subjectTypeLabels,
         subjectTypeFieldLabels,
+        settingRelated,
     } = ps;
 
     var {
@@ -95,7 +105,7 @@ const InhouseSetting = (ps) => {
         <div className='p-3 mb-2 border d-flex justify-content-between align-items-start'>
             <div className='flex-grow-1 mr-4'>
                 <header className='mb-2 border-bottom'>
-                    { subjectTypeLabels[subjectTypeKey] }
+                    <b>{ subjectTypeLabels[subjectTypeKey] }</b>
                 </header>
 
                 <Pair label='Anzahl pro Termin'>
@@ -108,7 +118,12 @@ const InhouseSetting = (ps) => {
                     { subjectsPerExperiment }
                 </Pair>
             </div>
-            <EditIconButton />
+            <div className='d-flex flex-column'>
+                <div className='mb-2'>
+                    <EditIconButton />
+                </div>
+                <RemoveIconButton />
+            </div>
         </div>
     )
 }

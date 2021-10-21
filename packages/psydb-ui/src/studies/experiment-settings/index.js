@@ -77,7 +77,7 @@ const ExperimentSettings = ({
     var { customRecordTypes } = fetched.crts.data;
     var studyData = fetched.study.data;
     var variantRecords = fetched.variants.data.records;
-    var settingRecords = fetched.settings.data.records;
+    var { settingRecords ...settingRelated } = fetched.settings.data;
 
     var subjectTypeLabels = (
         customRecordTypes
@@ -110,6 +110,7 @@ const ExperimentSettings = ({
                 <VariantList { ...({
                     variantRecords,
                     settingRecords,
+                    settingRelated,
                     subjectTypeLabels,
 
                     onAddSetting: newSettingModal.handleShow
