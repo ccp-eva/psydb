@@ -1,5 +1,4 @@
 import React from 'react';
-import { Form } from '@mpieva/psydb-ui-layout';
 import WithField from '../with-field';
 import { GenericEnumField } from './generic-enum-field';
 

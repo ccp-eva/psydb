@@ -1,7 +1,4 @@
 import React from 'react';
-import { FieldArray } from 'formik';
-import { Form, FormHelpers } from '@mpieva/psydb-ui-layout';
-import WithField from '../with-field';
 import {
     SubjectFieldRequirementField
 } from './subject-field-requirement-field';

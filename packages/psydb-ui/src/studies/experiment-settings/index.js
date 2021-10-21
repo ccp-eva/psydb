@@ -26,7 +26,8 @@ import {
     GenericEnumField,
     IntegerField,
     ForeignIdField,
-    SubjectFieldRequirementListField
+    SubjectFieldRequirementListField,
+    TypedLocationIdListField,
 } from '@mpieva/psydb-ui-lib/src/formik';
 
 const getAllowedSubjectTypes = (studyData) => {
@@ -96,14 +97,15 @@ const ExperimentSettings = ({
                     var { getFieldProps } = formikProps;
                     return <div>
                         <SaneStringField label='Foo' dataXPath='$.foo' />
-                        <SubjectFieldRequirementListField
-                            label='Req'
-                            dataXPath='$.req'
-                            subjectScientificFields={[
-                                { key: 'foo', displayName: 'Foo'}
-                            ]}
+                        <TypedLocationIdListField
+                            label='Loc'
+                            dataXPath='$.loc'
+                            typeOptions={{
+                                'kiga': 'Kiga'
+                            }}
                             disabled={ false }
                         />
+
                         <Button type='submit'>Submit</Button>
                     </div>
                 }}

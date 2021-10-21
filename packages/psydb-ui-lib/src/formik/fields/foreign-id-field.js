@@ -19,7 +19,7 @@ export const ForeignIdField = WithField({ Control: (ps) => {
     var { setFieldValue } = formikForm;
 
     var onChange = (record) => {
-        setFieldValue(dataXPath, record._id);
+        setFieldValue(dataXPath, record ? record._id : '');
     }
 
     return (
