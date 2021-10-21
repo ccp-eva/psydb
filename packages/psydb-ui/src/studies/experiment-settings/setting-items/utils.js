@@ -6,6 +6,7 @@ import {
 
 export const DefaultSettingWrapper = (ps) => {
     var {
+        variantRecord,
         settingRecord,
         settingRelated,
         customRecordTypes,
@@ -21,6 +22,7 @@ export const DefaultSettingWrapper = (ps) => {
     var { label } = relatedCustomRecordTypes.subject[subjectTypeKey].state;
 
     var actionProps = {
+        variantRecord,
         settingRecord,
         settingRelated,
         customRecordTypes

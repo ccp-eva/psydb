@@ -7,6 +7,11 @@ var Ajv = require('@mpieva/psydb-api-lib/src/ajv'),
     ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
     ResponseBody = require('@mpieva/psydb-api-lib/src/response-body');
 
+var {
+    AddLastKnownEventIdStage,
+    StripEventsStage,
+} = require('@mpieva/psydb-api-lib/src/fetch-record-helpers');
+
 var fetchRelatedLabels = require('@mpieva/psydb-api-lib/src/fetch-related-labels');
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
@@ -47,9 +52,14 @@ var experimentVariantSettings = async (context, next) => {
 
     var { studyId } = request.body;
 
-    var records = await db.collection('experimentVariantSetting').find({
-        studyId
-    }).toArray();
+    var records = await (
+        db.collection('experimentVariantSetting').aggregate([
+            { $match: { studyId }},
+    
+            AddLastKnownEventIdStage(),
+            StripEventsStage(),
+        ]).toArray()
+    )
 
     var creators = (
         allSchemaCreators

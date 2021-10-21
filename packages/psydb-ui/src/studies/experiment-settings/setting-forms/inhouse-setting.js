@@ -13,7 +13,7 @@ import {
     TypedLocationIdListField,
 } from '@mpieva/psydb-ui-lib/src/formik';
 
-const initialValues = {
+const defaultValues = {
     subjectsPerExperiment: 1,
     subjectFieldRequirements: [],
     locations: [],
@@ -22,15 +22,22 @@ const initialValues = {
 export const InhouseSetting = (ps) => {
     var {
         op,
-        settingId,
-        lastKnownEventId,
         studyId,
         variantId,
+        settingRecord,
 
         allowedSubjectTypes,
         onSuccessfulUpdate
     } = ps;
 
+    var settingId, lastKnownEventId, settingState;
+    if (settingRecord) {
+        ({
+            _id: settingId,
+            _lastKnownEventId: lastKnownEventId,
+            state: settingState,
+        } = settingRecord)
+    }
     if (![ 'create', 'patch' ].includes(op)) {
         throw new Error(`unknown op "${op}"`);
     }
@@ -89,7 +96,7 @@ export const InhouseSetting = (ps) => {
         <div>
             <DefaultForm
                 onSubmit={ handleSubmit }
-                initialValues={ initialValues }
+                initialValues={ settingState || defaultValues }
             >
                 {(formikProps) => {
                     var { getFieldProps } = formikProps;

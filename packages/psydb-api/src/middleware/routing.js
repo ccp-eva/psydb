@@ -260,7 +260,7 @@ var createRouting = ({
     router.post('/experiment-variant-settings',
         withSelfAuth(),
         withPermissions(),
-        withEndpointProtection({ endpoint: 'experiment-variant-settingss' }),
+        withEndpointProtection({ endpoint: 'experiment-variant-settings' }),
         withKoaBody(),
         endpoints.special.experimentVariantSettings
     );

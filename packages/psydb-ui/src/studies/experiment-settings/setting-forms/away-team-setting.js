@@ -13,14 +13,22 @@ import {
 export const AwayTeamSetting = (ps) => {
     var {
         op,
-        settingId,
-        lastKnownEventId,
         studyId,
         variantId,
+        settingRecord,
 
         allowedSubjectTypes,
         onSuccessfulUpdate
     } = ps;
+
+    var settingId, lastKnownEventId, settingState;
+    if (settingRecord) {
+        ({
+            _id: settingId,
+            _lastKnownEventId: lastKnownEventId,
+            state: settingState,
+        } = settingRecord)
+    }
 
     if (![ 'create', 'patch' ].includes(op)) {
         throw new Error(`unknown op "${op}"`);
@@ -68,7 +76,10 @@ export const AwayTeamSetting = (ps) => {
 
     return (
         <div>
-            <DefaultForm onSubmit={ handleSubmit }>
+            <DefaultForm
+                onSubmit={ handleSubmit }
+                initialValues={ settingState || {}}
+            >
                 {(formikProps) => {
                     var { getFieldProps } = formikProps;
                     var selectedType = (

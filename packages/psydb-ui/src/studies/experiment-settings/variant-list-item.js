@@ -38,7 +38,7 @@ const VariantListItem = (ps) => {
                 </header>
 
                 <SettingList { ...({
-                    variantType,
+                    variantRecord,
                     ...downstream
                 })} />
 
@@ -63,12 +63,14 @@ const VariantListItem = (ps) => {
 
 const SettingList = (ps) => {
     var {
-        variantType,
+        variantRecord,
         settingRecords,
-        onRemoveSetting,
         onEditSetting,
+        onRemoveSetting,
         ...downstream
     } = ps;
+
+    var { type: variantType } = variantRecord;
 
     if (settingRecords.length < 1) {
         return (
@@ -89,6 +91,7 @@ const SettingList = (ps) => {
         <div>
             { settingRecords.map((settingRecord, index) => (
                 <SettingComponent key={ index } { ...({
+                    variantRecord,
                     settingRecord,
                     onEdit: onEditSetting,
                     onRemove: onRemoveSetting,

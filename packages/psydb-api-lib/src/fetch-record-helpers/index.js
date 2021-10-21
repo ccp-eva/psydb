@@ -2,7 +2,9 @@ module.exports = {
     SystemPermissionStages: require('./system-permission-stages'),
     ProjectDisplayFieldsStage: require('./project-display-fields-stage'),
     MatchIntervalOverlapStage: require('./match-interval-overlap-stage'),
+    
     StripEventsStage: require('./strip-events-stage'),
+    AddLastKnownEventIdStage: require('./add-last-known-event-id-stage'),
 
     AddSubjectTestabilityFieldsStage: require('./add-subject-testability-fields-stage'),
     HasAnyTestabilityStage: require('./has-any-testability-stage'),

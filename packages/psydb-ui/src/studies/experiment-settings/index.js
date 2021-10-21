@@ -20,6 +20,7 @@ import NewVariantModal from './new-variant-modal';
 import RemoveVariantModal from './remove-variant-modal';
 
 import NewSettingModal from './new-setting-modal';
+import EditSettingModal from './edit-setting-modal';
 import RemoveSettingModal from './remove-setting-modal';
 
 import VariantList from './variant-list';
@@ -56,6 +57,7 @@ const ExperimentSettings = ({
     var removeVariantModal = useModalReducer();
     
     var newSettingModal = useModalReducer();
+    var editSettingModal = useModalReducer();
     var removeSettingModal = useModalReducer();
 
     var [ didFetch, fetched ] = useFetchAll((agent) => {
@@ -113,6 +115,13 @@ const ExperimentSettings = ({
                 onSuccessfulUpdate: increaseRevision
             })} />
 
+            <EditSettingModal { ...({
+                ...editSettingModal.passthrough,
+                studyId,
+                allowedSubjectTypes,
+                onSuccessfulUpdate: increaseRevision
+            })} />
+
             <RemoveSettingModal { ...({
                 ...removeSettingModal.passthrough,
                 onSuccessfulUpdate: increaseRevision
@@ -128,6 +137,7 @@ const ExperimentSettings = ({
                     onRemoveVariant: removeVariantModal.handleShow,
 
                     onAddSetting: newSettingModal.handleShow,
+                    onEditSetting: editSettingModal.handleShow,
                     onRemoveSetting: removeSettingModal.handleShow,
                 })} />
             </div>
