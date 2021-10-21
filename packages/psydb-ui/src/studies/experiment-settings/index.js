@@ -102,6 +102,7 @@ const ExperimentSettings = ({
                             subjectScientificFields={[
                                 { key: 'foo', displayName: 'Foo'}
                             ]}
+                            disabled={ true }
                         />
                         <Button type='submit'>Submit</Button>
                     </div>

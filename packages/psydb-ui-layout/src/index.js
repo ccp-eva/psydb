@@ -18,6 +18,7 @@ export { default as Pair } from './pair';
 
 export { default as WithDefaultModal } from './with-default-modal';
 
+export * from './nbsp';
 export * as FormHelpers from './form';
 export * as Icons from './icons';
 

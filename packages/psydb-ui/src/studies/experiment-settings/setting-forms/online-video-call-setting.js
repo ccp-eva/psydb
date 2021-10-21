@@ -93,8 +93,8 @@ export const OnlineVideoCallSetting = (ps) => {
                                 disabled: !selectedType
                             })} />
                             <SubjectFieldRequirementListField { ...({
-                                dataXPath: '$.req',
-                                label: 'Req',
+                                dataXPath: '$.subjectFieldRequirements',
+                                label: 'Terminbedingungen',
                                 subjectScientificFields: (
                                     selectedType
                                     ? (

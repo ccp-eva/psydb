@@ -30,7 +30,7 @@ const WithField = (options) => (ps) => {
         <Field type='text' name={ dataXPath }>
             {(formikProps) => {
                 var { field, meta, form } = formikProps;
-                field = fakeControlledInput(field, '');
+                field = fakeControlledInput(field, fakeDefault);
 
                 return (
                     <Wrapper

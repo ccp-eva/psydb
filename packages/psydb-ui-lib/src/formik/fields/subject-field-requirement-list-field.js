@@ -17,6 +17,11 @@ const Control = (ps) => {
     )
 }
 
+const defaultItemValue = {
+    pointer: null,
+    check: null
+};
+
 const List = (ps) => {
     var {
         dataXPath,
@@ -33,21 +38,35 @@ const List = (ps) => {
     } = formikArrayHelpers
 
     var { getFieldProps } = formikForm;
-    var values = getFieldProps(dataXPath).value;
+    var values = getFieldProps(dataXPath).value || [];
 
     return (
-        <>
-            { (values || []).map((value, index) => {
-                return <SubjectFieldRequirementField key={ index } { ...({
-                    index,
-                    dataXPath: `${dataXPath}[${index}]`,
-                    formikArrayHelpers,
-                    subjectScientificFields,
-                    disabled,
-                })} />
+        <FormHelpers.ObjectArrayContentWrapper { ...({
+            formikArrayHelpers,
+            defaultItemValue,
+            itemsCount: values.length,
+            disabled,
+        })}>
+            { values.map((value, index) => {
+                return (
+                    <FormHelpers.ObjectArrayItemWrapper
+                        key={ index }
+                        index={ index }
+                        lastIndex={ values.length - 1 }
+                        formikArrayHelpers={ formikArrayHelpers }
+                        disabled={ disabled }
+                    >
+                        <SubjectFieldRequirementField { ...({
+                            index,
+                            dataXPath: `${dataXPath}[${index}]`,
+                            formikArrayHelpers,
+                            subjectScientificFields,
+                            disabled,
+                        })} />
+                    </FormHelpers.ObjectArrayItemWrapper>
+                );
             }) }
-            <button type='button' onClick={ () => push('foo') }>Push</button>
-        </>
+        </FormHelpers.ObjectArrayContentWrapper>
     )
 }
 
