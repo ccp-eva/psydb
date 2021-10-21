@@ -6,71 +6,30 @@ import {
     SubjectFieldRequirementField
 } from './subject-field-requirement-field';
 
-const Control = (ps) => {
-    var { dataXPath } = ps;
-    return (
-        <FieldArray name={ dataXPath }>
-            {(helpers) => (
-                <List { ...ps } formikArrayHelpers={ helpers } />
-            )}
-        </FieldArray>
-    )
-}
+import WithFieldArray from '../with-field-array';
 
-const defaultItemValue = {
-    pointer: null,
-    check: null
-};
-
-const List = (ps) => {
-    var {
-        dataXPath,
-        formikField,
-        formikMeta,
-        formikForm,
-        formikArrayHelpers,
-        subjectScientificFields,
-        disabled,
-    } = ps;
-
-    var {
-        push
-    } = formikArrayHelpers
-
-    var { getFieldProps } = formikForm;
-    var values = getFieldProps(dataXPath).value || [];
-
-    return (
-        <FormHelpers.ObjectArrayContentWrapper { ...({
+export const SubjectFieldRequirementListField = WithFieldArray({
+    Control: (ps) => {
+        var {
+            dataXPath,
+            formikField,
+            formikMeta,
+            formikForm,
             formikArrayHelpers,
-            defaultItemValue,
-            itemsCount: values.length,
+            
+            index,
             disabled,
-        })}>
-            { values.map((value, index) => {
-                return (
-                    <FormHelpers.ObjectArrayItemWrapper
-                        key={ index }
-                        index={ index }
-                        lastIndex={ values.length - 1 }
-                        formikArrayHelpers={ formikArrayHelpers }
-                        disabled={ disabled }
-                    >
-                        <SubjectFieldRequirementField { ...({
-                            index,
-                            dataXPath: `${dataXPath}[${index}]`,
-                            formikArrayHelpers,
-                            subjectScientificFields,
-                            disabled,
-                        })} />
-                    </FormHelpers.ObjectArrayItemWrapper>
-                );
-            }) }
-        </FormHelpers.ObjectArrayContentWrapper>
-    )
-}
+            subjectScientificFields,
+        } = ps;
 
-export const SubjectFieldRequirementListField = WithField({
-    Control,
-    Wrapper: FormHelpers.InlineArrayWrapper
-});
+        return (
+            <SubjectFieldRequirementField { ...({
+                index,
+                dataXPath,
+                formikArrayHelpers,
+                subjectScientificFields,
+                disabled,
+            })} />
+        )
+    }
+})

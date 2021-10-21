@@ -27,7 +27,7 @@ const WithField = (options) => (ps) => {
     );
 
     return (
-        <Field type='text' name={ dataXPath }>
+        <Field type={ type } name={ dataXPath }>
             {(formikProps) => {
                 var { field, meta, form } = formikProps;
                 field = fakeControlledInput(field, fakeDefault);
