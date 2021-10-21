@@ -5,10 +5,9 @@ var isFunction = (it) => (typeof it === 'function');
 
 const createFormikConfig = (ps) => {
     var { initialValues, ...formikOptions } = ps;
-    // defaults
     return {
         ...formikOptions,
-        initialValues: { '$': {}}
+        initialValues: { '$': (initialValues || {})}
     };
 }
 

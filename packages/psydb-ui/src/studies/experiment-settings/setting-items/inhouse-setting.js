@@ -61,6 +61,11 @@ export const InhouseSetting = (ps) => {
                         </div>
                     )
                 }) }
+                { subjectFieldRequirements.length < 1 && (
+                    <b style={{ fontWeight: 600 }}>
+                        Keine
+                    </b>
+                )}
             </Pair>
             <Pair label='Räumlichkeiten'>
                 { locations.map(it => {
@@ -69,6 +74,9 @@ export const InhouseSetting = (ps) => {
                         .location[it.locationId]._recordLabel
                     );
                 }).join(', ')}
+                { locations.length < 1 && (
+                    <span>Keine</span>
+                )}
             </Pair>
         </DefaultSettingWrapper>
     )

@@ -12,6 +12,11 @@ import {
     SubjectFieldRequirementListField
 } from '@mpieva/psydb-ui-lib/src/formik';
 
+const initialValues = {
+    subjectsPerExperiment: 1,
+    subjectFieldRequirements: [],
+}
+
 export const OnlineVideoCallSetting = (ps) => {
     var {
         op,
@@ -70,7 +75,10 @@ export const OnlineVideoCallSetting = (ps) => {
 
     return (
         <div>
-            <DefaultForm onSubmit={ handleSubmit }>
+            <DefaultForm
+                onSubmit={ handleSubmit }
+                initialValues={ initialValues }
+            >
                 {(formikProps) => {
                     var { getFieldProps } = formikProps;
                     var selectedType = (

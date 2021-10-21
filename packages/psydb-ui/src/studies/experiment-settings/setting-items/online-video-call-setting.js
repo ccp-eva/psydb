@@ -60,6 +60,11 @@ export const OnlineVideoCallSetting = (ps) => {
                         </div>
                     )
                 }) }
+                { subjectFieldRequirements.length < 1 && (
+                    <b style={{ fontWeight: 600 }}>
+                        Keine
+                    </b>
+                )}
             </Pair>
         </DefaultSettingWrapper>
     )

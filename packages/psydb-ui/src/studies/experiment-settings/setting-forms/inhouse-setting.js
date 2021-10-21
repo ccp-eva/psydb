@@ -13,6 +13,12 @@ import {
     TypedLocationIdListField,
 } from '@mpieva/psydb-ui-lib/src/formik';
 
+const initialValues = {
+    subjectsPerExperiment: 1,
+    subjectFieldRequirements: [],
+    locations: [],
+}
+
 export const InhouseSetting = (ps) => {
     var {
         op,
@@ -81,7 +87,10 @@ export const InhouseSetting = (ps) => {
 
     return (
         <div>
-            <DefaultForm onSubmit={ handleSubmit }>
+            <DefaultForm
+                onSubmit={ handleSubmit }
+                initialValues={ initialValues }
+            >
                 {(formikProps) => {
                     var { getFieldProps } = formikProps;
                     var selectedType = (
