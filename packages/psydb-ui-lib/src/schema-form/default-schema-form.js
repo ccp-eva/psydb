@@ -7,6 +7,8 @@ import RJSFCustomTheme from './rjsf-theme';
 import { ErrorResponseModal } from '../modals';
 
 const DefaultSchemaForm = ({
+    schema,
+    formData,
     buttonLabel,
     onSubmit,
     noErrorIndicator,
@@ -26,7 +28,6 @@ const DefaultSchemaForm = ({
         apiError,
         showErrorModal,
     } = state;
-
 
     var handleValidationError = (errors) => {
         dispatch({ type: 'set-validation-errors', payload: errors });
@@ -56,6 +57,8 @@ const DefaultSchemaForm = ({
                 errorResponse={ apiError }
             />
             <SchemaForm
+                schema={ schema }
+                formData={ formData }
                 noHtml5Validate={ true }
                 showErrorList={ false }
                 onSubmit={ wrappedOnSubmit }

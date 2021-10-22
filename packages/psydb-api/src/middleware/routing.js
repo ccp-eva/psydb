@@ -44,6 +44,11 @@ var createRouting = ({
         ]})
     );
 
+    router.get('/server-timezone',
+        withSelfAuth(),
+        endpoints.special.serverTimezone
+    );
+
     router.get('/self',
         withSelfAuth(),
         withPermissions(),

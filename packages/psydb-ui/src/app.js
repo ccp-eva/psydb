@@ -25,13 +25,10 @@ const App = () => {
     useEffect(() => {
         agent.get('/api/self').then(
             (res) => {
-                console.log('fetched stuff')
-                console.log(res);
                 onSignedIn()
                 setIsInitialized(true)
             },
             (error) => {
-                console.log('failed axios')
                 setIsInitialized(true)
             }
         )

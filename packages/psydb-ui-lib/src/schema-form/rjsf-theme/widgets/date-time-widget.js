@@ -1,24 +1,25 @@
-import React, { useState, useCallback, useMemo, useEffect } from 'react';
+import React, { useState, useCallback, useMemo, useEffect, useContext } from 'react';
 import { utils } from "@rjsf/core";
 import { Form, InputGroup } from 'react-bootstrap';
 import * as wrappers from '../utility-components/wrappers';
+import ServerTimezoneContext from '../../../server-timezone-context';
 
-const removeTimezone = (str) => {
+const removeTimezone = (str, offset = 60) => {
     if (typeof str === 'string') {
         var date = new Date(str);
         if (!isNaN(date.getTime())) {
-            var offset = date.getTimezoneOffset() * -1 * 60000;
+            var offset = date.getTimezoneOffset() * offset * 1000;
             str = new Date(date.getTime() + offset).toISOString();
         }
     }
     return str;
 }
 
-const addTimezone = (str) => {
+const addTimezone = (str, offset = 60) => {
     if (typeof str === 'string') {
         var date = new Date(str);
         if (!isNaN(date.getTime())) {
-            var offset = date.getTimezoneOffset() * +1 * 60000;
+            var offset = date.getTimezoneOffset() * offset * 1000;
             str = new Date(date.getTime() + offset).toISOString();
         }
     }
@@ -48,7 +49,7 @@ const splitISO = (value) => {
     return { date, time, fraction };
 }
 
-const DateTimeWidget = (ps) => {
+const DefaultDateTimeWidget = (ps) => {
 
     var {
         id,
@@ -154,5 +155,108 @@ const DateTimeWidget = (ps) => {
         </Wrapper>
     )
 };
+
+const DateOnlyServerSideWidget = (ps) => {
+
+    var {
+        id,
+        type,
+        label,
+        value,
+        required,
+        onChange,
+        options,
+        schema,
+        formContext,
+        rawErrors = [],
+
+        isArrayItem,
+    } = ps;
+   
+    var serverTimezoneOffset = useContext(ServerTimezoneContext);
+
+    var {
+        systemType,
+        systemProps = {}
+    } = schema;
+
+    var Wrapper = wrappers[systemProps.uiWrapper];
+    if (!Wrapper) {
+        if (isArrayItem) {
+            Wrapper = wrappers.OneLineWrapper;
+        }
+        else {
+            Wrapper = wrappers.InlineWrapper;
+        }
+    }
+    
+    var hasErrors = rawErrors.length > 0;
+    var className = hasErrors ? 'is-invalid' : '';
+
+    var { date } = splitISO(removeTimezone(value, serverTimezoneOffset));
+    //console.log({ date });
+    
+    // usin empty defaults or else react complains about switching
+    // controlled to uncontrolled, and when i use null it complains
+    // about that too
+    var [ cachedDate, setCachedDate ] = useState(date || '');
+
+    var {
+        handleChangeDate,
+    } = useMemo(() => ({
+        handleChangeDate: (event) => {
+            var { target: { value }} = event;
+            setCachedDate(value);
+
+            var date = value;
+            if (date) {
+                // FIXME: summer vs winter time
+                var fakeISOString = `${date}T12:00:00.000Z`;
+                var fakeDate = new Date(fakeISOString);
+
+                if (!isNaN(fakeDate.getTime())) {
+                    //var localOffset = fakeDate.getTimezoneOffset();
+                    //var delta = localOffset - serverTimezoneOffset;
+                    /*var iso = removeTimezone(
+                        fakeISOString,
+                        serverTimezoneOffset
+                    );*/
+                    //console.log({ fakeISOString })
+                    onChange(fakeISOString);
+                }
+                else {
+                    console.log('INVALID');
+                    onChange('INVALID');
+                }
+            }
+        },
+    }), [ cachedDate, onChange ]);
+
+    return (
+        <Wrapper { ...({
+            id, label, required, schema, rawErrors
+        }) }>
+            <InputGroup>
+                <Form.Control {...({
+                    id: `${id}_DATE`,
+                    className,
+                    type: 'date',
+                    value: cachedDate,
+                    onChange: handleChangeDate,
+                })} />
+            </InputGroup>
+        </Wrapper>
+    )
+}
+
+const DateTimeWidget = (ps) => {
+    var { schema } = ps;
+    if (schema.systemType === 'DateOnlyServerSide') {
+        return <DateOnlyServerSideWidget { ...ps} />
+    }
+    else {
+        return <DefaultDateTimeWidget { ...ps} />
+    }
+}
 
 export default DateTimeWidget;

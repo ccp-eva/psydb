@@ -27,6 +27,10 @@ agent.send = ({ message }) => {
     return axios.post('/api/', message);
 }
 
+agent.fetchServerTimezone = () => {
+    return axios.get(`/api/server-timezone`);
+}
+
 agent.readCustomRecordTypeMetadata = () => {
     return axios.get(`/api/metadata/custom-record-types`);
 }

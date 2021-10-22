@@ -15,7 +15,6 @@ const checkReallyRequired = ({ schema, required }) => {
             type.includes('string') && !!minLength
         )
     );
-    console.log({ schema, isReallyRequired });
 
     return isReallyRequired;
 }

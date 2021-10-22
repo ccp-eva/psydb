@@ -14,8 +14,11 @@ import {
 } from '@mpieva/psydb-ui-layout';
 
 import agent from '@mpieva/psydb-ui-request-agents';
+import { useFetch } from '@mpieva/psydb-ui-hooks';
+import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
 import ErrorBoundary from './error-boundary';
+import ServerTimezoneContext from '@mpieva/psydb-ui-lib/src/server-timezone-context';
 
 import SideNav from './side-nav';
 import CustomRecordTypes from './custom-record-types';
@@ -38,6 +41,17 @@ import AwayTeamCalendar from './calendars/away-team-experiments/calendar';
 const Main = ({ onSignedOut, onSignedIn }) => {
     var history = useHistory();
 
+    var [ didFetch, fetched ] = useFetch((agent) => (
+        agent.fetchServerTimezone()
+    ), [])
+
+    if (!didFetch) {
+        return <LoadingIndicator size='lg' />
+    }
+
+    var serverTimezoneOffset = fetched.data.timezoneOffset;
+    console.log({ serverTimezoneOffset });
+
     var onSignOut = () => (
         agent.signOut()
         .then(
@@ -53,15 +67,17 @@ const Main = ({ onSignedOut, onSignedIn }) => {
     );
 
     return (
-        <Switch>
-            <Route
-                path='/calendars/away-team/:locationType/:researchGroupId'
-                component={ withEB(AwayTeamCalendar) }
-            />
-            <Route>
-                <LayoutedRoutes { ...({ onSignOut }) }/>
-            </Route>
-        </Switch>
+        <ServerTimezoneContext.Provider value={ serverTimezoneOffset }>
+            <Switch>
+                <Route
+                    path='/calendars/away-team/:locationType/:researchGroupId'
+                    component={ withEB(AwayTeamCalendar) }
+                />
+                <Route>
+                    <LayoutedRoutes { ...({ onSignOut }) }/>
+                </Route>
+            </Switch>
+        </ServerTimezoneContext.Provider>
     )
 }
 
