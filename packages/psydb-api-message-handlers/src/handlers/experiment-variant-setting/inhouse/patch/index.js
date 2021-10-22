@@ -8,12 +8,12 @@ var SimpleHandler = require('../../../../lib/simple-handler'),
     createEvents = require('../../../../lib/create-event-messages-from-props');
 
 var checkForeignIdsExist = require('../../../../lib/check-foreign-ids-exist');
-var checkBasics = require('../../utils/check-create-basics');
+var checkBasics = require('../../utils/check-patch-basics');
 var checkCRTFieldPointers = require('../../utils/check-crt-field-pointers');
 var createSchema = require('./schema');
 
 var handler = SimpleHandler({
-    messageType: 'experiment-variant-setting/inhouse/create',
+    messageType: 'experiment-variant-setting/inhouse/patch',
     createSchema,
 });
 
@@ -29,7 +29,6 @@ handler.checkAllowedAndPlausible = async ({
         permissions,
         cache,
         message,
-        type: 'inhouse'
     });
 
     var { subjectTypeRecord } = cache;
@@ -82,20 +81,12 @@ handler.triggerSystemEvents = async ({
     personnelId,
 }) => {
     var { type: messageType, payload } = message;
-    var { id, studyId, experimentVariantId, props } = payload;
+    var { id, lastKnownEventId, props } = payload;
 
     var channel = (
         rohrpost
         .openCollection('experimentVariantSetting')
-        .openChannel({
-            id,
-            isNew: true,
-            additionalChannelProps: {
-                type: 'inhouse',
-                studyId,
-                experimentVariantId
-            }
-        })
+        .openChannel({ id })
     );
 
     var messages = createEvents({
@@ -104,7 +95,7 @@ handler.triggerSystemEvents = async ({
         props
     })
 
-    await channel.dispatchMany({ messages });
+    await channel.dispatchMany({ messages, lastKnownEventId });
 }
 
 module.exports = handler;

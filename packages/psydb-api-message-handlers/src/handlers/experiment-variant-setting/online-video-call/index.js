@@ -5,6 +5,7 @@ var {
 
 var EVSOnlineVideoCallGroup = MessageHandlerGroup([
     require('./create'),
+    require('./patch'),
 ]);
 
 module.exports = EVSOnlineVideoCallGroup;

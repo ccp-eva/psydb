@@ -8,12 +8,12 @@ var SimpleHandler = require('../../../../lib/simple-handler'),
     createEvents = require('../../../../lib/create-event-messages-from-props');
 
 var checkForeignIdsExist = require('../../../../lib/check-foreign-ids-exist');
-var checkBasics = require('../../utils/check-create-basics');
+var checkBasics = require('../../utils/check-patch-basics');
 var checkCRTFieldPointers = require('../../utils/check-crt-field-pointers');
 var createSchema = require('./schema');
 
 var handler = SimpleHandler({
-    messageType: 'experiment-variant-setting/inhouse/create',
+    messageType: 'experiment-variant-setting/online-video-call/patch',
     createSchema,
 });
 
@@ -29,13 +29,11 @@ handler.checkAllowedAndPlausible = async ({
         permissions,
         cache,
         message,
-        type: 'inhouse'
     });
 
     var { subjectTypeRecord } = cache;
     var {
         subjectFieldRequirements,
-        locations
     } = message.payload.props;
     
     var pointers = subjectFieldRequirements.map(it => it.pointer);
@@ -43,36 +41,6 @@ handler.checkAllowedAndPlausible = async ({
         crt: subjectTypeRecord,
         pointers,
     });
-
-    var locationsByType = groupBy({
-        items: locations,
-        byProp: 'customRecordTypeKey'
-    });
-
-    for (var typeKey of Object.keys(locationsByType)) {
-        var values = locationsByType[typeKey];
-
-        var locationTypeRecord = await (
-            db.collection('customRecordType')
-            .findOne(
-                { collection: 'location', type: typeKey },
-                { projection: { events: false }}
-            )
-        );
-        if (!locationTypeRecord) {
-            throw new ApiError(400, 'InvalidLocationRecordType');
-        }
-
-        var locationIds = values.map(it => it.locationId);
-        await checkForeignIdsExist(db, {
-            'location': {
-                ids: locationIds,
-                filters: { type: typeKey }
-            },
-        });
-
-    }
-
 }
 
 handler.triggerSystemEvents = async ({
@@ -82,20 +50,12 @@ handler.triggerSystemEvents = async ({
     personnelId,
 }) => {
     var { type: messageType, payload } = message;
-    var { id, studyId, experimentVariantId, props } = payload;
+    var { id, lastKnownEventId, props } = payload;
 
     var channel = (
         rohrpost
         .openCollection('experimentVariantSetting')
-        .openChannel({
-            id,
-            isNew: true,
-            additionalChannelProps: {
-                type: 'inhouse',
-                studyId,
-                experimentVariantId
-            }
-        })
+        .openChannel({ id })
     );
 
     var messages = createEvents({
@@ -104,7 +64,7 @@ handler.triggerSystemEvents = async ({
         props
     })
 
-    await channel.dispatchMany({ messages });
+    await channel.dispatchMany({ messages, lastKnownEventId });
 }
 
 module.exports = handler;

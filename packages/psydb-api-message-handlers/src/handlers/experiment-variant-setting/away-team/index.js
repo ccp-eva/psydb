@@ -5,6 +5,7 @@ var {
 
 var EVSAwayTeamGroup = MessageHandlerGroup([
     require('./create'),
+    require('./patch'),
 ]);
 
 module.exports = EVSAwayTeamGroup;

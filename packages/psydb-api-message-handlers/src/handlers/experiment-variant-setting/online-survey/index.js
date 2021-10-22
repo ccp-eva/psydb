@@ -5,6 +5,7 @@ var {
 
 var EVSOnlineSurveyGroup = MessageHandlerGroup([
     require('./create'),
+    require('./patch'),
 ]);
 
 module.exports = EVSOnlineSurveyGroup;

@@ -5,6 +5,7 @@ var {
 
 var EVSInhouseGroup = MessageHandlerGroup([
     require('./create'),
+    require('./patch'),
 ]);
 
 module.exports = EVSInhouseGroup;
