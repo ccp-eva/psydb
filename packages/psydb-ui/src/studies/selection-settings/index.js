@@ -1,16 +1,14 @@
-import React, { useEffect, useReducer, useMemo, useCallback } from 'react';
+import React from 'react';
+import { useRouteMatch, useParams } from 'react-router-dom';
+
+import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
 import {
-    Route,
-    Switch,
-    Redirect,
-    useRouteMatch,
-    useHistory,
-    useParams
-} from 'react-router-dom';
+    useFetchAll,
+    useRevision,
+    useModalReducer,
+} from '@mpieva/psydb-ui-hooks';
 
-import agent from '@mpieva/psydb-ui-request-agents';
-import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 import SelectionSettingsBySubjectType from './selection-settings-by-subject-type';
 
 const StudySelectionSettings = ({
@@ -19,93 +17,39 @@ const StudySelectionSettings = ({
     var { path, url } = useRouteMatch();
     var { id } = useParams();
 
-    var [ state, dispatch ] = useReducer(reducer, {});
-    var {
-        revision,
+    var [ revision, increaseRevision ] = useRevision();
 
-        record,
-        subjectTypeData,
-        relatedRecordLabels,
-        relatedHelperSetItems,
-        relatedCustomRecordTypeLabels,
-    } = state;
-
-    var handleSuccessfulUpdate = useCallback((response) => {
-        dispatch({ type: 'increase-revision' });
-    }, [])
-
-    useEffect(() => {
-        agent.readRecord({
+    var [ didFetch, fetched ] = useFetchAll((agent) => ({
+        study: agent.readRecord({
             collection: 'study',
             recordType,
             id,
-        })
-        .then((response) => {
-            dispatch({ type: 'init-data', payload: {
-                ...response.data.data
-            }})
-        })
-
-        agent.fetchSubjectTypeDataForStudy({
+        }),
+        studySubjectTypes: agent.fetchSubjectTypeDataForStudy({
             studyId: id,
-        })
-        .then((response) => {
-            dispatch({ type: 'init-subject-type-data', payload: {
-                ...response.data.data
-            }})
-        })
+        }),
+    }), [ id, revision ]);
 
-    }, [ id, revision ])
-
-    if (!record || !subjectTypeData) {
-        return (
-            <LoadingIndicator size='lg' />
-        );
+    if (!didFetch) {
+        return <LoadingIndicator size='lg' />
     }
 
-    var { selectionSettingsBySubjectType } = record.state;
+    var studyData = fetched.study.data;
+    var studySubjectTypesData = fetched.studySubjectTypes.data;
+
+    var { selectionSettingsBySubjectType } = studyData.record.state;
 
     return (
         <div className='mt-3 mb-3'>
             <SelectionSettingsBySubjectType { ...({
                 settings: selectionSettingsBySubjectType,
-                onSuccessfulUpdate: handleSuccessfulUpdate,
-
-                record,
-                subjectTypeData,
-                relatedRecordLabels,
-                relatedHelperSetItems,
-                relatedCustomRecordTypeLabels,
+                subjectTypeData: studySubjectTypesData.records,
+                ...studyData,
+                
+                onSuccessfulUpdate: increaseRevision,
             }) } />
         </div>
     )
-}
-
-const reducer = (state, action) => {
-    var { type, payload } = action;
-    switch (type) {
-
-        case 'init-data':
-            return ({
-                ...state,
-                record: payload.record,
-                relatedRecordLabels: payload.relatedRecordLabels,
-                relatedHelperSetItems: payload.relatedHelperSetItems,
-                relatedCustomRecordTypeLabels: payload.relatedCustomRecordTypeLabels,
-            })
-
-        case 'init-subject-type-data':
-            return ({
-                ...state,
-                subjectTypeData: payload.records,
-            })
-
-        case 'increase-revision':
-            return ({
-                ...state,
-                revision: (state.revision || 0) + 1
-            })
-    }
 }
 
 export default StudySelectionSettings;

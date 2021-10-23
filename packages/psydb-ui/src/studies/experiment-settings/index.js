@@ -1,5 +1,4 @@
 import React from 'react';
-import { useFetchAll, useRevision } from '@mpieva/psydb-ui-hooks';
 
 import {
     Route,
@@ -10,7 +9,12 @@ import {
     useParams
 } from 'react-router-dom';
 
-import { useModalReducer } from '@mpieva/psydb-ui-hooks';
+import {
+    useFetchAll,
+    useRevision,
+    useModalReducer,
+} from '@mpieva/psydb-ui-hooks';
+
 import {
     Button,
     LoadingIndicator
