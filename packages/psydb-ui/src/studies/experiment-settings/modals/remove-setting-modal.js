@@ -2,7 +2,7 @@ import React from 'react';
 
 import { createSend, demuxed } from '@mpieva/psydb-ui-utils';
 import { Button, WithDefaultModal } from '@mpieva/psydb-ui-layout';
-import * as Items from './setting-items';
+import * as Items from '../setting-items';
 
 const RemoveSettingModalBody = (ps) => {
     var {

@@ -16,12 +16,14 @@ import {
     LoadingIndicator
 } from '@mpieva/psydb-ui-layout';
 
-import NewVariantModal from './new-variant-modal';
-import RemoveVariantModal from './remove-variant-modal';
+import {
+    NewVariantModal,
+    RemoveVariantModal,
 
-import NewSettingModal from './new-setting-modal';
-import EditSettingModal from './edit-setting-modal';
-import RemoveSettingModal from './remove-setting-modal';
+    NewSettingModal,
+    EditSettingModal,
+    RemoveSettingModal,
+} from './modals';
 
 import VariantList from './variant-list';
 
