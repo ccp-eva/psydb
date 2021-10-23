@@ -52,7 +52,7 @@ const TargetLocationList = ({
         )
     }
 
-    var [ revision, increaseRevision ] = useRevision();
+    var { value: revision, up: increaseRevision } = useRevision();
 
     var pagination = usePaginationReducer();
     var { offset, limit } = pagination;

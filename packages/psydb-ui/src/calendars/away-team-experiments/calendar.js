@@ -44,7 +44,7 @@ const AwayTeamCalendar = ({
         researchGroupId,
     } = useParams();
 
-    var [ revision, increaseRevision ] = useRevision();
+    var { value: revision, up: increaseRevision } = useRevision();
     var [ query, updateQuery ] = useURLSearchParams();
     // TODO: study selection
     

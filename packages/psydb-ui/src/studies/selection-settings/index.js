@@ -17,7 +17,7 @@ const StudySelectionSettings = ({
     var { path, url } = useRouteMatch();
     var { id } = useParams();
 
-    var [ revision, increaseRevision ] = useRevision();
+    var { value: revision, up: increaseRevision } = useRevision();
 
     var [ didFetch, fetched ] = useFetchAll((agent) => ({
         study: agent.readRecord({

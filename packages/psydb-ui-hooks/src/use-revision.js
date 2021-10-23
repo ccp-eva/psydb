@@ -7,7 +7,7 @@ const useRevision = () => {
         dispatch({ type: 'increment-revision' })
     }, [])
 
-    return [ state.revision, increment ];
+    return { value: state, up: increment };
 }
 
 const reducer = (state, action) => {

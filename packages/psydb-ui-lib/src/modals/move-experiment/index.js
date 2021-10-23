@@ -33,7 +33,7 @@ const MoveExperimentModal = ({
     onSuccessfulUpdate,
 }) => {
     var confirmModal = useModalReducer({ show: false });
-    var [ revision, increaseRevision ] = useRevision();
+    var { value: revision, up: increaseRevision } = useRevision();
 
     var wrappedOnSuccessfulUpdate = demuxed([
         onHide, onSuccessfulUpdate

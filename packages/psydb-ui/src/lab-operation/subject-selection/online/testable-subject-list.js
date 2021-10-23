@@ -64,7 +64,7 @@ const OnlineTestableSubjectList = ({
     var pagination = usePaginationReducer();
     var { offset, limit, total } = pagination;
 
-    var [ revision, increaseRevision ] = useRevision();
+    var { value: revision, up: increaseRevision } = useRevision();
     
     // FIXME
     var studyId = studyIds;

@@ -57,7 +57,7 @@ const ExperimentSettings = ({
     var { path, url } = useRouteMatch();
     var { id: studyId } = useParams();
     
-    var [ revision, increaseRevision ] = useRevision();
+    var { value: revision, up: increaseRevision } = useRevision();
     
     var newVariantModal = useModalReducer();
     var removeVariantModal = useModalReducer();
