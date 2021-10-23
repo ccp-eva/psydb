@@ -1,22 +1,16 @@
 import React from 'react';
 import groupBy from '@mpieva/psydb-common-lib/src/group-by';
+import { SimpleList } from '@mpieva/psydb-ui-layout';
 import VariantListItem from './variant-list-item';
 
 const VariantList = (ps) => {
     var {
         variantRecords,
         settingRecords,
+        onAddVariant,
         onRemoveVariant,
         ...downstream
     } = ps;
-
-    if (variantRecords.length < 1) {
-        return (
-            <div className='p-3 text-danger'>
-                <b>Keine Ablauf-Einstellungen vorhanden</b>
-            </div>
-        )
-    }
 
     var groupedSettings = groupBy({
         items: settingRecords,
@@ -24,20 +18,23 @@ const VariantList = (ps) => {
     });
 
     return (
-        <div>
-            { variantRecords.map((it, index) => {
-                return (
-                    <VariantListItem key={ index } {...({
-                        index,
-                        variantRecord: it,
-                        settingRecords: groupedSettings[it._id] || [],
-                        onRemove: onRemoveVariant,
-                        ...downstream,
-                    })} />
-                )
-            })}
-        </div>
-    );
+        <SimpleList { ...({
+            items: variantRecords,
+            emptyLabel:'Keine Ablauf-Einstellungen vorhanden',
+            addButtonLabel: '+ Ablauf',
+            onAdd: onAddVariant,
+        }) }>
+            {(it, index) => (
+                <VariantListItem key={ index } {...({
+                    index,
+                    variantRecord: it,
+                    settingRecords: groupedSettings[it._id] || [],
+                    onRemove: onRemoveVariant,
+                    ...downstream,
+                })} />
+            )}
+        </SimpleList>
+    )
 }
 
 export default VariantList;

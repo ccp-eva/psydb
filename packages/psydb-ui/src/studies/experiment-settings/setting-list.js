@@ -33,8 +33,9 @@ const SettingList = (ps) => {
         'online-survey': OnlineSurveySetting
     })[variantType];
 
+
     return (
-        <div>
+        <>
             { settingRecords.map((settingRecord, index) => (
                 <SettingComponent key={ index } { ...({
                     variantRecord,
@@ -44,7 +45,7 @@ const SettingList = (ps) => {
                     ...downstream
                 })} />
             ))}
-        </div>
+        </>
     )
 }
 

@@ -11,6 +11,9 @@ import {
 
 import SelectionSettingsBySubjectType from './selection-settings-by-subject-type';
 
+import AddSubjectTypeModal from './add-subject-type-modal';
+import ConditionsByAgeFrameModal from './conditions-by-age-frame-modal';
+
 const StudySelectionSettings = ({
     recordType,
 }) => {
@@ -18,6 +21,9 @@ const StudySelectionSettings = ({
     var { id } = useParams();
 
     var { value: revision, up: increaseRevision } = useRevision();
+
+    var addSubjectTypeModal = useModalReducer();
+    var conditionsByAgeFrameModal = useModalReducer();
 
     var [ didFetch, fetched ] = useFetchAll((agent) => ({
         study: agent.readRecord({
@@ -41,11 +47,29 @@ const StudySelectionSettings = ({
 
     return (
         <div className='mt-3 mb-3'>
+            
+            <AddSubjectTypeModal { ...({
+                ...addSubjectTypeModal.passthrough,
+                ...studyData,
+                
+                onSuccessfulUpdate: increaseRevision
+            })} />
+            
+            <ConditionsByAgeFrameModal { ...({
+                ...conditionsByAgeFrameModal.passthrough,
+                studyData,
+                
+                onSuccessfulUpdate: increaseRevision
+            })} />
+
             <SelectionSettingsBySubjectType { ...({
                 settings: selectionSettingsBySubjectType,
                 subjectTypeData: studySubjectTypesData.records,
-                ...studyData,
+                studyData,
                 
+                onAddSubjectType: addSubjectTypeModal.handleShow,
+                onAddAgeFrame: conditionsByAgeFrameModal.handleShow,
+                onEditAgeFrame: conditionsByAgeFrameModal.handleShow,
                 onSuccessfulUpdate: increaseRevision,
             }) } />
         </div>

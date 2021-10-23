@@ -1,7 +1,11 @@
 import React, { useEffect, useReducer } from 'react';
 import agent from '@mpieva/psydb-ui-request-agents';
-import { Modal } from '@mpieva/psydb-ui-layout';
+
+import { useSend } from '@mpieva/psydb-ui-hooks';
+import { WithDefaultModal } from '@mpieva/psydb-ui-layout';
 import { SchemaForm } from '@mpieva/psydb-ui-lib';
+
+import { Modal } from '@mpieva/psydb-ui-layout';
 
 import {
     AgeFrameSettingsListItem,
@@ -31,7 +35,7 @@ const createSchema = ({ subjectTypeData }) => {
 };
 
 
-const ConditionsByAgeFrameModal = ({
+const ConditionsByAgeFrameModalOLD = ({
     type,
     show,
     onHide,
@@ -121,5 +125,95 @@ const ConditionsByAgeFrameModal = ({
         </Modal>
     );
 }
+
+
+const ConditionsByAgeFrameModalBody = (ps) => {
+    var {
+        modalPayloadData,
+        studyData,
+
+        onHide,
+        onSuccessfulUpdate,
+    } = ps;
+
+    var {
+        type,
+        ageFrame,
+        conditions,
+
+        subjectRecordType,
+        subjectTypeData,
+    } = modalPayloadData;
+
+    var {
+        record: studyRecord,
+        relatedRecordLabels,
+        relatedHelperSetItems,
+        relatedCustomRecordTypeLabels,
+    } = studyData;
+
+    var schema = createSchema({ subjectTypeData });
+
+    var formData = (
+        type === 'edit'
+        ? {
+            ageFrame,
+            conditions,
+        }
+        : undefined
+    );
+
+    var send = useSend(({ formData }) => {
+        var message = undefined;
+
+        if (type === 'edit') {
+            message = {
+                type: 'study/update-age-frame',
+                payload: {
+                    id: studyRecord._id,
+                    lastKnownEventId: studyRecord._lastKnownEventId,
+                    customRecordType: subjectRecordType,
+                    originalAgeFrame: ageFrame,
+                    props: formData,
+                }
+            };
+        }
+        else {
+            message = {
+                type: 'study/add-age-frame',
+                payload: {
+                    id: studyRecord._id,
+                    lastKnownEventId: studyRecord._lastKnownEventId,
+                    customRecordType: subjectRecordType,
+                    props: formData,
+                }
+            };
+        }
+        
+        return message;
+    }, {
+        onSuccessfulUpdate: [ onHide, onSuccessfulUpdate ]
+    })
+
+    return (
+        <SchemaForm
+            schema={ schema }
+            formContext={{
+                relatedRecordLabels,
+                relatedHelperSetItems,
+                relatedCustomRecordTypeLabels,
+            }}
+            formData={ formData }
+            onSubmit={ send.exec }
+        />
+    )
+}
+
+const ConditionsByAgeFrameModal = WithDefaultModal({
+    title: 'Altersfenster',
+    size: 'lg',
+
+    Body: ConditionsByAgeFrameModalBody,
+});
 
 export default ConditionsByAgeFrameModal;

@@ -19,8 +19,13 @@ export { default as Pair } from './pair';
 export { default as WithDefaultModal } from './with-default-modal';
 
 export * from './nbsp';
+export * from './simple-list';
+export * from './outer-setting-panel';
+export * from './inner-setting-panel';
+
 export * as FormHelpers from './form';
 export * as Icons from './icons';
+
 
 export {
     Nav,

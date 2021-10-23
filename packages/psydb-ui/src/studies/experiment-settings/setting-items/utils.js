@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-    EditIconButton,
-    RemoveIconButton,
-} from '@mpieva/psydb-ui-layout';
+import { InnerSettingPanel } from '@mpieva/psydb-ui-layout';
 
 export const DefaultSettingWrapper = (ps) => {
     var {
@@ -28,24 +25,17 @@ export const DefaultSettingWrapper = (ps) => {
         customRecordTypes
     };
 
+    var panelProps = {
+        label,
+        onEdit: () => onEdit(actionProps),
+        onRemove: () => onRemove(actionProps),
+        showEditButton: showButtons,
+        showRemoveButton: showButtons,
+    }
+
     return (
-        <div className='p-3 mb-2 border d-flex justify-content-between align-items-start'>
-            <div className='flex-grow-1 mr-4'>
-                <header className='mb-2 border-bottom'>
-                    <b>{ label }</b>
-                </header>
-                { children }
-            </div>
-            { showButtons && (
-                <div className='d-flex flex-column'>
-                    <EditIconButton className='mb-2' onClick={ () => (
-                        onEdit(actionProps)
-                    )} />
-                    <RemoveIconButton onClick={ () => (
-                        onRemove(actionProps)
-                    )} />
-                </div>
-            )}
-        </div>
+        <InnerSettingPanel { ...panelProps }>
+            { children }
+        </InnerSettingPanel>
     )
 }

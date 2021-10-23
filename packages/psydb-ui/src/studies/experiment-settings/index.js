@@ -133,28 +133,20 @@ const ExperimentSettings = ({
                 onSuccessfulUpdate: increaseRevision
             })} />
 
-            <div className='mb-3'>
-                <VariantList { ...({
-                    variantRecords,
-                    settingRecords,
-                    settingRelated,
-                    customRecordTypes,
+            <VariantList { ...({
+                variantRecords,
+                settingRecords,
+                settingRelated,
+                customRecordTypes,
 
-                    onRemoveVariant: removeVariantModal.handleShow,
+                onAddVariant: newVariantModal.handleShow,
+                onRemoveVariant: removeVariantModal.handleShow,
 
-                    onAddSetting: newSettingModal.handleShow,
-                    onEditSetting: editSettingModal.handleShow,
-                    onRemoveSetting: removeSettingModal.handleShow,
-                })} />
-            </div>
+                onAddSetting: newSettingModal.handleShow,
+                onEditSetting: editSettingModal.handleShow,
+                onRemoveSetting: removeSettingModal.handleShow,
+            })} />
             
-            <Button
-                size='sm'
-                onClick={ () => newVariantModal.handleShow() }
-            >
-                + Neuer Ablauf
-            </Button>
-    
         </div>
     )
 }
