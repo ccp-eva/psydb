@@ -1,7 +1,17 @@
-import React, { useEffect, useReducer } from 'react';
+import { useEffect, useReducer } from 'react';
 import agent from '@mpieva/psydb-ui-request-agents';
 
-const useFetch = (createPromise, triggerProps) => {
+const useFetch = (...args) => {
+    if (args.length < 3) {
+        args = [ args[0], defaultInit, args[1] ];
+    }
+    var [
+        createPromise,
+        init,
+        dependencies
+    ] = args;
+
+    var reducer = createReducer(init);
     var [ state, dispatch ] = useReducer(reducer, { didFetch: false });
 
     var wrappedCreatePromise = () => {
@@ -16,20 +26,24 @@ const useFetch = (createPromise, triggerProps) => {
         }
     };
 
-    useEffect(wrappedCreatePromise, triggerProps);
+    useEffect(wrappedCreatePromise, dependencies);
 
     return [ state.didFetch, state ];
 }
 
-const reducer = (state, action) => {
+const defaultInit = (payload) => ({
+    data: payload.data,
+    response: payload.response,
+});
+
+const createReducer = (init) => (state, action) => {
     var { type, payload } = action;
     switch (type) {
         case 'init-data':
             return ({
                 ...state,
                 didFetch: true,
-                data: payload.data,
-                response: payload.response,
+                ...init(payload),
             })
     }
 }
