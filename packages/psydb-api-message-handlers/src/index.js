@@ -14,6 +14,7 @@ var allHandlers = [
     
     require('./handlers/subject'),
     require('./handlers/subject-selector'),
+    require('./handlers/age-frame'),
 
     require('./handlers/study'),
     require('./handlers/experiment-operator-team'),

@@ -246,6 +246,14 @@ module.exports = {
         hasSubChannels: false,
     },
 
+    subjectSelector: {
+        collection: 'ageFrame',
+        isGenericRecord: true,
+        hasCustomTypes: false,
+        hasFixedTypes: false,
+        hasSubChannels: false,
+    },
+
     systemRole: {
         collection: 'systemRole',
         isGenericRecord: true,

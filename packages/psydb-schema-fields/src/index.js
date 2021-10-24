@@ -18,6 +18,9 @@ module.exports = {
     CustomRecordTypeKey: require('./custom-record-type-key'),
     CustomRecordTypeFieldKey: require('./custom-record-type-field-key'),
 
+    AgeFrameBoundary: require('./age-frame-boundary'),
+    AgeFrameInterval: require('./age-frame-interval'),
+
     DateTime: require('./date-time'),
     DateTimeInterval: require('./date-time-interval'),
     DateOnlyServerSide: require('./date-only-server-side'),

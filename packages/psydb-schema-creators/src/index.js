@@ -61,6 +61,12 @@ module.exports = {
         RecordMessage: internals.SubjectSelectorRecordMessage,
     },
 
+    ageFrame: {
+        ...metadata.ageFrame,
+        State: internals.AgeFrameState,
+        RecordMessage: internals.AgeFrameRecordMessage,
+    },
+
     systemRole: {
         ...metadata.systemRole,
         State: internals.SystemRoleState,
