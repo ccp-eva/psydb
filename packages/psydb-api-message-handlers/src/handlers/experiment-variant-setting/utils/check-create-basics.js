@@ -71,7 +71,7 @@ var checkCreateBasics = async ({
         .toArray()
     );
 
-    if (conflictingSettings.length) {
+    if (conflictingSettings.length > 0) {
         throw new ApiError(400, 'SubjectTypeConflictsWithOtherSetting');
     }
 

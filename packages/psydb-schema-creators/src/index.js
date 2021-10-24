@@ -54,6 +54,13 @@ module.exports = {
         },
         RecordMessage: internals.SubjectRecordMessage
     },
+
+    subjectSelector: {
+        ...metadata.subjectSelector,
+        State: internals.SubjectSelectorState,
+        RecordMessage: internals.SubjectSelectorRecordMessage,
+    },
+
     systemRole: {
         ...metadata.systemRole,
         State: internals.SystemRoleState,

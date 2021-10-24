@@ -16,6 +16,9 @@ module.exports.SubjectScientificState = require('./subject/scientific-state');
 module.exports.SubjectGdprState = require('./subject/gdpr-state');
 module.exports.SubjectRecordMessage = require('./subject/record-message');
     
+module.exports.SubjectSelectorState = require('./subject-selector/state');
+module.exports.SubjectSelectorRecordMessage = require('./subject-selector/record-message');
+
 module.exports.LocationState = require('./location/state');
 module.exports.LocationRecordMessage = require('./location/record-message');
 

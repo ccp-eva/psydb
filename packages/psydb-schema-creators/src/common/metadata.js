@@ -237,6 +237,15 @@ module.exports = {
         hasSubChannels: true,
         subChannelKeys: ['scientific', 'gdpr'],
     },
+
+    subjectSelector: {
+        collection: 'subjectSelector',
+        isGenericRecord: true,
+        hasCustomTypes: false,
+        hasFixedTypes: false,
+        hasSubChannels: false,
+    },
+
     systemRole: {
         collection: 'systemRole',
         isGenericRecord: true,

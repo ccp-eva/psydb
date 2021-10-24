@@ -3,7 +3,7 @@ var {
     MessageHandlerGroup
 } = require('@mpieva/psydb-koa-event-middleware');
 
-var ExperimentVariantSettingGroup = MessageHandlerGroup([
+var SubjectSelectorSettingGroup = MessageHandlerGroup([
     require('./online-survey'),
     require('./online-video-call'),
     require('./inhouse'),
@@ -11,4 +11,4 @@ var ExperimentVariantSettingGroup = MessageHandlerGroup([
     require('./remove')
 ]);
 
-module.exports = ExperimentVariantSettingGroup;
+module.exports = SubjectSelectorSettingGroup;

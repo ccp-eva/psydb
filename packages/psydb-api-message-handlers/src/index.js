@@ -11,9 +11,13 @@ var allHandlers = [
     require('./handlers/personnel'),
     require('./handlers/research-group'),
     require('./handlers/location'),
+    
     require('./handlers/subject'),
+    require('./handlers/subject-selector'),
+
     require('./handlers/study'),
     require('./handlers/experiment-operator-team'),
+
     require('./handlers/reservation'),
     require('./handlers/experiment'),
     require('./handlers/experiment-variant'),
