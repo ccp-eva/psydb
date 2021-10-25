@@ -11,9 +11,8 @@ import {
 } from '@mpieva/psydb-ui-lib/src/formik';
 
 const defaultValues = {
-    subjectsPerExperiment: 1,
-    subjectFieldRequirements: [],
-    locations: [],
+    interval: {},
+    conditions: [],
 }
 
 export const AgeFrameForm = (ps) => {
@@ -49,6 +48,7 @@ export const AgeFrameForm = (ps) => {
         switch (op) {
             case 'create':
                 message = { type, payload: {
+                    subjectTypeKey,
                     studyId,
                     subjectSelectorId: selectorId,
                     props: formData['$']
@@ -106,7 +106,7 @@ export const AgeFrameForm = (ps) => {
                                     <b>Bedingungen</b>
                                 </header>
                                 <Fields.SubjectFieldConditionList { ...({
-                                    dataXPath: '$.cond',
+                                    dataXPath: '$.conditions',
                                     subjectScientificFields,
                                     noWrapper: true
                                 })} />

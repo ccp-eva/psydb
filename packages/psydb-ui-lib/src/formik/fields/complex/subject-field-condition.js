@@ -100,7 +100,7 @@ const Control = (ps) => {
             }) } />
 
             <ConditionValueFieldList { ...({
-                dataXPath: `${dataXPath}.value`,
+                dataXPath: `${dataXPath}.values`,
                 label: 'Werte',
                 required: true,
                 disabled: disabled || !selectedPointer,
