@@ -1,7 +1,9 @@
 import React from 'react';
-import WithField from '../with-field';
-import { GenericEnumField } from './generic-enum-field';
-import { ForeignIdField } from './foreign-id-field';
+import WithField from '../../with-field';
+import {
+    GenericEnum,
+    ForeignId,
+} from '../scalar'
 
 const Control = (ps) => {
     var {
@@ -21,14 +23,14 @@ const Control = (ps) => {
 
     return (
         <>
-            <GenericEnumField { ...({
+            <GenericEnum { ...({
                 dataXPath: `${dataXPath}.customRecordTypeKey`,
                 label: 'Typ',
                 required: true,
                 options: typeOptions,
                 disabled,
             }) } />
-            <ForeignIdField { ...({
+            <ForeignId { ...({
                 dataXPath: `${dataXPath}.locationId`,
                 label: 'Location',
                 required: true,
@@ -40,7 +42,7 @@ const Control = (ps) => {
     )
 }
 
-export const TypedLocationIdField = WithField({
+export const TypedLocationId = WithField({
     Control,
     DefaultWrapper: ({ children }) => (<>{ children }</>),
 });

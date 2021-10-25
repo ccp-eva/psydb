@@ -34,9 +34,6 @@ handler.triggerSystemEvents = async ({
     var { payload } = message;
     var { id } = payload;
 
-    await db.collection('ageFrameSetting').removeMany({
-        ageFrameId: id
-    });
     await db.collection('ageFrame').removeOne({ _id: id });
 }
 

@@ -79,4 +79,11 @@ module.exports = {
     experimentVariantSettings: (
         require('./experiment-variant-settings')
     ),
+    
+    subjectSelectors: (
+        require('./subject-selectors')
+    ),
+    ageFrames: (
+        require('./age-frames')
+    ),
 }

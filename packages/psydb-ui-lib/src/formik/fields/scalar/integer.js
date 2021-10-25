@@ -1,21 +1,8 @@
 import React from 'react';
 import { Form } from '@mpieva/psydb-ui-layout';
-import WithField from '../with-field';
+import WithField from '../../with-field';
 
-export const SaneStringField = WithField({
-    Control: (ps) => {
-        var { formikField, disabled } = ps;
-        return (
-            <Form.Control
-                type='text'
-                disabled={ disabled }
-                { ...formikField }
-            />
-        )
-    }
-})
-
-export const IntegerField = WithField({
+export const Integer = WithField({
     type: 'number',
     fakeDefault: Infinity,
 

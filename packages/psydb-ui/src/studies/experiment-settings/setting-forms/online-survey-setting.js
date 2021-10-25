@@ -3,7 +3,7 @@ import { createSend } from '@mpieva/psydb-ui-utils';
 import { Button } from '@mpieva/psydb-ui-layout';
 import {
     DefaultForm,
-    GenericEnumField,
+    Fields,
 } from '@mpieva/psydb-ui-lib/src/formik';
 
 export const OnlineSurveySetting = (ps) => {
@@ -58,7 +58,7 @@ export const OnlineSurveySetting = (ps) => {
             <DefaultForm onSubmit={ handleSubmit }>
                 {(formikProps) => (
                     <>
-                        <GenericEnumField { ...({
+                        <Fields.GenericEnum { ...({
                             dataXPath: '$.subjectTypeKey',
                             label: 'Probandentyp',
                             required: true,

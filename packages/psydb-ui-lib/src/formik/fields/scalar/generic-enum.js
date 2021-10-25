@@ -1,10 +1,10 @@
 import React from 'react';
 import { Form } from '@mpieva/psydb-ui-layout';
-import WithField from '../with-field';
+import WithField from '../../with-field';
 
-import fixSelectProps from '../fix-select-props';
+import fixSelectProps from '../../fix-select-props';
 
-export const GenericEnumField = WithField({ Control: (ps) => {
+export const GenericEnum = WithField({ Control: (ps) => {
     var {
         dataXPath,
         formikField,

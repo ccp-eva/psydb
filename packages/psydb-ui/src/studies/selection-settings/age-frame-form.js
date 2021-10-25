@@ -13,28 +13,28 @@ import {
 const defaultValues = {
     subjectsPerExperiment: 1,
     subjectFieldRequirements: [],
+    locations: [],
 }
 
-export const OnlineVideoCallSetting = (ps) => {
+export const AgeFrameForm = (ps) => {
     var {
         op,
+        subjectTypeKey,
         studyId,
-        variantId,
-        settingRecord,
+        selectorId,
+        ageFrameRecord,
 
-        allowedSubjectTypes,
         onSuccessfulUpdate
     } = ps;
 
-    var settingId, lastKnownEventId, settingState;
-    if (settingRecord) {
+    var ageFrameId, lastKnownEventId, ageFrameState;
+    if (ageFrameRecord) {
         ({
-            _id: settingId,
+            _id: ageFrameId,
             _lastKnownEventId: lastKnownEventId,
-            state: settingState,
-        } = settingRecord)
+            state: ageFrameState,
+        } = ageFrameRecord)
     }
-
     if (![ 'create', 'patch' ].includes(op)) {
         throw new Error(`unknown op "${op}"`);
     }
@@ -44,19 +44,19 @@ export const OnlineVideoCallSetting = (ps) => {
     }, [])
 
     var handleSubmit = createSend((formData, formikProps) => {
-        var type = `experiment-variant-setting/online-video-call/${op}`;
+        var type = `ageFrame/${op}`;
         var message;
         switch (op) {
             case 'create':
                 message = { type, payload: {
                     studyId,
-                    experimentVariantId: variantId,
+                    subjectSelectorId: selectorId,
                     props: formData['$']
                 } };
                 break;
             case 'patch':
                 message = { type, payload: {
-                    id: settingId,
+                    id: ageFrameId,
                     lastKnownEventId,
                     props: formData['$']
                 }};
@@ -68,12 +68,11 @@ export const OnlineVideoCallSetting = (ps) => {
     }, { onSuccessfulUpdate });
 
     if (!didFetch) {
-        return (
-            <LoadingIndicator size='lg' />
-        );
+        return <LoadingIndicator size='lg' />
     }
 
     var { customRecordTypes } = fetched.data;
+
     customRecordTypes = keyBy({
         items: customRecordTypes,
         byProp: 'type',
@@ -83,42 +82,30 @@ export const OnlineVideoCallSetting = (ps) => {
         <div>
             <DefaultForm
                 onSubmit={ handleSubmit }
-                initialValues={ settingState || defaultValues }
+                initialValues={ ageFrameState || defaultValues }
             >
                 {(formikProps) => {
-                    var { getFieldProps } = formikProps;
-                    var selectedType = (
-                        getFieldProps('$.subjectTypeKey').value
+                    var subjectScientificFields = (
+                        customRecordTypes[subjectTypeKey].state
+                        .settings.subChannelFields.scientific
                     );
 
                     return (
                         <>
-                            <Fields.GenericEnum { ...({
-                                dataXPath: '$.subjectTypeKey',
-                                label: 'Probandentyp',
-                                required: true,
-                                options: allowedSubjectTypes
+                            <Fields.AgeFrameBoundary
+                                label='Start'
+                                dataXPath='$.interval.start'
+                            />
+                            <Fields.AgeFrameBoundary
+                                label='Ende'
+                                dataXPath='$.interval.end'
+                            />
+
+                            <Fields.SubjectFieldCondition { ...({
+                                dataXPath: '$.cond',
+                                subjectScientificFields
                             })} />
-                            <Fields.Integer { ...({
-                                dataXPath: '$.subjectsPerExperiment',
-                                label: 'Anzahl pro Termin',
-                                required: true,
-                                min: 1,
-                                disabled: !selectedType
-                            })} />
-                            <Fields.SubjectFieldRequirementList { ...({
-                                dataXPath: '$.subjectFieldRequirements',
-                                label: 'Terminbedingungen',
-                                subjectScientificFields: (
-                                    selectedType
-                                    ? (
-                                        customRecordTypes[selectedType].state
-                                        .settings.subChannelFields.scientific
-                                    )
-                                    : []
-                                ),
-                                disabled: !selectedType
-                            })} />
+
                             <Button type='submit'>
                                 Speichern
                             </Button>

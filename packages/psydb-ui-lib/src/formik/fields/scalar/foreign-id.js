@@ -1,8 +1,8 @@
 import React from 'react';
-import WithField from '../with-field';
-import RecordPicker from '../../pickers/record-picker';
+import WithField from '../../with-field';
+import RecordPicker from '../../../pickers/record-picker';
 
-export const ForeignIdField = WithField({ Control: (ps) => {
+export const ForeignId = WithField({ Control: (ps) => {
     var {
         dataXPath,
         formikField,

@@ -7,10 +7,7 @@ import { Button, LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
 import {
     DefaultForm,
-    GenericEnumField,
-    IntegerField,
-    SubjectFieldRequirementListField,
-    TypedLocationIdListField,
+    Fields
 } from '@mpieva/psydb-ui-lib/src/formik';
 
 const defaultValues = {
@@ -115,13 +112,13 @@ export const InhouseSetting = (ps) => {
 
                     return (
                         <>
-                            <GenericEnumField { ...({
+                            <Fields.GenericEnum { ...({
                                 dataXPath: '$.subjectTypeKey',
                                 label: 'Probandentyp',
                                 required: true,
                                 options: allowedSubjectTypes
                             })} />
-                            <IntegerField { ...({
+                            <Fields.Integer { ...({
                                 dataXPath: '$.subjectsPerExperiment',
                                 label: 'Anzahl pro Termin',
                                 required: true,
@@ -129,14 +126,14 @@ export const InhouseSetting = (ps) => {
                                 disabled: !selectedType
                             })} />
 
-                            <SubjectFieldRequirementListField { ...({
+                            <Fields.SubjectFieldRequirementList { ...({
                                 dataXPath: '$.subjectFieldRequirements',
                                 label: 'Terminbedingungen',
                                 subjectScientificFields,
                                 disabled: !selectedType
                             })} />
 
-                            <TypedLocationIdListField { ...({
+                            <Fields.TypedLocationIdList { ...({
                                 dataXPath: '$.locations',
                                 label: 'Räumlichkeiten',
                                 typeOptions: allowedLocationTypes,

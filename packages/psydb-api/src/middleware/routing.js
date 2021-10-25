@@ -270,6 +270,22 @@ var createRouting = ({
         endpoints.special.experimentVariantSettings
     );
 
+    router.post('/subject-selectors',
+        withSelfAuth(),
+        withPermissions(),
+        withEndpointProtection({ endpoint: 'subject-selectors' }),
+        withKoaBody(),
+        endpoints.special.subjectSelectors
+    );
+
+    router.post('/age-frames',
+        withSelfAuth(),
+        withPermissions(),
+        withEndpointProtection({ endpoint: 'age-frames' }),
+        withKoaBody(),
+        endpoints.special.ageFrames
+    );
+
     return compose([
         router.routes(),
         router.allowedMethods(),

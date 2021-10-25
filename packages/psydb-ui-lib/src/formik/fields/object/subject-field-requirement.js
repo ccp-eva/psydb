@@ -1,7 +1,7 @@
 import React from 'react';
 import { subjectFieldRequirementChecks } from '@mpieva/psydb-schema-enums';
-import WithField from '../with-field';
-import { GenericEnumField } from './generic-enum-field';
+import WithField from '../../with-field';
+import { GenericEnum } from '../scalar';
 
 // all the non scalar types
 const prohibitedFieldTypes = [
@@ -51,7 +51,7 @@ const Control = (ps) => {
 
     return (
         <>
-            <GenericEnumField { ...({
+            <GenericEnum { ...({
                 dataXPath: `${dataXPath}.pointer`,
                 label: 'Feld',
                 required: true,
@@ -59,7 +59,7 @@ const Control = (ps) => {
                 disabled,
             }) } />
             
-            <GenericEnumField { ...({
+            <GenericEnum { ...({
                 dataXPath: `${dataXPath}.check`,
                 label: 'Bedingung',
                 required: true,
@@ -70,7 +70,7 @@ const Control = (ps) => {
     )
 };
 
-export const SubjectFieldRequirementField = WithField({
+export const SubjectFieldRequirement = WithField({
     Control,
     DefaultWrapper: ({ children }) => (<>{ children }</>),
 });

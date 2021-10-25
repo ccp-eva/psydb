@@ -387,4 +387,26 @@ agent.fetchExperimentVariantSettings = ({
         }
     );
 }
+
+agent.fetchSubjectSelectors = ({
+    studyId,
+}) => {
+    return axios.post(
+        '/api/subject-selectors',
+        {
+            studyId,
+        }
+    );
+}
+
+agent.fetchAgeFrames = ({
+    studyId,
+}) => {
+    return axios.post(
+        '/api/age-frames',
+        {
+            studyId,
+        }
+    );
+}
 export default agent;

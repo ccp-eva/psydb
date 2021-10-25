@@ -7,7 +7,7 @@ import { Button, LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
 import {
     DefaultForm,
-    GenericEnumField,
+    Fields,
 } from '@mpieva/psydb-ui-lib/src/formik';
 
 export const AwayTeamSetting = (ps) => {
@@ -115,13 +115,13 @@ export const AwayTeamSetting = (ps) => {
 
                     return (
                         <>
-                            <GenericEnumField { ...({
+                            <Fields.GenericEnum { ...({
                                 dataXPath: '$.subjectTypeKey',
                                 label: 'Probandentyp',
                                 required: true,
                                 options: allowedSubjectTypes
                             })} />
-                            <GenericEnumField { ...({
+                            <Fields.GenericEnum { ...({
                                 dataXPath: '$.subjectLocationFieldPointer',
                                 label: 'Termine in',
                                 required: true,

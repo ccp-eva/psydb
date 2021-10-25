@@ -2,6 +2,7 @@
 var ApiError = require('@mpieva/psydb-api-lib/src/api-error');
 var GenericRecordHandler = require('../../../lib/generic-record-handler');
 var checkForeignIdsExist = require('../../../lib/check-foreign-ids-exist');
+var checkCRTFieldPointers = require('../../../lib/check-crt-field-pointers');
     
 var handler = GenericRecordHandler({
     collection: 'ageFrame',
@@ -16,7 +17,8 @@ var handler = GenericRecordHandler({
             cache
         } = context;
 
-        var { studyId, subjectTypeKey } = message.payload;
+        var { studyId, subjectTypeKey, props } = message.payload;
+        var { conditions } = props;
 
         await checkForeignIdsExist(db, {
             'study': studyId,
@@ -50,6 +52,12 @@ var handler = GenericRecordHandler({
         if (conflictingSelectors.length > 0) {
             throw new ApiError(400, 'SubjectTypeConflictsWithOtherSelector');
         }
+
+        var pointers = conditions.map((it) => it.pointer);
+        checkCRTFieldPointers({
+            crt: subjectTypeRecord,
+            pointers,
+        });
 
         cache.subjectTypeRecord = subjectTypeRecord;
     }

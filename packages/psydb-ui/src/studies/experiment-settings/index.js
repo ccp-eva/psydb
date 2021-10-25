@@ -16,7 +16,6 @@ import {
 } from '@mpieva/psydb-ui-hooks';
 
 import {
-    Button,
     LoadingIndicator
 } from '@mpieva/psydb-ui-layout';
 
@@ -30,26 +29,6 @@ import {
 } from './modals';
 
 import VariantList from './variant-list';
-
-const getAllowedSubjectTypes = (studyData) => {
-    var { selectionSettingsBySubjectType } = studyData.record.state;
-    var {
-        subject: subjectTypeLabels
-    } = studyData.relatedCustomRecordTypeLabels;
-
-    var allowedSubjectTypes = (
-        selectionSettingsBySubjectType.reduce(
-            (acc, it) => ({
-                ...acc,
-                [it.subjectRecordType]: (
-                    subjectTypeLabels[it.subjectRecordType].state.label
-                )
-            }), {}
-        )
-    );
-
-    return allowedSubjectTypes;
-}
 
 const ExperimentSettings = ({
     studyType,
@@ -85,9 +64,7 @@ const ExperimentSettings = ({
     }, [ studyId, revision ])
 
     if (!didFetch) {
-        return (
-            <LoadingIndicator size='lg' />
-        );
+        return <LoadingIndicator size='lg' />
     }
 
     var { customRecordTypes } = fetched.crts.data;
@@ -98,7 +75,14 @@ const ExperimentSettings = ({
         ...settingRelated
     } = fetched.settings.data;
 
-    var allowedSubjectTypes = getAllowedSubjectTypes(studyData);
+    var allowedSubjectTypes = (
+        customRecordTypes
+        .filter(it => it.collection === 'subject')
+        .reduce((acc, it) => ({
+            ...acc,
+            [it.type]: it.state.label
+        }), {})
+    );
 
     return (
         <div className='mt-3 mb-3'>
