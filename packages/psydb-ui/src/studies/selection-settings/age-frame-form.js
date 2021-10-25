@@ -100,11 +100,17 @@ export const AgeFrameForm = (ps) => {
                                 label='Ende'
                                 dataXPath='$.interval.end'
                             />
-
-                            <Fields.SubjectFieldCondition { ...({
-                                dataXPath: '$.cond',
-                                subjectScientificFields
-                            })} />
+                            
+                            <div className='pl-3'>
+                                <header className='border-bottom pb-1 mb-2'>
+                                    <b>Bedingungen</b>
+                                </header>
+                                <Fields.SubjectFieldConditionList { ...({
+                                    dataXPath: '$.cond',
+                                    subjectScientificFields,
+                                    noWrapper: true
+                                })} />
+                            </div>
 
                             <Button type='submit'>
                                 Speichern

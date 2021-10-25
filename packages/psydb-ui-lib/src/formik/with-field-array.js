@@ -18,7 +18,11 @@ const WithFieldArray = (options) => {
         return (
             <FieldArray name={ dataXPath }>
                 {(helpers) => (
-                    <ArrayContent { ...ps } formikArrayHelpers={ helpers } />
+                    <ArrayContent
+                        { ...ps }
+                        inArray={ true }
+                        formikArrayHelpers={ helpers }
+                    />
                 )}
             </FieldArray>
         )
@@ -32,6 +36,8 @@ const WithFieldArray = (options) => {
             formikForm,
             formikArrayHelpers,
             disabled,
+            enableMove,
+            enableRemove,
             ...downstream
         } = ps;
     
@@ -54,6 +60,8 @@ const WithFieldArray = (options) => {
                         ...sharedBag,
                         index,
                         lastIndex: values.length - 1,
+                        enableMove,
+                        enableRemove,
                     };
                     return (
                         <ArrayItemWrapper key={ index } { ...sharedItemBag }>

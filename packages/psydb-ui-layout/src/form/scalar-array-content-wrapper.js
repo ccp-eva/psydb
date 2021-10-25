@@ -1,7 +1,8 @@
 import React from 'react';
+import { Button } from 'react-bootstrap';
 import * as Icons from '../icons';
 
-export const ObjectArrayContentWrapper = (ps) => {
+export const ScalarArrayContentWrapper = (ps) => {
     var {
         formikArrayHelpers,
         itemsCount,
@@ -16,15 +17,17 @@ export const ObjectArrayContentWrapper = (ps) => {
 
     return (
         <div>
-            { children }
-            <Footer { ...ps } />
+            <ol className='border p-3 mb-3'>
+                { children }
+                <Footer { ...ps } />
+            </ol>
         </div>
     );
 }
 
 const Fallback = (ps) => (
     <div>
-        <div className='border p-3' style={{
+        <div className='border p-3 mb-3' style={{
             position: 'relative',
         }}>
             <div className='text-muted' style={{
@@ -33,13 +36,13 @@ const Fallback = (ps) => (
             }}>
                 <i>Keine Einträge</i>
             </div>
+            <Footer { ...ps } />
         </div>
-        <Footer { ...ps } />
     </div>
 )
 
 const Footer = ({ formikArrayHelpers, defaultItemValue, disabled }) => (
-    <AddButtonWrapper>
+    <div className='mt-3'>
         <AddButton
             disabled={ disabled }
             onClick={ () => (
@@ -48,19 +51,8 @@ const Footer = ({ formikArrayHelpers, defaultItemValue, disabled }) => (
         >
             <Icons.Plus />
         </AddButton>
-    </AddButtonWrapper>
-)
-
-const AddButtonWrapper = ({ children }) => (
-    <div
-        className='d-flex mb-3'
-        style={{ marginTop: '-1px' }}
-    >
-        <div className='bg-white'>
-            { children }
-        </div>
     </div>
-);
+)
 
 const AddButton = ({ children, onClick, style, disabled }) => (
     <div
@@ -73,7 +65,7 @@ const AddButton = ({ children, onClick, style, disabled }) => (
             width: '100px',
             ...style,
         }}
-        className=' border d-flex align-items-center justify-content-center'
+        className=' border d-flex align-items-center justify-content-center bg-white'
     >
         { children }
     </div>

@@ -1,4 +1,6 @@
 import React from 'react';
+import { FormHelpers } from '@mpieva/psydb-ui-layout';
+import factory from '../../field-array-factory';
 import WithField from '../../with-field';
 import WithFieldArray from '../../with-field-array';
 import * as ScalarFields from '../scalar';
@@ -47,19 +49,11 @@ const ConditionValueField = (ps) => {
     );
 }
 
-const ConditionValueFieldList = WithFieldArray({
-    Control: (ps) => {
-        var {
-            formikField,
-            formikMeta,
-            formikForm,
-            formikArrayHelpers,
-            ...downstream
-        } = ps;
-
-        return  <ConditionValueField { ...downstream } />
-    }
-})
+const ConditionValueFieldList = factory({
+    FieldComponent: ConditionValueField,
+    ArrayContentWrapper: FormHelpers.ScalarArrayContentWrapper,
+    ArrayItemWrapper: FormHelpers.ScalarArrayItemWrapper,
+});
 
 const Control = (ps) => {
     var {
@@ -111,6 +105,7 @@ const Control = (ps) => {
                 required: true,
                 disabled: disabled || !selectedPointer,
                 targetField,
+                enableMove: false,
             })} />
         </>
     )

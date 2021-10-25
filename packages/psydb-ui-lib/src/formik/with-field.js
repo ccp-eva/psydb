@@ -8,7 +8,7 @@ const WithField = (options) => (ps) => {
     var {
         Control,
         DefaultWrapper = FormHelpers.InlineWrapper,
-        InArrayWrapper = FormHelpers.ScalarArrayItemWrapper,
+        InArrayWrapper = FormHelpers.NoneWrapper,
         type = 'text',
         fakeDefault = '',
     } = options;
@@ -17,14 +17,19 @@ const WithField = (options) => (ps) => {
         dataXPath,
         label,
         required,
-        inArray
+        inArray,
+        noWrapper,
     } = ps;
-    
+
     var Wrapper = (
         inArray
         ? InArrayWrapper
         : DefaultWrapper
     );
+
+    if (noWrapper) {
+        Wrapper = FormHelpers.NoneWrapper;
+    }
 
     return (
         <Field type={ type } name={ dataXPath }>
