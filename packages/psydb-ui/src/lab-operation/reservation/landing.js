@@ -5,7 +5,7 @@ import { RecordPicker } from '@mpieva/psydb-ui-lib';
 
 import StudySelectList from '@mpieva/psydb-ui-lib/src/study-select-list';
 
-const Landing = (ps) => {
+export const Landing = (ps) => {
     var { path, url } = useRouteMatch();
     var { studyType } = useParams();
     var history =  useHistory();
@@ -54,5 +54,3 @@ const SelectionIndicator = (ps) => {
         </div>
     )
 }
-
-export default Landing;

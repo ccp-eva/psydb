@@ -19,7 +19,7 @@ const AwayTeamContainer = ({}) => {
     var { studyId, studyType } = useParams();
 
     var createModal = useModalReducer();
-    var [ revision, incrementRevision ] = useRevision();
+    var { value: revision, up: incrementRevision } = useRevision();
 
     var handleSuccessfulUpdate = () => {
         incrementRevision();
