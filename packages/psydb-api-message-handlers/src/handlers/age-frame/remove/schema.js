@@ -4,7 +4,7 @@ var { Message } = require('@mpieva/psydb-schema-helpers');
 
 var createSchema = ({} = {}) => {
     return Message({
-        type: `age-frame/remove`,
+        type: `ageFrame/remove`,
         payload: ExactObject({
             properties: {
                 id: Id(),

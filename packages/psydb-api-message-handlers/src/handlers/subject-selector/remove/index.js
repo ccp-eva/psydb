@@ -8,7 +8,7 @@ var checkForeignIdsExist = require('../../../lib/check-foreign-ids-exist');
 var createSchema = require('./schema');
 
 var handler = SimpleHandler({
-    messageType: 'subject-selector/remove',
+    messageType: 'subjectSelector/remove',
     createSchema,
 });
 

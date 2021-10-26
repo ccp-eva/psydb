@@ -8,13 +8,16 @@ import { createSend } from '@mpieva/psydb-ui-utils';
 import { WithDefaultModal } from '@mpieva/psydb-ui-layout';
 import { SchemaForm } from '@mpieva/psydb-ui-lib';
 
-const createSchema = ({ subjectTypesEnum }) => ExactObject({
+const createSchema = ({ subjectTypeMap }) => ExactObject({
     properties: {
         subjectTypeKey: {
             title: 'Probandentyp',
             type: 'string',
-            enum: Object.keys(subjectTypesEnum),
-            enumNames: Object.values(subjectTypesEnum),
+            enum: Object.keys(subjectTypeMap),
+            enumNames: (
+                Object.values(subjectTypeMap)
+                .map(it => it.state.label)
+            ),
         }
     },
     required: [ 'subjectTypeKey' ]
@@ -23,13 +26,13 @@ const createSchema = ({ subjectTypesEnum }) => ExactObject({
 const NewSelectorModalBody = (ps) => {
     var {
         studyId,
-        subjectTypesEnum,
+        subjectTypeMap,
 
         onHide,
         onSuccessfulUpdate,
     } = ps;
 
-    var schema = createSchema({ subjectTypesEnum });
+    var schema = createSchema({ subjectTypeMap });
 
     var handleSubmit = createSend(({ formData }) => ({
         type: `subjectSelector/create`,

@@ -69,12 +69,12 @@ const StudySelectionSettings = ({
         ...ageFrameRelated
     } = fetched.ageFrames.data;
 
-    var subjectTypesEnum = (
+    var subjectTypeMap = (
         customRecordTypes
         .filter(it => it.collection === 'subject')
         .reduce((acc, it) => ({
             ...acc,
-            [it.type]: it.state.label
+            [it.type]: it
         }), {})
     );
 
@@ -84,14 +84,14 @@ const StudySelectionSettings = ({
             <NewSelectorModal { ...({
                 ...newSelectorModal.passthrough,
                 studyId,
-                subjectTypesEnum,
+                subjectTypeMap,
                 
                 onSuccessfulUpdate: increaseRevision
             })} />
             
             <RemoveSelectorModal { ...({
                 ...removeSelectorModal.passthrough,
-                subjectTypesEnum,
+                subjectTypeMap,
                 onSuccessfulUpdate: increaseRevision
             })} />
 
@@ -119,13 +119,13 @@ const StudySelectionSettings = ({
                 ageFrameRelated,
 
                 customRecordTypes,
-                subjectTypesEnum,
+                subjectTypeMap,
 
                 onAddSelector: newSelectorModal.handleShow,
                 onRemoveSelector: removeSelectorModal.handleShow,
 
                 onAddAgeFrame: newAgeFrameModal.handleShow,
-                onEditAgeFrame: newAgeFrameModal.handleShow,
+                onEditAgeFrame: editAgeFrameModal.handleShow,
                 onRemoveAgeFrame: removeAgeFrameModal.handleShow,
             })} />
 

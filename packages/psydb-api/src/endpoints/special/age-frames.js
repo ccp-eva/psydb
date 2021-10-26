@@ -8,6 +8,13 @@ var Ajv = require('@mpieva/psydb-api-lib/src/ajv'),
     ResponseBody = require('@mpieva/psydb-api-lib/src/response-body');
 
 var {
+    AddLastKnownEventIdStage,
+    StripEventsStage,
+} = require('@mpieva/psydb-api-lib/src/fetch-record-helpers');
+
+var fetchRelatedLabelsForMany = require('@mpieva/psydb-api-lib/src/fetch-related-labels-for-many');
+
+var {
     ExactObject,
     ForeignId,
 } = require('@mpieva/psydb-schema-fields');
@@ -44,13 +51,25 @@ var ageFrames = async (context, next) => {
 
     var { studyId } = request.body;
 
-    var records = await db.collection('ageFrame').find({
-        studyId
-    }).toArray();
+    var records = await (
+        db.collection('ageFrame').aggregate([
+            { $match: { studyId }},
+    
+            AddLastKnownEventIdStage(),
+            StripEventsStage(),
+        ]).toArray()
+    )
+
+    var ageFrameRelated = await fetchRelatedLabelsForMany({
+        db,
+        collectionName: 'ageFrame',
+        records,
+    })
 
     context.body = ResponseBody({
         data: {
             records,
+            ...ageFrameRelated
         },
     });
 

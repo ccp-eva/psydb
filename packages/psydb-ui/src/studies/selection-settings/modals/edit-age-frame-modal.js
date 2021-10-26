@@ -7,23 +7,38 @@ import {
 
 import { demuxed } from '@mpieva/psydb-ui-utils';
 import { WithDefaultModal } from '@mpieva/psydb-ui-layout';
-import { SchemaForm } from '@mpieva/psydb-ui-lib';
+import { AgeFrameForm } from '../age-frame-form';
 
 const EditAgeFrameModalBody = (ps) => {
     var {
         studyId,
-        allowedSubjectTypes,
         modalPayloadData,
 
         onHide,
         onSuccessfulUpdate,
     } = ps;
 
-    var { selectorRecord, ageFrameRecord } = modalPayloadData;
-    var { _id: selectorId, type: selectorType } = selectorRecord;
+    var {
+        selectorRecord,
+        ageFrameRecord,
+        ageFrameRelated
+    } = modalPayloadData;
+
+    var { _id: selectorId, subjectTypeKey } = selectorRecord;
 
     return (
-        <div>Foo
+        <div>
+            <AgeFrameForm {...({
+                op: 'patch',
+                studyId,
+                selectorId,
+                subjectTypeKey,
+
+                ageFrameRecord,
+                ageFrameRelated,
+
+                onSuccessfulUpdate: demuxed([ onHide, onSuccessfulUpdate ])
+            })} />
         {/*<AgeFrameForm {...({
             op: 'patch',
             studyId,
@@ -37,7 +52,7 @@ const EditAgeFrameModalBody = (ps) => {
 }
 
 const EditAgeFrameModal = WithDefaultModal({
-    title: 'Altersfenster hinzufügen',
+    title: 'Altersfenster bearbeiten',
     size: 'lg',
 
     Body: EditAgeFrameModalBody

@@ -22,6 +22,7 @@ export const AgeFrameForm = (ps) => {
         studyId,
         selectorId,
         ageFrameRecord,
+        ageFrameRelated,
 
         onSuccessfulUpdate
     } = ps;

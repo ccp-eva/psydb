@@ -9,7 +9,7 @@ const SelectorListItem = (ps) => {
     var {
         index,
         selectorRecord,
-        subjectTypesEnum,
+        subjectTypeMap,
 
         onRemove,
         onAddAgeFrame,
@@ -22,8 +22,10 @@ const SelectorListItem = (ps) => {
         state: selectorState
     } = selectorRecord;
 
+    var subjectTypeRecord = subjectTypeMap[subjectTypeKey];
+
     var panelProps = {
-        label: `${subjectTypesEnum[subjectTypeKey]}`,
+        label: `${subjectTypeRecord.state.label}`,
         addButtonLabel: '+ Altersfenster',
         onAdd: () => onAddAgeFrame({ selectorRecord }),
         onRemove: () => onRemove({ index, selectorRecord })
@@ -33,6 +35,7 @@ const SelectorListItem = (ps) => {
         <OuterSettingPanel { ...panelProps }>
             <AgeFrameList { ...({
                 selectorRecord,
+                subjectTypeRecord,
                 ...downstream
             })} />
         </OuterSettingPanel>

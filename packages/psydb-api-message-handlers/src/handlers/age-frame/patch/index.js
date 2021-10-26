@@ -6,7 +6,7 @@ var checkCRTFieldPointers = require('../../../lib/check-crt-field-pointers');
     
 var handler = GenericRecordHandler({
     collection: 'ageFrame',
-    op: 'create',
+    op: 'patch',
 
     checkAllowedAndPlausible: async (context) => {
         await GenericRecordHandler.checkAllowedAndPlausible(context);
@@ -17,13 +17,19 @@ var handler = GenericRecordHandler({
             cache
         } = context;
 
-        var { studyId, subjectTypeKey, props } = message.payload;
+        var { id, props } = message.payload;
         var { conditions } = props;
 
-        await checkForeignIdsExist(db, {
-            'study': studyId,
-        });
-        
+        var ageFrameRecord = await (
+            db.collection('ageFrame')
+            .findOne(
+                { _id: id },
+                { projection: { events: false }}
+            )
+        );
+
+        var { subjectTypeKey } = ageFrameRecord;
+
         var subjectTypeRecord = await (
             db.collection('customRecordType')
             .findOne(

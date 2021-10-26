@@ -2,21 +2,21 @@ import React from 'react';
 import stringifyFieldValue from '@mpieva/psydb-ui-lib/src/stringify-field-value';
 
 export const AgeFrameCondition = ({
-    fieldKey,
-    values,
+    condition,
 
-    subjectTypeData,
+    ageFrameRecord,
+    ageFrameRelated,
+
+    subjectTypeRecord,
     studyData,
 }) => {
-    var {
-        relatedRecordLabels,
-        relatedHelperSetItems,
-        relatedCustomRecordTypeLabels,
-    } = studyData;
+    var { pointer, values } = condition;
 
     var fieldDefinition = (
-        subjectTypeData.state.settings.subChannelFields.scientific
-        .find(it => it.key === fieldKey )
+        subjectTypeRecord.state.settings.subChannelFields.scientific
+        .find(it => (
+            pointer === `/scientific/state/custom/${it.key}`
+        ))
     );
 
     // FIXME: this is lab-operation/../selection-settings-form-schema.js
@@ -41,10 +41,7 @@ export const AgeFrameCondition = ({
                         ...fieldDefinition,
                         type: realType
                     },
-                    
-                    relatedRecordLabels,
-                    relatedHelperSetItems,
-                    relatedCustomRecordTypeLabels,
+                    ...ageFrameRelated,
                 })).join(', ') }
             </div>
         </div>

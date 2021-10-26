@@ -2,6 +2,7 @@ import React from 'react';
 
 import { createSend, demuxed } from '@mpieva/psydb-ui-utils';
 import { Button, WithDefaultModal } from '@mpieva/psydb-ui-layout';
+import { AgeFrame } from '../age-frame';
 //import * as Items from '../ageFrame-items';
 
 const RemoveAgeFrameModalBody = (ps) => {
@@ -13,10 +14,10 @@ const RemoveAgeFrameModalBody = (ps) => {
     } = ps;
 
     var { ageFrameRecord } = modalPayloadData;
-    var { _id: ageFrameId, type: selectorType } = ageFrameRecord;
+    var { _id: ageFrameId, subjectTypeKey } = ageFrameRecord;
 
     var handleSubmit = createSend(() => ({
-        type: `experiment-selector-ageFrame/remove`,
+        type: `ageFrame/remove`,
         payload: { id: ageFrameId }
     }), {
         onSuccessfulUpdate: [ onHide, onSuccessfulUpdate ]
@@ -28,7 +29,7 @@ const RemoveAgeFrameModalBody = (ps) => {
                 <b>Dieses Altersfenster wirklich löschen?</b>
             </div>
             <div className='bg-white'>
-                <AgeFrameItem
+                <AgeFrame
                     { ...modalPayloadData }
                     showButtons={ false }
                 />

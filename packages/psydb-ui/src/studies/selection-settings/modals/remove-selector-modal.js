@@ -7,7 +7,7 @@ const RemoveSelectorModalBody = (ps) => {
     var {
         onHide,
         modalPayloadData,
-        subjectTypesEnum,
+        subjectTypeMap,
 
         onSuccessfulUpdate,
     } = ps;
@@ -17,7 +17,7 @@ const RemoveSelectorModalBody = (ps) => {
 
 
     var handleSubmit = createSend(() => ({
-        type: `experiment-selector/remove`,
+        type: `subjectSelector/remove`,
         payload: { id: selectorId }
     }), {
         onSuccessfulUpdate: [ onHide, onSuccessfulUpdate ]
@@ -32,7 +32,7 @@ const RemoveSelectorModalBody = (ps) => {
                 </b>
             </div>
             <div className='p-3 border bg-white'>
-                { subjectTypesEnum[subjectTypeKey] }
+                { subjectTypeMap[subjectTypeKey].state.label }
             </div>
             <div className='mt-3 d-flex justify-content-end'>
                 <Button selector='danger' onClick={ handleSubmit }>

@@ -57,6 +57,17 @@ var AgeFrame = (value) => {
     return `${start} - ${end}`;
 }
 
+var AgeFrameBoundary = (value) => {
+    var { years, months, days } = value;
+    return `${years}/${months}/${days}`;
+}
+
+var AgeFrameInterval = (value) => {
+    var start = AgeFrameBoundary(value.start);
+    var end = AgeFrameBoundary(value.end);
+    return `${start} - ${end}`;
+}
+
 var BiologicalGender = (value) => {
     return {
         'male': 'Männlich',
@@ -75,8 +86,14 @@ var ExtBool = (value) => {
 
 module.exports = {
     Address,
+    
+    // FIXME: obsolete
     AgeFrameEdge,
     AgeFrame,
+
+    AgeFrameBoundary,
+    AgeFrameInterval,
+
     EmailList,
     PhoneList,
     DateTime,

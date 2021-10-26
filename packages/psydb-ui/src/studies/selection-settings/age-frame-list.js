@@ -1,4 +1,5 @@
 import React from 'react';
+import { AgeFrame } from './age-frame';
 
 const AgeFrameList = (ps) => {
     var {
@@ -21,16 +22,16 @@ const AgeFrameList = (ps) => {
 
     return (
         <>
-            { foo }
-            { /*ageFrameRecords.map((ageFrameRecord, index) => (
-                <AgeFrameComponent key={ index } { ...({
+            { ageFrameRecords.map((ageFrameRecord, index) => (
+                <AgeFrame key={ index } { ...({
+                    index,
                     selectorRecord,
                     ageFrameRecord,
                     onEdit: onEditAgeFrame,
                     onRemove: onRemoveAgeFrame,
                     ...downstream
                 })} />
-            ))*/}
+            ))}
         </>
     )
 }

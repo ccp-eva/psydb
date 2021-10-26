@@ -8,7 +8,7 @@ var checkForeignIdsExist = require('../../../lib/check-foreign-ids-exist');
 var createSchema = require('./schema');
 
 var handler = SimpleHandler({
-    messageType: 'age-frame/remove',
+    messageType: 'ageFrame/remove',
     createSchema,
 });
 

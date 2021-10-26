@@ -5,6 +5,7 @@ var {
 
 var AgeFrameGroup = MessageHandlerGroup([
     require('./create'),
+    require('./patch'),
     require('./remove'),
 ]);
 
