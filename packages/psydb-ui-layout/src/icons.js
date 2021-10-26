@@ -8,6 +8,7 @@ export {
    
     ChevronLeft,
     ChevronRight,
+    ChevronDoubleRight,
 
     CaretDownFill,
     CaretUpFill,

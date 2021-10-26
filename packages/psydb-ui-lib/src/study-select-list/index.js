@@ -15,7 +15,9 @@ const StudySelectList = ({
     wholeRowIsClickable,
     selectedRecordIds,
     onSelectRecord,
-   
+
+    bsTableProps,
+    CustomActionListComponent,
 }) => {
     var [ didFetch, fetched ] = useFetch((agent) => {
         return agent.fetchSelectableStudies({
@@ -51,6 +53,9 @@ const StudySelectList = ({
             wholeRowIsClickable,
             onSelectRecord,
             selectedRecordIds,
+    
+            bsTableProps,
+            CustomActionListComponent,
         })} />
     )
 };

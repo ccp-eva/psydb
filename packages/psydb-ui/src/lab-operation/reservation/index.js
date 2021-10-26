@@ -12,44 +12,29 @@ import {
 import agent from '@mpieva/psydb-ui-request-agents';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
 
-import { TabNav } from '@mpieva/psydb-ui-layout';
+import { TabNav, PageWrappers } from '@mpieva/psydb-ui-layout';
 import StudyInhouseLocationTypeNav from '@mpieva/psydb-ui-lib/src/study-inhouse-location-type-nav';
 
 import LocationTypeContainer from './location-type-container';
 import { RecordPicker } from '@mpieva/psydb-ui-lib';
 //import LocationCalendarList from './location-calendar-list';
 
+import Landing from './landing';
 import AwayTeams from './away-teams';
 
 const ReservationRouting = ({ customRecordTypes }) => {
     var { path, url } = useRouteMatch();
     return (
-        <>
-            <h2>Reservierung</h2>
+        <PageWrappers.Level2 title='Reservierung'>
             <Switch>
                 <Route exact path={`${path}`}>
-                    <ReservationIndex />
+                    <Landing />
                 </Route>
                 <Route path={`${path}/:studyId`}>
                     <Reservation customRecordTypes={ customRecordTypes } />
                 </Route>
             </Switch>
-        </>
-    )
-}
-
-const ReservationIndex = () => {
-    var { path, url } = useRouteMatch();
-    var { studyType } = useParams();
-    var history =  useHistory();
-    return (
-        <RecordPicker
-            collection='study'
-            recordType={ studyType }
-            onChange={ (nextStudyRecord) => {
-                history.push(`${url}/${nextStudyRecord._id}`)
-            }}
-        />
+        </PageWrappers.Level2>
     )
 }
 

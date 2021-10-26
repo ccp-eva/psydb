@@ -62,7 +62,7 @@ const TableRow = ({
                 displayFieldData,
             })} />
             <td>
-                <div className='d-flex justify-content-end pb-0 pt-2'>
+                <div className='d-flex justify-content-end pb-0 pt-0'>
                 {
                     CustomActionListComponent
                     ? (

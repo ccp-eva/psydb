@@ -11,7 +11,7 @@ import {
 
 import agent from '@mpieva/psydb-ui-request-agents';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
-import { BigNav } from '@mpieva/psydb-ui-layout';
+import { BigNav, PageWrappers } from '@mpieva/psydb-ui-layout';
 import RecordTypeNav from '@mpieva/psydb-ui-lib/src/record-type-nav';
 
 import ReservationRouting from './reservation';
@@ -53,12 +53,7 @@ const LabOperation = () => {
     );
 
     return (
-        <div>
-            <header>
-                <h1 className='mb-0 border-bottom'>
-                    Studienbetrieb
-                </h1>
-            </header>
+        <PageWrappers.Level1 title='Studienbetrieb'>
             <Switch>
                 <Route exact path={`${path}`}>
                     <RedirectOrTypeNav
@@ -117,8 +112,7 @@ const LabOperation = () => {
                 </Route>
 
             </Switch>
-        </div>
-
+        </PageWrappers.Level1>
     )
 }
 

@@ -14,7 +14,8 @@ import agent from '@mpieva/psydb-ui-request-agents';
 import {
     BigNav,
     TabNav,
-    LinkButton
+    LinkButton,
+    PageWrappers
 } from '@mpieva/psydb-ui-layout';
 
 import RecordListContainer from '@mpieva/psydb-ui-lib/src/record-list-container';
@@ -32,11 +33,7 @@ const SubjectSelectionRouting = () => {
     var { path, url } = useRouteMatch();
     
     return (
-        <>
-            <h5 className='mt-0 mb-3 text-muted'>
-                Probandenauswahl
-            </h5>
-
+        <PageWrappers.Level2 title='Probandenauswahl'>
             <Switch>
                 <Route exact path={ path }>
                     <BigNav items={[
@@ -67,7 +64,7 @@ const SubjectSelectionRouting = () => {
                     <OnlineSelectionContainer />
                 </Route>
             </Switch>
-        </>
+        </PageWrappers.Level2>
     )
 }
 
@@ -75,10 +72,7 @@ const InhouseSelectionContainer = () => {
     var { path, url } = useRouteMatch();
 
     return (
-        <div>
-            <h4 className='border-bottom'>
-                Für Interne Studie
-            </h4>
+        <PageWrappers.Level3 title='Für Interne Studie'>
             <Switch>
                 <Route exact path={ `${path}` }>
                     <StudySelect experimentType='inhouse' />
@@ -90,7 +84,7 @@ const InhouseSelectionContainer = () => {
                     <SearchContainer experimentType='inhouse' />
                 </Route>
             </Switch>
-        </div>
+        </PageWrappers.Level3>
     )
 }
 
@@ -98,10 +92,7 @@ const AwayTeamSelectionContainer = () => {
     var { path, url } = useRouteMatch();
 
     return (
-        <div>
-            <h4 className='border-bottom'>
-                Für Externe Studie
-            </h4>
+        <PageWrappers.Level3 title='Für Externe Studie'>
             <Switch>
                 <Route exact path={ `${path}` }>
                     <StudySelect
@@ -120,7 +111,7 @@ const AwayTeamSelectionContainer = () => {
                     />
                 </Route>
             </Switch>
-        </div>
+        </PageWrappers.Level3>
     )
 }
 
@@ -128,10 +119,7 @@ const OnlineSelectionContainer = () => {
     var { path, url } = useRouteMatch();
 
     return (
-        <div>
-            <h4 className='border-bottom'>
-                Für Online-Studie
-            </h4>
+        <PageWrappers.Level3 title='Für Online-Umfrage'>
             <Switch>
                 <Route exact path={ `${path}` }>
                     <StudySelect
@@ -150,7 +138,7 @@ const OnlineSelectionContainer = () => {
                     />
                 </Route>
             </Switch>
-        </div>
+        </PageWrappers.Level3>
     )
 }
 

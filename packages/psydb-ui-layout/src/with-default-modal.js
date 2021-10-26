@@ -9,6 +9,8 @@ const WithDefaultModal = (options) => (ps) => {
         className = 'team-modal',
         backdropClassName = 'team-modal-backdrop',
 
+        bodyClassName = 'bg-light',
+
         title,
     } = options;
 
@@ -26,7 +28,7 @@ const WithDefaultModal = (options) => (ps) => {
     var renderedContent = (
         Body
         ? (
-            <Modal.Body className='bg-light'>
+            <Modal.Body className={ bodyClassName }>
                 <Body { ...ps } />
             </Modal.Body>
         )

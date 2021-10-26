@@ -1,171 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import classnames from 'classnames';
-
-import {
-    Form,
-    InputGroup,
-    Button,
-    Modal,
-    Icons
-} from '@mpieva/psydb-ui-layout';
-
+import React from 'react';
+import { withRecordPicker } from './with-record-picker';
 import RecordListContainer from '../record-list-container';
 
-const RecordPicker = ({
-    collection,
-    recordType,
-    constraints,
-
-    idLabelProp = '_id',
-    value: record,
-    onChange,
-    hasErrors,
-    disabled,
-}) => {
-    var [ showModal, setShowModal ] = useState(false);
-    // FIXME: im not sure how to best reset the state in case
-    // it gets out of sync i could do it manually by checking the
-    // record ids and foribly update the state
-    var [ cachedRecord, setCachedRecord ] = useState(record);
-
-    useEffect(() => {
-        if (!record) {
-            setCachedRecord(null);
-        }
-    }, [ record ])
-
-    var handleSelect = (record) => {
-        setCachedRecord(record);
-        onChange(record);
-        handleCloseModal();
-    }
-
-    var handleClear = () => {
-        setCachedRecord(null);
-        onChange(null);
-    }
-
-    var handleShowModal = () => {
-        setShowModal(true);
-    }
-
-    var handleCloseModal = () => {
-        setShowModal(false);
-    }
-    
-    var displayValue = (
-        cachedRecord
-        ? cachedRecord._recordLabel || cachedRecord[idLabelProp]
-        : ''
-    )
-
-    var className = classnames([
-        'border pl-3',
-        !disabled && 'bg-white',
-        hasErrors && 'border-danger',
-        (cachedRecord && !cachedRecord._recordLabel) && 'text-danger',
-    ]);
-
+const RecordPicker = withRecordPicker({ RecordList: (ps) => {
+    var {
+        onSelect,
+        
+        collection,
+        recordType,
+        constraints,
+    } = ps;
     return (
-        <div>
-            <InputGroup>
-                <Form.Control
-                    className={ className }
-                    value={ displayValue }
-                    placeholder='Bitte Datensatz wählen'
-                    plaintext
-                    readOnly
-                    onClick={ handleShowModal }
-                    disabled={ disabled }
-                />
-                <InputGroup.Append>
-                    <Button
-                        className={ disabled ? '' : 'bg-white' }
-                        variant={ hasErrors ? 'danger' : 'outline-primary' }
-                        onClick={ handleShowModal }
-                        disabled={ disabled }
-                    >
-                        <Icons.PencilFill style={{ marginTop: '-3px' }}/>
-                    </Button>
-                </InputGroup.Append>
-                { cachedRecord && (
-                    <InputGroup.Append>
-                        <Button
-                            className={ disabled ? '' : 'bg-white' }
-                            variant={ 'outline-secondary' }
-                            onClick={ handleClear }
-                            disabled={ disabled }
-                        >
-                            <Icons.XLg style={{
-                                height: '13px',
-                                width: '13px',
-                                marginTop: '-2px'
-                            }} />
-                        </Button>
-                    </InputGroup.Append>
-                )}
-            </InputGroup>
-            <RecordPickerModal
-                show={ showModal }
-                onHide={ handleCloseModal }
+        <RecordListContainer
+            className='bg-white'
+            tableClassName='border-left border-bottom border-right mb-0'
+            bsTableProps={{ hover: true }}
+            target='optionlist'
+            collection={ collection }
+            recordType={ recordType }
+            constraints={ constraints }
 
-                collection={ collection }
-                recordType={ recordType }
-                constraints={ constraints }
-                onSelectRecord={ handleSelect }
-            />
-        </div>
+            onSelectRecord={ onSelect }
+
+            enableNew={ false }
+            enableView={ false }
+            enableEdit={ false }
+        />
     )
-    /*return (
-        <div>
-            {(
-                record
-                    ? record._recordLabel
-                    : 'Keine ausgewählt'
-            )}
-            <Button
-                onClick={ handleShowModal }
-            >
-                <PencilFill />
-            </Button>
-        </div>
-    )*/
-}
-
-const RecordPickerModal = ({
-    show,
-    onHide,
-
-    collection,
-    recordType,
-    constraints,
-    onSelectRecord,
-}) => {
-    return (
-        <Modal show={show} onHide={ onHide } size='lg'>
-            <Modal.Header closeButton>
-                <Modal.Title>Auswahlliste</Modal.Title>
-            </Modal.Header>
-            <Modal.Body className='bg-light pt-0 pr-3 pl-3'>
-                <RecordListContainer
-                    className='bg-white'
-                    tableClassName='border-left border-bottom border-right mb-0'
-                    bsTableProps={{ hover: true }}
-                    target='optionlist'
-                    collection={ collection }
-                    recordType={ recordType }
-                    constraints={ constraints }
-
-                    onSelectRecord={ onSelectRecord }
-
-                    enableNew={ false }
-                    enableView={ false }
-                    enableEdit={ false }
-                />
-            </Modal.Body>
-        </Modal>
-
-    );
-}
+}})
 
 export default RecordPicker;
