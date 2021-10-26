@@ -10,7 +10,7 @@ const Landing = (ps) => {
     var { studyType } = useParams();
     var history =  useHistory();
     return (
-        <PageWrappers.Level3 title='Studien'>
+        <PageWrappers.Level3 title='Studienauswahl'>
             {/*<div className='m-3 text-muted'>
                 <i>
                     Bitte auswählen für welche Studie Reservierungen
