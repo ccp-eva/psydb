@@ -22,6 +22,8 @@ export const OnlineVideoCallSetting = (ps) => {
         locations,
     } = settingRecord.state;
 
+    var { relatedRecords } = settingRelated;
+
     var subjectType = customRecordTypes.find(it => (
         it.collection === 'subject' && it.type === subjectTypeKey
     ));
@@ -64,6 +66,17 @@ export const OnlineVideoCallSetting = (ps) => {
                     <b style={{ fontWeight: 600 }}>
                         Keine
                     </b>
+                )}
+            </Pair>
+            <Pair label='Räumlichkeiten'>
+                { locations.map(it => {
+                    return (
+                        relatedRecords
+                        .location[it.locationId]._recordLabel
+                    );
+                }).join(', ')}
+                { locations.length < 1 && (
+                    <span>Keine</span>
                 )}
             </Pair>
         </DefaultSettingWrapper>

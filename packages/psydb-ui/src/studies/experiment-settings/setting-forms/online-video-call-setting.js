@@ -13,6 +13,7 @@ import {
 const defaultValues = {
     subjectsPerExperiment: 1,
     subjectFieldRequirements: [],
+    locations: [],
 }
 
 export const OnlineVideoCallSetting = (ps) => {
@@ -74,6 +75,16 @@ export const OnlineVideoCallSetting = (ps) => {
     }
 
     var { customRecordTypes } = fetched.data;
+    
+    var allowedLocationTypes = (
+        customRecordTypes
+        .filter(it => it.collection === 'location')
+        .reduce((acc, it) => ({
+            ...acc,
+            [it.type]: it.state.label
+        }), {})
+    )
+
     customRecordTypes = keyBy({
         items: customRecordTypes,
         byProp: 'type',
@@ -91,6 +102,15 @@ export const OnlineVideoCallSetting = (ps) => {
                         getFieldProps('$.subjectTypeKey').value
                     );
 
+                    var subjectScientificFields = (
+                        selectedType
+                        ? (
+                            customRecordTypes[selectedType].state
+                            .settings.subChannelFields.scientific
+                        )
+                        : []
+                    );
+
                     return (
                         <>
                             <Fields.GenericEnum { ...({
@@ -106,17 +126,17 @@ export const OnlineVideoCallSetting = (ps) => {
                                 min: 1,
                                 disabled: !selectedType
                             })} />
+                            
                             <Fields.SubjectFieldRequirementList { ...({
                                 dataXPath: '$.subjectFieldRequirements',
                                 label: 'Terminbedingungen',
-                                subjectScientificFields: (
-                                    selectedType
-                                    ? (
-                                        customRecordTypes[selectedType].state
-                                        .settings.subChannelFields.scientific
-                                    )
-                                    : []
-                                ),
+                                subjectScientificFields,
+                                disabled: !selectedType
+                            })} />
+                            <Fields.TypedLocationIdList { ...({
+                                dataXPath: '$.locations',
+                                label: 'Räumlichkeiten',
+                                typeOptions: allowedLocationTypes,
                                 disabled: !selectedType
                             })} />
                             <Button type='submit'>

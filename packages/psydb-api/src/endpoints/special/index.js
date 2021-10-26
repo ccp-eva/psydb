@@ -20,10 +20,10 @@ module.exports = {
         require('./participated-studies-for-subject')
     ),
     studyLocationReservationCalendar: (
-        require('./study-location-reservation-calendar')
+        require('./calendars/study-location-reservation-calendar')
     ),
     studyAwayTeamReservationCalendar: (
-        require('./study-away-team-reservation-calendar')
+        require('./calendars/study-away-team-reservation-calendar')
     ),
 
 
@@ -51,10 +51,10 @@ module.exports = {
     ),
 
     experimentCalendar: (
-        require('./experiment-calendar')
+        require('./calendars/experiment-calendar')
     ),
     locationExperimentCalendar: (
-        require('./location-experiment-calendar')
+        require('./calendars/location-experiment-calendar')
     ),
 
     selectableStudies: (

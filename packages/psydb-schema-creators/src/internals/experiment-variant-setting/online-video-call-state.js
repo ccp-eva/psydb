@@ -7,6 +7,7 @@ var {
     Integer,
     DefaultArray,
     JsonPointer,
+    ForeignId,
 } = require('@mpieva/psydb-schema-fields');
 
 var { SubjectFieldRequirementList } = require('./utils');
@@ -24,11 +25,34 @@ var OnlineVideoCallState = () => {
                 minimum: 1,
             }),
             subjectFieldRequirements: SubjectFieldRequirementList(),
+            locations: DefaultArray({
+                title: 'Räumlichkeiten',
+                items: ExactObject({
+                    systemType: 'TypedInhouseLocationId',
+                    properties: {
+                        // FIXME: InhouseLocationTypeKey
+                        customRecordTypeKey: CustomRecordTypeKey({
+                            title: 'Typ',
+                            collection: 'location',
+                        }),
+                        locationId: ForeignId({
+                            title: 'Raum',
+                            collection: 'location',
+                            // TODO: record type $data ??
+                        })
+                    },
+                    required: [
+                        'customRecordTypeKey',
+                        'locationId',
+                    ]
+                })
+            })
         },
         required: [
             'subjectTypeKey',
             'subjectsPerExperiment',
             'subjectFieldRequirements',
+            'locations',
         ]
     });
 }
