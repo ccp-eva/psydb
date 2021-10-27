@@ -1,8 +1,12 @@
 import React from 'react';
-import { useFetchAll } from '@mpieva/psydb-ui-hooks';
-import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
-import { LocationTypeNav } from './location-type-nav';
+import {
+    gatherLocationsFromLabProcedureSettings
+} from '@mpieva/psydb-common-lib';
+
+import { useFetchAll } from '@mpieva/psydb-ui-hooks';
+import { LoadingIndicator, TabNav } from '@mpieva/psydb-ui-layout';
+
 import LocationCalendarList from './location-calendar-list';
 
 
@@ -73,29 +77,32 @@ const StudyInhouseLocations = ({
         ...settingRelated
     } = fetched.settings.data;
 
-    if (!activeLocationType) {
-        var firstSetting = settingRecords.find(it => (
-            ['inhouse', 'online-video-call'].includes(it.type)
-            && it.state.locations.length > 0
-        ));
+    var locations = gatherLocationsFromLabProcedureSettings({
+        settingRecords
+    });
 
-        activeLocationType = (
-            firstSetting.state.locations[0].customRecordTypeKey
-        );
+    var tabs = Object.keys(locations).map(type => ({
+        key: type,
+        label: (
+            settingRelated.relatedCustomRecordTypes.location[type]
+            .state.label
+        )
+    }))
+
+    if (!activeLocationType) {
+        activeLocationType = Object.keys(locations)[0];
     }
 
     //console.log('L', locationCalendarListClassName);
 
     return (
         <>
-            <LocationTypeNav
-                settingRecords={ settingRecords }
-                settingRelated={ settingRelated }
-                studyRecord={ studyRecord }
-                customRecordTypeData={ customRecordTypeData }
-                activeType={ activeLocationType }
-                onSelect={ onSelectLocationType }
+            <TabNav
+                items={ tabs }
+                activeKey={ activeLocationType }
+                onItemClick={ onSelectLocationType }
             />
+
             <LocationCalendarList { ...({
                 className: locationCalendarListClassName,
                 teamRecords,
