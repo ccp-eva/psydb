@@ -6,6 +6,8 @@ var gatherDisplayFieldsForRecordType = require(
     '@mpieva/psydb-api-lib/src/gather-display-fields-for-record-type'
 );
 
+var ApiError = require('@mpieva/psydb-api-lib/src/api-error');
+
 var {
     StripEventsStage,
 } = require('@mpieva/psydb-api-lib/src/fetch-record-helpers');

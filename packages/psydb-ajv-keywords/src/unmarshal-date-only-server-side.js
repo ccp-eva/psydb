@@ -23,7 +23,7 @@ var unmarshalDateOnlyServerSide = {
     valid: true,
     validate: (data, dataPath, parentData, parentDataProperty) => {
         //console.log(data, dataPath, parentData, parentDataProperty);
-        if (validateDateTime(data)) {
+        if (data && validateDateTime(data)) {
             var { date } = splitISO(data);
             var [ year, month, day ] = date.split('-');
             // NOTE: this depends on timezone settings of the server
