@@ -2,7 +2,7 @@ import React from 'react';
 import { useFetchAll } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
-import StudyInhouseLocationTypeNav from '../study-inhouse-location-type-nav';
+import { LocationTypeNav } from './location-type-nav';
 import LocationCalendarList from './location-calendar-list';
 
 
@@ -43,12 +43,17 @@ const StudyInhouseLocations = ({
         
         var teams = agent.fetchExperimentOperatorTeamsForStudy({
             studyId,
-        })
+        });
+
+        var settings = agent.fetchExperimentVariantSettings({
+            studyId,
+        });
 
         var promises = {
             customTypes,
             study,
-            teams
+            teams,
+            settings,
         };
         return promises;
     }, [ studyId, studyRecordType, activeLocationType, revision ])
@@ -63,18 +68,29 @@ const StudyInhouseLocations = ({
     var studyRecord = fetched.study.data.record;
     var teamRecords = fetched.teams.data.records;
 
+    var {
+        records: settingRecords,
+        ...settingRelated
+    } = fetched.settings.data;
+
     if (!activeLocationType) {
+        var firstSetting = settingRecords.find(it => (
+            ['inhouse', 'online-video-call'].includes(it.type)
+            && it.state.locations.length > 0
+        ));
+
         activeLocationType = (
-            studyRecord.state
-            .inhouseTestLocationSettings[0].customRecordType
-        )
+            firstSetting.state.locations[0].customRecordTypeKey
+        );
     }
 
     //console.log('L', locationCalendarListClassName);
 
     return (
         <>
-            <StudyInhouseLocationTypeNav
+            <LocationTypeNav
+                settingRecords={ settingRecords }
+                settingRelated={ settingRelated }
                 studyRecord={ studyRecord }
                 customRecordTypeData={ customRecordTypeData }
                 activeType={ activeLocationType }
