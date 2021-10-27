@@ -33,6 +33,9 @@ export const Main = ({ customRecordTypes }) => {
         }),
         teams: agent.fetchExperimentOperatorTeamsForStudy({
             studyId,
+        }),
+        labProcedureSettings: agent.fetchExperimentVariantSettings({
+            studyId,
         })
     }), [ studyType, studyId ]);
 
@@ -42,29 +45,62 @@ export const Main = ({ customRecordTypes }) => {
 
     var studyRecord = fetched.study.data.record;
     var teamRecords = fetched.teams.data.records;
+    var settingRecords = fetched.labProcedureSettings.data.records;
+
+    settingRecords = settingRecords.filter(it => (
+        ['inhouse', 'away-team', 'online-video-call'].includes(it.type)
+    ))
+
+    var renderedPicker = (
+        <RecordPicker
+            collection='study'
+            recordType={ studyType }
+            value={ studyRecord }
+            onChange={ (nextStudyRecord) => {
+                var nextUrl = up(url, 1) + '/' + nextStudyRecord._id;;
+                history.push(nextUrl)
+            }}
+        />
+    );
+
+    if (teamRecords.length < 1) {
+        return (
+            <>
+                { renderedPicker }
+                <hr />
+                <div className='p-3 text-danger'>
+                    <b>Keine Experimenter-Teams in dieser Studie</b>
+                </div>
+            </>
+        )
+    }
+    if (settingRecords.length < 1) {
+        return (
+            <>
+                { renderedPicker }
+                <hr />
+                <div className='p-3 text-danger'>
+                    <b>Für diese Studie ist keine Reservierung möglich</b>
+                </div>
+            </>
+        )
+    }
 
     return (
         <>
-            <RecordPicker
-                collection='study'
-                recordType={ studyType }
-                value={ studyRecord }
-                onChange={ (nextStudyRecord) => {
-                    var nextUrl = up(url, 1) + '/' + nextStudyRecord._id;;
-                    history.push(nextUrl)
-                }}
-            />
-
+            { renderedPicker }
+            <hr />
             <Switch>
                 <Route exact path={ path }>
                     <Redirect to={`${url}/locations`} />
                 </Route>
                 <Route path={`${path}/:navItem`}>
-                    <ReservationTypeRouting
-                        customRecordTypes={ customRecordTypes }
-                        studyRecord={ studyRecord }
-                        teamRecords={ teamRecords }
-                    />
+                    <ReservationTypeRouting { ...({
+                        customRecordTypes,
+                        studyRecord,
+                        teamRecords,
+                        settingRecords,
+                    })} />
                 </Route>
 
             </Switch>

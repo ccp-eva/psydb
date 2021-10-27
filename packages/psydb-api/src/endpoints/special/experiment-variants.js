@@ -1,5 +1,5 @@
 'use strict';
-// FIXME maybe rename to labProcess and labProcessSetting
+// FIXME maybe rename to lapProcedure labProcedureSetting
 var debug = require('debug')(
     'psydb:api:endpoints:experimentVariants'
 );

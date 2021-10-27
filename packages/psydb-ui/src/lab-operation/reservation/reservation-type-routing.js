@@ -15,19 +15,36 @@ import { LocationTypeRouting } from './location-type-routing';
 import { AwayTeamRouting } from './away-team-routing';
 
 export const ReservationTypeRouting = (ps) => {
+    var {
+        settingRecords
+    } = ps;
+
     var { path, url } = useRouteMatch();
     var { navItem } = useParams();
     var history =  useHistory();
+
+    var canReserveLocations = settingRecords.find(it => (
+        ['inhouse', 'online-video-call'].includes(it.type)
+    ));
+
+    var canReserveTeams = settingRecords.find(it => (
+        ['away-team'].includes(it.type)
+    ));
+
+    var tabs = [];
+    if (canReserveLocations) {
+        tabs.push({ key: 'locations', label: 'Räumlichkeiten' });
+    }
+    if (canReserveTeams) {
+        tabs.push({ key: 'away-teams', label: 'Aussen-Teams' });
+    }
 
     return (
         <>
             <TabNav
                 className='d-flex'
                 itemClassName='flex-grow'
-                items={[
-                    { key: 'locations', label: 'Räumlichkeiten' },
-                    { key: 'away-teams', label: 'Aussen-Teams' },
-                ]}
+                items={ tabs }
                 activeKey={ navItem }
                 onItemClick={ (nextKey) => {
                     history.push(`${up(url, 1)}/${nextKey}`);

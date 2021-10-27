@@ -25,7 +25,7 @@ const extractTime = (dateIsoString) => (
     : dateIsoString
 );
 
-const DeleteModal = ({
+export const DeleteModal = ({
     show,
     onHide,
     studyId,
@@ -86,5 +86,3 @@ const DeleteModal = ({
         </Modal>
     );
 }
-
-export default DeleteModal;

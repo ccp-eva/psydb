@@ -9,33 +9,33 @@ import {
     useParams
 } from 'react-router-dom';
 
-//import { LocationList } from './location-list';
-import LocationTypeContainer from './location-type-container';
+import { Locations } from './locations';
 
 export const LocationTypeRouting = ({
     customRecordTypes,
     studyRecord,
     teamRecords,
+    settingRecords,
 }) => {
     var { path, url } = useRouteMatch();
-    var { inhouseTestLocationSettings } = studyRecord.state;
-   
-    if (inhouseTestLocationSettings.length < 1) {
-        return (
-            <div>no locations available</div>
-        )
-    }
 
-    var { customRecordType } = inhouseTestLocationSettings[0];
+    var firstSetting = settingRecords.find(it => (
+        ['inhouse', 'online-video-call'].includes(it.type)
+        && it.state.locations.length > 0
+    ));
+
+    var firstLocationType = (
+        firstSetting.state.locations[0].customRecordTypeKey
+    );
 
     return (
         <div className='border p-2 border-top-0'>
             <Switch> 
                 <Route exact path={ path }>
-                    <Redirect to={`${url}/${customRecordType}`} />
+                    <Redirect to={`${url}/${firstLocationType}`} />
                 </Route>
                 <Route path={ `${path}/:locationRecordType`}>
-                    <LocationTypeContainer
+                    <Locations
                         studyRecord={ studyRecord }
                         teamRecords={ teamRecords }
                         customRecordTypeData={ customRecordTypes }

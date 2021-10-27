@@ -1,0 +1,85 @@
+import React, { useState, useEffect } from 'react';
+import { useSend } from '@mpieva/psydb-ui-hooks';
+
+import {
+    Button,
+    WithDefaultModal,
+} from '@mpieva/psydb-ui-layout';
+
+import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
+import ExperimentShortControls from '@mpieva/psydb-ui-lib/src/experiment-short-controls';
+
+const CreateModalBody = (ps) => {
+    var {
+        show,
+        onHide,
+        modalPayloadData,
+        onSuccessfulUpdate
+    } = ps;
+
+    var {
+        studyId,
+        locationRecord,
+        teamRecords,
+        start,
+        slotDuration,
+        maxEnd,
+    } = modalPayloadData;
+
+    var locationId = locationRecord._id;
+
+    var minEnd = new Date(start.getTime() + slotDuration);
+    var [ end, setEnd ] = useState(minEnd);
+    var [ teamId, setTeamId ] = useState(teamRecords[0]._id);
+
+    var send = useSend(() => ({
+        type: 'reservation/reserve-inhouse-slot',
+        payload: {
+            props: {
+                studyId,
+                experimentOperatorTeamId: teamId,
+                locationId,
+                interval: {
+                    start: start.toISOString(),
+                    end: end.toISOString(),
+                }
+            }
+        }
+    }), {
+        onSuccessfulUpdate: [ onHide, onSuccessfulUpdate ],
+    })
+
+    return (
+        <>
+            <ExperimentShortControls { ...({
+                start,
+                end,
+                minEnd,
+                maxEnd,
+                slotDuration,
+
+                teamRecords,
+                teamId,
+
+                onChangeEnd: setEnd,
+                onChangeTeamId: setTeamId
+            })} />
+
+            <hr />
+            <div className='d-flex justify-content-end'>
+                <Button size='sm' onClick={ send.exec }>
+                    Speichern
+                </Button>
+            </div>
+        </>
+    );
+}
+
+export const CreateModal = WithDefaultModal({
+    Body: CreateModalBody,
+
+    title: 'Reservierung',
+    className: '',
+    backdropClassName: '',
+    bodyClassName: 'bg-white'
+});
