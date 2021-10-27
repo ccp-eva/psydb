@@ -1,48 +1,57 @@
 'use strict';
+var {
+    gatherLocationsFromLabProcedureSettings
+} = require('@mpieva/psydb-common-lib');
+
 var compareIds = require('./compare-ids');
 var createRecordLabel = require('./create-record-label');
+var fetchOneCustomRecordType = require('./fetch-one-custom-record-type');
 
 var fetchEnabledLocationRecordsForStudy = async ({
     db,
-    locationTypeSettings,
+    studyId,
+    locationType,
 }) => {
 
-    var {
-        customRecordType,
-        enableAllAvailableLocations, // TODO: maybe remove this feature?
-        enabledLocationIds,
-    } = locationTypeSettings;
+    var locationTypeRecord = await fetchOneCustomRecordType({
+        db,
+        collection: 'location',
+        type: locationType
+    });
 
-    var customRecordTypeRecord = await (
-        db.collection('customRecordType').findOne({
-            collection: 'location',
-            type: customRecordType
-        })
+    var settingRecords = await (
+        db.collection('experimentVariantSetting')
+        .find({
+            type: { $in: [
+                'inhouse',
+                'online-video-call'
+            ]},
+            'state.locations.customRecordTypeKey': locationType
+        }, { projection: { events: false }})
+        .toArray()
     );
 
-    var matchStage = (
-        enableAllAvailableLocations
-        ? ({
-            recordType: customRecordTypeRecord.type
-        })
-        : ({
-            _id: { $in: enabledLocationIds }
-        })
-    );
+    var locationsByType = gatherLocationsFromLabProcedureSettings({
+        settingRecords
+    });
+
+    if (!locationsByType[locationType]) {
+        return [];
+    }
 
     var locationRecords = await (
         db.collection('location').aggregate([
-            { $match: matchStage },
-            { $project: {
-                events: false
+            { $match: {
+                _id: { $in: locationsByType[locationType] }
             }},
+            { $project: { events: false }},
         ]).toArray()
     );
-
+    
     locationRecords.forEach(it => {
         it._recordLabel = createRecordLabel({
             record: it,
-            definition: customRecordTypeRecord.state.recordLabelDefinition
+            definition: locationTypeRecord.state.recordLabelDefinition
         })
     })
     

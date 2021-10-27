@@ -58,7 +58,7 @@ module.exports = {
     ),
 
     selectableStudies: (
-        require('./lab-opertion/selectable-studies')
+        require('./lab-operation/selectable-studies')
     ),
 
     selectableStudiesForCalendar: (

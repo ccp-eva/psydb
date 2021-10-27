@@ -52,7 +52,7 @@ var studyLocationReservationCalendar = async (context, next) => {
 
     var {
         studyId,
-        locationRecordType,
+        locationRecordType: locationType,
         start,
         end
     } = params;
@@ -70,18 +70,8 @@ var studyLocationReservationCalendar = async (context, next) => {
         throw new ApiError(404, 'NoAccessibleStudyRecordFound');
     }
 
-    var { inhouseTestLocationSettings } = studyRecord.state;
-    var locationTypeSettings = inhouseTestLocationSettings.find(it => (
-        it.customRecordType === locationRecordType
-    ));
-
-    if (!locationTypeSettings) {
-        throw new ApiError(400, 'LocationRecordTypeNotFound');
-    }
-
     var locationRecords = await fetchEnabledLocationRecordsForStudy({
-        db,
-        locationTypeSettings,
+        db, studyId, locationType
     });
 
     var reservationRecords = await fetchRecordsInInterval({
@@ -90,7 +80,7 @@ var studyLocationReservationCalendar = async (context, next) => {
         start,
         end,
         additionalStages: [
-            { $match: { type: 'inhouse' }}
+            { $match: { type: { $in: [ 'inhouse', 'online-video-call' ] }}}
         ]
     });
 
@@ -106,7 +96,7 @@ var studyLocationReservationCalendar = async (context, next) => {
         end,
         additionalStages: [
             { $match: {
-                type: 'inhouse',
+                type: { $in: [ 'inhouse', 'online-video-call' ] },
                 'state.isCanceled': false,
             }}
         ]
