@@ -149,8 +149,8 @@ var selectableStudies = async (context, next) => {
     var settingRecords = await (
         db.collection('experimentVariantSetting').aggregate([
             { $match: {
-                //studyId: { $in: records.map(it => it._id) },
-                //type: { $in: labProcedureTypes }
+                studyId: { $in: records.map(it => it._id) },
+                type: { $in: labProcedureTypes }
             }},
             { $project: { _id: true, studyId: true }},
         ]).toArray()

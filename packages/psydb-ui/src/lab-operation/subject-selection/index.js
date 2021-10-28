@@ -31,7 +31,7 @@ import SearchContainer from './search-container';
 // and decide based on that
 const SubjectSelectionRouting = () => {
     var { path, url } = useRouteMatch();
-    
+
     return (
         <PageWrappers.Level2 title='Probandenauswahl'>
             <Switch>
@@ -48,94 +48,66 @@ const SubjectSelectionRouting = () => {
                             linkTo: 'away-team'
                         },
                         {
-                            key: 'online',
-                            label: 'Online',
-                            linkTo: 'online'
+                            key: 'online-video-call',
+                            label: 'Online-Video-Anruf',
+                            linkTo: 'online-video-call'
+                        },
+                        {
+                            key: 'online-survey',
+                            label: 'Online-Umfrage',
+                            linkTo: 'online-survey'
                         },
                     ]} />
                 </Route>
                 <Route path={ `${path}/inhouse`}>
-                    <InhouseSelectionContainer />
+                    <TypedSelectionContainer
+                        title='Für Interne Studie'
+                        type='inhouse'
+                    />
                 </Route>
                 <Route path={ `${path}/away-team`}>
-                    <AwayTeamSelectionContainer />
+                    <TypedSelectionContainer
+                        title='Für Externe Studie'
+                        type='away-team'
+                        singleStudy={ true }
+                    />
                 </Route>
-                <Route path={ `${path}/online`}>
-                    <OnlineSelectionContainer />
+                <Route path={ `${path}/online-video-call`}>
+                    <TypedSelectionContainer
+                        title='Für Online-Video-Anruf'
+                        type='online-video-call'
+                    />
+                </Route>
+                <Route path={ `${path}/online-survey`}>
+                    <TypedSelectionContainer
+                        title='Für Online-Umfrage'
+                        type='online-survey'
+                        singleStudy={ true }
+                    />
                 </Route>
             </Switch>
         </PageWrappers.Level2>
     )
 }
 
-const InhouseSelectionContainer = () => {
+const TypedSelectionContainer = (ps) => {
+    var { title, type, singleStudy } = ps;
     var { path, url } = useRouteMatch();
 
     return (
-        <PageWrappers.Level3 title='Für Interne Studie'>
-            <Switch>
-                <Route exact path={ `${path}` }>
-                    <StudySelect experimentType='inhouse' />
-                </Route>
-                <Route exact path={ `${path}/:studyIds` }>
-                    <SubjectTypeSelect experimentType='inhouse' />
-                </Route>
-                <Route path={ `${path}/:studyIds/:subjectRecordType` }>
-                    <SearchContainer experimentType='inhouse' />
-                </Route>
-            </Switch>
-        </PageWrappers.Level3>
-    )
-}
-
-const AwayTeamSelectionContainer = () => {
-    var { path, url } = useRouteMatch();
-
-    return (
-        <PageWrappers.Level3 title='Für Externe Studie'>
+        <PageWrappers.Level3 title={ title }>
             <Switch>
                 <Route exact path={ `${path}` }>
                     <StudySelect
-                        experimentType='away-team'
-                        singleStudy={ true }
+                        experimentType={ type }
+                        singleStudy={ singleStudy }
                     />
                 </Route>
                 <Route exact path={ `${path}/:studyIds` }>
-                    <SubjectTypeSelect
-                        experimentType='away-team'
-                    />
+                    <SubjectTypeSelect experimentType={ type } />
                 </Route>
                 <Route path={ `${path}/:studyIds/:subjectRecordType` }>
-                    <SearchContainer
-                        experimentType='away-team'
-                    />
-                </Route>
-            </Switch>
-        </PageWrappers.Level3>
-    )
-}
-
-const OnlineSelectionContainer = () => {
-    var { path, url } = useRouteMatch();
-
-    return (
-        <PageWrappers.Level3 title='Für Online-Umfrage'>
-            <Switch>
-                <Route exact path={ `${path}` }>
-                    <StudySelect
-                        experimentType='online'
-                        singleStudy={ true }
-                    />
-                </Route>
-                <Route exact path={ `${path}/:studyIds` }>
-                    <SubjectTypeSelect
-                        experimentType='online'
-                    />
-                </Route>
-                <Route path={ `${path}/:studyIds/:subjectRecordType` }>
-                    <SearchContainer
-                        experimentType='online'
-                    />
+                    <SearchContainer experimentType={ type } />
                 </Route>
             </Switch>
         </PageWrappers.Level3>

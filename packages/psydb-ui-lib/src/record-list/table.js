@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
 import {
-    Table
+    Table,
+    Alert,
 } from 'react-bootstrap';
 
 import TableHead from './table-head';
@@ -28,10 +29,21 @@ var RecordListTable = ({
     linkBaseUrl,
     CustomActionListComponent,
     bsTableProps,
+    emptyInfoText,
 }) => {
     if (!records.length) {
         return (
-            <div>Empty</div> 
+            <>
+                <Table className={ 'mb-1 ' + className } { ...bsTableProps }>
+                    <TableHead
+                        displayFieldData={ displayFieldData }
+                        showSelectionIndicator={ showSelectionIndicator }
+                    />
+                </Table>
+                <Alert variant='info'>
+                    <i>{ emptyInfoText || 'Keine Datensätze gefunden'}</i>
+                </Alert>
+            </>
         );
     }
 

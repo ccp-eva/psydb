@@ -13,6 +13,7 @@ const StudySelectList = ({
 
     target,
     className,
+    emptyInfoText,
 
     enableSelectRecords,
     showSelectionIndicator,
@@ -56,6 +57,7 @@ const StudySelectList = ({
 
             target,
             className,
+            emptyInfoText,
 
             enableSelectRecords,
             showSelectionIndicator,
