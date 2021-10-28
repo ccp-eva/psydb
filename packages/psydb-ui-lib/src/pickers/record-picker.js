@@ -1,4 +1,5 @@
 import React from 'react';
+import { OptionSelectIndicator } from '@mpieva/psydb-ui-layout';
 import { withRecordPicker } from './with-record-picker';
 import RecordListContainer from '../record-list-container';
 
@@ -25,6 +26,7 @@ const RecordPicker = withRecordPicker({ RecordList: (ps) => {
             enableNew={ false }
             enableView={ false }
             enableEdit={ false }
+            CustomActionListComponent={ OptionSelectIndicator }
         />
     )
 }})
