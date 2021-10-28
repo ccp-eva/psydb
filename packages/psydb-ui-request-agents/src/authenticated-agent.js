@@ -156,10 +156,11 @@ agent.fetchStudyAwayTeamReservationCalendar = ({
 
 agent.fetchTestableSubjectTypesForStudies = ({
     studyIds,
+    labProcedureType,
 }) => {
     return axios.post(
         '/api/testable-subject-types-for-studies',
-        { studyIds }
+        { studyIds, labProcedureType }
     );
 }
 

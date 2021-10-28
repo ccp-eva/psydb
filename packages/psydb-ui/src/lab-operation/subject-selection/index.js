@@ -104,7 +104,7 @@ const TypedSelectionContainer = (ps) => {
                     />
                 </Route>
                 <Route exact path={ `${path}/:studyIds` }>
-                    <SubjectTypeSelect experimentType={ type } />
+                    <SubjectTypeSelect labProcedureType={ type } />
                 </Route>
                 <Route path={ `${path}/:studyIds/:subjectRecordType` }>
                     <SearchContainer experimentType={ type } />

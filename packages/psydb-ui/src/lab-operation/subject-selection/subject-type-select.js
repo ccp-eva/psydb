@@ -14,7 +14,7 @@ import agent from '@mpieva/psydb-ui-request-agents';
 import { LinkButton } from '@mpieva/psydb-ui-layout';
 import RecordTypeNav from '@mpieva/psydb-ui-lib/src/record-type-nav';
 
-const StudyTypeSelect = () => {
+const StudyTypeSelect = ({ labProcedureType }) => {
     var { path, url } = useRouteMatch();
     var { studyIds } = useParams();
 
@@ -26,6 +26,7 @@ const StudyTypeSelect = () => {
     useEffect(() => {
         agent.fetchTestableSubjectTypesForStudies({
             studyIds: studyIds.split(','),
+            labProcedureType,
         })
         .then(response => {
             setSubjectRecordTypeRecords(

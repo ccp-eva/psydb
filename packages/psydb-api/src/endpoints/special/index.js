@@ -43,7 +43,7 @@ module.exports = {
     ),
 
     testableSubjectTypesForStudies: (
-        require('./testable-subject-types-for-studies')
+        require('./lab-operation/testable-subject-types-for-studies')
     ),
     
     inviteConfirmationList: (
