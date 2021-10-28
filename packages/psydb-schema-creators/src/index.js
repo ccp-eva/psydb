@@ -64,6 +64,7 @@ module.exports = {
     ageFrame: {
         ...metadata.ageFrame,
         State: internals.AgeFrameState,
+        FullSchema: internals.AgeFrameFullSchema,
         RecordMessage: internals.AgeFrameRecordMessage,
     },
 

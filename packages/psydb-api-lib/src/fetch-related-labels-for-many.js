@@ -3,7 +3,6 @@
 var createSchemaForRecordType =require('./create-schema-for-record-type');
 var fetchRelatedLabels = require('./fetch-related-labels');
 
-// TODO: move to lib
 var fetchRelatedLabelsForMany = async ({
     db,
     collectionName,

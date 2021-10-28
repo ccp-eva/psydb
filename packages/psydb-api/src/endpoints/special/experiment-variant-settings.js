@@ -17,15 +17,15 @@ var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
 var {
     ExactObject,
-    ForeignId,
+    ForeignIdList,
 } = require('@mpieva/psydb-schema-fields');
 
 var RequestBodySchema = () => ExactObject({
     properties: {
-        studyId: ForeignId({ collection: 'study' }),
+        studyIds: ForeignIdList({ collection: 'study' }),
     },
     required: [
-        'studyId',
+        'studyIds',
     ]
 })
 
@@ -50,11 +50,13 @@ var experimentVariantSettings = async (context, next) => {
         });
     };
 
-    var { studyId } = request.body;
+    var { studyIds } = request.body;
 
     var records = await (
         db.collection('experimentVariantSetting').aggregate([
-            { $match: { studyId }},
+            { $match: {
+                studyId: { $in: studyIds }
+            }},
     
             AddLastKnownEventIdStage(),
             StripEventsStage(),

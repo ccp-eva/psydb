@@ -1,6 +1,7 @@
 'use strict';
 var compose = require('koa-compose'),
     KoaRouter = require('koa-router'),
+    withKoaBody = require('koa-body'),
 
     getCustomRecordTypes = require('./get-custom-record-types'),
     getSchema = require('./get-schema');
@@ -10,7 +11,11 @@ var createMetadataRouting = ({ middleware }) => {
 
     router.use(middleware);
 
-    router.get('/custom-record-types', getCustomRecordTypes);
+    router.post(
+        '/custom-record-types',
+        withKoaBody(),
+        getCustomRecordTypes
+    );
     router.get('/record-schema/:collectionName', getSchema);
     router.get('/record-schema/:collectionName/:recordType', getSchema);
 

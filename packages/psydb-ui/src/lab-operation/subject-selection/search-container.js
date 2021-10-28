@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect, useReducer, useMemo } from 'react';
 
 import {
     Route,
@@ -19,6 +19,7 @@ import {
 import agent from '@mpieva/psydb-ui-request-agents';
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 
+import { useFetchAll } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
 import createValueMap from './create-value-map';
@@ -27,6 +28,8 @@ import SelectionSettingsForm from './selection-settings-form';
 import InhouseSubjectList from './inhouse/testable-subject-list';
 import OnlineSubjectList from './online/testable-subject-list';
 import AwayTeamTargetLocationList from './away-team/target-location-list';
+
+import { SelectionForm } from './selection-form';
 
 var FormSettingsItemSchema = ({
     studyName,
@@ -99,6 +102,62 @@ const SearchContainer = ({
     var { path, url } = useRouteMatch();
     var history = useHistory();
     var { studyIds, subjectRecordType } = useParams();
+
+    var [ schema, setSchema ] = useState();
+    var [ didFetch, fetched ] = useFetchAll((agent) => ({
+        crts: agent.readCustomRecordTypeMetadata({
+            only: [{
+                collection: 'subject',
+                types: [ subjectRecordType ]
+            }]
+        }),
+        ageFrames: agent.fetchAgeFrames({
+            studyIds: studyIds.split(','),
+        })
+    }), [ studyIds, subjectRecordType ]);
+
+    var schema = useMemo(() => {
+        if (didFetch) {
+            /*return SelectionSettingsFormSchema({
+                timeFrameDefaults: {
+                    start: datefns.format(
+                        datefns.add(new Date(), { days: 1 }),
+                        'yyyy-MM-dd'
+                    ),
+                    end: datefns.format(
+                        datefns.add(new Date(), { weeks: 2, days: 1 }),
+                        'yyyy-MM-dd'
+                    )
+                },
+                studySelectionSettings,
+                customFieldDefinitions: scientificFieldDefinitions,
+                relatedRecords,
+                relatedHelperSetItems,
+            });*/
+        }
+    }, [ didFetch ]);
+
+    if (!didFetch) {
+        return <LoadingIndicator size='lg' />
+    }
+
+    var subjectTypeRecord = fetched.crts.data.customRecordTypes[0];
+    var {
+        records: ageFrameRecords,
+        ...ageFrameRelated
+    } = fetched.ageFrames.data;
+
+    return (
+        <div className='p-3 border bg-light'>
+            <SelectionForm { ...({
+                subjectTypeRecord,
+                ageFrameRecords,
+                ageFrameRelated
+            })} />
+        </div>
+    );
+
+    return 'foo';
 
     var [ state, dispatch ] = useReducer(reducer, {
         isInitialized: false,

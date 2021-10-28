@@ -31,8 +31,10 @@ agent.fetchServerTimezone = () => {
     return axios.get(`/api/server-timezone`);
 }
 
-agent.readCustomRecordTypeMetadata = () => {
-    return axios.get(`/api/metadata/custom-record-types`);
+agent.readCustomRecordTypeMetadata = ({
+    only,
+} = {}) => {
+    return axios.post(`/api/metadata/custom-record-types`, { only });
 }
 
 agent.readRecordSchema = ({
@@ -373,44 +375,48 @@ agent.fetchExperimentPostprocessing = ({
 
 agent.fetchExperimentVariants = ({
     studyId,
+    studyIds,
 }) => {
     return axios.post(
         '/api/experiment-variants',
         {
-            studyId,
+            studyIds: studyIds || [ studyId ],
         }
     );
 }
 
 agent.fetchExperimentVariantSettings = ({
     studyId,
+    studyIds,
 }) => {
     return axios.post(
         '/api/experiment-variant-settings',
         {
-            studyId,
+            studyIds: studyIds || [ studyId ],
         }
     );
 }
 
 agent.fetchSubjectSelectors = ({
     studyId,
+    studyIds,
 }) => {
     return axios.post(
         '/api/subject-selectors',
         {
-            studyId,
+            studyIds: studyIds || [ studyId ],
         }
     );
 }
 
 agent.fetchAgeFrames = ({
     studyId,
+    studyIds,
 }) => {
     return axios.post(
         '/api/age-frames',
         {
-            studyId,
+            studyIds: studyIds || [ studyId ],
         }
     );
 }

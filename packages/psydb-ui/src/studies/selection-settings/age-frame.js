@@ -1,6 +1,6 @@
 import React from 'react';
 import { InnerSettingPanel, EditIconButton } from '@mpieva/psydb-ui-layout';
-import stringifyFieldValue from '@mpieva/psydb-ui-lib/src/stringify-field-value';
+import { stringifyFieldValue } from '@mpieva/psydb-ui-lib/';
 import { AgeFrameCondition } from './age-frame-condition';
 
 
