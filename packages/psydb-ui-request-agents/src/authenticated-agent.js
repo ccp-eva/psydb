@@ -318,6 +318,7 @@ agent.fetchSelectableStudies = ({
     studyRecordType,
     experimentType,
     experimentTypes,
+    target,
 }) => {
     return axios.post(
         '/api/selectable-studies',
@@ -325,6 +326,7 @@ agent.fetchSelectableStudies = ({
             studyRecordType,
             experimentType,
             experimentTypes,
+            target,
         }
     );
 }

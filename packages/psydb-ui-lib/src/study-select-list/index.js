@@ -28,6 +28,7 @@ const StudySelectList = ({
             studyRecordType,
             experimentType,
             experimentTypes,
+            target,
         })
     }, [ studyRecordType, experimentType ]);
 

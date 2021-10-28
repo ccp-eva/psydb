@@ -1,4 +1,5 @@
 import React from 'react';
+import { OptionSelectIndicator } from '@mpieva/psydb-ui-layout';
 import { StudySelectList, withRecordPicker } from '@mpieva/psydb-ui-lib';
 
 export const StudyPicker = withRecordPicker({ RecordList: (ps) => {
@@ -29,6 +30,7 @@ export const StudyPicker = withRecordPicker({ RecordList: (ps) => {
 
             selectedRecordIds={[]}
             onSelectRecord={ wrappedOnSelect }
+            CustomActionListComponent={ OptionSelectIndicator }
         />
     )
 }})

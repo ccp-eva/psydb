@@ -53,14 +53,18 @@ export const Main = ({ customRecordTypes }) => {
     ))
 
     var renderedPicker = (
-        <StudyPicker
-            studyType={ studyType }
-            value={ studyRecord }
-            onChange={ (nextStudyRecord) => {
-                var nextUrl = up(url, 1) + '/' + nextStudyRecord._id;
-                history.push(nextUrl)
-            }}
-        />
+        <>
+            <header><b>Studie</b></header>
+            <StudyPicker
+                studyType={ studyType }
+                value={ studyRecord }
+                canClear={ false }
+                onChange={ (nextStudyRecord) => {
+                    var nextUrl = up(url, 1) + '/' + nextStudyRecord._id;
+                    history.push(nextUrl)
+                }}
+            />
+        </>
     );
 
     if (teamRecords.length < 1) {

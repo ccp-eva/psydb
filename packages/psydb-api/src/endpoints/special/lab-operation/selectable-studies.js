@@ -18,6 +18,7 @@ var compareIds = require('@mpieva/psydb-api-lib/src/compare-ids');
 var {
     ExactObject,
     DefaultArray,
+    StringEnum,
     CustomRecordTypeKey,
     ExperimentVariantEnum,
 } = require('@mpieva/psydb-schema-fields');
@@ -27,6 +28,7 @@ var RequestBodySchema = () => ({
         ExactObject({
             properties: {
                 studyRecordType: CustomRecordTypeKey({ collection: 'study' }),
+                target: StringEnum([ 'table', 'optionlist' ])
             },
             required: [
                 'studyRecordType',
@@ -37,6 +39,7 @@ var RequestBodySchema = () => ({
                 studyRecordType: CustomRecordTypeKey({ collection: 'study' }),
                 // FIXME: this is actually labProcedureType
                 experimentType: ExperimentVariantEnum(),
+                target: StringEnum([ 'table', 'optionlist' ])
             },
             required: [
                 'studyRecordType',
@@ -51,6 +54,7 @@ var RequestBodySchema = () => ({
                     items: ExperimentVariantEnum(),
                     minItems: 1
                 }),
+                target: StringEnum([ 'table', 'optionlist' ])
             },
             required: [
                 'studyRecordType',
@@ -86,6 +90,7 @@ var selectableStudies = async (context, next) => {
         studyRecordType,
         experimentType: labProcedureType,
         experimentTypes: labProcedureTypes,
+        target,
     } = request.body
 
     if (labProcedureType) {
@@ -104,7 +109,8 @@ var selectableStudies = async (context, next) => {
     } = await gatherDisplayFieldsForRecordType({
         db,
         collectionName: 'study',
-        customRecordType: studyRecordType
+        customRecordType: studyRecordType,
+        target,
     });
 
     var recordLabelDefinition = (
@@ -135,6 +141,7 @@ var selectableStudies = async (context, next) => {
         displayFields,
         recordLabelDefinition,
         additionalPreprocessStages,
+        target,
         //offset,
         //limit
     });

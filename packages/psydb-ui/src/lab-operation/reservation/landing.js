@@ -1,6 +1,12 @@
 import React from 'react'
 import { useRouteMatch, useParams, useHistory } from 'react-router-dom';
-import { PageWrappers, Icons } from '@mpieva/psydb-ui-layout';
+
+import {
+    PageWrappers,
+    OptionSelectIndicator,
+    Icons
+} from '@mpieva/psydb-ui-layout';
+
 import { RecordPicker } from '@mpieva/psydb-ui-lib';
 
 import StudySelectList from '@mpieva/psydb-ui-lib/src/study-select-list';
@@ -42,20 +48,8 @@ export const Landing = (ps) => {
                 onSelectRecord={ ({ type, payload }) => {
                     history.push(`${url}/${payload.record._id}`)
                 }}
-                CustomActionListComponent={ SelectionIndicator }
+                CustomActionListComponent={ OptionSelectIndicator }
             />
         </PageWrappers.Level3>
-    )
-}
-
-const SelectionIndicator = (ps) => {
-    return (
-        <div className='text-primary'>
-            <Icons.ChevronDoubleRight style={{
-                marginTop: '-4px',
-                width: '20px',
-                height: '20px',
-            }}/> 
-        </div>
     )
 }
