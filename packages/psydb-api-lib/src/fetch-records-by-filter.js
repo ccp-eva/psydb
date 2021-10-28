@@ -132,7 +132,7 @@ var fetchRecordByFilter = async ({
     })
 
     //console.log(collectionName);
-    console.dir(stages, { depth: null });
+    //console.dir(stages, { depth: null });
     //throw new Error();*/
 
     var facets = await (

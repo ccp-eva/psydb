@@ -99,11 +99,18 @@ var collections = {
     ]
 }
 
+// FIXME: rename labProcedureTypes
 var experimentVariants = createEnum({
     'inhouse': 'Interne Termine',
     'away-team': 'Externe Termine',
     'online-video-call': 'Online-Video-Termine',
     'online-survey': 'Online-Umfrage',
+});
+
+var experimentTypes = createEnum({
+    'inhouse': 'Interne Termine',
+    'away-team': 'Externe Termine',
+    'online-video-call': 'Online-Video-Termine',
 });
 
 var subjectFieldRequirementChecks = createEnum({
@@ -121,4 +128,6 @@ module.exports = {
 
     experimentVariants,
     subjectFieldRequirementChecks,
+
+    experimentTypes,
 }

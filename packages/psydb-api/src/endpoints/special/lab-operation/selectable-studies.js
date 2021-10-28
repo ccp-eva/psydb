@@ -3,15 +3,62 @@ var debug = require('debug')(
     'psydb:api:endpoints:selectableStudies'
 );
 
+var { keyBy, unique } = require('@mpieva/psydb-common-lib');
+
 var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
     Ajv = require('@mpieva/psydb-api-lib/src/ajv'),
-    ResponseBody = require('@mpieva/psydb-api-lib/src/response-body'),
-    keyBy = require('@mpieva/psydb-common-lib/src/key-by');
+    ResponseBody = require('@mpieva/psydb-api-lib/src/response-body');
 
 var fetchRecordsByFilter = require('@mpieva/psydb-api-lib/src/fetch-records-by-filter');
 var gatherDisplayFieldsForRecordType = require('@mpieva/psydb-api-lib/src/gather-display-fields-for-record-type');
 var fetchOneCustomRecordType = require('@mpieva/psydb-api-lib/src/fetch-one-custom-record-type');
 var fetchRelatedLabelsForMany = require('@mpieva/psydb-api-lib/src/fetch-related-labels-for-many');
+var compareIds = require('@mpieva/psydb-api-lib/src/compare-ids');
+
+var {
+    ExactObject,
+    DefaultArray,
+    CustomRecordTypeKey,
+    ExperimentVariantEnum,
+} = require('@mpieva/psydb-schema-fields');
+
+var RequestBodySchema = () => ({
+    oneOf: [
+        ExactObject({
+            properties: {
+                studyRecordType: CustomRecordTypeKey({ collection: 'study' }),
+            },
+            required: [
+                'studyRecordType',
+            ]
+        }),
+        ExactObject({
+            properties: {
+                studyRecordType: CustomRecordTypeKey({ collection: 'study' }),
+                // FIXME: this is actually labProcedureType
+                experimentType: ExperimentVariantEnum(),
+            },
+            required: [
+                'studyRecordType',
+                'experimentType',
+            ]
+        }),
+        ExactObject({
+            properties: {
+                studyRecordType: CustomRecordTypeKey({ collection: 'study' }),
+                // FIXME: this is actually labProcedureTypes
+                experimentTypes: DefaultArray({
+                    items: ExperimentVariantEnum(),
+                    minItems: 1
+                }),
+            },
+            required: [
+                'studyRecordType',
+                'experimentTypes',
+            ]
+        }),
+    ]
+});
 
 var selectableStudies = async (context, next) => {
     var { 
@@ -20,10 +67,36 @@ var selectableStudies = async (context, next) => {
         request,
     } = context;
 
+    var ajv = Ajv(),
+        isValid = false;
+
+    isValid = ajv.validate(
+        RequestBodySchema(),
+        request.body
+    );
+    if (!isValid) {
+        debug('ajv errors', ajv.errors);
+        throw new ApiError(400, {
+            apiStatus: 'InvalidRequestSchema',
+            data: { ajvErrors: ajv.errors }
+        });
+    };
+
     var {
         studyRecordType,
-        experimentType,
+        experimentType: labProcedureType,
+        experimentTypes: labProcedureTypes,
     } = request.body
+
+    if (labProcedureType) {
+        labProcedureTypes = [ labProcedureType ];
+    }
+
+    var customRecordTypeData = await fetchOneCustomRecordType({
+        db,
+        collection: 'study',
+        type: studyRecordType,
+    });
 
     var {
         displayFields,
@@ -32,12 +105,6 @@ var selectableStudies = async (context, next) => {
         db,
         collectionName: 'study',
         customRecordType: studyRecordType
-    });
-
-    var customRecordTypeData = await fetchOneCustomRecordType({
-        db,
-        collection: 'study',
-        type: studyRecordType,
     });
 
     var recordLabelDefinition = (
@@ -54,34 +121,11 @@ var selectableStudies = async (context, next) => {
                 },
                 {
                     'state.runningPeriod.start': { $lte: now },
-                    'state.runningPeriod.end': { $exists: false },
+                    'state.runningPeriod.end': { $type: 10 }, // null
                 }
             ]
         }},
     ];
-
-    if (experimentType) {
-        additionalPreprocessStages = [
-            ...additionalPreprocessStages,
-            ...({
-                'online': [
-                    { $match: {
-                        'state.selectionSettingsBySubjectType.enableOnlineTesting': true,
-                    }}
-                ],
-                'inhouse': [
-                    { $match: {
-                        'state.inhouseTestLocationSettings': { $not: { $size: 0 }}
-                    }}
-                ],
-                'away-team': [
-                    { $match: {
-                        'state.selectionSettingsBySubjectType.externalLocationGrouping.enabled': true,
-                    }}
-                ]
-            }[experimentType])
-        ];
-    }
 
     var records = await fetchRecordsByFilter({
         db,
@@ -94,6 +138,24 @@ var selectableStudies = async (context, next) => {
         //offset,
         //limit
     });
+
+    var settingRecords = await (
+        db.collection('experimentVariantSetting').aggregate([
+            { $match: {
+                //studyId: { $in: records.map(it => it._id) },
+                //type: { $in: labProcedureTypes }
+            }},
+            { $project: { _id: true, studyId: true }},
+        ]).toArray()
+    );
+
+    var studyIdsWithSettings = unique(
+        settingRecords.map(it => String(it.studyId))
+    );
+
+    records = records.filter(study => (
+        studyIdsWithSettings.includes(String(study._id))
+    ));
 
     var related = await fetchRelatedLabelsForMany({
         db,

@@ -71,7 +71,9 @@ var experimentCalendar = async (context, next) => {
     );
     if (!isValid) {
         debug('ajv errors', ajv.errors);
-        throw new ApiError(400, 'InvalidRequestSchema');
+        throw new ApiError(400, 'InvalidRequestSchema', {
+            ajvErrors: ajv.errors,
+        });
     };
 
 

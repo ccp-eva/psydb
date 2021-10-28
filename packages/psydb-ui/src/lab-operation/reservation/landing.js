@@ -28,6 +28,11 @@ export const Landing = (ps) => {
 
             <StudySelectList
                 studyRecordType={ studyType }
+                experimentTypes={[
+                    'inhouse',
+                    'online-video-call',
+                    'away-team'
+                ]}
 
                 showSelectionIndicator={ false }
                 wholeRowIsClickable={ true }

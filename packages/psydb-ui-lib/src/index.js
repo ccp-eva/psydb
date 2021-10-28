@@ -6,5 +6,8 @@ export {
 
 export {
     RecordPicker,
+    withRecordPicker,
     //HelperSetItemPicker
 } from './pickers';
+
+export { default as StudySelectList } from './study-select-list';

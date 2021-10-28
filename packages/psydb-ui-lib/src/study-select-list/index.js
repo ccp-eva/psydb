@@ -9,6 +9,10 @@ import { useFetch } from '@mpieva/psydb-ui-hooks';
 const StudySelectList = ({
     studyRecordType,
     experimentType,
+    experimentTypes,
+
+    target,
+    className,
 
     enableSelectRecords,
     showSelectionIndicator,
@@ -22,7 +26,8 @@ const StudySelectList = ({
     var [ didFetch, fetched ] = useFetch((agent) => {
         return agent.fetchSelectableStudies({
             studyRecordType,
-            experimentType
+            experimentType,
+            experimentTypes,
         })
     }, [ studyRecordType, experimentType ]);
 
@@ -47,6 +52,9 @@ const StudySelectList = ({
             relatedRecordLabels,
             relatedHelperSetItems,
             relatedCustomRecordTypeLabels,
+
+            target,
+            className,
 
             enableSelectRecords,
             showSelectionIndicator,

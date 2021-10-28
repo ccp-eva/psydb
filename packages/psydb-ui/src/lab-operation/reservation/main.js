@@ -16,6 +16,7 @@ import { ReservationTypeRouting } from './reservation-type-routing';
 import agent from '@mpieva/psydb-ui-request-agents';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
 import { RecordPicker } from '@mpieva/psydb-ui-lib';
+import { StudyPicker } from './study-picker';
 
 export const Main = ({ customRecordTypes }) => {
     var { path, url } = useRouteMatch();
@@ -52,12 +53,11 @@ export const Main = ({ customRecordTypes }) => {
     ))
 
     var renderedPicker = (
-        <RecordPicker
-            collection='study'
-            recordType={ studyType }
+        <StudyPicker
+            studyType={ studyType }
             value={ studyRecord }
             onChange={ (nextStudyRecord) => {
-                var nextUrl = up(url, 1) + '/' + nextStudyRecord._id;;
+                var nextUrl = up(url, 1) + '/' + nextStudyRecord._id;
                 history.push(nextUrl)
             }}
         />

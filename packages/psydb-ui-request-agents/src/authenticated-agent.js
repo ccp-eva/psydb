@@ -317,12 +317,14 @@ agent.fetchLocationExperimentCalendar = ({
 agent.fetchSelectableStudies = ({
     studyRecordType,
     experimentType,
+    experimentTypes,
 }) => {
     return axios.post(
         '/api/selectable-studies',
         {
             studyRecordType,
-            experimentType
+            experimentType,
+            experimentTypes,
         }
     );
 }
