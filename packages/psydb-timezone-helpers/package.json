@@ -1,0 +1,16 @@
+{
+  "name": "@mpieva/psydb-timezone-helpers",
+  "version": "0.1.0-alpha",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "npx jest"
+  },
+  "author": "Jan Schwalbe",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "~27.2.4"
+  },
+  "dependencies": {
+  }
+}
