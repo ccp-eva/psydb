@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { groupBy } from '@mpieva/psydb-common-lib';
-import { Form as BSForm } from '@mpieva/psydb-ui-layout';
+import { Button, Form as BSForm } from '@mpieva/psydb-ui-layout';
 
 import {
     stringifyFieldValue,
@@ -24,10 +24,28 @@ export const SelectionForm = (ps) => {
     var initialValues = createInitialValues({ ageFrameRecords });
     console.log(initialValues);
 
+    var handleSubmit = (...args) => {
+        console.log({ args });
+    }
+
     return (
-        <DefaultForm initialValues={ initialValues }>
+        <DefaultForm
+            initialValues={ initialValues }
+            onSubmit={ handleSubmit }
+        >
             {(formikProps) => (
                 <>
+                    <header className='pb-1 mb-3 border-bottom'>
+                        <b>Zeitraum</b>
+                    </header>
+                    <Fields.DateOnlyServerSide
+                        label='Von'
+                        dataXPath='$.interval.start'
+                    />
+                    <Fields.DateOnlyServerSide
+                        label='Bis'
+                        dataXPath='$.interval.end'
+                    />
                     { Object.keys(grouped).map((key) => (
                         <StudyPanel key={ key } { ...({
                             studyId: key,
@@ -36,13 +54,17 @@ export const SelectionForm = (ps) => {
                             ageFrameRelated
                         })} />
                     ))}
+                    <hr />
+                    <Button type='submit'>
+                        Suchen
+                    </Button>
                 </>
             )}
         </DefaultForm>
     );
 }
 
-const createAgeFrameKey = ({ interval }) => {
+const createAgeFrameKey = ({ studyId, interval }) => {
     var create = (af) => {
         var { years, months, days } = af;
         return `${years}-${months}-${days}`;
@@ -51,7 +73,7 @@ const createAgeFrameKey = ({ interval }) => {
     var start = create(interval.start);
     var end = create(interval.end);
 
-    return `${start}_${end}`;
+    return `${studyId}/${start}_${end}`;
 }
 
 const escapeJsonPointer = (pointer) => (
@@ -61,18 +83,28 @@ const escapeJsonPointer = (pointer) => (
 const createInitialValues = ({
     ageFrameRecords
 }) => {
-    var initialValues = {};
+    var now = new Date();
+    var initialValues = {
+        interval: {
+            start: now.toISOString(),
+            end: now.toISOString()
+        },
+        filters: {}
+    };
     for (var ageFrame of ageFrameRecords) {
-        var { interval, conditions } = ageFrame.state;
-        var afKey = createAgeFrameKey({ interval });
+        var { studyId, state } = ageFrame;
+        var { interval, conditions } = state;
+        var afKey = createAgeFrameKey({ studyId, interval });
+        initialValues.filters[afKey] = true;
 
         for (var cond of conditions) {
             var { pointer, values } = cond;
             var condKey = escapeJsonPointer(pointer);
             
             for (var value of values) {
+                // FIXME: maybe escape certain values?
                 var fullKey = `${afKey}/${condKey}/${value}`;
-                initialValues[fullKey] = true;
+                initialValues.filters[fullKey] = true;
             }
         }
     }
@@ -114,9 +146,16 @@ const AgeFrame = (ps) => {
     } = ps;
 
     var {
+        studyId,
+        state
+    } = ageFrameRecord;
+
+    var {
         interval,
         conditions
-    } = ageFrameRecord.state;
+    } = state;
+
+    var formKey = createAgeFrameKey({ studyId, interval });
 
     var stringifiedAgeFrame = stringifyFieldValue({
         rawValue: interval,
@@ -128,10 +167,14 @@ const AgeFrame = (ps) => {
     return (
         <div className='p-3 mb-3 border bg-white'>
             <header className='pb-1 mb-3 border-bottom'>
-                <BSForm.Check label={ title } />
+                <Fields.PlainCheckbox
+                    dataXPath={ `$.filters.${formKey}` }
+                    label={ title }
+                />
             </header>
             { conditions.map((it, index) => (
                 <Condition key={ index } { ...({
+                    formKey,
                     subjectTypeRecord,
                     condition: it,
                     ageFrameRelated,
@@ -143,6 +186,7 @@ const AgeFrame = (ps) => {
 
 const Condition = (ps) => {
     var {
+        formKey,
         condition,
         ageFrameRelated,
         subjectTypeRecord,
@@ -154,6 +198,9 @@ const Condition = (ps) => {
         subjectTypeRecord.state.settings.subChannelFields.scientific
         .find(it => pointer === it.pointer)
     );
+
+    var condKey = escapeJsonPointer(pointer);
+    formKey = `${formKey}/${condKey}`;
 
     // FIXME: maybe we can just cut the "List" suffix via regex
     if (fieldDefinition.type === 'HelperSetItemIdList') {
@@ -171,6 +218,7 @@ const Condition = (ps) => {
             <div className='flex-grow'>
                 { values.map((value, index) => (
                     <ConditionValue key={ index } { ...({
+                        formKey,
                         value,
                         fieldDefinition,
                         ageFrameRelated,
@@ -183,10 +231,14 @@ const Condition = (ps) => {
 
 const ConditionValue = (ps) => {
     var {
+        formKey,
         value,
         fieldDefinition,
         ageFrameRelated,
     } = ps;
+
+    // FIXME: maybe escape certain values?
+    formKey = `${formKey}/${value}`;
 
     var label = stringifyFieldValue({
         rawValue: value,
@@ -195,6 +247,9 @@ const ConditionValue = (ps) => {
     });
 
     return (
-        <BSForm.Check label={ label } />
-    );
+        <Fields.PlainCheckbox
+            dataXPath={ `$.filters.${formKey}` }
+            label={ label }
+        />
+    )
 }
