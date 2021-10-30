@@ -24,7 +24,12 @@ agent.signOut = () => {
 }
 
 agent.send = ({ message }) => {
-    return axios.post('/api/', message);
+    var now = new Date();
+    var timezoneOffset = now.getTimezoneOffset();
+    return axios.post('/api/', {
+        ...message,
+        timezoneOffset,
+    });
 }
 
 agent.fetchServerTimezone = () => {
