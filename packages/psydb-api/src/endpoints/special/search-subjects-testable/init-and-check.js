@@ -262,6 +262,7 @@ var initStudies = async ({
     return {
         studyTypeKey,
         studyTypeRecord,
+        studyIds: studyRecords.map(it => it._id),
         studyRecords,
         studyRecordLabelDefinition: (
             studyTypeRecord.state.recordLabelDefinition

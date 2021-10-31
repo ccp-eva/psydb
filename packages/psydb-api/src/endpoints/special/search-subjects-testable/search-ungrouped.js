@@ -38,21 +38,20 @@ var searchUngrouped = async (context, next) => {
     } = context;
 
     var {
-        timeFrameStart,
-        timeFrameEnd,
-        
+        interval,
+        unwoundAgeFrameRecords,
+       
+        studyTypeKey,
+        studyTypeRecord,
         studyIds,
         studyRecords,
         studyRecordLabelDefinition,
 
-        subjectRecordType,
-        subjectRecordTypeRecord,
+        subjectTypeKey,
+        subjectTypeRecord,
         subjectDisplayFields,
         subjectAvailableDisplayFieldData,
         subjectRecordLabelDefinition,
-
-        enabledAgeFrames,
-        enabledValues,
 
         limit,
         offset,
@@ -63,7 +62,7 @@ var searchUngrouped = async (context, next) => {
     });
     
     var result = await db.collection('subject').aggregate([
-        { $match: { type: subjectRecordType }},
+        { $match: { type: subjectTypeKey }},
         // TODO: quicksearch
         /*...QuickSearchStages({
             queryFields,
@@ -74,14 +73,12 @@ var searchUngrouped = async (context, next) => {
         // age frames; this should reduce the size enough most of the time
         AddSubjectTestabilityFieldsStage({
             experimentVariant,
+            interval,
+            unwoundAgeFrameRecords,
 
-            timeFrameStart,
-            timeFrameEnd,
-            subjectRecordTypeRecord,
+            subjectTypeRecord,
             studyRecords,
 
-            enabledAgeFrames,
-            enabledValues,
             // TODO: ageframe custom verrides
             // TODO: global study settings filters in stage itself
         }),
@@ -126,7 +123,7 @@ var searchUngrouped = async (context, next) => {
 
     postprocessSubjectRecords({
         subjectRecords,
-        subjectRecordType,
+        subjectRecordType: subjectTypeKey,
         studyRecords,
         timeFrame: {
             start: timeFrameStart,
@@ -141,7 +138,7 @@ var searchUngrouped = async (context, next) => {
             subjectData: await combineSubjectResponseData({
                 db,
 
-                subjectRecordType,
+                subjectRecordType: subjectTypekey,
                 subjectRecords,
                 subjectRecordsCount,
                 subjectAvailableDisplayFieldData,

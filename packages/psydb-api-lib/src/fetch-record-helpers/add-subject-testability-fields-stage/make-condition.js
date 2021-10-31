@@ -25,7 +25,7 @@ var makeCondition = ({
                 [ 
                     // exclude study itself
                     studyRecord._id,
-                    // ... exlcuded studies
+                    // TODO ... exlcuded studies
                 ]
             ]}},
         ]
