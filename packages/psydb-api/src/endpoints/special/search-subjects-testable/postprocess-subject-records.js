@@ -15,7 +15,8 @@ var postprocessSubjectRecords = ({
     recordLabelDefinition,
 }) => {
 
-    var gatheredAgeFrameDataByStudyId = {};
+    // TODO
+    /*var gatheredAgeFrameDataByStudyId = {};
     for (var study of studyRecords) {
         var out = gatherAgeFrameDataOfStudy({
             studyRecord: study,
@@ -23,7 +24,7 @@ var postprocessSubjectRecords = ({
             timeFrame,
         });
         gatheredAgeFrameDataByStudyId[study._id] = out;
-    }
+    }*/
 
     subjectRecords.forEach(record => {
         record._recordLabel = createRecordLabel({

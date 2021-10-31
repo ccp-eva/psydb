@@ -128,10 +128,7 @@ var searchUngrouped = async (context, next) => {
         subjectRecords,
         subjectRecordType: subjectTypeKey,
         studyRecords,
-        timeFrame: {
-            start: timeFrameStart,
-            end: timeFrameEnd
-        },
+        timeFrame: interval,
         upcomingBySubjectId,
         recordLabelDefinition: subjectRecordLabelDefinition,
     })
@@ -141,7 +138,7 @@ var searchUngrouped = async (context, next) => {
             subjectData: await combineSubjectResponseData({
                 db,
 
-                subjectRecordType: subjectTypekey,
+                subjectRecordType: subjectTypeKey,
                 subjectRecords,
                 subjectRecordsCount,
                 subjectAvailableDisplayFieldData,
