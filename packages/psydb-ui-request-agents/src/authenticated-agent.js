@@ -1,4 +1,5 @@
 import Axios from 'axios';
+import { getSystemTimezone } from '@mpieva/psydb-timezone-helpers';
 
 const axios = Axios.create();
 
@@ -24,11 +25,9 @@ agent.signOut = () => {
 }
 
 agent.send = ({ message }) => {
-    var now = new Date();
-    var timezoneOffset = now.getTimezoneOffset();
     return axios.post('/api/', {
         ...message,
-        timezoneOffset,
+        timezone: getSystemTimezone()
     });
 }
 

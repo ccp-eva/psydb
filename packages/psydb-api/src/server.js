@@ -1,6 +1,12 @@
 //require('debug').enable('json-schema-lazy-resolve-oneof*,psydb:*');
 require('debug').enable('psydb:*');
 
+// NOTE: forcing UTC here since dumps from
+// diffrent servers that use DateOnlyServerSide
+// would get incompatible with one another
+// when servers have different timezones
+process.env.TZ = 'UTC';
+
 var Koa = require('koa'),
     psydbConfig = require('@mpieva/psydb-api-config'),
     createApi = require('./middleware/api');

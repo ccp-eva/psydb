@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "mongodb": "~3.6.3",
+    "@mpieva/psydb-timezone-helpers": "~0.1.0-alpha",
     "@mpieva/psydb-ajv-formats": "~0.1.0-alpha",
     "ajv-formats": "~0.6.1"
   }

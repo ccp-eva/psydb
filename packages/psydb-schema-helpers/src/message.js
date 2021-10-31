@@ -1,17 +1,15 @@
 'use strict';
-var { ExactObject, Integer } = require('@mpieva/psydb-schema-fields');
+var { ExactObject, Timezone } = require('@mpieva/psydb-schema-fields');
 
 var Message = ({ type, payload }) => ExactObject({
     properties: {
         type: { const: type },
-        timezoneOffset: Integer({
-            description: 'clients timezone offset',
-        }),
+        timezone: Timezone(),
         payload,
     },
     required: [
         'type',
-        'timezoneOffset',
+        'timezone',
         'payload',
     ],
 });

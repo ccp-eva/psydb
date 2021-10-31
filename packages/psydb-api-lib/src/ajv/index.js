@@ -4,6 +4,11 @@ var Ajv = require('ajv'),
     psydbFormats = require('@mpieva/psydb-ajv-formats'),
     psydbKeywords = require('@mpieva/psydb-ajv-keywords');
 
+var {
+    IANAZones,
+    getSystemTimezone,
+} = require('@mpieva/psydb-timezone-helpers');
+
 var AjvWrapper = ({
     disableProhibitedKeyword = false,
     ...options
@@ -53,14 +58,28 @@ var AjvWrapper = ({
         psydbKeywords.unmarshalDateOnlyServerSide
     );
 
-    var initializeValidateContext = () => {
-        wrapper.validateContext = {};
+    var initializeValidateContext = (data) => {
+        var serverTimezone = getSystemTimezone();
+        var clientTimezone = undefined;
+
+        // FIXME: relying on data here is quite hacky
+        // on the other hand it will be caught in validator
+        // later when its invalid; we just need to make sure we dont
+        // rely on it being set in the keywords using clientTimezoneOffset
+        if (IANAZones.includes(data.timezone)) {
+            clientTimezone = data.timezone;
+        }
+
+        wrapper.validateContext = {
+            serverTimezone,
+            clientTimezone,
+        };
     }
 
     wrapper.validate = (schema, data) => {
         var compiledValidate = ajv.compile(schema);
         
-        initializeValidateContext();
+        initializeValidateContext(data);
         var isValid = compiledValidate.call(wrapper.validateContext, data);
 
         wrapper.errors = compiledValidate.errors;
