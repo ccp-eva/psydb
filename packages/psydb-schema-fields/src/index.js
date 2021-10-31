@@ -63,4 +63,6 @@ module.exports = {
     StringEnum: require('./string-enum'),
     ExperimentVariantEnum: require('./experiment-variant-enum'),
     ExperimentTypeEnum: require('./experiment-type-enum'),
+
+    Timezone: require('./timezone'),
 }
