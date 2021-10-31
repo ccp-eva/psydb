@@ -43,6 +43,7 @@
     "@mpieva/psydb-driver-nodejs": "~0.1.0-alpha",
     "copy-anything": "~2.0.3",
     "deep-diff": "~1.0.2",
+    "@mpieva/psydb-timezone-helpers": "~0.1.0-alpha",
     "@mpieva/psydb-koa-event-middleware": "~0.1.0-alpha",
     "@mpieva/psydb-schema-creators": "~0.1.0-alpha",
     "@mpieva/psydb-common-lib": "~0.1.0-alpha",

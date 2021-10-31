@@ -49,8 +49,8 @@ const Main = ({ onSignedOut, onSignedIn }) => {
         return <LoadingIndicator size='lg' />
     }
 
-    var serverTimezoneOffset = fetched.data.timezoneOffset;
-    console.log({ serverTimezoneOffset });
+    var serverTimezone = fetched.data.timezone;
+    console.log({ serverTimezone });
 
     var onSignOut = () => (
         agent.signOut()
@@ -67,7 +67,7 @@ const Main = ({ onSignedOut, onSignedIn }) => {
     );
 
     return (
-        <ServerTimezoneContext.Provider value={ serverTimezoneOffset }>
+        <ServerTimezoneContext.Provider value={ serverTimezone }>
             <Switch>
                 <Route
                     path='/calendars/away-team/:locationType/:researchGroupId'
