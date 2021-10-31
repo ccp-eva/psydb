@@ -11,6 +11,7 @@ import {
 } from 'react-bootstrap';
 
 import { Base64 } from 'js-base64';
+import { getSystemTimezone } from '@mpieva/psydb-timezone-helpers';
 
 import agent from '@mpieva/psydb-ui-request-agents';
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
@@ -43,7 +44,7 @@ const InhouseTestableSubjectList = ({
     var { path, url } = useRouteMatch();
     var {
         studyType,
-        studyIds,
+        studyIds: joinedStudyIds,
         subjectRecordType,
         searchSettings64
     } = useParams();
@@ -69,11 +70,12 @@ const InhouseTestableSubjectList = ({
         } = userSearchSettings['$'];
 
         var { start, end } = interval;
-        console.log({ interval });
 
         return (
             agent.searchTestableSubjectsInhouse({
                 subjectTypeKey: subjectRecordType,
+                studyTypeKey: studyType,
+                studyIds: joinedStudyIds.split(','),
                 interval: {
                     start: datefns.startOfDay(new Date(start)),
                     end: datefns.endOfDay(new Date(end)),
@@ -91,7 +93,7 @@ const InhouseTestableSubjectList = ({
             })
         )
     }, [
-        studyIds, subjectRecordType, searchSettings64,
+        joinedStudyIds, subjectRecordType, searchSettings64,
         revision, offset, limit
     ])
    

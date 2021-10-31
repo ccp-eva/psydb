@@ -4,6 +4,7 @@ var {
     DefaultArray,
     CustomRecordTypeKey,
     ForeignId,
+    ForeignIdList,
     JsonPointer,
     DefaultBool,
     DateOnlyServerSideInterval,
@@ -14,8 +15,11 @@ var {
 var RequestBodySchema = () => ExactObject({
     properties: {
         timezone: Timezone(),
-        studyTypeKey: CustomRecordTypeKey({ collection: 'study' }),
+
         subjectTypeKey: CustomRecordTypeKey({ collection: 'subject' }),
+        studyTypeKey: CustomRecordTypeKey({ collection: 'study' }),
+        studyIds: ForeignIdList({ collection: 'study' }),
+
         interval: DateOnlyServerSideInterval(),
         filters: DefaultArray({
             items: { oneOf: [
@@ -30,6 +34,8 @@ var RequestBodySchema = () => ExactObject({
     required: [
         'timezone',
         'subjectTypeKey',
+        'studyTypeKey',
+        'studyIds',
         'interval',
         'filters',
         'offset',

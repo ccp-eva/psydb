@@ -14,7 +14,7 @@ var makeAgeFrameFieldSubConditions = (options) => {
     var {
         searchInterval,
         ageFrameFilters,
-        ageFrameValueFilters,
+        ageFrameValueFilters = [],
         ageFrameTargetDefinition,
     } = options;
 
@@ -35,11 +35,18 @@ var makeAgeFrameFieldSubConditions = (options) => {
                 ageFrameInterval: filter.interval,
                 ageFrameTargetDefinition,
             }),
-            ...makeAgeFrameValueConditions({
-                ageFrameValueFilters: ageFrameValueFilterGroup || []
-            })
-        ]
+        ];
 
+        if (
+            Array.isArray(ageFrameValueFilterGroup)
+            && ageFrameValueFilterGroup.length > 0
+        ) {
+            ageFrameConditions.push(
+                ...makeAgeFrameValueConditions({
+                    ageFrameValueFilters: ageFrameValueFilterGroup
+                })
+            )
+        }
 
         /*for (var it of ageFrameGroup) {
             var {

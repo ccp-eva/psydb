@@ -3,6 +3,7 @@ var debug = require('debug')(
     'psydb:api:endpoints:searchTestableSubjects:initAndCheck'
 );
 var { groupBy } = require('@mpieva/psydb-common-lib');
+var compareIds = require('@mpieva/psydb-api-lib/src/compare-ids');
 var checkForeignIdsExist = require(
     '@mpieva/psydb-api-lib/src/check-foreign-ids-exist'
 );
@@ -31,8 +32,9 @@ var initAndCheck = async ({
     checkSchema({ request });
 
     var {
-        studyTypeKey,
         subjectTypeKey,
+        studyTypeKey,
+        studyIds,
         filters,
     } = request.body;
 
@@ -45,7 +47,7 @@ var initAndCheck = async ({
     var studyData = await initStudies({
         db,
         studyTypeKey,
-        studyIds: ageFrameFilters.map(it => it.studyId)
+        studyIds,
     })
 
     var subjectData = await initSubjects({
@@ -219,29 +221,39 @@ var initAgeFrames = async ({
         ]).toArray()
     );
 
-    var unwoundAgeFrameRecords = await (
-        db.collection('ageFrame').aggregate([
-            StripEventsStage(),
-            { $match: {
-                _id: { $in: ageFrameIds }, // only enabled frames
-                subjectTypeKey,
-            }},
-            { $unwind: '$state.conditions' },
-            { $unwind: '$state.conditions.values' },
-            { $match: {
-                // only enabled values
-                $or: valueFilters.map(it => ({
-                    'state.conditions.pointer': it.pointer,
-                    'state.conditions.values': it.value
-                }))
-            }}
-        ]).toArray()
-    );
+    // weed out those that belong to disabled age frames
+    valueFilters = valueFilters.filter(value => (
+        ageFrameRecords.find(af => compareIds(
+            af._id, value.ageFrameId
+        ))
+    ));
 
-    if (unwoundAgeFrameRecords.length != valueFilters.length) {
-        throw new ApiError(400, {
-            apiStatus: 'InvalidFilters',
-        });
+    var unwoundAgeFrameRecords = [];
+    if (valueFilters.length > 0) {
+        unwoundAgeFrameRecords = await (
+            db.collection('ageFrame').aggregate([
+                StripEventsStage(),
+                { $match: {
+                    _id: { $in: ageFrameIds }, // only enabled frames
+                    subjectTypeKey,
+                }},
+                { $unwind: '$state.conditions' },
+                { $unwind: '$state.conditions.values' },
+                { $match: {
+                    // only enabled values of enabled ageframes
+                    $or: valueFilters.map(it => ({
+                        'state.conditions.pointer': it.pointer,
+                        'state.conditions.values': it.value
+                    }))
+                }}
+            ]).toArray()
+        );
+
+        if (unwoundAgeFrameRecords.length != valueFilters.length) {
+            throw new ApiError(400, {
+                apiStatus: 'InvalidFilters',
+            });
+        }
     }
 
     return {

@@ -10,67 +10,84 @@ var makeTestingPermissionSubConditions = (
     require('./make-testing-permission-sub-conditions')
 );
 
-var makeCondition = ({
-    experimentVariant,
-    searchInterval,
-    ageFrameFilters,
-    ageFrameValueFilters,
-    ageFrameTargetDefinition,
+var makeCondition = (options) => {
+    var {
+        experimentVariant,
+        searchInterval,
+        ageFrameFilters = [],
+        ageFrameValueFilters = [],
+        ageFrameTargetDefinition,
 
-    studyRecord,
-    subjectTypeSettings,
-}) => {
-    var base = {
-        $and: [
-            { $not: { $in: [
-                '$scientific.state.participatedInStudyIds',
-                [ 
-                    // exclude study itself
-                    studyRecord._id,
-                    // TODO ... exlcuded studies
-                ]
-            ]}},
-        ]
-    };
-    // TODO: global conditions
+        studyRecord,
+        subjectTypeSettings,
+    } = options;
 
+    var combinedTestingPermissions = { $or: (
+        makeTestingPermissionSubConditions({
+            researchGroupIds: studyRecord.state.researchGroupIds,
+            experimentVariant
+        })
+    )};
 
-    var combinedTestingPermissions = makeTestingPermissionSubConditions({
-        researchGroupIds: studyRecord.state.researchGroupIds,
-        experimentVariant
-    });
+    var combinedAgeFrameConditions = undefined;
+    if (
+        ageFrameTargetDefinition && ageFrameFilters.length > 0) {
+        combinedAgeFrameConditions = { $or: (
+            makeAgeFrameFieldSubConditions({
+                searchInterval,
+                ageFrameFilters,
+                ageFrameValueFilters,
+                ageFrameTargetDefinition,
 
-    var combinedAgeFrameConditions = [];
-    if (ageFrameTargetDefinition) {
-        combinedAgeFrameConditions = makeAgeFrameFieldSubConditions({
-            searchInterval,
-            ageFrameFilters,
-            ageFrameValueFilters,
-            ageFrameTargetDefinition,
-
-            /*conditionsByAgeFrameList: (
-                subjectTypeSettings.conditionsByAgeFrame
-            )*/
-        });
+                /*conditionsByAgeFrameList: (
+                    subjectTypeSettings.conditionsByAgeFrame
+                )*/
+            })
+        )}
     }
 
-    var mongoCondOperation = {
+    var expression = MongoExpression({
+        excludedStudyIds: [
+            // exclude study itself
+            studyRecord._id,
+            // TODO ... exlcuded studies
+        ],
+        combinedTestingPermissions,
+        combinedAgeFrameConditions
+    });
+
+    console.dir({ expression }, { depth: null });
+    return expression;
+};
+
+var MongoExpression = (options) => {
+    var {
+        excludedStudyIds,
+        combinedTestingPermissions,
+        combinedAgeFrameConditions
+    } = options;
+
+    var AND = [
+        { $and: [
+            { $not: { $in: [
+                '$scientific.state.participatedInStudyIds',
+                excludedStudyIds
+            ]}},
+        ]},
+        combinedTestingPermissions,
+    ];
+
+    if (combinedAgeFrameConditions) {
+        AND.push(combinedAgeFrameConditions);
+    }
+
+    return ({
         $cond: {
-            if: {
-                $and: [
-                    base,
-                    { $or: combinedTestingPermissions },
-                    { $or: combinedAgeFrameConditions }
-                ]
-            },
+            if: { $and: AND },
             then: true,
             else: false
         }
-    }
-
-    //console.dir(mongoCondOperation, { depth: null });
-    return mongoCondOperation;
-};
-
+    })
+}
 
 module.exports = makeCondition;

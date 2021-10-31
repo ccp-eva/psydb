@@ -239,6 +239,9 @@ agent.searchSubjectsTestableOnline = ({
 
 agent.searchTestableSubjectsInhouse = ({
     subjectTypeKey,
+    studyTypeKey,
+    studyIds,
+
     interval,
     filters,
 
@@ -248,7 +251,11 @@ agent.searchTestableSubjectsInhouse = ({
     return axios.post(
         '/api/testable-subjects-inhouse',
         {
+            timezone: getSystemTimezone(),
             subjectTypeKey,
+            studyTypeKey,
+            studyIds,
+
             interval,
             filters,
 
