@@ -1,4 +1,12 @@
 'use strict';
+var debug = require('debug')(
+    'psydb:api:endpoints:searchTestableSubjects:initAndCheck'
+);
+var { groupBy } = require('@mpieva/psydb-common-lib');
+var checkForeignIdsExist = require(
+    '@mpieva/psydb-api-lib/src/check-foreign-ids-exist'
+);
+
 var fetchOneCustomRecordType = require(
     '@mpieva/psydb-api-lib/src/fetch-one-custom-record-type'
 );
@@ -6,7 +14,10 @@ var gatherDisplayFieldsForRecordType = require(
     '@mpieva/psydb-api-lib/src/gather-display-fields-for-record-type'
 );
 
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error');
+var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
+    Ajv = require('@mpieva/psydb-api-lib/src/ajv');
+
+var RequestBodySchema = require('./request-body-schema');
 
 var {
     StripEventsStage,
@@ -17,6 +28,56 @@ var initAndCheck = async ({
     permissions,
     request
 }) => {
+    
+    var ajv = Ajv(),
+        isValid = false;
+
+    isValid = ajv.validate(
+        RequestBodySchema(),
+        request.body
+    );
+    if (!isValid) {
+        debug('ajv errors', ajv.errors);
+        throw new ApiError(400, {
+            apiStatus: 'InvalidRequestSchema',
+            data: { ajvErrors: ajv.errors }
+        });
+    };
+
+    var {
+        timezone,
+        subjectTypeKey,
+        interval,
+        filters,
+
+        offset,
+        limit,
+    } = request.body;
+    var ageFrameFilters = [];
+    var valueFilters = [];
+
+    for (var it of filters) {
+        if (it.isEnabled) {
+            if (it.pointer) {
+                valueFilters.push(it);
+            }
+            else {
+                ageFrameFilters.push(it);
+            }
+        }
+    }
+
+    var groupedValueFilters = groupBy({
+        items: valueFilters,
+        byProp: 'ageFrameId',
+    });
+
+    await checkForeignIdsExist(db, {
+        'ageFrame': ageFrameFilters.map(it => it.ageFrameId),
+    });
+
+    console.log('FOOOOOOOOO')
+    
     var {
         studyRecordType,
         studyIds,

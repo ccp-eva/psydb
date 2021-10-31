@@ -2,24 +2,37 @@
 var {
     ExactObject,
     DefaultArray,
+    CustomRecordTypeKey,
     ForeignId,
     JsonPointer,
     DefaultBool,
+    DateOnlyServerSideInterval,
+    Integer,
+    Timezone,
 } = require('@mpieva/psydb-schema-fields');
 
 var RequestBodySchema = () => ExactObject({
     properties: {
+        timezone: Timezone(),
+        subjectTypeKey: CustomRecordTypeKey({ collection: 'subject' }),
         interval: DateOnlyServerSideInterval(),
         filters: DefaultArray({
             items: { oneOf: [
                 AgeFrameFilter(),
                 ValueFilter(),
             ]}
-        })
+        }),
+
+        offset: Integer(),
+        limit: Integer(),
     },
     required: [
+        'timezone',
+        'subjectTypeKey',
         'interval',
         'filters',
+        'offset',
+        'limit',
     ]
 })
 
