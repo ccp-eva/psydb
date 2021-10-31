@@ -25,11 +25,11 @@ var timeshift = (options) => {
         //end: datefns.sub(searchInterval.end, { days: ageFrame.start }),
         start: subtractAgeFrameEdge({
             date: searchInterval.start,
-            ageFrameEdge: ageFrameInterval.start
+            ageFrameEdge: ageFrameInterval.end
         }),
         end: subtractAgeFrameEdge({
             date: searchInterval.end,
-            ageFrameEdge: ageFrameInterval.end
+            ageFrameEdge: ageFrameInterval.start
         }),
     }
 

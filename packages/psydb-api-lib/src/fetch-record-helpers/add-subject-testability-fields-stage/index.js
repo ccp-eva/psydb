@@ -41,12 +41,9 @@ var AddSubjectTestabilityFieldsStage = ({
         byProp: 'studyId',
     });
 
-    console.log({ ageFrameFiltersByStudy });
-
     var conditionsByStudy = {};
     for (var study of studyRecords) {
         var { _id } = study;
-        console.log({ _id });
         var studyAgeFrameFilters = ageFrameFiltersByStudy[_id];
         var studyAgeFrameValueFilters = ageFrameValueFiltersByStudy[_id];
 
@@ -79,12 +76,16 @@ var AddSubjectTestabilityFieldsStage = ({
         });
     }
 
-    return ({ $addFields: {
+    var stage = { $addFields: {
         ...(ageFrameField && {
             _ageFrameField: `$scientific.state.custom.${ageFrameField.key}`,
         }),
         ...conditionsByStudy
-    }});
+    }};
+
+    //console.dir({ stage }, { depth: null });
+    
+    return stage;
 }
 
 
