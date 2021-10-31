@@ -16,6 +16,7 @@ var getOffsetString = (date, timezone) => {
         timeZoneName: 'short'
     });
     var [ match, timezoneString ] = str.match(/(\S+)$/);
+    console.log({ str });
 
     return timezoneString;
 }

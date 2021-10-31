@@ -87,7 +87,7 @@ const createInitialValues = ({
     var initialValues = {
         interval: {
             start: now.toISOString(),
-            end: now.toISOString()
+            //end: now.toISOString()
         },
         filters: {}
     };

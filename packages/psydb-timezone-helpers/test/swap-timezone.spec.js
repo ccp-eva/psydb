@@ -28,9 +28,6 @@ describe('swapTimezone()', () => {
     });
 
     it('client germany; server utc', () => {
-        var sourceTimezone = 'Europe/Berlin';
-        var targetTimezone = 'UTC';
-
         // local date in germany shows 1970-01-01 00:00:00
         var fakeGermany = new Date('1969-12-31T23:00:00.000Z');
         
@@ -41,47 +38,45 @@ describe('swapTimezone()', () => {
         });
         console.log({ out })
         expect(out).toEqual(new Date('1970-01-01T00:00:00.000Z'));
+    });
 
-        /*console.log(fakeGermany.getTimezoneOffset());
-        //console.log(fakeTZ(fakeGermany));
-        console.log(swapTZ({
+    it('client germany; server new york', () => {
+        // local date in germany shows 1970-01-01 00:00:00
+        var fakeGermany = new Date('1969-12-31T23:00:00.000Z');
+        
+        var out = swapTimezone({
             date: fakeGermany,
             sourceTZ: 'Europe/Berlin',
-            //targetTZ: 'Europe/Berlin',
-            //targetTZ: 'UTC',
             targetTZ: 'America/New_York',
-        }))*/
-       
-        /*
-        var localeString = fakeGermany.toLocaleString('en-US', {
-            timeZone: sourceTimezone
-        })
-        var fake = (
-            new Date(localeString)
-        );
-
-        var delta = (
-            fakeGermany.getTime() - fake.getTime()
-        );
-
-        var server = new Date((fakeGermany.getTime() + delta));
-
-        // the server will receive the clients timezone +60 in this case
-        // then to get the correct date part, that is 1970-01-01,
-        // the server adds the clients timezone offset to the timestamp
-        // it received to get utc equivalent
-        // and then has to subtract its own timezone offset
-        // to get the proper date part of that date
-        // in this case its -60 +0
-
-        console.log({
-            fakeGermany,
-            local: fakeGermany.toString(),
-            localeString,
-            fake,
-            delta,
-            server,
-        })*/
+        });
+        console.log({ out })
+        expect(out).toEqual(new Date('1970-01-01T05:00:00.000Z'));
     });
+
+    it('dates before 100 AD', () => {
+        // local date in germany shows 1970-01-01 00:00:00
+        var fakeGermany = new Date('0001-12-31T23:00:00.000Z');
+        
+        var out = swapTimezone({
+            date: fakeGermany,
+            sourceTZ: 'Europe/Berlin',
+            targetTZ: 'UTC',
+        });
+        console.log({ out })
+        expect(out).toEqual(new Date('1970-01-01T00:00:00.000Z'));
+    })
+
+    it.only('dates brefore 1893-04-01', () => {
+        // local date in germany shows 1970-01-01 00:00:00
+        var fakeGermany = new Date('1893-03-31T23:00:00.000Z');
+        
+        var out = swapTimezone({
+            date: fakeGermany,
+            sourceTZ: 'Europe/Berlin',
+            targetTZ: 'UTC',
+        });
+        console.log({ out })
+        expect(out).toEqual(new Date('1970-01-01T00:00:00.000Z'));
+    })
 });
 

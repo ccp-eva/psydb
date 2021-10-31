@@ -6,13 +6,22 @@ var swapTimezone = ({
     sourceTZ,
     targetTZ
 }) => {
+    var year = date.getUTCFullYear();
+    console.log({ year })
+
     // first create date string that can eb parsed back 'sv' works too
     var str = date.toLocaleString('sv', {
         timeZone: sourceTZ,
     });
+    var [ match, year, rest ] = str.match(/^(\d+)(.*)$/);
+    year = year.padStart(4, '0');
+    str = `${year}${rest}`;
+    console.log({ str, year });
 
     // then get the offset of target timezone at dates point in time
     var targetTZString = getOffsetString(date, targetTZ);
+    console.log({ targetTZString });
+    
 
     // append the target timezone offset string and parse back
     var swapped = new Date(

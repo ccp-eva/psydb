@@ -193,7 +193,8 @@ const DateOnlyServerSideWidget = (ps) => {
     var hasErrors = rawErrors.length > 0;
     var className = hasErrors ? 'is-invalid' : '';
 
-    var { date } = splitISO(removeTimezone(value, serverTimezoneOffset));
+    //var { date } = splitISO(removeTimezone(value, serverTimezoneOffset));
+    var { date } = splitISO(value);
     //console.log({ date });
     
     // usin empty defaults or else react complains about switching

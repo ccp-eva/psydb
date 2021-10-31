@@ -35,16 +35,22 @@ var unmarshalDateOnlyServerSide = {
         //console.log(data, dataPath, parentData, parentDataProperty);
         if (serverTimezone && clientTimezone) {
             var received = new Date(data);
+            // FIXME:
+            // on 1894-04-01 something wird happened
+            // als all dates before 100 AD cannot be timezone corrected properly
+            if (received.getUTCFullYear() <= 1894) {
+                return false;
+            }
             var swapped = swapTimezone({
                 date: received,
                 sourceTZ: clientTimezone,
                 targetTZ: serverTimezone,
             });
-            
+
             var dayStart = new Date(swapped);
             dayStart.setHours(0,0,0,0); // sets server tz local hours
 
-            //console.log({ received, swapped, dayStart });
+            console.log({ received, swapped, dayStart });
             
             
             parentData[parentDataProperty] = dayStart;
