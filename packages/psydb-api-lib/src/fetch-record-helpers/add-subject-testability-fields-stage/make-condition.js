@@ -11,12 +11,14 @@ var makeTestingPermissionSubConditions = (
 );
 
 var makeCondition = ({
-    ageFrameFieldKey,
-    timeFrameStart,
-    timeFrameEnd,
+    experimentVariant,
+    searchInterval,
+    ageFrameFilters,
+    ageFrameValueFilters,
+    ageFrameTargetDefinition,
+
     studyRecord,
     subjectTypeSettings,
-    experimentVariant
 }) => {
     var base = {
         $and: [
@@ -39,14 +41,16 @@ var makeCondition = ({
     });
 
     var combinedAgeFrameConditions = [];
-    if (ageFrameFieldKey) {
+    if (ageFrameTargetDefinition) {
         combinedAgeFrameConditions = makeAgeFrameFieldSubConditions({
-            ageFrameFieldKey,
-            timeFrameStart,
-            timeFrameEnd,
-            conditionsByAgeFrameList: (
+            searchInterval,
+            ageFrameFilters,
+            ageFrameValueFilters,
+            ageFrameTargetDefinition,
+
+            /*conditionsByAgeFrameList: (
                 subjectTypeSettings.conditionsByAgeFrame
-            )
+            )*/
         });
     }
 

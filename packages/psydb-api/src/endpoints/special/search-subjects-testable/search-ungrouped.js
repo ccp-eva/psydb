@@ -39,7 +39,8 @@ var searchUngrouped = async (context, next) => {
 
     var {
         interval,
-        unwoundAgeFrameRecords,
+        ageFrameFilters,
+        ageFrameValueFilters,
        
         studyTypeKey,
         studyTypeRecord,
@@ -74,8 +75,10 @@ var searchUngrouped = async (context, next) => {
         AddSubjectTestabilityFieldsStage({
             experimentVariant,
             interval,
-            unwoundAgeFrameRecords,
+            ageFrameFilters,
+            ageFrameValueFilters,
 
+            subjectTypeKey,
             subjectTypeRecord,
             studyRecords,
 

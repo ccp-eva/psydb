@@ -1,6 +1,7 @@
 'use strict'
 var datefns = require('date-fns');
 var jsonpointer = require('jsonpointer');
+var { groupBy } = require('@mpieva/psydb-common-lib');
 
 var prepareSubjectTypeSettings = require('./prepare-subject-type-settings');
 var filterAgeFrameConditions = require('./filter-age-frame-conditions');
@@ -8,36 +9,50 @@ var makeCondition = require('./make-condition');
 
 var AddSubjectTestabilityFieldsStage = ({
     experimentVariant,
+    interval,
+    ageFrameFilters,
+    ageFrameValueFilters,
 
-    timeFrameStart,
-    timeFrameEnd,
-
-    enabledAgeFrames,
-    enabledValues,
-    
-    subjectRecordTypeRecord,
+    subjectTypeKey,
+    subjectTypeRecord,
     studyRecords,
 }) => {
 
-    var subjectTypeSettingsByStudy = prepareSubjectTypeSettings({
+    /*var subjectTypeSettingsByStudy = prepareSubjectTypeSettings({
         studyRecords,
-        subjectType: subjectRecordTypeRecord.type,
-    });
+        subjectType: subjectTypeKey,
+    });*/
 
     var customFields = (
-        subjectRecordTypeRecord.state.settings.subChannelFields.scientific
+        subjectTypeRecord.state.settings.subChannelFields.scientific
     );
     
     var ageFrameField = customFields.find(field => (
         field.props.isSpecialAgeFrameField === true
-    ))
+    ));
+
+    var ageFrameFiltersByStudy = groupBy({
+        items: ageFrameFilters,
+        byProp: 'studyId',
+    });
+
+    var ageFrameValueFiltersByStudy = groupBy({
+        items: ageFrameValueFilters,
+        byProp: 'studyId',
+    });
+
+    console.log({ ageFrameFiltersByStudy });
 
     var conditionsByStudy = {};
     for (var study of studyRecords) {
-        var subjectTypeSettings = subjectTypeSettingsByStudy[study._id];
-        
-        if (ageFrameField) {
+        var { _id } = study;
+        console.log({ _id });
+        var studyAgeFrameFilters = ageFrameFiltersByStudy[_id];
+        var studyAgeFrameValueFilters = ageFrameValueFiltersByStudy[_id];
 
+        /*var subjectTypeSettings = subjectTypeSettingsByStudy[study._id];
+
+        if (ageFrameField) {
             var filteredConditionsByAgeFrame = filterAgeFrameConditions({
                 studyId: study._id,
                 enabledAgeFrames,
@@ -50,15 +65,16 @@ var AddSubjectTestabilityFieldsStage = ({
             subjectTypeSettings.conditionsByAgeFrame = (
                 filteredConditionsByAgeFrame
             );
-        }
+        }*/
 
         conditionsByStudy[`_testableIn_${study._id}`] = makeCondition({
             experimentVariant,
-            ageFrameFieldKey: ageFrameField && ageFrameField.key,
-            timeFrameStart,
-            timeFrameEnd,
-            subjectRecordTypeRecord,
-            subjectTypeSettings: subjectTypeSettingsByStudy[study._id],
+            searchInterval: interval,
+            ageFrameFilters: studyAgeFrameFilters,
+            ageFrameValueFilters: studyAgeFrameValueFilters,
+            ageFrameTargetDefinition: ageFrameField,
+
+            subjectTypeRecord,
             studyRecord: study,
         });
     }

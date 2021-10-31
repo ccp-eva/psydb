@@ -36,16 +36,16 @@ var initAndCheck = async ({
         filters,
     } = request.body;
 
-    var { unwoundAgeFrameRecords } = await initAgeFrames({
+    var { ageFrameFilters, ageFrameValueFilters } = await initAgeFrames({
         db, subjectTypeKey, filters,
     });
     
-    console.dir(unwoundAgeFrameRecords, { depth: null })
+    console.dir({ ageFrameFilters, ageFrameValueFilters }, { depth: null })
 
     var studyData = await initStudies({
         db,
         studyTypeKey,
-        studyIds: unwoundAgeFrameRecords.map(it => it.studyId)
+        studyIds: ageFrameFilters.map(it => it.studyId)
     })
 
     var subjectData = await initSubjects({
@@ -55,9 +55,10 @@ var initAndCheck = async ({
 
     return ({
         ...request.body,
-        unwoundAgeFrameRecords,
         ...studyData,
         ...subjectData,
+        ageFrameFilters,
+        ageFrameValueFilters,
     });
 
    // var {
@@ -194,12 +195,12 @@ var initAgeFrames = async ({
 
     for (var it of filters) {
         if (it.isEnabled) {
-            if (it.pointer) {
-                valueFilters.push(it);
-            }
-            else {
-                ageFrameFilters.push(it);
-            }
+            var target = (
+                it.pointer
+                ? valueFilters
+                : ageFrameFilters
+            );
+            target.push(it);
         }
     }
 
@@ -207,6 +208,16 @@ var initAgeFrames = async ({
     await checkForeignIdsExist(db, {
         'ageFrame': ageFrameIds,
     });
+
+    var ageFrameRecords = await (
+        db.collection('ageFrame').aggregate([
+            StripEventsStage(),
+            { $match: {
+                _id: { $in: ageFrameIds }, // only enabled frames
+                subjectTypeKey,
+            }},
+        ]).toArray()
+    );
 
     var unwoundAgeFrameRecords = await (
         db.collection('ageFrame').aggregate([
@@ -233,7 +244,20 @@ var initAgeFrames = async ({
         });
     }
 
-    return { unwoundAgeFrameRecords };
+    return {
+        ageFrameFilters: ageFrameRecords.map(it => ({
+            ageFrameId: it._id,
+            studyId: it.studyId,
+            interval: it.state.interval,
+        })),
+        ageFrameValueFilters: unwoundAgeFrameRecords.map(it => ({
+            ageFrameId: it._id,
+            studyId: it.studyId,
+            interval: it.state.interval,
+            pointer: it.state.conditions.pointer,
+            value: it.state.conditions.values
+        }))
+    };
 }
 
 var initStudies = async ({
