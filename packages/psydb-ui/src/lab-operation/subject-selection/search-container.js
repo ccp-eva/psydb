@@ -155,7 +155,7 @@ const SearchContainer = ({
 
             //var gzipped = pako.deflate(json);
             //var base64 = Base64.encode(gzipped);
-            console.log(base64);
+            console.log({ base64 });
 
             //dispatch({ type: 'update-search-settings', payload });
             history.push(`${url}/search/${base64}`);

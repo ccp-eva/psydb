@@ -238,7 +238,6 @@ agent.searchSubjectsTestableOnline = ({
 }
 
 agent.searchTestableSubjectsInhouse = ({
-    studyTypeKey, // FIXME: thei param might not be required
     subjectTypeKey,
     interval,
     filters,
@@ -249,7 +248,6 @@ agent.searchTestableSubjectsInhouse = ({
     return axios.post(
         '/api/testable-subjects-inhouse',
         {
-            studyTypeKey,
             subjectTypeKey,
             interval,
             filters,

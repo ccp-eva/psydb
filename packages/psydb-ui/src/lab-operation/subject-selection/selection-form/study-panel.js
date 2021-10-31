@@ -54,7 +54,7 @@ const AgeFrame = (ps) => {
         conditions
     } = state;
 
-    var formKey = createAgeFrameKey({ studyId, interval });
+    var formKey = createAgeFrameKey(ageFrameRecord);
 
     var stringifiedAgeFrame = stringifyFieldValue({
         rawValue: interval,

@@ -49,6 +49,7 @@ const InhouseTestableSubjectList = ({
     } = useParams();
 
     var userSearchSettings = JSON.parse(Base64.decode(searchSettings64));
+    console.log({ userSearchSettings });
 
     if (!userSearchSettings) {
         return (
@@ -71,7 +72,6 @@ const InhouseTestableSubjectList = ({
 
         return (
             agent.searchTestableSubjectsInhouse({
-                studyTypeKey: studyType,
                 subjectTypeKey: subjectRecordType,
                 interval: {
                     start: datefns.startOfDay(start),

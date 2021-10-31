@@ -11,16 +11,21 @@ export const parseEncodedInterval = (str) => {
     }
 }
 
-export const createAgeFrameKey = ({ studyId, interval }) => {
-    var create = (af) => {
-        var { years, months, days } = af;
-        return `${years}-${months}-${days}`;
-    }
+export const createAgeFrameKey = (ageFrameRecord) => {
+    var { _id, studyId, state } = ageFrameRecord;
+    return `${studyId}/${_id}`;
+    
 
-    var start = create(interval.start);
-    var end = create(interval.end);
+    //var { interval } = state;
+    //var create = (af) => {
+    //    var { years, months, days } = af;
+    //    return `${years}-${months}-${days}`;
+    //}
 
-    return `${studyId}/${start}_${end}`;
+    //var start = create(interval.start);
+    //var end = create(interval.end);
+
+    //return `${studyId}/${start}_${end}`;
 }
 
 export const escapeJsonPointer = (pointer) => (
@@ -45,7 +50,7 @@ export const createInitialValues = ({
     for (var ageFrame of ageFrameRecords) {
         var { studyId, state } = ageFrame;
         var { interval, conditions } = state;
-        var afKey = createAgeFrameKey({ studyId, interval });
+        var afKey = createAgeFrameKey(ageFrame);
         initialValues.filters[afKey] = true;
 
         for (var cond of conditions) {
