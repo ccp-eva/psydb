@@ -8,13 +8,13 @@ var swapTimezone = ({
 }) => {
 
     // first create date string that can eb parsed back 'sv' works too
-    var str = date.toLocaleString('sv', {
+    var str = date.toLocaleString('en-US', {
         timeZone: sourceTZ,
     });
 
-    var [ match, year, rest ] = str.match(/^(\d+)(.*)$/);
-    year = year.padStart(4, '0');
-    str = `${year}${rest}`;
+    //var [ match, year, rest ] = str.match(/^(\d+)(.*)$/);
+    //year = year.padStart(4, '0');
+    //str = `${year}${rest}`;
     //console.log({ str, year });
 
     // then get the offset of target timezone at dates point in time
@@ -23,9 +23,9 @@ var swapTimezone = ({
     
 
     // append the target timezone offset string and parse back
-    var swapped = new Date(
-        `${str} ${targetTZString}`
-    );
+    var swapString = `${str} ${targetTZString}`;
+    var swapped = new Date(swapString);
+    //console.log({ swapString, swapped });
     
     // fix milliseconds
     var millis = date.getUTCMilliseconds();

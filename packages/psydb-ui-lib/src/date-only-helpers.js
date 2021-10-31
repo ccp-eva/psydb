@@ -49,6 +49,7 @@ export const createInitialDate = ({
             sourceTZ: serverTimezone,
             targetTZ: clientTimezone
         });
+        //console.log({ temp, swapped })
         var { date } = splitISO(swapped.toISOString());
         return date;
     }
