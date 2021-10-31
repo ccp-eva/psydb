@@ -14,6 +14,7 @@ var {
 var RequestBodySchema = () => ExactObject({
     properties: {
         timezone: Timezone(),
+        studyTypeKey: CustomRecordTypeKey({ collection: 'study' }),
         subjectTypeKey: CustomRecordTypeKey({ collection: 'subject' }),
         interval: DateOnlyServerSideInterval(),
         filters: DefaultArray({
