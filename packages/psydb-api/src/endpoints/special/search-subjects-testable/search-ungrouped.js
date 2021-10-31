@@ -135,6 +135,10 @@ var searchUngrouped = async (context, next) => {
 
     context.body = ResponseBody({
         data: {
+            studyData: {
+                records: studyRecords,
+                // FIXME: studyRelated?
+            },
             subjectData: await combineSubjectResponseData({
                 db,
 

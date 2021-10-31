@@ -104,6 +104,7 @@ const InhouseTestableSubjectList = ({
     }
 
     var {
+        studyData,
         subjectData,
         subjectExperimentMetadata,
     } = fetched.data;
@@ -122,7 +123,10 @@ const InhouseTestableSubjectList = ({
                 show={ subjectModal.show }
                 onHide={ subjectModal.handleHide }
                 
-                studyNavItems={ studyLabelItems }
+                studyNavItems={ studyData.records.map(it => ({
+                    key: it._id,
+                    label: it.state.shorthand
+                })) }
                 studyRecordType={ studyType }
                 
                 subjectRecordType={ subjectRecordType }

@@ -56,7 +56,7 @@ var makeCondition = (options) => {
         combinedAgeFrameConditions
     });
 
-    console.dir({ expression }, { depth: null });
+    //console.dir({ expression }, { depth: null });
     return expression;
 };
 

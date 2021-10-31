@@ -42,7 +42,7 @@ var initAndCheck = async ({
         db, subjectTypeKey, filters,
     });
     
-    console.dir({ ageFrameFilters, ageFrameValueFilters }, { depth: null })
+    //console.dir({ ageFrameFilters, ageFrameValueFilters }, { depth: null })
 
     var studyData = await initStudies({
         db,

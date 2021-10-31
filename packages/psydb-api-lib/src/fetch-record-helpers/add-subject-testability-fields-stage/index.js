@@ -83,7 +83,7 @@ var AddSubjectTestabilityFieldsStage = ({
         ...conditionsByStudy
     }};
 
-    console.dir({ stage }, { depth: null });
+    //console.dir({ stage }, { depth: null });
     
     return stage;
 }
