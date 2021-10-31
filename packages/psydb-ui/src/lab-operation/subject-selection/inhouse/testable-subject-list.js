@@ -69,13 +69,14 @@ const InhouseTestableSubjectList = ({
         } = userSearchSettings['$'];
 
         var { start, end } = interval;
+        console.log({ interval });
 
         return (
             agent.searchTestableSubjectsInhouse({
                 subjectTypeKey: subjectRecordType,
                 interval: {
-                    start: datefns.startOfDay(start),
-                    end: datefns.endOfDay(end),
+                    start: datefns.startOfDay(new Date(start)),
+                    end: datefns.endOfDay(new Date(end)),
                 },
                 filters: convertFilters(filters),
 
