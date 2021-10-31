@@ -13,7 +13,7 @@ import {
     unescapeJsonPointer,
     createInitialValues,
     parseEncodedInterval,
-} from './utils';
+} from '../utils';
 
 import { StudyPanel } from './study-panel';
 
@@ -21,7 +21,9 @@ export const SelectionForm = (ps) => {
     var {
         subjectTypeRecord,
         ageFrameRecords,
-        ageFrameRelated
+        ageFrameRelated,
+
+        onSubmit,
     } = ps;
 
     var grouped = groupBy({
@@ -32,64 +34,21 @@ export const SelectionForm = (ps) => {
     var initialValues = createInitialValues({ ageFrameRecords });
     console.log(initialValues);
 
-    var handleSubmit = (formData) => {
+    /*var handleSubmit = (formData) => {
         try {
-        var { interval, filters } = formData['$'];
-
-        var converted = [];
-        var sorted = Object.keys(filters).sort();
-        console.log(sorted);
-        for (var key of sorted) {
-            var value = filters[key];
-
-            var segments = key.split('/');
-            var [
-                studyId,
-                ageFrameKey,
-                ...rest
-            ] = segments;
-
-            var ageFrameInterval = (
-                parseEncodedInterval(ageFrameKey)
-            );
-
-            if (segments.length === 2) {
-                converted.push({
-                    studyId,
-                    ageFrameInterval,
-                    isEnabled: value,
-                });
-            }
-            else if (segments.length === 4) {
-                var [
-                    escapedPointer,
-                    conditionValue
-                ] = rest;
-
-                var pointer = (
-                    unescapeJsonPointer(escapedPointer)
-                );
-                
-                converted.push({
-                    studyId,
-                    ageFrameInterval,
-                    pointer,
-                    value: conditionValue,
-                    isEnabled: value,
-                });
-            }
-        }
-        console.log({ converted })
+            var { interval, filters } = formData['$'];
+            var converted = convertFilters(filters);
+            console.log({ converted })
         }
         catch (e) {
             console.log(e);
         }
-    }
+    }*/
 
     return (
         <DefaultForm
             initialValues={ initialValues }
-            onSubmit={ handleSubmit }
+            onSubmit={ onSubmit }
         >
             {(formikProps) => (
                 <>
@@ -121,5 +80,4 @@ export const SelectionForm = (ps) => {
         </DefaultForm>
     );
 }
-
 

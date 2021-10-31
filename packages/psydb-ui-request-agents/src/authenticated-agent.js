@@ -238,26 +238,22 @@ agent.searchSubjectsTestableOnline = ({
 }
 
 agent.searchTestableSubjectsInhouse = ({
-    studyRecordType,
-    subjectRecordType,
-    studyIds,
-    timeFrameStart,
-    timeFrameEnd,
-    enabledAgeFrames,
-    enabledValues,
+    studyTypeKey, // FIXME: thei param might not be required
+    subjectTypeKey,
+    interval,
+    filters,
+
     offset = 0,
     limit = 100,
 }) => {
     return axios.post(
         '/api/testable-subjects-inhouse',
         {
-            studyRecordType,
-            subjectRecordType,
-            studyIds,
-            timeFrameStart,
-            timeFrameEnd,
-            enabledAgeFrames,
-            enabledValues,
+            studyTypeKey,
+            subjectTypeKey,
+            interval,
+            filters,
+
             offset,
             limit,
         }

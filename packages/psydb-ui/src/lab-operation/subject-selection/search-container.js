@@ -11,6 +11,7 @@ import {
 
 import jsonpointer from 'jsonpointer';
 import { Base64 } from 'js-base64';
+import pako from 'pako';
 
 import {
     DateOnlyServerSideInterval,
@@ -147,14 +148,47 @@ const SearchContainer = ({
         ...ageFrameRelated
     } = fetched.ageFrames.data;
 
+    var handleSubmit = (formData) => {
+        try {
+            var json = JSON.stringify(formData);
+            var base64 = Base64.encode(json);
+
+            //var gzipped = pako.deflate(json);
+            //var base64 = Base64.encode(gzipped);
+            console.log(base64);
+
+            //dispatch({ type: 'update-search-settings', payload });
+            history.push(`${url}/search/${base64}`);
+        }
+        catch (e) {
+            console.log(e);
+        }
+    }
+
+    var SubjectListComponent = {
+        'inhouse': InhouseSubjectList,
+        'online': OnlineSubjectList,
+        'away-team': AwayTeamTargetLocationList,
+    }[experimentType];
+
     return (
-        <div className='p-3 border bg-light'>
-            <SelectionForm { ...({
-                subjectTypeRecord,
-                ageFrameRecords,
-                ageFrameRelated
-            })} />
-        </div>
+        <Switch>
+            <Route exact path={ `${path}` }>
+                <div className='p-3 border bg-light'>
+                    <SelectionForm { ...({
+                        subjectTypeRecord,
+                        ageFrameRecords,
+                        ageFrameRelated,
+
+                        onSubmit: handleSubmit
+                    })} />
+                </div>
+            </Route>
+            <Route exact path={ `${path}/search/:searchSettings64` }>
+                <SubjectListComponent />
+            </Route>
+        </Switch>
+
     );
 
     return 'foo';

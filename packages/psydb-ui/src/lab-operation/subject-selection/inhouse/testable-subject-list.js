@@ -32,6 +32,8 @@ import {
     FieldDataHeadCols,
 } from '@mpieva/psydb-ui-lib/src/record-list';
 
+import { convertFilters } from '../convert-filters';
+
 import TableBody from './table-body';
 import SubjectModal from './subject-modal';
 
@@ -61,24 +63,21 @@ const InhouseTestableSubjectList = ({
     
     var [ didFetch, fetched ] = useFetch((agent) => {
         var {
-            timeFrame,
-            ageFrames,
-            values,
-        } = userSearchSettings
+            interval,
+            filters,
+        } = userSearchSettings['$'];
+
+        var { start, end } = interval;
 
         return (
             agent.searchTestableSubjectsInhouse({
-                studyRecordType: studyType,
-                subjectRecordType,
-                studyIds: studyIds.split(','),
-                timeFrameStart: datefns.startOfDay(
-                    userSearchSettings.timeFrame.start
-                ),
-                timeFrameEnd: datefns.endOfDay(
-                    userSearchSettings.timeFrame.end
-                ),
-                enabledAgeFrames: ageFrames,
-                enabledValues: values,
+                studyTypeKey: studyType,
+                subjectTypeKey: subjectRecordType,
+                interval: {
+                    start: datefns.startOfDay(start),
+                    end: datefns.endOfDay(end),
+                },
+                filters: convertFilters(filters),
 
                 offset,
                 limit,

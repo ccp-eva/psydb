@@ -8,7 +8,7 @@ import {
 import {
     escapeJsonPointer,
     createAgeFrameKey,
-} from './utils';
+} from '../utils';
 
 export const StudyPanel = (ps) => {
     var {
