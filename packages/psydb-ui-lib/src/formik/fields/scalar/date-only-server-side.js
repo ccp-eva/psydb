@@ -36,10 +36,10 @@ export const DateOnlyServerSide = WithField({
             isInitialValueSwapped
         });
 
-        console.log({
-            value,
-            initialDate
-        });
+        //console.log({
+        //    value,
+        //    initialDate
+        //});
 
         var [ cachedDate, setCachedDate ] = useState(initialDate || '');
 

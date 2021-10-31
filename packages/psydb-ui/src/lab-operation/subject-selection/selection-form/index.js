@@ -24,8 +24,58 @@ export const SelectionForm = (ps) => {
     var initialValues = createInitialValues({ ageFrameRecords });
     console.log(initialValues);
 
-    var handleSubmit = (...args) => {
-        console.log({ args });
+    var handleSubmit = (formData) => {
+        try {
+        var { interval, filters } = formData['$'];
+
+        var converted = [];
+        var sorted = Object.keys(filters).sort();
+        console.log(sorted);
+        for (var key of sorted) {
+            var value = filters[key];
+
+            var segments = key.split('/');
+            var [
+                studyId,
+                ageFrameKey,
+                ...rest
+            ] = segments;
+
+            var ageFrameInterval = (
+                parseEncodedInterval(ageFrameKey)
+            );
+
+            if (segments.length === 2) {
+                converted.push({
+                    studyId,
+                    ageFrameInterval,
+                    isEnabled: value,
+                });
+            }
+            else if (segments.length === 4) {
+                var [
+                    escapedPointer,
+                    conditionValue
+                ] = rest;
+
+                var pointer = (
+                    unescapeJsonPointer(escapedPointer)
+                );
+                
+                converted.push({
+                    studyId,
+                    ageFrameInterval,
+                    pointer,
+                    value: conditionValue,
+                    isEnabled: value,
+                });
+            }
+        }
+        console.log({ converted })
+        }
+        catch (e) {
+            console.log(e);
+        }
     }
 
     return (
@@ -64,6 +114,19 @@ export const SelectionForm = (ps) => {
     );
 }
 
+const parseEncodedInterval = (str) => {
+    var parseEdge = (s) => {
+        var [ years, months, days ] = s.split('-');
+        return { years, months, days };
+    }
+
+    var [ start, end ] = str.split('_');
+    return {
+        start: parseEdge(start),
+        end: parseEdge(end)
+    }
+}
+
 const createAgeFrameKey = ({ studyId, interval }) => {
     var create = (af) => {
         var { years, months, days } = af;
@@ -80,6 +143,10 @@ const escapeJsonPointer = (pointer) => (
     pointer.replaceAll(/\//g, '~1')
 );
 
+const unescapeJsonPointer = (pointer) => (
+    pointer.replaceAll('~1', '/')
+);
+
 const createInitialValues = ({
     ageFrameRecords
 }) => {
@@ -87,7 +154,7 @@ const createInitialValues = ({
     var initialValues = {
         interval: {
             start: now.toISOString(),
-            //end: now.toISOString()
+            end: now.toISOString()
         },
         filters: {}
     };
