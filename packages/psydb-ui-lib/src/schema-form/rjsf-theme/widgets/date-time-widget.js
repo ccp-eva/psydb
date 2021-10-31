@@ -1,8 +1,19 @@
 import React, { useState, useCallback, useMemo, useEffect, useContext } from 'react';
+import { getSystemTimezone } from '@mpieva/psydb-timezone-helpers';
+
 import { utils } from "@rjsf/core";
 import { Form, InputGroup } from 'react-bootstrap';
 import * as wrappers from '../utility-components/wrappers';
 import ServerTimezoneContext from '../../../server-timezone-context';
+
+import {
+    splitISO,
+    checkDate,
+    canSwap,
+    createInitialDate,
+    canParseBack,
+    parseBack,
+} from '../../../date-only-helpers';
 
 const removeTimezone = (str, offset = 60) => {
     if (typeof str === 'string') {
@@ -35,18 +46,6 @@ const stripSeconds = (str) => {
         }
     }
     return str
-}
-
-const splitISO = (value) => {
-    var date, time, fraction;
-    if (typeof value === 'string') {
-        var match = value.match(/^(.*)T(\d\d:\d\d:\d\d)\.(\d{3})Z$/);
-        if (match) {
-            ([ date, time, fraction ] = match.slice(1))
-        }
-    }
-
-    return { date, time, fraction };
 }
 
 const DefaultDateTimeWidget = (ps) => {
@@ -173,8 +172,6 @@ const DateOnlyServerSideWidget = (ps) => {
         isArrayItem,
     } = ps;
    
-    var serverTimezoneOffset = useContext(ServerTimezoneContext);
-
     var {
         systemType,
         systemProps = {}
@@ -193,14 +190,17 @@ const DateOnlyServerSideWidget = (ps) => {
     var hasErrors = rawErrors.length > 0;
     var className = hasErrors ? 'is-invalid' : '';
 
-    //var { date } = splitISO(removeTimezone(value, serverTimezoneOffset));
-    var { date } = splitISO(value);
-    //console.log({ date });
+    var serverTimezone = useContext(ServerTimezoneContext);
+    var clientTimezone = getSystemTimezone();
+
+    var initialDate = createInitialDate({
+        value,
+        serverTimezone,
+        clientTimezone,
+        isInitialValueSwapped: true,
+    })
     
-    // usin empty defaults or else react complains about switching
-    // controlled to uncontrolled, and when i use null it complains
-    // about that too
-    var [ cachedDate, setCachedDate ] = useState(date || '');
+    var [ cachedDate, setCachedDate ] = useState(initialDate || '');
 
     var {
         handleChangeDate,
@@ -209,26 +209,15 @@ const DateOnlyServerSideWidget = (ps) => {
             var { target: { value }} = event;
             setCachedDate(value);
 
-            var date = value;
-            if (date) {
-                // FIXME: summer vs winter time
-                var fakeISOString = `${date}T12:00:00.000Z`;
-                var fakeDate = new Date(fakeISOString);
+            if (canParseBack(value)) {
+                var date = parseBack(value);
 
-                if (!isNaN(fakeDate.getTime())) {
-                    //var localOffset = fakeDate.getTimezoneOffset();
-                    //var delta = localOffset - serverTimezoneOffset;
-                    /*var iso = removeTimezone(
-                        fakeISOString,
-                        serverTimezoneOffset
-                    );*/
-                    //console.log({ fakeISOString })
-                    onChange(fakeISOString);
-                }
-                else {
-                    console.log('INVALID');
-                    onChange('INVALID');
-                }
+                console.log({ date: date.toISOString() });
+                onChange(date.toISOString());
+            }
+            else {
+                console.log('INVALID')
+                onChange('INVALID');
             }
         },
     }), [ cachedDate, onChange ]);
