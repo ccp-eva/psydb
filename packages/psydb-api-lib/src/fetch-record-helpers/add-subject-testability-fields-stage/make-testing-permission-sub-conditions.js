@@ -75,7 +75,7 @@ var makeTestingPermissionSubConditions = ({
         }))*/
     )
     
-    console.dir({ subConditions }, { depth: null });
+    //console.dir({ subConditions }, { depth: null });
     return subConditions;
 }
 
