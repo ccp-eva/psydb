@@ -9,7 +9,8 @@ var makeTestingPermissionSubConditions = ({
         'inhouse': 'canBeTestedInhouse',
         'away-team': 'canBeTestedByAwayTeam',
         'online-video-call': 'canBeTestedInOnlineVideoCall',
-        'online-survey': 'canBeTestedInOnlineSurvey',
+        //'online-survey': 'canBeTestedInOnlineSurvey',
+        'online-survey': 'canBeTestedOnline',
     }[experimentVariant];
 
     if (!inputField) {
