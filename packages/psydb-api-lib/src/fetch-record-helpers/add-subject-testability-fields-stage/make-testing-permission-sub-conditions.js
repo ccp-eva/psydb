@@ -5,7 +5,7 @@ var makeTestingPermissionSubConditions = ({
     researchGroupIds,
     experimentVariant
 }) => {
-    var inputField = {
+    /*var inputField = {
         'inhouse': 'canBeTestedInhouse',
         'away-team': 'canBeTestedByAwayTeam',
         'online-video-call': 'canBeTestedInOnlineVideoCall',
@@ -19,32 +19,81 @@ var makeTestingPermissionSubConditions = ({
             ['inhouse', 'away-team', 'online'] but
             "${experimentVariant}" was given
         `)
-    }
+    }*/
 
-    var inputPath = `$scientific.state.testingPermissions.${inputField}`;
+    var inputPath = `$scientific.state.testingPermissions`;
 
     var subConditions = (
         // is the child allowed to be tested by the studies researchgroups
         // we currently require at least one group
-        researchGroupIds.map(groupId => ({
+        researchGroupIds.map(groupId => (
+            ItemsExistExpr({
+                inputPath,
+                as: 'group',
+                cond: { $and: [
+                    { $eq: [ '$$group.researchGroupId', groupId ]},
+                    ItemsExistExpr({
+                        inputPath: '$$group.permissionList',
+                        as: 'perm',
+                        cond: { $and: [
+                            { $eq: [
+                                '$$perm.labProcedureTypeKey',
+                                experimentVariant
+                            ]},
+                            { $eq: [ '$$perm.value', 'yes' ]}
+                        ]}
+                    })
+                ]}
+            })
+        ))
+        /*researchGroupIds.map(groupId => ({
             $gt: [
                 { $size: {
                     $filter: {
-                        // XXX inhouse fixed
                         input: inputPath,
                         as: 'item',
                         cond: { $and: [
                             { $eq: [ '$$item.researchGroupId', groupId ]},
-                            { $eq: [ '$$item.permission', 'yes' ]}
+                            { $gt: [
+                                { $size: {
+                                    $filter: {
+                                        input: '$$item.permissionList',
+                                        as: 'perm',
+                                        cond: { $and: [
+                                            { $eq: { '$$perm.labOperationType'}}
+                                        ]}
+                                    }
+                                }},
+                                0
+                            ]}
+                    //{ $eq: [ '$$item.permissionList', 'yes' ]}
                         ]}
                     }
                 }},
                 0,
             ]
-        }))
+        }))*/
     )
-
+    
+    console.dir({ subConditions }, { depth: null });
     return subConditions;
 }
+
+var ItemsExistExpr = ({
+    inputPath,
+    as,
+    cond
+}) => ({
+    $gt: [
+        { $size: {
+            $filter: {
+                input: inputPath,
+                as,
+                cond
+            }
+        }},
+        0,
+    ]
+})
 
 module.exports = makeTestingPermissionSubConditions;
