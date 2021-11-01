@@ -35,6 +35,7 @@ handler.checkAllowedAndPlausible = async ({
     }
 
     var {
+        labProcedureTypeKey,
         experimentId,
         subjectId,
     } = message.payload;
@@ -49,6 +50,9 @@ handler.checkAllowedAndPlausible = async ({
         throw new ApiError(400, 'InvalidExperimentId');
     }
     if (experimentRecord.state.isCanceled) {
+        throw new ApiError(400, 'InvalidExperimentId');
+    }
+    if (experimentRecord.type !== labProcedureTypeKey) {
         throw new ApiError(400, 'InvalidExperimentId');
     }
 

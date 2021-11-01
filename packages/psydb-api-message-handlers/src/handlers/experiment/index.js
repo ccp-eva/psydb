@@ -6,6 +6,7 @@ var {
 var ExperimentGroup = MessageHandlerGroup([
     require('./create-from-awayteam-reservation'),
     require('./create-from-inhouse-reservation'),
+    require('./create-from-online-video-call-reservation'),
     
     require('./change-experiment-operator-team'),
     require('./change-invitation-status'),

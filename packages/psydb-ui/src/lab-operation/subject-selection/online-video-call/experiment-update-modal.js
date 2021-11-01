@@ -32,7 +32,7 @@ const ExperimentUpdateModal = (ps) => {
     var handleSubmit = createSend(() => ({
         type: 'experiment/add-subject',
         payload: {
-            labProcedureTypeKey: 'inhouse',
+            labProcedureTypeKey: 'online-video-call',
             experimentId: experimentRecord._id,
             subjectId,
             comment,

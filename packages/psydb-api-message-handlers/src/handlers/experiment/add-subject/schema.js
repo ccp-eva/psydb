@@ -7,6 +7,7 @@ var {
     ForeignId,
     FullText,
     DefaultBool,
+    ExperimentVariantEnum,
 } = require('@mpieva/psydb-schema-fields');
 
 var { Message } = require('@mpieva/psydb-schema-helpers');
@@ -16,6 +17,7 @@ var createSchema = ({} = {}) => (
         type: `experiment/add-subject`,
         payload: ExactObject({
             properties: {
+                labProcedureTypeKey: ExperimentVariantEnum(),
                 experimentId: ForeignId({
                     collection: 'experiment',
                 }),
@@ -26,6 +28,7 @@ var createSchema = ({} = {}) => (
                 autoConfirm: DefaultBool(),
             },
             required: [
+                'labProcedureTypeKey',
                 'experimentId',
                 'subjectId',
             ]

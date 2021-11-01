@@ -26,9 +26,11 @@ import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 import createValueMap from './create-value-map';
 import SelectionSettingsFormSchema from './selection-settings-form-schema';
 import SelectionSettingsForm from './selection-settings-form';
+
 import InhouseSubjectList from './inhouse/testable-subject-list';
-import OnlineSubjectList from './online/testable-subject-list';
 import AwayTeamTargetLocationList from './away-team/target-location-list';
+import OnlineVideoCallSubjectList from './online-video-call/testable-subject-list';
+import OnlineSubjectList from './online/testable-subject-list';
 
 import { SelectionForm } from './selection-form';
 
@@ -167,8 +169,9 @@ const SearchContainer = ({
 
     var SubjectListComponent = {
         'inhouse': InhouseSubjectList,
-        'online-survey': OnlineSubjectList,
         'away-team': AwayTeamTargetLocationList,
+        'online-video-call': OnlineVideoCallSubjectList,
+        'online-survey': OnlineSubjectList,
     }[experimentType];
 
     return (
