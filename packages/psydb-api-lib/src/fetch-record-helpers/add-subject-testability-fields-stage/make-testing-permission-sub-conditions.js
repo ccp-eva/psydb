@@ -8,7 +8,8 @@ var makeTestingPermissionSubConditions = ({
     var inputField = {
         'inhouse': 'canBeTestedInhouse',
         'away-team': 'canBeTestedByAwayTeam',
-        'online': 'canBeTestedOnline',
+        'online-video-call': 'canBeTestedInOnlineVideoCall',
+        'online-survey': 'canBeTestedInOnlineSurvey',
     }[experimentVariant];
 
     if (!inputField) {

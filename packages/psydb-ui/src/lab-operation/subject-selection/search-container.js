@@ -167,7 +167,7 @@ const SearchContainer = ({
 
     var SubjectListComponent = {
         'inhouse': InhouseSubjectList,
-        'online': OnlineSubjectList,
+        'online-survey': OnlineSubjectList,
         'away-team': AwayTeamTargetLocationList,
     }[experimentType];
 

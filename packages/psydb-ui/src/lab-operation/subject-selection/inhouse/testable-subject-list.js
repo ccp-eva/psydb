@@ -77,7 +77,7 @@ const InhouseTestableSubjectList = ({
         var { start, end } = interval;
 
         return (
-            agent.searchTestableSubjectsInhouse({
+            agent.searchSubjectsTestableInhouse({
                 subjectTypeKey: subjectRecordType,
                 studyTypeKey: studyType,
                 studyIds: joinedStudyIds.split(','),

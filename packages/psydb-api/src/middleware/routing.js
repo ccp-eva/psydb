@@ -13,6 +13,17 @@ var compose = require('koa-compose'),
 
 var inline = require('@cdxoo/inline-string');
 
+var withPostStages = ({
+    protection,
+    endpoint
+}) => ([
+    withSelfAuth(),
+    withPermissions(),
+    withEndpointProtection({ endpoint: protection }),
+    withKoaBody(),
+    endpoint
+]);
+
 var createRouting = ({
     prefix = '/',
 } = {}) => {
@@ -164,32 +175,36 @@ var createRouting = ({
         endpoints.special.selectionSettingsForSubjectTypeAndStudies
     );
 
-    router.post('/testable-subjects-inhouse',
-        withSelfAuth(),
-        withPermissions(),
-        withEndpointProtection({ endpoint: 'testable-subjects-inhouse' }),
-        withKoaBody(),
-        endpoints.special.testableSubjectsInhouse
+    router.post(
+        '/search-subjects-testable/inhouse',
+        ...withPostStages({
+            protection: 'search-subjects-testable-inhouse',
+            endpoint: endpoints.special.searchSubjectsTestableInhouse
+        })
     );
 
-    router.post('/search-subjects-testable-online',
-        withSelfAuth(),
-        withPermissions(),
-        withEndpointProtection({
-            endpoint: 'search-subjects-testable-online'
-        }),
-        withKoaBody(),
-        endpoints.special.searchSubjectsTestableOnline
+    router.post(
+        '/search-subjects-testable/away-team',
+        ...withPostStages({
+            protection: 'search-subjects-testable-via-away-team',
+            endpoint: endpoints.special.searchSubjectsTestableViaAwayTeam
+        })
     );
 
-    router.post('/search-subjects-testable-via-away-team',
-        withSelfAuth(),
-        withPermissions(),
-        withEndpointProtection({
-            endpoint: 'search-subjects-testable-via-away-team'
-        }),
-        withKoaBody(),
-        endpoints.special.searchSubjectsTestableViaAwayTeam
+    router.post(
+        '/search-subjects-testable/online-video-call',
+        ...withPostStages({
+            protection: 'search-subjects-testable-in-online-video-call',
+            endpoint: endpoints.special.searchSubjectsTestableInOnlineVideoCall
+        })
+    );
+
+    router.post(
+        '/search-subjects-testable/online-survey',
+        ...withPostStages({
+            protection: 'search-subjects-testable-in-online-survey',
+            endpoint: endpoints.special.searchSubjectsTestableInOnlineSurvey
+        })
     );
 
     router.post('/invite-confirmation-list',

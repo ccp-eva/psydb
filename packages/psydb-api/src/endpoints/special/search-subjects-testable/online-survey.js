@@ -1,16 +1,16 @@
 'use strict';
 var debug = require('debug')(
-    'psydb:api:endpoints:searchSubjectsTestableOnline'
+    'psydb:api:endpoints:searchSubjectsTestableInOnlineSurvey'
 );
 var compose = require('koa-compose');
 var searchUngrouped = require('./search-ungrouped');
 
-var searchSubjectsTestableOnline = compose([
+var searchSubjectsTestableInOnlineSurvey = compose([
     async (context, next) => {
-        context.experimentVariant = 'online';
+        context.experimentVariant = 'online-survey';
         await next();
     },
     searchUngrouped
 ]);
 
-module.exports = searchSubjectsTestableOnline;
+module.exports = searchSubjectsTestableInOnlineSurvey;

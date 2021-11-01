@@ -183,7 +183,9 @@ agent.fetchSelectionSettingsForSubjectTypeAndStudies = ({
     );
 }
 
-agent.searchSubjectsTestableViaAwayTeam = ({
+var searchSubjectsTestable = ({
+    labProcedureTypeKey,
+
     subjectTypeKey,
     studyTypeKey,
     studyIds,
@@ -195,7 +197,7 @@ agent.searchSubjectsTestableViaAwayTeam = ({
     limit = 100,
 }) => {
     return axios.post(
-        '/api/search-subjects-testable-via-away-team',
+        `/api/search-subjects-testable/${labProcedureTypeKey}`,
         {
             timezone: getSystemTimezone(),
             subjectTypeKey,
@@ -211,61 +213,34 @@ agent.searchSubjectsTestableViaAwayTeam = ({
     );
 }
 
-agent.searchSubjectsTestableOnline = ({
-    subjectTypeKey,
-    studyTypeKey,
-    studyIds,
-
-    interval,
-    filters,
-    
-    offset = 0,
-    limit = 100,
-}) => {
-    return axios.post(
-        '/api/search-subjects-testable-online',
-        {
-            timezone: getSystemTimezone(),
-            subjectTypeKey,
-            studyTypeKey,
-            studyIds,
-
-            interval,
-            filters,
-
-            offset,
-            limit,
-        }
-    );
+agent.searchSubjectsTestableInhouse = (options) => {
+    return searchSubjectsTestable({
+        labProcedureTypeKey: 'inhouse',
+        ...options,
+    })
 }
 
-agent.searchTestableSubjectsInhouse = ({
-    subjectTypeKey,
-    studyTypeKey,
-    studyIds,
-
-    interval,
-    filters,
-
-    offset = 0,
-    limit = 100,
-}) => {
-    return axios.post(
-        '/api/testable-subjects-inhouse',
-        {
-            timezone: getSystemTimezone(),
-            subjectTypeKey,
-            studyTypeKey,
-            studyIds,
-
-            interval,
-            filters,
-
-            offset,
-            limit,
-        }
-    );
+agent.searchSubjectsTestableViaAwayTeam = (options) => {
+    return searchSubjectsTestable({
+        labProcedureTypeKey: 'away-team',
+        ...options,
+    })
 }
+
+agent.searchSubjectsTestableInOnlineVideoCall = (options) => {
+    return searchSubjectsTestable({
+        labProcedureTypeKey: 'online-video-call',
+        ...options,
+    })
+}
+
+agent.searchSubjectsTestableInOnlineSurvey = (options) => {
+    return searchSubjectsTestable({
+        labProcedureTypeKey: 'online-survey',
+        ...options,
+    })
+}
+
 
 agent.fetchInviteConfirmationList = ({
     subjectRecordType,

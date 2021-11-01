@@ -27,14 +27,17 @@ module.exports = {
     ),
 
 
-    testableSubjectsInhouse: (
+    searchSubjectsTestableInhouse: (
         require('./search-subjects-testable/inhouse')
-    ),
-    searchSubjectsTestableOnline: (
-        require('./search-subjects-testable/online')
     ),
     searchSubjectsTestableViaAwayTeam: (
         require('./search-subjects-testable/away-team')
+    ),
+    searchSubjectsTestableInOnlineVideoCall: (
+        require('./search-subjects-testable/online-video-call')
+    ),
+    searchSubjectsTestableInOnlineSurvey: (
+        require('./search-subjects-testable/online-survey')
     ),
 
 

@@ -33,6 +33,8 @@ import {
     Table
 } from '@mpieva/psydb-ui-lib/src/record-list';
 
+import { convertFilters } from '../convert-filters';
+
 import SubjectModal from './subject-modal';
 import MailInviteModal from './mail-invite-modal';
 
@@ -42,10 +44,13 @@ const OnlineTestableSubjectList = ({
     var { path, url } = useRouteMatch();
     var {
         studyType,
-        studyIds,
+        studyIds: joinedStudyIds,
         subjectRecordType,
         searchSettings64
     } = useParams();
+
+    // FIXME
+    var studyId = joinedStudyIds;
 
     var subjectModal = useModalReducer();
     var mailInviteModal = useModalReducer();
@@ -66,9 +71,13 @@ const OnlineTestableSubjectList = ({
 
     var { value: revision, up: increaseRevision } = useRevision();
     
-    // FIXME
-    var studyId = studyIds;
-    var userSearchSettings = JSON.parse(Base64.decode(searchSettings64));
+    var userSearchSettings = undefined;
+    try {
+        userSearchSettings = JSON.parse(Base64.decode(searchSettings64));
+    }
+    catch (e) {}
+    
+    console.log({ userSearchSettings });
 
     if (!userSearchSettings) {
         return (
@@ -78,25 +87,23 @@ const OnlineTestableSubjectList = ({
     
     var [ didFetch, fetched ] = useFetch((agent) => {
         var {
-            timeFrame,
-            ageFrames,
-            values,
-        } = userSearchSettings
+            interval,
+            filters,
+        } = userSearchSettings['$'];
+
+        var { start, end } = interval;
 
         return (
-            agent.searchSubjectsTestableOnline({
-                studyRecordType: studyType,
-                subjectRecordType,
-                studyIds: studyIds.split(','),
-                timeFrameStart: datefns.startOfDay(
-                    userSearchSettings.timeFrame.start
-                ),
-                timeFrameEnd: datefns.endOfDay(
-                    userSearchSettings.timeFrame.end
-                ),
-                enabledAgeFrames: ageFrames,
-                enabledValues: values,
-            
+            agent.searchSubjectsTestableInOnlineSurvey({
+                subjectTypeKey: subjectRecordType,
+                studyTypeKey: studyType,
+                studyIds: joinedStudyIds.split(','),
+                interval: {
+                    start: datefns.startOfDay(new Date(start)),
+                    end: datefns.endOfDay(new Date(end)),
+                },
+                filters: convertFilters(filters),
+
                 offset,
                 limit,
             })
@@ -108,7 +115,7 @@ const OnlineTestableSubjectList = ({
             })
         );
     }, [
-        studyIds, subjectRecordType, searchSettings64,
+        joinedStudyIds, subjectRecordType, searchSettings64,
         revision, offset, limit
     ])
    
@@ -130,6 +137,7 @@ const OnlineTestableSubjectList = ({
     }
 
     var {
+        studyData,
         subjectData,
         subjectExperimentMetadata,
     } = fetched.data;
@@ -147,7 +155,10 @@ const OnlineTestableSubjectList = ({
             <SubjectModal
                 { ...subjectModal.passthrough }
                 
-                studyNavItems={ studyLabelItems }
+                studyNavItems={ studyData.records.map(it => ({
+                    key: it._id,
+                    label: it.state.shorthand
+                })) }
                 studyRecordType={ studyType }
                 subjectRecordType={ subjectRecordType }
                 onSuccessfulUpdate={ increaseRevision }
