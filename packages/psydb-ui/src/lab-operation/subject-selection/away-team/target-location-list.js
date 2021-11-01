@@ -25,6 +25,8 @@ import {
     Pagination
 } from '@mpieva/psydb-ui-layout';
 
+import { convertFilters } from '../convert-filters';
+
 import TargetLocationTable from './target-location-table';
 import ExperimentScheduleModal from './experiment-schedule-modal';
 
@@ -35,7 +37,7 @@ const TargetLocationList = ({
     var { path, url } = useRouteMatch();
     var {
         studyType,
-        studyIds,
+        studyIds: joinedStudyIds,
         subjectRecordType,
         searchSettings64
     } = useParams();
@@ -45,6 +47,8 @@ const TargetLocationList = ({
         userSearchSettings = JSON.parse(Base64.decode(searchSettings64));
     }
     catch (e) {}
+
+    console.log({ userSearchSettings });
 
     if (!userSearchSettings) {
         return (
@@ -59,31 +63,30 @@ const TargetLocationList = ({
     
     var [ didFetch, fetched ] = useFetch((agent) => {
         var {
-            timeFrame,
-            ageFrames,
-            values,
-        } = userSearchSettings
+            interval,
+            filters,
+        } = userSearchSettings['$'];
+
+        var { start, end } = interval;
 
         return agent.searchSubjectsTestableViaAwayTeam({
-            studyRecordType: studyType,
-            subjectRecordType,
-            studyIds: studyIds.split(','),
-            timeFrameStart: datefns.startOfDay(
-                userSearchSettings.timeFrame.start
-            ),
-            timeFrameEnd: datefns.endOfDay(
-                userSearchSettings.timeFrame.end
-            ),
-            enabledAgeFrames: ageFrames,
-            enabledValues: values,
-            limit,
+            subjectTypeKey: subjectRecordType,
+            studyTypeKey: studyType,
+            studyIds: joinedStudyIds.split(','),
+            interval: {
+                start: datefns.startOfDay(new Date(start)),
+                end: datefns.endOfDay(new Date(end)),
+            },
+            filters: convertFilters(filters),
+
             offset,
+            limit,
         }).then(response => {
             pagination.setTotal(response.data.data.locationCount)
             return response;
         })
     }, [
-        studyIds, subjectRecordType, searchSettings64,
+        joinedStudyIds, subjectRecordType, searchSettings64,
         revision, offset, limit
     ]);
 
@@ -158,7 +161,7 @@ const TargetLocationList = ({
                 show: createExperimentModal.show,
                 onHide: createExperimentModal.handleHide,
                 modalPayloadData: createExperimentModal.data,
-                studyId: studyIds.split(',')[0],
+                studyId: joinedStudyIds.split(',')[0],
                 studyType,
                 
                 onSuccessfulUpdate: increaseRevision

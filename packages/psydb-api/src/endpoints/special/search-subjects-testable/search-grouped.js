@@ -7,7 +7,9 @@ var inline = require('@cdxoo/inline-text');
 var omit = require('@cdxoo/omit');
 var datefns = require('date-fns');
 
-var keyBy = require('@mpieva/psydb-common-lib/src/key-by');
+var { keyBy } = require('@mpieva/psydb-common-lib');
+
+var convertPointerToPath = require('@mpieva/psydb-api-lib/src/convert-pointer-to-path');
 
 var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
     Ajv = require('@mpieva/psydb-api-lib/src/ajv'),
@@ -43,21 +45,22 @@ var searchGrouped = async (context, next) => {
     var now = new Date();
 
     var {
-        timeFrameStart,
-        timeFrameEnd,
-        
+        interval,
+        labProcedureSettingRecords,
+        ageFrameFilters,
+        ageFrameValueFilters,
+       
+        studyTypeKey,
+        studyTypeRecord,
         studyIds,
         studyRecords,
         studyRecordLabelDefinition,
 
-        subjectRecordType,
-        subjectRecordTypeRecord,
+        subjectTypeKey,
+        subjectTypeRecord,
         subjectDisplayFields,
         subjectAvailableDisplayFieldData,
         subjectRecordLabelDefinition,
-
-        enabledAgeFrames,
-        enabledValues,
 
         limit,
         offset,
@@ -65,9 +68,40 @@ var searchGrouped = async (context, next) => {
         db,
         permissions,
         request,
+        labProcedureType: experimentVariant,
     });
 
-    var groupByFieldKey = undefined;
+    var subjectLocationFieldPointer = undefined;
+    for (var it of labProcedureSettingRecords) {
+        var { studyId, state } = it;
+        var { subjectLocationFieldPointer: current } = state;
+        if (subjectLocationFieldPointer === undefined) {
+            subjectLocationFieldPointer = current;
+        }
+        else if (subjectLocationFieldPointer !== current) {
+            throw new ApiError(400, {
+                apiStatus: 'SubjectLocationFieldConflict',
+                data: {
+                    studyId,
+                    expected: subjectLocationFieldPointer,
+                    actual: current,
+                }
+            });
+        }
+    }
+    
+    var customFields = (
+        subjectTypeRecord.state.settings.subChannelFields.scientific
+    );
+
+    var groupByFieldPath = convertPointerToPath(subjectLocationFieldPointer);
+
+    var groupByField = customFields.find(field => (
+        field.pointer === subjectLocationFieldPointer
+    ));
+
+
+    /*var groupByFieldKey = undefined;
     for (var it of studyRecords) {
         var selectionSettings = (
             it.state.selectionSettingsBySubjectType.find(s => (
@@ -101,9 +135,9 @@ var searchGrouped = async (context, next) => {
                 });
             }
         }
-    }
+    }*/
 
-    var customFields = (
+    /*var customFields = (
         subjectRecordTypeRecord.state.settings.subChannelFields.scientific
     );
 
@@ -120,13 +154,13 @@ var searchGrouped = async (context, next) => {
                 "${subjectRecordType}"
             `}
         })
-    }
+    }*/
 
-    var groupByFieldPath = `scientific.state.custom.${groupByFieldKey}`;
+    //var groupByFieldPath = `scientific.state.custom.${groupByFieldKey}`;
 
     var result = await db.collection('subject').aggregate([
         { $match: {
-            type: subjectRecordType,
+            type: subjectTypeKey,
             $and: [
                 { [groupByFieldPath]: { $exists: true } },
                 { [groupByFieldPath]: { $not: { $type: 10 }}}, // NOT NULL
@@ -142,14 +176,14 @@ var searchGrouped = async (context, next) => {
         // age frames; this should reduce the size enough most of the time
         AddSubjectTestabilityFieldsStage({
             experimentVariant,
+            interval,
+            ageFrameFilters,
+            ageFrameValueFilters,
 
-            timeFrameStart,
-            timeFrameEnd,
-            subjectRecordTypeRecord,
+            subjectTypeKey,
+            subjectTypeRecord,
             studyRecords,
 
-            enabledAgeFrames,
-            enabledValues,
             // TODO: ageframe custom verrides
             // TODO: global study settings filters in stage itself
         }),
@@ -232,12 +266,9 @@ var searchGrouped = async (context, next) => {
 
     postprocessSubjectRecords({
         subjectRecords: flatSubjects,
-        subjectRecordType,
+        subjectRecordType: subjectTypeKey,
         studyRecords,
-        timeFrame: {
-            start: timeFrameStart,
-            end: timeFrameEnd
-        },
+        timeFrame: interval,
         upcomingBySubjectId,
         recordLabelDefinition: subjectRecordLabelDefinition,
     })
@@ -245,7 +276,7 @@ var searchGrouped = async (context, next) => {
     var combinedSubjectResponseData =  await combineSubjectResponseData({
         db,
 
-        subjectRecordType,
+        subjectRecordType: subjectTypeKey,
         subjectRecords: flatSubjects,
         subjectRecordsCount: subjectCount,
         subjectAvailableDisplayFieldData,

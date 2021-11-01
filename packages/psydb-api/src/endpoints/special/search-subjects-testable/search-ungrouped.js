@@ -60,6 +60,7 @@ var searchUngrouped = async (context, next) => {
         db,
         permissions,
         request,
+        labProcedureType: experimentVariant,
     });
     
     var result = await db.collection('subject').aggregate([

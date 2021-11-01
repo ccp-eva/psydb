@@ -27,8 +27,11 @@ var {
 var initAndCheck = async ({
     db,
     permissions,
-    request
+    request,
+    labProcedureType,
 }) => {
+    // TODO: permissions
+
     checkSchema({ request });
 
     var {
@@ -37,6 +40,13 @@ var initAndCheck = async ({
         studyIds,
         filters,
     } = request.body;
+
+    var labProcedureSettingData = await initLabProcedureSettings({
+        db,
+        labProcedureType,
+        subjectTypeKey, 
+        studyIds,
+    });
 
     var { ageFrameFilters, ageFrameValueFilters } = await initAgeFrames({
         db, subjectTypeKey, filters,
@@ -57,6 +67,7 @@ var initAndCheck = async ({
 
     return ({
         ...request.body,
+        ...labProcedureSettingData,
         ...studyData,
         ...subjectData,
         ageFrameFilters,
@@ -184,6 +195,43 @@ var checkSchema = ({ request }) => {
             data: { ajvErrors: ajv.errors }
         });
     };
+}
+
+var initLabProcedureSettings = async (options) => {
+    var {
+        db,
+        labProcedureType,
+        subjectTypeKey, 
+        studyIds,
+    } = options;
+
+    var settingRecords = await (
+        db.collection('experimentVariantSetting').aggregate([
+            StripEventsStage(),
+            { $match: {
+                type: labProcedureType,
+                studyId: { $in: studyIds },
+                'state.subjectTypeKey': subjectTypeKey,
+            }},
+        ]).toArray()
+    );
+    
+    var settingRecordsByStudy = groupBy({
+        items: settingRecords,
+        byProp: 'studyId'
+    });
+
+    for (var id of studyIds) {
+        if (!settingRecordsByStudy[id]) {
+            throw new ApiError(400, {
+                apiStatus: 'StudyDoesNotHaveLabProcedure',
+            });
+        }
+    }
+
+    return {
+        labProcedureSettingRecords: settingRecords,
+    }
 }
 
 var initAgeFrames = async ({

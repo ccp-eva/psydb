@@ -184,26 +184,27 @@ agent.fetchSelectionSettingsForSubjectTypeAndStudies = ({
 }
 
 agent.searchSubjectsTestableViaAwayTeam = ({
-    studyRecordType,
-    subjectRecordType,
+    subjectTypeKey,
+    studyTypeKey,
     studyIds,
-    timeFrameStart,
-    timeFrameEnd,
-    enabledAgeFrames,
-    enabledValues,
+
+    interval,
+    filters,
+
     offset = 0,
     limit = 100,
 }) => {
     return axios.post(
         '/api/search-subjects-testable-via-away-team',
         {
-            studyRecordType,
-            subjectRecordType,
+            timezone: getSystemTimezone(),
+            subjectTypeKey,
+            studyTypeKey,
             studyIds,
-            timeFrameStart,
-            timeFrameEnd,
-            enabledAgeFrames,
-            enabledValues,
+
+            interval,
+            filters,
+            
             offset,
             limit,
         }
@@ -211,26 +212,27 @@ agent.searchSubjectsTestableViaAwayTeam = ({
 }
 
 agent.searchSubjectsTestableOnline = ({
-    studyRecordType,
-    subjectRecordType,
+    subjectTypeKey,
+    studyTypeKey,
     studyIds,
-    timeFrameStart,
-    timeFrameEnd,
-    enabledAgeFrames,
-    enabledValues,
+
+    interval,
+    filters,
+    
     offset = 0,
     limit = 100,
 }) => {
     return axios.post(
         '/api/search-subjects-testable-online',
         {
-            studyRecordType,
-            subjectRecordType,
+            timezone: getSystemTimezone(),
+            subjectTypeKey,
+            studyTypeKey,
             studyIds,
-            timeFrameStart,
-            timeFrameEnd,
-            enabledAgeFrames,
-            enabledValues,
+
+            interval,
+            filters,
+
             offset,
             limit,
         }

@@ -49,7 +49,12 @@ const InhouseTestableSubjectList = ({
         searchSettings64
     } = useParams();
 
-    var userSearchSettings = JSON.parse(Base64.decode(searchSettings64));
+    var userSearchSettings = undefined;
+    try {
+        userSearchSettings = JSON.parse(Base64.decode(searchSettings64));
+    }
+    catch (e) {}
+    
     console.log({ userSearchSettings });
 
     if (!userSearchSettings) {
