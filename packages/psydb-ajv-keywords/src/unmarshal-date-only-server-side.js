@@ -25,6 +25,11 @@ var unmarshalDateOnlyServerSide = {
     schema: false,
     //valid: false,
     validate: function (data, dataPath, parentData, parentDataProperty) {
+        // dates can be null in this case dont do anything
+        if (data === null) {
+            return true;
+        }
+
         var {
             clientTimezone,
             serverTimezone,
