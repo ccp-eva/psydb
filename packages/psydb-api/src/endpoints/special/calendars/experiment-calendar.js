@@ -20,6 +20,7 @@ var gatherDisplayFieldsForRecordType = require('@mpieva/psydb-api-lib/src/gather
 var fetchRelatedLabelsForMany = require('@mpieva/psydb-api-lib/src/fetch-related-labels-for-many');
 
 var {
+    MatchIntervalAroundStage,
     MatchIntervalOverlapStage,
     StripEventsStage,
     ProjectDisplayFieldsStage,
@@ -31,6 +32,7 @@ var {
     ForeignId,
     CustomRecordTypeKey,
     DateTimeInterval,
+    ExperimentTypeEnum,
 } = require('@mpieva/psydb-schema-fields');
 
 var RequestBodySchema = () => ExactObject({
@@ -39,10 +41,7 @@ var RequestBodySchema = () => ExactObject({
         subjectRecordType: CustomRecordTypeKey({ collection: 'subject' }),
         interval: DateTimeInterval(),
         studyId: ForeignId({ collection: 'study' }),
-        experimentType: {
-            type: 'string',
-            enum: ['inhouse', 'away-team'],
-        },
+        experimentType: ExperimentTypeEnum(),
         researchGroupId: ForeignId({
             collection: 'researchGroup',
         }),
@@ -108,7 +107,13 @@ var experimentCalendar = async (context, next) => {
         studyRecords = await (
             db.collection('study').aggregate([
                 ...SystemPermissionStages({ permissions }),
-                { $match: {
+                MatchIntervalAroundStage({
+                    recordIntervalPath: 'state.runningPeriod',
+                    recordIntervalEndCanBeNull: true,
+                    start,
+                    end,
+                }),
+                /*{ $match: {
                     $or: [
                         {
                             'state.runningPeriod.start': { $lte: start },
@@ -120,13 +125,20 @@ var experimentCalendar = async (context, next) => {
                         },
                         {
                             'state.runningPeriod.start': { $lte: end },
-                            'state.runningPeriod.end': { $exists: false },
+                            $or: [
+                                {
+                                    'state.runningPeriod.end': { $exists: false },
+                                },
+                                {
+                                    'state.runningPeriod.end': { $type: 10 },
+                                },
+                            ]
                         }
                     ],
                     ...(researchGroupId && {
                         'state.researchGroupIds': researchGroupId
                     })
-                }},
+                }},*/
             ]).toArray()
         );
     }

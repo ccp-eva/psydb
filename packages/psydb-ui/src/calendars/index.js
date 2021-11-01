@@ -20,6 +20,7 @@ import RecordTypeNav from '@mpieva/psydb-ui-lib/src/record-type-nav';
 
 import InhouseExperimentsRouting from './inhouse-experiments';
 import AwayTeamExperimentsRouting from './away-team-experiments';
+import OnlineVideoCallExperimentsRouting from './online-video-call-experiments';
 
 const Calendars = () => {
     var { path, url } = useRouteMatch();
@@ -83,6 +84,11 @@ const Calendars = () => {
                         locationTypes={ locationTypes }
                     />
                 </Route>
+                <Route path={ `${path}/online-video-call` }>
+                    <OnlineVideoCallExperimentsRouting
+                        subjectRecordTypes={ subjectTypes }
+                    />
+                </Route>
             </Switch>
         </div>
 
@@ -131,6 +137,10 @@ const CalendarNav = () => {
             {
                 label: 'Externe Termine',
                 linkUrl: `${url}/away-team`,
+            },
+            {
+                label: 'Video Termine',
+                linkUrl: `${url}/online-video-call`,
             },
         ]} />
     );

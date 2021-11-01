@@ -1,6 +1,7 @@
 module.exports = {
     SystemPermissionStages: require('./system-permission-stages'),
     ProjectDisplayFieldsStage: require('./project-display-fields-stage'),
+    MatchIntervalAroundStage: require('./match-interval-around-stage'),
     MatchIntervalOverlapStage: require('./match-interval-overlap-stage'),
     
     StripEventsStage: require('./strip-events-stage'),

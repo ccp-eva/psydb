@@ -9,12 +9,14 @@ var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
     keyBy = require('@mpieva/psydb-common-lib/src/key-by');
 
 var {
+    MatchIntervalAroundStage,
     StripEventsStage,
     SystemPermissionStages,
 } = require('@mpieva/psydb-api-lib/src/fetch-record-helpers');
 
 var fetchCustomRecordTypes = require('@mpieva/psydb-api-lib/src/fetch-custom-record-types');
 var createRecordLabel = require('@mpieva/psydb-api-lib/src/create-record-label');
+var compareIds = require('@mpieva/psydb-api-lib/src/compare-ids');
 
 var selectableStudiesForCalendar = async (context, next) => {
     var { 
@@ -29,9 +31,16 @@ var selectableStudiesForCalendar = async (context, next) => {
         researchGroupId,
     } = request.body
 
+    // FIXME: this should actually be the interval of the calendar
     var now = new Date();
     var stages = [
-        { $match: {
+        MatchIntervalAroundStage({
+            recordIntervalPath: 'state.runningPeriod',
+            recordIntervalEndCanBeNull: true,
+            start: now,
+            end: now,
+        }),
+        /*{ $match: {
             $or: [
                 {
                     'state.runningPeriod.start': { $lte: now },
@@ -45,30 +54,13 @@ var selectableStudiesForCalendar = async (context, next) => {
             ...(researchGroupId && {
                 'state.researchGroupIds': researchGroupId
             })
-        }},
+        }},*/
     ];
 
-    if (experimentType) {
-        stages = [
-            ...stages,
-            ...({
-                'online': [
-                    { $match: {
-                        'state.selectionSettingsBySubjectType.enableOnlineTesting': true,
-                    }}
-                ],
-                'inhouse': [
-                    { $match: {
-                        'state.inhouseTestLocationSettings': { $not: { $size: 0 }}
-                    }}
-                ],
-                'away-team': [
-                    { $match: {
-                        'state.selectionSettingsBySubjectType.externalLocationGrouping.enabled': true,
-                    }}
-                ]
-            }[experimentType])
-        ];
+    if (researchGroupId) {
+        stages.push({ $match: {
+            'state.researchGroupIds': researchGroupId
+        }})
     }
 
     var records = await (
@@ -78,6 +70,24 @@ var selectableStudiesForCalendar = async (context, next) => {
             ...stages,
         ]).toArray()
     );
+
+    var settingRecords = await (
+        db.collection('experimentVariantSetting').aggregate([
+            { $match: {
+                studyId: { $in: records.map(it => it._id) },
+                type: experimentType,
+            }},
+            { $project: {
+                studyId: true,
+            }}
+        ]).toArray()
+    );
+
+    records = records.filter(study => (
+        settingRecords.find(setting => (
+            compareIds(study._id, setting.studyId))
+        )
+    ))
 
     var studyRecordTypeKeys = {};
     for (var it of records) {
