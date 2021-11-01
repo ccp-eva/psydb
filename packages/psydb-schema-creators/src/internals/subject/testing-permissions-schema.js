@@ -7,6 +7,7 @@ var {
     ForeignId,
     DateTimeInterval,
     ExtBool,
+    ExperimentVariantEnum,
 } = require('@mpieva/psydb-schema-fields');
 
 var ExtBoolPermissionList = ({
@@ -36,15 +37,6 @@ var ExtBoolPermissionList = ({
 var testingPermissionsSchema = ExactObject({
     properties: {
         
-        canBeTestedOnline: ExtBoolPermissionList({
-            title: 'Online-Studien erlaubt für',
-            description: inline`
-                list of items describing if a subject can be tested
-                by a research group at a location belonging to the research
-                group itself
-            `,
-        }),
-        
         canBeTestedInhouse: ExtBoolPermissionList({
             title: 'Interne Studie erlaubt für',
             description: inline`
@@ -63,6 +55,24 @@ var testingPermissionsSchema = ExactObject({
             `,
         }),
 
+        canBeTestedInOnlineVideoCall: ExtBoolPermissionList({
+            title: 'Online-Video-Anruf erlaubt für',
+            description: inline`
+                list of items describing if a subject can be tested
+                by a research group at a location belonging to the research
+                group itself
+            `,
+        }),
+        
+        canBeTestedInOnlineSurvey: ExtBoolPermissionList({
+            title: 'Online-Umfrage erlaubt für',
+            description: inline`
+                list of items describing if a subject can be tested
+                by a research group at a location belonging to the research
+                group itself
+            `,
+        }),
+        
         /*blockedFromTesting: DateTimeInterval({
             systemType: 'BlockedFromTesting',
             title: 'Gesperrt',
@@ -86,4 +96,32 @@ var testingPermissionsSchema = ExactObject({
     
 });
 
-module.exports = testingPermissionsSchema;
+var RGPermissionItem = () => ExactObject({
+    properties: {
+        labProcedureTypeKey: ExperimentVariantEnum({ title: 'Für' }),
+        value: ExtBool({ title: 'Erlaubnis'}),
+    },
+    required: [ 'labProcedureTypeKey', 'value' ]
+});
+
+var RGPermissions = () => ExactObject({
+    properties: {
+        researchGroupId: ForeignId({
+            title: 'Forschungsgruppe',
+            collection: 'researchGroup',
+        }),
+        permissionList: DefaultArray({
+            title: 'Einstellungen',
+            items: RGPermissionItem(),
+            minItems: 1
+        })
+    },
+    required: [ 'researchGroupId', 'permissionList' ],
+})
+
+var testingPermissionsSchema_NEW = DefaultArray({
+    title: 'Teilnahme-Erlaubnis',
+    items: RGPermissions(),
+})
+
+module.exports = testingPermissionsSchema_NEW;

@@ -1,6 +1,8 @@
 // https://stackoverflow.com/a/54500197/1158560
 
 var IANAZones = [
+  'UTC', // FIXME: not sure if that belongs here but we need this value
+
   'Europe/Andorra',
   'Asia/Dubai',
   'Asia/Kabul',

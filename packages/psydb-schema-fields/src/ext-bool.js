@@ -1,7 +1,7 @@
 'use strict';
 var ExtBool = ({
     ...additionalKeywords
-}) => ({
+} = {}) => ({
     systemType: 'ExtBool',
     type: 'string',
     enum: [

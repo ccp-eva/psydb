@@ -2,6 +2,8 @@
 var superagent = require('superagent'),
     jsonpointer = require('jsonpointer');
 
+var { getSystemTimezone } = require('@mpieva/psydb-timezone-helpers');
+
 var createDefaultAgent = (server) => (
     superagent.agent(server)
 );
@@ -71,7 +73,10 @@ class RequestFailed extends DriverError {
 }
 
 var defaultWriteRequest = async ({ agent, url, message }) => {
-    var { status, body } = await agent.post(url).send(message);
+    var { status, body } = await agent.post(url).send({
+        timezone: getSystemTimezone(),
+        ...message,
+    });
     if (status !== 200) {
         throw new RequestFailed({ status, body });
     }
