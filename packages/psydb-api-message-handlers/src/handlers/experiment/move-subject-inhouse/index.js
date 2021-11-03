@@ -78,39 +78,11 @@ handler.checkAllowedAndPlausible = async (context) => {
             experimentId: target.experimentId,
         });
 
-        //var { experimentRecord: targetExperimentRecord } = cache;
-
         await verifySubjectMovable({
             subjectId,
             sourceExperimentRecord: experimentRecord,
             targteExperimentRecord: targteCache.experimentRecord
         });
-        
-        /*var isSameStudy = compareIds(
-            experimentRecord.state.studyId,
-            targetExperimentRecord.state.studyId,
-        )
-        if (!isSameStudy) {
-            throw new ApiError(400, 'StudiesDontMatch');
-        }
-
-        var subjectExistsInTargetIndex = (
-            targetExperimentRecord.state.subjectData.findIndex(it => (
-                compareIds(it.subjectId, subjectId)
-            ))
-        );
-        var subjectExistsInTarget = (
-            targetExperimentRecord
-            .state.subjectData[subjectExistsInTargetIndex]
-        );
-        // TODO: move back to where subject came from fails
-        // since subject is still in that experiment technically
-        //if (['moved'].includes(subjectExistsInTarget.participationStatus)) {
-        //    cache.subjectExistsInTargetIndex = subjectExistsInTargetIndex;
-        //}
-        if (subjectExistsInTarget) {
-            throw new ApiError(400, 'SubjectExistsInTarget');
-        }*/
     }
     else {
 

@@ -4,94 +4,36 @@ var {
     compareIds
 } = require('@mpieva/psydb-api-lib');
 
+var verifySubjectMovableToExperiment = (
+    require('./verify-subject-movable-to-experiment')
+)
+
+var verifSubjectModableToReservation = (
+    require('./verify-subject-movable-to-reservation')
+)
+
 var verifySubjectMovable = async (context, options) => {
     var { db } = context;
     var {
         subjectId,
         sourceExperimentRecord,
         targetExperimentRecord,
+        targetReservationData
     } = options;
 
     if (targetExperimentRecord) {
         await verifySubjectMovableToExperiment(context, options);
     }
-    else {
+    else if (targetReservationData) {
         await verifySubjectMovableToReservation(context, options);
     }
+    else {
+        throw new Error(
+            'either provide targetExperimentRecord or targetReservationData'
+        );
+    }
 
 }
 
-var checkSubjectInExperiment = (options) => {
-    var {
-        subjectId,
-        experimentRecord,
-    } = options;
-    
-    var subjectExists = (
-        experimentRecord.state.subjectData.find(it => (
-            compareIds(it.subjectId, subjectId)
-        ))
-    )
-    
-    return subjectExists;
-}
-
-var verifySourceExperiment = (options) => {
-    var {
-        subjectId,
-        sourceExperimentRecord,
-    } = options;
-    
-    var isSubjectInSource = checkSubjectInExperiment({
-        subjectId,
-        experimentRecord: sourceExperimentRecord
-    })
-    if (!isSubjectInSource) {
-        throw new ApiError(400, 'SubjectMissingInSource');
-    }
-}
-
-var verifySubjectMovableToExperiment = async () => {
-    var { db } = context;
-    var {
-        subjectId,
-        sourceExperimentRecord,
-        targetExperimentRecord,
-    } = options;
-    
-    var {
-        type: sourceType,
-        state: sourceState,
-    } = sourceExperimentRecord;
-
-    var {
-        type: targetType,
-        state: targetState,
-    } = targetExperimentRecord;
-   
-    verifySourceExperiment(options);
-
-    if (sourceType !== targetType) {
-        throw new ApiError(400, 'ExperimentTypeMismatch');
-    }
-
-    var isSameStudy = compareIds(
-        sourceState.studyId,
-        targetState.studyId,
-    )
-    if (!isSameStudy) {
-        throw new ApiError(400, 'StudiesDontMatch');
-    }
-
-    var isSubjectInTarget = checkSubjectInExperiment({
-        subjectId,
-        experimentRecord: sourceExperimentRecord
-    });
-    if (isSubjectInTarget) {
-        throw new ApiError(400, 'SubjectExistsInTarget');
-    }
-};
-
-var verifySubjectMovableToReservation = async () => {};
 
 module.exports = verifySubjectMovable;
