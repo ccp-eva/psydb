@@ -1,5 +1,9 @@
 import React, { useMemo, useEffect, useReducer, useCallback } from 'react';
 
+import {
+    inviteExperimentTypes
+} from '@mpieva/psydb-schema-enums';
+
 import { demuxed } from '@mpieva/psydb-ui-utils';
 import {
     useFetch,
@@ -82,7 +86,7 @@ const MoveExperimentModal = ({
             })} />
         )
     }
-    else if (experimentType === 'inhouse') {
+    else if (inviteExperimentTypes.keys.includes(experimentType)) {
          prerenderedCalendar = (
             <StudyInhouseLocations { ...({
                 studyId,

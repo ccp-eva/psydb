@@ -1,11 +1,17 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
 
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error');
-var compareIds = require('@mpieva/psydb-api-lib/src/compare-ids');
+var {
+    unique
+} = require('@mpieva/psydb-common-lib');
 
-var SimpleHandler = require('../../../lib/simple-handler'),
-    checkForeignIdsExist = require('../../../lib/check-foreign-ids-exist');
+var {
+    ApiError,
+    compareIds,
+    checkForeignIdExists,
+} = require('@mpieva/psydb-api-lib');
+
+var SimpleHandler = require('../../../lib/simple-handler');
 
 var PutMaker = require('../../../lib/put-maker'),
     PushMaker = require('../../../lib/push-maker');
@@ -68,14 +74,35 @@ handler.checkAllowedAndPlausible = async ({
         })
     );
 
-    var enabledLocationIds = (
-        studyRecord.state.inhouseTestLocationSettings.reduce(
-            (acc, settings) => ([
-                ...acc,
-                ...settings.enabledLocationIds
-            ]), []
-        )
+    var settingRecords = await (
+        db.collection('experimentVariantSetting').aggregate([
+            { $match: {
+                type: 'inhouse',
+                studyId: experimentRecord.state.studyId,
+            }},
+            //StripEventsStage()
+        ]).toArray()
     );
+
+    var allSettingLocations = settingRecords.reduce((acc, it) => ([
+        ...acc,
+        ...it.state.locations
+    ]), []);
+
+    var allSettingLocationTypeKeys = unique(allSettingLocations.map(
+        it => it.customRecordTypeKey
+    ));
+
+    if (allSettingLocationTypeKeys.length > 1) {
+        throw new ApiError(400, {
+            apiStatus: 'SubjectLocationTypeConflict',
+            data: { locationTypeKeys: allSettingLocationTypeKeys }
+        });
+    }
+
+    var enabledLocationIds = unique(allSettingLocations.map(
+        it => it.locationId,
+    ));
 
     var locationRecord = cache.locationRecord = await (
         db.collection('location').findOne({

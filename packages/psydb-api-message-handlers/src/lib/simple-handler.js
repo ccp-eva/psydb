@@ -10,7 +10,7 @@ var SimpleHandler = ({ messageType, createSchema }) => ({
     ),
 
     checkSchema: async ({ message }) => {
-        var schema = createSchema(),
+        var schema = createSchema({ messageType }),
             ajv = Ajv(),
             isValid = ajv.validate(schema, message);
 

@@ -10,9 +10,9 @@ var {
 
 var { Message } = require('@mpieva/psydb-schema-helpers');
 
-var createSchema = ({} = {}) => (
+var createSchema = ({ messageType } = {}) => (
     Message({
-        type: `experiment/move-inhouse`,
+        type: messageType,
         payload: ExactObject({
             properties: {
                 experimentId: ForeignId({

@@ -1,5 +1,6 @@
 import React, { useMemo, useEffect, useReducer, useCallback, useState } from 'react';
-
+// FIXME: invite-confirm-modal as its also video-calls now
+//
 import {
     Modal,
     Button,
@@ -7,7 +8,8 @@ import {
     Row,
     Col,
     Pair,
-    Split
+    Split,
+    Form,
 } from '@mpieva/psydb-ui-layout';
 
 import agent from '@mpieva/psydb-ui-request-agents';
@@ -27,18 +29,25 @@ const extractTime = (dateIsoString) => (
     : dateIsoString
 );
 
-const FormContainer = ({
-    onHide,
-    experimentData,
-    studyData,
-    confirmData,
+const FormContainer = (ps) => {
+    var {
+        onHide,
+        experimentData,
+        studyData,
+        confirmData,
 
-    onSuccessfulUpdate,
-}) => {
+        onSuccessfulUpdate,
+    } = ps;
 
-    var studyId = studyData.record._id;
-    var studyRecordType = studyData.record.type;
-    var experimentState = experimentData.record.state;
+    var {
+        _id: studyId,
+        type: studyRecordType,
+    } = studyData.record;
+
+    var {
+        type: experimentType,
+        state: experimentState
+    } = experimentData.record;
 
     var minEnd = new Date(
         confirmData.start.getTime() + confirmData.slotDuration
@@ -51,7 +60,7 @@ const FormContainer = ({
 
     var handleSubmit = () => {
         var message = {
-            type: 'experiment/move-inhouse',
+            type: 'experiment/move-inhouse', // FIXME: move/invite-type
             payload: {
                 experimentId: experimentData.record._id,
                 locationId: confirmData.locationRecord._id,
@@ -143,7 +152,7 @@ const InhouseConfirmModal = ({
 
     experimentData,
     studyData,
-    confirmData,
+    modalPayloadData: confirmData,
 
     onSuccessfulUpdate,
 }) => {
