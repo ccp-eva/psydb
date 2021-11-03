@@ -1,5 +1,5 @@
 'use strict';
-var { compareIds } = require('@mpieva/psydb-api-lib');
+var compareIds = require('./compare-ids');
 
 var checkSubjectInExperiment = (options) => {
     var {

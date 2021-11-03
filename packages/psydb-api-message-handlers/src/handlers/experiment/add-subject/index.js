@@ -87,42 +87,6 @@ handler.checkAllowedAndPlausible = async (context) => {
         .reduce((acc, it) => (acc + 1), 0)
     );
 
-    /*var existingSubjectRecords = await (
-        db.collection('subject').find({
-            _id: { $in: (
-                experimentRecord.state.subjectData
-                .filter(it => (
-                    !enums.unparticipationStatus.keys.includes(
-                        it.participationStatus
-                    )
-                ))
-                .map(it => (
-                    it.subjectId
-                ))
-            ) },
-        },{ projection: { type: true }}).toArray()
-    )
-
-    var existingSubjectCountByType = {};
-    for (var it of existingSubjectRecords) {
-        existingSubjectCountByType[it.type] = (
-            (existingSubjectCountByType[it.type] || 0) + 1
-        )
-    }
-
-    var {
-        selectionSettingsBySubjectType
-    } = studyRecord.state;
-
-    var wantedSubjectCountByType = {};
-    for (var it of selectionSettingsBySubjectType) {
-        wantedSubjectCountByType[it.subjectRecordType] = it.subjectsPerExperiment;
-    }
-
-    var canAdd = (
-        existingSubjectCountByType[subjectRecord.type] <
-        wantedSubjectCountByType[subjectRecord.type]
-    );*/
     var canAdd = (
         existingCount < subjectsPerExperiment
     );

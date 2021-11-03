@@ -1,6 +1,7 @@
 'use strict';
 var { ApiError } = require('@mpieva/psydb-api-lib');
-var checkSubjectInExperiment = require('./check-subject-in-experiment');
+var { checkSubjectInExperiment } = require('@mpieva/psydb-common-lib');
+
 
 var verifySourceExperiment = (options) => {
     var {

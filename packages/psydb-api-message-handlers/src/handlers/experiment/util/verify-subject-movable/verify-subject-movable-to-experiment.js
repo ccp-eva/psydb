@@ -1,10 +1,10 @@
 'use strict';
 var {
-    ApiError,
+    checkSubjectInExperiment,
     compareIds
-} = require('@mpieva/psydb-api-lib');
+} = require('@mpieva/psydb-common-lib');
 
-var checkSubjectInExperiment = require('./check-subject-in-experiment');
+var { ApiError } = require('@mpieva/psydb-api-lib');
 var verifySourceExperiment = require('./verify-source-experiment');
 
 var verifySubjectMovableToExperiment = async (context, options) => {

@@ -1,6 +1,2 @@
-'use strict';
-var compareIds = (a, b) => (
-    a === b
-);
-
-module.exports = compareIds;
+// FIXME remove
+module.exports = require('@mpieva/psydb-common-lib').compareIds;

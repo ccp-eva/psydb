@@ -13,8 +13,13 @@ module.exports = {
     unique: require('./unique'),
     groupBy: require('./group-by'),
     keyBy: require('./key-by'),
+    compareIds: require('./compare-ids'),
+
+    checkSubjectInExperiment: require('./check-subject-in-experiment'),
+    
     quicksort: require('./quicksort'),
     perceivedBrightness: require('./perceived-brightness'),
     range: require('./range'),
     slotifyItems: require('./slotify-items'),
+
 }

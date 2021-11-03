@@ -1,10 +1,10 @@
 'use strict';
+var { ApiError } = require('@mpieva/psydb-api-lib');
 var {
-    ApiError,
-    compareIds
-} = require('@mpieva/psydb-api-lib');
+    compareIds,
+    checkSubjectInExperiment,
+} = require('@mpieva/psydb-common-lib');
 
-var checkSubjectInExperiment = require('./check-subject-in-experiment');
 var verifySourceExperiment = require('./verify-source-experiment');
 
 var checkIntervalHasReservation = (
