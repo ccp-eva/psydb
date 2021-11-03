@@ -15,6 +15,9 @@ var prepareExperimentRecord = async (context, options) => {
     if (!experimentRecord) {
         throw new ApiError(400, 'InvalidExperimentId');
     }
+    if (experimentRecord.state.isCanceled) {
+        throw new ApiError(400, 'InvalidExperimentId');
+    }
 
     cache.experimentRecord = experimentRecord;
 }

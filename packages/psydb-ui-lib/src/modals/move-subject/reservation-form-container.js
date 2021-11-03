@@ -20,9 +20,15 @@ const ReservationFormContainer = ({
     onSuccessfulUpdate,
 }) => {
 
-    var studyId = studyData.record._id;
-    var studyRecordType = studyData.record.type;
-    var experimentState = experimentData.record.state;
+    var {
+        _id: studyId,
+        type: studyRecordType,
+    } = studyData.record;
+
+    var {
+        type: experimentType,
+        state: experimentState
+    } = experimentData.record;
 
     var {
         reservationRecord,
@@ -43,7 +49,7 @@ const ReservationFormContainer = ({
     } = useControlStates({ start, slotDuration });
 
     var handleSubmit = createSend(() => ({
-        type: 'experiment/move-subject-inhouse',
+        type: `experiment/move-subject-${experimentType}`,
         payload: {
             experimentId: experimentData.record._id,
             subjectId: subjectData.record._id,

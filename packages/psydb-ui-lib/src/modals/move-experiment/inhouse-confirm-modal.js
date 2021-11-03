@@ -60,7 +60,7 @@ const FormContainer = (ps) => {
 
     var handleSubmit = () => {
         var message = {
-            type: 'experiment/move-inhouse', // FIXME: move/invite-type
+            type: `experiment/move-${experimentType}`,
             payload: {
                 experimentId: experimentData.record._id,
                 locationId: confirmData.locationRecord._id,

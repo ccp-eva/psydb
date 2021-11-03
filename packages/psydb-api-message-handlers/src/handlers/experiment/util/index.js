@@ -15,6 +15,14 @@ module.exports = {
         require('./check-conflicting-subject-experiments')
     ),
 
+    verifySubjectMovable: (
+        require('./verify-subject-movable')
+    ),
+
+    prepareSubjectRecord: (
+        require('./prepare-subject-record')
+    ),
+
     prepareExperimentRecord: (
         require('./prepare-experiment-record')
     ),

@@ -14,6 +14,9 @@ var {
     dispatchCreateEvents,
     dispatchAddSubjectEvents,
     dispatchRemoveSubjectEvents,
+
+    prepareExperimentRecord,
+    prepareSubjectRecord,
 } = require('../util');
 
 var createSchema = require('./schema');
@@ -23,18 +26,20 @@ var handler = SimpleHandler({
     createSchema,
 });
 
-handler.checkAllowedAndPlausible = async ({
-    db,
-    permissions,
-    cache,
-    message
-}) => {
-    var targetCache = cache.targetCache = {};
+handler.checkAllowedAndPlausible = async (context) => {
+    var {
+        db,
+        permissions,
+        cache,
+        message
+    } = context
 
     // TODO
     if (!permissions.hasRootAccess) {
         throw new ApiError(403);
     }
+
+    var targetCache = cache.targetCache = {};
 
     var {
         experimentId,
@@ -42,30 +47,16 @@ handler.checkAllowedAndPlausible = async ({
         target
     } = message.payload;
 
-    var experimentRecord = cache.experimentRecord = await (
-        db.collection('experiment').findOne({
-            _id: experimentId
-        })
-    );
+    await prepareExperimentRecord(context, {
+        experimentType: 'inhouse',
+        experimentId,
+    });
+   
+    await prepareSubjectRecord(context, {
+        subjectId,
+    });
 
-    if (!experimentRecord) {
-        throw new ApiError(400, 'InvalidExperimentId');
-    }
-    if (experimentRecord.type !== 'inhouse') {
-        throw new ApiError(400, 'InvalidExperimentId');
-    }
-    if (experimentRecord.state.isCanceled) {
-        throw new ApiError(400, 'InvalidExperimentId');
-    }
-
-    var subjectRecord = cache.subjectRecord = await (
-        db.collection('subject').findOne({
-            _id: subjectId
-        })
-    );
-    if (!subjectRecord) {
-        throw new ApiError(400, 'InvalidSubjectId');
-    }
+    var { experimentRecord } = cache;
 
     var subjectExistsInSource = (
         experimentRecord.state.subjectData.find(it => (
@@ -77,24 +68,25 @@ handler.checkAllowedAndPlausible = async ({
     }
 
     if (target.experimentId) {
+        var targetContext = {
+            db,
+            cache: targetCache,
+        };
+
+        await prepareExperimentRecord(targetContext, {
+            experimentType: 'inhouse',
+            experimentId: target.experimentId,
+        });
+
+        //var { experimentRecord: targetExperimentRecord } = cache;
+
+        await verifySubjectMovable({
+            subjectId,
+            sourceExperimentRecord: experimentRecord,
+            targteExperimentRecord: targteCache.experimentRecord
+        });
         
-        var targetExperimentRecord = targetCache.experimentRecord = await (
-            db.collection('experiment').findOne({
-                _id: target.experimentId
-            })
-        );
-
-        if (!targetExperimentRecord) {
-            throw new ApiError(400, 'InvalidTargetExperimentId');
-        }
-        if (targetExperimentRecord.type !== 'inhouse') {
-            throw new ApiError(400, 'InvalidTargetExperimentId');
-        }
-        if (targetExperimentRecord.state.isCanceled) {
-            throw new ApiError(400, 'InvalidTargetExperimentId');
-        }
-
-        var isSameStudy = compareIds(
+        /*var isSameStudy = compareIds(
             experimentRecord.state.studyId,
             targetExperimentRecord.state.studyId,
         )
@@ -113,12 +105,12 @@ handler.checkAllowedAndPlausible = async ({
         );
         // TODO: move back to where subject came from fails
         // since subject is still in that experiment technically
-        /*if (['moved'].includes(subjectExistsInTarget.participationStatus)) {
-            cache.subjectExistsInTargetIndex = subjectExistsInTargetIndex;
-        }*/
+        //if (['moved'].includes(subjectExistsInTarget.participationStatus)) {
+        //    cache.subjectExistsInTargetIndex = subjectExistsInTargetIndex;
+        //}
         if (subjectExistsInTarget) {
             throw new ApiError(400, 'SubjectExistsInTarget');
-        }
+        }*/
     }
     else {
 
