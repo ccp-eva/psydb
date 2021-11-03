@@ -15,16 +15,20 @@ const ExperimentFormContainer = ({
     onSuccessfulUpdate,
 }) => {
 
-    var studyId = studyData.record._id;
-    var studyRecordType = studyData.record.type;
+    var {
+        _id: studyId,
+        type: studyRecordType,
+    } = studyData.record;
+
     var experimentRecord = experimentData.record;
+    var { type: experimentType } = experimentRecord;
     var target = confirmData.experimentRecord;
 
     var [ comment, setComment ] = useState('');
     var [ autoConfirm, setAutoConfirm ] = useState(false);
 
     var handleSubmit = createSend(() => ({
-        type: 'experiment/move-subject-inhouse',
+        type: `experiment/move-subject-${experimentType}`,
         payload: {
             experimentId: experimentData.record._id,
             subjectId: subjectData.record._id,
