@@ -24,7 +24,7 @@ import applyValueToDisplayFields from '@mpieva/psydb-ui-lib/src/apply-value-to-d
 
 const General = ({
     experimentData,
-    experimentOperatorTeamData,
+    opsTeamData,
     locationData,
     studyData
 }) => {
@@ -48,7 +48,7 @@ const General = ({
                     </Pair>
                     <Pair label='Team'>
                         <TeamNameAndColor teamRecord={
-                            experimentOperatorTeamData.record
+                            opsTeamData.record
                         } />
                     </Pair>
                 </Split>

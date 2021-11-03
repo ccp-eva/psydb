@@ -4,7 +4,7 @@ import AllSubjects from './all-subjects';
 
 const ExperimentFinalized = ({
     experimentData,
-    experimentOperatorTeamData,
+    opsTeamData,
     locationData,
     studyData,
     subjectDataByType,
@@ -19,7 +19,7 @@ const ExperimentFinalized = ({
                 </h5>
                 <GeneralInfo { ...({
                     experimentData,
-                    experimentOperatorTeamData,
+                    opsTeamData,
                     locationData,
                     studyData
                 }) } />

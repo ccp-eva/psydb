@@ -11,7 +11,7 @@ import {
 
 const GeneralFunctions = ({
     experimentData,
-    experimentOperatorTeamData,
+    opsTeamData,
     studyData,
     onSuccessfulUpdate,
 }) => {
@@ -22,14 +22,14 @@ const GeneralFunctions = ({
                 experimentId: experimentData.record._id,
                 studyId: studyData.record._id,
                 currentTeamId: (
-                    experimentData.record.state.experimentOperatorTeamId
+                    experimentData.record.state.opsTeamId
                 ),
                 onSuccessfulUpdate,
             }) } />
 
             <MoveExperimentContainer { ...({
                 experimentData,
-                experimentOperatorTeamData,
+                opsTeamData,
                 studyData,
                 onSuccessfulUpdate,
             }) } />
@@ -66,7 +66,7 @@ const ChangeTeamContainer = ({
 
 const MoveExperimentContainer = ({
     experimentData,
-    experimentOperatorTeamData,
+    opsTeamData,
     studyData,
     onSuccessfulUpdate,
 }) => {
@@ -84,7 +84,7 @@ const MoveExperimentContainer = ({
                 
                 experimentType: experimentData.record.type,
                 experimentData,
-                teamData: experimentOperatorTeamData,
+                teamData: opsTeamData,
                 studyData,
                 onSuccessfulUpdate
             }) } />

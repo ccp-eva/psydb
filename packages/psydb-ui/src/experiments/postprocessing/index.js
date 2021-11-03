@@ -5,7 +5,7 @@ import PostprocessableSubjects from './postprocessable-subjects';
 
 const ExperimentPostprocessing = ({
     experimentData,
-    experimentOperatorTeamData,
+    opsTeamData,
     locationData,
     studyData,
     subjectDataByType,
@@ -20,7 +20,7 @@ const ExperimentPostprocessing = ({
                 </h5>
                 <GeneralInfo { ...({
                     experimentData,
-                    experimentOperatorTeamData,
+                    opsTeamData,
                     locationData,
                     studyData
                 }) } />

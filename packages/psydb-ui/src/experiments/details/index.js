@@ -20,7 +20,7 @@ const ExperimentDetails = ({
     id,
 
     experimentData,
-    experimentOperatorTeamData,
+    opsTeamData,
     locationData,
     studyData,
     subjectDataByType,
@@ -37,7 +37,7 @@ const ExperimentDetails = ({
                 )}
                 <GeneralInfo { ...({
                     experimentData,
-                    experimentOperatorTeamData,
+                    opsTeamData,
                     locationData,
                     studyData,
                 }) } />
@@ -47,7 +47,7 @@ const ExperimentDetails = ({
                         <div className='mt-3 d-flex justify-content-end'>
                             <GeneralFunctions { ...({
                                 experimentData,
-                                experimentOperatorTeamData,
+                                opsTeamData,
                                 studyData,
                                 onSuccessfulUpdate,
                             }) } />
