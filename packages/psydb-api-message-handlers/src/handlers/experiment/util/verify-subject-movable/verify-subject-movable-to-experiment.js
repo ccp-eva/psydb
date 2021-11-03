@@ -39,6 +39,8 @@ var verifySubjectMovableToExperiment = async (context, options) => {
         throw new ApiError(400, 'StudiesDontMatch');
     }
 
+    // TODO: we need to actually remove the subject from
+    // the source experiment or else we can move back the subject
     var isSubjectInTarget = checkSubjectInExperiment({
         subjectId,
         experimentRecord: targetExperimentRecord

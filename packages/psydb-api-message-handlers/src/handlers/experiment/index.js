@@ -17,7 +17,7 @@ var ExperimentGroup = MessageHandlerGroup([
     require('./move-subject-inhouse'),
 
     require('./move-online-video-call'),
-    //require('./move-subject-online-video-call'),
+    require('./move-subject-online-video-call'),
 
     require('./move-away-team'),
 

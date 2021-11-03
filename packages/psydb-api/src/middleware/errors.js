@@ -10,9 +10,6 @@ var createErrorsMiddleware = () => async (context, next) => {
     }
     catch (error) {
 
-        // FIXME: should have condition
-        debug(error);
-
         var shouldEmitError = false;
         
         var statusCode,
@@ -20,6 +17,10 @@ var createErrorsMiddleware = () => async (context, next) => {
             data;
 
         if (error instanceof ApiError) {
+            var info = error.getInfo();
+            debug(error)
+            debug({ ERROR_INFO: info });
+
             ({
                 statusCode,
                 apiStatus,
@@ -31,6 +32,8 @@ var createErrorsMiddleware = () => async (context, next) => {
             }
         }
         else {
+            debug(error);
+
             statusCode = 500;
             shouldEmitError = true;
         }
