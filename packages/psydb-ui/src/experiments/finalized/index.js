@@ -4,6 +4,7 @@ import AllSubjects from './all-subjects';
 
 const ExperimentFinalized = ({
     experimentData,
+    labProcedureSettingData,
     opsTeamData,
     locationData,
     studyData,
@@ -27,6 +28,7 @@ const ExperimentFinalized = ({
             <div>
                 <AllSubjects { ...({
                     experimentData,
+                    labProcedureSettingData,
                     studyData,
                     subjectDataByType,
                 }) } />

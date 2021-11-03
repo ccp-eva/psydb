@@ -4,6 +4,7 @@ import SubjectsContainer from '../subjects-container';
 
 const AllSubjects = ({
     experimentData,
+    labProcedureSettingData,
     studyData,
     subjectDataByType,
 }) => {
@@ -11,6 +12,7 @@ const AllSubjects = ({
     return (
         <SubjectsContainer { ...({
             experimentData,
+            labProcedureSettingData,
             studyData,
             subjectDataByType,
             

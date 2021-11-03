@@ -3,40 +3,42 @@ import createStringifier from '@mpieva/psydb-ui-lib/src/record-field-stringifier
 
 import SubjectTypeContainer from './subject-type-container';
 
-const Subjects = ({
+const SubjectsContainer = ({
     experimentData,
+    labProcedureSettingData,
     studyData,
     subjectDataByType,
 
     ActionsComponent,
 }) => {
-    var { selectionSettingsBySubjectType } = studyData.record.state;
-    var stringifyStudyValue = createStringifier(studyData);
-
+    var {
+        records: settingRecords,
+        ...settingRelated
+    } = labProcedureSettingData;
+    
     return (
         <div className='p-3'>
-            { selectionSettingsBySubjectType.map((it, index) => {
+            { settingRecords.map((it, index) => {
                 var {
-                    subjectRecordType,
-                    subjectsPerExperiment
-                } = it;
-                
-                var subjectTypeLabel = stringifyStudyValue({
-                    ptr: `/state/selectionSettingsBySubjectType/${index}/subjectRecordType`,
-                    collection: 'subject',
-                    type: 'CustomRecordTypeKey',
-                });
+                    subjectTypeKey,
+                    subjectsPerExperiment,
+                } = it.state;
 
-                var fullSubjectData = subjectDataByType[subjectRecordType];
+                var subjectTypeLabel = (
+                    settingRelated.relatedCustomRecordTypes
+                    .subject[subjectTypeKey].state.label
+                );
+                
+                var fullSubjectData = subjectDataByType[subjectTypeKey];
                 if (fullSubjectData.records.length < 1) {
                     return null;
                 }
                 
                 return (
                     <SubjectTypeContainer { ...({
-                        key: subjectRecordType,
+                        key: subjectTypeKey,
                         
-                        subjectTypeKey: subjectRecordType,
+                        subjectTypeKey,
                         subjectTypeLabel,
                         subjectsPerExperiment,
 
@@ -51,4 +53,4 @@ const Subjects = ({
     );
 }
 
-export default Subjects;
+export default SubjectsContainer;

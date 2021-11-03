@@ -13,6 +13,7 @@ const ActionsContext = createContext({});
 
 const Subjects = ({
     experimentData,
+    labProcedureSettingData,
     studyData,
     subjectDataByType,
     onSuccessfulUpdate,
@@ -63,6 +64,7 @@ const Subjects = ({
             }}>
                 <SubjectsContainer { ...({
                     experimentData,
+                    labProcedureSettingData,
                     studyData,
                     subjectDataByType,
                     

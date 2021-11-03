@@ -20,6 +20,7 @@ const ExperimentDetails = ({
     id,
 
     experimentData,
+    labProcedureSettingData,
     opsTeamData,
     locationData,
     studyData,
@@ -58,6 +59,7 @@ const ExperimentDetails = ({
             <div>
                 <Subjects { ...({
                     experimentData,
+                    labProcedureSettingData,
                     studyData,
                     subjectDataByType,
                     onSuccessfulUpdate,
