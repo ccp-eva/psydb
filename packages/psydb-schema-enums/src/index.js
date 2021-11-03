@@ -113,6 +113,11 @@ var experimentTypes = createEnum({
     'online-video-call': 'Online-Video-Termine',
 });
 
+var inviteExperimentTypes = createEnum({
+    'inhouse': 'Interne Termine',
+    'online-video-call': 'Online-Video-Termine',
+});
+
 var subjectFieldRequirementChecks = createEnum({
     'inter-subject-equality': 'ist Gleich im Termin'
 })
@@ -130,4 +135,5 @@ module.exports = {
     subjectFieldRequirementChecks,
 
     experimentTypes,
+    inviteExperimentTypes,
 }

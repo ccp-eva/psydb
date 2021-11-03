@@ -2,6 +2,11 @@ import React from 'react';
 import jsonpointer from 'jsonpointer';
 
 import {
+    experimentTypes,
+    inviteExperimentTypes
+} from '@mpieva/psydb-schema-enums';
+
+import {
     Container,
     Row,
     Col,
@@ -16,10 +21,6 @@ import TeamNameAndColor from '@mpieva/psydb-ui-lib/src/team-name-and-color';
 import createStringifier from '@mpieva/psydb-ui-lib/src/record-field-stringifier';
 import applyValueToDisplayFields from '@mpieva/psydb-ui-lib/src/apply-value-to-display-fields';
 
-const experimentTypeNames = {
-    'inhouse': 'Intern',
-    'away-team': 'Aussen-Team',
-}
 
 const General = ({
     experimentData,
@@ -34,12 +35,16 @@ const General = ({
     var stringifyStudyValue = createStringifier(studyData);
 
     var experimentType = experimentRecord.type;
+    
+    var isInviteExperiment = (
+        inviteExperimentTypes.keys.includes(experimentType)
+    );
 
     return (
             <Container>
                 <Split num={2}>
                     <Pair label='Typ'>
-                        { experimentTypeNames[experimentRecord.type] }
+                        { experimentTypes.mapping[experimentRecord.type] }
                     </Pair>
                     <Pair label='Team'>
                         <TeamNameAndColor teamRecord={
@@ -55,7 +60,7 @@ const General = ({
                             'P'
                         ) }
                     </Pair>
-                    { experimentType === 'inhouse' && (
+                    { isInviteExperiment && (
                         <Pair label='Uhrzeit'>
                             { datefns.format(
                                 new Date(experimentRecord.state.interval.start),
@@ -96,7 +101,12 @@ const LocationInfo = ({
     experimentType,
     locationData,
 }) => {
-    if (experimentType === 'inhouse') {
+    
+    var isInviteExperiment = (
+        inviteExperimentTypes.keys.includes(experimentType)
+    );
+
+    if (isInviteExperiment) {
         return (
             <Split>
                 <Pair label='Location'>

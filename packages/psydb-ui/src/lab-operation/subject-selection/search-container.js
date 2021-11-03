@@ -34,7 +34,7 @@ import OnlineSubjectList from './online/testable-subject-list';
 
 import { SelectionForm } from './selection-form';
 
-var FormSettingsItemSchema = ({
+/*var FormSettingsItemSchema = ({
     studyName,
     selectionSettings,
     conditionsByAgeFrameItemSchema,
@@ -97,7 +97,7 @@ var reducer = (state, action) => {
             })
     }
 
-};
+};*/
 
 const SearchContainer = ({
     experimentType,
@@ -194,7 +194,7 @@ const SearchContainer = ({
 
     );
 
-    return 'foo';
+    /*return 'foo';
 
     var [ state, dispatch ] = useReducer(reducer, {
         isInitialized: false,
@@ -313,7 +313,7 @@ const SearchContainer = ({
                 />
             </Route>
         </Switch>
-    )
+    )*/
 }
 
 export default SearchContainer;

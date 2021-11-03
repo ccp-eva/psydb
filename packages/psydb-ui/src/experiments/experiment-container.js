@@ -24,7 +24,7 @@ const ExperimentContainer = () => {
     var { path, url } = useRouteMatch();
     var { experimentType, id } = useParams();
 
-    var [ revision, incrementRevision ] = useRevision();
+    var { value: revision, up: incrementRevision } = useRevision();
 
     var [ didFetch, fetched ] = useFetch((agent) => {
         return agent.fetchExtendedExperimentData({

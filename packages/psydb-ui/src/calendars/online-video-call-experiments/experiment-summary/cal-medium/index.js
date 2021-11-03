@@ -94,7 +94,7 @@ const ExperimentSummaryMedium = ({
 
                 shouldFetch: true,
                 experimentId: experimentRecord._id,
-                experimentType: 'inhouse',
+                experimentType: 'online-video-call',
 
                 onSuccessfulUpdate,
             }) } />
@@ -128,7 +128,7 @@ const ExperimentSummaryMedium = ({
 
                 shouldFetch: true,
                 experimentId: experimentRecord._id,
-                experimentType: 'inhouse',
+                experimentType: 'online-video-call',
 
                 onSuccessfulUpdate,
             }) } />
@@ -140,7 +140,7 @@ const ExperimentSummaryMedium = ({
 
                 shouldFetch: true,
                 experimentId: experimentRecord._id,
-                experimentType: 'inhouse',
+                experimentType: 'online-video-call',
 
                 onSuccessfulUpdate,
             }) } />
@@ -170,7 +170,7 @@ const ExperimentSummaryMedium = ({
                 >
                     <ExperimentDropdown { ...({
                         variant: 'calendar',
-                        detailsLink: `/experiments/inhouse/${experimentRecord._id}`,
+                        detailsLink: `/experiments/online-video-call/${experimentRecord._id}`,
                         onClickMove: moveExperimentModal.handleShow,
                         onClickChangeTeam: changeTeamModal.handleShow
                     })} />
@@ -217,7 +217,7 @@ const ExperimentSummaryMedium = ({
                     style={{
                         color: getTextColor(teamRecord.state.color),
                     }}
-                    to={ `/experiments/inhouse/${experimentRecord._id}` }
+                    to={ `/experiments/online-video-call/${experimentRecord._id}` }
                 >
                     <a><u>... Details</u></a>
                 </LinkContainer>

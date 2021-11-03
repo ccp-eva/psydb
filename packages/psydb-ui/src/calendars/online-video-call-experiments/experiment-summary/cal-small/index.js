@@ -55,7 +55,7 @@ const ExperimentSummarySmall = ({
 
                 shouldFetch: true,
                 experimentId: experimentRecord._id,
-                experimentType: 'inhouse',
+                experimentType: 'online-video-call',
 
                 onSuccessfulUpdate,
             }) } />
@@ -117,7 +117,7 @@ const ExperimentSummarySmall = ({
             <div className='mt-2 d-flex justify-content-end'>
                 <ExperimentDropdown { ...({
                     variant: 'calendar',
-                    detailsLink: `/experiments/inhouse/${experimentRecord._id}`,
+                    detailsLink: `/experiments/online-video-call/${experimentRecord._id}`,
                     onClickMove: moveExperimentModal.handleShow,
                     onClickChangeTeam: changeTeamModal.handleShow
                 })} />

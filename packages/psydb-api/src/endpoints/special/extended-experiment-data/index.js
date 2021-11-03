@@ -23,6 +23,11 @@ var fetchRecordDisplayDataById = require('@mpieva/psydb-api-lib/src/fetch-record
 var keyBy = require('@mpieva/psydb-common-lib/src/key-by');
 var groupBy = require('@mpieva/psydb-common-lib/src/group-by');
 
+var fetchOneExperimentData = require('./fetch-one-experiment-data');
+var fetchOneStudyData = require('./fetch-one-study-data');
+var fetchOneOpsTeamData = require('./fetch-one-ops-team-data');
+var fetchLabProcedureSettingData = require('./fetch-lab-procedure-setting-data');
+
 var extendedExperimentData = async (context, next) => {
     debug('__START__')
     var { 
@@ -38,93 +43,49 @@ var extendedExperimentData = async (context, next) => {
 
     // TODO: check params
 
-    debug('fetch experiment record');
-    var experimentRecord = await fetchRecordById({
+    var experimentData = await fetchOneExperimentData({
         db,
-        collectionName: 'experiment',
-        recordType: experimentType,
-        id: experimentId,
         permissions,
+        experimentType,
+        experimentId,
     });
 
-    // FIXME: question is should we 404 or 403 when access is denied?
-    // well 404 for now and treat it as if it wasnt found kinda
-    if (!experimentRecord) {
-        debug('=> 404');
-        throw new ApiError(404, 'NoAccessibleExperimentRecordFound');
-    }
+    var {
+        studyId,
+        locationRecordType,
+        locationId,
+        experimentOperatorTeamId,
+        selectedSubjectIds,
+    } = experimentData.record.state;
 
-    debug('fetch experiment record schema');
-    var experimentRecordSchema = await createSchemaForRecordType({
+    var studyData = await fetchOneStudyData({
         db,
-        collectionName: 'experiment',
-        recordType: experimentType,
-        fullSchema: true
+        _id: studyId,
     });
 
-    debug('fetch experiment related labels');
-    var experimentRelated = await fetchRelatedLabels({
+    var labProcedureSettingData = await fetchLabProcedureSettingData({
         db,
-        data: experimentRecord,
-        schema: experimentRecordSchema,
-    });
-
-    debug('fetch study record');
-    var studyRecord = await (
-        db.collection('study').findOne({
-            _id: experimentRecord.state.studyId
-        }, { projection: { events: false }})
-    );
-
-    debug('fetch study record schema');
-    var studyRecordSchema = await createSchemaForRecordType({
-        db,
-        collectionName: 'study',
-        recordType: studyRecord.type,
-        fullSchema: true
-    });
-
-    debug('fetch study related labels');
-    var studyRelated = await fetchRelatedLabels({
-        db,
-        data: studyRecord,
-        schema: studyRecordSchema,
+        match: {
+            type: experimentType,
+            studyId: studyId,
+        }
     });
 
     debug('fetch location display data');
     var locationData = await fetchRecordDisplayDataById({
         db,
         collection: 'location',
-        recordType: experimentRecord.state.locationRecordType,
-        id: experimentRecord.state.locationId,
+        recordType: locationRecordType,
+        id: locationId,
     });
 
-    debug('fetch operator team record');
-    var experimentOperatorTeamRecord = await (
-        db.collection('experimentOperatorTeam').findOne({
-            _id: experimentRecord.state.experimentOperatorTeamId
-        }, { projection: { events: false }})
-    );
-
-    debug('fetch operator team record schema');
-    var teamRecordSchema = await createSchemaForRecordType({
+    var opsTeamData = await fetchOneOpsTeamData({
         db,
-        collectionName: 'experimentOperatorTeam',
-        recordType: experimentOperatorTeamRecord.type,
-        fullSchema: true
+        _id: experimentOperatorTeamId,
     });
 
-    debug('fetch operator team record related labels');
-    var experimentOperatorTeamRelated = await fetchRelatedLabels({
-        db,
-        data: experimentOperatorTeamRecord,
-        schema: teamRecordSchema,
-    });
-
-    var subjectTypeKeys = (
-        studyRecord.state.selectionSettingsBySubjectType.map(it => (
-            it.subjectRecordType
-        ))
+    var subjectTypeKeys = labProcedureSettingData.records.map(
+        it => it.state.subjectTypeKey
     );
 
     debug('iterating contained subject types...');
@@ -161,7 +122,7 @@ var extendedExperimentData = async (context, next) => {
             recordLabelDefinition,
             additionalPreprocessStages: [
                 { $match: {
-                    _id: { $in: experimentRecord.state.selectedSubjectIds }
+                    _id: { $in: selectedSubjectIds }
                 }}
             ],
             additionalProjection: {
@@ -202,17 +163,22 @@ var extendedExperimentData = async (context, next) => {
     context.body = ResponseBody({
         data: {
             experimentData: {
-                record: experimentRecord,
-                ...experimentRelated,
-            },
-            experimentOperatorTeamData: {
-                record: experimentOperatorTeamRecord,
-                ...experimentOperatorTeamRelated
+                record: experimentData.record,
+                ...experimentData.related,
             },
             studyData: {
-                record: studyRecord,
-                ...studyRelated,
+                record: studyData.record,
+                ...studyData.related,
             },
+            labProcedureSettingData: {
+                records: labProcedureSettingData.records,
+                ...labProcedureSettingData.related,
+            },
+            opsTeamData: {
+                record: opsTeamData.record,
+                ...opsTeamData.related,
+            },
+            
             locationData,
             subjectDataByType,
         },
