@@ -76,6 +76,9 @@ var ExperimentState = ({
                         subjectId: ForeignId({
                             collection: 'subject',
                         }),
+                        subjectType: CustomRecordTypeKey({
+                            collection: 'subject'
+                        }),
                         invitatonStatus: InvitationStatus(),
                         participationStatus: ParticipationStatus(),
                         comment: FullText(),

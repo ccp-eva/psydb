@@ -61,10 +61,10 @@ var dispatchCreateEvents = async ({
     });
 
     var pusher = PushMaker({ personnelId });
-    
+   
     var SubjectDataItem = ({ subjectId, comment, autoConfirm }) => ({
         subjectId,
-        subjectType: subjectRecordsById[subjectId],
+        subjectType: subjectRecordsById[subjectId].type,
         invitationStatus: autoConfirm ? 'confirmed': 'scheduled',
         participationStatus: 'unknown',
         comment: comment || '',

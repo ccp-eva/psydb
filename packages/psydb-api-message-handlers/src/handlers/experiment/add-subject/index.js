@@ -13,6 +13,14 @@ var PutMaker = require('../../../lib/put-maker'),
     PushMaker = require('../../../lib/push-maker');
 
 var {
+    prepareExperimentRecord,
+    prepareSubjectRecord,
+    prepareOpsTeamRecord,
+    prepareLocationRecord,
+    prepareLabProcedureSettingRecords,
+
+    verifySubjectMovable,
+    
     dispatchAddSubjectEvents,
 } = require('../util');
 
@@ -23,12 +31,15 @@ var handler = SimpleHandler({
     createSchema,
 });
 
-handler.checkAllowedAndPlausible = async ({
-    db,
-    permissions,
-    cache,
-    message
-}) => {
+handler.checkAllowedAndPlausible = async (context) => {
+
+    var {
+        db,
+        permissions,
+        cache,
+        message
+    } = context;
+
     // TODO
     if (!permissions.hasRootAccess) {
         throw new ApiError(403);
@@ -40,39 +51,43 @@ handler.checkAllowedAndPlausible = async ({
         subjectId,
     } = message.payload;
 
-    var experimentRecord = cache.experimentRecord = await (
-        db.collection('experiment').findOne({
-            _id: experimentId
-        })
+    await prepareExperimentRecord(context, {
+        experimentType: labProcedureTypeKey,
+        experimentId,
+    });
+
+    var { experimentRecord } = cache;
+    var { studyId, subjectData } = experimentRecord.state;
+  
+    await prepareSubjectRecord(context, {
+        subjectId,
+    });
+
+    var { type: subjectTypeKey } = cache.subjectRecord;
+
+    await prepareLabProcedureSettingRecords(context, {
+        studyId,
+        labProcedureTypeKey,
+        subjectTypeKey,
+    });
+
+    var { labProcedureSettingRecords: settingRecords } = cache;
+    if (settingRecords.length > 1) {
+        throw new ApiError(400, 'DuplicateLabProceduresFound');
+    }
+
+    var { subjectsPerExperiment } = settingRecords[0].state;
+    var existingCount = (
+        subjectData
+        .filter(it => (
+            !enums.unparticipationStatus.keys.includes(
+                it.participationStatus
+            )
+        ))
+        .reduce((acc, it) => (acc + 1), 0)
     );
 
-    if (!experimentRecord) {
-        throw new ApiError(400, 'InvalidExperimentId');
-    }
-    if (experimentRecord.state.isCanceled) {
-        throw new ApiError(400, 'InvalidExperimentId');
-    }
-    if (experimentRecord.type !== labProcedureTypeKey) {
-        throw new ApiError(400, 'InvalidExperimentId');
-    }
-
-    var subjectRecord = cache.subjectRecord = await (
-        db.collection('subject').findOne({
-            _id: subjectId
-        })
-    );
-
-    if (!subjectRecord) {
-        throw new ApiError(400, 'InvalidSubjectId');
-    }
-
-    var studyRecord = cache.studyRecord = await (
-        db.collection('study').findOne({
-            _id: experimentRecord.state.studyId,
-        })
-    );
-
-    var existingSubjectRecords = await (
+    /*var existingSubjectRecords = await (
         db.collection('subject').find({
             _id: { $in: (
                 experimentRecord.state.subjectData
@@ -107,6 +122,9 @@ handler.checkAllowedAndPlausible = async ({
     var canAdd = (
         existingSubjectCountByType[subjectRecord.type] <
         wantedSubjectCountByType[subjectRecord.type]
+    );*/
+    var canAdd = (
+        existingCount < subjectsPerExperiment
     );
     if (!canAdd) {
         throw new ApiError(400, 'ExperimentIsFull');

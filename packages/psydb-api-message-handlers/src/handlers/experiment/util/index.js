@@ -19,6 +19,8 @@ module.exports = {
         require('./verify-subject-movable')
     ),
 
+
+
     prepareSubjectRecord: (
         require('./prepare-subject-record')
     ),
@@ -34,6 +36,12 @@ module.exports = {
     prepareOpsTeamRecord: (
         require('./prepare-ops-team-record')
     ),
+
+    prepareLabProcedureSettingRecords: (
+        require('./prepare-lab-procedure-setting-records')
+    ),
+
+
 
     prepareTargetLocation: (
         require('./prepare-target-location')
