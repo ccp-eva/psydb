@@ -8,7 +8,7 @@ var verifySubjectMovableToExperiment = (
     require('./verify-subject-movable-to-experiment')
 )
 
-var verifSubjectModableToReservation = (
+var verifySubjectMovableToReservation = (
     require('./verify-subject-movable-to-reservation')
 )
 
