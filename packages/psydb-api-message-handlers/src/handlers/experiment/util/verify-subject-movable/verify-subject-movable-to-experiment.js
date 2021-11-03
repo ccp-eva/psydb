@@ -7,7 +7,7 @@ var {
 var checkSubjectInExperiment = require('./check-subject-in-experiment');
 var verifySourceExperiment = require('./verify-source-experiment');
 
-var verifySubjectMovableToExperiment = async () => {
+var verifySubjectMovableToExperiment = async (context, options) => {
     var { db } = context;
     var {
         subjectId,
@@ -41,7 +41,7 @@ var verifySubjectMovableToExperiment = async () => {
 
     var isSubjectInTarget = checkSubjectInExperiment({
         subjectId,
-        experimentRecord: sourceExperimentRecord
+        experimentRecord: targetExperimentRecord
     });
     if (isSubjectInTarget) {
         throw new ApiError(400, 'SubjectExistsInTarget');

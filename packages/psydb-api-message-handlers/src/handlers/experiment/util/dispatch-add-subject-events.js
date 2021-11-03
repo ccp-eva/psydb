@@ -63,7 +63,7 @@ var dispatchAddSubjectEvents = async ({
                     experimentId: experimentRecord._id,
                     studyId: experimentRecord.state.studyId,
                     timestamp: new Date(),
-                    dtatus: autoConfirm ? 'confirmed' : 'scheduled',
+                    status: autoConfirm ? 'confirmed' : 'scheduled',
                 }
             }),
         ]

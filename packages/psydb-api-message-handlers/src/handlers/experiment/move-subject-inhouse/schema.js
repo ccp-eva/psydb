@@ -17,9 +17,9 @@ var OneOf = (variants) => ({
     oneOf: variants,
 });
 
-var createSchema = ({} = {}) => (
+var createSchema = ({ messageType } = {}) => (
     Message({
-        type: `experiment/move-subject-inhouse`,
+        type: messageType,
         payload: ExactObject({
             properties: {
                 experimentId: ForeignId({

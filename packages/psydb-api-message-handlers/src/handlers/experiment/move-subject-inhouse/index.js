@@ -17,6 +17,10 @@ var {
 
     prepareExperimentRecord,
     prepareSubjectRecord,
+    prepareOpsTeamRecord,
+    prepareLocationRecord,
+
+    verifySubjectMovable,
 } = require('../util');
 
 var createSchema = require('./schema');
@@ -57,36 +61,44 @@ handler.checkAllowedAndPlausible = async (context) => {
     });
 
     var { experimentRecord } = cache;
+    var { studyId } = experimentRecord.state;
 
-    var subjectExistsInSource = (
+    /*var subjectExistsInSource = (
         experimentRecord.state.subjectData.find(it => (
             compareIds(it.subjectId, subjectId)
         ))
     )
     if (!subjectExistsInSource) {
         throw new ApiError(400, 'SubjectMissingInSource');
-    }
+    }*/
 
+    var targetContext = {
+        db,
+        cache: targetCache,
+    };
     if (target.experimentId) {
-        var targetContext = {
-            db,
-            cache: targetCache,
-        };
-
         await prepareExperimentRecord(targetContext, {
             experimentType: 'inhouse',
             experimentId: target.experimentId,
         });
 
-        await verifySubjectMovable({
+        await verifySubjectMovable(context, {
             subjectId,
             sourceExperimentRecord: experimentRecord,
-            targteExperimentRecord: targteCache.experimentRecord
+            targetExperimentRecord: targetCache.experimentRecord
         });
     }
     else {
+        await prepareLocationRecord(targetContext, {
+            locationId: target.locationId,
+        });
+        await prepareOpsTeamRecord(targetContext, {
+            opsTeamId: target.experimentOperatorTeamId,
+            studyId,
+        });
 
-        var targetLocationRecord = targetCache.locationRecord = await (
+
+        /*var targetLocationRecord = targetCache.locationRecord = await (
             db.collection('location').findOne({
                 _id: target.locationId
             })
@@ -113,7 +125,7 @@ handler.checkAllowedAndPlausible = async (context) => {
 
         await checkConflictingSubjectExperiments({
             db, subjectIds: [ subjectId ], interval: target.interval
-        });
+        });*/
     }
 };
 
@@ -159,7 +171,7 @@ handler.triggerSystemEvents = async ({
         var [ experimentMod, subjectMod ] = rohrpost.getModifiedChannels();
         var lastKnownSubjectScientificEventId = (
             subjectMod
-            ? subbjectMod.lastKnownEventId
+            ? subjectMod.lastKnownEventId
             : subjectRecord.scientific.events[0]._id
         );
         // FIXME: this unlocks the specific channel so i can dispatch

@@ -23,6 +23,10 @@ module.exports = {
         require('./prepare-subject-record')
     ),
 
+    prepareLocationRecord: (
+        require('./prepare-location-record')
+    ),
+
     prepareExperimentRecord: (
         require('./prepare-experiment-record')
     ),
