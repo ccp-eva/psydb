@@ -15,6 +15,18 @@ module.exports = {
         require('./check-conflicting-subject-experiments')
     ),
 
+    prepareExperimentRecord: (
+        require('./prepare-experiment-record')
+    ),
+
+    prepareOpsTeamRecord: (
+        require('./prepare-ops-team-record')
+    ),
+
+    prepareTargetLocation: (
+        require('./prepare-target-location')
+    ),
+
     dispatchCreateEvents: (
         require('./dispatch-create-events')
     ),

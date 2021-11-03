@@ -11,14 +11,18 @@ var {
     checkForeignIdExists,
 } = require('@mpieva/psydb-api-lib');
 
-var SimpleHandler = require('../../../lib/simple-handler');
-
-var PutMaker = require('../../../lib/put-maker'),
-    PushMaker = require('../../../lib/push-maker');
+var {
+    SimpleHandler,
+    PutMaker,
+    PushMaker
+} = require('../../../lib');
 
 var {
     checkIntervalHasReservation,
     checkConflictingSubjectExperiments,
+    prepareExperimentRecord,
+    prepareOpsTeamRecord,
+    prepareTargetLocation,
     dispatchAllChannelMessages,
 } = require('../util');
 
@@ -29,12 +33,14 @@ var handler = SimpleHandler({
     createSchema,
 });
 
-handler.checkAllowedAndPlausible = async ({
-    db,
-    permissions,
-    cache,
-    message
-}) => {
+handler.checkAllowedAndPlausible = async (context) => {
+    var {
+        db,
+        permissions,
+        cache,
+        message
+    } = context;
+
     // TODO
     if (!permissions.hasRootAccess) {
         throw new ApiError(403);
@@ -47,75 +53,24 @@ handler.checkAllowedAndPlausible = async ({
         interval,
     } = message.payload;
 
-    var experimentRecord = cache.experimentRecord = await (
-        db.collection('experiment').findOne({
-            _id: experimentId
-        })
-    );
+    await prepareExperimentRecord(context, {
+        experimentType: 'inhouse',
+        experimentId,
+    });
 
-    if (!experimentRecord) {
-        throw new ApiError('InvalidExperimentId');
-    }
+    var { experimentRecord } = cache;
+    var { studyId } = experimentRecord.state;
 
-    var teamRecord = cache.teamRecord = await (
-        db.collection('experimentOperatorTeam').findOne({
-            _id: experimentOperatorTeamId,
-            studyId: experimentRecord.state.studyId,
-        })
-    )
+    await prepareOpsTeamRecord(context, {
+        studyId,
+        opsTeamId: experimentOperatorTeamId
+    });
 
-    if (!teamRecord) {
-        throw new ApiError('InvalidExperimentOperatorTeamId');
-    }
-
-    var studyRecord = cache.studyRecord = await (
-        db.collection('study').findOne({
-            _id: experimentRecord.state.studyId,
-        })
-    );
-
-    var settingRecords = await (
-        db.collection('experimentVariantSetting').aggregate([
-            { $match: {
-                type: 'inhouse',
-                studyId: experimentRecord.state.studyId,
-            }},
-            //StripEventsStage()
-        ]).toArray()
-    );
-
-    var allSettingLocations = settingRecords.reduce((acc, it) => ([
-        ...acc,
-        ...it.state.locations
-    ]), []);
-
-    var allSettingLocationTypeKeys = unique(allSettingLocations.map(
-        it => it.customRecordTypeKey
-    ));
-
-    if (allSettingLocationTypeKeys.length > 1) {
-        throw new ApiError(400, {
-            apiStatus: 'SubjectLocationTypeConflict',
-            data: { locationTypeKeys: allSettingLocationTypeKeys }
-        });
-    }
-
-    var enabledLocationIds = unique(allSettingLocations.map(
-        it => it.locationId,
-    ));
-
-    var locationRecord = cache.locationRecord = await (
-        db.collection('location').findOne({
-            $and: [
-                { _id: locationId },
-                { _id: { $in: enabledLocationIds }}
-            ]
-        })
-    )
-
-    if (!locationRecord) {
-        throw new ApiError('InvalidLocationId');
-    }
+    await prepareTargetLocation(context, {
+        studyId,
+        experimentType: 'inhouse',
+        locationId,
+    });
     
     await checkIntervalHasReservation({
         db,

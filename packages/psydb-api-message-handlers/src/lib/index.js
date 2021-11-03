@@ -1,0 +1,13 @@
+module.exports = {
+    SimpleHandler: require('./simple-handler'),
+    GenericRecordHandler: require('./generic-record-handler'),
+
+    PushMaker: require('./push-maker'),
+    PutMaker: require('./put-maker'),
+    RemoveMaker: require('./remove-maker'),
+
+    checkCRTFieldPointers: require('./check-crt-field-pointers'),
+    createEventMessagesFromProps: (
+        require('./create-event-messages-from-props')
+    )
+}
