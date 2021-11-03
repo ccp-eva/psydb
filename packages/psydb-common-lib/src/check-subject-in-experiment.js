@@ -1,6 +1,8 @@
 'use strict';
 var compareIds = require('./compare-ids');
 
+// FIXME: should we use haystack needle
+// aka checkExperimentHasSubject??
 var checkSubjectInExperiment = (options) => {
     var {
         subjectId,

@@ -1,6 +1,12 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
 
+var {
+    compareIds,
+    checkExperimentFull,
+    checkSubjectInExperiment,
+} = require('@mpieva/psydb-common-lib')
+
 var enums = require('@mpieva/psydb-schema-enums');
 
 var ApiError = require('@mpieva/psydb-api-lib/src/api-error');
@@ -76,21 +82,19 @@ handler.checkAllowedAndPlausible = async (context) => {
         throw new ApiError(400, 'DuplicateLabProceduresFound');
     }
 
-    var { subjectsPerExperiment } = settingRecords[0].state;
-    var existingCount = (
-        subjectData
-        .filter(it => (
-            !enums.unparticipationStatus.keys.includes(
-                it.participationStatus
-            )
-        ))
-        .reduce((acc, it) => (acc + 1), 0)
-    );
+    var isSubjectAlreadyInTarget = checkSubjectInExperiment({
+        experimentRecord,
+        subjectId,
+    });
+    if (isSubjectAlreadyInTarget) {
+        throw new ApiError(400, 'SubjectExistsInTarget');
+    }
 
-    var canAdd = (
-        existingCount < subjectsPerExperiment
-    );
-    if (!canAdd) {
+    var isExperimentFull = checkExperimentFull({
+        experimentRecord,
+        labProcedureSettingRecord: settingRecords[0]
+    });
+    if (isExperimentFull) {
         throw new ApiError(400, 'ExperimentIsFull');
     }
 }
