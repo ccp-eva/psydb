@@ -1,9 +1,9 @@
 'use strict';
 var { ApiError } = require('@mpieva/psydb-api-lib');
+var { compareIds } = require('@mpieva/psydb-core-utils');
 var {
-    compareIds,
     checkSubjectInExperiment,
-} = require('@mpieva/psydb-common-lib');
+} = require('@mpieva/psydb-common-verify-helpers');
 
 var verifySourceExperiment = require('./verify-source-experiment');
 

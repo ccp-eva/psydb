@@ -1,6 +1,2 @@
-'use strict';
-var unique = (ary) => (
-    ary.filter((it, index, self) => self.indexOf(it) === index)
-);
-
-module.exports = unique;
+// FIXME: remove
+module.exports = require('@mpieva/psydb-core-utils').unique;

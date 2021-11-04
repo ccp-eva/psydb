@@ -32,6 +32,9 @@ dependencies:
   '@rush-temp/psydb-api-lib': 'file:projects/psydb-api-lib.tgz'
   '@rush-temp/psydb-api-message-handlers': 'file:projects/psydb-api-message-handlers.tgz'
   '@rush-temp/psydb-common-lib': 'file:projects/psydb-common-lib.tgz'
+  '@rush-temp/psydb-common-utils': 'file:projects/psydb-common-utils.tgz'
+  '@rush-temp/psydb-common-verify-helpers': 'file:projects/psydb-common-verify-helpers.tgz'
+  '@rush-temp/psydb-core-utils': 'file:projects/psydb-core-utils.tgz'
   '@rush-temp/psydb-driver-nodejs': 'file:projects/psydb-driver-nodejs.tgz'
   '@rush-temp/psydb-fixture-initializer': 'file:projects/psydb-fixture-initializer.tgz'
   '@rush-temp/psydb-fixtures': 'file:projects/psydb-fixtures.tgz'
@@ -9508,8 +9511,40 @@ packages:
     dev: false
     name: '@rush-temp/psydb-common-lib'
     resolution:
-      integrity: sha512-5RCsNTa1EaH7E7FXq1OVrkv6ZEHfPxdYTqPtU2CpiDRyJdk+IO+9tRFLd73n6c+JvkDwmgh/rV4gOBbWo9/JsA==
+      integrity: sha512-6OeheOd9/Ok2EO3Hu5Je4i+y134gXN3xlKZCOgp8DzUjmqkg5tEUxQrVXoTDZbTQ6OasYYrJBjMioz9+6jc1GA==
       tarball: 'file:projects/psydb-common-lib.tgz'
+    version: 0.0.0
+  'file:projects/psydb-common-utils.tgz':
+    dependencies:
+      chai: 4.2.0
+      mocha: 8.1.3
+    dev: false
+    name: '@rush-temp/psydb-common-utils'
+    resolution:
+      integrity: sha512-Vn2yuaq04RZxHd0XZqpAeHtyk0ixE/UEtChDUmOtcrNxBKLQQQMxIid1vJlPPlR+8xAYc+g+gSr+8vgS98axGQ==
+      tarball: 'file:projects/psydb-common-utils.tgz'
+    version: 0.0.0
+  'file:projects/psydb-common-verify-helpers.tgz':
+    dependencies:
+      '@cdxoo/inline-text': 1.0.1
+      chai: 4.2.0
+      mocha: 8.1.3
+    dev: false
+    name: '@rush-temp/psydb-common-verify-helpers'
+    resolution:
+      integrity: sha512-oilHMwnn49UstdBg5xvOOCmIZZ1uikNz6SKMW/CbHe177F7yBmEG1WeRLAzfES0WFSPG+RumyYSxEOL+IDq76w==
+      tarball: 'file:projects/psydb-common-verify-helpers.tgz'
+    version: 0.0.0
+  'file:projects/psydb-core-utils.tgz':
+    dependencies:
+      chai: 4.2.0
+      jsonpointer: 4.1.0
+      mocha: 8.1.3
+    dev: false
+    name: '@rush-temp/psydb-core-utils'
+    resolution:
+      integrity: sha512-kdvcmR19z5kvBNB5Pne5z38e9ROWaR4tIy/VYDC/cUgEb5wHc7michvKyAo4wd+r1IRm1lOzcfiJcm58txxkZQ==
+      tarball: 'file:projects/psydb-core-utils.tgz'
     version: 0.0.0
   'file:projects/psydb-driver-nodejs.tgz':
     dependencies:
@@ -9518,7 +9553,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-driver-nodejs'
     resolution:
-      integrity: sha512-DcF4TPj6v5hkJ+Cb6bEPzjCg8Jca1iP1azGn8GWFmcw9HEMwj3VmF2I/h5m6UMMoTK1k4O0gbX4XlFTBblEMAA==
+      integrity: sha512-1GD7wPotGwZDfIlp8a0HWy5N/Er0nN3qdZrVw0HM8/aGc7vCwqcaUZ93FUtCX4J8depyzoNKP5MuxPFnUw0U4g==
       tarball: 'file:projects/psydb-driver-nodejs.tgz'
     version: 0.0.0
   'file:projects/psydb-fixture-initializer.tgz':
@@ -9802,7 +9837,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-ui'
     resolution:
-      integrity: sha512-lrWevnyMvWJi1rtUqmhSE9xlCR2A/sYo1WeYoHU3GnO4U2Q6ZqXF9pcBn/D5T+yveEabLUEzF/xnEey46jQrZQ==
+      integrity: sha512-cPVW9Yz6DbP8j7cXEET77dMEjxCzMP+YdSrirccTWWWIbIMsIce09yoYTKKuMggwiHMZlTg9deZjmSZcNl+K/w==
       tarball: 'file:projects/psydb-ui.tgz'
     version: 0.0.0
   'file:projects/psydb-web.tgz':
@@ -9883,6 +9918,9 @@ specifiers:
   '@rush-temp/psydb-api-lib': 'file:./projects/psydb-api-lib.tgz'
   '@rush-temp/psydb-api-message-handlers': 'file:./projects/psydb-api-message-handlers.tgz'
   '@rush-temp/psydb-common-lib': 'file:./projects/psydb-common-lib.tgz'
+  '@rush-temp/psydb-common-utils': 'file:./projects/psydb-common-utils.tgz'
+  '@rush-temp/psydb-common-verify-helpers': 'file:./projects/psydb-common-verify-helpers.tgz'
+  '@rush-temp/psydb-core-utils': 'file:./projects/psydb-core-utils.tgz'
   '@rush-temp/psydb-driver-nodejs': 'file:./projects/psydb-driver-nodejs.tgz'
   '@rush-temp/psydb-fixture-initializer': 'file:./projects/psydb-fixture-initializer.tgz'
   '@rush-temp/psydb-fixtures': 'file:./projects/psydb-fixtures.tgz'

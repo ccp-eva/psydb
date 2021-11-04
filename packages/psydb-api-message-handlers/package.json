@@ -14,7 +14,11 @@
     "@mpieva/psydb-schema-fields": "~0.1.0-alpha",
     "@mpieva/psydb-schema-fields-special": "~0.1.0-alpha",
     "@mpieva/psydb-schema-helpers": "~0.1.0-alpha",
+    
+    "@mpieva/psydb-core-utils": "~0.1.0-alpha",
+    "@mpieva/psydb-common-verify-helpers": "~0.1.0-alpha",
     "@mpieva/psydb-common-lib": "~0.1.0-alpha",
+
     "@mpieva/psydb-api-lib": "~0.1.0-alpha",
     "@cdxoo/omit": "~1.0.1",
     "@cdxoo/inline-text": "~1.0.1",

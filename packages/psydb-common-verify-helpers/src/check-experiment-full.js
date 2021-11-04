@@ -1,5 +1,5 @@
 'use strict';
-var countExperimentSubjects = require('./count-experiment-subjects');
+var { countExperimentSubjects } = require('@mpieva/psydb-common-utils');
 
 var checkExperimentFull = (options) => {
     var {

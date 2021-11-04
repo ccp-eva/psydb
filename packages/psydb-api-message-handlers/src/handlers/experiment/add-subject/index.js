@@ -1,16 +1,16 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
 
+var { compareIds } = require('@mpieva/psydb-core-utils');
+
 var {
-    compareIds,
     checkExperimentFull,
     checkSubjectInExperiment,
-} = require('@mpieva/psydb-common-lib')
+} = require('@mpieva/psydb-common-verify-helpers');
 
 var enums = require('@mpieva/psydb-schema-enums');
 
 var ApiError = require('@mpieva/psydb-api-lib/src/api-error');
-var compareIds = require('@mpieva/psydb-api-lib/src/compare-ids');
 
 var SimpleHandler = require('../../../lib/simple-handler'),
     checkForeignIdsExist = require('../../../lib/check-foreign-ids-exist');

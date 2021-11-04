@@ -169,6 +169,21 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/psydb-core-utils",
+       "projectFolder": "packages/psydb-core-utils",
+       "reviewCategory": "production"
+    },
+    {
+       "packageName": "@mpieva/psydb-common-utils",
+       "projectFolder": "packages/psydb-common-utils",
+       "reviewCategory": "production"
+    },
+    {
+       "packageName": "@mpieva/psydb-common-verify-helpers",
+       "projectFolder": "packages/psydb-common-verify-helpers",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-common-lib",
        "projectFolder": "packages/psydb-common-lib",
        "reviewCategory": "production"

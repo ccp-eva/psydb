@@ -1,5 +1,5 @@
 'use strict';
-var compareIds = require('./compare-ids');
+var { compareIds } = require('@mpieva/psydb-core-utils');
 
 // FIXME: should we use haystack needle
 // aka checkExperimentHasSubject??

@@ -15,13 +15,8 @@ module.exports = {
     keyBy: require('./key-by'),
     compareIds: require('./compare-ids'),
 
-    countExperimentSubjects: require('./count-experiment-subjects'),
-    checkSubjectInExperiment: require('./check-subject-in-experiment'),
-    checkExperimentFull: require('./check-subject-in-experiment'),
-    
     quicksort: require('./quicksort'),
     perceivedBrightness: require('./perceived-brightness'),
     range: require('./range'),
     slotifyItems: require('./slotify-items'),
-
 }
