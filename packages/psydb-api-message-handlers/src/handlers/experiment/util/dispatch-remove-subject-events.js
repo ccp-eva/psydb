@@ -2,11 +2,13 @@
 var debug = require('debug')('psydb:api:message-handlers');
 
 var enums = require('@mpieva/psydb-schema-enums');
-var compareIds = require('@mpieva/psydb-api-lib/src/compare-ids');
+var { compareIds } = require('@mpieva/psydb-core-utils');
 
-var PutMaker = require('../../../lib/put-maker'),
-    PushMaker = require('../../../lib/push-maker'),
-    RemoveMaker = require('../../../lib/remove-maker');
+var {
+    PutMaker,
+    PushMaker,
+    RemoveMaker
+} = require('../../../lib');
 
 var dispatchRemoveSubjectEvents = async ({
     db,
@@ -62,12 +64,21 @@ var dispatchRemoveSubjectEvents = async ({
     await experimentChannel.dispatchMany({
         lastKnownEventId: lastKnownExperimentEventId,
         messages: [
-            ...PutMaker({ personnelId }).all({
-                [`${ePath}/participationStatus`]: unparticipateStatus,
-                ...(shouldCancelExperiment && {
+            ...RemoveMaker({ personnelId }).all({
+                '/state/subjectData': [ subjectDataIndex ]
+            }),
+            ...(shouldCancelExperiment
+                ? PutMaker({ personnelId }).all({
                     '/state/isCanceled': true
-                }),
-            })
+                })
+                : []
+            ),
+            //...PutMaker({ personnelId }).all({
+            //    [`${ePath}/participationStatus`]: unparticipateStatus,
+            //    ...(shouldCancelExperiment && {
+            //        '/state/isCanceled': true
+            //    }),
+            //})
         ]
     })
 
