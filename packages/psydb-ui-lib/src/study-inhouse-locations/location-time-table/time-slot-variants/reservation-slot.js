@@ -3,6 +3,8 @@ import React from 'react';
 import datefns from '../../../date-fns';
 import getTextColor from '../../../bw-text-color-for-background';
 
+import OtherStudySlot from './other-study-slot';
+
 const ReservationSlot = (ps) => {
     var {
         timestamp,
@@ -25,14 +27,7 @@ const ReservationSlot = (ps) => {
 
     // this reservation does not belong to any of the study teams
     if (!teamRecord) {
-        return (
-            <div
-                className='border text-center m-1'
-                style={{
-                    height: '26px',
-                }}
-            >-</div>
-        )
+        return <OtherStudySlot />
     }
 
     return (

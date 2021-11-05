@@ -1,5 +1,6 @@
 'use strict';
 var getHttpStatus = require('statuses');
+var { VerifyError } = require('@mpieva/psydb-common-verify-helpers');
 
 class ApiError extends Error {
     constructor (statusCode, apiStatusOrAdditionalProps) {
@@ -30,6 +31,19 @@ class ApiError extends Error {
 
     getInfo () {
         return this.__info;
+    }
+}
+
+ApiError.from = (statusCode, otherError) => {
+    if (otherError instanceof VerifyError) {
+        var info = otherError.getInfo();
+        return new ApiError(statusCode, {
+            apiStatus: info.status,
+            data: info.status
+        });
+    }
+    else {
+        throw new Error('unknown error type');
     }
 }
 

@@ -36,6 +36,8 @@ const TimeSlotList = ({
     var slottedReservationRecords = slotify(reservationRecords);
     var slottedExperimentRecords = slotify(experimentRecords)
 
+    console.log({ slottedReservationRecords, reservationRecords });
+
     var slots = useMemo(() => {
         var tmp = [];
         for (var t = start.getTime(); t < end.getTime(); t += slotDuration) {

@@ -128,7 +128,10 @@ var stripIfOtherStudy = ({
             ? { _id, state, ...other }
             : {
                 _id,
-                state: { interval: state.interval },
+                state: {
+                    locationId: state.locationId,
+                    interval: state.interval
+                },
                 ...other
             }
         )

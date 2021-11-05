@@ -4,6 +4,8 @@ import { Icons } from '@mpieva/psydb-ui-layout';
 import datefns from '../../../date-fns';
 import getTextColor from '../../../bw-text-color-for-background';
 
+import OtherStudySlot from './other-study-slot';
+
 const ExperimentSlot = (ps) => {
     var {
         timestamp,
@@ -28,14 +30,15 @@ const ExperimentSlot = (ps) => {
 
     // this reservation does not belong to any of the study teams
     if (!teamRecord) {
-        return (
+        return <OtherStudySlot />
+        /*return (
             <div
                 className='border text-center m-1'
                 style={{
                     height: '26px',
                 }}
             >-</div>
-        )
+        )*/
     }
 
     return (

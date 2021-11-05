@@ -21,6 +21,7 @@
     "@mpieva/psydb-timezone-helpers": "~0.1.0-alpha",
     "@mpieva/psydb-schema-creators": "~0.1.0-alpha",
     "@mpieva/psydb-schema-fields": "~0.1.0-alpha",
+    "@mpieva/psydb-common-verify-helpers": "~0.1.0-alpha",
     "@mpieva/psydb-common-lib": "~0.1.0-alpha",
     "json-schema-traverse": "~1.0.0",
     "jsonpointer": "~4.1.0",

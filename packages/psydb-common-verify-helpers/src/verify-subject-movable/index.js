@@ -1,13 +1,5 @@
 'use strict';
-// TODO
-// var {
-//     verifySubjectMovable
-// }= require('@mpieva/psydb-common-verify-helpers')
-
-var {
-    ApiError,
-    compareIds
-} = require('@mpieva/psydb-api-lib');
+var { compareIds } = require('@mpieva/psydb-core-utils');
 
 var verifySubjectMovableToExperiment = (
     require('./verify-subject-movable-to-experiment')
@@ -17,8 +9,7 @@ var verifySubjectMovableToReservation = (
     require('./verify-subject-movable-to-reservation')
 )
 
-var verifySubjectMovable = async (context, options) => {
-    var { db } = context;
+var verifySubjectMovable = (options) => {
     var {
         subjectId,
         sourceExperimentRecord,
@@ -27,10 +18,10 @@ var verifySubjectMovable = async (context, options) => {
     } = options;
 
     if (targetExperimentRecord) {
-        await verifySubjectMovableToExperiment(context, options);
+        verifySubjectMovableToExperiment(options);
     }
     else if (targetReservationData) {
-        await verifySubjectMovableToReservation(context, options);
+        verifySubjectMovableToReservation(options);
     }
     else {
         throw new Error(
