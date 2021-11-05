@@ -59,7 +59,7 @@ const MoveSubjectModal = ({
 
     var studyId = studyData.record._id;
     var studyRecordType = studyData.record.type;
-    var { subjectId, subjectType } = payloadData;
+    var { subjectId, subjectType, subjectRecord } = payloadData;
 
     var subjectRecord = subjectDataByType[subjectType].records.find(it => (
         it._id === subjectId
@@ -98,6 +98,8 @@ const MoveSubjectModal = ({
                     studyRecordType={ studyRecordType }
                     subjectRecordType={ subjectType }
                     currentExperimentId={ experimentId }
+                    currentExperimentType={ experimentType }
+                    currentSubjectRecord={ subjectRecord }
 
                     //activeLocationType={ 'instituteroom' }
                     onSelectReservationSlot={ 

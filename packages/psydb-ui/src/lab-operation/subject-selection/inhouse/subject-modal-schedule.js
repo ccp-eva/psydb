@@ -25,6 +25,7 @@ const SubjectModalSchedule = ({
 
     onSuccessfulUpdate,
 }) => {
+    console.log({ subjectRecordType })
 
     var [ studyId, setStudyId ] = useState(studyNavItems[0].key);
     
@@ -63,6 +64,8 @@ const SubjectModalSchedule = ({
                 studyId={ studyId }
                 studyRecordType={ studyRecordType }
                 subjectRecordType={ subjectRecordType }
+                currentExperimentType='inhouse'
+                currentSubjectRecord={{ _id: subjectId /* FIXME */ }}
 
                 //activeLocationType={ 'instituteroom' }
                 onSelectReservationSlot={ experimentCreateModal.handleShow }

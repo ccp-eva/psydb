@@ -63,6 +63,8 @@ const SubjectModalSchedule = ({
                 studyId={ studyId }
                 studyRecordType={ studyRecordType }
                 subjectRecordType={ subjectRecordType }
+                currentExperimentType='online-video-call'
+                currentSubjectRecord={{ _id: subjectId /* FIXME */ }}
 
                 //activeLocationType={ 'instituteroom' }
                 onSelectReservationSlot={ experimentCreateModal.handleShow }

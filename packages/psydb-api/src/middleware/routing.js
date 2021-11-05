@@ -124,21 +124,13 @@ var createRouting = ({
         endpoints.special.participatedStudiesForSubject
     );
 
-    router.get(
-        inline`
-            /study-location-reservation-calendar
-            /:start
-            /:end
-            /:studyId
-            /:locationRecordType
-        `,
-        withSelfAuth(),
-        withPermissions(),
-        withEndpointProtection({ endpoint: (
-            'study-location-reservation-calendar'
-        )}),
-        endpoints.special.studyLocationReservationCalendar
-    );
+    router.post(
+        '/study-location-reservation-calendar',
+        ...withPostStages({
+            protection: 'study-location-reservation-calendar',
+            endpoint: endpoints.special.studyLocationReservationCalendar
+        })
+    )
 
     router.get(
         inline`

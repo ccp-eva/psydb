@@ -134,16 +134,19 @@ agent.fetchStudyLocationReservationCalendar = ({
     studyId,
     locationRecordType,
     start,
-    end
+    end,
+    experimentType,
+    selectedSubjectId,
 }) => {
     var baseUrl = '/api/study-location-reservation-calendar';
-    return axios.get([
-        baseUrl,
-        start.toISOString(),
-        end.toISOString(),
+    return axios.post(baseUrl, {
+        experimentType,
+        start,
+        end,
         studyId,
-        locationRecordType
-    ].join('/'));
+        locationRecordType,
+        selectedSubjectId,
+    });
 }
 
 agent.fetchStudyAwayTeamReservationCalendar = ({

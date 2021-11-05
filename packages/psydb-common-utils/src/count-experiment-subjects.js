@@ -7,9 +7,10 @@ var countExperimentSubjects = (options) => {
         subjectTypeKey,
     } = options;
 
-    var { subjectData } = experimentRecord;
+    var { subjectData } = experimentRecord.state;
     var count = 0;
     for (var it of subjectData) {
+        console.log({ subjectTypeKey, it });
         // FIXME: this might be obsolete wehn we actually remove subjects
         var isUnparticipated = (
             enums.unparticipationStatus.keys.includes(it.participationStatus)
@@ -17,7 +18,7 @@ var countExperimentSubjects = (options) => {
         if (isUnparticipated) {
             continue;
         }
-        if (subjectData.type !== subjectTypeKey) {
+        if (it.subjectType !== subjectTypeKey) {
             continue;
         }
 

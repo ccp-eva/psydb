@@ -25,6 +25,7 @@ const TimeSlotList = ({
     
     subjectRecordType,
     currentExperimentId,
+    currentSubjectRecord,
 
     onSelectEmptySlot,
     onSelectReservationSlot,
@@ -77,6 +78,7 @@ const TimeSlotList = ({
         
         subjectRecordType,
         currentExperimentId,
+        currentSubjectRecord,
         
         onSelectEmptySlot: wrapped.onSelectEmptySlot,
         onSelectReservationSlot: wrapped.onSelectReservationSlot,

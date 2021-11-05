@@ -21,6 +21,7 @@ const ExperimentSlot = (ps) => {
 
         subjectRecordType,
         currentExperimentId,
+        currentSubjectRecord,
 
         onSelectExperimentSlot,
     } = ps;
@@ -45,20 +46,31 @@ const ExperimentSlot = (ps) => {
         )*/
     }
 
-    var missingCount = countMissing({
-        experimentRecord,
-        settingRecords,
-        subjectRecordType
-    });
+    var {
+        _isAugmented,
+        _matchesRequirements,
+        _missingCount
+    } = experimentRecord;
+
+    var missingCount = (
+        _isAugmented && _missingCount !== undefined
+        ? _missingCount
+        : countMissing({
+            experimentRecord,
+            settingRecords,
+            subjectRecordType
+        })
+    )
 
     var isSameExperiment = (
-        experimentRecord._id === currentExperimentId
+        currentExperimentId && experimentRecord._id === currentExperimentId
     )
 
     var canClick = (
         onSelectExperimentSlot &&
         missingCount > 0 &&
-        !isSameExperiment
+        !isSameExperiment && 
+        (_isAugmented && _matchesRequirements)
     );
 
     return (
@@ -69,7 +81,7 @@ const ExperimentSlot = (ps) => {
                 height: '26px',
                 background: teamRecord.state.color,
                 color: getTextColor(teamRecord.state.color),
-                ...(isSameExperiment && {
+                ...(!canClick && {
                     opacity: 0.5
                 }),
                 //borderWidth: '2px',

@@ -12,6 +12,8 @@ const LocationCalendarList = ({
     studyRecord,
     subjectRecordType,
     currentExperimentId,
+    currentExperimentType,
+    currentSubjectRecord,
 
     locationRecordType,
     teamRecords,
@@ -34,10 +36,14 @@ const LocationCalendarList = ({
 }) => {
     var [ didFetch, fetched ] = useFetch((agent) => {
         return agent.fetchStudyLocationReservationCalendar({
+            experimentType: currentExperimentType,
             locationRecordType,
             studyId: studyRecord._id,
             start: currentPageStart,
             end: currentPageEnd,
+            ...(currentSubjectRecord && {
+                selectedSubjectId: currentSubjectRecord._id
+            })
         })
     }, [
         studyRecord,
@@ -91,6 +97,7 @@ const LocationCalendarList = ({
     
                         subjectRecordType,
                         currentExperimentId,
+                        currentSubjectRecord,
 
                         onSelectEmptySlot,
                         onSelectReservationSlot,
