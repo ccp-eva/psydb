@@ -16,6 +16,9 @@ const ExperimentSlot = (ps) => {
         locationRecord,
         teamRecords,
 
+        settingRecords,
+        settingRelated,
+
         subjectRecordType,
 
         onSelectExperimentSlot,
@@ -40,6 +43,8 @@ const ExperimentSlot = (ps) => {
             >-</div>
         )*/
     }
+
+
 
     return (
         <div
@@ -78,6 +83,9 @@ const ExperimentSlot = (ps) => {
                     experimentRecord,
                     studyRecord,
                     subjectRecordType,
+                
+                    settingRecords,
+                    settingRelated,
                 })} />
             </div>
         </div>
@@ -89,15 +97,23 @@ const SubjectCountIndicator = (ps) => {
         experimentRecord,
         studyRecord,
         subjectRecordType,
+
+        settingRecords,
+        settingRelated,
     } = ps;
 
-    var { state: { subjectData }} = experimentRecord;
+    var { type: experimentType, state: { subjectData }} = experimentRecord;
     var { state: { selectionSettingsBySubjectType }} = studyRecord;
 
+    var relevantSettings = settingRecords.filter(it => (
+        it.type === experimentType &&
+        (!subjectRecordType || it.state.subjectTypeKey === subjectRecordType)
+    ));
+
     var missingCountByType = (
-        selectionSettingsBySubjectType.reduce((acc, it) => ({
+        relevantSettings.reduce((acc, it) => ({
             ...acc,
-            [it.subjectRecordType]: it.subjectsPerExperiment
+            [it.state.subjectTypeKey]: it.state.subjectsPerExperiment
         }), {})
     );
 
@@ -107,16 +123,12 @@ const SubjectCountIndicator = (ps) => {
         }
     }
 
-    // FIXME: currently we dont rally have proper experiment
-    // settings that determine if subjects types can be mixed
-    // so we just test if any subject type requirement
-    // is fulfilled
     var missingCount = (
         subjectRecordType
         ? missingCountByType[subjectRecordType]
         : (
-            Object.keys(missingCountByType).reduce((acc, it) => (
-                acc === 0 ? 0 : it
+            Object.keys(missingCountByType).reduce((acc, key) => (
+                acc === 0 ? 0 : missingCountByType[key]
             ), Infinity)
         )
     )

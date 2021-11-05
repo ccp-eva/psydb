@@ -14,6 +14,10 @@ const TimeSlotList = ({
     teamRecords,
     reservationRecords,
     experimentRecords,
+    
+    settingRecords,
+    settingRelated,
+
     dayStart,
     startTimeInt,
     endTimeInt,
@@ -66,6 +70,9 @@ const TimeSlotList = ({
         studyRecord,
         locationRecord,
         teamRecords,
+        
+        settingRecords,
+        settingRelated,
         
         subjectRecordType,
         

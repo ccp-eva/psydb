@@ -36,31 +36,20 @@ const StudyInhouseLocations = ({
     calendarRevision = 0,
 }) => {
     
-    var [ didFetch, fetched ] = useFetchAll((agent) => {
-        var customTypes = agent.readCustomRecordTypeMetadata();
-        
-        var study = agent.readRecord({
+    var [ didFetch, fetched ] = useFetchAll((agent) => ({
+        customTypes: agent.readCustomRecordTypeMetadata(),
+        study:  agent.readRecord({
             collection: 'study',
             recordType: studyRecordType,
             id: studyId,
-        });
-        
-        var teams = agent.fetchExperimentOperatorTeamsForStudy({
+        }),
+        teams: agent.fetchExperimentOperatorTeamsForStudy({
             studyId,
-        });
-
-        var settings = agent.fetchExperimentVariantSettings({
+        }),
+        settings: agent.fetchExperimentVariantSettings({
             studyId,
-        });
-
-        var promises = {
-            customTypes,
-            study,
-            teams,
-            settings,
-        };
-        return promises;
-    }, [ studyId, studyRecordType, activeLocationType, revision ])
+        }),
+    }), [ studyId, studyRecordType, activeLocationType, revision ])
 
     if (!didFetch) {
         return (
@@ -107,6 +96,9 @@ const StudyInhouseLocations = ({
                 className: locationCalendarListClassName,
                 teamRecords,
                 studyRecord,
+
+                settingRecords,
+                settingRelated,
                 
                 subjectRecordType,
                 locationRecordType: activeLocationType,

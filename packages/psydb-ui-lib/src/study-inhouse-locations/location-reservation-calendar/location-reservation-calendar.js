@@ -11,6 +11,9 @@ const LocationCalendar = ({
     experimentRecords,
     teamRecords,
 
+    settingRecords,
+    settingRelated,
+
     currentPageStart,
     currentPageEnd,
     onPageChange,
@@ -56,6 +59,10 @@ const LocationCalendar = ({
                 teamRecords,
                 reservationRecords,
                 experimentRecords,
+
+                settingRecords,
+                settingRelated,
+
                 allDayStarts,
                 startTimeInt,
                 endTimeInt,

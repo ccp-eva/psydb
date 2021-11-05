@@ -14,6 +14,9 @@ const LocationCalendarList = ({
     locationRecordType,
     teamRecords,
     
+    settingRecords,
+    settingRelated,
+
     currentPageStart,
     currentPageEnd,
     onPageChange,
@@ -76,6 +79,9 @@ const LocationCalendarList = ({
                         reservationRecords,
                         experimentRecords,
                         teamRecords,
+
+                        settingRecords,
+                        settingRelated,
 
                         currentPageStart,
                         currentPageEnd,
