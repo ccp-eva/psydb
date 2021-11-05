@@ -15,6 +15,7 @@ const StudyInhouseLocations = ({
     studyRecordType,
 
     subjectRecordType,
+    currentExperimentId,
 
     activeLocationType,
     onSelectLocationType,
@@ -100,6 +101,7 @@ const StudyInhouseLocations = ({
                 settingRecords,
                 settingRelated,
                 
+                currentExperimentId,
                 subjectRecordType,
                 locationRecordType: activeLocationType,
 

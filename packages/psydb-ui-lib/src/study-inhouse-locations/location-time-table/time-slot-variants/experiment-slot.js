@@ -20,6 +20,7 @@ const ExperimentSlot = (ps) => {
         settingRelated,
 
         subjectRecordType,
+        currentExperimentId,
 
         onSelectExperimentSlot,
     } = ps;
@@ -44,23 +45,40 @@ const ExperimentSlot = (ps) => {
         )*/
     }
 
+    var missingCount = countMissing({
+        experimentRecord,
+        settingRecords,
+        subjectRecordType
+    });
 
+    var isSameExperiment = (
+        experimentRecord._id === currentExperimentId
+    )
+
+    var canClick = (
+        onSelectExperimentSlot &&
+        missingCount > 0 &&
+        !isSameExperiment
+    );
 
     return (
         <div
-            role={ onSelectExperimentSlot ? 'button' : undefined }
+            role={ canClick ? 'button' : undefined }
             className='text-center m-1'
             style={{
                 height: '26px',
                 background: teamRecord.state.color,
                 color: getTextColor(teamRecord.state.color),
+                ...(isSameExperiment && {
+                    opacity: 0.5
+                }),
                 //borderWidth: '2px',
                 //borderStyle: 'dashed',
                 //borderColor: getTextColor(teamRecord.state.color),
                 //boxSizing: 'border-box'
             }}
             onClick={ () => {
-                onSelectExperimentSlot && onSelectExperimentSlot({
+                canClick && onSelectExperimentSlot({
                     studyId,
                     locationRecord,
                     experimentRecord,
@@ -86,24 +104,21 @@ const ExperimentSlot = (ps) => {
                 
                     settingRecords,
                     settingRelated,
+                    missingCount,
                 })} />
             </div>
         </div>
     );
 }
 
-const SubjectCountIndicator = (ps) => {
+var countMissing = (options)  => {
     var {
         experimentRecord,
-        studyRecord,
-        subjectRecordType,
-
         settingRecords,
-        settingRelated,
-    } = ps;
+        subjectRecordType,
+    } = options;
 
     var { type: experimentType, state: { subjectData }} = experimentRecord;
-    var { state: { selectionSettingsBySubjectType }} = studyRecord;
 
     var relevantSettings = settingRecords.filter(it => (
         it.type === experimentType &&
@@ -132,6 +147,20 @@ const SubjectCountIndicator = (ps) => {
             ), Infinity)
         )
     )
+
+    return missingCount;
+}
+
+const SubjectCountIndicator = (ps) => {
+    var {
+        experimentRecord,
+        studyRecord,
+        subjectRecordType,
+
+        settingRecords,
+        settingRelated,
+        missingCount,
+    } = ps;
 
     var Indication = (
         subjectRecordType && missingCount !== 0

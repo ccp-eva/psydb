@@ -36,29 +36,35 @@ var ExperimentSubjectDropdown = ({
         type: subjectType
     } = subjectRecord;
 
+    var sharedPayload = {
+        subjectId,
+        subjectType,
+        subjectRecord
+    };
+
     var wrappedOnClickComment = useCallback(() => (
-        onClickComment({ subjectId, subjectType })
-    ), [ onClickComment ]);
+        onClickComment(sharedPayload)
+    ), [ onClickComment, subjectRecord ]);
 
     var wrappedOnClickMove = useCallback(() => (
-        onClickMove({ subjectId, subjectType })
-    ), [ onClickMove ]);
+        onClickMove(sharedPayload)
+    ), [ onClickMove, subjectRecord ]);
 
     var wrappedOnClickRemove = useCallback(() => (
-        onClickRemove({ subjectId, subjectType })
-    ), [ onClickRemove ]);
+        onClickRemove(sharedPayload)
+    ), [ onClickRemove, subjectRecord ]);
 
     var wrappedOnClickConfirm = useCallback(() => (
-        onClickConfirm({ subjectId, subjectType })
-    ), [ onClickConfirm ]);
+        onClickConfirm(sharedPayload)
+    ), [ onClickConfirm, subjectRecord ]);
 
     var wrappedOnClickMailbox = useCallback(() => (
-        onClickMailbox({ subjectId, subjectType })
-    ), [ onClickMailbox ]);
+        onClickMailbox(sharedPayload)
+    ), [ onClickMailbox, subjectRecord ]);
 
     var wrappedOnClickContactFailed = useCallback(() => (
-        onClickContactFailed({ subjectId, subjectType })
-    ), [ onClickContactFailed ]);
+        onClickContactFailed(sharedPayload)
+    ), [ onClickContactFailed, subjectRecord ]);
 
     var style = (
         variant === 'calendar'

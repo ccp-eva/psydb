@@ -19,6 +19,7 @@ const LocationCalendar = ({
     onPageChange,
 
     subjectRecordType,
+    currentExperimentId,
 
     onSelectEmptySlot,
     onSelectReservationSlot,
@@ -69,6 +70,7 @@ const LocationCalendar = ({
                 slotDuration: reservationSlotDuration,
 
                 subjectRecordType,
+                currentExperimentId,
 
                 onSelectEmptySlot,
                 onSelectReservationSlot,

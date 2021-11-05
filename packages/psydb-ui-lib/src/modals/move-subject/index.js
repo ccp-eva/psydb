@@ -96,6 +96,8 @@ const MoveSubjectModal = ({
                 <StudyInhouseLocations
                     studyId={ studyId }
                     studyRecordType={ studyRecordType }
+                    subjectRecordType={ subjectType }
+                    currentExperimentId={ experimentId }
 
                     //activeLocationType={ 'instituteroom' }
                     onSelectReservationSlot={ 
