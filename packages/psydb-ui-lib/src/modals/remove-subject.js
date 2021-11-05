@@ -28,6 +28,7 @@ var schema = ExactObject({
         subjectComment: FullText({ title: 'Kommentar zum Probanden' }),
     },
     required: [
+        'unparticipateStatus',
         'subjectComment',
         'blockSubjectFromTesting'
     ],
@@ -130,6 +131,7 @@ const RemoveSubjectModal = ({
                 <SchemaForm
                     schema={ schema }
                     formData={{
+                        blockSubjectFromTesting: { shouldBlock: false },
                         subjectComment: subjectRecord.scientific.state.comment,
                     }}
                     onSubmit={ handleSubmit }
