@@ -17,9 +17,11 @@ var RecordList = ({
     target,
     collection,
     recordType,
+    constraints,
+    searchOptions,
+
     //offset,
     //limit,
-    constraints,
     //filters,
     defaultSort,
 
@@ -50,6 +52,7 @@ var RecordList = ({
             target,
             collection,
             recordType,
+            searchOptions,
             offset,
             limit,
             constraints,
@@ -60,7 +63,7 @@ var RecordList = ({
             pagination.setTotal(response.data.data.recordsCount);
             return response;
         });
-    }, [ collection, recordType, offset, limit, filters ]);
+    }, [ collection, recordType, offset, limit, filters, searchOptions ]);
 
     if (!didFetch) {
         return (

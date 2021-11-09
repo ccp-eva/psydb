@@ -5,7 +5,9 @@ var {
     ExactObject,
     SaneString,
     Address,
-    FullText
+    FullText,
+    DefaultArray,
+    CustomRecordTypeKey,
 } = require('@mpieva/psydb-schema-fields');
 
 var ResearchGroupState = ({} = {}) => {
@@ -31,12 +33,45 @@ var ResearchGroupState = ({} = {}) => {
             // and writable only to root accounts?
             // or normal read/write by researchgroup?
             // => readable to all writable to root
+            recordTypePermissions: ExactObject({
+                title: 'Datensatz-Typen',
+                properties: {
+                    subject: DefaultArray({
+                        title: 'Probanden-Typen',
+                        items: ExactObject({
+                            properties: {
+                                typeKey: CustomRecordTypeKey({
+                                    title: 'Typ',
+                                    collection: 'subject',
+                                    enableResearchGroupFilter: false,
+                                })
+                            },
+                            required: [ 'typeKey' ]
+                        })
+                    }),
+                    location: DefaultArray({
+                        title: 'Location-Typen',
+                        items: ExactObject({
+                            properties: {
+                                typeKey: CustomRecordTypeKey({
+                                    title: 'Typ',
+                                    collection: 'location',
+                                    enableResearchGroupFilter: false,
+                                })
+                            },
+                            required: [ 'typeKey' ]
+                        })
+                    }),
+                },
+                required: ['subject', 'location']
+            }),
         },
         required: [
             'name',
             'shorthand',
             'address',
-            'description'
+            'description',
+            'recordTypePermissions',
         ]
     })
 

@@ -9,6 +9,7 @@ const RecordListContainer = ({
     collection,
     recordType,
     constraints,
+    searchOptions,
     defaultSort,
 
     enableNew,
@@ -40,6 +41,7 @@ const RecordListContainer = ({
                 collection,
                 recordType,
                 constraints,
+                searchOptions,
                 defaultSort,
 
                 enableView,

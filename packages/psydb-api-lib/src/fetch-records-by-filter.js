@@ -25,6 +25,7 @@ var fetchRecordByFilter = async ({
     permissions,
     hasSubChannels,
 
+    enableResearchGroupFilter = true,
     constraints,
     queryFields,
 
@@ -43,6 +44,44 @@ var fetchRecordByFilter = async ({
     limit = limit || 0;
 
     var stages = [];
+    
+    if (collectionName === 'customRecordType') {
+        if (enableResearchGroupFilter || true) {
+            var { allowedResearchGroupIds } = permissions;
+
+            //var childlabId = 'VVuQ9Z4dp6o5rmhbhMwvQ';
+            //allowedResearchGroupIds = [ childlabId ];
+
+            var researchGroupRecords = await (
+                db.collection('researchGroup').aggregate([
+                    { $match: {
+                        _id: { $in: allowedResearchGroupIds },
+                    }},
+                    StripEventsStage(),
+                ]).toArray()
+            );
+
+            var allowedTypeKeys = [];
+            for (var rg of researchGroupRecords) {
+                var {
+                    recordTypePermissions = {}
+                } = rg.state;
+
+                for (var target of Object.keys(recordTypePermissions)) {
+                    var items = recordTypePermissions[target];
+                    allowedTypeKeys.push(...items.map(it => (
+                        it.typeKey
+                    )))
+                }
+            }
+
+            stages.push(
+                { $match: {
+                    type: { $in: allowedTypeKeys }
+                }}
+            );
+        }
+    }
 
     if (recordType) {
         stages.push(

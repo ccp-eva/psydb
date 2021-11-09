@@ -10,6 +10,8 @@ const RecordPicker = withRecordPicker({ RecordList: (ps) => {
         collection,
         recordType,
         constraints,
+
+        searchOptions,
     } = ps;
     return (
         <RecordListContainer
@@ -20,6 +22,7 @@ const RecordPicker = withRecordPicker({ RecordList: (ps) => {
             collection={ collection }
             recordType={ recordType }
             constraints={ constraints }
+            searchOptions={ searchOptions }
 
             onSelectRecord={ onSelect }
 

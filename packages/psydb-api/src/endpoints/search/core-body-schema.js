@@ -4,6 +4,7 @@ var {
     Id,
     IdentifierString,
     JsonPointer,
+    DefaultBool
 } = require('@mpieva/psydb-schema-fields');
 
 var CoreBodySchema = () => ({
@@ -11,12 +12,15 @@ var CoreBodySchema = () => ({
     properties: {
         collectionName: IdentifierString(),
         recordType: IdentifierString(), // FIXME: enum
+        searchOptions: ExactObject({
+            properties: {
+                enableResearchGroupFilter: DefaultBool({ default: true })
+            },
+            required: []
+        }),
         target: {
             type: 'string',
-            enum: [
-                'table',
-                'optionlist',
-            ]
+            enum: [ 'table', 'optionlist' ]
         }
     },
     required: [

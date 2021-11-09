@@ -19,12 +19,18 @@ const CustomRecordTypeKey = ({
     ...other
 }) => {
     var { systemProps } = schema;
-    var { collection, constraints } = systemProps;
+    var {
+        collection,
+        constraints,
+        ...otherSystemProps
+    } = systemProps;
 
     var { relatedCustomRecordTypeLabels } = formContext;
     var crt;
     if (relatedCustomRecordTypeLabels) {
-        crt = relatedCustomRecordTypeLabels[collection][typeKey];
+        if (relatedCustomRecordTypeLabels[collection]) {
+            crt = relatedCustomRecordTypeLabels[collection][typeKey];
+        }
     }
 
     if (typeKey && !crt) {
@@ -42,6 +48,7 @@ const CustomRecordTypeKey = ({
     return (
         <RecordPicker { ...({
             collection: 'customRecordType',
+            searchOptions: otherSystemProps,
             constraints: {
                 '/collection': collection,
                 ...constraints,

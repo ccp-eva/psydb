@@ -74,6 +74,8 @@ agent.searchRecords = ({
     target,
     collection,
     recordType,
+    searchOptions,
+
     offset,
     limit,
     constraints,
@@ -85,6 +87,8 @@ agent.searchRecords = ({
             target,
             collectionName: collection,
             recordType,
+            searchOptions,
+
             offset: offset || 0,
             limit: limit || 50,
             filters: filters || {},

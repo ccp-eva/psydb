@@ -113,6 +113,7 @@ var search = async (context, next) => {
     var {
         collectionName,
         recordType,
+        searchOptions = {},
         filters,
         constraints,
         offset,
@@ -143,6 +144,10 @@ var search = async (context, next) => {
         );
     }
 
+    var {
+        enableResearchGroupFilter = true,
+    } = searchOptions;
+
     var records = await fetchRecordsByFilter({
         db,
         permissions,
@@ -150,6 +155,7 @@ var search = async (context, next) => {
         recordType,
         hasSubChannels,
 
+        enableResearchGroupFilter,
         constraints,
         queryFields,
 

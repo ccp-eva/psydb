@@ -1,12 +1,19 @@
 'use strict';
 var IdentifierString = require('./identifier-string');
 
-var CustomRecordTypeKey = ({ collection, ...additionalKeywords }) => {
+var CustomRecordTypeKey = (keywords) => {
+    var {
+        collection,
+        enableResearchGroupFilter = true,
+        ...extraKeywords
+    } = keywords;
+
     return ({
-        ...IdentifierString(additionalKeywords),
+        ...IdentifierString(extraKeywords),
         systemType: 'CustomRecordTypeKey',
         systemProps: {
             collection,
+            enableResearchGroupFilter,
         },
     })
 }

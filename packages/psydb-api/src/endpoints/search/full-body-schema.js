@@ -7,6 +7,7 @@ var {
     Id,
     IdentifierString,
     JsonPointer,
+    DefaultBool,
 } = psydbSchemaFields;
 
 var metadata = require('@mpieva/psydb-common-lib/src/field-type-metadata');
@@ -56,6 +57,12 @@ var FullBodySchema = ({
         properties: {
             collectionName: IdentifierString(),
             recordType: IdentifierString(), // FIXME: enum
+            searchOptions: ExactObject({
+                properties: {
+                    enableResearchGroupFilter: DefaultBool({ default: true })
+                },
+                required: []
+            }),
             target: {
                 type: 'string',
                 enum: [
