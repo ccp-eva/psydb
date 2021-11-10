@@ -24,6 +24,7 @@ export * from './option-select-indicator';
 export * from './simple-list';
 export * from './outer-setting-panel';
 export * from './inner-setting-panel';
+export * from './big-nav-item';
 
 export * as PageWrappers from './page-wrappers';
 export * as FormHelpers from './form';

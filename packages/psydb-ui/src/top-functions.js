@@ -1,7 +1,53 @@
 import React from 'react';
-import { useModalReducer } from '@mpieva/psydb-ui-hooks';
-import { Icons } from '@mpieva/psydb-ui-layout';
+import { useHistory } from 'react-router';
+import { useModalReducer, useFetch, useSend } from '@mpieva/psydb-ui-hooks';
+
+import {
+    LoadingIndicator,
+    Icons,
+    WithDefaultModal,
+    BigNavItem,
+} from '@mpieva/psydb-ui-layout';
+
 import { AccountFunctionDropdown } from '@mpieva/psydb-ui-lib';
+
+const SwitchResearchGroupModal = WithDefaultModal({
+    title: 'Forschungsgruppe wechseln',
+    Body: (ps) => {
+        var { onHide } = ps;
+        var history = useHistory();
+
+        var [ didFetch, fetched ] = useFetch((agent) => (
+            agent.getAxios().get('/api/self/research-groups')
+        ), []);
+
+        var send = useSend((researchGroupId) => ({
+            type: 'personnel/set-forced-research-group',
+            payload: { researchGroupId }
+        }), {
+            onSuccessfulUpdate: [
+                () => history.push('/'),
+                onHide,
+            ]
+        })
+
+        if (!didFetch) {
+            return <LoadingIndicator size='lg' />
+        }
+        return (
+            <div>
+                { fetched.data.records.map(it => (
+                    <BigNavItem
+                        key={ it._id }
+                        onClick={ () => send.exec(it._id)}
+                    >
+                        { it._recordLabel }
+                    </BigNavItem>
+                ))}
+            </div>
+        )
+    }
+})
 
 const TopFunctions = (ps) => {
     var {
@@ -22,10 +68,12 @@ const TopFunctions = (ps) => {
                 overflowX: 'clip'
             }}
         >
+            <SwitchResearchGroupModal { ...switchRGModal.passthrough } />
             <AccountFunctionDropdown { ...({
                 onClickForceResearchGroup: switchRGModal.handleShow,
                 //onClickChangePassword: changePasswordModal.handleShow
             })} />
+
             <a
                 className='btn btn-link p-0'
                 onClick={ onSignOut }
