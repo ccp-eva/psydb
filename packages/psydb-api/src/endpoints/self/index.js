@@ -10,7 +10,7 @@ var self = async (context, next) => {
     }
 
     context.body = {
-        data: self,
+        data: { record: self.record },
     };
 
     await next();

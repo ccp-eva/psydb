@@ -17,10 +17,11 @@ var createSelfAuthMiddleware = ({
         query: {
             _id: session.personnelId
         },
-        projection: {
+        // see FIXME in self
+        /*projection: {
             'scientific.state': true,
             'gdpr.state': true
-        }
+        }*/
     });
 
     var { record, researchGroupIds, hasRootAccess } = self;
@@ -34,6 +35,10 @@ var createSelfAuthMiddleware = ({
         debug('user has no researchgroup and is not root user');
         throw new Error(401); // TODO: 401
     }
+
+    // TODO: we need to store passwords in another collection
+    // see Self() for more on this
+    delete self.record.gdpr.state.internals.passwordHash;
 
     context.self = self;
     await next();

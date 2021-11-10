@@ -38,11 +38,19 @@ var PersonnelScientificState = () => {
             },
 
             systemPermissions: systemPermissionsSchema,
+            internals: ExactObject({
+                properties: {
+                    forcedResearchGroup: ForeignId({
+                        collection: 'researchGroup'
+                    })
+                }
+            }),
         },
         required: [
             'hasRootAccess',
             'researchGroupSettings',
             'systemPermissions',
+            'internals',
         ],
     })
 

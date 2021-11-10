@@ -5,8 +5,11 @@ var keyBy = require('@mpieva/psydb-common-lib/src/key-by');
 var Self = async ({
     db,
     query,
-    projection
+    //projection // see FIXME
 }) => {
+    // FIXME
+    var projection = undefined;
+
     var self = {
         record: undefined,
         hasRootAccess: false,
@@ -15,9 +18,15 @@ var Self = async ({
     }
 
     var requiredProjection = {
-        'scientific.state.hasRootAccess': true,
-        'scientific.state.researchGroupSettings': true,
+        // FIXME: i want a minimal projection
+        // but it will throw path collision when we want more
+        // than the minimum
+        //'scientific.state.hasRootAccess': true,
+        //'scientific.state.researchGroupSettings': true,
+        'scientific.state': true,
+        'gdpr.state': true
     };
+
 
     projection = (
         projection
@@ -29,15 +38,22 @@ var Self = async ({
     );
 
     var personnelRecords = await (
-        db.collection('personnel').find({
-            $or: [
-                { 'scientific.state.hasRootAccess': true },
-                { 'scientific.state.researchGroupSettings.0': {
-                    $exists: true
-                }},
-            ],
-            ...query
-        }, projection)
+        db.collection('personnel').aggregate([
+            { $match: {
+                $or: [
+                    { 'scientific.state.hasRootAccess': true },
+                    { 'scientific.state.researchGroupSettings.0': {
+                        $exists: true
+                    }},
+                ],
+                ...query
+            }},
+            // TODO: i think its better to have a seperate password
+            // collection to avoid always having to project here
+            // ane in other places
+            //{ $project: { 'gdpr.state.internals.passwordHash': false }},
+            { $project: projection }
+        ])
         .toArray()
     );
 
