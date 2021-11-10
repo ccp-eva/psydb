@@ -1,6 +1,8 @@
 'use strict';
 var debug = require('debug')('psydb:api:lib:permissions');
 
+var { compareIds } = require('@mpieva/psydb-core-utils');
+
 var checkAllPermissionAcls = require('./check-all-permission-acls'),
     endpointAcls = require('./endpoint-acls'),
     messageTypeAcls = require('./message-type-acls');
@@ -26,18 +28,36 @@ var mergeFlagsMax = (union, systemRole) => {
 var Permissions = ({
     hasRootAccess,
     rolesByResearchGroupId,
-    researchGroupIds,
+    allowedResearchGroupIds,
+    forcedResearchGroupId,
 }) => {
     var permissions = {
         hasRootAccess,
-        allowedResearchGroupIds: researchGroupIds,
+        allowedResearchGroupIds,
+        forcedResearchGroupId: undefined,
+        projectedResearchGroupIds: allowedResearchGroupIds,
         byResearchGroupId: {},
     };
+
+    if (forcedResearchGroupId) {
+        var isForcedRGAllowed = !!allowedResearchGroupIds.find(allowed => (
+            compareIds(allowed, forcedResearchGroupId)
+        ))
+        if (isForcedRGAllowed) {
+            permissions.forcedResearchGroupId = forcedResearchGroupId;
+        }
+
+        if (permissions.forcedResearchGroupId) {
+            permissions.projectedResearchGroupIds = [
+                permissions.forcedResearchGroupId
+            ];
+        }
+    }
 
     // merged flag is true if any systemrole sets it to true
     var unionMax = {};
 
-    for (var gid of researchGroupIds) {
+    for (var gid of allowedResearchGroupIds) {
         var systemRole = rolesByResearchGroupId[gid]
         permissions.byResearchGroupId[gid] = ResearchGroupPermissions({
             systemRole, 

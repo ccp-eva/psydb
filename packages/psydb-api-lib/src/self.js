@@ -68,9 +68,13 @@ var Self = async ({
         var {
             hasRootAccess,
             researchGroupSettings,
+            internals = {}
         } = self.record.scientific.state;
 
+        var { forcedResearchGroupId } = internals;
+
         self.hasRootAccess = hasRootAccess;
+        self.forcedResearchGroupId = forcedResearchGroupId;
         
         var roles = await (
             db.collection('systemRole')

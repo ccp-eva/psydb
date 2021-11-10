@@ -213,6 +213,14 @@ var createRouting = ({
         endpoints.special.inviteConfirmationList
     );
 
+    router.post('/reception-calendar',
+        withSelfAuth(),
+        withPermissions(),
+        withEndpointProtection({ endpoint: 'reception-calendar' }),
+        withKoaBody(),
+        endpoints.special.receptionCalendar
+    );
+
     router.post('/experiment-calendar',
         withSelfAuth(),
         withPermissions(),

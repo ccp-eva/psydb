@@ -2,6 +2,7 @@
 module.exports = {
     compareIds: require('./compare-ids'),
 
+    Ajv: require('./ajv'),
     ApiError: require('./api-error'),
     ResponseBody: require('./response-body'),
     
