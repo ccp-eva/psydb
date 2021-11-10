@@ -10,13 +10,13 @@ import GenericRecordFormContainer from '@mpieva/psydb-ui-lib/src/generic-record-
 
 const PersonnelTypeView = withRecordTypeView({
     RecordEditor: (ps) => {
-        console.log({ ps });
+        //console.log({ ps });
 
         var setPasswordModal = useModalReducer();
         return (
             <>
                 <GenericRecordFormContainer { ...ps } />
-                <div className='mt-4 mb-4 bg-light border p-3'>
+                { /*<div className='mt-4 mb-4 bg-light border p-3'>
                     <div>
                         <button
                             className='btn btn-link p-0'
@@ -25,7 +25,7 @@ const PersonnelTypeView = withRecordTypeView({
                             Passwort ändern
                         </button>
                     </div>
-                </div>
+                </div> */}
             </>
         )
     }

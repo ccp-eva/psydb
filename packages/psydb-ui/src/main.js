@@ -21,6 +21,8 @@ import ErrorBoundary from './error-boundary';
 import ServerTimezoneContext from '@mpieva/psydb-ui-lib/src/server-timezone-context';
 
 import SideNav from './side-nav';
+import TopFunctions from './top-functions';
+
 import CustomRecordTypes from './custom-record-types';
 import Studies from './studies';
 import Locations from './locations';
@@ -103,18 +105,7 @@ const LayoutedRoutes = ({ onSignOut }) => {
                     //width: '1076px' // => min size: 1366
                     width: '1040px' // => min size: 1280
                 }}>
-                    <div className='flex-core flex-row-reverse pt-2 pb-1'>
-                        <div className='flex-core'>
-                            <a
-                                onClick={ onSignOut }
-                            >
-                                <Icons.DoorClosedFill className='align-middle' />
-                                <u className='d-inline-block ml-2 align-middle'>
-                                    Abmelden
-                                </u>
-                            </a>
-                        </div>
-                    </div>
+                    <TopFunctions onSignOut={ onSignOut } />
                     <div className='pl-3'>
                         <Routing />
                     </div>
