@@ -1,8 +1,11 @@
 'use strict';
 module.exports = {
-    ApiError: require('./api-error'),
     compareIds: require('./compare-ids'),
+
+    ApiError: require('./api-error'),
+    ResponseBody: require('./response-body'),
     
+    createRecordLabel: require('./create-record-label'),
     createSchemaForRecordType: require('./create-schema-for-record-type'),
 
     fetchOneCustomRecordType: require('./fetch-one-custom-record-type'),

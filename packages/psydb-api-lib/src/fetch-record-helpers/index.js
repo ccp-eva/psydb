@@ -1,4 +1,6 @@
 module.exports = {
+    MatchAlwaysStage: require('./match-always-stage'),
+
     SystemPermissionStages: require('./system-permission-stages'),
     ProjectDisplayFieldsStage: require('./project-display-fields-stage'),
     MatchIntervalAroundStage: require('./match-interval-around-stage'),
