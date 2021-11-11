@@ -1,20 +1,29 @@
 'use strict';
 
 var {
+    MatchAlwaysStage,
+    MatchIntervalAroundStage,
     StripEventsStage,
     SystemPermissionStages,
 } = require('@mpieva/psydb-api-lib/src/fetch-record-helpers');
 
 var fetchRedactedStudies = async (context, options) => {
     var { db, permissions } = context;
+    var { hasRootAccess, projectedResearchGroupIds } = permissions;
+    var { interval } = options;
 
     var records = await (
         db.collection('study').aggregate([
-            //...SystemPermissionStages({ permissions }),
+            ...SystemPermissionStages({ permissions }),
+            MatchIntervalAroundStage({
+                ...interval,
+                recordIntervalPath: 'state.runningPeriod',
+                recordIntervalEndCanBeNull: true
+            }),
+
             { $project: {
                 _id: true,
                 'state.researchGroupIds': true,
-                'state.scientistIds': true,
             }},
             StripEventsStage(),
         ]).toArray()

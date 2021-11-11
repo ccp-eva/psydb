@@ -4,7 +4,8 @@ var enums = require('@mpieva/psydb-schema-enums');
 
 var {
     keyBy,
-    groupBy
+    groupBy,
+    unwind,
 } = require('@mpieva/psydb-core-utils');
 
 var {
@@ -25,6 +26,7 @@ var {
 
 var RequestBodySchema = require('./request-body-schema');
 var fetchRedactedStudies = require('./fetch-redacted-studies');
+var fetchResearchGroups = require('./fetch-research-groups');
 var fetchPersonnel = require('./fetch-personnel');
 var fetchExperiments = require('./fetch-experiments');
 var fetchOpsTeams = require('./fetch-ops-teams');
@@ -32,8 +34,9 @@ var fetchSubjectsOfType = require('./fetch-subjects-of-type');
 
 var receptionCalendar = async (context, next) => {
     var { db, permissions, request } = context;
+    var { hasRootAccess, projectedResearchGroupIds } = permissions;
     
-    if (!permissions.hasRootAccess) {
+    if (!hasRootAccess) {
         throw new ApiError(403)
     }
 
@@ -44,17 +47,13 @@ var receptionCalendar = async (context, next) => {
 
     var { interval } = request.body;
 
-    var studies = await fetchRedactedStudies(context);
-    
-    // didnt need that
-    /*var scientists = await fetchPersonnel(context, {
+    // fetchData(context, { interval });
+    var studies = await fetchRedactedStudies(context, { interval });
+
+    var researchGroups = await fetchResearchGroups(context, {
         onlyLabels: true,
-        personnelIds: studies.reduce((acc, it) => ([
-            ...acc,
-            ...it.state.scientistIds
-        ]), []),
-    })*/
-    
+    })
+
     var experiments = await fetchExperiments(context, {
         ...interval,
         studyIds: studies.map(it => it._id)
@@ -66,59 +65,112 @@ var receptionCalendar = async (context, next) => {
         ))
     });
 
-    var experimentSubjectData = omitUnparticipatedFromExperiment({
-        experimentRecords: experiments.records
+    // createAugmentedExperiments()
+    var studiesByResearchGroup = groupBy({
+        items: unwind({
+            items: studies,
+            byPath: 'state.researchGroupIds'
+        }),
+        byPointer: '/state/researchGroupIds',
     });
 
-    var experimentSubjectDataByType = groupBy({
-        items: experimentSubjectData,
-        byProp: 'subjectType',
+    var studiesById = keyBy({
+        items: studies,
+        byProp: '_id'
     });
 
-    /*var fetchedSubjectData = [];
-    for (var key of Object.keys(experimentSubjectDataByType)) {
-        var group = experimentSubjectDataByType[key];
+    var opsTeamsById = keyBy({
+        items: opsTeams.records,
+        byProp: '_id'
+    });
 
-        var subjectsOfType = await fetchSubjectsOfType(context, {
-            subjectTypeKey: key,
-            subjectIds: group.map(it => it.subjectId),
+    var augmentedExperimentRecords = [];
+    for (var exp of experiments.records) {
+        var { _id, state } = exp;
+        var {
+            interval,
+            studyId,
+            experimentOperatorTeamId
+        } = state;
 
-            fetchRelated: false,
+
+        var study = studiesById[studyId];
+        var { researchGroupIds } = study.state;
+
+        var opsTeam = opsTeamsById[experimentOperatorTeamId];
+        var { personnelIds } = opsTeam.state;
+
+        var subjectData = omitUnparticipatedFromExperiment({
+            experimentRecord: exp
         });
 
-        fetchedSubjectData.push({
-            subjectTypeKey: key,
-            ...subjectsOfType
-        });
+        var augmentedSubjectData = subjectData.map(it => ({
+            typeKey: it.subjectType,
+            typeLabel: (
+                experiments
+                .related.relatedCustomRecordTypeLabels
+                .subject[it.subjectType].state.label
+            ),
+            recordLabel: (
+                experiments
+                .related.relatedRecordLabels
+                .subject[it.subjectId]._recordLabel
+            ),
+        }));
+
+        var subjectGroups = (
+            Object.values(groupBy({
+                items: augmentedSubjectData,
+                byProp: 'typeKey'
+            }))
+            .map(group => {
+                var first = group[0];
+                return {
+                    typeKey: first.typeKey,
+                    typeLabel: first.typeLabel,
+                    recordLabels: group.map(it => it.recordLabel)
+                }
+            })
+        )
+
+        augmentedExperimentRecords.push({
+            _id,
+            researchGroupIds,
+            interval,
+            subjectGroups,
+            personnelLabels: personnelIds.map(it => (
+                opsTeams
+                .related.relatedRecordLabels
+                .personnel[it]._recordLabel
+            )),
+        })
     }
 
-    console.dir({ fetchedSubjectData }, { depth: null });*/
-
-    /*var subjectsByTypeAndId = keyBy({
-        items: subjects,
-        creakeKey: (it) => `${it.type}_${it._id}`
-    });*/
-
-    
-    //console.log(subjectIds);
-
-    context.body = ResponseBody({
-        data: {
-            experiments,
-            studiesById: keyBy({ items: studies, byProp: '_id' }),
-            //scientistsById: keyBy({ items: scientists.records, byProp: '_id' }),
-            opsTeams,
-
-            /*experimentRecords,
-            experimentOperatorTeamRecords,
-            experimentRelated,
-            subjectRecordsById,
-            subjectRelated,
-            subjectDisplayFieldData: displayFieldData,
-            phoneListField,*/
-        },
+    var researchGroupsById = keyBy({
+        items: researchGroups.records,
+        byProp: '_id',
     });
 
+    // createResearchGroupBuckets()
+    var byResearchGroups = groupBy({
+        items: unwind({
+            items: augmentedExperimentRecords,
+            byPath: 'researchGroupIds',
+        }),
+        byProp: 'researchGroupIds'
+    });
+
+    var data = (
+        researchGroups.records
+        .map(it => ({
+            _id: it._id,
+            label: it._recordLabel,
+            experiments: byResearchGroups[it._id] || []
+        }))
+        .sort((a, b) => ( a.label < b.label ? 1 : 0))
+    )
+
+    context.body = ResponseBody({ data });
     await next();
 }
 
