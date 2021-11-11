@@ -14,8 +14,6 @@ var PersonnelGroup = MessageHandlerGroup([
         collection: 'personnel',
         op: 'patch',
     }),
-
-    require('./set-forced-research-group'),
 ]);
 
 module.exports = PersonnelGroup;

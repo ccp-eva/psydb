@@ -1,6 +1,8 @@
 'use strict';
 
 var allHandlers = [
+    require('./handlers/self'),
+
     require('./handlers/helper-set-items'),
     require('./handlers/helper-sets'),
     require('./handlers/custom-record-types'),

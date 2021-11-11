@@ -8,7 +8,7 @@ var { SimpleHandler, PutMaker } = require('../../../lib/');
 var createSchema = require('./schema');
 
 var handler = SimpleHandler({
-    messageType: 'personnel/set-forced-research-group',
+    messageType: 'self/set-forced-research-group',
     createSchema,
 });
 

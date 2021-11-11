@@ -11,7 +11,10 @@ var createSchema = ({ messageType } = {}) => {
         type: messageType,
         payload: ExactObject({
             properties: {
-                researchGroupId: ForeignId({ collection: 'researchGroup' }),
+                researchGroupId: ForeignId({
+                    collection: 'researchGroup',
+                    isNullable: true,
+                }),
             },
             required: [
                 'researchGroupId'

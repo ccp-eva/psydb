@@ -22,7 +22,7 @@ const SwitchResearchGroupModal = WithDefaultModal({
         ), []);
 
         var send = useSend((researchGroupId) => ({
-            type: 'personnel/set-forced-research-group',
+            type: 'self/set-forced-research-group',
             payload: { researchGroupId }
         }), {
             onSuccessfulUpdate: [
@@ -36,6 +36,9 @@ const SwitchResearchGroupModal = WithDefaultModal({
         }
         return (
             <div>
+                <BigNavItem onClick={ () => send.exec(null) }>
+                    Alle Verfügbaren
+                </BigNavItem>
                 { fetched.data.records.map(it => (
                     <BigNavItem
                         key={ it._id }
