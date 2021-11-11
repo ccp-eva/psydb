@@ -5,8 +5,13 @@ module.exports = {
     Ajv: require('./ajv'),
     ApiError: require('./api-error'),
     ResponseBody: require('./response-body'),
+
+    validateOrThrow: require('./validate-or-throw'),
     
     createRecordLabel: require('./create-record-label'),
+    createRecordLabelFromCRT: require('./create-record-label-from-crt'),
+    applyRecordLabels: require('./apply-record-labels'),
+
     createSchemaForRecordType: require('./create-schema-for-record-type'),
 
     fetchOneCustomRecordType: require('./fetch-one-custom-record-type'),

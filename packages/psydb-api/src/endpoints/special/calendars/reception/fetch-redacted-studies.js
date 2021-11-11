@@ -5,21 +5,25 @@ var {
     SystemPermissionStages,
 } = require('@mpieva/psydb-api-lib/src/fetch-record-helpers');
 
-var fetchStudies = async (context) => {
+var fetchRedactedStudies = async (context, options) => {
     var { db, permissions } = context;
 
-    var studies = await (
+    var records = await (
         db.collection('study').aggregate([
             //...SystemPermissionStages({ permissions }),
             { $project: {
                 _id: true,
-                'state.researchGroupIds': true
+                'state.researchGroupIds': true,
+                'state.scientistIds': true,
             }},
             StripEventsStage(),
         ]).toArray()
     );
 
-    return studies;
+    // NOTE: cant fetch related here since
+    // they might be of different types
+
+    return records;
 }
 
-module.exports = fetchStudies;
+module.exports = fetchRedactedStudies;

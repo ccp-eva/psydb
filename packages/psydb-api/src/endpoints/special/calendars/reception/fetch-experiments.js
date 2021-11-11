@@ -1,12 +1,18 @@
+'use strict';
+var {
+    fetchRelatedLabelsForMany,
+} = require('@mpieva/psydb-api-lib');
+
 var {
     MatchIntervalOverlapStage,
     StripEventsStage,
 } = require('@mpieva/psydb-api-lib/src/fetch-record-helpers');
 
-var fetchExperiments = (context) => {
+var fetchExperiments = async (context, options) => {
     var { db } = context;
+    var { studyIds, start, end } = options;
 
-    var experimentRecords = await (
+    var records = await (
         db.collection('experiment').aggregate([
             MatchIntervalOverlapStage({ start, end }),
             { $match: {
@@ -19,7 +25,16 @@ var fetchExperiments = (context) => {
         ]).toArray()
     );
     
-    return experimentRecords;
+    var related = await fetchRelatedLabelsForMany({
+        db,
+        collectionName: 'experiment',
+        records,
+    })
+
+    return {
+        records,
+        related,
+    }
 }
 
 module.exports = fetchExperiments;

@@ -7,6 +7,7 @@ module.exports = {
     MatchIntervalOverlapStage: require('./match-interval-overlap-stage'),
     
     StripEventsStage: require('./strip-events-stage'),
+    StripInternalsStage: require('./strip-internals-stage'),
     AddLastKnownEventIdStage: require('./add-last-known-event-id-stage'),
 
     AddSubjectTestabilityFieldsStage: require('./add-subject-testability-fields-stage'),

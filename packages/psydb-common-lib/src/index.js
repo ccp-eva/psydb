@@ -9,6 +9,9 @@ module.exports = {
     gatherLocationsFromLabProcedureSettings: (
         require('./gather-locations-from-lab-procedure-settings')
     ),
+    omitUnparticipatedFromExperiment: (
+        require('./omit-unparticipated-from-experiment')
+    ),
 
     unique: require('./unique'),
     groupBy: require('./group-by'),

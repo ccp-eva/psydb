@@ -3,9 +3,17 @@ var debug = require('debug')('psydb:api:endpoints:calendars:reception');
 var enums = require('@mpieva/psydb-schema-enums');
 
 var {
-    Ajv,
-    ApiError,
-    ResponseBody
+    keyBy,
+    groupBy
+} = require('@mpieva/psydb-core-utils');
+
+var {
+    omitUnparticipatedFromExperiment
+} = require('@mpieva/psydb-common-lib');
+
+var {
+    ResponseBody,
+    validateOrThrow,
 } = require('@mpieva/psydb-api-lib');
 
 var {
@@ -15,129 +23,99 @@ var {
     SystemPermissionStages,
 } = require('@mpieva/psydb-api-lib/src/fetch-record-helpers');
 
-var receptionCalendar = async (context, next) => {
-    var { db, permissions } = context;
+var RequestBodySchema = require('./request-body-schema');
+var fetchRedactedStudies = require('./fetch-redacted-studies');
+var fetchPersonnel = require('./fetch-personnel');
+var fetchExperiments = require('./fetch-experiments');
+var fetchOpsTeams = require('./fetch-ops-teams');
+var fetchSubjectsOfType = require('./fetch-subjects-of-type');
 
+var receptionCalendar = async (context, next) => {
+    var { db, permissions, request } = context;
+    
     if (!permissions.hasRootAccess) {
         throw new ApiError(403)
     }
 
-    var redactedStudyRecords = await fetchStudies({ permissions });
-    var experimentRecords = await fetchExperiments({
-        studyIds: redactedStudyRecords.map(it => it._id)
+    validateOrThrow({
+        schema: RequestBodySchema(),
+        payload: request.body
     });
 
+    var { interval } = request.body;
+
+    var studies = await fetchRedactedStudies(context);
     
-    var subjectIds = [];
-    for (var it of experimentRecords) {
-        subjectIds = [
-            ...subjectIds,
-            ...(
-                it.state.subjectData
-                .filter(it => (
-                    !enums.unparticipationStatus.keys.includes(
-                        it.participationStatus
-                    )
-                ))
-                .map(it => it.subjectId)
-            )
-        ]
+    // didnt need that
+    /*var scientists = await fetchPersonnel(context, {
+        onlyLabels: true,
+        personnelIds: studies.reduce((acc, it) => ([
+            ...acc,
+            ...it.state.scientistIds
+        ]), []),
+    })*/
+    
+    var experiments = await fetchExperiments(context, {
+        ...interval,
+        studyIds: studies.map(it => it._id)
+    });
+
+    var opsTeams = await fetchOpsTeams(context, {
+        opsTeamIds: experiments.records.map(it => (
+            it.state.experimentOperatorTeamId
+        ))
+    });
+
+    var experimentSubjectData = omitUnparticipatedFromExperiment({
+        experimentRecords: experiments.records
+    });
+
+    var experimentSubjectDataByType = groupBy({
+        items: experimentSubjectData,
+        byProp: 'subjectType',
+    });
+
+    /*var fetchedSubjectData = [];
+    for (var key of Object.keys(experimentSubjectDataByType)) {
+        var group = experimentSubjectDataByType[key];
+
+        var subjectsOfType = await fetchSubjectsOfType(context, {
+            subjectTypeKey: key,
+            subjectIds: group.map(it => it.subjectId),
+
+            fetchRelated: false,
+        });
+
+        fetchedSubjectData.push({
+            subjectTypeKey: key,
+            ...subjectsOfType
+        });
     }
 
+    console.dir({ fetchedSubjectData }, { depth: null });*/
+
+    /*var subjectsByTypeAndId = keyBy({
+        items: subjects,
+        creakeKey: (it) => `${it.type}_${it._id}`
+    });*/
+
+    
     //console.log(subjectIds);
-
-    var subjectRecordTypeData = await fetchOneCustomRecordType({
-        db,
-        collection: 'subject',
-        type: subjectRecordType,
-    });
-
-    var {
-        displayFields,
-        availableDisplayFieldData,
-    } = await gatherDisplayFieldsForRecordType({
-        prefetched: subjectRecordTypeData,
-    });
-
-    // TODO: theese fields needs a flag of some kind so that they are allowed
-    // to be shown here
-    // find the first PhoneList field
-    var phoneListField = (
-        subjectRecordTypeData.state.settings.subChannelFields.gdpr
-        .find(field => {
-            return (field.type === 'PhoneList');
-        })
-    );
-
-    var subjectRecords = await (
-        db.collection('subject').aggregate([
-            { $match: {
-                _id: { $in: subjectIds }
-            }},
-            StripEventsStage({ subChannels: ['gdpr', 'scientific' ]}),
-
-            ProjectDisplayFieldsStage({
-                displayFields,
-                additionalProjection: {
-                    type: true,
-                }
-            }),
-        ]).toArray()
-    );
-
-    var subjectRelated = await fetchRelatedLabelsForMany({
-        db,
-        collectionName: 'subject',
-        recordType: subjectRecordType,
-        records: subjectRecords
-    })
-
-    var experimentRelated = await fetchRelatedLabelsForMany({
-        db,
-        collectionName: 'experiment',
-        records: experimentRecords
-    })
-
-    //console.dir(subjectRelated, { depth: null });
-
-    //console.log(experimentRecords);
-
-    var experimentOperatorTeamRecords = await (
-        db.collection('experimentOperatorTeam').aggregate([
-            { $match: {
-                _id: { $in: experimentRecords.map(it => (
-                    it.state.experimentOperatorTeamId
-                ))},
-            }},
-            StripEventsStage(),
-        ]).toArray()
-    );
-
-    var subjectRecordsById = keyBy({
-        items: subjectRecords,
-        byProp: '_id'
-    })
-
-    var availableDisplayFieldDataByPointer = keyBy({
-        items: availableDisplayFieldData,
-        byProp: 'dataPointer'
-    });
-
-    var displayFieldData = displayFields.map(it => ({
-        ...availableDisplayFieldDataByPointer[it.dataPointer],
-        dataPointer: it.dataPointer,
-    }))
-
 
     context.body = ResponseBody({
         data: {
-            experimentRecords,
+            experiments,
+            studiesById: keyBy({ items: studies, byProp: '_id' }),
+            //scientistsById: keyBy({ items: scientists.records, byProp: '_id' }),
+            opsTeams,
+
+            /*experimentRecords,
             experimentOperatorTeamRecords,
             experimentRelated,
             subjectRecordsById,
             subjectRelated,
             subjectDisplayFieldData: displayFieldData,
-            phoneListField,
+            phoneListField,*/
         },
     });
 

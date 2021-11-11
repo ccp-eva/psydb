@@ -4,7 +4,7 @@ var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
 var {
     ResponseBody,
-    createRecordLabel,
+    applyRecordLabels
 } = require('@mpieva/psydb-api-lib');
     
 var {
@@ -33,15 +33,17 @@ var researchGroups = async (context, next) => {
         ]).toArray()
     )
 
+    applyRecordLabels({
+        records,
+        definition: (
+            allSchemaCreators.researchGroup.recordLabelDefinition
+        )
+    });
+
     records = records.map(it => ({
         _id: it._id,
-        _recordLabel: createRecordLabel({
-            record: it,
-            definition: (
-                allSchemaCreators.researchGroup.recordLabelDefinition
-            )
-        })
-    }))
+        _recordLabel: it._recordLabel
+    }));
 
     context.body = ResponseBody({
         data: { records }
