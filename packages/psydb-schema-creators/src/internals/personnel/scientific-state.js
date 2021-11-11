@@ -50,7 +50,6 @@ var PersonnelScientificState = () => {
             'hasRootAccess',
             'researchGroupSettings',
             'systemPermissions',
-            'internals',
         ],
     })
 

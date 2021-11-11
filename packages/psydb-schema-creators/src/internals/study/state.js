@@ -61,7 +61,7 @@ var StudyState = (ps = {}) => {
             shorthand: SaneString({
                 title: 'Kürzel',
             }),
-            scientistId: ForeignId({
+            scientistIds: ForeignIdList({
                 collection: 'personnel',
             }),
 

@@ -223,11 +223,11 @@ module.exports = {
                 systemType: 'SaneString',
                 dataPointer: '/state/name',
                 displayName: 'Studienname',
-            }
+            },
             {
-                key: '_scientistId',
-                systemType: 'SaneString',
-                dataPointer: '/state/scientistId',
+                key: '_scientistIds',
+                systemType: 'ForeignIdList',
+                dataPointer: '/state/scientistIds',
                 displayName: 'Wissenschaftler',
             }
         ]
