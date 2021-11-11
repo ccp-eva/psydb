@@ -224,11 +224,20 @@ module.exports = {
                 dataPointer: '/state/name',
                 displayName: 'Studienname',
             }
+            {
+                key: '_scientistId',
+                systemType: 'SaneString',
+                dataPointer: '/state/scientistId',
+                displayName: 'Wissenschaftler',
+            }
         ]
         // TODO: more as a note - maybe we should
         // rename "internal" to private
         // since theese are essentially fields we
         // dont want to search in or manipulate directly
+        // NOTE: but we need to be able to read them
+        // and we want to track changes
+        // maybe 'internal' subchannel?
     },
     subject: {
         collection: 'subject',

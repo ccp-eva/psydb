@@ -61,6 +61,9 @@ var StudyState = (ps = {}) => {
             shorthand: SaneString({
                 title: 'Kürzel',
             }),
+            scientistId: ForeignId({
+                collection: 'personnel',
+            }),
 
             runningPeriod: DateOnlyServerSideInterval({
                 title: 'Laufzeit',
