@@ -18,6 +18,7 @@ import agent from '@mpieva/psydb-ui-request-agents';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
 import RecordTypeNav from '@mpieva/psydb-ui-lib/src/record-type-nav';
 
+import ReceptionCalendar from './reception';
 import InhouseExperimentsRouting from './inhouse-experiments';
 import AwayTeamExperimentsRouting from './away-team-experiments';
 import OnlineVideoCallExperimentsRouting from './online-video-call-experiments';
@@ -73,6 +74,14 @@ const Calendars = () => {
             <Switch>
                 <Route exact path={`${path}`}>
                     <CalendarNav />
+                </Route>
+                <Route path={ `${path}/reception` }>
+                    <ReceptionCalendar />
+                </Route>
+                <Route path={ `${path}/inhouse` }>
+                    <InhouseExperimentsRouting
+                        subjectRecordTypes={ subjectTypes }
+                    />
                 </Route>
                 <Route path={ `${path}/inhouse` }>
                     <InhouseExperimentsRouting
