@@ -43,7 +43,7 @@ var Permissions = ({
         var isForcedRGAllowed = !!allowedResearchGroupIds.find(allowed => (
             compareIds(allowed, forcedResearchGroupId)
         ))
-        if (isForcedRGAllowed) {
+        if (isForcedRGAllowed || hasRootAccess) {
             permissions.forcedResearchGroupId = forcedResearchGroupId;
         }
 

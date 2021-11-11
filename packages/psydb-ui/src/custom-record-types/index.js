@@ -47,6 +47,9 @@ const CustomRecordTypes = () => {
                             linkBaseUrl={ url }
                             collection='customRecordType'
                             enableNew={ true }
+                            searchOptions={{
+                                enableResearchGroupFilter: false
+                            }}
                             defaultSort={{
                                 path: 'state.label',
                                 direction: 'asc',

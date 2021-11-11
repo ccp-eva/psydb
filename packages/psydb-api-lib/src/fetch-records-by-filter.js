@@ -46,8 +46,8 @@ var fetchRecordByFilter = async ({
     var stages = [];
     
     if (collectionName === 'customRecordType') {
-        if (enableResearchGroupFilter || true) {
-            var { allowedResearchGroupIds } = permissions;
+        if (enableResearchGroupFilter) {
+            var { projectedResearchGroupIds } = permissions;
 
             //var childlabId = 'VVuQ9Z4dp6o5rmhbhMwvQ';
             //allowedResearchGroupIds = [ childlabId ];
@@ -55,7 +55,7 @@ var fetchRecordByFilter = async ({
             var researchGroupRecords = await (
                 db.collection('researchGroup').aggregate([
                     { $match: {
-                        _id: { $in: allowedResearchGroupIds },
+                        _id: { $in: projectedResearchGroupIds },
                     }},
                     StripEventsStage(),
                 ]).toArray()
