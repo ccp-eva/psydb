@@ -18,6 +18,7 @@ var fetchRelatedLabelsForMany = require('@mpieva/psydb-api-lib/src/fetch-related
 
 var {
     MatchIntervalOverlapStage,
+    MatchIntervalAroundStage,
     StripEventsStage,
     ProjectDisplayFieldsStage,
 } = require('@mpieva/psydb-api-lib/src/fetch-record-helpers');
@@ -56,18 +57,19 @@ var inviteConfirmationList = async (context, next) => {
             { $match: {
                 'state.researchGroupIds': researchGroupId,
             }},
-            MatchIntervalOverlapStage({
+            MatchIntervalAroundStage({
                 start, end,
-                recordIntervalPath: 'state.runningPeriod'
+                recordIntervalPath: 'state.runningPeriod',
+                recordIntervalEndCanBeNull: true
             }),
         ]).toArray()
     );
-
+    
     var experimentRecords = await (
         db.collection('experiment').aggregate([
             MatchIntervalOverlapStage({ start, end }),
             { $match: {
-                type: [ 'inhouse', 'online-video-call' ],
+                type: { $in: [ 'inhouse', 'online-video-call' ] },
                 // TODO: only for invitation
                 'state.subjectData.invitationStatus': 'scheduled',
             }},
