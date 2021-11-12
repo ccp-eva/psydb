@@ -6,9 +6,18 @@ var debug = require('debug')(
 var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
     Ajv = require('@mpieva/psydb-api-lib/src/ajv');
 
-var keyBy = require('@mpieva/psydb-common-lib/src/key-by');
+
+var {
+    keyBy,
+    compareIds
+} = require('@mpieva/psydb-common-lib');
+
 var ResponseBody = require('@mpieva/psydb-api-lib/src/response-body');
-var compareIds = require('@mpieva/psydb-api-lib/src/compare-ids');
+
+var {
+    gatherSubjectTypesFromLabProcedureSettings
+} = require('@mpieva/psydb-common-lib');
+
 var createRecordLabel = require('@mpieva/psydb-api-lib/src/create-record-label');
 var fetchRecordById = require('@mpieva/psydb-api-lib/src/fetch-record-by-id');
 
@@ -36,31 +45,24 @@ var participatedSubjectsForStudy = async (context, next) => {
 
     // TODO: check params
 
-    var studyRecord = await fetchRecordById({
-        db,
-        collectionName: 'study',
-        id: studyId,
-        permissions,
-    });
-
-    // FIXME: question is should we 404 or 403 when access is denied?
-    // well 404 for now and treat it as if it wasnt found kinda
-    if (!studyRecord) {
-        throw new ApiError(404, 'NoAccessibleStudyRecordFound');
+    var settingRecords = await (
+        db.collection('experimentVariantSetting').aggregate([
+            { $match: {
+                studyId,
+            }},
+            { $project: { _id: true, 'state.subjectTypeKey': true }},
+        ]).toArray()
+    );
+    if (settingRecords.length < 1) {
+        throw new ApiError(400, 'StudyHasNoLabProcedureSettings');
     }
 
-    //console.dir(studyRecord, { depth: null });
-
-    var subjectRecordTypes = (
-        studyRecord.state.selectionSettingsBySubjectType.map(it => (
-            it.subjectRecordType
-        ))
-    );
-
-    //console.log(subjectRecordTypes);
+    var subjectTypeKeys = gatherSubjectTypesFromLabProcedureSettings({
+        settingRecords
+    });
 
     var dataBySubjectType = {};
-    for (var subjectType of subjectRecordTypes) {
+    for (var subjectType of subjectTypeKeys) {
         var data = await fetchParticipation({
             db,
             subjectType,

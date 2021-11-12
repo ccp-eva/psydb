@@ -9,6 +9,10 @@ module.exports = {
     gatherLocationsFromLabProcedureSettings: (
         require('./gather-locations-from-lab-procedure-settings')
     ),
+    gatherSubjectTypesFromLabProcedureSettings: (
+        require('./gather-subject-types-from-lab-procedure-settings')
+    ),
+
     omitUnparticipatedFromExperiment: (
         require('./omit-unparticipated-from-experiment')
     ),
