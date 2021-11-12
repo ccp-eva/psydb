@@ -27,7 +27,7 @@ const EditSettingModalBody = (ps) => {
         onSuccessfulUpdate,
     } = ps;
 
-    var { variantRecord, settingRecord } = modalPayloadData;
+    var { variantRecord, settingRecord, settingRelated } = modalPayloadData;
     var { _id: variantId, type: variantType } = variantRecord;
 
     var SettingForm = ({
@@ -43,6 +43,7 @@ const EditSettingModalBody = (ps) => {
             studyId,
             variantId,
             settingRecord,
+            settingRelated,
             allowedSubjectTypes,
             onSuccessfulUpdate: demuxed([ onHide, onSuccessfulUpdate ])
         })} />

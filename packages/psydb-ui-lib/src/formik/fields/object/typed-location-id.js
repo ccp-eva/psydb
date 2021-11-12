@@ -14,12 +14,16 @@ const Control = (ps) => {
         
         typeOptions,
         disabled,
+
+        related,
     } = ps;
 
     var { getFieldProps } = formikForm;
     var selectedType = (
         getFieldProps(`${dataXPath}.customRecordTypeKey`).value
     );
+
+    console.log({ related });
 
     return (
         <>
@@ -36,7 +40,9 @@ const Control = (ps) => {
                 required: true,
                 collection: 'location',
                 recordType: selectedType,
-                disabled: disabled || !selectedType
+                disabled: disabled || !selectedType,
+
+                related,
             })} />
         </>
     )

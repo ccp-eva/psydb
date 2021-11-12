@@ -14,17 +14,31 @@ export const ForeignId = WithField({ Control: (ps) => {
         constraints,
 
         disabled,
+        related,
     } = ps;
 
+    var { value: recordId } = formikField;
     var { setFieldValue } = formikForm;
 
     var onChange = (record) => {
         setFieldValue(dataXPath, record ? record._id : '');
     }
 
+    var { relatedRecords } = related || {};
+    var record;
+    if (relatedRecords && relatedRecords[collection]) {
+        record = relatedRecords[collection][recordId]
+    }
+
+    if (recordId && !record) {
+        // create erroneous record
+        record = { _id: recordId };
+    }
+
     return (
         <RecordPicker { ...({
             ...formikField,
+            value: record,
             onChange,
             hasError: !!formikMeta.error,
 
@@ -33,7 +47,9 @@ export const ForeignId = WithField({ Control: (ps) => {
             constraints,
 
             disabled,
-            isFormik: true 
+            isFormik: true,
+
+            ...related,
         })} />
     );
 }})
