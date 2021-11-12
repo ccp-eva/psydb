@@ -57,7 +57,7 @@ export const AgeFrame = (ps) => {
     return (
         <InnerSettingPanel { ...panelProps }>
             { conditions.map((it, index) => (
-                <div className='pl-3'>
+                <div key={ index } className='pl-3'>
                     <AgeFrameCondition key={ index } { ...({
                         index,
                         condition: it,

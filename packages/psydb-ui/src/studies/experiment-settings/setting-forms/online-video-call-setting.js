@@ -22,6 +22,7 @@ export const OnlineVideoCallSetting = (ps) => {
         studyId,
         variantId,
         settingRecord,
+        settingRelated,
 
         allowedSubjectTypes,
         onSuccessfulUpdate
@@ -137,7 +138,9 @@ export const OnlineVideoCallSetting = (ps) => {
                                 dataXPath: '$.locations',
                                 label: 'Räumlichkeiten',
                                 typeOptions: allowedLocationTypes,
-                                disabled: !selectedType
+                                disabled: !selectedType,
+
+                                related: settingRelated,
                             })} />
                             <Button type='submit'>
                                 Speichern
