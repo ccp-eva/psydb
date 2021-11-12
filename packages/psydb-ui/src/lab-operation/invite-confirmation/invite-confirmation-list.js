@@ -141,6 +141,8 @@ const reducer = (state, action) => {
 }
 
 const WrappedInviteConfirmationList = (
-    withDailyCalendarPages(InviteConfirmationList)
+    withDailyCalendarPages(InviteConfirmationList, {
+        withURLSearchParams: true
+    })
 );
 export default WrappedInviteConfirmationList;

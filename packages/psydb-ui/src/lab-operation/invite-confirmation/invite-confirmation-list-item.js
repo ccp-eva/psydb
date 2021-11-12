@@ -18,12 +18,17 @@ const InviteConfirmationListItem = ({
     onChangeStatus,
 }) => {
 
-    var { state: {
+    var {
+        type: experimentType,
+        state: experimentState
+    } = experimentRecord;
+
+    var {
         studyId,
         locationId,
         interval: { start, end },
         subjectData
-    }} = experimentRecord;
+    } = experimentState;
 
     start = new Date(start);
     end = new Date(new Date(end).getTime() + 1); // FIXME: 1ms offset
@@ -33,51 +38,62 @@ const InviteConfirmationListItem = ({
     } = experimentRelated;
 
     return (
-        <div className='border p-3 mb-3 bg-light d-flex'>
-            <div style={{ minWidth: '150px' }}>
-                <div>
-                    { datefns.format(start, 'P')}
+        <div className='border p-3 mb-3 bg-light'>
+            <header className='border-bottom mb-2 pb-1'>
+                <b>
+                    {
+                        experimentType === 'online-video-call'
+                        ? 'Online-Video-Termin'
+                        : 'Interner Termin'
+                    }
+                </b>
+            </header>
+            <div className='d-flex'>
+                <div style={{ minWidth: '150px' }}>
+                    <div>
+                        { datefns.format(start, 'P')}
+                    </div>
+                    <div>
+                        <b>
+                            { datefns.format(start, 'p') }
+                            {' - '}
+                            { datefns.format(end, 'p') }
+                        </b>
+                    </div>
                 </div>
-                <div>
-                    <b>
-                        { datefns.format(start, 'p') }
-                        {' - '}
-                        { datefns.format(end, 'p') }
-                    </b>
+                <div style={{ width: '250px' }}>
+                    <div>
+                        Studie:
+                        {' '}
+                        <b>{ relatedRecordLabels.study[studyId]._recordLabel }</b>
+                    </div>
+                    <div>
+                        Ort:
+                        {' '}
+                        <b>{ relatedRecordLabels.location[locationId]._recordLabel }</b>
+                    </div>
+                    <u>Terminkommentar:</u>
                 </div>
-            </div>
-            <div style={{ width: '250px' }}>
-                <div>
-                    Studie:
-                    {' '}
-                    <b>{ relatedRecordLabels.study[studyId]._recordLabel }</b>
-                </div>
-                <div>
-                    Ort:
-                    {' '}
-                    <b>{ relatedRecordLabels.location[locationId]._recordLabel }</b>
-                </div>
-                <u>Terminkommentar:</u>
-            </div>
-            <div className='flex-grow'>
-                { 
-                    subjectData
-                    .filter(it => it.invitationStatus === 'scheduled')
-                    .map(it => (
-                        <SubjectItem { ...({
-                            key: it.subjectId,
-                            subjectDataItem: it,
-                            subjectRecordsById,
-                            subjectRelated,
-                            subjectDisplayFieldData,
-                            phoneListField,
-    
-                            experimentRecord,
+                <div className='flex-grow'>
+                    { 
+                        subjectData
+                        .filter(it => it.invitationStatus === 'scheduled')
+                        .map(it => (
+                            <SubjectItem { ...({
+                                key: it.subjectId,
+                                subjectDataItem: it,
+                                subjectRecordsById,
+                                subjectRelated,
+                                subjectDisplayFieldData,
+                                phoneListField,
+        
+                                experimentRecord,
 
-                            onChangeStatus,
-                        }) } />
-                    ))
-                }
+                                onChangeStatus,
+                            }) } />
+                        ))
+                    }
+                </div>
             </div>
         </div>
     );
