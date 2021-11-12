@@ -227,6 +227,9 @@ module.exports = {
             {
                 key: '_scientistIds',
                 systemType: 'ForeignIdList',
+                props: {
+                    collection: 'personnel',
+                },
                 dataPointer: '/state/scientistIds',
                 displayName: 'Wissenschaftler',
             }

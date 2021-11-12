@@ -24,7 +24,7 @@ var fetchExperiments = async (context, options) => {
             { $sort: { 'state.interval.start': 1 }}
         ]).toArray()
     );
-    
+
     var related = await fetchRelatedLabelsForMany({
         db,
         collectionName: 'experiment',

@@ -216,7 +216,7 @@ export const DateOnlyServerSide = ({ label, value, schema }) => {
     return (
         <InlineWrapper label={ label }>
             <b style={ styles.bold }>{
-                value === undefined
+                value === undefined || value === null
                 ? '-' 
                 : datefns.format(new Date(value), 'P')
             }</b>

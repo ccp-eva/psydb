@@ -15,10 +15,12 @@ const stringifyFieldValue = ({
 
     var {
         type,
+        systemType, // FIXME: u ise this in static declarations
         props,
     } = fieldDefinition;
 
     var str = undefined;
+    type = type || systemType; // FIXME
 
     if (type === 'ForeignId') {
         if (rawValue === null) {

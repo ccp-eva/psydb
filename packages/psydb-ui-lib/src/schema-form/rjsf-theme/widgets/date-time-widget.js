@@ -193,13 +193,17 @@ const DateOnlyServerSideWidget = (ps) => {
     var serverTimezone = useContext(ServerTimezoneContext);
     var clientTimezone = getSystemTimezone();
 
-    var initialDate = createInitialDate({
-        value,
-        serverTimezone,
-        clientTimezone,
-        isInitialValueSwapped: true,
-    })
-    
+    var initialDate = (
+        value === null
+        ? ''
+        : createInitialDate({
+            value,
+            serverTimezone,
+            clientTimezone,
+            isInitialValueSwapped: true,
+        })
+    )
+
     var [ cachedDate, setCachedDate ] = useState(initialDate || '');
 
     var {
@@ -214,6 +218,10 @@ const DateOnlyServerSideWidget = (ps) => {
 
                 console.log({ date: date.toISOString() });
                 onChange(date.toISOString());
+            }
+            else if (value === '') {
+                console.log(null);
+                onChange(null);
             }
             else {
                 console.log('INVALID')

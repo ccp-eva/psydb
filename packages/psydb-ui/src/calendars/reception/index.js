@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 
 import { useFetch } from '@mpieva/psydb-ui-hooks';
-import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
+import { LoadingIndicator, Alert } from '@mpieva/psydb-ui-layout';
 
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 import CalendarNav from '@mpieva/psydb-ui-lib/src/calendar-nav';
@@ -89,8 +89,13 @@ const ResearchGroup = (ps) => {
             <header className='border-bottom mb-2'>
                 <b>{ label }</b>
             </header>
+            { experiments.length < 1 && (
+                <Alert variant='info'>
+                    <i>Keine Termine</i>
+                </Alert>
+            )}
             { experiments.map((it, index) => (
-                <Experiment key={ index } { ...it} />
+                <Experiment key={ index } { ...it } />
             ))}
         </div>
     )

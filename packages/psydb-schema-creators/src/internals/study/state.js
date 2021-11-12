@@ -69,7 +69,7 @@ var StudyState = (ps = {}) => {
                 title: 'Laufzeit',
                 required: [ 'start', 'end' ],
                 additionalStartKeywords: { title: 'Beginn' },
-                additionalEndKeywords: { title: 'End', isNullable: true },
+                additionalEndKeywords: { title: 'Ende', isNullable: true },
             }),
 
             enableFollowUpExperiments: DefaultBool({
