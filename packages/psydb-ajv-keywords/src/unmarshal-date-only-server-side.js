@@ -55,7 +55,7 @@ var unmarshalDateOnlyServerSide = {
             var dayStart = new Date(swapped);
             dayStart.setHours(0,0,0,0); // sets server tz local hours
 
-            console.log({ received, swapped, dayStart });
+            //console.log({ received, swapped, dayStart });
             
             
             parentData[parentDataProperty] = dayStart;

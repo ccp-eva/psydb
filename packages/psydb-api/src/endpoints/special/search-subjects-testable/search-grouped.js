@@ -234,7 +234,7 @@ var searchGrouped = async (context, next) => {
     ]).toArray();
 
     var { groupedSubjectRecords, subjectCount, locationCount } = result[0];
-    console.log(groupedSubjectRecords);
+    //console.log(groupedSubjectRecords);
 
     subjectCount = (
         subjectCount.length
