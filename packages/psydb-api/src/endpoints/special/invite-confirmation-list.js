@@ -67,7 +67,7 @@ var inviteConfirmationList = async (context, next) => {
         db.collection('experiment').aggregate([
             MatchIntervalOverlapStage({ start, end }),
             { $match: {
-                type: 'inhouse',
+                type: [ 'inhouse', 'online-video-call' ],
                 // TODO: only for invitation
                 'state.subjectData.invitationStatus': 'scheduled',
             }},

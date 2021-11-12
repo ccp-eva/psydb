@@ -141,7 +141,8 @@ var studyLocationReservationCalendar = async (context, next) => {
         var allSubjectIds = experimentRecords.reduce((acc, record) => [
             ...acc,
             ...(
-                record.state.subjectData
+                // NOTE: since we stip of other study this can be undefined
+                (record.state.subjectData || [])
                 .filter(sd => sd.subjectType === selectedSubjectRecord.type)
                 .map(sd => sd.subjectId)
             )
@@ -226,6 +227,12 @@ var augmentWithSelectSubjectMetadata = (options) => {
     });
 
     for (var exp of experimentRecords) {
+        // NOTE since we strip other study experiemnts 
+        // sbject data may be undefined
+        if (!exp.state.subjectData) {
+            continue;
+        }
+
         var count = countExperimentSubjects({
             experimentRecord: exp,
             subjectTypeKey: selectedSubjectRecord.type,
