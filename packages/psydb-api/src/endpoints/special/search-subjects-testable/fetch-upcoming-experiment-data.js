@@ -1,6 +1,8 @@
 'use strict';
 var fetchRelatedLabelsForMany = require('@mpieva/psydb-api-lib/src/fetch-related-labels-for-many');
 
+// FIXME: this needs renaming as it includes
+// experiments that havent been postprocessed by are in the past
 var fetchUpcomingExperimentData = async ({
     db,
     locationIds,
@@ -22,7 +24,10 @@ var fetchUpcomingExperimentData = async ({
                 ...( subjectIds && {
                     'state.subjectData.subjectId': { $in: subjectIds }
                 }),
-                'state.interval.start': { $gt: after },
+                $or: [
+                    { 'state.interval.start': { $gt: after }},
+                    { 'state.isPostprocessed': false }
+                ],
             }},
             { $sort: { 'state.interval.start': 1 }},
             { $project: {
