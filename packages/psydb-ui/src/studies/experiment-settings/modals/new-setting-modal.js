@@ -49,7 +49,7 @@ const NewSettingModalBody = (ps) => {
 }
 
 const NewSettingModal = WithDefaultModal({
-    title: 'Probandentyp hinzufügen',
+    title: 'Einstellungen hinzufügen',
     size: 'lg',
 
     Body: NewSettingModalBody

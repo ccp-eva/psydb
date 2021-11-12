@@ -22,6 +22,7 @@ var fetchEnabledLocationRecordsForStudy = async ({
     var settingRecords = await (
         db.collection('experimentVariantSetting')
         .find({
+            studyId,
             type: { $in: [
                 'inhouse',
                 'online-video-call'

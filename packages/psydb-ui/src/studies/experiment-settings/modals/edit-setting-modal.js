@@ -50,7 +50,7 @@ const EditSettingModalBody = (ps) => {
 }
 
 const EditSettingModal = WithDefaultModal({
-    title: 'Probandentyp hinzufügen',
+    title: 'Einstellungen bearbeiten',
     size: 'lg',
 
     Body: EditSettingModalBody
