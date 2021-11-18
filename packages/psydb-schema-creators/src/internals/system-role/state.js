@@ -25,11 +25,16 @@ var SystemRoleState = ({
                 title: 'Bezeichnung',
                 minLength: 1,
             }),
+            
             ...administrativeFlags,
             ...studyCollectionFlags,
             ...subjectCollectionFlags,
             ...participationFlags,
+            canViewReceptionCalendar: DefaultBool({
+                title: 'kann Rezeptionskalender einsehen'
+            }),
             ...labOperationFlags,
+
         },
         required: [
             'name',
@@ -37,6 +42,7 @@ var SystemRoleState = ({
             ...Object.keys(studyCollectionFlags),
             ...Object.keys(subjectCollectionFlags),
             ...Object.keys(participationFlags),
+            'canViewReceptionCalendar',
             ...Object.keys(labOperationFlags),
         ],
     });
