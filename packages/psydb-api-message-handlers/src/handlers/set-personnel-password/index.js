@@ -1,5 +1,5 @@
 'use strict';
-var brypt = require('bcrypt'),
+var bcrypt = require('bcrypt'),
     messageType = require('./message-type'),
     checkSchema = require('./check-schema');
 
@@ -40,7 +40,7 @@ var triggerSystemEvents = async ({
         .openChannel({ id: targetRecordId })
     );
 
-    var passwordHash = brypt.hashSync(password, 10);
+    var passwordHash = bcrypt.hashSync(password, 10);
     await channel.dispatch({
         subChannelKey: 'gdpr',
         lastKnownEventId,
