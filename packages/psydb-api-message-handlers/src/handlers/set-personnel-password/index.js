@@ -21,7 +21,7 @@ var checkAllowedAndPlausible = async ({
         throw new ApiError(400);
     }
 
-    if (!permissions.canPatchRecord(personnelRecord)) {
+    if (!permissions.hasRootAccess) {
         throw new ApiError(403);
     }
 };
@@ -33,6 +33,7 @@ var triggerSystemEvents = async ({
 }) => {
     var { type: messageType, personnelId, payload } = message;
     var { id: targetRecordId, lastKnownEventId, password } = payload;
+    var passwordHash = bcrypt.hashSync(password, 10);
 
     var channel = (
         rohrpost
@@ -40,7 +41,6 @@ var triggerSystemEvents = async ({
         .openChannel({ id: targetRecordId })
     );
 
-    var passwordHash = bcrypt.hashSync(password, 10);
     await channel.dispatch({
         subChannelKey: 'gdpr',
         lastKnownEventId,
