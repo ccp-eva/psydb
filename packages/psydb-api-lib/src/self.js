@@ -80,7 +80,7 @@ var Self = async ({
             db.collection('systemRole')
             .find({
                 _id: { $in: (
-                    researchGroupSettings.map(it => it.researchGroupId)
+                    researchGroupSettings.map(it => it.systemRoleId)
                 )}
             }).toArray()
         );

@@ -89,6 +89,13 @@ var Permissions = ({
             isAllowed = true;
         }
 
+        if (endpoint === 'event') {
+            // all users that are signed in can acces this
+            // endpoint; the handlers themselves need to decide
+            // if the user cann access the particular handler
+            isAllowed = true;
+        }
+
         // TODO
         
         /*var isAllowed = checkAllPermissionAcls({
