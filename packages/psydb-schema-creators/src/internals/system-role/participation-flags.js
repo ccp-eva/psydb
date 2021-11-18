@@ -6,13 +6,13 @@ var {
 } = require('@mpieva/psydb-schema-fields');
 
 module.exports = {
-    canReadParticipation: Default({
+    canReadParticipation: DefaultBool({
         title: inline`
             kann einsehen welche Probanden
             an einer Studie telgenommen haben
         `
     }),
-    canWriteParticipation: Default({
+    canWriteParticipation: DefaultBool({
         title: 'kann manuell Probanden in eine Studie eintragen'
     }),
 }

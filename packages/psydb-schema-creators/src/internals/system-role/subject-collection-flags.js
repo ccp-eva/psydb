@@ -9,7 +9,7 @@ module.exports = {
     canReadSubjects: DefaultBool({
         title: 'kann Studien einsehen',
     }),
-    canWriteStudies: DefaultBool({
+    canWriteSubjects: DefaultBool({
         title: 'kann Studien anlegen und bearbeiten',
     }),
 }
