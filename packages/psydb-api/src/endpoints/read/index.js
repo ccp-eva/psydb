@@ -18,6 +18,10 @@ var {
     gatherRemovedFields
 } = require('@mpieva/psydb-api-lib/src/crt-utils');
 
+var {
+    verifyReadRecordAllowed
+} = require('@mpieva/psydb-api-lib');
+
 
 var read = async (context, next) => {
     var { 
@@ -34,15 +38,6 @@ var read = async (context, next) => {
     } = params;
 
     // TODO: check param format
-
-    if (
-        !permissions.hasRootAccess
-        && !permissions.canReadCollection(collectionName)
-    ) {
-        throw new ApiError(403, 'CollectionAccessDenied');
-    }
-
-    //console.dir(addSystemPermissionStages({ permissions }), { depth: null });
 
     var collectionCreatorData = allSchemaCreators[collectionName];
     if (!collectionCreatorData) {
@@ -82,6 +77,12 @@ var read = async (context, next) => {
         recordLabelDefinition,
         removedCustomFields,
     });
+
+    /*verifyReadRecordAllowed({
+        collection: collectionName,
+        record,
+        permissions,
+    })*/
 
     // FIXME: question is should we 404 or 403 when access is denied?
     // well 404 for now and treat it as if it wasnt found kinda

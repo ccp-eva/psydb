@@ -80,6 +80,9 @@ var fetchRecordById = async ({
     );
 
     var record = resultSet[0];
+    if (!record) {
+        return undefined;
+    }
 
     if (recordLabelDefinition) {
         record._recordLabel = createRecordLabel({
