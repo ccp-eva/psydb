@@ -5,4 +5,7 @@ module.exports = {
     keyBy: require('./key-by'),
     compareIds: require('./compare-ids'),
     unwind: require('./unwind'),
+    
+    intersect: require('./intersect'),
+    without: require('./without'),
 }
