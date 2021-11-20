@@ -1,4 +1,5 @@
 'use strict';
+var { intersect } = require('@mpieva/psydb-core-utils');
 var ApiError = require('./api-error');
 
 var verifyReadRecordAllowed = (options) => {
@@ -27,9 +28,22 @@ var verifyReadRecordAllowed = (options) => {
             ? record.scientific.state
             : record.state
         );
+
+        var recordGroupIds = (
+            systemPermissions
+            .accessRightsByResearchGroup
+            .map(it => (
+                it.researchGroupId
+            ))
+        )
+       
+        projectedResearchGroupIds = intersect(
+            projectedResearchGroupIds,
+            recordGroupIds
+        );
     }
 
-    var researchGroupPermissions = projectedResearchGroups.map(gid => (
+    var researchGroupPermissions = projectedResearchGroupIds.map(gid => (
         permissions.byResearchGroupId[gid]
     ));
 
@@ -63,7 +77,7 @@ var getCollectionFlagKeys = ({ collection }) => {
             return [ 'canWritePersonnel' ];
 
         case 'researchGroup':
-        case 'systeRole':
+        case 'systemRole':
         case 'customRecordType':
             return [];
 

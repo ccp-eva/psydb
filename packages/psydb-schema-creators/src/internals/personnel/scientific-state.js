@@ -33,7 +33,11 @@ var PersonnelScientificState = () => {
                             title: 'Zugriff',
                             collection: 'systemRole',
                         })
-                    }
+                    },
+                    required: [
+                        'researchGroupId',
+                        'systemRoleId'
+                    ]
                 })
             },
 
