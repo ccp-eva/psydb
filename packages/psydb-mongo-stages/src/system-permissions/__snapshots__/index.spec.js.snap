@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`system-permission-stages non-root with one research group has proper stages 1`] = `
+Array [
+  Object {
+    "$match": Object {
+      "$expr": Object {
+        "$gt": Array [
+          Object {
+            "$size": Object {
+              "$ifNull": Array [
+                Object {
+                  "$setIntersection": Array [
+                    "$scientific.state.systemPermissions.accessRightsByResearchGroup.researchGroupId",
+                    Array [
+                      "gid_1",
+                    ],
+                  ],
+                },
+                Array [],
+              ],
+            },
+          },
+          0,
+        ],
+      },
+    },
+  },
+]
+`;

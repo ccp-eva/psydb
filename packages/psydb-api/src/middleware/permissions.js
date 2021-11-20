@@ -14,16 +14,16 @@ var createPermissionMiddleware = ({
 
     var {
         hasRootAccess,
-        rolesByResearchGroupId,
         researchGroupIds,
         forcedResearchGroupId,
+        rolesByResearchGroupId,
     } = self;
 
     context.permissions = Permissions({
         hasRootAccess,
-        rolesByResearchGroupId,
-        allowedResearchGroupIds: researchGroupIds,
+        researchGroupIds,
         forcedResearchGroupId,
+        rolesByResearchGroupId,
     });
 
     await next();

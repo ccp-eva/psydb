@@ -1,0 +1,21 @@
+{
+  "name": "@mpieva/psydb-mongo-stages",
+  "version": "0.1.0-alpha",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "npx jest"
+  },
+  "author": "Jan Schwalbe",
+  "license": "MIT",
+  "dependencies": {
+    "@mpieva/psydb-core-utils": "~0.1.0-alpha",
+    "@mpieva/psydb-schema-creators": "~0.1.0-alpha",
+    "jsonpointer": "~4.1.0",
+    "@cdxoo/inline-string": "~1.0.0",
+    "nanoid": "~3.1.22"
+  },
+  "devDependencies": {
+    "jest": "~27.2.4"
+  }
+}
