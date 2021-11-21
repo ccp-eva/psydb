@@ -3,17 +3,22 @@ var debug = require('debug')(
     'psydb:api:endpoints:selectableStudies'
 );
 
-var { keyBy, unique } = require('@mpieva/psydb-common-lib');
+var {
+    keyBy,
+    unique,
+    compareIds,
+} = require('@mpieva/psydb-core-utils');
 
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
-    Ajv = require('@mpieva/psydb-api-lib/src/ajv'),
-    ResponseBody = require('@mpieva/psydb-api-lib/src/response-body');
+var {
+    validateOrThrow,
+    ApiError,
+    ResponseBody,
+} = require('@mpieva/psydb-api-lib');
 
 var fetchRecordsByFilter = require('@mpieva/psydb-api-lib/src/fetch-records-by-filter');
 var gatherDisplayFieldsForRecordType = require('@mpieva/psydb-api-lib/src/gather-display-fields-for-record-type');
 var fetchOneCustomRecordType = require('@mpieva/psydb-api-lib/src/fetch-one-custom-record-type');
 var fetchRelatedLabelsForMany = require('@mpieva/psydb-api-lib/src/fetch-related-labels-for-many');
-var compareIds = require('@mpieva/psydb-api-lib/src/compare-ids');
 
 var {
     ExactObject,
@@ -71,20 +76,10 @@ var selectableStudies = async (context, next) => {
         request,
     } = context;
 
-    var ajv = Ajv(),
-        isValid = false;
-
-    isValid = ajv.validate(
-        RequestBodySchema(),
-        request.body
-    );
-    if (!isValid) {
-        debug('ajv errors', ajv.errors);
-        throw new ApiError(400, {
-            apiStatus: 'InvalidRequestSchema',
-            data: { ajvErrors: ajv.errors }
-        });
-    };
+    validateOrThrow({
+        schema: RequestBodySchema(),
+        payload: request.body
+    });
 
     var {
         studyRecordType,
@@ -92,6 +87,8 @@ var selectableStudies = async (context, next) => {
         experimentTypes: labProcedureTypes,
         target,
     } = request.body
+
+    // TODO: permissions
 
     if (labProcedureType) {
         labProcedureTypes = [ labProcedureType ];

@@ -13,8 +13,8 @@ var {
 } = require('@mpieva/psydb-common-lib');
 
 var {
-    ResponseBody,
     validateOrThrow,
+    ResponseBody,
 } = require('@mpieva/psydb-api-lib');
 
 var {
@@ -36,14 +36,12 @@ var receptionCalendar = async (context, next) => {
     var { db, permissions, request } = context;
     var { hasRootAccess, projectedResearchGroupIds } = permissions;
     
-    if (!hasRootAccess) {
-        throw new ApiError(403)
-    }
-
     validateOrThrow({
         schema: RequestBodySchema(),
         payload: request.body
     });
+
+    // TODO: permissions
 
     var { interval } = request.body;
 

@@ -3,11 +3,16 @@ var debug = require('debug')(
     'psydb:api:endpoints:awayTeamCalendar'
 );
 
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
-    Ajv = require('@mpieva/psydb-api-lib/src/ajv');
+var {
+    compareIds,
+} = require('@mpieva/psydb-core-utils');
 
-var ResponseBody = require('@mpieva/psydb-api-lib/src/response-body');
-var compareIds = require('@mpieva/psydb-api-lib/src/compare-ids');
+var {
+    validateOrThrow,
+    ApiError,
+    ResponseBody,
+} = require('@mpieva/psydb-api-lib');
+
 var createRecordLabel = require('@mpieva/psydb-api-lib/src/create-record-label');
 var fetchRecordById = require('@mpieva/psydb-api-lib/src/fetch-record-by-id');
 var fetchRecordsInInterval = require('@mpieva/psydb-api-lib/src/fetch-records-in-interval');
@@ -41,18 +46,18 @@ var studyAwayTeamReservationCalendar = async (context, next) => {
         params,
     } = context;
 
-    var ajv = Ajv();
-    var isValid = ajv.validate(ParamsSchema(), params);
-    if (!isValid) {
-        debug('ajv errors', ajv.errors);
-        throw new ApiError(400, 'InvalidParams');
-    }
+    validateOrThrow({
+        schema: ParamsSchema(),
+        payload: request.body
+    });
 
     var {
         studyId,
         start,
         end
     } = params;
+
+    // TODO: permissions
 
     var studyRecord = await fetchRecordById({
         db,

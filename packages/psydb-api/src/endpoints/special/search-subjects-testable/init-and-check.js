@@ -2,8 +2,17 @@
 var debug = require('debug')(
     'psydb:api:endpoints:searchTestableSubjects:initAndCheck'
 );
-var { groupBy } = require('@mpieva/psydb-common-lib');
-var compareIds = require('@mpieva/psydb-api-lib/src/compare-ids');
+
+var {
+    groupBy,
+    compareIds,
+} = require('@mpieva/psydb-core-utils');
+
+var {
+    validateOrThrow,
+    ApiError,
+} = require('@mpieva/psydb-api-lib');
+
 var checkForeignIdsExist = require(
     '@mpieva/psydb-api-lib/src/check-foreign-ids-exist'
 );
@@ -14,9 +23,6 @@ var fetchOneCustomRecordType = require(
 var gatherDisplayFieldsForRecordType = require(
     '@mpieva/psydb-api-lib/src/gather-display-fields-for-record-type'
 );
-
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
-    Ajv = require('@mpieva/psydb-api-lib/src/ajv');
 
 var RequestBodySchema = require('./request-body-schema');
 
@@ -30,9 +36,11 @@ var initAndCheck = async ({
     request,
     labProcedureType,
 }) => {
-    // TODO: permissions
-
-    checkSchema({ request });
+    
+    validateOrThrow({
+        schema: RequestBodySchema(),
+        payload: request.body
+    });
 
     var {
         subjectTypeKey,
@@ -40,6 +48,8 @@ var initAndCheck = async ({
         studyIds,
         filters,
     } = request.body;
+
+    // TODO: permissions
 
     var labProcedureSettingData = await initLabProcedureSettings({
         db,
@@ -178,23 +188,6 @@ var initAndCheck = async ({
    //     limit,
    //     offset,
    // })
-}
-
-var checkSchema = ({ request }) => {
-    var ajv = Ajv(),
-        isValid = false;
-
-    isValid = ajv.validate(
-        RequestBodySchema(),
-        request.body
-    );
-    if (!isValid) {
-        debug('ajv errors', ajv.errors);
-        throw new ApiError(400, {
-            apiStatus: 'InvalidRequestSchema',
-            data: { ajvErrors: ajv.errors }
-        });
-    };
 }
 
 var initLabProcedureSettings = async (options) => {

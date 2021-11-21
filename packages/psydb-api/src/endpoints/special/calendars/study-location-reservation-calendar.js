@@ -4,13 +4,19 @@ var debug = require('debug')(
 );
 
 var jsonpointer = require('jsonpointer');
-var { compareIds, keyBy } = require('@mpieva/psydb-core-utils');
+
+var {
+    keyBy,
+    compareIds,
+} = require('@mpieva/psydb-core-utils');
+
 var { countExperimentSubjects } = require('@mpieva/psydb-common-utils');
 
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
-    Ajv = require('@mpieva/psydb-api-lib/src/ajv');
-
-var ResponseBody = require('@mpieva/psydb-api-lib/src/response-body');
+var {
+    validateOrThrow,
+    ApiError,
+    ResponseBody,
+} = require('@mpieva/psydb-api-lib');
 
 var {
     StripEventsStage
@@ -56,15 +62,10 @@ var studyLocationReservationCalendar = async (context, next) => {
         request
     } = context;
 
-    var ajv = Ajv();
-    var isValid = ajv.validate(RequestBodySchema(), request.body);
-    if (!isValid) {
-        debug('ajv errors', ajv.errors);
-        throw new ApiError(400, {
-            apiStatus: 'InvalidParams',
-            data: { ajvErrors: ajv.errors }
-        });
-    }
+    validateOrThrow({
+        schema: RequestBodySchema(),
+        payload: request.body
+    });
 
     var {
         experimentType,
@@ -75,6 +76,7 @@ var studyLocationReservationCalendar = async (context, next) => {
         selectedSubjectId,
     } = request.body;
 
+    // TODO: permissions
     var studyRecord = await fetchRecordById({
         db,
         collectionName: 'study',

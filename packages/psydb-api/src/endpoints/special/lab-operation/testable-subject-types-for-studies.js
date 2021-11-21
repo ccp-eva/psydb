@@ -3,12 +3,15 @@ var debug = require('debug')(
     'psydb:api:endpoints:testableSubjectTypesForStudies'
 );
 
-var { unique } = require('@mpieva/psydb-common-lib');
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
-    Ajv = require('@mpieva/psydb-api-lib/src/ajv');
+var {
+    unique
+} = require('@mpieva/psydb-core-utils');
 
-
-var ResponseBody = require('@mpieva/psydb-api-lib/src/response-body');
+var {
+    validateOrThrow,
+    ApiError,
+    ResponseBody,
+} = require('@mpieva/psydb-api-lib');
 
 var {
     ExactObject,
@@ -39,27 +42,17 @@ var testableSubjectTypesForStudies = async (context, next) => {
         request,
     } = context;
 
-    var ajv = Ajv(),
-        isValid = false;
-
-    isValid = ajv.validate(
-        RequestBodySchema(),
-        request.body
-    );
-    if (!isValid) {
-        debug('ajv errors', ajv.errors);
-        throw new ApiError(400, {
-            apiStatus: 'InvalidRequestSchema',
-            data: { ajvErrors: ajv.errors }
-        });
-    };
+    validateOrThrow({
+        schema: RequestBodySchema(),
+        payload: request.body
+    });
 
     var {
         studyIds,
         labProcedureType,
     } = request.body;
 
-    // TODO: check body + unmarshal
+    // TODO: permissions
 
     var studyRecords = await db.collection('study').aggregate([
         { $match: {

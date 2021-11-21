@@ -3,11 +3,17 @@ var debug = require('debug')(
     'psydb:api:endpoints:extendedExperimentData'
 );
 
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
-    Ajv = require('@mpieva/psydb-api-lib/src/ajv');
+var {
+    keyBy,
+    groupBy,
+    compareIds,
+} = require('@mpieva/psydb-core-utils');
 
-var ResponseBody = require('@mpieva/psydb-api-lib/src/response-body');
-var compareIds = require('@mpieva/psydb-api-lib/src/compare-ids');
+var {
+    validateOrThrow,
+    ApiError,
+    ResponseBody,
+} = require('@mpieva/psydb-api-lib');
 
 var fetchRecordById = require('@mpieva/psydb-api-lib/src/fetch-record-by-id');
 var createSchemaForRecordType = require('@mpieva/psydb-api-lib/src/create-schema-for-record-type');
@@ -19,9 +25,6 @@ var fetchOneCustomRecordType = require('@mpieva/psydb-api-lib/src/fetch-one-cust
 var fetchRelatedLabelsForMany = require('@mpieva/psydb-api-lib/src/fetch-related-labels-for-many');
 
 var fetchRecordDisplayDataById = require('@mpieva/psydb-api-lib/src/fetch-record-display-data-by-id');
-
-var keyBy = require('@mpieva/psydb-common-lib/src/key-by');
-var groupBy = require('@mpieva/psydb-common-lib/src/group-by');
 
 var fetchOneExperimentData = require('./fetch-one-experiment-data');
 var fetchOneStudyData = require('./fetch-one-study-data');
@@ -42,6 +45,7 @@ var extendedExperimentData = async (context, next) => {
     } = params;
 
     // TODO: check params
+    // TODO: permissions
 
     var experimentData = await fetchOneExperimentData({
         db,

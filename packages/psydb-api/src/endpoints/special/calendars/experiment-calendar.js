@@ -3,15 +3,20 @@ var debug = require('debug')(
     'psydb:api:endpoints:inhouseExperimentCalendar'
 );
 
-var Ajv = require('@mpieva/psydb-api-lib/src/ajv'),
-    ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
-    ResponseBody = require('@mpieva/psydb-api-lib/src/response-body');
+var {
+    keyBy,
+    groupBy,
+    compareIds,
+} = require('@mpieva/psydb-core-utils');
+
+var {
+    validateOrThrow,
+    ApiError,
+    ResponseBody,
+} = require('@mpieva/psydb-api-lib');
 
 var enums = require('@mpieva/psydb-schema-enums');
 
-var groupBy = require('@mpieva/psydb-common-lib/src/group-by');
-var keyBy = require('@mpieva/psydb-common-lib/src/key-by');
-var compareIds = require('@mpieva/psydb-api-lib/src/compare-ids');
 var convertPointerToPath = require('@mpieva/psydb-api-lib/src/convert-pointer-to-path');
 
 var fetchOneCustomRecordType = require('@mpieva/psydb-api-lib/src/fetch-one-custom-record-type');
@@ -61,20 +66,10 @@ var experimentCalendar = async (context, next) => {
         request,
     } = context;
 
-    var ajv = Ajv(),
-        isValid = false;
-
-    isValid = ajv.validate(
-        RequestBodySchema(),
-        request.body
-    );
-    if (!isValid) {
-        debug('ajv errors', ajv.errors);
-        throw new ApiError(400, 'InvalidRequestSchema', {
-            ajvErrors: ajv.errors,
-        });
-    };
-
+    validateOrThrow({
+        schema: RequestBodySchema(),
+        payload: request.body
+    });
 
     var {
         subjectRecordType,
@@ -86,6 +81,7 @@ var experimentCalendar = async (context, next) => {
 
     var { start, end } = interval;
 
+    // TODO: permissions
     if (!permissions.hasRootAccess) {
         var allowed = permissions.allowedResearchGroupIds.find(id => {
             return compareIds(id, researchGroupId)
