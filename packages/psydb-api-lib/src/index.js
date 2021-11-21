@@ -21,7 +21,5 @@ module.exports = {
     fetchRelatedLabelsForMany: require('./fetch-related-labels-for-many'),
     fetchRelatedRecords: require('./fetch-related-records'),
 
-    verifyReadRecordAllowed: require('./verify-read-record-allowed'),
-
     gatherDisplayFieldsForRecordType: require('./gather-display-fields-for-record-type')
 }
