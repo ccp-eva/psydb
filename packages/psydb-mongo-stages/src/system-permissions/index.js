@@ -10,6 +10,7 @@ var SystemPermissionStages = (options) => {
     var {
         permissions,
         collection,
+        action = 'read',
     } = options;
 
     if (!permissions) {
@@ -17,6 +18,9 @@ var SystemPermissionStages = (options) => {
     }
     if (!collection) {
         throw new Error('option "collection" required');
+    }
+    if (!['read', 'write'].includes(action)) {
+        throw new Error(`unknown action "${action}"`);
     }
 
     var {
@@ -31,7 +35,7 @@ var SystemPermissionStages = (options) => {
     }
     else {
         var allowedResearchGroupIds = (
-            researchGroupIdsByCollection[collection].read
+            researchGroupIdsByCollection[collection][action]
         );
 
         return [
