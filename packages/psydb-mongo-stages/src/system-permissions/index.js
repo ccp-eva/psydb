@@ -77,4 +77,4 @@ var hasResearchGroupIntersectionsCondition = ({
     )
 };
 
-module.exports = SystemPermissionStages;
+module.exports = { SystemPermissionStages };

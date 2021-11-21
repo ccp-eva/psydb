@@ -1,5 +1,5 @@
 'use strict';
-var SystemPermissionStages = require('./');
+var { SystemPermissionStages } = require('./');
 
 describe('system-permission-stages', () => {
     

@@ -75,7 +75,10 @@ var fetchRecordById = async ({
             { $match: {
                 _id: id
             }},
-            ...SystemPermissionStages({ permissions, hasSubChannels }),
+            ...SystemPermissionStages({
+                collection: collectionName,
+                permissions
+            }),
         ]).toArray()
     );
 

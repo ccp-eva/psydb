@@ -18,11 +18,6 @@ var {
     gatherRemovedFields
 } = require('@mpieva/psydb-api-lib/src/crt-utils');
 
-var {
-    verifyReadRecordAllowed
-} = require('@mpieva/psydb-api-lib');
-
-
 var read = async (context, next) => {
     var { 
         db,
@@ -77,12 +72,6 @@ var read = async (context, next) => {
         recordLabelDefinition,
         removedCustomFields,
     });
-
-    verifyReadRecordAllowed({
-        collection: collectionName,
-        record,
-        permissions,
-    })
 
     // FIXME: question is should we 404 or 403 when access is denied?
     // well 404 for now and treat it as if it wasnt found kinda
