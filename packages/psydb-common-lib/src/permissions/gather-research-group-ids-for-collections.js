@@ -87,6 +87,7 @@ var getCollectionWriteFlagKeys = ({ collection }) => {
             return []
     }
 }
+
 var checkFlagKeys = ({ flags, possibleFlagKeys }) => {
     var areAnyTrue = false;
     for (var key of possibleFlagKeys) {

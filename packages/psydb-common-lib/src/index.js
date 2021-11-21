@@ -26,4 +26,6 @@ module.exports = {
     perceivedBrightness: require('./perceived-brightness'),
     range: require('./range'),
     slotifyItems: require('./slotify-items'),
+
+    Permissions: require('./permissions'),
 }

@@ -34,14 +34,6 @@ var SystemPermissionStages = (options) => {
             researchGroupIdsByCollection[collection].read
         );
 
-        /*var allowedResearchGroupIds = (
-            filterResearchGroupsByPermissionFlags({
-                collection,
-                permissions,
-                researchGroupIds: projectedResearchGroupIds,
-            })
-        );*/
-
         return [
             { $match: { $expr: (
                 hasResearchGroupIntersectionsCondition({
