@@ -91,6 +91,12 @@ var verifyRecordAccess = async (options) => {
         });
     }
 
+    // when we have additional flags we need to manually
+    // strip out the researchgroups in the record
+    // that arent the ones the current users permission
+    // is based on; this makes the following more complicated
+    // FIXME: maybe we can add a flag to SystemPermissions
+    // to remove those when needed
     if (additionalFlags) {
         var allowedForCollection = (
             researchGroupIdsByCollection[collection][action]

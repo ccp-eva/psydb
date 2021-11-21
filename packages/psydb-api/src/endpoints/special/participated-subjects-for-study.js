@@ -9,28 +9,41 @@ var {
 } = require('@mpieva/psydb-core-utils');
 
 var {
-    validateOrThrow,
-    ApiError,
-    ResponseBody
-} = require('@mpieva/psydb-api-lib');
-
-var {
     gatherSubjectTypesFromLabProcedureSettings
 } = require('@mpieva/psydb-common-lib');
 
-var createRecordLabel = require('@mpieva/psydb-api-lib/src/create-record-label');
-var fetchRecordById = require('@mpieva/psydb-api-lib/src/fetch-record-by-id');
+var {
+    ApiError,
+    ResponseBody,
 
-var createSchemaForRecordType =
-    require('@mpieva/psydb-api-lib/src/create-schema-for-record-type');
+    validateOrThrow,
+    verifyStudyAccess,
 
-var fetchRelatedLabels = require('@mpieva/psydb-api-lib/src/fetch-related-labels');
-var gatherDisplayFieldsForRecordType = require('@mpieva/psydb-api-lib/src/gather-display-fields-for-record-type');
+    createRecordLabel,
+    fetchRecordById,
+    createSchemaForRecordType,
+    fetchRelatedLabels,
+    gatherDisplayFieldsForRecordType,
+} = require('@mpieva/psydb-api-lib');
 
 var {
     ProjectDisplayFieldsStage,
     StripEventsStage,
 } = require('@mpieva/psydb-api-lib/src/fetch-record-helpers');
+
+var {
+    ExactObject,
+    ForeignId,
+} = require('@mpieva/psydb-schema-fields');
+
+var RequestParamsSchema = () => ExactObject({
+    properties: {
+        studyId: ForeignId({ collection: 'study' }),
+    },
+    required: [
+        'studyId',
+    ]
+});
 
 var participatedSubjectsForStudy = async (context, next) => {
     var { 
@@ -39,12 +52,22 @@ var participatedSubjectsForStudy = async (context, next) => {
         params,
     } = context;
 
+    validateOrThrow({
+        schema: RequestParamsSchema(),
+        payload: params
+    })
+
     var {
         studyId,
     } = params;
 
-    // TODO: check params
-    // TODO: permissions
+    await verifyStudyAccess({
+        db,
+        permissions,
+        studyId,
+        action: 'read',
+        additionalFlags: [ 'canReadParticipation' ]
+    });
 
     var settingRecords = await (
         db.collection('experimentVariantSetting').aggregate([

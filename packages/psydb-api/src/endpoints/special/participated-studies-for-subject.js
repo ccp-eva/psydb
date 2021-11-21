@@ -64,7 +64,7 @@ var participatedStudiesForSubject = async (context, next) => {
         permissions,
         subjectId,
         action: 'read',
-        checkAdditionalFlags: [ 'canReadParticipation' ]
+        additionalFlags: [ 'canReadParticipation' ]
     });
 
     var subjectData = await fetchSubjectData({

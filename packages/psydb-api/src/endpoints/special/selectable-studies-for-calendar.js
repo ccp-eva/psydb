@@ -9,9 +9,14 @@ var {
 } = require('@mpieva/psydb-core-utils');
 
 var {
-    validateOrThrow,
     ApiError,
-    ResponseBody
+    ResponseBody,
+
+    validateOrThrow,
+    verifyLabOperationAccess,
+
+    fetchCustomRecordTypes,
+    createRecordLabel,
 } = require('@mpieva/psydb-api-lib');
 
 var {
@@ -20,8 +25,25 @@ var {
     SystemPermissionStages,
 } = require('@mpieva/psydb-api-lib/src/fetch-record-helpers');
 
-var fetchCustomRecordTypes = require('@mpieva/psydb-api-lib/src/fetch-custom-record-types');
-var createRecordLabel = require('@mpieva/psydb-api-lib/src/create-record-label');
+var {
+    ExactObject,
+    ForeignId,
+    CustomRecordTypeKey,
+    ExperimentTypeEnum,
+} = require('@mpieva/psydb-schema-fields');
+
+var RequestBodySchema = () => ExactObject({
+    properties: {
+        researchGroupId: ForeignId({ collection: 'researchGroup' }),
+        subjectRecordType: CustomRecordTypeKey({ collection: 'subject' }),
+        experimentType: ExperimentTypeEnum(),
+    },
+    required: [
+        'researchGroupId',
+        'subjectRecordType',
+        'experimentType',
+    ]
+});
 
 var selectableStudiesForCalendar = async (context, next) => {
     var { 
@@ -30,14 +52,23 @@ var selectableStudiesForCalendar = async (context, next) => {
         request,
     } = context;
 
-    // TODO: check params
-    // TODO: check permissions
+    validateOrThrow({
+        schema: RequestBodySchema(),
+        payload: request.body
+    })
 
     var {
         experimentType,
         subjectRecordType,
         researchGroupId,
     } = request.body
+
+    verifyLabOperationFlag({
+        researchGroupId,
+        labOperationType: experimentType,
+        flag: 'canViewExperimentCalendar',
+        permissions,
+    });
 
     // FIXME: this should actually be the interval of the calendar
     var now = new Date();
