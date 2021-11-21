@@ -5,15 +5,14 @@ var debug = require('debug')(
 
 var {
     validateOrThrow,
-    ResponseBody
+    ResponseBody,
+    fetchRelatedLabelsForMany,
 } = require('@mpieva/psydb-api-lib');
 
 var {
     AddLastKnownEventIdStage,
     StripEventsStage,
-} = require('@mpieva/psydb-api-lib/src/fetch-record-helpers');
-
-var fetchRelatedLabelsForMany = require('@mpieva/psydb-api-lib/src/fetch-related-labels-for-many');
+} = require('@mpieva/psydb-mongo-stages');
 
 var {
     ExactObject,

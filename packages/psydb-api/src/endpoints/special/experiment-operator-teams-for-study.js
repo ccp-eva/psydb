@@ -3,18 +3,33 @@ var debug = require('debug')(
     'psydb:api:endpoints:experimentOperatorTeamsForStudy'
 );
 
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
-    Ajv = require('@mpieva/psydb-api-lib/src/ajv');
+var {
+    compareIds
+} = require('@mpieva/psydb-core-utils');
 
-var ResponseBody = require('@mpieva/psydb-api-lib/src/response-body');
-var compareIds = require('@mpieva/psydb-api-lib/src/compare-ids');
-var createRecordLabel = require('@mpieva/psydb-api-lib/src/create-record-label');
-var fetchRecordById = require('@mpieva/psydb-api-lib/src/fetch-record-by-id');
+var {
+    validateOrThrow,
+    ResponseBody,
 
-var createSchemaForRecordType =
-    require('@mpieva/psydb-api-lib/src/create-schema-for-record-type');
+    createRecordLabel,
+    fetchRecordById,
+    createSchemaFoRecordType,
+    fetchRelatedLabels,
+} = require('@mpieva/psydb-api-lib');
 
-var fetchRelatedLabels = require('@mpieva/psydb-api-lib/src/fetch-related-labels');
+var {
+    ExactObject,
+    ForeignId,
+} = require('@mpieva/psydb-schema-fields');
+
+var RequestParamsSchema = () => ExactObject({
+    properties: {
+        studyId: ForeignId({ collection: 'study' }),
+    },
+    required: [
+        'studyId',
+    ]
+})
 
 var experimentOperatorTeamsForStudy = async (context, next) => {
     var { 
@@ -23,26 +38,21 @@ var experimentOperatorTeamsForStudy = async (context, next) => {
         params,
     } = context;
 
+    validateOrThrow({
+        schema: RequestParamsSchema(),
+        payload: params
+    })
+
     var {
         studyId,
     } = params;
 
-    // TODO: check params
-
-    var studyRecord = await fetchRecordById({
+    await verifyStudyAccess({
         db,
-        collectionName: 'study',
-        id: studyId,
         permissions,
+        studyId,
+        action: 'read',
     });
-
-    // TODO: permissions
-
-    // FIXME: question is should we 404 or 403 when access is denied?
-    // well 404 for now and treat it as if it wasnt found kinda
-    if (!studyRecord) {
-        throw new ApiError(404, 'NoAccessibleStudyRecordFound');
-    }
 
     var experimentOperatorTeamRecords = await (
         db.collection('experimentOperatorTeam').aggregate([

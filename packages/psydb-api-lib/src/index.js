@@ -8,6 +8,7 @@ module.exports = {
 
     validateOrThrow: require('./validate-or-throw'),
     verifyStudyAccess: require('./verify-study-access'),
+    verifyLabOperationAccess: require('./verify-lab-operation-access'),
     
     createRecordLabel: require('./create-record-label'),
     createRecordLabelFromCRT: require('./create-record-label-from-crt'),

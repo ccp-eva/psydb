@@ -4,23 +4,22 @@ var debug = require('debug')(
 );
 
 var {
-    validateOrThrow,
-    ApiError,
-    ResponseBody
-} = require('@mpieva/psydb-api-lib');
-
-var {
     groupBy,
     keyBy,
     compareIds
 } = require('@mpieva/psydb-core-utils');
 
-var fetchRelatedLabelsForMany = require('@mpieva/psydb-api-lib/src/fetch-related-labels-for-many');
+var {
+    validateOrThrow,
+    ApiError,
+    ResponseBody
+    fetchRelatedLabelsForMany,
+} = require('@mpieva/psydb-api-lib');
 
 var {
     StripEventsStage,
     SystemPermissionStages,
-} = require('@mpieva/psydb-api-lib/src/fetch-record-helpers');
+} = require('@mpieva/psydb-mongo-stages');
 
 var {
     ExactObject,
@@ -63,15 +62,12 @@ var experimentPostprocessing = async (context, next) => {
         subjectRecordType,
     } = request.body;
 
-    // TODO: permissions
-    if (!permissions.hasRootAccess) {
-        var allowed = permissions.allowedResearchGroupIds.find(id => {
-            return compareIds(id, researchGroupId)
-        })
-        if (!allowed) {
-            throw new ApiError(403)
-        }
-    }
+    verifyLabOperationFlag({
+        researchGroupId,
+        labOperationType: experimentType,
+        flag: 'canPostprocessExperiments',
+        permissions,
+    })
 
     var studyRecords = await (
         db.collection('study').aggregate([

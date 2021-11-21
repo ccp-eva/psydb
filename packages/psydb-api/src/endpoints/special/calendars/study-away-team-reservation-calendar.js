@@ -48,7 +48,7 @@ var studyAwayTeamReservationCalendar = async (context, next) => {
 
     validateOrThrow({
         schema: ParamsSchema(),
-        payload: request.body
+        payload: params
     });
 
     var {
