@@ -38,7 +38,7 @@ var SystemPermissionStages = (options) => {
             researchGroupIdsByCollection[collection][action]
         );
 
-        return [
+        var stages = [
             { $match: { $expr: (
                 hasResearchGroupIntersectionsCondition({
                     statePath: (
@@ -47,30 +47,30 @@ var SystemPermissionStages = (options) => {
                         : 'state'
                     ),
                     allowedResearchGroupIds,
+                    requiredPermission: action,
                 })
             )}}
-        ]
+        ];
+
+        return stages;
     }
 }
 
 
-var accessRightsPathSuffix = inlineString`
-    systemPermissions
-    .accessRightsByResearchGroup
-    .researchGroupId
-`;
-
 var hasResearchGroupIntersectionsCondition = ({
     statePath,
     allowedResearchGroupIds,
+    requiredPermission,
 }) => {
-
     return (
         { $gt: [
             { $size: {
                 $ifNull: [
                     { $setIntersection: [
-                        `$${statePath}.${accessRightsPathSuffix}`,
+                        FilterAndMapAccessRightsExpression({
+                            statePath,
+                            requiredPermission
+                        }),
                         allowedResearchGroupIds,
                     ]},
                     []
@@ -80,5 +80,31 @@ var hasResearchGroupIntersectionsCondition = ({
         ]}
     )
 };
+
+var FilterAndMapAccessRightsExpression = ({
+    statePath,
+    requiredPermission
+}) => {
+    var expr = (
+        { $map: {
+            input: { $filter: {
+                input: inlineString`
+                $${statePath}
+                .systemPermissions
+                .accessRightsByResearchGroup
+            `,
+                cond: { $in: [
+                    '$$this.permission',
+                    requiredPermission === 'read'
+                    ? [ 'read', 'write' ]
+                    : [ 'write' ]
+                ]}
+            }},
+            in: '$$this.researchGroupId'
+        }}
+    );
+
+    return expr;
+}
 
 module.exports = { SystemPermissionStages };
