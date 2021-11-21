@@ -18,6 +18,7 @@ handler.checkAllowedAndPlausible = async ({
     message,
     cache
 }) => {
+    // TODO: permissions
     var { id } = message.payload;
 
     await checkForeignIdsExist(db, {

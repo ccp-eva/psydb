@@ -10,10 +10,10 @@ var checkCreateBasics = async ({
     type
 }) => {
 
-    // TODO
-    if (!permissions.hasRootAccess) {
+    // TODO permissions
+    /*if (!permissions.hasRootAccess) {
         throw new ApiError(403);
-    }
+    }*/
 
     var {
         studyId,

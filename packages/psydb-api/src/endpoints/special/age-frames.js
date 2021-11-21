@@ -43,7 +43,12 @@ var ageFrames = async (context, next) => {
 
     var { studyIds } = request.body;
 
-    // TODO: permissions
+    await verifyStudyAccess({
+        db,
+        permissions,
+        studyIds,
+        action: 'read',
+    });
 
     var records = await (
         db.collection('ageFrame').aggregate([

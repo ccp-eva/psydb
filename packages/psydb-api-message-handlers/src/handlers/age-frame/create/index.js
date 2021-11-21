@@ -9,6 +9,7 @@ var handler = GenericRecordHandler({
     op: 'create',
 
     checkAllowedAndPlausible: async (context) => {
+        // TODO: permissions
         await GenericRecordHandler.checkAllowedAndPlausible(context);
         
         var {

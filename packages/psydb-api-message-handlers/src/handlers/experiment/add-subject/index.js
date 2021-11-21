@@ -46,10 +46,10 @@ handler.checkAllowedAndPlausible = async (context) => {
         message
     } = context;
 
-    // TODO
-    if (!permissions.hasRootAccess) {
+    // TODO: permissions
+    /*if (!permissions.hasRootAccess) {
         throw new ApiError(403);
-    }
+    }*/
 
     var {
         labProcedureTypeKey,

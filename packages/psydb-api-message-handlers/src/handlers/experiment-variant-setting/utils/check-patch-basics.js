@@ -9,10 +9,10 @@ var checkPatchBasics = async ({
     message,
 }) => {
 
-    // TODO
-    if (!permissions.hasRootAccess) {
+    // TODO: permissions
+    /*if (!permissions.hasRootAccess) {
         throw new ApiError(403);
-    }
+    }*/
 
     var { id, props } = message.payload;
     var { subjectTypeKey } = props;

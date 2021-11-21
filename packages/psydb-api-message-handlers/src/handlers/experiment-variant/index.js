@@ -6,6 +6,7 @@ var {
 var GenericRecordHandler = require('../../lib/generic-record-handler');
 
 var SubjectSelectorGroup = MessageHandlerGroup([
+    // TODO: permissions
     GenericRecordHandler({
         collection: 'experimentVariant',
         op: 'create',
