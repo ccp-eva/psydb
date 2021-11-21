@@ -3,13 +3,18 @@ var debug = require('debug')(
     'psydb:api:endpoints:experimentPostprocessing'
 );
 
-var Ajv = require('@mpieva/psydb-api-lib/src/ajv'),
-    ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
-    ResponseBody = require('@mpieva/psydb-api-lib/src/response-body');
+var {
+    validateOrThrow,
+    ApiError,
+    ResponseBody
+} = require('@mpieva/psydb-api-lib');
 
-var groupBy = require('@mpieva/psydb-common-lib/src/group-by');
-var keyBy = require('@mpieva/psydb-common-lib/src/key-by');
-var compareIds = require('@mpieva/psydb-api-lib/src/compare-ids');
+var {
+    groupBy,
+    keyBy,
+    compareIds
+} = require('@mpieva/psydb-core-utils');
+
 var fetchRelatedLabelsForMany = require('@mpieva/psydb-api-lib/src/fetch-related-labels-for-many');
 
 var {
@@ -47,17 +52,10 @@ var experimentPostprocessing = async (context, next) => {
         request,
     } = context;
 
-    var ajv = Ajv(),
-        isValid = false;
-
-    isValid = ajv.validate(
-        RequestBodySchema(),
-        request.body
-    );
-    if (!isValid) {
-        debug('ajv errors', ajv.errors);
-        throw new ApiError(400, 'InvalidRequestSchema');
-    };
+    validateOrThrow({
+        schema: RequestBodySchema(),
+        payload: request.body
+    })
 
     var {
         experimentType,
@@ -65,6 +63,7 @@ var experimentPostprocessing = async (context, next) => {
         subjectRecordType,
     } = request.body;
 
+    // TODO: permissions
     if (!permissions.hasRootAccess) {
         var allowed = permissions.allowedResearchGroupIds.find(id => {
             return compareIds(id, researchGroupId)

@@ -3,14 +3,17 @@ var debug = require('debug')(
     'psydb:api:endpoints:participatedStudiesForSubject'
 );
 
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
-    Ajv = require('@mpieva/psydb-api-lib/src/ajv');
+var {
+    groupBy,
+    keyBy,
+    compareIds
+} = require('@mpieva/psydb-core-utils');
 
-var keyBy = require('@mpieva/psydb-common-lib/src/key-by');
-var groupBy = require('@mpieva/psydb-common-lib/src/group-by');
-
-var ResponseBody = require('@mpieva/psydb-api-lib/src/response-body');
-var compareIds = require('@mpieva/psydb-api-lib/src/compare-ids');
+var {
+    validateOrThrow,
+    ApiError,
+    ResponseBody
+} = require('@mpieva/psydb-api-lib');
 
 var createSchemaForRecordType =
     require('@mpieva/psydb-api-lib/src/create-schema-for-record-type');
@@ -39,6 +42,7 @@ var participatedStudiesForSubject = async (context, next) => {
     } = params;
 
     // TODO: check params
+    // TODO: permissions
 
     var subjectData = await fetchSubjectData({
         db,

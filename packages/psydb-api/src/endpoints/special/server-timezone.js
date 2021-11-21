@@ -4,7 +4,7 @@ var debug = require('debug')(
 );
 
 var { getSystemTimezone } = require('@mpieva/psydb-timezone-helpers');
-var ResponseBody = require('@mpieva/psydb-api-lib/src/response-body');
+var { ResponseBody } = require('@mpieva/psydb-api-lib');
 
 var serverTimezone = async (context, next) => {
     var d = new Date();

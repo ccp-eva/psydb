@@ -3,16 +3,16 @@ var debug = require('debug')(
     'psydb:api:endpoints:participatedSubjectsForStudy'
 );
 
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
-    Ajv = require('@mpieva/psydb-api-lib/src/ajv');
-
-
 var {
     keyBy,
     compareIds
-} = require('@mpieva/psydb-common-lib');
+} = require('@mpieva/psydb-core-utils');
 
-var ResponseBody = require('@mpieva/psydb-api-lib/src/response-body');
+var {
+    validateOrThrow,
+    ApiError,
+    ResponseBody
+} = require('@mpieva/psydb-api-lib');
 
 var {
     gatherSubjectTypesFromLabProcedureSettings
@@ -44,6 +44,7 @@ var participatedSubjectsForStudy = async (context, next) => {
     } = params;
 
     // TODO: check params
+    // TODO: permissions
 
     var settingRecords = await (
         db.collection('experimentVariantSetting').aggregate([

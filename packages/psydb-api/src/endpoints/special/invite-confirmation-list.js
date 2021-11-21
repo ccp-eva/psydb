@@ -3,12 +3,18 @@ var debug = require('debug')(
     'psydb:api:endpoints:invitedInhouseSubjects'
 );
 
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
-    ResponseBody = require('@mpieva/psydb-api-lib/src/response-body');
+var {
+    validateOrThrow,
+    ApiError,
+    ResponseBody
+} = require('@mpieva/psydb-api-lib');
 
-var groupBy = require('@mpieva/psydb-common-lib/src/group-by');
-var keyBy = require('@mpieva/psydb-common-lib/src/key-by');
-var compareIds = require('@mpieva/psydb-api-lib/src/compare-ids');
+var {
+    groupBy,
+    keyBy,
+    compareIds
+} = require('@mpieva/psydb-core-utils');
+
 var convertPointerToPath = require('@mpieva/psydb-api-lib/src/convert-pointer-to-path');
 
 var fetchOneCustomRecordType = require('@mpieva/psydb-api-lib/src/fetch-one-custom-record-type');
@@ -30,6 +36,8 @@ var inviteConfirmationList = async (context, next) => {
         request,
     } = context;
 
+    // TODO: check schema
+
     // FIXME: maybe unmarshal researchGroupId
     // FIXME: we should maybe add subjectRecordtype and studyRecordType
     var {
@@ -43,6 +51,7 @@ var inviteConfirmationList = async (context, next) => {
     start = new Date(start);
     end = new Date(end);
     
+    // TODO permissions
     if (!permissions.hasRootAccess) {
         var allowed = permissions.allowedResearchGroupIds.find(id => {
             return compareIds(id, researchGroupId)

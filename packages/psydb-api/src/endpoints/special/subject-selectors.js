@@ -3,9 +3,10 @@ var debug = require('debug')(
     'psydb:api:endpoints:subjectSelectors'
 );
 
-var Ajv = require('@mpieva/psydb-api-lib/src/ajv'),
-    ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
-    ResponseBody = require('@mpieva/psydb-api-lib/src/response-body');
+var {
+    validateOrThrow,
+    ResponseBody
+} = require('@mpieva/psydb-api-lib');
 
 var {
     ExactObject,
@@ -28,20 +29,12 @@ var subjectSelectors = async (context, next) => {
         request,
     } = context;
 
-    var ajv = Ajv(),
-        isValid = false;
+    validateOrThrow({
+        schema: RequestBodySchema(),
+        payload: request.body
+    })
 
-    isValid = ajv.validate(
-        RequestBodySchema(),
-        request.body
-    );
-    if (!isValid) {
-        debug('ajv errors', ajv.errors);
-        throw new ApiError(400, 'InvalidRequestSchema', {
-            ajvErrors: ajv.errors
-        });
-    };
-
+    // TODO: permissions
     var { studyIds } = request.body;
 
     var records = await db.collection('subjectSelector').find({

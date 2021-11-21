@@ -9,6 +9,7 @@ var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
 var ResponseBody = require('@mpieva/psydb-api-lib/src/response-body');
 var fetchRecordById = require('@mpieva/psydb-api-lib/src/fetch-record-by-id');
 
+// TODO: obsolete?
 var subjectTypeDataForStudy = async (context, next) => {
     var { 
         db,

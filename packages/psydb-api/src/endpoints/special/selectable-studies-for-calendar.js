@@ -3,10 +3,16 @@ var debug = require('debug')(
     'psydb:api:endpoints:selectableStudiesForCalendar'
 );
 
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
-    Ajv = require('@mpieva/psydb-api-lib/src/ajv'),
-    ResponseBody = require('@mpieva/psydb-api-lib/src/response-body'),
-    keyBy = require('@mpieva/psydb-common-lib/src/key-by');
+var {
+    keyBy,
+    compareIds
+} = require('@mpieva/psydb-core-utils');
+
+var {
+    validateOrThrow,
+    ApiError,
+    ResponseBody
+} = require('@mpieva/psydb-api-lib');
 
 var {
     MatchIntervalAroundStage,
@@ -16,7 +22,6 @@ var {
 
 var fetchCustomRecordTypes = require('@mpieva/psydb-api-lib/src/fetch-custom-record-types');
 var createRecordLabel = require('@mpieva/psydb-api-lib/src/create-record-label');
-var compareIds = require('@mpieva/psydb-api-lib/src/compare-ids');
 
 var selectableStudiesForCalendar = async (context, next) => {
     var { 
@@ -24,6 +29,9 @@ var selectableStudiesForCalendar = async (context, next) => {
         permissions,
         request,
     } = context;
+
+    // TODO: check params
+    // TODO: check permissions
 
     var {
         experimentType,

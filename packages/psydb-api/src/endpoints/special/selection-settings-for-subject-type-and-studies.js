@@ -33,6 +33,7 @@ var selectionSettingsForSubjectTypeAndStudies = async (context, next) => {
         studyIds,
     } = request.body;
 
+    // TODO: obsolete=
     // TODO: check body + unmarshal
 
     var studySelectionSettings = await db.collection('study').aggregate([

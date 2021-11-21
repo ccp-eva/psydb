@@ -4,9 +4,10 @@ var debug = require('debug')(
     'psydb:api:endpoints:experimentVariants'
 );
 
-var Ajv = require('@mpieva/psydb-api-lib/src/ajv'),
-    ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
-    ResponseBody = require('@mpieva/psydb-api-lib/src/response-body');
+var {
+    validateOrThrow,
+    ResponseBody
+} = require('@mpieva/psydb-api-lib');
 
 var {
     ExactObject,
@@ -29,19 +30,12 @@ var experimentVariants = async (context, next) => {
         request,
     } = context;
 
-    var ajv = Ajv(),
-        isValid = false;
+    validateOrThrow({
+        schema: RequestBodySchema(),
+        payload: request.body
+    })
 
-    isValid = ajv.validate(
-        RequestBodySchema(),
-        request.body
-    );
-    if (!isValid) {
-        debug('ajv errors', ajv.errors);
-        throw new ApiError(400, 'InvalidRequestSchema', {
-            ajvErrors: ajv.errors
-        });
-    };
+    // TODO: permissions
 
     var { studyIds } = request.body;
 

@@ -3,9 +3,10 @@ var debug = require('debug')(
     'psydb:api:endpoints:ageFrames'
 );
 
-var Ajv = require('@mpieva/psydb-api-lib/src/ajv'),
-    ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
-    ResponseBody = require('@mpieva/psydb-api-lib/src/response-body');
+var {
+    validateOrThrow,
+    ResponseBody
+} = require('@mpieva/psydb-api-lib');
 
 var {
     AddLastKnownEventIdStage,
@@ -35,21 +36,14 @@ var ageFrames = async (context, next) => {
         request,
     } = context;
 
-    var ajv = Ajv(),
-        isValid = false;
-
-    isValid = ajv.validate(
-        RequestBodySchema(),
-        request.body
-    );
-    if (!isValid) {
-        debug('ajv errors', ajv.errors);
-        throw new ApiError(400, 'InvalidRequestSchema', {
-            ajvErrors: ajv.errors
-        });
-    };
+    validateOrThrow({
+        schema: RequestBodySchema(),
+        payload: request.body
+    })
 
     var { studyIds } = request.body;
+
+    // TODO: permissions
 
     var records = await (
         db.collection('ageFrame').aggregate([

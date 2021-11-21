@@ -36,6 +36,8 @@ var experimentOperatorTeamsForStudy = async (context, next) => {
         permissions,
     });
 
+    // TODO: permissions
+
     // FIXME: question is should we 404 or 403 when access is denied?
     // well 404 for now and treat it as if it wasnt found kinda
     if (!studyRecord) {

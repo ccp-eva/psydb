@@ -157,6 +157,10 @@ var search = async (context, next) => {
         offset,
         limit,
         sort,
+
+        // TODO remove this as soon as we
+        // can properly quicksearch and search for fk
+        disablePermissionCheck: true
     });
 
     var related = await fetchRelatedLabelsForMany({
