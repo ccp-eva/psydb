@@ -66,13 +66,6 @@ var search = async (context, next) => {
     
     target = target || 'table';
 
-    if (
-        !permissions.hasRootAccess
-        && !permissions.canReadCollection(collectionName)
-    ) {
-        throw new ApiError(403, 'CollectionAccessDenied');
-    }
-
     var collectionCreatorData = allSchemaCreators[collectionName];
     if (!collectionCreatorData) {
         throw new Error(

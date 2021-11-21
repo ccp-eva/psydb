@@ -97,7 +97,10 @@ var fetchRecordByFilter = async ({
         ...(
             disablePermissionCheck
             ? []
-            : SystemPermissionStages({ permissions, hasSubChannels })
+            : SystemPermissionStages({
+                collection: collectionName,
+                permissions,
+            })
         ),
         StripEventsStage({
             subChannels: (
