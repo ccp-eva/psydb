@@ -7,6 +7,7 @@ module.exports = {
     ResponseBody: require('./response-body'),
 
     validateOrThrow: require('./validate-or-throw'),
+    verifyStudyAccess: require('./verify-study-access'),
     
     createRecordLabel: require('./create-record-label'),
     createRecordLabelFromCRT: require('./create-record-label-from-crt'),
