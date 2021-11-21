@@ -25,18 +25,28 @@ var filterResearchGroupsByPermissionFlags = (options) => {
         flagsByResearchGroupId,
     } = options;
 
-    var possibleFlagKeys = getCollectionFlagKeys({ collection });
+    var possibleFlagKeysByAction = {
+        read: getCollectionReadFlagKeys({ collection }),
+        write: getCollectionWriteFlagKeys({ collection }),
+    }
 
-    var filteredIds = researchGroupIds.filter(gid => {
-        var flags = flagsByResearchGroupId[gid];
-        var anyAllowed = checkFlagKeys({ flags, possibleFlagKeys });
-        return anyAllowed;
-    });
-    
-    return filteredIds;
+    var out = {};
+    for (var action of Object.keys(possibleFlagKeysByAction)) {
+        var possibleFlagKeys = possibleFlagKeysByAction[action];
+
+        var filteredIds = researchGroupIds.filter(gid => {
+            var flags = flagsByResearchGroupId[gid];
+            var anyAllowed = checkFlagKeys({ flags, possibleFlagKeys });
+            return anyAllowed;
+        });
+        
+        out[action] = filteredIds
+    }
+
+    return out;
 }
 
-var getCollectionFlagKeys = ({ collection }) => {
+var getCollectionReadFlagKeys = ({ collection }) => {
     switch (collection) {
         case 'subject':
             return [ 'canReadSubjects', 'canWriteSubjects' ];
@@ -57,6 +67,26 @@ var getCollectionFlagKeys = ({ collection }) => {
     }
 }
 
+var getCollectionWriteFlagKeys = ({ collection }) => {
+    switch (collection) {
+        case 'subject':
+            return [ 'canWriteSubjects' ];
+        case 'study':
+            return [ 'canWriteStudies' ];
+        case 'personnel':
+            return [ 'canWritePersonnel' ];
+
+        case 'externalPerson':
+        case 'externalOrganization':
+        case 'helperSet':
+        case 'helperSetItem':
+        case 'location':
+            return [ 'canWriteAdministrativeCollections' ]
+
+        default:
+            return []
+    }
+}
 var checkFlagKeys = ({ flags, possibleFlagKeys }) => {
     var areAnyTrue = false;
     for (var key of possibleFlagKeys) {

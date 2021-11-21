@@ -18,8 +18,8 @@ var Permissions = ({
         hasRootAccess,
         availableResearchGroupIds,
         forcedResearchGroupId,
-    }),
-        
+    });
+
     var flagsByResearchGroupId = keyRoleFlagsByResearchGroupId({
         availableResearchGroupIds,
         rolesByResearchGroupId

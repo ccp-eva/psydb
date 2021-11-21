@@ -2,7 +2,11 @@
 var { compareIds } = require('@mpieva/psydb-core-utils');
 
 var setupInternalResearchGroupIds = (options) => {
-    var { hasRootAccess, available, forced } = options;
+    var {
+        hasRootAccess,
+        availableResearchGroupIds: available,
+        forcedResearchGroupId: forced,
+    } = options;
     
     if (forced) {
         var isForcedRGAllowed = !!available.find(availableId => (

@@ -7,7 +7,7 @@ var keyRoleFlagsByResearchGroupId = (options) => {
     } = options;
 
     return (
-        researchGroupIds.reduce((acc, gid) => ({
+        availableResearchGroupIds.reduce((acc, gid) => ({
             ...acc,
             [gid]: rolesByResearchGroupId[gid].state
         }), {})
