@@ -8,9 +8,10 @@ var {
 } = require('@mpieva/psydb-core-utils');
 
 var {
-    validateOrThrow,
     ResponseBody,
 
+    validateOrThrow,
+    verifyStudyAccess,
     createRecordLabel,
     fetchRecordById,
     createSchemaFoRecordType,

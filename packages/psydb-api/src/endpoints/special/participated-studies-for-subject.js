@@ -10,25 +10,38 @@ var {
 } = require('@mpieva/psydb-core-utils');
 
 var {
-    validateOrThrow,
     ApiError,
-    ResponseBody
+    ResponseBody,
+
+    validateOrThrow,
+    verifySubjectAccess,
+
+    createSchemaForRecordType,
+    fetchRelatedLabelsForMany,
+    createRecordLabel,
+    gatherDisplayFieldsForRecordType,
+    fetchRecordById,
+    fetchRecordsByFilter
 } = require('@mpieva/psydb-api-lib');
-
-var createSchemaForRecordType =
-    require('@mpieva/psydb-api-lib/src/create-schema-for-record-type');
-
-var fetchRelatedLabelsForMany = require('@mpieva/psydb-api-lib/src/fetch-related-labels-for-many');
-var fetchRecordById = require('@mpieva/psydb-api-lib/src/fetch-record-by-id');
-var fetchRecordsByFilter = require('@mpieva/psydb-api-lib/src/fetch-records-by-filter');
-
-var createRecordLabel = require('@mpieva/psydb-api-lib/src/create-record-label');
-var gatherDisplayFieldsForRecordType = require('@mpieva/psydb-api-lib/src/gather-display-fields-for-record-type');
 
 var {
     ProjectDisplayFieldsStage,
     StripEventsStage,
 } = require('@mpieva/psydb-api-lib/src/fetch-record-helpers');
+
+var {
+    ExactObject,
+    ForeignId,
+} = require('@mpieva/psydb-schema-fields');
+
+var RequestParamsSchema = () => ExactObject({
+    properties: {
+        subjectId: ForeignId({ collection: 'subject' }),
+    },
+    required: [
+        'subjectId',
+    ]
+});
 
 var participatedStudiesForSubject = async (context, next) => {
     var { 
@@ -37,12 +50,22 @@ var participatedStudiesForSubject = async (context, next) => {
         params,
     } = context;
 
+    validateOrThrow({
+        schema: RequestParamsSchema(),
+        payload: params
+    })
+
     var {
         subjectId,
     } = params;
 
-    // TODO: check params
-    // TODO: permissions
+    await verifySubjectAccess({
+        db,
+        permissions,
+        subjectId,
+        action: 'read',
+        checkAdditionalFlags: [ 'canReadParticipation' ]
+    });
 
     var subjectData = await fetchSubjectData({
         db,

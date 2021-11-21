@@ -28,4 +28,5 @@ module.exports = {
     slotifyItems: require('./slotify-items'),
 
     Permissions: require('./permissions'),
+    checkLabOperationAccess: require('./check-lab-operation-access'),
 }

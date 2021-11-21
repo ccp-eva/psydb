@@ -7,7 +7,10 @@ module.exports = {
     ResponseBody: require('./response-body'),
 
     validateOrThrow: require('./validate-or-throw'),
+
+    verifyRecordAccess: require('./verify-record-access'),
     verifyStudyAccess: require('./verify-study-access'),
+    verifySubjectAccess: require('./verify-study-access'),
     verifyLabOperationAccess: require('./verify-lab-operation-access'),
     
     createRecordLabel: require('./create-record-label'),

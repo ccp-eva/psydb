@@ -4,23 +4,26 @@ var debug = require('debug')(
 );
 
 var {
-    validateOrThrow,
-    ApiError,
-    ResponseBody
-} = require('@mpieva/psydb-api-lib');
-
-var {
     groupBy,
     keyBy,
     compareIds
 } = require('@mpieva/psydb-core-utils');
 
-var convertPointerToPath = require('@mpieva/psydb-api-lib/src/convert-pointer-to-path');
+var {
+    checkLabOperationAccess
+} = require('@mpieva/psydb-common-lib');
 
-var fetchOneCustomRecordType = require('@mpieva/psydb-api-lib/src/fetch-one-custom-record-type');
-var gatherDisplayFieldsForRecordType = require('@mpieva/psydb-api-lib/src/gather-display-fields-for-record-type');
+var {
+    ApiError,
+    ResponseBody,
 
-var fetchRelatedLabelsForMany = require('@mpieva/psydb-api-lib/src/fetch-related-labels-for-many');
+    validateOrThrow,
+
+    convertPointerToPath,
+    fetchOneCustomRecordType,
+    gatherDisplayFieldsForRecordType,
+    fetchRelatedLabelsForMany,
+} = require('@mpieva/psydb-api-lib');
 
 var {
     MatchIntervalOverlapStage,
@@ -29,6 +32,28 @@ var {
     ProjectDisplayFieldsStage,
 } = require('@mpieva/psydb-api-lib/src/fetch-record-helpers');
 
+var {
+    ExactObject,
+    ForeignId,
+    CustomRecordTypeKey,
+    DateTime,
+} = require('@mpieva/psydb-schema-fields');
+
+var RequestBodySchema = () => ExactObject({
+    properties: {
+        researchGroupId: ForeignId({ collection: 'researchGroup' }),
+        subjectRecordType: CustomRecordTypeKey({ collection: 'subject' }),
+        start: DateTime(),
+        end: DateTime(),
+    },
+    required: [
+        'researchGroupId',
+        'subjectRecordType',
+        'start',
+        'end',
+    ]
+});
+
 var inviteConfirmationList = async (context, next) => {
     var { 
         db,
@@ -36,10 +61,11 @@ var inviteConfirmationList = async (context, next) => {
         request,
     } = context;
 
-    // TODO: check schema
+    validateOrThrow({
+        schema: RequestBodySchema(),
+        payload: request.body
+    })
 
-    // FIXME: maybe unmarshal researchGroupId
-    // FIXME: we should maybe add subjectRecordtype and studyRecordType
     var {
         researchGroupId,
         subjectRecordType,
@@ -47,18 +73,37 @@ var inviteConfirmationList = async (context, next) => {
         end,
     } = request.body;
 
-    // TODO: unmarshal date
-    start = new Date(start);
-    end = new Date(end);
-    
-    // TODO permissions
-    if (!permissions.hasRootAccess) {
-        var allowed = permissions.allowedResearchGroupIds.find(id => {
-            return compareIds(id, researchGroupId)
+    var canAccessInhouse = verifyLabOperationFlag({
+        researchGroupId,
+        labOperationType: 'inhouse',
+        flag: 'canConfirmSubjectInvitation',
+        permissions,
+    })
+
+    var canAccessOnlineVideoCall = verifyLabOperationFlag({
+        researchGroupId,
+        labOperationType: 'online-video-call',
+        flag: 'canConfirmSubjectInvitation',
+        permissions,
+    });
+
+    if (!canAccessInhouse && !canAccessOnlineVideoCall) {
+        throw new ApiError(403, {
+            apiStatus: 'LabOperationAccessDenied',
+            data: {
+                researchGroupId,
+                flag: 'canConfirmSubjectInvitation',
+                labOperationTypes: [ 'online-video-call', 'inhouse' ]
+            }
         })
-        if (!allowed) {
-            throw new ApiError(403)
-        }
+    }
+
+    var experimentTypes = [];
+    if (canAccessInhouse) {
+        experimentTypes.push('inhouse');
+    }
+    if (canAccessOnlineVideoCall) {
+        experimentTypes.push('online-video-call');
     }
 
     var studyRecords = await (
@@ -78,7 +123,7 @@ var inviteConfirmationList = async (context, next) => {
         db.collection('experiment').aggregate([
             MatchIntervalOverlapStage({ start, end }),
             { $match: {
-                type: { $in: [ 'inhouse', 'online-video-call' ] },
+                type: { $in: experimentTypes },
                 // TODO: only for invitation
                 'state.subjectData.invitationStatus': 'scheduled',
             }},

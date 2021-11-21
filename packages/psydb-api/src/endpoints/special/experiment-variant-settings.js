@@ -3,9 +3,14 @@ var debug = require('debug')(
     'psydb:api:endpoints:experimentVariantSettings'
 );
 
+var allSchemaCreators = require('@mpieva/psydb-schema-creators');
+
 var {
+    ResponseBody,
     validateOrThrow,
-    ResponseBody
+    verifyStudyAccess,
+
+    fetchRelatedLabels,
 } = require('@mpieva/psydb-api-lib');
 
 var {
@@ -13,8 +18,6 @@ var {
     StripEventsStage,
 } = require('@mpieva/psydb-api-lib/src/fetch-record-helpers');
 
-var fetchRelatedLabels = require('@mpieva/psydb-api-lib/src/fetch-related-labels');
-var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
 var {
     ExactObject,
@@ -42,9 +45,14 @@ var experimentVariantSettings = async (context, next) => {
         payload: request.body
     })
 
-    // TODO: permissions
-
     var { studyIds } = request.body;
+
+    await verifyStudyAccess({
+        db,
+        permissions,
+        studyIds,
+        action: 'read',
+    });
 
     var records = await (
         db.collection('experimentVariantSetting').aggregate([

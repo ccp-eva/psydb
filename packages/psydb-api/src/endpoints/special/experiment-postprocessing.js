@@ -10,9 +10,11 @@ var {
 } = require('@mpieva/psydb-core-utils');
 
 var {
-    validateOrThrow,
     ApiError,
-    ResponseBody
+    ResponseBody,
+
+    validateOrThrow,
+    verifyLabOperationAccess,
     fetchRelatedLabelsForMany,
 } = require('@mpieva/psydb-api-lib');
 

@@ -5,8 +5,9 @@ var debug = require('debug')(
 );
 
 var {
+    ResponseBody,
     validateOrThrow,
-    ResponseBody
+    verifyStudyAccess,
 } = require('@mpieva/psydb-api-lib');
 
 var {
@@ -35,9 +36,14 @@ var experimentVariants = async (context, next) => {
         payload: request.body
     })
 
-    // TODO: permissions
-
     var { studyIds } = request.body;
+
+    await verifyStudyAccess({
+        db,
+        permissions,
+        studyIds,
+        action: 'read',
+    });
 
     var records = await db.collection('experimentVariant').find({
         studyId: { $in: studyIds }

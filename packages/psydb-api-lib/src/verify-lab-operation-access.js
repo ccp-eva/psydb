@@ -1,5 +1,6 @@
 'use strict';
 var { compareIds } = require('@mpieva/psydb-core-utils');
+var { checkLabOperationAccess } = require('@mpieva/psydb-common-lib');
 
 var verifyLabOperationAccess = (options) => {
     var {
@@ -9,30 +10,18 @@ var verifyLabOperationAccess = (options) => {
         researchGroupId,
     } = options;
 
-    var {
-        hasRootAccess,
-        forcedResearchGroupId,
-        researchGroupIdsByFlag
-    } = permissions;
+    var isAllowed = checkLabOperationAccess(options);
 
-    if (!hasRootAccess && !forcedResearchGroupId) {
-        var allowedIds = researchGroupIdsByFlag[flag];
-
-        var isAllowed = !!allowedIds.find(id => {
-            return compareIds(id, researchGroupId)
-        });
-
-        if (!isAllowed) {
-            throw new ApiError(403, {
-                apiStatus: 'LabOperationAccessDenied',
-                data: {
-                    flag,
-                    researchGroupId,
-                    labOperationType
-                }
-            })
-        }
+    if (!isAllowed) {
+        throw new ApiError(403, {
+            apiStatus: 'LabOperationAccessDenied',
+            data: {
+                flag,
+                researchGroupId,
+                labOperationType
+            }
+        })
     }
 }
 
-module.exports = verifyLabOperationAccss;
+module.exports = verifyLabOperationAccess;

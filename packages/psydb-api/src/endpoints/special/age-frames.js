@@ -4,8 +4,9 @@ var debug = require('debug')(
 );
 
 var {
-    validateOrThrow,
     ResponseBody,
+    validateOrThrow,
+    verifyStudyAccess,
     fetchRelatedLabelsForMany,
 } = require('@mpieva/psydb-api-lib');
 

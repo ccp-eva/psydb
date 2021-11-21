@@ -1,11 +1,11 @@
 'use strict';
 var verifyRecordAccess = require('./verify-record-access');
 
-var verifyStudyAccess = async (options) => {
+var verifySubjectAccess = async (options) => {
     return await verifyRecordAccess({
         ...options,
-        collection: 'study',
+        collection: 'subject',
     });
 }
 
-module.exports = verifyStudyAccess;
+module.exports = verifySubjectAccess;
