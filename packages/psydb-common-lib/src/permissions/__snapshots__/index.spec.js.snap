@@ -99,6 +99,155 @@ Object {
       "write": Array [],
     },
   },
+  "researchGroupIdsByFlag": Object {
+    "canReadStudies": Array [
+      "gid_2",
+    ],
+    "canReadSubjects": Array [
+      "gid_2",
+    ],
+  },
+}
+`;
+
+exports[`Permissions() non-root; multiple research group; deep flags 1`] = `
+Object {
+  "availableResearchGroupIds": Array [
+    "gid_1",
+    "gid_2",
+  ],
+  "flagsByResearchGroupId": Object {
+    "gid_1": Object {
+      "canReadSubjects": true,
+      "canWriteSubjects": true,
+      "labOperations": Object {
+        "inhouse": Object {
+          "canMoveAndCancelExperiments": true,
+          "canViewExperimentCalendar": true,
+        },
+      },
+    },
+    "gid_2": Object {
+      "canReadStudies": true,
+      "canReadSubjects": true,
+      "labOperations": Object {
+        "inhouse": Object {
+          "canMoveAndCancelExperiments": false,
+          "canViewExperimentCalendar": true,
+        },
+      },
+    },
+  },
+  "forcedResearchGroupId": undefined,
+  "hasRootAccess": false,
+  "researchGroupIds": Array [
+    "gid_1",
+    "gid_2",
+  ],
+  "researchGroupIdsByCollection": Object {
+    "ageFrame": Object {
+      "read": Array [],
+      "write": Array [],
+    },
+    "customRecordType": Object {
+      "read": Array [],
+      "write": Array [],
+    },
+    "experiment": Object {
+      "read": Array [],
+      "write": Array [],
+    },
+    "experimentOperatorTeam": Object {
+      "read": Array [],
+      "write": Array [],
+    },
+    "experimentVariant": Object {
+      "read": Array [],
+      "write": Array [],
+    },
+    "experimentVariantSetting": Object {
+      "read": Array [],
+      "write": Array [],
+    },
+    "externalOrganization": Object {
+      "read": Array [],
+      "write": Array [],
+    },
+    "externalPerson": Object {
+      "read": Array [],
+      "write": Array [],
+    },
+    "helperSet": Object {
+      "read": Array [],
+      "write": Array [],
+    },
+    "helperSetItem": Object {
+      "read": Array [],
+      "write": Array [],
+    },
+    "location": Object {
+      "read": Array [],
+      "write": Array [],
+    },
+    "personnel": Object {
+      "read": Array [],
+      "write": Array [],
+    },
+    "researchGroup": Object {
+      "read": Array [],
+      "write": Array [],
+    },
+    "reservation": Object {
+      "read": Array [],
+      "write": Array [],
+    },
+    "study": Object {
+      "read": Array [
+        "gid_2",
+      ],
+      "write": Array [],
+    },
+    "subject": Object {
+      "read": Array [
+        "gid_1",
+        "gid_2",
+      ],
+      "write": Array [
+        "gid_1",
+      ],
+    },
+    "subjectSelector": Object {
+      "read": Array [],
+      "write": Array [],
+    },
+    "systemRole": Object {
+      "read": Array [],
+      "write": Array [],
+    },
+  },
+  "researchGroupIdsByFlag": Object {
+    "canReadStudies": Array [
+      "gid_2",
+    ],
+    "canReadSubjects": Array [
+      "gid_1",
+      "gid_2",
+    ],
+    "canWriteSubjects": Array [
+      "gid_1",
+    ],
+    "labOperations": Object {
+      "inhouse": Object {
+        "canMoveAndCancelExperiments": Array [
+          "gid_1",
+        ],
+        "canViewExperimentCalendar": Array [
+          "gid_1",
+          "gid_2",
+        ],
+      },
+    },
+  },
 }
 `;
 
@@ -205,6 +354,18 @@ Object {
       "write": Array [],
     },
   },
+  "researchGroupIdsByFlag": Object {
+    "canReadStudies": Array [
+      "gid_2",
+    ],
+    "canReadSubjects": Array [
+      "gid_1",
+      "gid_2",
+    ],
+    "canWriteSubjects": Array [
+      "gid_1",
+    ],
+  },
 }
 `;
 
@@ -305,6 +466,12 @@ Object {
       "write": Array [],
     },
   },
+  "researchGroupIdsByFlag": Object {
+    "canReadSubjects": Array [
+      "gid_1",
+      "gid_2",
+    ],
+  },
 }
 `;
 
@@ -397,6 +564,140 @@ Object {
     "systemRole": Object {
       "read": Array [],
       "write": Array [],
+    },
+  },
+  "researchGroupIdsByFlag": Object {
+    "canReadSubjects": Array [
+      "gid_1",
+    ],
+  },
+}
+`;
+
+exports[`Permissions() root; multiple research group + forced; deep flags 1`] = `
+Object {
+  "availableResearchGroupIds": Array [
+    "gid_1",
+    "gid_2",
+  ],
+  "flagsByResearchGroupId": Object {
+    "gid_1": Object {
+      "canReadSubjects": true,
+      "canWriteSubjects": true,
+      "labOperations": Object {
+        "inhouse": Object {
+          "canMoveAndCancelExperiments": true,
+          "canViewExperimentCalendar": true,
+        },
+      },
+    },
+    "gid_2": Object {
+      "canReadStudies": true,
+      "canReadSubjects": true,
+      "labOperations": Object {
+        "inhouse": Object {
+          "canMoveAndCancelExperiments": false,
+          "canViewExperimentCalendar": true,
+        },
+      },
+    },
+  },
+  "forcedResearchGroupId": "gid_2",
+  "hasRootAccess": true,
+  "researchGroupIds": Array [
+    "gid_2",
+  ],
+  "researchGroupIdsByCollection": Object {
+    "ageFrame": Object {
+      "read": Array [],
+      "write": Array [],
+    },
+    "customRecordType": Object {
+      "read": Array [],
+      "write": Array [],
+    },
+    "experiment": Object {
+      "read": Array [],
+      "write": Array [],
+    },
+    "experimentOperatorTeam": Object {
+      "read": Array [],
+      "write": Array [],
+    },
+    "experimentVariant": Object {
+      "read": Array [],
+      "write": Array [],
+    },
+    "experimentVariantSetting": Object {
+      "read": Array [],
+      "write": Array [],
+    },
+    "externalOrganization": Object {
+      "read": Array [],
+      "write": Array [],
+    },
+    "externalPerson": Object {
+      "read": Array [],
+      "write": Array [],
+    },
+    "helperSet": Object {
+      "read": Array [],
+      "write": Array [],
+    },
+    "helperSetItem": Object {
+      "read": Array [],
+      "write": Array [],
+    },
+    "location": Object {
+      "read": Array [],
+      "write": Array [],
+    },
+    "personnel": Object {
+      "read": Array [],
+      "write": Array [],
+    },
+    "researchGroup": Object {
+      "read": Array [],
+      "write": Array [],
+    },
+    "reservation": Object {
+      "read": Array [],
+      "write": Array [],
+    },
+    "study": Object {
+      "read": Array [
+        "gid_2",
+      ],
+      "write": Array [],
+    },
+    "subject": Object {
+      "read": Array [
+        "gid_2",
+      ],
+      "write": Array [],
+    },
+    "subjectSelector": Object {
+      "read": Array [],
+      "write": Array [],
+    },
+    "systemRole": Object {
+      "read": Array [],
+      "write": Array [],
+    },
+  },
+  "researchGroupIdsByFlag": Object {
+    "canReadStudies": Array [
+      "gid_2",
+    ],
+    "canReadSubjects": Array [
+      "gid_2",
+    ],
+    "labOperations": Object {
+      "inhouse": Object {
+        "canViewExperimentCalendar": Array [
+          "gid_2",
+        ],
+      },
     },
   },
 }
@@ -500,6 +801,14 @@ Object {
       "read": Array [],
       "write": Array [],
     },
+  },
+  "researchGroupIdsByFlag": Object {
+    "canReadStudies": Array [
+      "gid_2",
+    ],
+    "canReadSubjects": Array [
+      "gid_2",
+    ],
   },
 }
 `;

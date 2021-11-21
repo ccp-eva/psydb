@@ -3,7 +3,8 @@ var { compareIds } = require('@mpieva/psydb-core-utils');
 var {
     setupInternalResearchGroupIds,
     keyRoleFlagsByResearchGroupId,
-    gatherResearchGroupIdsForCollections
+    gatherResearchGroupIdsForCollections,
+    gatherResearchGroupIdsForFlags,
 } = require('./utils');
 
 var Permissions = ({
@@ -32,6 +33,13 @@ var Permissions = ({
         })
     );
 
+    var researchGroupIdsByFlag = (
+        gatherResearchGroupIdsForFlags({
+            researchGroupIds: internal.actualIds,
+            flagsByResearchGroupId,
+        })
+    )
+
     var permissions = {
         hasRootAccess,
         
@@ -41,6 +49,7 @@ var Permissions = ({
 
         flagsByResearchGroupId,
         researchGroupIdsByCollection,
+        researchGroupIdsByFlag,
     };
 
     return permissions;

@@ -99,4 +99,62 @@ describe('Permissions()', () => {
         //console.dir({ permissions }, { depth: null })
         expect(permissions).toMatchSnapshot()
     })
+
+    test('non-root; multiple research group; deep flags', () => {
+        var permissions = Permissions({
+            hasRootAccess: false,
+            researchGroupIds: [ 'gid_1', 'gid_2' ],
+            forcedResearchGroupId: undefined,
+            rolesByResearchGroupId: {
+                'gid_1': { state: {
+                    canReadSubjects: true,
+                    canWriteSubjects: true,
+                    labOperations: { 'inhouse': {
+                        canViewExperimentCalendar: true,
+                        canMoveAndCancelExperiments: true,
+                    }}
+                }},
+                'gid_2': { state: {
+                    canReadSubjects: true,
+                    canReadStudies: true,
+                    labOperations: { 'inhouse': {
+                        canViewExperimentCalendar: true,
+                        canMoveAndCancelExperiments: false,
+                    }}
+                }}
+            }
+        });
+
+        //console.dir({ permissions }, { depth: null })
+        expect(permissions).toMatchSnapshot()
+    })
+
+    test('root; multiple research group + forced; deep flags', () => {
+        var permissions = Permissions({
+            hasRootAccess: true,
+            researchGroupIds: [ 'gid_1', 'gid_2' ],
+            forcedResearchGroupId: 'gid_2',
+            rolesByResearchGroupId: {
+                'gid_1': { state: {
+                    canReadSubjects: true,
+                    canWriteSubjects: true,
+                    labOperations: { 'inhouse': {
+                        canViewExperimentCalendar: true,
+                        canMoveAndCancelExperiments: true,
+                    }}
+                }},
+                'gid_2': { state: {
+                    canReadSubjects: true,
+                    canReadStudies: true,
+                    labOperations: { 'inhouse': {
+                        canViewExperimentCalendar: true,
+                        canMoveAndCancelExperiments: false,
+                    }}
+                }}
+            }
+        });
+
+        //console.dir({ permissions }, { depth: null })
+        expect(permissions).toMatchSnapshot()
+    })
 })
