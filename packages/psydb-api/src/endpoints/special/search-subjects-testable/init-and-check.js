@@ -9,26 +9,19 @@ var {
 } = require('@mpieva/psydb-core-utils');
 
 var {
-    validateOrThrow,
     ApiError,
+    validateOrThrow,
+
+    checkForeignIdExists,
+    fetchOneCustomRecordType,
+    gatherDisplayFieldsForRecordType,
 } = require('@mpieva/psydb-api-lib');
-
-var checkForeignIdsExist = require(
-    '@mpieva/psydb-api-lib/src/check-foreign-ids-exist'
-);
-
-var fetchOneCustomRecordType = require(
-    '@mpieva/psydb-api-lib/src/fetch-one-custom-record-type'
-);
-var gatherDisplayFieldsForRecordType = require(
-    '@mpieva/psydb-api-lib/src/gather-display-fields-for-record-type'
-);
-
-var RequestBodySchema = require('./request-body-schema');
 
 var {
     StripEventsStage,
 } = require('@mpieva/psydb-api-lib/src/fetch-record-helpers');
+
+var RequestBodySchema = require('./request-body-schema');
 
 var initAndCheck = async ({
     db,

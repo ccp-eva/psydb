@@ -28,7 +28,7 @@ var {
     DateTime,
 } = require('@mpieva/psydb-schema-fields');
 
-var RequestBodySchema = () => ExactObject({
+var RequestParamsSchema = () => ExactObject({
     properties: {
         studyId: Id(),
         start: DateTime(),
@@ -49,7 +49,7 @@ var studyAwayTeamReservationCalendar = async (context, next) => {
     } = context;
 
     validateOrThrow({
-        schema: ParamsSchema(),
+        schema: RequestParamsSchema(),
         payload: params
     });
 

@@ -10,15 +10,15 @@ var {
 } = require('@mpieva/psydb-core-utils');
 
 var {
-    validateOrThrow,
     ApiError,
     ResponseBody,
+    validateOrThrow,
+    
+    fetchRecordsByFilter,
+    gatherDisplayFieldsForRecordType,
+    fetchOneCustomRecordType,
+    fetchRelatedLabelsForMany,
 } = require('@mpieva/psydb-api-lib');
-
-var fetchRecordsByFilter = require('@mpieva/psydb-api-lib/src/fetch-records-by-filter');
-var gatherDisplayFieldsForRecordType = require('@mpieva/psydb-api-lib/src/gather-display-fields-for-record-type');
-var fetchOneCustomRecordType = require('@mpieva/psydb-api-lib/src/fetch-one-custom-record-type');
-var fetchRelatedLabelsForMany = require('@mpieva/psydb-api-lib/src/fetch-related-labels-for-many');
 
 var {
     ExactObject,
@@ -89,6 +89,7 @@ var selectableStudies = async (context, next) => {
     } = request.body
 
     // TODO: permissions
+    // .... ye ... what actually?
 
     if (labProcedureType) {
         labProcedureTypes = [ labProcedureType ];

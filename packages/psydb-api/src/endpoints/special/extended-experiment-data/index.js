@@ -10,26 +10,45 @@ var {
 } = require('@mpieva/psydb-core-utils');
 
 var {
-    validateOrThrow,
+    checkLabOperationAccess,
+} = require('@mpieva/psydb-common-utils');
+
+var {
     ApiError,
     ResponseBody,
+    validateOrThrow,
+
+    createSchemaForRecordType,
+    fetchOneCustomRecordType,
+    fetchRecordById,
+    fetchRecordsByFilter,
+    gatherDisplayFieldsForRecordType,
+    fetchRelatedLabels,
+    fetchRelatedLabelsForMany,
+    fetchRecordDisplayDataById,
 } = require('@mpieva/psydb-api-lib');
-
-var fetchRecordById = require('@mpieva/psydb-api-lib/src/fetch-record-by-id');
-var createSchemaForRecordType = require('@mpieva/psydb-api-lib/src/create-schema-for-record-type');
-var fetchRelatedLabels = require('@mpieva/psydb-api-lib/src/fetch-related-labels');
-
-var fetchRecordsByFilter = require('@mpieva/psydb-api-lib/src/fetch-records-by-filter');
-var gatherDisplayFieldsForRecordType = require('@mpieva/psydb-api-lib/src/gather-display-fields-for-record-type');
-var fetchOneCustomRecordType = require('@mpieva/psydb-api-lib/src/fetch-one-custom-record-type');
-var fetchRelatedLabelsForMany = require('@mpieva/psydb-api-lib/src/fetch-related-labels-for-many');
-
-var fetchRecordDisplayDataById = require('@mpieva/psydb-api-lib/src/fetch-record-display-data-by-id');
 
 var fetchOneExperimentData = require('./fetch-one-experiment-data');
 var fetchOneStudyData = require('./fetch-one-study-data');
 var fetchOneOpsTeamData = require('./fetch-one-ops-team-data');
 var fetchLabProcedureSettingData = require('./fetch-lab-procedure-setting-data');
+
+var {
+    ExactObject,
+    Id,
+    ExperimentTypeEnum,
+} = require('@mpieva/psydb-schema-fields');
+
+var RequestParamsSchema = () => ExactObject({
+    properties: {
+        experimentType: ExperimentTypeEnum(),
+        experimentId: Id(),
+    },
+    required: [
+        'experimentType',
+        'experimentId',
+    ]
+})
 
 var extendedExperimentData = async (context, next) => {
     debug('__START__')
@@ -39,13 +58,15 @@ var extendedExperimentData = async (context, next) => {
         params,
     } = context;
 
+    validateOrThrow({
+        schema: RequestParamsSchema(),
+        payload: params
+    });
+
     var {
         experimentType,
         experimentId,
     } = params;
-
-    // TODO: check params
-    // TODO: permissions
 
     var experimentData = await fetchOneExperimentData({
         db,
@@ -61,6 +82,46 @@ var extendedExperimentData = async (context, next) => {
         experimentOperatorTeamId,
         selectedSubjectIds,
     } = experimentData.record.state;
+
+    ////////////////////////////////////////
+    var studyRecord = await (
+        db.collection('study').findOne({
+            _id: studyId,
+        }, { projection: { 'state.researchGroupIds': true }})
+    );
+
+    // FIXME: make this into utility
+    var hasAnyAccess = false;
+    for (var researchGroupId of studyRecord.state.researchGroupIds) {
+        var currentAllowed = checkLabOperationFlag({
+            permissions,
+            researchGroupId,
+            labOperationType: experimentType,
+            flags: [
+                'canViewExperimentCalendar',
+                'canPostprocessExperiments'
+            ],
+            checkJoin: 'or',
+        });
+        if (currentAllowed) {
+            hasAnyAccess = true;
+            break;
+        }
+    }
+    if (!hasAnyAccess) {
+        throw new ApiError(403, {
+            apiStatus: 'LabOperationAccessDenied',
+            data: {
+                researchGroupIds: studyRecord.state.researchGroupIds,
+                flags: [
+                    'canViewExperimentCalendar',
+                    'canPostprocessExperiments'
+                ],
+                checkJoin: 'or',
+            }
+        })
+    }
+    //////////////////////////////////7
 
     var studyData = await fetchOneStudyData({
         db,
