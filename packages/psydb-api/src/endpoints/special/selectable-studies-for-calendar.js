@@ -104,10 +104,6 @@ var selectableStudiesForCalendar = async (context, next) => {
 
     var records = await (
         db.collection('study').aggregate([
-            ...SystemPermissionStages({
-                collection: 'study',
-                permissions
-            }),
             StripEventsStage(),
             ...stages,
         ]).toArray()

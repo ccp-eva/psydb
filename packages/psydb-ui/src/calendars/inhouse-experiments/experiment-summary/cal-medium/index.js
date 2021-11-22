@@ -2,11 +2,16 @@ import React, { useReducer, useEffect, useMemo, useCallback } from 'react';
 
 import { LinkContainer } from '@mpieva/psydb-ui-layout';
 
+import {
+    useModalReducer,
+    usePermissions
+} from '@mpieva/psydb-ui-hooks';
+
 import enums from '@mpieva/psydb-schema-enums';
 
 import agent from '@mpieva/psydb-ui-request-agents';
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
-import { useModalReducer } from '@mpieva/psydb-ui-hooks';
+
 import getTextColor from '@mpieva/psydb-ui-lib/src/bw-text-color-for-background';
 import applyValueToDisplayFields from '@mpieva/psydb-ui-lib/src/apply-value-to-display-fields';
 
@@ -33,6 +38,7 @@ const ExperimentSummaryMedium = ({
     url,
     onSuccessfulUpdate,
 }) => {
+    var permissions = usePermissions();
 
     var moveExperimentModal = useModalReducer({ show: false });
     var changeTeamModal = useModalReducer({ show: false });
@@ -169,6 +175,7 @@ const ExperimentSummaryMedium = ({
                     className='d-flex flex-column align-items-center'
                 >
                     <ExperimentDropdown { ...({
+                        experimentType: 'inhouse',
                         variant: 'calendar',
                         detailsLink: `/experiments/inhouse/${experimentRecord._id}`,
                         onClickMove: moveExperimentModal.handleShow,
@@ -201,13 +208,13 @@ const ExperimentSummaryMedium = ({
                             experimentRelated,
 
                             onClickComment: commentPerSubjectModal.handleShow,
+
                             onClickMove: moveSubjectModal.handleShow,
                             onClickRemove: removeSubjectModal.handleShow,
 
                             onClickConfirm,
                             onClickMailbox,
                             onClickContactFailed,
-
                         }) } />
                     ))
                 }
@@ -275,6 +282,7 @@ const SubjectItem = ({
                     className='d-flex flex-column align-items-center'
                 >
                     <ExperimentSubjectDropdown { ...({
+                        experimentType: 'inhouse',
                         variant: 'calendar',
                         subjectRecord,
                         

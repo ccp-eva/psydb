@@ -1,4 +1,6 @@
 import React, { useCallback } from 'react';
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
+
 import {
     LinkContainer,
     Dropdown,
@@ -22,7 +24,18 @@ var ExperimentDropdown = ({
     
     disabled,
     variant,
+
+    experimentType,
 }) => {
+    var permissions = usePermissions();
+
+    var canMove = permissions.hasLabOperationFlag(
+        experimentType, 'canMoveAndCancelExperiments'
+    );
+    var canChangeOpsTeam = permissions.hasLabOperationFlag(
+        experimentType, 'canChangeOpsTeam'
+    );
+
 
     var style = (
         variant === 'calendar'
@@ -60,14 +73,15 @@ var ExperimentDropdown = ({
                 
                 <Dropdown.Item
                     as='button'
-                    disabled={ !onClickMove }
+                    disabled={ !canMove || !onClickMove }
                     onClick={ onClickMove }
                 >
                     Verschieben
                 </Dropdown.Item>
+
                 <Dropdown.Item
                     as='button'
-                    disabled={ !onClickChangeTeam }
+                    disabled={ !canChangeOpsTeam || !onClickChangeTeam }
                     onClick={ onClickChangeTeam }
                 >
                     Team ändern

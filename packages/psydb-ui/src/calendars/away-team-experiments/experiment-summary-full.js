@@ -103,6 +103,7 @@ const ExperimentSummaryFull = ({
                     className='d-flex flex-column align-items-center'
                 >
                     <ExperimentDropdown { ...({
+                        experimentType: 'away-team',
                         variant: 'calendar',
                         detailsLink: `/experiments/away-team/${experimentRecord._id}`,
                         onClickMove: moveExperimentModal.handleShow,

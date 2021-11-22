@@ -169,6 +169,7 @@ const ExperimentSummaryMedium = ({
                     className='d-flex flex-column align-items-center'
                 >
                     <ExperimentDropdown { ...({
+                        experimentType: 'online-video-call',
                         variant: 'calendar',
                         detailsLink: `/experiments/online-video-call/${experimentRecord._id}`,
                         onClickMove: moveExperimentModal.handleShow,
@@ -275,6 +276,7 @@ const SubjectItem = ({
                     className='d-flex flex-column align-items-center'
                 >
                     <ExperimentSubjectDropdown { ...({
+                        experimentType: 'online-video-call',
                         variant: 'calendar',
                         subjectRecord,
                         

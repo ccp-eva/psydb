@@ -116,6 +116,7 @@ const ExperimentSummarySmall = ({
             </ul>
             <div className='mt-2 d-flex justify-content-end'>
                 <ExperimentDropdown { ...({
+                    experimentType: 'inhouse',
                     variant: 'calendar',
                     detailsLink: `/experiments/inhouse/${experimentRecord._id}`,
                     onClickMove: moveExperimentModal.handleShow,

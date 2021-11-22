@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import {
     Dropdown,
@@ -29,6 +30,8 @@ var ExperimentSubjectDropdown = ({
 
     disabled,
     variant,
+
+    experimentType,
 }) => {
 
     var {
@@ -66,6 +69,22 @@ var ExperimentSubjectDropdown = ({
         onClickContactFailed(sharedPayload)
     ), [ onClickContactFailed, subjectRecord ]);
 
+    var permissions = usePermissions();
+    var canComment = permissions.hasSomeLabOperationFlags({
+        types: [ experimentType ],
+        flags: [
+            'canSelectSubjectsForExperiments',
+            'canMoveAndCancelExperiments',
+            'canConfirmSubjectInvitation',
+        ]
+    });
+    var canConfirm = permissions.hasLabOperationFlag(
+        'inhouse', 'canConfirmSubjectInvitation'
+    )
+    var canMove = permissions.hasLabOperationFlag(
+        experimentType, 'canMoveAndCancelExperiments',
+    );
+
     var style = (
         variant === 'calendar'
         ? calendarStyle
@@ -74,6 +93,10 @@ var ExperimentSubjectDropdown = ({
 
     if (variant === 'calendar') {
         style = { ...style, }
+    }
+
+    if (!canConfirm && !canMove && !canComment) {
+        return null;
     }
 
     return (
@@ -94,21 +117,21 @@ var ExperimentSubjectDropdown = ({
             <Dropdown.Menu>
                 <Dropdown.Item
                     as='button'
-                    disabled={ !onClickComment }
+                    disabled={ !canComment || !onClickComment }
                     onClick={ wrappedOnClickComment }
                 >
                     Kommentar
                 </Dropdown.Item>
                 <Dropdown.Item
                     as='button'
-                    disabled={ !onClickMove }
+                    disabled={ !canMove || !onClickMove }
                     onClick={ wrappedOnClickMove }
                 >
                     Verschieben
                 </Dropdown.Item>
                 <Dropdown.Item
                     as='button'
-                    disabled={ !onClickRemove }
+                    disabled={ !canMove || !onClickRemove }
                     onClick={ wrappedOnClickRemove }
                 >
                     Entfernen
@@ -118,7 +141,7 @@ var ExperimentSubjectDropdown = ({
                 
                 <Dropdown.Item
                     as='button'
-                    disabled={ !onClickConfirm }
+                    disabled={ !canConfirm || !onClickConfirm }
                     onClick={ wrappedOnClickConfirm }
                 >
                     Bestätigen
@@ -126,7 +149,7 @@ var ExperimentSubjectDropdown = ({
 
                 <Dropdown.Item
                     as='button'
-                    disabled={ !onClickMailbox }
+                    disabled={ !canConfirm || !onClickMailbox }
                     onClick={ wrappedOnClickMailbox }
                 >
                     Anrufbeantworter
@@ -134,7 +157,7 @@ var ExperimentSubjectDropdown = ({
 
                 <Dropdown.Item
                     as='button'
-                    disabled={ !onClickContactFailed }
+                    disabled={ !canConfirm || !onClickContactFailed }
                     onClick={ wrappedOnClickContactFailed }
                 >
                     Nicht Erreicht
