@@ -16,9 +16,11 @@ const App = () => {
     var [ self, setSelf ] = useState();
     var [ isInitialized, setIsInitialized ] = useState(false);
 
-    var onSignedIn = (self) => {
+    var onSignedIn = (selfArg) => {
         setIsSignedIn(true);
-        setSelf(self);
+        if (selfArg) {
+            setSelf(selfArg);
+        }
     }
 
     var onSignedOut = () => {

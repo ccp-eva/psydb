@@ -10,8 +10,8 @@ export const InlineWrapper = (ps) => {
         required,
         labelClassName,
         valueClassName,
-        uiSplit,
-        uiHrTop,
+        uiSplit = [3,9],
+        uiHrTop = false,
         children,
 
         error

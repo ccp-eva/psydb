@@ -4,9 +4,9 @@ var WideBool = require('./wide-bool');
 
 module.exports = {
     canReadSubjects: WideBool({
-        title: 'kann Studien einsehen',
+        title: 'kann Probanden einsehen',
     }),
     canWriteSubjects: WideBool({
-        title: 'kann Studien anlegen und bearbeiten',
+        title: 'kann Probanden anlegen und bearbeiten',
     }),
 }
