@@ -14,14 +14,14 @@ var {
 
 var researchGroups = async (context, next) => {
     var { db, permissions } = context;
-    var { hasRootAccess, allowedResearchGroupIds } = permissions;
+    var { hasRootAccess, researchGroupIds } = permissions;
 
     var MatchStage = (
         hasRootAccess
         ? MatchAlwaysStage()
         : (
             { $match: {
-                _id: { $in: allowedResearchGroupIds }
+                _id: { $in: researchGroupIds }
             }}
         )
     )

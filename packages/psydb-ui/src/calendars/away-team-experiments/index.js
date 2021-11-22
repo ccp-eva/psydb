@@ -1,4 +1,5 @@
 import React, { useMemo, useEffect, useReducer } from 'react';
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import {
     Route,
@@ -12,13 +13,14 @@ import {
 import { LinkContainer } from '@mpieva/psydb-ui-layout';
 
 import RecordTypeNav from '@mpieva/psydb-ui-lib/src/record-type-nav';
-import ResearchGroupNav from './research-group-nav';
+import ResearchGroupNav from '../research-group-nav';
 //import Calendar from './calendar';
 
 const AwayTeamExperimentsRouting = ({
     locationTypes
 }) => {
     var { path, url } = useRouteMatch();
+    var permissions = usePermissions();
 
     return (
         <>
@@ -36,7 +38,16 @@ const AwayTeamExperimentsRouting = ({
                     />
                 </Route>
                 <Route exact path={`${path}/:locationType`}>
-                    <ResearchGroupNav />
+                    <ResearchGroupNav
+                        autoRedirect={ true }
+                        filterIds={
+                            permissions.isRoot()
+                            ? undefined
+                            : permissions.getLabOperationFlagIds(
+                                'away-team', 'canViewExperimentCalendar'
+                            )
+                        }
+                    />
                 </Route>
                 <Route path={`${path}/:locationType/:researchGroupId`}>
                     { /* <Calendar /> */ }

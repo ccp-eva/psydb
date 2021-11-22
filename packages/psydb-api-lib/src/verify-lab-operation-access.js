@@ -2,6 +2,8 @@
 var { compareIds } = require('@mpieva/psydb-core-utils');
 var { checkLabOperationAccess } = require('@mpieva/psydb-common-lib');
 
+var ApiError = require('./api-error');
+
 var verifyLabOperationAccess = (options) => {
     var {
         permissions,

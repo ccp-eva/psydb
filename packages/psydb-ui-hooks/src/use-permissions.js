@@ -21,36 +21,38 @@ var createCallbacks = (options) => {
         hasRootAccess && !forcedResearchGroup
     )
 
+    var getFlagIds = (flag) => (
+        researchGroupIdsByFlag[flag] || []
+    );
+
+    var getLabOperationFlagIds = (type, flag) => {
+        var { labOperation } = researchGroupIdsByFlag;
+        return (
+            (
+                labOperation &&
+                labOperation[type] &&
+                labOperation[type][flag]
+            )
+            ? labOperation[type][flag]
+            : []
+        )
+    };
+
     var hasFlag = (flag) => (
         isRoot()
         ? true
-        : (
-            researchGroupIdsByFlag[flag] &&
-            researchGroupIdsByFlag[flag].length > 0
-        )
+        : getFlagIds(flag).length > 0
     );
 
     var hasSomeFlags = (flags) => (
         flags.some(it => hasFlag(it))
     );
 
-    var hasLabOperationFlag = (type, flag) => {
-        if (isRoot()) {
-            return true;
-        }
-        else {
-            var { labOperation } = researchGroupIdsByFlag;
-            if (
-                labOperation &&
-                labOperation[type] &&
-                labOperation[type][flag]
-            ) {
-                return labOperation[type][flag].length > 0
-            }
-        }
-
-        return false;
-    }
+    var hasLabOperationFlag = (type, flag) => (
+        isRoot()
+        ? true
+        : getLabOperationFlagIds(type, flag).length > 0
+    );
 
     var hasSomeLabOperationFlags = ({ types, flags }) => {
         if (types === 'any') {
@@ -68,6 +70,10 @@ var createCallbacks = (options) => {
     return {
         isRoot,
         researchGroupIds,
+        
+        getFlagIds,
+        getLabOperationFlagIds,
+
         hasFlag,
         hasSomeFlags,
         hasLabOperationFlag,

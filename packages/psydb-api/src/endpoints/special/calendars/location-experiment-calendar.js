@@ -87,6 +87,7 @@ var locationExperimentCalendar = async (context, next) => {
         researchGroupId,
         labOperationType: experimentType,
         flags: [
+            'canViewExperimentCalendar',
             'canWriteReservations',
             'canSelectSubjectsForExperiments',
             'canMoveAndCancelExperiments'

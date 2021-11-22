@@ -1,4 +1,5 @@
 import React, { useMemo, useEffect, useReducer } from 'react';
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import {
     Route,
@@ -15,13 +16,14 @@ import {
 
 import agent from '@mpieva/psydb-ui-request-agents';
 import RecordTypeNav from '@mpieva/psydb-ui-lib/src/record-type-nav';
-import ResearchGroupNav from './research-group-nav';
+import ResearchGroupNav from '../research-group-nav';
 import Calendar from './calendar';
 
 const OnlineVideoCallExperimentsRouting = ({
     subjectRecordTypes
 }) => {
     var { path, url } = useRouteMatch();
+    var permissions = usePermissions();
 
     return (
         <>
@@ -39,7 +41,17 @@ const OnlineVideoCallExperimentsRouting = ({
                     />
                 </Route>
                 <Route exact path={`${path}/:subjectType`}>
-                    <ResearchGroupNav />
+                    <ResearchGroupNav
+                        autoRedirect={ true }
+                        filterIds={
+                            permissions.isRoot()
+                            ? undefined
+                            : permissions.getLabOperationFlagIds(
+                                'online-video-call',
+                                'canViewExperimentCalendar'
+                            )
+                        }
+                    />
                 </Route>
                 <Route path={`${path}/:subjectType/:researchGroupId`}>
                     <Calendar />

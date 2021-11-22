@@ -35,13 +35,14 @@ var checkLabOperationAccess = (options) => {
             var allowedIds = (
                 researchGroupIdsByFlag.labOperation[labOperationType][flag]
             );
+            if (allowedIds) {
+                var currentFlagAllowed = !!allowedIds.find(id => {
+                    return compareIds(id, researchGroupId)
+                });
 
-            var currentFlagAllowed = !!allowedIds.find(id => {
-                return compareIds(id, researchGroupId)
-            });
-
-            if (currentFlagAllowed) {
-                flagsAllowed += 1;
+                if (currentFlagAllowed) {
+                    flagsAllowed += 1;
+                }
             }
         }
         if (checkJoin === 'and') {
