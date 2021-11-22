@@ -1,10 +1,13 @@
-import React, { useContext } from 'react';
-import { SelfContext } from '@mpieva/psydb-ui-contexts';
+import React from 'react';
 
 import {
     Nav,
     LinkContainer
 } from '@mpieva/psydb-ui-layout';
+
+import {
+    WhenAllowed
+} from '@mpieva/psydb-ui-lib';
 
 const Link = ({
     to,
@@ -16,91 +19,7 @@ const Link = ({
     </LinkContainer>
 )
 
-const usePermissions = () => {
-    var { permissions } = useContext(SelfContext);
-    
-    var {
-        hasRootAccess,
-        forcedResearchGroup,
-        researchGroupIdsByFlag
-    } = permissions;
-
-    var isRoot = () => (
-        hasRootAccess && !forcedResearchGroup
-    )
-
-    var hasFlag = (flag) => (
-        isRoot()
-        ? true
-        : (
-            researchGroupIdsByFlag[flag] &&
-            researchGroupIdsByFlag[flag].length > 0
-        )
-    );
-
-    var hasSomeFlags = (flags) => (
-        flags.some(it => hasFlag(it))
-    );
-
-    var hasLabOperationFlag = (type, flag) => {
-        if (isRoot()) {
-            return true;
-        }
-        else {
-            var { labOperation } = researchGroupIdsByFlag;
-            if (!labOperation) {
-                return false;
-            }
-            
-            var allFlags = labOperation[type];
-            if (!allFlags) {
-                return false;
-            }
-            var ids = allFlags[flag];
-            if (!ids) {
-                return false
-            }
-
-            return ids.length > 0
-        }
-    }
-
-    var hasSomeLabOperationFlags = ({ types, flags }) => {
-        if (types === 'any') {
-            types = anyLabOperationTypes;
-        }
-        return types.some(t => (
-            flags.some(f => hasLabOperationFlag(t, f))
-        ))
-    }
-
-    return {
-        isRoot,
-        hasFlag,
-        hasSomeFlags,
-        hasLabOperationFlag,
-        hasSomeLabOperationFlags,
-    }
-}
-
-var anyLabOperationTypes = [
-    'inhouse', 
-    'away-team',
-    'online-video-call',
-    'online-survey'
-];
-
-const SideNav = ({
-    permissions
-}) => {
-    var {
-        isRoot,
-        hasRootAccess,
-        hasFlag,
-        hasSomeFlags,
-        hasSomeLabOperationFlags
-    } = usePermissions();
-
+const SideNav = (ps) => {
     return (
         <>
             <h2
@@ -118,113 +37,93 @@ const SideNav = ({
                 <div className='navbar-nav'>
                     <Link to='/calendars'>Kalender</Link>
                     <Nav className='flex-column pl-3'>
-                        { hasFlag('canViewReceptionCalendar') && (
+                        <WhenAllowed flag='canViewReceptionCalendar'>
                             <Link to='/calendars/reception'>Rezeption</Link>
-                        )}
+                        </WhenAllowed>
 
-                        { hasSomeLabOperationFlags({
-                            types: [ 'inhouse' ],
-                            flags: [ 'canViewExperimentCalendar' ]
-                        }) && (
+                        <WhenAllowed
+                            labType='inhouse'
+                            labFlag='canViewExperimentCalendar'
+                        >
                             <Link to='/calendars/inhouse'>Interne Termine</Link>
-                        )}
+                        </WhenAllowed>
 
-                        { hasSomeLabOperationFlags({
-                            types: [ 'away-team' ],
-                            flags: [ 'canViewExperimentCalendar' ]
-                        }) && (
+                        <WhenAllowed
+                            labType='away-team'
+                            labFlag='canViewExperimentCalendar'
+                        >
                             <Link to='/calendars/away-team'>Externe Termine</Link>
-                        )}
+                        </WhenAllowed>
 
-                        { hasSomeLabOperationFlags({
-                            types: [ 'online-video-call' ],
-                            flags: [ 'canViewExperimentCalendar' ]
-                        }) && (
+                        <WhenAllowed
+                            labType='online-video-call'
+                            labFlag='canViewExperimentCalendar'
+                        >
                             <Link to='/calendars/online-video-call'>Video Termine</Link>
-                        )}
+                        </WhenAllowed>
                     </Nav>
 
-                    { hasSomeLabOperationFlags({
-                        types: 'any',
-                        flags: [
-                            'canWriteReservations',
-                            'canSelectSubjectsForExperiments',
-                            'canConfirmSubjectInvitation',
-                            'canPostprocessExperiments',
-                        ]
-                    }) && (
-                        <>
-                            <Link to='/lab-operation'>Studienbetrieb</Link>
-                            <Nav className='flex-column pl-3'>
-                                
-                                { hasSomeLabOperationFlags({
-                                    types: 'any',
-                                    flags: [ 'canWriteReservations' ],
-                                }) && (
-                                    <Link to='/lab-operation/reservation'>Reservierung</Link>
-                                )}
+                    <WhenAllowed labFlags={[
+                        'canWriteReservations',
+                        'canSelectSubjectsForExperiments',
+                        'canConfirmSubjectInvitation',
+                        'canPostprocessExperiments',
+                    ]}>
+                        <Link to='/lab-operation'>Studienbetrieb</Link>
+                        <Nav className='flex-column pl-3'>
 
-                                { hasSomeLabOperationFlags({
-                                    types: 'any',
-                                    flags: ['canSelectSubjectsForExperiments' ],
-                                }) && (
-                                    <Link to='/lab-operation/subject-selection'>
-                                        Probandenauswahl
-                                    </Link>
-                                )}
+                            <WhenAllowed labFlag='canWriteReservations'>
+                                <Link to='/lab-operation/reservation'>Reservierung</Link>
+                            </WhenAllowed>
 
-                                { hasSomeLabOperationFlags({
-                                    types: 'any',
-                                    flags: [ 'canConfirmSubjectInvitation' ],
-                                }) && (
-                                    <Link to='/lab-operation/invite-confirmation'>
-                                        Terminbestätigung
-                                    </Link>
-                                )}
+                            <WhenAllowed labFlag='canSelectSubjectsForExperiments'>
+                                <Link to='/lab-operation/subject-selection'>
+                                    Probandenauswahl
+                                </Link>
+                            </WhenAllowed>
 
-                                { hasSomeLabOperationFlags({
-                                    types: 'any',
-                                    flags: [ 'canPostprocessExperiments' ],
-                                }) && (
-                                    <Link to='/lab-operation/experiment-postprocessing'>
-                                        Nachbereitung
-                                    </Link>
-                                )}
-                            </Nav>
-                        </>
-                    )}
+                            <WhenAllowed labFlag='canConfirmSubjectInvitation'>
+                                <Link to='/lab-operation/invite-confirmation'>
+                                    Terminbestätigung
+                                </Link>
+                            </WhenAllowed>
 
-                    { hasSomeFlags([
+                            <WhenAllowed labFlag='canPostprocessExperiments'>
+                                <Link to='/lab-operation/experiment-postprocessing'>
+                                    Nachbereitung
+                                </Link>
+                            </WhenAllowed>
+                        </Nav>
+                    </WhenAllowed>
+
+                    <WhenAllowed flags={[
                         'canReadSubjects', 'canWriteSubjects'
-                    ]) && (
+                    ]}>
                         <Link to='/subjects'>Probanden</Link>
-                    )}
-                    
-                    { hasSomeFlags([
+                    </WhenAllowed>
+
+                    <WhenAllowed flags={[
                         'canReadStudies', 'canWriteStudies'
-                    ]) && (
+                    ]}>
                         <Link to='/studies'>Studien</Link>
-                    )}
+                    </WhenAllowed>
 
-                    { hasFlag('canWriteAdministrativeCollections') && (
-                        <>
-                            <Link to='/locations'>Locations</Link>
-                            <Link to='/external-persons'>Externe Personen</Link>
-                            <Link to='/external-organizations'>Externe Organsationen</Link>
-                            <Link to='/helper-sets'>Hilfstabellen</Link>
-                        </>
-                    )}
+                    <WhenAllowed flag='canWriteAdministrativeCollections'>
+                        <Link to='/locations'>Locations</Link>
+                        <Link to='/external-persons'>Externe Personen</Link>
+                        <Link to='/external-organizations'>Externe Organsationen</Link>
+                        <Link to='/helper-sets'>Hilfstabellen</Link>
+                    </WhenAllowed>
 
-                    { hasFlag('canWritePersonnel') && (
+                    <WhenAllowed flag='canWritePersonnel'>
                         <Link to='/personnel'>Mitarbeiter</Link>
-                    )}
-                    { isRoot() && (
-                        <>
-                            <Link to='/research-groups'>Forschungsgruppen</Link>
-                            <Link to='/system-roles'>System-Rollen</Link>
-                            <Link to='/custom-record-types'>Datensatz-Typen</Link>
-                        </>
-                    )}
+                    </WhenAllowed>
+
+                    <WhenAllowed isRoot>
+                        <Link to='/research-groups'>Forschungsgruppen</Link>
+                        <Link to='/system-roles'>System-Rollen</Link>
+                        <Link to='/custom-record-types'>Datensatz-Typen</Link>
+                    </WhenAllowed>
                 </div>
             </Nav>
         </>

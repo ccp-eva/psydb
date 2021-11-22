@@ -4,6 +4,7 @@ export { default as useFetchAll } from './use-fetch-all';
 export { default as useSend } from './use-send';
 export { default as useWriteRequest } from './use-write-request';
 
+export { default as usePermissions } from './use-permissions';
 export { default as useRevision } from './use-revision';
 export { default as useModalReducer } from './use-modal-reducer';
 export { default as usePaginationReducer } from './use-pagination-reducer';

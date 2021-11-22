@@ -27,7 +27,8 @@
     "react-router": "~5.2.0",
     "@cdxoo/react-router-url-search-params": "~1.0.4",
     "@mpieva/psydb-ui-utils": "~0.1.0-alpha",
-    "@mpieva/psydb-ui-request-agents": "~0.1.0-alpha"
+    "@mpieva/psydb-ui-request-agents": "~0.1.0-alpha",
+    "@mpieva/psydb-ui-contexts": "~0.1.0-alpha"
   },
   "babel": {
     "presets": [

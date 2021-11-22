@@ -15,3 +15,4 @@ export { default as stringifyFieldValue } from './stringify-field-value';
 export * from './formik';
 
 export * from './account-function-dropdown';
+export * from './when-allowed';
