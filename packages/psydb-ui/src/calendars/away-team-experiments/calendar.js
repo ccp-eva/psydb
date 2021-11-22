@@ -50,7 +50,7 @@ const AwayTeamCalendar = ({
     
     var [ didFetch, fetched ] = useFetch((agent) => {
         return agent.fetchLocationExperimentCalendar({
-            //experimentType: 'away-team',
+            experimentType: 'away-team',
             locationType,
             researchGroupId,
             

@@ -64,7 +64,7 @@ var experimentPostprocessing = async (context, next) => {
         subjectRecordType,
     } = request.body;
 
-    verifyLabOperationFlag({
+    verifyLabOperationAccess({
         researchGroupId,
         labOperationType: experimentType,
         flag: 'canPostprocessExperiments',

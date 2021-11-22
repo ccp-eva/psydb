@@ -250,6 +250,7 @@ agent.searchSubjectsTestableInOnlineSurvey = (options) => {
 
 
 agent.fetchInviteConfirmationList = ({
+    researchGroupId,
     subjectRecordType,
     studyIds,
     start,
@@ -258,6 +259,7 @@ agent.fetchInviteConfirmationList = ({
     return axios.post(
         '/api/invite-confirmation-list',
         {
+            researchGroupId,
             subjectRecordType,
             studyIds,
             start,

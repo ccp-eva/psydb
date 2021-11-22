@@ -160,7 +160,7 @@ var search = async (context, next) => {
 
         // TODO remove this as soon as we
         // can properly quicksearch and search for fk
-        disablePermissionCheck: true
+        disablePermissionCheck: (target === 'optionlist' ? true : false)
     });
 
     var related = await fetchRelatedLabelsForMany({

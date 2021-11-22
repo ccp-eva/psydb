@@ -81,7 +81,7 @@ var experimentCalendar = async (context, next) => {
 
     var { start, end } = interval;
 
-    verifyLabOperationFlag({
+    verifyLabOperationAccess({
         researchGroupId,
         labOperationType: experimentType,
         flag: 'canViewExperimentCalendar',

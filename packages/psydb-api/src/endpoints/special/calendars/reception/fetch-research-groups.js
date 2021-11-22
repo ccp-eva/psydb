@@ -13,7 +13,11 @@ var {
 
 var fetchResearchGroups = async (context, options) => {
     var { db, permissions } = context;
-    var { hasRootAccess, projectedResearchGroupIds } = permissions;
+    var {
+        hasRootAccess,
+        researchGroupIds: projectedResearchGroupIds
+    } = permissions;
+
     var {
         researchGroupIds,
         onlyLabels = false,

@@ -11,7 +11,7 @@ var checkLabOperationAccess = (options) => {
         researchGroupId,
     } = options;
 
-    if (['and', 'or'].includes(checkJoin)) {
+    if (!['and', 'or'].includes(checkJoin)) {
         throw new Error(`unknown checkJoin value "${checkJoin}"`);
     }
 

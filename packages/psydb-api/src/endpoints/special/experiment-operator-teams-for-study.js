@@ -12,9 +12,10 @@ var {
 
     validateOrThrow,
     verifyStudyAccess,
+
     createRecordLabel,
     fetchRecordById,
-    createSchemaFoRecordType,
+    createSchemaForRecordType,
     fetchRelatedLabels,
 } = require('@mpieva/psydb-api-lib');
 

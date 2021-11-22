@@ -5,6 +5,7 @@ var {
     keyRoleFlagsByResearchGroupId,
     gatherResearchGroupIdsForCollections,
     gatherResearchGroupIdsForFlags,
+    createFakeRootFlags,
 } = require('./utils');
 
 var Permissions = ({
@@ -21,10 +22,16 @@ var Permissions = ({
         forcedResearchGroupId,
     });
 
-    var flagsByResearchGroupId = keyRoleFlagsByResearchGroupId({
-        availableResearchGroupIds,
-        rolesByResearchGroupId
-    });
+    var flagsByResearchGroupId = (
+        hasRootAccess && forcedResearchGroupId
+        ? { [forcedResearchGroupId]: createFakeRootFlags() }
+        : (
+            keyRoleFlagsByResearchGroupId({
+                availableResearchGroupIds,
+                rolesByResearchGroupId
+            })
+        )
+    );
 
     var researchGroupIdsByCollection = (
         gatherResearchGroupIdsForCollections({
@@ -44,7 +51,8 @@ var Permissions = ({
         hasRootAccess,
         
         availableResearchGroupIds,
-        researchGroupIds: internal.actualIds,
+        researchGroupIds: internal.actualIds, // FIXME deprecated
+        userResearchGroupIds: internal.actualIds,
         forcedResearchGroupId: internal.actuallyForcedId,
 
         flagsByResearchGroupId,

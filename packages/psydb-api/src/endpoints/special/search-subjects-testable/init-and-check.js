@@ -12,7 +12,7 @@ var {
     ApiError,
     validateOrThrow,
 
-    checkForeignIdExists,
+    checkForeignIdsExist,
     fetchOneCustomRecordType,
     gatherDisplayFieldsForRecordType,
 } = require('@mpieva/psydb-api-lib');

@@ -35,12 +35,12 @@ var {
 var RequestBodySchema = () => ExactObject({
     properties: {
         researchGroupId: ForeignId({ collection: 'researchGroup' }),
-        subjectRecordType: CustomRecordTypeKey({ collection: 'subject' }),
+        //subjectRecordType: CustomRecordTypeKey({ collection: 'subject' }),
         experimentType: ExperimentTypeEnum(),
     },
     required: [
         'researchGroupId',
-        'subjectRecordType',
+        //'subjectRecordType',
         'experimentType',
     ]
 });
@@ -59,11 +59,11 @@ var selectableStudiesForCalendar = async (context, next) => {
 
     var {
         experimentType,
-        subjectRecordType,
+        //subjectRecordType,
         researchGroupId,
     } = request.body
 
-    verifyLabOperationFlag({
+    verifyLabOperationAccess({
         researchGroupId,
         labOperationType: experimentType,
         flag: 'canViewExperimentCalendar',

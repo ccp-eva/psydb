@@ -20,7 +20,11 @@ handler.checkAllowedAndPlausible = async (context) => {
         cache
     } = context;
 
-    var { hasRootAccess, allowedResearchGroupIds } = permissions;
+    var {
+        hasRootAccess,
+        researchGroupIds: allowedResearchGroupIds
+    } = permissions;
+
     var { researchGroupId } = message.payload;
     
     var hasGroup = !!allowedResearchGroupIds.find(allowedId => (

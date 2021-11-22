@@ -12,6 +12,9 @@ var {
 
 var {
     checkLabOperationAccess,
+} = require('@mpieva/psydb-common-lib');
+
+var {
     countExperimentSubjects,
 } = require('@mpieva/psydb-common-utils');
 

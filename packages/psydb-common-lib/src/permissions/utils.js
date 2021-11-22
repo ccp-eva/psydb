@@ -3,4 +3,5 @@ module.exports = {
     ...require('./key-role-flags-by-research-group-id'),
     ...require('./gather-research-group-ids-for-collections'),
     ...require('./gather-research-group-ids-for-flags'),
+    ...require('./create-fake-root-flags'),
 }

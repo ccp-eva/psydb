@@ -39,28 +39,35 @@ var verifyRecordAccess = async (options) => {
     }
 
     var {
+        hasRootAccess,
+        forcedResearchGroupId,
         researchGroupIdsByCollection,
         researchGroupIdsByFlag
     } = permissions;
 
-    if (
-        action === 'read' &&
-        researchGroupIdsByCollection.study.read.length < 1
-    ) {
-        throw new ApiError(403, {
-            apiStatus: 'NoReadPermissionForCollection',
-            data: { collection }
-        });
+    if (hasRootAccess && !forcedResearchGroupId) {
+        // no-op
     }
+    else {
+        if (
+            action === 'read' &&
+            researchGroupIdsByCollection.study.read.length < 1
+        ) {
+            throw new ApiError(403, {
+                apiStatus: 'NoReadPermissionForCollection',
+                data: { collection }
+            });
+        }
 
-    if (
-        action === 'write' &&
-        researchGroupIdsByCollection.study.write.length < 1
-    ) {
-        throw new ApiError(403, {
-            apiStatus: 'NoWritePermissionForCollection',
-            data: { collection }
-        });
+        if (
+            action === 'write' &&
+            researchGroupIdsByCollection.study.write.length < 1
+        ) {
+            throw new ApiError(403, {
+                apiStatus: 'NoWritePermissionForCollection',
+                data: { collection }
+            });
+        }
     }
 
     var records = await (
@@ -78,7 +85,7 @@ var verifyRecordAccess = async (options) => {
         ]).toArray()
     );
 
-    if (records.length == recordIds.length) {
+    if (records.length !== recordIds.length) {
         throw new ApiError(403, {
             apiStatus: 'RecordAccessDenied',
             data: {

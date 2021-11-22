@@ -48,12 +48,13 @@ var RequestBodySchema = () => ExactObject({
         studyId: ForeignId({ collection: 'study' }),
         experimentType: {
             type: 'string',
-            enum: ['inhouse', 'away-team'],
+            enum: ['inhouse', 'online-video-call', 'away-team'],
         },
     },
     required: [
         'locationType',
         'researchGroupId',
+        'experimentType',
         'interval',
     ]
 })
@@ -81,7 +82,7 @@ var locationExperimentCalendar = async (context, next) => {
 
     var { start, end } = interval;
 
-    verifyLabOperationFlag({
+    verifyLabOperationAccess({
         permissions,
         researchGroupId,
         labOperationType: experimentType,
