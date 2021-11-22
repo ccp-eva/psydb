@@ -1,25 +1,25 @@
 'use strict';
 var inline = require('@cdxoo/inline-text');
-var { DefaultBool } = require('@mpieva/psydb-schema-fields');
+var WideBool = require('./wide-bool');
 
 module.exports = {
-    canWriteAdministrativeCollections: DefaultBool({
+    canWriteAdministrativeCollections: WideBool({
         title: inline`
             kann administrative Datensätze bearbeiten
-            (d.h. Kindergärten, Räume, Träger, Hilfstabellen, etc.)
+            (d.h. Kigas, Räume, Hilfstabellen, etc.)
         `,
     }),
-    canWritePersonnel: DefaultBool({
+    canWritePersonnel: WideBool({
         title: inline`
             kann Mitarbeiter bearbeiten (d.h. Benutzer-Accounts)
         `,
     }),
-    canSetPersonnelPassword: DefaultBool({
+    canSetPersonnelPassword: WideBool({
         title: inline`
             kann das Passwort anderer Benutzer manuell neu setzen
         `,
     }),
-    /*canUseComplexSubjectSearch: DefaultBool({
+    /*canUseComplexSubjectSearch: WideBool({
         title: 'kann die erweiterte Probandensuche benutzen',
     })*/
 }

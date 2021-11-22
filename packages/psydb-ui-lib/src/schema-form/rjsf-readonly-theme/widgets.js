@@ -60,9 +60,14 @@ export const SelectWidget = (ps) => {
 }
 
 export const CheckboxWidget = (ps) => {
-    var { label, value } = ps;
+    var { schema, label, value } = ps;
+    var { systemProps = {} } = schema;
+    var {
+        uiSplit = [3,9]
+    } = systemProps;
+
     return (
-        <InlineWrapper label={ label }>
+        <InlineWrapper label={ label } uiSplit={ uiSplit }>
             <b className='d-block' style={ styles.bold }>
                 { value ? 'Ja' : 'Nein' }
             </b>

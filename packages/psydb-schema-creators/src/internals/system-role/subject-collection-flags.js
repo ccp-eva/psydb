@@ -1,15 +1,12 @@
 'use strict';
 var inline = require('@cdxoo/inline-text');
-
-var {
-    DefaultBool,
-} = require('@mpieva/psydb-schema-fields');
+var WideBool = require('./wide-bool');
 
 module.exports = {
-    canReadSubjects: DefaultBool({
+    canReadSubjects: WideBool({
         title: 'kann Studien einsehen',
     }),
-    canWriteSubjects: DefaultBool({
+    canWriteSubjects: WideBool({
         title: 'kann Studien anlegen und bearbeiten',
     }),
 }

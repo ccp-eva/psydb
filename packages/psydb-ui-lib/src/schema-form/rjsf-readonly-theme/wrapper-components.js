@@ -15,20 +15,32 @@ const styles = {
 }
 
 export const InlineWrapper = (ps) => {
-    var { label, children, valueStyle } = ps;
+    var {
+        label,
+        valueStyle,
+        uiSplit = [3,9],
+        uiHrTop = false,
+        children,
+    } = ps;
+
     return (
-        <div className='row mr-0 ml-0'>
-            <header className='col-sm-3'>
-                <div style={ styles.label }>
-                    { label }
-                </div>
-            </header>
-            <div className='col-sm-9 p-0'>
-                <div style={ valueStyle || styles.value }>
-                    { children }
+        <>
+            { uiHrTop && (
+                <hr />
+            )}
+            <div className='row mr-0 ml-0'>
+                <header className={ `col-sm-${uiSplit[0]}` }>
+                    <div style={ styles.label }>
+                        { label }
+                    </div>
+                </header>
+                <div className={ `col-sm-${uiSplit[1]} p-0` }>
+                    <div style={ valueStyle || styles.value }>
+                        { children }
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     )
 }
 
@@ -42,5 +54,12 @@ export const OneLineWrapper = (ps) => {
                 </div>
             </div>
         </div>
+    )
+}
+
+export const PlainWrapper = (ps) => {
+    var { children } = ps;
+    return (
+        <>{ children }</>
     )
 }

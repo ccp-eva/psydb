@@ -49,6 +49,7 @@ dependencies:
   '@rush-temp/psydb-schema-primitives': 'file:projects/psydb-schema-primitives.tgz'
   '@rush-temp/psydb-timezone-helpers': 'file:projects/psydb-timezone-helpers.tgz'
   '@rush-temp/psydb-ui': 'file:projects/psydb-ui.tgz'
+  '@rush-temp/psydb-ui-contexts': 'file:projects/psydb-ui-contexts.tgz'
   '@rush-temp/psydb-ui-hooks': 'file:projects/psydb-ui-hooks.tgz_webpack@5.10.1'
   '@rush-temp/psydb-ui-layout': 'file:projects/psydb-ui-layout.tgz_webpack@5.10.1'
   '@rush-temp/psydb-ui-lib': 'file:projects/psydb-ui-lib.tgz_webpack@5.10.1'
@@ -9504,7 +9505,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-api'
     resolution:
-      integrity: sha512-EBYQefRpb7jdtZBFi+olp34GB6596FSbYoAS4pHNFmRymCiBXobGycXBmivPfrBQsqaQPeLeqlZhX0TMhP56iw==
+      integrity: sha512-GeNPQIGOXhenCbSF34GzoZH08lS7+CJtnG2nd5pz4f8N7NuL/jcXoYtaMjnxPufueLbb3xbrYRP1Q7Y6lfsQXA==
       tarball: 'file:projects/psydb-api.tgz'
     version: 0.0.0
   'file:projects/psydb-common-lib.tgz':
@@ -9704,6 +9705,15 @@ packages:
     resolution:
       integrity: sha512-u25qoAndb2DNM95NSLt4ufDU7WMgDQRzJ44o0OqbFyLlN3+GHjv1JmtHkzWnexmMlsNBODWnVLIfyyHKEqtBHw==
       tarball: 'file:projects/psydb-timezone-helpers.tgz'
+    version: 0.0.0
+  'file:projects/psydb-ui-contexts.tgz':
+    dependencies:
+      react: 17.0.2
+    dev: false
+    name: '@rush-temp/psydb-ui-contexts'
+    resolution:
+      integrity: sha512-rKS/8+5U4C9Q9TpxHoa2QBp4uugdx0crFr/pJ9IT/7Jc+5f7QdDc3zpMqm7ImdqC+Kbf1QzT7ewl38WeSiH5nA==
+      tarball: 'file:projects/psydb-ui-contexts.tgz'
     version: 0.0.0
   'file:projects/psydb-ui-hooks.tgz_webpack@5.10.1':
     dependencies:
@@ -9956,6 +9966,7 @@ specifiers:
   '@rush-temp/psydb-schema-primitives': 'file:./projects/psydb-schema-primitives.tgz'
   '@rush-temp/psydb-timezone-helpers': 'file:./projects/psydb-timezone-helpers.tgz'
   '@rush-temp/psydb-ui': 'file:./projects/psydb-ui.tgz'
+  '@rush-temp/psydb-ui-contexts': 'file:./projects/psydb-ui-contexts.tgz'
   '@rush-temp/psydb-ui-hooks': 'file:./projects/psydb-ui-hooks.tgz'
   '@rush-temp/psydb-ui-layout': 'file:./projects/psydb-ui-layout.tgz'
   '@rush-temp/psydb-ui-lib': 'file:./projects/psydb-ui-lib.tgz'

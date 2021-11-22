@@ -1,18 +1,15 @@
 'use strict';
 var inline = require('@cdxoo/inline-text');
-
-var {
-    DefaultBool,
-} = require('@mpieva/psydb-schema-fields');
+var WideBool = require('./wide-bool');
 
 module.exports = {
-    canReadParticipation: DefaultBool({
+    canReadParticipation: WideBool({
         title: inline`
             kann einsehen welche Probanden
             an einer Studie telgenommen haben
         `
     }),
-    canWriteParticipation: DefaultBool({
+    canWriteParticipation: WideBool({
         title: 'kann manuell Probanden in eine Studie eintragen'
     }),
 }

@@ -1,6 +1,7 @@
 'use strict';
 var inline = require('@cdxoo/inline-text');
 var { ExactObject, DefaultBool } = require('@mpieva/psydb-schema-fields');
+var WideBool = require('./wide-bool');
 
 var LabOperationPermissions = (options) => {
     var {
@@ -15,31 +16,32 @@ var LabOperationPermissions = (options) => {
 
     return ExactObject({
         title,
+        systemProps: { uiWrapper: 'InlineWrapper', uiHrTop: true },
         properties: {
-            canWriteReservations: DefaultBool({
+            canWriteReservations: WideBool({
                 title: {
                     'location-with-team': 'kann Räumlichkeiten reservieren',
                     'team-only': 'kann Experimenter-Teams planen',
                 }[reservationType],
             }),
-            canSelectSubjectsForExperiments: DefaultBool({
+            canSelectSubjectsForExperiments: WideBool({
                 title: 'kann Probanden für Termine auswählen',
             }),
             ...(hasInvitation && {
-                canConfirmSubjectInvitation: DefaultBool({
+                canConfirmSubjectInvitation: WideBool({
                     title: 'kann Termine bestätigen',
                 }),
             }),
-            canViewExperimentCalendar: DefaultBool({
+            canViewExperimentCalendar: WideBool({
                 title: 'kann Terminkalender einsehen',
             }),
-            canMoveAndCancelExperiments: DefaultBool({
+            canMoveAndCancelExperiments: WideBool({
                 title: 'kann Termine verschieben und absagen',
             }),
-            canChangeOpsTeam: DefaultBool({
+            canChangeOpsTeam: WideBool({
                 title: 'kann Experimenter-Team ändern'
             }),
-            canPostprocessExperiments: DefaultBool({
+            canPostprocessExperiments: WideBool({
                 title: 'kann Termine nachbearbeiten',
             }),
         },
@@ -59,8 +61,9 @@ var SurveyPermissions = (options) => {
     var { title } = options;
     return ExactObject({
         title,
+        systemProps: { uiWrapper: 'InlineWrapper', uiHrTop: true },
         properties: {
-            canPerformOnlineSurveys: DefaultBool({
+            canPerformOnlineSurveys: WideBool({
                 title: 'kann Online-Umfragen durchführen'
             }),
         },

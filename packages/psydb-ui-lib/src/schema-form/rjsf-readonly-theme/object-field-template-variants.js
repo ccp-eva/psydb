@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useReducer } from 'react';
 import { FormattedDuration } from '@mpieva/psydb-common-lib/src/durations';
 import datefns from '../../date-fns';
-import { InlineWrapper, OneLineWrapper } from './wrapper-components';
+import * as wrappers from './wrapper-components';
+
+const { InlineWrapper, OneLineWrapper } = wrappers;
 
 const styles = {
     bold: { fontWeight: '600' }
@@ -10,18 +12,28 @@ const styles = {
 export const Plain = ({
     properties,
     schema,
+    title,
     ...other
 }) => {
+    var {
+        systemType,
+        systemProps = {}
+    } = schema;
+    
+    var Wrapper = wrappers[systemProps.uiWrapper];
+    if (!Wrapper) {
+        Wrapper = wrappers.PlainWrapper;
+    }
     //console.log(other);
     return (
-        <>
+        <Wrapper label={ title } { ...systemProps }>
             { properties.map((element, index) => {
                 return <div key={index}>
                     { /*schema.systemType || 'undefined' */}
                     { element.content }
                 </div>
             }) }
-        </>
+        </Wrapper>
     )
 }
 

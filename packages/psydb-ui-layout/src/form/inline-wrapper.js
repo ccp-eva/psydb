@@ -10,6 +10,8 @@ export const InlineWrapper = (ps) => {
         required,
         labelClassName,
         valueClassName,
+        uiSplit,
+        uiHrTop,
         children,
 
         error
@@ -24,13 +26,13 @@ export const InlineWrapper = (ps) => {
         <Form.Group className={ className }>
             <Form.Label
                 htmlFor={ id }
-                className={ `col-sm-3 col-form-label ${labelClassName}`}
+                className={ `col-sm-${uiSplit[0]} col-form-label ${labelClassName}`}
             >
                 { label }
                 <NBSP />
                 { label && required ? '*' : null }
             </Form.Label>
-            <div className={`col-sm-9 pl-0 pr-0 ${valueClassName}`}>
+            <div className={`col-sm-${uiSplit[1]} pl-0 pr-0 ${valueClassName}`}>
                 { children }
             </div>
         </Form.Group>

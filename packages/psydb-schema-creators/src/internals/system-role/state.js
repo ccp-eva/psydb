@@ -9,6 +9,8 @@ var {
     DefaultBool,
 } = require('@mpieva/psydb-schema-fields');
 
+var WideBool = require('./wide-bool');
+
 var administrativeFlags = require('./administrative-flags');
 var studyCollectionFlags = require('./study-collection-flags');
 var subjectCollectionFlags = require('./subject-collection-flags');
@@ -30,7 +32,7 @@ var SystemRoleState = ({
             ...studyCollectionFlags,
             ...subjectCollectionFlags,
             ...participationFlags,
-            canViewReceptionCalendar: DefaultBool({
+            canViewReceptionCalendar: WideBool({
                 title: 'kann Rezeptionskalender einsehen'
             }),
             ...labOperationFlags,

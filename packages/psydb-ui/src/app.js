@@ -5,6 +5,7 @@ import {
 } from 'react-router-dom';
 
 import { simple as agent } from '@mpieva/psydb-ui-request-agents';
+import { SelfContext } from '@mpieva/psydb-ui-contexts';
 import ErrorBoundary from './error-boundary';
 import SignIn from './sign-in';
 import Main from './main'
@@ -12,10 +13,12 @@ import Main from './main'
 const App = () => {
 
     var [ isSignedIn, setIsSignedIn ] = useState(false);
+    var [ self, setSelf ] = useState();
     var [ isInitialized, setIsInitialized ] = useState(false);
 
-    var onSignedIn = () => {
-        setIsSignedIn(true)
+    var onSignedIn = (self) => {
+        setIsSignedIn(true);
+        setSelf(self);
     }
 
     var onSignedOut = () => {
@@ -25,7 +28,8 @@ const App = () => {
     useEffect(() => {
         agent.get('/api/self').then(
             (res) => {
-                onSignedIn()
+                var self = res.data.data;
+                onSignedIn(self);
                 setIsInitialized(true)
             },
             (error) => {
@@ -37,8 +41,12 @@ const App = () => {
     var View = undefined;
     if (isInitialized) {
         View = (
-            isSignedIn
-            ? <Main onSignedOut={ onSignedOut } />
+            isSignedIn && self
+            ? (
+                <SelfContext.Provider value={ self }>
+                    <Main onSignedOut={ onSignedOut } />
+                </SelfContext.Provider>
+            )
             : <SignIn onSignedIn={ onSignedIn } />
         );
     }

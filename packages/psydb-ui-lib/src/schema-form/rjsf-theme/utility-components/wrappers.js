@@ -37,17 +37,29 @@ export const InlineWrapper = ({
     rawErrors = [], 
     children,
 }) => {
+    var { systemProps = {} } = schema;
+    var {
+        uiSplit = [3,9],
+        uiHrTop = false,
+    } = systemProps;
+
     var isReallyRequired = checkReallyRequired({ schema, required });
     var hasErrors = rawErrors.length > 0;
     return (
-        <FormHelpers.InlineWrapper { ...({
-            id,
-            label,
-            required: isReallyRequired,
-            labelClassName: hasErrors ? 'text-danger': '',
-            valueClassName,
-            children
-        })} />
+        <>
+            { uiHrTop && (
+                <hr />
+            )}
+            <FormHelpers.InlineWrapper { ...({
+                id,
+                label,
+                required: isReallyRequired,
+                labelClassName: hasErrors ? 'text-danger': '',
+                valueClassName,
+                uiSplit,
+                children
+            })} />
+        </>
     );
 }
 

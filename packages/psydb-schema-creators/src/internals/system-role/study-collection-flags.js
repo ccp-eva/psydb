@@ -1,11 +1,11 @@
 'use strict';
-var { DefaultBool } = require('@mpieva/psydb-schema-fields');
+var WideBool = require('./wide-bool');
 
 module.exports = {
-    canReadStudies: DefaultBool({
+    canReadStudies: WideBool({
         title: 'kann Studien einsehen',
     }),
-    canWriteStudies: DefaultBool({
+    canWriteStudies: WideBool({
         title: 'kann Studien anlegen und bearbeiten',
     }),
 }
