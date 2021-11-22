@@ -8,16 +8,18 @@ var {
 } = require('@mpieva/psydb-core-utils');
 
 var {
-    validateOrThrow,
+    checkLabOperationAccess,
+} = require('@mpieva/psydb-common-utils');
+
+var {
     ApiError,
     ResponseBody,
+    validateOrThrow,
+
+    createRecordLabel,
+    fetchRecordById,
+    fetchRecordsInInterval,
 } = require('@mpieva/psydb-api-lib');
-
-var createRecordLabel = require('@mpieva/psydb-api-lib/src/create-record-label');
-var fetchRecordById = require('@mpieva/psydb-api-lib/src/fetch-record-by-id');
-var fetchRecordsInInterval = require('@mpieva/psydb-api-lib/src/fetch-records-in-interval');
-var fetchEnabledLocationRecordsForStudy = require('@mpieva/psydb-api-lib/src/fetch-enabled-location-records-for-study');
-
 
 var {
     ExactObject,
@@ -26,7 +28,7 @@ var {
     DateTime,
 } = require('@mpieva/psydb-schema-fields');
 
-var ParamsSchema = () => ExactObject({
+var RequestBodySchema = () => ExactObject({
     properties: {
         studyId: Id(),
         start: DateTime(),
@@ -57,19 +59,44 @@ var studyAwayTeamReservationCalendar = async (context, next) => {
         end
     } = params;
 
-    // TODO: permissions
+    var studyRecord = await (
+        db.collection('study').findOne({
+            _id: studyId,
+        }, { projection: { 'state.researchGroupIds': true }})
+    );
 
-    var studyRecord = await fetchRecordById({
-        db,
-        collectionName: 'study',
-        id: studyId,
-        permissions,
-    });
-
-    // FIXME: question is should we 404 or 403 when access is denied?
-    // well 404 for now and treat it as if it wasnt found kinda
-    if (!studyRecord) {
-        throw new ApiError(404, 'NoAccessibleStudyRecordFound');
+    // FIXME: make this into utility
+    var hasAnyAccess = false;
+    for (var researchGroupId of studyRecord.state.researchGroupIds) {
+        var currentAllowed = checkLabOperationFlag({
+            permissions,
+            researchGroupId,
+            labOperationType: 'away-team',
+            flags: [
+                'canWriteReservations',
+                'canSelectSubjectsForExperiments',
+                'canMoveAndCancelExperiments'
+            ],
+            checkJoin: 'or',
+        });
+        if (currentAllowed) {
+            hasAnyAccess = true;
+            break;
+        }
+    }
+    if (!hasAnyAccess) {
+        throw new ApiError(403, {
+            apiStatus: 'LabOperationAccessDenied',
+            data: {
+                researchGroupIds: studyRecord.state.researchGroupIds,
+                flags: [
+                    'canWriteReservations',
+                    'canSelectSubjectsForExperiments',
+                    'canMoveAndCancelExperiments'
+                ],
+                checkJoin: 'or',
+            }
+        })
     }
 
     var reservationRecords = await fetchRecordsInInterval({

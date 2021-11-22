@@ -3,6 +3,8 @@ var debug = require('debug')(
     'psydb:api:endpoints:inhouseExperimentCalendar'
 );
 
+var enums = require('@mpieva/psydb-schema-enums');
+
 var {
     keyBy,
     groupBy,
@@ -10,19 +12,17 @@ var {
 } = require('@mpieva/psydb-core-utils');
 
 var {
-    validateOrThrow,
     ApiError,
     ResponseBody,
+    
+    validateOrThrow,
+    verifyLabOperationAccess,
+
+    convertPointerToPath,
+    fetchOneCustomRecordType,
+    gatherDisplayFieldsForRecordType,
+    fetchRelatedLabelsForMany,
 } = require('@mpieva/psydb-api-lib');
-
-var enums = require('@mpieva/psydb-schema-enums');
-
-var convertPointerToPath = require('@mpieva/psydb-api-lib/src/convert-pointer-to-path');
-
-var fetchOneCustomRecordType = require('@mpieva/psydb-api-lib/src/fetch-one-custom-record-type');
-var gatherDisplayFieldsForRecordType = require('@mpieva/psydb-api-lib/src/gather-display-fields-for-record-type');
-
-var fetchRelatedLabelsForMany = require('@mpieva/psydb-api-lib/src/fetch-related-labels-for-many');
 
 var {
     MatchIntervalAroundStage,
@@ -81,15 +81,12 @@ var experimentCalendar = async (context, next) => {
 
     var { start, end } = interval;
 
-    // TODO: permissions
-    if (!permissions.hasRootAccess) {
-        var allowed = permissions.allowedResearchGroupIds.find(id => {
-            return compareIds(id, researchGroupId)
-        })
-        if (!allowed) {
-            throw new ApiError(403)
-        }
-    }
+    verifyLabOperationFlag({
+        researchGroupId,
+        labOperationType: experimentType,
+        flag: 'canViewExperimentCalendar',
+        permissions,
+    });
 
     var studyRecords = []
     if (studyId) {

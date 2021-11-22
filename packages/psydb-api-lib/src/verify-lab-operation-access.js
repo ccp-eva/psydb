@@ -7,8 +7,14 @@ var verifyLabOperationAccess = (options) => {
         permissions,
         labOperationType,
         flag,
+        flags,
         researchGroupId,
+        checkJoin = 'and'
     } = options;
+
+    if (flag) {
+        flags = [ flag ];
+    }
 
     var isAllowed = checkLabOperationAccess(options);
 
@@ -16,7 +22,8 @@ var verifyLabOperationAccess = (options) => {
         throw new ApiError(403, {
             apiStatus: 'LabOperationAccessDenied',
             data: {
-                flag,
+                flags,
+                checkJoin,
                 researchGroupId,
                 labOperationType
             }

@@ -6,8 +6,18 @@ var checkLabOperationAccess = (options) => {
         permissions,
         labOperationType,
         flag,
+        flags,
+        checkJoin = 'and',
         researchGroupId,
     } = options;
+
+    if (['and', 'or'].includes(checkJoin)) {
+        throw new Error(`unknown checkJoin value "${checkJoin}"`);
+    }
+
+    if (flag) {
+        flags = [ flag ];
+    }
 
     var {
         hasRootAccess,
@@ -20,13 +30,26 @@ var checkLabOperationAccess = (options) => {
         isAllowed = true;
     }
     else if (!hasRootAccess || hasRootAccess && forcedResearchGroupId) {
-        var allowedIds = (
-            researchGroupIdsByFlag.labOperation[labOperationType][flag]
-        );
+        var flagsAllowed = 0;
+        for (var flag of flags) {
+            var allowedIds = (
+                researchGroupIdsByFlag.labOperation[labOperationType][flag]
+            );
 
-        var isAllowed = !!allowedIds.find(id => {
-            return compareIds(id, researchGroupId)
-        });
+            var currentFlagAllowed = !!allowedIds.find(id => {
+                return compareIds(id, researchGroupId)
+            });
+
+            if (currentFlagAllowed) {
+                flagsAllowed += 1;
+            }
+        }
+        if (checkJoin === 'and') {
+            isAllowed = (flagsAllowed === flags.length);
+        }
+        if (checkJoin === 'or') {
+            isAllowed = flagsAllowed > 0
+        }
     }
 
     return isAllowed;
