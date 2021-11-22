@@ -106,27 +106,6 @@ var experimentCalendar = async (context, next) => {
                     end,
                 }),
                 /*{ $match: {
-                    $or: [
-                        {
-                            'state.runningPeriod.start': { $lte: start },
-                            'state.runningPeriod.end': { $gte: start }
-                        },
-                        {
-                            'state.runningPeriod.start': { $lte: end },
-                            'state.runningPeriod.end': { $gte: end },
-                        },
-                        {
-                            'state.runningPeriod.start': { $lte: end },
-                            $or: [
-                                {
-                                    'state.runningPeriod.end': { $exists: false },
-                                },
-                                {
-                                    'state.runningPeriod.end': { $type: 10 },
-                                },
-                            ]
-                        }
-                    ],
                     ...(researchGroupId && {
                         'state.researchGroupIds': researchGroupId
                     })
