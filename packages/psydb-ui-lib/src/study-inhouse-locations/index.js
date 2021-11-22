@@ -41,11 +41,11 @@ const StudyInhouseLocations = ({
     
     var [ didFetch, fetched ] = useFetchAll((agent) => ({
         customTypes: agent.readCustomRecordTypeMetadata(),
-        study:  agent.readRecord({
+        /*study:  agent.readRecord({
             collection: 'study',
             recordType: studyRecordType,
             id: studyId,
-        }),
+        }),*/
         teams: agent.fetchExperimentOperatorTeamsForStudy({
             studyId,
         }),
@@ -61,7 +61,7 @@ const StudyInhouseLocations = ({
     }
 
     var customRecordTypeData = fetched.customTypes.data.customRecordTypes;
-    var studyRecord = fetched.study.data.record;
+    //var studyRecord = fetched.study.data.record;
     var teamRecords = fetched.teams.data.records;
 
     var {
@@ -98,7 +98,7 @@ const StudyInhouseLocations = ({
             <LocationCalendarList { ...({
                 className: locationCalendarListClassName,
                 teamRecords,
-                studyRecord,
+                studyId,
 
                 settingRecords,
                 settingRelated,

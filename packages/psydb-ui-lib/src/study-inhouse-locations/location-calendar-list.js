@@ -9,7 +9,7 @@ import withWeeklyCalendarPages from '../with-weekly-calendar-pages';
 import LocationReservationCalendar from './location-reservation-calendar';
 
 const LocationCalendarList = ({
-    studyRecord,
+    studyId,
     subjectRecordType,
     currentExperimentId,
     currentExperimentType,
@@ -38,7 +38,7 @@ const LocationCalendarList = ({
         return agent.fetchStudyLocationReservationCalendar({
             experimentType: currentExperimentType,
             locationRecordType,
-            studyId: studyRecord._id,
+            studyId,
             start: currentPageStart,
             end: currentPageEnd,
             ...(currentSubjectRecord && {
@@ -46,7 +46,7 @@ const LocationCalendarList = ({
             })
         })
     }, [
-        studyRecord,
+        studyId,
         locationRecordType,
         teamRecords,
         currentPageStart,
@@ -82,7 +82,7 @@ const LocationCalendarList = ({
                 <LocationReservationCalendar
                     key={ locationRecord._id }
                     { ...({
-                        studyRecord,
+                        studyId,
                         locationRecord,
                         reservationRecords,
                         experimentRecords,

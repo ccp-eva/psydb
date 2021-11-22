@@ -9,7 +9,7 @@ import {
 import TimeSlot from './time-slot';
 
 const TimeSlotList = ({
-    studyRecord,
+    studyId,
     locationRecord,
     teamRecords,
     reservationRecords,
@@ -69,7 +69,7 @@ const TimeSlotList = ({
 
     var sharedSlotProps = {
         slotDuration,
-        studyRecord,
+        studyId,
         locationRecord,
         teamRecords,
         

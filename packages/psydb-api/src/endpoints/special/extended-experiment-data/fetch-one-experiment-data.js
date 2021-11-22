@@ -4,6 +4,11 @@ var debug = require('debug')(
 );
 
 var {
+    StripEventsStage,
+    AddLastKnownEventIdStage
+} = require('@mpieva/psydb-mongo-stages');
+
+var {
     ApiError,
     fetchRecordById,
     createSchemaForRecordType,
@@ -19,13 +24,17 @@ var fetchOneExperimentData = async (options) => {
     } = options;
 
     debug('fetch experiment record');
-    var experimentRecord = await fetchRecordById({
-        db,
-        collectionName: 'experiment',
-        recordType: experimentType,
-        id: experimentId,
-        permissions,
-    });
+    var experimentRecords = await (
+        db.collection('experiment').aggregate([
+            { $match: {
+                _id: experimentId,
+                type: experimentType,
+            }},
+            AddLastKnownEventIdStage(),
+            StripEventsStage(),
+        ]).toArray()
+    );
+    var experimentRecord = experimentRecords[0];
 
     // FIXME: question is should we 404 or 403 when access is denied?
     // well 404 for now and treat it as if it wasnt found kinda

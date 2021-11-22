@@ -47,12 +47,23 @@ var experimentVariantSettings = async (context, next) => {
 
     var { studyIds } = request.body;
 
-    await verifyStudyAccess({
-        db,
-        permissions,
-        studyIds,
-        action: 'read',
-    });
+    var hasOtherPermission = (
+        permissions.hasSomeLabOperationFlags({
+            types: 'any',
+            flags: [ 'canMoveAndCancelExperiments' ]
+        })
+    );
+    // FIXME: this is incomplete
+    // we need to check if the studies
+    // research groups match with the users
+    if (!hasOtherPermission) {
+        await verifyStudyAccess({
+            db,
+            permissions,
+            studyIds,
+            action: 'read',
+        });
+    }
 
     var records = await (
         db.collection('experimentVariantSetting').aggregate([

@@ -49,12 +49,23 @@ var experimentOperatorTeamsForStudy = async (context, next) => {
         studyId,
     } = params;
 
-    await verifyStudyAccess({
-        db,
-        permissions,
-        studyId,
-        action: 'read',
-    });
+    var canChangeOpsTeam = (
+        permissions.hasSomeLabOperationFlags({
+            types: 'any',
+            flags: [ 'canChangeOpsTeam' ]
+        })
+    );
+    // FIXME: this is incomplete
+    // we need to check if the studies
+    // research groups match with the users
+    if (!canChangeOpsTeam) {
+        await verifyStudyAccess({
+            db,
+            permissions,
+            studyId,
+            action: 'read',
+        });
+    }
 
     var experimentOperatorTeamRecords = await (
         db.collection('experimentOperatorTeam').aggregate([

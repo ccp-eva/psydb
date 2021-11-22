@@ -12,7 +12,7 @@ const ExperimentSlot = (ps) => {
         experimentRecord,
 
         slotDuration,
-        studyRecord,
+        studyId,
         locationRecord,
         teamRecords,
 
@@ -26,7 +26,6 @@ const ExperimentSlot = (ps) => {
         onSelectExperimentSlot,
     } = ps;
 
-    var { _id: studyId } = studyRecord;
     var date = new Date(timestamp);
 
     var teamRecord = teamRecords.find(it => (
@@ -111,7 +110,6 @@ const ExperimentSlot = (ps) => {
                 </b>
                 <SubjectCountIndicator { ...({
                     experimentRecord,
-                    studyRecord,
                     subjectRecordType,
                 
                     settingRecords,
@@ -166,7 +164,6 @@ var countMissing = (options)  => {
 const SubjectCountIndicator = (ps) => {
     var {
         experimentRecord,
-        studyRecord,
         subjectRecordType,
 
         settingRecords,

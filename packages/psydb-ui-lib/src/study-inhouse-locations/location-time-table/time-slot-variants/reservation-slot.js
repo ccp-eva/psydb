@@ -11,14 +11,13 @@ const ReservationSlot = (ps) => {
         reservationRecord,
 
         slotDuration,
-        studyRecord,
+        studyId,
         locationRecord,
         teamRecords,
 
         onSelectReservationSlot,
     } = ps;
     
-    var { _id: studyId } = studyRecord;
     var date = new Date(timestamp);
 
     var teamRecord = teamRecords.find(it => (

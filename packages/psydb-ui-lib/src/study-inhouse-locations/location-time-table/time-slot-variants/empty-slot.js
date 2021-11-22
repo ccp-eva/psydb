@@ -6,14 +6,13 @@ const EmptySlot = (ps) => {
         timestamp,
 
         slotDuration,
-        studyRecord,
+        studyId,
         locationRecord,
         teamRecords,
 
         onSelectEmptySlot,
     } = ps;
 
-    var { _id: studyId } = studyRecord;
     var date = new Date(timestamp);
     
     return (
