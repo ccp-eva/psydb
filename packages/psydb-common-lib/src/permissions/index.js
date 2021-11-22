@@ -1,66 +1,88 @@
 'use strict';
-var { compareIds } = require('@mpieva/psydb-core-utils');
-var {
-    setupInternalResearchGroupIds,
-    keyRoleFlagsByResearchGroupId,
-    gatherResearchGroupIdsForCollections,
-    gatherResearchGroupIdsForFlags,
-    createFakeRootFlags,
-} = require('./utils');
+var DataHolder = require('./data-holder');
 
-var Permissions = ({
-    hasRootAccess,
-    rolesByResearchGroupId,
+var anyLabOperationTypes = [
+    'inhouse', 
+    'away-team',
+    'online-video-call',
+    'online-survey'
+];
 
-    researchGroupIds: availableResearchGroupIds,
-    forcedResearchGroupId,
-}) => {
+var Permissions = (options) => {
+    var { raw, ...rest } = options;
 
-    var internal = setupInternalResearchGroupIds({
+    var wrapper = (
+        raw
+        ? { ...raw }
+        : { ...DataHolder(rest) }
+    );
+
+    var {
         hasRootAccess,
-        availableResearchGroupIds,
-        forcedResearchGroupId,
-    });
+        forcedResearchGroup,
+        researchGroupIdsByFlag
+    } = wrapper;
 
-    var flagsByResearchGroupId = (
-        hasRootAccess && forcedResearchGroupId
-        ? { [forcedResearchGroupId]: createFakeRootFlags() }
-        : (
-            keyRoleFlagsByResearchGroupId({
-                availableResearchGroupIds,
-                rolesByResearchGroupId
-            })
-        )
-    );
-
-    var researchGroupIdsByCollection = (
-        gatherResearchGroupIdsForCollections({
-            researchGroupIds: internal.actualIds,
-            flagsByResearchGroupId,
-        })
-    );
-
-    var researchGroupIdsByFlag = (
-        gatherResearchGroupIdsForFlags({
-            researchGroupIds: internal.actualIds,
-            flagsByResearchGroupId,
-        })
+    var isRoot = () => (
+        hasRootAccess && !forcedResearchGroup
     )
 
-    var permissions = {
-        hasRootAccess,
-        
-        availableResearchGroupIds,
-        researchGroupIds: internal.actualIds, // FIXME deprecated
-        userResearchGroupIds: internal.actualIds,
-        forcedResearchGroupId: internal.actuallyForcedId,
+    var getFlagIds = (flag) => (
+        researchGroupIdsByFlag[flag] || []
+    );
 
-        flagsByResearchGroupId,
-        researchGroupIdsByCollection,
-        researchGroupIdsByFlag,
+    var getLabOperationFlagIds = (type, flag) => {
+        var { labOperation } = researchGroupIdsByFlag;
+        return (
+            (
+                labOperation &&
+                labOperation[type] &&
+                labOperation[type][flag]
+            )
+            ? labOperation[type][flag]
+            : []
+        )
     };
 
-    return permissions;
+    var hasFlag = (flag) => (
+        isRoot()
+        ? true
+        : getFlagIds(flag).length > 0
+    );
+
+    var hasSomeFlags = (flags) => (
+        flags.some(it => hasFlag(it))
+    );
+
+    var hasLabOperationFlag = (type, flag) => (
+        isRoot()
+        ? true
+        : getLabOperationFlagIds(type, flag).length > 0
+    );
+
+    var hasSomeLabOperationFlags = ({ types, flags }) => {
+        if (types === 'any') {
+            types = anyLabOperationTypes;
+        }
+        return types.some(t => (
+            flags.some(f => hasLabOperationFlag(t, f))
+        ))
+    }
+
+    var out = {
+        ...wrapper,
+
+        isRoot,
+        getFlagIds,
+        getLabOperationFlagIds,
+
+        hasFlag,
+        hasSomeFlags,
+        hasLabOperationFlag,
+        hasSomeLabOperationFlags,
+    }
+
+    return out;
 }
 
 module.exports = Permissions;

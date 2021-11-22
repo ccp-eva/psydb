@@ -1,75 +1,16 @@
 import React, { useContext, useMemo } from 'react';
+import { Permissions } from '@mpieva/psydb-common-lib';
 import { SelfContext } from '@mpieva/psydb-ui-contexts';
 
-var anyLabOperationTypes = [
-    'inhouse', 
-    'away-team',
-    'online-video-call',
-    'online-survey'
-];
-
-var createCallbacks = (options) => {
-    var { permissions } = options;
-
-    var {
-        hasRootAccess,
-        forcedResearchGroup,
-        researchGroupIdsByFlag
-    } = permissions;
+const usePermissions = () => {
+    var { permissions } = useContext(SelfContext);
    
-    var isRoot = () => (
-        hasRootAccess && !forcedResearchGroup
-    )
-
-    var getFlagIds = (flag) => (
-        researchGroupIdsByFlag[flag] || []
-    );
-
-    var getLabOperationFlagIds = (type, flag) => {
-        var { labOperation } = researchGroupIdsByFlag;
-        return (
-            (
-                labOperation &&
-                labOperation[type] &&
-                labOperation[type][flag]
-            )
-            ? labOperation[type][flag]
-            : []
-        )
-    };
-
-    var hasFlag = (flag) => (
-        isRoot()
-        ? true
-        : getFlagIds(flag).length > 0
-    );
-
-    var hasSomeFlags = (flags) => (
-        flags.some(it => hasFlag(it))
-    );
-
-    var hasLabOperationFlag = (type, flag) => (
-        isRoot()
-        ? true
-        : getLabOperationFlagIds(type, flag).length > 0
-    );
-
-    var hasSomeLabOperationFlags = ({ types, flags }) => {
-        if (types === 'any') {
-            types = anyLabOperationTypes;
-        }
-        return types.some(t => (
-            flags.some(f => hasLabOperationFlag(t, f))
-        ))
-    }
-
-    var researchGroupIds = () => (
-        permissions.researchGroupIds
-    )
-
-    return {
+    var wrappedPermissions = useMemo(() => (
+        Permissions({ raw: permissions })
+    ), [ permissions ]);
+    
+    var {
         isRoot,
-        researchGroupIds,
         
         getFlagIds,
         getLabOperationFlagIds,
@@ -78,19 +19,20 @@ var createCallbacks = (options) => {
         hasSomeFlags,
         hasLabOperationFlag,
         hasSomeLabOperationFlags,
-    }
-}
 
-const usePermissions = () => {
-    var { permissions } = useContext(SelfContext);
-   
-    var callbacks = useMemo(() => (
-        createCallbacks({ permissions })
-    ), [ permissions ]);
+        ...raw
+    } = wrappedPermissions;
 
     return {
-        raw: permissions,
-        ...callbacks,
+        raw,
+
+        isRoot,
+        getFlagIds,
+        getLabOperationFlagIds,
+        hasFlag,
+        hasSomeFlags,
+        hasLabOperationFlag,
+        hasSomeLabOperationFlags,
     }
 }
 

@@ -1,4 +1,5 @@
 'use strict';
+var jsonpointer = require('jsonpointer');
 
 var gatherResearchGroupIdsForCollections = (options) => {
     var {
@@ -25,18 +26,18 @@ var filterResearchGroupsByPermissionFlags = (options) => {
         flagsByResearchGroupId,
     } = options;
 
-    var possibleFlagKeysByAction = {
-        read: getCollectionReadFlagKeys({ collection }),
-        write: getCollectionWriteFlagKeys({ collection }),
+    var possibleFlagPointersByAction = {
+        read: getCollectionReadFlagPointers({ collection }),
+        write: getCollectionWriteFlagPointers({ collection }),
     }
 
     var out = {};
-    for (var action of Object.keys(possibleFlagKeysByAction)) {
-        var possibleFlagKeys = possibleFlagKeysByAction[action];
+    for (var action of Object.keys(possibleFlagPointersByAction)) {
+        var possibleFlagPointers = possibleFlagPointersByAction[action];
 
         var filteredIds = researchGroupIds.filter(gid => {
             var flags = flagsByResearchGroupId[gid];
-            var anyAllowed = checkFlagKeys({ flags, possibleFlagKeys });
+            var anyAllowed = checkFlagPointers({ flags, possibleFlagPointers });
             return anyAllowed;
         });
         
@@ -46,52 +47,52 @@ var filterResearchGroupsByPermissionFlags = (options) => {
     return out;
 }
 
-var getCollectionReadFlagKeys = ({ collection }) => {
+var getCollectionReadFlagPointers = ({ collection }) => {
     switch (collection) {
         case 'subject':
-            return [ 'canReadSubjects', 'canWriteSubjects' ];
+            return [ '/canReadSubjects', '/canWriteSubjects' ];
         case 'study':
-            return [ 'canReadStudies', 'canWriteStudies' ];
+            return [ '/canReadStudies', '/canWriteStudies' ];
         case 'personnel':
-            return [ 'canWritePersonnel' ];
+            return [ '/canWritePersonnel' ];
 
         case 'externalPerson':
         case 'externalOrganization':
         case 'helperSet':
         case 'helperSetItem':
         case 'location':
-            return [ 'canWriteAdministrativeCollections' ]
+            return [ '/canWriteAdministrativeCollections' ]
 
         default:
             return []
     }
 }
 
-var getCollectionWriteFlagKeys = ({ collection }) => {
+var getCollectionWriteFlagPointers = ({ collection }) => {
     switch (collection) {
         case 'subject':
-            return [ 'canWriteSubjects' ];
+            return [ '/canWriteSubjects' ];
         case 'study':
-            return [ 'canWriteStudies' ];
+            return [ '/canWriteStudies' ];
         case 'personnel':
-            return [ 'canWritePersonnel' ];
+            return [ '/canWritePersonnel' ];
 
         case 'externalPerson':
         case 'externalOrganization':
         case 'helperSet':
         case 'helperSetItem':
         case 'location':
-            return [ 'canWriteAdministrativeCollections' ]
+            return [ '/canWriteAdministrativeCollections' ]
 
         default:
             return []
     }
 }
 
-var checkFlagKeys = ({ flags, possibleFlagKeys }) => {
+var checkFlagPointers = ({ flags, possibleFlagPointers }) => {
     var areAnyTrue = false;
-    for (var key of possibleFlagKeys) {
-        if (flags[key] === true) {
+    for (var pointer of possibleFlagPointers) {
+        if (jsonpointer.get(flags, pointer) === true) {
             areAnyTrue = true;
             break;
         }
