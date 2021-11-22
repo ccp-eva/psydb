@@ -52,7 +52,7 @@ var RequestBodySchema = () => ExactObject({
         }),
     },
     required: [
-        //'researchGroupId',
+        'researchGroupId',
         'subjectRecordType',
         'interval',
         'experimentType',
@@ -105,11 +105,9 @@ var experimentCalendar = async (context, next) => {
                     start,
                     end,
                 }),
-                /*{ $match: {
-                    ...(researchGroupId && {
-                        'state.researchGroupIds': researchGroupId
-                    })
-                }},*/
+                { $match: {
+                    'state.researchGroupIds': researchGroupId
+                }},
             ]).toArray()
         );
     }

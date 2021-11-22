@@ -79,28 +79,10 @@ var selectableStudiesForCalendar = async (context, next) => {
             start: now,
             end: now,
         }),
-        /*{ $match: {
-            $or: [
-                {
-                    'state.runningPeriod.start': { $lte: now },
-                    'state.runningPeriod.end': { $gte: now }
-                },
-                {
-                    'state.runningPeriod.start': { $lte: now },
-                    'state.runningPeriod.end': { $exists: false },
-                }
-            ],
-            ...(researchGroupId && {
-                'state.researchGroupIds': researchGroupId
-            })
-        }},*/
-    ];
-
-    if (researchGroupId) {
-        stages.push({ $match: {
+        { $match: {
             'state.researchGroupIds': researchGroupId
-        }})
-    }
+        }},
+    ];
 
     var records = await (
         db.collection('study').aggregate([
