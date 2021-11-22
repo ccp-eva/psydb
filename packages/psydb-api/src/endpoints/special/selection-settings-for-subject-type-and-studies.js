@@ -40,7 +40,10 @@ var selectionSettingsForSubjectTypeAndStudies = async (context, next) => {
         { $match: {
             _id: { $in: studyIds }
         }},
-        ...SystemPermissionStages({ permissions }),
+        ...SystemPermissionStages({
+            collection: 'study',
+            permissions
+        }),
         StripEventsStage(),
         { $unwind: '$state.selectionSettingsBySubjectType' },
         { $project: {

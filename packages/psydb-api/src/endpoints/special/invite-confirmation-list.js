@@ -73,14 +73,14 @@ var inviteConfirmationList = async (context, next) => {
         end,
     } = request.body;
 
-    var canAccessInhouse = checkLabOperationFlag({
+    var canAccessInhouse = checkLabOperationAccess({
         researchGroupId,
         labOperationType: 'inhouse',
         flag: 'canConfirmSubjectInvitation',
         permissions,
     })
 
-    var canAccessOnlineVideoCall = checkLabOperationFlag({
+    var canAccessOnlineVideoCall = checkLabOperationAccess({
         researchGroupId,
         labOperationType: 'online-video-call',
         flag: 'canConfirmSubjectInvitation',

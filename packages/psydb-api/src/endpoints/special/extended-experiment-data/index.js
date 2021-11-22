@@ -93,7 +93,7 @@ var extendedExperimentData = async (context, next) => {
     // FIXME: make this into utility
     var hasAnyAccess = false;
     for (var researchGroupId of studyRecord.state.researchGroupIds) {
-        var currentAllowed = checkLabOperationFlag({
+        var currentAllowed = checkLabOperationAccess({
             permissions,
             researchGroupId,
             labOperationType: experimentType,

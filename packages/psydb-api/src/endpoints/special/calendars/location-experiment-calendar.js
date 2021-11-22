@@ -104,7 +104,10 @@ var locationExperimentCalendar = async (context, next) => {
     else {
         studyRecords = await (
             db.collection('study').aggregate([
-                ...SystemPermissionStages({ permissions }),
+                ...SystemPermissionStages({
+                    collection: 'study',
+                    permissions
+                }),
                 { $match: {
                     $or: [
                         {

@@ -21,7 +21,6 @@ var {
     MatchIntervalOverlapStage,
     StripEventsStage,
     ProjectDisplayFieldsStage,
-    SystemPermissionStages,
 } = require('@mpieva/psydb-api-lib/src/fetch-record-helpers');
 
 var RequestBodySchema = require('./request-body-schema');

@@ -87,7 +87,7 @@ var studyLocationReservationCalendar = async (context, next) => {
     // FIXME: make this into utility
     var hasAnyAccess = false;
     for (var researchGroupId of studyRecord.state.researchGroupIds) {
-        var currentAllowedInhouse = checkLabOperationFlag({
+        var currentAllowedInhouse = checkLabOperationAccess({
             permissions,
             researchGroupId,
             labOperationType: 'inhouse',
@@ -98,7 +98,7 @@ var studyLocationReservationCalendar = async (context, next) => {
             ],
             checkJoin: 'or',
         });
-        var currentAllowedVideo = checkLabOperationFlag({
+        var currentAllowedVideo = checkLabOperationAccess({
             permissions,
             researchGroupId,
             labOperationType: 'online-video-call',

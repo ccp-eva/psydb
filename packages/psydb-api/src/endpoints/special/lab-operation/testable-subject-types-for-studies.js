@@ -58,7 +58,10 @@ var testableSubjectTypesForStudies = async (context, next) => {
         { $match: {
             _id: { $in: studyIds }
         }},
-        ...SystemPermissionStages({ permissions }),
+        ...SystemPermissionStages({
+            collection: 'study',
+            permissions
+        }),
         StripEventsStage(),
     ]).toArray()
 

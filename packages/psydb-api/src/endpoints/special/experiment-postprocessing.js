@@ -73,7 +73,10 @@ var experimentPostprocessing = async (context, next) => {
 
     var studyRecords = await (
         db.collection('study').aggregate([
-            ...SystemPermissionStages({ permissions }),
+            ...SystemPermissionStages({
+                collection: 'study',
+                permissions
+            }),
             { $match: {
                 'state.researchGroupIds': researchGroupId
             }},

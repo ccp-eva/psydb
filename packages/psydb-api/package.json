@@ -34,6 +34,7 @@
     "nanoid": "~3.1.20",
     "jsonpointer": "~4.1.0",
     "@mpieva/psydb-mongo-adapter": "~0.1.0-alpha",
+    "@mpieva/psydb-mongo-stages": "~0.1.0-alpha",
     "koa-router": "~10.0.0",
     "statuses": "~2.0.0",
     "@cdxoo/inline-text": "~1.0.1",
