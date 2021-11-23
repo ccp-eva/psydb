@@ -23,7 +23,7 @@ var checkAllowedAndPlausible = async (context) => {
 
     // TODO
     if (!permissions.hasRootAccess) {
-        throw new ApiError(403);
+        //throw new ApiError(403);
     }
 
     var targetCache = cache.targetCache = {};

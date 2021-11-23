@@ -16,7 +16,7 @@ var checkAllowedAndPlausible = async ({
 
     if (op === 'create') {
         if (!permissions.hasRootAccess) {
-            throw new ApiError(403);
+            //throw new ApiError(403);
         }
     }
     else if (op === 'patch') {
@@ -27,7 +27,7 @@ var checkAllowedAndPlausible = async ({
             throw new ApiError(400);
         }
         if (!permissions.hasRootAccess) {
-            throw new ApiError(403);
+            //throw new ApiError(403);
         }
     }
     // TODO: deleteGdpr

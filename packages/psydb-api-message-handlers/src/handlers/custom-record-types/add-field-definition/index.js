@@ -39,7 +39,7 @@ var checkAllowedAndPlausible = async ({
     message
 }) => {
     if (!permissions.hasRootAccess) {
-        throw new ApiError(403);
+        //throw new ApiError(403);
     }
 
     var {
