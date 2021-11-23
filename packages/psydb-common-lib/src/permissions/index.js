@@ -19,12 +19,12 @@ var Permissions = (options) => {
 
     var {
         hasRootAccess,
-        forcedResearchGroup,
+        forcedResearchGroupId,
         researchGroupIdsByFlag
     } = wrapper;
 
     var isRoot = () => (
-        hasRootAccess && !forcedResearchGroup
+        hasRootAccess && !forcedResearchGroupId
     )
 
     var getFlagIds = (flag) => (
