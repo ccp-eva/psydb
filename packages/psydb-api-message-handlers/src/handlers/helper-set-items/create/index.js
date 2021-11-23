@@ -25,9 +25,9 @@ var checkAllowedAndPlausible = async ({
 }) => {
     var { setId, props } = message.payload;
     
-    if (!permissions.canCreateHelperSetItem()) {
+    //if (!permissions.canCreateHelperSetItem()) {
         //throw new ApiError(403);
-    }
+    //}
 
     var existingSet = await (
         db.collection('helperSet').findOne({
