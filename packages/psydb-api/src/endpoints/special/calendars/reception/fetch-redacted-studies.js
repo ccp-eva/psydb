@@ -14,10 +14,6 @@ var fetchRedactedStudies = async (context, options) => {
 
     var records = await (
         db.collection('study').aggregate([
-            ...SystemPermissionStages({
-                collection: 'study',
-                permissions
-            }),
             MatchIntervalAroundStage({
                 ...interval,
                 recordIntervalPath: 'state.runningPeriod',
