@@ -45,7 +45,7 @@ const InhouseExperimentsRouting = ({
                         autoRedirect={ true }
                         filterIds={
                             permissions.isRoot()
-                            ? undefined
+                            ? permissions.raw.forcedResearchGroupId
                             : permissions.getLabOperationFlagIds(
                                 'inhouse', 'canViewExperimentCalendar'
                             )

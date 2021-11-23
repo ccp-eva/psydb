@@ -45,7 +45,7 @@ const OnlineVideoCallExperimentsRouting = ({
                         autoRedirect={ true }
                         filterIds={
                             permissions.isRoot()
-                            ? undefined
+                            ? permissions.raw.forcedResearchGroupId
                             : permissions.getLabOperationFlagIds(
                                 'online-video-call',
                                 'canViewExperimentCalendar'

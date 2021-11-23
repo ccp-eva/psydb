@@ -24,7 +24,7 @@ const InviteConfirmationRouting = ({
 
     var researchGroupIds = (
         permissions.isRoot()
-        ? undefined
+        ? permissions.raw.forcedResearchGroupId
         : unique([
             ...permissions.getLabOperationFlagIds(
                 'inhouse', 'canConfirmSubjectInvitation'

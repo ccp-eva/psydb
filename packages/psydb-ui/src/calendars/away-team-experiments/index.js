@@ -42,7 +42,7 @@ const AwayTeamExperimentsRouting = ({
                         autoRedirect={ true }
                         filterIds={
                             permissions.isRoot()
-                            ? undefined
+                            ? permissions.raw.forcedResearchGroupId
                             : permissions.getLabOperationFlagIds(
                                 'away-team', 'canViewExperimentCalendar'
                             )
