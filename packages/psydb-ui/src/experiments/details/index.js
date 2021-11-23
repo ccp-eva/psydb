@@ -1,4 +1,5 @@
 import React, { useEffect, useReducer, useCallback } from 'react';
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import {
     Route,
@@ -28,6 +29,21 @@ const ExperimentDetails = ({
 
     onSuccessfulUpdate,
 }) => {
+    var { type: experimentType } = experimentData.record;
+    
+    var permissions = usePermissions();
+
+    var showFunctions = (
+        !experimentData.record.state.isCanceled
+        && (
+            permissions.hasLabOperationFlag(
+                experimentType, 'canMoveAndCancelExperiments'
+            ) ||
+            permissions.hasLabOperationFlag(
+                experimentType, 'canChangeOpsTeam'
+            )
+        )
+    )
     return (
         <div>
             <div className='border bg-light p-3'>
@@ -42,7 +58,7 @@ const ExperimentDetails = ({
                     locationData,
                     studyData,
                 }) } />
-                { !experimentData.record.state.isCanceled && (
+                { showFunctions && (
                     <>
                         <hr />
                         <div className='mt-3 d-flex justify-content-end'>

@@ -5,37 +5,39 @@ import SubjectTypeContainer from './subject-type-container';
 
 const PostprocessableSubjects = ({
     experimentData,
+    labProcedureSettingData,
     studyData,
     subjectDataByType,
     onSuccessfulUpdate,
 }) => {
-    var { selectionSettingsBySubjectType } = studyData.record.state;
-    var stringifyStudyValue = createStringifier(studyData);
+    var {
+        records: settingRecords,
+        ...settingRelated
+    } = labProcedureSettingData;
 
     return (
         <div className='p-3'>
-            { selectionSettingsBySubjectType.map((it, index) => {
+            { settingRecords.map((it, index) => {
                 var {
-                    subjectRecordType,
-                    subjectsPerExperiment
-                } = it;
-                
-                var subjectTypeLabel = stringifyStudyValue({
-                    ptr: `/state/selectionSettingsBySubjectType/${index}/subjectRecordType`,
-                    collection: 'subject',
-                    type: 'CustomRecordTypeKey',
-                });
+                    subjectTypeKey,
+                    subjectsPerExperiment,
+                } = it.state;
 
-                var fullSubjectData = subjectDataByType[subjectRecordType];
+                var subjectTypeLabel = (
+                    settingRelated.relatedCustomRecordTypes
+                    .subject[subjectTypeKey].state.label
+                );
+                
+                var fullSubjectData = subjectDataByType[subjectTypeKey];
                 if (fullSubjectData.records.length < 1) {
                     return null;
                 }
                 
                 return (
                     <SubjectTypeContainer { ...({
-                        key: subjectRecordType,
-
-                        subjectTypeKey: subjectRecordType,
+                        key: subjectTypeKey,
+                        
+                        subjectTypeKey,
                         subjectTypeLabel,
                         subjectsPerExperiment,
 

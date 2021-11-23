@@ -1,4 +1,5 @@
 import React, { useEffect, useReducer, useCallback } from 'react';
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import GeneralInfo from '../general-info';
 import AllSubjects from './all-subjects';
 import PostprocessableSubjects from './postprocessable-subjects';
@@ -13,6 +14,13 @@ const ExperimentPostprocessing = ({
 
     onSuccessfulUpdate,
 }) => {
+    var permissions = usePermissions();
+    var { type: experimentType } = experimentData.record;
+
+    var canPostprocess = permissions.hasLabOperationFlag(
+        experimentType, 'canPostprocessExperiments'
+    );
+
     return (
         <div>
             <div className='border bg-light p-3'>
@@ -26,29 +34,43 @@ const ExperimentPostprocessing = ({
                     studyData
                 }) } />
             </div>
-            <div className='mt-3'>
-                <h4 className='border-bottom'>
-                    Nachzubereitende Probanden
-                </h4>
-                <PostprocessableSubjects { ...({
-                    experimentData,
-                    labProcedureSettingData,
-                    studyData,
-                    subjectDataByType,
-                    onSuccessfulUpdate,
-                })} />
-            </div>
-            <div className='mt-3'>
-                <h4 className='border-bottom'>
-                    Alle Probanden
-                </h4>
-                <AllSubjects { ...({
-                    experimentData,
-                    labProcedureSettingData,
-                    studyData,
-                    subjectDataByType,
-                }) } />
-            </div>
+            { canPostprocess
+                ? (
+                    <>
+                        <div className='mt-3'>
+                            <h4 className='border-bottom'>
+                                Nachzubereitende Probanden
+                            </h4>
+                            <PostprocessableSubjects { ...({
+                                experimentData,
+                                labProcedureSettingData,
+                                studyData,
+                                subjectDataByType,
+                                onSuccessfulUpdate,
+                            })} />
+                        </div>
+                        <div className='mt-3'>
+                            <h4 className='border-bottom'>
+                                Alle Probanden
+                            </h4>
+                            <AllSubjects { ...({
+                                experimentData,
+                                labProcedureSettingData,
+                                studyData,
+                                subjectDataByType,
+                            }) } />
+                        </div>
+                    </>
+                )
+                : (
+                    <AllSubjects { ...({
+                        experimentData,
+                        labProcedureSettingData,
+                        studyData,
+                        subjectDataByType,
+                    }) } />
+                )
+            }
         </div>
 
     );

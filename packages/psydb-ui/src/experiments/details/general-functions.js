@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import {
     Button
@@ -15,24 +16,37 @@ const GeneralFunctions = ({
     studyData,
     onSuccessfulUpdate,
 }) => {
+    var { type: experimentType } = experimentData.record;
+    
+    var permissions = usePermissions();
+    var canChangeOpsTeam = permissions.hasLabOperationFlag(
+        experimentType, 'canChangeOpsTeam'
+    );
+    var canMove = permissions.hasLabOperationFlag(
+        experimentType, 'canMoveAndCancelExperiments'
+    );
+    
     return (
         <>
-
-            <ChangeTeamContainer { ...({
-                experimentId: experimentData.record._id,
-                studyId: studyData.record._id,
-                currentTeamId: (
-                    experimentData.record.state.opsTeamId
-                ),
-                onSuccessfulUpdate,
-            }) } />
-
-            <MoveExperimentContainer { ...({
-                experimentData,
-                opsTeamData,
-                studyData,
-                onSuccessfulUpdate,
-            }) } />
+            { canChangeOpsTeam && (
+                <ChangeTeamContainer { ...({
+                    experimentId: experimentData.record._id,
+                    studyId: studyData.record._id,
+                    currentTeamId: (
+                        experimentData.record.state.opsTeamId
+                    ),
+                    onSuccessfulUpdate,
+                }) } />
+            )}
+            
+            { canMove && (
+                <MoveExperimentContainer { ...({
+                    experimentData,
+                    opsTeamData,
+                    studyData,
+                    onSuccessfulUpdate,
+                }) } />
+            )}
         </>
     );
 }

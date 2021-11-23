@@ -1,7 +1,7 @@
 import React, { createContext, useContext } from 'react';
 
 import { createSend } from '@mpieva/psydb-ui-utils';
-import { useModalReducer } from '@mpieva/psydb-ui-hooks';
+import { useModalReducer, usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import { DetailsIconButton } from '@mpieva/psydb-ui-layout';
 import SubjectDropdown from '@mpieva/psydb-ui-lib/src/experiment-subject-dropdown';
@@ -18,6 +18,8 @@ const Subjects = ({
     subjectDataByType,
     onSuccessfulUpdate,
 }) => {
+    var { type: experimentType } = experimentData.record;
+
     var commentModal = useModalReducer({ show: false });
     var moveModal = useModalReducer({ show: false });
     var removeModal = useModalReducer({ show: false });
@@ -54,6 +56,8 @@ const Subjects = ({
             }) } />
             
             <ActionsContext.Provider value={{
+                experimentType,
+
                 onClickComment: commentModal.handleShow,
                 onClickMove: moveModal.handleShow,
                 onClickRemove: removeModal.handleShow,
@@ -83,7 +87,11 @@ const ActionsComponent = ({
     isUnparticipated,
 }) => {
     var context = useContext(ActionsContext);
+    var permissions = usePermissions();
+
     var {
+        experimentType,
+
         onClickComment,
         onClickMove,
         onClickRemove,
@@ -93,11 +101,14 @@ const ActionsComponent = ({
         onClickContactFailed,
     } = context;
 
+
     return (
         <div className='d-flex justify-content-end'>
-            <DetailsIconButton
-                to={`/subjects/${subjectRecord.type}/${subjectRecord._id}`}
-            />
+            { permissions.hasFlag('canReadSubjects') && (
+                <DetailsIconButton
+                    to={`/subjects/${subjectRecord.type}/${subjectRecord._id}`}
+                />
+            )}
 
             <SubjectDropdown { ...({
                 subjectRecord,
@@ -111,6 +122,7 @@ const ActionsComponent = ({
                 onClickContactFailed,
                     
                 disabled: isUnparticipated,
+                experimentType,
             }) } />
         </div>
     )

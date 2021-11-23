@@ -1,4 +1,5 @@
 import React from 'react';
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { DetailsIconButton } from '@mpieva/psydb-ui-layout';
 import SubjectsContainer from '../subjects-container';
 
@@ -28,11 +29,14 @@ const ActionsComponent = ({
     hasContactIssue,
     isUnparticipated,
 }) => {
+    var permissions = usePermissions();
     return (
         <div className='d-flex justify-content-end'>
-            <DetailsIconButton
-                to={`/subjects/${subjectRecord.type}/${subjectRecord._id}`}
-            />
+            { permissions.hasFlag('canReadSubjects') && (
+                <DetailsIconButton
+                    to={`/subjects/${subjectRecord.type}/${subjectRecord._id}`}
+                />
+            )}
         </div>
     )
 }
