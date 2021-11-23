@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import {
     Route,
@@ -25,6 +26,7 @@ import OnlineVideoCallExperimentsRouting from './online-video-call-experiments';
 
 const Calendars = () => {
     var { path, url } = useRouteMatch();
+    var permissions = usePermissions();
 
     var [ isInitialized, setIsInitialized ] = useState(false);
     var [ metadata, setMetadata ] = useState();
@@ -62,6 +64,38 @@ const Calendars = () => {
         ))
     );
 
+    var canViewReception = permissions.hasFlag(
+        'canViewReceptionCalendar'
+    );
+    var canViewInhouse = permissions.hasLabOperationFlag(
+        'inhouse', 'canViewExperimentCalendar',
+    );
+    var canViewAwayTeam = permissions.hasLabOperationFlag(
+        'away-team', 'canViewExperimentCalendar',
+    );
+    var canViewVideo = permissions.hasLabOperationFlag(
+        'online-video-call', 'canViewExperimentCalendar',
+    );
+
+    var navItems = [
+        (canViewReception && { 
+            label: 'Rezeption',
+            linkUrl: `${url}/reception`,
+        }),
+        (canViewInhouse && { 
+            label: 'Interne Termine',
+            linkUrl: `${url}/inhouse`,
+        }),
+        (canViewAwayTeam && {
+            label: 'Externe Termine',
+            linkUrl: `${url}/away-team`,
+        }),
+        (canViewVideo && {
+            label: 'Video Termine',
+            linkUrl: `${url}/online-video-call`,
+        }),
+    ].filter(it => !!it)
+
     return (
         <div>
             <header>
@@ -73,31 +107,34 @@ const Calendars = () => {
             </header>
             <Switch>
                 <Route exact path={`${path}`}>
-                    <CalendarNav />
+                    <BigNav items={ navItems } />
                 </Route>
-                <Route path={ `${path}/reception` }>
-                    <ReceptionCalendar />
-                </Route>
-                <Route path={ `${path}/inhouse` }>
-                    <InhouseExperimentsRouting
-                        subjectRecordTypes={ subjectTypes }
-                    />
-                </Route>
-                <Route path={ `${path}/inhouse` }>
-                    <InhouseExperimentsRouting
-                        subjectRecordTypes={ subjectTypes }
-                    />
-                </Route>
-                <Route path={ `${path}/away-team` }>
-                    <AwayTeamExperimentsRouting
-                        locationTypes={ locationTypes }
-                    />
-                </Route>
-                <Route path={ `${path}/online-video-call` }>
-                    <OnlineVideoCallExperimentsRouting
-                        subjectRecordTypes={ subjectTypes }
-                    />
-                </Route>
+                { canViewReception && (
+                    <Route path={ `${path}/reception` }>
+                        <ReceptionCalendar />
+                    </Route>
+                )}
+                { canViewInhouse && (
+                    <Route path={ `${path}/inhouse` }>
+                        <InhouseExperimentsRouting
+                            subjectRecordTypes={ subjectTypes }
+                        />
+                    </Route>
+                )}
+                { canViewAwayTeam && (
+                    <Route path={ `${path}/away-team` }>
+                        <AwayTeamExperimentsRouting
+                            locationTypes={ locationTypes }
+                        />
+                    </Route>
+                )}
+                { canViewVideo && (
+                    <Route path={ `${path}/online-video-call` }>
+                        <OnlineVideoCallExperimentsRouting
+                            subjectRecordTypes={ subjectTypes }
+                        />
+                    </Route>
+                )}
             </Switch>
         </div>
 
@@ -113,7 +150,7 @@ const RedirectOrTypeNav = ({
         return (
             <Redirect to={
                 `${baseUrl}/${studyTypes[0].type}`
-            } />
+                } />
         )
     }
     else {
@@ -126,33 +163,6 @@ const RedirectOrTypeNav = ({
             </>
         )
     }
-}
-
-const CalendarNav = () => {
-    var { path, url } = useRouteMatch();
-    
-    //var baseUrl = up(url, 1);
-
-    return (
-        <BigNav items={[
-            { 
-                label: 'Rezeption',
-                linkUrl: `${url}/reception`,
-            },
-            { 
-                label: 'Interne Termine',
-                linkUrl: `${url}/inhouse`,
-            },
-            {
-                label: 'Externe Termine',
-                linkUrl: `${url}/away-team`,
-            },
-            {
-                label: 'Video Termine',
-                linkUrl: `${url}/online-video-call`,
-            },
-        ]} />
-    );
 }
 
 export default Calendars;
