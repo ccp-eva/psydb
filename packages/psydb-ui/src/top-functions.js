@@ -26,7 +26,10 @@ const SwitchResearchGroupModal = WithDefaultModal({
             payload: { researchGroupId }
         }), {
             onSuccessfulUpdate: [
-                () => history.push('/'),
+                //() => history.push('/'),
+                //() => { window.location.reload() },
+                // FIXME: we need to refresh the self context here
+                () => { window.location.href = '/' },
                 onHide,
             ]
         })
