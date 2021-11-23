@@ -69,6 +69,13 @@ var createRouting = ({
         endpoints.self.researchGroups
     )
 
+    router.get('/self/available-research-groups',
+        withSelfAuth(),
+        withPermissions(),
+        endpoints.self.availableResearchGroups
+    )
+
+
     router.get('/read/:collectionName/:id',
         withSelfAuth(),
         withPermissions(),

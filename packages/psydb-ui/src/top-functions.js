@@ -18,7 +18,7 @@ const SwitchResearchGroupModal = WithDefaultModal({
         var history = useHistory();
 
         var [ didFetch, fetched ] = useFetch((agent) => (
-            agent.getAxios().get('/api/self/research-groups')
+            agent.getAxios().get('/api/self/available-research-groups')
         ), []);
 
         var send = useSend((researchGroupId) => ({
