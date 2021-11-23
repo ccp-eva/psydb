@@ -1,5 +1,6 @@
 import React from 'react';
 import { Table } from 'react-bootstrap';
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import formatInterval from '@mpieva/psydb-ui-lib/src/format-date-interval';
 import { DetailsIconButton } from '@mpieva/psydb-ui-layout';
@@ -15,6 +16,9 @@ const InhouseList = ({
 
     onSuccessfulUpdate
 }) => {
+    var permissions = usePermissions();
+    var canReadSubjects = permissions.hasFlag('canReadSubjects');
+
     return (
         <Table>
             <thead>
@@ -33,7 +37,8 @@ const InhouseList = ({
                         subjectType,
                         experimentRecord,
                         relatedRecordLabels,
-
+                        
+                        canReadSubjects,
                         onSuccessfulUpdate
                     })} />
                 )) }
@@ -47,6 +52,7 @@ const ExperimentSubjectItems = ({
     experimentRecord,
     relatedRecordLabels,
     
+    canReadSubjects,
     onSuccessfulUpdate
 }) => {
     var { subjectData } = experimentRecord.state;
@@ -75,10 +81,12 @@ const ExperimentSubjectItems = ({
                     <tr key={ index }>
                         <Cell>
                             { subjectLabel }
-                            <DetailsIconButton
-                                to={`/subjects/${subjectType}/${it.subjectId}`}
-                                target='_blank'
-                            />
+                            { canReadSubjects && (
+                                <DetailsIconButton
+                                    to={`/subjects/${subjectType}/${it.subjectId}`}
+                                    target='_blank'
+                                />
+                            )}
                         </Cell>
                         <Cell>
                             { startDate }

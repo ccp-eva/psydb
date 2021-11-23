@@ -12,7 +12,8 @@ import {
 
 import {
     useFetch,
-    useRevision
+    useRevision,
+    usePermissions
 } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -40,7 +41,7 @@ const ExperimentPostprocessingListLoader = ({
         researchGroupId,
     } = useParams();
 
-    var [ revision, incrementRevision ] = useRevision();
+    var revision = useRevision();
 
     var [ didFetch, fetched ] = useFetch((agent) => {
         return agent.fetchExperimentPostprocessing({
@@ -48,7 +49,7 @@ const ExperimentPostprocessingListLoader = ({
             subjectRecordType: subjectType,
             researchGroupId,
         })
-    }, [ researchGroupId, subjectType, revision ]);
+    }, [ researchGroupId, subjectType, revision.value ]);
 
     if (!didFetch) {
         return <LoadingIndicator size='lg' />
@@ -71,7 +72,7 @@ const ExperimentPostprocessingListLoader = ({
                 relatedHelperSetItems,
                 relatedRecordLabels,
 
-                onSuccessfulUpdate: incrementRevision
+                onSuccessfulUpdate: revision.up
             }) } />
         );
     }
@@ -83,7 +84,7 @@ const ExperimentPostprocessingListLoader = ({
                 relatedHelperSetItems,
                 relatedRecordLabels,
 
-                onSuccessfulUpdate: incrementRevision
+                onSuccessfulUpdate: revision.up
             }) } />
         );
     }
