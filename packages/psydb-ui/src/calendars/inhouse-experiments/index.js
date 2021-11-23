@@ -16,7 +16,7 @@ import {
 
 import agent from '@mpieva/psydb-ui-request-agents';
 import RecordTypeNav from '@mpieva/psydb-ui-lib/src/record-type-nav';
-import ResearchGroupNav from '../research-group-nav';
+import { ResearchGroupNav } from '@mpieva/psydb-ui-lib';
 import Calendar from './calendar';
 
 const InhouseExperimentsRouting = ({

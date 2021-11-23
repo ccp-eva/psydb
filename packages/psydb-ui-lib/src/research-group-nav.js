@@ -1,39 +1,54 @@
-import React, { useEffect, useReducer } from 'react';
+import React from 'react';
+import { useFetch, usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import {
-    Route,
-    Switch,
     Redirect,
     useRouteMatch,
-    useHistory,
-    useParams
 } from 'react-router-dom';
-
-import agent from '@mpieva/psydb-ui-request-agents';
-import { useFetch } from '@mpieva/psydb-ui-hooks';
 
 import {
     LoadingIndicator,
-    BigNav
+    BigNav,
+    Alert,
 } from '@mpieva/psydb-ui-layout';
 
-const ResearchGroupNav = () => {
+const ResearchGroupNav = (ps) => {
+    var { url } = useRouteMatch();
+    var {
+        autoRedirect,
+        filterIds
+    } = ps;
 
-    var [ didFetch, fetched ] = useFetch((agent) => {
-        return agent.searchRecords({
-            collection: 'researchGroup'
-        });
-    }, []);
+    var [ didFetch, fetched ] = useFetch((agent) => (
+        agent.getAxios().get('/api/self/research-groups')
+    ), []);
 
     if (!didFetch) {
         return <LoadingIndicator size='lg' />
     }
 
+
     var { records } = fetched.data;
+
+    if (filterIds) {
+        records = records.filter(it => filterIds.includes(it._id))
+    }
+
+    if (records.length === 0) {
+        return (
+            <Alert variant='info'>
+                <i>Keine Forschungsgruppen gefunden</i>
+            </Alert>
+        )
+    }
+
+    if (autoRedirect && records.length === 1) {
+        return <Redirect to={ `${url}/${records[0]._id}` } />
+    }
 
     return (
         <BigNav items={
-            records.map(it => ({
+            fetched.data.records.map(it => ({
                 label: `Forschungsgruppe ${it._recordLabel}`,
                 linkTo: it._id
             }))

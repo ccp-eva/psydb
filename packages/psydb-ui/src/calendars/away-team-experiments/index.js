@@ -11,9 +11,9 @@ import {
 } from 'react-router-dom';
 
 import { LinkContainer } from '@mpieva/psydb-ui-layout';
+import { ResearchGroupNav } from '@mpieva/psydb-ui-lib';
 
 import RecordTypeNav from '@mpieva/psydb-ui-lib/src/record-type-nav';
-import ResearchGroupNav from '../research-group-nav';
 //import Calendar from './calendar';
 
 const AwayTeamExperimentsRouting = ({

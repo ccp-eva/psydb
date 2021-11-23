@@ -50,6 +50,7 @@
     "js-base64": "~3.6.0",
 
     "@mpieva/psydb-timezone-helpers": "~0.1.0-alpha",
+    "@mpieva/psydb-core-utils": "~0.1.0-alpha",
     "@mpieva/psydb-common-lib": "~0.1.0-alpha",
     "@mpieva/psydb-schema-fields": "~0.1.0-alpha",
     "@mpieva/psydb-schema-fields-special": "~0.1.0-alpha",
