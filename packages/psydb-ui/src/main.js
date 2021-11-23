@@ -86,7 +86,7 @@ const Main = ({ onSignedOut, onSignedIn }) => {
 const LayoutedRoutes = ({ onSignOut }) => {
     return (
         <div className='enable-flexbox flex-core flex-row'>
-            <header className='flex-core flex-grow flex-row-reverse' style={{
+            <header className='flex-core flex-row-reverse' style={{
                 //alignItems: 'flex-end',
             }}>
                 <div className='flex-core' style={{
@@ -97,13 +97,13 @@ const LayoutedRoutes = ({ onSignOut }) => {
                     <SideNav />
                 </div>
             </header>
-            <main className='flex-core flex-grow' style={{
+            <main className='flex-core flex-grow mr-3' style={{
                 //alignItems: 'flex-start',
             }}>
                 <div style={{
                     //width: '990px' // => min size: 1280
                     //width: '1076px' // => min size: 1366
-                    width: '1040px' // => min size: 1280
+                    //width: '1040px' // => min size: 1280
                 }}>
                     <TopFunctions onSignOut={ onSignOut } />
                     <div className='pl-3'>

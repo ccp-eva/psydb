@@ -33,6 +33,8 @@ var checkLabOperationAccess = (options) => {
         var flagsAllowed = 0;
         for (var flag of flags) {
             var allowedIds = (
+                researchGroupIdsByFlag.labOperation &&
+                researchGroupIdsByFlag.labOperation[labOperationType] &&
                 researchGroupIdsByFlag.labOperation[labOperationType][flag]
             );
             if (allowedIds) {

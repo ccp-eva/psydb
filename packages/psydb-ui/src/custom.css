@@ -120,3 +120,7 @@ a:hover {
     /*margin-bottom: .25rem;*/
     margin-bottom: 0;
 }
+
+.container {
+    max-width: none !important;
+}
