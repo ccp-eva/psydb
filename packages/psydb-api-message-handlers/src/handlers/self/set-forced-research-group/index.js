@@ -22,18 +22,20 @@ handler.checkAllowedAndPlausible = async (context) => {
 
     var {
         hasRootAccess,
-        researchGroupIds: allowedResearchGroupIds
+        availableResearchGroupIds
     } = permissions;
 
     var { researchGroupId } = message.payload;
-    
-    var hasGroup = !!allowedResearchGroupIds.find(allowedId => (
-        compareIds(allowedId, researchGroupId)
-    ))
-    if (!hasGroup && !hasRootAccess) {
-        throw new ApiError(403, {
-            apiStatus: 'ResearchGroupNotAllowed',
-        })
+   
+    if (researchGroupId) {
+        var hasGroup = !!availableResearchGroupIds.find(allowedId => (
+            compareIds(allowedId, researchGroupId)
+        ))
+        if (!hasGroup && !hasRootAccess) {
+            throw new ApiError(403, {
+                apiStatus: 'ResearchGroupNotAllowed',
+            })
+        }
     }
 }
 
