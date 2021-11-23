@@ -107,10 +107,6 @@ var locationExperimentCalendar = async (context, next) => {
     else {
         studyRecords = await (
             db.collection('study').aggregate([
-                ...SystemPermissionStages({
-                    collection: 'study',
-                    permissions
-                }),
                 MatchIntervalAroundStage({
                     recordIntervalPath: 'state.runningPeriod',
                     recordIntervalEndCanBeNull: true,

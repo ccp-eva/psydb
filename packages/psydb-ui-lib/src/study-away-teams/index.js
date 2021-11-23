@@ -20,21 +20,14 @@ const StudyAwayTeams = ({
 }) => {
     var [ didFetch, state ] = useFetchAll((agent) => {
         
-        var fetchStudy = agent.readRecord({
-            collection: 'study',
-            recordType: studyRecordType,
-            id: studyId,
-        });
-
         var fetchTeams = agent.fetchExperimentOperatorTeamsForStudy({
             studyId,
         });
 
         return {
-            fetchStudy,
             fetchTeams
         }
-    }, [ studyId, studyRecordType, revision ]);
+    }, [ studyId, revision ]);
 
     if (!didFetch) {
         return (
@@ -43,13 +36,12 @@ const StudyAwayTeams = ({
     }
 
     var {
-        fetchStudy: { data: studyData },
         fetchTeams: { data: teamData },
     } = state;
 
     return (
         <WeeklyCalendar { ...({
-            studyData,
+            studyId,
             teamData,
             
             onSelectEmptySlot,

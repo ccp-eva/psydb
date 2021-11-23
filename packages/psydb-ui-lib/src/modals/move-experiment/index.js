@@ -57,7 +57,7 @@ const MoveExperimentModal = ({
     }
 
     experimentData = experimentData || fetched.data.experimentData;
-    teamData = teamData || fetched.data.experimentOperatorTeamData;
+    teamData = teamData || fetched.data.opsTeamData;
     studyData = studyData || fetched.data.studyData;
 
     var studyId = studyData.record._id;
@@ -78,9 +78,9 @@ const MoveExperimentModal = ({
             <AwayTeamConfirmModal { ...({
                 ...confirmModal.passthrough,
 
+                studyId,
                 experimentData,
                 teamData,
-                studyData,
 
                 onSuccessfulUpdate: wrappedOnSuccessfulUpdate,
             })} />

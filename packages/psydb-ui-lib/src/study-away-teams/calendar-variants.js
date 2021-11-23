@@ -11,7 +11,7 @@ import TimeTableHead from './time-table-head';
 import TeamTimeTable from './team-time-table';
 
 export const Calendar = ({
-    studyData,
+    studyId,
     teamData,
     
     onSelectEmptySlot,
@@ -25,8 +25,6 @@ export const Calendar = ({
     currentPageEnd,
     onPageChange,
 }) => {
-    var studyId = studyData.record._id;
-
     var allDayStarts = useMemo(() => (
         getDayStartsInInterval({
             start: currentPageStart,
