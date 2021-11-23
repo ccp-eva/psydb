@@ -9,7 +9,7 @@ var {
 
 var {
     checkLabOperationAccess,
-} = require('@mpieva/psydb-common-utils');
+} = require('@mpieva/psydb-common-lib');
 
 var {
     ApiError,

@@ -19,7 +19,7 @@ const ConfirmModal = ({
     var { teamRecord, interval } = modalPayloadData;
 
     var wrappedOnSuccessfulUpdate = demuxed([
-        onHide, onSuccessulUpdate,
+        onHide, onSuccessfulUpdate
     ]);
 
     var handleSubmit = createSend(() => ({

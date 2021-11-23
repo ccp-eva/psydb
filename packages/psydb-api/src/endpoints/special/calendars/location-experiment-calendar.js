@@ -25,6 +25,7 @@ var {
 } = require('@mpieva/psydb-api-lib');
 
 var {
+    MatchIntervalAroundStage,
     MatchIntervalOverlapStage,
     StripEventsStage,
     ProjectDisplayFieldsStage,
@@ -110,25 +111,15 @@ var locationExperimentCalendar = async (context, next) => {
                     collection: 'study',
                     permissions
                 }),
+                MatchIntervalAroundStage({
+                    recordIntervalPath: 'state.runningPeriod',
+                    recordIntervalEndCanBeNull: true,
+                    start,
+                    end,
+                }),
                 { $match: {
-                    $or: [
-                        {
-                            'state.runningPeriod.start': { $lte: start },
-                            'state.runningPeriod.end': { $gte: start }
-                        },
-                        {
-                            'state.runningPeriod.start': { $lte: end },
-                            'state.runningPeriod.end': { $gte: end },
-                        },
-                        {
-                            'state.runningPeriod.start': { $lte: end },
-                            'state.runningPeriod.end': { $exists: false },
-                        }
-                    ],
-                    ...(researchGroupId && {
-                        'state.researchGroupIds': researchGroupId
-                    })
-                }},
+                    'state.researchGroupIds': researchGroupId
+                }}
             ]).toArray()
         );
     }
