@@ -49,6 +49,7 @@ var PermissionsDataHolder = ({
 
     var permissions = {
         hasRootAccess,
+        rolesByResearchGroupId,
         
         availableResearchGroupIds,
         researchGroupIds: internal.actualIds, // FIXME deprecated

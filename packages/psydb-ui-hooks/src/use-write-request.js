@@ -20,13 +20,13 @@ const useWriteRequest = (
         .then((response) => {
             setIsTransmitting(false);
             if (onSuccessfulUpdate) {
-                demuxed(arrify(onSuccessfulUpdate))(response);
+                demuxed(arrify(onSuccessfulUpdate))(response, args);
             }
         })
         .catch((error) => {
             setIsTransmitting(false);
             if (onFailedUpdate) {
-                demuxed(arrify(onFailedUpdate))(error);
+                demuxed(arrify(onFailedUpdate))(error, args);
             }
             else {
                 throw error;

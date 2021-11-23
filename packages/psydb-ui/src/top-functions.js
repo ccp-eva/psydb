@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
+import jsonpointer from 'jsonpointer';
+
 import { useHistory } from 'react-router';
+import { Permissions } from '@mpieva/psydb-common-lib';
 import { useModalReducer, useFetch, useSend } from '@mpieva/psydb-ui-hooks';
+import { SelfContext } from '@mpieva/psydb-ui-contexts';
 
 import {
     LoadingIndicator,
@@ -16,6 +20,11 @@ const SwitchResearchGroupModal = WithDefaultModal({
     Body: (ps) => {
         var { onHide } = ps;
         var history = useHistory();
+        var { setSelf, ...self } = useContext(SelfContext);
+        var [
+            selectedResearchGroupId,
+            setSelectedResearchGroupId
+        ] = useState();
 
         var [ didFetch, fetched ] = useFetch((agent) => (
             agent.getAxios().get('/api/self/available-research-groups')
@@ -26,10 +35,27 @@ const SwitchResearchGroupModal = WithDefaultModal({
             payload: { researchGroupId }
         }), {
             onSuccessfulUpdate: [
-                //() => history.push('/'),
+                () => history.push('/'),
                 //() => { window.location.reload() },
                 // FIXME: we need to refresh the self context here
-                () => { window.location.href = '/' },
+                //() => { window.location.href = '/' },
+                (res, [ researchGroupId ]) => {
+                    var oldPermissions = self.permissions;
+                    var {
+                        hasRootAccess,
+                        rolesByResearchGroupId,
+                        availableResearchGroupIds
+                    } = oldPermissions;
+                    setSelf({
+                        ...self,
+                        permissions: Permissions({
+                            hasRootAccess,
+                            rolesByResearchGroupId,
+                            researchGroupIds: availableResearchGroupIds,
+                            forcedResearchGroupId: researchGroupId,
+                        }),
+                    });
+                },
                 onHide,
             ]
         })
@@ -45,7 +71,10 @@ const SwitchResearchGroupModal = WithDefaultModal({
                 { fetched.data.records.map(it => (
                     <BigNavItem
                         key={ it._id }
-                        onClick={ () => send.exec(it._id)}
+                        onClick={ () => {
+                            setSelectedResearchGroupId(it._id);
+                            send.exec(it._id)
+                        }}
                     >
                         { it._recordLabel }
                     </BigNavItem>

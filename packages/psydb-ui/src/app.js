@@ -46,7 +46,9 @@ const App = () => {
         View = (
             isSignedIn && self
             ? (
-                <SelfContext.Provider value={ self }>
+                <SelfContext.Provider value={{
+                    ...self, setSelf,
+                }}>
                     <Main onSignedOut={ onSignedOut } />
                 </SelfContext.Provider>
             )

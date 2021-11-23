@@ -82,7 +82,7 @@ var Self = async ({
                 _id: { $in: (
                     researchGroupSettings.map(it => it.systemRoleId)
                 )}
-            }).toArray()
+            }, { projection: { events: false }}).toArray()
         );
 
         if (roles.length > 0) {
