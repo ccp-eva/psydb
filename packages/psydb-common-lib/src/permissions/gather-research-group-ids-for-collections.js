@@ -52,7 +52,14 @@ var getCollectionReadFlagPointers = ({ collection }) => {
         case 'subject':
             return [ '/canReadSubjects', '/canWriteSubjects' ];
         case 'study':
-            return [ '/canReadStudies', '/canWriteStudies' ];
+            return [
+                '/canReadStudies', '/canWriteStudies',
+                // TODO: reservation needs a separate endpoint to
+                // get study name/summary
+                '/labOperation/inhouse/canWriteReservations',
+                '/labOperation/away-team/canWriteReservations',
+                '/labOperation/online-video-call/canWriteReservations',
+            ];
         case 'personnel':
             return [ '/canWritePersonnel' ];
 

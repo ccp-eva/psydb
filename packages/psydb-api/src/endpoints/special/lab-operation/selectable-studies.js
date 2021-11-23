@@ -88,11 +88,30 @@ var selectableStudies = async (context, next) => {
         target,
     } = request.body
 
+
     // TODO: permissions
     // .... ye ... what actually?
 
     if (labProcedureType) {
         labProcedureTypes = [ labProcedureType ];
+    }
+
+    var isAllowed = permissions.hasSomeLabOperationFlags({
+        types: labProcedureTypes,
+        flags: [ 'canWriteReservation', 'canSelectSubjectsForExperiments' ]
+    });
+    if (!isAllowed) {
+        throw new ApiError(403, {
+            apiStatus: 'LabOperationAccessDenied',
+            data: {
+                labProcedureTypes,
+                flags: [
+                    'canWriteReservations',
+                    'canSelectSubjectsForExperiments',
+                ],
+                checkJoin: 'or',
+            }
+        })
     }
 
     var customRecordTypeData = await fetchOneCustomRecordType({
@@ -131,6 +150,9 @@ var selectableStudies = async (context, next) => {
         }},
     ];
 
+    // FIXME: this is not fully correct
+    // we actually need to limit to studies that involve
+    // researchgroupds the user belongs to
     var records = await fetchRecordsByFilter({
         db,
         permissions,
@@ -142,6 +164,8 @@ var selectableStudies = async (context, next) => {
         target,
         //offset,
         //limit
+        
+        disablePermissionCheck: true,
     });
 
     var settingRecords = await (

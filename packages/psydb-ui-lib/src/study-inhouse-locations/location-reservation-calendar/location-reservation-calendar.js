@@ -5,7 +5,7 @@ import getDayStartsInInterval from '../../get-day-starts-in-interval';
 import TimeTable from '../location-time-table';
 
 const LocationCalendar = ({
-    studyRecord,
+    studyId,
     locationRecord,
     reservationRecords,
     experimentRecords,
@@ -56,7 +56,7 @@ const LocationCalendar = ({
                 <u>Raum: { locationRecord._recordLabel }</u>
             </h5>
             <TimeTable { ...({
-                studyRecord,
+                studyId,
                 locationRecord,
                 teamRecords,
                 reservationRecords,
