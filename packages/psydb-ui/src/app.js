@@ -28,6 +28,7 @@ const App = () => {
     }
 
     useEffect(() => {
+        setIsInitialized(false)
         agent.get('/api/self').then(
             (res) => {
                 var self = res.data.data;
@@ -38,7 +39,7 @@ const App = () => {
                 setIsInitialized(true)
             }
         )
-    }, [ /* noDidUpdate */ ]);
+    }, [ isSignedIn ]);
 
     var View = undefined;
     if (isInitialized) {
