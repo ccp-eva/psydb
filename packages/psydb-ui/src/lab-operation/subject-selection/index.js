@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useReducer } from 'react';
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import {
     Route,
@@ -31,60 +32,84 @@ import SearchContainer from './search-container';
 // and decide based on that
 const SubjectSelectionRouting = () => {
     var { path, url } = useRouteMatch();
+    var permissions = usePermissions();
+
+    var canSelectInhouse = permissions.hasLabOperationFlag(
+        'inhouse', 'canSelectSubjectsForExperiments'
+    );
+    var canSelectAwayTeam = permissions.hasLabOperationFlag(
+        'away-team', 'canSelectSubjectsForExperiments'
+    );
+    var canSelectVideo = permissions.hasLabOperationFlag(
+        'online-video-call', 'canSelectSubjectsForExperiments'
+    );
+    var canSelectOnlineSurvey = permissions.hasLabOperationFlag(
+        'online-survey', 'canPerformOnlineSurveys'
+    );
+
+    var navItems = [
+        (canSelectInhouse && {
+            key: 'inhouse',
+            label: 'Interne Studie',
+            linkTo: 'inhouse'
+        }), 
+        (canSelectAwayTeam && {
+            key: 'away-team',
+            label: 'Externe Studie',
+            linkTo: 'away-team'
+        }),
+        (canSelectVideo && {
+            key: 'online-video-call',
+            label: 'Online-Video-Anruf',
+            linkTo: 'online-video-call'
+        }),
+        (canSelectOnlineSurvey && {
+            key: 'online-survey',
+            label: 'Online-Umfrage',
+            linkTo: 'online-survey'
+        }),
+    ].filter(it => !!it)
 
     return (
         <PageWrappers.Level2 title='Probandenauswahl'>
             <Switch>
                 <Route exact path={ path }>
-                    <BigNav items={[
-                        {
-                            key: 'inhouse',
-                            label: 'Interne Studie',
-                            linkTo: 'inhouse'
-                        }, 
-                        {
-                            key: 'away-team',
-                            label: 'Externe Studie',
-                            linkTo: 'away-team'
-                        },
-                        {
-                            key: 'online-video-call',
-                            label: 'Online-Video-Anruf',
-                            linkTo: 'online-video-call'
-                        },
-                        {
-                            key: 'online-survey',
-                            label: 'Online-Umfrage',
-                            linkTo: 'online-survey'
-                        },
-                    ]} />
+                    <BigNav items={ navItems } />
                 </Route>
-                <Route path={ `${path}/inhouse`}>
-                    <TypedSelectionContainer
-                        title='Für Interne Studie'
-                        type='inhouse'
-                    />
-                </Route>
-                <Route path={ `${path}/away-team`}>
-                    <TypedSelectionContainer
-                        title='Für Externe Studie'
-                        type='away-team'
-                        singleStudy={ true }
-                    />
-                </Route>
-                <Route path={ `${path}/online-video-call`}>
-                    <TypedSelectionContainer
-                        title='Für Online-Video-Anruf'
-                        type='online-video-call'
-                    />
-                </Route>
-                <Route path={ `${path}/online-survey`}>
-                    <TypedSelectionContainer
-                        title='Für Online-Umfrage'
-                        type='online-survey'
-                        singleStudy={ true }
-                    />
-                </Route>
+                { canSelectInhouse && (
+                    <Route path={ `${path}/inhouse`}>
+                        <TypedSelectionContainer
+                            title='Für Interne Studie'
+                            type='inhouse'
+                        />
+                    </Route>
+                )}
+                { canSelectAwayTeam && (
+                    <Route path={ `${path}/away-team`}>
+                        <TypedSelectionContainer
+                            title='Für Externe Studie'
+                            type='away-team'
+                            singleStudy={ true }
+                        />
+                    </Route>
+                )}
+                { canSelectVideo && (
+                    <Route path={ `${path}/online-video-call`}>
+                        <TypedSelectionContainer
+                            title='Für Online-Video-Anruf'
+                            type='online-video-call'
+                        />
+                    </Route>
+                )}
+                { canSelectOnlineSurvey && (
+                    <Route path={ `${path}/online-survey`}>
+                        <TypedSelectionContainer
+                            title='Für Online-Umfrage'
+                            type='online-survey'
+                            singleStudy={ true }
+                        />
+                    </Route>
+                )}
             </Switch>
         </PageWrappers.Level2>
     )

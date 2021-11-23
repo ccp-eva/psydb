@@ -58,7 +58,10 @@ const LabOperation = () => {
         types: 'any', flags: [ 'canWriteReservations' ],
     });
     var canSelectSubjects = permissions.hasSomeLabOperationFlags({
-        types: 'any', flags: [ 'canSelectSubjectsForExperiments' ],
+        types: 'any', flags: [
+            'canSelectSubjectsForExperiments',
+            'canPerformOnlineSurveys'
+        ],
     });
     var canConfirmInvitations = permissions.hasSomeLabOperationFlags({
         types: 'any', flags: [ 'canConfirmSubjectInvitation' ],
@@ -87,65 +90,65 @@ const LabOperation = () => {
                 </Route>
 
                 { canWriteReservations && (
-                    <>
-                        <Route exact path={`${path}/reservation`}>
-                            <RedirectOrTypeNav
-                                baseUrl={ `${url}/reservation` }
-                                studyTypes={ studyTypes }
-                            />
-                        </Route>
-                        <Route path={`${path}/reservation/:studyType`}>
-                            <ReservationRouting customRecordTypes={
-                                metadata.customRecordTypes
-                            } />
-                        </Route>
-                    </>
+                    <Route exact path={`${path}/reservation`}>
+                        <RedirectOrTypeNav
+                            baseUrl={ `${url}/reservation` }
+                            studyTypes={ studyTypes }
+                        />
+                    </Route>
+                )}
+                { canWriteReservations && (
+                    <Route path={`${path}/reservation/:studyType`}>
+                        <ReservationRouting customRecordTypes={
+                            metadata.customRecordTypes
+                        } />
+                    </Route>
                 )}
 
                 { canSelectSubjects && (
-                    <>
-                        <Route exact path={`${path}/subject-selection`}>
-                            <RedirectOrTypeNav
-                                baseUrl={ `${url}/subject-selection` }
-                                studyTypes={ studyTypes }
-                            />
-                        </Route>
-                        <Route path={`${path}/subject-selection/:studyType`}>
-                            <SubjectSelectionRouting />
-                        </Route>
-                    </>
+                    <Route exact path={`${path}/subject-selection`}>
+                        <RedirectOrTypeNav
+                            baseUrl={ `${url}/subject-selection` }
+                            studyTypes={ studyTypes }
+                        />
+                    </Route>
+                )}
+                { canSelectSubjects && (
+                    <Route path={`${path}/subject-selection/:studyType`}>
+                        <SubjectSelectionRouting />
+                    </Route>
                 )}
 
                 { canConfirmInvitations && (
-                    <>
-                        <Route exact path={`${path}/invite-confirmation`}>
-                            <RedirectOrTypeNav
-                                baseUrl={ `${url}/invite-confirmation` }
-                                studyTypes={ studyTypes }
-                            />
-                        </Route>
-                        <Route path={`${path}/invite-confirmation/:studyType`}>
-                            <InviteConfirmationRouting
-                                subjectRecordTypes={ subjectTypes }
-                            />
-                        </Route>
-                    </>
+                    <Route exact path={`${path}/invite-confirmation`}>
+                        <RedirectOrTypeNav
+                            baseUrl={ `${url}/invite-confirmation` }
+                            studyTypes={ studyTypes }
+                        />
+                    </Route>
+                )}
+                { canConfirmInvitations && (
+                    <Route path={`${path}/invite-confirmation/:studyType`}>
+                        <InviteConfirmationRouting
+                            subjectRecordTypes={ subjectTypes }
+                        />
+                    </Route>
                 )}
 
                 { canPostprocess && (
-                    <>
-                        <Route exact path={`${path}/experiment-postprocessing`}>
-                            <RedirectOrTypeNav
-                                baseUrl={ `${url}/experiment-postprocessing` }
-                                studyTypes={ studyTypes }
-                            />
-                        </Route>
-                        <Route path={`${path}/experiment-postprocessing/:studyType`}>
-                            <ExperimentPostprocessingRouting
-                                subjectRecordTypes={ subjectTypes }
-                            />
-                        </Route>
-                    </>
+                    <Route exact path={`${path}/experiment-postprocessing`}>
+                        <RedirectOrTypeNav
+                            baseUrl={ `${url}/experiment-postprocessing` }
+                            studyTypes={ studyTypes }
+                        />
+                    </Route>
+                )}
+                { canPostprocess && (
+                    <Route path={`${path}/experiment-postprocessing/:studyType`}>
+                        <ExperimentPostprocessingRouting
+                            subjectRecordTypes={ subjectTypes }
+                        />
+                    </Route>
                 )}
 
             </Switch>
