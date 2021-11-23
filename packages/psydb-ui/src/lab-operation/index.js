@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import {
     Route,
@@ -21,6 +22,7 @@ import ExperimentPostprocessingRouting from './experiment-postprocessing';
 
 const LabOperation = () => {
     var { path, url } = useRouteMatch();
+    var permissions = usePermissions();
 
     var [ isInitialized, setIsInitialized ] = useState(false);
     var [ metadata, setMetadata ] = useState();
@@ -52,6 +54,20 @@ const LabOperation = () => {
         ))
     );
 
+    var canWriteReservations = permissions.hasSomeLabOperationFlags({
+        types: 'any', flags: [ 'canWriteReservations' ],
+    });
+    var canSelectSubjects = permissions.hasSomeLabOperationFlags({
+        types: 'any', flags: [ 'canSelectSubjectsForExperiments' ],
+    });
+    var canConfirmInvitations = permissions.hasSomeLabOperationFlags({
+        types: 'any', flags: [ 'canConfirmSubjectInvitation' ],
+    });
+    var canPostprocess = permissions.hasSomeLabOperationFlags({
+        types: 'any', flags: [ 'canPostprocessExperiments' ],
+    });
+
+
     return (
         <PageWrappers.Level1 title='Studienbetrieb'>
             <Switch>
@@ -62,54 +78,75 @@ const LabOperation = () => {
                     />
                 </Route>
                 <Route exact path={`${path}/index/:studyType`}>
-                    <OperationNav />
+                    <OperationNav {...({
+                        canWriteReservations,
+                        canSelectSubjects,
+                        canConfirmInvitations,
+                        canPostprocess,
+                    })} />
                 </Route>
 
-                <Route exact path={`${path}/reservation`}>
-                    <RedirectOrTypeNav
-                        baseUrl={ `${url}/reservation` }
-                        studyTypes={ studyTypes }
-                    />
-                </Route>
-                <Route path={`${path}/reservation/:studyType`}>
-                    <ReservationRouting
-                        customRecordTypes={ metadata.customRecordTypes }
-                    />
-                </Route>
+                { canWriteReservations && (
+                    <>
+                        <Route exact path={`${path}/reservation`}>
+                            <RedirectOrTypeNav
+                                baseUrl={ `${url}/reservation` }
+                                studyTypes={ studyTypes }
+                            />
+                        </Route>
+                        <Route path={`${path}/reservation/:studyType`}>
+                            <ReservationRouting customRecordTypes={
+                                metadata.customRecordTypes
+                            } />
+                        </Route>
+                    </>
+                )}
 
-                <Route exact path={`${path}/subject-selection`}>
-                    <RedirectOrTypeNav
-                        baseUrl={ `${url}/subject-selection` }
-                        studyTypes={ studyTypes }
-                    />
-                </Route>
-                <Route path={`${path}/subject-selection/:studyType`}>
-                    <SubjectSelectionRouting />
-                </Route>
+                { canSelectSubjects && (
+                    <>
+                        <Route exact path={`${path}/subject-selection`}>
+                            <RedirectOrTypeNav
+                                baseUrl={ `${url}/subject-selection` }
+                                studyTypes={ studyTypes }
+                            />
+                        </Route>
+                        <Route path={`${path}/subject-selection/:studyType`}>
+                            <SubjectSelectionRouting />
+                        </Route>
+                    </>
+                )}
 
-                <Route exact path={`${path}/invite-confirmation`}>
-                    <RedirectOrTypeNav
-                        baseUrl={ `${url}/invite-confirmation` }
-                        studyTypes={ studyTypes }
-                    />
-                </Route>
-                <Route path={`${path}/invite-confirmation/:studyType`}>
-                    <InviteConfirmationRouting
-                        subjectRecordTypes={ subjectTypes }
-                    />
-                </Route>
+                { canConfirmInvitations && (
+                    <>
+                        <Route exact path={`${path}/invite-confirmation`}>
+                            <RedirectOrTypeNav
+                                baseUrl={ `${url}/invite-confirmation` }
+                                studyTypes={ studyTypes }
+                            />
+                        </Route>
+                        <Route path={`${path}/invite-confirmation/:studyType`}>
+                            <InviteConfirmationRouting
+                                subjectRecordTypes={ subjectTypes }
+                            />
+                        </Route>
+                    </>
+                )}
 
-                <Route exact path={`${path}/experiment-postprocessing`}>
-                    <RedirectOrTypeNav
-                        baseUrl={ `${url}/experiment-postprocessing` }
-                        studyTypes={ studyTypes }
-                    />
-                </Route>
-                <Route path={`${path}/experiment-postprocessing/:studyType`}>
-                    <ExperimentPostprocessingRouting
-                        subjectRecordTypes={ subjectTypes }
-                    />
-                </Route>
+                { canPostprocess && (
+                    <>
+                        <Route exact path={`${path}/experiment-postprocessing`}>
+                            <RedirectOrTypeNav
+                                baseUrl={ `${url}/experiment-postprocessing` }
+                                studyTypes={ studyTypes }
+                            />
+                        </Route>
+                        <Route path={`${path}/experiment-postprocessing/:studyType`}>
+                            <ExperimentPostprocessingRouting
+                                subjectRecordTypes={ subjectTypes }
+                            />
+                        </Route>
+                    </>
+                )}
 
             </Switch>
         </PageWrappers.Level1>
@@ -140,33 +177,40 @@ const RedirectOrTypeNav = ({
     }
 }
 
-const OperationNav = () => {
+const OperationNav = (ps) => {
     var { path, url } = useRouteMatch();
     var { studyType } = useParams();
 
-    console.log(url);
+    var {
+        canWriteReservations,
+        canSelectSubjects,
+        canConfirmInvitations,
+        canPostprocess,
+    } = ps;
+
     var baseUrl = up(url, 2);
-    console.log(baseUrl);
+
+    var navItems = [
+        (canWriteReservations && { 
+            label: 'Reservierung',
+            linkUrl: `${baseUrl}/reservation/${studyType}`,
+        }),
+        (canSelectSubjects && {
+            label: 'Probandenauswahl',
+            linkUrl: `${baseUrl}/subject-selection/${studyType}`,
+        }),
+        (canConfirmInvitations && {
+            label: 'Terminbestätigung',
+            linkUrl: `${baseUrl}/invite-confirmation/${studyType}`,
+        }),
+        (canPostprocess && {
+            label: 'Nachbereitung',
+            linkUrl: `${baseUrl}/experiment-postprocessing/${studyType}`,
+        }),
+    ].filter(it => !!it)
 
     return (
-        <BigNav items={[
-            { 
-                label: 'Reservierung',
-                linkUrl: `${baseUrl}/reservation/${studyType}`,
-            },
-            { 
-                label: 'Probandenauswahl',
-                linkUrl: `${baseUrl}/subject-selection/${studyType}`,
-            },
-            {
-                label: 'Terminbestätigung',
-                linkUrl: `${baseUrl}/invite-confirmation/${studyType}`,
-            },
-            {
-                label: 'Nachbereitung',
-                linkUrl: `${baseUrl}/experiment-postprocessing/${studyType}`,
-            },
-        ]} />
+        <BigNav items={ navItems } />
     );
 }
 
