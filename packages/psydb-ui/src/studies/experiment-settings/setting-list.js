@@ -1,4 +1,5 @@
 import React from 'react';
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import {
     InhouseSetting,
@@ -17,6 +18,9 @@ const SettingList = (ps) => {
     } = ps;
 
     var { type: variantType } = variantRecord;
+
+    var permissions = usePermissions();
+    var canWrite = permissions.hasFlag('canWriteStudies');
 
     if (settingRecords.length < 1) {
         return (
@@ -40,8 +44,11 @@ const SettingList = (ps) => {
                 <SettingComponent key={ index } { ...({
                     variantRecord,
                     settingRecord,
-                    onEdit: onEditSetting,
-                    onRemove: onRemoveSetting,
+                    showButtons: !!canWrite,
+                    ...(canWrite && {
+                        onEdit: onEditSetting,
+                        onRemove: onRemoveSetting,
+                    }),
                     ...downstream
                 })} />
             ))}

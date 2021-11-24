@@ -23,6 +23,8 @@ const VariantListItem = (ps) => {
     var panelProps = {
         label: `Ablauf ${index + 1} - ${variantsEnum.mapping[variantType]}`,
         addButtonLabel: '+ Einstellungen',
+        showAddButton: !!onAddSetting,
+        showRemoveButton: !!onRemove,
         onAdd: () => onAddSetting({ variantRecord }),
         onRemove: () => onRemove({ index, variantRecord })
     };

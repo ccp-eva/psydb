@@ -22,6 +22,7 @@ const VariantList = (ps) => {
             items: variantRecords,
             emptyLabel:'Keine Ablauf-Einstellungen vorhanden',
             addButtonLabel: '+ Ablauf',
+            showAddButton: !!onAddVariant,
             onAdd: onAddVariant,
         }) }>
             {(it, index) => (
@@ -29,6 +30,7 @@ const VariantList = (ps) => {
                     index,
                     variantRecord: it,
                     settingRecords: groupedSettings[it._id] || [],
+                    showRemoveButton: !!onRemoveVariant,
                     onRemove: onRemoveVariant,
                     ...downstream,
                 })} />

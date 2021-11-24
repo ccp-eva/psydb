@@ -13,6 +13,7 @@ import {
     useFetchAll,
     useRevision,
     useModalReducer,
+    usePermissions,
 } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -37,6 +38,7 @@ const ExperimentSettings = ({
     var { id: studyId } = useParams();
     
     var { value: revision, up: increaseRevision } = useRevision();
+    var permissions = usePermissions();
     
     var newVariantModal = useModalReducer();
     var removeVariantModal = useModalReducer();
@@ -84,6 +86,8 @@ const ExperimentSettings = ({
         }), {})
     );
 
+    var canWrite = permissions.hasFlag('canWriteStudies');
+
     return (
         <div className='mt-3 mb-3'>
 
@@ -122,13 +126,14 @@ const ExperimentSettings = ({
                 settingRecords,
                 settingRelated,
                 customRecordTypes,
+                ...(canWrite && {
+                    onAddVariant: newVariantModal.handleShow,
+                    onRemoveVariant: removeVariantModal.handleShow,
 
-                onAddVariant: newVariantModal.handleShow,
-                onRemoveVariant: removeVariantModal.handleShow,
-
-                onAddSetting: newSettingModal.handleShow,
-                onEditSetting: editSettingModal.handleShow,
-                onRemoveSetting: removeSettingModal.handleShow,
+                    onAddSetting: newSettingModal.handleShow,
+                    onEditSetting: editSettingModal.handleShow,
+                    onRemoveSetting: removeSettingModal.handleShow,
+                })
             })} />
             
         </div>
