@@ -21,10 +21,6 @@ const SwitchResearchGroupModal = WithDefaultModal({
         var { onHide } = ps;
         var history = useHistory();
         var { setSelf, ...self } = useContext(SelfContext);
-        var [
-            selectedResearchGroupId,
-            setSelectedResearchGroupId
-        ] = useState();
 
         var [ didFetch, fetched ] = useFetch((agent) => (
             agent.getAxios().get('/api/self/available-research-groups')
@@ -46,6 +42,7 @@ const SwitchResearchGroupModal = WithDefaultModal({
                         rolesByResearchGroupId,
                         availableResearchGroupIds
                     } = oldPermissions;
+
                     setSelf({
                         ...self,
                         permissions: Permissions({
@@ -63,18 +60,20 @@ const SwitchResearchGroupModal = WithDefaultModal({
         if (!didFetch) {
             return <LoadingIndicator size='lg' />
         }
+        var { forcedResearchGroupId } = self.permissions;
         return (
             <div>
-                <BigNavItem onClick={ () => send.exec(null) }>
+                <BigNavItem
+                    onClick={ () => send.exec(null) }
+                    isActive={ !forcedResearchGroupId }
+                >
                     Alle Verfügbaren
                 </BigNavItem>
                 { fetched.data.records.map(it => (
                     <BigNavItem
                         key={ it._id }
-                        onClick={ () => {
-                            setSelectedResearchGroupId(it._id);
-                            send.exec(it._id)
-                        }}
+                        onClick={ () => send.exec(it._id) }
+                        isActive={ it._id === forcedResearchGroupId }
                     >
                         { it._recordLabel }
                     </BigNavItem>
