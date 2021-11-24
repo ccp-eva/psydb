@@ -2,6 +2,7 @@ import React from 'react';
 import { useRouteMatch, useParams } from 'react-router-dom';
 
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { LinkButton } from '@mpieva/psydb-ui-layout';
 import GenericRecordDetails from '@mpieva/psydb-ui-lib/src/generic-record-details';
 import Participation from './participation';
@@ -9,7 +10,8 @@ import Participation from './participation';
 const Header = ({
     title,
     editLabel,
-    editUrl
+    editUrl,
+    canEdit,
 }) => {
     var { path, url } = useRouteMatch();
 
@@ -17,11 +19,13 @@ const Header = ({
     editLabel = editLabel || 'Bearbeiten';
 
     return (
-         <h5 className='d-flex justify-content-between align-items-end'>
-            <span>{ title }</span>
-            <LinkButton to={ editUrl }>
-                { editLabel }
-            </LinkButton>
+        <h5 className='d-flex justify-content-between align-items-end'>
+            <span className='d-inline-block pt-3'>{ title }</span>
+            { canEdit && (
+                <LinkButton to={ editUrl }>
+                    { editLabel }
+                </LinkButton>
+            )}
         </h5>
     )
 }
@@ -33,6 +37,11 @@ const SubjectDetailsContainer = ({
 }) => {
     var { path, url } = useRouteMatch();
     var { id } = useParams();
+    var permissions = usePermissions();
+
+    var canEdit = permissions.hasCollectionFlag(collection, 'write');
+    var canReadParticipation = permissions.hasFlag('canReadParticipation');
+    var canWriteParticipation = permissions.hasFlag('canWriteParticipation');
 
     return (
         <>
@@ -41,6 +50,7 @@ const SubjectDetailsContainer = ({
                 <Header
                     title='Erfasste Daten'
                     editUrl={ `${up(url, 1)}/edit` }
+                    canEdit= { canEdit }
                 />
                 <hr />
                 
@@ -51,16 +61,19 @@ const SubjectDetailsContainer = ({
                 })} />
             </div>
             
-            <div className='border pl-3 bg-light mt-4'>
-                <Header
-                    title='Studienteilnahme'
-                    editUrl={ `${up(url, 1)}/edit` }
-                />
-                <hr />
-                <div className='mr-3'>
-                    <Participation id={ id } />
+            { canReadParticipation && (
+                <div className='border pl-3 bg-light mt-4'>
+                    <Header
+                        title='Studienteilnahme'
+                        editUrl={ `${up(url, 1)}/edit` }
+                        canEdit={ canWriteParticipation }
+                    />
+                    <hr />
+                    <div className='mr-3'>
+                        <Participation id={ id } />
+                    </div>
                 </div>
-            </div>
+            )}
 
         </>
     )

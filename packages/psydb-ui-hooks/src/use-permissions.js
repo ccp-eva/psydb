@@ -14,11 +14,13 @@ const usePermissions = () => {
         
         getFlagIds,
         getLabOperationFlagIds,
+        getCollectionFlagIds,
 
         hasFlag,
         hasSomeFlags,
         hasLabOperationFlag,
         hasSomeLabOperationFlags,
+        hasCollectionFlag,
 
         ...raw
     } = wrappedPermissions;
@@ -29,10 +31,12 @@ const usePermissions = () => {
         isRoot,
         getFlagIds,
         getLabOperationFlagIds,
+        getCollectionFlagIds,
         hasFlag,
         hasSomeFlags,
         hasLabOperationFlag,
         hasSomeLabOperationFlags,
+        hasCollectionFlag,
     }
 }
 

@@ -20,7 +20,8 @@ var Permissions = (options) => {
     var {
         hasRootAccess,
         forcedResearchGroupId,
-        researchGroupIdsByFlag
+        researchGroupIdsByFlag,
+        researchGroupIdsByCollection,
     } = wrapper;
 
     var isRoot = () => (
@@ -43,6 +44,15 @@ var Permissions = (options) => {
             : []
         )
     };
+
+    var getCollectionFlagIds = (collection, flag) => (
+        (
+            researchGroupIdsByCollection[collection] &&
+            researchGroupIdsByCollection[collection][flag]
+        )
+        ? researchGroupIdsByCollection[collection][flag]
+        : []
+    );
 
     var hasFlag = (flag) => (
         isRoot()
@@ -69,17 +79,25 @@ var Permissions = (options) => {
         ))
     }
 
+    var hasCollectionFlag = (collection, flag) => (
+        isRoot()
+        ? true
+        : getCollectionFlagIds(collection, flag).length > 0
+    );
+
     var out = {
         ...wrapper,
 
         isRoot,
         getFlagIds,
         getLabOperationFlagIds,
+        getCollectionFlagIds,
 
         hasFlag,
         hasSomeFlags,
         hasLabOperationFlag,
         hasSomeLabOperationFlags,
+        hasCollectionFlag,
     }
 
     return out;

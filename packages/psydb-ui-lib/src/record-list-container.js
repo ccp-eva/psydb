@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouteMatch } from 'react-router-dom';
 
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { LinkButton } from '@mpieva/psydb-ui-layout';
 import RecordList from './record-list';
 
@@ -27,10 +28,13 @@ const RecordListContainer = ({
     CustomActionListComponent,
 }) => {
     var { path, url } = useRouteMatch();
+    var permissions = usePermissions();
+
+    var canCreate = permissions.hasCollectionFlag(collection, 'write');
 
     return (
         <div className={ className }>
-            { enableNew && (
+            { enableNew && canCreate && (
                 <LinkButton to={`${url}/new`}>
                     Neuer Eintrag
                 </LinkButton>
