@@ -1,4 +1,6 @@
 import React from 'react';
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
+import { PermissionDenied } from '@mpieva/psydb-ui-layout';
 
 import {
     withCollectionView,

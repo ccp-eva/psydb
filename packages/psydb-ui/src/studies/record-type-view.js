@@ -8,7 +8,8 @@ import {
     useParams
 } from 'react-router-dom';
 
-import { LinkContainer } from '@mpieva/psydb-ui-layout';
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
+import { LinkContainer, PermissionDenied } from '@mpieva/psydb-ui-layout';
 
 import FormBox from '@mpieva/psydb-ui-lib/src/form-box';
 import RecordListContainer from '@mpieva/psydb-ui-lib/src/record-list-container';
@@ -24,6 +25,14 @@ const StudyRecordTypeView = ({
     var { path, url } = useRouteMatch();
     var { recordType } = useParams();
     var history= useHistory();
+    var permissions = usePermissions();
+
+    var canRead = permissions.hasFlag('canReadStudies');
+    var canWrite = permissions.hasFlag('canWriteStudies');
+
+    if (!canRead) {
+        return <PermissionDenied />
+    }
 
     var typeData = undefined;
     if (recordType) {
@@ -54,15 +63,20 @@ const StudyRecordTypeView = ({
                     />
                 </Route>
                 <Route exact path={`${path}/new`}>
-                    <FormBox title='Neuer Datensatz'>
-                        <StudyRecordForm
-                            type='create'
-                            recordType={ recordType }
-                            onSuccessfulUpdate={
-                                ({ id }) => history.push(`${url}/${id}/selection-settings`)
-                            }
-                        />
-                    </FormBox>
+                    { canWrite
+                        ? (
+                            <FormBox title='Neuer Datensatz'>
+                                <StudyRecordForm
+                                    type='create'
+                                    recordType={ recordType }
+                                    onSuccessfulUpdate={
+                                        ({ id }) => history.push(`${url}/${id}/selection-settings`)
+                                    }
+                                />
+                            </FormBox>
+                        )
+                        : <PermissionDenied />
+                    }
                 </Route>
 
                 <Route path={`${path}/:id`}>

@@ -20,6 +20,7 @@ export { default as Pair } from './pair';
 export { default as WithDefaultModal } from './with-default-modal';
 
 export * from './nbsp';
+export * from './permission-denied';
 export * from './option-select-indicator';
 export * from './simple-list';
 export * from './outer-setting-panel';

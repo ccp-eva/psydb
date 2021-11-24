@@ -1,5 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
+import { PermissionDenied } from '@mpieva/psydb-ui-layout';
 
 import FormBox from './form-box';
 import GenericRecordForm from './generic-record-form';
@@ -11,6 +13,14 @@ const GenericRecordFormContainer = ({
     additionalPayloadProps,
     onSuccessfulUpdate,
 }) => {
+    var permissions = usePermissions();
+    var canWrite = permissions.hasCollectionFlag(
+        collection, 'write'
+    );
+
+    if (!canWrite) {
+        return <PermissionDenied />
+    }
     
     var id = undefined;
     if (type === 'edit') {

@@ -12,7 +12,8 @@ import {
 
 import {
     BigNav,
-    LinkContainer
+    LinkContainer,
+    PermissionDenied
 } from '@mpieva/psydb-ui-layout';
 
 import agent from '@mpieva/psydb-ui-request-agents';
@@ -26,7 +27,43 @@ import OnlineVideoCallExperimentsRouting from './online-video-call-experiments';
 
 const Calendars = () => {
     var { path, url } = useRouteMatch();
+    
     var permissions = usePermissions();
+    
+    var canViewReception = permissions.hasFlag(
+        'canViewReceptionCalendar'
+    );
+
+    var canViewAny = (
+        canViewReception ||
+        permissions.hasSomeLabOperationFlags({
+            types: 'any',
+            flags: [ 'canViewExperimentCalendar' ]
+        })
+    );
+
+    if (!canViewAny) {
+        return (
+            <>
+                <h1 className='mb-0 border-bottom' role='button'>
+                    Kalender
+                </h1>
+                <div className='mt-3'>
+                    <PermissionDenied />
+                </div>
+            </>
+        )
+    }
+
+    var canViewInhouse = permissions.hasLabOperationFlag(
+        'inhouse', 'canViewExperimentCalendar',
+    );
+    var canViewAwayTeam = permissions.hasLabOperationFlag(
+        'away-team', 'canViewExperimentCalendar',
+    );
+    var canViewVideo = permissions.hasLabOperationFlag(
+        'online-video-call', 'canViewExperimentCalendar',
+    );
 
     var [ isInitialized, setIsInitialized ] = useState(false);
     var [ metadata, setMetadata ] = useState();
@@ -64,18 +101,6 @@ const Calendars = () => {
         ))
     );
 
-    var canViewReception = permissions.hasFlag(
-        'canViewReceptionCalendar'
-    );
-    var canViewInhouse = permissions.hasLabOperationFlag(
-        'inhouse', 'canViewExperimentCalendar',
-    );
-    var canViewAwayTeam = permissions.hasLabOperationFlag(
-        'away-team', 'canViewExperimentCalendar',
-    );
-    var canViewVideo = permissions.hasLabOperationFlag(
-        'online-video-call', 'canViewExperimentCalendar',
-    );
 
     var navItems = [
         (canViewReception && { 

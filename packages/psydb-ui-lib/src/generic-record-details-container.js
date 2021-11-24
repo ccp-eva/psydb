@@ -15,7 +15,12 @@ const GenericRecordDetailsContainer = ({
     var { id } = useParams();
     var permissions = usePermissions();
 
+    var canRead = permissions.hasCollectionFlag(collection, 'read');
     var canEdit = permissions.hasCollectionFlag(collection, 'write');
+
+    if (!canRead) {
+        return <PermissionDenied />
+    }
 
     return (
         <div className='border pl-3 bg-light'>

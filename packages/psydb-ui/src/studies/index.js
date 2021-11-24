@@ -8,9 +8,8 @@ import {
     useParams
 } from 'react-router-dom';
 
-import {
-    LinkContainer
-} from '@mpieva/psydb-ui-layout';
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
+import { LinkContainer, PermissionDenied } from '@mpieva/psydb-ui-layout';
 
 import allSchemaCreators from '@mpieva/psydb-schema-creators';
 import agent from '@mpieva/psydb-ui-request-agents';
@@ -33,8 +32,24 @@ const GenericCollectionView = ({
 }) => {
     var collection = 'study';
 
-
     var { path, url } = useRouteMatch();
+    
+    var permissions = usePermissions();
+    var canRead = permissions.hasFlag('canReadStudies');
+    if (!canRead) {
+        return (
+            <>
+                <LinkContainer to={ url }>
+                    <h1 className='m-0 border-bottom' role='button'>
+                        { collectionDisplayNames[collection] || collection }
+                    </h1>
+                </LinkContainer>
+                <div className='mt-3'>
+                    <PermissionDenied />
+                </div>
+            </>
+        )
+    }
 
     var [ isInitialized, setIsInitialized ] = useState(false);
     var [ metadata, setMetadata ] = useState();
