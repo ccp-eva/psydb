@@ -242,6 +242,21 @@ module.exports = {
         // and we want to track changes
         // maybe 'internal' subchannel?
     },
+    studyTopic: {
+        collection: 'studyTopic',
+        isGenericRecord: true,
+        hasCustomTypes: false,
+        hasSubChannels: false,
+        recordLabelDefinition: {
+            format: '${#}',
+            tokens: [
+                {
+                    systemType: 'SaneString',
+                    dataPointer: '/state/name',
+                },
+            ]
+        },
+    },
     subject: {
         collection: 'subject',
         isGenericRecord: true,

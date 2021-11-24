@@ -35,6 +35,9 @@ module.exports.SystemRoleRecordMessage = require('./system-role/record-message')
 module.exports.StudyState = require('./study/state');
 module.exports.StudyRecordMessage = require('./study/record-message');
 
+module.exports.StudyTopicState = require('./study-topic/state');
+module.exports.StudyTopicRecordMessage = require('./study-topic/record-message');
+
 module.exports.ExperimentOperatorTeamState = require('./experiment-operator-team/state');
 module.exports.ExperimentOperatorTeamRecordMessage = require('./experiment-operator-team/record-message');
 

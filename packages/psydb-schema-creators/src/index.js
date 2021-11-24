@@ -46,6 +46,11 @@ module.exports = {
         State: internals.StudyState,
         RecordMessage: internals.StudyRecordMessage 
     },
+    studyTopic: {
+        ...metadata.studyTopic,
+        State: internals.StudyTopicState,
+        RecordMessage: internals.StudyTopicRecordMessage 
+    },
     subject: {
         ...metadata.subject,
         subChannelStateSchemaCreators: {
