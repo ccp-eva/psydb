@@ -10,6 +10,7 @@ import {
 } from 'react-router-dom';
 
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { TabNav } from '@mpieva/psydb-ui-layout';
 import { LocationTypeRouting } from './location-type-routing';
 import { AwayTeamRouting } from './away-team-routing';
@@ -22,14 +23,27 @@ export const ReservationTypeRouting = (ps) => {
     var { path, url } = useRouteMatch();
     var { navItem } = useParams();
     var history =  useHistory();
+    var permissions = usePermissions();
 
-    var canReserveLocations = settingRecords.find(it => (
-        ['inhouse', 'online-video-call'].includes(it.type)
-    ));
+    var canReserveLocations = (
+        settingRecords.find(it => (
+            ['inhouse', 'online-video-call'].includes(it.type)
+        ))
+        && permissions.hasSomeLabOperationFlags({
+            types: [ 'inhouse', 'online-video-call' ],
+            flags: [ 'canWriteReservations' ]
+        })
+    );
 
-    var canReserveTeams = settingRecords.find(it => (
-        ['away-team'].includes(it.type)
-    ));
+    var canReserveTeams = (
+        settingRecords.find(it => (
+            ['away-team'].includes(it.type)
+        ))
+        && permissions.hasSomeLabOperationFlags({
+            types: [ 'away-team' ],
+            flags: [ 'canWriteReservations ']
+        })
+    );
 
     var tabs = [];
     if (canReserveLocations) {
@@ -50,10 +64,10 @@ export const ReservationTypeRouting = (ps) => {
                     history.push(`${up(url, 1)}/${nextKey}`);
                 }}
             />
-            { navItem === 'locations' && (
+            { canReserveLocations && navItem === 'locations' && (
                 <LocationTypeRouting { ...ps } />
             )}
-            { navItem === 'away-teams' && (
+            { canReserveTeams && navItem === 'away-teams' && (
                 <AwayTeamRouting { ...ps } />
             )}
         </>
