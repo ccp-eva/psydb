@@ -25,6 +25,7 @@ import TopFunctions from './top-functions';
 
 import CustomRecordTypes from './custom-record-types';
 import Studies from './studies';
+import StudyTopics from './study-topics';
 import Locations from './locations';
 import Subjects from './subjects';
 import Personnel from './personnel';
@@ -125,6 +126,7 @@ var Routing = () => (
     <>
     <Route path='/custom-record-types' component={ withEB(CustomRecordTypes) } />
     <Route path='/studies' component={ withEB(Studies) } />
+    <Route path='/study-topics' component={ withEB(StudyTopics) } />
     <Route path='/locations' component={ withEB(Locations) } />
     <Route path='/subjects' component={ withEB(Subjects) } />
     <Route path='/personnel' component={ withEB(Personnel) } />

@@ -112,6 +112,7 @@ const SideNav = (ps) => {
                         <Link to='/locations'>Locations</Link>
                         <Link to='/external-persons'>Externe Personen</Link>
                         <Link to='/external-organizations'>Externe Organsationen</Link>
+                        <Link to='/study-topics'>Themengebiete</Link>
                         <Link to='/helper-sets'>Hilfstabellen</Link>
                     </WhenAllowed>
 
