@@ -64,16 +64,18 @@ const SwitchResearchGroupModal = WithDefaultModal({
         return (
             <div>
                 <BigNavItem
-                    onClick={ () => send.exec(null) }
+                    bg='white'
                     isActive={ !forcedResearchGroupId }
+                    onClick={ () => send.exec(null) }
                 >
                     Alle Verfügbaren
                 </BigNavItem>
                 { fetched.data.records.map(it => (
                     <BigNavItem
                         key={ it._id }
-                        onClick={ () => send.exec(it._id) }
+                        bg='white'
                         isActive={ it._id === forcedResearchGroupId }
+                        onClick={ () => send.exec(it._id) }
                     >
                         { it._recordLabel }
                     </BigNavItem>

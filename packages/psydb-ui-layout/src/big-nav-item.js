@@ -7,11 +7,17 @@ import { LinkContainer } from 'react-router-bootstrap';
 import * as Icons from './icons';
 
 const AComponent = (ps) => {
-    var { isActive, onClick, children, ...other } = ps;
+    var {
+        isActive,
+        bg = 'light',
+        onClick,
+        children,
+        ...other
+    } = ps;
 
     var className = classnames([
         'd-flex justify-content-between align-items-center',
-        'bg-light p-3 border mt-2 mb-2'
+        `bg-${bg} p-3 border mt-2 mb-2`
     ]);
 
     return (
@@ -44,6 +50,7 @@ export const BigNavItem = (ps) => {
         to,
         onClick,
         isActive,
+        bg,
         children
     } = ps;
 
@@ -56,13 +63,13 @@ export const BigNavItem = (ps) => {
                 )}}
                 className='big-nav'
             >
-                <AComponent>{ children }</AComponent>
+                <AComponent bg={ bg }>{ children }</AComponent>
             </LinkContainer>
         )
     }
     else {
         return (
-            <AComponent isActive={ isActive } onClick={ onClick }>
+            <AComponent bg={ bg } isActive={ isActive } onClick={ onClick }>
                 { children }
             </AComponent>
         )
