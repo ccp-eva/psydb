@@ -5,6 +5,7 @@ import {
     useFetchAll,
     useRevision,
     useModalReducer,
+    usePermissions,
 } from '@mpieva/psydb-ui-hooks';
 
 import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
@@ -27,6 +28,7 @@ const StudySelectionSettings = ({
     var { id: studyId } = useParams();
 
     var { value: revision, up: increaseRevision } = useRevision();
+    var permissions = usePermissions();
 
     var newSelectorModal = useModalReducer();
     var removeSelectorModal = useModalReducer();
@@ -78,6 +80,8 @@ const StudySelectionSettings = ({
         }), {})
     );
 
+    var canWrite = permissions.hasFlag('canWriteStudies');
+
     return (
         <div className='mt-3 mb-3'>
             
@@ -121,12 +125,14 @@ const StudySelectionSettings = ({
                 customRecordTypes,
                 subjectTypeMap,
 
-                onAddSelector: newSelectorModal.handleShow,
-                onRemoveSelector: removeSelectorModal.handleShow,
+                ...(canWrite && {
+                    onAddSelector: newSelectorModal.handleShow,
+                    onRemoveSelector: removeSelectorModal.handleShow,
 
-                onAddAgeFrame: newAgeFrameModal.handleShow,
-                onEditAgeFrame: editAgeFrameModal.handleShow,
-                onRemoveAgeFrame: removeAgeFrameModal.handleShow,
+                    onAddAgeFrame: newAgeFrameModal.handleShow,
+                    onEditAgeFrame: editAgeFrameModal.handleShow,
+                    onRemoveAgeFrame: removeAgeFrameModal.handleShow,
+                })
             })} />
 
         </div>

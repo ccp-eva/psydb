@@ -1,4 +1,5 @@
 import React from 'react';
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { AgeFrame } from './age-frame';
 
 const AgeFrameList = (ps) => {
@@ -11,6 +12,9 @@ const AgeFrameList = (ps) => {
     } = ps;
 
     var { type: selectorType } = selectorRecord;
+    
+    var permissions = usePermissions();
+    var canWrite = permissions.hasFlag('canWriteStudies');
 
     if (ageFrameRecords.length < 1) {
         return (
@@ -27,8 +31,10 @@ const AgeFrameList = (ps) => {
                     index,
                     selectorRecord,
                     ageFrameRecord,
-                    onEdit: onEditAgeFrame,
-                    onRemove: onRemoveAgeFrame,
+                    ...(canWrite && {
+                        onEdit: onEditAgeFrame,
+                        onRemove: onRemoveAgeFrame,
+                    }),
                     ...downstream
                 })} />
             ))}

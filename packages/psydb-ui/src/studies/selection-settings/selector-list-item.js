@@ -27,6 +27,8 @@ const SelectorListItem = (ps) => {
     var panelProps = {
         label: `${subjectTypeRecord.state.label}`,
         addButtonLabel: '+ Altersfenster',
+        showAddButton: !!onAddAgeFrame,
+        showRemoveButton: !!onRemove,
         onAdd: () => onAddAgeFrame({ selectorRecord }),
         onRemove: () => onRemove({ index, selectorRecord })
     };

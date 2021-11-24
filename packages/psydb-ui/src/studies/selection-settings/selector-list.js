@@ -25,6 +25,7 @@ const SelectorList = (ps) => {
             emptyClassName: 'text-muted',
             addButtonLabel: '+ Probandentyp',
             onAdd: onAddSelector,
+            showAddButton: !!onAddSelector
         }) }>
             {(it, index) => (
                 <SelectorListItem key={ index } {...({

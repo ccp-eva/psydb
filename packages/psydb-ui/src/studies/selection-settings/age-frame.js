@@ -12,7 +12,7 @@ export const AgeFrame = (ps) => {
         ageFrameRelated,
 
         subjectTypeRecord,
-        showButtons,
+        showButtons = true,
 
         onEdit,
         onRemove,
@@ -28,8 +28,8 @@ export const AgeFrame = (ps) => {
 
     var panelProps = {
         label: `Altersfenster  ${stringifiedAgeFrame}`,
-        showEditButton: showButtons,
-        showRemoveButton: showButtons,
+        showEditButton: !!showButtons && !!onEdit,
+        showRemoveButton: !!showButtons && !!onRemove,
         onEdit: () => onEdit({
             selectorRecord,
             ageFrameRecord,

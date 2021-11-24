@@ -12,6 +12,7 @@ import {
 import { Button } from 'react-bootstrap';
 
 import agent from '@mpieva/psydb-ui-request-agents';
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import {
     LinkButton,
     LoadingIndicator
@@ -26,6 +27,7 @@ const StudyTeams = ({
 }) => {
     var { path, url } = useRouteMatch();
     var { id } = useParams();
+    var permissions = usePermissions();
 
     var [ state, dispatch ] = useReducer(reducer, {});
 
@@ -94,6 +96,8 @@ const StudyTeams = ({
         })
     }, [ id, listRevision ])
 
+    var canEdit = permissions.hasFlag('canWriteStudies');
+
     if (!records) {
         return (
             <LoadingIndicator size='lg' />
@@ -103,9 +107,11 @@ const StudyTeams = ({
     return (
         <div className='pt-3'>
             <div className='d-flex justify-content-between mb-3'>
-                <Button onClick={ handleShowCreateModal }>
-                    Neues Team
-                </Button>
+                { canEdit && (
+                    <Button onClick={ handleShowCreateModal }>
+                        Neues Team
+                    </Button>
+                )}
                 <Button
                     variant={ showHidden ? 'secondary' : 'outline-secondary'}
                     onClick={ handleToggleHidden }>
@@ -137,6 +143,7 @@ const StudyTeams = ({
                         studyId: id,
                         record,
                         relatedRecordLabels,
+                        canEdit,
                         onEditClick: handleShowEditModal,
                         //onDeleteClick,
                         //enableDelete

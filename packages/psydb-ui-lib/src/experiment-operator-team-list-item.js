@@ -8,6 +8,7 @@ const StudyTeamListItem = ({
     active,
     onClick,
     onEditClick,
+    canEdit,
 
     // FIXME: decide if obsolete
     onDeleteClick,
@@ -62,7 +63,7 @@ const StudyTeamListItem = ({
             </div>
 
             <div className='d-flex flex-column justify-content-between ml-2'>
-                { onEditClick && (
+                { canEdit && onEditClick && (
                     <TeamEditButton
                         onClick={ () => onEditClick(record._id) }
                     />

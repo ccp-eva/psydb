@@ -11,7 +11,7 @@ export const InnerSettingPanel = (ps) => {
         showEditButton = true,
         showRemoveButton = true,
     } = ps;
-    
+
     var showAnyButtons = showEditButton || showRemoveButton;
 
     return (

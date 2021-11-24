@@ -11,6 +11,7 @@ import {
 import agent from '@mpieva/psydb-ui-request-agents';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
 
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import {
     TabNav,
     LinkButton,
@@ -48,6 +49,19 @@ const StudyRecordContainer = ({
     var { path, url } = useRouteMatch();
     var { id, tabKey } = useParams();
     var history =  useHistory();
+    var permissions = usePermissions();
+
+    var canReadParticipation = permissions.hasFlag('canReadParticipation');
+
+    var navItems = [
+        { key: 'details', label: 'Allgemein' },
+        { key: 'selection-settings', label: 'Auswahlbedingungen' },
+        { key: 'experiment-settings', label: 'Ablauf-Einstellungen' },
+        { key: 'teams', label: 'Teams' },
+        canReadParticipation && (
+            { key: 'participation', label: 'Studienteilnahme' }
+        ),
+    ].filter(it => !!it);
 
     return (
         <>
@@ -65,14 +79,7 @@ const StudyRecordContainer = ({
                         className='d-flex'
                         itemClassName='flex-grow'
                         activeKey={ tabKey }
-                        items={[
-                            { key: 'details', label: 'Allgemein' },
-                            { key: 'selection-settings', label: 'Auswahlbedingungen' },
-                            //{ key: 'inhouse-locations', label: 'Räumlichkeiten' },
-                            { key: 'experiment-settings', label: 'Ablauf-Einstellungen' },
-                            { key: 'teams', label: 'Teams' },
-                            { key: 'participation', label: 'Studienteilnahme' },
-                        ]}
+                        items={ navItems }
                         onItemClick={ (nextKey) => {
                             history.push(`${up(url, 1)}/${nextKey}`)
                         }}
@@ -103,12 +110,6 @@ const StudyRecordContainer = ({
                         />
                     )}
 
-                    {/* tabKey === 'inhouse-locations' && (
-                        <StudyInhouseLocations
-                            recordType={ recordType }
-                        />
-                    )*/}
-
                     { tabKey === 'experiment-settings' && (        
                         <ExperimentSettings
                             studyType={ recordType }
@@ -121,7 +122,7 @@ const StudyRecordContainer = ({
                         />
                     )}
 
-                    { tabKey === 'participation' && (        
+                    { canReadParticipation && tabKey === 'participation' && (
                         <StudyParticipation
                             recordType={ recordType }
                         />
