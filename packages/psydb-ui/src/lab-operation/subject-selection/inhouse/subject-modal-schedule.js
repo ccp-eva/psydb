@@ -54,11 +54,12 @@ const SubjectModalSchedule = ({
                 onSuccessfulUpdate={ onSuccessfulUpdate }
             />
 
-            <TabNav
-                items={ studyNavItems }
-                activeKey={ studyId }
-                onItemClick={ setStudyId }
-            />
+                <TabNav
+                    label='Studie:'
+                    items={ studyNavItems }
+                    activeKey={ studyId }
+                    onItemClick={ setStudyId }
+                />
 
             <StudyInhouseLocations
                 studyId={ studyId }

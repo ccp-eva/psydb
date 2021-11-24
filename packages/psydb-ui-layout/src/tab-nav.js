@@ -25,32 +25,36 @@ const styleInactive = {
 const TabNav = ({
     className,
     itemClassName,
+    label,
     items,
     activeKey,
     onItemClick,
 }) => {
     return (
-        <Nav variant='tabs' className={ className }>
-            { items.map(it => (
-                <Nav.Item
-                    className={ itemClassName }
-                    key={ it.key }
-                    onClick={ () => onItemClick(it.key) }
-                    style={{}}
-                >
-                    <Nav.Link
-                        active={ it.key === activeKey }
-                        style={
-                            it.key === activeKey
-                            ? styleActive
-                            : styleInactive
-                        }
+            <Nav variant='tabs' className={ className }>
+                { items.map(it => (
+                    <Nav.Item
+                        className={ itemClassName }
+                        key={ it.key }
+                        onClick={ () => onItemClick(it.key) }
+                        style={{}}
                     >
-                        { it.label }
-                    </Nav.Link>
-                </Nav.Item>
-            ))}
-        </Nav>
+                        <Nav.Link
+                            active={ it.key === activeKey }
+                            style={
+                                it.key === activeKey
+                                ? styleActive
+                                : styleInactive
+                            }
+                        >
+                            { it.label }
+                        </Nav.Link>
+                    </Nav.Item>
+                ))}
+            </Nav>
+        /*<div className='d-flex border-bottom'>
+            <div className='px-3 py-2'><b>{ label }</b></div>
+        </div>*/
     );
 }
 

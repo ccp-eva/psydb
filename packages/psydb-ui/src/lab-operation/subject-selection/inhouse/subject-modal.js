@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useReducer } from 'react';
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import {
     Modal
@@ -21,6 +22,17 @@ const SubjectModal = ({
 
     onSuccessfulUpdate,
 }) => {
+    var permissions = usePermissions();
+    var canReadSubjects = permissions.hasFlag('canReadSubjects');
+
+    var [ state, dispatch ] = useReducer(reducer, {
+        activeMainNavKey: (
+            canReadSubjects
+            ? 'subjectDetails'
+            : 'scheduleExperiment'
+        ),
+    })
+
     if (!subjectModalData) {
         return null;
     }
@@ -28,10 +40,6 @@ const SubjectModal = ({
     var {
         record
     } = subjectModalData;
-
-    var [ state, dispatch ] = useReducer(reducer, {
-        activeMainNavKey: 'subjectDetails',
-    })
 
     var {
         activeMainNavKey,
@@ -42,6 +50,17 @@ const SubjectModal = ({
         onSuccessfulUpdate && onSuccessfulUpdate(...args);
     }
 
+    var navItems = [
+        (canReadSubjects && {
+            key: 'subjectDetails',
+            label: 'Probanden-Details'
+        }),
+        {
+            key: 'scheduleExperiment',
+            label: 'Einladung'
+        }
+    ].filter(it => !!it)
+
     return (
         <Modal
             show={show}
@@ -51,28 +70,20 @@ const SubjectModal = ({
             backdropClassName='team-modal-backdrop'
         >
             <Modal.Header closeButton>
-                <Modal.Title>Details/Einladung</Modal.Title>
+                <Modal.Title>Termin-Einladung</Modal.Title>
             </Modal.Header>
             <Modal.Body className='bg-light'>
-
-                <TabNav
-                    items={[
-                        {
-                            key: 'subjectDetails',
-                            label: 'Probanden-Details'
-                        },
-                        {
-                            key: 'scheduleExperiment',
-                            label: 'Einladung'
-                        }
-                    ]}
-                    activeKey={ activeMainNavKey }
-                    onItemClick={ (nextKey) => {
-                        dispatch({ type: 'select-nav-item', payload: {
-                            key: nextKey
-                        }})
-                    }}
-                />
+                { navItems.length > 1 && (
+                    <TabNav
+                        items={ navItems }
+                        activeKey={ activeMainNavKey }
+                        onItemClick={ (nextKey) => {
+                            dispatch({ type: 'select-nav-item', payload: {
+                                key: nextKey
+                            }})
+                        }}
+                    />
+                )}
 
                 { activeMainNavKey === 'subjectDetails' && (
                     <SubjectModalDetails
