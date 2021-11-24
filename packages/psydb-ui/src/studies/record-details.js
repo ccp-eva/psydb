@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useReducer, forwardRef } from 'react';
 
 import { useRouteMatch, useParams } from 'react-router-dom';
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import allSchemaCreators from '@mpieva/psydb-schema-creators';
 import agent from '@mpieva/psydb-ui-request-agents';
@@ -30,10 +31,13 @@ const StudyRecordDetails = ({
     recordType,
     onSuccessfulUpdate,
 }) => {
+    var collection = 'study';
+
     var { path, url } = useRouteMatch();
     var { id } = useParams();
-
-    var collection = 'study';
+    var permissions = usePermissions();
+    
+    var canEdit = permissions.hasCollectionFlag(collection, 'write');
 
     var { hasSubChannels } = allSchemaCreators[collection];
 
@@ -124,12 +128,16 @@ const StudyRecordDetails = ({
                 formData={ formData }
                 formContext={ formContext }
             />
-            <div style={{ position: 'absolute', right: '0px', top: '0px'}}>
-                <EditLinkButton
-                    label='Bearbeiten'
-                    to={ `${url}/edit` }
-                />
-            </div>
+            { canEdit && (
+                <div style={{
+                    position: 'absolute', right: '0px', top: '0px'
+                }}>
+                    <EditLinkButton
+                        label='Bearbeiten'
+                        to={ `${url}/edit` }
+                    />
+                </div>
+            )}
         </div>
     )
 }

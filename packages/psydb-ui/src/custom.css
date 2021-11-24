@@ -124,3 +124,14 @@ a:hover {
 .container {
     max-width: none !important;
 }
+
+/* prevent link dragging */
+a {
+    user-select: none;
+    user-drag: none;
+    app-region: none;
+
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-app-region: none;
+}
