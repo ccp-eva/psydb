@@ -97,6 +97,7 @@ dependencies:
   mongodb-memory-server: 6.9.6
   pako: 2.0.4
   pascal-case: 3.1.2
+  performant-array-to-tree: 1.9.1
   prop-types: 15.7.2
   raw-body: 2.4.1
   react: 17.0.2
@@ -6811,6 +6812,10 @@ packages:
     dev: false
     resolution:
       integrity: sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
+  /performant-array-to-tree/1.9.1:
+    dev: false
+    resolution:
+      integrity: sha512-t+Hiy1HbKTVXg+mdcDUwPwAGgrLMtNUOhs2vV0M9MG2aAfnXQT9czAadksufMnf75h4xYU014HqlQ91JZ4XdlA==
   /picomatch/2.2.2:
     dev: false
     engines:
@@ -9499,13 +9504,14 @@ packages:
       mongodb: 3.6.6
       mongodb-memory-server: 6.9.6
       nanoid: 3.1.22
+      performant-array-to-tree: 1.9.1
       statuses: 2.0.1
       superagent-prefix: 0.0.2
       supertest: 6.0.1
     dev: false
     name: '@rush-temp/psydb-api'
     resolution:
-      integrity: sha512-GeNPQIGOXhenCbSF34GzoZH08lS7+CJtnG2nd5pz4f8N7NuL/jcXoYtaMjnxPufueLbb3xbrYRP1Q7Y6lfsQXA==
+      integrity: sha512-RtjXJNyOB2tnRgCwHKQVwdQJZ75CegcgWa43Fxt1MYV7G1hFqpq8eTnkTOsBYlPL3fbl8dHG+g71ctsVyyI9hA==
       tarball: 'file:projects/psydb-api.tgz'
     version: 0.0.0
   'file:projects/psydb-common-lib.tgz':
@@ -9732,7 +9738,7 @@ packages:
     peerDependencies:
       webpack: '*'
     resolution:
-      integrity: sha512-tzpUw19lTHTSKt6jz7JFtKPoAXvhPIae4kvLsANbjUJNdNKaKGzlRbzGHtsndo67fht+0c/RnXbOnhMtq8sZ9A==
+      integrity: sha512-+CkxYCRvHedfPvEdQREpcsjUJAgSa6KZ5zHaKBtnt8cWXoJCaYVNf6SU8o3A4OWVLQ098mmiqR+56gysX4gFHg==
       tarball: 'file:projects/psydb-ui-hooks.tgz'
     version: 0.0.0
   'file:projects/psydb-ui-layout.tgz_webpack@5.10.1':
@@ -9868,7 +9874,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-ui'
     resolution:
-      integrity: sha512-cPVW9Yz6DbP8j7cXEET77dMEjxCzMP+YdSrirccTWWWIbIMsIce09yoYTKKuMggwiHMZlTg9deZjmSZcNl+K/w==
+      integrity: sha512-v+gNSqhVkuFHffOwnovqopthDXJqVn1ylaZbuwWQ2VYgjYzVSkAz/GSjTzvzeWNK4zNCpJO0mYRotYsfgpe0ew==
       tarball: 'file:projects/psydb-ui.tgz'
     version: 0.0.0
   'file:projects/psydb-web.tgz':
@@ -10014,6 +10020,7 @@ specifiers:
   mongodb-memory-server: ~6.9.2
   pako: ~2.0.4
   pascal-case: ~3.1.1
+  performant-array-to-tree: ~1.9.1
   prop-types: ~15.7.2
   raw-body: ~2.4.1
   react: ~17.0.1

@@ -93,4 +93,8 @@ module.exports = {
     ageFrames: (
         require('./age-frames')
     ),
+    
+    studyTopicTree: (
+        require('./study-topic-tree')
+    ),
 }

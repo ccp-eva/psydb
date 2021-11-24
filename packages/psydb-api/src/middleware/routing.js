@@ -276,6 +276,13 @@ var createRouting = ({
         endpoints.special.ageFrames
     );
 
+    router.post('/study-topic-tree',
+        withSelfAuth(),
+        withPermissions(),
+        withKoaBody(),
+        endpoints.special.studyTopicTree
+    );
+
     return compose([
         router.routes(),
         router.allowedMethods(),
