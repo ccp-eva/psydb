@@ -39,14 +39,20 @@ const StudyTopics = () => {
     var onEdit = (id) => (
         editModal.handleShow({ id })
     );
-
-    var [ selectedTopicId, onSelect ] = useState();
+    var onSelect = (id) => (
+        updateQuery({ ...query, selectedTopicId: id })
+    )
 
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.getAxios().post('/api/study-topic-tree', {
             name: query.name || undefined,
+            activeId: query.selectedTopicId
         })
-    ), [ revision.value, ...queryValues, queryValues.length ])
+    ), [
+        revision.value,
+        ...queryValues,
+        queryValues.length,
+    ])
 
     if (!didFetch) {
         return <LoadingIndicator size='lg' />
@@ -84,7 +90,7 @@ const StudyTopics = () => {
                     onCreate,
                     onEdit,
                     onSelect,
-                    selectedTopicId
+                    selectedTopicId: query.selectedTopicId
                 }}>
                     <div className='px-3 py-1'>
                         { trees.map((it, index) => (
@@ -142,25 +148,8 @@ const Topic = (ps) => {
                 </InnerName>
                 { isSelected && (
                     <>
-                        <a
-                            className='btn btn-link p-0 m-0 border-0 ml-3 text-primary'
-                            style={{ verticalAlign: 'baseline' }}
-                            onClick={ () => onCreate(node) }
-                        >
-                            <Icons.Plus
-                                viewBox='4 4 10 10'
-                            />
-                        </a>
-                        
-                        <a
-                            className='btn btn-link p-0 m-0 border-0 ml-1 text-primary'
-                            style={{ verticalAlign: 'baseline' }}
-                            onClick={ () => onEdit(_id) }
-                        >
-                            <Icons.PencilFill
-                                viewBox='0 0 18 18'
-                            />
-                        </a>
+                        <CreateButton onClick={ () => onCreate(node) } />
+                        <EditButton onClick={ () => onEdit(_id) } />
                     </>
                 )}
             </Name>
@@ -179,5 +168,34 @@ const Topic = (ps) => {
     )
 }
 
+const CreateButton = (ps) => {
+    var { onClick } = ps;
+    return (
+        <a
+            className='btn btn-link p-0 m-0 border-0 ml-3 text-primary'
+            style={{ verticalAlign: 'baseline' }}
+            onClick={ onClick }
+        >
+            <Icons.Plus
+                viewBox='4 4 10 10'
+            />
+        </a>
+    )
+}
+
+const EditButton = (ps) => {
+    var { onClick } = ps;
+    return (
+        <a
+            className='btn btn-link p-0 m-0 border-0 ml-1 text-primary'
+            style={{ verticalAlign: 'baseline' }}
+            onClick={ onClick }
+        >
+            <Icons.PencilFill
+                viewBox='0 0 18 18'
+            />
+        </a>
+    )
+}
 
 export default StudyTopics;

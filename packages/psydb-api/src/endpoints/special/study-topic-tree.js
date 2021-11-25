@@ -20,10 +20,12 @@ var {
 var {
     ExactObject,
     SaneString,
+    Id,
 } = require('@mpieva/psydb-schema-fields');
 
 var RequestBodySchema = () => ExactObject({
     properties: {
+        activeId: Id(),
         name: SaneString(),
     },
     required: []
@@ -41,7 +43,7 @@ var studyTopicTree = async (context, next) => {
         payload: request.body
     })
 
-    var { name } = request.body;
+    var { name, activeId } = request.body;
     var shouldSearch = !!name;
 
     var records;
@@ -49,10 +51,19 @@ var studyTopicTree = async (context, next) => {
         records = await (
             db.collection('studyTopic').aggregate([
                 { $match: {
-                    'state.name': new RegExp(name, 'i')
+                    $or: [
+                        { 'state.name': new RegExp(name, 'i') },
+                        ...(activeId ? [
+                            { '_id': activeId },
+                            { 'state.parentId': activeId }
+                        ] : [])
+                    ]
                 }},
                 { $addFields: {
-                    _matchesQuery: true
+                    _matchesQuery: { $regexMatch: {
+                        input: '$state.name',
+                        regex: new RegExp(name, 'i'),
+                    }}
                 }},
 
                 // reverse walk from found leafs to roots upwards
@@ -84,6 +95,10 @@ var studyTopicTree = async (context, next) => {
                     node: { $first: '$$ROOT' }
                 }},
                 { $replaceRoot: { newRoot: '$node' }},
+                { $sort: {
+                    'state.name': 1,
+                    'events.0.timestamp': 1,
+                }},
 
                 AddLastKnownEventIdStage(),
                 StripEventsStage(),
@@ -96,6 +111,10 @@ var studyTopicTree = async (context, next) => {
                 /*{ $addFields: {
                     _matchesQuery: true
                 }},*/
+                { $sort: {
+                    'state.name': 1,
+                    'events.0.timestamp': 1,
+                }},
                 AddLastKnownEventIdStage(),
                 StripEventsStage(),
             ]).toArray()
