@@ -72,6 +72,12 @@ var StudyState = (ps = {}) => {
                 additionalEndKeywords: { title: 'Ende', isNullable: true },
             }),
 
+            studyTopicIds: ForeignIdList({
+                collection: 'studyTopic',
+                minLength: 1,
+            }),
+
+            // TODO: move to labProcedureSettings
             enableFollowUpExperiments: DefaultBool({
                 title: 'Folge-Experimente anschalten'
             }),
@@ -92,7 +98,8 @@ var StudyState = (ps = {}) => {
             
             custom: CustomProps({ customFieldDefinitions }),
             systemPermissions: systemPermissionsSchema,
-
+            
+            // TODO: obsolete
             inhouseTestLocationSettings: DefaultArray({
                 systemType: 'InhouseTestLocationSettings',
                 items: ExactObject({
