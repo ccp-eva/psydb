@@ -8,10 +8,10 @@ import {
 import {
     DefaultForm,
     Fields
-} from '@mpieva/psydb-ui-lib/src/formik';
+} from '../formik';
 
 //className='d-flex align-items-end quick-search-fixes'
-const QuickSearch = (ps) => {
+export const QuickSearch = (ps) => {
     var { searchValues, onSubmit } = ps;
     var className = (
         'bg-light border-bottom px-3 py-2 d-flex justify-content-start'
@@ -63,5 +63,3 @@ const QuickSearch = (ps) => {
         </div>
     )
 }
-
-export default QuickSearch;

@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 
-const Pagination = (ps) => {
+export const Pagination = (ps) => {
     var { total, totalLabel, extraClassName } = ps;
 
     var className = classnames([
@@ -17,5 +17,3 @@ const Pagination = (ps) => {
         </div>
     );
 }
-
-export default Pagination;

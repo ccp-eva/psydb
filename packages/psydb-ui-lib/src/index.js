@@ -17,3 +17,4 @@ export * from './formik';
 
 export * from './account-function-dropdown';
 export * from './when-allowed';
+export * as StudyTopic from './study-topic';
