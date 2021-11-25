@@ -12,12 +12,12 @@ const createFormikConfig = (ps) => {
 }
 
 const DefaultForm = (ps) => {
-    var { children, ...formikOptions } = ps;
+    var { className, children, ...formikOptions } = ps;
     var config = createFormikConfig(ps);
     return (
         <Formik { ...config }>
             {(formikProps) => (
-                <Form>
+                <Form className={ className }>
                     { isFunction(children) && children(formikProps) }
                 </Form>
             )}

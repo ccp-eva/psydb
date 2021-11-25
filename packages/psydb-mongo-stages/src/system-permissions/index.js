@@ -38,18 +38,26 @@ var SystemPermissionStages = (options) => {
             researchGroupIdsByCollection[collection][action]
         );
 
+        var statePath = (
+            collectionHasSubChannels(collection)
+            ? 'scientific.state'
+            : 'state'
+        );
+
         var stages = [
-            { $match: { $expr: (
-                hasResearchGroupIntersectionsCondition({
-                    statePath: (
-                        collectionHasSubChannels(collection)
-                        ? 'scientific.state'
-                        : 'state'
-                    ),
-                    allowedResearchGroupIds,
-                    requiredPermission: action,
-                })
-            )}}
+            { $match: { $or: [
+                // NOTE: we have collections that do not have
+                // record based systempermissions but instead
+                // only require collection access
+                { [`${statePath}.systemPermissions`]: { $exists: false }},
+                { $expr: (
+                    hasResearchGroupIntersectionsCondition({
+                        statePath,
+                        allowedResearchGroupIds,
+                        requiredPermission: action,
+                    })
+                )}
+            ]}}
         ];
 
         return stages;

@@ -68,6 +68,7 @@ var getCollectionReadFlagPointers = ({ collection }) => {
         case 'helperSet':
         case 'helperSetItem':
         case 'location':
+        case 'studyTopic':
             return [ '/canWriteAdministrativeCollections' ]
 
         default:
@@ -89,6 +90,7 @@ var getCollectionWriteFlagPointers = ({ collection }) => {
         case 'helperSet':
         case 'helperSetItem':
         case 'location':
+        case 'studyTopic':
             return [ '/canWriteAdministrativeCollections' ]
 
         default:
@@ -146,6 +148,7 @@ var allCollections = [
     'helperSet',
     'helperSetItem',
     'location',
+    'studyTopic',
 
     // theese have special read/write flags
     // but the same stuff about search for fk applies here

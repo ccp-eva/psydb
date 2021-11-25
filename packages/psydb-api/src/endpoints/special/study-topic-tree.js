@@ -49,7 +49,7 @@ var studyTopicTree = async (context, next) => {
         records = await (
             db.collection('studyTopic').aggregate([
                 { $match: {
-                    'state.name': new RegExp(name)
+                    'state.name': new RegExp(name, 'i')
                 }},
 
                 // reverse walk from found leafs to roots upwards

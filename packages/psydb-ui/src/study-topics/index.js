@@ -6,6 +6,7 @@ import {
     usePermissions,
     useRevision,
     useModalReducer,
+    useURLSearchParams
 } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -16,6 +17,8 @@ import {
 } from '@mpieva/psydb-ui-layout';
 
 import CreateModal from './create-modal';
+import EditModal from './edit-modal';
+import QuickSearch from './quick-search';
 
 var ActionContext = React.createContext();
 
@@ -26,20 +29,23 @@ const StudyTopics = () => {
     var createModal = useModalReducer();
     var editModal = useModalReducer();
 
+    var [ query, updateQuery ] = useURLSearchParams();
+    var queryValues = Object.values(query);
+
     var onCreate = (parent = { _id: null }) => (
         createModal.handleShow({ parent })
     );
     var onEdit = (id) => (
-        createModal.handleShow({ id })
+        editModal.handleShow({ id })
     );
 
     var [ selectedTopicId, onSelect ] = useState();
 
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.getAxios().post('/api/study-topic-tree', {
-            name: undefined,
+            name: query.name || undefined,
         })
-    ), [ revision.value ])
+    ), [ revision.value, ...queryValues, queryValues.length ])
 
     if (!didFetch) {
         return <LoadingIndicator size='lg' />
@@ -55,9 +61,19 @@ const StudyTopics = () => {
                     onSuccessfulUpdate={ revision.up }
                 />
 
+                <EditModal
+                    { ...editModal.passthrough }
+                    onSuccessfulUpdate={ revision.up }
+                />
+
                 <Button onClick={ () => onCreate() }>
-                    Neues Hauptthema
+                    Neues Themengebiet
                 </Button>
+
+                <QuickSearch
+                    searchValues={ query }
+                    onSubmit={ (next) => updateQuery(next)}
+                />
 
                 <ActionContext.Provider value={{
                     onCreate,
@@ -65,9 +81,11 @@ const StudyTopics = () => {
                     onSelect,
                     selectedTopicId
                 }}>
-                    { trees.map((it, index) => (
-                        <Topic key={ index } { ...it } />
-                    ))}
+                    <div className='px-3 py-1'>
+                        { trees.map((it, index) => (
+                            <Topic key={ index } { ...it } />
+                        ))}
+                    </div>
                 </ActionContext.Provider>
 
             </PageWrappers.Level2>
@@ -110,15 +128,27 @@ const Topic = (ps) => {
                     { name }
                 </span>
                 { isSelected && (
-                    <a
-                        className='btn btn-link p-0 m-0 border-0'
-                        style={{ verticalAlign: 'baseline' }}
-                        onClick={ () => onCreate(node) }
-                    >
-                        <Icons.Plus
-                            viewBox='4 4 10 10'
-                        />
-                    </a>
+                    <>
+                        <a
+                            className='btn btn-link p-0 m-0 border-0'
+                            style={{ verticalAlign: 'baseline' }}
+                            onClick={ () => onCreate(node) }
+                        >
+                            <Icons.Plus
+                                viewBox='4 4 10 10'
+                            />
+                        </a>
+                        
+                        <a
+                            className='btn btn-link p-0 m-0 border-0 ml-1'
+                            style={{ verticalAlign: 'baseline' }}
+                            onClick={ () => onEdit(_id) }
+                        >
+                            <Icons.PencilFill
+                                viewBox='0 0 18 18'
+                            />
+                        </a>
+                    </>
                 )}
             </Name>
             <div
@@ -135,5 +165,6 @@ const Topic = (ps) => {
         </div>
     )
 }
+
 
 export default StudyTopics;
