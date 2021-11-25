@@ -19,6 +19,7 @@ import {
 import CreateModal from './create-modal';
 import EditModal from './edit-modal';
 import QuickSearch from './quick-search';
+import Pagination from './pagination';
 
 var ActionContext = React.createContext();
 
@@ -51,7 +52,7 @@ const StudyTopics = () => {
         return <LoadingIndicator size='lg' />
     }
 
-    var { trees } = fetched.data;
+    var { trees, recordsCount } = fetched.data;
 
     return (
         <PageWrappers.Level1 title='Themengebiete'>
@@ -74,6 +75,10 @@ const StudyTopics = () => {
                     searchValues={ query }
                     onSubmit={ (next) => updateQuery(next)}
                 />
+                <Pagination
+                    extraClassName='border-bottom'
+                    total={ recordsCount }
+                />
 
                 <ActionContext.Provider value={{
                     onCreate,
@@ -88,6 +93,10 @@ const StudyTopics = () => {
                     </div>
                 </ActionContext.Provider>
 
+                <Pagination
+                    extraClassName='border-top border-bottom'
+                    total={ recordsCount }
+                />
             </PageWrappers.Level2>
         </PageWrappers.Level1>
     );
@@ -102,35 +111,39 @@ const Topic = (ps) => {
     } = useContext(ActionContext);
 
     var { data: node, children, level = 0 } = ps;
-    var { _id, state } = node;
+    var { _id, _matchesQuery, state } = node;
     var { name, parentId } = state;
 
+    var isSelected = (selectedTopicId === _id);
+    
     //var Name = [0,1].includes(level) ? `h${4+level}` : 'div'
     var Name = level === 0 ? 'h5' : 'div'
-    var isSelected = (selectedTopicId === _id);
+    var InnerName = isSelected ? 'b' : 'span';
 
     var wrapperClassName = classnames([
         level === 0 ? 'mb-2' : 'ml-4'
     ]);
     var nameClassName = classnames([
-        'd-inline-block mr-2 pb-1',
-        level === 0 && 'mt-2'
-        //isSelected && 'text-primary text-bold'
+        'd-inline-block pb-1',
+        level === 0 && 'mt-2',
+        _matchesQuery && 'text-primary',
     ]);
+
 
     return (
         <div className={ wrapperClassName }>
             <Name className='m-0'>
-                <span
+                <InnerName
                     className={ nameClassName }
+                    role='button'
                     onClick={ () => onSelect(_id) }
                 >
                     { name }
-                </span>
+                </InnerName>
                 { isSelected && (
                     <>
                         <a
-                            className='btn btn-link p-0 m-0 border-0'
+                            className='btn btn-link p-0 m-0 border-0 ml-3 text-primary'
                             style={{ verticalAlign: 'baseline' }}
                             onClick={ () => onCreate(node) }
                         >
@@ -140,7 +153,7 @@ const Topic = (ps) => {
                         </a>
                         
                         <a
-                            className='btn btn-link p-0 m-0 border-0 ml-1'
+                            className='btn btn-link p-0 m-0 border-0 ml-1 text-primary'
                             style={{ verticalAlign: 'baseline' }}
                             onClick={ () => onEdit(_id) }
                         >

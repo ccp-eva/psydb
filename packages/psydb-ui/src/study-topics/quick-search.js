@@ -27,7 +27,7 @@ const QuickSearch = (ps) => {
             <DefaultForm
                 className='d-flex align-items-end quick-search-fixes'
                 onSubmit={ wrappedOnSubmit }
-                initialValues={{}}
+                initialValues={ searchValues || {}}
             >
                 {(formikProps) => {
                     return (

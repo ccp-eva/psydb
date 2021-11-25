@@ -95,6 +95,9 @@ a:hover {
 .text-orange {
     color: #f90;
 }
+.text-lightgrey {
+    color: #ccc;
+}
 
 .team-time-slot.empty {
     border: 1px solid;

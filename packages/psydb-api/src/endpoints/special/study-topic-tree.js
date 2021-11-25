@@ -51,6 +51,9 @@ var studyTopicTree = async (context, next) => {
                 { $match: {
                     'state.name': new RegExp(name, 'i')
                 }},
+                { $addFields: {
+                    _matchesQuery: true
+                }},
 
                 // reverse walk from found leafs to roots upwards
                 // so that non-matching parent nodes dont get ommited
@@ -90,6 +93,9 @@ var studyTopicTree = async (context, next) => {
     else {
         records = await (
             db.collection('studyTopic').aggregate([
+                /*{ $addFields: {
+                    _matchesQuery: true
+                }},*/
                 AddLastKnownEventIdStage(),
                 StripEventsStage(),
             ]).toArray()
@@ -107,7 +113,8 @@ var studyTopicTree = async (context, next) => {
     context.body = ResponseBody({
         data: {
             //records,
-            trees
+            trees,
+            recordsCount: records.length
         },
     });
 
