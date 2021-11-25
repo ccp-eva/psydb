@@ -29,8 +29,8 @@ const Topic = (ps) => {
         selectedTopicId
     } = useContext(ActionContext);
 
-    var { data: node, children, level = 0 } = ps;
-    var { _id, _matchesQuery, state } = node;
+    var { data: record, children, level = 0 } = ps;
+    var { _id, _matchesQuery, state } = record;
     var { name, parentId } = state;
 
     var isSelected = (selectedTopicId === _id);
@@ -55,14 +55,14 @@ const Topic = (ps) => {
                 <InnerName
                     className={ nameClassName }
                     role='button'
-                    onClick={ () => onSelect && onSelect(_id) }
+                    onClick={ () => onSelect && onSelect(record) }
                 >
                     { name }
                 </InnerName>
                 { isSelected && (
                     <>
                         { onCreate && (
-                            <CreateButton onClick={ () => onCreate(node) } />
+                            <CreateButton onClick={ () => onCreate(record) } />
                         )}
                         { onEdit && (
                             <EditButton onClick={ () => onEdit(_id) } />

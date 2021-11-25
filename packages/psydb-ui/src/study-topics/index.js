@@ -29,7 +29,6 @@ const StudyTopics = () => {
     var editModal = useModalReducer();
 
     var [ query, updateQuery ] = useURLSearchParams();
-    var queryValues = Object.values(query);
 
     var onCreate = (parent = { _id: null }) => (
         createModal.handleShow({ parent })
@@ -37,8 +36,8 @@ const StudyTopics = () => {
     var onEdit = (id) => (
         editModal.handleShow({ id })
     );
-    var onSelect = (id) => (
-        updateQuery({ ...query, selectedTopicId: id })
+    var onSelect = (record) => (
+        updateQuery({ ...query, selectedTopicId: record._id })
     )
 
     var [ didFetch, fetched ] = useFetch((agent) => (
@@ -46,11 +45,7 @@ const StudyTopics = () => {
             name: query.name || undefined,
             activeId: query.selectedTopicId
         })
-    ), [
-        revision.value,
-        ...queryValues,
-        queryValues.length,
-    ])
+    ), [ revision.value, query.name, query.selectedTopicId ])
 
     if (!didFetch) {
         return <LoadingIndicator size='lg' />

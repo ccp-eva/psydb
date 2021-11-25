@@ -2,13 +2,16 @@ import React  from 'react';
 import { WithDefaultModal } from '@mpieva/psydb-ui-layout';
 import { usePickerHandling } from './use-picker-handling';
 import { PickerInput } from './picker-input';
+import { StudyTopicPickerView } from './study-topic-picker-view';
 
 
 export const withRecordPicker = (options) => {
     var { RecordList } = options;
     
     var RecordPickerModalBody = (ps) => (
-        <RecordList { ...ps } />
+        ps.collection === 'studyTopic'
+        ? <StudyTopicPickerView { ...ps } />
+        : <RecordList { ...ps } />
     );
 
     var RecordPickerModal = WithDefaultModal({
