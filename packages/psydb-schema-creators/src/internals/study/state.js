@@ -62,6 +62,7 @@ var StudyState = (ps = {}) => {
                 title: 'Kürzel',
             }),
             scientistIds: ForeignIdList({
+                title: 'Wissenschaftler',
                 collection: 'personnel',
             }),
 
@@ -73,8 +74,9 @@ var StudyState = (ps = {}) => {
             }),
 
             studyTopicIds: ForeignIdList({
+                title: 'Themengebiete',
                 collection: 'studyTopic',
-                minLength: 1,
+                minItems: 1,
             }),
 
             // TODO: move to labProcedureSettings

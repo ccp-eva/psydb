@@ -256,6 +256,20 @@ module.exports = {
                 },
             ]
         },
+        availableStaticDisplayFields: [
+            {
+                key: '_name',
+                systemType: 'SaneString',
+                dataPointer: '/state/name',
+                displayName: 'Name',
+            },
+        ],
+        staticDisplayFields: [
+            {
+                systemType: 'SaneString',
+                dataPointer: '/state/name',
+            }
+        ]
     },
     subject: {
         collection: 'subject',
