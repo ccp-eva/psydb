@@ -10,7 +10,7 @@ module.exports = {
 
     verifyRecordAccess: require('./verify-record-access'),
     verifyStudyAccess: require('./verify-study-access'),
-    verifySubjectAccess: require('./verify-study-access'),
+    verifySubjectAccess: require('./verify-subject-access'),
     verifyLabOperationAccess: require('./verify-lab-operation-access'),
    
     checkForeignIdsExist: require('./check-foreign-ids-exist'),

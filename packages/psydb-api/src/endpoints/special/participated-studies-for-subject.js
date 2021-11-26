@@ -59,6 +59,7 @@ var participatedStudiesForSubject = async (context, next) => {
         subjectId,
     } = params;
 
+
     await verifySubjectAccess({
         db,
         permissions,
@@ -167,7 +168,7 @@ var fetchSubjectData = async ({
         throw new ApiError(404, 'NoAccessibleStudyRecordFound');
     }
 
-    console.dir(subjectRecord, { depth: null });
+    //console.dir(subjectRecord, { depth: null });
 
     var {
         mergedDisplayFieldData,
