@@ -23,7 +23,7 @@ const Participation = ({ id, revision }) => {
                 subjectId: id,
             })
         }
-    }, [ id, revision ]);
+    }, [ id, revision.value ]);
 
     if (!didFetch) {
         return (

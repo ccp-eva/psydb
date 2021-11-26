@@ -2,15 +2,23 @@ import React from 'react';
 import { useRouteMatch, useParams } from 'react-router-dom';
 
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
-import { usePermissions } from '@mpieva/psydb-ui-hooks';
-import { LinkButton } from '@mpieva/psydb-ui-layout';
+
+import {
+    usePermissions,
+    useModalReducer,
+    useRevision
+} from '@mpieva/psydb-ui-hooks';
+
+import { LinkButton, Button } from '@mpieva/psydb-ui-layout';
 import GenericRecordDetails from '@mpieva/psydb-ui-lib/src/generic-record-details';
 import Participation from './participation';
+import ParticipationModal from './participation-modal';
 
 const Header = ({
     title,
     editLabel,
     editUrl,
+    onEditClick,
     canEdit,
 }) => {
     var { path, url } = useRouteMatch();
@@ -19,12 +27,17 @@ const Header = ({
     editLabel = editLabel || 'Bearbeiten';
 
     return (
-        <h5 className='d-flex justify-content-between align-items-end'>
+        <h5 className='d-flex justify-content-between align-items-start'>
             <span className='d-inline-block pt-3'>{ title }</span>
-            { canEdit && (
+            { canEdit && editUrl && (
                 <LinkButton to={ editUrl }>
                     { editLabel }
                 </LinkButton>
+            )}
+            { canEdit && onEditClick && (
+                <Button onClick={ onEditClick }>
+                    { editLabel }
+                </Button>
             )}
         </h5>
     )
@@ -37,7 +50,9 @@ const SubjectDetailsContainer = ({
 }) => {
     var { path, url } = useRouteMatch();
     var { id } = useParams();
+    var revision = useRevision();
     var permissions = usePermissions();
+    var participationModal = useModalReducer();
 
     var canEdit = permissions.hasCollectionFlag(collection, 'write');
     var canReadParticipation = permissions.hasFlag('canReadParticipation');
@@ -63,14 +78,22 @@ const SubjectDetailsContainer = ({
             
             { canReadParticipation && (
                 <div className='border pl-3 bg-light mt-4'>
+                    <ParticipationModal
+                        { ...participationModal.passthrough }
+                        subjectId={ id }
+                        onSuccessfulUpdate={ revision.up }
+                    />
                     <Header
                         title='Studienteilnahme'
-                        editUrl={ `${up(url, 1)}/edit` }
+                        editLabel='Studie hinzufügen'
                         canEdit={ canWriteParticipation }
+                        onEditClick={ () => (
+                            participationModal.handleShow()
+                        )}
                     />
                     <hr />
                     <div className='mr-3'>
-                        <Participation id={ id } />
+                        <Participation id={ id } revision={ revision } />
                     </div>
                 </div>
             )}
