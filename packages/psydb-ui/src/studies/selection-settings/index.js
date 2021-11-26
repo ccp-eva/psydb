@@ -1,142 +1,57 @@
 import React from 'react';
-import { useRouteMatch, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import {
-    useFetchAll,
+    useFetch,
     useRevision,
-    useModalReducer,
-    usePermissions,
 } from '@mpieva/psydb-ui-hooks';
 
 import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
+import SubjectTypeSettings from './subject-type-settings';
+import StudyExclusion from './study-exclusion';
 
-import {
-    NewSelectorModal,
-    RemoveSelectorModal,
-
-    NewAgeFrameModal,
-    EditAgeFrameModal,
-    RemoveAgeFrameModal,
-} from './modals';
-
-import SelectorList from './selector-list';
-
-const StudySelectionSettings = ({
-    recordType: studyType,
-}) => {
-    var { path, url } = useRouteMatch();
+const SelectionSettings = (ps) => {
+    var { recordType: studyType } = ps;
     var { id: studyId } = useParams();
-
-    var { value: revision, up: increaseRevision } = useRevision();
-    var permissions = usePermissions();
-
-    var newSelectorModal = useModalReducer();
-    var removeSelectorModal = useModalReducer();
-
-    var newAgeFrameModal = useModalReducer();
-    var editAgeFrameModal = useModalReducer();
-    var removeAgeFrameModal = useModalReducer();
-
-    var [ didFetch, fetched ] = useFetchAll((agent) => {
-        var promises = {
-            crts: agent.readCustomRecordTypeMetadata(),
-            study: agent.readRecord({
-                collection: 'study',
-                recordType: studyType,
-                id: studyId
-            }),
-            selectors: agent.fetchSubjectSelectors({
-                studyId,
-            }),
-            ageFrames: agent.fetchAgeFrames({
-                studyId,
-            })
-        }
-        return promises;
-    }, [ studyId, revision ])
+    
+    var [ didFetch, fetched ] = useFetch((agent) => (
+        agent.readRecord({
+            collection: 'study',
+            recordType: studyType,
+            id: studyId
+        })
+    ), [ studyId, studyType ]);
 
     if (!didFetch) {
         return <LoadingIndicator size='lg' />
     }
 
-    var { customRecordTypes } = fetched.crts.data;
-    var studyData = fetched.study.data;
-
     var {
-        records: selectorRecords,
-        ...selectorRelated
-    } = fetched.selectors.data;
-    var {
-        records: ageFrameRecords,
-        ...ageFrameRelated
-    } = fetched.ageFrames.data;
-
-    var subjectTypeMap = (
-        customRecordTypes
-        .filter(it => it.collection === 'subject')
-        .reduce((acc, it) => ({
-            ...acc,
-            [it.type]: it
-        }), {})
-    );
-
-    var canWrite = permissions.hasFlag('canWriteStudies');
+        record: studyRecord,
+        ...studyRelated
+    } = fetched.data;
 
     return (
-        <div className='mt-3 mb-3'>
-            
-            <NewSelectorModal { ...({
-                ...newSelectorModal.passthrough,
-                studyId,
-                subjectTypeMap,
-                
-                onSuccessfulUpdate: increaseRevision
-            })} />
-            
-            <RemoveSelectorModal { ...({
-                ...removeSelectorModal.passthrough,
-                subjectTypeMap,
-                onSuccessfulUpdate: increaseRevision
-            })} />
-
-            <NewAgeFrameModal { ...({
-                ...newAgeFrameModal.passthrough,
-                studyId,
-                onSuccessfulUpdate: increaseRevision
-            })} />
-
-            <EditAgeFrameModal { ...({
-                ...editAgeFrameModal.passthrough,
-                onSuccessfulUpdate: increaseRevision
-            })} />
-
-            <RemoveAgeFrameModal { ...({
-                ...removeAgeFrameModal.passthrough,
-                onSuccessfulUpdate: increaseRevision
-            })} />
-
-
-            <SelectorList { ...({
-                selectorRecords,
-                selectorRelated,
-                ageFrameRecords,
-                ageFrameRelated,
-
-                customRecordTypes,
-                subjectTypeMap,
-
-                ...(canWrite && {
-                    onAddSelector: newSelectorModal.handleShow,
-                    onRemoveSelector: removeSelectorModal.handleShow,
-
-                    onAddAgeFrame: newAgeFrameModal.handleShow,
-                    onEditAgeFrame: editAgeFrameModal.handleShow,
-                    onRemoveAgeFrame: removeAgeFrameModal.handleShow,
-                })
-            })} />
-
-        </div>
+        <>
+            <h5 className='mt-3 mb-2 border-bottom pb-1'>
+                Allgemeine Bedingungen
+            </h5>
+            <div className='mb-3 p-3 border bg-white'>
+                <StudyExclusion {...({
+                    studyId,
+                    studyType,
+                    studyRecord,
+                    studyRelated
+                })} />
+            </div>
+            <h5 className='mb-2 border-bottom pb-1'>
+                Probandenspezifische Bedingungen
+            </h5>
+            <div className='mb-3'>
+                <SubjectTypeSettings studyId={ studyId } />
+            </div>
+        </>
     )
 }
 
-export default StudySelectionSettings;
+export default SelectionSettings;

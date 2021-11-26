@@ -14,7 +14,7 @@ import {
 export const QuickSearch = (ps) => {
     var { searchValues, onSubmit } = ps;
     var className = (
-        'bg-light border-bottom px-3 py-2 d-flex justify-content-start'
+        'bg-light border-bottom py-2 d-flex justify-content-start'
     );
 
     var wrappedOnSubmit = (formData, formikProps) => (

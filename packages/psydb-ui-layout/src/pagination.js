@@ -17,30 +17,41 @@ const Pagination = ({
     setLimit,
     selectNextPage,
     selectPrevPage,
-    selectSpecificPage
+    selectSpecificPage,
+
+    showTotal = true,
+    showLimit = true,
+    showPages = true,
 }) => {
     return (
         <div className='bg-light pt-2 pb-2 pr-3 pl-3 d-flex align-items-center'>
-            <span style={{ width: '150px' }}>
-                <b>{ totalLabel || 'Gesamt:' }</b> { total }
-            </span>
-            <b className='mr-3'>pro Seite:</b>
-            <LimitControl
-                value={ limit }
-                onChange={ setLimit }
-            />
+            { showTotal && (
+                <span style={{ width: '150px' }}>
+                    <b>{ totalLabel || 'Gesamt:' }</b> { total }
+                </span>
+            )}
 
-            <div className='ml-auto'>
-            
-                <PageNav { ...({
-                    page,
-                    maxPage,
-                    selectNextPage,
-                    selectPrevPage,
-                    selectSpecificPage
-                }) }/>
+            { showLimit && (
+                <>
+                    <b className='mr-3'>pro Seite:</b>
+                    <LimitControl
+                        value={ limit }
+                        onChange={ setLimit }
+                    />
+                </>
+            )}
 
-            </div>
+            { showPages && (
+                <div className='ml-auto'>
+                    <PageNav { ...({
+                        page,
+                        maxPage,
+                        selectNextPage,
+                        selectPrevPage,
+                        selectSpecificPage
+                    }) }/>
+                </div>
+            )}
         </div>
     )
 }
@@ -95,7 +106,10 @@ const PageNav = ({
     }
 
     if (!items.length) {
-        return null;
+        items = [0];
+        page = 0;
+        maxPage = 1;
+        //return null;
     }
 
     return (
