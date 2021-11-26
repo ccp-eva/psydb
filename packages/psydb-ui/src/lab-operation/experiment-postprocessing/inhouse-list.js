@@ -78,7 +78,7 @@ const ExperimentSubjectItems = ({
                     .subject[it.subjectId]._recordLabel
                 );
                 return (
-                    <tr key={ index }>
+                    <tr key={ `${experimentRecord._id}_${it.subjectId}` }>
                         <Cell>
                             { subjectLabel }
                             { canReadSubjects && (
