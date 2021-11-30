@@ -83,7 +83,10 @@ const StudyExclusionModalBody = (ps) => {
                 <header className='mb-1 pb-1 border-bottom'>
                     <b>Ausgeschlossen</b>
                 </header>
-                <ExcludedStudies selection={ excludedStudySelection } />
+                <ExcludedStudies
+                    records={ excludedStudySelection.value }
+                    onSelect={ excludedStudySelection.remove }
+                />
             </div>
         </div>
     )
