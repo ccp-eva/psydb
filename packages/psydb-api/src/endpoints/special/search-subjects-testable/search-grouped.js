@@ -100,64 +100,6 @@ var searchGrouped = async (context, next) => {
         field.pointer === subjectLocationFieldPointer
     ));
 
-
-    /*var groupByFieldKey = undefined;
-    for (var it of studyRecords) {
-        var selectionSettings = (
-            it.state.selectionSettingsBySubjectType.find(s => (
-                s.subjectRecordType === subjectRecordType
-            ))
-        );
-        var { externalLocationGrouping } = selectionSettings;
-
-        if (!externalLocationGrouping) {
-            throw new ApiError(400, {
-                apiStatus: 'ExternalLocationGrouoingNotEnabled',
-                data: { message: inline`
-                    study "${studyRecord._id}" has externalLocationGrouping
-                    disabled for subject type "${subjectRecordType}"
-                `}
-            });
-        }
-
-        if (groupByFieldKey === undefined) {
-            groupByFieldKey = externalLocationGrouping.fieldKey;
-        }
-        else {
-            if (groupByFieldKey !== externalLocationGrouping.fieldKey) {
-                throw new ApiError(400, {
-                    apiStatus: 'ExternalLocationGrouoingFieldMismatch',
-                    data: { message: inline`
-                        externalLocationGrouping.fieldKey mismatch;
-                        "${groupByFieldKey}" differs from
-                        "${externalLocationGrouping.fieldKey}"
-                    `}
-                });
-            }
-        }
-    }*/
-
-    /*var customFields = (
-        subjectRecordTypeRecord.state.settings.subChannelFields.scientific
-    );
-
-    var groupByField = customFields.find(field => (
-        field.key === groupByFieldKey
-    ));
-
-    if (!groupByField) {
-        throw new ApiError(400, {
-            apiStatus: 'InvalidExternalLocationGroupingField',
-            data: { message: inline`
-                field with key "${groupByFieldKey}" could
-                not be found in scientific fields of subject type
-                "${subjectRecordType}"
-            `}
-        })
-    }*/
-
-    //var groupByFieldPath = `scientific.state.custom.${groupByFieldKey}`;
-
     var result = await db.collection('subject').aggregate([
         { $match: {
             type: subjectTypeKey,

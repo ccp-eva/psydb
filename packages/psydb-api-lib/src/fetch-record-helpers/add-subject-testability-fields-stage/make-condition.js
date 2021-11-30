@@ -19,7 +19,6 @@ var makeCondition = (options) => {
         ageFrameTargetDefinition,
 
         studyRecord,
-        subjectTypeSettings,
     } = options;
 
     var combinedTestingPermissions = { $or: (
@@ -38,10 +37,6 @@ var makeCondition = (options) => {
                 ageFrameFilters,
                 ageFrameValueFilters,
                 ageFrameTargetDefinition,
-
-                /*conditionsByAgeFrameList: (
-                    subjectTypeSettings.conditionsByAgeFrame
-                )*/
             })
         )}
     }
