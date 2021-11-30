@@ -1,6 +1,6 @@
 import React from 'react';
-import { useModalReducer } from '@mpieva/psydb-ui-hooks';
-import { Pair } from '@mpieva/psydb-ui-layout';
+import { useFetch, useModalReducer } from '@mpieva/psydb-ui-hooks';
+import { LoadingIndicator, Pair } from '@mpieva/psydb-ui-layout';
 
 import StudyExclusionModal from './study-exclusion-modal';
 
@@ -14,20 +14,36 @@ const StudyExclusion = (ps) => {
         onSuccessfulUpdate,
     } = ps;
 
-    var { excludedOtherStudyIds, studyTopicIds } = studyRecord.state;
+    //var { studyTopicIds, internals = {} } = studyRecord.state;
+    //var { excludedOtherStudyIds = [] } = internals;
+    var { studyTopicIds, excludedOtherStudyIds } = studyRecord.state;
     var { relatedRecordLabels } = studyRelated;
 
     var exclusionModal = useModalReducer();
+
+    var [ didFetch, fetched ] = useFetch((agent) => {
+        return agent.getAxios().post('/api/search-studies-for-exclusion', {
+            studyIds: excludedOtherStudyIds
+        })
+    }, [ excludedOtherStudyIds ]);
+
+    if (!didFetch) {
+        return <LoadingIndicator size='lg' />
+    }
+
+    var { records: excludedOtherStudies } = fetched.data;
 
     return (
         <div>
             <StudyExclusionModal { ...({
                 ...exclusionModal.passthrough,
-                show: true,
+                //show: true,
                 studyId,
                 studyType,
-                excludedOtherStudyIds,
+                lastKnownEventId: studyRecord._lastKnownEventId,
+                excludedOtherStudies,
                 studyTopicIds,
+                onSuccessfulUpdate,
             })} />
 
             <Pair label='Studien-Ausschluss'>
@@ -35,7 +51,18 @@ const StudyExclusion = (ps) => {
                     className='btn btn-link m-0 p-0'
                     onClick={ exclusionModal.handleShow }
                 >
-                    <b>Kein Ausschluss</b>
+                    <b>
+                        { excludedOtherStudyIds.length > 0
+                            ? (
+                                excludedOtherStudies
+                                .map(it => (
+                                    `${it.state.shorthand}`
+                                ))
+                                .join(', ')
+                            )
+                            : 'Keine anderen Studien ausgeschlossen'
+                        }
+                    </b>
                     { /*<b>
                         { studyTopicIds.map(it => (
                             relatedRecordLabels.studyTopic[it]._recordLabel

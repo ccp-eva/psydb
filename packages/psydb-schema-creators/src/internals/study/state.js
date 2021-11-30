@@ -125,15 +125,14 @@ var StudyState = (ps = {}) => {
                 })
             }),
 
-            // TODO: excluded study ids
-            excludedOtherStudyIds: ForeignIdList({
-                title: 'Ausgeschlossene Studien',
-                collection: 'study',
-            }),
-
             // FIXME: should probably be in internals
+            // TODO: obsolete
             selectionSettingsBySubjectType: SubjectSelectionSettingsList({
                 subjectRecordTypeRecords,
+            }),
+
+            excludedOtherStudyIds: ForeignIdList({
+                collection: 'study',
             }),
 
             ...(enableInternalProps && {
@@ -161,6 +160,7 @@ var StudyState = (ps = {}) => {
                         })*/
                     },
                     required: [
+                        'excludedOtherStudyIds',
                         //'experimentOperatorTeamIds',
                         //'nextSettings',
                         //'settings',

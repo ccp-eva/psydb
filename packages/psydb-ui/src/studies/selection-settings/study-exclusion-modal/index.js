@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
 import { demuxed, arrify } from '@mpieva/psydb-ui-utils';
-import { useSelectionReducer } from '@mpieva/psydb-ui-hooks';
-import { WithDefaultModal } from '@mpieva/psydb-ui-layout';
+import { useSelectionReducer, useSend } from '@mpieva/psydb-ui-hooks';
+import { WithDefaultModal, Button } from '@mpieva/psydb-ui-layout';
 
 import { StudyTopicSelector } from './study-topic-selector';
 import { AvailableStudies } from './available-studies';
@@ -13,7 +13,8 @@ const checkEqual = (a,b) => ( a._id === b._id );
 const StudyExclusionModalBody = (ps) => {
     var {
         studyId,
-        excludedOtherStudyIds,
+        lastKnownEventId,
+        excludedOtherStudies,
         studyTopicIds,
 
         modalPayloadData,
@@ -26,12 +27,25 @@ const StudyExclusionModalBody = (ps) => {
         defaultSelection: studyTopicIds,
     });
     var excludedStudySelection = useSelectionReducer({
-        defaultSelection: excludedOtherStudyIds.map(it => ({
-            _id: it,
-            _recordLabel: relatedRecordLabels.study[it]._recordLabel
-        })),
+        defaultSelection: excludedOtherStudies,
         checkEqual
     });
+
+    var send = useSend(() => ({
+        type: 'study/set-excluded-other-study-ids',
+        payload: {
+            id: studyId,
+            lastKnownEventId,
+            excludedOtherStudyIds: (
+                excludedStudySelection.value.map(it => it._id)
+            )
+        }
+    }), {
+        onSuccessfulUpdate: demuxed([
+            onSuccessfulUpdate,
+            onHide
+        ])
+    })
 
     return (
         <div className='d-flex'>
@@ -87,6 +101,9 @@ const StudyExclusionModalBody = (ps) => {
                     records={ excludedStudySelection.value }
                     onSelect={ excludedStudySelection.remove }
                 />
+                <div className='d-flex justify-content-end mt-1'>
+                    <Button onClick={ send.exec }>Speichern</Button>
+                </div>
             </div>
         </div>
     )

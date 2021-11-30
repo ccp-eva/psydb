@@ -1,10 +1,5 @@
 import React from 'react';
-
-import {
-    PageWrappers,
-    OptionDeselectIndicator,
-    Icons
-} from '@mpieva/psydb-ui-layout';
+import { OptionDeselectIndicator } from '@mpieva/psydb-ui-layout';
 
 export const List = (ps) => {
     var {

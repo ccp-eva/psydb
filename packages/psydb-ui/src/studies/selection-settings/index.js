@@ -13,6 +13,7 @@ import StudyExclusion from './study-exclusion';
 const SelectionSettings = (ps) => {
     var { recordType: studyType } = ps;
     var { id: studyId } = useParams();
+    var revision = useRevision();
     
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.readRecord({
@@ -20,7 +21,7 @@ const SelectionSettings = (ps) => {
             recordType: studyType,
             id: studyId
         })
-    ), [ studyId, studyType ]);
+    ), [ studyId, studyType, revision.value ]);
 
     if (!didFetch) {
         return <LoadingIndicator size='lg' />
@@ -41,7 +42,8 @@ const SelectionSettings = (ps) => {
                     studyId,
                     studyType,
                     studyRecord,
-                    studyRelated
+                    studyRelated,
+                    onSuccessfulUpdate: revision.up,
                 })} />
             </div>
             <h5 className='mb-2 border-bottom pb-1'>

@@ -23,12 +23,12 @@ var {
 
 var RequestBodySchema = () => ExactObject({
     properties: {
+        studyIds: ForeignIdList({ collection: 'study' }),
         excludedStudyIds: ForeignIdList({ collection: 'study' }),
         selectedTopicIds: ForeignIdList({ collection: 'studyTopic' }),
         nameOrShorthand: SaneString(),
         offset: Integer({ minimum: 0 }),
         limit: Integer({
-            minimum: 1,
             maximum: 100,
         }),
     },
@@ -48,10 +48,11 @@ var searchStudiesForExclusion = async (context, next) => {
     });
 
     var {
+        studyIds,
         excludedStudyIds = [],
         selectedTopicIds = [],
         nameOrShorthand,
-        limit = 25,
+        limit = 0,
         offset = 0,
     } = request.body;
 
@@ -60,6 +61,9 @@ var searchStudiesForExclusion = async (context, next) => {
 
     var facets = await (
         db.collection('study').aggregate(clean([
+            studyIds && { $match: {
+                '_id': { $in: studyIds }
+            }},
             shouldSearch && { $match: {
                 $or: clean([
                     { 'state.name': new RegExp(nameOrShorthand, 'i') },
