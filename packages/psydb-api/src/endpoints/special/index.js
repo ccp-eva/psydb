@@ -97,4 +97,7 @@ module.exports = {
     studyTopicTree: (
         require('./study-topic-tree')
     ),
+    searchStudiesForExclusion: (
+        require('./search-studies-for-exclusion')
+    ),
 }

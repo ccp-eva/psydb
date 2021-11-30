@@ -59,7 +59,10 @@ export const StudyTopicSelector = (ps) => {
                     Themen der Studie
                 </QuickSelect>
             </div>
-            <div className='px-3 py-1 bg-white border border-top-0'>
+            <div
+                className='px-3 py-1 bg-white border border-top-0'
+                style={{ height: '400px', overflow: 'auto' }}
+            >
                 <StudyTopic.TreeList {...({
                     trees,
                     onSelect: (record) => {

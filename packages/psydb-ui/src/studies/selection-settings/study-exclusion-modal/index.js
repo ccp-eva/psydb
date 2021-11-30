@@ -13,7 +13,6 @@ const checkEqual = (a,b) => ( a._id === b._id );
 const StudyExclusionModalBody = (ps) => {
     var {
         studyId,
-        studyType,
         excludedOtherStudyIds,
         studyTopicIds,
 
@@ -36,7 +35,10 @@ const StudyExclusionModalBody = (ps) => {
 
     return (
         <div className='d-flex'>
-            <div className='flex-grow' style={{ width: '33.333%' }}>
+            <div
+                className='flex-grow d-flex flex-column'
+                style={{ width: '33.333%' }}
+            >
                 <header className='mb-1 pb-1 border-bottom'>
                     <b>Themengbiete</b>
                 </header>
@@ -56,17 +58,28 @@ const StudyExclusionModalBody = (ps) => {
                     )}
                 />
             </div>
-            <div className='flex-grow ml-3' style={{ width: '33.333%' }}>
+
+            <div
+                className='flex-grow d-flex flex-column ml-3'
+                style={{ width: '33.333%' }}
+            >
                 <header className='mb-1 pb-1 border-bottom'>
                     <b>Alle Studien</b>
                 </header>
                 <AvailableStudies
-                    studyType={ studyType }
+                    excludedStudyIds={[
+                        studyId,
+                        ...excludedStudySelection.value.map(it => it._id)
+                    ]}
                     selectedTopicIds={ topicIdsSelection.value }
                     onSelect={ excludedStudySelection.add }
                 />
             </div>
-            <div className='flex-grow ml-3' style={{ width: '33.333%' }}>
+            
+            <div
+                className='flex-grow d-flex flex-column ml-3'
+                style={{ width: '33.333%' }}
+            >
                 <header className='mb-1 pb-1 border-bottom'>
                     <b>Ausgeschlossen</b>
                 </header>

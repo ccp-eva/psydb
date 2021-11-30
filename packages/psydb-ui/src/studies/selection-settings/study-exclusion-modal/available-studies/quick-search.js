@@ -7,16 +7,14 @@ import {
 
 import {
     DefaultForm,
-    Fields,
     QuickSearchFields
-} from '../formik';
+} from '@mpieva/psydb-ui-lib';
 
-//className='d-flex align-items-end quick-search-fixes'
 export const QuickSearch = (ps) => {
     var {
-        searchValues, onSubmit,
-        fillX,
         className,
+        searchValues,
+        onSubmit
     } = ps;
 
     var wrappedOnSubmit = (formData, formikProps) => (
@@ -34,9 +32,9 @@ export const QuickSearch = (ps) => {
                     return (
                         <>
                             <QuickSearchFields.SaneString
-                                label='Name'
-                                dataXPath='$.name'
-                                groupClassName={ fillX ? 'flex-grow' : '' }
+                                label='Name/Kürzel'
+                                dataXPath='$.nameOrShorthand'
+                                groupClassName='flex-grow'
                             />
                             <Button
                                 className=''

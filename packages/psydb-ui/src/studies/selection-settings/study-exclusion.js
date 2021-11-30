@@ -23,7 +23,7 @@ const StudyExclusion = (ps) => {
         <div>
             <StudyExclusionModal { ...({
                 ...exclusionModal.passthrough,
-                //show: true,
+                show: true,
                 studyId,
                 studyType,
                 excludedOtherStudyIds,

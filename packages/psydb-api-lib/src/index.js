@@ -1,6 +1,7 @@
 'use strict';
 module.exports = {
     compareIds: require('./compare-ids'),
+    fromFacets: require('./from-facets'),
 
     Ajv: require('./ajv'),
     ApiError: require('./api-error'),

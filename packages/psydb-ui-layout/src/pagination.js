@@ -4,6 +4,7 @@ import { Form } from 'react-bootstrap';
 import PaddedText from './padded-text';
 
 const Pagination = ({
+    extraClassName,
     totalLabel,
 
     offset,
@@ -24,7 +25,7 @@ const Pagination = ({
     showPages = true,
 }) => {
     return (
-        <div className='bg-light pt-2 pb-2 pr-3 pl-3 d-flex align-items-center'>
+        <div className={ `bg-light pt-2 pb-2 pr-3 pl-3 d-flex align-items-center ${extraClassName}` }>
             { showTotal && (
                 <span style={{ width: '150px' }}>
                     <b>{ totalLabel || 'Gesamt:' }</b> { total }

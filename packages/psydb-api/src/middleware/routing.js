@@ -283,6 +283,13 @@ var createRouting = ({
         endpoints.special.studyTopicTree
     );
 
+    router.post('/search-studies-for-exclusion',
+        withSelfAuth(),
+        withPermissions(),
+        withKoaBody(),
+        endpoints.special.searchStudiesForExclusion
+    );
+
     return compose([
         router.routes(),
         router.allowedMethods(),
