@@ -29,6 +29,8 @@ export const StudyTopicSelector = (ps) => {
     return (
         <div>
             <StudyTopic.QuickSearch
+                className='border-bottom pb-2'
+                fillX={ true }
                 searchValues={ query }
                 onSubmit={ (next) => {
                     onReset()

@@ -19,6 +19,9 @@ const WithField = (options) => (ps) => {
         required,
         inArray,
         noWrapper,
+
+        // FIXME: push down the whole rest to wrapper?
+        groupClassName,
     } = ps;
 
     var Wrapper = (
@@ -42,6 +45,8 @@ const WithField = (options) => (ps) => {
                         label={ label }
                         required={ required }
                         hasError={ !!meta.error }
+
+                        groupClassName={ groupClassName }
                     >
                         <Control {...({
                             ...ps,

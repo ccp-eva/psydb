@@ -75,6 +75,7 @@ const StudyTopics = () => {
                 </Button>
 
                 <StudyTopic.QuickSearch
+                    className='bg-light border-bottom pb-2 pt-1 mt-2 border-top px-3'
                     searchValues={ query }
                     onSubmit={ (next) => updateQuery(
                         omit('selectedTopicId', next)

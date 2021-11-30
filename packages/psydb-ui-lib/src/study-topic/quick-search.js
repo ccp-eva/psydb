@@ -7,15 +7,20 @@ import {
 
 import {
     DefaultForm,
-    Fields
+    Fields,
+    QuickSearchFields
 } from '../formik';
 
 //className='d-flex align-items-end quick-search-fixes'
 export const QuickSearch = (ps) => {
-    var { searchValues, onSubmit } = ps;
-    var className = (
-        'bg-light border-bottom py-2 d-flex justify-content-start'
-    );
+    var {
+        searchValues, onSubmit,
+        fillX,
+        className,
+    } = ps;
+    //var className = (
+    //    'bg-light border-bottom pb-2 border-top'
+    //);
 
     var wrappedOnSubmit = (formData, formikProps) => (
         onSubmit(formData['$'])
@@ -32,12 +37,13 @@ export const QuickSearch = (ps) => {
                 {(formikProps) => {
                     return (
                         <>
-                            <Fields.SaneString
+                            <QuickSearchFields.SaneString
                                 label='Name'
                                 dataXPath='$.name'
+                                groupClassName={ fillX ? 'flex-grow' : '' }
                             />
                             <Button
-                                className='ml-3'
+                                className=''
                                 type='submit'
                             >
                                 Suchen
