@@ -118,6 +118,13 @@ const StudyRecordDetails = ({
     delete formSchema.properties.selectionSettingsBySubjectType;
     delete formData.selectionSettingsBySubjectType;
 
+    delete formSchema.properties.inhouseTestLocationSettings;
+    delete formData.inhouseTestLocationSettings;
+
+    delete formSchema.properties.excludedOtherStudyIds;
+    delete formData.excludedOtherStudyIds;
+    delete formData.internals;
+
     //console.log(formSchema);
     //console.log(formData);
 

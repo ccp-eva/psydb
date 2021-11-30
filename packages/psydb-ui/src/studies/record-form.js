@@ -135,7 +135,11 @@ const StudyRecordForm = ({
     delete formData.inhouseTestLocationSettings;
     delete formSchema.properties.inhouseTestLocationSettings;
 
+    delete formSchema.properties.excludedOtherStudyIds;
+    delete formData.excludedOtherStudyIds;
+
     delete formData.isCreateFinalized;
+    delete formData.internals;
 
     //console.log(formSchema);
     //console.log(formData);
