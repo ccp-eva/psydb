@@ -1,6 +1,7 @@
 'use strict';
 var datefns = require('date-fns');
 var jsonpointer = require('jsonpointer');
+var { hasIntersection } = require('@mpieva/psydb-mongo-stages').expressions;
 
 var makeAgeFrameFieldSubConditions = (
     require('./make-age-frame-field-sub-conditions')
@@ -21,9 +22,14 @@ var makeCondition = (options) => {
         studyRecord,
     } = options;
 
+    var {
+        excludedOtherStudyIds,
+        researchGroupIds,
+    } = studyRecord.state;
+
     var combinedTestingPermissions = { $or: (
         makeTestingPermissionSubConditions({
-            researchGroupIds: studyRecord.state.researchGroupIds,
+            researchGroupIds,
             experimentVariant
         })
     )};
@@ -45,7 +51,7 @@ var makeCondition = (options) => {
         excludedStudyIds: [
             // exclude study itself
             studyRecord._id,
-            // TODO ... exlcuded studies
+            ...excludedOtherStudyIds,
         ],
         combinedTestingPermissions,
         combinedAgeFrameConditions
@@ -64,10 +70,9 @@ var MongoExpression = (options) => {
 
     var AND = [
         { $and: [
-            { $not: { $in: [
-                '$scientific.state.participatedInStudyIds',
+            { $not: hasParticipatedInExcludedStudies({
                 excludedStudyIds
-            ]}},
+            })},
         ]},
         combinedTestingPermissions,
     ];
@@ -83,6 +88,23 @@ var MongoExpression = (options) => {
             else: false
         }
     })
+}
+
+var hasParticipatedInExcludedStudies = ({ excludedStudyIds }) => {
+    var path = '$scientific.state.internals.participatedInStudies';
+    return hasIntersection({ sets: [
+        { $map: {
+            input: { $filter: {
+                input: path,
+                cond: { $in: [
+                    '$$this.status',
+                    [ 'participated' ]
+                ]}
+            }},
+            in: '$$this.studyId'
+        }},
+        excludedStudyIds
+    ]});
 }
 
 module.exports = makeCondition;

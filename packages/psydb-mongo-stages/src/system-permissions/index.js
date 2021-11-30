@@ -2,6 +2,8 @@
 var inlineString = require('@cdxoo/inline-string');
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
+var { hasIntersection } = require('../expressions');
+
 var collectionHasSubChannels = (collection) => (
     allSchemaCreators[collection].hasSubChannels
 )
@@ -86,7 +88,16 @@ var hasResearchGroupIntersectionsCondition = ({
             }},
             0
         ]}
-    )
+    );
+
+    // TODO:
+    /*return hasIntersection({ sets: [
+        FilterAndMapAccessRightsExpression({
+            statePath,
+            requiredPermission
+        }),
+        allowedResearchGroupIds,
+    ]})*/
 };
 
 var FilterAndMapAccessRightsExpression = ({
