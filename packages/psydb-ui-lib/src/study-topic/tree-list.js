@@ -5,14 +5,26 @@ import { Icons } from '@mpieva/psydb-ui-layout';
 var ActionContext = React.createContext();
 
 export const TreeList = (ps) => {
-    var { onCreate, onEdit, onSelect, selectedTopicId, trees } = ps;
+    var {
+        onCreate,
+        onEdit,
+        onSelect,
+        selectedTopicId,
+        selectedTopicIds,
+        trees
+    } = ps;
+
+    // FIXME remove singular id prop
+    if (selectedTopicId) {
+        selectedTopicIds = [ selectedTopicId ];
+    }
 
     return (
         <ActionContext.Provider value={{
             onCreate,
             onEdit,
             onSelect,
-            selectedTopicId,
+            selectedTopicIds
         }}>
             { trees.map((it, index) => (
                 <Topic key={ index } { ...it } />
@@ -26,14 +38,14 @@ const Topic = (ps) => {
         onCreate,
         onEdit,
         onSelect,
-        selectedTopicId
+        selectedTopicIds
     } = useContext(ActionContext);
 
     var { data: record, children, level = 0 } = ps;
     var { _id, _matchesQuery, state } = record;
     var { name, parentId } = state;
 
-    var isSelected = (selectedTopicId === _id);
+    var isSelected = selectedTopicIds && selectedTopicIds.includes(_id);
     
     //var Name = [0,1].includes(level) ? `h${4+level}` : 'div'
     var Name = level === 0 ? 'h5' : 'div'
@@ -46,6 +58,7 @@ const Topic = (ps) => {
         'd-inline-block pb-1',
         level === 0 && 'mt-2',
         _matchesQuery && 'text-primary',
+        isSelected && 'text-underline',
     ]);
 
 

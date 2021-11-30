@@ -14,6 +14,7 @@ export {
     CaretUpFill,
 
     Square,
+    SquareFill,
     CheckSquareFill,
 
     CheckCircleFill,

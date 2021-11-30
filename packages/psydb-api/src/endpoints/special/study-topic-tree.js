@@ -21,11 +21,12 @@ var {
     ExactObject,
     SaneString,
     Id,
+    ForeignIdList,
 } = require('@mpieva/psydb-schema-fields');
 
 var RequestBodySchema = () => ExactObject({
     properties: {
-        activeId: Id(),
+        activeIds: ForeignIdList({ collection: 'studyTopic' }),
         name: SaneString(),
     },
     required: []
@@ -43,7 +44,7 @@ var studyTopicTree = async (context, next) => {
         payload: request.body
     })
 
-    var { name, activeId } = request.body;
+    var { name, activeIds } = request.body;
     var shouldSearch = !!name;
 
     var records;
@@ -53,9 +54,9 @@ var studyTopicTree = async (context, next) => {
                 { $match: {
                     $or: [
                         { 'state.name': new RegExp(name, 'i') },
-                        ...(activeId ? [
-                            { '_id': activeId },
-                            { 'state.parentId': activeId }
+                        ...(Array.isArray(activeIds) && activeIds.length > 0 ? [
+                            { '_id': { $in: activeIds }},
+                            { 'state.parentId': { $in: activeIds }}
                         ] : [])
                     ]
                 }},

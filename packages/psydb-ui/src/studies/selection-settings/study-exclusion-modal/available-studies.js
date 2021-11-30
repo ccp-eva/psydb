@@ -50,8 +50,8 @@ export const AvailableStudies = (ps) => {
     return (
         <div>
             <div className='p-3 border bg-white'>
-                { records.map(it => (
-                    <div>{ it._recordLabel }</div>
+                { records.map((it, index) => (
+                    <div key={ index }>{ it._recordLabel }</div>
                 )) }
             </div>
             <Pagination

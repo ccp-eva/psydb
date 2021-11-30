@@ -23,12 +23,20 @@ const useSelectionReducer = (options = {}) => {
     var handleRemove = useCallback((payload) => {
         dispatch({ type: 'remove', payload });
     }, []);
+    var handleReset = useCallback(() => {
+        dispatch({ type: 'set', payload: [] });
+    }, []);
+    var handleToggle = useCallback((payload) => {
+        dispatch({ type: 'toggle', payload });
+    }, []);
 
     return {
         value: selected,
         set: handleSet,
         add: handleAdd,
         remove: handleRemove,
+        toggle: handleToggle,
+        reset: handleReset,
         dispatchAction: dispatch,
     }
 }
@@ -75,6 +83,26 @@ const createReducer = (options) => {
                 return ({
                     ...state,
                     selected: nextSelected
+                });
+            case 'toggle':
+                var toRemove = intersect({
+                    a: state.selected,
+                    b: payload,
+                    checkEqual
+                });
+                var toAdd = without({
+                    that: payload,
+                    without: toRemove,
+                    checkEqual,
+                });
+                var toKeep = without({
+                    that: state.selected,
+                    without: toRemove,
+                    checkEqual,
+                });
+                return ({
+                    ...state,
+                    selected: [ ...toAdd, ...toKeep ]
                 })
         }
     }
@@ -100,6 +128,18 @@ const without = ({ that: listA, without: listB, checkEqual }) => {
     }
     return filtered;
 }
+
+var intersect = (options) => {
+    var {
+        a: listA,
+        b: listB,
+        checkEqual,
+    } = options;
+
+    return (
+        listA.filter(a => !!listB.find(b => checkEqual(a, b)))
+    )
+};
 
 /*const intersect = (listA, listB, checkEqual) => {
     // FIXME: this implementation does wierd things when

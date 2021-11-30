@@ -43,7 +43,11 @@ const StudyTopics = () => {
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.getAxios().post('/api/study-topic-tree', {
             name: query.name || undefined,
-            activeId: query.selectedTopicId
+            activeIds: (
+                query.selectedTopicId
+                ? [ query.selectedTopicId ]
+                : undefined
+            )
         })
     ), [ revision.value, query.name, query.selectedTopicId ])
 

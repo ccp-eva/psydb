@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { demuxed } from '@mpieva/psydb-ui-utils';
+import { demuxed, arrify } from '@mpieva/psydb-ui-utils';
 import { useSelectionReducer } from '@mpieva/psydb-ui-hooks';
 import { WithDefaultModal } from '@mpieva/psydb-ui-layout';
 
@@ -23,6 +23,9 @@ const StudyExclusionModalBody = (ps) => {
     } = ps;
 
     var [ selectedTopic, onSelectTopic ] = useState();
+    var topicIdsSelection = useSelectionReducer({
+        defaultSelection: studyTopicIds,
+    });
     var excludedStudySelection = useSelectionReducer({
         defaultSelection: excludedOtherStudyIds.map(it => ({
             _id: it,
@@ -38,8 +41,19 @@ const StudyExclusionModalBody = (ps) => {
                     <b>Themengbiete</b>
                 </header>
                 <StudyTopicSelector
-                    onSelect={ onSelectTopic }
-                    selectedTopicId={ selectedTopic && selectedTopic._id }
+                    studyTopicIds={ studyTopicIds }
+                    selectedTopicIds={ topicIdsSelection.value }
+                    onSelect={ (records) => {
+                        if (records) {
+                            records = arrify(records);
+                            topicIdsSelection.toggle(
+                                records.map(it => it._id)
+                            );
+                        }
+                    }}
+                    onReset={ (ids = []) => (
+                        topicIdsSelection.set(ids) 
+                    )}
                 />
             </div>
             <div className='flex-grow ml-3' style={{ width: '33.333%' }}>
@@ -48,7 +62,7 @@ const StudyExclusionModalBody = (ps) => {
                 </header>
                 <AvailableStudies
                     studyType={ studyType }
-                    selectedTopicId={ selectedTopic && selectedTopic._id }
+                    selectedTopicIds={ topicIdsSelection.value }
                     onSelect={ excludedStudySelection.add }
                 />
             </div>
