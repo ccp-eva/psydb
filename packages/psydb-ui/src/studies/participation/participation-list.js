@@ -84,6 +84,12 @@ const ParticipationListRow = ({
             { dateOfBirthField && (
                 <td>
                     { 
+                        // FIXME: timezone correction
+                        // PS: calculating the difference
+                        // between a tz corrected value and actual
+                        // date-time is hillarious
+                        // NOTE: maybe we could strip the time from
+                        // the participation timestamp
                         calculateAge({
                             base: jsonpointer.get(
                                 record, dateOfBirthField.dataPointer

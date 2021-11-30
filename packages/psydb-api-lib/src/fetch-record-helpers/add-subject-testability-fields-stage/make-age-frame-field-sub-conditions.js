@@ -48,37 +48,6 @@ var makeAgeFrameFieldSubConditions = (options) => {
             )
         }
 
-        /*for (var it of ageFrameGroup) {
-            var {
-                pointer,
-                values: value
-            } = it.state.conditions;
-
-            var conditionFieldPath = (
-                `$scientific.state.custom.${condition.fieldKey}`
-            );
-            ageFrameConditions.push({
-                $cond: {
-                    if: { $isArray: conditionFieldPath },
-                    then: { $gt: [
-                        { $size: {
-                            $ifNull: [
-                                { $setIntersection: [
-                                    conditionFieldPath,
-                                    condition.values,
-                                ]},
-                                []
-                            ]
-                        }},
-                        0
-                    ]},
-                    else: { $in: [
-                        conditionFieldPath, condition.values
-                    ]}
-                }
-            })
-        }*/
-
         combinedAgeFrameConditions.push({ $and: ageFrameConditions });
     }
 

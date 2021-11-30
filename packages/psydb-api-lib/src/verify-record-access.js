@@ -104,7 +104,10 @@ var verifyRecordAccess = async (options) => {
     // is based on; this makes the following more complicated
     // FIXME: maybe we can add a flag to SystemPermissions
     // to remove those when needed
-    if (additionalFlags) {
+    if (hasRootAccess) {
+        // no-op
+    }
+    else if (additionalFlags) {
         var allowedForCollection = (
             researchGroupIdsByCollection[collection][action]
         );

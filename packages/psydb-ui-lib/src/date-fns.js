@@ -9,6 +9,10 @@ import {
     startOfDay,
     endOfDay,
     isSameDay,
+
+    differenceInCalendarYears,
+    differenceInCalendarMonths,
+    differenceInCalendarDays,
 } from 'date-fns';
 
 import de from 'date-fns/locale/de';
@@ -22,6 +26,10 @@ const custom = {
     startOfDay,
     endOfDay,
     isSameDay,
+    
+    differenceInCalendarYears,
+    differenceInCalendarMonths,
+    differenceInCalendarDays,
 }
 
 custom.format = (date, fmt, options = {}) => (

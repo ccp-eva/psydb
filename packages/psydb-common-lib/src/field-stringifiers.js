@@ -43,6 +43,7 @@ var DateTime = (value) => {
     )
 };
 
+// FIXME: timezone correction
 var DateOnlyServerSide = (value) => {
     return (
         value === null
