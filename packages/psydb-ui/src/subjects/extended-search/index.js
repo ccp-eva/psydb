@@ -8,7 +8,7 @@ import {
 import {
     FormBox,
     DefaultForm,
-    Fields
+    ExtendedSearchFields as Fields
 } from '@mpieva/psydb-ui-lib';
 
 const getCustomFields = (schema, subChannelKey) => (
@@ -62,6 +62,10 @@ const FormBody = (ps) => {
                 dataXPath='$gdpr.state.custom'
                 fields={ customGdpr }
             />
+            <CustomFields
+                dataXPath='$scientific.state.custom'
+                fields={ customScientific }
+            />
             <Button type='submit'>
                 Suchen
             </Button>
@@ -73,16 +77,51 @@ const CustomFields = (ps) => {
     var { dataXPath, fields } = ps;
     return (
         <>
-            <Fields.DateOnlyServerSide
-                label='Start'
-                dataXPath='$.start'
-            />
-            <Fields.SaneString
-                label='Name'
-                dataXPath='$.name'
-            />
+            { Object.keys(fields).map(key => (
+                <SearchFieldWrapper
+                    key={ key }
+                    dataXPath={ `${dataXPath}.${key}` }
+                    schema={ fields[key] }
+                />
+            ))}
         </>
     );
+}
+
+const SearchFieldWrapper = (ps) => {
+    var { dataXPath, schema } = ps;
+    var { systemType, systemProps, title } = schema;
+
+    var type = getSearchFieldType(systemType);
+    console.log({ systemType, type });
+    
+    if (!type) {
+        return null;
+    }
+
+    var Component = Fields[type];
+    return (
+        <Component
+            label={ title }
+            dataXPath={ `${dataXPath}` }
+        />
+    );
+}
+
+const getSearchFieldType = (type) => {
+    switch (type) {
+        case 'SaneString':
+        case 'BiologicalGender':
+        case 'ExtBool':
+            return type;
+
+        case 'PhoneList':
+        case 'EmailList':
+            return 'SaneString';
+
+        default:
+            return undefined;
+    }
 }
 
 export default ExtendedSearch;
