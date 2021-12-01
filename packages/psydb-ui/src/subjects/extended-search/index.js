@@ -104,6 +104,7 @@ const SearchFieldWrapper = (ps) => {
         <Component
             label={ title }
             dataXPath={ `${dataXPath}` }
+            { ...systemProps }
         />
     );
 }
@@ -118,6 +119,14 @@ const getSearchFieldType = (type) => {
         case 'PhoneList':
         case 'EmailList':
             return 'SaneString';
+
+        //case 'HelperSetItemIdList':
+        //case 'HelperSetItemId':
+        //    return 'HelperSetItemIdList';
+
+        case 'ForeignIdList':
+        case 'ForeignId':
+            return 'ForeignIdList';
 
         default:
             return undefined;

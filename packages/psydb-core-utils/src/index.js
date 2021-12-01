@@ -8,4 +8,6 @@ module.exports = {
     
     intersect: require('./intersect'),
     without: require('./without'),
+
+    extractFrom: require('./extract-from'),
 }

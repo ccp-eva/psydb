@@ -1,5 +1,6 @@
 import React from 'react';
 import { FieldArray } from 'formik';
+import { extractFrom } from '@mpieva/psydb-core-utils';
 import { FormHelpers } from '@mpieva/psydb-ui-layout';
 import WithField from './with-field';
 
@@ -29,6 +30,10 @@ const WithFieldArray = (options) => {
     }
 
     const ArrayContent = (ps) => {
+        var [ ComponentProps, rest ] = extractFrom(ps, [
+            'ArrayContentWrapper', 'ArrayItemWrapper'
+        ]);
+
         var {
             dataXPath,
             formikField,
@@ -38,9 +43,11 @@ const WithFieldArray = (options) => {
             disabled,
             enableMove,
             enableRemove,
+
             ...downstream
-        } = ps;
-    
+        } = rest;
+
+
         var { getFieldProps } = formikForm;
         var values = getFieldProps(dataXPath).value || [];
 
