@@ -1,5 +1,5 @@
 import React from 'react';
-
+// FIXME: move to layout
 const FormBox = ({
     title,
     children,

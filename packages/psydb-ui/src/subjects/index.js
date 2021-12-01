@@ -5,10 +5,12 @@ import {
     withRecordTypeView
 } from '@mpieva/psydb-ui-lib/src/generic-views'
 
-import SubjectDetailsContainer from './details';
+import Details from './details';
+import IntraTypeRouting from './intra-type-routing'
 
 const SubjectTypeView = withRecordTypeView({
-    RecordDetails: SubjectDetailsContainer
+    RecordDetails: Details,
+    CustomRouting: IntraTypeRouting,
 })
 
 const SubjectCollectionView = withCollectionView({
