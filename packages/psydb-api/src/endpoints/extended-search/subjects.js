@@ -19,6 +19,8 @@ var {
     JsonPointer,
     Integer,
     StringEnum,
+    SaneString,
+    ForeignIdList,
 } = require('@mpieva/psydb-schema-fields');
 
 var RequestBodySchema = () => ExactObject({
