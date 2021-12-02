@@ -8,6 +8,7 @@ module.exports = {
     read: require('./read'),
     searchInField: require('./search-in-field'),
     search: require('./search'),
+    extendedSearch: require('./extended-search'),
 
     special: require('./special')
 };
