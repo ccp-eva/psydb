@@ -9,6 +9,7 @@ var HelperSetItemIdList = ({
 }) => (
     DefaultArray({
         systemType: 'HelperSetItemIdList',
+        systemProps: { setId },
         minItems: (minItems || 0),
         items: HelperSetItemId({ setId }),
         ...additionalKeywords,

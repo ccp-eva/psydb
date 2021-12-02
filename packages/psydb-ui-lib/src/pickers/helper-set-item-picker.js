@@ -9,44 +9,31 @@ import {
 } from '@mpieva/psydb-ui-layout';
 
 import HelperSetItemListContainer from '../../helperSetItem-list-container';
+import { usePickerHandling } from './use-picker-handling';
 
-const HelperSetItemPicker = ({
-    set,
+const HelperSetItemPicker = (ps) => {
+    var {
+        set,
 
-    value: helperSetItem,
-    onChange,
-    hasErrors,
-}) => {
-    var [ showModal, setShowModal ] = useState(false);
-    // FIXME: im not sure how to best reset the state in case
-    // it gets out of sync i could do it manually by checking the
-    // helperSetItem ids and foribly update the state
-    var [ cachedHelperSetItem, setCachedHelperSetItem ] = useState(helperSetItem);
+        value: helperSetItem,
+        onChange,
+        hasErrors,
+    } = ps;
 
-    var handleSelect = (helperSetItem) => {
-        setCachedHelperSetItem(helperSetItem);
-        onChange(helperSetItem);
-        handleCloseModal();
-    }
+    var {
+        modal, cached, onEdit, onSelect, onClear
+    } = usePickerHandling({ record: helperSetItem, onChange });
 
-    var handleShowModal = () => {
-        setShowModal(true);
-    }
-
-    var handleCloseModal = () => {
-        setShowModal(false);
-    }
-    
     var displayValue = (
-        cachedHelperSetItem
-        ? cachedHelperSetItem._helperSetItemLabel || cachedHelperSetItem._id
+        cached
+        ? cached._helperSetItemLabel || cached._id
         : ''
-    )
+    );
 
     var classes = [
         'border pl-3 bg-white',
         hasErrors ? 'border-danger' : '',
-        (cachedHelperSetItem && !cachedHelperSetItem._helperSetItemLabel) ? 'text-danger' : '',
+        (cached && !cached._helperSetItemLabel) ? 'text-danger' : '',
     ].join(' ')
 
     return (

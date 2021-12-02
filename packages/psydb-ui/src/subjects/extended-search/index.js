@@ -93,7 +93,7 @@ const SearchFieldWrapper = (ps) => {
     var { systemType, systemProps, title } = schema;
 
     var type = getSearchFieldType(systemType);
-    console.log({ systemType, type });
+    //console.log({ systemType, type, systemProps, schema });
     
     if (!type) {
         return null;
@@ -120,9 +120,9 @@ const getSearchFieldType = (type) => {
         case 'EmailList':
             return 'SaneString';
 
-        //case 'HelperSetItemIdList':
-        //case 'HelperSetItemId':
-        //    return 'HelperSetItemIdList';
+        case 'HelperSetItemIdList':
+        case 'HelperSetItemId':
+            return 'HelperSetItemIdList';
 
         case 'ForeignIdList':
         case 'ForeignId':

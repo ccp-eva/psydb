@@ -1,4 +1,5 @@
 import React from 'react';
+import classnames from 'classnames';
 import { Button } from 'react-bootstrap';
 import * as Icons from '../icons';
 
@@ -8,16 +9,28 @@ export const ScalarArrayContentWrapper = (ps) => {
         itemsCount,
         defaultItemValue,
         disabled,
-        children
+        children,
+
+        className,
+        extraClassName,
+        fallbackLabel
     } = ps;
 
+    className = (
+        className !== undefined
+        ? className
+        : classnames([
+            'border p-3 mb-3', extraClassName
+        ])
+    );
+
     if (itemsCount < 1) {
-        return <Fallback { ...ps } />
+        return <Fallback { ...ps } className={ className } />
     }
 
     return (
         <div>
-            <ol className='border p-3 mb-3'>
+            <ol className={ className }>
                 { children }
                 <Footer { ...ps } />
             </ol>
@@ -27,14 +40,14 @@ export const ScalarArrayContentWrapper = (ps) => {
 
 const Fallback = (ps) => (
     <div>
-        <div className='border p-3 mb-3' style={{
+        <div className={ ps.className } style={{
             position: 'relative',
         }}>
             <div className='text-muted' style={{
                 paddingLeft: '15px',
                 opacity: ps.disabled ? 0.5 : 1
             }}>
-                <i>Keine Einträge</i>
+                <i>{ ps.fallbackLabel || 'Keine Einträge' }</i>
             </div>
             <Footer { ...ps } />
         </div>

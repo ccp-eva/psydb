@@ -30,10 +30,6 @@ const WithFieldArray = (options) => {
     }
 
     const ArrayContent = (ps) => {
-        var [ ComponentProps, rest ] = extractFrom(ps, [
-            'ArrayContentWrapper', 'ArrayItemWrapper'
-        ]);
-
         var {
             dataXPath,
             formikField,
@@ -44,8 +40,12 @@ const WithFieldArray = (options) => {
             enableMove,
             enableRemove,
 
+            contentClassName,
+            contentExtraClassName,
+            contentFallbackLabel,
+            
             ...downstream
-        } = rest;
+        } = ps;
 
 
         var { getFieldProps } = formikForm;
@@ -60,7 +60,11 @@ const WithFieldArray = (options) => {
             <ArrayContentWrapper { ...({
                 ...sharedBag,
                 defaultItemValue,
-                itemsCount: values.length
+                itemsCount: values.length,
+
+                className: contentClassName,
+                extraClassName: contentExtraClassName,
+                fallbackLabel: contentFallbackLabel,
             })} >
                 { values.map((value, index) => {
                     var sharedItemBag = {

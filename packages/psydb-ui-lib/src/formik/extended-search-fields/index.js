@@ -1,4 +1,6 @@
 import React from 'react';
+import { FormHelpers } from '@mpieva/psydb-ui-layout';
+
 import WithField from '../with-field';
 import * as CoreFields from '../fields';
 import { PlainCheckbox } from './plain-checkbox';
@@ -33,7 +35,30 @@ export const ForeignIdList = WithField({ Control: (ps) => {
         <div className='border p-3'>
             <CoreFields.ForeignIdList
                 { ...ps }
-                noWrapper
+                contentFallbackLabel='Keine Bedingungen'
+                contentClassName='m-0 p-0'
+                noWrapper={ true }
+                dataXPath={ `${dataXPath}.values` }
+                label='Werte'
+            />
+            <hr />
+            <PlainCheckbox
+                dataXPath={ `${dataXPath}.negate` }
+                label='Nicht mit diesen Werten'
+            />
+        </div>
+    )
+}});
+
+export const HelperSetItemIdList = WithField({ Control: (ps) => {
+    var { dataXPath } = ps;
+    return (
+        <div className='border p-3'>
+            <CoreFields.HelperSetItemIdList
+                { ...ps }
+                contentFallbackLabel='Keine Bedingungen'
+                contentClassName='m-0 p-0'
+                noWrapper={ true }
                 dataXPath={ `${dataXPath}.values` }
                 label='Werte'
             />
