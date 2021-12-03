@@ -11,6 +11,7 @@ import {
     Button,
     LoadingIndicator,
     TabNav,
+    PageWrappers,
 } from '@mpieva/psydb-ui-layout';
 
 import {
@@ -79,7 +80,7 @@ const ExtendedSearch = (ps) => {
     }; // createDefaults({ schema })
 
     return (
-        <>
+        <PageWrappers.Level3 title='Erweiterte Probandensuche'>
             <DefaultForm
                 onSubmit={ (formData) => { console.log(formData) }}
                 initialValues={ defaultValues }
@@ -93,7 +94,7 @@ const ExtendedSearch = (ps) => {
                     })} />
                 )}
             </DefaultForm>
-        </>
+        </PageWrappers.Level3>
     );
 }
 
