@@ -60,16 +60,21 @@ var getCollectionReadFlagPointers = ({ collection }) => {
                 '/labOperation/away-team/canWriteReservations',
                 '/labOperation/online-video-call/canWriteReservations',
             ];
+
+        case 'location':
+            return [ '/canWriteLocations' ];
+        case 'externalPerson':
+            return [ '/canWriteExternalPersons' ];
+        case 'externalOrganization':
+            return [ '/canWriteExternalOrganizations' ];
+        case 'studyTopic':
+            return [ '/canWriteStudyTopics' ]
         case 'personnel':
             return [ '/canWritePersonnel' ];
 
-        case 'externalPerson':
-        case 'externalOrganization':
         case 'helperSet':
         case 'helperSetItem':
-        case 'location':
-        case 'studyTopic':
-            return [ '/canWriteAdministrativeCollections' ]
+            return [ '/canWriteHelperSets' ];
 
         default:
             return []
@@ -85,13 +90,20 @@ var getCollectionWriteFlagPointers = ({ collection }) => {
         case 'personnel':
             return [ '/canWritePersonnel' ];
 
+        case 'location':
+            return [ '/canWriteLocations' ];
         case 'externalPerson':
+            return [ '/canWriteExternalPersons' ];
         case 'externalOrganization':
+            return [ '/canWriteExternalOrganizations' ];
+        case 'studyTopic':
+            return [ '/canWriteStudyTopics' ]
+        case 'personnel':
+            return [ '/canWritePersonnel' ];
+
         case 'helperSet':
         case 'helperSetItem':
-        case 'location':
-        case 'studyTopic':
-            return [ '/canWriteAdministrativeCollections' ]
+            return [ '/canWriteHelperSets' ];
 
         default:
             return []
