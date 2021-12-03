@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { useFetch } from '@mpieva/psydb-ui-hooks';
+import { Base64 } from 'js-base64';
+import { useHistory, useLocation } from 'react-router';
+
+import {
+    useFetch,
+    useURLSearchParams
+} from '@mpieva/psydb-ui-hooks';
+
 import {
     Button,
     LoadingIndicator,
@@ -20,7 +27,35 @@ const ExtendedSearch = (ps) => {
         collection,
         recordType
     } = ps;
+
+    var location = useLocation();
+    var history = useHistory();
+    var [ query, updateQuery ] = useURLSearchParams({
+        defaults: { tab: 'filters' }
+    });
+    var { tab, formData } = query;
     
+    var decodedFormData = undefined;
+    try {
+        if (formData) {
+            decodedFormData = JSON.parse(Base64.decode(formData));
+        }
+    }
+    catch (e) {}
+    
+    var handleSwitchTab = ({ nextTab, formData }) => {
+        var formData64 = Base64.encode(JSON.stringify(formData['$']));
+
+        var nextSearchQuery = updateQuery(
+            { ...query, tab: nextTab, formData: formData64 },
+            { push: false }
+        );
+        history.replace({
+            pathname: location.pathname,
+            search: nextSearchQuery
+        });
+    }
+
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.readRecordSchema({
             collection,
@@ -28,14 +63,12 @@ const ExtendedSearch = (ps) => {
         })
     ), [ collection, recordType ]);
 
-    var [ tab, setTab ] = useState('filters');
-
     if (!didFetch) {
         return <LoadingIndicator size='lg' />
     }
 
     var schema = fetched.data;
-    var defaultValues = {
+    var defaultValues = decodedFormData || {
         subjectType: recordType,
         customGdprFilters: {},
         customScientificFilters: {},
@@ -55,7 +88,7 @@ const ExtendedSearch = (ps) => {
                     <Inner { ...({
                         schema,
                         activeTab: tab,
-                        onSwitchTab: setTab,
+                        onSwitchTab: handleSwitchTab,
                         formData: formikProps.values
                     })} />
                 )}
@@ -81,7 +114,9 @@ const Inner = (ps) => {
     return (
         <>
             <TabNav 
-                onItemClick={ onSwitchTab }
+                onItemClick={ (nextTab) => (
+                    onSwitchTab({ nextTab, formData })
+                )}
                 activeKey={ activeTab }
                 className='d-flex'
                 itemClassName='flex-grow'
