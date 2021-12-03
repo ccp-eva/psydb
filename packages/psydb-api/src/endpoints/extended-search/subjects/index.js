@@ -40,6 +40,7 @@ var subjectExtendedSearch = async (context, next) => {
         specialFilters,
 
         columns,
+        sort,
         offset = 0,
         limit = 0
     } = request.body;

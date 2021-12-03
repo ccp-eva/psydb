@@ -1,4 +1,6 @@
 import React from 'react';
+import jsonpointer from 'jsonpointer';
+
 import {
     useFetch,
     usePaginationReducer,
@@ -14,22 +16,29 @@ import {
 export const Results = (ps) => {
     var { schema, formData } = ps;
     
+    var { columns } = formData['$'];
+    columns = Object.keys(columns).filter(key => !!columns[key]);
+    
     var pagination = usePaginationReducer({ offset: 0, limit: 50 })
     var { offset, limit } = pagination;
     
-    var [ didFetch, fetched ] = useFetch((agent) => (
-        agent
-        .getAxios()
-        .post('/api/extended-search/subjects', {
-            ...formData['$'],
-            offset,
-            limit
-        })
-        .then((response) => {
-            pagination.setTotal(response.data.data.recordsCount);
-            return response;
-        })
-    ), [ offset, limit ]);
+    var [ didFetch, fetched ] = useFetch((agent) => {
+
+        return (
+            agent
+            .getAxios()
+            .post('/api/extended-search/subjects', {
+                ...formData['$'],
+                columns,
+                offset,
+                limit
+            })
+            .then((response) => {
+                pagination.setTotal(response.data.data.recordsCount);
+                return response;
+            })
+        )
+    }, [ offset, limit ]);
 
     if (!didFetch) {
         return <LoadingIndicator size='lg' />
@@ -51,6 +60,7 @@ export const Results = (ps) => {
             <Pagination { ...pagination } />
 
             <TableComponent { ...({
+                columns,
                 records
             })} />
         </div>
@@ -81,20 +91,25 @@ const RecordTable = (ps) => {
 }
 
 const TableHead = (ps) => {
+    var { columns } = ps;
     return (
         <thead><tr>
-            <th>ID</th>
+            { columns.map(col => (
+                <th key={ col }>{ col}</th>
+            ))}
         </tr></thead>
     )
 }
 
 const TableBody = (ps) => {
-    var { records } = ps;
+    var { columns, records } = ps;
     return (
         <tbody>
             { records.map(it => (
                 <tr key={ it._id }>
-                    <td>{ it._id }</td>
+                    { columns.map(col => (
+                        <td key={ col }>{ jsonpointer.get(it, col) }</td>
+                    ))}
                 </tr>
             ))}
         </tbody>
