@@ -5,6 +5,8 @@ module.exports = {
     fieldStringifiers: require('./field-stringifiers'),
     fieldTypeMetadata: require('./field-type-metadata'),
     
+    gatherCustomColumns: require('./gather-custom-columns'),
+
     gatherDisplayFieldData: require('./gather-display-field-data'),
     gatherLocationsFromLabProcedureSettings: (
         require('./gather-locations-from-lab-procedure-settings')

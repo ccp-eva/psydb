@@ -12,58 +12,14 @@ var {
     convertPointerToPath,
 } = require('@mpieva/psydb-api-lib');
 
-var {
-    ExactObject,
-    CustomRecordTypeKey,
-    DefaultArray,
-    JsonPointer,
-    Integer,
-    StringEnum,
-    SaneString,
-    ForeignIdList,
-} = require('@mpieva/psydb-schema-fields');
-
-var RequestBodySchema = () => ExactObject({
-    properties: {
-        subjectType: CustomRecordTypeKey({ collection: 'subject' }),
-        customGdprFilters: { type: 'object' },
-        customScientificFilters: { type: 'object' },
-        
-        specialFilters: ExactObject({
-            properties: {
-                subjectId: SaneString(),
-                //didParticipate: StringEnum([ 'yes'. 'no', 'any' ]),
-                didParticipateIn: ForeignIdList({
-                    collection: 'study'
-                }),
-                didNotParticipateIn: ForeignIdList({
-                    collection: 'study',
-                }),
-            }
-        }),
-
-        columns: DefaultArray({
-            items: JsonPointer(),
-            minItems: 1,
-        }),
-        offset: Integer({ minimum: 0 }),
-        limit: Integer({ maximum: 100 }),
-    },
-    required: [
-        'subjectType',
-        'customGdprFilters',
-        'customScientificFilters',
-        'specialFilters',
-
-        'columns',
-    ]
-})
 
 var {
     createCustomQueryValues,
     getCustomQueryPointer,
     convertPointerKeys
-} = require('./utils');
+} = require('../utils');
+
+var RequestBodySchema = require('./request-body-schema');
 
 var subjectExtendedSearch = async (context, next) => {
     var {

@@ -21,6 +21,7 @@ import {
 } from '@mpieva/psydb-ui-lib';
 
 import { Filters } from './filters';
+import { Columns } from './columns';
 import { Results } from './results';
 
 const ExtendedSearch = (ps) => {
@@ -74,7 +75,8 @@ const ExtendedSearch = (ps) => {
         customGdprFilters: {},
         customScientificFilters: {},
         specialFilters: {},
-        columns: [ '/id' ],
+        columns: { '/_id': true },
+        sort: { column: '/_id', direction: 'asc' },
         limit: 0,
         offset: 0
     }; // createDefaults({ schema })
@@ -133,10 +135,6 @@ const Inner = (ps) => {
             />
         </>
     );
-}
-
-const Columns = (ps) => {
-    return (<div />)
 }
 
 export default ExtendedSearch;
