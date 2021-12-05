@@ -4,7 +4,8 @@ import {
     experimentVariants as variantsEnum,
 } from '@mpieva/psydb-schema-enums';
 
-import { createSend, demuxed } from '@mpieva/psydb-ui-utils';
+import { demuxed } from '@mpieva/psydb-ui-utils';
+import { useSend } from '@mpieva/psydb-ui-hooks';
 import { Button, WithDefaultModal } from '@mpieva/psydb-ui-layout';
 
 const RemoveVariantModalBody = (ps) => {
@@ -19,7 +20,7 @@ const RemoveVariantModalBody = (ps) => {
     var { _id: variantId, type: variantType } = variantRecord;
 
 
-    var handleSubmit = createSend(() => ({
+    var send = useSend(() => ({
         type: `experiment-variant/remove`,
         payload: { id: variantId }
     }), {
@@ -37,7 +38,7 @@ const RemoveVariantModalBody = (ps) => {
                 { variantsEnum.mapping[variantType] }
             </div>
             <div className='mt-3 d-flex justify-content-end'>
-                <Button variant='danger' onClick={ handleSubmit }>
+                <Button variant='danger' onClick={ send.exec }>
                     Löschen
                 </Button>
             </div>

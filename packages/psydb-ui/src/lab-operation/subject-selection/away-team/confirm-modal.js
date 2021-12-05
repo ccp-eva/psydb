@@ -1,7 +1,8 @@
 import React from 'react';
 import { Modal, Button, Table } from 'react-bootstrap';
 
-import { createSend, demuxed } from '@mpieva/psydb-ui-utils';
+import { demuxed } from '@mpieva/psydb-ui-utils';
+import { useSend } from '@mpieva/psydb-ui-hooks';
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 import calculateAge from '@mpieva/psydb-ui-lib/src/calculate-age';
 import { Pair } from '@mpieva/psydb-ui-layout';
@@ -22,7 +23,7 @@ const ConfirmModal = ({
         onHide, onSuccessfulUpdate
     ]);
 
-    var handleSubmit = createSend(() => ({
+    var send = useSend(() => ({
         type: 'experiment/create-from-awayteam-reservation',
         payload: {
             props: {
@@ -93,7 +94,7 @@ const ConfirmModal = ({
                 </Table>
 
                 <div className='d-flex justify-content-end'>
-                    <Button onClick={ handleSubmit }>
+                    <Button onClick={ send.exec }>
                         Bestätigen
                     </Button>
                 </div>

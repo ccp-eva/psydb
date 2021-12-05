@@ -4,7 +4,7 @@ import {
     ExactObject,
 } from '@mpieva/psydb-schema-fields';
 
-import { createSend } from '@mpieva/psydb-ui-utils';
+import { useSend } from '@mpieva/psydb-ui-hooks';
 import { WithDefaultModal } from '@mpieva/psydb-ui-layout';
 import { SchemaForm } from '@mpieva/psydb-ui-lib';
 
@@ -34,7 +34,7 @@ const NewSelectorModalBody = (ps) => {
 
     var schema = createSchema({ subjectTypeMap });
 
-    var handleSubmit = createSend(({ formData }) => ({
+    var send = useSend(({ formData }) => ({
         type: `subjectSelector/create`,
         payload: {
             subjectTypeKey: formData.subjectTypeKey,
@@ -51,7 +51,7 @@ const NewSelectorModalBody = (ps) => {
     return (
         <SchemaForm
             schema={ schema }
-            onSubmit={ handleSubmit }
+            onSubmit={ send.exec }
         />
     );
 }

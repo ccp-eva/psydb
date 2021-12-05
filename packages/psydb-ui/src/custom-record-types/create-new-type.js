@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { createSend } from '@mpieva/psydb-ui-utils';
+import { useSend } from '@mpieva/psydb-ui-hooks';
 import FormBox from '@mpieva/psydb-ui-lib/src/form-box';
 import { SchemaForm } from '@mpieva/psydb-ui-lib';
 
@@ -42,7 +42,7 @@ const CreateNewType = ({ onCreated }) => {
         });
     }
 
-    var onSubmit = createSend(({ formData }) => ({
+    var send = useSend(({ formData }) => ({
         type: 'custom-record-types/create',
         payload: {
             collection: formData.collection,
@@ -57,7 +57,7 @@ const CreateNewType = ({ onCreated }) => {
         <FormBox title='Neuer Datensatz-Typ'>
             <SchemaForm
                 schema={ schema }
-                onSubmit={ onSubmit }
+                onSubmit={ send.exec }
             />
         </FormBox>
     )

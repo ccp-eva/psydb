@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
-import { createSend } from '@mpieva/psydb-ui-utils';
+import { useSend } from '@mpieva/psydb-ui-hooks';
 import ExperimentShortControls from '@mpieva/psydb-ui-lib/src/experiment-short-controls';
 
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
@@ -42,7 +42,7 @@ const CreateModal = ({
         onSuccessfulCreate && onSuccessfulCreate(...args);
     };
 
-    var handleSubmit = createSend(() => ({
+    var send = useSend(() => ({
         type: 'experiment/create-from-online-video-call-reservation',
         payload: {
             props: {
@@ -88,7 +88,7 @@ const CreateModal = ({
 
                 <hr />
                 <div className='d-flex justify-content-end'>
-                    <Button size='sm' onClick={ handleSubmit }>
+                    <Button size='sm' onClick={ send.exec }>
                         Speichern
                     </Button>
                 </div>

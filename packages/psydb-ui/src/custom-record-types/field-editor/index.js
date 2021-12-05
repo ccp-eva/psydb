@@ -5,7 +5,7 @@ import {
 } from '@mpieva/psydb-ui-layout';
 
 import { useModalReducer } from '@mpieva/psydb-ui-hooks';
-import { createSend } from '@mpieva/psydb-ui-utils';
+import { useSend } from '@mpieva/psydb-ui-hooks';
 
 import { ErrorResponseModal } from '@mpieva/psydb-ui-lib/src/modals';
 
@@ -24,7 +24,7 @@ const FieldEditor = ({ record, onSuccessfulUpdate }) => {
         errorModal.handleShow({ errorResponse: error.response });
     };
 
-    var handleCommitSettings = createSend(() => ({
+    var handleCommitSettings = useSend(() => ({
         type: 'custom-record-types/commit-settings',
         payload: {
             id: record._id,
@@ -32,7 +32,7 @@ const FieldEditor = ({ record, onSuccessfulUpdate }) => {
         }
     }), { onSuccessfulUpdate, onFailedUpdate });
 
-    var handleRemoveField = createSend(({ field }) => ({
+    var handleRemoveField = useSend(({ field }) => ({
         type: 'custom-record-types/remove-field-definition',
         payload: {
             id: record._id,
@@ -42,7 +42,7 @@ const FieldEditor = ({ record, onSuccessfulUpdate }) => {
         }
     }), { onSuccessfulUpdate, onFailedUpdate });
 
-    var handleRestoreField = createSend(({ field }) => ({
+    var handleRestoreField = useSend(({ field }) => ({
         type: 'custom-record-types/restore-field-definition',
         payload: {
             id: record._id,
@@ -77,15 +77,15 @@ const FieldEditor = ({ record, onSuccessfulUpdate }) => {
             <FieldList
                 record={ record }
                 onEditField={ editFieldModal.handleShow }
-                onRemoveField={ handleRemoveField }
-                onRestoreField={ handleRestoreField }
+                onRemoveField={ handleRemoveField.exec }
+                onRestoreField={ handleRestoreField.exec }
             />
 
             <hr />
 
             <Button
                 variant='danger'
-                onClick={ handleCommitSettings }
+                onClick={ handleCommitSettings.exec }
                 disabled={
                     !(record.state.isDirty || record.state.isNew)
                 }

@@ -1,8 +1,7 @@
 import React from 'react';
 import isSubset from 'is-subset';
 import keyBy from '@mpieva/psydb-common-lib/src/key-by';
-import { createSend } from '@mpieva/psydb-ui-utils';
-import { useFetch } from '@mpieva/psydb-ui-hooks';
+import { useSend, useFetch } from '@mpieva/psydb-ui-hooks';
 import { Button, LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
 import {
@@ -45,7 +44,7 @@ export const OnlineVideoCallSetting = (ps) => {
         return agent.readCustomRecordTypeMetadata()
     }, [])
 
-    var handleSubmit = createSend((formData, formikProps) => {
+    var send = useSend((formData, formikProps) => {
         var type = `experiment-variant-setting/online-video-call/${op}`;
         var message;
         switch (op) {
@@ -94,7 +93,7 @@ export const OnlineVideoCallSetting = (ps) => {
     return (
         <div>
             <DefaultForm
-                onSubmit={ handleSubmit }
+                onSubmit={ send.exec }
                 initialValues={ settingState || defaultValues }
             >
                 {(formikProps) => {

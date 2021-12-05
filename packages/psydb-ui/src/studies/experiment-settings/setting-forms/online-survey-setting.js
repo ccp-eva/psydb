@@ -1,5 +1,5 @@
 import React from 'react';
-import { createSend } from '@mpieva/psydb-ui-utils';
+import { useSend, useFetch } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
 import {
     DefaultForm,
@@ -29,7 +29,7 @@ export const OnlineSurveySetting = (ps) => {
         throw new Error(`unknown op "${op}"`);
     }
 
-    var handleSubmit = createSend((formData, formikProps) => {
+    var send = useSend((formData, formikProps) => {
         var type = `experiment-variant-setting/online-survey/${op}`;
         var message;
         switch (op) {
@@ -55,7 +55,7 @@ export const OnlineSurveySetting = (ps) => {
 
     return (
         <div>
-            <DefaultForm onSubmit={ handleSubmit }>
+            <DefaultForm onSubmit={ send.exec }>
                 {(formikProps) => (
                     <>
                         <Fields.GenericEnum { ...({

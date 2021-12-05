@@ -1,8 +1,7 @@
 import React from 'react';
 import isSubset from 'is-subset';
 import keyBy from '@mpieva/psydb-common-lib/src/key-by';
-import { createSend } from '@mpieva/psydb-ui-utils';
-import { useFetch } from '@mpieva/psydb-ui-hooks';
+import { useSend, useFetch } from '@mpieva/psydb-ui-hooks';
 import { Button, LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
 import {
@@ -43,7 +42,7 @@ export const AgeFrameForm = (ps) => {
         return agent.readCustomRecordTypeMetadata()
     }, [])
 
-    var handleSubmit = createSend((formData, formikProps) => {
+    var send = useSend((formData, formikProps) => {
         var type = `ageFrame/${op}`;
         var message;
         switch (op) {
@@ -82,7 +81,7 @@ export const AgeFrameForm = (ps) => {
     return (
         <div>
             <DefaultForm
-                onSubmit={ handleSubmit }
+                onSubmit={ send.exec }
                 initialValues={ ageFrameState || defaultValues }
             >
                 {(formikProps) => {
