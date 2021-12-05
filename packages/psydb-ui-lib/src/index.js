@@ -10,6 +10,8 @@ export {
     //HelperSetItemPicker
 } from './pickers';
 
+export { ErrorResponseModal } from './modals';
+
 export { default as FormBox } from './form-box';
 export { default as ResearchGroupNav } from './research-group-nav';
 export { default as StudySelectList } from './study-select-list';

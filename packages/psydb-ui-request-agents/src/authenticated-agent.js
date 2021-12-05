@@ -3,18 +3,18 @@ import { getSystemTimezone } from '@mpieva/psydb-timezone-helpers';
 
 const axios = Axios.create();
 
-axios.interceptors.response.use(
-    (response) => (response),
-    (error) => {
-        if (error.response && error.response.status === 401) {
-            window.location = '/';
-            return Promis.resolve();
-        }
-        else {
-            return Promise.reject(error);
-        }
-    }
-)
+//axios.interceptors.response.use(
+//    (response) => (response),
+//    (error) => {
+//        if (error.response && error.response.status === 401) {
+//            window.location = '/';
+//            return Promis.resolve();
+//        }
+//        else {
+//            return Promise.reject(error);
+//        }
+//    }
+//)
 
 var agent = {
     getAxios: () => axios,
