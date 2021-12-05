@@ -55,7 +55,7 @@ const ParticipationByType = ({
     } = participationData;
 
     var ageFrameField = subjectData.displayFieldData.find(it => (
-        it.props.isSpecialAgeFrameField
+        it.props && it.props.isSpecialAgeFrameField
     ));
 
     var ageFrameFieldValue = undefined;
