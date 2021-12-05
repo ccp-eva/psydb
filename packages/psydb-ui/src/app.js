@@ -6,14 +6,12 @@ import {
 
 import agent, { simple as publicAgent } from '@mpieva/psydb-ui-request-agents';
 
-import { useModalReducer } from '@mpieva/psydb-ui-hooks';
-
 import {
     SelfContext,
     AgentContext
 } from '@mpieva/psydb-ui-contexts';
 
-import ErrorResponseModal from './error-response-modal';
+import ErrorResponseModalSetup from './error-response-modal-setup';
 import ErrorBoundary from './error-boundary';
 import SignIn from './sign-in';
 import Main from './main'
@@ -23,23 +21,6 @@ const App = () => {
     var [ isSignedIn, setIsSignedIn ] = useState(false);
     var [ self, setSelf ] = useState();
     var [ isInitialized, setIsInitialized ] = useState(false);
-
-    var errorResponseModal = useModalReducer();
-    if (agent.getAxios().interceptors.response.handlers.length === 0) {
-        agent.getAxios().interceptors.response.use(
-            (response) => (response),
-            (error) => {
-                if (error.response) {
-                    errorResponseModal.handleShow(error.response);
-                    throw error;
-                }
-                else {
-                    throw error;
-                }
-            }
-        );
-    }
-
 
     var onSignedIn = (selfArg) => {
         setIsSignedIn(true);
@@ -72,9 +53,7 @@ const App = () => {
             isSignedIn && self
             ? (
                 <AgentContext.Provider value={ agent }>
-                    <ErrorResponseModal
-                        { ...errorResponseModal.passthrough }
-                    />
+                    <ErrorResponseModalSetup />
                     <SelfContext.Provider value={{ ...self, setSelf }}>
                         <Main onSignedOut={ onSignedOut } />
                     </SelfContext.Provider>
