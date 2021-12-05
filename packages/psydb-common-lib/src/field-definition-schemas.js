@@ -33,10 +33,11 @@ var IsNullableProp = () => DefaultBool({
 
 var FieldDefinition = ({
     type,
+    title,
     props,
     required,
 }) => ExactObject({
-    title: type, // for rjsf option labels
+    title: title || type, // for rjsf option labels
     properties: {
         key: IdentifierString({
             title: 'Interner-Key',
@@ -71,6 +72,7 @@ var FieldDefinition = ({
 
 var EmailListFieldDefinition = () => FieldDefinition({
     type: 'EmailList',
+    title: 'Liste von Email-Adressen (EmailList)',
     props: {
         minItems: MinItemsProp(),
     },
@@ -78,6 +80,7 @@ var EmailListFieldDefinition = () => FieldDefinition({
 
 var PhoneListFieldDefinition = () => FieldDefinition({
     type: 'PhoneList',
+    title: 'Liste von Telefon-Nummern (PhoneList)',
     props: {
         minItems: MinItemsProp(),
     },
@@ -85,6 +88,7 @@ var PhoneListFieldDefinition = () => FieldDefinition({
 
 var HelperSetItemIdListFieldDefinition = () => FieldDefinition({
     type: 'HelperSetItemIdList',
+    title: 'Liste von Hisfstabellen-Einträgen (HelperSetItemIdList)',
     props: {
         setId: ForeignId({
             collection: 'helperSet'
@@ -97,6 +101,7 @@ var HelperSetItemIdListFieldDefinition = () => FieldDefinition({
 
 var HelperSetItemIdFieldDefinition = () => FieldDefinition({
     type: 'HelperSetItemId',
+    title: 'Hisfstabellen-Eintrag (HelperSetItemId)',
     props: {
         setId: ForeignId({
             collection: 'helperSet'
@@ -111,6 +116,7 @@ var HelperSetItemIdFieldDefinition = () => FieldDefinition({
 
 var ForeignIdListFieldDefinition = () => FieldDefinition({
     type: 'ForeignIdList',
+    title: 'Liste von Einträgen anderer Haupt-Tabellen (ForeignIdList)',
     props: {
         collection: CollectionEnum({ title: 'Referenz-Tabelle' }),
         recordType: IdentifierString(),
@@ -129,6 +135,7 @@ var ForeignIdListFieldDefinition = () => FieldDefinition({
 
 var ForeignIdFieldDefinition = () => FieldDefinition({
     type: 'ForeignId',
+    title: 'Eintrag anderer Haupt-Tabellen (ForeignId)',
     props: {
         collection: CollectionEnum({ title: 'Referenz-Tabelle' }),
         recordType: IdentifierString(),
@@ -147,16 +154,19 @@ var ForeignIdFieldDefinition = () => FieldDefinition({
 
 var AddressFieldDefinition = () => FieldDefinition({
     type: 'Address',
+    title: 'Adresse (Address)',
     props: {},
 });
 
 var GeoCoordsFieldDefinition = () => FieldDefinition({
     type: 'GeoCoords',
+    title: 'Geo-Koordinaten (GeoCoords)',
     props: {},
 });
 
 var SaneStringFieldDefinition = () => FieldDefinition({
     type: 'SaneString',
+    title: 'Freitext - Einzeilig (SaneString)',
     required: [],
     props: {
         minLength: MinLengthProp(),
@@ -165,6 +175,7 @@ var SaneStringFieldDefinition = () => FieldDefinition({
 
 var FullTextFieldDefinition = () => FieldDefinition({
     type: 'FullText',
+    title: 'Freitext - Mehrzeilig (FullText)',
     required: [],
     props: {
         minLength: MinLengthProp(),
@@ -173,6 +184,7 @@ var FullTextFieldDefinition = () => FieldDefinition({
 
 var DateTimeFieldDefinition = () => FieldDefinition({
     type: 'DateTime',
+    title: 'Datum + Zeit (DateTime)',
     props: {
         isSpecialAgeFrameField: DefaultBool(),
         isNullable: IsNullableProp(),
@@ -185,6 +197,7 @@ var DateTimeFieldDefinition = () => FieldDefinition({
 
 var DateOnlyServerSideFieldDefinition = () => FieldDefinition({
     type: 'DateOnlyServerSide',
+    title: 'Datum mit Server-Zeitzone (DateOnlyServerSide)',
     props: {
         isSpecialAgeFrameField: DefaultBool(),
         isNullable: IsNullableProp(),
@@ -197,6 +210,7 @@ var DateOnlyServerSideFieldDefinition = () => FieldDefinition({
 
 var BiologicalGenderFieldDefinition = () => FieldDefinition({
     type: 'BiologicalGender',
+    title: 'Geschlecht (BiologicalGender)',
     props: {
         // enableUnknwonValue
     },
@@ -204,6 +218,7 @@ var BiologicalGenderFieldDefinition = () => FieldDefinition({
 
 var EmailFieldDefinition = () => FieldDefinition({
     type: 'Email',
+    title: 'Email-Adress (Email)',
     props: {
         // enableUnknwonValue
     },
@@ -211,6 +226,7 @@ var EmailFieldDefinition = () => FieldDefinition({
 
 var PhoneFieldDefinition = () => FieldDefinition({
     type: 'Phone',
+    title: 'Telefonnummer (Phone)',
     props: {
         // enableUnknwonValue
     },
@@ -218,6 +234,7 @@ var PhoneFieldDefinition = () => FieldDefinition({
 
 var DefaultBoolFieldDefinition = () => FieldDefinition({
     type: 'DefaultBool',
+    title: 'Ja/Nein-Wert (DefaultBool)',
     props: {
         // enableUnknwonValue
     },
@@ -225,6 +242,7 @@ var DefaultBoolFieldDefinition = () => FieldDefinition({
 
 var ExtBoolFieldDefinition = () => FieldDefinition({
     type: 'ExtBool',
+    title: 'Ja/Nein/Unbekannt-Wert (ExtBool)',
     props: {
         // enableUnknwonValue
     },
@@ -232,6 +250,7 @@ var ExtBoolFieldDefinition = () => FieldDefinition({
 
 var ListOfObjectsFieldDefinition = () => FieldDefinition({
     type: 'ListOfObjects',
+    title: 'Benutzerdefinierte Unterliste (ListOfObjects)',
     props: {
         minItems: MinItemsProp(),
         fields: DefaultArray({

@@ -32,8 +32,10 @@ var createSchema = ({ hasSubChannels }) => ({
                 fieldSchema.required = (
                     fieldSchema.required.filter(it => it !== 'key')
                 );
+                console.log(fieldSchema);
                 return fieldSchema;
-            }),
+            }).sort((a, b) => (a.title < b.title ? -1 : 1)),
+
         },
     },
 });
