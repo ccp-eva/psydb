@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { arrify, demuxed } from '@mpieva/psydb-ui-utils';
-import agent from '@mpieva/psydb-ui-request-agents';
+import { AgentContext } from '@mpieva/psydb-ui-contexts';
+//import agent from '@mpieva/psydb-ui-request-agents';
 
 const useWriteRequest = (
     createPromise,
@@ -11,12 +12,13 @@ const useWriteRequest = (
         onFailedUpdate,
     } = options;
    
+    var contextAgent = useContext(AgentContext);
     var [ isTransmitting, setIsTransmitting ] = useState(false);
 
     var exec = (...args) => {
         setIsTransmitting(true);
 
-        return createPromise(agent, ...args)
+        return createPromise(contextAgent, ...args)
         .then((response) => {
             setIsTransmitting(false);
             if (onSuccessfulUpdate) {

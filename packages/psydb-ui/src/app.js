@@ -4,8 +4,13 @@ import {
     HashRouter as Router,
 } from 'react-router-dom';
 
-import { simple as agent } from '@mpieva/psydb-ui-request-agents';
-import { SelfContext } from '@mpieva/psydb-ui-contexts';
+import agent, { simple as publicAgent } from '@mpieva/psydb-ui-request-agents';
+
+import {
+    SelfContext,
+    AgentContext
+} from '@mpieva/psydb-ui-contexts';
+
 import ErrorBoundary from './error-boundary';
 import SignIn from './sign-in';
 import Main from './main'
@@ -29,7 +34,7 @@ const App = () => {
 
     useEffect(() => {
         setIsInitialized(false)
-        agent.get('/api/self').then(
+        publicAgent.get('/api/self').then(
             (res) => {
                 var self = res.data.data;
                 onSignedIn(self);
@@ -46,11 +51,11 @@ const App = () => {
         View = (
             isSignedIn && self
             ? (
-                <SelfContext.Provider value={{
-                    ...self, setSelf,
-                }}>
-                    <Main onSignedOut={ onSignedOut } />
-                </SelfContext.Provider>
+                <AgentContext.Provider value={ agent }>
+                    <SelfContext.Provider value={{ ...self, setSelf }}>
+                        <Main onSignedOut={ onSignedOut } />
+                    </SelfContext.Provider>
+                </AgentContext.Provider>
             )
             : <SignIn onSignedIn={ onSignedIn } />
         );

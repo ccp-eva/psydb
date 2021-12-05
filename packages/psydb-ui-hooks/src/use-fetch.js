@@ -1,5 +1,6 @@
-import { useEffect, useReducer } from 'react';
-import agent from '@mpieva/psydb-ui-request-agents';
+import { useEffect, useReducer, useContext } from 'react';
+import { AgentContext } from '@mpieva/psydb-ui-contexts';
+//import agent from '@mpieva/psydb-ui-request-agents';
 
 const useFetch = (...args) => {
     if (args.length < 3) {
@@ -11,11 +12,13 @@ const useFetch = (...args) => {
         dependencies
     ] = args;
 
+    var contextAgent = useContext(AgentContext);
+
     var reducer = createReducer(init);
     var [ state, dispatch ] = useReducer(reducer, { didFetch: false });
 
     var wrappedCreatePromise = () => {
-        var promise = createPromise(agent);
+        var promise = createPromise(contextAgent);
         if (promise) {
             promise.then((response) => {
                 dispatch({ type: 'init-data', payload: {
