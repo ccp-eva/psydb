@@ -8,7 +8,7 @@ var IdentifierString = ({
         systemType: 'IdentifierString',
         type: 'string',
         default: '',
-        pattern: '^[a-zA-Z]*$',
+        pattern: '^[a-zA-Z0-9_]*$',
 
         // FIXME: in my opinion this is a stupid hacky way of doing that
         // but its the only way to transform bevore validation
