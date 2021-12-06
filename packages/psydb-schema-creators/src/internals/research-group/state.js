@@ -71,7 +71,7 @@ var ResearchGroupState = ({} = {}) => {
             'shorthand',
             'address',
             'description',
-            'recordTypePermissions',
+            //'recordTypePermissions',
         ]
     })
 
