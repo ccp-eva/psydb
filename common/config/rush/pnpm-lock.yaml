@@ -5,7 +5,6 @@ dependencies:
   '@babel/preset-react': 7.12.13_@babel+core@7.12.17
   '@cdxoo/block-quote': 1.0.0
   '@cdxoo/inline-string': 1.0.0
-  '@cdxoo/inline-text': 1.0.1
   '@cdxoo/koa-mongo-mq': 1.1.0
   '@cdxoo/koa-mongo-rohrpost': 1.0.0
   '@cdxoo/mongo-test-helpers': 0.6.0
@@ -1158,6 +1157,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-UYVmRQpEXRbpVFXkOgNoosN1nTNLu1qkn5tdDL8vLO1eMxEtWHIPq1IE/UWUs5v274oZUWQXclShBQDKEt0sbQ==
+  /@cdxoo/inline-text/1.0.2:
+    dev: false
+    resolution:
+      integrity: sha512-iKWKmwCoHH/WwEV5WBLUUmbB6r5OdBL+I5K6dcOj6h3XWYi7SdeW1kLuzAAaFttGgLpBGq+jnpVznmZlyyUK4w==
   /@cdxoo/koa-mongo-mq/1.1.0:
     dependencies:
       '@cdxoo/mongo-mq': 1.1.0
@@ -9637,14 +9640,17 @@ packages:
     version: 0.0.0
   'file:projects/psydb-migration.tgz':
     dependencies:
+      '@cdxoo/inline-text': 1.0.2
       co: 4.6.0
+      debug: 4.3.1
       koa: 2.13.1
+      mongodb: 3.6.6
       mysql: 2.18.1
       supertest: 6.0.1
     dev: false
     name: '@rush-temp/psydb-migration'
     resolution:
-      integrity: sha512-9htZbozKhuS0llJarqDLoTzHJPq//DsoQyIOH6+htfdDz+jlZRu6t6+l00xvJNt+Fi/ErEXslDlikIjl+vBCiA==
+      integrity: sha512-BBwjbAW/WCzrEyf0alHUZiJ5ADpvdYaXzvoMaNSZLhKivyX/M7ptinH8QrPhR2eczcnf+5GiKXjem630r4SiXw==
       tarball: 'file:projects/psydb-migration.tgz'
     version: 0.0.0
   'file:projects/psydb-mongo-adapter.tgz':
@@ -9964,7 +9970,6 @@ specifiers:
   '@babel/preset-react': ~7.12.10
   '@cdxoo/block-quote': ~1.0.0
   '@cdxoo/inline-string': ~1.0.0
-  '@cdxoo/inline-text': ~1.0.1
   '@cdxoo/koa-mongo-mq': ~1.1.0
   '@cdxoo/koa-mongo-rohrpost': ~1.0.0
   '@cdxoo/mongo-test-helpers': ~0.6.0
