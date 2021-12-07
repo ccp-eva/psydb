@@ -39,6 +39,7 @@ dependencies:
   '@rush-temp/psydb-fixture-initializer': 'file:projects/psydb-fixture-initializer.tgz'
   '@rush-temp/psydb-fixtures': 'file:projects/psydb-fixtures.tgz'
   '@rush-temp/psydb-koa-event-middleware': 'file:projects/psydb-koa-event-middleware.tgz'
+  '@rush-temp/psydb-migration': 'file:projects/psydb-migration.tgz'
   '@rush-temp/psydb-mongo-adapter': 'file:projects/psydb-mongo-adapter.tgz'
   '@rush-temp/psydb-mongo-stages': 'file:projects/psydb-mongo-stages.tgz'
   '@rush-temp/psydb-schema-creators': 'file:projects/psydb-schema-creators.tgz'
@@ -68,6 +69,7 @@ dependencies:
   chai: 4.2.0
   classnames: 2.3.1
   clone-deep: 4.0.1
+  co: 4.6.0
   compression-webpack-plugin: 7.1.2_webpack@5.10.1
   copy-anything: 2.0.3
   css-loader: 5.2.1_webpack@5.10.1
@@ -95,6 +97,7 @@ dependencies:
   mockdate: 3.0.5
   moment: 2.29.1
   mongodb-memory-server: 6.9.6
+  mysql: 2.18.1
   pako: 2.0.4
   pascal-case: 3.1.2
   performant-array-to-tree: 1.9.1
@@ -2313,6 +2316,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-vyL2OymJxmarO8gxMr0mhChsO9QGwhynfuu4+MHTAW6czfq9humCB7rKpUjDd9YUiDPU4mzpyupFSvOClAwbmQ==
+  /bignumber.js/9.0.0:
+    dev: false
+    resolution:
+      integrity: sha512-t/OYhhJ2SD+YGBQcjY8GzzDHEk9f3nerxjtfa6tlMXfe7frs/WozhvCNoGvpM0P3bNf3Gq5ZRMlGr5f3r4/N8A==
   /binary-extensions/1.13.1:
     dev: false
     engines:
@@ -6330,6 +6337,17 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-ji6J5enbMyGRHIAkAOu3WdV8nggqviKCEKtXcOqfphZZtQrmHKycfynJ2V7eVPUA4NhJ6V7Wf4TmGbTwKE9B6g==
+  /mysql/2.18.1:
+    dependencies:
+      bignumber.js: 9.0.0
+      readable-stream: 2.3.7
+      safe-buffer: 5.1.2
+      sqlstring: 2.3.1
+    dev: false
+    engines:
+      node: '>= 0.6'
+    resolution:
+      integrity: sha512-Bca+gk2YWmqp2Uf6k5NFEurwY/0td0cpebAucFpY/3jhrwrVGuxU2uQFCHjU19SJfje0yQvi+rVWdq78hR5lig==
   /nan/2.14.2:
     dev: false
     optional: true
@@ -8069,6 +8087,12 @@ packages:
     dev: false
     resolution:
       integrity: sha1-BOaSb2YolTVPPdAVIDYzuFcpfiw=
+  /sqlstring/2.3.1:
+    dev: false
+    engines:
+      node: '>= 0.6'
+    resolution:
+      integrity: sha1-R1OT/56RR5rqYtyvDKPRSYOn+0A=
   /stack-utils/2.0.5:
     dependencies:
       escape-string-regexp: 2.0.0
@@ -9611,6 +9635,18 @@ packages:
       integrity: sha512-unwANk4z+gmxumIW1C5V4cUgNNParswpHL484Bq3iMN7NemaEIL8rxeVv6bDfz5mxDvlVTwVRQQFD7Bdcr4HAw==
       tarball: 'file:projects/psydb-koa-event-middleware.tgz'
     version: 0.0.0
+  'file:projects/psydb-migration.tgz':
+    dependencies:
+      co: 4.6.0
+      koa: 2.13.1
+      mysql: 2.18.1
+      supertest: 6.0.1
+    dev: false
+    name: '@rush-temp/psydb-migration'
+    resolution:
+      integrity: sha512-9htZbozKhuS0llJarqDLoTzHJPq//DsoQyIOH6+htfdDz+jlZRu6t6+l00xvJNt+Fi/ErEXslDlikIjl+vBCiA==
+      tarball: 'file:projects/psydb-migration.tgz'
+    version: 0.0.0
   'file:projects/psydb-mongo-adapter.tgz':
     dependencies:
       mongodb: 3.6.6
@@ -9799,7 +9835,7 @@ packages:
     peerDependencies:
       webpack: '*'
     resolution:
-      integrity: sha512-2R6QqYIkP/5sr8XWWDRsHqot/KeJ95vwe+cabvkfAUPMdBlQhlcj94lOyZJm3DZ4g3jEjLKbg393FEguxWHfUQ==
+      integrity: sha512-izvwEnoG58qG4alm3jiosJxZCCnN/PCvJboDx+NKT89qwEyL406alY5G5LGGBZNLeLqDL1CX1ZoAObOogIvjAw==
       tarball: 'file:projects/psydb-ui-lib.tgz'
     version: 0.0.0
   'file:projects/psydb-ui-request-agents.tgz_debug@4.3.1':
@@ -9962,6 +9998,7 @@ specifiers:
   '@rush-temp/psydb-fixture-initializer': 'file:./projects/psydb-fixture-initializer.tgz'
   '@rush-temp/psydb-fixtures': 'file:./projects/psydb-fixtures.tgz'
   '@rush-temp/psydb-koa-event-middleware': 'file:./projects/psydb-koa-event-middleware.tgz'
+  '@rush-temp/psydb-migration': 'file:./projects/psydb-migration.tgz'
   '@rush-temp/psydb-mongo-adapter': 'file:./projects/psydb-mongo-adapter.tgz'
   '@rush-temp/psydb-mongo-stages': 'file:./projects/psydb-mongo-stages.tgz'
   '@rush-temp/psydb-schema-creators': 'file:./projects/psydb-schema-creators.tgz'
@@ -9991,6 +10028,7 @@ specifiers:
   chai: ~4.2.0
   classnames: ~2.3.1
   clone-deep: ~4.0.1
+  co: ~4.6.0
   compression-webpack-plugin: ~7.1.2
   copy-anything: ~2.0.3
   css-loader: ~5.2.1
@@ -10018,6 +10056,7 @@ specifiers:
   mockdate: ~3.0.5
   moment: ~2.29.1
   mongodb-memory-server: ~6.9.2
+  mysql: ~2.18.1
   pako: ~2.0.4
   pascal-case: ~3.1.1
   performant-array-to-tree: ~1.9.1
