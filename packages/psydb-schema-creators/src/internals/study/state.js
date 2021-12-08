@@ -127,9 +127,10 @@ var StudyState = (ps = {}) => {
 
             // FIXME: should probably be in internals
             // TODO: obsolete
-            selectionSettingsBySubjectType: SubjectSelectionSettingsList({
+            selectionSettingsBySubjectType: { type: 'array' },
+            /*selectionSettingsBySubjectType: SubjectSelectionSettingsList({
                 subjectRecordTypeRecords,
-            }),
+            }),*/
 
             excludedOtherStudyIds: ForeignIdList({
                 collection: 'study',
