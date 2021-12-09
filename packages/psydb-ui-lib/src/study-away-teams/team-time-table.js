@@ -50,7 +50,6 @@ var spliceWithMaxOverlap = ({ items, interval }) => {
             toIntInterval(toDateInterval(interval)),
         );
         if (overlap > maxOverlap) {
-            console.log({ overlap, maxOverlap })
             maxOverlap = overlap;
             maxIndex = index;
         };
