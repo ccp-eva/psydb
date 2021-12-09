@@ -76,7 +76,7 @@ var StudyState = (ps = {}) => {
             studyTopicIds: ForeignIdList({
                 title: 'Themengebiete',
                 collection: 'studyTopic',
-                minItems: 1,
+                minItems: 0,
             }),
 
             // TODO: move to labProcedureSettings
