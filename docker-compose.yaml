@@ -1,3 +1,4 @@
+# docker-compose -p primary -f docker-compose.yaml up -d
 version: "2"
 services:
   mongodb:
