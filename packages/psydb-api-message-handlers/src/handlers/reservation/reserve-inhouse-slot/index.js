@@ -47,7 +47,7 @@ handler.checkAllowedAndPlausible = async ({
 
     await checkConflictingTeamReservations({
         db, experimentOperatorTeamId, interval,
-        types: [ 'inhouse', 'online-video-call' ]
+        types: [ 'inhouse' ]
     });
     
     await checkConflictingLocationReservations({
