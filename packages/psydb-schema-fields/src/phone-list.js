@@ -22,12 +22,17 @@ var PhoneList = ({ minItems, numbertypes, numbertypeNames }) => ({
                     'private',
                     'mobile', // is that still a thing?
                     'fax', // is this still a thing?
+
+                    'mother', // TODO: we need to make this controllable
+                    'father', // this too
                 ]),
                 enumNames: (numbertypeNames || [
                     'geschäftlich',
                     'privat',
                     'mobil',
                     'Fax',
+                    'Tel. Mutter',
+                    'Tel. Vater'
                 ])
             }
         },
