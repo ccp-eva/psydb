@@ -1,10 +1,11 @@
-import React, { useReducer, useEffect } from 'react';
+import React, { useReducer, useEffect, useState } from 'react';
 
 import agent from '@mpieva/psydb-ui-request-agents';
-import { Table } from '../record-list';
 import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
-
 import { useFetch } from '@mpieva/psydb-ui-hooks';
+
+import { Table } from '../record-list';
+import { QuickSearch } from './quick-search';
 
 const StudySelectList = ({
     studyRecordType,
@@ -24,14 +25,17 @@ const StudySelectList = ({
     bsTableProps,
     CustomActionListComponent,
 }) => {
+    var [ query, updateQuery ] = useState({});
+
     var [ didFetch, fetched ] = useFetch((agent) => {
         return agent.fetchSelectableStudies({
             studyRecordType,
             experimentType,
             experimentTypes,
             target,
+            filters: query
         })
-    }, [ studyRecordType, experimentType ]);
+    }, [ studyRecordType, experimentType, query ]);
 
     if (!didFetch) {
         return (
@@ -47,27 +51,45 @@ const StudySelectList = ({
         relatedCustomRecordTypeLabels,
     } = fetched.data;
 
+    var quickSearchClassName = (
+        target === 'optionlist'
+        ? 'mb-n2 mt-2'
+        : 'bg-light px-3 pt-2 border-top mt-3'
+    );
+
     return (
-        <Table { ...({
-            records,
-            displayFieldData,
-            relatedRecordLabels,
-            relatedHelperSetItems,
-            relatedCustomRecordTypeLabels,
+        <>
+            <div className={ quickSearchClassName }>
+                <QuickSearch
+                    className='pb-2'
+                    displayFieldData={ displayFieldData }
+                    searchValues={ query }
+                    onSubmit={ (next) => {
+                        updateQuery(next)
+                    }}
+                />
+            </div>
+            <Table { ...({
+                records,
+                displayFieldData,
+                relatedRecordLabels,
+                relatedHelperSetItems,
+                relatedCustomRecordTypeLabels,
 
-            target,
-            className,
-            emptyInfoText,
+                target,
+                className,
+                emptyInfoText,
 
-            enableSelectRecords,
-            showSelectionIndicator,
-            wholeRowIsClickable,
-            onSelectRecord,
-            selectedRecordIds,
-    
-            bsTableProps,
-            CustomActionListComponent,
-        })} />
+                enableSelectRecords,
+                showSelectionIndicator,
+                wholeRowIsClickable,
+                onSelectRecord,
+                selectedRecordIds,
+        
+                bsTableProps,
+                CustomActionListComponent,
+            })} />
+        </>
     )
 };
 
