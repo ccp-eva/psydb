@@ -1,6 +1,8 @@
 import React from 'react';
 import jsonpointer from 'jsonpointer';
 
+import { keyBy } from '@mpieva/psydb-core-utils';
+
 import {
     useFetch,
     usePaginationReducer,
@@ -13,6 +15,11 @@ import {
     Pagination,
 } from '@mpieva/psydb-ui-layout';
 
+import datefns from '@mpieva/psydb-ui-lib/src/date-fns'
+
+import FieldDataHeadCols from '@mpieva/psydb-ui-lib/src/record-list/field-data-head-cols';
+import FieldDataBodyCols from '@mpieva/psydb-ui-lib/src/record-list/field-data-body-cols';
+
 export const Results = (ps) => {
     var { schema, formData } = ps;
     
@@ -23,7 +30,6 @@ export const Results = (ps) => {
     var { offset, limit } = pagination;
     
     var [ didFetch, fetched ] = useFetch((agent) => {
-
         return (
             agent
             .getAxios()
@@ -46,8 +52,14 @@ export const Results = (ps) => {
 
     var {
         records,
-        recordsCount
+        recordsCount,
+        related,
+        displayFieldData,
     } = fetched.data;
+
+    var selectedFieldData = displayFieldData.filter(it => (
+        columns.includes(it.dataPointer)
+    ));
 
     var TableComponent = (
         recordsCount > 0
@@ -61,7 +73,9 @@ export const Results = (ps) => {
 
             <TableComponent { ...({
                 columns,
-                records
+                selectedFieldData,
+                records,
+                related
             })} />
         </div>
     )
@@ -72,7 +86,7 @@ const Fallback = (ps) => {
     return (
         <>
             <Table>
-                <TableHead />
+                <TableHead { ...ps } />
             </Table>
             <Alert variant='info'>
                 <i>Keine Datensätze gefunden</i>
@@ -91,27 +105,69 @@ const RecordTable = (ps) => {
 }
 
 const TableHead = (ps) => {
-    var { columns } = ps;
+    var { columns, selectedFieldData } = ps;
+    var keyed = keyBy({ items: selectedFieldData, byProp: 'dataPointer' });
     return (
         <thead><tr>
-            { columns.map(col => (
-                <th key={ col }>{ col}</th>
-            ))}
+            <FieldDataHeadCols { ...({
+                displayFieldData: (
+                    columns.map(it => keyed[it]).filter(it => !!it)
+                ),
+            })} />
+            { columns.includes('/_specialStudyParticipation') && (
+                <th>Studien</th>
+            )}
         </tr></thead>
     )
 }
 
 const TableBody = (ps) => {
-    var { columns, records } = ps;
+    var { columns, selectedFieldData, records, related } = ps;
+    var keyed = keyBy({ items: selectedFieldData, byProp: 'dataPointer' });
+
     return (
         <tbody>
             { records.map(it => (
                 <tr key={ it._id }>
-                    { columns.map(col => (
-                        <td key={ col }>{ jsonpointer.get(it, col) }</td>
-                    ))}
+                    <FieldDataBodyCols { ...({
+                        record: it,
+                        //displayFieldData: selectedFieldData,
+                        displayFieldData: (
+                            columns.map(it => keyed[it]).filter(it => !!it)
+                        ),
+                        ...related
+                    })} />
+                    { columns.includes('/_specialStudyParticipation') && (
+                        <ParticipationColumn
+                            participation={
+                                it
+                                .scientific.state
+                                .internals.participatedInStudies
+                            }
+                            related={ related }
+                        />
+                    )}
                 </tr>
             ))}
         </tbody>
+    )
+}
+
+const ParticipationColumn = (ps) => {
+    var { participation, related } = ps;
+    var relatedStudies = related.relatedRecordLabels.study;
+    return (
+        <td>
+            {
+                participation
+                .filter(it => it.status === 'participated')
+                .map(it => {
+                    var studyLabel = relatedStudies[it.studyId]._recordLabel;
+                    var date = datefns.format(new Date(it.timestamp), 'P');
+                    return `${studyLabel} (${date})`;
+                })
+                .join('; ')
+            }
+        </td>
     )
 }

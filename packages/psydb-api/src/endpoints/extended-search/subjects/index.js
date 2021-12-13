@@ -10,6 +10,8 @@ var {
 
     fetchOneCustomRecordType,
     convertPointerToPath,
+    gatherDisplayFieldsForRecordType,
+    fetchRelatedLabelsForMany,
 } = require('@mpieva/psydb-api-lib');
 
 
@@ -51,6 +53,15 @@ var subjectExtendedSearch = async (context, next) => {
         type: subjectType
     });
 
+    var {
+        availableDisplayFieldData,
+    } = await gatherDisplayFieldsForRecordType({
+        db,
+        collectionName: 'subject',
+        customRecordType: subjectType,
+        target: 'table',
+    });
+
     var { subChannelFields } = crt.state.settings;
 
     var customFields = {
@@ -75,16 +86,24 @@ var subjectExtendedSearch = async (context, next) => {
 
     console.dir(customQueryValues, { depth: null })
 
+
     var stages = [
         { $match: {
             ...convertPointerKeys(customQueryValues),
         }},
+        
         { $project: {
             ...columns.reduce((acc, pointer) => ({
                 ...acc,
                 [ convertPointerToPath(pointer) ]: true
             }), {}),
+            ...(columns.includes('/_specialStudyParticipation') && {
+                'scientific.state.internals.participatedInStudies': true
+            })
         }},
+
+        SortStage({ ...sort }),
+
         { $facet: {
             records: [
                 { $skip: offset },
@@ -92,7 +111,7 @@ var subjectExtendedSearch = async (context, next) => {
             ],
             recordsCount: [{ $count: 'COUNT' }]
         }}
-    ];
+    ].filter(it => !!it);
 
     console.dir({ stages }, { depth: null });
 
@@ -102,14 +121,34 @@ var subjectExtendedSearch = async (context, next) => {
     
     var [ records, recordsCount ] = fromFacets(facets);
 
+    var related = await fetchRelatedLabelsForMany({
+        db,
+        collectionName: 'subject',
+        recordType: subjectType,
+        records: records,
+    });
+
     context.body = ResponseBody({
         data: {
             records,
             recordsCount,
+            related,
+            displayFieldData: availableDisplayFieldData,
         },
     });
 }
 
+var SortStage = (options) => {
+    var { column, direction = 'asc' } = options;
+    if (!column) {
+        return undefined;
+    }
+    var path = convertPointerToPath(column);
+    return { $sort: {
+        [path]: direction === 'desc' ? -1 : 1,
+    }}
+
+}
 
 module.exports = subjectExtendedSearch;
 
