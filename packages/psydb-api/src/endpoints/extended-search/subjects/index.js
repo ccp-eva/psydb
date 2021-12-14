@@ -95,6 +95,7 @@ var subjectExtendedSearch = async (context, next) => {
         }},
         
         { $project: {
+            type: true,
             ...columns.reduce((acc, pointer) => ({
                 ...acc,
                 [ convertPointerToPath(pointer) ]: true

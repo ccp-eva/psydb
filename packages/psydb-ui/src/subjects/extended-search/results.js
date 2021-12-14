@@ -13,6 +13,7 @@ import {
     Alert,
     LoadingIndicator,
     Pagination,
+    DetailsIconButton,
     LinkContainer,
 } from '@mpieva/psydb-ui-layout';
 
@@ -121,6 +122,7 @@ const TableHead = (ps) => {
             { columns.includes('/_specialUpcomingExperiments') && (
                 <th>Termine</th>
             )}
+            <th></th>
         </tr></thead>
     )
 }
@@ -156,6 +158,13 @@ const TableBody = (ps) => {
                             experiments={ it._specialUpcomingExperiments }
                         />
                     )}
+                    <td>
+                        <div className='d-flex justify-content-end'>
+                            <DetailsIconButton
+                                to={`/subjects/${it.type}/${it._id}`}
+                            />
+                        </div>
+                    </td>
                 </tr>
             ))}
         </tbody>
