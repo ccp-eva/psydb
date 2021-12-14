@@ -13,6 +13,7 @@ import {
     Alert,
     LoadingIndicator,
     Pagination,
+    LinkContainer,
 } from '@mpieva/psydb-ui-layout';
 
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns'
@@ -117,6 +118,9 @@ const TableHead = (ps) => {
             { columns.includes('/_specialStudyParticipation') && (
                 <th>Studien</th>
             )}
+            { columns.includes('/_specialUpcomingExperiments') && (
+                <th>Termine</th>
+            )}
         </tr></thead>
     )
 }
@@ -147,6 +151,11 @@ const TableBody = (ps) => {
                             related={ related }
                         />
                     )}
+                    { columns.includes('/_specialUpcomingExperiments') && (
+                        <ExperimentColumn
+                            experiments={ it._specialUpcomingExperiments }
+                        />
+                    )}
                 </tr>
             ))}
         </tbody>
@@ -168,6 +177,32 @@ const ParticipationColumn = (ps) => {
                 })
                 .join('; ')
             }
+        </td>
+    )
+}
+
+const ExperimentColumn = (ps) => {
+    var { experiments, related } = ps;
+    var items = (
+        experiments
+        .map((it, index) => {
+            var date = datefns.format(
+                new Date(it.state.interval.start), 'P'
+            );
+            return (
+                <LinkContainer to={ `/experiments/${it.type}/${it._id}` }>
+                    <a>{ it.state.studyLabel } ({date})</a>
+                </LinkContainer>
+            );
+        })
+    );
+    return (
+        <td>
+            { items.map((it, index) => (
+                <>
+                    { it }{'; '}
+                </>
+            ))}
         </td>
     )
 }

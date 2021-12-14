@@ -3,6 +3,8 @@ var debug = require('debug')(
     'psydb:api:endpoints:extendedSearch:subjects'
 );
 
+var { groupBy } = require('@mpieva/psydb-core-utils');
+
 var {
     ResponseBody,
     validateOrThrow,
@@ -84,7 +86,7 @@ var subjectExtendedSearch = async (context, next) => {
         }),
     }
 
-    console.dir(customQueryValues, { depth: null })
+    //console.dir(customQueryValues, { depth: null })
 
 
     var stages = [
@@ -99,7 +101,7 @@ var subjectExtendedSearch = async (context, next) => {
             }), {}),
             ...(columns.includes('/_specialStudyParticipation') && {
                 'scientific.state.internals.participatedInStudies': true
-            })
+            }),
         }},
 
         SortStage({ ...sort }),
@@ -113,7 +115,7 @@ var subjectExtendedSearch = async (context, next) => {
         }}
     ].filter(it => !!it);
 
-    console.dir({ stages }, { depth: null });
+    //console.dir({ stages }, { depth: null });
 
     var facets = await (
         db.collection('subject').aggregate(stages).toArray()
@@ -121,12 +123,27 @@ var subjectExtendedSearch = async (context, next) => {
     
     var [ records, recordsCount ] = fromFacets(facets);
 
+    var experiments = (
+        await fetchUpcomingExperiments({ db, records })
+    );
+    var upcomingExperimentsForSubject = groupBy({
+        items: experiments,
+        byPointer: '/state/subjectId',
+    });
+
+    //console.log({ upcomingExperimentsForSubject });
+
     var related = await fetchRelatedLabelsForMany({
         db,
         collectionName: 'subject',
         recordType: subjectType,
         records: records,
     });
+
+    records = records.map(it => ({
+        ...it,
+        _specialUpcomingExperiments: upcomingExperimentsForSubject[it._id] || [],
+    }));
 
     context.body = ResponseBody({
         data: {
@@ -148,6 +165,46 @@ var SortStage = (options) => {
         [path]: direction === 'desc' ? -1 : 1,
     }}
 
+}
+
+var fetchUpcomingExperiments = async ({ db, records }) => {
+    var now = new Date();
+
+    var records = await (
+        db.collection('experiment').aggregate([
+            { $match: {
+                'state.isPostprocessed': false,
+                'state.isCanceled': false,
+            }},
+            { $sort: { 'state.interval.start': 1 }},
+            { $unwind: '$state.subjectData' },
+            { $project: {
+                'type': true,
+                'state.subjectId': '$state.subjectData.subjectId',
+                'state.interval': true,
+                'state.studyId': true,
+            }},
+        ]).toArray()
+    );
+    
+    var related = await fetchRelatedLabelsForMany({
+        db,
+        collectionName: 'experiment',
+        records,
+    });
+
+    records = records.map(it => ({
+        ...it,
+        state: {
+            ...it.state,
+            studyLabel: (
+                related.relatedRecordLabels
+                .study[it.state.studyId]._recordLabel
+            )
+        }
+    }));
+
+    return records;
 }
 
 module.exports = subjectExtendedSearch;
