@@ -13,6 +13,8 @@ import {
     differenceInCalendarYears,
     differenceInCalendarMonths,
     differenceInCalendarDays,
+
+    intervalToDuration,
 } from 'date-fns';
 
 import de from 'date-fns/locale/de';
@@ -30,6 +32,8 @@ const custom = {
     differenceInCalendarYears,
     differenceInCalendarMonths,
     differenceInCalendarDays,
+
+    intervalToDuration,
 }
 
 custom.format = (date, fmt, options = {}) => (
