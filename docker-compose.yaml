@@ -20,8 +20,21 @@ services:
       - "/home/jans/psydb-ssl:/etc/ssl/private"
     networks:
       - "psydb-net"
+    # make it accessible from outside
     extra_hosts:
       - "host.docker.internal:host-gateway"
+
+  mailhog:
+    image: "mailhog/mailhog"
+    ports:
+      - "127.0.0.1:1025:1025"
+      - "8025:8025"
+    networks:
+      - "psydb-net"
+    # make it accessible from outside
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
 
 #  psydb:
 #    image: "psydb/psydb:latest"
