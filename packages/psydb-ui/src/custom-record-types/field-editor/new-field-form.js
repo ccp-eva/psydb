@@ -26,7 +26,16 @@ var createSchema = ({ hasSubChannels }) => ({
                 FieldDefinitionSchemas.SaneString(),
                 FieldDefinitionSchemas.BiologicalGender(),
             ]*/
-            oneOf: Object.values(FieldDefinitionSchemas).map(f => f()),
+            oneOf: Object.values(FieldDefinitionSchemas).map(f => {
+                var fieldSchema = f();
+                delete fieldSchema.properties.key;
+                fieldSchema.required = (
+                    fieldSchema.required.filter(it => it !== 'key')
+                );
+                console.log(fieldSchema);
+                return fieldSchema;
+            }).sort((a, b) => (a.title < b.title ? -1 : 1)),
+
         },
     },
 });
@@ -51,14 +60,19 @@ const NewFieldForm = ({ record, onSuccess }) => {
     console.log(schema);
 
     var onSubmit = ({ formData, ...unused }) => {
+        var { subChannelKey, fieldData } = formData;
         var message = {
             type: 'custom-record-types/add-field-definition',
             payload: {
                 id: record._id,
                 lastKnownEventId: record._lastKnownEventId,
-                ...(hasSubChannels && ({ subChannelKey: formData.subChannelKey })),
+                ...(hasSubChannels && ({ subChannelKey })),
                 props: {
-                    ...formData.fieldData
+                    ...fieldData,
+                    key: (
+                        (String(fieldData.displayName) || '')
+                        .toLowerCase().replaceAll(/[^A-Za-z0-9]/g, '_')
+                    ),
                 }
             }
         }

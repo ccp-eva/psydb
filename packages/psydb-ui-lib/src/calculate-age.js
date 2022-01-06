@@ -12,22 +12,11 @@ const calculateAge = ({
     // FIXME: timezone correction
     base = new Date(base);
     relativeTo = new Date(relativeTo);
+
+    var { years, months, days } = datefns.intervalToDuration({
+        start: base, end: relativeTo
+    });
     
-    var tmp = new Date(base);
-    var years = datefns.differenceInCalendarYears(relativeTo, tmp);
-    tmp = datefns.add(tmp, { years });
-    var months = datefns.differenceInCalendarMonths(relativeTo, tmp);
-    tmp = datefns.add(tmp, { months });
-    var days = datefns.differenceInCalendarDays(relativeTo, tmp);
-
-    /*var delta = relativeTo.getTime() - base.getTime();
-
-    var years = Math.floor(delta / YEAR);
-    delta -= years * YEAR;
-    var months = Math.floor(delta / MONTH);
-    delta -= months * MONTH;
-    var days = Math.floor(delta / DAY);*/
-
     return `${years}/${months}/${days}`;
 }
 

@@ -28,12 +28,19 @@ var {
     ExperimentVariantEnum,
 } = require('@mpieva/psydb-schema-fields');
 
+var convertFiltersToQueryFields = require('@mpieva/psydb-api-lib/src/convert-filters-to-query-fields');
+var fieldTypeMetadata = require('@mpieva/psydb-common-lib/src/field-type-metadata');
+
 var RequestBodySchema = () => ({
     oneOf: [
         ExactObject({
             properties: {
                 studyRecordType: CustomRecordTypeKey({ collection: 'study' }),
-                target: StringEnum([ 'table', 'optionlist' ])
+                target: StringEnum([ 'table', 'optionlist' ]),
+                filters: {
+                    type: 'object',
+                    // TODO
+                },
             },
             required: [
                 'studyRecordType',
@@ -44,7 +51,11 @@ var RequestBodySchema = () => ({
                 studyRecordType: CustomRecordTypeKey({ collection: 'study' }),
                 // FIXME: this is actually labProcedureType
                 experimentType: ExperimentVariantEnum(),
-                target: StringEnum([ 'table', 'optionlist' ])
+                target: StringEnum([ 'table', 'optionlist' ]),
+                filters: {
+                    type: 'object',
+                    // TODO
+                },
             },
             required: [
                 'studyRecordType',
@@ -59,7 +70,11 @@ var RequestBodySchema = () => ({
                     items: ExperimentVariantEnum(),
                     minItems: 1
                 }),
-                target: StringEnum([ 'table', 'optionlist' ])
+                target: StringEnum([ 'table', 'optionlist' ]),
+                filters: {
+                    type: 'object',
+                    // TODO
+                },
             },
             required: [
                 'studyRecordType',
@@ -86,6 +101,7 @@ var selectableStudies = async (context, next) => {
         experimentType: labProcedureType,
         experimentTypes: labProcedureTypes,
         target,
+        filters = {},
     } = request.body
 
 
@@ -150,6 +166,12 @@ var selectableStudies = async (context, next) => {
         }},
     ];
 
+    var queryFields = convertFiltersToQueryFields({
+        filters,
+        displayFields,
+        fieldTypeMetadata,
+    });
+
     // FIXME: this is not fully correct
     // we actually need to limit to studies that involve
     // researchgroupds the user belongs to
@@ -162,6 +184,7 @@ var selectableStudies = async (context, next) => {
         recordLabelDefinition,
         additionalPreprocessStages,
         target,
+        queryFields,
         //offset,
         //limit
         

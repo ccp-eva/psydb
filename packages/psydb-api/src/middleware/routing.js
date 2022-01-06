@@ -290,6 +290,13 @@ var createRouting = ({
         endpoints.special.searchStudiesForExclusion
     );
 
+    router.post('/extended-search/subjects',
+        withSelfAuth(),
+        withPermissions(),
+        withKoaBody(),
+        endpoints.extendedSearch.subjects
+    );
+
     return compose([
         router.routes(),
         router.allowedMethods(),

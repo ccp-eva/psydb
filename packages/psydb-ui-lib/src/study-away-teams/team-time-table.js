@@ -11,6 +11,59 @@ import keyBy from '@mpieva/psydb-common-lib/src/key-by';
 import datefns from '../date-fns';
 import getTextColor from '../bw-text-color-for-background';
 
+var calculateOverlap = (that, other) => {
+    // FIXME: breaks when start/end are reversed in that/other
+    if (that.end <= other.start || that.start >= other.end) {
+        return 0;
+    }
+
+    var maxStart = (
+        that.start > other.start
+        ? that.start
+        : other.start
+    );
+    var minEnd = (
+        that.end < other.end
+        ? that.end
+        : other.end
+    );
+
+    return (minEnd - maxStart);
+}
+
+var toIntInterval = ({ start, end }) => ({
+    start: start.getTime(),
+    end: end.getTime(),
+});
+
+var toDateInterval = ({ start, end }) => ({
+    start: new Date(start),
+    end: new Date(end),
+})
+
+var spliceWithMaxOverlap = ({ items, interval }) => {
+    var maxOverlap = 0;
+    var maxIndex = undefined;
+    for (var [ index, it ] of items.entries()) {
+        var overlap = calculateOverlap(
+            toIntInterval(toDateInterval(it.state.interval)),
+            toIntInterval(toDateInterval(interval)),
+        );
+        if (overlap > maxOverlap) {
+            maxOverlap = overlap;
+            maxIndex = index;
+        };
+    }
+    
+    if (maxIndex === undefined) {
+        return undefined
+    }
+    else {
+        var it = items.splice(maxIndex, 1)[0];
+        return it;
+    }
+}
+
 const TeamTimeTable = ({
     teamRecord,
     allDayStarts,
@@ -23,7 +76,39 @@ const TeamTimeTable = ({
     onSelectExperimentSlot,
 }) => {
 
-    var keyedExperiments = keyBy({
+    var filteredExperiments = experimentRecords.filter(it => (
+        it.state.experimentOperatorTeamId === teamRecord._id
+    ));
+    var filteredReservations = reservationRecords.filter(it => (
+        it.state.experimentOperatorTeamId === teamRecord._id
+    ));
+
+    var itemsByDayStart = {};
+    allDayStarts.forEach(dayStart => {
+        var k = dayStart.toISOString();
+        
+        // FIXME: this is still a hack
+        var interval = {
+            start: dayStart,
+            end: datefns.endOfDay(dayStart)
+        };
+        var reservationRecord = spliceWithMaxOverlap({
+            items: filteredReservations,
+            interval
+        });
+        var experimentRecord = spliceWithMaxOverlap({
+            items: filteredExperiments,
+            interval
+        });
+
+        itemsByDayStart[k] = {
+            reservationRecord,
+            experimentRecord,
+        }
+    })
+
+
+    /*var keyedExperiments = keyBy({
         items: experimentRecords.filter(it => (
             it.state.experimentOperatorTeamId === teamRecord._id
         )),
@@ -35,7 +120,7 @@ const TeamTimeTable = ({
             it.state.experimentOperatorTeamId === teamRecord._id
         )),
         byPointer: '/state/interval/start'
-    });
+    });*/
 
 
     return (
@@ -56,8 +141,13 @@ const TeamTimeTable = ({
                 </Col>
                 { allDayStarts.map(dayStart => {
                     var k = dayStart.toISOString();
-                    var reservationRecord = keyedReservations[k];
-                    var experimentRecord = keyedExperiments[k];
+                    
+                    var {
+                        reservationRecord,
+                        experimentRecord,
+                    } = itemsByDayStart[k]
+                    //var reservationRecord = keyedReservations[k];
+                    //var experimentRecord = keyedExperiments[k];
 
                     return <Col
                         key={ dayStart.getTime() }
@@ -87,7 +177,7 @@ const TimeSlot = ({
 
     reservationRecord,
     experimentRecord,
-    
+
     onSelectEmptySlot,
     onSelectReservationSlot,
     onSelectExperimentSlot,
@@ -136,7 +226,7 @@ const ExperimentSlot = ({
         'empty',
     ];
     var role = '';
-    
+
     if (onSelectReservationSlot) {
         classNames.push('selectable');
         role = 'button';
@@ -186,7 +276,7 @@ const ReservationSlot = ({
         'empty',
     ];
     var role = '';
-    
+
     if (onSelectReservationSlot) {
         classNames.push('selectable');
         role = 'button';
@@ -228,7 +318,7 @@ const EmptySlot = ({
         'empty',
     ];
     var role = '';
-    
+
     if (onSelectEmptySlot) {
         classNames.push('selectable');
         role = 'button';

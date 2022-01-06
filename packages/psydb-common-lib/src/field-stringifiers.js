@@ -47,7 +47,7 @@ var DateTime = (value) => {
 var DateOnlyServerSide = (value) => {
     return (
         value === null
-        ? 'Keine Angabe'
+        ? '-'
         : formatDate(new Date(value), 'P', { locale: deLocale })
     )
 };

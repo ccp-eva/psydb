@@ -232,7 +232,21 @@ module.exports = {
                 },
                 dataPointer: '/state/scientistIds',
                 displayName: 'Wissenschaftler',
-            }
+            },
+            {
+                key: '_start',
+                systemType: 'DateOnlyServerSide',
+                props: {},
+                dataPointer: '/state/runningPeriod/start',
+                displayName: 'Start',
+            },
+            {
+                key: '_end',
+                systemType: 'DateOnlyServerSide',
+                props: {},
+                dataPointer: '/state/runningPeriod/end',
+                displayName: 'Ende',
+            },
         ]
         // TODO: more as a note - maybe we should
         // rename "internal" to private

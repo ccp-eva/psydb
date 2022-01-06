@@ -9,7 +9,11 @@ import {
     useParams
 } from 'react-router-dom';
 
-import { useFetchAll } from '@mpieva/psydb-ui-hooks';
+import {
+    useFetchAll,
+    usePermissions,
+} from '@mpieva/psydb-ui-hooks';
+
 import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 import { ReservationTypeRouting } from './reservation-type-routing';
 
@@ -40,6 +44,9 @@ export const Main = ({ customRecordTypes }) => {
         })
     }), [ studyType, studyId ]);
 
+    var permissions = usePermissions();
+
+
     if (!didFetch) {
         return <LoadingIndicator size='lg' />
     }
@@ -51,6 +58,26 @@ export const Main = ({ customRecordTypes }) => {
     settingRecords = settingRecords.filter(it => (
         ['inhouse', 'away-team', 'online-video-call'].includes(it.type)
     ))
+
+    var canReserveLocations = (
+        settingRecords.find(it => (
+            ['inhouse', 'online-video-call'].includes(it.type)
+        ))
+        && permissions.hasSomeLabOperationFlags({
+            types: [ 'inhouse', 'online-video-call' ],
+            flags: [ 'canWriteReservations' ]
+        })
+    );
+
+    var canReserveTeams = (
+        settingRecords.find(it => (
+            ['away-team'].includes(it.type)
+        ))
+        && permissions.hasSomeLabOperationFlags({
+            types: [ 'away-team' ],
+            flags: [ 'canWriteReservations ']
+        })
+    );
 
     var renderedPicker = (
         <>
@@ -96,7 +123,11 @@ export const Main = ({ customRecordTypes }) => {
             <hr />
             <Switch>
                 <Route exact path={ path }>
-                    <Redirect to={`${url}/locations`} />
+                    <Redirect to={
+                        canReserveLocations
+                        ? `${url}/locations`
+                        : `${url}/away-teams`
+                    } />
                 </Route>
                 <Route path={`${path}/:navItem`}>
                     <ReservationTypeRouting { ...({

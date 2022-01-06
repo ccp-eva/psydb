@@ -20,14 +20,16 @@ const CollectionHeader = ({
 }) => {
     return (
         <header>
-            <LinkContainer to={ url }>
-                <h1 className='m-0 border-bottom' role='button'>
-                    {
-                        collectionDisplayNames[collection]
-                        || collection
-                    }
-                </h1>
-            </LinkContainer>
+            <h1 className='m-0 border-bottom'>
+                <LinkContainer to={ url }>
+                    <span role='button'>
+                        {
+                            collectionDisplayNames[collection]
+                                || collection
+                        }
+                    </span>
+                </LinkContainer>
+            </h1>
         </header>
     )
 }

@@ -49,11 +49,10 @@ var checkIntervalHasReservation = async ({
                         'type': 'awayTeam'
                     }
                 )
-            }}
+            }},
+            { $project: { events: false }},
         ]).toArray()
     );
-
-    //console.log(reservations);
 
     var merged = intervalUtils.merge({
         intervals: reservations.map(it => ({

@@ -1,6 +1,6 @@
 var Email = () => ({
     type: 'string',
-    format: 'email',
+    //format: 'email',
     title: 'Email',
     systemType: 'Email',
 });

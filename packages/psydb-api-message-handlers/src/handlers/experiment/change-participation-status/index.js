@@ -141,6 +141,8 @@ handler.triggerSystemEvents = async ({
         })
     )
 
+    // TODO: we need to somehow mark the invitation in subject
+    // record to not be pending anymore
     await subjectChannel.dispatchMany({
         subChannelKey: 'scientific',
         lastKnownEventId: subjectRecord.scientific.events[0]._id,

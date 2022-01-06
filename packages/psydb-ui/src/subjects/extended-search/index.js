@@ -1,8 +1,17 @@
-import React from 'react';
-import { useFetch } from '@mpieva/psydb-ui-hooks';
+import React, { useState } from 'react';
+import { Base64 } from 'js-base64';
+import { useHistory, useLocation } from 'react-router';
+
+import {
+    useFetch,
+    useURLSearchParams
+} from '@mpieva/psydb-ui-hooks';
+
 import {
     Button,
     LoadingIndicator,
+    TabNav,
+    PageWrappers,
 } from '@mpieva/psydb-ui-layout';
 
 import {
@@ -11,117 +20,121 @@ import {
     ExtendedSearchFields as Fields
 } from '@mpieva/psydb-ui-lib';
 
-const getCustomFields = (schema, subChannelKey) => (
-    schema.properties[subChannelKey]
-    .properties.state.properties.custom.properties
-);
+import { Filters } from './filters';
+import { Columns } from './columns';
+import { Results } from './results';
 
 const ExtendedSearch = (ps) => {
     var {
         collection,
         recordType
     } = ps;
+
+    var location = useLocation();
+    var history = useHistory();
+    var [ query, updateQuery ] = useURLSearchParams({
+        defaults: { tab: 'filters' }
+    });
+    var { tab, formData } = query;
     
+    var decodedFormData = undefined;
+    try {
+        if (formData) {
+            decodedFormData = JSON.parse(Base64.decode(formData));
+        }
+    }
+    catch (e) {}
+    
+    var handleSwitchTab = ({ nextTab, formData }) => {
+        var formData64 = Base64.encode(JSON.stringify(formData['$']));
+
+        var nextSearchQuery = updateQuery(
+            { ...query, tab: nextTab, formData: formData64 },
+            { push: false }
+        );
+        history.replace({
+            pathname: location.pathname,
+            search: nextSearchQuery
+        });
+    }
+
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.readRecordSchema({
             collection,
             recordType
         })
-    ), [ collection, recordType ])
+    ), [ collection, recordType ]);
 
     if (!didFetch) {
         return <LoadingIndicator size='lg' />
     }
 
     var schema = fetched.data;
-    var defaultValues = {}; // createDefaults({ schema })
+    var defaultValues = decodedFormData || {
+        subjectType: recordType,
+        customGdprFilters: {},
+        customScientificFilters: {},
+        specialFilters: {},
+        columns: { '/_id': true },
+        sort: { column: '/_id', direction: 'asc' },
+        limit: 0,
+        offset: 0
+    }; // createDefaults({ schema })
 
     return (
-        <FormBox title='Erweiterte Suche'>
+        <PageWrappers.Level3 title='Erweiterte Probandensuche'>
             <DefaultForm
                 onSubmit={ (formData) => { console.log(formData) }}
                 initialValues={ defaultValues }
             >
                 {(formikProps) => (
-                    <FormBody schema={ schema } />
+                    <Inner { ...({
+                        schema,
+                        activeTab: tab,
+                        onSwitchTab: handleSwitchTab,
+                        formData: formikProps.values
+                    })} />
                 )}
             </DefaultForm>
-        </FormBox>
+        </PageWrappers.Level3>
     );
 }
 
-const FormBody = (ps) => {
-    var { schema } = ps;
-    
-    var customGdpr = getCustomFields(schema, 'gdpr');
-    var customScientific = getCustomFields(schema, 'scientific');
+const Inner = (ps) => {
+    var {
+        activeTab = 'filters',
+        onSwitchTab,
+        schema,
+        formData,
+    } = ps;
+
+    var Component = {
+        filters: Filters,
+        columns: Columns,
+        results: Results
+    }[activeTab];
 
     return (
         <>
-            <CustomFields
-                dataXPath='$gdpr.state.custom'
-                fields={ customGdpr }
+            <TabNav 
+                onItemClick={ (nextTab) => (
+                    onSwitchTab({ nextTab, formData })
+                )}
+                activeKey={ activeTab }
+                className='d-flex'
+                itemClassName='flex-grow'
+                items={[
+                    { key: 'filters', label: 'Suchbedingungen' },
+                    { key: 'columns', label: 'Spalten' },
+                    { key: 'results', label: 'Ergebnisliste' },
+                ]}
             />
-            <CustomFields
-                dataXPath='$scientific.state.custom'
-                fields={ customScientific }
+            <Component
+                formData={ formData }
+                schema={ schema }
             />
-            <Button type='submit'>
-                Suchen
-            </Button>
-        </>
-    )
-}
-
-const CustomFields = (ps) => {
-    var { dataXPath, fields } = ps;
-    return (
-        <>
-            { Object.keys(fields).map(key => (
-                <SearchFieldWrapper
-                    key={ key }
-                    dataXPath={ `${dataXPath}.${key}` }
-                    schema={ fields[key] }
-                />
-            ))}
         </>
     );
-}
-
-const SearchFieldWrapper = (ps) => {
-    var { dataXPath, schema } = ps;
-    var { systemType, systemProps, title } = schema;
-
-    var type = getSearchFieldType(systemType);
-    console.log({ systemType, type });
-    
-    if (!type) {
-        return null;
-    }
-
-    var Component = Fields[type];
-    return (
-        <Component
-            label={ title }
-            dataXPath={ `${dataXPath}` }
-        />
-    );
-}
-
-const getSearchFieldType = (type) => {
-    switch (type) {
-        case 'SaneString':
-        case 'BiologicalGender':
-        case 'ExtBool':
-            return type;
-
-        case 'PhoneList':
-        case 'EmailList':
-            return 'SaneString';
-
-        default:
-            return undefined;
-    }
 }
 
 export default ExtendedSearch;

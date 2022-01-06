@@ -1,5 +1,6 @@
 import React from 'react';
 import { FieldArray } from 'formik';
+import { extractFrom } from '@mpieva/psydb-core-utils';
 import { FormHelpers } from '@mpieva/psydb-ui-layout';
 import WithField from './with-field';
 
@@ -38,9 +39,15 @@ const WithFieldArray = (options) => {
             disabled,
             enableMove,
             enableRemove,
+
+            contentClassName,
+            contentExtraClassName,
+            contentFallbackLabel,
+            
             ...downstream
         } = ps;
-    
+
+
         var { getFieldProps } = formikForm;
         var values = getFieldProps(dataXPath).value || [];
 
@@ -53,7 +60,11 @@ const WithFieldArray = (options) => {
             <ArrayContentWrapper { ...({
                 ...sharedBag,
                 defaultItemValue,
-                itemsCount: values.length
+                itemsCount: values.length,
+
+                className: contentClassName,
+                extraClassName: contentExtraClassName,
+                fallbackLabel: contentFallbackLabel,
             })} >
                 { values.map((value, index) => {
                     var sharedItemBag = {

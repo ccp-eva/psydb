@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
-import { createSend } from '@mpieva/psydb-ui-utils';
+import { useSend } from '@mpieva/psydb-ui-hooks';
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 import { Pair } from '@mpieva/psydb-ui-layout';
 
@@ -15,7 +15,7 @@ const CreateModal = ({
 }) => {
     var { teamRecord, interval } = modalPayloadData;
 
-    var handleSubmit = createSend(() => ({
+    var send = useSend(() => ({
         type: 'reservation/reserve-awayteam-slot',
         payload: {
             props: {
@@ -52,7 +52,7 @@ const CreateModal = ({
                 </Pair>
                 <hr />
                 <div className='d-flex justify-content-end'>
-                    <Button onClick={ handleSubmit }>
+                    <Button onClick={ send.exec }>
                         Reservieren
                     </Button>
                 </div>

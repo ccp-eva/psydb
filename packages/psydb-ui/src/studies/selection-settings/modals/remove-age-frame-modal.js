@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { createSend, demuxed } from '@mpieva/psydb-ui-utils';
+import { demuxed } from '@mpieva/psydb-ui-utils';
+import { useSend } from '@mpieva/psydb-ui-hooks';
 import { Button, WithDefaultModal } from '@mpieva/psydb-ui-layout';
 import { AgeFrame } from '../age-frame';
 //import * as Items from '../ageFrame-items';
@@ -16,7 +17,7 @@ const RemoveAgeFrameModalBody = (ps) => {
     var { ageFrameRecord } = modalPayloadData;
     var { _id: ageFrameId, subjectTypeKey } = ageFrameRecord;
 
-    var handleSubmit = createSend(() => ({
+    var send = useSend(() => ({
         type: `ageFrame/remove`,
         payload: { id: ageFrameId }
     }), {
@@ -35,7 +36,7 @@ const RemoveAgeFrameModalBody = (ps) => {
                 />
             </div>
             <div className='mt-3 d-flex justify-content-end'>
-                <Button selector='danger' onClick={ handleSubmit }>
+                <Button selector='danger' onClick={ send.exec }>
                     Löschen
                 </Button>
             </div>

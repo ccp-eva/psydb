@@ -28,11 +28,11 @@ var PersonnelGdprState = ({ enableInternalProps } = {}) => {
             
             emails: EmailList({
                 title: 'E-Mail',
-                minItems: 1
+                minItems: 0
             }),
             phones: PhoneList({
                 title: 'Telefon',
-                minItems: 1
+                minItems: 0
             }),
             
             // TODO: find out what thats good for

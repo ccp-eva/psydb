@@ -35,14 +35,14 @@ const DefaultSchemaForm = ({
 
     var wrappedOnSubmit = (...args) => {
         var promise = onSubmit(...args);
-        promise.catch(error => {
-            if (error.response) {
-                dispatch({ type: 'set-api-error', payload: error.response })
-            }
-            else {
-                throw error;
-            }
-        })
+        //promise.catch(error => {
+        //    if (error.response) {
+        //        dispatch({ type: 'set-api-error', payload: error.response })
+        //    }
+        //    else {
+        //        throw error;
+        //    }
+        //})
     }
 
     var handleHideErrorModal = () => {

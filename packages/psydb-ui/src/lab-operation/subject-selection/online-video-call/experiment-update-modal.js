@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
-import { createSend } from '@mpieva/psydb-ui-utils';
+import { useSend } from '@mpieva/psydb-ui-hooks';
 
 import ExperimentShortControls from '@mpieva/psydb-ui-lib/src/experiment-short-controls';
 
@@ -29,7 +29,7 @@ const ExperimentUpdateModal = (ps) => {
         onSuccessfulUpdate && onSuccessfulUpdate(...args);
     };
 
-    var handleSubmit = createSend(() => ({
+    var send = useSend(() => ({
         type: 'experiment/add-subject',
         payload: {
             labProcedureTypeKey: 'online-video-call',
@@ -62,7 +62,7 @@ const ExperimentUpdateModal = (ps) => {
                 })} />
                 <hr />
                 <div className='d-flex justify-content-end'>
-                    <Button size="sm" onClick={ handleSubmit }>
+                    <Button size="sm" onClick={ send.exec }>
                         Hinzufügen
                     </Button>
                 </div>

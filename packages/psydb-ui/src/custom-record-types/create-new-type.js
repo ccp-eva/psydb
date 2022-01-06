@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { createSend } from '@mpieva/psydb-ui-utils';
+import { useSend } from '@mpieva/psydb-ui-hooks';
 import FormBox from '@mpieva/psydb-ui-lib/src/form-box';
 import { SchemaForm } from '@mpieva/psydb-ui-lib';
 
@@ -14,10 +14,10 @@ import {
 const schema = ExactObject({
     properties: {
         collection: CustomRecordTypeCollectionEnum({ title: 'Collection' }),
-        type: IdentifierString({
-            title: 'Interner Type-Key',
-            minLength: 1,
-        }),
+        //type: IdentifierString({
+        //    title: 'Interner Type-Key',
+        //    minLength: 1,
+        //}),
         label: SaneString({
             title: 'Anzeigename',
             minLength: 1,
@@ -25,7 +25,7 @@ const schema = ExactObject({
     },
     required: [
         'collection',
-        'type',
+        //'type',
         'label',
     ]
 })
@@ -42,11 +42,15 @@ const CreateNewType = ({ onCreated }) => {
         });
     }
 
-    var onSubmit = createSend(({ formData }) => ({
+    var send = useSend(({ formData }) => ({
         type: 'custom-record-types/create',
         payload: {
             collection: formData.collection,
-            type: formData.type,
+            //type: formData.type,
+            type: (
+                (String(formData.label) || '')
+                .toLowerCase().replaceAll(/[^A-Za-z0-9]/g, '_')
+            ),
             props: {
                 label: formData.label
             }
@@ -57,7 +61,7 @@ const CreateNewType = ({ onCreated }) => {
         <FormBox title='Neuer Datensatz-Typ'>
             <SchemaForm
                 schema={ schema }
-                onSubmit={ onSubmit }
+                onSubmit={ send.exec }
             />
         </FormBox>
     )

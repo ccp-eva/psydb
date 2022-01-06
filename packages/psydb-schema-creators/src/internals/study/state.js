@@ -76,7 +76,7 @@ var StudyState = (ps = {}) => {
             studyTopicIds: ForeignIdList({
                 title: 'Themengebiete',
                 collection: 'studyTopic',
-                minItems: 1,
+                minItems: 0,
             }),
 
             // TODO: move to labProcedureSettings
@@ -127,9 +127,10 @@ var StudyState = (ps = {}) => {
 
             // FIXME: should probably be in internals
             // TODO: obsolete
-            selectionSettingsBySubjectType: SubjectSelectionSettingsList({
+            selectionSettingsBySubjectType: { type: 'array' },
+            /*selectionSettingsBySubjectType: SubjectSelectionSettingsList({
                 subjectRecordTypeRecords,
-            }),
+            }),*/
 
             excludedOtherStudyIds: ForeignIdList({
                 collection: 'study',

@@ -22,6 +22,7 @@ module.exports = {
 
     createSchemaForRecordType: require('./create-schema-for-record-type'),
 
+    convertPointerToPath: require('./convert-pointer-to-path'),
     fetchOneCustomRecordType: require('./fetch-one-custom-record-type'),
     fetchCustomRecordTypes: require('./fetch-custom-record-types'),
 

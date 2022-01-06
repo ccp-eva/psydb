@@ -163,6 +163,8 @@ var search = async (context, next) => {
         disablePermissionCheck: (target === 'optionlist' ? true : false)
     });
 
+    //console.dir(records, { depth: null });
+
     var related = await fetchRelatedLabelsForMany({
         db,
         collectionName,

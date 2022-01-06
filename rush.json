@@ -124,6 +124,11 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/psydb-migration",
+       "projectFolder": "packages/psydb-migration",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-fixtures",
        "projectFolder": "packages/psydb-fixtures",
        "reviewCategory": "production"

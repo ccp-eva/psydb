@@ -35,7 +35,21 @@ const SideNav = (ps) => {
                 as='nav'
             >
                 <div className='navbar-nav'>
-                    <Link to='/calendars'>Kalender</Link>
+                    
+                <WhenAllowed flags={[
+                        'canReadSubjects', 'canWriteSubjects'
+                    ]}>
+                        <Link to='/subjects'><b>Probanden</b></Link>
+                    </WhenAllowed>
+
+                    <WhenAllowed flags={[
+                        'canReadStudies', 'canWriteStudies'
+                    ]}>
+                        <Link to='/studies'><b>Studien</b></Link>
+                    </WhenAllowed>
+
+
+                    <Link to='/calendars'><b>Kalender</b></Link>
                     <Nav className='flex-column pl-3'>
                         <WhenAllowed flag='canViewReceptionCalendar'>
                             <Link to='/calendars/reception'>Rezeption</Link>
@@ -69,7 +83,7 @@ const SideNav = (ps) => {
                         'canConfirmSubjectInvitation',
                         'canPostprocessExperiments',
                     ]}>
-                        <Link to='/lab-operation'>Studienbetrieb</Link>
+                        <Link to='/lab-operation'><b>Studienbetrieb</b></Link>
                         <Nav className='flex-column pl-3'>
 
                             <WhenAllowed labFlag='canWriteReservations'>
@@ -96,29 +110,28 @@ const SideNav = (ps) => {
                         </Nav>
                     </WhenAllowed>
 
-                    <WhenAllowed flags={[
-                        'canReadSubjects', 'canWriteSubjects'
-                    ]}>
-                        <Link to='/subjects'>Probanden</Link>
-                    </WhenAllowed>
+                    <div className='border-top mt-2 mb-2' />
 
-                    <WhenAllowed flags={[
-                        'canReadStudies', 'canWriteStudies'
-                    ]}>
-                        <Link to='/studies'>Studien</Link>
-                    </WhenAllowed>
-
-                    <WhenAllowed flag='canWriteAdministrativeCollections'>
+                    <WhenAllowed flag='canWriteLocations'>
                         <Link to='/locations'>Locations</Link>
+                    </WhenAllowed>
+                    <WhenAllowed flag='canWriteExternalPersons'>
                         <Link to='/external-persons'>Externe Personen</Link>
+                    </WhenAllowed>
+                    <WhenAllowed flag='canWriteExternalOrganizations'>
                         <Link to='/external-organizations'>Externe Organsationen</Link>
+                    </WhenAllowed>
+                    <WhenAllowed flag='canWriteStudyTopics'>
                         <Link to='/study-topics'>Themengebiete</Link>
+                    </WhenAllowed>
+                    <WhenAllowed flag='canWriteHelperSets'>
                         <Link to='/helper-sets'>Hilfstabellen</Link>
                     </WhenAllowed>
-
                     <WhenAllowed flag='canWritePersonnel'>
                         <Link to='/personnel'>Mitarbeiter</Link>
                     </WhenAllowed>
+
+                    <div className='border-top mt-2 mb-2' />
 
                     <WhenAllowed isRoot>
                         <Link to='/research-groups'>Forschungsgruppen</Link>

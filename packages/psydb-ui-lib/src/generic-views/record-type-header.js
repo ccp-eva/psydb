@@ -7,11 +7,11 @@ const RecordTypeHeader = ({
 }) => {
     return (
         <header>
-            <LinkContainer to={ url }>
-                <h5 className='mt-0 mb-3 text-muted' role='button'>
-                    Typ: { label }
-                </h5>
-            </LinkContainer>
+            <h5 className='mt-0 mb-3 text-muted'>
+                <LinkContainer to={ url }>
+                    <span role='button'>Typ: { label }</span>
+                </LinkContainer>
+            </h5>
         </header>
     )
 }

@@ -78,6 +78,7 @@ const CreateModalBody = (ps) => {
 export const CreateModal = WithDefaultModal({
     Body: CreateModalBody,
 
+    size: 'md',
     title: 'Reservierung',
     className: '',
     backdropClassName: '',

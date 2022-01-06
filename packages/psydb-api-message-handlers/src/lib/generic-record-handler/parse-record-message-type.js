@@ -2,7 +2,7 @@
 var rx = new RegExp(`
     ^
     ([a-zA-Z]+)\\/
-    (?:([a-zA-Z]+)\\/)?
+    (?:([a-zA-Z0-9_]+)\\/)?
     (create|patch)
     $
 `.replace(/\s*\n\s*/g, ''))

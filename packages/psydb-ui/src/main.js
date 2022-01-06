@@ -53,7 +53,7 @@ const Main = ({ onSignedOut, onSignedIn }) => {
     }
 
     var serverTimezone = fetched.data.timezone;
-    console.log({ serverTimezone });
+    //console.log({ serverTimezone });
 
     var onSignOut = () => (
         agent.signOut()

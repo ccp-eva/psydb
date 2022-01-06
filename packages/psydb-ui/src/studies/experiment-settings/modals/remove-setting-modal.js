@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { createSend, demuxed } from '@mpieva/psydb-ui-utils';
+import { demuxed } from '@mpieva/psydb-ui-utils';
+import { useSend } from '@mpieva/psydb-ui-hooks';
 import { Button, WithDefaultModal } from '@mpieva/psydb-ui-layout';
 import * as Items from '../setting-items';
 
@@ -15,7 +16,7 @@ const RemoveSettingModalBody = (ps) => {
     var { settingRecord } = modalPayloadData;
     var { _id: settingId, type: variantType } = settingRecord;
 
-    var handleSubmit = createSend(() => ({
+    var send = useSend(() => ({
         type: `experiment-variant-setting/remove`,
         payload: { id: settingId }
     }), {
@@ -41,7 +42,7 @@ const RemoveSettingModalBody = (ps) => {
                 />
             </div>
             <div className='mt-3 d-flex justify-content-end'>
-                <Button variant='danger' onClick={ handleSubmit }>
+                <Button variant='danger' onClick={ send.exec }>
                     Löschen
                 </Button>
             </div>

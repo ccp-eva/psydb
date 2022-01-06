@@ -46,11 +46,12 @@ handler.checkAllowedAndPlausible = async ({
     });
 
     await checkConflictingTeamReservations({
-        db, experimentOperatorTeamId, interval
+        db, experimentOperatorTeamId, interval,
+        types: [ 'inhouse' ]
     });
     
     await checkConflictingLocationReservations({
-        db, locationId, interval
+        db, locationId, interval,
     });
 }
 

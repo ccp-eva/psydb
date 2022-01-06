@@ -29,6 +29,7 @@ const StudyTeamListItem = ({
             role={ onClick ? 'button' : '' }
         >
             <div style={{
+                flexShrink: 0,
                 width: '30px',
                 background: record.state.color,
                 border: `1px solid ${record.state.color}`,

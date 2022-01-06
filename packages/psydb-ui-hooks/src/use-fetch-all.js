@@ -1,11 +1,13 @@
-import React, { useEffect, useReducer } from 'react';
-import agent from '@mpieva/psydb-ui-request-agents';
+import React, { useEffect, useReducer, useContext } from 'react';
+import { AgentContext } from '@mpieva/psydb-ui-contexts';
+//import agent from '@mpieva/psydb-ui-request-agents';
 
 const useFetchAll = (createPromises, triggerProps) => {
+    var contextAgent = useContext(AgentContext);
     var [ state, dispatch ] = useReducer(reducer, { didFetch: false });
 
     var wrappedCreatePromises = () => {
-        var keyedPromises = createPromises(agent);
+        var keyedPromises = createPromises(contextAgent);
         var keys = Object.keys(keyedPromises);
 
         // NOTE: using let prevents issue with k being always the last key

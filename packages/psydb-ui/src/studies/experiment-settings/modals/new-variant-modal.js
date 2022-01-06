@@ -5,7 +5,8 @@ import {
     ExperimentVariantEnum
 } from '@mpieva/psydb-schema-fields';
 
-import { createSend } from '@mpieva/psydb-ui-utils';
+import { demuxed } from '@mpieva/psydb-ui-utils';
+import { useSend } from '@mpieva/psydb-ui-hooks';
 import { WithDefaultModal } from '@mpieva/psydb-ui-layout';
 import { SchemaForm } from '@mpieva/psydb-ui-lib';
 
@@ -23,7 +24,8 @@ const NewVariantModalBody = (ps) => {
         onHide,
         onSuccessfulUpdate,
     } = ps;
-    var handleSubmit = createSend(({ formData }) => ({
+
+    var send = useSend(({ formData }) => ({
         type: `experimentVariant/create`,
         payload: {
             type: formData.type,
@@ -38,7 +40,7 @@ const NewVariantModalBody = (ps) => {
     return (
         <SchemaForm
             schema={ schema }
-            onSubmit={ handleSubmit }
+            onSubmit={ send.exec }
         />
     );
 }

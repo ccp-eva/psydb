@@ -28,9 +28,7 @@ var RequestBodySchema = () => ExactObject({
         selectedTopicIds: ForeignIdList({ collection: 'studyTopic' }),
         nameOrShorthand: SaneString(),
         offset: Integer({ minimum: 0 }),
-        limit: Integer({
-            maximum: 100,
-        }),
+        limit: Integer({ maximum: 100 }),
     },
     required: []
 });

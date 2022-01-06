@@ -20,6 +20,7 @@ var ExperimentOperatorTeamState = ({
             }),
             color: Color({
                 title: 'Farbe',
+                default: '#00ff00',
             }),
             // is now kept outside of state as it should
             // probably be immutable

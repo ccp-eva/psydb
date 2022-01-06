@@ -47,6 +47,11 @@ var createMessageHandling = ({
     return compose([
         //async (context, next) => { console.dir(context, { depth: 3}); await next(); },
         withContextSetup({ forcedPersonnelId }),
+        async (context, next) => {
+            var { type, payload } = context.request.body;
+            debug(type, JSON.stringify(payload));
+            await next();
+        },
 
         createEngine({
             mqSettings,

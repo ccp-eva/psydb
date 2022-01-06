@@ -8,7 +8,7 @@ var AgeFrameBoundary = ({ minimum, ...additionalKeywords } = {}) => (
         properties: {
             years: Integer(),
             months: Integer({ maximum: 12 }),
-            days: Integer({ maximum: 30 }),
+            days: Integer({ maximum: 31 }),
         },
         required: ['years', 'months', 'days'],
         ...additionalKeywords,

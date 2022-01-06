@@ -50,6 +50,13 @@ const LocationCalendar = ({
         })
     ), [ currentPageStart, currentPageEnd ]);
 
+    var filteredReservationRecords = reservationRecords.filter(it => (
+        it.state.locationId === locationRecord._id
+    ));
+    var filteredExperimentRecords = experimentRecords.filter(it => (
+        it.state.locationId === locationRecord._id
+    ));
+
     return (
         <div className={ className }>
             <h5 className='pl-3 pt-2 pb-2 m-0 bg-light'>
@@ -59,8 +66,8 @@ const LocationCalendar = ({
                 studyId,
                 locationRecord,
                 teamRecords,
-                reservationRecords,
-                experimentRecords,
+                reservationRecords: filteredReservationRecords,
+                experimentRecords: filteredExperimentRecords,
 
                 settingRecords,
                 settingRelated,
