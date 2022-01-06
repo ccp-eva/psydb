@@ -1,0 +1,69 @@
+import React from 'react';
+import { FallbackTheme } from '@cdxoo/formik-utils';
+
+export const FieldWrapper = (ps) => {
+    var { hasError, formikMeta } = ps;
+    return (
+        <div style={{ border: '1px solid purple', padding: '5px' }}>
+            <FallbackTheme.FieldWrapper { ...ps } />
+            <ErrorIndicator { ...ps } />
+        </div>
+    )
+};
+
+export const ArrayFieldWrapper = (ps) => (
+    <div style={{ border: '1px solid blue', padding: '5px' }}>
+        <FallbackTheme.ArrayFieldWrapper { ...ps } />
+    </div>
+);
+
+export const ArrayContentWrapper = (ps) => {
+    var { hasError, formikMeta } = ps;
+    return (
+        <div style={{ border: '1px solid green', padding: '5px' }}>
+            <ErrorIndicator { ...ps } />
+            <FallbackTheme.ArrayContentWrapper { ...ps } />
+        </div>
+    )
+};
+
+export const ArrayItemWrapper = (ps) => {
+    var { index, hasError, formikMeta } = ps;
+    return (
+        <div style={{ border: '1px solid lime', padding: '5px' }}>
+            <FallbackTheme.ArrayItemWrapper { ...ps } />
+        </div>
+    )
+};
+
+export const ArrayItemFieldWrapper = (ps) => (
+    <div style={{ border: '1px solid cyan', padding: '5px' }}>
+        <FallbackTheme.ArrayItemFieldWrapper { ...ps } />
+        <ErrorIndicator { ...ps } />
+    </div>
+)
+export const NoneWrapper = (ps) => (
+    <div style={{ border: '1px solid lightgrey', padding: '5px' }}>
+        <FallbackTheme.NoneWrapper { ...ps } />
+    </div>
+)
+
+const ErrorIndicator = (ps) => {
+    var { formikMeta } = ps;
+    var { error } = formikMeta;
+    
+
+    return (
+        error && error['@@ERRORS']
+        ? (
+            <div style={{ color: '#c00' }}>
+                { error['@@ERRORS'].map((err, index) => (
+                    <div key={ index }><small>
+                        { err.message }
+                    </small></div>
+                )) }
+            </div>
+        )
+        : null
+    );
+}
