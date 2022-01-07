@@ -14,12 +14,13 @@ export const InlineWrapper = (ps) => {
         uiHrTop = false,
         children,
 
-        error
+        error,
+        formikMeta,
     } = ps;
     
     var className = classnames([
         'row ml-0 mr-0',
-        error && 'has-error'
+        (error || formikMeta.error) && 'has-error'
     ])
 
     return (
@@ -34,7 +35,27 @@ export const InlineWrapper = (ps) => {
             </Form.Label>
             <div className={`col-sm-${uiSplit[1]} pl-0 pr-0 ${valueClassName}`}>
                 { children }
+                <ErrorIndicator { ...ps } />
             </div>
         </Form.Group>
+    );
+}
+
+const ErrorIndicator = (ps) => {
+    var { formikMeta } = ps;
+    var { error } = formikMeta;
+
+    return (
+        error && error['@@ERRORS']
+        ? (
+            <Form.Control.Feedback type='invalid'>
+                { error['@@ERRORS'].map((err, index) => (
+                    <div key={ index }>
+                        { err.message }
+                    </div>
+                )) }
+            </Form.Control.Feedback>
+        )
+        : null
     );
 }

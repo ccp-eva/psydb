@@ -47,7 +47,7 @@ export const TopicForm = (ps) => {
                 message = { type, payload: {
                     id: recordId,
                     lastKnownEventId,
-                    props: formData['$']
+                    props: formData
                 }};
                 break;
             default:
@@ -69,6 +69,7 @@ export const TopicForm = (ps) => {
                             <Fields.SaneString
                                 label='Name'
                                 dataXPath='$.name'
+                                required={ true }
                             />
                             <Button type='submit'>
                                 Speichern

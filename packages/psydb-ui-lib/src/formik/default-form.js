@@ -22,6 +22,7 @@ const createFormikConfig = (ps) => {
                     onSubmit(formData['$'], ...other)
                 ),
                 errorResponsePath: 'data.data.ajvErrors',
+                errorInstancePathPrefix: '/payload/props',
                 dataPrefix: '$',
             })
             : (formData, ...other) => (
