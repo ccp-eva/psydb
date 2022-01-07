@@ -10,7 +10,7 @@ var {
 var StudyTopicState = () => {
     var schema = ExactObject({
         properties: {
-            name: SaneString({ title: 'name' }),
+            name: SaneString({ title: 'name', minLength: 1 }),
             parentId: ForeignId({
                 collection: 'studyTopic',
                 isNullable: true

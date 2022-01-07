@@ -32,18 +32,6 @@ export const SelectionForm = (ps) => {
     });
 
     var initialValues = createInitialValues({ ageFrameRecords });
-    console.log(initialValues);
-
-    /*var handleSubmit = (formData) => {
-        try {
-            var { interval, filters } = formData['$'];
-            var converted = convertFilters(filters);
-            console.log({ converted })
-        }
-        catch (e) {
-            console.log(e);
-        }
-    }*/
 
     return (
         <DefaultForm

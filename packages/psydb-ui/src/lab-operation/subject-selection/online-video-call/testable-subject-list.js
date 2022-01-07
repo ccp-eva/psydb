@@ -72,7 +72,7 @@ const OnlineVideoCallTestableSubjectList = ({
         var {
             interval,
             filters,
-        } = userSearchSettings['$'];
+        } = userSearchSettings;
 
         var { start, end } = interval;
 

@@ -39,7 +39,7 @@ export const TopicForm = (ps) => {
         switch (op) {
             case 'create':
                 message = { type, payload: { props: {
-                    ...formData['$'],
+                    ...formData,
                     parentId, // force the parentId from component props
                 }}};
                 break;
@@ -60,6 +60,7 @@ export const TopicForm = (ps) => {
         <div>
             <DefaultForm
                 onSubmit={ send.exec }
+                useAjvAsync={ true }
                 initialValues={ recordState || defaultValues }
             >
                 {(formikProps) => {
