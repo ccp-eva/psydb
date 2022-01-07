@@ -11,16 +11,22 @@ import * as Theme from './theme';
 var isFunction = (it) => (typeof it === 'function');
 
 const createFormikConfig = (ps) => {
-    var { initialValues, onSubmit, ...formikOptions } = ps;
+    var { initialValues, onSubmit, useAjvAsync, ...formikOptions } = ps;
     return {
         ...formikOptions,
         initialValues: { '$': (initialValues || {}) },
-        onSubmit: withAjvErrors({
-            callback: (formData, ...other) => (
+        onSubmit: (
+            useAjvAsync
+            ? withAjvErrors({
+                callback: (formData, ...other) => (
+                    onSubmit(formData['$'], ...other)
+                ),
+                dataPrefix: '$',
+            })
+            : (formData, ...other) => (
                 onSubmit(formData['$'], ...other)
-            ),
-            dataPrefix: '$',
-        }),
+            )
+        ),
         validateOnChange: false,
         validateOnBlur: false,
     };
@@ -32,20 +38,22 @@ const PsyDBDefaultForm = (ps) => {
     return (
         <ThemeContext.Provider value={ Theme }>
             <DefaultForm { ...config }>
-                { isFunction(children) && children(formikProps) }
+                {(formikProps) => (
+                    isFunction(children) && children(formikProps)
+                )}
             </DefaultForm>
         </ThemeContext.Provider>
     );
 
-    return (
-        <Formik { ...config }>
-            {(formikProps) => (
-                <Form className={ className }>
-                    { isFunction(children) && children(formikProps) }
-                </Form>
-            )}
-        </Formik>
-    );
+    //return (
+    //    <Formik { ...config }>
+    //        {(formikProps) => (
+    //            <Form className={ className }>
+    //                { isFunction(children) && children(formikProps) }
+    //            </Form>
+    //        )}
+    //    </Formik>
+    //);
 }
 
 export default PsyDBDefaultForm;
