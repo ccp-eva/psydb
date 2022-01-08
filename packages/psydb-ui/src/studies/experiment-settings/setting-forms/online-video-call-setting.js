@@ -52,14 +52,14 @@ export const OnlineVideoCallSetting = (ps) => {
                 message = { type, payload: {
                     studyId,
                     experimentVariantId: variantId,
-                    props: formData['$']
+                    props: formData
                 } };
                 break;
             case 'patch':
                 message = { type, payload: {
                     id: settingId,
                     lastKnownEventId,
-                    props: formData['$']
+                    props: formData
                 }};
                 break;
             default:

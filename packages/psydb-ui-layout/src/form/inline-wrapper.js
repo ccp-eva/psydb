@@ -15,7 +15,7 @@ export const InlineWrapper = (ps) => {
         children,
 
         error,
-        formikMeta,
+        formikMeta = {},
     } = ps;
     
     var className = classnames([
@@ -42,7 +42,7 @@ export const InlineWrapper = (ps) => {
 }
 
 const ErrorIndicator = (ps) => {
-    var { formikMeta } = ps;
+    var { formikMeta = {} } = ps;
     var { error } = formikMeta;
 
     return (

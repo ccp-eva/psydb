@@ -46,7 +46,7 @@ const ExtendedSearch = (ps) => {
     catch (e) {}
     
     var handleSwitchTab = ({ nextTab, formData }) => {
-        var formData64 = Base64.encode(JSON.stringify(formData['$']));
+        var formData64 = Base64.encode(JSON.stringify(formData));
 
         var nextSearchQuery = updateQuery(
             { ...query, tab: nextTab, formData: formData64 },

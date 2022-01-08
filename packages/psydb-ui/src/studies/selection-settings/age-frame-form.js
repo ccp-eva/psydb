@@ -51,14 +51,14 @@ export const AgeFrameForm = (ps) => {
                     subjectTypeKey,
                     studyId,
                     subjectSelectorId: selectorId,
-                    props: formData['$']
+                    props: formData
                 } };
                 break;
             case 'patch':
                 message = { type, payload: {
                     id: ageFrameId,
                     lastKnownEventId,
-                    props: formData['$']
+                    props: formData
                 }};
                 break;
             default:

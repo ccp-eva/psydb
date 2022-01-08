@@ -17,15 +17,11 @@ export const QuickSearch = (ps) => {
         onSubmit
     } = ps;
 
-    var wrappedOnSubmit = (formData, formikProps) => (
-        onSubmit(formData['$'])
-    );
-
     return (
         <div className={ className }>
             <DefaultForm
                 className='d-flex align-items-end quick-search-fixes'
-                onSubmit={ wrappedOnSubmit }
+                onSubmit={ onSubmit }
                 initialValues={ searchValues || {}}
             >
                 {(formikProps) => {
