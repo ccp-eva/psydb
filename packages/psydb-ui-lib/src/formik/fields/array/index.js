@@ -1,10 +1,11 @@
 import React from 'react';
 import { FormHelpers } from '@mpieva/psydb-ui-layout';
 import factory from '../../field-array-factory';
+import { withFieldArray } from '@cdxoo/formik-utils';
 import * as ScalarFields from '../scalar';
 import * as ObjectFields from '../object';
 
-const s = {};
+/*const s = {};
 for (var k of Object.keys(ScalarFields)) {
     s[`${k}List`] = factory({
         FieldComponent: ScalarFields[k],
@@ -12,11 +13,23 @@ for (var k of Object.keys(ScalarFields)) {
         ArrayItemWrapper: FormHelpers.ScalarArrayItemWrapper,
         defaultItemValue: null,
     });
+}*/
+
+const s = {};
+for (var k of Object.keys(ScalarFields)) {
+    s[`${k}List`] = withFieldArray({
+        FieldComponent: ScalarFields[k],
+        defaultItemValue: null,
+    });
 }
 
 const o = {};
 for (var k of Object.keys(ObjectFields)) {
-    o[`${k}List`] = factory({ FieldComponent: ObjectFields[k]});
+    o[`${k}List`] = withFieldArray({
+        FieldComponent: ObjectFields[k],
+        ArrayContentWrapper: 'ObjectArrayContentWrapper',
+        ArrayItemWrapper: 'ObjectArrayItemWrapper',
+    });
 }
 
 const {
@@ -37,6 +50,8 @@ const {
     TypedLocationIdList,
     EmailWithPrimaryList,
     PhoneWithTypeList,
+    ResearchGroupWithRoleList,
+    AccessRightByResearchGroupList,
 } = o;
 
 export {
@@ -55,4 +70,6 @@ export {
     TypedLocationIdList,
     EmailWithPrimaryList,
     PhoneWithTypeList,
+    ResearchGroupWithRoleList,
+    AccessRightByResearchGroupList,
 }

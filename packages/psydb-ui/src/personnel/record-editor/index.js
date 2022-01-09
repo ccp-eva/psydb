@@ -1,5 +1,8 @@
 import React from 'react';
 
+import { demuxed } from '@mpieva/psydb-ui-utils';
+import { Button } from '@mpieva/psydb-ui-layout';
+
 import {
     DefaultForm,
     Fields,
@@ -12,6 +15,8 @@ import {
     useSend
 } from '@mpieva/psydb-ui-hooks';
 
+import only from './only-deep';
+import { useSendPatch } from './use-send-patch';
 import { withRecordEditor } from './with-record-editor';
 
 const EditForm = (ps) => {
@@ -24,41 +29,51 @@ const EditForm = (ps) => {
 
     var {
         record,
-        relatedRecordLabels,
-        relatedHelperSetItems,
-        relatedCustomRecordTypeLabels,
-        schema
+        schema,
+        //relatedRecordLabels,
+        //relatedHelperSetItems,
+        //relatedCustomRecordTypeLabels,
+        ...related
     } = fetched.data;
 
     var setPasswordModal = useModalReducer();
-    var send = useSend((formData) => ({
-        type: `${collection}/patch`,
-        payload: {
-            id,
-            lastKnownSubChannelEventIds: {
-                ...(record.scientific && {
-                    scientific: record.scientific._lastKnownEventId,
-                }),
-                ...(record.gdpr && {
-                    gdpr: record.gdpr._lastKnownEventId,
-                }),
-            },
-            props: formData,
-        }
-    }), { onSuccessfulUpdate });
+
+    var send = useSendPatch({
+        collection,
+        record,
+        subChannels: ['gdpr', 'scientific'],
+        onSuccessfulUpdate
+    });
+
+    var initialValues = only({
+        from: {
+            gdpr: record.gdpr.state,
+            scientific: record.scientific.state,
+        },
+        paths: [
+            'gdpr.firstname',
+            'gdpr.lastname',
+            'gdpr.shorthand',
+            'gdpr.emails',
+            'gdpr.phones',
+            'scientific.hasRootAccess',
+            'scientific.researchGroupSettings',
+            'scientific.systemPermissions',
+        ]
+    })
 
     return (
         <FormBox title='Mitarbeiter bearbeiten'>
             <DefaultForm
-                initialValues={{
-                    gdpr: record.gdpr.state,
-                    scientific: record.scientific.state,
-                }}
+                initialValues={ initialValues }
                 onSubmit={ send.exec }
                 useAjvAsync
             >
                 {(formikProps) => (
-                    <FormFields /> 
+                    <>
+                        <FormFields related={ related } />
+                        <Button type='submit'>Speichern</Button>
+                    </>
                 )}
             </DefaultForm>
         </FormBox>
@@ -66,6 +81,7 @@ const EditForm = (ps) => {
 }
 
 const FormFields = (ps) => {
+    var { related } = ps;
     return (
         <>
             <Fields.SaneString
@@ -93,9 +109,22 @@ const FormFields = (ps) => {
                 dataXPath='$.gdpr.phones'
                 required
             />
+
             <Fields.DefaultBool
                 label='Admin-Zugriff'
                 dataXPath='$.scientific.hasRootAccess'
+                required
+            />
+            <Fields.ResearchGroupWithRoleList
+                label='Forschungsgruppen'
+                dataXPath='$.scientific.researchGroupSettings'
+                related={ related }
+                required
+            />
+            <Fields.AccessRightByResearchGroupList
+                label='Zugriff auf diesen Datensatz für'
+                dataXPath='$.scientific.systemPermissions.accessRightsByResearchGroup'
+                related={ related }
                 required
             />
         </>

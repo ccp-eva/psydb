@@ -24,7 +24,9 @@ export const ForeignId = WithField({ Control: (ps) => {
         setFieldValue(dataXPath, record ? record._id : '');
     }
 
-    var { relatedRecords } = related || {};
+    var { relatedRecords, relatedRecordLabels } = related || {};
+    relatedRecords = relatedRecords || relatedRecordLabels;
+
     var record;
     if (relatedRecords && relatedRecords[collection]) {
         record = relatedRecords[collection][recordId]

@@ -35,7 +35,7 @@ export const withRecordEditor = (options) => {
         }
 
         return (
-            <EditForm { ...ps } fetched={ fetched } />
+            <EditForm { ...ps } id={ id } fetched={ fetched } />
         )
     }
 

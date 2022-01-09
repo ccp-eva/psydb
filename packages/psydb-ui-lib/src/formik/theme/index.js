@@ -15,11 +15,16 @@ export const FieldWrapper = (ps) => {
     )*/
 };
 
-export const ArrayFieldWrapper = (ps) => (
-    <div style={{ border: '1px solid blue', padding: '5px' }}>
-        <FallbackTheme.ArrayFieldWrapper { ...ps } />
-    </div>
-);
+export const ArrayFieldWrapper = (ps) => {
+    return (
+        <FormHelpers.InlineArrayWrapper { ...ps }/>
+    );
+    /*return (
+        <div style={{ border: '1px solid blue', padding: '5px' }}>
+            <FallbackTheme.ArrayFieldWrapper { ...ps } />
+        </div>
+    )*/
+};
 
 export const ArrayContentWrapper = (ps) => {
     var { hasError, formikMeta } = ps;
@@ -46,6 +51,19 @@ export const ArrayItemFieldWrapper = (ps) => (
         <ErrorIndicator { ...ps } />
     </div>
 )
+
+export const ObjectArrayContentWrapper = (ps) => {
+    return (
+        <FormHelpers.ObjectArrayContentWrapper { ...ps } />
+    )
+}
+
+export const ObjectArrayItemWrapper = (ps) => {
+    return (
+        <FormHelpers.ObjectArrayItemWrapper { ...ps } />
+    )
+}
+
 export const NoneWrapper = (ps) => (
     <div style={{ border: '1px solid lightgrey', padding: '5px' }}>
         <FallbackTheme.NoneWrapper { ...ps } />

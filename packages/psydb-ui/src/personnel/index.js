@@ -12,7 +12,6 @@ import { RecordEditor } from './record-editor';
 
 const PersonnelTypeView = withRecordTypeView({
     RecordEditor: (ps) => {
-        console.log({ ps });
 
         var setPasswordModal = useModalReducer();
         return (
