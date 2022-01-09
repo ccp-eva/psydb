@@ -10,3 +10,4 @@ export * from './date-only-server-side';
 export * from './plain-checkbox';
 
 export * from './email';
+export * from './password';
