@@ -10,11 +10,20 @@ export const GenericEnum = WithField({ Control: (ps) => {
         formikField,
         formikForm,
         options,
+        enum: enumeration,
         allowedValues,
         disabled,
     } = ps;
 
-    allowedValues = allowedValues || Object.keys(options);
+    if (!enumeration) {
+        var enumeration = { keys: [], labels: [] };
+        for (var it of Object.keys(options)) {
+            enumeration.keys.push(it);
+            enumeration.labels.push(options[it]);
+        }
+    }
+
+    allowedValues = allowedValues || enumeration.keys;
 
     var controlProps = fixSelectProps({
         options: allowedValues,
@@ -30,7 +39,7 @@ export const GenericEnum = WithField({ Control: (ps) => {
             )}
             { allowedValues.map((k, index) => (
                 <option key={ index } value={ index }>
-                    { options[k] }
+                    { enumeration.labels[index] }
                 </option>
             ))}
         </Form.Control>

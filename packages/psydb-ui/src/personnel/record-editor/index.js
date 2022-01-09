@@ -52,7 +52,7 @@ const EditForm = (ps) => {
             <DefaultForm
                 initialValues={{
                     gdpr: record.gdpr.state,
-                    scientific: record.gdpr.state,
+                    scientific: record.scientific.state,
                 }}
                 onSubmit={ send.exec }
                 useAjvAsync
@@ -91,6 +91,11 @@ const FormFields = (ps) => {
             <Fields.PhoneWithTypeList
                 label='Telefon'
                 dataXPath='$.gdpr.phones'
+                required
+            />
+            <Fields.DefaultBool
+                label='Admin-Zugriff'
+                dataXPath='$.scientific.hasRootAccess'
                 required
             />
         </>
