@@ -8,3 +8,5 @@ export * from './ext-bool';
 export * from './biological-gender';
 export * from './date-only-server-side';
 export * from './plain-checkbox';
+
+export * from './email';

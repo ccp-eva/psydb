@@ -8,14 +8,17 @@ import {
 
 import GenericRecordFormContainer from '@mpieva/psydb-ui-lib/src/generic-record-form-container';
 
+import { RecordEditor } from './record-editor';
+
 const PersonnelTypeView = withRecordTypeView({
     RecordEditor: (ps) => {
-        //console.log({ ps });
+        console.log({ ps });
 
         var setPasswordModal = useModalReducer();
         return (
             <>
-                <GenericRecordFormContainer { ...ps } />
+                <RecordEditor { ...ps } />
+                {/*<GenericRecordFormContainer { ...ps } />*/}
                 { /*<div className='mt-4 mb-4 bg-light border p-3'>
                     <div>
                         <button

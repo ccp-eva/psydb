@@ -28,12 +28,15 @@ const {
     DefaultBoolList,
     ExtBoolList,
     BiologicalGenderList,
+    EmailList,
 } = s;
 
 const {
     AgeFrameBoundaryList,
     SubjectFieldRequirementList,
-    TypedLocationIdList
+    TypedLocationIdList,
+    EmailWithPrimaryList,
+    PhoneWithTypeList,
 } = o;
 
 export {
@@ -45,8 +48,11 @@ export {
     DefaultBoolList,
     ExtBoolList,
     BiologicalGenderList,
+    EmailList,
 
     AgeFrameBoundaryList,
     SubjectFieldRequirementList,
-    TypedLocationIdList
+    TypedLocationIdList,
+    EmailWithPrimaryList,
+    PhoneWithTypeList,
 }
