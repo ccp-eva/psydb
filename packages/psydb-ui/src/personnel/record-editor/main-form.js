@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { only } from '@mpieva/psydb-core-utils';
-import { usePermissions } from '@mpieva/psydb-ui-hooks';
+import { usePermissions, useSendPatch } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
 
 import {
@@ -10,9 +10,7 @@ import {
     FormBox
 } from '@mpieva/psydb-ui-lib';
 
-
-import { useSendPatch } from './use-send-patch';
-import { withRecordEditor } from './with-record-editor';
+import { withRecordEditor } from '@mpieva/psydb-ui-lib';
 
 export const MainForm = (ps) => {
     var {

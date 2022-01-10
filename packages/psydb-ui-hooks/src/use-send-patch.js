@@ -1,7 +1,7 @@
 import { demuxed } from '@mpieva/psydb-ui-utils';
-import { useSend } from '@mpieva/psydb-ui-hooks';
+import useSend from './use-send';
 
-export const useSendPatch = (options) => {
+const useSendPatch = (options) => {
     var {
         collection,
         recordType,
@@ -44,3 +44,5 @@ const createEventIdProps = (record, subChannels) => (
     )}
     : { lastKnownEventId: record._lastKnownEventId }
 )
+
+export default useSendPatch;

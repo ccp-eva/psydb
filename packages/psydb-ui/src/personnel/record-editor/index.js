@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
-import { withRecordEditor } from './with-record-editor';
+import { withRecordEditor } from '@mpieva/psydb-ui-lib';
 import { MainForm } from './main-form';
 import { PasswordForm } from './password-form';
 
