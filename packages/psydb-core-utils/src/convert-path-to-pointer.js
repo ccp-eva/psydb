@@ -1,6 +1,6 @@
-import jsonpointer from 'jsonpointer';
+'use strict';
 
-const convertPathToPointer = (path) => {
+var convertPathToPointer = (path) => {
     var tokens = path.split('.');
     var matcher = /[\/\.]/g;
     var escaper = (m) => {
@@ -18,14 +18,4 @@ const convertPathToPointer = (path) => {
     return '/' + tokens.join('/');
 }
 
-const onlyDeep = ({ from, paths }) => {
-    var out = {};
-    for (var path of paths) {
-        var pointer = convertPathToPointer(path);
-        var value = jsonpointer.get(from, pointer);
-        jsonpointer.set(out, pointer, value);
-    }
-    return out;
-}
-
-export default onlyDeep;
+module.exports = convertPathToPointer;

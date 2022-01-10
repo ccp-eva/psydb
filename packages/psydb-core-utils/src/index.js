@@ -5,6 +5,8 @@ module.exports = {
     keyBy: require('./key-by'),
     compareIds: require('./compare-ids'),
     unwind: require('./unwind'),
+    convertPathToPointer: require('./convert-path-to-pointer'),
+    only: require('./only'),
     
     intersect: require('./intersect'),
     without: require('./without'),

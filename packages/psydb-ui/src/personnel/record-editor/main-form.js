@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Button } from '@mpieva/psydb-ui-layout';
+import { only } from '@mpieva/psydb-core-utils';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
+import { Button } from '@mpieva/psydb-ui-layout';
 
 import {
     DefaultForm,
@@ -10,7 +11,6 @@ import {
 } from '@mpieva/psydb-ui-lib';
 
 
-import only from './only-deep';
 import { useSendPatch } from './use-send-patch';
 import { withRecordEditor } from './with-record-editor';
 
@@ -51,12 +51,12 @@ export const MainForm = (ps) => {
             'gdpr.shorthand',
             'gdpr.emails',
             'gdpr.phones',
+            'scientific.researchGroupSettings',
+            'scientific.systemPermissions',
             ...(
                 permissions.isRoot()
                 ? [
                     'scientific.hasRootAccess',
-                    'scientific.researchGroupSettings',
-                    'scientific.systemPermissions',
                 ]
                 : []
             )
@@ -113,24 +113,23 @@ const FormFields = (ps) => {
                 dataXPath='$.gdpr.phones'
                 required
             />
-
+            <Fields.ResearchGroupWithRoleList
+                label='Forschungsgruppen'
+                dataXPath='$.scientific.researchGroupSettings'
+                related={ related }
+                required
+            />
+            <Fields.AccessRightByResearchGroupList
+                label='Zugriff auf diesen Datensatz für'
+                dataXPath='$.scientific.systemPermissions.accessRightsByResearchGroup'
+                related={ related }
+                required
+            />
             { permissions.isRoot() && (
                 <>
                     <Fields.DefaultBool
-                        label='Admin-Zugriff'
+                        label='MA hat Admin-Zugriff'
                         dataXPath='$.scientific.hasRootAccess'
-                        required
-                    />
-                    <Fields.ResearchGroupWithRoleList
-                        label='Forschungsgruppen'
-                        dataXPath='$.scientific.researchGroupSettings'
-                        related={ related }
-                        required
-                    />
-                    <Fields.AccessRightByResearchGroupList
-                        label='Zugriff auf diesen Datensatz für'
-                        dataXPath='$.scientific.systemPermissions.accessRightsByResearchGroup'
-                        related={ related }
                         required
                     />
                 </>
