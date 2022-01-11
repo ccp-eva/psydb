@@ -2,14 +2,14 @@ import React from 'react';
 
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { withRecordEditor } from '@mpieva/psydb-ui-lib';
-import { MainForm } from './main-form';
+import { EditorMainForm } from './editor-main-form';
 import { PasswordForm } from './password-form';
 
 const EditForm = (ps) => {
     var permissions = usePermissions();
     return (
         <>
-            <MainForm { ...ps } />
+            <EditorMainForm { ...ps } />
             { permissions.isRoot() && (
                 <div className='mt-3'>
                     <PasswordForm { ...ps } />

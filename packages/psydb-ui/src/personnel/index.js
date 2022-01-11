@@ -9,9 +9,11 @@ import {
 import GenericRecordFormContainer from '@mpieva/psydb-ui-lib/src/generic-record-form-container';
 
 import { RecordEditor } from './record-editor';
+import { RecordCreator } from './record-creator';
 
 const PersonnelTypeView = withRecordTypeView({
-    RecordEditor
+    RecordEditor,
+    RecordCreator,
 })
 
 const PersonnelCollectionView = withCollectionView({
