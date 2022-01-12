@@ -5,7 +5,9 @@ import { FormHelpers } from '@mpieva/psydb-ui-layout';
 export const FieldWrapper = (ps) => {
     var { formikMeta } = ps;
     return (
-        <FormHelpers.InlineWrapper { ...ps } />
+        <div style={{ border: '1px solid green', padding: '5px' }}>
+            <FormHelpers.InlineWrapper { ...ps } />
+        </div>
     );
     /*return (
         <div style={{ border: '1px solid purple', padding: '5px' }}>
@@ -30,7 +32,6 @@ export const ArrayContentWrapper = (ps) => {
     var { hasError, formikMeta } = ps;
     return (
         <div style={{ border: '1px solid green', padding: '5px' }}>
-            <ErrorIndicator { ...ps } />
             <FallbackTheme.ArrayContentWrapper { ...ps } />
         </div>
     )
@@ -46,7 +47,7 @@ export const ArrayItemWrapper = (ps) => {
 };
 
 export const ArrayItemFieldWrapper = (ps) => (
-    <div style={{ border: '1px solid cyan', padding: '5px' }}>
+    <div style={{ border: '1px solid cyan' }}>
         <FallbackTheme.ArrayItemFieldWrapper { ...ps } />
         <ErrorIndicator { ...ps } />
     </div>

@@ -2,6 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import { Form } from 'react-bootstrap';
 import { NBSP } from '../nbsp';
+import { ErrorIndicator } from './error-indicator';
 
 export const InlineWrapper = (ps) => {
     var {
@@ -41,21 +42,3 @@ export const InlineWrapper = (ps) => {
     );
 }
 
-const ErrorIndicator = (ps) => {
-    var { formikMeta = {} } = ps;
-    var { error } = formikMeta;
-
-    return (
-        error && error['@@ERRORS']
-        ? (
-            <Form.Control.Feedback type='invalid'>
-                { error['@@ERRORS'].map((err, index) => (
-                    <div key={ index }>
-                        { err.message }
-                    </div>
-                )) }
-            </Form.Control.Feedback>
-        )
-        : null
-    );
-}

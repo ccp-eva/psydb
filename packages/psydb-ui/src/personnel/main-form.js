@@ -26,6 +26,7 @@ export const MainForm = (ps) => {
             >
                 {(formikProps) => (
                     <>
+                        { console.log(formikProps.errors) || '' }
                         <FormFields
                             related={ related }
                             permissions={ permissions }

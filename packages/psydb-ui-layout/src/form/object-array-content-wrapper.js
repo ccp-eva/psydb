@@ -1,5 +1,6 @@
 import React from 'react';
 import * as Icons from '../icons';
+import { ErrorIndicator } from './error-indicator';
 
 export const ObjectArrayContentWrapper = (ps) => {
     var {
@@ -11,11 +12,14 @@ export const ObjectArrayContentWrapper = (ps) => {
     } = ps;
 
     if (itemsCount < 1) {
-        return <Fallback { ...ps } />
+        return (
+            <Fallback { ...ps } />
+        )
     }
 
     return (
         <div>
+            <ErrorIndicator { ...ps } />
             { children }
             <Footer { ...ps } />
         </div>
@@ -32,6 +36,7 @@ const Fallback = (ps) => (
                 opacity: ps.disabled ? 0.5 : 1
             }}>
                 <i>Keine Einträge</i>
+                <ErrorIndicator { ...ps } />
             </div>
         </div>
         <Footer { ...ps } />

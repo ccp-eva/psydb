@@ -33,13 +33,29 @@ const CreateForm = (ps) => {
         onSuccessfulUpdate
     })
 
-    var initialValues = {};
+    var initialValues = {
+        gdpr: {
+            firstname: '',
+            lastname: '',
+            shorthand: '',
+            emails: [],
+            phones: [],
+        },
+        scientific: {
+            researchGroupSettings: [],
+            systemPermissions: {
+                accessRightsByResearchGroup: []
+            },
+            isHiddenForResearchGroupIds: [],
+            hasRootAccess: false
+        },
+    };
 
     return (
         <MainForm
             title='Neuer Mitarbeiter'
             initialValues={ initialValues }
-            onSbmit={ send.exec }
+            onSubmit={ send.exec }
             permissions={ permissions }
         />
     )

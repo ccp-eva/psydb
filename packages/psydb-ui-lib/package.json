@@ -34,8 +34,8 @@
     "jsonpointer": "~4.1.0",
 
     "@cdxoo/omit": "~1.0.1",
-    "@cdxoo/formik-utils": "~0.3.0",
-    "@cdxoo/formik-ajv-async": "~0.3.0",
+    "@cdxoo/formik-utils": "~0.4.0",
+    "@cdxoo/formik-ajv-async": "~0.4.0",
     
     "@mpieva/psydb-timezone-helpers": "~0.1.0-alpha",
     "@mpieva/psydb-core-utils": "~0.1.0-alpha",

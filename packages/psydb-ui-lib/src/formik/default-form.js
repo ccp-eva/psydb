@@ -29,6 +29,7 @@ const createFormikConfig = (ps) => {
                 onSubmit(formData['$'], ...other)
             )
         ),
+        noHTML5Validate: true,
         validateOnChange: false,
         validateOnBlur: false,
     };

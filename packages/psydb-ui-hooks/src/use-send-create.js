@@ -12,8 +12,8 @@ const useSendCreate = (options) => {
     var send = useSend((props) => ({
         type: (
             recordType
-            ? `${collection}/${recordType}/patch`
-            : `${collection}/patch`
+            ? `${collection}/${recordType}/create`
+            : `${collection}/create`
         ),
         payload: {
             props,
