@@ -38,13 +38,13 @@ const CreateForm = (ps) => {
             firstname: '',
             lastname: '',
             shorthand: '',
-            emails: [],
+            emails: [{}],
             phones: [],
         },
         scientific: {
-            researchGroupSettings: [],
+            researchGroupSettings: [{}],
             systemPermissions: {
-                accessRightsByResearchGroup: [],
+                accessRightsByResearchGroup: [{}],
                 isHiddenForResearchGroupIds: [],
             },
             canLogIn: false,

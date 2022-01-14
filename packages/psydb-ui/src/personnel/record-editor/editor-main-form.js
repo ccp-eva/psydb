@@ -55,6 +55,7 @@ export const EditorMainForm = (ps) => {
             ...(
                 permissions.isRoot()
                 ? [
+                    'scientific.canLogIn',
                     'scientific.hasRootAccess',
                 ]
                 : []
