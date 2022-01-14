@@ -61,6 +61,7 @@ module.exports = {
 
     ListOfObjects: require('./list-of-objects'),
     StringEnum: require('./string-enum'),
+    StringConst: require('./string-const'),
     ExperimentVariantEnum: require('./experiment-variant-enum'),
     ExperimentTypeEnum: require('./experiment-type-enum'),
 

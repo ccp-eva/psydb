@@ -1,8 +1,8 @@
 'use strict';
 var nodemailer = require('nodemailer');
-var config = require('@mpieva/psydb-api-config');
 var nanoid = require('nanoid');
 var bcrypt = require('bcrypt');
+var config = require('@mpieva/psydb-api-config');
 
 var GenericRecordHandler = require('../../lib/generic-record-handler');
 var {
@@ -12,6 +12,7 @@ var {
     dispatchRecordPropMessages
 } = require('../../lib/generic-record-handler-utils');
 
+// TODO: redundant
 var getRecipientMail = (emails) => {
     if (!Array.isArray(emails)) {
         return;
@@ -90,7 +91,7 @@ module.exports = GenericRecordHandler({
             await transport.sendMail({
                 from: 'psydb-noreply@eva.mpg.de',
                 to: recipient,
-                subject: 'PsyDB-Account angelegt',
+                subject: 'PsyDB - Account angelegt',
                 text: `Passwort: ${generatedPassword}`,
             })
         }

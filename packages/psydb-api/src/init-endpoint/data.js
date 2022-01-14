@@ -38,7 +38,9 @@ var messages = [
         payload: {
             id: rootAccountId,
             lastKnownEventId: knownEventIds.personnel.gdpr[rootAccountId],
+            method: 'manual',
             password: 'test1234',
+            sendMail: true,
         }
     }),
 ];

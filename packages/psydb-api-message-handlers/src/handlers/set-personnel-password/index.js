@@ -1,7 +1,11 @@
 'use strict';
-var bcrypt = require('bcrypt'),
-    messageType = require('./message-type'),
-    checkSchema = require('./check-schema');
+var nodemailer = require('nodemailer');
+var nanoid = require('nanoid');
+var bcrypt = require('bcrypt');
+var config = require('@mpieva/psydb-api-config');
+
+var messageType = require('./message-type');
+var checkSchema = require('./check-schema');
 
 var shouldRun = (message) => (
     messageType === message.type
@@ -22,6 +26,7 @@ var checkAllowedAndPlausible = async ({
     }
 
     if (!permissions.hasRootAccess) {
+        // TODO: why is this disabled?
         //throw new ApiError(403);
     }
 };
@@ -29,10 +34,24 @@ var checkAllowedAndPlausible = async ({
 var triggerSystemEvents = async ({
     db,
     rohrpost,
-    message
+    message,
+    cache
 }) => {
     var { type: messageType, personnelId, payload } = message;
-    var { id: targetRecordId, lastKnownEventId, password } = payload;
+    var {
+        id: targetRecordId, lastKnownEventId,
+        method, password, sendMail
+    } = payload;
+
+    if (method === 'auto') {
+        password = nanoid.customAlphabet(
+            [
+                '1234567890',
+                'abcdefghikmnpqrstuvwxyz',
+                'ABCDEFGHIKMNPQRSTUVWXYZ',
+            ].join(''), 24
+        )();
+    }
     var passwordHash = bcrypt.hashSync(password, 10);
 
     var channel = (
@@ -53,10 +72,55 @@ var triggerSystemEvents = async ({
             }
         }
     });
+        
+    cache.password = password;
 }
 
-// no-op
-var triggerOtherSideEffects = async () => {};
+var triggerOtherSideEffects = async (options) => {
+    var { db, message, cache } = options;
+    var { id, method, sendMail } = message.payload;
+    var { password } = cache;
+
+    if (!(method === 'auto' || method === 'manual' && sendMail)) {
+        return;
+    }
+
+    var record = await (
+        db.collection('personnel').findOne(
+            { _id: id },
+            { 'gdpr.state.emails': true }
+        )
+    );
+
+    var recipient = getRecipientMail(record.gdpr.state.emails);
+    if (recipient) {
+        var transport = nodemailer.createTransport({
+            ...config.smtp
+        });
+
+        await transport.sendMail({
+            from: 'psydb-noreply@eva.mpg.de',
+            to: recipient,
+            subject: 'PsyDB - Passwort wurde geändert',
+            text: `Neues Passwort: ${password}`,
+        })
+    }
+};
+
+// TODO: redundant
+var getRecipientMail = (emails) => {
+    if (!Array.isArray(emails)) {
+        return;
+    }
+
+    var filtered = emails.filter(it => it.isPrimary);
+    if (filtered.length < 1) {
+        return;
+    }
+    else {
+        return filtered[0].email;
+    }
+}
 
 module.exports = {
     shouldRun,
