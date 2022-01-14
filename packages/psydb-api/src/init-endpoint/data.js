@@ -27,6 +27,7 @@ var messages = [
                     ]
                 },
                 scientific: {
+                    canLogIn: true,
                     hasRootAccess: true,
                 }
             }
