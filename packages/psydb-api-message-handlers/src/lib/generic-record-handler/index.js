@@ -5,7 +5,8 @@ var defaultStages = {
     checkSchema: require('./check-schema'),
     checkAllowedAndPlausible: require('./check-allowed-and-plausible'),
     triggerSystemEvents: require('./trigger-system-events'),
-    createRecordPropMessages: require('./create-record-prop-messages'),
+    // FIXME: why was that here in the first place?
+    //createRecordPropMessages: require('./create-record-prop-messages'),
     
     // no-op
     triggerOtherSideEffects: async () => {},

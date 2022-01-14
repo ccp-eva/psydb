@@ -3,11 +3,8 @@ var debug = require('debug')('psydb:api:message-handlers');
 
 var inline = require('@cdxoo/inline-text');
 
-var {
-    createRecordMessageType,
-} = require('@mpieva/psydb-schema-helpers');
-
-var parseRecordMessageType = require('./parse-record-message-type');
+var { createRecordMessageType } = require('@mpieva/psydb-schema-helpers');
+var { parseRecordMessageType } = require('../generic-record-handler-utils');
 
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 

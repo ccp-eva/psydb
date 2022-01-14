@@ -1,7 +1,7 @@
 'use strict';
 var createEventMessagesFromProps = require('../create-event-messages-from-props');
 
-var createCollectionMessages = ({
+var createRecordPropMessages = ({
     personnelId,
     props,
     op = 'put',
@@ -46,4 +46,4 @@ var createCollectionMessages = ({
 };
 
 
-module.exports = createCollectionMessages;
+module.exports = { createRecordPropMessages };

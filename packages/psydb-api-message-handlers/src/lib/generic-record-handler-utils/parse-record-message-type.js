@@ -17,4 +17,4 @@ var parseRecordMessageType = (type) => {
     };
 }
 
-module.exports = parseRecordMessageType;
+module.exports = { parseRecordMessageType };
