@@ -1,8 +1,8 @@
 import React from 'react';
-import WithField from '../../with-field';
+import { withField } from '@cdxoo/formik-utils';
 import RecordPicker from '../../../pickers/record-picker';
 
-export const ForeignId = WithField({ Control: (ps) => {
+export const ForeignId = withField({ Control: (ps) => {
     var {
         dataXPath,
         formikField,
@@ -42,7 +42,7 @@ export const ForeignId = WithField({ Control: (ps) => {
             ...formikField,
             value: record,
             onChange,
-            hasError: !!formikMeta.error,
+            hasErrors: !!formikMeta.error,
 
             collection,
             recordType,

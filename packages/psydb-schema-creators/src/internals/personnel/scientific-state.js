@@ -4,7 +4,8 @@ var inline = require('@cdxoo/inline-text'),
 
 var {
     ExactObject,
-    ForeignId
+    ForeignId,
+    DefaultBool,
 } = require('@mpieva/psydb-schema-fields');
 
 var PersonnelScientificState = () => {
@@ -14,11 +15,12 @@ var PersonnelScientificState = () => {
             // to login at all i.e. has no permissions na therefor
             // does not have a system-role
 
-            hasRootAccess: {
+            canLogIn: DefaultBool({
+                title: 'Log-In erlauben'
+            }),
+            hasRootAccess: DefaultBool({
                 title: 'Admin-Zugriff',
-                type: 'boolean',
-                default: false
-            },
+            }),
             researchGroupSettings: {
                 title: 'Forschungsgruppen',
                 type: 'array',
@@ -51,6 +53,7 @@ var PersonnelScientificState = () => {
             }),
         },
         required: [
+            'canLogIn',
             'hasRootAccess',
             'researchGroupSettings',
             'systemPermissions',

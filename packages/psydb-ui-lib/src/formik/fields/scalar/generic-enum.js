@@ -8,12 +8,14 @@ export const GenericEnum = withField({ Control: (ps) => {
     var {
         dataXPath,
         formikField,
+        formikMeta,
         formikForm,
         options,
         enum: enumeration,
         allowedValues,
         disabled,
     } = ps;
+    var { error } = formikMeta;
 
     if (!enumeration) {
         var enumeration = { keys: [], labels: [] };
@@ -33,7 +35,12 @@ export const GenericEnum = withField({ Control: (ps) => {
     });
 
     return (
-        <Form.Control as="select" disabled={ disabled } { ...controlProps }>
+        <Form.Control
+            as="select"
+            disabled={ disabled }
+            isInvalid={ !!error }
+            { ...controlProps }
+        >
             { controlProps.value === -1 && (
                 <option></option>
             )}

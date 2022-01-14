@@ -44,10 +44,11 @@ const CreateForm = (ps) => {
         scientific: {
             researchGroupSettings: [],
             systemPermissions: {
-                accessRightsByResearchGroup: []
+                accessRightsByResearchGroup: [],
+                isHiddenForResearchGroupIds: [],
             },
-            isHiddenForResearchGroupIds: [],
-            hasRootAccess: false
+            canLogIn: false,
+            hasRootAccess: false,
         },
     };
 

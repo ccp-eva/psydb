@@ -6,10 +6,7 @@ var {
 var GenericRecordHandler = require('../../lib/generic-record-handler');
 
 var PersonnelGroup = MessageHandlerGroup([
-    GenericRecordHandler({
-        collection: 'personnel',
-        op: 'create',
-    }),
+    require('./create'),
     GenericRecordHandler({
         collection: 'personnel',
         op: 'patch',

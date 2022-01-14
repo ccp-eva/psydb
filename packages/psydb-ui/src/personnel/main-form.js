@@ -83,6 +83,11 @@ const FormFields = (ps) => {
             { permissions.isRoot() && (
                 <>
                     <Fields.DefaultBool
+                        label='Log-In erlauben'
+                        dataXPath='$.scientific.canLogIn'
+                        required
+                    />
+                    <Fields.DefaultBool
                         label='MA hat Admin-Zugriff'
                         dataXPath='$.scientific.hasRootAccess'
                         required

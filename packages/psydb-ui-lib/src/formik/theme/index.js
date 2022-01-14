@@ -5,9 +5,7 @@ import { FormHelpers } from '@mpieva/psydb-ui-layout';
 export const FieldWrapper = (ps) => {
     var { formikMeta } = ps;
     return (
-        <div style={{ border: '1px solid green', padding: '5px' }}>
-            <FormHelpers.InlineWrapper { ...ps } />
-        </div>
+        <FormHelpers.InlineWrapper { ...ps } />
     );
     /*return (
         <div style={{ border: '1px solid purple', padding: '5px' }}>
@@ -31,26 +29,19 @@ export const ArrayFieldWrapper = (ps) => {
 export const ArrayContentWrapper = (ps) => {
     var { hasError, formikMeta } = ps;
     return (
-        <div style={{ border: '1px solid green', padding: '5px' }}>
-            <FallbackTheme.ArrayContentWrapper { ...ps } />
-        </div>
+        <FallbackTheme.ArrayContentWrapper { ...ps } />
     )
 };
 
 export const ArrayItemWrapper = (ps) => {
     var { index, hasError, formikMeta } = ps;
     return (
-        <div style={{ border: '1px solid lime', padding: '5px' }}>
-            <FallbackTheme.ArrayItemWrapper { ...ps } />
-        </div>
+        <FallbackTheme.ArrayItemWrapper { ...ps } />
     )
 };
 
 export const ArrayItemFieldWrapper = (ps) => (
-    <div style={{ border: '1px solid cyan' }}>
-        <FallbackTheme.ArrayItemFieldWrapper { ...ps } />
-        <ErrorIndicator { ...ps } />
-    </div>
+    <FallbackTheme.ArrayItemFieldWrapper { ...ps } />
 )
 
 export const ObjectArrayContentWrapper = (ps) => {
@@ -66,9 +57,7 @@ export const ObjectArrayItemWrapper = (ps) => {
 }
 
 export const NoneWrapper = (ps) => (
-    <div style={{ border: '1px solid lightgrey', padding: '5px' }}>
-        <FallbackTheme.NoneWrapper { ...ps } />
-    </div>
+    <FallbackTheme.NoneWrapper { ...ps } />
 )
 
 const ErrorIndicator = (ps) => {
