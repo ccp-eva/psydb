@@ -1,9 +1,40 @@
 import React from 'react';
-import { Form } from '@mpieva/psydb-ui-layout';
+//import { Form } from '@mpieva/psydb-ui-layout';
 import { withField } from '@cdxoo/formik-utils';
+import * as Controls from '@mpieva/psydb-ui-form-controls';
+//import fixSelectProps from '../../fix-select-props';
 
-import fixSelectProps from '../../fix-select-props';
+export const GenericEnum = withField({ Control: (ps) => {
+    var {
+        dataXPath,
+        formikField,
+        formikMeta,
+        formikForm,
 
+        manualOnChange,
+        ...pass
+    } = ps;
+
+    var { error } = formikMeta;
+    var { setFieldValue } = formikForm;
+    var { value } = formikField;
+
+    return (
+        <Controls.GenericEnum
+            useRawOnChange={ !!manualOnChange }
+            onChange={ (
+                manualOnChange
+                ? manualOnChange
+                : (next) => setFieldValue(dataXPath, next)
+            )}
+            value={ value }
+            //options={ downstreamOptions }
+            { ...pass }
+        />
+    );
+}})
+
+/*
 export const GenericEnum = withField({ Control: (ps) => {
     var {
         dataXPath,
@@ -57,4 +88,4 @@ export const GenericEnum = withField({ Control: (ps) => {
             ))}
         </Form.Control>
     )
-}});
+}});*/

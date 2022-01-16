@@ -49,6 +49,7 @@
     "@mpieva/psydb-ui-utils": "~0.1.0-alpha",
     "@mpieva/psydb-ui-hooks": "~0.1.0-alpha",
     "@mpieva/psydb-ui-layout": "~0.1.0-alpha",
+    "@mpieva/psydb-ui-form-controls": "~0.1.0-alpha",
 
     "moment": "~2.29.1",
     "react-datetime": "~3.0.4",

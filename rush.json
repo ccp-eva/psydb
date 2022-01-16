@@ -224,6 +224,16 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/psydb-ui-form-controls",
+       "projectFolder": "packages/psydb-ui-form-controls",
+       "reviewCategory": "production"
+    },
+    {
+       "packageName": "@mpieva/psydb-ui-form-control-wrappers",
+       "projectFolder": "packages/psydb-ui-form-control-wrappers",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-ui-lib",
        "projectFolder": "packages/psydb-ui-lib",
        "reviewCategory": "production"

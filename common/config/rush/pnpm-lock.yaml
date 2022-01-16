@@ -52,6 +52,8 @@ dependencies:
   '@rush-temp/psydb-timezone-helpers': 'file:projects/psydb-timezone-helpers.tgz'
   '@rush-temp/psydb-ui': 'file:projects/psydb-ui.tgz'
   '@rush-temp/psydb-ui-contexts': 'file:projects/psydb-ui-contexts.tgz'
+  '@rush-temp/psydb-ui-form-control-wrappers': 'file:projects/psydb-ui-form-control-wrappers.tgz'
+  '@rush-temp/psydb-ui-form-controls': 'file:projects/psydb-ui-form-controls.tgz'
   '@rush-temp/psydb-ui-hooks': 'file:projects/psydb-ui-hooks.tgz_webpack@5.65.0'
   '@rush-temp/psydb-ui-layout': 'file:projects/psydb-ui-layout.tgz_webpack@5.65.0'
   '@rush-temp/psydb-ui-lib': 'file:projects/psydb-ui-lib.tgz_webpack@5.65.0'
@@ -9771,7 +9773,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-api-message-handlers'
     resolution:
-      integrity: sha512-tiGFwwj2tI6iO7W+wyiO/JQzV0zLPPa0oX2+XqLvcPK4xKydxONCRnd4ROnNu6dIm6/vxZ15u/PSZxdRaYGd0A==
+      integrity: sha512-+Ep5wvi4OXbRBU9VWkR6Y6+WfqfVjs9VzmodGZq11WFc6rmI3S1/s7+RaHJgK3v7GTHquNJvyRrkAO9Jk6UuEA==
       tarball: 'file:projects/psydb-api-message-handlers.tgz'
     version: 0.0.0
   'file:projects/psydb-api.tgz':
@@ -10030,6 +10032,24 @@ packages:
       integrity: sha512-rKS/8+5U4C9Q9TpxHoa2QBp4uugdx0crFr/pJ9IT/7Jc+5f7QdDc3zpMqm7ImdqC+Kbf1QzT7ewl38WeSiH5nA==
       tarball: 'file:projects/psydb-ui-contexts.tgz'
     version: 0.0.0
+  'file:projects/psydb-ui-form-control-wrappers.tgz':
+    dependencies:
+      react: 17.0.2
+    dev: false
+    name: '@rush-temp/psydb-ui-form-control-wrappers'
+    resolution:
+      integrity: sha512-o+JY+sjg8WJE3smJFb0f5aXrzEbYeIHH3X/m2O4ECz8hWAVdy53WGbymmOniKmOhRPefLNNDn2iQiJCYzJG/Ug==
+      tarball: 'file:projects/psydb-ui-form-control-wrappers.tgz'
+    version: 0.0.0
+  'file:projects/psydb-ui-form-controls.tgz':
+    dependencies:
+      react: 17.0.2
+    dev: false
+    name: '@rush-temp/psydb-ui-form-controls'
+    resolution:
+      integrity: sha512-DFoP5L/cJ1aprzUPzCHoCbGnCLMN0HTvMvpmYxiPHNpL0PpesmsRgaADr8AnKOeeHar0oheaZfY3yIHrbM3Mfw==
+      tarball: 'file:projects/psydb-ui-form-controls.tgz'
+    version: 0.0.0
   'file:projects/psydb-ui-hooks.tgz_webpack@5.65.0':
     dependencies:
       '@babel/core': 7.12.17
@@ -10276,6 +10296,8 @@ specifiers:
   '@rush-temp/psydb-timezone-helpers': 'file:./projects/psydb-timezone-helpers.tgz'
   '@rush-temp/psydb-ui': 'file:./projects/psydb-ui.tgz'
   '@rush-temp/psydb-ui-contexts': 'file:./projects/psydb-ui-contexts.tgz'
+  '@rush-temp/psydb-ui-form-control-wrappers': 'file:./projects/psydb-ui-form-control-wrappers.tgz'
+  '@rush-temp/psydb-ui-form-controls': 'file:./projects/psydb-ui-form-controls.tgz'
   '@rush-temp/psydb-ui-hooks': 'file:./projects/psydb-ui-hooks.tgz'
   '@rush-temp/psydb-ui-layout': 'file:./projects/psydb-ui-layout.tgz'
   '@rush-temp/psydb-ui-lib': 'file:./projects/psydb-ui-lib.tgz'

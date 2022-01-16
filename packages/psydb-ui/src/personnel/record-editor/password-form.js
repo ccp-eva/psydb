@@ -38,17 +38,16 @@ export const PasswordForm = (ps) => {
             >
                 {(formikProps) => (
                     <>
+                        { /*console.log(formikProps.values) || ''*/ }
                         <Fields.GenericEnum
                             label='Methode'
                             dataXPath='$.method'
                             enum={ methodEnum }
                             manualOnChange={ (e) => {
                                 var { target: { value }} = e;
-                                var key = methodEnum.keys[value];
-
                                 formikProps.setValues({ '$': {
-                                    method: key,
-                                    ...(key === 'manual' && {
+                                    method: value,
+                                    ...(value === 'manual' && {
                                         sendMail: false,
                                     })
                                 }}, false);
