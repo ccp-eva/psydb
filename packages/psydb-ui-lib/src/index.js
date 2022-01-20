@@ -22,4 +22,5 @@ export * from './account-function-dropdown';
 export * from './when-allowed';
 export * as StudyTopic from './study-topic';
 
+export * from './with-record-creator';
 export * from './with-record-editor';

@@ -1,5 +1,4 @@
 import React from 'react';
-import { useModalReducer } from '@mpieva/psydb-ui-hooks';
 
 import {
     withCollectionView,

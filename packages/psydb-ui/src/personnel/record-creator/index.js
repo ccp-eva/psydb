@@ -1,28 +1,7 @@
 import React from 'react';
 import { useSendCreate, usePermissions } from '@mpieva/psydb-ui-hooks';
+import { withRecordCreator } from '@mpieva/psydb-ui-lib';
 import { MainForm } from '../main-form';
-
-const withRecordCreator = (options) => {
-    var { CreateForm } = options;
-
-    var RecordCreator = (ps) => {
-        var { collection, recordType } = ps;
-
-        var permissions = usePermissions();
-        var canWrite = permissions.hasCollectionFlag(
-            collection, 'write'
-        );
-
-        if (canWrite) {
-            return <CreateForm { ...ps } />
-        }
-        else {
-            return <PermissionDenied />
-        }
-    }
-
-    return RecordCreator;
-}
 
 const CreateForm = (ps) => {
     var { collection, onSuccessfulUpdate } = ps;
