@@ -42,7 +42,7 @@ var RequestBodySchema = () => ExactObject({
             required: [],
         }),
         offset: Integer({ minimum: 0 }),
-        limit: Integer({ maximum: 100 }),
+        limit: Integer({ maximum: 250 }),
     },
     required: [
         'subjectType',

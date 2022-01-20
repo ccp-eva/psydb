@@ -62,7 +62,7 @@ const LimitControl = ({
     value,
     onChange,
 }) => {
-    var steps = [ 2, 25, 50, 100 ];
+    var steps = [ 2, 25, 50, 100, 250 ];
     return (
         <div className='user-select-none'>
             { steps.map((s, index) => {
