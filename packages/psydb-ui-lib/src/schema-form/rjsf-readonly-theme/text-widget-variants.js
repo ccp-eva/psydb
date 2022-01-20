@@ -22,7 +22,7 @@ var collectionMapping = {
     'personnel': 'personnel',
     'externalPerson': 'external-persons',
     'externalOrganization': 'external-organizations',
-    'systemRole': 'systemRoles',
+    'systemRole': 'system-roles',
 }
 
 export const ForeignId = ({
@@ -61,9 +61,13 @@ export const ForeignId = ({
         );
 
         renderedValue = (
-            <LinkContainer to={ uri }>
-                <a>{ renderedText }</a>
-            </LinkContainer>
+            collectionUI
+            ? (
+                <LinkContainer to={ uri }>
+                    <a>{ renderedText }</a>
+                </LinkContainer>
+            )
+            : renderedText
         );
     }
     else {
