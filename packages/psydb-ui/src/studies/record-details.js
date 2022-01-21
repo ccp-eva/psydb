@@ -28,6 +28,7 @@ const EditLinkButton = ({
 }
 
 const StudyRecordDetails = ({
+    fetched,
     recordType,
     onSuccessfulUpdate,
 }) => {
@@ -41,46 +42,17 @@ const StudyRecordDetails = ({
 
     var { hasSubChannels } = allSchemaCreators[collection];
 
-    var [ state, dispatch ] = useReducer(reducer, {});
     var {
+        schema,
         record,
+        related,
+    } = fetched;
+
+    var {
         relatedRecordLabels,
         relatedHelperSetItems,
         relatedCustomRecordTypeLabels,
-        schema
-    } = state;
-
-    useEffect(() => {
-        var suffix = `${collection}`;
-        if (recordType) {
-            suffix = `${suffix}/${recordType}`;
-        }
-
-        agent.readRecordSchema({
-            collection,
-            recordType
-        }).then((response) => {
-            dispatch({ type: 'init-schema', payload: {
-                schema: response.data.data
-            }})
-        })
-
-        agent.readRecord({
-            collection,
-            recordType,
-            id
-        }).then((response) => {
-            dispatch({ type: 'init-data', payload: {
-                ...response.data.data
-            }})
-        })
-    }, [ id, collection, recordType ])
-
-    if (!schema || !record) {
-        return (
-            <div>Loading...</div>
-        );
-    }
+    } = related;
 
     var formData = {};
     var formContext = {};

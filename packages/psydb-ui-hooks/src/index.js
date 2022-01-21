@@ -1,6 +1,8 @@
 export { default as useFetch } from './use-fetch';
 export { default as useFetchAll } from './use-fetch-all';
 
+export { default as useReadRecord } from './use-read-record';
+
 export { default as useSendCreate } from './use-send-create';
 export { default as useSendPatch } from './use-send-patch';
 export { default as useSend } from './use-send';

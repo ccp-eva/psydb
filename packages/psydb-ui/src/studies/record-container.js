@@ -11,10 +11,16 @@ import {
 import agent from '@mpieva/psydb-ui-request-agents';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
 
-import { usePermissions } from '@mpieva/psydb-ui-hooks';
+import {
+    useRevision,
+    usePermissions,
+    useReadRecord
+} from '@mpieva/psydb-ui-hooks';
+
 import {
     TabNav,
     LinkButton,
+    LoadingIndicator,
 } from '@mpieva/psydb-ui-layout';
 
 import StudyRecordDetails from './record-details';
@@ -49,9 +55,20 @@ const StudyRecordContainer = ({
     var { path, url } = useRouteMatch();
     var { id, tabKey } = useParams();
     var history =  useHistory();
-    var permissions = usePermissions();
 
+    var permissions = usePermissions();
     var canReadParticipation = permissions.hasFlag('canReadParticipation');
+
+    var revision = useRevision();
+    var [ didFetch, fetched ] = useReadRecord({
+        collection: 'study',
+        recordType,
+        id,
+    }, [ revision.value ]);
+
+    if (!didFetch) {
+        return <LoadingIndicator size='lg' />
+    }
 
     var navItems = [
         { key: 'details', label: 'Allgemein' },
@@ -70,7 +87,11 @@ const StudyRecordContainer = ({
                     className='d-flex justify-content-between align-items-end'
                     style={{ minHeight: '38px' }}
                 >
-                    <span>Studien-Details</span>
+                    Studien-Details
+                    {' - '}
+                    { fetched.record.state.name }
+                    {' '}
+                    ({ fetched.record.state.shorthand })
                 </h5>
                 <hr />
 
@@ -90,6 +111,7 @@ const StudyRecordContainer = ({
                             <Route exact path={path}>
                                 <StudyRecordDetails
                                     recordType={ recordType }
+                                    fetched={ fetched }
                                 />
                             </Route>
                             <Route exact path={`${path}/edit`}>
@@ -97,7 +119,8 @@ const StudyRecordContainer = ({
                                     type='edit'
                                     recordType={ recordType }
                                     onSuccessfulUpdate={ () => {
-                                        history.push(`${url}`)
+                                        revision.up();
+                                        history.push(`${url}`);
                                     }}
                                 />
                             </Route>
