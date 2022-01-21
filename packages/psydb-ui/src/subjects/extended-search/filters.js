@@ -26,7 +26,7 @@ export const Filters = (ps) => {
                 fields={ customScientific }
             />
             <Button type='submit'>
-                Suchen
+                Weiter
             </Button>
         </FormBox>
     )

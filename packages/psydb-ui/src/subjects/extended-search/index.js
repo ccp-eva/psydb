@@ -40,7 +40,8 @@ const ExtendedSearch = (ps) => {
     var decodedFormData = undefined;
     try {
         if (formData) {
-            decodedFormData = JSON.parse(Base64.decode(formData));
+            decodedFormData = JSON.parse(Base64.decode(formData))['$'];
+            console.log(decodedFormData);
         }
     }
     catch (e) {}
