@@ -1,0 +1,24 @@
+import React from 'react';
+import { Form } from '@mpieva/psydb-ui-layout';
+
+export const PlainCheckbox = (ps) => {
+    var { value, checked, onChange, useRawOnChange = false, ...pass } = ps;
+    if (!useRawOnChange) {
+        ({ checked, onChange } = fixCheckbox({ value, onChange }))
+    }
+    return (
+        <Form.Check
+            checked={ checked }
+            onChange={ onChange }
+            { ...pass }
+        />
+    )
+}
+
+const fixCheckbox = ({ value, onChange }) => ({
+    checked: value === true,
+    onChange: (event) => {
+        var { target: { checked }} = event;
+        onChange(!!checked);
+    }
+})

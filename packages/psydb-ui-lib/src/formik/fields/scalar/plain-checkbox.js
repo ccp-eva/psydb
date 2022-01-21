@@ -1,12 +1,13 @@
 import React from 'react';
-import { Form, FormHelpers } from '@mpieva/psydb-ui-layout';
-import WithField from '../../with-field';
+import { withField } from '@cdxoo/formik-utils';
+import * as Controls from '@mpieva/psydb-ui-form-controls';
 
-export const PlainCheckbox = WithField({
+export const PlainCheckbox = withField({
     Control: (ps) => {
         var { dataXPath, formikField, disabled, label } = ps;
         return (
-            <Form.Check
+            <Controls.PlainCheckbox
+                useRawOnChange
                 id={ dataXPath }
                 label={ label }
                 disabled={ disabled }
@@ -16,6 +17,6 @@ export const PlainCheckbox = WithField({
     },
     type: 'checkbox',
     fakeDefault: false,
-    DefaultWrapper: FormHelpers.NoneWrapper
+    DefaultWrapper: 'NoneWrapper'
 })
 

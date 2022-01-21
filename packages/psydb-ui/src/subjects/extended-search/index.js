@@ -77,7 +77,7 @@ const ExtendedSearch = (ps) => {
         customGdprFilters: {},
         customScientificFilters: {},
         specialFilters: {},
-        columns: { '/_id': true },
+        columns: [ '/_id' ],
         sort: { column: '/_id', direction: 'asc' },
         limit: 0,
         offset: 0
