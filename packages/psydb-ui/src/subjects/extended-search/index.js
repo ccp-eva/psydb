@@ -41,7 +41,7 @@ const ExtendedSearch = (ps) => {
     try {
         if (formData) {
             decodedFormData = JSON.parse(Base64.decode(formData))['$'];
-            console.log(decodedFormData);
+            //console.log(decodedFormData);
         }
     }
     catch (e) {}
@@ -106,9 +106,9 @@ const ExtendedSearch = (ps) => {
 }
 
 const tabs = [
-    { key: 'filters', label: 'Suchbedingungen' },
-    { key: 'columns', label: 'Spalten' },
-    { key: 'results', label: 'Ergebnisliste' },
+    { key: 'filters', label: '1. Suchbedingungen' },
+    { key: 'columns', label: '2. Spalten' },
+    { key: 'results', label: '3. Ergebnisliste' },
 ]
 
 const getNextTabKey = (current) => {
