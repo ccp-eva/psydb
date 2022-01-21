@@ -19,7 +19,7 @@ export const DefaultBool = withField({ Control: (ps) => {
     };
 
     return (
-        <ButtonGroup>
+        <ButtonGroup className='mt-1'>
             <Yes { ...bag }>Ja</Yes>
             <No { ...bag }>Nein</No>
         </ButtonGroup>
@@ -56,6 +56,7 @@ var YNButton = (ps) => {
     var { variant, active, ...pass } = ps;
     return (
         <Button
+            size='sm'
             variant={ active ? variant : 'outline-secondary' }
             style={{ minWidth: '60px' }} { ...pass }
         />
