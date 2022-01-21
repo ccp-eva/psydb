@@ -143,7 +143,6 @@ const FormFields = (ps) => {
 const LabOperationFields = (ps) => {
     var { type, title, hasInvitation } = ps;
     var dataXPath = `$.labOperation.${type}`;
-    console.log(dataXPath)
 
     return (
         <>

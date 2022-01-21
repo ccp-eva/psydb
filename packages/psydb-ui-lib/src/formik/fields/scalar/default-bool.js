@@ -18,8 +18,6 @@ export const DefaultBool = withField({ Control: (ps) => {
         onChange: (next) => setFieldValue(dataXPath, next)
     };
 
-    console.log(value);
-
     return (
         <ButtonGroup>
             <Yes { ...bag }>Ja</Yes>
