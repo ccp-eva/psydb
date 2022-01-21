@@ -45,4 +45,5 @@ export {
     Dropdown,
     Form,
     InputGroup,
+    ButtonGroup,
 } from 'react-bootstrap';

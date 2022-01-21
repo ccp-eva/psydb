@@ -1,4 +1,6 @@
 import React from 'react';
+import { withField } from '@cdxoo/formik-utils';
+import { ButtonGroup, Button } from '@mpieva/psydb-ui-layout';
 import { GenericEnum } from './generic-enum';
 
 const enumeration = {
@@ -6,6 +8,58 @@ const enumeration = {
     labels: [ 'Ja', 'Nein' ],
 }
 
-export const DefaultBool = (ps) => (
-    <GenericEnum enum={ enumeration } { ...ps } />
-)
+export const DefaultBool = withField({ Control: (ps) => {
+    var { dataXPath, formikField, formikForm } = ps;
+    var { setFieldValue } = formikForm;
+    var { value } = formikField;
+
+    var bag = {
+        value,
+        onChange: (next) => setFieldValue(dataXPath, next)
+    };
+
+    console.log(value);
+
+    return (
+        <ButtonGroup>
+            <Yes { ...bag }>Ja</Yes>
+            <No { ...bag }>Nein</No>
+        </ButtonGroup>
+    )
+
+    //<GenericEnum enum={ enumeration } { ...ps } />
+}});
+
+var Yes = (ps) => {
+    var { value, onChange } = ps;
+    return (
+        <YNButton
+            active={ value === true }
+            variant='primary'
+            onClick={ () => onChange(true) }
+            { ...ps }
+        />
+    )
+}
+
+var No = (ps) => {
+    var { value, onChange } = ps;
+    return (
+        <YNButton
+            active={ value !== true }
+            variant='danger'
+            onClick={ () => onChange(false) }
+            { ...ps }
+        />
+    )
+}
+
+var YNButton = (ps) => {
+    var { variant, active, ...pass } = ps;
+    return (
+        <Button
+            variant={ active ? variant : 'outline-secondary' }
+            style={{ minWidth: '60px' }} { ...pass }
+        />
+    )
+}
