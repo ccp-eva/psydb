@@ -5,7 +5,7 @@ import {
 } from '@mpieva/psydb-common-lib';
 
 import { withField, withFieldArray } from '@cdxoo/formik-utils';
-import { Icons } from '@mpieva/psydb-ui-layout';
+import { Icons, Button } from '@mpieva/psydb-ui-layout';
 import { Fields } from '@mpieva/psydb-ui-lib';
 import * as Controls from '@mpieva/psydb-ui-form-controls';
 
@@ -33,55 +33,62 @@ export const Columns = (ps) => {
     ];
 
     return (
-        <div className='bg-light p-3 border border-top-0 d-flex'>
-            
-            <div className='w-50 pr-3'>
-                <header className='mb-2 border-bottom'>
-                    <b>Ausgewählt</b>
-                </header>
-                <div className='mb-3'>
-                    <ColumnField
-                        dataXPath='$.columns'
-                        pointer='/_id'
-                        label='ID'
-                    />
+        <div className='bg-light p-3 border border-top-0'>
+            <div className='d-flex'>
+                
+                <div className='w-50 pr-3'>
+                    <header className='mb-2 border-bottom'>
+                        <b>Ausgewählt</b>
+                    </header>
+                    <div className='mb-3'>
+                        <ColumnField
+                            dataXPath='$.columns'
+                            pointer='/_id'
+                            label='ID'
+                        />
+                    </div>
+
+                    <ColumnOptionBlock columns={ customColumns } />
+                    <ColumnOptionBlock columns={ specialColumns } />
                 </div>
 
-                <ColumnOptionBlock columns={ customColumns } />
-                <ColumnOptionBlock columns={ specialColumns } />
+                <div className='w-50 pl-3'>
+                    <header className='mb-2 border-bottom'>
+                        <b>Sortierung</b>
+                    </header>
+                    <Fields.GenericEnum
+                        dataXPath='$.sort.column'
+                        label='Spalte'
+                        options={ sortableColumns.reduce((acc, it) => ({
+                            ...acc,
+                            [it.pointer]: it.label
+                        }), {})}
+                    />
+                    <Fields.GenericEnum
+                        dataXPath='$.sort.direction'
+                        label='Richtung'
+                        options={{
+                            asc: 'Aufsteigend',
+                            desc: 'Absteigend',
+                        }}
+                    />
+
+                    <header className='mb-2 border-bottom'>
+                        <b>Anordnung</b>
+                    </header>
+                    <ColumnOrder
+                        labels={ allColumns.reduce((acc, it) => ({
+                            ...acc,
+                            [it.pointer]: it.label
+                        }), {})}
+                        dataXPath='$.columns'
+                    />
+                </div>
             </div>
-
-            <div className='w-50 pl-3'>
-                <header className='mb-2 border-bottom'>
-                    <b>Sortierung</b>
-                </header>
-                <Fields.GenericEnum
-                    dataXPath='$.sort.column'
-                    label='Spalte'
-                    options={ sortableColumns.reduce((acc, it) => ({
-                        ...acc,
-                        [it.pointer]: it.label
-                    }), {})}
-                />
-                <Fields.GenericEnum
-                    dataXPath='$.sort.direction'
-                    label='Richtung'
-                    options={{
-                        asc: 'Aufsteigend',
-                        desc: 'Absteigend',
-                    }}
-                />
-
-                <header className='mb-2 border-bottom'>
-                    <b>Anordnung</b>
-                </header>
-                <ColumnOrder
-                    labels={ allColumns.reduce((acc, it) => ({
-                        ...acc,
-                        [it.pointer]: it.label
-                    }), {})}
-                    dataXPath='$.columns'
-                />
+            <div>
+                <Button type='submit'>
+                    Weiter
+                </Button>
             </div>
         </div>
     )

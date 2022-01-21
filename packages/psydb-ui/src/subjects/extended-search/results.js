@@ -26,7 +26,6 @@ export const Results = (ps) => {
     var { schema, formData } = ps;
     
     var { columns } = formData['$'];
-    columns = Object.keys(columns).filter(key => !!columns[key]);
     
     var pagination = usePaginationReducer({ offset: 0, limit: 50 })
     var { offset, limit } = pagination;
