@@ -4,9 +4,10 @@ import WithField from '../../with-field';
 
 export const PlainCheckbox = WithField({
     Control: (ps) => {
-        var { formikField, disabled, label } = ps;
+        var { dataXPath, formikField, disabled, label } = ps;
         return (
             <Form.Check
+                id={ dataXPath }
                 label={ label }
                 disabled={ disabled }
                 { ...formikField }

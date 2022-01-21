@@ -56,6 +56,7 @@ const ExtendedSearch = (ps) => {
             pathname: location.pathname,
             search: nextSearchQuery
         });
+        window.scrollTo(0, 0);
     }
 
     var [ didFetch, fetched ] = useFetch((agent) => (
@@ -84,7 +85,10 @@ const ExtendedSearch = (ps) => {
     return (
         <PageWrappers.Level3 title='Erweiterte Probandensuche'>
             <DefaultForm
-                onSubmit={ (formData) => { console.log(formData) }}
+                onSubmit={ (formData) => { handleSwitchTab({
+                    nextTab: getNextTabKey(tab),
+                    formData,
+                }) }}
                 initialValues={ defaultValues }
             >
                 {(formikProps) => (
@@ -98,6 +102,21 @@ const ExtendedSearch = (ps) => {
             </DefaultForm>
         </PageWrappers.Level3>
     );
+}
+
+const tabs = [
+    { key: 'filters', label: 'Suchbedingungen' },
+    { key: 'columns', label: 'Spalten' },
+    { key: 'results', label: 'Ergebnisliste' },
+]
+
+const getNextTabKey = (current) => {
+    var index = tabs.findIndex(it => it.key === current);
+    var next = tabs[index + 1];
+    if (!next) {
+        throw new Error(`cannot find next tab for "${current}"`)
+    }
+    return next.key;
 }
 
 const Inner = (ps) => {
@@ -123,11 +142,7 @@ const Inner = (ps) => {
                 activeKey={ activeTab }
                 className='d-flex'
                 itemClassName='flex-grow'
-                items={[
-                    { key: 'filters', label: 'Suchbedingungen' },
-                    { key: 'columns', label: 'Spalten' },
-                    { key: 'results', label: 'Ergebnisliste' },
-                ]}
+                items={ tabs }
             />
             <Component
                 formData={ formData }
