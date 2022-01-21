@@ -5,6 +5,8 @@ export { default as LoadingIndicator } from './loading-indicator';
 export { default as Pagination } from './pagination';
 
 export { default as DetailsIconButton } from './details-icon-button';
+export { default as StudyIconButton } from './study-icon-button';
+export { default as ExperimentIconButton } from './experiment-icon-button';
 export { default as EditIconButton } from './edit-icon-button';
 export { default as RemoveIconButton } from './remove-icon-button';
 

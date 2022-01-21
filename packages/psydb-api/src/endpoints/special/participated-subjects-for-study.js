@@ -135,6 +135,7 @@ var fetchParticipation = async ({
             ProjectDisplayFieldsStage({
                 displayFields,
                 additionalProjection: {
+                    'type': true,
                     'scientific.state.internals.participatedInStudies': true 
                 }
             }),

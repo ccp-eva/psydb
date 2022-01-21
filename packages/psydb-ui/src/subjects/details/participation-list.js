@@ -1,5 +1,8 @@
 import React from 'react';
-import { Table } from 'react-bootstrap';
+import {
+    Table,
+    StudyIconButton,
+} from '@mpieva/psydb-ui-layout';
 
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 import calculateAge from '@mpieva/psydb-ui-lib/src/calculate-age';
@@ -8,6 +11,7 @@ import FieldDataHeadCols from '@mpieva/psydb-ui-lib/src/record-list/field-data-h
 import FieldDataBodyCols from '@mpieva/psydb-ui-lib/src/record-list/field-data-body-cols';
 
 const ParticipationList = ({
+    studyType,
     ageFrameField,
     ageFrameFieldValue,
 
@@ -30,6 +34,7 @@ const ParticipationList = ({
                         <th>Alter</th>
                     )}
                     <th>Status</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -38,6 +43,7 @@ const ParticipationList = ({
                         key: index,
                         item: it,
 
+                        studyType,
                         ageFrameField,
                         ageFrameFieldValue,
                         
@@ -56,6 +62,7 @@ const ParticipationList = ({
 const ParticipationListRow = ({
     item,
 
+    studyType,
     ageFrameField,
     ageFrameFieldValue,
     studyRecordsById,
@@ -90,6 +97,11 @@ const ParticipationListRow = ({
             )}
             <td>
                 { formatStatus(item.status) }
+            </td>
+            <td className='d-flex justify-content-end'>
+                <StudyIconButton
+                    to={`/studies/${studyType}/${item.studyId}`}
+                />
             </td>
         </tr>
     );

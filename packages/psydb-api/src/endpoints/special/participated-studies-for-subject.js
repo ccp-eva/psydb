@@ -224,6 +224,9 @@ var fetchStudyDataForType = async ({
                 _id: { $in: studyIds }
             }}
         ],
+        additionalProjection: {
+            'type': true,
+        },
         disablePermissionCheck: true,
     });
 

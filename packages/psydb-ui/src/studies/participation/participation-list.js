@@ -1,6 +1,9 @@
 import React, { useEffect, useReducer, useMemo } from 'react';
 import jsonpointer from 'jsonpointer';
-import { Table } from 'react-bootstrap';
+import {
+    Table,
+    DetailsIconButton,
+} from '@mpieva/psydb-ui-layout';
 
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 import calculateAge from '@mpieva/psydb-ui-lib/src/calculate-age';
@@ -66,6 +69,7 @@ const ParticipationListRow = ({
         record.scientific.state.internals.participatedInStudies[0]
     );
 
+    console.log({ record });
     return (
         <tr>
             <FieldDataBodyCols { ...({
@@ -101,6 +105,11 @@ const ParticipationListRow = ({
             )}
             <td>
                 { formatStatus(participationData.status) }
+            </td>
+            <td className='d-flex justify-content-end'>
+                <DetailsIconButton
+                    to={`/subjects/${record.type}/${record._id}`}
+                />
             </td>
         </tr>
     );

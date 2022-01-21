@@ -73,6 +73,7 @@ const ParticipationByType = ({
             { studyTypes.map(type => (
                 <ParticipationList { ...({
                     key: type,
+                    studyType: type,
                     ageFrameField,
                     ageFrameFieldValue,
                     ...participationByStudyType[type]
