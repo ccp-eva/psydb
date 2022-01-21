@@ -1,7 +1,7 @@
 import React from 'react';
+import { withField } from '@cdxoo/formik-utils';
 import { FormHelpers } from '@mpieva/psydb-ui-layout';
 
-import WithField from '../with-field';
 import * as CoreFields from '../fields';
 import { PlainCheckbox } from './plain-checkbox';
 import { GenericMultiCheckbox } from './generic-multi-checkbox';
@@ -29,7 +29,7 @@ export const ExtBool = (ps) => (
     />
 )
 
-export const ForeignIdList = WithField({ Control: (ps) => {
+export const ForeignIdList = withField({ Control: (ps) => {
     var { dataXPath } = ps;
     return (
         <div className='border p-3'>
@@ -50,7 +50,7 @@ export const ForeignIdList = WithField({ Control: (ps) => {
     )
 }});
 
-export const HelperSetItemIdList = WithField({ Control: (ps) => {
+export const HelperSetItemIdList = withField({ Control: (ps) => {
     var { dataXPath } = ps;
     return (
         <div className='border p-3'>

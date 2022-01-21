@@ -1,9 +1,9 @@
 import React from 'react';
 import { Form, FormHelpers } from '@mpieva/psydb-ui-layout';
-import WithField from '../with-field';
+import { withField } from '@cdxoo/formik-utils';
 import { PlainCheckbox } from './plain-checkbox';
 
-export const GenericMultiCheckbox = WithField({ Control: (ps) => {
+export const GenericMultiCheckbox = withField({ Control: (ps) => {
     var {
         dataXPath,
         options

@@ -29,14 +29,14 @@ export const ArrayFieldWrapper = (ps) => {
 export const ArrayContentWrapper = (ps) => {
     var { hasError, formikMeta } = ps;
     return (
-        <FallbackTheme.ArrayContentWrapper { ...ps } />
+        <FormHelpers.ScalarArrayContentWrapper { ...ps } />
     )
 };
 
 export const ArrayItemWrapper = (ps) => {
     var { index, hasError, formikMeta } = ps;
     return (
-        <FallbackTheme.ArrayItemWrapper { ...ps } />
+        <FormHelpers.ScalarArrayItemWrapper { ...ps } />
     )
 };
 
