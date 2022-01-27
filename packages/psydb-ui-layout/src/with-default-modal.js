@@ -12,6 +12,7 @@ const WithDefaultModal = (options) => (ps) => {
         bodyClassName = 'bg-light',
 
         title,
+        forceShow,
     } = options;
 
     var {
@@ -20,6 +21,9 @@ const WithDefaultModal = (options) => (ps) => {
         modalPayloadData
     } = ps;
 
+    if (forceShow) {
+        show = true;
+    }
 
     if (!show) {
         return <Modal show={ show } onHide={ onHide } />
