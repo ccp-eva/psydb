@@ -11,9 +11,10 @@ const ErrorResponseModalSetup = (ps) => {
         agent.getAxios().interceptors.response.use(
             (response) => (response),
             (error) => {
+                var { config, response } = error;
                 console.log('axios error');
-                if (error.response) {
-                    errorResponseModal.handleShow(error.response);
+                if (response && !config.disableErrorModal) {
+                    errorResponseModal.handleShow(response);
                     throw error;
                 }
                 else {

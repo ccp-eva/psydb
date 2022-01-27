@@ -24,11 +24,11 @@ agent.signOut = () => {
     return axios.post('/api/sign-out');
 }
 
-agent.send = ({ message }) => {
+agent.send = ({ message, extraAxiosConfig }) => {
     return axios.post('/api/', {
         ...message,
-        timezone: getSystemTimezone()
-    });
+        timezone: getSystemTimezone(),
+    }, extraAxiosConfig);
 }
 
 agent.fetchServerTimezone = () => {
