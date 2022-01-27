@@ -72,9 +72,9 @@ class RequestFailed extends DriverError {
     }
 }
 
-var defaultWriteRequest = async ({ agent, url, message }) => {
+var defaultWriteRequest = async ({ agent, url, message, options = {} }) => {
     var { status, body } = await agent.post(url).send({
-        timezone: getSystemTimezone(),
+        timezone: options.forceTZ || getSystemTimezone(),
         ...message,
     });
     if (status !== 200) {
@@ -111,9 +111,9 @@ var Driver = ({
         writeRequest({ agent, url: '/sign-out' })
     )
 
-    driver.sendMessage = async (message) => {
+    driver.sendMessage = async (message, options = {}) => {
         var { status, body } = await writeRequest({
-            agent, url: '/', message
+            agent, url: '/', message, options
         });
 
         var modified = body.data;
