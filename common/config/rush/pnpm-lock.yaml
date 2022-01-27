@@ -79,11 +79,13 @@ dependencies:
   date-fns: 2.21.3
   debug: 4.3.3
   deep-diff: 1.0.2
+  detect-character-encoding: 0.8.0
   escape-string-regexp: 4.0.0
   flat: 5.0.2
   formik: 2.2.9_react@17.0.2
   graphql: 15.3.0
   html-webpack-plugin: 5.1.0_webpack@5.65.0
+  iconv-lite: 0.6.3
   inflation: 2.0.0
   is-subset: 0.1.1
   is-what: 3.14.1
@@ -2522,7 +2524,6 @@ packages:
     dependencies:
       file-uri-to-path: 1.0.0
     dev: false
-    optional: true
     resolution:
       integrity: sha512-p2q/t/mhvuOj/UeLlV6566GD/guowlr0hHxClI0W9m7MWYkL1F0hLo+0Aexs9HSPCtR1SXQ0TD3MMKrXZajbiQ==
   /bl/2.2.1:
@@ -3540,6 +3541,16 @@ packages:
     dev: false
     resolution:
       integrity: sha1-l4hXRCxEdJ5CBmE+N5RiBYJqvYA=
+  /detect-character-encoding/0.8.0:
+    dependencies:
+      bindings: 1.5.0
+      nan: 2.15.0
+    dev: false
+    engines:
+      node: '>=6'
+    requiresBuild: true
+    resolution:
+      integrity: sha512-w+ZYVkUenSJjk1lh36wYcejy03oqZZcBXx52W6zNxyBT7tBMd8IjEglSh+pMHfTvjnPBqnziTGvX1RhitYm7wg==
   /detect-libc/1.0.3:
     dev: false
     engines:
@@ -4081,7 +4092,6 @@ packages:
       integrity: sha1-JcfInLH5B3+IkbvmHY85Dq4lbx4=
   /file-uri-to-path/1.0.0:
     dev: false
-    optional: true
     resolution:
       integrity: sha512-0Zt+s3L7Vf1biwWZ29aARiVYLx7iMGnEUl9x33fbB/j3jR81u/O2LbqK+Bm1CDSNDKVtJ/YjwY7TUd5SkeLQLw==
   /fill-range/4.0.0:
@@ -4731,6 +4741,14 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==
+  /iconv-lite/0.6.3:
+    dependencies:
+      safer-buffer: 2.1.2
+    dev: false
+    engines:
+      node: '>=0.10.0'
+    resolution:
+      integrity: sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==
   /icss-utils/5.1.0_postcss@8.4.5:
     dependencies:
       postcss: 8.4.5
@@ -6603,7 +6621,6 @@ packages:
       integrity: sha512-Bca+gk2YWmqp2Uf6k5NFEurwY/0td0cpebAucFpY/3jhrwrVGuxU2uQFCHjU19SJfje0yQvi+rVWdq78hR5lig==
   /nan/2.15.0:
     dev: false
-    optional: true
     resolution:
       integrity: sha512-8ZtvEnA2c5aYCZYd1cvgdnU6cqwixRoYg70xPLWUws5ORTa/lnw+u4amixRS/Ac5U5mQVgp9pnlSUnbNWFaWZQ==
   /nanoid/2.1.11:
@@ -9914,6 +9931,9 @@ packages:
       '@cdxoo/inline-text': 1.0.2
       co: 4.6.0
       debug: 4.3.3
+      detect-character-encoding: 0.8.0
+      iconv-lite: 0.6.3
+      jest: 27.2.5
       koa: 2.13.4
       mongodb: 3.6.12
       mysql: 2.18.1
@@ -9921,7 +9941,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-migration'
     resolution:
-      integrity: sha512-KOVKUt+kfPYaGQcQexIXewPGPKJ6CcBgve2RzBXFUTISuhUi3hlrja5GiQvh37qTg/RrGXVqNH48jH1wYExr1g==
+      integrity: sha512-+KWEY3l5VydMXQG7bhFrfafUHbUV/5jY7n4Zc7JEsMnpxkjnAYqmS+j+T3Z1rAaePS92OqHszYOwcUW5hYWMng==
       tarball: 'file:projects/psydb-migration.tgz'
     version: 0.0.0
   'file:projects/psydb-mongo-adapter.tgz':
@@ -10127,7 +10147,7 @@ packages:
     peerDependencies:
       webpack: '*'
     resolution:
-      integrity: sha512-yXZxqWscDty9J6le0mhBW32FPEiEBI8AKv4c56kc8R1K1ohHTsSIXT5zDlZImz4teH3HiDfz7xY/hCCYM7rbbQ==
+      integrity: sha512-OLFcGzUeYN2G73igF4AJwRT71cmso9OKG+GeZZc75igvEAQyyq96QygXDJ9c0DcAGYMQVhRWJUksod9iWFleIQ==
       tarball: 'file:projects/psydb-ui-lib.tgz'
     version: 0.0.0
   'file:projects/psydb-ui-request-agents.tgz_debug@4.3.3':
@@ -10166,6 +10186,7 @@ packages:
       '@babel/plugin-proposal-class-properties': 7.13.0_@babel+core@7.12.17
       '@babel/preset-env': 7.12.17_@babel+core@7.12.17
       '@babel/preset-react': 7.12.13_@babel+core@7.12.17
+      '@cdxoo/formik-utils': 0.4.0_formik@2.2.9+react@17.0.2
       '@cdxoo/omit': 1.0.1
       '@rjsf/bootstrap-4': 2.5.1_5dccca4f99fef0089ce8bea6fe035927
       '@rjsf/core': 2.5.1_react@17.0.2
@@ -10196,7 +10217,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-ui'
     resolution:
-      integrity: sha512-v+gNSqhVkuFHffOwnovqopthDXJqVn1ylaZbuwWQ2VYgjYzVSkAz/GSjTzvzeWNK4zNCpJO0mYRotYsfgpe0ew==
+      integrity: sha512-ZjYitSgIGwVJe1qBuCLxDkt+rmEJLUASYezU1daJGM1iefKpgV+e+tJkg25VIC6cDK6twnhKHREXQ6CQ6fYdBQ==
       tarball: 'file:projects/psydb-ui.tgz'
     version: 0.0.0
   'file:projects/psydb-web.tgz':
@@ -10323,11 +10344,13 @@ specifiers:
   date-fns: ~2.21.1
   debug: ~4.3.1
   deep-diff: ~1.0.2
+  detect-character-encoding: ~0.8.0
   escape-string-regexp: ~4.0.0
   flat: ~5.0.2
   formik: ~2.2.6
   graphql: ~15.3.0
   html-webpack-plugin: 5.1.0
+  iconv-lite: ~0.6.3
   inflation: ~2.0.0
   is-subset: ~0.1.1
   is-what: ~3.14.0
