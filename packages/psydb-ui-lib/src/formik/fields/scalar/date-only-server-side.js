@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react';
+import { withField } from '@cdxoo/formik-utils';
 import { getSystemTimezone } from '@mpieva/psydb-timezone-helpers';
 
 import {
@@ -12,9 +13,8 @@ import {
 
 import { Form } from '@mpieva/psydb-ui-layout';
 import ServerTimezoneContext from '../../../server-timezone-context';
-import WithField from '../../with-field';
 
-export const DateOnlyServerSide = WithField({
+export const DateOnlyServerSide = withField({
     Control: (ps) => {
         var {
             dataXPath,

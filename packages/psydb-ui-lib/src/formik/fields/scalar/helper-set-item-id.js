@@ -1,8 +1,8 @@
 import React from 'react';
-import WithField from '../../with-field';
+import { withField } from '@cdxoo/formik-utils';
 import RecordPicker from '../../../pickers/record-picker';
 
-export const HelperSetItemId = WithField({ Control: (ps) => {
+export const HelperSetItemId = withField({ Control: (ps) => {
     var {
         dataXPath,
         formikField,

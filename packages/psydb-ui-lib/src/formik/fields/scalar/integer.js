@@ -1,8 +1,8 @@
 import React from 'react';
+import { withField } from '@cdxoo/formik-utils';
 import { Form } from '@mpieva/psydb-ui-layout';
-import WithField from '../../with-field';
 
-export const Integer = WithField({
+export const Integer = withField({
     type: 'number',
     fakeDefault: Infinity,
 

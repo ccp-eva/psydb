@@ -1,5 +1,4 @@
 import React from 'react';
-import WithField from '../../with-field';
 import { GenericEnum } from './generic-enum';
 
 const options = {
