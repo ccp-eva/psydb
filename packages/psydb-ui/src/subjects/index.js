@@ -7,8 +7,10 @@ import {
 
 import Details from './details';
 import IntraTypeRouting from './intra-type-routing'
+import { RecordEditor } from './record-editor';
 
 const SubjectTypeView = withRecordTypeView({
+    RecordEditor,
     RecordDetails: Details,
     CustomRouting: IntraTypeRouting,
 })
