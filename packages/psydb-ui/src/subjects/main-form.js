@@ -1,6 +1,6 @@
 import React from 'react';
 import jsonpointer from 'jsonpointer';
-import { convertPathToPointer } from '@mpieva/psydb-core-utils';
+import { gatherCustomFieldSchemas } from '@mpieva/psydb-common-lib';
 import { Button } from '@mpieva/psydb-ui-layout';
 
 import {
@@ -69,7 +69,7 @@ const FormFields = (ps) => {
 const CustomFields = (ps) => {
     var { schema, subChannels, related, extraTypeProps } = ps;
     //console.log(schema);
-    var fieldSchemas = getCustomFieldSchemas({ schema, subChannels });
+    var fieldSchemas = gatherCustomFieldSchemas({ schema, subChannels });
     console.log(fieldSchemas);
 
     return (
@@ -123,44 +123,3 @@ const CustomField = (ps) => {
     )
 }
 
-const getCustomFieldSchemas = (options = {}) => {
-    var { schema, subChannels } = options;
-    if (Array.isArray(subChannels) && subChannels.length > 1) {
-        return subChannels.reduce((acc, key) => ({
-            ...acc,
-            ...getCustomFieldSchemas({ schema, subChannels: [ key ]})
-        }), {})
-    }
-    else {
-        var suffix = `properties.state.properties.custom.properties`;
-        var path = (
-            Array.isArray(subChannels)
-            ? `properties.${subChannels[0]}.${suffix}`
-            : suffix
-        );
-        //console.log(path);
-        var fieldSchemas = jsonpointer.get(
-            schema,
-            convertPathToPointer(path)
-        );
-        //console.log({ fieldSchemas });
-        if (!fieldSchemas || typeof fieldSchemas !== 'object') {
-            throw new Error(`no field schemas found for path "${path}"`);
-        }
-        var out = Object.keys(fieldSchemas).reduce((acc, key) => {
-            var dataXPath = (
-                path
-                .split('.')
-                .filter(it => !(it == 'properties' || it === 'state'))
-                .join('.')
-            );
-            return {
-                ...acc,
-                [`${dataXPath}.${key}`]: fieldSchemas[key]
-            }
-        }, {});
-
-        //console.log({ out });
-        return out;
-    }
-}

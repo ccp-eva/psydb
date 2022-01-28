@@ -7,6 +7,7 @@ module.exports = {
     
     gatherCustomColumns: require('./gather-custom-columns'),
 
+    gatherCustomFieldSchemas: require('./gather-custom-field-schemas'),
     gatherDisplayFieldData: require('./gather-display-field-data'),
     gatherLocationsFromLabProcedureSettings: (
         require('./gather-locations-from-lab-procedure-settings')
