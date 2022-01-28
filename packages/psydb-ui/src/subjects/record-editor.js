@@ -8,6 +8,7 @@ import { MainForm } from './main-form';
 const EditForm = (ps) => {
     var {
         collection,
+        recordType,
         id,
         fetched,
         onSuccessfulUpdate
@@ -23,6 +24,7 @@ const EditForm = (ps) => {
 
     var send = useSendPatch({
         collection,
+        recordType,
         record,
         subChannels: ['gdpr', 'scientific'],
         onSuccessfulUpdate
@@ -36,7 +38,9 @@ const EditForm = (ps) => {
         paths: [
             'gdpr.custom',
             'scientific.custom',
+            'scientific.testingPermissions',
             'scientific.systemPermissions',
+            'scientific.comment',
         ]
     });
 
