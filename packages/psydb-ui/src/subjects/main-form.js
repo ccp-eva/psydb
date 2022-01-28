@@ -67,6 +67,10 @@ const FormFields = (ps) => {
                 related={ related }
                 required
             />
+            <Fields.FullText
+                label='Kommentar'
+                dataXPath='$.scientific.comment'
+            />
         </>
     );
 }

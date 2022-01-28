@@ -14,6 +14,14 @@ export const PlainText = ({ label, value }) => (
     </InlineWrapper>
 )
 
+export const FullText = ({ label, value }) => (
+    <InlineWrapper label={ label }>
+        <b style={ styles.bold }>{ (value || '').split("\n").map(it => (
+            <>{ it }<br /></>
+        )) }</b>
+    </InlineWrapper>
+)
+
 var collectionMapping = {
     'subject': 'subjects',
     'researchGroup': 'research-groups',

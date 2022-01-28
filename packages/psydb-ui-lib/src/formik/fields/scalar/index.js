@@ -1,4 +1,5 @@
 export * from './sane-string';
+export * from './full-text';
 export * from './integer';
 export * from './foreign-id';
 export * from './helper-set-item-id';
