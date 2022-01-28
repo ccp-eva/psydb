@@ -7,6 +7,7 @@ module.exports = {
     unwind: require('./unwind'),
     convertPathToPointer: require('./convert-path-to-pointer'),
     only: require('./only'),
+    range: require('./range'),
     
     intersect: require('./intersect'),
     without: require('./without'),

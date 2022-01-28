@@ -3,11 +3,15 @@ var jsonpointer = require('jsonpointer');
 var { convertPathToPointer } = require('@mpieva/psydb-core-utils');
 
 var gatherCustomFieldSchemas = (options = {}) => {
-    var { schema, subChannels } = options;
+    var { schema, subChannels, asPointers } = options;
     if (Array.isArray(subChannels) && subChannels.length > 1) {
         return subChannels.reduce((acc, key) => ({
             ...acc,
-            ...gatherCustomFieldSchemas({ schema, subChannels: [ key ]})
+            ...gatherCustomFieldSchemas({
+                schema,
+                subChannels: [ key ],
+                asPointers
+            })
         }), {})
     }
     else {
@@ -27,15 +31,19 @@ var gatherCustomFieldSchemas = (options = {}) => {
             throw new Error(`no field schemas found for path "${path}"`);
         }
         var out = Object.keys(fieldSchemas).reduce((acc, key) => {
-            var dataXPath = (
+            var keyPrefix = (
                 path
                 .split('.')
                 .filter(it => !(it == 'properties' || it === 'state'))
                 .join('.')
             );
+            var outKey = `${keyPrefix}.${key}`;
+            if (asPointers) {
+                outKey = convertPathToPointer(outKey);
+            }
             return {
                 ...acc,
-                [`${dataXPath}.${key}`]: fieldSchemas[key]
+                [outKey]: fieldSchemas[key]
             }
         }, {});
 

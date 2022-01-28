@@ -15,7 +15,6 @@ export const HelperSetItemId = WithField({ Control: (ps) => {
         disabled,
         related,
     } = ps;
-    console.log(ps);
 
     var collection = 'helperSetItem';
     var constraints = { '/setId': setId };

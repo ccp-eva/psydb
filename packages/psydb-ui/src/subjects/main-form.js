@@ -55,6 +55,12 @@ const FormFields = (ps) => {
                     'PhoneWithTypeList': { enableParentNumbers: true }
                 }}
             />
+            <Fields.SubjectTestingPermissionList
+                label='Teilnahme-Erlaubnis'
+                dataXPath='$.scientific.testingPermissions'
+                related={ related }
+                required
+            />
             <Fields.AccessRightByResearchGroupList
                 label='Zugriff auf diesen Datensatz für'
                 dataXPath='$.scientific.systemPermissions.accessRightsByResearchGroup'
@@ -94,8 +100,8 @@ const CustomFieldFallback = (ps) => {
     )
 }
 const fixSystemType = (systemType) => {
+    // TODO: make sure that we dont need this mapping anymore
     switch (systemType) {
-            // TODO: make sure that we dont need this mapping anymore
         case 'EmailList':
             return 'EmailWithPrimaryList';
         case 'PhoneList':
@@ -109,13 +115,20 @@ const CustomField = (ps) => {
     var { systemType, title, systemProps } = schema;
 
     systemType = fixSystemType(systemType);
+    var isRequired = true;
+    switch (systemType) {
+        case 'SaneString':
+            // TODO: use crt definition instead
+            isRequired = !!schema.allOf.find(it => it.minLength > 0);
+            break;
+    }
 
     var Component = Fields[systemType] || CustomFieldFallback;
     return (
         <Component
             dataXPath={ dataXPath }
             label={ title || dataXPath }
-            required={ true }
+            required={ isRequired }
             related={ related }
             { ...systemProps }
             { ...extraTypeProps[systemType] }

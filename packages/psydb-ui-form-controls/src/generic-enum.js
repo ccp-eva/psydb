@@ -49,7 +49,7 @@ export const GenericEnum = (ps) => {
 
     if (!useRawOnChange) {
         ({ onChange, value } = fixSelectProps({
-            actualValueList: allowedValues,
+            actualValueList: enumeration.keys,
             onChange,
             value
         }));
@@ -59,6 +59,12 @@ export const GenericEnum = (ps) => {
         (useRawOnChange && !enumeration.keys.includes(value)) ||
         (!useRawOnChange && value === -1)
     );
+
+    // FIXME: either use names xor labels
+    if (enumeration.names) {
+        enumeration.labels = enumeration.names;
+    }
+
 
     return (
         <Control
@@ -70,14 +76,19 @@ export const GenericEnum = (ps) => {
             { hasEmptyOption && (
                 <option></option>
             )}
-            { allowedValues.map((key, index) => (
-                <option
-                    key={ index }
-                    value={ useRawOnChange ? key : index }
-                >
-                    { enumeration.labels[index] }
-                </option>
-            ))}
+            {
+                enumeration.keys
+                .map((key, index) => ({ key, index }))
+                .filter(it => allowedValues.includes(it.key))
+                .map(({ key, index }) => (
+                    <option
+                        key={ index }
+                        value={ useRawOnChange ? key : index }
+                    >
+                        { enumeration.labels[index] }
+                    </option>
+                ))
+            }
         </Control>
     )
 };
