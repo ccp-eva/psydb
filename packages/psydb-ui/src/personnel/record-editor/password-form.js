@@ -13,7 +13,7 @@ import { useSend } from '@mpieva/psydb-ui-hooks';
 
 export const PasswordForm = (ps) => {
     var { id, fetched, onSuccessfulUpdate } = ps;
-    var { record } = fetched.data;
+    var { record } = fetched;
 
     var sendManualPassword = useSend((formData) => ({
         type: 'set-personnel-password',

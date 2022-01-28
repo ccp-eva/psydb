@@ -8,7 +8,7 @@ import {
 
 import {
     usePermissions,
-    useFetch
+    useReadRecord
 } from '@mpieva/psydb-ui-hooks';
 
 export const withRecordEditor = (options) => {
@@ -26,9 +26,9 @@ export const withRecordEditor = (options) => {
             return <PermissionDenied />
         }
 
-        var [ didFetch, fetched ] = useFetch((agent) => {
-            return agent.readRecord({ collection, recordType, id })
-        }, [ collection, recordType, id ]);
+        var [ didFetch, fetched ] = useReadRecord({
+            collection, recordType, id
+        });
 
         if (!didFetch) {
             return <LoadingIndicator size='lg' />

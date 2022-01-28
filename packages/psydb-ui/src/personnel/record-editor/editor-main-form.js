@@ -24,11 +24,8 @@ export const EditorMainForm = (ps) => {
     var {
         record,
         schema,
-        //relatedRecordLabels,
-        //relatedHelperSetItems,
-        //relatedCustomRecordTypeLabels,
-        ...related
-    } = fetched.data;
+        related
+    } = fetched;
 
     var permissions = usePermissions();
 

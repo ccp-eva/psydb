@@ -15,8 +15,8 @@ const EditForm = (ps) => {
     var {
         record,
         schema,
-        ...related
-    } = fetched.data;
+        related
+    } = fetched;
 
     var permissions = usePermissions();
 
