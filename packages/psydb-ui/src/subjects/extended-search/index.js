@@ -40,13 +40,14 @@ const ExtendedSearch = (ps) => {
     var decodedFormData = undefined;
     try {
         if (formData) {
-            decodedFormData = JSON.parse(Base64.decode(formData))['$'];
-            //console.log(decodedFormData);
+            decodedFormData = JSON.parse(Base64.decode(formData));
+            console.log(decodedFormData);
         }
     }
     catch (e) {}
     
     var handleSwitchTab = ({ nextTab, formData }) => {
+        console.log('handleSwitchTab', formData);
         var formData64 = Base64.encode(JSON.stringify(formData));
 
         var nextSearchQuery = updateQuery(
@@ -97,7 +98,7 @@ const ExtendedSearch = (ps) => {
                         schema,
                         activeTab: tab,
                         onSwitchTab: handleSwitchTab,
-                        formData: formikProps.values
+                        formData: formikProps.values['$']
                     })} />
                 )}
             </DefaultForm>

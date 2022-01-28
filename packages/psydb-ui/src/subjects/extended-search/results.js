@@ -25,7 +25,7 @@ import FieldDataBodyCols from '@mpieva/psydb-ui-lib/src/record-list/field-data-b
 export const Results = (ps) => {
     var { schema, formData } = ps;
     
-    var { columns } = formData['$'];
+    var { columns } = formData;
     
     var pagination = usePaginationReducer({ offset: 0, limit: 50 })
     var { offset, limit } = pagination;
@@ -35,7 +35,7 @@ export const Results = (ps) => {
             agent
             .getAxios()
             .post('/api/extended-search/subjects', {
-                ...formData['$'],
+                ...formData,
                 columns,
                 offset,
                 limit
