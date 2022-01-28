@@ -10,10 +10,12 @@ export const HelperSetItemId = WithField({ Control: (ps) => {
         formikForm,
 
         setId,
+        constraints,
 
         disabled,
         related,
     } = ps;
+    console.log(ps);
 
     var collection = 'helperSetItem';
     var constraints = { '/setId': setId };
@@ -25,10 +27,11 @@ export const HelperSetItemId = WithField({ Control: (ps) => {
         setFieldValue(dataXPath, record ? record._id : '');
     }
 
-    var { relatedRecords } = related || {};
+    var { relatedHelperSetItems } = related || {};
     var record;
-    if (relatedRecords && relatedRecords[collection]) {
-        record = relatedRecords[collection][recordId]
+    if (relatedHelperSetItems && relatedHelperSetItems[setId]) {
+        record = relatedHelperSetItems[setId][recordId];
+        record._recordLabel = record.state.label;
     }
 
     if (recordId && !record) {
