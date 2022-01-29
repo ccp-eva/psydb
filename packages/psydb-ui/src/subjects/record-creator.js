@@ -8,7 +8,7 @@ import {
 
 import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 import { withRecordCreator } from '@mpieva/psydb-ui-lib';
-import * as MainForm from './main-form';
+import MainForm from './main-form';
 
 const CreateForm = (ps) => {
     var { collection, recordType, onSuccessfulUpdate } = ps;

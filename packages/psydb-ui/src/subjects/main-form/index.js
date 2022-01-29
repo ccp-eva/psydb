@@ -1,2 +1,8 @@
-export * from './component';
-export * from './create-defaults';
+import { Component } from './component';
+import { createDefaults } from './create-defaults';
+
+const out = {
+    Component,
+    createDefaults
+}
+export default out;
