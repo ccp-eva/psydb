@@ -53,6 +53,18 @@ agent.readRecordSchema = ({
     return axios.get(url);
 }
 
+agent.readFieldDefinitions = ({
+    collection,
+    recordType
+}) => {
+    var url = (
+        recordType
+        ? `/api/metadata/field-definitions/${collection}/${recordType}`
+        : `/api/metadata/field-definitions/${collection}`
+    );
+    return axios.get(url);
+}
+
 agent.readRecord = ({
     collection,
     recordType,

@@ -1,9 +1,19 @@
 import useFetchAll from './use-fetch-all';
 
 const useReadRecord = (options, dependencies = []) => {
-    var { collection, recordType, id, shouldFetchSchema = true } = options;
+    var {
+        collection, recordType, id,
+        shouldFetchSchema = true,
+        shouldFetchFieldDefinitions = true,
+    } = options;
 
     var [ didFetch, fetched ] = useFetchAll((agent) => ({
+        ...(shouldFetchFieldDefinitions && ({
+            fieldDefinitions: agent.readFieldDefinitions({
+                collection,
+                recordType,
+            })
+        })),
         ...(shouldFetchSchema && {
             schema: agent.readRecordSchema({
                 collection,
