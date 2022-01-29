@@ -1,4 +1,2 @@
-export * from './scalar';
-export * from './array';
-export * from './object';
-export * from './complex';
+export * from './static';
+export * from './dynamic';
