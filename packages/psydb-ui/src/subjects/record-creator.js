@@ -4,7 +4,7 @@ import { range } from '@mpieva/psydb-core-utils';
 import { gatherCustomFieldSchemas } from '@mpieva/psydb-common-lib';
 
 import {
-    useFetch,
+    useFetchAll,
     useSendCreate,
     usePermissions
 } from '@mpieva/psydb-ui-hooks';
@@ -115,9 +115,12 @@ const CreateForm = (ps) => {
     var { collection, recordType, onSuccessfulUpdate } = ps;
     var permissions = usePermissions();
 
-    var [ didFetch, fetched ] = useFetch((agent) => (
-        agent.readRecordSchema({ collection, recordType })
-    ), [ collection, recordType ])
+    var [ didFetch, fetched ] = useFetchAll((agent) => ({
+        fieldDefinitions: agent.readFieldDefinitions({
+            collection, recordType
+        }),
+        schema: agent.readRecordSchema({ collection, recordType }),
+    }), [ collection, recordType ])
 
     var send = useSendCreate({
         collection,
@@ -129,13 +132,14 @@ const CreateForm = (ps) => {
         return <LoadingIndicator size='lg' />
     }
 
-    var schema = fetched.data;
+    var schema = fetched.schema.data;
+    var fieldDefinitions = fetched.fieldDefinitions.data;
     var initialValues = Defaults({ schema, permissions });
 
     return (
         <MainForm
             title='Neuer Probanden-Datensatz'
-            schema={ schema }
+            fieldDefinitions={ fieldDefinitions }
             initialValues={ initialValues }
             onSubmit={ send.exec }
             permissions={ permissions }

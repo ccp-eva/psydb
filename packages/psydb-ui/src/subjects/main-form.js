@@ -10,7 +10,7 @@ import {
 export const MainForm = (ps) => {
     var {
         title,
-        schema,
+        fieldDefinitions,
         initialValues,
         onSubmit,
 
@@ -29,7 +29,7 @@ export const MainForm = (ps) => {
                     <>
                         { /*console.log(formikProps.values) || ''*/ }
                         <FormFields
-                            schema={ schema }
+                            fieldDefinitions={ fieldDefinitions }
                             related={ related }
                             permissions={ permissions }
                         />
@@ -42,11 +42,11 @@ export const MainForm = (ps) => {
 }
 
 const FormFields = (ps) => {
-    var { schema, related, permissions } = ps;
+    var { fieldDefinitions, related, permissions } = ps;
     return (
         <>
             <Fields.Dynamic
-                schema={ schema }
+                fieldDefinitions={ fieldDefinitions }
                 subChannels={[ 'gdpr', 'scientific' ]}
                 related={ related }
                 extraTypeProps={{

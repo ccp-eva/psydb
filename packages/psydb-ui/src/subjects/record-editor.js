@@ -16,7 +16,7 @@ const EditForm = (ps) => {
 
     var {
         record,
-        schema,
+        fieldDefinitions,
         related
     } = fetched;
 
@@ -48,7 +48,7 @@ const EditForm = (ps) => {
         <>
             <MainForm
                 title='Proband bearbeiten'
-                schema={ schema }
+                fieldDefinitions={ fieldDefinitions }
                 initialValues={ initialValues }
                 onSubmit={ send.exec }
                 related={ related }

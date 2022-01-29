@@ -6,8 +6,7 @@ import * as Fields from './static';
 
 /*
     <Fields.Dynamic
-        //definitions={ definitions }
-        schema={ schema }
+        fieldDefinitions={ fieldDefinitions }
         subChannels={[ 'gdpr', 'scientific' ]}
         related={ related }
         extraTypeProps={{
@@ -18,24 +17,31 @@ import * as Fields from './static';
 
 // TODO: make custom fields based on crt field list instead of schema
 export const Dynamic = (ps) => {
-    var { schema, subChannels, related, extraTypeProps } = ps;
-    //console.log(schema);
-    var fieldSchemas = gatherCustomFieldSchemas({ schema, subChannels });
-    console.log(fieldSchemas);
+    var {
+        fieldDefinitions,
+        subChannels,
+        related,
+        extraTypeProps
+    } = ps;
 
-    return (
-        <>
-            { Object.keys(fieldSchemas).map(path => (
-                <CustomField
-                    key={ path }
-                    dataXPath={`$.${path}`}
-                    schema={ fieldSchemas[path] }
-                    related={ related }
-                    extraTypeProps={ extraTypeProps }
-                />
-            ))}
-        </>
-    )
+    var fields = subChannels.reduce((acc, subChannelKey) => ([
+        ...acc,
+        ...fieldDefinitions[subChannelKey].map(it => ({
+            definition: it,
+            dataXPath: `$.${subChannelKey}.custom.${it.key}`
+        }))
+    ]), []);
+    //console.log(fields);
+
+    return fields.map(it => (
+        <CustomField
+            key={ it.dataXPath }
+            dataXPath={ it.dataXPath }
+            definition={ it.definition }
+            related={ related }
+            extraTypeProps={ extraTypeProps }
+        />
+    ));
 }
 
 const CustomFieldFallback = (ps) => {
@@ -56,28 +62,27 @@ const fixSystemType = (systemType) => {
     }
 };
 const CustomField = (ps) => {
-    var { dataXPath, schema, related, extraTypeProps } = ps;
-    var { systemType, title, systemProps } = schema;
+    var { dataXPath, definition, related, extraTypeProps } = ps;
+    var { displayName, type, props } = definition;
 
-    systemType = fixSystemType(systemType);
+    type = fixSystemType(type);
     var isRequired = true;
-    switch (systemType) {
+    switch (type) {
         case 'SaneString':
             // TODO: use crt definition instead
-            isRequired = !!schema.allOf.find(it => it.minLength > 0);
+            isRequired = props.minLength > 0
             break;
     }
 
-    var Component = Fields[systemType] || CustomFieldFallback;
+    var Component = Fields[type] || CustomFieldFallback;
     return (
         <Component
             dataXPath={ dataXPath }
-            label={ title || dataXPath }
-            required={ isRequired }
+            label={ displayName }
             related={ related }
-            { ...systemProps }
-            { ...extraTypeProps[systemType] }
+            required={ isRequired }
+            { ...props }
+            { ...extraTypeProps[type] }
         />
     )
 }
-

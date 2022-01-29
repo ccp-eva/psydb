@@ -37,6 +37,9 @@ const useReadRecord = (options, dependencies = []) => {
     } = fetched.record.data;
 
     return [ didFetch, {
+        ...(shouldFetchFieldDefinitions && {
+            fieldDefinitions: fetched.fieldDefinitions.data,
+        }),
         ...(shouldFetchSchema && {
             schema: fetched.schema.data
         }),
