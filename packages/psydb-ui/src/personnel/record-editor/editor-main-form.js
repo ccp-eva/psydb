@@ -11,7 +11,7 @@ import {
     withRecordEditor
 } from '@mpieva/psydb-ui-lib';
 
-import { MainForm } from '../main-form';
+import MainForm from '../main-form';
 
 export const EditorMainForm = (ps) => {
     var {
@@ -61,7 +61,7 @@ export const EditorMainForm = (ps) => {
     })
 
     return (
-        <MainForm
+        <MainForm.Component
             title='Mitarbeiter bearbeiten'
             initialValues={ initialValues }
             onSubmit={ send.exec }

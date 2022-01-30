@@ -12,7 +12,11 @@ import {
 } from '@mpieva/psydb-ui-hooks';
 
 export const withRecordEditor = (options) => {
-    var { EditForm } = options;
+    var {
+        EditForm,
+        shouldFetchSchema = true,
+        shouldFetchFieldDefinitions = true,
+    } = options;
 
     var RecordEditor = (ps) => {
         var { collection, recordType } = ps;
@@ -27,7 +31,9 @@ export const withRecordEditor = (options) => {
         }
 
         var [ didFetch, fetched ] = useReadRecord({
-            collection, recordType, id
+            collection, recordType, id,
+            shouldFetchSchema,
+            shouldFetchFieldDefinitions,
         });
 
         if (!didFetch) {

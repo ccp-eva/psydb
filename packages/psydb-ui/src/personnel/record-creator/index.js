@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSendCreate, usePermissions } from '@mpieva/psydb-ui-hooks';
 import { withRecordCreator } from '@mpieva/psydb-ui-lib';
-import { MainForm } from '../main-form';
+import MainForm from '../main-form';
 
 const CreateForm = (ps) => {
     var { collection, onSuccessfulUpdate } = ps;
@@ -12,29 +12,10 @@ const CreateForm = (ps) => {
         onSuccessfulUpdate
     })
 
-    var initialValues = {
-        gdpr: {
-            firstname: '',
-            lastname: '',
-            shorthand: '',
-            emails: [{}],
-            phones: [],
-        },
-        scientific: {
-            researchGroupSettings: [{}],
-            systemPermissions: {
-                accessRightsByResearchGroup: [{}],
-                isHiddenForResearchGroupIds: [],
-            },
-            canLogIn: false,
-            hasRootAccess: false,
-        },
-    };
-
     return (
-        <MainForm
+        <MainForm.Component
             title='Neuer Mitarbeiter'
-            initialValues={ initialValues }
+            initialValues={ MainForm.createDefaults({ permissions }) }
             onSubmit={ send.exec }
             permissions={ permissions }
         />

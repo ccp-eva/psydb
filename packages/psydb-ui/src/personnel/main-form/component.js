@@ -7,7 +7,7 @@ import {
     FormBox,
 } from '@mpieva/psydb-ui-lib';
 
-export const MainForm = (ps) => {
+export const Component = (ps) => {
     var {
         title,
         initialValues,
