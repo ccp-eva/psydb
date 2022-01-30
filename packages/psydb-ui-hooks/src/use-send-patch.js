@@ -7,6 +7,7 @@ const useSendPatch = (options) => {
         recordType,
         record,
         subChannels,
+        additionalPayloadProps,
         onSuccessfulUpdate,
         ...otherOptions
     } = options;
@@ -21,6 +22,7 @@ const useSendPatch = (options) => {
             id: record._id,
             ...createEventIdProps(record, subChannels),
             props,
+            ...additionalPayloadProps
         }
     }), {
         onSuccessfulUpdate: (response) => {

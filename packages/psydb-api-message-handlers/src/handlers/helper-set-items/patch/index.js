@@ -25,8 +25,8 @@ var checkAllowedAndPlausible = async ({
 }) => {
     var { id, lastKnownEventId, props } = message.payload;
     
-    if (!permissions.canCreateHelperSetItem()) {
-        //throw new ApiError(403);
+    if (!permissions.hasCollectionFlag('helperSetItem', 'write')) {
+        throw new ApiError(403);
     }
 
     console.log(id);

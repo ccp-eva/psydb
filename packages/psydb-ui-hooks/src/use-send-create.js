@@ -6,6 +6,7 @@ const useSendCreate = (options) => {
         collection,
         recordType,
         onSuccessfulUpdate,
+        additionalPayloadProps,
         ...otherOptions
     } = options;
 
@@ -17,6 +18,7 @@ const useSendCreate = (options) => {
         ),
         payload: {
             props,
+            ...additionalPayloadProps
         }
     }), {
         onSuccessfulUpdate: (response) => {

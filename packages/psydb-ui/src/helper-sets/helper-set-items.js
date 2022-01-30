@@ -8,6 +8,8 @@ import {
     useHistory,
 } from 'react-router-dom';
 
+import { useReadRecord } from '@mpieva/psydb-ui-hooks';
+
 import {
     LinkButton,
     LoadingIndicator,
@@ -15,39 +17,30 @@ import {
     Icons
 } from '@mpieva/psydb-ui-layout';
 
-import agent from '@mpieva/psydb-ui-request-agents';
-
 import GenericRecordFormContainer from '@mpieva/psydb-ui-lib/src/generic-record-form-container';
 import RecordListContainer from '@mpieva/psydb-ui-lib/src/record-list-container';
 
+import { RecordCreator, RecordEditor } from './items';
 
 const HelperSetItems = () => {
     var { path, url } = useRouteMatch();
     var { setId } = useParams();
     var history = useHistory();
 
-    var [ state, dispatch ] = useReducer(reducer, {});
-    var {
-        record
-    } = state;
+    var [ didFetch, fetched ] = useReadRecord({
+        collection: 'helperSet',
+        id: setId,
+        shouldFetchSchema: false,
+        shouldFetchFieldDefinitions: false,
+    });
 
-    useEffect(() => {
-        agent.readRecord({
-            collection: 'helperSet',
-            id: setId
-        })
-        .then((response) => {
-            dispatch({ type: 'init-data', payload: {
-                ...response.data.data
-            }})
-        })
-    }, [ setId ])
-
-    if (!record) {
+    if (!didFetch) {
         return (
             <LoadingIndicator size='lg' />
         );
     }
+
+    var { record } = fetched;
 
     return (
         <>
@@ -74,12 +67,9 @@ const HelperSetItems = () => {
                 </Route>
 
                 <Route path={`${path}/new`}>
-                    <GenericRecordFormContainer
-                        type='create'
+                    <RecordCreator
                         collection='helperSetItem'
-                        additionalPayloadProps={{
-                            setId,
-                        }}
+                        setId={ setId }
                         onSuccessfulUpdate={ ({ id }) => {
                             history.push(`${url}`)
                         }}
@@ -87,8 +77,7 @@ const HelperSetItems = () => {
                 </Route>
 
                 <Route path={`${path}/:id/edit`}>
-                    <GenericRecordFormContainer
-                        type='edit'
+                    <RecordEditor
                         collection='helperSetItem'
                         onSuccessfulUpdate={ ({ id }) => {
                             history.push(`${url}`)
@@ -116,20 +105,6 @@ const HelperSetItemRecordActions = ({
             </LinkButton>
         </>
     )
-}
-
-var reducer = (state, action) => {
-    var { type, payload } = action;
-    switch (type) {
-        case 'init-data':
-            return {
-                ...state,
-                record: payload.record,
-                relatedRecordLabels: payload.relatedRecordLabels,
-                relatedHelperSetItems: payload.relatedHelperSetItems,
-                relatedCustomRecordTypeLabels: payload.relatedCustomRecordTypeLabels,
-            }
-    }
 }
 
 export default HelperSetItems;
