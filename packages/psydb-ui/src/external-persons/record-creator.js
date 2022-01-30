@@ -15,7 +15,7 @@ const CreateForm = (ps) => {
     var permissions = usePermissions();
 
     var [ didFetch, fetched ] = useFetch((agent) => (
-        agent.readFieldDefinitions({
+        agent.readCRTSettings({
             collection, recordType
         })
     ), [ collection, recordType ])
@@ -30,7 +30,7 @@ const CreateForm = (ps) => {
         return <LoadingIndicator size='lg' />
     }
 
-    var fieldDefinitions = fetched.data;
+    var { fieldDefinitions } = fetched.data;
     var initialValues = MainForm.createDefaults({
         fieldDefinitions,
         permissions

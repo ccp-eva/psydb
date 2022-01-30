@@ -15,7 +15,7 @@ export const withRecordEditor = (options) => {
     var {
         EditForm,
         shouldFetchSchema = true,
-        shouldFetchFieldDefinitions = true,
+        shouldCRTSettings = true,
     } = options;
 
     var RecordEditor = (ps) => {
@@ -33,7 +33,7 @@ export const withRecordEditor = (options) => {
         var [ didFetch, fetched ] = useReadRecord({
             collection, recordType, id,
             shouldFetchSchema,
-            shouldFetchFieldDefinitions,
+            shouldFetchCRTSettings,
         });
 
         if (!didFetch) {

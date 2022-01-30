@@ -53,14 +53,14 @@ agent.readRecordSchema = ({
     return axios.get(url);
 }
 
-agent.readFieldDefinitions = ({
+agent.readCRTSettings = ({
     collection,
     recordType
 }) => {
     var url = (
         recordType
-        ? `/api/metadata/field-definitions/${collection}/${recordType}`
-        : `/api/metadata/field-definitions/${collection}`
+        ? `/api/metadata/crt-settings/${collection}/${recordType}`
+        : `/api/metadata/crt-settings/${collection}`
     );
     return axios.get(url);
 }

@@ -22,6 +22,6 @@ const EditForm = (ps) => {
 export const RecordEditor = withRecordEditor({
     EditForm,
     shouldFetchSchema: false,
-    shouldFetchFieldDefinitions: false
+    shouldCRTSettings: false
 });
 

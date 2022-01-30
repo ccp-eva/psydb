@@ -25,6 +25,7 @@ const ReservationType = (options) => {
                 reservationSlotDuration: 15 * MINUTE
             }
         case 'no-reservation':
+        default:
             return undefined;
     }
 }

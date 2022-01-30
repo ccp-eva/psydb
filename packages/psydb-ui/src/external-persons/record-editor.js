@@ -15,10 +15,14 @@ const EditForm = (ps) => {
     } = ps;
 
     var {
+        crtSettings,
         record,
-        fieldDefinitions,
         related
     } = fetched;
+
+    var {
+        fieldDefinitions
+    } = crtSettings;
 
     var permissions = usePermissions();
 

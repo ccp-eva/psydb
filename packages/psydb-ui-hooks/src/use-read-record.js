@@ -4,12 +4,12 @@ const useReadRecord = (options, dependencies = []) => {
     var {
         collection, recordType, id,
         shouldFetchSchema = true,
-        shouldFetchFieldDefinitions = true,
+        shouldFetchCRTSettings = true,
     } = options;
 
     var [ didFetch, fetched ] = useFetchAll((agent) => ({
-        ...(shouldFetchFieldDefinitions && ({
-            fieldDefinitions: agent.readFieldDefinitions({
+        ...(shouldFetchCRTSettings && ({
+            crtSettings: agent.readCRTSettings({
                 collection,
                 recordType,
             })
@@ -37,8 +37,8 @@ const useReadRecord = (options, dependencies = []) => {
     } = fetched.record.data;
 
     return [ didFetch, {
-        ...(shouldFetchFieldDefinitions && {
-            fieldDefinitions: fetched.fieldDefinitions.data,
+        ...(shouldCRTSettings && {
+            crtSettings: fetched.crtSettings.data,
         }),
         ...(shouldFetchSchema && {
             schema: fetched.schema.data

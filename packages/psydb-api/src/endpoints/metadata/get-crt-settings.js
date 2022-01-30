@@ -9,7 +9,7 @@ var {
     fetchOneCustomRecordType
 } = require('@mpieva/psydb-api-lib');
 
-var getFieldDefinitions = async (context, next) => {
+var getCRTSettings = async (context, next) => {
     var { db, params, query } = context;
     var { collectionName, recordType } = params;
     
@@ -40,18 +40,37 @@ var getFieldDefinitions = async (context, next) => {
             "${collectionName}/${recordType}"
         `);
     }
-        
+   
+    var {
+        isNew,
+        isDirty,
+        nextSettings,
+        settings,
+        ...otherState
+    } = crt.state;
+
+    var {
+        subChannelFields,
+        fields,
+        ...otherSettings
+    } = settings;
+
     var fieldDefinitions = (
         hasSubChannels
-        ? crt.state.settings.subChannelFields
-        : crt.state.settings.fields
+        ? subChannelFields
+        : fields
     );
 
     context.body = ResponseBody({
-        data: fieldDefinitions,
+        data: {
+            hasSubChannels,
+            fieldDefinitions,
+            ...otherSettings,
+            ...otherState,
+        }
     });
 
     await next();
 }
 
-module.exports = getFieldDefinitions;
+module.exports = getCRTSettings;

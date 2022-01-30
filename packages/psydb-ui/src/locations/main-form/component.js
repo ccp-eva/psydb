@@ -11,6 +11,7 @@ export const Component = (ps) => {
     var {
         title,
         fieldDefinitions,
+        reservationType,
         initialValues,
         onSubmit,
 
@@ -30,6 +31,7 @@ export const Component = (ps) => {
                         { /*console.log(formikProps.values) || ''*/ }
                         <FormFields
                             fieldDefinitions={ fieldDefinitions }
+                            reservationType={ reservationType }
                             related={ related }
                             permissions={ permissions }
                         />
@@ -53,11 +55,7 @@ const FormFields = (ps) => {
     return (
         <>
             <Fields.Custom { ...customFieldBag } />
-            <ReservationFields
-                type='away-team'
-                related={ related }
-                permissions={ permission }
-            />
+            <ReservationFields { ...ps } />
             <Fields.AccessRightByResearchGroupList
                 label='Zugriff auf diesen Datensatz für'
                 dataXPath='$.systemPermissions.accessRightsByResearchGroup'
@@ -69,13 +67,14 @@ const FormFields = (ps) => {
 }
 
 const ReservationFields = (ps) => {
-    var { type, ...pass } = ps;
-    switch (type) {
+    var { reservationType, ...pass } = ps;
+    switch (reservationType) {
         case 'away-team':
             return <AwayTeamReservationFields { ...pass } />
         case 'inhouse':
             return <InhouseReservationFields { ...pass } />
         case 'no-reservation':
+        default:
             return null
     }
 }
