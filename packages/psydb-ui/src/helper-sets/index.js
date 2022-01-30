@@ -8,6 +8,7 @@ import {
 import RecordListContainer from '@mpieva/psydb-ui-lib/src/record-list-container';
 import HelperSetRouting from './helper-set-routing';
 import HelperSetRecordActions from './helper-set-record-actions';
+import { RecordCreator, RecordEditor } from './sets';
 
 const HelperSetRecordList = (ps) => (
     <RecordListContainer
@@ -17,6 +18,8 @@ const HelperSetRecordList = (ps) => (
 );
 
 const HelperSetTypeView = withRecordTypeView({
+    RecordCreator,
+    RecordEditor,
     RecordList: HelperSetRecordList,
     CustomRouting: HelperSetRouting,
 });
