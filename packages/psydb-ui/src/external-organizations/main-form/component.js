@@ -43,7 +43,6 @@ export const Component = (ps) => {
 
 const FormFields = (ps) => {
     var { fieldDefinitions, related, permissions } = ps;
-    
     var customFieldBag = {
         fieldDefinitions,
         related,
@@ -51,32 +50,14 @@ const FormFields = (ps) => {
             'PhoneWithTypeList': { enableParentNumbers: true }
         }
     }
-
     return (
         <>
-            <Field.Custom
-                { ...customFieldBag }
-                subChannelKey='gdpr'
-            />
-            <Field.Custom
-                { ...customFieldBag }
-                subChannelKey='scientific'
-            />
-            <Fields.SubjectTestingPermissionList
-                label='Teilnahme-Erlaubnis'
-                dataXPath='$.scientific.testingPermissions'
-                related={ related }
-                required
-            />
+            <Fields.Custom { ...customFieldBag } />
             <Fields.AccessRightByResearchGroupList
                 label='Zugriff auf diesen Datensatz für'
                 dataXPath='$.scientific.systemPermissions.accessRightsByResearchGroup'
                 related={ related }
                 required
-            />
-            <Fields.FullText
-                label='Kommentar'
-                dataXPath='$.scientific.comment'
             />
         </>
     );

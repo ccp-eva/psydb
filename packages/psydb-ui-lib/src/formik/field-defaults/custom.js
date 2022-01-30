@@ -20,9 +20,12 @@ const CustomFieldDefault = (options) => {
     
     switch (type) {
         case 'SaneString':
+        case 'FullText':
             return '';
         case 'DefaultBool':
             return false;
+        case 'Address':
+            return {};
 
         case 'DateOnlyServerSide':
         case 'DateTime':

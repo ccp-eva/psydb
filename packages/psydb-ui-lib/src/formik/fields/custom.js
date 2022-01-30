@@ -7,7 +7,7 @@ import * as Fields from './static';
 /*
     <Fields.Dynamic
         fieldDefinitions={ fieldDefinitions }
-        subChannels={[ 'gdpr', 'scientific' ]}
+        subChannelKey='gdpr'
         related={ related }
         extraTypeProps={{
             'PhoneWithTypeList': { enableParentNumbers: true }
@@ -16,21 +16,28 @@ import * as Fields from './static';
 */
 
 // TODO: make custom fields based on crt field list instead of schema
-export const Dynamic = (ps) => {
+export const Custom = (ps) => {
     var {
         fieldDefinitions,
-        subChannels,
+        subChannelKey,
         related,
         extraTypeProps
     } = ps;
 
-    var fields = subChannels.reduce((acc, subChannelKey) => ([
-        ...acc,
-        ...fieldDefinitions[subChannelKey].map(it => ({
-            definition: it,
-            dataXPath: `$.${subChannelKey}.custom.${it.key}`
-        }))
-    ]), []);
+    var fields = (
+        subChannelKey
+        ? fieldDefinitions[subChannelKey]
+        : fieldDefinitions
+    );
+
+    fields = fields.map(it => ({
+        definition: it,
+        dataXPath: (
+            subChannelKey
+            ? `$.${subChannelKey}.custom.${it.key}`
+            : `$.custom.${it.key}`
+        )
+    }))
     //console.log(fields);
 
     return fields.map(it => (
