@@ -1,13 +1,13 @@
 import React from 'react';
-import { Form } from '@mpieva/psydb-ui-layout';
 import { withField } from '@cdxoo/formik-utils';
+import * as Controls from '@mpieva/psydb-ui-form-controls';
 
 export const SaneString = withField({
     Control: (ps) => {
         var { formikField, formikMeta, disabled } = ps;
         var { error } = formikMeta;
         return (
-            <Form.Control
+            <Controls.SaneString
                 type='text'
                 disabled={ disabled }
                 isInvalid={ !!error }

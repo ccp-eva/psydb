@@ -36,7 +36,6 @@ const EditForm = (ps) => {
             'systemPermissions',
         ]
     });
-    console.log(initialValues);
 
     return (
         <>

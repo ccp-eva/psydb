@@ -5,7 +5,7 @@ dependencies:
   '@babel/preset-react': 7.12.13_@babel+core@7.12.17
   '@cdxoo/block-quote': 1.0.1
   '@cdxoo/formik-ajv-async': 0.4.0_formik@2.2.9+react@17.0.2
-  '@cdxoo/formik-utils': 0.4.0_formik@2.2.9+react@17.0.2
+  '@cdxoo/formik-utils': 0.5.0_formik@2.2.9+react@17.0.2
   '@cdxoo/inline-string': 1.0.0
   '@cdxoo/koa-mongo-mq': 1.1.0
   '@cdxoo/koa-mongo-rohrpost': 1.0.0
@@ -79,14 +79,12 @@ dependencies:
   date-fns: 2.21.3
   debug: 4.3.3
   deep-diff: 1.0.2
-  detect-character-encoding: 0.8.0
   escape-string-regexp: 4.0.0
   flat: 5.0.2
   formik: 2.2.9_react@17.0.2
   graphql: 15.3.0
   html-entities: 2.3.2
   html-webpack-plugin: 5.1.0_webpack@5.65.0
-  iconv-lite: 0.6.3
   inflation: 2.0.0
   is-subset: 0.1.1
   is-what: 3.14.1
@@ -1337,7 +1335,7 @@ packages:
       react: '>=16.8'
     resolution:
       integrity: sha512-X+IMqbnFmEz938tiJHwlTHcLINjUlYcAGPt63DUnXFCdei8wkcv8on46F/OasGLoEonJyVq8OPDiGLDu+n3Y0Q==
-  /@cdxoo/formik-utils/0.4.0_formik@2.2.9+react@17.0.2:
+  /@cdxoo/formik-utils/0.5.0_formik@2.2.9+react@17.0.2:
     dependencies:
       formik: 2.2.9_react@17.0.2
       react: 17.0.2
@@ -1346,7 +1344,7 @@ packages:
       formik: '>=2.0'
       react: '>=16.8'
     resolution:
-      integrity: sha512-VDWpZVRqKD/N8FCxMlmQY/Aig0JPxzNuyOypfvGacFxYEP6S6jmIHlCTMNihQekihZDbSYJfWJ6X1uiL7WjWXw==
+      integrity: sha512-xL6ARqMVyd4WJvW5oQhnNjbJGe9hpwqVPRcx0hfxaogK4p1r27GrrAkx3vIEUda/BDtn8y7uO+kamZlSEjDEew==
   /@cdxoo/inline-string/1.0.0:
     dev: false
     resolution:
@@ -9947,7 +9945,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-migration'
     resolution:
-      integrity: sha512-2hHuYBYUY8uaT/ffDwyQiRirGhM9MuAJeaPXLFRL+6UBD4tuQjPVItNiAiTVfvVZCN3mlItrSHXbZZVOqeJcZA==
+      integrity: sha512-9XFDhByTlLKb1g8ggsneLRcmabTqzHexsxFvGvt27V7vd9tX6v6B7V6+iwOnc0OAlyt3PAOLEcjylBZtVDN6fA==
       tarball: 'file:projects/psydb-migration.tgz'
     version: 0.0.0
   'file:projects/psydb-mongo-adapter.tgz':
@@ -10127,7 +10125,7 @@ packages:
       '@babel/preset-env': 7.12.17_@babel+core@7.12.17
       '@babel/preset-react': 7.12.13_@babel+core@7.12.17
       '@cdxoo/formik-ajv-async': 0.4.0_formik@2.2.9+react@17.0.2
-      '@cdxoo/formik-utils': 0.4.0_formik@2.2.9+react@17.0.2
+      '@cdxoo/formik-utils': 0.5.0_formik@2.2.9+react@17.0.2
       '@cdxoo/omit': 1.0.1
       '@rjsf/bootstrap-4': 2.5.1_5dccca4f99fef0089ce8bea6fe035927
       '@rjsf/core': 2.5.1_react@17.0.2
@@ -10153,7 +10151,7 @@ packages:
     peerDependencies:
       webpack: '*'
     resolution:
-      integrity: sha512-OLFcGzUeYN2G73igF4AJwRT71cmso9OKG+GeZZc75igvEAQyyq96QygXDJ9c0DcAGYMQVhRWJUksod9iWFleIQ==
+      integrity: sha512-LpfoJOpTZQlMxhPNfnJkv76bODUHs4xgKUMsAftg3ouLCBzM1j4R3WIplqo0ZsAuhKT27Hpkq9J5iJMMFyB5Zw==
       tarball: 'file:projects/psydb-ui-lib.tgz'
     version: 0.0.0
   'file:projects/psydb-ui-request-agents.tgz_debug@4.3.3':
@@ -10192,7 +10190,7 @@ packages:
       '@babel/plugin-proposal-class-properties': 7.13.0_@babel+core@7.12.17
       '@babel/preset-env': 7.12.17_@babel+core@7.12.17
       '@babel/preset-react': 7.12.13_@babel+core@7.12.17
-      '@cdxoo/formik-utils': 0.4.0_formik@2.2.9+react@17.0.2
+      '@cdxoo/formik-utils': 0.5.0_formik@2.2.9+react@17.0.2
       '@cdxoo/omit': 1.0.1
       '@rjsf/bootstrap-4': 2.5.1_5dccca4f99fef0089ce8bea6fe035927
       '@rjsf/core': 2.5.1_react@17.0.2
@@ -10223,7 +10221,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-ui'
     resolution:
-      integrity: sha512-ZjYitSgIGwVJe1qBuCLxDkt+rmEJLUASYezU1daJGM1iefKpgV+e+tJkg25VIC6cDK6twnhKHREXQ6CQ6fYdBQ==
+      integrity: sha512-rfd+JyRfOmnhlmNgUeguox9yNjEthnBE9ZSiX431rJXrXzAk+9c93GJOEdonEQKydCMweFF1zpkvWwbbYEyn8Q==
       tarball: 'file:projects/psydb-ui.tgz'
     version: 0.0.0
   'file:projects/psydb-web.tgz':
@@ -10276,7 +10274,7 @@ specifiers:
   '@babel/preset-react': ~7.12.10
   '@cdxoo/block-quote': ~1.0.0
   '@cdxoo/formik-ajv-async': ~0.4.0
-  '@cdxoo/formik-utils': ~0.4.0
+  '@cdxoo/formik-utils': ~0.5.0
   '@cdxoo/inline-string': ~1.0.0
   '@cdxoo/koa-mongo-mq': ~1.1.0
   '@cdxoo/koa-mongo-rohrpost': ~1.0.0
@@ -10350,14 +10348,12 @@ specifiers:
   date-fns: ~2.21.1
   debug: ~4.3.1
   deep-diff: ~1.0.2
-  detect-character-encoding: ~0.8.0
   escape-string-regexp: ~4.0.0
   flat: ~5.0.2
   formik: ~2.2.6
   graphql: ~15.3.0
   html-entities: ~2.3.2
   html-webpack-plugin: 5.1.0
-  iconv-lite: ~0.6.3
   inflation: ~2.0.0
   is-subset: ~0.1.1
   is-what: ~3.14.0

@@ -15,6 +15,13 @@ export const FieldWrapper = (ps) => {
     )*/
 };
 
+export const FieldWrapperMultiline = (ps) => {
+    var { formikMeta } = ps;
+    return (
+        <FormHelpers.MultiLineWrapper { ...ps } />
+    );
+}
+
 export const ArrayFieldWrapper = (ps) => {
     return (
         <FormHelpers.InlineArrayWrapper { ...ps }/>

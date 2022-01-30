@@ -142,3 +142,9 @@ a {
 .text-underline {
     text-decoration: underline;
 }
+.text-bold {
+    font-weight: bold;
+}
+.text-small {
+    font-size: 80%;
+}

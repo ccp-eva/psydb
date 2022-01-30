@@ -8,7 +8,7 @@ export const MultiLineWrapper = (ps) => {
         id,
         label,
         required,
-        labelClassName,
+        labelClassName = 'border-bottom d-block border-bottom',
         valueClassName,
         children,
     } = ps;
@@ -17,13 +17,13 @@ export const MultiLineWrapper = (ps) => {
         <Form.Group>
             <Form.Label
                 htmlFor={ id }
-                className={ `border-bottom d-block ${labelClassName}` }
+                className={ labelClassName }
             >
-                <b>
-                    { label }
-                    <NBSP />
-                    { label && required ? '*' : null }
-                </b>
+                { label }
+                { label && required
+                    ? <><NBSP/>*</>
+                    : null
+                }
             </Form.Label>
             <div className={ valueClassName }>
                 { children }
