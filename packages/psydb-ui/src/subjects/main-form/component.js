@@ -54,11 +54,11 @@ const FormFields = (ps) => {
 
     return (
         <>
-            <Field.Custom
+            <Fields.Custom
                 { ...customFieldBag }
                 subChannelKey='gdpr'
             />
-            <Field.Custom
+            <Fields.Custom
                 { ...customFieldBag }
                 subChannelKey='scientific'
             />

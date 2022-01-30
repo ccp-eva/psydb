@@ -55,7 +55,7 @@ const FormFields = (ps) => {
             <Fields.Custom { ...customFieldBag } />
             <Fields.AccessRightByResearchGroupList
                 label='Zugriff auf diesen Datensatz für'
-                dataXPath='$.scientific.systemPermissions.accessRightsByResearchGroup'
+                dataXPath='$.systemPermissions.accessRightsByResearchGroup'
                 related={ related }
                 required
             />
