@@ -22,7 +22,7 @@ const FieldPointerList = ({
     }
 
     return (
-        <Table>
+        <Table className='bg-white border'>
             <thead>
                 <tr>
                     <th>#</th>

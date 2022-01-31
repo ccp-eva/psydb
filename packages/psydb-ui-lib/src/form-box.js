@@ -1,11 +1,17 @@
 import React from 'react';
+import classnames from 'classnames';
 // FIXME: move to layout
 const FormBox = ({
     title,
     children,
+    extraClassName
 }) => {
+    var className = classnames([
+        'border p-3 bg-light',
+        extraClassName
+    ])
     return (
-        <div className='border p-3 bg-light'>
+        <div className={ className }>
             <h5>
                 { title }
             </h5>
