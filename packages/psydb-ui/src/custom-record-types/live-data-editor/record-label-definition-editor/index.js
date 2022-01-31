@@ -38,8 +38,6 @@ const RecordLabelDefinitionEditor = ({
         tokens
     } = record.state.recordLabelDefinition;
 
-    console.log(availableFieldDataByPointer);
-
     return (
         <div>
             <p>

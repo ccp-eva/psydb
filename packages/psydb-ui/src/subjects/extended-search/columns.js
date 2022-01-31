@@ -1,13 +1,9 @@
 import React from 'react';
 
-import {
-    gatherCustomColumns
-} from '@mpieva/psydb-common-lib';
-
-import { withField, withFieldArray } from '@cdxoo/formik-utils';
-import { Icons, Button } from '@mpieva/psydb-ui-layout';
+import { gatherCustomColumns } from '@mpieva/psydb-common-lib';
+import { withField } from '@cdxoo/formik-utils';
 import { Fields } from '@mpieva/psydb-ui-lib';
-import * as Controls from '@mpieva/psydb-ui-form-controls';
+
 
 const ColumnSelect = withField({
     Control: Fields.ColumnSelect.Control,
@@ -43,7 +39,7 @@ export const Columns = (ps) => {
                 columnLabel='Ausgewählt'
                 orderLabel='Anordnung'
                 dataXPath='$.columns'
-                columns={[
+                columnBlocks={[
                     [{ pointer: '/_id', label: 'ID' }],
                     customColumns,
                     specialColumns,

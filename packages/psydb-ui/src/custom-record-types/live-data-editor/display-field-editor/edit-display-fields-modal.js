@@ -19,7 +19,13 @@ const EditDisplayFieldsModal = ({
         onHide()
     }
     return (
-        <Modal show={show} onHide={ onHide }>
+        <Modal
+            show={ show }
+            onHide={ onHide }
+            size='lg'
+            className='team-modal'
+            backdropClassName='team-modal-backdrop'
+        >
             <Modal.Header closeButton>
                 <Modal.Title>
                     {(
@@ -29,7 +35,7 @@ const EditDisplayFieldsModal = ({
                     )} bearbeiten
                 </Modal.Title>
             </Modal.Header>
-            <Modal.Body>
+            <Modal.Body className='bg-light'>
                 <EditDisplayFieldsForm
                     target={ target }
                     record={ record }

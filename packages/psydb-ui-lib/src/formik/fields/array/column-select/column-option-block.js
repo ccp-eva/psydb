@@ -6,8 +6,8 @@ export const ColumnOptionBlock = (ps) => {
     var { dataXPath, columns } = ps;
     return (
         <div className='d-flex flex-wrap mb-3'>
-            { columns.map(col => (
-                <div key={ col.pointer} className='w-50'>
+            { columns.map((col, index) => (
+                <div key={ col.pointer } className='w-50'>
                     <ColumnField dataXPath={ dataXPath } { ...col } />
                 </div>
             ))}

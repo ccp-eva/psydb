@@ -1,6 +1,5 @@
 import React from 'react';
 import { withField } from '@cdxoo/formik-utils';
-import { arrify } from '@mpieva/psydb-core-utils';
 
 import { ColumnOptionBlock } from './column-option-block';
 import { ColumnOrder } from './column-order';
@@ -21,13 +20,11 @@ export const ColumnSelect = withField({ Control: (ps) => {
         children
     } = ps;
 
-    var columnBlocks = arrify(columns);
+    var columnBlocks = columnBlocks || [ columns ];
     var allOptions = columnBlocks.reduce((acc, block) => ({
         ...acc,
         ...toOptions(block, { value: 'pointer' })
     }), {});
-
-    console.log(allOptions);
 
     return (
         <>
