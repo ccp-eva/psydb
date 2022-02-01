@@ -8,7 +8,7 @@ const {
 const MINUTE = 60 * 1000;
 const HOUR = 60 * MINUTE;
 
-const ReservationType = (options) => {
+const ReservationDefaults = (options) => {
     var { reservationType } = options;
     switch (reservationType) {
         case 'away-team':
@@ -27,7 +27,8 @@ const ReservationType = (options) => {
                 possibleReservationTimeInterval: {
                     start: 8 * HOUR, end: 16 * HOUR
                 },
-                reservationSlotDuration: 15 * MINUTE
+                reservationSlotDuration: 15 * MINUTE,
+                timezone: 'Europe/Berlin',
             }
         //case 'no-reservation': //FIXME
         //    return undefined;
