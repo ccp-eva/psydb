@@ -37,7 +37,7 @@ const useReadRecord = (options, dependencies = []) => {
     } = fetched.record.data;
 
     return [ didFetch, {
-        ...(shouldCRTSettings && {
+        ...(shouldFetchCRTSettings && {
             crtSettings: fetched.crtSettings.data,
         }),
         ...(shouldFetchSchema && {

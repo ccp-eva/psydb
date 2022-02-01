@@ -12,3 +12,4 @@ export * from './plain-checkbox';
 
 export * from './email';
 export * from './password';
+export * from './time';

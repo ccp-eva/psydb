@@ -72,10 +72,10 @@ const ReservationFields = (ps) => {
         case 'away-team':
             return <AwayTeamReservationFields { ...pass } />
         case 'inhouse':
-            return <InhouseReservationFields { ...pass } />
-        case 'no-reservation':
         default:
-            return null
+            return <InhouseReservationFields { ...pass } />
+        //case 'no-reservation': // FIXME
+        //    return null
     }
 }
 
@@ -84,9 +84,9 @@ const AwayTeamReservationFields = (ps) => {
     var prefix = '$.reservationSettings';
     return (
         <>
-            <Field.WeekdayBoolObject
+            <Fields.WeekdayBoolObject
                 label='Termine nicht am'
-                dataXPath={`${prefix}.excludeExperimentWeekdays`}
+                dataXPath={`${prefix}.excludedExperimentWeekdays`}
             />
         </>
     );
@@ -97,15 +97,15 @@ const InhouseReservationFields = (ps) => {
     var prefix = '$.reservationSettings';
     return (
         <>
-            <Field.WeekdayBoolObject
+            <Fields.WeekdayBoolObject
                 label='Wochentage'
                 dataXPath={`${prefix}.possibleReservationWeekdays`}
             />
-            <Field.Time
+            <Fields.Time
                 label='Reservierbar Von'
                 dataXPath={`${prefix}.possibleReservationTimeInterval.start`}
             />
-            <Field.Time
+            <Fields.Time
                 label='Reservierbar Bis'
                 dataXPath={`${prefix}.possibleReservationTimeInterval.end`}
             />

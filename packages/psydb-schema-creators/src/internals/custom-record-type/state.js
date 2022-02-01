@@ -2,6 +2,7 @@
 var {
     ExactObject,
     SaneString,
+    StringEnum,
     IdentifierString,
 } = require('@mpieva/psydb-schema-fields');
 
@@ -155,6 +156,11 @@ var ChannelState = ({
 }) => ExactObject({
     properties: {
         label: SaneString(),
+        reservationType: StringEnum([
+            'away-team',
+            'inhouse',
+            //'no-reservation' // FIXME
+        ]),
         recordLabelDefinition: RecordLabelDefinition(),
         tableDisplayFields: {
             type: 'array',

@@ -17,7 +17,7 @@ var reservationSettingsSchema = {
         ExactObject({
             title: 'nicht reservierbar',
             properties: {
-                canBeReserved: {
+                canBeReserved: { // FIXME
                     type: 'boolean',
                     const: false,
                     default: false, // because rjsf
@@ -34,7 +34,7 @@ var reservationSettingsSchema = {
         ExactObject({
             title: 'reservierbar',
             properties: {
-                canBeReserved: {
+                canBeReserved: { // FIXME
                     type: 'boolean',
                     const: true,
                     default: true, // because rjsf

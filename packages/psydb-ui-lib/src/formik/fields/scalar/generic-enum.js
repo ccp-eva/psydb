@@ -12,6 +12,10 @@ export const GenericEnum = withField({ Control: (ps) => {
         formikForm,
 
         manualOnChange,
+        // FIXME: this is the earliest place to prevent
+        // this from being passed down to select which will
+        // give big prop warning; see Address
+        labelClassName,
         ...pass
     } = ps;
 

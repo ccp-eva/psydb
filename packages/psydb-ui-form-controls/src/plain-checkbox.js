@@ -8,6 +8,7 @@ export const PlainCheckbox = (ps) => {
     }
     return (
         <Form.Check
+            value={ value }
             checked={ checked }
             onChange={ onChange }
             { ...pass }

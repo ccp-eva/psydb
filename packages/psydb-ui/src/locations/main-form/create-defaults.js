@@ -12,9 +12,14 @@ const ReservationType = (options) => {
     var { reservationType } = options;
     switch (reservationType) {
         case 'away-team':
-            return { excludeExperimentWeekdays: {}}
-        case 'away-team':
             return {
+                canBeReserved: false, // FIXME
+                excludedExperimentWeekdays: {}
+            }
+        case 'inhouse':
+        default:
+            return {
+                canBeReserved: true, // FIXME
                 possibleReservationWeekdays: {
                     mon: true, tue: true, wed: true, thu: true, fri: true,
                     sat: false, sun: false
@@ -24,9 +29,8 @@ const ReservationType = (options) => {
                 },
                 reservationSlotDuration: 15 * MINUTE
             }
-        case 'no-reservation':
-        default:
-            return undefined;
+        //case 'no-reservation': //FIXME
+        //    return undefined;
     }
 }
 

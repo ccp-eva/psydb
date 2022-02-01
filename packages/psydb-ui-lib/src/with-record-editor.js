@@ -15,7 +15,7 @@ export const withRecordEditor = (options) => {
     var {
         EditForm,
         shouldFetchSchema = true,
-        shouldCRTSettings = true,
+        shouldFetchCRTSettings = true,
     } = options;
 
     var RecordEditor = (ps) => {

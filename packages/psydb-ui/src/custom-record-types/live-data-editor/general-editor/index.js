@@ -7,7 +7,7 @@ import { DefaultForm, Fields } from '@mpieva/psydb-ui-lib';
 const reservationTypes = {
     'inhouse': 'Reservierbar (z.B. Instituts-Räume)',
     'away-team': 'Terminierbar (t.B. Kindergärten)',
-    'no-reservation': 'Nein'
+    //'no-reservation': 'Nein'
 }
 
 const GeneralEditor = (ps) => {
@@ -22,9 +22,9 @@ const GeneralEditor = (ps) => {
             </div>
             { collection === 'location' && (
                 <div>
-                    Reservierung/Terminierung:
+                    Reservierung/Termine:
                     {' '}
-                    { reservationTypes[reservationType] }
+                    { reservationTypes[reservationType] || 'inhouse' }
                 </div>
             )}
             <div className='mt-3'>
@@ -63,10 +63,15 @@ const Modal = WithDefaultModal({
             onSuccessfulUpdate: demuxed([ onSuccessfulUpdate, onHide ])
         })
 
-        var initialValues = { label, reservationType };
+        var initialValues = {
+            label,
+            ...(collection === 'location' && {
+                reservationType: reservationType || 'inhouse'
+            })
+        };
         return (
             <Form
-                colllection={ collection }
+                collection={ collection }
                 initialValues={ initialValues }
                 onSubmit={ send.exec }
             />
@@ -76,6 +81,7 @@ const Modal = WithDefaultModal({
 
 const Form = (ps) => {
     var { collection, initialValues, onSubmit } = ps;
+        
     return (
         <DefaultForm
             initialValues={ initialValues }
@@ -90,7 +96,7 @@ const Form = (ps) => {
                     />
                     { collection === 'location' && (
                         <Fields.GenericEnum
-                            label='Reservierung/Terminierung'
+                            label='Reservierung/Termine'
                             dataXPath='$.reservationType'
                             options={ reservationTypes }
                             required
