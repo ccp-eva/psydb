@@ -14,7 +14,10 @@ const ReservationDefaults = (options) => {
         case 'away-team':
             return {
                 canBeReserved: false, // FIXME
-                excludedExperimentWeekdays: {}
+                excludedExperimentWeekdays: {
+                    mon: false, tue: false, wed: false, thu: false, fri: false,
+                    sat: false, sun: false
+                }
             }
         case 'inhouse':
         default:
