@@ -14,11 +14,8 @@ const EditForm = (ps) => {
         onSuccessfulUpdate
     } = ps;
 
-    var {
-        record,
-        fieldDefinitions,
-        related
-    } = fetched;
+    var { record, crtSettings, related } = fetched;
+    var { fieldDefinitions } = crtSettings;
 
     var permissions = usePermissions();
 
