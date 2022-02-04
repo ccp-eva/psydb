@@ -15,12 +15,13 @@ export const ColumnSelect = withField({ Control: (ps) => {
         columnLabel = 'columnLabel',
         orderLabel = 'orderLabel',
         columns,
+        columnBlocks,
         dataXPath,
         required,
         children
     } = ps;
 
-    var columnBlocks = columnBlocks || [ columns ];
+    columnBlocks = columnBlocks || [ columns ];
     var allOptions = columnBlocks.reduce((acc, block) => ({
         ...acc,
         ...toOptions(block, { value: 'pointer' })
