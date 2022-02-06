@@ -2,7 +2,7 @@ import React from 'react';
 import * as Fields from './static';
 
 /*
-    <Fields.Dynamic
+    <Fields.Custom
         fieldDefinitions={ fieldDefinitions }
         subChannelKey='gdpr'
         related={ related }
@@ -15,6 +15,7 @@ import * as Fields from './static';
 // TODO: make custom fields based on crt field list instead of schema
 export const Custom = (ps) => {
     var {
+        dataXPath,
         fieldDefinitions,
         subChannelKey,
         related,
@@ -30,9 +31,13 @@ export const Custom = (ps) => {
     fields = fields.map(it => ({
         definition: it,
         dataXPath: (
-            subChannelKey
-            ? `$.${subChannelKey}.custom.${it.key}`
-            : `$.custom.${it.key}`
+            dataXPath
+            ? `${dataXPath}.${it.key}`
+            : (
+                subChannelKey
+                ? `$.${subChannelKey}.custom.${it.key}`
+                : `$.custom.${it.key}`
+            )
         )
     }))
     //console.log(fields);
@@ -55,28 +60,31 @@ const CustomFieldFallback = (ps) => {
     )
 }
 const fixSystemType = (systemType) => {
-    // TODO: make sure that we dont need this mapping anymore
     switch (systemType) {
-        case 'EmailList':
-            return 'EmailWithPrimaryList';
         case 'PhoneList':
-            return 'PhoneWithTypeList';
+        case 'EmailList':
+            return 'SaneString';
+
+        case 'HelperSetItemIdList':
+        case 'HelperSetItemId':
+            return 'HelperSetItemIdList';
+
+        case 'ForeignIdList':
+        case 'ForeignId':
+            return 'ForeignIdList';
+
+        case 'SaneString':
+        case 'BiologicalGender':
+        case 'ExtBool':
         default:
             return systemType;
     }
 };
 const CustomField = (ps) => {
-    var { dataXPath, definition, related, extraTypeProps } = ps;
+    var { dataXPath, definition, related, extraTypeProps = {} } = ps;
     var { displayName, type, props } = definition;
 
     type = fixSystemType(type);
-    var isRequired = true;
-    switch (type) {
-        case 'SaneString':
-            // TODO: use crt definition instead
-            isRequired = props.minLength > 0
-            break;
-    }
 
     var Component = Fields[type] || CustomFieldFallback;
     return (
@@ -84,7 +92,7 @@ const CustomField = (ps) => {
             dataXPath={ dataXPath }
             label={ displayName }
             related={ related }
-            required={ isRequired }
+            required={ false }
             { ...props }
             { ...extraTypeProps[type] }
         />

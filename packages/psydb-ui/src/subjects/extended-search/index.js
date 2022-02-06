@@ -3,7 +3,7 @@ import { Base64 } from 'js-base64';
 import { useHistory, useLocation } from 'react-router';
 
 import {
-    useFetch,
+    useFetchAll,
     useURLSearchParams
 } from '@mpieva/psydb-ui-hooks';
 
@@ -24,6 +24,21 @@ import { Filters } from './filters';
 import { Columns } from './columns';
 import { Results } from './results';
 
+const maybeDecodeBase64 = (encoded, { isJson = true } = {}) => {
+    var decoded = undefined;
+    try {
+        if (encoded) {
+            decoded = Base64.decode(encoded);
+            if (isJson) {
+                decoded = JSON.parse(decoded);
+            }
+            console.log(decoded);
+        }
+    }
+    catch (e) {}
+    return decoded;
+}
+
 const ExtendedSearch = (ps) => {
     var {
         collection,
@@ -36,15 +51,7 @@ const ExtendedSearch = (ps) => {
         defaults: { tab: 'filters' }
     });
     var { tab, formData } = query;
-    
-    var decodedFormData = undefined;
-    try {
-        if (formData) {
-            decodedFormData = JSON.parse(Base64.decode(formData));
-            console.log(decodedFormData);
-        }
-    }
-    catch (e) {}
+    var decodedFormData = maybeDecodeBase64(formData, { isJson: true });
     
     var handleSwitchTab = ({ nextTab, formData }) => {
         console.log('handleSwitchTab', formData);
@@ -61,18 +68,24 @@ const ExtendedSearch = (ps) => {
         window.scrollTo(0, 0);
     }
 
-    var [ didFetch, fetched ] = useFetch((agent) => (
-        agent.readRecordSchema({
+    var [ didFetch, fetched ] = useFetchAll((agent) => ({
+        crtSettings: agent.readCRTSettings({
+            collection, recordType
+        }),
+        schema: agent.readRecordSchema({
             collection,
             recordType
         })
-    ), [ collection, recordType ]);
+    }), [ collection, recordType ])
+
 
     if (!didFetch) {
         return <LoadingIndicator size='lg' />
     }
 
-    var schema = fetched.data;
+    var schema = fetched.schema.data;
+    var crtSettings = fetched.crtSettings.data;
+
     var defaultValues = decodedFormData || {
         subjectType: recordType,
         customGdprFilters: {},
@@ -95,6 +108,7 @@ const ExtendedSearch = (ps) => {
             >
                 {(formikProps) => (
                     <Inner { ...({
+                        crtSettings,
                         schema,
                         activeTab: tab,
                         onSwitchTab: handleSwitchTab,
@@ -125,6 +139,7 @@ const Inner = (ps) => {
     var {
         activeTab = 'filters',
         onSwitchTab,
+        crtSettings,
         schema,
         formData,
     } = ps;
@@ -148,6 +163,7 @@ const Inner = (ps) => {
             />
             <Component
                 formData={ formData }
+                crtSettings={ crtSettings }
                 schema={ schema }
             />
         </>

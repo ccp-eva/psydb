@@ -10,21 +10,32 @@ import {
 } from '@mpieva/psydb-ui-lib';
 
 export const Filters = (ps) => {
-    var { schema } = ps;
+    var { crtSettings, schema } = ps;
+    var { fieldDefinitions } = crtSettings;
     
     var customGdpr = getCustomFields(schema, 'gdpr');
     var customScientific = getCustomFields(schema, 'scientific');
 
     return (
         <FormBox title='Suchbedingungen'>
-            <CustomFields
+            <Fields.Custom
+                dataXPath='$.customGdprFilters'
+                subChannelKey='gdpr'
+                fieldDefinitions={ fieldDefinitions }
+            />
+            <Fields.Custom
+                dataXPath='$.customScientificFilters'
+                subChannelKey='scientific'
+                fieldDefinitions={ fieldDefinitions }
+            />
+            {/*<CustomFields
                 dataXPath='$.customGdprFilters'
                 fields={ customGdpr }
             />
             <CustomFields
                 dataXPath='$.customScientificFilters'
                 fields={ customScientific }
-            />
+            />*/}
             <Button type='submit'>
                 Weiter
             </Button>
