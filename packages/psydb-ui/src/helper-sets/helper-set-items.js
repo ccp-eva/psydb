@@ -31,7 +31,7 @@ const HelperSetItems = () => {
         collection: 'helperSet',
         id: setId,
         shouldFetchSchema: false,
-        shouldFetchFieldDefinitions: false,
+        shouldFetchCRTSettings: false,
     });
 
     if (!didFetch) {

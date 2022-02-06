@@ -33,7 +33,12 @@ var subjectExtendedSearch = async (context, next) => {
     } = context;
 
     validateOrThrow({
-        schema: RequestBodySchema(),
+        schema: RequestBodySchema.Core(),
+        payload: request.body
+    });
+
+    validateOrThrow({
+        schema: RequestBodySchema.Full(),
         payload: request.body
     });
 

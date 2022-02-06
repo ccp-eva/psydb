@@ -13,4 +13,6 @@ module.exports = {
     without: require('./without'),
 
     extractFrom: require('./extract-from'),
+
+    isInstanceOf: require('./is-instance-of'),
 }

@@ -1,75 +1,44 @@
 'use strict';
 var debug = require('debug')('psydb:api:endpoints:metadata');
-var inline = require('@cdxoo/inline-text');
-var allSchemaCreators = require('@mpieva/psydb-schema-creators');
+var { isInstanceOf } = require('@mpieva/psydb-core-utils');
+
+var {
+    InvalidCollection,
+    RecordTypeRequired,
+    RecordTypeNotFound
+} = require('@mpieva/psydb-api-lib-errors');
 
 var {
     ApiError,
     ResponseBody,
-    fetchOneCustomRecordType
+    fetchCRTSettings,
 } = require('@mpieva/psydb-api-lib');
 
 var getCRTSettings = async (context, next) => {
     var { db, params, query } = context;
     var { collectionName, recordType } = params;
-    
-    var collectionCreatorData = allSchemaCreators[collectionName];
-    if (!collectionCreatorData || collectionName === 'customRecordType') {
-        throw new ApiError(400, 'InvalidCollection');
+
+    try {
+        var data = await fetchCRTSettings({
+            db,
+            collectionName,
+            recordType
+        });
+        context.body = ResponseBody({ data });
     }
-
-    var {
-        hasCustomTypes,
-        hasSubChannels
-    } = collectionCreatorData;
-
-    // FIXME: we might be able to check that
-    // via param schema
-    if (hasCustomTypes && !recordType) {
-        throw new ApiError(400, 'RecordTypeRequired');
-    }
-
-    var crt = await fetchOneCustomRecordType({
-        db,
-        collection: collectionName,
-        type: recordType
-    });
-    if (!crt) {
-        throw new Error(inline`
-            could not find custom record type for
-            "${collectionName}/${recordType}"
-        `);
-    }
-   
-    var {
-        isNew,
-        isDirty,
-        nextSettings,
-        settings,
-        ...otherState
-    } = crt.state;
-
-    var {
-        subChannelFields,
-        fields,
-        ...otherSettings
-    } = settings;
-
-    var fieldDefinitions = (
-        hasSubChannels
-        ? subChannelFields
-        : fields
-    );
-
-    context.body = ResponseBody({
-        data: {
-            hasSubChannels,
-            fieldDefinitions,
-            ...otherSettings,
-            ...otherState,
+    catch (e) {
+        var should400 = isInstanceOf(e, [
+            InvalidCollection,
+            RecordTypeRequired,
+            RecordTypeNotFound
+        ]);
+        if (should400) {
+            throw ApiError.from(400, e)
         }
-    });
-
+        else {
+            throw e;
+        }
+    }
     await next();
 }
 

@@ -159,6 +159,11 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/psydb-api-lib-errors",
+       "projectFolder": "packages/psydb-api-lib-errors",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-api-lib",
        "projectFolder": "packages/psydb-api-lib",
        "reviewCategory": "production"

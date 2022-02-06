@@ -2,6 +2,7 @@
 
 var {
     ExactObject,
+    OpenObject,
     CustomRecordTypeKey,
     DefaultArray,
     JsonPointer,
@@ -11,7 +12,15 @@ var {
     ForeignIdList,
 } = require('@mpieva/psydb-schema-fields');
 
-var RequestBodySchema = () => ExactObject({
+var RequestBodySchema = {};
+RequestBodySchema.Core = () => OpenObject({
+    properties: {
+        subjectType: CustomRecordTypeKey({ collection: 'subject' }),
+    },
+    required: [ 'subjectType' ]
+})
+
+RequestBodySchema.Full = () => ExactObject({
     properties: {
         subjectType: CustomRecordTypeKey({ collection: 'subject' }),
         customGdprFilters: { type: 'object' },

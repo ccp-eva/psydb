@@ -65,6 +65,15 @@ const fixSystemType = (systemType) => {
         case 'EmailList':
             return 'SaneString';
 
+        case 'DateTime':
+            'DateTimeInterval';
+
+        case 'DateOnlyServerSide':
+            return 'DateOnlyServerSideInterval';
+
+        case 'Integer':
+            return 'IntegerInterval';
+
         case 'HelperSetItemIdList':
         case 'HelperSetItemId':
             return 'HelperSetItemIdList';
@@ -93,6 +102,7 @@ const CustomField = (ps) => {
             label={ displayName }
             related={ related }
             required={ false }
+            systemType={ type }
             { ...props }
             { ...extraTypeProps[type] }
         />
