@@ -28,7 +28,10 @@ const Control = (ps) => {
 }
 
 class InnerControl extends React.Component {
-    state = { cachedDate: '' };
+    state = {
+        cachedDate: '',
+        hasUserUpdate: false
+    };
     
     static getDerivedStateFromProps (ps, state) {
         var {
@@ -38,12 +41,14 @@ class InnerControl extends React.Component {
             isInitialValueSwapped = true
         } = ps;
         var { value } = formikField;
+        var { hasUserUpdate } = state;
 
-        console.log({
+        /*console.log({
             value,
             serverTimezone,
             clientTimezone,
-        })
+            isInitialValueSwapped,
+        })*/
 
         if (value === 'INVALID') {
             return null; // no state change
@@ -53,9 +58,10 @@ class InnerControl extends React.Component {
                 value,
                 serverTimezone,
                 clientTimezone,
-                isInitialValueSwapped
+                isInitialValueSwapped,
+                reverseSwap: hasUserUpdate
             });
-            console.log({ initialDate })
+            //console.log({ initialDate })
             return {
                 cachedDate: initialDate || '',
             }
@@ -65,9 +71,14 @@ class InnerControl extends React.Component {
     useCachedDate () {
         return [
             this.state.cachedDate,
-            (next) => this.setState({ ...this.state, cachedDate: next })
+            (next) => this.setState({
+                ...this.state,
+                cachedDate: next,
+                hasUserUpdate: true
+            })
         ]
     }
+
 
     render () {
         var {
@@ -75,27 +86,26 @@ class InnerControl extends React.Component {
             formikField,
             formikForm,
             disabled,
-            isInitialValueSwapped = true,
         } = this.props;
         var { value } = formikField;
         var { setFieldValue } = formikForm;
 
         var [ cachedDate, setCachedDate ] = this.useCachedDate();
-        console.log({ cachedDate })
+        //console.log({ cachedDate })
 
         var handleChange = (event) => {
-            console.log('HANDLECHANGE');
+            //console.log('HANDLECHANGE');
             var { target: { value }} = event;
             setCachedDate(value);
 
             if (canParseBack(value)) {
                 var date = parseBack(value);
 
-                console.log({ date: date.toISOString() });
+                //console.log({ date: date.toISOString() });
                 setFieldValue(dataXPath, date.toISOString());
             }
             else {
-                console.log('INVALID')
+                //console.log('INVALID')
                 setFieldValue(dataXPath, 'INVALID');
             }
         }

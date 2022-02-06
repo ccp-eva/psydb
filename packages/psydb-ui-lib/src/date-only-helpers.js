@@ -32,7 +32,8 @@ export const createInitialDate = ({
     value,
     serverTimezone,
     clientTimezone,
-    isInitialValueSwapped
+    isInitialValueSwapped,
+    reverseSwap,
 }) => {
     var temp = new Date(value);
     if (!checkDate(temp)) {
@@ -44,12 +45,25 @@ export const createInitialDate = ({
     }
 
     if (isInitialValueSwapped) {
+        var tzprops = (
+            reverseSwap
+            ? {
+                sourceTZ: clientTimezone,
+                targetTZ: serverTimezone
+            }
+            : {
+                sourceTZ: serverTimezone,
+                targetTZ: clientTimezone
+            }
+        );
         var swapped = swapTimezone({
             date: temp,
-            sourceTZ: serverTimezone,
-            targetTZ: clientTimezone
+            ...tzprops
         });
-        //console.log({ temp, swapped })
+        /*console.log({
+            temp: temp.toISOString(),
+            swapped: swapped.toISOString(),
+        })*/
         var { date } = splitISO(swapped.toISOString());
         return date;
     }
