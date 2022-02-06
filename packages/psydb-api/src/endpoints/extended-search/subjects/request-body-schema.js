@@ -10,6 +10,10 @@ var {
     StringEnum,
     SaneString,
     ForeignIdList,
+
+    AgeFrameInterval,
+    DateOnlyServerSideInterval,
+    Timezone,
 } = require('@mpieva/psydb-schema-fields');
 
 var RequestBodySchema = {};
@@ -24,7 +28,19 @@ RequestBodySchema.Full = () => ExactObject({
     properties: {
         subjectType: CustomRecordTypeKey({ collection: 'subject' }),
         customGdprFilters: { type: 'object' },
-        customScientificFilters: { type: 'object' },
+        customScientificFilters: {
+            type: 'object',
+            /*properties: { dateOfBirth: { oneOf: [
+                ExactObject({
+                    properties: { interval: DateOnlyServerSideInterval() },
+                    required: ['interval']
+                }),
+                ExactObject({
+                    properties: { ageFrame: AgeFrameInterval() },
+                    required: ['ageFrame']
+                })
+            ]}}*/
+        },
         
         specialFilters: ExactObject({
             properties: {
@@ -52,6 +68,7 @@ RequestBodySchema.Full = () => ExactObject({
         }),
         offset: Integer({ minimum: 0 }),
         limit: Integer({ maximum: 250 }),
+        timezone: Timezone(),
     },
     required: [
         'subjectType',
@@ -60,6 +77,7 @@ RequestBodySchema.Full = () => ExactObject({
         'specialFilters',
 
         'columns',
+        'timezone',
     ]
 });
 

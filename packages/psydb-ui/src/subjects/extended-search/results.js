@@ -1,6 +1,7 @@
 import React from 'react';
 import jsonpointer from 'jsonpointer';
 
+import { getSystemTimezone } from '@mpieva/psydb-timezone-helpers';
 import { keyBy } from '@mpieva/psydb-core-utils';
 
 import {
@@ -38,7 +39,8 @@ export const Results = (ps) => {
                 ...formData,
                 columns,
                 offset,
-                limit
+                limit,
+                timezone: getSystemTimezone()
             })
             .then((response) => {
                 pagination.setTotal(response.data.data.recordsCount);

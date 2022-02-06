@@ -5,6 +5,7 @@ module.exports = {
 
     Ajv: require('./ajv'),
     ApiError: require('./api-error'),
+    FakeAjvError: require('./fake-ajv-error'),
     ResponseBody: require('./response-body'),
 
     validateOrThrow: require('./validate-or-throw'),
