@@ -17,26 +17,37 @@ var timeshiftAgeFrame = ({ ageFrame, targetDate, targetInterval }) => {
     if (targetDate) {
         targetInterval = { start: targetDate, end: targetDate };
     }
-    
-    var timeShifted = {
-        // shifting time frame back by the age frame boundaries
-        // ... on the first test day whats the oldest child
-        // we can test ? and on the last day of the testing
-        // whats the youngest child we can test?
-        // ... if we move the testing interval in the past
-        // which children are born within the testinterval
-        // expanded by the age frame
-        //
-        //start: datefns.sub(searchInterval.start, { days: ageFrame.end }),
-        //end: datefns.sub(searchInterval.end, { days: ageFrame.start }),
-        start: subtractAgeFrameEdge({
+   
+    // all subjects born before "start"
+    // are too old (i.e. above ageFrame.end)
+    // even at the earliest posisble test date (targetInterval.start)
+    // a.k.a start is the earliest DoB we can test in the interval
+    var start = (
+        targetInterval.start && ageFrame.end
+        ? subtractAgeFrameEdge({
             date: targetInterval.start,
             ageFrameEdge: ageFrame.end
-        }),
-        end: subtractAgeFrameEdge({
+        })
+        : undefined
+    );
+
+    // all subjects born after "end"
+    // are too young (i.e. below ageFrame.start)
+    // even at the latest possible test time (targetInterval.end)
+    var end = (
+        targetInterval.end && ageFrame.start
+        ? subtractAgeFrameEdge({
             date: targetInterval.end,
             ageFrameEdge: ageFrame.start
-        }),
+        })
+        : undefined
+    )
+
+    // all DoBs inside the timeshifted interval are testable
+    // at some point in the desired test interval
+    var timeShifted = {
+        ...(start && { start }),
+        ...(end && { end }),
     }
 
     return timeShifted;

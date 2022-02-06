@@ -1,5 +1,9 @@
 'use strict';
 var {
+    timeshiftAgeFrame
+} = require('@mpieva/psydb-common-lib');
+
+var {
     convertPointerToPath,
 } = require('@mpieva/psydb-api-lib');
 
@@ -51,13 +55,35 @@ var createOneCustomQueryValue = (options) => {
             var { isSpecialAgeFrameField } = props;
             if (filter) {
                 var { interval, ageFrame } = filter;
-                if (interval) {
-                    out = { $expr: {}};
+                if (interval && (interval.start || interval.end)) {
+                    out = {
+                        // FIXME: date conversion via ajv
+                        // FIXME: endOfDay?
+                        ...(interval.start && {
+                            $gte: new Date(interval.start)
+                        }),
+                        ...(interval.end && {
+                            $lt: new Date(interval.end)
+                        })
+                    };
                 }
                 if (isSpecialAgeFrameField && ageFrame) {
-                    out = { $expr: {}};
+                    var now = new Date();
+                    var timeshifted = timeshiftAgeFrame({
+                        ageFrame, targetDate: now
+                    });
+                    out = {
+                        ...(timeshifted.start && {
+                            $gte: timeshifted.start
+                        }),
+                        ...(timeshifted.end && {
+                            $lt: timeshifted.end
+                        })
+                    }
+                    //out = { $expr: {}};
                 }
             }
+            console.log(out);
             return out;
 
     }
@@ -75,12 +101,17 @@ var getCustomQueryPointer = (options) => {
         case 'HelperSetItemIdList':
         case 'BiologicalGender':
         case 'ExtBool':
+        case 'DateTime':
+        case 'DateOnlyServerSide':
             return pointer;
 
         case 'PhoneList':
             return `${pointer}/number`;
         case 'EmailList':
             return `${pointer}/email`;
+
+        default:
+            throw new Error(`unknown type "${type}" for "${pointer}"`);
     }
 }
 
