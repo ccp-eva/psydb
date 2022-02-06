@@ -14,36 +14,77 @@ import {
 import { Form } from '@mpieva/psydb-ui-layout';
 import ServerTimezoneContext from '../../../server-timezone-context';
 
-export const DateOnlyServerSide = withField({
-    Control: (ps) => {
+const Control = (ps) => {
+    var serverTimezone = useContext(ServerTimezoneContext);
+    var clientTimezone = getSystemTimezone();
+
+    return (
+        <InnerControl { ...({
+            serverTimezone,
+            clientTimezone,
+            ...ps,
+        })} />
+    )
+}
+
+class InnerControl extends React.Component {
+    state = { cachedDate: '' };
+    
+    static getDerivedStateFromProps (ps, state) {
+        var {
+            formikField,
+            serverTimezone,
+            clientTimezone,
+            isInitialValueSwapped = true
+        } = ps;
+        var { value } = formikField;
+
+        console.log({
+            value,
+            serverTimezone,
+            clientTimezone,
+        })
+
+        if (value === 'INVALID') {
+            return null; // no state change
+        }
+        else {
+            var initialDate = createInitialDate({
+                value,
+                serverTimezone,
+                clientTimezone,
+                isInitialValueSwapped
+            });
+            console.log({ initialDate })
+            return {
+                cachedDate: initialDate || '',
+            }
+        }
+    }
+
+    useCachedDate () {
+        return [
+            this.state.cachedDate,
+            (next) => this.setState({ ...this.state, cachedDate: next })
+        ]
+    }
+
+    render () {
         var {
             dataXPath,
             formikField,
             formikForm,
             disabled,
             isInitialValueSwapped = true,
-        } = ps;
+        } = this.props;
         var { value } = formikField;
         var { setFieldValue } = formikForm;
-    
-        var serverTimezone = useContext(ServerTimezoneContext);
-        var clientTimezone = getSystemTimezone();
 
-        var initialDate = createInitialDate({
-            value,
-            serverTimezone,
-            clientTimezone,
-            isInitialValueSwapped
-        });
-
-        //console.log({
-        //    value,
-        //    initialDate
-        //});
-
-        var [ cachedDate, setCachedDate ] = useState(initialDate || '');
+        var [ cachedDate, setCachedDate ] = this.useCachedDate();
+        console.log({ cachedDate })
 
         var handleChange = (event) => {
+            console.log('HANDLECHANGE');
             var { target: { value }} = event;
             setCachedDate(value);
 
@@ -69,5 +110,64 @@ export const DateOnlyServerSide = withField({
             />
         )
     }
+}
+
+var _OLD_Control = (ps) => {
+    var {
+        dataXPath,
+        formikField,
+        formikForm,
+        disabled,
+        isInitialValueSwapped = true,
+    } = ps;
+    var { value } = formikField;
+    var { setFieldValue } = formikForm;
+
+    var serverTimezone = useContext(ServerTimezoneContext);
+    var clientTimezone = getSystemTimezone();
+
+    var initialDate = createInitialDate({
+        value,
+        serverTimezone,
+        clientTimezone,
+        isInitialValueSwapped
+    });
+
+    //console.log({
+    //    value,
+    //    initialDate
+    //});
+
+    var [ cachedDate, setCachedDate ] = useState(initialDate || '');
+
+    var handleChange = (event) => {
+        var { target: { value }} = event;
+        setCachedDate(value);
+
+        if (canParseBack(value)) {
+            var date = parseBack(value);
+
+            console.log({ date: date.toISOString() });
+            setFieldValue(dataXPath, date.toISOString());
+        }
+        else {
+            console.log('INVALID')
+            setFieldValue(dataXPath, 'INVALID');
+        }
+    }
+
+    return (
+        <Form.Control
+            type='date'
+            disabled={ disabled }
+            { ...formikField }
+            value={ cachedDate }
+            onChange={ handleChange }
+        />
+    )
+}
+
+export const DateOnlyServerSide = withField({
+    Control,
 })
 
