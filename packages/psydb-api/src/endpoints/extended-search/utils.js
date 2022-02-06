@@ -25,7 +25,7 @@ var createCustomQueryValues = (options) => {
 
 var createOneCustomQueryValue = (options) => {
     var { field, filter } = options;
-    var { type } = field;
+    var { type, props } = field;
     switch (type) {
         case 'SaneString':
         case 'PhoneList':
@@ -44,6 +44,22 @@ var createOneCustomQueryValue = (options) => {
             filter = filter || {};
             var op = filter.negate ? '$nin' : '$in';
             return { [op]: filter.values };
+
+        case 'DateOnlyServerSide':
+            console.log({ field, filter });
+            var out = undefined;
+            var { isSpecialAgeFrameField } = props;
+            if (filter) {
+                var { interval, ageFrame } = filter;
+                if (interval) {
+                    out = { $expr: {}};
+                }
+                if (isSpecialAgeFrameField && ageFrame) {
+                    out = { $expr: {}};
+                }
+            }
+            return out;
+
     }
 }
 

@@ -14,6 +14,8 @@ var {
     convertPointerToPath,
     gatherDisplayFieldsForRecordType,
     fetchRelatedLabelsForMany,
+
+    fetchCRTSettings,
 } = require('@mpieva/psydb-api-lib');
 
 
@@ -37,13 +39,20 @@ var subjectExtendedSearch = async (context, next) => {
         payload: request.body
     });
 
+    var {
+        subjectType
+    } = request.body;
+
+    var crtSettings = await fetchCRTSettings({
+        db, collectionName: 'subject', recordType: subjectType,
+    });
+
     validateOrThrow({
-        schema: RequestBodySchema.Full(),
+        schema: RequestBodySchema.Full(crtSettings),
         payload: request.body
     });
 
     var {
-        subjectType,
         customGdprFilters,
         customScientificFilters,
         specialFilters,
