@@ -5,9 +5,12 @@ import { Icons } from '@mpieva/psydb-ui-layout';
 import * as CoreFields from '../fields';
 
 export const DateOnlyServerSideInterval = withField({ Control: (ps) => {
-    var { dataXPath, formikForm } = ps;
+    var { dataXPath, formikField, formikForm } = ps;
+    var { value } = formikField;
     var { setFieldValue } = formikForm;
-    var [ variant, setVariant ] = useState('age');
+    var [ variant, setVariant ] = useState(
+        value && value.interval ? 'date': 'age'
+    );
 
     var handleSwitchVariant = (key) => {
         // FIXME: does not properly reset date felds
