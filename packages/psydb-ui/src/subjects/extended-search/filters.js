@@ -9,6 +9,7 @@ import {
     ExtendedSearchFields as Fields
 } from '@mpieva/psydb-ui-lib';
 
+// TODO: filter undefined values from all id lists
 export const Filters = (ps) => {
     var { crtSettings, schema } = ps;
     var { fieldDefinitions } = crtSettings;
@@ -16,7 +17,7 @@ export const Filters = (ps) => {
     return (
         <FormBox title='Suchbedingungen'>
             <Fields.SaneString
-                dataXPath='$.specialFilters.id'
+                dataXPath='$.specialFilters.subjectId'
                 label='ID'
             />
             <Fields.Custom
@@ -30,12 +31,12 @@ export const Filters = (ps) => {
                 fieldDefinitions={ fieldDefinitions }
             />
             <Fields.ForeignIdList
-                dataXPath='$.specialFilters.participated'
+                dataXPath='$.specialFilters.didParticipateIn'
                 label='Hat Teilgenommen an'
                 collection='study'
             />
             <Fields.ForeignIdList
-                dataXPath='$.specialFilters.notParticipated'
+                dataXPath='$.specialFilters.didNotParticipateIn'
                 label='Hat nicht Teilgenommen an'
                 collection='study'
             />

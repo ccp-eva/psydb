@@ -124,9 +124,19 @@ var convertPointerKeys = (obj) => {
     return converted;
 }
 
+var createSpecialFilterConditions = (filters) => {
+    var AND = [];
+    if (filters.didParticipateIn.length > 0) {
+        AND.push({
+        })
+    }
+}
+
 module.exports = {
     createCustomQueryValues,
     createOneCustomQueryValue,
     getCustomQueryPointer,
-    convertPointerKeys
+    convertPointerKeys,
+
+    createSpecialFilterConditions
 }

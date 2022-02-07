@@ -1,20 +1,5 @@
 'use strict';
-
-var hasIntersection = (options) => {
-    var { sets } = options;
-    return (
-        { $gt: [
-            { $size: {
-                $ifNull: [
-                    { $setIntersection: sets },
-                    []
-                ]
-            }},
-            0
-        ]}
-    )
-}
-
 module.exports = {
-    hasIntersection
+    hasIntersection: require('./has-intersection'),
+    hasSubjectParticipatedIn: require('./has-subject-participated-in'),
 }

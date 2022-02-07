@@ -22,7 +22,8 @@ var {
 var {
     createCustomQueryValues,
     getCustomQueryPointer,
-    convertPointerKeys
+    convertPointerKeys,
+    createSpecialFilterConditions,
 } = require('../utils');
 
 var RequestBodySchema = require('./request-body-schema');
@@ -106,6 +107,7 @@ var subjectExtendedSearch = async (context, next) => {
     var stages = [
         { $match: {
             ...convertPointerKeys(customQueryValues),
+            ...createSpecialFilterConditions(specialFilters),
         }},
         
         { $project: {

@@ -22,7 +22,6 @@ export const withRecordPicker = (options) => {
         }
 
         if (!recordType) {
-            console.log(fetched.data);
             if (fetched.data.length === 1) {
                 recordType = fetched.data[0].type;
             }
