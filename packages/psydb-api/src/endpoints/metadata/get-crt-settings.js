@@ -15,7 +15,7 @@ var {
 } = require('@mpieva/psydb-api-lib');
 
 var getCRTSettings = async (context, next) => {
-    var { db, params, query } = context;
+    var { db, params } = context;
     var { collectionName, recordType } = params;
 
     try {

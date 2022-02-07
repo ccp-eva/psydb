@@ -65,6 +65,20 @@ agent.readCRTSettings = ({
     return axios.get(url);
 }
 
+agent.fetchCollectionCRTs = ({
+    collection,
+}) => {
+    var url = `/api/metadata/collection-crts/${collection}`;
+    return axios.get(url);
+}
+
+agent.fetchSubjectStudyCRTs = ({
+    subjectType,
+}) => {
+    var url = `/api/metadata/subject-study-crts/${subjectType}`;
+    return axios.get(url);
+}
+
 agent.readRecord = ({
     collection,
     recordType,

@@ -5,7 +5,9 @@ var compose = require('koa-compose'),
 
     getCustomRecordTypes = require('./get-custom-record-types'),
     getSchema = require('./get-schema'),
-    getCRTSettings = require('./get-crt-settings');
+    getCRTSettings = require('./get-crt-settings'),
+    getCollectionCRTs = require('./get-collection-crts'),
+    getSubjectStudyCRTs = require('./get-subject-study-crts');
 
 var createMetadataRouting = ({ middleware }) => {
     var router = KoaRouter();
@@ -22,6 +24,9 @@ var createMetadataRouting = ({ middleware }) => {
 
     router.get('/crt-settings/:collectionName', getCRTSettings);
     router.get('/crt-settings/:collectionName/:recordType', getCRTSettings);
+
+    router.get('/collection-crts/:collection', getCollectionCRTs);
+    router.get('/subject-study-crts/:subjectType', getSubjectStudyCRTs);
 
     return [
         router.routes(),
