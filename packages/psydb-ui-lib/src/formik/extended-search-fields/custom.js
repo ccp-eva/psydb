@@ -76,11 +76,11 @@ const fixSystemType = (systemType) => {
 
         case 'HelperSetItemIdList':
         case 'HelperSetItemId':
-            return 'HelperSetItemIdList';
+            return 'NegatableHelperSetItemIdList';
 
         case 'ForeignIdList':
         case 'ForeignId':
-            return 'ForeignIdList';
+            return 'NegatableForeignIdList';
 
         case 'SaneString':
         case 'BiologicalGender':

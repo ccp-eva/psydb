@@ -3,11 +3,11 @@ import { withField } from '@cdxoo/formik-utils';
 import * as CoreFields from '../fields';
 import { PlainCheckbox } from './plain-checkbox';
 
-export const HelperSetItemIdList = withField({ Control: (ps) => {
+export const NegatableForeignIdList = withField({ Control: (ps) => {
     var { dataXPath } = ps;
     return (
         <div className='border p-3'>
-            <CoreFields.HelperSetItemIdList
+            <CoreFields.ForeignIdList
                 { ...ps }
                 contentFallbackLabel='Keine Bedingungen'
                 contentClassName='m-0 p-0'

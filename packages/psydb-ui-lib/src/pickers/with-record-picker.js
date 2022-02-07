@@ -1,4 +1,5 @@
 import React  from 'react';
+import { useFetch } from '@mpieva/psydb-ui-hooks';
 import { WithDefaultModal } from '@mpieva/psydb-ui-layout';
 import { usePickerHandling } from './use-picker-handling';
 import { PickerInput } from './picker-input';
@@ -32,6 +33,8 @@ export const withRecordPicker = (options) => {
             canClear = true,
             idLabelProp = '_id',
 
+            collection,
+            recordType,
             onChange,
             ...downstream
         } = ps;
@@ -40,17 +43,50 @@ export const withRecordPicker = (options) => {
             modal, cached, onEdit, onSelect, onClear
         } = usePickerHandling({ record, onChange });
 
+        var hasInvalidRecord = cached && !cached._recordLabel;
         var displayValue = (
             cached
             ? cached._recordLabel || cached[idLabelProp]
             : ''
-        )
+        );
+
+        var [ didFetch, fetched ] = useFetch((agent) => (
+            hasInvalidRecord
+            ? agent.readRecord({
+                collection,
+                id: cached._id
+            })
+            : undefined
+        ), []);
+
+        if (!didFetch) {
+            return null;
+        }
+
+        if (fetched) {
+            if (
+                fetched.data && fetched.data.record
+                && cached && !cached._recordLabel // FIXME: hasInvalidRecord
+            ) {
+                displayValue = fetched.data.record._recordLabel;
+                hasInvalidRecord = false;
+            }
+            else {
+                displayValue = (
+                    cached
+                    ? cached._recordLabel || cached[idLabelProp]
+                    : ''
+                )
+            }
+        }
 
         return (
             <div>
                 <RecordPickerModal { ...({
                     ...modal.passthrough,
                     ...downstream,
+                    collection,
+                    recordType,
                     onSelect,
                 })} />
 
@@ -58,7 +94,7 @@ export const withRecordPicker = (options) => {
                     displayValue,
                     disabled,
                     hasErrors,
-                    hasInvalidRecord: cached && !cached._recordLabel,
+                    hasInvalidRecord,
                     canClear: cached && canClear,
 
                     onEdit,

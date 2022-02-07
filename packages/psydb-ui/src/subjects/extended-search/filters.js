@@ -15,6 +15,10 @@ export const Filters = (ps) => {
     
     return (
         <FormBox title='Suchbedingungen'>
+            <Fields.SaneString
+                dataXPath='$.specialFilters.id'
+                label='ID'
+            />
             <Fields.Custom
                 dataXPath='$.customGdprFilters'
                 subChannelKey='gdpr'
@@ -24,6 +28,16 @@ export const Filters = (ps) => {
                 dataXPath='$.customScientificFilters'
                 subChannelKey='scientific'
                 fieldDefinitions={ fieldDefinitions }
+            />
+            <Fields.ForeignIdList
+                dataXPath='$.specialFilters.participated'
+                label='Hat Teilgenommen an'
+                collection='study'
+            />
+            <Fields.ForeignIdList
+                dataXPath='$.specialFilters.notParticipated'
+                label='Hat nicht Teilgenommen an'
+                collection='study'
             />
             <Button type='submit'>
                 Weiter

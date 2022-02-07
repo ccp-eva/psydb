@@ -28,7 +28,7 @@ var read = async (context, next) => {
 
     var {
         collectionName,
-        recordType,
+        //recordType,
         id,
     } = params;
 
@@ -49,7 +49,14 @@ var read = async (context, next) => {
 
     var removedCustomFields = [];
 
+    var recordType = undefined;
     if (hasCustomTypes) {
+        var stub = await (
+            db.collection(collectionName)
+            .findOne({ _id: id }, { projection: { type: true }})
+        );
+        recordType = stub.type;
+
         var customRecordType = await fetchOneCustomRecordType({
             db,
             collection: collectionName,

@@ -27,6 +27,10 @@ const useFetch = (...args) => {
                 }})
             })
         }
+        else {
+            console.log('fake-fetch')
+            dispatch({ type: 'fake-fetch' })
+        }
     };
 
     useEffect(wrappedCreatePromise, dependencies);
@@ -47,6 +51,11 @@ const createReducer = (init) => (state, action) => {
                 ...state,
                 didFetch: true,
                 ...init(payload),
+            })
+        case 'fake-fetch':
+            return ({
+                ...state,
+                didFetch: true
             })
     }
 }
