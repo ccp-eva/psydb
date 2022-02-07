@@ -25,7 +25,7 @@ var createMetadataRouting = ({ middleware }) => {
     router.get('/crt-settings/:collectionName', getCRTSettings);
     router.get('/crt-settings/:collectionName/:recordType', getCRTSettings);
 
-    router.get('/collection-crts/:collection', getCollectionCRTs);
+    router.get('/collection-crts/:collectionName', getCollectionCRTs);
     router.get('/subject-study-crts/:subjectType', getSubjectStudyCRTs);
 
     return [

@@ -8,11 +8,41 @@ import { StudyTopicPickerView } from './study-topic-picker-view';
 
 export const withRecordPicker = (options) => {
     var { RecordList } = options;
+
+    var DefaultModalView = (ps) => {
+        var { collection, recordType } = ps;
+
+        // FIXME: for collection w/o crts i dont need to fetch
+        var [ didFetch, fetched] = useFetch((agent) => (
+            agent.fetchCollectionCRTs({ collection })
+        ), []);
+
+        if (!didFetch) {
+            return null;
+        }
+
+        if (!recordType) {
+            console.log(fetched.data);
+            if (fetched.data.length === 1) {
+                recordType = fetched.data[0].type;
+            }
+            // TODO: for crts with multiple types
+            // we need to create select ui and render that
+        }
+
+        return (
+            <RecordList { ...ps } recordType={ recordType } />
+        )
+    }
+
+    var TopicModalView = (ps) => (
+        <StudyTopicPickerView { ...ps } />
+    );
     
     var RecordPickerModalBody = (ps) => (
         ps.collection === 'studyTopic'
-        ? <StudyTopicPickerView { ...ps } />
-        : <RecordList { ...ps } />
+        ? <TopicModalView { ...ps } />
+        : <DefaultModalView { ...ps } />
     );
 
     var RecordPickerModal = WithDefaultModal({

@@ -28,7 +28,6 @@ const useFetch = (...args) => {
             })
         }
         else {
-            console.log('fake-fetch')
             dispatch({ type: 'fake-fetch' })
         }
     };

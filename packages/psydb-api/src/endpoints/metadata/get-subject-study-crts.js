@@ -1,6 +1,10 @@
 'use strict';
 var debug = require('debug')('psydb:api:endpoints:metadata');
 
+var {
+    ResponseBody,
+} = require('@mpieva/psydb-api-lib');
+
 var getSubjectStudyCRTs = async (context, next) => {
     var { db, params } = context;
     var { subjectType } = params;
@@ -10,10 +14,18 @@ var getSubjectStudyCRTs = async (context, next) => {
     // to restrict what study type can actually access what subjects
     var results = await (
         db.collection('customRecordType')
-        .find({ collection: 'study' }, { projection: { type: true } })
+        .find({ collection: 'study' }, { projection: {
+            type: true,
+            'state.label': true,
+        }})
         .toArray()
     );
-    context.body = ResponseBody({ data: results.map(it => it.type) });
+    
+    context.body = ResponseBody({ data: results.map(it => ({
+        type: it.type,
+        label: it.state.label
+    }))});
+
     await next();
 }
 
