@@ -13,7 +13,6 @@ export const DateOnlyServerSideInterval = withField({ Control: (ps) => {
     );
 
     var handleSwitchVariant = (key) => {
-        // FIXME: does not properly reset date felds
         setFieldValue(dataXPath, undefined);
         setVariant(key);
     }
