@@ -248,6 +248,12 @@ var ExtBoolFieldDefinition = () => FieldDefinition({
     },
 });
 
+var IntegerFieldDefinition = () => FieldDefinition({
+    type: 'Integer',
+    title: 'Ganz-Zahl (Integer)',
+    props: {},
+});
+
 var ListOfObjectsFieldDefinition = () => FieldDefinition({
     type: 'ListOfObjects',
     title: 'Benutzerdefinierte Unterliste (ListOfObjects)',
@@ -274,6 +280,7 @@ var ListOfObjectsFieldDefinition = () => FieldDefinition({
 var ScalarFields = {
     SaneString: SaneStringFieldDefinition,
     FullText: FullTextFieldDefinition,
+    Integer: IntegerFieldDefinition,
 
     ForeignId: ForeignIdFieldDefinition,
     HelperSetItemId: HelperSetItemIdFieldDefinition,

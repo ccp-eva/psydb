@@ -45,6 +45,8 @@ var Schema = () => {
                                 'ExtBool',
                                 'GeoCoords',
                                 'ListOfObjects',
+
+                                'Integer',
                             ],
                         },
                     }

@@ -26,6 +26,8 @@ const CustomFieldDefault = (options) => {
             return false;
         case 'Address':
             return {};
+        case 'Integer':
+            return 0;
 
         case 'DateOnlyServerSide':
         case 'DateTime':
