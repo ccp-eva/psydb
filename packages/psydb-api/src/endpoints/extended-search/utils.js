@@ -26,7 +26,9 @@ var createCustomQueryValues = (options) => {
                 field, filter: filters[key]
             });
 
-            values[pointer] = value;
+            if (value !== undefined) {
+                values[pointer] = value;
+            }
         }
     }
 
