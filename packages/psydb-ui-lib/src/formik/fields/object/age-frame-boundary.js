@@ -42,7 +42,7 @@ export const AgeFrameBoundary = WithField({ Control: (ps) => {
                 max={ 30 }
             />
             <InputGroup.Append>
-                <InputGroup.Text>Jahre / Monate / Tage</InputGroup.Text>
+                <InputGroup.Text>J/M/T</InputGroup.Text>
             </InputGroup.Append>
         </InputGroup>
     )
