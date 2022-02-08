@@ -326,6 +326,7 @@ export default class Form extends Component {
 
   onSubmit = event => {
     event.preventDefault();
+    event.stopPropagation();
     if (event.target !== event.currentTarget) {
       return;
     }
