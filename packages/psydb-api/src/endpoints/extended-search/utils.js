@@ -63,7 +63,7 @@ var createOneCustomQueryValue = (options) => {
                         $gte: filter.min
                     }),
                     ...(filter.max && {
-                        $lte: interval.end
+                        $lte: filter.max
                     })
                 };
             }
