@@ -32,42 +32,19 @@ const maybeDecodeBase64 = (encoded, { isJson = true } = {}) => {
             if (isJson) {
                 decoded = JSON.parse(decoded);
             }
-            console.log(decoded);
+            console.log('decoded base64', decoded);
         }
     }
     catch (e) {}
     return decoded;
 }
 
-const ExtendedSearch = (ps) => {
+const ExtendedSearchDataWrapper = (ps) => {
     var {
         collection,
         recordType
     } = ps;
-
-    var location = useLocation();
-    var history = useHistory();
-    var [ query, updateQuery ] = useURLSearchParams({
-        defaults: { tab: 'filters' }
-    });
-    var { tab, formData } = query;
-    var decodedFormData = maybeDecodeBase64(formData, { isJson: true });
     
-    var handleSwitchTab = ({ nextTab, formData }) => {
-        console.log('handleSwitchTab', formData);
-        var formData64 = Base64.encode(JSON.stringify(formData));
-
-        var nextSearchQuery = updateQuery(
-            { ...query, tab: nextTab, formData: formData64 },
-            { push: false }
-        );
-        history.replace({
-            pathname: location.pathname,
-            search: nextSearchQuery
-        });
-        window.scrollTo(0, 0);
-    }
-
     var [ didFetch, fetched ] = useFetchAll((agent) => ({
         crtSettings: agent.readCRTSettings({
             collection, recordType
@@ -85,6 +62,47 @@ const ExtendedSearch = (ps) => {
 
     var schema = fetched.schema.data;
     var crtSettings = fetched.crtSettings.data;
+
+    return (
+        <ExtendedSearch
+            schema={ schema }
+            crtSettings={ crtSettings }
+            { ...ps }
+        />
+    )
+}
+
+const ExtendedSearch = (ps) => {
+    var {
+        collection,
+        recordType,
+        schema,
+        crtSettings,
+    } = ps;
+    var { fieldDefinitions } = crtSettings;
+
+    var location = useLocation();
+    var history = useHistory();
+    var [ query, updateQuery ] = useURLSearchParams({
+        defaults: { tab: 'filters' }
+    });
+    var { tab, formData } = query;
+    var decodedFormData = maybeDecodeBase64(formData, { isJson: true });
+    
+    var handleSwitchTab = ({ nextTab, formData }) => {
+        //console.log('handleSwitchTab', formData);
+        var formData64 = Base64.encode(JSON.stringify(formData));
+
+        var nextSearchQuery = updateQuery(
+            { ...query, tab: nextTab, formData: formData64 },
+            { push: false }
+        );
+        history.replace({
+            pathname: location.pathname,
+            search: nextSearchQuery
+        });
+        window.scrollTo(0, 0);
+    }
 
     var defaultValues = decodedFormData || {
         subjectType: recordType,
@@ -170,4 +188,5 @@ const Inner = (ps) => {
     );
 }
 
-export default ExtendedSearch;
+
+export default ExtendedSearchDataWrapper;

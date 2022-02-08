@@ -152,7 +152,11 @@ var createSpecialFilterConditions = (filters) => {
         )}});
     }
 
-    return { $and: AND }
+    return (
+        AND.length > 0
+        ? { $and: AND }
+        : undefined
+    )
 }
 
 module.exports = {

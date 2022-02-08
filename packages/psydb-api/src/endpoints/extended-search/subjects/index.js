@@ -132,7 +132,7 @@ var subjectExtendedSearch = async (context, next) => {
         }}
     ].filter(it => !!it);
 
-    //console.dir({ stages }, { depth: null });
+    console.dir({ stages }, { depth: null });
 
     var facets = await (
         db.collection('subject').aggregate(stages).toArray()

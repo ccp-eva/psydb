@@ -23,21 +23,23 @@ import datefns from '@mpieva/psydb-ui-lib/src/date-fns'
 import FieldDataHeadCols from '@mpieva/psydb-ui-lib/src/record-list/field-data-head-cols';
 import FieldDataBodyCols from '@mpieva/psydb-ui-lib/src/record-list/field-data-body-cols';
 
+import sanitizeFormData from './sanitize-form-data';
+
 export const Results = (ps) => {
-    var { schema, formData } = ps;
-    
+    var { schema, crtSettings, formData } = ps;
+    var { fieldDefinitions } = crtSettings;
     var { columns } = formData;
     
     var pagination = usePaginationReducer({ offset: 0, limit: 50 })
     var { offset, limit } = pagination;
     
     var [ didFetch, fetched ] = useFetch((agent) => {
+        var saneData = sanitizeFormData(fieldDefinitions, formData);
         return (
             agent
             .getAxios()
             .post('/api/extended-search/subjects', {
-                ...formData,
-                columns,
+                ...saneData,
                 offset,
                 limit,
                 timezone: getSystemTimezone()
