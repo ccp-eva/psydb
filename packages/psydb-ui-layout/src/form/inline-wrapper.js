@@ -9,6 +9,7 @@ export const InlineWrapper = (ps) => {
         id,
         label,
         required,
+        formGroupClassName,
         labelClassName,
         valueClassName,
         uiSplit = [3,9],
@@ -21,7 +22,8 @@ export const InlineWrapper = (ps) => {
     
     var className = classnames([
         'row ml-0 mr-0',
-        (error || formikMeta.error) && 'has-error'
+        (error || formikMeta.error) && 'has-error',
+        formGroupClassName
     ])
 
     return (

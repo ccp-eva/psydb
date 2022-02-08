@@ -53,6 +53,7 @@ export const DateOnlyServerSideInterval = withField({ Control: (ps) => {
                         dataXPath={ `${dataXPath}.interval.start` }
                         label='Von'
                         disabled={ variant !== 'date' }
+                        formGroupClassName='mb-0'
                     />
                 </div>
                 <div className='w-50 flex-grow'>
@@ -60,6 +61,7 @@ export const DateOnlyServerSideInterval = withField({ Control: (ps) => {
                         dataXPath={ `${dataXPath}.interval.end` }
                         label='Bis'
                         disabled={ variant !== 'date' }
+                        formGroupClassName='mb-0'
                     />
                 </div>
             </div>

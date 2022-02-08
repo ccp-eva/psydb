@@ -9,3 +9,4 @@ export * from './negatable-foreign-id-list';
 export * from './negatable-helper-set-item-id-list';
 
 export * from './date-only-server-side-interval';
+export * from './integer-interval';

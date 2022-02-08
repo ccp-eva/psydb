@@ -55,6 +55,20 @@ var createOneCustomQueryValue = (options) => {
             var op = filter.negate ? '$nin' : '$in';
             return { [op]: filter.values };
 
+        case 'Integer':
+            var out = undefined;
+            if (filter && (filter.min || filter.max)) {
+                out = {
+                    ...(filter.min && {
+                        $gte: filter.min
+                    }),
+                    ...(filter.max && {
+                        $lte: interval.end
+                    })
+                };
+            }
+            return out;
+
         case 'DateOnlyServerSide':
             console.log({ field, filter });
             var out = undefined;
@@ -109,6 +123,7 @@ var getCustomQueryPointer = (options) => {
         case 'ExtBool':
         case 'DateTime':
         case 'DateOnlyServerSide':
+        case 'Integer':
             return pointer;
 
         case 'PhoneList':
