@@ -1,4 +1,6 @@
 'use strict';
+var escapeRX = require('escape-string-regexp');
+
 var {
     timeshiftAgeFrame
 } = require('@mpieva/psydb-common-lib');
@@ -38,7 +40,7 @@ var createOneCustomQueryValue = (options) => {
         case 'SaneString':
         case 'PhoneList':
         case 'EmailList':
-            return new RegExp(filter, 'i');
+            return new RegExp(escapeRX(filter), 'i');
 
         case 'BiologicalGender':
         case 'ExtBool':
@@ -138,7 +140,7 @@ var createSpecialFilterConditions = (filters) => {
     var AND = [];
     if (subjectId) {
         AND.push({
-            '_id': new RegExp(filter, 'i')
+            '_id': new RegExp(escapeRX(subjectId), 'i')
         });
     }
     if (didParticipateIn && didParticipateIn.length > 0) {
