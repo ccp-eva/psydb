@@ -4,6 +4,10 @@ var {
 } = require('@mpieva/psydb-common-lib');
 
 var {
+    hasSubjectParticipatedIn
+} = require('@mpieva/psydb-mongo-stages').expressions;
+
+var {
     convertPointerToPath,
 } = require('@mpieva/psydb-api-lib');
 
@@ -125,11 +129,30 @@ var convertPointerKeys = (obj) => {
 }
 
 var createSpecialFilterConditions = (filters) => {
+    var {
+        subjectId,
+        didParticipateIn,
+        didNotParticipateIn
+    } = filters;
+
     var AND = [];
-    if (filters.didParticipateIn.length > 0) {
+    if (subjectId) {
         AND.push({
-        })
+            '_id': new RegExp(filter, 'i')
+        });
     }
+    if (didParticipateIn && didParticipateIn.length > 0) {
+        AND.push({ $expr: (
+            hasSubjectParticipatedIn({ studyIds: didParticipateIn })
+        )});
+    }
+    if (didNotParticipateIn && didNotParticipateIn.length > 0) {
+        AND.push({ $expr: { $not: (
+            hasSubjectParticipatedIn({ studyIds: didNotParticipateIn })
+        )}});
+    }
+
+    return { $and: AND }
 }
 
 module.exports = {
