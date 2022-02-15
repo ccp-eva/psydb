@@ -11,6 +11,7 @@ export const HelperSetItemId = withField({ Control: (ps) => {
 
         setId,
         constraints,
+        isNullable,
 
         disabled,
         related,
@@ -23,7 +24,8 @@ export const HelperSetItemId = withField({ Control: (ps) => {
     var { setFieldValue } = formikForm;
 
     var onChange = (record) => {
-        setFieldValue(dataXPath, record ? record._id : '');
+        var fallback = isNullable ? null : undefined;
+        setFieldValue(dataXPath, record ? record._id : fallback);
     }
 
     var { relatedHelperSetItems } = related || {};

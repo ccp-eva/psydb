@@ -26,7 +26,7 @@ const Control = (ps) => {
         }),
         ...(enableParentNumbers && {
             'mother': 'Tel. Mutter',
-            'father': 'Tel. Father',
+            'father': 'Tel. Vater',
         })
     }
 

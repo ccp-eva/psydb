@@ -12,6 +12,7 @@ export const ForeignId = withField({ Control: (ps) => {
         collection,
         recordType,
         constraints,
+        isNullable,
 
         disabled,
         related,
@@ -21,7 +22,8 @@ export const ForeignId = withField({ Control: (ps) => {
     var { setFieldValue } = formikForm;
 
     var onChange = (record) => {
-        setFieldValue(dataXPath, record ? record._id : '');
+        var fallback = isNullable ? null : undefined;
+        setFieldValue(dataXPath, record ? record._id : fallback);
     }
 
     var { relatedRecords, relatedRecordLabels } = related || {};

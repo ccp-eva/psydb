@@ -33,9 +33,15 @@ const CustomFieldDefault = (options) => {
         case 'DateTime':
         case 'ExtBool':
         case 'BiologicalGender':
+            return undefined;
         case 'ForeignId':
         case 'HelperSetItemId':
-            return undefined;
+            var { isNullable } = props;
+            return (
+                isNullable
+                ? null
+                : undefined
+            );
 
         case 'EmailWithPrimaryList':
         case 'PhoneWithTypeList':
