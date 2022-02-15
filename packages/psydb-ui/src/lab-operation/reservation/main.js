@@ -14,7 +14,7 @@ import {
     usePermissions,
 } from '@mpieva/psydb-ui-hooks';
 
-import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
+import { LoadingIndicator, Alert, Icons } from '@mpieva/psydb-ui-layout';
 import { ReservationTypeRouting } from './reservation-type-routing';
 
 import agent from '@mpieva/psydb-ui-request-agents';
@@ -99,9 +99,12 @@ export const Main = ({ customRecordTypes }) => {
             <>
                 { renderedPicker }
                 <hr />
-                <div className='p-3 text-danger'>
-                    <b>Keine Experimenter-Teams in dieser Studie</b>
-                </div>
+                <ErrorFallback
+                    studyRecord={ studyRecord }
+                    urlAffix='/teams'
+                >
+                    Keine Experimenter-Teams in dieser Studie
+                </ErrorFallback>
             </>
         )
     }
@@ -110,9 +113,12 @@ export const Main = ({ customRecordTypes }) => {
             <>
                 { renderedPicker }
                 <hr />
-                <div className='p-3 text-danger'>
-                    <b>Für diese Studie ist keine Reservierung möglich</b>
-                </div>
+                <ErrorFallback
+                    studyRecord={ studyRecord }
+                    urlAffix='/experiment-settings'
+                >
+                    Für diese Studie ist keine Reservierung möglich
+                </ErrorFallback>
             </>
         )
     }
@@ -141,4 +147,26 @@ export const Main = ({ customRecordTypes }) => {
             </Switch>
         </>
     );
+}
+
+const ErrorFallback = (ps) => {
+    var { studyRecord, urlAffix = '', children } = ps;
+    var { _id: studyId, type: studyType } = studyRecord;
+    return (
+        <Alert variant='danger' className='mt-3'>
+            { children }
+            {' '}
+            <a 
+                className='text-reset'
+                href={`#/studies/${studyType}/${studyId}${urlAffix}`}
+            >
+                <b>Zu den Studien-Einstellungen</b>
+                {' '}
+                <Icons.ArrowRightShort style={{
+                    height: '20px',
+                    width: '20px', marginTop: '-4px'
+                }} />
+            </a>
+        </Alert>
+    )
 }
