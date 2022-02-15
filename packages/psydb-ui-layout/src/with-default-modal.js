@@ -11,15 +11,19 @@ const WithDefaultModal = (options) => (ps) => {
 
         bodyClassName = 'bg-light',
 
-        title,
+        title: optionsTitle,
         forceShow,
     } = options;
 
     var {
         show,
         onHide,
-        modalPayloadData
+        modalPayloadData,
+        propsTitle,
     } = ps;
+
+    var { title: modalPayloadTitle } = modalPayloadData || {};
+    var title = modalPayloadTitle || propsTitle || optionsTitle;
 
     if (forceShow) {
         show = true;

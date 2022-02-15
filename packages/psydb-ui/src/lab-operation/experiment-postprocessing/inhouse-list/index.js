@@ -1,10 +1,16 @@
 import React from 'react';
 import { Table } from 'react-bootstrap';
-import { usePermissions } from '@mpieva/psydb-ui-hooks';
+import { usePermissions, useModalReducer } from '@mpieva/psydb-ui-hooks';
 
 import formatInterval from '@mpieva/psydb-ui-lib/src/format-date-interval';
-import { DetailsIconButton } from '@mpieva/psydb-ui-layout';
+import {
+    EditIconButtonInline,
+    DetailsIconButton
+} from '@mpieva/psydb-ui-layout';
+
 import PostprocessSubjectForm from '@mpieva/psydb-ui-lib/src/experiments/postprocess-subject-form';
+
+import { SubjectModal } from './subject-modal';
 
 const InhouseList = ({
     subjectType,
@@ -16,34 +22,45 @@ const InhouseList = ({
 
     onSuccessfulUpdate
 }) => {
+    var subjectModal = useModalReducer();
+
     var permissions = usePermissions();
     var canReadSubjects = permissions.hasFlag('canReadSubjects');
+    var canWriteSubjects = permissions.hasFlag('canWriteSubjects');
 
     return (
-        <Table>
-            <thead>
-                <tr>
-                    <th>Proband</th>
-                    <th>Datum</th>
-                    <th>Studie</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                { records.map((experimentRecord, index) => (
-                    <ExperimentSubjectItems { ...({
-                        key: index,
-                        
-                        subjectType,
-                        experimentRecord,
-                        relatedRecordLabels,
-                        
-                        canReadSubjects,
-                        onSuccessfulUpdate
-                    })} />
-                )) }
-            </tbody>
-        </Table>
+        <>
+            <SubjectModal
+                { ...subjectModal.passthrough }
+                onSuccessfulUpdate={ onSuccessfulUpdate }
+            />
+            <Table>
+                <thead>
+                    <tr>
+                        <th>Proband</th>
+                        <th>Datum</th>
+                        <th>Studie</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    { records.map((experimentRecord, index) => (
+                        <ExperimentSubjectItems { ...({
+                            key: index,
+                            
+                            subjectType,
+                            experimentRecord,
+                            relatedRecordLabels,
+                            
+                            canReadSubjects,
+                            canWriteSubjects,
+                            subjectModal,
+                            onSuccessfulUpdate
+                        })} />
+                    )) }
+                </tbody>
+            </Table>
+        </>
     )
 }
 
@@ -53,6 +70,8 @@ const ExperimentSubjectItems = ({
     relatedRecordLabels,
     
     canReadSubjects,
+    canWriteSubjects,
+    subjectModal,
     onSuccessfulUpdate
 }) => {
     var { subjectData } = experimentRecord.state;
@@ -81,7 +100,18 @@ const ExperimentSubjectItems = ({
                     <tr key={ `${experimentRecord._id}_${it.subjectId}` }>
                         <Cell>
                             { subjectLabel }
-                            { canReadSubjects && (
+                            { canWriteSubjects && (
+                                <EditIconButtonInline onClick={ () => (
+                                    subjectModal.handleShow({
+                                        title: `Nachbereitung (${subjectLabel} - ${studyLabel})`,
+                                        subjectType,
+                                        subjectId: it.subjectId,
+                                        experimentRecord,
+                                        relatedRecordLabels,
+                                    })
+                                )} />
+                            )}
+                            { !canWriteSubjects && canReadSubjects && (
                                 <DetailsIconButton
                                     to={`/subjects/${subjectType}/${it.subjectId}`}
                                     target='_blank'
@@ -103,6 +133,7 @@ const ExperimentSubjectItems = ({
                         <Cell>{ studyLabel }</Cell>
                         <Cell>
                         <PostprocessSubjectForm { ...({
+                            subjectLabel,
                             experimentId: experimentRecord._id,
                             subjectId: it.subjectId,
                             onSuccessfulUpdate,

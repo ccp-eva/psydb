@@ -19,8 +19,9 @@ export const withRecordEditor = (options) => {
     } = options;
 
     var RecordEditor = (ps) => {
-        var { collection, recordType } = ps;
-        var { id } = useParams();
+        var { collection, recordType, id: manualId } = ps;
+        var { id: paramId } = useParams();
+        var id = manualId || paramId;
 
         var permissions = usePermissions();
         var canWrite = permissions.hasCollectionFlag(
