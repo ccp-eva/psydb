@@ -5,6 +5,11 @@ import { Button, Icons } from '@mpieva/psydb-ui-layout';
 import * as fieldSchemas from '@mpieva/psydb-schema-fields';
 import fieldMetadata from '@mpieva/psydb-common-lib/src/field-type-metadata'
 
+import {
+    DefaultForm,
+    QuickSearchFields
+} from './formik';
+
 import { SchemaForm } from './schema-form';
 
 const createSchema = (displayFieldData) => {
@@ -48,55 +53,142 @@ const QuickSearch = ({
     filters,
     onSubmit
 }) => {
-    var schema = useMemo(() => (
-        createSchema(displayFieldData)
-    ), [ displayFieldData ]);
-
     var className = classnames([
         'bg-light border-bottom',
         'pr-3 pl-3 pt-2 pb-2',
-        'd-flex justify-content-start',
+        'd-flex justify-content-start align-items-end quick-search-fixes',
     ]);
 
-    return (
-        <div className={ className }>
-            <SchemaForm
-                className='d-flex align-items-end quick-search-fixes'
-                buttonLabel='Suchen'
-                noErrorIndicator={ true }
-                schema={ schema }
-                formData={ filters }
-                onSubmit={
-                    ({ formData }) => {
-                        
-                        var sanitized = {};
-                        for (var key of Object.keys(formData)) {
-                            var v = formData[key];
-                            // filter string values that are empty
-                            if (v || typeof v !== 'string') {
-                                sanitized[key] = v;
-                            }
-                        }
+    var handleSubmit = (formData) => {
+        var sanitized = {};
+        for (var key of Object.keys(formData)) {
+            var v = formData[key];
+            // filter string values that are empty
+            if (v || typeof v !== 'string') {
+                sanitized[key] = v;
+            }
+        }
 
-                        onSubmit({ filters: sanitized })
-                        return Promise.resolve();
-                    }
-                }
-            >
-                <Button
-                    className='ml-2'
-                    variant='outline-secondary'
-                    onClick={ () => onSubmit({}) }
-                >
-                    <Icons.XLg style={{
-                        height: '13px',
-                        width: '13px',
-                        marginTop: '-2px'
-                    }} />
-                </Button>
-            </SchemaForm>
-        </div>
+        return onSubmit({ filters: sanitized })
+    }
+
+    return (
+        <DefaultForm
+            className={ className }
+            initialValues={ filters || {} }
+            onSubmit={ handleSubmit }
+        >
+            {(formikProps) => {
+                return (
+                    <>
+                        <FieldList displayFieldData={
+                            displayFieldData.slice(0,4)
+                        } />
+                        <Button
+                            className=''
+                            type='submit'
+                        >
+                            Suchen
+                        </Button>
+                        <Button
+                            className='ml-2'
+                            variant='outline-secondary'
+                            onClick={ () => {
+                                onSubmit({});
+                                formikProps.resetForm();
+                            }}
+                        >
+                            <Icons.XLg style={{
+                                height: '13px',
+                                width: '13px',
+                                marginTop: '-2px'
+                            }} />
+                        </Button>
+                    </>
+                );
+            }}
+        </DefaultForm>
     )
 }
+
+const FieldList = (ps) => {
+    var { displayFieldData } = ps;
+    console.log(displayFieldData);
+
+    return (
+        <>
+            { displayFieldData.map(it => {
+                var Field = QuickSearchFields[it.type || it.systemType];
+                if (!Field) {
+                    return null;
+                }
+                return (
+                    <Field
+                        key={ it.key }
+                        label={ it.displayName }
+                        dataXPath={ `$.${it.dataPointer}` }
+                    />
+                )
+            }) }
+        </>
+    );
+}
+
+
+//const QuickSearch_OLD = ({
+//    displayFieldData,
+//    filters,
+//    onSubmit
+//}) => {
+//    var schema = useMemo(() => (
+//        createSchema(displayFieldData)
+//    ), [ displayFieldData ]);
+//
+//    var className = classnames([
+//        'bg-light border-bottom',
+//        'pr-3 pl-3 pt-2 pb-2',
+//        'd-flex justify-content-start',
+//    ]);
+//
+//    return (
+//        <div className={ className }>
+//            <SchemaForm
+//                className='d-flex align-items-end quick-search-fixes'
+//                buttonLabel='Suchen'
+//                noErrorIndicator={ true }
+//                schema={ schema }
+//                formData={ filters }
+//                onSubmit={
+//                    ({ formData }) => {
+//                        
+//                        var sanitized = {};
+//                        for (var key of Object.keys(formData)) {
+//                            var v = formData[key];
+//                            // filter string values that are empty
+//                            if (v || typeof v !== 'string') {
+//                                sanitized[key] = v;
+//                            }
+//                        }
+//
+//                        onSubmit({ filters: sanitized })
+//                        return Promise.resolve();
+//                    }
+//                }
+//            >
+//                <Button
+//                    className='ml-2'
+//                    variant='outline-secondary'
+//                    onClick={ () => onSubmit({}) }
+//                >
+//                    <Icons.XLg style={{
+//                        height: '13px',
+//                        width: '13px',
+//                        marginTop: '-2px'
+//                    }} />
+//                </Button>
+//            </SchemaForm>
+//        </div>
+//    )
+//}
 
 export default QuickSearch;

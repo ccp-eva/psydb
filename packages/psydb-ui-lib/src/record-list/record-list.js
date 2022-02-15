@@ -82,7 +82,7 @@ var RecordList = ({
   
     return (
         <>
-            <div className='sticky-top'>
+            <div className='sticky-top border-bottom'>
                 <QuickSearch
                     filters={ filters }
                     displayFieldData={ displayFieldData }
