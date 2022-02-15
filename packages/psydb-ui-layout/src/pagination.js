@@ -1,4 +1,5 @@
 import React from 'react';
+import classnames from 'classnames';
 import { Form } from 'react-bootstrap';
 
 import PaddedText from './padded-text';
@@ -24,8 +25,13 @@ const Pagination = ({
     showLimit = true,
     showPages = true,
 }) => {
+    var className = classnames([
+        'bg-light pt-2 pb-2 pr-3 pl-3',
+        'd-flex align-items-center',
+        extraClassName,
+    ]);
     return (
-        <div className={ `bg-light pt-2 pb-2 pr-3 pl-3 d-flex align-items-center ${extraClassName}` }>
+        <div className={ className }>
             { showTotal && (
                 <span style={{ width: '150px' }}>
                     <b>{ totalLabel || 'Gesamt:' }</b> { total }

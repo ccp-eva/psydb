@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import classnames from 'classnames';
 import { Button, Icons } from '@mpieva/psydb-ui-layout';
 
 import * as fieldSchemas from '@mpieva/psydb-schema-fields';
@@ -51,8 +52,14 @@ const QuickSearch = ({
         createSchema(displayFieldData)
     ), [ displayFieldData ]);
 
+    var className = classnames([
+        'bg-light border-bottom',
+        'pr-3 pl-3 pt-2 pb-2',
+        'd-flex justify-content-start',
+    ]);
+
     return (
-        <div className='bg-light border-bottom pr-3 pl-3 pt-2 pb-2 d-flex justify-content-start'>
+        <div className={ className }>
             <SchemaForm
                 className='d-flex align-items-end quick-search-fixes'
                 buttonLabel='Suchen'

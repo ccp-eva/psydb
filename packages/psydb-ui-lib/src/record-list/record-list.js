@@ -82,12 +82,14 @@ var RecordList = ({
   
     return (
         <>
-            <QuickSearch
-                filters={ filters }
-                displayFieldData={ displayFieldData }
-                onSubmit={ ({ filters }) => setFilters(filters) }
-            />
-            <Pagination { ...pagination } />
+            <div className='sticky-top'>
+                <QuickSearch
+                    filters={ filters }
+                    displayFieldData={ displayFieldData }
+                    onSubmit={ ({ filters }) => setFilters(filters) }
+                />
+                <Pagination { ...pagination } />
+            </div>
 
             <Table { ...({
                 className: tableClassName,
