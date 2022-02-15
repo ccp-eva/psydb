@@ -58,6 +58,7 @@ dependencies:
   '@rush-temp/psydb-ui-hooks': 'file:projects/psydb-ui-hooks.tgz_webpack@5.65.0'
   '@rush-temp/psydb-ui-layout': 'file:projects/psydb-ui-layout.tgz_webpack@5.65.0'
   '@rush-temp/psydb-ui-lib': 'file:projects/psydb-ui-lib.tgz_webpack@5.65.0'
+  '@rush-temp/psydb-ui-record-views': 'file:projects/psydb-ui-record-views.tgz'
   '@rush-temp/psydb-ui-request-agents': 'file:projects/psydb-ui-request-agents.tgz_debug@4.3.3'
   '@rush-temp/psydb-ui-utils': 'file:projects/psydb-ui-utils.tgz_webpack@5.65.0'
   '@rush-temp/psydb-web': 'file:projects/psydb-web.tgz'
@@ -9942,6 +9943,7 @@ packages:
     dependencies:
       '@cdxoo/inline-text': 1.0.2
       co: 4.6.0
+      date-fns: 2.21.3
       debug: 4.3.3
       detect-character-encoding: 0.8.0
       html-entities: 2.3.2
@@ -9954,7 +9956,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-migration'
     resolution:
-      integrity: sha512-9XFDhByTlLKb1g8ggsneLRcmabTqzHexsxFvGvt27V7vd9tX6v6B7V6+iwOnc0OAlyt3PAOLEcjylBZtVDN6fA==
+      integrity: sha512-eu0u9AfpHecGg/gxu/E1MoR8+lT/uZVHFY+7IqgJvlLg1hohpXscmtsVHdHStWmkgOv8FGOLcLLoULXU+QM/xg==
       tarball: 'file:projects/psydb-migration.tgz'
     version: 0.0.0
   'file:projects/psydb-mongo-adapter.tgz':
@@ -10163,6 +10165,15 @@ packages:
       integrity: sha512-LpfoJOpTZQlMxhPNfnJkv76bODUHs4xgKUMsAftg3ouLCBzM1j4R3WIplqo0ZsAuhKT27Hpkq9J5iJMMFyB5Zw==
       tarball: 'file:projects/psydb-ui-lib.tgz'
     version: 0.0.0
+  'file:projects/psydb-ui-record-views.tgz':
+    dependencies:
+      react: 17.0.2
+    dev: false
+    name: '@rush-temp/psydb-ui-record-views'
+    resolution:
+      integrity: sha512-lHTlHS9jC1ppQYlvkhT/bE1FhD1aO7AuPJNpH8VI9ZNY9uTPtgD7EbnmRtQ+oO5bfiGR4o3jG7Gt5gD1+AXhaw==
+      tarball: 'file:projects/psydb-ui-record-views.tgz'
+    version: 0.0.0
   'file:projects/psydb-ui-request-agents.tgz_debug@4.3.3':
     dependencies:
       axios: 0.24.0_debug@4.3.3
@@ -10230,7 +10241,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-ui'
     resolution:
-      integrity: sha512-rfd+JyRfOmnhlmNgUeguox9yNjEthnBE9ZSiX431rJXrXzAk+9c93GJOEdonEQKydCMweFF1zpkvWwbbYEyn8Q==
+      integrity: sha512-bcqN9EIQWkaz5mjjgzD1na1aQFrkZyTxxb0N7qssgaYPzDYV4/QxWUnJb84pJSX8PvgxR2tz92uzHfR3Vj03eQ==
       tarball: 'file:projects/psydb-ui.tgz'
     version: 0.0.0
   'file:projects/psydb-web.tgz':
@@ -10336,6 +10347,7 @@ specifiers:
   '@rush-temp/psydb-ui-hooks': 'file:./projects/psydb-ui-hooks.tgz'
   '@rush-temp/psydb-ui-layout': 'file:./projects/psydb-ui-layout.tgz'
   '@rush-temp/psydb-ui-lib': 'file:./projects/psydb-ui-lib.tgz'
+  '@rush-temp/psydb-ui-record-views': 'file:./projects/psydb-ui-record-views.tgz'
   '@rush-temp/psydb-ui-request-agents': 'file:./projects/psydb-ui-request-agents.tgz'
   '@rush-temp/psydb-ui-utils': 'file:./projects/psydb-ui-utils.tgz'
   '@rush-temp/psydb-web': 'file:./projects/psydb-web.tgz'

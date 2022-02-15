@@ -11,7 +11,7 @@ import {
 import formatInterval from '@mpieva/psydb-ui-lib/src/format-date-interval';
 import PostprocessSubjectForm from '@mpieva/psydb-ui-lib/src/experiments/postprocess-subject-form';
 
-import { RecordEditor } from '../../../subjects/record-editor';
+import { RecordEditor } from '@mpieva/psydb-ui-record-views/subjects';
 
 const SubjectModalBody = (ps) => {
     var {

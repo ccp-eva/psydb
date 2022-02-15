@@ -7,8 +7,14 @@ import {
 
 import Details from './details';
 import IntraTypeRouting from './intra-type-routing'
-import { RecordCreator } from './record-creator';
-import { RecordEditor } from './record-editor';
+
+import {
+    RecordCreator,
+    RecordEditor
+} from '@mpieva/psydb-ui-record-views/subjects';
+
+//import { RecordCreator } from './record-creator';
+//import { RecordEditor } from './record-editor';
 
 const SubjectTypeView = withRecordTypeView({
     RecordCreator,

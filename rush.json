@@ -244,6 +244,11 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/psydb-ui-record-views",
+       "projectFolder": "packages/psydb-ui-record-views",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-ui",
        "projectFolder": "packages/psydb-ui",
        "reviewCategory": "production"
