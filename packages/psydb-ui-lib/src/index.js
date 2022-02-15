@@ -24,3 +24,5 @@ export * as StudyTopic from './study-topic';
 
 export * from './with-record-creator';
 export * from './with-record-editor';
+
+export { default as formatDateInterval } from './format-date-interval';

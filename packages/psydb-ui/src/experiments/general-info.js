@@ -15,7 +15,10 @@ import {
     PaddedText,
 } from '@mpieva/psydb-ui-layout';
 
-import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
+import {
+    formatDateInterval
+} from '@mpieva/psydb-ui-lib';
+
 import TeamNameAndColor from '@mpieva/psydb-ui-lib/src/team-name-and-color';
 
 import createStringifier from '@mpieva/psydb-ui-lib/src/record-field-stringifier';
@@ -40,6 +43,11 @@ const General = ({
         inviteExperimentTypes.keys.includes(experimentType)
     );
 
+    var {
+        startDate, startTime,
+        endDate, endTime
+    } = formatDateInterval(experimentRecord.state.interval);
+
     return (
             <Container>
                 <Split num={2}>
@@ -55,22 +63,13 @@ const General = ({
                 
                 <Split num={2}>
                     <Pair label='Datum'>
-                        { datefns.format(
-                            new Date(experimentRecord.state.interval.start),
-                            'P'
-                        ) }
+                        { startDate }
                     </Pair>
                     { isInviteExperiment && (
                         <Pair label='Uhrzeit'>
-                            { datefns.format(
-                                new Date(experimentRecord.state.interval.start),
-                                'p'
-                            ) }
+                            { startTime }
                             {' bis '}
-                            { datefns.format(
-                                new Date(experimentRecord.state.interval.end).getTime() + 1,
-                                'p'
-                            ) }
+                            { endTime }
                         </Pair>
                     )}
                 </Split>
