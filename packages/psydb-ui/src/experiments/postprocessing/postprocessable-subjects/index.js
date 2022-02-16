@@ -1,55 +1,77 @@
 import React, { useCallback, useMemo } from 'react';
 import createStringifier from '@mpieva/psydb-ui-lib/src/record-field-stringifier';
 
+import { withLabProcedureSettingsIterator } from '@mpieva/psydb-ui-lib';
 import SubjectTypeContainer from './subject-type-container';
 
-const PostprocessableSubjects = ({
-    experimentData,
-    labProcedureSettingData,
-    studyData,
-    subjectDataByType,
-    onSuccessfulUpdate,
-}) => {
-    var {
-        records: settingRecords,
-        ...settingRelated
-    } = labProcedureSettingData;
+// NOTE: its an idea but im not a fan yet
+//const Foo = (ps) => {
+//    var { labProcedureSettingsData, ...pass } = ps;
+//    var bag = { labProcedureSettingsData };
+//    return (
+//        <LabProcedureSettings { ...bag }>
+//            {(item) => {
+//                var {
+//                    subjectTypeKey,
+//                    subjectTypeLabel,
+//                    subjectsPerExperiment,
+//                } = item;
+//
+//                var {
+//                    experimentData,
+//                    subjectDataByType,
+//                    onSuccessfulUpdate,
+//                } = pass;
+//                
+//                var fullSubjectData = subjectDataByType[subjectTypeKey];
+//                if (fullSubjectData.records.length < 1) {
+//                    return null;
+//                }
+//            }}
+//        </LabProcedureSettings>
+//    )
+//}
 
-    return (
-        <div className='p-3'>
-            { settingRecords.map((it, index) => {
-                var {
-                    subjectTypeKey,
-                    subjectsPerExperiment,
-                } = it.state;
+// NOTE:
+//var composed = withComponentComposition({
+//    composition: [
+//        (c) => withTable({ Body: c, Header }),
+//        (c) => withTableBody({ Row: c }),
+//        (c) => withLabProcedureSettingsIterator({ SubjectTypeContainer: c })
+//    ],
+//    Component: (ps) => {}
+//});
 
-                var subjectTypeLabel = (
-                    settingRelated.relatedCustomRecordTypes
-                    .subject[subjectTypeKey].state.label
-                );
+const PostprocessableSubjects = withLabProcedureSettingsIterator({
+    SubjectTypeContainer: (ps) => {
+        var {
+            subjectTypeKey,
+            subjectTypeLabel,
+            subjectsPerExperiment,
+
+            experimentData,
+            subjectDataByType,
+            onSuccessfulUpdate,
+        } = ps;
+
+        var fullSubjectData = subjectDataByType[subjectTypeKey];
+        if (fullSubjectData.records.length < 1) {
+            return null;
+        }
                 
-                var fullSubjectData = subjectDataByType[subjectTypeKey];
-                if (fullSubjectData.records.length < 1) {
-                    return null;
-                }
-                
-                return (
-                    <SubjectTypeContainer { ...({
-                        key: subjectTypeKey,
-                        
-                        subjectTypeKey,
-                        subjectTypeLabel,
-                        subjectsPerExperiment,
+        return (
+            <SubjectTypeContainer { ...({
+                subjectTypeKey,
+                subjectTypeLabel,
+                subjectsPerExperiment,
 
-                        experimentData,
-                        fullSubjectData,
+                experimentData,
+                fullSubjectData,
 
-                        onSuccessfulUpdate
-                    })} />
-                );
-            })}
-        </div>
-    );
-}
+                onSuccessfulUpdate
+            })} />
+        );
+    }
+})
 
 export default PostprocessableSubjects;

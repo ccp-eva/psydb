@@ -1,56 +1,40 @@
 import React, { useCallback, useMemo } from 'react';
 import createStringifier from '@mpieva/psydb-ui-lib/src/record-field-stringifier';
 
+import { withLabProcedureSettingsIterator } from '@mpieva/psydb-ui-lib';
 import SubjectTypeContainer from './subject-type-container';
 
-const SubjectsContainer = ({
-    experimentData,
-    labProcedureSettingData,
-    studyData,
-    subjectDataByType,
+const SubjectsContainer = withLabProcedureSettingsIterator({
+    SubjectTypeContainer: (ps) => {
+        var {
+            subjectTypeKey,
+            subjectTypeLabel,
+            subjectsPerExperiment,
 
-    ActionsComponent,
-}) => {
-    var {
-        records: settingRecords,
-        ...settingRelated
-    } = labProcedureSettingData;
-    
-    return (
-        <div className='p-3'>
-            { settingRecords.map((it, index) => {
-                var {
-                    subjectTypeKey,
-                    subjectsPerExperiment,
-                } = it.state;
+            experimentData,
+            subjectDataByType,
+            
+            ActionsComponent,
+        } = ps;
 
-                var subjectTypeLabel = (
-                    settingRelated.relatedCustomRecordTypes
-                    .subject[subjectTypeKey].state.label
-                );
-                
-                var fullSubjectData = subjectDataByType[subjectTypeKey];
-                if (fullSubjectData.records.length < 1) {
-                    return null;
-                }
-                
-                return (
-                    <SubjectTypeContainer { ...({
-                        key: subjectTypeKey,
-                        
-                        subjectTypeKey,
-                        subjectTypeLabel,
-                        subjectsPerExperiment,
+        var fullSubjectData = subjectDataByType[subjectTypeKey];
+        if (fullSubjectData.records.length < 1) {
+            return null;
+        }
+        
+        return (
+            <SubjectTypeContainer { ...({
+                subjectTypeKey,
+                subjectTypeLabel,
+                subjectsPerExperiment,
 
-                        experimentData,
-                        fullSubjectData,
+                experimentData,
+                fullSubjectData,
 
-                        ActionsComponent
-                    })} />
-                );
-            })}
-        </div>
-    );
-}
+                ActionsComponent
+            })} />
+        );
+    }
+});
 
 export default SubjectsContainer;

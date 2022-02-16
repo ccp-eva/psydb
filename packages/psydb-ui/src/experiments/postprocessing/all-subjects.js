@@ -4,6 +4,7 @@ import { DetailsIconButton } from '@mpieva/psydb-ui-layout';
 import SubjectsContainer from '../subjects-container';
 
 const AllSubjects = ({
+    className,
     experimentData,
     labProcedureSettingData,
     studyData,
@@ -12,6 +13,7 @@ const AllSubjects = ({
 
     return (
         <SubjectsContainer { ...({
+            className,
             experimentData,
             labProcedureSettingData,
             studyData,

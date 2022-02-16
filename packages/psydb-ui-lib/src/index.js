@@ -26,3 +26,4 @@ export * from './with-record-creator';
 export * from './with-record-editor';
 
 export { default as formatDateInterval } from './format-date-interval';
+export * from './with-lab-procedure-settings-iterator';

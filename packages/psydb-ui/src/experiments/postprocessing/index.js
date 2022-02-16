@@ -42,6 +42,7 @@ const ExperimentPostprocessing = ({
                                 Nachzubereitende Probanden
                             </h4>
                             <PostprocessableSubjects { ...({
+                                className: 'p-3',
                                 experimentData,
                                 labProcedureSettingData,
                                 studyData,
@@ -54,6 +55,7 @@ const ExperimentPostprocessing = ({
                                 Alle Probanden
                             </h4>
                             <AllSubjects { ...({
+                                className: 'p-3',
                                 experimentData,
                                 labProcedureSettingData,
                                 studyData,
@@ -64,6 +66,7 @@ const ExperimentPostprocessing = ({
                 )
                 : (
                     <AllSubjects { ...({
+                        className: 'p-3',
                         experimentData,
                         labProcedureSettingData,
                         studyData,
