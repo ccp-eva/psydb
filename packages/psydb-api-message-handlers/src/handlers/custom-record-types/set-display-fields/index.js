@@ -109,12 +109,8 @@ handler.triggerSystemEvents = async ({
         })
     );
 
-    var pointer = (
-        target === 'optionlist'
-        ? '/state/optionListDisplayFields'
-        : '/state/tableDisplayFields'
-    );
-    
+    var pointer = getPointerForTarget(target);
+
     var messages = PutMaker({ personnelId }).all({
         [pointer]: gatheredFieldData,
     });
@@ -123,6 +119,23 @@ handler.triggerSystemEvents = async ({
         lastKnownEventId,
         messages,
     });
+}
+
+var getPointerForTarget = (target) => {
+    switch (target) {
+        case 'table':
+            return '/state/tableDisplayFields';
+        case 'optionlist':
+            return '/state/optionListDisplayFields';
+        case 'extra-description':
+            return '/state/extraDescriptionDisplayFields';
+        case 'selection-summary':
+            return '/state/selectionSummaryDisplayFields';
+        case 'invite-confirm-summary':
+            return '/state/inviteConfirmSummaryDisplayFields';
+        default:
+            throw new Error(`unknown target "${target}"`);
+    }
 }
 
 module.exports = handler;

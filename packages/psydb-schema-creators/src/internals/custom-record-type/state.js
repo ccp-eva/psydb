@@ -42,8 +42,8 @@ var CustomRecordTypeState = ({
     );
     return (
         subChannels.length > 0
-        ? MultiChannelState({ subChannels, enableInternalProps })
-        : SingleChannelState({ enableInternalProps })
+        ? MultiChannelState({ collection, subChannels, enableInternalProps })
+        : SingleChannelState({ collection, enableInternalProps })
     );
 }
 
@@ -150,17 +150,20 @@ var ChannelSettings = ({
 // fixed...
 
 var ChannelState = ({
+    collection,
     enableInternalProps,
     nextSettings,
     settings
 }) => ExactObject({
     properties: {
         label: SaneString(),
-        reservationType: StringEnum([
-            'away-team',
-            'inhouse',
-            //'no-reservation' // FIXME
-        ]),
+        ...( collection === 'location' && {
+            reservationType: StringEnum([
+                'away-team',
+                'inhouse',
+                //'no-reservation' // FIXME
+            ]),
+        }),
         recordLabelDefinition: RecordLabelDefinition(),
         tableDisplayFields: {
             type: 'array',
@@ -170,6 +173,25 @@ var ChannelState = ({
             type: 'array',
             default: []
         },
+        
+        ...( collection === 'study' && {
+            extraDescriptionDisplayFields: {
+                type: 'array',
+                default: []
+            },
+        }),
+        
+        ...( collection === 'subject' && {
+            selectionSummaryDisplayFields: {
+                type: 'array',
+                default: []
+            },
+            inviteConfirmationSummaryDisplayFields: {
+                type: 'array',
+                default: []
+            },
+        }),
+
         ...(enableInternalProps && ({
             isNew: { type: 'boolean', default: true },
             isDirty: { type: 'boolean', default: true },
@@ -184,7 +206,11 @@ var ChannelState = ({
     ],
 });
 
-var SingleChannelState = ({ enableInternalProps }) => ChannelState({
+var SingleChannelState = ({
+    collection,
+    enableInternalProps
+}) => ChannelState({
+    collection,
     enableInternalProps,
     nextSettings: ChannelSettings({
         enableFlags: true,
@@ -196,9 +222,11 @@ var SingleChannelState = ({ enableInternalProps }) => ChannelState({
 });
 
 var MultiChannelState = ({
+    collection,
     subChannels,
     enableInternalProps,
 }) => ChannelState({
+    collection,
     enableInternalProps,
     nextSettings: ChannelSettings({
         enableFlags: true,

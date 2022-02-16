@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useReducer } from 'react';
+import React from 'react';
 
 import {
     Table,
@@ -22,14 +22,11 @@ const FieldPointerList = ({
     }
 
     return (
-        <Table className='bg-white border'>
+        <Table size='sm' className='bg-white border'>
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>DisplayName</th>
-                    { (onMoveItem || onRemoveItem) && (
-                        <th></th>
-                    )}
+                    <th>Feld</th>
                 </tr>
             </thead>
             <tbody>
@@ -41,55 +38,12 @@ const FieldPointerList = ({
                         <tr key={ dataPointer }>
                             <td>{ index + 1 }</td>
                             <td>{ displayName }</td>
-                            { (onMoveItem || onRemoveItem) && (
-                                <td>
-                                    <ItemActions
-                                        index={ index }
-                                        onMoveItem={ onMoveItem }
-                                        onRemoveItem={ onRemoveItem }
-                                    />
-                                </td>
-                            )}
                         </tr>
                     );
                 })}
             </tbody>
         </Table>
     );
-}
-
-const ItemActions = ({
-    index,
-    onMoveItem,
-    onRemoveItem
-}) => {
-    var handleUp = () => (
-        onMoveItem({ from: index, to: index - 1 })
-    );
-    var handleDown = () => (
-        onMoveItem({ from: index, to: index + 1 })
-    );
-    var handleRemove = () => onRemoveItem({ index });
-
-    return (
-        <Fragment>
-            { onMoveItem && (
-                <Fragment>
-                    <Button onClick={ handleUp }>
-                        <Icons.ArrowUp />
-                    </Button>
-                    <Button onClick={ handleDown }>
-                        <Icons.ArrowDown />
-                    </Button>
-                </Fragment>
-            )}
-            { onRemoveItem && (
-                <Button onClick={ handleRemove }>
-                    <Icons.XCircle />
-                </Button>
-            )}
-        </Fragment>
-    )
 }
 
 export default FieldPointerList;
