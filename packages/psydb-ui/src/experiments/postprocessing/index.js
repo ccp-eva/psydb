@@ -3,6 +3,7 @@ import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import GeneralInfo from '../general-info';
 import AllSubjects from './all-subjects';
 import PostprocessableSubjects from './postprocessable-subjects';
+import PostprocessedSubjects from './postprocessed-subjects';
 
 const ExperimentPostprocessing = ({
     experimentData,
@@ -56,9 +57,9 @@ const ExperimentPostprocessing = ({
                         </div>
                         <div className='mt-3'>
                             <h4 className='border-bottom'>
-                                Alle Probanden
+                                Nachbereitete Probanden
                             </h4>
-                            <AllSubjects { ...subjectsBag } />
+                            <PostprocessedSubjects { ...subjectsBag } />
                         </div>
                     </>
                 )

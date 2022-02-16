@@ -32,21 +32,21 @@ const SubjectList = ({
 
     return (
         <div>
-                { todoSubjects.map(it => {
-                    var subjectRecord = records.find(record => (
-                        record._id === it.subjectId
-                    ));
-                    return <PostprocessSubjectRow { ...({
-                        key: it.subjectId,
+            { todoSubjects.map(it => {
+                var subjectRecord = records.find(record => (
+                    record._id === it.subjectId
+                ));
+                return <PostprocessSubjectRow { ...({
+                    key: it.subjectId,
 
-                        experimentId: experimentRecord._id,
-                        subjectId: subjectRecord._id,
-                        subjectType: subjectRecord.type,
-                        subjectRecordLabel: subjectRecord._recordLabel,
-                        
-                        ...other
-                    })} />
-                })}
+                    experimentId: experimentRecord._id,
+                    subjectId: subjectRecord._id,
+                    subjectType: subjectRecord.type,
+                    subjectRecordLabel: subjectRecord._recordLabel,
+                    
+                    ...other
+                })} />
+            })}
         </div>
     )
 }
