@@ -1,12 +1,16 @@
 import React from 'react';
+import { usePermissions, useModalReducer } from '@mpieva/psydb-ui-hooks';
+
 import {
     Container,
     Row,
     Col,
+    EditIconButtonInline,
     DetailsIconButton,
 } from '@mpieva/psydb-ui-layout';
 
 import PostprocessSubjectForm from '@mpieva/psydb-ui-lib/src/experiments/postprocess-subject-form';
+import { DetailedPostprocessModal } from '@mpieva/psydb-ui-compositions';
 
 const SubjectList = ({
     experimentRecord,
@@ -18,8 +22,15 @@ const SubjectList = ({
     displayFieldData,
 
     className,
+    onSuccessfulUpdate,
     ...other
 }) => {
+    var subjectModal = useModalReducer();
+
+    var permissions = usePermissions();
+    var canReadSubjects = permissions.hasFlag('canReadSubjects');
+    var canWriteSubjects = permissions.hasFlag('canWriteSubjects');
+
     var dateOfBirthField = displayFieldData.find(it => (
         it.props.isSpecialAgeFrameField
     ));
@@ -32,6 +43,10 @@ const SubjectList = ({
 
     return (
         <div>
+            <DetailedPostprocessModal
+                { ...subjectModal.passthrough }
+                onSuccessfulUpdate={ onSuccessfulUpdate }
+            />
             { todoSubjects.map(it => {
                 var subjectRecord = records.find(record => (
                     record._id === it.subjectId
@@ -40,10 +55,17 @@ const SubjectList = ({
                     key: it.subjectId,
 
                     experimentId: experimentRecord._id,
+                    experimentRecord,
+                    relatedRecordLabels,
                     subjectId: subjectRecord._id,
                     subjectType: subjectRecord.type,
                     subjectRecordLabel: subjectRecord._recordLabel,
                     
+                    canReadSubjects,
+                    canWriteSubjects,
+                    subjectModal,
+                    
+                    onSuccessfulUpdate,
                     ...other
                 })} />
             })}
@@ -57,6 +79,13 @@ const PostprocessSubjectRow = ({
     subjectType,
     subjectRecordLabel,
 
+    experimentRecord,
+    relatedRecordLabels,
+
+    canReadSubjects,
+    canWriteSubjects,
+    subjectModal,
+
     onSuccessfulUpdate,
 }) => {
     return (
@@ -68,13 +97,32 @@ const PostprocessSubjectRow = ({
                             { subjectRecordLabel }
                         </span>
                         
-                        <DetailsIconButton
-                            buttonStyle={{
-                                background: 'transparent',
-                                marginTop: '0px'
-                            }}
-                            to={`/subjects/${subjectType}/${subjectId}`}
-                        />
+                        { canWriteSubjects && (
+                            <EditIconButtonInline
+                                buttonStyle={{
+                                    background: 'transparent',
+                                    marginTop: '0px'
+                                }}
+                                onClick={ () => (
+                                    subjectModal.handleShow({
+                                        title: `Nachbereitung (${subjectRecordLabel})`,
+                                        subjectType,
+                                        subjectId,
+                                        experimentRecord,
+                                        relatedRecordLabels,
+                                    })
+                                )}
+                            />
+                        )}
+                        { !canWriteSubjects && canReadSubjects && (
+                            <DetailsIconButton
+                                buttonStyle={{
+                                    background: 'transparent',
+                                    marginTop: '0px'
+                                }}
+                                to={`/subjects/${subjectType}/${subjectId}`}
+                            />
+                        )}
                     </Col>
                     <Col sm={7}>
                         <PostprocessSubjectForm { ...({
