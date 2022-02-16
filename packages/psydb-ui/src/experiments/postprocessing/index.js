@@ -73,7 +73,7 @@ const ExperimentPostprocessing = ({
                     </>
                 )
                 : (
-                    <AllSubjects { ...subjectsBag } />
+                    <AllSubjects { ...subjectsBag } className='p-3' />
                 )
             }
         </div>

@@ -12,6 +12,7 @@ const AllSubjects = ({
 
     return (
         <SubjectsContainer { ...({
+            className: 'p-3',
             experimentData,
             labProcedureSettingData,
             studyData,
