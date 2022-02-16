@@ -47,9 +47,8 @@ const PostprocessableSubjects = withLabProcedureSettingsIterator({
             subjectTypeLabel,
             subjectsPerExperiment,
 
-            experimentData,
             subjectDataByType,
-            onSuccessfulUpdate,
+            ...pass
         } = ps;
 
         var fullSubjectData = subjectDataByType[subjectTypeKey];
@@ -63,10 +62,8 @@ const PostprocessableSubjects = withLabProcedureSettingsIterator({
                 subjectTypeLabel,
                 subjectsPerExperiment,
 
-                experimentData,
                 fullSubjectData,
-
-                onSuccessfulUpdate
+                ...pass
             })} />
         );
     }

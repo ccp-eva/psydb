@@ -4,6 +4,8 @@ import enums from '@mpieva/psydb-schema-enums';
 import SubjectList from './subject-list';
 
 const SubjectTypeContainer = ({
+    isMultiTypeExperiment,
+
     subjectTypeKey,
     subjectTypeLabel,
     subjectsPerExperiment,
@@ -13,6 +15,7 @@ const SubjectTypeContainer = ({
     
     ...other
 }) => {
+
     var todoSubjects = (
         experimentData.record.state.subjectData.filter(it => (
             it.participationStatus === 'unknown'
@@ -26,9 +29,11 @@ const SubjectTypeContainer = ({
 
     return (
         <div>
-            <h5 className=''>
-                { subjectTypeLabel }
-            </h5>
+            { isMultiTypeExperiment && (
+                <h5 className=''>
+                    { subjectTypeLabel }
+                </h5>
+            )}
             <SubjectList { ...({
                 experimentRecord: experimentData.record,
                 ...fullSubjectData,

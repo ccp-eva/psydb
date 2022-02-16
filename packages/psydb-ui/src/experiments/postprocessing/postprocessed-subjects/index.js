@@ -7,6 +7,8 @@ import SubjectList from '../../subjects-container/subject-list';
 const PostprocessedSubjects = withLabProcedureSettingsIterator({
     SubjectTypeContainer: (ps) => {
         var {
+            isMultiTypeExperiment,
+
             subjectTypeKey,
             subjectTypeLabel,
             subjectsPerExperiment,
@@ -49,9 +51,9 @@ const PostprocessedSubjects = withLabProcedureSettingsIterator({
 
         return (
             <div>
-                <h5>
-                    { subjectTypeLabel }
-                </h5>
+                { isMultiTypeExperiment && (
+                    <h5>{ subjectTypeLabel }</h5>
+                )}
                 <SubjectList { ...({
                     experimentRecord: experimentData.record,
                     records,

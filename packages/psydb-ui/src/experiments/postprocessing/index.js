@@ -1,4 +1,5 @@
 import React, { useEffect, useReducer, useCallback } from 'react';
+import { unique } from '@mpieva/psydb-core-utils';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import GeneralInfo from '../general-info';
 import AllSubjects from './all-subjects';
@@ -22,6 +23,11 @@ const ExperimentPostprocessing = ({
         experimentType, 'canPostprocessExperiments'
     );
 
+    var uniqueSubjectTypeKeys = unique(
+        labProcedureSettingData.records.map(it => it.subjectTypeKey)
+    );
+    var isMultiTypeExperiment = uniqueSubjectTypeKeys.length > 1;
+
     var infoBag = {
         experimentData,
         opsTeamData,
@@ -30,7 +36,10 @@ const ExperimentPostprocessing = ({
     };
 
     var subjectsBag = {
-        className: 'p-3',
+        ...(isMultiTypeExperiment && {
+            className: 'p-3',
+        }),
+        isMultiTypeExperiment,
         experimentData,
         labProcedureSettingData,
         studyData,
