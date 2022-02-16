@@ -21,18 +21,29 @@ const ExperimentPostprocessing = ({
         experimentType, 'canPostprocessExperiments'
     );
 
+    var infoBag = {
+        experimentData,
+        opsTeamData,
+        locationData,
+        studyData
+    };
+
+    var subjectsBag = {
+        className: 'p-3',
+        experimentData,
+        labProcedureSettingData,
+        studyData,
+        subjectDataByType,
+        onSuccessfulUpdate,
+    }
+
     return (
         <div>
             <div className='border bg-light p-3'>
                 <h5 className='text-orange'>
                     In Nachbereitung
                 </h5>
-                <GeneralInfo { ...({
-                    experimentData,
-                    opsTeamData,
-                    locationData,
-                    studyData
-                }) } />
+                <GeneralInfo { ...infoBag } />
             </div>
             { canPostprocess
                 ? (
@@ -41,37 +52,18 @@ const ExperimentPostprocessing = ({
                             <h4 className='border-bottom'>
                                 Nachzubereitende Probanden
                             </h4>
-                            <PostprocessableSubjects { ...({
-                                className: 'p-3',
-                                experimentData,
-                                labProcedureSettingData,
-                                studyData,
-                                subjectDataByType,
-                                onSuccessfulUpdate,
-                            })} />
+                            <PostprocessableSubjects { ...subjectsBag } />
                         </div>
                         <div className='mt-3'>
                             <h4 className='border-bottom'>
                                 Alle Probanden
                             </h4>
-                            <AllSubjects { ...({
-                                className: 'p-3',
-                                experimentData,
-                                labProcedureSettingData,
-                                studyData,
-                                subjectDataByType,
-                            }) } />
+                            <AllSubjects { ...subjectsBag } />
                         </div>
                     </>
                 )
                 : (
-                    <AllSubjects { ...({
-                        className: 'p-3',
-                        experimentData,
-                        labProcedureSettingData,
-                        studyData,
-                        subjectDataByType,
-                    }) } />
+                    <AllSubjects { ...subjectsBag } />
                 )
             }
         </div>
