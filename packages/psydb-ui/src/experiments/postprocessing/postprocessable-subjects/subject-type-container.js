@@ -28,8 +28,6 @@ const SubjectTypeContainer = ({
         <div>
             <h5 className=''>
                 { subjectTypeLabel }
-                {' '}
-                ({ todoSubjectCount })
             </h5>
             <SubjectList { ...({
                 experimentRecord: experimentData.record,
