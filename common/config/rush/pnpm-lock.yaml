@@ -52,6 +52,7 @@ dependencies:
   '@rush-temp/psydb-schema-primitives': 'file:projects/psydb-schema-primitives.tgz'
   '@rush-temp/psydb-timezone-helpers': 'file:projects/psydb-timezone-helpers.tgz'
   '@rush-temp/psydb-ui': 'file:projects/psydb-ui.tgz'
+  '@rush-temp/psydb-ui-compositions': 'file:projects/psydb-ui-compositions.tgz'
   '@rush-temp/psydb-ui-contexts': 'file:projects/psydb-ui-contexts.tgz'
   '@rush-temp/psydb-ui-form-control-wrappers': 'file:projects/psydb-ui-form-control-wrappers.tgz'
   '@rush-temp/psydb-ui-form-controls': 'file:projects/psydb-ui-form-controls.tgz'
@@ -10058,6 +10059,15 @@ packages:
       integrity: sha512-u25qoAndb2DNM95NSLt4ufDU7WMgDQRzJ44o0OqbFyLlN3+GHjv1JmtHkzWnexmMlsNBODWnVLIfyyHKEqtBHw==
       tarball: 'file:projects/psydb-timezone-helpers.tgz'
     version: 0.0.0
+  'file:projects/psydb-ui-compositions.tgz':
+    dependencies:
+      react: 17.0.2
+    dev: false
+    name: '@rush-temp/psydb-ui-compositions'
+    resolution:
+      integrity: sha512-gT5JHYqQiVJ+uTUkb+DQ6QlDTN8w3sBru4eVQ591ig+SH6eL389tqjjA7n5Z07XDwFN8Qh4lrRspj2E3kGn6SQ==
+      tarball: 'file:projects/psydb-ui-compositions.tgz'
+    version: 0.0.0
   'file:projects/psydb-ui-contexts.tgz':
     dependencies:
       react: 17.0.2
@@ -10341,6 +10351,7 @@ specifiers:
   '@rush-temp/psydb-schema-primitives': 'file:./projects/psydb-schema-primitives.tgz'
   '@rush-temp/psydb-timezone-helpers': 'file:./projects/psydb-timezone-helpers.tgz'
   '@rush-temp/psydb-ui': 'file:./projects/psydb-ui.tgz'
+  '@rush-temp/psydb-ui-compositions': 'file:./projects/psydb-ui-compositions.tgz'
   '@rush-temp/psydb-ui-contexts': 'file:./projects/psydb-ui-contexts.tgz'
   '@rush-temp/psydb-ui-form-control-wrappers': 'file:./projects/psydb-ui-form-control-wrappers.tgz'
   '@rush-temp/psydb-ui-form-controls': 'file:./projects/psydb-ui-form-controls.tgz'

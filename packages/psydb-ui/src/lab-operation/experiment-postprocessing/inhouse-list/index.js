@@ -10,7 +10,7 @@ import {
 
 import PostprocessSubjectForm from '@mpieva/psydb-ui-lib/src/experiments/postprocess-subject-form';
 
-import { SubjectModal } from './subject-modal';
+import { DetailedPostprocessModal } from '@mpieva/psydb-ui-compositions';
 
 const InhouseList = ({
     subjectType,
@@ -30,7 +30,7 @@ const InhouseList = ({
 
     return (
         <>
-            <SubjectModal
+            <DetailedPostprocessModal
                 { ...subjectModal.passthrough }
                 onSuccessfulUpdate={ onSuccessfulUpdate }
             />

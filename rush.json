@@ -249,6 +249,11 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/psydb-ui-compositions",
+       "projectFolder": "packages/psydb-ui-compositions",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-ui",
        "projectFolder": "packages/psydb-ui",
        "reviewCategory": "production"

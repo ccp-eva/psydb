@@ -1,8 +1,8 @@
 {
-  "name": "@mpieva/psydb-ui-record-views",
+  "name": "@mpieva/psydb-ui-compositions",
   "version": "0.1.0-alpha",
   "description": "",
-  "main": "./index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -25,6 +25,7 @@
     "@mpieva/psydb-ui-contexts": "~0.1.0-alpha",
     "@mpieva/psydb-ui-hooks": "~0.1.0-alpha",
     "@mpieva/psydb-ui-layout": "~0.1.0-alpha",
-    "@mpieva/psydb-ui-lib": "~0.1.0-alpha"
+    "@mpieva/psydb-ui-lib": "~0.1.0-alpha",
+    "@mpieva/psydb-ui-record-views": "~0.1.0-alpha"
   }
 }

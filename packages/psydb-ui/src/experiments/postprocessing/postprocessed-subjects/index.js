@@ -1,5 +1,6 @@
 import React from 'react';
-import { Alert } from '@mpieva/psydb-ui-layout';
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
+import { Alert, DetailsIconButton } from '@mpieva/psydb-ui-layout';
 import { withLabProcedureSettingsIterator } from '@mpieva/psydb-ui-lib';
 import SubjectList from '../../subjects-container/subject-list';
 
@@ -55,11 +56,30 @@ const PostprocessedSubjects = withLabProcedureSettingsIterator({
                     experimentRecord: experimentData.record,
                     records,
                     ...related,
-                    ...pass
+                    ...pass,
+                    ActionsComponent
                 }) } />
             </div>
         );
     }
 })
 
+const ActionsComponent = ({
+    experimentSubjectData,
+    subjectRecord,
+
+    hasContactIssue,
+    isUnparticipated,
+}) => {
+    var permissions = usePermissions();
+    return (
+        <div className='d-flex justify-content-end'>
+            { permissions.hasFlag('canReadSubjects') && (
+                <DetailsIconButton
+                    to={`/subjects/${subjectRecord.type}/${subjectRecord._id}`}
+                />
+            )}
+        </div>
+    )
+}
 export default PostprocessedSubjects;

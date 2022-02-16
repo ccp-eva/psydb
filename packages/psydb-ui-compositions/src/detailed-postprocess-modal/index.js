@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { demuxed } from '@mpieva/psydb-ui-utils';
-import { useSend, usePermissions } from '@mpieva/psydb-ui-hooks';
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import {
     Button,
@@ -13,7 +13,7 @@ import PostprocessSubjectForm from '@mpieva/psydb-ui-lib/src/experiments/postpro
 
 import { RecordEditor } from '@mpieva/psydb-ui-record-views/subjects';
 
-const SubjectModalBody = (ps) => {
+const DetailedPostprocessModalBody = (ps) => {
     var {
         show,
         onHide,
@@ -31,24 +31,6 @@ const SubjectModalBody = (ps) => {
     var permissions = usePermissions();
     var canEdit = permissions.hasFlag('canWriteSubjects');
     var [ hasEdited, setHasEdited ] = useState(false);
-
-    var send = useSend(() => ({
-        type: 'reservation/reserve-inhouse-slot',
-        payload: {
-            props: {
-                studyId,
-                experimentOperatorTeamId: teamId,
-                locationId,
-                interval: {
-                    start: start.toISOString(),
-                    end: end.toISOString(),
-                }
-            }
-        }
-    }), {
-        onSuccessfulUpdate: () => setHasEdited(true),
-    })
-
 
     return (
         <>
@@ -139,8 +121,8 @@ const Postprocessing = (ps) => {
     )
 }
 
-export const SubjectModal = WithDefaultModal({
-    Body: SubjectModalBody,
+export const DetailedPostprocessModal = WithDefaultModal({
+    Body: DetailedPostprocessModalBody,
 
     size: 'xl',
     title: 'Nachbereitung',

@@ -67,6 +67,7 @@
     "@mpieva/psydb-ui-form-controls": "~0.1.0-alpha",
     "@mpieva/psydb-ui-lib": "~0.1.0-alpha",
     "@mpieva/psydb-ui-record-views": "~0.1.0-alpha",
+    "@mpieva/psydb-ui-compositions": "~0.1.0-alpha",
 
     "@rjsf/core": "~2.5.1",
     "@rjsf/bootstrap-4": "~2.5.1",

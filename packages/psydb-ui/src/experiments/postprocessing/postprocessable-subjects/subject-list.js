@@ -6,7 +6,7 @@ import {
     DetailsIconButton,
 } from '@mpieva/psydb-ui-layout';
 
-import PostprocessSubjectRow from '@mpieva/psydb-ui-lib/src/experiments/postprocess-subject-row';
+import PostprocessSubjectForm from '@mpieva/psydb-ui-lib/src/experiments/postprocess-subject-form';
 
 const SubjectList = ({
     experimentRecord,
@@ -51,5 +51,42 @@ const SubjectList = ({
     )
 }
 
+const PostprocessSubjectRow = ({
+    experimentId,
+    subjectId,
+    subjectType,
+    subjectRecordLabel,
+
+    onSuccessfulUpdate,
+}) => {
+    return (
+        <div className='bg-light border mb-2 p-3'>
+            <Container>
+                <Row className='align-items-center'>
+                    <Col sm={5} className='d-flex align-items-center'>
+                        <span className='d-inline-block mr-2'>
+                            { subjectRecordLabel }
+                        </span>
+                        
+                        <DetailsIconButton
+                            buttonStyle={{
+                                background: 'transparent',
+                                marginTop: '0px'
+                            }}
+                            to={`/subjects/${subjectType}/${subjectId}`}
+                        />
+                    </Col>
+                    <Col sm={7}>
+                        <PostprocessSubjectForm { ...({
+                            experimentId,
+                            subjectId,
+                            onSuccessfulUpdate
+                        }) } />
+                    </Col>
+                </Row>
+            </Container>
+        </div>
+    );
+}
 
 export default SubjectList;
