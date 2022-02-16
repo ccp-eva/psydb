@@ -17,13 +17,19 @@ const EditDefinitionModal = ({
         onHide()
     }
     return (
-        <Modal show={show} onHide={ onHide }>
+        <Modal
+            show={ show }
+            onHide={ onHide }
+            size='lg'
+            className='team-modal'
+            backdropClassName='team-modal-backdrop'
+        >
             <Modal.Header closeButton>
                 <Modal.Title>
                     Kurzanzeige bearbeiten
                 </Modal.Title>
             </Modal.Header>
-            <Modal.Body>
+            <Modal.Body className='bg-light'>
                 <EditDefinitionForm
                     record={ record }
                     format={ format }

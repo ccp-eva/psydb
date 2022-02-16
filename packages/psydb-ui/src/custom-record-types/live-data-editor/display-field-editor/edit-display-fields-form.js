@@ -22,6 +22,7 @@ const EditDisplayFieldForm = ({
     availableFieldDataByPointer,
     onSuccess,
 }) => {
+    console.log(availableFieldDataByPointer);
 
     var send = useSend((formData) => ({
         type: 'custom-record-types/set-display-fields',
