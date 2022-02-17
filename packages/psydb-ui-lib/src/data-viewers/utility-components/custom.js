@@ -70,11 +70,13 @@ var CustomField = (ps) => {
 
     // FIXME: theming
     return (
-        <Component
-            label={ displayName }
-            value={ value }
-            props={ props }
-            related={ related }
-        />
+        <div className='mb-3'>
+            <header><b>{ displayName}</b></header>
+            <Component
+                value={ value }
+                props={ props }
+                related={ related }
+            />
+        </div>
     )
 }

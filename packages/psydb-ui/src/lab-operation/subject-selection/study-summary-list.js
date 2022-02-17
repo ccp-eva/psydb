@@ -85,7 +85,7 @@ const StudySummary = (ps) => {
                         <b><Study.Name noWrapper /></b>
                     </div>
                     <div className='flex-grow'>
-                        <Study.Custom />
+                        <Study.ExtraDescription />
                     </div>
                 </div>
             </Study>

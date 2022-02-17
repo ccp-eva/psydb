@@ -1,6 +1,7 @@
 import React from 'react';
 import { createBase, withPair, addComponents } from '../core';
 import { Custom } from '../utility-components';
+import ExtraDescription from './extra-description';
 
 const labels = {
     '/state/name': 'Name',
@@ -12,11 +13,11 @@ addComponents(Study, StudyContext, labels, [
     { cname: 'Custom', path: '/state/custom', Component: Custom },
     // { prop: 'customGdpr', Component: CustomGdpr }
     // { prop: 'customScientific', Component: CustomScientific }
-    /*{
+    {
         cname: 'ExtraDescription',
         path: '/state/custom',
         Component: ExtraDescription
-    }*/
+    }
 ]);
 
 export default Study;
