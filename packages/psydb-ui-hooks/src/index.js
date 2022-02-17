@@ -1,5 +1,6 @@
 export { default as useFetch } from './use-fetch';
 export { default as useFetchAll } from './use-fetch-all';
+export { default as useFetchChain } from './use-fetch-chain';
 
 export { default as useReadRecord } from './use-read-record';
 

@@ -37,6 +37,7 @@ import { convertFilters } from '../convert-filters';
 
 import TableBody from './table-body';
 import SubjectModal from './subject-modal';
+import StudySummaryList from '../study-summary-list';
 
 const InhouseTestableSubjectList = ({
     studyLabelItems,
@@ -48,6 +49,8 @@ const InhouseTestableSubjectList = ({
         subjectRecordType,
         searchSettings64
     } = useParams();
+
+    var studyIds = joinedStudyIds.split(',');
 
     var userSearchSettings = undefined;
     try {
@@ -80,7 +83,7 @@ const InhouseTestableSubjectList = ({
             agent.searchSubjectsTestableInhouse({
                 subjectTypeKey: subjectRecordType,
                 studyTypeKey: studyType,
-                studyIds: joinedStudyIds.split(','),
+                studyIds,
                 interval: {
                     start: datefns.startOfDay(new Date(start)),
                     end: datefns.endOfDay(new Date(end)),
@@ -140,6 +143,12 @@ const InhouseTestableSubjectList = ({
                 onSuccessfulUpdate={ increaseRevision }
             />
 
+            <StudySummaryList
+                studyIds={ studyIds }
+                subjectTypeKey={ subjectRecordType }
+                labProcedureTypeKey='inhouse'
+            />
+
             <Pagination { ...pagination } />
 
             <Table>
@@ -147,7 +156,7 @@ const InhouseTestableSubjectList = ({
                     <tr>
                         <FieldDataHeadCols { ...({
                             displayFieldData: subjectData.displayFieldData
-                        })}/>
+                        })} />
                         <th>Teilg. Stud.</th>
                         <th>Termine</th>
                         <th>Mögl. Stud.</th>

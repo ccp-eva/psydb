@@ -14,6 +14,7 @@ const DisplayFieldEditor = ({
     record,
     onSuccessfulUpdate,
 }) => {
+    var { collection } = record;
 
     var [ showEditModal, setShowEditModal ] = useState(false);
 
@@ -41,7 +42,8 @@ const DisplayFieldEditor = ({
     );
 
     var currentDataPointers = (
-        currentDisplayFieldData.map(it => it.dataPointer)
+        getDisplayFields(record, target)
+        .map(it => it.dataPointer)
     );
 
     return (
@@ -68,6 +70,23 @@ const DisplayFieldEditor = ({
             />
         </div>
     );
+}
+
+const getDisplayFields = (record, target) => {
+    switch (target) {
+        case 'table':
+            return record.state.tableDisplayFields;
+        case 'optionlist':
+            return record.state.optionListDisplayFields;
+        case 'extra-description':
+            return record.state.extraDescriptionDisplayFields;
+        case 'selection-summary':
+            return record.state.selectionSummaryDisplayFields;
+        case 'invite-confirm-summary':
+            return record.state.inviteConfirmSummaryDisplayFields;
+        default:
+            throw new Error(`unknown target "${target}"`)
+    }
 }
 
 export default DisplayFieldEditor;

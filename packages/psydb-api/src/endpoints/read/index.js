@@ -55,6 +55,9 @@ var read = async (context, next) => {
             db.collection(collectionName)
             .findOne({ _id: id }, { projection: { type: true }})
         );
+        if (!stub) {
+            throw new ApiError(404, 'NoAccessibleRecordFound');
+        }
         recordType = stub.type;
 
         var customRecordType = await fetchOneCustomRecordType({

@@ -6,7 +6,7 @@ import DisplayFieldEditor from './display-field-editor';
 const StudyExtraEditors = (ps) => {
     return (
         <>
-            <FormBox title='Felder in Zusammenfassung'>
+            <FormBox title='Beschreibungsfelder für Zusammenfassung'>
                 <DisplayFieldEditor target='extra-description' { ...ps } />
             </FormBox>
         </>
