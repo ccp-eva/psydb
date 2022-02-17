@@ -1,6 +1,7 @@
 import React from 'react';
 import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 import { useFetchChain, useFetchAll } from '@mpieva/psydb-ui-hooks';
+import { Study } from '@mpieva/psydb-ui-lib/data-viewers';
 
 const StudySummaryList = (ps) => {
     var {
@@ -70,9 +71,24 @@ const StudySummary = (ps) => {
     } = fetched.record.data;
     var crtSettings = fetched.crtSettings.data;
 
+    var bag = {
+        value: record,
+        related,
+        crtSettings
+    }
+
     return (
-        <div>
-            { record.state.name }
+        <div className='bg-light p-3 mb-3'>
+            <Study { ...bag }>
+                <div className='d-flex'>
+                    <div className='w-25'>
+                        <b><Study.Name noWrapper /></b>
+                    </div>
+                    <div className='flex-grow'>
+                        <Study.Custom />
+                    </div>
+                </div>
+            </Study>
         </div>
     )
 }
