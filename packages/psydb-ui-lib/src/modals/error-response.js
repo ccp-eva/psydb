@@ -14,6 +14,10 @@ const ErrorResponseModal = ({
         : errorResponse
     );
 
+    if (!errorResponse) {
+        return null;
+    }
+
     var {
         data: responseBody,
         config

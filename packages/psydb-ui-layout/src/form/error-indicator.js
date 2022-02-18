@@ -11,11 +11,29 @@ export const ErrorIndicator = (ps) => {
             <div className='text-danger' style={{ fontSize: '80%' }}>
                 { error['@@ERRORS'].map((err, index) => (
                     <div key={ index }>
-                        { err.message }
+                        { createFriendlyMessage(err) }
                     </div>
                 )) }
             </div>
         )
         : null
     );
+}
+
+const createFriendlyMessage = (err) => {
+    var { keyword, params } = err;
+    switch (keyword) {
+        case 'required':
+            return 'Dies ist ein Plichtfeld. Bitte einen Wert eingeben.'
+        case 'minLength':
+            return (
+                params.limit === 1
+                ? 'Dies ist ein Plichtfeld. Bitte einen Wert eingeben.'
+                : `Muss mindestens ${params.limit} Zeichen haben.`
+            );
+        default:
+            console.log(err);
+            return err.message;
+    }
+    return message;
 }
