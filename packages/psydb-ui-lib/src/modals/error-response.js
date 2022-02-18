@@ -14,25 +14,6 @@ const ErrorResponseModal = ({
         : errorResponse
     );
 
-    return (
-        <Modal show={show} onHide={ onHide } size='lg'>
-            <Modal.Header closeButton>
-                <Modal.Title>
-                    <span className='text-danger'>Fehler</span>
-                </Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <ErrorResponseContainer errorResponse={ errorResponse } />
-            </Modal.Body>
-        </Modal>
-    );
-}
-
-const ErrorResponseContainer = ({
-    errorResponse
-}) => {
-    console.log(errorResponse);
-
     var {
         data: responseBody,
         config
@@ -42,25 +23,27 @@ const ErrorResponseContainer = ({
         statusCode,
     } = responseBody;
 
-    var ErrorComponent = getErrorComponent(statusCode);
-
+    var [ title, Body ] = getErrorComponents(statusCode);
     return (
-        <div>
-            <div className='text-danger'>
-                Es ist ein Fehler aufgetreten!
-            </div>
-            <hr />
-            <ErrorComponent { ...responseBody }/>
-        </div>
+        <Modal show={show} onHide={ onHide } size='lg'>
+            <Modal.Header closeButton>
+                <Modal.Title>
+                    <span className='text-danger'>{ title }</span>
+                </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <Body { ...responseBody } />
+            </Modal.Body>
+        </Modal>
     );
 }
 
-const getErrorComponent = (statusCode) => {
+const getErrorComponents = (statusCode) => {
     switch (statusCode) {
         case 400:
-            return BadRequestError;
+            return [ 'Fehlerhafte Eingaben', BadRequestError ];
         default:
-            return DefaultServerError;
+            return [ 'System-Fehler', DefaultServerError ];
     }
 } 
 
@@ -88,11 +71,8 @@ const BadRequestError = ({
     data
 }) => {
     return (
-        <div>
-            <h5>{ apiStatus }</h5>
-            <div>
-                { data.message }
-            </div>
+        <div className='text-danger'>
+            Die abgesendeten Daten enthalten fehlerhafte Eingaben.
         </div>
     )
 }
