@@ -42,7 +42,7 @@ const DisplayFieldEditor = ({
     );
 
     var currentDataPointers = (
-        getDisplayFields(record, target)
+        (getDisplayFields(record, target) || [])
         .map(it => it.dataPointer)
     );
 
