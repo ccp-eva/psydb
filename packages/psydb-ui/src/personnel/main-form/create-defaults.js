@@ -8,7 +8,7 @@ export const createDefaults = (options) => {
             firstname: '',
             lastname: '',
             shorthand: '',
-            emails: [{}],
+            emails: [{ isPrimary: false }],
             phones: [],
         },
         scientific: {
