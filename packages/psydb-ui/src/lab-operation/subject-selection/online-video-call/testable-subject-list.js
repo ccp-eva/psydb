@@ -37,6 +37,7 @@ import { convertFilters } from '../convert-filters';
 
 import TableBody from './table-body';
 import SubjectModal from './subject-modal';
+import StudySummaryList from '../study-summary-list';
 
 const OnlineVideoCallTestableSubjectList = ({
     studyLabelItems,
@@ -55,7 +56,7 @@ const OnlineVideoCallTestableSubjectList = ({
     }
     catch (e) {}
     
-    console.log({ userSearchSettings });
+    //console.log({ userSearchSettings });
 
     if (!userSearchSettings) {
         return (
@@ -138,6 +139,13 @@ const OnlineVideoCallTestableSubjectList = ({
                 subjectModalData={ subjectModal.data }
 
                 onSuccessfulUpdate={ increaseRevision }
+            />
+
+            <StudySummaryList
+                studyTypeKey={ studyType }
+                studyIds={ joinedStudyIds.split(',') }
+                subjectTypeKey={ subjectRecordType }
+                labProcedureTypeKey='online-video-call'
             />
 
             <Pagination { ...pagination } />

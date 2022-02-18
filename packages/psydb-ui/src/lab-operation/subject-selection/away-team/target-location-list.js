@@ -27,6 +27,7 @@ import {
 
 import { convertFilters } from '../convert-filters';
 
+import StudySummary from '../study-summary';
 import TargetLocationTable from './target-location-table';
 import ExperimentScheduleModal from './experiment-schedule-modal';
 
@@ -48,7 +49,7 @@ const TargetLocationList = ({
     }
     catch (e) {}
 
-    console.log({ userSearchSettings });
+    //console.log({ userSearchSettings });
 
     if (!userSearchSettings) {
         return (
@@ -166,7 +167,9 @@ const TargetLocationList = ({
                 
                 onSuccessfulUpdate: increaseRevision
             }) } />
-           
+          
+            <StudySummary studyId={ joinedStudyIds.split(',')[0] } />
+
             <div className='bg-light pt-2 pb-2 pr-3 pl-3 border-bottom'>
                 <b>gefundene Probanden:</b> { subjectCount }
             </div>

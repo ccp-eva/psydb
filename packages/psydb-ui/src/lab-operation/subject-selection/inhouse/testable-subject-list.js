@@ -144,6 +144,7 @@ const InhouseTestableSubjectList = ({
             />
 
             <StudySummaryList
+                studyTypeKey={ studyType }
                 studyIds={ studyIds }
                 subjectTypeKey={ subjectRecordType }
                 labProcedureTypeKey='inhouse'
