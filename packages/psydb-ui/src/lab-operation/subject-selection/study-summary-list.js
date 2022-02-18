@@ -1,7 +1,11 @@
 import React from 'react';
+import { keyBy } from '@mpieva/psydb-core-utils';
 import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 import { useFetchChain, useFetchAll } from '@mpieva/psydb-ui-hooks';
-import { Study } from '@mpieva/psydb-ui-lib/data-viewers';
+import {
+    Study,
+    LabProcedureSettings
+} from '@mpieva/psydb-ui-lib/data-viewers';
 
 const StudySummaryList = (ps) => {
     var {
@@ -10,13 +14,11 @@ const StudySummaryList = (ps) => {
         subjectTypeKey
     } = ps;
 
-    /*var [ didFetch, fetched ] = useFetchAll((agent) => ({
-        ...studyIds.reduce((acc, it) => ({
-            ...acc, [it]: agent.readRecord({
-                collection: 'study',
-                id: it
-            }, {})
-        }), {}),
+    var [ didFetch, fetched ] = useFetchAll((agent) => ({
+        subjectCRTSettings: agent.readCRTSettings({
+            collection: 'subject',
+            recordType: subjectTypeKey
+        }),
         labProcedureSettings: agent.fetchExperimentVariantSettings({
             studyIds
         }),
@@ -26,11 +28,22 @@ const StudySummaryList = (ps) => {
         return <LoadingIndicator size='lg' />
     }
 
-    var studyDataList = studyIds.map(it => fetched[it].data);
     var {
         records: settings,
-        ...settingRelated
-    } = fetched.labProcedureSettings.data;*/
+        ...settingsRelated
+    } = fetched.labProcedureSettings.data;
+
+    var subjectCRTSettings = fetched.subjectCRTSettings.data;
+
+    settings = settings.filter(it => (
+        it.type === labProcedureTypeKey &&
+        it.state.subjectTypeKey === subjectTypeKey
+    ));
+
+    var settingsByStudy = keyBy({
+        items: settings,
+        byProp: 'studyId'
+    });
 
     return (
         <div>
@@ -39,6 +52,9 @@ const StudySummaryList = (ps) => {
                     <StudySummary
                         key={ it }
                         studyId={ it }
+                        settings={ settingsByStudy[it] }
+                        settingsRelated={ settingsRelated }
+                        subjectCRTSettings={ subjectCRTSettings }
                     />
                 );
             })}
@@ -47,7 +63,7 @@ const StudySummaryList = (ps) => {
 }
 
 const StudySummary = (ps) => {
-    var { studyId } = ps;
+    var { studyId, settings, settingsRelated, subjectCRTSettings } = ps;
 
     var [ didFetch, fetched ] = useFetchChain(() => ([
         ({ agent }) => ({
@@ -71,18 +87,34 @@ const StudySummary = (ps) => {
     } = fetched.record.data;
     var crtSettings = fetched.crtSettings.data;
 
-    var bag = {
+    var studyBag = {
         value: record,
         related,
         crtSettings
     }
 
+    var settingsBag = {
+        value: settings,
+        related: settingsRelated,
+        subjectCRTSettings
+    }
+
     return (
-        <div className='bg-light p-3 mb-3'>
-            <Study { ...bag }>
+        <div className='bg-light p-3 mb-3 border'>
+            <Study { ...studyBag }>
                 <div className='d-flex'>
-                    <div className='w-25'>
-                        <b><Study.Name noWrapper /></b>
+                    <div className='w-33 pr-5'>
+                        <header className='border-bottom mb-2'>
+                            <b><Study.Shorthand noWrapper /></b>
+                        </header>
+                        <LabProcedureSettings { ...settingsBag }>
+                            <LabProcedureSettings.SubjectsPerExperiment
+                                label='pro Termin'
+                            />
+                            <LabProcedureSettings.SubjectFieldRequirements
+                                label='Bedingungen'
+                            />
+                        </LabProcedureSettings>
                     </div>
                     <div className='flex-grow'>
                         <Study.ExtraDescription />

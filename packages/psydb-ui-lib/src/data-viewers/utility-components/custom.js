@@ -23,8 +23,9 @@ export const Custom = (ps) => {
     var keys = onlyKeys || Object.keys(fieldsByKey);
     return (
         <>
-            { keys.map(k => (
+            { keys.map((k, ix) => (
                 <CustomField
+                    key={ ix }
                     definition={ fieldsByKey[k] }
                     value={ value[k] }
                     related={ related }

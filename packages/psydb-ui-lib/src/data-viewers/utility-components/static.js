@@ -11,8 +11,8 @@ export const FullText = (ps) => {
     var { value } = ps;
     return (
         <div className='bg-white px-3 py-2 border'>
-            { String(value).split(/\n/).map(it => (
-                <span>{ it }<br /></span>
+            { String(value).split(/\n/).map((it, ix) => (
+                <span key={ ix }>{ it }<br /></span>
             )) }
         </div>
     );

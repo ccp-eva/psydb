@@ -10,6 +10,7 @@ const labels = {
 const [ Study, StudyContext ] = createBase();
 addComponents(Study, StudyContext, labels, [
     { cname: 'Name', path: '/state/name' },
+    { cname: 'Shorthand', path: '/state/shorthand' },
     { cname: 'Custom', path: '/state/custom', Component: Custom },
     // { prop: 'customGdpr', Component: CustomGdpr }
     // { prop: 'customScientific', Component: CustomScientific }

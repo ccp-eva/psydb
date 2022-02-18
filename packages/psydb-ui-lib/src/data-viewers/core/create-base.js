@@ -8,12 +8,13 @@ export const createBase = (options = {}) => {
         if (!value) {
             throw new Error('value prop is required (db record)');
         }
-        if (!crtSettings) {
+        // FIXME: add options to enable/disable theese checks
+        /*if (!crtSettings) {
             throw new Error('crtSettings prop is required');
         }
         if (!related) {
             throw new Error('related prop is required');
-        }
+        }*/
         return (
             <Context.Provider value={ context }>
                 { children }
