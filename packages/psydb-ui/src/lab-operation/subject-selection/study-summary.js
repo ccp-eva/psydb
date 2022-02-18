@@ -63,7 +63,7 @@ const StudySummary = (ps) => {
                             </LabProcedureSettings>
                         )}
                     </div>
-                    <div className='flex-grow'>
+                    <div className='w-66'>
                         <Study.ExtraDescription />
                     </div>
                 </div>
