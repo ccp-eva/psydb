@@ -248,6 +248,7 @@ const SubjectItem = ({
     var {
         subjectId,
         invitationStatus,
+        comment,
     } = subjectDataItem;
 
     var subjectRecord = subjectRecordsById[subjectId];
@@ -270,6 +271,12 @@ const SubjectItem = ({
                             <b className='flex-grow ml-3'>{ it.value }</b>
                         </div>
                     )) }
+                    <div className='d-flex'>
+                        <span style={{ width: '90px' }}>
+                            Kommentar
+                        </span>
+                        <i className='flex-grow ml-3'>{ comment }</i>
+                    </div>
                 </div>
                 <div
                     style={{ width: '35px' }}
