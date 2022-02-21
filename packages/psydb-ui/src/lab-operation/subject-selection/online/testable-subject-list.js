@@ -204,7 +204,9 @@ const OnlineTestableSubjectList = ({
 
             </div>
 
-            <Pagination { ...pagination } />
+            <div className='sticky-top border-bottom'>
+                <Pagination { ...pagination } />
+            </div>
 
             <Table { ...({
                 records,

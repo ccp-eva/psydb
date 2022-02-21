@@ -170,13 +170,15 @@ const TargetLocationList = ({
           
             <StudySummary studyId={ joinedStudyIds.split(',')[0] } />
 
-            <div className='bg-light pt-2 pb-2 pr-3 pl-3 border-bottom'>
-                <b>gefundene Probanden:</b> { subjectCount }
+            <div className='sticky-top border-bottom'>
+                <div className='bg-light pt-2 pb-2 pr-3 pl-3 border-bottom'>
+                    <b>gefundene Probanden:</b> { subjectCount }
+                </div>
+                <Pagination
+                    totalLabel='Locations:'
+                    { ...pagination }
+                />
             </div>
-            <Pagination
-                totalLabel='Locations:'
-                { ...pagination }
-            />
             
             <TargetLocationTable { ...({
                 mergedRecords,

@@ -148,7 +148,9 @@ const OnlineVideoCallTestableSubjectList = ({
                 labProcedureTypeKey='online-video-call'
             />
 
-            <Pagination { ...pagination } />
+            <div className='sticky-top border-bottom'>
+                <Pagination { ...pagination } />
+            </div>
 
             <Table>
                 <thead>

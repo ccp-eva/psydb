@@ -150,7 +150,9 @@ const InhouseTestableSubjectList = ({
                 labProcedureTypeKey='inhouse'
             />
 
-            <Pagination { ...pagination } />
+            <div className='sticky-top border-bottom'>
+                <Pagination { ...pagination } />
+            </div>
 
             <Table>
                 <thead>
