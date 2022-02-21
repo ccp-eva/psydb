@@ -1,25 +1,41 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
+
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
+import {
+    Button,
+    EditIconButtonInline
+} from '@mpieva/psydb-ui-layout';
 
 import { FieldDataBodyCols } from '@mpieva/psydb-ui-lib/src/record-list';
 import UpcomingExperiments from '../upcoming-experiments';
 
 const TableBody = ({
+    subjectType,
     subjectData,
     subjectExperimentMetadata,
 
-    onSelectSubject,
+    onInviteSubject,
+    onViewSubject,
 }) => {
     var { records, ...subjectMetadata } = subjectData;
+    
+    var permissions = usePermissions();
+    var canWriteSubjects = permissions.hasFlag('canWriteSubjects');
+
     return (
         <tbody>
             { records.map((record, index) => {
                 return (
                     <TableRow key={ index} { ...({
+                        subjectType,
                         record,
                         subjectMetadata,
                         subjectExperimentMetadata,
-                        onSelectSubject
+                        
+                        canWriteSubjects,
+
+                        onInviteSubject,
+                        onViewSubject
                     }) }/>
                 )
             })}
@@ -29,10 +45,15 @@ const TableBody = ({
 }
 
 const TableRow = ({
+    subjectType,
     record,
     subjectMetadata,
     subjectExperimentMetadata,
-    onSelectSubject
+
+    canWriteSubjects,
+
+    onInviteSubject,
+    onViewSubject
 }) => {
     var isRed = (
         record._upcomingExperiments.length > 0
@@ -83,10 +104,22 @@ const TableRow = ({
                     <div className='d-flex justify-content-end'>
                         <Button
                             size='sm'
-                            onClick={ () => onSelectSubject({ record }) }
+                            onClick={ () => onInviteSubject({ record }) }
                         >
                             Termin
                         </Button>
+                    </div>
+                )}
+                { isRed && canWriteSubjects && (
+                    <div className='d-flex justify-content-end'>
+                        <EditIconButtonInline
+                            buttonStyle={{ background: 'transparent' }}
+                            onClick={ () => onViewSubject({
+                                title: `Proband - ${record._recordLabel}`,
+                                subjectId: record._id,
+                                subjectType
+                            })}
+                        />
                     </div>
                 )}
             </td>

@@ -16,28 +16,38 @@ export const Component = (ps) => {
 
         related,
         permissions,
+
+        renderFormBox = true,
     } = ps;
 
+    var renderedForm = (
+        <DefaultForm
+            initialValues={ initialValues }
+            onSubmit={ onSubmit }
+            useAjvAsync
+        >
+            {(formikProps) => (
+                <>
+                    { /*console.log(formikProps.values) || ''*/ }
+                    <FormFields
+                        fieldDefinitions={ fieldDefinitions }
+                        related={ related }
+                        permissions={ permissions }
+                    />
+                    <Button type='submit'>Speichern</Button>
+                </>
+            )}
+        </DefaultForm>
+    );
+
     return (
-        <FormBox title={ title }>
-            <DefaultForm
-                initialValues={ initialValues }
-                onSubmit={ onSubmit }
-                useAjvAsync
-            >
-                {(formikProps) => (
-                    <>
-                        { /*console.log(formikProps.values) || ''*/ }
-                        <FormFields
-                            fieldDefinitions={ fieldDefinitions }
-                            related={ related }
-                            permissions={ permissions }
-                        />
-                        <Button type='submit'>Speichern</Button>
-                    </>
-                )}
-            </DefaultForm>
-        </FormBox>
+        renderFormBox
+        ? (
+            <FormBox title={ title }>
+                { renderedForm }
+            </FormBox>
+        )
+        : renderedForm
     );
 }
 

@@ -11,6 +11,7 @@ const EditForm = (ps) => {
         recordType,
         id,
         fetched,
+        renderFormBox = true,
         onSuccessfulUpdate
     } = ps;
 
@@ -50,6 +51,7 @@ const EditForm = (ps) => {
                 onSubmit={ send.exec }
                 related={ related }
                 permissions={ permissions }
+                renderFormBox={ renderFormBox }
             />
         </>
     )
