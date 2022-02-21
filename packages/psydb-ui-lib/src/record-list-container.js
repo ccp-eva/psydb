@@ -34,11 +34,13 @@ const RecordListContainer = ({
 
     return (
         <div className={ className }>
-            { enableNew && canCreate && (
-                <LinkButton to={`${url}/new`}>
-                    Neuer Eintrag
-                </LinkButton>
-            )}
+            <div className='media-print-hidden'>
+                { enableNew && canCreate && (
+                    <LinkButton to={`${url}/new`}>
+                        Neuer Eintrag
+                    </LinkButton>
+                )}
+            </div>
             <RecordList { ...({
                 linkBaseUrl: url,
                 target,

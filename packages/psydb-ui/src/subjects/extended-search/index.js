@@ -175,7 +175,7 @@ const Inner = (ps) => {
                     onSwitchTab({ nextTab, formData })
                 )}
                 activeKey={ activeTab }
-                className='d-flex'
+                className='d-flex media-print-hidden'
                 itemClassName='flex-grow'
                 items={ tabs }
             />

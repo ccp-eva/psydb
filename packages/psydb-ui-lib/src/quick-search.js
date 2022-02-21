@@ -57,6 +57,7 @@ const QuickSearch = ({
         'bg-light border-bottom',
         'pr-3 pl-3 pt-2 pb-2',
         'd-flex justify-content-start align-items-end quick-search-fixes',
+        'media-print-hidden'
     ]);
 
     var handleSubmit = (formData) => {

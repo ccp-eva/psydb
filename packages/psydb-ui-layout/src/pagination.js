@@ -28,6 +28,7 @@ const Pagination = ({
     var className = classnames([
         'bg-light pt-2 pb-2 pr-3 pl-3',
         'd-flex align-items-center',
+        //'media-print-hidden',
         extraClassName,
     ]);
     return (

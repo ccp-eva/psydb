@@ -1,4 +1,5 @@
 import React from 'react';
+import classnames from 'classnames';
 import { useModalReducer } from '@mpieva/psydb-ui-hooks';
 import { Icons } from '@mpieva/psydb-ui-layout';
 import { AccountFunctionDropdown } from '@mpieva/psydb-ui-lib';
@@ -9,15 +10,21 @@ import { ChangePasswordModal } from './change-password-modal';
 
 const TopFunctions = (ps) => {
     var {
-        onSignOut
+        onSignOut,
+        extraClassName
     } = ps;
 
     var switchRGModal = useModalReducer();
     var changePasswordModal = useModalReducer();
 
+    var className = classnames([
+        'd-flex justify-content-end pt-2 pb-1 media-print-hidden',
+        extraClassName,
+    ]);
+
     return (
         <div
-            className='d-flex justify-content-end pt-2 pb-1'
+            className={ className }
             style={{
                 // FIXME: dropdown on behaves wierd when
                 // overfloing over small screen bounds

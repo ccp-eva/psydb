@@ -32,7 +32,9 @@ export const HelperSetItemId = withField({ Control: (ps) => {
     var record;
     if (relatedHelperSetItems && relatedHelperSetItems[setId]) {
         record = relatedHelperSetItems[setId][recordId];
-        record._recordLabel = record.state.label;
+        if (record) {
+            record._recordLabel = record.state.label;
+        }
     }
 
     if (recordId && !record) {

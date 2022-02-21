@@ -158,3 +158,10 @@ a {
 .w-66 {
     width: 66.666%
 }
+
+@media print {
+    .media-print-hidden {
+        display: none !important;
+        visibility: hidden !important;
+    }
+}

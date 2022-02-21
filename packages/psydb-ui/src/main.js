@@ -90,7 +90,7 @@ const LayoutedRoutes = ({ onSignOut }) => {
             <header className='flex-core flex-row-reverse' style={{
                 //alignItems: 'flex-end',
             }}>
-                <div className='flex-core' style={{
+                <div className='flex-core media-print-hidden' style={{
                     //width: '275px'
                     width: '225px'
 
@@ -101,13 +101,13 @@ const LayoutedRoutes = ({ onSignOut }) => {
             <main className='flex-core flex-grow mr-3' style={{
                 //alignItems: 'flex-start',
             }}>
-                <div style={{
+                <div className='pl-3' style={{
                     //width: '990px' // => min size: 1280
                     //width: '1076px' // => min size: 1366
                     //width: '1040px' // => min size: 1280
                 }}>
                     <TopFunctions onSignOut={ onSignOut } />
-                    <div className='pl-3'>
+                    <div>
                         <Routing />
                     </div>
                 </div>

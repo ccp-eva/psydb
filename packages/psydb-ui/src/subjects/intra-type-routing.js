@@ -25,9 +25,11 @@ const RecordTypeRouting = ({
     <Switch>
         <Route exact path={`${path}`}>
             <>
-                <LinkContainer to={ `${url}/extended-search/` }>
-                    <a>Erweiterte Search</a>
-                </LinkContainer>
+                <div className='media-print-hidden'>
+                    <LinkContainer to={ `${url}/extended-search/` }>
+                        <a>Erweiterte Search</a>
+                    </LinkContainer>
+                </div>
                 <RecordList
                     linkBaseUrl={ url }
                     collection={ collection }
