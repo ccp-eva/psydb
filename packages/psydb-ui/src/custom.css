@@ -84,6 +84,10 @@ a:hover {
     color: #006c66!important;
 }
 
+.sticky-top {
+    z-index: 1001 !important;
+}
+
 /* FIXME: this is so wierd*/
 .team-modal-backdrop {
     z-index: 1010;
