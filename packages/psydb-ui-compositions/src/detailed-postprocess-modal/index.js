@@ -47,18 +47,25 @@ const DetailedPostprocessModalBody = (ps) => {
                 )
             }
 
-            <hr />
+            { hasEdited && (
+                <>
+                    <hr />
+                    <div className='d-flex justify-content-end'>
+                        <Button onClick={ onHide }>Schliessen</Button>
+                    </div>
 
-            <Postprocessing { ...({
+            {/*<Postprocessing { ...({
                 subjectId,
                 experimentRecord,
                 relatedRecordLabels,
                 onSuccessfulUpdate: demuxed([
                     onHide, onSuccessfulUpdate
                 ])
-            }) } />
+            }) } />*/}
             
-            <hr />
+                    <hr />
+                </>
+            )}
         </>
     );
 }
