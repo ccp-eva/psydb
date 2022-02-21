@@ -60,7 +60,7 @@ const InhouseTestableSubjectList = ({
     }
     catch (e) {}
     
-    console.log({ userSearchSettings });
+    //console.log({ userSearchSettings });
 
     if (!userSearchSettings) {
         return (

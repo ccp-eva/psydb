@@ -33,10 +33,12 @@ import {
     FieldDataHeadCols,
 } from '@mpieva/psydb-ui-lib/src/record-list';
 
+import { SubjectRecordViewModal } from '@mpieva/psydb-ui-compositions';
+
 import { convertFilters } from '../convert-filters';
 
 import TableBody from './table-body';
-import SubjectModal from './subject-modal';
+import InviteModal from './subject-modal';
 import StudySummaryList from '../study-summary-list';
 
 const OnlineVideoCallTestableSubjectList = ({
@@ -103,6 +105,7 @@ const OnlineVideoCallTestableSubjectList = ({
         revision, offset, limit
     ])
    
+    var inviteModal = useModalReducer();
     var subjectModal = useModalReducer();
 
     if (!didFetch) {
@@ -125,9 +128,9 @@ const OnlineVideoCallTestableSubjectList = ({
 
     return (
         <>
-            <SubjectModal
-                show={ subjectModal.show }
-                onHide={ subjectModal.handleHide }
+            <InviteModal
+                show={ inviteModal.show }
+                onHide={ inviteModal.handleHide }
                 
                 studyNavItems={ studyData.records.map(it => ({
                     key: it._id,
@@ -136,8 +139,13 @@ const OnlineVideoCallTestableSubjectList = ({
                 studyRecordType={ studyType }
                 
                 subjectRecordType={ subjectRecordType }
-                subjectModalData={ subjectModal.data }
+                subjectModalData={ inviteModal.data }
 
+                onSuccessfulUpdate={ increaseRevision }
+            />
+
+            <SubjectRecordViewModal
+                { ...subjectModal.passthrough }
                 onSuccessfulUpdate={ increaseRevision }
             />
 
@@ -166,9 +174,11 @@ const OnlineVideoCallTestableSubjectList = ({
                 </thead>
 
                 <TableBody { ...({
+                    subjectType: subjectRecordType,
                     subjectData,
                     subjectExperimentMetadata,
-                    onSelectSubject: subjectModal.handleShow,
+                    onInviteSubject: inviteModal.handleShow,
+                    onViewSubject: subjectModal.handleShow,
                 }) } />
             </Table>
         </>
