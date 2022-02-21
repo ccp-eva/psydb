@@ -1,9 +1,10 @@
 import React from 'react';
+import { ThemeProvider } from './theme-context';
 
 export const createBase = (options = {}) => {
     var Context = React.createContext();
     var Component = (ps) => {
-        var { children, ...context } = ps;
+        var { theme, children, ...context } = ps;
         var { value, crtSettings, related } = context;
         if (!value) {
             throw new Error('value prop is required (db record)');
@@ -16,9 +17,11 @@ export const createBase = (options = {}) => {
             throw new Error('related prop is required');
         }*/
         return (
-            <Context.Provider value={ context }>
-                { children }
-            </Context.Provider>
+            <ThemeProvider value={ theme }>
+                <Context.Provider value={ context }>
+                    { children }
+                </Context.Provider>
+            </ThemeProvider>
         );
     }
     return [ Component, Context ];

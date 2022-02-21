@@ -1,5 +1,6 @@
 import React from 'react';
 import { keyBy } from '@mpieva/psydb-core-utils';
+import { useThemeContext } from '../core/theme-context';
 import * as Fields from './static';
 
 export const Custom = (ps) => {
@@ -60,6 +61,9 @@ var CustomField = (ps) => {
     type = fixSystemType(type);
     var Component = Fields[type];
 
+    var context = useThemeContext();
+    var { Field } = context;
+
     if (!Component) {
         return (
             <CustomFieldFallback
@@ -68,6 +72,16 @@ var CustomField = (ps) => {
             />
         );
     }
+
+    return (
+        <Field label={ displayName }>
+            <Component
+                value={ value }
+                props={ props }
+                related={ related }
+            />
+        </Field>
+    )
 
     // FIXME: theming
     return (
