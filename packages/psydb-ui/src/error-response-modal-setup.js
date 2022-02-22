@@ -12,7 +12,7 @@ const ErrorResponseModalSetup = (ps) => {
             (response) => (response),
             (error) => {
                 var { config, response } = error;
-                console.log('axios error');
+                console.log('axios error', response.status);
                 if (response && !config.disableErrorModal) {
                     errorResponseModal.handleShow(response);
                     throw error;

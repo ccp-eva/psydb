@@ -17,10 +17,13 @@ handler.checkAllowedAndPlausible = async (context) => {
         personnelId,
         message,
         cache,
+        permissions,
     } = context;
 
     var { id, lastKnownEventId, excludedOtherStudyIds } = message.payload;
-
+    if (!permissions.hasCollectionFlag('study', 'write')) {
+        throw new ApiError(403); 
+    }
     // TODO: checks
 }
 
