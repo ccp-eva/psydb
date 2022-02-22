@@ -19,6 +19,7 @@ var listStyle = {
 
 var ExperimentDropdown = ({
     detailsLink,
+    onClickFollowUp,
     onClickMove,
     onClickChangeTeam,
     
@@ -29,6 +30,10 @@ var ExperimentDropdown = ({
 }) => {
     var permissions = usePermissions();
 
+    
+    var canCreateFollowUp = permissions.hasLabOperationFlag(
+        experimentType, 'canMoveAndCancelExperiments_'
+    );
     var canMove = permissions.hasLabOperationFlag(
         experimentType, 'canMoveAndCancelExperiments'
     );
@@ -70,7 +75,17 @@ var ExperimentDropdown = ({
                 </LinkContainer>
 
                 <Dropdown.Divider />
-                
+            
+                { experimentType === 'away-team' && (
+                    <Dropdown.Item
+                        as='button'
+                        disabled={ !canCreateFollowUp || !onClickFollowUp }
+                        onClick={ onClickFollowUp }
+                    >
+                        Folgetermin
+                    </Dropdown.Item>
+                )}
+
                 <Dropdown.Item
                     as='button'
                     disabled={ !canMove || !onClickMove }

@@ -82,6 +82,10 @@ var selectableStudiesForCalendar = async (context, next) => {
         { $match: {
             'state.researchGroupIds': researchGroupId
         }},
+        { $sort: {
+            'state.shorthand': 1,
+            'state.name': 1
+        }},
     ];
 
     var records = await (
