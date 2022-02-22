@@ -20,12 +20,13 @@ const Control = (ps) => {
         formikForm,
 
         disabled,
-        isStreetRequired = true,
-        isHousenumberRequired = true,
+        // TODO: should depend on address field defintions props
+        isStreetRequired = false,
+        isHousenumberRequired = false,
         isAffixRequired = false,
-        isPostcodeRequired = true,
-        isCityRequired = true,
-        isCountryRequired = true
+        isPostcodeRequired = false,
+        isCityRequired = false,
+        isCountryRequired = false
     } = ps;
 
     var labelClassName = 'd-block m-0 text-small';

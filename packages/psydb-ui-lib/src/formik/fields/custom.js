@@ -79,6 +79,10 @@ const CustomField = (ps) => {
         case 'HelperSetItemId':
             isRequired = !props.isNullable;
             break;
+        case 'Address':
+            // TODO: depends on sub field prop settings
+            isRequired = false;
+            break;
     }
 
     var Component = Fields[type] || CustomFieldFallback;
