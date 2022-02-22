@@ -29,15 +29,6 @@ var createCustomQueryValues = (options) => {
                 createOneCustomQueryValueObject({ field, filter })
             );
             values = { ...values, ...fieldValues };
-
-            //var pointer = getCustomQueryPointer({ field });
-            //var value = createOneCustomQueryValue({
-            //    field, filter: filters[key]
-            //});
-
-            //if (value !== undefined) {
-            //    values[pointer] = value;
-            //}
         }
     }
 
@@ -164,34 +155,6 @@ var createOneCustomQueryValueObject = (options) => {
     }
 }
 
-var getCustomQueryPointer = (options) => {
-    var { field } = options;
-    var { type, pointer } = field;
-
-    switch (type) {
-        case 'SaneString':
-        case 'ForeignId':
-        case 'ForeignIdList':
-        case 'HelperSetItemId':
-        case 'HelperSetItemIdList':
-        case 'BiologicalGender':
-        case 'ExtBool':
-        case 'DateTime':
-        case 'DateOnlyServerSide':
-        case 'Integer':
-        case 'Address':
-            return pointer;
-
-        case 'PhoneList':
-            return `${pointer}/number`;
-        case 'EmailList':
-            return `${pointer}/email`;
-
-        default:
-            throw new Error(`unknown type "${type}" for "${pointer}"`);
-    }
-}
-
 var convertPointerKeys = (obj) => {
     var converted = Object.keys(obj).reduce((acc, key) => ({
         ...acc,
@@ -234,10 +197,6 @@ var createSpecialFilterConditions = (filters) => {
 
 module.exports = {
     createCustomQueryValues,
-    //createOneCustomQueryValue,
-    createOneCustomQueryValueObject,
-    getCustomQueryPointer,
     convertPointerKeys,
-
     createSpecialFilterConditions
 }

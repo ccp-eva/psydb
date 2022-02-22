@@ -21,7 +21,6 @@ var {
 
 var {
     createCustomQueryValues,
-    getCustomQueryPointer,
     convertPointerKeys,
     createSpecialFilterConditions,
 } = require('../utils');
