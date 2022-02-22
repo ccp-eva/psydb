@@ -109,7 +109,10 @@ var selectableStudies = async (context, next) => {
                     'state.runningPeriod.end': { $type: 10 }, // null
                 }
             ],
-            'state.researchGroupIds': { $in: userResearchGroupIds }
+            // FIXME: we need to actally evaluate if research group is forced
+            ...(!permissions.isRoot() && {
+                'state.researchGroupIds': { $in: userResearchGroupIds }
+            })
         }},
     ];
 

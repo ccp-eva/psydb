@@ -20,7 +20,8 @@ var fetchCRTSettings = async (options) => {
 
     var {
         hasCustomTypes,
-        hasSubChannels
+        hasSubChannels,
+        availableStaticDisplayFields,
     } = collectionCreatorData;
 
     if (hasCustomTypes && !recordType) {
@@ -60,6 +61,33 @@ var fetchCRTSettings = async (options) => {
         ? subChannelFields
         : fields
     );
+
+    if (availableStaticDisplayFields) {
+        if (hasSubChannels) {
+            fieldDefinitions.gdpr.push(
+                ...availableStaticDisplayFields
+                .filter(it => (
+                    it.dataPointer.startsWith('/gdpr/')
+                ))
+                // FIXME: compat
+                .map(it => ({ ...it, pointer: it.dataPointer }))
+            );
+            fieldDefinitions.scientific.push(
+                ...availableStaticDisplayFields.filter(it => (
+                    it.dataPointer.startsWith('/scientifix/')
+                ))
+                // FIXME: compat
+                .map(it => ({ ...it, pointer: it.dataPointer }))
+            );
+        }
+        else {
+            fieldDefinitions.push(
+                ...availableStaticDisplayFields
+                // FIXME: compat
+                .map(it => ({ ...it, pointer: it.dataPointer }))
+            );
+        }
+    }
 
     return {
         hasSubChannels,

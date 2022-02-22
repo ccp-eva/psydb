@@ -1,16 +1,15 @@
 import React from 'react';
-import { Custom } from '../utility-components';
+import { Display } from '../utility-components';
 
 const ExtraDescription = (ps) => {
     var { crtSettings } = ps;
     var { extraDescriptionDisplayFields } = crtSettings;
-    var onlyKeys = extraDescriptionDisplayFields.map(it => (
-        // FIXME: we dont store key
-        it.dataPointer.replace('/state/custom/', '')
+    var onlyPointers = extraDescriptionDisplayFields.map(it => (
+        it.dataPointer
     ));
 
     return (
-        <Custom onlyKeys={ onlyKeys} { ...ps } />
+        <Display onlyPointers={ onlyPointers } { ...ps } />
     )
 }
 

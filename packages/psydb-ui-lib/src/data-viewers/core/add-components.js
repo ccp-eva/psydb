@@ -13,7 +13,11 @@ export const addComponents = (target, context, labels, items) => {
         target[cname] = (ps) => {
             var { value, ...pass } = useContext(context);
             var propLabel = labels[path];
-            var propValue = jsonpointer.get(value, path);
+            var propValue = (
+                path
+                ? jsonpointer.get(value, path)
+                : value
+            );
             return (
                 <Component
                     label={ propLabel }

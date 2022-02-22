@@ -16,7 +16,6 @@ addComponents(Study, StudyContext, labels, [
     // { prop: 'customScientific', Component: CustomScientific }
     {
         cname: 'ExtraDescription',
-        path: '/state/custom',
         Component: ExtraDescription
     }
 ]);
