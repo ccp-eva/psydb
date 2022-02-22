@@ -25,6 +25,12 @@ a:hover {
     color: #228e88;
 }
 
+.btn-link {
+    color: #006c66;
+}
+.btn-link:hover {
+    color: #228e88;
+}
 /* removes wierd bootstrap outlines */
 *:focus {
     outline: none !important;
