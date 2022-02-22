@@ -5,9 +5,12 @@ import {
     Icons
 } from '@mpieva/psydb-ui-layout';
 
-var calendarStyle = {
+var style = {
     background: 'transparent',
     color: 'inherit',
+    padding: 0,
+    marginTop: '1px',
+    border: '1px solid transparent',
 }
 
 export const AccountFunctionDropdown = ({
@@ -16,8 +19,6 @@ export const AccountFunctionDropdown = ({
     
     disabled,
 }) => {
-
-    var style = calendarStyle;
 
     return (
         <Dropdown>
@@ -32,8 +33,13 @@ export const AccountFunctionDropdown = ({
                 <Icons.GearFill className='text-primary' style={{
                     width: '18px',
                     height: '18px',
-                    marginTop: '-3px',
                 }} />
+                <u
+                    className='d-inline-block ml-1 align-middle text-primary'
+                    style={{ fontSize: '1rem' }}
+                >
+                    Funktionen
+                </u>
             </Dropdown.Toggle>
             <Dropdown.Menu align='right'>
                 <Dropdown.Item

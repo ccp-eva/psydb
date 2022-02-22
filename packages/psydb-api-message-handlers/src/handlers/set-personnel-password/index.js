@@ -25,9 +25,8 @@ var checkAllowedAndPlausible = async ({
         throw new ApiError(400);
     }
 
-    if (!permissions.hasRootAccess) {
-        // TODO: why is this disabled?
-        //throw new ApiError(403);
+    if (!permissions.isRoot()) {
+        throw new ApiError(403);
     }
 };
 

@@ -41,11 +41,11 @@ const TopFunctions = (ps) => {
             })} />
 
             <a
-                className='btn btn-link p-0'
+                className='btn btn-link p-0 ml-3'
                 onClick={ onSignOut }
             >
                 <Icons.DoorClosedFill className='align-middle' />
-                <u className='d-inline-block ml-2 align-middle'>
+                <u className='d-inline-block ml-1 align-middle'>
                     Abmelden
                 </u>
             </a>
