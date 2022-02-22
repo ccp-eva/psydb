@@ -35,7 +35,7 @@ const CreateModal = ({
     var [ autoConfirm, setAutoConfirm ] = useState(false);
 
     var minEnd = new Date(start.getTime() + slotDuration);
-    var [ end, setEnd ] = useState(minEnd);
+    var [ end, setEnd ] = useState(new Date(minEnd.getTime() - 1));
 
     var wrappedOnSuccessfulUpdate = (...args) => {
         onHide();
