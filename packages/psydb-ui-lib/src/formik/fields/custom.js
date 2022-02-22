@@ -73,8 +73,11 @@ const CustomField = (ps) => {
     var isRequired = true;
     switch (type) {
         case 'SaneString':
-            // TODO: use crt definition instead
             isRequired = props.minLength > 0
+            break;
+        case 'ForeignId':
+        case 'HelperSetItemId':
+            isRequired = !props.isNullable;
             break;
     }
 
