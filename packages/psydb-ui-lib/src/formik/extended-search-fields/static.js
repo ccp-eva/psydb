@@ -10,3 +10,5 @@ export * from './negatable-helper-set-item-id-list';
 
 export * from './date-only-server-side-interval';
 export * from './integer-interval';
+
+export * from './address';

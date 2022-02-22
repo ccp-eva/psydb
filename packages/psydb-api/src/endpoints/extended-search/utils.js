@@ -13,6 +13,10 @@ var {
     convertPointerToPath,
 } = require('@mpieva/psydb-api-lib');
 
+var makeRX = (str) => (
+    new RegExp(escapeRX(str), 'i')
+)
+
 var createCustomQueryValues = (options) => {
     var { fields, filters } = options;
     var values = {};
@@ -21,33 +25,50 @@ var createCustomQueryValues = (options) => {
         var { key } = field;
         var filter = filters[key];
         if (filter) {
-            var pointer = getCustomQueryPointer({ field });
-            var value = createOneCustomQueryValue({
-                field, filter: filters[key]
-            });
+            var fieldValues = (
+                createOneCustomQueryValueObject({ field, filter })
+            );
+            values = { ...values, ...fieldValues };
 
-            if (value !== undefined) {
-                values[pointer] = value;
-            }
+            //var pointer = getCustomQueryPointer({ field });
+            //var value = createOneCustomQueryValue({
+            //    field, filter: filters[key]
+            //});
+
+            //if (value !== undefined) {
+            //    values[pointer] = value;
+            //}
         }
     }
 
+    //console.log(values);
     return values;
 }
 
-var createOneCustomQueryValue = (options) => {
+var createOneCustomQueryValueObject = (options) => {
     var { field, filter } = options;
-    var { type, props } = field;
+    var { pointer, type, props } = field;
     switch (type) {
         case 'SaneString':
+            return { [pointer]: makeRX(filter) };
+
         case 'PhoneList':
+            pointer = `${pointer}/number`;
+            return { [pointer]: makeRX(filter) };
+
         case 'EmailList':
-            return new RegExp(escapeRX(filter), 'i');
+            pointer = `${pointer}/email`;
+            return { [pointer]: makeRX(filter) };
 
         case 'BiologicalGender':
         case 'ExtBool':
             filter = filter || {};
-            return { $in: Object.keys(filter).filter(key => !!filter[key]) }
+            var values = Object.keys(filter).filter(key => !!filter[key]);
+            return (
+                values.length > 0
+                ? { [pointer]: { $in: values }}
+                : undefined
+            )
 
         case 'ForeignId':
         case 'ForeignIdList':
@@ -55,7 +76,11 @@ var createOneCustomQueryValue = (options) => {
         case 'HelperSetItemIdList':
             filter = filter || {};
             var op = filter.negate ? '$nin' : '$in';
-            return { [op]: filter.values };
+            return (
+                filter.values && filter.values.length > 0
+                ? { [pointer]: { [op]: filter.values }}
+                : undefined
+            )
 
         case 'Integer':
             var out = undefined;
@@ -69,10 +94,10 @@ var createOneCustomQueryValue = (options) => {
                     })
                 };
             }
-            return out;
+            return { [pointer]: out };
 
         case 'DateOnlyServerSide':
-            console.log({ field, filter });
+            //console.log({ field, filter });
             var out = undefined;
             var { isSpecialAgeFrameField } = props;
             if (filter) {
@@ -105,9 +130,37 @@ var createOneCustomQueryValue = (options) => {
                     //out = { $expr: {}};
                 }
             }
-            console.log(out);
-            return out;
+            //console.log(out);
+            return { [pointer]: out };
 
+        case 'Address':
+            //console.log(filter);
+            filter = filter || {};
+            var out = {
+                ...(filter.country && {
+                    [pointer + '/country']: filter.country,
+                }),
+                ...(filter.city && {
+                    [pointer + '/city']: makeRX(filter.city),
+                }),
+                ...(filter.postcode && {
+                    [pointer + '/postcode']: makeRX(filter.postcode),
+                }),
+                ...(filter.street && {
+                    [pointer + '/street']: makeRX(filter.street),
+                }),
+                ...(filter.housenumber && {
+                    [pointer + '/housenumber']: makeRX(filter.housenumber),
+                }),
+                ...(filter.affix && {
+                    [pointer + '/affix']: makeRX(filter.affix),
+                }),
+            }
+            //console.log(out);
+            return out;
+            
+        default:
+            throw new Error(`unknown type "${type}" for "${pointer}"`);
     }
 }
 
@@ -126,6 +179,7 @@ var getCustomQueryPointer = (options) => {
         case 'DateTime':
         case 'DateOnlyServerSide':
         case 'Integer':
+        case 'Address':
             return pointer;
 
         case 'PhoneList':
@@ -180,7 +234,8 @@ var createSpecialFilterConditions = (filters) => {
 
 module.exports = {
     createCustomQueryValues,
-    createOneCustomQueryValue,
+    //createOneCustomQueryValue,
+    createOneCustomQueryValueObject,
     getCustomQueryPointer,
     convertPointerKeys,
 
