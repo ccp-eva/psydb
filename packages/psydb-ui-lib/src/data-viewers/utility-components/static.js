@@ -1,4 +1,5 @@
 import React from 'react';
+import datefns from '../../date-fns';
 
 export const SaneString = (ps) => {
     var { value } = ps;
@@ -33,7 +34,25 @@ export const ForeignIdList = (ps) => {
     var { value, props, related } = ps;
     var { collection } = props;
     
+    var formatted = (
+        value
+        .map(it => related.relatedRecordLabels[collection][it]._recordLabel)
+        .join(', ')
+    );
+    
     return (
-        <span>{ value.map(it => related.relatedRecordLabels[collection][it]._recordLabel).join(', ') }</span>
+        <span>{ formatted }</span>
+    )
+}
+
+export const DateOnlyServerSide = (ps) => {
+    var { value, props, related } = ps;
+    var formatted = (
+        value === undefined || value === null
+        ? '-' 
+        : datefns.format(new Date(value), 'P')
+    );
+    return (
+        <span>{ formatted }</span>
     )
 }

@@ -62,36 +62,19 @@ var fetchCRTSettings = async (options) => {
         : fields
     );
 
-    if (availableStaticDisplayFields) {
-        if (hasSubChannels) {
-            fieldDefinitions.gdpr.push(
-                ...availableStaticDisplayFields
-                .filter(it => (
-                    it.dataPointer.startsWith('/gdpr/')
-                ))
-                // FIXME: compat
-                .map(it => ({ ...it, pointer: it.dataPointer }))
-            );
-            fieldDefinitions.scientific.push(
-                ...availableStaticDisplayFields.filter(it => (
-                    it.dataPointer.startsWith('/scientifix/')
-                ))
-                // FIXME: compat
-                .map(it => ({ ...it, pointer: it.dataPointer }))
-            );
-        }
-        else {
-            fieldDefinitions.push(
-                ...availableStaticDisplayFields
-                // FIXME: compat
-                .map(it => ({ ...it, pointer: it.dataPointer }))
-            );
-        }
-    }
+    var staticFieldDefinitions = (
+        (availableStaticDisplayFields || [])
+        .map(it => ({
+            ...it,
+            pointer: it.dataPointer,
+            type: it.systemType,
+        }))
+    );
 
     return {
         hasSubChannels,
         fieldDefinitions,
+        staticFieldDefinitions,
         ...otherSettings,
         ...otherState,
     }

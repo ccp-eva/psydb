@@ -213,6 +213,12 @@ module.exports = {
         // FIXME: not a big fan
         availableStaticDisplayFields: [
             {
+                key: '_id',
+                systemType: 'SaneString',
+                dataPointer: '/_id',
+                displayName: 'ID',
+            },
+            {
                 key: '_shorthand',
                 systemType: 'SaneString',
                 dataPointer: '/state/shorthand',

@@ -6,7 +6,11 @@ import * as Fields from './static';
 
 export const Display = (ps) => {
     var { value, related, crtSettings, onlyPointers } = ps;
-    var { hasSubChannels, fieldDefinitions } = crtSettings;
+    var {
+        hasSubChannels,
+        fieldDefinitions,
+        staticFieldDefinitions = []
+    } = crtSettings;
 
     var fields = (
         hasSubChannels
@@ -21,6 +25,9 @@ export const Display = (ps) => {
     if (!fields) {
         throw new Error('no fields defined in CRT')
     }
+
+    fields = [ ...fields, ...staticFieldDefinitions ];
+
     var fieldsByPointer = keyBy({
         items: fields,
         byProp: 'pointer',
@@ -88,15 +95,4 @@ var DisplayField = (ps) => {
         </Field>
     )
 
-    // FIXME: theming
-    return (
-        <div className='mb-3'>
-            <header><b>{ displayName}</b></header>
-            <Component
-                value={ value }
-                props={ props }
-                related={ related }
-            />
-        </div>
-    )
 }
