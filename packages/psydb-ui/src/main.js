@@ -72,10 +72,10 @@ const Main = ({ onSignedOut, onSignedIn }) => {
     return (
         <ServerTimezoneContext.Provider value={ serverTimezone }>
             <Switch>
-                <Route
+                { /*<Route
                     path='/calendars/away-team/:locationType/:researchGroupId'
                     component={ withEB(AwayTeamCalendar) }
-                />
+                />*/}
                 <Route>
                     <LayoutedRoutes { ...({ onSignOut }) }/>
                 </Route>

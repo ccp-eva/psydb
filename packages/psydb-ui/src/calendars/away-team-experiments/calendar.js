@@ -30,7 +30,7 @@ import EmptyDaysRow from './empty-days-row';
 import StudyRow from './study-row';
 
 const headerStyle = {
-    marginLeft: '35px',
+    //marginLeft: '35px',
 }
 
 const AwayTeamCalendar = ({
@@ -90,8 +90,8 @@ const AwayTeamCalendar = ({
 
     return (
         <div>
-            <div className='bg-light'>
-                <LinkButton to={ `/calendars/away-team` }>
+            {/*<div className='bg-light'>
+                <LinkButton to={ `/calendars` }>
                     <Icons.ArrowLeftShort style={{
                         height: '25px',
                         width: '25px',
@@ -100,7 +100,7 @@ const AwayTeamCalendar = ({
                     }} />
                     Zurück
                 </LinkButton>
-            </div>
+            </div>*/}
 
             <CalendarNav { ...({
                 className: 'mt-3 mr-5 ml-5',

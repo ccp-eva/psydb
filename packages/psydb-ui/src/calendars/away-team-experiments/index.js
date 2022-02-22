@@ -14,7 +14,7 @@ import { LinkContainer } from '@mpieva/psydb-ui-layout';
 import { ResearchGroupNav } from '@mpieva/psydb-ui-lib';
 
 import RecordTypeNav from '@mpieva/psydb-ui-lib/src/record-type-nav';
-//import Calendar from './calendar';
+import Calendar from './calendar';
 
 const AwayTeamExperimentsRouting = ({
     locationTypes
@@ -50,7 +50,7 @@ const AwayTeamExperimentsRouting = ({
                     />
                 </Route>
                 <Route path={`${path}/:locationType/:researchGroupId`}>
-                    { /* <Calendar /> */ }
+                    <Calendar />
                 </Route>
             </Switch>
         </>
@@ -63,6 +63,9 @@ const RedirectOrTypeNav = ({
     locationTypes,
     title,
 }) => {
+    locationTypes = locationTypes.filter(it => (
+        it.state.reservationType === 'away-team'
+    ));
     if (locationTypes.length === 1) {
         return (
             <Redirect to={
