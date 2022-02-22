@@ -1,4 +1,5 @@
 'use strict';
+var { unique } = require('@mpieva/psydb-core-utils');
 var DataHolder = require('./data-holder');
 
 var anyLabOperationTypes = [
@@ -44,6 +45,16 @@ var Permissions = (options) => {
             : []
         )
     };
+
+    var getAllLabOperationFlagIds = ({ types, flags }) => {
+        var ids = [];
+        for (var type of types) {
+            for (var flag of flags) {
+                ids.push(...getLabOperationFlagIds(type, flag));
+            }
+        }
+        return unique(ids);
+    }
 
     var getCollectionFlagIds = (collection, flag) => (
         (
@@ -91,6 +102,7 @@ var Permissions = (options) => {
         isRoot,
         getFlagIds,
         getLabOperationFlagIds,
+        getAllLabOperationFlagIds,
         getCollectionFlagIds,
 
         hasFlag,

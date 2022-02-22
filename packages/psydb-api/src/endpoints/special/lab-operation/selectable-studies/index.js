@@ -20,69 +20,11 @@ var {
     fetchRelatedLabelsForMany,
 } = require('@mpieva/psydb-api-lib');
 
-var {
-    ExactObject,
-    DefaultArray,
-    StringEnum,
-    CustomRecordTypeKey,
-    ExperimentVariantEnum,
-} = require('@mpieva/psydb-schema-fields');
 
 var convertFiltersToQueryFields = require('@mpieva/psydb-api-lib/src/convert-filters-to-query-fields');
 var fieldTypeMetadata = require('@mpieva/psydb-common-lib/src/field-type-metadata');
 
-var RequestBodySchema = () => ({
-    oneOf: [
-        ExactObject({
-            properties: {
-                studyRecordType: CustomRecordTypeKey({ collection: 'study' }),
-                target: StringEnum([ 'table', 'optionlist' ]),
-                filters: {
-                    type: 'object',
-                    // TODO
-                },
-            },
-            required: [
-                'studyRecordType',
-            ]
-        }),
-        ExactObject({
-            properties: {
-                studyRecordType: CustomRecordTypeKey({ collection: 'study' }),
-                // FIXME: this is actually labProcedureType
-                experimentType: ExperimentVariantEnum(),
-                target: StringEnum([ 'table', 'optionlist' ]),
-                filters: {
-                    type: 'object',
-                    // TODO
-                },
-            },
-            required: [
-                'studyRecordType',
-                'experimentType',
-            ]
-        }),
-        ExactObject({
-            properties: {
-                studyRecordType: CustomRecordTypeKey({ collection: 'study' }),
-                // FIXME: this is actually labProcedureTypes
-                experimentTypes: DefaultArray({
-                    items: ExperimentVariantEnum(),
-                    minItems: 1
-                }),
-                target: StringEnum([ 'table', 'optionlist' ]),
-                filters: {
-                    type: 'object',
-                    // TODO
-                },
-            },
-            required: [
-                'studyRecordType',
-                'experimentTypes',
-            ]
-        }),
-    ]
-});
+var RequestBodySchema = require('./body-schema');
 
 var selectableStudies = async (context, next) => {
     var { 
@@ -105,13 +47,17 @@ var selectableStudies = async (context, next) => {
     } = request.body
 
 
-    // TODO: permissions
-    // .... ye ... what actually?
-
     if (labProcedureType) {
         labProcedureTypes = [ labProcedureType ];
     }
 
+    // FIXME: we need to provide which context we want the study list in
+    // i.e. reservation/suject-selection so that we apply the correct
+    // flag here
+    var userResearchGroupIds = permissions.getAllLabOperationFlagIds({
+        types: labProcedureTypes,
+        flags: [ 'canWriteReservation', 'canSelectSubjectsForExperiments' ]
+    });
     var isAllowed = permissions.hasSomeLabOperationFlags({
         types: labProcedureTypes,
         flags: [ 'canWriteReservation', 'canSelectSubjectsForExperiments' ]
@@ -162,7 +108,8 @@ var selectableStudies = async (context, next) => {
                     'state.runningPeriod.start': { $lte: now },
                     'state.runningPeriod.end': { $type: 10 }, // null
                 }
-            ]
+            ],
+            'state.researchGroupIds': { $in: userResearchGroupIds }
         }},
     ];
 
