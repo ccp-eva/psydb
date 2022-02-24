@@ -2,6 +2,14 @@
 
 module.exports = {
     
+    Integer: {
+        canBeCustomField: true,
+        canBeDisplayField: true,
+        canBeLabelField: true,
+        canSearch: true,
+        searchType: 'Integer',
+    },
+
     Address: {
         canBeCustomField: true,
         canBeDisplayField: true,

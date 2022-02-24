@@ -5,6 +5,7 @@ var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 var {
     ExactObject,
     Id,
+    Integer,
 } = require('@mpieva/psydb-schema-fields');
 
 var createSchemaForRecordType = ({
@@ -95,11 +96,18 @@ var createSchemaForRecordType = ({
         );
     }*/
 
+    var {
+        enableOnlineId,
+        enableSequenceNumber
+    } = additionalSchemaCreatorArgs;
+
     var SchemaCreator = (
         fullSchema === true
         ? FullRecordSchemaCreator({
             collectionCreatorData,
             recordType: recordType,
+            enableOnlineId,
+            enableSequenceNumber,
         })
         : StateSchemaCreator({
             collectionCreatorData,
@@ -146,7 +154,10 @@ var StateSchemaCreator = ({
 
 var FullRecordSchemaCreator = ({
     collectionCreatorData,
-    recordType
+    recordType,
+
+    enableOnlineId,
+    enableSequenceNumber,
 }) => {
 
     var {
@@ -184,6 +195,17 @@ var FullRecordSchemaCreator = ({
             SchemaCreator = ({ ...otherArgs }) => ExactObject({
                 properties: {
                     _id: Id(),
+
+                    ...(enableSequenceNumber && {
+                        sequenceNumber: Integer()
+                    }),
+                    ...(enableOnlineId && {
+                        onlineId: {
+                            systemType: 'SaneString', // FIXME
+                            type: 'string'
+                        }
+                    }),
+
                     ...subChannelKeys.reduce((acc, key) => {
                         var SCStateSchema = (
                             subChannelStateSchemaCreators[key]
@@ -205,6 +227,17 @@ var FullRecordSchemaCreator = ({
             }) => ExactObject({
                 properties: {
                     _id: Id(),
+
+                    ...(enableSequenceNumber && {
+                        sequenceNumber: Integer()
+                    }),
+                    ...(enableOnlineId && {
+                        onlineId: {
+                            systemType: 'SaneString', // FIXME
+                            type: 'string'
+                        }
+                    }),
+
                     ...Object.keys(
                         subChannelCustomRecordFieldDefinitions || {}
                     )
@@ -243,6 +276,17 @@ var FullRecordSchemaCreator = ({
             SchemaCreator = (...args) => ExactObject({
                 properties: {
                     _id: Id(),
+
+                    ...(enableSequenceNumber && {
+                        sequenceNumber: Integer()
+                    }),
+                    ...(enableOnlineId && {
+                        onlineId: {
+                            systemType: 'SaneString', // FIXME
+                            type: 'string'
+                        }
+                    }),
+
                     state: (
                         collectionCreatorData
                         .fixedTypeStateSchemaCreators[recordType](...args)
@@ -254,6 +298,17 @@ var FullRecordSchemaCreator = ({
             SchemaCreator = (options, ...args) => ExactObject({
                 properties: {
                     _id: Id(),
+                    
+                    ...(enableSequenceNumber && {
+                        sequenceNumber: Integer()
+                    }),
+                    ...(enableOnlineId && {
+                        onlineId: {
+                            systemType: 'SaneString', // FIXME
+                            type: 'string'
+                        }
+                    }),
+                    
                     state: collectionCreatorData.State({
                         ...options,
                         ...(options.customFieldDefinitions && ({

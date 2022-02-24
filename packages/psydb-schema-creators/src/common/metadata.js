@@ -297,6 +297,21 @@ module.exports = {
         hasCustomTypes: true,
         hasSubChannels: true,
         subChannelKeys: ['scientific', 'gdpr'],
+        
+        availableStaticDisplayFields: [
+            {
+                key: '_sequenceNumber',
+                systemType: 'Integer',
+                dataPointer: '/sequenceNumber',
+                displayName: 'ID Nr.',
+            },
+            {
+                key: '_onlineId',
+                systemType: 'SaneString',
+                dataPointer: '/onlineId',
+                displayName: 'Online ID Code',
+            },
+        ],
     },
 
     subjectSelector: {

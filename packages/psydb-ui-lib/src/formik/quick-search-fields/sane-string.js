@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Form, FormHelpers } from '@mpieva/psydb-ui-layout';
 import WithField from '../with-field';

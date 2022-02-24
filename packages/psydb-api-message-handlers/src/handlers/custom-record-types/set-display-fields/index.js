@@ -55,8 +55,14 @@ handler.checkAllowedAndPlausible = async ({
         db,
         collectionName: record.collection,
         recordType: record.type,
-        fullSchema: true
+        fullSchema: true,
+        additionalSchemaCreatorArgs: {
+            enableOnlineId: record.collection === 'subject' ? true : false,
+            enableSequenceNumber: true,
+        }
     });
+
+    console.log(targetRecordSchema);
 
     var gatheredFieldData = [];
     for (var fieldPointer of fieldPointers) {
