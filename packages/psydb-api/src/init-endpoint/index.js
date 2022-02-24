@@ -21,6 +21,10 @@ var init = async (context, next) => {
         throw new ApiError(404, 'personnelRecordCount is not zero');
     }
 
+    await (
+        db.collection('sequenceNumbers').insertOne({ _id: 1 })
+    );
+
     var eventMiddleware = createEventMiddleware({
         enableMessageChecks: false,
         enableNotifications: false,

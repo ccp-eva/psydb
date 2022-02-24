@@ -34,7 +34,8 @@ module.exports = GenericRecordHandler({
         var { db, rohrpost, personnelId, message, cache } = options;
         var destructured = destructureMessage({ message });
 
-        var channel = openChannel({
+        var channel = await openChannel({
+            db,
             rohrpost,
             ...destructured
         });

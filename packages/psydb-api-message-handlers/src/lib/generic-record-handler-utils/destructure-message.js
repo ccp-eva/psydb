@@ -12,6 +12,7 @@ var destructureMessage = (options) => {
 
     var {
         id,
+        sequenceNumber,
         lastKnownEventId,
         lastKnownSubChannelEventIds,
         props,
@@ -23,6 +24,7 @@ var destructureMessage = (options) => {
         recordType,
         op,
         id,
+        sequenceNumber,
         lastKnownEventId,
         lastKnownSubChannelEventIds,
         props,

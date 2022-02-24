@@ -1,15 +1,56 @@
 'use strict';
 
-var openChannel = (options) => {
+var openChannel = async (options) => {
     var {
+        db,
         rohrpost,
         op,
         collection,
         recordType,
         additionalCreateProps,
-        id
+
+        id,
+        sequenceNumber,
     } = options;
-    
+   
+    console.log({ collection, recordType, sequenceNumber });
+    var seqpath = (
+        recordType
+        ? `${collection}.${recordType}`
+        : collection
+    );
+    if (sequenceNumber) {
+        var { value: seqdoc } = await (
+            db.collection('sequenceNumbers').findOneAndUpdate(
+                { _id: 1, $or: [
+                    { [seqpath]: { $exists: false }},
+                    { [seqpath]: { $lt: sequenceNumber }},
+                ]},
+                { $set: { [seqpath]: sequenceNumber }},
+                { returnOriginal: false }
+            )
+        );
+    }
+    else {
+        var { value: seqdoc } = await (
+            db.collection('sequenceNumbers').findOneAndUpdate(
+                { _id: 1 },
+                { $inc: { [seqpath]: 1 }},
+                { returnOriginal: false }
+            )
+        );
+        sequenceNumber = (
+            recordType
+            ? seqdoc[collection][recordType]
+            : seqdoc[collection]
+        );
+    }
+
+    await db.collection(collection).createIndex({
+        ...( recordType && { type: 1 }),
+        sequenceNumber: 1
+    }, { unique: true })
+
     // FIXME: dispatch silently ignores messages when id is set
     // but record doesnt exist
     var channel = (
@@ -22,6 +63,7 @@ var openChannel = (options) => {
                 op === 'create'
                 ? {
                     ...(recordType && { type: recordType }),
+                    sequenceNumber,
                     ...additionalCreateProps
                 }
                 : undefined

@@ -5,6 +5,7 @@ var {
     ExactObject,
     Id,
     EventId,
+    Integer,
 } = require('@mpieva/psydb-schema-fields');
 
 var createMessageType = require('./create-record-message-type'),
@@ -78,6 +79,7 @@ var MultiChannelRecordCreateMessage = ({
         payload: ExactObject({
             properties: {
                 id: Id(), // user can optionally force create id
+                sequenceNumber: Integer(), // user can optionally force it
                 props: payloadPropsSchema,
 
                 ...staticCreatePropSchemas,

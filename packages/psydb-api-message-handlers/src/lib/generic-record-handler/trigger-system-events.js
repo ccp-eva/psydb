@@ -14,7 +14,8 @@ var triggerSystemEvents = async ({
 }) => {
     var destructured = destructureMessage({ message });
 
-    var channel = openChannel({
+    var channel = await openChannel({
+        db,
         rohrpost,
         ...destructured
     });
