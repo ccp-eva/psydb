@@ -13,7 +13,6 @@ var openChannel = async (options) => {
         sequenceNumber,
     } = options;
    
-    console.log({ collection, recordType, sequenceNumber });
     var seqpath = (
         recordType
         ? `${collection}.${recordType}`
