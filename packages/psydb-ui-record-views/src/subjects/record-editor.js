@@ -2,7 +2,8 @@ import React from 'react';
 
 import { only } from '@mpieva/psydb-core-utils';
 import { usePermissions, useSendPatch } from '@mpieva/psydb-ui-hooks';
-import { withRecordEditor } from '@mpieva/psydb-ui-lib';
+import { Pair } from '@mpieva/psydb-ui-layout';
+import { withRecordEditor, FormBox } from '@mpieva/psydb-ui-lib';
 import MainForm from './main-form';
 
 const EditForm = (ps) => {
@@ -42,8 +43,32 @@ const EditForm = (ps) => {
         ]
     });
 
-    return (
+    var {
+        sequenceNumber,
+        onlineId
+    } = record;
+
+    var renderedContent = (
         <>
+            { sequenceNumber && (
+                <Pair 
+                    label='ID Nr.'
+                    wLeft={ 3 } wRight={ 9 } className='px-3'
+                >
+                    { sequenceNumber }
+                </Pair>
+            )}
+            { onlineId && (
+                <Pair 
+                    label='Online ID Code'
+                    wLeft={ 3 } wRight={ 9 } className='px-3'
+                >
+                    { onlineId }
+                </Pair>
+            )}
+            { (sequenceNumber || onlineId) && (
+                <hr />
+            )}
             <MainForm.Component
                 title='Proband bearbeiten'
                 fieldDefinitions={ fieldDefinitions }
@@ -51,8 +76,24 @@ const EditForm = (ps) => {
                 onSubmit={ send.exec }
                 related={ related }
                 permissions={ permissions }
-                renderFormBox={ renderFormBox }
+                renderFormBox={ false }
             />
+        </>
+    );
+
+    var renderedForm = (
+        renderFormBox
+        ? (
+            <FormBox title='Proband bearbeiten'>
+                { renderedContent }
+            </FormBox>
+        )
+        : renderedContent
+    );
+
+    return (
+        <>
+            { renderedForm }
         </>
     )
 }

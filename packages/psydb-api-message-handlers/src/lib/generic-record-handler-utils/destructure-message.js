@@ -13,9 +13,6 @@ var destructureMessage = (options) => {
     var {
         id,
         sequenceNumber,
-        // FIXME: this is only for migrating existing onlineIds
-        // and can probably removed in the future
-        // if its kept we need to restrict this to nanoid specifically
         lastKnownEventId,
         lastKnownSubChannelEventIds,
         props,

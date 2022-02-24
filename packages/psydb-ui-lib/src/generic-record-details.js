@@ -7,7 +7,7 @@ import agent from '@mpieva/psydb-ui-request-agents';
 import { withTheme } from '@mpieva/rjsf-monkey-patch';
 import { RJSFReadonlyTheme } from './schema-form';
 
-import { LinkButton } from '@mpieva/psydb-ui-layout';
+import { LinkButton, Pair } from '@mpieva/psydb-ui-layout';
 
 var SchemaForm = withTheme(RJSFReadonlyTheme);
 
@@ -99,16 +99,39 @@ const GenericRecordDetails = ({
         : schema.properties.state
     );
 
+    var {
+        sequenceNumber,
+        onlineId
+    } = record;
+
     return (
-        <SchemaForm
-            noHtml5Validate={ true }
-            showErrorList={ false }
-            schema={ formSchema }
-            formData={ formData }
-            formContext={ formContext }
-        >
-            <div></div>
-        </SchemaForm>
+        <div>
+            { sequenceNumber && (
+                <Pair 
+                    label='ID Nr.'
+                    wLeft={ 3 } wRight={ 9 } className='px-3'
+                >
+                    { sequenceNumber }
+                </Pair>
+            )}
+            { onlineId && (
+                <Pair 
+                    label='Online ID Code'
+                    wLeft={ 3 } wRight={ 9 } className='px-3'
+                >
+                    { onlineId }
+                </Pair>
+            )}
+            <SchemaForm
+                noHtml5Validate={ true }
+                showErrorList={ false }
+                schema={ formSchema }
+                formData={ formData }
+                formContext={ formContext }
+            >
+                <div></div>
+            </SchemaForm>
+        </div>
     )
 }
 

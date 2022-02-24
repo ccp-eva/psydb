@@ -136,14 +136,10 @@ var InternalsSchema = () => {
                         ]
                     }
                 },
-                onlineId: {
-                    type: 'string',
-                }
             },
             required: [
                 'invitedForExperiments',
                 'participatedInStudies',
-                'onlineId',
             ],
         })
     )
