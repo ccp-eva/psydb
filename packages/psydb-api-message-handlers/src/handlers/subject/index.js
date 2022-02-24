@@ -6,10 +6,8 @@ var {
 var GenericRecordHandler = require('../../lib/generic-record-handler');
 
 var SubjectGroup = MessageHandlerGroup([
-    GenericRecordHandler({
-        collection: 'subject',
-        op: 'create',
-    }),
+    require('./create'),
+
     GenericRecordHandler({
         collection: 'subject',
         op: 'patch',

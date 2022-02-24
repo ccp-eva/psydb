@@ -102,7 +102,6 @@ var ExperimentInvitation = ({ type }) => ExactObject({
 })
 
 var InternalsSchema = () => {
-    var onlineId = nanoid();
     return (
         ExactObject({
             properties: {
@@ -138,15 +137,13 @@ var InternalsSchema = () => {
                     }
                 },
                 onlineId: {
-                    // FIXME: this needs to be nanoid specifically
                     type: 'string',
-                    const: onlineId,
-                    default: onlineId,
                 }
             },
             required: [
                 'invitedForExperiments',
                 'participatedInStudies',
+                'onlineId',
             ],
         })
     )

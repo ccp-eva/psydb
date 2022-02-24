@@ -10,7 +10,7 @@ var SubjectRecordMessage = ({
     type,
     subChannelCustomFieldDefinitions,
 }) => {
-    return MultiChannelRecordMessage({
+    var schema = MultiChannelRecordMessage({
         op,
         collection: 'subject',
         type,
@@ -19,7 +19,12 @@ var SubjectRecordMessage = ({
             scientific: internals.SubjectScientificState,
             gdpr: internals.SubjectGdprState
         }
-    })
+    });
+    // FIXME: this is only for migrating existing onlineIds
+    // and can probably removed in the future
+    // if its kept we need to restrict this to nanoid specifically
+    schema.properties.payload.properties.onlineId = { type: 'string' };
+    return schema;
 }
 
 module.exports = SubjectRecordMessage;

@@ -47,9 +47,9 @@ module.exports = GenericRecordHandler({
 
         var generatedPassword = nanoid.customAlphabet(
             [
-                '1234567890',
-                'abcdefghikmnpqrstuvwxyz',
-                'ABCDEFGHIKMNPQRSTUVWXYZ',
+                '123456789',
+                'abcdefghikmnopqrstuvwxyz',
+                'ABCDEFGHJKLMNPQRSTUVWXYZ'
             ].join(''), 24
         )();
         var passwordHash = bcrypt.hashSync(generatedPassword, 10);
