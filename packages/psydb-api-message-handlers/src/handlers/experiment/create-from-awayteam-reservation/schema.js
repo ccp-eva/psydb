@@ -6,6 +6,7 @@ var {
     ForeignId,
     SaneString,
     DateTimeInterval,
+    FullText,
 } = require('@mpieva/psydb-schema-fields');
 
 var { Message } = require('@mpieva/psydb-schema-helpers');
@@ -38,6 +39,8 @@ var createSchema = ({} = {}) => (
                             }),
                         },
 
+                        comment: FullText(),
+
                         /*subjectGroupIds: {
                             type: 'array',
                             default: [],
@@ -52,6 +55,7 @@ var createSchema = ({} = {}) => (
                         'experimentOperatorTeamId',
                         //'subjectGroupIds',
                         'subjectIds',
+                        'comment',
                     ]
                 })
             },

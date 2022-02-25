@@ -26,6 +26,7 @@ var dispatchCreateEvents = async ({
     //subjectGroupIds,
     subjectData,
     interval,
+    comment,
 
     lastKnownReservationEventId,
 }) => {
@@ -131,6 +132,9 @@ var dispatchCreateEvents = async ({
             '/state/locationRecordType': locationRecordType,
             '/state/interval/start': interval.start,
             '/state/interval/end': interval.end,
+            ...(type === 'away-team' && {
+                '/state/comment': comment
+            })
         }),
 
         ...pusher.all({

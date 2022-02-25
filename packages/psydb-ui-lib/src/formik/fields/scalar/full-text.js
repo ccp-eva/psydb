@@ -4,7 +4,7 @@ import { withField } from '@cdxoo/formik-utils';
 
 export const FullText = withField({
     Control: (ps) => {
-        var { formikField, formikMeta, disabled } = ps;
+        var { formikField, formikMeta, disabled, rows = 8 } = ps;
         var { error } = formikMeta;
         return (
             <Form.Control
@@ -14,7 +14,7 @@ export const FullText = withField({
                 { ...formikField }
             
                 as='textarea'
-                rows={8}
+                rows={ rows }
             />
         )
     }

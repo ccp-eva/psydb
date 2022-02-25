@@ -48,65 +48,86 @@ const General = ({
         endDate, endTime
     } = formatDateInterval(experimentRecord.state.interval);
 
+    var researchGroupLabel = stringifyStudyValue({
+        ptr: '/state/researchGroupIds',
+        type: 'ForeignIdList',
+        collection: 'researchGroup'
+    });
+
+    var sharedBag = {
+        experimentTypeLabel: experimentTypes.mapping[experimentRecord.type],
+        studyLabel: studyRecord.state.shorthand,
+        researchGroupLabel,
+        interval: experimentRecord.state.interval,
+        locationData,
+        opsTeamData,
+    }
+
     return (
             <Container>
-                <Split num={2}>
-                    <Pair label='Typ'>
-                        { experimentTypes.mapping[experimentRecord.type] }
-                    </Pair>
-                    <Pair label='Team'>
-                        <TeamNameAndColor teamRecord={
-                            opsTeamData.record
-                        } />
-                    </Pair>
-                </Split>
-                
-                <Split num={2}>
-                    <Pair label='Datum'>
-                        { startDate }
-                    </Pair>
-                    { isInviteExperiment && (
-                        <Pair label='Uhrzeit'>
-                            { startTime }
-                            {' bis '}
-                            { endTime }
-                        </Pair>
-                    )}
-                </Split>
-
-                <Split>
-                    <Pair label='Studie'>
-                        { studyRecord.state.shorthand }
-                    </Pair>
-                    <Pair label='Forschungsgruppe'>
-                        { stringifyStudyValue({
-                            ptr: '/state/researchGroupIds',
-                            type: 'ForeignIdList',
-                            collection: 'researchGroup'
-                        })}
-                    </Pair>
-                </Split>
-                
-                <LocationInfo { ...({
-                    experimentType,
-                    locationData,
-                }) } />
-                
+                {
+                    isInviteExperiment
+                    ? (
+                        <InviteVariant
+                            { ...sharedBag }
+                        />
+                    )
+                    : (
+                        <AwayTeamVariant
+                            { ...sharedBag }
+                            comment={ experimentRecord.state.comment }
+                        />
+                    )
+                }
             </Container>
     );
 }
 
-const LocationInfo = ({
-    experimentType,
-    locationData,
-}) => {
+const InviteVariant = (ps) => {
+    var {
+        experimentTypeLabel,
+        studyLabel,
+        researchGroupLabel,
+        interval,
+        locationData,
+        opsTeamData,
+    } = ps;
     
-    var isInviteExperiment = (
-        inviteExperimentTypes.keys.includes(experimentType)
-    );
+    var {
+        startDate, startTime, endTime
+    } = formatDateInterval(interval);
 
-    if (isInviteExperiment) {
-        return (
+    return (
+        <>
+            <Split num={2}>
+                <Pair label='Studie'>
+                    { studyLabel }
+                </Pair>
+                <Pair label='Team'>
+                    <TeamNameAndColor teamRecord={ opsTeamData.record } />
+                </Pair>
+            </Split>
+
+            <Split num={2}>
+                <Pair label='Datum'>
+                    { startDate }
+                </Pair>
+                <Pair label='Uhrzeit'>
+                    { startTime }
+                    {' bis '}
+                    { endTime }
+                </Pair>
+            </Split>
+
+            <Split>
+                <Pair label='Forschungsgruppe'>
+                    { researchGroupLabel }
+                </Pair>
+                <Pair label='Typ'>
+                    { experimentTypeLabel }
+                </Pair>
+            </Split>
+            
             <Split>
                 <Pair label='Location'>
                     { locationData.record._recordLabel}
@@ -115,21 +136,92 @@ const LocationInfo = ({
                     { locationData.recordTypeLabel}
                 </Pair>
             </Split>
-        );
+        </>
+    )
+};
+
+
+const AwayTeamVariant = (ps) => {
+    var {
+        experimentTypeLabel,
+        studyLabel,
+        researchGroupLabel,
+        interval,
+        locationData,
+        opsTeamData,
+        comment
+    } = ps;
+
+    var { startDate } = formatDateInterval(interval);
+
+    var withValue = applyValueToDisplayFields({
+        ...locationData,
+    });
+
+    return (
+        <>
+            <Split num={2}>
+                <div>
+                    <Pair label='Studie'>
+                        { studyLabel }
+                    </Pair>
+                    <Pair label='Team'>
+                        <TeamNameAndColor teamRecord={ opsTeamData.record } />
+                    </Pair>
+                    <Pair label='Datum'>
+                        { startDate }
+                    </Pair>
+                    <Pair label='Forschungsgruppe'>
+                        { researchGroupLabel }
+                    </Pair>
+                    <Pair label='Typ'>
+                        { experimentTypeLabel }
+                    </Pair>
+                </div>
+                <div>
+                    <Pair label='Location-Typ'>
+                        { locationData.recordTypeLabel }
+                    </Pair>
+                    <div className='ml-3 pl-3' style={{
+                        borderLeft: '3px solid #dfe0e1'
+                    }}>
+                        { withValue.map((it, index) => (
+                            <Pair
+                                key={ index } wLeft={ 2 }
+                                label={ it.displayName }
+                            >
+                                { it.value }
+                            </Pair>
+                        )) }
+                    </div>
+                </div>
+            </Split>
+            <header className='mt-3'><b>Kommentar</b></header>
+            <div className='px-3 py-2 bg-white border'>
+                { comment ? comment : <i className='text-muted'>Kein Kommentar</i> }
+            </div>
+        </>
+    )
+};
+
+const LocationInfo = ({
+    isInviteExperiment,
+    experimentType,
+    locationData,
+}) => {
+    if (isInviteExperiment) {
     }
     else {
-    
+
         var withValue = applyValueToDisplayFields({
             ...locationData,
         });
 
         return (
             <div>
-                <Split num={2}>
-                    <Pair label='Location-Typ'>
-                        { locationData.recordTypeLabel}
-                    </Pair>
-                </Split>
+                <Pair label='Location-Typ'>
+                    { locationData.recordTypeLabel }
+                </Pair>
                 <div className='ml-3 pl-3' style={{
                     borderLeft: '3px solid #dfe0e1'
                 }}>
