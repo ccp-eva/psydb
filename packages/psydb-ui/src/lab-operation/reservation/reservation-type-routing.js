@@ -41,7 +41,7 @@ export const ReservationTypeRouting = (ps) => {
         ))
         && permissions.hasSomeLabOperationFlags({
             types: [ 'away-team' ],
-            flags: [ 'canWriteReservations ']
+            flags: [ 'canWriteReservations']
         })
     );
 
