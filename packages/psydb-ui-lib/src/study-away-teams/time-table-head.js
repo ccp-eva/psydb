@@ -21,14 +21,23 @@ const TimeTableHead = ({
                     </div>
                 </Col>
                 
-                { allDayStarts.map(dayStart => (
-                    <Col
+                { allDayStarts.map(dayStart => {
+                    var dayIndex = datefns.getISODay(dayStart);
+                    var shouldEnable = !([6,7].includes(dayIndex));
+                    var className = (
+                        shouldEnable
+                        ? 'p-0 text-center bg-light border-bottom'
+                        : 'p-0 text-center bg-light text-lightgrey border-bottom'
+                    )
+                    return <Col
                         key={ dayStart.getTime() }
-                        className='p-0 text-center bg-light border-bottom'
+                        className={ className }
                     >
-                        <b>{ datefns.format(dayStart, 'cccccc dd.MM.') }</b>
+                        <b>
+                            { datefns.format(dayStart, 'cccccc dd.MM.') }
+                        </b>
                     </Col>
-                )) }
+                }) }
             </Row>
         </Container>
     )

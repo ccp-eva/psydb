@@ -109,6 +109,10 @@ a:hover {
     color: #ccc;
 }
 
+.team-time-slot.disabled {
+    border: 1px solid;
+    border-color: #f8f9fa;
+}
 .team-time-slot.empty {
     border: 1px solid;
     border-color: #dee2e6;

@@ -182,7 +182,13 @@ const TimeSlot = ({
     onSelectReservationSlot,
     onSelectExperimentSlot,
 }) => {
-    if (experimentRecord) {
+    var dayIndex = datefns.getISODay(dayStart);
+    var shouldEnable = !([6,7].includes(dayIndex));
+
+    if (!shouldEnable) {
+        return <DisabledSlot />
+    }
+    else if (experimentRecord) {
         return (
             <ExperimentSlot { ...({
                 teamRecord,
@@ -346,4 +352,23 @@ const EmptySlot = ({
     )
 }
 
+const DisabledSlot = () => {
+    var classNames = [
+        'text-center',
+        'm-1',
+        'team-time-slot',
+        'disabled',
+        'bg-light'
+    ];
+    var role = '';
+
+    return (
+        <div
+            className={ classNames.join(' ') }
+            style={{
+                height: '26px',
+            }}
+        />
+    )
+}
 export default TeamTimeTable;
