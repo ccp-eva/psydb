@@ -93,7 +93,7 @@ var FullBodySchema = ({
             limit: {
                 type: 'integer',
                 minimum: 1,
-                maximum: 250,
+                maximum: 1000,
             },
             sort: ExactObject({
                 properties: {

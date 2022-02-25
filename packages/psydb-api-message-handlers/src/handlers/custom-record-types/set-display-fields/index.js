@@ -62,7 +62,7 @@ handler.checkAllowedAndPlausible = async ({
         }
     });
 
-    console.log(targetRecordSchema);
+    //console.log(targetRecordSchema);
 
     var gatheredFieldData = [];
     for (var fieldPointer of fieldPointers) {

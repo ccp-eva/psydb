@@ -24,7 +24,7 @@ var createRecordLabel = ({ definition, record }) => {
         else {
             var stringify = stringifiers[systemType];
             if (stringify) {
-                value = stringify(value);
+                value = stringify(value, { short: true });
             }
         }
         label = label.replace(

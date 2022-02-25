@@ -67,7 +67,7 @@ RequestBodySchema.Full = () => ExactObject({
             required: [],
         }),
         offset: Integer({ minimum: 0 }),
-        limit: Integer({ maximum: 250 }),
+        limit: Integer({ maximum: 1000 }),
         timezone: Timezone(),
     },
     required: [

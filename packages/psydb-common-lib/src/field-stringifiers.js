@@ -69,20 +69,38 @@ var AgeFrameInterval = (value) => {
     return `${start} - ${end}`;
 }
 
-var BiologicalGender = (value) => {
-    return {
-        'male': 'Männlich',
-        'female': 'Weiblich',
-        'unknown': 'Unbekannt',
-    }[value];
+var BiologicalGender = (value, { short } = {}) => {
+    if (short) {
+        return {
+            'male': 'm',
+            'female': 'w',
+            'unknown': 'u',
+        }[value];
+    }
+    else {
+        return {
+            'male': 'Männlich',
+            'female': 'Weiblich',
+            'unknown': 'Unbekannt',
+        }[value];
+    }
 }
 
-var ExtBool = (value) => {
-    return {
-        'yes': 'Ja',
-        'no': 'Nein',
-        'unknown': 'Unbekannt',
-    }[value];
+var ExtBool = (value, { short } = {}) => {
+    if (short) {
+        return {
+            'yes': 'J',
+            'no': 'N',
+            'unknown': 'U',
+        }[value];
+    }
+    else {
+        return {
+            'yes': 'Ja',
+            'no': 'Nein',
+            'unknown': 'Unbekannt',
+        }[value];
+    }
 }
 
 module.exports = {
