@@ -47,6 +47,7 @@ export const EditorMainForm = (ps) => {
             'gdpr.shorthand',
             'gdpr.emails',
             'gdpr.phones',
+            'gdpr.description',
             'scientific.researchGroupSettings',
             'scientific.systemPermissions',
             ...(

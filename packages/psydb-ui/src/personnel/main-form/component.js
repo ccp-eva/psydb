@@ -68,6 +68,12 @@ const FormFields = (ps) => {
                 dataXPath='$.gdpr.phones'
                 required
             />
+            
+            <Fields.FullText
+                label='Beschreibung'
+                dataXPath='$.gdpr.description'
+            />
+
             <Fields.ResearchGroupWithRoleList
                 label='Forschungsgruppen'
                 dataXPath='$.scientific.researchGroupSettings'

@@ -35,8 +35,10 @@ var PersonnelGdprState = ({ enableInternalProps } = {}) => {
                 minItems: 0
             }),
             
-            // TODO: find out what thats good for
-            //description: FullText(),
+            description: FullText({
+                title: 'Beschreibung',
+                minLength: 0,
+            }),
 
             // TODO: internals need to be separated
             // and put here when we read the record
