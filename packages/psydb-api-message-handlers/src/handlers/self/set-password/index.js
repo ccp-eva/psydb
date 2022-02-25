@@ -25,11 +25,12 @@ handler.checkAllowedAndPlausible = async (context) => {
     var self = await (
         db.collection('personnel')
         .findOne({ _id: personnelId }, { projection: {
-            'passwordHash': '$gdpr.state.internals.passwordHash',
+            'gdpr.state.internals.passwordHash': true,
         }})
-    )
+    );
+    var passwordHash = self.gdpr.state.internals.passwordHash;
 
-    if (bcrypt.compareSync(currentPassword, self.passwordHash)) {
+    if (bcrypt.compareSync(currentPassword, passwordHash)) {
         debug('passwords match');
     }
     else {
