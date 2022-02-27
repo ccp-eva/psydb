@@ -31,6 +31,7 @@ module.exports = {
 
     fetchRecordById: require('./fetch-record-by-id'),
     fetchRecordDisplayDataById: require('./fetch-record-display-data-by-id'),
+    fetchRecordReverseRefs: require('./fetch-record-reverse-refs'),
     fetchRecordsByFilter: require('./fetch-records-by-filter'),
     fetchRecordsInInterval: require('./fetch-records-in-interval'),
 
