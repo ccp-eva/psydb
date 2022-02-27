@@ -14,6 +14,7 @@ var SubjectGroup = MessageHandlerGroup([
     }),
 
     require('./add-manual-participation'),
+    require('./remove'),
 ]);
 
 module.exports = SubjectGroup;

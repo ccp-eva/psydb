@@ -39,5 +39,7 @@ module.exports = {
     fetchRelatedRecords: require('./fetch-related-records'),
     fetchEnabledLocationRecordsForStudy: require('./fetch-enabled-location-records-for-study'),
 
-    gatherDisplayFieldsForRecordType: require('./gather-display-fields-for-record-type')
+    gatherDisplayFieldsForRecordType: require('./gather-display-fields-for-record-type'),
+
+    resolvePossibleRefs: require('./resolve-possible-refs'),
 }

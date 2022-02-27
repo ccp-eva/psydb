@@ -13,12 +13,10 @@ var Schema = () => {
         payload: ExactObject({
             properties: {
                 id: Id(),
-                lastKnownGdprEventId: EventId(),
                 lastKnownScientificEventId: EventId(),
             },
             required: [
                 'id',
-                'lastKnownGdprEventId',
                 'lastKnownScientificEventId',
             ]
         })
