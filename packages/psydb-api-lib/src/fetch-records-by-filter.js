@@ -190,7 +190,10 @@ var fetchRecordByFilter = async ({
         db.collection(collectionName)
         .aggregate(
             stages,
-            { collation: { locale: 'de@collation=phonebook' }}
+            {
+                allowDiskUse: true,
+                collation: { locale: 'de@collation=phonebook' }
+            }
         )
         .toArray()
     );
