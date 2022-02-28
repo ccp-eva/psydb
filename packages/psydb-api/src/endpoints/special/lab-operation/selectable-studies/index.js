@@ -138,6 +138,7 @@ var selectableStudies = async (context, next) => {
         //offset,
         //limit
         
+        //sort: { path: 'state.shorthand', direction: 'asc' },
         disablePermissionCheck: true,
     });
 

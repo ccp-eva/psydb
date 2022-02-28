@@ -162,6 +162,15 @@ var fetchRecordByFilter = async ({
             }
         })
     }
+    else {
+        if (displayFields && displayFields.length > 0) {
+            var { pointer, dataPointer } = displayFields[0];
+            var sortPath = convertPointerToPath(pointer || dataPointer);
+            stages.push({
+                $sort: { [sortPath]: 1 }
+            })
+        }
+    }
 
     stages.push({
         $facet: {
@@ -178,7 +187,12 @@ var fetchRecordByFilter = async ({
     //throw new Error();*/
 
     var facets = await (
-        db.collection(collectionName).aggregate(stages).toArray()
+        db.collection(collectionName)
+        .aggregate(
+            stages,
+            { collation: { locale: 'de@collation=phonebook' }}
+        )
+        .toArray()
     );
     var [ resultSet, totalRecordCount ] = fromFacets(facets);
 

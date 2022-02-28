@@ -92,7 +92,7 @@ var selectableStudiesForCalendar = async (context, next) => {
         db.collection('study').aggregate([
             StripEventsStage(),
             ...stages,
-        ]).toArray()
+        ], { collation: { locale: 'de@collation=phonebook' }}).toArray()
     );
 
     var settingRecords = await (
