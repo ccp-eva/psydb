@@ -31,6 +31,8 @@ var fetchUpcomingExperimentData = async ({
             }},
             { $sort: { 'state.interval.start': 1 }},
             { $project: {
+                _id: true,
+                type: true,
                 'state.locationId': true,
                 'state.studyId': true,
                 'state.interval.start': true,
