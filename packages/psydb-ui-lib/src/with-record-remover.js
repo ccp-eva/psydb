@@ -1,0 +1,73 @@
+import React from 'react';
+
+import {
+    useRouteMatch,
+    useParams,
+    Switch,
+    Route
+} from 'react-router-dom';
+
+import {
+    PermissionDenied,
+    LoadingIndicator
+} from '@mpieva/psydb-ui-layout';
+
+import {
+    usePermissions,
+    useReadRecord
+} from '@mpieva/psydb-ui-hooks';
+
+export const withRecordRemover = (options) => {
+    var {
+        SafetyForm,
+        SuccessInfo
+    } = options;
+
+    var SafetyFormWrapper = (ps) => {
+        var { collection, recordType, id } = ps;
+
+        var [ didFetch, fetched ] = useReadRecord({
+            collection, recordType, id,
+            shouldFetchSchema: false,
+            shouldFetchCRTSettings: false,
+        });
+        
+        if (!didFetch) {
+            return <LoadingIndicator size='lg' />
+        }
+
+        return (
+            <SafetyForm { ...ps } fetched={ fetched } />
+        );
+    }
+
+    var SuccessInfoWrapper = (ps) => {
+        return (
+            <SuccessInfo { ...ps } />
+        )
+    }
+
+    var RecordRemover = (ps) => {
+        var { collection, recordType, id: manualId } = ps;
+        var { id: paramId } = useParams();
+        var id = manualId || paramId;
+
+        var permissions = usePermissions();
+        if (!permissions.isRoot()) {
+            return <PermissionDenied />
+        }
+
+        return (
+            <Switch>
+                <Route exact match='/'>
+                    <SafetyFormWrapper { ...ps } id={ id }/>
+                </Route>
+                <Route exact match='/success'>
+                    <SuccessInfoWrapper { ...ps } id={ id } />
+                </Route>
+            </Switch>
+        )
+    }
+
+    return RecordRemover;
+}

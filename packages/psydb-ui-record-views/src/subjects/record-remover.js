@@ -1,10 +1,13 @@
 import React from 'react';
 
-export const RecordRemover = (ps) => {
+import { withRecordRemover, FormBox } from '@mpieva/psydb-ui-lib';
+
+const SafetyForm = (ps) => {
     var {
         collection,
         recordType,
         id,
+        fetched,
         onSuccessfulUpdate
     } = ps;
 
@@ -12,3 +15,14 @@ export const RecordRemover = (ps) => {
         <div>REM</div>
     )
 }
+
+const SuccessInfo = (ps) => {
+    return (
+        <div>success</div>
+    )
+}
+
+export const RecordRemover = withRecordRemover({
+    SafetyForm,
+    SuccessInfo
+});
