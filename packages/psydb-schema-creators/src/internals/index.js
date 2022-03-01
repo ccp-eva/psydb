@@ -39,12 +39,14 @@ module.exports.StudyTopicState = require('./study-topic/state');
 module.exports.StudyTopicRecordMessage = require('./study-topic/record-message');
 
 module.exports.ExperimentOperatorTeamState = require('./experiment-operator-team/state');
+module.exports.ExperimentOperatorTeamFullSchema = require('./experiment-operator-team/full-schema');
 module.exports.ExperimentOperatorTeamRecordMessage = require('./experiment-operator-team/record-message');
 
 module.exports.AwayTeamReservationState = require('./reservation/away-team-state');
 module.exports.InhouseReservationState = require('./reservation/inhouse-state');
 
 module.exports.ExperimentState = require('./experiment/state');
+module.exports.ExperimentFullSchema = require('./experiment/full-schema');
 module.exports.ExperimentVariantState = require('./experiment-variant/state');
 module.exports.ExperimentVariantRecordMessage = require('./experiment-variant/record-message');
 

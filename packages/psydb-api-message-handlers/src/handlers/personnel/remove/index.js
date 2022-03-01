@@ -12,7 +12,7 @@ var PutMaker = require('../../../lib/put-maker');
 var createSchema = require('./schema');
 
 var handler = SimpleHandler({
-    messageType: 'subject/remove',
+    messageType: 'personnel/remove',
     createSchema,
 });
 
@@ -32,7 +32,7 @@ handler.checkAllowedAndPlausible = async ({
     } = message.payload;
 
     var record = await (
-        db.collection('subject')
+        db.collection('personnel')
         .findOne(
             { _id: id },
             { projection: {
@@ -45,57 +45,10 @@ handler.checkAllowedAndPlausible = async ({
         throw new ApiError(404);
     }
 
-    var { scientific: { state }} = record;
-    var { internals: {
-        invitedForExperiments,
-        participatedInStudies
-    }} = state;
-
-    console.log({
-        invitedForExperiments,
-        participatedInStudies
-    });
-
-    if (invitedForExperiments.length > 0) {
-        var now = new Date();
-        var experiments = await (
-            db.collection('experiment').find(
-                { 
-                    _id: { $in: invitedForExperiments.map(it => (
-                        it.experimentId
-                    ))},
-                    'state.isPostprocessed': false,
-                    'state.isCanceled': false
-                },
-                { projection: {
-                    _id: true,
-                    type: true,
-                    'state.interval': true,
-                }}
-            ).toArray()
-        );
-
-        throw new ApiError(409, {
-            apiStatus: 'SubjectHasExperimentInvitations',
-            data: { experiments }
-        });
-    }
-
-    if (participatedInStudies.length > 0) {
-        var participated = participatedInStudies.filter(it => (
-            it.status === 'participated'
-        ));
-        if (participated.length > 0) {
-            throw new ApiError(409, {
-                apiStatus: 'SubjectHasStudyParticipation',
-                data: { participatedInStudies: participated }
-            });
-        }
-    }
     var reverseRefs = await fetchRecordReverseRefs({
         db,
         recordId: id,
-        refTargetCollection: 'subject'
+        refTargetCollection: 'personnel'
     });
 
     if (reverseRefs.length > 0) {
@@ -104,7 +57,6 @@ handler.checkAllowedAndPlausible = async ({
             data: { reverseRefs }
         });
     }
-
 
 }
 
@@ -122,7 +74,7 @@ handler.triggerSystemEvents = async ({
 
     var channel = (
         rohrpost
-        .openCollection('subject')
+        .openCollection('personnel')
         .openChannel({ id })
     );
 

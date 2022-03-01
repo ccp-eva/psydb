@@ -21,6 +21,7 @@ module.exports = {
     experimentOperatorTeam: {
         ...metadata.experimentOperatorTeam,
         State: internals.ExperimentOperatorTeamState,
+        FullSchema: internals.ExperimentOperatorTeamFullSchema,
         RecordMessage: internals.ExperimentOperatorTeamRecordMessage 
     },
     location: {
@@ -104,6 +105,7 @@ module.exports = {
 
     experiment: {
         ...metadata.experiment,
+        FullSchema: internals.ExperimentFullSchema,
         State: internals.ExperimentState,
     },
 

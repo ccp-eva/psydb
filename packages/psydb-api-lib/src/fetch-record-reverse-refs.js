@@ -1,22 +1,53 @@
 'use strict';
 var { unique } = require('@mpieva/psydb-core-utils');
 
+var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 var createSchemaForRecordType = require('./create-schema-for-record-type');
 var resolvePossibleRefs = require('./resolve-possible-refs');
 
 var fetchRecordReverseRefs = async ({
     db,
     recordId,
+    refTargetCollection,
 }) => {
+    var allReferencingRecords = [];
+
+    var staticCollections = [
+        'experiment',
+        'experimentOperatorTeam'
+    ];
+    for (var collection of staticCollections) {
+        var { FullSchema } = allSchemaCreators[collection];
+        var schema = FullSchema({ enableInternalProps: true });
+        
+        var possibleRefs = (
+            resolvePossibleRefs(schema, {
+                systemTypes: [ 'ForeignId' ]
+            })
+            .filter(it => {
+                var { systemProps: { collection }} = it;
+                //return true;
+                return collection === refTargetCollection
+            })
+        );
+        
+        var fetchedRefs = await fetchReferencingRecords({
+            db,
+            collection,
+            id: recordId,
+            possibleRefs
+        });
+        allReferencingRecords.push(...fetchedRefs);
+    }
+
     var crts = await (
         db.collection('customRecordType')
         .find({}, { projection: { events: false }})
         .toArray()
     );
 
-    var allReferencingRecords = [];
     for (var crt of crts) {
-        console.log(crt.collection);
+        //console.log(crt.collection);
         var schema = await createSchemaForRecordType({
             db,
             collectionName: crt.collection,
@@ -31,42 +62,68 @@ var fetchRecordReverseRefs = async ({
             })
             .filter(it => {
                 var { systemProps: { collection }} = it;
-                return true;
-                return collection === 'subject'
+                //return true;
+                return collection === refTargetCollection
             })
         );
         
-        //console.log(possibleRefs);
-        var searchPaths = unique(
-            possibleRefs
-            .map(it => (
-                convertSchemaPointerToMongoSearchPath(it.schemaPointer)
-            ))
-        );
-
-        console.log(searchPaths);
-        var query = {
+        var fetchedRefs = await fetchReferencingRecords({
+            db,
+            collection: crt.collection,
             type: crt.type,
+            id: recordId,
+            possibleRefs
+        });
+        allReferencingRecords.push(...fetchedRefs);
+    }
+
+    console.log('all', allReferencingRecords);
+    return allReferencingRecords;
+}
+
+var fetchReferencingRecords = async (options) => {
+    var {
+        db,
+        collection,
+        type,
+        id: recordId,
+        possibleRefs
+    } = options;
+
+    //console.log(possibleRefs);
+    var searchPaths = unique(
+        possibleRefs
+        .map(it => (
+            convertSchemaPointerToMongoSearchPath(it.schemaPointer)
+        ))
+    );
+
+    //console.log(searchPaths);
+    if (searchPaths.length > 0) {
+        var query = {
+            ...(type && { type }),
             $or: searchPaths.map(it => ({
                 [it]: recordId
             }))
         };
-        console.log(query);
+        console.log(collection, query);
         var referencingRecords = await (
-            db.collection(crt.collection)
+            db.collection(collection)
             .find(query, { projection: {
                 _id: true,
                 type: true
             }})
             .toArray()
         );
-        allReferencingRecords.push(...referencingRecords.map(it => ({
-            ...it, collection: crt.collection
-        })));
+        console.log(referencingRecords);
+        
+        return referencingRecords.map(it => ({
+            ...it, collection,
+        }));
     }
-
-    console.log(allReferencingRecords);
-    return allReferencingRecords;
+    else {
+        return [];
+    }
 }
 
 var convertSchemaPointerToMongoSearchPath = (schemaPointer) => {
