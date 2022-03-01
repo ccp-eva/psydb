@@ -24,6 +24,7 @@ const withRecordTypeView = ({
     RecordDetails,
     RecordCreator,
     RecordEditor,
+    RecordRemover,
 
     CustomRouting,
     shouldFetchCollectionTypes,
@@ -96,6 +97,7 @@ const withRecordTypeView = ({
                     RecordDetails,
                     RecordCreator,
                     RecordEditor,
+                    RecordRemover,
                 }) } />
             </div>
         );

@@ -54,6 +54,7 @@ const SubjectDetailsContainer = ({
     var permissions = usePermissions();
     var participationModal = useModalReducer();
 
+    var isRoot = permissions.isRoot();
     var canEdit = permissions.hasCollectionFlag(collection, 'write');
     var canReadParticipation = permissions.hasFlag('canReadParticipation');
     var canWriteParticipation = permissions.hasFlag('canWriteParticipation');
@@ -77,7 +78,7 @@ const SubjectDetailsContainer = ({
             </div>
             
             { canReadParticipation && (
-                <div className='border pl-3 bg-light mt-4'>
+                <div className='border pl-3 bg-light mt-4 mb-4'>
                     <ParticipationModal
                         { ...participationModal.passthrough }
                         subjectId={ id }
@@ -92,9 +93,20 @@ const SubjectDetailsContainer = ({
                         )}
                     />
                     <hr />
-                    <div className='mr-3'>
+                    <div className='pr-3 pb-3'>
                         <Participation id={ id } revision={ revision } />
                     </div>
+                </div>
+            )}
+
+            { isRoot && (
+                <div className='mb-4'>
+                    <LinkButton
+                        variant='danger'
+                        to={`${up(url, 1)}/remove` }
+                    >
+                        Proband Löschen
+                    </LinkButton>
                 </div>
             )}
 

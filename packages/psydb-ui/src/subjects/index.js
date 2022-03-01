@@ -11,7 +11,8 @@ import IntraTypeRouting from './intra-type-routing'
 import {
     RecordCreator,
     RecordEditor,
-    RecordDetails
+    RecordDetails,
+    RecordRemover
 } from '@mpieva/psydb-ui-record-views/subjects';
 
 //import { RecordCreator } from './record-creator';
@@ -22,6 +23,7 @@ const SubjectTypeView = withRecordTypeView({
     RecordEditor,
     RecordDetails: Details,
     //RecordDetails,
+    RecordRemover,
     CustomRouting: IntraTypeRouting,
 })
 

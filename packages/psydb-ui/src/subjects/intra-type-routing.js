@@ -21,6 +21,7 @@ const RecordTypeRouting = ({
     RecordDetails,
     RecordCreator,
     RecordEditor,
+    RecordRemover,
 }) => (
     <Switch>
         <Route exact path={`${path}`}>
@@ -80,6 +81,17 @@ const RecordTypeRouting = ({
                 recordType={ recordType }
                 onSuccessfulUpdate={ ({ id }) => {
                     history.push(`${url}/${id}`)
+                }}
+            />
+        </Route>
+        
+        <Route path={`${path}/:id/remove`}>
+            <RecordRemover
+                type='edit'
+                collection={ collection }
+                recordType={ recordType }
+                onSuccessfulUpdate={ ({ id }) => {
+                    history.push(`${url}/${id}/remove/success`)
                 }}
             />
         </Route>

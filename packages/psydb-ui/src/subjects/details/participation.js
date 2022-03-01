@@ -67,6 +67,11 @@ const ParticipationByType = ({
     }
 
     var studyTypes = Object.keys(participationByStudyType);
+    if (studyTypes.length < 1) {
+        return (
+            <i className='text-muted'>Keine Studienteilnahmen vorhanden</i>
+        )
+    }
 
     return (
         <>
