@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { Pair, Button } from '@mpieva/psydb-ui-layout';
+import { useSendRemove } from '@mpieva/psydb-ui-hooks';
+import { Pair, Button, Icons } from '@mpieva/psydb-ui-layout';
 import { withRecordRemover, FormBox } from '@mpieva/psydb-ui-lib';
 
 const SafetyForm = (ps) => {
@@ -12,16 +13,16 @@ const SafetyForm = (ps) => {
         onSuccessfulUpdate
     } = ps;
 
-    var { sequenceNumber, _recordLabel } = fetched.record;
+    var { record } = fetched;
+    var { sequenceNumber, _recordLabel } = record;
 
-    var send = {};
-    /*var send = useSendRemove({
+    var send = useSendRemove({
         collection,
         recordType,
         record,
+        subChannels: [ 'gdpr', 'scientific' ],
         onSuccessfulUpdate
-    });*/
-
+    });
 
     return (
         <FormBox title='Proband löschen' titleClassName='text-danger'>
@@ -49,8 +50,21 @@ const SafetyForm = (ps) => {
 }
 
 const SuccessInfo = (ps) => {
+    var { successInfoBackLink } = ps;
     return (
-        <div>success</div>
+        <FormBox titleClassName='text-success' title='Proband gelöscht'>
+            <i>Proband wurde erfolgreich gelöscht</i>
+            { successInfoBackLink && (
+                <>
+                    <hr />
+                    <a href={ successInfoBackLink }>
+                        <Icons.ArrowLeftShort />
+                        {' '}
+                        <b>zurück zur Liste</b>
+                    </a>
+                </>
+            )}
+        </FormBox>
     )
 }
 

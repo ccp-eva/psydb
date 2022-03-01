@@ -6,6 +6,7 @@ export { default as useReadRecord } from './use-read-record';
 
 export { default as useSendCreate } from './use-send-create';
 export { default as useSendPatch } from './use-send-patch';
+export { default as useSendRemove } from './use-send-remove';
 export { default as useSend } from './use-send';
 export { default as useWriteRequest } from './use-write-request';
 

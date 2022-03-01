@@ -28,7 +28,7 @@ handler.checkAllowedAndPlausible = async ({
 
     var {
         id,
-        lastKnownScientificEventId,
+        lastKnownSubChannelEventIds,
     } = message.payload;
 
     var record = await (
@@ -69,7 +69,7 @@ handler.triggerSystemEvents = async ({
 }) => {
     var {
         id,
-        lastKnownScientificEventId,
+        lastKnownSubChannelEventIds,
     } = message.payload;
 
     var channel = (
@@ -79,7 +79,9 @@ handler.triggerSystemEvents = async ({
     );
 
     await channel.dispatchMany({
-        lastKnownEventId: lastKnownScientificEventId,
+        lastKnownEventId: (
+            lastKnownSubChannelEventIds.scientific
+        ),
         subChannelKey: 'scientific',
         messages: PutMaker({ personnelId }).all({
             '/state/internals/isRemoved': true

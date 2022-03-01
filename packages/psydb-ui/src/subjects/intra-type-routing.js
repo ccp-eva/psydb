@@ -90,6 +90,7 @@ const RecordTypeRouting = ({
                 type='edit'
                 collection={ collection }
                 recordType={ recordType }
+                successInfoBackLink={ `#${url}` }
                 onSuccessfulUpdate={ ({ id }) => {
                     history.push(`${url}/${id}/remove/success`)
                 }}

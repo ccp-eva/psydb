@@ -49,6 +49,7 @@ export const withRecordRemover = (options) => {
 
     var RecordRemover = (ps) => {
         var { collection, recordType, id: manualId } = ps;
+        var { path } = useRouteMatch();
         var { id: paramId } = useParams();
         var id = manualId || paramId;
 
@@ -59,10 +60,10 @@ export const withRecordRemover = (options) => {
 
         return (
             <Switch>
-                <Route exact match='/'>
+                <Route exact path={ `${path}`}>
                     <SafetyFormWrapper { ...ps } id={ id }/>
                 </Route>
-                <Route exact match='/success'>
+                <Route exact path={ `${path}/success` }>
                     <SuccessInfoWrapper { ...ps } id={ id } />
                 </Route>
             </Switch>
