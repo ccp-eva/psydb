@@ -4,7 +4,10 @@ import { AgentContext } from '@mpieva/psydb-ui-contexts';
 
 const useFetchAll = (createPromises, triggerProps) => {
     var contextAgent = useContext(AgentContext);
-    var [ state, dispatch ] = useReducer(reducer, { didFetch: false });
+    var [ state, dispatch ] = useReducer(reducer, {
+        didFetch: false,
+        didReject: false,
+    });
 
     var wrappedCreatePromises = () => {
         var keyedPromises = createPromises(contextAgent);
@@ -24,8 +27,15 @@ const useFetchAll = (createPromises, triggerProps) => {
             })
         });
 
-        Promise.all(keys.map(k => keyedPromises[k])).then(() => {
+        Promise.all(keys.map(k => keyedPromises[k]))
+        .then(() => {
             dispatch({ type: 'fetched-all' });
+        })
+        .catch((err) => {
+            console.log(err.response);
+            dispatch({ type: 'rejected', payload: {
+                errorResponse: err.response,
+            }});
         })
     };
 
@@ -49,6 +59,13 @@ const reducer = (state, action) => {
             return ({
                 ...state,
                 didFetch: true
+            })
+        case 'rejected':
+            return ({
+                ...state,
+                didFetch: true,
+                didReject: true,
+                errorResponse: payload.errorResponse,
             })
 
     }

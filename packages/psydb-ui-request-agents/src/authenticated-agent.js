@@ -85,6 +85,7 @@ agent.readRecord = ({
     id,
 
     additionalParams,
+    extraAxiosConfig,
 }) => {
 
     var url = (
@@ -93,7 +94,8 @@ agent.readRecord = ({
         : `/api/read/${collection}/${id}`
     );
 
-    return axios.get(url, additionalParams);
+    //return axios.get(url, additionalParams);
+    return axios.get(url, extraAxiosConfig);
 }
 
 agent.searchRecords = ({

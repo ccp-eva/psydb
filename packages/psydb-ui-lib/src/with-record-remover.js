@@ -8,6 +8,7 @@ import {
 } from 'react-router-dom';
 
 import {
+    NotFound,
     PermissionDenied,
     LoadingIndicator
 } from '@mpieva/psydb-ui-layout';
@@ -30,10 +31,19 @@ export const withRecordRemover = (options) => {
             collection, recordType, id,
             shouldFetchSchema: false,
             shouldFetchCRTSettings: false,
+            extraAxiosConfig: { disableErrorModal: 404 }
         });
         
         if (!didFetch) {
             return <LoadingIndicator size='lg' />
+        }
+
+        var { didReject, errorResponse } = fetched;
+        if (didReject) {
+            var { status } = errorResponse;
+            if (status === 404) {
+                return <NotFound />
+            }
         }
 
         return (

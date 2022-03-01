@@ -5,6 +5,7 @@ const useReadRecord = (options, dependencies = []) => {
         collection, recordType, id,
         shouldFetchSchema = true,
         shouldFetchCRTSettings = true,
+        extraAxiosConfig,
     } = options;
 
     var [ didFetch, fetched ] = useFetchAll((agent) => ({
@@ -23,7 +24,8 @@ const useReadRecord = (options, dependencies = []) => {
         record: agent.readRecord({
             collection,
             recordType,
-            id
+            id,
+            extraAxiosConfig,
         })
     }), [ collection, recordType, id, ...dependencies ]);
 
@@ -31,7 +33,12 @@ const useReadRecord = (options, dependencies = []) => {
         return [ didFetch, undefined ];
     }
 
+    if (fetched.didReject) {
+        return [ didFetch, fetched ];
+    }
+
     var {
+        didReject,
         record,
         ...related
     } = fetched.record.data;

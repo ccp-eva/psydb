@@ -73,7 +73,12 @@ var fetchRecordById = async ({
             ...preprocessingStages,
             ...OmitRemovedCustomFieldsStage({ removedCustomFields }),
             { $match: {
-                _id: id
+                _id: id,
+                ...(
+                    hasSubChannels
+                    ? { 'scientific.state.internals.isRemoved': { $ne: true }}
+                    : { 'state.internals.isRemoved': { $ne: true }}
+                ),
             }},
             ...SystemPermissionStages({
                 collection: collectionName,

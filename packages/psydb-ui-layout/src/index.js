@@ -24,7 +24,10 @@ export { default as Pair } from './pair';
 export { default as WithDefaultModal } from './with-default-modal';
 
 export * from './nbsp';
+
 export * from './permission-denied';
+export * from './not-found';
+
 export * from './option-select-indicator';
 export * from './option-deselect-indicator';
 export * from './simple-list';

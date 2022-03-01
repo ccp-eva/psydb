@@ -12,13 +12,32 @@ const ErrorResponseModalSetup = (ps) => {
             (response) => (response),
             (error) => {
                 var { config, response } = error;
-                console.log('axios error', response.status);
-                if (response && !config.disableErrorModal) {
+                var { status } = response;
+                var { disableErrorModal } = config;
+
+                console.log('axios error', status);
+                if (response && !disableErrorModal) {
                     errorResponseModal.handleShow(response);
                     throw error;
                 }
                 else {
-                    throw error;
+                    if (disableErrorModal === true) {
+                        throw error;
+                    }
+                    else {
+                        var codes = (
+                            Array.isArray(disableErrorModal)
+                            ? disableErrorModal
+                            : [ disableErrorModal ]
+                        );
+                        if (codes.includes(status)) {
+                            throw error;
+                        }
+                        else {
+                            errorResponseModal.handleShow(response);
+                            throw error;
+                        }
+                    }
                 }
             }
         );
