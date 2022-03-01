@@ -8,6 +8,7 @@ var {
     DateTime,
     ParticipationStatus,
     InvitationStatus,
+    DefaultBool,
 } = require('@mpieva/psydb-schema-fields');
 
 var ManualParticipation = () => ExactObject({
@@ -105,6 +106,7 @@ var InternalsSchema = () => {
     return (
         ExactObject({
             properties: {
+                isRemoved: DefaultBool(),
                 // FIXME: this should actually be scheduledForExperiments
                 // since it probably inludes away team based testing as well
                 // im not sure about that though (online has to be handled
@@ -138,6 +140,7 @@ var InternalsSchema = () => {
                 },
             },
             required: [
+                'isRemoved',
                 'invitedForExperiments',
                 'participatedInStudies',
             ],

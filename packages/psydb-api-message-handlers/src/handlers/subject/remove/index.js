@@ -54,7 +54,7 @@ handler.checkAllowedAndPlausible = async ({
         recordId: id
     });
 
-    if (allReverseRefs.length > 1) {
+    if (reverseRefs.length > 1) {
         throw new ApiError(409, {
             apiStatus: 'RecordHasReverseRefs',
             data: { reverseRefs }
@@ -74,7 +74,7 @@ handler.checkAllowedAndPlausible = async ({
 
     if (invitedForExperiments.length > 0) {
         var now = new Date();
-        var experiments = (
+        var experiments = await (
             db.collection('experiment').find(
                 { 
                     _id: { $in: invitedForExperiments.map(it => (
@@ -83,11 +83,11 @@ handler.checkAllowedAndPlausible = async ({
                     'state.isPostprocessed': false,
                     'state.isCanceled': false
                 },
-                {
+                { projection: {
                     _id: true,
                     type: true,
                     'state.interval': true,
-                }
+                }}
             ).toArray()
         );
 
@@ -109,8 +109,6 @@ handler.checkAllowedAndPlausible = async ({
         }
     }
 
-    console.log(state);
-    
 }
 
 handler.triggerSystemEvents = async ({
@@ -120,6 +118,24 @@ handler.triggerSystemEvents = async ({
     personnelId,
     cache,
 }) => {
+    var {
+        id,
+        lastKnownScientificEventId,
+    } = message.payload;
+
+    var channel = (
+        rohrpost
+        .openCollection('subject')
+        .openChannel({ id })
+    );
+
+    await channel.dispatchMany({
+        lastKnownEventId: lastKnownScientificEventId,
+        subChannelKey: 'scientific',
+        messages: PutMaker({ personnelId }).all({
+            '/state/internals/isRemoved': true
+        })
+    })
 }
 
 
