@@ -4,7 +4,8 @@ import classnames from 'classnames';
 const FormBox = ({
     title,
     children,
-    extraClassName
+    extraClassName,
+    titleClassName,
 }) => {
     var className = classnames([
         'border p-3 bg-light',
@@ -12,7 +13,7 @@ const FormBox = ({
     ])
     return (
         <div className={ className }>
-            <h5>
+            <h5 className={ titleClassName }>
                 { title }
             </h5>
             <hr />
