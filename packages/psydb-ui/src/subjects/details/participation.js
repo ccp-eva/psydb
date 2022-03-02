@@ -8,7 +8,7 @@ import {
 import jsonpointer from 'jsonpointer';
 
 import { useFetchAll } from '@mpieva/psydb-ui-hooks';
-import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
+import { LoadingIndicator, NotFound } from '@mpieva/psydb-ui-layout';
 
 import ParticipationList from './participation-list';
 
@@ -21,6 +21,7 @@ const Participation = ({ id, revision }) => {
             fetchRecordTypeMetadata: agent.readCustomRecordTypeMetadata(),
             fetchParticipationData: agent.fetchParticipatedStudiesForSubject({
                 subjectId: id,
+                extraAxiosConfig: { disableErrorModal: [ 404 ] },
             })
         }
     }, [ id, revision.value ]);
@@ -29,6 +30,14 @@ const Participation = ({ id, revision }) => {
         return (
             <LoadingIndicator size='lg' />
         ) 
+    }
+
+    var { didReject, errorResponse } = fetched;
+    if (didReject) {
+        var { status } = errorResponse;
+        if (status === 404) {
+            return <NotFound />
+        }
     }
 
     var {

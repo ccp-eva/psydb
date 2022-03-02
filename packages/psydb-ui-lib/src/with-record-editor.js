@@ -3,7 +3,8 @@ import { useParams } from 'react-router-dom';
 
 import {
     PermissionDenied,
-    LoadingIndicator
+    LoadingIndicator,
+    NotFound,
 } from '@mpieva/psydb-ui-layout';
 
 import {
@@ -35,10 +36,19 @@ export const withRecordEditor = (options) => {
             collection, recordType, id,
             shouldFetchSchema,
             shouldFetchCRTSettings,
+            extraAxiosConfig: { disableErrorModal: 404 }
         });
 
         if (!didFetch) {
             return <LoadingIndicator size='lg' />
+        }
+
+        var { didReject, errorResponse } = fetched;
+        if (didReject) {
+            var { status } = errorResponse;
+            if (status === 404) {
+                return <NotFound />
+            }
         }
 
         return (
