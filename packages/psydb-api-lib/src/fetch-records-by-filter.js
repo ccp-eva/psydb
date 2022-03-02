@@ -87,15 +87,20 @@ var fetchRecordByFilter = async ({
         stages.push(
             { $match: {
                 type: recordType,
-                ...(
-                    hasSubChannels
-                    ? { 'scientific.state.internals.isRemoved': { $ne: true }}
-                    : { 'state.internals.isRemoved': { $ne: true }}
-                ),
             }}
         );
     }
     
+    stages.push({
+        $match: {
+            ...(
+                hasSubChannels
+                ? { 'scientific.state.internals.isRemoved': { $ne: true }}
+                : { 'state.internals.isRemoved': { $ne: true }}
+            ),
+        }
+    });
+
     stages = [
         ...stages,
         ...(additionalPreprocessStages || []),
