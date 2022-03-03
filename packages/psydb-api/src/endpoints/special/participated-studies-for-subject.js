@@ -18,6 +18,7 @@ var {
 
     createSchemaForRecordType,
     fetchRelatedLabelsForMany,
+    fetchOneCustomRecordType,
     createRecordLabel,
     gatherDisplayFieldsForRecordType,
     fetchRecordById,
@@ -204,6 +205,12 @@ var fetchStudyDataForType = async ({
     studyIds,
 }) => {
 
+    var crt = await fetchOneCustomRecordType({
+        db,
+        collection: 'study',
+        type: studyType,
+    });
+
     var {
         displayFields,
         availableDisplayFieldData,
@@ -218,6 +225,7 @@ var fetchStudyDataForType = async ({
         db,
         collectionName: 'study',
         recordType: studyType,
+        recordLabelDefinition: crt.state.recordLabelDefinition,
         displayFields,
         additionalPreprocessStages: [
             { $match: {

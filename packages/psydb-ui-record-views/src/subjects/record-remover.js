@@ -1,15 +1,19 @@
 import React from 'react';
 
-import { groupBy } from '@mpieva/psydb-core-utils';
 import { useFetch, useSendRemove } from '@mpieva/psydb-ui-hooks';
 import {
     Pair,
     Button,
     Icons,
-    LoadingIndicator
+    LoadingIndicator,
+    Alert,
 } from '@mpieva/psydb-ui-layout';
 
-import { withRecordRemover, FormBox } from '@mpieva/psydb-ui-lib';
+import {
+    withRecordRemover,
+    FormBox,
+    ReverseRefList
+} from '@mpieva/psydb-ui-lib';
 
 const SafetyForm = (ps) => {
     var {
@@ -38,9 +42,21 @@ const SafetyForm = (ps) => {
         })
     ), [ collection, id ]);
 
-    if (!didFetchRefs) {
+    var [ didFetchParticipation, fetchedParticipation ] = (
+        useFetch((agent) => (
+            agent.fetchParticipatedStudiesForSubject({
+                subjectId: id,
+                extraAxiosConfig: { disableErrorModal: [ 404 ] },
+            })
+        ), [ id ])
+    )
+
+    if (!didFetchRefs || !didFetchParticipation) {
         return <LoadingIndicator size='lg' />
     }
+    var { reverseRefs } = fetchedReverseRefs.data;
+    var { participationByStudyType } = fetchedParticipation.data;
+    var studyTypes = Object.keys(participationByStudyType);
 
     return (
         <FormBox title='Proband löschen' titleClassName='text-danger'>
@@ -57,15 +73,81 @@ const SafetyForm = (ps) => {
                 { sequenceNumber }
             </Pair>
             <hr />
+            { reverseRefs.length > 0 && (
+                <>
+                    <Alert variant='danger'><b>
+                        Proband wird von anderen Datensätzen referenziert
+                    </b></Alert>
+
+                    <ReverseRefList reverseRefs={ reverseRefs } />
+                    <hr />
+                </>
+            )}
+            { studyTypes.length > 0 && (
+                <>
+                    <Alert variant='danger'><b>
+                        Proband hat an Studien teilgenommen
+                    </b></Alert>
+                    <ParticipationList { ...({
+                        participationByStudyType
+                    })} />
+                    <hr />
+                </>
+            )}
 
 
             <Button
                 variant='danger'
                 onClick={ send.exec }
+                disabled={ reverseRefs.length > 0 || studyTypes.length > 0 }
             >
                 Löschen
             </Button>
         </FormBox>
+    )
+}
+
+const ParticipationList = (ps) => {
+    var {
+        participationByStudyType
+    } = ps;
+
+    var allStudiesById = (
+        Object.values(participationByStudyType)
+        .reduce((acc, it) => ({
+            ...acc,
+            ...it.studyRecordsById
+        }), {})
+    );
+    var allParticipation = (
+        Object.keys(participationByStudyType)
+        .reduce((acc, key) => ([
+            ...acc,
+            ...participationByStudyType[key].participation.map(it => ({
+                ...it,
+                studyType: key,
+            }))
+        ]), [])
+    );
+
+    return (
+        <div>
+            <header className='pb-1 mt-3'><b>
+                Studienteilnahme
+            </b></header>
+            { allParticipation.map((it, ix) => {
+                var { studyType, studyId } = it;
+                var study = allStudiesById[studyId];
+                var url = `#/studies/${studyType}/${studyId}`;
+                return (
+                    <div key={ ix }>
+                        <a href={ url } target='_blank'>
+                            { study._recordLabel }
+                        </a>
+                    </div>
+                )
+            })}
+        </div>
     )
 }
 

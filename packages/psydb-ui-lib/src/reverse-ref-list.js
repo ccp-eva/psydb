@@ -2,6 +2,18 @@ import React from 'react';
 import { groupBy } from '@mpieva/psydb-core-utils';
 import { collections as collectionEnum } from '@mpieva/psydb-schema-enums';
 
+var collectionUILinks = {
+    'subject': 'subjects',
+    'researchGroup': 'research-groups',
+    'location': 'locations',
+    'study': 'studies',
+    'personnel': 'personnel',
+    'externalPerson': 'external-persons',
+    'externalOrganization': 'external-organizations',
+    'systemRole': 'system-roles',
+    'experiment': 'experiments',
+}
+
 export const ReverseRefList = (ps) => {
     var { reverseRefs } = ps;
 
@@ -22,17 +34,28 @@ export const ReverseRefList = (ps) => {
                     <div className='pl-3'>
                         { collectionReverseRefs.map(it => {
                             var { type, _id, _recordLabel } = it;
-                            var url = (
-                                type
-                                ? `#/${collection}/${type}/${_id}`
-                                : `#/${collection}/${_id}`
-                            )
+                            var clink = collectionUILinks[collection];
 
-                            return (
-                                <div key={ _id }>
+                            var renderedText = undefined;
+                            if (clink) {
+                                var url = (
+                                    type
+                                    ? `#/${clink}/${type}/${_id}`
+                                    : `#/${clink}/${_id}`
+                                );
+                                renderedText = (
                                     <a href={ url } target='_blank'>
                                         { _recordLabel }
                                     </a>
+                                );
+                            }
+                            else {
+                                renderedText = _recordLabel;
+                            }
+
+                            return (
+                                <div key={ _id }>
+                                    { renderedText }
                                 </div>
                             )
                         })}

@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { useFetch, useSendRemove } from '@mpieva/psydb-ui-hooks';
-
 import {
     Pair,
     Button,
