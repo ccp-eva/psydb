@@ -1,20 +1,44 @@
 'use strict';
-var createEnum = (mapping) => {
+var createEnum = (list) => {
     var en = {
-        mapping,
+        list,
+        mapping: {},
         keys: [],
-        names: []
+        names: [],
+    }
+
+    en.getLabel = (key) => {
+        var it = list.find(it => it.key === key);
+        return it ? it.name : undefined;
     }
     
     // since the order within the object is technically not
     // deterministic we do it the safe way
-    for (var k of Object.keys(mapping)) {
-        en.keys.push(k);
-        en.names.push(mapping[k]);
+    for (var it of list) {
+        en.keys.push(it.key);
+        en.names.push(it.name);
+        en.mapping[it.key] = it.name;
     }
 
     return en;
 };
+
+var createEnumFromMap = (map) => {
+    var list = Object.keys(map).map(key => ({
+        key: key, name: map[key]
+    }));
+
+    return createEnum(list);
+}
+
+var createEnumFromKV = ({ keys, names }) => {
+    var list = keys.map((it, ix) => ({
+        key: it,
+        name: names[ix]
+    }));
+
+    return createEnum(list);
+}
 
 var safeUnparticipationStatus = {
     keys: [
@@ -69,7 +93,7 @@ var unparticipationStatus = {
     ]
 }
 
-var customRecordTypeCollections = {
+var customRecordTypeCollections = createEnumFromKV({
     keys: [
         'location',
         'subject',
@@ -84,41 +108,45 @@ var customRecordTypeCollections = {
         'Externe Personen',
         'Externe Organinsationen'
     ]
-}
+})
 
-var collections = {
+var collections = createEnumFromKV({
     keys: [
         ...customRecordTypeCollections.keys,
         'personnel',
         'researchGroups',
+        'experimentOperatorTeam',
+        'experiment',
     ],
     names: [
         ...customRecordTypeCollections.names,
         'Mitarbeiter',
-        'Forschungs-Gruppen'
+        'Forschungs-Gruppen',
+        'Experimenter-Teams',
+        'Termine',
     ]
-}
+})
 
 // FIXME: rename labProcedureTypes
-var experimentVariants = createEnum({
+var experimentVariants = createEnumFromMap({
     'inhouse': 'Interne Termine',
     'away-team': 'Externe Termine',
     'online-video-call': 'Online-Video-Termine',
     'online-survey': 'Online-Umfrage',
 });
 
-var experimentTypes = createEnum({
+var experimentTypes = createEnumFromMap({
     'inhouse': 'Interne Termine',
     'away-team': 'Externe Termine',
     'online-video-call': 'Online-Video-Termine',
 });
 
-var inviteExperimentTypes = createEnum({
+var inviteExperimentTypes = createEnumFromMap({
     'inhouse': 'Interne Termine',
     'online-video-call': 'Online-Video-Termine',
 });
 
-var subjectFieldRequirementChecks = createEnum({
+var subjectFieldRequirementChecks = createEnumFromMap({
     'inter-subject-equality': 'ist Gleich im Termin'
 })
 

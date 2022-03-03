@@ -1,7 +1,7 @@
 import React from 'react';
 
+import { groupBy } from '@mpieva/psydb-core-utils';
 import { useFetch, useSendRemove } from '@mpieva/psydb-ui-hooks';
-
 import {
     Pair,
     Button,
@@ -57,6 +57,8 @@ const SafetyForm = (ps) => {
                 { sequenceNumber }
             </Pair>
             <hr />
+
+
             <Button
                 variant='danger'
                 onClick={ send.exec }
