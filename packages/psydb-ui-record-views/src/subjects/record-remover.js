@@ -133,7 +133,7 @@ const ParticipationList = (ps) => {
     return (
         <div>
             <header className='pb-1 mt-3'><b>
-                Studienteilnahme
+                Studien
             </b></header>
             { allParticipation.map((it, ix) => {
                 var { studyType, studyId } = it;
