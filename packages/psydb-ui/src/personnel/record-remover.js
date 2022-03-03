@@ -1,7 +1,12 @@
 import React from 'react';
 
-import { useSendRemove } from '@mpieva/psydb-ui-hooks';
-import { Pair, Button, Icons } from '@mpieva/psydb-ui-layout';
+import { useFetch, useSendRemove } from '@mpieva/psydb-ui-hooks';
+import {
+    Pair,
+    Button,
+    Icons,
+    LoadingIndicator
+} from '@mpieva/psydb-ui-layout';
 import { withRecordRemover, FormBox } from '@mpieva/psydb-ui-lib';
 
 const SafetyForm = (ps) => {
@@ -23,6 +28,17 @@ const SafetyForm = (ps) => {
         subChannels: [ 'gdpr', 'scientific' ],
         onSuccessfulUpdate
     });
+
+    var [ didFetchRefs, fetchedReverseRefs ] = useFetch((agent) => (
+        agent.fetchRecordReverseRefs({
+            collection,
+            id
+        })
+    ), [ collection, id ]);
+
+    if (!didFetchRefs) {
+        return <LoadingIndicator size='lg' />
+    }
 
     return (
         <FormBox title='Mitarbeiter löschen' titleClassName='text-danger'>

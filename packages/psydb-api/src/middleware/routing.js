@@ -297,6 +297,20 @@ var createRouting = ({
         endpoints.extendedSearch.subjects
     );
 
+    router.get('/reverse-refs/:collection',
+        withSelfAuth(),
+        withPermissions(),
+        withKoaBody(),
+        endpoints.special.reverseRefs
+    );
+
+    router.get('/record-reverse-refs/:collection/:id',
+        withSelfAuth(),
+        withPermissions(),
+        withKoaBody(),
+        endpoints.special.reverseRefs
+    );
+
     return compose([
         router.routes(),
         router.allowedMethods(),

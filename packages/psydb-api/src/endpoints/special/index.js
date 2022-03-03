@@ -100,4 +100,6 @@ module.exports = {
     searchStudiesForExclusion: (
         require('./search-studies-for-exclusion')
     ),
+
+    reverseRefs: require('./reverse-refs'),
 }

@@ -10,6 +10,7 @@ module.exports = {
 
     validateOrThrow: require('./validate-or-throw'),
 
+    verifyRecordExists: require('./verify-record-exists'),
     verifyRecordAccess: require('./verify-record-access'),
     verifyStudyAccess: require('./verify-study-access'),
     verifySubjectAccess: require('./verify-subject-access'),

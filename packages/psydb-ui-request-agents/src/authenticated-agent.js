@@ -442,4 +442,16 @@ agent.fetchAgeFrames = ({
         }
     );
 }
+
+agent.fetchRecordReverseRefs = ({
+    collection,
+    id,
+    extraAxiosConfig
+}) => {
+    return axios.get(
+        `/api/record-reverse-refs/${collection}/${id}`,
+        extraAxiosConfig
+    );
+}
+
 export default agent;
