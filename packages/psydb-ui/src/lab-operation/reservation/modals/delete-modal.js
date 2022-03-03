@@ -1,88 +1,82 @@
 import React, { useState, useEffect } from 'react';
+import { useSend } from '@mpieva/psydb-ui-hooks';
 
 import {
     Button,
-    Modal
+    WithDefaultModal,
 } from '@mpieva/psydb-ui-layout';
 
-import agent from '@mpieva/psydb-ui-request-agents';
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
+import ExperimentShortControls from '@mpieva/psydb-ui-lib/src/experiment-short-controls';
 
-import {
-    Duration,
-    FormattedDuration
-} from '@mpieva/psydb-common-lib/src/durations';
+const DeleteModalBody = (ps) => {
+    var {
+        show,
+        onHide,
+        modalPayloadData,
+        onSuccessfulUpdate
+    } = ps;
 
-import {
-    ConstWidget,
-    TimeSlotWidget,
-    ExperimentOperatorTeamIdWidget,
-} from '@mpieva/psydb-ui-lib/src/schema-form/rjsf-components';
+    var {
+        studyId,
+        locationRecord,
+        reservationRecord,
+        start,
+        slotDuration,
+        maxEnd,
+    } = modalPayloadData;
 
-const extractTime = (dateIsoString) => (
-    NaN !== (new Date(dateIsoString)).getTime()
-    ? datefns.format(new Date(dateIsoString), 'HH:mm:ss.SSS') + 'Z'
-    : dateIsoString
-);
+    var locationId = locationRecord._id;
+    var { experimentOperatorTeamId } = reservationRecord.state;
 
-export const DeleteModal = ({
-    show,
-    onHide,
-    studyId,
-    locationId,
-    date,
-    reservationRecords,
-    teamRecords,
-    onSuccessfulDelete,
-}) => {
-    if (!show) {
-        return null;
-    }
-    //var fallbackDate = new Date(0);
-    
-    /*start = start || fallbackDate;
-    maxEnd = maxEnd || fallbackDate;
-    console.log(slotDuration);
-    slotDuration = slotDuration || Duration('0:30')*/
+    var minEnd = new Date(start.getTime() + slotDuration);
+    var [ end, setEnd ] = useState(new Date(minEnd.getTime() - 1));
 
-    var startOfDay = datefns.startOfDay(date).getTime();
-
-    var handleSubmit = ({ formData }) => {
-        var { end, experimentOperatorTeamId } = formData;
-        var message = {
-            type: 'reservation/reserve-inhouse-slot',
-            payload: {
-                props: {
-                    studyId,
-                    experimentOperatorTeamId,
-                    locationId,
-                    interval: {
-                        start: start.toISOString(),
-                        end: (
-                            new Date(startOfDay + Duration(end) - 1)
-                            .toISOString()
-                        ),
-                    }
+    var send = useSend(() => ({
+        type: 'reservation/remove-inhouse-slot',
+        payload: {
+            props: {
+                studyId,
+                experimentOperatorTeamId,
+                locationId,
+                interval: {
+                    start: start.toISOString(),
+                    end: end.toISOString(),
                 }
             }
         }
-        agent.send({ message }).then((response) => {
-            onSuccessfulCreate && onSuccessfulCreate(response);
-            onHide();
-        });
-    }
+    }), {
+        onSuccessfulUpdate: [ onHide, onSuccessfulUpdate ],
+    })
 
     return (
-        <Modal show={show} onHide={ onHide } size='sm'>
-            <Modal.Header closeButton>
-                <Modal.Title>Löschen</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <div>
-                    reservieringsdetails ...
-                </div>
-                <Button>Löschen</Button>
-            </Modal.Body>
-        </Modal>
+        <>
+            <ExperimentShortControls { ...({
+                start,
+                end,
+                minEnd,
+                maxEnd,
+                slotDuration,
+
+                onChangeEnd: setEnd,
+            })} />
+
+            <hr />
+            <div className='d-flex justify-content-end'>
+                <Button size='sm' onClick={ send.exec }>
+                    Speichern
+                </Button>
+            </div>
+        </>
     );
 }
+
+export const DeleteModal = WithDefaultModal({
+    Body: DeleteModalBody,
+
+    size: 'md',
+    title: 'Löschen',
+    className: '',
+    backdropClassName: '',
+    bodyClassName: 'bg-white'
+});

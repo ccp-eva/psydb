@@ -37,11 +37,10 @@ export const Locations = ({
                 onSuccessfulUpdate={ revision.up }
             />
 
-            {/*<DeleteModal
-                show={ deleteModalState.showModal }
-                onHide={ handleHideDeleteModal }
-                onSuccessfulDelete={ () => {} }
-            />*/}
+            <DeleteModal
+                { ...deleteModal.passthrough }
+                onSuccessfulUpdate={ revision.up }
+            />
 
             <StudyInhouseLocations
                 studyId={ studyId }
@@ -50,6 +49,7 @@ export const Locations = ({
 
                 activeLocationType={ locationRecordType }
                 onSelectEmptySlot={ createModal.handleShow  }
+                onSelectReservationSlot={ deleteModal.handleShow }
                 calendarRevision={ revision.value }
 
                 locationCalendarListClassName='bg-white'

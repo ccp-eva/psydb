@@ -11,6 +11,7 @@ var SimpleHandler = require('../../../lib/simple-handler'),
 var {
     checkIntervalHasReservation,
     checkConflictingSubjectExperiments,
+    checkConflictingLocationExperiments,
     dispatchCreateEvents,
 } = require('../util');
 
@@ -58,6 +59,10 @@ handler.checkAllowedAndPlausible = async ({
 
     await checkConflictingSubjectExperiments({
         db, subjectIds, interval
+    });
+    
+    await checkConflictingLocationExperiments({
+        db, locationId, interval
     });
 }
 

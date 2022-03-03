@@ -6,6 +6,7 @@ var {
 var ReservationGroup = MessageHandlerGroup([
     require('./reserve-away-slot'),
     require('./reserve-inhouse-slot'),
+    require('./remove-inhouse-slot'),
 ]);
 
 module.exports = ReservationGroup;

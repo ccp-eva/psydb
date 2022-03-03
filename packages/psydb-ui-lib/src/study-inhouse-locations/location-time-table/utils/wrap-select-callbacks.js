@@ -33,6 +33,7 @@ const wrapSelectCallbacks = ({
                 start: props.start,
                 selectedReservationRecord: props.reservationRecord,
                 reservationRecords,
+                experimentRecords,
                 // TODO: this has an issue, we need experimentRecords
                 upperBoundary,
                 slotDuration,
