@@ -103,6 +103,7 @@ var searchGrouped = async (context, next) => {
     var result = await db.collection('subject').aggregate([
         { $match: {
             type: subjectTypeKey,
+            'scientific.state.internals.isRemoved': { $ne: true },
             $and: [
                 { [groupByFieldPath]: { $exists: true } },
                 { [groupByFieldPath]: { $not: { $type: 10 }}}, // NOT NULL

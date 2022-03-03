@@ -64,7 +64,10 @@ var searchUngrouped = async (context, next) => {
     });
     
     var result = await db.collection('subject').aggregate([
-        { $match: { type: subjectTypeKey }},
+        { $match: {
+            type: subjectTypeKey,
+            'scientific.state.internals.isRemoved': { $ne: true }
+        }},
         // TODO: quicksearch
         /*...QuickSearchStages({
             queryFields,
