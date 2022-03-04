@@ -44,22 +44,36 @@ var RecordList = ({
     var [ payload, setPayload ] = useState([]);
 
     var [ filters, setFilters ] = useState({});
+    var [ didChangeFilters, setDidChangeFilters ] = useState(false);
+    //var [ cachedOffset, setCachedOffset ] = useState(0);
+
     var pagination = usePaginationReducer({ offset: 0, limit: 50 })
     var { offset, limit } = pagination;
 
+    // FIXME: this renders twice; we need to
+    // add function to set Offset manually in pagination hook
+    // and then use the flag below as dependency in effect
+    // var didOffsetChange = ( offset !== cachedOffset );
     var [ didFetch, fetched ] = useFetch((agent) => {
+        if (didChangeFilters) {
+            pagination.selectSpecificPage(0);
+        }
+
         return agent.searchRecords({
             target,
             collection,
             recordType,
             searchOptions,
-            offset,
+            offset: (
+                didChangeFilters ? 0 : offset
+            ),
             limit,
             constraints,
             filters,
             sort: defaultSort || undefined
         })
         .then((response) => {
+            setDidChangeFilters(false);
             pagination.setTotal(response.data.data.recordsCount);
             return response;
         });
@@ -86,7 +100,10 @@ var RecordList = ({
                 <QuickSearch
                     filters={ filters }
                     displayFieldData={ displayFieldData }
-                    onSubmit={ ({ filters }) => setFilters(filters) }
+                    onSubmit={ ({ filters }) => {
+                        setDidChangeFilters(true);
+                        setFilters(filters);
+                    }}
                 />
                 <Pagination { ...pagination } />
             </div>
