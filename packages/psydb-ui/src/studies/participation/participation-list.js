@@ -82,7 +82,7 @@ const ParticipationListRow = ({
             <td>{ 
                 datefns.format(
                     new Date(participationData.timestamp),
-                    'P p'
+                    'dd.MM.yyyy HH:mm'
                 )
             }</td>
             { dateOfBirthField && (

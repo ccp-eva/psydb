@@ -84,7 +84,7 @@ const ParticipationListRow = ({
             <td>{ 
                 datefns.format(
                     new Date(item.timestamp),
-                    'P p'
+                    'dd.MM.yyyy HH:mm'
                 )
             }</td>
             { ageFrameField && (
