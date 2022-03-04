@@ -13,12 +13,14 @@ import {
 
 import StudyAwayTeams from '@mpieva/psydb-ui-lib/src/study-away-teams';
 import CreateModal from './create-modal';
+import DeleteModal from './delete-modal';
 
 const AwayTeamContainer = ({}) => {
     var { path, url } = useRouteMatch();
     var { studyId, studyType } = useParams();
 
     var createModal = useModalReducer();
+    var deleteModal = useModalReducer();
     var { value: revision, up: incrementRevision } = useRevision();
 
     var handleSuccessfulUpdate = () => {
@@ -38,11 +40,17 @@ const AwayTeamContainer = ({}) => {
                 studyRecordType: studyType,
             }) } />
 
+            <DeleteModal { ...({
+                ...deleteModal.passthrough,
+                onSuccessfulUpdate: handleSuccessfulUpdate,
+            })} />
+
             <StudyAwayTeams { ...({
                 studyId,
                 studyRecordType: studyType,
 
                 onSelectEmptySlot: createModal.handleShow,
+                onSelectReservationSlot: deleteModal.handleShow,
                 calendarRevision: revision
             }) } />
         </>

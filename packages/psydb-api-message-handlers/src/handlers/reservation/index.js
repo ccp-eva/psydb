@@ -5,6 +5,7 @@ var {
 
 var ReservationGroup = MessageHandlerGroup([
     require('./reserve-away-slot'),
+    require('./remove-away-slot'),
     require('./reserve-inhouse-slot'),
     require('./remove-inhouse-slot'),
 ]);

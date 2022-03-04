@@ -24,9 +24,10 @@ handler.checkAllowedAndPlausible = async ({
     permissions,
     message
 }) => {
-    var canRemove = permissions.hasLabOperationFlag(
-        'inhouse', 'canWriteReservations'
-    );
+    var canRemove = permissions.hasSomeLabOperationFlags({
+        types: ['inhouse', 'online-video-call'],
+        flags: ['canWriteReservations']
+    });
     if (!canRemove) {
         throw new ApiError(403);
     }
@@ -240,35 +241,6 @@ handler.triggerSystemEvents = async ({
             )});
         } 
     }
-
-    /*var locationRecord = await (
-        db.collection('location').findOne({ _id: props.locationId })
-    );
-
-    var channel = (
-        rohrpost
-        .openCollection('reservation')
-        .openChannel({
-            id,
-            isNew: true,
-            additionalChannelProps: {
-                type: 'inhouse'
-            }
-        })
-    );
-    
-    var messages = PutMaker({ personnelId }).all({
-        '/state/seriesId': nanoid(),
-        '/state/isDeleted': false,
-        '/state/studyId': props.studyId,
-        '/state/experimentOperatorTeamId': props.experimentOperatorTeamId,
-        '/state/locationId': props.locationId,
-        '/state/locationRecordType': locationRecord.type,
-        '/state/interval/start': props.interval.start,
-        '/state/interval/end': props.interval.end,
-    });
-
-    await channel.dispatchMany({ messages });*/
 }
 
 module.exports = handler;
