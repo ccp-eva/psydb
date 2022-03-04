@@ -113,6 +113,7 @@ class InnerControl extends React.Component {
         return (
             <Form.Control
                 type='date'
+                lang='de-DE'
                 disabled={ disabled }
                 { ...formikField }
                 value={ cachedDate }
