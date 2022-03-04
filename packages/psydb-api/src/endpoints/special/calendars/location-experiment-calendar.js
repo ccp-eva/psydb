@@ -200,9 +200,10 @@ var locationExperimentCalendar = async (context, next) => {
     });
 
     // XXX: this is hacky
+    // FIXME: why is this even here?
     if (locationRecords.length < 1) {
         experimentRecords = [];
-        reservationRecords = [];
+        //reservationRecords = [];
     }
 
     var locationRelated = await fetchRelatedLabelsForMany({
