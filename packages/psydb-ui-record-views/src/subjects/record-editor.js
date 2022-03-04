@@ -29,6 +29,11 @@ const EditForm = (ps) => {
         onSuccessfulUpdate
     });
 
+    var defaults = MainForm.createDefaults({
+        fieldDefinitions,
+        permissions
+    });
+
     var initialValues = only({
         from: {
             gdpr: record.gdpr.state,
@@ -42,6 +47,20 @@ const EditForm = (ps) => {
             'scientific.comment',
         ]
     });
+
+    // FIXME: use deep merge
+    // FIXME: we might als need to update all
+    // db records, we'll see
+    initialValues.gdpr.custom = {
+        ...defaults.gdpr.custom,
+        ...initialValues.gdpr.custom
+    };
+    
+    initialValues.scientific.custom = {
+        ...defaults.scientific.custom,
+        ...initialValues.scientific.custom
+    };
+
 
     var {
         sequenceNumber,
