@@ -42,6 +42,7 @@ const {
     ExtBoolList,
     BiologicalGenderList,
     EmailList,
+    PhoneList,
 } = s;
 
 const {
@@ -64,6 +65,7 @@ export {
     ExtBoolList,
     BiologicalGenderList,
     EmailList,
+    PhoneList,
 
     AgeFrameBoundaryList,
     SubjectFieldRequirementList,

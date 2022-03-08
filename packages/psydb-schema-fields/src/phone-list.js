@@ -1,8 +1,8 @@
 'use strict';
 var Phone = require('./phone');
 
-var PhoneList = ({ minItems }) => ({
-    title: 'Telefon',
+var PhoneList = ({ title, minItems }) => ({
+    title: title,
     systemType: 'PhoneList',
     type: 'array',
     default: [],
