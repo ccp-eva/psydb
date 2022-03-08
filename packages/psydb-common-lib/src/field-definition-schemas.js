@@ -80,7 +80,15 @@ var EmailListFieldDefinition = () => FieldDefinition({
 
 var PhoneWithTypeListFieldDefinition = () => FieldDefinition({
     type: 'PhoneWithTypeList',
-    title: 'Liste von Telefon-Nummern (PhoneWithTypeList)',
+    title: 'Liste von Telefon-Nummern mit Typ (PhoneWithTypeList)',
+    props: {
+        minItems: MinItemsProp(),
+    },
+})
+
+var PhoneWithTypeListFieldDefinition = () => FieldDefinition({
+    type: 'PhoneList',
+    title: 'Liste von Telefon-Nummern ohne Typ (PhoneList)',
     props: {
         minItems: MinItemsProp(),
     },

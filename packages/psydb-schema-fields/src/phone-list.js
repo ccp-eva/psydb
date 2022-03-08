@@ -1,46 +1,15 @@
 'use strict';
-var ExactObject = require('./exact-object');
 var Phone = require('./phone');
 
-var PhoneWithTypeList = ({ minItems, numbertypes, numbertypeNames }) => ({
+var PhoneList = ({ minItems }) => ({
     title: 'Telefon',
-    systemType: 'PhoneWithTypeList',
+    systemType: 'PhoneList',
     type: 'array',
     default: [],
     minItems: (minItems || 0),
-    items: ExactObject({
-        systemType: 'PhoneWithTypeListItem',
-        properties: {
-            number: Phone({
-                title: 'Nummer',
-            }),
-            type: {
-                title: 'Typ',
-                type: 'string',
-                enum: (numbertypes || [
-                    'business',
-                    'private',
-                    'mobile', // is that still a thing?
-                    'fax', // is this still a thing?
-
-                    'mother', // TODO: we need to make this controllable
-                    'father', // this too
-                ]),
-                enumNames: (numbertypeNames || [
-                    'geschäftlich',
-                    'privat',
-                    'mobil',
-                    'Fax',
-                    'Tel. Mutter',
-                    'Tel. Vater'
-                ])
-            }
-        },
-        required: [
-            'number',
-            'type'
-        ]
-    }),
+    items: Phone({
+        title: 'Nummer'
+    })
 })
 
-module.exports = PhoneWithTypeList;
+module.exports = PhoneList;
