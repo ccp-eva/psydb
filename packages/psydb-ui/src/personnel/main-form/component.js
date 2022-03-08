@@ -53,11 +53,6 @@ const FormFields = (ps) => {
                 dataXPath='$.gdpr.lastname'
                 required
             />
-            <Fields.SaneString
-                label='Kürzel'
-                dataXPath='$.gdpr.shorthand'
-                required
-            />
             <Fields.EmailWithPrimaryList
                 label='Emails'
                 dataXPath='$.gdpr.emails'

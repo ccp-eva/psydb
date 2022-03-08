@@ -7,7 +7,6 @@ export const createDefaults = (options) => {
         gdpr: {
             firstname: '',
             lastname: '',
-            shorthand: '',
             emails: [{ isPrimary: false }],
             phones: [],
             comment: '',

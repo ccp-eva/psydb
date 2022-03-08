@@ -44,7 +44,6 @@ export const EditorMainForm = (ps) => {
         paths: [
             'gdpr.firstname',
             'gdpr.lastname',
-            'gdpr.shorthand',
             'gdpr.emails',
             'gdpr.phones',
             'gdpr.description',

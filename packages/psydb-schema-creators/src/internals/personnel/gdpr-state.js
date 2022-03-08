@@ -17,9 +17,6 @@ var PersonnelGdprState = ({ enableInternalProps } = {}) => {
         properties: {
             firstname: SaneString({ title: 'Vorname' }),
             lastname: SaneString({ title: 'Nachname' }),
-            // TODO: decide if that should be stored in the scientific part
-            //shorthand: SaneString(),
-            shorthand: SaneString({ title: 'Kürzel', minLength: 2 }),
             
             // TODO: find out if thats even needed
             /*address: Address({
