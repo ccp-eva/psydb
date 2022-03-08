@@ -73,6 +73,7 @@ const CustomField = (ps) => {
     var isRequired = true;
     switch (type) {
         case 'SaneString':
+        case 'FullText':
             isRequired = props.minLength > 0
             break;
         case 'ForeignId':
