@@ -2,14 +2,14 @@
 var ExactObject = require('./exact-object');
 var Phone = require('./phone');
 
-var PhoneList = ({ minItems, numbertypes, numbertypeNames }) => ({
+var PhoneWithTypeList = ({ minItems, numbertypes, numbertypeNames }) => ({
     title: 'Telefon',
-    systemType: 'PhoneList',
+    systemType: 'PhoneWithTypeList',
     type: 'array',
     default: [],
     minItems: (minItems || 0),
     items: ExactObject({
-        systemType: 'PhoneListItem',
+        systemType: 'PhoneWithTypeListItem',
         properties: {
             number: Phone({
                 title: 'Nummer',
@@ -43,4 +43,4 @@ var PhoneList = ({ minItems, numbertypes, numbertypeNames }) => ({
     }),
 })
 
-module.exports = PhoneList;
+module.exports = PhoneWithTypeList;

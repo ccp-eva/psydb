@@ -4,7 +4,7 @@ var inline = require('@cdxoo/inline-text');
 var {
     ForeignId,
     EmailList,
-    PhoneList,
+    PhoneWithTypeList,
     Address,
     FullText,
     SaneString,
@@ -27,7 +27,7 @@ var PersonnelGdprState = ({ enableInternalProps } = {}) => {
                 title: 'E-Mail',
                 minItems: 0
             }),
-            phones: PhoneList({
+            phones: PhoneWithTypeList({
                 title: 'Telefon',
                 minItems: 0
             }),

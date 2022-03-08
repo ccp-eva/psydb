@@ -31,7 +31,7 @@ module.exports = {
         }})
     },
 
-    PhoneList: {
+    PhoneWithTypeList: {
         alterValue: (value) => new RegExp(escape(value), 'i'),
         createProjection: (path) => ({ $map: {
             input: '$' + path,

@@ -13,7 +13,7 @@ const prohibitedFieldTypes = [
     'DateSinceBirthInterval',
     'DateOnlyServerSide',
     'EmailList',
-    'PhoneList',
+    'PhoneWithTypeList',
     'GeoCoords',
     'TimeInterval',
     'WeekdayBoolObject',

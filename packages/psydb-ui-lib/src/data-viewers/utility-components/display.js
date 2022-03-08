@@ -60,7 +60,7 @@ const fixSystemType = (systemType) => {
     switch (systemType) {
         case 'EmailList':
             return 'EmailWithPrimaryList';
-        case 'PhoneList':
+        case 'PhoneWithTypeList':
             return 'PhoneWithTypeList';
         default:
             return systemType;

@@ -34,7 +34,7 @@ module.exports = {
         searchDisplayType: 'SaneString',
     },
 
-    PhoneList: {
+    PhoneWithTypeList: {
         canBeCustomField: true,
         canBeDisplayField: true,
         canBeLabelField: false,

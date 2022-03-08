@@ -61,7 +61,7 @@ const CustomFieldFallback = (ps) => {
 }
 const fixSystemType = (systemType) => {
     switch (systemType) {
-        case 'PhoneList':
+        case 'PhoneWithTypeList':
         case 'EmailList':
             return 'SaneString';
 

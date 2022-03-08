@@ -31,7 +31,7 @@ var EmailList = (value) => (
 
 // TODO: decide if we want to separate stringify stuff into
 // label/display
-var PhoneList = (value) => (
+var PhoneWithTypeList = (value) => (
     value.map(it => it.number).join(', ')
 );
 
@@ -114,7 +114,7 @@ module.exports = {
     AgeFrameInterval,
 
     EmailList,
-    PhoneList,
+    PhoneWithTypeList,
     DateTime,
     DateOnlyServerSide,
     BiologicalGender,

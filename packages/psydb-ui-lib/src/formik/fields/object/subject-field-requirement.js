@@ -10,7 +10,7 @@ const prohibitedFieldTypes = [
     'HelperSetItemIdList',
     'DateSinceBirthInterval',
     'EmailList',
-    'PhoneList',
+    'PhoneWithTypeList',
     'GeoCoords',
     'TimeInterval',
     'WeekdayBoolObject',

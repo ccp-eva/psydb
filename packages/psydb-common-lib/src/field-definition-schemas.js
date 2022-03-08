@@ -78,9 +78,9 @@ var EmailListFieldDefinition = () => FieldDefinition({
     },
 })
 
-var PhoneListFieldDefinition = () => FieldDefinition({
-    type: 'PhoneList',
-    title: 'Liste von Telefon-Nummern (PhoneList)',
+var PhoneWithTypeListFieldDefinition = () => FieldDefinition({
+    type: 'PhoneWithTypeList',
+    title: 'Liste von Telefon-Nummern (PhoneWithTypeList)',
     props: {
         minItems: MinItemsProp(),
     },
@@ -302,7 +302,7 @@ var ObjectFields = {
 
 var ListFields = {
     EmailList: EmailListFieldDefinition,
-    PhoneList: PhoneListFieldDefinition,
+    PhoneWithTypeList: PhoneWithTypeListFieldDefinition,
     ForeignIdList: ForeignIdListFieldDefinition,
     HelperSetItemIdList: HelperSetItemIdListFieldDefinition,
 

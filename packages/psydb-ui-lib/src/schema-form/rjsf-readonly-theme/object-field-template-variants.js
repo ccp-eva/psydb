@@ -80,7 +80,7 @@ export const EmailListItem = ({
     )
 }
 
-export const PhoneListItem = ({
+export const PhoneWithTypeListItem = ({
     title,
     schema,
     formData,

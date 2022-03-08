@@ -43,7 +43,7 @@ var createOneCustomQueryValueObject = (options) => {
         case 'SaneString':
             return { [pointer]: makeRX(filter) };
 
-        case 'PhoneList':
+        case 'PhoneWithTypeList':
             pointer = `${pointer}/number`;
             return { [pointer]: makeRX(filter) };
 

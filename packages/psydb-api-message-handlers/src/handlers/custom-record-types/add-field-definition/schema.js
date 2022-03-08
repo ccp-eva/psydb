@@ -34,7 +34,7 @@ var Schema = () => {
                                 'HelperSetItemId',
                                 'HelperSetItemIdList',
                                 'EmailList',
-                                'PhoneList',
+                                'PhoneWithTypeList',
                                 'ForeignId',
                                 'ForeignIdList',
                                 'FullText',

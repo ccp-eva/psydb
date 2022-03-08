@@ -32,7 +32,7 @@ module.exports = {
     Email: require('./email'),
     Password: require('./password'),
     EventId: require('./event-id'),
-    PhoneList: require('./phone-list'),
+    PhoneWithTypeList: require('./phone-list'),
     Phone: require('./phone'),
     ForeignId: require('./foreign-id'),
     ForeignIdList: require('./foreign-id-list'),

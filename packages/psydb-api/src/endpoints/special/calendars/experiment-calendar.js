@@ -159,11 +159,11 @@ var experimentCalendar = async (context, next) => {
 
     // TODO: theese fields needs a flag of some kind so that they are allowed
     // to be shown here
-    // find the first PhoneList field
+    // find the first PhoneWithTypeList field
     var phoneListField = (
         subjectRecordTypeData.state.settings.subChannelFields.gdpr
         .find(field => {
-            return (field.type === 'PhoneList');
+            return (field.type === 'PhoneWithTypeList');
         })
     );
 
