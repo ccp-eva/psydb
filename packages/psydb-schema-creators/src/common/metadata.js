@@ -133,12 +133,6 @@ module.exports = {
         },
         availableStaticDisplayFields: [
             {
-                key: '_shorthand',
-                systemType: 'SaneString',
-                dataPointer: '/gdpr/state/shorthand',
-                displayName: 'Kürzel',
-            },
-            {
                 key: '_firstname',
                 systemType: 'SaneString',
                 dataPointer: '/gdpr/state/firstname',
@@ -152,10 +146,6 @@ module.exports = {
             },
         ],
         staticDisplayFields: [
-            {
-                systemType: 'SaneString',
-                dataPointer: '/gdpr/state/shorthand',
-            },
             {
                 systemType: 'SaneString',
                 dataPointer: '/gdpr/state/firstname',

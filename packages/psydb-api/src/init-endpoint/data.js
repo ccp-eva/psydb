@@ -19,8 +19,8 @@ var messages = [
             id: rootAccountId,
             props: {
                 gdpr: {
-                    name: { firstname: 'ROOT', lastname: 'ADMIN' },
-                    shorthand: 'ROOT',
+                    firstname: 'ROOT',
+                    lastname: 'ADMIN',
                     emails: [
                         // TODO: possbily need to be set in config
                         { email: 'root@example.com', isPrimary: true }
