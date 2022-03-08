@@ -64,7 +64,6 @@ var PersonnelGdprState = ({ enableInternalProps } = {}) => {
         required: [
             'firstname',
             'lastname',
-            'shorthand',
             //'address',
             'emails',
             'phones',
