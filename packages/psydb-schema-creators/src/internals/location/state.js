@@ -17,7 +17,6 @@ var GenericLocationState = ({
         type: 'object',
         properties: {
             custom: CustomProps({ customFieldDefinitions }),
-            comment: FullText({ title: 'Kommentar' }),
             reservationSettings: reservationSettingsSchema,
             systemPermissions: systemPermissionsSchema,
             
