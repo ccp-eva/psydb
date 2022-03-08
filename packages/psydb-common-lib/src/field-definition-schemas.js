@@ -86,7 +86,7 @@ var PhoneWithTypeListFieldDefinition = () => FieldDefinition({
     },
 })
 
-var PhoneWithTypeListFieldDefinition = () => FieldDefinition({
+var PhoneListFieldDefinition = () => FieldDefinition({
     type: 'PhoneList',
     title: 'Liste von Telefon-Nummern ohne Typ (PhoneList)',
     props: {
@@ -311,6 +311,7 @@ var ObjectFields = {
 var ListFields = {
     EmailList: EmailListFieldDefinition,
     PhoneWithTypeList: PhoneWithTypeListFieldDefinition,
+    PhoneList: PhoneListFieldDefinition,
     ForeignIdList: ForeignIdListFieldDefinition,
     HelperSetItemIdList: HelperSetItemIdListFieldDefinition,
 
