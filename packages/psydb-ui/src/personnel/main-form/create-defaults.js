@@ -9,7 +9,7 @@ export const createDefaults = (options) => {
             lastname: '',
             emails: [{ isPrimary: false }],
             phones: [],
-            comment: '',
+            description: '',
         },
         scientific: {
             researchGroupSettings: [{}],
