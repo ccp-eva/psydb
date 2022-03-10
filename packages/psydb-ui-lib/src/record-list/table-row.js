@@ -76,6 +76,7 @@ const TableRow = ({
                             { enableView && (
                                 <LinkButton
                                     size='sm'
+                                    target='_blank'
                                     to={`${linkBaseUrl}/${record._id}`}>
                                     Details
                                 </LinkButton>

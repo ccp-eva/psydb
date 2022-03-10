@@ -5,11 +5,24 @@ import { LinkContainer } from 'react-router-bootstrap';
 
 const LinkButton = ({
     to,
+    target,
     ...other
 }) => (
-    <LinkContainer to={to}>
-        <Button { ...other } />
-    </LinkContainer>
+    target
+    ? (
+        <a
+            target={ target }
+            href={ `#${to}` }
+            className={ `btn btn-primary btn-${other.size}` }
+        >
+            { other.children }
+        </a>
+    )
+    : (
+        <LinkContainer to={ to }>
+            <Button { ...other } />
+        </LinkContainer>
+    )
 );
 
 export default LinkButton;
