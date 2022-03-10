@@ -21,7 +21,7 @@ export const RecordDetails = (ps) => {
                         variant='danger'
                         to={`${up(url, 1)}/remove` }
                     >
-                        Proband Löschen
+                        Mitarbeiter Löschen
                     </LinkButton>
                 </div>
             )}
