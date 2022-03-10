@@ -86,4 +86,6 @@ export const Calendar = ({
     )
 }
 
-export const WeeklyCalendar = withWeeklyCalendarPages(Calendar);
+export const WeeklyCalendar = withWeeklyCalendarPages(Calendar, {
+    withURLSearchParams: true
+});
