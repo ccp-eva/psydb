@@ -49,8 +49,6 @@ var handler = GenericRecordHandler({
             ...destructured
         });
 
-        console.dir(recordPropMessages, { depth: null });
-
         await dispatchRecordPropMessages({
             channel,
             ...destructured,
