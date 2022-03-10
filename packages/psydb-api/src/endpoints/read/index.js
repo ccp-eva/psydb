@@ -113,6 +113,9 @@ var read = async (context, next) => {
     if (record.scientific && record.scientific._lastKnownEventId === null) {
         delete record.scientific;
     }
+    if (collectionName === 'personnel') {
+        delete record.scientific.state.internals.passwordHash;
+    }
 
     var {
         relatedRecords,
