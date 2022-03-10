@@ -2,6 +2,7 @@
 var inline = require('@cdxoo/inline-text');
 
 var {
+    ExactObject,
     ForeignIdList,
     SaneString,
     Color,
@@ -11,13 +12,12 @@ var {
 var ExperimentOperatorTeamState = ({
     enableInternalProps
 } = {}) => {
-    var schema = {
-        type: 'object',
+    var schema = ExactObject({
         properties: {
-            name: SaneString({
+            /*name: SaneString({
                 title: 'Bezeichnung',
                 minLength: 1,
-            }),
+            }),*/
             color: Color({
                 title: 'Farbe',
                 default: '#00ff00',
@@ -42,7 +42,7 @@ var ExperimentOperatorTeamState = ({
             })
         },
         required: [
-            'name',
+            //'name',
             'color',
             'personnelIds',
             ...(
@@ -51,7 +51,7 @@ var ExperimentOperatorTeamState = ({
                 : []
             ),
         ],
-    }
+    });
 
     return schema;
 };

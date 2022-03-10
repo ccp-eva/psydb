@@ -101,6 +101,8 @@ var checkSchema = async ({ db, getRecordSchemas, message }) => {
 
     var ajv = Ajv();
 
+    console.dir({ schema }, { depth: null });
+    console.dir({ message }, { depth: null });
     var isValid = ajv.validate(
         schema,
         message

@@ -6,15 +6,8 @@ var {
 var GenericRecordHandler = require('../../lib/generic-record-handler');
 
 var ExperimentOperatorTeamGroup = MessageHandlerGroup([
-    // TODO: permissions
-    GenericRecordHandler({
-        collection: 'experimentOperatorTeam',
-        op: 'create',
-    }),
-    GenericRecordHandler({
-        collection: 'experimentOperatorTeam',
-        op: 'patch',
-    }),
+    require('./create'),
+    require('./patch'),
 ]);
 
 module.exports = ExperimentOperatorTeamGroup;

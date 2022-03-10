@@ -147,6 +147,11 @@ const GenericRecordForm = ({
             formData = record.state;
         }
 
+        // FIXME:
+        if (collection === 'experimentOperatorTeam') {
+            delete formData.name;
+        };
+
         formContext = {
             relatedRecordLabels,
             relatedHelperSetItems,
