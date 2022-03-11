@@ -120,8 +120,8 @@ var formatStatus = (status) => {
         'unknown': 'unb.',
         'participated': 't.g.',
         'showed-up-but-didnt-participate': 'n.t.g',
-        'did-show-up': 'ersch.',
-        'didnt-show-up': 'n. ersch.',
+        'did-show-up': 'gek.',
+        'didnt-show-up': 'n. gek.',
         'canceled-by-participant': 'abg.',
         'canceled-by-institute': 'ausg.',
     }[status] || 'ERROR'

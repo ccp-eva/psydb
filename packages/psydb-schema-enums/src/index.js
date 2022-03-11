@@ -63,8 +63,8 @@ var safeParticipationStatus = {
     names: [
         'teilgenommen',
         'nicht teilgenommen',
-        'nur erschienen',
-        'nicht erschienen',
+        'gekommen',
+        'nicht gekommen',
     ]
 }
 
