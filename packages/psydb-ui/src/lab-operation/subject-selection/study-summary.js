@@ -7,6 +7,8 @@ import {
     LabProcedureSettings
 } from '@mpieva/psydb-ui-lib/data-viewers';
 
+import * as Themes from '@mpieva/psydb-ui-lib/data-viewer-themes';
+
 const StudySummary = (ps) => {
     var { studyId, settings, settingsRelated, subjectCRTSettings } = ps;
 
@@ -39,6 +41,7 @@ const StudySummary = (ps) => {
     }
 
     var settingsBag = {
+        theme: Themes.HorizontalSplit,
         value: settings,
         related: settingsRelated,
         subjectCRTSettings
