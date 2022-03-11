@@ -54,6 +54,13 @@ module.exports = {
             // in 1st of Janurary when searching via stringified date
             timezone: 'Europe/Berlin'
         }})
-    }
+    },
 
+    Integer: {
+        alterValue: (value) => new RegExp(escape(String(value)), 'i'),
+        createProjection: (path) => ({ $convert: {
+            input: '$' + path,
+            to: 'string'
+        }})
+    },
 }
