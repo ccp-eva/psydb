@@ -1,10 +1,5 @@
 import datefns from './date-fns';
 
-// XXX: theese are mpi constants
-const DAY = 24*60*60*1000;
-const MONTH = 30 * DAY;
-const YEAR = 12 * MONTH;
-
 const calculateAge = ({
     base,
     relativeTo

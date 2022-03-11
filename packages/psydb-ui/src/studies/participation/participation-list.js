@@ -69,7 +69,16 @@ const ParticipationListRow = ({
         record.scientific.state.internals.participatedInStudies[0]
     );
 
-    console.log({ record });
+    var formattedDate = datefns.format(
+        new Date(participationData.timestamp),
+        'dd.MM.yyyy HH:mm'
+    );
+    // FIXME: this is really hacky but we have
+    // experiments old stuff in db
+    var is1970 = (
+        formattedDate === '01.01.1970 00:00'
+    );
+
     return (
         <tr>
             <FieldDataBodyCols { ...({
@@ -79,22 +88,13 @@ const ParticipationListRow = ({
                 relatedCustomRecordTypeLabels,
                 displayFieldData,
             })} />
-            <td>{ 
-                datefns.format(
-                    new Date(participationData.timestamp),
-                    'dd.MM.yyyy HH:mm'
-                )
-            }</td>
+            <td>{ is1970 ? '-' : formattedDate }</td>
             { dateOfBirthField && (
                 <td>
                     { 
-                        // FIXME: timezone correction
-                        // PS: calculating the difference
-                        // between a tz corrected value and actual
-                        // date-time is hillarious
-                        // NOTE: maybe we could strip the time from
-                        // the participation timestamp
-                        calculateAge({
+                        is1970
+                        ? '-'
+                        : calculateAge({
                             base: jsonpointer.get(
                                 record, dateOfBirthField.dataPointer
                             ),

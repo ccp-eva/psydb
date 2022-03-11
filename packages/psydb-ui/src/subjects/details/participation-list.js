@@ -71,6 +71,16 @@ const ParticipationListRow = ({
     relatedCustomRecordTypeLabels,
     displayFieldData
 }) => {
+    var formattedDate = datefns.format(
+        new Date(item.timestamp),
+        'dd.MM.yyyy HH:mm'
+    );
+    // FIXME: this is really hacky but we have
+    // experiments old stuff in db
+    var is1970 = (
+        formattedDate === '01.01.1970 00:00'
+    );
+
     return (
         <tr>
             <FieldDataBodyCols { ...({
@@ -81,18 +91,17 @@ const ParticipationListRow = ({
                 displayFieldData,
             })} />
 
-            <td>{ 
-                datefns.format(
-                    new Date(item.timestamp),
-                    'dd.MM.yyyy HH:mm'
-                )
-            }</td>
+            <td>{ is1970 ? '-' : formattedDate }</td>
             { ageFrameField && (
                 <td>
-                    { calculateAge({
-                        base: ageFrameFieldValue,
-                        relativeTo: item.timestamp
-                    }) }
+                    { 
+                        is1970
+                        ? '-'
+                        : calculateAge({
+                            base: ageFrameFieldValue,
+                            relativeTo: item.timestamp
+                        })
+                    }
                 </td>
             )}
             <td>
