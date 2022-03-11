@@ -69,14 +69,16 @@ const ParticipationListRow = ({
         record.scientific.state.internals.participatedInStudies[0]
     );
 
+    var date = new Date(participationData.timestamp);
     var formattedDate = datefns.format(
-        new Date(participationData.timestamp),
+        date,
         'dd.MM.yyyy HH:mm'
     );
     // FIXME: this is really hacky but we have
     // experiments old stuff in db
     var is1970 = (
-        formattedDate === '01.01.1970 00:00'
+        date.toISOString() === '1970-01-01T00:00:00.000Z'
+        //formattedDate === '01.01.1970 00:00'
     );
 
     return (
