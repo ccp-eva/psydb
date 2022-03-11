@@ -80,13 +80,6 @@ const ExperimentSummarySmall = ({
                     { datefns.format(end, 'p') }
                 </b>
             </div>
-            <div>
-                { teamRecord.state.name }
-                {' '}
-                ({
-                    experimentRelated.relatedRecordLabels.study[studyId]._recordLabel
-                })
-            </div>
             <div className='mt-2'>
                 <small><b>Probanden:</b></small>
             </div>
@@ -114,7 +107,17 @@ const ExperimentSummarySmall = ({
                     ))
                 }
             </ul>
-            <div className='mt-2 d-flex justify-content-end'>
+            <div className='d-flex text-small mt-3'>
+                <b style={{ width: '70px' }}>Team</b>
+                { teamRecord.state.name }
+            </div>
+            <div className='d-flex text-small'>
+                <b style={{ width: '70px' }}>Studie</b>
+                {
+                    experimentRelated.relatedRecordLabels.study[studyId]._recordLabel
+                }
+            </div>
+            <div className='mt-1 d-flex justify-content-end'>
                 <ExperimentDropdown { ...({
                     experimentType: 'inhouse',
                     variant: 'calendar',

@@ -162,13 +162,6 @@ const ExperimentSummaryMedium = ({
                             { datefns.format(end, 'p') }
                         </b>
                     </div>
-                    <div>
-                        { teamRecord.state.name }
-                        {' '}
-                        ({
-                            experimentRelated.relatedRecordLabels.study[studyId]._recordLabel
-                        })
-                    </div>
                 </div>
                 <div
                     style={{ width: '35px' }}
@@ -219,16 +212,16 @@ const ExperimentSummaryMedium = ({
                     ))
                 }
             </ul>
-            {/*<div className='mt-3 d-flex justify-content-end'>
-                <LinkContainer
-                    style={{
-                        color: getTextColor(teamRecord.state.color),
-                    }}
-                    to={ `/experiments/inhouse/${experimentRecord._id}` }
-                >
-                    <a><u>... Details</u></a>
-                </LinkContainer>
-            </div>*/}
+            <div className='d-flex text-small mt-3'>
+                <b style={{ width: '70px' }}>Team</b>
+                { teamRecord.state.name }
+            </div>
+            <div className='d-flex text-small'>
+                <b style={{ width: '70px' }}>Studie</b>
+                {
+                    experimentRelated.relatedRecordLabels.study[studyId]._recordLabel
+                }
+            </div>
         </div>
     )
 }
