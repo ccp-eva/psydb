@@ -50,7 +50,7 @@ const TableRow = ({
             { (showSelectionIndicator && wholeRowIsClickable) && (
                 <CheckColumn { ...({
                     record,
-                    onSelectRecord,
+                    //onSelectRecord, // FIXME: what am i doing here?
                     selectedRecordIds,
                 }) } />
             )}

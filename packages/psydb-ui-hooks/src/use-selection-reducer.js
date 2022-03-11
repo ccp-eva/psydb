@@ -9,7 +9,9 @@ const useSelectionReducer = (options = {}) => {
 
     var reducer = useMemo(() => (
         createReducer({ checkEqual })
-    ), [ checkEqual ]);
+    ), [ /*checkEqual*/ ]);
+    // NOTE: when we make checkEqual a dep it creates new reducer
+    // in the middle of redering an dupdate whcih can lead to issues
 
     var [ state, dispatch ] = useReducer(reducer, { selected });
     var { selected } = state;
