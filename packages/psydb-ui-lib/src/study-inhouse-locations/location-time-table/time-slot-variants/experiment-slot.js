@@ -1,4 +1,5 @@
 import React from 'react';
+import classnames from 'classnames';
 import { Icons } from '@mpieva/psydb-ui-layout';
 
 import datefns from '../../../date-fns';
@@ -9,6 +10,7 @@ import OtherStudySlot from './other-study-slot';
 const ExperimentSlot = (ps) => {
     var {
         timestamp,
+        isFirstSlotOfExperiment,
         experimentRecord,
 
         slotDuration,
@@ -72,6 +74,8 @@ const ExperimentSlot = (ps) => {
         (_isAugmented && _matchesRequirements)
     );
 
+    var textColor = getTextColor(teamRecord.state.color);
+
     return (
         <div
             role={ canClick ? 'button' : undefined }
@@ -79,7 +83,7 @@ const ExperimentSlot = (ps) => {
             style={{
                 height: '26px',
                 background: teamRecord.state.color,
-                color: getTextColor(teamRecord.state.color),
+                color: textColor,
                 ...(!canClick && {
                     opacity: 0.5
                 }),
@@ -100,6 +104,10 @@ const ExperimentSlot = (ps) => {
             }}
         >
             <div className='d-flex'>
+                <ExperimentSlotPosIndicator { ...({
+                    isFirstSlotOfExperiment,
+                    textColor,
+                }) } />
                 <b className='d-inline-block pl-1 pr-1 flex-grow' style={{
                     height: '26px',
                     //borderLeft: '4px solid',
@@ -159,6 +167,35 @@ var countMissing = (options)  => {
     )
 
     return missingCount;
+}
+
+const ExperimentSlotPosIndicator = (ps) => {
+    var {
+        isFirstSlotOfExperiment,
+        textColor
+    } = ps;
+
+    var Indication = (
+        isFirstSlotOfExperiment
+        ? <Icons.CaretRightFill style={{
+            width: '12px', height: '12px', marginTop: '-3px'
+        }} />
+        : null
+    )
+
+    return (
+        <span
+            className={`text-center`}
+            style={{
+                color: textColor,
+
+                height: '26px',
+                width: '30px'
+            }}
+        >
+            { Indication }
+        </span>
+    );
 }
 
 const SubjectCountIndicator = (ps) => {

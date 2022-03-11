@@ -44,12 +44,28 @@ const TimeSlotList = ({
 
     var slots = useMemo(() => {
         var tmp = [];
+        var visitedExperiments = {};
         for (var t = start.getTime(); t < end.getTime(); t += slotDuration) {
-            tmp.push({
+            var reservationRecord = slottedReservationRecords[t].item;
+            var experimentRecord = slottedExperimentRecords[t].item;
+
+            var bag = {
                 timestamp: t,
-                reservationRecord: slottedReservationRecords[t].item,
-                experimentRecord: slottedExperimentRecords[t].item,
-            });
+                reservationRecord,
+                experimentRecord,
+            };
+
+            if (experimentRecord) {
+                var { _id: expId } = experimentRecord;
+                var visited = visitedExperiments[expId];
+                if (!visited) {
+                    bag.isFirstSlotOfExperiment = true;
+                    visitedExperiments[expId] = true;
+                }
+            }
+
+            tmp.push(bag);
+
         }
         return tmp;
     }, [ slottedReservationRecords, slottedExperimentRecords ]);
@@ -94,11 +110,13 @@ const TimeSlotList = ({
             { slots.map(
                 ({
                     timestamp,
+                    isFirstSlotOfExperiment,
                     reservationRecord,
                     experimentRecord
                 }) => (
                     <TimeSlot key={ timestamp } { ...({
                         timestamp,
+                        isFirstSlotOfExperiment,
                         reservationRecord,
                         experimentRecord,
 

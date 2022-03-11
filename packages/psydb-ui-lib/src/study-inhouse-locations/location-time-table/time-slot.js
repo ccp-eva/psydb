@@ -11,6 +11,8 @@ const TimeSlot = (ps) => {
         experimentRecord,
         reservationRecord,
         
+        isFirstSlotOfExperiment,
+
         onSelectExperimentSlot,
         onSelectReservationSlot,
         onSelectEmptySlot,
@@ -20,6 +22,7 @@ const TimeSlot = (ps) => {
     if (experimentRecord) {
         return (
             <ExperimentSlot { ...({
+                isFirstSlotOfExperiment,
                 experimentRecord,
                 onSelectExperimentSlot,
                 ...downstream

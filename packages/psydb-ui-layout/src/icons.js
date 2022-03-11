@@ -13,6 +13,7 @@ export {
 
     CaretDownFill,
     CaretUpFill,
+    CaretRightFill,
 
     Square,
     SquareFill,
