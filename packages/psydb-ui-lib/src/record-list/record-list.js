@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { transliterate } from '@mpieva/psydb-core-utils';
 
 import {
     useFetch,
     usePaginationReducer,
+    useURLSearchParamsB64,
 } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -33,8 +35,6 @@ var RecordList = ({
     selectedRecordIds,
     onSelectRecord,
 
-    useURLSearchParams,
-
     linkBaseUrl,
     tableClassName,
     bsTableProps,
@@ -43,7 +43,12 @@ var RecordList = ({
     var [ isInitialized, setIsInitialized ] = useState(false);
     var [ payload, setPayload ] = useState([]);
 
-    var [ filters, setFilters ] = useState({});
+    var [ filters, setFilters ] = (
+        (target === 'table' || !target)
+        ? useURLSearchParamsB64()
+        : useState({})
+    );
+
     var [ didChangeFilters, setDidChangeFilters ] = useState(false);
     //var [ cachedOffset, setCachedOffset ] = useState(0);
 

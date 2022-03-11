@@ -8,6 +8,7 @@ module.exports = {
     convertPathToPointer: require('./convert-path-to-pointer'),
     only: require('./only'),
     range: require('./range'),
+    transliterate: require('./transliterate'),
     
     intersect: require('./intersect'),
     without: require('./without'),
