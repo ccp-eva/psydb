@@ -29,11 +29,21 @@ const DetailsBody = (ps) => {
     return (
         <>
             <Subject { ...subjectBag }>
+                <Subject.SequenceNumber />
+                <Subject.OnlineId />
+                
+                <hr />
+                
                 <Subject.CustomGDPR />
                 <Subject.CustomScientific />
-                <Subject.Comment />
+                
                 <Subject.TestingPermissions />
+                <Subject.Comment />
+                
+                <hr />
+                
                 <Subject.SystemPermissions />
+
             </Subject>
         </>
     )

@@ -3,6 +3,7 @@ import { createBase, withPair, addComponents } from '../core';
 import {
     CustomGDPR,
     CustomScientific,
+    SaneString,
     FullText,
     SystemPermissions
 } from '../utility-components';
@@ -10,6 +11,8 @@ import {
 import TestingPermissions from './testing-permissions';
 
 const labels = {
+    '/sequenceNumber': 'ID Nr.',
+    '/onlineId': 'Online ID Code',
     '/scientific/state/comment': 'Kommentar',
     '/scientific/state/testingPermissions': 'Teilnahme-Erlaubnis',
     '/scientific/state/systemPermissions': 'Zugriff auf diesen Datensatz für'
@@ -41,6 +44,16 @@ addComponents(Subject, SubjectContext, labels, [
         cname: 'SystemPermissions',
         path: '/scientific/state/systemPermissions',
         Component: withPair(SystemPermissions)
+    },
+    {
+        cname: 'SequenceNumber',
+        path: '/sequenceNumber',
+        Component: withPair(SaneString)
+    },
+    {
+        cname: 'OnlineId',
+        path: '/onlineId',
+        Component: withPair(SaneString)
     }
 ]);
 

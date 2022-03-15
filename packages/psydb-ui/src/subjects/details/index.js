@@ -14,6 +14,8 @@ import GenericRecordDetails from '@mpieva/psydb-ui-lib/src/generic-record-detail
 import Participation from './participation';
 import ParticipationModal from './participation-modal';
 
+import { RecordDetails } from '@mpieva/psydb-ui-record-views/subjects';
+
 const Header = ({
     title,
     editLabel,
@@ -70,11 +72,17 @@ const SubjectDetailsContainer = ({
                 />
                 <hr />
                 
-                <GenericRecordDetails { ...({
+                <RecordDetails { ...({
                     id,
                     collection,
                     recordType,
                 })} />
+
+                { /*<GenericRecordDetails { ...({
+                    id,
+                    collection,
+                    recordType,
+                })} /> */}
             </div>
             
             { canReadParticipation && (
