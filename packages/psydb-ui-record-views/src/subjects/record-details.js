@@ -33,7 +33,7 @@ const DetailsBody = (ps) => {
                 <Subject.CustomScientific />
                 <Subject.Comment />
                 <Subject.TestingPermissions />
-                { /*<Subject.SystemPerimssions />*/ }
+                <Subject.SystemPermissions />
             </Subject>
         </>
     )

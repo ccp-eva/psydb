@@ -48,6 +48,7 @@ const CustomFieldDefault = (options) => {
             var { minItems } = props;
             return range(minItems || 0).map(() => ({}));
 
+        case 'PhoneList':
         case 'HelperSetItemIdList':
         case 'ForeignIdList':
             var { minItems } = props;

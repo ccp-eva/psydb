@@ -3,7 +3,8 @@ import { createBase, withPair, addComponents } from '../core';
 import {
     CustomGDPR,
     CustomScientific,
-    FullText
+    FullText,
+    SystemPermissions
 } from '../utility-components';
 
 import TestingPermissions from './testing-permissions';
@@ -11,6 +12,7 @@ import TestingPermissions from './testing-permissions';
 const labels = {
     '/scientific/state/comment': 'Kommentar',
     '/scientific/state/testingPermissions': 'Teilnahme-Erlaubnis',
+    '/scientific/state/systemPermissions': 'Zugriff auf diesen Datensatz für'
 }
 
 const [ Subject, SubjectContext ] = createBase();
@@ -35,6 +37,11 @@ addComponents(Subject, SubjectContext, labels, [
         path: '/scientific/state/testingPermissions',
         Component: withPair(TestingPermissions),
     },
+    {
+        cname: 'SystemPermissions',
+        path: '/scientific/state/systemPermissions',
+        Component: withPair(SystemPermissions)
+    }
 ]);
 
 export default Subject;

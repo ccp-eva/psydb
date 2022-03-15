@@ -35,10 +35,12 @@ export const HelperSetItemIdList = (ps) => {
     var { value, props, related } = ps;
     var { setId } = props;
     
+    if (!(Array.isArray(value) && value.length)) {
+        return <i className='text-muted'>Keine</i>
+    }
+
     return (
-        !(Array.isArray(value) && value.length)
-        ? <i className='text-muted'>Keine</i>
-        : <span>{ value.map(it => (
+        <span>{ value.map(it => (
             related.relatedHelperSetItems[setId][it].state.label
         )).join(', ') }</span>
     )
@@ -48,6 +50,10 @@ export const ForeignIdList = (ps) => {
     var { value, props, related } = ps;
     var { collection, recordType } = props;
     
+    if (!(Array.isArray(value) && value.length)) {
+        return <i className='text-muted'>Keine</i>
+    }
+
     var formatted = (
         value
         .map((it, ix) => (
@@ -80,6 +86,11 @@ export const DateOnlyServerSide = (ps) => {
 
 export const Address = (ps) => {
     var { value } = ps;
+    
+    if (!value) {
+        return <i className='text-muted'>Keine Angabe</i>
+    }
+    
     return (
         <>
             <div>
@@ -102,6 +113,11 @@ export const Address = (ps) => {
 
 export const EmailWithPrimaryList = (ps) => {
     var { value } = ps;
+    
+    if (!(Array.isArray(value) && value.length)) {
+        return <i className='text-muted'>Keine</i>
+    }
+
     return (
         value.map((it, ix) => (
             <div key={ ix }>
@@ -120,6 +136,10 @@ export const EmailWithPrimaryList = (ps) => {
 export const PhoneWithTypeList = (ps) => {
     var { value } = ps;
     
+    if (!(Array.isArray(value) && value.length)) {
+        return <i className='text-muted'>Keine</i>
+    }
+
     var fieldOptions = {
         'business': 'geschäftlich',
         'private': 'privat',
@@ -138,11 +158,21 @@ export const PhoneWithTypeList = (ps) => {
             </div>
         ))
     )
-
 }
 
-export const BiologicalGender = (ps) => {
+export const PhoneList = (ps) => {
     var { value } = ps;
+    
+    if (!(Array.isArray(value) && value.length)) {
+        return <i className='text-muted'>Keine</i>
+    }
+
+    return (
+        value.join(', ')
+    )
+}
+export const BiologicalGender = (ps) => {
+    var { value = 'unknown' } = ps;
 
     var fieldOptions = {
         'female': 'Weiblich',
@@ -154,12 +184,12 @@ export const BiologicalGender = (ps) => {
 }
 
 export const ExtBool = (ps) => {
-    var { value } = ps;
+    var { value = 'unknown' } = ps;
 
     var colorClasses = {
         'yes': 'text-primary',
         'no': 'text-danger',
-        'unknown': 'text-light',
+        'unknown': 'text-grey',
     };
 
     var fieldOptions = {
@@ -177,7 +207,9 @@ export const ExtBool = (ps) => {
     var OptionIcon = icons[value];
     return (
         <span className={ colorClasses[value] }>
-            <OptionIcon />
+            <OptionIcon
+                style={{ marginTop: '-3px' }}
+            />
             <span className='d-inline-block ml-2'>
                 { fieldOptions[value] }
             </span>
