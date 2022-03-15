@@ -221,6 +221,9 @@ export const ExtBool = (ps) => {
 export const ForeignId = (ps) => {
     var { value, props, related } = ps;
     var { collection, recordType } = props;
+    if (!value) {
+        return <i className='text-muted'>Keine Angabe</i>
+    }
     
     var label = (
         related.relatedRecordLabels[collection][value]._recordLabel
