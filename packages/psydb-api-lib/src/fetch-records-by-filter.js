@@ -196,11 +196,12 @@ var fetchRecordByFilter = async ({
     //console.dir(stages, { depth: null });
     //throw new Error();*/
 
-    await db.collection('subject').dropIndexes()
+    /*await db.collection('subject').dropIndexes()
     await db.collection('subject').createIndex({
         'type': 1
     }, { name: 'ix__type' });
-    console.log(await db.collection('subject').indexes());
+    console.log(await db.collection('subject').indexes());*/
+
     /*await db.collection('subject').createIndex({
         'scientific.state.internals.isRemoved': 1
     }, { name: 'ix_isRemoved'});
@@ -209,21 +210,22 @@ var fetchRecordByFilter = async ({
         'scientific.state.internals.isRemoved': 1
     }, { name: 'ix__type_and_isRemoved' });*/
 
-    console.log(collectionName);
-    console.dir(await (
+    //console.log(collectionName);
+    
+    /*console.dir(await (
         db.collection(collectionName)
         .aggregate(
             [
                 ...stages.slice(0,1),
             ],
             {
-                hint: { 'type': 1 },
+                //hint: { 'type': 1 },
                 allowDiskUse: true,
                 collation: { locale: 'de@collation=phonebook' }
             }
         )
         .explain('executionStats')
-    ), { depth: null });
+    ), { depth: null });*/
 
     var facets = await (
         db.collection(collectionName)
