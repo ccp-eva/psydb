@@ -90,7 +90,7 @@ const ExperimentSummary = ({
 
             <div className='d-flex'>
                 <div className='flex-grow'>
-                    <div>
+                    <div className='text-small'>
                         { teamRecord.state.name }
                         {' '}
                         ({
