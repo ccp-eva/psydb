@@ -1,5 +1,17 @@
 import React from 'react';
+import { Icons } from '@mpieva/psydb-ui-layout';
 import datefns from '../../date-fns';
+
+var collectionUIMapping = {
+    'subject': 'subjects',
+    'researchGroup': 'research-groups',
+    'location': 'locations',
+    'study': 'studies',
+    'personnel': 'personnel',
+    'externalPerson': 'external-persons',
+    'externalOrganization': 'external-organizations',
+    'systemRole': 'system-roles',
+}
 
 export const SaneString = (ps) => {
     var { value } = ps;
@@ -20,23 +32,32 @@ export const FullText = (ps) => {
 }
 
 export const HelperSetItemIdList = (ps) => {
-    var { value, props } = ps;
+    var { value, props, related } = ps;
     var { setId } = props;
     
     return (
         !(Array.isArray(value) && value.length)
         ? <i className='text-muted'>Keine</i>
-        : <span>{ value.map(it => it).join(', ') }</span>
+        : <span>{ value.map(it => (
+            related.relatedHelperSetItems[setId][it].state.label
+        )).join(', ') }</span>
     )
 }
 
 export const ForeignIdList = (ps) => {
     var { value, props, related } = ps;
-    var { collection } = props;
+    var { collection, recordType } = props;
     
     var formatted = (
         value
-        .map(it => related.relatedRecordLabels[collection][it]._recordLabel)
+        .map((it, ix) => (
+            <ForeignId
+                key={ ix }
+                value={ it }
+                props={ props }
+                related={ related }
+            />
+        ))
         .join(', ')
     );
     
@@ -50,9 +71,146 @@ export const DateOnlyServerSide = (ps) => {
     var formatted = (
         value === undefined || value === null
         ? '-' 
-        : datefns.format(new Date(value), 'P')
+        : datefns.format(new Date(value), 'dd.MM.yyyy')
     );
     return (
         <span>{ formatted }</span>
     )
+}
+
+export const Address = (ps) => {
+    var { value } = ps;
+    return (
+        <>
+            <div>
+                { value.street }
+                {' '}
+                { value.housenumber }
+                {' '}
+                { value.affix }
+            </div>
+            <div>
+                { value.postcode }
+                {' '}
+                { value.city }
+                {' '}
+                ({ value.country})
+            </div>
+        </>
+    )
+}
+
+export const EmailWithPrimaryList = (ps) => {
+    var { value } = ps;
+    return (
+        value.map((it, ix) => (
+            <div key={ ix }>
+                { it.email }
+                {' '}
+                { it.isPrimary && (
+                    <span className='text-primary'>
+                        (primär)
+                    </span>
+                )}
+            </div>
+        ))
+    )
+}
+
+export const PhoneWithTypeList = (ps) => {
+    var { value } = ps;
+    
+    var fieldOptions = {
+        'business': 'geschäftlich',
+        'private': 'privat',
+        'mobile': 'mobil',
+        'fax': 'Fax',
+        'mother': 'Tel. Mutter',
+        'father': 'Tel. Vater',
+    }
+
+    return (
+        value.map((it, ix) => (
+            <div key={ ix }>
+                { it.number }
+                {' '}
+                ({ fieldOptions[it.type] })
+            </div>
+        ))
+    )
+
+}
+
+export const BiologicalGender = (ps) => {
+    var { value } = ps;
+
+    var fieldOptions = {
+        'female': 'Weiblich',
+        'male': 'Männlich',
+        'unknown': 'Unbekannt'
+    }
+
+    return fieldOptions[value];
+}
+
+export const ExtBool = (ps) => {
+    var { value } = ps;
+
+    var colorClasses = {
+        'yes': 'text-primary',
+        'no': 'text-danger',
+        'unknown': 'text-light',
+    };
+
+    var fieldOptions = {
+        'yes': 'Ja',
+        'no': 'Nein',
+        'unknown': 'Unbekannt',
+    };
+
+    var icons = {
+        'yes': Icons.CheckSquareFill,
+        'no': Icons.XSquareFill,
+        'unknown': Icons.Square
+    }
+
+    var OptionIcon = icons[value];
+    return (
+        <span className={ colorClasses[value] }>
+            <OptionIcon />
+            <span className='d-inline-block ml-2'>
+                { fieldOptions[value] }
+            </span>
+        </span>
+    )
+}
+
+
+export const ForeignId = (ps) => {
+    var { value, props, related } = ps;
+    var { collection, recordType } = props;
+    
+    var label = (
+        related.relatedRecordLabels[collection][value]._recordLabel
+    );
+    
+    var collectionUI = collectionUIMapping[collection];
+    if (collectionUI) {
+        var uri = (
+            recordType
+            ? `#/${collectionUI}/${recordType}/${value}`
+            : `#/${collectionUI}/${value}`
+        );
+
+        return (
+            <a href={ uri }>{ label }</a>
+        )
+    }
+    else {
+        return label;
+    }
+}
+
+export const Integer = (ps) => {
+    return String(ps.value);
 }

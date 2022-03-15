@@ -21,8 +21,8 @@ import {
 const SubjectTypeView = withRecordTypeView({
     RecordCreator,
     RecordEditor,
-    RecordDetails: Details,
-    //RecordDetails,
+    //RecordDetails: Details,
+    RecordDetails,
     RecordRemover,
     CustomRouting: IntraTypeRouting,
 })

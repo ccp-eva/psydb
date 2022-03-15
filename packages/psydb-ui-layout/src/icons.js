@@ -18,6 +18,7 @@ export {
     Square,
     SquareFill,
     CheckSquareFill,
+    XSquareFill,
 
     CheckCircleFill,
 

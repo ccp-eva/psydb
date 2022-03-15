@@ -30,8 +30,11 @@ const DetailsBody = (ps) => {
         <>
             <Subject { ...subjectBag }>
                 <Subject.CustomGDPR />
+                <Subject.CustomScientific />
+                <Subject.Comment />
+                <Subject.TestingPermissions />
+                { /*<Subject.SystemPerimssions />*/ }
             </Subject>
-            <div>FOO</div>
         </>
     )
 }
