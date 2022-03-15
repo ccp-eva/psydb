@@ -36,7 +36,6 @@ const DetailsBody = (ps) => {
                 
                 <Subject.CustomGDPR />
                 <Subject.CustomScientific />
-                
                 <Subject.TestingPermissions />
                 <Subject.Comment />
                 

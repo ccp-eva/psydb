@@ -21,6 +21,16 @@ const labels = {
 const [ Subject, SubjectContext ] = createBase();
 addComponents(Subject, SubjectContext, labels, [
     {
+        cname: 'SequenceNumber',
+        path: '/sequenceNumber',
+        Component: withPair(SaneString)
+    },
+    {
+        cname: 'OnlineId',
+        path: '/onlineId',
+        Component: withPair(SaneString)
+    },
+    {
         cname: 'CustomGDPR',
         path: '/gdpr/state/custom',
         Component: CustomGDPR
@@ -45,16 +55,6 @@ addComponents(Subject, SubjectContext, labels, [
         path: '/scientific/state/systemPermissions',
         Component: withPair(SystemPermissions)
     },
-    {
-        cname: 'SequenceNumber',
-        path: '/sequenceNumber',
-        Component: withPair(SaneString)
-    },
-    {
-        cname: 'OnlineId',
-        path: '/onlineId',
-        Component: withPair(SaneString)
-    }
 ]);
 
 export default Subject;
