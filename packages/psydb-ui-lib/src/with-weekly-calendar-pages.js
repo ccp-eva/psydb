@@ -8,7 +8,7 @@ const withWeeklyCalendarPages = (
     { withURLSearchParams } = {}
 ) => (ps) => {
     
-    if (withURLSearchParams) {
+    if (withURLSearchParams && ps.withURLSearchParams !== false) {
         var [ query, updateQuery ] = useURLSearchParams();
         
         var currentPageStart = (

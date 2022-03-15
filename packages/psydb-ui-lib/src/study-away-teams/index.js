@@ -17,6 +17,8 @@ const StudyAwayTeams = ({
     className,
     revision = 0,
     calendarRevision = 0,
+
+    withURLSearchParams,
 }) => {
     var [ didFetch, state ] = useFetchAll((agent) => {
         
@@ -49,6 +51,7 @@ const StudyAwayTeams = ({
             onSelectExperimentSlot,
 
             revision: calendarRevision,
+            withURLSearchParams,
         }) } />
     )
 }

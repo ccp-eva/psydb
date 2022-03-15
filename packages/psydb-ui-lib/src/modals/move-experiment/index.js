@@ -71,7 +71,8 @@ const MoveExperimentModal = ({
                 studyId,
                 studyRecordType,
                 onSelectReservationSlot: confirmModal.handleShow,
-                calendarRevision: revision
+                calendarRevision: revision,
+                withURLSearchParams: false,
             }) } />
         );
         prerenderedConfirmModal = (
