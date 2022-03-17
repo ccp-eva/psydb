@@ -18,15 +18,39 @@ var storeNextState = async ({
             subChannelKey
         } = it;
 
+
+        /*var unprocessedEvents = (
+            rohrpost.openCollection(collectionName).openChannel({
+                id: channelId
+            }).fetchOrderedEvents({ unprocessed: true });
+        );
+
+        for (var event of unprocessedEvents.reverse()) {
+            await db.collection(collectionName).updateOne(
+                { _id: channelId },
+                unescapeDeep(event.message.payload);
+            );
+        }*/
+
+
+        //////////////////
+
         var storedRecord = await (
             db.collection(collectionName).findOne({ _id: channelId })
         );
 
-        var channelEvents = (
+        /*var channelEvents = (
             subChannelKey
             ? storedRecord[subChannelKey].events
             : storedRecord.events
+        );*/
+
+        var channelEvents = (
+            await rohrpost.openCollection(collectionName).openChannel({
+                id: channelId
+            }).fetchOrderedEvents({ subChannelKey })
         );
+
 
         // next contains stuff like
         // {

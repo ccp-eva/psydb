@@ -47,12 +47,6 @@ var triggerSystemEvents = async ({
             dontTrackSubjectParticipatedInStudies : true,
         });
 
-        var [ experimentMod, subjectMod ] = rohrpost.getModifiedChannels();
-        var lastKnownSubjectScientificEventId = (
-            subjectMod
-            ? subjectMod.lastKnownEventId
-            : subjectRecord.scientific.events[0]._id
-        );
         // FIXME: this unlocks the specific channel so i can dispatch
         // more stuff into that thing ... im not happy with that
         await db.collection('subject').updateOne(
@@ -76,7 +70,6 @@ var triggerSystemEvents = async ({
             experimentRecord: targetCache.experimentRecord,
             
             subjectRecord,
-            lastKnownSubjectScientificEventId,
         });
     }
     else {
@@ -99,17 +92,6 @@ var triggerSystemEvents = async ({
             
             dontTrackSubjectParticipatedInStudies : true,
         });
-
-        var [ experimentMod, subjectMod ] = rohrpost.getModifiedChannels();
-        // FIXME: this unlocks the specific channel so i can dispatch
-        // more stuff into that thing ... im not happy with that
-        await db.collection('subject').updateOne(
-            { _id: subjectId },
-            { $set: {
-                'scientific.events.$[].processed': true,
-            }},
-        );
-
 
         await dispatchCreateEvents({
             db,

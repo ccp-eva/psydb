@@ -124,7 +124,6 @@ handler.triggerSystemEvents = async ({
     )
 
     await experimentChannel.dispatchMany({
-        lastKnownEventId: experimentRecord.events[0]._id,
         messages: [
             ...PutMaker({ personnelId }).all({
                 [experimentParticipationStatusPath]: participationStatus,
@@ -145,7 +144,6 @@ handler.triggerSystemEvents = async ({
     // record to not be pending anymore
     await subjectChannel.dispatchMany({
         subChannelKey: 'scientific',
-        lastKnownEventId: subjectRecord.scientific.events[0]._id,
         messages: [
             ...PushMaker({ personnelId }).all({
                 [subjectParticipationPath]: subjectParticipation,

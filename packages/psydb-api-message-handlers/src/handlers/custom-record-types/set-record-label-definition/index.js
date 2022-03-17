@@ -43,10 +43,6 @@ handler.checkAllowedAndPlausible = async ({
         throw new ApiError(404, 'RecordNotFound');
     }
     
-    if (!compareIds(record.events[0]._id, lastKnownEventId)) {
-        throw new ApiError(400, 'RecordHasChanged');
-    }
-
     var targetRecordSchema = await createSchemaForRecordType({
         db,
         collectionName: record.collection,

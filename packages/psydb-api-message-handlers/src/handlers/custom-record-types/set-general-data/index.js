@@ -57,10 +57,6 @@ var checkAllowedAndPlausible = async (context) => {
         //throw new ApiError(403);
     }
     
-    if (!compareIds(record.events[0]._id, lastKnownEventId)) {
-        throw new ApiError(400, 'RecordHasChanged');
-    }
-
 }
 
 var triggerSystemEvents = async (context) => {

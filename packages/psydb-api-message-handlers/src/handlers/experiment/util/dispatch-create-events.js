@@ -162,8 +162,6 @@ var dispatchCreateEvents = async ({
                 })
             );
 
-            var lastKnownEventId = subjectRecord.scientific.events[0]._id;
-
             var subjectChannel = (
                 rohrpost
                 .openCollection('subject')
@@ -172,7 +170,6 @@ var dispatchCreateEvents = async ({
 
             await subjectChannel.dispatchMany({
                 subChannelKey: 'scientific',
-                lastKnownEventId,
                 messages: [
                     ...pusher.all({
                         '/state/internals/invitedForExperiments': [{

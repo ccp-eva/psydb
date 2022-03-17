@@ -58,13 +58,6 @@ handler.checkAllowedAndPlausible = async ({
     }
 
     cache.subject = subject;
-
-    /*if (!compareIds(
-        subject.scientific.events[0]._id,
-        lastKnownScientificEventId
-    )) {
-        throw new ApiError(400, 'SubjectRecordHasChanged');
-    }*/
 }
 
 handler.triggerSystemEvents = async ({
@@ -102,9 +95,6 @@ handler.triggerSystemEvents = async ({
     await channel.dispatchMany({
         messages,
         subChannelKey: 'scientific',
-        // NOTE: this is intentional since there is no way of knowing the id
-        // beforehand in certain cases
-        lastKnownEventId: cache.subject.scientific.events[0]._id,
     });
 }
 

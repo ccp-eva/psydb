@@ -16,7 +16,15 @@ var MongoConnector = ({
 }) => {
     var connector = {},
         connection = undefined,
+        selectedDbName = undefined,
         selectedDb = undefined;
+
+    connector.getConnection = () => {
+        return connection;
+    };
+    connector.getSelectedDbName = () => {
+        return selectedDbName;
+    };
 
     connector.getSelectedDb = () => {
         if (!connection) {
@@ -35,6 +43,7 @@ var MongoConnector = ({
             otherOptions,
         );
         if (dbName) {
+            selectedDbName = dbName;
             selectedDb = connection.db(dbName);
         }
         else {

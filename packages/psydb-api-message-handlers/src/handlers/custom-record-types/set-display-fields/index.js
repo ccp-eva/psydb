@@ -31,7 +31,6 @@ handler.checkAllowedAndPlausible = async ({
 
     var {
         id,
-        lastKnownEventId,
         fieldPointers,
     } = message.payload;
 
@@ -45,10 +44,6 @@ handler.checkAllowedAndPlausible = async ({
         throw new ApiError(404, 'CustomRecordTypeNotFound');
     }
     
-    if (!compareIds(record.events[0]._id, lastKnownEventId)) {
-        throw new ApiError(400, 'RecordHasChanged');
-    }
-
     //console.dir(record, { depth: null });
 
     var targetRecordSchema = await createSchemaForRecordType({

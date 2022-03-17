@@ -49,10 +49,6 @@ handler.checkAllowedAndPlausible = async ({
         throw new ApiError(404, 'StudyNotFound');
     }
 
-    if (!compareIds(study.events[0]._id, lastKnownEventId)) {
-        throw new ApiError(400, 'RecordHasChanged');
-    }
-
     var { selectionSettingsBySubjectType } = study.state;
 
     var conditionsByAgeFrame = undefined,

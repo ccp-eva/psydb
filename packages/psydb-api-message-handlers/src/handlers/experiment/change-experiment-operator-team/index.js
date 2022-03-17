@@ -81,7 +81,6 @@ handler.triggerSystemEvents = async ({
 
     // FIXME: not sure about lastknownEventId
     await experimentChannel.dispatchMany({
-        lastKnownEventId: experimentRecord.events[0]._id,
         messages: [
             ...PutMaker({ personnelId }).all({
                 '/state/experimentOperatorTeamId': experimentOperatorTeamId,

@@ -86,7 +86,6 @@ handler.triggerSystemEvents = async ({
     )
 
     await experimentChannel.dispatchMany({
-        lastKnownEventId: experimentRecord.events[0]._id,
         messages: [
             ...PutMaker({ personnelId }).all({
                 [commentPath]: comment

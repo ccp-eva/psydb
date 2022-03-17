@@ -112,7 +112,6 @@ handler.triggerSystemEvents = async ({
     )
 
     await experimentChannel.dispatchMany({
-        lastKnownEventId: experimentRecord.events[0]._id,
         messages: [
             ...PutMaker({ personnelId }).all({
                 [experimentInvitationStatusPath]: invitationStatus
@@ -128,7 +127,6 @@ handler.triggerSystemEvents = async ({
 
     await subjectChannel.dispatchMany({
         subChannelKey: 'scientific',
-        lastKnownEventId: subjectRecord.scientific.events[0]._id,
         messages: [
             ...PutMaker({ personnelId }).all({
                 [subjectInvitationStatusPath]: invitationStatus

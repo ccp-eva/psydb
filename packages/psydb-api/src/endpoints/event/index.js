@@ -42,6 +42,9 @@ var createMessageHandling = ({
     var rohrpostSettings = {
         createChannelId: () => nanoid(),
         createChannelEventId: () => nanoid(),
+
+        enableTransactions: false,
+        enableOptimisticLocking: false,
     };
 
     return compose([

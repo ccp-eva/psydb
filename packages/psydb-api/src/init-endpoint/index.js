@@ -10,7 +10,7 @@ var compose = require('koa-compose'),
 var jsonpointer = require('jsonpointer');
 
 var init = async (context, next) => {
-    var { db } = context;
+    var { db, mongoClient, mongoDbName } = context;
 
     var personnelRecordCount = await (
         db.collection('personnel')
@@ -31,7 +31,7 @@ var init = async (context, next) => {
         forcedPersonnelId: data.rootAccountId,
     })
 
-    var processEvent = createProcessEvent({ db, eventMiddleware });
+    var processEvent = createProcessEvent({ db, mongoClient, mongoDbName, eventMiddleware });
     
     var messageContext = {};
     var send = messageContext.send = createSend(processEvent, messageContext);
@@ -62,8 +62,8 @@ var init = async (context, next) => {
 
 var noop = async () => {};
 
-var createProcessEvent = ({ eventMiddleware, db }) => async (message) => {
-    var context = { db, request: { body: message }};
+var createProcessEvent = ({ eventMiddleware, ...rest }) => async (message) => {
+    var context = { ...rest, request: { body: message }};
     await eventMiddleware(context, noop);
     return { status: 200, body: context.body };
 };

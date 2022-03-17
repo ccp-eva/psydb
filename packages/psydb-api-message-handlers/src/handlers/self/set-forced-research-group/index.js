@@ -63,7 +63,6 @@ handler.triggerSystemEvents = async (context) => {
     )
 
     await channel.dispatchMany({
-        lastKnownEventId: self.scientific.events[0]._id,
         subChannelKey: 'scientific',
         messages: PutMaker({ personnelId }).all({
             '/state/internals/forcedResearchGroupId': researchGroupId

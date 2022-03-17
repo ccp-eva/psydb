@@ -46,19 +46,8 @@ handler.checkAllowedAndPlausible = async ({
 
     var record = await (
         db.collection('customRecordType')
-        .findOne({
-            _id: id,
-            'events.0._id': lastKnownEventId
-        })
+        .findOne({ _id: id })
     );
-
-    if (!record) {
-        // FIXME: 409?
-        // FIXME: name of tha status .... mke clear that it as changed
-        // by someone else, and we cann not be sure that we perform the
-        // operation safely (UnsafeRecordUpdate?)
-        throw new ApiError(400, 'RecordHasChanged');
-    }
 
     cache.record = record;
 

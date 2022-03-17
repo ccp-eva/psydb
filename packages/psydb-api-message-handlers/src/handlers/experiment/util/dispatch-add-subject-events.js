@@ -11,7 +11,6 @@ var dispatchAddSubjectEvents = async ({
 
     experimentRecord,
     subjectRecord,
-    lastKnownSubjectScientificEventId,
 
     comment,
     autoConfirm,
@@ -23,10 +22,7 @@ var dispatchAddSubjectEvents = async ({
         })
     )
 
-    // FIXME
-    var lastKnownExperimentEventId = experimentRecord.events[0]._id;
     await experimentChannel.dispatchMany({
-        lastKnownEventId: lastKnownExperimentEventId,
         messages: [
             ...PushMaker({ personnelId }).all({
                 '/state/selectedSubjectIds': subjectRecord._id,
@@ -47,15 +43,8 @@ var dispatchAddSubjectEvents = async ({
         })
     )
 
-    // FIXME
-    if (!lastKnownSubjectScientificEventId) {
-        lastKnownSubjectScientificEventId = (
-            subjectRecord.scientific.events[0]._id
-        );
-    }
     await subjectChannel.dispatchMany({
         subChannelKey: 'scientific',
-        lastKnownEventId: lastKnownSubjectScientificEventId,
         messages: [
             ...PushMaker({ personnelId }).all({
                 '/state/internals/invitedForExperiments': {

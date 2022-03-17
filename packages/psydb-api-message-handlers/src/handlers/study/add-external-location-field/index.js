@@ -44,10 +44,6 @@ handler.checkAllowedAndPlausible = async ({
         throw new ApiError(404, 'StudyNotFound');
     }
 
-    if (!compareIds(study.events[0]._id, lastKnownEventId)) {
-        throw new ApiError(400, 'RecordHasChanged');
-    }
-
     for (var it of study.state.externalTestLocationFields) {
         if (it.subjectType === subjectType) {
             throw new ApiError(400, 'DuplicateTargetSubjectType')

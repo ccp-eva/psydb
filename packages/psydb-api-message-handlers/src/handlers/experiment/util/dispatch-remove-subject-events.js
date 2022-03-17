@@ -57,12 +57,8 @@ var dispatchRemoveSubjectEvents = async ({
         })
     )
 
-    // FIXME
-    var lastKnownExperimentEventId = experimentRecord.events[0]._id;
-
     var ePath = `/state/subjectData/${subjectDataIndex}`;
     await experimentChannel.dispatchMany({
-        lastKnownEventId: lastKnownExperimentEventId,
         messages: [
             ...RemoveMaker({ personnelId }).all({
                 '/state/subjectData': [ subjectDataIndex ]
@@ -92,11 +88,6 @@ var dispatchRemoveSubjectEvents = async ({
             id: subjectRecord._id
         })
     )
-
-    /// FIXME
-    var lastKnownSubjectScientificEventId = (
-        subjectRecord.scientific.events[0]._id
-    );
 
     var {
         invitedForExperiments,
@@ -150,7 +141,6 @@ var dispatchRemoveSubjectEvents = async ({
     if (subjectMessages.length) {
         await subjectChannel.dispatchMany({
             subChannelKey: 'scientific',
-            lastKnownEventId: lastKnownSubjectScientificEventId,
             messages: subjectMessages,
         })
     }

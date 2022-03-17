@@ -63,7 +63,6 @@ handler.triggerSystemEvents = async (context) => {
     )
 
     await channel.dispatchMany({
-        lastKnownEventId: self.gdpr.events[0]._id,
         subChannelKey: 'gdpr',
         messages: PutMaker({ personnelId }).all({
             '/state/internals/passwordHash': newPasswordHash
