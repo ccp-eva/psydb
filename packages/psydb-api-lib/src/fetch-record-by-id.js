@@ -47,8 +47,8 @@ var fetchRecordById = async ({
         hasSubChannels
         ? [
             { $addFields: {
-                'gdpr._lastKnownEventId': { $arrayElemAt: [ '$gdpr.events._id', 0 ]},
-                'scientific._lastKnownEventId': { $arrayElemAt: [ '$scientific.events._id', 0 ]},
+                'gdpr._lastKnownEventId': '$gdpr._rohrpostMetadata.lastKnownEventId',
+                'scientific._lastKnownEventId': '$scientific._rohrpostMetadata.lastKnownEventId',
             }},
             { $project: {
                 // FIXME: any way to not hardcode that?
@@ -60,7 +60,7 @@ var fetchRecordById = async ({
         ]
         : [
             { $addFields: {
-                '_lastKnownEventId': { $arrayElemAt: [ '$events._id', 0 ]},
+                '_lastKnownEventId': '$_rohrpostMetadata.lastKnownEventId',
             }},
             { $project: {
                 events: false,
