@@ -11,6 +11,7 @@
     "copy-anything": "~2.0.3",
     "koa-compose": "^4.1.0",
     "mongodb": "~3.6.3",
+    "map-obj": "~4.3.0",
     "@cdxoo/inline-text": "~1.0.1",
     "@cdxoo/koa-mongo-mq": "~1.1.0",
     "@cdxoo/koa-mongo-rohrpost": "~3.1.1",
