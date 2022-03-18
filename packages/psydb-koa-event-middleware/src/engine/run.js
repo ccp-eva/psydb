@@ -25,6 +25,7 @@ var run = ({
             additionalChannelProps,
 
             channel,
+            subChannelKey,
             payload,
         } = options;
 
@@ -38,13 +39,20 @@ var run = ({
             })
         );
         
-        var r = await channel.dispatch({ message: {
+        var meta = await channel.dispatch({ subChannelKey, message: {
             personnelId,
             payload: escapeDeep(payload) 
         }});
+        meta.collectionName = meta.collection; // FIXME
+
+        context.modifiedChannels = (
+            context.modifiedChannels
+            ? [ ...context.modifiedChannels, meta ]
+            : [ meta ]
+        )
 
         if (!channelId) {
-            ({ channelId } = r);
+            ({ channelId } = meta);
         }
         
         await db.collection(collection).updateOne(
@@ -52,8 +60,12 @@ var run = ({
             payload
         );
         
-        context.modifiedChannels = rohrpost.getModifiedChannels();
+        //context.modifiedChannels = rohrpost.getModifiedChannels();
+        console.log('AAAAAAAAAAAAAAA')
+        console.log(context.modifiedChannels);
         await rohrpost.unlockModifiedChannels();
+        //console.log(rohrpost.getModifiedChannels());
+        console.log('BBBBBBBBBBBBBBB')
 
         /*var a = await db.collection(collection).findOne({
             _id: channelId,
@@ -65,6 +77,10 @@ var run = ({
 
     try {
         await messageHandler.triggerSystemEvents(context);
+        var modded = rohrpost.getModifiedChannels();
+        if (modded.length !== 0) {
+            throw new Error('temp error');
+        }
 
         await storeNextState({
             createInitialChannelState,
@@ -81,7 +97,9 @@ var run = ({
     // cache modified channels in context to be used
     // by middleware downstream
     var modded = rohrpost.getModifiedChannels();
+    console.log(modded);
     if (modded.length !== 0) {
+        throw new Error('temp error 2');
         context.modifiedChannels = modded;
         await rohrpost.unlockModifiedChannels();
     }

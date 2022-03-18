@@ -9,7 +9,9 @@ var {
     destructureMessage,
     openChannel,
     createRecordPropMessages,
-    dispatchRecordPropMessages
+    dispatchRecordPropMessages,
+
+    pathifyProps,
 } = require('../../lib/generic-record-handler-utils');
 
 // TODO: redundant
@@ -31,7 +33,7 @@ module.exports = GenericRecordHandler({
     collection: 'personnel',
     op: 'create',
     triggerSystemEvents: async (options) => {
-        var { db, rohrpost, personnelId, message, cache } = options;
+        var { db, rohrpost, personnelId, message, cache, dispatch } = options;
         var destructured = destructureMessage({ message });
 
         var channel = await openChannel({
@@ -39,10 +41,15 @@ module.exports = GenericRecordHandler({
             rohrpost,
             ...destructured
         });
-    
-        var recordPropMessages = createRecordPropMessages({
-            personnelId,
-            props: destructured.props
+
+        await dispatch({
+            ...destructured,
+            channel,
+            subChannelKey: 'gdpr',
+            payload: { $set: pathifyProps({
+                subChannelKey: 'gdpr',
+                props: destructured.props.gdpr
+            }) }
         });
 
         var generatedPassword = nanoid.customAlphabet(
@@ -53,6 +60,24 @@ module.exports = GenericRecordHandler({
             ].join(''), 24
         )();
         var passwordHash = bcrypt.hashSync(generatedPassword, 10);
+
+        await dispatch({
+            ...destructured,
+            channel,
+            subChannelKey: 'scientific',
+            payload: { $set: {
+                ...pathifyProps({
+                    subChannelKey: 'scientific',
+                    props: destructured.props.scientific
+                }),
+                'scientific.state.internals.passwordHash': passwordHash
+            }}
+        })
+    
+        /*var recordPropMessages = createRecordPropMessages({
+            personnelId,
+            props: destructured.props
+        });
 
         recordPropMessages.push({
             type: 'put',
@@ -68,7 +93,7 @@ module.exports = GenericRecordHandler({
             channel,
             ...destructured,
             recordPropMessages
-        });
+        });*/
         
         cache.generatedPassword = generatedPassword;
     },
