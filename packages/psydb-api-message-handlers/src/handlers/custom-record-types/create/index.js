@@ -1,7 +1,11 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
 
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error');
+var deepmerge = require('deepmerge');
+var {
+    ApiError,
+    createInitialChannelState
+} = require('@mpieva/psydb-api-lib');
 
 var SimpleHandler = require('../../../lib/simple-handler'),
     PutMaker = require('../../../lib/put-maker');
@@ -44,10 +48,29 @@ handler.triggerSystemEvents = async ({
     rohrpost,
     message,
     personnelId,
+
+    dispatchProps,
 }) => {
     var { id, collection, type, props } = message.payload;
 
-    var channel = (
+    var defaults = await createInitialChannelState({
+        db,
+        collection: 'customRecordType',
+        additionalSchemaCreatorArgs: { collection }
+    });
+
+    await dispatchProps({
+        collection: 'customRecordType',
+        channelId: id,
+        isNew: true,
+        additionalChannelProps: { collection, type },
+        props: deepmerge(
+            defaults.state,
+            props
+        )
+    });
+
+    /*var channel = (
         rohrpost
         .openCollection('customRecordType')
         .openChannel({
@@ -61,17 +84,7 @@ handler.triggerSystemEvents = async ({
         '/state/label': props.label
     });
 
-    await channel.dispatchMany({ messages });
-
-    /*{
-        type: 'put',
-        payload: {
-            // datensatz-beschriftung
-            prop: '/nextSettings/recordLabelDefinition',
-            value: props.recordLabelDefinition
-        }
-    }*/
-
+    await channel.dispatchMany({ messages });*/
 }
 
 module.exports = handler;

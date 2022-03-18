@@ -9,6 +9,7 @@ var createInitialChannelState = async ({
     collection,
     recordType,
     subChannelKey,
+    additionalSchemaCreatorArgs,
 }) => {
 
     // FIXME: ajv construction is a little slow
@@ -25,6 +26,7 @@ var createInitialChannelState = async ({
         collectionName: collection,
         recordType,
         subChannelKey,
+        additionalSchemaCreatorArgs,
     });
 
     //console.dir(channelStateSchema, { depth: null });
