@@ -28,6 +28,7 @@ var run = ({
             subChannelKey,
             payload,
         } = options;
+        console.log(payload);
 
         var channel = channel || (
             rohrpost
@@ -61,11 +62,11 @@ var run = ({
         );
         
         //context.modifiedChannels = rohrpost.getModifiedChannels();
-        console.log('AAAAAAAAAAAAAAA')
-        console.log(context.modifiedChannels);
+        //console.log('AAAAAAAAAAAAAAA')
+        //console.log(context.modifiedChannels);
         await rohrpost.unlockModifiedChannels();
         //console.log(rohrpost.getModifiedChannels());
-        console.log('BBBBBBBBBBBBBBB')
+        //console.log('BBBBBBBBBBBBBBB')
 
         /*var a = await db.collection(collection).findOne({
             _id: channelId,
@@ -97,7 +98,7 @@ var run = ({
     // cache modified channels in context to be used
     // by middleware downstream
     var modded = rohrpost.getModifiedChannels();
-    console.log(modded);
+    //console.log(modded);
     if (modded.length !== 0) {
         throw new Error('temp error 2');
         context.modifiedChannels = modded;

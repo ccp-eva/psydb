@@ -83,6 +83,7 @@ dependencies:
   date-fns: 2.21.3
   debug: 4.3.3
   deep-diff: 1.0.2
+  deepmerge: 4.2.2
   escape-string-regexp: 4.0.0
   flat: 5.0.2
   formik: 2.2.9_react@17.0.2
@@ -9802,6 +9803,7 @@ packages:
       copy-anything: 2.0.3
       debug: 4.3.3
       deep-diff: 1.0.2
+      deepmerge: 4.2.2
       is-subset: 0.1.1
       jsonpointer: 4.1.0
       mocha: 8.1.3
@@ -9811,7 +9813,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-api-message-handlers'
     resolution:
-      integrity: sha512-+Ep5wvi4OXbRBU9VWkR6Y6+WfqfVjs9VzmodGZq11WFc6rmI3S1/s7+RaHJgK3v7GTHquNJvyRrkAO9Jk6UuEA==
+      integrity: sha512-c6MLFQMXtxduwedjw2Y3IDeYhujxTfL+b1sNdA02XXned0mq4Is3PhjHEWjOTqJKtkL7KzW2+507yPSfDAn9ow==
       tarball: 'file:projects/psydb-api-message-handlers.tgz'
     version: 0.0.0
   'file:projects/psydb-api.tgz':
@@ -10395,6 +10397,7 @@ specifiers:
   date-fns: ~2.21.1
   debug: ~4.3.1
   deep-diff: ~1.0.2
+  deepmerge: ~4.2.2
   escape-string-regexp: ~4.0.0
   flat: ~5.0.2
   formik: ~2.2.6

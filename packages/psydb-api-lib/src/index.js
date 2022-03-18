@@ -44,4 +44,5 @@ module.exports = {
     gatherDisplayFieldsForRecordType: require('./gather-display-fields-for-record-type'),
 
     resolvePossibleRefs: require('./resolve-possible-refs'),
+    createInitialChannelState: require('./create-initial-channel-state'),
 }

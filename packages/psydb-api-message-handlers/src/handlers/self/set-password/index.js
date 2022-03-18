@@ -44,17 +44,23 @@ handler.triggerSystemEvents = async (context) => {
         rohrpost,
         message,
         personnelId,
+        dispatch,
     } = context;
     
     var { newPassword } = message.payload;
     var newPasswordHash = bcrypt.hashSync(newPassword, 10);
 
-    var self = await (
-        db.collection('personnel')
-        .findOne({ _id: personnelId })
-    );
+    await dispatch({
+        collection: 'personnel',
+        channelId: personnelId,
+        subChannelKey: 'gdpr',
+        payload: { $set: {
+            'gdpr.state.internals.passwordHash': newPasswordHash,
+        }}
+    });
+    console.log('AAAAAAAAAAAAAA');
 
-    var channel = (
+    /*var channel = (
         rohrpost
         .openCollection('personnel')
         .openChannel({
@@ -67,7 +73,7 @@ handler.triggerSystemEvents = async (context) => {
         messages: PutMaker({ personnelId }).all({
             '/state/internals/passwordHash': newPasswordHash
         })
-    })
+    })*/
 }
 
 module.exports = handler;

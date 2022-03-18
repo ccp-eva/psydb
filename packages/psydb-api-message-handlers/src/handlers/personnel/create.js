@@ -2,7 +2,9 @@
 var nodemailer = require('nodemailer');
 var nanoid = require('nanoid');
 var bcrypt = require('bcrypt');
+var deepmerge = require('deepmerge');
 var config = require('@mpieva/psydb-api-config');
+var { createInitialChannelState } = require('@mpieva/psydb-api-lib');
 
 var GenericRecordHandler = require('../../lib/generic-record-handler');
 var {
@@ -41,15 +43,18 @@ module.exports = GenericRecordHandler({
             rohrpost,
             ...destructured
         });
+        
+        var { props, collection } = destructured;
 
-        await dispatch({
-            ...destructured,
-            channel,
+        var gdprDefaults = await createInitialChannelState({
+            db,
+            collection,
             subChannelKey: 'gdpr',
-            payload: { $set: pathifyProps({
-                subChannelKey: 'gdpr',
-                props: destructured.props.gdpr
-            }) }
+        });
+        var scientificDefaults = await createInitialChannelState({
+            db,
+            collection,
+            subChannelKey: 'scientific',
         });
 
         var generatedPassword = nanoid.customAlphabet(
@@ -64,13 +69,33 @@ module.exports = GenericRecordHandler({
         await dispatch({
             ...destructured,
             channel,
+            subChannelKey: 'gdpr',
+            payload: { $set: {
+                ...pathifyProps({
+                    subChannelKey: 'gdpr',
+                    props: deepmerge(
+                        gdprDefaults.state,
+                        deepmerge(
+                            props.gdpr,
+                            { internals: { passwordHash }}
+                        )
+                    )
+                }),
+            }}
+        });
+
+        await dispatch({
+            ...destructured,
+            channel,
             subChannelKey: 'scientific',
             payload: { $set: {
                 ...pathifyProps({
                     subChannelKey: 'scientific',
-                    props: destructured.props.scientific
+                    props: deepmerge(
+                        scientificDefaults.state,
+                        props.scientific,
+                    )
                 }),
-                'scientific.state.internals.passwordHash': passwordHash
             }}
         })
     

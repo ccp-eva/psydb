@@ -15,7 +15,8 @@
     "@cdxoo/inline-text": "~1.0.1",
     "@cdxoo/koa-mongo-mq": "~1.1.0",
     "@cdxoo/koa-mongo-rohrpost": "~3.2.0",
-    "@cdxoo/mongo-rohrpost": "~3.2.0"
+    "@cdxoo/mongo-rohrpost": "~3.2.0",
+    "deepmerge": "~4.2.2"
   },
   "devDependencies": {
     "mocha": "~8.1.3",

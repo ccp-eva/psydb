@@ -1,4 +1,6 @@
 'use strict';
+var { createInitialChannelState } = require('@mpieva/psydb-api-lib');
+
 var {
     destructureMessage,
     openChannel,
@@ -23,9 +25,15 @@ var triggerSystemEvents = async ({
         ...destructured
     });
 
-    var { props } = destructured;
+    var { collection, props } = destructured;
+
     if (props.gdpr || props.scientific) {
         if (props.gdpr) {
+            var defaults = await createInitialChannelState({
+                db,
+                collection,
+                subChannelKey: 'gdpr',
+            });
             await dispatch({
                 ...destructured,
                 channel,
