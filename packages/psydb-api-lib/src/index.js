@@ -45,4 +45,5 @@ module.exports = {
 
     resolvePossibleRefs: require('./resolve-possible-refs'),
     createInitialChannelState: require('./create-initial-channel-state'),
+    pathifyProps: require('./pathify-props'),
 }

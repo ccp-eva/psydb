@@ -4,7 +4,10 @@ var nanoid = require('nanoid');
 var bcrypt = require('bcrypt');
 var deepmerge = require('deepmerge');
 var config = require('@mpieva/psydb-api-config');
-var { createInitialChannelState } = require('@mpieva/psydb-api-lib');
+var {
+    createInitialChannelState,
+    pathifyProps,
+} = require('@mpieva/psydb-api-lib');
 
 var GenericRecordHandler = require('../../lib/generic-record-handler');
 var {
@@ -12,8 +15,6 @@ var {
     openChannel,
     createRecordPropMessages,
     dispatchRecordPropMessages,
-
-    pathifyProps,
 } = require('../../lib/generic-record-handler-utils');
 
 // TODO: redundant
@@ -35,7 +36,7 @@ module.exports = GenericRecordHandler({
     collection: 'personnel',
     op: 'create',
     triggerSystemEvents: async (options) => {
-        var { db, rohrpost, personnelId, message, cache, dispatch } = options;
+        var { db, rohrpost, personnelId, message, cache, dispatchProps } = options;
         var destructured = destructureMessage({ message });
 
         var channel = await openChannel({
@@ -46,17 +47,6 @@ module.exports = GenericRecordHandler({
         
         var { props, collection } = destructured;
 
-        var gdprDefaults = await createInitialChannelState({
-            db,
-            collection,
-            subChannelKey: 'gdpr',
-        });
-        var scientificDefaults = await createInitialChannelState({
-            db,
-            collection,
-            subChannelKey: 'scientific',
-        });
-
         var generatedPassword = nanoid.customAlphabet(
             [
                 '123456789',
@@ -66,39 +56,25 @@ module.exports = GenericRecordHandler({
         )();
         var passwordHash = bcrypt.hashSync(generatedPassword, 10);
 
-        await dispatch({
-            ...destructured,
+        await dispatchProps({
+            collection,
             channel,
             subChannelKey: 'gdpr',
-            payload: { $set: {
-                ...pathifyProps({
-                    subChannelKey: 'gdpr',
-                    props: deepmerge(
-                        gdprDefaults.state,
-                        deepmerge(
-                            props.gdpr,
-                            { internals: { passwordHash }}
-                        )
-                    )
-                }),
-            }}
+            props: deepmerge(
+                props.gdpr,
+                { internals: { passwordHash }}
+            ),
+            initialize: true,
         });
 
-        await dispatch({
-            ...destructured,
+        await dispatchProps({
+            collection,
             channel,
             subChannelKey: 'scientific',
-            payload: { $set: {
-                ...pathifyProps({
-                    subChannelKey: 'scientific',
-                    props: deepmerge(
-                        scientificDefaults.state,
-                        props.scientific,
-                    )
-                }),
-            }}
-        })
-    
+            props: props.scientific,
+            initialize: true,
+        });
+
         /*var recordPropMessages = createRecordPropMessages({
             personnelId,
             props: destructured.props

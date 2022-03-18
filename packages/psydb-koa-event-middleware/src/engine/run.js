@@ -1,12 +1,19 @@
 'use strict';
+var deepmerge = require('deepmerge');
+var {
+    createInitialChannelState,
+    pathifyProps,
+} = require('@mpieva/psydb-api-lib');
+
 var storeNextState = require('./store-next-state');
 var escapeDeep = require('./escape-deep');
+        
 
 // triggerMussageEffects ??
 // runHandlers ??
 // performUpdates ??
 var run = ({
-    createInitialChannelState,
+    //createInitialChannelState,
     handleChannelEvent
 }) => async (context, next) => {
     var {
@@ -17,7 +24,8 @@ var run = ({
     } = context;
 
     var usedDispatch = false;
-    var dispatch = async (options) => {
+
+    var dispatch = context.dispatch = async (options) => {
         var {
             collection,
             channelId,
@@ -74,7 +82,31 @@ var run = ({
         console.log(a);*/
     }
 
-    context.dispatch = dispatch;
+    var dispatchProps = context.dispatchProps = async (ps) => {
+        var { initialize, recordType, props, ...pass } = ps;
+        var { collection, subChannelKey } = pass;
+       
+        var defaults = {};
+        if (initialize) {
+            defaults = await createInitialChannelState({
+                db,
+                collection,
+                subChannelKey,
+                recordType,
+            });
+            props = deepmerge(defaults.state, props);
+        }
+
+        var pathified = pathifyProps({
+            subChannelKey,
+            props
+        });
+
+        return await dispatch({
+            ...pass,
+            payload: { $set: pathified }
+        });
+    }
 
     try {
         await messageHandler.triggerSystemEvents(context);

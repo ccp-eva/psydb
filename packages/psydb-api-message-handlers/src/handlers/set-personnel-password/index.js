@@ -62,25 +62,6 @@ var triggerSystemEvents = async ({
             'gdpr.state.internals.passwordHash': passwordHash,
         }}
     });
-
-    /*var channel = (
-        rohrpost
-        .openCollection('personnel')
-        .openChannel({ id: targetRecordId })
-    );
-
-    await channel.dispatch({
-        subChannelKey: 'gdpr',
-        lastKnownEventId,
-        message: {
-            type: 'put',
-            personnelId,
-            payload: {
-                prop: '/state/internals/passwordHash',
-                value: passwordHash
-            }
-        }
-    });*/
         
     cache.password = password;
 }

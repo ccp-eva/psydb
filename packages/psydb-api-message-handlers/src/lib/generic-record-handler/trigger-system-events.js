@@ -1,12 +1,14 @@
 'use strict';
-var { createInitialChannelState } = require('@mpieva/psydb-api-lib');
+var {
+    createInitialChannelState,
+    pathifyProps,
+} = require('@mpieva/psydb-api-lib');
 
 var {
     destructureMessage,
     openChannel,
     createRecordPropMessages,
     dispatchRecordPropMessages,
-    pathifyProps,
 } = require('../generic-record-handler-utils');
 
 var triggerSystemEvents = async ({

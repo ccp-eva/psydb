@@ -58,7 +58,6 @@ handler.triggerSystemEvents = async (context) => {
             'gdpr.state.internals.passwordHash': newPasswordHash,
         }}
     });
-    console.log('AAAAAAAAAAAAAA');
 
     /*var channel = (
         rohrpost

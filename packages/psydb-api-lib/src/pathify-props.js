@@ -35,4 +35,4 @@ var pathifyProps = ({
     return mongoSet;
 }
 
-module.exports = { pathifyProps };
+module.exports = pathifyProps;
