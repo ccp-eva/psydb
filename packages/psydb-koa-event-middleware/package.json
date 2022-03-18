@@ -14,8 +14,8 @@
     "map-obj": "~4.3.0",
     "@cdxoo/inline-text": "~1.0.1",
     "@cdxoo/koa-mongo-mq": "~1.1.0",
-    "@cdxoo/koa-mongo-rohrpost": "~3.1.1",
-    "@cdxoo/mongo-rohrpost": "~3.1.1"
+    "@cdxoo/koa-mongo-rohrpost": "~3.2.0",
+    "@cdxoo/mongo-rohrpost": "~3.2.0"
   },
   "devDependencies": {
     "mocha": "~8.1.3",
