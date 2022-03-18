@@ -58,21 +58,6 @@ handler.triggerSystemEvents = async (context) => {
             'gdpr.state.internals.passwordHash': newPasswordHash,
         }}
     });
-
-    /*var channel = (
-        rohrpost
-        .openCollection('personnel')
-        .openChannel({
-            id: personnelId
-        })
-    )
-
-    await channel.dispatchMany({
-        subChannelKey: 'gdpr',
-        messages: PutMaker({ personnelId }).all({
-            '/state/internals/passwordHash': newPasswordHash
-        })
-    })*/
 }
 
 module.exports = handler;

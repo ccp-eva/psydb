@@ -17,7 +17,7 @@ var triggerSystemEvents = async ({
     personnelId,
     message,
 
-    dispatch,
+    dispatchProps,
 }) => {
     var destructured = destructureMessage({ message });
 
@@ -31,40 +31,30 @@ var triggerSystemEvents = async ({
 
     if (props.gdpr || props.scientific) {
         if (props.gdpr) {
-            var defaults = await createInitialChannelState({
-                db,
+            await dispatchProps({
                 collection,
-                subChannelKey: 'gdpr',
-            });
-            await dispatch({
-                ...destructured,
                 channel,
                 subChannelKey: 'gdpr',
-                payload: { $set: pathifyProps({
-                    subChannelKey: 'gdpr',
-                    props
-                }) }
+                props: props.gdpr,
+                initialize: channel.isNew,
             })
         }
         if (props.scientific) {
-            await dispatch({
-                ...destructured,
+            await dispatchProps({
+                collection,
                 channel,
                 subChannelKey: 'scientific',
-                payload: { $set: pathifyProps({
-                    subChannelKey: 'scientific',
-                    props
-                }) }
+                props: props.scientific,
+                initialize: channel.isNew,
             })
         }
     }
     else {
-        await dispatch({
-            ...destructured,
+        await dispatchProps({
+            collection,
             channel,
-            payload: { $set: pathifyProps({
-                props
-            }) }
+            props,
+            initialize: channel.isNew,
         })
     }
 

@@ -74,27 +74,6 @@ module.exports = GenericRecordHandler({
             props: props.scientific,
             initialize: true,
         });
-
-        /*var recordPropMessages = createRecordPropMessages({
-            personnelId,
-            props: destructured.props
-        });
-
-        recordPropMessages.push({
-            type: 'put',
-            personnelId,
-            subChannelKey: 'scientific',
-            payload: {
-                prop: '/state/internals/passwordHash',
-                value: passwordHash
-            }
-        })
-
-        await dispatchRecordPropMessages({
-            channel,
-            ...destructured,
-            recordPropMessages
-        });*/
         
         cache.generatedPassword = generatedPassword;
     },
