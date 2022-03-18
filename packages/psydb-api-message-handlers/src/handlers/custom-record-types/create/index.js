@@ -69,22 +69,6 @@ handler.triggerSystemEvents = async ({
             props
         )
     });
-
-    /*var channel = (
-        rohrpost
-        .openCollection('customRecordType')
-        .openChannel({
-            id,
-            isNew: true,
-            additionalChannelProps: { collection, type }
-        })
-    );
-
-    var messages = PutMaker({ personnelId }).all({
-        '/state/label': props.label
-    });
-
-    await channel.dispatchMany({ messages });*/
 }
 
 module.exports = handler;

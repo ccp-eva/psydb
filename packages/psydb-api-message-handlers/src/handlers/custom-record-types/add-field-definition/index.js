@@ -140,6 +140,8 @@ var triggerSystemEvents = async ({
     cache,
     message,
     personnelId,
+
+    dispatch,
 }) => {
     var { payload } = message;
     var {
@@ -157,43 +159,31 @@ var triggerSystemEvents = async ({
         })
     );
 
-    var pointer = (
-        subChannelKey
-        ? `/state/nextSettings/subChannelFields/${subChannelKey}`
-        : '/state/nextSettings/fields'
-    )
-
     var fieldPointer = (
         subChannelKey
         ? `/${subChannelKey}/state/custom/${props.key}`
         : `/state/custom/${props.key}`
     )
 
-    await channel.dispatchMany({
-        lastKnownEventId,
-        messages: [
-            {
-                type: 'push',
-                personnelId,
-                payload: {
-                    prop: pointer,
-                    value: {
-                        ...payload.props,
-                        pointer: fieldPointer,
-                        isNew: true,
-                        isDirty: true,
-                    }
+    var pushPath = (
+        subChannelKey
+        ? `state.nextSettings.subChannelFields.${subChannelKey}`
+        : 'state.nextSettings.fields'
+    );
+    await dispatch({
+        collection: 'customRecordType',
+        channelId: id,
+        payload: {
+            $push: {
+                [pushPath]: {
+                    ...payload.props,
+                    pointer: fieldPointer,
+                    isNew: true,
+                    isDirty: true,
                 }
             },
-            {
-                type: 'put',
-                personnelId,
-                payload: {
-                    prop: '/state/isDirty',
-                    value: true,
-                }
-            }
-        ]
+            $set: { 'state.isDirty': true }
+        }
     });
 }
 

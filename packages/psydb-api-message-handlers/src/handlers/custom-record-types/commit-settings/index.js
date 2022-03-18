@@ -63,6 +63,8 @@ handler.triggerSystemEvents = async ({
     rohrpost,
     cache,
     message,
+
+    dispatch,
 }) => {
     var { personnelId, payload } = message;
     var { id, lastKnownEventId, props } = payload;
@@ -73,7 +75,8 @@ handler.triggerSystemEvents = async ({
         return;
     }
 
-    var nextState = createClone(record.state);
+    var nextSettings = record.state.nextSettings;
+    /*var nextState = createClone(record.state);
     nextState.settings = createClone(nextState.nextSettings);
 
     
@@ -81,7 +84,7 @@ handler.triggerSystemEvents = async ({
     nextState.isDirty = false;
 
 
-    var { settings, nextSettings } = nextState;
+    var { settings, nextSettings } = nextState;*/
 
     // handle label def
 
@@ -97,7 +100,8 @@ handler.triggerSystemEvents = async ({
         hasSubChannels,
         subChannelKeys,
     } = collectionCreatorData;
-
+    
+    /*
     // handle fields
     if (hasSubChannels) {
         subChannelKeys.forEach(key => {
@@ -130,17 +134,23 @@ handler.triggerSystemEvents = async ({
     // calculation works
     messages.forEach(m => {
         m.payload.prop = `/state${m.payload.prop}`;
-    })
+    });*/
 
-        /*if (subChannels.length) {
-        console.dir(nextState, { depth: null });
-        console.dir(diff, { depth: null });
-        console.dir(messages, { depth: null });
+    await dispatch({
+        collection: 'customRecordType',
+        channelId: id,
+        payload: { $set: {
+            ...createCopyOps({ hasSubChannels, nextSettings }),
+            ...createCleanupOps({ hasSubChannels }),
+        }}
+    });
 
-        //throw new Error();
-    }*/
+    //var doc = await db.collection('customRecordType').findOne({ _id: id });
+    //console.dir(doc, { depth: null });
 
-    var channel = (
+    //throw new Error();
+
+    /*var channel = (
         rohrpost
         .openCollection('customRecordType')
         .openChannel({
@@ -151,8 +161,60 @@ handler.triggerSystemEvents = async ({
     await channel.dispatchMany({
         lastKnownEventId,
         messages,
-    });
+    });*/
+}
 
+var createCopyOps = ({ hasSubChannels, nextSettings }) => {
+    var ops;
+
+    if (hasSubChannels) {
+        var copy = {};
+        ['gdpr', 'scientific'].forEach(key => {
+            nextSettings.subChannelFields[key] = (
+                copy[key].map(it => (
+                    omit([ 'isNew', 'isDirty'], it)
+                ))
+            );
+        });
+
+        ops = { 'state.settings.subChannelFields': copy }
+    }
+    else {
+        var copy = nextSettings.fields.map(it => (
+            omit([ 'isNew', 'isDirty'], it)
+        ));
+        ops = { 'state.settings.fields': copy }
+    }
+
+    return ops;
+}
+
+var createCleanupOps = ({ hasSubChannels }) => {
+    var ops = {
+        'state.isNew': false,
+        'state.isDirty': false,
+    };
+
+    if (hasSubChannels) {
+        var prefix = 'state.nextSettings.subChannelFields';
+        ops = {
+            ...ops,
+            [`${prefix}.gdpr.$[].isNew`]: false,
+            [`${prefix}.gdpr.$[].isDirty`]: false,
+            [`${prefix}.scientific.$[].isNew`]: false,
+            [`${prefix}.scientific.$[].isDirty`]: false,
+        }
+    }
+    else {
+        var prefix = 'state.nextSettings';
+        ops = {
+            ...ops,
+            [`${prefix}.fields.$[].isNew`]: false,
+            [`${prefix}.fields.$[].isDirty`]: false,
+        }
+    }
+
+    return ops;
 }
 
 module.exports = handler;
