@@ -66,6 +66,8 @@ handler.triggerSystemEvents = async ({
     message,
     personnelId,
     cache,
+
+    dispatch,
 }) => {
     var { type: messageType, payload } = message;
     var {
@@ -75,26 +77,18 @@ handler.triggerSystemEvents = async ({
         status,
     } = payload;
 
-    var channel = (
-        rohrpost
-        .openCollection('subject')
-        .openChannel({
-            id,
-        })
-    );
-
-    var messages = PushMaker({ personnelId }).all({
-        '/state/internals/participatedInStudies': {
-            type: 'manual',
-            studyId,
-            timestamp,
-            status,
-        },
-    });
-
-    await channel.dispatchMany({
-        messages,
+    await dispatch({
+        collection: 'subject',
+        channelId: id,
         subChannelKey: 'scientific',
+        payload: { $push: {
+            'scientific.state.internals.participatedInStudies': {
+                type: 'manual',
+                studyId,
+                timestamp,
+                status,
+            },
+        }}
     });
 }
 
