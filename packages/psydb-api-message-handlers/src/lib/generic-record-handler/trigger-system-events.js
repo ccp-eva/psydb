@@ -60,17 +60,6 @@ var triggerSystemEvents = async ({
             initialize: channel.isNew,
         })
     }
-
-    /*var recordPropMessages = createRecordPropMessages({
-        personnelId,
-        props: destructured.props
-    });
-
-    await dispatchRecordPropMessages({
-        channel,
-        ...destructured,
-        recordPropMessages
-    });*/
 }
 
 module.exports = triggerSystemEvents;
