@@ -102,66 +102,7 @@ var dispatchCreateEvents = async ({
         initialize: true,
         recordType: type,
     });
-
-    //var subjectDataMessages = [
-    //    // XXX: keep this around in case we are actually using
-    //    /*...subjectGroups.reduce((acc, group) => ([
-    //        ...acc,
-    //        ...pusher.all({
-    //            '/state/subjectData': group.state.subjectIds.map(
-    //                id => SubjectDataItem(id)
-    //            )
-    //        })
-    //    ]), []),*/
-    //    
-    //    ...pusher.all({
-    //        '/state/subjectData': subjectData.map(
-    //            it => SubjectDataItem(it)
-    //        )
-    //    })
-    //];
-
-    //var experimentId = forcedExperimentId || await createId('experiment');
-
-    //var experimentChannel = (
-    //    rohrpost
-    //    .openCollection('experiment')
-    //    .openChannel({
-    //        id: experimentId,
-    //        isNew: true,
-    //        additionalChannelProps: {
-    //            type,
-    //        }
-    //    })
-    //);
-
-    //var channelMessages = [
-    //    ...PutMaker({ personnelId }).all({
-    //        '/state/seriesId': seriesId,
-    //        '/state/studyId': studyId,
-    //        '/state/experimentOperatorTeamId': experimentOperatorTeamId,
-    //        '/state/locationId': locationId,
-    //        '/state/locationRecordType': locationRecordType,
-    //        '/state/interval/start': interval.start,
-    //        '/state/interval/end': interval.end,
-    //        ...(type === 'away-team' && {
-    //            '/state/comment': comment
-    //        })
-    //    }),
-
-    //    ...pusher.all({
-    //        //'/state/selectedSubjectGroupIds': subjectGroupIds,
-    //        // TODO: this needs to store invitation status as well
-    //        // as perticipationstatus
-    //        '/state/selectedSubjectIds': subjectIds,
-    //    }),
-
-    //    ...subjectDataMessages,
-
-    //];
-
-    //await experimentChannel.dispatchMany({ messages: channelMessages });
-    
+ 
     var now = new Date();
     if (type === 'inhouse') {
         var autoConfirm = subjectData[0].autoConfirm; // FIXME
@@ -198,33 +139,6 @@ var dispatchCreateEvents = async ({
     console.dir(subjectRecords, { depth: null })
     throw new Error();*/
 
-    /*if (type === 'inhouse') {
-        // TODO: the last known ids should be in payload
-        for (var it of subjectData) {
-            var { subjectId, comment, autoConfirm } = it;
-
-            var subjectChannel = (
-                rohrpost
-                .openCollection('subject')
-                .openChannel({ id: subjectId })
-            );
-
-            await subjectChannel.dispatchMany({
-                subChannelKey: 'scientific',
-                messages: [
-                    ...pusher.all({
-                        '/state/internals/invitedForExperiments': [{
-                            type: 'inhouse',
-                            studyId,
-                            experimentId,
-                            timestamp: now,
-                            status: autoConfirm ? 'confrmed' : 'scheduled',
-                        }]
-                    })
-                ],
-            })
-        }
-    }*/
 }
 
 module.exports = dispatchCreateEvents;
