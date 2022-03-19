@@ -1,7 +1,7 @@
 'use strict';
 var mapObject = require('map-obj');
 
-var unescapeDeep = (payload) => {
+var mongoUnescapeDeep = (payload) => {
     var unescaped = mapObject(payload, (key, value) => {
         var unescapedKey = key;
         if (key.startsWith('#$')) {
@@ -50,4 +50,4 @@ var convertPointerToPath = (pointer) => {
     return converted.join('.');
 }
 
-module.exports = unescapeDeep;
+module.exports = mongoUnescapeDeep;

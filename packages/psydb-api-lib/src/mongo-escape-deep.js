@@ -1,7 +1,7 @@
 'use strict';
 var mapObject = require('map-obj');
 
-var escapeDeep = (payload) => {
+var mongoEscapeDeep = (payload) => {
     var escaped = mapObject(payload, (key, value) => {
         var escapedKey = key;
         if (key.startsWith('$')) {
@@ -35,4 +35,4 @@ var convertPathToPointer = (path) => {
     return '/' + tokens.join('/');
 }
 
-module.exports = escapeDeep;
+module.exports = mongoEscapeDeep;

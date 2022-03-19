@@ -13,10 +13,15 @@ module.exports = GenericRecordHandler({
     collection: 'subject',
     op: 'create',
     triggerSystemEvents: async (options) => {
-        var { db, rohrpost, personnelId, message, cache } = options;
+        var { db, rohrpost, personnelId, message, cache, dispatchProps } = options;
         var destructured = destructureMessage({ message });
+        var {
+            collection,
+            recordType,
+            props,
+            additionalCreateProps
+        } = destructured;
 
-        var { additionalCreateProps } = destructured;
         if (!additionalCreateProps.onlineId) {
             additionalCreateProps.onlineId = nanoid.customAlphabet(
                 [
@@ -33,15 +38,22 @@ module.exports = GenericRecordHandler({
             ...destructured
         });
     
-        var recordPropMessages = createRecordPropMessages({
-            personnelId,
-            props: destructured.props
+        await dispatchProps({
+            collection,
+            channel,
+            recordType,
+            subChannelKey: 'gdpr',
+            props: props.gdpr,
+            initialize: true,
         });
 
-        await dispatchRecordPropMessages({
+        await dispatchProps({
+            collection,
             channel,
-            ...destructured,
-            recordPropMessages
+            recordType,
+            subChannelKey: 'scientific',
+            props: props.scientific,
+            initialize: true,
         });
     },
 });

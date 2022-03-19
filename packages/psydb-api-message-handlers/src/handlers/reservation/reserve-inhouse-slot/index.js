@@ -60,6 +60,8 @@ handler.triggerSystemEvents = async ({
     rohrpost,
     message,
     personnelId,
+
+    dispatchProps,
 }) => {
     var { type: messageType, payload } = message;
     var { id, props } = payload;
@@ -68,30 +70,21 @@ handler.triggerSystemEvents = async ({
         db.collection('location').findOne({ _id: props.locationId })
     );
 
-    var channel = (
-        rohrpost
-        .openCollection('reservation')
-        .openChannel({
-            id,
-            isNew: true,
-            additionalChannelProps: {
-                type: 'inhouse'
-            }
-        })
-    );
-    
-    var messages = PutMaker({ personnelId }).all({
-        '/state/seriesId': nanoid(),
-        '/state/isDeleted': false,
-        '/state/studyId': props.studyId,
-        '/state/experimentOperatorTeamId': props.experimentOperatorTeamId,
-        '/state/locationId': props.locationId,
-        '/state/locationRecordType': locationRecord.type,
-        '/state/interval/start': props.interval.start,
-        '/state/interval/end': props.interval.end,
-    });
+    props.seriesId = nanoid();
+    props.locationRecordType = locationRecord.type;
 
-    await channel.dispatchMany({ messages });
+    await dispatchProps({
+        collection: 'reservation',
+        channelId: id,
+        isNew: true,
+        additionalChannelProps: {
+            type: 'inhouse'
+        },
+        props,
+
+        initialize: true,
+        recordType: 'inhouse',
+    });
 }
 
 module.exports = handler;

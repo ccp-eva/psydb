@@ -3,10 +3,10 @@ var deepmerge = require('deepmerge');
 var {
     createInitialChannelState,
     pathifyProps,
+    mongoEscapeDeep,
 } = require('@mpieva/psydb-api-lib');
 
 var storeNextState = require('./store-next-state');
-var escapeDeep = require('./escape-deep');
         
 
 // triggerMussageEffects ??
@@ -50,7 +50,7 @@ var run = ({
         
         var meta = await channel.dispatch({ subChannelKey, message: {
             personnelId,
-            payload: escapeDeep(payload) 
+            payload: mongoEscapeDeep(payload) 
         }});
         meta.collectionName = meta.collection; // FIXME
 
@@ -83,7 +83,7 @@ var run = ({
     }
 
     var dispatchProps = context.dispatchProps = async (ps) => {
-        var { initialize, recordType, props, ...pass } = ps;
+        var { initialize, recordType, props = {}, ...pass } = ps;
         var { collection, subChannelKey } = pass;
        
         var defaults = {};

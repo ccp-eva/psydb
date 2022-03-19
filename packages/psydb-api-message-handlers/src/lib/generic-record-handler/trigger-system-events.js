@@ -27,12 +27,13 @@ var triggerSystemEvents = async ({
         ...destructured
     });
 
-    var { collection, props } = destructured;
+    var { collection, recordType, props } = destructured;
 
     if (props.gdpr || props.scientific) {
         if (props.gdpr) {
             await dispatchProps({
                 collection,
+                recordType,
                 channel,
                 subChannelKey: 'gdpr',
                 props: props.gdpr,
@@ -43,6 +44,7 @@ var triggerSystemEvents = async ({
             await dispatchProps({
                 collection,
                 channel,
+                recordType,
                 subChannelKey: 'scientific',
                 props: props.scientific,
                 initialize: channel.isNew,
@@ -53,6 +55,7 @@ var triggerSystemEvents = async ({
         await dispatchProps({
             collection,
             channel,
+            recordType,
             props,
             initialize: channel.isNew,
         })

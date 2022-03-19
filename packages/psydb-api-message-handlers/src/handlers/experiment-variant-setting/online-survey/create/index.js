@@ -34,35 +34,26 @@ handler.triggerSystemEvents = async ({
     rohrpost,
     message,
     personnelId,
+
+    dispatchProps,
 }) => {
     var { type: messageType, payload } = message;
     var { id, studyId, experimentVariantId, props } = payload;
 
-    var channel = (
-        rohrpost
-        .openCollection('experimentVariantSetting')
-        .openChannel({
-            id,
-            isNew: true,
-            additionalChannelProps: {
-                type: 'online-survey',
-                studyId,
-                experimentVariantId
-            }
-        })
-    );
+    await dispatchProps({
+        collection: 'experimentVariantSetting',
+        channelId: id,
+        isNew: true,
+        additionalChannelProps: {
+            type: 'online-survey',
+            studyId,
+            experimentVariantId
+        },
+        props,
 
-    var messages = createEvents({
-        op: 'put',
-        personnelId,
-        props
-    })
-
-    /*var messages = PutMaker({ personnelId }).all({
-        '/state/subjectTypeKey': props.subjectTypeKey,
-    });*/
-
-    await channel.dispatchMany({ messages });
+        initialize: true,
+        recordType: 'online-survey',
+    });
 }
 
 module.exports = handler;

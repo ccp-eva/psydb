@@ -69,26 +69,15 @@ handler.triggerSystemEvents = async ({
     var { personnelId, payload } = message;
     var { id, lastKnownEventId, props } = payload;
     var { record } = cache;
+    var { collection, state } = record;
+    var { nextSettings, isDirty } = state;
 
     // do nothing if record is not dirty
-    if (!record.state.isDirty) {
+    if (!isDirty) {
         return;
     }
 
-    var nextSettings = record.state.nextSettings;
-    /*var nextState = createClone(record.state);
-    nextState.settings = createClone(nextState.nextSettings);
-
-    
-    nextState.isNew = false;
-    nextState.isDirty = false;
-
-
-    var { settings, nextSettings } = nextState;*/
-
-    // handle label def
-
-    var collectionCreatorData = allSchemaCreators[record.collection];
+    var collectionCreatorData = allSchemaCreators[collection];
     if (!collectionCreatorData) {
         throw new Error(inline`
             no creator data found for collection
@@ -96,46 +85,8 @@ handler.triggerSystemEvents = async ({
         `);
     }
 
-    var {
-        hasSubChannels,
-        subChannelKeys,
-    } = collectionCreatorData;
-    
-    /*
-    // handle fields
-    if (hasSubChannels) {
-        subChannelKeys.forEach(key => {
-            settings.subChannelFields[key] = (
-                settings.subChannelFields[key].map(it => (
-                    omit([ 'isNew', 'isDirty'], it)
-                ))
-            );
-            nextSettings.subChannelFields[key].forEach(it => {
-                it.isNew = false;
-                it.isDirty = false;
-            })
-        })
-    }
-    else {
-        settings.fields = settings.fields.map(it => (
-            omit([ 'isNew', 'isDirty'], it)
-        ));
-        nextSettings.fields.forEach(it => {
-            it.isNew = false;
-            it.isDirty = false;
-        })
-    }
-
-
-    var diff = createDiff(record.state, nextState);
-
-    var messages = createRohrpostMessagesFromDiff(diff, { prefix: '/state'});
-    // FIXME: prefixin because we changed how underlying state
-    // calculation works
-    messages.forEach(m => {
-        m.payload.prop = `/state${m.payload.prop}`;
-    });*/
-
+    console.dir(record, { depth: null })
+    var { hasSubChannels } = collectionCreatorData;
     await dispatch({
         collection: 'customRecordType',
         channelId: id,
@@ -144,24 +95,6 @@ handler.triggerSystemEvents = async ({
             ...createCleanupOps({ hasSubChannels }),
         }}
     });
-
-    //var doc = await db.collection('customRecordType').findOne({ _id: id });
-    //console.dir(doc, { depth: null });
-
-    //throw new Error();
-
-    /*var channel = (
-        rohrpost
-        .openCollection('customRecordType')
-        .openChannel({
-            id
-        })
-    );
-
-    await channel.dispatchMany({
-        lastKnownEventId,
-        messages,
-    });*/
 }
 
 var createCopyOps = ({ hasSubChannels, nextSettings }) => {
@@ -170,8 +103,8 @@ var createCopyOps = ({ hasSubChannels, nextSettings }) => {
     if (hasSubChannels) {
         var copy = {};
         ['gdpr', 'scientific'].forEach(key => {
-            nextSettings.subChannelFields[key] = (
-                copy[key].map(it => (
+            copy[key] = (
+                nextSettings.subChannelFields[key].map(it => (
                     omit([ 'isNew', 'isDirty'], it)
                 ))
             );

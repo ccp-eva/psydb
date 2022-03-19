@@ -54,32 +54,26 @@ handler.triggerSystemEvents = async ({
     rohrpost,
     message,
     personnelId,
+
+    dispatchProps,
 }) => {
     var { type: messageType, payload } = message;
     var { id, props } = payload;
 
-    var channel = (
-        rohrpost
-        .openCollection('reservation')
-        .openChannel({
-            id,
-            isNew: true,
-            additionalChannelProps: {
-                type: 'awayTeam'
-            }
-        })
-    );
+    props.seriesId = nanoid();
 
-    var messages = PutMaker({ personnelId }).all({
-        '/state/seriesId': nanoid(),
-        '/state/isDeleted': false,
-        '/state/studyId': props.studyId,
-        '/state/experimentOperatorTeamId': props.experimentOperatorTeamId,
-        '/state/interval/start': props.interval.start,
-        '/state/interval/end': props.interval.end,
+    await dispatchProps({
+        collection: 'reservation',
+        channelId: id,
+        isNew: true,
+        additionalChannelProps: {
+            type: 'awayTeam'
+        },
+        props,
+
+        initialize: true,
+        recordType: 'awayTeam',
     });
-
-    await channel.dispatchMany({ messages });
 }
 
 module.exports = handler;

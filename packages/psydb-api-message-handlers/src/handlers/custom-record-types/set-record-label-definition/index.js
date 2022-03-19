@@ -86,6 +86,8 @@ handler.triggerSystemEvents = async ({
     rohrpost,
     cache,
     message,
+
+    dispatch,
 }) => {
     var { personnelId, payload } = message;
     var {
@@ -98,24 +100,15 @@ handler.triggerSystemEvents = async ({
         gatheredFieldData
     } = cache;
 
-    var channel = (
-        rohrpost
-        .openCollection('customRecordType')
-        .openChannel({
-            id
-        })
-    );
-
-    var messages = PutMaker({ personnelId }).all({
-        '/state/recordLabelDefinition': {
-            format: props.format,
-            tokens: gatheredFieldData
-        }
-    });
-
-    await channel.dispatchMany({
-        lastKnownEventId,
-        messages,
+    await dispatch({
+        collection: 'customRecordType',
+        channelId: id,
+        payload: { $set: {
+            'state.recordLabelDefinition': {
+                format: props.format,
+                tokens: gatheredFieldData
+            }
+        }}
     });
 }
 

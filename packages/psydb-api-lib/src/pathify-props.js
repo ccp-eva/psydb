@@ -18,11 +18,15 @@ var pathifyProps = ({
 
         var converted = (
             key === 'custom' && depth === 0
-            ? pathifyProps({
-                props: value,
-                prefix: path,
-                depth: depth + 1
-            })
+            ? (
+                value && Object.keys(value).length > 0
+                ? pathifyProps({
+                    props: value,
+                    prefix: path,
+                    depth: depth + 1
+                })
+                : { path: value }
+            )
             : { [path]: value }
         );
 

@@ -1,5 +1,6 @@
 'use strict';
 module.exports = {
+    createId: require('./create-id'),
     compareIds: require('./compare-ids'),
     fromFacets: require('./from-facets'),
 
@@ -46,4 +47,6 @@ module.exports = {
     resolvePossibleRefs: require('./resolve-possible-refs'),
     createInitialChannelState: require('./create-initial-channel-state'),
     pathifyProps: require('./pathify-props'),
+    mongoEscapeDeep: require('./mongo-escape-deep'),
+    mongoUnescapeDeep: require('./mongo-unescape-deep'),
 }

@@ -72,6 +72,9 @@ handler.triggerSystemEvents = async ({
     cache,
     message,
     personnelId,
+
+    dispatch,
+    dispatchProps,
 }) => {
     var { type: messageType, payload } = message;
     var { id, props } = payload;
@@ -85,6 +88,9 @@ handler.triggerSystemEvents = async ({
         db,
         rohrpost,
         personnelId,
+
+        dispatch,
+        dispatchProps,
 
         forcedExperimentId: id,
 
