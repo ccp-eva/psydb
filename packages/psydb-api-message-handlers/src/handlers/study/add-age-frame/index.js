@@ -1,14 +1,8 @@
 'use strict';
-// TODO: redesign this to gtet the whole conditions object
 var debug = require('debug')('psydb:api:message-handlers');
 
-var nanoid = require('nanoid').nanoid;
-
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
-    compareIds = require('@mpieva/psydb-api-lib/src/compare-ids');
-
-var SimpleHandler = require('../../../lib/simple-handler'),
-    PushMaker = require('../../../lib/push-maker');
+var { ApiError } = require('@mpieva/psydb-api-lib');
+var { SimpleHandler } = require('../../../lib');
 
 var createSchema = require('./schema');
 
@@ -30,7 +24,6 @@ handler.checkAllowedAndPlausible = async ({
 
     var {
         id,
-        lastKnownEventId,
         customRecordType,
         props,
     } = message.payload;
@@ -83,11 +76,12 @@ handler.triggerSystemEvents = async ({
     message,
     personnelId,
     cache,
+
+    dispatch,
 }) => {
     var { type: messageType, payload } = message;
     var { 
         id,
-        lastKnownEventId,
         customRecordType,
         props,
     } = payload;
@@ -97,25 +91,20 @@ handler.triggerSystemEvents = async ({
         conditions,
     } = props;
 
-    var channel = (
-        rohrpost
-        .openCollection('study')
-        .openChannel({
-            id,
-        })
-    );
-
     var i = cache.settingsIndex;
-    var path = `/state/selectionSettingsBySubjectType/${i}/conditionsByAgeFrame`;
+    var path = `state.selectionSettingsBySubjectType.${i}.conditionsByAgeFrame`;
 
-    var messages = PushMaker({ personnelId }).all({
-        [path]: {
-            ageFrame,
-            conditions,
-        },
+    await dispatch({
+        collection: 'study',
+        channelId: id,
+        payload: { $push: {
+            [path]: {
+                ageFrame,
+                conditions,
+            },
+        }}
     });
 
-    await channel.dispatchMany({ messages, lastKnownEventId });
 }
 
 module.exports = handler;

@@ -1,15 +1,8 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
 
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error');
-var compareIds = require('@mpieva/psydb-api-lib/src/compare-ids');
-
-var SimpleHandler = require('../../../lib/simple-handler'),
-    checkForeignIdsExist = require('../../../lib/check-foreign-ids-exist');
-
-var PutMaker = require('../../../lib/put-maker'),
-    PushMaker = require('../../../lib/push-maker');
-
+var { ApiError, compareIds } = require('@mpieva/psydb-api-lib');
+var { SimpleHandler } = require('../../../lib/');
 var createSchema = require('./schema');
 
 var handler = SimpleHandler({
@@ -71,7 +64,7 @@ handler.triggerSystemEvents = async ({
     rohrpost,
     cache,
     message,
-    personnelId,
+    dispatch,
 }) => {
     var { type: messageType, payload } = message;
     var {
@@ -85,28 +78,6 @@ handler.triggerSystemEvents = async ({
         subjectRecord,
     } = cache;
 
-    var experimentParticipationIndex = (
-        experimentRecord.state.subjectData.findIndex(it => {
-            return compareIds(it.subjectId, subjectId)
-        })
-    )
-
-    var subjectParticipation = {
-        type: experimentRecord.type,
-        expermentId: experimentRecord._id,
-        studyId: experimentRecord.state.studyId,
-        timestamp: experimentRecord.state.interval.start,
-        status: participationStatus,
-    };
-
-    var experimentParticipationStatusPath = (
-        `/state/subjectData/${experimentParticipationIndex}/participationStatus`
-    );
-
-    var subjectParticipationPath = (
-        `/state/internals/participatedInStudies`
-    );
-
     var unprocessedSubjects = (
         experimentRecord.state.subjectData.filter(it => (
             it.participationStatus === 'unknown'
@@ -117,39 +88,43 @@ handler.triggerSystemEvents = async ({
         (unprocessedSubjects.length - 1) === 0
     )
 
-    var experimentChannel = (
-        rohrpost.openCollection('experiment').openChannel({
-            id: experimentId
-        })
-    )
+    var eix = experimentRecord.state.subjectData.findIndex(it => {
+        return compareIds(it.subjectId, subjectId)
+    });
+    var epath = `state.subjectData.${eix}.participationStatus`;
+    await dispatch({
+        collection: 'experiment',
+        channelId: experimentId,
+        payload: { $set: {
+            [epath]: participationStatus,
+            ...(shouldSetPostprocessedFlag && {
+                'state.isPostprocessed': true
+            }),
+        }}
+    });
 
-    await experimentChannel.dispatchMany({
-        messages: [
-            ...PutMaker({ personnelId }).all({
-                [experimentParticipationStatusPath]: participationStatus,
-                ...(shouldSetPostprocessedFlag && {
-                    '/state/isPostprocessed': true
-                }),
-            })
-        ]
-    })
-
-    var subjectChannel = (
-        rohrpost.openCollection('subject').openChannel({
-            id: subjectId
-        })
-    )
-
+    var sPath = `scientific.state.internals.participatedInStudies`;
     // TODO: we need to somehow mark the invitation in subject
     // record to not be pending anymore
-    await subjectChannel.dispatchMany({
+    // => this required extra filter in addition to chennel id
+    // mongodb.update(
+    // { _id: subjectId, invitations: { $elemMatch: { experimentId }} }
+    // { 'invitations.$.status': 'processed' }
+    // )
+    await dispatch({
+        collection: 'subject',
+        channelId: experimentId,
         subChannelKey: 'scientific',
-        messages: [
-            ...PushMaker({ personnelId }).all({
-                [subjectParticipationPath]: subjectParticipation,
-            })
-        ]
-    })
+        payload: { $push: {
+            [spath]: {
+                type: experimentRecord.type,
+                expermentId: experimentRecord._id,
+                studyId: experimentRecord.state.studyId,
+                timestamp: experimentRecord.state.interval.start,
+                status: participationStatus,
+            }
+        }}
+    });
 }
 
 module.exports = handler;

@@ -1,9 +1,7 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
 
-var { compareIds } = require('@mpieva/psydb-core-utils');
 var { ApiError, Ajv } = require('@mpieva/psydb-api-lib');
-var { PutMaker } = require('../../../lib/');
 
 var createSchema = require('./schema');
 
@@ -50,7 +48,7 @@ var checkSchema = async (context) => {
 
 var checkAllowedAndPlausible = async (context) => {
     var { db, permissions, cache, message } = context;
-    var { id, lastKnownEventId, label, reservationType } = message.payload;
+    var { id, label, reservationType } = message.payload;
     var { record } = cache;
 
     if (!permissions.hasRootAccess) {
@@ -60,28 +58,21 @@ var checkAllowedAndPlausible = async (context) => {
 }
 
 var triggerSystemEvents = async (context) => {
-    var { rohrpost, cache, personnelId, message } = context;
-    var { id, lastKnownEventId, label, reservationType } = message.payload;
+    var { rohrpost, cache, personnelId, message, dispatch } = context;
+    var { id, label, reservationType } = message.payload;
     var { record } = cache;
     var { collection } = record;
-    
-    var channel = (
-        rohrpost
-        .openCollection('customRecordType')
-        .openChannel({
-            id
-        })
-    );
-
-    await channel.dispatchMany({
-        lastKnownEventId,
-        messages: PutMaker({ personnelId }).all({
-            '/state/label': label,
+   
+    dispatch({
+        collection: 'customRecordType',
+        channelId: id,
+        payload: { $set: {
+            'state.label': label,
             ...(collection === 'location' && {
-                '/state/reservationType': reservationType
+                'state.reservationType': reservationType
             })
-        })
-    })
+        }}
+    });
 }
 
 // no-op

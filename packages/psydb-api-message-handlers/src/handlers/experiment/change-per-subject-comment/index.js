@@ -1,15 +1,8 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
 
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error');
-var compareIds = require('@mpieva/psydb-api-lib/src/compare-ids');
-
-var SimpleHandler = require('../../../lib/simple-handler'),
-    checkForeignIdsExist = require('../../../lib/check-foreign-ids-exist');
-
-var PutMaker = require('../../../lib/put-maker'),
-    PushMaker = require('../../../lib/push-maker');
-
+var { ApiError, compareIds } = require('@mpieva/psydb-api-lib');
+var { SimpleHandler } = require('../../../lib/');
 var createSchema = require('./schema');
 
 var handler = SimpleHandler({
@@ -61,7 +54,7 @@ handler.triggerSystemEvents = async ({
     rohrpost,
     cache,
     message,
-    personnelId,
+    dispatch,
 }) => {
     var { type: messageType, payload } = message;
     var {
@@ -75,23 +68,14 @@ handler.triggerSystemEvents = async ({
         subjectDataIndex,
     } = cache;
 
-    var commentPath = (
-        `/state/subjectData/${subjectDataIndex}/comment`
-    );
-
-    var experimentChannel = (
-        rohrpost.openCollection('experiment').openChannel({
-            id: experimentId
-        })
-    )
-
-    await experimentChannel.dispatchMany({
-        messages: [
-            ...PutMaker({ personnelId }).all({
-                [commentPath]: comment
-            })
-        ]
-    })
+    var path = `state.subjectData.${subjectDataIndex}.comment`;
+    await dispatch({
+        collection: 'experiment',
+        channelId: experimentId,
+        payload: { $set: {
+            [path]: comment
+        }}
+    });
 }
 
 module.exports = handler;

@@ -1,4 +1,5 @@
 'use strict';
+// TODO move to core utils
 
 var hasDotRegex = /\./;
 var hasEscapeRegex = /~/;

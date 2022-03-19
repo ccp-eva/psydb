@@ -2,11 +2,8 @@
 var debug = require('debug')('psydb:api:message-handlers');
 
 var jsonpointer = require('jsonpointer');
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error');
-
-var SimpleHandler = require('../../../lib/simple-handler');
-var PutMaker = require('../../../lib/put-maker');
-var RemoveMaker = require('../../../lib/remove-maker');
+var { ApiError, convertPointerToPath } = require('@mpieva/psydb-api-lib');
+var { SimpleHandler } = require('../../../lib/');
 var createSchema = require('./schema');
 
 var handler = SimpleHandler({
@@ -26,7 +23,6 @@ handler.checkAllowedAndPlausible = async ({
 
     var {
         id,
-        lastKnownEventId,
         subChannelKey,
         key
     } = message.payload;
@@ -41,36 +37,20 @@ handler.checkAllowedAndPlausible = async ({
         throw new ApiError(404, 'CustomRecordTypeNotFound');
     }
 
-    var record = await (
-        db.collection('customRecordType')
-        .findOne({
-            _id: id,
-            'events.0._id': lastKnownEventId
-        })
-    );
-
-    if (!record) {
-        // FIXME: 409?
-        // FIXME: name of tha status .... mke clear that it as changed
-        // by someone else, and we cann not be sure that we perform the
-        // operation safely (UnsafeRecordUpdate?)
-        throw new ApiError(400, 'RecordHasChanged');
-    }
-
     var fieldsPath = (
         subChannelKey
         ? `/state/settings/subChannelFields/${subChannelKey}`
         : `/state/settings/fields`
     );
 
-    var nextFieldsPath = (
+    var nextFieldsPointer = (
         subChannelKey
         ? `/state/nextSettings/subChannelFields/${subChannelKey}`
         : `/state/nextSettings/fields`
     );
 
     var fields = jsonpointer.get(record, fieldsPath);
-    var nextFields = jsonpointer.get(record, nextFieldsPath);
+    var nextFields = jsonpointer.get(record, nextFieldsPointer);
 
     var isKey = (it) => (it.key === key);
     var fieldIndex = fields.findIndex(isKey);
@@ -117,7 +97,7 @@ handler.checkAllowedAndPlausible = async ({
     }
 
     cache.isCommited = isCommited;
-    cache.nextFieldsPath = nextFieldsPath;
+    cache.nextFieldsPointer = nextFieldsPointer;
     cache.nextFieldIndex = nextFieldIndex
     // TODO: check if record label definition is still valid
 
@@ -135,45 +115,38 @@ handler.triggerSystemEvents = async ({
     personnelId,
 }) => {
     var { payload } = message;
-    var { id, lastKnownEventId, subChannelKey, key } = payload;
+    var { id, subChannelKey, key } = payload;
     var {
         isCommited,
-        nextFieldsPath,
+        nextFieldsPointer,
         nextFieldIndex
     } = cache;
 
-    var messages = undefined;
+    var path = convertPointerToPath(
+        `${nextFieldsPointer}/${nextFieldIndex}`
+    );
+
+    var payload = undefined;
     if (isCommited) {
-        messages = PutMaker({ personnelId }).all({
-            '/state/isDirty': true,
-            [`${nextFieldsPath}/${nextFieldIndex}/isDirty`]: true,
-            [`${nextFieldsPath}/${nextFieldIndex}/isRemoved`]: true,
-        });
-        
+        payload = { $set: {
+            'state.isDirty': true,
+            [`${path}.isDirty`]: true,
+            [`${path}.isRemoved`]: true,
+        }};
         // TODO maybe we could allow to actually remove the field when
         // there are no records of that in db yet
     }
     else {
-        messages = RemoveMaker({ personnelId }).all({
-            [nextFieldsPath]: [
-                nextFieldIndex
-            ]
-        })
+        payload = { $unset: {
+            [path]: true,
+        }};
     }
-   
-    var channel = (
-        rohrpost
-        .openCollection('customRecordType')
-        .openChannel({
-            id
-        })
-    );
 
-    await channel.dispatchMany({
-        lastKnownEventId,
-        messages,
+    dispatch({
+        collection: 'customRecordType',
+        channelId: id,
+        payload
     });
-
 }
 
 var isIncludedInDisplayFields = ({ displayFields, subChannelKey, key }) => {
