@@ -57,6 +57,15 @@ var dispatchRemoveSubjectEvents = async ({
             })
         }
     });
+    // FIXME: his is a workaround for:
+    // http://jira.mongodb.org/browse/SERVER-1014
+    await dispatch({
+        collection: 'experiment',
+        channelId: experimentRecord._id,
+        payload: { $pull: {
+            'state.subjectData': null
+        }}
+    });
     
 
     var shouldUpdateSubjectComment = (
@@ -108,11 +117,22 @@ var dispatchRemoveSubjectEvents = async ({
         channelId: subjectRecord._id,
         subChannelKey: 'scientific',
         payload: {
-            ...(keys(pushUpdates) && { $push: pushUpdates }),
-            ...(keys(setUpdates) && { $set: setUpdates }),
+            ...(hasKeys(pushUpdates) && { $push: pushUpdates }),
+            ...(hasKeys(setUpdates) && { $set: setUpdates }),
             $unset: unsetUpdates
         }
     })
+
+    // FIXME: his is a workaround for:
+    // http://jira.mongodb.org/browse/SERVER-1014
+    await dispatch({
+        collection: 'subject',
+        channelId: subjectRecord._id,
+        subChannelKey: 'scientific',
+        payload: { $pull: {
+            'scientific.state.internals.invitedForExperiments': null
+        }}
+    });
 
     //var subjectMessages = [
     //    ...(
@@ -156,6 +176,6 @@ var dispatchRemoveSubjectEvents = async ({
     //];
 }
 
-var keys = (o) => Object.keys(o);
+var hasKeys = (o) => Object.keys(o).length > 0;
 
 module.exports = dispatchRemoveSubjectEvents;

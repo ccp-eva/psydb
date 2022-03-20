@@ -53,9 +53,7 @@ var triggerSystemEvents = async (context) => {
         }, { projection: { type: true }});
 
         await dispatchRemoveSubjectEvents({
-            db,
-            rohrpost,
-            personnelId,
+            ...context,
 
             experimentRecord,
             subjectRecord,
@@ -68,9 +66,7 @@ var triggerSystemEvents = async (context) => {
         });
 
         await dispatchCreateEvents({
-            db,
-            rohrpost,
-            personnelId,
+            ...context,
 
             type: 'inhouse',
             // FIXME: id format; fixme when study uses follow up
@@ -87,7 +83,6 @@ var triggerSystemEvents = async (context) => {
                 { subjectId: subjectRecord._id, comment, autoConfirm },
             ]
         });
-
 
     }
 }

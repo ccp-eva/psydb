@@ -25,7 +25,7 @@ var handler = GenericRecordHandler({
     }) => {
 
         var destructured = destructureMessage({ message });
-        var { id, props } = destructured;
+        var { id, props, additionalCreateProps } = destructured;
         var { personnelIds } = props;
 
         var teamName = await fetchTeamName({ db, personnelIds });
@@ -35,6 +35,7 @@ var handler = GenericRecordHandler({
             collection: 'experimentOperatorTeam',
             channelId: id,
             isNew: true,
+            additionalChannelProps: additionalCreateProps,
             props,
 
             initialize: true,

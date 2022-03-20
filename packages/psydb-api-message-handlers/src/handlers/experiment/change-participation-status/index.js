@@ -103,7 +103,7 @@ handler.triggerSystemEvents = async ({
         }}
     });
 
-    var sPath = `scientific.state.internals.participatedInStudies`;
+    var spath = `scientific.state.internals.participatedInStudies`;
     // TODO: we need to somehow mark the invitation in subject
     // record to not be pending anymore
     // => this required extra filter in addition to chennel id
@@ -113,7 +113,7 @@ handler.triggerSystemEvents = async ({
     // )
     await dispatch({
         collection: 'subject',
-        channelId: experimentId,
+        channelId: subjectId,
         subChannelKey: 'scientific',
         payload: { $push: {
             [spath]: {
