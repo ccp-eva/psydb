@@ -2,7 +2,7 @@
 var debug = require('debug')('psydb:api:message-handlers');
 
 var dispatchAddSubjectEvents = async ({
-    dispatch
+    dispatch,
 
     experimentRecord,
     subjectRecord,

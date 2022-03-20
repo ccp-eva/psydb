@@ -54,7 +54,7 @@ var dispatchRemoveSubjectEvents = async ({
             },
             ...(shouldCancelExperiment && {
                 $set: { 'state.isCanceled': true }
-            });
+            })
         }
     });
     
