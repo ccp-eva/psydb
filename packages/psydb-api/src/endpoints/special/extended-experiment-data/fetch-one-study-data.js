@@ -15,7 +15,7 @@ var fetchOneStudyData = async (options) => {
     var studyRecord = await (
         db.collection('study').findOne({
             _id
-        }, { projection: { events: false }})
+        }, { projection: { _rohrpostMetadata: false }})
     );
 
     debug('fetch study record schema');

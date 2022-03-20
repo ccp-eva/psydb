@@ -11,10 +11,10 @@ var StripEventsStage = (options = {}) => {
     }
 
     var projection = {
-        events: false,
+        _rohrpostMetadata: false,
     };
     for (var key of subChannelKeys) {
-        projection[`${key}.events`] = false;
+        projection[`${key}.rohrpostMetadata`] = false;
     }
 
     return ({ $project: projection });

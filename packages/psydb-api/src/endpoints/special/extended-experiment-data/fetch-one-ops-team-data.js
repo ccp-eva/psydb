@@ -16,7 +16,7 @@ var fetchOneOpsTeamData = async (options) => {
     var opsTeamRecord = await (
         db.collection('experimentOperatorTeam').findOne({
             _id
-        }, { projection: { events: false }})
+        }, { projection: { _rohrpostMetadata: false }})
     );
 
     debug('fetch operator team record schema');

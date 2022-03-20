@@ -28,11 +28,8 @@ handler.checkAllowedAndPlausible = async ({
     } = message.payload;
 
     var record = await (
-        db.collection('customRecordType').findOne({
-            _id: id
-        })
+        db.collection('customRecordType').findOne({ _id: id })
     );
-
     if (!record) {
         throw new ApiError(404, 'CustomRecordTypeNotFound');
     }

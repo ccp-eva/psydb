@@ -51,11 +51,12 @@ var fetchRecordById = async ({
                 'scientific._lastKnownEventId': '$scientific._rohrpostMetadata.lastKnownEventId',
             }},
             { $project: {
+                _rohrpostMetadata: false,
                 // FIXME: any way to not hardcode that?
                 'gdpr.internals.passwordHash': false,
 
-                'gdpr.events': false,
-                'scientific.events': false,
+                'gdpr._rohrpostMetadata': false,
+                'scientific._rohrpostMetadata': false,
             }},
         ]
         : [
@@ -63,7 +64,7 @@ var fetchRecordById = async ({
                 '_lastKnownEventId': '$_rohrpostMetadata.lastKnownEventId',
             }},
             { $project: {
-                events: false,
+                _rohrpostMetadata: false,
             }},
         ]
     );
