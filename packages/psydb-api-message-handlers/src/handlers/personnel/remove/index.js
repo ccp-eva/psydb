@@ -6,10 +6,9 @@ var {
     fetchRecordReverseRefs,
 } = require('@mpieva/psydb-api-lib');
 
-var SimpleHandler = require('../../../lib/simple-handler');
-var PutMaker = require('../../../lib/put-maker');
-
+var { SimpleHandler } = require('../../../lib/');
 var createSchema = require('./schema');
+
 
 var handler = SimpleHandler({
     messageType: 'personnel/remove',
@@ -26,10 +25,7 @@ handler.checkAllowedAndPlausible = async ({
         throw new ApiError(403);
     }
 
-    var {
-        id,
-        lastKnownSubChannelEventIds,
-    } = message.payload;
+    var { id } = message.payload;
 
     var record = await (
         db.collection('personnel')
@@ -64,29 +60,19 @@ handler.triggerSystemEvents = async ({
     db,
     rohrpost,
     message,
-    personnelId,
     cache,
+    dispatch
 }) => {
-    var {
-        id,
-        lastKnownSubChannelEventIds,
-    } = message.payload;
-
-    var channel = (
-        rohrpost
-        .openCollection('personnel')
-        .openChannel({ id })
-    );
-
-    await channel.dispatchMany({
-        lastKnownEventId: (
-            lastKnownSubChannelEventIds.scientific
-        ),
+    var { id } = message.payload;
+    
+    await dispatch({
+        collection: 'personnel',
+        channelId: id,
         subChannelKey: 'scientific',
-        messages: PutMaker({ personnelId }).all({
-            '/state/internals/isRemoved': true
-        })
-    })
+        payload: { $set: {
+            'scientific.state.internals.isRemoved': true
+        }}
+    });
 }
 
 

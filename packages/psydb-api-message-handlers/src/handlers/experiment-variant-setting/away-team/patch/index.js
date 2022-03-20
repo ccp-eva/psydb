@@ -1,13 +1,10 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
 
-var groupBy = require('@mpieva/psydb-common-lib/src/group-by');
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error');
+var { groupBy } = require('@mpieva/psydb-core-utils');
+var { ApiError } = require('@mpieva/psydb-api-lib');
+var { SimpleHandler } = require('../../../lib/');
 
-var SimpleHandler = require('../../../../lib/simple-handler'),
-    createEvents = require('../../../../lib/create-event-messages-from-props');
-
-var checkForeignIdsExist = require('../../../../lib/check-foreign-ids-exist');
 var checkBasics = require('../../utils/check-patch-basics');
 var checkCRTFieldPointers = require('../../utils/check-crt-field-pointers');
 var createSchema = require('./schema');
@@ -20,8 +17,8 @@ var handler = SimpleHandler({
 handler.checkAllowedAndPlausible = async ({
     db,
     permissions,
+    cache,
     message,
-    cache
 }) => {
     await checkBasics({
         db,
@@ -49,24 +46,16 @@ handler.triggerSystemEvents = async ({
     db,
     rohrpost,
     message,
-    personnelId,
+    dispatchProps
 }) => {
     var { type: messageType, payload } = message;
-    var { id, lastKnownEventId, props } = payload;
-
-    var channel = (
-        rohrpost
-        .openCollection('experimentVariantSetting')
-        .openChannel({ id })
-    );
-
-    var messages = createEvents({
-        op: 'put',
-        personnelId,
+    var { id, props } = payload;
+    
+    await dispatchProps({
+        collection: 'experimentVariantSetting',
+        channelId: id,
         props
-    })
-
-    await channel.dispatchMany({ messages, lastKnownEventId });
+    });
 }
 
 module.exports = handler;

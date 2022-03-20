@@ -1,13 +1,9 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
 
-var nanoid = require('nanoid').nanoid;
-
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error');
-
-var SimpleHandler = require('../../../lib/simple-handler'),
-    PutMaker = require('../../../lib/put-maker'),
-    checkForeignIdsExist = require('../../../lib/check-foreign-ids-exist');
+var { nanoid } = require('nanoid');
+var { ApiError } = require('@mpieva/psydb-api-lib');
+var { SimpleHandler, checkForeignIdExists } = require('../../../lib/');
 
 var {
     checkConflictingTeamReservations,
@@ -15,6 +11,7 @@ var {
 } = require('../util');
 
 var createSchema = require('./schema');
+
 
 var handler = SimpleHandler({
     messageType: 'reservation/reserve-inhouse-slot',

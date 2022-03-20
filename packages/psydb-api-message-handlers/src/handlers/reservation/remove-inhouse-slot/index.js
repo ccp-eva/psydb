@@ -1,18 +1,18 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
 
-var nanoid = require('nanoid').nanoid;
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error');
-
-var SimpleHandler = require('../../../lib/simple-handler'),
-    PutMaker = require('../../../lib/put-maker'),
-    checkForeignIdsExist = require('../../../lib/check-foreign-ids-exist');
+var { ApiError } = require('@mpieva/psydb-api-lib');
+var {
+    SimpleHandler,
+    checkForeignIdsExist
+} = require('../../../lib/');
 
 var {
     checkConflictingLocationExperiments,
 } = require('../util');
 
 var createSchema = require('./schema');
+
 
 var handler = SimpleHandler({
     messageType: 'reservation/remove-inhouse-slot',
@@ -56,6 +56,9 @@ handler.triggerSystemEvents = async ({
     rohrpost,
     message,
     personnelId,
+
+    dispatch,
+    dispatchProps,
 }) => {
     var { type: messageType, payload } = message;
     var { id, props } = payload;
@@ -82,135 +85,98 @@ handler.triggerSystemEvents = async ({
     var toBeRemoved = [];
     var toBeCreated = [];
     for (var reservation of reservations) {
-        var { _id: reservationId, events, state } = reservation;
+        var { _id: reservationId, type, state } = reservation;
         var { interval } = state;
-        var [{ _id: lastKnownEventId }] = events;
 
-        var isStartBelowRemoveStart = (
-            removeInterval.start.getTime() > interval.start.getTime()
-        );
-        var isStartAboveRemoveStart = (
-            removeInterval.start.getTime() < interval.start.getTime()
-        );
-
-        var isEndBelowRemoveEnd = (
-            removeInterval.end.getTime() > interval.end.getTime()
-        );
-        var isEndAboveRemoveEnd = (
-            removeInterval.end.getTime() < interval.end.getTime()
-        );
-
-        var isEqualStart = (
-            removeInterval.start.getTime() === interval.start.getTime()
-        );
-        var isEqualEnd = (
-            removeInterval.end.getTime() === interval.end.getTime()
-        );
-
-        // remove
-        var isEqualAll = (
-            isEqualStart && isEqualEnd
-        );
-        // remove
-        var isInside = (
-            isStartAboveRemoveStart && isEndBelowRemoveEnd
-        );
-        // remove
-        var isInsideRightAligned = (
-            isStartAboveRemoveStart && isEqualEnd
-        );
-        // remove
-        var isInsideLeftAligned = (
-            isEqualStart && isEndBelowRemoveEnd
-        );
-
-        // cut out the rem part
-        var isOutside = (
-            isStartBelowRemoveStart && isEndAboveRemoveEnd
-        );
-        // change end to rem start
-        var isOutsideRightAligned = (
-            isStartBelowRemoveStart && isEqualEnd
-        );
-        // change start to rem end
-        var isOutsideLeftAligned = (
-            isEqualStart && isEndAboveRemoveEnd
-        );
-        // change end to rem start
-        var isOverlappingLeft = (
-            isStartBelowRemoveStart && isEndBelowRemoveEnd
-        );
-        // change start to rem end
-        var isOverlappingRight = (
-            isStartAboveRemoveStart && isEndAboveRemoveEnd
-        );
-
-        var shouldRemove = (
-            isEqualAll ||
-            isInside ||
-            isInsideRightAligned ||
-            isInsideLeftAligned
-        );
-
-        var shouldUpdateStart = (
-            isOutsideLeftAligned || isOverlappingRight
-        );
-        var shouldUpdateEnd = (
-            isOutsideRightAligned || isOverlappingLeft
-        )
+        var {
+            shouldRemove,
+            shouldUpdateStart,
+            shouldUpdateEnd,
+            shouldCutOut,
+        } = getIntervalRemovealUpdateOps({ removeInterval, recordInterval });
 
         if (shouldRemove) {
             toBeRemoved.push(reservationId);
         }
-        else if (isOutside) {
-            var ps = {
-                '/state/seriesId': state.seriesId,
-                '/state/isDeleted': false,
-                '/state/studyId': state.studyId,
-                '/state/experimentOperatorTeamId': (
-                    state.experimentOperatorTeamId
-                ),
-                '/state/locationId': state.locationId,
-                '/state/locationRecordType': state.locationRecordType,
-                '/state/interval/start': state.interval.start,
-                '/state/interval/end': state.interval.end,
+        else if (shouldCutOut) {
+            var props = {
+                ...state,
+                isDeleted: false
             };
-            toBeCreated.push({
-                ...ps,
-                '/state/interval/end': (
-                    new Date (removeInterval.start.getTime() - 1)
-                )
-            });
-            toBeCreated.push({
-                ...ps,
-                '/state/interval/start': ( 
-                    new Date (removeInterval.end.getTime() + 1)
-                )
-            });
+            toBeCreated.push({ type, props: {
+                ...props,
+                interval: {
+                    start: props.interval.start,
+                    end: new Date (removeInterval.start.getTime() - 1)
+                }
+            }});
+            toBeCreated.push({ type, props: {
+                ...props,
+                interval: {
+                    start: new Date (removeInterval.end.getTime() + 1),
+                    end: props.interval.end
+                }
+            }});
+
+            //var ps = {
+            //    '/state/seriesId': state.seriesId,
+            //    '/state/isDeleted': false,
+            //    '/state/studyId': state.studyId,
+            //    '/state/experimentOperatorTeamId': (
+            //        state.experimentOperatorTeamId
+            //    ),
+            //    '/state/locationId': state.locationId,
+            //    '/state/locationRecordType': state.locationRecordType,
+            //    '/state/interval/start': state.interval.start,
+            //    '/state/interval/end': state.interval.end,
+            //};
+            //toBeCreated.push({
+            //    ...ps,
+            //    '/state/interval/end': (
+            //        new Date (removeInterval.start.getTime() - 1)
+            //    )
+            //});
+            //toBeCreated.push({
+            //    ...ps,
+            //    '/state/interval/start': ( 
+            //        new Date (removeInterval.end.getTime() + 1)
+            //    )
+            //});
             toBeRemoved.push(reservationId);
         }
         else if (shouldUpdateStart || shouldUpdateEnd) {
-            var messages = [];
+            var updates = {};
             if (shouldUpdateEnd) {
-                messages.push(...PutMaker({ personnelId }).all({
-                    '/state/interval/end': (
-                        new Date (removeInterval.start.getTime() - 1)
-                    ),
-                }));
+                updates['state.interval.end'] = (
+                    new Date (removeInterval.start.getTime() - 1)
+                );
+                //messages.push(...PutMaker({ personnelId }).all({
+                //    '/state/interval/end': (
+                //        new Date (removeInterval.start.getTime() - 1)
+                //    ),
+                //}));
             }
             if (shouldUpdateStart) {
-                messages.push(...PutMaker({ personnelId }).all({
-                    '/state/interval/start': (
-                        new Date (removeInterval.end.getTime() + 1)
-                    )
-                }));
+                updates['state.interval.start'] = (
+                    new Date (removeInterval.end.getTime() + 1)
+                );
+                //messages.push(...PutMaker({ personnelId }).all({
+                //    '/state/interval/start': (
+                //        new Date (removeInterval.end.getTime() + 1)
+                //    )
+                //}));
             }
-            var channel = (
-                rohrpost
-                .openCollection('reservation')
-                .openChannel({ id: reservationId })
-            );
-            await channel.dispatchMany({ messages, lastKnownEventId });
+            await dispatch({
+                collection: 'reservation',
+                channelId: reservationId,
+                payload: { $set: updates }
+            });
+            //var channel = (
+            //    rohrpost
+            //    .openCollection('reservation')
+            //    .openChannel({ id: reservationId })
+            //);
+            //await channel.dispatchMany({ messages });
         }
         else {
             throw new Error('reached an unknown state');
@@ -225,22 +191,116 @@ handler.triggerSystemEvents = async ({
 
     if (toBeCreated.length > 0) {
         for (var it of toBeCreated) {
-            var channel = (
-                rohrpost
-                .openCollection('reservation')
-                .openChannel({
-                    id,
-                    isNew: true,
-                    additionalChannelProps: {
-                        type: 'inhouse'
-                    }
-                })
-            );
-            await channel.dispatchMany({ messages: (
-                PutMaker({ personnelId }).all(it)
-            )});
+            await dispatchProps({
+                collection: 'reservation',
+                //channelId: id,
+                isNew: true,
+                additionalChannelProps: { type: it.type },
+                props: it.props,
+
+                recordType: it.type,
+                initialize: true
+            });
+            //var channel = (
+            //    rohrpost
+            //    .openCollection('reservation')
+            //    .openChannel({
+            //        id,
+            //        isNew: true,
+            //        additionalChannelProps: {
+            //            type: 'inhouse'
+            //        }
+            //    })
+            //);
+            //await channel.dispatchMany({ messages: (
+            //    PutMaker({ personnelId }).all(it)
+            //)});
         } 
     }
+}
+
+var getIntervalRemovalUpdateOps = (options) => {
+    var { removeInterval, recordInterval: interval } = options;
+
+    var isStartBelowRemoveStart = (
+        removeInterval.start.getTime() > interval.start.getTime()
+    );
+    var isStartAboveRemoveStart = (
+        removeInterval.start.getTime() < interval.start.getTime()
+    );
+
+    var isEndBelowRemoveEnd = (
+        removeInterval.end.getTime() > interval.end.getTime()
+    );
+    var isEndAboveRemoveEnd = (
+        removeInterval.end.getTime() < interval.end.getTime()
+    );
+
+    var isEqualStart = (
+        removeInterval.start.getTime() === interval.start.getTime()
+    );
+    var isEqualEnd = (
+        removeInterval.end.getTime() === interval.end.getTime()
+    );
+
+    // remove
+    var isEqualAll = (
+        isEqualStart && isEqualEnd
+    );
+    // remove
+    var isInside = (
+        isStartAboveRemoveStart && isEndBelowRemoveEnd
+    );
+    // remove
+    var isInsideRightAligned = (
+        isStartAboveRemoveStart && isEqualEnd
+    );
+    // remove
+    var isInsideLeftAligned = (
+        isEqualStart && isEndBelowRemoveEnd
+    );
+
+    // cut out the rem part
+    var isOutside = (
+        isStartBelowRemoveStart && isEndAboveRemoveEnd
+    );
+    // change end to rem start
+    var isOutsideRightAligned = (
+        isStartBelowRemoveStart && isEqualEnd
+    );
+    // change start to rem end
+    var isOutsideLeftAligned = (
+        isEqualStart && isEndAboveRemoveEnd
+    );
+    // change end to rem start
+    var isOverlappingLeft = (
+        isStartBelowRemoveStart && isEndBelowRemoveEnd
+    );
+    // change start to rem end
+    var isOverlappingRight = (
+        isStartAboveRemoveStart && isEndAboveRemoveEnd
+    );
+
+    var shouldRemove = (
+        isEqualAll ||
+        isInside ||
+        isInsideRightAligned ||
+        isInsideLeftAligned
+    );
+
+    var shouldUpdateStart = (
+        isOutsideLeftAligned || isOverlappingRight
+    );
+    var shouldUpdateEnd = (
+        isOutsideRightAligned || isOverlappingLeft
+    );
+    
+    return {
+        shouldRemove,
+        shouldUpdateStart,
+        shouldUpdateEnd,
+        shouldCutOut: isOutside
+    };
 }
 
 module.exports = handler;

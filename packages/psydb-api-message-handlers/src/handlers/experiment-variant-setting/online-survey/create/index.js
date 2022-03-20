@@ -1,10 +1,7 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
 
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error');
-
-var SimpleHandler = require('../../../../lib/simple-handler'),
-    createEvents = require('../../../../lib/create-event-messages-from-props');
+var { SimpleHandler } = require('../../../lib/');
 
 var checkBasics = require('../../utils/check-create-basics');
 var createSchema = require('./schema');
