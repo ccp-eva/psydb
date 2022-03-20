@@ -25,7 +25,7 @@ var pathifyProps = ({
                     prefix: path,
                     depth: depth + 1
                 })
-                : { path: value }
+                : { [path]: value }
             )
             : { [path]: value }
         );
