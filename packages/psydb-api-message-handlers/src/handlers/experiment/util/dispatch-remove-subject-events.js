@@ -4,16 +4,8 @@ var debug = require('debug')('psydb:api:message-handlers');
 var enums = require('@mpieva/psydb-schema-enums');
 var { compareIds } = require('@mpieva/psydb-core-utils');
 
-var {
-    PutMaker,
-    PushMaker,
-    RemoveMaker
-} = require('../../../lib');
-
 var dispatchRemoveSubjectEvents = async ({
-    db,
-    rohrpost,
-    personnelId,
+    dispatch,
 
     experimentRecord,
     subjectRecord,
@@ -51,43 +43,26 @@ var dispatchRemoveSubjectEvents = async ({
         experimentRecord.state.subjectData.length === canceledSubjectCount
     );
 
-    var experimentChannel = (
-        rohrpost.openCollection('experiment').openChannel({
-            id: experimentRecord._id
-        })
-    )
-
     var ePath = `/state/subjectData/${subjectDataIndex}`;
-    await experimentChannel.dispatchMany({
-        messages: [
-            ...RemoveMaker({ personnelId }).all({
-                '/state/subjectData': [ subjectDataIndex ]
-            }),
-            ...(shouldCancelExperiment
-                ? PutMaker({ personnelId }).all({
-                    '/state/isCanceled': true
-                })
-                : []
-            ),
-            //...PutMaker({ personnelId }).all({
-            //    [`${ePath}/participationStatus`]: unparticipateStatus,
-            //    ...(shouldCancelExperiment && {
-            //        '/state/isCanceled': true
-            //    }),
-            //})
-        ]
-    })
+    await dispatch({
+        collection: 'experiment',
+        channelId: experimentRecord._id,
+        payload: {
+            $unset: {
+                // FIXME: state.selectedSubjectIds should be removed as well
+                [`state.subjectData.${subjectDataIndex}`]: true
+            },
+            ...(shouldCancelExperiment && {
+                $set: { 'state.isCanceled': true }
+            });
+        }
+    });
+    
 
     var shouldUpdateSubjectComment = (
         subjectComment !== undefined
         && subjectRecord.scientific.state.comment !== subjectComment
     );
-
-    var subjectChannel = (
-        rohrpost.openCollection('subject').openChannel({
-            id: subjectRecord._id
-        })
-    )
 
     var {
         invitedForExperiments,
@@ -97,55 +72,90 @@ var dispatchRemoveSubjectEvents = async ({
         compareIds(it.experimentId, experimentRecord._id)
     ));
 
-    var subjectMessages = [
-        ...(
-            !dontTrackSubjectParticipatedInStudies
-            ? (
-                PushMaker({ personnelId }).all({
-                    '/state/internals/participatedInStudies': {
-                        type: 'inhouse',
-                        studyId: experimentRecord.state.studyId,
-                        timestamp: experimentRecord.state.interval.start,
-                        status: unparticipateStatus,
-                    }
-                })
-            )
-            : []
-        ),
-        ...(
-            shouldUpdateSubjectComment
-            ? PutMaker({ personnelId }).all({
-                '/state/comment': subjectComment,
-            })
-            : []
-        ),
-        ...(
-            blockSubjectFromTesting.shouldBlock === true
-            ? PutMaker({ personnelId }).all({
-                '/state/internals/blockedFromTesting': {
-                    isBlocked: true,
-                    blockUntil: blockSubjectFromTesting.blockUntil
-                },
-            })
-            : []
-        ),
-        ...(
-            RemoveMaker({ personnelId }).all({
-                '/state/internals/invitedForExperiments': [
-                    oldInviteIndex,
-                ]
-            })
-        )
-    ];
-    
-    if (subjectMessages.length) {
-        await subjectChannel.dispatchMany({
-            subChannelKey: 'scientific',
-            messages: subjectMessages,
+    var pushUpdates = {
+        ...(!dontTrackSubjectParticipatedInStudies && {
+            'scientific.state.internals.participatedInStudies': {
+                type: 'inhouse',
+                studyId: experimentRecord.state.studyId,
+                timestamp: experimentRecord.state.interval.start,
+                status: unparticipateStatus,
+            }
         })
+    };
+
+    var setUpdates = {
+        ...(shouldUpdateSubjectComment && {
+            'scientific.state.comment': subjectComment,
+        }),
+        // FIXME: not sure if blocking is even a thing anymore
+        ...(blockSubjectFromTesting.shouldBlock === true && {
+            'scientific.state.internals.blockedFromTesting': {
+                isBlocked: true,
+                blockUntil: blockSubjectFromTesting.blockUntil
+            },
+        }),
     }
 
+    var ipath = (
+        `scientific.state.internals.invitedForExperiments.${oldInviteIndex}`
+    )
+    var unsetUpdates = {
+        [ipath]: true
+    }
 
+    await dispatch({
+        collection: 'subject',
+        channelId: subjectRecord._id,
+        subChannelKey: 'scientific',
+        payload: {
+            ...(keys(pushUpdates) && { $push: pushUpdates }),
+            ...(keys(setUpdates) && { $set: setUpdates }),
+            $unset: unsetUpdates
+        }
+    })
+
+    //var subjectMessages = [
+    //    ...(
+    //        !dontTrackSubjectParticipatedInStudies
+    //        ? (
+    //            PushMaker({ personnelId }).all({
+    //                '/state/internals/participatedInStudies': {
+    //                    type: 'inhouse',
+    //                    studyId: experimentRecord.state.studyId,
+    //                    timestamp: experimentRecord.state.interval.start,
+    //                    status: unparticipateStatus,
+    //                }
+    //            })
+    //        )
+    //        : []
+    //    ),
+    //    ...(
+    //        shouldUpdateSubjectComment
+    //        ? PutMaker({ personnelId }).all({
+    //            '/state/comment': subjectComment,
+    //        })
+    //        : []
+    //    ),
+    //    ...(
+    //        blockSubjectFromTesting.shouldBlock === true
+    //        ? PutMaker({ personnelId }).all({
+    //            '/state/internals/blockedFromTesting': {
+    //                isBlocked: true,
+    //                blockUntil: blockSubjectFromTesting.blockUntil
+    //            },
+    //        })
+    //        : []
+    //    ),
+    //    ...(
+    //        RemoveMaker({ personnelId }).all({
+    //            '/state/internals/invitedForExperiments': [
+    //                oldInviteIndex,
+    //            ]
+    //        })
+    //    )
+    //];
 }
+
+var keys = (o) => Object.keys(o);
 
 module.exports = dispatchRemoveSubjectEvents;

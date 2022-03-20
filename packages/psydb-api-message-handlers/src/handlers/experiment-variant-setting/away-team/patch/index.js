@@ -3,7 +3,7 @@ var debug = require('debug')('psydb:api:message-handlers');
 
 var { groupBy } = require('@mpieva/psydb-core-utils');
 var { ApiError } = require('@mpieva/psydb-api-lib');
-var { SimpleHandler } = require('../../../lib/');
+var { SimpleHandler } = require('../../../../lib');
 
 var checkBasics = require('../../utils/check-patch-basics');
 var checkCRTFieldPointers = require('../../utils/check-crt-field-pointers');

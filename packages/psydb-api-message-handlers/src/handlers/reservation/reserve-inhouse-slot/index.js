@@ -3,7 +3,7 @@ var debug = require('debug')('psydb:api:message-handlers');
 
 var { nanoid } = require('nanoid');
 var { ApiError } = require('@mpieva/psydb-api-lib');
-var { SimpleHandler, checkForeignIdExists } = require('../../../lib/');
+var { SimpleHandler, checkForeignIdsExist } = require('../../../lib');
 
 var {
     checkConflictingTeamReservations,

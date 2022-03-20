@@ -6,7 +6,7 @@ var { ApiError } = require('@mpieva/psydb-api-lib');
 var {
     SimpleHandler,
     checkForeignKeyExists
-} = require('../../../lib/');
+} = require('../../../../lib');
 
 var checkBasics = require('../../utils/check-patch-basics');
 var checkCRTFieldPointers = require('../../utils/check-crt-field-pointers');

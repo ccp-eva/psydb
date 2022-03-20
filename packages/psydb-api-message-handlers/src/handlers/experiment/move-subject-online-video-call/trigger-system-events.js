@@ -8,13 +8,8 @@ var {
     dispatchRemoveSubjectEvents,
 } = require('../util');
 
-var triggerSystemEvents = async ({
-    db,
-    rohrpost,
-    cache,
-    message,
-    personnelId,
-}) => {
+var triggerSystemEvents = async (context) => {
+    var { db, cache, message } = context;
     var { type: messageType, payload } = message;
     var {
         experimentId,
@@ -33,9 +28,7 @@ var triggerSystemEvents = async ({
     if (target.experimentId) {
 
         await dispatchRemoveSubjectEvents({
-            db,
-            rohrpost,
-            personnelId,
+            ...context,
 
             experimentRecord,
             subjectRecord,
@@ -54,12 +47,8 @@ var triggerSystemEvents = async ({
         );
 
         await dispatchAddSubjectEvents({
-            db,
-            rohrpost,
-            personnelId,
-
+            ...context,
             experimentRecord: targetCache.experimentRecord,
-            
             subjectRecord,
         });
     }
@@ -70,10 +59,7 @@ var triggerSystemEvents = async ({
         }, { projection: { type: true }});
 
         await dispatchRemoveSubjectEvents({
-            db,
-            rohrpost,
-            personnelId,
-
+            ...context,
             experimentRecord,
             subjectRecord,
 
@@ -85,10 +71,7 @@ var triggerSystemEvents = async ({
         });
 
         await dispatchCreateEvents({
-            db,
-            rohrpost,
-            personnelId,
-
+            ...context,
             type: 'online-video-call',
             // FIXME: id format; fixme when study uses follow up
             // appointments we need to reuse the original id when

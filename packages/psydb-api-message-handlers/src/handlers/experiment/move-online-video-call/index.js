@@ -1,21 +1,8 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
 
-var {
-    unique
-} = require('@mpieva/psydb-common-lib');
-
-var {
-    ApiError,
-    compareIds,
-    checkForeignIdExists,
-} = require('@mpieva/psydb-api-lib');
-
-var {
-    SimpleHandler,
-    PutMaker,
-    PushMaker
-} = require('../../../lib');
+var { ApiError } = require('@mpieva/psydb-api-lib');
+var { SimpleHandler } = require('../../../lib');
 
 var {
     checkIntervalHasReservation,
@@ -27,6 +14,7 @@ var {
 } = require('../util');
 
 var createSchema = require('./schema');
+
 
 var handler = SimpleHandler({
     messageType: 'experiment/move-online-video-call',
@@ -96,7 +84,8 @@ handler.triggerSystemEvents = async ({
     rohrpost,
     cache,
     message,
-    personnelId,
+
+    dispatch,
 }) => {
     var { type: messageType, payload } = message;
     var {
@@ -111,23 +100,16 @@ handler.triggerSystemEvents = async ({
         locationRecord,
     } = cache;
 
-    var experimentChannel = (
-        rohrpost.openCollection('experiment').openChannel({
-            id: experimentId
-        })
-    )
-
-    await experimentChannel.dispatchMany({
-        messages: [
-            ...PutMaker({ personnelId }).all({
-                '/state/experimentOperatorTeamId': experimentOperatorTeamId,
-                '/state/locationRecordType': locationRecord.type,
-                '/state/locationId': locationRecord._id,
-                '/state/interval': interval,
-            })
-        ]
-    })
-
+    await dispatch({
+        collection: 'experiment',
+        channelId: experimentId,
+        payload: { $set: {
+            'state.experimentOperatorTeamId': experimentOperatorTeamId,
+            'state.locationRecordType': locationRecord.type,
+            'state.locationId': locationRecord._id,
+            'state.interval': interval,
+        }}
+    });
 }
 
 module.exports = handler;
