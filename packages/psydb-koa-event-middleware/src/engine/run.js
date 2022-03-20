@@ -36,7 +36,7 @@ var run = ({
             subChannelKey,
             payload,
         } = options;
-        console.dir(payload, { depth: null });
+        //console.dir(payload, { depth: null });
 
         var channel = channel || (
             rohrpost
