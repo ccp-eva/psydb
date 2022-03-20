@@ -27,13 +27,13 @@ handler.checkAllowedAndPlausible = async ({
         key
     } = message.payload;
 
-    var existing = await (
-        db.collection('customRecordType').find({
+    var record = await (
+        db.collection('customRecordType').findOne({
             _id: id
-        }).toArray()
+        })
     );
 
-    if (existing.length < 1) {
+    if (!record) {
         throw new ApiError(404, 'CustomRecordTypeNotFound');
     }
 
@@ -113,6 +113,7 @@ handler.triggerSystemEvents = async ({
     cache,
     message,
     personnelId,
+    dispatch,
 }) => {
     var { payload } = message;
     var { id, subChannelKey, key } = payload;
@@ -128,25 +129,37 @@ handler.triggerSystemEvents = async ({
 
     var payload = undefined;
     if (isCommited) {
-        payload = { $set: {
-            'state.isDirty': true,
-            [`${path}.isDirty`]: true,
-            [`${path}.isRemoved`]: true,
-        }};
+        await dispatch({
+            collection: 'customRecordType',
+            channelId: id,
+            payload: { $set: {
+                'state.isDirty': true,
+                [`${path}.isDirty`]: true,
+                [`${path}.isRemoved`]: true,
+            }}
+        });
         // TODO maybe we could allow to actually remove the field when
         // there are no records of that in db yet
     }
     else {
-        payload = { $unset: {
-            [path]: true,
-        }};
+        await dispatch({
+            collection: 'customRecordType',
+            channelId: id,
+            payload: { $unset: {
+                [path]: true,
+            }}
+        });
+        // FIXME: his is a workaround for:
+        // http://jira.mongodb.org/browse/SERVER-1014
+        await dispatch({
+            collection: 'customRecordType',
+            channelId: id,
+            payload: { $pull: {
+                [convertPointerToPath(nextFieldsPointer)]: null,
+            }}
+        });
     }
 
-    dispatch({
-        collection: 'customRecordType',
-        channelId: id,
-        payload
-    });
 }
 
 var isIncludedInDisplayFields = ({ displayFields, subChannelKey, key }) => {

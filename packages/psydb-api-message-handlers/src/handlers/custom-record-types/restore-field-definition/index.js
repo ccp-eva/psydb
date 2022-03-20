@@ -27,13 +27,10 @@ handler.checkAllowedAndPlausible = async ({
         key
     } = message.payload;
 
-    var existing = await (
-        db.collection('customRecordType').find({
-            _id: id
-        }).toArray()
+    var record = await (
+        db.collection('customRecordType').findOne({ _id: id })
     );
-
-    if (existing.length < 1) {
+    if (!record) {
         throw new ApiError(404, 'CustomRecordTypeNotFound');
     }
 
@@ -95,7 +92,7 @@ handler.triggerSystemEvents = async ({
         `${nextFieldsPointer}/${nextFieldIndex}`
     );
 
-    dispatch({
+    await dispatch({
         collection: 'customRecordType',
         channelId: id,
         payload: { $set: {
