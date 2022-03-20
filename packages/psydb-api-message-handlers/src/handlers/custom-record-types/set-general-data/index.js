@@ -63,7 +63,7 @@ var triggerSystemEvents = async (context) => {
     var { record } = cache;
     var { collection } = record;
    
-    dispatch({
+    await dispatch({
         collection: 'customRecordType',
         channelId: id,
         payload: { $set: {
