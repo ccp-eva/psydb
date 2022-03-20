@@ -33,11 +33,11 @@ var createMessageHandling = ({
                 payload: redactedPayload
             }
         },
-        redactMessageOnPersist: (ephemeralMessage) => {
+        /*redactMessageOnPersist: (ephemeralMessage) => {
             // TODO: only while developing stuff
             var persistentMessage = ephemeralMessage;
             return persistentMessage;
-        }
+        }*/
     };
     var rohrpostSettings = {
         createChannelId: () => nanoid(),
