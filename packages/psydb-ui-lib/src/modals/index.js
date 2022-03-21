@@ -3,5 +3,6 @@ export { default as PerSubjectCommentModal } from './per-subject-comment';
 export { default as MoveExperimentModal } from './move-experiment';
 export { default as FollowUpExperimentModal } from './follow-up-experiment';
 export { default as MoveSubjectModal } from './move-subject';
+export { default as FollowUpSubjectModal } from './follow-up-subject';
 export { default as RemoveSubjectModal } from './remove-subject';
 export { default as ErrorResponseModal } from './error-response';

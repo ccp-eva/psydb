@@ -19,9 +19,10 @@ var listStyle = {
 
 var ExperimentSubjectDropdown = ({
     subjectRecord,
-    
+
     onClickComment,
     onClickMove,
+    onClickFollowUp,
     onClickRemove,
 
     onClickConfirm,
@@ -53,6 +54,10 @@ var ExperimentSubjectDropdown = ({
         onClickMove(sharedPayload)
     ), [ onClickMove, subjectRecord ]);
 
+    var wrappedOnClickFollowUp = useCallback(() => (
+        onClickFollowUp(sharedPayload)
+    ), [ onClickFollowUp, subjectRecord ]);
+
     var wrappedOnClickRemove = useCallback(() => (
         onClickRemove(sharedPayload)
     ), [ onClickRemove, subjectRecord ]);
@@ -82,6 +87,9 @@ var ExperimentSubjectDropdown = ({
         'inhouse', 'canConfirmSubjectInvitation'
     )
     var canMove = permissions.hasLabOperationFlag(
+        experimentType, 'canMoveAndCancelExperiments',
+    );
+    var canFollowUp = permissions.hasLabOperationFlag(
         experimentType, 'canMoveAndCancelExperiments',
     );
 
@@ -128,6 +136,13 @@ var ExperimentSubjectDropdown = ({
                     onClick={ wrappedOnClickMove }
                 >
                     Verschieben
+                </Dropdown.Item>
+                <Dropdown.Item
+                    as='button'
+                    disabled={ !canMove || !onClickFollowUp }
+                    onClick={ wrappedOnClickFollowUp }
+                >
+                    Folgetermin
                 </Dropdown.Item>
                 <Dropdown.Item
                     as='button'

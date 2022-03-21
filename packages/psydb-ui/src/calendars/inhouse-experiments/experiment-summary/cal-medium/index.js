@@ -22,6 +22,7 @@ import {
     MoveExperimentModal,
     ChangeTeamModal,
     MoveSubjectModal,
+    FollowUpSubjectModal,
     RemoveSubjectModal,
     PerSubjectCommentModal,
 } from '@mpieva/psydb-ui-lib/src/modals';
@@ -45,6 +46,7 @@ const ExperimentSummaryMedium = ({
 
     var commentPerSubjectModal = useModalReducer({ show: false });
     var moveSubjectModal = useModalReducer({ show: false });
+    var followUpSubjectModal = useModalReducer({ show: false });
     var removeSubjectModal = useModalReducer({ show: false });
 
     var changeStatusThunk = (status) => ({ subjectId }) => {
@@ -139,6 +141,18 @@ const ExperimentSummaryMedium = ({
                 onSuccessfulUpdate,
             }) } />
 
+            <FollowUpSubjectModal { ...({
+                show: followUpSubjectModal.show,
+                onHide: followUpSubjectModal.handleHide,
+                payloadData: followUpSubjectModal.data,
+
+                shouldFetch: true,
+                experimentId: experimentRecord._id,
+                experimentType: 'inhouse',
+
+                onSuccessfulUpdate,
+            }) } />
+
             <RemoveSubjectModal { ...({
                 show: removeSubjectModal.show,
                 onHide: removeSubjectModal.handleHide,
@@ -203,6 +217,7 @@ const ExperimentSummaryMedium = ({
                             onClickComment: commentPerSubjectModal.handleShow,
 
                             onClickMove: moveSubjectModal.handleShow,
+                            onClickFollowUp: followUpSubjectModal.handleShow,
                             onClickRemove: removeSubjectModal.handleShow,
 
                             onClickConfirm,
@@ -238,6 +253,7 @@ const SubjectItem = ({
 
     onClickComment,
     onClickMove,
+    onClickFollowUp,
     onClickRemove,
 
     onClickConfirm,
@@ -288,6 +304,7 @@ const SubjectItem = ({
                         
                         onClickComment,
                         onClickMove,
+                        onClickFollowUp,
                         onClickRemove,
 
                         onClickConfirm,
