@@ -123,7 +123,7 @@ var createTargetExperiment = async (context) => {
     var targetExperimentId = await createId('experiment');
     var props = {
         ...sourceExperiment.state,
-        selectedSubjectIds: subjectDataForOp.map(it => it._id),
+        selectedSubjectIds: subjectDataForOp.map(it => it.subjectId),
         subjectData: subjectDataForOp.map(it => ({
             ...it,
             // FIXME: we might need to pass autoConfirm here for inhouse
@@ -154,7 +154,7 @@ var removeSubjectsFromSource = async (context) => {
     var { cache, dispatch } = context;
     var { sourceExperiment, subjectDataForOp } = cache;
 
-    var subjectIds = subjectDataForOp.map(it => it._id);
+    var subjectIds = subjectDataForOp.map(it => it.subjectId);
     await dispatch({
         collection: 'experiment',
         channelId: sourceExperiment._id,
@@ -170,7 +170,7 @@ var pushExperimentToSubjects = async (context) => {
     var { type, targetExperimentId, subjectDataForOp } = cache;
 
     var now = new Date();
-    var subjectIds = subjectDataForOp.map(it => it._id);
+    var subjectIds = subjectDataForOp.map(it => it.subjectId);
 
     if (['inhouse', 'online-video-call'].includes(type)) {
         var update = { $push: {
@@ -203,7 +203,7 @@ var pullExperimentFromSubjects = async (context) => {
     var { sourceExperiment, subjectDataForOp } = cache;
 
     var experimentId = sourceExperiment._id;
-    var subjectIds = subjectDataForOp.map(it => it._id);
+    var subjectIds = subjectDataForOp.map(it => it.subjectId);
 
     var update = { $pull: {
         'scientific.state.internals.invitedForExperiments': { experimentId },
