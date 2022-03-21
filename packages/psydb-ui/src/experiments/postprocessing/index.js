@@ -2,6 +2,7 @@ import React, { useEffect, useReducer, useCallback } from 'react';
 import { unique } from '@mpieva/psydb-core-utils';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import GeneralInfo from '../general-info';
+import GeneralFunctions from './general-functions';
 import AllSubjects from './all-subjects';
 import PostprocessableSubjects from './postprocessable-subjects';
 import PostprocessedSubjects from './postprocessed-subjects';
@@ -21,6 +22,18 @@ const ExperimentPostprocessing = ({
 
     var canPostprocess = permissions.hasLabOperationFlag(
         experimentType, 'canPostprocessExperiments'
+    );
+
+    var showFunctions = (
+        !experimentData.record.state.isCanceled
+        && (
+            permissions.hasLabOperationFlag(
+                experimentType, 'canMoveAndCancelExperiments'
+            ) ||
+            permissions.hasLabOperationFlag(
+                experimentType, 'canChangeOpsTeam'
+            )
+        )
     );
 
     var uniqueSubjectTypeKeys = unique(
@@ -54,6 +67,19 @@ const ExperimentPostprocessing = ({
                     In Nachbereitung
                 </h5>
                 <GeneralInfo { ...infoBag } />
+                { showFunctions && (
+                    <>
+                        <hr />
+                        <div className='mt-3 d-flex justify-content-end'>
+                            <GeneralFunctions { ...({
+                                experimentData,
+                                opsTeamData,
+                                studyData,
+                                onSuccessfulUpdate,
+                            }) } />
+                        </div>
+                    </>
+                )}
             </div>
             { canPostprocess
                 ? (

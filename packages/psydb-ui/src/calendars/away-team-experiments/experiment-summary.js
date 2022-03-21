@@ -13,6 +13,7 @@ import applyValueToDisplayFields from '@mpieva/psydb-ui-lib/src/apply-value-to-d
 import ExperimentDropdown from '@mpieva/psydb-ui-lib/src/experiment-dropdown';
 
 import {
+    FollowUpExperimentModal,
     MoveExperimentModal,
     ChangeTeamModal,
 } from '@mpieva/psydb-ui-lib/src/modals';
@@ -33,6 +34,7 @@ const ExperimentSummary = ({
 }) => {
 
     var moveExperimentModal = useModalReducer({ show: false });
+    var followupExperimentModal = useModalReducer({ show: false });
     var changeTeamModal = useModalReducer({ show: false });
 
     var experimentData = {
@@ -75,6 +77,18 @@ const ExperimentSummary = ({
                 onSuccessfulUpdate,
             }) } />
 
+            <FollowUpExperimentModal { ...({
+                show: followupExperimentModal.show,
+                onHide: followupExperimentModal.handleHide,
+                payloadData: followupExperimentModal.data,
+
+                shouldFetch: true,
+                experimentId: experimentRecord._id,
+                experimentType: 'away-team',
+
+                onSuccessfulUpdate,
+            }) } />
+
             <ChangeTeamModal { ...({
                 show: changeTeamModal.show,
                 onHide: changeTeamModal.handleHide,
@@ -107,6 +121,7 @@ const ExperimentSummary = ({
                         variant: 'calendar',
                         detailsLink: `/experiments/away-team/${experimentRecord._id}`,
                         onClickMove: moveExperimentModal.handleShow,
+                        onClickFollowUp: followupExperimentModal.handleShow,
                         onClickChangeTeam: changeTeamModal.handleShow
                     })} />
                 </div>
