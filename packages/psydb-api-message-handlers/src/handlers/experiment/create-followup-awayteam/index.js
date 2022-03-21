@@ -1,8 +1,19 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
 
-var { ApiError } = require('@mpieva/psydb-api-lib');
+var {
+    ApiError,
+    mongoEscapeDeep,
+    createId
+} = require('@mpieva/psydb-api-lib');
+
 var { SimpleHandler, checkForeignIdsExist } = require('../../../lib');
+
+var {
+    checkIntervalHasReservation,
+    checkConflictingSubjectExperiments,
+    checkConflictingLocationExperiments,
+} = require('../util');
 
 var createSchema = require('./schema');
 
@@ -16,6 +27,7 @@ handler.checkAllowedAndPlausible = async (context) => {
     var {
         db,
         permissions,
+        cache,
         message
     } = context;
 
@@ -42,7 +54,7 @@ handler.checkAllowedAndPlausible = async (context) => {
 
     var {
         locationId,
-        experimentOperatorTeam,
+        experimentOperatorTeamId,
         subjectData,
     } = sourceExperiment.state;
 
@@ -70,7 +82,7 @@ handler.checkAllowedAndPlausible = async (context) => {
         experimentOperatorTeamId,
     });
     
-    await checkConflicingSubjectExperiments({
+    await checkConflictingSubjectExperiments({
         db,
         interval: targetInterval,
         subjectIds: subjectDataForOp.map(it => it.subjectId)
@@ -82,6 +94,7 @@ handler.checkAllowedAndPlausible = async (context) => {
         locationId,
     });
 
+    cache.type = sourceExperiment.type;
     cache.sourceExperiment = sourceExperiment;
     cache.subjectDataForOp = subjectDataForOp;
     cache.targetInterval = targetInterval;
@@ -90,11 +103,16 @@ handler.checkAllowedAndPlausible = async (context) => {
 
 handler.triggerSystemEvents = async (context) => {
     var { cache } = context;
-    var { shouldRemoveFromSource } = cache;
+    var { subjectDataForOp, shouldRemoveFromSource } = cache;
 
     var targetExperimentId = await createTargetExperiment(context);
-    if (subjectDataForOp.length > 0 && shouldRemoveFromSource) {
-        await removeSubjectsFromSource(context);
+    if (subjectDataForOp.length > 0) {
+        await pushExperimentToSubjects({ ...context, targetExperimentId });
+
+        if (shouldRemoveFromSource) {
+            await removeSubjectsFromSource(context);
+            await pullExperimentFromSubjects(context);
+        }
     }
 }
 
@@ -102,7 +120,7 @@ var createTargetExperiment = async (context) => {
     var { cache, dispatchProps } = context;
     var { sourceExperiment, subjectDataForOp, targetInterval } = cache;
 
-    var targetExperimentId = createId('experiment');
+    var targetExperimentId = await createId('experiment');
     var props = {
         ...sourceExperiment.state,
         selectedSubjectIds: subjectDataForOp.map(it => it._id),
@@ -114,7 +132,7 @@ var createTargetExperiment = async (context) => {
         interval: targetInterval,
         isCanceled: false,
         isPostprocessed: false,
-    }
+    };
 
     await dispatchProps({
         collection: 'experiment',
@@ -123,6 +141,7 @@ var createTargetExperiment = async (context) => {
         additionalChannelProps: {
             type: sourceExperiment.type
         },
+        props,
 
         initialize: true,
         recordType: sourceExperiment.type
@@ -132,7 +151,77 @@ var createTargetExperiment = async (context) => {
 }
 
 var removeSubjectsFromSource = async (context) => {
-    var 
+    var { cache, dispatch } = context;
+    var { sourceExperiment, subjectDataForOp } = cache;
+
+    var subjectIds = subjectDataForOp.map(it => it._id);
+    await dispatch({
+        collection: 'experiment',
+        channelId: sourceExperiment._id,
+        payload: { $pull: {
+            'state.selectedSubjectIds': { $in: subjectIds },
+            'state.subjectData': { subjectId: { $in: subjectIds }}
+        }}
+    });
+}
+
+var pushExperimentToSubjects = async (context) => {
+    var { cache, rohrpost, personnelId } = context;
+    var { type, targetExperimentId, subjectDataForOp } = cache;
+
+    var now = new Date();
+    var subjectIds = subjectDataForOp.map(it => it._id);
+
+    if (['inhouse', 'online-video-call'].includes(type)) {
+        var update = { $push: {
+            'scientific.state.internals.invitedForExperiments': {
+                type: 'away-team',
+                studyId,
+                experimentId,
+                timestamp: now,
+                status: 'scheduled',
+            }
+        }};
+
+        await rohrpost._experimental_dispatchMultiplexed({
+            collection: 'subject',
+            channelIds: subjectIds,
+            subChannelKey: 'scientific',
+            messages: [ { personnelId, payload: mongoEscapeDeep(update) }],
+            mongoExtraUpdate: {
+                ...update,
+                $set: {
+                    'scientific._rohrpostMetadata.unprocessedEventIds': []
+                }
+            }
+        });
+    }
+}
+
+var pullExperimentFromSubjects = async (context) => {
+    var { cache, rohrpost, personnelId } = context;
+    var { sourceExperiment, subjectDataForOp } = cache;
+
+    var experimentId = sourceExperiment._id;
+    var subjectIds = subjectDataForOp.map(it => it._id);
+
+    var update = { $pull: {
+        'scientific.state.internals.invitedForExperiments': { experimentId },
+        'scientific.state.internals.participatedInStudies': { experimentId },
+    }};
+
+    await rohrpost._experimental_dispatchMultiplexed({
+        collection: 'subject',
+        channelIds: subjectIds,
+        subChannelKey: 'scientific',
+        messages: [ { personnelId, payload: mongoEscapeDeep(update) }],
+        mongoExtraUpdate: {
+            ...update,
+            $set: {
+                'scientific._rohrpostMetadata.unprocessedEventIds': []
+            }
+        }
+    });
 }
 
 module.exports = handler;

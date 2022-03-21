@@ -36,7 +36,7 @@ var run = ({
             subChannelKey,
             payload,
         } = options;
-        //console.dir(payload, { depth: null });
+        console.dir(payload, { depth: null });
 
         var channel = channel || (
             rohrpost
@@ -53,6 +53,7 @@ var run = ({
             payload: mongoEscapeDeep(payload) 
         }});
         meta.collectionName = meta.collection; // FIXME
+        meta.isNew = isNew; // FIXME
 
         context.modifiedChannels = (
             context.modifiedChannels
