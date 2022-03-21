@@ -48,10 +48,13 @@ var dispatchRemoveSubjectEvents = async ({
         collection: 'experiment',
         channelId: experimentRecord._id,
         payload: {
-            $unset: {
-                // FIXME: state.selectedSubjectIds should be removed as well
-                [`state.subjectData.${subjectDataIndex}`]: true
+            $pull: {
+                'state.selectedSubjectIds': subjectRecord._id,
+                'state.subjectData': { subjectId: subjectRecord._id }
             },
+            /*$unset: {
+                [`state.subjectData.${subjectDataIndex}`]: true
+            },*/
             ...(shouldCancelExperiment && {
                 $set: { 'state.isCanceled': true }
             })
@@ -59,13 +62,13 @@ var dispatchRemoveSubjectEvents = async ({
     });
     // FIXME: his is a workaround for:
     // http://jira.mongodb.org/browse/SERVER-1014
-    await dispatch({
+    /*await dispatch({
         collection: 'experiment',
         channelId: experimentRecord._id,
         payload: { $pull: {
             'state.subjectData': null
         }}
-    });
+    });*/
     
 
     var shouldUpdateSubjectComment = (

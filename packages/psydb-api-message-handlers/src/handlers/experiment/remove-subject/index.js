@@ -114,13 +114,15 @@ handler.checkAllowedAndPlausible = async ({
     cache.subjectDataIndex = subjectDataIndex;
 }
 
-handler.triggerSystemEvents = async ({
-    db,
-    rohrpost,
-    cache,
-    message,
-    personnelId,
-}) => {
+handler.triggerSystemEvents = async (context) => {
+    var {
+        db,
+        rohrpost,
+        cache,
+        message,
+        personnelId,
+    } = context;
+
     var { type: messageType, payload } = message;
     var {
         experimentId,
@@ -140,9 +142,7 @@ handler.triggerSystemEvents = async ({
     } = cache;
 
     await dispatchRemoveSubjectEvents({
-        db,
-        rohrpost,
-        personnelId,
+        ...context,
 
         experimentRecord,
         subjectRecord,
