@@ -52,23 +52,11 @@ var dispatchRemoveSubjectEvents = async ({
                 'state.selectedSubjectIds': subjectRecord._id,
                 'state.subjectData': { subjectId: subjectRecord._id }
             },
-            /*$unset: {
-                [`state.subjectData.${subjectDataIndex}`]: true
-            },*/
             ...(shouldCancelExperiment && {
                 $set: { 'state.isCanceled': true }
             })
         }
     });
-    // FIXME: his is a workaround for:
-    // http://jira.mongodb.org/browse/SERVER-1014
-    /*await dispatch({
-        collection: 'experiment',
-        channelId: experimentRecord._id,
-        payload: { $pull: {
-            'state.subjectData': null
-        }}
-    });*/
     
 
     var shouldUpdateSubjectComment = (
@@ -136,47 +124,6 @@ var dispatchRemoveSubjectEvents = async ({
             'scientific.state.internals.invitedForExperiments': null
         }}
     });
-
-    //var subjectMessages = [
-    //    ...(
-    //        !dontTrackSubjectParticipatedInStudies
-    //        ? (
-    //            PushMaker({ personnelId }).all({
-    //                '/state/internals/participatedInStudies': {
-    //                    type: 'inhouse',
-    //                    studyId: experimentRecord.state.studyId,
-    //                    timestamp: experimentRecord.state.interval.start,
-    //                    status: unparticipateStatus,
-    //                }
-    //            })
-    //        )
-    //        : []
-    //    ),
-    //    ...(
-    //        shouldUpdateSubjectComment
-    //        ? PutMaker({ personnelId }).all({
-    //            '/state/comment': subjectComment,
-    //        })
-    //        : []
-    //    ),
-    //    ...(
-    //        blockSubjectFromTesting.shouldBlock === true
-    //        ? PutMaker({ personnelId }).all({
-    //            '/state/internals/blockedFromTesting': {
-    //                isBlocked: true,
-    //                blockUntil: blockSubjectFromTesting.blockUntil
-    //            },
-    //        })
-    //        : []
-    //    ),
-    //    ...(
-    //        RemoveMaker({ personnelId }).all({
-    //            '/state/internals/invitedForExperiments': [
-    //                oldInviteIndex,
-    //            ]
-    //        })
-    //    )
-    //];
 }
 
 var hasKeys = (o) => Object.keys(o).length > 0;
