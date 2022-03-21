@@ -217,7 +217,9 @@ const ExperimentSummaryMedium = ({
                             onClickComment: commentPerSubjectModal.handleShow,
 
                             onClickMove: moveSubjectModal.handleShow,
-                            onClickFollowUp: followUpSubjectModal.handleShow,
+                            ...(experimentRecord._canFollowUp && {
+                                onClickFollowUp: followUpSubjectModal.handleShow,
+                            }),
                             onClickRemove: removeSubjectModal.handleShow,
 
                             onClickConfirm,
