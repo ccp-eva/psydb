@@ -16,12 +16,13 @@ var ExperimentGroup = MessageHandlerGroup([
     require('./change-per-subject-comment'),
     
     require('./move-inhouse'),
-    require('./move-subject-inhouse'),
-
     require('./move-online-video-call'),
-    require('./move-subject-online-video-call'),
-
     require('./move-away-team'),
+
+    require('./move-subject-inhouse'),
+    require('./move-subject-online-video-call'),
+    require('./followup-subject-inhouse'),
+    require('./followup-subject-online-video-call'),
 
     require('./add-subject'),
     require('./remove-subject'),
