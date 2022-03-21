@@ -256,6 +256,7 @@ const SubjectItem = ({
 
     onClickComment,
     onClickMove,
+    onClickFollowUp,
     onClickRemove,
 
     onClickConfirm,
@@ -306,6 +307,7 @@ const SubjectItem = ({
                         
                         onClickComment,
                         onClickMove,
+                        onClickFollowUp,
                         onClickRemove,
 
                         onClickConfirm,
