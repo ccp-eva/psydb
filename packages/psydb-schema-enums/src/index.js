@@ -83,13 +83,11 @@ var participationStatus = {
 var unparticipationStatus = {
     keys: [
         ...safeUnparticipationStatus.keys,
-        'deleted', // XXX: we deleted the thing i guess??
-        'moved',
+        'deleted',
     ],
     names: [
         ...safeUnparticipationStatus.names,
         'gelöscht',
-        'verschoben',
     ]
 }
 
