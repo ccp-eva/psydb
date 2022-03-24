@@ -150,7 +150,11 @@ handler.triggerSystemEvents = async (context) => {
         unparticipateStatus,
         subjectComment,
         blockSubjectFromTesting,
-    })
+
+        dontTrackSubjectParticipatedInStudies: (
+            unparticipateStatus === 'deleted'
+        )
+    });
 }
 
 module.exports = handler;
