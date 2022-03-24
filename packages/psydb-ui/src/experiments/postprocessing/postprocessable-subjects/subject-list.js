@@ -88,6 +88,8 @@ const PostprocessSubjectRow = ({
 
     onSuccessfulUpdate,
 }) => {
+    var { type: experimentType } = experimentRecord;
+
     return (
         <div className='bg-light border mb-2 p-3'>
             <Container>
@@ -126,6 +128,7 @@ const PostprocessSubjectRow = ({
                     </Col>
                     <Col sm={7}>
                         <PostprocessSubjectForm { ...({
+                            experimentType,
                             experimentId,
                             subjectId,
                             onSuccessfulUpdate

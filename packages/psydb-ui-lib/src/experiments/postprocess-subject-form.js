@@ -4,18 +4,8 @@ import enums from '@mpieva/psydb-schema-enums';
 
 import { createSend } from '@mpieva/psydb-ui-utils';
 
-const options = {
-    keys: [
-        ...enums.safeParticipationStatus.keys,
-        ...enums.safeUnparticipationStatus.keys,
-    ],
-    names: [
-        ...enums.safeParticipationStatus.names,
-        ...enums.safeUnparticipationStatus.names,
-    ]
-}
-
 const PostprocessSubjectForm = ({
+    experimentType,
     experimentId,
     subjectId,
     onSuccessfulUpdate
@@ -35,6 +25,35 @@ const PostprocessSubjectForm = ({
         var { target: { value }} = event;
         setSelectedStatus(value);
     }, []);
+
+    var options;
+    if (experimentType === 'away-team') {
+        options = {
+            keys: [
+                'participated',
+                'showed-up-but-didnt-participate',
+                // FIXME: this is not really correct in kiga case
+                // because in kiga experiments the child
+                // might not even be there in the first place
+            ],
+            names: [
+                'teilgenommen',
+                'nicht teilgenommen',
+            ]
+        }
+    }
+    else {
+        options = {
+            keys: [
+                ...enums.safeParticipationStatus.keys,
+                ...enums.safeUnparticipationStatus.keys,
+            ],
+            names: [
+                ...enums.safeParticipationStatus.names,
+                ...enums.safeUnparticipationStatus.names,
+            ]
+        }
+    }
 
     return (
         <InputGroup>
