@@ -24,6 +24,7 @@ var run = ({
     } = context;
 
     var usedDispatch = false;
+    context.modifiedChannels = [];
 
     var dispatch = context.dispatch = async (options) => {
         var {

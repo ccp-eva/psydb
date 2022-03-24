@@ -49,6 +49,7 @@ const ExperimentSummary = ({
         locationId,
         interval: { start, end },
         experimentOperatorTeamId,
+        subjectData,
     }} = experimentRecord;
 
     var locationRecord = locationRecordsById[locationId];
@@ -56,6 +57,10 @@ const ExperimentSummary = ({
     var teamRecord = experimentOperatorTeamRecords.find(it => (
         it._id === experimentOperatorTeamId
     ));
+
+    var hasProcessedSubjects = !!subjectData.find(
+        it => it.participationStatus !== 'unknown'
+    );
     
     start = new Date(start);
     end = new Date(new Date(end).getTime() + 1); // FIXME: 1ms offset
@@ -135,7 +140,11 @@ const ExperimentSummary = ({
                         detailsLink: `/experiments/away-team/${experimentRecord._id}`,
                         onClickMove: moveExperimentModal.handleShow,
                         onClickFollowUp: followupExperimentModal.handleShow,
-                        onClickCancel: cancelExperimentModal.handleShow,
+                        onClickCancel: (
+                            hasProcessedSubjects
+                            ? undefined
+                            : cancelExperimentModal.handleShow
+                        ),
                         onClickChangeTeam: changeTeamModal.handleShow
                     })} />
                 </div>

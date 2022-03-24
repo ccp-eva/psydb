@@ -64,7 +64,12 @@ const CancelExperimentModalBody = (ps) => {
                 </Container>
             </div>
             <div className='d-flex justify-content-end mt-3'>
-                <Button variant='danger'>Absagen</Button>
+                <Button
+                    onClick={ handleSubmit }
+                    variant='danger'
+                >
+                    Absagen
+                </Button>
             </div>
         </div>
     )
