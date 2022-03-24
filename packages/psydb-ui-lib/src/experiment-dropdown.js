@@ -22,6 +22,7 @@ var ExperimentDropdown = ({
     onClickFollowUp,
     onClickMove,
     onClickChangeTeam,
+    onClickCancel,
     
     disabled,
     variant,
@@ -32,9 +33,12 @@ var ExperimentDropdown = ({
 
     
     var canCreateFollowUp = permissions.hasLabOperationFlag(
-        experimentType, 'canMoveAndCancelExperiments_'
+        experimentType, 'canMoveAndCancelExperiments'
     );
     var canMove = permissions.hasLabOperationFlag(
+        experimentType, 'canMoveAndCancelExperiments'
+    );
+    var canCancel = permissions.hasLabOperationFlag(
         experimentType, 'canMoveAndCancelExperiments'
     );
     var canChangeOpsTeam = permissions.hasLabOperationFlag(
@@ -76,6 +80,14 @@ var ExperimentDropdown = ({
 
                 <Dropdown.Divider />
             
+                <Dropdown.Item
+                    as='button'
+                    disabled={ !canChangeOpsTeam || !onClickChangeTeam }
+                    onClick={ onClickChangeTeam }
+                >
+                    Team ändern
+                </Dropdown.Item>
+
                 { experimentType === 'away-team' && (
                     <Dropdown.Item
                         as='button'
@@ -93,14 +105,16 @@ var ExperimentDropdown = ({
                 >
                     Verschieben
                 </Dropdown.Item>
-
-                <Dropdown.Item
-                    as='button'
-                    disabled={ !canChangeOpsTeam || !onClickChangeTeam }
-                    onClick={ onClickChangeTeam }
-                >
-                    Team ändern
-                </Dropdown.Item>
+                
+                { experimentType === 'away-team' && (
+                    <Dropdown.Item
+                        as='button'
+                        disabled={ !canCancel || !onClickCancel }
+                        onClick={ onClickCancel }
+                    >
+                        Absagen
+                    </Dropdown.Item>
+                )}
             </Dropdown.Menu>
         </Dropdown>
     );

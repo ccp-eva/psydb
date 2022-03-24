@@ -15,6 +15,7 @@ import ExperimentDropdown from '@mpieva/psydb-ui-lib/src/experiment-dropdown';
 import {
     FollowUpExperimentModal,
     MoveExperimentModal,
+    CancelExperimentModal,
     ChangeTeamModal,
 } from '@mpieva/psydb-ui-lib/src/modals';
 
@@ -33,9 +34,10 @@ const ExperimentSummary = ({
     style,
 }) => {
 
+    var changeTeamModal = useModalReducer({ show: false });
     var moveExperimentModal = useModalReducer({ show: false });
     var followupExperimentModal = useModalReducer({ show: false });
-    var changeTeamModal = useModalReducer({ show: false });
+    var cancelExperimentModal = useModalReducer({ show: false });
 
     var experimentData = {
         record: experimentRecord,
@@ -89,6 +91,17 @@ const ExperimentSummary = ({
                 onSuccessfulUpdate,
             }) } />
 
+            <CancelExperimentModal { ...({
+                show: cancelExperimentModal.show,
+                onHide: cancelExperimentModal.handleHide,
+                payloadData: cancelExperimentModal.data,
+
+                experimentId: experimentRecord._id,
+                experimentType: 'away-team',
+
+                onSuccessfulUpdate,
+            }) } />
+
             <ChangeTeamModal { ...({
                 show: changeTeamModal.show,
                 onHide: changeTeamModal.handleHide,
@@ -122,6 +135,7 @@ const ExperimentSummary = ({
                         detailsLink: `/experiments/away-team/${experimentRecord._id}`,
                         onClickMove: moveExperimentModal.handleShow,
                         onClickFollowUp: followupExperimentModal.handleShow,
+                        onClickCancel: cancelExperimentModal.handleShow,
                         onClickChangeTeam: changeTeamModal.handleShow
                     })} />
                 </div>
