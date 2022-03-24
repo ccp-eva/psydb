@@ -183,7 +183,6 @@ var formatParticipationStatus = (status) => {
         'didnt-show-up': 'n. ersch.',
         'canceled-by-participant': 'abg.',
         'canceled-by-institute': 'ausg.',
-        'removed': 'entf.',
         'moved': 'versch.',
     }[status] || 'ERROR'
 }

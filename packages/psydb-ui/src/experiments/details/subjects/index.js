@@ -21,6 +21,7 @@ const Subjects = ({
 
     var commentModal = useModalReducer({ show: false });
     var moveModal = useModalReducer({ show: false });
+    var followupModal = useModalReducer({ show: false });
     var removeModal = useModalReducer({ show: false });
 
     var send = useSend(({ subjectId, status }) => ({
@@ -49,6 +50,7 @@ const Subjects = ({
 
                 commentModal,
                 moveModal,
+                followupModal,
                 removeModal,
 
                 onSuccessfulUpdate,
@@ -59,6 +61,11 @@ const Subjects = ({
 
                 onClickComment: commentModal.handleShow,
                 onClickMove: moveModal.handleShow,
+                onClickFollowUp: (
+                    studyData.record.state.enableFollowUpExperiments
+                    ? followupModal.handleShow
+                    : undefined
+                ),
                 onClickRemove: removeModal.handleShow,
 
                 onClickConfirm,
@@ -94,6 +101,7 @@ const ActionsComponent = ({
 
         onClickComment,
         onClickMove,
+        onClickFollowUp,
         onClickRemove,
 
         onClickConfirm,
@@ -115,6 +123,7 @@ const ActionsComponent = ({
                 
                 onClickComment,
                 onClickMove,
+                onClickFollowUp,
                 onClickRemove,
 
                 onClickConfirm,
