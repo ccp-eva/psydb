@@ -15,6 +15,9 @@ var createSchema = ({} = {}) => (
             properties: {
                 sourceExperimentId: ForeignId({ collection: 'experiment' }),
                 targetInterval: DateTimeInterval(),
+                targetExperimentOperatorTeamId: ForeignId({
+                    collection: 'experimentOperatorTeam'
+                }),
                 subjectOp: StringEnum([
                     'copy',
                     'move-unprocessed',

@@ -34,7 +34,7 @@ const FormContainer = ({
         payload: {
             sourceExperimentId: experimentData.record._id,
             subjectOp: formData.subjectOp,
-            //experimentOperatorTeamId: nextTeamRecord._id,
+            targetExperimentOperatorTeamId: nextTeamRecord._id,
             targetInterval: nextInterval,
         }
     }), { onSuccessfulUpdate })
@@ -79,7 +79,7 @@ const FormContainer = ({
                                         'ccc P'
                                     ) }
                                 </Pair>
-                                {/*<Pair label='Team'>
+                                <Pair label='Team'>
                                     <span className='d-inline-block mr-2' style={{
                                         backgroundColor: nextTeamRecord.state.color,
                                         height: '24px',
@@ -87,7 +87,7 @@ const FormContainer = ({
                                         verticalAlign: 'bottom',
                                     }} />
                                     { nextTeamRecord.state.name }
-                                </Pair>*/}
+                                </Pair>
                                 <Fields.GenericEnum
                                     dataXPath='$.subjectOp'
                                     uiSplit={[ 4, 8 ]}

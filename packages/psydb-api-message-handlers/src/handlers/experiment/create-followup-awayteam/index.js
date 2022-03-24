@@ -41,6 +41,7 @@ handler.checkAllowedAndPlausible = async (context) => {
     var {
         sourceExperimentId,
         targetInterval,
+        targetExperimentOperatorTeamId,
         subjectOp,
     } = message.payload;
 
@@ -79,7 +80,7 @@ handler.checkAllowedAndPlausible = async (context) => {
     await checkIntervalHasReservation({
         db,
         interval: targetInterval,
-        experimentOperatorTeamId,
+        experimentOperatorTeamId: targetExperimentOperatorTeamId,
     });
     
     await checkConflictingSubjectExperiments({
@@ -98,6 +99,7 @@ handler.checkAllowedAndPlausible = async (context) => {
     cache.sourceExperiment = sourceExperiment;
     cache.subjectDataForOp = subjectDataForOp;
     cache.targetInterval = targetInterval;
+    cache.targetExperimentOperatorTeamId = targetExperimentOperatorTeamId;
     cache.shouldRemoveFromSource = shouldRemoveFromSource;
 }
 
@@ -118,7 +120,12 @@ handler.triggerSystemEvents = async (context) => {
 
 var createTargetExperiment = async (context) => {
     var { cache, dispatchProps } = context;
-    var { sourceExperiment, subjectDataForOp, targetInterval } = cache;
+    var {
+        sourceExperiment,
+        subjectDataForOp,
+        targetInterval,
+        targetExperimentOperatorTeamId,
+    } = cache;
 
     var targetExperimentId = await createId('experiment');
     var props = {
@@ -130,6 +137,7 @@ var createTargetExperiment = async (context) => {
             invitationStatus: 'scheduled'
         })),
         interval: targetInterval,
+        experimentOperatorTeamId: targetExperimentOperatorTeamId,
         isCanceled: false,
         isPostprocessed: false,
     };
