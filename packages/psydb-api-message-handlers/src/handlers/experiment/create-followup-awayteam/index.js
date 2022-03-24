@@ -134,7 +134,8 @@ var createTargetExperiment = async (context) => {
         subjectData: subjectDataForOp.map(it => ({
             ...it,
             // FIXME: we might need to pass autoConfirm here for inhouse
-            invitationStatus: 'scheduled'
+            invitationStatus: 'scheduled',
+            participationStatus: 'unknown',
         })),
         interval: targetInterval,
         experimentOperatorTeamId: targetExperimentOperatorTeamId,
