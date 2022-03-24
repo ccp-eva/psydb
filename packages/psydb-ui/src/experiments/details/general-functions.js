@@ -11,6 +11,7 @@ import {
     ChangeTeamModal,
     MoveExperimentModal,
     FollowUpExperimentModal,
+    CancelExperimentModal
 } from '@mpieva/psydb-ui-lib/src/modals';
 
 const GeneralFunctions = ({
@@ -26,6 +27,9 @@ const GeneralFunctions = ({
         experimentType, 'canChangeOpsTeam'
     );
     var canMove = permissions.hasLabOperationFlag(
+        experimentType, 'canMoveAndCancelExperiments'
+    );
+    var canCancel = permissions.hasLabOperationFlag(
         experimentType, 'canMoveAndCancelExperiments'
     );
     
@@ -57,6 +61,15 @@ const GeneralFunctions = ({
                     opsTeamData,
                     studyData,
                     onSuccessfulUpdate,
+                }) } />
+            )}
+            
+            { canCancel && experimentType === 'away-team' && (
+                <CancelExperimentContainer { ...({
+                    experimentData,
+                    onSuccessfulUpdate: () => {
+                        history.replace(`${up(url, 1)}/remove-success`);
+                    },
                 }) } />
             )}
         </>
@@ -151,6 +164,42 @@ const FollowUpExperimentContainer = ({
 
                     history.push(`${up(url, 1)}/${nextId}`);
                 }
+            }) } />
+        </>
+    );
+};
+
+const CancelExperimentContainer = ({
+    experimentData,
+    onSuccessfulUpdate,
+}) => {
+    var { subjectData } = experimentData.record.state;
+    var hasProcessedSubjects = !!subjectData.find(it => (
+        it.participationId !== 'unknown'
+    ));
+    
+    var [ show, setShow ] = useState(false);
+    var handleShow = useCallback(() => setShow(true), []);
+    var handleHide = useCallback(() => setShow(false), []);
+    return (
+        <>
+            <Button 
+                size='sm'
+                variant='danger'
+                className='mr-3'
+                onClick={ handleShow }
+                disabled={ hasProcessedSubjects }
+            >
+                Absagen
+            </Button>
+            <CancelExperimentModal { ...({
+                show,
+                onHide: handleHide,
+                
+                experimentType: experimentData.record.type,
+                experimentId: experimentData.record._id,
+
+                onSuccessfulUpdate,
             }) } />
         </>
     );
