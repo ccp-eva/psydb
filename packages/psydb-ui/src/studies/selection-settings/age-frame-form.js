@@ -10,7 +10,10 @@ import {
 } from '@mpieva/psydb-ui-lib/src/formik';
 
 const defaultValues = {
-    interval: {},
+    interval: { 
+        start: { years: 0, months: 0, days: 0 },
+        end: { years: 0, months: 0, days: 0 },
+    },
     conditions: [],
 }
 
@@ -26,11 +29,10 @@ export const AgeFrameForm = (ps) => {
         onSuccessfulUpdate
     } = ps;
 
-    var ageFrameId, lastKnownEventId, ageFrameState;
+    var ageFrameId, ageFrameState;
     if (ageFrameRecord) {
         ({
             _id: ageFrameId,
-            _lastKnownEventId: lastKnownEventId,
             state: ageFrameState,
         } = ageFrameRecord)
     }
@@ -57,7 +59,6 @@ export const AgeFrameForm = (ps) => {
             case 'patch':
                 message = { type, payload: {
                     id: ageFrameId,
-                    lastKnownEventId,
                     props: formData
                 }};
                 break;
