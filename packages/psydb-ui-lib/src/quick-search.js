@@ -10,8 +10,6 @@ import {
     QuickSearchFields
 } from './formik';
 
-import { SchemaForm } from './schema-form';
-
 const createSchema = (displayFieldData) => {
     var properties = {};
     for (var it of displayFieldData.slice(0,4)) {
@@ -134,62 +132,5 @@ const FieldList = (ps) => {
         </>
     );
 }
-
-
-//const QuickSearch_OLD = ({
-//    displayFieldData,
-//    filters,
-//    onSubmit
-//}) => {
-//    var schema = useMemo(() => (
-//        createSchema(displayFieldData)
-//    ), [ displayFieldData ]);
-//
-//    var className = classnames([
-//        'bg-light border-bottom',
-//        'pr-3 pl-3 pt-2 pb-2',
-//        'd-flex justify-content-start',
-//    ]);
-//
-//    return (
-//        <div className={ className }>
-//            <SchemaForm
-//                className='d-flex align-items-end quick-search-fixes'
-//                buttonLabel='Suchen'
-//                noErrorIndicator={ true }
-//                schema={ schema }
-//                formData={ filters }
-//                onSubmit={
-//                    ({ formData }) => {
-//                        
-//                        var sanitized = {};
-//                        for (var key of Object.keys(formData)) {
-//                            var v = formData[key];
-//                            // filter string values that are empty
-//                            if (v || typeof v !== 'string') {
-//                                sanitized[key] = v;
-//                            }
-//                        }
-//
-//                        onSubmit({ filters: sanitized })
-//                        return Promise.resolve();
-//                    }
-//                }
-//            >
-//                <Button
-//                    className='ml-2'
-//                    variant='outline-secondary'
-//                    onClick={ () => onSubmit({}) }
-//                >
-//                    <Icons.XLg style={{
-//                        height: '13px',
-//                        width: '13px',
-//                        marginTop: '-2px'
-//                    }} />
-//                </Button>
-//            </SchemaForm>
-//        </div>
-//    )
-//}
 
 export default QuickSearch;
