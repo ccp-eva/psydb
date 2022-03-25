@@ -6,8 +6,6 @@ import {
     Split
 } from '@mpieva/psydb-ui-layout';
 
-import { SchemaForm } from '../../schema-form';
-
 import ReservationFormContainer from './reservation-form-container';
 import ExperimentFormContainer from './experiment-form-container';
 

@@ -14,7 +14,6 @@ import {
 
 import agent from '@mpieva/psydb-ui-request-agents';
 import datefns from '../../date-fns';
-import { SchemaForm } from '../../schema-form';
 
 import {
     Duration,

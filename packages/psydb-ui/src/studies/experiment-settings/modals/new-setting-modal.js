@@ -7,7 +7,6 @@ import {
 
 import { demuxed } from '@mpieva/psydb-ui-utils';
 import { WithDefaultModal } from '@mpieva/psydb-ui-layout';
-import { SchemaForm } from '@mpieva/psydb-ui-lib';
 import * as Forms from '../setting-forms';
 
 const schema = ExactObject({
