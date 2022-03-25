@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react';
+import ReactDateTime from 'react-datetime';
 import { withField } from '@cdxoo/formik-utils';
 import { getSystemTimezone } from '@mpieva/psydb-timezone-helpers';
 
@@ -15,16 +16,47 @@ import { Form } from '@mpieva/psydb-ui-layout';
 import ServerTimezoneContext from '../../../server-timezone-context';
 
 const Control = (ps) => {
-    var serverTimezone = useContext(ServerTimezoneContext);
-    var clientTimezone = getSystemTimezone();
+    var { dataXPath, formikField, disabled } = ps;
+    var { value, onChange } = formikField;
+    var isValidDate = !isNaN(new Date(value).getTime());
+
+    //var serverTimezone = useContext(ServerTimezoneContext);
+    //var clientTimezone = getSystemTimezone();
 
     return (
+        <ReactDateTime
+            value={ isValidDate ? new Date(value) : value }
+            onChange={ (stringOrMomentInstance) => {
+                var v = '';
+                if (stringOrMomentInstance.toISOString) {
+                    var str = stringOrMomentInstance.toISOString();
+                    // stripping Z from string and reparsing t makes it
+                    // localtime
+                    var local = new Date(str.slice(0, -1));
+                    v = local.toISOString();
+                    //console.log(v);
+                }
+                else {
+                    v = String(stringOrMomentInstance);
+                }
+                return onChange(dataXPath)(v);
+            }}
+            locale='de-DE'
+            timeFormat={ false }
+            inputProps={{
+                disabled,
+                placeholder: 'tt.mm.jjjj'
+            }}
+        />
+    );
+
+    /*return (
         <InnerControl { ...({
             serverTimezone,
             clientTimezone,
             ...ps,
         })} />
-    )
+    )*/
 }
 
 class InnerControl extends React.Component {

@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useMemo, useEffect, useContext } from 'react';
+import ReactDateTime from 'react-datetime';
 import { getSystemTimezone } from '@mpieva/psydb-timezone-helpers';
 
 import { utils } from "@rjsf/core";
@@ -48,7 +49,7 @@ const stripSeconds = (str) => {
     return str
 }
 
-const DefaultDateTimeWidget = (ps) => {
+const DefaultDateTimeWidget_OLD = (ps) => {
 
     var {
         id,
@@ -155,7 +156,7 @@ const DefaultDateTimeWidget = (ps) => {
     )
 };
 
-const DateOnlyServerSideWidget = (ps) => {
+const DateOnlyServerSideWidget_OLD = (ps) => {
 
     var {
         id,
@@ -245,6 +246,156 @@ const DateOnlyServerSideWidget = (ps) => {
             </InputGroup>
         </Wrapper>
     )
+}
+
+const Control = (ps) => {
+    var { 
+        value,
+        onChange,
+        disabled,
+        placeholder,
+        enableTime = true,
+        className
+    } = ps;
+
+    var isValidDate = !isNaN(new Date(value).getTime());
+
+    //var serverTimezone = useContext(ServerTimezoneContext);
+    //var clientTimezone = getSystemTimezone();
+
+    return (
+        <ReactDateTime
+            value={ isValidDate ? new Date(value) : value }
+            onChange={ (stringOrMomentInstance) => {
+                var v = '';
+                if (stringOrMomentInstance.toISOString) {
+                    var str = stringOrMomentInstance.toISOString();
+                    if (enableTime) {
+                        v = str;
+                    }
+                    else {
+                        // stripping Z from string and reparsing t makes it
+                        // localtime
+                        var local = new Date(str.slice(0, -1));
+                        v = local.toISOString();
+                    }
+                }
+                else {
+                    v = String(stringOrMomentInstance);
+                }
+                return onChange(v);
+            }}
+            locale='de-DE'
+            timeFormat={ enableTime }
+            inputProps={{
+                disabled,
+                placeholder,
+                className
+            }}
+        />
+    );
+}
+
+const DefaultDateTimeWidget = (ps) => {
+    var {
+        id,
+        type,
+        label,
+        value,
+        required,
+        onChange,
+        options,
+        schema,
+        formContext,
+        rawErrors = [],
+
+        isArrayItem,
+    } = ps;
+   
+    var {
+        systemType,
+        systemProps = {}
+    } = schema;
+
+    var Wrapper = wrappers[systemProps.uiWrapper];
+    if (!Wrapper) {
+        if (isArrayItem) {
+            Wrapper = wrappers.OneLineWrapper;
+        }
+        else {
+            Wrapper = wrappers.InlineWrapper;
+        }
+    }
+    
+    var hasErrors = rawErrors.length > 0;
+    var className = hasErrors ? 'form-control is-invalid' : 'form-control';
+
+    return (
+        <Wrapper { ...({
+            id, label, required, schema, rawErrors
+        }) }>
+            <Control {...({
+                //id: `${id}_DATE`,
+                className,
+                value,
+                onChange,
+                placeholder: 'tt.mm.jjjj --:--',
+                className,
+                enableTime: true
+            })} />
+        </Wrapper>
+    );
+}
+
+const DateOnlyServerSideWidget = (ps) => {
+    var {
+        id,
+        type,
+        label,
+        value,
+        required,
+        onChange,
+        options,
+        schema,
+        formContext,
+        rawErrors = [],
+
+        isArrayItem,
+    } = ps;
+   
+    var {
+        systemType,
+        systemProps = {}
+    } = schema;
+
+    var Wrapper = wrappers[systemProps.uiWrapper];
+    if (!Wrapper) {
+        if (isArrayItem) {
+            Wrapper = wrappers.OneLineWrapper;
+        }
+        else {
+            Wrapper = wrappers.InlineWrapper;
+        }
+    }
+    
+    var hasErrors = rawErrors.length > 0;
+    var className = hasErrors ? 'form-control is-invalid' : 'form-control';
+
+    return (
+        <Wrapper { ...({
+            id, label, required, schema, rawErrors
+        }) }>
+            <Control {...({
+                //id: `${id}_DATE`,
+                className,
+                value,
+                onChange,
+                placeholder: 'tt.mm.jjjj',
+                className,
+                enableTime: false
+            })} />
+        </Wrapper>
+    );
 }
 
 const DateTimeWidget = (ps) => {

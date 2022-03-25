@@ -53,7 +53,7 @@
     "@mpieva/psydb-ui-form-controls": "~0.1.0-alpha",
 
     "moment": "~2.29.1",
-    "react-datetime": "~3.0.4",
+    "react-datetime": "~3.1.1",
     "bootstrap": "~4.6.0",
     "react-bootstrap": "~1.5.2",
     "@rjsf/core": "~2.5.1",
