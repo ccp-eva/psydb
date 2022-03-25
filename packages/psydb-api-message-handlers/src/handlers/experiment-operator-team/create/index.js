@@ -5,8 +5,6 @@ var GenericRecordHandler = require('../../../lib/generic-record-handler');
 var {
     destructureMessage,
     openChannel,
-    createRecordPropMessages,
-    dispatchRecordPropMessages
 } = require('../../../lib/generic-record-handler-utils');
 
 var { fetchTeamName } = require('../utils');

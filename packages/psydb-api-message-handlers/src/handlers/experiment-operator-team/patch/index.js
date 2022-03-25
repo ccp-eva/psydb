@@ -19,16 +19,13 @@ var handler = GenericRecordHandler({
         db,
         rohrpost,
         personnelId,
-        message
+        message,
+        dispatchProps,
     }) => {
 
         var destructured = destructureMessage({ message });
-        var { id, props: { personnelIds }} = destructured;
-        
-        var recordPropMessages = createRecordPropMessages({
-            personnelId,
-            props: destructured.props
-        });
+        var { id, props } = destructured;
+        var { personnelIds } = props;
         
         var { state: { personnelIds: currentPersonnelIds}} = await (
             db.collection('experimentOperatorTeam').findOne({ _id: id })
@@ -36,23 +33,13 @@ var handler = GenericRecordHandler({
 
         if (personnelIds.join('::') !== currentPersonnelIds.join('::')) {
             var teamName = await fetchTeamName({ db, personnelIds });
-            recordPropMessages.push({
-                type: 'put',
-                personnelId,
-                payload: { prop: '/state/name', value: teamName }
-            });
+            props.name = teamName;
         }
 
-        var channel = await openChannel({
-            db,
-            rohrpost,
-            ...destructured
-        });
-
-        await dispatchRecordPropMessages({
-            channel,
-            ...destructured,
-            recordPropMessages
+        await dispatchProps({
+            collection: 'experimentOperatorTeam',
+            channelId: id,
+            props,
         });
     }
 })
