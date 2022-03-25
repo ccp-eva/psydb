@@ -27,11 +27,10 @@ export const InhouseSetting = (ps) => {
         onSuccessfulUpdate
     } = ps;
 
-    var settingId, lastKnownEventId, settingState;
+    var settingId, settingState;
     if (settingRecord) {
         ({
             _id: settingId,
-            _lastKnownEventId: lastKnownEventId,
             state: settingState,
         } = settingRecord)
     }
@@ -57,7 +56,6 @@ export const InhouseSetting = (ps) => {
             case 'patch':
                 message = { type, payload: {
                     id: settingId,
-                    lastKnownEventId,
                     props: formData
                 }};
                 break;

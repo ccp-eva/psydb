@@ -17,11 +17,10 @@ export const OnlineSurveySetting = (ps) => {
         onSuccessfulUpdate
     } = ps;
 
-    var settingId, lastKnownEventId, settingState;
+    var settingId, settingState;
     if (settingRecord) {
         ({
             _id: settingId,
-            _lastKnownEventId: lastKnownEventId,
             state: settingState,
         } = settingRecord)
     }
@@ -43,7 +42,6 @@ export const OnlineSurveySetting = (ps) => {
             case 'patch':
                 message = { type, payload: {
                     id: settingId,
-                    lastKnownEventId,
                     props: formData
                 }};
                 break;

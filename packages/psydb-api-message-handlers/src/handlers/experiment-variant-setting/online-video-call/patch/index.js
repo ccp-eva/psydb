@@ -5,7 +5,8 @@ var { groupBy } = require('@mpieva/psydb-core-utils');
 var { ApiError } = require('@mpieva/psydb-api-lib');
 var {
     SimpleHandler,
-    checkForeignKeyExists
+    checkForeignKeyExists,
+    checkForeignIdsExist,
 } = require('../../../../lib');
 
 var checkBasics = require('../../utils/check-patch-basics');
