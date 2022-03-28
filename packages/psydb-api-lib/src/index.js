@@ -47,6 +47,6 @@ module.exports = {
     resolvePossibleRefs: require('./resolve-possible-refs'),
     createInitialChannelState: require('./create-initial-channel-state'),
     pathifyProps: require('./pathify-props'),
-    mongoEscapeDeep: require('./mongo-escape-deep'),
-    mongoUnescapeDeep: require('./mongo-unescape-deep'),
+    mongoEscapeDeep: require('@cdxoo/mongodb-escape-keys').escape,
+    mongoUnescapeDeep: require('@cdxoo/mongodb-escape-keys').unescape,
 }
