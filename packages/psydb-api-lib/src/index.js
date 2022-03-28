@@ -25,7 +25,6 @@ module.exports = {
 
     createSchemaForRecordType: require('./create-schema-for-record-type'),
 
-    convertPointerToPath: require('./convert-pointer-to-path'),
     fetchOneCustomRecordType: require('./fetch-one-custom-record-type'),
     fetchCustomRecordTypes: require('./fetch-custom-record-types'),
 
@@ -47,6 +46,10 @@ module.exports = {
     resolvePossibleRefs: require('./resolve-possible-refs'),
     createInitialChannelState: require('./create-initial-channel-state'),
     pathifyProps: require('./pathify-props'),
+
     mongoEscapeDeep: require('@cdxoo/mongodb-escape-keys').escape,
     mongoUnescapeDeep: require('@cdxoo/mongodb-escape-keys').unescape,
+    
+    // FIXME: make this include go away and use core-utils instead
+    convertPointerToPath: require('@mpieva/psydb-core-utils').convertPointerToPath,
 }

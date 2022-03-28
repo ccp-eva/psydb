@@ -5,7 +5,6 @@ module.exports = {
     keyBy: require('./key-by'),
     compareIds: require('./compare-ids'),
     unwind: require('./unwind'),
-    convertPathToPointer: require('./convert-path-to-pointer'),
     only: require('./only'),
     range: require('./range'),
     transliterate: require('./transliterate'),
@@ -16,4 +15,7 @@ module.exports = {
     extractFrom: require('./extract-from'),
 
     isInstanceOf: require('./is-instance-of'),
+    
+    convertPathToPointer: require('@cdxoo/objectpath-to-jsonpointer'),
+    convertPointerToPath: require('@cdxoo/jsonpointer-to-objectpath'),
 }
