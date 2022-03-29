@@ -60,11 +60,11 @@ handler.checkAllowedAndPlausible = async ({
             pointer: fieldPointer
         });
         if (!resolved) {
-            debug(record.collection, record.type, fieldPointer);
+            debug(record.collection, record.type, fieldPointer, 'notResolved');
             throw new ApiError(400, 'InvalidFieldPointer');
         }
         if (!resolved.schema.systemType) {
-            debug(record.collection, record.type, fieldPointer);
+            debug(record.collection, record.type, fieldPointer, 'noType');
             throw new ApiError(400, 'InvalidFieldPointer');
         }
         gatheredFieldData.push({
@@ -95,7 +95,7 @@ handler.triggerSystemEvents = async ({
         collection: 'customRecordType',
         channelId: id,
         payload: { $set: {
-            'state.formOrder': gatheredFieldData
+            'state.formOrder': gatheredFieldData.map(it => it.dataPointer)
         }}
     });
 }

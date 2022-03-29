@@ -121,6 +121,7 @@ var RGPermissions = () => ExactObject({
 
 var testingPermissionsSchema_NEW = DefaultArray({
     title: 'Teilnahme-Erlaubnis',
+    systemType: 'TestingPermissions',
     items: RGPermissions(),
 })
 

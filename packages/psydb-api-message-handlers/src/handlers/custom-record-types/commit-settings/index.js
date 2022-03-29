@@ -151,16 +151,16 @@ var createFormOrderOps = ({ hasSubChannels, record }) => {
         ...newPointers,
     ];
 
-    var formOrder = formOrderPointers.map(pointer => {
+    /*var formOrder = formOrderPointers.map(pointer => {
         var field = fieldDataByPointer[pointer];
         return {
             systemType: field.systemType,
             dataPointer: field.dataPointer
         }
-    })
+    })*/
 
     var ops = {
-        'state.formOrder': formOrder
+        'state.formOrder': formOrderPointers
     };
     //console.log({ allPointers, newPointers, removedPointers, ops });
     return ops;

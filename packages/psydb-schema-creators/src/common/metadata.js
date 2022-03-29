@@ -327,9 +327,16 @@ module.exports = {
             },
             {
                 key: '_comment',
-                systemType: 'SaneString',
+                systemType: 'FullText',
                 dataPointer: '/scientific/state/comment',
                 displayName: 'Kommentar',
+                props: {},
+            },
+            {
+                key: '_testingPermissions',
+                systemType: 'TestingPermissions',
+                dataPointer: '/scientific/state/testingPermissions',
+                displayName: 'Teilnahme-Erlaubnis',
                 props: {},
             },
         ],

@@ -27,12 +27,10 @@ const FormOrderEditor = (ps) => {
         byProp: 'dataPointer' // FIXME
     });
 
-    var formOrderPointers = formOrder.map(it => it.dataPointer);
-
     return (
         <div>
             <FieldPointerList
-                dataPointers={ formOrderPointers }
+                dataPointers={ formOrder }
                 availableFieldDataByPointer={
                     availableFieldDataByPointer
                 }
@@ -44,7 +42,7 @@ const FormOrderEditor = (ps) => {
             <EditFormOrderModal
                 { ...editModal.passthrough }
                 recordId={ record._id }
-                currentDataPointers={ formOrderPointers }
+                currentDataPointers={ formOrder }
                 availableFieldDataByPointer={
                     availableFieldDataByPointer
                 }
