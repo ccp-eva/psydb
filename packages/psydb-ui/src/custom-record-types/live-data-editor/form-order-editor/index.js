@@ -11,7 +11,8 @@ const FormOrderEditor = (ps) => {
         onSuccessfulUpdate
     } = ps;
 
-    var { collection, formOrder } = record;
+    var { collection, state } = record;
+    var { formOrder } = state;
 
     var availableDisplayFieldData = gatherDisplayFieldData({
         customRecordTypeData: record,
@@ -19,7 +20,7 @@ const FormOrderEditor = (ps) => {
 
     var availableFieldDataByPointer = keyBy({
         items: availableDisplayFieldData,
-        byProp: 'pointer'
+        byProp: 'dataPointer' // FIXME
     });
 
     var allPointers = Object.keys(availableFieldDataByPointer);

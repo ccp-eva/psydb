@@ -1,6 +1,5 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
-var createDiff = require('deep-diff');
 var omit = require('@cdxoo/omit');
 
 var { without } = require('@mpieva/psydb-core-utils');
@@ -144,7 +143,7 @@ var createFormOrderOps = ({ hasSubChannels, record }) => {
     var removedPointers = without(formOrder, allPointers);
 
     var ops = {
-        formOrder: [
+        'state.formOrder': [
             ...without(formOrder, removedPointers),
             ...newPointers,
         ]

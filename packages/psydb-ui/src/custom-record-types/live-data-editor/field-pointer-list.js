@@ -32,18 +32,11 @@ const FieldPointerList = ({
             <tbody>
                 { dataPointers.map((dataPointer, index) => {
                     var {
-                        isRemoved,
                         displayName,
                     } = availableFieldDataByPointer[dataPointer];
                     
-                    var style = {
-                        ...(isRemoved && {
-                            color: '#ccc',
-                        }),
-                    };
-
                     return (
-                        <tr key={ dataPointer } style={ style }>
+                        <tr key={ dataPointer }>
                             <td>{ index + 1 }</td>
                             <td>{ displayName }</td>
                         </tr>
