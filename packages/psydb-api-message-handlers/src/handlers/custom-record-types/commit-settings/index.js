@@ -2,7 +2,7 @@
 var debug = require('debug')('psydb:api:message-handlers');
 var omit = require('@cdxoo/omit');
 
-var { without } = require('@mpieva/psydb-core-utils');
+var { without, keyBy } = require('@mpieva/psydb-core-utils');
 var { gatherDisplayFieldData } = require('@mpieva/psydb-common-lib');
 var { ApiError } = require('@mpieva/psydb-api-lib');
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
@@ -129,7 +129,11 @@ var createFormOrderOps = ({ hasSubChannels, record }) => {
             state: { ...record.state, settings: record.state.nextSettings }
         }
     });
-    
+    var fieldDataByPointer = keyBy({
+        items: availableDisplayFieldData,
+        byProp: 'dataPointer', // FIXME
+    });
+
     var allPointers = (
         availableDisplayFieldData
         .filter(it => (
@@ -142,11 +146,21 @@ var createFormOrderOps = ({ hasSubChannels, record }) => {
     var newPointers = without(allPointers, formOrder);
     var removedPointers = without(formOrder, allPointers);
 
+    var formOrderPointers = [
+        ...without(formOrder, removedPointers),
+        ...newPointers,
+    ];
+
+    var formOrder = formOrderPointers.map(pointer => {
+        var field = fieldDataByPointer[pointer];
+        return {
+            systemType: field.systemType,
+            dataPointer: field.dataPointer
+        }
+    })
+
     var ops = {
-        'state.formOrder': [
-            ...without(formOrder, removedPointers),
-            ...newPointers,
-        ]
+        'state.formOrder': formOrder
     };
     //console.log({ allPointers, newPointers, removedPointers, ops });
     return ops;

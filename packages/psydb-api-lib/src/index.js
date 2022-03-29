@@ -43,6 +43,7 @@ module.exports = {
 
     gatherDisplayFieldsForRecordType: require('./gather-display-fields-for-record-type'),
 
+    resolveDataPointer: require('./resolve-data-pointer'),
     resolvePossibleRefs: require('./resolve-possible-refs'),
     createInitialChannelState: require('./create-initial-channel-state'),
     pathifyProps: require('./pathify-props'),
