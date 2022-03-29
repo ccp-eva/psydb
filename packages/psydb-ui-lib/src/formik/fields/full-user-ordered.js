@@ -1,11 +1,13 @@
 import React from 'react';
-import jsonpointer from 'jsonpointer';
-import { keyBy } from '@mpieva/psydb-core-utils';
+import {
+    keyBy,
+    without,
+    convertPointerToPath
+} from '@mpieva/psydb-core-utils';
 import { CustomField } from './custom-field';
 
-export const createFullUserOrdered = (options) => (ps) => {
-    var { extraFieldComponents = {} } = options;
-    var { value, related, crtSettings  } = ps;
+export const FullUserOrdered = (ps) => {
+    var { related, crtSettings, extraTypeProps, exclude = [] } = ps; 
 
     var {
         hasSubChannels,
@@ -13,7 +15,7 @@ export const createFullUserOrdered = (options) => (ps) => {
         fieldDefinitions,
         staticFieldDefinitions
     } = crtSettings;
-
+    
     var keyedFieldDefinitions = keyBy({
         items: (
             hasSubChannels
@@ -38,21 +40,22 @@ export const createFullUserOrdered = (options) => (ps) => {
 
     return (
         <>
-            { formOrder.map((pointer, ix) => {
+            { without(formOrder, exclude).map((pointer, ix) => {
                 var def = allDefinitions[pointer];
-                var { systemType, displayName } = def;
-                
-                var Extra = extraFieldComponents[systemType];
-                var shared = {
-                    key: ix,
-                    value: jsonpointer.get(value, pointer),
-                    related,
-                };
+                // FIXME: we maybe can get rid this replace
+                var fixedPointer = pointer.replace('/state', '');
+                var dataXPath = (
+                    '$.' + convertPointerToPath(fixedPointer)
+                );
 
                 return (
-                    Extra
-                    ? <Extra { ...shared } label={ displayName } />
-                    : <CustomField { ...shared } definition={ def } />
+                    <CustomField 
+                        key={ dataXPath }
+                        dataXPath={ dataXPath }
+                        definition={ def }
+                        related={ related }
+                        extraTypeProps={ extraTypeProps }
+                    />
                 )
             })}
         </>
