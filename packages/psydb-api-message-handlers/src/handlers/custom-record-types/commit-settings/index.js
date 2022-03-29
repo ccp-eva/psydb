@@ -1,18 +1,16 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
+var createDiff = require('deep-diff');
+var omit = require('@cdxoo/omit');
 
-var omit = require('@cdxoo/omit'),
-    createClone = require('copy-anything').copy,
-    createDiff = require('deep-diff');
+var { without } = require('@mpieva/psydb-core-utils');
+var { gatherDisplayFieldData } = require('@mpieva/psydb-common-lib');
+var { ApiError } = require('@mpieva/psydb-api-lib');
+var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error');
+var { SimpleHandler } = require('../../../lib');
+var createSchema = require('./schema');
 
-var createRohrpostMessagesFromDiff = require('@mpieva/psydb-api-lib/src/diff-to-rohrpost');
-
-var SimpleHandler = require('../../../lib/simple-handler');
-
-var createSchema = require('./schema'),
-    allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
 var handler = SimpleHandler({
     messageType: 'custom-record-types/commit-settings',
@@ -85,13 +83,14 @@ handler.triggerSystemEvents = async ({
         `);
     }
 
-    console.dir(record, { depth: null })
+    //console.dir(record, { depth: null })
     var { hasSubChannels } = collectionCreatorData;
     await dispatch({
         collection: 'customRecordType',
         channelId: id,
         payload: { $set: {
             ...createCopyOps({ hasSubChannels, nextSettings }),
+            ...createFormOrderOps({ hasSubChannels, record }),
             ...createCleanupOps({ hasSubChannels }),
         }}
     });
@@ -119,6 +118,38 @@ var createCopyOps = ({ hasSubChannels, nextSettings }) => {
         ops = { 'state.settings.fields': copy }
     }
 
+    return ops;
+}
+
+var createFormOrderOps = ({ hasSubChannels, record }) => {
+    var { formOrder = [] } = record.state;
+
+    var availableDisplayFieldData = gatherDisplayFieldData({
+        customRecordTypeData: {
+            ...record,
+            state: { ...record.state, settings: record.state.nextSettings }
+        }
+    });
+    
+    var allPointers = (
+        availableDisplayFieldData
+        .filter(it => (
+            it.dataPointer !== '/_id' &&
+            !it.isRemoved
+        ))
+        .map(it => it.dataPointer) // FIXME
+    );
+
+    var newPointers = without(allPointers, formOrder);
+    var removedPointers = without(formOrder, allPointers);
+
+    var ops = {
+        formOrder: [
+            ...without(formOrder, removedPointers),
+            ...newPointers,
+        ]
+    };
+    //console.log({ allPointers, newPointers, removedPointers, ops });
     return ops;
 }
 

@@ -21,7 +21,7 @@ var gatherDisplayFieldData = ({
         {
             key: 'ID',
             systemType: 'Id',
-            dataPointer: '/_id',
+            dataPointer: '/_id', // FIXME
             displayName: 'ID',
         },
         ...(availableStaticDisplayFields || []),

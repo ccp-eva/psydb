@@ -7,6 +7,7 @@ import PanelPair from './panel-pair';
 import GeneralEditor from './general-editor';
 import DisplayFieldEditor from './display-field-editor';
 import RecordLabelDefinitionEditor from './record-label-definition-editor';
+import FormOrderEditor from './form-order-editor';
 import StudyExtraEditors from './study-extra-editors';
 
 const PanelColumn = (ps) => {
@@ -39,6 +40,10 @@ const LiveDataEditor = (ps) => {
                         <RecordLabelDefinitionEditor { ...ps } />
                     </FormBox>
                     
+                    <FormBox title='Feldsortierung im Formular'>
+                        <FormOrderEditor { ...ps } />
+                    </FormBox>
+
                     { collection === 'study' && (
                         <StudyExtraEditors { ...ps } />
                     )}
