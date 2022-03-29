@@ -1,9 +1,11 @@
 import React from 'react';
 import { keyBy } from '@mpieva/psydb-core-utils';
-import { Button, Table } from '@mpieva/psydb-ui-layout';
 import { gatherDisplayFieldData } from '@mpieva/psydb-common-lib';
+import { useModalReducer } from '@mpieva/psydb-ui-hooks';
+import { Button } from '@mpieva/psydb-ui-layout';
 
 import FieldPointerList from '../field-pointer-list';
+import EditFormOrderModal from './edit-form-order-modal';
 
 const FormOrderEditor = (ps) => {
     var {
@@ -14,6 +16,8 @@ const FormOrderEditor = (ps) => {
     var { collection, state } = record;
     var { formOrder } = state;
 
+    var editModal = useModalReducer();
+
     var availableDisplayFieldData = gatherDisplayFieldData({
         customRecordTypeData: record,
     });
@@ -23,15 +27,25 @@ const FormOrderEditor = (ps) => {
         byProp: 'dataPointer' // FIXME
     });
 
-    var allPointers = Object.keys(availableFieldDataByPointer);
-
     return (
         <div>
             <FieldPointerList
-                dataPointers={ formOrder || allPointers }
+                dataPointers={ formOrder }
                 availableFieldDataByPointer={
                     availableFieldDataByPointer
                 }
+            />
+            <Button onClick={ editModal.handleShow }>
+                Edit
+            </Button>
+            
+            <EditFormOrderModal
+                { ...editModal.passthrough }
+                currentDataPointers={ formOrder }
+                availableFieldDataByPointer={
+                    availableFieldDataByPointer
+                }
+                onSuccessfulUpdate={ onSuccessfulUpdate }
             />
         </div>
     );

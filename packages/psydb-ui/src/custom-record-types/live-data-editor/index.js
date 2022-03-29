@@ -16,8 +16,8 @@ const PanelColumn = (ps) => {
     
     return (
         <>
-            { children.map(it => (
-                <div className='mb-4'>{ it }</div>
+            { children.map((it, ix) => (
+                <div key={ ix } className='mb-4'>{ it }</div>
             ))}
         </>
     )
