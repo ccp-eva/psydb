@@ -40,9 +40,11 @@ const LiveDataEditor = (ps) => {
                         <RecordLabelDefinitionEditor { ...ps } />
                     </FormBox>
                     
-                    <FormBox title='Feldsortierung im Formular'>
-                        <FormOrderEditor { ...ps } />
-                    </FormBox>
+                    { collection === 'subject' && ( 
+                        <FormBox title='Feldsortierung im Formular'>
+                            <FormOrderEditor { ...ps } />
+                        </FormBox>
+                    )}
 
                     { collection === 'study' && (
                         <StudyExtraEditors { ...ps } />
