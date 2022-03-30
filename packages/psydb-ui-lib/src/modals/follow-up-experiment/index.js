@@ -80,6 +80,7 @@ const FollowUpExperimentModal = ({
                 ...confirmModal.passthrough,
 
                 studyId,
+                studyData,
                 experimentData,
                 teamData,
 

@@ -28,6 +28,7 @@ const FormContainer = ({
 
     onSuccessfulUpdate,
 }) => {
+    var { enableFollowUpExperiments } = studyData.record.state;
 
     var handleSubmit = createSend((formData) => ({
         type: 'experiment/create-followup-awayteam',
@@ -95,8 +96,10 @@ const FormContainer = ({
                                     label='Probanden'
                                     options={{
                                         'none': 'Keine Aktion',
-                                        'move-unprocessed': 'Verbleibende Verschieben',
-                                        'copy': 'Alle Kopieren',
+                                        'move-unprocessed': 'Verbleibende Verschieben', 
+                                        ...( enableFollowUpExperiments && {
+                                            'copy': 'Alle Kopieren',
+                                        }),
                                     }}
                                 />
                             </Container>
