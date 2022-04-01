@@ -1,8 +1,9 @@
 import React, { useMemo, useEffect, useReducer, useCallback, useState } from 'react';
 // FIXME: invite-confirm-modal as its also video-calls now
-//
+
+import { withField } from '@cdxoo/formik-utils';
+import { useSend } from '@mpieva/psydb-ui-hooks';
 import {
-    Modal,
     Button,
     Container,
     Row,
@@ -10,116 +11,53 @@ import {
     Pair,
     Split,
     Form,
+
+    WithDefaultModal
 } from '@mpieva/psydb-ui-layout';
 
-import agent from '@mpieva/psydb-ui-request-agents';
+import { DefaultForm, Fields } from '../../formik';
+import ExperimentIntervalSummary from '../../experiment-interval-summary';
+
 import datefns from '../../date-fns';
 
-import {
-    Duration,
-    FormattedDuration,
-    HOUR,
-    MINUTE
-} from '@mpieva/psydb-common-lib/src/durations';
+var formatDate = (datelike) => (
+    datefns.format(new Date(datelike), 'dd.MM.yyyy')
+);
 
-const extractTime = (dateIsoString) => (
-    NaN !== (new Date(dateIsoString)).getTime()
-    ? Duration(datefns.format(new Date(dateIsoString), 'HH:mm:ss.SSS') + 'Z')
-    : dateIsoString
+var formatTime = (datelike) => (
+    datefns.format(new Date(datelike), 'HH:mm')
 );
 
 const FormContainer = (ps) => {
     var {
-        onHide,
         experimentData,
         studyData,
         confirmData,
-
-        onSuccessfulUpdate,
+        minEnd,
     } = ps;
-
-    var {
-        _id: studyId,
-        type: studyRecordType,
-    } = studyData.record;
 
     var {
         type: experimentType,
         state: experimentState
     } = experimentData.record;
 
-    var minEnd = new Date(
-        confirmData.start.getTime() + confirmData.slotDuration
-    );
-    var [ selectedEnd, setSelectedEnd ] = useState(minEnd.toISOString());
-    var handleSelectEnd = useCallback((event) => {
-        var { target: { value }} = event;
-        setSelectedEnd(value);
-    }, [])
-
-    var handleSubmit = () => {
-        var message = {
-            type: `experiment/move-${experimentType}`,
-            payload: {
-                experimentId: experimentData.record._id,
-                locationId: confirmData.locationRecord._id,
-                experimentOperatorTeamId: (
-                    confirmData.reservationRecord.state.experimentOperatorTeamId
-                ),
-                interval: {
-                    start: confirmData.start.toISOString(),
-                    end: new Date(selectedEnd).toISOString(),
-                }
-            }
-        };
-
-        return agent.send({ message }).then(response => {
-            onSuccessfulUpdate && onSuccessfulUpdate(response);
-        })
-    }
-
     return (
         <div>
             <header className='pb-1'><b>Aktuell</b></header>
             <div className='p-2 bg-white border'>
-                <Container>
-                    <Pair label='Datum'>
-                        { datefns.format(
-                            new Date(experimentState.interval.start),
-                            'P'
-                        ) }
-                    </Pair>
-
-                    <Pair label='Beginn'>
-                        { datefns.format(
-                            new Date(experimentState.interval.start),
-                            'p'
-                        ) }
-                    </Pair>
-                    <Pair label='Ende'>
-                        { datefns.format(
-                            new Date(experimentState.interval.end).getTime() + 1,
-                            'p'
-                        ) }
-                    </Pair>
-
-                </Container>
+                <ExperimentIntervalSummary
+                    experimentRecord={ experimentData.record }
+                />
             </div>
 
             <header className='pb-1 mt-3'><b>nach Verschiebung</b></header>
             <div className='p-2 bg-white border'>
                 <Container>
                     <Pair label='Datum'>
-                        { datefns.format(
-                            new Date(confirmData.start),
-                            'P'
-                        ) }
+                        { formatDate(confirmData.start) }
                     </Pair>
                     <Pair label='Beginn'>
-                        { datefns.format(
-                            new Date(confirmData.start),
-                            'p'
-                        ) }
+                        { formatTime(confirmData.start) }
                     </Pair>
                     <Row>
                         <Form.Label className='col-sm-4 col-form-label'>
@@ -127,8 +65,7 @@ const FormContainer = (ps) => {
                         </Form.Label>
                         <Col sm={8}>
                             <SlotControl
-                                value={ selectedEnd  }
-                                onChange={ handleSelectEnd }
+                                dataXPath='$.end'
                                 min={ minEnd }
                                 max={ confirmData.maxEnd }
                                 step={ confirmData.slotDuration }
@@ -138,84 +75,108 @@ const FormContainer = (ps) => {
                 </Container>
             </div>
             <div className='d-flex justify-content-end mt-3'>
-                <Button onClick={ handleSubmit }>Verschieben</Button>
+                <Button type='submit'>Verschieben</Button>
             </div>
         </div>
     )
 
 }
 
-const InhouseConfirmModal = ({
-    show,
-    onHide,
+const InhouseConfirmModalBody = (ps) => {
+    var {
+        onHide,
 
-    experimentData,
-    studyData,
-    modalPayloadData: confirmData,
+        experimentData,
+        studyData,
+        modalPayloadData,
 
-    onSuccessfulUpdate,
-}) => {
+        onSuccessfulUpdate,
+    } = ps;
 
-    if (!show) {
-        return null;
+    var { type: experimentType } = experimentData.record;
+    var {
+        locationRecord,
+        reservationRecord,
+        start,
+        slotDuration,
+    } = modalPayloadData;
+
+    var send = useSend((formData) => ({
+        type: `experiment/move-${experimentType}`,
+        payload: {
+            experimentId: experimentData.record._id,
+            locationId: locationRecord._id,
+            experimentOperatorTeamId: (
+                reservationRecord.state.experimentOperatorTeamId
+            ),
+            interval: {
+                start: start.toISOString(),
+                end: formData.end,
+            },
+            shouldRemoveOldReservation: formData.shouldRemoveOldReservation
+        }
+    }), {
+        onSuccessfulUpdate: [ onHide, onSuccessfulUpdate ]
+    });
+
+    var minEnd = new Date(start.getTime() + slotDuration);
+    var initialValues = {
+        end: minEnd.toISOString(),
+        shouldRemoveOldReservation: false
     }
 
-    var wrappedOnSuccessfulUpdate = (...args) => {
-        onHide(),
-        onSuccessfulUpdate && onSuccessfulUpdate(...args);
-    };
-    //console.log(confirmData);
-
     return (
-        <Modal
-            show={show}
-            onHide={ onHide }
-            size='md'
+        <DefaultForm
+            initialValues={ initialValues }
+            onSubmit={ send.exec }
         >
-            <Modal.Header closeButton>
-                <Modal.Title>Experiment verschieben</Modal.Title>
-            </Modal.Header>
-            <Modal.Body className='bg-light'>
+            { (formikProps) => (
                 <FormContainer { ...({
                     experimentData,
                     studyData,
-                    confirmData,
-
-                    onSuccessfulUpdate: wrappedOnSuccessfulUpdate,
+                    confirmData: modalPayloadData,
+                    minEnd,
                 }) } />
-            </Modal.Body>
-        </Modal>
+            )}
+        </DefaultForm>
     )
+
 }
 
-const SlotControl = ({
-    value,
-    onChange,
-    min,
-    max,
-    step,
-}) => {
-    var slots = [];
-    for (var t = min.getTime(); t < max.getTime(); t += step) {
-        slots.push(new Date(t));
-    }
+const InhouseConfirmModal = WithDefaultModal({
+    Body: InhouseConfirmModalBody,
+    title: 'Termin verschieben',
+    size: 'md',
+    className: '',
+    backdropClassName: '',
+})
 
-    return (
-        <Form.Control { ...({
-            as: 'select',
-            onChange,
-            value
-        }) } >
-            { slots.map(it => (
-                <option
-                    key={ it }
-                    value={ it }
-                >
-                    { datefns.format(it, 'p') }
-                </option>
-            ))}
-        </Form.Control>
-    )
-}
+const SlotControl = withField({
+    Control: (ps) => {
+        var { dataXPath, formikField, min, max, step } = ps;
+
+        var slots = [];
+        for (var t = min.getTime(); t < max.getTime(); t += step) {
+            slots.push(t - 1);
+        }
+
+        return (
+            <Form.Control { ...({
+                as: 'select',
+                ...formikField
+            }) } >
+                { slots.map(it => (
+                    <option
+                        key={ it }
+                        value={ new Date(it).toISOString() }
+                    >
+                        { formatTime(it + 1) }
+                    </option>
+                ))}
+            </Form.Control>
+        )
+    },
+    DefaultWrapper: 'NoneWrapper'
+})
 
 export default InhouseConfirmModal;
