@@ -18,6 +18,7 @@ module.exports = {
     verifyLabOperationAccess: require('./verify-lab-operation-access'),
    
     checkForeignIdsExist: require('./check-foreign-ids-exist'),
+    checkIntervalHasReservation: require('./check-interval-has-reservation'),
 
     createRecordLabel: require('./create-record-label'),
     createRecordLabelFromCRT: require('./create-record-label-from-crt'),

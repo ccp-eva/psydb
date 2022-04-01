@@ -67,7 +67,7 @@ handler.triggerSystemEvents = async ({
         db.collection('location').findOne({ _id: props.locationId })
     );
 
-    props.seriesId = nanoid();
+    props.seriesId = nanoid(); // FIXME: why?
     props.locationRecordType = locationRecord.type;
 
     await dispatchProps({

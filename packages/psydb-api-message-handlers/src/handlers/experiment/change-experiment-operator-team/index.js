@@ -1,8 +1,18 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
 
-var { ApiError, compareIds } = require('@mpieva/psydb-api-lib');
-var { SimpleHandler } = require('../../../lib/');
+var { nanoid } = require('nanoid');
+var {
+    ApiError,
+    compareIds,
+    checkIntervalHasReservation,
+} = require('@mpieva/psydb-api-lib');
+
+var {
+    SimpleHandler,
+    removeReservationsInInterval, // FIXME: where to put this?
+} = require('../../../lib/');
+
 var createSchema = require('./schema');
 
 var handler = SimpleHandler({
@@ -48,19 +58,14 @@ handler.checkAllowedAndPlausible = async ({
     }
 }
 
-handler.triggerSystemEvents = async ({
-    db,
-    rohrpost,
-    cache,
-    message,
-    dispatch,
-}) => {
-    var { type: messageType, payload } = message;
+handler.triggerSystemEvents = async (context) => {
+    var { cache, message, dispatch } = context;
+
     var {
         experimentId,
-        experimentOperatorTeamId,
+        experimentOperatorTeamId: newTeamId,
         shouldRemoveOldReservation
-    } = payload;
+    } = message.payload;
 
     var {
         experimentRecord,
@@ -68,23 +73,70 @@ handler.triggerSystemEvents = async ({
     } = cache;
 
     var { 
-        type, state: { experimentOperatorteamId: oldTeamId }
-    } = experimentType;
+        type, state: {
+            studyId,
+            locationId,
+            locationRecordType,
+            experimentOperatorTeamId: oldTeamId,
+            interval: experimentInterval,
+        }
+    } = experimentRecord;
 
-    if (shouldRemoveOldReservation) {
-        // TODO
-        // cut the old reservation
+    var reservationType = (
+        type === 'away-team' ? 'awayTeam' : 'inhouse'
+    );
+
+    if (reservationType === 'inhouse' || shouldRemoveOldReservation) {
+        var extraFilters = {
+            'state.experimentOperatorTeamId': oldTeamId,
+            ...(reservationType === 'inhouse' && {
+                'state.locationId': locationId,
+            })
+        }
+
+        await removeReservationsInInterval({
+            ...context,
+            removeInterval: experimentInterval,
+            extraFilters
+        });
     }
     
-    // TODO
-    // change the underlying reservation to be the new team
-    // or create one if there is none
+    var hasReservation = await checkIntervalHasReservation({
+        db,
+        interval,
+        locationId,
+        experimentOperatorTeamId: newTeamId
+    });
+
+    if (!hasReservation) {
+        await dispatchProps({
+            collection: 'reservation',
+            isNew: true,
+            additionalChannelProps: {
+                type: reservationType
+            },
+            props: {
+                seriesId: nanoid(), //FIXME: why?
+                isDeleted: false,
+                studyId,
+                experimentOperatorTeamId,
+                interval: experimentInterval,
+                ...(reservationType === 'inhouse' && {
+                    locationId,
+                    locationRecordType
+                })
+            },
+
+            initialize: true,
+            recordType: reservationType,
+        });
+    }
 
     await dispatch({
         collection: 'experiment',
         channelId: experimentId,
         payload: { $set: {
-            'state.experimentOperatorTeamId': experimentOperatorTeamId,
+            'state.experimentOperatorTeamId': newTeamId,
         }}
     });
 }
