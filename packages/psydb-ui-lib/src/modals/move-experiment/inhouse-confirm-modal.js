@@ -74,7 +74,11 @@ const FormContainer = (ps) => {
                     </Row>
                 </Container>
             </div>
-            <div className='d-flex justify-content-end mt-3'>
+            <div className='d-flex justify-content-between mt-3'>
+                <Fields.PlainCheckbox
+                    dataXPath='$.shouldRemoveOldReservation'
+                    label='Alte Reservierung entfernen'
+                />
                 <Button type='submit'>Verschieben</Button>
             </div>
         </div>

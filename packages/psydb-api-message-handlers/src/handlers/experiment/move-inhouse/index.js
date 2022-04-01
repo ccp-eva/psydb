@@ -2,7 +2,10 @@
 var debug = require('debug')('psydb:api:message-handlers');
 
 var { ApiError } = require('@mpieva/psydb-api-lib');
-var { SimpleHandler } = require('../../../lib');
+var {
+    SimpleHandler,
+    removeReservationsInInterval, // FIXME: where to put this?
+} = require('../../../lib');
 
 var {
     checkIntervalHasReservation,
@@ -10,7 +13,6 @@ var {
     prepareExperimentRecord,
     prepareOpsTeamRecord,
     prepareTargetLocation,
-    dispatchAllChannelMessages,
 } = require('../util');
 
 var createSchema = require('./schema');
@@ -79,26 +81,38 @@ handler.checkAllowedAndPlausible = async (context) => {
     });*/
 }
 
-handler.triggerSystemEvents = async ({
-    db,
-    rohrpost,
-    cache,
-    message,
+handler.triggerSystemEvents = async (context) => {
+    var { cache, message, dispatch } = context;
 
-    dispatch
-}) => {
-    var { type: messageType, payload } = message;
     var {
         experimentId,
         experimentOperatorTeamId,
         loactionId,
         interval,
-    } = payload;
+        shouldRemoveOldReservation
+    } = message.payload;
 
     var {
         experimentRecord,
         locationRecord,
     } = cache;
+
+    var {
+        interval: oldExperimentInterval,
+        experimentOperatorTeamId: oldTeamId,
+        locationId: oldLocationId
+    } = experimentRecord.state;
+
+    if (shouldRemoveOldReservation) {
+        await removeReservationsInInterval({
+            ...context,
+            removeInterval: oldExperimentInterval,
+            extraFilters: {
+                'state.experimentOperatorTeamId': oldTeamId,
+                'state.locationId': oldLocationId,
+            }
+        });
+    }
 
     await dispatch({
         collection: 'experiment',
