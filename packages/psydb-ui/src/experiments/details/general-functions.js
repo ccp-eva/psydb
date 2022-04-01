@@ -78,6 +78,7 @@ const GeneralFunctions = ({
 }
 
 const ChangeTeamContainer = ({
+    experimentType,
     experimentId,
     studyId,
     currentTeamId,
@@ -95,6 +96,7 @@ const ChangeTeamContainer = ({
                 show,
                 onHide: handleHide,
 
+                experimentType,
                 experimentId,
                 studyId,
                 currentTeamId,
