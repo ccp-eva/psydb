@@ -1,10 +1,8 @@
 'use strict';
 var {
     ExactObject,
-    Id,
-    EventId,
     ForeignId,
-    InvitationStatus
+    DefaultBool,
 } = require('@mpieva/psydb-schema-fields');
 
 var { Message } = require('@mpieva/psydb-schema-helpers');
@@ -20,10 +18,12 @@ var createSchema = ({} = {}) => (
                 experimentOperatorTeamId: ForeignId({
                     collection: 'experimentOperatorTeam',
                 }),
+                shouldRemoveOldReservation: DefaultBool()
             },
             required: [
                 'experimentId',
                 'experimentOperatorTeamId',
+                'shouldRemoveOldReservation'
             ]
         })
     })

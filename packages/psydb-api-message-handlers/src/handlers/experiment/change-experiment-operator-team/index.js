@@ -59,12 +59,26 @@ handler.triggerSystemEvents = async ({
     var {
         experimentId,
         experimentOperatorTeamId,
+        shouldRemoveOldReservation
     } = payload;
 
     var {
         experimentRecord,
         teamRecord,
     } = cache;
+
+    var { 
+        type, state: { experimentOperatorteamId: oldTeamId }
+    } = experimentType;
+
+    if (shouldRemoveOldReservation) {
+        // TODO
+        // cut the old reservation
+    }
+    
+    // TODO
+    // change the underlying reservation to be the new team
+    // or create one if there is none
 
     await dispatch({
         collection: 'experiment',

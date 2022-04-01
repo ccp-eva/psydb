@@ -48,6 +48,8 @@ module.exports = {
     createInitialChannelState: require('./create-initial-channel-state'),
     pathifyProps: require('./pathify-props'),
 
+    getIntervalRemovalUpdateOps: require('./get-interval-removal-update-ops'),
+
     mongoEscapeDeep: require('@cdxoo/mongodb-escape-keys').escape,
     mongoUnescapeDeep: require('@cdxoo/mongodb-escape-keys').unescape,
     

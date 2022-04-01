@@ -1,7 +1,11 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
 
-var { ApiError } = require('@mpieva/psydb-api-lib');
+var {
+    ApiError,
+    getIntervalRemovalUpdateOps
+} = require('@mpieva/psydb-api-lib');
+
 var {
     SimpleHandler,
     checkForeignIdsExist
@@ -51,17 +55,9 @@ handler.checkAllowedAndPlausible = async ({
     });
 }
 
-handler.triggerSystemEvents = async ({
-    db,
-    rohrpost,
-    message,
-    personnelId,
-
-    dispatch,
-    dispatchProps,
-}) => {
-    var { type: messageType, payload } = message;
-    var { id, props } = payload;
+handler.triggerSystemEvents = async (context) => {
+    var { message } = context;
+    var { id, props } = message.payload;
 
     var { 
         interval: removeInterval,
@@ -69,10 +65,24 @@ handler.triggerSystemEvents = async ({
         experimentOperatorTeamId
     } = props;
 
+    await removeReservationsInInterval({
+        ...context,
+        removeInterval,
+        extraFilters: {
+            'state.locationId': locationId,
+            'state.experimentOperatorTeamId': experimentOperatorTeamId
+        }
+    })
+
+}
+
+var removeReservationsInInterval = async (options) => {
+    var { db, dispatch, removeInterval, extraFilters } = options;
+    
     var reservations = await (
         db.collection('reservation')
         .find({
-            'state.locationId': locationId,
+            ...extraFilters,
             // we are switching to half open intervals
             // i.e. ends are set on .000Z
             // therefor $lt is the way to go
@@ -82,18 +92,19 @@ handler.triggerSystemEvents = async ({
         .toArray()
     );
 
+    var toBeUpdated = [];
     var toBeRemoved = [];
     var toBeCreated = [];
     for (var reservation of reservations) {
         var { _id: reservationId, type, state } = reservation;
-        var { interval } = state;
+        var { interval: recordInterval } = state;
 
         var {
             shouldRemove,
             shouldUpdateStart,
             shouldUpdateEnd,
             shouldCutOut,
-        } = getIntervalRemovealUpdateOps({ removeInterval, recordInterval });
+        } = getIntervalRemovalUpdateOps({ removeInterval, recordInterval });
 
         if (shouldRemove) {
             toBeRemoved.push(reservationId);
@@ -118,30 +129,6 @@ handler.triggerSystemEvents = async ({
                 }
             }});
 
-            //var ps = {
-            //    '/state/seriesId': state.seriesId,
-            //    '/state/isDeleted': false,
-            //    '/state/studyId': state.studyId,
-            //    '/state/experimentOperatorTeamId': (
-            //        state.experimentOperatorTeamId
-            //    ),
-            //    '/state/locationId': state.locationId,
-            //    '/state/locationRecordType': state.locationRecordType,
-            //    '/state/interval/start': state.interval.start,
-            //    '/state/interval/end': state.interval.end,
-            //};
-            //toBeCreated.push({
-            //    ...ps,
-            //    '/state/interval/end': (
-            //        new Date (removeInterval.start.getTime() - 1)
-            //    )
-            //});
-            //toBeCreated.push({
-            //    ...ps,
-            //    '/state/interval/start': ( 
-            //        new Date (removeInterval.end.getTime() + 1)
-            //    )
-            //});
             toBeRemoved.push(reservationId);
         }
         else if (shouldUpdateStart || shouldUpdateEnd) {
@@ -150,38 +137,33 @@ handler.triggerSystemEvents = async ({
                 updates['state.interval.end'] = (
                     new Date (removeInterval.start.getTime() - 1)
                 );
-                //messages.push(...PutMaker({ personnelId }).all({
-                //    '/state/interval/end': (
-                //        new Date (removeInterval.start.getTime() - 1)
-                //    ),
-                //}));
             }
             if (shouldUpdateStart) {
                 updates['state.interval.start'] = (
                     new Date (removeInterval.end.getTime() + 1)
                 );
-                //messages.push(...PutMaker({ personnelId }).all({
-                //    '/state/interval/start': (
-                //        new Date (removeInterval.end.getTime() + 1)
-                //    )
-                //}));
             }
-            await dispatch({
-                collection: 'reservation',
-                channelId: reservationId,
-                payload: { $set: updates }
+            toBeUpdated.push({
+                reservationId,
+                updates
             });
-            //var channel = (
-            //    rohrpost
-            //    .openCollection('reservation')
-            //    .openChannel({ id: reservationId })
-            //);
-            //await channel.dispatchMany({ messages });
         }
         else {
             throw new Error('reached an unknown state');
         }
     }
+
+    if (toBeUpdated.length > 0) {
+        for (var it of toBeUpdated) {
+            var { reservationId, updates } = it;
+            
+            await dispatch({
+                collection: 'reservation',
+                channelId: reservationId,
+                payload: { $set: updates }
+            });
+        }
+    } 
 
     if (toBeRemoved.length > 0) {
         await db.collection('reservation').removeMany({
@@ -193,7 +175,6 @@ handler.triggerSystemEvents = async ({
         for (var it of toBeCreated) {
             await dispatchProps({
                 collection: 'reservation',
-                //channelId: id,
                 isNew: true,
                 additionalChannelProps: { type: it.type },
                 props: it.props,
@@ -201,106 +182,8 @@ handler.triggerSystemEvents = async ({
                 recordType: it.type,
                 initialize: true
             });
-            //var channel = (
-            //    rohrpost
-            //    .openCollection('reservation')
-            //    .openChannel({
-            //        id,
-            //        isNew: true,
-            //        additionalChannelProps: {
-            //            type: 'inhouse'
-            //        }
-            //    })
-            //);
-            //await channel.dispatchMany({ messages: (
-            //    PutMaker({ personnelId }).all(it)
-            //)});
         } 
     }
-}
-
-var getIntervalRemovalUpdateOps = (options) => {
-    var { removeInterval, recordInterval: interval } = options;
-
-    var isStartBelowRemoveStart = (
-        removeInterval.start.getTime() > interval.start.getTime()
-    );
-    var isStartAboveRemoveStart = (
-        removeInterval.start.getTime() < interval.start.getTime()
-    );
-
-    var isEndBelowRemoveEnd = (
-        removeInterval.end.getTime() > interval.end.getTime()
-    );
-    var isEndAboveRemoveEnd = (
-        removeInterval.end.getTime() < interval.end.getTime()
-    );
-
-    var isEqualStart = (
-        removeInterval.start.getTime() === interval.start.getTime()
-    );
-    var isEqualEnd = (
-        removeInterval.end.getTime() === interval.end.getTime()
-    );
-
-    // remove
-    var isEqualAll = (
-        isEqualStart && isEqualEnd
-    );
-    // remove
-    var isInside = (
-        isStartAboveRemoveStart && isEndBelowRemoveEnd
-    );
-    // remove
-    var isInsideRightAligned = (
-        isStartAboveRemoveStart && isEqualEnd
-    );
-    // remove
-    var isInsideLeftAligned = (
-        isEqualStart && isEndBelowRemoveEnd
-    );
-
-    // cut out the rem part
-    var isOutside = (
-        isStartBelowRemoveStart && isEndAboveRemoveEnd
-    );
-    // change end to rem start
-    var isOutsideRightAligned = (
-        isStartBelowRemoveStart && isEqualEnd
-    );
-    // change start to rem end
-    var isOutsideLeftAligned = (
-        isEqualStart && isEndAboveRemoveEnd
-    );
-    // change end to rem start
-    var isOverlappingLeft = (
-        isStartBelowRemoveStart && isEndBelowRemoveEnd
-    );
-    // change start to rem end
-    var isOverlappingRight = (
-        isStartAboveRemoveStart && isEndAboveRemoveEnd
-    );
-
-    var shouldRemove = (
-        isEqualAll ||
-        isInside ||
-        isInsideRightAligned ||
-        isInsideLeftAligned
-    );
-
-    var shouldUpdateStart = (
-        isOutsideLeftAligned || isOverlappingRight
-    );
-    var shouldUpdateEnd = (
-        isOutsideRightAligned || isOverlappingLeft
-    );
-    
-    return {
-        shouldRemove,
-        shouldUpdateStart,
-        shouldUpdateEnd,
-        shouldCutOut: isOutside
-    };
 }
 
 module.exports = handler;
