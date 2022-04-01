@@ -37,6 +37,7 @@ const GeneralFunctions = ({
         <>
             { canChangeOpsTeam && (
                 <ChangeTeamContainer { ...({
+                    experimentType,
                     experimentId: experimentData.record._id,
                     studyId: studyData.record._id,
                     currentTeamId: (

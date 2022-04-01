@@ -65,6 +65,7 @@ const ExperimentSummarySmall = ({
                 onHide: changeTeamModal.handleHide,
                 payloadData: changeTeamModal.data,
 
+                experimentType: 'online-video-call',
                 experimentId: experimentRecord._id,
                 studyId: experimentRecord.state.studyId,
                 currentTeamId: experimentRecord.state.experimentOperatorTeamId,

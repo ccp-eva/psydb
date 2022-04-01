@@ -59,7 +59,7 @@ handler.checkAllowedAndPlausible = async ({
 }
 
 handler.triggerSystemEvents = async (context) => {
-    var { cache, message, dispatch } = context;
+    var { db, cache, message, dispatch, dispatchProps } = context;
 
     var {
         experimentId,
@@ -103,9 +103,11 @@ handler.triggerSystemEvents = async (context) => {
     
     var hasReservation = await checkIntervalHasReservation({
         db,
-        interval,
-        locationId,
-        experimentOperatorTeamId: newTeamId
+        interval: experimentInterval,
+        experimentOperatorTeamId: newTeamId,
+        ...(reservationType === 'inhouse' && {
+            locationId,
+        }),
     });
 
     if (!hasReservation) {
@@ -119,7 +121,7 @@ handler.triggerSystemEvents = async (context) => {
                 seriesId: nanoid(), //FIXME: why?
                 isDeleted: false,
                 studyId,
-                experimentOperatorTeamId,
+                experimentOperatorTeamId: newTeamId,
                 interval: experimentInterval,
                 ...(reservationType === 'inhouse' && {
                     locationId,

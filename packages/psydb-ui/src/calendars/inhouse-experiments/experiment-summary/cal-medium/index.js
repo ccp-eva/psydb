@@ -112,6 +112,7 @@ const ExperimentSummaryMedium = ({
                 onHide: changeTeamModal.handleHide,
                 payloadData: changeTeamModal.data,
 
+                experimentType: 'inhouse',
                 experimentId: experimentRecord._id,
                 studyId: experimentRecord.state.studyId,
                 currentTeamId: experimentRecord.state.experimentOperatorTeamId,

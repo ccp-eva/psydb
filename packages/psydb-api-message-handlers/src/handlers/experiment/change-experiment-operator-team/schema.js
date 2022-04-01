@@ -23,7 +23,6 @@ var createSchema = ({} = {}) => (
             required: [
                 'experimentId',
                 'experimentOperatorTeamId',
-                'shouldRemoveOldReservation'
             ]
         })
     })

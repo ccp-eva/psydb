@@ -16,6 +16,7 @@ const ChangeTeamModal = ({
     show,
     onHide,
     
+    experimentType,
     experimentId,
     studyId,
     currentTeamId,
@@ -51,6 +52,7 @@ const ChangeTeamModal = ({
             </Modal.Header>
             <Modal.Body className='bg-light'>
                 <ChangeOpsTeamForm { ...({
+                    experimentType,
                     experimentId,
                     studyId,
                     selectedTeamId,
@@ -62,7 +64,14 @@ const ChangeTeamModal = ({
 }
 
 const ChangeOpsTeamForm = (ps) => {
-    var { experimentId, studyId, selectedTeamId, onSubmit } = ps;
+    var {
+        experimentType,
+        experimentId,
+        studyId,
+        selectedTeamId,
+        onSubmit
+    } = ps;
+
     var initialValues = {
         experimentOperatorTeamId: selectedTeamId,
         shouldRemoveOldReservation: false
@@ -90,10 +99,16 @@ const ChangeOpsTeamForm = (ps) => {
                         }) } />
                         <hr />
                         <div className='d-flex justify-content-between'>
-                            <Fields.PlainCheckbox
-                                dataXPath='$.shouldRemoveOldReservation'
-                                label='Alte Reservierung entfernen'
-                            />
+                            { 
+                                experimentType === 'away-team'
+                                ? (
+                                    <Fields.PlainCheckbox
+                                        dataXPath='$.shouldRemoveOldReservation'
+                                        label='Alte Reservierung entfernen'
+                                    />
+                                )
+                                : <div />
+                            }
                             <Button type='submit'>
                                 Speichern
                             </Button>

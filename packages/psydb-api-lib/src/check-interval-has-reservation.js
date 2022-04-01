@@ -7,11 +7,11 @@ var checkIntervalHasReservation = async ({
     locationId,
     experimentOperatorTeamId
 }) => {
-    /*console.log({
-        interval,
-        locationId,
-        experimentOperatorTeamId
-    });*/
+    //console.log({
+    //    interval,
+    //    locationId,
+    //    experimentOperatorTeamId
+    //});
 
     var reservations = await (
         db.collection('reservation').aggregate([
