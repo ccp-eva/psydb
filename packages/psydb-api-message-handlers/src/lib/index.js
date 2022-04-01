@@ -10,5 +10,8 @@ module.exports = {
     checkCRTFieldPointers: require('./check-crt-field-pointers'),
     createEventMessagesFromProps: (
         require('./create-event-messages-from-props')
-    )
+    ),
+    removeReservationsInInterval: (
+        require('./remove-reservations-in-interval')
+    ),
 }
