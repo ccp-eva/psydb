@@ -53,21 +53,29 @@ var safeUnparticipationStatus = {
     ]
 }
 
-var safeParticipationStatus = {
-    keys: [
-        'participated',
-        'showed-up-but-didnt-participate',
-        'did-show-up', // XXX is that even a thing?
-        'didnt-show-up',
-    ],
-    names: [
-        'teilgenommen',
-        'nicht teilgenommen',
-        'gekommen',
-        'nicht gekommen',
-    ]
-}
+var awayTeamParticipationStatus = createEnumFromMap({
+    'participated': 'teilgenommen',
+});
 
+var awayTeamUnparticipationStatus = createEnumFromMap({
+    'didnt-participate': 'nicht teilgenommen',
+});
+
+var inviteParticipationStatus = createEnumFromMap({
+    'participated': 'teilgenommen',
+    'showed-up-but-didnt-participate': 'gekommen',
+    'didnt-show-up': 'nicht gekommen',
+});
+
+var inviteUnparticipationStatus = createEnumFromMap({
+    'canceled-by-participant': 'abgesagt',
+    'canceled-by-institute': 'ausgeladen',
+});
+
+var safeParticipationStatus = createEnumFromMap({
+    ...awayTeamParticipationStatus.mapping,
+    ...inviteParticipationStatus.mapping,
+});
 
 var participationStatus = {
     keys: [
@@ -149,6 +157,11 @@ var subjectFieldRequirementChecks = createEnumFromMap({
 })
 
 module.exports = {
+    awayTeamParticipationStatus,
+    awayTeamUnparticipationStatus,
+    inviteParticipationStatus,
+    inviteUnparticipationStatus,
+
     safeParticipationStatus,
     participationStatus,
     safeUnparticipationStatus,

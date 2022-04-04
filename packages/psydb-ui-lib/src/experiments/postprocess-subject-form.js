@@ -30,27 +30,24 @@ const PostprocessSubjectForm = ({
     if (experimentType === 'away-team') {
         options = {
             keys: [
-                'participated',
-                'showed-up-but-didnt-participate',
-                // FIXME: this is not really correct in kiga case
-                // because in kiga experiments the child
-                // might not even be there in the first place
+                ...enums.awayTeamParticipationStatus.keys,
+                ...enums.awayTeamUnparticipationStatus.keys,
             ],
             names: [
-                'teilgenommen',
-                'nicht teilgenommen',
+                ...enums.awayTeamParticipationStatus.names,
+                ...enums.awayTeamUnparticipationStatus.names,
             ]
         }
     }
     else {
         options = {
             keys: [
-                ...enums.safeParticipationStatus.keys,
-                ...enums.safeUnparticipationStatus.keys,
+                ...enums.inviteParticipationStatus.keys,
+                ...enums.inviteUnparticipationStatus.keys,
             ],
             names: [
-                ...enums.safeParticipationStatus.names,
-                ...enums.safeUnparticipationStatus.names,
+                ...enums.inviteParticipationStatus.names,
+                ...enums.inviteUnparticipationStatus.names,
             ]
         }
     }

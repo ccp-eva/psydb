@@ -178,8 +178,9 @@ var formatParticipationStatus = (status) => {
     return {
         'unknown': 'unb.',
         'participated': 't.g.',
-        'showed-up-but-didnt-participate': 'n.t.g',
-        'did-show-up': 'ersch.',
+        'didnt-participate': 'n.t.g.',
+
+        'showed-up-but-didnt-participate': 'ersch.',
         'didnt-show-up': 'n. ersch.',
         'canceled-by-participant': 'abg.',
         'canceled-by-institute': 'ausg.',
