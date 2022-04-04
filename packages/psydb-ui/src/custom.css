@@ -142,6 +142,15 @@ a:hover {
     max-width: none !important;
 }
 
+/* FIXME: dont knwo what bootstrap is doing there
+ * see postprocesisng form
+ */
+.input-group-text input[type=checkbox],
+.input-group-text input[type=radio]
+{
+    margin-top: 0.3rem;
+}
+
 /* prevent link dragging */
 a {
     user-select: none;

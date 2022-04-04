@@ -70,7 +70,8 @@ handler.triggerSystemEvents = async ({
     var {
         experimentId,
         subjectId,
-        participationStatus
+        participationStatus,
+        excludeFromMoreExperimentsInStudy = false
     } = payload;
 
     var {
@@ -122,6 +123,7 @@ handler.triggerSystemEvents = async ({
                 studyId: experimentRecord.state.studyId,
                 timestamp: experimentRecord.state.interval.start,
                 status: participationStatus,
+                excludeFromMoreExperimentsInStudy
             }
         }}
     });

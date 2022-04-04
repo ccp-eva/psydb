@@ -2,6 +2,7 @@
 var datefns = require('date-fns');
 var jsonpointer = require('jsonpointer');
 var {
+    hasItems,
     hasIntersection,
     hasSubjectParticipatedIn
 } = require('@mpieva/psydb-mongo-stages').expressions;
@@ -28,6 +29,7 @@ var makeCondition = (options) => {
     var {
         excludedOtherStudyIds,
         researchGroupIds,
+        enableFollowUpExperiments,
     } = studyRecord.state;
 
     var combinedTestingPermissions = { $or: (
@@ -51,9 +53,10 @@ var makeCondition = (options) => {
     }
 
     var expression = MongoExpression({
+        currentStudyId: studyRecord._id,
+        enableFollowUpExperiments,
         excludedStudyIds: [
             // exclude study itself
-            studyRecord._id,
             ...excludedOtherStudyIds,
         ],
         combinedTestingPermissions,
@@ -66,6 +69,8 @@ var makeCondition = (options) => {
 
 var MongoExpression = (options) => {
     var {
+        currentStudyId,
+        enableFollowUpExperiments,
         excludedStudyIds,
         combinedTestingPermissions,
         combinedAgeFrameConditions
@@ -73,6 +78,23 @@ var MongoExpression = (options) => {
 
     var AND = [
         { $and: [
+            { $not: hasItems({
+                $filter: {
+                    input: '$scientific.state.internals.participatedInStudies',
+                    cond: { $and: [
+                        { $eq: [ '$$this.studyId', currentStudyId ] },
+
+                        (
+                            enableFollowUpExperiments
+                            ? { $eq: [
+                                '$$this.excludeFromMoreExperimentsInStudy',
+                                true
+                            ]}
+                            : { $eq: [ '$$this.status', 'participated' ]}
+                        )
+                    ]}
+                }
+            })},
             { $not: hasParticipatedInExcludedStudies({
                 excludedStudyIds
             })},
