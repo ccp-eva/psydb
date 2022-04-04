@@ -26,9 +26,10 @@ const ParticipationList = ({
         <Table className='bg-white border'>
             <thead>
                 <tr>
-                    <FieldDataHeadCols
+                    {/*<FieldDataHeadCols
                         displayFieldData={ displayFieldData }
-                    />
+                    />*/}
+                    <th>Studie</th>
                     <th>Zeitpunkt</th>
                     { ageFrameField && (
                         <th>Alter</th>
@@ -38,22 +39,25 @@ const ParticipationList = ({
                 </tr>
             </thead>
             <tbody>
-                { participation.map((it, index) => (
-                    <ParticipationListRow { ...({
-                        key: index,
-                        item: it,
+                { 
+                    participation
+                    .map((it, index) => (
+                        <ParticipationListRow { ...({
+                            key: index,
+                            item: it,
 
-                        studyType,
-                        ageFrameField,
-                        ageFrameFieldValue,
-                        
-                        studyRecordsById,
-                        relatedRecordLabels,
-                        relatedHelperSetItems,
-                        relatedCustomRecordTypeLabels,
-                        displayFieldData
-                    }) } />
-                ))}
+                            studyType,
+                            ageFrameField,
+                            ageFrameFieldValue,
+                            
+                            studyRecordsById,
+                            relatedRecordLabels,
+                            relatedHelperSetItems,
+                            relatedCustomRecordTypeLabels,
+                            displayFieldData
+                        }) } />
+                    ))
+                }
             </tbody>
         </Table>
     )
@@ -85,13 +89,14 @@ const ParticipationListRow = ({
 
     return (
         <tr>
-            <FieldDataBodyCols { ...({
+            {/*<FieldDataBodyCols { ...({
                 record: studyRecordsById[item.studyId],
                 relatedRecordLabels,
                 relatedHelperSetItems,
                 relatedCustomRecordTypeLabels,
                 displayFieldData,
-            })} />
+            })} />*/}
+            <td>{ studyRecordsById[item.studyId].state.shorthand }</td>
 
             <td>{ is1970 ? '-' : formattedDate }</td>
             { ageFrameField && (
@@ -122,8 +127,8 @@ var formatStatus = (status) => {
     return {
         'unknown': 'unb.',
         'participated': 't.g.',
-        'showed-up-but-didnt-participate': 'n.t.g',
-        'did-show-up': 'gek.',
+        'didnt-participate': 'n.t.g.',
+        'showed-up-but-didnt-participate': 'gek.',
         'didnt-show-up': 'n. gek.',
         'canceled-by-participant': 'abg.',
         'canceled-by-institute': 'ausg.',

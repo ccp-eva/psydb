@@ -11,7 +11,7 @@ export const EditButton = (ps) => {
     return (
         <Button
             className={ disabled ? '' : 'bg-white' }
-            variant={ hasErrors ? 'danger' : 'outline-primary' }
+            variant={ hasErrors ? 'outline-danger' : 'outline-primary' }
             onClick={ onClick }
             disabled={ disabled }
         >

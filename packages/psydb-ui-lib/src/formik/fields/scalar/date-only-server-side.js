@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import ReactDateTime from 'react-datetime';
+import classnames from 'classnames';
 import { withField } from '@cdxoo/formik-utils';
 import { getSystemTimezone } from '@mpieva/psydb-timezone-helpers';
 
@@ -16,13 +17,18 @@ import { Form } from '@mpieva/psydb-ui-layout';
 import ServerTimezoneContext from '../../../server-timezone-context';
 
 const Control = (ps) => {
-    var { dataXPath, formikField, disabled } = ps;
+    var { dataXPath, formikField, formikMeta, disabled } = ps;
+    var { error } = formikMeta;
     var { value, onChange } = formikField;
     var isValidDate = !isNaN(new Date(value).getTime());
 
     //var serverTimezone = useContext(ServerTimezoneContext);
     //var clientTimezone = getSystemTimezone();
 
+    var inputClassName = classnames([
+        'form-control',
+        !!error && 'is-invalid'
+    ])
     return (
         <ReactDateTime
             value={ isValidDate ? new Date(value) : value }
@@ -44,6 +50,7 @@ const Control = (ps) => {
             locale='de-DE'
             timeFormat={ false }
             inputProps={{
+                className: inputClassName,
                 disabled,
                 placeholder: 'tt.mm.jjjj'
             }}

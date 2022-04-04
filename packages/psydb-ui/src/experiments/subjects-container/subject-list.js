@@ -180,8 +180,8 @@ var formatParticipationStatus = (status) => {
         'participated': 't.g.',
         'didnt-participate': 'n.t.g.',
 
-        'showed-up-but-didnt-participate': 'ersch.',
-        'didnt-show-up': 'n. ersch.',
+        'showed-up-but-didnt-participate': 'gek.',
+        'didnt-show-up': 'n. gek.',
         'canceled-by-participant': 'abg.',
         'canceled-by-institute': 'ausg.',
         'moved': 'versch.',

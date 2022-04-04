@@ -11,7 +11,13 @@ import * as Theme from './theme';
 var isFunction = (it) => (typeof it === 'function');
 
 const createFormikConfig = (ps) => {
-    var { initialValues, onSubmit, useAjvAsync, ...formikOptions } = ps;
+    var {
+        initialValues,
+        onSubmit,
+        useAjvAsync,
+        ajvErrorInstancePathPrefix = '/payload/props',
+        ...formikOptions
+    } = ps;
     return {
         ...formikOptions,
         initialValues: { '$': (initialValues || {}) },
@@ -22,7 +28,7 @@ const createFormikConfig = (ps) => {
                     onSubmit(formData['$'], ...other)
                 ),
                 errorResponsePath: 'data.data.ajvErrors',
-                errorInstancePathPrefix: '/payload/props',
+                errorInstancePathPrefix: ajvErrorInstancePathPrefix,
                 dataPrefix: '$',
             })
             : (formData, ...other) => (

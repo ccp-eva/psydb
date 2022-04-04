@@ -1,9 +1,9 @@
 import React from 'react';
-import agent from '@mpieva/psydb-ui-request-agents';
 
-import { demuxed } from '@mpieva/psydb-ui-utils';
-import { WithDefaultModal } from '@mpieva/psydb-ui-layout';
-import ParticipationForm from './participation-form';
+import { useSend } from '@mpieva/psydb-ui-hooks';
+import { WithDefaultModal, Button } from '@mpieva/psydb-ui-layout';
+import { DefaultForm, Fields } from '@mpieva/psydb-ui-lib';
+import * as enums from '@mpieva/psydb-schema-enums';
 
 const ParticipationModalBody = (ps) => {
     var {
@@ -13,35 +13,51 @@ const ParticipationModalBody = (ps) => {
         onSuccessfulUpdate
     } = ps;
 
-    var handleSubmit = ({ formData }) => {
-        var message = {
-            type: 'subject/add-manual-participation',
-            payload: {
-                ...formData,
-                id: subjectId
-            }
-        };
+    var send = useSend((formData) => ({
+        type: 'subject/add-manual-participation',
+        payload: {
+            ...formData,
+            id: subjectId
+        }
+    }), { onSuccessfulUpdate: [ onHide, onSuccessfulUpdate ]})
 
-        return agent.send({ message }).then(demuxed([
-            onSuccessfulUpdate,
-            onHide
-        ]));
-    }
+    var initialValues = { status: 'participated' };
 
     return (
-        <>
-            <ParticipationForm { ...({
-                onSubmit: handleSubmit
-            })} />
-            {/*<TopicForm
-                op='create'
-                parentId={ parent._id }
-                onSuccessfulUpdate={ demuxed([
-                    onSuccessfulUpdate,
-                    onHide
-                ])}
-            />*/}
-        </>
+        <DefaultForm
+            useAjvAsync
+            ajvErrorInstancePathPrefix='/payload'
+            initialValues={ initialValues }
+            onSubmit={ send.exec }
+        >
+            {(formikProps) => (
+                <>
+                    <Fields.DateTime
+                        dataXPath='$.timestamp'
+                        label='Test-Zeitpunkt'
+                    />
+                    <Fields.ForeignId
+                        dataXPath='$.studyId'
+                        label='Studie'
+                        collection='study'
+                        recordType='default' // FIXME
+                    />
+                    <Fields.GenericEnum
+                        dataXPath='$.status'
+                        label='Status'
+                        options={{
+                            ...enums.inviteParticipationStatus.mapping,
+                            ...enums.inviteUnparticipationStatus.mapping,
+                            ...enums.awayTeamParticipationStatus.mapping
+                        }}
+                    />
+                    <hr />
+                    <div className='d-flex justify-content-end'>
+                        <Button type='submit'>Speichern</Button>
+                    </div>
+                </>
+            )}
+        </DefaultForm>
     )
 }
 

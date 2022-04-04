@@ -33,6 +33,7 @@ export const GenericEnum = withField({ Control: (ps) => {
             )}
             value={ value }
             //options={ downstreamOptions }
+            isInvalid={ !!error }
             { ...pass }
         />
     );
