@@ -9,11 +9,11 @@ const Split = ({ num, children }) => {
     if (!Array.isArray(children)) {
         children = [ children ];
     }
-    var sm = 12 / (num || children.length);
+    var xs = 12 / (num || children.length);
     return (
         <Row>
             { children.map((it, index) => (
-                <Col key={ index } sm={sm}>
+                <Col key={ index } xs={xs}>
                     { it }
                 </Col>
             ))}

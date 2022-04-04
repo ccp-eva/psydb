@@ -187,7 +187,7 @@ const AwayTeamVariant = (ps) => {
                     }}>
                         { withValue.map((it, index) => (
                             <Pair
-                                key={ index } wLeft={ 2 }
+                                key={ index } wLeft={ 3 }
                                 label={ it.displayName }
                             >
                                 { it.value }

@@ -98,10 +98,10 @@ const LayoutedRoutes = ({ onSignOut }) => {
                     <SideNav />
                 </div>
             </header>
-            <main className='flex-core flex-grow mr-3' style={{
+            <main className='flex-core flex-grow mr-3 media-print-no-spacing' style={{
                 //alignItems: 'flex-start',
             }}>
-                <div className='pl-3' style={{
+                <div className='pl-3 media-print-no-spacing' style={{
                     //width: '990px' // => min size: 1280
                     //width: '1076px' // => min size: 1366
                     //width: '1040px' // => min size: 1280

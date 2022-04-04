@@ -25,10 +25,10 @@ const Pair = ({ label, className,  children, wLeft, wRight, textWrap }) => {
 
     return (
         <Row className={ className }>
-            <Col sm={ wLeft }>
+            <Col xs={ wLeft }>
                 <PaddedText>{ label }</PaddedText>
             </Col>
-            <Col sm={ wRight }>
+            <Col xs={ wRight }>
                 <PaddedText>
                     <Wrap style={ style }>{ children }</Wrap>
                 </PaddedText>

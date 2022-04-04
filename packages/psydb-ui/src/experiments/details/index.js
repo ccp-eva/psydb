@@ -59,7 +59,7 @@ const ExperimentDetails = ({
                     studyData,
                 }) } />
                 { showFunctions && (
-                    <>
+                    <div className='media-print-hidden'>
                         <hr />
                         <div className='mt-3 d-flex justify-content-end'>
                             <GeneralFunctions { ...({
@@ -69,7 +69,7 @@ const ExperimentDetails = ({
                                 onSuccessfulUpdate,
                             }) } />
                         </div>
-                    </>
+                    </div>
                 )}
             </div>
             <div>

@@ -73,7 +73,7 @@ const Subjects = ({
                 onClickContactFailed,
             }}>
                 <SubjectsContainer { ...({
-                    className: 'p-3',
+                    className: 'p-3 media-print-no-spacing-x',
                     experimentData,
                     labProcedureSettingData,
                     studyData,
@@ -111,7 +111,7 @@ const ActionsComponent = ({
 
 
     return (
-        <div className='d-flex justify-content-end'>
+        <div className='d-flex justify-content-end media-print-hidden'>
             { permissions.hasFlag('canReadSubjects') && (
                 <DetailsIconButton
                     to={`/subjects/${subjectRecord.type}/${subjectRecord._id}`}
