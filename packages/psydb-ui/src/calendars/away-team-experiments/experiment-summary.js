@@ -125,10 +125,6 @@ const ExperimentSummary = ({
                 <div className='flex-grow'>
                     <div className='text-small'>
                         { teamRecord.state.name }
-                        {' '}
-                        ({
-                            experimentRelated.relatedRecordLabels.study[studyId]._recordLabel
-                        })
                     </div>
                 </div>
                 <div
