@@ -1,14 +1,14 @@
 import React from 'react';
 
 const OtherStudySlot = (ps) => {
+    var { studyLabel } = ps;
     return (
         <div
-            className='text-center m-1'
+            className='text-center text-grey m-1 border'
             style={{
                 height: '26px',
-                border: '1px solid white'
             }}
-        ></div>
+        ><b>{ studyLabel }</b></div>
     )
 }
 

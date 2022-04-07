@@ -102,13 +102,6 @@ a:hover {
     z-index: 1011;
 }
 
-.text-orange {
-    color: #f90;
-}
-.text-lightgrey {
-    color: #ccc;
-}
-
 .team-time-slot.disabled {
     border: 1px solid;
     border-color: #f8f9fa;
@@ -171,6 +164,14 @@ a {
 .text-small {
     font-size: 80%;
 }
+.text-orange {
+    color: #f90;
+}
+.text-grey, .text-lightgrey {
+    color: #ccc;
+}
+
+
 .w-33 {
     width: 33.333%
 }

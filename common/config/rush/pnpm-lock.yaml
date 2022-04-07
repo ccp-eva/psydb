@@ -8,9 +8,9 @@ dependencies:
   '@cdxoo/formik-utils': 0.5.0_formik@2.2.9+react@17.0.2
   '@cdxoo/inline-string': 1.0.0
   '@cdxoo/jsonpointer-to-objectpath': 1.0.0
-  '@cdxoo/koa-mongo-mq': 1.1.0
-  '@cdxoo/koa-mongo-rohrpost': 3.2.0
-  '@cdxoo/mongo-rohrpost': 3.2.0
+  '@cdxoo/koa-mongo-mq': 1.4.0
+  '@cdxoo/koa-mongo-rohrpost': 3.2.1
+  '@cdxoo/mongo-rohrpost': 3.2.1
   '@cdxoo/mongo-test-helpers': 0.6.0
   '@cdxoo/mongodb-escape-keys': 0.1.0
   '@cdxoo/mongodb-restore': 1.1.2
@@ -1366,28 +1366,30 @@ packages:
     dev: false
     resolution:
       integrity: sha512-irVseGCgtDKd+bUnHvRe/J8/nm50saOxW1mw5xfo13d2ni82q/e/sEwd1x7lYlweVYRkE+pQImJhScaOftFxoQ==
-  /@cdxoo/koa-mongo-mq/1.1.0:
+  /@cdxoo/koa-mongo-mq/1.4.0:
     dependencies:
-      '@cdxoo/mongo-mq': 1.3.0
+      '@cdxoo/mongo-mq': 1.4.0
     dev: false
     resolution:
-      integrity: sha512-hBH5KaruZd3OOlfTlNn5TwwudhbgQIrhYeTKfpL+Yql3eQMGLV/gbKmq0e4haYixKFHuhj4UiXJ+g+3s5Qpnbw==
-  /@cdxoo/koa-mongo-rohrpost/3.2.0:
+      integrity: sha512-m3VP18YX+ILk/abLbrJ57RQONYTe9BX3DRKkNE9gnb2+jj7Ht2Sk7fGkydTovIAbk6GlOGuixB+mQLXCbpJ6HA==
+  /@cdxoo/koa-mongo-rohrpost/3.2.1:
     dependencies:
-      '@cdxoo/mongo-rohrpost': 3.2.0
+      '@cdxoo/mongo-rohrpost': 3.2.1
     dev: false
     resolution:
-      integrity: sha512-Kv6yDkZ57HfBVcXIFST2DUz5prB0Pj6BqoSwNkCPyUgyvkADBIKNJDfX6RDpNDdSO1PKu/AkQ7blWNoJpYzPXg==
-  /@cdxoo/mongo-mq/1.3.0:
-    dev: false
-    resolution:
-      integrity: sha512-8BGx4+37wshEWP9B02H33nfyFIx25PyCMwxvot5ImNhMGaDLyA46aiGfZSCNCTsBeZIbj7mdUVXHQXd9pLQNxg==
-  /@cdxoo/mongo-rohrpost/3.2.0:
+      integrity: sha512-EHzZXk86pnOa1vb+ASRBpay9D1fHDkD+nKvxECVEUuTjAkphmJEx0mBTDP+evpkmQgwnhFiSZr53FN7DTHORUQ==
+  /@cdxoo/mongo-mq/1.4.0:
     dependencies:
       mongodb: 3.6.12
     dev: false
     resolution:
-      integrity: sha512-aXDdRAAamGEV2QtAQdpvu5yqWItI/Hfpm3ZOVItJDIOqUKYorBNrCloYwpf2nqkd3sE8unvxEBCyKg3LsKaazg==
+      integrity: sha512-7FtVgsRQBCdz0WkMJfiDjrXNNOC4RFtgm5Ld/lTPO6myJraRxb1g8kX1vauE5B8gmNn0Kw1D+byDJi3Pa88U4g==
+  /@cdxoo/mongo-rohrpost/3.2.1:
+    dependencies:
+      mongodb: 3.6.12
+    dev: false
+    resolution:
+      integrity: sha512-4quM+mi7d3uXFx3K1RmxuaMqGzqEXFmbgwuIFndPZoXSxhIn4sHDh7E2aVxS5IUVWytyN2V2vYGW3QxyL+le0Q==
   /@cdxoo/mongo-test-helpers/0.6.0:
     dependencies:
       bson: 4.5.4
@@ -9959,9 +9961,9 @@ packages:
   'file:projects/psydb-koa-event-middleware.tgz':
     dependencies:
       '@cdxoo/inline-text': 1.0.2
-      '@cdxoo/koa-mongo-mq': 1.1.0
-      '@cdxoo/koa-mongo-rohrpost': 3.2.0
-      '@cdxoo/mongo-rohrpost': 3.2.0
+      '@cdxoo/koa-mongo-mq': 1.4.0
+      '@cdxoo/koa-mongo-rohrpost': 3.2.1
+      '@cdxoo/mongo-rohrpost': 3.2.1
       chai: 4.2.0
       copy-anything: 2.0.3
       deepmerge: 4.2.2
@@ -9973,7 +9975,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-koa-event-middleware'
     resolution:
-      integrity: sha512-NAceUaULqvl0HyTTN0+uOTuwQm16Xtz2V+o1SUr2qEFMqOX6ip9eIVolNRpxJfH2k4VUP68qWaWyrx4hZipEUg==
+      integrity: sha512-Kv3yKrVKHISaYN2/e/hx8O6BIl3W8HLV1cwgtT4lM75BgO4WeSlcuwpnlHhKAgTHwQPr9OtTqP+bPJkzEcLdEA==
       tarball: 'file:projects/psydb-koa-event-middleware.tgz'
     version: 0.0.0
   'file:projects/psydb-migration.tgz':
@@ -10062,7 +10064,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-schema-fields'
     resolution:
-      integrity: sha512-bRhxEb2ZAyYl8ZvbDfD3G6M+DxaYp9+VHOPJOaj9fj0ODhC6hPxQ5lWR4hpDrNKF3FjSHkA4QSLeSth2WRv5dA==
+      integrity: sha512-Y4xPfOqVlwr4SupQ0fboBf7PRTmuuAub/ddOernsvdpVMB+c0Aq7erI0WqOHlX2bBRwu8g53hbdIicUKWWUn1Q==
       tarball: 'file:projects/psydb-schema-fields.tgz'
     version: 0.0.0
   'file:projects/psydb-schema-helpers.tgz':
@@ -10348,9 +10350,9 @@ specifiers:
   '@cdxoo/formik-utils': ~0.5.0
   '@cdxoo/inline-string': ~1.0.0
   '@cdxoo/jsonpointer-to-objectpath': ~1.0.0
-  '@cdxoo/koa-mongo-mq': ~1.1.0
-  '@cdxoo/koa-mongo-rohrpost': ~3.2.0
-  '@cdxoo/mongo-rohrpost': ~3.2.0
+  '@cdxoo/koa-mongo-mq': ~1.4.0
+  '@cdxoo/koa-mongo-rohrpost': ~3.2.1
+  '@cdxoo/mongo-rohrpost': ~3.2.1
   '@cdxoo/mongo-test-helpers': ~0.6.0
   '@cdxoo/mongodb-escape-keys': ~0.1.0
   '@cdxoo/mongodb-restore': ~1.1.2

@@ -109,7 +109,6 @@ const ActionsComponent = ({
         onClickContactFailed,
     } = context;
 
-
     return (
         <div className='d-flex justify-content-end media-print-hidden'>
             { permissions.hasFlag('canReadSubjects') && (
@@ -118,21 +117,23 @@ const ActionsComponent = ({
                 />
             )}
 
-            <SubjectDropdown { ...({
-                subjectRecord,
-                
-                onClickComment,
-                onClickMove,
-                onClickFollowUp,
-                onClickRemove,
-
-                onClickConfirm,
-                onClickMailbox,
-                onClickContactFailed,
+            { experimentType !== 'away-team' && (
+                <SubjectDropdown { ...({
+                    subjectRecord,
                     
-                disabled: isUnparticipated,
-                experimentType,
-            }) } />
+                    onClickComment,
+                    onClickMove,
+                    onClickFollowUp,
+                    onClickRemove,
+
+                    onClickConfirm,
+                    onClickMailbox,
+                    onClickContactFailed,
+                        
+                    disabled: isUnparticipated,
+                    experimentType,
+                }) } />
+            )}
         </div>
     )
 }

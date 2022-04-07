@@ -8,6 +8,7 @@ var jsonpointer = require('jsonpointer');
 var {
     keyBy,
     compareIds,
+    unique,
 } = require('@mpieva/psydb-core-utils');
 
 var {
@@ -158,11 +159,6 @@ var studyLocationReservationCalendar = async (context, next) => {
         ]
     });
 
-    reservationRecords = stripIfOtherStudy({
-        records: reservationRecords,
-        studyId,
-    });
-
     var experimentRecords = await fetchRecordsInInterval({
         db,
         collection: 'experiment',
@@ -175,10 +171,31 @@ var studyLocationReservationCalendar = async (context, next) => {
             }}
         ]
     });
+
+    var studyLabels = await db.collection('study').find(
+        { _id: { $in: unique([
+            ...reservationRecords.map(it => it.state.studyId),
+            ...experimentRecords.map(it => it.state.studyId),
+        ])}},
+        { projection: { 'state.shorthand': true }}
+    ).toArray();
+
+    var studyLabelsById = keyBy({
+        items: studyLabels,
+        byProp: '_id',
+        transform: (it) => it.state.shorthand,
+    });
     
+    reservationRecords = stripIfOtherStudy({
+        records: reservationRecords,
+        studyId,
+        studyLabelsById,
+    });
+
     experimentRecords = stripIfOtherStudy({
         records: experimentRecords,
         studyId,
+        studyLabelsById,
     });
 
     if (selectedSubjectRecord) {
@@ -235,6 +252,7 @@ var studyLocationReservationCalendar = async (context, next) => {
 var stripIfOtherStudy = ({
     records,
     studyId,
+    studyLabelsById,
 }) => (
     records.map(
         ({ _id, state, ...other }) => (
@@ -242,6 +260,7 @@ var stripIfOtherStudy = ({
             ? { _id, state, ...other }
             : {
                 _id,
+                _studyLabel: studyLabelsById[state.studyId],
                 state: {
                     locationId: state.locationId,
                     interval: state.interval
