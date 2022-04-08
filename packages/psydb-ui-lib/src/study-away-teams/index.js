@@ -13,6 +13,7 @@ const StudyAwayTeams = ({
     onSelectEmptySlot,
     onSelectReservationSlot,
     onSelectExperimentSlot,
+    onSelectExperimentPlaceholderSlot,
 
     className,
     revision = 0,
@@ -49,6 +50,7 @@ const StudyAwayTeams = ({
             onSelectEmptySlot,
             onSelectReservationSlot,
             onSelectExperimentSlot,
+            onSelectExperimentPlaceholderSlot,
 
             revision: calendarRevision,
             withURLSearchParams,

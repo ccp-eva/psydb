@@ -27,7 +27,7 @@ export const ExperimentSlot = ({
     if (!isPlaceholder && onSelectExperimentSlot) {
         classNames.push('selectable');
         role = 'button';
-        onClick = onSelectExperimentSlot({
+        onClick = () => onSelectExperimentSlot({
             teamRecord,
             reservationRecord,
             experimentRecord,
@@ -36,7 +36,7 @@ export const ExperimentSlot = ({
     if (isPlaceholder && onSelectExperimentPlaceholderSlot) {
         classNames.push('selectable');
         role = 'button';
-        onClick = onSelectExperimentPlaceholderSlot({
+        onClick = () => onSelectExperimentPlaceholderSlot({
             teamRecord,
             reservationRecord,
             experimentRecord,

@@ -17,6 +17,7 @@ export const Calendar = ({
     onSelectEmptySlot,
     onSelectReservationSlot,
     onSelectExperimentSlot,
+    onSelectExperimentPlaceholderSlot,
 
     className,
     revision = 0,
@@ -79,6 +80,7 @@ export const Calendar = ({
                     onSelectEmptySlot,
                     onSelectReservationSlot,
                     onSelectExperimentSlot,
+                    onSelectExperimentPlaceholderSlot,
                 })} />
             })}
 

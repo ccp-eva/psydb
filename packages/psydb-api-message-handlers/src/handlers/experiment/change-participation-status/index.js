@@ -92,12 +92,16 @@ handler.triggerSystemEvents = async ({
     var eix = experimentRecord.state.subjectData.findIndex(it => {
         return compareIds(it.subjectId, subjectId)
     });
-    var epath = `state.subjectData.${eix}.participationStatus`;
+    var epath = `state.subjectData.${eix}`;
     await dispatch({
         collection: 'experiment',
         channelId: experimentId,
         payload: { $set: {
-            [epath]: participationStatus,
+            [`${epath}.participationStatus`]: participationStatus,
+            // FIXME: not in schema, not set by default
+            ...(excludeFromMoreExperimentsInStudy && {
+                [`${epath}.excludeFromMoreExperimentsInStudy`]: true
+            }),
             ...(shouldSetPostprocessedFlag && {
                 'state.isPostprocessed': true
             }),

@@ -14,7 +14,10 @@ const GeneralFunctions = ({
     studyData,
     onSuccessfulUpdate,
 }) => {
-    var { type: experimentType } = experimentData.record;
+    var {
+        _id: experimentId,
+        type: experimentType,
+    } = experimentData.record;
     
     var history = useHistory();
     var { url } = useRouteMatch();
@@ -37,7 +40,8 @@ const GeneralFunctions = ({
                     onSuccessfulUpdate: (response) => {
                         var { data } = response.data;
                         var { channelId: nextId } = data.find(it => (
-                            it.collection === 'experiment' && it.isNew
+                            it.collection === 'experiment' &&
+                            it.channelId !== experimentId
                         ));
 
                         history.push(`${up(url, 1)}/${nextId}`);

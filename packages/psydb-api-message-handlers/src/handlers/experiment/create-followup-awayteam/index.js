@@ -66,8 +66,10 @@ handler.checkAllowedAndPlausible = async (context) => {
             subjectDataForOp = subjectData;
             break;
         case 'move-unprocessed':
+            var movable = ['unknown', 'didnt-participate'];
             subjectDataForOp = subjectData.filter(it => (
-                it.participationStatus === 'unknown'
+                movable.includes(it.participationStatus) &&
+                !it.excludeFromMoreExperimentsInStudy
             ));
             shouldRemoveFromSource = true;
             break;
@@ -112,7 +114,7 @@ handler.triggerSystemEvents = async (context) => {
         await pushExperimentToSubjects({ ...context, targetExperimentId });
 
         if (shouldRemoveFromSource) {
-            await removeSubjectsFromSource(context);
+            await removeSubjectsFromSource({ ...context, setProcessed: true  });
             await pullExperimentFromSubjects(context);
         }
     }
@@ -184,7 +186,7 @@ var pushExperimentToSubjects = async (context) => {
     if (['inhouse', 'online-video-call'].includes(type)) {
         var update = { $push: {
             'scientific.state.internals.invitedForExperiments': {
-                type: 'away-team',
+                type,
                 studyId,
                 experimentId,
                 timestamp: now,

@@ -71,6 +71,7 @@ const FollowUpExperimentModal = ({
                 studyId,
                 studyRecordType,
                 onSelectReservationSlot: confirmModal.handleShow,
+                onSelectExperimentPlaceholderSlot: confirmModal.handleShow,
                 calendarRevision: revision,
                 withURLSearchParams: false,
             }) } />

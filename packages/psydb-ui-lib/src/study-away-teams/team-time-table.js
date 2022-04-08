@@ -76,6 +76,7 @@ const TeamTimeTable = ({
     onSelectEmptySlot,
     onSelectReservationSlot,
     onSelectExperimentSlot,
+    onSelectExperimentPlaceholderSlot,
 }) => {
 
     var filteredExperiments = experimentRecords.filter(it => (
@@ -165,6 +166,7 @@ const TeamTimeTable = ({
                             onSelectEmptySlot,
                             onSelectReservationSlot,
                             onSelectExperimentSlot,
+                            onSelectExperimentPlaceholderSlot,
                         }) } />
                     </Col>
                 }) }

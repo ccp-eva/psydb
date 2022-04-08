@@ -21,7 +21,9 @@ const FormContainer = ({
     experimentData,
     teamData,
     studyData,
-    
+   
+    nextExperimentRecord,
+
     nextReservationRecord,
     nextTeamRecord,
     nextInterval,
@@ -29,16 +31,39 @@ const FormContainer = ({
     onSuccessfulUpdate,
 }) => {
     var { enableFollowUpExperiments } = studyData.record.state;
+    
+    var handleSubmit = undefined;
+    var isPlaceholder = false;
 
-    var handleSubmit = createSend((formData) => ({
-        type: 'experiment/create-followup-awayteam',
-        payload: {
-            sourceExperimentId: experimentData.record._id,
-            subjectOp: formData.subjectOp,
-            targetExperimentOperatorTeamId: nextTeamRecord._id,
-            targetInterval: nextInterval,
+    if (nextExperimentRecord) {
+        isPlaceholder = nextExperimentRecord.state.subjectData.length < 1;
+        nextInterval = nextExperimentRecord.state.interval;
+
+        if (isPlaceholder) {
+            handleSubmit = createSend((formData) => ({
+                type: 'experiment/followup-awayteam-move-to-placeholder',
+                payload: {
+                    sourceExperimentId: experimentData.record._id,
+                    targetExperimentId: nextExperimentRecord._id,
+                }
+            }), { onSuccessfulUpdate })
         }
-    }), { onSuccessfulUpdate })
+        else {
+            // TODO: but this should never happen though
+        }
+    }
+    else {
+        handleSubmit = createSend((formData) => ({
+            type: 'experiment/create-followup-awayteam',
+            payload: {
+                sourceExperimentId: experimentData.record._id,
+                subjectOp: formData.subjectOp,
+                targetExperimentOperatorTeamId: nextTeamRecord._id,
+                targetInterval: nextInterval,
+            }
+        }), { onSuccessfulUpdate })
+    }
+
 
     return (
         <div>
@@ -89,19 +114,21 @@ const FormContainer = ({
                                     }} />
                                     { nextTeamRecord.state.name }
                                 </Pair>
-                                <Fields.GenericEnum
-                                    dataXPath='$.subjectOp'
-                                    uiSplit={[ 4, 8 ]}
-                                    labelClassName='px-0'
-                                    label='Probanden'
-                                    options={{
-                                        'none': 'Keine Aktion',
-                                        'move-unprocessed': 'Verbleibende Verschieben', 
-                                        ...( enableFollowUpExperiments && {
-                                            'copy': 'Alle Kopieren',
-                                        }),
-                                    }}
-                                />
+                                { !nextExperimentRecord && (
+                                    <Fields.GenericEnum
+                                        dataXPath='$.subjectOp'
+                                        uiSplit={[ 4, 8 ]}
+                                        labelClassName='px-0'
+                                        label='Probanden'
+                                        options={{
+                                            'none': 'Keine Aktion',
+                                            'move-unprocessed': 'Verbleibende Verschieben', 
+                                            ...( enableFollowUpExperiments && {
+                                                'copy': 'Alle Kopieren',
+                                            }),
+                                        }}
+                                    />
+                                )}
                             </Container>
                         </div>
                         <div className='d-flex justify-content-end mt-3'>
@@ -132,6 +159,7 @@ const AwayTeamConfirmModal = ({
     }
 
     var {
+        experimentRecord: nextExperimentRecord,
         reservationRecord: nextReservationRecord,
         teamRecord: nextTeamRecord,
         interval: nextInterval,
@@ -157,6 +185,7 @@ const AwayTeamConfirmModal = ({
                     teamData,
                     studyData,
 
+                    nextExperimentRecord,
                     nextReservationRecord,
                     nextTeamRecord,
                     nextInterval,
