@@ -1,5 +1,5 @@
 'use strict';
-var { unique } = require('@mpieva/psydb-core-utils');
+var { unique, intersect } = require('@mpieva/psydb-core-utils');
 var DataHolder = require('./data-holder');
 
 var anyLabOperationTypes = [
@@ -20,6 +20,7 @@ var Permissions = (options) => {
 
     var {
         hasRootAccess,
+        userResearchGroupsIds,
         forcedResearchGroupId,
         researchGroupIdsByFlag,
         researchGroupIdsByCollection,
@@ -94,6 +95,13 @@ var Permissions = (options) => {
         isRoot()
         ? true
         : getCollectionFlagIds(collection, flag).length > 0
+    );
+
+    // FIXME: since root does have no ids we need to check that seperately
+    var getResearchGroupIds = (intersectIds) => (
+        intersectIds
+        ? userResearchGroupIds
+        : intersect(intersectIds, userResearchGroupIds)
     );
 
     var out = {

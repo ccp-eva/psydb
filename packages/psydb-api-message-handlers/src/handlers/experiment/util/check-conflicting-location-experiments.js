@@ -21,9 +21,10 @@ var checkConflictingLocationExperiments = async ({
     );
 
     if (conflicting.length > 0) {
-        throw new ApiError(
-            409, 'ConflictingLocationExperiment'
-        );
+        throw new ApiError(409, {
+            apiStatus: 'ConflictingLocationExperiment',
+            data: conflicting
+        });
     }
 }
 

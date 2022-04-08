@@ -1,3 +1,4 @@
+export { default as datefns } from './date-fns';
 export {
     ROSchemaForm,
     SchemaForm,

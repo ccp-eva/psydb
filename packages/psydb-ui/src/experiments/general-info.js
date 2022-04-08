@@ -1,6 +1,8 @@
 import React from 'react';
 import jsonpointer from 'jsonpointer';
 
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
+
 import {
     experimentTypes,
     inviteExperimentTypes
@@ -16,7 +18,8 @@ import {
 } from '@mpieva/psydb-ui-layout';
 
 import {
-    formatDateInterval
+    formatDateInterval,
+    datefns,
 } from '@mpieva/psydb-ui-lib';
 
 import TeamNameAndColor from '@mpieva/psydb-ui-lib/src/team-name-and-color';
@@ -24,13 +27,14 @@ import TeamNameAndColor from '@mpieva/psydb-ui-lib/src/team-name-and-color';
 import createStringifier from '@mpieva/psydb-ui-lib/src/record-field-stringifier';
 import applyValueToDisplayFields from '@mpieva/psydb-ui-lib/src/apply-value-to-display-fields';
 
-
 const General = ({
     experimentData,
     opsTeamData,
     locationData,
     studyData
 }) => {
+    var permissions = usePermissions();
+
     var experimentRecord = experimentData.record;
     var studyRecord = studyData.record;
 
@@ -39,6 +43,16 @@ const General = ({
 
     var experimentType = experimentRecord.type;
     
+    var firstResearchGroupId = (
+        permissions.isRoot()
+        ? studyRecord.state.researchGroupIds[0]
+        : (
+            permissions.
+            getResearchGroupIds(studyRecord.state.researchGroupIds)
+            .shift()
+        )
+    );
+
     var isInviteExperiment = (
         inviteExperimentTypes.keys.includes(experimentType)
     );
@@ -57,6 +71,7 @@ const General = ({
     var sharedBag = {
         experimentTypeLabel: experimentTypes.mapping[experimentRecord.type],
         studyLabel: studyRecord.state.shorthand,
+        firstResearchGroupId,
         researchGroupLabel,
         interval: experimentRecord.state.interval,
         locationData,
@@ -92,7 +107,7 @@ const InviteVariant = (ps) => {
         locationData,
         opsTeamData,
     } = ps;
-    
+
     var {
         startDate, startTime, endTime
     } = formatDateInterval(interval);
@@ -145,6 +160,7 @@ const AwayTeamVariant = (ps) => {
     var {
         experimentTypeLabel,
         studyLabel,
+        firstResearchGroupId,
         researchGroupLabel,
         interval,
         locationData,
@@ -152,6 +168,10 @@ const AwayTeamVariant = (ps) => {
         comment
     } = ps;
 
+    var locationType = locationData.record.type;
+    var weekStart = datefns.startOfWeek(new Date(interval.start));
+    var weekStartTimestamp = weekStart.getTime();
+    
     var { startDate } = formatDateInterval(interval);
 
     var withValue = applyValueToDisplayFields({
@@ -169,7 +189,9 @@ const AwayTeamVariant = (ps) => {
                         <TeamNameAndColor teamRecord={ opsTeamData.record } />
                     </Pair>
                     <Pair label='Datum'>
-                        { startDate }
+                        <a href={`#/calendars/away-team/${locationType}/${firstResearchGroupId}?d=${weekStartTimestamp}`}>
+                            { startDate }
+                        </a>
                     </Pair>
                     <Pair label='Forschungsgruppe'>
                         { researchGroupLabel }

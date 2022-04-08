@@ -41,6 +41,8 @@ const ExperimentPostprocessing = ({
     );
     var isMultiTypeExperiment = uniqueSubjectTypeKeys.length > 1;
 
+    var isPlaceholder = experimentData.record.state.subjectData.length < 1;
+
     var infoBag = {
         experimentData,
         opsTeamData,
@@ -65,6 +67,9 @@ const ExperimentPostprocessing = ({
             <div className='border bg-light p-3'>
                 <h5 className='text-orange'>
                     In Nachbereitung
+                    { isPlaceholder && (
+                        <span className='text-grey'>{' '}(Platzhalter)</span>
+                    )}
                 </h5>
                 <GeneralInfo { ...infoBag } />
                 { showFunctions && (
@@ -81,7 +86,7 @@ const ExperimentPostprocessing = ({
                     </>
                 )}
             </div>
-            { canPostprocess
+            { !isPlaceholder && canPostprocess
                 ? (
                     <>
                         <div className='mt-3'>
