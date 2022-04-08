@@ -167,7 +167,10 @@ a {
 .text-orange {
     color: #f90;
 }
-.text-grey, .text-lightgrey {
+.text-grey {
+    color: #bbb;
+}
+.text-lightgrey {
     color: #ccc;
 }
 

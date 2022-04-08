@@ -18,7 +18,10 @@ const ExperimentPostprocessing = ({
     onSuccessfulUpdate,
 }) => {
     var permissions = usePermissions();
-    var { type: experimentType } = experimentData.record;
+    var {
+        type: experimentType,
+        state: { subjectData }
+    } = experimentData.record;
 
     var canPostprocess = permissions.hasLabOperationFlag(
         experimentType, 'canPostprocessExperiments'
@@ -50,6 +53,10 @@ const ExperimentPostprocessing = ({
         studyData
     };
 
+    var hasProcessedSubjects = !!subjectData.find(
+        it => it.participationStatus !== 'unknown'
+    );
+
     var subjectsBag = {
         ...(isMultiTypeExperiment && {
             className: 'p-3',
@@ -66,9 +73,13 @@ const ExperimentPostprocessing = ({
         <div>
             <div className='border bg-light p-3'>
                 <h5 className='text-orange'>
-                    In Nachbereitung
+                    { !isPlaceholder && (
+                        hasProcessedSubjects
+                        ? <span>in Nachbereitung</span>
+                        : <span>offene Nachbereitung</span>
+                    )}
                     { isPlaceholder && (
-                        <span className='text-grey'>{' '}(Platzhalter)</span>
+                        <span className='text-grey'>Platzhalter (in Vergangenheit)</span>
                     )}
                 </h5>
                 <GeneralInfo { ...infoBag } />

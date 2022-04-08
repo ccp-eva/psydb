@@ -50,6 +50,7 @@ const ExperimentSummary = ({
         interval: { start, end },
         experimentOperatorTeamId,
         subjectData,
+        isPostprocessed,
     }} = experimentRecord;
 
     var locationRecord = locationRecordsById[locationId];
@@ -61,6 +62,8 @@ const ExperimentSummary = ({
     var hasProcessedSubjects = !!subjectData.find(
         it => it.participationStatus !== 'unknown'
     );
+    var isPlaceholder = subjectData.length < 1;
+    var isInPast = (new Date().getTime()) > (new Date(end).getTime());
     
     start = new Date(start);
     end = new Date(new Date(end).getTime() + 1); // FIXME: 1ms offset
@@ -135,14 +138,22 @@ const ExperimentSummary = ({
                         experimentType: 'away-team',
                         variant: 'calendar',
                         detailsLink: `/experiments/away-team/${experimentRecord._id}`,
-                        onClickMove: moveExperimentModal.handleShow,
-                        onClickFollowUp: followupExperimentModal.handleShow,
+                        onClickMove: (
+                            hasProcessedSubjects
+                            ? undefined
+                            : moveExperimentModal.handleShow
+                        ),
                         onClickCancel: (
                             hasProcessedSubjects
                             ? undefined
                             : cancelExperimentModal.handleShow
                         ),
-                        onClickChangeTeam: changeTeamModal.handleShow
+                        onClickChangeTeam: (
+                            hasProcessedSubjects
+                            ? undefined
+                            : changeTeamModal.handleShow
+                        ),
+                        onClickFollowUp: followupExperimentModal.handleShow,
                     })} />
                 </div>
             </div>
@@ -154,6 +165,27 @@ const ExperimentSummary = ({
                     locationDisplayFieldData,
                 }) } />
             </div>
+
+            { isPlaceholder && (
+                <div>
+                    <small>Platzhalter</small>
+                </div>
+            )}
+            { !isPostprocessed && hasProcessedSubjects && (
+                <div>
+                    <small>in Nachbereitung</small>
+                </div>
+            )}
+            { !isPostprocessed && !hasProcessedSubjects && isInPast && (
+                <div>
+                    <small>offene Nachbereitung</small>
+                </div>
+            )}
+            { isPostprocessed && (
+                <div>
+                    <small>Abgeschlossen</small>
+                </div>
+            )}
         </div>
     )
 }
