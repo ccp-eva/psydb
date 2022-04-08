@@ -48,6 +48,20 @@ const ExperimentsInDay = ({
     onSelectDay,
     ...other
 }) => {
+    var dayStart = start;
+
+    var dayIndex = datefns.getISODay(dayStart);
+    var dayEnd = datefns.endOfDay(dayStart);
+    var isInPast = new Date().getTime() > dayEnd.getTime();
+    var shouldEnable = (
+        !isInPast
+        // && !([6,7].includes(dayIndex))
+    );
+    var className = (
+        shouldEnable
+        ? 'text-center border-bottom mb-2'
+        : 'text-center text-grey border-bottom mb-2'
+    );
 
     var ExperimentSummary = undefined;
     switch (calendarVariant) {
@@ -64,7 +78,7 @@ const ExperimentsInDay = ({
 
     return (
         <div>
-            <header className='text-center border-bottom mb-2'>
+            <header className={ className }>
                 <div role='button' onClick={ () => onSelectDay(start) }>
                     <b>{ datefns.format(start, 'cccccc dd.MM.') }</b>
                 </div>
