@@ -4,15 +4,17 @@ import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
 
 import {
-    Button
-} from 'react-bootstrap';
-
-import {
     ChangeTeamModal,
     MoveExperimentModal,
-    FollowUpExperimentModal,
     CancelExperimentModal
 } from '@mpieva/psydb-ui-lib/src/modals';
+
+import { Button } from '@mpieva/psydb-ui-layout';
+import {
+    FollowUpExperimentContainer,
+    CancelExperimentContainer
+} from '../shared-general-functions';
+
 
 const GeneralFunctions = ({
     experimentData,
@@ -134,77 +136,4 @@ const MoveExperimentContainer = ({
     );
 };
 
-const FollowUpExperimentContainer = ({
-    experimentData,
-    opsTeamData,
-    studyData,
-    onSuccessfulUpdate,
-}) => {
-    var { url } = useRouteMatch();
-    var history = useHistory();
-
-    var [ show, setShow ] = useState(false);
-    var handleShow = useCallback(() => setShow(true), []);
-    var handleHide = useCallback(() => setShow(false), []);
-    return (
-        <>
-            <Button size='sm' className='mr-3' onClick={ handleShow }>
-                Folgetermin
-            </Button>
-            <FollowUpExperimentModal { ...({
-                show,
-                onHide: handleHide,
-                
-                experimentType: experimentData.record.type,
-                experimentData,
-                teamData: opsTeamData,
-                studyData,
-                onSuccessfulUpdate: (response) => {
-                    var { data } = response.data;
-                    var { channelId: nextId } = data.find(it => (
-                        it.collection === 'experiment' && it.isNew
-                    ));
-
-                    history.push(`${up(url, 1)}/${nextId}`);
-                }
-            }) } />
-        </>
-    );
-};
-
-const CancelExperimentContainer = ({
-    experimentData,
-    onSuccessfulUpdate,
-}) => {
-    var { subjectData } = experimentData.record.state;
-    var hasProcessedSubjects = !!subjectData.find(it => (
-        it.participationId !== 'unknown'
-    ));
-    
-    var [ show, setShow ] = useState(false);
-    var handleShow = useCallback(() => setShow(true), []);
-    var handleHide = useCallback(() => setShow(false), []);
-    return (
-        <>
-            <Button 
-                size='sm'
-                variant='danger'
-                className='mr-3'
-                onClick={ handleShow }
-                disabled={ hasProcessedSubjects }
-            >
-                Absagen
-            </Button>
-            <CancelExperimentModal { ...({
-                show,
-                onHide: handleHide,
-                
-                experimentType: experimentData.record.type,
-                experimentId: experimentData.record._id,
-
-                onSuccessfulUpdate,
-            }) } />
-        </>
-    );
-};
 export default GeneralFunctions;

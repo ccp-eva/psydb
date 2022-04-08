@@ -4,13 +4,9 @@ import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
 
 import {
-    Button
-} from 'react-bootstrap';
-
-import {
-    FollowUpExperimentModal,
-    CancelExperimentModal
-} from '@mpieva/psydb-ui-lib/src/modals';
+    FollowUpExperimentContainer,
+    CancelExperimentContainer
+} from '../shared-general-functions';
 
 const GeneralFunctions = ({
     experimentData,
@@ -60,69 +56,5 @@ const GeneralFunctions = ({
     );
 }
 
-const FollowUpExperimentContainer = ({
-    experimentData,
-    opsTeamData,
-    studyData,
-    onSuccessfulUpdate,
-}) => {
-    var [ show, setShow ] = useState(false);
-    var handleShow = useCallback(() => setShow(true), []);
-    var handleHide = useCallback(() => setShow(false), []);
-    return (
-        <>
-            <Button size='sm' className='mr-3' onClick={ handleShow }>
-                Folgetermin
-            </Button>
-            <FollowUpExperimentModal { ...({
-                show,
-                onHide: handleHide,
-                
-                experimentType: experimentData.record.type,
-                experimentData,
-                teamData: opsTeamData,
-                studyData,
-                onSuccessfulUpdate,
-            }) } />
-        </>
-    );
-};
-
-
-const CancelExperimentContainer = ({
-    experimentData,
-    onSuccessfulUpdate,
-}) => {
-    var { subjectData } = experimentData.record.state;
-    var hasProcessedSubjects = !!subjectData.find(it => (
-        it.participationId !== 'unknown'
-    ));
-    
-    var [ show, setShow ] = useState(false);
-    var handleShow = useCallback(() => setShow(true), []);
-    var handleHide = useCallback(() => setShow(false), []);
-    return (
-        <>
-            <Button 
-                size='sm'
-                variant='danger'
-                className='mr-3'
-                onClick={ handleShow }
-                disabled={ hasProcessedSubjects }
-            >
-                Absagen
-            </Button>
-            <CancelExperimentModal { ...({
-                show,
-                onHide: handleHide,
-                
-                experimentType: experimentData.record.type,
-                experimentId: experimentData.record._id,
-
-                onSuccessfulUpdate,
-            }) } />
-        </>
-    );
-};
 
 export default GeneralFunctions;
