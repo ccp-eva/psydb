@@ -77,6 +77,8 @@ const TeamTimeTable = ({
     onSelectReservationSlot,
     onSelectExperimentSlot,
     onSelectExperimentPlaceholderSlot,
+
+    showPast,
 }) => {
 
     var filteredExperiments = experimentRecords.filter(it => (
@@ -167,6 +169,8 @@ const TeamTimeTable = ({
                             onSelectReservationSlot,
                             onSelectExperimentSlot,
                             onSelectExperimentPlaceholderSlot,
+
+                            showPast
                         }) } />
                     </Col>
                 }) }
@@ -186,14 +190,22 @@ const TimeSlot = ({
     onSelectReservationSlot,
     onSelectExperimentSlot,
     onSelectExperimentPlaceholderSlot,
+
+    showPast
 }) => {
     var dayIndex = datefns.getISODay(dayStart);
+    var dayEnd = datefns.endOfDay(dayStart);
     var shouldEnable = !([6,7].includes(dayIndex));
 
     if (!shouldEnable) {
         return <DisabledSlot />
     }
     else if (experimentRecord) {
+        var end = experimentRecord.state.interval.end;
+        var isInPast = new Date().getTime() > new Date(end).getTime();
+        if (!showPast && isInPast) {
+            return <DisabledSlot />
+        }
         return (
             <ExperimentSlot { ...({
                 teamRecord,
@@ -206,6 +218,11 @@ const TimeSlot = ({
         );
     }
     else if (reservationRecord) {
+        var end = reservationRecord.state.interval.end;
+        var isInPast = new Date().getTime() > new Date(end).getTime();
+        if (!showPast && isInPast) {
+            return <DisabledSlot />
+        }
         return (
             <ReservationSlot { ...({
                 teamRecord,
@@ -216,6 +233,10 @@ const TimeSlot = ({
         );
     }
     else {
+        var isInPast = new Date().getTime() > dayEnd.getTime();
+        if (!showPast && isInPast) {
+            return <DisabledSlot />
+        }
         return (
             <EmptySlot { ...({
                 teamRecord,
