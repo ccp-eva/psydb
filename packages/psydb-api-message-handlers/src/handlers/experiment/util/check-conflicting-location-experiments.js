@@ -10,6 +10,7 @@ var checkConflictingLocationExperiments = async ({
     var conflicting = await (
         db.collection('experiment')
         .find({
+            'state.isCanceled': false,
             'state.locationId': locationId,
             // we are switching to half open intervals
             // i.e. ends are set on .000Z
