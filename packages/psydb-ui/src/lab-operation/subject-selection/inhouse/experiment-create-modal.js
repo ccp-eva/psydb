@@ -6,25 +6,31 @@ import ExperimentShortControls from '@mpieva/psydb-ui-lib/src/experiment-short-c
 
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 
-const CreateModal = ({
-    show,
-    onHide,
-    subjectId,
-    subjectLabel,
+const CreateModal = (ps) => {
+    var {
+        show,
+        onHide,
+        studyData,
+        subjectId,
+        subjectLabel,
 
-    studyId,
-    locationRecord,
-    reservationRecord,
-    teamRecords,
-    start,
-    slotDuration,
-    maxEnd,
+        studyId,
+        locationRecord,
+        reservationRecord,
+        teamRecords,
+        start,
+        slotDuration,
+        maxEnd,
 
-    onSuccessfulCreate,
-}) => {
+        onSuccessfulCreate,
+    } = ps;
+
     if (!show) {
         return null;
     }
+
+    var studyRecord = studyData.records.find(it => it._id === studyId);
+    var { enableFollowUpExperiments } = studyRecord.state;
 
     var locationId = locationRecord._id;
     var experimentOperatorTeamId = (
@@ -38,8 +44,9 @@ const CreateModal = ({
     var [ end, setEnd ] = useState(new Date(minEnd.getTime() - 1));
 
     var wrappedOnSuccessfulUpdate = (...args) => {
+        var shouldHide = !enableFollowUpExperiments;
         onHide();
-        onSuccessfulCreate && onSuccessfulCreate(...args);
+        onSuccessfulCreate && onSuccessfulCreate(shouldHide, ...args);
     };
 
     var send = useSend(() => ({
