@@ -29,6 +29,7 @@ const ExperimentSummary = ({
     locationDisplayFieldData,
 
     url,
+    showPast,
     onSuccessfulUpdate,
 
     style,
@@ -59,17 +60,15 @@ const ExperimentSummary = ({
         it._id === experimentOperatorTeamId
     ));
 
+    var isInPast = new Date().getTime() > new Date(end).getTime();
     var hasProcessedSubjects = !!subjectData.find(
         it => it.participationStatus !== 'unknown'
     );
     var isPlaceholder = subjectData.length < 1;
 
-    var isInPast = new Date().getTime() > new Date(end).getTime();
-
-    // TODO: we need a flag for isRoot() to view them
     // TODO: we might also want to send a flag to api
     // so we dont send dent data of those at all
-    if (isInPast && isPostprocessed) {
+    if (!showPast && isInPast && isPostprocessed) {
         return null;
     }
     

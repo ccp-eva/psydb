@@ -23,11 +23,15 @@ const TimeTableHead = ({
                 
                 { allDayStarts.map(dayStart => {
                     var dayIndex = datefns.getISODay(dayStart);
-                    var shouldEnable = !([6,7].includes(dayIndex));
+                    var dayEnd = datefns.endOfDay(dayStart);
+                    var isInPast = new Date().getTime() > dayEnd.getTime();
+                    var shouldEnable = (
+                        !isInPast && !([6,7].includes(dayIndex))
+                    );
                     var className = (
                         shouldEnable
                         ? 'p-0 text-center bg-light border-bottom'
-                        : 'p-0 text-center bg-light text-lightgrey border-bottom'
+                        : 'p-0 text-center bg-light text-grey border-bottom'
                     )
                     return <Col
                         key={ dayStart.getTime() }

@@ -12,7 +12,8 @@ import {
 import agent from '@mpieva/psydb-ui-request-agents';
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 
-import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
+import { Button, LoadingIndicator } from '@mpieva/psydb-ui-layout';
 import CalendarNav from '@mpieva/psydb-ui-lib/src/calendar-nav';
 import withVariableCalendarPages from '@mpieva/psydb-ui-lib/src/with-variable-calendar-pages';
 import getDayStartsInInterval from '@mpieva/psydb-ui-lib/src/get-day-starts-in-interval';
@@ -28,6 +29,7 @@ const Calendar = ({
     onPageChange,
     selectedStudyId,
     calendarVariant,
+    showPast,
     onSelectDay,
 }) => {
     var { path, url } = useRouteMatch();
@@ -141,6 +143,7 @@ const Calendar = ({
 
                 url,
                 calendarVariant,
+                showPast,
                 onSelectDay,
                 onSuccessfulUpdate: handleSuccessfulUpdate
             }) }/>
@@ -187,6 +190,8 @@ const CalendarVariantContainer = (ps) => {
     } = useParams();
 
     var [ query, updateQuery ] = useURLSearchParams();
+    var permissions = usePermissions();
+    var [ showPast, setShowPast ] = useState(false);
     
     var {
         cal: calendarVariant,
@@ -198,7 +203,14 @@ const CalendarVariantContainer = (ps) => {
 
     return (
         <>
-
+            { permissions.isRoot() && (
+                <div className='mb-2'>
+                    <Button
+                        onClick={ () => setShowPast(true) }
+                        size='sm'
+                    >zeige Vergangenheit</Button>
+                </div>
+            )}
             <div className='d-flex mb-2'>
                 <div style={{ width: '100px', paddingTop: '.2rem' }}>
                     <b>Ansicht</b>
@@ -241,6 +253,7 @@ const CalendarVariantContainer = (ps) => {
             <WrappedCalendar { ...({
                 calendarVariant,
                 selectedStudyId,
+                showPast,
                 //onSelectStudy: handleSelectStudyId,
                 onSelectDay: (date) => {
                     updateQuery({
