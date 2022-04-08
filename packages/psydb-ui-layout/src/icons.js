@@ -21,6 +21,7 @@ export {
     XSquareFill,
 
     CheckCircleFill,
+    RecordCircle,
 
     Plus,
     List,

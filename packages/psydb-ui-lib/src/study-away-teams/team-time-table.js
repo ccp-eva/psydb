@@ -11,6 +11,8 @@ import keyBy from '@mpieva/psydb-common-lib/src/key-by';
 import datefns from '../date-fns';
 import getTextColor from '../bw-text-color-for-background';
 
+import { ExperimentSlot } from './experiment-slot';
+
 var calculateOverlap = (that, other) => {
     // FIXME: breaks when start/end are reversed in that/other
     if (that.end <= other.start || that.start >= other.end) {
@@ -181,6 +183,7 @@ const TimeSlot = ({
     onSelectEmptySlot,
     onSelectReservationSlot,
     onSelectExperimentSlot,
+    onSelectExperimentPlaceholderSlot,
 }) => {
     var dayIndex = datefns.getISODay(dayStart);
     var shouldEnable = !([6,7].includes(dayIndex));
@@ -193,8 +196,10 @@ const TimeSlot = ({
             <ExperimentSlot { ...({
                 teamRecord,
                 reservationRecord,
+                experimentRecord,
                 dayStart,
                 onSelectExperimentSlot,
+                onSelectExperimentPlaceholderSlot,
             }) } />
         );
     }
@@ -219,55 +224,6 @@ const TimeSlot = ({
     }
 }
 
-const ExperimentSlot = ({
-    teamRecord,
-    reservationRecord,
-    dayStart,
-    onSelectReservationSlot,
-}) => {
-    var classNames = [
-        'text-center',
-        'm-1',
-        'team-time-slot',
-        'empty',
-    ];
-    var role = '';
-
-    if (onSelectReservationSlot) {
-        classNames.push('selectable');
-        role = 'button';
-    }
-
-    var onClick = useCallback(() => {
-        onSelectReservationSlot && onSelectReservationSlot({
-            teamRecord,
-            reservationRecord,
-            interval: {
-                start: dayStart,
-                end: datefns.endOfDay(dayStart)
-            }
-        })
-    })
-
-    return (
-        <div
-            role={ role }
-            className={ classNames.join(' ') }
-            style={{
-                height: '26px',
-                backgroundColor: teamRecord.state.color,
-            }}
-            onClick={ onClick }
-        >
-            <Icons.CheckCircleFill style={{
-                color: getTextColor(teamRecord.state.color),
-                width: '16px',
-                height: '16px',
-                marginTop: '-5px'
-            }} />
-        </div>
-    )
-}
 
 const ReservationSlot = ({
     teamRecord,
