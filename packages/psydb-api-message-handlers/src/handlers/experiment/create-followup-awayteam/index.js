@@ -61,6 +61,7 @@ handler.checkAllowedAndPlausible = async (context) => {
 
     var subjectDataForOp = [];
     var shouldRemoveFromSource = false;
+    var shouldCancelSource = false;
     switch (subjectOp) {
         case 'copy':
             subjectDataForOp = subjectData;
@@ -72,6 +73,9 @@ handler.checkAllowedAndPlausible = async (context) => {
                 !it.excludeFromMoreExperimentsInStudy
             ));
             shouldRemoveFromSource = true;
+            shouldCancelSource = (
+                subjectDataForOp.length === subjectData.length
+            );
             break;
         case 'none':
         default:
@@ -103,19 +107,28 @@ handler.checkAllowedAndPlausible = async (context) => {
     cache.targetInterval = targetInterval;
     cache.targetExperimentOperatorTeamId = targetExperimentOperatorTeamId;
     cache.shouldRemoveFromSource = shouldRemoveFromSource;
+    cache.shouldCancelSource = shouldCancelSource;
 }
 
 handler.triggerSystemEvents = async (context) => {
     var { cache } = context;
-    var { subjectDataForOp, shouldRemoveFromSource } = cache;
+    var {
+        subjectDataForOp,
+        shouldRemoveFromSource,
+        shouldCancelSource
+    } = cache;
 
     var targetExperimentId = await createTargetExperiment(context);
     if (subjectDataForOp.length > 0) {
         await pushExperimentToSubjects({ ...context, targetExperimentId });
 
         if (shouldRemoveFromSource) {
-            await removeSubjectsFromSource({ ...context, setProcessed: true  });
+            await removeSubjectsFromSource(context);
             await pullExperimentFromSubjects(context);
+        }
+
+        if (shouldCancelSource) {
+            await removeSourceExperiment(context)
         }
     }
 }
@@ -169,10 +182,15 @@ var removeSubjectsFromSource = async (context) => {
     await dispatch({
         collection: 'experiment',
         channelId: sourceExperiment._id,
-        payload: { $pull: {
-            'state.selectedSubjectIds': { $in: subjectIds },
-            'state.subjectData': { subjectId: { $in: subjectIds }}
-        }}
+        payload: {
+            $pull: {
+                'state.selectedSubjectIds': { $in: subjectIds },
+                'state.subjectData': { subjectId: { $in: subjectIds }}
+            },
+            $set: {
+                'state.isPostprocessed': true
+            }
+        }
     });
 }
 
@@ -232,6 +250,16 @@ var pullExperimentFromSubjects = async (context) => {
                 'scientific._rohrpostMetadata.unprocessedEventIds': []
             }
         }
+    });
+}
+
+var removeSourceExperiment = async (context) => {
+    var { db, cache } = context;
+    var { sourceExperiment } = cache;
+
+    var experimentId = sourceExperiment._id
+    await db.collection('experiment').removeOne({
+        _id: experimentId
     });
 }
 

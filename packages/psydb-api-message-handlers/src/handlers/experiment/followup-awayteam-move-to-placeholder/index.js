@@ -73,7 +73,12 @@ handler.triggerSystemEvents = async (context) => {
         movable.includes(it.participationStatus) &&
         !it.excludeFromMoreExperimentsInStudy
     ));
+    var shouldCancelSource = (
+        subjectDataForOp.length === subjectData.length
+    );
+
     cache.subjectDataForOp = subjectDataForOp;
+
 
     if (subjectDataForOp.length > 0) {
         await addSubjectsToTarget(context);
@@ -81,6 +86,10 @@ handler.triggerSystemEvents = async (context) => {
 
         await removeSubjectsFromSource(context);
         await pullExperimentFromSubjects(context);
+
+        if (shouldCancelSource) {
+            await removeSourceExperiment(context)
+        }
     }
 }
 
@@ -185,6 +194,16 @@ var pullExperimentFromSubjects = async (context) => {
                 'scientific._rohrpostMetadata.unprocessedEventIds': []
             }
         }
+    });
+}
+
+var removeSourceExperiment = async (context) => {
+    var { db, cache } = context;
+    var { sourceExperimentId } = cache;
+
+    var experimentId = sourceExperimentId
+    await db.collection('experiment').removeOne({
+        _id: experimentId
     });
 }
 
