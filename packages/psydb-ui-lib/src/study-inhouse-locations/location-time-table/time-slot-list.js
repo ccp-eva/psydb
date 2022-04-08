@@ -30,9 +30,25 @@ const TimeSlotList = ({
     onSelectEmptySlot,
     onSelectReservationSlot,
     onSelectExperimentSlot,
+    
+    showPast,
 }) => {
     var start = new Date(dayStart.getTime() + startTimeInt);
     var end = new Date(dayStart.getTime() + endTimeInt);
+
+    var dayStart = start;
+    var dayIndex = datefns.getISODay(dayStart);
+    var dayEnd = datefns.endOfDay(dayStart);
+    var isInPast = new Date().getTime() > dayEnd.getTime();
+    var shouldEnable = (
+        !isInPast
+        // && !([6,7].includes(dayIndex))
+    );
+    var className = (
+        shouldEnable
+        ? 'text-center border-bottom bg-light'
+        : 'text-center text-grey border-bottom bg-light'
+    )
 
     var { _id: locationId } = locationRecord;
 
@@ -99,11 +115,13 @@ const TimeSlotList = ({
         onSelectEmptySlot: wrapped.onSelectEmptySlot,
         onSelectReservationSlot: wrapped.onSelectReservationSlot,
         onSelectExperimentSlot: wrapped.onSelectExperimentSlot,
+    
+        showPast,
     }
 
     return (
         <div>
-            <header className='text-center bg-light border-bottom'>
+            <header className={ className }>
                 <div><b>{ datefns.format(start, 'cccccc dd.MM.') }</b></div>
                 <div>Uhrzeit</div>
             </header>

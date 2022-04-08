@@ -27,6 +27,7 @@ const LocationCalendar = ({
     onSelectExperimentSlot,
 
     className,
+    showPast,
 }) => {
     var { path, url } = useRouteMatch();
 
@@ -84,6 +85,8 @@ const LocationCalendar = ({
                 onSelectEmptySlot,
                 onSelectReservationSlot,
                 onSelectExperimentSlot,
+                
+                showPast,
             })} />
 
         </div>

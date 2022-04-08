@@ -1,6 +1,6 @@
-import React from 'react';
-import { useFetch } from '@mpieva/psydb-ui-hooks';
-import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
+import React, { useState } from 'react';
+import { useFetch, usePermissions } from '@mpieva/psydb-ui-hooks';
+import { Button, LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
 import datefns from '../date-fns';
 import CalendarNav from '../calendar-nav';
@@ -34,6 +34,9 @@ const LocationCalendarList = ({
     // used to force reloading the calendar data
     revision = 0,
 }) => {
+    var permissions = usePermissions();
+    var [ showPast, setShowPast ] = useState(false);
+
     var [ didFetch, fetched ] = useFetch((agent) => {
         return agent.fetchStudyLocationReservationCalendar({
             experimentType: currentExperimentType,
@@ -68,6 +71,14 @@ const LocationCalendarList = ({
 
     return (
         <div className={ className }>
+            { permissions.isRoot() && (
+                <div className='mt-2'>
+                    <Button
+                        onClick={ () => setShowPast(true) }
+                        size='sm'
+                    >zeige Vergangenheit</Button>
+                </div>
+            )}
             <CalendarNav { ...({
                 className: 'mt-3',
                 currentPageStart,
@@ -102,6 +113,8 @@ const LocationCalendarList = ({
                         onSelectEmptySlot,
                         onSelectReservationSlot,
                         onSelectExperimentSlot,
+
+                        showPast
                     })}
                 />
             ))}
