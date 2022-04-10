@@ -12,7 +12,7 @@ import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { FormBox } from '@mpieva/psydb-ui-lib';
 
 import StudyRecordContainer from './record-container';
-import StudyRecordForm from './record-form';
+import RecordCreator from './record-creator';
 
 import {
     withCollectionView,
@@ -51,8 +51,8 @@ const StudyRouting = (ps) => {
                 { canWrite
                     ? (
                         <FormBox title='Neuer Datensatz'>
-                            <StudyRecordForm
-                                type='create'
+                            <RecordCreator
+                                collection='study'
                                 recordType={ recordType }
                                 onSuccessfulUpdate={
                                     ({ id }) => history.push(`${url}/${id}/selection-settings`)

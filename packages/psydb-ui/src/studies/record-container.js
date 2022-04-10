@@ -24,7 +24,7 @@ import {
 } from '@mpieva/psydb-ui-layout';
 
 import StudyRecordDetails from './record-details';
-import StudyRecordForm from './record-form';
+import RecordEditor from './record-editor';
 import StudySelectionSettings from './selection-settings';
 import StudyInhouseLocations from './inhouse-locations';
 
@@ -115,9 +115,8 @@ const StudyRecordContainer = ({
                                 />
                             </Route>
                             <Route exact path={`${path}/edit`}>
-                                <StudyRecordForm
+                                <RecordEditor
                                     collection='study'
-                                    type='edit'
                                     recordType={ recordType }
                                     onSuccessfulUpdate={ () => {
                                         revision.up();

@@ -8,7 +8,7 @@ const {
 export const createDefaults = (options) => {
     var { fieldDefinitions, permissions } = options;
     return {
-        runningPeriod: {},
+        runningPeriod: { end: null },
         enableFollowUpExperiments: false,
         researchGroupIds: [],
         scientistIds: [],
