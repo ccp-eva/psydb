@@ -18,7 +18,7 @@ export const Custom = (ps) => {
         fieldDefinitions,
         subChannelKey,
         related,
-        extraTypeProps
+        extraTypeProps = {},
     } = ps;
 
     var fields = (

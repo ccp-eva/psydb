@@ -116,6 +116,7 @@ const StudyRecordContainer = ({
                             </Route>
                             <Route exact path={`${path}/edit`}>
                                 <StudyRecordForm
+                                    collection='study'
                                     type='edit'
                                     recordType={ recordType }
                                     onSuccessfulUpdate={ () => {

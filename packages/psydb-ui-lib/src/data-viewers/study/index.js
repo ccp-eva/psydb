@@ -13,7 +13,7 @@ import ExtraDescription from './extra-description';
 
 const labels = {
     '/sequenceNumber': 'ID Nr.',
-    '/state/name': 'Name',
+    '/state/name': 'Bezeichnung',
     '/state/shorthand': 'Kürzel',
     '/state/runningPeriod/start': 'Beginn',
     '/state/runningPeriod/end': 'Ende',
