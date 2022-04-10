@@ -72,9 +72,17 @@ const withRecordTypeView = ({
             ));
         }
 
-        var title = `Typ: ${typeData.state.label}`;
+        var title = (
+            typeData
+            ? `Typ: ${typeData.state.label}`
+            : undefined
+        );
         return (
-            <PageWrappers.Level2 title={ title } titleLinkUrl={ url }>
+            <PageWrappers.Level2
+                showTitle={ !!title }
+                title={ title }
+                titleLinkUrl={ url }
+            >
                 { (!recordType && !noSpacer) && (
                     <div className='mb-3'></div>
                 )}

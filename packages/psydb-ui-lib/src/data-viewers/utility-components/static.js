@@ -13,6 +13,18 @@ var collectionUIMapping = {
     'systemRole': 'system-roles',
 }
 
+// TODO: put elsewhere
+const Joined = ({ delimiter, children }) => (
+    children.reduce((acc, it, ix) => ([
+        ...acc,
+        it,
+
+        ix < children.length - 1
+        ? delimiter
+        : null
+    ]), [])
+)
+
 export const SaneString = (ps) => {
     var { value } = ps;
     return (
@@ -64,11 +76,10 @@ export const ForeignIdList = (ps) => {
                 related={ related }
             />
         ))
-        .join(', ')
     );
     
     return (
-        <span>{ formatted }</span>
+        <Joined delimiter=', '>{ formatted }</Joined>
     )
 }
 
@@ -217,6 +228,37 @@ export const ExtBool = (ps) => {
     )
 }
 
+export const DefaultBool = (ps) => {
+    var { value } = ps;
+    value = String(!!value);
+
+    var colorClasses = {
+        'true': 'text-primary',
+        'false': 'text-danger',
+    };
+
+    var fieldOptions = {
+        'true': 'Ja',
+        'false': 'Nein',
+    };
+
+    var icons = {
+        'true': Icons.CheckSquareFill,
+        'false': Icons.XSquareFill,
+    }
+
+    var OptionIcon = icons[value];
+    return (
+        <span className={ colorClasses[value] }>
+            <OptionIcon
+                style={{ marginTop: '-3px' }}
+            />
+            <span className='d-inline-block ml-2'>
+                { fieldOptions[value] }
+            </span>
+        </span>
+    )
+}
 
 export const ForeignId = (ps) => {
     var { value, props, related } = ps;

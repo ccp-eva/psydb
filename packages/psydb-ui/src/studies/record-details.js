@@ -1,17 +1,12 @@
-import React, { useState, useEffect, useReducer, forwardRef } from 'react';
+import React from 'react';
 
-import { useRouteMatch, useParams } from 'react-router-dom';
+import { useRouteMatch  } from 'react-router-dom';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
+import { LinkButton, Icons } from '@mpieva/psydb-ui-layout';
 
-import allSchemaCreators from '@mpieva/psydb-schema-creators';
-import agent from '@mpieva/psydb-ui-request-agents';
+import { Study } from '@mpieva/psydb-ui-lib/data-viewers';
+import * as Themes from '@mpieva/psydb-ui-lib/data-viewer-themes';
 
-import { ROSchemaForm } from '@mpieva/psydb-ui-lib';
-
-import {
-    LinkButton,
-    Icons
-} from '@mpieva/psydb-ui-layout';
 
 const EditLinkButton = ({
     to,
@@ -27,86 +22,43 @@ const EditLinkButton = ({
     );
 }
 
-const StudyRecordDetails = ({
-    fetched,
-    recordType,
-    onSuccessfulUpdate,
-}) => {
-    var collection = 'study';
+const StudyRecordDetails = (ps) => {
+    var {
+        fetched,
+        recordType,
+        onSuccessfulUpdate,
+    } = ps;
 
+    var { record, crtSettings, related } = fetched;
     var { path, url } = useRouteMatch();
-    var { id } = useParams();
     var permissions = usePermissions();
-    
-    var canEdit = permissions.hasCollectionFlag(collection, 'write');
+    var canEdit = permissions.hasCollectionFlag('study', 'write');
 
-    var { hasSubChannels } = allSchemaCreators[collection];
-
-    var {
-        schema,
-        record,
-        related,
-    } = fetched;
-
-    var {
-        relatedRecordLabels,
-        relatedHelperSetItems,
-        relatedCustomRecordTypeLabels,
-    } = related;
-
-    var formData = {};
-    var formContext = {};
-    if (record) {
-        if (hasSubChannels) {
-            formData = {
-                gdpr: record.gdpr.state,
-                scientific: record.scientific.state
-            }
-        }
-        else {
-            formData = record.state;
-        }
-
-        formContext = {
-            relatedRecordLabels,
-            relatedHelperSetItems,
-            relatedCustomRecordTypeLabels,
-        }
+    var studyBag = {
+        theme: Themes.HorizontalSplit,
+        value: record,
+        crtSettings,
+        related
     }
 
-    var formSchema = (
-        hasSubChannels
-        ? {
-            type: 'object',
-            properties: {
-                gdpr: schema.properties.gdpr.properties.state,
-                scientific: schema.properties.scientific.properties.state
-            }
-        }
-        : schema.properties.state
-    );
-
-    // TODO: it blows up when i have more than one subject type
-    delete formSchema.properties.selectionSettingsBySubjectType;
-    delete formData.selectionSettingsBySubjectType;
-
-    delete formSchema.properties.inhouseTestLocationSettings;
-    delete formData.inhouseTestLocationSettings;
-
-    delete formSchema.properties.excludedOtherStudyIds;
-    delete formData.excludedOtherStudyIds;
-    delete formData.internals;
-
-    //console.log(formSchema);
-    //console.log(formData);
-
     return (
-        <div className='mt-3 position-relative'>
-            <ROSchemaForm
-                schema={ formSchema }
-                formData={ formData }
-                formContext={ formContext }
-            />
+        <div className='m-3 position-relative'>
+            <Study { ...studyBag }>
+                <Study.SequenceNumber />
+                <Study.Name />
+                <Study.Shorthand />
+                <hr />
+                <Study.Start />
+                <Study.End />
+                <Study.EnableFollowUpExperiments />
+                <Study.ResearchGroupIds />
+                <Study.ScientistIds />
+                <Study.StudyTopicIds />
+                <Study.Custom />
+                <hr />
+                <Study.SystemPermissions />
+            </Study>
+
             { canEdit && (
                 <div style={{
                     position: 'absolute', right: '0px', top: '0px'
@@ -118,26 +70,7 @@ const StudyRecordDetails = ({
                 </div>
             )}
         </div>
-    )
-}
-
-var reducer = (state, action) => {
-    var { type, payload } = action;
-    switch (type) {
-        case 'init-data':
-            return {
-                ...state,
-                record: payload.record,
-                relatedRecordLabels: payload.relatedRecordLabels,
-                relatedHelperSetItems: payload.relatedHelperSetItems,
-                relatedCustomRecordTypeLabels: payload.relatedCustomRecordTypeLabels,
-            }
-        case 'init-schema':
-            return {
-                ...state,
-                schema: payload.schema
-            }
-    }
+    );
 }
 
 export default StudyRecordDetails;

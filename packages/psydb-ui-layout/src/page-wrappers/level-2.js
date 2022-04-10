@@ -4,6 +4,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 
 export const Level2 = (ps) => {
     var {
+        showTitle = true,
         title,
         titleClassName,
         titleLinkUrl,
@@ -17,20 +18,24 @@ export const Level2 = (ps) => {
     ]);
 
     var renderedTitle = (
-        titleLinkUrl
-        ? (
-            <h5 className={ titleClassName }>
-                <LinkContainer to={ titleLinkUrl }>
-                    <span role='button'>
-                        { title }
-                    </span>
-                </LinkContainer>
-            </h5>
-        )
+        !showTitle
+        ? null
         : (
-            <h5 className={ titleClassName }>
-                { title }
-            </h5>
+            titleLinkUrl
+            ? (
+                <h5 className={ titleClassName }>
+                    <LinkContainer to={ titleLinkUrl }>
+                        <span role='button'>
+                            { title }
+                        </span>
+                    </LinkContainer>
+                </h5>
+            )
+            : (
+                <h5 className={ titleClassName }>
+                    { title }
+                </h5>
+            )
         )
     );
     return (
