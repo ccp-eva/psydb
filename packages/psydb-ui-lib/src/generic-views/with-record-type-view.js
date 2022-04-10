@@ -10,13 +10,12 @@ import {
 } from 'react-router-dom';
 
 import { useFetch } from '@mpieva/psydb-ui-hooks';
-import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
+import { LoadingIndicator, PageWrappers } from '@mpieva/psydb-ui-layout';
 
 import GenericRecordListContainer from '../record-list-container';
 import GenericRecordDetailsContainer from '../generic-record-details-container';
 import GenericRecordFormContainer from '../generic-record-form-container';
 
-import RecordTypeHeader from './record-type-header';
 import RecordTypeRouting from './record-type-routing';
 
 const withRecordTypeView = ({
@@ -73,14 +72,9 @@ const withRecordTypeView = ({
             ));
         }
 
+        var title = `Typ: ${typeData.state.label}`;
         return (
-            <div>
-                { recordType && (
-                    <RecordTypeHeader { ...({
-                        url,
-                        label: typeData.state.label
-                    })} />
-                )}
+            <PageWrappers.Level2 title={ title } titleLinkUrl={ url }>
                 { (!recordType && !noSpacer) && (
                     <div className='mb-3'></div>
                 )}
@@ -99,7 +93,7 @@ const withRecordTypeView = ({
                     RecordEditor,
                     RecordRemover,
                 }) } />
-            </div>
+            </PageWrappers.Level2>
         );
     }
 

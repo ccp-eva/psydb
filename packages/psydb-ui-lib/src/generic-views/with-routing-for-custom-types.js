@@ -8,7 +8,7 @@ import {
 
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
-import RecordTypeNav from '../record-type-nav';
+import RedirectOrTypeNav from '../redirect-or-type-nav';
 
 
 const withRoutingForCustomTypes = (options) => {
@@ -30,7 +30,7 @@ const withRoutingForCustomTypes = (options) => {
             collectionRecordTypes = []
         } = ps;
 
-        var { path } = useRouteMatch();
+        var { url, path } = useRouteMatch();
 
         if (shouldFetchCollectionTypes) {
             var [ didFetch, fetched ] = useFetch((agent) => (
@@ -53,8 +53,10 @@ const withRoutingForCustomTypes = (options) => {
         return (
             <Switch>
                 <Route exact path={`${path}`}>
-                    <RecordTypeNav
-                        items={ collectionRecordTypes }
+                    <RedirectOrTypeNav
+                        baseUrl={ url }
+                        recordTypes={ collectionRecordTypes }
+                        enableRedirect={ enableRedirect }
                     />
                 </Route>
                 <Route path={`${path}/:recordType`}>

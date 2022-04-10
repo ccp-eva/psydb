@@ -23,7 +23,7 @@ export const Level1 = (ps) => {
         : (
             titleLinkUrl
             ? (
-                <h1 className={ titleClassName } role='button'>
+                <h1 className={ titleClassName }>
                     <LinkContainer to={ titleLinkUrl }>
                         <span role='button'>
                             { title }

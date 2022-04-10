@@ -112,7 +112,7 @@ var customRecordTypeCollections = createEnumFromKV({
         'Probanden',
         'Studien',
         'Externe Personen',
-        'Externe Organinsationen'
+        'Externe Organisationen'
     ]
 })
 
@@ -120,16 +120,18 @@ var collections = createEnumFromKV({
     keys: [
         ...customRecordTypeCollections.keys,
         'personnel',
-        'researchGroups',
+        'researchGroup',
         'experimentOperatorTeam',
         'experiment',
+        'helperSet',
     ],
     names: [
         ...customRecordTypeCollections.names,
         'Mitarbeiter',
-        'Forschungs-Gruppen',
+        'Forschungsgruppen',
         'Experimenter-Teams',
         'Termine',
+        'Hilfstabellen',
     ]
 })
 

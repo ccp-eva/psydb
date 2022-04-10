@@ -62,7 +62,9 @@ const withCollectionView = (options) => {
                 </PageWrappers.Level1>
             )
         }
+        
         // TODO: static types
+        // FIXME: noSpacer still needed?
         return (
             <PageWrappers.Level1
                 showTitle={ showTitle }
@@ -79,7 +81,7 @@ const withCollectionView = (options) => {
                     : (
                         <RecordTypeView { ...({
                             collection,
-                            noSpacer,
+                            noSpacer: true
                         }) } />
                     )
                 )}
