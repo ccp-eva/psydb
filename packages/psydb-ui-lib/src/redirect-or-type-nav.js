@@ -3,17 +3,20 @@ import { Redirect } from 'react-router-dom';
 
 import RecordTypeNav from './record-type-nav';
 
-const RedirectOrTypeNav = ({
-    baseUrl,
-    subjectTypes,
-    recordTypes,
-    title,
-}) => {
+const RedirectOrTypeNav = (ps) => {
+    var {
+        baseUrl,
+        subjectTypes,
+        recordTypes,
+        title,
+        enableRedirect = true
+    } = ps;
+
     if (subjectTypes) {
         recordTypes = subjectTypes; // FIXME
     }
 
-    if (recordTypes.length === 1) {
+    if (enableRedirect && recordTypes.length === 1) {
         return (
             <Redirect to={
                 `${baseUrl}/${recordTypes[0].type}`

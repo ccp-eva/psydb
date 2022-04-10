@@ -14,6 +14,7 @@ var getCollectionCRTs = async (context, next) => {
         .find({ collection: collectionName }, { projection: {
             type: true,
             'state.label': true,
+            'state.hasSubChannels': true,
         }})
         .toArray()
     );

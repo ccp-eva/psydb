@@ -16,7 +16,8 @@ import {
 import {
     LoadingIndicator,
     LinkContainer,
-    PermissionDenied
+    PermissionDenied,
+    PageWrappers
 } from '@mpieva/psydb-ui-layout';
 
 import {
@@ -24,38 +25,27 @@ import {
     RecordListContainer
 } from '@mpieva/psydb-ui-lib';
 
+import * as enums from '@mpieva/psydb-schema-enums';
 import allSchemaCreators from '@mpieva/psydb-schema-creators';
 
 import StudyRecordTypeView from './record-type-view';
 
-// TODO: put this somewhere
-var collectionDisplayNames = {
-    'location': 'Locations',
-    'subject': 'Probanden',
-    'study': 'Studien',
-    'researchGroup': 'Forschungsgruppen',
-    'personnel': 'Mitarbeiter',
-    'systemRole': 'System-Rollen',
-}
-
 const GenericCollectionView = () => {
     var collection = 'study';
+    var title = enums.collections.getLabel(collection) || collection;
+    var { hasCustomTypes } = allSchemaCreators[collection];
+
     var { path, url } = useRouteMatch();
     
     var permissions = usePermissions();
     var canRead = permissions.hasFlag('canReadStudies');
     if (!canRead) {
         return (
-            <>
-                <LinkContainer to={ url }>
-                    <h1 className='m-0 border-bottom' role='button'>
-                        { collectionDisplayNames[collection] || collection }
-                    </h1>
-                </LinkContainer>
+            <PageWrappers.Level1 title={ title } titleLinkUrl={ url }>
                 <div className='mt-3'>
                     <PermissionDenied />
                 </div>
-            </>
+            </PageWrappers.Level1>
         )
     }
 
@@ -69,18 +59,9 @@ const GenericCollectionView = () => {
 
     var collectionRecordTypes = fetched.data;
 
-    var { hasCustomTypes } = allSchemaCreators[collection];
-
     // TODO: static types
     return (
-        <div>
-            <header>
-                <LinkContainer to={ url }>
-                    <h1 className='m-0 border-bottom' role='button'>
-                        { collectionDisplayNames[collection] || collection }
-                    </h1>
-                </LinkContainer>
-            </header>
+        <PageWrappers.Level1 title={ title } titleLinkUrl={ url }>
             {(
                 hasCustomTypes
                 ? (
@@ -98,7 +79,7 @@ const GenericCollectionView = () => {
                     />
                 )
             )}
-        </div>
+        </PageWrappers.Level1>
     );
 }
 

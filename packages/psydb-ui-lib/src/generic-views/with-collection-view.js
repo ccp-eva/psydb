@@ -1,20 +1,25 @@
 import React from 'react';
 import { useRouteMatch } from 'react-router-dom';
+
+import * as enums from '@mpieva/psydb-schema-enums';
 import allSchemaCreators from '@mpieva/psydb-schema-creators';
 
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
-import { PermissionDenied } from '@mpieva/psydb-ui-layout';
+import {
+    PermissionDenied,
+    PageWrappers
+} from '@mpieva/psydb-ui-layout';
 
 import withRecordTypeView from './with-record-type-view';
 import withRoutingForCustomTypes from './with-routing-for-custom-types';
-import CollectionHeader from './collection-header';
 
 
-const withCollectionView = ({
-    collection: staticCollection,
-    RoutingForCustomTypes,
-    RecordTypeView
-}) => {
+const withCollectionView = (options) => {
+    var {
+        collection: staticCollection,
+        RoutingForCustomTypes,
+        RecordTypeView
+    } = options;
 
     if (!RecordTypeView) {
         RecordTypeView = withRecordTypeView({
@@ -29,12 +34,14 @@ const withCollectionView = ({
         })
     }
 
-    return ({
-        collection,
-        showTitle = true,
-        noSpacer
-    }) => {
-        collection = collection || staticCollection;
+    return (ps) => {
+        var {
+            collection = staticCollection,
+            showTitle = true,
+            noSpacer
+        } = ps;
+
+        var title = enums.collections.getLabel(collection) || collection;
 
         var permissions = usePermissions();
         var canRead = permissions.hasCollectionFlag(collection, 'read');
@@ -44,26 +51,24 @@ const withCollectionView = ({
 
         if (!canRead) {
             return (
-                <>
-                    { showTitle && (
-                        <CollectionHeader { ...({
-                            url, collection
-                        }) } />
-                    )}
+                <PageWrappers.Level1
+                    showTitle={ showTitle }
+                    title={ title }
+                    titleLinkUrl={ url }
+                >
                     <div className='mt-3'>
                         <PermissionDenied />
                     </div>
-                </>
+                </PageWrappers.Level1>
             )
         }
         // TODO: static types
         return (
-            <div>
-                { showTitle && (
-                    <CollectionHeader { ...({
-                        url, collection
-                    }) } />
-                )}
+            <PageWrappers.Level1
+                showTitle={ showTitle }
+                title={ title }
+                titleLinkUrl={ url }
+            >
                 {(
                     hasCustomTypes
                     ? (
@@ -78,7 +83,7 @@ const withCollectionView = ({
                         }) } />
                     )
                 )}
-            </div>
+            </PageWrappers.Level1>
         );
 
     }

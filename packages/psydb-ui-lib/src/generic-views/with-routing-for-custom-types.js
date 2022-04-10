@@ -11,23 +11,26 @@ import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 import RecordTypeNav from '../record-type-nav';
 
 
-const withRoutingForCustomTypes = ({
-    RecordTypeView,
-    shouldFetchCollectionTypes,
-}) => {
+const withRoutingForCustomTypes = (options) => {
+    var {
+        RecordTypeView,
+        shouldFetchCollectionTypes,
+        enableRedirect = true
+    } = options;
+
     if (!RecordTypeView) {
         RecordTypeView = withRecordTypeView({
             shouldFetchCollectionTypes: false,
         });
     }
 
-    return ({
-        collection,
-        collectionRecordTypes,
-    }) => {
-        var { path } = useRouteMatch();
+    return (ps) => {
+        var {
+            collection,
+            collectionRecordTypes = []
+        } = ps;
 
-        collectionRecordTypes = collectionRecordTypes || [];
+        var { path } = useRouteMatch();
 
         if (shouldFetchCollectionTypes) {
             var [ didFetch, fetched ] = useFetch((agent) => (
