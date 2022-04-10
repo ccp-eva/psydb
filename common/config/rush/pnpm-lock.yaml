@@ -4,7 +4,7 @@ dependencies:
   '@babel/preset-env': 7.12.17_@babel+core@7.12.17
   '@babel/preset-react': 7.12.13_@babel+core@7.12.17
   '@cdxoo/block-quote': 1.0.1
-  '@cdxoo/formik-ajv-async': 0.4.0_formik@2.2.9+react@17.0.2
+  '@cdxoo/formik-ajv-async': 0.4.1_formik@2.2.9+react@17.0.2
   '@cdxoo/formik-utils': 0.5.0_formik@2.2.9+react@17.0.2
   '@cdxoo/inline-string': 1.0.0
   '@cdxoo/jsonpointer-to-objectpath': 1.0.0
@@ -1333,7 +1333,7 @@ packages:
     dev: false
     resolution:
       integrity: sha512-VDMjQuGRJdz9jxU85/srmZg3ePjhQTNOcMQuziecvqSwPrNMmBApMSbC45IAoxqAW9fVVhacMBFdzMtf81o+EQ==
-  /@cdxoo/formik-ajv-async/0.4.0_formik@2.2.9+react@17.0.2:
+  /@cdxoo/formik-ajv-async/0.4.1_formik@2.2.9+react@17.0.2:
     dependencies:
       formik: 2.2.9_react@17.0.2
       jsonpointer: 4.1.0
@@ -1343,7 +1343,7 @@ packages:
       formik: '>=2.0'
       react: '>=16.8'
     resolution:
-      integrity: sha512-X+IMqbnFmEz938tiJHwlTHcLINjUlYcAGPt63DUnXFCdei8wkcv8on46F/OasGLoEonJyVq8OPDiGLDu+n3Y0Q==
+      integrity: sha512-gJHk0c2D44N+Ho3C9tZjOF0hgFB4whlgTYkrBvBSVMjaS53RojkIJ/Wg4aCDF0VBFSdpQ6jAGAJcLejET0SyqQ==
   /@cdxoo/formik-utils/0.5.0_formik@2.2.9+react@17.0.2:
     dependencies:
       formik: 2.2.9_react@17.0.2
@@ -10185,7 +10185,7 @@ packages:
       '@babel/core': 7.12.17
       '@babel/preset-env': 7.12.17_@babel+core@7.12.17
       '@babel/preset-react': 7.12.13_@babel+core@7.12.17
-      '@cdxoo/formik-ajv-async': 0.4.0_formik@2.2.9+react@17.0.2
+      '@cdxoo/formik-ajv-async': 0.4.1_formik@2.2.9+react@17.0.2
       '@cdxoo/formik-utils': 0.5.0_formik@2.2.9+react@17.0.2
       '@cdxoo/omit': 1.0.1
       '@rjsf/bootstrap-4': 2.5.1_5dccca4f99fef0089ce8bea6fe035927
@@ -10213,7 +10213,7 @@ packages:
     peerDependencies:
       webpack: '*'
     resolution:
-      integrity: sha512-O8N6569dnDghUBe0B+Jl6KR1BbJU1DZmzMZB1GkaiytkT/a3outbEjT8jLnkky2xV4KjvUs2aDqhb1QadP3NWg==
+      integrity: sha512-vqAu+e8OOfeWsUnWULLYS45nyA+oCJiK3Em4m/l6u6TH5eg9g9G6mnvawwdkdavpPJCf72akzGdE1hIOP3W07w==
       tarball: 'file:projects/psydb-ui-lib.tgz'
     version: 0.0.0
   'file:projects/psydb-ui-record-views.tgz':
@@ -10346,7 +10346,7 @@ specifiers:
   '@babel/preset-env': ~7.12.10
   '@babel/preset-react': ~7.12.10
   '@cdxoo/block-quote': ~1.0.0
-  '@cdxoo/formik-ajv-async': ~0.4.0
+  '@cdxoo/formik-ajv-async': ~0.4.1
   '@cdxoo/formik-utils': ~0.5.0
   '@cdxoo/inline-string': ~1.0.0
   '@cdxoo/jsonpointer-to-objectpath': ~1.0.0

@@ -1,8 +1,9 @@
 'use strict';
-var Password = () => ({
+var Password = ({ ...keywords } = {}) => ({
     type: 'string',
     systemType: 'Password',
-    title: 'Passwort'
+    title: 'Passwort',
+    ...keywords
 });
 
 module.exports = Password;

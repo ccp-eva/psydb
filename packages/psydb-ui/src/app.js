@@ -59,7 +59,11 @@ const App = () => {
                     </SelfContext.Provider>
                 </AgentContext.Provider>
             )
-            : <SignIn onSignedIn={ onSignedIn } />
+            : (
+                <AgentContext.Provider value={ publicAgent }>
+                    <SignIn onSignedIn={ onSignedIn } />
+                </AgentContext.Provider>
+            )
         );
     }
     else {

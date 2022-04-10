@@ -8,6 +8,7 @@ module.exports = {
     ApiError: require('./api-error'),
     FakeAjvError: require('./fake-ajv-error'),
     ResponseBody: require('./response-body'),
+    Self: require('./self'),
 
     validateOrThrow: require('./validate-or-throw'),
 
