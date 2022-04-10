@@ -98,4 +98,4 @@ const StudyRecordTypeView = ({
     );
 }
 
-export default StudyRecordTypeView;
+//export default StudyRecordTypeView;
