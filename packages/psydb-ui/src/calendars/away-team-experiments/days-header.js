@@ -19,12 +19,24 @@ const DaysHeader = ({
         <div style={ style }>
             <Container style={{ maxWidth: '100%' }}>
                 <Row>
-                    { allDayStarts.map(dayStart => (
-                        <Col
+                    { allDayStarts.map(dayStart => {
+                        var dayIndex = datefns.getISODay(dayStart);
+                        var dayEnd = datefns.endOfDay(dayStart);
+                        var isInPast = new Date().getTime() > dayEnd.getTime();
+                        var shouldEnable = (
+                            !isInPast
+                            // && !([6,7].includes(dayIndex))
+                        );
+                        var className = (
+                            shouldEnable
+                            ? 'text-center border-bottom mb-2'
+                            : 'text-center text-grey border-bottom mb-2'
+                        )
+                        return <Col
                             key={ dayStart.getTime() }
                             className='p-1'
                         >
-                            <header className='text-center border-bottom mb-2'>
+                            <header className={ className }>
                                 <div
                                     role={ role }
                                     onClick={ onClick && (() => onClick(dayStart)) }
@@ -33,7 +45,7 @@ const DaysHeader = ({
                                 </div>
                             </header>
                         </Col>
-                    ))}
+                    })}
                 </Row>
             </Container>
         </div>

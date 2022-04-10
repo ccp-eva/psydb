@@ -34,7 +34,8 @@ var triggerSystemEvents = async ({
     db,
     rohrpost,
     message,
-    cache
+    cache,
+    dispatch,
 }) => {
     var { type: messageType, personnelId, payload } = message;
     var {
@@ -53,23 +54,13 @@ var triggerSystemEvents = async ({
     }
     var passwordHash = bcrypt.hashSync(password, 10);
 
-    var channel = (
-        rohrpost
-        .openCollection('personnel')
-        .openChannel({ id: targetRecordId })
-    );
-
-    await channel.dispatch({
+    await dispatch({
+        collection: 'personnel',
+        channelId: targetRecordId,
         subChannelKey: 'gdpr',
-        lastKnownEventId,
-        message: {
-            type: 'put',
-            personnelId,
-            payload: {
-                prop: '/state/internals/passwordHash',
-                value: passwordHash
-            }
-        }
+        payload: { $set: {
+            'gdpr.state.internals.passwordHash': passwordHash,
+        }}
     });
         
     cache.password = password;

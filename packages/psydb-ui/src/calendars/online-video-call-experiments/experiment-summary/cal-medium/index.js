@@ -6,7 +6,7 @@ import enums from '@mpieva/psydb-schema-enums';
 
 import agent from '@mpieva/psydb-ui-request-agents';
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
-import { useModalReducer } from '@mpieva/psydb-ui-hooks';
+import { useModalReducer, usePermissions } from '@mpieva/psydb-ui-hooks';
 import getTextColor from '@mpieva/psydb-ui-lib/src/bw-text-color-for-background';
 import applyValueToDisplayFields from '@mpieva/psydb-ui-lib/src/apply-value-to-display-fields';
 
@@ -17,6 +17,7 @@ import {
     MoveExperimentModal,
     ChangeTeamModal,
     MoveSubjectModal,
+    FollowUpSubjectModal,
     RemoveSubjectModal,
     PerSubjectCommentModal,
 } from '@mpieva/psydb-ui-lib/src/modals';
@@ -31,6 +32,7 @@ const ExperimentSummaryMedium = ({
     subjectDisplayFieldData,
 
     url,
+    showPast,
     onSuccessfulUpdate,
 }) => {
 
@@ -39,6 +41,7 @@ const ExperimentSummaryMedium = ({
 
     var commentPerSubjectModal = useModalReducer({ show: false });
     var moveSubjectModal = useModalReducer({ show: false });
+    var followUpSubjectModal = useModalReducer({ show: false });
     var removeSubjectModal = useModalReducer({ show: false });
 
     var changeStatusThunk = (status) => ({ subjectId }) => {
@@ -72,6 +75,7 @@ const ExperimentSummaryMedium = ({
         interval: { start, end },
         subjectData,
         experimentOperatorTeamId,
+        isPostprocessed,
     }} = experimentRecord;
 
     var teamRecord = experimentOperatorTeamRecords.find(it => (
@@ -80,6 +84,16 @@ const ExperimentSummaryMedium = ({
     
     start = new Date(start);
     end = new Date(new Date(end).getTime() + 1); // FIXME: 1ms offset
+
+    var isInPast = new Date().getTime() > new Date(end).getTime();
+    var hasProcessedSubjects = !!subjectData.find(
+        it => it.participationStatus !== 'unknown'
+    );
+    // TODO: we might also want to send a flag to api
+    // so we dont send dent data of those at all
+    if (!showPast && isInPast && isPostprocessed) {
+        return null;
+    }
 
     return (
         <div className='pl-2 pr-2 pb-1 pt-1 mb-2' style={{
@@ -104,6 +118,7 @@ const ExperimentSummaryMedium = ({
                 onHide: changeTeamModal.handleHide,
                 payloadData: changeTeamModal.data,
 
+                experimentType: 'online-video-call',
                 experimentId: experimentRecord._id,
                 studyId: experimentRecord.state.studyId,
                 currentTeamId: experimentRecord.state.experimentOperatorTeamId,
@@ -125,6 +140,18 @@ const ExperimentSummaryMedium = ({
                 show: moveSubjectModal.show,
                 onHide: moveSubjectModal.handleHide,
                 payloadData: moveSubjectModal.data,
+
+                shouldFetch: true,
+                experimentId: experimentRecord._id,
+                experimentType: 'online-video-call',
+
+                onSuccessfulUpdate,
+            }) } />
+
+            <FollowUpSubjectModal { ...({
+                show: followUpSubjectModal.show,
+                onHide: followUpSubjectModal.handleHide,
+                payloadData: followUpSubjectModal.data,
 
                 shouldFetch: true,
                 experimentId: experimentRecord._id,
@@ -178,6 +205,21 @@ const ExperimentSummaryMedium = ({
                 </div>
             </div>
 
+            { !isPostprocessed && hasProcessedSubjects && (
+                <div>
+                    <small>in Nachbereitung</small>
+                </div>
+            )}
+            { !isPostprocessed && !hasProcessedSubjects && isInPast && (
+                <div>
+                    <small>offene Nachbereitung</small>
+                </div>
+            )}
+            { isPostprocessed && (
+                <div>
+                    <small>Abgeschlossen</small>
+                </div>
+            )}
 
             <div className='mt-2'>
                 <small><b>Probanden:</b></small>
@@ -203,6 +245,9 @@ const ExperimentSummaryMedium = ({
 
                             onClickComment: commentPerSubjectModal.handleShow,
                             onClickMove: moveSubjectModal.handleShow,
+                            ...(experimentRecord._canFollowUp && {
+                                onClickFollowUp: followUpSubjectModal.handleShow,
+                            }),
                             onClickRemove: removeSubjectModal.handleShow,
 
                             onClickConfirm,
@@ -239,6 +284,7 @@ const SubjectItem = ({
 
     onClickComment,
     onClickMove,
+    onClickFollowUp,
     onClickRemove,
 
     onClickConfirm,
@@ -289,6 +335,7 @@ const SubjectItem = ({
                         
                         onClickComment,
                         onClickMove,
+                        onClickFollowUp,
                         onClickRemove,
 
                         onClickConfirm,

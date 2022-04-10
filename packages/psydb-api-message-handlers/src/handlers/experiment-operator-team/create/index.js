@@ -5,8 +5,6 @@ var GenericRecordHandler = require('../../../lib/generic-record-handler');
 var {
     destructureMessage,
     openChannel,
-    createRecordPropMessages,
-    dispatchRecordPropMessages
 } = require('../../../lib/generic-record-handler-utils');
 
 var { fetchTeamName } = require('../utils');
@@ -19,35 +17,26 @@ var handler = GenericRecordHandler({
         db,
         rohrpost,
         personnelId,
-        message
+        message,
+
+        dispatchProps,
     }) => {
 
         var destructured = destructureMessage({ message });
-        var { props: { personnelIds }} = destructured;
+        var { id, props, additionalCreateProps } = destructured;
+        var { personnelIds } = props;
 
         var teamName = await fetchTeamName({ db, personnelIds });
+        props.name = teamName;
 
-        var channel = await openChannel({
-            db,
-            rohrpost,
-            ...destructured
-        });
+        await dispatchProps({
+            collection: 'experimentOperatorTeam',
+            channelId: id,
+            isNew: true,
+            additionalChannelProps: additionalCreateProps,
+            props,
 
-        var recordPropMessages = createRecordPropMessages({
-            personnelId,
-            props: destructured.props
-        });
-        
-        recordPropMessages.push({
-            type: 'put',
-            personnelId,
-            payload: { prop: '/state/name', value: teamName }
-        });
-
-        await dispatchRecordPropMessages({
-            channel,
-            ...destructured,
-            recordPropMessages
+            initialize: true,
         });
     }
 })

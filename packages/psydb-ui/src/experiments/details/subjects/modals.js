@@ -3,6 +3,7 @@ import React from 'react';
 import {
     PerSubjectCommentModal,
     MoveSubjectModal,
+    FollowUpSubjectModal,
     RemoveSubjectModal,
 } from '@mpieva/psydb-ui-lib/src/modals';
 
@@ -13,6 +14,7 @@ const Modals = ({
 
     commentModal,
     moveModal,
+    followupModal,
     removeModal,
 
     onSuccessfulUpdate,
@@ -34,6 +36,19 @@ const Modals = ({
                 onHide: moveModal.handleHide,
                 payloadData: moveModal.data,
 
+                experimentData,
+                studyData,
+                subjectDataByType,
+
+                onSuccessfulUpdate,
+            }) } />
+            
+            <FollowUpSubjectModal { ...({
+                show: followupModal.show,
+                onHide: followupModal.handleHide,
+                payloadData: followupModal.data,
+
+                experimentType: experimentData.record.type,
                 experimentData,
                 studyData,
                 subjectDataByType,

@@ -113,6 +113,12 @@ var experimentCalendar = async (context, next) => {
     }
 
     var studyIds = studyRecords.map(it => it._id);
+    
+    var studiesById = keyBy({
+        items: studyRecords,
+        byProp: '_id'
+    });
+
     var experimentRecords = await (
         db.collection('experiment').aggregate([
             MatchIntervalOverlapStage({ start, end }),
@@ -229,7 +235,10 @@ var experimentCalendar = async (context, next) => {
 
     context.body = ResponseBody({
         data: {
-            experimentRecords,
+            experimentRecords: experimentRecords.map(it => ({
+                ...it,
+                _canFollowUp: studiesById[it.state.studyId].state.enableFollowUpExperiments
+            })),
             experimentOperatorTeamRecords,
             experimentRelated,
             subjectRecordsById,

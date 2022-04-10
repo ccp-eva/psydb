@@ -111,13 +111,28 @@ module.exports = {
         isGenericRecord: true,
         hasCustomTypes: true,
         hasSubChannels: false,
+        availableStaticDisplayFields: [
+            {
+                key: '_id',
+                systemType: 'SaneString',
+                dataPointer: '/_id',
+                displayName: 'ID',
+            },
+            {
+                key: '_sequenceNumber',
+                systemType: 'Integer',
+                dataPointer: '/sequenceNumber',
+                displayName: 'ID Nr.',
+                props: {},
+            },
+        ]
     },
     personnel: {
         collection: 'personnel',
         isGenericRecord: true,
         hasCustomTypes: false,
         hasSubChannels: true,
-        subChannelKeys: ['scientific', 'gdpr'],
+        subChannelKeys: ['gdpr', 'scientific'],
         recordLabelDefinition: {
             format: '${#} ${#}',
             tokens: [
@@ -209,6 +224,13 @@ module.exports = {
                 displayName: 'ID',
             },
             {
+                key: '_sequenceNumber',
+                systemType: 'Integer',
+                dataPointer: '/sequenceNumber',
+                displayName: 'ID Nr.',
+                props: {},
+            },
+            {
                 key: '_shorthand',
                 systemType: 'SaneString',
                 dataPointer: '/state/shorthand',
@@ -286,7 +308,7 @@ module.exports = {
         isGenericRecord: true,
         hasCustomTypes: true,
         hasSubChannels: true,
-        subChannelKeys: ['scientific', 'gdpr'],
+        subChannelKeys: ['gdpr', 'scientific'],
         
         availableStaticDisplayFields: [
             {
@@ -301,6 +323,20 @@ module.exports = {
                 systemType: 'SaneString',
                 dataPointer: '/onlineId',
                 displayName: 'Online ID Code',
+                props: {},
+            },
+            {
+                key: '_comment',
+                systemType: 'FullText',
+                dataPointer: '/scientific/state/comment',
+                displayName: 'Kommentar',
+                props: {},
+            },
+            {
+                key: '_testingPermissions',
+                systemType: 'TestingPermissions',
+                dataPointer: '/scientific/state/testingPermissions',
+                displayName: 'Teilnahme-Erlaubnis',
                 props: {},
             },
         ],
@@ -395,6 +431,21 @@ module.exports = {
         isGenericRecord: true,
         hasCustomTypes: true,
         hasSubChannels: false,
+        availableStaticDisplayFields: [
+            {
+                key: '_id',
+                systemType: 'SaneString',
+                dataPointer: '/_id',
+                displayName: 'ID',
+            },
+            {
+                key: '_sequenceNumber',
+                systemType: 'Integer',
+                dataPointer: '/sequenceNumber',
+                displayName: 'ID Nr.',
+                props: {},
+            },
+        ]
     },
 
     externalPerson: {
@@ -402,6 +453,21 @@ module.exports = {
         isGenericRecord: true,
         hasCustomTypes: true,
         hasSubChannels: false,
+        availableStaticDisplayFields: [
+            {
+                key: '_id',
+                systemType: 'SaneString',
+                dataPointer: '/_id',
+                displayName: 'ID',
+            },
+            {
+                key: '_sequenceNumber',
+                systemType: 'Integer',
+                dataPointer: '/sequenceNumber',
+                displayName: 'ID Nr.',
+                props: {},
+            },
+        ]
     },
 
 }

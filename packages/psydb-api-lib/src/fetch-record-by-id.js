@@ -47,23 +47,24 @@ var fetchRecordById = async ({
         hasSubChannels
         ? [
             { $addFields: {
-                'gdpr._lastKnownEventId': { $arrayElemAt: [ '$gdpr.events._id', 0 ]},
-                'scientific._lastKnownEventId': { $arrayElemAt: [ '$scientific.events._id', 0 ]},
+                'gdpr._lastKnownEventId': '$gdpr._rohrpostMetadata.lastKnownEventId',
+                'scientific._lastKnownEventId': '$scientific._rohrpostMetadata.lastKnownEventId',
             }},
             { $project: {
+                _rohrpostMetadata: false,
                 // FIXME: any way to not hardcode that?
                 'gdpr.internals.passwordHash': false,
 
-                'gdpr.events': false,
-                'scientific.events': false,
+                'gdpr._rohrpostMetadata': false,
+                'scientific._rohrpostMetadata': false,
             }},
         ]
         : [
             { $addFields: {
-                '_lastKnownEventId': { $arrayElemAt: [ '$events._id', 0 ]},
+                '_lastKnownEventId': '$_rohrpostMetadata.lastKnownEventId',
             }},
             { $project: {
-                events: false,
+                _rohrpostMetadata: false,
             }},
         ]
     );

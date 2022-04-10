@@ -1,12 +1,25 @@
 'use strict';
 var debug = require('debug')('psydb:api:endpoints:public-sign-in');
+var bcrypt = require('bcrypt');
+var { ApiError, Ajv, Self } = require('@mpieva/psydb-api-lib');
 
-var bcrypt = require('bcrypt'),
-    Self = require('@mpieva/psydb-api-lib/src/self'),
-    ApiError = require('@mpieva/psydb-api-lib/src/api-error');
+var Schema = require('./schema');
 
 var signIn = async (context, next) => {
     var { db, session, request } = context;
+    
+    var schema = Schema(),
+        ajv = Ajv(),
+        isValid = ajv.validate(schema, request.body);
+
+    if (!isValid) {
+        debug('/sign-in', ajv.errors);
+        throw new ApiError(400, {
+            apiStatus: 'InvalidMessageSchema',
+            data: { ajvErrors: ajv.errors }
+        });
+    }
+
     var { email, password } = request.body;
 
     var self = await Self({

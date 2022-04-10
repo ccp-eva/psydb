@@ -80,6 +80,11 @@ var participatedStudiesForSubject = async (context, next) => {
     var { participatedInStudies } = (
         subjectData.record.scientific.state.internals
     );
+    participatedInStudies = participatedInStudies.filter(it => {
+        // FIXME maybe not store it in subject at all then?
+        // keep in experiment though
+        return !(['didnt-participate'].includes(it.status));
+    })
 
     var {
         studyTypes,

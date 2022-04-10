@@ -1,4 +1,5 @@
 'use strict';
+var { unique } = require('@mpieva/psydb-core-utils');
 var enums = require('@mpieva/psydb-schema-enums');
 
 var ProcessedParticipationStatus = ({
@@ -6,16 +7,21 @@ var ProcessedParticipationStatus = ({
 } = {}) => ({
     systemType: 'ProcessedParticipationStatus',
     type: 'string',
-    enum: [
-        ...enums.safeParticipationStatus.keys,
-        ...enums.safeUnparticipationStatus.keys,
-    ],
+
+    enum: unique([
+        ...enums.awayTeamParticipationStatus.keys,
+        ...enums.awayTeamUnparticipationStatus.keys,
+        ...enums.inviteParticipationStatus.keys,
+        ...enums.inviteUnparticipationStatus.keys,
+    ]),
 
     // FIXME: rjsf
-    enumNames: [
-        ...enums.safeParticipationStatus.names,
-        ...enums.safeUnparticipationStatus.names,
-    ],
+    enumNames: unique([
+        ...enums.awayTeamParticipationStatus.names,
+        ...enums.awayTeamUnparticipationStatus.names,
+        ...enums.inviteParticipationStatus.names,
+        ...enums.inviteUnparticipationStatus.names,
+    ]),
 
     default: 'participated',
     ...additionalKeywords,

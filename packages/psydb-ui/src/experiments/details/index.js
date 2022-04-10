@@ -43,11 +43,19 @@ const ExperimentDetails = ({
                 experimentType, 'canChangeOpsTeam'
             )
         )
-    )
+    );
+
+    var isCanceled = experimentData.record.state.isCanceled;
+    var isPlaceholder = experimentData.record.state.subjectData.length < 1;
     return (
         <div>
             <div className='border bg-light p-3'>
-                { experimentData.record.state.isCanceled && (
+                { !isCanceled && isPlaceholder && (
+                    <h5 className='text-grey'>
+                        Platzhalter
+                    </h5>
+                )}
+                { isCanceled && (
                     <h5 className='text-danger'>
                         Abgesagt
                     </h5>
@@ -59,7 +67,7 @@ const ExperimentDetails = ({
                     studyData,
                 }) } />
                 { showFunctions && (
-                    <>
+                    <div className='media-print-hidden'>
                         <hr />
                         <div className='mt-3 d-flex justify-content-end'>
                             <GeneralFunctions { ...({
@@ -69,7 +77,7 @@ const ExperimentDetails = ({
                                 onSuccessfulUpdate,
                             }) } />
                         </div>
-                    </>
+                    </div>
                 )}
             </div>
             <div>

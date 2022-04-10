@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 
 import {
     useRouteMatch,
@@ -9,10 +9,12 @@ import {
 import {
     useFetch,
     useRevision,
+    usePermissions,
     useURLSearchParams,
 } from '@mpieva/psydb-ui-hooks';
 
 import {
+    Button,
     LoadingIndicator,
     LinkButton,
     Icons,
@@ -48,6 +50,9 @@ const AwayTeamCalendar = ({
     var [ query, updateQuery ] = useURLSearchParams();
     // TODO: study selection
     
+    var permissions = usePermissions();
+    var [ showPast, setShowPast ] = useState(false);
+
     var [ didFetch, fetched ] = useFetch((agent) => {
         return agent.fetchLocationExperimentCalendar({
             experimentType: 'away-team',
@@ -90,6 +95,14 @@ const AwayTeamCalendar = ({
 
     return (
         <div>
+            { permissions.isRoot() && (
+                <div className='mb-2'>
+                    <Button
+                        onClick={ () => setShowPast(true) }
+                        size='sm'
+                    >zeige Vergangenheit</Button>
+                </div>
+            )}
             {/*<div className='bg-light'>
                 <LinkButton to={ `/calendars` }>
                     <Icons.ArrowLeftShort style={{
@@ -143,6 +156,7 @@ const AwayTeamCalendar = ({
                     locationDisplayFieldData,
                     
                     url,
+                    showPast,
                     onSuccessfulUpdate: increaseRevision
                 }) } />
             ))}

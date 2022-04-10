@@ -8,16 +8,16 @@ const ExperimentIntervalSummary = ({ experimentRecord }) => {
     return (
         <Container>
             <Pair label='Datum'>
-                { datefns.format(new Date(start), 'P') }
+                { datefns.format(new Date(start), 'dd.MM.yyyy') }
             </Pair>
 
             <Pair label='Beginn'>
-                { datefns.format(new Date(start), 'p') }
+                { datefns.format(new Date(start), 'HH:mm') }
             </Pair>
             <Pair label='Ende'>
                 { datefns.format(
                     new Date(end).getTime() + 1,
-                    'p'
+                    'HH:mm'
                 ) }
             </Pair>
         </Container>

@@ -1,20 +1,10 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
 
-var {
-    unique
-} = require('@mpieva/psydb-common-lib');
-
-var {
-    ApiError,
-    compareIds,
-    checkForeignIdExists,
-} = require('@mpieva/psydb-api-lib');
-
+var { ApiError } = require('@mpieva/psydb-api-lib');
 var {
     SimpleHandler,
-    PutMaker,
-    PushMaker
+    removeReservationsInInterval, // FIXME: where to put this?
 } = require('../../../lib');
 
 var {
@@ -23,10 +13,10 @@ var {
     prepareExperimentRecord,
     prepareOpsTeamRecord,
     prepareTargetLocation,
-    dispatchAllChannelMessages,
 } = require('../util');
 
 var createSchema = require('./schema');
+
 
 var handler = SimpleHandler({
     messageType: 'experiment/move-online-video-call',
@@ -91,45 +81,49 @@ handler.checkAllowedAndPlausible = async (context) => {
     });*/
 }
 
-handler.triggerSystemEvents = async ({
-    db,
-    rohrpost,
-    cache,
-    message,
-    personnelId,
-}) => {
-    var { type: messageType, payload } = message;
+handler.triggerSystemEvents = async (context) => {
+    var { cache, message, dispatch } = context;
+
     var {
         experimentId,
         experimentOperatorTeamId,
         loactionId,
         interval,
-    } = payload;
+        shouldRemoveOldReservation
+    } = message.payload;
 
     var {
         experimentRecord,
         locationRecord,
     } = cache;
 
-    var experimentChannel = (
-        rohrpost.openCollection('experiment').openChannel({
-            id: experimentId
-        })
-    )
+    var {
+        interval: oldExperimentInterval,
+        experimentOperatorTeamId: oldTeamId,
+        locationId: oldLocationId
+    } = experimentRecord.state;
 
-    // FIXME: not sure about lastknownEventId
-    await experimentChannel.dispatchMany({
-        lastKnownEventId: experimentRecord.events[0]._id,
-        messages: [
-            ...PutMaker({ personnelId }).all({
-                '/state/experimentOperatorTeamId': experimentOperatorTeamId,
-                '/state/locationRecordType': locationRecord.type,
-                '/state/locationId': locationRecord._id,
-                '/state/interval': interval,
-            })
-        ]
-    })
+    if (shouldRemoveOldReservation) {
+        await removeReservationsInInterval({
+            ...context,
+            removeInterval: oldExperimentInterval,
+            extraFilters: {
+                'state.experimentOperatorTeamId': oldTeamId,
+                'state.locationId': oldLocationId,
+            }
+        });
+    }
 
+    await dispatch({
+        collection: 'experiment',
+        channelId: experimentId,
+        payload: { $set: {
+            'state.experimentOperatorTeamId': experimentOperatorTeamId,
+            'state.locationRecordType': locationRecord.type,
+            'state.locationId': locationRecord._id,
+            'state.interval': interval,
+        }}
+    });
 }
 
 module.exports = handler;

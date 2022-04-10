@@ -1,6 +1,5 @@
 'use strict';
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
-    Ajv = require('@mpieva/psydb-api-lib/src/ajv');
+var { Ajv, ApiError } = require('@mpieva/psydb-api-lib');
 
 var shouldRun = (message) => (
     message.type === 'helperSetItem/patch'
@@ -46,26 +45,16 @@ var triggerSystemEvents = async ({
     db,
     rohrpost,
     message,
-    personnelId,
+
+    dispatchProps,
 }) => {
     var { type: messageType, payload } = message;
-    var { id, lastKnownEventId, props } = payload;
-
-    var channel = (
-        rohrpost
-        .openCollection('helperSetItem')
-        .openChannel({ id })
-    );
-
-    await channel.dispatch({ message: {
-        type: 'put',
-        personnelId,
-        payload: {
-            prop: '/state/label',
-            value: props.label
-        }
-    }, lastKnownEventId });
-
+    var { id, props } = payload;
+    await dispatchProps({
+        collection: 'helperSetItem',
+        channelId: id,
+        props
+    });
 }
 
 // no-op

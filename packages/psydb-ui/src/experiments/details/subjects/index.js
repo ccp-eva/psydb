@@ -21,6 +21,7 @@ const Subjects = ({
 
     var commentModal = useModalReducer({ show: false });
     var moveModal = useModalReducer({ show: false });
+    var followupModal = useModalReducer({ show: false });
     var removeModal = useModalReducer({ show: false });
 
     var send = useSend(({ subjectId, status }) => ({
@@ -49,6 +50,7 @@ const Subjects = ({
 
                 commentModal,
                 moveModal,
+                followupModal,
                 removeModal,
 
                 onSuccessfulUpdate,
@@ -59,6 +61,11 @@ const Subjects = ({
 
                 onClickComment: commentModal.handleShow,
                 onClickMove: moveModal.handleShow,
+                onClickFollowUp: (
+                    studyData.record.state.enableFollowUpExperiments
+                    ? followupModal.handleShow
+                    : undefined
+                ),
                 onClickRemove: removeModal.handleShow,
 
                 onClickConfirm,
@@ -66,7 +73,7 @@ const Subjects = ({
                 onClickContactFailed,
             }}>
                 <SubjectsContainer { ...({
-                    className: 'p-3',
+                    className: 'p-3 media-print-no-spacing-x',
                     experimentData,
                     labProcedureSettingData,
                     studyData,
@@ -94,6 +101,7 @@ const ActionsComponent = ({
 
         onClickComment,
         onClickMove,
+        onClickFollowUp,
         onClickRemove,
 
         onClickConfirm,
@@ -101,29 +109,31 @@ const ActionsComponent = ({
         onClickContactFailed,
     } = context;
 
-
     return (
-        <div className='d-flex justify-content-end'>
+        <div className='d-flex justify-content-end media-print-hidden'>
             { permissions.hasFlag('canReadSubjects') && (
                 <DetailsIconButton
                     to={`/subjects/${subjectRecord.type}/${subjectRecord._id}`}
                 />
             )}
 
-            <SubjectDropdown { ...({
-                subjectRecord,
-                
-                onClickComment,
-                onClickMove,
-                onClickRemove,
-
-                onClickConfirm,
-                onClickMailbox,
-                onClickContactFailed,
+            { experimentType !== 'away-team' && (
+                <SubjectDropdown { ...({
+                    subjectRecord,
                     
-                disabled: isUnparticipated,
-                experimentType,
-            }) } />
+                    onClickComment,
+                    onClickMove,
+                    onClickFollowUp,
+                    onClickRemove,
+
+                    onClickConfirm,
+                    onClickMailbox,
+                    onClickContactFailed,
+                        
+                    disabled: isUnparticipated,
+                    experimentType,
+                }) } />
+            )}
         </div>
     )
 }

@@ -1,4 +1,9 @@
 import React, { useState, useContext } from 'react';
+import ReactDateTime from 'react-datetime';
+import classnames from 'classnames';
+
+import datefns from '../../../date-fns';
+
 import { withField } from '@cdxoo/formik-utils';
 import { getSystemTimezone } from '@mpieva/psydb-timezone-helpers';
 
@@ -15,16 +20,62 @@ import { Form } from '@mpieva/psydb-ui-layout';
 import ServerTimezoneContext from '../../../server-timezone-context';
 
 const Control = (ps) => {
-    var serverTimezone = useContext(ServerTimezoneContext);
-    var clientTimezone = getSystemTimezone();
+    var { dataXPath, formikField, formikMeta, disabled } = ps;
+    var { error } = formikMeta;
+    var { value, onChange } = formikField;
+    var isValidDate = !isNaN(new Date(value).getTime());
+    
+    // TODO detect via 00:00:00.000Z bc thats alays utc?
+    //if (isValidDate) {
+    //    value = datefns.startOfDay(new Date(value).getTime() + 1)
+    //}
 
+    //var serverTimezone = useContext(ServerTimezoneContext);
+    //var clientTimezone = getSystemTimezone();
+
+    var inputClassName = classnames([
+        'form-control',
+        !!error && 'is-invalid'
+    ])
     return (
+        <ReactDateTime
+            value={ isValidDate ? new Date(value) : value }
+            onChange={ (stringOrMomentInstance) => {
+                console.log(stringOrMomentInstance.toISOString());
+                var v = '';
+                if (stringOrMomentInstance.toISOString) {
+                    var str = stringOrMomentInstance.toISOString();
+                    // stripping Z from string and reparsing t makes it
+                    // localtime
+                    var local = new Date(str.slice(0, -1));
+                    v = local.toISOString();
+
+                    // FIXME
+                    v = str;
+                    //console.log(v);
+                }
+                else {
+                    v = String(stringOrMomentInstance);
+                }
+                return onChange(dataXPath)(v);
+            }}
+            locale='de-DE'
+            timeFormat={ false }
+            inputProps={{
+                className: inputClassName,
+                disabled,
+                placeholder: 'tt.mm.jjjj'
+            }}
+        />
+    );
+
+    /*return (
         <InnerControl { ...({
             serverTimezone,
             clientTimezone,
             ...ps,
         })} />
-    )
+    )*/
 }
 
 class InnerControl extends React.Component {

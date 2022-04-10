@@ -58,13 +58,6 @@ handler.checkAllowedAndPlausible = async ({
     }
 
     cache.subject = subject;
-
-    /*if (!compareIds(
-        subject.scientific.events[0]._id,
-        lastKnownScientificEventId
-    )) {
-        throw new ApiError(400, 'SubjectRecordHasChanged');
-    }*/
 }
 
 handler.triggerSystemEvents = async ({
@@ -73,6 +66,8 @@ handler.triggerSystemEvents = async ({
     message,
     personnelId,
     cache,
+
+    dispatch,
 }) => {
     var { type: messageType, payload } = message;
     var {
@@ -82,29 +77,18 @@ handler.triggerSystemEvents = async ({
         status,
     } = payload;
 
-    var channel = (
-        rohrpost
-        .openCollection('subject')
-        .openChannel({
-            id,
-        })
-    );
-
-    var messages = PushMaker({ personnelId }).all({
-        '/state/internals/participatedInStudies': {
-            type: 'manual',
-            studyId,
-            timestamp,
-            status,
-        },
-    });
-
-    await channel.dispatchMany({
-        messages,
+    await dispatch({
+        collection: 'subject',
+        channelId: id,
         subChannelKey: 'scientific',
-        // NOTE: this is intentional since there is no way of knowing the id
-        // beforehand in certain cases
-        lastKnownEventId: cache.subject.scientific.events[0]._id,
+        payload: { $push: {
+            'scientific.state.internals.participatedInStudies': {
+                type: 'manual',
+                studyId,
+                timestamp,
+                status,
+            },
+        }}
     });
 }
 

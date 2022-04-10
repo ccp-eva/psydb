@@ -102,13 +102,6 @@ a:hover {
     z-index: 1011;
 }
 
-.text-orange {
-    color: #f90;
-}
-.text-lightgrey {
-    color: #ccc;
-}
-
 .team-time-slot.disabled {
     border: 1px solid;
     border-color: #f8f9fa;
@@ -142,6 +135,15 @@ a:hover {
     max-width: none !important;
 }
 
+/* FIXME: dont knwo what bootstrap is doing there
+ * see postprocesisng form
+ */
+.input-group-text input[type=checkbox],
+.input-group-text input[type=radio]
+{
+    margin-top: 0.3rem;
+}
+
 /* prevent link dragging */
 a {
     user-select: none;
@@ -162,6 +164,17 @@ a {
 .text-small {
     font-size: 80%;
 }
+.text-orange {
+    color: #f90;
+}
+.text-grey {
+    color: #bbb;
+}
+.text-lightgrey {
+    color: #ccc;
+}
+
+
 .w-33 {
     width: 33.333%
 }
@@ -182,5 +195,15 @@ a {
     .media-print-hidden {
         display: none !important;
         visibility: hidden !important;
+    }
+    .media-print-no-spacing {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    .media-print-no-spacing-x {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
     }
 }

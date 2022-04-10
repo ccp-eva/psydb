@@ -53,9 +53,6 @@ handler.checkAllowedAndPlausible = async ({
     if (!experimentRecord) {
         throw new ApiError(400, 'InvalidExperimentId');
     }
-    /*if (!compareIds(experimentRecord.events[0]._id, lastKnownExperimentEventId)) {
-        throw new ApiError(400, 'ExperimentRecordHasChanged');
-    }*/
 
     var {
         selectedSubjectIds,
@@ -94,9 +91,6 @@ handler.checkAllowedAndPlausible = async ({
     if (!subjectRecord) {
         throw new ApiError(400, 'InvalidSubjectId');
     }
-    /*if (!compareIds(subjectRecord.scientific.events[0]._id, lastKnownSubjectScientificEventId)) {
-        throw new ApiError(400, 'SubjectRecordHasChanged');
-    }*/
 
     if (experimentRecord.type === 'inhouse') {
         var {
@@ -120,13 +114,15 @@ handler.checkAllowedAndPlausible = async ({
     cache.subjectDataIndex = subjectDataIndex;
 }
 
-handler.triggerSystemEvents = async ({
-    db,
-    rohrpost,
-    cache,
-    message,
-    personnelId,
-}) => {
+handler.triggerSystemEvents = async (context) => {
+    var {
+        db,
+        rohrpost,
+        cache,
+        message,
+        personnelId,
+    } = context;
+
     var { type: messageType, payload } = message;
     var {
         experimentId,
@@ -146,9 +142,7 @@ handler.triggerSystemEvents = async ({
     } = cache;
 
     await dispatchRemoveSubjectEvents({
-        db,
-        rohrpost,
-        personnelId,
+        ...context,
 
         experimentRecord,
         subjectRecord,
@@ -156,7 +150,11 @@ handler.triggerSystemEvents = async ({
         unparticipateStatus,
         subjectComment,
         blockSubjectFromTesting,
-    })
+
+        dontTrackSubjectParticipatedInStudies: (
+            unparticipateStatus === 'deleted'
+        )
+    });
 }
 
 module.exports = handler;

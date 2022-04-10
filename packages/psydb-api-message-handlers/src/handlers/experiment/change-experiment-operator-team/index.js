@@ -1,14 +1,17 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
 
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error');
-var compareIds = require('@mpieva/psydb-api-lib/src/compare-ids');
+var { nanoid } = require('nanoid');
+var {
+    ApiError,
+    compareIds,
+    checkIntervalHasReservation,
+} = require('@mpieva/psydb-api-lib');
 
-var SimpleHandler = require('../../../lib/simple-handler'),
-    checkForeignIdsExist = require('../../../lib/check-foreign-ids-exist');
-
-var PutMaker = require('../../../lib/put-maker'),
-    PushMaker = require('../../../lib/push-maker');
+var {
+    SimpleHandler,
+    removeReservationsInInterval, // FIXME: where to put this?
+} = require('../../../lib/');
 
 var createSchema = require('./schema');
 
@@ -55,40 +58,89 @@ handler.checkAllowedAndPlausible = async ({
     }
 }
 
-handler.triggerSystemEvents = async ({
-    db,
-    rohrpost,
-    cache,
-    message,
-    personnelId,
-}) => {
-    var { type: messageType, payload } = message;
+handler.triggerSystemEvents = async (context) => {
+    var { db, cache, message, dispatch, dispatchProps } = context;
+
     var {
         experimentId,
-        experimentOperatorTeamId,
-    } = payload;
+        experimentOperatorTeamId: newTeamId,
+        shouldRemoveOldReservation
+    } = message.payload;
 
     var {
         experimentRecord,
         teamRecord,
     } = cache;
 
-    var experimentChannel = (
-        rohrpost.openCollection('experiment').openChannel({
-            id: experimentId
-        })
-    )
+    var { 
+        type, state: {
+            studyId,
+            locationId,
+            locationRecordType,
+            experimentOperatorTeamId: oldTeamId,
+            interval: experimentInterval,
+        }
+    } = experimentRecord;
 
-    // FIXME: not sure about lastknownEventId
-    await experimentChannel.dispatchMany({
-        lastKnownEventId: experimentRecord.events[0]._id,
-        messages: [
-            ...PutMaker({ personnelId }).all({
-                '/state/experimentOperatorTeamId': experimentOperatorTeamId,
+    var reservationType = (
+        type === 'away-team' ? 'awayTeam' : 'inhouse'
+    );
+
+    if (reservationType === 'inhouse' || shouldRemoveOldReservation) {
+        var extraFilters = {
+            'state.experimentOperatorTeamId': oldTeamId,
+            ...(reservationType === 'inhouse' && {
+                'state.locationId': locationId,
             })
-        ]
-    })
+        }
 
+        await removeReservationsInInterval({
+            ...context,
+            removeInterval: experimentInterval,
+            extraFilters
+        });
+    }
+    
+    var hasReservation = await checkIntervalHasReservation({
+        db,
+        interval: experimentInterval,
+        experimentOperatorTeamId: newTeamId,
+        ...(reservationType === 'inhouse' && {
+            locationId,
+        }),
+    });
+
+    if (!hasReservation) {
+        await dispatchProps({
+            collection: 'reservation',
+            isNew: true,
+            additionalChannelProps: {
+                type: reservationType
+            },
+            props: {
+                seriesId: nanoid(), //FIXME: why?
+                isDeleted: false,
+                studyId,
+                experimentOperatorTeamId: newTeamId,
+                interval: experimentInterval,
+                ...(reservationType === 'inhouse' && {
+                    locationId,
+                    locationRecordType
+                })
+            },
+
+            initialize: true,
+            recordType: reservationType,
+        });
+    }
+
+    await dispatch({
+        collection: 'experiment',
+        channelId: experimentId,
+        payload: { $set: {
+            'state.experimentOperatorTeamId': newTeamId,
+        }}
+    });
 }
 
 module.exports = handler;

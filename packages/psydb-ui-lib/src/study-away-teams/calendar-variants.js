@@ -1,7 +1,7 @@
-import React, { useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 
-import { useFetch } from '@mpieva/psydb-ui-hooks';
-import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
+import { useFetch, usePermissions } from '@mpieva/psydb-ui-hooks';
+import { Button, LoadingIndicator } from '@mpieva/psydb-ui-layout';
 import getDayStartsInInterval from '../get-day-starts-in-interval';
 import withWeeklyCalendarPages from '../with-weekly-calendar-pages';
 
@@ -17,6 +17,7 @@ export const Calendar = ({
     onSelectEmptySlot,
     onSelectReservationSlot,
     onSelectExperimentSlot,
+    onSelectExperimentPlaceholderSlot,
 
     className,
     revision = 0,
@@ -25,6 +26,9 @@ export const Calendar = ({
     currentPageEnd,
     onPageChange,
 }) => {
+    var permissions = usePermissions();
+
+    var [ showPast, setShowPast ] = useState(false);
     var allDayStarts = useMemo(() => (
         getDayStartsInInterval({
             start: currentPageStart,
@@ -67,21 +71,34 @@ export const Calendar = ({
             <TimeTableHead { ...({
                 allDayStarts,
             }) }/>
-            { teamData.records.map(teamRecord => {
-                return <TeamTimeTable { ...({
-                    key: teamRecord._id,
-                    teamRecord,
+            <div className='border-bottom'>
+                { teamData.records.map(teamRecord => {
+                    return <TeamTimeTable { ...({
+                        key: teamRecord._id,
+                        teamRecord,
 
-                    allDayStarts,
-                    reservationRecords,
-                    experimentRecords,
+                        allDayStarts,
+                        reservationRecords,
+                        experimentRecords,
 
-                    onSelectEmptySlot,
-                    onSelectReservationSlot,
-                    onSelectExperimentSlot,
-                })} />
-            })}
+                        onSelectEmptySlot,
+                        onSelectReservationSlot,
+                        onSelectExperimentSlot,
+                        onSelectExperimentPlaceholderSlot,
 
+                        showPast
+                    })} />
+                })}
+            </div>
+
+            { permissions.isRoot() && (
+                <div className='mt-3'>
+                    <Button
+                        onClick={ () => setShowPast(true) }
+                        size='sm'
+                    >zeige Vergangenheit</Button>
+                </div>
+            )}
         </div>
     )
 }

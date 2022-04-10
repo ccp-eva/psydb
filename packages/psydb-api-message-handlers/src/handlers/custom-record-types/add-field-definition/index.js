@@ -59,10 +59,6 @@ var checkAllowedAndPlausible = async ({
         throw new ApiError(404, 'RecordNotFound');
     }
     
-    if (!compareIds(record.events[0]._id, lastKnownEventId)) {
-        throw new ApiError(400, 'RecordHasChanged');
-    }
-
     var collectionCreatorData = allSchemaCreators[record.collection];
     if (!collectionCreatorData) {
         throw new Error(inline`
@@ -144,6 +140,8 @@ var triggerSystemEvents = async ({
     cache,
     message,
     personnelId,
+
+    dispatch,
 }) => {
     var { payload } = message;
     var {
@@ -161,43 +159,31 @@ var triggerSystemEvents = async ({
         })
     );
 
-    var pointer = (
-        subChannelKey
-        ? `/state/nextSettings/subChannelFields/${subChannelKey}`
-        : '/state/nextSettings/fields'
-    )
-
     var fieldPointer = (
         subChannelKey
         ? `/${subChannelKey}/state/custom/${props.key}`
         : `/state/custom/${props.key}`
     )
 
-    await channel.dispatchMany({
-        lastKnownEventId,
-        messages: [
-            {
-                type: 'push',
-                personnelId,
-                payload: {
-                    prop: pointer,
-                    value: {
-                        ...payload.props,
-                        pointer: fieldPointer,
-                        isNew: true,
-                        isDirty: true,
-                    }
+    var pushPath = (
+        subChannelKey
+        ? `state.nextSettings.subChannelFields.${subChannelKey}`
+        : 'state.nextSettings.fields'
+    );
+    await dispatch({
+        collection: 'customRecordType',
+        channelId: id,
+        payload: {
+            $push: {
+                [pushPath]: {
+                    ...payload.props,
+                    pointer: fieldPointer,
+                    isNew: true,
+                    isDirty: true,
                 }
             },
-            {
-                type: 'put',
-                personnelId,
-                payload: {
-                    prop: '/state/isDirty',
-                    value: true,
-                }
-            }
-        ]
+            $set: { 'state.isDirty': true }
+        }
     });
 }
 

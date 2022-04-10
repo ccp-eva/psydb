@@ -14,8 +14,11 @@ import applyValueToDisplayFields from '@mpieva/psydb-ui-lib/src/apply-value-to-d
 
 import ExperimentDropdown from '@mpieva/psydb-ui-lib/src/experiment-dropdown';
 
-import MoveExperimentModal from '@mpieva/psydb-ui-lib/src/move-experiment-modal';
-import ChangeTeamModal from '@mpieva/psydb-ui-lib/src/change-team-modal';
+import {
+    FollowUpExperimentModal,
+    MoveExperimentModal,
+    ChangeTeamModal,
+} from '@mpieva/psydb-ui-lib/src/modals';
 
 const ExperimentSummaryFull = ({
     experimentRecord,
@@ -33,6 +36,7 @@ const ExperimentSummaryFull = ({
 }) => {
 
     var moveExperimentModal = useModalReducer({ show: false });
+    var followupExperimentModal = useModalReducer({ show: false });
     var changeTeamModal = useModalReducer({ show: false });
 
     var experimentData = {
@@ -75,11 +79,24 @@ const ExperimentSummaryFull = ({
                 onSuccessfulUpdate,
             }) } />
 
+            <FollowUpExperimentModal { ...({
+                show: followupExperimentModal.show,
+                onHide: followupExperimentModal.handleHide,
+                payloadData: followupExperimentModal.data,
+
+                shouldFetch: true,
+                experimentId: experimentRecord._id,
+                experimentType: 'away-team',
+
+                onSuccessfulUpdate,
+            }) } />
+
             <ChangeTeamModal { ...({
                 show: changeTeamModal.show,
                 onHide: changeTeamModal.handleHide,
                 payloadData: changeTeamModal.data,
 
+                experimentType: 'away-team',
                 experimentId: experimentRecord._id,
                 studyId: experimentRecord.state.studyId,
                 currentTeamId: experimentRecord.state.experimentOperatorTeamId,
@@ -107,6 +124,7 @@ const ExperimentSummaryFull = ({
                         variant: 'calendar',
                         detailsLink: `/experiments/away-team/${experimentRecord._id}`,
                         onClickMove: moveExperimentModal.handleShow,
+                        onClickFollowUp: followupExperimentModal.handleShow,
                         onClickChangeTeam: changeTeamModal.handleShow
                     })} />
                 </div>

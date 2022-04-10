@@ -34,6 +34,7 @@ const FieldPointerList = ({
                     var {
                         displayName,
                     } = availableFieldDataByPointer[dataPointer];
+                    
                     return (
                         <tr key={ dataPointer }>
                             <td>{ index + 1 }</td>

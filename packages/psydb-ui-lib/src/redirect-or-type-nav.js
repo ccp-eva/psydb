@@ -6,12 +6,17 @@ import RecordTypeNav from './record-type-nav';
 const RedirectOrTypeNav = ({
     baseUrl,
     subjectTypes,
+    recordTypes,
     title,
 }) => {
-    if (subjectTypes.length === 1) {
+    if (subjectTypes) {
+        recordTypes = subjectTypes; // FIXME
+    }
+
+    if (recordTypes.length === 1) {
         return (
             <Redirect to={
-                `${baseUrl}/${subjectTypes[0].type}`
+                `${baseUrl}/${recordTypes[0].type}`
             } />
         )
     }
@@ -21,7 +26,7 @@ const RedirectOrTypeNav = ({
                 { title && (
                     <h2>{ title }</h2>
                 )}
-                <RecordTypeNav items={ subjectTypes } />
+                <RecordTypeNav items={ recordTypes } />
             </>
         )
     }

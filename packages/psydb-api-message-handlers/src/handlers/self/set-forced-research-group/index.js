@@ -1,10 +1,8 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
 
-var { compareIds } = require('@mpieva/psydb-core-utils');
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error');
-var { SimpleHandler, PutMaker } = require('../../../lib/');
-
+var { ApiError, compareIds } = require('@mpieva/psydb-api-lib');
+var { SimpleHandler } = require('../../../lib/');
 var createSchema = require('./schema');
 
 var handler = SimpleHandler({
@@ -45,30 +43,21 @@ handler.triggerSystemEvents = async (context) => {
         rohrpost,
         message,
         personnelId,
+
+        dispatch,
     } = context;
     
     var { researchGroupId } = message.payload;
-
-    var self = await (
-        db.collection('personnel')
-        .findOne({ _id: personnelId })
-    );
-
-    var channel = (
-        rohrpost
-        .openCollection('personnel')
-        .openChannel({
-            id: personnelId
-        })
-    )
-
-    await channel.dispatchMany({
-        lastKnownEventId: self.scientific.events[0]._id,
+    await dispatch({
+        collection: 'personnel',
+        channelId: personnelId,
         subChannelKey: 'scientific',
-        messages: PutMaker({ personnelId }).all({
-            '/state/internals/forcedResearchGroupId': researchGroupId
-        })
-    })
+        payload: { $set: {
+            'scientific.state.internals.forcedResearchGroupId': (
+                researchGroupId
+            )
+        }}
+    });
 }
 
 module.exports = handler;

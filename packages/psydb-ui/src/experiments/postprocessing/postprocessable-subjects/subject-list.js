@@ -13,6 +13,7 @@ import PostprocessSubjectForm from '@mpieva/psydb-ui-lib/src/experiments/postpro
 import { DetailedPostprocessModal } from '@mpieva/psydb-ui-compositions';
 
 const SubjectList = ({
+    studyData,
     experimentRecord,
 
     records,
@@ -60,6 +61,7 @@ const SubjectList = ({
                     subjectId: subjectRecord._id,
                     subjectType: subjectRecord.type,
                     subjectRecordLabel: subjectRecord._recordLabel,
+                    studyData,
                     
                     canReadSubjects,
                     canWriteSubjects,
@@ -79,6 +81,8 @@ const PostprocessSubjectRow = ({
     subjectType,
     subjectRecordLabel,
 
+    studyData,
+
     experimentRecord,
     relatedRecordLabels,
 
@@ -88,6 +92,9 @@ const PostprocessSubjectRow = ({
 
     onSuccessfulUpdate,
 }) => {
+    var { type: experimentType } = experimentRecord;
+    var { enableFollowUpExperiments } = studyData.record.state;
+
     return (
         <div className='bg-light border mb-2 p-3'>
             <Container>
@@ -126,8 +133,10 @@ const PostprocessSubjectRow = ({
                     </Col>
                     <Col sm={7}>
                         <PostprocessSubjectForm { ...({
+                            experimentType,
                             experimentId,
                             subjectId,
+                            enableFollowUpExperiments,
                             onSuccessfulUpdate
                         }) } />
                     </Col>

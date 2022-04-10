@@ -72,6 +72,7 @@ var fetchCRTSettings = async (options) => {
     );
 
     return {
+        collection: collectionName,
         hasSubChannels,
         fieldDefinitions,
         staticFieldDefinitions,

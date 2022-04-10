@@ -13,7 +13,9 @@ import applyValueToDisplayFields from '@mpieva/psydb-ui-lib/src/apply-value-to-d
 import ExperimentDropdown from '@mpieva/psydb-ui-lib/src/experiment-dropdown';
 
 import {
+    FollowUpExperimentModal,
     MoveExperimentModal,
+    CancelExperimentModal,
     ChangeTeamModal,
 } from '@mpieva/psydb-ui-lib/src/modals';
 
@@ -27,13 +29,16 @@ const ExperimentSummary = ({
     locationDisplayFieldData,
 
     url,
+    showPast,
     onSuccessfulUpdate,
 
     style,
 }) => {
 
-    var moveExperimentModal = useModalReducer({ show: false });
     var changeTeamModal = useModalReducer({ show: false });
+    var moveExperimentModal = useModalReducer({ show: false });
+    var followupExperimentModal = useModalReducer({ show: false });
+    var cancelExperimentModal = useModalReducer({ show: false });
 
     var experimentData = {
         record: experimentRecord,
@@ -45,6 +50,8 @@ const ExperimentSummary = ({
         locationId,
         interval: { start, end },
         experimentOperatorTeamId,
+        subjectData,
+        isPostprocessed,
     }} = experimentRecord;
 
     var locationRecord = locationRecordsById[locationId];
@@ -52,6 +59,18 @@ const ExperimentSummary = ({
     var teamRecord = experimentOperatorTeamRecords.find(it => (
         it._id === experimentOperatorTeamId
     ));
+
+    var isInPast = new Date().getTime() > new Date(end).getTime();
+    var hasProcessedSubjects = !!subjectData.find(
+        it => it.participationStatus !== 'unknown'
+    );
+    var isPlaceholder = subjectData.length < 1;
+
+    // TODO: we might also want to send a flag to api
+    // so we dont send dent data of those at all
+    if (!showPast && isInPast && isPostprocessed) {
+        return null;
+    }
     
     start = new Date(start);
     end = new Date(new Date(end).getTime() + 1); // FIXME: 1ms offset
@@ -75,11 +94,35 @@ const ExperimentSummary = ({
                 onSuccessfulUpdate,
             }) } />
 
+            <FollowUpExperimentModal { ...({
+                show: followupExperimentModal.show,
+                onHide: followupExperimentModal.handleHide,
+                payloadData: followupExperimentModal.data,
+
+                shouldFetch: true,
+                experimentId: experimentRecord._id,
+                experimentType: 'away-team',
+
+                onSuccessfulUpdate,
+            }) } />
+
+            <CancelExperimentModal { ...({
+                show: cancelExperimentModal.show,
+                onHide: cancelExperimentModal.handleHide,
+                payloadData: cancelExperimentModal.data,
+
+                experimentId: experimentRecord._id,
+                experimentType: 'away-team',
+
+                onSuccessfulUpdate,
+            }) } />
+
             <ChangeTeamModal { ...({
                 show: changeTeamModal.show,
                 onHide: changeTeamModal.handleHide,
                 payloadData: changeTeamModal.data,
 
+                experimentType: 'away-team',
                 experimentId: experimentRecord._id,
                 studyId: experimentRecord.state.studyId,
                 currentTeamId: experimentRecord.state.experimentOperatorTeamId,
@@ -92,10 +135,6 @@ const ExperimentSummary = ({
                 <div className='flex-grow'>
                     <div className='text-small'>
                         { teamRecord.state.name }
-                        {' '}
-                        ({
-                            experimentRelated.relatedRecordLabels.study[studyId]._recordLabel
-                        })
                     </div>
                 </div>
                 <div
@@ -106,8 +145,22 @@ const ExperimentSummary = ({
                         experimentType: 'away-team',
                         variant: 'calendar',
                         detailsLink: `/experiments/away-team/${experimentRecord._id}`,
-                        onClickMove: moveExperimentModal.handleShow,
-                        onClickChangeTeam: changeTeamModal.handleShow
+                        onClickMove: (
+                            hasProcessedSubjects
+                            ? undefined
+                            : moveExperimentModal.handleShow
+                        ),
+                        onClickCancel: (
+                            hasProcessedSubjects
+                            ? undefined
+                            : cancelExperimentModal.handleShow
+                        ),
+                        onClickChangeTeam: (
+                            hasProcessedSubjects
+                            ? undefined
+                            : changeTeamModal.handleShow
+                        ),
+                        onClickFollowUp: followupExperimentModal.handleShow,
                     })} />
                 </div>
             </div>
@@ -119,6 +172,27 @@ const ExperimentSummary = ({
                     locationDisplayFieldData,
                 }) } />
             </div>
+
+            { isPlaceholder && (
+                <div>
+                    <small>Platzhalter</small>
+                </div>
+            )}
+            { !isPostprocessed && hasProcessedSubjects && (
+                <div>
+                    <small>in Nachbereitung</small>
+                </div>
+            )}
+            { !isPostprocessed && !hasProcessedSubjects && isInPast && (
+                <div>
+                    <small>offene Nachbereitung</small>
+                </div>
+            )}
+            { isPostprocessed && (
+                <div>
+                    <small>Abgeschlossen</small>
+                </div>
+            )}
         </div>
     )
 }

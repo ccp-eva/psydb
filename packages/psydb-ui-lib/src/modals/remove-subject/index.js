@@ -5,8 +5,8 @@ import { useFetch } from '@mpieva/psydb-ui-hooks';
 import { createSend } from '@mpieva/psydb-ui-utils';
 import { Split } from '@mpieva/psydb-ui-layout';
 
-import { SchemaForm } from '../schema-form';
-import ExperimentIntervalSummary from '../experiment-interval-summary';
+import { SchemaForm } from '../../schema-form';
+import ExperimentIntervalSummary from '../../experiment-interval-summary';
 
 import {
     ExactObject,

@@ -8,13 +8,8 @@ var {
     dispatchRemoveSubjectEvents,
 } = require('../util');
 
-var triggerSystemEvents = async ({
-    db,
-    rohrpost,
-    cache,
-    message,
-    personnelId,
-}) => {
+var triggerSystemEvents = async (context) => {
+    var { db, cache, message } = context;
     var { type: messageType, payload } = message;
     var {
         experimentId,
@@ -33,9 +28,7 @@ var triggerSystemEvents = async ({
     if (target.experimentId) {
 
         await dispatchRemoveSubjectEvents({
-            db,
-            rohrpost,
-            personnelId,
+            ...context,
 
             experimentRecord,
             subjectRecord,
@@ -47,36 +40,10 @@ var triggerSystemEvents = async ({
             dontTrackSubjectParticipatedInStudies : true,
         });
 
-        var [ experimentMod, subjectMod ] = rohrpost.getModifiedChannels();
-        var lastKnownSubjectScientificEventId = (
-            subjectMod
-            ? subjectMod.lastKnownEventId
-            : subjectRecord.scientific.events[0]._id
-        );
-        // FIXME: this unlocks the specific channel so i can dispatch
-        // more stuff into that thing ... im not happy with that
-        await db.collection('subject').updateOne(
-            { _id: subjectId },
-            { $set: {
-                'scientific.events.$[].processed': true,
-            }},
-        );
-
-        var subjectRecord = await (
-            db.collection('subject').findOne({
-                _id: subjectId
-            })
-        );
-
         await dispatchAddSubjectEvents({
-            db,
-            rohrpost,
-            personnelId,
-
-            experimentRecord: targetCache.experimentRecord,
-            
+            ...context,
+            experimentRecord: targetCache.experimentRecord,            
             subjectRecord,
-            lastKnownSubjectScientificEventId,
         });
     }
     else {
@@ -86,9 +53,7 @@ var triggerSystemEvents = async ({
         }, { projection: { type: true }});
 
         await dispatchRemoveSubjectEvents({
-            db,
-            rohrpost,
-            personnelId,
+            ...context,
 
             experimentRecord,
             subjectRecord,
@@ -100,21 +65,8 @@ var triggerSystemEvents = async ({
             dontTrackSubjectParticipatedInStudies : true,
         });
 
-        var [ experimentMod, subjectMod ] = rohrpost.getModifiedChannels();
-        // FIXME: this unlocks the specific channel so i can dispatch
-        // more stuff into that thing ... im not happy with that
-        await db.collection('subject').updateOne(
-            { _id: subjectId },
-            { $set: {
-                'scientific.events.$[].processed': true,
-            }},
-        );
-
-
         await dispatchCreateEvents({
-            db,
-            rohrpost,
-            personnelId,
+            ...context,
 
             type: 'inhouse',
             // FIXME: id format; fixme when study uses follow up
@@ -131,7 +83,6 @@ var triggerSystemEvents = async ({
                 { subjectId: subjectRecord._id, comment, autoConfirm },
             ]
         });
-
 
     }
 }

@@ -49,19 +49,6 @@ var checkAllowedAndPlausible = async ({
     if (existingByLabel) {
         throw new ApiError(400, 'DuplicateLabel');
     }
-
-    /*if (op === 'patch') {
-        var stored = await (
-            db.collection('helperSetItem').findOne({
-                _id: payload.id,
-                'state.set': set
-            })
-        );
-        if (!stored) {
-            // ImplausibleValue
-            throw new ApiError(400);
-        }
-    }*/
 }
 
 var triggerSystemEvents = async ({
@@ -69,29 +56,21 @@ var triggerSystemEvents = async ({
     rohrpost,
     message,
     personnelId,
+    dispatchProps,
 }) => {
     var { type: messageType, payload } = message;
     var { id, setId, props } = payload;
 
-    var channel = (
-        rohrpost
-        .openCollection('helperSetItem')
-        .openChannel({
-            id,
-            isNew: true,
-            additionalChannelProps: { setId }
-        })
-    );
+    await dispatchProps({
+        collection: 'helperSetItem',
+        channelId: id,
+        isNew: true,
+        additionalChannelProps: { setId },
+        props,
 
-    await channel.dispatch({ message: {
-        type: 'put',
-        personnelId,
-        payload: {
-            prop: '/state/label',
-            value: props.label
-        }
-    }});
-
+        // NOTE: helperset items cant be initialize
+        //initialize: true
+    })
 }
 
 // no-op

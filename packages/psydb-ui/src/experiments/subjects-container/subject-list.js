@@ -178,12 +178,12 @@ var formatParticipationStatus = (status) => {
     return {
         'unknown': 'unb.',
         'participated': 't.g.',
-        'showed-up-but-didnt-participate': 'n.t.g',
-        'did-show-up': 'ersch.',
-        'didnt-show-up': 'n. ersch.',
+        'didnt-participate': 'n.t.g.',
+
+        'showed-up-but-didnt-participate': 'gek.',
+        'didnt-show-up': 'n. gek.',
         'canceled-by-participant': 'abg.',
         'canceled-by-institute': 'ausg.',
-        'removed': 'entf.',
         'moved': 'versch.',
     }[status] || 'ERROR'
 }

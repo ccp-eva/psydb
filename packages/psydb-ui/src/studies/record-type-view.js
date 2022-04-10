@@ -36,10 +36,7 @@ const StudyRecordTypeView = ({
 
     var typeData = undefined;
     if (recordType) {
-        typeData = customRecordTypes.find(it => (
-            (it.type === recordType)
-            && it.collection === collection
-        ));
+        typeData = customRecordTypes.find(it => it.type === recordType);
     }
 
     return (
@@ -47,7 +44,7 @@ const StudyRecordTypeView = ({
             { recordType && (
                 <LinkContainer to={ url }>
                     <h5 className='mt-0 mb-3 text-muted' role='button'>
-                        Typ: { typeData.state.label }
+                        Typ: { typeData.label }
                     </h5>
                 </LinkContainer>
             )}

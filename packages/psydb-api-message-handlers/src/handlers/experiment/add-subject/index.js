@@ -99,13 +99,8 @@ handler.checkAllowedAndPlausible = async (context) => {
     }
 }
 
-handler.triggerSystemEvents = async ({
-    db,
-    rohrpost,
-    cache,
-    message,
-    personnelId,
-}) => {
+handler.triggerSystemEvents = async (context) => {
+    var { cache, message } = context;
     var { type: messageType, payload } = message;
     var {
         experimentId,
@@ -120,9 +115,7 @@ handler.triggerSystemEvents = async ({
     } = cache;
 
     await dispatchAddSubjectEvents({
-        db,
-        rohrpost,
-        personnelId,
+        ...context,
         experimentRecord,
         subjectRecord,
 

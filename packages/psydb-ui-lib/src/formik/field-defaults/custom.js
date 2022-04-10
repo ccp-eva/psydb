@@ -25,7 +25,7 @@ const CustomFieldDefault = (options) => {
         case 'DefaultBool':
             return false;
         case 'Address':
-            return {};
+            return { 'country': 'DE' };
         case 'Integer':
             return 0;
 

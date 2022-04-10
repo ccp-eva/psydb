@@ -35,12 +35,6 @@ const DisplayFieldEditor = ({
         byProp: 'dataPointer'
     });
 
-    var currentDisplayFieldData = (
-        target === 'optionlist'
-        ? record.state.optionListDisplayFields
-        : record.state.tableDisplayFields
-    );
-
     var currentDataPointers = (
         (getDisplayFields(record, target) || [])
         .map(it => it.dataPointer)

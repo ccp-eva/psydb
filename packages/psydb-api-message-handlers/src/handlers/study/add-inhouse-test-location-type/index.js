@@ -1,13 +1,8 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
 
-var nanoid = require('nanoid').nanoid;
-
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
-    compareIds = require('@mpieva/psydb-api-lib/src/compare-ids');
-
-var SimpleHandler = require('../../../lib/simple-handler'),
-    PushMaker = require('../../../lib/push-maker');
+var { ApiError } = require('@mpieva/psydb-api-lib');
+var { SimpleHandler } = require('../../../lib');
 
 var createSchema = require('./schema');
 
@@ -28,7 +23,6 @@ handler.checkAllowedAndPlausible = async ({
 
     var {
         id,
-        lastKnownEventId,
         customRecordType,
     } = message.payload;
 
@@ -39,10 +33,6 @@ handler.checkAllowedAndPlausible = async ({
 
     if (!study) {
         throw new ApiError(404, 'StudyNotFound');
-    }
-
-    if (!compareIds(study.events[0]._id, lastKnownEventId)) {
-        throw new ApiError(400, 'RecordHasChanged');
     }
 
     var customRecordTypeRecord = await (
@@ -71,28 +61,22 @@ handler.triggerSystemEvents = async ({
     rohrpost,
     message,
     personnelId,
+
+    dispatch,
 }) => {
     var { type: messageType, payload } = message;
-    var { id, lastKnownEventId, customRecordType } = payload;
+    var { id, customRecordType } = payload;
 
-    var channel = (
-        rohrpost
-        .openCollection('study')
-        .openChannel({
-            id,
-        })
-    );
-
-    var messages = PushMaker({ personnelId }).all({
-        // NOTE: this structure has to exist so we can push into the
-        // nested arrays
-        '/state/inhouseTestLocationSettings': {
-            customRecordType,
-            enabledLocationIds: [],
-        },
+    await dispatch({
+        collection: 'study',
+        channelId: id,
+        payload: { $push: {
+            'state.inhouseTestLocationSettings': {
+                customRecordType,
+                enabledLocationIds: [],
+            },
+        }}
     });
-
-    await channel.dispatchMany({ messages, lastKnownEventId });
 }
 
 module.exports = handler;

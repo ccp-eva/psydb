@@ -2,14 +2,13 @@
 // TODO: obsolete
 var debug = require('debug')('psydb:api:message-handlers');
 
-var nanoid = require('nanoid').nanoid;
+var {
+    ApiError,
+} = require('@mpieva/psydb-api-lib');
 
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
-    compareIds = require('@mpieva/psydb-api-lib/src/compare-ids');
-
-var SimpleHandler = require('../../../lib/simple-handler'),
-    checkForeignIdsExist = require('../../../lib/check-foreign-ids-exist'),
-    PushMaker = require('../../../lib/push-maker');
+var {
+    SimpleHandler,
+} = require('../../../lib');
 
 var createSchema = require('./schema');
 
@@ -30,7 +29,6 @@ handler.checkAllowedAndPlausible = async ({
 
     var {
         id,
-        lastKnownEventId,
         subjectType,
         locationFieldKey,
     } = message.payload;
@@ -42,10 +40,6 @@ handler.checkAllowedAndPlausible = async ({
 
     if (!study) {
         throw new ApiError(404, 'StudyNotFound');
-    }
-
-    if (!compareIds(study.events[0]._id, lastKnownEventId)) {
-        throw new ApiError(400, 'RecordHasChanged');
     }
 
     for (var it of study.state.externalTestLocationFields) {
@@ -84,31 +78,26 @@ handler.triggerSystemEvents = async ({
     rohrpost,
     message,
     personnelId,
+
+    dispatch,
 }) => {
     var { type: messageType, payload } = message;
     var {
         id,
-        lastKnownEventId,
         subjectType,
         locationFieldKey,
     } = payload;
 
-    var channel = (
-        rohrpost
-        .openCollection('study')
-        .openChannel({
-            id,
-        })
-    );
-
-    var messages = PushMaker({ personnelId }).all({
-        '/state/externalTestLocationFields': {
-            subjectType,
-            locationFieldKey,
-        },
-    });
-
-    await channel.dispatchMany({ messages, lastKnownEventId });
+    await dispatch({
+        collection: 'study',
+        channelId: id,
+        payload: { $push: {
+            'state.externalTestLocationFields': {
+                subjectType,
+                locationFieldKey,
+            },
+        }}
+    })
 }
 
 module.exports = handler;

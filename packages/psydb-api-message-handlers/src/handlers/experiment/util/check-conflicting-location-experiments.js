@@ -10,6 +10,7 @@ var checkConflictingLocationExperiments = async ({
     var conflicting = await (
         db.collection('experiment')
         .find({
+            'state.isCanceled': false,
             'state.locationId': locationId,
             // we are switching to half open intervals
             // i.e. ends are set on .000Z
@@ -21,9 +22,10 @@ var checkConflictingLocationExperiments = async ({
     );
 
     if (conflicting.length > 0) {
-        throw new ApiError(
-            409, 'ConflictingLocationExperiment'
-        );
+        throw new ApiError(409, {
+            apiStatus: 'ConflictingLocationExperiment',
+            data: conflicting
+        });
     }
 }
 

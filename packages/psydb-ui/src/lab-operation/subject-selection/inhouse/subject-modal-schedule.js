@@ -16,7 +16,9 @@ import ExperimentUpdateModal from './experiment-update-modal';
 
 const SubjectModalSchedule = ({
     onHide,
+    revision,
 
+    studyData,
     subjectId,
     subjectRecordType,
     subjectLabel,
@@ -40,6 +42,7 @@ const SubjectModalSchedule = ({
                 show={ experimentCreateModal.show }
                 onHide={ experimentCreateModal.handleHide }
                 onSuccessfulCreate={ handleExperimentCreated }
+                studyData={ studyData }
                 subjectId={ subjectId }
                 subjectLabel={ subjectLabel }
                 { ...experimentCreateModal.data }
@@ -48,6 +51,7 @@ const SubjectModalSchedule = ({
             <ExperimentUpdateModal
                 { ...experimentUpdateModal.passthrough }
                 
+                studyData={ studyData }
                 subjectId={ subjectId }
                 subjectLabel={ subjectLabel }
                 
@@ -71,7 +75,7 @@ const SubjectModalSchedule = ({
                 //activeLocationType={ 'instituteroom' }
                 onSelectReservationSlot={ experimentCreateModal.handleShow }
                 onSelectExperimentSlot={ experimentUpdateModal.handleShow}
-                calendarRevision={ 0 }
+                calendarRevision={ revision || 0 }
                 
                 locationCalendarListClassName='bg-white p-2 border-left border-bottom border-right'
             />

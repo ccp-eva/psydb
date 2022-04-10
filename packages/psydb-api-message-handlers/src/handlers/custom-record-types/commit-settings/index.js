@@ -1,18 +1,15 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
+var omit = require('@cdxoo/omit');
 
-var omit = require('@cdxoo/omit'),
-    createClone = require('copy-anything').copy,
-    createDiff = require('deep-diff');
+var { without, keyBy } = require('@mpieva/psydb-core-utils');
+var { gatherDisplayFieldData } = require('@mpieva/psydb-common-lib');
+var { ApiError } = require('@mpieva/psydb-api-lib');
+var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error');
+var { SimpleHandler } = require('../../../lib');
+var createSchema = require('./schema');
 
-var createRohrpostMessagesFromDiff = require('@mpieva/psydb-api-lib/src/diff-to-rohrpost');
-
-var SimpleHandler = require('../../../lib/simple-handler');
-
-var createSchema = require('./schema'),
-    allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
 var handler = SimpleHandler({
     messageType: 'custom-record-types/commit-settings',
@@ -46,19 +43,8 @@ handler.checkAllowedAndPlausible = async ({
 
     var record = await (
         db.collection('customRecordType')
-        .findOne({
-            _id: id,
-            'events.0._id': lastKnownEventId
-        })
+        .findOne({ _id: id })
     );
-
-    if (!record) {
-        // FIXME: 409?
-        // FIXME: name of tha status .... mke clear that it as changed
-        // by someone else, and we cann not be sure that we perform the
-        // operation safely (UnsafeRecordUpdate?)
-        throw new ApiError(400, 'RecordHasChanged');
-    }
 
     cache.record = record;
 
@@ -74,29 +60,21 @@ handler.triggerSystemEvents = async ({
     rohrpost,
     cache,
     message,
+
+    dispatch,
 }) => {
     var { personnelId, payload } = message;
     var { id, lastKnownEventId, props } = payload;
     var { record } = cache;
+    var { collection, state } = record;
+    var { nextSettings, isDirty } = state;
 
     // do nothing if record is not dirty
-    if (!record.state.isDirty) {
+    if (!isDirty) {
         return;
     }
 
-    var nextState = createClone(record.state);
-    nextState.settings = createClone(nextState.nextSettings);
-
-    
-    nextState.isNew = false;
-    nextState.isDirty = false;
-
-
-    var { settings, nextSettings } = nextState;
-
-    // handle label def
-
-    var collectionCreatorData = allSchemaCreators[record.collection];
+    var collectionCreatorData = allSchemaCreators[collection];
     if (!collectionCreatorData) {
         throw new Error(inline`
             no creator data found for collection
@@ -104,66 +82,116 @@ handler.triggerSystemEvents = async ({
         `);
     }
 
-    var {
-        hasSubChannels,
-        subChannelKeys,
-    } = collectionCreatorData;
+    //console.dir(record, { depth: null })
+    var { hasSubChannels } = collectionCreatorData;
+    await dispatch({
+        collection: 'customRecordType',
+        channelId: id,
+        payload: { $set: {
+            ...createCopyOps({ hasSubChannels, nextSettings }),
+            ...createFormOrderOps({ hasSubChannels, record }),
+            ...createCleanupOps({ hasSubChannels }),
+        }}
+    });
+}
 
-    // handle fields
+var createCopyOps = ({ hasSubChannels, nextSettings }) => {
+    var ops;
+
     if (hasSubChannels) {
-        subChannelKeys.forEach(key => {
-            settings.subChannelFields[key] = (
-                settings.subChannelFields[key].map(it => (
+        var copy = {};
+        ['gdpr', 'scientific'].forEach(key => {
+            copy[key] = (
+                nextSettings.subChannelFields[key].map(it => (
                     omit([ 'isNew', 'isDirty'], it)
                 ))
             );
-            nextSettings.subChannelFields[key].forEach(it => {
-                it.isNew = false;
-                it.isDirty = false;
-            })
-        })
+        });
+
+        ops = { 'state.settings.subChannelFields': copy }
     }
     else {
-        settings.fields = settings.fields.map(it => (
+        var copy = nextSettings.fields.map(it => (
             omit([ 'isNew', 'isDirty'], it)
         ));
-        nextSettings.fields.forEach(it => {
-            it.isNew = false;
-            it.isDirty = false;
-        })
+        ops = { 'state.settings.fields': copy }
     }
 
+    return ops;
+}
 
-    var diff = createDiff(record.state, nextState);
+var createFormOrderOps = ({ hasSubChannels, record }) => {
+    var { formOrder = [] } = record.state;
 
-    var messages = createRohrpostMessagesFromDiff(diff, { prefix: '/state'});
-    // FIXME: prefixin because we changed how underlying state
-    // calculation works
-    messages.forEach(m => {
-        m.payload.prop = `/state${m.payload.prop}`;
-    })
-
-        /*if (subChannels.length) {
-        console.dir(nextState, { depth: null });
-        console.dir(diff, { depth: null });
-        console.dir(messages, { depth: null });
-
-        //throw new Error();
-    }*/
-
-    var channel = (
-        rohrpost
-        .openCollection('customRecordType')
-        .openChannel({
-            id
-        })
-    );
-
-    await channel.dispatchMany({
-        lastKnownEventId,
-        messages,
+    var availableDisplayFieldData = gatherDisplayFieldData({
+        customRecordTypeData: {
+            ...record,
+            state: { ...record.state, settings: record.state.nextSettings }
+        }
+    });
+    var fieldDataByPointer = keyBy({
+        items: availableDisplayFieldData,
+        byProp: 'dataPointer', // FIXME
     });
 
+    var allPointers = (
+        availableDisplayFieldData
+        .filter(it => (
+            it.dataPointer !== '/_id' &&
+            !it.isRemoved
+        ))
+        .map(it => it.dataPointer) // FIXME
+    );
+
+    var newPointers = without(allPointers, formOrder);
+    var removedPointers = without(formOrder, allPointers);
+
+    var formOrderPointers = [
+        ...without(formOrder, removedPointers),
+        ...newPointers,
+    ];
+
+    /*var formOrder = formOrderPointers.map(pointer => {
+        var field = fieldDataByPointer[pointer];
+        return {
+            systemType: field.systemType,
+            dataPointer: field.dataPointer
+        }
+    })*/
+
+    var ops = {
+        'state.formOrder': formOrderPointers
+    };
+    //console.log({ allPointers, newPointers, removedPointers, ops });
+    return ops;
+}
+
+var createCleanupOps = ({ hasSubChannels }) => {
+    var ops = {
+        'state.isNew': false,
+        'state.isDirty': false,
+    };
+
+    if (hasSubChannels) {
+        var prefix = 'state.nextSettings.subChannelFields';
+        ops = {
+            ...ops,
+            [`${prefix}.gdpr.$[].isNew`]: false,
+            [`${prefix}.gdpr.$[].isDirty`]: false,
+            [`${prefix}.scientific.$[].isNew`]: false,
+            [`${prefix}.scientific.$[].isDirty`]: false,
+        }
+    }
+    else {
+        var prefix = 'state.nextSettings';
+        ops = {
+            ...ops,
+            [`${prefix}.fields.$[].isNew`]: false,
+            [`${prefix}.fields.$[].isDirty`]: false,
+        }
+    }
+
+    return ops;
 }
 
 module.exports = handler;

@@ -1,10 +1,7 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
 
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error');
-
-var SimpleHandler = require('../../../../lib/simple-handler'),
-    createEvents = require('../../../../lib/create-event-messages-from-props');
+var { SimpleHandler } = require('../../../../lib');
 
 var checkBasics = require('../../utils/check-create-basics');
 var createSchema = require('./schema');
@@ -34,35 +31,26 @@ handler.triggerSystemEvents = async ({
     rohrpost,
     message,
     personnelId,
+
+    dispatchProps,
 }) => {
     var { type: messageType, payload } = message;
     var { id, studyId, experimentVariantId, props } = payload;
 
-    var channel = (
-        rohrpost
-        .openCollection('experimentVariantSetting')
-        .openChannel({
-            id,
-            isNew: true,
-            additionalChannelProps: {
-                type: 'online-survey',
-                studyId,
-                experimentVariantId
-            }
-        })
-    );
+    await dispatchProps({
+        collection: 'experimentVariantSetting',
+        channelId: id,
+        isNew: true,
+        additionalChannelProps: {
+            type: 'online-survey',
+            studyId,
+            experimentVariantId
+        },
+        props,
 
-    var messages = createEvents({
-        op: 'put',
-        personnelId,
-        props
-    })
-
-    /*var messages = PutMaker({ personnelId }).all({
-        '/state/subjectTypeKey': props.subjectTypeKey,
-    });*/
-
-    await channel.dispatchMany({ messages });
+        initialize: true,
+        recordType: 'online-survey',
+    });
 }
 
 module.exports = handler;

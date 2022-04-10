@@ -2,11 +2,8 @@
 var debug = require('debug')('psydb:api:message-handlers');
 
 var jsonpointer = require('jsonpointer');
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error');
-
-var SimpleHandler = require('../../../lib/simple-handler');
-var PutMaker = require('../../../lib/put-maker');
-var RemoveMaker = require('../../../lib/remove-maker');
+var { ApiError, convertPointerToPath } = require('@mpieva/psydb-api-lib');
+var { SimpleHandler } = require('../../../lib/');
 var createSchema = require('./schema');
 
 var handler = SimpleHandler({
@@ -26,35 +23,15 @@ handler.checkAllowedAndPlausible = async ({
 
     var {
         id,
-        lastKnownEventId,
         subChannelKey,
         key
     } = message.payload;
 
-    var existing = await (
-        db.collection('customRecordType').find({
-            _id: id
-        }).toArray()
-    );
-
-    if (existing.length < 1) {
-        throw new ApiError(404, 'CustomRecordTypeNotFound');
-    }
-
     var record = await (
-        db.collection('customRecordType')
-        .findOne({
-            _id: id,
-            'events.0._id': lastKnownEventId
-        })
+        db.collection('customRecordType').findOne({ _id: id })
     );
-
     if (!record) {
-        // FIXME: 409?
-        // FIXME: name of tha status .... mke clear that it as changed
-        // by someone else, and we cann not be sure that we perform the
-        // operation safely (UnsafeRecordUpdate?)
-        throw new ApiError(400, 'RecordHasChanged');
+        throw new ApiError(404, 'CustomRecordTypeNotFound');
     }
 
     var fieldsPath = (
@@ -63,14 +40,14 @@ handler.checkAllowedAndPlausible = async ({
         : `/state/settings/fields`
     );
 
-    var nextFieldsPath = (
+    var nextFieldsPointer = (
         subChannelKey
         ? `/state/nextSettings/subChannelFields/${subChannelKey}`
         : `/state/nextSettings/fields`
     );
 
     var fields = jsonpointer.get(record, fieldsPath);
-    var nextFields = jsonpointer.get(record, nextFieldsPath);
+    var nextFields = jsonpointer.get(record, nextFieldsPointer);
 
     var isKey = (it) => (it.key === key);
     var fieldIndex = fields.findIndex(isKey);
@@ -85,7 +62,7 @@ handler.checkAllowedAndPlausible = async ({
         }        
     }
 
-    cache.nextFieldsPath = nextFieldsPath;
+    cache.nextFieldsPointer = nextFieldsPointer;
     cache.nextFieldIndex = nextFieldIndex;
 
     // TODO: check if record label definition is still valid
@@ -101,34 +78,29 @@ handler.triggerSystemEvents = async ({
     rohrpost,
     cache,
     message,
-    personnelId,
+
+    dispatch
 }) => {
     var { payload } = message;
-    var { id, lastKnownEventId, subChannelKey, key } = payload;
+    var { id, subChannelKey, key } = payload;
     var {
-        nextFieldsPath,
+        nextFieldsPointer,
         nextFieldIndex
     } = cache;
 
-    var messages = PutMaker({ personnelId }).all({
-        '/state/isDirty': true,
-        [`${nextFieldsPath}/${nextFieldIndex}/isDirty`]: true,
-        [`${nextFieldsPath}/${nextFieldIndex}/isRemoved`]: false,
-    });
-        
-    var channel = (
-        rohrpost
-        .openCollection('customRecordType')
-        .openChannel({
-            id
-        })
+    var path = convertPointerToPath(
+        `${nextFieldsPointer}/${nextFieldIndex}`
     );
 
-    await channel.dispatchMany({
-        lastKnownEventId,
-        messages,
+    await dispatch({
+        collection: 'customRecordType',
+        channelId: id,
+        payload: { $set: {
+            'state.isDirty': true,
+            [`${path}.isDirty`]: true,
+            [`${path}.isRemoved`]: false,
+        }}
     });
-
 }
 
 module.exports = handler;

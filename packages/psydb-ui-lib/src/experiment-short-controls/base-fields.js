@@ -75,7 +75,7 @@ const SlotControl = ({
                     key={ it }
                     value={ index }
                 >
-                    { datefns.format(it, 'p') }
+                    { datefns.format(new Date(it.getTime() + 1), 'p') }
                 </option>
             ))}
         </Form.Control>

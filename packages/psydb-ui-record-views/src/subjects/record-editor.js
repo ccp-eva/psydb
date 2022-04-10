@@ -90,7 +90,7 @@ const EditForm = (ps) => {
             )}
             <MainForm.Component
                 title='Proband bearbeiten'
-                fieldDefinitions={ fieldDefinitions }
+                crtSettings={ crtSettings }
                 initialValues={ initialValues }
                 onSubmit={ send.exec }
                 related={ related }

@@ -134,7 +134,8 @@ const InhouseTestableSubjectList = ({
             <InviteModal
                 show={ inviteModal.show }
                 onHide={ inviteModal.handleHide }
-                
+               
+                studyData={ studyData }
                 studyNavItems={ studyData.records.map(it => ({
                     key: it._id,
                     label: it.state.shorthand

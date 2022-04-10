@@ -25,6 +25,15 @@ const ParticipationList = ({
         it.props.isSpecialAgeFrameField
     ));
 
+    records = records.filter(it => {
+        var participationStatus = (
+            it.scientific.state.internals.participatedInStudies[0].status
+        );
+        // FIXME maybe not store it in subject at all then?a
+        // keep in experiment though
+        return !(['didnt-participate'].includes(participationStatus));
+    })
+
     return (
         <Table className={ className }>
             <thead>
@@ -121,8 +130,8 @@ var formatStatus = (status) => {
     return {
         'unknown': 'unb.',
         'participated': 't.g.',
-        'showed-up-but-didnt-participate': 'n.t.g',
-        'did-show-up': 'gek.',
+        'didnt-participate': 'n.t.g.',
+        'showed-up-but-didnt-participate': 'gek.',
         'didnt-show-up': 'n. gek.',
         'canceled-by-participant': 'abg.',
         'canceled-by-institute': 'ausg.',

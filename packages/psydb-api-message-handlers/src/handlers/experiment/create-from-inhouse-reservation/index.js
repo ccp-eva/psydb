@@ -44,7 +44,6 @@ handler.checkAllowedAndPlausible = async ({
 
     var subjectIds = subjectData.map(it => it.subjectId);
 
-    // TODO: use FK to check existance (?)
     await checkForeignIdsExist(db, {
         //'subjectGroup': subjectGroupIds,
         'subject': subjectIds,
@@ -72,6 +71,9 @@ handler.triggerSystemEvents = async ({
     cache,
     message,
     personnelId,
+
+    dispatch,
+    dispatchProps,
 }) => {
     var { type: messageType, payload } = message;
     var { id, props } = payload;
@@ -86,10 +88,12 @@ handler.triggerSystemEvents = async ({
         rohrpost,
         personnelId,
 
+        dispatch,
+        dispatchProps,
+
         forcedExperimentId: id,
 
         type: 'inhouse',
-        //reservationId: reservation._id,
         seriesId: nanoid(), // FIXME: id format
         studyId: props.studyId,
         experimentOperatorTeamId: props.experimentOperatorTeamId,
@@ -99,8 +103,6 @@ handler.triggerSystemEvents = async ({
 
         //subjectGroupIds: props.subjectGroupIds,
         subjectData: props.subjectData,
-
-        //lastKnownReservationEventId: props.lastKnownReservationEventId,
     });
 }
 

@@ -77,7 +77,7 @@ var SingleChannelRecordPatchMessage = ({
             },
             required: [
                 'id',
-                'lastKnownEventId',
+                //'lastKnownEventId',
                 'props',
             ]
         })

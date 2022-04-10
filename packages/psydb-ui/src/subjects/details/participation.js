@@ -12,7 +12,8 @@ import { LoadingIndicator, NotFound } from '@mpieva/psydb-ui-layout';
 
 import ParticipationList from './participation-list';
 
-const Participation = ({ id, revision }) => {
+const Participation = (ps) => {
+    var { id, revision } = ps;
     var { path, url } = useRouteMatch();
     var { id } = useParams();
 

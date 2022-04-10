@@ -8,12 +8,15 @@ import {
     LoadingIndicator
 } from '@mpieva/psydb-ui-layout';
 
+import { DefaultForm, Fields } from '../../formik';
+
 import StudyTeamListItem from '../../experiment-operator-team-list-item';
 
 const ChangeTeamModal = ({
     show,
     onHide,
     
+    experimentType,
     experimentId,
     studyId,
     currentTeamId,
@@ -26,11 +29,12 @@ const ChangeTeamModal = ({
         return null;
     }
 
-    var handleSubmit = createSend(() => ({
+    var handleSubmit = createSend((formData) => ({
         type: 'experiment/change-experiment-operator-team',
         payload: {
             experimentId,
-            experimentOperatorTeamId: selectedTeamId
+            experimentOperatorTeamId: formData.experimentOperatorTeamId,
+            shouldRemoveOldReservation: formData.shouldRemoveOldReservation,
         }
     }), { onSuccessfulUpdate: [ onHide, onSuccessfulUpdate ] });
 
@@ -47,21 +51,73 @@ const ChangeTeamModal = ({
                 <Modal.Title>Team ändern</Modal.Title>
             </Modal.Header>
             <Modal.Body className='bg-light'>
-                <TeamList {...({
+                <ChangeOpsTeamForm { ...({
+                    experimentType,
                     experimentId,
                     studyId,
                     selectedTeamId,
-                    onSelectTeam: handleSelectTeam,
+                    onSubmit: handleSubmit
                 }) } />
-                <hr />
-                <div className='d-flex justify-content-end'>
-                    <Button onClick={ handleSubmit }>
-                        Speichern
-                    </Button>
-                </div>
             </Modal.Body>
         </Modal>
     );
+}
+
+const ChangeOpsTeamForm = (ps) => {
+    var {
+        experimentType,
+        experimentId,
+        studyId,
+        selectedTeamId,
+        onSubmit
+    } = ps;
+
+    var initialValues = {
+        experimentOperatorTeamId: selectedTeamId,
+        shouldRemoveOldReservation: false
+    };
+    return (
+        <DefaultForm
+            onSubmit={ onSubmit }
+            initialValues={ initialValues }
+        >
+            { (formikProps) => {
+                var { getFieldProps, setFieldValue } = formikProps;
+                var teamIdPath = '$.experimentOperatorTeamId';
+                var teamId = (
+                    getFieldProps(teamIdPath).value
+                );
+                return (
+                    <>
+                        <TeamList {...({
+                            experimentId,
+                            studyId,
+                            selectedTeamId: teamId,
+                            onSelectTeam: (value) => (
+                                setFieldValue(teamIdPath, value)
+                            ),
+                        }) } />
+                        <hr />
+                        <div className='d-flex justify-content-between'>
+                            { 
+                                experimentType === 'away-team'
+                                ? (
+                                    <Fields.PlainCheckbox
+                                        dataXPath='$.shouldRemoveOldReservation'
+                                        label='Alte Reservierung entfernen'
+                                    />
+                                )
+                                : <div />
+                            }
+                            <Button type='submit'>
+                                Speichern
+                            </Button>
+                        </div>
+                    </>
+                );
+            }}
+        </DefaultForm>
+    )
 }
 
 const TeamList = ({

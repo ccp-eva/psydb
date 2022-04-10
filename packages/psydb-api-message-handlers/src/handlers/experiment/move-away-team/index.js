@@ -1,23 +1,20 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
 
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error');
-var compareIds = require('@mpieva/psydb-api-lib/src/compare-ids');
-
-var SimpleHandler = require('../../../lib/simple-handler'),
-    checkForeignIdsExist = require('../../../lib/check-foreign-ids-exist');
-
-var PutMaker = require('../../../lib/put-maker'),
-    PushMaker = require('../../../lib/push-maker');
+var { ApiError } = require('@mpieva/psydb-api-lib');
+var {
+    SimpleHandler,
+    removeReservationsInInterval, // FIXME: where to put this?
+} = require('../../../lib');
 
 var {
     checkIntervalHasReservation,
     checkConflictingLocationExperiments,
     checkConflictingSubjectExperiments,
-    dispatchAllChannelMessages,
 } = require('../util');
 
 var createSchema = require('./schema');
+
 
 var handler = SimpleHandler({
     messageType: 'experiment/move-away-team',
@@ -48,7 +45,7 @@ handler.checkAllowedAndPlausible = async ({
     );
 
     if (!experimentRecord) {
-        throw new ApiError('InvalidExperimentId');
+        throw new ApiError(400, 'InvalidExperimentId');
     }
 
     var teamRecord = cache.teamRecord = await (
@@ -59,7 +56,7 @@ handler.checkAllowedAndPlausible = async ({
     )
 
     if (!teamRecord) {
-        throw new ApiError('InvalidExperimentOperatorTeamId');
+        throw new ApiError(400, 'InvalidExperimentOperatorTeamId');
     }
 
     await checkIntervalHasReservation({
@@ -86,41 +83,43 @@ handler.checkAllowedAndPlausible = async ({
     });*/
 }
 
-handler.triggerSystemEvents = async ({
-    db,
-    rohrpost,
-    cache,
-    message,
-    personnelId,
-}) => {
-    var { type: messageType, payload } = message;
+handler.triggerSystemEvents = async (context) => {
+    var { cache, message, dispatch } = context;
+
     var {
         experimentId,
         experimentOperatorTeamId,
         interval,
-    } = payload;
+        shouldRemoveOldReservation
+    } = message.payload;
 
     var {
         experimentRecord,
     } = cache;
 
-    var experimentChannel = (
-        rohrpost.openCollection('experiment').openChannel({
-            id: experimentId
-        })
-    )
+    var {
+        interval: oldExperimentInterval,
+        experimentOperatorTeamId: oldTeamId,
+    } = experimentRecord.state;
 
-    // FIXME: not sure about lastknownEventId
-    await experimentChannel.dispatchMany({
-        lastKnownEventId: experimentRecord.events[0]._id,
-        messages: [
-            ...PutMaker({ personnelId }).all({
-                '/state/experimentOperatorTeamId': experimentOperatorTeamId,
-                '/state/interval': interval,
-            })
-        ]
-    })
+    if (shouldRemoveOldReservation) {
+        await removeReservationsInInterval({
+            ...context,
+            removeInterval: oldExperimentInterval,
+            extraFilters: {
+                'state.experimentOperatorTeamId': oldTeamId,
+            }
+        });
+    }
 
+    await dispatch({
+        collection: 'experiment',
+        channelId: experimentId,
+        payload: { $set: {
+            'state.experimentOperatorTeamId': experimentOperatorTeamId,
+            'state.interval': interval,
+        }}
+    });
 }
 
 module.exports = handler;

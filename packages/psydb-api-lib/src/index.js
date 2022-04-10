@@ -1,5 +1,6 @@
 'use strict';
 module.exports = {
+    createId: require('./create-id'),
     compareIds: require('./compare-ids'),
     fromFacets: require('./from-facets'),
 
@@ -7,6 +8,7 @@ module.exports = {
     ApiError: require('./api-error'),
     FakeAjvError: require('./fake-ajv-error'),
     ResponseBody: require('./response-body'),
+    Self: require('./self'),
 
     validateOrThrow: require('./validate-or-throw'),
 
@@ -17,6 +19,7 @@ module.exports = {
     verifyLabOperationAccess: require('./verify-lab-operation-access'),
    
     checkForeignIdsExist: require('./check-foreign-ids-exist'),
+    checkIntervalHasReservation: require('./check-interval-has-reservation'),
 
     createRecordLabel: require('./create-record-label'),
     createRecordLabelFromCRT: require('./create-record-label-from-crt'),
@@ -24,7 +27,6 @@ module.exports = {
 
     createSchemaForRecordType: require('./create-schema-for-record-type'),
 
-    convertPointerToPath: require('./convert-pointer-to-path'),
     fetchOneCustomRecordType: require('./fetch-one-custom-record-type'),
     fetchCustomRecordTypes: require('./fetch-custom-record-types'),
 
@@ -43,5 +45,16 @@ module.exports = {
 
     gatherDisplayFieldsForRecordType: require('./gather-display-fields-for-record-type'),
 
+    resolveDataPointer: require('./resolve-data-pointer'),
     resolvePossibleRefs: require('./resolve-possible-refs'),
+    createInitialChannelState: require('./create-initial-channel-state'),
+    pathifyProps: require('./pathify-props'),
+
+    getIntervalRemovalUpdateOps: require('./get-interval-removal-update-ops'),
+
+    mongoEscapeDeep: require('@cdxoo/mongodb-escape-keys').escape,
+    mongoUnescapeDeep: require('@cdxoo/mongodb-escape-keys').unescape,
+    
+    // FIXME: make this include go away and use core-utils instead
+    convertPointerToPath: require('@mpieva/psydb-core-utils').convertPointerToPath,
 }

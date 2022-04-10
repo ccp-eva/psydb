@@ -5,7 +5,8 @@ import {
     CustomScientific,
     SaneString,
     FullText,
-    SystemPermissions
+    SystemPermissions,
+    createFullUserOrdered
 } from '../utility-components';
 
 import TestingPermissions from './testing-permissions';
@@ -55,6 +56,14 @@ addComponents(Subject, SubjectContext, labels, [
         path: '/scientific/state/systemPermissions',
         Component: withPair(SystemPermissions)
     },
+    {
+        cname: 'FullUserOrdered',
+        Component: createFullUserOrdered({
+            extraFieldComponents: {
+                TestingPermissions: withPair(TestingPermissions)
+            }
+        })
+    }
 ]);
 
 export default Subject;

@@ -1,12 +1,17 @@
 'use strict';
 var jsonpointer = require('jsonpointer');
+var defaultTransform = it => it;
 
-var keyBy = ({
-    items,
-    byPointer,
-    createKey,
-    byProp
-}) => {
+var keyBy = (options) => {
+    var {
+        items,
+        byPointer,
+        byProp,
+        createKey,
+
+        transform = defaultTransform
+    } = options;
+
     if (byProp) {
         createKey = (item) => item[byProp];
     }
@@ -16,13 +21,14 @@ var keyBy = ({
     return genericKeyBy({
         items,
         createKey,
+        transform,
     });
 }
 
-var genericKeyBy = ({ items, createKey }) => {
+var genericKeyBy = ({ items, createKey, transform }) => {
     var keyed = items.reduce((acc, item) => ({
         ...acc,
-        [createKey(item)]: item
+        [createKey(item)]: transform(item)
     }), {});
 
     return keyed;

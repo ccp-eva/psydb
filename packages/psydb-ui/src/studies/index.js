@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import {
     Route,
@@ -8,14 +8,24 @@ import {
     useParams
 } from 'react-router-dom';
 
-import { usePermissions } from '@mpieva/psydb-ui-hooks';
-import { LinkContainer, PermissionDenied } from '@mpieva/psydb-ui-layout';
+import {
+    usePermissions,
+    useFetch,
+} from '@mpieva/psydb-ui-hooks';
+
+import {
+    LoadingIndicator,
+    LinkContainer,
+    PermissionDenied
+} from '@mpieva/psydb-ui-layout';
+
+import {
+    RedirectOrTypeNav,
+    RecordListContainer
+} from '@mpieva/psydb-ui-lib';
 
 import allSchemaCreators from '@mpieva/psydb-schema-creators';
-import agent from '@mpieva/psydb-ui-request-agents';
 
-import RecordTypeNav from '@mpieva/psydb-ui-lib/src/record-type-nav';
-import RecordListContainer from '@mpieva/psydb-ui-lib/src/record-list-container';
 import StudyRecordTypeView from './record-type-view';
 
 // TODO: put this somewhere
@@ -28,10 +38,8 @@ var collectionDisplayNames = {
     'systemRole': 'System-Rollen',
 }
 
-const GenericCollectionView = ({
-}) => {
+const GenericCollectionView = () => {
     var collection = 'study';
-
     var { path, url } = useRouteMatch();
     
     var permissions = usePermissions();
@@ -51,34 +59,17 @@ const GenericCollectionView = ({
         )
     }
 
-    var [ isInitialized, setIsInitialized ] = useState(false);
-    var [ metadata, setMetadata ] = useState();
+    var [ didFetch, fetched ] = useFetch((agent) => (
+        agent.fetchCollectionCRTs({ collection })
+    ), []);
 
-    useEffect(() => {
-        agent.readCustomRecordTypeMetadata().then(
-            (response) => {
-                setMetadata(response.data.data);
-                setIsInitialized(true)
-            }
-        )
-    }, [])
-
-    if (!isInitialized) {
-        return (
-            <div>Loading...</div>
-        );
+    if (!didFetch) {
+        return <LoadingIndicator size='lg' />
     }
 
+    var collectionRecordTypes = fetched.data;
+
     var { hasCustomTypes } = allSchemaCreators[collection];
-
-    // only if hasCustomRecordTypes
-    //console.log(metadata);
-    var collectionRecordTypes = (
-        metadata.customRecordTypes.filter(it => (
-            it.collection ===  collection
-        ))
-    );
-
 
     // TODO: static types
     return (
@@ -120,8 +111,9 @@ const RoutingForCustomTypes = ({
     return (
         <Switch>
             <Route exact path={`${path}`}>
-                <RecordTypeNav
-                    items={ collectionRecordTypes }
+                <RedirectOrTypeNav
+                    baseUrl={ url }
+                    recordTypes={ collectionRecordTypes }
                 />
             </Route>
             <Route path={`${path}/:recordType`}>

@@ -1,14 +1,20 @@
 import React, { useState, useCallback } from 'react';
+import { useRouteMatch, useHistory } from 'react-router';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
-
-import {
-    Button
-} from 'react-bootstrap';
+import { urlUp as up } from '@mpieva/psydb-ui-utils';
 
 import {
     ChangeTeamModal,
-    MoveExperimentModal
+    MoveExperimentModal,
+    CancelExperimentModal
 } from '@mpieva/psydb-ui-lib/src/modals';
+
+import { Button } from '@mpieva/psydb-ui-layout';
+import {
+    FollowUpExperimentContainer,
+    CancelExperimentContainer
+} from '../shared-general-functions';
+
 
 const GeneralFunctions = ({
     experimentData,
@@ -25,11 +31,15 @@ const GeneralFunctions = ({
     var canMove = permissions.hasLabOperationFlag(
         experimentType, 'canMoveAndCancelExperiments'
     );
+    var canCancel = permissions.hasLabOperationFlag(
+        experimentType, 'canMoveAndCancelExperiments'
+    );
     
     return (
         <>
             { canChangeOpsTeam && (
                 <ChangeTeamContainer { ...({
+                    experimentType,
                     experimentId: experimentData.record._id,
                     studyId: studyData.record._id,
                     currentTeamId: (
@@ -47,11 +57,30 @@ const GeneralFunctions = ({
                     onSuccessfulUpdate,
                 }) } />
             )}
+
+            { canMove && experimentType === 'away-team' && (
+                <FollowUpExperimentContainer { ...({
+                    experimentData,
+                    opsTeamData,
+                    studyData,
+                    onSuccessfulUpdate,
+                }) } />
+            )}
+            
+            { canCancel && experimentType === 'away-team' && (
+                <CancelExperimentContainer { ...({
+                    experimentData,
+                    onSuccessfulUpdate: () => {
+                        history.replace(`${up(url, 1)}/remove-success`);
+                    },
+                }) } />
+            )}
         </>
     );
 }
 
 const ChangeTeamContainer = ({
+    experimentType,
     experimentId,
     studyId,
     currentTeamId,
@@ -69,6 +98,7 @@ const ChangeTeamContainer = ({
                 show,
                 onHide: handleHide,
 
+                experimentType,
                 experimentId,
                 studyId,
                 currentTeamId,

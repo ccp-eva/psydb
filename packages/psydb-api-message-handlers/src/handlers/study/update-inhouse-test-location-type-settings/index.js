@@ -2,13 +2,12 @@
 // TODO: redesign this to gtet the whole conditions object
 var debug = require('debug')('psydb:api:message-handlers');
 
-var nanoid = require('nanoid').nanoid;
-
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
-    compareIds = require('@mpieva/psydb-api-lib/src/compare-ids');
-
-var SimpleHandler = require('../../../lib/simple-handler'),
-    PutMaker = require('../../../lib/put-maker');
+var { nanoid } = require('nanoid');
+var {
+    ApiError,
+    compareIds
+} = require('@mpieva/psydb-api-lib');
+var { SimpleHandler } = require('../../../lib/');
 
 var createSchema = require('./schema');
 
@@ -49,10 +48,6 @@ handler.checkAllowedAndPlausible = async ({
         throw new ApiError(404, 'StudyNotFound');
     }
 
-    if (!compareIds(study.events[0]._id, lastKnownEventId)) {
-        throw new ApiError(400, 'RecordHasChanged');
-    }
-
     var { inhouseTestLocationSettings } = study.state;
 
     var settingsIndex = undefined;
@@ -76,6 +71,8 @@ handler.triggerSystemEvents = async ({
     message,
     personnelId,
     cache,
+
+    dispatch,
 }) => {
     var { type: messageType, payload } = message;
     var { 
@@ -89,22 +86,16 @@ handler.triggerSystemEvents = async ({
         enabledLocationIds,
     } = props;
 
-    var channel = (
-        rohrpost
-        .openCollection('study')
-        .openChannel({
-            id,
-        })
-    );
-
     var si = cache.settingsIndex;
-    var base = `/state/inhouseTestLocationSettings/${si}`;
+    var base = `state.inhouseTestLocationSettings.${si}`;
 
-    var messages = PutMaker({ personnelId }).all({
-        [`${base}/enabledLocationIds`]: enabledLocationIds,
-    });
-
-    await channel.dispatchMany({ messages, lastKnownEventId });
+    await dispatch({
+        collection: 'study',
+        channelId: id,
+        payload: { $set: {
+            [`${base}.enabledLocationIds`]: enabledLocationIds,
+        }}
+    })
 }
 
 module.exports = handler;

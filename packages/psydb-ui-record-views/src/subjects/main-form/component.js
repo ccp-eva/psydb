@@ -10,7 +10,7 @@ import {
 export const Component = (ps) => {
     var {
         title,
-        fieldDefinitions,
+        crtSettings,
         initialValues,
         onSubmit,
 
@@ -30,7 +30,7 @@ export const Component = (ps) => {
                 <>
                     { /*console.log(formikProps.values) || ''*/ }
                     <FormFields
-                        fieldDefinitions={ fieldDefinitions }
+                        crtSettings={ crtSettings }
                         related={ related }
                         permissions={ permissions }
                     />
@@ -52,41 +52,28 @@ export const Component = (ps) => {
 }
 
 const FormFields = (ps) => {
-    var { fieldDefinitions, related, permissions } = ps;
+    var { crtSettings, related, permissions } = ps;
     
-    var customFieldBag = {
-        fieldDefinitions,
-        related,
-        extraTypeProps: {
-            'PhoneWithTypeList': { enableParentNumbers: true }
-        }
-    }
-
     return (
         <>
-            <Fields.Custom
-                { ...customFieldBag }
-                subChannelKey='gdpr'
-            />
-            <Fields.Custom
-                { ...customFieldBag }
-                subChannelKey='scientific'
-            />
-            <Fields.SubjectTestingPermissionList
-                label='Teilnahme-Erlaubnis'
-                dataXPath='$.scientific.testingPermissions'
+            <Fields.FullUserOrdered
+                crtSettings={ crtSettings }
                 related={ related }
-                required
+                exclude={[
+                    '/sequenceNumber',
+                    '/onlineId'
+                ]}
+                extraTypeProps={{
+                    'PhoneWithTypeList': { enableParentNumbers: true },
+                    'TestingPermissions': { required: true }
+                }}
             />
+
             <Fields.AccessRightByResearchGroupList
                 label='Zugriff auf diesen Datensatz für'
                 dataXPath='$.scientific.systemPermissions.accessRightsByResearchGroup'
                 related={ related }
                 required
-            />
-            <Fields.FullText
-                label='Kommentar'
-                dataXPath='$.scientific.comment'
             />
         </>
     );

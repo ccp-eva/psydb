@@ -1,13 +1,11 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
 
-var nanoid = require('nanoid').nanoid;
-
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
-    compareIds = require('@mpieva/psydb-api-lib/src/compare-ids'),
-    Ajv = require('@mpieva/psydb-api-lib/src/ajv');
-
-var PushMaker = require('../../../lib/push-maker');
+var {
+    Ajv,
+    ApiError,
+    compareIds
+} = require('@mpieva/psydb-api-lib');
 
 var BaseSchema = require('./base-schema');
 var FullSchema = require('./full-schema');
@@ -70,7 +68,6 @@ handler.checkAllowedAndPlausible = async ({
 
     var {
         id,
-        lastKnownEventId,
         customRecordType,
     } = message.payload;
 
@@ -81,10 +78,6 @@ handler.checkAllowedAndPlausible = async ({
 
     if (!study) {
         throw new ApiError(404, 'StudyNotFound');
-    }
-
-    if (!compareIds(study.events[0]._id, lastKnownEventId)) {
-        throw new ApiError(400, 'RecordHasChanged');
     }
 
     var customRecordTypeRecord = await (
@@ -113,39 +106,32 @@ handler.triggerSystemEvents = async ({
     rohrpost,
     message,
     personnelId,
+
+    dispatch,
 }) => {
     var { type: messageType, payload } = message;
     var {
         id,
-        lastKnownEventId,
         customRecordType,
         enableOnlineTesting,
         externalLocationGrouping,
     } = payload;
 
-    var channel = (
-        rohrpost
-        .openCollection('study')
-        .openChannel({
-            id,
-        })
-    );
-
-    var messages = PushMaker({ personnelId }).all({
-        // NOTE: this structure has to exist so we can push into the
-        // nested arrays
-        '/state/selectionSettingsBySubjectType': {
-            subjectRecordType: customRecordType,
-            generalConditions: [],
-            conditionsByAgeFrame: [],
-            enableOnlineTesting: enableOnlineTesting || false,
-            externalLocationGrouping: (
-                externalLocationGrouping || { enabled: false }
-            ),
-        },
+    await dispatch({
+        collection: 'study',
+        channelId: id,
+        payload: { $push: {
+            'state.selectionSettingsBySubjectType': {
+                subjectRecordType: customRecordType,
+                generalConditions: [],
+                conditionsByAgeFrame: [],
+                enableOnlineTesting: enableOnlineTesting || false,
+                externalLocationGrouping: (
+                    externalLocationGrouping || { enabled: false }
+                ),
+            },
+        }}
     });
-
-    await channel.dispatchMany({ messages, lastKnownEventId });
 }
 
 handler.triggerOtherSideEffects = async () => {};

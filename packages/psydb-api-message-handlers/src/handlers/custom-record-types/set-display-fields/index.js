@@ -31,7 +31,6 @@ handler.checkAllowedAndPlausible = async ({
 
     var {
         id,
-        lastKnownEventId,
         fieldPointers,
     } = message.payload;
 
@@ -45,10 +44,6 @@ handler.checkAllowedAndPlausible = async ({
         throw new ApiError(404, 'CustomRecordTypeNotFound');
     }
     
-    if (!compareIds(record.events[0]._id, lastKnownEventId)) {
-        throw new ApiError(400, 'RecordHasChanged');
-    }
-
     //console.dir(record, { depth: null });
 
     var targetRecordSchema = await createSchemaForRecordType({
@@ -94,6 +89,8 @@ handler.triggerSystemEvents = async ({
     rohrpost,
     cache,
     message,
+
+    dispatch,
 }) => {
     var { personnelId, payload } = message;
 
@@ -107,38 +104,29 @@ handler.triggerSystemEvents = async ({
         gatheredFieldData
     } = cache;
 
-    var channel = (
-        rohrpost
-        .openCollection('customRecordType')
-        .openChannel({
-            id
-        })
-    );
+    var path = getPathForTarget(target);
 
-    var pointer = getPointerForTarget(target);
-
-    var messages = PutMaker({ personnelId }).all({
-        [pointer]: gatheredFieldData,
-    });
-
-    await channel.dispatchMany({
-        lastKnownEventId,
-        messages,
+    await dispatch({
+        collection: 'customRecordType',
+        channelId: id,
+        payload: { $set: {
+            [path]: gatheredFieldData
+        }}
     });
 }
 
-var getPointerForTarget = (target) => {
+var getPathForTarget = (target) => {
     switch (target) {
         case 'table':
-            return '/state/tableDisplayFields';
+            return 'state.tableDisplayFields';
         case 'optionlist':
-            return '/state/optionListDisplayFields';
+            return 'state.optionListDisplayFields';
         case 'extra-description':
-            return '/state/extraDescriptionDisplayFields';
+            return 'state.extraDescriptionDisplayFields';
         case 'selection-summary':
-            return '/state/selectionSummaryDisplayFields';
+            return 'state.selectionSummaryDisplayFields';
         case 'invite-confirm-summary':
-            return '/state/inviteConfirmSummaryDisplayFields';
+            return 'state.inviteConfirmSummaryDisplayFields';
         default:
             throw new Error(`unknown target "${target}"`);
     }

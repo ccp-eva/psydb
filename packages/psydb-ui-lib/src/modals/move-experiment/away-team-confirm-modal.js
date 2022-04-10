@@ -1,37 +1,27 @@
 import React, { useMemo, useEffect, useReducer, useCallback, useState } from 'react';
 
 import datefns from '../../date-fns';
-import { createSend } from '@mpieva/psydb-ui-utils';
+import { useSend } from '@mpieva/psydb-ui-hooks';
 
 import {
     Modal,
     Container,
     Pair,
-    Button
+    Button,
+
+    WithDefaultModal
 } from '@mpieva/psydb-ui-layout';
 
-const FormContainer = ({
-    onHide,
-    
-    experimentData,
-    teamData,
-    studyData,
-    
-    nextReservationRecord,
-    nextTeamRecord,
-    nextInterval,
+import { DefaultForm, Fields } from '../../formik';
 
-    onSuccessfulUpdate,
-}) => {
-
-    var handleSubmit = createSend(() => ({
-        type: 'experiment/move-away-team',
-        payload: {
-            experimentId: experimentData.record._id,
-            experimentOperatorTeamId: nextTeamRecord._id,
-            interval: nextInterval,
-        }
-    }), { onSuccessfulUpdate })
+const FormContainer = (ps) => {
+    var {
+        experimentData,
+        teamData,
+        
+        nextTeamRecord,
+        nextInterval,
+    } = ps;
 
     return (
         <div>
@@ -43,7 +33,7 @@ const FormContainer = ({
                             new Date(
                                 experimentData.record.state.interval.start
                             ),
-                            'cccc P'
+                            'dd.MM.yyyy HH:mm'
                         ) }
                     </Pair>
                     <Pair label='Team'>
@@ -64,7 +54,7 @@ const FormContainer = ({
                     <Pair label='Datum'>
                         { datefns.format(
                             new Date(nextInterval.start),
-                            'ccc P'
+                            'dd.MM.yyyy HH:mm'
                         ) }
                     </Pair>
                      <Pair label='Team'>
@@ -78,65 +68,69 @@ const FormContainer = ({
                     </Pair>
                 </Container>
             </div>
-            <div className='d-flex justify-content-end mt-3'>
-                <Button onClick={ handleSubmit }>Verschieben</Button>
+            <div className='d-flex justify-content-between mt-3'>
+                <Fields.PlainCheckbox
+                    dataXPath='$.shouldRemoveOldReservation'
+                    label='Alte Reservierung entfernen'
+                />
+                <Button type='submit'>Verschieben</Button>
             </div>
         </div>
     )
 
 }
 
-const AwayTeamConfirmModal = ({
-    show,
-    onHide,
+const AwayTeamConfirmModalBody = (ps) => {
+    var {
+        experimentData,
+        teamData,
+        modalPayloadData,
 
-    experimentData,
-    teamData,
-    studyData,
-    modalPayloadData,
-
-    onSuccessfulUpdate,
-}) => {
-
-    if (!modalPayloadData) {
-        return null;
-    }
+        onHide,
+        onSuccessfulUpdate,
+    } = ps;
 
     var {
-        reservationRecord: nextReservationRecord,
         teamRecord: nextTeamRecord,
         interval: nextInterval,
     } = modalPayloadData;
 
-    var wrappedOnSuccessfulUpdate = (...args) => {
-        onHide();
-        onSuccessfulUpdate && onSuccessfulUpdate(...args);
-    };
+    var send = useSend((formData) => ({
+        type: 'experiment/move-away-team',
+        payload: {
+            experimentId: experimentData.record._id,
+            experimentOperatorTeamId: nextTeamRecord._id,
+            interval: nextInterval,
+            shouldRemoveOldReservation: formData.shouldRemoveOldReservation
+        }
+    }), { onSuccessfulUpdate: [ onHide, onSuccessfulUpdate ] })
+
+    var initialValues = { shouldRemoveOldReservation: false };
 
     return (
-        <Modal
-            show={show}
-            onHide={ onHide }
-            size='md'
+        <DefaultForm
+            initialValues={ initialValues }
+            onSubmit={ send.exec }
         >
-            <Modal.Header closeButton>
-                <Modal.Title>Experiment verschieben</Modal.Title>
-            </Modal.Header>
-            <Modal.Body className='bg-light'>
+            { (formikProps) => (
                 <FormContainer { ...({
                     experimentData,
                     teamData,
-                    studyData,
 
-                    nextReservationRecord,
                     nextTeamRecord,
                     nextInterval,
-
-                    onSuccessfulUpdate: wrappedOnSuccessfulUpdate,
-                }) } /> 
-            </Modal.Body>
-        </Modal>
+                }) } />
+            )}
+        </DefaultForm>
     )
 }
+
+const AwayTeamConfirmModal = WithDefaultModal({
+    Body: AwayTeamConfirmModalBody,
+    title: 'Termin verschieben',
+    size: 'md',
+    className: '',
+    backdropClassName: '',
+});
 
 export default AwayTeamConfirmModal;

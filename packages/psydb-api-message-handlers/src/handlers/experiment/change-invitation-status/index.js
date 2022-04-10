@@ -1,15 +1,8 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
 
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error');
-var compareIds = require('@mpieva/psydb-api-lib/src/compare-ids');
-
-var SimpleHandler = require('../../../lib/simple-handler'),
-    checkForeignIdsExist = require('../../../lib/check-foreign-ids-exist');
-
-var PutMaker = require('../../../lib/put-maker'),
-    PushMaker = require('../../../lib/push-maker');
-
+var { ApiError, compareIds } = require('@mpieva/psydb-api-lib');
+var { SimpleHandler } = require('../../../lib/');
 var createSchema = require('./schema');
 
 var handler = SimpleHandler({
@@ -70,7 +63,7 @@ handler.triggerSystemEvents = async ({
     rohrpost,
     cache,
     message,
-    personnelId,
+    dispatch,
 }) => {
     var { type: messageType, payload } = message;
     var {
@@ -84,57 +77,38 @@ handler.triggerSystemEvents = async ({
         subjectRecord,
     } = cache;
 
-    var experimentInvitationIndex = (
+    var eix = (
         experimentRecord.state.subjectData.findIndex(it => {
             return compareIds(it.subjectId, subjectId)
         })
-    )
+    );
 
-    var subjectInvitationIndex = (
+    await dispatch({
+        collection: 'experiment',
+        channelId: experimentId,
+        payload: { $set: {
+            [`state.subjectData.${eix}.invitationStatus`]: invitationStatus
+        }}
+    });
+
+    var six = (
         subjectRecord.scientific.state.internals.invitedForExperiments
         .findIndex(it => {
             return compareIds(it.experimentId, experimentId)
         })
     )
 
-    var experimentInvitationStatusPath = (
-        `/state/subjectData/${experimentInvitationIndex}/invitationStatus`
+    var spath = (
+        `scientific.state.internals.invitedForExperiments.${six}.status`
     );
-
-    var subjectInvitationStatusPath = (
-        `/state/internals/invitedForExperiments/${subjectInvitationIndex}/status`
-    );
-
-    var experimentChannel = (
-        rohrpost.openCollection('experiment').openChannel({
-            id: experimentId
-        })
-    )
-
-    await experimentChannel.dispatchMany({
-        lastKnownEventId: experimentRecord.events[0]._id,
-        messages: [
-            ...PutMaker({ personnelId }).all({
-                [experimentInvitationStatusPath]: invitationStatus
-            })
-        ]
-    })
-
-    var subjectChannel = (
-        rohrpost.openCollection('subject').openChannel({
-            id: subjectId
-        })
-    )
-
-    await subjectChannel.dispatchMany({
+    await dispatch({
+        collection: 'subject',
+        channelId: subjectId,
         subChannelKey: 'scientific',
-        lastKnownEventId: subjectRecord.scientific.events[0]._id,
-        messages: [
-            ...PutMaker({ personnelId }).all({
-                [subjectInvitationStatusPath]: invitationStatus
-            })
-        ]
-    })
+        payload: { $set: {
+            [spath]: invitationStatus
+        }}
+    });
 }
 
 module.exports = handler;

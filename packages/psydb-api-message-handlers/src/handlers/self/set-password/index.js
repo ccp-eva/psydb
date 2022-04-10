@@ -44,31 +44,20 @@ handler.triggerSystemEvents = async (context) => {
         rohrpost,
         message,
         personnelId,
+        dispatch,
     } = context;
     
     var { newPassword } = message.payload;
     var newPasswordHash = bcrypt.hashSync(newPassword, 10);
 
-    var self = await (
-        db.collection('personnel')
-        .findOne({ _id: personnelId })
-    );
-
-    var channel = (
-        rohrpost
-        .openCollection('personnel')
-        .openChannel({
-            id: personnelId
-        })
-    )
-
-    await channel.dispatchMany({
-        lastKnownEventId: self.gdpr.events[0]._id,
+    await dispatch({
+        collection: 'personnel',
+        channelId: personnelId,
         subChannelKey: 'gdpr',
-        messages: PutMaker({ personnelId }).all({
-            '/state/internals/passwordHash': newPasswordHash
-        })
-    })
+        payload: { $set: {
+            'gdpr.state.internals.passwordHash': newPasswordHash,
+        }}
+    });
 }
 
 module.exports = handler;

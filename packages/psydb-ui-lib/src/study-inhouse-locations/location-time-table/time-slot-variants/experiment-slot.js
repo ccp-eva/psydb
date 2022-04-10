@@ -36,7 +36,9 @@ const ExperimentSlot = (ps) => {
 
     // this reservation does not belong to any of the study teams
     if (!teamRecord) {
-        return <OtherStudySlot />
+        return (
+            <OtherStudySlot studyLabel={ experimentRecord._studyLabel } />
+        );
         /*return (
             <div
                 className='border text-center m-1'

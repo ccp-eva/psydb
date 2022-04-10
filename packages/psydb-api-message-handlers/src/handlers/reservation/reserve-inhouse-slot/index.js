@@ -1,13 +1,9 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
 
-var nanoid = require('nanoid').nanoid;
-
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error');
-
-var SimpleHandler = require('../../../lib/simple-handler'),
-    PutMaker = require('../../../lib/put-maker'),
-    checkForeignIdsExist = require('../../../lib/check-foreign-ids-exist');
+var { nanoid } = require('nanoid');
+var { ApiError } = require('@mpieva/psydb-api-lib');
+var { SimpleHandler, checkForeignIdsExist } = require('../../../lib');
 
 var {
     checkConflictingTeamReservations,
@@ -15,6 +11,7 @@ var {
 } = require('../util');
 
 var createSchema = require('./schema');
+
 
 var handler = SimpleHandler({
     messageType: 'reservation/reserve-inhouse-slot',
@@ -60,6 +57,8 @@ handler.triggerSystemEvents = async ({
     rohrpost,
     message,
     personnelId,
+
+    dispatchProps,
 }) => {
     var { type: messageType, payload } = message;
     var { id, props } = payload;
@@ -68,30 +67,21 @@ handler.triggerSystemEvents = async ({
         db.collection('location').findOne({ _id: props.locationId })
     );
 
-    var channel = (
-        rohrpost
-        .openCollection('reservation')
-        .openChannel({
-            id,
-            isNew: true,
-            additionalChannelProps: {
-                type: 'inhouse'
-            }
-        })
-    );
-    
-    var messages = PutMaker({ personnelId }).all({
-        '/state/seriesId': nanoid(),
-        '/state/isDeleted': false,
-        '/state/studyId': props.studyId,
-        '/state/experimentOperatorTeamId': props.experimentOperatorTeamId,
-        '/state/locationId': props.locationId,
-        '/state/locationRecordType': locationRecord.type,
-        '/state/interval/start': props.interval.start,
-        '/state/interval/end': props.interval.end,
-    });
+    props.seriesId = nanoid(); // FIXME: why?
+    props.locationRecordType = locationRecord.type;
 
-    await channel.dispatchMany({ messages });
+    await dispatchProps({
+        collection: 'reservation',
+        channelId: id,
+        isNew: true,
+        additionalChannelProps: {
+            type: 'inhouse'
+        },
+        props,
+
+        initialize: true,
+        recordType: 'inhouse',
+    });
 }
 
 module.exports = handler;

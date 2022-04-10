@@ -1,8 +1,9 @@
-var Email = () => ({
+var Email = ({ ...keywords } = {}) => ({
     type: 'string',
-    //format: 'email',
+    //format: 'email', // TODO: reenable
     title: 'Email',
     systemType: 'Email',
+    ...keywords
 });
 
 module.exports = Email;

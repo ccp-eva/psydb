@@ -2,65 +2,73 @@ import React, { useState, useCallback } from 'react';
 import { Form, Button, InputGroup } from 'react-bootstrap';
 import enums from '@mpieva/psydb-schema-enums';
 
-import { createSend } from '@mpieva/psydb-ui-utils';
+import { useSend } from '@mpieva/psydb-ui-hooks';
+import { DefaultForm, Fields, withField } from '../formik';
 
-const options = {
-    keys: [
-        ...enums.safeParticipationStatus.keys,
-        ...enums.safeUnparticipationStatus.keys,
-    ],
-    names: [
-        ...enums.safeParticipationStatus.names,
-        ...enums.safeUnparticipationStatus.names,
-    ]
-}
+const Select = withField({
+    Control: Fields.GenericEnum.Control,
+    DefaultWrapper: 'NoneWrapper'
+});
 
-const PostprocessSubjectForm = ({
-    experimentId,
-    subjectId,
-    onSuccessfulUpdate
-}) => {
-    var [ selectedStatus, setSelectedStatus ] = useState('participated');
-
-    var handleChangeStatus = createSend(() => ({
+const PostprocessSubjectForm = (ps) => {
+    var {
+        experimentType,
+        experimentId,
+        subjectId,
+        enableFollowUpExperiments,
+        onSuccessfulUpdate
+    } = ps;
+    var send = useSend((formData) => ({
         type: 'experiment/change-participation-status',
         payload: {
             experimentId: experimentId,
             subjectId: subjectId,
-            participationStatus: selectedStatus,
+            ...formData
         }
     }), { onSuccessfulUpdate });
 
-    var handleSelectionChange = useCallback((event) => {
-        var { target: { value }} = event;
-        setSelectedStatus(value);
-    }, []);
+    var options = (
+        experimentType === 'away-team'
+        ? {
+            ...enums.awayTeamParticipationStatus.mapping,
+            ...enums.awayTeamUnparticipationStatus.mapping,
+        }
+        : {
+            ...enums.inviteParticipationStatus.mapping,
+            ...enums.inviteUnparticipationStatus.mapping,
+        }
+    )
 
+    var initialValues = {
+        participationStatus: 'participated',
+        excludeFromMoreExperimentsInStudy: false,
+    };
     return (
-        <InputGroup>
-            <Form.Control
-                as='select'
-                value={ selectedStatus }
-                onChange={ handleSelectionChange }
-            >   
-                { /*selectedStatus === 'unknown' && (
-                    <option>Bitte wählen...</option>
-                )*/ }
-                { options.keys.map((k, i) => (
-                    <option key={k} value={k}>
-                        { options.names[i] }
-                    </option>
-                ))}
-            </Form.Control>
-            <InputGroup.Append>
-                <Button
-                    onClick={ handleChangeStatus }
-                    disabled={ selectedStatus === 'unknown' }
-                >
-                    Speichern
-                </Button>
-            </InputGroup.Append>
-        </InputGroup>
+        <DefaultForm onSubmit={ send.exec }initialValues={ initialValues }>
+            {(formikProps) => (
+                <InputGroup>
+                    <Select
+                        dataXPath='$.participationStatus'
+                        options={ options }
+                    />
+                    { enableFollowUpExperiments && (
+                        <InputGroup.Append>
+                            <InputGroup.Text>
+                                <Fields.PlainCheckbox
+                                    dataXPath='$.excludeFromMoreExperimentsInStudy'
+                                    label='Letzter Termin?'
+                                />
+                            </InputGroup.Text>
+                        </InputGroup.Append>
+                    )}
+                    <InputGroup.Append>
+                        <Button type='submit'>
+                            Speichern
+                        </Button>
+                    </InputGroup.Append>
+                </InputGroup>
+            )}
+        </DefaultForm>
     )
 }
 
