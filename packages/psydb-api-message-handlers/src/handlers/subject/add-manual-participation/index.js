@@ -62,7 +62,7 @@ handler.checkAllowedAndPlausible = async ({
         if (!opsTeam) {
             throw new ApiError(409, 'ExperimentOperatorTeamNotFound');
         }
-        cache.experimentOperatorTeam = experimentOperatorTeam;
+        cache.experimentOperatorTeam = opsTeam;
     }
     else {
         var experimentOperators = await (
@@ -124,16 +124,19 @@ handler.triggerSystemEvents = async ({
 
         timestamp,
         status,
+    
+        // TODO
+        excludeFromMoreExperimentsInStudy: false
     }
 
     if (experimentOperatorTeamId) {
         var { experimentOperatorTeam } = cache;
-        var { personnelIds, color } = experimentOperatorTeamId.state;
+        var { personnelIds, color } = experimentOperatorTeam.state;
         
         participationItem = {
             ...participationItem,
-            experimentOperatorTeamId,
-            experimentOperatorTeamColor: color,
+            //experimentOperatorTeamId,
+            //experimentOperatorTeamColor: color,
             experimentOperatorIds: personnelIds
         }
     }

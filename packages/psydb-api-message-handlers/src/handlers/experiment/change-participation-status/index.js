@@ -1,6 +1,7 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
 
+var { nanoid } = require('nanoid');
 var { ApiError, compareIds } = require('@mpieva/psydb-api-lib');
 var { SimpleHandler } = require('../../../lib/');
 var createSchema = require('./schema');
@@ -79,6 +80,24 @@ handler.triggerSystemEvents = async ({
         subjectRecord,
     } = cache;
 
+    var {
+        studyId,
+        locationId,
+        experimentOperatorTeamId,
+    } = experimentRecord.state;
+
+    var study = await (
+        db.collection('study').findOne({ _id: studyId })
+    );
+    var location = await (
+        db.collection('location').findOne({ _id: locationId })
+    );
+    var experimentOperatorTeam = await (
+        db.collection('experimentOperatorTeam')
+        .findOne({ _id: experimentOperatorTeamId })
+    );
+    var { personnelIds } = experimentOperatorTeam.state;
+
     var unprocessedSubjects = (
         experimentRecord.state.subjectData.filter(it => (
             it.participationStatus === 'unknown'
@@ -122,11 +141,20 @@ handler.triggerSystemEvents = async ({
         subChannelKey: 'scientific',
         payload: { $push: {
             [spath]: {
+                _id: nanoid(),
+
                 type: experimentRecord.type,
                 expermentId: experimentRecord._id,
-                studyId: experimentRecord.state.studyId,
+                
+                studyId: study._id,
+                studyType: study.type,
+                locationId: location._id,
+                locationType: location.type,
+                experimentOperatorIds: personnelIds,
+
                 timestamp: experimentRecord.state.interval.start,
                 status: participationStatus,
+
                 excludeFromMoreExperimentsInStudy
             }
         }}
