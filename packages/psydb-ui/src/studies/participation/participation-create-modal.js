@@ -1,55 +1,42 @@
-import React, { useEffect, useReducer } from 'react';
+import React from 'react';
 
-import { Modal } from 'react-bootstrap';
-
-import agent from '@mpieva/psydb-ui-request-agents';
-
+import { demuxed } from '@mpieva/psydb-ui-utils';
+import { useSend } from '@mpieva/psydb-ui-hooks';
+import { WithDefaultModal } from '@mpieva/psydb-ui-layout';
 import ParticipationCreateForm from './participation-create-form';
 
-const ParticipationCreateModal = ({
-    show,
-    onHide,
-    studyId,
-    subjectRecordType,
-    onSuccessfulCreate
-}) => {
+const ParticipationCreateModalBody = (ps) => {
+    var {
+        studyId,
+        subjectRecordType,
+        onHide,
+        onSuccessfulCreate
+    } = ps;
 
-    var handleSubmit = ({ formData }) => {
-        var message = {
-            type: 'subject/add-manual-participation',
-            payload: {
-                ...formData,
-                studyId
-            }
-        };
+    var send = useSend(({ formData }) => ({
+        type: 'subject/add-manual-participation',
+        payload: {
+            ...formData,
+            studyId
+        }
+    }), { onSuccessfulUpdate: [ onHide, onSuccessfulCreate ]});
 
-        return agent.send({ message }).then(response => {
-            onHide();
-            onSuccessfulCreate && onSuccessfulCreate(response);
-        })
-    }
 
     return (
-        <Modal
-            show={show}
-            onHide={ onHide }
-            size='lg'
-            className='team-modal'
-            backdropClassName='team-modal-backdrop'
-        >
-            <Modal.Header closeButton>
-                <Modal.Title>Probdanden hinzufügen</Modal.Title>
-            </Modal.Header>
-            <Modal.Body className='bg-light'>
-                <div>
-                    <ParticipationCreateForm { ...({
-                        subjectRecordType,
-                        onSubmit: handleSubmit
-                    })} />
-                </div>
-            </Modal.Body>
-        </Modal>
+        <div>
+            <ParticipationCreateForm { ...({
+                subjectRecordType,
+                onSubmit: send.exec
+            })} />
+        </div>
     );
 }
+
+const ParticipationCreateModal = WithDefaultModal({
+    title: 'Probanden hinzufügen',
+    size: 'lg',
+
+    Body: ParticipationCreateModalBody
+});
 
 export default ParticipationCreateModal;
