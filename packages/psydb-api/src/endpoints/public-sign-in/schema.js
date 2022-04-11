@@ -8,7 +8,8 @@ var {
 module.exports = () => ExactObject({
     properties: {
         email: Email({ format: 'email' }), // FIXME:  format
-        password: Password()
+        password: Password(),
+        timezone: { type: 'string' }
     },
     required: [
         'email',

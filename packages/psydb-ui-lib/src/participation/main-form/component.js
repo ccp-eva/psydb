@@ -74,7 +74,7 @@ const FormFields = (ps) => {
                 />
             )}
             <Fields.GenericEnum
-                label='Beginn'
+                label='Status'
                 dataXPath='$.status'
                 options={{
                     ...enums.inviteParticipationStatus.mapping,

@@ -12,7 +12,6 @@ import {
 import { LinkButton, Button } from '@mpieva/psydb-ui-layout';
 import GenericRecordDetails from '@mpieva/psydb-ui-lib/src/generic-record-details';
 import Participation from './participation';
-//import ParticipationModal from './participation-modal';
 import {
     CreateModal as ParticipationCreateModal
 } from '@mpieva/psydb-ui-lib/src/participation';
