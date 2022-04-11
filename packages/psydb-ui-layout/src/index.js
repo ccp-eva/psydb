@@ -6,9 +6,11 @@ export { default as Pagination } from './pagination';
 
 export { default as EditIconButtonInline } from './edit-icon-button-inline';
 
+export * from './icon-buttons';
+
 export { default as DetailsIconButton } from './details-icon-button';
-export { default as StudyIconButton } from './study-icon-button';
-export { default as ExperimentIconButton } from './experiment-icon-button';
+//export { default as StudyIconButton } from './study-icon-button';
+//export { default as ExperimentIconButton } from './experiment-icon-button';
 export { default as EditIconButton } from './edit-icon-button';
 export { default as RemoveIconButton } from './remove-icon-button';
 

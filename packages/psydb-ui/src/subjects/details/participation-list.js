@@ -2,6 +2,7 @@ import React from 'react';
 import {
     Table,
     StudyIconButton,
+    ExperimentIconButton
 } from '@mpieva/psydb-ui-layout';
 
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
@@ -115,8 +116,13 @@ const ParticipationListRow = ({
                 { formatStatus(item.status) }
             </td>
             <td className='d-flex justify-content-end'>
+                { item.type !== 'manual' && (
+                    <ExperimentIconButton
+                        to={`/experiments/${item.type}/${item.experimentId}`}
+                    />
+                )}
                 <StudyIconButton
-                    to={`/studies/${studyType}/${item.studyId}`}
+                    to={`/studies/${item.studyType}/${item.studyId}`}
                 />
             </td>
         </tr>

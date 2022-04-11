@@ -144,7 +144,7 @@ handler.triggerSystemEvents = async ({
                 _id: nanoid(),
 
                 type: experimentRecord.type,
-                expermentId: experimentRecord._id,
+                experimentId: experimentRecord._id,
                 
                 studyId: study._id,
                 studyType: study.type,

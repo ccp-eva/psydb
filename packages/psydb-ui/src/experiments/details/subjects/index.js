@@ -2,7 +2,7 @@ import React, { createContext, useContext } from 'react';
 
 import { useSend, useModalReducer, usePermissions } from '@mpieva/psydb-ui-hooks';
 
-import { DetailsIconButton } from '@mpieva/psydb-ui-layout';
+import { SubjectIconButton } from '@mpieva/psydb-ui-layout';
 import SubjectDropdown from '@mpieva/psydb-ui-lib/src/experiment-subject-dropdown';
 
 import SubjectsContainer from '../../subjects-container';
@@ -112,7 +112,7 @@ const ActionsComponent = ({
     return (
         <div className='d-flex justify-content-end media-print-hidden'>
             { permissions.hasFlag('canReadSubjects') && (
-                <DetailsIconButton
+                <SubjectIconButton
                     to={`/subjects/${subjectRecord.type}/${subjectRecord._id}`}
                 />
             )}

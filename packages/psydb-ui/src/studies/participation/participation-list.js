@@ -2,7 +2,8 @@ import React, { useEffect, useReducer, useMemo } from 'react';
 import jsonpointer from 'jsonpointer';
 import {
     Table,
-    DetailsIconButton,
+    SubjectIconButton,
+    ExperimentIconButton,
 } from '@mpieva/psydb-ui-layout';
 
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
@@ -90,6 +91,8 @@ const ParticipationListRow = ({
         //formattedDate === '01.01.1970 00:00'
     );
 
+    var { type: participationType, experimentId } = participationData;
+
     return (
         <tr>
             <FieldDataBodyCols { ...({
@@ -118,7 +121,12 @@ const ParticipationListRow = ({
                 { formatStatus(participationData.status) }
             </td>
             <td className='d-flex justify-content-end'>
-                <DetailsIconButton
+                { participationType !== 'manual' && (
+                    <ExperimentIconButton
+                        to={`/experiments/${participationType}/${experimentId}`}
+                    />
+                )}
+                <SubjectIconButton
                     to={`/subjects/${record.type}/${record._id}`}
                 />
             </td>

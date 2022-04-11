@@ -1,6 +1,6 @@
 import React from 'react';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
-import { Alert, DetailsIconButton } from '@mpieva/psydb-ui-layout';
+import { Alert, SubjectIconButton } from '@mpieva/psydb-ui-layout';
 import { withLabProcedureSettingsIterator } from '@mpieva/psydb-ui-lib';
 import SubjectList from '../../subjects-container/subject-list';
 
@@ -77,7 +77,7 @@ const ActionsComponent = ({
     return (
         <div className='d-flex justify-content-end'>
             { permissions.hasFlag('canReadSubjects') && (
-                <DetailsIconButton
+                <SubjectIconButton
                     to={`/subjects/${subjectRecord.type}/${subjectRecord._id}`}
                 />
             )}
