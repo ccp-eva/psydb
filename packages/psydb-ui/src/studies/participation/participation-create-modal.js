@@ -5,8 +5,6 @@ import { useSend } from '@mpieva/psydb-ui-hooks';
 import { WithDefaultModal } from '@mpieva/psydb-ui-layout';
 import MainForm from './main-form';
 
-import ParticipationCreateForm from './participation-create-form';
-
 const ParticipationCreateModalBody = (ps) => {
     var {
         studyId,
