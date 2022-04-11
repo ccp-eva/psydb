@@ -91,20 +91,30 @@ var Schema = () => {
         payload: OpenObject({
             properties: {
                 ...requiredProps,
-                experimentOperatorTeamId: ForeignId({
-                    collection: 'experimentOperatorTeam'
-                }),
-                experimentOperatorIds: ForeignIdList({
-                    collection: 'experimentOperatorIds',
-                    minItems: 1,
-                })
             },
             required: [
                 ...requiredKeys,
             ],
             oneOf: [
-                { required: [ 'experimentOperatorTeamId' ]},
-                { required: [ 'experimentOperatorIds' ]},
+                { 
+                    properties: { experimentOperatorTeamId: ForeignId({
+                        collection: 'experimentOperatorTeam'
+                    })},
+                    required: [ 'experimentOperatorTeamId' ],
+                    propertyNames: { not: { enum: [
+                        'experimentOperatorIds'
+                    ]}}
+                },
+                {
+                    properties: { experimentOperatorIds: ForeignIdList({
+                        collection: 'experimentOperatorIds',
+                        minItems: 1,
+                    })},
+                    required: [ 'experimentOperatorIds' ],
+                    propertyNames: { not: { enum: [
+                        'experimentOperatorTeamId'
+                    ]}}
+                },
             ]
         }),
     });
