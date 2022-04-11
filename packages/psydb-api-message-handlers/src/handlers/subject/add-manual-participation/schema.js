@@ -30,6 +30,9 @@ var AllOf = ({ variants, keywords }) => ({
 });
 
 var Schema = () => {
+    // TODO: this variant breaks when unmarshalling
+    // as it tries to apply date format on second branch when
+    // the value is already a date
     var requiredProps = {
         labProcedureType: StringEnum(
             enums.experimentVariants.keys
@@ -49,6 +52,10 @@ var Schema = () => {
     var requiredKeys = Object.keys(requiredProps);
 
 
+    // TODO: this variant breaks when unmarshalling
+    // as it tries to apply date format on second branch when
+    // the value is already a date
+    /*
     return Message({
         type: `subject/add-manual-participation`,
         payload: OneOf({ variants: [
@@ -77,6 +84,29 @@ var Schema = () => {
                 ]
             }),
         ]})
+    });*/
+    
+    return Message({
+        type: `subject/add-manual-participation`,
+        payload: OpenObject({
+            properties: {
+                ...requiredProps,
+                experimentOperatorTeamId: ForeignId({
+                    collection: 'experimentOperatorTeam'
+                }),
+                experimentOperatorIds: ForeignIdList({
+                    collection: 'experimentOperatorIds',
+                    minItems: 1,
+                })
+            },
+            required: [
+                ...requiredKeys,
+            ],
+            oneOf: [
+                { required: [ 'experimentOperatorTeamId' ]},
+                { required: [ 'experimentOperatorIds' ]},
+            ]
+        }),
     });
 }
 

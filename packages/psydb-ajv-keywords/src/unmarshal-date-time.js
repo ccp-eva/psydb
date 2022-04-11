@@ -11,7 +11,7 @@ var unmarshalDateTime = {
     schema: false,
     valid: true,
     validate: (data, dataPath, parentData, parentDataProperty) => {
-        console.log(data, dataPath, parentData, parentDataProperty);
+        //console.log(data, dataPath, parentData, parentDataProperty);
         if (validateDateTime(data)) {
             parentData[parentDataProperty] = new Date(data);
         }
