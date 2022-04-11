@@ -3,6 +3,8 @@ import React from 'react';
 import { demuxed } from '@mpieva/psydb-ui-utils';
 import { useSend } from '@mpieva/psydb-ui-hooks';
 import { WithDefaultModal } from '@mpieva/psydb-ui-layout';
+import MainForm from './main-form';
+
 import ParticipationCreateForm from './participation-create-form';
 
 const ParticipationCreateModalBody = (ps) => {
@@ -13,7 +15,7 @@ const ParticipationCreateModalBody = (ps) => {
         onSuccessfulCreate
     } = ps;
 
-    var send = useSend(({ formData }) => ({
+    var send = useSend((formData) => ({
         type: 'subject/add-manual-participation',
         payload: {
             ...formData,
@@ -21,14 +23,16 @@ const ParticipationCreateModalBody = (ps) => {
         }
     }), { onSuccessfulUpdate: [ onHide, onSuccessfulCreate ]});
 
+    var initialValues = MainForm.createDefaults();
 
     return (
-        <div>
-            <ParticipationCreateForm { ...({
-                subjectRecordType,
-                onSubmit: send.exec
-            })} />
-        </div>
+        <>
+            <MainForm.Component
+                subjectType={ subjectRecordType }
+                initialValues={ initialValues }
+                onSubmit={ send.exec }
+            />
+        </>
     );
 }
 
