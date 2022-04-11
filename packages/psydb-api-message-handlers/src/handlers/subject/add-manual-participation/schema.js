@@ -18,7 +18,9 @@ var Schema = () => {
         type: `subject/add-manual-participation`,
         payload: ExactObject({
             properties: {
-                id: Id(),
+                subjectId: ForeignId({
+                    collection: 'subject',
+                }),
                 studyId: ForeignId({
                     collection: 'study',
                 }),
@@ -26,7 +28,7 @@ var Schema = () => {
                 status: ParticipationStatus(),
             },
             required: [
-                'id',
+                'subjectId',
                 'studyId',
                 'timestamp',
                 'status',

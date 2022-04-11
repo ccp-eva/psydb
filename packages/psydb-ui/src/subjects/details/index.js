@@ -12,7 +12,10 @@ import {
 import { LinkButton, Button } from '@mpieva/psydb-ui-layout';
 import GenericRecordDetails from '@mpieva/psydb-ui-lib/src/generic-record-details';
 import Participation from './participation';
-import ParticipationModal from './participation-modal';
+//import ParticipationModal from './participation-modal';
+import {
+    CreateModal as ParticipationCreateModal
+} from '@mpieva/psydb-ui-lib/src/participation';
 
 import { RecordDetails } from '@mpieva/psydb-ui-record-views/subjects';
 
@@ -87,7 +90,7 @@ const SubjectDetailsContainer = ({
             
             { canReadParticipation && (
                 <div className='border pl-3 bg-light mt-4 mb-4'>
-                    <ParticipationModal
+                    <ParticipationCreateModal
                         { ...participationModal.passthrough }
                         subjectId={ id }
                         onSuccessfulUpdate={ revision.up }

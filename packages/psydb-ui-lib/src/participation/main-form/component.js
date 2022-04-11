@@ -5,25 +5,35 @@ import * as enums from '@mpieva/psydb-schema-enums';
 import {
     DefaultForm,
     Fields,
-} from '@mpieva/psydb-ui-lib';
+} from '../../formik';
 
 export const Component = (ps) => {
     var {
+        enableSubjectId,
         subjectType,
+        enableStudyId,
+        studyType,
+
         initialValues,
         onSubmit,
     } = ps;
 
     var renderedForm = (
         <DefaultForm
+            useAjvAsync
+            ajvErrorInstancePathPrefix='/payload'
             initialValues={ initialValues }
             onSubmit={ onSubmit }
-            useAjvAsync
         >
             {(formikProps) => (
                 <>
                     { /*console.log(formikProps.values) || ''*/ }
-                    <FormFields subjectType={ subjectType } />
+                    <FormFields { ...({
+                        enableSubjectId,
+                        subjectType,
+                        enableStudyId,
+                        studyType
+                    }) } />
                     <Button type='submit'>Speichern</Button>
                 </>
             )}
@@ -34,19 +44,35 @@ export const Component = (ps) => {
 }
 
 const FormFields = (ps) => {
-    var { subjectType } = ps;
+    var {
+        enableSubjectId,
+        subjectType,
+        enableStudyId,
+        studyType
+    } = ps;
+
     return (
         <>
             <Fields.DateTime
                 label='Test-Zeitpunkt'
                 dataXPath='$.timestamp'
             />
-            <Fields.ForeignId
-                label='Proband'
-                dataXPath='$.id'
-                collection='subject'
-                recordType={ subjectType }
-            />
+            { enableStudyId && (
+                <Fields.ForeignId
+                    label='Studie'
+                    dataXPath='$.studyId'
+                    collection='study'
+                    recordType={ studyType }
+                />
+            )}
+            { enableSubjectId && (
+                <Fields.ForeignId
+                    label='Proband'
+                    dataXPath='$.subjectId'
+                    collection='subject'
+                    recordType={ subjectType }
+                />
+            )}
             <Fields.GenericEnum
                 label='Beginn'
                 dataXPath='$.status'

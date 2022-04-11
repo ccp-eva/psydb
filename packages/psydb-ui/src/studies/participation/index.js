@@ -15,8 +15,8 @@ import {
     TabNav,
 } from '@mpieva/psydb-ui-layout';
 
+import { CreateModal } from '@mpieva/psydb-ui-lib/src/participation';
 import ParticipationList from './participation-list';
-import ParticipationCreateModal from './participation-create-modal';
 
 
 const StudyParticipation = ({}) => {
@@ -55,9 +55,9 @@ const StudyParticipation = ({}) => {
     return (
         <div className='mt-3'>
 
-            <ParticipationCreateModal
+            <CreateModal
                 { ...modalReducer.passthrough }
-                onSuccessfulCreate={ revision.up }
+                onSuccessfulUpdate={ revision.up }
                 studyId={ id }
                 subjectRecordType={ selectedSubjectType }
             />

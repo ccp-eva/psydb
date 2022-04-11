@@ -29,15 +29,11 @@ handler.checkAllowedAndPlausible = async ({
     }
 
     var {
-        id,
-        lastKnownScientificEventId,
+        subjectId,
         studyId,
     } = message.payload;
 
-    var study = await (
-        db.collection('study')
-        .findOne({ _id: studyId })
-    );
+    var study = await db.collection('study').findOne({ _id: studyId });
 
     // TODO: check study permissions
 
@@ -45,10 +41,7 @@ handler.checkAllowedAndPlausible = async ({
         throw new ApiError(404, 'StudyNotFound');
     }
 
-    var subject = await (
-        db.collection('subject')
-        .findOne({ _id: id })
-    );
+    var subject = await db.collection('subject').findOne({ _id: subjectId });
 
     // TODO: check subject permissions agains study permissions
     // TODO: check subject record type agains study subject types
@@ -71,15 +64,15 @@ handler.triggerSystemEvents = async ({
 }) => {
     var { type: messageType, payload } = message;
     var {
-        id,
         studyId,
+        subjectId,
         timestamp,
         status,
     } = payload;
 
     await dispatch({
         collection: 'subject',
-        channelId: id,
+        channelId: subjectId,
         subChannelKey: 'scientific',
         payload: { $push: {
             'scientific.state.internals.participatedInStudies': {
