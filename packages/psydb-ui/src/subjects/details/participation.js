@@ -13,7 +13,7 @@ import { LoadingIndicator, NotFound } from '@mpieva/psydb-ui-layout';
 import ParticipationList from './participation-list';
 
 const Participation = (ps) => {
-    var { id, revision } = ps;
+    var { id, subjectType, revision } = ps;
     var { path, url } = useRouteMatch();
     var { id } = useParams();
 
@@ -49,6 +49,8 @@ const Participation = (ps) => {
     return (
         <div>
             <ParticipationByType {...({
+                subjectId: id,
+                subjectType,
                 participationData
             }) }/>
         </div>
@@ -56,6 +58,8 @@ const Participation = (ps) => {
 }
 
 const ParticipationByType = ({
+    subjectId,
+    subjectType,
     participationData
 }) => {
 
@@ -88,6 +92,8 @@ const ParticipationByType = ({
             { studyTypes.map(type => (
                 <ParticipationList { ...({
                     key: type,
+                    subjectId,
+                    subjectType,
                     studyType: type,
                     ageFrameField,
                     ageFrameFieldValue,

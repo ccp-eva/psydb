@@ -69,39 +69,23 @@ const ParticipationCreateModalBody = (ps) => {
 
     return (
         <>
-            {/* enableStudyId && !studyRecordType && (
-                <Form.Group className='row ml-0 mr-0'>
-                    <Form.Label className='col-sm-3 col-form-label'>
-                        Studien-Typ
-                    </Form.Label>
-                    <div className='col-sm-9 pl-0 pr-0'>
-                        <Controls.GenericEnum
-                            value={ selectedStudyType }
-                            onChange={ setSelectedStudyType }
-                            options={ studyTypes.reduce((acc, it) => ({
-                                ...acc, [it.type]: it.label
-                            }), {}) }
-                        />
-                    </div>
-                </Form.Group>
-            )*/}
-            { (!enableStudyId || enableStudyId && selectedStudyType) && (
-                <MainForm.Component
-                    enableStudyId={ enableStudyId }
-                    studyTypes={ studyTypes }
-                    enableSubjectId={ enableSubjectId }
-                    subjectTypes={[ subjectRecordType ]}
+            <MainForm.Component
+                enableStudyId={ enableStudyId }
+                studyTypes={ studyTypes }
+                enableSubjectId={ enableSubjectId }
+                subjectTypes={[ subjectRecordType ]}
 
-                    initialValues={ initialValues }
-                    onSubmit={ send.exec }
-                />
-            )}
+                enableTeamSelect={ true }
+
+                initialValues={ initialValues }
+                onSubmit={ send.exec }
+            />
         </>
     );
 }
 
 const ParticipationCreateModal = WithDefaultModal({
-    title: 'Probanden hinzufügen',
+    title: 'Teilnahme hinzufügen',
     size: 'lg',
 
     Body: ParticipationCreateModalBody

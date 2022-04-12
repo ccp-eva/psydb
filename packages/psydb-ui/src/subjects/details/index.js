@@ -104,7 +104,11 @@ const SubjectDetailsContainer = ({
                     />
                     <hr />
                     <div className='pr-3 pb-3'>
-                        <Participation id={ id } revision={ revision } />
+                        <Participation
+                            id={ id }
+                            subjectType={ recordType }
+                            revision={ revision }
+                        />
                     </div>
                 </div>
             )}

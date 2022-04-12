@@ -2,8 +2,11 @@ import React from 'react';
 import {
     Table,
     StudyIconButton,
-    ExperimentIconButton
+    ExperimentIconButton,
+    EditIconButtonInline,
 } from '@mpieva/psydb-ui-layout';
+
+import { useModalReducer } from '@mpieva/psydb-ui-hooks';
 
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 import calculateAge from '@mpieva/psydb-ui-lib/src/calculate-age';
@@ -11,7 +14,12 @@ import calculateAge from '@mpieva/psydb-ui-lib/src/calculate-age';
 import FieldDataHeadCols from '@mpieva/psydb-ui-lib/src/record-list/field-data-head-cols';
 import FieldDataBodyCols from '@mpieva/psydb-ui-lib/src/record-list/field-data-body-cols';
 
+import { EditModal } from '@mpieva/psydb-ui-lib/src/participation';
+
 const ParticipationList = ({
+    subjectId,
+    subjectType,
+
     studyType,
     ageFrameField,
     ageFrameFieldValue,
@@ -23,48 +31,60 @@ const ParticipationList = ({
     relatedCustomRecordTypeLabels,
     displayFieldData
 }) => {
+    var editModal = useModalReducer();
     return (
-        <Table className='bg-white border'>
-            <thead>
-                <tr>
-                    {/*<FieldDataHeadCols
-                        displayFieldData={ displayFieldData }
-                    />*/}
-                    <th>Studie</th>
-                    <th>Zeitpunkt</th>
-                    { ageFrameField && (
-                        <th>Alter</th>
-                    )}
-                    <th>Status</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                { 
-                    participation
-                    .map((it, index) => (
-                        <ParticipationListRow { ...({
-                            key: index,
-                            item: it,
+        <>
+            <EditModal { ...editModal.passthrough } />
+            <Table className='bg-white border'>
+                <thead>
+                    <tr>
+                        {/*<FieldDataHeadCols
+                            displayFieldData={ displayFieldData }
+                        />*/}
+                        <th>Studie</th>
+                        <th>Zeitpunkt</th>
+                        { ageFrameField && (
+                            <th>Alter</th>
+                        )}
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    { 
+                        participation
+                        .map((it, index) => (
+                            <ParticipationListRow { ...({
+                                key: index,
+                                item: it,
 
-                            studyType,
-                            ageFrameField,
-                            ageFrameFieldValue,
-                            
-                            studyRecordsById,
-                            relatedRecordLabels,
-                            relatedHelperSetItems,
-                            relatedCustomRecordTypeLabels,
-                            displayFieldData
-                        }) } />
-                    ))
-                }
-            </tbody>
-        </Table>
+                                subjectId,
+                                subjectType,
+
+                                studyType,
+                                ageFrameField,
+                                ageFrameFieldValue,
+                                
+                                studyRecordsById,
+                                relatedRecordLabels,
+                                relatedHelperSetItems,
+                                relatedCustomRecordTypeLabels,
+                                displayFieldData,
+
+                                onEdit: editModal.handleShow
+                            }) } />
+                        ))
+                    }
+                </tbody>
+            </Table>
+        </>
     )
 }
 
 const ParticipationListRow = ({
+    subjectId,
+    subjectType,
+
     item,
 
     studyType,
@@ -74,7 +94,9 @@ const ParticipationListRow = ({
     relatedRecordLabels,
     relatedHelperSetItems,
     relatedCustomRecordTypeLabels,
-    displayFieldData
+    displayFieldData,
+
+    onEdit,
 }) => {
     var date = new Date(item.timestamp);
     var formattedDate = datefns.format(
@@ -123,6 +145,11 @@ const ParticipationListRow = ({
                 )}
                 <StudyIconButton
                     to={`/studies/${item.studyType}/${item.studyId}`}
+                />
+                <EditIconButtonInline
+                    onClick={ () => onEdit({
+                        subjectType, subjectId, ...item
+                    }) }
                 />
             </td>
         </tr>

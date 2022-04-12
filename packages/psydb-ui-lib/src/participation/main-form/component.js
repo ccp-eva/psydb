@@ -18,6 +18,8 @@ export const Component = (ps) => {
         enableStudyId,
         studyTypes,
 
+        enableTeamSelect,
+
         initialValues,
         onSubmit,
     } = ps;
@@ -37,6 +39,7 @@ export const Component = (ps) => {
                         subjectTypes,
                         enableStudyId,
                         studyTypes,
+                        enableTeamSelect,
                         formikForm: formikProps,
                     }) } />
                     <Button type='submit'>Speichern</Button>
@@ -52,10 +55,10 @@ const FormFields = (ps) => {
     var {
         enableSubjectId,
         subjectTypes,
-
         enableStudyId,
         studyTypes,
 
+        enableTeamSelect,
         formikForm,
     } = ps;
 
@@ -137,10 +140,20 @@ const FormFields = (ps) => {
             )}
 
             { studyId && (
-                <OpsTeamSelect
-                    studyId={ studyId }
-                    disabled={ !subjectId }
-                />
+                enableTeamSelect
+                ? (
+                    <OpsTeamSelect
+                        studyId={ studyId }
+                        disabled={ !subjectId }
+                    />
+                )
+                : (
+                    <Fields.ForeignIdList
+                        label='Experimenter'
+                        dataXPath='$.experimentOperatorIds'
+                        collection='personnel'
+                    />
+                )
             )}
 
             <Fields.DateTime
@@ -158,6 +171,7 @@ const FormFields = (ps) => {
                 disabled={ !subjectId }
             />
 
+            { /* FIXME: hide that if theres only one */ }
                 <Fields.GenericEnum
                     label='Ablauf-Typ'
                     dataXPath='$.labProcedureType'
