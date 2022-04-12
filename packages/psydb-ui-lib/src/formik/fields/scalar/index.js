@@ -15,3 +15,5 @@ export * from './email';
 export * from './phone';
 export * from './password';
 export * from './time';
+
+export * from './ops-team-select';

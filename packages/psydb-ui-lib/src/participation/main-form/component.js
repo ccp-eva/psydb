@@ -100,23 +100,6 @@ const FormFields = (ps) => {
 
     return (
         <>
-            { showStudyTypeSelect && (
-                <Fields.GenericEnum
-                    label='Studien-Typ'
-                    dataXPath='$.studyType'
-                    options={ studyTypes.reduce((acc, it) => ({
-                        ...acc, [it.type]: it.label
-                    }), {}) }
-                />
-            )}
-            { enableStudyId && (
-                <Fields.ForeignId
-                    label='Studie'
-                    dataXPath='$.studyId'
-                    collection='study'
-                    recordType={ studyType }
-                />
-            )}
             { showSubjectTypeSelect && (
                 <Fields.GenericEnum
                     label='Probanden-Typ'
@@ -135,6 +118,30 @@ const FormFields = (ps) => {
                 />
             )}
 
+            { showStudyTypeSelect && (
+                <Fields.GenericEnum
+                    label='Studien-Typ'
+                    dataXPath='$.studyType'
+                    options={ studyTypes.reduce((acc, it) => ({
+                        ...acc, [it.type]: it.label
+                    }), {}) }
+                />
+            )}
+            { enableStudyId && (
+                <Fields.ForeignId
+                    label='Studie'
+                    dataXPath='$.studyId'
+                    collection='study'
+                    recordType={ studyType }
+                />
+            )}
+
+            { studyId && (
+                <OpsTeamSelect
+                    studyId={ studyId }
+                    disabled={ !subjectId }
+                />
+            )}
 
             <Fields.DateTime
                 label='Test-Zeitpunkt'
@@ -159,7 +166,7 @@ const FormFields = (ps) => {
                     }), {}) }
                     disabled={ !subjectId }
                 />
-            
+           
             { labProcedureType && (
                 <LabProcedureFields
                     subjectId={ subjectId }
@@ -171,6 +178,27 @@ const FormFields = (ps) => {
             )}
         </>
     );
+}
+
+const OpsTeamSelect = (ps) => {
+    var { studyId, disabled } = ps;
+
+    var [ didFetch, fetched ] = useFetch((agent) => (
+        agent.fetchExperimentOperatorTeamsForStudy({ studyId })
+    ), [ studyId ])
+
+    if (!didFetch) {
+        return null;
+    }
+
+    return (
+        <Fields.OpsTeamSelect
+            label='Team'
+            dataXPath='$.experimentOperatorTeamId'
+            teamRecords={ fetched.data.records }
+            disabled={ disabled }
+        />
+    )
 }
 
 const LabProcedureFields = (ps) => {
