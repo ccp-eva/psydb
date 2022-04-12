@@ -2,7 +2,13 @@ import React, { useEffect, useReducer, useContext } from 'react';
 import { AgentContext } from '@mpieva/psydb-ui-contexts';
 //import agent from '@mpieva/psydb-ui-request-agents';
 
-const useFetchAll = (createPromises, triggerProps) => {
+const useFetchAll = (createPromises, dependenciesOrOptions = []) => {
+    var options = dependenciesOrOptions;
+    if (Array.isArray(dependenciesOrOptions)) {
+        options = { dependencies: dependenciesOrOptions };
+    }
+    var { dependencies, extraEffect } = options;
+
     var contextAgent = useContext(AgentContext);
     var [ state, dispatch ] = useReducer(reducer, {
         didFetch: false,
@@ -28,7 +34,11 @@ const useFetchAll = (createPromises, triggerProps) => {
         });
 
         Promise.all(keys.map(k => keyedPromises[k]))
-        .then(() => {
+        .then((responses) => {
+            extraEffect && extraEffect(keys.reduce(
+                (acc, it, ix) => ({ ...acc, [it]: responses[ix] }),
+                {}
+            ));
             dispatch({ type: 'fetched-all' });
         })
         .catch((err) => {
@@ -39,7 +49,7 @@ const useFetchAll = (createPromises, triggerProps) => {
         })
     };
 
-    useEffect(wrappedCreatePromises, triggerProps);
+    useEffect(wrappedCreatePromises, dependencies);
 
     return [ state.didFetch, state ];
 }

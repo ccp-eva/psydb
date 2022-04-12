@@ -6,28 +6,35 @@ const useReadRecord = (options, dependencies = []) => {
         shouldFetchSchema = true,
         shouldFetchCRTSettings = true,
         extraAxiosConfig,
+        extraEffect,
     } = options;
 
-    var [ didFetch, fetched ] = useFetchAll((agent) => ({
-        ...(shouldFetchCRTSettings && ({
-            crtSettings: agent.readCRTSettings({
-                collection,
-                recordType,
-            })
-        })),
-        ...(shouldFetchSchema && {
-            schema: agent.readRecordSchema({
-                collection,
-                recordType,
+    var [ didFetch, fetched ] = useFetchAll(
+        (agent) => ({
+            ...(shouldFetchCRTSettings && ({
+                crtSettings: agent.readCRTSettings({
+                    collection,
+                    recordType,
+                })
+            })),
+            ...(shouldFetchSchema && {
+                schema: agent.readRecordSchema({
+                    collection,
+                    recordType,
+                }),
             }),
+            record: agent.readRecord({
+                collection,
+                recordType,
+                id,
+                extraAxiosConfig,
+            })
         }),
-        record: agent.readRecord({
-            collection,
-            recordType,
-            id,
-            extraAxiosConfig,
-        })
-    }), [ collection, recordType, id, ...dependencies ]);
+        { 
+            dependencies: [ collection, recordType, id, ...dependencies ],
+            extraEffect
+        }
+    );
 
     if (!didFetch) {
         return [ didFetch, undefined ];

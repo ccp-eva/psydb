@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { demuxed } from '@mpieva/psydb-ui-utils';
-import { useFetch, useSend } from '@mpieva/psydb-ui-hooks';
+import { useFetchAll, useSend } from '@mpieva/psydb-ui-hooks';
 
 import {
     WithDefaultModal,
@@ -22,13 +22,10 @@ const ParticipationCreateModalBody = (ps) => {
         onSuccessfulUpdate
     } = ps;
 
-    var [
-        selectedStudyType, setSelectedStudyType
-    ] = useState(studyRecordType);
-
-    var [ didFetch, fetched ] = useFetch((agent) => (
-        agent.fetchCollectionCRTs({ collection: 'study' })
-    ), []);
+    var [ didFetch, fetched ] = useFetchAll((agent) => ({
+        studyTypes: agent.fetchCollectionCRTs({ collection: 'study' }),
+        subjectTypes: agent.fetchCollectionCRTs({ collection: 'subject' }),
+    }), []);
 
     var send = useSend((formData) => ({
         type: 'subject/add-manual-participation',
@@ -43,18 +40,36 @@ const ParticipationCreateModalBody = (ps) => {
         return <LoadingIndicator size='lg' />
     }
 
-    var studyTypes = fetched.data;
-    if (studyTypes.length === 1) {
-        selectedStudyType = studyRecordType = studyTypes[0].type;
-    }
+    var studyTypes = fetched.studyTypes.data;
+    var subjectTypes = fetched.subjectTypes.data;
 
     var enableStudyId = !studyId;
     var enableSubjectId = !subjectId;
 
-    var initialValues = MainForm.createDefaults();
+    var initialValues = {
+        ...MainForm.createDefaults(),
+        studyId,
+        subjectId,
+
+        ...(studyTypes.length === 1 && {
+            studyType: studyTypes[0].type
+        }),
+        ...(studyRecordType && {
+            studyType: studyRecordType
+        }),
+
+        ...(subjectTypes.length === 1 && {
+            subjectType: subjectTypes[0].type
+        }),
+        ...(subjectRecordType && {
+            subjectType: subjectRecordType
+        }),
+
+    };
+
     return (
         <>
-            { enableStudyId && !studyRecordType && (
+            {/* enableStudyId && !studyRecordType && (
                 <Form.Group className='row ml-0 mr-0'>
                     <Form.Label className='col-sm-3 col-form-label'>
                         Studien-Typ
@@ -69,13 +84,13 @@ const ParticipationCreateModalBody = (ps) => {
                         />
                     </div>
                 </Form.Group>
-            )}
+            )*/}
             { (!enableStudyId || enableStudyId && selectedStudyType) && (
                 <MainForm.Component
                     enableStudyId={ enableStudyId }
-                    studyType={ selectedStudyType }
+                    studyTypes={ studyTypes }
                     enableSubjectId={ enableSubjectId }
-                    subjectType={ subjectRecordType }
+                    subjectTypes={[ subjectRecordType ]}
 
                     initialValues={ initialValues }
                     onSubmit={ send.exec }
