@@ -398,11 +398,13 @@ agent.fetchExperimentPostprocessing = ({
 agent.fetchExperimentVariants = ({
     studyId,
     studyIds,
+    subjectType
 }) => {
     return axios.post(
         '/api/experiment-variants',
         {
             studyIds: studyIds || [ studyId ],
+            subjectType,
         }
     );
 }
