@@ -17,6 +17,6 @@
     "@mpieva/psydb-timezone-helpers": "~0.1.0-alpha",
     "@mpieva/psydb-schema-primitives": "~0.1.0-alpha",
     "@mpieva/psydb-schema-enums": "~0.1.0-alpha",
-    "@cdxoo/inline-text": "~1.0.1"
+    "@cdxoo/inline-text": "~1.0.2"
   }
 }

@@ -13,8 +13,8 @@
     "chai": "~4.2.0"
   },
   "dependencies": {
-      "@cdxoo/inline-string": "~1.0.0",
-      "@cdxoo/inline-text": "~1.0.1",
-      "jsonpointer": "~4.1.0"
+    "@cdxoo/inline-string": "~1.0.0",
+    "@cdxoo/inline-text": "~1.0.2",
+    "jsonpointer": "~4.1.0"
   }
 }

@@ -3,15 +3,14 @@
   "version": "0.1.0-alpha",
   "description": "",
   "main": "src/index.js",
-  "scripts": {
-  },
+  "scripts": {},
   "author": "Jan Schwalbe",
   "license": "MIT",
   "dependencies": {
     "@mpieva/psydb-core-utils": "~0.1.0-alpha",
     "@mpieva/psydb-schema-enums": "~0.1.0-alpha",
     "@mpieva/psydb-common-utils": "~0.1.0-alpha",
-    "@cdxoo/inline-text": "~1.0.1"
+    "@cdxoo/inline-text": "~1.0.2"
   },
   "devDependencies": {
     "mocha": "~8.1.3",

@@ -3,8 +3,7 @@
   "version": "0.1.0-alpha",
   "description": "",
   "main": "./src/index.js",
-  "scripts": {
-  },
+  "scripts": {},
   "author": "Jan Schwalbe",
   "license": "MIT",
   "dependencies": {
@@ -12,7 +11,7 @@
     "koa-compose": "^4.1.0",
     "mongodb": "~3.6.3",
     "map-obj": "~4.3.0",
-    "@cdxoo/inline-text": "~1.0.1",
+    "@cdxoo/inline-text": "~1.0.2",
     "@cdxoo/koa-mongo-mq": "~1.4.0",
     "@cdxoo/koa-mongo-rohrpost": "~3.2.1",
     "@cdxoo/mongo-rohrpost": "~3.2.1",
