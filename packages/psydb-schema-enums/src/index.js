@@ -46,10 +46,12 @@ var safeUnparticipationStatus = {
         // in invitation status
         'canceled-by-participant',
         'canceled-by-institute', // aka we uninvited the subject
+        'didnt-participate',
     ],
     names: [
         'abgesagt',
         'ausgeladen',
+        'nicht teilgenommen',
     ]
 }
 
