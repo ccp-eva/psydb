@@ -81,20 +81,22 @@ export const LabProcedureFields = (ps) => {
     return (
         <>
             { 
-                labProcedureType !== 'online-survey' && enableTeamSelect
-                ? (
-                    <OpsTeamSelect
-                        studyId={ studyId }
-                        disabled={ !subjectId }
-                    />
-                )
-                : (
-                    <Fields.ForeignIdList
-                        label='Experimenter'
-                        dataXPath='$.experimentOperatorIds'
-                        collection='personnel'
-                    />
-                )
+                labProcedureType === 'online-survey'
+                ? null 
+                : enableTeamSelect 
+                    ? (
+                        <OpsTeamSelect
+                            studyId={ studyId }
+                            disabled={ !subjectId }
+                        />
+                    )
+                    : (
+                        <Fields.ForeignIdList
+                            label='Experimenter'
+                            dataXPath='$.experimentOperatorIds'
+                            collection='personnel'
+                        />
+                    )
             }
 
             <TypeSelect

@@ -3,16 +3,52 @@ var debug = require('debug')('psydb:api:message-handlers');
 
 var { nanoid } = require('nanoid');
 var { without } = require('@mpieva/psydb-core-utils');
-var { ApiError, compareIds } = require('@mpieva/psydb-api-lib');
+var { Ajv, ApiError, compareIds } = require('@mpieva/psydb-api-lib');
 var { SimpleHandler, checkForeignIdsExist } = require('../../../lib');
 
-var createSchema = require('./schema');
+var BaseSchema = require('./base-schema');
+var DefaultSchema = require('./default-schema');
+var OnlineSurveySchema = require('./online-survey-schema');
 
+var handler = {};
 
-var handler = SimpleHandler({
-    messageType: 'subject/add-manual-participation',
-    createSchema,
-});
+handler.shouldRun = (message) => (
+    message.type === 'subject/add-manual-participation'
+)
+
+handler.checkSchema = async ({ db, message }) => {
+    var ajv = Ajv();
+    var isValid = undefined;
+
+    isValid = ajv.validate(BaseSchema(), message);
+    if (!isValid) {
+        debug('ajv errors', ajv.errors);
+        throw new ApiError(400, {
+            apiStatus: 'InvalidMessageSchema',
+            data: { ajvErrors: ajv.errors }
+        });
+    }
+
+    var { labProcedureType } = message.payload;
+    if (labProcedureType === 'online-survey') {
+        isValid = ajv.validate(OnlineSurveySchema(), message);
+        if (!isValid) {
+            throw new ApiError(400, {
+                apiStatus: 'InvalidMessageSchema',
+                data: { ajvErrors: ajv.errors }
+            });
+        }
+    }
+    else {
+        isValid = ajv.validate(DefaultSchema(), message);
+        if (!isValid) {
+            throw new ApiError(400, {
+                apiStatus: 'InvalidMessageSchema',
+                data: { ajvErrors: ajv.errors }
+            });
+        }
+    }
+} 
 
 handler.checkAllowedAndPlausible = async ({
     db,
@@ -26,6 +62,7 @@ handler.checkAllowedAndPlausible = async ({
     }
 
     var {
+        labProcedureType,
         subjectId,
         studyId,
         locationId,
@@ -46,44 +83,47 @@ handler.checkAllowedAndPlausible = async ({
     if (!subject) {
         throw new ApiError(409, 'SubjectNotFound');
     }
-    
-    var location = await (
-        db.collection('location').findOne({ _id: locationId })
-    );
-    if (!location) {
-        throw new ApiError(409, 'LocationNotFound');
-    }
+   
+    if (labProcedureType !== 'online-survey') {
+        var location = await (
+            db.collection('location').findOne({ _id: locationId })
+        );
+        if (!location) {
+            throw new ApiError(409, 'LocationNotFound');
+        }
 
-    if (experimentOperatorTeamId) {
-        var opsTeam = await (
-            db.collection('experimentOperatorTeam')
-            .findOne({ _id: experimentOperatorTeamId })
-        );
-        if (!opsTeam) {
-            throw new ApiError(409, 'ExperimentOperatorTeamNotFound');
+        if (experimentOperatorTeamId) {
+            var opsTeam = await (
+                db.collection('experimentOperatorTeam')
+                .findOne({ _id: experimentOperatorTeamId })
+            );
+            if (!opsTeam) {
+                throw new ApiError(409, 'ExperimentOperatorTeamNotFound');
+            }
+            cache.experimentOperatorTeam = opsTeam;
         }
-        cache.experimentOperatorTeam = opsTeam;
-    }
-    else {
-        var experimentOperators = await (
-            db.collection('personnel')
-            .find({ _id: { $in: experimentOperatorIds } })
-            .toArray()
-        );
-        if (experimentOperators.length !== experimentOperatorIds.length) {
-            throw new ApiError(409, {
-                apiStatus: 'ExperimentOperatorNotFound',
-                data: without(
-                    experimentOperatorIds,
-                    experimentOperators.map(it => it._id)
-                )
-            });
+        else {
+            var experimentOperators = await (
+                db.collection('personnel')
+                .find({ _id: { $in: experimentOperatorIds } })
+                .toArray()
+            );
+            if (experimentOperators.length !== experimentOperatorIds.length) {
+                throw new ApiError(409, {
+                    apiStatus: 'ExperimentOperatorNotFound',
+                    data: without(
+                        experimentOperatorIds,
+                        experimentOperators.map(it => it._id)
+                    )
+                });
+            }
         }
+    
+        cache.location = location;
     }
 
     cache.study = study;
     cache.subject = subject;
-    cache.location = location;
 }
 
 handler.triggerSystemEvents = async ({
@@ -119,8 +159,6 @@ handler.triggerSystemEvents = async ({
 
         studyId,
         studyType: study.type,
-        locationId,
-        locationType: location.type,
 
         timestamp,
         status,
@@ -129,21 +167,29 @@ handler.triggerSystemEvents = async ({
         excludeFromMoreExperimentsInStudy: false
     }
 
-    if (experimentOperatorTeamId) {
-        var { experimentOperatorTeam } = cache;
-        var { personnelIds, color } = experimentOperatorTeam.state;
-        
+    if (labProcedureType !== 'online-survey') {
         participationItem = {
             ...participationItem,
-            //experimentOperatorTeamId,
-            //experimentOperatorTeamColor: color,
-            experimentOperatorIds: personnelIds
+            locationId,
+            locationType: location.type,
         }
-    }
-    else {
-        participationItem = {
-            ...participationItem,
-            experimentOperatorIds,
+
+        if (experimentOperatorTeamId) {
+            var { experimentOperatorTeam } = cache;
+            var { personnelIds, color } = experimentOperatorTeam.state;
+            
+            participationItem = {
+                ...participationItem,
+                //experimentOperatorTeamId,
+                //experimentOperatorTeamColor: color,
+                experimentOperatorIds: personnelIds
+            }
+        }
+        else {
+            participationItem = {
+                ...participationItem,
+                experimentOperatorIds,
+            }
         }
     }
 
@@ -158,5 +204,7 @@ handler.triggerSystemEvents = async ({
         }}
     });
 }
+
+handler.triggerOtherSideEffects = async () => {};
 
 module.exports = handler;
