@@ -25,7 +25,7 @@ export const LabProcedureFields = (ps) => {
         formikForm
     } = ps;
 
-    var { setFieldValue } = formikForm;
+    var { setFieldValue, dirty: isFormDirty } = formikForm;
     var { labProcedureType } = formikForm.values['$'];
 
     var [ didFetch, fetched ] = useFetch((agent) => (
@@ -36,7 +36,9 @@ export const LabProcedureFields = (ps) => {
         : undefined
     ), {
         extraEffect: (response) => {
-            console.log('EFFECT')
+            if (!isFormDirty) {
+                return;
+            }
             var { data } = response.data;
             setFieldValue('$.experimentOperatorTeamId', undefined);
             setFieldValue('$.experimentOperatorIds', undefined);
