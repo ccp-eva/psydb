@@ -1,9 +1,12 @@
 import React, { useEffect, useReducer, useMemo } from 'react';
 import jsonpointer from 'jsonpointer';
+
+import { useModalReducer } from '@mpieva/psydb-ui-hooks';
 import {
     Table,
     SubjectIconButton,
     ExperimentIconButton,
+    EditIconButtonInline,
 } from '@mpieva/psydb-ui-layout';
 
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
@@ -11,6 +14,10 @@ import calculateAge from '@mpieva/psydb-ui-lib/src/calculate-age';
 
 import FieldDataHeadCols from '@mpieva/psydb-ui-lib/src/record-list/field-data-head-cols';
 import FieldDataBodyCols from '@mpieva/psydb-ui-lib/src/record-list/field-data-body-cols';
+
+import { EditModal } from '@mpieva/psydb-ui-lib/src/participation';
+
+
 
 const ParticipationList = ({
     records,
@@ -20,7 +27,9 @@ const ParticipationList = ({
     displayFieldData,
 
     className,
+    onSuccessfulUpdate,
 }) => {
+    var editModal = useModalReducer();
 
     var dateOfBirthField = displayFieldData.find(it => (
         it.props.isSpecialAgeFrameField
@@ -36,33 +45,41 @@ const ParticipationList = ({
     })
 
     return (
-        <Table className={ className }>
-            <thead>
-                <tr>
-                    <FieldDataHeadCols
-                        displayFieldData={ displayFieldData }
-                    />
-                    <th>Zeitpunkt</th>
-                    { dateOfBirthField && (
-                        <th>Alter</th>
-                    )}
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                { records.map((it, index) => (
-                    <ParticipationListRow { ...({
-                        key: index,
-                        record: it,
-                        relatedRecordLabels,
-                        relatedHelperSetItems,
-                        relatedCustomRecordTypeLabels,
-                        displayFieldData,
-                        dateOfBirthField,
-                    })} />
-                ))}
-            </tbody>
-        </Table>
+        <>
+            <EditModal
+                { ...editModal.passthrough }
+                onSuccessfulUpdate={ onSuccessfulUpdate }
+            />
+            <Table className={ className }>
+                <thead>
+                    <tr>
+                        <FieldDataHeadCols
+                            displayFieldData={ displayFieldData }
+                        />
+                        <th>Zeitpunkt</th>
+                        { dateOfBirthField && (
+                            <th>Alter</th>
+                        )}
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    { records.map((it, index) => (
+                        <ParticipationListRow { ...({
+                            key: index,
+                            record: it,
+                            relatedRecordLabels,
+                            relatedHelperSetItems,
+                            relatedCustomRecordTypeLabels,
+                            displayFieldData,
+                            dateOfBirthField,
+                            
+                            onEdit: editModal.handleShow
+                        })} />
+                    ))}
+                </tbody>
+            </Table>
+        </>
     )
 }
 
@@ -73,7 +90,11 @@ const ParticipationListRow = ({
     relatedCustomRecordTypeLabels,
     displayFieldData,
     dateOfBirthField,
+
+    onEdit,
 }) => {
+
+    var { _id: subjectId, type: subjectType } = record;
 
     var participationData = (
         record.scientific.state.internals.participatedInStudies[0]
@@ -91,7 +112,10 @@ const ParticipationListRow = ({
         //formattedDate === '01.01.1970 00:00'
     );
 
-    var { type: participationType, experimentId } = participationData;
+    var {
+        type: participationType,
+        experimentId,
+    } = participationData;
 
     return (
         <tr>
@@ -121,13 +145,19 @@ const ParticipationListRow = ({
                 { formatStatus(participationData.status) }
             </td>
             <td className='d-flex justify-content-end'>
-                { participationType !== 'manual' && (
+                { experimentId && (
                     <ExperimentIconButton
                         to={`/experiments/${participationType}/${experimentId}`}
                     />
                 )}
                 <SubjectIconButton
                     to={`/subjects/${record.type}/${record._id}`}
+                />
+                <EditIconButtonInline
+                    onClick={ () => onEdit({
+                        subjectId, subjectType,
+                        ...participationData
+                    }) }
                 />
             </td>
         </tr>

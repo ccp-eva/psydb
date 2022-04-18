@@ -81,6 +81,7 @@ const StudyParticipation = ({}) => {
 
                 <ParticipationList
                     className='mt-1 bg-white'
+                    onSuccessfulUpdate={ revision.up }
                     { ...dataBySubjectType[selectedSubjectType] } 
                 />
             </div>

@@ -51,7 +51,8 @@ const Participation = (ps) => {
             <ParticipationByType {...({
                 subjectId: id,
                 subjectType,
-                participationData
+                participationData,
+                onSuccessfulUpdate: revision.up
             }) }/>
         </div>
     );
@@ -60,7 +61,8 @@ const Participation = (ps) => {
 const ParticipationByType = ({
     subjectId,
     subjectType,
-    participationData
+    participationData,
+    onSuccessfulUpdate,
 }) => {
 
     var {
@@ -97,7 +99,8 @@ const ParticipationByType = ({
                     studyType: type,
                     ageFrameField,
                     ageFrameFieldValue,
-                    ...participationByStudyType[type]
+                    ...participationByStudyType[type],
+                    onSuccessfulUpdate,
                 })} />
             )) }
         </>

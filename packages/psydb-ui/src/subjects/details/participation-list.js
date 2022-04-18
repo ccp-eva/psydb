@@ -29,12 +29,17 @@ const ParticipationList = ({
     relatedRecordLabels,
     relatedHelperSetItems,
     relatedCustomRecordTypeLabels,
-    displayFieldData
+    displayFieldData,
+
+    onSuccessfulUpdate,
 }) => {
     var editModal = useModalReducer();
     return (
         <>
-            <EditModal { ...editModal.passthrough } />
+            <EditModal
+                { ...editModal.passthrough }
+                onSuccessfulUpdate={ onSuccessfulUpdate }
+            />
             <Table className='bg-white border'>
                 <thead>
                     <tr>
@@ -138,7 +143,7 @@ const ParticipationListRow = ({
                 { formatStatus(item.status) }
             </td>
             <td className='d-flex justify-content-end'>
-                { item.type !== 'manual' && (
+                { item.experimentId && (
                     <ExperimentIconButton
                         to={`/experiments/${item.type}/${item.experimentId}`}
                     />

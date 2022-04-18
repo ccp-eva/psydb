@@ -2,8 +2,17 @@
 var enums = require('@mpieva/psydb-schema-enums');
 
 var {
+    ExactObject,
     OpenObject,
+    Id,
+    EventId,
+    ForeignId,
+    ForeignIdList,
+    IdentifierString,
+    DateTime,
+    ParticipationStatus,
     StringEnum,
+    CustomRecordTypeKey,
 } = require('@mpieva/psydb-schema-fields');
 
 var {
@@ -12,14 +21,23 @@ var {
 
 var Schema = () => {
     var requiredProps = {
+        participationId: Id(),
         labProcedureType: StringEnum(
             enums.experimentVariants.keys
         ),
+        subjectId: ForeignId({
+            collection: 'subject',
+        }),
+        studyId: ForeignId({
+            collection: 'study',
+        }),
+        timestamp: DateTime(),
+        status: ParticipationStatus(),
     };
     var requiredKeys = Object.keys(requiredProps);
-    
+ 
     return Message({
-        type: `subject/add-manual-participation`,
+        type: `subject/patch-manual-participation`,
         payload: OpenObject({
             properties: {
                 ...requiredProps,

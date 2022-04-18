@@ -36,6 +36,7 @@ var run = ({
             channel,
             subChannelKey,
             payload,
+            mongoArrayFilters,
         } = options;
         //console.dir(payload, { depth: null });
 
@@ -52,7 +53,8 @@ var run = ({
         var meta = await channel.dispatch({ subChannelKey, message: {
             personnelId,
             payload: mongoEscapeDeep(payload) 
-        }});
+        }, mongoArrayFilters });
+
         meta.collectionName = meta.collection; // FIXME
         meta.isNew = isNew; // FIXME
 
