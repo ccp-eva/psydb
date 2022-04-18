@@ -20,10 +20,12 @@ export const LabProcedureFields = (ps) => {
         subjectType,
         subjectId,
         studyId,
-
+        
+        enableTeamSelect,
         formikForm
     } = ps;
 
+    var { setFieldValue } = formikForm;
     var { labProcedureType } = formikForm.values['$'];
 
     var [ didFetch, fetched ] = useFetch((agent) => (
@@ -32,18 +34,43 @@ export const LabProcedureFields = (ps) => {
             studyId, subjectType
         })
         : undefined
-    ),
-        [ studyId, subjectType ]
-        /*{
-        extraEffect: () => {
-            // TODO: set field if its only 1 option
+    ), {
+        extraEffect: (response) => {
+            console.log('EFFECT')
+            var { data } = response.data;
+            setFieldValue('$.experimentOperatorTeamId', undefined);
+            setFieldValue('$.experimentOperatorIds', undefined);
+
+            if (data.records.length === 1) {
+                var [ settings ] = data.records;
+                var { type, state } = settings;
+                setFieldValue('$.labProcedureType', type);
+
+                if (['inhouse', 'online-video-call'].includes(type)) {
+                    var { locations } = settings.state;
+                    if (locations.length === 1) {
+                        var { locationId } = locations[0];
+                        setFieldValue('$.locationId', locationId);
+                    }
+                }
+            }
+            else {
+                setFieldValue('$.labProcedureType', undefined);
+                setFieldValue('$.locationId', undefined);
+            }
         },
-        dependencies: [ studyId ]
-    }*/
-    );
+        dependencies: [ studyId, subjectType ]
+    });
 
     if (!didFetch || !fetched.data) {
-        return <TypeSelect types={[]} disabled />
+        return (
+            <TypeSelect
+                formikForm={ formikForm }
+                settingsByType={ settingsByType }
+                types={[]}
+                disabled
+            />
+        )
     }
 
     var { records, related } = fixRelated(fetched.data);
@@ -53,7 +80,29 @@ export const LabProcedureFields = (ps) => {
 
     return (
         <>
-            <TypeSelect types={ types } disabled={ !subjectId } />
+            { 
+                labProcedureType !== 'online-survey' && enableTeamSelect
+                ? (
+                    <OpsTeamSelect
+                        studyId={ studyId }
+                        disabled={ !subjectId }
+                    />
+                )
+                : (
+                    <Fields.ForeignIdList
+                        label='Experimenter'
+                        dataXPath='$.experimentOperatorIds'
+                        collection='personnel'
+                    />
+                )
+            }
+
+            <TypeSelect
+                formikForm={ formikForm }
+                settingsByType={ settingsByType }
+                types={ types }
+                disabled={ !subjectId }
+            />
             { labProcedureType && (
                 <TypeFields
                     settings={ settingsByType[labProcedureType] }
@@ -69,7 +118,9 @@ export const LabProcedureFields = (ps) => {
 }
 
 const TypeSelect = (ps) => {
-    var { types, disabled } = ps;
+    var { formikForm, settingsByType, types, disabled } = ps;
+    var { setFieldValue } = formikForm;
+
     return (
         <Fields.GenericEnum
             label='Ablauf-Typ'
@@ -77,6 +128,22 @@ const TypeSelect = (ps) => {
             options={ types.reduce((acc, it) => ({
                 ...acc, [it]: enums.experimentVariants.getLabel(it)
             }), {}) }
+            extraOnChange={(next) => {
+                if (next === 'online-survey') {
+                    setFieldValue('$.experimentOperatorTeamId', undefined);
+                    setFieldValue('$.experimentOperatorIds', undefined);
+                }
+                setFieldValue('$.locationId', undefined);
+                
+                if (['inhouse', 'online-video-call'].includes(next)) {
+                    var settings = settingsByType[next];
+                    var { locations } = settings.state;
+                    if (locations.length === 1) {
+                        var { locationId } = locations[0];
+                        setFieldValue('$.locationId', locationId);
+                    }
+                }
+            }}
             disabled={ disabled }
         />
     )
@@ -99,3 +166,25 @@ const TypeFields = (ps) => {
         return null;
     }
 }
+
+const OpsTeamSelect = (ps) => {
+    var { studyId, disabled } = ps;
+
+    var [ didFetch, fetched ] = useFetch((agent) => (
+        agent.fetchExperimentOperatorTeamsForStudy({ studyId })
+    ), [ studyId ])
+
+    if (!didFetch) {
+        return null;
+    }
+
+    return (
+        <Fields.OpsTeamSelect
+            label='Team'
+            dataXPath='$.experimentOperatorTeamId'
+            teamRecords={ fetched.data.records }
+            disabled={ disabled }
+        />
+    )
+}
+

@@ -39,30 +39,6 @@ export const FormFields = (ps) => {
         enableSubjectId && !(subjectTypes.length === 1 && subjectType)
     );
 
-    /*var [ didFetch, fetched ] = useFetch((agent) => (
-        studyId
-        ? agent.fetchExperimentVariantSettings({ studyId })
-        : undefined
-    ), [ studyId ]);
-
-    var opsRelated = (
-        didFetch && fetched.data
-        ? {
-            relatedCRTs: fetched.data.relatedCustomRecordTypes,
-            relatedRecords: fetched.data.relatedRecords
-        }
-        : undefined
-    );
-    var opsRecords = (
-        didFetch && fetched.data
-        ? fetched.data.records.filter(it => (
-            it.state.subjectTypeKey === subjectType
-        ))
-        : []
-    );
-    var opsRecordsByType = keyBy({ items: opsRecords, byProp: 'type' });
-    var opsTypes = Object.keys(opsRecordsByType);*/
-
     return (
         <>
             { showSubjectTypeSelect && (
@@ -101,23 +77,6 @@ export const FormFields = (ps) => {
                 />
             )}
 
-            { studyId && (
-                enableTeamSelect
-                ? (
-                    <OpsTeamSelect
-                        studyId={ studyId }
-                        disabled={ !subjectId }
-                    />
-                )
-                : (
-                    <Fields.ForeignIdList
-                        label='Experimenter'
-                        dataXPath='$.experimentOperatorIds'
-                        collection='personnel'
-                    />
-                )
-            )}
-
             <Fields.DateTime
                 label='Test-Zeitpunkt'
                 dataXPath='$.timestamp'
@@ -133,45 +92,15 @@ export const FormFields = (ps) => {
                 disabled={ !subjectId }
             />
 
-            { /* FIXME: hide that if theres only one */ }
-            {/*<Fields.GenericEnum
-                    label='Ablauf-Typ'
-                    dataXPath='$.labProcedureType'
-                    options={ opsTypes.reduce((acc, it) => ({
-                        ...acc, [it]: enums.experimentVariants.getLabel(it)
-                    }), {}) }
-                    disabled={ !subjectId }
-                />*/}
-           
-                <LabProcedureFields
-                    subjectType={ subjectType }
-                    subjectId={ subjectId }
-                    studyId={ studyId }
+            <LabProcedureFields
+                subjectType={ subjectType }
+                subjectId={ subjectId }
+                studyId={ studyId }
+                enableTeamSelect={ enableTeamSelect }
 
-                    formikForm={ formikForm }
-                />
+                formikForm={ formikForm }
+            />
         </>
     );
-}
-
-const OpsTeamSelect = (ps) => {
-    var { studyId, disabled } = ps;
-
-    var [ didFetch, fetched ] = useFetch((agent) => (
-        agent.fetchExperimentOperatorTeamsForStudy({ studyId })
-    ), [ studyId ])
-
-    if (!didFetch) {
-        return null;
-    }
-
-    return (
-        <Fields.OpsTeamSelect
-            label='Team'
-            dataXPath='$.experimentOperatorTeamId'
-            teamRecords={ fetched.data.records }
-            disabled={ disabled }
-        />
-    )
 }
 

@@ -4,13 +4,26 @@ import { AgentContext } from '@mpieva/psydb-ui-contexts';
 
 const useFetch = (...args) => {
     if (args.length < 3) {
-        args = [ args[0], defaultInit, args[1] ];
+        if (Array.isArray(args[1])) {
+            args = [ args[0], { dependencies: args[1] }];
+        }
+        else {
+            args = [ args[0], args[1] ];
+        }
+    }
+    if (args.length === 3) {
+        args = [ args[0], { init: args[1], dependencies: args[2] }];
     }
     var [
         createPromise,
-        init,
-        dependencies
+        options
     ] = args;
+
+    var {
+        init = defaultInit,
+        dependencies,
+        extraEffect
+    } = options;
 
     var contextAgent = useContext(AgentContext);
 
@@ -21,6 +34,7 @@ const useFetch = (...args) => {
         var promise = createPromise(contextAgent);
         if (promise) {
             promise.then((response) => {
+                extraEffect && extraEffect(response);
                 dispatch({ type: 'init-data', payload: {
                     response: response,
                     data: response.data.data

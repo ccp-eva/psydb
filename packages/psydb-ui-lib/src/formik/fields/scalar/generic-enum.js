@@ -12,6 +12,7 @@ export const GenericEnum = withField({ Control: (ps) => {
         formikForm,
 
         manualOnChange,
+        extraOnChange,
         // FIXME: this is the earliest place to prevent
         // this from being passed down to select which will
         // give big prop warning; see Address
@@ -29,7 +30,10 @@ export const GenericEnum = withField({ Control: (ps) => {
             onChange={ (
                 manualOnChange
                 ? manualOnChange
-                : (next) => setFieldValue(dataXPath, next)
+                : (next) => {
+                    extraOnChange && extraOnChange(next);
+                    setFieldValue(dataXPath, next)
+                }
             )}
             value={ value }
             //options={ downstreamOptions }
