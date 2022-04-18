@@ -8,12 +8,19 @@ import * as enums from '@mpieva/psydb-schema-enums';
 
 import {
     DefaultForm,
-    Fields,
+    useFormikContext,
 } from '../../../formik';
 
+import * as Fields from './fields';
+
 export const AwayTeamFields = (ps) => {
-    var { subjectId, subjectType, settings, formikForm } = ps;
+    var { enableTeamSelect, studyId, subjectId, subjectType, settings } = ps;
+
     var { subjectLocationFieldPointer } = settings.state;
+
+    var formikForm = useFormikContext();
+    var { setFieldValue } = formikForm;
+
     var [ fieldDef, setFieldDef ] = useState();
 
     var [ didFetch, fetched ] = useFetchAll((agent) => ({
@@ -36,7 +43,7 @@ export const AwayTeamFields = (ps) => {
             ));
             var locationId = jsonpointer.get(record, def.pointer);
 
-            formikForm.setFieldValue('$.locationId', locationId);
+            setFieldValue('$.locationId', locationId);
             setFieldDef(def);
         }
     });
@@ -52,14 +59,18 @@ export const AwayTeamFields = (ps) => {
 
     return (
         <>
-            <Fields.GenericEnum
+            <Fields.Timestamp />
+            <Fields.Status type='away-team' />
+            { 
+                enableTeamSelect
+                ? <Fields.Team studyId={ studyId } />
+                : <Fields.ExperimentOperators />
+            }
+            <Fields.AwayLocation
                 label={ fieldDef.displayName }
                 dataXPath='$.locationId'
-                options={{ 
-                    ...(locationId && {
-                        [locationId]: locationLabel
-                    })
-                }}
+                locationId={ locationId }
+                locationLabel={ locationLabel }
             />
         </>
     )

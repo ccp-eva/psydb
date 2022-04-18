@@ -42,7 +42,6 @@ export const Component = (ps) => {
                         enableStudyId,
                         studyTypes,
                         enableTeamSelect,
-                        formikForm: formikProps,
                     }) } />
                     <Button type='submit'>Speichern</Button>
                 </>

@@ -1,0 +1,143 @@
+import React from 'react';
+import { useFetch } from '@mpieva/psydb-ui-hooks';
+import * as enums from '@mpieva/psydb-schema-enums';
+
+import { Fields, useFormikContext } from '../../../formik';
+
+export const Timestamp = (ps) => {
+    return (
+        <Fields.DateTime
+            label='Test-Zeitpunkt'
+            dataXPath='$.timestamp'
+        />
+    );
+}
+
+export const Team = (ps) => {
+    var { studyId, disabled } = ps;
+
+    var [ didFetch, fetched ] = useFetch((agent) => (
+        agent.fetchExperimentOperatorTeamsForStudy({ studyId })
+    ), [ studyId ])
+
+    if (!didFetch) {
+        return null;
+    }
+
+    return (
+        <Fields.OpsTeamSelect
+            label='Team'
+            dataXPath='$.experimentOperatorTeamId'
+            teamRecords={ fetched.data.records }
+            disabled={ disabled }
+        />
+    )
+}
+
+export const Status = (ps) => {
+    var { type } = ps;
+
+    var options = ({
+        'invite': {
+            ...enums.inviteParticipationStatus.mapping,
+            ...enums.inviteUnparticipationStatus.mapping,
+        },
+        'away-team': {
+            ...enums.awayTeamParticipationStatus.mapping,
+            ...enums.awayTeamUnparticipationStatus.mapping,
+        },
+        'online-survey': {
+            ...enums.awayTeamParticipationStatus.mapping,
+            ...enums.awayTeamUnparticipationStatus.mapping,
+        }
+    }[type]);
+
+    return (
+        <Fields.GenericEnum
+            label='Status'
+            dataXPath='$.status'
+            options={ options }
+        />
+    );
+}
+
+export const ExperimentOperators = (ps) => {
+    return (
+        <Fields.ForeignIdList
+            label='Experimenter'
+            dataXPath='$.experimentOperatorIds'
+            collection='personnel'
+        />
+    )
+}
+
+export const LabProcedureType = (ps) => {
+    var { settingsByType, types, disabled } = ps;
+    var { setFieldValue } = useFormikContext();
+
+    return (
+        <Fields.GenericEnum
+            label='Ablauf-Typ'
+            dataXPath='$.labProcedureType'
+            options={ types.reduce((acc, it) => ({
+                ...acc, [it]: enums.experimentVariants.getLabel(it)
+            }), {}) }
+            extraOnChange={(next) => {
+                if (next === 'online-survey') {
+                    setFieldValue('$.experimentOperatorTeamId', undefined);
+                    setFieldValue('$.experimentOperatorIds', undefined);
+                }
+                setFieldValue('$.locationId', undefined);
+                
+                if (['inhouse', 'online-video-call'].includes(next)) {
+                    var settings = settingsByType[next];
+                    var { locations } = settings.state;
+                    if (locations.length === 1) {
+                        var { locationId } = locations[0];
+                        setFieldValue('$.locationId', locationId);
+                    }
+                }
+            }}
+            disabled={ disabled }
+        />
+    )
+}
+
+export const InviteLocation = (ps) => {
+    var { locations, related } = ps;
+    return (
+        <Fields.GenericEnum
+            label='Raum'
+            dataXPath='$.locationId'
+            options={ locations.reduce((acc, it) => {
+                var type = it.customRecordTypeKey;
+                var id = it.locationId;
+
+                var typeLabel = (
+                    related.crts.location[type].state.label
+                );
+                var idLabel = (
+                    related.records.location[id]._recordLabel
+                )
+
+                return { ...acc, [id]: `${typeLabel} - ${idLabel}` }
+            }, {}) }
+        />
+    )
+}
+
+export const AwayLocation = (ps) => {
+    var { label, locationId, locationLabel } = ps;
+
+    return (
+        <Fields.GenericEnum
+            label={ label }
+            dataXPath='$.locationId'
+            options={{ 
+                ...(locationId && {
+                    [locationId]: locationLabel
+                })
+            }}
+        />
+    )
+}

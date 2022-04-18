@@ -1,19 +1,17 @@
-import React, { useState } from 'react';
-import jsonpointer from 'jsonpointer';
+import React from 'react';
 
 import { keyBy } from '@mpieva/psydb-core-utils';
 import { fixRelated } from '@mpieva/psydb-ui-utils';
-import { useFetch, useFetchAll } from '@mpieva/psydb-ui-hooks';
-import { Button } from '@mpieva/psydb-ui-layout';
-import * as enums from '@mpieva/psydb-schema-enums';
+import { useFetch } from '@mpieva/psydb-ui-hooks';
 
-import {
-    DefaultForm,
-    Fields,
-} from '../../../formik';
+import { useFormikContext } from '../../../formik';
 
+import * as Fields from './fields';
 import { InviteFields } from './invite-fields';
 import { AwayTeamFields } from './away-team-fields';
+import { OnlineSurveyFields } from './online-survey-fields';
+
+
 
 export const LabProcedureFields = (ps) => {
     var {
@@ -22,11 +20,10 @@ export const LabProcedureFields = (ps) => {
         studyId,
         
         enableTeamSelect,
-        formikForm
     } = ps;
 
-    var { setFieldValue, dirty: isFormDirty } = formikForm;
-    var { labProcedureType } = formikForm.values['$'];
+    var { values, setFieldValue, dirty: isFormDirty } = useFormikContext();
+    var { labProcedureType } = values['$'];
 
     var [ didFetch, fetched ] = useFetch((agent) => (
         studyId && subjectType
@@ -66,8 +63,7 @@ export const LabProcedureFields = (ps) => {
 
     if (!didFetch || !fetched.data) {
         return (
-            <TypeSelect
-                formikForm={ formikForm }
+            <Fields.LabProcedureType
                 settingsByType={ settingsByType }
                 types={[]}
                 disabled
@@ -82,113 +78,38 @@ export const LabProcedureFields = (ps) => {
 
     return (
         <>
-            { 
-                labProcedureType === 'online-survey'
-                ? null 
-                : enableTeamSelect 
-                    ? (
-                        <OpsTeamSelect
-                            studyId={ studyId }
-                            disabled={ !subjectId }
-                        />
-                    )
-                    : (
-                        <Fields.ForeignIdList
-                            label='Experimenter'
-                            dataXPath='$.experimentOperatorIds'
-                            collection='personnel'
-                        />
-                    )
-            }
-
-            <TypeSelect
-                formikForm={ formikForm }
+            <Fields.LabProcedureType
                 settingsByType={ settingsByType }
                 types={ types }
                 disabled={ !subjectId }
             />
             { labProcedureType && (
                 <TypeFields
+                    enableTeamSelect={ enableTeamSelect }
                     settings={ settingsByType[labProcedureType] }
                     related={ related }
-                    
+                   
+                    studyId={ studyId }
                     subjectId={ subjectId }
                     subjectType={ subjectType }
-                    formikForm={ formikForm }
                 />
             )}
         </>
     )
 }
 
-const TypeSelect = (ps) => {
-    var { formikForm, settingsByType, types, disabled } = ps;
-    var { setFieldValue } = formikForm;
-
-    return (
-        <Fields.GenericEnum
-            label='Ablauf-Typ'
-            dataXPath='$.labProcedureType'
-            options={ types.reduce((acc, it) => ({
-                ...acc, [it]: enums.experimentVariants.getLabel(it)
-            }), {}) }
-            extraOnChange={(next) => {
-                if (next === 'online-survey') {
-                    setFieldValue('$.experimentOperatorTeamId', undefined);
-                    setFieldValue('$.experimentOperatorIds', undefined);
-                }
-                setFieldValue('$.locationId', undefined);
-                
-                if (['inhouse', 'online-video-call'].includes(next)) {
-                    var settings = settingsByType[next];
-                    var { locations } = settings.state;
-                    if (locations.length === 1) {
-                        var { locationId } = locations[0];
-                        setFieldValue('$.locationId', locationId);
-                    }
-                }
-            }}
-            disabled={ disabled }
-        />
-    )
-}
-
 const TypeFields = (ps) => {
     var { type } = ps.settings;
-
-    if (['inhouse', 'online-video-call'].includes(type)) {
-        return (
-            <InviteFields { ...ps } />
-        )
+    switch (type) {
+        case 'inhouse':
+        case 'online-video-call':
+            return <InviteFields { ...ps } />
+        case 'away-team':
+            return <AwayTeamFields { ...ps } />
+        case 'online-survey':
+            return <OnlineSurveyFields { ...ps } />
+        default:
+            return null;
     }
-    if (['away-team'].includes(type)) {
-        return (
-            <AwayTeamFields { ...ps } />
-        );
-    }
-    else {
-        return null;
-    }
-}
-
-const OpsTeamSelect = (ps) => {
-    var { studyId, disabled } = ps;
-
-    var [ didFetch, fetched ] = useFetch((agent) => (
-        agent.fetchExperimentOperatorTeamsForStudy({ studyId })
-    ), [ studyId ])
-
-    if (!didFetch) {
-        return null;
-    }
-
-    return (
-        <Fields.OpsTeamSelect
-            label='Team'
-            dataXPath='$.experimentOperatorTeamId'
-            teamRecords={ fetched.data.records }
-            disabled={ disabled }
-        />
-    )
 }
 

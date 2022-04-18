@@ -1,17 +1,15 @@
-import React, { useState } from 'react';
-import jsonpointer from 'jsonpointer';
-
-import { keyBy } from '@mpieva/psydb-core-utils';
-import { useFetch, useFetchAll } from '@mpieva/psydb-ui-hooks';
-import { Button } from '@mpieva/psydb-ui-layout';
+import React from 'react';
 import * as enums from '@mpieva/psydb-schema-enums';
 
 import {
     DefaultForm,
     Fields,
+    useFormikContext
 } from '../../../formik';
 
 import { LabProcedureFields } from './lab-procedure-fields';
+
+
 
 export const FormFields = (ps) => {
     var {
@@ -21,16 +19,16 @@ export const FormFields = (ps) => {
         studyTypes,
 
         enableTeamSelect,
-        formikForm,
     } = ps;
 
+    var { values } = useFormikContext();
     var {
         studyId,
         subjectId,
         studyType,
         subjectType,
         labProcedureType,
-    } = formikForm.values['$'];
+    } = values['$'];
 
     var showStudyTypeSelect = (
         enableStudyId && !(studyTypes.length === 1 && studyType)
@@ -77,28 +75,11 @@ export const FormFields = (ps) => {
                 />
             )}
 
-            <Fields.DateTime
-                label='Test-Zeitpunkt'
-                dataXPath='$.timestamp'
-                disabled={ !subjectId }
-            />
-            <Fields.GenericEnum
-                label='Status'
-                dataXPath='$.status'
-                options={{
-                    ...enums.inviteParticipationStatus.mapping,
-                    ...enums.inviteUnparticipationStatus.mapping,
-                }}
-                disabled={ !subjectId }
-            />
-
             <LabProcedureFields
                 subjectType={ subjectType }
                 subjectId={ subjectId }
                 studyId={ studyId }
                 enableTeamSelect={ enableTeamSelect }
-
-                formikForm={ formikForm }
             />
         </>
     );
