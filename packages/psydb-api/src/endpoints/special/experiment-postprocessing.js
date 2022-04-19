@@ -92,7 +92,7 @@ var experimentPostprocessing = async (context, next) => {
             { $match: {
                 'type': experimentType,
                 'state.studyId': { $in: studyIds },
-                'state.interval.end': { $lte: new Date() },
+                'state.interval.start': { $lte: new Date() },
                 'state.isCanceled': false,
                 'state.subjectData': { $elemMatch: {
                     participationStatus: 'unknown',

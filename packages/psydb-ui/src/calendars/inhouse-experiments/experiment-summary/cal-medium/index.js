@@ -220,7 +220,13 @@ const ExperimentSummaryMedium = ({
                 </div>
             )}
 
-            <div className='mt-2'>
+            <div className='d-flex text-small mt-2'>
+                <b className='flex-shrink-0' style={{ width: '70px' }}>Raum</b>
+                {
+                    experimentRelated.relatedRecordLabels.location[locationId]._recordLabel
+                }
+            </div>
+            <div className=''>
                 <small><b>Probanden:</b></small>
             </div>
             <ul className='m-0' style={{ paddingLeft: '20px', fontSize: '80%' }}>
@@ -258,11 +264,11 @@ const ExperimentSummaryMedium = ({
                 }
             </ul>
             <div className='d-flex text-small mt-3'>
-                <b style={{ width: '70px' }}>Team</b>
+                <b className='flex-shrink-0' style={{ width: '70px' }}>Team</b>
                 { teamRecord.state.name }
             </div>
             <div className='d-flex text-small'>
-                <b style={{ width: '70px' }}>Studie</b>
+                <b className='flex-shrink-0' style={{ width: '70px' }}>Studie</b>
                 {
                     experimentRelated.relatedRecordLabels.study[studyId]._recordLabel
                 }

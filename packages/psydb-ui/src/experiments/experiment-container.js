@@ -43,10 +43,10 @@ const ExperimentContainer = () => {
     var { interval, isCanceled, isPostprocessed } = record.state;
 
     var now = new Date(),
-        experimentEnd = new Date(interval.end);
+        experimentStart = new Date(interval.start);
 
     var shouldDisplayPostprocessing = (
-        !isCanceled && !isPostprocessed && experimentEnd < now
+        !isCanceled && !isPostprocessed && experimentStart < now
     );
 
     var downstream = {
