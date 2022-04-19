@@ -5,7 +5,8 @@ import { usePermissions, useModalReducer } from '@mpieva/psydb-ui-hooks';
 import formatInterval from '@mpieva/psydb-ui-lib/src/format-date-interval';
 import {
     EditIconButtonInline,
-    DetailsIconButton
+    DetailsIconButton,
+    Alert,
 } from '@mpieva/psydb-ui-layout';
 
 import PostprocessSubjectForm from '@mpieva/psydb-ui-lib/src/experiments/postprocess-subject-form';
@@ -28,6 +29,10 @@ const InhouseList = ({
     var canReadSubjects = permissions.hasFlag('canReadSubjects');
     var canWriteSubjects = permissions.hasFlag('canWriteSubjects');
 
+    if (records.length < 1) {
+        return <Fallback />
+    }
+
     return (
         <>
             <DetailedPostprocessModal
@@ -35,14 +40,7 @@ const InhouseList = ({
                 onSuccessfulUpdate={ onSuccessfulUpdate }
             />
             <Table>
-                <thead>
-                    <tr>
-                        <th>Proband</th>
-                        <th>Datum</th>
-                        <th>Studie</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
+                <TableHead />
                 <tbody>
                     { records.map((experimentRecord, index) => (
                         <ExperimentSubjectItems { ...({
@@ -74,7 +72,8 @@ const ExperimentSubjectItems = ({
     subjectModal,
     onSuccessfulUpdate
 }) => {
-    var { subjectData } = experimentRecord.state;
+    var { _enableFollowUpExperiments, state } = experimentRecord;
+    var { subjectData } = state;
     subjectData = subjectData.filter(it => (
         it.subjectType === subjectType && it.participationStatus === 'unknown'
     ))
@@ -137,6 +136,9 @@ const ExperimentSubjectItems = ({
                             experimentId: experimentRecord._id,
                             subjectId: it.subjectId,
                             onSuccessfulUpdate,
+                            enableFollowUpExperiments: (
+                                _enableFollowUpExperiments
+                            )
                         }) } />
                         </Cell>
                     </tr>
@@ -150,6 +152,32 @@ const Cell = ({ children }) => (
     <td style={{ verticalAlign: 'middle' }}>
         { children }
     </td>
-)
+);
+
+const TableHead = (ps) => {
+    return (
+        <thead>
+            <tr>
+                <th>Proband</th>
+                <th>Datum</th>
+                <th>Studie</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+    );
+}
+
+const Fallback = (ps) => {
+    return (
+        <>
+            <Table className='mb-1'>
+                <TableHead />
+            </Table>
+            <Alert variant='info'>
+                <i>Keine offenen Nachbereitungen gefunden</i>
+            </Alert>
+        </>
+    )
+}
 
 export default InhouseList;

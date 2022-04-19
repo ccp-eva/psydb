@@ -18,7 +18,8 @@ import {
 
 import {
     LoadingIndicator,
-    DetailsIconButton
+    DetailsIconButton,
+    Alert,
 } from '@mpieva/psydb-ui-layout';
 
 import agent from '@mpieva/psydb-ui-request-agents';
@@ -98,39 +99,13 @@ const ExperimentPostprocessingList = ({
     relatedRecordLabels,
     onSuccessfulUpdate,
 }) => {
-    //var [ state, dispatch ] = useReducer(reducer, {});
-
-    /*var [
-        handleChangeStatus
-    ] = useMemo(() => ([
-        ({ experimentRecord, subjectRecord, status }) => {
-            var message = {
-                type: 'experiment/change-participation-status',
-                payload: {
-                    experimentId: experimentRecord._id,
-                    subjectId: subjectRecord._id,
-                    invitationStatus: status
-                }
-            }
-
-            agent.send({ message })
-            .then(response => {
-                onSuccessfulUpdate && onSuccessfulUpdate(response);
-            })
-        }
-    ]), [])*/
+    if (records.length < 1) {
+        return <Fallback />
+    }
 
     return (
         <Table>
-            <thead>
-                <tr>
-                    <th>Typ</th>
-                    <th>Studie</th>
-                    <th>Ort</th>
-                    <th>Datum</th>
-                    <th></th>
-                </tr>
-            </thead>
+            <TableHead />
             <tbody>
                 { records.map(it => {
                     var { _id, type, state } = it;
@@ -172,6 +147,33 @@ const ExperimentPostprocessingList = ({
                 }) }
             </tbody>
         </Table>
+    )
+}
+
+const TableHead = (ps) => {
+    return (
+        <thead>
+            <tr>
+                <th>Typ</th>
+                <th>Studie</th>
+                <th>Ort</th>
+                <th>Datum</th>
+                <th></th>
+            </tr>
+        </thead>
+    )
+}
+
+const Fallback = (ps) => {
+    return (
+        <>
+            <Table className='mb-1'>
+                <TableHead />
+            </Table>
+            <Alert variant='info'>
+                <i>Keine offenen Nachbereitungen gefunden</i>
+            </Alert>
+        </>
     )
 }
 

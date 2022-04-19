@@ -81,11 +81,12 @@ var experimentPostprocessing = async (context, next) => {
                 'state.researchGroupIds': researchGroupId
             }},
             { $project: {
-                _id: true
+                _id: true,
+                'state.enableFollowUpExperiments': true,
             }}
         ]).toArray()
-    )
-
+    );
+    
     var studyIds = studyRecords.map(it => it._id);
     var experimentRecords = await (
         db.collection('experiment').aggregate([
@@ -110,9 +111,21 @@ var experimentPostprocessing = async (context, next) => {
         records: experimentRecords
     })
 
+    var studiesById = keyBy({
+        items: studyRecords,
+        byProp: '_id'
+    });
+
+    var augmented = experimentRecords.map(it => ({
+        ...it,
+        _enableFollowUpExperiments: (
+            studiesById[it.state.studyId].state.enableFollowUpExperiments
+        )
+    }));
+
     context.body = ResponseBody({
         data: {
-            records: experimentRecords,
+            records: augmented,
             ...experimentRelated,
         },
     });
