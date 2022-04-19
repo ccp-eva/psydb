@@ -1,4 +1,13 @@
-export { SaneString, ForeignIdList } from '../fields';
+import { SaneString, ForeignIdList } from '../fields';
+
+// FIXME: not sure about line breaks when searching
+const FullText = SaneString;
+
+export {
+    SaneString,
+    FullText,
+    ForeignIdList
+}
 
 export * from './plain-checkbox';
 export * from './generic-multi-checkbox';
