@@ -56,9 +56,8 @@ handler.checkAllowedAndPlausible = async ({
     message,
     cache,
 }) => {
-    // TODO
-    if (!permissions.hasRootAccess) {
-        //throw new ApiError(403);
+    if (!permissions.hasFlag('canWriteParticipation')) {
+        throw new ApiError(403);
     }
 
     var {

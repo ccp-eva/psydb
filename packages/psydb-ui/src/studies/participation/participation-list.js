@@ -1,13 +1,17 @@
 import React, { useEffect, useReducer, useMemo } from 'react';
 import jsonpointer from 'jsonpointer';
 
-import { useModalReducer } from '@mpieva/psydb-ui-hooks';
+import {
+    useModalReducer,
+    usePermissions
+} from '@mpieva/psydb-ui-hooks';
+
 import {
     Table,
     SubjectIconButton,
     ExperimentIconButton,
-    RemoveIconButtonInline,
     EditIconButtonInline,
+    RemoveIconButtonInline,
 } from '@mpieva/psydb-ui-layout';
 
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
@@ -104,6 +108,9 @@ const ParticipationListRow = ({
     onEdit,
     onRemove,
 }) => {
+    var permissions = usePermissions();
+    var canWrite = permissions.hasFlag('canWriteParticipations');
+    var canRemove = permissions.hasFlag('canWriteParticipations');
 
     var { _id: subjectId, type: subjectType } = record;
 
@@ -164,17 +171,21 @@ const ParticipationListRow = ({
                 <SubjectIconButton
                     to={`/subjects/${record.type}/${record._id}`}
                 />
-                <EditIconButtonInline
-                    onClick={ () => onEdit({
-                        subjectId, subjectType,
-                        ...participationData
-                    }) }
-                />
-                <RemoveIconButtonInline
-                    onClick={ () => onRemove({
-                        ...participationData
-                    }) }
-                />
+                { canWrite && (
+                    <EditIconButtonInline
+                        onClick={ () => onEdit({
+                            subjectId, subjectType,
+                            ...participationData
+                        }) }
+                    />
+                )}
+                { canRemove && (
+                    <RemoveIconButtonInline
+                        onClick={ () => onRemove({
+                            ...participationData
+                        }) }
+                    />
+                )}
             </td>
         </tr>
     );

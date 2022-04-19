@@ -7,7 +7,10 @@ import {
     RemoveIconButtonInline,
 } from '@mpieva/psydb-ui-layout';
 
-import { useModalReducer } from '@mpieva/psydb-ui-hooks';
+import {
+    useModalReducer,
+    usePermissions
+} from '@mpieva/psydb-ui-hooks';
 
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 import calculateAge from '@mpieva/psydb-ui-lib/src/calculate-age';
@@ -114,6 +117,10 @@ const ParticipationListRow = ({
     onEdit,
     onRemove,
 }) => {
+    var permissions = usePermissions();
+    var canWrite = permissions.hasFlag('canWriteParticipations');
+    var canRemove = permissions.hasFlag('canWriteParticipations');
+
     var date = new Date(item.timestamp);
     var formattedDate = datefns.format(
         date,
@@ -162,16 +169,20 @@ const ParticipationListRow = ({
                 <StudyIconButton
                     to={`/studies/${item.studyType}/${item.studyId}`}
                 />
-                <EditIconButtonInline
-                    onClick={ () => onEdit({
-                        subjectType, subjectId, ...item
-                    }) }
-                />
-                <RemoveIconButtonInline
-                    onClick={ () => onRemove({
-                        ...item
-                    }) }
-                />
+                { canWrite && (
+                    <EditIconButtonInline
+                        onClick={ () => onEdit({
+                            subjectType, subjectId, ...item
+                        }) }
+                    />
+                )}
+                { canRemove && (
+                    <RemoveIconButtonInline
+                        onClick={ () => onRemove({
+                            ...item
+                        }) }
+                    />
+                )}
             </td>
         </tr>
     );

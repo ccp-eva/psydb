@@ -20,8 +20,8 @@ handler.checkAllowedAndPlausible = async (context) => {
         cache,
     } = context;
 
-    if (!permissions.isRoot()) {
-        //throw new ApiError(403);
+    if (!permissions.hasFlag('canWriteParticipation')) {
+        throw new ApiError(403);
     }
 
     var { participationId } = message.payload;
