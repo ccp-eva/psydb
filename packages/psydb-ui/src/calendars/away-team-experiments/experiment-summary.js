@@ -68,7 +68,7 @@ const ExperimentSummary = ({
 
     // TODO: we might also want to send a flag to api
     // so we dont send dent data of those at all
-    if (!showPast && isInPast && isPostprocessed) {
+    if (!showPast && isInPast && (isPlaceholder || isPostprocessed)) {
         return null;
     }
     
@@ -178,12 +178,12 @@ const ExperimentSummary = ({
                     <small>Platzhalter</small>
                 </div>
             )}
-            { !isPostprocessed && hasProcessedSubjects && (
+            { !isPlaceholder && !isPostprocessed && hasProcessedSubjects && (
                 <div>
                     <small>in Nachbereitung</small>
                 </div>
             )}
-            { !isPostprocessed && !hasProcessedSubjects && isInPast && (
+            { !isPlaceholder && !isPostprocessed && !hasProcessedSubjects && isInPast && (
                 <div>
                     <small>offene Nachbereitung</small>
                 </div>

@@ -92,9 +92,10 @@ const ExperimentSummaryMedium = ({
     var hasProcessedSubjects = !!subjectData.find(
         it => it.participationStatus !== 'unknown'
     );
+    var isPlaceholder = subjectData.length < 1;
     // TODO: we might also want to send a flag to api
     // so we dont send dent data of those at all
-    if (!showPast && isInPast && isPostprocessed) {
+    if (!showPast && isInPast && (isPlaceholder || isPostprocessed)) {
         return null;
     }
 
@@ -204,12 +205,17 @@ const ExperimentSummaryMedium = ({
                 </div>
             </div>
 
-            { !isPostprocessed && hasProcessedSubjects && (
+            { isPlaceholder && (
+                <div>
+                    <small>Platzhalter</small>
+                </div>
+            )}
+            { !isPlaceholder && !isPostprocessed && hasProcessedSubjects && (
                 <div>
                     <small>in Nachbereitung</small>
                 </div>
             )}
-            { !isPostprocessed && !hasProcessedSubjects && isInPast && (
+            { !isPlaceholder && !isPostprocessed && !hasProcessedSubjects && isInPast && (
                 <div>
                     <small>offene Nachbereitung</small>
                 </div>
