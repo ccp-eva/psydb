@@ -296,6 +296,12 @@ var createRouting = ({
         withKoaBody(),
         endpoints.extendedSearch.subjects
     );
+    router.post('/extended-search/studies',
+        withSelfAuth(),
+        withPermissions(),
+        withKoaBody(),
+        endpoints.extendedSearch.studies
+    );
 
     router.get('/reverse-refs/:collection',
         withSelfAuth(),

@@ -22,12 +22,11 @@ var {
 var {
     createCustomQueryValues,
     convertPointerKeys,
-    createSpecialFilterConditions,
 } = require('../utils');
 
 var RequestBodySchema = require('./request-body-schema');
 
-var subjectExtendedSearch = async (context, next) => {
+var studyExtendedSearch = async (context, next) => {
     var {
         db,
         permissions,
@@ -40,11 +39,11 @@ var subjectExtendedSearch = async (context, next) => {
     });
 
     var {
-        subjectType
+        studyType
     } = request.body;
 
     var crtSettings = await fetchCRTSettings({
-        db, collectionName: 'subject', recordType: subjectType,
+        db, collectionName: 'study', recordType: studyType,
     });
 
     validateOrThrow({
@@ -53,8 +52,7 @@ var subjectExtendedSearch = async (context, next) => {
     });
 
     var {
-        customGdprFilters,
-        customScientificFilters,
+        customFilters,
         specialFilters,
 
         columns,
@@ -65,38 +63,29 @@ var subjectExtendedSearch = async (context, next) => {
 
     var crt = await fetchOneCustomRecordType({
         db,
-        collection: 'subject',
-        type: subjectType
+        collection: 'study',
+        type: studyType
     });
 
     var {
         availableDisplayFieldData,
     } = await gatherDisplayFieldsForRecordType({
         db,
-        collectionName: 'subject',
-        customRecordType: subjectType,
+        collectionName: 'study',
+        customRecordType: studyType,
         target: 'table',
     });
 
-    var { subChannelFields } = crt.state.settings;
-
-    var customFields = {
-        scientific: (
-            subChannelFields.scientific.filter(it => !it.isRemoved)
-        ),
-        gdpr: (
-            subChannelFields.gdpr.filter(it => !it.isRemoved)
-        )
-    };
+    // TODO
+    var { fields } = crt.state.settings;
+    var customFields = (
+        fields.filter(it => !it.isRemoved)
+    );
 
     var customQueryValues = {
         ...createCustomQueryValues({
-            fields: customFields.scientific,
-            filters: customScientificFilters,
-        }),
-        ...createCustomQueryValues({
-            fields: customFields.gdpr,
-            filters: customGdprFilters,
+            fields: customFields,
+            filters: customFilters,
         }),
     }
 
@@ -115,10 +104,7 @@ var subjectExtendedSearch = async (context, next) => {
             ...columns.reduce((acc, pointer) => ({
                 ...acc,
                 [ convertPointerToPath(pointer) ]: true
-            }), {}),
-            ...(columns.includes('/_specialStudyParticipation') && {
-                'scientific.state.internals.participatedInStudies': true
-            }),
+            }), {})
         }},
 
         SortStage({ ...sort }),
@@ -135,32 +121,17 @@ var subjectExtendedSearch = async (context, next) => {
     //console.dir({ stages }, { depth: null });
 
     var facets = await (
-        db.collection('subject').aggregate(stages).toArray()
+        db.collection('study').aggregate(stages).toArray()
     );
     
     var [ records, recordsCount ] = fromFacets(facets);
 
-    var experiments = (
-        await fetchUpcomingExperiments({ db, records })
-    );
-    var upcomingExperimentsForSubject = groupBy({
-        items: experiments,
-        byPointer: '/state/subjectId',
-    });
-
-    //console.log({ upcomingExperimentsForSubject });
-
     var related = await fetchRelatedLabelsForMany({
         db,
-        collectionName: 'subject',
-        recordType: subjectType,
+        collectionName: 'study',
+        recordType: studyType,
         records: records,
     });
-
-    records = records.map(it => ({
-        ...it,
-        _specialUpcomingExperiments: upcomingExperimentsForSubject[it._id] || [],
-    }));
 
     context.body = ResponseBody({
         data: {
@@ -184,45 +155,61 @@ var SortStage = (options) => {
 
 }
 
-var fetchUpcomingExperiments = async ({ db, records }) => {
-    var now = new Date();
+var createSpecialFilterConditions = (filters) => {
+    var {
+        studyId,
+    } = filters;
 
-    var records = await (
-        db.collection('experiment').aggregate([
-            { $match: {
-                'state.isPostprocessed': false,
-                'state.isCanceled': false,
-            }},
-            { $sort: { 'state.interval.start': 1 }},
-            { $unwind: '$state.subjectData' },
-            { $project: {
-                'type': true,
-                'state.subjectId': '$state.subjectData.subjectId',
-                'state.interval': true,
-                'state.studyId': true,
-            }},
-        ]).toArray()
-    );
-    
-    var related = await fetchRelatedLabelsForMany({
-        db,
-        collectionName: 'experiment',
-        records,
+    var AND = [];
+    if (studyId) {
+        AND.push({
+            '_id': new RegExp(escapeRX(studyId), 'i')
+        });
+    }
+
+    var statics = createCustomQueryValues({
+        fields: [
+            {
+                key: 'name',
+                pointer: '/state/name',
+                type: 'SaneString'
+            },
+            {
+                key: 'shorthand',
+                pointer: '/state/shorthand',
+                type: 'SaneString'
+            },
+            {
+                key: 'scientistIds',
+                pointer: '/state/scientistIds',
+                type: 'ForeignIdList',
+                props: { collection: 'personnel' }
+            },
+            {
+                key: 'studyTopicIds',
+                pointer: '/state/studyTopicIds',
+                type: 'ForeignIdList',
+                props: { collection: 'studyTopic' }
+            },
+            {
+                key: 'researchGroupIds',
+                pointer: '/state/researchGroupIds',
+                type: 'ForeignIdList',
+                props: { collection: 'researchGroup' }
+            }
+        ],
+        filters,
     });
+    if (Object.keys(statics).length > 0 ) {
+        AND.push(convertPointerKeys(statics));
+    }
 
-    records = records.map(it => ({
-        ...it,
-        state: {
-            ...it.state,
-            studyLabel: (
-                related.relatedRecordLabels
-                .study[it.state.studyId]._recordLabel
-            )
-        }
-    }));
-
-    return records;
+    return (
+        AND.length > 0
+        ? { $and: AND }
+        : undefined
+    )
 }
 
-module.exports = subjectExtendedSearch;
+module.exports = studyExtendedSearch;
 

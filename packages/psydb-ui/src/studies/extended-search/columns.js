@@ -14,26 +14,34 @@ const ColumnSelect = withField({
 export const Columns = (ps) => {
     var { formData, schema } = ps;
     
-    var customColumns = gatherCustomColumns({
-        schema, subChannelKeys: [ 'gdpr', 'scientific' ]
-    });
+    var customColumns = gatherCustomColumns({ schema });
 
     var sortableColumns = [
         { pointer: '/_id', label: 'ID' },
         { pointer: '/_sequenceNumber', label: 'ID Nr.' },
+        { pointer: '/state/name', label: 'Studienname' },
+        { pointer: '/state/shorthand', label: 'Kürzel' },
+        { pointer: '/state/researchGroupIds', label: 'Forschungsgruppen' },
+        { pointer: '/state/scientistIds', label: 'Wissenschaftler' },
+        { pointer: '/state/studyTopicIds', label: 'Themengebiete' },
         ...customColumns
     ];
 
-    var specialColumns = [
-        { pointer: '/_specialStudyParticipation', label: 'Studien' },
-        { pointer: '/_specialUpcomingExperiments', label: 'Termine' },
+    var staticColumns = [
+        { pointer: '/state/name', label: 'Studienname' },
+        { pointer: '/state/shorthand', label: 'Kürzel' },
+        { pointer: '/state/researchGroupIds', label: 'Forschungsgruppen' },
+        { pointer: '/state/scientistIds', label: 'Wissenschaftler' },
+        { pointer: '/state/studyTopicIds', label: 'Themengebiete' },
     ];
+
+    var specialColumns = [];
 
     var allColumns = [
         { pointer: '/_id', label: 'ID' },
         { pointer: '/_sequenceNumber', label: 'ID Nr.' },
+        ...staticColumns,
         ...customColumns,
-        ...specialColumns,
     ];
 
     return (
@@ -45,10 +53,11 @@ export const Columns = (ps) => {
                 columnBlocks={[
                     [
                         { pointer: '/_id', label: 'ID' },
-                        { pointer: '/_sequenceNumber', label: 'ID Nr.' },
+                        { pointer: '/sequenceNumber', label: 'ID Nr.' },
                     ],
+                    staticColumns,
                     customColumns,
-                    specialColumns,
+                    //specialColumns,
                 ]}
             >
                 <header className='mb-2 border-bottom'>

@@ -252,6 +252,24 @@ module.exports = {
                 displayName: 'Wissenschaftler',
             },
             {
+                key: '_researchGroupIds',
+                systemType: 'ForeignIdList',
+                props: {
+                    collection: 'researchGroup',
+                },
+                dataPointer: '/state/researchGroupIds',
+                displayName: 'Forschungsgruppen',
+            },
+            {
+                key: '_studyTopicIds',
+                systemType: 'ForeignIdList',
+                props: {
+                    collection: 'studyTopic',
+                },
+                dataPointer: '/state/studyTopicIds',
+                displayName: 'Themengebiete',
+            },
+            {
                 key: '_start',
                 systemType: 'DateOnlyServerSide',
                 props: {},

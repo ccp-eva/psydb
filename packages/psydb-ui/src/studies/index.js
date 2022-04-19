@@ -9,6 +9,7 @@ import {
 } from 'react-router-dom';
 
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
+import { LinkContainer } from '@mpieva/psydb-ui-layout';
 import { FormBox } from '@mpieva/psydb-ui-lib';
 
 import StudyRecordContainer from './record-container';
@@ -18,6 +19,9 @@ import {
     withCollectionView,
     withRecordTypeView
 } from '@mpieva/psydb-ui-lib/src/generic-views'
+
+import ExtendedSearch from './extended-search';
+
 
 
 const StudyRouting = (ps) => {
@@ -38,6 +42,11 @@ const StudyRouting = (ps) => {
     return (
         <Switch>
             <Route exact path={ path }>
+                <div className='media-print-hidden'>
+                    <LinkContainer to={ `${url}/extended-search/` }>
+                        <a>Erweiterte Search</a>
+                    </LinkContainer>
+                </div>
                 <RecordList
                     linkBaseUrl={ url }
                     collection={ collection }
@@ -47,6 +56,14 @@ const StudyRouting = (ps) => {
                     enableEdit={ true }
                 />
             </Route>
+            
+            <Route path={`${path}/extended-search/`}>
+                <ExtendedSearch {...({
+                    collection,
+                    recordType
+                })} />
+            </Route>
+            
             <Route exact path={`${path}/new`}>
                 { canWrite
                     ? (
