@@ -6,6 +6,7 @@ import {
     Table,
     SubjectIconButton,
     ExperimentIconButton,
+    RemoveIconButtonInline,
     EditIconButtonInline,
 } from '@mpieva/psydb-ui-layout';
 
@@ -15,7 +16,10 @@ import calculateAge from '@mpieva/psydb-ui-lib/src/calculate-age';
 import FieldDataHeadCols from '@mpieva/psydb-ui-lib/src/record-list/field-data-head-cols';
 import FieldDataBodyCols from '@mpieva/psydb-ui-lib/src/record-list/field-data-body-cols';
 
-import { EditModal } from '@mpieva/psydb-ui-lib/src/participation';
+import {
+    EditModal,
+    RemoveModal
+} from '@mpieva/psydb-ui-lib/src/participation';
 
 
 
@@ -30,6 +34,7 @@ const ParticipationList = ({
     onSuccessfulUpdate,
 }) => {
     var editModal = useModalReducer();
+    var removeModal = useModalReducer();
 
     var dateOfBirthField = displayFieldData.find(it => (
         it.props.isSpecialAgeFrameField
@@ -48,6 +53,10 @@ const ParticipationList = ({
         <>
             <EditModal
                 { ...editModal.passthrough }
+                onSuccessfulUpdate={ onSuccessfulUpdate }
+            />
+            <RemoveModal
+                { ...removeModal.passthrough }
                 onSuccessfulUpdate={ onSuccessfulUpdate }
             />
             <Table className={ className }>
@@ -74,7 +83,8 @@ const ParticipationList = ({
                             displayFieldData,
                             dateOfBirthField,
                             
-                            onEdit: editModal.handleShow
+                            onEdit: editModal.handleShow,
+                            onRemove: removeModal.handleShow
                         })} />
                     ))}
                 </tbody>
@@ -92,6 +102,7 @@ const ParticipationListRow = ({
     dateOfBirthField,
 
     onEdit,
+    onRemove,
 }) => {
 
     var { _id: subjectId, type: subjectType } = record;
@@ -156,6 +167,11 @@ const ParticipationListRow = ({
                 <EditIconButtonInline
                     onClick={ () => onEdit({
                         subjectId, subjectType,
+                        ...participationData
+                    }) }
+                />
+                <RemoveIconButtonInline
+                    onClick={ () => onRemove({
                         ...participationData
                     }) }
                 />

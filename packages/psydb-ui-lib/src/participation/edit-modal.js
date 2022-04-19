@@ -20,8 +20,6 @@ const ParticipationEditModalBody = (ps) => {
         ...participation
     } = modalPayloadData;
 
-    console.log(modalPayloadData);
-
     var labProcedureType = realType || type;
 
     var send = useSend((formData) => ({

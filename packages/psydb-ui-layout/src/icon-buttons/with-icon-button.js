@@ -67,6 +67,7 @@ export const withIconButton = (options) => {
                 <Button
                     { ...mergedButtonProps }
                     style={ mergedButtonStyle }
+                    onClick={ onClick }
                 >
                     <Icon style={ mergedIconStyle } />
                 </Button>

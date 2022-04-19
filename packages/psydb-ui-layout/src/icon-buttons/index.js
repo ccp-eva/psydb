@@ -28,3 +28,12 @@ export const SubjectIconButton = withIconButton({
         marginTop: '2px'
     }
 });
+
+export const RemoveIconButtonInline = withIconButton({
+    Icon: Icons.X,
+    defaultButtonProps: {
+        size: 'sm',
+        variant: 'outline-danger'
+    }
+});
+

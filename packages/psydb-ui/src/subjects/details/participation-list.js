@@ -4,6 +4,7 @@ import {
     StudyIconButton,
     ExperimentIconButton,
     EditIconButtonInline,
+    RemoveIconButtonInline,
 } from '@mpieva/psydb-ui-layout';
 
 import { useModalReducer } from '@mpieva/psydb-ui-hooks';
@@ -14,7 +15,10 @@ import calculateAge from '@mpieva/psydb-ui-lib/src/calculate-age';
 import FieldDataHeadCols from '@mpieva/psydb-ui-lib/src/record-list/field-data-head-cols';
 import FieldDataBodyCols from '@mpieva/psydb-ui-lib/src/record-list/field-data-body-cols';
 
-import { EditModal } from '@mpieva/psydb-ui-lib/src/participation';
+import {
+    EditModal,
+    RemoveModal
+} from '@mpieva/psydb-ui-lib/src/participation';
 
 const ParticipationList = ({
     subjectId,
@@ -34,10 +38,15 @@ const ParticipationList = ({
     onSuccessfulUpdate,
 }) => {
     var editModal = useModalReducer();
+    var removeModal = useModalReducer();
     return (
         <>
             <EditModal
                 { ...editModal.passthrough }
+                onSuccessfulUpdate={ onSuccessfulUpdate }
+            />
+            <RemoveModal
+                { ...removeModal.passthrough }
                 onSuccessfulUpdate={ onSuccessfulUpdate }
             />
             <Table className='bg-white border'>
@@ -76,7 +85,8 @@ const ParticipationList = ({
                                 relatedCustomRecordTypeLabels,
                                 displayFieldData,
 
-                                onEdit: editModal.handleShow
+                                onEdit: editModal.handleShow,
+                                onRemove: removeModal.handleShow
                             }) } />
                         ))
                     }
@@ -102,6 +112,7 @@ const ParticipationListRow = ({
     displayFieldData,
 
     onEdit,
+    onRemove,
 }) => {
     var date = new Date(item.timestamp);
     var formattedDate = datefns.format(
@@ -154,6 +165,11 @@ const ParticipationListRow = ({
                 <EditIconButtonInline
                     onClick={ () => onEdit({
                         subjectType, subjectId, ...item
+                    }) }
+                />
+                <RemoveIconButtonInline
+                    onClick={ () => onRemove({
+                        ...item
                     }) }
                 />
             </td>
