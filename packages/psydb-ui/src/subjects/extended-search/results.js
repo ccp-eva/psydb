@@ -70,7 +70,7 @@ export const Results = (ps) => {
         recordsCount > 0
         ? RecordTable
         : Fallback
-    )
+    );
 
     return (
         <div>
@@ -112,6 +112,7 @@ const RecordTable = (ps) => {
 const TableHead = (ps) => {
     var { columns, selectedFieldData } = ps;
     var keyed = keyBy({ items: selectedFieldData, byProp: 'dataPointer' });
+    console.log(keyed);
     return (
         <thead><tr>
             <FieldDataHeadCols { ...({

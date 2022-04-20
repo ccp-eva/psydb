@@ -109,8 +109,8 @@ const ExtendedSearch = (ps) => {
         customGdprFilters: {},
         customScientificFilters: {},
         specialFilters: {},
-        columns: [ '/_id' ],
-        sort: { column: '/_id', direction: 'asc' },
+        columns: [ '/sequenceNumber' ],
+        sort: { column: '/_sequenceNumber', direction: 'asc' },
         limit: 0,
         offset: 0
     }; // createDefaults({ schema })

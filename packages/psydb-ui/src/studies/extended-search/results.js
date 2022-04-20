@@ -119,12 +119,6 @@ const TableHead = (ps) => {
                     columns.map(it => keyed[it]).filter(it => !!it)
                 ),
             })} />
-            { columns.includes('/_specialStudyParticipation') && (
-                <th>Studien</th>
-            )}
-            { columns.includes('/_specialUpcomingExperiments') && (
-                <th>Termine</th>
-            )}
             <th></th>
         </tr></thead>
     )
@@ -146,21 +140,6 @@ const TableBody = (ps) => {
                         ),
                         ...related
                     })} />
-                    { columns.includes('/_specialStudyParticipation') && (
-                        <ParticipationColumn
-                            participation={
-                                it
-                                .scientific.state
-                                .internals.participatedInStudies
-                            }
-                            related={ related }
-                        />
-                    )}
-                    { columns.includes('/_specialUpcomingExperiments') && (
-                        <ExperimentColumn
-                            experiments={ it._specialUpcomingExperiments }
-                        />
-                    )}
                     <td>
                         <div className='d-flex justify-content-end'>
                             <DetailsIconButton
@@ -174,47 +153,3 @@ const TableBody = (ps) => {
     )
 }
 
-const ParticipationColumn = (ps) => {
-    var { participation, related } = ps;
-    var relatedStudies = related.relatedRecordLabels.study;
-    return (
-        <td>
-            {
-                participation
-                .filter(it => it.status === 'participated')
-                .map(it => {
-                    var studyLabel = relatedStudies[it.studyId]._recordLabel;
-                    var date = datefns.format(new Date(it.timestamp), 'P');
-                    return `${studyLabel} (${date})`;
-                })
-                .join('; ')
-            }
-        </td>
-    )
-}
-
-const ExperimentColumn = (ps) => {
-    var { experiments, related } = ps;
-    var items = (
-        experiments
-        .map((it, index) => {
-            var date = datefns.format(
-                new Date(it.state.interval.start), 'P'
-            );
-            return (
-                <LinkContainer to={ `/experiments/${it.type}/${it._id}` }>
-                    <a>{ it.state.studyLabel } ({date})</a>
-                </LinkContainer>
-            );
-        })
-    );
-    return (
-        <td>
-            { items.map((it, index) => (
-                <>
-                    { it }{'; '}
-                </>
-            ))}
-        </td>
-    )
-}

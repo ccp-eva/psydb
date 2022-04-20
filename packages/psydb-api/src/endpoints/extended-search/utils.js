@@ -169,6 +169,7 @@ var convertPointerKeys = (obj) => {
 var createSpecialFilterConditions = (filters) => {
     var {
         subjectId,
+        sequenceNumber,
         didParticipateIn,
         didNotParticipateIn
     } = filters;
@@ -178,6 +179,16 @@ var createSpecialFilterConditions = (filters) => {
         AND.push({
             '_id': new RegExp(escapeRX(subjectId), 'i')
         });
+    }
+    if (sequenceNumber !== undefined) {
+        AND.push({ $expr: {
+            $regexMatch: {
+                input: { $convert: {
+                    input: '$sequenceNumber', to: 'string'
+                }},
+                regex: new RegExp(escapeRX(String(sequenceNumber)), 'i')
+            }
+        }});
     }
     if (didParticipateIn && didParticipateIn.length > 0) {
         AND.push({ $expr: (

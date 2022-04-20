@@ -52,8 +52,8 @@ export const Columns = (ps) => {
                 dataXPath='$.columns'
                 columnBlocks={[
                     [
-                        { pointer: '/_id', label: 'ID' },
                         { pointer: '/sequenceNumber', label: 'ID Nr.' },
+                        { pointer: '/_id', label: 'ID' },
                     ],
                     staticColumns,
                     customColumns,

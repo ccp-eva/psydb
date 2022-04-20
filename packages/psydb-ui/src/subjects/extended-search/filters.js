@@ -16,9 +16,13 @@ export const Filters = (ps) => {
     
     return (
         <FormBox title='Suchbedingungen'>
+            <Fields.Integer
+                dataXPath='$.specialFilters.sequenceNumber'
+                label='ID Nr.'
+            />
             <Fields.SaneString
                 dataXPath='$.specialFilters.subjectId'
-                label='ID'
+                label='Interne ID'
             />
             <Fields.Custom
                 dataXPath='$.customGdprFilters'

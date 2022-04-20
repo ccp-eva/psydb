@@ -19,8 +19,9 @@ export const Columns = (ps) => {
     });
 
     var sortableColumns = [
-        { pointer: '/_id', label: 'ID' },
         { pointer: '/_sequenceNumber', label: 'ID Nr.' },
+        { pointer: '/_onlineId', label: 'Online ID Code' },
+        { pointer: '/_id', label: 'Interne ID' },
         ...customColumns
     ];
 
@@ -30,8 +31,9 @@ export const Columns = (ps) => {
     ];
 
     var allColumns = [
-        { pointer: '/_id', label: 'ID' },
+        { pointer: '/_id', label: 'Interne ID' },
         { pointer: '/_sequenceNumber', label: 'ID Nr.' },
+        { pointer: '/_onlineId', label: 'Online ID Code' },
         ...customColumns,
         ...specialColumns,
     ];
@@ -44,8 +46,9 @@ export const Columns = (ps) => {
                 dataXPath='$.columns'
                 columnBlocks={[
                     [
-                        { pointer: '/_id', label: 'ID' },
-                        { pointer: '/_sequenceNumber', label: 'ID Nr.' },
+                        { pointer: '/sequenceNumber', label: 'ID Nr.' },
+                        { pointer: '/onlineId', label: 'Online ID Code' },
+                        { pointer: '/_id', label: 'Interne ID' },
                     ],
                     customColumns,
                     specialColumns,
