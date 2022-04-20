@@ -21,6 +21,10 @@ export const Columns = (ps) => {
         { pointer: '/sequenceNumber', label: 'ID Nr.' },
         { pointer: '/state/name', label: 'Studienname' },
         { pointer: '/state/shorthand', label: 'Kürzel' },
+
+        { pointer: '/state/runningPeriod/start', label: 'Start' },
+        { pointer: '/state/runningPeriod/end', label: 'Ende' },
+
         { pointer: '/state/researchGroupIds', label: 'Forschungsgruppen' },
         { pointer: '/state/scientistIds', label: 'Wissenschaftler' },
         { pointer: '/state/studyTopicIds', label: 'Themengebiete' },
@@ -30,6 +34,10 @@ export const Columns = (ps) => {
     var staticColumns = [
         { pointer: '/state/name', label: 'Studienname' },
         { pointer: '/state/shorthand', label: 'Kürzel' },
+
+        { pointer: '/state/runningPeriod/start', label: 'Start' },
+        { pointer: '/state/runningPeriod/end', label: 'Ende' },
+
         { pointer: '/state/researchGroupIds', label: 'Forschungsgruppen' },
         { pointer: '/state/scientistIds', label: 'Wissenschaftler' },
         { pointer: '/state/studyTopicIds', label: 'Themengebiete' },

@@ -104,12 +104,16 @@ const ExtendedSearch = (ps) => {
         window.scrollTo(0, 0);
     }
 
+    var defaultColumns = crtSettings.tableDisplayFields.map(it => (
+        it.dataPointer
+    ));
+
     var defaultValues = decodedFormData || {
         studyType: recordType,
         customFilters: {},
         specialFilters: {},
-        columns: [ '/_id' ],
-        sort: { column: '/_id', direction: 'asc' },
+        columns: defaultColumns,
+        sort: { column: '/sequenceNumber', direction: 'asc' },
         limit: 0,
         offset: 0
     }; // createDefaults({ schema })
