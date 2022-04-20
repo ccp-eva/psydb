@@ -163,7 +163,14 @@ var ForeignIdFieldDefinition = () => FieldDefinition({
 var AddressFieldDefinition = () => FieldDefinition({
     type: 'Address',
     title: 'Adresse (Address)',
-    props: {},
+    props: {
+        isStreetRequired: DefaultBool(),
+        isHousenumberRequired: DefaultBool(),
+        isAffixRequired: DefaultBool(),
+        isPostcodeRequired: DefaultBool(),
+        isCityRequired: DefaultBool(),
+        isCountryRequired: DefaultBool(),
+    },
 });
 
 var GeoCoordsFieldDefinition = () => FieldDefinition({

@@ -24,6 +24,7 @@ var CustomProps = ({ customFieldDefinitions }) => {
         required: Object.keys(schemaProperties),
     });
 
+    //console.dir(schema, { depth: null });
     return schema;
 }
 

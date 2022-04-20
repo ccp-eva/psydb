@@ -9,7 +9,7 @@ import {
 const FieldPointerList = ({
     onMoveItem,
     onRemoveItem,
-    dataPointers,
+    dataPointers = [],
     availableFieldDataByPointer,
 }) => {
     // TODO: andle move/remove

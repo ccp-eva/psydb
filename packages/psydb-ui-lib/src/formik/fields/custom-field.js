@@ -35,8 +35,14 @@ export const CustomField = (ps) => {
             isRequired = !props.isNullable;
             break;
         case 'Address':
-            // TODO: depends on sub field prop settings
-            isRequired = false;
+            isRequired = (
+                props.isStreetRequired
+                || props.isHousenumberRequired
+                || props.isAffixRequired
+                || props.isPostcodeRequired
+                || props.isCityRequired
+                || props.isCountryRequired
+            );
             break;
     }
 
