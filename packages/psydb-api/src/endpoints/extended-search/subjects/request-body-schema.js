@@ -45,6 +45,7 @@ RequestBodySchema.Full = () => ExactObject({
         specialFilters: ExactObject({
             properties: {
                 subjectId: SaneString(),
+                onlineId: SaneString(),
                 sequenceNumber: Integer(),
                 //didParticipate: StringEnum([ 'yes'. 'no', 'any' ]),
                 didParticipateIn: ForeignIdList({

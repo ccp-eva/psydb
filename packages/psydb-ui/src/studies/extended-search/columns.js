@@ -18,7 +18,7 @@ export const Columns = (ps) => {
 
     var sortableColumns = [
         { pointer: '/_id', label: 'ID' },
-        { pointer: '/_sequenceNumber', label: 'ID Nr.' },
+        { pointer: '/sequenceNumber', label: 'ID Nr.' },
         { pointer: '/state/name', label: 'Studienname' },
         { pointer: '/state/shorthand', label: 'Kürzel' },
         { pointer: '/state/researchGroupIds', label: 'Forschungsgruppen' },
@@ -36,13 +36,6 @@ export const Columns = (ps) => {
     ];
 
     var specialColumns = [];
-
-    var allColumns = [
-        { pointer: '/_id', label: 'ID' },
-        { pointer: '/_sequenceNumber', label: 'ID Nr.' },
-        ...staticColumns,
-        ...customColumns,
-    ];
 
     return (
         <div className='bg-light p-3 border border-top-0'>

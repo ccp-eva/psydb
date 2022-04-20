@@ -121,7 +121,13 @@ var studyExtendedSearch = async (context, next) => {
     //console.dir({ stages }, { depth: null });
 
     var facets = await (
-        db.collection('study').aggregate(stages).toArray()
+        db.collection('study').aggregate(
+            stages,
+            {
+                allowDiskUse: true,
+                collation: { locale: 'de@collation=phonebook' }
+            }
+        ).toArray()
     );
     
     var [ records, recordsCount ] = fromFacets(facets);

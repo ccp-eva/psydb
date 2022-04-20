@@ -21,6 +21,10 @@ export const Filters = (ps) => {
                 label='ID Nr.'
             />
             <Fields.SaneString
+                dataXPath='$.specialFilters.onlineId'
+                label='Online ID Code'
+            />
+            <Fields.SaneString
                 dataXPath='$.specialFilters.subjectId'
                 label='Interne ID'
             />

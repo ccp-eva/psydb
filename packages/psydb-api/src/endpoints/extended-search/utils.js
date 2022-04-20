@@ -169,6 +169,7 @@ var convertPointerKeys = (obj) => {
 var createSpecialFilterConditions = (filters) => {
     var {
         subjectId,
+        onlineId,
         sequenceNumber,
         didParticipateIn,
         didNotParticipateIn
@@ -178,6 +179,11 @@ var createSpecialFilterConditions = (filters) => {
     if (subjectId) {
         AND.push({
             '_id': new RegExp(escapeRX(subjectId), 'i')
+        });
+    }
+    if (onlineId) {
+        AND.push({
+            'onlineId': new RegExp(escapeRX(onlineId), 'i')
         });
     }
     if (sequenceNumber !== undefined) {

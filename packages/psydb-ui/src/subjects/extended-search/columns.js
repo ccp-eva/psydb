@@ -19,8 +19,8 @@ export const Columns = (ps) => {
     });
 
     var sortableColumns = [
-        { pointer: '/_sequenceNumber', label: 'ID Nr.' },
-        { pointer: '/_onlineId', label: 'Online ID Code' },
+        { pointer: '/sequenceNumber', label: 'ID Nr.' },
+        { pointer: '/onlineId', label: 'Online ID Code' },
         { pointer: '/_id', label: 'Interne ID' },
         ...customColumns
     ];
@@ -28,14 +28,6 @@ export const Columns = (ps) => {
     var specialColumns = [
         { pointer: '/_specialStudyParticipation', label: 'Studien' },
         { pointer: '/_specialUpcomingExperiments', label: 'Termine' },
-    ];
-
-    var allColumns = [
-        { pointer: '/_id', label: 'Interne ID' },
-        { pointer: '/_sequenceNumber', label: 'ID Nr.' },
-        { pointer: '/_onlineId', label: 'Online ID Code' },
-        ...customColumns,
-        ...specialColumns,
     ];
 
     return (
