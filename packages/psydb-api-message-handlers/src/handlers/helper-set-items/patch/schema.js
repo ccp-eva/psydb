@@ -14,7 +14,7 @@ var createSchema = () => (
         payload: ExactObject({
             properties: {
                 id: Id(),
-                lastKnownEventId: EventId(),
+                //lastKnownEventId: EventId(),
                 props: ExactObject({
                     properties: {
                         label: SaneString(),
@@ -26,7 +26,7 @@ var createSchema = () => (
             },
             required: [
                 'id',
-                'lastKnownEventId',
+                //'lastKnownEventId',
                 'props'
             ]
         })

@@ -29,12 +29,12 @@ var HelperSetRecordMessage = ({ op }) => {
         payload = ExactObject({
             properties: {
                 id: Id(),
-                lastKnownEventId: EventId(),
+                //lastKnownEventId: EventId(),
                 props: HelperSetState(),
             },
             required: [
                 'id',
-                'lastKnownEventId',
+                //'lastKnownEventId',
                 'props',
             ]
         });

@@ -1,4 +1,5 @@
 'use strict';
+// FIXME: unised; see messge handler
 var {
     Message
 } = require('@mpieva/psydb-schema-helpers');
@@ -30,12 +31,12 @@ var HelperSetItemRecordMessage = ({ op }) => {
         payload = ExactObject({
             properties: {
                 id: Id(),
-                lastKnownEventId: EventId(),
+                //lastKnownEventId: EventId(),
                 props: HelperSetItemState(),
             },
             required: [
                 'id',
-                'lastKnownEventId',
+                //'lastKnownEventId',
                 'props',
             ]
         });
@@ -44,10 +45,14 @@ var HelperSetItemRecordMessage = ({ op }) => {
         throw new Error('unknown op');
     }
 
-    return Message({
+    var schema = Message({
         type: `helperSetItem/${op}`,
         payload
-    })
+    });
+
+    console.log(schema);
+
+    return schema;
 }
 
 module.exports = HelperSetItemRecordMessage;

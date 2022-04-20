@@ -20,7 +20,7 @@ const Control = (ps) => {
         formikForm,
 
         disabled,
-        // TODO: should depend on address field defintions props
+
         isStreetRequired = false,
         isHousenumberRequired = false,
         isAffixRequired = false,

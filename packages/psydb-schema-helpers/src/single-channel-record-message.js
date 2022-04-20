@@ -6,6 +6,7 @@ var {
 
 var {
     ExactObject,
+    OpenObject,
     Id,
     EventId,
     Integer,
@@ -66,7 +67,7 @@ var SingleChannelRecordPatchMessage = ({
 }) => {
     return Message({
         type: createMessageType({ collection, type, op: 'patch' }),
-        payload: ExactObject({
+        payload: OpenObject({
             properties: {
                 id: Id(),
                 lastKnownEventId: EventId(),

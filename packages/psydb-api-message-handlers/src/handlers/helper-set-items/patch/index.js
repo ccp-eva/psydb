@@ -13,7 +13,10 @@ var checkSchema = async ({ message }) => {
         isValid = ajv.validate(schema, message);
 
     if (!isValid) {
-        throw new ApiError(400, 'InvalidMessageSchema');
+        throw new ApiError(400, {
+            apiStatus: 'InvalidMessageSchema',
+            data: { ajvErrors: ajv.errors }
+        });
     }
 }
 

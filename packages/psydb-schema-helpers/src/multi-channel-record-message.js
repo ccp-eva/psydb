@@ -3,6 +3,7 @@ var { isPlainObject } = require('is-what');
 
 var {
     ExactObject,
+    OpenObject,
     Id,
     EventId,
     Integer,
@@ -111,7 +112,7 @@ var MultiChannelRecordPatchMessage = ({
         payload: ExactObject({
             properties: {
                 id: Id(),
-                lastKnownSubChannelEventIds: ExactObject({
+                lastKnownSubChannelEventIds: OpenObject({
                     properties: (
                         subChannelKeys
                         .filter(key => (
@@ -140,7 +141,7 @@ var MultiChannelRecordPatchMessage = ({
             },
             required: [
                 'id',
-                'lastKnownSubChannelEventIds',
+                //'lastKnownSubChannelEventIds',
                 'props',
             ]
         })
