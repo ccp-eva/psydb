@@ -1,6 +1,7 @@
 'use strict';
 var {
     ExactObject,
+    OpenObject,
     Id,
     EventId,
     SaneString,
@@ -11,7 +12,7 @@ var { Message } = require('@mpieva/psydb-schema-helpers');
 var createSchema = () => (
     Message({
         type: `helperSetItem/patch`,
-        payload: ExactObject({
+        payload: OpenObject({
             properties: {
                 id: Id(),
                 //lastKnownEventId: EventId(),

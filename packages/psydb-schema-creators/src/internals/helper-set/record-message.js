@@ -5,6 +5,7 @@ var {
 
 var {
     ExactObject,
+    OpenObject,
     Id,
     ForeignId,
     EventId,
@@ -26,7 +27,7 @@ var HelperSetRecordMessage = ({ op }) => {
         });
     }
     else if (op === 'patch') {
-        payload = ExactObject({
+        payload = OpenObject({
             properties: {
                 id: Id(),
                 //lastKnownEventId: EventId(),

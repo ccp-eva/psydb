@@ -20,7 +20,7 @@ const useSendPatch = (options) => {
         ),
         payload: {
             id: record._id,
-            //...createEventIdProps(record, subChannels),
+            ...createEventIdProps(record, subChannels),
             props,
             ...additionalPayloadProps
         }
