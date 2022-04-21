@@ -17,3 +17,4 @@ export * from './password';
 export * from './time';
 
 export * from './ops-team-select';
+export * from './color';

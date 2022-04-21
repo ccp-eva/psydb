@@ -13,8 +13,8 @@ import { Button, LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
 import StudyTeamListItem from '@mpieva/psydb-ui-lib/src/experiment-operator-team-list-item';
 
-import { CreateModal } from './create-modal';
-import { EditModal } from './edit-modal';
+import CreateModal from './create-modal';
+import EditModal from './edit-modal';
 
 import {
     useFetch,

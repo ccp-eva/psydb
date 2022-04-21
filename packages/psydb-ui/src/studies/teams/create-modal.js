@@ -1,42 +1,34 @@
-import React, { useEffect, useReducer } from 'react';
+import React from 'react';
 
-import { Modal } from 'react-bootstrap';
+import { WithDefaultModal } from '@mpieva/psydb-ui-layout';
+import { useSend } from '@mpieva/psydb-ui-hooks';
+import MainForm from './main-form';
 
-import agent from '@mpieva/psydb-ui-request-agents';
-import GenericRecordForm from '@mpieva/psydb-ui-lib/src/generic-record-form';
+const CreateOpsTeamModalBody = (ps) => {
+    var { studyId, onHide, onSuccessfulUpdate } = ps;
 
-export const CreateModal = ({
-    show,
-    onHide,
-    studyId,
-    onSuccessfulCreate
-}) => {
+    var send = useSend((formData) => ({
+        type: 'experimentOperatorTeam/create',
+        payload: { studyId, props: formData }
+    }), {
+        onSuccessfulUpdate: [ onHide, onSuccessfulUpdate ]
+    });
+
+    var initialValues = MainForm.createDefaults();
+
     return (
-        <Modal
-            show={show}
-            onHide={ onHide }
-            size='lg'
-            className='team-modal'
-            backdropClassName='team-modal-backdrop'
-        >
-            <Modal.Header closeButton>
-                <Modal.Title>Neues Team</Modal.Title>
-            </Modal.Header>
-            <Modal.Body className='bg-light'>
-                <div>
-                    <GenericRecordForm
-                        type='create'
-                        collection='experimentOperatorTeam'
-                        additionalPayloadProps={{
-                            studyId,
-                        }}
-                        onSuccessfulUpdate={ () => {
-                            onHide();
-                            onSuccessfulCreate && onSuccessfulCreate();
-                        }}
-                    />
-                </div>
-            </Modal.Body>
-        </Modal>
-    );
+        <MainForm.Component
+            initialValues={ initialValues }
+            onSubmit={ send.exec }
+        />
+    )
 }
+
+const CreateOpsTeamModal = WithDefaultModal({
+    title: 'Neues Team',
+    size: 'lg',
+
+    Body: CreateOpsTeamModalBody
+});
+
+export default CreateOpsTeamModal;
