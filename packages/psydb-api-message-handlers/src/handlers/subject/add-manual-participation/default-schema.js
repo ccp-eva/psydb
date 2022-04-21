@@ -108,7 +108,8 @@ var Schema = () => {
                 {
                     properties: { experimentOperatorIds: ForeignIdList({
                         collection: 'experimentOperatorIds',
-                        minItems: 1,
+                        // TODO: migration mode
+                        //minItems: 1,
                     })},
                     required: [ 'experimentOperatorIds' ],
                     propertyNames: { not: { enum: [
