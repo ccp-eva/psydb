@@ -5,18 +5,12 @@ import { Modal } from 'react-bootstrap';
 import agent from '@mpieva/psydb-ui-request-agents';
 import GenericRecordForm from '@mpieva/psydb-ui-lib/src/generic-record-form';
 
-const StudyTeamEditModal = ({
+export const CreateModal = ({
     show,
     onHide,
-    onSuccessfulUpdate,
-    editModalData,
+    studyId,
+    onSuccessfulCreate
 }) => {
-    if (!editModalData) {
-        return null;
-    }
-
-    var { teamId } = editModalData;
-    
     return (
         <Modal
             show={show}
@@ -26,17 +20,19 @@ const StudyTeamEditModal = ({
             backdropClassName='team-modal-backdrop'
         >
             <Modal.Header closeButton>
-                <Modal.Title>Team bearbeiten</Modal.Title>
+                <Modal.Title>Neues Team</Modal.Title>
             </Modal.Header>
             <Modal.Body className='bg-light'>
                 <div>
                     <GenericRecordForm
-                        type='edit'
+                        type='create'
                         collection='experimentOperatorTeam'
-                        id={ teamId }
+                        additionalPayloadProps={{
+                            studyId,
+                        }}
                         onSuccessfulUpdate={ () => {
                             onHide();
-                            onSuccessfulUpdate && onSuccessfulUpdate();
+                            onSuccessfulCreate && onSuccessfulCreate();
                         }}
                     />
                 </div>
@@ -44,5 +40,3 @@ const StudyTeamEditModal = ({
         </Modal>
     );
 }
-
-export default StudyTeamEditModal;

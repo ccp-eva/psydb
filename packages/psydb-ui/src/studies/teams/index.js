@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useMemo } from 'react';
+import React, { useState} from 'react';
 
 import {
     Route,
@@ -9,129 +9,77 @@ import {
     useParams
 } from 'react-router-dom';
 
-import { Button } from 'react-bootstrap';
-
-import agent from '@mpieva/psydb-ui-request-agents';
-import { usePermissions } from '@mpieva/psydb-ui-hooks';
-import {
-    LinkButton,
-    LoadingIndicator
-} from '@mpieva/psydb-ui-layout';
+import { Button, LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
 import StudyTeamListItem from '@mpieva/psydb-ui-lib/src/experiment-operator-team-list-item';
 
-import StudyTeamCreateModal from './team-create-modal';
-import StudyTeamEditModal from './team-edit-modal';
+import { CreateModal } from './create-modal';
+import { EditModal } from './edit-modal';
 
-const StudyTeams = ({
-}) => {
+import {
+    useFetch,
+    useModalReducer,
+    useRevision,
+    usePermissions,
+} from '@mpieva/psydb-ui-hooks';
+
+const StudyTeams = (ps) => {
     var { path, url } = useRouteMatch();
-    var { id } = useParams();
+    var { id: studyId } = useParams();
+
+    var revision = useRevision();
+
     var permissions = usePermissions();
-
-    var [ state, dispatch ] = useReducer(reducer, {});
-
-    var {
-        records,
-        relatedRecordLabels,
-
-        showCreateModal,
-        showEditModal,
-        showDeleteModal,
-        
-        editModalData,
-        deleteModalData,
-
-        showHidden,
-
-        listRevision,
-    } = state;
-
-    var [
-        handleShowCreateModal,
-        handleShowEditModal,
-        handleShowDeleteModal,
-        
-        handleHideCreateModal,
-        handleHideEditModal,
-        handleHideDeleteModal,
-
-        handleTeamCreated,
-        handleTeamUpdated,
-        handleTeamDeleted,
-
-        handleToggleHidden,
-    ] = useMemo(() => ([
-        () => dispatch({
-            type: 'show-create-modal',
-        }),
-        (teamId) => dispatch({
-            type: 'show-edit-modal',
-            payload: { teamId }
-        }),
-        (teamId) => dispatch({
-            type: 'show-delete-modal',
-            payload: { teamId }
-        }),
-
-        () => dispatch({ type: 'hide-create-modal' }),
-        () => dispatch({ type: 'hide-edit-modal' }),
-        () => dispatch({ type: 'hide-delete-modal' }),
-
-        () => dispatch({ type: 'increase-list-revision' }),
-        () => dispatch({ type: 'increase-list-revision' }),
-        () => dispatch({ type: 'increase-list-revision' }),
-
-        () => dispatch({ type: 'toggle-hidden' }),
-    ]))
-
-    useEffect(() => {
-        agent.fetchExperimentOperatorTeamsForStudy({
-            studyId: id
-        })
-        .then(response => {
-            dispatch({ type: 'init', payload: {
-                ...response.data.data
-            }})
-        })
-    }, [ id, listRevision ])
-
     var canEdit = permissions.hasFlag('canWriteStudies');
 
-    if (!records) {
-        return (
-            <LoadingIndicator size='lg' />
-        ) 
+    var createModal = useModalReducer();
+    var editModal = useModalReducer();
+    var editVisibilityModal = useModalReducer();
+
+    var [ showHidden, setShowHidden ] = useState();
+
+    var [ didFetch, fetched ] = useFetch((agent) => (
+        agent.fetchExperimentOperatorTeamsForStudy({
+            studyId,
+        })
+    ), [ studyId, revision.value ]);
+
+    if (!didFetch) {
+        return <LoadingIndicator size='lg' />
+    }
+
+    var { records, ...related } = fetched.data;
+    
+    if (records.length < 1) {
+        return <Fallback />
     }
 
     return (
         <div className='pt-3'>
             <div className='d-flex justify-content-between mb-3'>
                 { canEdit && (
-                    <Button onClick={ handleShowCreateModal }>
+                    <Button onClick={ createModal.handleShow }>
                         Neues Team
                     </Button>
                 )}
                 <Button
                     variant={ showHidden ? 'secondary' : 'outline-secondary'}
-                    onClick={ handleToggleHidden }>
+                    onClick={ () => setShowHidden(!showHidden) }
+                >
                     Ausgeblendete anzeigen
                 </Button>
             </div>
 
-            <StudyTeamCreateModal
-                show={ showCreateModal }
-                onHide={ handleHideCreateModal }
-                onSuccessfulCreate={ handleTeamCreated }
-                studyId={ id }
+            <CreateModal
+                { ...createModal.passthrough }
+                onSuccessfulUpdate={ revision.up }
+                studyId={ studyId }
             />
 
-            <StudyTeamEditModal
-                show={ showEditModal }
-                onHide={ handleHideEditModal }
-                onSuccessfulUpdate={ handleTeamUpdated }
-                editModalData={ editModalData }
-                studyId={ id }
+            <EditModal
+                { ...editModal.passthrough }
+                onSuccessfulUpdate={ revision.up }
+                studyId={ studyId }
             />
 
             { 
@@ -140,68 +88,17 @@ const StudyTeams = ({
                 .map(record => (
                     <StudyTeamListItem {...({
                         key: record._id,
-                        studyId: id,
+                        studyId,
                         record,
-                        relatedRecordLabels,
+                        ...related,
                         canEdit,
-                        onEditClick: handleShowEditModal,
-                        //onDeleteClick,
-                        //enableDelete
+                        onEditClick: editModal.handleShow,
+                        onEditVisibilityClick: editVisibilityModal.handleShow
                     })} />
                 ))
             }
         </div>
     )
-}
-
-const reducer = (state, action) => {
-    var { type, payload } = action;
-    switch (type) {
-        case 'init':
-            return ({
-                ...state,
-                records: payload.records,
-                relatedRecordLabels: payload.relatedRecordLabels,
-            })
-        
-        case 'show-create-modal':
-            return {
-                ...state,
-                showCreateModal: true,
-            }
-        case 'hide-create-modal':
-            return {
-                ...state,
-                showCreateModal: false,
-            }
-
-        case 'show-edit-modal':
-            return {
-                ...state,
-                showEditModal: true,
-                editModalData: {
-                    ...payload
-                }
-            }
-        case 'hide-edit-modal':
-            return {
-                ...state,
-                showEditModal: false,
-            }
-
-        case 'toggle-hidden':
-            return {
-                ...state,
-                showHidden: !state.showHidden
-            }
-
-        case 'increase-list-revision':
-            return {
-                ...state,
-                listRevision: (state.listRevision || 0) + 1
-            }
-
-    }
 }
 
 export default StudyTeams;
