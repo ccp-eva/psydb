@@ -7,7 +7,7 @@ var { SimpleHandler } = require('../../../lib');
 var createSchema = require('./schema');
 
 var handler = SimpleHandler({
-    messageType: 'experimentOperatorTeam/change-hidden-state',
+    messageType: 'experimentOperatorTeam/set-visibility',
     createSchema
 });
 
@@ -46,7 +46,7 @@ handler.triggerSystemEvents = async (context) => {
         collection: 'experimentOperatorTeam',
         channelId: experimentOperatorTeamId,
         payload: { $set: {
-            'state.hidden': isHidden
+            'state.hidden': !isVisible
         }}
     })
 }

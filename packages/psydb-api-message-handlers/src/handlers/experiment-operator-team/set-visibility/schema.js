@@ -16,11 +16,11 @@ var createSchema = ({ messageType }) => (
                 experimentOperatorTeamId: Id({
                     collection: 'experimentOperatorTeam',
                 }),
-                isHidden: DefaultBool(),
+                isVisible: DefaultBool(),
             },
             required: [
                 'experimentOperatorTeamId',
-                'isHidden'
+                'isVisible'
             ]
         })
     })

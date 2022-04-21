@@ -8,7 +8,7 @@ var GenericRecordHandler = require('../../lib/generic-record-handler');
 var ExperimentOperatorTeamGroup = MessageHandlerGroup([
     require('./create'),
     require('./patch'),
-    require('./change-hidden-state'),
+    require('./set-visibility'),
 ]);
 
 module.exports = ExperimentOperatorTeamGroup;
