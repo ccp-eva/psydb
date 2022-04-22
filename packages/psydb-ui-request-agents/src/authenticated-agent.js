@@ -456,4 +456,18 @@ agent.fetchRecordReverseRefs = ({
     );
 }
 
+agent.fetchOpsTeamsExperiments = (bag) => {
+    var {
+        teamId,
+        out = 'full',
+        extraAxiosConfig,
+    } = bag;
+
+    return axios.post(
+        '/api/ops-team-experiments',
+        { teamId, out }
+        extraAxiosConfig,
+    );
+}
+
 export default agent;

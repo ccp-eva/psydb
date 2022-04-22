@@ -17,6 +17,9 @@ const EditOpsTeamModalBody = (ps) => {
         team: agent.readRecord({
             collection: 'experimentOperatorTeam',
             id: teamId
+        }),
+        relatedExperiments: agent.fetchOpsTeamExperiments({
+            teamId
         })
     }), []);
 
@@ -51,7 +54,7 @@ const EditOpsTeamModalBody = (ps) => {
 }
 
 const EditOpsTeamModal = WithDefaultModal({
-    title: 'Neues Team',
+    title: 'Team bearbeiten',
     size: 'lg',
 
     Body: EditOpsTeamModalBody
