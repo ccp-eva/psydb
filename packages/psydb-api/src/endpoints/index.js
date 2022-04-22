@@ -10,5 +10,7 @@ module.exports = {
     search: require('./search'),
     extendedSearch: require('./extended-search'),
 
-    special: require('./special')
+    special: require('./special'),
+
+    opsTeam: require('./entities/ops-team'),
 };

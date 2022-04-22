@@ -18,4 +18,8 @@ module.exports = {
     
     convertPathToPointer: require('@cdxoo/objectpath-to-jsonpointer'),
     convertPointerToPath: require('@cdxoo/jsonpointer-to-objectpath'),
+
+    merge: require('./deep-merge'),
+    queryObject: require('./query-object'),
+    convertSchemaPointerToMongoPath: require('./schemapointer-to-mongopath'),
 }

@@ -465,7 +465,7 @@ agent.fetchOpsTeamsExperiments = (bag) => {
 
     return axios.post(
         '/api/ops-team-experiments',
-        { teamId, out }
+        { teamId, out },
         extraAxiosConfig,
     );
 }
