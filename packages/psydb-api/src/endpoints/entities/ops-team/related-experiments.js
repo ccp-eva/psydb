@@ -6,6 +6,8 @@ var {
     arrify,
     merge,
     unique,
+    keyBy,
+    groupBy,
     convertSchemaPointerToMongoPath,
     queryObject,
 } = require('@mpieva/psydb-core-utils');
@@ -148,6 +150,7 @@ var fetchSimpleRecordList = (context) => async (options) => {
             collectionName: 'experiment',
             records: docs,
         });
+        console.dir(related, { depth: null });
 
         /*return {
             records: docs,
@@ -191,7 +194,7 @@ var fetchRelatedLabelsForMany = async (bag) => {
                 pointer = '/helperSetItems/ids';
             }
             else if (systemType === 'CustomRecordTypeKey') {
-                pointer = '/customRecordTypes/types'
+                pointer = `/crts/${systemProps.collection}/types`
             }
 
             forcePush(
@@ -201,23 +204,158 @@ var fetchRelatedLabelsForMany = async (bag) => {
         }
     }
 
-    var collections = Object.keys(gathered.records);
-    for (var c of collections) {
-        var it = gathered[records][c];
-        var { ids } = it;
-        // FIXME: slow maybe => project maybe
-        var docs = (
-            await db.collection(c).aggregate([
-                { $match: {
-                    _id: { $in: ids }
-                }}
-            ]).toArray()
-        );
+    var out = {
+        relatedRecords: {},
+        relatedHelperSetItems: {}, 
+        relatedCustomRecordType: {},
+    };
 
-
+    if (gathered.records) {
+        var collections = Object.keys(gathered.records);
+        for (var c of collections) {
+            var { ids } = gathered.records[c];
+            out.relatedRecords[c] = await fetchRecordLabels({
+                db, collection, ids,
+                keyed: true
+            });
+        }
     }
-    
+
+    if (gathered.helperSetItems) {
+        out.relatedHelperSetItems = await fetchHelperSetItemLabels({
+            db, ids: gathered.helperSetItems.ids,
+            keyed: true
+        });
+    }
+
+    if (gathered.crts) {
+        var filter = { $or: (
+            Object.keys(gathered.crts).map(collection => ({
+                collection,
+                type: { $in: gathered.crts[collection].types }
+            }))
+        )};
+        console.dir(filter, { depth: null });
+        out.relatedCustomRecordTypes = await fetchCRTLabels({
+            db,
+            filter,
+            keyed: true
+        });
+    }
+
+    return out;
 }
+
+var fetchCRTLabels = async (bag) => {
+    var { db, filter = {}, keyed = false } = bag;
+
+    var crts = await (
+        db.collection('customRecordType').find(
+            filter,
+            { projection: {
+                'collection': true,
+                'type': true,
+                'state.label': true,
+            }}
+        ).toArray()
+    );
+    
+    if (keyed) {
+        var collectionGroups = groupBy({
+            items: crts,
+            byProp: 'collection',
+        });
+
+        for (var key of Object.keys(collectionGroups)) {
+            collectionGroups[key] = keyBy({
+                items: collectionGroups[key],
+                byProp: 'type',
+            })
+        }
+
+        return collectionGroups;
+    }
+    else {
+        return crts;
+    }
+}
+
+var fetchHelperSetItemLabels = async (bag) => {
+    var { db, ids, keyed = false } = bag; 
+    var items = await (
+        db.collection('helperSetItem').aggregate([
+            { $match: {
+                _id: { $in: ids }
+            }},
+            { $project: {
+                'setId': true,
+                'state.label': true
+            }}
+        ]).toArray()
+    );
+
+    if (keyed) {
+        var setGroups = groupBy({
+            items,
+            byProp: 'setId',
+        });
+
+        for (var setId of Object.keys(setGroups)) {
+            setGroups[setId] = keyBy({
+                items: setGroups[setId],
+                byProp: '_id',
+            })
+        }
+
+        return setGroups;
+    }
+    else {
+        return items;
+    }
+}
+
+var fetchRecordLabels = async (bag) => {
+    var { db, collection, ids, keyed = false } = bag;
+    
+    var crts = await (
+        db.collection('customRecordType')
+        .find(
+            { collection },
+            { projection: { 'state.recordLabelDefinition': true }}
+        )
+        .toArray()
+    );
+    
+    var crtsByType = keyBy({ items: crts, byProp: '_id' });
+
+    var records = (
+        // FIXME: slow maybe => project maybe
+        await db.collection(collection).aggregate([
+            { $match: {
+                _id: { $in: ids }
+            }}
+        ]).toArray()
+    );
+
+    var labeled = records.map(it => ({
+        _id: it._id,
+        _recordLabel: createRecordLabelFromCRT({
+            customRecordType: crtsByType[it.type],
+            record: it
+        })
+    }))
+
+    if (keyed) {
+        return keyBy({
+            items: labeled,
+            byProp: '_id'
+        });
+    }
+    else {
+        return labeled;
+    }
+}
+
 
 var itemizeKeys = (bag) => {
     var { from, key = 'key', merge = false } = bag;
