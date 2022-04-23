@@ -4,6 +4,7 @@ dependencies:
   '@babel/preset-env': 7.12.17_@babel+core@7.12.17
   '@babel/preset-react': 7.12.13_@babel+core@7.12.17
   '@cdxoo/block-quote': 1.0.1
+  '@cdxoo/flat': 0.0.2
   '@cdxoo/formik-ajv-async': 0.4.1_formik@2.2.9+react@17.0.2
   '@cdxoo/formik-utils': 0.5.0_formik@2.2.9+react@17.0.2
   '@cdxoo/inline-string': 1.0.0
@@ -38,6 +39,7 @@ dependencies:
   '@rush-temp/psydb-api-lib': 'file:projects/psydb-api-lib.tgz'
   '@rush-temp/psydb-api-lib-errors': 'file:projects/psydb-api-lib-errors.tgz'
   '@rush-temp/psydb-api-message-handlers': 'file:projects/psydb-api-message-handlers.tgz'
+  '@rush-temp/psydb-common-config': 'file:projects/psydb-common-config.tgz'
   '@rush-temp/psydb-common-lib': 'file:projects/psydb-common-lib.tgz'
   '@rush-temp/psydb-common-utils': 'file:projects/psydb-common-utils.tgz'
   '@rush-temp/psydb-common-verify-helpers': 'file:projects/psydb-common-verify-helpers.tgz'
@@ -96,7 +98,6 @@ dependencies:
   html-webpack-plugin: 5.1.0_webpack@5.65.0
   inflation: 2.0.0
   is-subset: 0.1.1
-  is-what: 3.14.1
   jest: 27.2.5
   js-base64: 3.6.2
   json-schema-merge-allof: 0.8.1
@@ -1338,6 +1339,12 @@ packages:
     dev: false
     resolution:
       integrity: sha512-VDMjQuGRJdz9jxU85/srmZg3ePjhQTNOcMQuziecvqSwPrNMmBApMSbC45IAoxqAW9fVVhacMBFdzMtf81o+EQ==
+  /@cdxoo/flat/0.0.2:
+    dependencies:
+      '@cdxoo/traverse': 0.0.1
+    dev: false
+    resolution:
+      integrity: sha512-MrKnr3HztXDz1hKyocabSuzlWJOecBoQHT12OncI7lSLwfAhqymcAI+f/0tKgFc/xObAKykw2kX008MSrWx0bg==
   /@cdxoo/formik-ajv-async/0.4.1_formik@2.2.9+react@17.0.2:
     dependencies:
       formik: 2.2.9_react@17.0.2
@@ -1437,6 +1444,10 @@ packages:
       react-router: 5.x
     resolution:
       integrity: sha512-sQqT4qpIChOn8pSG1Z29J3eScLPoz6eFYVTvYPZC+ODm1QvT14Mxh4Utyb9L1rB05PrMbynZjFxBEMXyy8VAeA==
+  /@cdxoo/traverse/0.0.1:
+    dev: false
+    resolution:
+      integrity: sha512-e/MMDIl46tXc7DF867o0CFSd2lUV4xDNwNMXDsR3sxvqjEyYUoDR7jq+gdWIZzGhvH2h6ZsiQET8ZNcEC90U0A==
   /@discoveryjs/json-ext/0.5.6:
     dev: false
     engines:
@@ -9738,7 +9749,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-api-config'
     resolution:
-      integrity: sha512-xlD/1GJ7cc6OgxXEAJvloSlZqRb3WUoGZVXOrY/RF+kO6UQ3CdLK+6pWX2L7+k91EZRRxgc7FsQgatJFZCh++w==
+      integrity: sha512-V6mldtBY9nNnuWWdsM65QRcjz6cDY73qdYXIlgr6/I63hbtQqx24KkPkM4IcDvc4P+inF6fdsheASv3O7txWSg==
       tarball: 'file:projects/psydb-api-config.tgz'
     version: 0.0.0
   'file:projects/psydb-api-endpoint-schemas.tgz':
@@ -9865,6 +9876,13 @@ packages:
       integrity: sha512-52vYpjDFL/WLJVVQtBJw9IMqLrzUwA97KxRgVVfqYFlqNb/cWjIgS2JigvKZQ2u9KRK5IktL/C0kQhRfx/RU4w==
       tarball: 'file:projects/psydb-api.tgz'
     version: 0.0.0
+  'file:projects/psydb-common-config.tgz':
+    dev: false
+    name: '@rush-temp/psydb-common-config'
+    resolution:
+      integrity: sha512-lHmEOlP7iRG1TudGI9q6Ohf7arsgQCoglAWIdx6jr4Uyf0qT7pSbnPL52HaCHNTSeicLOKINheYNZ8a5TVcOEg==
+      tarball: 'file:projects/psydb-common-config.tgz'
+    version: 0.0.0
   'file:projects/psydb-common-lib.tgz':
     dependencies:
       '@cdxoo/inline-text': 1.0.2
@@ -9904,15 +9922,18 @@ packages:
     version: 0.0.0
   'file:projects/psydb-core-utils.tgz':
     dependencies:
+      '@cdxoo/flat': 0.0.2
       '@cdxoo/jsonpointer-to-objectpath': 1.0.0
       '@cdxoo/objectpath-to-jsonpointer': 1.0.0
       chai: 4.2.0
+      deepmerge: 4.2.2
+      is-what: 3.14.1
       jsonpointer: 4.1.0
       mocha: 8.1.3
     dev: false
     name: '@rush-temp/psydb-core-utils'
     resolution:
-      integrity: sha512-gaR9t+UIJwyjy3QAlWXDPr/vQIhP1k8iccwW1zmX7LF4T6b4yUEYLHFdiVCW8BJxgbfAZxR5QhzzTC/OaA0GHA==
+      integrity: sha512-LDKZ6FmARms3EVWzA7VBP9dkp9dW5r8wAC7u1BR4k7hzmBBAH9pxlMxaEwvUx/azjZTYHzssoRDE76WJT2j/Dg==
       tarball: 'file:projects/psydb-core-utils.tgz'
     version: 0.0.0
   'file:projects/psydb-driver-nodejs.tgz':
@@ -10053,7 +10074,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-schema-fields'
     resolution:
-      integrity: sha512-k3NlngmLJHEKmGs4lhILC7AMKvvwe4rBBGZb2L6cI3QAhluuqAOZrEWuvoX0X4/TX8or5puzeBq7lIBtpmJWSA==
+      integrity: sha512-FWaePAsCcR40pC2m9EWxMzuIzzqyCar5LVq37kpS3zSSHqQ2T06rwx5ULshMm+9nbCEih5tgfK3wFro4v+aB6Q==
       tarball: 'file:projects/psydb-schema-fields.tgz'
     version: 0.0.0
   'file:projects/psydb-schema-helpers.tgz':
@@ -10335,6 +10356,7 @@ specifiers:
   '@babel/preset-env': ~7.12.10
   '@babel/preset-react': ~7.12.10
   '@cdxoo/block-quote': ~1.0.0
+  '@cdxoo/flat': ~0.0.1
   '@cdxoo/formik-ajv-async': ~0.4.1
   '@cdxoo/formik-utils': ~0.5.0
   '@cdxoo/inline-string': ~1.0.0
@@ -10369,6 +10391,7 @@ specifiers:
   '@rush-temp/psydb-api-lib': 'file:./projects/psydb-api-lib.tgz'
   '@rush-temp/psydb-api-lib-errors': 'file:./projects/psydb-api-lib-errors.tgz'
   '@rush-temp/psydb-api-message-handlers': 'file:./projects/psydb-api-message-handlers.tgz'
+  '@rush-temp/psydb-common-config': 'file:./projects/psydb-common-config.tgz'
   '@rush-temp/psydb-common-lib': 'file:./projects/psydb-common-lib.tgz'
   '@rush-temp/psydb-common-utils': 'file:./projects/psydb-common-utils.tgz'
   '@rush-temp/psydb-common-verify-helpers': 'file:./projects/psydb-common-verify-helpers.tgz'
@@ -10427,7 +10450,6 @@ specifiers:
   html-webpack-plugin: 5.1.0
   inflation: ~2.0.0
   is-subset: ~0.1.1
-  is-what: ~3.14.0
   jest: ~27.2.4
   js-base64: ~3.6.0
   json-schema-merge-allof: ~0.8.1

@@ -34,7 +34,7 @@ var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
 var convertFiltersToQueryFields = require('@mpieva/psydb-api-lib/src/convert-filters-to-query-fields');
 var convertConstraintsToMongoPath = require('@mpieva/psydb-api-lib/src/convert-constraints-to-mongo-path');
-var fetchRelatedLabelsForMany = require('@mpieva/psydb-api-lib/src/fetch-related-labels-for-many');
+var fetchRelatedLabelsForMany = require('@mpieva/psydb-api-lib/src/fetch-related-labels-for-many-ng');
 
 var fieldTypeMetadata = require('@mpieva/psydb-common-lib/src/field-type-metadata');
 

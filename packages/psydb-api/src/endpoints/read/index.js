@@ -13,6 +13,7 @@ var fetchOneCustomRecordType = require('@mpieva/psydb-api-lib/src/fetch-one-cust
 var fetchRecordById = require('@mpieva/psydb-api-lib/src/fetch-record-by-id');
 
 var fetchRelatedLabels = require('@mpieva/psydb-api-lib/src/fetch-related-labels');
+var fetchRelatedLabelsForMany = require('@mpieva/psydb-api-lib/src/fetch-related-labels-for-many-ng');
 
 var {
     gatherRemovedFields
@@ -117,7 +118,11 @@ var read = async (context, next) => {
         delete record.scientific.state.internals.passwordHash;
     }
 
-    var {
+    var related = await fetchRelatedLabelsForMany({
+        db, collectionName, records: [ record ]
+    });
+
+    /*var {
         relatedRecords,
         relatedHelperSetItems,
         relatedCustomRecordTypes,
@@ -125,14 +130,15 @@ var read = async (context, next) => {
         db,
         data: record,
         schema: recordSchema,
-    });
+    });*/
 
     context.body = ResponseBody({
         data: {
             record,
-            relatedRecordLabels: relatedRecords,
-            relatedHelperSetItems,
-            relatedCustomRecordTypeLabels: relatedCustomRecordTypes,
+            ...related,
+            //relatedRecordLabels: relatedRecords,
+            //relatedHelperSetItems,
+            //relatedCustomRecordTypeLabels: relatedCustomRecordTypes,
         }
     });
 

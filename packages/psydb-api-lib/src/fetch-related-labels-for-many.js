@@ -9,9 +9,11 @@ var fetchRelatedLabelsForMany = async ({
     recordType,
     records,
 }) => {
+    console.warn('fetchRelatedLabslsForMany() OLD')
     var resolveSchema = undefined;
 
     if (collectionName === 'customRecordType') {
+        console.log('related on CRT collection')
         var targetCollections = [];
         for (var it of records) {
             if (!targetCollections.includes(it.collection)) {

@@ -39,7 +39,7 @@ module.exports = {
     fetchRecordsInInterval: require('./fetch-records-in-interval'),
 
     fetchRelatedLabels: require('./fetch-related-labels'),
-    fetchRelatedLabelsForMany: require('./fetch-related-labels-for-many'),
+    fetchRelatedLabelsForMany: require('./fetch-related-labels-for-many-ng'),
     fetchRelatedRecords: require('./fetch-related-records'),
     fetchEnabledLocationRecordsForStudy: require('./fetch-enabled-location-records-for-study'),
 

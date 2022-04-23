@@ -1,3 +1,4 @@
+// TODO: make obsolete its broken
 'use strict';
 var createRecordLabel = require('./create-record-label');
 
@@ -9,6 +10,7 @@ var createRecordLabelFromCRT = (options) => {
 
     var recordLabelDefinition = (
         customRecordType.state.recordLabelDefinitions
+        || customRecordType.state.recordLabelDefinition // FIXME: which?
     );
 
     return createRecordLabel({
