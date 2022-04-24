@@ -1,10 +1,14 @@
 'use strict';
 var _deepmerge = require('deepmerge');
-var { isPlainObject } = require('is-what');
+var { isArray, isPlainObject } = require('is-what');
+var concat = (base, x) => ([ ...base, ...x ]);
 
 var deepmerge = (...args) => {
     var options = {
-        isMergeableObject: isPlainObject
+        isMergeableObject: (that) => (
+            isPlainObject(that) || isArray(that)
+        ),
+        arrayMerge: concat,
     };
     return _deepmerge.all(args, options);
 }

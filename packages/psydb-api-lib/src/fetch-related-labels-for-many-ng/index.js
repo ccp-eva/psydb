@@ -61,10 +61,7 @@ var fetchRelatedLabelsForMany = async (bag) => {
             from: record,
         });
 
-        gathered = merge.raw(gathered, result, {
-            isMergableObject: isPlainObject,
-            arrayMerge: (base, x) => ([ ...base, ...x ])
-        });
+        gathered = merge(gathered, result);
     }
 
     var out = {
