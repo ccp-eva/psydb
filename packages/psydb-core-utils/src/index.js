@@ -21,5 +21,7 @@ module.exports = {
 
     merge: require('./deep-merge'),
     queryObject: require('./query-object'),
+    forcePush: require('./force-push'),
+
     convertSchemaPointerToMongoPath: require('./schemapointer-to-mongopath'),
 }
