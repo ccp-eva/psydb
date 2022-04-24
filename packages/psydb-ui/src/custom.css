@@ -185,6 +185,10 @@ a {
     width: 66.666%
 }
 
+.opacity-50 {
+    opacity: 0.5;
+}
+
 @page {
     /* enables user choice of portrait/landscape */
     size: auto;

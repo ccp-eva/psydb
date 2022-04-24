@@ -15,6 +15,7 @@ import StudyTeamListItem from '@mpieva/psydb-ui-lib/src/experiment-operator-team
 
 import CreateModal from './create-modal';
 import EditModal from './edit-modal';
+import HideModal from './hide-modal';
 
 import {
     useFetch,
@@ -34,7 +35,7 @@ const StudyTeams = (ps) => {
 
     var createModal = useModalReducer();
     var editModal = useModalReducer();
-    var editVisibilityModal = useModalReducer();
+    var hideModal = useModalReducer();
 
     var [ showHidden, setShowHidden ] = useState();
 
@@ -82,6 +83,12 @@ const StudyTeams = (ps) => {
                 studyId={ studyId }
             />
 
+            <HideModal
+                { ...hideModal.passthrough }
+                onSuccessfulUpdate={ revision.up }
+                studyId={ studyId }
+            />
+
             { 
                 records
                 .filter(it => showHidden || it.state.hidden !== true)
@@ -93,7 +100,8 @@ const StudyTeams = (ps) => {
                         ...related,
                         canEdit,
                         onEditClick: editModal.handleShow,
-                        onEditVisibilityClick: editVisibilityModal.handleShow
+                        enableDelete: record.state.hidden !== true,
+                        onDeleteClick: hideModal.handleShow
                     })} />
                 ))
             }

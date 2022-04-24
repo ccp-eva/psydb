@@ -1,4 +1,5 @@
 import React, { useEffect, useReducer } from 'react';
+import classnames from 'classnames';
 import { Button, Icons } from '@mpieva/psydb-ui-layout';
 
 const StudyTeamListItem = ({
@@ -14,13 +15,20 @@ const StudyTeamListItem = ({
     onDeleteClick,
     enableDelete,
 }) => {
-    var cls = [
-        'd-flex border bg-white',
+    var cls = classnames([
+        'd-flex border',
+        record.state.hidden ? 'bg-light' : 'bg-white',
         'experiment-operator-team-list-item',
         relatedRecordLabels ? 'mb-3' : 'mb-1',
-        ...(active ? ['active'] : []),
-        ...(onClick ? ['hover'] : []),
-    ].join(' ');
+        active && 'active',
+        onClick && 'hover',
+    ]);
+
+    var textCls = classnames([
+        'flex-grow',
+        relatedRecordLabels ? 'p-3' : 'pl-3',
+        record.state.hidden && 'text-grey'
+    ]);
 
     return (
         <div
@@ -36,10 +44,7 @@ const StudyTeamListItem = ({
             }}>
             </div>
             <div 
-                className={[
-                    'flex-grow',
-                    relatedRecordLabels ? 'p-3' : 'pl-3'
-                ].join(' ')}
+                className={ textCls }
                 style={relatedRecordLabels ? {} : {
                     paddingTop: '0.375rem',
                     paddingBottom: '0.375rem',
@@ -71,7 +76,7 @@ const StudyTeamListItem = ({
                 )}
                 { enableDelete && (
                     <TeamDeleteButton
-                        onDeleteClick={ () => onDeleteClick(record._id) }
+                        onClick={ () => onDeleteClick(record._id) }
                     />
                 )}
             </div>
@@ -102,7 +107,7 @@ const TeamDeleteButton = ({
             style={{ borderRight: 0, borderBottom: 0 }}
             onClick={ onClick }
         >
-            <Icons.X style={{ marginTop: '-2px', width: '18px', height: '18px' }} />
+            <Icons.X style={{ marginTop: '-2px', width: '22px', height: '22px' }} />
         </TeamButton>
     )
 }

@@ -4,7 +4,7 @@ import { Button } from '@mpieva/psydb-ui-layout';
 import { DefaultForm, Fields } from '@mpieva/psydb-ui-lib';
 
 export const Component = (ps) => {
-    var { initialValues, onSubmit, hasExperiments } = ps;
+    var { initialValues, onSubmit, ...pass } = ps;
 
     return (
         <DefaultForm
@@ -14,9 +14,7 @@ export const Component = (ps) => {
         >
             {(formikProps) => (
                 <>
-                    <FormFields
-                        hasExperiments={ hasExperiments }
-                    />
+                    <FormFields { ...pass } />
                     <hr />
                     <div className='d-flex justify-content-end'>
                         <Button type='submit'>Speichern</Button>
@@ -28,7 +26,7 @@ export const Component = (ps) => {
 }
 
 const FormFields = (ps) => {
-    var { hasExperiments } = ps;
+    var { hasExperiments, enableVisibility } = ps;
 
     return (
         <>
@@ -50,6 +48,12 @@ const FormFields = (ps) => {
                 collection='personnel'
                 disabled={ hasExperiments }
             />
+            { enableVisibility && (
+                <Fields.DefaultBool
+                    dataXPath='$.hidden'
+                    label='Ausgeblendet'
+                />
+            )}
         </>
     )
 }

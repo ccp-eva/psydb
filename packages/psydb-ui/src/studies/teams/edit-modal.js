@@ -56,6 +56,7 @@ const EditOpsTeamModalBody = (ps) => {
             initialValues={ initialValues }
             onSubmit={ send.exec }
             hasExperiments={ hasExperiments }
+            enableVisibility={ record.state.hidden === true }
         />
     );
 }

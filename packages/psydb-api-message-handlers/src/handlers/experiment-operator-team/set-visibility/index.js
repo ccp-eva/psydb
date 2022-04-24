@@ -25,7 +25,6 @@ handler.checkAllowedAndPlausible = async (context) => {
 
     var {
         experimentOperatorTeamId,
-        isHidden
     } = message.payload;
 
     var record = await db.collection('experimentOperatorTeam').findOne({
@@ -40,7 +39,7 @@ handler.checkAllowedAndPlausible = async (context) => {
 
 handler.triggerSystemEvents = async (context) => {
     var { message, dispatch } = context;
-    var { experimentOperatorTeamId, isHidden } = message.payload;
+    var { experimentOperatorTeamId, isVisible } = message.payload;
 
     await dispatch({
         collection: 'experimentOperatorTeam',
