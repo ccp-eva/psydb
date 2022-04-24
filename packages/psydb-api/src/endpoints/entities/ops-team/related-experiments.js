@@ -137,7 +137,7 @@ var fetchSimpleRecordList = (context) => async (options) => {
         out === 'count' && { $count: 'COUNT' }
     ].filter(it => !!it);
 
-    var docs = await db.collection(collection).aggregate(
+    var records = await db.collection(collection).aggregate(
         stages,
         {
             allowDiskUse: true,
@@ -146,34 +146,37 @@ var fetchSimpleRecordList = (context) => async (options) => {
     ).toArray();
 
     if (out === 'count') {
-        return { count: docs[0].COUNT }
+        return { count: records[0].COUNT }
+    }
+    else if (out === 'id-only') {
+        return { records };
     }
     else {
         var related = await fetchRelatedLabelsForMany({
             db,
             collectionName: 'experiment',
-            records: docs,
+            records,
         });
         console.dir(related, { depth: null });
 
-        /*return {
-            records: docs,
+        return {
+            records,
             ...related
-        };*/
+        };
     }
 
 }
 
-var itemizeKeys = (bag) => {
-    var { from, key = 'key', merge = false } = bag;
-    return Object.keys(from).map(k => {
-        var value = from[k];
-        return (
-            mergeKey
-            ? { [key]: k, ...value }
-            : { [key]: k, value }
-        );
-    });
-}
+//var itemizeKeys = (bag) => {
+//    var { from, key = 'key', merge = false } = bag;
+//    return Object.keys(from).map(k => {
+//        var value = from[k];
+//        return (
+//            mergeKey
+//            ? { [key]: k, ...value }
+//            : { [key]: k, value }
+//        );
+//    });
+//}
 
 module.exports = relatedExperiments;

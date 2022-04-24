@@ -2,6 +2,7 @@
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
 var {
+    isPlainObject,
     merge,
     unique,
 } = require('@mpieva/psydb-core-utils');
@@ -60,7 +61,10 @@ var fetchRelatedLabelsForMany = async (bag) => {
             from: record,
         });
 
-        gathered = merge(gathered, result);
+        gathered = merge.raw(gathered, result, {
+            isMergableObject: isPlainObject,
+            arrayMerge: (base, x) => ([ ...base, ...x ])
+        });
     }
 
     var out = {

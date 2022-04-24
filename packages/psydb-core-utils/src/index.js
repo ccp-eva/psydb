@@ -1,4 +1,9 @@
+'use strict';
+var { isPlainObject } = require('is-what');
+
 module.exports = {
+    isPlainObject,
+
     arrify: require('./arrify'),
     unique: require('./unique'),
     groupBy: require('./group-by'),
