@@ -1,32 +1,9 @@
 'use strict';
-var jsonpointer = require('jsonpointer');
-var allSchemaCreators = require('@mpieva/psydb-schema-creators');
+var { merge } = require('@mpieva/psydb-core-utils');
+var { ExactObject, Id } = require('@mpieva/psydb-schema-fields');
+var { ResponseBody } = require('@mpieva/psydb-api-lib');
 
-var {
-    merge,
-} = require('@mpieva/psydb-core-utils');
-
-var {
-    ExactObject,
-    Id,
-    StringEnum,
-    Integer
-} = require('@mpieva/psydb-schema-fields');
-
-var {
-    ApiError,
-    ResponseBody,
-    validateOrThrow,
-    resolvePossibleRefs,
-    createRecordLabelFromCRT,
-    createRecordLabel,
-
-    fetchRelatedLabelsForMany,
-} = require('@mpieva/psydb-api-lib');
-
-var {
-    withContext
-} = require('@mpieva/psydb-api-lib/src/list-endpoint-utils');
+var { withContext } = require('@mpieva/psydb-api-lib/src/list-endpoint-utils');
 
 
 var relatedExperiments = async (context, next) => {
@@ -64,7 +41,6 @@ var relatedExperiments = async (context, next) => {
         collection: 'experiment',
         filter: { 'state.experimentOperatorTeamId': teamId },
     });
-    console.log(data);
 
     context.body = ResponseBody({ data });
     await next();
