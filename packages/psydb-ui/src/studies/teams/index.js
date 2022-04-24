@@ -9,7 +9,7 @@ import {
     useParams
 } from 'react-router-dom';
 
-import { Button, LoadingIndicator } from '@mpieva/psydb-ui-layout';
+import { Button, LoadingIndicator, Alert } from '@mpieva/psydb-ui-layout';
 
 import StudyTeamListItem from '@mpieva/psydb-ui-lib/src/experiment-operator-team-list-item';
 
@@ -51,10 +51,6 @@ const StudyTeams = (ps) => {
 
     var { records, ...related } = fetched.data;
     
-    if (records.length < 1) {
-        return <Fallback />
-    }
-
     return (
         <div className='pt-3'>
             <div className='d-flex justify-content-between mb-3'>
@@ -89,23 +85,35 @@ const StudyTeams = (ps) => {
                 studyId={ studyId }
             />
 
-            { 
-                records
-                .filter(it => showHidden || it.state.hidden !== true)
-                .map(record => (
-                    <StudyTeamListItem {...({
-                        key: record._id,
-                        studyId,
-                        record,
-                        ...related,
-                        canEdit,
-                        onEditClick: editModal.handleShow,
-                        enableDelete: record.state.hidden !== true,
-                        onDeleteClick: hideModal.handleShow
-                    })} />
-                ))
+
+
+            {
+                records.length > 0
+                ? (
+                    records
+                    .filter(it => showHidden || it.state.hidden !== true)
+                    .map(record => (
+                        <StudyTeamListItem {...({
+                            key: record._id,
+                            studyId,
+                            record,
+                            ...related,
+                            canEdit,
+                            onEditClick: editModal.handleShow,
+                            enableDelete: record.state.hidden !== true,
+                            onDeleteClick: hideModal.handleShow
+                        })} />
+                    ))
+                )
+                : <Fallback />
             }
         </div>
+    )
+}
+
+var Fallback = (ps) => {
+    return (
+        <Alert variant='info'>Keine Teams vorhanden</Alert>
     )
 }
 
