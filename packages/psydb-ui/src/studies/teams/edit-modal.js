@@ -18,14 +18,19 @@ const EditOpsTeamModalBody = (ps) => {
             collection: 'experimentOperatorTeam',
             id: teamId
         }),
-        relatedExperiments: agent.fetchOpsTeamExperiments({
-            teamId
+        experiments: agent.fetchOpsTeamExperiments({
+            teamId, out: 'count'
         })
     }), []);
 
+    var hasExperiments = false;
     var send = useSend((formData) => ({
         type: 'experimentOperatorTeam/patch',
-        payload: { id: teamId, props: formData }
+        payload: { id: teamId, props: (
+            hasExperiments
+            ? only({ from: formData, paths: [ 'color', 'hidden' ]})
+            : formData
+        )}
     }), {
         onSuccessfulUpdate: [ onHide, onSuccessfulUpdate ]
     });
@@ -35,6 +40,7 @@ const EditOpsTeamModalBody = (ps) => {
     }
 
     var { record, ...related } = fetched.team.data;
+    hasExperiments = fetched.experiments.data.count > 0;
 
     var initialValues = only({
         from: record.state,
@@ -42,13 +48,14 @@ const EditOpsTeamModalBody = (ps) => {
             'color',
             'personnelIds',
             'hidden'
-        ], 
+        ],
     });
-    
+
     return (
         <MainForm.Component
             initialValues={ initialValues }
             onSubmit={ send.exec }
+            hasExperiments={ hasExperiments }
         />
     );
 }

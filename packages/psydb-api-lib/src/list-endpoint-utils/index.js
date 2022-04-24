@@ -48,7 +48,14 @@ SimpleRecordList.fetchData = (context) => async (options) => {
     ).toArray();
 
     if (out === 'count') {
-        return { count: records[0].COUNT }
+        // FIXME: when no records where found it kinda doesnt count
+        // but returns an empty array not sure if thats a bug
+        if (records.length < 1) {
+            return { count: 0 };
+        }
+        else {
+            return { count: records[0].COUNT }
+        }
     }
     else if (out === 'id-only') {
         return { records };

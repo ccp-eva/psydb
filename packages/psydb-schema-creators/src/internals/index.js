@@ -11,6 +11,7 @@ module.exports.HelperSetItemRecordMessage = require('./helper-set-item/record-me
 module.exports.PersonnelScientificState = require('./personnel/scientific-state');
 module.exports.PersonnelGdprState = require('./personnel/gdpr-state');
 module.exports.PersonnelRecordMessage = require('./personnel/record-message');
+module.exports.PersonnelFullSchema = require('./personnel/full-schema');
     
 module.exports.SubjectScientificState = require('./subject/scientific-state');
 module.exports.SubjectGdprState = require('./subject/gdpr-state');

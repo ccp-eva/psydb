@@ -55,16 +55,4 @@ var Schema = () => {
     });
 }
 
-//var itemizeKeys = (bag) => {
-//    var { from, key = 'key', merge = false } = bag;
-//    return Object.keys(from).map(k => {
-//        var value = from[k];
-//        return (
-//            mergeKey
-//            ? { [key]: k, ...value }
-//            : { [key]: k, value }
-//        );
-//    });
-//}
-
 module.exports = relatedExperiments;

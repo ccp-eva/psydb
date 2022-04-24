@@ -35,6 +35,7 @@ module.exports = {
             scientific: internals.PersonnelScientificState,
             gdpr: internals.PersonnelGdprState,
         },
+        FullSchema: internals.PersonnelFullSchema,
         RecordMessage: internals.PersonnelRecordMessage
     },
     researchGroup: {

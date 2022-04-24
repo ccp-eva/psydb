@@ -456,7 +456,7 @@ agent.fetchRecordReverseRefs = ({
     );
 }
 
-agent.fetchOpsTeamsExperiments = (bag) => {
+agent.fetchOpsTeamExperiments = (bag) => {
     var {
         teamId,
         out = 'full',
@@ -464,7 +464,7 @@ agent.fetchOpsTeamsExperiments = (bag) => {
     } = bag;
 
     return axios.post(
-        '/api/ops-team-experiments',
+        '/api/ops-team/related-experiments',
         { teamId, out },
         extraAxiosConfig,
     );
