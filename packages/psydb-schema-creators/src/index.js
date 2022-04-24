@@ -109,6 +109,9 @@ module.exports = {
             'online-survey': internals.OnlineSurveyExperimentVariantSettingState,
             'online-video-call': internals.OnlineVideoCallExperimentVariantSettingState,
             'inhouse': internals.InhouseExperimentVariantSettingState,
+            'inhouse-group-simple': (
+                internals.InhouseGroupSimpleExperimentVariantSettingState
+            ),
             'away-team': internals.AwayTeamExperimentVariantSettingState,
         }
     },

@@ -74,6 +74,9 @@ module.exports.OnlineVideoCallExperimentVariantSettingState = (
 module.exports.InhouseExperimentVariantSettingState = (
     require('./experiment-variant-setting/inhouse-state')
 );
+module.exports.InhouseGroupSimpleExperimentVariantSettingState = (
+    require('./experiment-variant-setting/inhouse-group-simple-state')
+);
 module.exports.AwayTeamExperimentVariantSettingState = (
     require('./experiment-variant-setting/away-team-state')
 )

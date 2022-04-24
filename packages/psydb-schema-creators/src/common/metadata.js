@@ -461,6 +461,7 @@ module.exports = {
             'online-survey',
             'online-video-call',
             'inhouse',
+            'inhouse-group-simple',
             'away-team',
         ],
         hasSubChannels: false,
