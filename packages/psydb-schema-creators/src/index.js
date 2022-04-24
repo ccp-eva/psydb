@@ -85,7 +85,8 @@ module.exports = {
         fixedTypeStateSchemaCreators: {
             awayTeam: internals.AwayTeamReservationState,
             inhouse: internals.InhouseReservationState
-        }
+        },
+        FullSchema: internals.ReservationFullSchema,
     },
 
     experimentVariant: {
