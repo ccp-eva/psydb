@@ -1,8 +1,6 @@
-
 'use strict';
-
-var isObject = (that) => typeof that === 'object';
-var isArray = (that) => Array.isArray(that);
+var { isPlainObject, isArray } = require('is-what');
+var arrify = require('./arrify');
 
 var queryObject = (bag) => {
     var { from, path } = bag;
@@ -12,18 +10,27 @@ var queryObject = (bag) => {
     for (var ix = 0; ix < tokens.length; ix += 1) {
         var token = tokens[ix];
         
-        if (!isObject(current)) {
-            current = undefined;
-            break;
-        }
-
         if (isArray(current)) {
             current = (
                 current
-                .filter(isObject)
-                .map(it => it[token])
+                .filter((it) => (
+                    isPlainObject(it) || isArray(it)
+                ))
+                .reduce((acc, it) => {
+                    var v = (
+                        isPlainObject
+                        ? arrify(it[token])
+                        : it
+                    );
+                    return [
+                        ...acc, ...arrify(v)
+                    ];
+                }, [])
                 .filter(it => it !== undefined)
             )
+        }
+        else if (!isPlainObject(current)) {
+            current = undefined;
         }
         else {
             current = current[token];
