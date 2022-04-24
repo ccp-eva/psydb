@@ -32,6 +32,7 @@ var fetchRelatedLabelsForMany = async (bag) => {
     var { hasCustomTypes, FullSchema } = allSchemaCreators[collection];
     var schema;
     if (!hasCustomTypes) {
+        console.log(collection);
         schema = FullSchema({ enableInternalProps: true });
     }
     else {

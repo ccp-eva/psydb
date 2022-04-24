@@ -1,6 +1,7 @@
 'use strict';
 module.exports.CustomRecordTypeState = require('./custom-record-type/state');
 
+module.exports.HelperSetFullSchema = require('./helper-set/full-schema');
 module.exports.HelperSetState = require('./helper-set/state');
 module.exports.HelperSetRecordMessage = require('./helper-set/record-message');
 
@@ -27,6 +28,7 @@ module.exports.AgeFrameRecordMessage = require('./age-frame/record-message');
 module.exports.LocationState = require('./location/state');
 module.exports.LocationRecordMessage = require('./location/record-message');
 
+module.exports.ResearchGroupFullSchema = require('./research-group/full-schema');
 module.exports.ResearchGroupState = require('./research-group/state');
 module.exports.ResearchGroupRecordMessage = require('./research-group/record-message');
 

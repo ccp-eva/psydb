@@ -8,7 +8,12 @@ import {
 
 const TestingPermissions = (ps) => {
     var { value, related } = ps;
-    console.log(value);
+    if (value.length < 1) {
+        return (
+            <i className='text-muted'>Keine</i>
+        )
+    }
+
     return (
         value.map((it, ix) => (
             <ResearchGroupTestingPermissions

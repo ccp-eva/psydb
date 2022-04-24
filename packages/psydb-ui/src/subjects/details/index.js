@@ -65,7 +65,7 @@ const SubjectDetailsContainer = ({
 
     return (
         <>
-            <h3 className='border-bottom'>Kinder-Details</h3>
+            <h3 className='border-bottom'>Probanden-Details</h3>
             <div className='border pl-3 bg-light'>
                 <Header
                     title='Erfasste Daten'

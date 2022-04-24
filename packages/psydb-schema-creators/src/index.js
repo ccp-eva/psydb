@@ -9,6 +9,7 @@ module.exports = {
     },
     helperSet: {
         ...metadata.helperSet,
+        FullSchema: internals.HelperSetFullSchema,
         State: internals.HelperSetState,
         RecordMessage: internals.HelperSetRecordMessage 
     },
@@ -40,6 +41,7 @@ module.exports = {
     },
     researchGroup: {
         ...metadata.researchGroup,
+        FullSchema: internals.ResearchGroupFullSchema,
         State: internals.ResearchGroupState,
         RecordMessage: internals.ResearchGroupRecordMessage 
     },

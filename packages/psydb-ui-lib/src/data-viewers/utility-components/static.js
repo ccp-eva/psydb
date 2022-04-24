@@ -58,6 +58,15 @@ export const HelperSetItemIdList = (ps) => {
     )
 }
 
+export const HelperSetItemId = (ps) => {
+    var { value, props, related } = ps;
+    var { setId } = props;
+
+    return (
+        related.relatedHelperSetItems[setId][value].state.label
+    );
+}
+
 export const ForeignIdList = (ps) => {
     var { value, props, related } = ps;
     var { collection, recordType } = props;
