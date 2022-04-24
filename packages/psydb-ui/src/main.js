@@ -28,6 +28,7 @@ import Studies from './studies';
 import StudyTopics from './study-topics';
 import Locations from './locations';
 import Subjects from './subjects';
+import SubjectGroups from './subject-groups';
 import Personnel from './personnel';
 import ResearchGroups from './research-groups';
 import SystemRoles from './system-roles';
@@ -129,6 +130,7 @@ var Routing = () => (
     <Route path='/study-topics' component={ withEB(StudyTopics) } />
     <Route path='/locations' component={ withEB(Locations) } />
     <Route path='/subjects' component={ withEB(Subjects) } />
+    <Route path='/subject-groups' component={ withEB(SubjectGroups) } />
     <Route path='/personnel' component={ withEB(Personnel) } />
     <Route path='/research-groups' component={ withEB(ResearchGroups) } />
     <Route path='/system-roles' component={ withEB(SystemRoles) } />

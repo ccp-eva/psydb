@@ -359,6 +359,36 @@ module.exports = {
             },
         ],
     },
+    
+    subjectGroup: {
+        collection: 'subjectGroup',
+        isGenericRecord: true,
+        hasCustomTypes: false,
+        hasSubChannels: false,
+        recordLabelDefinition: {
+            format: '${#}',
+            tokens: [
+                {
+                    systemType: 'SaneString',
+                    dataPointer: '/state/name',
+                },
+            ]
+        },
+        availableStaticDisplayFields: [
+            {
+                key: '_name',
+                systemType: 'SaneString',
+                dataPointer: '/state/name',
+                displayName: 'Name',
+            },
+        ],
+        staticDisplayFields: [
+            {
+                systemType: 'SaneString',
+                dataPointer: '/state/name',
+            }
+        ]
+    },
 
     subjectSelector: {
         collection: 'subjectSelector',

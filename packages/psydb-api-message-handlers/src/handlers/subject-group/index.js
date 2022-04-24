@@ -5,15 +5,15 @@ var {
 
 var GenericRecordHandler = require('../../lib/generic-record-handler');
 
-var ResearchGroup = MessageHandlerGroup([
+var SubjectGroupGroup = MessageHandlerGroup([
     GenericRecordHandler({
-        collection: 'researchGroup',
+        collection: 'subjectGroup',
         op: 'create',
     }),
     GenericRecordHandler({
-        collection: 'researchGroup',
+        collection: 'subjectGroup',
         op: 'patch',
     }),
 ]);
 
-module.exports = ResearchGroup;
+module.exports = SubjectGroupGroup;

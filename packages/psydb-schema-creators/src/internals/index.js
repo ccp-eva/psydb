@@ -60,6 +60,10 @@ module.exports.ExternalOrganizationMessage = require('./external-organization/re
 module.exports.ExternalPersonState = require('./external-person/state');
 module.exports.ExternalPersonMessage = require('./external-person/record-message');
             
+module.exports.SubjectGroupFullSchema = require('./subject-group/full-schema');
+module.exports.SubjectGroupState = require('./subject-group/state');
+module.exports.SubjectGroupRecordMessage = require('./subject-group/record-message');
+
 
 module.exports.OnlineSurveyExperimentVariantSettingState = (
     require('./experiment-variant-setting/online-survey-state')

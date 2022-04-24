@@ -63,6 +63,12 @@ module.exports = {
         },
         RecordMessage: internals.SubjectRecordMessage
     },
+    subjectGroup: {
+        ...metadata.subjectGroup,
+        FullSchema: internals.SubjectGroupFullSchema,
+        State: internals.SubjectGroupState,
+        RecordMessage: internals.SubjectGroupRecordMessage 
+    },
 
     subjectSelector: {
         ...metadata.subjectSelector,

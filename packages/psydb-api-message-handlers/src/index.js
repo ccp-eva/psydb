@@ -15,6 +15,7 @@ var allHandlers = [
     require('./handlers/location'),
     
     require('./handlers/subject'),
+    require('./handlers/subject-group'),
     require('./handlers/subject-selector'),
     require('./handlers/age-frame'),
 
