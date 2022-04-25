@@ -32,6 +32,7 @@ module.exports.ResearchGroupFullSchema = require('./research-group/full-schema')
 module.exports.ResearchGroupState = require('./research-group/state');
 module.exports.ResearchGroupRecordMessage = require('./research-group/record-message');
 
+module.exports.SystemRoleFullSchema = require('./system-role/full-schema');
 module.exports.SystemRoleState = require('./system-role/state');
 module.exports.SystemRoleRecordMessage = require('./system-role/record-message');
 

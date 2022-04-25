@@ -37,3 +37,12 @@ export const RemoveIconButtonInline = withIconButton({
     }
 });
 
+export const EditIconButtonInline = withIconButton({
+    Icon: Icons.PencilFill,
+    defaultIconStyle: {
+        width: '16px',
+        height: '16px',
+        marginTop: '-2px'
+    }
+});
+

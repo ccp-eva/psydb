@@ -4,8 +4,6 @@ export { default as LinkButton } from './link-button';
 export { default as LoadingIndicator } from './loading-indicator';
 export { default as Pagination } from './pagination';
 
-export { default as EditIconButtonInline } from './edit-icon-button-inline';
-
 export * from './icon-buttons';
 
 export { default as DetailsIconButton } from './details-icon-button';

@@ -85,6 +85,7 @@ module.exports = {
 
     systemRole: {
         ...metadata.systemRole,
+        FullSchema: internals.SystemRoleFullSchema,
         State: internals.SystemRoleState,
         RecordMessage: internals.SystemRoleRecordMessage 
     },
