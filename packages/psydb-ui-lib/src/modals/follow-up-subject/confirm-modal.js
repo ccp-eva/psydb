@@ -43,7 +43,7 @@ const ConfirmModal = ({
             size='md'
         >
             <Modal.Header closeButton>
-                <Modal.Title>Termin verschieben</Modal.Title>
+                <Modal.Title>Folgetermin</Modal.Title>
             </Modal.Header>
             <Modal.Body className='bg-light'>
                 <FormContainer { ...({

@@ -29,14 +29,15 @@ SimpleRecordList.fetchData = (context) => async (options) => {
     var { db, payload } = context;
 
     var { out, limit, offset } = payload;
-    var { collection, filter } = options;
+    var { collection, filter, sort } = options;
 
     var stages = [
         filter && { $match: filter },
         out === 'id-only' && { $project: { _id: true }},
         offset && { $skip: offset },
         limit && { $limit: limit },
-        out === 'count' && { $count: 'COUNT' }
+        out === 'count' && { $count: 'COUNT' },
+        sort && { $sort: sort },
     ].filter(it => !!it);
 
     var records = await db.collection(collection).aggregate(

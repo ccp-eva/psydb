@@ -470,4 +470,19 @@ agent.fetchOpsTeamExperiments = (bag) => {
     );
 }
 
+agent.fetchSubjectExperiments = (bag) => {
+    var {
+        subjectId,
+        studyId,
+        out = 'full',
+        extraAxiosConfig,
+    } = bag;
+
+    return axios.post(
+        '/api/subject/related-experiments',
+        { subjectId, studyId, out },
+        extraAxiosConfig,
+    );
+}
+
 export default agent;

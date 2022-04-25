@@ -310,6 +310,13 @@ var createRouting = ({
         endpoints.special.reverseRefs
     );
 
+    router.get('/record-reverse-refs/:collection/:id',
+        withSelfAuth(),
+        withPermissions(),
+        withKoaBody(),
+        endpoints.special.reverseRefs
+    );
+
     router.post('/ops-team/related-experiments',
         withSelfAuth(),
         withPermissions(),
@@ -317,11 +324,11 @@ var createRouting = ({
         endpoints.opsTeam.relatedExperiments
     );
 
-    router.get('/record-reverse-refs/:collection/:id',
+    router.post('/subject/related-experiments',
         withSelfAuth(),
         withPermissions(),
         withKoaBody(),
-        endpoints.special.reverseRefs
+        endpoints.subject.relatedExperiments
     );
 
     return compose([

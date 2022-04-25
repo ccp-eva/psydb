@@ -10,6 +10,7 @@ import {
 } from '@mpieva/psydb-ui-hooks';
 
 import StudyInhouseLocations from '../../study-inhouse-locations';
+import Experiments from '../../experiments/shortlist-by-study-and-subject';
 
 import ConfirmModal from './confirm-modal';
 
@@ -58,6 +59,7 @@ const FollowUpSubjectModal = ({
     subjectDataByType = subjectDataByType || fetched.data.subjectDataByType;
 
     var studyId = studyData.record._id;
+    var studyLabel = studyData.record.state.shorthand;
     var studyRecordType = studyData.record.type;
     var { subjectId, subjectType, subjectRecord } = payloadData;
 
@@ -79,7 +81,7 @@ const FollowUpSubjectModal = ({
             backdropClassName='team-modal-backdrop'
         >
             <Modal.Header closeButton>
-                <Modal.Title>Proband verschieben</Modal.Title>
+                <Modal.Title>Folgetermin</Modal.Title>
             </Modal.Header>
             <Modal.Body className='bg-light'>
 
@@ -92,6 +94,16 @@ const FollowUpSubjectModal = ({
 
                     onSuccessfulUpdate: wrappedOnSuccessfulUpdate,
                 }) } />
+
+                <header className='mb-1'>
+                    <b>Termine des Probanden in { studyLabel }</b>
+                </header>
+                <div className='bg-white border px-3 py-2 mb-3'>
+                    <Experiments
+                        studyId={ studyId }
+                        subjectId={ subjectId }
+                    />
+                </div>
 
                 <StudyInhouseLocations
                     studyId={ studyId }

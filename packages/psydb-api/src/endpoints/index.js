@@ -13,4 +13,5 @@ module.exports = {
     special: require('./special'),
 
     opsTeam: require('./entities/ops-team'),
+    subject: require('./entities/subject'),
 };

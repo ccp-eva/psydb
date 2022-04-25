@@ -9,6 +9,7 @@ import {
     useCallbackMaybe
 } from '@mpieva/psydb-ui-hooks';
 
+import ExistingSubjectExperiments from '@mpieva/psydb-ui-lib/src/experiments/shortlist-by-study-and-subject';
 import StudyInhouseLocations from '@mpieva/psydb-ui-lib/src/study-inhouse-locations';
 
 import ExperimentCreateModal from './experiment-create-modal';
@@ -30,6 +31,7 @@ const SubjectModalSchedule = ({
     console.log({ subjectRecordType })
 
     var [ studyId, setStudyId ] = useState(studyNavItems[0].key);
+    var studyLabel = studyNavItems.find(it => it.key === studyId).label;
     
     var experimentCreateModal = useModalReducer();
     var experimentUpdateModal = useModalReducer();
@@ -58,12 +60,25 @@ const SubjectModalSchedule = ({
                 onSuccessfulUpdate={ onSuccessfulUpdate }
             />
 
+            { studyNavItems.length > 1 && (
                 <TabNav
                     label='Studie:'
                     items={ studyNavItems }
                     activeKey={ studyId }
                     onItemClick={ setStudyId }
                 />
+            )}
+
+            <header className='mb-1 mt-2'>
+                <b>Termine des Probanden in { studyLabel }</b>
+            </header>
+            <div className='bg-white border px-3 py-2 mb-2'>
+                <ExistingSubjectExperiments
+                    subjectId={ subjectId }
+                    studyId={ studyId }
+                    revision={ revision || 0}
+                />
+            </div>
 
             <StudyInhouseLocations
                 studyId={ studyId }

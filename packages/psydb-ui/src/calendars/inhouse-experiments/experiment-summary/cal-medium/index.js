@@ -156,8 +156,7 @@ const ExperimentSummaryMedium = ({
             }) } />
 
             <FollowUpSubjectModal { ...({
-                show: followUpSubjectModal.show,
-                onHide: followUpSubjectModal.handleHide,
+                ...followUpSubjectModal.passthrough,
                 payloadData: followUpSubjectModal.data,
 
                 shouldFetch: true,
