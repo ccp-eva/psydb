@@ -30,7 +30,6 @@ const ExperimentUpdateModal = (ps) => {
     } = modalPayloadData;
 
     var studyRecord = studyData.records.find(it => it._id === studyId);
-    console.log('AAAAAAAAA', studyRecord);
     var { enableFollowUpExperiments } = studyRecord.state;
 
     var wrappedOnSuccessfulUpdate = (...args) => {

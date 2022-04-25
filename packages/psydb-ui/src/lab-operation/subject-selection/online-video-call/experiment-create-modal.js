@@ -9,6 +9,7 @@ import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 const CreateModal = ({
     show,
     onHide,
+    studyData,
     subjectId,
     subjectLabel,
 
@@ -26,6 +27,9 @@ const CreateModal = ({
         return null;
     }
 
+    var studyRecord = studyData.records.find(it => it._id === studyId);
+    var { enableFollowUpExperiments } = studyRecord.state;
+
     var locationId = locationRecord._id;
     var experimentOperatorTeamId = (
         reservationRecord.state.experimentOperatorTeamId
@@ -38,8 +42,9 @@ const CreateModal = ({
     var [ end, setEnd ] = useState(new Date(minEnd.getTime() - 1));
 
     var wrappedOnSuccessfulUpdate = (...args) => {
+        var shouldHide = !enableFollowUpExperiments;
         onHide();
-        onSuccessfulCreate && onSuccessfulCreate(...args);
+        onSuccessfulCreate && onSuccessfulCreate(shouldHide, ...args);
     };
 
     var send = useSend(() => ({

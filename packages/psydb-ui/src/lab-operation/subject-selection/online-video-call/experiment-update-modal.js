@@ -10,12 +10,16 @@ const ExperimentUpdateModal = (ps) => {
         onHide,
         modalPayloadData = {},
 
+        studyData,
         subjectId,
         subjectLabel,
         
         onSuccessfulUpdate,
     } = ps;
  
+    if (!show) {
+        return null;
+    }
     var {
         experimentRecord,
         locationRecord,
@@ -24,9 +28,13 @@ const ExperimentUpdateModal = (ps) => {
         studyId
     } = modalPayloadData;
 
+    var studyRecord = studyData.records.find(it => it._id === studyId);
+    var { enableFollowUpExperiments } = studyRecord.state;
+
     var wrappedOnSuccessfulUpdate = (...args) => {
+        var shouldHide = !enableFollowUpExperiments;
         onHide();
-        onSuccessfulUpdate && onSuccessfulUpdate(...args);
+        onSuccessfulUpdate && onSuccessfulUpdate(shouldHide, ...args);
     };
 
     var send = useSend(() => ({

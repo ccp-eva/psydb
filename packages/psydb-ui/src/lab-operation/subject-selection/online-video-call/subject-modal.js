@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useReducer } from 'react';
+import { usePermissions, useRevision } from '@mpieva/psydb-ui-hooks';
 
 import {
     Modal
@@ -14,6 +15,7 @@ import SubjectModalSchedule from './subject-modal-schedule';
 const SubjectModal = ({
     show,
     onHide,
+    studyData,
     studyNavItems,
     studyRecordType,
     subjectRecordType,
@@ -21,6 +23,18 @@ const SubjectModal = ({
 
     onSuccessfulUpdate,
 }) => {
+    var permissions = usePermissions();
+    var revision = useRevision();
+    var canReadSubjects = permissions.hasFlag('canReadSubjects');
+
+    var [ state, dispatch ] = useReducer(reducer, {
+        activeMainNavKey: (
+            canReadSubjects
+            ? 'subjectDetails'
+            : 'scheduleExperiment'
+        ),
+    })
+
     if (!subjectModalData) {
         return null;
     }
@@ -29,16 +43,17 @@ const SubjectModal = ({
         record
     } = subjectModalData;
 
-    var [ state, dispatch ] = useReducer(reducer, {
-        activeMainNavKey: 'subjectDetails',
-    })
-
     var {
         activeMainNavKey,
     } = state;
 
-    var wrappedOnSuccessfulUpdate = (...args) => {
-        onHide();
+    var wrappedOnSuccessfulUpdate = (shouldHide, ...args) => {
+        if (shouldHide) {
+            onHide();
+        }
+        else {
+            revision.up();
+        }
         onSuccessfulUpdate && onSuccessfulUpdate(...args);
     }
 
@@ -84,6 +99,8 @@ const SubjectModal = ({
 
                 { activeMainNavKey === 'scheduleExperiment' && (
                     <SubjectModalSchedule
+                        revision={ revision.value }
+                        studyData={ studyData }
                         studyNavItems={ studyNavItems }
                         subjectId={ record._id }
                         subjectRecordType={ subjectRecordType }
