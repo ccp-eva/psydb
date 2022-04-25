@@ -8,7 +8,10 @@ const Control = (ps) => {
     var { dataXPath, formikField, formikMeta, disabled } = ps;
     var { error } = formikMeta;
     var { value, onChange } = formikField;
-    var isValidDate = !isNaN(new Date(value).getTime());
+    var isValidDate = (
+        /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z/.test(value)
+        && !isNaN(new Date(value).getTime())
+    );
 
     var inputClassName = classnames([
         'form-control',
