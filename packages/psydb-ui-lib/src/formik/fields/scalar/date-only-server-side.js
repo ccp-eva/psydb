@@ -23,7 +23,11 @@ const Control = (ps) => {
     var { dataXPath, formikField, formikMeta, disabled } = ps;
     var { error } = formikMeta;
     var { value, onChange } = formikField;
-    var isValidDate = !isNaN(new Date(value).getTime());
+    var isValidDate = (
+        /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z/.test(value)
+        && !isNaN(new Date(value).getTime())
+    );
+    //console.log({ value, isValidDate });
     
     // TODO detect via 00:00:00.000Z bc thats alays utc?
     //if (isValidDate) {
@@ -41,9 +45,9 @@ const Control = (ps) => {
         <ReactDateTime
             value={ isValidDate ? new Date(value) : value }
             onChange={ (stringOrMomentInstance) => {
-                console.log(stringOrMomentInstance.toISOString());
                 var v = '';
                 if (stringOrMomentInstance.toISOString) {
+                    console.log(stringOrMomentInstance.toISOString());
                     var str = stringOrMomentInstance.toISOString();
                     // stripping Z from string and reparsing t makes it
                     // localtime

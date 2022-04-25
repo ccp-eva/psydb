@@ -36,11 +36,17 @@ const SideNav = (ps) => {
             >
                 <div className='navbar-nav'>
                     
-                <WhenAllowed flags={[
+                    <WhenAllowed flags={[
                         'canReadSubjects', 'canWriteSubjects'
                     ]}>
                         <Link to='/subjects'><b>Probanden</b></Link>
                     </WhenAllowed>
+                    
+                    {/*<WhenAllowed flags={[
+                        'canReadSubjects', 'canWriteSubjects'
+                    ]}>
+                        <Link to='/subject-groups'><b>Probanden-Gruppen</b></Link>
+                    </WhenAllowed>*/}
 
                     <WhenAllowed flags={[
                         'canReadStudies', 'canWriteStudies'

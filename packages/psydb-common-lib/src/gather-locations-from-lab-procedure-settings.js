@@ -2,7 +2,7 @@
 var gatherLocationsFromLabProcedureSettings = ({ settingRecords }) => {
     var gathered = {};
     for (var setting of settingRecords) {
-        if (!['inhouse', 'online-video-call'].includes(setting.type)) {
+        if (!['inhouse', 'inhouse-group-simple', 'online-video-call'].includes(setting.type)) {
             continue;
         }
 

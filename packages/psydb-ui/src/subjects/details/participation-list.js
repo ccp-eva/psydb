@@ -118,8 +118,8 @@ const ParticipationListRow = ({
     onRemove,
 }) => {
     var permissions = usePermissions();
-    var canWrite = permissions.hasFlag('canWriteParticipations');
-    var canRemove = permissions.hasFlag('canWriteParticipations');
+    var canWrite = permissions.hasFlag('canWriteParticipation');
+    var canRemove = permissions.hasFlag('canWriteParticipation');
 
     var date = new Date(item.timestamp);
     var formattedDate = datefns.format(
@@ -174,6 +174,17 @@ const ParticipationListRow = ({
                         onClick={ () => onEdit({
                             subjectType, subjectId, ...item
                         }) }
+                        iconStyle={{
+                            ...(
+                                item.experimentId && !permissions.isRoot()
+                                && { color: '#888' }
+                            )
+                        }}
+                        buttonProps={{
+                            disabled: (
+                                item.experimentId && !permissions.isRoot()
+                            )
+                        }}
                     />
                 )}
                 { canRemove && (
@@ -181,6 +192,17 @@ const ParticipationListRow = ({
                         onClick={ () => onRemove({
                             ...item
                         }) }
+                        iconStyle={{
+                            ...(
+                                item.experimentId && !permissions.isRoot()
+                                && { color: '#888' }
+                            )
+                        }}
+                        buttonProps={{
+                            disabled: (
+                                item.experimentId && !permissions.isRoot()
+                            )
+                        }}
                     />
                 )}
             </td>

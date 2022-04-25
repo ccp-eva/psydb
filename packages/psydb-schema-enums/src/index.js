@@ -143,12 +143,14 @@ var experimentVariants = createEnumFromMap({
     'away-team': 'Externe Termine',
     'online-video-call': 'Online-Video-Termine',
     'online-survey': 'Online-Umfrage',
+    //'inhouse-group-simple': 'Interne Gruppen Termine (WKPRC)'
 });
 
 var experimentTypes = createEnumFromMap({
     'inhouse': 'Interne Termine',
     'away-team': 'Externe Termine',
     'online-video-call': 'Online-Video-Termine',
+    //'inhouse-group-simple': 'Interne Gruppen Termine (WKPRC)'
 });
 
 var inviteExperimentTypes = createEnumFromMap({

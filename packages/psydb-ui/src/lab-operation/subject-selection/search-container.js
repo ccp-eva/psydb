@@ -27,6 +27,7 @@ import SelectionSettingsFormSchema from './selection-settings-form-schema';
 import SelectionSettingsForm from './selection-settings-form';
 
 import InhouseSubjectList from './inhouse/testable-subject-list';
+import InhouseGroupSimpleList from './inhouse-group-simple/group-list';
 import AwayTeamTargetLocationList from './away-team/target-location-list';
 import OnlineVideoCallSubjectList from './online-video-call/testable-subject-list';
 import OnlineSubjectList from './online/testable-subject-list';
@@ -79,6 +80,7 @@ const SearchContainer = ({
         'away-team': AwayTeamTargetLocationList,
         'online-video-call': OnlineVideoCallSubjectList,
         'online-survey': OnlineSubjectList,
+        'inhouse-group-simple': InhouseGroupSimpleList,
     }[experimentType];
 
     return (

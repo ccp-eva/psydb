@@ -25,7 +25,8 @@ var fetchEnabledLocationRecordsForStudy = async ({
             studyId,
             type: { $in: [
                 'inhouse',
-                'online-video-call'
+                'online-video-call',
+                'inhouse-group-simple',
             ]},
             'state.locations.customRecordTypeKey': locationType
         }, { projection: { events: false }})

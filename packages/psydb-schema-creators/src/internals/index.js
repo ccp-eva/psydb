@@ -32,12 +32,14 @@ module.exports.ResearchGroupFullSchema = require('./research-group/full-schema')
 module.exports.ResearchGroupState = require('./research-group/state');
 module.exports.ResearchGroupRecordMessage = require('./research-group/record-message');
 
+module.exports.SystemRoleFullSchema = require('./system-role/full-schema');
 module.exports.SystemRoleState = require('./system-role/state');
 module.exports.SystemRoleRecordMessage = require('./system-role/record-message');
 
 module.exports.StudyState = require('./study/state');
 module.exports.StudyRecordMessage = require('./study/record-message');
 
+module.exports.StudyTopicFullSchema = require('./study-topic/full-schema');
 module.exports.StudyTopicState = require('./study-topic/state');
 module.exports.StudyTopicRecordMessage = require('./study-topic/record-message');
 
@@ -60,6 +62,10 @@ module.exports.ExternalOrganizationMessage = require('./external-organization/re
 module.exports.ExternalPersonState = require('./external-person/state');
 module.exports.ExternalPersonMessage = require('./external-person/record-message');
             
+module.exports.SubjectGroupFullSchema = require('./subject-group/full-schema');
+module.exports.SubjectGroupState = require('./subject-group/state');
+module.exports.SubjectGroupRecordMessage = require('./subject-group/record-message');
+
 
 module.exports.OnlineSurveyExperimentVariantSettingState = (
     require('./experiment-variant-setting/online-survey-state')
@@ -69,6 +75,9 @@ module.exports.OnlineVideoCallExperimentVariantSettingState = (
 );
 module.exports.InhouseExperimentVariantSettingState = (
     require('./experiment-variant-setting/inhouse-state')
+);
+module.exports.InhouseGroupSimpleExperimentVariantSettingState = (
+    require('./experiment-variant-setting/inhouse-group-simple-state')
 );
 module.exports.AwayTeamExperimentVariantSettingState = (
     require('./experiment-variant-setting/away-team-state')

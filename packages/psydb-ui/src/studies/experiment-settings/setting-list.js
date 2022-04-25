@@ -3,6 +3,7 @@ import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import {
     InhouseSetting,
+    InhouseGroupSimpleSetting,
     AwayTeamSetting,
     OnlineVideoCallSetting,
     OnlineSurveySetting
@@ -32,6 +33,7 @@ const SettingList = (ps) => {
 
     var SettingComponent = ({
         'inhouse': InhouseSetting,
+        'inhouse-group-simple': InhouseGroupSimpleSetting,
         'away-team': AwayTeamSetting,
         'online-video-call': OnlineVideoCallSetting,
         'online-survey': OnlineSurveySetting

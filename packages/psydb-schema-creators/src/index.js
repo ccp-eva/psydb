@@ -52,6 +52,7 @@ module.exports = {
     },
     studyTopic: {
         ...metadata.studyTopic,
+        FullSchema: internals.StudyTopicFullSchema,
         State: internals.StudyTopicState,
         RecordMessage: internals.StudyTopicRecordMessage 
     },
@@ -62,6 +63,12 @@ module.exports = {
             gdpr: internals.SubjectGdprState,
         },
         RecordMessage: internals.SubjectRecordMessage
+    },
+    subjectGroup: {
+        ...metadata.subjectGroup,
+        FullSchema: internals.SubjectGroupFullSchema,
+        State: internals.SubjectGroupState,
+        RecordMessage: internals.SubjectGroupRecordMessage 
     },
 
     subjectSelector: {
@@ -79,6 +86,7 @@ module.exports = {
 
     systemRole: {
         ...metadata.systemRole,
+        FullSchema: internals.SystemRoleFullSchema,
         State: internals.SystemRoleState,
         RecordMessage: internals.SystemRoleRecordMessage 
     },
@@ -103,6 +111,9 @@ module.exports = {
             'online-survey': internals.OnlineSurveyExperimentVariantSettingState,
             'online-video-call': internals.OnlineVideoCallExperimentVariantSettingState,
             'inhouse': internals.InhouseExperimentVariantSettingState,
+            'inhouse-group-simple': (
+                internals.InhouseGroupSimpleExperimentVariantSettingState
+            ),
             'away-team': internals.AwayTeamExperimentVariantSettingState,
         }
     },

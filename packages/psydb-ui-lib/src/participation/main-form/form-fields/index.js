@@ -30,6 +30,8 @@ export const FormFields = (ps) => {
         labProcedureType,
     } = values['$'];
 
+    console.log(studyId);
+
     var showStudyTypeSelect = (
         enableStudyId && !(studyTypes.length === 1 && studyType)
     );

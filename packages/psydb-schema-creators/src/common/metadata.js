@@ -359,6 +359,49 @@ module.exports = {
             },
         ],
     },
+    
+    subjectGroup: {
+        collection: 'subjectGroup',
+        isGenericRecord: true,
+        hasCustomTypes: false,
+        hasSubChannels: false,
+        recordLabelDefinition: {
+            format: '${#}',
+            tokens: [
+                {
+                    systemType: 'SaneString',
+                    dataPointer: '/state/name',
+                },
+            ]
+        },
+        availableStaticDisplayFields: [
+            {
+                key: '_name',
+                systemType: 'SaneString',
+                dataPointer: '/state/name',
+                displayName: 'Name',
+            },
+            {
+                key: '_researchGroupId',
+                systemType: 'ForeignId',
+                props: {
+                    collection: 'researchGroup',
+                },
+                dataPointer: '/state/researchGroupId',
+                displayName: 'Forschungsgruppe',
+            },
+        ],
+        staticDisplayFields: [
+            {
+                systemType: 'SaneString',
+                dataPointer: '/state/name',
+            },
+            {
+                systemType: 'ForeignId',
+                dataPointer: '/state/researchGroupId',
+            }
+        ]
+    },
 
     subjectSelector: {
         collection: 'subjectSelector',
@@ -431,6 +474,7 @@ module.exports = {
             'online-survey',
             'online-video-call',
             'inhouse',
+            'inhouse-group-simple',
             'away-team',
         ],
         hasSubChannels: false,
