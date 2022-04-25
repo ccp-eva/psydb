@@ -47,6 +47,8 @@ const SubjectSelectionRouting = () => {
         'online-survey', 'canPerformOnlineSurveys'
     );
 
+    var canSelectInhouseGroupSimple = true;
+
     var navItems = [
         (canSelectInhouse && {
             key: 'inhouse',
@@ -68,6 +70,11 @@ const SubjectSelectionRouting = () => {
             label: 'Online-Umfrage',
             linkTo: 'online-survey'
         }),
+        (canSelectInhouseGroupSimple && {
+            key: 'inhouse-group-simple',
+            label: 'Interne Gruppen Studie (WKPRC)',
+            linkTo: 'inhouse-group-simple'
+        }), 
     ].filter(it => !!it)
 
     return (
@@ -107,6 +114,14 @@ const SubjectSelectionRouting = () => {
                             title='Für Online-Umfrage'
                             type='online-survey'
                             singleStudy={ true }
+                        />
+                    </Route>
+                )}
+                { canSelectInhouseGroupSimple && (
+                    <Route path={ `${path}/inhouse-group-simple`}>
+                        <TypedSelectionContainer
+                            title='Für Interne Gruppen Studie (WKPRC)'
+                            type='inhouse-group-simple'
                         />
                     </Route>
                 )}
