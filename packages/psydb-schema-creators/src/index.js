@@ -52,6 +52,7 @@ module.exports = {
     },
     studyTopic: {
         ...metadata.studyTopic,
+        FullSchema: internals.StudyTopicFullSchema,
         State: internals.StudyTopicState,
         RecordMessage: internals.StudyTopicRecordMessage 
     },

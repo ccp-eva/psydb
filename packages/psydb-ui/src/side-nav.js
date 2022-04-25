@@ -42,11 +42,11 @@ const SideNav = (ps) => {
                         <Link to='/subjects'><b>Probanden</b></Link>
                     </WhenAllowed>
                     
-                    <WhenAllowed flags={[
+                    {/*<WhenAllowed flags={[
                         'canReadSubjects', 'canWriteSubjects'
                     ]}>
                         <Link to='/subject-groups'><b>Probanden-Gruppen</b></Link>
-                    </WhenAllowed>
+                    </WhenAllowed>*/}
 
                     <WhenAllowed flags={[
                         'canReadStudies', 'canWriteStudies'
