@@ -154,6 +154,7 @@ const InhouseTestableSubjectList = ({
                     <tr>
                         {/*<th>ID Nr.</th>*/}
                         <th>Name</th>
+                        <th>Forschungsgruppe</th>
                         <th />
                     </tr>
                 </thead>

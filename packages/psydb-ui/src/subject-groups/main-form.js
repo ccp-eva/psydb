@@ -52,6 +52,12 @@ const FormFields = (ps) => {
                 dataXPath='$.name'
                 required
             />
+            <Fields.ForeignId
+                label='Forschungsgruppe'
+                dataXPath='$.researchGroupId'
+                collection='researchGroup'
+                required
+            />
             <SubjectsForTypeList
                 dataXPath='$.subjectsForType'
                 label='Probanden'

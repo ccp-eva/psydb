@@ -381,11 +381,24 @@ module.exports = {
                 dataPointer: '/state/name',
                 displayName: 'Name',
             },
+            {
+                key: '_researchGroupId',
+                systemType: 'ForeignId',
+                props: {
+                    collection: 'researchGroup',
+                },
+                dataPointer: '/state/researchGroupId',
+                displayName: 'Forschungsgruppe',
+            },
         ],
         staticDisplayFields: [
             {
                 systemType: 'SaneString',
                 dataPointer: '/state/name',
+            },
+            {
+                systemType: 'ForeignId',
+                dataPointer: '/state/researchGroupId',
             }
         ]
     },

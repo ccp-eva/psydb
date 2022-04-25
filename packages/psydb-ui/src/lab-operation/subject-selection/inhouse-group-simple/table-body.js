@@ -42,6 +42,7 @@ const TableRow = ({
         <tr>
             {/*<td>{ record.sequenceNumber }</td>*/}
             <td>{ record.state.name }</td>
+            <td>{ related.relatedRecords.researchGroup[record.state.researchGroupId]._recordLabel }</td>
             <td>
                 <div className='d-flex justify-content-end'>
                     <Button

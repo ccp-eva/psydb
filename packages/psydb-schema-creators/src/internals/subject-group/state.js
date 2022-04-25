@@ -6,6 +6,7 @@ var {
     SaneString,
     DefaultArray,
     CustomRecordTypeKey,
+    ForeignId,
     ForeignIdList,
 } = require('@mpieva/psydb-schema-fields');
 
@@ -15,6 +16,9 @@ var SubjectGroupState = ({} = {}) => {
             name: SaneString({
                 title: 'Name',
                 minLength: 1
+            }),
+            researchGroupId: ForeignId({
+                collection: 'researchGroup'
             }),
             subjectsForType: DefaultArray({
                 minItems: 1,

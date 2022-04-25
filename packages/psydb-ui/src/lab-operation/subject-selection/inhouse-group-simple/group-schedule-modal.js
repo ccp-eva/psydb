@@ -9,10 +9,13 @@ import {
 
 import {
     useFetch,
+    useFetchAll,
     useModalReducer
 } from '@mpieva/psydb-ui-hooks';
 
 import StudyInhouseLocations from '@mpieva/psydb-ui-lib/src/study-inhouse-locations';
+
+import ExperimentCreateModal from './experiment-create-modal';
 
 const Details = (ps) => {
     var { subjectGroupId } = ps;
@@ -41,18 +44,28 @@ const ScheduleExperiment = (ps) => {
     var [ studyId, setStudyId ] = useState(studyIds[0]);
     var experimentCreateModal = useModalReducer();
 
-    var [ didFetch, fetched ] = useFetch((agent) => (
-        agent.readRecord({ collection: 'study', id: studyId })
-    ), [ studyId ]);
+    var [ didFetch, fetched ] = useFetchAll((agent) => ({
+        study: agent.readRecord({ collection: 'study', id: studyId }),
+        teams: agent.fetchExperimentOperatorTeamsForStudy({
+            studyId
+        })
+    }), [ studyId ]);
 
     if (!didFetch) {
         return <LoadingIndicator size='lg' />
     }
 
-    var { record, ...related } = fetched.data;
+    var { record, ...related } = fetched.study.data;
+    var { records: teams } = fetched.teams.data;
 
     return (
         <>
+            <ExperimentCreateModal
+                { ...experimentCreateModal.passthrough }
+                //studyId={ studyId }
+                subjectGroupId={ subjectGroupId }
+                teamRecords={ teams }
+            />
             <StudyInhouseLocations
                 studyId={ studyId }
                 studyRecordType={ record.type }
