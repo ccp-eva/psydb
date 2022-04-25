@@ -3,7 +3,7 @@ import jsonpointer from 'jsonpointer';
 
 import { keyBy } from '@mpieva/psydb-core-utils';
 import { useFetch, useFetchAll } from '@mpieva/psydb-ui-hooks';
-import { Button } from '@mpieva/psydb-ui-layout';
+import { Alert, Button } from '@mpieva/psydb-ui-layout';
 import * as enums from '@mpieva/psydb-schema-enums';
 
 import {
@@ -53,6 +53,16 @@ export const AwayTeamFields = (ps) => {
     }
     var { record, ...related } = fetched.subjectData.data;
     var locationId = jsonpointer.get(record, fieldDef.pointer);
+
+    if (!locationId) {
+        return (
+            <Alert variant='danger'>
+                Proband hat Feld "{fieldDef.displayName}"
+                nicht gesetzt!
+            </Alert>
+        );
+    }
+
     var locationLabel = (
         locationId
         ? related.relatedRecordLabels.location[locationId]._recordLabel
@@ -68,23 +78,12 @@ export const AwayTeamFields = (ps) => {
                 ? <Fields.Team studyId={ studyId } />
                 : <Fields.ExperimentOperators />
             }
-            { 
-                locationId
-                ? (
-                    <Fields.AwayLocation
-                        label={ fieldDef.displayName }
-                        dataXPath='$.locationId'
-                        locationId={ locationId }
-                        locationLabel={ locationLabel }
-                    />
-                )
-                : (
-                    <div className='text-danger'>
-                        Proband hat Feld "{fieldDef.displayName}"
-                        nicht gesetzt!
-                    </div>
-                )
-            }
+            <Fields.AwayLocation
+                label={ fieldDef.displayName }
+                dataXPath='$.locationId'
+                locationId={ locationId }
+                locationLabel={ locationLabel }
+            />
         </>
     )
 }
