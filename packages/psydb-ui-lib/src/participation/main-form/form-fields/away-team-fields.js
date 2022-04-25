@@ -54,7 +54,9 @@ export const AwayTeamFields = (ps) => {
     var { record, ...related } = fetched.subjectData.data;
     var locationId = jsonpointer.get(record, fieldDef.pointer);
     var locationLabel = (
-        related.relatedRecordLabels.location[locationId]._recordLabel
+        locationId
+        ? related.relatedRecordLabels.location[locationId]._recordLabel
+        : ''
     );
 
     return (
@@ -66,12 +68,23 @@ export const AwayTeamFields = (ps) => {
                 ? <Fields.Team studyId={ studyId } />
                 : <Fields.ExperimentOperators />
             }
-            <Fields.AwayLocation
-                label={ fieldDef.displayName }
-                dataXPath='$.locationId'
-                locationId={ locationId }
-                locationLabel={ locationLabel }
-            />
+            { 
+                locationId
+                ? (
+                    <Fields.AwayLocation
+                        label={ fieldDef.displayName }
+                        dataXPath='$.locationId'
+                        locationId={ locationId }
+                        locationLabel={ locationLabel }
+                    />
+                )
+                : (
+                    <div className='text-danger'>
+                        Proband hat Feld "{fieldDef.displayName}"
+                        nicht gesetzt!
+                    </div>
+                )
+            }
         </>
     )
 }

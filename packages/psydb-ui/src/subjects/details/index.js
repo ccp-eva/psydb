@@ -92,6 +92,7 @@ const SubjectDetailsContainer = ({
                     <ParticipationCreateModal
                         { ...participationModal.passthrough }
                         subjectId={ id }
+                        subjectRecordType={ recordType }
                         onSuccessfulUpdate={ revision.up }
                     />
                     <Header
