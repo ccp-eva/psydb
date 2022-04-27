@@ -22,7 +22,8 @@
     "@babel/core": "~7.12.10",
     "@babel/preset-env": "~7.12.10",
     "babel-loader": "~8.2.2",
-    "@mpieva/psydb-ui-request-agents": "~0.1.0-alpha"
+    "@mpieva/psydb-ui-request-agents": "~0.1.0-alpha",
+    "@cdxoo/flat": "~0.0.4"
   },
   "babel": {
     "presets": [

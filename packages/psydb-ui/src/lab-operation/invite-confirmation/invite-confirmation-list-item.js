@@ -1,22 +1,30 @@
 import React, { useReducer, useEffect, useMemo } from 'react';
-import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
-import applyValueToDisplayFields from '@mpieva/psydb-ui-lib/src/apply-value-to-display-fields';
+
+import { fixRelated } from '@mpieva/psydb-ui-utils';
+import { Button } from '@mpieva/psydb-ui-layout';
 
 import {
-    Button
-} from 'react-bootstrap';
+    datefns,
+    formatDateInterval
+} from '@mpieva/psydb-ui-lib';
 
-const InviteConfirmationListItem = ({
-    experimentRecord,
-    experimentOperatorTeamRecords,
-    experimentRelated,
-    subjectRecordsById,
-    subjectRelated,
-    subjectDisplayFieldData,
-    phoneListField,
+import applyValueToDisplayFields from '@mpieva/psydb-ui-lib/src/apply-value-to-display-fields';
 
-    onChangeStatus,
-}) => {
+import ExperimentContainer from './experiment-container';
+
+const InviteConfirmationListItem = (ps) => {
+
+    var {
+        experimentRecord,
+        experimentOperatorTeamRecords,
+        experimentRelated,
+        subjectRecordsById,
+        subjectRelated,
+        subjectDisplayFieldData,
+        phoneListField,
+
+        onChangeStatus,
+    } = ps;
 
     var {
         type: experimentType,
@@ -26,76 +34,40 @@ const InviteConfirmationListItem = ({
     var {
         studyId,
         locationId,
-        interval: { start, end },
+        interval,
         subjectData
     } = experimentState;
-
-    start = new Date(start);
-    end = new Date(new Date(end).getTime() + 1); // FIXME: 1ms offset
 
     var {
         relatedRecordLabels
     } = experimentRelated;
 
-    return (
-        <div className='border p-3 mb-3 bg-light'>
-            <header className='border-bottom mb-2 pb-1'>
-                <b>
-                    {
-                        experimentType === 'online-video-call'
-                        ? 'Online-Video-Termin'
-                        : 'Interner Termin'
-                    }
-                </b>
-            </header>
-            <div className='d-flex'>
-                <div style={{ minWidth: '150px' }}>
-                    <div>
-                        { datefns.format(start, 'P')}
-                    </div>
-                    <div>
-                        <b>
-                            { datefns.format(start, 'p') }
-                            {' - '}
-                            { datefns.format(end, 'p') }
-                        </b>
-                    </div>
-                </div>
-                <div style={{ width: '250px' }}>
-                    <div>
-                        Studie:
-                        {' '}
-                        <b>{ relatedRecordLabels.study[studyId]._recordLabel }</b>
-                    </div>
-                    <div>
-                        Ort:
-                        {' '}
-                        <b>{ relatedRecordLabels.location[locationId]._recordLabel }</b>
-                    </div>
-                    <u>Terminkommentar:</u>
-                </div>
-                <div className='flex-grow'>
-                    { 
-                        subjectData
-                        .filter(it => it.invitationStatus === 'scheduled')
-                        .map(it => (
-                            <SubjectItem { ...({
-                                key: it.subjectId,
-                                subjectDataItem: it,
-                                subjectRecordsById,
-                                subjectRelated,
-                                subjectDisplayFieldData,
-                                phoneListField,
-        
-                                experimentRecord,
+    var { startDate, startTime, endTime } = formatDateInterval(interval);
 
-                                onChangeStatus,
-                            }) } />
-                        ))
-                    }
-                </div>
-            </div>
-        </div>
+    return (
+        <ExperimentContainer
+            record={ experimentRecord }
+            related={ experimentRelated }
+        >
+            { 
+                subjectData
+                .filter(it => it.invitationStatus === 'scheduled')
+                .map(it => (
+                    <SubjectItem { ...({
+                        key: it.subjectId,
+                        subjectDataItem: it,
+                        subjectRecordsById,
+                        subjectRelated,
+                        subjectDisplayFieldData,
+                        phoneListField,
+
+                        experimentRecord,
+
+                        onChangeStatus,
+                    }) } />
+                ))
+            }
+        </ExperimentContainer>
     );
 }
 

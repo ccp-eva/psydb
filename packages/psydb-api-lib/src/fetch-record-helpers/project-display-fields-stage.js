@@ -17,7 +17,10 @@ var ProjectDisplayFieldsStage = ({
         }
     }
 
-    return ({ $project: displayFieldProjection });
+    return ({ $project: {
+        type: true,
+        ...displayFieldProjection
+    }});
 }
 
 module.exports = ProjectDisplayFieldsStage;

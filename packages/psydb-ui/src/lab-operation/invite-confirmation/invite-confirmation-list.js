@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useMemo } from 'react';
+import React from 'react';
 
 import {
     Route,
@@ -9,18 +9,23 @@ import {
     useParams
 } from 'react-router-dom';
 
-import agent from '@mpieva/psydb-ui-request-agents';
+import { useFetch, useSend, useRevision } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
-import CalendarNav from '@mpieva/psydb-ui-lib/src/calendar-nav';
-import withDailyCalendarPages from '@mpieva/psydb-ui-lib/src/with-daily-calendar-pages';
+import { 
+    CalendarNav,
+    withDailyCalendarPages
+} from '@mpieva/psydb-ui-lib';
 
 import InviteConfirmationListItem from './invite-confirmation-list-item';
 
-const InviteConfirmationList = ({
-    currentPageStart,
-    currentPageEnd,
-    onPageChange,
-}) => {
+
+const InviteConfirmationList = (ps) => {
+    var {
+        currentPageStart,
+        currentPageEnd,
+        onPageChange,
+    } = ps;
+
     var { path, url } = useRouteMatch();
 
     var {
@@ -29,7 +34,33 @@ const InviteConfirmationList = ({
         researchGroupId,
     } = useParams();
 
-    var [ state, dispatch ] = useReducer(reducer, {});
+    var revision = useRevision();
+    var [ didFetch, fetched ] = useFetch((agent) => (
+        agent.fetchInviteConfirmationList({
+            subjectRecordType: subjectType,
+            researchGroupId,
+            start: currentPageStart,
+            end: currentPageEnd,
+        })
+    ), [
+        studyType, subjectType, researchGroupId,
+        currentPageStart, currentPageEnd, revision.value
+    ]);
+
+    var send = useSend((bag) => ({
+        type: 'experiment/change-invitation-status',
+        payload: {
+            experimentId: bag.experimentRecord._id,
+            subjectId: bag.subjectRecord._id,
+            invitationStatus: bag.status
+        }
+    }), {
+        onSuccessfulUpdate: revision.up
+    });
+
+    if (!didFetch) {
+        return <LoadingIndicator size='lg' />
+    }
 
     var {
         experimentRecords,
@@ -39,50 +70,8 @@ const InviteConfirmationList = ({
         subjectRelated,
         subjectDisplayFieldData,
         phoneListField,
+    } = fetched.data;
 
-        listRevision,
-    } = state;
-
-    useEffect(() => {
-        agent.fetchInviteConfirmationList({
-            subjectRecordType: subjectType,
-            researchGroupId,
-            start: currentPageStart,
-            end: currentPageEnd,
-        })
-        .then(response => {
-            dispatch({ type: 'init', payload: {
-                ...response.data.data
-            }})
-        })
-    }, [ 
-        studyType, subjectType, researchGroupId,
-        currentPageStart, currentPageEnd, listRevision
-    ])
-
-    var [
-        handleChangeStatus
-    ] = useMemo(() => ([
-        ({ experimentRecord, subjectRecord, status }) => {
-            var message = {
-                type: 'experiment/change-invitation-status',
-                payload: {
-                    experimentId: experimentRecord._id,
-                    subjectId: subjectRecord._id,
-                    invitationStatus: status
-                }
-            }
-
-            agent.send({ message })
-            .then(response => {
-                dispatch({ type: 'increase-list-revision'})
-            })
-        }
-    ]), [])
-
-    if (!experimentRecords) {
-        return <LoadingIndicator size='lg' />
-    }
 
     return (
         <div>
@@ -109,35 +98,11 @@ const InviteConfirmationList = ({
                     subjectDisplayFieldData,
                     phoneListField,
 
-                    onChangeStatus: handleChangeStatus,
+                    onChangeStatus: send.exec,
                 }) } />
             )) }
         </div>
     )
-}
-
-const reducer = (state, action) => {
-    var { type, payload } = action;
-    switch (type) {
-        case 'init':
-            return {
-                ...state,
-                experimentRecords: payload.experimentRecords,
-                experimentOperatorTeamRecords: payload.experimentOperatorTeamRecords,
-                experimentRelated: payload.experimentRelated,
-                subjectRecordsById: payload.subjectRecordsById,
-                subjectRelated: payload.subjectRelated,
-                subjectDisplayFieldData: payload.subjectDisplayFieldData,
-                phoneListField: payload.phoneListField,
-
-            }
-        
-        case 'increase-list-revision':
-            return {
-                ...state,
-                listRevision: (state.listRevision || 0) + 1
-            }
-    }
 }
 
 const WrappedInviteConfirmationList = (
@@ -145,4 +110,5 @@ const WrappedInviteConfirmationList = (
         withURLSearchParams: true
     })
 );
+
 export default WrappedInviteConfirmationList;

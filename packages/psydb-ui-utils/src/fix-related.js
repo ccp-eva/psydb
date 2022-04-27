@@ -1,7 +1,11 @@
 // TODO: fix the underlying code
+import { flatten, unflatten } from '@cdxoo/flat';
 
 const fixRelated = (raw, options = {}) => {
-    var { isResponse = true } = options;
+    var {
+        isResponse = true,
+        labelize = false
+    } = options;
 
     var out = {
         crts: {},
@@ -25,6 +29,31 @@ const fixRelated = (raw, options = {}) => {
     
     if (raw.relatedHelperSetItems) {
         out.helperSets = raw.relatedHelperSetItems;
+    }
+
+    if (labelize) {
+        // FIXME: depth === 3
+        var flat = flatten(out, { maxDepth: 3 });
+        out = unflatten(
+            Object.keys(flat).reduce((acc, key) => {
+                if (key.split('.').length < 3) {
+                    return acc;
+                }
+
+                var value = flat[key];
+                if (
+                    key.startsWith('crts')
+                    || key.startsWith('helperSets')
+                ) {
+                    value = value.state.label
+                }
+                else if (key.startsWith('records')) {
+                    value = value._recordLabel;
+                }
+
+                return { ...acc, [key]: value }
+            }, {})
+        );
     }
 
     return (

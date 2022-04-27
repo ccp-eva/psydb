@@ -11,14 +11,18 @@ import {
     useParams
 } from 'react-router-dom';
 
-import agent from '@mpieva/psydb-ui-request-agents';
-import RecordTypeNav from '@mpieva/psydb-ui-lib/src/record-type-nav';
-import { ResearchGroupNav } from '@mpieva/psydb-ui-lib';
+var { PageWrappers } = require('@mpieva/psydb-ui-layout');
+
+import {
+    RedirectOrTypeNav,
+    ResearchGroupNav
+} from '@mpieva/psydb-ui-lib';
+
 import InviteConfirmationList from './invite-confirmation-list';
 
-const InviteConfirmationRouting = ({
-    subjectRecordTypes
-}) => {
+const InviteConfirmationRouting = (ps) => {
+    var { subjectRecordTypes } = ps;
+
     var { path, url } = useRouteMatch();
     var permissions = usePermissions();
 
@@ -36,11 +40,7 @@ const InviteConfirmationRouting = ({
     );
 
     return (
-        <>
-            <h5 className='mt-0 mb-3 text-muted'>
-                Terminbestätigung
-            </h5>
-                
+        <PageWrappers.Level2 title='Terminbestätigung'>
             <Switch>
                 <Route exact path={`${path}`}>
                     <RedirectOrTypeNav
@@ -58,33 +58,8 @@ const InviteConfirmationRouting = ({
                     <InviteConfirmationList />
                 </Route>
             </Switch>
-        </>
+        </PageWrappers.Level2>
     );
-}
-
-// FIXME redundant
-const RedirectOrTypeNav = ({
-    baseUrl,
-    subjectTypes,
-    title,
-}) => {
-    if (subjectTypes.length === 1) {
-        return (
-            <Redirect to={
-                `${baseUrl}/${subjectTypes[0].type}`
-            } />
-        )
-    }
-    else {
-        return (
-            <>
-                { title && (
-                    <h2>{ title }</h2>
-                )}
-                <RecordTypeNav items={ subjectTypes } />
-            </>
-        )
-    }
 }
 
 export default InviteConfirmationRouting;
