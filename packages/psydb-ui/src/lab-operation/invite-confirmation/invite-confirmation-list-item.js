@@ -52,9 +52,8 @@ const InviteConfirmationListItem = (ps) => {
             { 
                 subjectData
                 .map((it, ix) => (
-                    <>
+                    <div key={ ix }>
                         <SubjectItem { ...({
-                            key: it.subjectId,
                             subjectDataItem: it,
                             subjectRecordsById,
                             subjectRelated,
@@ -68,7 +67,7 @@ const InviteConfirmationListItem = (ps) => {
                         { ix < subjectData.length - 1 && (
                             <hr />
                         )}
-                    </>
+                    </div>
                 ))
             }
         </ExperimentContainer>
@@ -90,6 +89,7 @@ const SubjectItem = ({
     var {
         subjectId,
         invitationStatus,
+        comment,
     } = subjectDataItem;
 
     var subjectRecord = subjectRecordsById[subjectId];
@@ -103,8 +103,8 @@ const SubjectItem = ({
     return (
         <div className='d-flex'>
             <div className='flex-grow'>
-                { withValue.map(it => (
-                    <div className='d-flex' key={ it.key }>
+                { withValue.map((it, ix) => (
+                    <div className='d-flex' key={ ix }>
                         <span className='flx-grow w-25'>
                             { it.displayName }
                         </span>
@@ -127,6 +127,14 @@ const SubjectItem = ({
                         }
                     </div>
                 </div>
+                { comment && (
+                    <div className='mt-3'>
+                        <b><u>Kommentar</u></b>
+                        <div>
+                            <i>{ comment }</i>
+                        </div>
+                    </div>
+                )}
             </div>
             <div>
                 <div>
@@ -172,7 +180,6 @@ var StatusButton = ({
     currentStatus,
     onClick
 }) => {
-    console.log(buttonStatus, currentStatus);
     var variant = (
         buttonStatus === currentStatus
         ? 'primary'

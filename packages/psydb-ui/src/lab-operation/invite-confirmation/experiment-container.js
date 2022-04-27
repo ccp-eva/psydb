@@ -37,7 +37,6 @@ const ExperimentContainer = (ps) => {
                     <div>
                         Ort: <b>{ locationLabel}</b>
                     </div>
-                    <u>Terminkommentar:</u>
                 </div>
 
                 <div className='flex-grow'>
