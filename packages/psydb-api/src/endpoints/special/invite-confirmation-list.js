@@ -137,7 +137,6 @@ var inviteConfirmationList = async (context, next) => {
             ...subjectIds,
             ...(
                 it.state.subjectData
-                .filter(it => it.invitationStatus === 'scheduled')
                 .map(it => it.subjectId)
             )
         ]
@@ -188,7 +187,6 @@ var inviteConfirmationList = async (context, next) => {
     var subjectRelated = await fetchRelatedLabelsForMany({
         db,
         collectionName: 'subject',
-        recordType: subjectRecordType,
         records: subjectRecords
     })
 

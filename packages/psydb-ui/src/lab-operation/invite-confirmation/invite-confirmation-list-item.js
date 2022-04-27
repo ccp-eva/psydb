@@ -51,7 +51,6 @@ const InviteConfirmationListItem = (ps) => {
         >
             { 
                 subjectData
-                .filter(it => it.invitationStatus === 'scheduled')
                 .map(it => (
                     <SubjectItem { ...({
                         key: it.subjectId,
@@ -128,24 +127,30 @@ const SubjectItem = ({
                 <div>
                     <StatusButton
                         label='NE'
-                        onClick={ () => onChangeStatus({
-                            status: 'contact-failed',
+                        buttonStatus='contact-failed'
+                        currentStatus={ invitationStatus }
+                        onClick={ (status) => onChangeStatus({
+                            status,
                             subjectRecord,
                             experimentRecord,
                         }) }
                     />
                     <StatusButton
                         label='AB'
-                        onClick={ () => onChangeStatus({
-                            status: 'mailbox',
+                        buttonStatus='mailbox'
+                        currentStatus={ invitationStatus }
+                        onClick={ (status) => onChangeStatus({
+                            status,
                             subjectRecord,
                             experimentRecord,
                         }) }
                     />
                     <StatusButton
                         label='B'
-                        onClick={ () => onChangeStatus({
-                            status: 'confirmed',
+                        buttonStatus='confirmed'
+                        currentStatus={ invitationStatus }
+                        onClick={ (status) => onChangeStatus({
+                            status,
                             subjectRecord,
                             experimentRecord,
                         }) }
@@ -158,20 +163,30 @@ const SubjectItem = ({
 
 var StatusButton = ({
     label,
+    buttonStatus,
+    currentStatus,
     onClick
-}) => (
-    <Button
-        onClick={ onClick }
-        variant='outline-primary'
-        size='sm'
-        className='ml-2'>
-        <b
-            className='d-inline-block'
-            style={{ width: '23px' }}
-        >
-            { label }
-        </b>
-    </Button>
-)
+}) => {
+    console.log(buttonStatus, currentStatus);
+    var variant = (
+        buttonStatus === currentStatus
+        ? 'primary'
+        : 'outline-secondary'
+    );
+    return (
+        <Button
+            onClick={ () => onClick(buttonStatus) }
+            variant={ variant }
+            size='sm'
+            className='ml-2'>
+            <b
+                className='d-inline-block'
+                style={{ width: '23px' }}
+            >
+                { label }
+            </b>
+        </Button>
+    );
+}
 
 export default InviteConfirmationListItem;
