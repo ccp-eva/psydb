@@ -1,0 +1,33 @@
+import React from 'react';
+import { createBase, withPair, addComponents } from '../core';
+import {
+    Custom,
+    SaneString,
+    ForeignIdList,
+    DateOnlyServerSide,
+    DefaultBool,
+    SystemPermissions,
+} from '../utility-components';
+
+const labels = {
+    '/sequenceNumber': 'ID Nr.',
+    '/state/systemPermissions': 'Zugriff auf diesen Datensatz für'
+}
+
+const [ Location, LocationContext ] = createBase();
+addComponents(Location, LocationContext, labels, [
+    {
+        cname: 'SequenceNumber',
+        path: '/sequenceNumber',
+        Component: withPair(SaneString)
+    },
+    {
+        cname: 'SystemPermissions',
+        path: '/state/systemPermissions',
+        Component: withPair(SystemPermissions)
+    },
+
+    { cname: 'Custom', path: '/state/custom', Component: Custom },
+]);
+
+export default Location;

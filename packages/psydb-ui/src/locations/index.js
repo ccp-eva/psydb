@@ -9,8 +9,10 @@ import {
 
 import { RecordCreator } from './record-creator';
 import { RecordEditor } from './record-editor';
+import { RecordDetails } from './record-details';
 
 const LocationTypeView = withRecordTypeView({
+    RecordDetails,
     RecordCreator,
     RecordEditor,
 });

@@ -1,13 +1,5 @@
 import React from 'react';
-
-import {
-    Route,
-    Switch,
-    Redirect,
-    useRouteMatch,
-    useHistory,
-    useParams
-} from 'react-router-dom';
+import { useRouteMatch, useParams } from 'react-router-dom';
 
 import { useFetch, useSend, useRevision } from '@mpieva/psydb-ui-hooks';
 import { Alert, LoadingIndicator } from '@mpieva/psydb-ui-layout';
