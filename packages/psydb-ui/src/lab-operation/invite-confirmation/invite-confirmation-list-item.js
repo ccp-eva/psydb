@@ -1,19 +1,9 @@
-import React, { useReducer, useEffect, useMemo } from 'react';
-
-import { fixRelated } from '@mpieva/psydb-ui-utils';
-import { Button } from '@mpieva/psydb-ui-layout';
-
-import {
-    datefns,
-    formatDateInterval
-} from '@mpieva/psydb-ui-lib';
-
-import applyValueToDisplayFields from '@mpieva/psydb-ui-lib/src/apply-value-to-display-fields';
+import React from 'react';
 
 import ExperimentContainer from './experiment-container';
+import SubjectItem from './subject-item';
 
 const InviteConfirmationListItem = (ps) => {
-
     var {
         experimentRecord,
         experimentOperatorTeamRecords,
@@ -26,23 +16,7 @@ const InviteConfirmationListItem = (ps) => {
         onChangeStatus,
     } = ps;
 
-    var {
-        type: experimentType,
-        state: experimentState
-    } = experimentRecord;
-
-    var {
-        studyId,
-        locationId,
-        interval,
-        subjectData
-    } = experimentState;
-
-    var {
-        relatedRecordLabels
-    } = experimentRelated;
-
-    var { startDate, startTime, endTime } = formatDateInterval(interval);
+    var { subjectData } = experimentRecord.state;
 
     return (
         <ExperimentContainer
@@ -74,131 +48,5 @@ const InviteConfirmationListItem = (ps) => {
     );
 }
 
-const SubjectItem = ({
-    subjectDataItem,
-    experimentOperatorTeamRecords,
-    subjectRecordsById,
-    subjectRelated,
-    subjectDisplayFieldData,
-    phoneListField,
-    
-    experimentRecord,
-
-    onChangeStatus,
-}) => {
-    var {
-        subjectId,
-        invitationStatus,
-        comment,
-    } = subjectDataItem;
-
-    var subjectRecord = subjectRecordsById[subjectId];
-
-    var withValue = applyValueToDisplayFields({
-        displayFieldData: subjectDisplayFieldData,
-        record: subjectRecord,
-        ...subjectRelated,
-    });
-
-    return (
-        <div className='d-flex'>
-            <div className='flex-grow'>
-                { withValue.map((it, ix) => (
-                    <div className='d-flex' key={ ix }>
-                        <span className='flx-grow w-25'>
-                            { it.displayName }
-                        </span>
-                        <b className='flex-grow ml-3'>{ it.value }</b>
-                    </div>
-                )) }
-                <div className='mt-3 font-weight-bold'>
-                    <u>{ phoneListField.displayName }</u>
-                    <div>
-                        { 
-                            subjectRecord
-                            .gdpr.state.custom[phoneListField.key]
-                            .map((it, index) => {
-                                return (
-                                    <div key={ index }>
-                                        { it.number }
-                                    </div>
-                                )
-                            })
-                        }
-                    </div>
-                </div>
-                { comment && (
-                    <div className='mt-3'>
-                        <b><u>Kommentar</u></b>
-                        <div>
-                            <i>{ comment }</i>
-                        </div>
-                    </div>
-                )}
-            </div>
-            <div>
-                <div>
-                    <StatusButton
-                        label='NE'
-                        buttonStatus='contact-failed'
-                        currentStatus={ invitationStatus }
-                        onClick={ (status) => onChangeStatus({
-                            status,
-                            subjectRecord,
-                            experimentRecord,
-                        }) }
-                    />
-                    <StatusButton
-                        label='AB'
-                        buttonStatus='mailbox'
-                        currentStatus={ invitationStatus }
-                        onClick={ (status) => onChangeStatus({
-                            status,
-                            subjectRecord,
-                            experimentRecord,
-                        }) }
-                    />
-                    <StatusButton
-                        label='B'
-                        buttonStatus='confirmed'
-                        currentStatus={ invitationStatus }
-                        onClick={ (status) => onChangeStatus({
-                            status,
-                            subjectRecord,
-                            experimentRecord,
-                        }) }
-                    />
-                </div>
-            </div>
-        </div>
-    )
-}
-
-var StatusButton = ({
-    label,
-    buttonStatus,
-    currentStatus,
-    onClick
-}) => {
-    var variant = (
-        buttonStatus === currentStatus
-        ? 'primary'
-        : 'outline-secondary'
-    );
-    return (
-        <Button
-            onClick={ () => onClick(buttonStatus) }
-            variant={ variant }
-            size='sm'
-            className='ml-2'>
-            <b
-                className='d-inline-block'
-                style={{ width: '23px' }}
-            >
-                { label }
-            </b>
-        </Button>
-    );
-}
 
 export default InviteConfirmationListItem;

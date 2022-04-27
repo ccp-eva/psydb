@@ -10,7 +10,7 @@ import {
 } from 'react-router-dom';
 
 import { useFetch, useSend, useRevision } from '@mpieva/psydb-ui-hooks';
-import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
+import { Alert, LoadingIndicator } from '@mpieva/psydb-ui-layout';
 import { 
     CalendarNav,
     withDailyCalendarPages
@@ -72,7 +72,6 @@ const InviteConfirmationList = (ps) => {
         phoneListField,
     } = fetched.data;
 
-
     return (
         <div>
             <CalendarNav { ...({
@@ -86,6 +85,15 @@ const InviteConfirmationList = (ps) => {
                 marginLeft: '15em',
                 marginRight: '15em',
             }}/>
+
+            { experimentRecords.length < 1 && (
+                <Alert variant='info'>
+                    <i>
+                        Keine offenen Terminbestätigungen
+                        an diesem Tag
+                    </i>
+                </Alert>
+            )}
 
             { experimentRecords.map(it => (
                 <InviteConfirmationListItem { ...({
