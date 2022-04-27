@@ -51,19 +51,24 @@ const InviteConfirmationListItem = (ps) => {
         >
             { 
                 subjectData
-                .map(it => (
-                    <SubjectItem { ...({
-                        key: it.subjectId,
-                        subjectDataItem: it,
-                        subjectRecordsById,
-                        subjectRelated,
-                        subjectDisplayFieldData,
-                        phoneListField,
+                .map((it, ix) => (
+                    <>
+                        <SubjectItem { ...({
+                            key: it.subjectId,
+                            subjectDataItem: it,
+                            subjectRecordsById,
+                            subjectRelated,
+                            subjectDisplayFieldData,
+                            phoneListField,
 
-                        experimentRecord,
+                            experimentRecord,
 
-                        onChangeStatus,
-                    }) } />
+                            onChangeStatus,
+                        }) } />
+                        { ix < subjectData.length - 1 && (
+                            <hr />
+                        )}
+                    </>
                 ))
             }
         </ExperimentContainer>
