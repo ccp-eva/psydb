@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { FormBox, withRecordDetails } from '@mpieva/psydb-ui-lib';
 import { useRouteMatch  } from 'react-router-dom';
+import { withRecordDetails } from '@mpieva/psydb-ui-lib';
+import { DetailsBox } from '@mpieva/psydb-ui-layout';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
 
 import { Location } from '@mpieva/psydb-ui-lib/data-viewers';
@@ -28,12 +29,18 @@ export const DetailsBody = (ps) => {
     //var title = `${crtSettings.label} Datensatz-Details`;
     var title = 'Datensatz-Details';
     return (
-        <FormBox title={ title }>
+        <DetailsBox
+            title={ title }
+            editUrl={ `${up(url, 1)}/edit` }
+            canEdit= { canEdit }
+        >
             <Location { ...locationBag }>
                 <Location.SequenceNumber />
                 <Location.Custom />
+                <Location.ReservationSettings />
+                <Location.SystemPermissions />
             </Location>
-        </FormBox>
+        </DetailsBox>
     )
 }
 

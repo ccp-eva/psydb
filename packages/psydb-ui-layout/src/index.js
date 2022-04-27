@@ -20,6 +20,9 @@ export { default as PaddedText } from './padded-text';
 export { default as Split } from './split';
 export { default as Pair } from './pair';
 
+export { default as DetailsBox } from './details-box';
+export { default as FormBox } from './form-box';
+
 // FIXME: this should be withDefaultModal non capitalized
 export { default as WithDefaultModal } from './with-default-modal';
 

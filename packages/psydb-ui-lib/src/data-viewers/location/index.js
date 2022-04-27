@@ -3,11 +3,10 @@ import { createBase, withPair, addComponents } from '../core';
 import {
     Custom,
     SaneString,
-    ForeignIdList,
-    DateOnlyServerSide,
-    DefaultBool,
     SystemPermissions,
 } from '../utility-components';
+
+import ReservationSettings from './reservation-settings';
 
 const labels = {
     '/sequenceNumber': 'ID Nr.',
@@ -25,6 +24,11 @@ addComponents(Location, LocationContext, labels, [
         cname: 'SystemPermissions',
         path: '/state/systemPermissions',
         Component: withPair(SystemPermissions)
+    },
+    {
+        cname: 'ReservationSettings',
+        path: '/state/reservationSettings',
+        Component: ReservationSettings
     },
 
     { cname: 'Custom', path: '/state/custom', Component: Custom },
