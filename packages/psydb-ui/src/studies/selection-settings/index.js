@@ -47,7 +47,7 @@ const SelectionSettings = (ps) => {
                 })} />
             </div>
             <h5 className='mb-2 border-bottom pb-1'>
-                Probandenspezifische Bedingungen
+                Zugeordnete Probandentypen
             </h5>
             <div className='mb-3'>
                 <SubjectTypeSettings studyId={ studyId } />

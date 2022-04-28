@@ -8,6 +8,8 @@ const SelectorList = (ps) => {
         selectorRecords,
         ageFrameRecords,
 
+        disableAddSelector,
+
         onAddSelector,
         onRemoveSelector,
         ...downstream
@@ -25,7 +27,8 @@ const SelectorList = (ps) => {
             emptyClassName: 'text-muted',
             addButtonLabel: '+ Probandentyp',
             onAdd: onAddSelector,
-            showAddButton: !!onAddSelector
+            showAddButton: !!onAddSelector,
+            disableAddButton: disableAddSelector,
         }) }>
             {(it, index) => (
                 <SelectorListItem key={ index } {...({

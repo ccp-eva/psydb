@@ -15,6 +15,7 @@ const Form = (ps) => {
         <DefaultForm
             onSubmit={ onSubmit }
             useAjvAsync
+            ajvErrorInstancePathPrefix={ '/payload' }
         >
             {(formikProps) => (
                 <>
@@ -34,6 +35,7 @@ const NewSelectorModalBody = (ps) => {
     var {
         studyId,
         subjectTypeMap,
+        existingSubjectTypes = [],
 
         onHide,
         onSuccessfulUpdate,
@@ -58,7 +60,9 @@ const NewSelectorModalBody = (ps) => {
             subjectTypeMap={
                 Object.keys(subjectTypeMap).reduce((acc, key) => ({
                     ...acc,
-                    [key]: subjectTypeMap[key].state.label
+                    ...(!existingSubjectTypes.includes(key) && {
+                        [key]: subjectTypeMap[key].state.label
+                    })
                 }), {})
             }
             onSubmit={ send.exec }

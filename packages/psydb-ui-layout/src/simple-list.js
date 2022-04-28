@@ -9,6 +9,7 @@ export const SimpleList = (ps) => {
         emptyLabel = 'Keine Einträge',
         emptyClassName = 'text-danger',
         showAddButton = true,
+        disableAddButton = false,
         addButtonLabel = '+ Neuer Eintrag',
         onAdd,
     } = ps;
@@ -41,12 +42,17 @@ export const SimpleList = (ps) => {
 const Footer = (ps) => {
     var {
         addButtonLabel,
+        disableAddButton,
         onAdd
     } = ps;
 
     return (
         <div className='mt-3'>
-            <Button size='sm' onClick={ onAdd }>
+            <Button
+                size='sm'
+                disabled={ disableAddButton }
+                onClick={ onAdd }
+            >
                 { addButtonLabel }
             </Button>
         </div>

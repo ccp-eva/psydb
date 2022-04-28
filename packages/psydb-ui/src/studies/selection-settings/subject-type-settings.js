@@ -71,6 +71,13 @@ const SubjectTypeSettings = (ps) => {
         }), {})
     );
 
+    var existingSubjectTypes = (
+        selectorRecords.map(it => it.subjectTypeKey)
+    );
+    var hasNoTypesLeft = (
+        Object.keys(subjectTypeMap).length === existingSubjectTypes.length
+    );
+
     var canWrite = permissions.hasFlag('canWriteStudies');
 
     return (
@@ -80,6 +87,7 @@ const SubjectTypeSettings = (ps) => {
                 ...newSelectorModal.passthrough,
                 studyId,
                 subjectTypeMap,
+                existingSubjectTypes,
                 
                 onSuccessfulUpdate: increaseRevision
             })} />
@@ -115,6 +123,8 @@ const SubjectTypeSettings = (ps) => {
 
                 customRecordTypes,
                 subjectTypeMap,
+
+                disableAddSelector: hasNoTypesLeft,
 
                 ...(canWrite && {
                     onAddSelector: newSelectorModal.handleShow,
