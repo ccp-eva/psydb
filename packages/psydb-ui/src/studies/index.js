@@ -9,7 +9,7 @@ import {
 } from 'react-router-dom';
 
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
-import { LinkContainer } from '@mpieva/psydb-ui-layout';
+import { LinkContainer, PermissionDenied } from '@mpieva/psydb-ui-layout';
 import { FormBox } from '@mpieva/psydb-ui-lib';
 
 import StudyRecordContainer from './record-container';
