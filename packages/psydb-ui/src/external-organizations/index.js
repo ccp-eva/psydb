@@ -7,8 +7,10 @@ import {
 
 import { RecordCreator } from './record-creator';
 import { RecordEditor } from './record-editor';
+import { RecordDetails } from './record-details';
 
 const ExternalOrganizationTypeView = withRecordTypeView({
+    RecordDetails,
     RecordCreator,
     RecordEditor,
 });

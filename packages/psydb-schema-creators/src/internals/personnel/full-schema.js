@@ -9,10 +9,14 @@ var ScientificState = require('./scientific-state');
 var FullSchema = ({ enableInternalProps } = {}) => ExactObject({
     properties: {
         gdpr: ExactObject({
-            state: GdprState({ enableInternalProps }),
+            properties: {
+                state: GdprState({ enableInternalProps }),
+            }
         }),
         scientific: ExactObject({
-            state: ScientificState({ enableInternalProps })
+            properties: {
+                state: ScientificState({ enableInternalProps })
+            }
         }),
     },
 });
