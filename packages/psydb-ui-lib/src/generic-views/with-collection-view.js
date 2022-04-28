@@ -79,10 +79,12 @@ const withCollectionView = (options) => {
                         }) } />
                     )
                     : (
-                        <RecordTypeView { ...({
-                            collection,
-                            noSpacer: true
-                        }) } />
+                        <div className='mt-3'>
+                            <RecordTypeView { ...({
+                                collection,
+                                noSpacer: true
+                            }) } />
+                        </div>
                     )
                 )}
             </PageWrappers.Level1>

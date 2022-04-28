@@ -126,6 +126,7 @@ var collections = createEnumFromKV({
         'experimentOperatorTeam',
         'experiment',
         'helperSet',
+        'systemRole',
     ],
     names: [
         ...customRecordTypeCollections.names,
@@ -134,6 +135,7 @@ var collections = createEnumFromKV({
         'Experimenter-Teams',
         'Termine',
         'Hilfstabellen',
+        'System-Rollen'
     ]
 })
 

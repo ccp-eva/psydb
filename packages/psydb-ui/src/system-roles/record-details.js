@@ -45,6 +45,7 @@ export const DetailsBody = (ps) => {
             <SystemRole { ...systemRoleBag }>
                 <SystemRole.SequenceNumber />
                 <SystemRole.Name />
+                <hr />
                 <BaseFlags />
                 <AllLabOpsFlags />
             </SystemRole>
