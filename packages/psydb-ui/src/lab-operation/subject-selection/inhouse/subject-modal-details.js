@@ -41,7 +41,7 @@ const SubjectModalDetails = ({
     }
     else {
         return (
-            <div className='mt-3'>
+            <div className='mt-3 px-3'>
                 <RecordDetails
                     collection='subject'
                     recordType={ recordType }
