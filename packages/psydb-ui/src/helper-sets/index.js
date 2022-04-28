@@ -18,6 +18,7 @@ const HelperSetRecordList = (ps) => (
 );
 
 const HelperSetTypeView = withRecordTypeView({
+    RecordDetails: null,
     RecordCreator,
     RecordEditor,
     RecordList: HelperSetRecordList,

@@ -17,7 +17,6 @@ import {
     Icons
 } from '@mpieva/psydb-ui-layout';
 
-import GenericRecordFormContainer from '@mpieva/psydb-ui-lib/src/generic-record-form-container';
 import RecordListContainer from '@mpieva/psydb-ui-lib/src/record-list-container';
 
 import { RecordCreator, RecordEditor } from './items';

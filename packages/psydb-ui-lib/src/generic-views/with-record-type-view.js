@@ -18,6 +18,25 @@ import GenericRecordFormContainer from '../generic-record-form-container';
 
 import RecordTypeRouting from './record-type-routing';
 
+const DefaultRecordDetails = (ps) => (
+    <Alert variant='danger'>
+        <b>ERROR: RecordDetails component not set</b>
+    </Alert>
+)
+
+const DefaultRecordEditor = (ps) => (
+    <Alert variant='danger'>
+        <b>ERROR: RecordEditor component not set</b>
+    </Alert>
+)
+
+const DefaultRecordCreator = (ps) => (
+    <Alert variant='danger'>
+        <b>ERROR: RecordCreator component not set</b>
+    </Alert>
+)
+
+
 const withRecordTypeView = ({
     RecordList,
     RecordDetails,
@@ -29,9 +48,9 @@ const withRecordTypeView = ({
     shouldFetchCollectionTypes,
 }) => {
     RecordList = RecordList || GenericRecordListContainer;
-    RecordDetails = RecordDetails || GenericRecordDetailsContainer;
-    RecordEditor = RecordEditor || GenericRecordFormContainer;
-    RecordCreator = RecordCreator || GenericRecordFormContainer;
+    RecordDetails = RecordDetails || DefaultRecordDetails;
+    RecordEditor = RecordEditor || DefaultRecordEditor;
+    RecordCreator = RecordCreator || DefaultRecordCreator;
 
     const Routing = CustomRouting || RecordTypeRouting;
 
