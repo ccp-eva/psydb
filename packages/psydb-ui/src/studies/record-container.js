@@ -26,7 +26,6 @@ import {
 import StudyRecordDetails from './record-details';
 import RecordEditor from './record-editor';
 import StudySelectionSettings from './selection-settings';
-import StudyInhouseLocations from './inhouse-locations';
 
 import ExperimentSettings from './experiment-settings';
 import StudyTeams from './teams';
