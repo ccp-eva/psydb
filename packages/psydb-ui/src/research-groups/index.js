@@ -5,10 +5,12 @@ import {
     withRecordTypeView
 } from '@mpieva/psydb-ui-lib/src/generic-views'
 
+import { RecordDetails } from './record-details';
 import { RecordEditor } from './record-editor';
 import { RecordCreator } from './record-creator';
 
 const ResearchGroupTypeView = withRecordTypeView({
+    RecordDetails,
     RecordEditor,
     RecordCreator,
 });
