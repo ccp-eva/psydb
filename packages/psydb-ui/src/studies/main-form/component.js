@@ -28,7 +28,6 @@ export const Component = (ps) => {
         >
             {(formikProps) => (
                 <>
-                    { /*console.log(formikProps.values) || ''*/ }
                     <FormFields
                         crtSettings={ crtSettings }
                         related={ related }

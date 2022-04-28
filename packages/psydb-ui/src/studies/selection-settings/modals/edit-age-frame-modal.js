@@ -1,10 +1,5 @@
 import React from 'react';
 
-import {
-    ExactObject,
-    ExperimentSelectorEnum
-} from '@mpieva/psydb-schema-fields';
-
 import { demuxed } from '@mpieva/psydb-ui-utils';
 import { WithDefaultModal } from '@mpieva/psydb-ui-layout';
 import { AgeFrameForm } from '../age-frame-form';
@@ -39,14 +34,6 @@ const EditAgeFrameModalBody = (ps) => {
 
                 onSuccessfulUpdate: demuxed([ onHide, onSuccessfulUpdate ])
             })} />
-        {/*<AgeFrameForm {...({
-            op: 'patch',
-            studyId,
-            selectorId,
-            ageFrameRecord,
-            allowedSubjectTypes,
-            onSuccessfulUpdate: demuxed([ onHide, onSuccessfulUpdate ])
-        })} />*/}
         </div>
     );
 }

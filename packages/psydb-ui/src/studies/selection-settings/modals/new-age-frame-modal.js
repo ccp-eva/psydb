@@ -1,10 +1,5 @@
 import React from 'react';
 
-import {
-    ExactObject,
-    ExperimentVariantEnum
-} from '@mpieva/psydb-schema-fields';
-
 import { demuxed } from '@mpieva/psydb-ui-utils';
 import { WithDefaultModal } from '@mpieva/psydb-ui-layout';
 import { AgeFrameForm } from '../age-frame-form';

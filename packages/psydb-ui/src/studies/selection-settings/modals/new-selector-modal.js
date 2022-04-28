@@ -1,27 +1,34 @@
 import React from 'react';
 
-import {
-    ExactObject,
-} from '@mpieva/psydb-schema-fields';
-
 import { useSend } from '@mpieva/psydb-ui-hooks';
-import { WithDefaultModal } from '@mpieva/psydb-ui-layout';
-import { SchemaForm } from '@mpieva/psydb-ui-lib';
+import { WithDefaultModal, Button } from '@mpieva/psydb-ui-layout';
 
-const createSchema = ({ subjectTypeMap }) => ExactObject({
-    properties: {
-        subjectTypeKey: {
-            title: 'Probandentyp',
-            type: 'string',
-            enum: Object.keys(subjectTypeMap),
-            enumNames: (
-                Object.values(subjectTypeMap)
-                .map(it => it.state.label)
-            ),
-        }
-    },
-    required: [ 'subjectTypeKey' ]
-});
+import {
+    DefaultForm,
+    Fields,
+} from '@mpieva/psydb-ui-lib';
+
+const Form = (ps) => {
+    var { onSubmit, subjectTypeMap } = ps;
+
+    return (
+        <DefaultForm
+            onSubmit={ onSubmit }
+            useAjvAsync
+        >
+            {(formikProps) => (
+                <>
+                    <Fields.GenericEnum
+                        label='Probandentyp'
+                        dataXPath='$.subjectTypeKey'
+                        options={ subjectTypeMap }
+                    />
+                    <Button type='submit'>Speichern</Button>
+                </>
+            )}
+        </DefaultForm>
+    )
+}
 
 const NewSelectorModalBody = (ps) => {
     var {
@@ -32,9 +39,7 @@ const NewSelectorModalBody = (ps) => {
         onSuccessfulUpdate,
     } = ps;
 
-    var schema = createSchema({ subjectTypeMap });
-
-    var send = useSend(({ formData }) => ({
+    var send = useSend((formData) => ({
         type: `subjectSelector/create`,
         payload: {
             subjectTypeKey: formData.subjectTypeKey,
@@ -49,8 +54,13 @@ const NewSelectorModalBody = (ps) => {
     });
 
     return (
-        <SchemaForm
-            schema={ schema }
+        <Form
+            subjectTypeMap={
+                Object.keys(subjectTypeMap).reduce((acc, key) => ({
+                    ...acc,
+                    [key]: subjectTypeMap[key].state.label
+                }), {})
+            }
             onSubmit={ send.exec }
         />
     );
