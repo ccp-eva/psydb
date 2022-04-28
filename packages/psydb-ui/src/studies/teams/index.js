@@ -100,7 +100,7 @@ const StudyTeams = (ps) => {
                             ...related,
                             canEdit,
                             onEditClick: editModal.handleShow,
-                            enableDelete: record.state.hidden !== true,
+                            enableDelete: canEdit && record.state.hidden !== true,
                             onDeleteClick: hideModal.handleShow
                         })} />
                     ))
