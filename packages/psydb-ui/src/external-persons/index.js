@@ -5,10 +5,12 @@ import {
     withRecordTypeView
 } from '@mpieva/psydb-ui-lib/src/generic-views'
 
+import { RecordDetails } from './record-details';
 import { RecordCreator } from './record-creator';
 import { RecordEditor } from './record-editor';
 
 const ExternalPersonTypeView = withRecordTypeView({
+    RecordDetails,
     RecordCreator,
     RecordEditor,
 });

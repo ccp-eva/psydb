@@ -6,4 +6,5 @@ export { default as Location } from './location';
 export { default as Subject } from './subject';
 export { default as Study } from './study';
 export { default as LabProcedureSettings } from './lab-procedure-settings';
-export { default as ExternalOrganization } from './location';
+export { default as ExternalPerson } from './external-person';
+export { default as ExternalOrganization } from './external-organization';
