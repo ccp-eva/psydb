@@ -13,9 +13,6 @@ import { useFetch } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator, PageWrappers } from '@mpieva/psydb-ui-layout';
 
 import GenericRecordListContainer from '../record-list-container';
-import GenericRecordDetailsContainer from '../generic-record-details-container';
-import GenericRecordFormContainer from '../generic-record-form-container';
-
 import RecordTypeRouting from './record-type-routing';
 
 const DefaultRecordDetails = (ps) => (

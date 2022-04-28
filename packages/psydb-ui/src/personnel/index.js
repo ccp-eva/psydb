@@ -5,8 +5,6 @@ import {
     withRecordTypeView
 } from '@mpieva/psydb-ui-lib/src/generic-views'
 
-import GenericRecordFormContainer from '@mpieva/psydb-ui-lib/src/generic-record-form-container';
-
 import { RecordDetails } from './record-details';
 import { RecordEditor } from './record-editor';
 import { RecordCreator } from './record-creator';

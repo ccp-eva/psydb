@@ -10,7 +10,6 @@ import {
 } from '@mpieva/psydb-ui-hooks';
 
 import { LinkButton, Button } from '@mpieva/psydb-ui-layout';
-import GenericRecordDetails from '@mpieva/psydb-ui-lib/src/generic-record-details';
 import Participation from './participation';
 import {
     CreateModal as ParticipationCreateModal
@@ -79,12 +78,6 @@ const SubjectDetailsContainer = ({
                     collection,
                     recordType,
                 })} />
-
-                { /*<GenericRecordDetails { ...({
-                    id,
-                    collection,
-                    recordType,
-                })} /> */}
             </div>
             
             { canReadParticipation && (

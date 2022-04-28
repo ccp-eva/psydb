@@ -12,8 +12,6 @@ import {
     RecordEditor
 } from '@mpieva/psydb-ui-record-views/subjects';
 
-import GenericRecordDetails from '@mpieva/psydb-ui-lib/src/generic-record-details';
-
 const SubjectModalDetails = ({
     recordType,
     id
