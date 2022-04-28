@@ -3,11 +3,13 @@ import { createBase, withPair, addComponents } from '../core';
 import {
     SaneString,
     FullText,
+    EmailWithPrimaryList,
+    PhoneWithTypeList,
     DefaultBool,
     SystemPermissions,
 } from '../utility-components';
 
-import ExtraDescription from './extra-description';
+import ResearchGroupSettings from './research-group-settings';
 
 const labels = {
     '/sequenceNumber': 'ID Nr.',
@@ -18,7 +20,7 @@ const labels = {
     '/gdpr/state/phones': 'Telefon',
     '/gdpr/state/description': 'Beschreibung',
 
-    '/scientific/state/researchGroupSettings': 'Forschungsgruppen'
+    '/scientific/state/researchGroupSettings': 'Forschungsgruppen',
     '/scientific/state/systemPermissions': 'Zugriff auf diesen Datensatz für'
 }
 
@@ -69,7 +71,7 @@ addComponents(Personnel, PersonnelContext, labels, [
     
     {
         cname: 'SystemPermissions',
-        path: '/state/systemPermissions',
+        path: '/scientific/state/systemPermissions',
         Component: withPair(SystemPermissions)
     },
 ]);

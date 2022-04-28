@@ -1,20 +1,52 @@
 import React from 'react';
 import { useRouteMatch, useParams } from 'react-router-dom';
 
+import { withRecordDetails } from '@mpieva/psydb-ui-lib';
+import { DetailsBox, LinkButton } from '@mpieva/psydb-ui-layout';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
-import { usePermissions } from '@mpieva/psydb-ui-hooks';
-import { LinkButton } from '@mpieva/psydb-ui-layout';
 
-import GenericRecordDetailsContainer from '@mpieva/psydb-ui-lib/src/generic-record-details-container';
+import { Personnel } from '@mpieva/psydb-ui-lib/data-viewers';
+import * as Themes from '@mpieva/psydb-ui-lib/data-viewer-themes';
 
-export const RecordDetails = (ps) => {
+const DetailsBody = (ps) => {
+    var {
+        fetched,
+        permissions
+    } = ps;
+    
+    var { record, related } = fetched;
     var { url } = useRouteMatch();
-    var permissions = usePermissions();
+    
     var isRoot = permissions.isRoot();
+    var canEdit = permissions.hasCollectionFlag('personnel', 'write');
 
+    var personnelBag = {
+        theme: Themes.HorizontalSplit,
+        value: record,
+        related
+    }
+
+    //var title = `${crtSettings.label} Datensatz-Details`;
+    var title = 'Datensatz-Details';
     return (
         <>
-            <GenericRecordDetailsContainer { ...ps } />
+            <DetailsBox
+                title={ title }
+                editUrl={ `${up(url, 1)}/edit` }
+                canEdit= { canEdit }
+            >
+                <Personnel { ...personnelBag }>
+                    <Personnel.SequenceNumber />
+                    <Personnel.Firstname />
+                    <Personnel.Lastname />
+                    <Personnel.Emails />
+                    <Personnel.Phones />
+                    <Personnel.Description />
+                    <Personnel.ResearchGroupSettings />
+                    <Personnel.SystemPermissions />
+                </Personnel>
+            </DetailsBox>
+            
             { isRoot && (
                 <div className='mt-4 mb-4'>
                     <LinkButton
@@ -25,7 +57,12 @@ export const RecordDetails = (ps) => {
                     </LinkButton>
                 </div>
             )}
-
         </>
     )
 }
+
+export const RecordDetails = withRecordDetails({
+    DetailsBody: DetailsBody,
+    shouldFetchCRTSettings: false,
+    shouldFetchSchema: false,
+});

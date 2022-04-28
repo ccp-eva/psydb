@@ -1,4 +1,5 @@
 export * from './core/theme-context';
+export { default as Personnel } from './personnel'
 export { default as Location } from './location'
 export { default as Subject } from './subject'
 export { default as Study } from './study'
