@@ -1,0 +1,166 @@
+import React from 'react';
+import camelcase from 'camelcase';
+import { createBase, withPair, addComponents } from '../core';
+import {
+    SaneString,
+    FullText,
+    DefaultBool,
+} from '../utility-components';
+
+const labOpsPath = (type, flag) => (
+    `/state/labOperation/${type}/${flag}`
+)
+
+const inviteLabOpsLabels = (type) => ({
+    [labOpsPath(type, 'canWriteReservations')]: (
+        'kann Räumlichkeiten reservieren'
+    ),
+    [labOpsPath(type, 'canSelectSubjectsForExperiments')]: (
+        'kann Probanden für Termine auswählen'
+    ),
+    [labOpsPath(type, 'canConfirmSubjectInvitation')]: (
+        'kann Termine bestätigen'
+    ),
+    [labOpsPath(type, 'canViewExperimentCalendar')]: (
+        'kann Terminkalender einsehen'
+    ),
+    [labOpsPath(type, 'canMoveAndCancelExperiments')]: (
+        'kann Termine verschieben und absagen'
+    ),
+    [labOpsPath(type, 'canChangeOpsTeam')]: (
+        'kann Experimenter-Teams ändern'
+    ),
+    [labOpsPath(type, 'canPostprocessExperiments')]: (
+        'kann Termine nachbereiten'
+    ),
+})
+
+const awayTeamLabOpsLabels = (type) => ({
+    [labOpsPath(type, 'canWriteReservations')]: (
+        'kann Experimenter-Teams planen'
+    ),
+    [labOpsPath(type, 'canSelectSubjectsForExperiments')]: (
+        'kann Probanden für Termine auswählen'
+    ),
+    [labOpsPath(type, 'canViewExperimentCalendar')]: (
+        'kann Terminkalender einsehen'
+    ),
+    [labOpsPath(type, 'canMoveAndCancelExperiments')]: (
+        'kann Termine verschieben und absagen'
+    ),
+    [labOpsPath(type, 'canChangeOpsTeam')]: (
+        'kann Experimenter-Teams ändern'
+    ),
+    [labOpsPath(type, 'canPostprocessExperiments')]: (
+        'kann Termine nachbereiten'
+    ),
+});
+
+const surveyLabOpsLabels = (type) => ({
+    [labOpsPath(type, 'canPerformOnlineSurveys')]: (
+        'kann Online-Umfragen durchführen'
+    ),
+})
+
+const labels = {
+    '/sequenceNumber': 'ID Nr.',
+    '/state/name': 'Bezeichnung',
+
+    '/state/canWriteLocations': (
+        'kann Locations bearbeiten (Kigas, Räume, etc.)'
+    ),
+    '/state/canWriteExternalPersons': (
+        'kann Externe Personen bearbeiten (z.B. Ärzte)'
+    ),
+    '/state/canWriteExternalOrganizations': (
+        'kann Externe Organisationen bearbeiten (z.B. Träger)'
+    ),
+    '/state/canWriteStudyTopics': (
+        'kann Themengebiete bearbeiten'
+    ),
+    '/state/canWriteHelperSets': (
+        'kann Hilfstabellen bearbeiten'
+    ),
+    '/state/canWritePersonnel': (
+        'kann Mitarbeiter bearbeiten (d.h. Benutzer-Accounts)'
+    ),
+    '/state/canSetPersonnelPassword': (
+        'kann das Passwort anderer Benutzer manuell neu setzen'
+    ),
+    '/state/canReadStudies': (
+        'kann Studien einsehen'
+    ),
+    '/state/canWriteStudies': (
+        'kann Studien anlegen und bearbeiten'
+    ),
+    '/state/canReadSubjects': (
+        'kann Probanden einsehen'
+    ),
+    '/state/canWriteSubjects': (
+        'kann Probanden anlegen und bearbeiten'
+    ),
+    '/state/canReadParticipation': (
+        'kann einsehen welche Probanden an einer Studie teilgeommen haben'
+    ),
+    '/state/canWriteParticipation': (
+        'kann manuell Probanden in eine Studie eintragen'
+    ),
+    '/state/canViewReceptionCalendar': (
+        'kann Rezeptionskalender einsehen'
+    ),
+
+    ...inviteLabOpsLabels('inhouse'),
+    ...inviteLabOpsLabels('online-video-call'),
+    ...awayTeamLabOpsLabels('away-team'),
+    ...surveyLabOpsLabels('online-survey'),
+}
+
+const [ SystemRole, SystemRoleContext ] = createBase();
+addComponents(SystemRole, SystemRoleContext, labels, [
+    {
+        cname: 'SequenceNumber',
+        path: '/sequenceNumber',
+        Component: withPair(SaneString)
+    },
+    {
+        cname: 'Name',
+        path: '/name',
+        Component: withPair(SaneString)
+    },
+    
+    ...(
+        Object.keys(labels)
+        .filter(path => (
+            !['/sequenceNumber', '/state/name'].includes(path)
+            && !path.startsWith('/state/labOperation')
+        ))
+        .map(path => {
+            var flag = path.split('/').pop();
+            return {
+                cname: flag.toUpperCase(),
+                path
+                Component: withPair(DefaultBool)
+            }
+        })
+    ),
+
+    ...(
+        Object.keys(labels)
+        .filter(path => path.startsWith('/state/labOperation'))
+        .map(path => {
+            var [ type, flag ] = path.split('/').slice(-2);
+            type = camelcase(type, {
+                pascalCase: true,
+                preserveConsecutiveUppercase: true
+            });
+
+            return {
+                cname: 'LabOperation' + type + flag.toUpperCase(),
+                path
+                Component: withPair(DefaultBool)
+            }
+        })
+    )
+]);
+
+export default SystemRole;

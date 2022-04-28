@@ -79,6 +79,7 @@ dependencies:
   bcrypt: 5.0.1
   bootstrap: 4.6.1
   bson: 4.2.3
+  camelcase: 6.3.0
   chai: 4.2.0
   classnames: 2.3.1
   clone-deep: 4.0.1
@@ -10202,6 +10203,7 @@ packages:
       '@rjsf/core': 2.5.1_react@17.0.2
       babel-loader: 8.2.3_283b913718ac0bcaef1854ef6d4920fc
       bootstrap: 4.6.1
+      camelcase: 6.3.0
       chai: 4.2.0
       classnames: 2.3.1
       date-fns: 2.21.3
@@ -10223,7 +10225,7 @@ packages:
     peerDependencies:
       webpack: '*'
     resolution:
-      integrity: sha512-vqAu+e8OOfeWsUnWULLYS45nyA+oCJiK3Em4m/l6u6TH5eg9g9G6mnvawwdkdavpPJCf72akzGdE1hIOP3W07w==
+      integrity: sha512-pMnDMktpVs7pUFBaRt9qyenvmItV0FxM4VIGC1hxi8hJsOTNm6FkEPxPH6P69hvvn1iK0mJu55wQQR8sRpJcoA==
       tarball: 'file:projects/psydb-ui-lib.tgz'
     version: 0.0.0
   'file:projects/psydb-ui-record-views.tgz':
@@ -10432,6 +10434,7 @@ specifiers:
   bcrypt: ~5.0.0
   bootstrap: ~4.6.0
   bson: ~4.2.2
+  camelcase: ~6.3.0
   chai: ~4.2.0
   classnames: ~2.3.1
   clone-deep: ~4.0.1
