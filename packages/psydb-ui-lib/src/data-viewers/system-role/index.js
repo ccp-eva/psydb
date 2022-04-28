@@ -7,6 +7,11 @@ import {
     DefaultBool,
 } from '../utility-components';
 
+const cc = (str) => camelcase(str, {
+    pascalCase: true,
+    preserveConsecutiveUppercase: true
+})
+
 const labOpsPath = (type, flag) => (
     `/state/labOperation/${type}/${flag}`
 )
@@ -124,7 +129,7 @@ addComponents(SystemRole, SystemRoleContext, labels, [
     },
     {
         cname: 'Name',
-        path: '/name',
+        path: '/state/name',
         Component: withPair(SaneString)
     },
     
@@ -137,8 +142,8 @@ addComponents(SystemRole, SystemRoleContext, labels, [
         .map(path => {
             var flag = path.split('/').pop();
             return {
-                cname: flag.toUpperCase(),
-                path
+                cname: cc(flag),
+                path,
                 Component: withPair(DefaultBool)
             }
         })
@@ -149,14 +154,10 @@ addComponents(SystemRole, SystemRoleContext, labels, [
         .filter(path => path.startsWith('/state/labOperation'))
         .map(path => {
             var [ type, flag ] = path.split('/').slice(-2);
-            type = camelcase(type, {
-                pascalCase: true,
-                preserveConsecutiveUppercase: true
-            });
 
             return {
-                cname: 'LabOperation' + type + flag.toUpperCase(),
-                path
+                cname: 'LabOperation' + cc(type) + cc(flag),
+                path,
                 Component: withPair(DefaultBool)
             }
         })
