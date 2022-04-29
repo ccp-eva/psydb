@@ -1,6 +1,7 @@
 import React from 'react';
 
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
+import { formatDateInterval } from '@mpieva/psydb-ui-lib';
 
 import {
     FieldDataBodyCols,
@@ -63,9 +64,14 @@ const TargetLocationRow = ({
                                 excluded: record.state.reservationSettings.excludedExperimentWeekdays
                             })} />
                             <UpcomingExperiments { ...({
+                                className: 'mr-5',
                                 records: record._upcomingExperiments,
                                 ...locationExperimentMetadata
                             })} />
+                            <PastStudies { ...({
+                                records: record._pastStudies,
+                                ...locationExperimentMetadata
+                            }) } />
                         </div>
                         { showDetails && (
                             <DetailContainer { ...({
@@ -95,16 +101,19 @@ const UpcomingExperiments = ({
     relatedRecordLabels,
     relatedHelperSetItems,
     relatedCustomRecordTypeLabels,
+
+    className,
 }) => {
     var upcoming = (
         records.length > 0
         ? (
-            records.map((record, index) => {
-                var start = datefns.format(new Date(record.state.interval.start), 'P');
-                var study = relatedRecordLabels.study[record.state.studyId]._recordLabel;
+            records.map((record, ix) => {
+                var { studyId, interval } = record.state;
+                var { startDate } = formatDateInterval(interval);
+                var study = relatedRecordLabels.study[studyId]._recordLabel;
                 return (
-                    <b key={ index } className='d-inline-block mr-3'>
-                        { start } - { study }
+                    <b key={ ix } className='d-inline-block mr-3'>
+                        { startDate } - { study }
                     </b>
                 );
             })
@@ -114,10 +123,46 @@ const UpcomingExperiments = ({
         )
     )
     return (
-        <div>
+        <div className={ className }>
             Termine:
             {' '}
             { upcoming }
+        </div>
+    )
+}
+
+const PastStudies = (ps) => {
+    var {
+        records = [],
+        relatedRecordLabels,
+        relatedHelperSetItems,
+        relatedCustomRecordTypeLabels,
+    } = ps;
+
+    var past = (
+        records.length > 0
+        ? (
+            records.map((record, ix) => {
+                var { studyId, interval } = record.state;
+                var { startDate } = formatDateInterval(interval);
+                var study = relatedRecordLabels.study[studyId]._recordLabel;
+                return (
+                    <b key={ ix } className='d-inline-block mr-3'>
+                        { startDate } - { study }
+                    </b>
+                );
+            })
+        )
+        : (
+            <i className='text-muted'>Keine</i>
+        )
+    )
+    
+    return (
+        <div>
+            Studien:
+            {' '}
+            { past }
         </div>
     )
 }

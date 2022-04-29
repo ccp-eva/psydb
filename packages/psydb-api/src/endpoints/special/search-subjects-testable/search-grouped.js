@@ -30,6 +30,7 @@ var postprocessSubjectRecords = require('./postprocess-subject-records');
 var combineSubjectResponseData = require('./combine-subject-response-data');
 var fetchParentDataForGroups = require('./fetch-parent-data-for-groups');
 var fetchUpcomingExperimentData = require('./fetch-upcoming-experiment-data');
+var fetchPastLocationStudyData = require('./fetch-past-location-study-data');
 
 var fromFacets = require('./from-facets');
 
@@ -255,12 +256,28 @@ var searchGrouped = async (context, next) => {
         byProp: '_id',
     })
 
+    var pastLocationStudyData = await fetchPastLocationStudyData({
+        db,
+        locationIds: groupIds,
+        before: now,
+    });
+
+    var pastStudiesByLocationId = keyBy({
+        items: pastLocationStudyData.pastForIds,
+        byProp: '_id',
+    })
+
     var merged = locationData.records.map(it => ({
         ...it,
         _subjectRecords: groupedById[it._id].items,
         _upcomingExperiments: (
             upcomingByLocationId[it._id]
             ? upcomingByLocationId[it._id].upcoming
+            : []
+        ),
+        _pastStudies: (
+            pastByLocationId[it._id]
+            ? pastStudiesByLocationId[it._id].pastForIds
             : []
         )
     }))
@@ -277,9 +294,10 @@ var searchGrouped = async (context, next) => {
             locationMetadata: {
                 ...omit('records', locationData),
             },
-            locationExperimentMetadata: {
-                ...omit('upcomingForIds', upcomingLocationExperimentData),
-            },
+            locationExperimentMetadata: merge(
+                omit('upcomingForIds', upcomingLocationExperimentData),
+                omit('pastForIds', pastLocationStudyData),
+            ),
 
             locationCount,
             subjectCount,
