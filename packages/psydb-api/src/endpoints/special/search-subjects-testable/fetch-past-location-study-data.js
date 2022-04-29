@@ -44,12 +44,12 @@ var fetchPastLocationStudyData = async ({
         ]), [])
     });
 
-
+    // TODO: participation since old data is f'ed
 
     return {
-        upcomingForIds: upcomingExperiments,
+        pastForIds: pastExperiments,
         ...experimentRelated
     }
 }
 
-module.exports = fetchUpcomingExperimentData;
+module.exports = fetchPastLocationStudyData;
