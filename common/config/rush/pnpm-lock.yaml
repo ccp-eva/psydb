@@ -18,7 +18,7 @@ dependencies:
   '@cdxoo/mongodb-restore': 1.1.2
   '@cdxoo/objectpath-to-jsonpointer': 1.0.0
   '@cdxoo/omit': 1.0.1
-  '@cdxoo/pick-random-item': 0.0.1
+  '@cdxoo/pick-random-item': 0.0.2
   '@cdxoo/react-router-url-search-params': 1.0.4_react-router@5.2.1+react@17.0.2
   '@faker-js/faker': 6.2.0
   '@rjsf/bootstrap-4': 2.5.1_5dccca4f99fef0089ce8bea6fe035927
@@ -1437,10 +1437,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-2LM0fbRTixVTCE7qF4pLFZXlLeO0C0o7N7x0HzIbQNgDey8dcFxCOUblUpPfxIw8eGyHxBc4Sba4l6nlnXbO1A==
-  /@cdxoo/pick-random-item/0.0.1:
+  /@cdxoo/pick-random-item/0.0.2:
     dev: false
     resolution:
-      integrity: sha512-JfOQjArEUG2vrnxl1R3QE2dA+epoLt0F18QYPLkcb1Poyvy28KopS/TMT3Qq4QAs+cGfwSb+3fbpcarrz/c3Sw==
+      integrity: sha512-DnLA9K2dmVTKJBbLAXPmWfdNto+FjPQMg6QVXmiNRDU8iFZVMKSG40dPgpYdYOvLQaoDBCL+MWjQthgOhqqVWQ==
   /@cdxoo/react-router-url-search-params/1.0.4_react-router@5.2.1+react@17.0.2:
     dependencies:
       react: 17.0.2
@@ -9968,7 +9968,7 @@ packages:
   'file:projects/psydb-faker.tgz':
     dependencies:
       '@cdxoo/inline-text': 1.0.2
-      '@cdxoo/pick-random-item': 0.0.1
+      '@cdxoo/pick-random-item': 0.0.2
       '@faker-js/faker': 6.2.0
       co: 4.6.0
       date-fns: 2.21.3
@@ -9983,7 +9983,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-faker'
     resolution:
-      integrity: sha512-c1cgi58CkBXcAFYLRwNmYho0oMXZu5RTiSWRZnIQSv0La9c5bF+qbn9tF4sFk0Hz4fLjwOlJNbA7RWlCnBbiFw==
+      integrity: sha512-Q0h2w5sJe5P+9Hpy4AY73h/QqMU+eNPC9q/CjDHUkvBcMJFfkvOa8Ig4IwV3zmzc6ZfeqyyFSidi3bSCj6sp6w==
       tarball: 'file:projects/psydb-faker.tgz'
     version: 0.0.0
   'file:projects/psydb-fixture-initializer.tgz':
@@ -10413,7 +10413,7 @@ specifiers:
   '@cdxoo/mongodb-restore': ~1.1.2
   '@cdxoo/objectpath-to-jsonpointer': ~1.0.0
   '@cdxoo/omit': ~1.0.1
-  '@cdxoo/pick-random-item': ~0.0.1
+  '@cdxoo/pick-random-item': ~0.0.2
   '@cdxoo/react-router-url-search-params': ~1.0.4
   '@faker-js/faker': ~6.2.0
   '@rjsf/bootstrap-4': ~2.5.1
