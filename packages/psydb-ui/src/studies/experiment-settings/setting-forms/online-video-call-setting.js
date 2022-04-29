@@ -76,7 +76,10 @@ export const OnlineVideoCallSetting = (ps) => {
     
     var allowedLocationTypes = (
         customRecordTypes
-        .filter(it => it.collection === 'location')
+        .filter(it => (
+            it.collection === 'location'
+            && it.state.reservationType === 'inhouse'
+        ))
         .reduce((acc, it) => ({
             ...acc,
             [it.type]: it.state.label
