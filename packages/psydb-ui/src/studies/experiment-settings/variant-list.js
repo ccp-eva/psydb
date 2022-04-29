@@ -7,6 +7,9 @@ const VariantList = (ps) => {
     var {
         variantRecords,
         settingRecords,
+        
+        disableAddLabOps,
+
         onAddVariant,
         onRemoveVariant,
         ...downstream
@@ -23,6 +26,7 @@ const VariantList = (ps) => {
             emptyLabel:'Keine Ablauf-Einstellungen vorhanden',
             addButtonLabel: '+ Ablauf',
             showAddButton: !!onAddVariant,
+            disableAddButton: disableAddLabOps,
             onAdd: onAddVariant,
         }) }>
             {(it, index) => (

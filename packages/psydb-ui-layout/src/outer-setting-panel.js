@@ -8,6 +8,7 @@ export const OuterSettingPanel = (ps) => {
         children,
 
         showAddButton = true,
+        disableAddButton = false,
         showRemoveButton = true,
     } = ps;
 
@@ -36,6 +37,7 @@ export const OuterSettingPanel = (ps) => {
 const Footer = (ps) => {
     var {
         showAddButton = true,
+        disableAddButton = false,
         showRemoveButton = true,
         onAdd,
         onRemove,
@@ -45,7 +47,11 @@ const Footer = (ps) => {
     return (
         <div className='d-flex justify-content-between pr-3'>
             { showAddButton && ( 
-                <Button size='sm' onClick={ onAdd }>
+                <Button
+                    size='sm'
+                    disabled={ disableAddButton }
+                    onClick={ onAdd }
+                >
                     { addButtonLabel }
                 </Button>
             )}

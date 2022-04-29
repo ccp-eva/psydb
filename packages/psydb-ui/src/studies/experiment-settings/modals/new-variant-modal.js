@@ -1,31 +1,48 @@
 import React from 'react';
 
-import {
-    ExactObject,
-    ExperimentVariantEnum
-} from '@mpieva/psydb-schema-fields';
-
-import { demuxed } from '@mpieva/psydb-ui-utils';
+import * as enums from '@mpieva/psydb-schema-enums';
 import { useSend } from '@mpieva/psydb-ui-hooks';
-import { WithDefaultModal } from '@mpieva/psydb-ui-layout';
-import { SchemaForm } from '@mpieva/psydb-ui-lib';
+import { WithDefaultModal, Button } from '@mpieva/psydb-ui-layout';
 
-const schema = ExactObject({
-    properties: {
-        type: ExperimentVariantEnum(),
-    },
-    required: [ 'type' ]
-});
+import {
+    DefaultForm,
+    Fields,
+} from '@mpieva/psydb-ui-lib';
+
+const Form = (ps) => {
+    var { onSubmit, allowedLabOpsTypes } = ps;
+
+    return (
+        <DefaultForm
+            onSubmit={ onSubmit }
+            useAjvAsync
+            ajvErrorInstancePathPrefix={ '/payload' }
+        >
+            {(formikProps) => (
+                <>
+                    <Fields.GenericEnum
+                        label='Ablauf-Typ'
+                        dataXPath='$.type'
+                        options={ enums.experimentVariants.mapping }
+                        allowedValues={ allowedLabOpsTypes }
+                    />
+                    <Button type='submit'>Speichern</Button>
+                </>
+            )}
+        </DefaultForm>
+    )
+}
 
 const NewVariantModalBody = (ps) => {
     var {
         studyId,
+        allowedLabOpsTypes,
 
         onHide,
         onSuccessfulUpdate,
     } = ps;
 
-    var send = useSend(({ formData }) => ({
+    var send = useSend((formData) => ({
         type: `experimentVariant/create`,
         payload: {
             type: formData.type,
@@ -38,8 +55,8 @@ const NewVariantModalBody = (ps) => {
         onSuccessfulUpdate: [ onHide, onSuccessfulUpdate ]
     });
     return (
-        <SchemaForm
-            schema={ schema }
+        <Form
+            allowedLabOpsTypes={ allowedLabOpsTypes }
             onSubmit={ send.exec }
         />
     );

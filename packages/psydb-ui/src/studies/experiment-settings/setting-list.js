@@ -13,6 +13,10 @@ const SettingList = (ps) => {
     var {
         variantRecord,
         settingRecords,
+       
+        allowedSubjectTypes,
+        existingSubjectTypes,
+
         onEditSetting,
         onRemoveSetting,
         ...downstream
@@ -39,13 +43,13 @@ const SettingList = (ps) => {
         'online-survey': OnlineSurveySetting
     })[variantType];
 
-
     return (
         <>
             { settingRecords.map((settingRecord, index) => (
                 <SettingComponent key={ index } { ...({
                     variantRecord,
                     settingRecord,
+                    existingSubjectTypes,
                     showButtons: !!canWrite,
                     ...(canWrite && {
                         onEdit: onEditSetting,

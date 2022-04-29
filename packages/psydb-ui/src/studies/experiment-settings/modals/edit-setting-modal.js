@@ -1,20 +1,9 @@
 import React from 'react';
-
-import {
-    ExactObject,
-    ExperimentVariantEnum
-} from '@mpieva/psydb-schema-fields';
+import omit from '@cdxoo/omit';
 
 import { demuxed } from '@mpieva/psydb-ui-utils';
 import { WithDefaultModal } from '@mpieva/psydb-ui-layout';
 import * as Forms from '../setting-forms';
-
-const schema = ExactObject({
-    properties: {
-        type: ExperimentVariantEnum(),
-    },
-    required: [ 'type' ]
-});
 
 const EditSettingModalBody = (ps) => {
     var {
@@ -26,8 +15,23 @@ const EditSettingModalBody = (ps) => {
         onSuccessfulUpdate,
     } = ps;
 
-    var { variantRecord, settingRecord, settingRelated } = modalPayloadData;
+    var {
+        variantRecord,
+        settingRecord,
+        settingRelated,
+        existingSubjectTypes,
+    } = modalPayloadData;
+
     var { _id: variantId, type: variantType } = variantRecord;
+    var { subjectTypeKey } = settingRecord.state;
+
+    allowedSubjectTypes = {
+        ...omit(existingSubjectTypes, allowedSubjectTypes),
+        [subjectTypeKey]: (
+            settingRelated.relatedCustomRecordTypes.subject[subjectTypeKey]
+            .state.label
+        )
+    }
 
     var SettingForm = ({
         'inhouse': Forms.InhouseSetting,

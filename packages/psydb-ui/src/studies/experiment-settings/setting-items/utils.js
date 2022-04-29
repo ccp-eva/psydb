@@ -7,6 +7,7 @@ export const DefaultSettingWrapper = (ps) => {
         settingRecord,
         settingRelated,
         customRecordTypes,
+        existingSubjectTypes,
         showButtons = true,
         onEdit,
         onRemove,
@@ -22,7 +23,8 @@ export const DefaultSettingWrapper = (ps) => {
         variantRecord,
         settingRecord,
         settingRelated,
-        customRecordTypes
+        customRecordTypes,
+        existingSubjectTypes,
     };
 
     var panelProps = {

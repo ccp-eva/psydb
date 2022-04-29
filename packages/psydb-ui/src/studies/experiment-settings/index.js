@@ -9,6 +9,9 @@ import {
     useParams
 } from 'react-router-dom';
 
+import { without } from '@mpieva/psydb-core-utils';
+import * as enums from '@mpieva/psydb-schema-enums';
+
 import {
     useFetchAll,
     useRevision,
@@ -37,7 +40,7 @@ const ExperimentSettings = ({
     var { path, url } = useRouteMatch();
     var { id: studyId } = useParams();
     
-    var { value: revision, up: increaseRevision } = useRevision();
+    var revision = useRevision();
     var permissions = usePermissions();
     
     var newVariantModal = useModalReducer();
@@ -63,7 +66,7 @@ const ExperimentSettings = ({
             })
         }
         return promises;
-    }, [ studyId, revision ])
+    }, [ studyId, revision.value ])
 
     if (!didFetch) {
         return <LoadingIndicator size='lg' />
@@ -86,39 +89,47 @@ const ExperimentSettings = ({
         }), {})
     );
 
+    var allowedLabOpsTypes = without(
+        enums.experimentVariants.keys,
+        variantRecords.map(it => it.type)
+    );
+
     var canWrite = permissions.hasFlag('canWriteStudies');
+
+    var modalBag = {
+        studyId,
+        onSuccessfulUpdate: revision.up
+    }
 
     return (
         <div className='mt-3 mb-3'>
 
             <NewVariantModal { ...({
                 ...newVariantModal.passthrough,
-                studyId,
-                onSuccessfulUpdate: increaseRevision
+                ...modalBag,
+                allowedLabOpsTypes,
             })} />
 
             <RemoveVariantModal { ...({
                 ...removeVariantModal.passthrough,
-                onSuccessfulUpdate: increaseRevision
+                ...modalBag,
             })} />
 
             <NewSettingModal { ...({
                 ...newSettingModal.passthrough,
-                studyId,
+                ...modalBag,
                 allowedSubjectTypes,
-                onSuccessfulUpdate: increaseRevision
             })} />
 
             <EditSettingModal { ...({
                 ...editSettingModal.passthrough,
-                studyId,
+                ...modalBag,
                 allowedSubjectTypes,
-                onSuccessfulUpdate: increaseRevision
             })} />
 
             <RemoveSettingModal { ...({
                 ...removeSettingModal.passthrough,
-                onSuccessfulUpdate: increaseRevision
+                ...modalBag,
             })} />
 
             <VariantList { ...({
@@ -126,6 +137,10 @@ const ExperimentSettings = ({
                 settingRecords,
                 settingRelated,
                 customRecordTypes,
+                
+                allowedSubjectTypes: Object.keys(allowedSubjectTypes),
+                disableAddLabOps: allowedLabOpsTypes.length < 1,
+
                 ...(canWrite && {
                     onAddVariant: newVariantModal.handleShow,
                     onRemoveVariant: removeVariantModal.handleShow,

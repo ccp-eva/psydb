@@ -9,6 +9,8 @@ const VariantListItem = (ps) => {
     var {
         index,
         variantRecord,
+        settingRecords,
+        allowedSubjectTypes,
         onRemove,
         onAddSetting,
         ...downstream
@@ -20,12 +22,21 @@ const VariantListItem = (ps) => {
         state: variantState
     } = variantRecord;
 
+    var existingSubjectTypes = (
+        settingRecords.map(it => it.state.subjectTypeKey)
+    );
+
+    var hasNoSubjectTypesLeft = (
+        allowedSubjectTypes.length <= existingSubjectTypes.length
+    );
+
     var panelProps = {
         label: `Ablauf ${index + 1} - ${variantsEnum.mapping[variantType]}`,
         addButtonLabel: '+ Einstellungen',
         showAddButton: !!onAddSetting,
+        disableAddButton: hasNoSubjectTypesLeft,
         showRemoveButton: !!onRemove,
-        onAdd: () => onAddSetting({ variantRecord }),
+        onAdd: () => onAddSetting({ variantRecord, existingSubjectTypes }),
         onRemove: () => onRemove({ index, variantRecord })
     };
 
@@ -33,6 +44,8 @@ const VariantListItem = (ps) => {
         <OuterSettingPanel { ...panelProps }>
             <SettingList { ...({
                 variantRecord,
+                settingRecords,
+                existingSubjectTypes,
                 ...downstream
             })} />
         </OuterSettingPanel>
