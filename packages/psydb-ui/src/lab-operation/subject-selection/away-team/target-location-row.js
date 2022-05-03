@@ -11,6 +11,7 @@ import UncollapseButton from './uncollapse-button';
 import DetailContainer from './detail-container';
 
 const TargetLocationRow = ({
+    studyIds,
     record,
     subjectMetadata,
     subjectExperimentMetadata,
@@ -75,6 +76,7 @@ const TargetLocationRow = ({
                         </div>
                         { showDetails && (
                             <DetailContainer { ...({
+                                studyIds,
                                 locationId: record._id,
                                 locationComment: record.state.comment,
                                 locationRecord: record,

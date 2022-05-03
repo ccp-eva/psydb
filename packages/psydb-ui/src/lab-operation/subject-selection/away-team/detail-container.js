@@ -20,6 +20,7 @@ import CheckColumn from '@mpieva/psydb-ui-lib/src/check-column';
 import UpcomingExperiments from '../upcoming-experiments';
 
 const DetailContainer = ({
+    studyIds,
     locationId,
     locationComment,
     locationRecord,
@@ -54,6 +55,7 @@ const DetailContainer = ({
                 </thead>
 
                 <SubjectTableBody {...({
+                    studyIds,
                     subjectRecords,
                     subjectMetadata,
                     subjectExperimentMetadata,
@@ -82,6 +84,7 @@ const DetailContainer = ({
 }
 
 const SubjectTableBody = ({
+    studyIds,
     subjectRecords,
     subjectMetadata,
     subjectExperimentMetadata,
@@ -93,6 +96,10 @@ const SubjectTableBody = ({
     return (
         <tbody>
             { subjectRecords.map(record => {
+                var canSelect = record._upcomingExperiments.filter(it => (
+                    studyIds.includes(it.state.studyId)
+                )).length === 0;
+
                 var isRed = (
                     record._upcomingExperiments.length > 0
                 );
@@ -103,13 +110,13 @@ const SubjectTableBody = ({
                     >
                         
                         {
-                            isRed
-                            ? <td></td>
-                            : <CheckColumn { ...({
+                            canSelect
+                            ? <CheckColumn { ...({
                                 record,
                                 selectedRecordIds: selectedSubjectIds,
                                 onSelectRecord: onSelectSubject
                             })} />
+                            : <td></td>
                         }
 
                         <FieldDataBodyCols { ...({

@@ -11,6 +11,7 @@ import {
 import TargetLocationRow from './target-location-row';
 
 const TargetLocationTable = ({
+    studyIds,
     mergedRecords,
     subjectMetadata,
     subjectExperimentMetadata,
@@ -42,6 +43,7 @@ const TargetLocationTable = ({
                     return (
                         <TargetLocationRow { ...({
                             key: record._id,
+                            studyIds,
                             record,
                             subjectMetadata,
                             subjectExperimentMetadata,

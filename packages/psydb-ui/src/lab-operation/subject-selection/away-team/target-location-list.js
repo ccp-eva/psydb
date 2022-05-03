@@ -100,6 +100,7 @@ const TargetLocationList = ({
         revision, offset, limit
     ]);
 
+    var studyIds = joinedStudyIds.split(',');
     var selectedSubjectIds = state.selectedSubjects.map(it => it._id);
 
     var handleSelectSubject = ({ locationId, subjectRecord }) => {
@@ -185,6 +186,7 @@ const TargetLocationList = ({
             </div>
             
             <TargetLocationTable { ...({
+                studyIds,
                 mergedRecords,
                 subjectMetadata,
                 subjectExperimentMetadata,
