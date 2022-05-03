@@ -7,7 +7,7 @@ var inline = require('@cdxoo/inline-text');
 var omit = require('@cdxoo/omit');
 var datefns = require('date-fns');
 
-var { keyBy } = require('@mpieva/psydb-common-lib');
+var { keyBy, merge } = require('@mpieva/psydb-core-utils');
 
 var convertPointerToPath = require('@mpieva/psydb-api-lib/src/convert-pointer-to-path');
 
@@ -276,7 +276,7 @@ var searchGrouped = async (context, next) => {
             : []
         ),
         _pastStudies: (
-            pastByLocationId[it._id]
+            pastStudiesByLocationId[it._id]
             ? pastStudiesByLocationId[it._id].pastForIds
             : []
         )

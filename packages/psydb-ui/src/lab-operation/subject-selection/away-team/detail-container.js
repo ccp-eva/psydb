@@ -101,12 +101,16 @@ const SubjectTableBody = ({
                         key={record._id}
                         className={ isRed ? 'bg-light-red' : '' }
                     >
-
-                        <CheckColumn { ...({
-                            record,
-                            selectedRecordIds: selectedSubjectIds,
-                            onSelectRecord: onSelectSubject
-                        })} />
+                        
+                        {
+                            isRed
+                            ? <td></td>
+                            : <CheckColumn { ...({
+                                record,
+                                selectedRecordIds: selectedSubjectIds,
+                                onSelectRecord: onSelectSubject
+                            })} />
+                        }
 
                         <FieldDataBodyCols { ...({
                             record,

@@ -62,6 +62,11 @@ const TargetLocationList = ({
     var pagination = usePaginationReducer();
     var { offset, limit } = pagination;
     
+    var [ state, dispatch ] = useReducer(reducer, {
+        selectedSubjectsLocationId: undefined,
+        selectedSubjects: []
+    });
+
     var [ didFetch, fetched ] = useFetch((agent) => {
         var {
             interval,
@@ -83,18 +88,17 @@ const TargetLocationList = ({
             offset,
             limit,
         }).then(response => {
-            pagination.setTotal(response.data.data.locationCount)
+            pagination.setTotal(response.data.data.locationCount);
+            dispatch({ type: 'selected-subjects/set', payload: {
+                locationId: undefined, subjectRecords: [],
+            }})
+
             return response;
         })
     }, [
         joinedStudyIds, subjectRecordType, searchSettings64,
         revision, offset, limit
     ]);
-
-    var [ state, dispatch ] = useReducer(reducer, {
-        selectedSubjectsLocationId: undefined,
-        selectedSubjects: []
-    });
 
     var selectedSubjectIds = state.selectedSubjects.map(it => it._id);
 
