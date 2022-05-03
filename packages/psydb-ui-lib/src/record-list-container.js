@@ -16,6 +16,7 @@ const RecordListContainer = ({
     enableNew,
     enableView,
     enableEdit_old,
+    enableRecordRowLink,
 
     enableSelectRecords,
     showSelectionIndicator,
@@ -52,6 +53,7 @@ const RecordListContainer = ({
 
                 enableView,
                 enableEdit_old,
+                enableRecordRowLink,
 
                 enableSelectRecords,
                 showSelectionIndicator,

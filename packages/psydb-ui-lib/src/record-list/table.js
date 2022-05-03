@@ -19,6 +19,7 @@ var RecordListTable = ({
     
     enableView,
     enableEdit_old,
+    enableRecordRowLink,
     
     enableSelectRecords,
     showSelectionIndicator,
@@ -69,6 +70,9 @@ var RecordListTable = ({
         : undefined
     );
 
+    if (enableRecordRowLink) {
+        bsTableProps = { ...bsTableProps, hover: true };
+    }
     return (
         <Table className={ className } { ...bsTableProps }>
             <TableHead
@@ -84,6 +88,7 @@ var RecordListTable = ({
 
                 enableView,
                 enableEdit_old,
+                enableRecordRowLink,
 
                 enableSelectRecords,
                 showSelectionIndicator,

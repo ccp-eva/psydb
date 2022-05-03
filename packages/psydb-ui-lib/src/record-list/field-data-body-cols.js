@@ -7,6 +7,7 @@ const FieldDataBodyCols = ({
     relatedHelperSetItems,
     relatedCustomRecordTypeLabels,
     displayFieldData,
+    wrapAsLinkTo,
 }) => {
 
     var withValue = applyValueToDisplayFields({
@@ -19,7 +20,22 @@ const FieldDataBodyCols = ({
 
     return (
         withValue.map(it => (
-            <td key={ it.key }>{ it.value }</td>
+            wrapAsLinkTo
+            ? (
+                <td key={ it.key } className='p-0'>
+                    <a
+                        href={wrapAsLinkTo}
+                        className='d-block text-reset'
+                        style={{
+                            textDecoration: 'none',
+                            padding: '0.75rem'
+                        }}
+                    >
+                            { it.value }
+                    </a>
+                </td>
+            )
+            : <td key={ it.key }>{ it.value }</td>
         ))
     );
 }

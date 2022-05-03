@@ -8,25 +8,28 @@ import CheckColumn from '../check-column';
 
 import FieldDataBodyCols from './field-data-body-cols';
 
-const TableRow = ({
-    displayFieldData,
-    record,
-    relatedRecordLabels,
-    relatedHelperSetItems,
-    relatedCustomRecordTypeLabels,
-    
-    enableView,
-    enableEdit_old,
+const TableRow = (ps) => {
+    var {
+        displayFieldData,
+        record,
+        relatedRecordLabels,
+        relatedHelperSetItems,
+        relatedCustomRecordTypeLabels,
+        
+        enableView,
+        enableEdit_old,
+        enableRecordRowLink,
 
-    enableSelectRecord,
-    showSelectionIndicator,
-    wholeRowIsClickable,
-    onSelectRecord,
-    selectedRecordIds,
+        enableSelectRecord,
+        showSelectionIndicator,
+        wholeRowIsClickable,
+        onSelectRecord,
+        selectedRecordIds,
 
-    linkBaseUrl,
-    CustomActionListComponent,
-}) => {
+        linkBaseUrl,
+        CustomActionListComponent,
+    } = ps;
+
     return (
         <tr
             style={{
@@ -47,6 +50,36 @@ const TableRow = ({
                 : undefined
             )}
         >
+            <TDs { ...ps } />
+        </tr>
+    );
+}
+
+const TDs = (ps) => {
+    var {
+        displayFieldData,
+        record,
+        relatedRecordLabels,
+        relatedHelperSetItems,
+        relatedCustomRecordTypeLabels,
+        
+        enableView,
+        enableEdit_old,
+        enableRecordRowLink,
+
+        enableSelectRecord,
+        showSelectionIndicator,
+        wholeRowIsClickable,
+        onSelectRecord,
+        selectedRecordIds,
+
+        linkBaseUrl,
+        CustomActionListComponent,
+    } = ps;
+
+
+    return (
+        <>
             { (showSelectionIndicator && wholeRowIsClickable) && (
                 <CheckColumn { ...({
                     record,
@@ -60,6 +93,10 @@ const TableRow = ({
                 relatedHelperSetItems,
                 relatedCustomRecordTypeLabels,
                 displayFieldData,
+
+                ...(enableRecordRowLink && {
+                    wrapAsLinkTo: `#${linkBaseUrl}/${record._id}`
+                })
             })} />
             <td>
                 <div className='d-flex justify-content-end pb-0 pt-0'>
@@ -92,8 +129,8 @@ const TableRow = ({
                 }
                 </div>
             </td>
-        </tr>
-    );
+        </>
+    )
 }
 
 export default TableRow;

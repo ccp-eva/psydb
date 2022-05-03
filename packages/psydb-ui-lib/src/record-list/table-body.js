@@ -10,6 +10,7 @@ const TableBody = ({
 
     enableView,
     enableEdit_old,
+    enableRecordRowLink,
     
     enableSelectRecord,
     showSelectionIndicator,
@@ -32,6 +33,7 @@ const TableBody = ({
                     displayFieldData,
                     enableView,
                     enableEdit_old,
+                    enableRecordRowLink,
                     linkBaseUrl,
                 
                     enableSelectRecord,

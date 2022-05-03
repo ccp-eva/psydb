@@ -26,9 +26,10 @@ const RecordTypeRouting = ({
                 linkBaseUrl={ url }
                 collection={ collection }
                 recordType={ recordType }
-                enableView={ true }
+                enableView={ false }
                 enableNew={ true }
-                enableEdit={ true }
+                enableEdit={ false }
+                enableRecordRowLink={ true }
             />
         </Route>
 

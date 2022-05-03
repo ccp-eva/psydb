@@ -29,6 +29,7 @@ var RecordList = ({
 
     enableView,
     enableEdit_old,
+    enableRecordRowLink,
 
     enableSelectRecords,
     showSelectionIndicator,
@@ -124,6 +125,7 @@ var RecordList = ({
 
                 enableView,
                 enableEdit_old,
+                enableRecordRowLink,
 
                 enableSelectRecords,
                 showSelectionIndicator,
