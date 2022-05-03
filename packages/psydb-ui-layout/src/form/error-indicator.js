@@ -31,6 +31,12 @@ const createFriendlyMessage = (err) => {
                 ? 'Dies ist ein Plichtfeld. Bitte einen Wert eingeben.'
                 : `Muss mindestens ${params.limit} Zeichen haben.`
             );
+        case 'minItems':
+            return (
+                params.limit === 1
+                ? 'Dies ist ein Plichtfeld. Bitte einen Wert eingeben.'
+                : `Muss mindestens ${params.limit} Einträge haben.`
+            );
         default:
             console.log(err);
             return err.message;
