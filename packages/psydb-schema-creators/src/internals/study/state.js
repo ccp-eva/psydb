@@ -21,23 +21,6 @@ var {
     CustomRecordTypeKey,
 } = require('@mpieva/psydb-schema-fields');
 
-// -> type A (has date of birth)
-//      -> age interval 01
-//              -> condition 01
-//                      -> value 01
-//                      -> value 02
-//              -> condition 02
-//                      -> value 02
-//      -> age interval 02
-//              -> condition 01
-//                      -> value 01
-// -> type B (has _no_ date of birth)
-//      -> condition 01
-//              -> value 01
-//              -> value 02
-
-// TODO: stub; needs conditions handling somehow
-// also we need condition templates for study types
 var StudyState = (ps = {}) => {
     var {
         customFieldDefinitions,

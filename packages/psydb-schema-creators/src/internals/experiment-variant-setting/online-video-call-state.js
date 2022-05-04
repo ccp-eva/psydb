@@ -27,6 +27,7 @@ var OnlineVideoCallState = () => {
             subjectFieldRequirements: SubjectFieldRequirementList(),
             locations: DefaultArray({
                 title: 'Räumlichkeiten',
+                minLength: 1,
                 items: ExactObject({
                     systemType: 'TypedInhouseLocationId',
                     properties: {
