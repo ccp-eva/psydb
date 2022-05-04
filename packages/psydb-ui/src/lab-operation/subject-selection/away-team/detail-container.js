@@ -159,7 +159,16 @@ const SubjectTableBody = ({
             <tr>
                 <td
                     role='button'
-                    onClick={ () => onSelectManySubjects(subjectRecords)}
+                    onClick={ () => {
+                        var filtered = (
+                            subjectRecords.filter((record) => (
+                                record._upcomingExperiments.filter(it => (
+                                    studyIds.includes(it.state.studyId)
+                                )).length === 0
+                            ))
+                        );
+                        onSelectManySubjects(filtered)
+                    }}
                 >
                     {
                         selectedSubjectIds.length > 0 

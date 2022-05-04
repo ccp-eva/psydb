@@ -15,20 +15,43 @@ export const Timestamp = (ps) => {
 
 export const Team = (ps) => {
     var { studyId, disabled } = ps;
+    var { setFieldValue } = useFormikContext();
 
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.fetchExperimentOperatorTeamsForStudy({ studyId })
-    ), [ studyId ])
+    ), {
+        dependencies: [ studyId ],
+        extraEffect: (response) => {
+            if (response.data && response.data.data) {
+                var { records } = response.data.data;
+                
+                var filtered = records.filter(it => (
+                    it.state.hidden !== true
+                ));
+                
+                if (filtered.length === 1) {
+                    setFieldValue(
+                        '$.experimentOperatorTeamId',
+                        filtered[0]._id
+                    );
+                }
+            }
+        }
+    })
 
     if (!didFetch) {
         return null;
     }
 
+    var filtered = fetched.data.records.filter(it => (
+        it.state.hidden !== true
+    ));
+
     return (
         <Fields.OpsTeamSelect
             label='Team'
             dataXPath='$.experimentOperatorTeamId'
-            teamRecords={ fetched.data.records }
+            teamRecords={ filtered }
             disabled={ disabled }
         />
     )
