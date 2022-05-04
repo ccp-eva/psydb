@@ -9,7 +9,12 @@ import {
     useParams
 } from 'react-router-dom';
 
-import { Button, LoadingIndicator, Alert } from '@mpieva/psydb-ui-layout';
+import {
+    LoadingIndicator,
+    Icons,
+    Button,
+    Alert
+} from '@mpieva/psydb-ui-layout';
 
 import StudyTeamListItem from '@mpieva/psydb-ui-lib/src/experiment-operator-team-list-item';
 
@@ -59,12 +64,20 @@ const StudyTeams = (ps) => {
                         Neues Team
                     </Button>
                 )}
-                <Button
-                    variant={ showHidden ? 'secondary' : 'outline-secondary'}
+                <div
+                    role='button'
+                    className='d-flex align-items-center text-primary'
                     onClick={ () => setShowHidden(!showHidden) }
                 >
-                    Ausgeblendete anzeigen
-                </Button>
+                    {
+                        showHidden 
+                        ? <Icons.CheckSquareFill />
+                        : <Icons.Square />
+                    }
+                    <span className='ml-2'>
+                        Ausgeblendete anzeigen
+                    </span>
+                </div>
             </div>
 
             <CreateModal
