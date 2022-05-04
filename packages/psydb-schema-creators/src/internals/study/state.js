@@ -57,13 +57,16 @@ var StudyState = (ps = {}) => {
 
             name: SaneString({
                 title: 'Bezeichnung',
+                minLength: 1,
             }),
             shorthand: SaneString({
                 title: 'Kürzel',
+                minLength: 1,
             }),
             scientistIds: ForeignIdList({
                 title: 'Wissenschaftler',
                 collection: 'personnel',
+                minItems: 1,
             }),
 
             runningPeriod: DateOnlyServerSideInterval({

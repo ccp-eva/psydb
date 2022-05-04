@@ -93,6 +93,7 @@ var fetchRecordByFilter = async ({
     
     stages.push({
         $match: {
+            'isDummy': { $ne: true },
             ...(
                 hasSubChannels
                 ? { 'scientific.state.internals.isRemoved': { $ne: true }}

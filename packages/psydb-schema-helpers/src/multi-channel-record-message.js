@@ -1,5 +1,6 @@
 'use strict';
 var { isPlainObject } = require('is-what');
+var config = require('@mpieva/psydb-common-config');
 
 var {
     ExactObject,
@@ -7,6 +8,7 @@ var {
     Id,
     EventId,
     Integer,
+    DefaultBool
 } = require('@mpieva/psydb-schema-fields');
 
 var createMessageType = require('./create-record-message-type'),
@@ -81,6 +83,9 @@ var MultiChannelRecordCreateMessage = ({
             properties: {
                 id: Id(), // user can optionally force create id
                 sequenceNumber: Integer(), // user can optionally force it
+                ...(config.enableMigrationMode && {
+                    isDummy: DefaultBool(),
+                }),
                 props: payloadPropsSchema,
 
                 ...staticCreatePropSchemas,

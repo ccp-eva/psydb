@@ -11,10 +11,6 @@ var {
 var PersonnelScientificState = () => {
     var schema = ExactObject({
         properties: {
-            // TODO: figure out if there is personnel that isnt allowed
-            // to login at all i.e. has no permissions na therefor
-            // does not have a system-role
-
             canLogIn: DefaultBool({
                 title: 'Log-In erlauben'
             }),

@@ -13,6 +13,7 @@
     "chai": "~4.2.0"
   },
   "dependencies": {
+    "@mpieva/psydb-common-config": "~0.1.0-alpha",
     "@mpieva/psydb-schema-fields": "~0.1.0-alpha",
     "@cdxoo/inline-text": "~1.0.2",
     "is-what": "~3.14.0"
