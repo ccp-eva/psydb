@@ -47,7 +47,7 @@ var fetchRecordByFilter = async ({
     offset = offset ||0;
     limit = limit || 0;
 
-    var stages = [];
+    var preCountStages = [];
     
     if (collectionName === 'customRecordType') {
         if (enableResearchGroupFilter) {
@@ -79,7 +79,7 @@ var fetchRecordByFilter = async ({
                 }
             }
 
-            stages.push(
+            preCountStages.push(
                 { $match: {
                     type: { $in: allowedTypeKeys }
                 }}
@@ -88,7 +88,7 @@ var fetchRecordByFilter = async ({
     }
 
     if (recordType) {
-        stages.push(
+        preCountStages.push(
             { $match: {
                 type: recordType,
             }}
@@ -96,7 +96,7 @@ var fetchRecordByFilter = async ({
     }
     
     if (collectionName === 'subject') {
-        stages.push({
+        preCountStages.push({
             $match: {
                 'isDummy': false,
                 'scientific.state.internals.isRemoved': false,
@@ -104,7 +104,7 @@ var fetchRecordByFilter = async ({
         });
     }
     else {
-        stages.push({
+        preCountStages.push({
             $match: {
                 'isDummy': { $ne: true },
                 ...(
@@ -147,8 +147,8 @@ var fetchRecordByFilter = async ({
         }
     }
 
-    stages = [
-        ...stages,
+    preCountStages = [
+        ...preCountStages,
         ...(additionalPreprocessStages || []),
         ...(
             disablePermissionCheck
@@ -169,19 +169,21 @@ var fetchRecordByFilter = async ({
     ];
 
     if (constraints) {
-        stages = [
-            ...stages,
+        preCountStages = [
+            ...preCountStages,
             MatchConstraintsStage({ constraints })
         ]
     }
 
     if (queryFields && queryFields.length > 0) {
-        stages = [
-            ...stages,
-            ...QuickSearchStages({
-                queryFields,
-                fieldTypeConversions,
-            })
+        var qsStages = QuickSearchStages({
+            queryFields,
+            fieldTypeConversions,
+        });
+        console.log(qsStages);
+        preCountStages = [
+            ...preCountStages,
+            ...qsStages
         ];
     }
     
@@ -204,7 +206,7 @@ var fetchRecordByFilter = async ({
     var countResult = await (
         db.collection(collectionName)
         .aggregate(
-            [ ...stages, { $count: 'COUNT' } ],
+            [ ...preCountStages, { $count: 'COUNT' } ],
             {
                 hint: 'searchIndex',
                 allowDiskUse: true,
@@ -217,8 +219,9 @@ var fetchRecordByFilter = async ({
     );
     console.log({ totalRecordCount });
 
+    var labelStage = undefined;
     if (recordLabelDefinition) {
-        stages.push(
+        labelStage = (
             SeperateRecordLabelDefinitionFieldsStage({
                 recordLabelDefinition
             })
@@ -227,8 +230,9 @@ var fetchRecordByFilter = async ({
 
     //console.log(additionalProjection);
 
+    var displayFieldStage = undefined;
     if (displayFields) {
-        /*stages.push(ProjectDisplayFieldsStage({
+        displayFieldStage = ProjectDisplayFieldsStage({
             displayFields,
             additionalProjection: {
                 type: true,
@@ -241,25 +245,38 @@ var fetchRecordByFilter = async ({
                 }),
                 ...additionalProjection
             }
-        }))*/
+        });
     }
 
+    var sortStage;
     if (sort) {
-        /*stages.push({
+        sortStage = {
             $sort: {
                 [sort.path]: sort.direction === 'desc' ? -1 : 1
             }
-        })*/
+        };
     }
     else {
         if (displayFields && displayFields.length > 0) {
             var { pointer, dataPointer } = displayFields[0];
             var sortPath = convertPointerToPath(pointer || dataPointer);
-            /*stages.push({
+            
+            await db.collection(collectionName).createIndex({
+                [sortPath]: 1
+            }, {
+                //collation: { locale: 'de@collation=phonebook' }
+            });
+
+            sortStage = {
                 $sort: { [sortPath]: 1 }
-            })*/
+            };
         }
     }
+
+    /*postCountStages.push(...[
+        { $skip: offset },
+        ...(limit ? [{ $limit: limit }] : [])
+    ]);*/
 
     /*stages.push({
         $facet: {
@@ -271,68 +288,41 @@ var fetchRecordByFilter = async ({
         }
     })*/
 
-    //console.log(collectionName);
+    var postCountStages = [
+        labelStage,
+        displayFieldStage
+    ].filter(it => !!it);
+
+    //console.dir({ postCountStages }, { depth: null });
+
     //console.dir(stages, { depth: null });
-    //throw new Error();*/
-
-    /*await db.collection('subject').dropIndexes()
-    await db.collection('subject').createIndex({
-        'type': 1
-    }, { name: 'ix__type' });
-    console.log(await db.collection('subject').indexes());*/
-
-    /*await db.collection('subject').createIndex({
-        'scientific.state.internals.isRemoved': 1
-    }, { name: 'ix_isRemoved'});
-    await db.collection('subject').createIndex({
-        'type': 1,
-        'scientific.state.internals.isRemoved': 1
-    }, { name: 'ix__type_and_isRemoved' });*/
-
-    //console.log(collectionName);
-    
-    /*console.dir(await (
-        db.collection(collectionName)
-        .aggregate(
-            [
-                ...stages.slice(0,1),
-            ],
-            {
-                //hint: { 'type': 1 },
-                allowDiskUse: true,
-                collation: { locale: 'de@collation=phonebook' }
-            }
-        )
-        .explain('executionStats')
-    ), { depth: null });*/
-
- 
-    console.dir(stages, { depth: null });
     var resultSet = await (
         db.collection(collectionName)
         .aggregate(
-            //_s
+            //[ ...preCountStages, ...postCountStages ],
             [
-                ...stages,
+                ...preCountStages,
+                sortStage,
                 { $skip: offset },
-                ...(limit ? [{ $limit: limit }] : [])
+                ...(limit ? [{ $limit: limit }] : []),
+                ...postCountStages,
             ],
             {
-                hint: 'searchIndex',
+                //hint: 'searchIndex',
                 allowDiskUse: true,
-                collation: { locale: 'de@collation=phonebook' }
+                //collation: { locale: 'de@collation=phonebook' }
             }
         )
         //.explain()
         .toArray()
     );
-    //console.log(facets);
+    //console.dir(resultSet, { depth: null });
     //console.dir(facets.stages[0]['$cursor'].queryPlanner.winningPlan, { depth: 4 });
     //console.dir(facets.queryPlanner.winningPlan, { depth: 4 });
     //return;
-    //var [ resultSet, totalRecordCount ] = fromFacets(facets);
+    //var [ resultSet = [], totalRecordCount ] = fromFacets(facets);
 
-    console.dir(resultSet, { depth: null });
+    //console.dir(resultSet, { depth: null });
 
     if (recordLabelDefinition) {
         resultSet.forEach(it => {
