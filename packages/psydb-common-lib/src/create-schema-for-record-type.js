@@ -6,6 +6,7 @@ var {
     ExactObject,
     Id,
     Integer,
+    DefaultBool,
 } = require('@mpieva/psydb-schema-fields');
 
 var createSchemaForRecordType = ({
@@ -195,10 +196,12 @@ var FullRecordSchemaCreator = ({
             SchemaCreator = ({ ...otherArgs }) => ExactObject({
                 properties: {
                     _id: Id(),
+                    isDummy: DefaultBool(),
 
                     ...(enableSequenceNumber && {
                         sequenceNumber: Integer()
                     }),
+
                     ...(enableOnlineId && {
                         onlineId: {
                             systemType: 'SaneString', // FIXME
@@ -217,7 +220,8 @@ var FullRecordSchemaCreator = ({
                             }})
                         };
                     }, {})
-                }
+                },
+                required: [ 'isDummy' ],
             });
         }
         else if (hasSubChannels) {
@@ -227,6 +231,7 @@ var FullRecordSchemaCreator = ({
             }) => ExactObject({
                 properties: {
                     _id: Id(),
+                    isDummy: DefaultBool(),
 
                     ...(enableSequenceNumber && {
                         sequenceNumber: Integer()
@@ -269,13 +274,15 @@ var FullRecordSchemaCreator = ({
                             })
                         };
                     }, {}),
-                }
+                },
+                required: [ 'isDummy' ],
             });
         }
         else if (hasFixedTypes) {
             SchemaCreator = (...args) => ExactObject({
                 properties: {
                     _id: Id(),
+                    isDummy: DefaultBool(),
 
                     ...(enableSequenceNumber && {
                         sequenceNumber: Integer()
@@ -298,6 +305,7 @@ var FullRecordSchemaCreator = ({
             SchemaCreator = (options, ...args) => ExactObject({
                 properties: {
                     _id: Id(),
+                    isDummy: DefaultBool(),
                     
                     ...(enableSequenceNumber && {
                         sequenceNumber: Integer()
@@ -318,7 +326,8 @@ var FullRecordSchemaCreator = ({
                             )
                         }))
                     }, ...args),
-                }
+                },
+                required: [ 'isDummy' ],
             });
         }
     

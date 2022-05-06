@@ -18,6 +18,10 @@ var fieldTypeConversions = require('./mongodb-field-type-conversions');
 var createRecordLabel = require('./create-record-label');
 var fromFacets = require('./from-facets');
 
+var collectionHasSubChannels = (collection) => (
+    allSchemaCreators[collection].hasSubChannels
+);
+
 var fetchRecordByFilter = async ({
     db,
     collectionName,
@@ -91,16 +95,57 @@ var fetchRecordByFilter = async ({
         );
     }
     
-    stages.push({
-        $match: {
-            'isDummy': { $ne: true },
-            ...(
-                hasSubChannels
-                ? { 'scientific.state.internals.isRemoved': { $ne: true }}
-                : { 'state.internals.isRemoved': { $ne: true }}
-            ),
+    if (collectionName === 'subject') {
+        stages.push({
+            $match: {
+                'isDummy': false,
+                'scientific.state.internals.isRemoved': false,
+            }
+        });
+    }
+    else {
+        stages.push({
+            $match: {
+                'isDummy': { $ne: true },
+                ...(
+                    hasSubChannels
+                    ? { 'scientific.state.internals.isRemoved': { $ne: true }}
+                    : { 'state.internals.isRemoved': { $ne: true }}
+                ),
+            }
+        });
+    }
+
+    var FooStages = ({ permissions, collection }) => {
+        var {
+            hasRootAccess,
+            forcedResearchGroupId,
+            researchGroupIdsByCollection,
+        } = permissions
+        if (hasRootAccess && !forcedResearchGroupId) {
+            return [];
         }
-    });
+        else {
+            var allowedResearchGroupIds = (
+                researchGroupIdsByCollection[collection].read
+            );
+            var statePath = (
+                collectionHasSubChannels(collection)
+                ? 'scientific.state'
+                : 'state'
+            );
+            var stages = [
+                { $match: { $or: [
+                    // NOTE: we have collections that do not have
+                    // record based systempermissions but instead
+                    // only require collection access
+                    { [`${statePath}.systemPermissions`]: { $exists: false }},
+                    { [`${statePath}.systemPermissions.accessRightsByResearchGroup.researchGroupId`]: { $in: allowedResearchGroupIds }},
+                ]}}
+            ];
+            return stages;
+        }
+    }
 
     stages = [
         ...stages,
@@ -108,18 +153,19 @@ var fetchRecordByFilter = async ({
         ...(
             disablePermissionCheck
             ? []
-            : SystemPermissionStages({
+            //: SystemPermissionStages({
+            : FooStages({
                 collection: collectionName,
                 permissions,
             })
         ),
-        StripEventsStage({
+        /*StripEventsStage({
             subChannels: (
                 hasSubChannels
                 ? [ 'gdpr', 'scientific' ]
                 : undefined
             )
-        })
+        })*/
     ];
 
     if (constraints) {
@@ -139,6 +185,38 @@ var fetchRecordByFilter = async ({
         ];
     }
     
+    var index = {
+        sequenceNumber: 1,
+        isDummy: 1,
+        ...(recordType && {
+            type: 1
+        }),
+        ...(
+            hasSubChannels
+            ? { 'scientific.state.internals.isRemoved': 1 }
+            : { 'state.internals.isRemoved': 1 }
+        )
+    }
+    await db.collection(collectionName).createIndex(index, {
+        name: 'searchIndex'
+    });
+
+    var countResult = await (
+        db.collection(collectionName)
+        .aggregate(
+            [ ...stages, { $count: 'COUNT' } ],
+            {
+                hint: 'searchIndex',
+                allowDiskUse: true,
+            }
+        )
+        .toArray()
+    );
+    var totalRecordCount = (
+        countResult && countResult[0] ? countResult[0].COUNT : 0
+    );
+    console.log({ totalRecordCount });
+
     if (recordLabelDefinition) {
         stages.push(
             SeperateRecordLabelDefinitionFieldsStage({
@@ -150,7 +228,7 @@ var fetchRecordByFilter = async ({
     //console.log(additionalProjection);
 
     if (displayFields) {
-        stages.push(ProjectDisplayFieldsStage({
+        /*stages.push(ProjectDisplayFieldsStage({
             displayFields,
             additionalProjection: {
                 type: true,
@@ -163,27 +241,27 @@ var fetchRecordByFilter = async ({
                 }),
                 ...additionalProjection
             }
-        }))
+        }))*/
     }
 
     if (sort) {
-        stages.push({
+        /*stages.push({
             $sort: {
                 [sort.path]: sort.direction === 'desc' ? -1 : 1
             }
-        })
+        })*/
     }
     else {
         if (displayFields && displayFields.length > 0) {
             var { pointer, dataPointer } = displayFields[0];
             var sortPath = convertPointerToPath(pointer || dataPointer);
-            stages.push({
+            /*stages.push({
                 $sort: { [sortPath]: 1 }
-            })
+            })*/
         }
     }
 
-    stages.push({
+    /*stages.push({
         $facet: {
             records: [
                 { $skip: offset },
@@ -191,7 +269,7 @@ var fetchRecordByFilter = async ({
             ],
             recordsCount: [{ $count: 'COUNT' }]
         }
-    })
+    })*/
 
     //console.log(collectionName);
     //console.dir(stages, { depth: null });
@@ -228,20 +306,33 @@ var fetchRecordByFilter = async ({
         .explain('executionStats')
     ), { depth: null });*/
 
-    var facets = await (
+ 
+    console.dir(stages, { depth: null });
+    var resultSet = await (
         db.collection(collectionName)
         .aggregate(
-            stages,
+            //_s
+            [
+                ...stages,
+                { $skip: offset },
+                ...(limit ? [{ $limit: limit }] : [])
+            ],
             {
+                hint: 'searchIndex',
                 allowDiskUse: true,
                 collation: { locale: 'de@collation=phonebook' }
             }
         )
+        //.explain()
         .toArray()
     );
-    var [ resultSet, totalRecordCount ] = fromFacets(facets);
+    //console.log(facets);
+    //console.dir(facets.stages[0]['$cursor'].queryPlanner.winningPlan, { depth: 4 });
+    //console.dir(facets.queryPlanner.winningPlan, { depth: 4 });
+    //return;
+    //var [ resultSet, totalRecordCount ] = fromFacets(facets);
 
-    //console.dir(resultSet, { depth: null });
+    console.dir(resultSet, { depth: null });
 
     if (recordLabelDefinition) {
         resultSet.forEach(it => {

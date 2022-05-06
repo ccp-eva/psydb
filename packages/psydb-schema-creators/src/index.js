@@ -58,6 +58,7 @@ module.exports = {
     },
     subject: {
         ...metadata.subject,
+        FullSchema: internals.SubjectFullSchema,
         subChannelStateSchemaCreators: {
             scientific: internals.SubjectScientificState,
             gdpr: internals.SubjectGdprState,

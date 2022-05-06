@@ -63,6 +63,7 @@ var openChannel = async (options) => {
                 ? {
                     ...(recordType && { type: recordType }),
                     sequenceNumber,
+                    isDummy: false,
                     ...additionalCreateProps
                 }
                 : undefined
