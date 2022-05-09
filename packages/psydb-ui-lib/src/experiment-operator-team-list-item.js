@@ -55,7 +55,7 @@ const StudyTeamListItem = ({
                 </div>
                 { relatedRecordLabels && (
                     <div>
-                        <span className='d-inline-block pr-2'>Experimenter:</span>
+                        <span className='d-inline-block pr-2'>Experimenter:innen:</span>
                         {
                             record.state.personnelIds
                             .map(id => (

@@ -151,7 +151,7 @@ const LabOperationFields = (ps) => {
                 label={
                     hasInvitation
                     ? 'kann Räumlichkeiten reservieren'
-                    : 'kann Experimenter-Teams planen'
+                    : 'kann Experimenter:innen-Teams planen'
                 }
                 dataXPath={ `${dataXPath}.canWriteReservations` }
                 required
@@ -179,7 +179,7 @@ const LabOperationFields = (ps) => {
                 required
             />
             <Bool
-                label='kann Experimenter-Teams ändern'
+                label='kann Experimenter:innen-Teams ändern'
                 dataXPath={ `${dataXPath}.canChangeOpsTeam` }
                 required
             />

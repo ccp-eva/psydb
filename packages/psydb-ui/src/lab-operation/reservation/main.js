@@ -103,7 +103,7 @@ export const Main = ({ customRecordTypes }) => {
                     studyRecord={ studyRecord }
                     urlAffix='/teams'
                 >
-                    Keine Experimenter-Teams in dieser Studie
+                    Keine Experimenter:innen-Teams in dieser Studie
                 </ErrorFallback>
             </>
         )

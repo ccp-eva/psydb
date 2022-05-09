@@ -38,13 +38,13 @@ const FormFields = (ps) => {
                 <div className='mb-3'>
                     <i>
                         Team ist bereits Terminen zugeordnet,
-                        Experimenter daher nicht mehr änderbar
+                        Experimenter:innen daher nicht mehr änderbar
                     </i>
                 </div>
             )}
             <Fields.ForeignIdList
                 dataXPath='$.personnelIds'
-                label='Experimenter'
+                label='Experimenter:innen'
                 collection='personnel'
                 disabled={ hasExperiments }
             />

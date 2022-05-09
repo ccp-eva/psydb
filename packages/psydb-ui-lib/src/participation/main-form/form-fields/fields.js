@@ -87,7 +87,7 @@ export const Status = (ps) => {
 export const ExperimentOperators = (ps) => {
     return (
         <Fields.ForeignIdList
-            label='Experimenter'
+            label='Experimenter:innen'
             dataXPath='$.experimentOperatorIds'
             collection='personnel'
         />

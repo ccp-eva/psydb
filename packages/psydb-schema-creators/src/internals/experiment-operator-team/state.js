@@ -29,7 +29,7 @@ var ExperimentOperatorTeamState = ({
                 collection: 'study',
             }),*/
             personnelIds: ForeignIdList({
-                title: 'Experimenter',
+                title: 'Experimenter:innen',
                 collection: 'personnel',
                 minItems: 1,
             }),

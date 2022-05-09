@@ -132,7 +132,7 @@ var collections = createEnumFromKV({
         ...customRecordTypeCollections.names,
         'Mitarbeiter',
         'Forschungsgruppen',
-        'Experimenter-Teams',
+        'Experimenter:innen-Teams',
         'Termine',
         'Hilfstabellen',
         'System-Rollen'

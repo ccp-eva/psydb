@@ -33,7 +33,7 @@ const inviteLabOpsLabels = (type) => ({
         'kann Termine verschieben und absagen'
     ),
     [labOpsPath(type, 'canChangeOpsTeam')]: (
-        'kann Experimenter-Teams ändern'
+        'kann Experimenter:innen-Teams ändern'
     ),
     [labOpsPath(type, 'canPostprocessExperiments')]: (
         'kann Termine nachbereiten'
@@ -42,7 +42,7 @@ const inviteLabOpsLabels = (type) => ({
 
 const awayTeamLabOpsLabels = (type) => ({
     [labOpsPath(type, 'canWriteReservations')]: (
-        'kann Experimenter-Teams planen'
+        'kann Experimenter:innen-Teams planen'
     ),
     [labOpsPath(type, 'canSelectSubjectsForExperiments')]: (
         'kann Probanden für Termine auswählen'
@@ -54,7 +54,7 @@ const awayTeamLabOpsLabels = (type) => ({
         'kann Termine verschieben und absagen'
     ),
     [labOpsPath(type, 'canChangeOpsTeam')]: (
-        'kann Experimenter-Teams ändern'
+        'kann Experimenter:innen-Teams ändern'
     ),
     [labOpsPath(type, 'canPostprocessExperiments')]: (
         'kann Termine nachbereiten'

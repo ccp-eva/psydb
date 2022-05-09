@@ -21,7 +21,7 @@ var LabOperationPermissions = (options) => {
             canWriteReservations: WideBool({
                 title: {
                     'location-with-team': 'kann Räumlichkeiten reservieren',
-                    'team-only': 'kann Experimenter-Teams planen',
+                    'team-only': 'kann Experimenter:innen-Teams planen',
                 }[reservationType],
             }),
             canSelectSubjectsForExperiments: WideBool({
@@ -39,7 +39,7 @@ var LabOperationPermissions = (options) => {
                 title: 'kann Termine verschieben und absagen',
             }),
             canChangeOpsTeam: WideBool({
-                title: 'kann Experimenter-Team ändern'
+                title: 'kann Experimenter:innen-Team ändern'
             }),
             canPostprocessExperiments: WideBool({
                 title: 'kann Termine nachbearbeiten',
