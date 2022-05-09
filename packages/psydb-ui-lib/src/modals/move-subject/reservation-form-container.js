@@ -60,7 +60,9 @@ const ReservationFormContainer = ({
                 ),
                 interval: {
                     start: start.toISOString(),
-                    end: new Date(end).toISOString(),
+                    // FIXME: maxEnd and therefor end is already
+                    // reduced by 1 millisecond here
+                    end: new Date(end.getTime() + 1).toISOString(),
                 },
             },
             comment,
