@@ -199,7 +199,7 @@ var fetchRecordByFilter = async ({
             : { 'state.internals.isRemoved': 1 }
         )
     }
-    await db.collection(collectionName).createIndex(index, {
+    await db.collection(collectionName).ensureIndex(index, {
         name: 'searchIndex'
     });
 
@@ -261,7 +261,7 @@ var fetchRecordByFilter = async ({
             var { pointer, dataPointer } = displayFields[0];
             var sortPath = convertPointerToPath(pointer || dataPointer);
             
-            await db.collection(collectionName).createIndex({
+            await db.collection(collectionName).ensureIndex({
                 [sortPath]: 1
             }, {
                 //collation: { locale: 'de@collation=phonebook' }

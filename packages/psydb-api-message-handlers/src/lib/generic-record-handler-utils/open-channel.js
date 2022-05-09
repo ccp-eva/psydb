@@ -45,7 +45,7 @@ var openChannel = async (options) => {
         );
     }
 
-    await db.collection(collection).createIndex({
+    await db.collection(collection).ensureIndex({
         ...( recordType && { type: 1 }),
         sequenceNumber: 1
     }, { unique: true })
