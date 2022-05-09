@@ -74,7 +74,9 @@ export const Results = (ps) => {
 
     return (
         <div>
-            <Pagination { ...pagination } />
+            <div className='sticky-top border-bottom'>
+                <Pagination { ...pagination } />
+            </div>
 
             <TableComponent { ...({
                 columns,
