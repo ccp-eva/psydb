@@ -29,7 +29,7 @@ var fetchExperiments = async (context, options) => {
         db,
         collectionName: 'experiment',
         records,
-    })
+    });
 
     return {
         records,

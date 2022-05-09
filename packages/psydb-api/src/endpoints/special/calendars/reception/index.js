@@ -105,7 +105,7 @@ var receptionCalendar = async (context, next) => {
             typeKey: it.subjectType,
             typeLabel: (
                 experiments
-                .related.relatedCustomRecordTypeLabels
+                .related.relatedCustomRecordTypes
                 .subject[it.subjectType].state.label
             ),
             recordLabel: (
