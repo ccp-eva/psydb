@@ -32,6 +32,7 @@ export const CustomField = (ps) => {
             break;
         case 'ForeignId':
         case 'HelperSetItemId':
+        case 'Integer':
             isRequired = !props.isNullable;
             break;
         case 'ForeignIdList':

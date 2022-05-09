@@ -4,10 +4,30 @@ import { Form } from '@mpieva/psydb-ui-layout';
 
 export const Integer = withField({
     type: 'number',
-    fakeDefault: Infinity,
+    fakeDefault: null,
 
     Control: (ps) => {
-        var { formikField, disabled, min, max, step } = ps;
+        var {
+            formikField,
+            formikForm,
+            dataXPath,
+            isNullable,
+            disabled,
+            min, max, step,
+        } = ps;
+
+        var { value, onChange } = formikField;
+        var { setFieldValue } = formikForm;
+
+        var handleChange = (event) => {
+            var { target: { value }} = event;
+            if (isNullable && value === '') {
+                setFieldValue(dataXPath, null);
+            }
+            else {
+                return onChange(event)
+            }
+        }
         return (
             <Form.Control
                 type='number'
@@ -16,6 +36,7 @@ export const Integer = withField({
                 max={ max }
                 step={ step }
                 { ...formikField }
+                onChange={ handleChange }
             />
         )
     },

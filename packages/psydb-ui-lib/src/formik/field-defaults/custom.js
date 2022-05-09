@@ -27,7 +27,12 @@ const CustomFieldDefault = (options) => {
         case 'Address':
             return { 'country': 'DE' };
         case 'Integer':
-            return 0;
+            var { isNullable } = props;
+            return (
+                isNullable
+                ? null
+                : 0
+            );
 
         case 'DateOnlyServerSide':
         case 'DateTime':

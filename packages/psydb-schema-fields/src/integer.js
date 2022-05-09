@@ -1,11 +1,20 @@
 'use strict';
 var Integer = ({
+    isNullable,
     ...additionalKeywords
 } = {}) => {
     return {
         systemType: 'Integer',
-        type: 'integer',
-        default: 0,
+        type: (
+            isNullable
+            ? ['null', 'integer']
+            : 'integer'
+        ),
+        default: (
+            isNullable
+            ? null
+            : 0
+        ),
         ...additionalKeywords,
     };
 }

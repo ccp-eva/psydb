@@ -266,7 +266,9 @@ var ExtBoolFieldDefinition = () => FieldDefinition({
 var IntegerFieldDefinition = () => FieldDefinition({
     type: 'Integer',
     title: 'Ganz-Zahl (Integer)',
-    props: {},
+    props: {
+        isNullable: IsNullableProp(),
+    },
 });
 
 var ListOfObjectsFieldDefinition = () => FieldDefinition({
