@@ -79,7 +79,7 @@ const MoveSubjectModal = ({
             backdropClassName='team-modal-backdrop'
         >
             <Modal.Header closeButton>
-                <Modal.Title>Proband verschieben</Modal.Title>
+                <Modal.Title>Proband:in verschieben</Modal.Title>
             </Modal.Header>
             <Modal.Body className='bg-light'>
 

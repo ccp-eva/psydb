@@ -59,9 +59,9 @@ const SafetyForm = (ps) => {
     var studyTypes = Object.keys(participationByStudyType);
 
     return (
-        <FormBox title='Proband löschen' titleClassName='text-danger'>
+        <FormBox title='Proband:in löschen' titleClassName='text-danger'>
             <Pair 
-                label='Proband'
+                label='Proband:in'
                 wLeft={ 3 } wRight={ 9 } className='px-3'
             >
                 { _recordLabel }
@@ -76,7 +76,7 @@ const SafetyForm = (ps) => {
             { reverseRefs.length > 0 && (
                 <>
                     <Alert variant='danger'><b>
-                        Proband wird von anderen Datensätzen referenziert
+                        Proband:in wird von anderen Datensätzen referenziert
                     </b></Alert>
 
                     <ReverseRefList reverseRefs={ reverseRefs } />
@@ -86,7 +86,7 @@ const SafetyForm = (ps) => {
             { studyTypes.length > 0 && (
                 <>
                     <Alert variant='danger'><b>
-                        Proband hat an Studien teilgenommen
+                        Proband:in hat an Studien teilgenommen
                     </b></Alert>
                     <ParticipationList { ...({
                         participationByStudyType
@@ -154,8 +154,8 @@ const ParticipationList = (ps) => {
 const SuccessInfo = (ps) => {
     var { successInfoBackLink } = ps;
     return (
-        <FormBox titleClassName='text-success' title='Proband gelöscht'>
-            <i>Proband wurde erfolgreich gelöscht</i>
+        <FormBox titleClassName='text-success' title='Proband:in gelöscht'>
+            <i>Proband:in wurde erfolgreich gelöscht</i>
             { successInfoBackLink && (
                 <>
                     <hr />

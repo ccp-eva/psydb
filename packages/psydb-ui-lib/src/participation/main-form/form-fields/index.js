@@ -52,7 +52,7 @@ export const FormFields = (ps) => {
             )}
             { enableSubjectId && (
                 <Fields.ForeignId
-                    label='Proband'
+                    label='Proband:in'
                     dataXPath='$.subjectId'
                     collection='subject'
                     recordType={ subjectType }

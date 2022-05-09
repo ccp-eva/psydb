@@ -82,7 +82,7 @@ export const SubjectRecordViewModal = WithDefaultModal({
     Body: SubjectRecordViewModalBody,
 
     size: 'xl',
-    title: 'Proband',
+    title: 'Proband:in',
     className: '',
     backdropClassName: '',
     bodyClassName: 'bg-light'

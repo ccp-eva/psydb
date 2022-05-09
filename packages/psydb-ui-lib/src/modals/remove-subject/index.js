@@ -24,7 +24,7 @@ var schema = ExactObject({
     properties: {
 
         unparticipateStatus: UnparticipationStatus({ title: 'Grund' }),
-        blockSubjectFromTesting: BlockFromTesting({ title: 'Proband sperren' }),
+        blockSubjectFromTesting: BlockFromTesting({ title: 'Proband:in sperren' }),
         subjectComment: FullText({ title: 'Kommentar zum Probanden' }),
     },
     required: [
@@ -100,13 +100,13 @@ const RemoveSubjectModal = ({
             backdropClassName='team-modal-backdrop'
         >
             <Modal.Header closeButton>
-                <Modal.Title>Proband austragen</Modal.Title>
+                <Modal.Title>Proband:in austragen</Modal.Title>
             </Modal.Header>
             <Modal.Body className='bg-light'>
                 
                 <Split>
                     <div>
-                        <header><b>Proband</b></header>
+                        <header><b>Proband:in</b></header>
                         <div className='pt-2 pb-2 pl-4 mb-1'>{
                             subjectRecord._recordLabel
                         }</div>

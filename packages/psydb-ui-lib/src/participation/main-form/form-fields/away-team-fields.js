@@ -57,7 +57,7 @@ export const AwayTeamFields = (ps) => {
     if (!locationId) {
         return (
             <Alert variant='danger'>
-                Proband hat Feld "{fieldDef.displayName}"
+                Proband:in hat Feld "{fieldDef.displayName}"
                 nicht gesetzt!
             </Alert>
         );

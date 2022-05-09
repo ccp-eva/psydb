@@ -89,7 +89,7 @@ const EditForm = (ps) => {
                 <hr />
             )}
             <MainForm.Component
-                title='Proband bearbeiten'
+                title='Proband:in bearbeiten'
                 crtSettings={ crtSettings }
                 initialValues={ initialValues }
                 onSubmit={ send.exec }
@@ -103,7 +103,7 @@ const EditForm = (ps) => {
     var renderedForm = (
         renderFormBox
         ? (
-            <FormBox title='Proband bearbeiten'>
+            <FormBox title='Proband:in bearbeiten'>
                 { renderedContent }
             </FormBox>
         )

@@ -17,7 +17,7 @@ const SubjectControls = (ps) => {
 
     return (
         <>
-            <Pair className='mb-2' label="Proband">
+            <Pair className='mb-2' label="Proband:in">
                 { subjectLabel }
             </Pair>
             <CommentControl { ...({
