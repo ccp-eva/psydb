@@ -10,8 +10,15 @@ const EmptySlot = (ps) => {
         locationRecord,
         teamRecords,
 
+        checkEmptySlotSelectable,
         onSelectEmptySlot,
     } = ps;
+
+    var canSelect = (
+        checkEmptySlotSelectable
+        ? checkEmptySlotSelectable(ps)
+        : true
+    );
 
     var date = new Date(timestamp);
     
@@ -21,7 +28,7 @@ const EmptySlot = (ps) => {
             className='border text-center m-1'
             style={{ height: '26px' }}
             onClick={ () => {
-                onSelectEmptySlot && onSelectEmptySlot({
+                canSelect && onSelectEmptySlot && onSelectEmptySlot({
                     studyId,
                     locationRecord,
                     teamRecords,

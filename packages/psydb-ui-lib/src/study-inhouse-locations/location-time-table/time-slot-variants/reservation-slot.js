@@ -15,9 +15,16 @@ const ReservationSlot = (ps) => {
         locationRecord,
         teamRecords,
 
+        checkReservationSlotSelectable,
         onSelectReservationSlot,
     } = ps;
     
+    var canSelect = (
+        checkReservationSlotSelectable
+        ? checkReservationSlotSelectable(ps)
+        : true
+    );
+
     var date = new Date(timestamp);
 
     var teamRecord = teamRecords.find(it => (
@@ -44,7 +51,7 @@ const ReservationSlot = (ps) => {
                 borderColor: teamRecord.state.color
             }}
             onClick={ () => {
-                onSelectReservationSlot && onSelectReservationSlot({
+                canSelect && onSelectReservationSlot && onSelectReservationSlot({
                     studyId,
                     teamRecords,
                     locationRecord,

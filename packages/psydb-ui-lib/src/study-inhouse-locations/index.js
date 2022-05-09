@@ -22,6 +22,11 @@ const StudyInhouseLocations = ({
     activeLocationType,
     onSelectLocationType,
 
+    __useNewCanSelect,
+    checkEmptySlotSelectable,
+    checkReservationSlotSelectable,
+    checkExperimentSlotSelectable,
+
     onSelectEmptySlot,
     onSelectReservationSlot,
     onSelectExperimentSlot,
@@ -108,6 +113,11 @@ const StudyInhouseLocations = ({
                 currentSubjectRecord,
                 subjectRecordType,
                 locationRecordType: activeLocationType,
+
+                __useNewCanSelect,
+                checkEmptySlotSelectable,
+                checkReservationSlotSelectable,
+                checkExperimentSlotSelectable,
 
                 onSelectEmptySlot,
                 onSelectReservationSlot,

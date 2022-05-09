@@ -93,7 +93,15 @@ const MoveExperimentModal = ({
                 studyId,
                 studyRecordType,
 
+                __useNewCanSelect: true,
                 //activeLocationType={ 'instituteroom' }
+                checkExperimentSlotSelectable: (bag) => {
+                    var isSameExperiment = (
+                        bag.experimentRecord._id === experimentData.record._id
+                    );
+                    return isSameExperiment;
+                },
+                onSelectExperimentSlot: confirmModal.handleShow,
                 onSelectReservationSlot: confirmModal.handleShow,
 
                 calendarRevision: revision,

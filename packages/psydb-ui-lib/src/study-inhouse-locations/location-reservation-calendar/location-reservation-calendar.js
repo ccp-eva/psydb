@@ -22,6 +22,11 @@ const LocationCalendar = ({
     currentExperimentId,
     currentSubjectRecord,
 
+    __useNewCanSelect,
+    checkEmptySlotSelectable,
+    checkReservationSlotSelectable,
+    checkExperimentSlotSelectable,
+
     onSelectEmptySlot,
     onSelectReservationSlot,
     onSelectExperimentSlot,
@@ -81,6 +86,11 @@ const LocationCalendar = ({
                 subjectRecordType,
                 currentExperimentId,
                 currentSubjectRecord,
+
+                __useNewCanSelect,
+                checkEmptySlotSelectable,
+                checkReservationSlotSelectable,
+                checkExperimentSlotSelectable,
 
                 onSelectEmptySlot,
                 onSelectReservationSlot,

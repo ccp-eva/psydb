@@ -25,8 +25,16 @@ const ExperimentSlot = (ps) => {
         currentExperimentId,
         currentSubjectRecord,
 
+        __useNewCanSelect,
+        checkExperimentSlotSelectable,
         onSelectExperimentSlot,
     } = ps;
+
+    var canSelect = (
+        checkExperimentSlotSelectable
+        ? checkExperimentSlotSelectable(ps)
+        : true
+    );
 
     var date = new Date(timestamp);
 
@@ -69,12 +77,19 @@ const ExperimentSlot = (ps) => {
         currentExperimentId && experimentRecord._id === currentExperimentId
     )
 
-    var canClick = (
-        onSelectExperimentSlot &&
-        missingCount > 0 &&
-        !isSameExperiment && 
-        (_isAugmented && _matchesRequirements)
-    );
+    var canClick = false;
+    if (__useNewCanSelect) {
+        canClick = canSelect && onSelectExperimentSlot;
+    }
+    else {
+        canClick = (
+            canSelect &&
+            onSelectExperimentSlot &&
+            missingCount > 0 &&
+            !isSameExperiment && 
+            (_isAugmented && _matchesRequirements)
+        );
+    }
 
     var textColor = getTextColor(teamRecord.state.color);
 

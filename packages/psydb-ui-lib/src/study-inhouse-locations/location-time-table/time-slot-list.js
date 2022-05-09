@@ -27,6 +27,11 @@ const TimeSlotList = ({
     currentExperimentId,
     currentSubjectRecord,
 
+    __useNewCanSelect,
+    checkEmptySlotSelectable,
+    checkReservationSlotSelectable,
+    checkExperimentSlotSelectable,
+
     onSelectEmptySlot,
     onSelectReservationSlot,
     onSelectExperimentSlot,
@@ -112,6 +117,11 @@ const TimeSlotList = ({
         currentExperimentId,
         currentSubjectRecord,
         
+        __useNewCanSelect,
+        checkEmptySlotSelectable,
+        checkReservationSlotSelectable,
+        checkExperimentSlotSelectable,
+
         onSelectEmptySlot: wrapped.onSelectEmptySlot,
         onSelectReservationSlot: wrapped.onSelectReservationSlot,
         onSelectExperimentSlot: wrapped.onSelectExperimentSlot,

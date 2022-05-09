@@ -25,6 +25,11 @@ const LocationCalendarList = ({
     currentPageEnd,
     onPageChange,
    
+    __useNewCanSelect,
+    checkEmptySlotSelectable,
+    checkReservationSlotSelectable,
+    checkExperimentSlotSelectable,
+
     onSelectEmptySlot,
     onSelectReservationSlot,
     onSelectExperimentSlot,
@@ -109,6 +114,11 @@ const LocationCalendarList = ({
                         subjectRecordType,
                         currentExperimentId,
                         currentSubjectRecord,
+
+                        __useNewCanSelect,
+                        checkEmptySlotSelectable,
+                        checkReservationSlotSelectable,
+                        checkExperimentSlotSelectable,
 
                         onSelectEmptySlot,
                         onSelectReservationSlot,
