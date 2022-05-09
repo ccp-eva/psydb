@@ -144,8 +144,8 @@ const SubjectGroup = (ps) => {
     return (
         <div>
             <header><b>{ typeLabel }</b></header>
-            { recordLabels.map(label => (
-                <div>- { label }</div>
+            { recordLabels.map((label, ix) => (
+                <div key={ ix }>- { label }</div>
             ))}
         </div>
     )
