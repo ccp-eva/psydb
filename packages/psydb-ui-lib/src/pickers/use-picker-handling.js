@@ -3,26 +3,28 @@ import { useModalReducer } from '@mpieva/psydb-ui-hooks';
 
 export const usePickerHandling = ({ record, onChange }) => {
     var modal = useModalReducer();
+    //console.log(record);
+    var cachedRecord = record;
 
     // FIXME: im not sure how to best reset the state in case
     // it gets out of sync i could do it manually by checking the
     // record ids and foribly update the state
-    var [ cachedRecord, setCachedRecord ] = useState(record);
+    //var [ cachedRecord, setCachedRecord ] = useState(record);
 
-    useEffect(() => {
-        if (!record) {
+    /*useEffect(() => {
+        if (!record || !record._recordLabel) {
             setCachedRecord(null);
         }
-    }, [ record ])
+    }, [ record ])*/
 
     var handleSelect = (record) => {
-        setCachedRecord(record);
+        //setCachedRecord(record);
         onChange(record);
         modal.handleHide()
     }
 
     var handleClear = () => {
-        setCachedRecord(null);
+        //setCachedRecord(null);
         onChange(null);
     }
 

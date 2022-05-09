@@ -86,7 +86,7 @@ export const withRecordPicker = (options) => {
                 id: cached._id
             })
             : undefined
-        ), []);
+        ), [ hasInvalidRecord ]);
 
         if (!didFetch) {
             return null;
