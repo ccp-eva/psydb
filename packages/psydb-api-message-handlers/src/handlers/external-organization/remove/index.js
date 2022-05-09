@@ -11,7 +11,7 @@ var createSchema = require('./schema');
 
 
 var handler = SimpleHandler({
-    messageType: 'subject/remove',
+    messageType: 'externalOrganization/remove',
     createSchema,
 });
 
