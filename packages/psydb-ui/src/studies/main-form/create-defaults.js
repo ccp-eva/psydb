@@ -10,8 +10,8 @@ export const createDefaults = (options) => {
     return {
         runningPeriod: { end: null },
         enableFollowUpExperiments: false,
-        researchGroupIds: [],
-        scientistIds: [],
+        researchGroupIds: [ null ],
+        scientistIds: [ null ],
         studyTopicIds: [],
         custom: Custom({ fieldDefinitions }),
         systemPermissions: SystemPermissions({ permissions }),

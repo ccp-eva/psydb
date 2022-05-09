@@ -80,11 +80,13 @@ const FormFields = (ps) => {
                 label='Forschungsgruppen'
                 dataXPath='$.researchGroupIds'
                 collection='researchGroup'
+                required
             />
             <Fields.ForeignIdList
                 label='Wissenschaftler:innen'
                 dataXPath='$.scientistIds'
                 collection='personnel'
+                required
             />
             <Fields.ForeignIdList
                 label='Themengebiete'

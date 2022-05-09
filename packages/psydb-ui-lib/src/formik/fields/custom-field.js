@@ -28,11 +28,15 @@ export const CustomField = (ps) => {
     switch (type) {
         case 'SaneString':
         case 'FullText':
-            isRequired = props.minLength > 0
+            isRequired = props.minLength > 0;
             break;
         case 'ForeignId':
         case 'HelperSetItemId':
             isRequired = !props.isNullable;
+            break;
+        case 'ForeignIdList':
+        case 'HelperSetItemIdList':
+            isRequired = props.minItems > 0;
             break;
         case 'Address':
             isRequired = (
