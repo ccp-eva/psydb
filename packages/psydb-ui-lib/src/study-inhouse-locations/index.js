@@ -31,6 +31,8 @@ const StudyInhouseLocations = ({
     onSelectReservationSlot,
     onSelectExperimentSlot,
 
+    calculateNewExperimentMaxEnd,
+
     /*currentPageStart,
     currentPageEnd,
     onPageChange,*/
@@ -122,6 +124,8 @@ const StudyInhouseLocations = ({
                 onSelectEmptySlot,
                 onSelectReservationSlot,
                 onSelectExperimentSlot,
+
+                calculateNewExperimentMaxEnd,
 
                 revision: calendarRevision,
             })} />

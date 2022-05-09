@@ -34,6 +34,8 @@ const LocationCalendarList = ({
     onSelectReservationSlot,
     onSelectExperimentSlot,
 
+    calculateNewExperimentMaxEnd,
+
     className,
 
     // used to force reloading the calendar data
@@ -124,6 +126,7 @@ const LocationCalendarList = ({
                         onSelectReservationSlot,
                         onSelectExperimentSlot,
 
+                        calculateNewExperimentMaxEnd,
                         showPast
                     })}
                 />

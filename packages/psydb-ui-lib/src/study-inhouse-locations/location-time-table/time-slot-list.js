@@ -36,6 +36,7 @@ const TimeSlotList = ({
     onSelectReservationSlot,
     onSelectExperimentSlot,
     
+    calculateNewExperimentMaxEnd,
     showPast,
 }) => {
     var start = new Date(dayStart.getTime() + startTimeInt);
@@ -101,7 +102,9 @@ const TimeSlotList = ({
         reservationRecords,
         experimentRecords,
         slotDuration,
-        upperBoundary: end
+        upperBoundary: end,
+
+        calculateNewExperimentMaxEnd,
     });
 
     var sharedSlotProps = {

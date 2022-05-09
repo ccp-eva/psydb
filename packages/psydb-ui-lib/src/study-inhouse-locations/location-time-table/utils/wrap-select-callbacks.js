@@ -1,22 +1,25 @@
 import getNewReservationMaxEnd from './get-new-reservation-max-end';
 import getNewExperimentMaxEnd from './get-new-experiment-max-end';
 
-const wrapSelectCallbacks = ({
-    onSelectEmptySlot,
-    onSelectReservationSlot,
-    onSelectExperimentSlot,
+const wrapSelectCallbacks = (bag) => {
+    var {
+        onSelectEmptySlot,
+        onSelectReservationSlot,
+        onSelectExperimentSlot,
 
-    reservationRecords,
-    experimentRecords,
-    slotDuration,
-    upperBoundary,
-}) => {
+        reservationRecords,
+        experimentRecords,
+        slotDuration,
+        upperBoundary,
+
+        calculateNewExperimentMaxEnd = getNewReservationMaxEnd,
+    } = bag;
 
     var wrappedOnSelectEmptySlot = undefined;
     if (onSelectEmptySlot) {
         wrappedOnSelectEmptySlot = (props) => onSelectEmptySlot({
             ...props,
-            maxEnd: getNewReservationMaxEnd({
+            maxEnd: calculateNewReservationMaxEnd({
                 start: props.start,
                 reservationRecords,
                 upperBoundary,
@@ -29,7 +32,7 @@ const wrapSelectCallbacks = ({
     if (onSelectReservationSlot) {
         wrappedOnSelectReservationSlot = (props) => onSelectReservationSlot({
             ...props,
-            maxEnd: getNewExperimentMaxEnd({
+            maxEnd: calculateNewExperimentMaxEnd({
                 start: props.start,
                 selectedReservationRecord: props.reservationRecord,
                 reservationRecords,
@@ -45,6 +48,15 @@ const wrapSelectCallbacks = ({
     if (onSelectExperimentSlot) {
         wrappedOnSelectExperimentSlot = (props) => onSelectExperimentSlot({
             ...props,
+            maxEnd: calculateNewExperimentMaxEnd({
+                start: props.start,
+                selectedExperimentRecord: props.experimentRecord,
+                reservationRecords,
+                experimentRecords,
+                // TODO: this has an issue, we need experimentRecords
+                upperBoundary,
+                slotDuration,
+            }),
         }) 
     }
 

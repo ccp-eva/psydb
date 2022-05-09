@@ -31,6 +31,8 @@ const LocationCalendar = ({
     onSelectReservationSlot,
     onSelectExperimentSlot,
 
+    calculateNewExperimentMaxEnd,
+
     className,
     showPast,
 }) => {
@@ -96,6 +98,7 @@ const LocationCalendar = ({
                 onSelectReservationSlot,
                 onSelectExperimentSlot,
                 
+                calculateNewExperimentMaxEnd,
                 showPast,
             })} />
 

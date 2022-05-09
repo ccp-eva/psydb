@@ -1,12 +1,19 @@
 const getNewExperimentMaxEnd = ({
     start,
     selectedReservationRecord,
+    selectedExperimentRecord,
     reservationRecords,
     experimentRecords,
     upperBoundary,
     slotDuration,
 }) => {
-    var maxEnd = new Date(selectedReservationRecord.state.interval.end);
+    
+    // FIXME
+    if (selectedExperimentRecord) {
+        selectedReservationRecord = selectedExperimentRecord;
+    }
+
+    var maxEnd = new Date(upperBoundary);
     
     for (var item of reservationRecords) {
         var reservationStart = new Date(item.state.interval.start);
@@ -47,7 +54,7 @@ const getNewExperimentMaxEnd = ({
                 new Date(start).getTime()
             );
 
-            return ( expStart >= selectedStart );
+            return expStart >= selectedStart;
         })
         .sort((a,b) => {
             var startA = new Date(a.state.interval.start).getTime();
@@ -60,6 +67,7 @@ const getNewExperimentMaxEnd = ({
     
     var nextExperiment = orderedExperiments[0];
     if (nextExperiment) {
+        //console.log(nextExperiment.state.interval);
         var nextExperimentStart = (
             new Date(nextExperiment.state.interval.start)
         );
@@ -67,11 +75,13 @@ const getNewExperimentMaxEnd = ({
             maxEnd = new Date(nextExperimentStart.getTime() - 1);
         }
     }
+    //console.log({ maxEnd: maxEnd.toISOString() });
 
 
-    //console.log(maxEnd);
 
-    return new Date(maxEnd.getTime() + slotDuration);
+    var out = new Date(maxEnd.getTime() + slotDuration);
+    //console.log({ out: out.toISOString() });
+    return out;
 }
 
 export default getNewExperimentMaxEnd;

@@ -29,6 +29,7 @@ var formatTime = (datelike) => (
 );
 
 const FormContainer = (ps) => {
+    console.log(ps);
     var {
         experimentData,
         studyData,
@@ -101,9 +102,14 @@ const InhouseConfirmModalBody = (ps) => {
     var {
         locationRecord,
         reservationRecord,
+        experimentRecord,
         start,
         slotDuration,
     } = modalPayloadData;
+
+    var record = (
+        reservationRecord || experimentRecord
+    );
 
     var send = useSend((formData) => ({
         type: `experiment/move-${experimentType}`,
@@ -111,7 +117,7 @@ const InhouseConfirmModalBody = (ps) => {
             experimentId: experimentData.record._id,
             locationId: locationRecord._id,
             experimentOperatorTeamId: (
-                reservationRecord.state.experimentOperatorTeamId
+                record.state.experimentOperatorTeamId
             ),
             interval: {
                 start: start.toISOString(),
