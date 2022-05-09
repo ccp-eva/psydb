@@ -37,7 +37,7 @@ var ResearchGroupState = ({} = {}) => {
             //    title: 'Datensatz-Typen',
             //    properties: {
             //        subject: DefaultArray({
-            //            title: 'Probanden-Typen',
+            //            title: 'Proband:innen-Typen',
             //            items: ExactObject({
             //                properties: {
             //                    typeKey: CustomRecordTypeKey({

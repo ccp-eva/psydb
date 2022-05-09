@@ -38,7 +38,7 @@ const CreateForm = (ps) => {
 
     return (
         <MainForm.Component
-            title='Neuer Probanden-Datensatz'
+            title='Neuer Proband:innen-Datensatz'
             crtSettings={ fetched.data }
             initialValues={ initialValues }
             onSubmit={ send.exec }

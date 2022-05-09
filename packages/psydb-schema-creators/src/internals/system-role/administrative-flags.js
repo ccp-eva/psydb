@@ -36,6 +36,6 @@ module.exports = {
         `,
     }),
     /*canUseComplexSubjectSearch: WideBool({
-        title: 'kann die erweiterte Probandensuche benutzen',
+        title: 'kann die erweiterte Proband:innensuche benutzen',
     })*/
 }

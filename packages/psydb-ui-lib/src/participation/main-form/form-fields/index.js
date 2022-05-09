@@ -43,7 +43,7 @@ export const FormFields = (ps) => {
         <>
             { showSubjectTypeSelect && (
                 <Fields.GenericEnum
-                    label='Probanden-Typ'
+                    label='Proband:innen-Typ'
                     dataXPath='$.subjectType'
                     options={ subjectTypes.reduce((acc, it) => ({
                         ...acc, [it.type]: it.label

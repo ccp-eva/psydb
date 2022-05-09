@@ -25,7 +25,7 @@ var LabOperationPermissions = (options) => {
                 }[reservationType],
             }),
             canSelectSubjectsForExperiments: WideBool({
-                title: 'kann Probanden für Termine auswählen',
+                title: 'kann Proband:innen für Termine auswählen',
             }),
             ...(hasInvitation && {
                 canConfirmSubjectInvitation: WideBool({

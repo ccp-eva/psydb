@@ -111,7 +111,7 @@ var customRecordTypeCollections = createEnumFromKV({
     ],
     names: [
         'Locations',
-        'Probanden',
+        'Proband:innen',
         'Studien',
         'Externe Personen',
         'Externe Organisationen'

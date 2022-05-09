@@ -67,7 +67,7 @@ var StudyState = (ps = {}) => {
 
             // TODO: move to labProcedureSettings
             enableFollowUpExperiments: DefaultBool({
-                title: 'Probanden können mehrfach getestet werden'
+                title: 'Proband:innen können mehrfach getestet werden'
             }),
 
             researchGroupIds: ForeignIdList({

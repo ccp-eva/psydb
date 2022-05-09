@@ -119,7 +119,7 @@ const FormContainer = ({
                                         dataXPath='$.subjectOp'
                                         uiSplit={[ 4, 8 ]}
                                         labelClassName='px-0'
-                                        label='Probanden'
+                                        label='Proband:innen'
                                         options={{
                                             'none': 'Keine Aktion',
                                             'move-unprocessed': 'Verbleibende Verschieben', 

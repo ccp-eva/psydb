@@ -4,7 +4,7 @@ import SubjectFieldRequirements from './subject-field-requirements';
 
 
 const labels = {
-    '/state/subjectsPerExperiment': 'Probanden pro Termin',
+    '/state/subjectsPerExperiment': 'Proband:innen pro Termin',
     '/state/subjectFieldRequirements': 'Terminbedingungen',
 }
 

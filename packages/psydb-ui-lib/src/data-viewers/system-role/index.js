@@ -21,7 +21,7 @@ const inviteLabOpsLabels = (type) => ({
         'kann Räumlichkeiten reservieren'
     ),
     [labOpsPath(type, 'canSelectSubjectsForExperiments')]: (
-        'kann Probanden für Termine auswählen'
+        'kann Proband:innen für Termine auswählen'
     ),
     [labOpsPath(type, 'canConfirmSubjectInvitation')]: (
         'kann Termine bestätigen'
@@ -45,7 +45,7 @@ const awayTeamLabOpsLabels = (type) => ({
         'kann Experimenter:innen-Teams planen'
     ),
     [labOpsPath(type, 'canSelectSubjectsForExperiments')]: (
-        'kann Probanden für Termine auswählen'
+        'kann Proband:innen für Termine auswählen'
     ),
     [labOpsPath(type, 'canViewExperimentCalendar')]: (
         'kann Terminkalender einsehen'
@@ -99,16 +99,16 @@ const labels = {
         'kann Studien anlegen und bearbeiten'
     ),
     '/state/canReadSubjects': (
-        'kann Probanden einsehen'
+        'kann Proband:innen einsehen'
     ),
     '/state/canWriteSubjects': (
-        'kann Probanden anlegen und bearbeiten'
+        'kann Proband:innen anlegen und bearbeiten'
     ),
     '/state/canReadParticipation': (
-        'kann einsehen welche Probanden an einer Studie teilgeommen haben'
+        'kann einsehen welche Proband:innen an einer Studie teilgeommen haben'
     ),
     '/state/canWriteParticipation': (
-        'kann manuell Probanden in eine Studie eintragen'
+        'kann manuell Proband:innen in eine Studie eintragen'
     ),
     '/state/canViewReceptionCalendar': (
         'kann Rezeptionskalender einsehen'

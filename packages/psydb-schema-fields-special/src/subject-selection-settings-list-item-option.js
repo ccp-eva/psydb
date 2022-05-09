@@ -22,7 +22,7 @@ var SubjectSelectionSettingsListItemOption = ({
             properties: {
                 enableOnlineTesting: DefaultBool(),
                 subjectsPerExperiment: Integer({
-                    title: 'Probanden pro Experiment',
+                    title: 'Proband:innen pro Experiment',
                     default: 1,
                     minimum: 1,
                 }),

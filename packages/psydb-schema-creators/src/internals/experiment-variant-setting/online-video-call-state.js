@@ -16,11 +16,11 @@ var OnlineVideoCallState = () => {
     return ExactObject({
         properties: {
             subjectTypeKey: CustomRecordTypeKey({
-                title: 'Probandentyp',
+                title: 'Proband:innentyp',
                 collection: 'subject',
             }),
             subjectsPerExperiment: Integer({
-                title: 'Probanden pro Experiment',
+                title: 'Proband:innen pro Experiment',
                 default: 1,
                 minimum: 1,
             }),

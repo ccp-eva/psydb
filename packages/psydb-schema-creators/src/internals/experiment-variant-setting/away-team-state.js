@@ -14,7 +14,7 @@ var AwayTeamState = () => {
     return ExactObject({
         properties: {
             subjectTypeKey: CustomRecordTypeKey({
-                title: 'Probandentyp',
+                title: 'Proband:innentyp',
                 collection: 'subject',
             }),
             subjectLocationFieldPointer: JsonPointer({

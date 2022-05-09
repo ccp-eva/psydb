@@ -10,7 +10,7 @@ var OnlineSurveyState = () => {
     return ExactObject({
         properties: {
             subjectTypeKey: CustomRecordTypeKey({
-                title: 'Probandentyp',
+                title: 'Proband:innentyp',
                 collection: 'subject',
             }),
         },

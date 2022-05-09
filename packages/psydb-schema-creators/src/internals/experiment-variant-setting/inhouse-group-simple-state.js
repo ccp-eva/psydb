@@ -14,7 +14,7 @@ var InhouseGroupSimpleState = () => {
     return ExactObject({
         properties: {
             subjectTypeKey: CustomRecordTypeKey({
-                title: 'Probandentyp',
+                title: 'Proband:innentyp',
                 collection: 'subject',
             }),
             locations: DefaultArray({

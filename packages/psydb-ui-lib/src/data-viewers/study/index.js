@@ -18,7 +18,7 @@ const labels = {
     '/state/runningPeriod/start': 'Beginn',
     '/state/runningPeriod/end': 'Ende',
     '/state/enableFollowUpExperiments': (
-        'Probanden können mehrfach getestet werden'
+        'Proband:innen können mehrfach getestet werden'
     ),
     '/state/researchGroupIds': 'Forschungsgruppen',
     '/state/scientistIds': 'Wissenschaftler',

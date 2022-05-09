@@ -25,7 +25,7 @@ var schema = ExactObject({
 
         unparticipateStatus: UnparticipationStatus({ title: 'Grund' }),
         blockSubjectFromTesting: BlockFromTesting({ title: 'Proband:in sperren' }),
-        subjectComment: FullText({ title: 'Kommentar zum Probanden' }),
+        subjectComment: FullText({ title: 'Kommentar zum Proband:innen' }),
     },
     required: [
         'unparticipateStatus',
