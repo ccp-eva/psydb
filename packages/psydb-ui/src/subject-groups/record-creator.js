@@ -22,7 +22,7 @@ const CreateForm = (ps) => {
 
     return (
         <MainForm
-            title='Neue Probanden-Gruppe'
+            title='Neue Proband:innen-Gruppe'
             initialValues={ initialValues }
             onSubmit={ send.exec }
             permissions={ permissions }

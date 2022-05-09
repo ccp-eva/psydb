@@ -124,7 +124,7 @@ const ExperimentSummarySmall = ({
                 }
             </div>
             <div className=''>
-                <small><b>Probanden:</b></small>
+                <small><b>Proband:innen:</b></small>
             </div>
             <ul className='m-0' style={{ paddingLeft: '20px', fontSize: '80%' }}>
                 { 

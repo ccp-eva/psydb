@@ -31,7 +31,7 @@ const EditForm = (ps) => {
     return (
         <>
             <MainForm
-                title='Probanden-Gruppe bearbeiten'
+                title='Proband:innen-Gruppe bearbeiten'
                 initialValues={ initialValues }
                 onSubmit={ send.exec }
                 related={ related }

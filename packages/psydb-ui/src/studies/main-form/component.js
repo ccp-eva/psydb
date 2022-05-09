@@ -73,7 +73,7 @@ const FormFields = (ps) => {
                 dataXPath='$.runningPeriod.end'
             />
             <Fields.DefaultBool
-                label='Probanden können mehrfach getestet werden'
+                label='Proband:innen können mehrfach getestet werden'
                 dataXPath='$.enableFollowUpExperiments'
             />
             <Fields.ForeignIdList

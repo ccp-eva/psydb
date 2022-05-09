@@ -29,7 +29,7 @@ const RemoveSelectorModalBody = (ps) => {
             <div className='text-danger mb-2'>
                 <b>
                     Auswahlbedingungen für diesen
-                    {' '}Probandentyp wirklich löschen?
+                    {' '}Proband:innentyp wirklich löschen?
                 </b>
             </div>
             <div className='p-3 border bg-white'>
@@ -45,7 +45,7 @@ const RemoveSelectorModalBody = (ps) => {
 }
 
 const RemoveSelectorModal = WithDefaultModal({
-    title: 'Probandentyp löschen',
+    title: 'Proband:innentyp löschen',
     size: 'lg',
 
     Body: RemoveSelectorModalBody

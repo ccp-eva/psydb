@@ -60,7 +60,7 @@ const FormFields = (ps) => {
             />
             <SubjectsForTypeList
                 dataXPath='$.subjectsForType'
-                label='Probanden'
+                label='Proband:innen'
                 { ...ps }
             />
         </>
@@ -85,12 +85,12 @@ const SubjectsForType = withField({
             <>
                 <CRTPicker
                     dataXPath={ `${dataXPath}.subjectType` }
-                    label='Probanden-Typ'
+                    label='Proband:innen-Typ'
                     collection='subject'
                 />
                 <Fields.ForeignIdList
                     dataXPath={ `${dataXPath}.subjectIds` }
-                    label='Probanden'
+                    label='Proband:innen'
                     collection='subject'
                     recordType={ subjectType }
                     disabled={ !subjectType }

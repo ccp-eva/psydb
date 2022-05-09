@@ -76,7 +76,7 @@ const StudyParticipation = ({}) => {
             <div className='mt-3'>
 
                 <Button onClick={ modalReducer.handleShow }>
-                    Probanden hinzufügen
+                    Proband:innen hinzufügen
                 </Button>
 
                 <ParticipationList

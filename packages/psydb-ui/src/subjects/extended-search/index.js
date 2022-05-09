@@ -120,7 +120,7 @@ const ExtendedSearch = (ps) => {
     };
 
     return (
-        <PageWrappers.Level3 title='Erweiterte Probandensuche'>
+        <PageWrappers.Level3 title='Erweiterte Proband:innensuche'>
             <DefaultForm
                 onSubmit={ (formData) => { handleSwitchTab({
                     nextTab: getNextTabKey(tab),

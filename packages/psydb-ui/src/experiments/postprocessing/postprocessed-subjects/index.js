@@ -32,7 +32,7 @@ const PostprocessedSubjects = withLabProcedureSettingsIterator({
         if (unprocessedSubjects.length < 1) {
             return (
                 <Alert variant='info'>
-                    <i>Bisher keine Probanden nachbereitet</i>
+                    <i>Bisher keine Proband:innen nachbereitet</i>
                 </Alert>
             );
         }

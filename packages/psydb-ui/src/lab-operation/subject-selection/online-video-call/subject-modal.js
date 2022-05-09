@@ -74,7 +74,7 @@ const SubjectModal = ({
                     items={[
                         {
                             key: 'subjectDetails',
-                            label: 'Probanden-Details'
+                            label: 'Proband:innen-Details'
                         },
                         {
                             key: 'scheduleExperiment',

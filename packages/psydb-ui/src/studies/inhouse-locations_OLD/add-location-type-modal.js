@@ -74,7 +74,7 @@ const AddLocationTypeModal = ({
             backdropClassName='team-modal-backdrop'
         >
             <Modal.Header closeButton>
-                <Modal.Title>Probandentyp Hinzufügen</Modal.Title>
+                <Modal.Title>Proband:innentyp Hinzufügen</Modal.Title>
             </Modal.Header>
             <Modal.Body className='bg-light'>
                 <div>

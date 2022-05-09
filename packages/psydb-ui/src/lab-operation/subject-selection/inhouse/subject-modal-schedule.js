@@ -71,7 +71,7 @@ const SubjectModalSchedule = ({
             { enableFollowUpExperiments && (
                 <>
                     <header className='mb-1 mt-2'>
-                        <b>Termine des Probanden in { studyLabel }</b>
+                        <b>Termine des Proband:innen in { studyLabel }</b>
                     </header>
                     <div className='bg-white border px-3 py-2 mb-2'>
                         <ExistingSubjectExperiments

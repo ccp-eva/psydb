@@ -30,7 +30,7 @@ const SettingList = (ps) => {
     if (settingRecords.length < 1) {
         return (
             <div className='p-3 text-danger'>
-                <b>Keine Probanden-Einstellungen</b>
+                <b>Keine Proband:innen-Einstellungen</b>
             </div>
         )
     }

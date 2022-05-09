@@ -56,7 +56,7 @@ const HasEditedInfo = (ps) => {
     var { onReEdit } = ps;
     return (
         <Alert variant='info' className='d-flex justify-content-between'>
-            <i>Probandendaten gespeichert!</i>
+            <i>Proband:innendaten gespeichert!</i>
             <a role='button' className='force-hover' onClick={ onReEdit }>
                 <b>Erneut bearbeiten</b>
             </a>

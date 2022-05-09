@@ -93,22 +93,22 @@ const FormFields = (ps) => {
                 required
             />
             <Bool
-                label='kann Probanden einsehen'
+                label='kann Proband:innen einsehen'
                 dataXPath='$.canReadSubjects'
                 required
             />
             <Bool
-                label='kann Probanden anlegen und bearbeiten'
+                label='kann Proband:innen anlegen und bearbeiten'
                 dataXPath='$.canWriteSubjects'
                 required
             />
             <Bool
-                label='kann einsehen welche Probanden an einer Studie teilgeommen haben'
+                label='kann einsehen welche Proband:innen an einer Studie teilgeommen haben'
                 dataXPath='$.canReadParticipation'
                 required
             />
             <Bool
-                label='kann manuell Probanden in eine Studie eintragen'
+                label='kann manuell Proband:innen in eine Studie eintragen'
                 dataXPath='$.canWriteParticipation'
                 required
             />
@@ -157,7 +157,7 @@ const LabOperationFields = (ps) => {
                 required
             />
             <Bool
-                label='kann Probanden für Termine auswählen'
+                label='kann Proband:innen für Termine auswählen'
                 dataXPath={ `${dataXPath}.canSelectSubjectsForExperiments` }
                 required
             />

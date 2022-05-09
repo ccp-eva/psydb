@@ -116,7 +116,7 @@ export const OnlineVideoCallSetting = (ps) => {
                         <>
                             <Fields.GenericEnum { ...({
                                 dataXPath: '$.subjectTypeKey',
-                                label: 'Probandentyp',
+                                label: 'Proband:innentyp',
                                 required: true,
                                 options: allowedSubjectTypes
                             })} />

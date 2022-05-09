@@ -78,7 +78,7 @@ const SubjectSelectionRouting = () => {
     ].filter(it => !!it)
 
     return (
-        <PageWrappers.Level2 title='Probandenauswahl'>
+        <PageWrappers.Level2 title='Proband:innenauswahl'>
             <Switch>
                 <Route exact path={ path }>
                     <BigNav items={ navItems } />

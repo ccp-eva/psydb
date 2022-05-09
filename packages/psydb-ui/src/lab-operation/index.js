@@ -199,7 +199,7 @@ const OperationNav = (ps) => {
             linkUrl: `${baseUrl}/reservation/${studyType}`,
         }),
         (canSelectSubjects && {
-            label: 'Probandenauswahl',
+            label: 'Proband:innenauswahl',
             linkUrl: `${baseUrl}/subject-selection/${studyType}`,
         }),
         (canConfirmInvitations && {

@@ -177,7 +177,7 @@ const TargetLocationList = ({
 
             <div className='sticky-top border-bottom'>
                 <div className='bg-light pt-2 pb-2 pr-3 pl-3 border-bottom'>
-                    <b>gefundene Probanden:</b> { subjectCount }
+                    <b>gefundene Proband:innen:</b> { subjectCount }
                 </div>
                 <Pagination
                     totalLabel='Locations:'

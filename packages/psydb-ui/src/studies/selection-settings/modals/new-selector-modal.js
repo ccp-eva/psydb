@@ -20,7 +20,7 @@ const Form = (ps) => {
             {(formikProps) => (
                 <>
                     <Fields.GenericEnum
-                        label='Probandentyp'
+                        label='Proband:innentyp'
                         dataXPath='$.subjectTypeKey'
                         options={ subjectTypeMap }
                     />
@@ -71,7 +71,7 @@ const NewSelectorModalBody = (ps) => {
 }
 
 const NewSelectorModal = WithDefaultModal({
-    title: 'Probandentyp hinzufügen',
+    title: 'Proband:innentyp hinzufügen',
     size: 'lg',
 
     Body: NewSelectorModalBody

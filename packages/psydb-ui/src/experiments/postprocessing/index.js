@@ -102,13 +102,13 @@ const ExperimentPostprocessing = ({
                     <>
                         <div className='mt-3'>
                             <h4 className='border-bottom'>
-                                Nachzubereitende Probanden
+                                Nachzubereitende Proband:innen
                             </h4>
                             <PostprocessableSubjects { ...subjectsBag } />
                         </div>
                         <div className='mt-3'>
                             <h4 className='border-bottom'>
-                                Nachbereitete Probanden
+                                Nachbereitete Proband:innen
                             </h4>
                             <PostprocessedSubjects { ...subjectsBag } />
                         </div>

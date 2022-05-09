@@ -60,7 +60,7 @@ const SubjectModal = ({
     var navItems = [
         (canReadSubjects && {
             key: 'subjectDetails',
-            label: 'Probanden-Details'
+            label: 'Proband:innen-Details'
         }),
         {
             key: 'scheduleExperiment',

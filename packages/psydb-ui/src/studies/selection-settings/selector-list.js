@@ -23,9 +23,9 @@ const SelectorList = (ps) => {
     return (
         <SimpleList { ...({
             items: selectorRecords,
-            emptyLabel: 'Keine Probandentypen mit Auswahlbedingungen',
+            emptyLabel: 'Keine Proband:innentypen mit Auswahlbedingungen',
             emptyClassName: 'text-muted',
-            addButtonLabel: '+ Probandentyp',
+            addButtonLabel: '+ Proband:innentyp',
             onAdd: onAddSelector,
             showAddButton: !!onAddSelector,
             disableAddButton: disableAddSelector,

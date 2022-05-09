@@ -39,13 +39,13 @@ const SideNav = (ps) => {
                     <WhenAllowed flags={[
                         'canReadSubjects', 'canWriteSubjects'
                     ]}>
-                        <Link to='/subjects'><b>Probanden</b></Link>
+                        <Link to='/subjects'><b>Proband:innen</b></Link>
                     </WhenAllowed>
                     
                     {/*<WhenAllowed flags={[
                         'canReadSubjects', 'canWriteSubjects'
                     ]}>
-                        <Link to='/subject-groups'><b>Probanden-Gruppen</b></Link>
+                        <Link to='/subject-groups'><b>Proband:innen-Gruppen</b></Link>
                     </WhenAllowed>*/}
 
                     <WhenAllowed flags={[
@@ -98,7 +98,7 @@ const SideNav = (ps) => {
 
                             <WhenAllowed labFlag='canSelectSubjectsForExperiments'>
                                 <Link to='/lab-operation/subject-selection'>
-                                    Probandenauswahl
+                                    Proband:innenauswahl
                                 </Link>
                             </WhenAllowed>
 

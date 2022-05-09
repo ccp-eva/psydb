@@ -88,7 +88,7 @@ const MailInviteModal = ({
                             <b className='d-inline-block mr-2'>
                                 { totalSubjectCount }
                             </b>
-                            Probanden per Mail benachrichtigen
+                            Proband:innen per Mail benachrichtigen
                         </Button>
                     </div>
                 </div>
