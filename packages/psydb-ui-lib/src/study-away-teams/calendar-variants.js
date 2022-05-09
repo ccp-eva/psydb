@@ -72,23 +72,27 @@ export const Calendar = ({
                 allDayStarts,
             }) }/>
             <div className='border-bottom'>
-                { teamData.records.map(teamRecord => {
-                    return <TeamTimeTable { ...({
-                        key: teamRecord._id,
-                        teamRecord,
+                {
+                    teamData.records
+                    .filter(it => !it.state.hidden)
+                    .map(teamRecord => {
+                        return <TeamTimeTable { ...({
+                            key: teamRecord._id,
+                            teamRecord,
 
-                        allDayStarts,
-                        reservationRecords,
-                        experimentRecords,
+                            allDayStarts,
+                            reservationRecords,
+                            experimentRecords,
 
-                        onSelectEmptySlot,
-                        onSelectReservationSlot,
-                        onSelectExperimentSlot,
-                        onSelectExperimentPlaceholderSlot,
+                            onSelectEmptySlot,
+                            onSelectReservationSlot,
+                            onSelectExperimentSlot,
+                            onSelectExperimentPlaceholderSlot,
 
-                        showPast
-                    })} />
-                })}
+                            showPast
+                        })} />
+                    })
+                }
             </div>
 
             { permissions.isRoot() && (
