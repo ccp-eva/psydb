@@ -2,6 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import { Button } from 'react-bootstrap';
 import * as Icons from '../icons';
+import { ErrorIndicator } from './error-indicator';
 
 export const ScalarArrayContentWrapper = (ps) => {
     var {
@@ -48,6 +49,7 @@ const Fallback = (ps) => (
                 opacity: ps.disabled ? 0.5 : 1
             }}>
                 <i>{ ps.fallbackLabel || 'Keine Einträge' }</i>
+                <ErrorIndicator { ...ps } />
             </div>
             <Footer { ...ps } />
         </div>
