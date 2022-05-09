@@ -13,7 +13,7 @@ const getNewExperimentMaxEnd = ({
         selectedReservationRecord = selectedExperimentRecord;
     }
 
-    var maxEnd = new Date(upperBoundary);
+    var maxEnd = new Date(selectedReservationRecord.state.interval.end);
     
     for (var item of reservationRecords) {
         var reservationStart = new Date(item.state.interval.start);

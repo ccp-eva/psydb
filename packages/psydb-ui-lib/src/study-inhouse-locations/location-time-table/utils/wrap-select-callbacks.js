@@ -12,7 +12,8 @@ const wrapSelectCallbacks = (bag) => {
         slotDuration,
         upperBoundary,
 
-        calculateNewExperimentMaxEnd = getNewReservationMaxEnd,
+        calculateNewReservationMaxEnd = getNewReservationMaxEnd,
+        calculateNewExperimentMaxEnd = getNewExperimentMaxEnd,
     } = bag;
 
     var wrappedOnSelectEmptySlot = undefined;

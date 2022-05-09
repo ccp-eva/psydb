@@ -172,32 +172,56 @@ const createCalculateNewExperimentMaxEnd = (currentExperimentId) => ({
         selectedReservationRecord = selectedExperimentRecord;
     }
 
-    var maxEnd = new Date(upperBoundary);
+    var maxEnd = undefined;
     
-    for (var item of reservationRecords) {
+    var orderedReservations = (
+        reservationRecords
+        .filter(it => {
+            var resEnd = (
+                new Date(it.state.interval.end).getTime()
+            );
+            var selectedStart = (
+                new Date(start).getTime()
+            );
+
+            return (
+                resEnd > selectedStart
+            );
+        })
+        .sort((a,b) => {
+            var startA = new Date(a.state.interval.end).getTime();
+            var startB = new Date(b.state.interval.end).getTime();
+            return (
+                startA < startB ? -1 : 1
+            )
+        })
+    );
+    for (var item of orderedReservations) {
         var reservationStart = new Date(item.state.interval.start);
         var reservationEnd = new Date(item.state.interval.end);
 
-        var isBelowMax = maxEnd > reservationEnd;
-        var isOutOfBounds = reservationEnd > upperBoundary;
-        if (isBelowMax || isOutOfBounds) {
-            continue;
-        }
-        
         var isOtherTeam = (
             item.state.experimentOperatorTeamId
             !== selectedReservationRecord.state.experimentOperatorTeamId
         );
         if (isOtherTeam) {
-            continue;
+            break;
         }
 
-        // check if continous
-        var hasNoGap = (
-            maxEnd.getTime() + 1 !== reservationStart.getTime()
-        );
-        if (hasNoGap) {
-            continue;
+        var isOutOfBounds = reservationEnd > upperBoundary;
+        if (isOutOfBounds) {
+            maxEnd = upperBoundary;
+            break;
+        }
+        
+        if (maxEnd !== undefined) {
+            // check if continous
+            var hasGap = (
+                maxEnd.getTime() + 1 !== reservationStart.getTime()
+            );
+            if (hasGap) {
+                break;
+            }
         }
 
         maxEnd = reservationEnd;
