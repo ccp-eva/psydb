@@ -14,6 +14,8 @@ var ExternalOrganizationGroup = MessageHandlerGroup([
         collection: 'externalOrganization',
         op: 'patch',
     }),
+
+    require('./remove'),
 ]);
 
 module.exports = ExternalOrganizationGroup;
