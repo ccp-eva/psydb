@@ -158,7 +158,7 @@ const TableHead = (ps) => {
     return (
         <thead>
             <tr>
-                <th>Proband</th>
+                <th>Proband:in</th>
                 <th>Datum</th>
                 <th>Studie</th>
                 <th>Status</th>

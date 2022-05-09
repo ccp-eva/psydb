@@ -96,7 +96,7 @@ const ConfirmModal = ({
                             <Table size='sm' className='bg-white border mt-2'>
                                 <thead>
                                     <tr>
-                                        <th>Proband</th>
+                                        <th>Proband:in</th>
                                         <th>Alter am Tag</th>
                                     </tr>
                                 </thead>

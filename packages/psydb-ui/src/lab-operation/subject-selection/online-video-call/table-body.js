@@ -115,7 +115,7 @@ const TableRow = ({
                         <EditIconButtonInline
                             buttonStyle={{ background: 'transparent' }}
                             onClick={ () => onViewSubject({
-                                title: `Proband - ${record._recordLabel}`,
+                                title: `Proband:in - ${record._recordLabel}`,
                                 subjectId: record._id,
                                 subjectType
                             })}

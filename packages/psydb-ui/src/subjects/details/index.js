@@ -113,7 +113,7 @@ const SubjectDetailsContainer = ({
                         variant='danger'
                         to={`${up(url, 1)}/remove` }
                     >
-                        Proband Löschen
+                        Proband:in Löschen
                     </LinkButton>
                 </div>
             )}
