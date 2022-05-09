@@ -64,7 +64,7 @@ const DeleteModalBody = (ps) => {
             <hr />
             <div className='d-flex justify-content-end'>
                 <Button size='sm' variant='danger' onClick={ send.exec }>
-                    Speichern
+                    Löschen
                 </Button>
             </div>
         </>
