@@ -47,7 +47,7 @@ var StudyState = (ps = {}) => {
                 minLength: 1,
             }),
             scientistIds: ForeignIdList({
-                title: 'Wissenschaftler',
+                title: 'Wissenschaftler:innen',
                 collection: 'personnel',
                 minItems: 1,
             }),

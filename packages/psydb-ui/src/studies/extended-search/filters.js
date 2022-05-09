@@ -35,7 +35,7 @@ export const Filters = (ps) => {
             />
             <Fields.NegatableForeignIdList
                 dataXPath='$.specialFilters.scientistIds'
-                label='Wissenschaftler'
+                label='Wissenschaftler:innen'
                 collection='personnel'
             />
             <Fields.NegatableForeignIdList

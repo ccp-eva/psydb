@@ -82,7 +82,7 @@ const FormFields = (ps) => {
                 collection='researchGroup'
             />
             <Fields.ForeignIdList
-                label='Wissenschaftler'
+                label='Wissenschaftler:innen'
                 dataXPath='$.scientistIds'
                 collection='personnel'
             />

@@ -26,7 +26,7 @@ export const Columns = (ps) => {
         { pointer: '/state/runningPeriod/end', label: 'Ende' },
 
         { pointer: '/state/researchGroupIds', label: 'Forschungsgruppen' },
-        { pointer: '/state/scientistIds', label: 'Wissenschaftler' },
+        { pointer: '/state/scientistIds', label: 'Wissenschaftler:innen' },
         { pointer: '/state/studyTopicIds', label: 'Themengebiete' },
         ...customColumns
     ];
@@ -39,7 +39,7 @@ export const Columns = (ps) => {
         { pointer: '/state/runningPeriod/end', label: 'Ende' },
 
         { pointer: '/state/researchGroupIds', label: 'Forschungsgruppen' },
-        { pointer: '/state/scientistIds', label: 'Wissenschaftler' },
+        { pointer: '/state/scientistIds', label: 'Wissenschaftler:innen' },
         { pointer: '/state/studyTopicIds', label: 'Themengebiete' },
     ];
 

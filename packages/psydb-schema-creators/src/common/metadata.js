@@ -249,7 +249,7 @@ module.exports = {
                     collection: 'personnel',
                 },
                 dataPointer: '/state/scientistIds',
-                displayName: 'Wissenschaftler',
+                displayName: 'Wissenschaftler:innen',
             },
             {
                 key: '_researchGroupIds',

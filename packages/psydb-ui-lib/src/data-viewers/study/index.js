@@ -21,7 +21,7 @@ const labels = {
         'Proband:innen können mehrfach getestet werden'
     ),
     '/state/researchGroupIds': 'Forschungsgruppen',
-    '/state/scientistIds': 'Wissenschaftler',
+    '/state/scientistIds': 'Wissenschaftler:innen',
     '/state/studyTopicIds': 'Themengebiete',
     '/state/systemPermissions': 'Zugriff auf diesen Datensatz für'
 }
