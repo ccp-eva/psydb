@@ -12,13 +12,17 @@ var MatchIntervalAroundStage = (options) => {
 
     var OR = [
         {
+            // db   :      |--------|
+            // ours :      eeeeeeeeeeeeeeeeeeeee
+            //        sssssssssssssss
             [`${path}.start`]: { $lte: end },
             [`${path}.end`]: { $gte: start },
         },
-        {
-            [`${path}.start`]: { $lte: end },
-            [`${path}.end`]: { $gte: start },
-        },
+        // FIXME: that looks redundant
+        //{
+        //    [`${path}.start`]: { $lte: end },
+        //    [`${path}.end`]: { $gte: start },
+        //},
     ];
 
     if (recordIntervalEndCanBeNull === true) {

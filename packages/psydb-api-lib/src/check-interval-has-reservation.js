@@ -1,7 +1,7 @@
 'use strict';
 var intervalUtils = require('@mpieva/psydb-common-lib/src/interval-utils');
 var { 
-    MatchIntervalOverlapStage,
+    MatchIntervalAroundStage,
 } = require('./fetch-record-helpers');
 
 var checkIntervalHasReservation = async ({
@@ -18,7 +18,7 @@ var checkIntervalHasReservation = async ({
 
     var reservations = await (
         db.collection('reservation').aggregate([
-            MatchIntervalOverlapStage(interval),
+            MatchIntervalAroundStage(interval),
             { $match: {
                 'state.experimentOperatorTeamId': experimentOperatorTeamId,
                 ...(
