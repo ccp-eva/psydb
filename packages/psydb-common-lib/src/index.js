@@ -25,6 +25,7 @@ module.exports = {
     keyBy: require('./key-by'),
     compareIds: require('./compare-ids'),
 
+    stringifyFieldValue: require('./stringify-field-value'),
     quicksort: require('./quicksort'),
     perceivedBrightness: require('./perceived-brightness'),
     range: require('./range'),

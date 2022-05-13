@@ -5,6 +5,8 @@ var formatDate = formatDate_ESM.default || formatDate_ESM;
 var deLocale_ESM = require('date-fns/locale/de');
 var deLocale = deLocale_ESM.default || deLocale_ESM;
 
+var { formatInTimeZone } = require('date-fns-tz');
+
 var ageFrameUtils = require('./age-frame-utils');
 
 var AgeFrameEdge = (value) => {
@@ -35,20 +37,33 @@ var PhoneWithTypeList = (value) => (
     value.map(it => it.number).join(', ')
 );
 
-var DateTime = (value) => {
+var DateTime = (value, options = {}) => {
+    var { timezone } = options;
+
+    if (value === null) {
+        return '-';
+    }
+
+    var other = [ 'P p', { locale: deLocale } ];
     return (
-        value === null
-        ? 'Keine Angabe'
-        : formatDate(new Date(value), 'P p', { locale: deLocale })
+        timezone
+        ? formatInTimeZone(new Date(value), timezone, ...other)
+        : formatDate(new Date(value), ...other)
     )
 };
 
-// FIXME: timezone correction
-var DateOnlyServerSide = (value) => {
+var DateOnlyServerSide = (value, options = {}) => {
+    var { timezone } = options;
+
+    if (value === null) {
+        return '-';
+    }
+
+    var other = [ 'P', { locale: deLocale } ];
     return (
-        value === null
-        ? '-'
-        : formatDate(new Date(value), 'P', { locale: deLocale })
+        timezone
+        ? formatInTimeZone(new Date(value), timezone, ...other)
+        : formatDate(new Date(value), ...other)
     )
 };
 

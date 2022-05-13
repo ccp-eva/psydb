@@ -1,7 +1,10 @@
 'use strict';
 var debug = require('debug')('psydb:api:endpoints:export');
+var jsonpointer = require('jsonpointer');
 
 var { keyBy } = require('@mpieva/psydb-core-utils');
+var { stringifyFieldValue } = require('@mpieva/psydb-common-lib');
+
 var {
     ApiError,
     Ajv,
@@ -141,6 +144,27 @@ var exportEndpoint = async (context, next) => {
         dataPointer: it.dataPointer,
     }))
 
+    var csv = CSV();
+    csv.addLine(displayFieldData.map(it => it.displayName));
+    for (var record of records) {
+        csv.addLine(displayFieldData.map(fieldDefinition => {
+            var { dataPointer } = fieldDefinition;
+            var rawValue = jsonpointer.get(record, dataPointer);
+            
+            var str = stringifyFieldValue({
+                rawValue,
+                fieldDefinition,
+                ...related,
+
+                timezone: 'Europe/Berlin',
+            });
+
+            return str;
+        }))
+    }
+
+    console.log(csv.toString());
+
     context.body = ResponseBody({
         data: {
             ...related,
@@ -151,6 +175,29 @@ var exportEndpoint = async (context, next) => {
     });
 
     await next();
+}
+
+var CSV = (options = {}) => {
+    var {
+        delimiter = ',',
+        eol = "\n"
+    } = options;
+
+    var csv = {};
+    var lines = [];
+
+    csv.addLine = (that) => lines.push(that);
+    csv.toString = () => {
+        return lines.map(line => {
+            var sanitized = line.map(value => {
+                var escaped = JSON.stringify(value);
+                return `${escaped}`;
+            });
+            return sanitized.join(delimiter)
+        }).join(eol);
+    }
+
+    return csv;
 }
 
 var generateFullBodySchema = async (context, bag) => {
