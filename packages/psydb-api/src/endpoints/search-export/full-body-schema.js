@@ -8,6 +8,7 @@ var {
     IdentifierString,
     JsonPointer,
     DefaultBool,
+    Timezone,
 } = psydbSchemaFields;
 
 var metadata = require('@mpieva/psydb-common-lib/src/field-type-metadata');
@@ -92,6 +93,8 @@ var FullBodySchema = ({
                 },
                 required: [ 'path', 'direction' ]
             }),
+
+            timezone: Timezone(),
         },
         required: [
             'collectionName',

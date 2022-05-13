@@ -142,7 +142,9 @@ agent.exportRecords = (bag) => {
         searchOptions,
         constraints,
         filters,
-        sort
+        sort,
+
+        timezone: getSystemTimezone(),
     });
 }
 

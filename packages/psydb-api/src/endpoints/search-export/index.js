@@ -77,6 +77,8 @@ var exportEndpoint = async (context, next) => {
         filters,
         constraints,
         sort,
+
+        timezone
     } = request.body;
 
     var {
@@ -156,23 +158,24 @@ var exportEndpoint = async (context, next) => {
                 fieldDefinition,
                 ...related,
 
-                timezone: 'Europe/Berlin',
+                timezone,
             });
 
             return str;
         }))
     }
 
-    console.log(csv.toString());
+    //console.log(csv.toString());
+    context.body = csv.toString();
 
-    context.body = ResponseBody({
+    /*context.body = ResponseBody({
         data: {
             ...related,
             displayFieldData,
             records,
             recordsCount: records.totalRecordCount
         },
-    });
+    });*/
 
     await next();
 }
