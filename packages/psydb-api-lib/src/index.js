@@ -44,6 +44,7 @@ module.exports = {
     fetchEnabledLocationRecordsForStudy: require('./fetch-enabled-location-records-for-study'),
 
     gatherDisplayFieldsForRecordType: require('./gather-display-fields-for-record-type'),
+    gatherAvailableConstraintsForRecordType: require('./gather-available-constraints-for-record-type'),
 
     resolveDataPointer: require('./resolve-data-pointer'),
     resolvePossibleRefs: require('./resolve-possible-refs'),
@@ -57,4 +58,7 @@ module.exports = {
     
     // FIXME: make this include go away and use core-utils instead
     convertPointerToPath: require('@mpieva/psydb-core-utils').convertPointerToPath,
+
+    convertFiltersToQueryFields: require('./convert-filters-to-query-fields'),
+    convertConstraintsToMongoPath: require('./convert-constraints-to-mongo-path'),
 }

@@ -101,6 +101,13 @@ var createRouting = ({
         withKoaBody(),
         endpoints.search
     );
+    
+    router.post('/search-export',
+        withSelfAuth(),
+        withPermissions(),
+        withKoaBody(),
+        endpoints.searchExport
+    );
 
     /*router.get('/available-test-locations-for-study/:studyId/:locationRecordTypeId',
         withSelfAuth(),

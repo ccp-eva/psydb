@@ -136,7 +136,7 @@ agent.exportRecords = (bag) => {
         sort
     } = bag;
 
-    return axios.post('/api/export', {
+    return axios.post('/api/search-export', {
         collection,
         recordType,
         searchOptions,
