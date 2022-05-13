@@ -14,6 +14,11 @@ var collectionUIMapping = {
 }
 
 // TODO: put elsewhere
+const NoValue = () => (
+    <i className='text-muted'>Keine Angabe</i>
+);
+
+// TODO: put elsewhere
 const Joined = ({ delimiter, children }) => (
     children.reduce((acc, it, ix) => ([
         ...acc,
@@ -48,7 +53,7 @@ export const HelperSetItemIdList = (ps) => {
     var { setId } = props;
     
     if (!(Array.isArray(value) && value.length)) {
-        return <i className='text-muted'>Keine</i>
+        return <i className='text-muted'>Keine Angabe</i>
     }
 
     return (
@@ -72,7 +77,7 @@ export const ForeignIdList = (ps) => {
     var { collection, recordType } = props;
     
     if (!(Array.isArray(value) && value.length)) {
-        return <i className='text-muted'>Keine</i>
+        return <NoValue />
     }
 
     var formatted = (
@@ -108,7 +113,7 @@ export const Address = (ps) => {
     var { value } = ps;
     
     if (!value) {
-        return <i className='text-muted'>Keine Angabe</i>
+        return <NoValue />
     }
     
     return (
@@ -135,7 +140,7 @@ export const EmailWithPrimaryList = (ps) => {
     var { value } = ps;
     
     if (!(Array.isArray(value) && value.length)) {
-        return <i className='text-muted'>Keine</i>
+        return <NoValue />
     }
 
     return (
@@ -184,7 +189,7 @@ export const PhoneList = (ps) => {
     var { value } = ps;
     
     if (!(Array.isArray(value) && value.length)) {
-        return <i className='text-muted'>Keine</i>
+        return <NoValue />
     }
 
     return (
@@ -273,7 +278,7 @@ export const ForeignId = (ps) => {
     var { value, props, related } = ps;
     var { collection, recordType } = props;
     if (!value) {
-        return <i className='text-muted'>Keine Angabe</i>
+        return <NoValue />
     }
     
     var label = (
@@ -298,5 +303,9 @@ export const ForeignId = (ps) => {
 }
 
 export const Integer = (ps) => {
-    return String(ps.value);
+    return (
+        ps.value === null
+        ? <NoValue />
+        : String(ps.value)
+    );
 }
