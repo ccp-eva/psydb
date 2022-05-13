@@ -126,6 +126,26 @@ agent.searchRecords = ({
     )
 }
 
+agent.exportRecords = (bag) => {
+    var {
+        collection,
+        recordType,
+        searchOptions,
+        constraints = {},
+        filters = {},
+        sort
+    } = bag;
+
+    return axios.post('/api/export', {
+        collection,
+        recordType,
+        searchOptions,
+        constraints,
+        filters,
+        sort
+    });
+}
+
 agent.fetchSubjectTypeDataForStudy = ({
     studyId,
 }) => {

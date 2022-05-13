@@ -19,12 +19,13 @@ const ErrorResponseModal = ({
     }
 
     var {
+        status: rawStatus,
         data: responseBody,
         config
     } = errorResponse;
     
     var {
-        statusCode,
+        statusCode = rawStatus,
     } = responseBody;
 
     var [ title, Body ] = getErrorComponents(statusCode);
@@ -44,6 +45,8 @@ const ErrorResponseModal = ({
 
 const getErrorComponents = (statusCode) => {
     switch (statusCode) {
+        case 404:
+            return [ 'Nicht gefunden', NotFoundError ];
         case 400:
             return [ 'Fehlerhafte Eingaben', BadRequestError ];
         default:
@@ -63,6 +66,19 @@ const DefaultServerError = ({
             <div>
                 { data.message }
             </div>
+        </div>
+    )
+}
+
+const NotFoundError = ({
+    status,
+    statusCode,
+    apiStatus,
+    data
+}) => {
+    return (
+        <div className='text-danger'>
+            Die angegebene URL konnte nicht gefunden werden.
         </div>
     )
 }

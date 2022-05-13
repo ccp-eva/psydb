@@ -3,6 +3,8 @@ import { useRouteMatch } from 'react-router-dom';
 
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { LinkButton } from '@mpieva/psydb-ui-layout';
+
+import CSVExportButton from './csv-export-button';
 import RecordList from './record-list';
 
 const RecordListContainer = ({
@@ -18,6 +20,9 @@ const RecordListContainer = ({
     enableEdit_old,
     enableRecordRowLink,
 
+    enableExtendedSearch,
+    enableCSVExport,
+
     enableSelectRecords,
     showSelectionIndicator,
     selectedRecordIds,
@@ -32,15 +37,35 @@ const RecordListContainer = ({
     var permissions = usePermissions();
 
     var canCreate = permissions.hasCollectionFlag(collection, 'write');
+    var canUseExtendedSearch = true; // FIXME extra permission?
+    var canUseCSVExport = true; // FIXME extra permission?
 
     return (
         <div className={ className }>
-            <div className='media-print-hidden'>
+            <div className='media-print-hidden mb-3 d-flex justify-content-between'>
                 { enableNew && canCreate && (
                     <LinkButton to={`${url}/new`}>
                         Neuer Eintrag
                     </LinkButton>
                 )}
+                <div>
+                    { enableExtendedSearch && canUseExtendedSearch && (
+                        <LinkButton to={`${url}/extended-search`}>
+                            Erweiterte Suche
+                        </LinkButton>
+                    )}
+                    { enableCSVExport && canUseCSVExport && (
+                        <CSVExportButton { ...({
+                            className: 'ml-3',
+
+                            collection,
+                            recordType,
+                            constraints,
+                            searchOptions,
+                            sort: defaultSort || undefined,
+                        })} />
+                    )}
+                </div>
             </div>
             <RecordList { ...({
                 linkBaseUrl: url,

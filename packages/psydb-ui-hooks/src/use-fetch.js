@@ -19,6 +19,11 @@ const useFetch = (...args) => {
         options
     ] = args;
 
+    options = {
+        useEffect: true,
+        ...options
+    };
+
     var {
         init = defaultInit,
         dependencies,
@@ -30,25 +35,30 @@ const useFetch = (...args) => {
     var reducer = createReducer(init);
     var [ state, dispatch ] = useReducer(reducer, { didFetch: false });
 
-    var wrappedCreatePromise = () => {
-        var promise = createPromise(contextAgent);
-        if (promise) {
-            promise.then((response) => {
-                extraEffect && extraEffect(response);
-                dispatch({ type: 'init-data', payload: {
-                    response: response,
-                    data: response.data.data
-                }})
-            })
-        }
-        else {
-            dispatch({ type: 'fake-fetch' })
-        }
-    };
+    if (options.useEffect) {
+        var wrappedCreatePromise = () => {
+            var promise = createPromise(contextAgent);
+            if (promise) {
+                promise.then((response) => {
+                    extraEffect && extraEffect(response);
+                    dispatch({ type: 'init-data', payload: {
+                        response: response,
+                        data: response.data.data
+                    }})
+                })
+            }
+            else {
+                dispatch({ type: 'fake-fetch' })
+            }
+        };
 
-    useEffect(wrappedCreatePromise, dependencies);
-
-    return [ state.didFetch, state ];
+        useEffect(wrappedCreatePromise, dependencies);
+        return [ state.didFetch, state ];
+    }
+    else {
+        var exec = () => createPromise(contextAgent);
+        return { exec };
+    }
 }
 
 const defaultInit = (payload) => ({

@@ -26,16 +26,13 @@ const RecordTypeRouting = ({
     <Switch>
         <Route exact path={`${path}`}>
             <>
-                <div className='media-print-hidden'>
-                    <LinkContainer to={ `${url}/extended-search/` }>
-                        <a>Erweiterte Search</a>
-                    </LinkContainer>
-                </div>
                 <RecordList
                     linkBaseUrl={ url }
                     collection={ collection }
                     recordType={ recordType }
                     enableView={ false }
+                    enableExtendedSearch={ true }
+                    enableCSVExport={ true }
                     enableNew={ true }
                     enableEdit={ false }
                     enableRecordRowLink={ true }
