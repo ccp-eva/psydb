@@ -10,6 +10,7 @@ module.exports = {
     search: require('./search'),
     searchExport: require('./search-export'),
     extendedSearch: require('./extended-search'),
+    extendedSearchExport: require('./extended-search-export'),
 
     special: require('./special'),
 

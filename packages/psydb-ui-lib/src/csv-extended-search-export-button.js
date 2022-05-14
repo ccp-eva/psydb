@@ -14,11 +14,12 @@ const CSVExtendedSearchExportButton = (ps) => {
     } = ps;
 
     var fetcher = useFetch((agent) => {
+        var { offset, limit, ...pass } = searchData;
         return (
             agent
             .getAxios()
             .post(`/api/extended-search-export/${endpoint}`, {
-                ...searchData,
+                ...pass,
                 timezone: getSystemTimezone()
             })
         )
@@ -39,7 +40,7 @@ const CSVExtendedSearchExportButton = (ps) => {
             var csvURL = window.URL.createObjectURL(blob);
             var tempLink = document.createElement('a');
             tempLink.href = csvURL;
-            tempLink.setAttribute('download', `${collection}-export.csv`);
+            tempLink.setAttribute('download', `${endpoint}-export.csv`);
 
             // firefox needs the link to be appended to the body
             document.body.appendChild(tempLink);

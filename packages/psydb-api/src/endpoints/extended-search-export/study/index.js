@@ -1,10 +1,14 @@
 'use strict';
 var debug = require('debug')(
-    'psydb:api:endpoints:extended-search:studies'
+    'psydb:api:endpoints:extended-search-export:studies'
 );
 
+var jsonpointer = require('jsonpointer');
+var { keyBy } = require('@mpieva/psydb-core-utils');
+var { stringifyFieldValue } = require('@mpieva/psydb-common-lib');
+
 var {
-    ResponseBody,
+    CSV,
     validateOrThrow,
     fetchCRTSettings,
 } = require('@mpieva/psydb-api-lib');
@@ -13,7 +17,7 @@ var { extendedSearch } = require('@mpieva/psydb-api-endpoint-lib');
 var RequestBodySchema = require('./request-body-schema');
 
 
-var studyExtendedSearch = async (context, next) => {
+var studyExtendedSearchExport = async (context, next) => {
     var {
         db,
         permissions,
@@ -44,8 +48,8 @@ var studyExtendedSearch = async (context, next) => {
 
         columns,
         sort,
-        offset = 0,
-        limit = 0
+
+        timezone,
     } = request.body;
 
     var {
@@ -60,8 +64,6 @@ var studyExtendedSearch = async (context, next) => {
 
         columns,
         sort,
-        offset,
-        limit,
 
         customFilters,
         specialFilterConditions: (
@@ -69,17 +71,37 @@ var studyExtendedSearch = async (context, next) => {
         ),
     });
 
-    context.body = ResponseBody({
-        data: {
-            records,
-            recordsCount,
-            related,
-            displayFieldData,
-        },
+    var columnDefinitions = keyBy({
+        items: displayFieldData,
+        byProp: 'dataPointer'
     });
+
+    displayFieldData = columns.map(pointer => columnDefinitions[pointer]);
+
+    var csv = CSV();
+    csv.addLine(displayFieldData.map(it => it.displayName));
+    for (var record of records) {
+        csv.addLine(displayFieldData.map(fieldDefinition => {
+            var { dataPointer } = fieldDefinition;
+            var rawValue = jsonpointer.get(record, dataPointer);
+            
+            var str = stringifyFieldValue({
+                rawValue,
+                fieldDefinition,
+                ...related,
+
+                timezone,
+            });
+
+            return str;
+        }))
+    }
+
+    //console.log(csv.toString());
+    context.body = csv.toString();
 
     await next();
 }
 
-module.exports = studyExtendedSearch;
+module.exports = studyExtendedSearchExport;
 

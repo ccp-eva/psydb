@@ -18,7 +18,9 @@ var {
     fetchRelatedLabelsForMany,
 
     convertFiltersToQueryFields,
-    convertConstraintsToMongoPath
+    convertConstraintsToMongoPath,
+
+    CSV,
 } = require('@mpieva/psydb-api-lib');
 
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
@@ -165,29 +167,6 @@ var exportEndpoint = async (context, next) => {
     context.body = csv.toString();
 
     await next();
-}
-
-var CSV = (options = {}) => {
-    var {
-        delimiter = ',',
-        eol = "\n"
-    } = options;
-
-    var csv = {};
-    var lines = [];
-
-    csv.addLine = (that) => lines.push(that);
-    csv.toString = () => {
-        return lines.map(line => {
-            var sanitized = line.map(value => {
-                var escaped = JSON.stringify(value);
-                return `${escaped}`;
-            });
-            return sanitized.join(delimiter)
-        }).join(eol);
-    }
-
-    return csv;
 }
 
 var generateFullBodySchema = async (context, bag) => {

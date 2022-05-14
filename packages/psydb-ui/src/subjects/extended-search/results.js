@@ -36,8 +36,8 @@ export const Results = (ps) => {
     var pagination = usePaginationReducer({ offset: 0, limit: 50 })
     var { offset, limit } = pagination;
     
-    var saneData = sanitizeFormData(fieldDefinitions, formData);
     var [ didFetch, fetched ] = useFetch((agent) => {
+        var saneData = sanitizeFormData(fieldDefinitions, formData);
         return (
             agent
             .getAxios()
@@ -65,6 +65,8 @@ export const Results = (ps) => {
         displayFieldData,
     } = fetched.data;
 
+    var saneData = sanitizeFormData(fieldDefinitions, formData);
+
     var selectedFieldData = displayFieldData.filter(it => (
         columns.includes(it.dataPointer)
     ));
@@ -85,7 +87,7 @@ export const Results = (ps) => {
                     <CSVExtendedSearchExportButton
                         className='ml-3'
                         size='sm'
-                        endpoint='subjects'
+                        endpoint='subject'
                         searchData={ saneData }
                     />
                 </div>

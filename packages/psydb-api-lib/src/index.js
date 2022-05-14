@@ -9,6 +9,7 @@ module.exports = {
     FakeAjvError: require('./fake-ajv-error'),
     ResponseBody: require('./response-body'),
     Self: require('./self'),
+    CSV: require('./csv'),
 
     validateOrThrow: require('./validate-or-throw'),
 

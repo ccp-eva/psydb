@@ -18,6 +18,8 @@ import {
     LinkContainer,
 } from '@mpieva/psydb-ui-layout';
 
+import { CSVExtendedSearchExportButton } from '@mpieva/psydb-ui-lib';
+
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns'
 
 import FieldDataHeadCols from '@mpieva/psydb-ui-lib/src/record-list/field-data-head-cols';
@@ -35,7 +37,6 @@ export const Results = (ps) => {
     
     var [ didFetch, fetched ] = useFetch((agent) => {
         var saneData = sanitizeFormData(fieldDefinitions, formData);
-        console.log(saneData);
         return (
             agent
             .getAxios()
@@ -56,6 +57,8 @@ export const Results = (ps) => {
         return <LoadingIndicator size='lg' />
     }
 
+    var saneData = sanitizeFormData(fieldDefinitions, formData);
+
     var {
         records,
         recordsCount,
@@ -75,8 +78,18 @@ export const Results = (ps) => {
 
     return (
         <div>
-            <div className='sticky-top border-bottom'>
-                <Pagination { ...pagination } />
+            <div className='sticky-top border-bottom d-flex align-items-center bg-light'>
+                <div className='flex-grow'>
+                    <Pagination { ...pagination } />
+                </div>
+                <div className='media-print-hidden'>
+                    <CSVExtendedSearchExportButton
+                        className='ml-3'
+                        size='sm'
+                        endpoint='study'
+                        searchData={ saneData }
+                    />
+                </div>
             </div>
 
             <TableComponent { ...({
