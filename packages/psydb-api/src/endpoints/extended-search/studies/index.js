@@ -3,8 +3,6 @@ var debug = require('debug')(
     'psydb:api:endpoints:extendedSearch:subjects'
 );
 
-var { groupBy } = require('@mpieva/psydb-core-utils');
-
 var {
     ResponseBody,
     validateOrThrow,
@@ -18,6 +16,7 @@ var {
     fetchCRTSettings,
 } = require('@mpieva/psydb-api-lib');
 
+var { extendedSearch } = require('@mpieva/psydb-api-endpoint-lib');
 
 var {
     createCustomQueryValues,
@@ -61,7 +60,8 @@ var studyExtendedSearch = async (context, next) => {
         limit = 0
     } = request.body;
 
-    var crt = await fetchOneCustomRecordType({
+    ////////////////////////////
+    /*var crt = await fetchOneCustomRecordType({
         db,
         collection: 'study',
         type: studyType
@@ -90,7 +90,6 @@ var studyExtendedSearch = async (context, next) => {
     }
 
     //console.dir(customQueryValues, { depth: null })
-
 
     var stages = [
         { $match: {
@@ -137,6 +136,28 @@ var studyExtendedSearch = async (context, next) => {
         collectionName: 'study',
         recordType: studyType,
         records: records,
+    });*/
+    ///////////////////////
+
+    var {
+        records,
+        recordCount,
+        related,
+        displayFieldData,
+    } = await extendedSearch.core({
+        db,
+        collection: 'study',
+        recordType: studyType,
+
+        columns,
+        sort,
+        offset,
+        limit,
+
+        customFilters,
+        specialFilterConditions: (
+            createSpecialFilterConditions(specialFilters)
+        ),
     });
 
     context.body = ResponseBody({
@@ -147,18 +168,6 @@ var studyExtendedSearch = async (context, next) => {
             displayFieldData: availableDisplayFieldData,
         },
     });
-}
-
-var SortStage = (options) => {
-    var { column, direction = 'asc' } = options;
-    if (!column) {
-        return undefined;
-    }
-    var path = convertPointerToPath(column);
-    return { $sort: {
-        [path]: direction === 'desc' ? -1 : 1,
-    }}
-
 }
 
 var createSpecialFilterConditions = (filters) => {

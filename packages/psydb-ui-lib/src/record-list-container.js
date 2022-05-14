@@ -4,7 +4,7 @@ import { useRouteMatch } from 'react-router-dom';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { LinkButton } from '@mpieva/psydb-ui-layout';
 
-import CSVExportButton from './csv-export-button';
+import CSVSearchExportButton from './csv-search-export-button';
 import RecordList from './record-list';
 
 const RecordListContainer = ({
@@ -55,7 +55,7 @@ const RecordListContainer = ({
                         </LinkButton>
                     )}
                     { enableCSVExport && canUseCSVExport && (
-                        <CSVExportButton { ...({
+                        <CSVSearchExportButton { ...({
                             className: 'ml-3',
 
                             collection,

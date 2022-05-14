@@ -126,7 +126,7 @@ agent.searchRecords = ({
     )
 }
 
-agent.exportRecords = (bag) => {
+agent.searchExport = (bag) => {
     var {
         collection,
         recordType,

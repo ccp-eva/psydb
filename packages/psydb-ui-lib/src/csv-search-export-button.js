@@ -3,7 +3,7 @@ import React from 'react';
 import { useFetch, useURLSearchParamsB64 } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
 
-const CSVExportButton = (ps) => {
+const CSVSearchExportButton = (ps) => {
     var {
         collection,
         recordType,
@@ -17,7 +17,7 @@ const CSVExportButton = (ps) => {
     var [ filters ] = useURLSearchParamsB64();
 
     var fetcher = useFetch((agent) => {
-        return agent.exportRecords({
+        return agent.searchExport({
             collection,
             recordType,
             searchOptions,
@@ -31,7 +31,6 @@ const CSVExportButton = (ps) => {
     var handleExport = () => {
         fetcher.exec().then((response) => {
             var { data } = response;
-            console.log(data);
 
             var blob = new Blob(
                 [ data ],
@@ -60,4 +59,4 @@ const CSVExportButton = (ps) => {
     )
 }
 
-export default CSVExportButton;
+export default CSVSearchExportButton;

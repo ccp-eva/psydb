@@ -52,6 +52,7 @@
     "@mpieva/psydb-common-lib": "~0.1.0-alpha",
     "@mpieva/psydb-api-lib-errors": "~0.1.0-alpha",
     "@mpieva/psydb-api-lib": "~0.1.0-alpha",
+    "@mpieva/psydb-api-endpoint-lib": "~0.1.0-alpha",
     "@mpieva/psydb-api-config": "~0.1.0-alpha",
     "@mpieva/psydb-api-message-handlers": "~0.1.0-alpha",
     "@mpieva/json-schema-lazy-resolve-oneof": "~0.1.0-alpha",

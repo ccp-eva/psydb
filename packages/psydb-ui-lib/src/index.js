@@ -44,3 +44,6 @@ export { default as formatDateInterval } from './format-date-interval';
 export * from './with-lab-procedure-settings-iterator';
 
 export * from './reverse-ref-list';
+
+export { default as CSVSearchExportButton } from './csv-search-export-button';
+export { default as CSVExtendedSearchExportButton } from './csv-extended-search-export-button';

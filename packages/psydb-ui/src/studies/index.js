@@ -42,11 +42,6 @@ const StudyRouting = (ps) => {
     return (
         <Switch>
             <Route exact path={ path }>
-                <div className='media-print-hidden'>
-                    <LinkContainer to={ `${url}/extended-search/` }>
-                        <a>Erweiterte Search</a>
-                    </LinkContainer>
-                </div>
                 <RecordList
                     linkBaseUrl={ url }
                     collection={ collection }
@@ -54,6 +49,8 @@ const StudyRouting = (ps) => {
                     enableView={ false }
                     enableNew={ true }
                     enableEdit={ false }
+                    enableExtendedSearch={ true }
+                    enableCSVExport={ true }
                     enableRecordRowLink={ true }
                 />
             </Route>
@@ -68,15 +65,13 @@ const StudyRouting = (ps) => {
             <Route exact path={`${path}/new`}>
                 { canWrite
                     ? (
-                        <FormBox title='Neuer Datensatz'>
-                            <RecordCreator
-                                collection='study'
-                                recordType={ recordType }
-                                onSuccessfulUpdate={
-                                    ({ id }) => history.push(`${url}/${id}/selection-settings`)
-                                }
-                            />
-                        </FormBox>
+                        <RecordCreator
+                            collection='study'
+                            recordType={ recordType }
+                            onSuccessfulUpdate={
+                                ({ id }) => history.push(`${url}/${id}/selection-settings`)
+                            }
+                        />
                     )
                     : <PermissionDenied />
                 }

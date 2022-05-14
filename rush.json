@@ -179,6 +179,11 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/psydb-api-endpoint-lib",
+       "projectFolder": "packages/psydb-api-endpoint-lib",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-api-message-handlers",
        "projectFolder": "packages/psydb-api-message-handlers",
        "reviewCategory": "production"
