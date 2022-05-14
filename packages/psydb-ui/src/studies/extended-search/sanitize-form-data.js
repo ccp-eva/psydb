@@ -62,10 +62,10 @@ const sanitizeSpecialFilters = (values) => {
         ],
         values
     })
+    var { studyId, sequenceNumber, name, shorthand } = values;
     return {
-        ...only({ from: values, paths: [
-            'studyId', 'sequenceNumber', 'name', 'shorthand',
-        ]}),
+        studyId, name, shorthand,
+        ...(typeof sequenceNumber === 'number' && { sequenceNumber }),
         ...sanitized,
     };
 }

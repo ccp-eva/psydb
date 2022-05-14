@@ -1,29 +1,17 @@
 'use strict';
 var debug = require('debug')(
-    'psydb:api:endpoints:extendedSearch:subjects'
+    'psydb:api:endpoints:extendedSearch:studies'
 );
 
 var {
     ResponseBody,
     validateOrThrow,
-    fromFacets,
-
-    fetchOneCustomRecordType,
-    convertPointerToPath,
-    gatherDisplayFieldsForRecordType,
-    fetchRelatedLabelsForMany,
-
     fetchCRTSettings,
 } = require('@mpieva/psydb-api-lib');
 
 var { extendedSearch } = require('@mpieva/psydb-api-endpoint-lib');
-
-var {
-    createCustomQueryValues,
-    convertPointerKeys,
-} = require('../utils');
-
 var RequestBodySchema = require('./request-body-schema');
+
 
 var studyExtendedSearch = async (context, next) => {
     var {

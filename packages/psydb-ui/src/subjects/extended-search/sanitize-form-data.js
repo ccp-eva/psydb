@@ -60,9 +60,16 @@ const sanitizeCustomFieldValues = (options) => {
 }
 
 const sanitizeSpecialFilters = (values) => {
-    var { didParticipateIn, didNotParticipateIn } = values;
+    var {
+        sequenceNumber,
+        didParticipateIn,
+        didNotParticipateIn,
+        ...pass
+    } = values;
+
     var sanitized = {
-        ...values,
+        ...pass,
+        ...(typeof sequenceNumber === 'number' && { sequenceNumber }),
         ...(didParticipateIn && {
             didParticipateIn: didParticipateIn.filter(it => !!it)
         }),
