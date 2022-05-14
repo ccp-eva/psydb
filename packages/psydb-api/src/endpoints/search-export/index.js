@@ -103,8 +103,7 @@ var exportEndpoint = async (context, next) => {
         fieldTypeMetadata,
     });
 
-    var d1 = new Date();
-    console.log('>>> start fetchRecords()');
+    debug('>>> start fetchRecords()');
     var records = await fetchRecordsByFilter({
         db,
         permissions,
@@ -122,19 +121,16 @@ var exportEndpoint = async (context, next) => {
 
         disablePermissionCheck: false
     });
-    var d2 = new Date();
-    console.log('<<< end fetchRecords() ', (d2.getTime() - d1.getTime()));
+    debug('<<< end fetchRecords()');
 
-    var d1 = new Date();
-    console.log('>>> start fetchRelated()');
+    debug('>>> start fetchRelated()');
     var related = await fetchRelatedLabelsForMany({
         db,
         collectionName: collection,
         recordType,
         records: records,
     });
-    var d2 = new Date();
-    console.log('<<< end fetchRelated() ', (d2.getTime() - d1.getTime()));
+    debug('<<< end fetchRelated()');
 
     var availableDisplayFieldDataByPointer = keyBy({
         items: availableDisplayFieldData,
@@ -167,15 +163,6 @@ var exportEndpoint = async (context, next) => {
 
     //console.log(csv.toString());
     context.body = csv.toString();
-
-    /*context.body = ResponseBody({
-        data: {
-            ...related,
-            displayFieldData,
-            records,
-            recordsCount: records.totalRecordCount
-        },
-    });*/
 
     await next();
 }
