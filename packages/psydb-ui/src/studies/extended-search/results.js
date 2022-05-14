@@ -35,6 +35,7 @@ export const Results = (ps) => {
     
     var [ didFetch, fetched ] = useFetch((agent) => {
         var saneData = sanitizeFormData(fieldDefinitions, formData);
+        console.log(saneData);
         return (
             agent
             .getAxios()

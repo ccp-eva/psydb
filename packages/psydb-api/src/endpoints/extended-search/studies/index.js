@@ -141,7 +141,7 @@ var studyExtendedSearch = async (context, next) => {
 
     var {
         records,
-        recordCount,
+        recordsCount,
         related,
         displayFieldData,
     } = await extendedSearch.core({
@@ -156,7 +156,7 @@ var studyExtendedSearch = async (context, next) => {
 
         customFilters,
         specialFilterConditions: (
-            createSpecialFilterConditions(specialFilters)
+            extendedSearch.study.createSpecialFilterConditions(specialFilters)
         ),
     });
 
@@ -165,12 +165,13 @@ var studyExtendedSearch = async (context, next) => {
             records,
             recordsCount,
             related,
-            displayFieldData: availableDisplayFieldData,
+            displayFieldData,
+            //displayFieldData: availableDisplayFieldData,
         },
     });
 }
 
-var createSpecialFilterConditions = (filters) => {
+/*var createSpecialFilterConditions = (filters) => {
     var {
         studyId,
     } = filters;
@@ -224,7 +225,7 @@ var createSpecialFilterConditions = (filters) => {
         ? { $and: AND }
         : undefined
     )
-}
+}*/
 
 module.exports = studyExtendedSearch;
 

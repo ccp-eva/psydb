@@ -1,3 +1,4 @@
+import { only } from '@mpieva/psydb-core-utils';
 
 const sanitizeFormData = (fieldDefinitions, formData) => {
     var {
@@ -55,15 +56,18 @@ const sanitizeCustomFieldValues = (options) => {
 const sanitizeSpecialFilters = (values) => {
     var sanitized = sanitizeCustomFieldValues({
         fieldDefinitions: [
-            { key: 'name', type: 'SaneString' },
-            { key: 'shorthand', type: 'SaneString' },
             { key: 'scientistIds', type: 'ForeignIdList' },
             { key: 'studyTopicIds', type: 'ForeignIdList' },
             { key: 'researchGroupIds', type: 'ForeignIdList' },
         ],
         values
     })
-    return sanitized;
+    return {
+        ...only({ from: values, paths: [
+            'studyId', 'sequenceNumber', 'name', 'shorthand',
+        ]}),
+        ...sanitized,
+    };
 }
 
 export default sanitizeFormData;

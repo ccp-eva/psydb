@@ -12,6 +12,11 @@ var {
     fetchRelatedLabelsForMany,
 } = require('@mpieva/psydb-api-lib');
 
+var {
+    createCustomQueryValues,
+    convertPointerKeys,
+} = require('./utils');
+
 var extendedSearchCore = async (bag) => {
     var {
         db,
@@ -56,6 +61,7 @@ var extendedSearchCore = async (bag) => {
     }
 
     //console.dir(customQueryValues, { depth: null })
+    //console.log(specialFilterConditions);
 
     var stages = [
         { $match: {
@@ -106,10 +112,10 @@ var extendedSearchCore = async (bag) => {
 
     return {
         records,
-        recordCount,
+        recordsCount,
         related,
 
-        displayFieldData
+        displayFieldData: availableDisplayFieldData,
     };
 }
 

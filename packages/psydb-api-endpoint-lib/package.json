@@ -2,10 +2,9 @@
   "name": "@mpieva/psydb-api-endpoint-lib",
   "version": "0.1.0-alpha",
   "description": "",
-  "main": "src/server.js",
+  "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node src/server.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -29,6 +28,7 @@
     "@mpieva/psydb-core-utils": "~0.1.0-alpha",
     "@mpieva/psydb-common-utils": "~0.1.0-alpha",
     "@mpieva/psydb-common-lib": "~0.1.0-alpha",
+    "@mpieva/psydb-mongo-stages": "~0.1.0-alpha",
     "@mpieva/psydb-api-lib-errors": "~0.1.0-alpha",
     "@mpieva/psydb-api-lib": "~0.1.0-alpha",
     "@mpieva/psydb-api-config": "~0.1.0-alpha"

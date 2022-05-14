@@ -3,11 +3,13 @@
 var {
     createCustomQueryValues,
     convertPointerKeys,
+    escapeRX, // FIXME: use makeRX
 } = require('../utils');
 
 var createSpecialFilterConditions = (filters) => {
     var {
         studyId,
+        sequenceNumber,
     } = filters;
 
     var AND = [];
@@ -15,6 +17,16 @@ var createSpecialFilterConditions = (filters) => {
         AND.push({
             '_id': new RegExp(escapeRX(studyId), 'i')
         });
+    }
+    if (sequenceNumber !== undefined) {
+        AND.push({ $expr: {
+            $regexMatch: {
+                input: { $convert: {
+                    input: '$sequenceNumber', to: 'string'
+                }},
+                regex: new RegExp(escapeRX(String(sequenceNumber)), 'i')
+            }
+        }});
     }
 
     var statics = createCustomQueryValues({
