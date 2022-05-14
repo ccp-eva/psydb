@@ -310,6 +310,13 @@ var createRouting = ({
         endpoints.extendedSearch.studies
     );
 
+    router.post('/extended-search-export/subject',
+        withSelfAuth(),
+        withPermissions(),
+        withKoaBody(),
+        endpoints.extendedSearchExport.subject
+    );
+
     router.post('/extended-search-export/study',
         withSelfAuth(),
         withPermissions(),

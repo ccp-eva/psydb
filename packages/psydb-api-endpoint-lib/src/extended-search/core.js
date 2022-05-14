@@ -23,8 +23,12 @@ var extendedSearchCore = async (bag) => {
         collection,
         recordType,
 
-        customFilters,
         specialFilterConditions,
+        specialFilterProjection,
+        
+        customFilters,
+        customGdprFilters,
+        customScientificFilters,
 
         columns,
         sort,
@@ -47,17 +51,39 @@ var extendedSearchCore = async (bag) => {
         target: 'table',
     });
 
-    // TODO
-    var { fields } = crt.state.settings;
-    var customFields = (
-        fields.filter(it => !it.isRemoved)
-    );
+    var { fields, subChannelFields } = crt.state.settings;
+    if (subChannelFields) {
+        var customFields = {
+            scientific: (
+                subChannelFields.scientific.filter(it => !it.isRemoved)
+            ),
+            gdpr: (
+                subChannelFields.gdpr.filter(it => !it.isRemoved)
+            )
+        };
 
-    var customQueryValues = {
-        ...createCustomQueryValues({
-            fields: customFields,
-            filters: customFilters,
-        }),
+        var customQueryValues = {
+            ...createCustomQueryValues({
+                fields: customFields.scientific,
+                filters: customScientificFilters,
+            }),
+            ...createCustomQueryValues({
+                fields: customFields.gdpr,
+                filters: customGdprFilters,
+            }),
+        }
+    }
+    else {
+        var customFields = (
+            fields.filter(it => !it.isRemoved)
+        );
+
+        var customQueryValues = {
+            ...createCustomQueryValues({
+                fields: customFields,
+                filters: customFilters,
+            }),
+        }
     }
 
     //console.dir(customQueryValues, { depth: null })
@@ -75,7 +101,8 @@ var extendedSearchCore = async (bag) => {
             ...columns.reduce((acc, pointer) => ({
                 ...acc,
                 [ convertPointerToPath(pointer) ]: true
-            }), {})
+            }), {}),
+            ...specialFilterProjection,
         }},
 
         SortStage({ ...sort }),

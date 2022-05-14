@@ -1,4 +1,4 @@
 module.exports = {
-    //subject: require('./subject'),
+    subject: require('./subject'),
     study: require('./study'),
 }

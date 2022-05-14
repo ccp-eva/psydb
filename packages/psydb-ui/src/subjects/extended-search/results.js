@@ -202,7 +202,7 @@ const ParticipationColumn = (ps) => {
                 .filter(it => it.status === 'participated')
                 .map(it => {
                     var studyLabel = relatedStudies[it.studyId]._recordLabel;
-                    var date = datefns.format(new Date(it.timestamp), 'P');
+                    var date = datefns.format(new Date(it.timestamp), 'dd.MM.yyyy');
                     return `${studyLabel} (${date})`;
                 })
                 .join('; ')
@@ -217,7 +217,7 @@ const ExperimentColumn = (ps) => {
         experiments
         .map((it, index) => {
             var date = datefns.format(
-                new Date(it.state.interval.start), 'P'
+                new Date(it.state.interval.start), 'dd.MM.yyyy'
             );
             return (
                 <LinkContainer to={ `/experiments/${it.type}/${it._id}` }>
