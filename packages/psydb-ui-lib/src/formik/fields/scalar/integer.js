@@ -9,12 +9,15 @@ export const Integer = withField({
     Control: (ps) => {
         var {
             formikField,
+            formikMeta,
             formikForm,
             dataXPath,
             isNullable,
             disabled,
             min, max, step,
         } = ps;
+
+        var { error } = formikMeta;
 
         var { value, onChange } = formikField;
         var { setFieldValue } = formikForm;
@@ -35,6 +38,7 @@ export const Integer = withField({
                 min={ min }
                 max={ max }
                 step={ step }
+                isInvalid={ !!error }
                 { ...formikField }
                 onChange={ handleChange }
             />

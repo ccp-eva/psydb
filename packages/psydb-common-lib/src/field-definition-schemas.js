@@ -267,6 +267,7 @@ var IntegerFieldDefinition = () => FieldDefinition({
     type: 'Integer',
     title: 'Ganz-Zahl (Integer)',
     props: {
+        minimum: { type: 'integer' },
         isNullable: IsNullableProp(),
     },
 });
