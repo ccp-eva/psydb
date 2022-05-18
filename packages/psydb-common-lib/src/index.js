@@ -31,6 +31,7 @@ module.exports = {
     range: require('./range'),
     slotifyItems: require('./slotify-items'),
 
+    calculateAge: require('./calculate-age'),
     timeshiftAgeFrame: require('./timeshift-age-frame'),
 
     Permissions: require('./permissions'),

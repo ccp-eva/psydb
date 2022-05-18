@@ -5,22 +5,6 @@ var makeTestingPermissionSubConditions = ({
     researchGroupIds,
     experimentVariant
 }) => {
-    /*var inputField = {
-        'inhouse': 'canBeTestedInhouse',
-        'away-team': 'canBeTestedByAwayTeam',
-        'online-video-call': 'canBeTestedInOnlineVideoCall',
-        //'online-survey': 'canBeTestedInOnlineSurvey',
-        'online-survey': 'canBeTestedOnline',
-    }[experimentVariant];
-
-    if (!inputField) {
-        throw new Error(inline`
-            experimentVariant should be one of
-            ['inhouse', 'away-team', 'online'] but
-            "${experimentVariant}" was given
-        `)
-    }*/
-
     var inputPath = `$scientific.state.testingPermissions`;
 
     var subConditions = (
@@ -46,33 +30,6 @@ var makeTestingPermissionSubConditions = ({
                 ]}
             })
         ))
-        /*researchGroupIds.map(groupId => ({
-            $gt: [
-                { $size: {
-                    $filter: {
-                        input: inputPath,
-                        as: 'item',
-                        cond: { $and: [
-                            { $eq: [ '$$item.researchGroupId', groupId ]},
-                            { $gt: [
-                                { $size: {
-                                    $filter: {
-                                        input: '$$item.permissionList',
-                                        as: 'perm',
-                                        cond: { $and: [
-                                            { $eq: { '$$perm.labOperationType'}}
-                                        ]}
-                                    }
-                                }},
-                                0
-                            ]}
-                    //{ $eq: [ '$$item.permissionList', 'yes' ]}
-                        ]}
-                    }
-                }},
-                0,
-            ]
-        }))*/
     )
     
     //console.dir({ subConditions }, { depth: null });

@@ -3,6 +3,11 @@ var debug = require('debug')(
     'psydb:api:endpoints:searchSubjectsUngrouped'
 );
 
+var {
+    calculateAge,
+    timeshiftAgeFrame,
+} = require('@mpieva/psydb-common-lib');
+
 var omit = require('@cdxoo/omit');
 var datefns = require('date-fns');
 
@@ -62,8 +67,8 @@ var searchUngrouped = async (context, next) => {
         request,
         labProcedureType: experimentVariant,
     });
-    
-    var result = await db.collection('subject').aggregate([
+   
+    var stages = [
         { $match: {
             type: subjectTypeKey,
             'scientific.state.internals.isRemoved': { $ne: true }
@@ -92,7 +97,6 @@ var searchUngrouped = async (context, next) => {
         HasAnyTestabilityStage({
             studyIds
         }),
-        StripEventsStage({ subChannels: ['gdpr', 'scientific']}),
         SeperateRecordLabelDefinitionFieldsStage({
             recordLabelDefinition: subjectRecordLabelDefinition
         }),
@@ -111,9 +115,36 @@ var searchUngrouped = async (context, next) => {
             records: [{ $skip: offset }, { $limit: limit }],
             recordsCount: [{ $count: 'COUNT' }]
         }}
-    ]).toArray();
+    ];
+    //console.dir(stages, { depth: null });
+
+    var result = await (
+        db.collection('subject')
+        .aggregate(stages)
+        .toArray()
+    );
 
     var [ subjectRecords, subjectRecordsCount ] = fromFacets(result);
+
+    var timeFrame = interval;
+    console.dir(ageFrameFilters, { depth: null });
+    for (var it of subjectRecords) {
+        console.log('-------------------------');
+        var { dateOfBirth } = it.scientific.state.custom;
+        console.log({ dateOfBirth });
+        
+        var startAge = calculateAge({ base: dateOfBirth, relativeTo: timeFrame.start });
+        var endAge = calculateAge({ base: dateOfBirth, relativeTo: timeFrame.end });
+
+        console.log({ startAge, endAge });
+        for (var af of ageFrameFilters) {
+            var shifted = timeshiftAgeFrame({
+                sourceDate: dateOfBirth,
+                ageFrame: af.interval,
+            });
+            console.log({ shifted });
+        }
+    }
     
     var now = new Date();
     var subjectIds = subjectRecords.map(it => it._id);

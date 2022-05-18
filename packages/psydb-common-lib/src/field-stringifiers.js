@@ -1,9 +1,13 @@
 'use strict';
-var formatDate_ESM = require('date-fns/format');
-var formatDate = formatDate_ESM.default || formatDate_ESM;
+var maybeUseESM = require('./maybe-use-esm');
 
-var deLocale_ESM = require('date-fns/locale/de');
-var deLocale = deLocale_ESM.default || deLocale_ESM;
+var formatDate = maybeUseESM(require('date-fns/format'));
+//var formatDate_ESM = require('date-fns/format');
+//var formatDate = formatDate_ESM.default || formatDate_ESM;
+
+var deLocale = maybeUseESM(require('date-fns/locale/de'));
+//var deLocale_ESM = require('date-fns/locale/de');
+//var deLocale = deLocale_ESM.default || deLocale_ESM;
 
 var { formatInTimeZone } = require('date-fns-tz');
 
