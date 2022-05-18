@@ -8,6 +8,7 @@ var {
 } = require('@mpieva/psydb-api-lib-errors');
 
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
+var { convertCRTRecordToSettings } = require('@mpieva/psydb-common-lib');
 var fetchOneCustomRecordType = require('./fetch-one-custom-record-type');
 
 var fetchCRTSettings = async (options) => {
@@ -42,43 +43,7 @@ var fetchCRTSettings = async (options) => {
         `);
     }
 
-    var {
-        isNew,
-        isDirty,
-        nextSettings,
-        settings,
-        ...otherState
-    } = crt.state;
-
-    var {
-        subChannelFields,
-        fields,
-        ...otherSettings
-    } = settings;
-
-    var fieldDefinitions = (
-        hasSubChannels
-        ? subChannelFields
-        : fields
-    );
-
-    var staticFieldDefinitions = (
-        (availableStaticDisplayFields || [])
-        .map(it => ({
-            ...it,
-            pointer: it.dataPointer,
-            type: it.systemType,
-        }))
-    );
-
-    return {
-        collection: collectionName,
-        hasSubChannels,
-        fieldDefinitions,
-        staticFieldDefinitions,
-        ...otherSettings,
-        ...otherState,
-    }
+    return convertCRTRecordToSettings(crt);
 }
 
 module.exports = fetchCRTSettings;

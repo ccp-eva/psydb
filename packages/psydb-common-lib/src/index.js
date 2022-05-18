@@ -1,10 +1,12 @@
 module.exports = {
+    intervalUtils: require('./interval-utils'),
     createSchemaForRecord: require('./create-schema-for-record-type'),
     durations: require('./durations'),
     fieldDefinitionSchemas: require('./field-definition-schemas'),
     fieldStringifiers: require('./field-stringifiers'),
     fieldTypeMetadata: require('./field-type-metadata'),
     
+    convertCRTRecordToSettings: require('./convert-crt-record-to-settings'),
     gatherCustomColumns: require('./gather-custom-columns'),
 
     gatherCustomFieldSchemas: require('./gather-custom-field-schemas'),

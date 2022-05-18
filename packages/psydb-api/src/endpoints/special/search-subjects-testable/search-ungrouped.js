@@ -3,18 +3,22 @@ var debug = require('debug')(
     'psydb:api:endpoints:searchSubjectsUngrouped'
 );
 
-var {
-    calculateAge,
-    timeshiftAgeFrame,
-} = require('@mpieva/psydb-common-lib');
-
 var omit = require('@cdxoo/omit');
 var datefns = require('date-fns');
 
-var keyBy = require('@mpieva/psydb-common-lib/src/key-by');
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
-    Ajv = require('@mpieva/psydb-api-lib/src/ajv'),
-    ResponseBody = require('@mpieva/psydb-api-lib/src/response-body');
+var { keyBy } = require('@mpieva/psydb-core-utils');
+
+var {
+    calculateAge,
+    timeshiftAgeFrame,
+    intervalUtils,
+} = require('@mpieva/psydb-common-lib');
+
+var {
+    ApiError,
+    Ajv,
+    ResponseBody
+} = require('@mpieva/psydb-api-lib');
 
 var {
     MatchIntervalOverlapStage,
@@ -30,6 +34,7 @@ var initAndCheck = require('./init-and-check');
 var postprocessSubjectRecords = require('./postprocess-subject-records');
 var combineSubjectResponseData = require('./combine-subject-response-data');
 var fetchUpcomingExperimentData = require('./fetch-upcoming-experiment-data');
+var augmentSubjectTestableIntervals = require('./augment-subject-testable-intervals');
 
 var fromFacets = require('./from-facets');
 
@@ -126,26 +131,6 @@ var searchUngrouped = async (context, next) => {
 
     var [ subjectRecords, subjectRecordsCount ] = fromFacets(result);
 
-    var timeFrame = interval;
-    console.dir(ageFrameFilters, { depth: null });
-    for (var it of subjectRecords) {
-        console.log('-------------------------');
-        var { dateOfBirth } = it.scientific.state.custom;
-        console.log({ dateOfBirth });
-        
-        var startAge = calculateAge({ base: dateOfBirth, relativeTo: timeFrame.start });
-        var endAge = calculateAge({ base: dateOfBirth, relativeTo: timeFrame.end });
-
-        console.log({ startAge, endAge });
-        for (var af of ageFrameFilters) {
-            var shifted = timeshiftAgeFrame({
-                sourceDate: dateOfBirth,
-                ageFrame: af.interval,
-            });
-            console.log({ shifted });
-        }
-    }
-    
     var now = new Date();
     var subjectIds = subjectRecords.map(it => it._id);
     var upcomingSubjectExperimentData = await fetchUpcomingExperimentData({
@@ -159,6 +144,14 @@ var searchUngrouped = async (context, next) => {
         byProp: '_id',
     })
 
+    // FIXME: maybe put this into postprocessing
+    augmentSubjectTestableIntervals({
+        ageFrameFilters,
+        subjectRecords,
+        desiredTestInterval: interval,
+        dobFieldPointer: '/scientific/state/custom/dateOfBirth',
+    });
+    
     postprocessSubjectRecords({
         subjectRecords,
         subjectRecordType: subjectTypeKey,

@@ -6,6 +6,7 @@ module.exports = {
 
     arrify: require('./arrify'),
     unique: require('./unique'),
+    entries: require('./entries'),
     groupBy: require('./group-by'),
     keyBy: require('./key-by'),
     compareIds: require('./compare-ids'),
