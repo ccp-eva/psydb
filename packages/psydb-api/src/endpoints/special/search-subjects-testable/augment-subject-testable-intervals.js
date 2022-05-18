@@ -25,8 +25,9 @@ var augmentSubjectTestableIntervals = (bag) => {
     for (var subject of subjectRecords) {
         var dateOfBirth = jsonpointer.get(subject, dobFieldPointer);
         
-        //console.log('-------------------------');
+        console.log('-------------------------');
         //console.log({ dateOfBirth });
+        console.log({ desiredTestInterval });
         //var startAge = calculateAge({
         //    base: dateOfBirth,
         //    relativeTo: desiredTestInterval.start
@@ -46,7 +47,7 @@ var augmentSubjectTestableIntervals = (bag) => {
                 ageFrameIntervals: ageFrameFilters.map(it => it.interval)
             });
         
-            //console.dir({ testableIntervals }, { depth: null });
+            console.dir({ testableIntervals }, { depth: null });
             subject[`_testableIntervals_${studyId}`] = testableIntervals;
         }
 

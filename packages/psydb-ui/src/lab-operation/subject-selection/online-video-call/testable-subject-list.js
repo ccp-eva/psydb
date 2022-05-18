@@ -112,6 +112,8 @@ const OnlineVideoCallTestableSubjectList = ({
         return <LoadingIndicator size='lg' />
     }
 
+    var { interval: desiredTestInterval } = userSearchSettings;
+
     var {
         studyData,
         subjectData,
@@ -175,6 +177,7 @@ const OnlineVideoCallTestableSubjectList = ({
                 </thead>
 
                 <TableBody { ...({
+                    desiredTestInterval,
                     subjectType: subjectRecordType,
                     subjectData,
                     subjectExperimentMetadata,

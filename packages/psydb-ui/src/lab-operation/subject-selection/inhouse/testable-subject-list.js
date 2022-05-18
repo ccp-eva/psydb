@@ -69,7 +69,7 @@ const InhouseTestableSubjectList = ({
     }
 
     var { value: revision, up: increaseRevision } = useRevision();
-    
+
     var pagination = usePaginationReducer();
     var { offset, limit } = pagination;
     
@@ -113,6 +113,8 @@ const InhouseTestableSubjectList = ({
     if (!didFetch) {
         return <LoadingIndicator size='lg' />
     }
+
+    var { interval: desiredTestInterval } = userSearchSettings;
 
     var {
         studyData,
@@ -178,6 +180,7 @@ const InhouseTestableSubjectList = ({
                 </thead>
 
                 <TableBody { ...({
+                    desiredTestInterval,
                     subjectType: subjectRecordType,
                     subjectData,
                     subjectExperimentMetadata,

@@ -47,3 +47,5 @@ export * from './reverse-ref-list';
 
 export { default as CSVSearchExportButton } from './csv-search-export-button';
 export { default as CSVExtendedSearchExportButton } from './csv-extended-search-export-button';
+
+export { default as SubjectTestableIntervals } from './subject-testable-intervals';

@@ -66,6 +66,13 @@ const SearchContainer = ({
 
     var handleSubmit = (formData) => {
         try {
+            var { start, end } = formData.interval;
+
+            formData.interval = {
+                start: datefns.startOfDay(new Date(start)),
+                end: datefns.endOfDay(new Date(end)),
+            };
+
             var json = JSON.stringify(formData);
             var base64 = Base64.encode(json);
             history.push(`${url}/search/${base64}`);

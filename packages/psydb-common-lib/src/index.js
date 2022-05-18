@@ -7,6 +7,7 @@ module.exports = {
     fieldTypeMetadata: require('./field-type-metadata'),
     
     convertCRTRecordToSettings: require('./convert-crt-record-to-settings'),
+    findCRTAgeFrameField: require('./find-crt-age-frame-field'),
     gatherCustomColumns: require('./gather-custom-columns'),
 
     gatherCustomFieldSchemas: require('./gather-custom-field-schemas'),

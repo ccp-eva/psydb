@@ -12,6 +12,9 @@ var {
     calculateAge,
     timeshiftAgeFrame,
     intervalUtils,
+
+    convertCRTRecordToSettings,
+    findCRTAgeFrameField,
 } = require('@mpieva/psydb-common-lib');
 
 var {
@@ -144,12 +147,15 @@ var searchUngrouped = async (context, next) => {
         byProp: '_id',
     })
 
+    var subjectCRTSettings = convertCRTRecordToSettings(subjectTypeRecord);
+    var dobFieldPointer = findCRTAgeFrameField(subjectCRTSettings);
+
     // FIXME: maybe put this into postprocessing
     augmentSubjectTestableIntervals({
         ageFrameFilters,
         subjectRecords,
         desiredTestInterval: interval,
-        dobFieldPointer: '/scientific/state/custom/dateOfBirth',
+        dobFieldPointer,
     });
     
     postprocessSubjectRecords({

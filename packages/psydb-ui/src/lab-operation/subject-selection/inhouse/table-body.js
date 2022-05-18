@@ -6,10 +6,16 @@ import {
     EditIconButtonInline
 } from '@mpieva/psydb-ui-layout';
 
+import {
+    SubjectTestableIntervals
+} from '@mpieva/psydb-ui-lib';
+
 import { FieldDataBodyCols } from '@mpieva/psydb-ui-lib/src/record-list';
 import UpcomingExperiments from '../upcoming-experiments';
 
 const TableBody = ({
+    desiredTestInterval,
+
     subjectType,
     subjectData,
     subjectExperimentMetadata,
@@ -27,6 +33,8 @@ const TableBody = ({
             { records.map((record, index) => {
                 return (
                     <TableRow key={ index} { ...({
+                        desiredTestInterval,
+
                         subjectType,
                         record,
                         subjectMetadata,
@@ -45,6 +53,8 @@ const TableBody = ({
 }
 
 const TableRow = ({
+    desiredTestInterval,
+
     subjectType,
     record,
     subjectMetadata,
@@ -92,11 +102,23 @@ const TableRow = ({
             <td>
                 {
                     record._testableInStudies
-                    .map(it => (
-                        subjectMetadata.relatedRecordLabels
-                        .study[it]._recordLabel
-                    ))
-                    .join(', ')
+                    .map(studyId => {
+                        var studyLabel = (
+                            subjectMetadata.relatedRecordLabels
+                            .study[studyId]._recordLabel
+                        );
+                        var testableIntervals = (
+                            record[`_testableIntervals_${studyId}`]
+                        );
+
+                        return (
+                            <SubjectTestableIntervals
+                                studyLabel={ studyLabel }
+                                desiredTestInterval={ desiredTestInterval }
+                                testableIntervals={ testableIntervals }
+                            />
+                        )
+                    })
                 }
             </td>
             <td>
