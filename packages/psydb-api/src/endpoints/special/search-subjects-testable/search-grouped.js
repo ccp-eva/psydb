@@ -11,9 +11,11 @@ var { keyBy, merge } = require('@mpieva/psydb-core-utils');
 
 var convertPointerToPath = require('@mpieva/psydb-api-lib/src/convert-pointer-to-path');
 
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
-    Ajv = require('@mpieva/psydb-api-lib/src/ajv'),
-    ResponseBody = require('@mpieva/psydb-api-lib/src/response-body');
+var {
+    ApiError,
+    Ajv,
+    ResponseBody
+} = require('@mpieva/psydb-api-lib');
 
 var {
     MatchIntervalOverlapStage,

@@ -13,7 +13,6 @@ var {
     CustomRecordTypeKey,
 } = require('@mpieva/psydb-schema-fields');
 
-// TODO: merge adjascent reservations into one? or have a handler?
 var ExperimentState = ({
     enableInternalProps
 } = {}) => {
@@ -27,9 +26,9 @@ var ExperimentState = ({
             }), // foreign id w/ custom handler??
 
             // FIXME: why that?
-            reservationId: ForeignId({
-                collection: 'reservation',
-            }),
+            //reservationId: ForeignId({
+            //    collection: 'reservation',
+            //}),
             
             studyId: ForeignId({
                 collection: 'study',

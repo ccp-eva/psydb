@@ -11,6 +11,7 @@ var {
     DefaultBool,
 } = require('@mpieva/psydb-schema-fields');
 
+// FIXME: participation contains more fields now
 var ManualParticipation = () => ExactObject({
     properties: {
         type: {

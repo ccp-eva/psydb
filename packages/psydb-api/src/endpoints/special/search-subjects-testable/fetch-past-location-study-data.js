@@ -1,23 +1,52 @@
 'use strict';
-var fetchRelatedLabelsForMany = require('@mpieva/psydb-api-lib/src/fetch-related-labels-for-many');
+var jsonpointer = require('jsonpointer');
+var {
+    fetchRelatedLabelsForMany,
+    convertPathToPointer,
+} = require('@mpieva/psydb-api-lib');
 
-// FIXME: this needs renaming as it includes
-// experiments that havent been postprocessed by are in the past
+
 var fetchPastLocationStudyData = async ({
     db,
     locationIds,
     before,
 }) => {
+    
+    var path = 'state.internals.participatedInStudies';
+    var pastParticipation = await (
+        db.collection('subject').aggregate([
+            { $unwind: '$' + path },
+            { $match: {
+                [`${path}.locationId`]: { $in: locationId },
+                [`${path}.timestamp`]: { $lte: before }
+            }},
+            { $sort: {
+                [`${path}.timestamp`]: -1 }
+            },
+            { $limit: 3 },
+            { $project: {
+                [path]: true
+            }}
+        ]).toArray()
+    );
+
+    var pastParticipationRelated = await fetchRelatedLabelsForMany({
+        collection: 'subject',
+        records: pastParticipation
+    });
+
     var pastExperiments = await (
         db.collection('experiment').aggregate([
             { $match: {
                 'state.locationId': { $in: locationIds },
+                'state.subjectData': { $size: { $gt: 0 }},
                 $or: [
                     { 'state.interval.start': { $lte: before }},
                     //{ 'state.isPostprocessed': false }
                 ],
             }},
-            { $sort: { 'state.interval.start': 1 }},
+            { $sort: { 'state.interval.start': -1 }},
+            { $limit: 3 },
             { $project: {
                 _id: true,
                 type: true,
@@ -44,11 +73,11 @@ var fetchPastLocationStudyData = async ({
         ]), [])
     });
 
-    // TODO: participation since old data is f'ed
-
     return {
-        pastForIds: pastExperiments,
-        ...experimentRelated
+        pastForIds: pastParticipation.map(it => (
+            jsonpointer.get(it, convertPathToPointer(path))
+        )),
+        related: pastParticipationRelated
     }
 }
 

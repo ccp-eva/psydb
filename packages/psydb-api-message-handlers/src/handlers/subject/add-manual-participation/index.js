@@ -10,6 +10,9 @@ var BaseSchema = require('./base-schema');
 var DefaultSchema = require('./default-schema');
 var OnlineSurveySchema = require('./online-survey-schema');
 
+var createFakeExperiment = require('./create-fake-experiment');
+var createParticipation = require('./create-participation');
+
 var handler = {};
 
 handler.shouldRun = (message) => (
@@ -126,83 +129,53 @@ handler.checkAllowedAndPlausible = async ({
     cache.subject = subject;
 }
 
-handler.triggerSystemEvents = async ({
-    db,
-    rohrpost,
-    message,
-    personnelId,
-    cache,
+handler.triggerSystemEvents = async (context) => {
+    var {
+        db,
+        rohrpost,
+        message,
+        personnelId,
+        cache,
 
-    dispatch,
-}) => {
-    var { type: messageType, payload } = message;
+        dispatch,
+    } = context;
+
+    var { payload } = message;
     var {
         labProcedureType,
-        studyId,
-        subjectId,
-        locationId,
+        //studyId,
+        //subjectId,
+        //locationId,
 
         timestamp,
         status,
         
-        experimentOperatorTeamId,
+        //experimentOperatorTeamId,
         experimentOperatorIds,
     } = payload;
 
-    var { study, subject, location } = cache;
+    var {
+        study,
+        subject,
+        location,
+        experimentOperatorTeam
+    } = cache;
 
-    var participationItem = {
-        _id: nanoid(),
-
-        type: 'manual',
-        realType: labProcedureType,
-
-        studyId,
-        studyType: study.type,
-
+    var bag = {
+        labProcedureType,
         timestamp,
         status,
-    
-        // TODO
-        excludeFromMoreExperimentsInStudy: false
-    }
+        
+        study,
+        subject,
+        location,
 
-    if (labProcedureType !== 'online-survey') {
-        participationItem = {
-            ...participationItem,
-            locationId,
-            locationType: location.type,
-        }
+        experimentOperatorTeam,
+        experimentOperatorIds,
+    };
 
-        if (experimentOperatorTeamId) {
-            var { experimentOperatorTeam } = cache;
-            var { personnelIds, color } = experimentOperatorTeam.state;
-            
-            participationItem = {
-                ...participationItem,
-                //experimentOperatorTeamId,
-                //experimentOperatorTeamColor: color,
-                experimentOperatorIds: personnelIds
-            }
-        }
-        else {
-            participationItem = {
-                ...participationItem,
-                experimentOperatorIds,
-            }
-        }
-    }
-
-    await dispatch({
-        collection: 'subject',
-        channelId: subjectId,
-        subChannelKey: 'scientific',
-        payload: { $push: {
-            'scientific.state.internals.participatedInStudies': (
-                participationItem
-            ),
-        }}
-    });
+    var experimentId = await createFakeExperiment(context, bag);
+    await createParticipation(context, { ...bag, experimentId });
 }
 
 handler.triggerOtherSideEffects = async () => {};

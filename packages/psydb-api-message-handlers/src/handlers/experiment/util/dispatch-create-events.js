@@ -82,7 +82,9 @@ var dispatchCreateEvents = async ({
         locationRecordType,
         interval,
         ...(type === 'away-team' && {
-            comment
+            // FIXME: on of those must go
+            comment,
+            generalComment: comment
         }),
         selectedSubjectIds: subjectIds,
         subjectData: subjectData.map(SubjectDataItem),
