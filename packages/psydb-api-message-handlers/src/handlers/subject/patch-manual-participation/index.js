@@ -2,13 +2,16 @@
 var debug = require('debug')('psydb:api:message-handlers');
 
 var { nanoid } = require('nanoid');
-var { without } = require('@mpieva/psydb-core-utils');
-var { Ajv, ApiError, compareIds } = require('@mpieva/psydb-api-lib');
+var { without, compareIds } = require('@mpieva/psydb-core-utils');
+var { Ajv, ApiError } = require('@mpieva/psydb-api-lib');
 var { SimpleHandler, checkForeignIdsExist } = require('../../../lib');
 
 var BaseSchema = require('./base-schema');
 var DefaultSchema = require('./default-schema');
 var OnlineSurveySchema = require('./online-survey-schema');
+
+var setupParticipationItem = require('./setup-participation-items');
+var updateParticipation = require('./update-participation');
 
 var handler = {};
 
@@ -147,23 +150,30 @@ handler.triggerSystemEvents = async ({
     dispatch,
 }) => {
     var { type: messageType, payload } = message;
-    var {
-        participationId,
+   
+    setupParticipationItems(context);
+    var { patchedItem, originalItem } = cache;
 
-        labProcedureType,
-        studyId,
-        subjectId,
-        locationId,
+    if (patchedItem.type !== originalItem.type) {
+        // var shouldThrow = await checkExperimentHasMultipleSubjects({
+        //    experimentId
+        // });
+        // if (shouldThrow) {
+        throw new ApiError(500, 'CantHandleTypeChange');
+        // }
+    }
 
-        timestamp,
-        status,
-        
-        experimentOperatorTeamId,
-        experimentOperatorIds,
-    } = payload;
-
-    var { study, subject, location } = cache;
-
+    await updatePartcipation(context);
+   
+    // TODO: decide if online survey should have an experiment or not
+    // and what this would look like
+    // no location, no experimenters, interval maybe (like a month or so)
+    if (labProcedureType !== 'online-survey') {
+        await maybeUpdateRelatedParticipations(context);
+        await maybeUpdateLocationVisit(context);
+        await maybeUpdateExperiment(context);
+    }
+    
     var participationItem = {
         type: 'manual',
         realType: labProcedureType,
@@ -178,55 +188,48 @@ handler.triggerSystemEvents = async ({
         //excludeFromMoreExperimentsInStudy: false
     }
 
-    if (labProcedureType !== 'online-survey') {
-        participationItem = {
-            ...participationItem,
-            locationId,
-            locationType: location.type,
-        }
 
-        if (experimentOperatorTeamId) {
-            var { experimentOperatorTeam } = cache;
-            var { personnelIds, color } = experimentOperatorTeam.state;
+    if (labProcedureType !== 'online-survey') {
+        var { experimentId } = originalItem;
+
+        var changedLocation = !compareIds(
+            originalItem.locationId, patchedItem.locationId
+        );
+        var changedTimestamp = (
+            originalItem.timestamp.getTime()
+            !== patchedItem.timestamp.getTime()
+        );
+        var changedStatus = (
+            originalItem.status !== patchedItem.status
+        );
+
+        if (changedLocation) {
+            var { location } = cache;
+            var { visits } = location.state.internals;
             
-            participationItem = {
-                ...participationItem,
-                //experimentOperatorTeamId,
-                //experimentOperatorTeamColor: color,
-                experimentOperatorIds: personnelIds
-            }
-        }
-        else {
-            participationItem = {
-                ...participationItem,
-                experimentOperatorIds,
-            }
+            var vix = visits.findIndex(it => (
+                it.experimentId === experimentId
+            ));
+
+            await dispatch({
+                collection: 'location',
+                channelId: originalItem.locationId,
+                payload: { $pull: {
+                    'state.internals.visits': { experimentId }
+                }},
+            });
+            await dispatch({
+                collection: 'location',
+                channelId: patchedItem.locationId,
+                payload: { $push: {
+                    'state.internals.visits': {
+                        experimentId,
+                        experimentType: patchedItem.
+                    }
+                }},
+            });
         }
     }
-
-    var { participatedInStudies } = subject.scientific.state.internals;
-    var index = (
-        participatedInStudies
-        .findIndex(it => it._id === participationId)
-    );
-    var originalItem = participatedInStudies[index];
-    var patchedItem = { ...originalItem, ...participationItem };
-
-    var participationPath = (
-        `scientific.state.internals.participatedInStudies.${index}`
-    );
-
-    await dispatch({
-        collection: 'subject',
-        channelId: subjectId,
-        subChannelKey: 'scientific',
-        payload: { $set: {
-            [participationPath]: patchedItem
-        }},
-        //mongoArrayFilters: {
-        //    'item._id': participationId
-        //}
-    });
 }
 
 handler.triggerOtherSideEffects = async () => {};
