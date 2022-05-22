@@ -20,6 +20,8 @@ var maybeUpdateLocationVisit = async (context) => {
             : patchedItem.type
         );
 
+        // NOTE: we can pull here since we clean up all
+        // other participations and change the location id as well
         await dispatch({
             collection: 'location',
             channelId: originalItem.locationId,

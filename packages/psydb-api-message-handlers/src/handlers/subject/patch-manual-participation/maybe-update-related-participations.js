@@ -32,7 +32,6 @@ var maybeUpdateRelatedParticipations = async (context) => {
             ...otherOriginal,
             ...omit([ '_id', 'status' ], patchedItem),
         };
-        console.log({ otherPatched });
 
         var participationPath = (
             `scientific.state.internals.participatedInStudies.${pix}`
