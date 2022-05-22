@@ -35,6 +35,11 @@ module.exports = {
             kann das Passwort anderer Benutzer manuell neu setzen
         `,
     }),
+    canUseCSVExport: WideBool({
+        title: inline`
+            kann CSV-Export benutzen
+        `,
+    }),
     /*canUseComplexSubjectSearch: WideBool({
         title: 'kann die erweiterte Proband:innensuche benutzen',
     })*/

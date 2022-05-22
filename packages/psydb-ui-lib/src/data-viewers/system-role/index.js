@@ -110,6 +110,9 @@ const labels = {
     '/state/canWriteParticipation': (
         'kann manuell Proband:innen in eine Studie eintragen'
     ),
+    '/state/canUseCSVExport': (
+        'kann CSV-Export benutzen'
+    ),
     '/state/canViewReceptionCalendar': (
         'kann Rezeptionskalender einsehen'
     ),

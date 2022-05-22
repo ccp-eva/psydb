@@ -113,6 +113,11 @@ const FormFields = (ps) => {
                 required
             />
             <Bool
+                label='kann CSV-Export benutzen'
+                dataXPath='$.canUseCSVExport'
+                required
+            />
+            <Bool
                 label='kann Rezeptionskalender einsehen'
                 dataXPath='$.canViewReceptionCalendar'
                 required
