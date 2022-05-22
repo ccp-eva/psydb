@@ -108,6 +108,9 @@ handler.triggerSystemEvents = async ({
         (unprocessedSubjects.length - 1) === 0
     )
 
+    var experimentId = experimentRecord._id;
+    var timestamp = experimentRecord.state.interval.start;
+
     var eix = experimentRecord.state.subjectData.findIndex(it => {
         return compareIds(it.subjectId, subjectId)
     });
@@ -144,7 +147,7 @@ handler.triggerSystemEvents = async ({
                 _id: nanoid(),
 
                 type: experimentRecord.type,
-                experimentId: experimentRecord._id,
+                experimentId,
                 
                 studyId: study._id,
                 studyType: study.type,
@@ -152,13 +155,33 @@ handler.triggerSystemEvents = async ({
                 locationType: location.type,
                 experimentOperatorIds: personnelIds,
 
-                timestamp: experimentRecord.state.interval.start,
+                timestamp,
                 status: participationStatus,
 
                 excludeFromMoreExperimentsInStudy
             }
         }}
     });
+
+    var locationHasVisitation = (
+        !!location.state.internals.visits.find(it => (
+            it.experimentId === experimentId
+        ))
+    );
+    if (!locationHasVisitation) {
+        await dispatch({
+            collection: 'location',
+            channelId: locationId,
+            payload: { $push: {
+                'state.internals.visits': {
+                    experimentType: experimentRecord.type,
+                    experimentId,
+                    timestamp,
+                    studyId: study._id
+                }
+            }}
+        })
+    }
 }
 
 module.exports = handler;

@@ -7,6 +7,9 @@ var inline = require('@cdxoo/inline-text'),
 var {
     ExactObject,
     FullText,
+    ForeignId,
+    DefaultArray,
+    DateTime,
 } = require('@mpieva/psydb-schema-fields');
 
 var GenericLocationState = ({
@@ -21,7 +24,7 @@ var GenericLocationState = ({
             systemPermissions: systemPermissionsSchema,
             
             ...(enableInternalProps && {
-                /* TODO: anything here ? */
+                internals: Internals()
             })
         },
         required: [
@@ -30,7 +33,7 @@ var GenericLocationState = ({
             'systemPermissions',
             ...(
                 enableInternalProps
-                ? [ /* TODO anything here?*/]
+                ? [ 'internals' ]
                 : []
             )
         ]
@@ -38,5 +41,31 @@ var GenericLocationState = ({
 
     return schema;
 };
+
+var Internals = () => ExactObject({
+    properties: {
+        visits: DefaultArray({
+            items: Visit()
+        })
+    },
+    required: [
+        'visits'
+    ]
+});
+
+var Visit = () => ExactObject({
+    properties: {
+        experimentType: { type: 'string' /* FIXME*/ },
+        experimentId: ForeignId({ collection: 'experiment' }),
+        studyId: ForeignId({ collection: 'study' }),
+        timestamp: DateTime(),
+    },
+    required: [
+        'experimentType',
+        'experimentId',
+        'studyId',
+        'timestamp',
+    ]
+});
 
 module.exports = GenericLocationState;

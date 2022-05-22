@@ -32,7 +32,6 @@ var postprocessSubjectRecords = require('./postprocess-subject-records');
 var combineSubjectResponseData = require('./combine-subject-response-data');
 var fetchParentDataForGroups = require('./fetch-parent-data-for-groups');
 var fetchUpcomingExperimentData = require('./fetch-upcoming-experiment-data');
-var fetchPastLocationStudyData = require('./fetch-past-location-study-data');
 
 var fromFacets = require('./from-facets');
 
@@ -258,16 +257,7 @@ var searchGrouped = async (context, next) => {
         byProp: '_id',
     })
 
-    var pastLocationStudyData = await fetchPastLocationStudyData({
-        db,
-        locationIds: groupIds,
-        before: now,
-    });
-
-    var pastStudiesByLocationId = keyBy({
-        items: pastLocationStudyData.pastForIds,
-        byProp: '_id',
-    })
+    //console.dir(locationData.records, { depth: null });
 
     var merged = locationData.records.map(it => ({
         ...it,
@@ -278,11 +268,22 @@ var searchGrouped = async (context, next) => {
             : []
         ),
         _pastStudies: (
-            pastStudiesByLocationId[it._id]
-            ? pastStudiesByLocationId[it._id].pastForIds
-            : []
+            it.state.internals.visits
+            .sort((a,b) => (
+                a.timestamp.getTime() > b.timestamp.getTime()
+                ? -1 : 1 // reversed
+            ))
+            .map(it => ({ state: {
+                _id: it.experimentId,
+                type: it.experimentType,
+                studyId: it.studyId,
+                interval: { start: it.timestamp }
+            }}))
+            .slice(0,3)
+            .reverse()
         )
-    }))
+    }));
+    //console.dir(merged, { depth: null });
 
     context.body = ResponseBody({
         data: {
@@ -298,7 +299,7 @@ var searchGrouped = async (context, next) => {
             },
             locationExperimentMetadata: merge(
                 omit('upcomingForIds', upcomingLocationExperimentData),
-                omit('pastForIds', pastLocationStudyData),
+                omit('records', locationData),
             ),
 
             locationCount,
