@@ -163,7 +163,7 @@ const ParticipationListRow = ({
                 { formatStatus(participationData.status) }
             </td>
             <td className='d-flex justify-content-end'>
-                { experimentId && (
+                { participationType !== 'manual' && experimentId && (
                     <ExperimentIconButton
                         to={`/experiments/${participationType}/${experimentId}`}
                     />
