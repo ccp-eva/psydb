@@ -31,6 +31,7 @@ var createFakeExperiment = async (context, bag) => {
 
     var experimentState = {
         seriesId,
+        isPostprocessed: true,
 
         studyId: study._id,
         studyRecordType: study.type,
