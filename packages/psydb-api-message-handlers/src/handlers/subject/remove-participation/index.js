@@ -63,6 +63,18 @@ handler.triggerSystemEvents = async (context) => {
     var { _id: participationId, subjectId, experimentId } = participation;
 
     if (experimentId) {
+        var experiment = await (
+            db.collection('experiment').findOne({ _id: experimentId })
+        );
+        if (experiment.state.subjectData.length <= 1) {
+            await dispatch({
+                collection: 'location',
+                channelId: experiment.state.location,
+                payload: { $pull: {
+                    'state.internals.visits': { experimentId }
+                }}
+            })
+        }
         await dispatch({
             collection: 'experiment',
             channelId: experimentId,
