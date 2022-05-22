@@ -3,6 +3,7 @@ var findParticipation = require('./find-participation');
 
 var setupParticipationItems = (context) => {
     var { message, cache } = context;
+    var { payload } = message;
     var {
         participationId,
 
@@ -27,7 +28,7 @@ var setupParticipationItems = (context) => {
     var participationItem = {
         ...(
             originalItem.type === 'manual'
-            ? { type: 'manual', realType: 'labProcedureType' }
+            ? { type: 'manual', realType: labProcedureType }
             : { type: labProcedureType }
         ),
 

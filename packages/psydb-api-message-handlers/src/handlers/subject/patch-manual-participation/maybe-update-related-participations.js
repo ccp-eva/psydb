@@ -22,12 +22,17 @@ var maybeUpdateRelatedParticipations = async (context) => {
             db.collection('subject').findOne({ _id: subjectId })
         );
         var [ pix, otherOriginal ] = findParticipation({
-            subject, experimentId, as: 'entries'
+            subject, experimentId: experiment._id, as: 'entry'
         });
+        if (pix < 0) {
+            continue;
+        }
+
         var otherPatched = {
             ...otherOriginal,
             ...omit([ '_id', 'status' ], patchedItem),
         };
+        console.log({ otherPatched });
 
         var participationPath = (
             `scientific.state.internals.participatedInStudies.${pix}`
@@ -38,10 +43,10 @@ var maybeUpdateRelatedParticipations = async (context) => {
             channelId: subjectId,
             subChannelKey: 'scientific',
             payload: { $set: {
-                [participationPath]: patchedItem
+                [participationPath]: otherPatched
             }},
         });
     }
 }
 
-module.exports = maybeUpdateOtherParticipations;
+module.exports = maybeUpdateRelatedParticipations;

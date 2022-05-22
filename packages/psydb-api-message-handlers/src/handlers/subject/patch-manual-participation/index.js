@@ -10,8 +10,12 @@ var BaseSchema = require('./base-schema');
 var DefaultSchema = require('./default-schema');
 var OnlineSurveySchema = require('./online-survey-schema');
 
-var setupParticipationItem = require('./setup-participation-items');
+var setupParticipationItems = require('./setup-participation-items');
 var updateParticipation = require('./update-participation');
+var maybeUpdateRelatedParticipations = require('./maybe-update-related-participations');
+var maybeUpdateLocationVisit = require('./maybe-update-location-visit');
+var maybeUpdateExperiment = require('./maybe-update-experiment');
+
 
 var handler = {};
 
@@ -140,16 +144,19 @@ handler.checkAllowedAndPlausible = async ({
     cache.subject = subject;
 }
 
-handler.triggerSystemEvents = async ({
-    db,
-    rohrpost,
-    message,
-    personnelId,
-    cache,
+handler.triggerSystemEvents = async (context) => {
+    var {
+        db,
+        rohrpost,
+        message,
+        personnelId,
+        cache,
 
-    dispatch,
-}) => {
-    var { type: messageType, payload } = message;
+        dispatch,
+    } = context;
+
+    var { payload } = message;
+    var { labProcedureType } = payload;
    
     setupParticipationItems(context);
     var { patchedItem, originalItem } = cache;
@@ -163,7 +170,7 @@ handler.triggerSystemEvents = async ({
         // }
     }
 
-    await updatePartcipation(context);
+    await updateParticipation(context);
    
     // TODO: decide if online survey should have an experiment or not
     // and what this would look like
@@ -174,62 +181,6 @@ handler.triggerSystemEvents = async ({
         await maybeUpdateExperiment(context);
     }
     
-    var participationItem = {
-        type: 'manual',
-        realType: labProcedureType,
-
-        studyId,
-        studyType: study.type,
-
-        timestamp,
-        status,
-    
-        // TODO
-        //excludeFromMoreExperimentsInStudy: false
-    }
-
-
-    if (labProcedureType !== 'online-survey') {
-        var { experimentId } = originalItem;
-
-        var changedLocation = !compareIds(
-            originalItem.locationId, patchedItem.locationId
-        );
-        var changedTimestamp = (
-            originalItem.timestamp.getTime()
-            !== patchedItem.timestamp.getTime()
-        );
-        var changedStatus = (
-            originalItem.status !== patchedItem.status
-        );
-
-        if (changedLocation) {
-            var { location } = cache;
-            var { visits } = location.state.internals;
-            
-            var vix = visits.findIndex(it => (
-                it.experimentId === experimentId
-            ));
-
-            await dispatch({
-                collection: 'location',
-                channelId: originalItem.locationId,
-                payload: { $pull: {
-                    'state.internals.visits': { experimentId }
-                }},
-            });
-            await dispatch({
-                collection: 'location',
-                channelId: patchedItem.locationId,
-                payload: { $push: {
-                    'state.internals.visits': {
-                        experimentId,
-                        experimentType: patchedItem.
-                    }
-                }},
-            });
-        }
-    }
 }
 
 handler.triggerOtherSideEffects = async () => {};

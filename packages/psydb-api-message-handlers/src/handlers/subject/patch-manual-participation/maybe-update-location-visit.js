@@ -1,6 +1,7 @@
 'use strict';
+var { compareIds } = require('@mpieva/psydb-core-utils');
 
-var maybeUpdateLocationVisit = async (context) {
+var maybeUpdateLocationVisit = async (context) => {
     var { cache, dispatch } = context;
     var { originalItem, patchedItem } = cache;
 
@@ -11,9 +12,8 @@ var maybeUpdateLocationVisit = async (context) {
         originalItem.locationId, patchedItem.locationId
     );
 
+    var { experimentId, timestamp, studyId } = patchedItem;
     if (changedLocation) {
-        var { experimentId, timestamp, studyId } = patchedItem;
-        
         var experimentType = (
             patchedItem.type === 'manual'
             ? patchedItem.realType
@@ -41,7 +41,7 @@ var maybeUpdateLocationVisit = async (context) {
             }},
         });
     }
-    else if (!changedLocationId && changedTimestamp) {
+    else if (!changedLocation && changedTimestamp) {
         var { location } = cache;
 
         var { visits } = location.state.internals;
@@ -53,12 +53,7 @@ var maybeUpdateLocationVisit = async (context) {
             collection: 'location',
             channelId: patchedItem.locationId,
             payload: { $set: {
-                [`state.internals.visits.${vix}`]: {
-                    experimentId,
-                    experimentType,
-                    timestamp,
-                    studyId,
-                }
+                [`state.internals.visits.${vix}.timestamp`]: timestamp
             }},
         });
     }

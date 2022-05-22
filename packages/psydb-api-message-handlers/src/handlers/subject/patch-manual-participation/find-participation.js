@@ -1,6 +1,6 @@
 'use strict';
 var findParticipation = (bag) => {
-    var { subject, experimentId, paricipationId, as } = bag;
+    var { subject, experimentId, participationId, as } = bag;
 
     var { participatedInStudies } = subject.scientific.state.internals;
     var index = (
