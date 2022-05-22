@@ -1,13 +1,10 @@
 'use strict';
-var keyBy = require('@mpieva/psydb-common-lib/src/key-by');
+var { keyBy } = require('@mpieva/psydb-core-utils');
 
-var createRecordLabel = require(
-    '@mpieva/psydb-api-lib/src/create-record-label'
-);
-var fetchRelatedLabelsForMany = require(
-    '@mpieva/psydb-api-lib/src/fetch-related-labels-for-many'
-);
-
+var {
+    createRecordLabel,
+    fetchRelatedLabelsForMany
+} = require('@mpieva/psydb-api-lib');
 
 var combineSubjectResponseData = async ({
     db,

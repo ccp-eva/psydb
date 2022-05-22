@@ -1,5 +1,8 @@
 'use strict';
-var fetchRelatedLabelsForMany = require('@mpieva/psydb-api-lib/src/fetch-related-labels-for-many');
+var {
+    fetchRelatedLabelsForMany
+} = require('@mpieva/psydb-api-lib');
+
 
 // FIXME: this needs renaming as it includes
 // experiments that havent been postprocessed by are in the past
