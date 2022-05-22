@@ -1,11 +1,13 @@
 'use strict';
 
-var keyBy = require('@mpieva/psydb-common-lib/src/key-by');
+var { keyBy } = require('@mpieva/psydb-core-utils');
 
-var fetchRecordsByFilter = require('@mpieva/psydb-api-lib/src/fetch-records-by-filter');
-var gatherDisplayFieldsForRecordType = require('@mpieva/psydb-api-lib/src/gather-display-fields-for-record-type');
-var fetchOneCustomRecordType = require('@mpieva/psydb-api-lib/src/fetch-one-custom-record-type');
-var fetchRelatedLabelsForMany = require('@mpieva/psydb-api-lib/src/fetch-related-labels-for-many');
+var {
+    fetchRecordsByFilter,
+    gatherDisplayFieldsForRecordType,
+    fetchOneCustomRecordType,
+    fetchRelatedLabelsForMany,
+} = require('@mpieva/psydb-api-lib');
 
 
 var fetchParentDataForGroups = async ({
