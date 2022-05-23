@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useReducer, useMemo } from 'react';
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
+
 import datefns from '../../date-fns';
 
 import {
@@ -39,15 +41,28 @@ const TimeSlotList = ({
     calculateNewExperimentMaxEnd,
     showPast,
 }) => {
+    var permissions = usePermissions();
+    var canCreateReservationsWithinTheNext3Days = (
+        permissions.hasFlag('canCreateReservationsWithinTheNext3Days')
+    );
+    var canCreateExperimentsWithinTheNext3Days = (
+        permissions.hasFlag('canCreateExperimentsWithinTheNext3Days')
+    );
+
     var start = new Date(dayStart.getTime() + startTimeInt);
     var end = new Date(dayStart.getTime() + endTimeInt);
 
     var dayStart = start;
     var dayIndex = datefns.getISODay(dayStart);
     var dayEnd = datefns.endOfDay(dayStart);
-    var isInPast = new Date().getTime() > dayEnd.getTime();
+    
+    var now = new Date();
+    var isInPast = now.getTime() > dayEnd.getTime();
+    var isWithin3days = datefns.add(now, { days: 3 }).getTime() > dayEnd.getTime();
     var shouldEnable = (
         !isInPast
+        && canCreateReservationsWithinTheNext3Days ? true : !isWithin3days
+        && canCreateExperimentsWithinTheNext3Days ? true : !isWithin3days
         // && !([6,7].includes(dayIndex))
     );
     var className = (
