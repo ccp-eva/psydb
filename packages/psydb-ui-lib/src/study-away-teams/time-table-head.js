@@ -1,11 +1,19 @@
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import datefns from '../date-fns';
 
 const TimeTableHead = ({
     allDayStarts,
 }) => {
+    var permissions = usePermissions();
+    var canCreateReservationsWithinTheNext3Days = (
+        permissions.hasFlag('canCreateReservationsWithinTheNext3Days')
+    );
+    var canCreateExperimentsWithinTheNext3Days = (
+        permissions.hasFlag('canCreateExperimentsWithinTheNext3Days')
+    );
     return (
         <Container>
             <Row>
@@ -24,10 +32,27 @@ const TimeTableHead = ({
                 { allDayStarts.map(dayStart => {
                     var dayIndex = datefns.getISODay(dayStart);
                     var dayEnd = datefns.endOfDay(dayStart);
-                    var isInPast = new Date().getTime() > dayEnd.getTime();
-                    var shouldEnable = (
-                        !isInPast && !([6,7].includes(dayIndex))
+                    
+                    var now = new Date();
+                    var isInPast = now.getTime() > dayEnd.getTime();
+                    var isWithin3days = (
+                        datefns.add(now, { days: 3 }).getTime()
+                        > dayEnd.getTime()
                     );
+
+                    var shouldEnable = (
+                        !isInPast
+                        && (
+                            canCreateReservationsWithinTheNext3Days
+                            ? true : !isWithin3days
+                        )
+                        && (
+                            canCreateExperimentsWithinTheNext3Days
+                            ? true : !isWithin3days
+                        )
+                        && !([6,7].includes(dayIndex))
+                    );
+                    
                     var className = (
                         shouldEnable
                         ? 'p-0 text-center bg-light border-bottom'

@@ -37,9 +37,9 @@ const TimeSlot = (ps) => {
     var now = new Date();
     if (experimentRecord) {
         var end = experimentRecord.state.interval.end;
-        var isInPast = new now.getTime() > new Date(end).getTime();
+        var isInPast = now.getTime() > new Date(end).getTime();
         var isWithin3days = (
-            datefns.add(now, { days: 3 }).getTime() > dayEnd.getTime()
+            datefns.add(now, { days: 3 }).getTime() > end.getTime()
         );
         var shouldEnable = (
             !isInPast

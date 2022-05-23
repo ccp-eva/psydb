@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import {
     Container,
@@ -193,17 +194,31 @@ const TimeSlot = ({
 
     showPast
 }) => {
+    
+    var permissions = usePermissions();
+    var canCreateReservationsWithinTheNext3Days = (
+        permissions.hasFlag('canCreateReservationsWithinTheNext3Days')
+    );
+    var canCreateExperimentsWithinTheNext3Days = (
+        permissions.hasFlag('canCreateExperimentsWithinTheNext3Days')
+    );
+    
+    var now = new Date();
     var dayIndex = datefns.getISODay(dayStart);
     var dayEnd = datefns.endOfDay(dayStart);
-    var shouldEnable = !([6,7].includes(dayIndex));
 
-    if (!shouldEnable) {
-        return <DisabledSlot />
-    }
-    else if (experimentRecord) {
+    if (experimentRecord) {
         var end = experimentRecord.state.interval.end;
-        var isInPast = new Date().getTime() > new Date(end).getTime();
-        if (!showPast && isInPast) {
+        var isInPast = now.getTime() > new Date(end).getTime();
+        var isWithin3days = (
+            datefns.add(now, { days: 3 }).getTime() > dayEnd.getTime()
+        );
+        var shouldEnable = (
+            !isInPast
+            && canCreateExperimentsWithinTheNext3Days ? true : !isWithin3days
+            && !([6,7].includes(dayIndex))
+        );
+        if (!showPast && !shouldEnable) {
             return <DisabledSlot />
         }
         return (
@@ -219,8 +234,16 @@ const TimeSlot = ({
     }
     else if (reservationRecord) {
         var end = reservationRecord.state.interval.end;
-        var isInPast = new Date().getTime() > new Date(end).getTime();
-        if (!showPast && isInPast) {
+        var isInPast = now.getTime() > new Date(end).getTime();
+        var isWithin3days = (
+            datefns.add(now, { days: 3 }).getTime() > dayEnd.getTime()
+        );
+        var shouldEnable = (
+            !isInPast
+            && canCreateExperimentsWithinTheNext3Days ? true : !isWithin3days
+            && !([6,7].includes(dayIndex))
+        );
+        if (!showPast && !shouldEnable) {
             return <DisabledSlot />
         }
         return (
@@ -233,8 +256,16 @@ const TimeSlot = ({
         );
     }
     else {
-        var isInPast = new Date().getTime() > dayEnd.getTime();
-        if (!showPast && isInPast) {
+        var isInPast = now.getTime() > dayEnd.getTime();
+        var isWithin3days = (
+            datefns.add(now, { days: 3 }).getTime() > dayEnd.getTime()
+        );
+        var shouldEnable = (
+            !isInPast
+            && canCreateReservationsWithinTheNext3Days ? true : !isWithin3days
+            && !([6,7].includes(dayIndex))
+        );
+        if (!showPast && !shouldEnable) {
             return <DisabledSlot />
         }
         return (
