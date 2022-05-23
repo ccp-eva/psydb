@@ -70,18 +70,13 @@ var run = ({
         }
         
         console.log('QQQQQQQQQQQQQQQQQQ', { channelId });
-        var oid = ObjectId(channelId);
-        console.log(oid, channelId);
-        if (!(typeof channelId === 'string')) {
-            channelId = ObjectId(channelId);
-        }
-        console.log('FFFFFFFFFFFF')
+        console.dir({ channelId,  payload }, { depth: null });
+        console.log('FFFFFFFFFFFF');
         await db.collection(collection).updateOne(
             { _id: channelId },
             payload
         );
         console.log('OKOKOKO')
-        console.dir({ channelId,  payload }, { depth: null });
         
         //context.modifiedChannels = rohrpost.getModifiedChannels();
         //console.log('AAAAAAAAAAAAAAA')
