@@ -5,9 +5,9 @@ var EventId = ({
 } = {}) => ({
     systemType: 'EventId',
     type: 'string',
-    format: 'nanoid-default',
-    //format: 'mongodb-object-id',
-    //unmarshalMongodbObjectId: true,
+    //format: 'nanoid-default',
+    format: 'mongodb-object-id',
+    unmarshalMongodbObjectId: true,
     ...additionalKeywords,
 });
 

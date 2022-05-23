@@ -11,9 +11,9 @@ var Id = ({
             ? ['null', 'string']
             : 'string'
         ),
-        format: 'nanoid-default',
-        //format: 'mongodb-object-id',
-        //unmarshalMongodbObjectId: true,
+        //format: 'nanoid-default',
+        format: 'mongodb-object-id',
+        unmarshalMongodbObjectId: true,
     };
 
     if (isNullable) {

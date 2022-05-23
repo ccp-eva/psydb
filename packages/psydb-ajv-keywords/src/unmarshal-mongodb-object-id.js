@@ -10,7 +10,7 @@ var unmarshalMongodbObjectId = {
     validate: (data, dataPath, parentData, parentDataProperty) => {
         //console.log(data, dataPath, parentData, parentDataProperty);
         if (regex.test(data)) {
-            parentData[parentDataProperty] = ObjectId(data);
+            parentData[parentDataProperty] = ObjectId(String(data));
         }
         console.log(parentData[parentDataProperty]);
     }

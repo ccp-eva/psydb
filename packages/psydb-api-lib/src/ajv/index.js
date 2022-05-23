@@ -57,6 +57,10 @@ var AjvWrapper = ({
         'unmarshalDateOnlyServerSide',
         psydbKeywords.unmarshalDateOnlyServerSide
     );
+    ajv.addKeyword(
+        'unmarshalMongodbObjectId',
+        psydbKeywords.unmarshalMongodbObjectId
+    );
 
     var initializeValidateContext = (data) => {
         var serverTimezone = getSystemTimezone();
