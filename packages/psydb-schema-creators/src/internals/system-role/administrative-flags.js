@@ -35,12 +35,22 @@ module.exports = {
             kann das Passwort anderer Benutzer manuell neu setzen
         `,
     }),
+    canUseExtendedSearch: WideBool({
+        title: 'kann die Erweiterte Suche benutzen',
+    }),
     canUseCSVExport: WideBool({
         title: inline`
             kann CSV-Export benutzen
         `,
     }),
-    /*canUseComplexSubjectSearch: WideBool({
-        title: 'kann die erweiterte Proband:innensuche benutzen',
-    })*/
+    canCreateReservationsWithinTheNext3Days: WideBool({
+        title: inline`
+            kann Räume/Teams innerhalb der nächsten 3 Tage reservieren
+        `,
+    }),
+    canCreateExperimentsWithinTheNext3Days: WideBool({
+        title: inline`
+            kann Termine innerhalb der nächsten 3 Tage machen
+        `,
+    }),
 }

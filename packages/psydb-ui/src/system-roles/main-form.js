@@ -113,6 +113,21 @@ const FormFields = (ps) => {
                 required
             />
             <Bool
+                label='kann Räume/Teams innerhalb der nächsten 3 Tage reservieren'
+                dataXPath='$.canCreateReservationsWithinTheNext3Days'
+                required
+            />
+            <Bool
+                label='kann Termine innerhalb der nächsten 3 Tage machen'
+                dataXPath='$.canCreateExperimentsWithinTheNext3Days'
+                required
+            />
+            <Bool
+                label='kann die Erweiterte Suche benutzen'
+                dataXPath='$.canUseExtendedSearch'
+                required
+            />
+            <Bool
                 label='kann CSV-Export benutzen'
                 dataXPath='$.canUseCSVExport'
                 required

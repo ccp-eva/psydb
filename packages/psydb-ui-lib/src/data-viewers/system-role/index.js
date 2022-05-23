@@ -110,6 +110,15 @@ const labels = {
     '/state/canWriteParticipation': (
         'kann manuell Proband:innen in eine Studie eintragen'
     ),
+    '/state/canCreateReservationsWithinTheNext3Days': (
+        'kann Räume/Teams innerhalb der nächsten 3 Tage reservieren'
+    ),
+    '/state/canCreateExperimentsWithinTheNext3Days': (
+        'kann Termine innerhalb der nächsten 3 Tage machen'
+    ),
+    '/state/canUseExtendedSearch': (
+        'kann die Erweiterte Suche benutzen'
+    ),
     '/state/canUseCSVExport': (
         'kann CSV-Export benutzen'
     ),
