@@ -48,7 +48,7 @@ var maybeUpdateLocationVisit = async (context) => {
 
         var { visits } = location.state.internals;
         var vix = visits.findIndex(it => (
-            it.experimentId === experimentId
+            compareIds(it.experimentId, experimentId)
         ));
     
         await dispatch({

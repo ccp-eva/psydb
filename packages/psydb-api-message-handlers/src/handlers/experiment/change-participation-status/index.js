@@ -2,7 +2,8 @@
 var debug = require('debug')('psydb:api:message-handlers');
 
 var { nanoid } = require('nanoid');
-var { ApiError, compareIds } = require('@mpieva/psydb-api-lib');
+var { compareIds } = require('@mpieva/psydb-core-utils');
+var { ApiError } = require('@mpieva/psydb-api-lib');
 var { SimpleHandler } = require('../../../lib/');
 var createSchema = require('./schema');
 
@@ -165,7 +166,7 @@ handler.triggerSystemEvents = async ({
 
     var locationHasVisitation = (
         !!location.state.internals.visits.find(it => (
-            it.experimentId === experimentId
+            compareIds(it.experimentId, experimentId)
         ))
     );
     if (!locationHasVisitation) {

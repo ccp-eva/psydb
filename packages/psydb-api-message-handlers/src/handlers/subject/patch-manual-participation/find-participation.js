@@ -1,4 +1,6 @@
 'use strict';
+var { compareIds } = require('@mpieva/psydb-core-utils');
+
 var findParticipation = (bag) => {
     var { subject, experimentId, participationId, as } = bag;
 
@@ -6,8 +8,14 @@ var findParticipation = (bag) => {
     var index = (
         participatedInStudies
         .findIndex(it => (
-            participationId ? it._id === participationId : true
-            && experimentId ? it.experimentId === experimentId : true
+            (
+                participationId 
+                ? compareIds(it._id, participationId) : true
+            )
+            && (
+                experimentId
+                ? compareIds(it.experimentId, experimentId) : true
+            )
         ))
     );
     var item = participatedInStudies[index];
