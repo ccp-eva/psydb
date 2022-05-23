@@ -25,6 +25,7 @@ export const CustomField = (ps) => {
 
     type = fixSystemType(type);
     var isRequired = true;
+    console.log(type, props);
     switch (type) {
         case 'SaneString':
         case 'FullText':
@@ -37,6 +38,10 @@ export const CustomField = (ps) => {
             break;
         case 'ForeignIdList':
         case 'HelperSetItemIdList':
+        case 'EmailWithPrimaryList':
+        case 'PhoneWithTypeList':
+        case 'PhoneList':
+        case 'SubjectTestingPermissionList':
             isRequired = props.minItems > 0;
             break;
         case 'Address':
