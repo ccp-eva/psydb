@@ -7,6 +7,7 @@ import { keyBy } from '@mpieva/psydb-core-utils';
 import {
     useFetch,
     usePaginationReducer,
+    usePermissions,
 } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -32,6 +33,9 @@ export const Results = (ps) => {
     var { fieldDefinitions } = crtSettings;
     var { columns } = formData;
     
+    var permissions = usePermissions();
+    var canUseCSVExport = permissions.hasFlag('canUseCSVExport');
+
     var pagination = usePaginationReducer({ offset: 0, limit: 50 })
     var { offset, limit } = pagination;
     
@@ -83,12 +87,14 @@ export const Results = (ps) => {
                     <Pagination { ...pagination } />
                 </div>
                 <div className='media-print-hidden'>
-                    <CSVExtendedSearchExportButton
-                        className='ml-3'
-                        size='sm'
-                        endpoint='study'
-                        searchData={ saneData }
-                    />
+                    { canUseCSVExport && (
+                        <CSVExtendedSearchExportButton
+                            className='ml-3'
+                            size='sm'
+                            endpoint='study'
+                            searchData={ saneData }
+                        />
+                    )}
                 </div>
             </div>
 

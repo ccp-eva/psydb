@@ -37,7 +37,7 @@ const RecordListContainer = ({
     var permissions = usePermissions();
 
     var canCreate = permissions.hasCollectionFlag(collection, 'write');
-    var canUseExtendedSearch = true; // FIXME extra permission?
+    var canUseExtendedSearch = permissions.hasFlag('canUseExtendedSearch');
     var canUseCSVExport = permissions.hasFlag('canUseCSVExport');
 
     return (
