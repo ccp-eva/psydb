@@ -6,7 +6,7 @@ var debug = require('debug')(
 var omit = require('@cdxoo/omit');
 var datefns = require('date-fns');
 
-var { keyBy } = require('@mpieva/psydb-core-utils');
+var { keyBy, convertPointerToPath } = require('@mpieva/psydb-core-utils');
 
 var {
     calculateAge,
@@ -76,6 +76,9 @@ var searchUngrouped = async (context, next) => {
         labProcedureType: experimentVariant,
     });
    
+    var subjectCRTSettings = convertCRTRecordToSettings(subjectTypeRecord);
+    var dobFieldPointer = findCRTAgeFrameField(subjectCRTSettings);
+
     var stages = [
         { $match: {
             type: subjectTypeKey,
@@ -120,17 +123,25 @@ var searchUngrouped = async (context, next) => {
             }
         }),
         { $facet: {
-            records: [{ $skip: offset }, { $limit: limit }],
+            records: [
+                { $sort: {
+                    [convertPointerToPath(dobFieldPointer)]: -1
+                }},
+                { $skip: offset },
+                { $limit: limit }
+            ],
             recordsCount: [{ $count: 'COUNT' }]
         }}
     ];
     //console.dir(stages, { depth: null });
 
+    debug('start aggregate');
     var result = await (
         db.collection('subject')
         .aggregate(stages)
         .toArray()
     );
+    debug('end aggregate');
 
     var [ subjectRecords, subjectRecordsCount ] = fromFacets(result);
 
@@ -146,9 +157,6 @@ var searchUngrouped = async (context, next) => {
         items: upcomingSubjectExperimentData.upcomingForIds,
         byProp: '_id',
     })
-
-    var subjectCRTSettings = convertCRTRecordToSettings(subjectTypeRecord);
-    var dobFieldPointer = findCRTAgeFrameField(subjectCRTSettings);
 
     // FIXME: maybe put this into postprocessing
     augmentSubjectTestableIntervals({
