@@ -30,6 +30,7 @@ export const usePickerHandling = ({ record, onChange }) => {
 
     return {
         modal,
+        record,
         cached: cachedRecord,
 
         onEdit: modal.handleShow,

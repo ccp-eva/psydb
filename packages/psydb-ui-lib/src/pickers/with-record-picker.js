@@ -1,4 +1,4 @@
-import React  from 'react';
+import React, { useState }  from 'react';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 import { WithDefaultModal } from '@mpieva/psydb-ui-layout';
 import { usePickerHandling } from './use-picker-handling';
@@ -78,15 +78,32 @@ export const withRecordPicker = (options) => {
             ? cached._recordLabel || cached[idLabelProp]
             : ''
         );
+        //console.log(collection, record, hasInvalidRecord);
+
+        var [ fetchedRecord, setFetchedRecord ] = useState();
+        var shouldRefetch = (
+            record?._id != fetchedRecord?._id
+        );
 
         var [ didFetch, fetched ] = useFetch((agent) => (
-            hasInvalidRecord
+            shouldRefetch
             ? agent.readRecord({
                 collection,
                 id: cached._id
             })
             : undefined
-        ), [ hasInvalidRecord ]);
+        ), {
+            extraEffect: (response) => {
+                //console.log(response);
+                if (response?.data?.data?.record) {
+                    setFetchedRecord(response.data.data.record)
+                }
+                else {
+                    setFetchedRecord(undefined)
+                }
+            },
+            dependencies: [ record?._id ]
+        });
 
         if (!didFetch) {
             return null;
