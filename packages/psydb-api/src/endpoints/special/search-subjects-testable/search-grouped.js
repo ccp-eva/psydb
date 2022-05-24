@@ -271,7 +271,7 @@ var searchGrouped = async (context, next) => {
             it.state.internals.visits
             .sort((a,b) => (
                 a.timestamp.getTime() > b.timestamp.getTime()
-                ? -1 : 1 // reversed
+                ? 1 : -1 // reversed
             ))
             .map(it => ({ state: {
                 _id: it.experimentId,
