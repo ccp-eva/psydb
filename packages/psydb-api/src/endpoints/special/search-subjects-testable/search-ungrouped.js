@@ -79,11 +79,10 @@ var searchUngrouped = async (context, next) => {
     var subjectCRTSettings = convertCRTRecordToSettings(subjectTypeRecord);
     var dobFieldPointer = findCRTAgeFrameField(subjectCRTSettings);
 
-    var preCountStages = [
+    var stages = [
         { $match: {
             type: subjectTypeKey,
-            'isDummy': false,
-            'scientific.state.internals.isRemoved': false
+            'scientific.state.internals.isRemoved': { $ne: true }
         }},
         // TODO: quicksearch
         /*...QuickSearchStages({
@@ -109,10 +108,6 @@ var searchUngrouped = async (context, next) => {
         HasAnyTestabilityStage({
             studyIds
         }),
-    ]
-
-    var stages = [
-        ...preCountStages,
         SeperateRecordLabelDefinitionFieldsStage({
             recordLabelDefinition: subjectRecordLabelDefinition
         }),
@@ -127,37 +122,28 @@ var searchUngrouped = async (context, next) => {
                 }), {}))
             }
         }),
-        { $sort: {
-            [convertPointerToPath(dobFieldPointer)]: -1
-        }},
-        { $skip: offset },
-        { $limit: limit }
+        { $facet: {
+            records: [
+                { $sort: {
+                    [convertPointerToPath(dobFieldPointer)]: -1
+                }},
+                { $skip: offset },
+                { $limit: limit }
+            ],
+            recordsCount: [{ $count: 'COUNT' }]
+        }}
     ];
     //console.dir(stages, { depth: null });
 
-    debug('start aggregate count');
-    var countResult = await (
-        db.collection('subject')
-        .aggregate([
-            ...preCountStages,
-            { $count: 'COUNT' }
-        ])
-        .toArray()
-    );
-    var subjectRecordsCount = (
-        countResult && countResult[0] ? countResult[0].COUNT : 0
-    );
-    debug('end aggregate count');
-
-    debug('start aggregate result');
-    var subjectRecords = await (
+    debug('start aggregate');
+    var result = await (
         db.collection('subject')
         .aggregate(stages)
         .toArray()
     );
-    debug('end aggregate result');
+    debug('end aggregate');
 
-    //var [ subjectRecords, subjectRecordsCount ] = fromFacets(result);
+    var [ subjectRecords, subjectRecordsCount ] = fromFacets(result);
 
     var now = new Date();
     var subjectIds = subjectRecords.map(it => it._id);
