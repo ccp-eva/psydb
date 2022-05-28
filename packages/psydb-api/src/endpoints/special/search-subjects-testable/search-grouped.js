@@ -120,6 +120,8 @@ var searchGrouped = async (context, next) => {
     var stages = [
         { $match: {
             type: subjectTypeKey,
+            isDummy: false,
+            'scientific.state.systemPermissions.isHidden': { $ne: true },
             'scientific.state.internals.isRemoved': { $ne: true },
             $and: [
                 { [groupByFieldPath]: { $exists: true } },
