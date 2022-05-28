@@ -53,7 +53,8 @@ var fetchParentDataForGroups = async ({
             'state.comment': true,
             'state.internals.visits': true,
         },
-        disablePermissionCheck: true
+        disablePermissionCheck: true,
+        showHidden: true,
     });
 
     var related = await fetchRelatedLabelsForMany({

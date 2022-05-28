@@ -111,12 +111,30 @@ var searchGrouped = async (context, next) => {
     var subjectCRTSettings = convertCRTRecordToSettings(subjectTypeRecord);
     var dobFieldPointer = findCRTAgeFrameField(subjectCRTSettings);
 
+    debug('start find excluded locations');
+    var excludedLocationIds = await (
+        db.collection('location').find(
+            {
+                type: groupByField.props.recordType,
+                $or: [
+                    { isDummy: true },
+                    { 'state.systemPermissions.isHidden': true },
+                    { 'state.internals.isRemoved': true }
+                ],
+            },
+            { projection: { _id: true }}
+        ).map(it => it._id).toArray()
+    );
+    debug('end find excluded locations');
+    //console.log(excludedLocationIds);
+
     await db.collection('subject').ensureIndex({
         [convertPointerToPath(dobFieldPointer)]: 1
     }, {
         name: 'ageFrameIndex'
     });
 
+    //console.log(groupByFieldPath);
     var stages = [
         { $match: {
             type: subjectTypeKey,
@@ -126,6 +144,7 @@ var searchGrouped = async (context, next) => {
             $and: [
                 { [groupByFieldPath]: { $exists: true } },
                 { [groupByFieldPath]: { $not: { $type: 10 }}}, // NOT NULL
+                { [groupByFieldPath]: { $nin: excludedLocationIds }}
             ]
         }},
         // NOTE: prefiltering possbile age frames to make index use easier
@@ -242,11 +261,13 @@ var searchGrouped = async (context, next) => {
     ]), []);
 
     var subjectIds = flatSubjects.map(it => it._id);
+    debug('start fetch upcoming subject');
     var upcomingSubjectExperimentData = await fetchUpcomingExperimentData({
         db,
         subjectIds: subjectIds,
         after: now,
     });
+    debug('end fetch upcoming subject');
 
     var upcomingBySubjectId = keyBy({
         items: upcomingSubjectExperimentData.upcomingForIds,
@@ -277,6 +298,7 @@ var searchGrouped = async (context, next) => {
 
     var groupIds = groupedSubjectRecords.map(it => it._id);
 
+    debug('start fetch locations');
     // FIXME: its actually possible to fetch locations that the RG has
     // no permissions on when it contains subjects that are permitted
     var locationData = await fetchParentDataForGroups({
@@ -284,12 +306,15 @@ var searchGrouped = async (context, next) => {
         groupByField,
         groupIds,
     });
+    debug('end fetch locations');
 
+    debug('start fetch upcoming location');
     var upcomingLocationExperimentData = await fetchUpcomingExperimentData({
         db,
         locationIds: groupIds,
         after: now,
     });
+    debug('end fetch upcoming location');
 
     var groupedById = keyBy({
         items: groupedSubjectRecords,
