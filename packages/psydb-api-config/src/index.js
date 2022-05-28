@@ -2,7 +2,7 @@ var common = require('@mpieva/psydb-common-config');
 module.exports = {
     ...common,
     db: {
-        url: 'mongodb://127.0.0.1:47017/psydb',
+        url: 'mongodb://127.0.0.1:27017/psydb',
         dbName: 'psydb',
         useUnifiedTopology: true,
     },
