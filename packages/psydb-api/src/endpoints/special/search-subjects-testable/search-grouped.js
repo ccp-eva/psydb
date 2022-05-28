@@ -7,9 +7,15 @@ var inline = require('@cdxoo/inline-text');
 var omit = require('@cdxoo/omit');
 var datefns = require('date-fns');
 
-var { keyBy, merge } = require('@mpieva/psydb-core-utils');
+var {
+    keyBy, merge, convertPointerToPath
+} = require('@mpieva/psydb-core-utils');
 
-var convertPointerToPath = require('@mpieva/psydb-api-lib/src/convert-pointer-to-path');
+var {
+    timeshiftAgeFrame,
+    convertCRTRecordToSettings,
+    findCRTAgeFrameField,
+} = require('@mpieva/psydb-common-lib');
 
 var {
     ApiError,
@@ -102,7 +108,16 @@ var searchGrouped = async (context, next) => {
         field.pointer === subjectLocationFieldPointer
     ));
 
-    var result = await db.collection('subject').aggregate([
+    var subjectCRTSettings = convertCRTRecordToSettings(subjectTypeRecord);
+    var dobFieldPointer = findCRTAgeFrameField(subjectCRTSettings);
+
+    await db.collection('subject').ensureIndex({
+        [convertPointerToPath(dobFieldPointer)]: 1
+    }, {
+        name: 'ageFrameIndex'
+    });
+
+    var stages = [
         { $match: {
             type: subjectTypeKey,
             'scientific.state.internals.isRemoved': { $ne: true },
@@ -111,6 +126,22 @@ var searchGrouped = async (context, next) => {
                 { [groupByFieldPath]: { $not: { $type: 10 }}}, // NOT NULL
             ]
         }},
+        // NOTE: prefiltering possbile age frames to make index use easier
+        // and get better performance
+        { $match: { $or: (
+            ageFrameFilters.map(it => {
+                var p = convertPointerToPath(dobFieldPointer);
+                var shifted = timeshiftAgeFrame({
+                    targetInterval: interval,
+                    ageFrame: it.interval
+                });
+                    
+                return { $and: [
+                    { [p]: { $gte: shifted.start }},
+                    { [p]: { $lt: shifted.end }},
+                ]}
+            })
+        )}},
         // TODO: quicksearch
         /*...QuickSearchStages({
             queryFields,
@@ -176,7 +207,18 @@ var searchGrouped = async (context, next) => {
             ],
             subjectCount: [{ $count: 'COUNT' }]
         }}
-    ]).toArray();
+    ]
+
+    debug('start aggregate');
+    var result = await (
+        db.collection('subject')
+        .aggregate(stages, {
+            hint: 'ageFrameIndex',
+            allowDiskUse: true,
+        })
+        .toArray()
+    );
+    debug('end aggregate');
 
     var { groupedSubjectRecords, subjectCount, locationCount } = result[0];
     //console.log(groupedSubjectRecords);
