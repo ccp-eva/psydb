@@ -81,6 +81,10 @@ const FormFields = (ps) => {
                 related={ related }
                 required
             />
+            <Fields.DefaultBool
+                label='Ausgeblendet'
+                dataXPath='$.scientific.systemPermissions.isHidden'
+            />
             { permissions.isRoot() && (
                 <>
                     <Fields.DefaultBool

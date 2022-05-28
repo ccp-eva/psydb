@@ -21,7 +21,8 @@ var CoreBodySchema = () => ({
         target: {
             type: 'string',
             enum: [ 'table', 'optionlist' ]
-        }
+        },
+        showHidden: DefaultBool(),
     },
     required: [
         'collectionName',

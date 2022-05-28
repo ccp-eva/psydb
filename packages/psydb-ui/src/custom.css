@@ -189,6 +189,11 @@ a {
     opacity: 0.5;
 }
 
+.table-hover tbody tr.bg-light:hover {
+    color: #212529 !important;
+    background-color: rgba(0,0,0, 0.075) !important;
+}
+
 @page {
     /* enables user choice of portrait/landscape */
     size: auto;

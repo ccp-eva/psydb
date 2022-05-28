@@ -70,6 +70,7 @@ var FullBodySchema = ({
                     'optionlist',
                 ]
             },
+            showHidden: DefaultBool(),
             /*filters: {
                 type: 'array',
                 // TODO: the idea is to push/pull empty values

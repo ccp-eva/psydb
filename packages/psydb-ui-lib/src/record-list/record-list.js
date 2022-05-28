@@ -9,7 +9,9 @@ import {
 
 import {
     Pagination,
-    LoadingIndicator
+    LoadingIndicator,
+    Button,
+    Icons
 } from '@mpieva/psydb-ui-layout';
 
 import QuickSearch from '../quick-search';
@@ -42,6 +44,7 @@ var RecordList = ({
     CustomActionListComponent,
 }) => {
     var [ isInitialized, setIsInitialized ] = useState(false);
+    var [ showHidden, setShowHidden ] = useState(false);
     var [ payload, setPayload ] = useState([]);
 
     var [ filters, setFilters ] = (
@@ -76,14 +79,18 @@ var RecordList = ({
             limit,
             constraints,
             filters,
-            sort: defaultSort || undefined
+            sort: defaultSort || undefined,
+            showHidden,
         })
         .then((response) => {
             setDidChangeFilters(false);
             pagination.setTotal(response.data.data.recordsCount);
             return response;
         });
-    }, [ collection, recordType, offset, limit, filters, searchOptions ]);
+    }, [
+        collection, recordType, offset, limit,
+        filters, searchOptions, showHidden
+]);
 
     if (!didFetch) {
         return (
@@ -103,14 +110,32 @@ var RecordList = ({
     return (
         <>
             <div className='sticky-top border-bottom'>
-                <QuickSearch
-                    filters={ filters }
-                    displayFieldData={ displayFieldData }
-                    onSubmit={ ({ filters }) => {
-                        setDidChangeFilters(true);
-                        setFilters(filters);
-                    }}
-                />
+                <div className='d-flex justify-content-between bg-light border-bottom'>
+                    <QuickSearch
+                        filters={ filters }
+                        displayFieldData={ displayFieldData }
+                        onSubmit={ ({ filters }) => {
+                            setDidChangeFilters(true);
+                            setFilters(filters);
+                        }}
+                    />
+                    <div className='pt-2 px-3'>
+                        <div
+                            role='button'
+                            className='d-flex align-items-center text-primary'
+                            onClick={ () => setShowHidden(!showHidden) }
+                        >
+                            {
+                                showHidden 
+                                ? <Icons.CheckSquareFill />
+                                : <Icons.Square />
+                            }
+                            <span className='ml-2'>
+                                Ausgeblendete anzeigen
+                            </span>
+                        </div>
+                    </div>
+                </div>
                 <Pagination { ...pagination } />
             </div>
 

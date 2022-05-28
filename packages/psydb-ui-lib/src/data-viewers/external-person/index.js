@@ -8,7 +8,6 @@ import {
 
 const labels = {
     '/sequenceNumber': 'ID Nr.',
-    '/state/systemPermissions': 'Zugriff auf diesen Datensatz für'
 }
 
 const [ ExternalPerson, ExternalPersonContext ] = createBase();
@@ -21,7 +20,7 @@ addComponents(ExternalPerson, ExternalPersonContext, labels, [
     {
         cname: 'SystemPermissions',
         path: '/state/systemPermissions',
-        Component: withPair(SystemPermissions)
+        Component: SystemPermissions
     },
 
     { cname: 'Custom', path: '/state/custom', Component: Custom },

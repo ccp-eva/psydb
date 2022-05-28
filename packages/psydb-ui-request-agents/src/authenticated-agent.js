@@ -109,6 +109,8 @@ agent.searchRecords = ({
     constraints,
     filters,
     sort,
+
+    showHidden,
 }) => {
     return (
         axios.post('/api/search', {
@@ -121,7 +123,8 @@ agent.searchRecords = ({
             limit: limit || 50,
             filters: filters || {},
             constraints: constraints || {},
-            sort: sort || undefined
+            sort: sort || undefined,
+            showHidden,
         })
     )
 }

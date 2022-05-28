@@ -59,6 +59,10 @@ const FormFields = (ps) => {
                 related={ related }
                 required
             />
+            <Fields.DefaultBool
+                label='Ausgeblendet'
+                dataXPath='$.systemPermissions.isHidden'
+            />
         </>
     );
 }

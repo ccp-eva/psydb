@@ -39,6 +39,7 @@ var fetchRecordByFilter = async ({
     additionalProjection,
 
     disablePermissionCheck,
+    showHidden,
     offset,
     limit,
     
@@ -109,8 +110,19 @@ var fetchRecordByFilter = async ({
                 'isDummy': { $ne: true },
                 ...(
                     hasSubChannels
-                    ? { 'scientific.state.internals.isRemoved': { $ne: true }}
-                    : { 'state.internals.isRemoved': { $ne: true }}
+                    ? {
+                        'scientific.state.internals.isRemoved': { $ne: true },
+                        ...(!showHidden && {
+                            'scientific.state.systemPermissions.isHidden': { $ne: true },
+                        })
+
+                    }
+                    : { 
+                        'state.internals.isRemoved': { $ne: true },
+                        ...(!showHidden && {
+                            'state.systemPermissions.isHidden': { $ne: true },
+                        })
+                    }
                 ),
             }
         });
@@ -195,8 +207,14 @@ var fetchRecordByFilter = async ({
         }),
         ...(
             hasSubChannels
-            ? { 'scientific.state.internals.isRemoved': 1 }
-            : { 'state.internals.isRemoved': 1 }
+            ? {
+                'scientific.state.internals.isRemoved': 1,
+                'scientific.state.systemPermissions.isHidden': 1,
+            }
+            : {
+                'state.internals.isRemoved': 1,
+                'state.systemPermissions.isHidden': 1,
+            }
         )
     }
     await db.collection(collectionName).ensureIndex(index, {
@@ -236,7 +254,12 @@ var fetchRecordByFilter = async ({
             displayFields,
             additionalProjection: {
                 type: true,
-                ...( recordLabelDefinition && {
+                '_isHidden': (
+                    hasSubChannels
+                    ? '$scientific.state.systemPermissions.isHidden'
+                    : '$state.systemPermissions.isHidden'
+                ),
+                ...(recordLabelDefinition && {
                     '_recordLabelDefinitionFields': true 
                 }),
                 // FIXME: not sure if thats good
@@ -246,6 +269,7 @@ var fetchRecordByFilter = async ({
                 ...additionalProjection
             }
         });
+        //console.dir(displayFieldStage, { depth: null });
     }
 
     var sortStage;

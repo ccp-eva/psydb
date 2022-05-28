@@ -10,7 +10,6 @@ import ReservationSettings from './reservation-settings';
 
 const labels = {
     '/sequenceNumber': 'ID Nr.',
-    '/state/systemPermissions': 'Zugriff auf diesen Datensatz für'
 }
 
 const [ Location, LocationContext ] = createBase();
@@ -23,7 +22,7 @@ addComponents(Location, LocationContext, labels, [
     {
         cname: 'SystemPermissions',
         path: '/state/systemPermissions',
-        Component: withPair(SystemPermissions)
+        Component: SystemPermissions
     },
     {
         cname: 'ReservationSettings',

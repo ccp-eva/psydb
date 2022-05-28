@@ -20,6 +20,6 @@ export const SystemPermissions = (options) => {
             researchGroupId: presetResearchGroupId,
             permission: presetResearchGroupId ? 'write' : undefined,
         }],
-        isHiddenForResearchGroupIds: [],
+        isHidden: false,
     }
 }

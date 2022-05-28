@@ -23,7 +23,6 @@ const labels = {
     '/state/researchGroupIds': 'Forschungsgruppen',
     '/state/scientistIds': 'Wissenschaftler:innen',
     '/state/studyTopicIds': 'Themengebiete',
-    '/state/systemPermissions': 'Zugriff auf diesen Datensatz für'
 }
 
 const [ Study, StudyContext ] = createBase();
@@ -84,7 +83,7 @@ addComponents(Study, StudyContext, labels, [
     {
         cname: 'SystemPermissions',
         path: '/state/systemPermissions',
-        Component: withPair(SystemPermissions)
+        Component: SystemPermissions
     },
 
     { cname: 'Custom', path: '/state/custom', Component: Custom },
