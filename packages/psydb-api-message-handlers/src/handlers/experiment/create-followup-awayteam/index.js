@@ -53,6 +53,11 @@ handler.checkAllowedAndPlausible = async (context) => {
         throw new ApiError(400, 'InvalidExperimentId');
     }
 
+    var study = await (
+        db.collection('study')
+        .findOne({ _id: sourceExperiment.state.studyId })
+    );
+
     var {
         locationId,
         experimentOperatorTeamId,
@@ -68,13 +73,20 @@ handler.checkAllowedAndPlausible = async (context) => {
             break;
         case 'move-unprocessed':
             var movable = ['unknown', 'didnt-participate'];
+            if (study.state.enableFollowUpExperiments) {
+                movable.push('participated');
+            }
             subjectDataForOp = subjectData.filter(it => (
                 movable.includes(it.participationStatus) &&
                 !it.excludeFromMoreExperimentsInStudy
             ));
             shouldRemoveFromSource = true;
             shouldCancelSource = (
-                subjectDataForOp.length === subjectData.length
+                (
+                    subjectDataForOp
+                    .filter(it => !['participated'].includes(it.participationStatus))
+                    .length
+                ) === subjectData.length
             );
             break;
         case 'none':
@@ -178,7 +190,14 @@ var removeSubjectsFromSource = async (context) => {
     var { cache, dispatch } = context;
     var { sourceExperiment, subjectDataForOp } = cache;
 
-    var subjectIds = subjectDataForOp.map(it => it.subjectId);
+    var subjectIds = (
+        subjectDataForOp
+        .filter(it => !['participated'].includes(it.participationStatus))
+        .map(it => it.subjectId)
+    );
+    if (!subjectIds.length) {
+        return;
+    }
     await dispatch({
         collection: 'experiment',
         channelId: sourceExperiment._id,
@@ -232,7 +251,14 @@ var pullExperimentFromSubjects = async (context) => {
     var { sourceExperiment, subjectDataForOp } = cache;
 
     var experimentId = sourceExperiment._id;
-    var subjectIds = subjectDataForOp.map(it => it.subjectId);
+    var subjectIds = (
+        subjectDataForOp
+        .filter(it => !['participated'].includes(it.participationStatus))
+        .map(it => it.subjectId)
+    );
+    if (!subjectIds.length) {
+        return;
+    }
 
     var update = { $pull: {
         'scientific.state.internals.invitedForExperiments': { experimentId },

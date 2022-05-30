@@ -64,17 +64,29 @@ handler.checkAllowedAndPlausible = async (context) => {
 }
 
 handler.triggerSystemEvents = async (context) => {
-    var { cache } = context;
+    var { db, cache } = context;
     var { sourceExperiment } = cache;
     var { subjectData } = sourceExperiment.state;
+    var study = await (
+        db.collection('study')
+        .findOne({ _id: sourceExperiment.state.studyId })
+    );
     
     var movable = ['unknown', 'didnt-participate'];
+    if (study.state.enableFollowUpExperiments) {
+        movable.push('participated');
+    }
     var subjectDataForOp = subjectData.filter(it => (
         movable.includes(it.participationStatus) &&
         !it.excludeFromMoreExperimentsInStudy
     ));
+
     var shouldCancelSource = (
-        subjectDataForOp.length === subjectData.length
+        (
+            subjectDataForOp
+            .filter(it => !['participated'].includes(it.participationStatus))
+            .length
+        ) === subjectData.length
     );
 
     cache.subjectDataForOp = subjectDataForOp;
@@ -120,7 +132,14 @@ var removeSubjectsFromSource = async (context) => {
     var { sourceExperimentId, subjectDataForOp } = cache;
 
     var experimentId = sourceExperimentId;
-    var subjectIds = subjectDataForOp.map(it => it.subjectId);
+    var subjectIds = (
+        subjectDataForOp
+        .filter(it => !['participated'].includes(it.participationStatus))
+        .map(it => it.subjectId)
+    );
+    if (!subjectIds.length) {
+        return;
+    }
 
     await dispatch({
         collection: 'experiment',
@@ -176,7 +195,14 @@ var pullExperimentFromSubjects = async (context) => {
     var { sourceExperimentId, subjectDataForOp } = cache;
 
     var experimentId = sourceExperimentId;
-    var subjectIds = subjectDataForOp.map(it => it.subjectId);
+    var subjectIds = (
+        subjectDataForOp
+        .filter(it => !['participated'].includes(it.participationStatus))
+        .map(it => it.subjectId)
+    );
+    if (!subjectIds.length) {
+        return;
+    }
 
     var update = { $pull: {
         'scientific.state.internals.invitedForExperiments': { experimentId },
@@ -196,7 +222,7 @@ var pullExperimentFromSubjects = async (context) => {
         }
     });
 }
-
+;
 var removeSourceExperiment = async (context) => {
     var { db, cache } = context;
     var { sourceExperimentId } = cache;
