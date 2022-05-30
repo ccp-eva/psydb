@@ -87,7 +87,7 @@ agent.readRecord = ({
     additionalParams,
     extraAxiosConfig,
 }) => {
-
+    //console.log({ collection, recordType });
     var url = (
         recordType
         ? `/api/read/${collection}/${recordType}/${id}`
