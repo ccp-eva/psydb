@@ -1,5 +1,6 @@
 'use strict';
 var jsonpointer = require('jsonpointer');
+var datefns = require('date-fns');
 
 var { groupBy, entries } = require('@mpieva/psydb-core-utils');
 
@@ -64,7 +65,10 @@ var calculateTestableIntervals = (bag) => {
     var allShiftedDoBs = [];
     for (var afi of ageFrameIntervals) {
         var shifted = timeshiftAgeFrame({
-            sourceDate: dateOfBirth,
+            sourceInterval: {
+                start: dateOfBirth,
+                end: datefns.endOfDay(dateOfBirth)
+            },
             ageFrame: afi,
         });
         //console.log({ shifted });
@@ -77,6 +81,7 @@ var calculateTestableIntervals = (bag) => {
             end: it.end.getTime()
         }))
     });
+    //console.log(allShiftedDoBs, desiredTestInterval);
 
     var intersections = intervalUtils.intersect({
         setA: merged,

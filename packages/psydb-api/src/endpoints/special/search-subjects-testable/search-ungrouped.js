@@ -153,7 +153,7 @@ var searchUngrouped = async (context, next) => {
         { $facet: {
             records: [
                 { $sort: {
-                    [convertPointerToPath(dobFieldPointer)]: -1
+                    [convertPointerToPath(dobFieldPointer)]: 1
                 }},
                 { $skip: offset },
                 { $limit: limit },

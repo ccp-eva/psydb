@@ -102,7 +102,7 @@ const TableRow = ({
             <td>
                 {
                     record._testableInStudies
-                    .map(studyId => {
+                    .map((studyId, ix) => {
                         var studyLabel = (
                             subjectMetadata.relatedRecordLabels
                             .study[studyId]._recordLabel
@@ -113,6 +113,7 @@ const TableRow = ({
 
                         return (
                             <SubjectTestableIntervals
+                                key={ ix }
                                 studyLabel={ studyLabel }
                                 desiredTestInterval={ desiredTestInterval }
                                 testableIntervals={ testableIntervals }
