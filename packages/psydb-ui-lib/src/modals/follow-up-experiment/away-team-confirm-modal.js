@@ -122,7 +122,7 @@ const FormContainer = ({
                                         label='Proband:innen'
                                         options={{
                                             'none': 'Keine Aktion',
-                                            'move-unprocessed': 'Verbleibende Verschieben', 
+                                            'move-unprocessed': 'Verbleibende Mitnehmen', 
                                             ...( enableFollowUpExperiments && {
                                                 'copy': 'Alle Kopieren',
                                             }),
