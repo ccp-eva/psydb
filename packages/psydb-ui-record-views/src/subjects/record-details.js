@@ -23,13 +23,25 @@ const DetailsBody = (ps) => {
         related
     }
 
+    var isHidden = record.scientific.state.systemPermissions.isHidden;
+
     return (
         <>
-            <Subject { ...subjectBag }>
-                <Subject.FullUserOrdered />
-                <hr />
-                <Subject.SystemPermissions />
-            </Subject>
+            { isHidden && (
+                <>
+                    <h5 className='text-muted'>
+                        Datensatz ist Ausgeblendet
+                    </h5>
+                    <hr />
+                </>
+            )}
+            <div style={ isHidden ? { opacity: 0.5 } : {}}>
+                <Subject { ...subjectBag }>
+                    <Subject.FullUserOrdered />
+                    <hr />
+                    <Subject.SystemPermissions />
+                </Subject>
+            </div>
         </>
     )
 }

@@ -19,7 +19,6 @@ const SubjectEditorContainer = ({
     };
     return (
         <>
-            <h3 className='border-bottom'>Proband:in bearbeiten</h3>
             <RecordEditor { ...editorBag }>
                 {() => (
                     <GenericRecordEditorFooter

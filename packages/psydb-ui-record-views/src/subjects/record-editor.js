@@ -66,9 +66,19 @@ const EditForm = (ps) => {
         sequenceNumber,
         onlineId
     } = record;
+    
+    var isHidden = record.scientific.state.systemPermissions.isHidden;
 
     var renderedContent = (
-        <>
+        <div>
+            { isHidden && (
+                <>
+                    <h5 className='text-muted'>
+                        Datensatz ist Ausgeblendet
+                    </h5>
+                    <hr />
+                </>
+            )}
             { sequenceNumber && (
                 <Pair 
                     label='ID Nr.'
@@ -97,7 +107,15 @@ const EditForm = (ps) => {
                 permissions={ permissions }
                 renderFormBox={ false }
             />
-        </>
+            { isHidden && (
+                <>
+                    <hr />
+                    <h5 className='text-muted'>
+                        Datensatz ist Ausgeblendet
+                    </h5>
+                </>
+            )}
+        </div>
     );
 
     var renderedForm = (
