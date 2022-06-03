@@ -2,7 +2,6 @@ import React from 'react';
 import { useThemeContext } from '../core/theme-context';
 import {
     ForeignId,
-    DefaultBool
 } from './static';
 
 export const SystemPermissions = (ps) => {
@@ -19,9 +18,6 @@ export const SystemPermissions = (ps) => {
                         related={ related }
                     />
                 ))}
-            </Field>
-            <Field label='Ausgeblendet'>
-                <DefaultBool value={ value.isHidden } />
             </Field>
         </>
     );
