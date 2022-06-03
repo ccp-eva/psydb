@@ -25,6 +25,7 @@ export const Component = (ps) => {
             initialValues={ initialValues }
             onSubmit={ onSubmit }
             useAjvAsync
+            enableReinitialize
         >
             {(formikProps) => (
                 <>

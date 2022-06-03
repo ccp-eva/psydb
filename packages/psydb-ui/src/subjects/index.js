@@ -6,6 +6,7 @@ import {
 } from '@mpieva/psydb-ui-lib/src/generic-views'
 
 import Details from './details';
+import Editor from './editor';
 import IntraTypeRouting from './intra-type-routing'
 
 import {
@@ -20,7 +21,7 @@ import {
 
 const SubjectTypeView = withRecordTypeView({
     RecordCreator,
-    RecordEditor,
+    RecordEditor: Editor,
     RecordDetails: Details,
     //RecordDetails,
     RecordRemover,

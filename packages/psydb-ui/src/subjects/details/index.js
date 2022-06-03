@@ -107,7 +107,7 @@ const SubjectDetailsContainer = ({
                 </div>
             )}
 
-            { isRoot && (
+            { /*isRoot && (
                 <div className='mb-4'>
                     <LinkButton
                         variant='danger'
@@ -116,7 +116,7 @@ const SubjectDetailsContainer = ({
                         Proband:in Löschen
                     </LinkButton>
                 </div>
-            )}
+            )*/}
 
         </>
     )

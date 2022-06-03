@@ -3,7 +3,12 @@ var {
     MessageHandlerGroup
 } = require('@mpieva/psydb-koa-event-middleware');
 
-var GenericRecordHandler = require('../../lib/generic-record-handler');
+var {
+    GenericRecordHandler,
+
+    GenericHideRecordHandler,
+    GenericUnhideRecordHandler
+} = require('../../lib');
 
 var SubjectGroup = MessageHandlerGroup([
     require('./create'),
@@ -12,6 +17,8 @@ var SubjectGroup = MessageHandlerGroup([
         collection: 'subject',
         op: 'patch',
     }),
+    GenericHideRecordHandler({ collection: 'subject' }),
+    GenericUnhideRecordHandler({ collection: 'subject' }),
 
     require('./add-manual-participation'),
     require('./patch-manual-participation'),

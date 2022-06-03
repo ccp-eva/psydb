@@ -20,7 +20,7 @@ export const withRecordEditor = (options) => {
     } = options;
 
     var RecordEditor = (ps) => {
-        var { collection, recordType, id: manualId } = ps;
+        var { collection, recordType, id: manualId, revision } = ps;
         var { id: paramId } = useParams();
         var id = manualId || paramId;
 
@@ -32,12 +32,16 @@ export const withRecordEditor = (options) => {
             return <PermissionDenied />
         }
 
+        var dependencies = (
+            revision ? [ revision.value ] : []
+        );
+
         var [ didFetch, fetched ] = useReadRecord({
             collection, recordType, id,
             shouldFetchSchema,
             shouldFetchCRTSettings,
             extraAxiosConfig: { disableErrorModal: 404 }
-        });
+        }, dependencies);
 
         if (!didFetch) {
             return <LoadingIndicator size='lg' />
