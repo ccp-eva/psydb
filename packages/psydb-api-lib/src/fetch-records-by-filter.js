@@ -96,11 +96,16 @@ var fetchRecordByFilter = async ({
         );
     }
     
+    showHidden = showHidden || queryFields.length > 0;
+
     if (collectionName === 'subject') {
         preCountStages.push({
             $match: {
                 'isDummy': false,
                 'scientific.state.internals.isRemoved': false,
+                ...(!showHidden && {
+                    'scientific.state.systemPermissions.isHidden': { $ne: true },
+                })
             }
         });
     }
