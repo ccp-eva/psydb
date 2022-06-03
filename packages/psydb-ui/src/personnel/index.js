@@ -6,14 +6,15 @@ import {
 } from '@mpieva/psydb-ui-lib/src/generic-views'
 
 import { RecordDetails } from './record-details';
-import { RecordEditor } from './record-editor';
 import { RecordCreator } from './record-creator';
 import { RecordRemover } from './record-remover';
 
+import EditorContainer from './editor-container';
+
 const PersonnelTypeView = withRecordTypeView({
     RecordDetails,
-    RecordEditor,
     RecordCreator,
+    RecordEditor: EditorContainer,
     RecordRemover,
 })
 
