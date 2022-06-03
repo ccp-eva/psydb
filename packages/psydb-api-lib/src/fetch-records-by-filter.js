@@ -98,40 +98,27 @@ var fetchRecordByFilter = async ({
     
     showHidden = showHidden || queryFields.length > 0;
 
-    if (collectionName === 'subject') {
-        preCountStages.push({
-            $match: {
-                'isDummy': false,
-                'scientific.state.internals.isRemoved': false,
-                ...(!showHidden && {
-                    'scientific.state.systemPermissions.isHidden': { $ne: true },
-                })
-            }
-        });
-    }
-    else {
-        preCountStages.push({
-            $match: {
-                'isDummy': { $ne: true },
-                ...(
-                    hasSubChannels
-                    ? {
-                        'scientific.state.internals.isRemoved': { $ne: true },
-                        ...(!showHidden && {
-                            'scientific.state.systemPermissions.isHidden': { $ne: true },
-                        })
+    preCountStages.push({
+        $match: {
+            'isDummy': { $ne: true },
+            ...(
+                hasSubChannels
+                ? {
+                    'scientific.state.internals.isRemoved': { $ne: true },
+                    ...(!showHidden && {
+                        'scientific.state.systemPermissions.isHidden': { $ne: true },
+                    })
 
-                    }
-                    : { 
-                        'state.internals.isRemoved': { $ne: true },
-                        ...(!showHidden && {
-                            'state.systemPermissions.isHidden': { $ne: true },
-                        })
-                    }
-                ),
-            }
-        });
-    }
+                }
+                : { 
+                    'state.internals.isRemoved': { $ne: true },
+                    ...(!showHidden && {
+                        'state.systemPermissions.isHidden': { $ne: true },
+                    })
+                }
+            ),
+        }
+    });
 
     var FooStages = ({ permissions, collection }) => {
         var {
