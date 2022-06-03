@@ -6,10 +6,6 @@ import { Pair } from '@mpieva/psydb-ui-layout';
 import { withRecordEditor, FormBox } from '@mpieva/psydb-ui-lib';
 import MainForm from './main-form';
 
-export const RecordEditorContext = React.createContext();
-
-var isFunction = (it) => (typeof it === 'function');
-
 const EditForm = (ps) => {
     var {
         collection,
@@ -18,8 +14,6 @@ const EditForm = (ps) => {
         fetched,
         renderFormBox = true,
         onSuccessfulUpdate,
-
-        children
     } = ps;
 
     var { record, crtSettings, related } = fetched;
@@ -119,11 +113,6 @@ const EditForm = (ps) => {
     return (
         <>
             { renderedForm }
-            <RecordEditorContext.Provider
-                value={{ id, collection, recordType, fetched, permissions }}
-            >
-                { isFunction(children) ? children() : children }
-            </RecordEditorContext.Provider>
         </>
     )
 }
@@ -132,6 +121,3 @@ export const RecordEditor = withRecordEditor({
     EditForm,
     shouldFetchSchema: false,
 });
-
-RecordEditor.Context = RecordEditorContext;
-

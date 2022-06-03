@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from '@mpieva/psydb-ui-layout';
 import { useSend } from '@mpieva/psydb-ui-hooks';
 
-export const UpdateRecordVisibilityButton = (ps) => {
+const UpdateRecordVisibilityButton = (ps) => {
     var { className, collection, id, isHidden, onSuccessfulUpdate } = ps;
 
     var sendHide = useSend(() => ({
@@ -27,3 +27,5 @@ export const UpdateRecordVisibilityButton = (ps) => {
         </Button>
     );
 }
+
+export default UpdateRecordVisibilityButton;

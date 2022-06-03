@@ -50,4 +50,5 @@ export { default as CSVExtendedSearchExportButton } from './csv-extended-search-
 
 export { default as SubjectTestableIntervals } from './subject-testable-intervals';
 
-export * from './update-record-visibility-button';
+export { default as UpdateRecordVisibilityButton } from './update-record-visibility-button';
+export { default as GenericRecordEditorFooter } from './generic-record-editor-footer';
