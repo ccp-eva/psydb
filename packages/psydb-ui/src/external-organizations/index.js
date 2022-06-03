@@ -6,14 +6,15 @@ import {
 } from '@mpieva/psydb-ui-lib/src/generic-views'
 
 import { RecordCreator } from './record-creator';
-import { RecordEditor } from './record-editor';
 import { RecordDetails } from './record-details';
 import { RecordRemover } from './record-remover';
+
+import EditorContainer from './editor-container';
 
 const ExternalOrganizationTypeView = withRecordTypeView({
     RecordDetails,
     RecordCreator,
-    RecordEditor,
+    RecordEditor: EditorContainer,
     RecordRemover,
 });
 

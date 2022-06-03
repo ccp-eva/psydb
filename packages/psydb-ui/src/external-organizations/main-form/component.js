@@ -19,7 +19,6 @@ export const Component = (ps) => {
     } = ps;
 
     return (
-        <FormBox title={ title }>
             <DefaultForm
                 initialValues={ initialValues }
                 onSubmit={ onSubmit }
@@ -37,7 +36,6 @@ export const Component = (ps) => {
                     </>
                 )}
             </DefaultForm>
-        </FormBox>
     );
 }
 
@@ -58,10 +56,6 @@ const FormFields = (ps) => {
                 dataXPath='$.systemPermissions.accessRightsByResearchGroup'
                 related={ related }
                 required
-            />
-            <Fields.DefaultBool
-                label='Ausgeblendet'
-                dataXPath='$.systemPermissions.isHidden'
             />
         </>
     );

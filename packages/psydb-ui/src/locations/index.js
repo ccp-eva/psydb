@@ -8,13 +8,15 @@ import {
 } from '@mpieva/psydb-ui-lib/src/generic-views'
 
 import { RecordCreator } from './record-creator';
-import { RecordEditor } from './record-editor';
 import { RecordDetails } from './record-details';
+
+import EditorContainer from './editor-container';
+
 
 const LocationTypeView = withRecordTypeView({
     RecordDetails,
     RecordCreator,
-    RecordEditor,
+    RecordEditor: EditorContainer,
 });
 
 const LocationCollectionView = withCollectionView({
