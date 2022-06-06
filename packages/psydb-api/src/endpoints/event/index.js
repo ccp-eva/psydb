@@ -76,10 +76,10 @@ var createMessageHandling = ({
         async (context, next) => {
             //console.dir(context, { depth: 3 });
             var { db, correlationId, modifiedChannels } = context;
-            await db.collection('modifiedByMessage').insertOne({
-                correlationId,
-                modifiedChannels
-            });
+            //await db.collection('modifiedByMessage').insertOne({
+            //    correlationId,
+            //    modifiedChannels
+            //});
             await next();
         },
     ]);
