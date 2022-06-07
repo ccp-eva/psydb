@@ -68,7 +68,8 @@ const AddButtonWrapper = ({ children }) => (
 );
 
 const AddButton = ({ children, onClick, style, disabled }) => (
-    <div
+    <button
+        type='button'
         role={ disabled ? '': 'button' }
         onClick={ disabled ? undefined : onClick }
         style={{
@@ -78,8 +79,9 @@ const AddButton = ({ children, onClick, style, disabled }) => (
             width: '100px',
             ...style,
         }}
-        className=' border d-flex align-items-center justify-content-center'
+        className=' border d-flex align-items-center justify-content-center bg-white'
+        title='neuer Eintrag'
     >
         { children }
-    </div>
+    </button>
 )

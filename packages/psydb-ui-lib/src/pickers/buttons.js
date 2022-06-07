@@ -14,6 +14,7 @@ export const EditButton = (ps) => {
             variant={ hasErrors ? 'outline-danger' : 'outline-primary' }
             onClick={ onClick }
             disabled={ disabled }
+            title='Wert Ändern'
         >
             <Icons.PencilFill style={{ marginTop: '-3px' }}/>
         </Button>
@@ -33,6 +34,7 @@ export const ClearButton = (ps) => {
             variant={ 'outline-secondary' }
             onClick={ onClick }
             disabled={ disabled }
+            title='Zurücksetzen'
         >
             <Icons.XLg style={{
                 height: '13px',

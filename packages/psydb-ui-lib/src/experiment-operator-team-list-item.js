@@ -92,6 +92,7 @@ const TeamEditButton = ({
             className='bg-white border-left border-bottom'
             style={{ color: '#006066', borderRight: 0, borderTop: 0 }}
             onClick={ onClick }
+            title='Bearbeiten'
         >
             <Icons.PencilFill style={{ marginTop: '-2px' }} />
         </TeamButton>
@@ -106,6 +107,7 @@ const TeamDeleteButton = ({
             className='bg-white border-left border-top text-danger'
             style={{ borderRight: 0, borderBottom: 0 }}
             onClick={ onClick }
+            title='Löschen'
         >
             <Icons.X style={{ marginTop: '-2px', width: '22px', height: '22px' }} />
         </TeamButton>
@@ -116,6 +118,7 @@ const TeamButton = ({
     onClick,
     className,
     style,
+    title,
     children
 }) => {
     
@@ -134,6 +137,7 @@ const TeamButton = ({
             className={ allClassNames }
             style={ style }
             onClick={ onClick }
+            title={ title }
         >
             { children }
         </button>

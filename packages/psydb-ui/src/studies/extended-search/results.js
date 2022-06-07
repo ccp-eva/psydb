@@ -15,7 +15,7 @@ import {
     Alert,
     LoadingIndicator,
     Pagination,
-    DetailsIconButton,
+    StudyIconButton,
     LinkContainer,
 } from '@mpieva/psydb-ui-layout';
 
@@ -164,7 +164,7 @@ const TableBody = (ps) => {
                     })} />
                     <td>
                         <div className='d-flex justify-content-end'>
-                            <DetailsIconButton
+                            <StudyIconButton
                                 to={`/studies/${it.type}/${it._id}`}
                             />
                         </div>

@@ -16,7 +16,8 @@ var iconStyle = {
 const EditIconButton = ({
     className,
     to,
-    onClick
+    onClick,
+    title,
 }) => {
     if (to) {
         return (
@@ -24,6 +25,7 @@ const EditIconButton = ({
                 { ...buttonProps }
                 className={ className }
                 to={ to }
+                title={ title || 'Bearbeiten' }
             >
                 <PencilFill style={ iconStyle } />
             </LinkButton>
@@ -35,6 +37,7 @@ const EditIconButton = ({
                 { ...buttonProps }
                 className={ className }
                 onClick={ onClick }
+                title={ title || 'Bearbeiten' }
             >
                 <PencilFill style={ iconStyle } />
             </Button>
