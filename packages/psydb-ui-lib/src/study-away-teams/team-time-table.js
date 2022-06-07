@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { checkIsWithin3Days } from '@mpieva/psydb-common-lib';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -210,9 +211,7 @@ const TimeSlot = ({
     if (experimentRecord) {
         var end = experimentRecord.state.interval.end;
         var isInPast = now.getTime() > new Date(end).getTime();
-        var isWithin3days = (
-            datefns.add(now, { days: 3 }).getTime() > dayEnd.getTime()
-        );
+        var isWithin3days = checkIsWithin3Days(dayEnd);
         var shouldEnable = (
             !isInPast
             && canCreateExperimentsWithinTheNext3Days ? true : !isWithin3days
@@ -235,9 +234,7 @@ const TimeSlot = ({
     else if (reservationRecord) {
         var end = reservationRecord.state.interval.end;
         var isInPast = now.getTime() > new Date(end).getTime();
-        var isWithin3days = (
-            datefns.add(now, { days: 3 }).getTime() > dayEnd.getTime()
-        );
+        var isWithin3days = checkIsWithin3Days(dayEnd);
         var shouldEnable = (
             !isInPast
             && canCreateExperimentsWithinTheNext3Days ? true : !isWithin3days
@@ -257,9 +254,7 @@ const TimeSlot = ({
     }
     else {
         var isInPast = now.getTime() > dayEnd.getTime();
-        var isWithin3days = (
-            datefns.add(now, { days: 3 }).getTime() > dayEnd.getTime()
-        );
+        var isWithin3days = checkIsWithin3Days(dayEnd);
         var shouldEnable = (
             !isInPast
             && canCreateReservationsWithinTheNext3Days ? true : !isWithin3days

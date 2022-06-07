@@ -1,4 +1,5 @@
 import React from 'react';
+import { checkIsWithin3Days } from '@mpieva/psydb-common-lib';
 import { Container, Row, Col } from 'react-bootstrap';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
@@ -35,10 +36,7 @@ const TimeTableHead = ({
                     
                     var now = new Date();
                     var isInPast = now.getTime() > dayEnd.getTime();
-                    var isWithin3days = (
-                        datefns.add(now, { days: 3 }).getTime()
-                        > dayEnd.getTime()
-                    );
+                    var isWithin3days = checkIsWithin3Days(dayEnd);
 
                     var shouldEnable = (
                         !isInPast

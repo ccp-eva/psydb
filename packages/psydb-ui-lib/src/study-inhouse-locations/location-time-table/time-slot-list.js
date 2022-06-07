@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useReducer, useMemo } from 'react';
+import { checkIsWithin3Days } from '@mpieva/psydb-common-lib';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import datefns from '../../date-fns';
@@ -58,7 +59,7 @@ const TimeSlotList = ({
     
     var now = new Date();
     var isInPast = now.getTime() > dayEnd.getTime();
-    var isWithin3days = datefns.add(now, { days: 3 }).getTime() > dayEnd.getTime();
+    var isWithin3days = checkIsWithin3Days(dayEnd);
     var shouldEnable = (
         !isInPast
         && canCreateReservationsWithinTheNext3Days ? true : !isWithin3days
