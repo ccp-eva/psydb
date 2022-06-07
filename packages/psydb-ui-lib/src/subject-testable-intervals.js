@@ -35,7 +35,7 @@ const SubjectTestableIntervals = (ps) => {
     }
 
     return (
-        <span>
+        <div>
             { studyLabel }
             { indicator && (
                 <>
@@ -43,7 +43,7 @@ const SubjectTestableIntervals = (ps) => {
                     { indicator }
                 </>
             )}
-        </span>
+        </div>
     )
 }
 
