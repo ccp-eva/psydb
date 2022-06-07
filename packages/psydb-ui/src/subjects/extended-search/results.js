@@ -235,9 +235,9 @@ const ExperimentColumn = (ps) => {
     return (
         <td>
             { items.map((it, index) => (
-                <>
-                    { it }{'; '}
-                </>
+                <div>
+                    { it }
+                </div>
             ))}
         </td>
     )
