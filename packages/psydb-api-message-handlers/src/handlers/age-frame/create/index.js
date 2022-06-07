@@ -1,9 +1,15 @@
 'use strict';
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error');
+var { 
+    ApiError,
+    FakeAjvError
+} = require('@mpieva/psydb-api-lib');
+
 var GenericRecordHandler = require('../../../lib/generic-record-handler');
 var checkForeignIdsExist = require('../../../lib/check-foreign-ids-exist');
 var checkCRTFieldPointers = require('../../../lib/check-crt-field-pointers');
-    
+
+var { checkAgeFrameIntervalIsPlausible } = require('../utils');
+
 var handler = GenericRecordHandler({
     collection: 'ageFrame',
     op: 'create',
@@ -19,7 +25,20 @@ var handler = GenericRecordHandler({
         } = context;
 
         var { studyId, subjectTypeKey, props } = message.payload;
-        var { conditions } = props;
+        var { interval, conditions } = props;
+
+        if (!checkAgeFrameIntervalIsPlausible(interval)) {
+            throw new ApiError(400, {
+                apiStatus: 'InvalidMessageSchema',
+                data: { ajvErrors: [
+                    FakeAjvError({
+                        dataPath: '/payload/props/interval/end',
+                        errorClass: 'ImplausibleIntervalEnd',
+                        message: 'Ende muss größer sein als Start',
+                    })
+                ]}
+            });
+        }
 
         await checkForeignIdsExist(db, {
             'study': studyId,
