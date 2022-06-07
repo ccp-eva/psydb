@@ -142,7 +142,7 @@ const ParticipationListRow = ({
                 relatedCustomRecordTypeLabels,
                 displayFieldData,
             })} />*/}
-            <td>{ studyRecordsById[item.studyId].state.shorthand }</td>
+            <td>{ studyRecordsById[item.studyId]?.state.shorthand || item.studyId  }</td>
 
             <td>{ is1970 ? '-' : formattedDate }</td>
             { ageFrameField && (
