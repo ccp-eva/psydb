@@ -133,7 +133,9 @@ const TableRow = ({
                             size='sm'
                             onClick={ () => onInviteSubject({
                                 inviteType,
-                                record
+                                record,
+                                desiredTestInterval,
+                                testableIntervals,
                             }) }
                         >
                             Termin

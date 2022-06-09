@@ -47,14 +47,17 @@ dependencies:
   '@rush-temp/psydb-common-utils': 'file:projects/psydb-common-utils.tgz'
   '@rush-temp/psydb-common-verify-helpers': 'file:projects/psydb-common-verify-helpers.tgz'
   '@rush-temp/psydb-core-utils': 'file:projects/psydb-core-utils.tgz'
+  '@rush-temp/psydb-date-interval-fns': 'file:projects/psydb-date-interval-fns.tgz'
   '@rush-temp/psydb-driver-nodejs': 'file:projects/psydb-driver-nodejs.tgz'
   '@rush-temp/psydb-faker': 'file:projects/psydb-faker.tgz'
   '@rush-temp/psydb-fixture-initializer': 'file:projects/psydb-fixture-initializer.tgz'
   '@rush-temp/psydb-fixtures': 'file:projects/psydb-fixtures.tgz'
+  '@rush-temp/psydb-interval-fns': 'file:projects/psydb-interval-fns.tgz'
   '@rush-temp/psydb-koa-event-middleware': 'file:projects/psydb-koa-event-middleware.tgz'
   '@rush-temp/psydb-migration': 'file:projects/psydb-migration.tgz'
   '@rush-temp/psydb-mongo-adapter': 'file:projects/psydb-mongo-adapter.tgz'
   '@rush-temp/psydb-mongo-stages': 'file:projects/psydb-mongo-stages.tgz'
+  '@rush-temp/psydb-quicksort': 'file:projects/psydb-quicksort.tgz'
   '@rush-temp/psydb-schema-creators': 'file:projects/psydb-schema-creators.tgz'
   '@rush-temp/psydb-schema-enums': 'file:projects/psydb-schema-enums.tgz'
   '@rush-temp/psydb-schema-fields': 'file:projects/psydb-schema-fields.tgz'
@@ -9795,6 +9798,7 @@ packages:
     dependencies:
       chai: 4.2.0
       debug: 4.3.3
+      escape-string-regexp: 4.0.0
       jsonpointer: 4.1.0
       mocha: 8.1.3
       mongodb: 3.6.12
@@ -9803,7 +9807,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-api-endpoint-lib'
     resolution:
-      integrity: sha512-dXghnn+YKQQ1iJTre7WA+Kw0yB/8AgrkgWbQ/RXyjhzeDSp2YeVHIuEw0sU7KbHI9qhfMzgc8lqVqL5hoy1Q8Q==
+      integrity: sha512-oVto4wtkN+slKzDvV0Ox4dkfvPwzQ7M3IT556AnM3w/FvU4SN4RmTUEgo+B2Bjn2GbIu+UnVpjdJIsB+Cpj8bw==
       tarball: 'file:projects/psydb-api-endpoint-lib.tgz'
     version: 0.0.0
   'file:projects/psydb-api-endpoint-schemas.tgz':
@@ -9878,6 +9882,7 @@ packages:
       bcrypt: 5.0.1
       chai: 4.2.0
       copy-anything: 2.0.3
+      date-fns: 2.21.3
       debug: 4.3.3
       deep-diff: 1.0.2
       deepmerge: 4.2.2
@@ -9890,7 +9895,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-api-message-handlers'
     resolution:
-      integrity: sha512-BIeoF0k0tB5rxT4HfmkOGAIQQEImF+tjDnz3pXEVFpzcv7CFffC/2OEP6Oyo4LG1zXSW86Qa6SrSeNvoHdKyAA==
+      integrity: sha512-4Dm6Is+mW6lJxmhiAzg1890ZQIyFo7cQXmKT3YZbKuuH7A/r87sb/joig2f09FsXq4J5xPYpit4pPnfQ6kBALA==
       tarball: 'file:projects/psydb-api-message-handlers.tgz'
     version: 0.0.0
   'file:projects/psydb-api.tgz':
@@ -9951,7 +9956,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-common-lib'
     resolution:
-      integrity: sha512-v9j4eMMXA7fu8wmFO4Cc+0SGSibUO91M1Qf1N1DN/LXCEnxtwywSo22AyxprXnOuJUr8dYxjQct985zF4/RPGQ==
+      integrity: sha512-VWI9phQjtgmm/KNkd7DOnK1TXJv/dLlsBKxqDq13292qyNlobWd54/dLBIe4fg5FoF0ynek59Ehpk2NwFG2lvg==
       tarball: 'file:projects/psydb-common-lib.tgz'
     version: 0.0.0
   'file:projects/psydb-common-utils.tgz':
@@ -9990,6 +9995,18 @@ packages:
     resolution:
       integrity: sha512-paq+m+J93ltdj0xAZzrLQOd1E6q9OJG+WX7mKHYmkjk6XbPp0OJ8gQfEqpLQezkjqMd8RBaPz7t8yQ3j1dVjZw==
       tarball: 'file:projects/psydb-core-utils.tgz'
+    version: 0.0.0
+  'file:projects/psydb-date-interval-fns.tgz':
+    dependencies:
+      chai: 4.2.0
+      date-fns: 2.21.3
+      jsonpointer: 4.1.0
+      mocha: 8.1.3
+    dev: false
+    name: '@rush-temp/psydb-date-interval-fns'
+    resolution:
+      integrity: sha512-EyKnaSv98KSa7oB3Mk+A2Tsx0spYWweLt1+Kp8C00NXB7Fj7bD6eD5jcXvXobsNCEnvubDx9y1psSBdGmtse9A==
+      tarball: 'file:projects/psydb-date-interval-fns.tgz'
     version: 0.0.0
   'file:projects/psydb-driver-nodejs.tgz':
     dependencies:
@@ -10045,6 +10062,16 @@ packages:
     resolution:
       integrity: sha512-RqgpV9IxH9MOGshvZRB/itGKq/vwtANN1KiFxCstYJw/3AP72MDxnwaId2Hm0TVilGHtJMKlLvsYL90SAgnPgA==
       tarball: 'file:projects/psydb-fixtures.tgz'
+    version: 0.0.0
+  'file:projects/psydb-interval-fns.tgz':
+    dependencies:
+      chai: 4.2.0
+      mocha: 8.1.3
+    dev: false
+    name: '@rush-temp/psydb-interval-fns'
+    resolution:
+      integrity: sha512-m/so4uf2FHwLBopsoV1gHhTilXjqJ4M8jhQnhpoOFRTKX2hoonGWFEPPX8yJUTWimlDmQ6HE7QyH1jBMBa24pg==
+      tarball: 'file:projects/psydb-interval-fns.tgz'
     version: 0.0.0
   'file:projects/psydb-koa-event-middleware.tgz':
     dependencies:
@@ -10107,6 +10134,13 @@ packages:
     resolution:
       integrity: sha512-3y6lGiutf3PgGspn2UJ2CHZCcPnXiQApcGH7WbAkgXdhlb5OUiVUldiL7NH2c5k1PTRS8jy5aqjpewEqSIHA1w==
       tarball: 'file:projects/psydb-mongo-stages.tgz'
+    version: 0.0.0
+  'file:projects/psydb-quicksort.tgz':
+    dev: false
+    name: '@rush-temp/psydb-quicksort'
+    resolution:
+      integrity: sha512-LLTHILYFcbGNnTPrq26WeWNdIicdFysIvl2TmwChJYqIuwKF4H50gBdxgPJKJrtH1eDyKE/DL2cV6OJALIqTTQ==
+      tarball: 'file:projects/psydb-quicksort.tgz'
     version: 0.0.0
   'file:projects/psydb-schema-creators.tgz':
     dependencies:
@@ -10302,7 +10336,7 @@ packages:
     peerDependencies:
       webpack: '*'
     resolution:
-      integrity: sha512-pMnDMktpVs7pUFBaRt9qyenvmItV0FxM4VIGC1hxi8hJsOTNm6FkEPxPH6P69hvvn1iK0mJu55wQQR8sRpJcoA==
+      integrity: sha512-HT8nuxgbyQpmF2QN9yT1MzpSPTYa6R4WJvHYQZx0ESII9Rnfp2CHxdo6TKEpkKupYUAzJ9X82rAdt0v3CzTp6A==
       tarball: 'file:projects/psydb-ui-lib.tgz'
     version: 0.0.0
   'file:projects/psydb-ui-record-views.tgz':
@@ -10480,14 +10514,17 @@ specifiers:
   '@rush-temp/psydb-common-utils': 'file:./projects/psydb-common-utils.tgz'
   '@rush-temp/psydb-common-verify-helpers': 'file:./projects/psydb-common-verify-helpers.tgz'
   '@rush-temp/psydb-core-utils': 'file:./projects/psydb-core-utils.tgz'
+  '@rush-temp/psydb-date-interval-fns': 'file:./projects/psydb-date-interval-fns.tgz'
   '@rush-temp/psydb-driver-nodejs': 'file:./projects/psydb-driver-nodejs.tgz'
   '@rush-temp/psydb-faker': 'file:./projects/psydb-faker.tgz'
   '@rush-temp/psydb-fixture-initializer': 'file:./projects/psydb-fixture-initializer.tgz'
   '@rush-temp/psydb-fixtures': 'file:./projects/psydb-fixtures.tgz'
+  '@rush-temp/psydb-interval-fns': 'file:./projects/psydb-interval-fns.tgz'
   '@rush-temp/psydb-koa-event-middleware': 'file:./projects/psydb-koa-event-middleware.tgz'
   '@rush-temp/psydb-migration': 'file:./projects/psydb-migration.tgz'
   '@rush-temp/psydb-mongo-adapter': 'file:./projects/psydb-mongo-adapter.tgz'
   '@rush-temp/psydb-mongo-stages': 'file:./projects/psydb-mongo-stages.tgz'
+  '@rush-temp/psydb-quicksort': 'file:./projects/psydb-quicksort.tgz'
   '@rush-temp/psydb-schema-creators': 'file:./projects/psydb-schema-creators.tgz'
   '@rush-temp/psydb-schema-enums': 'file:./projects/psydb-schema-enums.tgz'
   '@rush-temp/psydb-schema-fields': 'file:./projects/psydb-schema-fields.tgz'

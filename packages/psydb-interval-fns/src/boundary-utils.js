@@ -1,5 +1,5 @@
 'use strict';
-var quicksort = require('../quicksort'),
+var quicksort = require('@mpieva/psydb-quicksort'),
     fn = module.exports = {};
 
 fn.START = '(';

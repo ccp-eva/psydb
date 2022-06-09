@@ -2,6 +2,8 @@ import React from 'react';
 import { NBSP } from '@mpieva/psydb-ui-layout';
 import formatInterval from './format-date-interval';
 
+import intervalfns from '@mpieva/psydb-date-interval-fns';
+
 const SubjectTestableIntervals = (ps) => {
     var {
         studyLabel,
@@ -9,7 +11,8 @@ const SubjectTestableIntervals = (ps) => {
         testableIntervals
     } = ps;
 
-    var desired = asTimestamps(desiredTestInterval);
+    var desired = intervalfns.dtoi(desiredTestInterval);
+    //var desired = asTimestamps(desiredTestInterval);
     console.log({ desired });
 
     var indicator = '';
