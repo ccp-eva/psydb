@@ -10,6 +10,9 @@ const CreateModal = (ps) => {
     var {
         show,
         onHide,
+
+        inviteType,
+
         studyData,
         subjectId,
         subjectLabel,
@@ -49,8 +52,16 @@ const CreateModal = (ps) => {
         onSuccessfulCreate && onSuccessfulCreate(shouldHide, ...args);
     };
 
+    var messageType = undefined;
+    if (inviteType === 'inhouse') {
+        messageType = 'experiment/create-from-inhouse-reservation';
+    }
+    else if (inviteType === 'online-video-call') {
+        messageType = 'experiment/create-from-online-video-call-reservation';
+    }
+
     var send = useSend(() => ({
-        type: 'experiment/create-from-inhouse-reservation',
+        type: messageType,
         payload: {
             props: {
                 studyId,

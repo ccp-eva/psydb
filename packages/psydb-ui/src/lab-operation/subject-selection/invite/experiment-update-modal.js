@@ -10,6 +10,8 @@ const ExperimentUpdateModal = (ps) => {
         onHide,
         modalPayloadData = {},
 
+        inviteType,
+
         studyData,
         subjectId,
         subjectLabel,
@@ -41,7 +43,7 @@ const ExperimentUpdateModal = (ps) => {
     var send = useSend(() => ({
         type: 'experiment/add-subject',
         payload: {
-            labProcedureTypeKey: 'inhouse',
+            labProcedureTypeKey: inviteType,
             experimentId: experimentRecord._id,
             subjectId,
             comment,

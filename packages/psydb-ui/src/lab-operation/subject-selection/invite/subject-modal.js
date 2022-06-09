@@ -15,6 +15,9 @@ import SubjectModalSchedule from './subject-modal-schedule';
 const SubjectModal = ({
     show,
     onHide,
+
+    inviteType,
+
     studyData,
     studyNavItems,
     studyRecordType,
@@ -102,6 +105,8 @@ const SubjectModal = ({
 
                 { activeMainNavKey === 'scheduleExperiment' && (
                     <SubjectModalSchedule
+                        inviteType={ inviteType }
+
                         revision={ revision.value }
                         studyData={ studyData }
                         studyNavItems={ studyNavItems }
@@ -115,16 +120,6 @@ const SubjectModal = ({
                     />
                 )}
                 
-                { /*<TabNav
-                    items={studyNavItems}
-                    activeKey={ activeStudyNavKey }
-                    onItemClick={ (...args) => {
-                        console.log(args);
-                    }}
-                />*/ }
-                
-
-
             </Modal.Body>
         </Modal>
     );

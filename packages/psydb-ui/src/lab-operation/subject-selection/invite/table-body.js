@@ -14,6 +14,7 @@ import { FieldDataBodyCols } from '@mpieva/psydb-ui-lib/src/record-list';
 import UpcomingExperiments from '../upcoming-experiments';
 
 const TableBody = ({
+    inviteType,
     desiredTestInterval,
 
     subjectType,
@@ -33,6 +34,7 @@ const TableBody = ({
             { records.map((record, index) => {
                 return (
                     <TableRow key={ index} { ...({
+                        inviteType,
                         desiredTestInterval,
 
                         subjectType,
@@ -53,6 +55,7 @@ const TableBody = ({
 }
 
 const TableRow = ({
+    inviteType,
     desiredTestInterval,
 
     subjectType,
@@ -95,6 +98,7 @@ const TableRow = ({
             </td>
             <td>
                 <UpcomingExperiments { ...({
+                    inviteType,
                     records: record._upcomingExperiments,
                     ...subjectExperimentMetadata
                 }) } />
@@ -127,7 +131,10 @@ const TableRow = ({
                     <div className='d-flex justify-content-end'>
                         <Button
                             size='sm'
-                            onClick={ () => onInviteSubject({ record }) }
+                            onClick={ () => onInviteSubject({
+                                inviteType,
+                                record
+                            }) }
                         >
                             Termin
                         </Button>

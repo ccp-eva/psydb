@@ -19,6 +19,8 @@ const SubjectModalSchedule = ({
     onHide,
     revision,
 
+    inviteType,
+
     studyData,
     subjectId,
     subjectRecordType,
@@ -45,6 +47,9 @@ const SubjectModalSchedule = ({
                 show={ experimentCreateModal.show }
                 onHide={ experimentCreateModal.handleHide }
                 onSuccessfulCreate={ handleExperimentCreated }
+                
+                inviteType={ inviteType }
+                
                 studyData={ studyData }
                 subjectId={ subjectId }
                 subjectLabel={ subjectLabel }
@@ -54,6 +59,8 @@ const SubjectModalSchedule = ({
             <ExperimentUpdateModal
                 { ...experimentUpdateModal.passthrough }
                 
+                inviteType={ inviteType }
+
                 studyData={ studyData }
                 subjectId={ subjectId }
                 subjectLabel={ subjectLabel }
@@ -87,7 +94,7 @@ const SubjectModalSchedule = ({
                 studyId={ studyId }
                 studyRecordType={ studyRecordType }
                 subjectRecordType={ subjectRecordType }
-                currentExperimentType='inhouse'
+                currentExperimentType={ inviteType }
                 currentSubjectRecord={{ _id: subjectId /* FIXME */ }}
 
                 //activeLocationType={ 'instituteroom' }
