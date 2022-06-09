@@ -43,7 +43,9 @@ const SubjectModal = ({
     }
 
     var {
-        record
+        record,
+        desiredTestInterval,
+        testableInStudies,
     } = subjectModalData;
 
     var {
@@ -106,6 +108,8 @@ const SubjectModal = ({
                 { activeMainNavKey === 'scheduleExperiment' && (
                     <SubjectModalSchedule
                         inviteType={ inviteType }
+                        desiredTestInterval={ desiredTestInterval }
+                        testableInStudies={ testableInStudies }
 
                         revision={ revision.value }
                         studyData={ studyData }

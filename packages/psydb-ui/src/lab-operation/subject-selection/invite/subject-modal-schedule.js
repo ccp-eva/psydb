@@ -20,6 +20,8 @@ const SubjectModalSchedule = ({
     revision,
 
     inviteType,
+    desiredTestInterval,
+    testableInStudies,
 
     studyData,
     subjectId,
@@ -41,6 +43,11 @@ const SubjectModalSchedule = ({
 
     var handleExperimentCreated = useCallbackMaybe(onSuccessfulUpdate);
 
+    var testableIntervals = (
+        // FIXME
+        testableInStudies[`_testableIntervals_${studyId}`]
+    );
+
     return (
         <div>
             <ExperimentCreateModal
@@ -49,6 +56,8 @@ const SubjectModalSchedule = ({
                 onSuccessfulCreate={ handleExperimentCreated }
                 
                 inviteType={ inviteType }
+                desiredTestInterval={ desiredTestInterval }
+                testableIntervals={ testableIntervals }
                 
                 studyData={ studyData }
                 subjectId={ subjectId }
@@ -60,6 +69,7 @@ const SubjectModalSchedule = ({
                 { ...experimentUpdateModal.passthrough }
                 
                 inviteType={ inviteType }
+                desiredTestInterval={ desiredTestInterval }
 
                 studyData={ studyData }
                 subjectId={ subjectId }
@@ -96,6 +106,8 @@ const SubjectModalSchedule = ({
                 subjectRecordType={ subjectRecordType }
                 currentExperimentType={ inviteType }
                 currentSubjectRecord={{ _id: subjectId /* FIXME */ }}
+                desiredTestInterval={ desiredTestInterval }
+                testableIntervals={ testableIntervals }
 
                 //activeLocationType={ 'instituteroom' }
                 onSelectReservationSlot={ experimentCreateModal.handleShow }

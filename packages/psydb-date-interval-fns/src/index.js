@@ -1,6 +1,7 @@
 'use strict';
 var datefns = require('date-fns');
 var jsonpointer = require('jsonpointer');
+var { arrify } = require('@mpieva/psydb-core-utils');
 var intervalfns = require('@mpieva/psydb-interval-fns');
 
 // theirs:           |-------------|

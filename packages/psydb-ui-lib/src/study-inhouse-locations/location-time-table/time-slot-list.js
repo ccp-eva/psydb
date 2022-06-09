@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useReducer, useMemo } from 'react';
+import intervalfns from '@mpieva/psydb-date-interval-fns';
 import { checkIsWithin3Days } from '@mpieva/psydb-common-lib';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
@@ -29,6 +30,8 @@ const TimeSlotList = ({
     subjectRecordType,
     currentExperimentId,
     currentSubjectRecord,
+    desiredTestInterval,
+    testableIntervals,
 
     __useNewCanSelect,
     checkEmptySlotSelectable,
@@ -66,11 +69,26 @@ const TimeSlotList = ({
         && canCreateExperimentsWithinTheNext3Days ? true : !isWithin3days
         // && !([6,7].includes(dayIndex))
     );
-    var className = (
-        shouldEnable
-        ? 'text-center border-bottom bg-light'
-        : 'text-center text-grey border-bottom bg-light'
-    )
+
+    var isSubjectTestable = false;
+    //console.log({ testableIntervals });
+    if (testableIntervals) {
+        var intersections = intervalfns.intersect(
+            [{ start: dayStart, end: dayEnd }],
+            testableIntervals
+        );
+        //console.log({ intersections });
+        isSubjectTestable = intersections.length > 0;
+    }
+
+    var className = 'text-center border-bottom bg-light';
+
+    if (isSubjectTestable) {
+        className = 'text-center text-success border-bottom bg-light';
+    }
+    if (!shouldEnable) {
+        className = 'text-center text-grey border-bottom bg-light'
+    }
 
     var { _id: locationId } = locationRecord;
 

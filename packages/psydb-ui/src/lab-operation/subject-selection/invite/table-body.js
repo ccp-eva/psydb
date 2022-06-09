@@ -135,7 +135,9 @@ const TableRow = ({
                                 inviteType,
                                 record,
                                 desiredTestInterval,
-                                testableIntervals,
+                                testableInStudies: (
+                                    record // FIXME
+                                )
                             }) }
                         >
                             Termin

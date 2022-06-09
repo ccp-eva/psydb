@@ -14,6 +14,8 @@ const LocationCalendarList = ({
     currentExperimentId,
     currentExperimentType,
     currentSubjectRecord,
+    desiredTestInterval,
+    testableIntervals,
 
     locationRecordType,
     teamRecords,
@@ -116,6 +118,8 @@ const LocationCalendarList = ({
                         subjectRecordType,
                         currentExperimentId,
                         currentSubjectRecord,
+                        desiredTestInterval,
+                        testableIntervals,
 
                         __useNewCanSelect,
                         checkEmptySlotSelectable,

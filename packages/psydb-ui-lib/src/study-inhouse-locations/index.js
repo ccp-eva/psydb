@@ -18,6 +18,9 @@ const StudyInhouseLocations = ({
     currentExperimentId,
     currentExperimentType,
     currentSubjectRecord,
+    
+    desiredTestInterval,
+    testableIntervals,
 
     activeLocationType,
     onSelectLocationType,
@@ -112,8 +115,11 @@ const StudyInhouseLocations = ({
                 
                 currentExperimentId,
                 currentExperimentType,
-                currentSubjectRecord,
                 subjectRecordType,
+                currentSubjectRecord,
+                desiredTestInterval,
+                testableIntervals,
+
                 locationRecordType: activeLocationType,
 
                 __useNewCanSelect,
