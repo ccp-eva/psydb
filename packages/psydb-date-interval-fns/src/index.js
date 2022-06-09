@@ -76,6 +76,38 @@ var itod = (source, options = {}) => {
     }
 }
 
+/////////////////////////////////////////////////////
+
+var format = (interval, options = {}) => {
+    var {
+        dateFormat = 'dd.MM.yyyy',
+        timeFormat = 'HH:mm',
+        offsetEnd = 1,
+        locale,
+    } = options;
+
+    var { start, end } = interval;
+    if (start !== undefined) {
+        start = new Date(start);
+    }
+    if (end !== undefined) {
+        end = new Date(end);
+        // accomodate for .999Z since interval is half open [s, e)
+        end = new Date(end.getTime() + offsetEnd);
+    }
+
+    return {
+        ...(start !== undefined && {
+            startDate: datefns.format(start, dateFormat),
+            startTime: datefns.format(start, timeFormat),
+        }),
+        ...(end !== undefined && {
+            endDate: datefns.format(end, dateFormat),
+            endTime: datefns.format(end, timeFormat),
+        })
+    }
+}
+
 module.exports = {
     checkHasOverlap,
     compareStarts,
@@ -83,4 +115,7 @@ module.exports = {
     //width,
     dtoi,
     itod,
+
+    /////////////
+    format
 }
