@@ -31,4 +31,7 @@ module.exports = {
     forcePush: require('./force-push'),
 
     convertSchemaPointerToMongoPath: require('./schemapointer-to-mongopath'),
+    
+    flatten: require('@cdxoo/flat').flatten,
+    unflatten: require('@cdxoo/flat').unflatten,
 }

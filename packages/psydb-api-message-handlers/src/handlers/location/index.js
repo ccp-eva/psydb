@@ -20,7 +20,7 @@ var LocationGroup = MessageHandlerGroup([
         op: 'patch',
     }),
     
-    GenericHideRecordHandler({ collection: 'location' }),
+    require('./hide-record'),
     GenericUnhideRecordHandler({ collection: 'location' }),
 ]);
 
