@@ -41,6 +41,7 @@ dependencies:
   '@rush-temp/psydb-api-integration-tests': 'file:projects/psydb-api-integration-tests.tgz'
   '@rush-temp/psydb-api-lib': 'file:projects/psydb-api-lib.tgz'
   '@rush-temp/psydb-api-lib-errors': 'file:projects/psydb-api-lib-errors.tgz'
+  '@rush-temp/psydb-api-message-handler-lib': 'file:projects/psydb-api-message-handler-lib.tgz'
   '@rush-temp/psydb-api-message-handlers': 'file:projects/psydb-api-message-handlers.tgz'
   '@rush-temp/psydb-common-config': 'file:projects/psydb-common-config.tgz'
   '@rush-temp/psydb-common-lib': 'file:projects/psydb-common-lib.tgz'
@@ -9875,6 +9876,29 @@ packages:
       integrity: sha512-O3AmRvFA3bRk35LWp3A+bkzVUg2rrU2unxYZie/5l+ZE+/Cs/YfUJut+K8JJKZHzvKoT9jiWMdZ/u6qwn3lb/Q==
       tarball: 'file:projects/psydb-api-lib.tgz'
     version: 0.0.0
+  'file:projects/psydb-api-message-handler-lib.tgz':
+    dependencies:
+      '@cdxoo/inline-text': 1.0.2
+      '@cdxoo/omit': 1.0.1
+      bcrypt: 5.0.1
+      chai: 4.2.0
+      copy-anything: 2.0.3
+      date-fns: 2.21.3
+      debug: 4.3.3
+      deep-diff: 1.0.2
+      deepmerge: 4.2.2
+      is-subset: 0.1.1
+      jsonpointer: 4.1.0
+      mocha: 8.1.3
+      mongodb-memory-server: 6.9.6
+      nanoid: 3.1.30
+      nodemailer: 6.7.2
+    dev: false
+    name: '@rush-temp/psydb-api-message-handler-lib'
+    resolution:
+      integrity: sha512-Mi701OuBf/01MHpLxY4vPt6vOkJehG803z0MPts5azrHCE7GAyvcZw3QNetvUJDV/ERPnluYQZ7fua9sH80xDQ==
+      tarball: 'file:projects/psydb-api-message-handler-lib.tgz'
+    version: 0.0.0
   'file:projects/psydb-api-message-handlers.tgz':
     dependencies:
       '@cdxoo/inline-text': 1.0.2
@@ -9956,7 +9980,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-common-lib'
     resolution:
-      integrity: sha512-VWI9phQjtgmm/KNkd7DOnK1TXJv/dLlsBKxqDq13292qyNlobWd54/dLBIe4fg5FoF0ynek59Ehpk2NwFG2lvg==
+      integrity: sha512-505Vm8Tbmt8DwsO4lro/xXaERGLx0SzKeNcKSYNv5dr6NsZNrTW4EsJem73HFKh6bjj7Jl9zLGncX8UlQfkPSw==
       tarball: 'file:projects/psydb-common-lib.tgz'
     version: 0.0.0
   'file:projects/psydb-common-utils.tgz':
@@ -10336,7 +10360,7 @@ packages:
     peerDependencies:
       webpack: '*'
     resolution:
-      integrity: sha512-HT8nuxgbyQpmF2QN9yT1MzpSPTYa6R4WJvHYQZx0ESII9Rnfp2CHxdo6TKEpkKupYUAzJ9X82rAdt0v3CzTp6A==
+      integrity: sha512-ZZLQ5KSlc7f/yu4Z/G+J3yZZaqAcdqBlU+FYz21WQXT21F/6sR4gSwgRV+WdG2/v+jyFB4pCjm8V5OlGz1mE/Q==
       tarball: 'file:projects/psydb-ui-lib.tgz'
     version: 0.0.0
   'file:projects/psydb-ui-record-views.tgz':
@@ -10419,7 +10443,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-ui'
     resolution:
-      integrity: sha512-BHZ0/epvUB6ZgkOns8z0OY3/9RzaX5EcM4HYO07p0c4tPFQGC2fRSNw6o9X9FGIh96tfG04gaMTHUVZknGoBPQ==
+      integrity: sha512-Z0k41ovoF3YY8ZTReeSFVboL40DoAaXJBFO0HTFbn487a8IXmmQzhQUynwQIzZptjFB9NsA8poqilX7PkEtDow==
       tarball: 'file:projects/psydb-ui.tgz'
     version: 0.0.0
   'file:projects/psydb-web.tgz':
@@ -10508,6 +10532,7 @@ specifiers:
   '@rush-temp/psydb-api-integration-tests': 'file:./projects/psydb-api-integration-tests.tgz'
   '@rush-temp/psydb-api-lib': 'file:./projects/psydb-api-lib.tgz'
   '@rush-temp/psydb-api-lib-errors': 'file:./projects/psydb-api-lib-errors.tgz'
+  '@rush-temp/psydb-api-message-handler-lib': 'file:./projects/psydb-api-message-handler-lib.tgz'
   '@rush-temp/psydb-api-message-handlers': 'file:./projects/psydb-api-message-handlers.tgz'
   '@rush-temp/psydb-common-config': 'file:./projects/psydb-common-config.tgz'
   '@rush-temp/psydb-common-lib': 'file:./projects/psydb-common-lib.tgz'

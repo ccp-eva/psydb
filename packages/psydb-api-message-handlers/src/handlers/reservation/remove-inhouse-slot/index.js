@@ -10,8 +10,8 @@ var {
 } = require('../../../lib/');
 
 var {
-    checkConflictingLocationExperiments,
-} = require('../util');
+    verifyNoConflictingLocationExperiments
+} = require('@mpieva/psydb-api-message-handler-lib');
 
 var createSchema = require('./schema');
 
@@ -48,7 +48,7 @@ handler.checkAllowedAndPlausible = async ({
         'location': locationId
     });
 
-    await checkConflictingLocationExperiments({
+    await verifyNoConflictingLocationExperiments({
         db, locationId, interval
     });
 }

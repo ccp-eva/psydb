@@ -1,5 +1,5 @@
 {
-  "name": "@mpieva/psydb-api-message-handlers",
+  "name": "@mpieva/psydb-api-message-handler-lib",
   "version": "0.1.0-alpha",
   "description": "",
   "main": "./src/index.js",
@@ -17,7 +17,6 @@
     "@mpieva/psydb-common-verify-helpers": "~0.1.0-alpha",
     "@mpieva/psydb-common-lib": "~0.1.0-alpha",
     "@mpieva/psydb-api-lib": "~0.1.0-alpha",
-    "@mpieva/psydb-api-message-handler-lib": "~0.1.0-alpha",
     "@cdxoo/omit": "~1.0.1",
     "@cdxoo/inline-text": "~1.0.2",
     "date-fns": "~2.21.1",
