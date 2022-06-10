@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Alert } from 'react-bootstrap';
 
+import intervalfns from '@mpieva/psydb-date-interval-fns';
 import { useSend } from '@mpieva/psydb-ui-hooks';
 import ExperimentShortControls from '@mpieva/psydb-ui-lib/src/experiment-short-controls';
 
@@ -16,6 +17,9 @@ const CreateModal = (ps) => {
         studyData,
         subjectId,
         subjectLabel,
+
+        desiredTestInterval,
+        testableIntervals,
 
         studyId,
         locationRecord,
@@ -52,6 +56,17 @@ const CreateModal = (ps) => {
         onSuccessfulCreate && onSuccessfulCreate(shouldHide, ...args);
     };
 
+    var isSubjectTestable = false;
+    //console.log({ testableIntervals });
+    if (testableIntervals) {
+        var intersections = intervalfns.intersect(
+            [{ start: start, end: maxEnd }],
+            testableIntervals
+        );
+        //console.log({ intersections });
+        isSubjectTestable = intersections.length > 0;
+    }
+
     var messageType = undefined;
     if (inviteType === 'inhouse') {
         messageType = 'experiment/create-from-inhouse-reservation';
@@ -87,6 +102,11 @@ const CreateModal = (ps) => {
                 <Modal.Title>Termin</Modal.Title>
             </Modal.Header>
             <Modal.Body>
+                { !isSubjectTestable && (
+                    <Alert variant='warning'>
+                        <b>Nicht in Altersfenster</b>
+                    </Alert>
+                )} 
                 <ExperimentShortControls { ...({
                     subjectLabel,
 

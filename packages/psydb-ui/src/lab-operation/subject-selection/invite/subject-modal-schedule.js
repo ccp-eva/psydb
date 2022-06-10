@@ -86,6 +86,7 @@ const SubjectModalSchedule = ({
                 
                 inviteType={ inviteType }
                 desiredTestInterval={ desiredTestInterval }
+                testableIntervals={ testableIntervals || fetchedIntervals }
 
                 studyData={ studyData }
                 subjectId={ subjectId }
@@ -123,7 +124,7 @@ const SubjectModalSchedule = ({
                 currentExperimentType={ inviteType }
                 currentSubjectRecord={{ _id: subjectId /* FIXME */ }}
                 desiredTestInterval={ desiredTestInterval }
-                testableIntervals={ testableIntervals }
+                testableIntervals={ testableIntervals || fetchedIntervals }
 
                 //activeLocationType={ 'instituteroom' }
                 onSelectReservationSlot={ experimentCreateModal.handleShow }
