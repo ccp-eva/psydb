@@ -109,6 +109,12 @@ var format = (interval, options = {}) => {
     }
 }
 
+var merge = (intervals, options = {}) => (
+    intervalfns.merge({ intervals: (
+        arrify(intervals).map(dtoi)
+    )}).map(itod)
+);
+
 module.exports = {
     checkHasOverlap,
     compareStarts,
@@ -118,5 +124,6 @@ module.exports = {
     itod,
 
     /////////////
-    format
+    format,
+    merge
 }

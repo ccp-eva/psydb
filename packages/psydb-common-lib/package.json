@@ -10,6 +10,7 @@
     "date-fns": "~2.21.1",
     "@mpieva/psydb-core-utils": "~0.1.0-alpha",
     "@mpieva/psydb-interval-fns": "~0.1.0-alpha",
+    "@mpieva/psydb-date-interval-fns": "~0.1.0-alpha",
     "@mpieva/psydb-schema-enums": "~0.1.0-alpha",
     "@mpieva/psydb-schema-creators": "~0.1.0-alpha",
     "@mpieva/psydb-schema-fields": "~0.1.0-alpha",

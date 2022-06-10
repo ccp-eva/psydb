@@ -68,4 +68,9 @@ fns.intersect = ({ setA, setB }) => {
     return intersections;
 }
 
+//fns.dayIntervalOf = (date, options = {}) => ({
+//    start: datefns.startOfDay(date),
+//    end: datefns.endOfDay(date),
+//});
+
 module.exports = fns;

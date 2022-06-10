@@ -5,6 +5,7 @@ import {
 } from '@mpieva/psydb-ui-layout';
 
 import {
+    useFetch,
     useModalReducer,
     useCallbackMaybe
 } from '@mpieva/psydb-ui-hooks';
@@ -48,6 +49,21 @@ const SubjectModalSchedule = ({
         testableInStudies[`_testableIntervals_${studyId}`]
     );
 
+    var [ didFetch, fetched ] = useFetch((agent) => (
+        agent.fetchSubjectPossibleTestIntervals({
+            studyId,
+            subjectId,
+            labProcedureTypeKey: inviteType,
+            desiredTestInterval
+        })
+    ), [ studyId, subjectId ]);
+
+    if (!didFetch) {
+        return null;
+    }
+
+    var { testableIntervals: fetchedIntervals } = fetched.data;
+
     return (
         <div>
             <ExperimentCreateModal
@@ -57,7 +73,7 @@ const SubjectModalSchedule = ({
                 
                 inviteType={ inviteType }
                 desiredTestInterval={ desiredTestInterval }
-                testableIntervals={ testableIntervals }
+                testableIntervals={ testableIntervals || fetchedIntervals }
                 
                 studyData={ studyData }
                 subjectId={ subjectId }

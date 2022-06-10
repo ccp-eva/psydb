@@ -101,5 +101,9 @@ module.exports = {
         require('./search-studies-for-exclusion')
     ),
 
+    readSubjectTestability: (
+        require('./read-subject-testability')
+    ),
+
     reverseRefs: require('./reverse-refs'),
 }
