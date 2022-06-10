@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { Modal, Button, Alert } from 'react-bootstrap';
+import React, { useState } from 'react';
 
 import intervalfns from '@mpieva/psydb-date-interval-fns';
 import { useSend } from '@mpieva/psydb-ui-hooks';
+import { Modal, Button, Alert } from '@mpieva/psydb-ui-layout';
+
 import ExperimentShortControls from '@mpieva/psydb-ui-lib/src/experiment-short-controls';
 
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
