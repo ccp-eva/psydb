@@ -2,8 +2,8 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useRevision } from '@mpieva/psydb-ui-hooks';
-import { GenericRecordEditorFooter } from '@mpieva/psydb-ui-lib';
 import { RecordEditor } from './record-editor';
+import LocationEditorFooter from './editor-container-footer';
 
 const LocationEditorContainer = ({
     collection,
@@ -21,9 +21,7 @@ const LocationEditorContainer = ({
         <>
             <RecordEditor { ...editorBag }>
                 {() => (
-                    <GenericRecordEditorFooter
-                        enableHide={ true }
-                        enableRemove={ true }
+                    <LocationEditorFooter
                         onSuccessfulUpdate={ revision.up }
                     />
                 )}
