@@ -42,7 +42,7 @@ const General = ({
     var stringifyStudyValue = createStringifier(studyData);
 
     var experimentType = experimentRecord.type;
-    
+   
     var firstResearchGroupId = (
         permissions.isRoot()
         ? studyRecord.state.researchGroupIds[0]

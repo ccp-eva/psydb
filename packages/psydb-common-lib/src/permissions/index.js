@@ -20,7 +20,7 @@ var Permissions = (options) => {
 
     var {
         hasRootAccess,
-        userResearchGroupsIds,
+        userResearchGroupIds,
         forcedResearchGroupId,
         researchGroupIdsByFlag,
         researchGroupIdsByCollection,
@@ -112,6 +112,7 @@ var Permissions = (options) => {
         getLabOperationFlagIds,
         getAllLabOperationFlagIds,
         getCollectionFlagIds,
+        getResearchGroupIds,
 
         hasFlag,
         hasSomeFlags,
