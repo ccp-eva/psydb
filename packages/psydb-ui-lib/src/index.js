@@ -31,6 +31,9 @@ export { default as StudySelectList } from './study-select-list';
 export { default as stringifyFieldValue } from './stringify-field-value';
 export * from './formik';
 
+export { default as ExperimentDropdown } from './experiment-dropdown';
+export { default as ExperimentSubjectDropdown } from './experiment-subject-dropdown';
+
 export * from './account-function-dropdown';
 export * from './when-allowed';
 export * as StudyTopic from './study-topic';

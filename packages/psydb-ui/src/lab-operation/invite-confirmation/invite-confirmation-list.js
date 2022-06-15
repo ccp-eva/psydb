@@ -99,6 +99,7 @@ const InviteConfirmationList = (ps) => {
                     phoneListField,
 
                     onChangeStatus: send.exec,
+                    onSuccessfulUpdate: revision.up
                 }) } />
             )) }
         </div>

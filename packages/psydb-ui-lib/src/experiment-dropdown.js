@@ -17,18 +17,33 @@ var listStyle = {
     border: 0,
 }
 
-var ExperimentDropdown = ({
-    detailsLink,
-    onClickFollowUp,
-    onClickMove,
-    onClickChangeTeam,
-    onClickCancel,
-    
-    disabled,
-    variant,
+var labelStyle = {
+    borderRadius: 0,
+    border: 0,
+}
 
-    experimentType,
-}) => {
+var ExperimentDropdown = (ps) => {
+    var {
+        detailsLink,
+
+        enableFollowUp = true,
+        enableMove = true,
+        enableChangeTeam = true,
+        enableCancel = true,
+
+        onClickFollowUp,
+        onClickMove,
+        onClickChangeTeam,
+        onClickCancel,
+        
+        disabled,
+        size='sm',
+        variant = 'primary',
+
+        experimentType,
+        label
+    } = ps;
+
     var permissions = usePermissions();
 
     
@@ -47,10 +62,12 @@ var ExperimentDropdown = ({
 
 
     var style = (
-        variant === 'calendar'
-        ? calendarStyle
-        : listStyle
-    )
+        label ? labelStyle : (
+            variant === 'calendar'
+            ? calendarStyle
+            : listStyle
+        )
+    );
 
     if (variant === 'calendar') {
         style = { ...style, }
@@ -59,17 +76,31 @@ var ExperimentDropdown = ({
     return (
         <Dropdown>
             <Dropdown.Toggle
-                size='sm'
-                variant={ variant === 'calendar' ? 'other' : 'outline-primary' }
+                size={ size }
+                variant={ variant === 'calendar' ? 'other' : variant }
                 style={ style }
-                bsPrefix='dropdown-toggle-no-caret'
+                bsPrefix={
+                    variant === 'calendar'
+                    ? 'dropdown-toggle-no-caret'
+                    : undefined
+                }
                 disabled={ disabled }
             >
-                <Icons.GearFill style={{
-                    width: '18px',
-                    height: '18px',
-                    marginTop: '-3px',
-                }} />
+                { 
+                    label 
+                    ? (
+                        <span className='d-inline-block mr-1'>
+                            { label }
+                        </span>
+                    )
+                    : (
+                        <Icons.GearFill style={{
+                            width: '18px',
+                            height: '18px',
+                            marginTop: '-3px',
+                        }} />
+                    )
+                }
             </Dropdown.Toggle>
             <Dropdown.Menu>
                 <LinkContainer to={ detailsLink }>
@@ -80,15 +111,17 @@ var ExperimentDropdown = ({
 
                 <Dropdown.Divider />
             
-                <Dropdown.Item
-                    as='button'
-                    disabled={ !canChangeOpsTeam || !onClickChangeTeam }
-                    onClick={ onClickChangeTeam }
-                >
-                    Team ändern
-                </Dropdown.Item>
+                { enableChangeTeam && (
+                    <Dropdown.Item
+                        as='button'
+                        disabled={ !canChangeOpsTeam || !onClickChangeTeam }
+                        onClick={ onClickChangeTeam }
+                    >
+                        Team ändern
+                    </Dropdown.Item>
+                )}
 
-                { experimentType === 'away-team' && (
+                { enableFollowUp && experimentType === 'away-team' && (
                     <Dropdown.Item
                         as='button'
                         disabled={ !canCreateFollowUp || !onClickFollowUp }
@@ -98,15 +131,17 @@ var ExperimentDropdown = ({
                     </Dropdown.Item>
                 )}
 
-                <Dropdown.Item
-                    as='button'
-                    disabled={ !canMove || !onClickMove }
-                    onClick={ onClickMove }
-                >
-                    Verschieben
-                </Dropdown.Item>
+                { enableMove && (
+                    <Dropdown.Item
+                        as='button'
+                        disabled={ !canMove || !onClickMove }
+                        onClick={ onClickMove }
+                    >
+                        Verschieben
+                    </Dropdown.Item>
+                )}
                 
-                { experimentType === 'away-team' && (
+                { enableCancel && experimentType === 'away-team' && (
                     <Dropdown.Item
                         as='button'
                         disabled={ !canCancel || !onClickCancel }

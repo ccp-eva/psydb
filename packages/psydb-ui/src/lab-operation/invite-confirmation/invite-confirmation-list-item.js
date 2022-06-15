@@ -14,6 +14,7 @@ const InviteConfirmationListItem = (ps) => {
         phoneListField,
 
         onChangeStatus,
+        onSuccessfulUpdate,
     } = ps;
 
     var { subjectData } = experimentRecord.state;
@@ -22,6 +23,7 @@ const InviteConfirmationListItem = (ps) => {
         <ExperimentContainer
             record={ experimentRecord }
             related={ experimentRelated }
+            onSuccessfulUpdate={ onSuccessfulUpdate }
         >
             { 
                 subjectData
@@ -37,6 +39,7 @@ const InviteConfirmationListItem = (ps) => {
                             experimentRecord,
 
                             onChangeStatus,
+                            onSuccessfulUpdate
                         }) } />
                         { ix < subjectData.length - 1 && (
                             <hr />
