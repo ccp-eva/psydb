@@ -77,6 +77,7 @@ const ExperimentContainer = (ps) => {
                         <ExperimentDropdown
                             experimentType={ type }
                             detailsLink={`/experiments/${type}/${_id}`}
+                            variant='primary'
                             label='Funktionen'
                             
                             onClickMove={ moveExperimentModal.handleShow }

@@ -38,7 +38,7 @@ var ExperimentDropdown = (ps) => {
         
         disabled,
         size='sm',
-        variant = 'primary',
+        variant = 'outline-primary',
 
         experimentType,
         label
@@ -80,9 +80,9 @@ var ExperimentDropdown = (ps) => {
                 variant={ variant === 'calendar' ? 'other' : variant }
                 style={ style }
                 bsPrefix={
-                    variant === 'calendar'
-                    ? 'dropdown-toggle-no-caret'
-                    : undefined
+                    label
+                    ? undefined
+                    : 'dropdown-toggle-no-caret'
                 }
                 disabled={ disabled }
             >

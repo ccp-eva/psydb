@@ -17,23 +17,32 @@ var listStyle = {
     marginTop: '-3px',
 }
 
-var ExperimentSubjectDropdown = ({
-    subjectRecord,
+var labelStyle = {
+    borderRadius: 0,
+    border: 0,
+}
 
-    onClickComment,
-    onClickMove,
-    onClickFollowUp,
-    onClickRemove,
+var ExperimentSubjectDropdown = (ps) => {
+    var {
+        subjectRecord,
+        enableStatusChanges = true,
 
-    onClickConfirm,
-    onClickMailbox,
-    onClickContactFailed,
+        onClickComment,
+        onClickMove,
+        onClickFollowUp,
+        onClickRemove,
 
-    disabled,
-    variant,
+        onClickConfirm,
+        onClickMailbox,
+        onClickContactFailed,
 
-    experimentType,
-}) => {
+        disabled,
+        size='sm',
+        variant = 'outline-primary',
+
+        experimentType,
+        label,
+    } = ps;
 
     var {
         _id: subjectId,
@@ -94,10 +103,12 @@ var ExperimentSubjectDropdown = ({
     );
 
     var style = (
-        variant === 'calendar'
-        ? calendarStyle
-        : listStyle
-    )
+        label ? labelStyle : (
+            variant === 'calendar'
+            ? calendarStyle
+            : listStyle
+        )
+    );
 
     if (variant === 'calendar') {
         style = { ...style, }
@@ -111,16 +122,30 @@ var ExperimentSubjectDropdown = ({
         <Dropdown>
             <Dropdown.Toggle
                 size='sm'
-                variant={ variant === 'calendar' ? 'other' : 'outline-primary' }
+                variant={ variant === 'calendar' ? 'other' : variant }
                 style={ style }
-                bsPrefix='dropdown-toggle-no-caret'
+                bsPrefix={
+                    label
+                    ? undefined
+                    : 'dropdown-toggle-no-caret'
+                }
                 disabled={ disabled }
             >
-                <Icons.GearFill style={{
-                    width: '18px',
-                    height: '18px',
-                    marginTop: '-3px',
-                }} />
+                { 
+                    label 
+                    ? (
+                        <span className='d-inline-block mr-1'>
+                            { label }
+                        </span>
+                    )
+                    : (
+                        <Icons.GearFill style={{
+                            width: '18px',
+                            height: '18px',
+                            marginTop: '-3px',
+                        }} />
+                    )
+                }
             </Dropdown.Toggle>
             <Dropdown.Menu>
                 <Dropdown.Item
@@ -152,31 +177,35 @@ var ExperimentSubjectDropdown = ({
                     Entfernen
                 </Dropdown.Item>
 
-                <Dropdown.Divider />
-                
-                <Dropdown.Item
-                    as='button'
-                    disabled={ !canConfirm || !onClickConfirm }
-                    onClick={ wrappedOnClickConfirm }
-                >
-                    Bestätigen
-                </Dropdown.Item>
+                { enableStatusChanges && (
+                    <>
+                        <Dropdown.Divider />
+                        
+                        <Dropdown.Item
+                            as='button'
+                            disabled={ !canConfirm || !onClickConfirm }
+                            onClick={ wrappedOnClickConfirm }
+                        >
+                            Bestätigen
+                        </Dropdown.Item>
 
-                <Dropdown.Item
-                    as='button'
-                    disabled={ !canConfirm || !onClickMailbox }
-                    onClick={ wrappedOnClickMailbox }
-                >
-                    Anrufbeantworter
-                </Dropdown.Item>
+                        <Dropdown.Item
+                            as='button'
+                            disabled={ !canConfirm || !onClickMailbox }
+                            onClick={ wrappedOnClickMailbox }
+                        >
+                            Anrufbeantworter
+                        </Dropdown.Item>
 
-                <Dropdown.Item
-                    as='button'
-                    disabled={ !canConfirm || !onClickContactFailed }
-                    onClick={ wrappedOnClickContactFailed }
-                >
-                    Nicht Erreicht
-                </Dropdown.Item>
+                        <Dropdown.Item
+                            as='button'
+                            disabled={ !canConfirm || !onClickContactFailed }
+                            onClick={ wrappedOnClickContactFailed }
+                        >
+                            Nicht Erreicht
+                        </Dropdown.Item>
+                    </>
+                )}
 
             </Dropdown.Menu>
         </Dropdown>
