@@ -67,38 +67,49 @@ var shiftToThePast = (bag) => {
     if (targetDate) {
         targetInterval = { start: targetDate, end: targetDate };
     }
-   
-    // all subjects born before "start"
-    // are too old (i.e. above ageFrame.end)
-    // even at the earliest posisble test date (targetInterval.start)
-    // a.k.a start is the earliest DoB we can test in the interval
-    // the end of the ageFrame is subtracted from the targetIntervals start
-    // to get the lowest possible date
-    var start = (
-        targetInterval.start && ageFrame.end
+
+    // TODO: there mst be a better way than that
+    var future = shiftToTheFuture({
+        ageFrame,
+        sourceDate: targetDate,
+        sourceInterval: targetInterval
+    });
+    //console.log({ future });
+
+    var tmpStart = (
+        future.start && ageFrame.start
         ? subtractAgeFrameEdge({
-            date: targetInterval.start,
-            ageFrameEdge: ageFrame.end
+            date: future.start,
+            ageFrameEdge: ageFrame.start
         })
         : undefined
     );
-
-    // all subjects born after "end"
-    // are too young (i.e. below ageFrame.start)
-    // even at the latest possible test time (targetInterval.end)
-    // the start of the ageFrame is subtracted from the targetIntervals end
-    // to get the highest possible date
-    var end = (
-        targetInterval.end && ageFrame.start
+    var start = (
+        future.start && ageFrame.start
         ? subtractAgeFrameEdge({
-            date: targetInterval.end,
+            date: tmpStart,
             ageFrameEdge: ageFrame.start
         })
         : undefined
     );
 
-    // all DoBs inside the timeshifted interval are testable
-    // at some point in the desired test interval
+    var tmpEnd = (
+        future.end && ageFrame.start
+        ? subtractAgeFrameEdge({
+            date: future.end,
+            ageFrameEdge: ageFrame.start
+        })
+        : undefined
+    );
+    var end = (
+        future.end && ageFrame.start
+        ? subtractAgeFrameEdge({
+            date: tmpEnd,
+            ageFrameEdge: ageFrame.start
+        })
+        : undefined
+    );
+
     var timeShifted = {
         ...(start && { start }),
         ...(end && { end }),
