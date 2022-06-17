@@ -81,10 +81,14 @@ var fetchRecordById = async ({
                     : { 'state.internals.isRemoved': { $ne: true }}
                 ),
             }},
-            ...SystemPermissionStages({
+            // XXX: locations arent allowed for hiwi
+            // but need to be read in subjects
+            // => read-for-fk-endpoint
+            //
+            /*...SystemPermissionStages({
                 collection: collectionName,
                 permissions
-            }),
+            }),*/
         ]).toArray()
     );
 
