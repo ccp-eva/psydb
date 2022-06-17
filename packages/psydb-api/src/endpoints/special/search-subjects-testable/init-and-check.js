@@ -2,6 +2,7 @@
 var debug = require('debug')(
     'psydb:api:endpoints:searchTestableSubjects:initAndCheck'
 );
+var { getSystemTimezone } = require('@mpieva/psydb-timezone-helpers');
 
 var {
     groupBy,
@@ -23,6 +24,31 @@ var {
 
 var RequestBodySchema = require('./request-body-schema');
 
+
+
+var {
+    zonedTimeToUtc,
+    utcToZonedTime
+} = require('date-fns-tz');
+// FIXME: redundant
+var convertIntervalTZ = (interval, options = {}) => {
+    var { sourceTZ, targetTZ } = options;
+    var { start, end } = interval;
+
+    if (sourceTZ) {
+        start = zonedTimeToUtc(start, sourceTZ);
+        end = zonedTimeToUtc(end, sourceTZ);
+    }
+    if (targetTZ) {
+        start = utcToZonedTime(start, targetTZ);
+        end = utcToZonedTime(end, targetTZ);
+    }
+
+    return { start, end };
+}
+
+
+
 var initAndCheck = async ({
     db,
     permissions,
@@ -34,6 +60,14 @@ var initAndCheck = async ({
         schema: RequestBodySchema(),
         payload: request.body
     });
+
+    // FIXME: the body interval is in utc
+    // as client converts its localtime to utc before sending
+    request.body.interval = convertIntervalTZ(
+        request.body.interval,{
+            targetTZ: request.body.timezone,
+        }
+    )
 
     var {
         subjectTypeKey,

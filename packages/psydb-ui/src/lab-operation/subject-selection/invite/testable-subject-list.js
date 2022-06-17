@@ -15,6 +15,7 @@ import { getSystemTimezone } from '@mpieva/psydb-timezone-helpers';
 
 import agent from '@mpieva/psydb-ui-request-agents';
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
+import intervalfns from '@mpieva/psydb-date-interval-fns';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
 
 import {
@@ -143,6 +144,9 @@ const InviteTestableSubjectList = ({
         relatedCustomRecordTypeLabels,
     } = subjectData;
 
+    var formattedTestInterval = (
+        intervalfns.format(desiredTestInterval, { offsetEnd: 0 })
+    );
 
     return (
         <>
@@ -177,9 +181,20 @@ const InviteTestableSubjectList = ({
                 labProcedureTypeKey={ inviteType }
             />
 
+            <div className='border px-3 py-2 mb-3 bg-light'>
+                <b>Gewünschter Zeitraum:</b>
+                {' '}
+                { formattedTestInterval.startDate }
+                {' '}
+                bis
+                {' '}
+                { formattedTestInterval.endDate }
+            </div>
+
             <div className='sticky-top border-bottom'>
                 <Pagination { ...pagination } />
             </div>
+
 
             <Table>
                 <thead>
