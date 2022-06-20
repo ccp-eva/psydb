@@ -98,12 +98,12 @@ const FormFields = (ps) => {
                 required
             />
             <Bool
-                label='kann Mitarbeiter:in einsehen (d.h. Benutzer-Accounts)'
+                label='kann Mitarbeiter:innen einsehen (d.h. Benutzer-Accounts)'
                 dataXPath='$.canReadPersonnel'
                 required
             />
             <Bool
-                label='kann Mitarbeiter:in bearbeiten (d.h. Benutzer-Accounts)'
+                label='kann Mitarbeiter:innen bearbeiten (d.h. Benutzer-Accounts)'
                 dataXPath='$.canWritePersonnel'
                 required
             />
