@@ -98,7 +98,7 @@ export const Calendar = ({
             { permissions.isRoot() && (
                 <div className='mt-3'>
                     <Button
-                        onClick={ () => setShowPast(true) }
+                        onClick={ () => setShowPast(showPast ? false : true) }
                         size='sm'
                     >zeige Vergangenheit</Button>
                 </div>

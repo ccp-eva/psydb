@@ -83,7 +83,7 @@ const LocationCalendarList = ({
             { permissions.isRoot() && (
                 <div className='mt-2'>
                     <Button
-                        onClick={ () => setShowPast(true) }
+                        onClick={ () => setShowPast(showPast ? false : true) }
                         size='sm'
                     >zeige Vergangenheit</Button>
                 </div>

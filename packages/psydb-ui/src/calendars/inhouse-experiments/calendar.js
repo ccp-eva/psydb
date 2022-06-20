@@ -206,7 +206,7 @@ const CalendarVariantContainer = (ps) => {
             { permissions.isRoot() && (
                 <div className='mb-2'>
                     <Button
-                        onClick={ () => setShowPast(true) }
+                        onClick={ () => setShowPast(showPast ? false : true) }
                         size='sm'
                     >zeige Vergangenheit</Button>
                 </div>
