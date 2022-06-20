@@ -48,8 +48,18 @@ const FormFields = (ps) => {
                 required
             />
             <Bool
+                label='kann Locations einsehen (Kigas, Räume, etc.)'
+                dataXPath='$.canReadLocations'
+                required
+            />
+            <Bool
                 label='kann Locations bearbeiten (Kigas, Räume, etc.)'
                 dataXPath='$.canWriteLocations'
+                required
+            />
+            <Bool
+                label='kann Externe Personen einsehen (z.B. Ärzte)'
+                dataXPath='$.canReadExternalPersons'
                 required
             />
             <Bool
@@ -58,8 +68,18 @@ const FormFields = (ps) => {
                 required
             />
             <Bool
+                label='kann Externe Organisationen einsehen (z.B. Träger)'
+                dataXPath='$.canReadExternalOrganizations'
+                required
+            />
+            <Bool
                 label='kann Externe Organisationen bearbeiten (z.B. Träger)'
                 dataXPath='$.canWriteExternalOrganizations'
+                required
+            />
+            <Bool
+                label='kann Themengebiete einsehen'
+                dataXPath='$.canReadStudyTopics'
                 required
             />
             <Bool
@@ -68,8 +88,18 @@ const FormFields = (ps) => {
                 required
             />
             <Bool
+                label='kann Hilfstabellen einsehen'
+                dataXPath='$.canReadHelperSets'
+                required
+            />
+            <Bool
                 label='kann Hilfstabellen bearbeiten'
                 dataXPath='$.canWriteHelperSets'
+                required
+            />
+            <Bool
+                label='kann Mitarbeiter einsehen (d.h. Benutzer-Accounts)'
+                dataXPath='$.canReadPersonnel'
                 required
             />
             <Bool

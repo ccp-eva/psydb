@@ -126,7 +126,6 @@ var searchGrouped = async (context, next) => {
         ).map(it => it._id).toArray()
     );
     debug('end find excluded locations');
-    //console.log(excludedLocationIds);
 
     await db.collection('subject').ensureIndex({
         [convertPointerToPath(dobFieldPointer)]: 1
@@ -138,7 +137,7 @@ var searchGrouped = async (context, next) => {
     var stages = [
         { $match: {
             type: subjectTypeKey,
-            isDummy: false,
+            isDummy: { $ne: true },
             'scientific.state.systemPermissions.isHidden': { $ne: true },
             'scientific.state.internals.isRemoved': { $ne: true },
             $and: [
