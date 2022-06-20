@@ -159,6 +159,18 @@ module.exports = {
                 dataPointer: '/gdpr/state/lastname',
                 displayName: 'Nachname',
             },
+            {
+                key: '_phones',
+                systemType: 'PhoneWithTypeList',
+                dataPointer: '/gdpr/state/phones',
+                displayName: 'Telefon',
+            },
+            {
+                key: '_descriptions',
+                systemType: 'FullText',
+                dataPointer: '/gdpr/state/description',
+                displayName: 'Beschreibung',
+            },
         ],
         staticDisplayFields: [
             {
@@ -168,7 +180,15 @@ module.exports = {
             {
                 systemType: 'SaneString',
                 dataPointer: '/gdpr/state/lastname',
-            }
+            },
+            {
+                systemType: 'PhoneWithTypeList',
+                dataPointer: '/gdpr/state/phones',
+            },
+            {
+                systemType: 'FullText',
+                dataPointer: '/gdpr/state/description',
+            },
         ]
     },
     researchGroup: {
