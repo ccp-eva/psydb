@@ -71,7 +71,6 @@ var shiftToThePast = (bag) => {
     // TODO: there mst be a better way than that
     var future = shiftToTheFuture({
         ageFrame,
-        sourceDate: targetDate,
         sourceInterval: targetInterval
     });
     //console.log({ future });
@@ -80,7 +79,7 @@ var shiftToThePast = (bag) => {
         future.start && ageFrame.start
         ? subtractAgeFrameEdge({
             date: future.start,
-            ageFrameEdge: ageFrame.start
+            ageFrameEdge: ageFrame.end
         })
         : undefined
     );
@@ -93,18 +92,10 @@ var shiftToThePast = (bag) => {
         : undefined
     );
 
-    var tmpEnd = (
-        future.end && ageFrame.start
-        ? subtractAgeFrameEdge({
-            date: future.end,
-            ageFrameEdge: ageFrame.start
-        })
-        : undefined
-    );
     var end = (
-        future.end && ageFrame.start
+        targetInterval.end && ageFrame.start
         ? subtractAgeFrameEdge({
-            date: tmpEnd,
+            date: targetInterval.end,
             ageFrameEdge: ageFrame.start
         })
         : undefined
