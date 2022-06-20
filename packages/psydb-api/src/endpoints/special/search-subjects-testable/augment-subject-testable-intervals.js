@@ -50,7 +50,7 @@ var augmentSubjectTestableIntervals = (bag) => {
     });
 
     for (var subject of subjectRecords) {
-        console.log(subject._id);
+        //console.log(subject._id);
         var dateOfBirth = jsonpointer.get(subject, dobFieldPointer);
         
         //console.log('-------------------------');
