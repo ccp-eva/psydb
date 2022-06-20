@@ -14,7 +14,7 @@ const CreateForm = (ps) => {
 
     return (
         <MainForm.Component
-            title='Neuer Mitarbeiter'
+            title='Neuer Mitarbeiter:in'
             initialValues={ MainForm.createDefaults({ permissions }) }
             onSubmit={ send.exec }
             permissions={ permissions }

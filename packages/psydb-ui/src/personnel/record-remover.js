@@ -48,9 +48,9 @@ const SafetyForm = (ps) => {
     var { reverseRefs } = fetchedReverseRefs.data;
 
     return (
-        <FormBox title='Mitarbeiter löschen' titleClassName='text-danger'>
+        <FormBox title='Mitarbeiter:in löschen' titleClassName='text-danger'>
             <Pair 
-                label='Mitarbeiter'
+                label='Mitarbeiter:in'
                 wLeft={ 3 } wRight={ 9 } className='px-3'
             >
                 { _recordLabel }
@@ -65,7 +65,7 @@ const SafetyForm = (ps) => {
             { reverseRefs.length > 0 && (
                 <>
                     <Alert variant='danger'><b>
-                        Mitarbeiter wird von anderen Datensätzen referenziert
+                        Mitarbeiter:in wird von anderen Datensätzen referenziert
                     </b></Alert>
 
                     <ReverseRefList reverseRefs={ reverseRefs } />
@@ -86,8 +86,8 @@ const SafetyForm = (ps) => {
 const SuccessInfo = (ps) => {
     var { successInfoBackLink } = ps;
     return (
-        <FormBox titleClassName='text-success' title='Mitarbeiter gelöscht'>
-            <i>Mitarbeiter wurde erfolgreich gelöscht</i>
+        <FormBox titleClassName='text-success' title='Mitarbeiter:in gelöscht'>
+            <i>Mitarbeiter:in wurde erfolgreich gelöscht</i>
             { successInfoBackLink && (
                 <>
                     <hr />

@@ -134,7 +134,7 @@ const SideNav = (ps) => {
                         <Link to='/helper-sets'>Hilfstabellen</Link>
                     </WhenAllowed>
                     <WhenAllowed flag='canWritePersonnel'>
-                        <Link to='/personnel'>Mitarbeiter</Link>
+                        <Link to='/personnel'>Mitarbeiter:in</Link>
                     </WhenAllowed>
 
                     <div className='border-top mt-2 mb-2' />

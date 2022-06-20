@@ -87,7 +87,7 @@ const labels = {
         'kann Hilfstabellen bearbeiten'
     ),
     '/state/canWritePersonnel': (
-        'kann Mitarbeiter bearbeiten (d.h. Benutzer-Accounts)'
+        'kann Mitarbeiter:in bearbeiten (d.h. Benutzer-Accounts)'
     ),
     '/state/canSetPersonnelPassword': (
         'kann das Passwort anderer Benutzer manuell neu setzen'

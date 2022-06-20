@@ -30,7 +30,7 @@ export const PasswordForm = (ps) => {
     }
 
     return (
-        <FormBox title='Mitarbeiter-Passwort ändern'>
+        <FormBox title='Mitarbeiter:in-Passwort ändern'>
             <DefaultForm
                 initialValues={{ method: 'auto' }}
                 onSubmit={ sendManualPassword.exec }

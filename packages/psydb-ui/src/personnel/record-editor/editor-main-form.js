@@ -62,7 +62,7 @@ export const EditorMainForm = (ps) => {
 
     return (
         <MainForm.Component
-            title='Mitarbeiter bearbeiten'
+            title='Mitarbeiter:in bearbeiten'
             initialValues={ initialValues }
             onSubmit={ send.exec }
             related={ related }
