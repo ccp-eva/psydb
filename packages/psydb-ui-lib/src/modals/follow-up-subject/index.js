@@ -96,7 +96,7 @@ const FollowUpSubjectModal = ({
                 }) } />
 
                 <header className='mb-1'>
-                    <b>Termine des Proband:innen in { studyLabel }</b>
+                    <b>Termine der Proband:in in { studyLabel }</b>
                 </header>
                 <div className='bg-white border px-3 py-2 mb-3'>
                     <Experiments
