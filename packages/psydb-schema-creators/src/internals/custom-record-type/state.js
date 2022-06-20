@@ -182,6 +182,10 @@ var ChannelState = ({
         }),
         
         ...( collection === 'subject' && {
+            selectionRowDisplayFields: {
+                type: 'array',
+                default: []
+            },
             selectionSummaryDisplayFields: {
                 type: 'array',
                 default: []
