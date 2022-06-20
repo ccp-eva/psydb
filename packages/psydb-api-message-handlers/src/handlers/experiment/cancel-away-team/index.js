@@ -20,7 +20,7 @@ handler.checkAllowedAndPlausible = async (context) => {
     } = context;
 
     var isAllowed = permissions.hasLabOperationFlag(
-        'away-team', 'canMoveAndCancelExperiment'
+        'away-team', 'canMoveAndCancelExperiments'
     );
     if (!isAllowed) {
         throw new ApiError(403);
