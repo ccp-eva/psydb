@@ -205,6 +205,7 @@ var initAgeFrames = async ({
                 { $match: {
                     // only enabled values of enabled ageframes
                     $or: valueFilters.map(it => ({
+                        _id: it.ageFrameId,
                         'state.conditions.pointer': it.pointer,
                         'state.conditions.values': it.value
                     }))
