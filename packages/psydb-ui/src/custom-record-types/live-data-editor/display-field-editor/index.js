@@ -78,6 +78,8 @@ const getDisplayFields = (record, target) => {
             return record.state.selectionSummaryDisplayFields;
         case 'invite-confirm-summary':
             return record.state.inviteConfirmSummaryDisplayFields;
+        case 'invite-selection-list':
+            return record.state.selectionRowDisplayFields;
         default:
             throw new Error(`unknown target "${target}"`)
     }

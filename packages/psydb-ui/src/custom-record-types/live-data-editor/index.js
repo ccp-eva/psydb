@@ -59,6 +59,12 @@ const LiveDataEditor = (ps) => {
                     <FormBox title='Tabellenspalten (Options-Auswahl)'>
                         <DisplayFieldEditor target='optionlist' { ...ps } />
                     </FormBox>
+                    
+                    { collection === 'subject' && ( 
+                        <FormBox title='Spalten bei Einladung (Inhouse, Online-Video-Anruf)'>
+                            <DisplayFieldEditor target='invite-selection-list' { ...ps } />
+                        </FormBox>
+                    )}
                 </PanelColumn>
             </PanelPair>
 

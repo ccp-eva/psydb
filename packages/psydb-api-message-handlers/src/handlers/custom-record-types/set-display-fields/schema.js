@@ -27,6 +27,7 @@ var Schema = () => {
                         'extra-description', // FIXME: only study
                         'selection-summary', // FIXME: only subject
                         'invite-confirm-summary', // FIXME: only subject
+                        'invite-selection-list', // FIXME: only subject
                     ]
                 },
                 fieldPointers: {

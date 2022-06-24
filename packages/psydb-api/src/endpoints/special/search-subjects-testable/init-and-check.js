@@ -100,6 +100,7 @@ var initAndCheck = async ({
     var subjectData = await initSubjects({
         db,
         subjectTypeKey,
+        labProcedureType,
     })
 
     return ({
@@ -273,6 +274,7 @@ var initStudies = async ({
 var initSubjects = async ({
     db,
     subjectTypeKey,
+    labProcedureType,
 }) => {
 
     var subjectTypeRecord = await fetchOneCustomRecordType({
@@ -286,6 +288,11 @@ var initSubjects = async ({
        availableDisplayFieldData,
    } = await gatherDisplayFieldsForRecordType({
        prefetched: subjectTypeRecord,
+       target: (
+            ['inhouse', 'online-video-call'].includes(labProcedureType)
+           ? 'invite-selection-list'
+           : 'table'
+       )
    });
 
     return {

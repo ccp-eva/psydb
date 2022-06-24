@@ -182,6 +182,8 @@ var ChannelState = ({
         }),
         
         ...( collection === 'subject' && {
+            // FIXME: inhouse/invite
+            // FIXME: rename inviteSelectionRowDisplayFields
             selectionRowDisplayFields: {
                 type: 'array',
                 default: []
