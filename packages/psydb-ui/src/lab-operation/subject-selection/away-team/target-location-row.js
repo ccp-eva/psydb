@@ -98,6 +98,7 @@ const TargetLocationRow = ({
     );    
 }
 
+// FIXME: redundant with invite
 const UpcomingExperiments = ({
     records,
     relatedRecordLabels,
