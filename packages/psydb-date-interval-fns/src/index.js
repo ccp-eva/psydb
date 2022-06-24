@@ -79,6 +79,26 @@ var itod = (source, options = {}) => {
 
 /////////////////////////////////////////////////////
 
+var dtos = (source, options = {}) => {
+    var { pointer = '', as } = options;
+    var { start, end } = (
+        pointer
+        ? jsonpointer.get(source, pointer)
+        : source
+    );
+
+    start = new Date(start).toISOString();
+    end = new Date(end).toISOString();
+
+    switch (as) {
+        case 'tuple':
+            return [ start, end ];
+        case 'object':
+        default:
+            return { start, end };
+    }
+};
+
 var format = (interval, options = {}) => {
     var {
         dateFormat = 'dd.MM.yyyy',
@@ -115,6 +135,61 @@ var merge = (intervals, options = {}) => (
     )}).map(itod)
 );
 
+var monthIntervalOf = (date, options = {}) => {
+    var { as } = options;
+
+    var start = datefns.startOfMonth(date);
+    var end = datefns.endOfMonth(date);
+
+    switch (as) {
+        case 'tuple':
+            return [ start, end ];
+        case 'object':
+        default:
+            return { start, end };
+    }
+}
+
+var weekIntervalOf = (date, options = {}) => {
+    var { as, ...pass } = options;
+
+    var start = datefns.startOfWeek(date, pass);
+    var end = datefns.endOfWeek(date, pass);
+
+    switch (as) {
+        case 'tuple':
+            return [ start, end ];
+        case 'object':
+        default:
+            return { start, end };
+    }
+}
+
+var add = (interval, options = {}) => {
+    var {
+        start: durationStart,
+        end: durationEnd,
+        both: durationBoth,
+        as
+    } = options;
+
+    if (durationBoth) {
+        durationStart = durationEnd = durationBoth;
+    }
+    
+    var start = datefns.add(interval.start, durationStart);
+    var end = datefns.add(interval.end, durationEnd);
+
+    switch (as) {
+        case 'tuple':
+            return [ start, end ];
+        case 'object':
+        default:
+            return { start, end };
+    }
+}
+
+
 module.exports = {
     checkHasOverlap,
     compareStarts,
@@ -124,6 +199,11 @@ module.exports = {
     itod,
 
     /////////////
+    dtos,
     format,
-    merge
+    merge,
+    monthIntervalOf,
+    weekIntervalOf,
+
+    add
 }

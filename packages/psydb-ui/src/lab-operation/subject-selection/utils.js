@@ -1,3 +1,5 @@
+import intervalfns from '@mpieva/psydb-date-interval-fns';
+
 export const parseEncodedInterval = (str) => {
     var parseEdge = (s) => {
         var [ years, months, days ] = s.split('-');
@@ -14,18 +16,6 @@ export const parseEncodedInterval = (str) => {
 export const createAgeFrameKey = (ageFrameRecord) => {
     var { _id, studyId, state } = ageFrameRecord;
     return `${studyId}/${_id}`;
-    
-
-    //var { interval } = state;
-    //var create = (af) => {
-    //    var { years, months, days } = af;
-    //    return `${years}-${months}-${days}`;
-    //}
-
-    //var start = create(interval.start);
-    //var end = create(interval.end);
-
-    //return `${studyId}/${start}_${end}`;
 }
 
 export const escapeJsonPointer = (pointer) => (
@@ -37,14 +27,15 @@ export const unescapeJsonPointer = (pointer) => (
 );
 
 export const createInitialValues = ({
-    ageFrameRecords
+    ageFrameRecords,
+    locale
 }) => {
     var now = new Date();
+    var interval = intervalfns.weekIntervalOf(now, { locale });
+    interval = intervalfns.add(interval, { both: { weeks: 1 }});
+
     var initialValues = {
-        interval: {
-            start: now.toISOString(),
-            end: now.toISOString()
-        },
+        interval: intervalfns.dtos(interval),
         filters: {}
     };
     for (var ageFrame of ageFrameRecords) {
