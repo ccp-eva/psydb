@@ -130,6 +130,7 @@ var ExperimentSubjectDropdown = (ps) => {
                     : 'dropdown-toggle-no-caret'
                 }
                 disabled={ disabled }
+                title='Proband:innen Funktionen für Termin'
             >
                 { 
                     label 

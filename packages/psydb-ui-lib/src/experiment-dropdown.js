@@ -85,6 +85,7 @@ var ExperimentDropdown = (ps) => {
                     : 'dropdown-toggle-no-caret'
                 }
                 disabled={ disabled }
+                title='Termin Funktionen'
             >
                 { 
                     label 
