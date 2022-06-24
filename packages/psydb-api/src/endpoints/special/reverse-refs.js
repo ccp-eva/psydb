@@ -36,7 +36,8 @@ var RequestParamsSchema = () => ExactObject({
         collection: StringEnum([
             'subject',
             'personnel',
-            'externalOrganization'
+            'externalOrganization',
+            'location',
         ]),
         id: Id(),
     },
