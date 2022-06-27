@@ -33,8 +33,7 @@ var createParticipation = async (context, bag) => {
             experimentId
         }),
 
-        // TODO
-        excludeFromMoreExperimentsInStudy: false
+        excludeFromMoreExperimentsInStudy
     }
 
     if (labProcedureType !== 'online-survey') {

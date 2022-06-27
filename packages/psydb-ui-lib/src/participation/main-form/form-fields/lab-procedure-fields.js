@@ -25,7 +25,7 @@ export const LabProcedureFields = (ps) => {
     var { values, setFieldValue, dirty: isFormDirty } = useFormikContext();
     var { labProcedureType } = values['$'];
 
-    var [ didFetch, fetched ] = useFetch((agent) => (
+    var [ didFetchSettings, fetchedSettings ] = useFetch((agent) => (
         studyId && subjectType
         ? agent.fetchExperimentVariantSettings({
             studyId, subjectType
@@ -61,7 +61,31 @@ export const LabProcedureFields = (ps) => {
         dependencies: [ studyId, subjectType ]
     });
 
-    if (!didFetch || !fetched.data) {
+    var [ didFetchStudy, fetchedStudy ] = useFetch((agent) => (
+        studyId
+        ? agent.readRecord({
+            collection: 'study',
+            id: studyId
+        })
+        : undefined
+    ), [ studyId ]);
+
+    var [ didFetchSubject, fetchedSubject ] = useFetch((agent) => (
+        subjectId
+        ? agent.readRecord({
+            collection: 'subject',
+            id: subjectId
+        })
+        : undefined
+    ), [ subjectId ]);
+
+    var shouldShowFallback = (
+        !didFetchSettings || !fetchedSettings.data
+        || !didFetchStudy || !fetchedStudy.data
+        || !didFetchSubject || !fetchedSubject.data
+    );
+
+    if (shouldShowFallback) {
         return (
             <Fields.LabProcedureType
                 settingsByType={ settingsByType }
@@ -71,7 +95,10 @@ export const LabProcedureFields = (ps) => {
         )
     }
 
-    var { records, related } = fixRelated(fetched.data);
+    var { record: study } = fetchedStudy.data;
+    var { record: subject } = fetchedSubject.data;
+
+    var { records, related } = fixRelated(fetchedSettings.data);
 
     var settingsByType = keyBy({ items: records, byProp: 'type' });
     var types = Object.keys(settingsByType);
@@ -84,15 +111,23 @@ export const LabProcedureFields = (ps) => {
                 disabled={ !subjectId }
             />
             { labProcedureType && (
-                <TypeFields
-                    enableTeamSelect={ enableTeamSelect }
-                    settings={ settingsByType[labProcedureType] }
-                    related={ related }
-                   
-                    studyId={ studyId }
-                    subjectId={ subjectId }
-                    subjectType={ subjectType }
-                />
+                <>
+                    <TypeFields
+                        enableTeamSelect={ enableTeamSelect }
+                        settings={ settingsByType[labProcedureType] }
+                        related={ related }
+                       
+                        studyId={ studyId }
+                        subjectId={ subjectId }
+                        subjectType={ subjectType }
+                    />
+                    { study.state.enableFollowUpExperiments && (
+                        <Fields.DefaultBool
+                            dataXPath='$.excludeFromMoreExperimentsInStudy'
+                            label='Ist Letzter Termin'
+                        />
+                    )}
+                </>
             )}
         </>
     )

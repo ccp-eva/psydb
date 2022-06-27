@@ -17,6 +17,7 @@ var setupParticipationItems = (context) => {
         
         experimentOperatorTeamId,
         experimentOperatorIds,
+        excludeFromMoreExperimentsInStudy,
     } = payload;
 
     var { study, subject, location } = cache;
@@ -38,8 +39,7 @@ var setupParticipationItems = (context) => {
         timestamp,
         status,
     
-        // TODO
-        //excludeFromMoreExperimentsInStudy: false
+        excludeFromMoreExperimentsInStudy
     }
     
     if (labProcedureType !== 'online-survey') {

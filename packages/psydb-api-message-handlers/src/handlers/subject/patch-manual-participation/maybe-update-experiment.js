@@ -38,18 +38,29 @@ var maybeUpdateExperiment = async (context) => {
     var changedStatus = (
         originalItem.status !== patchedItem.status
     );
-    if (changedStatus) {
+    var changedExcludeFromMoreExperimentsInStudy = (
+        originalItem.excludeFromMoreExperimentsInStudy
+        !== patchedItem.excludeFromMoreExperimentsInStudy
+    );
+    if (changedStatus || changedExcludeFromMoreExperimentsInStudy) {
         var six = experiment.state.subjectData.findIndex(it => (
             compareIds(it.subjectId, subject._id)
         ));
 
-        var path = `state.subjectData.${six}.participationStatus`;
+        var basePath = `state.subjectData.${six}`;
+        var participationPath = `${basePath}.participationStatus`;
+        var excludePath = `${basePath}.excludeFromMoreExperimentsInStudy`;
 
         await dispatch({
             collection: 'experiment',
             channelId: experimentId,
             payload: { $set: {
-                [path]: patchedItem.status
+                ...(changedStatus && {
+                    [participationPath]: patchedItem.status
+                }),
+                ...(changedExcludeFromMoreExperimentsInStudy && {
+                    [excludePath]: patchedItem.excludeFromMoreExperimentsInStudy
+                }),
             }},
         });
     }

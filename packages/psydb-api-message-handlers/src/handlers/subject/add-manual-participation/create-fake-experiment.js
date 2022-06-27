@@ -15,6 +15,8 @@ var createFakeExperiment = async (context, bag) => {
 
         experimentOperatorTeam,
         experimentOperatorIds,
+
+        excludeFromMoreExperimentsInStudy,
     } = bag;
     
     if (labProcedureType === 'online-survey') {
@@ -47,6 +49,7 @@ var createFakeExperiment = async (context, bag) => {
             invitationStatus: "scheduled",
             participationStatus: status,
             comment: "",
+            excludeFromMoreExperimentsInStudy,
         }],
 
         ...(experimentOperatorTeam && {
