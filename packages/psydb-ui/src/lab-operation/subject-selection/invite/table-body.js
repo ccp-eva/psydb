@@ -196,7 +196,7 @@ const Participation = (ps) => {
 
     return (
         <div className={ className + ' flex-grow-1 flex-basis-0' }>
-            Teilg.Studien:
+            <b>Teilg.Studien:</b>
             {' '}
             { formatted }
         </div>
@@ -238,7 +238,7 @@ const UpcomingExperiments = ({
     )
     return (
         <div className={ className + ' d-flex flex-grow-1 flex-basis-0' }>
-            Termine:
+            <b>Termine:</b>
             <div className='ml-3'>
                 { upcoming }
             </div>
