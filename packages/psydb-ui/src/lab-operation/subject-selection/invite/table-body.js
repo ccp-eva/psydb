@@ -84,6 +84,7 @@ const TableRow = ({
                     record,
                     ...subjectMetadata
                 }) }/>
+                <td></td>
             </tr>
             <ExtendedDataRow { ...({
                 isRed,
@@ -128,36 +129,38 @@ const ExtendedDataRow = (ps) => {
                 className={ (isRed ? 'bg-light-red' : '') + ' border-0 pt-0' }
             >
                 <div className='d-flex justify-content-between'>
-                    <div className='d-flex ml-5'>
-                        <Participation { ...({
-                            record, subjectMetadata,
-                            className: 'mr-4'
-                        })} />
-                        <UpcomingExperiments { ...({
-                            inviteType,
-                            records: record._upcomingExperiments,
-                            ...subjectExperimentMetadata,
-                            className: 'mr-4'
-                        }) } />
-                        <TestableInStudies { ...({
-                            record, subjectMetadata, desiredTestInterval
-                        })} />
-                    </div>
-                    <div>
-                        <ActionButtons { ...({
-                            isRed,
+                    <Participation { ...({
+                        record, subjectMetadata,
+                        className: 'mr-4'
+                    })} />
+                    <UpcomingExperiments { ...({
+                        inviteType,
+                        records: record._upcomingExperiments,
+                        ...subjectExperimentMetadata,
+                        className: 'mr-4'
+                    }) } />
+                    <TestableInStudies { ...({
+                        record, subjectMetadata, desiredTestInterval
+                    })} />
+                </div>
+            </td>
+            <td
+                className={ (isRed ? 'bg-light-red' : '') + ' border-0 pt-0' }
+            >
+                <div>
+                    <ActionButtons { ...({
+                        isRed,
 
-                            inviteType,
-                            record,
-                            subjectType,
-                            desiredTestInterval,
+                        inviteType,
+                        record,
+                        subjectType,
+                        desiredTestInterval,
 
-                            canWriteSubjects,
+                        canWriteSubjects,
 
-                            onInviteSubject,
-                            onViewSubject
-                        }) } />
-                    </div>
+                        onInviteSubject,
+                        onViewSubject
+                    }) } />
                 </div>
             </td>
         </tr>
@@ -192,7 +195,7 @@ const Participation = (ps) => {
     )
 
     return (
-        <div className={ className }>
+        <div className={ className + ' flex-grow-1 flex-basis-0' }>
             Teilg.Studien:
             {' '}
             { formatted }
@@ -234,7 +237,7 @@ const UpcomingExperiments = ({
         )
     )
     return (
-        <div className={ className + ' d-flex' }>
+        <div className={ className + ' d-flex flex-grow-1 flex-basis-0' }>
             Termine:
             <div className='ml-3'>
                 { upcoming }
@@ -266,8 +269,8 @@ const TestableInStudies = (ps) => {
         })
     )
     return (
-        <div className='d-flex mr-4'>
-            <b>Mögliche Studien:</b>
+        <div className='d-flex mr-4 flex-grow-1 flex-basis-0'>
+            <b>Mögl.Studien:</b>
             <div className='ml-3'>
                 { formatted }
             </div>

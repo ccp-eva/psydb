@@ -202,6 +202,7 @@ const InviteTestableSubjectList = ({
                         <FieldDataHeadCols { ...({
                             displayFieldData: subjectData.displayFieldData
                         })} />
+                        <th></th>
                         {/*<th>Teilg. Stud.</th>
                         <th>Termine</th>
                         <th>Mögl. Stud.</th>
