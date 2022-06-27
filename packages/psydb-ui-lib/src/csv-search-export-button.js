@@ -10,6 +10,7 @@ const CSVSearchExportButton = (ps) => {
         constraints,
         searchOptions,
         sort,
+        showHidden,
 
         className
     } = ps;
@@ -25,6 +26,7 @@ const CSVSearchExportButton = (ps) => {
             constraints,
             filters,
             sort,
+            showHidden,
         })
     }, { useEffect: false });
 

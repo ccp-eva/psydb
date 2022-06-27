@@ -40,6 +40,8 @@ const RecordListContainer = ({
     var canUseExtendedSearch = permissions.hasFlag('canUseExtendedSearch');
     var canUseCSVExport = permissions.hasFlag('canUseCSVExport');
 
+    var [ showHidden, setShowHidden ] = useState(false);
+
     return (
         <div className={ className }>
             <div className='media-print-hidden mb-3 d-flex justify-content-between'>
@@ -63,6 +65,8 @@ const RecordListContainer = ({
                             constraints,
                             searchOptions,
                             sort: defaultSort || undefined,
+
+                            showHidden,
                         })} />
                     )}
                 </div>
@@ -88,6 +92,9 @@ const RecordListContainer = ({
                 tableClassName,
                 bsTableProps,
                 CustomActionListComponent,
+
+                showHidden,
+                onToggleHidden: setShowHidden,
             }) } />
         </div>
     );

@@ -38,13 +38,14 @@ var RecordList = ({
     selectedRecordIds,
     onSelectRecord,
 
+    showHidden,
+    onToggleHidden,
     linkBaseUrl,
     tableClassName,
     bsTableProps,
     CustomActionListComponent,
 }) => {
     var [ isInitialized, setIsInitialized ] = useState(false);
-    var [ showHidden, setShowHidden ] = useState(false);
     var [ payload, setPayload ] = useState([]);
 
     var [ filters, setFilters ] = (
@@ -123,7 +124,7 @@ var RecordList = ({
                         <div
                             role='button'
                             className='d-flex align-items-center text-primary'
-                            onClick={ () => setShowHidden(!showHidden) }
+                            onClick={ () => onToggleHidden(!showHidden) }
                         >
                             {
                                 showHidden 

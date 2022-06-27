@@ -73,6 +73,8 @@ var FullBodySchema = ({
                 // nut sure here, might get wonky with wierd keys /foo/bar/baz
                 items: { oneOf: variants }
             },*/
+            showHidden: DefaultBool(),
+
             filters: ExactObject({
                 properties: filters,
                 required: [],
@@ -93,6 +95,7 @@ var FullBodySchema = ({
                 },
                 required: [ 'path', 'direction' ]
             }),
+
 
             timezone: Timezone(),
         },

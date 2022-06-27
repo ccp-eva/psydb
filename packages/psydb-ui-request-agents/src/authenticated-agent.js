@@ -136,7 +136,8 @@ agent.searchExport = (bag) => {
         searchOptions,
         constraints = {},
         filters = {},
-        sort
+        sort,
+        showHidden,
     } = bag;
 
     return axios.post('/api/search-export', {
@@ -146,6 +147,7 @@ agent.searchExport = (bag) => {
         constraints,
         filters,
         sort,
+        showHidden,
 
         timezone: getSystemTimezone(),
     });
