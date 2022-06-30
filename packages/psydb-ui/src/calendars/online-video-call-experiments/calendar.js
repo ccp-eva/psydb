@@ -12,8 +12,9 @@ import {
 import agent from '@mpieva/psydb-ui-request-agents';
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 
-import { usePermissions } from '@mpieva/psydb-ui-hooks';
-import { Button, LoadingIndicator } from '@mpieva/psydb-ui-layout';
+import { usePermissions, useToggleReducer } from '@mpieva/psydb-ui-hooks';
+import { LoadingIndicator, ToggleButtons } from '@mpieva/psydb-ui-layout';
+
 import CalendarNav from '@mpieva/psydb-ui-lib/src/calendar-nav';
 import withVariableCalendarPages from '@mpieva/psydb-ui-lib/src/with-variable-calendar-pages';
 import getDayStartsInInterval from '@mpieva/psydb-ui-lib/src/get-day-starts-in-interval';
@@ -189,7 +190,7 @@ const CalendarVariantContainer = (ps) => {
 
     var [ query, updateQuery ] = useURLSearchParams();
     var permissions = usePermissions();
-    var [ showPast, setShowPast ] = useState(false);
+    var showPast = useToggleReducer(false, { as: 'props' });
     
     var {
         cal: calendarVariant,
@@ -204,10 +205,7 @@ const CalendarVariantContainer = (ps) => {
 
             { permissions.isRoot() && (
                 <div className='mb-2'>
-                    <Button
-                        onClick={ () => setShowPast(showPast ? false : true) }
-                        size='sm'
-                    >zeige Vergangenheit</Button>
+                    <ToggleButtons.ShowPast { ...showPast } />
                 </div>
             )}
             <div className='d-flex mb-2'>
@@ -252,7 +250,7 @@ const CalendarVariantContainer = (ps) => {
             <WrappedCalendar { ...({
                 calendarVariant,
                 selectedStudyId,
-                showPast,
+                showPast: showPast.value,
                 //onSelectStudy: handleSelectStudyId,
                 onSelectDay: (date) => {
                     updateQuery({

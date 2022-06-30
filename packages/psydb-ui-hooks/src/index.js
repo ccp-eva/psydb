@@ -15,6 +15,7 @@ export { default as useRevision } from './use-revision';
 export { default as useModalReducer } from './use-modal-reducer';
 export { default as usePaginationReducer } from './use-pagination-reducer';
 export { default as useSelectionReducer } from './use-selection-reducer';
+export { default as useToggleReducer } from './use-toggle-reducer';
 
 export { default as useCallbackMaybe } from './use-callback-maybe';
 export { default as useURLSearchParamsB64 } from './use-url-search-params-b64';

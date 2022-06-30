@@ -6,6 +6,9 @@ export { default as Pagination } from './pagination';
 
 export * from './icon-buttons';
 
+export { default as ToggleButton } from './toggle-button';
+export * as ToggleButtons from './all-toggle-buttons';
+
 export { default as DetailsIconButton } from './details-icon-button';
 //export { default as StudyIconButton } from './study-icon-button';
 //export { default as ExperimentIconButton } from './experiment-icon-button';

@@ -1,6 +1,16 @@
 import React, { useState } from 'react';
-import { useFetch, usePermissions } from '@mpieva/psydb-ui-hooks';
-import { Button, LoadingIndicator } from '@mpieva/psydb-ui-layout';
+
+import {
+    useFetch,
+    usePermissions,
+    useToggleReducer,
+} from '@mpieva/psydb-ui-hooks';
+
+import {
+    Button,
+    LoadingIndicator,
+    ToggleButtons
+} from '@mpieva/psydb-ui-layout';
 
 import datefns from '../date-fns';
 import CalendarNav from '../calendar-nav';
@@ -44,7 +54,7 @@ const LocationCalendarList = ({
     revision = 0,
 }) => {
     var permissions = usePermissions();
-    var [ showPast, setShowPast ] = useState(false);
+    var showPast = useToggleReducer(false, { as: 'props' });
 
     var [ didFetch, fetched ] = useFetch((agent) => {
         return agent.fetchStudyLocationReservationCalendar({
@@ -82,10 +92,7 @@ const LocationCalendarList = ({
         <div className={ className }>
             { permissions.isRoot() && (
                 <div className='mt-2'>
-                    <Button
-                        onClick={ () => setShowPast(showPast ? false : true) }
-                        size='sm'
-                    >zeige Vergangenheit</Button>
+                    <ToggleButtons.ShowPast { ...showPast } />
                 </div>
             )}
             <CalendarNav { ...({
@@ -131,7 +138,7 @@ const LocationCalendarList = ({
                         onSelectExperimentSlot,
 
                         calculateNewExperimentMaxEnd,
-                        showPast
+                        showPast: showPast.value
                     })}
                 />
             ))}
