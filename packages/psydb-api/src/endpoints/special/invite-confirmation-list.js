@@ -227,6 +227,15 @@ var inviteConfirmationList = async (context, next) => {
         dataPointer: it.dataPointer,
     }))
 
+    var experimentStudyRecords = await (
+        db.collection('study').aggregate([
+            { $match: {
+                _id: { $in: (
+                    experimentRecords.map(it => it.state.studyId)
+                )},
+            }},
+        ]).toArray()
+    );
 
     context.body = ResponseBody({
         data: {
@@ -237,6 +246,7 @@ var inviteConfirmationList = async (context, next) => {
             subjectRelated,
             subjectDisplayFieldData: displayFieldData,
             phoneListField,
+            studyRecords: experimentStudyRecords,
         },
     });
 

@@ -22,6 +22,7 @@ const SubjectItem = ({
     subjectRelated,
     subjectDisplayFieldData,
     phoneListField,
+    studyRecord,
     
     experimentRecord,
 
@@ -157,7 +158,11 @@ const SubjectItem = ({
 
                         onClickComment={ commentPerSubjectModal.handleShow }
                         onClickMove={ moveSubjectModal.handleShow }
-                        onClickFollowUp={ followUpSubjectModal.handleShow }
+                        onClickFollowUp={
+                            studyRecord.state.enableFollowUpExperiments
+                            ? followUpSubjectModal.handleShow
+                            : undefined
+                        }
                         onClickRemove={ removeSubjectModal.handleShow }
 
                         enableStatusChanges={ false }

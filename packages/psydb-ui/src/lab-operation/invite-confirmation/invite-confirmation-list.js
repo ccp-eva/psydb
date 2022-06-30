@@ -1,6 +1,7 @@
 import React from 'react';
 import { useRouteMatch, useParams } from 'react-router-dom';
 
+import { keyBy } from '@mpieva/psydb-core-utils';
 import { useFetch, useSend, useRevision } from '@mpieva/psydb-ui-hooks';
 import { Alert, LoadingIndicator } from '@mpieva/psydb-ui-layout';
 import { 
@@ -62,7 +63,13 @@ const InviteConfirmationList = (ps) => {
         subjectRelated,
         subjectDisplayFieldData,
         phoneListField,
+        studyRecords,
     } = fetched.data;
+
+    var studyRecordsById = keyBy({
+        items: studyRecords,
+        byProp: '_id'
+    });
 
     return (
         <div>
@@ -97,6 +104,7 @@ const InviteConfirmationList = (ps) => {
                     subjectRelated,
                     subjectDisplayFieldData,
                     phoneListField,
+                    studyRecord: studyRecordsById[it.state.studyId],
 
                     onChangeStatus: send.exec,
                     onSuccessfulUpdate: revision.up
