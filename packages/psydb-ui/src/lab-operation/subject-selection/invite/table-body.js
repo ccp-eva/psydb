@@ -91,6 +91,7 @@ const TableRow = ({
                 colspan,
 
                 record,
+                subjectType,
                 subjectMetadata,
                 subjectExperimentMetadata,
                 inviteType,
