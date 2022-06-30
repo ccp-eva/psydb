@@ -22,10 +22,15 @@ const TimeSlot = (ps) => {
         onSelectReservationSlot,
         onSelectEmptySlot,
         showPast,
+        isDayEnabled,
         ...downstream
     } = ps;
 
     var { timestamp } = downstream;
+
+    if (!isDayEnabled && !showPast) {
+        return <DisabledSlot />
+    }
 
     var permissions = usePermissions();
     var canCreateReservationsWithinTheNext3Days = (
@@ -39,10 +44,10 @@ const TimeSlot = (ps) => {
     if (experimentRecord) {
         var end = experimentRecord.state.interval.end;
         var isInPast = now.getTime() > new Date(end).getTime();
-        var isWithin3days = checkIsWithin3Days(end);
+        //var isWithin3days = checkIsWithin3Days(end);
         var shouldEnable = (
             !isInPast
-            && canCreateExperimentsWithinTheNext3Days ? true : !isWithin3days
+            //&& canCreateExperimentsWithinTheNext3Days ? true : !isWithin3days
             // && !([6,7].includes(dayIndex))
         );
         if (!showPast && !shouldEnable) {
@@ -60,10 +65,10 @@ const TimeSlot = (ps) => {
     else if (reservationRecord) {
         //var end = reservationRecord.state.interval.end;
         var isInPast = now.getTime() > timestamp;
-        var isWithin3days = checkIsWithin3Days(timestamp);
+        //var isWithin3days = checkIsWithin3Days(timestamp);
         var shouldEnable = (
             !isInPast
-            && canCreateExperimentsWithinTheNext3Days ? true : !isWithin3days
+            //&& canCreateExperimentsWithinTheNext3Days ? true : !isWithin3days
             // && !([6,7].includes(dayIndex))
         );
         if (!showPast && !shouldEnable) {
@@ -79,10 +84,10 @@ const TimeSlot = (ps) => {
     }
     else {
         var isInPast = now.getTime() > timestamp;
-        var isWithin3days = checkIsWithin3Days(timestamp);
+        //var isWithin3days = checkIsWithin3Days(timestamp);
         var shouldEnable = (
             !isInPast
-            && canCreateReservationsWithinTheNext3Days ? true : !isWithin3days
+            //&& canCreateReservationsWithinTheNext3Days ? true : !isWithin3days
             // && !([6,7].includes(dayIndex))
         );
         if (!showPast && !shouldEnable) {

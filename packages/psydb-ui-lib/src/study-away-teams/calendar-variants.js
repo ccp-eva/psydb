@@ -21,6 +21,7 @@ import TimeTableHead from './time-table-head';
 import TeamTimeTable from './team-time-table';
 
 export const Calendar = ({
+    variant,
     studyId,
     teamData,
     
@@ -79,7 +80,9 @@ export const Calendar = ({
             }}/>
             
             <TimeTableHead { ...({
+                variant,
                 allDayStarts,
+                showPast: showPast.value,
             }) }/>
             <div className='border-bottom'>
                 {
@@ -88,6 +91,7 @@ export const Calendar = ({
                     .map(teamRecord => {
                         return <TeamTimeTable { ...({
                             key: teamRecord._id,
+                            variant,
                             teamRecord,
 
                             allDayStarts,

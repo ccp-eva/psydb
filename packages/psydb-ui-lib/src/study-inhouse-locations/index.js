@@ -11,6 +11,7 @@ import LocationCalendarList from './location-calendar-list';
 
 
 const StudyInhouseLocations = ({
+    variant = 'experiment',
     studyId,
     studyRecordType,
 
@@ -106,6 +107,7 @@ const StudyInhouseLocations = ({
             />
 
             <LocationCalendarList { ...({
+                variant,
                 className: locationCalendarListClassName,
                 teamRecords,
                 studyId,

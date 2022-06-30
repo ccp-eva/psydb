@@ -43,6 +43,7 @@ export const Locations = ({
             />
 
             <StudyInhouseLocations
+                variant='reservation'
                 studyId={ studyId }
                 studyRecordType={ studyType }
                 onSelectLocationType={ onSelectLocationType }

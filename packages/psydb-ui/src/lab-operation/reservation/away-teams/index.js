@@ -46,6 +46,7 @@ const AwayTeamContainer = ({}) => {
             })} />
 
             <StudyAwayTeams { ...({
+                variant: 'reservation',
                 studyId,
                 studyRecordType: studyType,
 

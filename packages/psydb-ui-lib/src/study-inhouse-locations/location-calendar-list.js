@@ -19,6 +19,8 @@ import withWeeklyCalendarPages from '../with-weekly-calendar-pages';
 import LocationReservationCalendar from './location-reservation-calendar';
 
 const LocationCalendarList = ({
+    variant,
+
     studyId,
     subjectRecordType,
     currentExperimentId,
@@ -109,6 +111,8 @@ const LocationCalendarList = ({
                 <LocationReservationCalendar
                     key={ locationRecord._id }
                     { ...({
+                        variant,
+
                         studyId,
                         locationRecord,
                         reservationRecords,
