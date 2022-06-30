@@ -166,6 +166,12 @@ module.exports = {
                 displayName: 'Telefon',
             },
             {
+                key: '_emails',
+                systemType: 'EmailList',
+                dataPointer: '/gdpr/state/emails',
+                displayName: 'Email',
+            },
+            {
                 key: '_descriptions',
                 systemType: 'FullText',
                 dataPointer: '/gdpr/state/description',
@@ -184,6 +190,10 @@ module.exports = {
             {
                 systemType: 'PhoneWithTypeList',
                 dataPointer: '/gdpr/state/phones',
+            },
+            {
+                systemType: 'EmailList',
+                dataPointer: '/gdpr/state/emails',
             },
             {
                 systemType: 'FullText',
