@@ -1,3 +1,4 @@
+import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 import intervalfns from '@mpieva/psydb-date-interval-fns';
 
 export const parseEncodedInterval = (str) => {
@@ -33,7 +34,7 @@ export const createInitialValues = ({
     var now = new Date();
     //var interval = intervalfns.weekIntervalOf(now, { locale });
     //interval = intervalfns.add(interval, { both: { weeks: 1 }});
-    var interval = { start: now, end: now };
+    var interval = { start: now, end: datefns.endOfWeek(now, { locale }) };
     interval = intervalfns.add(interval, { both: { days: 1 }});
     interval = intervalfns.add(interval, { end: { weeks: 1 }});
 
