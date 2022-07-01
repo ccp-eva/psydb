@@ -514,7 +514,7 @@ agent.fetchSubjectExperiments = (bag) => {
 
 agent.fetchSubjectPossibleTestIntervals = (bag) => {
     var {
-        subjectId, studyId,
+        subjectIds, studyId,
         labProcedureTypeKey, desiredTestInterval,
         extraAxiosConfig,
     } = bag;
@@ -522,7 +522,7 @@ agent.fetchSubjectPossibleTestIntervals = (bag) => {
     return axios.post(
         '/api/subject/possible-test-intervals',
         { 
-            subjectId, studyId,
+            subjectIds, studyId,
             labProcedureTypeKey, desiredTestInterval
         },
         extraAxiosConfig,

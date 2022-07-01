@@ -52,9 +52,10 @@ const SubjectModalSchedule = ({
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.fetchSubjectPossibleTestIntervals({
             studyId,
-            subjectId,
+            subjectIds: [ subjectId ],
             labProcedureTypeKey: inviteType,
-            desiredTestInterval
+            // ageFrameIds // TODO
+            //desiredTestInterval
         })
     ), [ studyId, subjectId ]);
 
