@@ -96,7 +96,7 @@ var fetchRecordByFilter = async ({
         );
     }
     
-    showHidden = showHidden || (queryFields && queryFields.length > 0);
+    //showHidden = showHidden || (queryFields && queryFields.length > 0);
 
     preCountStages.push({
         $match: {

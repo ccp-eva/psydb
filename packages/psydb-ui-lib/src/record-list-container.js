@@ -50,9 +50,10 @@ const RecordListContainer = ({
 
     var [ query, updateQuery ] = (
         (target === 'table' || !target)
-        ? useURLSearchParamsB64({ containerKey: 's' })
+        ? useURLSearchParamsB64()
         : useState({})
     );
+    console.log(query);
     var { showHidden = false } = query;
     var setShowHidden = (next) => updateQuery({ ...query, showHidden: next });
 
@@ -86,7 +87,7 @@ const RecordListContainer = ({
                             searchOptions,
                             sort: defaultSort || undefined,
 
-                            showHidden,
+                            //showHidden,
                         })} />
                     )}
                 </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { transliterate } from '@mpieva/psydb-core-utils';
+import { entries, transliterate } from '@mpieva/psydb-core-utils';
 
 import {
     useFetch,
@@ -40,6 +40,7 @@ var RecordList = ({
 
     showHidden,
     setShowHidden,
+
     linkBaseUrl,
     tableClassName,
     bsTableProps,
@@ -69,6 +70,8 @@ var RecordList = ({
             pagination.selectSpecificPage(0);
         }
 
+        var { showHidden: realShowHidden, ...realFilters } = filters;
+
         return agent.searchRecords({
             target,
             collection,
@@ -79,9 +82,9 @@ var RecordList = ({
             ),
             limit,
             constraints,
-            filters,
+            filters: realFilters,
             sort: defaultSort || undefined,
-            showHidden,
+            showHidden: realShowHidden,
         })
         .then((response) => {
             setDidChangeFilters(false);
@@ -91,7 +94,7 @@ var RecordList = ({
     }, [
         collection, recordType, offset, limit,
         filters, searchOptions, showHidden
-]);
+    ]);
 
     if (!didFetch) {
         return (
@@ -117,8 +120,15 @@ var RecordList = ({
                         displayFieldData={ displayFieldData }
                         onSubmit={ ({ filters }) => {
                             setDidChangeFilters(true);
-                            setFilters(filters);
-                            setShowHidden(true);
+                            setFilters({
+                                ...filters,
+                                showHidden: (
+                                    entries(filters || {})
+                                    .filter(it => it[1])
+                                    .length > 0
+                                )
+                            });
+                            //setShowHidden(true);
                         }}
                     />
                     <div className='pt-2 px-3'>

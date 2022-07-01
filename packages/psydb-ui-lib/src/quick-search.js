@@ -76,6 +76,7 @@ const QuickSearch = ({
             className={ className }
             initialValues={ filters || {} }
             onSubmit={ handleSubmit }
+            enableReinitialize={ true }
         >
             {(formikProps) => {
                 return (
