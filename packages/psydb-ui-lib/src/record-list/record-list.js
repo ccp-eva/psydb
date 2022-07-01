@@ -84,7 +84,11 @@ var RecordList = ({
             constraints,
             filters: realFilters,
             sort: defaultSort || undefined,
-            showHidden: realShowHidden,
+            showHidden: (
+                target === 'table'
+                ? realShowHidden
+                : showHidden
+            )
         })
         .then((response) => {
             setDidChangeFilters(false);
@@ -128,7 +132,9 @@ var RecordList = ({
                                     .length > 0
                                 )
                             });
-                            //setShowHidden(true);
+                            if (target && target !== 'table') {
+                                setShowHidden(true);
+                            }
                         }}
                     />
                     <div className='pt-2 px-3'>
