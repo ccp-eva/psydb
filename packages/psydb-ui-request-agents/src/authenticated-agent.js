@@ -512,6 +512,20 @@ agent.fetchSubjectExperiments = (bag) => {
     );
 }
 
+agent.fetchLocationExperiments = (bag) => {
+    var {
+        locationId,
+        includePastExperiments,
+        out = 'full',
+        extraAxiosConfig,
+    } = bag;
+
+    return axios.post(
+        '/api/location/related-experiments',
+        { locationId, includePastExperiments, out },
+        extraAxiosConfig,
+    );
+}
 agent.fetchSubjectPossibleTestIntervals = (bag) => {
     var {
         subjectIds, studyId,

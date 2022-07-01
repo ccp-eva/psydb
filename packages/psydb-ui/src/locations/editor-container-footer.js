@@ -84,7 +84,15 @@ const UpdateVisibilityModalBody = (ps) => {
         })
     ), [ id ]);
 
-    if (!didFetchRefs) {
+    var [ didFetchExperiments, fetchedExperiments ] = useFetch((agent) => (
+        agent.fetchLocationExperiments({
+            locationId: id,
+            includePastExperiments: false,
+            out: 'count'
+        })
+    ), [ id ]);
+
+    if (!didFetchRefs || !didFetchExperiments) {
         return <LoadingIndicator size='lg' />
     }
 
@@ -99,15 +107,26 @@ const UpdateVisibilityModalBody = (ps) => {
 
     return (
         <div>
-            { refsFromSubject.length > 0 && (
+            { (refsFromSubject.length > 0 || fetchedExperiments.data.count > 0) && (
                 <Alert variant='danger' className='mt-3'>
-                    <b>
-                        Es sind noch
-                        {' '}
-                        { refsFromSubject.length }
-                        {' '}
-                        Proband:innen in dieser Location!
-                    </b>
+                    { refsFromSubject.length > 0 && (
+                        <b className='d-block'>
+                            Es sind noch
+                            {' '}
+                            { refsFromSubject.length }
+                            {' '}
+                            Proband:innen in dieser Location!
+                        </b>
+                    )}
+                    { fetchedExperiments.data.count > 0 && (
+                        <b className='d-block'>
+                            Es existieren noch
+                            {' '}
+                            { fetchedExperiments.data.count }
+                            {' '}
+                            Termine in dieser Location!
+                        </b>
+                    )}
                 </Alert>
             )} 
             <div className='mt-3'>

@@ -352,6 +352,13 @@ var createRouting = ({
         endpoints.subject.relatedExperiments
     );
 
+    router.post('/location/related-experiments',
+        withSelfAuth(),
+        withPermissions(),
+        withKoaBody(),
+        endpoints.location.relatedExperiments
+    );
+
     router.post('/subject/possible-test-intervals',
         withSelfAuth(),
         withPermissions(),
