@@ -52,7 +52,28 @@ const MoveExperimentModal = ({
         }
     }, [ experimentId ]);
 
+    var [ didFetchTestability, fetchedTestability ] = useFetch((agent) => {
+        if (didFetch) {
+        
+            experimentData = experimentData || fetched.data.experimentData;
+            studyData = studyData || fetched.data.studyData;
+            var studyId = studyData.record._id;
+            var subjectIds = experimentData.record.state.subjectData.map(
+                it => it.subjectId
+            );
+
+            return agent.fetchSubjectPossibleTestIntervals({
+                studyId,
+                subjectIds,
+                labProcedureTypeKey: experimentType,
+            })
+        }
+    }, [ experimentType, didFetch ]);
+
     if (shouldFetch && !didFetch) {
+        return null;
+    }
+    if (!didFetchTestability || !fetchedTestability.data) {
         return null;
     }
 
@@ -107,6 +128,7 @@ const MoveExperimentModal = ({
                     createCalculateNewExperimentMaxEnd(experimentData.record._id)
                 ),
 
+                testableIntervals: fetchedTestability.data.testableIntervals,
                 calendarRevision: revision,
                 locationCalendarListClassName: (
                     'bg-white p-2 border-left border-bottom border-right'
@@ -119,6 +141,7 @@ const MoveExperimentModal = ({
 
                 experimentData,
                 studyData,
+                testableIntervals: fetchedTestability.data.testableIntervals,
 
                 onSuccessfulUpdate: wrappedOnSuccessfulUpdate,
             }) } />
