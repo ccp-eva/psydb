@@ -176,9 +176,15 @@ var add = (interval, options = {}) => {
     if (durationBoth) {
         durationStart = durationEnd = durationBoth;
     }
-    
-    var start = datefns.add(interval.start, durationStart);
-    var end = datefns.add(interval.end, durationEnd);
+  
+    var start = interval.start;
+    var end = interval.end;
+    if (durationStart) {
+        start = datefns.add(interval.start, durationStart);
+    }
+    if (durationEnd) {
+        end = datefns.add(interval.end, durationEnd);
+    }
 
     switch (as) {
         case 'tuple':

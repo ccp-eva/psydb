@@ -31,8 +31,11 @@ export const createInitialValues = ({
     locale
 }) => {
     var now = new Date();
-    var interval = intervalfns.weekIntervalOf(now, { locale });
-    interval = intervalfns.add(interval, { both: { weeks: 1 }});
+    //var interval = intervalfns.weekIntervalOf(now, { locale });
+    //interval = intervalfns.add(interval, { both: { weeks: 1 }});
+    var interval = { start: now, end: now };
+    interval = intervalfns.add(interval, { both: { days: 1 }});
+    interval = intervalfns.add(interval, { end: { weeks: 1 }});
 
     var initialValues = {
         interval: intervalfns.dtos(interval),
