@@ -44,24 +44,8 @@ const FormContainer = (ps) => {
         state: experimentState
     } = experimentData.record;
 
-    var { start, maxEnd } = modalPayloadData;
-    var isSubjectTestable = false;
-    //console.log({ testableIntervals });
-    if (testableIntervals) {
-        var intersections = intervalfns.intersect(
-            [{ start: start, end: maxEnd }],
-            testableIntervals
-        );
-        //console.log({ intersections });
-        isSubjectTestable = intersections.length > 0;
-    }
     return (
         <div>
-            { !isSubjectTestable && (
-                <Alert variant='danger'>
-                    <b>Nicht in Altersfenster</b>
-                </Alert>
-            )} 
             <header className='pb-1'><b>Aktuell</b></header>
             <div className='p-2 bg-white border'>
                 <ExperimentIntervalSummary
@@ -112,6 +96,7 @@ const InhouseConfirmModalBody = (ps) => {
         experimentData,
         studyData,
         modalPayloadData,
+        testableIntervals,
 
         onSuccessfulUpdate,
     } = ps;
@@ -153,20 +138,40 @@ const InhouseConfirmModalBody = (ps) => {
         shouldRemoveOldReservation: false
     }
 
+    var { start, maxEnd } = modalPayloadData;
+    var isSubjectTestable = false;
+    //console.log({ testableIntervals });
+    if (testableIntervals) {
+        var intersections = intervalfns.intersect(
+            [{ start: start, end: maxEnd }],
+            testableIntervals
+        );
+        //console.log({ intersections });
+        isSubjectTestable = intersections.length > 0;
+    }
+
     return (
-        <DefaultForm
-            initialValues={ initialValues }
-            onSubmit={ send.exec }
-        >
-            { (formikProps) => (
-                <FormContainer { ...({
-                    experimentData,
-                    studyData,
-                    confirmData: modalPayloadData,
-                    minEnd,
-                }) } />
-            )}
-        </DefaultForm>
+        <>
+            { !isSubjectTestable && (
+                <Alert variant='danger'>
+                    <b>Nicht in Altersfenster</b>
+                </Alert>
+            )} 
+            <DefaultForm
+                initialValues={ initialValues }
+                onSubmit={ send.exec }
+            >
+                { (formikProps) => (
+                    <FormContainer { ...({
+                        experimentData,
+                        studyData,
+                        confirmData: modalPayloadData,
+                        minEnd,
+                        modalPayloadData,
+                    }) } />
+                )}
+            </DefaultForm>
+        </>
     )
 
 }
