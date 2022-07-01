@@ -53,7 +53,7 @@ const RecordListContainer = ({
         ? useURLSearchParamsB64()
         : useState({})
     );
-    console.log(query);
+    //console.log(query);
     var { showHidden = false } = query;
     var setShowHidden = (next) => updateQuery({ ...query, showHidden: next });
 

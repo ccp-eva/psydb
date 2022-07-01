@@ -113,7 +113,7 @@ const QuickSearch = ({
 
 const FieldList = (ps) => {
     var { displayFieldData } = ps;
-    console.log(displayFieldData);
+    //console.log(displayFieldData);
 
     return (
         <>
