@@ -41,13 +41,13 @@ const ConfirmModal = ({
 
     var { start, maxEnd } = modalPayloadData;
     var isSubjectTestable = false;
-    console.log({ testableIntervals });
+    //console.log({ testableIntervals });
     if (testableIntervals) {
         var intersections = intervalfns.intersect(
             [{ start: start, end: maxEnd }],
             testableIntervals
         );
-        console.log({ intersections });
+        //console.log({ intersections });
         isSubjectTestable = intersections.length > 0;
     }
 
