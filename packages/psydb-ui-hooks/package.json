@@ -26,6 +26,7 @@
     "@babel/preset-react": "~7.12.10",
     "babel-loader": "~8.2.2",
     "react-router": "~5.2.0",
+    "@cdxoo/omit": "~1.0.1",
     "@cdxoo/react-router-url-search-params": "~1.0.4",
     "@mpieva/psydb-core-utils": "~0.1.0-alpha",
     "@mpieva/psydb-common-lib": "~0.1.0-alpha",

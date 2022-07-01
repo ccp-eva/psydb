@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useRouteMatch } from 'react-router-dom';
 
-import { usePermissions } from '@mpieva/psydb-ui-hooks';
+import {
+    usePermissions,
+    useURLSearchParams,
+    useURLSearchParamsB64,
+} from '@mpieva/psydb-ui-hooks';
+
 import { LinkButton } from '@mpieva/psydb-ui-layout';
 
 import CSVSearchExportButton from './csv-search-export-button';
@@ -35,12 +40,27 @@ const RecordListContainer = ({
 }) => {
     var { path, url } = useRouteMatch();
     var permissions = usePermissions();
+    
+    //var [ query, updateQuery ] = useURLSearchParams();
+    //var { showHidden = false } = query;
+    //if (showHidden) {
+    //    showHidden = showHidden === 'true' ? true : false;
+    //}
+    //var setShowHidden = (next) => updateQuery({ ...query, showHidden: next });
+
+    var [ query, updateQuery ] = (
+        (target === 'table' || !target)
+        ? useURLSearchParamsB64({ containerKey: 's' })
+        : useState({})
+    );
+    var { showHidden = false } = query;
+    var setShowHidden = (next) => updateQuery({ ...query, showHidden: next });
 
     var canCreate = permissions.hasCollectionFlag(collection, 'write');
     var canUseExtendedSearch = permissions.hasFlag('canUseExtendedSearch');
     var canUseCSVExport = permissions.hasFlag('canUseCSVExport');
 
-    var [ showHidden, setShowHidden ] = useState(false);
+    //var [ showHidden, setShowHidden ] = useState(false);
 
     return (
         <div className={ className }>
@@ -94,7 +114,7 @@ const RecordListContainer = ({
                 CustomActionListComponent,
 
                 showHidden,
-                onToggleHidden: setShowHidden,
+                setShowHidden,
             }) } />
         </div>
     );

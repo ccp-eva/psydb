@@ -39,7 +39,7 @@ var RecordList = ({
     onSelectRecord,
 
     showHidden,
-    onToggleHidden,
+    setShowHidden,
     linkBaseUrl,
     tableClassName,
     bsTableProps,
@@ -118,13 +118,14 @@ var RecordList = ({
                         onSubmit={ ({ filters }) => {
                             setDidChangeFilters(true);
                             setFilters(filters);
+                            setShowHidden(true);
                         }}
                     />
                     <div className='pt-2 px-3'>
                         <div
                             role='button'
                             className='d-flex align-items-center text-primary'
-                            onClick={ () => onToggleHidden(!showHidden) }
+                            onClick={ () => setShowHidden(!showHidden) }
                         >
                             {
                                 showHidden 

@@ -1,6 +1,7 @@
 import { useMemo, useCallback } from 'react';
 import { useLocation, useHistory } from 'react-router';
 import { Base64 } from 'js-base64';
+import omit from '@cdxoo/omit';
 import { useURLSearchParams } from '@cdxoo/react-router-url-search-params';
 
 import { transliterate } from '@mpieva/psydb-core-utils';
@@ -49,8 +50,8 @@ const useURLSearchParamsB64 = (options = {}) => {
 
         var out = (
             !stringified
-            ? {}
-            : { [containerKey]: stringified }
+            ? omit(containerKey, queryB64)
+            : { ...queryB64, [containerKey]: stringified }
         );
         return updateQueryB64(out, options);
     }, [ updateQueryB64 ]);
