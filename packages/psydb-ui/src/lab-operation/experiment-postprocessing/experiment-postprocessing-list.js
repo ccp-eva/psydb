@@ -19,6 +19,7 @@ import {
 import {
     LoadingIndicator,
     DetailsIconButton,
+    ExperimentIconButton,
     Alert,
 } from '@mpieva/psydb-ui-layout';
 
@@ -141,7 +142,7 @@ const ExperimentPostprocessingList = ({
                         </td>
                         <td>{ startDate }</td>
                         <td className='d-flex justify-content-end'>
-                            <DetailsIconButton to={`/experiments/${type}/${_id}`} />
+                            <ExperimentIconButton to={`/experiments/${type}/${_id}`} />
                         </td>
                     </tr>
                 }) }
