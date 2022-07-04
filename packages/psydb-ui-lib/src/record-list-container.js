@@ -41,13 +41,6 @@ const RecordListContainer = ({
     var { path, url } = useRouteMatch();
     var permissions = usePermissions();
     
-    //var [ query, updateQuery ] = useURLSearchParams();
-    //var { showHidden = false } = query;
-    //if (showHidden) {
-    //    showHidden = showHidden === 'true' ? true : false;
-    //}
-    //var setShowHidden = (next) => updateQuery({ ...query, showHidden: next });
-
     var [ query, updateQuery ] = (
         (target === 'table' || !target)
         ? useURLSearchParamsB64()
