@@ -241,6 +241,7 @@ var fetchStudyDataForType = async ({
             'type': true,
         },
         disablePermissionCheck: true,
+        showHidden: true
     });
 
     var related = await fetchRelatedLabelsForMany({
