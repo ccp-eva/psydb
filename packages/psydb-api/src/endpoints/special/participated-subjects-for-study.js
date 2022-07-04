@@ -24,6 +24,8 @@ var {
     createSchemaForRecordType,
     fetchRelatedLabels,
     gatherDisplayFieldsForRecordType,
+    fetchOneCustomRecordType,
+    applyRecordLabels,
 } = require('@mpieva/psydb-api-lib');
 
 var {
@@ -190,6 +192,16 @@ var fetchParticipation = async ({
         dataPointer: it.dataPointer,
     }))
 
+    var subjectTypeRecord = await fetchOneCustomRecordType({
+        db,
+        collection: 'subject',
+        type: subjectType,
+    });
+
+    applyRecordLabels({
+        records: subjectRecords,
+        customRecordType: subjectTypeRecord
+    });
 
     return ({
         records: subjectRecords,
