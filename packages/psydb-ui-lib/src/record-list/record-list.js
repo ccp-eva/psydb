@@ -4,6 +4,7 @@ import { entries, transliterate } from '@mpieva/psydb-core-utils';
 import {
     useFetch,
     usePaginationReducer,
+    usePaginationURLSearchParams,
     useURLSearchParamsB64,
 } from '@mpieva/psydb-ui-hooks';
 
@@ -58,7 +59,11 @@ var RecordList = ({
     var [ didChangeFilters, setDidChangeFilters ] = useState(false);
     //var [ cachedOffset, setCachedOffset ] = useState(0);
 
-    var pagination = usePaginationReducer({ offset: 0, limit: 50 })
+    var pagination = (
+        (target === 'table' || !target)
+        ? usePaginationURLSearchParams({ offset: 0, limit: 50 })
+        : usePaginationReducer({ offset: 0, limit: 50 })
+    )
     var { offset, limit } = pagination;
 
     // FIXME: this renders twice; we need to

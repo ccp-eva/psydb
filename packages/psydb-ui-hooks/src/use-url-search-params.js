@@ -18,6 +18,10 @@ const useURLSearchParams = (bag = {}) => {
     ), [ queryRaw ]);
 
     var updateQuery = useCallback((obj, options = {}) => {
+        var { mergedUpdate } = options;
+        if (mergedUpdate) {
+            obj = { ...query, ...obj };
+        }
         var tmp = stringifyObjectValues(obj, types);
         return updateQueryRaw(tmp);
     }, [ updateQueryRaw ])
