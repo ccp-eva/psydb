@@ -20,4 +20,5 @@ export { default as useToggleReducer } from './use-toggle-reducer';
 export { default as useCallbackMaybe } from './use-callback-maybe';
 export { default as useURLSearchParamsB64 } from './use-url-search-params-b64';
 
-export { useURLSearchParams } from '@cdxoo/react-router-url-search-params';
+export { default as useURLSearchParams } from './use-url-search-params';
+//export { useURLSearchParams } from '@cdxoo/react-router-url-search-params';

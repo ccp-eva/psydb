@@ -1,3 +1,4 @@
+import { useMemo, useCallback } from 'react';
 import {
     useURLSearchParams as useURLSearchParams_RAW
 } from '@cdxoo/react-router-url-search-params';
@@ -7,7 +8,7 @@ import { entries, transliterate } from '@mpieva/psydb-core-utils';
 const useURLSearchParams = (bag = {}) => {
     var {
         types = {},
-        ...pass,
+        ...pass
     } = bag;
 
     var [ queryRaw, updateQueryRaw ] = useURLSearchParams_RAW(pass);
@@ -17,7 +18,7 @@ const useURLSearchParams = (bag = {}) => {
     ), [ queryRaw ]);
 
     var updateQuery = useCallback((obj, options = {}) => {
-        var tmp = stingifyObjectValues(obj, types);
+        var tmp = stringifyObjectValues(obj, types);
         return updateQueryRaw(tmp);
     }, [ updateQueryRaw ])
 
@@ -26,9 +27,9 @@ const useURLSearchParams = (bag = {}) => {
 
 var stringifyObjectValues = (obj, types = {}) => {
     var out = {};
-    for (var [ key, value ] of entries(queryRaw)) {
+    for (var [ key, value ] of entries(obj)) {
         
-        if (value === undefined || value === null || isNaN(value)) {
+        if (value === undefined || value === null || Number.isNaN(value)) {
             continue;
         }
 
@@ -42,7 +43,7 @@ var stringifyObjectValues = (obj, types = {}) => {
             case 'number':
             case 'string':
             default:
-                out[key] = String(value)
+                out[key] = String(value);
                 break;
         }
     }
@@ -111,3 +112,5 @@ var decodeJsonB64 = (str, options = {}) => {
 
     return decoded;
 }
+
+export default useURLSearchParams;
