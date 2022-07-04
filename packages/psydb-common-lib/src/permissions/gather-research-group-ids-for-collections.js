@@ -77,7 +77,7 @@ var getCollectionReadFlagPointers = ({ collection }) => {
             ];
         case 'externalOrganization':
             return [
-                '/canReadExternalPersons',
+                '/canReadExternalOrganizations',
                 '/canWriteExternalOrganizations'
             ];
         case 'studyTopic':
