@@ -1,9 +1,10 @@
 import { useMemo, useCallback } from 'react';
+import { JsonBase64 } from '@cdxoo/json-base64';
 import {
     useURLSearchParams as useURLSearchParams_RAW
 } from '@cdxoo/react-router-url-search-params';
 
-import { entries, transliterate } from '@mpieva/psydb-core-utils';
+import { entries } from '@mpieva/psydb-core-utils';
 
 const useURLSearchParams = (bag = {}) => {
     var {
@@ -11,25 +12,19 @@ const useURLSearchParams = (bag = {}) => {
         ...pass
     } = bag;
 
-    var [ queryRaw, updateQueryRaw ] = useURLSearchParams_RAW(pass);
+    var prepareUpdate = createPrepareUpdate(types);
+    var parseReceived = createParseReceived(types);
 
-    var query = useMemo(() => (
-        parseQueryValues(queryRaw, types)
-    ), [ queryRaw ]);
-
-    var updateQuery = useCallback((obj, options = {}) => {
-        var { mergedUpdate } = options;
-        if (mergedUpdate) {
-            obj = { ...query, ...obj };
-        }
-        var tmp = stringifyObjectValues(obj, types);
-        return updateQueryRaw(tmp);
-    }, [ updateQueryRaw ])
-
+    var [ query, updateQuery ] = useURLSearchParams_RAW({
+        prepareUpdate,
+        parseReceived,
+        ...pass
+    });
+    
     return [ query, updateQuery ];
 }
 
-var stringifyObjectValues = (obj, types = {}) => {
+var createPrepareUpdate = (types = {}) => (obj) => {
     var out = {};
     for (var [ key, value ] of entries(obj)) {
         
@@ -40,7 +35,7 @@ var stringifyObjectValues = (obj, types = {}) => {
         var type = types[key];
         switch (type) {
             case 'jsonB64':
-                out[key] = encodeJsonB64(value);
+                out[key] = JsonBase64.encode(value);
                 break;
 
             case 'bool':
@@ -55,13 +50,13 @@ var stringifyObjectValues = (obj, types = {}) => {
     return out;
 }
 
-var parseQueryValues = (queryRaw, types = {}) => {
+var createParseReceived = (types = {}) => (queryRaw) => {
     var out = {};
     for (var [ key, value ] of entries(queryRaw)) {
         var type = types[key];
         switch (type) {
             case 'jsonB64':
-                out[key] = decodeJsonB64(value);
+                out[key] = JsonBase64.decode(value);
                 break;
 
             case 'bool':
@@ -77,44 +72,6 @@ var parseQueryValues = (queryRaw, types = {}) => {
         }
     }
     return out;
-}
-
-
-var encodeJsonB64 = (obj, options = {}) => {
-    var { urlSafe = true, shouldThrow = false } = options;
-    var encoded = '';
-    try {
-        encoded = Base64.encode(JSON.stringify(obj));
-        if (urlSafe) {
-            encoded = transliterate(encoded, '+/=', '._-');
-        }
-    }
-    catch (e) {
-        if (shouldThrow) {
-            throw e;
-        }
-    }
-
-    return encoded;
-}
-
-var decodeJsonB64 = (str, options = {}) => {
-    var { urlSafe = true, shouldThrow = false } = options;
-    
-    var decoded = {};
-    try {
-        if (urlSafe) {
-            str = transliterate(str, '._-', '+/=')
-        }
-        decoded = JSON.parse(Base64.decode(str));
-    }
-    catch (e) {
-        if (shouldThrow) {
-            throw e;
-        }
-    }
-
-    return decoded;
 }
 
 export default useURLSearchParams;

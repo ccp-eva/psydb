@@ -9,6 +9,7 @@ dependencies:
   '@cdxoo/formik-utils': 0.5.0_formik@2.2.9+react@17.0.2
   '@cdxoo/inline-string': 1.0.0
   '@cdxoo/inline-text': 1.0.2
+  '@cdxoo/json-base64': 1.0.0
   '@cdxoo/jsonpointer-to-objectpath': 1.0.0
   '@cdxoo/koa-mongo-mq': 1.4.0
   '@cdxoo/koa-mongo-rohrpost': 3.2.1
@@ -19,7 +20,7 @@ dependencies:
   '@cdxoo/objectpath-to-jsonpointer': 1.0.0
   '@cdxoo/omit': 1.0.1
   '@cdxoo/pick-random-item': 0.0.2
-  '@cdxoo/react-router-url-search-params': 1.1.0_react-router@5.2.1+react@17.0.2
+  '@cdxoo/react-router-url-search-params': 1.2.0_react-router@5.2.1+react@17.0.2
   '@faker-js/faker': 6.2.0
   '@rjsf/bootstrap-4': 2.5.1_5dccca4f99fef0089ce8bea6fe035927
   '@rjsf/core': 2.5.1_react@17.0.2
@@ -1386,6 +1387,12 @@ packages:
     dev: false
     resolution:
       integrity: sha512-iKWKmwCoHH/WwEV5WBLUUmbB6r5OdBL+I5K6dcOj6h3XWYi7SdeW1kLuzAAaFttGgLpBGq+jnpVznmZlyyUK4w==
+  /@cdxoo/json-base64/1.0.0:
+    dependencies:
+      js-base64: 3.7.2
+    dev: false
+    resolution:
+      integrity: sha512-PCzSQTriNYkKLnI+huKoIWPKkQz8+v/7QQCViL2sHnkJJptd0IRGfh+EG2FXeG/VaKa2IxN4hnBle8Ik91gpOA==
   /@cdxoo/jsonpointer-to-objectpath/1.0.0:
     dev: false
     resolution:
@@ -1449,7 +1456,7 @@ packages:
     dev: false
     resolution:
       integrity: sha512-DnLA9K2dmVTKJBbLAXPmWfdNto+FjPQMg6QVXmiNRDU8iFZVMKSG40dPgpYdYOvLQaoDBCL+MWjQthgOhqqVWQ==
-  /@cdxoo/react-router-url-search-params/1.1.0_react-router@5.2.1+react@17.0.2:
+  /@cdxoo/react-router-url-search-params/1.2.0_react-router@5.2.1+react@17.0.2:
     dependencies:
       react: 17.0.2
       react-router: 5.2.1_react@17.0.2
@@ -1459,7 +1466,7 @@ packages:
       react: '>=16.8'
       react-router: 5.x
     resolution:
-      integrity: sha512-yBeaIPimYPxA6v3jYMWEb3oDiT0HkG1/Hpo+lhLrRWvEaj/PRaPnOql930kmz/rDzoqRbOEIPoPrJ/qgVp362A==
+      integrity: sha512-gG8CIinv4VzPu5FEm/XqLXaNOeduDZkFugfF1LSzTuBpxQBRLKXdUa5xBpz8MsUdBMmwII1zdWhbzLrpYNYXjw==
   /@cdxoo/traverse/0.0.1:
     dev: false
     resolution:
@@ -5867,6 +5874,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-9xRCVqFwEuPH1SmwknrCRfGjcaUCt+boLjGZt5g/aAr98K8OtR9cI8K89U3cPT8xatgmzWQnJwgRQTd5tq2EOg==
+  /js-base64/3.7.2:
+    dev: false
+    resolution:
+      integrity: sha512-NnRs6dsyqUXejqk/yv2aiXlAvOs56sLkX6nUdeaNezI5LFFLlsZjOThmwnrcwh5ZZRwZlCMnVAY3CvhIhoVEKQ==
   /js-tokens/4.0.0:
     dev: false
     resolution:
@@ -10286,8 +10297,9 @@ packages:
       '@babel/core': 7.12.17
       '@babel/preset-env': 7.12.17_@babel+core@7.12.17
       '@babel/preset-react': 7.12.13_@babel+core@7.12.17
+      '@cdxoo/json-base64': 1.0.0
       '@cdxoo/omit': 1.0.1
-      '@cdxoo/react-router-url-search-params': 1.1.0_react-router@5.2.1+react@17.0.2
+      '@cdxoo/react-router-url-search-params': 1.2.0_react-router@5.2.1+react@17.0.2
       babel-loader: 8.2.3_283b913718ac0bcaef1854ef6d4920fc
       chai: 4.2.0
       js-base64: 3.6.2
@@ -10300,7 +10312,7 @@ packages:
     peerDependencies:
       webpack: '*'
     resolution:
-      integrity: sha512-mquAueYRQPlMjlXoBdILCWhyRnmIRFp2G6FfW8UuplhA7t475ypE61K8K3J0yqP1UlzbNLDp2Qx9B6eby0794g==
+      integrity: sha512-H9ACVHhiyqUjWniaEelnVCk/OWVpvNOeQ2XhY5gIcqgcY3dLvNvB+s6pmrRW+iBZmoPxqCq5VYOsj/Qi4QaHOg==
       tarball: 'file:projects/psydb-ui-hooks.tgz'
     version: 0.0.0
   'file:projects/psydb-ui-layout.tgz_webpack@5.65.0':
@@ -10502,6 +10514,7 @@ specifiers:
   '@cdxoo/formik-utils': ~0.5.0
   '@cdxoo/inline-string': ~1.0.0
   '@cdxoo/inline-text': ~1.0.2
+  '@cdxoo/json-base64': ~1.0.0
   '@cdxoo/jsonpointer-to-objectpath': ~1.0.0
   '@cdxoo/koa-mongo-mq': ~1.4.0
   '@cdxoo/koa-mongo-rohrpost': ~3.2.1
@@ -10512,7 +10525,7 @@ specifiers:
   '@cdxoo/objectpath-to-jsonpointer': ~1.0.0
   '@cdxoo/omit': ~1.0.1
   '@cdxoo/pick-random-item': ~0.0.2
-  '@cdxoo/react-router-url-search-params': ~1.1.0
+  '@cdxoo/react-router-url-search-params': ~1.2.0
   '@faker-js/faker': ~6.2.0
   '@rjsf/bootstrap-4': ~2.5.1
   '@rjsf/core': ~2.5.1
