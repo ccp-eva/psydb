@@ -11,11 +11,7 @@ const withRecordReader = (options = {}) => {
     } = options;
 
     var Composed = (ps) => {
-        var {
-            recordType,
-            id,
-            ...pass
-        } = ps;
+        var { recordType, id, ...pass } = ps;
 
         var readerBag = {
             collection,
@@ -29,10 +25,7 @@ const withRecordReader = (options = {}) => {
             <RecordReader { ...readerBag }>
                 <RecordReader.Context.Consumer>
                     {(context) => (
-                        <Body
-                            { ...context }
-                            { ...pass }
-                        />
+                        <Body { ...context } { ...pass } />
                     )}
                 </RecordReader.Context.Consumer>
             </RecordReader>

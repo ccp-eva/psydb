@@ -63,9 +63,9 @@ const RecordReader = (ps) => {
     }
 
     var context = {
-        id,
         collection,
         recordType,
+        id,
         fetched,
         permissions
     };
