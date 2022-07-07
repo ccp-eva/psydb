@@ -1,10 +1,10 @@
 import React from 'react';
 
 import { only } from '@mpieva/psydb-core-utils';
-import { Pair } from '@mpieva/psydb-ui-layout';
-import { FormBox } from '@mpieva/psydb-ui-lib';
+import { Pair, FormBox } from '@mpieva/psydb-ui-layout';
 import { withRecordEditor } from '../lib';
 import MainForm from './main-form';
+
 
 const EditForm = (ps) => {
     var {
