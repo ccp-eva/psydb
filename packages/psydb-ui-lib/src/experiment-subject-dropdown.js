@@ -84,6 +84,9 @@ var ExperimentSubjectDropdown = (ps) => {
     ), [ onClickContactFailed, subjectRecord ]);
 
     var permissions = usePermissions();
+    var canViewSubject = permissions.hasCollectionFlag(
+        'subject', 'read'
+    );
     var canComment = permissions.hasSomeLabOperationFlags({
         types: [ experimentType ],
         flags: [
@@ -149,6 +152,14 @@ var ExperimentSubjectDropdown = (ps) => {
                 }
             </Dropdown.Toggle>
             <Dropdown.Menu>
+                <Dropdown.Item
+                    as='a'
+                    disabled={ !canViewSubject }
+                    href={`#/subjects/${subjectType}/${subjectId}`}
+                >
+                    Details
+                </Dropdown.Item>
+                <Dropdown.Divider />
                 <Dropdown.Item
                     as='button'
                     disabled={ !canComment || !onClickComment }
