@@ -25,6 +25,7 @@ const Pagination = ({
     showTotal = true,
     showLimit = true,
     showPages = true,
+    showJump = true,
 }) => {
     var className = classnames([
         'bg-light pt-2 pb-2 pr-3 pl-3',
@@ -57,7 +58,9 @@ const Pagination = ({
                         maxPage,
                         selectNextPage,
                         selectPrevPage,
-                        selectSpecificPage
+                        selectSpecificPage,
+
+                        showJump
                     }) }/>
                 </div>
             )}
@@ -98,6 +101,8 @@ const PageNav = ({
     selectNextPage,
     selectPrevPage,
     selectSpecificPage,
+
+    showJump,
 }) => {
     var start = page - 1;
     var end = page + 2;
@@ -135,34 +140,36 @@ const PageNav = ({
 
     return (
         <div className='d-flex'>
-            <div className='d-flex align-items-center'>
-                <input
-                    type='number'
-                    placeholder='zu Seite'
-                    min={ 1 } step={ 1 } max={ maxPage }
-                    style={{
-                        width: '150px',
-                        fontSize: '75%',
-                    }}
-                    value={ jumpPage }
-                    onChange={ (event) => setJumpPage(event.target.value)}
-                    onKeyPress={ (event) => {
-                        event.key === 'Enter' && handleJump()
-                    }}
-                />
-                <Button size='sm' style={{
-                    fontSize: '75%',
-                    padding: '0'
-                }} onClick={ handleJump }>
-                    <Icons.ArrowRightShort
+            { showJump && (
+                <div className='d-flex align-items-center mr-3'>
+                    <input
+                        type='number'
+                        placeholder='zu Seite'
+                        min={ 1 } step={ 1 } max={ maxPage }
                         style={{
-                            height: '22px',
-                            width: '22px'
+                            width: '150px',
+                            fontSize: '75%',
+                        }}
+                        value={ jumpPage }
+                        onChange={ (event) => setJumpPage(event.target.value)}
+                        onKeyPress={ (event) => {
+                            event.key === 'Enter' && handleJump()
                         }}
                     />
-                </Button>
-            </div>
-            <div className='user-select-none ml-3'>
+                    <Button size='sm' style={{
+                        fontSize: '75%',
+                        padding: '0'
+                    }} onClick={ handleJump }>
+                        <Icons.ArrowRightShort
+                            style={{
+                                height: '22px',
+                                width: '22px'
+                            }}
+                        />
+                    </Button>
+                </div>
+            )}
+            <div className='user-select-none'>
                 <b className='d-inline-block mr-3'>Seite:</b>
                 { page > 0 && (
                     <span

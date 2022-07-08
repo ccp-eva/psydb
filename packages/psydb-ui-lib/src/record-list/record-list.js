@@ -159,7 +159,10 @@ var RecordList = ({
                         </div>
                     </div>
                 </div>
-                <Pagination { ...pagination } />
+                <Pagination
+                    { ...pagination }
+                    showJump={ target === 'table' || !target }
+                />
             </div>
 
             <Table { ...({
