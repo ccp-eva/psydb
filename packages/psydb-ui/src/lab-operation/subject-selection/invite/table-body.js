@@ -35,6 +35,7 @@ const TableBody = ({
             { records.map((record, index) => {
                 return (
                     <TableRow key={ index} { ...({
+                        index,
                         inviteType,
                         desiredTestInterval,
 
@@ -59,6 +60,7 @@ const TableRow = ({
     inviteType,
     desiredTestInterval,
 
+    index,
     subjectType,
     record,
     subjectMetadata,
@@ -73,11 +75,25 @@ const TableRow = ({
         record._upcomingExperiments.length > 0
     );
     var colspan = subjectMetadata.displayFieldData.length;
+    var isEven = (index % 2) === 0;
+    var className = (
+        isRed
+        ? (
+            isEven
+            ? 'bg-medium-red'
+            : 'bg-light-red'
+        )
+        : (
+            isEven
+            ? 'bg-light'
+            : ''
+        )
+    );
     return (
         <>
             <tr
                 key={record._id}
-                className={ isRed ? 'bg-light-red' : '' }
+                className={ className }
             >
 
                 <FieldDataBodyCols { ...({
@@ -88,6 +104,7 @@ const TableRow = ({
             </tr>
             <ExtendedDataRow { ...({
                 isRed,
+                className,
                 colspan,
 
                 record,
@@ -109,6 +126,7 @@ const TableRow = ({
 const ExtendedDataRow = (ps) => {
     var {
         isRed,
+        className,
         colspan,
 
         record,
@@ -124,10 +142,10 @@ const ExtendedDataRow = (ps) => {
         onViewSubject
     } = ps;
     return (
-        <tr>
+        <tr className={ className }>
             <td
                 colSpan={ colspan }
-                className={ (isRed ? 'bg-light-red' : '') + ' border-0 pt-0' }
+                className={ 'border-0 pt-0' }
             >
                 <div className='d-flex justify-content-between'>
                     <Participation { ...({
@@ -146,7 +164,7 @@ const ExtendedDataRow = (ps) => {
                 </div>
             </td>
             <td
-                className={ (isRed ? 'bg-light-red' : '') + ' border-0 pt-0' }
+                className={ 'border-0 pt-0' }
             >
                 <div>
                     <ActionButtons { ...({

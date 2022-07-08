@@ -124,6 +124,9 @@ a:hover {
     background-color: #fbdddd;
 }
 
+.bg-medium-red {
+    background-color: #f1d2d2;
+}
 .quick-search-fixes .form-group {
     margin-bottom: 0px;
     margin-right: .5rem;
