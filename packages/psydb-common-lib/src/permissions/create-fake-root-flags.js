@@ -1,13 +1,23 @@
 'use strict';
 var createFakeRootFlags = () => ({
-    canWriteAdministrativeCollections: true,
+    //canWriteAdministrativeCollections: true,
     canWritePersonnel: true,
     canSetPersonnelPassword: true,
 
-    canReadStudies: true,
-    canWriteStudies: true,
-    canReadSubjects: true,
-    canWriteSubjects: true,
+    ...([
+        'Subjects',
+        'Studies',
+        'Locations',
+        'ExternalPersons',
+        'ExternalOrganizations',
+        'StudyTopics',
+        'HelperSets',
+        'Personnel'
+    ]).reduce((acc, it) => ({
+        ...acc,
+        [`canRead${it}`]: true,
+        [`canWrite${it}`]: true,
+    }), {}),
 
     canReadParticipation: true,
     canWriteParticipation: true,
