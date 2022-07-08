@@ -82,7 +82,7 @@ const SubjectModal = ({
             backdropClassName='team-modal-backdrop'
         >
             <Modal.Header closeButton>
-                <Modal.Title>Termin-Einladung</Modal.Title>
+                <Modal.Title>Termin-Einladung - { record._recordLabel }</Modal.Title>
             </Modal.Header>
             <Modal.Body className='bg-light'>
                 { navItems.length > 1 && (
