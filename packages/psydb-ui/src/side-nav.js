@@ -5,8 +5,6 @@ import {
     LinkContainer
 } from '@mpieva/psydb-ui-layout';
 
-import { usePermissions } from '@mpieva/psydb-ui-hooks';
-
 import {
     WhenAllowed
 } from '@mpieva/psydb-ui-lib';
@@ -22,8 +20,6 @@ const Link = ({
 )
 
 const SideNav = (ps) => {
-    var permissions = usePermissions();
-    console.log(permissions);
     return (
         <>
             <h2
