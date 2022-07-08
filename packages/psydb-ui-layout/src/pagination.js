@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import classnames from 'classnames';
-import { Form } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
+import * as Icons from './icons';
 
 import PaddedText from './padded-text';
 
@@ -120,43 +121,84 @@ const PageNav = ({
         //return null;
     }
 
+    var [ jumpPage, setJumpPage ] = useState('');
+    var handleJump = () => {
+        var sane = Math.floor(jumpPage);
+        if (sane < 1) {
+            sane = 1;
+        }
+        else if (sane > maxPage) {
+            sane = maxPage;
+        }
+        selectSpecificPage(sane - 1);
+    }
+
     return (
-        <div className='user-select-none'>
-            <b className='d-inline-block mr-3'>Seite:</b>
-            { page > 0 && (
-                <span
-                    role='button'
-                    className='d-inline-block text-primary mr-2'
-                    onClick={ selectPrevPage }
-                >
-                    {'<'}
+        <div className='d-flex'>
+            <div className='d-flex align-items-center'>
+                <input
+                    type='number'
+                    placeholder='zu Seite'
+                    min={ 1 } step={ 1 } max={ maxPage }
+                    style={{
+                        width: '150px',
+                        fontSize: '75%',
+                    }}
+                    value={ jumpPage }
+                    onChange={ (event) => setJumpPage(event.target.value)}
+                    onKeyPress={ (event) => {
+                        event.key === 'Enter' && handleJump()
+                    }}
+                />
+                <Button size='sm' style={{
+                    fontSize: '75%',
+                    padding: '0'
+                }} onClick={ handleJump }>
+                    <Icons.ArrowRightShort
+                        style={{
+                            height: '22px',
+                            width: '22px'
+                        }}
+                    />
+                </Button>
+            </div>
+            <div className='user-select-none ml-3'>
+                <b className='d-inline-block mr-3'>Seite:</b>
+                { page > 0 && (
+                    <span
+                        role='button'
+                        className='d-inline-block text-primary mr-2'
+                        onClick={ selectPrevPage }
+                    >
+                        {'<'}
+                    </span>
+                )}
+                { items.map((it, index) => {
+                    var props = {
+                        key: index,
+                        role: 'button',
+                        className: 'd-inline-block mr-2 text-primary',
+                        onClick: () => selectSpecificPage(it)
+                    }
+                    return (
+                        it === page
+                        ? <u { ...props }><b>{ it + 1 }</b></u>
+                        : <span { ...props}>{ it + 1 }</span>
+                    )
+                }) }
+                { page < (maxPage - 1)  && (
+                    <span
+                        role='button'
+                        className='d-inline-block text-primary mr-2'
+                        onClick={ selectNextPage }
+                    >
+                        {'>'}
+                    </span>
+                )}
+                <span>
+                    von { maxPage }
                 </span>
-            )}
-            { items.map((it, index) => {
-                var props = {
-                    key: index,
-                    role: 'button',
-                    className: 'd-inline-block mr-2 text-primary',
-                    onClick: () => selectSpecificPage(it)
-                }
-                return (
-                    it === page
-                    ? <u { ...props }><b>{ it + 1 }</b></u>
-                    : <span { ...props}>{ it + 1 }</span>
-                )
-            }) }
-            { page < (maxPage - 1)  && (
-                <span
-                    role='button'
-                    className='d-inline-block text-primary mr-2'
-                    onClick={ selectNextPage }
-                >
-                    {'>'}
-                </span>
-            )}
-            <span>
-                von { maxPage }
-            </span>
+            </div>
         </div>
     )
 }
