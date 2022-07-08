@@ -19,15 +19,21 @@ const SubjectEditorContainer = ({
     };
     return (
         <>
-            <RecordEditor { ...editorBag }>
-                {() => (
-                    <GenericRecordEditorFooter
-                        enableHide={ true }
-                        enableRemove={ true }
-                        onSuccessfulUpdate={ revision.up }
-                    />
-                )}
-            </RecordEditor>
+            <RecordEditor.Provider { ...editorBag }>
+                <RecordEditor.Context.Consumer>
+                    {(context) => (
+                        <>
+                            <RecordEditor.Body { ...context } />
+                            <GenericRecordEditorFooter.RAW
+                                { ...context }
+                                enableHide={ true }
+                                enableRemove={ true }
+                                onSuccessfulUpdate={ revision.up }
+                            />
+                        </>
+                    )}
+                </RecordEditor.Context.Consumer>
+            </RecordEditor.Provider>
         </>
     )
 }

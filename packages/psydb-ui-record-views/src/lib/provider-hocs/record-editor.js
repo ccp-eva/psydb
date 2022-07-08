@@ -10,10 +10,18 @@ const withRecordEditor = (options = {}) => {
         shouldFetchCRTSettings = true,
     } = options;
 
+    var staticBag = {
+        collection,
+        subChannels,
+        shouldFetchSchema,
+        shouldFetchCRTSettings,
+    }
+
     var Composed = (ps) => {
         var {
             recordType,
             id,
+            revision,
             onSuccessfulUpdate,
             onFailedUpdate,
             ...pass
@@ -24,6 +32,7 @@ const withRecordEditor = (options = {}) => {
             subChannels,
             recordType,
             id,
+            revision,
             
             shouldFetchSchema,
             shouldFetchCRTSettings,
@@ -33,17 +42,24 @@ const withRecordEditor = (options = {}) => {
         };
 
         return (
-            <RecordEditor { ...editorBag }>
-                <Inner { ...pass } />
-            </RecordEditor>
+            <Provider { ...editorBag }>
+                <WrappedBody { ...pass } />
+            </Provider>
         )
     };
 
-    var Inner = (ps) => (
+    var WrappedBody = (ps) => (
         <Body { ...useContext(RecordEditor.Context) } { ...ps } />
     );
 
+    var Provider = (ps) => (
+        <RecordEditor { ...staticBag } { ...ps } />
+    )
+
     Composed.Body = Body;
+    Composed.Context = RecordEditor.Context;
+    Composed.Provider = Provider;
+
     return Composed;
 }
 

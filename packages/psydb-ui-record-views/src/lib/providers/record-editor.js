@@ -12,6 +12,7 @@ const RecordEditor = (ps) => {
         subChannels,
         recordType,
         id,
+        revision,
         onSuccessfulUpdate,
         onFailedUpdate,
         
@@ -25,6 +26,7 @@ const RecordEditor = (ps) => {
         collection,
         recordType,
         id,
+        revision,
         
         shouldFetchSchema,
         shouldFetchCRTSettings,

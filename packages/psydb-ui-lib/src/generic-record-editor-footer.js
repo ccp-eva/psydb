@@ -7,13 +7,19 @@ import { LinkButton, Button } from '@mpieva/psydb-ui-layout';
 import UpdateRecordVisibilityButton from './update-record-visibility-button';
 
 const GenericRecordEditorFooter = (ps) => {
-    var { enableHide, enableRemove, onSuccessfulUpdate } = ps;
+    var {
+        id,
+        collection,
+        recordType,
+        fetched,
+        permissions,
+
+        enableHide,
+        enableRemove,
+        onSuccessfulUpdate
+    } = ps;
 
     var { path, url } = useRouteMatch();
-    var context = useContext(RecordEditorContext);
-    var {
-        id, collection, recordType, fetched, permissions,
-    } = context;
 
     var isRoot = permissions.isRoot();
     var canEdit = permissions.hasCollectionFlag(collection, 'write');
@@ -55,4 +61,14 @@ const GenericRecordEditorFooter = (ps) => {
     );
 }
 
-export default GenericRecordEditorFooter;
+const ContextWrapper = (ps) => {
+    var context = useContext(RecordEditorContext);
+    return (
+        <GenericRecordEditorFooter { ...context } { ...ps } />
+    )
+}
+
+// FIXME: not happy with that
+ContextWrapper.RAW = GenericRecordEditorFooter;
+
+export default ContextWrapper;
