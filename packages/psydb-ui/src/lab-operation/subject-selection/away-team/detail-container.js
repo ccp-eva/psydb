@@ -44,6 +44,7 @@ const DetailContainer = ({
                 <thead>
                     <tr>
                         <th />
+                        <th>Proband:in</th>
                         <FieldDataHeadCols { ...({
                             displayFieldData: subjectMetadata.displayFieldData
                         })}/>
@@ -119,6 +120,7 @@ const SubjectTableBody = ({
                             : <td></td>
                         }
 
+                        <td>{ record._recordLabel }</td>
                         <FieldDataBodyCols { ...({
                             record,
                             ...subjectMetadata

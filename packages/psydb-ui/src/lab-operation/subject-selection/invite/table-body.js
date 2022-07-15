@@ -8,8 +8,9 @@ import {
 
 import {
     formatDateInterval,
-    SubjectTestableIntervals
+    SubjectTestableIntervals,
 } from '@mpieva/psydb-ui-lib';
+import calculateAge from '@mpieva/psydb-ui-lib/src/calculate-age';
 
 import { FieldDataBodyCols } from '@mpieva/psydb-ui-lib/src/record-list';
 //import UpcomingExperiments from '../upcoming-experiments';
@@ -95,14 +96,53 @@ const TableRow = ({
                 key={record._id}
                 className={ className }
             >
-
+                <td>{ record._recordLabel }</td>
                 <FieldDataBodyCols { ...({
                     record,
                     ...subjectMetadata
                 }) }/>
-                <td></td>
+                <td>
+                    { calculateAge({
+                        base: record._ageFrameField,
+                        relativeTo: new Date(),
+                    })}
+                </td>
+                <td>
+                    <Participation { ...({
+                        record, subjectMetadata,
+                        className: 'mr-4'
+                    })} />
+                </td>
+                <td>
+                    <UpcomingExperiments { ...({
+                        inviteType,
+                        records: record._upcomingExperiments,
+                        ...subjectExperimentMetadata,
+                        className: 'mr-4'
+                    }) } />
+                </td>
+                <td>
+                    <TestableInStudies { ...({
+                        record, subjectMetadata, desiredTestInterval
+                    })} />
+                </td>
+                <td>
+                    <ActionButtons { ...({
+                        isRed,
+
+                        inviteType,
+                        record,
+                        subjectType,
+                        desiredTestInterval,
+
+                        canWriteSubjects,
+
+                        onInviteSubject,
+                        onViewSubject
+                    }) } />
+                </td>
             </tr>
-            <ExtendedDataRow { ...({
+            {/*<ExtendedDataRow { ...({
                 isRed,
                 className,
                 colspan,
@@ -118,7 +158,7 @@ const TableRow = ({
 
                 onInviteSubject,
                 onViewSubject
-            })} />
+            })} />*/}
         </>
     )
 }
@@ -202,24 +242,27 @@ const Participation = (ps) => {
         ? (
             filtered
             .map(it => (
-                subjectMetadata
-                .relatedRecordLabels
-                .study[it.studyId]._recordLabel
+                <div> {
+                    subjectMetadata
+                    .relatedRecordLabels
+                    .study[it.studyId]._recordLabel
+                } </div>
             ))
-            .join(', ')
         )
         : (
             <i className='text-muted'>Keine</i>
         )
     )
 
-    return (
-        <div className={ className + ' flex-grow-1 flex-basis-0' }>
-            <b>Teilg.Studien:</b>
-            {' '}
-            { formatted }
-        </div>
-    );
+    return formatted;
+
+    //return (
+    //    <div className={ className + ' flex-grow-1 flex-basis-0' }>
+    //        <b>Teilg.Studien:</b>
+    //        {' '}
+    //        { formatted }
+    //    </div>
+    //);
 }
 
 // FIXME: redundant with away-team
@@ -255,14 +298,17 @@ const UpcomingExperiments = ({
             <i className='text-muted'>Keine</i>
         )
     )
-    return (
-        <div className={ className + ' d-flex flex-grow-1 flex-basis-0' }>
-            <b>Termine:</b>
-            <div className='ml-3'>
-                { upcoming }
-            </div>
-        </div>
-    )
+
+    return upcoming;
+
+    //return (
+    //    <div className={ className + ' d-flex flex-grow-1 flex-basis-0' }>
+    //        <b>Termine:</b>
+    //        <div className='ml-3'>
+    //            { upcoming }
+    //        </div>
+    //    </div>
+    //)
 }
 const TestableInStudies = (ps) => {
     var { record, subjectMetadata, desiredTestInterval } = ps;
@@ -286,15 +332,18 @@ const TestableInStudies = (ps) => {
                 />
             )
         })
-    )
-    return (
-        <div className='d-flex mr-4 flex-grow-1 flex-basis-0'>
-            <b>Mögl.Studien:</b>
-            <div className='ml-3'>
-                { formatted }
-            </div>
-        </div>
     );
+
+    return formatted;
+
+    //return (
+    //    <div className='d-flex mr-4 flex-grow-1 flex-basis-0'>
+    //        <b>Mögl.Studien:</b>
+    //        <div className='ml-3'>
+    //            { formatted }
+    //        </div>
+    //    </div>
+    //);
 }
 
 const ActionButtons = (ps) => {

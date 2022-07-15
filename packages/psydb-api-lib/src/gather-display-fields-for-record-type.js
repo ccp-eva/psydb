@@ -93,6 +93,8 @@ var mapDisplayTargetToValueProperty = (target) => {
     switch (target) {
         case 'invite-selection-list':
             return 'selectionRowDisplayFields';
+        case 'away-team-selection-list':
+            return 'awayTeamSelectionRowDisplayFields';
         case 'optionlist':
             return 'optionListDisplayFields';
         case 'table':

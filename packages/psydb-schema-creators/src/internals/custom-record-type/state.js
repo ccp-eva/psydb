@@ -188,6 +188,10 @@ var ChannelState = ({
                 type: 'array',
                 default: []
             },
+            awayTeamSelectionRowDisplayFields: {
+                type: 'array',
+                default: []
+            },
             selectionSummaryDisplayFields: {
                 type: 'array',
                 default: []

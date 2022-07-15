@@ -199,14 +199,15 @@ const InviteTestableSubjectList = ({
             <Table>
                 <thead>
                     <tr>
+                        <th>Proband:in</th>
                         <FieldDataHeadCols { ...({
                             displayFieldData: subjectData.displayFieldData
                         })} />
-                        <th></th>
-                        {/*<th>Teilg. Stud.</th>
+                        <th>Alter</th>
+                        <th>Teilg. Stud.</th>
                         <th>Termine</th>
                         <th>Mögl. Stud.</th>
-                        <th />*/}
+                        <th />
                     </tr>
                 </thead>
 
