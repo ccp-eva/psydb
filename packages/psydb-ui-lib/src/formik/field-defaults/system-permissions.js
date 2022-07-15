@@ -1,5 +1,7 @@
 export const SystemPermissions = (options) => {
     var { permissions } = options;
+
+    // FIXME: use permissions.getResearchGroupIds()
     var {
         forcedResearchGroupId,
         researchGroupIds,
