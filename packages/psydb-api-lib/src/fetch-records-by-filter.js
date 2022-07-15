@@ -274,13 +274,18 @@ var fetchRecordByFilter = async ({
     }
     else {
         if (displayFields && displayFields.length > 0) {
-            var { pointer, dataPointer } = displayFields[0];
+            var { systemType, pointer, dataPointer } = displayFields[0];
             var sortPath = convertPointerToPath(pointer || dataPointer);
-            
+
+            // FIXME: this is a hotfix
+            if (systemType === 'Address') {
+                sortPath += '.street';
+            }
+
             await db.collection(collectionName).ensureIndex({
                 [sortPath]: 1
             }, {
-                //collation: { locale: 'de@collation=phonebook' }
+                collation: { locale: 'de@collation=phonebook' }
             });
 
             sortStage = {
@@ -326,7 +331,7 @@ var fetchRecordByFilter = async ({
             {
                 //hint: 'searchIndex',
                 allowDiskUse: true,
-                //collation: { locale: 'de@collation=phonebook' }
+                collation: { locale: 'de@collation=phonebook' }
             }
         )
         //.explain()
