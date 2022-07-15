@@ -100,8 +100,8 @@ var Permissions = (options) => {
     // FIXME: since root does have no ids we need to check that seperately
     var getResearchGroupIds = (intersectIds) => (
         intersectIds
-        ? userResearchGroupIds
-        : intersect(intersectIds, userResearchGroupIds)
+        ? intersect(intersectIds, userResearchGroupIds)
+        : userResearchGroupIds
     );
 
     var out = {

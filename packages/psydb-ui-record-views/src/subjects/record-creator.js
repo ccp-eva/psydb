@@ -19,6 +19,26 @@ const CreateForm = (ps) => {
         permissions
     });
 
+    var [ primaryResearchGroupId ] = permissions.getResearchGroupIds();
+    if (primaryResearchGroupId) {
+        initialValues.scientific.testingPermissions = [
+            {
+                researchGroupId: primaryResearchGroupId,
+                permissionList: (
+                    [
+                        'inhouse',
+                        'online-video-call',
+                        'away-team',
+                        'online-survey'
+                    ].map(it => ({
+                        labProcedureTypeKey: it,
+                        value: 'unknown'
+                    }))
+                )
+            }
+        ]
+    }
+
     return (
         <MainForm.Component
             title='Neuer Proband:innen-Datensatz'
