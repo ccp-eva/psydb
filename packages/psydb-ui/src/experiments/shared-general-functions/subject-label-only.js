@@ -1,4 +1,6 @@
 import React, { useState, useCallback } from 'react';
+import enums from '@mpieva/psydb-schema-enums';
+
 import { groupBy } from '@mpieva/psydb-core-utils';
 import { useModalReducer } from '@mpieva/psydb-ui-hooks';
 import { WithDefaultModal, Button } from '@mpieva/psydb-ui-layout';
@@ -8,7 +10,13 @@ const SubjectLabelOnlyModalBody = (ps) => {
     var { record, relatedRecords } = experimentData;
     
     var grouped = groupBy({
-        items: record.state.subjectData,
+        items: (
+            record.state.subjectData.filter(it => (
+                !enums.unparticipationStatus.keys.includes(
+                    it.participationStatus
+                )
+            ))
+        ),
         byProp: 'subjectType'
     });
 
