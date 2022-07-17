@@ -23,6 +23,7 @@ const Header = ({
     editUrl,
     onEditClick,
     canEdit,
+    canAccessExtraFunctions,
 }) => {
     var { path, url } = useRouteMatch();
 
@@ -37,11 +38,11 @@ const Header = ({
                     { editLabel }
                 </LinkButton>
             )}
-            { canEdit && onEditClick && (
-                <Button onClick={ onEditClick }>
-                    { editLabel }
-                </Button>
-            )}
+            { /* canAccessExtraFunctions && (
+                <ExtraFunctionsDropdown>
+                    { }
+                </ExtraFunctionsDropdown>
+            )*/}
         </h5>
     )
 }
@@ -61,6 +62,14 @@ const SubjectDetailsContainer = ({
     var canEdit = permissions.hasCollectionFlag(collection, 'write');
     var canReadParticipation = permissions.hasFlag('canReadParticipation');
     var canWriteParticipation = permissions.hasFlag('canWriteParticipation');
+    
+    var canAccessExtraFunctions = (
+        canWriteParticipation
+        || permissions.hasSomeLabOperationFlags({
+            types: [ 'inhouse', 'online-video-call', 'away-team' ],
+            flags: [ 'canSelectSubjjectsForExperiments' ]
+        })
+    );
 
     return (
         <>
@@ -70,6 +79,7 @@ const SubjectDetailsContainer = ({
                     title='Erfasste Daten'
                     editUrl={ `${up(url, 1)}/edit` }
                     canEdit= { canEdit }
+                    canAccessExtraFunctions={ canAccessExtraFunctions }
                 />
                 <hr />
                 
