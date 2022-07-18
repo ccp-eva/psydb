@@ -37,6 +37,7 @@ const useFetch = (...args) => {
 
     if (options.useEffect) {
         var wrappedCreatePromise = () => {
+            dispatch({ type: 'set-transmitting' });
             var promise = createPromise(contextAgent);
             if (promise) {
                 promise.then((response) => {
@@ -53,7 +54,7 @@ const useFetch = (...args) => {
         };
 
         useEffect(wrappedCreatePromise, dependencies);
-        return [ state.didFetch, state ];
+        return [ state.didFetch, state, state.isTransmitting ];
     }
     else {
         var exec = () => createPromise(contextAgent);
@@ -69,16 +70,23 @@ const defaultInit = (payload) => ({
 const createReducer = (init) => (state, action) => {
     var { type, payload } = action;
     switch (type) {
+        case 'set-transmitting':
+            return ({
+                ...state,
+                isTransmitting: true,
+            })
         case 'init-data':
             return ({
                 ...state,
                 didFetch: true,
+                isTransmitting: false,
                 ...init(payload),
             })
         case 'fake-fetch':
             return ({
                 ...state,
-                didFetch: true
+                didFetch: true,
+                isTransmitting: false,
             })
     }
 }

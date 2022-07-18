@@ -50,7 +50,7 @@ const StudyInhouseLocations = ({
     calendarRevision = 0,
 }) => {
     
-    var [ didFetch, fetched ] = useFetchAll((agent) => ({
+    var [ didFetch, fetched, isTransmitting ] = useFetchAll((agent) => ({
         customTypes: agent.readCustomRecordTypeMetadata(),
         /*study:  agent.readRecord({
             collection: 'study',
@@ -65,7 +65,7 @@ const StudyInhouseLocations = ({
         }),
     }), [ studyId, studyRecordType, activeLocationType, revision ])
 
-    if (!didFetch) {
+    if (!didFetch || isTransmitting) {
         return (
             <LoadingIndicator size='lg' />
         )

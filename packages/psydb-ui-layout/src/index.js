@@ -21,6 +21,7 @@ export { default as TabNav } from './tab-nav';
 
 export { default as PaddedText } from './padded-text';
 export { default as Split } from './split';
+export * from './split-partitioned';
 export { default as Pair } from './pair';
 
 export { default as DetailsBox } from './details-box';

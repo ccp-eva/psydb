@@ -92,6 +92,12 @@ var searchStudiesTestableForSubject = async (context, next) => {
                 collection: 'study',
                 permissions
             }),
+            { $project: {
+                'type': true,
+                'state.name': true,
+                'state.shorthand': true,
+                'state.enableFolloeUpExperiments': true,
+            }},
             { $sort: {
                 'state.shorthand': 1,
                 'state.name': 1
@@ -125,9 +131,8 @@ var searchStudiesTestableForSubject = async (context, next) => {
 
         if (testableIntervals) {
             out.push({
-                studyId: study._id,
-                shorthand: study.state.shorthand,
-                testableIntervals,
+                ...study,
+                _testableIntervals: testableIntervals,
             });
         }
     }
