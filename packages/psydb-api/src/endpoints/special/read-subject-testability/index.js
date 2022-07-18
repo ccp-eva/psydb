@@ -118,6 +118,7 @@ var readSubjectTestability = async (context, next) => {
         .toArray()
     );
 
+    // intervals where all subjects are testable together
     var testableIntervals = undefined;
     if (testableSubjects.length > 0) {
         for (var subject of testableSubjects) {

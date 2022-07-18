@@ -15,6 +15,9 @@ import {
     CreateModal as ParticipationCreateModal
 } from '@mpieva/psydb-ui-lib/src/participation';
 
+
+import SelectSubjectContainer from './select-subject-container';
+
 import { RecordDetails } from '@mpieva/psydb-ui-record-views/subjects';
 
 const Header = ({
@@ -23,7 +26,12 @@ const Header = ({
     editUrl,
     onEditClick,
     canEdit,
-    canAccessExtraFunctions,
+
+    subjectId,
+    subjectType,
+    canWriteParticipation,
+    canSelectSubjects,
+    canSelectSubjectsForExperiments,
 }) => {
     var { path, url } = useRouteMatch();
 
@@ -33,16 +41,20 @@ const Header = ({
     return (
         <h5 className='d-flex justify-content-between align-items-start'>
             <span className='d-inline-block pt-3'>{ title }</span>
-            { canEdit && editUrl && (
-                <LinkButton to={ editUrl }>
-                    { editLabel }
-                </LinkButton>
-            )}
-            { /* canAccessExtraFunctions && (
-                <ExtraFunctionsDropdown>
-                    { }
-                </ExtraFunctionsDropdown>
-            )*/}
+            <div>
+                { canEdit && editUrl && (
+                    <LinkButton to={ editUrl }>
+                        { editLabel }
+                    </LinkButton>
+                )}
+                {  canSelectSubjectsForExperiments && (
+                    <SelectSubjectContainer
+                        className='ml-3'
+                        subjectId={ subjectId }
+                        subjectType={ subjectType }
+                    />
+                )}
+            </div>
         </h5>
     )
 }
@@ -62,12 +74,11 @@ const SubjectDetailsContainer = ({
     var canEdit = permissions.hasCollectionFlag(collection, 'write');
     var canReadParticipation = permissions.hasFlag('canReadParticipation');
     var canWriteParticipation = permissions.hasFlag('canWriteParticipation');
-    
-    var canAccessExtraFunctions = (
-        canWriteParticipation
-        || permissions.hasSomeLabOperationFlags({
+
+    var canSelectSubjectsForExperiments = (
+        permissions.hasSomeLabOperationFlags({
             types: [ 'inhouse', 'online-video-call', 'away-team' ],
-            flags: [ 'canSelectSubjjectsForExperiments' ]
+            flags: [ 'canSelectSubjectsForExperiments' ]
         })
     );
 
@@ -78,8 +89,11 @@ const SubjectDetailsContainer = ({
                 <Header
                     title='Erfasste Daten'
                     editUrl={ `${up(url, 1)}/edit` }
+                    subjectId={ id }
+                    subjectType={ recordType }
                     canEdit= { canEdit }
-                    canAccessExtraFunctions={ canAccessExtraFunctions }
+                    canWriteParticipation={ canWriteParticipation }
+                    canSelectSubjectsForExperiments={ canSelectSubjectsForExperiments }
                 />
                 <hr />
                 

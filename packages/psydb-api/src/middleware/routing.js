@@ -194,6 +194,13 @@ var createRouting = ({
         })
     );
 
+    router.post(
+        '/search-studies-testable-for-subject',
+        ...withPostStages({
+            endpoint: endpoints.special.searchStudiesTestableForSubject
+        })
+    );
+
     router.post('/invite-confirmation-list',
         withSelfAuth(),
         withPermissions(),
