@@ -31,6 +31,8 @@ var {
     Timezone,
 } = require('@mpieva/psydb-schema-fields');
 
+var fetchExcludedStudiesForSubject = require('./fetch-excluded-studies-for-subject');
+
 var RequestBodySchema = () => ExactObject({
     properties: {
         subjectId: ForeignId({ collection: 'subject' }),
@@ -78,6 +80,11 @@ var searchStudiesTestableForSubject = async (context, next) => {
     if (testingPermissions.length < 1) {
         throw new ApiError(403, { apiStatus: 'LabOperationAccessDenied' })
     }
+
+    var studyExclusion = await fetchExcludedStudiesForSubject({
+        db, subjectRecord
+    });
+    console.log(studyExclusion);
 
     var now = new Date();
     var studyRecords = await (
@@ -293,7 +300,7 @@ var calculateAllTestableIntervals = (bag) => {
         }
     }
 
-    console.log(out);
+    //console.log(out);
     return out;
 }
 

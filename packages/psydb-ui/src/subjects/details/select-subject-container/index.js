@@ -125,7 +125,7 @@ const SelectSubjectModalBody = (ps) => {
                         var experimentId = response.data.data.find(it => (
                             it.collectionName === 'experiment'
                         )).channelId;
-                        history.push(`/experiments/${selectedInviteType}/${experimentId}`)
+                        history.push(`/experiments/${selectedProcedure}/${experimentId}`)
                     }}
                 />
             </div>

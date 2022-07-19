@@ -49,7 +49,7 @@ const StudyInhouseLocations = ({
     // used to force update of the calendar
     calendarRevision = 0,
 }) => {
-    
+   
     var [ didFetch, fetched, isTransmitting ] = useFetchAll((agent) => ({
         customTypes: agent.readCustomRecordTypeMetadata(),
         /*study:  agent.readRecord({
@@ -62,8 +62,9 @@ const StudyInhouseLocations = ({
         }),
         settings: agent.fetchExperimentVariantSettings({
             studyId,
+            type: currentExperimentType,
         }),
-    }), [ studyId, studyRecordType, activeLocationType, revision ])
+    }), [ studyId, studyRecordType, activeLocationType, revision, currentExperimentType ])
 
     if (!didFetch || isTransmitting) {
         return (
