@@ -122,25 +122,39 @@ var searchStudiesTestableForSubject = async (context, next) => {
         subjectCRTSettings,
         subjectRecord,
         ageFrameFilters,
-        ageFrameValueFilters
+        ageFrameValueFilters,
+        desiredTestInterval,
     });
     
-    var out = [];
+    var testableStudies = [];
     for (var study of studyRecords) {
         var testableIntervals = testableIntervalsByStudyId[study._id];
 
         if (testableIntervals) {
-            out.push({
+            testableStudies.push({
                 ...study,
                 _testableIntervals: testableIntervals,
             });
         }
     }
 
-    //console.log(out);
+    var possibleProceduresByStudyId = await fetchPossibleProcedureKeys({
+        db,
+        studyIds: testableStudies.map(it => it._id),
+        subjectType: subjectRecord.type
+    });
+    testableStudies = (
+        testableStudies
+        .map(it => ({
+            ...it,
+            _possibleProcedures: possibleProceduresByStudyId[it._id]
+        }))
+        .filter(it => it._possibleProcedures)
+    );
+    //console.log(testableStudies);
 
     context.body = ResponseBody({
-        data: out
+        data: testableStudies
     });
 
     await next();
@@ -218,7 +232,8 @@ var calculateAllTestableIntervals = (bag) => {
         subjectCRTSettings,
         subjectRecord,
         ageFrameFilters,
-        ageFrameValueFilters
+        ageFrameValueFilters,
+        desiredTestInterval,
     } = bag;
 
     var groupedAFValueFilters = groupBy({
@@ -261,6 +276,11 @@ var calculateAllTestableIntervals = (bag) => {
             ageFrameIntervals: [ interval ]
         });
 
+        testableIntervals = intervalfns.intersect({
+            setA: testableIntervals,
+            setB: [ desiredTestInterval ]
+        });
+
         if (testableIntervals.length > 0) {
             if (!out[studyId]) {
                 out[studyId] = [];
@@ -276,5 +296,32 @@ var calculateAllTestableIntervals = (bag) => {
     console.log(out);
     return out;
 }
+
+var fetchPossibleProcedureKeys = async (bag) => {
+    var { db, studyIds, subjectType } = bag;
+    
+    var settings = await (
+        db.collection('experimentVariantSetting').aggregate([
+            { $match: {
+                type: { $in: [ 'inhouse', 'online-video-call' ]}, // FIXME: later we will allow also allow away-team
+                studyId: { $in: studyIds },
+                'state.subjectTypeKey': subjectType,
+            }},
+            { $project: {
+                'studyId': true,
+                'type': true
+            }}
+        ]).toArray()
+    );
+
+    var out = {};
+    for (var it of settings) {
+        if (!out[it.studyId]) {
+            out[it.studyId] = [];
+        }
+        out[it.studyId].push(it.type);
+    }
+    return out;
+} 
 
 module.exports = searchStudiesTestableForSubject;
