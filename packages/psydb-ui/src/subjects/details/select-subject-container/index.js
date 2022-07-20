@@ -101,7 +101,10 @@ const SelectSubjectModalBody = (ps) => {
                     subjectId={ subjectId }
                     desiredTestInterval={ desiredTestInterval }
                     selectedStudy={ selectedStudy }
-                    onSelect={ setSelectedStudy }
+                    onSelect={ (study) => {
+                        setSelectedProcedure();
+                        setSelectedStudy(study)
+                    }}
                 />
 
                 <hr />
