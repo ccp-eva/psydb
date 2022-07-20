@@ -4,7 +4,7 @@ var debug = require('debug')(
 );
 
 var jsonpointer = require('jsonpointer');
-var { groupBy } = require('@mpieva/psydb-core-utils');
+var { groupBy, keyBy } = require('@mpieva/psydb-core-utils');
 var intervalfns = require('@mpieva/psydb-interval-fns');
 
 var {
@@ -32,6 +32,8 @@ var {
 } = require('@mpieva/psydb-schema-fields');
 
 var fetchExcludedStudiesForSubject = require('./fetch-excluded-studies-for-subject');
+var fetchPossibleProcedureKeys = require('./fetch-possible-procedure-keys');
+var TestingPermissions = require('./testing-permissions');
 
 var RequestBodySchema = () => ExactObject({
     properties: {
@@ -72,19 +74,25 @@ var searchStudiesTestableForSubject = async (context, next) => {
         recordType: subjectRecord.type,
     });
 
-    var testingPermissions = gatherIntersectedTestingPermissions(
-        subjectRecord,
-        permissions
+    var testingPermissions = (
+        TestingPermissions
+        .fromSubject(subjectRecord)
+        .intersect({ userPermissions: permissions })
     );
 
-    if (testingPermissions.length < 1) {
+    
+    if (testingPermissions.allowedLabOps().length < 1) {
         throw new ApiError(403, { apiStatus: 'LabOperationAccessDenied' })
     }
 
     var studyExclusion = await fetchExcludedStudiesForSubject({
         db, subjectRecord
     });
-    console.log(studyExclusion);
+    
+    studyExclusion = groupBy({
+        items: studyExclusion,
+        byProp: 'type'
+    });
 
     var now = new Date();
     var studyRecords = await (
@@ -99,11 +107,17 @@ var searchStudiesTestableForSubject = async (context, next) => {
                 collection: 'study',
                 permissions
             }),
+            { $match: {
+                _id: { $nin: (
+                    (studyExclusion.excluded || []).map(it => it.studyId)
+                )}
+            }},
             { $project: {
                 'type': true,
                 'state.name': true,
                 'state.shorthand': true,
-                'state.enableFolloeUpExperiments': true,
+                'state.enableFollowUpExperiments': true,
+                'state.researchGroupIds': true,
             }},
             { $sort: {
                 'state.shorthand': 1,
@@ -133,6 +147,11 @@ var searchStudiesTestableForSubject = async (context, next) => {
         desiredTestInterval,
     });
     
+    var onlyFollowUpAllowed = keyBy({
+        items: studyExclusion['only-followup'] || [],
+        byProp: 'studyId'
+    });
+
     var testableStudies = [];
     for (var study of studyRecords) {
         var testableIntervals = testableIntervalsByStudyId[study._id];
@@ -140,6 +159,7 @@ var searchStudiesTestableForSubject = async (context, next) => {
         if (testableIntervals) {
             testableStudies.push({
                 ...study,
+                _onlyFollowUp: !!onlyFollowUpAllowed[study._id],
                 _testableIntervals: testableIntervals,
             });
         }
@@ -147,8 +167,9 @@ var searchStudiesTestableForSubject = async (context, next) => {
 
     var possibleProceduresByStudyId = await fetchPossibleProcedureKeys({
         db,
-        studyIds: testableStudies.map(it => it._id),
-        subjectType: subjectRecord.type
+        studyRecords,
+        subjectType: subjectRecord.type,
+        testingPermissions,
     });
     testableStudies = (
         testableStudies
@@ -209,30 +230,6 @@ var initAgeFrames = async ({
     };
 }
 
-var gatherIntersectedTestingPermissions = (
-    subjectRecord, userPermissions
-) => {
-    var { testingPermissions } = subjectRecord.scientific.state;
-
-    var out = [];
-    for (var it of testingPermissions) {
-        var { researchGroupId, permissionList } = it;
-        permissionList = permissionList.filter((it) => (
-            it.value === 'yes'
-            && userPermissions.hasLabOperationFlag(
-                it.labProcedureTypeKey,
-                'canSelectSubjectsForExperiments'
-            )
-        ));
-        if (permissionList.length > 0) {
-            out.push({
-                researchGroupId,
-                permissionList
-            })
-        }
-    }
-    return out;
-}
 
 var calculateAllTestableIntervals = (bag) => {
     var {
@@ -304,31 +301,5 @@ var calculateAllTestableIntervals = (bag) => {
     return out;
 }
 
-var fetchPossibleProcedureKeys = async (bag) => {
-    var { db, studyIds, subjectType } = bag;
-    
-    var settings = await (
-        db.collection('experimentVariantSetting').aggregate([
-            { $match: {
-                type: { $in: [ 'inhouse', 'online-video-call' ]}, // FIXME: later we will allow also allow away-team
-                studyId: { $in: studyIds },
-                'state.subjectTypeKey': subjectType,
-            }},
-            { $project: {
-                'studyId': true,
-                'type': true
-            }}
-        ]).toArray()
-    );
-
-    var out = {};
-    for (var it of settings) {
-        if (!out[it.studyId]) {
-            out[it.studyId] = [];
-        }
-        out[it.studyId].push(it.type);
-    }
-    return out;
-} 
 
 module.exports = searchStudiesTestableForSubject;
