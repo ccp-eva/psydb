@@ -45,7 +45,13 @@ const DetailContainer = ({
                         Location Kommentar
                         {' '}
                         <EditIconButtonInline
-                            onClick={ onEditLocationComment }
+                            onClick={ () => (
+                                onEditLocationComment({
+                                    locationLabel: locationRecord._recordLabel,
+                                    locationId,
+                                    locationComment
+                                })
+                            )}
                         />
                     </div>
                     <div className='px-3 py-2 border bg-white'>

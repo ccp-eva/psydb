@@ -19,6 +19,7 @@ var LocationGroup = MessageHandlerGroup([
         collection: 'location',
         op: 'patch',
     }),
+    require('./change-comment'),
     
     require('./hide-record'),
     GenericUnhideRecordHandler({ collection: 'location' }),

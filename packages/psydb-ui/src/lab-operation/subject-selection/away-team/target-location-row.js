@@ -21,6 +21,7 @@ const TargetLocationRow = ({
     onToggleDetails,
     selectedLocationId,
 
+    onEditLocationComment,
     onSelectSubject,
     onSelectManySubjects,
     selectedSubjectIds,
@@ -84,6 +85,7 @@ const TargetLocationRow = ({
                                 subjectMetadata,
                                 subjectExperimentMetadata,
 
+                                onEditLocationComment,
                                 onSelectSubject,
                                 onSelectManySubjects,
                                 selectedSubjectIds,
