@@ -3,6 +3,7 @@ import { createBase, withPair, addComponents } from '../core';
 import {
     Custom,
     SaneString,
+    FullText,
     SystemPermissions,
 } from '../utility-components';
 
@@ -10,6 +11,7 @@ import ReservationSettings from './reservation-settings';
 
 const labels = {
     '/sequenceNumber': 'ID Nr.',
+    '/state/comment': 'Kommentar',
 }
 
 const [ Location, LocationContext ] = createBase();
@@ -31,6 +33,11 @@ addComponents(Location, LocationContext, labels, [
     },
 
     { cname: 'Custom', path: '/state/custom', Component: Custom },
+    {
+        cname: 'Comment',
+        path: '/state/comment',
+        Component: withPair(FullText)
+    },
 ]);
 
 export default Location;

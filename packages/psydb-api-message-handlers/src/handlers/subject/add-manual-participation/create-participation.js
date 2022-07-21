@@ -15,6 +15,7 @@ var createParticipation = async (context, bag) => {
 
         experimentOperatorTeam,
         experimentOperatorIds,
+        excludeFromMoreExperimentsInStudy,
     } = bag;
 
     var participationItem = {

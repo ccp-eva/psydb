@@ -53,6 +53,10 @@ const FormFields = (ps) => {
     return (
         <>
             <Fields.Custom { ...customFieldBag } />
+            <Fields.FullText
+                label='Kommentar'
+                dataXPath='$.comment'
+            />
             <ReservationFields { ...ps } />
             <Fields.AccessRightByResearchGroupList
                 label='Zugriff auf diesen Datensatz für'

@@ -125,6 +125,13 @@ module.exports = {
                 displayName: 'ID Nr.',
                 props: {},
             },
+            {
+                key: '_comment',
+                systemType: 'FullText',
+                dataPointer: '/state/comment',
+                displayName: 'Kommentar',
+                props: {},
+            },
         ]
     },
     personnel: {
