@@ -11,6 +11,7 @@ const factoryButtonStyle = {
     marginTop: '-3px', // FIXME: in lists only
     borderRadius: '.2rem',
     border: 0,
+    background: 'transparent',
 }
 
 const factoryIconStyle = {

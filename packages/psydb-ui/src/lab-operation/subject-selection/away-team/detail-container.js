@@ -4,7 +4,9 @@ import {
     Table,
     Button,
     Pair,
-    Icons
+    Icons,
+    SplitPartitioned,
+    EditIconButtonInline,
 } from '@mpieva/psydb-ui-layout';
 
 import {
@@ -28,6 +30,7 @@ const DetailContainer = ({
     subjectMetadata,
     subjectExperimentMetadata,
 
+    onEditLocationComment,
     onSelectSubject,
     onSelectManySubjects,
     selectedSubjectIds,
@@ -36,9 +39,26 @@ const DetailContainer = ({
 }) => {
     return (
         <div className='border bg-light pr-3 pl-3'>
-            <Pair wLeft={ 2 } label='Kommentar: '>
-                { locationComment || '-' }
-            </Pair>
+            <div className='py-2'>
+                <SplitPartitioned partitions={[ 2, 10 ]}>
+                    <div className='py-2'>
+                        Location Kommentar
+                        {' '}
+                        <EditIconButtonInline
+                            onClick={ onEditLocationComment }
+                        />
+                    </div>
+                    <div className='px-3 py-2 border bg-white'>
+                        {
+                            locationComment
+                            ? <b style={{ fontWeight: 600 }}>
+                                { locationComment }
+                            </b>
+                            : <i>Keine Angabe</i>
+                        }
+                    </div>
+                </SplitPartitioned>
+            </div>
             <Table size='sm' className='border bg-white'>
 
                 <thead>

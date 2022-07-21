@@ -447,9 +447,9 @@ agent.fetchExperimentVariantSettings = ({
     return axios.post(
         '/api/experiment-variant-settings',
         {
-            studyIds: studyIds || studyId ? [ studyId ] : undefined,
-            types: types || type ? [ type ] : undefined,
-            subjectTypes: subjectTypes || subjectType ? [ subjectType ] : undefined
+            studyIds: studyIds || (studyId ? [ studyId ] : undefined),
+            types: types || (type ? [ type ] : undefined),
+            subjectTypes: (subjectTypes || subjectType ? [ subjectType ] : undefined)
         }
     );
 }

@@ -241,8 +241,8 @@ const Participation = (ps) => {
         filtered.length > 0
         ? (
             filtered
-            .map(it => (
-                <div> {
+            .map((it, ix) => (
+                <div key={ ix }> {
                     subjectMetadata
                     .relatedRecordLabels
                     .study[it.studyId]._recordLabel
@@ -282,7 +282,7 @@ const UpcomingExperiments = ({
                 var { startDate } = formatDateInterval(interval);
                 var study = relatedRecordLabels.study[studyId]._recordLabel;
                 return (
-                    <div>
+                    <div key={ ix }>
                         <a 
                             key={ ix }
                             href={`#/experiments/${record.type}/${record._id}`}
