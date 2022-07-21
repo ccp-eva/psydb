@@ -47,6 +47,11 @@ const Header = ({
                         { editLabel }
                     </LinkButton>
                 )}
+                { canEdit && onEditClick && (
+                    <Button onClick={ onEditClick }>
+                        { editLabel }
+                    </Button>
+                )}
                 {  canSelectSubjectsForExperiments && (
                     <SelectSubjectContainer
                         className='ml-3'
