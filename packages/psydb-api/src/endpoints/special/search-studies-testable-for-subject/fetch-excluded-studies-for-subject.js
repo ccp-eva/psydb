@@ -56,7 +56,7 @@ var fetchExcludedStudiesForSubject = async (bag) => {
             exclusion
             .find(a => compareIds(a.studyId === it.studyId))
         );
-        if (existing.type === 'excluded') {
+        if (existing && existing.type === 'excluded') {
             continue;
         }
 
