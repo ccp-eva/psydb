@@ -191,14 +191,16 @@ const InviteTestableSubjectList = ({
                 { formattedTestInterval.endDate }
             </div>
 
-            <div className='sticky-top border-bottom'>
-                <Pagination { ...pagination } />
-            </div>
-
-
-            <Table>
-                <thead>
-                    <tr>
+            <Table style={{ borderCollapse: 'separate', borderSpacing: 0 }}>
+                <thead className='sticky-top bg-light'>
+                    <tr className='bg-light'>
+                        <td className='m-0 p-0' colSpan={
+                            subjectData.displayFieldData.length + 6
+                        }>
+                            <Pagination { ...pagination } />
+                        </td>
+                    </tr>
+                    <tr className='bg-white'>
                         <th>Proband:in</th>
                         <FieldDataHeadCols { ...({
                             displayFieldData: subjectData.displayFieldData
