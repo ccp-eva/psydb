@@ -36,7 +36,6 @@ var combineSubjectResponseData = async ({
         })
     }))
 
-    // FIXME: NG
     var subjectRelated = await fetchRelatedLabelsForMany({
         db,
         collectionName: 'subject',

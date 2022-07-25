@@ -260,13 +260,13 @@ var searchGrouped = async (context, next) => {
     ]), []);
 
     var subjectIds = flatSubjects.map(it => it._id);
-    debug('start fetch upcoming subject');
+    debug('start fetch upcoming subject experiments');
     var upcomingSubjectExperimentData = await fetchUpcomingExperimentData({
         db,
         subjectIds: subjectIds,
         after: now,
     });
-    debug('end fetch upcoming subject');
+    debug('end fetch upcoming subject experiments');
 
     var upcomingBySubjectId = keyBy({
         items: upcomingSubjectExperimentData.upcomingForIds,
@@ -309,13 +309,13 @@ var searchGrouped = async (context, next) => {
     });
     debug('end fetch locations');
 
-    debug('start fetch upcoming location');
+    debug('start fetch upcoming location experiments');
     var upcomingLocationExperimentData = await fetchUpcomingExperimentData({
         db,
         locationIds: groupIds,
         after: now,
     });
-    debug('end fetch upcoming location');
+    debug('end fetch upcoming location experiments');
 
     var groupedById = keyBy({
         items: groupedSubjectRecords,

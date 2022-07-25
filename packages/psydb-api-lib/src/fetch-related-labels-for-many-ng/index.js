@@ -74,6 +74,7 @@ var fetchRelatedLabelsForMany = async (bag) => {
     };
 
     if (gathered.records) {
+        debug('fetching record labels');
         var collections = Object.keys(gathered.records);
         for (var c of collections) {
             var { ids } = gathered.records[c];
@@ -86,6 +87,7 @@ var fetchRelatedLabelsForMany = async (bag) => {
     }
 
     if (gathered.helperSetItems) {
+        debug('fetching helper set items');
         out.relatedHelperSetItems = await fetchHelperSetItemLabels({
             db, ids: gathered.helperSetItems.ids,
             keyed: true
@@ -93,6 +95,7 @@ var fetchRelatedLabelsForMany = async (bag) => {
     }
 
     if (gathered.crts) {
+        debug('fetching crt labels');
         var filter = { $or: (
             Object.keys(gathered.crts).map(collection => ({
                 collection,
