@@ -1,7 +1,11 @@
 import React from 'react';
 import jsonpointer from 'jsonpointer';
 
-import { usePermissions } from '@mpieva/psydb-ui-hooks';
+import {
+    usePermissions,
+    useModalReducer,
+    useRevision,
+} from '@mpieva/psydb-ui-hooks';
 
 import {
     experimentTypes,
@@ -15,7 +19,12 @@ import {
     Pair,
     Split,
     PaddedText,
+    EditIconButtonInline,
 } from '@mpieva/psydb-ui-layout';
+
+import {
+    EditExperimentCommentModal
+} from '@mpieva/psydb-ui-lib/src/modals';
 
 import {
     formatDateInterval,
@@ -31,7 +40,8 @@ const General = ({
     experimentData,
     opsTeamData,
     locationData,
-    studyData
+    studyData,
+    onSuccessfulUpdate
 }) => {
     var permissions = usePermissions();
 
@@ -69,6 +79,7 @@ const General = ({
     });
 
     var sharedBag = {
+        experimentId: experimentRecord._id,
         experimentTypeLabel: experimentTypes.mapping[experimentRecord.type],
         studyLabel: studyRecord.state.shorthand,
         firstResearchGroupId,
@@ -76,6 +87,8 @@ const General = ({
         interval: experimentRecord.state.interval,
         locationData,
         opsTeamData,
+
+        onSuccessfulUpdate
     }
 
     return (
@@ -158,6 +171,7 @@ const InviteVariant = (ps) => {
 
 const AwayTeamVariant = (ps) => {
     var {
+        experimentId,
         experimentTypeLabel,
         studyLabel,
         firstResearchGroupId,
@@ -165,8 +179,11 @@ const AwayTeamVariant = (ps) => {
         interval,
         locationData,
         opsTeamData,
-        comment
+        comment,
+        onSuccessfulUpdate
     } = ps;
+
+    var commentModal = useModalReducer();
 
     var locationType = locationData.record.type;
     var weekStart = datefns.startOfWeek(new Date(interval.start));
@@ -180,6 +197,10 @@ const AwayTeamVariant = (ps) => {
 
     return (
         <>
+            <EditExperimentCommentModal
+                { ...commentModal.passthrough }
+                onSuccessfulUpdate={ onSuccessfulUpdate }
+            />
             <Split num={2}>
                 <div>
                     <Pair label='Studie'>
@@ -218,7 +239,15 @@ const AwayTeamVariant = (ps) => {
                     </div>
                 </div>
             </Split>
-            <header className='mt-3'><b>Kommentar</b></header>
+            <header className='mt-3'>
+                <b>Kommentar</b>
+                <EditIconButtonInline
+                    onClick={ () => commentModal.handleShow({
+                        experimentId,
+                        experimentComment: comment
+                    }) }
+                />
+            </header>
             <div className='px-3 py-2 bg-white border'>
                 { comment ? comment : <i className='text-muted'>Kein Kommentar</i> }
             </div>

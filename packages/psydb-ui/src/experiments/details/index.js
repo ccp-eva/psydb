@@ -69,6 +69,7 @@ const ExperimentDetails = ({
                     opsTeamData,
                     locationData,
                     studyData,
+                    onSuccessfulUpdate,
                 }) } />
                 { showFunctions && (
                     <div className='media-print-hidden'>
