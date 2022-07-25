@@ -273,6 +273,7 @@ var searchGrouped = async (context, next) => {
         byProp: '_id',
     })
 
+    debug('postprocessing subjects');
     postprocessSubjectRecords({
         subjectRecords: flatSubjects,
         subjectRecordType: subjectTypeKey,
@@ -282,6 +283,7 @@ var searchGrouped = async (context, next) => {
         recordLabelDefinition: subjectRecordLabelDefinition,
     })
 
+    debug('combining response data');
     var combinedSubjectResponseData =  await combineSubjectResponseData({
         db,
 

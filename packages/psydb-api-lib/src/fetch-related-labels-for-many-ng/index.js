@@ -1,4 +1,5 @@
 'use strict';
+var debug = require('debug')('psydb:api-lib:fetchRelatedLabelsForMany');
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
 var {
@@ -16,6 +17,7 @@ var fetchCRTLabels = require('./fetch-crt-labels');
 var fetchHelperSetItemLabels = require('./fetch-helper-set-item-labels');
 
 var fetchRelatedLabelsForMany = async (bag) => {
+    debug('start fetchRelatedLabelsForMany()');
     var { db, collectionName: collection, records } = bag;
 
     // FIXME: thats a hack
@@ -108,6 +110,7 @@ var fetchRelatedLabelsForMany = async (bag) => {
     // FIXME: compat
     out.relatedRecordLabels = out.relatedRecords;
 
+    debug('end fetchRelatedLabelsForMany()');
     return out;
 }
 
