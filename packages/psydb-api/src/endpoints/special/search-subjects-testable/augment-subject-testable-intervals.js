@@ -40,7 +40,7 @@ var augmentSubjectTestableIntervals = (bag) => {
         ageFrameFilters,
         subjectRecords,
         desiredTestInterval,
-        dobFieldPointer,
+        //dobFieldPointer,
         clientTimezone,
     } = bag;
 
@@ -51,7 +51,7 @@ var augmentSubjectTestableIntervals = (bag) => {
 
     for (var subject of subjectRecords) {
         //console.log(subject._id);
-        var dateOfBirth = jsonpointer.get(subject, dobFieldPointer);
+        var dateOfBirth = jsonpointer.get(subject, '/_ageFrameField');
         
         //console.log('-------------------------');
         //console.log({ dateOfBirth });
