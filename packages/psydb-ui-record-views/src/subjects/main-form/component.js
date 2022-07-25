@@ -66,7 +66,10 @@ const FormFields = (ps) => {
                 ]}
                 extraTypeProps={{
                     'PhoneWithTypeList': { enableParentNumbers: true },
-                    'TestingPermissions': { required: true }
+                    'SubjectTestingPermissionList': {
+                        required: true,
+                        permissions
+                    }
                 }}
             />
 
