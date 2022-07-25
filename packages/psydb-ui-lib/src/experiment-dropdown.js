@@ -106,7 +106,7 @@ var ExperimentDropdown = (ps) => {
             <Dropdown.Menu>
                 <LinkContainer to={ detailsLink }>
                     <Dropdown.Item disabled={ !detailsLink } >
-                        Details
+                        Termin Details
                     </Dropdown.Item>
                 </LinkContainer>
 

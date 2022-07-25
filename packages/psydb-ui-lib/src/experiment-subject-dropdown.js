@@ -36,6 +36,7 @@ var ExperimentSubjectDropdown = (ps) => {
         onClickMailbox,
         onClickContactFailed,
 
+        enableSubjectDetailsLink = true,
         disabled,
         size='sm',
         variant = 'outline-primary',
@@ -152,14 +153,18 @@ var ExperimentSubjectDropdown = (ps) => {
                 }
             </Dropdown.Toggle>
             <Dropdown.Menu>
-                <Dropdown.Item
-                    as='a'
-                    disabled={ !canViewSubject }
-                    href={`#/subjects/${subjectType}/${subjectId}`}
-                >
-                    Details
-                </Dropdown.Item>
-                <Dropdown.Divider />
+                { enableSubjectDetailsLink && (
+                    <>
+                        <Dropdown.Item
+                            as='a'
+                            disabled={ !canViewSubject }
+                            href={`#/subjects/${subjectType}/${subjectId}`}
+                        >
+                            Proband:innen Details
+                        </Dropdown.Item>
+                        <Dropdown.Divider />
+                    </>
+                )}
                 <Dropdown.Item
                     as='button'
                     disabled={ !canComment || !onClickComment }
