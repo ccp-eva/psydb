@@ -6,7 +6,7 @@ import { keyBy } from '@mpieva/psydb-core-utils';
 
 import {
     useFetch,
-    usePaginationReducer,
+    usePaginationURLSearchParams,
     usePermissions,
 } from '@mpieva/psydb-ui-hooks';
 
@@ -37,7 +37,7 @@ export const Results = (ps) => {
     var permissions = usePermissions();
     var canUseCSVExport = permissions.hasFlag('canUseCSVExport');
 
-    var pagination = usePaginationReducer({ offset: 0, limit: 50 })
+    var pagination = usePaginationURLSearchParams({ offset: 0, limit: 50 })
     var { offset, limit } = pagination;
     
     var [ didFetch, fetched ] = useFetch((agent) => {
