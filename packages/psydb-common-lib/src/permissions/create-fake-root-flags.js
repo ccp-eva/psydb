@@ -3,6 +3,11 @@ var createFakeRootFlags = () => ({
     //canWriteAdministrativeCollections: true,
     canWritePersonnel: true,
     canSetPersonnelPassword: true,
+    canUseExtendedSearch: true,
+    canUseCSVExport: true,
+    canCreateReservationsWithinTheNext3Days: true,
+    canCreateExperimentsWithinTheNext3Days: true,
+
 
     ...([
         'Subjects',
@@ -21,6 +26,7 @@ var createFakeRootFlags = () => ({
 
     canReadParticipation: true,
     canWriteParticipation: true,
+
 
     canViewReceptionCalendar: true,
 
