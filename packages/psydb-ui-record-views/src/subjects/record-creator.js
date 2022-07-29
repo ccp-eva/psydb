@@ -19,24 +19,24 @@ const CreateForm = (ps) => {
         permissions
     });
 
+    initialValues.scientific.testingPermissions = [{
+        permissionList: (
+            [
+                'inhouse',
+                'online-video-call',
+                'away-team',
+                'online-survey'
+            ].map(it => ({
+                labProcedureTypeKey: it,
+                value: 'unknown'
+            }))
+        )
+    }];
     var [ primaryResearchGroupId ] = permissions.getResearchGroupIds();
     if (primaryResearchGroupId) {
-        initialValues.scientific.testingPermissions = [
-            {
-                researchGroupId: primaryResearchGroupId,
-                permissionList: (
-                    [
-                        'inhouse',
-                        'online-video-call',
-                        'away-team',
-                        'online-survey'
-                    ].map(it => ({
-                        labProcedureTypeKey: it,
-                        value: 'unknown'
-                    }))
-                )
-            }
-        ]
+        initialValues.scientific.testingPermissions[0].researchGroupId = (
+            primaryResearchGroupId
+        )
     }
 
     return (
