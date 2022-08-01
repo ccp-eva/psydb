@@ -12,8 +12,8 @@ dependencies:
   '@cdxoo/json-base64': 1.0.0
   '@cdxoo/jsonpointer-to-objectpath': 1.0.0
   '@cdxoo/koa-mongo-mq': 1.4.0
-  '@cdxoo/koa-mongo-rohrpost': 3.2.1
-  '@cdxoo/mongo-rohrpost': 3.2.1
+  '@cdxoo/koa-mongo-rohrpost': 3.2.2
+  '@cdxoo/mongo-rohrpost': 3.2.2
   '@cdxoo/mongo-test-helpers': 0.6.0
   '@cdxoo/mongodb-escape-keys': 0.1.0
   '@cdxoo/mongodb-restore': 1.1.2
@@ -1404,24 +1404,25 @@ packages:
     dev: false
     resolution:
       integrity: sha512-m3VP18YX+ILk/abLbrJ57RQONYTe9BX3DRKkNE9gnb2+jj7Ht2Sk7fGkydTovIAbk6GlOGuixB+mQLXCbpJ6HA==
-  /@cdxoo/koa-mongo-rohrpost/3.2.1:
+  /@cdxoo/koa-mongo-rohrpost/3.2.2:
     dependencies:
-      '@cdxoo/mongo-rohrpost': 3.2.1
+      '@cdxoo/mongo-rohrpost': 3.2.2
     dev: false
     resolution:
-      integrity: sha512-EHzZXk86pnOa1vb+ASRBpay9D1fHDkD+nKvxECVEUuTjAkphmJEx0mBTDP+evpkmQgwnhFiSZr53FN7DTHORUQ==
+      integrity: sha512-RrpfsxUJ1g8wLAzTgYI9ewJICwIZjgIGDfKPZs643B4aIfSjekSkxVXlPwVDO6GvMkAQ3mGfdc531N8il0GcTg==
   /@cdxoo/mongo-mq/1.4.0:
     dependencies:
       mongodb: 3.6.12
     dev: false
     resolution:
       integrity: sha512-7FtVgsRQBCdz0WkMJfiDjrXNNOC4RFtgm5Ld/lTPO6myJraRxb1g8kX1vauE5B8gmNn0Kw1D+byDJi3Pa88U4g==
-  /@cdxoo/mongo-rohrpost/3.2.1:
+  /@cdxoo/mongo-rohrpost/3.2.2:
     dependencies:
+      '@cdxoo/inline-text': 1.0.2
       mongodb: 3.6.12
     dev: false
     resolution:
-      integrity: sha512-4quM+mi7d3uXFx3K1RmxuaMqGzqEXFmbgwuIFndPZoXSxhIn4sHDh7E2aVxS5IUVWytyN2V2vYGW3QxyL+le0Q==
+      integrity: sha512-msloXmUADsy0hYL7I/wJlH/9C4mSiX/Gd+g4ktxhvbUVJzA0Zrodqz0YjLde2AMvUSfbOnl5PMerKniI+Fuxuw==
   /@cdxoo/mongo-test-helpers/0.6.0:
     dependencies:
       bson: 4.5.4
@@ -10114,8 +10115,8 @@ packages:
     dependencies:
       '@cdxoo/inline-text': 1.0.2
       '@cdxoo/koa-mongo-mq': 1.4.0
-      '@cdxoo/koa-mongo-rohrpost': 3.2.1
-      '@cdxoo/mongo-rohrpost': 3.2.1
+      '@cdxoo/koa-mongo-rohrpost': 3.2.2
+      '@cdxoo/mongo-rohrpost': 3.2.2
       chai: 4.2.0
       copy-anything: 2.0.3
       deepmerge: 4.2.2
@@ -10127,7 +10128,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-koa-event-middleware'
     resolution:
-      integrity: sha512-qrMU0NIWUxMIi4AKoQWILWOHgyFF9LoKoEgYbx9KfDM72nQBwoN/rRS5gInPnXAMJvATEJ2O73WT0Kd3c++xvA==
+      integrity: sha512-Fi8h7Q9NXg3Sc0T6oJFAOVXDBdU1n70VEn1ywhoItfevzI8F1XFfBmhlsA2Q+V8dSYIpHJD8d7Rrx7MGQRguLw==
       tarball: 'file:projects/psydb-koa-event-middleware.tgz'
     version: 0.0.0
   'file:projects/psydb-migration.tgz':
@@ -10520,8 +10521,8 @@ specifiers:
   '@cdxoo/json-base64': ~1.0.0
   '@cdxoo/jsonpointer-to-objectpath': ~1.0.0
   '@cdxoo/koa-mongo-mq': ~1.4.0
-  '@cdxoo/koa-mongo-rohrpost': ~3.2.1
-  '@cdxoo/mongo-rohrpost': ~3.2.1
+  '@cdxoo/koa-mongo-rohrpost': ~3.2.2
+  '@cdxoo/mongo-rohrpost': ~3.2.2
   '@cdxoo/mongo-test-helpers': ~0.6.0
   '@cdxoo/mongodb-escape-keys': ~0.1.0
   '@cdxoo/mongodb-restore': ~1.1.2
