@@ -7,10 +7,13 @@ var {
     keyBy,
     groupBy,
     compareIds,
+    convertPointerToPath,
 } = require('@mpieva/psydb-core-utils');
 
 var {
     checkLabOperationAccess,
+    convertCRTRecordToSettings,
+    findCRTAgeFrameField,
 } = require('@mpieva/psydb-common-lib');
 
 var {
@@ -165,6 +168,10 @@ var extendedExperimentData = async (context, next) => {
             type: typeKey,
         });
 
+        var crtSettings = convertCRTRecordToSettings(customRecordTypeData);
+        var dobFieldPointer = findCRTAgeFrameField(crtSettings);
+        var dobFieldPath = convertPointerToPath(dobFieldPointer);
+
         var recordLabelDefinition = (
             customRecordTypeData.state.recordLabelDefinition
         );
@@ -193,6 +200,10 @@ var extendedExperimentData = async (context, next) => {
             additionalProjection: {
                 'scientific.state.comment': true,
                 'scientific.state.internals.participatedInStudies': true,
+            },
+            sort: {
+                path: dobFieldPath,
+                direction: 'asc',
             },
             //offset,
             //limit

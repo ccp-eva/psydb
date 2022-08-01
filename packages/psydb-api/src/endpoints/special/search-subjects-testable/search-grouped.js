@@ -229,7 +229,7 @@ var searchGrouped = async (context, next) => {
         }}
     ]
 
-    debug('start aggregate');
+    debug('start aggregate sbjects');
     var result = await (
         db.collection('subject')
         .aggregate(stages, {
@@ -238,7 +238,7 @@ var searchGrouped = async (context, next) => {
         })
         .toArray()
     );
-    debug('end aggregate');
+    debug('end aggregate subjects');
 
     var { groupedSubjectRecords, subjectCount, locationCount } = result[0];
     //console.log(groupedSubjectRecords);
