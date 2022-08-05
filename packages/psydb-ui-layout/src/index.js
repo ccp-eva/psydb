@@ -42,6 +42,8 @@ export * from './outer-setting-panel';
 export * from './inner-setting-panel';
 export * from './big-nav-item';
 
+export * from './colored-box';
+
 export * as PageWrappers from './page-wrappers';
 export * as FormHelpers from './form';
 export * as Icons from './icons';

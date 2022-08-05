@@ -14,6 +14,7 @@ import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 
 import { usePermissions, useToggleReducer } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator, ToggleButtons } from '@mpieva/psydb-ui-layout';
+import { CalendarTeamLegend } from '@mpieva/psydb-ui-lib';
 
 import CalendarNav from '@mpieva/psydb-ui-lib/src/calendar-nav';
 import withVariableCalendarPages from '@mpieva/psydb-ui-lib/src/with-variable-calendar-pages';
@@ -41,9 +42,11 @@ const Calendar = ({
         researchGroupId,
     } = useParams();
 
+    var [ selectedTeamId, setSelectedTeamId ] = useState();
     var [ state, dispatch ] = useReducer(reducer, {});
 
     var {
+        studyRecords,
         experimentRecords,
         experimentOperatorTeamRecords,
         experimentRelated,
@@ -68,7 +71,9 @@ const Calendar = ({
                 studyId: selectedStudyId
             }),
             researchGroupId,
-            showPast
+
+            experimentOperatorTeamId: selectedTeamId,
+            showPast,
         })
         .then(response => {
             dispatch({ type: 'init', payload: {
@@ -79,7 +84,7 @@ const Calendar = ({
     }, [ 
         studyType, subjectType, researchGroupId,
         currentPageStart, currentPageEnd, revision,
-        selectedStudyId,
+        selectedStudyId, selectedTeamId
     ])
 
     var allDayStarts = useMemo(() => (
@@ -149,6 +154,19 @@ const Calendar = ({
                 onSelectDay,
                 onSuccessfulUpdate: handleSuccessfulUpdate
             }) }/>
+
+            <CalendarTeamLegend { ...({
+                studyRecords,
+                experimentOperatorTeamRecords,
+                onClickTeam: (team) => {
+                    if (selectedTeamId === team._id) {
+                        setSelectedTeamId(undefined);
+                    }
+                    else {
+                        setSelectedTeamId(team._id);
+                    }
+                }
+            })} />
         </div>
     )
 }
@@ -159,6 +177,7 @@ const reducer = (state, action) => {
         case 'init':
             return {
                 ...state,
+                studyRecords: payload.studyRecords,
                 experimentRecords: payload.experimentRecords,
                 experimentOperatorTeamRecords: payload.experimentOperatorTeamRecords,
                 experimentRelated: payload.experimentRelated,

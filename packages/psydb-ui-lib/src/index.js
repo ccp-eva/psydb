@@ -55,3 +55,5 @@ export { default as SubjectTestableIntervals } from './subject-testable-interval
 
 export { default as UpdateRecordVisibilityButton } from './update-record-visibility-button';
 export { default as GenericRecordEditorFooter } from './generic-record-editor-footer';
+
+export { default as CalendarTeamLegend } from './calendar-team-legend';

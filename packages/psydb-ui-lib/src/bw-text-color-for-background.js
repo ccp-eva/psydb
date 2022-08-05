@@ -1,9 +1,4 @@
-import calculatePerceivedBrightness from '@mpieva/psydb-common-lib/src/perceived-brightness';
-
-const bwTextColorForBackground = (bgColor) => (
-    calculatePerceivedBrightness(bgColor) > 150
-    ? '#212529'
-    : '#ffffff'
-);
+// FIXME: moved
+import { bwTextColorForBackground } from '@mpieva/psydb-ui-utils';
 
 export default bwTextColorForBackground;

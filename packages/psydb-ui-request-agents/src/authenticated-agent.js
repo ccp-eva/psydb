@@ -330,6 +330,8 @@ agent.fetchExperimentCalendar = ({
     experimentType,
     studyId,
     researchGroupId,
+
+    experimentOperatorTeamId,
     showPast,
 }) => {
     return axios.post(
@@ -340,6 +342,8 @@ agent.fetchExperimentCalendar = ({
             interval,
             experimentType,
             researchGroupId,
+
+            experimentOperatorTeamId,
             showPast
         }
     );
