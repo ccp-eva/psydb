@@ -35,6 +35,7 @@ var {
 var {
     ExactObject,
     ForeignId,
+    DefaultBool,
     CustomRecordTypeKey,
     DateTimeInterval,
     ExperimentTypeEnum,
@@ -50,6 +51,7 @@ var RequestBodySchema = () => ExactObject({
         researchGroupId: ForeignId({
             collection: 'researchGroup',
         }),
+        showPast: DefaultBool(),
     },
     required: [
         'researchGroupId',
@@ -77,7 +79,12 @@ var experimentCalendar = async (context, next) => {
         studyId,
         experimentType,
         researchGroupId,
+        showPast,
     } = request.body;
+
+    if (!permissions.isRoot()) {
+        showPast = false;
+    }
 
     var { start, end } = interval;
 
@@ -119,6 +126,7 @@ var experimentCalendar = async (context, next) => {
         byProp: '_id'
     });
 
+    var now = Date();
     var experimentRecords = await (
         db.collection('experiment').aggregate([
             MatchIntervalOverlapStage({ start, end }),
@@ -126,6 +134,10 @@ var experimentCalendar = async (context, next) => {
                 type: experimentType,
                 'state.studyId': { $in: studyIds },
                 'state.isCanceled': false,
+
+                ...(!showPast && {
+                    'state.interval.start': { $gte: now }
+                })
             }},
             StripEventsStage(),
             { $sort: { 'state.interval.start': 1 }}

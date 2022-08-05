@@ -68,6 +68,7 @@ const Calendar = ({
                 studyId: selectedStudyId
             }),
             researchGroupId,
+            showPast
         })
         .then(response => {
             dispatch({ type: 'init', payload: {

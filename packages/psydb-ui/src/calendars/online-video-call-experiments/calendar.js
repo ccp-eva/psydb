@@ -31,6 +31,7 @@ const Calendar = ({
     selectedStudyId,
     calendarVariant,
     onSelectDay,
+    showPast
 }) => {
     var { path, url } = useRouteMatch();
 
@@ -67,6 +68,7 @@ const Calendar = ({
                 studyId: selectedStudyId
             }),
             researchGroupId,
+            showPast,
         })
         .then(response => {
             dispatch({ type: 'init', payload: {
