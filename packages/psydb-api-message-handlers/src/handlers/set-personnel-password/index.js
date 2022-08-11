@@ -3,20 +3,25 @@ var nodemailer = require('nodemailer');
 var nanoid = require('nanoid');
 var bcrypt = require('bcrypt');
 var config = require('@mpieva/psydb-api-config');
+var { ApiError } = require('@mpieva/psydb-api-lib');
+
+var { SimpleHandler } = require('../../lib');
 
 var messageType = require('./message-type');
-var checkSchema = require('./check-schema');
+var createSchema = require('./create-schema');
 
-var shouldRun = (message) => (
-    messageType === message.type
-)
+var handler = SimpleHandler({
+    messageType,
+    createSchema,
+});
 
-// throw 400 or 403
-var checkAllowedAndPlausible = async ({
+
+handler.checkAllowedAndPlausible = async ({
     db,
     message,
     permissions,
 }) => {
+    console.dir(message.payload, { depth: null })
     var personnelRecord = await (
         db.collection('personnel').findOne({ _id: message.payload.id })
     );
@@ -30,7 +35,7 @@ var checkAllowedAndPlausible = async ({
     }
 };
 
-var triggerSystemEvents = async ({
+handler.triggerSystemEvents = async ({
     db,
     rohrpost,
     message,
@@ -66,7 +71,7 @@ var triggerSystemEvents = async ({
     cache.password = password;
 }
 
-var triggerOtherSideEffects = async (options) => {
+handler.triggerOtherSideEffects = async (options) => {
     var { db, message, cache } = options;
     var { id, method, sendMail } = message.payload;
     var { password } = cache;
@@ -112,10 +117,4 @@ var getRecipientMail = (emails) => {
     }
 }
 
-module.exports = {
-    shouldRun,
-    checkSchema,
-    checkAllowedAndPlausible,
-    triggerSystemEvents,
-    triggerOtherSideEffects,
-};
+module.exports = handler;

@@ -10,7 +10,7 @@ var {
 var MessageSchema = require('@mpieva/psydb-schema-helpers').Message,
     messageType = require('./message-type');
 
-var checkSchema = ({ recordSchemas, message }) => {
+var createSchema = ({ recordSchemas, message }) => {
     var schema = MessageSchema({
         type: messageType,
         payload: { oneOf: [
@@ -20,7 +20,7 @@ var checkSchema = ({ recordSchemas, message }) => {
                     lastKnownEventId: EventId(),
                     method: StringConst({ value: 'auto' }),
                 },
-                required: [ 'id', 'lastKnownEventId', 'method' ]
+                required: [ 'id', 'method' ]
             }),
             ExactObject({
                 properties: {
@@ -34,12 +34,14 @@ var checkSchema = ({ recordSchemas, message }) => {
                     sendMail: DefaultBool()
                 },
                 required: [
-                    'id', 'lastKnownEventId', 'method',
+                    'id', 'method',
                     'password', 'sendMail'
                 ]
             }),
         ]}
     });
+
+    return schema;
 };
 
-module.exports = checkSchema;
+module.exports = createSchema;

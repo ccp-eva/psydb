@@ -1,6 +1,8 @@
 'use strict';
 var { ObjectId } = require('mongodb');
-var deepmerge = require('deepmerge');
+var ejson = require('@cdxoo/tiny-ejson');
+var { merge } = require('@mpieva/psydb-core-utils');
+
 var {
     createInitialChannelState,
     pathifyProps,
@@ -70,7 +72,7 @@ var run = ({
         }
         
         console.log('QQQQQQQQQQQQQQQQQQ', { channelId });
-        console.dir({ channelId,  payload }, { depth: null });
+        console.dir(ejson({ channelId,  payload }), { depth: null });
         console.log('FFFFFFFFFFFF');
         await db.collection(collection).updateOne(
             { _id: channelId },
@@ -103,7 +105,7 @@ var run = ({
                 subChannelKey,
                 recordType,
             });
-            props = deepmerge(defaults.state, props);
+            props = merge(defaults.state, props);
         }
 
         var pathified = pathifyProps({

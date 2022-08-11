@@ -30,7 +30,8 @@
     "is-subset": "~0.1.1",
     "nodemailer": "~6.7.2",
     "@mpieva/psydb-api-config": "~0.1.0-alpha",
-    "deepmerge": "~4.2.2"
+    "deepmerge": "~4.2.2",
+    "@cdxoo/tiny-ejson": "~1.0.0"
   },
   "devDependencies": {
     "mocha": "~8.1.3",

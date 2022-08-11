@@ -3,6 +3,7 @@ var nodemailer = require('nodemailer');
 var nanoid = require('nanoid');
 var bcrypt = require('bcrypt');
 var deepmerge = require('deepmerge');
+var ejson = require('@cdxoo/tiny-ejson');
 var config = require('@mpieva/psydb-api-config');
 var {
     createInitialChannelState,
@@ -38,7 +39,7 @@ module.exports = GenericRecordHandler({
     triggerSystemEvents: async (options) => {
         var { db, rohrpost, personnelId, message, cache, dispatchProps } = options;
         console.log('PPPPPPPPPPPPPPPPPP');
-        console.dir({ message }, { depth: null });
+        console.dir(ejson({ message }), { depth: null });
         var destructured = destructureMessage({ message });
 
         var channel = await openChannel({

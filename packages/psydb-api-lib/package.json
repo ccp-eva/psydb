@@ -34,7 +34,7 @@
     "@mpieva/psydb-ajv-formats": "~0.1.0-alpha",
     "@mpieva/psydb-ajv-keywords": "~0.1.0-alpha",
     "@mpieva/psydb-api-lib-errors": "~0.1.0-alpha",
-    "@cdxoo/mongodb-escape-keys": "~0.1.0"
+    "@cdxoo/mongodb-escape-keys": "~0.1.1"
   },
   "devDependencies": {
     "mocha": "~8.1.3",
