@@ -113,7 +113,7 @@ var experimentCalendar = async (context, next) => {
                     'state.shorthand': true
                 }},
                 { $sort: {
-                    'state.shorthand': true
+                    'state.shorthand': 1
                 }}
             ], {
                 collation: { locale: 'de@collation=phonebook' }
