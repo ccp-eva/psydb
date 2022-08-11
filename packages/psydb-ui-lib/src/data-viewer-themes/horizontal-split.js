@@ -2,7 +2,7 @@ import React from 'react';
 import { Pair } from '@mpieva/psydb-ui-layout';
 
 export const Field = (ps) => {
-    var { label, handleMissing = 'warn', noWrapper, children } = ps;
+    var { label, handleMissing = 'warn', noWrapper, children, value } = ps;
 
     if (children === undefined) {
         if (handleMissing === 'warn') {

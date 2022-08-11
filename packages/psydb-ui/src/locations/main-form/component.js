@@ -20,7 +20,6 @@ export const Component = (ps) => {
     } = ps;
 
     return (
-        <FormBox title={ title }>
             <DefaultForm
                 initialValues={ initialValues }
                 onSubmit={ onSubmit }
@@ -39,7 +38,6 @@ export const Component = (ps) => {
                     </>
                 )}
             </DefaultForm>
-        </FormBox>
     );
 }
 
@@ -55,6 +53,10 @@ const FormFields = (ps) => {
     return (
         <>
             <Fields.Custom { ...customFieldBag } />
+            <Fields.FullText
+                label='Kommentar'
+                dataXPath='$.comment'
+            />
             <ReservationFields { ...ps } />
             <Fields.AccessRightByResearchGroupList
                 label='Zugriff auf diesen Datensatz für'

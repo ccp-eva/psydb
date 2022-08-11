@@ -7,6 +7,8 @@ const useRevision = () => {
         dispatch({ type: 'increment-revision' })
     }, [])
 
+    // FIXME: this hsould be value: state.revision
+    // but i dont wanna break stuff right now
     return { value: state, up: increment };
 }
 

@@ -1,16 +1,27 @@
 'use strict';
 var convertPointerToPath = require('./convert-pointer-to-path');
 
-var FakeAjvError = ({ dataPath, error, extraParams = {} }) => {
+var FakeAjvError = (bag) => {
+    var {
+        dataPath,
+        error,
+        extraParams = {}
+    } = bag;
+
+    var {
+        message = error.message,
+        errorClass = error.constructor.name,
+    } = bag;
+
     // ajv 6 compat
-    dataPath = convertPointerToPath(dataPath);
+    dataPath = '.' + convertPointerToPath(dataPath);
 
     return {
         dataPath,
         keyword: 'FakeAjvError',
-        message: error.message,
+        message,
         params: {
-            errorClass: error.constructor.name,
+            errorClass,
             ...extraParams,
         }
     }

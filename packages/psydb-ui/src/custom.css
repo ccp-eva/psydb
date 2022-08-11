@@ -10,6 +10,10 @@
     flex-grow: 1;
 }
 
+.flex-basis-0 {
+    flex-basis: 0;
+}
+
 .enable-flexbox {
     flex: 1;
 }
@@ -120,6 +124,9 @@ a:hover {
     background-color: #fbdddd;
 }
 
+.bg-medium-red {
+    background-color: #f1d2d2;
+}
 .quick-search-fixes .form-group {
     margin-bottom: 0px;
     margin-right: .5rem;
@@ -187,6 +194,11 @@ a {
 
 .opacity-50 {
     opacity: 0.5;
+}
+
+.table-hover tbody tr.bg-light:hover {
+    color: #212529 !important;
+    background-color: rgba(0,0,0, 0.075) !important;
 }
 
 @page {

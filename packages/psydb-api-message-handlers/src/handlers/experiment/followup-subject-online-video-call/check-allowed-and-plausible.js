@@ -19,9 +19,11 @@ var checkAllowedAndPlausible = async (context) => {
         message
     } = context
 
-    // TODO
-    if (!permissions.hasRootAccess) {
-        //throw new ApiError(403);
+    var isAllowed = permissions.hasLabOperationFlag(
+        'online-video-call', 'canMoveAndCancelExperiments'
+    );
+    if (!isAllowed) {
+        throw new ApiError(403);
     }
 
     var targetCache = cache.targetCache = {};

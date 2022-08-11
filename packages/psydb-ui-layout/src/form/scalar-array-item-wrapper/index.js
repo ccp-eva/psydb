@@ -71,7 +71,10 @@ var Aside = (ps) => {
             style={{ width: `${width}px` }}
         >
             { hasMoveUp && (
-                <MoveButton onClick={ moveUp } disabled={ disabled }>
+                <MoveButton
+                    onClick={ moveUp } disabled={ disabled }
+                    title='nach oben schieben'
+                >
                     <Icons.ArrowUpShort style={{
                         width: '24px',
                         height: '24px',
@@ -80,7 +83,10 @@ var Aside = (ps) => {
                 </MoveButton>
             )}
             { hasMoveDown && (
-                <MoveButton onClick={ moveDown } disabled={ disabled }>
+                <MoveButton
+                    onClick={ moveDown } disabled={ disabled }
+                    title='nach unten schieben'
+                >
                     <Icons.ArrowDownShort style={{
                         width: '24px',
                         height: '24px',
@@ -101,8 +107,9 @@ var Aside = (ps) => {
     )
 }
 
-const MoveButton = ({ children, onClick, disabled }) => (
-    <div
+const MoveButton = ({ children, onClick, disabled, title }) => (
+    <button
+        type='button'
         role={ disabled ? '': 'button' }
         onClick={ disabled ? undefined : onClick }
         style={{
@@ -113,13 +120,15 @@ const MoveButton = ({ children, onClick, disabled }) => (
             height: '38px',
         }}
         className='bg-white border d-flex align-items-center justify-content-center'
+        title={ title }
     >
         { children }
-    </div>
+    </button>
 )
 
 const RemoveButton = ({ children, onClick, disabled }) => (
-    <div
+    <button
+        type='button'
         role={ disabled ? '': 'button' }
         onClick={ disabled ? undefined : onClick }
         style={{
@@ -130,7 +139,8 @@ const RemoveButton = ({ children, onClick, disabled }) => (
             height: '38px',
         }}
         className='bg-white border d-flex align-items-center justify-content-center text-danger'
+        title='Löschen'
     >
         { children }
-    </div>
+    </button>
 )

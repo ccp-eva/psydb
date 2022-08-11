@@ -1,5 +1,7 @@
 export const SystemPermissions = (options) => {
     var { permissions } = options;
+
+    // FIXME: use permissions.getResearchGroupIds()
     var {
         forcedResearchGroupId,
         researchGroupIds,
@@ -20,6 +22,6 @@ export const SystemPermissions = (options) => {
             researchGroupId: presetResearchGroupId,
             permission: presetResearchGroupId ? 'write' : undefined,
         }],
-        isHiddenForResearchGroupIds: [],
+        isHidden: false,
     }
 }

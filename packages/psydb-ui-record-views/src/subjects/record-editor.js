@@ -1,10 +1,10 @@
 import React from 'react';
 
 import { only } from '@mpieva/psydb-core-utils';
-import { usePermissions, useSendPatch } from '@mpieva/psydb-ui-hooks';
-import { Pair } from '@mpieva/psydb-ui-layout';
-import { withRecordEditor, FormBox } from '@mpieva/psydb-ui-lib';
+import { Pair, FormBox } from '@mpieva/psydb-ui-layout';
+import { withRecordEditor } from '../lib';
 import MainForm from './main-form';
+
 
 const EditForm = (ps) => {
     var {
@@ -12,22 +12,14 @@ const EditForm = (ps) => {
         recordType,
         id,
         fetched,
+        permissions,
+        send,
+
         renderFormBox = true,
-        onSuccessfulUpdate
     } = ps;
 
     var { record, crtSettings, related } = fetched;
     var { fieldDefinitions } = crtSettings;
-
-    var permissions = usePermissions();
-
-    var send = useSendPatch({
-        collection,
-        recordType,
-        record,
-        subChannels: ['gdpr', 'scientific'],
-        onSuccessfulUpdate
-    });
 
     var defaults = MainForm.createDefaults({
         fieldDefinitions,
@@ -66,9 +58,19 @@ const EditForm = (ps) => {
         sequenceNumber,
         onlineId
     } = record;
+    
+    var isHidden = record.scientific.state.systemPermissions.isHidden;
 
     var renderedContent = (
-        <>
+        <div>
+            { isHidden && (
+                <>
+                    <h5 className='text-muted'>
+                        Datensatz ist Ausgeblendet
+                    </h5>
+                    <hr />
+                </>
+            )}
             { sequenceNumber && (
                 <Pair 
                     label='ID Nr.'
@@ -97,7 +99,15 @@ const EditForm = (ps) => {
                 permissions={ permissions }
                 renderFormBox={ false }
             />
-        </>
+            { isHidden && (
+                <>
+                    <hr />
+                    <h5 className='text-muted'>
+                        Datensatz ist Ausgeblendet
+                    </h5>
+                </>
+            )}
+        </div>
     );
 
     var renderedForm = (
@@ -118,7 +128,8 @@ const EditForm = (ps) => {
 }
 
 export const RecordEditor = withRecordEditor({
-    EditForm,
+    Body: EditForm,
+    collection: 'subject',
+    subChannels: [ 'gdpr', 'scientific' ],
     shouldFetchSchema: false,
 });
-

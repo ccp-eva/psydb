@@ -1,4 +1,5 @@
 'use strict';
+var debug = require('debug')('psydb:api-lib:fetchRelatedLabelsForMany');
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
 var {
@@ -16,6 +17,7 @@ var fetchCRTLabels = require('./fetch-crt-labels');
 var fetchHelperSetItemLabels = require('./fetch-helper-set-item-labels');
 
 var fetchRelatedLabelsForMany = async (bag) => {
+    debug('start fetchRelatedLabelsForMany()');
     var { db, collectionName: collection, records } = bag;
 
     // FIXME: thats a hack
@@ -72,6 +74,7 @@ var fetchRelatedLabelsForMany = async (bag) => {
     };
 
     if (gathered.records) {
+        debug('fetching record labels');
         var collections = Object.keys(gathered.records);
         for (var c of collections) {
             var { ids } = gathered.records[c];
@@ -84,6 +87,7 @@ var fetchRelatedLabelsForMany = async (bag) => {
     }
 
     if (gathered.helperSetItems) {
+        debug('fetching helper set items');
         out.relatedHelperSetItems = await fetchHelperSetItemLabels({
             db, ids: gathered.helperSetItems.ids,
             keyed: true
@@ -91,6 +95,7 @@ var fetchRelatedLabelsForMany = async (bag) => {
     }
 
     if (gathered.crts) {
+        debug('fetching crt labels');
         var filter = { $or: (
             Object.keys(gathered.crts).map(collection => ({
                 collection,
@@ -108,6 +113,7 @@ var fetchRelatedLabelsForMany = async (bag) => {
     // FIXME: compat
     out.relatedRecordLabels = out.relatedRecords;
 
+    debug('end fetchRelatedLabelsForMany()');
     return out;
 }
 

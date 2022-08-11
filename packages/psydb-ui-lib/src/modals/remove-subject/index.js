@@ -131,6 +131,7 @@ const RemoveSubjectModal = ({
                 <SchemaForm
                     schema={ schema }
                     formData={{
+                        unparticipateStatus: 'canceled-by-participant',
                         blockSubjectFromTesting: { shouldBlock: false },
                         subjectComment: subjectRecord.scientific.state.comment,
                     }}

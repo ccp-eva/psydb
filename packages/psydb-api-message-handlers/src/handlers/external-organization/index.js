@@ -3,7 +3,12 @@ var {
     MessageHandlerGroup
 } = require('@mpieva/psydb-koa-event-middleware');
 
-var GenericRecordHandler = require('../../lib/generic-record-handler');
+var {
+    GenericRecordHandler,
+
+    GenericHideRecordHandler,
+    GenericUnhideRecordHandler
+} = require('../../lib');
 
 var ExternalOrganizationGroup = MessageHandlerGroup([
     GenericRecordHandler({
@@ -14,6 +19,9 @@ var ExternalOrganizationGroup = MessageHandlerGroup([
         collection: 'externalOrganization',
         op: 'patch',
     }),
+
+    GenericHideRecordHandler({ collection: 'externalOrganization' }),
+    GenericUnhideRecordHandler({ collection: 'externalOrganization' }),
 
     require('./remove'),
 ]);

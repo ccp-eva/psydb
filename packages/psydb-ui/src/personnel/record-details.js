@@ -26,14 +26,16 @@ const DetailsBody = (ps) => {
         related
     }
 
+    var isHidden = record.scientific.state.systemPermissions.isHidden;
     //var title = `${crtSettings.label} Datensatz-Details`;
-    var title = 'Datensatz-Details';
+    var title = 'Mitarbeiter:in-Details';
     return (
         <>
             <DetailsBox
                 title={ title }
                 editUrl={ `${up(url, 1)}/edit` }
                 canEdit= { canEdit }
+                isRecordHidden={ isHidden }
             >
                 <Personnel { ...personnelBag }>
                     <Personnel.SequenceNumber />
@@ -46,17 +48,6 @@ const DetailsBody = (ps) => {
                     <Personnel.SystemPermissions />
                 </Personnel>
             </DetailsBox>
-            
-            { isRoot && (
-                <div className='mt-4 mb-4'>
-                    <LinkButton
-                        variant='danger'
-                        to={`${up(url, 1)}/remove` }
-                    >
-                        Mitarbeiter Löschen
-                    </LinkButton>
-                </div>
-            )}
         </>
     )
 }

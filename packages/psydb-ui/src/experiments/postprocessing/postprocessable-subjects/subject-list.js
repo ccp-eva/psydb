@@ -40,6 +40,15 @@ const SubjectList = ({
         experimentRecord.state.subjectData.filter(it => (
             it.participationStatus === 'unknown'
         ))
+        .map(it => {
+            var subjectRecord = records.find(record => (
+                record._id === it.subjectId
+            ));
+            return { ...it, _recordLabel: subjectRecord._recordLabel }
+        })
+        .sort((a,b) => (
+            a._recordLabel.localeCompare(b._recordLabel)
+        ))
     );
 
     return (

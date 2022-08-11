@@ -14,6 +14,7 @@ var ExperimentGroup = MessageHandlerGroup([
     require('./change-invitation-status'),
     require('./change-participation-status'),
     require('./change-per-subject-comment'),
+    require('./change-comment'),
     
     require('./move-inhouse'),
     require('./move-online-video-call'),

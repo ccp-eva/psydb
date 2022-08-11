@@ -153,6 +153,7 @@ handler.triggerSystemEvents = async (context) => {
         
         //experimentOperatorTeamId,
         experimentOperatorIds,
+        excludeFromMoreExperimentsInStudy,
     } = payload;
 
     var {
@@ -173,6 +174,7 @@ handler.triggerSystemEvents = async (context) => {
 
         experimentOperatorTeam,
         experimentOperatorIds,
+        excludeFromMoreExperimentsInStudy,
     };
 
     var experimentId = undefined;

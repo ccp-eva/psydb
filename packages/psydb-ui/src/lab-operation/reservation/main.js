@@ -25,6 +25,7 @@ import { StudyPicker } from './study-picker';
 export const Main = ({ customRecordTypes }) => {
     var { path, url } = useRouteMatch();
     var { studyType, studyId } = useParams();
+    console.log(useParams());
     var history =  useHistory();
 
     var [ didFetch, fetched ] = useFetchAll((agent) => ({
@@ -45,7 +46,6 @@ export const Main = ({ customRecordTypes }) => {
     }), [ studyType, studyId ]);
 
     var permissions = usePermissions();
-
 
     if (!didFetch) {
         return <LoadingIndicator size='lg' />
@@ -83,7 +83,8 @@ export const Main = ({ customRecordTypes }) => {
         <>
             <header><b>Studie</b></header>
             <StudyPicker
-                studyType={ studyType }
+                collection='study'
+                recordType={ studyType }
                 value={ studyRecord }
                 canClear={ false }
                 onChange={ (nextStudyRecord) => {

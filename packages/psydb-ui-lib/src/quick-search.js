@@ -52,7 +52,7 @@ const QuickSearch = ({
     onSubmit
 }) => {
     var className = classnames([
-        'bg-light border-bottom',
+        'bg-light',
         'pr-3 pl-3 pt-2 pb-2',
         'd-flex justify-content-start align-items-end quick-search-fixes',
         'media-print-hidden'
@@ -76,6 +76,7 @@ const QuickSearch = ({
             className={ className }
             initialValues={ filters || {} }
             onSubmit={ handleSubmit }
+            enableReinitialize={ true }
         >
             {(formikProps) => {
                 return (
@@ -112,7 +113,7 @@ const QuickSearch = ({
 
 const FieldList = (ps) => {
     var { displayFieldData } = ps;
-    console.log(displayFieldData);
+    //console.log(displayFieldData);
 
     return (
         <>

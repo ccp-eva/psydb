@@ -5,6 +5,8 @@ import getDayStartsInInterval from '../../get-day-starts-in-interval';
 import TimeTable from '../location-time-table';
 
 const LocationCalendar = ({
+    variant,
+
     studyId,
     locationRecord,
     reservationRecords,
@@ -21,6 +23,8 @@ const LocationCalendar = ({
     subjectRecordType,
     currentExperimentId,
     currentSubjectRecord,
+    desiredTestInterval,
+    testableIntervals,
 
     __useNewCanSelect,
     checkEmptySlotSelectable,
@@ -71,6 +75,8 @@ const LocationCalendar = ({
                 <u>Raum: { locationRecord._recordLabel }</u>
             </h5>
             <TimeTable { ...({
+                variant,
+
                 studyId,
                 locationRecord,
                 teamRecords,
@@ -88,6 +94,8 @@ const LocationCalendar = ({
                 subjectRecordType,
                 currentExperimentId,
                 currentSubjectRecord,
+                desiredTestInterval,
+                testableIntervals,
 
                 __useNewCanSelect,
                 checkEmptySlotSelectable,

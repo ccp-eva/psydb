@@ -5,7 +5,7 @@ import { StudySelectList, withRecordPicker } from '@mpieva/psydb-ui-lib';
 export const StudyPicker = withRecordPicker({ RecordList: (ps) => {
     var {
         onSelect,
-        studyType,
+        recordType: studyType,
     } = ps;
 
     var wrappedOnSelect = ({ type, payload }) => {

@@ -84,6 +84,7 @@ export const AgeFrameForm = (ps) => {
             <DefaultForm
                 onSubmit={ send.exec }
                 initialValues={ ageFrameState || defaultValues }
+                useAjvAsync
             >
                 {(formikProps) => {
                     var subjectScientificFields = (

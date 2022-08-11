@@ -12,8 +12,10 @@ import {
 import agent from '@mpieva/psydb-ui-request-agents';
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 
-import { usePermissions } from '@mpieva/psydb-ui-hooks';
-import { Button, LoadingIndicator } from '@mpieva/psydb-ui-layout';
+import { usePermissions, useToggleReducer } from '@mpieva/psydb-ui-hooks';
+import { LoadingIndicator, ToggleButtons } from '@mpieva/psydb-ui-layout';
+import { CalendarTeamLegend } from '@mpieva/psydb-ui-lib';
+
 import CalendarNav from '@mpieva/psydb-ui-lib/src/calendar-nav';
 import withVariableCalendarPages from '@mpieva/psydb-ui-lib/src/with-variable-calendar-pages';
 import getDayStartsInInterval from '@mpieva/psydb-ui-lib/src/get-day-starts-in-interval';
@@ -40,9 +42,11 @@ const Calendar = ({
         researchGroupId,
     } = useParams();
 
+    var [ selectedTeamId, setSelectedTeamId ] = useState();
     var [ state, dispatch ] = useReducer(reducer, {});
 
     var {
+        studyRecords,
         experimentRecords,
         experimentOperatorTeamRecords,
         experimentRelated,
@@ -67,6 +71,9 @@ const Calendar = ({
                 studyId: selectedStudyId
             }),
             researchGroupId,
+
+            experimentOperatorTeamId: selectedTeamId,
+            showPast,
         })
         .then(response => {
             dispatch({ type: 'init', payload: {
@@ -77,7 +84,7 @@ const Calendar = ({
     }, [ 
         studyType, subjectType, researchGroupId,
         currentPageStart, currentPageEnd, revision,
-        selectedStudyId,
+        selectedStudyId, selectedTeamId
     ])
 
     var allDayStarts = useMemo(() => (
@@ -147,6 +154,19 @@ const Calendar = ({
                 onSelectDay,
                 onSuccessfulUpdate: handleSuccessfulUpdate
             }) }/>
+
+            <CalendarTeamLegend { ...({
+                studyRecords,
+                experimentOperatorTeamRecords,
+                onClickTeam: (team) => {
+                    if (selectedTeamId === team._id) {
+                        setSelectedTeamId(undefined);
+                    }
+                    else {
+                        setSelectedTeamId(team._id);
+                    }
+                }
+            })} />
         </div>
     )
 }
@@ -157,6 +177,7 @@ const reducer = (state, action) => {
         case 'init':
             return {
                 ...state,
+                studyRecords: payload.studyRecords,
                 experimentRecords: payload.experimentRecords,
                 experimentOperatorTeamRecords: payload.experimentOperatorTeamRecords,
                 experimentRelated: payload.experimentRelated,
@@ -191,7 +212,7 @@ const CalendarVariantContainer = (ps) => {
 
     var [ query, updateQuery ] = useURLSearchParams();
     var permissions = usePermissions();
-    var [ showPast, setShowPast ] = useState(false);
+    var showPast = useToggleReducer(false, { as: 'props' });
     
     var {
         cal: calendarVariant,
@@ -205,10 +226,7 @@ const CalendarVariantContainer = (ps) => {
         <>
             { permissions.isRoot() && (
                 <div className='mb-2'>
-                    <Button
-                        onClick={ () => setShowPast(true) }
-                        size='sm'
-                    >zeige Vergangenheit</Button>
+                    <ToggleButtons.ShowPast { ...showPast } />
                 </div>
             )}
             <div className='d-flex mb-2'>
@@ -253,7 +271,7 @@ const CalendarVariantContainer = (ps) => {
             <WrappedCalendar { ...({
                 calendarVariant,
                 selectedStudyId,
-                showPast,
+                showPast: showPast.value,
                 //onSelectStudy: handleSelectStudyId,
                 onSelectDay: (date) => {
                     updateQuery({

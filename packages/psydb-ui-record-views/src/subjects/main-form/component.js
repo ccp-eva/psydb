@@ -25,6 +25,7 @@ export const Component = (ps) => {
             initialValues={ initialValues }
             onSubmit={ onSubmit }
             useAjvAsync
+            enableReinitialize
         >
             {(formikProps) => (
                 <>
@@ -65,7 +66,10 @@ const FormFields = (ps) => {
                 ]}
                 extraTypeProps={{
                     'PhoneWithTypeList': { enableParentNumbers: true },
-                    'TestingPermissions': { required: true }
+                    'SubjectTestingPermissionList': {
+                        required: true,
+                        permissions
+                    }
                 }}
             />
 

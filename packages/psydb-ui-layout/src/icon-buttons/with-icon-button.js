@@ -11,6 +11,7 @@ const factoryButtonStyle = {
     marginTop: '-3px', // FIXME: in lists only
     borderRadius: '.2rem',
     border: 0,
+    background: 'transparent',
 }
 
 const factoryIconStyle = {
@@ -24,8 +25,16 @@ export const withIconButton = (options) => {
         Icon,
         defaultButtonProps = factoryButtonProps,
         defaultButtonStyle = factoryButtonStyle,
-        defaultIconStyle = factoryIconStyle
+        defaultIconStyle = factoryIconStyle,
+        defaultTitle
     } = options;
+
+    if (defaultTitle) {
+        defaultButtonProps = {
+            ...defaultButtonProps,
+            title: defaultTitle
+        };
+    }
 
     var IconButton = (ps) => {
         var {
@@ -35,6 +44,7 @@ export const withIconButton = (options) => {
             buttonStyle,
             iconStyle,
             target,
+            title,
         } = ps;
 
         var mergedButtonProps = { ...defaultButtonProps, ...buttonProps };

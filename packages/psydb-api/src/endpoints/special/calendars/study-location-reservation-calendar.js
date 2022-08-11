@@ -146,7 +146,7 @@ var studyLocationReservationCalendar = async (context, next) => {
     }
 
     var locationRecords = await fetchEnabledLocationRecordsForStudy({
-        db, studyId, locationType
+        db, studyId, locationType, experimentType
     });
 
     var reservationRecords = await fetchRecordsInInterval({
@@ -166,7 +166,11 @@ var studyLocationReservationCalendar = async (context, next) => {
         end,
         additionalStages: [
             { $match: {
-                type: { $in: [ 'inhouse', 'online-video-call' ] },
+                type: (
+                    experimentType
+                    ? experimentType
+                    : { $in: [ 'inhouse', 'online-video-call' ] }
+                ),
                 'state.isCanceled': false,
             }}
         ]

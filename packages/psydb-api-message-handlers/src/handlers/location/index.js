@@ -3,7 +3,12 @@ var {
     MessageHandlerGroup
 } = require('@mpieva/psydb-koa-event-middleware');
 
-var GenericRecordHandler = require('../../lib/generic-record-handler');
+var {
+    GenericRecordHandler,
+
+    GenericHideRecordHandler,
+    GenericUnhideRecordHandler
+} = require('../../lib');
 
 var LocationGroup = MessageHandlerGroup([
     GenericRecordHandler({
@@ -14,6 +19,10 @@ var LocationGroup = MessageHandlerGroup([
         collection: 'location',
         op: 'patch',
     }),
+    require('./change-comment'),
+    
+    require('./hide-record'),
+    GenericUnhideRecordHandler({ collection: 'location' }),
 ]);
 
 module.exports = LocationGroup;

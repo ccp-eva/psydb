@@ -31,6 +31,8 @@ var RecordListTable = ({
     CustomActionListComponent,
     bsTableProps,
     emptyInfoText,
+
+    pagination,
 }) => {
     if (!records.length) {
         return (
@@ -74,10 +76,14 @@ var RecordListTable = ({
         bsTableProps = { ...bsTableProps, hover: true };
     }
     return (
-        <Table className={ className } { ...bsTableProps }>
+        <Table
+            style={{ borderCollapse: 'separate', borderSpacing: 0 }}
+            className={ className } { ...bsTableProps }
+        >
             <TableHead
                 displayFieldData={ displayFieldData }
                 showSelectionIndicator={ showSelectionIndicator }
+                pagination={ pagination }
             />
             <TableBody { ...({
                 records,

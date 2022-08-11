@@ -19,7 +19,7 @@ export const withRecordDetails = (options) => {
         shouldFetchCRTSettings = true,
     } = options;
 
-    var RecordEditor = (ps) => {
+    var RecordDetails = (ps) => {
         var { collection, recordType, id: manualId } = ps;
         var { id: paramId } = useParams();
         var id = manualId || paramId;
@@ -61,5 +61,5 @@ export const withRecordDetails = (options) => {
         )
     }
 
-    return RecordEditor;
+    return RecordDetails;
 }

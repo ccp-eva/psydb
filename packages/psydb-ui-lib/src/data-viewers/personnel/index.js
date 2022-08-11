@@ -21,7 +21,6 @@ const labels = {
     '/gdpr/state/description': 'Beschreibung',
 
     '/scientific/state/researchGroupSettings': 'Forschungsgruppen',
-    '/scientific/state/systemPermissions': 'Zugriff auf diesen Datensatz für'
 }
 
 const [ Personnel, PersonnelContext ] = createBase();
@@ -72,7 +71,7 @@ addComponents(Personnel, PersonnelContext, labels, [
     {
         cname: 'SystemPermissions',
         path: '/scientific/state/systemPermissions',
-        Component: withPair(SystemPermissions)
+        Component: SystemPermissions
     },
 ]);
 

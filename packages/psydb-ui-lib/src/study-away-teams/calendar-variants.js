@@ -1,7 +1,17 @@
 import React, { useState, useMemo } from 'react';
 
-import { useFetch, usePermissions } from '@mpieva/psydb-ui-hooks';
-import { Button, LoadingIndicator } from '@mpieva/psydb-ui-layout';
+import {
+    useFetch,
+    usePermissions,
+    useToggleReducer,
+} from '@mpieva/psydb-ui-hooks';
+
+import {
+    Button,
+    LoadingIndicator,
+    ToggleButtons
+} from '@mpieva/psydb-ui-layout';
+
 import getDayStartsInInterval from '../get-day-starts-in-interval';
 import withWeeklyCalendarPages from '../with-weekly-calendar-pages';
 
@@ -11,6 +21,7 @@ import TimeTableHead from './time-table-head';
 import TeamTimeTable from './team-time-table';
 
 export const Calendar = ({
+    variant,
     studyId,
     teamData,
     
@@ -27,8 +38,8 @@ export const Calendar = ({
     onPageChange,
 }) => {
     var permissions = usePermissions();
+    var showPast = useToggleReducer(false, { as: 'props' });
 
-    var [ showPast, setShowPast ] = useState(false);
     var allDayStarts = useMemo(() => (
         getDayStartsInInterval({
             start: currentPageStart,
@@ -69,7 +80,9 @@ export const Calendar = ({
             }}/>
             
             <TimeTableHead { ...({
+                variant,
                 allDayStarts,
+                showPast: showPast.value,
             }) }/>
             <div className='border-bottom'>
                 {
@@ -78,6 +91,7 @@ export const Calendar = ({
                     .map(teamRecord => {
                         return <TeamTimeTable { ...({
                             key: teamRecord._id,
+                            variant,
                             teamRecord,
 
                             allDayStarts,
@@ -89,7 +103,7 @@ export const Calendar = ({
                             onSelectExperimentSlot,
                             onSelectExperimentPlaceholderSlot,
 
-                            showPast
+                            showPast: showPast.value
                         })} />
                     })
                 }
@@ -97,10 +111,7 @@ export const Calendar = ({
 
             { permissions.isRoot() && (
                 <div className='mt-3'>
-                    <Button
-                        onClick={ () => setShowPast(true) }
-                        size='sm'
-                    >zeige Vergangenheit</Button>
+                    <ToggleButtons.ShowPast { ...showPast } />
                 </div>
             )}
         </div>

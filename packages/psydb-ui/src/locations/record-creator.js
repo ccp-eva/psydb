@@ -6,7 +6,7 @@ import {
     usePermissions
 } from '@mpieva/psydb-ui-hooks';
 
-import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
+import { LoadingIndicator, FormBox } from '@mpieva/psydb-ui-layout';
 import { withRecordCreator } from '@mpieva/psydb-ui-lib';
 import MainForm from './main-form';
 
@@ -38,14 +38,15 @@ const CreateForm = (ps) => {
     });
 
     return (
-        <MainForm.Component
-            title='Neue Location'
-            reservationType={ reservationType }
-            fieldDefinitions={ fieldDefinitions }
-            initialValues={ initialValues }
-            onSubmit={ send.exec }
-            permissions={ permissions }
-        />
+        <FormBox title='Neue Location'>
+            <MainForm.Component
+                reservationType={ reservationType }
+                fieldDefinitions={ fieldDefinitions }
+                initialValues={ initialValues }
+                onSubmit={ send.exec }
+                permissions={ permissions }
+            />
+        </FormBox>
     )
 }
 

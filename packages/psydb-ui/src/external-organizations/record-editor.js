@@ -2,7 +2,7 @@ import React from 'react';
 
 import { only } from '@mpieva/psydb-core-utils';
 import { usePermissions, useSendPatch } from '@mpieva/psydb-ui-hooks';
-import { withRecordEditor } from '@mpieva/psydb-ui-lib';
+import { withRecordEditor, FormBox } from '@mpieva/psydb-ui-lib';
 import MainForm from './main-form';
 
 const EditForm = (ps) => {
@@ -41,17 +41,21 @@ const EditForm = (ps) => {
         ]
     });
 
+    var isHidden = record.state.systemPermissions.isHidden;
+
     return (
-        <>
+        <FormBox
+            title='Externe Organisation bearbeiten'
+            isRecordHidden={ isHidden }
+        >
             <MainForm.Component
-                title='Externe Organisation bearbeiten'
                 fieldDefinitions={ fieldDefinitions }
                 initialValues={ initialValues }
                 onSubmit={ send.exec }
                 related={ related }
                 permissions={ permissions }
             />
-        </>
+        </FormBox>
     )
 }
 

@@ -175,6 +175,7 @@ const ParticipationListRow = ({
                     <EditIconButtonInline
                         onClick={ () => onEdit({
                             subjectId, subjectType,
+                            title: `Teilnahme - ${record._recordLabel}`,
                             ...participationData
                         }) }
                         iconStyle={{

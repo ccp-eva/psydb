@@ -25,7 +25,7 @@ export const CustomField = (ps) => {
 
     type = fixSystemType(type);
     var isRequired = true;
-    console.log(type, props);
+    //console.log(type, props);
     switch (type) {
         case 'SaneString':
         case 'FullText':

@@ -55,9 +55,7 @@ var gatherDisplayFieldsForRecordType =  async ({
         );
 
         displayFields = customRecordTypeRecord.state[
-            target === 'optionlist'
-            ? 'optionListDisplayFields'
-            : 'tableDisplayFields'
+            mapDisplayTargetToValueProperty(target)
         ];
 
         availableDisplayFieldData = [
@@ -89,6 +87,20 @@ var gatherDisplayFieldsForRecordType =  async ({
         availableDisplayFieldData,
         mergedDisplayFieldData,
     });
+}
+
+var mapDisplayTargetToValueProperty = (target) => {
+    switch (target) {
+        case 'invite-selection-list':
+            return 'selectionRowDisplayFields';
+        case 'away-team-selection-list':
+            return 'awayTeamSelectionRowDisplayFields';
+        case 'optionlist':
+            return 'optionListDisplayFields';
+        case 'table':
+        default:
+            return 'tableDisplayFields';
+    }
 }
 
 module.exports = gatherDisplayFieldsForRecordType;

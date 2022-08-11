@@ -30,14 +30,17 @@ export const DetailsBody = (ps) => {
         related
     }
 
+    var isHidden = record.state.systemPermissions.isHidden;
+
     //var title = `${crtSettings.label} Datensatz-Details`;
-    var title = 'Datensatz-Details';
+    var title = 'Externe-Organisation-Details';
     return (
         <>
             <DetailsBox
                 title={ title }
                 editUrl={ `${up(url, 1)}/edit` }
                 canEdit= { canEdit }
+                isRecordHidden={ isHidden }
             >
                 <ExternalOrganization { ...externalOrganizationBag }>
                     <ExternalOrganization.SequenceNumber />
@@ -45,17 +48,6 @@ export const DetailsBody = (ps) => {
                     <ExternalOrganization.SystemPermissions />
                 </ExternalOrganization>
             </DetailsBox>
-            
-            { isRoot && (
-                <div className='mt-4 mb-4'>
-                    <LinkButton
-                        variant='danger'
-                        to={`${up(url, 1)}/remove` }
-                    >
-                        Externe Organisation Löschen
-                    </LinkButton>
-                </div>
-            )}
         </>
     )
 }

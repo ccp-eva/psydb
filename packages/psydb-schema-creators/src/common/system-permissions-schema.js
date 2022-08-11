@@ -4,6 +4,7 @@ var inline = require('@cdxoo/inline-text');
 var {
     ForeignId,
     ExactObject,
+    DefaultBool,
 } = require('@mpieva/psydb-schema-fields');
 
 var systemPermissionsSchema = ExactObject({
@@ -46,38 +47,30 @@ var systemPermissionsSchema = ExactObject({
             `
         },
 
-        /*
-        canBeViewedByInstituteIds: {
-            type: 'array',
-            default: [],
-        },
-        canBeEditedByInstituteIds: {
-            type: 'array',
-            items: ForeignId('institute'),
-            default: [],
-        },
-        */
 
-        isHiddenForResearchGroupIds: {
-            title: 'Ausgeblendet für',
-            type: 'array',
-            default: [],
-            unqiueItems: true,
-            items: ForeignId({
-                title: 'Forschungsgruppe',
-                collection: 'researchGroup'
-            }),
-            description: inline`
-                hides the database record from view for that institute
-                in a soft way, i.e. one can always choose to show
-                hidden records; also this way the permissions are
-                retained to that it can be unhidden again
-            `,
-        }
+        isHidden: DefaultBool(),
+
+        //isHiddenForResearchGroupIds: {
+        //    title: 'Ausgeblendet für',
+        //    type: 'array',
+        //    default: [],
+        //    unqiueItems: true,
+        //    items: ForeignId({
+        //        title: 'Forschungsgruppe',
+        //        collection: 'researchGroup'
+        //    }),
+        //    description: inline`
+        //        hides the database record from view for that institute
+        //        in a soft way, i.e. one can always choose to show
+        //        hidden records; also this way the permissions are
+        //        retained to that it can be unhidden again
+        //    `,
+        //}
     },
     required: [
         'accessRightsByResearchGroup',
-        'isHiddenForResearchGroupIds'
+        'isHidden'
+        //'isHiddenForResearchGroupIds'
     ]
 });
 

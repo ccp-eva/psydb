@@ -1,6 +1,6 @@
 import React from 'react';
 import { NBSP } from '@mpieva/psydb-ui-layout';
-import formatInterval from './format-date-interval';
+import intervalfns from '@mpieva/psydb-date-interval-fns';
 
 const SubjectTestableIntervals = (ps) => {
     var {
@@ -9,17 +9,19 @@ const SubjectTestableIntervals = (ps) => {
         testableIntervals
     } = ps;
 
-    var desired = asTimestamps(desiredTestInterval);
-    console.log({ desired });
+    //console.log({ desiredTestInterval });
+    var desired = intervalfns.dtoi(desiredTestInterval);
+    //console.log({ desired });
 
     var indicator = '';
     for (var it of testableIntervals) {
-        var testable = asTimestamps(it);
-        console.log({ testable });
+        //console.log({ it });
+        var testable = intervalfns.dtoi(it);
+        //console.log({ testable });
         var isSameStart = desired.start === testable.start;
         var isSameEnd = desired.end === testable.end;
 
-        var formatted = formatInterval(it);
+        var formatted = intervalfns.format(it, { offsetEnd: 0 });
         if (isSameStart && isSameEnd) {
             indicator += '';
         }
@@ -35,7 +37,7 @@ const SubjectTestableIntervals = (ps) => {
     }
 
     return (
-        <span>
+        <div>
             { studyLabel }
             { indicator && (
                 <>
@@ -43,13 +45,8 @@ const SubjectTestableIntervals = (ps) => {
                     { indicator }
                 </>
             )}
-        </span>
+        </div>
     )
 }
-
-var asTimestamps = ({ start, end }) => ({
-    start: new Date(start).getTime(),
-    end: new Date(end).getTime(),
-})
 
 export default SubjectTestableIntervals;

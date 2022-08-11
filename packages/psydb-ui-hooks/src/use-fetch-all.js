@@ -16,6 +16,7 @@ const useFetchAll = (createPromises, dependenciesOrOptions = []) => {
     });
 
     var wrappedCreatePromises = () => {
+        dispatch({ type: 'set-transmitting' });
         var keyedPromises = createPromises(contextAgent);
         var keys = Object.keys(keyedPromises);
 
@@ -51,12 +52,17 @@ const useFetchAll = (createPromises, dependenciesOrOptions = []) => {
 
     useEffect(wrappedCreatePromises, dependencies);
 
-    return [ state.didFetch, state ];
+    return [ state.didFetch, state, state.isTransmitting ];
 }
 
 const reducer = (state, action) => {
     var { type, payload } = action;
     switch (type) {
+        case 'set-transmitting':
+            return ({
+                ...state,
+                isTransmitting: true,
+            })
         case 'init-data':
             return ({
                 ...state,
@@ -68,13 +74,15 @@ const reducer = (state, action) => {
         case 'fetched-all':
             return ({
                 ...state,
-                didFetch: true
+                didFetch: true,
+                isTransmitting: false,
             })
         case 'rejected':
             return ({
                 ...state,
                 didFetch: true,
                 didReject: true,
+                isTransmitting: false,
                 errorResponse: payload.errorResponse,
             })
 

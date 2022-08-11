@@ -17,6 +17,14 @@ var fetchUpcomingExperimentData = async ({
             'cannot use both subjectIds and locationIds combined'
         );
     }
+    
+    await db.collection('experiment').ensureIndex({
+        'state.interval.start': 1,
+        'state.interval.end': 1,
+    }, {
+        name: 'intervalIndex'
+    });
+
     var upcomingExperiments = await (
         db.collection('experiment').aggregate([
             ...(subjectIds ? [{ $unwind: '$state.subjectData' }] : []),

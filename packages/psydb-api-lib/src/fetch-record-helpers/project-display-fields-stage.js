@@ -1,4 +1,5 @@
 'use strict';
+var { entries } = require('@mpieva/psydb-core-utils');
 var convertPointerToPath = require('../convert-pointer-to-path');
 
 var ProjectDisplayFieldsStage = ({
@@ -12,8 +13,8 @@ var ProjectDisplayFieldsStage = ({
     }
 
     if (additionalProjection) {
-        for (var path of Object.keys(additionalProjection)) {
-            displayFieldProjection[path] = true;
+        for (var [ path, value ] of entries(additionalProjection)) {
+            displayFieldProjection[path] = value;
         }
     }
 

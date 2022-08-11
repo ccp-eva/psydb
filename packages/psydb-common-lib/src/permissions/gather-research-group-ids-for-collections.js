@@ -50,10 +50,14 @@ var filterResearchGroupsByPermissionFlags = (options) => {
 var getCollectionReadFlagPointers = ({ collection }) => {
     switch (collection) {
         case 'subject':
-            return [ '/canReadSubjects', '/canWriteSubjects' ];
+            return [
+                '/canReadSubjects',
+                '/canWriteSubjects'
+    ];
         case 'study':
             return [
-                '/canReadStudies', '/canWriteStudies',
+                '/canReadStudies',
+                '/canWriteStudies',
                 // TODO: reservation needs a separate endpoint to
                 // get study name/summary
                 '/labOperation/inhouse/canWriteReservations',
@@ -62,19 +66,37 @@ var getCollectionReadFlagPointers = ({ collection }) => {
             ];
 
         case 'location':
-            return [ '/canWriteLocations' ];
+            return [
+                '/canReadLocations',
+                '/canWriteLocations'
+            ];
         case 'externalPerson':
-            return [ '/canWriteExternalPersons' ];
+            return [
+                '/canReadExternalPersons',
+                '/canWriteExternalPersons'
+            ];
         case 'externalOrganization':
-            return [ '/canWriteExternalOrganizations' ];
+            return [
+                '/canReadExternalOrganizations',
+                '/canWriteExternalOrganizations'
+            ];
         case 'studyTopic':
-            return [ '/canWriteStudyTopics' ]
+            return [
+                '/canReadStudyTopics',
+                '/canWriteStudyTopics'
+            ]
         case 'personnel':
-            return [ '/canWritePersonnel' ];
+            return [
+                '/canReadPersonnel',
+                '/canWritePersonnel'
+            ];
 
         case 'helperSet':
         case 'helperSetItem':
-            return [ '/canWriteHelperSets' ];
+            return [
+                '/canReadHelperSets',
+                '/canWriteHelperSets'
+            ];
 
         default:
             return []

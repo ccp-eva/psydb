@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import jsonpointer from 'jsonpointer';
+import classnames from 'classnames';
 
 import { LinkButton } from '@mpieva/psydb-ui-layout';
 
@@ -30,8 +31,14 @@ const TableRow = (ps) => {
         CustomActionListComponent,
     } = ps;
 
+
+    var className = classnames([
+        record._isHidden && 'bg-light text-grey'
+    ]);
+
     return (
         <tr
+            className={ className }
             style={{
                 ...(
                     (onSelectRecord && !showSelectionIndicator) && {

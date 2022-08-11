@@ -6,6 +6,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 const LinkButton = ({
     to,
     target,
+    title,
     ...other
 }) => (
     target
@@ -14,13 +15,14 @@ const LinkButton = ({
             target={ target }
             href={ `#${to}` }
             className={ `btn btn-primary btn-${other.size}` }
+            alt={ title }
         >
             { other.children }
         </a>
     )
     : (
         <LinkContainer to={ to }>
-            <Button { ...other } />
+            <Button title={ title } { ...other } />
         </LinkContainer>
     )
 );

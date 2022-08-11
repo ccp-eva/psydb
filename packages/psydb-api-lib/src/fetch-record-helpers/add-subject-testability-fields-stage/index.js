@@ -1,7 +1,12 @@
 'use strict'
 var datefns = require('date-fns');
 var jsonpointer = require('jsonpointer');
-var { groupBy } = require('@mpieva/psydb-common-lib');
+var { groupBy } = require('@mpieva/psydb-core-utils');
+
+var {
+    convertCRTRecordToSettings,
+    findCRTAgeFrameField,
+} = require('@mpieva/psydb-common-lib');
 
 var filterAgeFrameConditions = require('./filter-age-frame-conditions');
 var makeCondition = require('./make-condition');
@@ -17,13 +22,10 @@ var AddSubjectTestabilityFieldsStage = ({
     studyRecords,
 }) => {
 
-    var customFields = (
-        subjectTypeRecord.state.settings.subChannelFields.scientific
+    var subjectCRTSettings = convertCRTRecordToSettings(subjectTypeRecord);
+    var ageFrameField = findCRTAgeFrameField(
+        subjectCRTSettings, { as: 'definition' }
     );
-    
-    var ageFrameField = customFields.find(field => (
-        field.props.isSpecialAgeFrameField === true
-    ));
 
     var ageFrameFiltersByStudy = groupBy({
         items: ageFrameFilters,

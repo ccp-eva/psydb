@@ -16,7 +16,6 @@ const labels = {
     '/onlineId': 'Online ID Code',
     '/scientific/state/comment': 'Kommentar',
     '/scientific/state/testingPermissions': 'Teilnahme-Erlaubnis',
-    '/scientific/state/systemPermissions': 'Zugriff auf diesen Datensatz für'
 }
 
 const [ Subject, SubjectContext ] = createBase();
@@ -54,7 +53,7 @@ addComponents(Subject, SubjectContext, labels, [
     {
         cname: 'SystemPermissions',
         path: '/scientific/state/systemPermissions',
-        Component: withPair(SystemPermissions)
+        Component: SystemPermissions
     },
     {
         cname: 'FullUserOrdered',

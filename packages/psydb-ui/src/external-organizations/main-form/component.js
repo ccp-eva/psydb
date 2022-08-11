@@ -19,7 +19,6 @@ export const Component = (ps) => {
     } = ps;
 
     return (
-        <FormBox title={ title }>
             <DefaultForm
                 initialValues={ initialValues }
                 onSubmit={ onSubmit }
@@ -37,7 +36,6 @@ export const Component = (ps) => {
                     </>
                 )}
             </DefaultForm>
-        </FormBox>
     );
 }
 

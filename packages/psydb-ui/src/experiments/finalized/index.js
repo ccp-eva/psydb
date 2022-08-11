@@ -22,7 +22,8 @@ const ExperimentFinalized = ({
                     experimentData,
                     opsTeamData,
                     locationData,
-                    studyData
+                    studyData,
+                    onSuccessfulUpdate,
                 }) } />
             </div>
             <div>

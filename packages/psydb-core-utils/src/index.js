@@ -3,13 +3,14 @@ var { isPlainObject } = require('is-what');
 
 module.exports = {
     isPlainObject,
+    compareIds: require('./compare-ids'),
 
     arrify: require('./arrify'),
     unique: require('./unique'),
     entries: require('./entries'),
+
     groupBy: require('./group-by'),
     keyBy: require('./key-by'),
-    compareIds: require('./compare-ids'),
     unwind: require('./unwind'),
     only: require('./only'),
     range: require('./range'),
@@ -30,4 +31,7 @@ module.exports = {
     forcePush: require('./force-push'),
 
     convertSchemaPointerToMongoPath: require('./schemapointer-to-mongopath'),
+    
+    flatten: require('@cdxoo/flat').flatten,
+    unflatten: require('@cdxoo/flat').unflatten,
 }

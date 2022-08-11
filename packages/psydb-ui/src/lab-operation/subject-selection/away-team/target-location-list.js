@@ -29,6 +29,7 @@ import { convertFilters } from '../convert-filters';
 
 import StudySummary from '../study-summary';
 import TargetLocationTable from './target-location-table';
+import EditLocationCommentModal from './edit-location-comment-modal';
 import ExperimentScheduleModal from './experiment-schedule-modal';
 
 const TargetLocationList = ({
@@ -142,6 +143,7 @@ const TargetLocationList = ({
         }})
     }
 
+    var editLocationCommentModal = useModalReducer();
     var createExperimentModal = useModalReducer();
 
     if (!didFetch) {
@@ -163,6 +165,10 @@ const TargetLocationList = ({
 
     return (
         <>
+            <EditLocationCommentModal
+                { ...editLocationCommentModal.passthrough }
+                onSuccessfulUpdate={ increaseRevision }
+            />
             <ExperimentScheduleModal { ...({
                 show: createExperimentModal.show,
                 onHide: createExperimentModal.handleHide,
@@ -196,6 +202,7 @@ const TargetLocationList = ({
                 onToggleDetails: handleToggleDetails,
                 selectedLocationId,
 
+                onEditLocationComment: editLocationCommentModal.handleShow,
                 onSelectSubject: handleSelectSubject,
                 onSelectManySubjects: handleSelectManySubjects,
                 selectedSubjectIds,

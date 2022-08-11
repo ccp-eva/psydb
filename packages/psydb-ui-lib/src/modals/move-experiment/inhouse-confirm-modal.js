@@ -1,6 +1,7 @@
 import React, { useMemo, useEffect, useReducer, useCallback, useState } from 'react';
 // FIXME: invite-confirm-modal as its also video-calls now
 
+import intervalfns from '@mpieva/psydb-date-interval-fns';
 import { withField } from '@cdxoo/formik-utils';
 import { useSend } from '@mpieva/psydb-ui-hooks';
 import {
@@ -11,6 +12,7 @@ import {
     Pair,
     Split,
     Form,
+    Alert,
 
     WithDefaultModal
 } from '@mpieva/psydb-ui-layout';
@@ -94,6 +96,7 @@ const InhouseConfirmModalBody = (ps) => {
         experimentData,
         studyData,
         modalPayloadData,
+        testableIntervals,
 
         onSuccessfulUpdate,
     } = ps;
@@ -135,20 +138,40 @@ const InhouseConfirmModalBody = (ps) => {
         shouldRemoveOldReservation: false
     }
 
+    var { start, maxEnd } = modalPayloadData;
+    var isSubjectTestable = false;
+    //console.log({ testableIntervals });
+    if (testableIntervals) {
+        var intersections = intervalfns.intersect(
+            [{ start: start, end: maxEnd }],
+            testableIntervals
+        );
+        //console.log({ intersections });
+        isSubjectTestable = intersections.length > 0;
+    }
+
     return (
-        <DefaultForm
-            initialValues={ initialValues }
-            onSubmit={ send.exec }
-        >
-            { (formikProps) => (
-                <FormContainer { ...({
-                    experimentData,
-                    studyData,
-                    confirmData: modalPayloadData,
-                    minEnd,
-                }) } />
-            )}
-        </DefaultForm>
+        <>
+            { !isSubjectTestable && (
+                <Alert variant='danger'>
+                    <b>Nicht in Altersfenster</b>
+                </Alert>
+            )} 
+            <DefaultForm
+                initialValues={ initialValues }
+                onSubmit={ send.exec }
+            >
+                { (formikProps) => (
+                    <FormContainer { ...({
+                        experimentData,
+                        studyData,
+                        confirmData: modalPayloadData,
+                        minEnd,
+                        modalPayloadData,
+                    }) } />
+                )}
+            </DefaultForm>
+        </>
     )
 
 }

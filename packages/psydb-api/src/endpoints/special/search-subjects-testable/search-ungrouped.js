@@ -6,7 +6,7 @@ var debug = require('debug')(
 var omit = require('@cdxoo/omit');
 var datefns = require('date-fns');
 
-var { keyBy } = require('@mpieva/psydb-core-utils');
+var { keyBy, convertPointerToPath } = require('@mpieva/psydb-core-utils');
 
 var {
     calculateAge,
@@ -52,6 +52,7 @@ var searchUngrouped = async (context, next) => {
 
     var {
         interval,
+        timezone,
         ageFrameFilters,
         ageFrameValueFilters,
        
@@ -75,12 +76,55 @@ var searchUngrouped = async (context, next) => {
         request,
         labProcedureType: experimentVariant,
     });
+
+    //console.log({ interval });
    
-    var stages = [
+    var subjectCRTSettings = convertCRTRecordToSettings(subjectTypeRecord);
+    var dobFieldPointer = findCRTAgeFrameField(subjectCRTSettings);
+
+    //var excludeStages = [
+    //    { $match: {
+    //        type: subjectTypeKey,
+    //        isDummy: false,
+    //        'scientific.state.systemPermissions.isHidden': { $ne: true },
+    //        'scientific.state.internals.isRemoved': { $ne: true }
+    //    }},
+    //    { $match: {
+    //        
+    //    }}
+    //];
+
+    //debug('start exclude query');
+    //var excludedSubjects = await (
+    //    db.collection('subject')
+    //    .aggregate(excludeStages)
+    //    .toArray()
+    //);
+    //debug('end exclude query');
+
+    var preCountStages = [
         { $match: {
             type: subjectTypeKey,
+            isDummy: false,
+            'scientific.state.systemPermissions.isHidden': { $ne: true },
             'scientific.state.internals.isRemoved': { $ne: true }
         }},
+        // NOTE: prefiltering possbile age frames to make index use easier
+        // and get better performance
+        { $match: { $or: (
+            ageFrameFilters.map(it => {
+                var p = convertPointerToPath(dobFieldPointer);
+                var shifted = timeshiftAgeFrame({
+                    targetInterval: interval,
+                    ageFrame: it.interval
+                });
+                    
+                return { $and: [
+                    { [p]: { $gte: shifted.start }},
+                    { [p]: { $lt: shifted.end }},
+                ]}
+            })
+        )}},
         // TODO: quicksearch
         /*...QuickSearchStages({
             queryFields,
@@ -105,32 +149,53 @@ var searchUngrouped = async (context, next) => {
         HasAnyTestabilityStage({
             studyIds
         }),
-        SeperateRecordLabelDefinitionFieldsStage({
-            recordLabelDefinition: subjectRecordLabelDefinition
-        }),
-        ProjectDisplayFieldsStage({
-            displayFields: subjectDisplayFields,
-            additionalProjection: {
-                '_recordLabelDefinitionFields': true,
-                '_ageFrameField': true,
-                'scientific.state.internals.participatedInStudies': true,
-                ...( studyIds.reduce((acc, id) => ({
-                    ...acc, [`_testableIn_${id}`]: true,
-                }), {}))
-            }
-        }),
+    ];
+
+    var stages = [
+        ...preCountStages,
         { $facet: {
-            records: [{ $skip: offset }, { $limit: limit }],
+            records: [
+                { $sort: {
+                    [convertPointerToPath(dobFieldPointer)]: 1
+                }},
+                { $skip: offset },
+                { $limit: limit },
+                SeperateRecordLabelDefinitionFieldsStage({
+                    recordLabelDefinition: subjectRecordLabelDefinition
+                }),
+                ProjectDisplayFieldsStage({
+                    displayFields: subjectDisplayFields,
+                    additionalProjection: {
+                        '_recordLabelDefinitionFields': true,
+                        '_ageFrameField': true,
+                        'scientific.state.internals.participatedInStudies': true,
+                        ...( studyIds.reduce((acc, id) => ({
+                            ...acc, [`_testableIn_${id}`]: true,
+                        }), {}))
+                    }
+                }),
+            ],
             recordsCount: [{ $count: 'COUNT' }]
         }}
     ];
     //console.dir(stages, { depth: null });
 
+    await db.collection('subject').ensureIndex({
+        [convertPointerToPath(dobFieldPointer)]: 1
+    }, {
+        name: 'ageFrameIndex'
+    });
+
+    debug('start aggregate');
     var result = await (
         db.collection('subject')
-        .aggregate(stages)
+        .aggregate(stages, {
+            hint: 'ageFrameIndex',
+            allowDiskUse: true,
+        })
         .toArray()
     );
+    debug('end aggregate');
 
     var [ subjectRecords, subjectRecordsCount ] = fromFacets(result);
 
@@ -147,15 +212,13 @@ var searchUngrouped = async (context, next) => {
         byProp: '_id',
     })
 
-    var subjectCRTSettings = convertCRTRecordToSettings(subjectTypeRecord);
-    var dobFieldPointer = findCRTAgeFrameField(subjectCRTSettings);
-
     // FIXME: maybe put this into postprocessing
     augmentSubjectTestableIntervals({
         ageFrameFilters,
         subjectRecords,
         desiredTestInterval: interval,
         dobFieldPointer,
+        clientTimezone: timezone
     });
     
     postprocessSubjectRecords({

@@ -11,6 +11,7 @@ var fetchEnabledLocationRecordsForStudy = async ({
     db,
     studyId,
     locationType,
+    experimentType,
 }) => {
 
     var locationTypeRecord = await fetchOneCustomRecordType({
@@ -23,11 +24,15 @@ var fetchEnabledLocationRecordsForStudy = async ({
         db.collection('experimentVariantSetting')
         .find({
             studyId,
-            type: { $in: [
-                'inhouse',
-                'online-video-call',
-                'inhouse-group-simple',
-            ]},
+            type: (
+                experimentType
+                ? experimentType
+                : { $in: [
+                    'inhouse',
+                    'online-video-call',
+                    'inhouse-group-simple',
+                ]}
+            ),
             'state.locations.customRecordTypeKey': locationType
         }, { projection: { events: false }})
         .toArray()

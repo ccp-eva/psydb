@@ -47,9 +47,27 @@ const MoveSubjectModal = ({
         }
     }, [ experimentType, experimentId ]);
 
+    var [ didFetchTestability, fetchedTestability ] = useFetch((agent) => {
+        if (didFetch) {
+            var { subjectId } = payloadData;
+        
+            studyData = studyData || fetched.data.studyData;
+            var studyId = studyData.record._id;
+
+            return agent.fetchSubjectPossibleTestIntervals({
+                studyId,
+                subjectIds: [ subjectId ],
+                labProcedureTypeKey: experimentType,
+            })
+        }
+    }, [ experimentType, didFetch ])
+
     var confirmModal = useModalReducer({ show: false });
 
     if (shouldFetch && !didFetch) {
+        return null;
+    }
+    if (!didFetchTestability || !fetchedTestability.data) {
         return null;
     }
 
@@ -90,6 +108,7 @@ const MoveSubjectModal = ({
                     studyData,
                     subjectData: { record: subjectRecord },
 
+                    testableIntervals: fetchedTestability.data.testableIntervals,
                     onSuccessfulUpdate: wrappedOnSuccessfulUpdate,
                 }) } />
 
@@ -100,6 +119,7 @@ const MoveSubjectModal = ({
                     currentExperimentId={ experimentId }
                     currentExperimentType={ experimentType }
                     currentSubjectRecord={ subjectRecord }
+                    testableIntervals={ fetchedTestability.data.testableIntervals }
 
                     //activeLocationType={ 'instituteroom' }
                     onSelectReservationSlot={ 

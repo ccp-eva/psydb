@@ -18,25 +18,28 @@
 'use strict';
 var debug = require('debug')('psydb:api:endpoints:search');
 
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
-    Ajv = require('@mpieva/psydb-api-lib/src/ajv'),
-    ResponseBody = require('@mpieva/psydb-api-lib/src/response-body'),
-    keyBy = require('@mpieva/psydb-common-lib/src/key-by');
+var { keyBy } = require('@mpieva/psydb-core-utils');
+var { fieldTypeMetadata } = require('@mpieva/psydb-common-lib');
+var {
+    ApiError,
+    Ajv,
+    ResponseBody,
 
-var CoreBodySchema = require('./core-body-schema'),
-    FullBodySchema = require('./full-body-schema');
+    gatherAvailableConstraintsForRecordType,
+    gatherDisplayFieldsForRecordType,
+    fetchOneCustomRecordType,
+    fetchRecordsByFilter,
+    convertFiltersToQueryFields, 
+    convertConstraintsToMongoPath,
+    fetchRelatedLabelsForMany,
 
-var gatherAvailableConstraintsForRecordType = require('@mpieva/psydb-api-lib/src/gather-available-constraints-for-record-type');
-var gatherDisplayFieldsForRecordType = require('@mpieva/psydb-api-lib/src/gather-display-fields-for-record-type');
-var fetchOneCustomRecordType = require('@mpieva/psydb-api-lib/src/fetch-one-custom-record-type');
-var fetchRecordsByFilter = require('@mpieva/psydb-api-lib/src/fetch-records-by-filter');
+} = require('@mpieva/psydb-api-lib');
+
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
-var convertFiltersToQueryFields = require('@mpieva/psydb-api-lib/src/convert-filters-to-query-fields');
-var convertConstraintsToMongoPath = require('@mpieva/psydb-api-lib/src/convert-constraints-to-mongo-path');
-var fetchRelatedLabelsForMany = require('@mpieva/psydb-api-lib/src/fetch-related-labels-for-many-ng');
+var CoreBodySchema = require('./core-body-schema');
+var FullBodySchema = require('./full-body-schema');
 
-var fieldTypeMetadata = require('@mpieva/psydb-common-lib/src/field-type-metadata');
 
 var search = async (context, next) => {
     debug('endpoints/search');
@@ -62,6 +65,7 @@ var search = async (context, next) => {
         collectionName,
         recordType,
         target,
+        showHidden,
     } = request.body;
     
     target = target || 'table';
@@ -160,6 +164,7 @@ var search = async (context, next) => {
         limit,
         sort,
 
+        showHidden,
         // TODO remove this as soon as we
         // can properly quicksearch and search for fk
         disablePermissionCheck: (target === 'optionlist' ? true : false)

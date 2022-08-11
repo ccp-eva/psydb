@@ -39,4 +39,10 @@ module.exports = {
 
     Permissions: require('./permissions'),
     checkLabOperationAccess: require('./check-lab-operation-access'),
+    checkIsWithin3Days: require('./check-is-within-3-days'),
+    checkShouldEnableCalendarSlotTypes: (
+        require('./check-should-enable-calendar-slot-types')
+    ),
+
+    calculateTestableIntervals: require('./calculate-testable-intervals'),
 }

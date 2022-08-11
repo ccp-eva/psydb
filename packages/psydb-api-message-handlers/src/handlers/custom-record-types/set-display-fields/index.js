@@ -127,6 +127,10 @@ var getPathForTarget = (target) => {
             return 'state.selectionSummaryDisplayFields';
         case 'invite-confirm-summary':
             return 'state.inviteConfirmSummaryDisplayFields';
+        case 'invite-selection-list':
+            return 'state.selectionRowDisplayFields';
+        case 'away-team-selection-list':
+            return 'state.awayTeamSelectionRowDisplayFields';
         default:
             throw new Error(`unknown target "${target}"`);
     }

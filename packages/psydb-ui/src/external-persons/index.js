@@ -7,12 +7,12 @@ import {
 
 import { RecordDetails } from './record-details';
 import { RecordCreator } from './record-creator';
-import { RecordEditor } from './record-editor';
+import EditorContainer from './editor-container';
 
 const ExternalPersonTypeView = withRecordTypeView({
     RecordDetails,
     RecordCreator,
-    RecordEditor,
+    RecordEditor: EditorContainer,
 });
 
 const ExternalPersonCollectionView = withCollectionView({

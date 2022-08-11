@@ -45,10 +45,10 @@ const StudySummaryList = (ps) => {
 
     return (
         <div>
-            { studyIds.map(it => {
+            { studyIds.map((it, ix) => {
                 return (
                     <StudySummary
-                        key={ it }
+                        key={ ix }
                         studyId={ it }
                         settings={ settingsByStudy[it] }
                         settingsRelated={ settingsRelated }

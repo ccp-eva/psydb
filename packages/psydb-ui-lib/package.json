@@ -25,21 +25,18 @@
     "@babel/preset-env": "~7.12.10",
     "@babel/preset-react": "~7.12.10",
     "babel-loader": "~8.2.2",
-
     "react-router": "~5.2.0",
     "react-router-dom": "~5.2.0",
-
-    "is-what": "~3.14.0",
+    "is-what": "~3.14.1",
     "formik": "~2.2.6",
     "jsonpointer": "~4.1.0",
     "js-base64": "~3.6.0",
-
     "@cdxoo/omit": "~1.0.1",
-    "@cdxoo/formik-utils": "~0.5.0",
+    "@cdxoo/formik-utils": "~0.6.0",
     "@cdxoo/formik-ajv-async": "~0.4.1",
-    
     "@mpieva/psydb-timezone-helpers": "~0.1.0-alpha",
     "@mpieva/psydb-core-utils": "~0.1.0-alpha",
+    "@mpieva/psydb-date-interval-fns": "~0.1.0-alpha",
     "@mpieva/psydb-common-lib": "~0.1.0-alpha",
     "@mpieva/psydb-schema-creators": "~0.1.0-alpha",
     "@mpieva/psydb-schema-fields": "~0.1.0-alpha",
@@ -48,10 +45,10 @@
     "@mpieva/psydb-api-endpoint-schemas": "~0.1.0-alpha",
     "@mpieva/psydb-ui-request-agents": "~0.1.0-alpha",
     "@mpieva/psydb-ui-utils": "~0.1.0-alpha",
+    "@mpieva/psydb-ui-contexts": "~0.1.0-alpha",
     "@mpieva/psydb-ui-hooks": "~0.1.0-alpha",
     "@mpieva/psydb-ui-layout": "~0.1.0-alpha",
     "@mpieva/psydb-ui-form-controls": "~0.1.0-alpha",
-
     "moment": "~2.29.1",
     "react-datetime": "~3.1.1",
     "bootstrap": "~4.6.0",

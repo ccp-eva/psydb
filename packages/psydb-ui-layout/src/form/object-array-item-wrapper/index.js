@@ -2,13 +2,6 @@ import React from 'react';
 import classnames from 'classnames';
 import * as Icons from '../../icons';
 
-import {
-    MoveButtonWrapper,
-    MoveButton,
-
-    RemoveButton,
-} from '../array-item-buttons';
-
 export const ObjectArrayItemWrapper = (ps) => {
     var {
         formikArrayHelpers,
@@ -63,12 +56,18 @@ const Footer = (ps) => {
     return (
         <MoveButtonWrapper>
             { hasMoveUp && (
-                <MoveButton onClick={ moveUp } disabled={ disabled }>
+                <MoveButton
+                    onClick={ moveUp } disabled={ disabled }
+                    title='nach oben schieben'
+                >
                     <Icons.ArrowUpShort />
                 </MoveButton>
             )}
             { hasMoveDown && (
-                <MoveButton onClick={ moveDown } disabled={ disabled }>
+                <MoveButton
+                    onClick={ moveDown } disabled={ disabled }
+                    title='nach unten schieben'
+                >
                     <Icons.ArrowDownShort />
                 </MoveButton>
             )}
@@ -80,3 +79,55 @@ const Footer = (ps) => {
         </MoveButtonWrapper>
     );
 }
+
+const MoveButtonWrapper = ({ children }) => (
+    <div
+        className='d-flex'
+        style={{
+            background: 'white',
+            bottom: -1,
+            right: -1,
+            position: 'absolute',
+        }}
+    >
+        { children }
+    </div>
+);
+
+const MoveButton = ({ children, onClick, disabled, title }) => (
+    <button
+        type='button'
+        role={ disabled ? '': 'button' }
+        onClick={ disabled ? undefined : onClick }
+        style={{
+            color: disabled ? '#ccc' : '#006066',
+            paddingTop: '3px',
+            paddingBottom: '3px',
+            width: '100px',
+        }}
+        className=' border d-flex align-items-center justify-content-center bg-white'
+        title={ title }
+    >
+        { children }
+    </button>
+)
+
+const RemoveButton = ({ children, onClick, disabled }) => (
+    <button
+        type='button'
+        role={ disabled ? '': 'button' }
+        onClick={ disabled ? undefined : onClick }
+        className='border d-flex align-items-center justify-content-center bg-white'
+        style={{
+            color: disabled ? '#ccc' : '#c00',
+            //border: '1px solid #c00',
+            paddingTop: '3px',
+            paddingBottom: '3px',
+            width: '100px',
+        }}
+        title='Löschen'
+    >
+        { children }
+    </button>
+)
+

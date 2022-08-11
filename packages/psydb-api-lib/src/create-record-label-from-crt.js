@@ -12,11 +12,13 @@ var createRecordLabelFromCRT = (options) => {
         customRecordType.state.recordLabelDefinitions
         || customRecordType.state.recordLabelDefinition // FIXME: which?
     );
-
-    return createRecordLabel({
-        recordLabelDefinition,
+    
+    var out = createRecordLabel({
+        definition: recordLabelDefinition,
         record,
-    })
+    });
+
+    return out;
 }
 
 module.exports = createRecordLabelFromCRT;

@@ -44,6 +44,9 @@ module.exports = {
         require('./search-subjects-testable/online-survey')
     ),
 
+    searchStudiesTestableForSubject: (
+        require('./search-studies-testable-for-subject')
+    ),
 
     selectionSettingsForSubjectTypeAndStudies: (
         require('./selection-settings-for-subject-type-and-studies')
@@ -99,6 +102,10 @@ module.exports = {
     ),
     searchStudiesForExclusion: (
         require('./search-studies-for-exclusion')
+    ),
+
+    readSubjectTestability: (
+        require('./read-subject-testability')
     ),
 
     reverseRefs: require('./reverse-refs'),

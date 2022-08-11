@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { useRouteMatch, useHistory } from 'react-router';
-import { usePermissions } from '@mpieva/psydb-ui-hooks';
+import { usePermissions, useModalReducer } from '@mpieva/psydb-ui-hooks';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
 
 import {
@@ -11,6 +11,7 @@ import {
 
 import { Button } from '@mpieva/psydb-ui-layout';
 import {
+    SelectSubjectContainer,
     FollowUpExperimentContainer,
     CancelExperimentContainer
 } from '../shared-general-functions';
@@ -25,6 +26,9 @@ const GeneralFunctions = ({
     var { type: experimentType } = experimentData.record;
     
     var permissions = usePermissions();
+    var canSelectSubjects = permissions.hasLabOperationFlag(
+        experimentType, 'canSelectSubjectsForExperiments'
+    );
     var canChangeOpsTeam = permissions.hasLabOperationFlag(
         experimentType, 'canChangeOpsTeam'
     );
@@ -37,6 +41,12 @@ const GeneralFunctions = ({
     
     return (
         <>
+            {/* canSelectSubjects && (
+                <SelectSubjectContainer { ...({
+                    experimentRecord: experimentData.record,
+                    onSuccessfulUpdate,
+                }) } />
+            )*/}
             { canChangeOpsTeam && (
                 <ChangeTeamContainer { ...({
                     experimentType,
@@ -78,6 +88,7 @@ const GeneralFunctions = ({
         </>
     );
 }
+
 
 const ChangeTeamContainer = ({
     experimentType,

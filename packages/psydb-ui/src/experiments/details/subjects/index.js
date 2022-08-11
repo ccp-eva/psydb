@@ -132,6 +132,7 @@ const ActionsComponent = ({
                         
                     disabled: isUnparticipated,
                     experimentType,
+                    enableSubjectDetailsLink: false,
                 }) } />
             )}
         </div>

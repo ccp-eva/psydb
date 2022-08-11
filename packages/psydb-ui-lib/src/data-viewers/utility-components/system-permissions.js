@@ -1,18 +1,25 @@
 import React from 'react';
+import { useThemeContext } from '../core/theme-context';
 import {
-    ForeignId
+    ForeignId,
 } from './static';
 
 export const SystemPermissions = (ps) => {
     var { value, related } = ps;
+    var { Field } = useThemeContext();
+
     return (
-        value.accessRightsByResearchGroup.map((it, ix) => (
-            <SystemPermissionItem
-                key={ ix }
-                value={ it }
-                related={ related }
-            />
-        ))
+        <>
+            <Field label='Zugriff auf diesen Datensatz für'>
+                { value.accessRightsByResearchGroup.map((it, ix) => (
+                    <SystemPermissionItem
+                        key={ ix }
+                        value={ it }
+                        related={ related }
+                    />
+                ))}
+            </Field>
+        </>
     );
 }
 

@@ -1,20 +1,47 @@
 'use strict';
 var jsonpointer = require('jsonpointer');
+var datefns = require('date-fns');
+var { getSystemTimezone } = require('@mpieva/psydb-timezone-helpers');
 
 var { groupBy, entries } = require('@mpieva/psydb-core-utils');
 
 var {
     calculateAge,
-    timeshiftAgeFrame,
-    intervalUtils,
+    calculateTestableIntervals,
 } = require('@mpieva/psydb-common-lib');
+
+
+
+var {
+    zonedTimeToUtc,
+    utcToZonedTime
+} = require('date-fns-tz');
+// FIXME: redundant
+var convertIntervalTZ = (interval, options = {}) => {
+    var { sourceTZ, targetTZ } = options;
+    var { start, end } = interval;
+
+    if (sourceTZ) {
+        start = zonedTimeToUtc(start, sourceTZ);
+        end = zonedTimeToUtc(end, sourceTZ);
+    }
+    if (targetTZ) {
+        start = utcToZonedTime(start, targetTZ);
+        end = utcToZonedTime(end, targetTZ);
+    }
+
+    return { start, end };
+}
+
+
 
 var augmentSubjectTestableIntervals = (bag) => {
     var {
         ageFrameFilters,
         subjectRecords,
         desiredTestInterval,
-        dobFieldPointer,
+        //dobFieldPointer,
+        clientTimezone,
     } = bag;
 
     var ageFrameFiltersForStudy = groupBy({
@@ -23,7 +50,8 @@ var augmentSubjectTestableIntervals = (bag) => {
     });
 
     for (var subject of subjectRecords) {
-        var dateOfBirth = jsonpointer.get(subject, dobFieldPointer);
+        //console.log(subject._id);
+        var dateOfBirth = jsonpointer.get(subject, '/_ageFrameField');
         
         //console.log('-------------------------');
         //console.log({ dateOfBirth });
@@ -40,58 +68,34 @@ var augmentSubjectTestableIntervals = (bag) => {
 
         for (var it of entries(ageFrameFiltersForStudy)) {
             var [ studyId, ageFrameFilters ] = it;
-            
+           
+            //console.dir({
+            //    dateOfBirth,
+            //    desiredTestInterval,
+            //    ageFrameIntervals: ageFrameFilters.map(it => it.interval)
+            //}, { depth: null });
             var testableIntervals = calculateTestableIntervals({
                 desiredTestInterval,
                 dateOfBirth,
                 ageFrameIntervals: ageFrameFilters.map(it => it.interval)
             });
-        
+            //console.log(datefns.add(dateOfBirth, { years: 22, months: 1 }));
+            //console.log({ testableIntervals });
+
+            testableIntervals = testableIntervals.map(interval => (
+
+                // NOTE: client wants utc version of
+                // its local date-only value
+                convertIntervalTZ(
+                    interval, { sourceTZ: clientTimezone }
+                )
+            ));
+            //console.log(clientTimezone);
             //console.dir({ testableIntervals }, { depth: null });
+        
             subject[`_testableIntervals_${studyId}`] = testableIntervals;
         }
-
     }
-}
-
-var calculateTestableIntervals = (bag) => {
-    var {
-        dateOfBirth,
-        ageFrameIntervals,
-        desiredTestInterval
-    } = bag;
-
-    var allShiftedDoBs = [];
-    for (var afi of ageFrameIntervals) {
-        var shifted = timeshiftAgeFrame({
-            sourceDate: dateOfBirth,
-            ageFrame: afi,
-        });
-        //console.log({ shifted });
-        allShiftedDoBs.push(shifted);
-    }
-
-    var merged = intervalUtils.merge({
-        intervals: allShiftedDoBs.map(it => ({
-            start: it.start.getTime(),
-            end: it.end.getTime()
-        }))
-    });
-
-    var intersections = intervalUtils.intersect({
-        setA: merged,
-        setB: [{
-            start: desiredTestInterval.start.getTime(),
-            end: desiredTestInterval.end.getTime(),
-        }]
-    });
-
-    intersections = intersections.map(it => ({
-        start: new Date(it.start),
-        end: new Date(it.end),
-    }));
-
-    return intersections;
 }
 
 module.exports = augmentSubjectTestableIntervals;

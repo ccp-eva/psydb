@@ -87,7 +87,7 @@ agent.readRecord = ({
     additionalParams,
     extraAxiosConfig,
 }) => {
-
+    //console.log({ collection, recordType });
     var url = (
         recordType
         ? `/api/read/${collection}/${recordType}/${id}`
@@ -109,6 +109,8 @@ agent.searchRecords = ({
     constraints,
     filters,
     sort,
+
+    showHidden,
 }) => {
     return (
         axios.post('/api/search', {
@@ -121,7 +123,8 @@ agent.searchRecords = ({
             limit: limit || 50,
             filters: filters || {},
             constraints: constraints || {},
-            sort: sort || undefined
+            sort: sort || undefined,
+            showHidden,
         })
     )
 }
@@ -133,7 +136,8 @@ agent.searchExport = (bag) => {
         searchOptions,
         constraints = {},
         filters = {},
-        sort
+        sort,
+        showHidden,
     } = bag;
 
     return axios.post('/api/search-export', {
@@ -143,6 +147,7 @@ agent.searchExport = (bag) => {
         constraints,
         filters,
         sort,
+        showHidden,
 
         timezone: getSystemTimezone(),
     });
@@ -325,6 +330,9 @@ agent.fetchExperimentCalendar = ({
     experimentType,
     studyId,
     researchGroupId,
+
+    experimentOperatorTeamId,
+    showPast,
 }) => {
     return axios.post(
         '/api/experiment-calendar',
@@ -334,6 +342,9 @@ agent.fetchExperimentCalendar = ({
             interval,
             experimentType,
             researchGroupId,
+
+            experimentOperatorTeamId,
+            showPast
         }
     );
 }
@@ -432,13 +443,19 @@ agent.fetchExperimentVariants = ({
 }
 
 agent.fetchExperimentVariantSettings = ({
+    type,
+    types,
     studyId,
     studyIds,
+    subjectType,
+    subjectTypes
 }) => {
     return axios.post(
         '/api/experiment-variant-settings',
         {
-            studyIds: studyIds || [ studyId ],
+            studyIds: studyIds || (studyId ? [ studyId ] : undefined),
+            types: types || (type ? [ type ] : undefined),
+            subjectTypes: (subjectTypes || subjectType ? [ subjectType ] : undefined)
         }
     );
 }
@@ -507,4 +524,34 @@ agent.fetchSubjectExperiments = (bag) => {
     );
 }
 
+agent.fetchLocationExperiments = (bag) => {
+    var {
+        locationId,
+        includePastExperiments,
+        out = 'full',
+        extraAxiosConfig,
+    } = bag;
+
+    return axios.post(
+        '/api/location/related-experiments',
+        { locationId, includePastExperiments, out },
+        extraAxiosConfig,
+    );
+}
+agent.fetchSubjectPossibleTestIntervals = (bag) => {
+    var {
+        subjectIds, studyId,
+        labProcedureTypeKey, desiredTestInterval,
+        extraAxiosConfig,
+    } = bag;
+
+    return axios.post(
+        '/api/subject/possible-test-intervals',
+        { 
+            subjectIds, studyId,
+            labProcedureTypeKey, desiredTestInterval
+        },
+        extraAxiosConfig,
+    );
+}
 export default agent;

@@ -5,15 +5,33 @@ import {
     withRecordTypeView
 } from '@mpieva/psydb-ui-lib/src/generic-views'
 
+import { RecordListContainer } from '@mpieva/psydb-ui-lib';
+
 import { RecordCreator } from './record-creator';
-import { RecordEditor } from './record-editor';
 import { RecordDetails } from './record-details';
 import { RecordRemover } from './record-remover';
 
+import EditorContainer from './editor-container';
+
 const ExternalOrganizationTypeView = withRecordTypeView({
+    RecordList: (ps) => {
+        var { url, collection, recordType } = ps;
+        return (
+            <RecordListContainer
+                linkBaseUrl={ url }
+                collection={ collection }
+                recordType={ recordType }
+                enableView={ false }
+                enableCSVExport={ true }
+                enableNew={ true }
+                enableEdit={ false }
+                enableRecordRowLink={ true }
+            />
+        );
+    },
     RecordDetails,
     RecordCreator,
-    RecordEditor,
+    RecordEditor: EditorContainer,
     RecordRemover,
 });
 

@@ -1,6 +1,8 @@
 module.exports = {
     SimpleHandler: require('./simple-handler'),
     GenericRecordHandler: require('./generic-record-handler'),
+    GenericHideRecordHandler: require('./generic-hide-record-handler'),
+    GenericUnhideRecordHandler: require('./generic-unhide-record-handler'),
 
     PushMaker: require('./push-maker'),
     PutMaker: require('./put-maker'),

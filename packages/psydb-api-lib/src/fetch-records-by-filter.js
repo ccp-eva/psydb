@@ -39,6 +39,7 @@ var fetchRecordByFilter = async ({
     additionalProjection,
 
     disablePermissionCheck,
+    showHidden,
     offset,
     limit,
     
@@ -95,26 +96,29 @@ var fetchRecordByFilter = async ({
         );
     }
     
-    if (collectionName === 'subject') {
-        preCountStages.push({
-            $match: {
-                'isDummy': false,
-                'scientific.state.internals.isRemoved': false,
-            }
-        });
-    }
-    else {
-        preCountStages.push({
-            $match: {
-                'isDummy': { $ne: true },
-                ...(
-                    hasSubChannels
-                    ? { 'scientific.state.internals.isRemoved': { $ne: true }}
-                    : { 'state.internals.isRemoved': { $ne: true }}
-                ),
-            }
-        });
-    }
+    //showHidden = showHidden || (queryFields && queryFields.length > 0);
+
+    preCountStages.push({
+        $match: {
+            'isDummy': { $ne: true },
+            ...(
+                hasSubChannels
+                ? {
+                    'scientific.state.internals.isRemoved': { $ne: true },
+                    ...(!showHidden && {
+                        'scientific.state.systemPermissions.isHidden': { $ne: true },
+                    })
+
+                }
+                : { 
+                    'state.internals.isRemoved': { $ne: true },
+                    ...(!showHidden && {
+                        'state.systemPermissions.isHidden': { $ne: true },
+                    })
+                }
+            ),
+        }
+    });
 
     var FooStages = ({ permissions, collection }) => {
         var {
@@ -195,8 +199,14 @@ var fetchRecordByFilter = async ({
         }),
         ...(
             hasSubChannels
-            ? { 'scientific.state.internals.isRemoved': 1 }
-            : { 'state.internals.isRemoved': 1 }
+            ? {
+                'scientific.state.internals.isRemoved': 1,
+                'scientific.state.systemPermissions.isHidden': 1,
+            }
+            : {
+                'state.internals.isRemoved': 1,
+                'state.systemPermissions.isHidden': 1,
+            }
         )
     }
     await db.collection(collectionName).ensureIndex(index, {
@@ -236,7 +246,12 @@ var fetchRecordByFilter = async ({
             displayFields,
             additionalProjection: {
                 type: true,
-                ...( recordLabelDefinition && {
+                '_isHidden': (
+                    hasSubChannels
+                    ? '$scientific.state.systemPermissions.isHidden'
+                    : '$state.systemPermissions.isHidden'
+                ),
+                ...(recordLabelDefinition && {
                     '_recordLabelDefinitionFields': true 
                 }),
                 // FIXME: not sure if thats good
@@ -246,6 +261,7 @@ var fetchRecordByFilter = async ({
                 ...additionalProjection
             }
         });
+        //console.dir(displayFieldStage, { depth: null });
     }
 
     var sortStage;
@@ -258,13 +274,18 @@ var fetchRecordByFilter = async ({
     }
     else {
         if (displayFields && displayFields.length > 0) {
-            var { pointer, dataPointer } = displayFields[0];
+            var { systemType, pointer, dataPointer } = displayFields[0];
             var sortPath = convertPointerToPath(pointer || dataPointer);
-            
+
+            // FIXME: this is a hotfix
+            if (systemType === 'Address') {
+                sortPath += '.street';
+            }
+
             await db.collection(collectionName).ensureIndex({
                 [sortPath]: 1
             }, {
-                //collation: { locale: 'de@collation=phonebook' }
+                collation: { locale: 'de@collation=phonebook' }
             });
 
             sortStage = {
@@ -310,7 +331,7 @@ var fetchRecordByFilter = async ({
             {
                 //hint: 'searchIndex',
                 allowDiskUse: true,
-                //collation: { locale: 'de@collation=phonebook' }
+                collation: { locale: 'de@collation=phonebook' }
             }
         )
         //.explain()

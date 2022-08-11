@@ -17,6 +17,7 @@ const DetailsBox = (ps) => {
         titleExtraClassName,
 
         onEditClick,
+        isRecordHidden,
     } = ps;
 
     var className = classnames([
@@ -31,9 +32,13 @@ const DetailsBox = (ps) => {
                 editLabel={ editLabel }
                 editUrl={ editUrl } 
                 extraClassName={ titleExtraClassName }
+                isRecordHidden={ isRecordHidden }
             />
             <hr />
-            <div className='px-3 pb-3'>
+            <div
+                className='px-3 pb-3'
+                style={ isRecordHidden ? { opacity: 0.5 } : {}}
+            >
                 { children }
             </div>
         </div>
@@ -50,7 +55,8 @@ const Header = (ps) => {
         editUrl,
         onEditClick,
 
-        extraClassName
+        extraClassName,
+        isRecordHidden
     } = ps;
 
     var className = classnames([
@@ -60,7 +66,14 @@ const Header = (ps) => {
 
     return (
         <h5 className={ className }>
-            <span className='d-inline-block pt-3'>{ title }</span>
+            <span className='d-inline-block pt-3'>
+                { title }
+                { isRecordHidden && (
+                    <span className='d-inline-block text-muted ml-2'>
+                        (Datensatz ist Ausgeblendet)
+                    </span>
+                )}
+            </span>
             { canEdit && editUrl && (
                 <LinkButton to={ editUrl }>
                     { editLabel }

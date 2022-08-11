@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import deLocale from 'date-fns/locale/de';
 
 import {
     HashRouter as Router,
@@ -8,7 +9,8 @@ import agent, { simple as publicAgent } from '@mpieva/psydb-ui-request-agents';
 
 import {
     SelfContext,
-    AgentContext
+    AgentContext,
+    UILocaleContext,
 } from '@mpieva/psydb-ui-contexts';
 
 import ErrorResponseModalSetup from './error-response-modal-setup';
@@ -52,17 +54,21 @@ const App = () => {
         View = (
             isSignedIn && self
             ? (
-                <AgentContext.Provider value={ agent }>
-                    <ErrorResponseModalSetup />
-                    <SelfContext.Provider value={{ ...self, setSelf }}>
-                        <Main onSignedOut={ onSignedOut } />
-                    </SelfContext.Provider>
-                </AgentContext.Provider>
+                <UILocaleContext.Provider value={ deLocale }>
+                    <AgentContext.Provider value={ agent }>
+                        <ErrorResponseModalSetup />
+                        <SelfContext.Provider value={{ ...self, setSelf }}>
+                            <Main onSignedOut={ onSignedOut } />
+                        </SelfContext.Provider>
+                    </AgentContext.Provider>
+                </UILocaleContext.Provider>
             )
             : (
-                <AgentContext.Provider value={ publicAgent }>
-                    <SignIn onSignedIn={ onSignedIn } />
-                </AgentContext.Provider>
+                <UILocaleContext.Provider value={ deLocale }>
+                    <AgentContext.Provider value={ publicAgent }>
+                        <SignIn onSignedIn={ onSignedIn } />
+                    </AgentContext.Provider>
+                </UILocaleContext.Provider>
             )
         );
     }

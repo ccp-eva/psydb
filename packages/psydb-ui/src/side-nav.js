@@ -118,23 +118,35 @@ const SideNav = (ps) => {
 
                     <div className='border-top mt-2 mb-2' />
 
-                    <WhenAllowed flag='canWriteLocations'>
+                    <WhenAllowed flags={[
+                        'canReadLocations', 'canWriteLocations'
+                    ]}>
                         <Link to='/locations'>Locations</Link>
                     </WhenAllowed>
-                    <WhenAllowed flag='canWriteExternalPersons'>
+                    <WhenAllowed flags={[
+                        'canReadExternalPersons', 'canWriteExternalPersons'
+                    ]}>
                         <Link to='/external-persons'>Externe Personen</Link>
                     </WhenAllowed>
-                    <WhenAllowed flag='canWriteExternalOrganizations'>
+                    <WhenAllowed flags={[
+                        'canReadExternalOrganizations', 'canWriteExternalOrganizations'
+                    ]}>
                         <Link to='/external-organizations'>Externe Organsationen</Link>
                     </WhenAllowed>
-                    <WhenAllowed flag='canWriteStudyTopics'>
+                    <WhenAllowed flags={[
+                        'canReadStudyTopics', 'canWriteStudyTopics'
+                    ]}>
                         <Link to='/study-topics'>Themengebiete</Link>
                     </WhenAllowed>
-                    <WhenAllowed flag='canWriteHelperSets'>
+                    <WhenAllowed flags={[
+                        'canReadHelperSets', 'canWriteHelperSets'
+                    ]}>
                         <Link to='/helper-sets'>Hilfstabellen</Link>
                     </WhenAllowed>
-                    <WhenAllowed flag='canWritePersonnel'>
-                        <Link to='/personnel'>Mitarbeiter</Link>
+                    <WhenAllowed flags={[
+                        'canReadPersonnel', 'canWritePersonnel'
+                    ]}>
+                        <Link to='/personnel'>Mitarbeiter:innen</Link>
                     </WhenAllowed>
 
                     <div className='border-top mt-2 mb-2' />

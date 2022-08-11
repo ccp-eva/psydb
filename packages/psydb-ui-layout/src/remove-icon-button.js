@@ -18,7 +18,8 @@ var iconStyle = {
 const RemoveIconButton = ({
     className,
     to,
-    onClick
+    onClick,
+    title,
 }) => {
     if (to) {
         return (
@@ -26,6 +27,7 @@ const RemoveIconButton = ({
                 { ...buttonProps }
                 className={ className }
                 to={ to }
+                title={ title || 'Löschen' }
             >
                 <XLg style={ iconStyle } />
             </LinkButton>
@@ -37,6 +39,7 @@ const RemoveIconButton = ({
                 { ...buttonProps }
                 className={ className }
                 onClick={ onClick }
+                title={ title || 'Löschen' }
             >
                 <XLg style={ iconStyle } />
             </Button>

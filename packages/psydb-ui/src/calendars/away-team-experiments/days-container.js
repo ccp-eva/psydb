@@ -135,7 +135,7 @@ const ItemsInDay = ({
 }
 
 const itemStyle = {
-    minHeight: '110px'
+    minHeight: '130px'
 }
 
 export default DaysContainer;

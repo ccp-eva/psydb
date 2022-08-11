@@ -2,6 +2,7 @@
 var debug = require('debug')(
     'psydb:api:endpoints:searchTestableSubjects:initAndCheck'
 );
+var { getSystemTimezone } = require('@mpieva/psydb-timezone-helpers');
 
 var {
     groupBy,
@@ -23,6 +24,31 @@ var {
 
 var RequestBodySchema = require('./request-body-schema');
 
+
+
+var {
+    zonedTimeToUtc,
+    utcToZonedTime
+} = require('date-fns-tz');
+// FIXME: redundant
+var convertIntervalTZ = (interval, options = {}) => {
+    var { sourceTZ, targetTZ } = options;
+    var { start, end } = interval;
+
+    if (sourceTZ) {
+        start = zonedTimeToUtc(start, sourceTZ);
+        end = zonedTimeToUtc(end, sourceTZ);
+    }
+    if (targetTZ) {
+        start = utcToZonedTime(start, targetTZ);
+        end = utcToZonedTime(end, targetTZ);
+    }
+
+    return { start, end };
+}
+
+
+
 var initAndCheck = async ({
     db,
     permissions,
@@ -34,6 +60,14 @@ var initAndCheck = async ({
         schema: RequestBodySchema(),
         payload: request.body
     });
+
+    // FIXME: the body interval is in utc
+    // as client converts its localtime to utc before sending
+    request.body.interval = convertIntervalTZ(
+        request.body.interval,{
+            targetTZ: request.body.timezone,
+        }
+    )
 
     var {
         subjectTypeKey,
@@ -66,6 +100,7 @@ var initAndCheck = async ({
     var subjectData = await initSubjects({
         db,
         subjectTypeKey,
+        labProcedureType,
     })
 
     return ({
@@ -76,111 +111,6 @@ var initAndCheck = async ({
         ageFrameFilters,
         ageFrameValueFilters,
     });
-
-   // var {
-   //     studyRecordType,
-   //     studyIds,
-   //     subjectRecordType,
-   //     timeFrameStart,
-   //     timeFrameEnd,
-   //     
-   //     enabledAgeFrames,
-   //     enabledValues,
-   //     
-   //     offset,
-   //     limit,
-   // } = request.body;
-
-   // // TODO: check body + unmarshal
-   // timeFrameStart = new Date(timeFrameStart);
-   // timeFrameEnd = new Date(timeFrameEnd);
-
-   // // TODO: not sure might be don via endpoint check
-   // /*if (
-   //     !permissions.hasRootAccess
-   // ) {
-   //     throw new ApiError(403, 'PermissionDenied');
-   // }*/
-
-   // var studyTypeRecord = await fetchOneCustomRecordType({
-   //     db,
-   //     collection: 'study',
-   //     type: studyTypeKey,
-   // });
-
-   // if (!studyTypeRecord) {
-   //     throw new ApiError(400, 'InvalidStudyRecordType');
-   // }
-
-   // var subjectRecordTypeRecord = await (
-   //     db.collection('customRecordType').findOne(
-   //         { collection: 'subject', type: subjectRecordType },
-   //         { projection: { events: false }}
-   //     )
-   // );
-
-   // if (!subjectRecordTypeRecord) {
-   //     throw new ApiError(400, 'InvalidSubjectRecordType');
-   // }
-
-   // var studyRecords = await db.collection('study').aggregate([
-   //     { $match: {
-   //         _id: { $in: studyIds }
-   //     }},
-   //     StripEventsStage(),
-   // ]).toArray()
-
-   // for (var study of studyRecords) {
-   //     var subjectTypeSettingsItem = (
-   //         study.state.selectionSettingsBySubjectType.find(it => {
-   //             return it.subjectRecordType === subjectRecordType
-   //         })
-   //     )
-   //     
-   //     if (!subjectTypeSettingsItem) {
-   //         throw new ApiError(400, 'SubjectTypeMissingInSelectedStudy');
-   //     }
-   // }
-
-   // var {
-   //     displayFields,
-   //     availableDisplayFieldData,
-   // } = await gatherDisplayFieldsForRecordType({
-   //     prefetched: subjectRecordTypeRecord,
-   // });
-
-   // var customRecordTypeData = await fetchOneCustomRecordType({
-   //     db,
-   //     collection: 'subject',
-   //     type: subjectRecordType,
-   // });
-
-   // var recordLabelDefinition = (
-   //     customRecordTypeData.state.recordLabelDefinition
-   // );
-
-   // return ({
-   //     timeFrameStart,
-   //     timeFrameEnd,
-
-   //     studyIds,
-   //     studyRecords,
-   //     studyRecordLabelDefinition: (
-   //         studyRecordTypeRecord.state.recordLabelDefinition
-   //     ),
-
-   //     subjectRecordType,
-   //     subjectRecordTypeRecord,
-   //     subjectDisplayFields: displayFields,
-   //     subjectAvailableDisplayFieldData: availableDisplayFieldData,
-   //     subjectRecordLabelDefinition: recordLabelDefinition,
-
-   //     enabledAgeFrames,
-   //     enabledValues,
-
-   //     limit,
-   //     offset,
-   // })
 }
 
 var initLabProcedureSettings = async (options) => {
@@ -276,6 +206,7 @@ var initAgeFrames = async ({
                 { $match: {
                     // only enabled values of enabled ageframes
                     $or: valueFilters.map(it => ({
+                        _id: it.ageFrameId,
                         'state.conditions.pointer': it.pointer,
                         'state.conditions.values': it.value
                     }))
@@ -343,6 +274,7 @@ var initStudies = async ({
 var initSubjects = async ({
     db,
     subjectTypeKey,
+    labProcedureType,
 }) => {
 
     var subjectTypeRecord = await fetchOneCustomRecordType({
@@ -356,6 +288,11 @@ var initSubjects = async ({
        availableDisplayFieldData,
    } = await gatherDisplayFieldsForRecordType({
        prefetched: subjectTypeRecord,
+       target: (
+            ['inhouse', 'online-video-call'].includes(labProcedureType)
+            ? 'invite-selection-list'
+            : 'away-team-selection-list'
+       )
    });
 
     return {

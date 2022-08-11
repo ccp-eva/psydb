@@ -31,6 +31,9 @@ export { default as StudySelectList } from './study-select-list';
 export { default as stringifyFieldValue } from './stringify-field-value';
 export * from './formik';
 
+export { default as ExperimentDropdown } from './experiment-dropdown';
+export { default as ExperimentSubjectDropdown } from './experiment-subject-dropdown';
+
 export * from './account-function-dropdown';
 export * from './when-allowed';
 export * as StudyTopic from './study-topic';
@@ -49,3 +52,8 @@ export { default as CSVSearchExportButton } from './csv-search-export-button';
 export { default as CSVExtendedSearchExportButton } from './csv-extended-search-export-button';
 
 export { default as SubjectTestableIntervals } from './subject-testable-intervals';
+
+export { default as UpdateRecordVisibilityButton } from './update-record-visibility-button';
+export { default as GenericRecordEditorFooter } from './generic-record-editor-footer';
+
+export { default as CalendarTeamLegend } from './calendar-team-legend';

@@ -26,17 +26,21 @@ export const DetailsBody = (ps) => {
         related
     }
 
+    var isHidden = record.state.systemPermissions.isHidden;
+
     //var title = `${crtSettings.label} Datensatz-Details`;
-    var title = 'Datensatz-Details';
+    var title = 'Location-Details';
     return (
         <DetailsBox
             title={ title }
             editUrl={ `${up(url, 1)}/edit` }
             canEdit= { canEdit }
+            isRecordHidden={ isHidden }
         >
             <Location { ...locationBag }>
                 <Location.SequenceNumber />
                 <Location.Custom />
+                <Location.Comment />
                 <Location.ReservationSettings />
                 <Location.SystemPermissions />
             </Location>

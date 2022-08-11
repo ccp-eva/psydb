@@ -48,9 +48,27 @@ const FollowUpSubjectModal = ({
         }
     }, [ experimentType, experimentId ]);
 
+    var [ didFetchTestability, fetchedTestability ] = useFetch((agent) => {
+        if (didFetch) {
+            var { subjectId } = payloadData;
+        
+            studyData = studyData || fetched.data.studyData;
+            var studyId = studyData.record._id;
+
+            return agent.fetchSubjectPossibleTestIntervals({
+                studyId,
+                subjectIds: [ subjectId ],
+                labProcedureTypeKey: experimentType,
+            })
+        }
+    }, [ experimentType, didFetch ])
+    
     var confirmModal = useModalReducer({ show: false });
 
     if (shouldFetch && !didFetch) {
+        return null;
+    }
+    if (!didFetchTestability || !fetchedTestability.data) {
         return null;
     }
 
@@ -92,11 +110,12 @@ const FollowUpSubjectModal = ({
                     studyData,
                     subjectData: { record: subjectRecord },
 
+                    testableIntervals: fetchedTestability.data.testableIntervals,
                     onSuccessfulUpdate: wrappedOnSuccessfulUpdate,
                 }) } />
 
                 <header className='mb-1'>
-                    <b>Termine des Proband:innen in { studyLabel }</b>
+                    <b>Termine der Proband:in in { studyLabel }</b>
                 </header>
                 <div className='bg-white border px-3 py-2 mb-3'>
                     <Experiments
@@ -112,6 +131,7 @@ const FollowUpSubjectModal = ({
                     currentExperimentId={ experimentId }
                     currentExperimentType={ experimentType }
                     currentSubjectRecord={ subjectRecord }
+                    testableIntervals={ fetchedTestability.data.testableIntervals }
 
                     //activeLocationType={ 'instituteroom' }
                     onSelectReservationSlot={ 

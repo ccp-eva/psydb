@@ -6,7 +6,7 @@ import { keyBy } from '@mpieva/psydb-core-utils';
 
 import {
     useFetch,
-    usePaginationReducer,
+    usePaginationURLSearchParams,
     usePermissions,
 } from '@mpieva/psydb-ui-hooks';
 
@@ -15,7 +15,7 @@ import {
     Alert,
     LoadingIndicator,
     Pagination,
-    DetailsIconButton,
+    SubjectIconButton,
     LinkContainer,
 } from '@mpieva/psydb-ui-layout';
 
@@ -37,7 +37,7 @@ export const Results = (ps) => {
     var permissions = usePermissions();
     var canUseCSVExport = permissions.hasFlag('canUseCSVExport');
 
-    var pagination = usePaginationReducer({ offset: 0, limit: 50 })
+    var pagination = usePaginationURLSearchParams({ offset: 0, limit: 50 })
     var { offset, limit } = pagination;
     
     var [ didFetch, fetched ] = useFetch((agent) => {
@@ -187,7 +187,7 @@ const TableBody = (ps) => {
                     )}
                     <td>
                         <div className='d-flex justify-content-end'>
-                            <DetailsIconButton
+                            <SubjectIconButton
                                 to={`/subjects/${it.type}/${it._id}`}
                             />
                         </div>
@@ -235,9 +235,9 @@ const ExperimentColumn = (ps) => {
     return (
         <td>
             { items.map((it, index) => (
-                <>
-                    { it }{'; '}
-                </>
+                <div>
+                    { it }
+                </div>
             ))}
         </td>
     )

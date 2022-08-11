@@ -70,7 +70,8 @@ const Footer = ({ formikArrayHelpers, defaultItemValue, disabled }) => (
 )
 
 const AddButton = ({ children, onClick, style, disabled }) => (
-    <div
+    <button
+        type='button'
         role={ disabled ? '': 'button' }
         onClick={ disabled ? undefined : onClick }
         style={{
@@ -81,7 +82,8 @@ const AddButton = ({ children, onClick, style, disabled }) => (
             ...style,
         }}
         className=' border d-flex align-items-center justify-content-center bg-white'
+        title='neuer Eintrag'
     >
         { children }
-    </div>
+    </button>
 )

@@ -14,7 +14,9 @@ const usePermissions = () => {
         
         getFlagIds,
         getLabOperationFlagIds,
+        getAllLabOperationFlagIds,
         getCollectionFlagIds,
+        getResearchGroupIds,
 
         hasFlag,
         hasSomeFlags,
@@ -31,7 +33,10 @@ const usePermissions = () => {
         isRoot,
         getFlagIds,
         getLabOperationFlagIds,
+        getAllLabOperationFlagIds,
         getCollectionFlagIds,
+        getResearchGroupIds,
+
         hasFlag,
         hasSomeFlags,
         hasLabOperationFlag,

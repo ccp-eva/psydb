@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { transliterate } from '@mpieva/psydb-core-utils';
+import { entries, transliterate } from '@mpieva/psydb-core-utils';
 
 import {
     useFetch,
     usePaginationReducer,
+    usePaginationURLSearchParams,
     useURLSearchParamsB64,
 } from '@mpieva/psydb-ui-hooks';
 
 import {
     Pagination,
-    LoadingIndicator
+    LoadingIndicator,
+    Button,
+    Icons
 } from '@mpieva/psydb-ui-layout';
 
 import QuickSearch from '../quick-search';
@@ -36,6 +39,9 @@ var RecordList = ({
     selectedRecordIds,
     onSelectRecord,
 
+    showHidden,
+    setShowHidden,
+
     linkBaseUrl,
     tableClassName,
     bsTableProps,
@@ -53,7 +59,11 @@ var RecordList = ({
     var [ didChangeFilters, setDidChangeFilters ] = useState(false);
     //var [ cachedOffset, setCachedOffset ] = useState(0);
 
-    var pagination = usePaginationReducer({ offset: 0, limit: 50 })
+    var pagination = (
+        (target === 'table' || !target)
+        ? usePaginationURLSearchParams({ offset: 0, limit: 50 })
+        : usePaginationReducer({ offset: 0, limit: 50 })
+    )
     var { offset, limit } = pagination;
 
     // FIXME: this renders twice; we need to
@@ -65,6 +75,8 @@ var RecordList = ({
             pagination.selectSpecificPage(0);
         }
 
+        var { showHidden: realShowHidden, ...realFilters } = filters;
+
         return agent.searchRecords({
             target,
             collection,
@@ -75,15 +87,23 @@ var RecordList = ({
             ),
             limit,
             constraints,
-            filters,
-            sort: defaultSort || undefined
+            filters: realFilters,
+            sort: defaultSort || undefined,
+            showHidden: (
+                target === 'table'
+                ? realShowHidden
+                : showHidden
+            )
         })
         .then((response) => {
             setDidChangeFilters(false);
             pagination.setTotal(response.data.data.recordsCount);
             return response;
         });
-    }, [ collection, recordType, offset, limit, filters, searchOptions ]);
+    }, [
+        collection, recordType, offset, limit,
+        filters, searchOptions, showHidden
+    ]);
 
     if (!didFetch) {
         return (
@@ -103,15 +123,46 @@ var RecordList = ({
     return (
         <>
             <div className='sticky-top border-bottom'>
-                <QuickSearch
-                    filters={ filters }
-                    displayFieldData={ displayFieldData }
-                    onSubmit={ ({ filters }) => {
-                        setDidChangeFilters(true);
-                        setFilters(filters);
-                    }}
+                <div className='d-flex justify-content-between bg-light border-bottom'>
+                    <QuickSearch
+                        filters={ filters }
+                        displayFieldData={ displayFieldData }
+                        onSubmit={ ({ filters }) => {
+                            setDidChangeFilters(true);
+                            setFilters({
+                                ...filters,
+                                showHidden: (
+                                    entries(filters || {})
+                                    .filter(it => it[1])
+                                    .length > 0
+                                )
+                            });
+                            if (target && target !== 'table') {
+                                setShowHidden(true);
+                            }
+                        }}
+                    />
+                    <div className='pt-2 px-3'>
+                        <div
+                            role='button'
+                            className='d-flex align-items-center text-primary'
+                            onClick={ () => setShowHidden(!showHidden) }
+                        >
+                            {
+                                showHidden 
+                                ? <Icons.CheckSquareFill />
+                                : <Icons.Square />
+                            }
+                            <span className='ml-2'>
+                                Ausgeblendete anzeigen
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <Pagination
+                    { ...pagination }
+                    showJump={ target === 'table' || !target }
                 />
-                <Pagination { ...pagination } />
             </div>
 
             <Table { ...({

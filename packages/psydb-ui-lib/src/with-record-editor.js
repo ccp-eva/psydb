@@ -1,6 +1,8 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 
+import { RecordEditorContext } from '@mpieva/psydb-ui-contexts';
+
 import {
     PermissionDenied,
     LoadingIndicator,
@@ -12,6 +14,8 @@ import {
     useReadRecord
 } from '@mpieva/psydb-ui-hooks';
 
+var isFunction = (it) => (typeof it === 'function');
+
 export const withRecordEditor = (options) => {
     var {
         EditForm,
@@ -20,7 +24,7 @@ export const withRecordEditor = (options) => {
     } = options;
 
     var RecordEditor = (ps) => {
-        var { collection, recordType, id: manualId } = ps;
+        var { collection, recordType, id: manualId, revision, children } = ps;
         var { id: paramId } = useParams();
         var id = manualId || paramId;
 
@@ -32,12 +36,16 @@ export const withRecordEditor = (options) => {
             return <PermissionDenied />
         }
 
+        var dependencies = (
+            revision ? [ revision.value ] : []
+        );
+
         var [ didFetch, fetched ] = useReadRecord({
             collection, recordType, id,
             shouldFetchSchema,
             shouldFetchCRTSettings,
             extraAxiosConfig: { disableErrorModal: 404 }
-        });
+        }, dependencies);
 
         if (!didFetch) {
             return <LoadingIndicator size='lg' />
@@ -51,8 +59,17 @@ export const withRecordEditor = (options) => {
             }
         }
 
+        var context = {
+            id, collection, recordType, fetched, permissions
+        };
         return (
-            <EditForm { ...ps } id={ id } fetched={ fetched } />
+            <>
+                <EditForm { ...ps } id={ id } fetched={ fetched } />
+                
+                <RecordEditorContext.Provider value={ context }>
+                    { isFunction(children) ? children() : children }
+                </RecordEditorContext.Provider>
+            </>
         )
     }
 

@@ -43,6 +43,8 @@ const createFriendlyMessage = (err) => {
                 ? `Muss größer als ${params.limit} sein.`
                 : `Muss größer oder gleich ${params.limit} sein.`
             );
+        case 'FakeAjvError':
+            return err.message;
         default:
             console.log(err);
             return err.message;
