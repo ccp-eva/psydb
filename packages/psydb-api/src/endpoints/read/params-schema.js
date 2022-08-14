@@ -8,7 +8,8 @@ var {
 var ParamsSchema = () => {
     var schema = ExactObject({
         properties: {
-            collectionName: CollectionEnum(),
+            //collectionName: CollectionEnum(),
+            collectionName: { type: 'string' }, // FIXME helperSetItem
             recordType: { type: 'string' }, // FIXME: remove, unused
             id: Id()
         },

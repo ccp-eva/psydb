@@ -109,7 +109,7 @@ var participatedStudiesForSubject = async (context, next) => {
 
         participationByStudyType[type] = {
             participation: participatedInStudies.filter(
-                it => studyIdsByType[type].includes(it.studyId)
+                it => studyIdsByType[type].map(String).includes(String(it.studyId))
             ),
             studyRecordsById: keyBy({
                 items: studyRecords,
