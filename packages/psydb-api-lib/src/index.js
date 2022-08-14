@@ -26,6 +26,7 @@ module.exports = {
     createRecordLabelFromCRT: require('./create-record-label-from-crt'),
     applyRecordLabels: require('./apply-record-labels'),
 
+    createSchemaForRecord: require('./create-schema-for-record'),
     createSchemaForRecordType: require('./create-schema-for-record-type'),
 
     fetchOneCustomRecordType: require('./fetch-one-custom-record-type'),

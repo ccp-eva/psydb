@@ -2,30 +2,40 @@
 var debug = require('debug')('psydb:api:endpoints:read');
 
 var inlineString = require('@cdxoo/inline-string');
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error');
-var ResponseBody = require('@mpieva/psydb-api-lib/src/response-body');
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
-var createSchemaForRecord =
-    require('@mpieva/psydb-api-lib/src/create-schema-for-record');
+var {
+    ApiError,
+    Ajv,
+    ResponseBody,
 
-var fetchOneCustomRecordType = require('@mpieva/psydb-api-lib/src/fetch-one-custom-record-type');
-var fetchRecordById = require('@mpieva/psydb-api-lib/src/fetch-record-by-id');
+    createSchemaForRecord,
+    fetchOneCustomRecordType,
+    fetchRecordById,
+    fetchRelatedLabels,
+    fetchRelatedLabelsForMany,
 
-var fetchRelatedLabels = require('@mpieva/psydb-api-lib/src/fetch-related-labels');
-var fetchRelatedLabelsForMany = require('@mpieva/psydb-api-lib/src/fetch-related-labels-for-many-ng');
+    validateOrThrow
+} = require('@mpieva/psydb-api-lib');
 
 var {
     gatherRemovedFields
 } = require('@mpieva/psydb-api-lib/src/crt-utils');
+
+var ParamsSchema = require('./params-schema');
 
 var read = async (context, next) => {
     var { 
         db,
         permissions,
         params,
-        query,
     } = context;
+
+    
+    validateOrThrow({
+        schema: ParamsSchema(),
+        payload: params
+    });
 
     var {
         collectionName,

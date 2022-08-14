@@ -1,7 +1,7 @@
 'use strict';
 var { collections } = require('@mpieva/psydb-schema-enums');
 
-var CollectionEnum = ({ ...additionalProps }) => ({
+var CollectionEnum = ({ ...additionalProps } = {}) => ({
     systemType: 'CollectionEnum',
     type: 'string',
     enum: collections.keys,
