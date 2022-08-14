@@ -4,6 +4,7 @@ var debug = require('debug')(
 );
 
 var jsonpointer = require('jsonpointer');
+var { copy } = require('copy-anything');
 var { keyBy, groupBy } = require('@mpieva/psydb-core-utils');
 var {
     stringifyFieldValue,
@@ -28,14 +29,15 @@ var subjectExtendedSearchExport = async (context, next) => {
         request
     } = context;
 
+    var precheckBody = copy(request.body);
     validateOrThrow({
         schema: RequestBodySchema.Core(),
-        payload: request.body
+        payload: precheckBody
     });
 
     var {
         subjectType
-    } = request.body;
+    } = precheckBody;
 
     var crtSettings = await fetchCRTSettings({
         db, collectionName: 'subject', recordType: subjectType,

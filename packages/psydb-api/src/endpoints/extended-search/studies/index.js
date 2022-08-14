@@ -3,6 +3,7 @@ var debug = require('debug')(
     'psydb:api:endpoints:extended-search:studies'
 );
 
+var { copy } = require('copy-anything');
 var {
     ResponseBody,
     validateOrThrow,
@@ -20,14 +21,15 @@ var studyExtendedSearch = async (context, next) => {
         request
     } = context;
 
+    var precheckBody = copy(request.body);
     validateOrThrow({
         schema: RequestBodySchema.Core(),
-        payload: request.body
+        payload: precheckBody
     });
 
     var {
         studyType
-    } = request.body;
+    } = precheckBody;
 
     var crtSettings = await fetchCRTSettings({
         db, collectionName: 'study', recordType: studyType,

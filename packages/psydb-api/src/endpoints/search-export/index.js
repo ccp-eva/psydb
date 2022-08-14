@@ -1,6 +1,7 @@
 'use strict';
 var debug = require('debug')('psydb:api:endpoints:export');
 var jsonpointer = require('jsonpointer');
+var { copy } = require('copy-anything');
 
 var { keyBy } = require('@mpieva/psydb-core-utils');
 var { stringifyFieldValue } = require('@mpieva/psydb-common-lib');
@@ -34,9 +35,10 @@ var exportEndpoint = async (context, next) => {
     var { db, permissions, request } = context;
 
     var ajv = Ajv();
+    var precheckBody = copy(request.body);
     var isValidCore = ajv.validate(
         CoreBodySchema(),
-        request.body
+        precheckBody
     );
     if (!isValidCore) {
         debug('ajv errors', ajv.errors);
@@ -46,7 +48,7 @@ var exportEndpoint = async (context, next) => {
     var {
         collection,
         recordType,
-    } = request.body;
+    } = precheckBody;
     
     var collectionCreatorData = allSchemaCreators[collection];
     if (!collectionCreatorData) {

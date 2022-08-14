@@ -18,6 +18,7 @@
 'use strict';
 var debug = require('debug')('psydb:api:endpoints:search');
 
+var { copy } = require('copy-anything');
 var { keyBy } = require('@mpieva/psydb-core-utils');
 var { fieldTypeMetadata } = require('@mpieva/psydb-common-lib');
 var {
@@ -52,9 +53,10 @@ var search = async (context, next) => {
     var ajv = Ajv(),
         isValid = false;
 
+    var precheckBody = copy(request.body);
     isValid = ajv.validate(
         CoreBodySchema(),
-        request.body
+        precheckBody
     );
     if (!isValid) {
         debug('ajv errors', ajv.errors);
@@ -66,7 +68,7 @@ var search = async (context, next) => {
         recordType,
         target,
         showHidden,
-    } = request.body;
+    } = precheckBody;
     
     target = target || 'table';
 

@@ -1,6 +1,7 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
 
+var { copy } = require('copy-anything');
 var {
     Ajv,
     ApiError,
@@ -20,7 +21,8 @@ handler.checkSchema = async ({ db, message }) => {
     var ajv = Ajv(),
         isValid = false;
 
-    isValid = ajv.validate(BaseSchema(), message);
+    var precheckMessage = copy(message);
+    isValid = ajv.validate(BaseSchema(), precheckMessage);
     if (!isValid) {
         debug('ajv errors', ajv.errors);
         throw new ApiError(400, 'InvalidMessageSchema');
@@ -28,7 +30,7 @@ handler.checkSchema = async ({ db, message }) => {
 
     var {
         customRecordType
-    } = message.payload;
+    } = precheckMessage;
 
     var subjectTypeData = await (
         db.collection('customRecordType').findOne({

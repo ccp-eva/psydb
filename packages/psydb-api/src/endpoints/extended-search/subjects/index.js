@@ -3,6 +3,7 @@ var debug = require('debug')(
     'psydb:api:endpoints:extendedSearch:subjects'
 );
 
+var { copy } = require('copy-anything');
 var { groupBy } = require('@mpieva/psydb-core-utils');
 
 var {
@@ -34,14 +35,15 @@ var subjectExtendedSearch = async (context, next) => {
         request
     } = context;
 
+    var precheckBody = copy(request.body);
     validateOrThrow({
         schema: RequestBodySchema.Core(),
-        payload: request.body
+        payload: precheckBody
     });
 
     var {
         subjectType
-    } = request.body;
+    } = precheckBody;
 
     var crtSettings = await fetchCRTSettings({
         db, collectionName: 'subject', recordType: subjectType,
