@@ -7,7 +7,7 @@ var EventId = ({
     type: 'string',
     //format: 'nanoid-default',
     format: 'mongodb-object-id',
-    unmarshalMongodbObjectId: true,
+    //unmarshalMongodbObjectId: true,
     ...additionalKeywords,
 });
 

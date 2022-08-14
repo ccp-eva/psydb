@@ -21,7 +21,6 @@ handler.checkAllowedAndPlausible = async ({
     message,
     permissions,
 }) => {
-    console.dir(message.payload, { depth: null })
     var personnelRecord = await (
         db.collection('personnel').findOne({ _id: message.payload.id })
     );

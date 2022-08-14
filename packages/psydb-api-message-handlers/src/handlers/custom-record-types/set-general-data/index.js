@@ -1,6 +1,7 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
 
+var { copy } = require('copy-anything');
 var { ApiError, Ajv } = require('@mpieva/psydb-api-lib');
 
 var createSchema = require('./schema');
@@ -14,8 +15,12 @@ var checkSchema = async (context) => {
     
     var ajv = Ajv();
     var isValid = false;
-    
-    isValid = ajv.validate(createSchema({ isPrecheck: true }), message);
+   
+    var precheckMessage = copy(message);
+    isValid = ajv.validate(
+        createSchema({ isPrecheck: true }),
+        precheckMessage
+    );
     if (!isValid) {
         debug('ajv errors', message.type, ajv.errors);
         throw new ApiError(400, {
@@ -24,7 +29,7 @@ var checkSchema = async (context) => {
         });
     }
   
-    var { id } = message.payload;
+    var { id } = precheckMessage.payload;
     var record = await (
         db.collection('customRecordType')
         .findOne({ _id: id })

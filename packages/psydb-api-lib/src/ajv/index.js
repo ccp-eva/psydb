@@ -1,8 +1,10 @@
 'use strict';
-var Ajv = require('ajv'),
-    ajvKeywords = require('ajv-keywords'),
-    psydbFormats = require('@mpieva/psydb-ajv-formats'),
-    psydbKeywords = require('@mpieva/psydb-ajv-keywords');
+var Ajv = require('ajv');
+var ajvKeywords = require('ajv-keywords');
+var psydbFormats = require('@mpieva/psydb-ajv-formats');
+var psydbKeywords = require('@mpieva/psydb-ajv-keywords');
+
+var createUnmarshalSchema = require('./create-unmarshal-schema');
 
 var {
     IANAZones,
@@ -80,16 +82,47 @@ var AjvWrapper = ({
         };
     }
 
-    wrapper.validate = (schema, data) => {
-        var compiledValidate = ajv.compile(schema);
-        
+    wrapper.validate = (schema, data, options = {}) => {
+        resetErrors();
+
         initializeValidateContext(data);
-        var isValid = compiledValidate.call(wrapper.validateContext, data);
+        var isOK = validate(schema, data);
+        if (isOK) {
+            isOK = unmarshal(schema, data);
+        }
+        wrapper.errors = [
+            ...wrapper.validateErrors,
+            ...wrapper.unmarshalErrors
+        ];
 
-        wrapper.errors = compiledValidate.errors;
-
-        return isValid;
+        return isOK;
     };
+
+    var validate = (schema, data) => {
+        var compiledValidate = ajv.compile(schema);
+        var isValid = compiledValidate.call(wrapper.validateContext, data);
+        if (!isValid) {
+            wrapper.validateErrors = compiledValidate.errors;
+        }
+        return isValid;
+    }
+
+    var unmarshal = (schema, data) => {
+        var unmarshalSchema = createUnmarshalSchema(schema);
+        var compiledValidate = ajv.compile(unmarshalSchema);
+        var isUnmarshaled = compiledValidate.call(wrapper.validateContext, data);
+        if (!isUnmarshaled) {
+            wrapper.unmarshalErrors = compiledValidate.errors;
+        }
+        //console.log(data);
+        return isUnmarshaled;
+    }
+    
+    var resetErrors = () => {
+        wrapper.errors = [];
+        wrapper.validateErrors = [];
+        wrapper.unmarshalErrors = [];
+    }
 
     return wrapper;
 }

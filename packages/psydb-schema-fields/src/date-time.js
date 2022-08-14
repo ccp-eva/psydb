@@ -11,7 +11,7 @@ var DateTime = ({
             : 'string'
         ),
         format: 'date-time',
-        unmarshalDateTime: true,
+        //unmarshalDateTime: true,
         // @rjsf treats this default as if the user has set it
         //default: '0000-00-00T00:00:00Z',
     };

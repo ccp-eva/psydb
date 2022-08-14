@@ -13,7 +13,7 @@ var Id = ({
         ),
         //format: 'nanoid-default',
         format: 'mongodb-object-id',
-        unmarshalMongodbObjectId: true,
+        //unmarshalMongodbObjectId: true,
     };
 
     if (isNullable) {
