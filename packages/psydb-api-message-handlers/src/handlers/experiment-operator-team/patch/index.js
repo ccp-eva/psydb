@@ -1,4 +1,5 @@
 'use strict';
+var { copy } = require('copy-anything');
 var {
     ApiError,
     validateOrThrow,
@@ -24,9 +25,10 @@ var handler = GenericRecordHandler({
         var { db, message, cache } = context;
         var type = 'experimentOperatorTeam/patch';
 
+        var precheckMessage = copy(message);
         var core = Schema.Core({ messageType: type });
         validateOrThrow({
-            payload: message,
+            payload: precheckMessage,
             schema: core
         });
 
