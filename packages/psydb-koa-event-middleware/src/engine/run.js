@@ -71,14 +71,10 @@ var run = ({
             ({ channelId } = meta);
         }
         
-        console.log('QQQQQQQQQQQQQQQQQQ', { channelId });
-        console.dir(ejson({ channelId,  payload }), { depth: null });
-        console.log('FFFFFFFFFFFF');
         await db.collection(collection).updateOne(
             { _id: channelId },
             payload
         );
-        console.log('OKOKOKO')
         
         //context.modifiedChannels = rohrpost.getModifiedChannels();
         //console.log('AAAAAAAAAAAAAAA')

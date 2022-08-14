@@ -38,8 +38,6 @@ module.exports = GenericRecordHandler({
     op: 'create',
     triggerSystemEvents: async (options) => {
         var { db, rohrpost, personnelId, message, cache, dispatchProps } = options;
-        console.log('PPPPPPPPPPPPPPPPPP');
-        console.dir(ejson({ message }), { depth: null });
         var destructured = destructureMessage({ message });
 
         var channel = await openChannel({
@@ -59,7 +57,6 @@ module.exports = GenericRecordHandler({
         )();
         var passwordHash = bcrypt.hashSync(generatedPassword, 10);
 
-        console.log('DDDDDDDDDDDDDDDD')
         await dispatchProps({
             collection,
             channel,
@@ -71,7 +68,6 @@ module.exports = GenericRecordHandler({
             initialize: true,
         });
 
-        console.log('2222222222222222222')
         await dispatchProps({
             collection,
             channel,
@@ -79,10 +75,8 @@ module.exports = GenericRecordHandler({
             props: props.scientific,
             initialize: true,
         });
-        console.log('333333333333333333333')
         
         cache.generatedPassword = generatedPassword;
-        console.log('triggerSystemEvents END');
     },
     triggerOtherSideEffects: async (options) => {
         var { db, rohrpost, personnelId, message, cache } = options;
