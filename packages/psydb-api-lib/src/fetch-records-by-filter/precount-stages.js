@@ -1,6 +1,7 @@
 'use strict';
 
 var createCRTCollectionStages = require('./create-crt-collection-stages');
+var createPermissionCheckStages = require('./create-permission-check-stages');
 
 var isNotDummyStage = () => (
     { $match: {
@@ -34,6 +35,8 @@ var isNotHiddenStage = ({ hasSubChannels }) => {
 
 module.exports = {
     createCRTCollectionStages,
+    createPermissionCheckStages,
+
     isNotDummyStage,
     isNotRemovedStage,
     isNotHiddenStage

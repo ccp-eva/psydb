@@ -4,7 +4,7 @@ var debug = require('debug')('psydb:api:lib:fetch-records-by-filter');
 var inlineString = require('@cdxoo/inline-string');
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
-var { arrify, isPromise } = require('@mpieva/psydb-core-utils');
+var { ejson, arrify, isPromise } = require('@mpieva/psydb-core-utils');
 
 var {
     SystemPermissionStages,
@@ -27,6 +27,7 @@ var {
     isNotDummyStage,
     isNotRemovedStage,
     isNotHiddenStage,
+    createPermissionCheckStages,
 } = require('./precount-stages');
 
 var collectionHasSubChannels = (collection) => (
@@ -94,57 +95,39 @@ var fetchRecordByFilter = async ({
 
         isNotDummyStage(),
         isNotRemovedStage({ hasSubChannels }),
-        
+       
+        ...(additionalPreprocessStages || []),
+
         ...maybeStages({
             condition: !showHidden,
             stages: [
                 isNotHiddenStage({ hasSubChannels }),
             ]
-        })
+        }),
 
+        ...maybeStages({
+            condition: !disablePermissionCheck,
+            stages: () => createPermissionCheckStages({
+                permissions, collection: collectionName
+            })
+        })
     ];
 
-    console.dir(preCountStages, { depth: null });
+    console.dir(ejson(preCountStages), { depth: null });
     //showHidden = showHidden || (queryFields && queryFields.length > 0);
-
-    var FooStages = ({ permissions, collection }) => {
-        if (permissions.isRoot()) {
-            return [];
-        }
-        else {
-            var allowedResearchGroupIds = (
-                permissions.getCollectionFlagIds(collection, 'read')
-            );
-            var statePath = (
-                collectionHasSubChannels(collection)
-                ? 'scientific.state'
-                : 'state'
-            );
-            var stages = [
-                { $match: { $or: [
-                    // NOTE: we have collections that do not have
-                    // record based systempermissions but instead
-                    // only require collection access
-                    { [`${statePath}.systemPermissions`]: { $exists: false }},
-                    { [`${statePath}.systemPermissions.accessRightsByResearchGroup.researchGroupId`]: { $in: allowedResearchGroupIds }},
-                ]}}
-            ];
-            return stages;
-        }
-    }
 
     preCountStages = [
         ...preCountStages,
-        ...(additionalPreprocessStages || []),
-        ...(
-            disablePermissionCheck
-            ? []
-            //: SystemPermissionStages({
-            : FooStages({
-                collection: collectionName,
-                permissions,
-            })
-        ),
+        //...(additionalPreprocessStages || []),
+        //...(
+        //    disablePermissionCheck
+        //    ? []
+        //    //: SystemPermissionStages({
+        //    : FooStages({
+        //        collection: collectionName,
+        //        permissions,
+        //    })
+        //),
         /*StripEventsStage({
             subChannels: (
                 hasSubChannels
