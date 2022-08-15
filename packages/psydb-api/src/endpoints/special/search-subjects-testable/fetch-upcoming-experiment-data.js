@@ -19,28 +19,37 @@ var fetchUpcomingExperimentData = async ({
     }
     
     await db.collection('experiment').ensureIndex({
+        'type': 1,
+        'state.locationId': 1,
+        //'state.subjectData.subjectId': 1,
+        'state.isPostprocessed': 1,
         'state.interval.start': 1,
         'state.interval.end': 1,
     }, {
-        name: 'intervalIndex'
+        name: 'upcomingExpIndex'
     });
 
     var upcomingExperiments = await (
         db.collection('experiment').aggregate([
-            ...(subjectIds ? [{ $unwind: '$state.subjectData' }] : []),
             { $match: {
                 ...( locationIds && {
                     'state.locationId': { $in: locationIds },
                 }),
-                ...( subjectIds && {
-                    'state.subjectData.subjectId': { $in: subjectIds }
-                }),
+                //...( subjectIds && {
+                //    'state.subjectData.subjectId': { $in: subjectIds }
+                //}),
                 $or: [
                     { 'state.interval.start': { $gt: after }},
                     { 'state.isPostprocessed': false }
                 ],
             }},
             { $sort: { 'state.interval.start': 1 }},
+            ...(subjectIds ? [
+                { $unwind: '$state.subjectData' },
+                { $match: {
+                    'state.subjectData.subjectId': { $in: subjectIds }
+                }}
+            ] : []),
             { $project: {
                 _id: true,
                 type: true,
