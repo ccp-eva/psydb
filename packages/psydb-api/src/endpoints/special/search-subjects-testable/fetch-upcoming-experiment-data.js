@@ -89,7 +89,7 @@ var fetchUpcomingExperimentData = async ({
                 'upcoming.state.subjectData': false,
                 'upcoming.state.locationId': false,
             }},
-        ]).toArray()
+        ], { hint: 'upcomingPPIndex' }).toArray()
     );
     
     var experimentRelated = await fetchRelatedLabelsForMany({
