@@ -56,14 +56,9 @@ var fetchRecordLabels = async (bag) => {
                 _id: { $in: ids }
             }},
             { $project: {
-                _id: true,
-                type: true,
-                sequenceNumber: true,
-                'gdpr.state.custom': true,
-                'scientific.state.custom': true,
-                'scientific.state.comment': true,
-                'state.custom': true,
-                'state.comment': true,
+                'state.internals': false,
+                'gdpr.state.internals': false,
+                'scientific.state.internals': false,
             }}
         ]).toArray()
     );
