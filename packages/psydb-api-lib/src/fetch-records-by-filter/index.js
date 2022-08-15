@@ -1,5 +1,5 @@
 'use strict';
-var debug = require('debug')('psydb:api:lib:fetch-record-by-id');
+var debug = require('debug')('psydb:api:lib:fetch-records-by-filter');
 
 var inlineString = require('@cdxoo/inline-string');
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
@@ -108,17 +108,12 @@ var fetchRecordByFilter = async ({
     //showHidden = showHidden || (queryFields && queryFields.length > 0);
 
     var FooStages = ({ permissions, collection }) => {
-        var {
-            hasRootAccess,
-            forcedResearchGroupId,
-            researchGroupIdsByCollection,
-        } = permissions
-        if (hasRootAccess && !forcedResearchGroupId) {
+        if (permissions.isRoot()) {
             return [];
         }
         else {
             var allowedResearchGroupIds = (
-                researchGroupIdsByCollection[collection].read
+                permissions.getCollectionFlagIds(collection, 'read')
             );
             var statePath = (
                 collectionHasSubChannels(collection)
