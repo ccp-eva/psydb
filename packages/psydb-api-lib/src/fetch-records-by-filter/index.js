@@ -27,7 +27,7 @@ var {
     isNotDummyStage,
     isNotRemovedStage,
     isNotHiddenStage,
-} = require('./local-stages');
+} = require('./precount-stages');
 
 var collectionHasSubChannels = (collection) => (
     allSchemaCreators[collection].hasSubChannels
