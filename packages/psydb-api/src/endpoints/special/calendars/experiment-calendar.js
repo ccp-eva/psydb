@@ -36,6 +36,7 @@ var {
 var {
     ExactObject,
     ForeignId,
+    ForeignIdList,
     DefaultBool,
     CustomRecordTypeKey,
     DateTimeInterval,
@@ -53,7 +54,7 @@ var RequestBodySchema = () => ExactObject({
             collection: 'researchGroup',
         }),
 
-        experimentOperatorTeamId: ForeignId({
+        experimentOperatorTeamIds: ForeignIdList({
             collection: 'experimentOperatorTeam'
         }),
         showPast: DefaultBool(),
@@ -85,7 +86,7 @@ var experimentCalendar = async (context, next) => {
         experimentType,
         researchGroupId,
 
-        experimentOperatorTeamId,
+        experimentOperatorTeamIds,
         showPast,
     } = request.body;
 
@@ -144,7 +145,7 @@ var experimentCalendar = async (context, next) => {
         byProp: '_id'
     });
 
-    console.log(experimentOperatorTeamId);
+    console.log(experimentOperatorTeamIds);
     var now = new Date();
     var experimentRecords = await (
         db.collection('experiment').aggregate([
@@ -154,8 +155,8 @@ var experimentCalendar = async (context, next) => {
                 'state.studyId': { $in: studyIds },
                 'state.isCanceled': false,
 
-                ...(experimentOperatorTeamId && {
-                    'state.experimentOperatorTeamId': experimentOperatorTeamId
+                ...(experimentOperatorTeamIds && {
+                    'state.experimentOperatorTeamId': { $in: experimentOperatorTeamIds }
                 }),
                 ...(!showPast && {
                     'state.interval.start': { $gte: datefns.startOfDay(now) }
@@ -243,10 +244,13 @@ var experimentCalendar = async (context, next) => {
     var experimentOperatorTeamRecords = await (
         db.collection('experimentOperatorTeam').aggregate([
             { $match: {
-                _id: { $in: experimentRecords.map(it => (
-                    it.state.experimentOperatorTeamId
-                ))},
+                studyId: { $in: studyRecords.map(it => it._id) }
             }},
+            //{ $match: {
+            //    _id: { $in: experimentRecords.map(it => (
+            //        it.state.experimentOperatorTeamId
+            //    ))},
+            //}},
             StripEventsStage(),
         ]).toArray()
     );

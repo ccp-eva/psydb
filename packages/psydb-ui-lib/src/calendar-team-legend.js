@@ -7,6 +7,7 @@ const CalendarTeamLegend = (ps) => {
         studyRecords,
         experimentOperatorTeamRecords,
         //onClickStudy,
+        activeTeamIds = [],
         onClickTeam,
     } = ps;
 
@@ -33,6 +34,7 @@ const CalendarTeamLegend = (ps) => {
                         key={ ix }
                         studyRecord={ study }
                         experimentOperatorTeamRecords={ teams }
+                        activeTeamIds={ activeTeamIds }
                         onClickTeam={ onClickTeam }
                     />
                 )
@@ -45,6 +47,7 @@ const StudyRow = (ps) => {
     var {
         studyRecord,
         experimentOperatorTeamRecords,
+        activeTeamIds,
         onClickTeam
     } = ps;
 
@@ -52,17 +55,26 @@ const StudyRow = (ps) => {
         <SplitPartitioned extraClassName='mb-1' partitions={[ 1, 20 ]}>
             <b>{ studyRecord.state.shorthand }</b>
             <div className='d-flex'>
-                { experimentOperatorTeamRecords.map((it, ix) => (
-                    <ColoredBox
-                        key={ ix }
-                        onClick={ () => (onClickTeam && onClickTeam(it)) }
-                        className='border px-3 ml-1'
-                        extraStyle={{ cursor: 'pointer' }}
-                        bg={ it.state.color }
-                    >
-                        { it.state.name }
-                    </ColoredBox>
-                ))}
+                { experimentOperatorTeamRecords.map((it, ix) => {
+                    var extraStyle = undefined;
+                    if (activeTeamIds.includes(it._id)) {
+                        extraStyle = { fontWeight: 'bold' };
+                    }
+                    return (
+                        <ColoredBox
+                            key={ ix }
+                            onClick={ () => (onClickTeam && onClickTeam(it)) }
+                            className='border px-3 ml-1'
+                            bg={ it.state.color }
+                            extraStyle={{
+                                cursor: 'pointer',
+                                ...extraStyle
+                            }}
+                        >
+                            { it.state.name }
+                        </ColoredBox>
+                    );
+                })}
             </div>
         </SplitPartitioned>
     )

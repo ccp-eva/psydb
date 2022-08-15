@@ -12,7 +12,12 @@ import {
 import agent from '@mpieva/psydb-ui-request-agents';
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 
-import { usePermissions, useToggleReducer } from '@mpieva/psydb-ui-hooks';
+import {
+    usePermissions,
+    useToggleReducer,
+    useSelectionReducer
+} from '@mpieva/psydb-ui-hooks';
+
 import { LoadingIndicator, ToggleButtons } from '@mpieva/psydb-ui-layout';
 import { CalendarTeamLegend } from '@mpieva/psydb-ui-lib';
 
@@ -44,7 +49,7 @@ const Calendar = ({
         researchGroupId,
     } = useParams();
 
-    var [ selectedTeamId, setSelectedTeamId ] = useState();
+    var teamSelection = useSelectionReducer();
     var [ state, dispatch ] = useReducer(reducer, {});
 
     var {
@@ -74,7 +79,11 @@ const Calendar = ({
             }),
             researchGroupId,
 
-            experimentOperatorTeamId: selectedTeamId,
+            experimentOperatorTeamIds: (
+                teamSelection.value.length > 0
+                ? teamSelection.value
+                : undefined
+            ),
             showPast,
         })
         .then(response => {
@@ -86,7 +95,7 @@ const Calendar = ({
     }, [ 
         studyType, subjectType, researchGroupId,
         currentPageStart, currentPageEnd, revision,
-        selectedStudyId, selectedTeamId
+        selectedStudyId, teamSelection.value
     ])
 
     var allDayStarts = useMemo(() => (
@@ -162,13 +171,9 @@ const Calendar = ({
             <CalendarTeamLegend { ...({
                 studyRecords,
                 experimentOperatorTeamRecords,
+                activeTeamIds: teamSelection.value,
                 onClickTeam: (team) => {
-                    if (selectedTeamId === team._id) {
-                        setSelectedTeamId(undefined);
-                    }
-                    else {
-                        setSelectedTeamId(team._id);
-                    }
+                    teamSelection.toggle(team._id)
                 }
             })} />
         </div>
