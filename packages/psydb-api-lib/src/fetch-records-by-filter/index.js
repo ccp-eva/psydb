@@ -20,8 +20,6 @@ var fieldTypeConversions = require('../mongodb-field-type-conversions');
 var createRecordLabel = require('../create-record-label');
 var fromFacets = require('../from-facets');
 
-var createCRTCollectionStages = require('./create-crt-collection-stages');
-
 var {
     createCRTCollectionStages,
     isNotDummyStage,
@@ -29,6 +27,8 @@ var {
     isNotHiddenStage,
     createPermissionCheckStages,
 } = require('./precount-stages');
+
+var createCountIndex = require('./create-count-index');
 
 var collectionHasSubChannels = (collection) => (
     allSchemaCreators[collection].hasSubChannels
@@ -110,52 +110,27 @@ var fetchRecordByFilter = async ({
             stages: () => createPermissionCheckStages({
                 permissions, collection: collectionName
             })
+        }),
+
+        ...maybeStages({
+            condition: constraints && Object.keys(constraints).length > 0,
+            stages: () => ([
+                MatchConstraintsStage({ constraints })
+            ])
+        }),
+
+        ...maybeStages({
+            condition: queryFields && queryFields.length > 0,
+            stages: () => QuickSearchStages({
+                queryFields,
+                fieldTypeConversions,
+            })
         })
     ];
 
-    console.dir(ejson(preCountStages), { depth: null });
+    //console.dir(ejson(preCountStages), { depth: null });
     //showHidden = showHidden || (queryFields && queryFields.length > 0);
 
-    preCountStages = [
-        ...preCountStages,
-        //...(additionalPreprocessStages || []),
-        //...(
-        //    disablePermissionCheck
-        //    ? []
-        //    //: SystemPermissionStages({
-        //    : FooStages({
-        //        collection: collectionName,
-        //        permissions,
-        //    })
-        //),
-        /*StripEventsStage({
-            subChannels: (
-                hasSubChannels
-                ? [ 'gdpr', 'scientific' ]
-                : undefined
-            )
-        })*/
-    ];
-
-    if (constraints) {
-        preCountStages = [
-            ...preCountStages,
-            MatchConstraintsStage({ constraints })
-        ]
-    }
-
-    if (queryFields && queryFields.length > 0) {
-        var qsStages = QuickSearchStages({
-            queryFields,
-            fieldTypeConversions,
-        });
-        console.log(qsStages);
-        preCountStages = [
-            ...preCountStages,
-            ...qsStages
-        ];
-    }
-    
     var index = {
         sequenceNumber: 1,
         isDummy: 1,
@@ -178,17 +153,24 @@ var fetchRecordByFilter = async ({
         name: 'searchIndex'
     });
 
+    await createCountIndex({
+        db,
+        collection: collectionName
+    });
+
+    debug('counting records');
     var countResult = await (
         db.collection(collectionName)
         .aggregate(
             [ ...preCountStages, { $count: 'COUNT' } ],
             {
-                hint: 'searchIndex',
+                hint: 'countIndex1',
                 allowDiskUse: true,
             }
         )
         .toArray()
     );
+    debug('done counting records');
     var totalRecordCount = (
         countResult && countResult[0] ? countResult[0].COUNT : 0
     );
@@ -282,6 +264,7 @@ var fetchRecordByFilter = async ({
     //console.dir({ postCountStages }, { depth: null });
 
     //console.dir(stages, { depth: null });
+    debug('searching records');
     var resultSet = await (
         db.collection(collectionName)
         .aggregate(
@@ -302,6 +285,7 @@ var fetchRecordByFilter = async ({
         //.explain()
         .toArray()
     );
+    debug('done searching records');
     //console.dir(resultSet, { depth: null });
     //console.dir(facets.stages[0]['$cursor'].queryPlanner.winningPlan, { depth: 4 });
     //console.dir(facets.queryPlanner.winningPlan, { depth: 4 });

@@ -1,6 +1,11 @@
 'use strict';
 var inline = require('@cdxoo/inline-string');
-var allSchemaCreators = require('@mpieva/psydb-schema-creators');
+
+var {
+    hasNoAccessRights,
+    collectionHasSubChannels
+} = require('./utils');
+
 
 var createPermissionCheckStages = (bag) => {
     var { permissions, collection } = bag;
@@ -26,7 +31,6 @@ var createPermissionCheckStages = (bag) => {
         ? 'scientific.state'
         : 'state'
     );
-    console.log(statePath);
 
     var fullPath = inline`
         ${statePath}
@@ -43,23 +47,8 @@ var createPermissionCheckStages = (bag) => {
         }}
     ];
 
-    console.log(stages);
     return stages;
 }
 
-var hasNoAccessRights = (collection) => {
-    return ( ! ([
-        'subject',
-        'study',
-        'location',
-        'personnel',
-        'externalPerson',
-        'externalOrganization',
-    ].includes(collection)));
-}
-
-var collectionHasSubChannels = (collection) => {
-    return allSchemaCreators[collection].hasSubChannels
-}
 
 module.exports = createPermissionCheckStages;
