@@ -11,12 +11,12 @@ var {
     StripEventsStage,
     QuickSearchStages,
     MatchConstraintsStage,
-} = require('./fetch-record-helpers');
+} = require('../fetch-record-helpers');
 
-var convertPointerToPath = require('./convert-pointer-to-path');
-var fieldTypeConversions = require('./mongodb-field-type-conversions');
-var createRecordLabel = require('./create-record-label');
-var fromFacets = require('./from-facets');
+var convertPointerToPath = require('../convert-pointer-to-path');
+var fieldTypeConversions = require('../mongodb-field-type-conversions');
+var createRecordLabel = require('../create-record-label');
+var fromFacets = require('../from-facets');
 
 var collectionHasSubChannels = (collection) => (
     allSchemaCreators[collection].hasSubChannels

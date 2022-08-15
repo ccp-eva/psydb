@@ -147,8 +147,7 @@ var search = async (context, next) => {
         enableResearchGroupFilter = true,
     } = searchOptions;
 
-    var d1 = new Date();
-    console.log('>>>>>>>>> START');
+    debug('>>>>>>>>> START');
     var records = await fetchRecordsByFilter({
         db,
         permissions,
@@ -171,8 +170,7 @@ var search = async (context, next) => {
         // can properly quicksearch and search for fk
         disablePermissionCheck: (target === 'optionlist' ? true : false)
     });
-    var d2 = new Date();
-    console.log('<<<<<<<<< END ', (d2.getTime() - d1.getTime()))
+    debug('<<<<<<<<< END')
 
     //console.dir(records, { depth: null });
 
