@@ -4,7 +4,7 @@ var debug = require('debug')('psydb:api:lib:fetch-record-by-id');
 var inlineString = require('@cdxoo/inline-string');
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
-var { isPromise } = require('@mpieva/psydb-core-utils');
+var { arrify, isPromise } = require('@mpieva/psydb-core-utils');
 
 var {
     SystemPermissionStages,
@@ -22,6 +22,13 @@ var fromFacets = require('../from-facets');
 
 var createCRTCollectionStages = require('./create-crt-collection-stages');
 
+var {
+    createCRTCollectionStages,
+    isNotDummyStage,
+    isNotRemovedStage,
+    isNotHiddenStage,
+} = require('./local-stages');
+
 var collectionHasSubChannels = (collection) => (
     allSchemaCreators[collection].hasSubChannels
 );
@@ -33,6 +40,9 @@ var maybeStages = ({ condition, stages }) => {
 
     if (typeof stages === 'function') {
         stages = stages();
+    }
+    else {
+        //stages = arrify(stages);
     }
 
     return stages;
@@ -71,40 +81,31 @@ var fetchRecordByFilter = async ({
                 && enableResearchGroupFilter
             ),
             stages: () => createCRTCollectionStages({ db, permissions })
-        }))
+        })),
+
+        ...maybeStages({
+            condition: recordType,
+            stages: [
+                { $match: {
+                    type: recordType,
+                }}
+            ]
+        }),
+
+        isNotDummyStage(),
+        isNotRemovedStage({ hasSubChannels }),
+        
+        ...maybeStages({
+            condition: !showHidden,
+            stages: [
+                isNotHiddenStage({ hasSubChannels }),
+            ]
+        })
+
     ];
 
-    if (recordType) {
-        preCountStages.push(
-            { $match: {
-                type: recordType,
-            }}
-        );
-    }
-    
+    console.dir(preCountStages, { depth: null });
     //showHidden = showHidden || (queryFields && queryFields.length > 0);
-
-    preCountStages.push({
-        $match: {
-            'isDummy': { $ne: true },
-            ...(
-                hasSubChannels
-                ? {
-                    'scientific.state.internals.isRemoved': { $ne: true },
-                    ...(!showHidden && {
-                        'scientific.state.systemPermissions.isHidden': { $ne: true },
-                    })
-
-                }
-                : { 
-                    'state.internals.isRemoved': { $ne: true },
-                    ...(!showHidden && {
-                        'state.systemPermissions.isHidden': { $ne: true },
-                    })
-                }
-            ),
-        }
-    });
 
     var FooStages = ({ permissions, collection }) => {
         var {
