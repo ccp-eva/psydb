@@ -14,6 +14,7 @@ import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 
 import { usePermissions, useToggleReducer } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator, ToggleButtons } from '@mpieva/psydb-ui-layout';
+import { CalendarTeamLegend } from '@mpieva/psydb-ui-lib';
 
 import CalendarNav from '@mpieva/psydb-ui-lib/src/calendar-nav';
 import withVariableCalendarPages from '@mpieva/psydb-ui-lib/src/with-variable-calendar-pages';
@@ -25,13 +26,15 @@ import StudyPillNav from '../study-pill-nav';
 import DaysContainer from './days-container';
 
 const Calendar = ({
+    inviteType,
+
     currentPageStart,
     currentPageEnd,
     onPageChange,
     selectedStudyId,
     calendarVariant,
+    showPast,
     onSelectDay,
-    showPast
 }) => {
     var { path, url } = useRouteMatch();
 
@@ -41,9 +44,11 @@ const Calendar = ({
         researchGroupId,
     } = useParams();
 
+    var [ selectedTeamId, setSelectedTeamId ] = useState();
     var [ state, dispatch ] = useReducer(reducer, {});
 
     var {
+        studyRecords,
         experimentRecords,
         experimentOperatorTeamRecords,
         experimentRelated,
@@ -63,11 +68,13 @@ const Calendar = ({
                 start: currentPageStart,
                 end: currentPageEnd,
             },
-            experimentType: 'online-video-call',
+            experimentType: inviteType,
             ...(selectedStudyId && {
                 studyId: selectedStudyId
             }),
             researchGroupId,
+
+            experimentOperatorTeamId: selectedTeamId,
             showPast,
         })
         .then(response => {
@@ -79,7 +86,7 @@ const Calendar = ({
     }, [ 
         studyType, subjectType, researchGroupId,
         currentPageStart, currentPageEnd, revision,
-        selectedStudyId,
+        selectedStudyId, selectedTeamId
     ])
 
     var allDayStarts = useMemo(() => (
@@ -134,6 +141,8 @@ const Calendar = ({
             }}/>
             
             <DaysContainer { ...({
+                inviteType,
+
                 allDayStarts,
                 experimentsByDayStart,
 
@@ -145,9 +154,23 @@ const Calendar = ({
 
                 url,
                 calendarVariant,
+                showPast,
                 onSelectDay,
                 onSuccessfulUpdate: handleSuccessfulUpdate
             }) }/>
+
+            <CalendarTeamLegend { ...({
+                studyRecords,
+                experimentOperatorTeamRecords,
+                onClickTeam: (team) => {
+                    if (selectedTeamId === team._id) {
+                        setSelectedTeamId(undefined);
+                    }
+                    else {
+                        setSelectedTeamId(team._id);
+                    }
+                }
+            })} />
         </div>
     )
 }
@@ -158,6 +181,7 @@ const reducer = (state, action) => {
         case 'init':
             return {
                 ...state,
+                studyRecords: payload.studyRecords,
                 experimentRecords: payload.experimentRecords,
                 experimentOperatorTeamRecords: payload.experimentOperatorTeamRecords,
                 experimentRelated: payload.experimentRelated,
@@ -184,6 +208,8 @@ import { useURLSearchParams } from '@mpieva/psydb-ui-hooks';
 import omit from '@cdxoo/omit';
 
 const CalendarVariantContainer = (ps) => {
+    var { inviteType } = ps;
+
     var {
         studyType,
         subjectType,
@@ -204,7 +230,6 @@ const CalendarVariantContainer = (ps) => {
 
     return (
         <>
-
             { permissions.isRoot() && (
                 <div className='mb-2'>
                     <ToggleButtons.ShowPast { ...showPast } />
@@ -231,7 +256,7 @@ const CalendarVariantContainer = (ps) => {
                 <div className='flex-grow'>
                     <StudyPillNav { ...({
                         subjectRecordType: ps.subjectRecordType,
-                        experimentType: 'online-video-call',
+                        experimentType: inviteType,
                         researchGroupId,
                         selectedStudyId,
                         onSelectStudy: (next) => {

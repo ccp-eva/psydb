@@ -13,6 +13,7 @@ import {
 } from '@mpieva/psydb-ui-lib/src/modals';
 
 const ExperimentSummarySmall = ({
+    inviteType,
     experimentRecord,
 
     experimentRelated,
@@ -45,9 +46,11 @@ const ExperimentSummarySmall = ({
     var hasProcessedSubjects = !!subjectData.find(
         it => it.participationStatus !== 'unknown'
     );
+    var isPlaceholder = subjectData.length < 1;
+
     // TODO: we might also want to send a flag to api
     // so we dont send dent data of those at all
-    if (!showPast && isInPast && isPostprocessed) {
+    if (!showPast && isInPast && (isPlaceholder || isPostprocessed)) {
         return null;
     }
 
@@ -67,7 +70,7 @@ const ExperimentSummarySmall = ({
 
                 shouldFetch: true,
                 experimentId: experimentRecord._id,
-                experimentType: 'online-video-call',
+                experimentType: inviteType,
 
                 onSuccessfulUpdate,
             }) } />
@@ -77,7 +80,7 @@ const ExperimentSummarySmall = ({
                 onHide: changeTeamModal.handleHide,
                 payloadData: changeTeamModal.data,
 
-                experimentType: 'online-video-call',
+                experimentType: inviteType,
                 experimentId: experimentRecord._id,
                 studyId: experimentRecord.state.studyId,
                 currentTeamId: experimentRecord.state.experimentOperatorTeamId,
@@ -93,20 +96,18 @@ const ExperimentSummarySmall = ({
                     { datefns.format(end, 'p') }
                 </b>
             </div>
-            <div>
-                { teamRecord.state.name }
-                {' '}
-                ({
-                    experimentRelated.relatedRecordLabels.study[studyId]._recordLabel
-                })
-            </div>
-
-            { !isPostprocessed && hasProcessedSubjects && (
+            
+            { isPlaceholder && (
+                <div>
+                    <small>Platzhalter</small>
+                </div>
+            )}
+            { !isPlaceholder && !isPostprocessed && hasProcessedSubjects && (
                 <div>
                     <small>in Nachbereitung</small>
                 </div>
             )}
-            { !isPostprocessed && !hasProcessedSubjects && isInPast && (
+            { !isPlaceholder && !isPostprocessed && !hasProcessedSubjects && isInPast && (
                 <div>
                     <small>offene Nachbereitung</small>
                 </div>
@@ -117,7 +118,13 @@ const ExperimentSummarySmall = ({
                 </div>
             )}
 
-            <div className='mt-2'>
+            <div className='d-flex text-small mt-2'>
+                <b className='flex-shrink-0' style={{ width: '70px' }}>Raum</b>
+                {
+                    experimentRelated.relatedRecordLabels.location[locationId]._recordLabel
+                }
+            </div>
+            <div className=''>
                 <small><b>Proband:innen:</b></small>
             </div>
             <ul className='m-0' style={{ paddingLeft: '20px', fontSize: '80%' }}>
@@ -132,6 +139,7 @@ const ExperimentSummarySmall = ({
                     ))
                     .map(it => (
                         <SubjectItem { ...({
+                            inviteType,
                             key: it.subjectId,
                             subjectDataItem: it,
                             subjectRecordsById,
@@ -144,11 +152,21 @@ const ExperimentSummarySmall = ({
                     ))
                 }
             </ul>
-            <div className='mt-2 d-flex justify-content-end'>
+            <div className='d-flex text-small mt-3'>
+                <b className='flex-shrink-0' style={{ width: '70px' }}>Team</b>
+                { teamRecord.state.name }
+            </div>
+            <div className='d-flex text-small'>
+                <b className='flex-shrink-0' style={{ width: '70px' }}>Studie</b>
+                {
+                    experimentRelated.relatedRecordLabels.study[studyId]._recordLabel
+                }
+            </div>
+            <div className='mt-1 d-flex justify-content-end'>
                 <ExperimentDropdown { ...({
-                    experimentType: 'online-video-call',
+                    experimentType: inviteType,
                     variant: 'calendar',
-                    detailsLink: `/experiments/online-video-call/${experimentRecord._id}`,
+                    detailsLink: `/experiments/${inviteType}/${experimentRecord._id}`,
                     onClickMove: moveExperimentModal.handleShow,
                     onClickChangeTeam: changeTeamModal.handleShow
                 })} />
@@ -158,6 +176,7 @@ const ExperimentSummarySmall = ({
 }
 
 const SubjectItem = ({
+    inviteType,
     subjectDataItem,
     subjectRecordsById,
     subjectRelated,

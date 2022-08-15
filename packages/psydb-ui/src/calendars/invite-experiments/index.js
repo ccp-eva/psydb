@@ -19,8 +19,20 @@ import RecordTypeNav from '@mpieva/psydb-ui-lib/src/record-type-nav';
 import { ResearchGroupNav } from '@mpieva/psydb-ui-lib';
 import Calendar from './calendar';
 
-const InhouseExperimentsRouting = ({
-    subjectRecordTypes
+const getTitleByType = (inviteType) => {
+    var title = {
+        'inhouse': 'Interne-Termine',
+        'online-video-call': 'Video-Termine'
+    }[inviteType];
+
+    title = title || inviteType;
+
+    return title;
+}
+
+const InviteExperimentsRouting = ({
+    subjectRecordTypes,
+    inviteType
 }) => {
     var { path, url } = useRouteMatch();
     var permissions = usePermissions();
@@ -29,7 +41,7 @@ const InhouseExperimentsRouting = ({
         <>
             <LinkContainer to={ url }>
                 <h5 className='mt-0 mb-3 text-muted' role='button'>
-                    Inhouse-Termine
+                    { getTitleByType(inviteType) }
                 </h5>
             </LinkContainer>
                 
@@ -47,13 +59,13 @@ const InhouseExperimentsRouting = ({
                             permissions.isRoot()
                             ? permissions.raw.forcedResearchGroupId
                             : permissions.getLabOperationFlagIds(
-                                'inhouse', 'canViewExperimentCalendar'
+                                inviteType, 'canViewExperimentCalendar'
                             )
                         }
                     />
                 </Route>
                 <Route path={`${path}/:subjectType/:researchGroupId`}>
-                    <Calendar />
+                    <Calendar inviteType={ inviteType } />
                 </Route>
             </Switch>
         </>
@@ -85,4 +97,4 @@ const RedirectOrTypeNav = ({
     }
 }
 
-export default InhouseExperimentsRouting;
+export default InviteExperimentsRouting;

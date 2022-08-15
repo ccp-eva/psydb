@@ -2,11 +2,16 @@ import React, { useReducer, useEffect, useMemo, useCallback } from 'react';
 
 import { LinkContainer } from '@mpieva/psydb-ui-layout';
 
+import {
+    useModalReducer,
+    usePermissions
+} from '@mpieva/psydb-ui-hooks';
+
 import enums from '@mpieva/psydb-schema-enums';
 
 import agent from '@mpieva/psydb-ui-request-agents';
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
-import { useModalReducer, usePermissions } from '@mpieva/psydb-ui-hooks';
+
 import getTextColor from '@mpieva/psydb-ui-lib/src/bw-text-color-for-background';
 import applyValueToDisplayFields from '@mpieva/psydb-ui-lib/src/apply-value-to-display-fields';
 
@@ -23,6 +28,7 @@ import {
 } from '@mpieva/psydb-ui-lib/src/modals';
 
 const ExperimentSummaryMedium = ({
+    inviteType,
     experimentRecord,
 
     experimentRelated,
@@ -35,6 +41,7 @@ const ExperimentSummaryMedium = ({
     showPast,
     onSuccessfulUpdate,
 }) => {
+    var permissions = usePermissions();
 
     var moveExperimentModal = useModalReducer({ show: false });
     var changeTeamModal = useModalReducer({ show: false });
@@ -82,18 +89,19 @@ const ExperimentSummaryMedium = ({
         it._id === experimentOperatorTeamId
     ));
     
-    start = new Date(start);
-    end = new Date(new Date(end).getTime() + 1); // FIXME: 1ms offset
-
     var isInPast = new Date().getTime() > new Date(end).getTime();
     var hasProcessedSubjects = !!subjectData.find(
         it => it.participationStatus !== 'unknown'
     );
+    var isPlaceholder = subjectData.length < 1;
     // TODO: we might also want to send a flag to api
     // so we dont send dent data of those at all
-    if (!showPast && isInPast && isPostprocessed) {
+    if (!showPast && isInPast && (isPlaceholder || isPostprocessed)) {
         return null;
     }
+
+    start = new Date(start);
+    end = new Date(new Date(end).getTime() + 1); // FIXME: 1ms offset
 
     return (
         <div className='pl-2 pr-2 pb-1 pt-1 mb-2' style={{
@@ -108,7 +116,7 @@ const ExperimentSummaryMedium = ({
 
                 shouldFetch: true,
                 experimentId: experimentRecord._id,
-                experimentType: 'online-video-call',
+                experimentType: inviteType,
 
                 onSuccessfulUpdate,
             }) } />
@@ -118,7 +126,7 @@ const ExperimentSummaryMedium = ({
                 onHide: changeTeamModal.handleHide,
                 payloadData: changeTeamModal.data,
 
-                experimentType: 'online-video-call',
+                experimentType: inviteType,
                 experimentId: experimentRecord._id,
                 studyId: experimentRecord.state.studyId,
                 currentTeamId: experimentRecord.state.experimentOperatorTeamId,
@@ -143,19 +151,18 @@ const ExperimentSummaryMedium = ({
 
                 shouldFetch: true,
                 experimentId: experimentRecord._id,
-                experimentType: 'online-video-call',
+                experimentType: inviteType,
 
                 onSuccessfulUpdate,
             }) } />
 
             <FollowUpSubjectModal { ...({
-                show: followUpSubjectModal.show,
-                onHide: followUpSubjectModal.handleHide,
+                ...followUpSubjectModal.passthrough,
                 payloadData: followUpSubjectModal.data,
 
                 shouldFetch: true,
                 experimentId: experimentRecord._id,
-                experimentType: 'online-video-call',
+                experimentType: inviteType,
 
                 onSuccessfulUpdate,
             }) } />
@@ -167,7 +174,7 @@ const ExperimentSummaryMedium = ({
 
                 shouldFetch: true,
                 experimentId: experimentRecord._id,
-                experimentType: 'online-video-call',
+                experimentType: inviteType,
 
                 onSuccessfulUpdate,
             }) } />
@@ -183,34 +190,32 @@ const ExperimentSummaryMedium = ({
                             { datefns.format(end, 'p') }
                         </b>
                     </div>
-                    <div>
-                        { teamRecord.state.name }
-                        {' '}
-                        ({
-                            experimentRelated.relatedRecordLabels.study[studyId]._recordLabel
-                        })
-                    </div>
                 </div>
                 <div
                     style={{ width: '35px' }}
                     className='d-flex flex-column align-items-center'
                 >
                     <ExperimentDropdown { ...({
-                        experimentType: 'online-video-call',
+                        experimentType: inviteType,
                         variant: 'calendar',
-                        detailsLink: `/experiments/online-video-call/${experimentRecord._id}`,
+                        detailsLink: `/experiments/${inviteType}/${experimentRecord._id}`,
                         onClickMove: moveExperimentModal.handleShow,
                         onClickChangeTeam: changeTeamModal.handleShow
                     })} />
                 </div>
             </div>
 
-            { !isPostprocessed && hasProcessedSubjects && (
+            { isPlaceholder && (
+                <div>
+                    <small>Platzhalter</small>
+                </div>
+            )}
+            { !isPlaceholder && !isPostprocessed && hasProcessedSubjects && (
                 <div>
                     <small>in Nachbereitung</small>
                 </div>
             )}
-            { !isPostprocessed && !hasProcessedSubjects && isInPast && (
+            { !isPlaceholder && !isPostprocessed && !hasProcessedSubjects && isInPast && (
                 <div>
                     <small>offene Nachbereitung</small>
                 </div>
@@ -221,7 +226,13 @@ const ExperimentSummaryMedium = ({
                 </div>
             )}
 
-            <div className='mt-2'>
+            <div className='d-flex text-small mt-2'>
+                <b className='flex-shrink-0' style={{ width: '70px' }}>Raum</b>
+                {
+                    experimentRelated.relatedRecordLabels.location[locationId]._recordLabel
+                }
+            </div>
+            <div className=''>
                 <small><b>Proband:innen:</b></small>
             </div>
             <ul className='m-0' style={{ paddingLeft: '20px', fontSize: '80%' }}>
@@ -235,6 +246,7 @@ const ExperimentSummaryMedium = ({
                     .map(it => (
                         <SubjectItem { ...({
                             key: it.subjectId,
+                            inviteType,
                             subjectDataItem: it,
                             subjectRecordsById,
                             subjectRelated,
@@ -244,6 +256,7 @@ const ExperimentSummaryMedium = ({
                             experimentRelated,
 
                             onClickComment: commentPerSubjectModal.handleShow,
+
                             onClickMove: moveSubjectModal.handleShow,
                             ...(experimentRecord._canFollowUp && {
                                 onClickFollowUp: followUpSubjectModal.handleShow,
@@ -253,26 +266,27 @@ const ExperimentSummaryMedium = ({
                             onClickConfirm,
                             onClickMailbox,
                             onClickContactFailed,
-
                         }) } />
                     ))
                 }
             </ul>
-            {/*<div className='mt-3 d-flex justify-content-end'>
-                <LinkContainer
-                    style={{
-                        color: getTextColor(teamRecord.state.color),
-                    }}
-                    to={ `/experiments/online-video-call/${experimentRecord._id}` }
-                >
-                    <a><u>... Details</u></a>
-                </LinkContainer>
-            </div>*/}
+            <div className='d-flex text-small mt-3'>
+                <b className='flex-shrink-0' style={{ width: '70px' }}>Team</b>
+                { teamRecord.state.name }
+            </div>
+            <div className='d-flex text-small'>
+                <b className='flex-shrink-0' style={{ width: '70px' }}>Studie</b>
+                {
+                    experimentRelated.relatedRecordLabels.study[studyId]._recordLabel
+                }
+            </div>
+
         </div>
     )
 }
 
 const SubjectItem = ({
+    inviteType,
     subjectDataItem,
     experimentOperatorTeamRecords,
     subjectRecordsById,
@@ -329,7 +343,7 @@ const SubjectItem = ({
                     className='d-flex flex-column align-items-center'
                 >
                     <ExperimentSubjectDropdown { ...({
-                        experimentType: 'online-video-call',
+                        experimentType: inviteType,
                         variant: 'calendar',
                         subjectRecord,
                         
