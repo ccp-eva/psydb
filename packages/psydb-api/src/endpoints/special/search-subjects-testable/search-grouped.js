@@ -199,7 +199,8 @@ var searchGrouped = async (context, next) => {
                 '_recordLabelDefinitionFields': true,
                 '_ageFrameField': true,
                 '_groupByField': true,
-                'scientific.state.internals.participatedInStudies': true,
+                // XXX: or else fetchRelated will try to get experiment labels
+                'scientific.state.internals.participatedInStudies.studyId': true,
                 'scientific.state.comment': true,
                 ...( studyIds.reduce((acc, id) => ({
                     ...acc, [`_testableIn_${id}`]: true,
