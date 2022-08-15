@@ -4,6 +4,8 @@ var debug = require('debug')('psydb:api:lib:fetch-record-by-id');
 var inlineString = require('@cdxoo/inline-string');
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
+var { isPromise } = require('@mpieva/psydb-core-utils');
+
 var {
     SystemPermissionStages,
     ProjectDisplayFieldsStage,
@@ -18,9 +20,23 @@ var fieldTypeConversions = require('../mongodb-field-type-conversions');
 var createRecordLabel = require('../create-record-label');
 var fromFacets = require('../from-facets');
 
+var createCRTCollectionStages = require('./create-crt-collection-stages');
+
 var collectionHasSubChannels = (collection) => (
     allSchemaCreators[collection].hasSubChannels
 );
+
+var maybeStages = ({ condition, stages }) => {
+    if (!condition) {
+        return [];
+    }
+
+    if (typeof stages === 'function') {
+        stages = stages();
+    }
+
+    return stages;
+}
 
 var fetchRecordByFilter = async ({
     db,
@@ -48,45 +64,15 @@ var fetchRecordByFilter = async ({
     offset = offset ||0;
     limit = limit || 0;
 
-    var preCountStages = [];
-    
-    if (collectionName === 'customRecordType') {
-        if (enableResearchGroupFilter) {
-            var { projectedResearchGroupIds } = permissions;
-
-            //var childlabId = 'VVuQ9Z4dp6o5rmhbhMwvQ';
-            //allowedResearchGroupIds = [ childlabId ];
-
-            var researchGroupRecords = await (
-                db.collection('researchGroup').aggregate([
-                    { $match: {
-                        _id: { $in: projectedResearchGroupIds },
-                    }},
-                    StripEventsStage(),
-                ]).toArray()
-            );
-
-            var allowedTypeKeys = [];
-            for (var rg of researchGroupRecords) {
-                var {
-                    recordTypePermissions = {}
-                } = rg.state;
-
-                for (var target of Object.keys(recordTypePermissions)) {
-                    var items = recordTypePermissions[target];
-                    allowedTypeKeys.push(...items.map(it => (
-                        it.typeKey
-                    )))
-                }
-            }
-
-            preCountStages.push(
-                { $match: {
-                    type: { $in: allowedTypeKeys }
-                }}
-            );
-        }
-    }
+    var preCountStages = [
+        ...(await maybeStages({
+            condition: (
+                collectionName === 'customRecordType'
+                && enableResearchGroupFilter
+            ),
+            stages: () => createCRTCollectionStages({ db, permissions })
+        }))
+    ];
 
     if (recordType) {
         preCountStages.push(
