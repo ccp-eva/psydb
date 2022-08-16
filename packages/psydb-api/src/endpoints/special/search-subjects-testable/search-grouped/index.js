@@ -43,6 +43,12 @@ var fetchUpcomingExperimentData = require('../fetch-upcoming-experiment-data');
 
 var prepareGroupByField = require('./prepare-group-by-field');
 var fetchExcludedLocationIds = require('./fetch-excluded-location-ids');
+var {
+    isRecordType,
+    isNotOmitted,
+    hasField,
+    prefilterAgeFrames
+} = require('./local-stages');
 
 var searchGrouped = async (context, next) => {
     var { 
@@ -105,33 +111,21 @@ var searchGrouped = async (context, next) => {
 
     //console.log(groupByFieldPath);
     var stages = [
-        { $match: {
-            type: subjectTypeKey,
-            isDummy: { $ne: true },
-            'scientific.state.systemPermissions.isHidden': { $ne: true },
-            'scientific.state.internals.isRemoved': { $ne: true },
-            $and: [
-                { [groupByFieldPath]: { $exists: true } },
-                { [groupByFieldPath]: { $not: { $type: 10 }}}, // NOT NULL
-                { [groupByFieldPath]: { $nin: excludedLocationIds }}
-            ]
-        }},
+        isRecordType({ type: subjectTypeKey }),
+        isNotOmitted(),
+        hasField({
+            path: groupByFieldPath,
+            excludedValues: excludedLocationIds
+        }),
+
         // NOTE: prefiltering possbile age frames to make index use easier
         // and get better performance
-        { $match: { $or: (
-            ageFrameFilters.map(it => {
-                var p = convertPointerToPath(dobFieldPointer);
-                var shifted = timeshiftAgeFrame({
-                    targetInterval: interval,
-                    ageFrame: it.interval
-                });
-                    
-                return { $and: [
-                    { [p]: { $gte: shifted.start }},
-                    { [p]: { $lt: shifted.end }},
-                ]}
-            })
-        )}},
+        prefilterAgeFrames({
+            targetInterval: interval,
+            ageFrameFilters,
+            dobFieldPath: convertPointerToPath(dobFieldPointer),
+        }),
+
         // TODO: quicksearch
         /*...QuickSearchStages({
             queryFields,
