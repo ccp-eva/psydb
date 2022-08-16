@@ -41,6 +41,10 @@ var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 var CoreBodySchema = require('./core-body-schema');
 var FullBodySchema = require('./full-body-schema');
 
+// NOTE https://github.com/ajv-validator/ajv/issues/242
+// i assume having it outside the thingy is find then?
+// saves ~60ms
+var ajv = Ajv();
 
 var search = async (context, next) => {
     debug('endpoints/search');
@@ -50,8 +54,9 @@ var search = async (context, next) => {
         request
     } = context;
 
-    var ajv = Ajv(),
-        isValid = false;
+    var isValid = false;
+
+    debug('start validating');
 
     var precheckBody = copy(request.body);
     isValid = ajv.validate(
@@ -108,6 +113,7 @@ var search = async (context, next) => {
         debug('ajv errors', ajv.errors);
         throw new ApiError(400, 'InvalidRequestSchema');
     }
+    debug('done validating');
     
     var {
         collectionName,
