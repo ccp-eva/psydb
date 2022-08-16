@@ -167,28 +167,4 @@ const Calendars = () => {
     )
 }
 
-const RedirectOrTypeNav = ({
-    baseUrl,
-    studyTypes,
-    title,
-}) => {
-    if (studyTypes.length === 1) {
-        return (
-            <Redirect to={
-                `${baseUrl}/${studyTypes[0].type}`
-                } />
-        )
-    }
-    else {
-        return (
-            <>
-                { title && (
-                    <h2>{ title }</h2>
-                )}
-                <RecordTypeNav items={ studyTypes } />
-            </>
-        )
-    }
-}
-
 export default Calendars;

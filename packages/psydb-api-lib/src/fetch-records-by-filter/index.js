@@ -19,6 +19,7 @@ var convertPointerToPath = require('../convert-pointer-to-path');
 var fieldTypeConversions = require('../mongodb-field-type-conversions');
 var createRecordLabel = require('../create-record-label');
 var fromFacets = require('../from-facets');
+var maybeStages = require('../maybe-stages');
 
 var {
     createCRTCollectionStages,
@@ -33,21 +34,6 @@ var createCountIndex = require('./create-count-index');
 var collectionHasSubChannels = (collection) => (
     allSchemaCreators[collection].hasSubChannels
 );
-
-var maybeStages = ({ condition, stages }) => {
-    if (!condition) {
-        return [];
-    }
-
-    if (typeof stages === 'function') {
-        stages = stages();
-    }
-    else {
-        //stages = arrify(stages);
-    }
-
-    return stages;
-}
 
 var fetchRecordByFilter = async ({
     db,
