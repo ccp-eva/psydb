@@ -20,7 +20,9 @@ var {
 var {
     ApiError,
     Ajv,
-    ResponseBody
+    ResponseBody,
+
+    fromFacets,
 } = require('@mpieva/psydb-api-lib');
 
 var {
@@ -33,13 +35,14 @@ var {
 } = require('@mpieva/psydb-api-lib/src/fetch-record-helpers');
 
 
-var initAndCheck = require('./init-and-check');
-var postprocessSubjectRecords = require('./postprocess-subject-records');
-var combineSubjectResponseData = require('./combine-subject-response-data');
-var fetchParentDataForGroups = require('./fetch-parent-data-for-groups');
-var fetchUpcomingExperimentData = require('./fetch-upcoming-experiment-data');
+var initAndCheck = require('../init-and-check');
+var postprocessSubjectRecords = require('../postprocess-subject-records');
+var combineSubjectResponseData = require('../combine-subject-response-data');
+var fetchParentDataForGroups = require('../fetch-parent-data-for-groups');
+var fetchUpcomingExperimentData = require('../fetch-upcoming-experiment-data');
 
-var fromFacets = require('./from-facets');
+var prepareGroupByField = require('./prepare-group-by-field');
+var fetchExcludedLocationIds = require('./fetch-excluded-location-ids');
 
 var searchGrouped = async (context, next) => {
     var { 
@@ -79,52 +82,19 @@ var searchGrouped = async (context, next) => {
         labProcedureType: experimentVariant,
     });
 
-    var subjectLocationFieldPointer = undefined;
-    for (var it of labProcedureSettingRecords) {
-        var { studyId, state } = it;
-        var { subjectLocationFieldPointer: current } = state;
-        if (subjectLocationFieldPointer === undefined) {
-            subjectLocationFieldPointer = current;
-        }
-        else if (subjectLocationFieldPointer !== current) {
-            throw new ApiError(400, {
-                apiStatus: 'SubjectLocationFieldConflict',
-                data: {
-                    studyId,
-                    expected: subjectLocationFieldPointer,
-                    actual: current,
-                }
-            });
-        }
-    }
-    
-    var customFields = (
-        subjectTypeRecord.state.settings.subChannelFields.scientific
-    );
-
-    var groupByFieldPath = convertPointerToPath(subjectLocationFieldPointer);
-
-    var groupByField = customFields.find(field => (
-        field.pointer === subjectLocationFieldPointer
-    ));
+    var groupByField = prepareGroupByField({
+        labProcedureSettingRecords,
+        subjectTypeRecord
+    });
+    var groupByFieldPath = convertPointerToPath(groupByField.pointer);
 
     var subjectCRTSettings = convertCRTRecordToSettings(subjectTypeRecord);
     var dobFieldPointer = findCRTAgeFrameField(subjectCRTSettings);
 
     debug('start find excluded locations');
-    var excludedLocationIds = await (
-        db.collection('location').find(
-            {
-                type: groupByField.props.recordType,
-                $or: [
-                    { isDummy: true },
-                    { 'state.systemPermissions.isHidden': true },
-                    { 'state.internals.isRemoved': true }
-                ],
-            },
-            { projection: { _id: true }}
-        ).map(it => it._id).toArray()
-    );
+    var excludedLocationIds = await fetchExcludedLocationIds({
+        db, locationType: groupByField.props.recordType,
+    });
     debug('end find excluded locations');
 
     await db.collection('subject').ensureIndex({
