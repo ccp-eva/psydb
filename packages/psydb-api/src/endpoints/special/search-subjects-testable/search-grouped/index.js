@@ -103,14 +103,16 @@ var searchGrouped = async (context, next) => {
     });
     debug('end find excluded locations');
 
+    var dobFieldPath = convertPointerToPath(dobFieldPointer);
     await db.collection('subject').ensureIndex({
-        [convertPointerToPath(dobFieldPointer)]: 1
+        [dobFieldPath]: 1
     }, {
         name: 'ageFrameIndex'
     });
 
     //console.log(groupByFieldPath);
     var stages = [
+        { $sort: { [dobFieldPath]: 1 }},
         isRecordType({ type: subjectTypeKey }),
         isNotOmitted(),
         hasField({
