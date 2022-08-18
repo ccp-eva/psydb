@@ -32,6 +32,7 @@ var gatherDisplayFieldsForRecordType =  async ({
         recordLabelDefinition,
         availableStaticDisplayFields,
         staticDisplayFields,
+        staticOptionListDisplayFields,
     } = collectionCreatorData;
 
 
@@ -68,7 +69,15 @@ var gatherDisplayFieldsForRecordType =  async ({
     // TODO: fixed types maybe
     else {
         // recodLabelDefinition is already set
-        displayFields = staticDisplayFields || [];
+        if (target === 'optionlist') {
+            displayFields = (
+                staticOptionListDisplayFields
+                || staticDisplayFields
+                || []
+            );
+        } else {
+            displayFields = staticDisplayFields || [];
+        }
         availableDisplayFieldData = availableStaticDisplayFields || [];
     }
 

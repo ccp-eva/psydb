@@ -206,6 +206,16 @@ module.exports = {
                 systemType: 'FullText',
                 dataPointer: '/gdpr/state/description',
             },
+        ],
+        staticOptionListDisplayFields: [
+            {
+                systemType: 'SaneString',
+                dataPointer: '/gdpr/state/firstname',
+            },
+            {
+                systemType: 'SaneString',
+                dataPointer: '/gdpr/state/lastname',
+            },
         ]
     },
     researchGroup: {
