@@ -168,6 +168,7 @@ var searchGrouped = async (context, next) => {
                 // XXX: or else fetchRelated will try to get experiment labels
                 'scientific.state.internals.participatedInStudies.studyId': true,
                 'scientific.state.internals.participatedInStudies.timestamp': true,
+                'scientific.state.internals.participatedInStudies.status': true,
                 'scientific.state.comment': true,
                 ...( studyIds.reduce((acc, id) => ({
                     ...acc, [`_testableIn_${id}`]: true,

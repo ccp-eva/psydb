@@ -168,9 +168,6 @@ const SubjectTableBody = ({
                             { 
                                 record.scientific.state
                                 .internals.participatedInStudies
-                                .filter(it => (
-                                    it.status === 'participated'
-                                ))
                                 .map(it => (
                                     subjectMetadata
                                     .relatedRecordLabels
