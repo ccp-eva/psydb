@@ -31,6 +31,7 @@
     "formik": "~2.2.6",
     "jsonpointer": "~4.1.0",
     "js-base64": "~3.6.0",
+    "@cdxoo/inline-string": "~1.0.0",
     "@cdxoo/omit": "~1.0.1",
     "@cdxoo/formik-utils": "~0.6.0",
     "@cdxoo/formik-ajv-async": "~0.4.1",

@@ -8,6 +8,8 @@ export const ForeignId = withField({ Control: (ps) => {
         formikField,
         formikMeta,
         formikForm,
+
+        extraOnChange,
         
         collection,
         recordType,
@@ -23,7 +25,9 @@ export const ForeignId = withField({ Control: (ps) => {
 
     var onChange = (record) => {
         var fallback = isNullable ? null : undefined;
-        setFieldValue(dataXPath, record ? record._id : fallback);
+        var next = record ? record._id : fallback;
+        extraOnChange && extraOnChange(next);
+        setFieldValue(dataXPath, next);
     }
 
     var { relatedRecords, relatedRecordLabels } = related || {};
