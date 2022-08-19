@@ -1,9 +1,6 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
-
-var nanoid = require('nanoid').nanoid;
-
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error');
+var { ApiError, createId } = require('@mpieva/psydb-api-lib');
 
 var SimpleHandler = require('../../../lib/simple-handler'),
     checkForeignIdsExist = require('../../../lib/check-foreign-ids-exist');
@@ -85,7 +82,7 @@ handler.triggerSystemEvents = async (context) => {
 
         type: 'online-video-call',
         //reservationId: reservation._id,
-        seriesId: nanoid(), // FIXME: id format
+        seriesId: await createId(),
         studyId: props.studyId,
         experimentOperatorTeamId: props.experimentOperatorTeamId,
         locationId: props.locationId,

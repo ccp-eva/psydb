@@ -1,6 +1,6 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
-var { nanoid } = require('nanoid');
+var { createId } = require('@mpieva/psydb-api-lib');
 
 var {
     dispatchCreateEvents,
@@ -46,7 +46,7 @@ var triggerSystemEvents = async (context) => {
             // appointments we need to reuse the original id when
             // this is not the first appointment of this child in
             // this study
-            seriesId: nanoid(),
+            seriesId: await createId(),
             studyId: experimentRecord.state.studyId,
             experimentOperatorTeamId: target.experimentOperatorTeamId,
             locationId: locationRecord._id,

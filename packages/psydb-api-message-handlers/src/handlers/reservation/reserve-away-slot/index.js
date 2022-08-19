@@ -1,9 +1,6 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
-
-var nanoid = require('nanoid').nanoid;
-
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error');
+var { ApiError, createId } = require('@mpieva/psydb-api-lib');
 
 var SimpleHandler = require('../../../lib/simple-handler'),
     PutMaker = require('../../../lib/put-maker'),
@@ -60,7 +57,7 @@ handler.triggerSystemEvents = async ({
     var { type: messageType, payload } = message;
     var { id, props } = payload;
 
-    props.seriesId = nanoid();
+    props.seriesId = await createId(); // FIXME. why?
 
     await dispatchProps({
         collection: 'reservation',

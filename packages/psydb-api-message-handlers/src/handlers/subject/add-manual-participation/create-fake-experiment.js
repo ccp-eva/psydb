@@ -1,5 +1,4 @@
 'use strict';
-var { nanoid } = require('nanoid');
 var { createId } = require('@mpieva/psydb-api-lib');
 
 var createFakeExperiment = async (context, bag) => {
@@ -24,7 +23,7 @@ var createFakeExperiment = async (context, bag) => {
     }
 
     var experimentId = await createId('experiment');
-    var seriesId = nanoid();
+    var seriesId = await createId();
 
     var experimentCore = {
         type: 'manual',
