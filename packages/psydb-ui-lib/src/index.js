@@ -57,3 +57,5 @@ export { default as UpdateRecordVisibilityButton } from './update-record-visibil
 export { default as GenericRecordEditorFooter } from './generic-record-editor-footer';
 
 export { default as CalendarTeamLegend } from './calendar-team-legend';
+
+export { default as QuickSearch } from './quick-search';

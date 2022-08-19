@@ -30,7 +30,14 @@ var {
     HasAnyTestabilityStage,
     SeperateRecordLabelDefinitionFieldsStage,
     ProjectDisplayFieldsStage,
+    QuickSearchStages,
 } = require('@mpieva/psydb-api-lib/src/fetch-record-helpers');
+
+var { fieldTypeMetadata } = require('@mpieva/psydb-common-lib');
+var { 
+    convertFiltersToQueryFields
+} = require('@mpieva/psydb-api-lib');
+var fieldTypeConversions = require('@mpieva/psydb-api-lib/src/mongodb-field-type-conversions');
 
 
 var initAndCheck = require('./init-and-check');
@@ -55,6 +62,7 @@ var searchUngrouped = async (context, next) => {
         timezone,
         ageFrameFilters,
         ageFrameValueFilters,
+        quickSearchFilters,
        
         studyTypeKey,
         studyTypeRecord,
@@ -75,6 +83,12 @@ var searchUngrouped = async (context, next) => {
         permissions,
         request,
         labProcedureType: experimentVariant,
+    });
+
+    var queryFields = convertFiltersToQueryFields({
+        filters: quickSearchFilters,
+        displayFields: subjectRecordLabelDefinition.tokens,
+        fieldTypeMetadata,
     });
 
     //console.log({ interval });
@@ -125,11 +139,12 @@ var searchUngrouped = async (context, next) => {
                 ]}
             })
         )}},
+
         // TODO: quicksearch
-        /*...QuickSearchStages({
-            queryFields,
+        ...QuickSearchStages({
+            queryFields, 
             fieldTypeConversions,
-        }),*/
+        }),
         // TODO: optimization
         // first match children that ar in any of the timeshifted
         // age frames; this should reduce the size enough most of the time
@@ -247,10 +262,12 @@ var searchUngrouped = async (context, next) => {
 
                 studyRecords,
                 studyRecordLabelDefinition,
+                subjectRecordLabelDefinition,
             }),
             subjectExperimentMetadata: {
                 ...omit('upcomingForIds', upcomingSubjectExperimentData),
             },
+            subjectRecordLabelDefinition,
         }
     });
     

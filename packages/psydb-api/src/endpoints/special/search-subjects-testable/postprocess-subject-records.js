@@ -47,15 +47,6 @@ var postprocessSubjectRecords = ({
             ))
             .slice(0, 3)
         );
-        
-        if (
-            record.scientific.state.internals.participatedInStudies
-            .length >0
-        ) {
-            console.log(
-                record.scientific.state.internals.participatedInStudies
-            )
-        }
     })
 
     //console.dir(subjectRecords, { depth: null });

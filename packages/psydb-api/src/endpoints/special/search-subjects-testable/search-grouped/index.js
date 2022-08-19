@@ -343,6 +343,8 @@ var searchGrouped = async (context, next) => {
 
             locationCount,
             subjectCount,
+
+            subjectRecordLabelDefinition,
         }
     });
 

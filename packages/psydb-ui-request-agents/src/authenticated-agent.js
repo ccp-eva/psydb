@@ -255,6 +255,7 @@ var searchSubjectsTestable = ({
 
     interval,
     filters,
+    quickSearchFilters,
 
     offset = 0,
     limit = 100,
@@ -269,6 +270,7 @@ var searchSubjectsTestable = ({
 
             interval,
             filters,
+            quickSearchFilters,
             
             offset,
             limit,

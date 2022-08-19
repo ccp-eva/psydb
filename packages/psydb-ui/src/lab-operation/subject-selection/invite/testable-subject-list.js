@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useMemo } from 'react';
+import React, { useState, useEffect, useReducer, useMemo } from 'react';
 
 import {
     Redirect,
@@ -30,9 +30,8 @@ import {
     Pagination,
 } from '@mpieva/psydb-ui-layout';
 
-import {
-    FieldDataHeadCols,
-} from '@mpieva/psydb-ui-lib/src/record-list';
+import { FieldDataHeadCols } from '@mpieva/psydb-ui-lib/src/record-list';
+import { QuickSearch } from '@mpieva/psydb-ui-lib';
 
 import { SubjectRecordViewModal } from '@mpieva/psydb-ui-compositions';
 
@@ -57,6 +56,8 @@ const InviteTestableSubjectList = ({
         subjectRecordType,
         searchSettings64
     } = useParams();
+    var [ quickSearchFilters, setQuickSearchFilters ] = useState({});
+
 
     var studyIds = joinedStudyIds.split(',');
 
@@ -105,6 +106,7 @@ const InviteTestableSubjectList = ({
                     end: datefns.endOfDay(new Date(end)),
                 },
                 filters: convertFilters(filters),
+                quickSearchFilters,
 
                 offset,
                 limit,
@@ -118,7 +120,7 @@ const InviteTestableSubjectList = ({
         )
     }, [
         joinedStudyIds, subjectRecordType, searchSettings64,
-        revision, offset, limit
+        revision, offset, limit, quickSearchFilters
     ])
    
     var inviteModal = useModalReducer();
@@ -134,6 +136,7 @@ const InviteTestableSubjectList = ({
         studyData,
         subjectData,
         subjectExperimentMetadata,
+        subjectRecordLabelDefinition,
     } = fetched.data;
 
     var {
@@ -147,6 +150,7 @@ const InviteTestableSubjectList = ({
     var formattedTestInterval = (
         intervalfns.format(desiredTestInterval, { offsetEnd: 0 })
     );
+
 
     return (
         <>
@@ -193,6 +197,21 @@ const InviteTestableSubjectList = ({
 
             <Table style={{ borderCollapse: 'separate', borderSpacing: 0 }}>
                 <thead className='sticky-top bg-light'>
+                    <tr className='bg-light'>
+                        <td className='m-0 p-0' colSpan={
+                            subjectData.displayFieldData.length + 6
+                        }>
+                            <QuickSearch
+                                filters={ quickSearchFilters }
+                                displayFieldData={
+                                    subjectRecordLabelDefinition.tokens
+                                }
+                                onSubmit={ ({ filters }) => {
+                                    setQuickSearchFilters(filters);
+                                }}
+                            />
+                        </td>
+                    </tr>
                     <tr className='bg-light'>
                         <td className='m-0 p-0' colSpan={
                             subjectData.displayFieldData.length + 6
