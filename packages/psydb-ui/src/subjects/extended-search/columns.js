@@ -2,6 +2,7 @@ import React from 'react';
 
 import { gatherCustomColumns } from '@mpieva/psydb-common-lib';
 import { withField } from '@cdxoo/formik-utils';
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
 import { Fields } from '@mpieva/psydb-ui-lib';
 
@@ -13,6 +14,7 @@ const ColumnSelect = withField({
 
 export const Columns = (ps) => {
     var { formData, schema } = ps;
+    var permissions = usePermissions();
     
     var customColumns = gatherCustomColumns({
         schema, subChannelKeys: [ 'gdpr', 'scientific' ]
@@ -21,7 +23,9 @@ export const Columns = (ps) => {
     var sortableColumns = [
         { pointer: '/sequenceNumber', label: 'ID Nr.' },
         { pointer: '/onlineId', label: 'Online ID Code' },
-        { pointer: '/_id', label: 'Interne ID' },
+        ...(permissions.isRoot() ? [
+            { pointer: '/_id', label: 'Interne ID' }
+        ] : []),
         ...customColumns
     ];
 
@@ -40,7 +44,9 @@ export const Columns = (ps) => {
                     [
                         { pointer: '/sequenceNumber', label: 'ID Nr.' },
                         { pointer: '/onlineId', label: 'Online ID Code' },
-                        { pointer: '/_id', label: 'Interne ID' },
+                        ...(permissions.isRoot() ? [
+                            { pointer: '/_id', label: 'Interne ID' }
+                        ] : []),
                     ],
                     customColumns,
                     specialColumns,

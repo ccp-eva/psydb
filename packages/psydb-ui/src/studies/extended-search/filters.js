@@ -1,8 +1,6 @@
 import React from 'react';
-import {
-    Button,
-} from '@mpieva/psydb-ui-layout';
-
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
+import { Button } from '@mpieva/psydb-ui-layout';
 import {
     FormBox,
     DefaultForm,
@@ -13,6 +11,7 @@ import {
 export const Filters = (ps) => {
     var { crtSettings, schema } = ps;
     var { fieldDefinitions } = crtSettings;
+    var permissions = usePermissions();
     
     return (
         <FormBox title='Suchbedingungen'>
@@ -20,10 +19,12 @@ export const Filters = (ps) => {
                 dataXPath='$.specialFilters.sequenceNumber'
                 label='ID Nr.'
             />
-            <Fields.SaneString
-                dataXPath='$.specialFilters.studyId'
-                label='Interne ID'
-            />
+            { permissions.isRoot() && (
+                <Fields.SaneString
+                    dataXPath='$.specialFilters.studyId'
+                    label='Interne ID'
+                />
+            )}
             <Fields.SaneString
                 dataXPath='$.specialFilters.name'
                 label='Studienname'
