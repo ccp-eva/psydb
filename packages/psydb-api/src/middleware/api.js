@@ -1,8 +1,8 @@
 'use strict';
 var compose = require('koa-compose'),
-    withSession = require('koa-session'),
     withMongoDB = require('@mpieva/psydb-mongo-adapter').createMiddleware,
     
+    withSession = require('./session'),
     withErrorHandling = require('./errors'),
     withRouting = require('./routing');
 
@@ -11,12 +11,7 @@ var createApi = (app, config) => {
     var composition = compose([
         withErrorHandling(),
         withMongoDB(config.db),
-        withSession({
-            ...(config.session || {}),
-            signed: false, // i think this requires app.keys to be set
-            //rolling: true, // reset cookie/ttl every request
-            renew: true, // renew session when close to ttl end
-        }, app),
+        withSession(app, config),
         
         withRouting(config.routing),
     ]);
