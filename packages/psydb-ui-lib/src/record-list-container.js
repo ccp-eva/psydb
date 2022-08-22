@@ -74,6 +74,7 @@ const RecordListContainer = ({
     collection,
     recordType,
     constraints,
+    excludedIds,
     searchOptions,
     defaultSort,
 
@@ -140,6 +141,7 @@ const RecordListContainer = ({
                             collection,
                             recordType,
                             constraints,
+                            excludedIds,
                             searchOptions,
                             sort: defaultSort || undefined,
 
@@ -154,6 +156,7 @@ const RecordListContainer = ({
                 collection,
                 recordType,
                 constraints,
+                excludedIds,
                 searchOptions,
                 defaultSort,
 

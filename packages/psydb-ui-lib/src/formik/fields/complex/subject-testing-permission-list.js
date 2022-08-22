@@ -1,8 +1,10 @@
 import React from 'react';
-import { withFieldArray } from '@cdxoo/formik-utils';
+import { withField, withFieldArray } from '@cdxoo/formik-utils';
 import { SubjectTestingPermission } from './subject-testing-permission';
 
-export const SubjectTestingPermissionList = withFieldArray({
+
+
+const SubjectTestingPermissionListArray = withFieldArray({
     FieldComponent: SubjectTestingPermission,
     ArrayContentWrapper: 'ObjectArrayContentWrapper',
     ArrayItemWrapper: 'ObjectArrayItemWrapper',
@@ -25,4 +27,25 @@ export const SubjectTestingPermissionList = withFieldArray({
             )
         })
     }
+});
+
+export const SubjectTestingPermissionList = withField({
+    Control: (ps) => {
+        var { formikField } = ps;
+        var { value = [] } = formikField;
+
+        var existingResearchGroupIds = (
+            value
+            .filter(it => it.researchGroupId)
+            .map(it => it.researchGroupId)
+        )
+
+        return (
+            <SubjectTestingPermissionListArray
+                { ...ps }
+                existingResearchGroupIds={ existingResearchGroupIds }
+            />
+        )
+    },
+    DefaultWrapper: 'NoneWrapper',
 });

@@ -5,6 +5,7 @@ var {
     BasicObject,
     ExactObject,
     Id,
+    IdList,
     IdentifierString,
     JsonPointer,
     DefaultBool,
@@ -87,6 +88,7 @@ var FullBodySchema = ({
             constraints: BasicObject({
                 ...availableConstraints
             }),
+            excludedIds: IdList(),
             offset: {
                 type: 'integer',
                 minimum: 0,

@@ -18,6 +18,8 @@ export const ForeignId = withField({ Control: (ps) => {
 
         disabled,
         related,
+
+        excludedIds
     } = ps;
 
     var { value: recordId } = formikField;
@@ -53,6 +55,7 @@ export const ForeignId = withField({ Control: (ps) => {
             collection,
             recordType,
             constraints,
+            excludedIds,
 
             disabled,
             isFormik: true,

@@ -42,6 +42,7 @@ module.exports = {
     HelperSetItemId: require('./helper-set-item-id'),
     HelperSetItemIdList: require('./helper-set-item-id-list'),
     Id: require('./id'),
+    IdList: require('./id-list'),
     IdentifierString: require('./identifier-string'),
     JsonPointer: require('./json-pointer'),
 

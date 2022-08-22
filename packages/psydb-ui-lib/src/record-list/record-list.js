@@ -23,6 +23,7 @@ var RecordList = ({
     collection,
     recordType,
     constraints,
+    excludedIds,
     searchOptions,
 
     //offset,
@@ -87,6 +88,7 @@ var RecordList = ({
             ),
             limit,
             constraints,
+            excludedIds,
             filters: realFilters,
             sort: defaultSort || undefined,
             showHidden: (

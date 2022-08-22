@@ -107,6 +107,7 @@ agent.searchRecords = ({
     offset,
     limit,
     constraints,
+    excludedIds,
     filters,
     sort,
 
@@ -123,6 +124,7 @@ agent.searchRecords = ({
             limit: limit || 50,
             filters: filters || {},
             constraints: constraints || {},
+            excludedIds,
             sort: sort || undefined,
             showHidden,
         })

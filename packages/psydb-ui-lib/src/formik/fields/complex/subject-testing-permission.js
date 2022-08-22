@@ -64,6 +64,8 @@ const Control = (ps) => {
         formikForm,
         disabled,
         related,
+
+        existingResearchGroupIds
     } = ps;
 
     var { values: allFormValues, setFieldValue } = formikForm;
@@ -100,6 +102,7 @@ const Control = (ps) => {
                 collection='researchGroup'
                 related={ related }
                 required
+                excludedIds={ existingResearchGroupIds }
                 extraOnChange={(next) => {
                     if (shouldSetAccessRights) {
                         var accessExists = !!accessRights.find(it => (

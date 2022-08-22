@@ -43,6 +43,7 @@ var fetchRecordByFilter = async ({
     hasSubChannels,
 
     enableResearchGroupFilter = true,
+    excludedIds,
     constraints,
     queryFields,
 
@@ -81,6 +82,15 @@ var fetchRecordByFilter = async ({
 
         isNotDummyStage(),
         isNotRemovedStage({ hasSubChannels }),
+
+        ...maybeStages({
+            condition: Array.isArray(excludedIds) && excludedIds.length > 0,
+            stages: [
+                { $match: {
+                    _id: { $nin: excludedIds }}
+                }
+            ]
+        }),
        
         ...(additionalPreprocessStages || []),
 

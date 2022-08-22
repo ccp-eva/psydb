@@ -10,6 +10,7 @@ const RecordPicker = withRecordPicker({ RecordList: (ps) => {
         collection,
         recordType,
         constraints,
+        excludedIds,
 
         searchOptions,
     } = ps;
@@ -21,6 +22,7 @@ const RecordPicker = withRecordPicker({ RecordList: (ps) => {
             target='optionlist'
             collection={ collection }
             recordType={ recordType }
+            excludedIds={ excludedIds }
             constraints={ constraints }
             searchOptions={ searchOptions }
 

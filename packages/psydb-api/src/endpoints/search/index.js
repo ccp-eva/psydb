@@ -120,6 +120,7 @@ var search = async (context, next) => {
         recordType,
         searchOptions = {},
         filters,
+        excludedIds,
         constraints,
         offset,
         limit,
@@ -162,6 +163,7 @@ var search = async (context, next) => {
         hasSubChannels,
 
         enableResearchGroupFilter,
+        excludedIds,
         constraints,
         queryFields,
 

@@ -52,7 +52,6 @@ const {
     EmailWithPrimaryList,
     PhoneWithTypeList,
     ResearchGroupWithRoleList,
-    AccessRightByResearchGroupList,
 } = o;
 
 export {
@@ -73,5 +72,4 @@ export {
     EmailWithPrimaryList,
     PhoneWithTypeList,
     ResearchGroupWithRoleList,
-    AccessRightByResearchGroupList,
 }

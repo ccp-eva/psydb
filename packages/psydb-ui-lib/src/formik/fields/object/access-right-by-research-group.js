@@ -16,10 +16,7 @@ const Control = (ps) => {
         formikForm,
 
         disabled,
-        // TODO: make already selected roles/grops exlcudable
-        // (except this item is the one that has it selected)
-        excludedResearchGroupIds,
-        excludedRoleIds,
+        existingResearchGroupIds,
         
         related,
     } = ps;
@@ -34,6 +31,7 @@ const Control = (ps) => {
                 disabled,
 
                 related,
+                excludedIds: existingResearchGroupIds
             })} />
             <GenericEnum
                 dataXPath={ `${dataXPath}.permission`}
