@@ -15,6 +15,7 @@ import {
 } from '@mpieva/psydb-ui-hooks';
 
 import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
+import { datefns } from '@mpieva/psydb-ui-lib';
 
 import Details from './details';
 import Postprocessing from './postprocessing';
@@ -45,8 +46,15 @@ const ExperimentContainer = () => {
     var now = new Date(),
         experimentStart = new Date(interval.start);
 
+    var noonifiedStart = (
+        datefns.add(datefns.startOfDay(experimentStart), { hours: 12 })
+    );
     var shouldDisplayPostprocessing = (
-        !isCanceled && !isPostprocessed && experimentStart < now
+        !isCanceled && !isPostprocessed && (
+            experimentType === 'away-team'
+            ? noonifiedStart < now
+            : experimentStart < now
+        )
     );
 
     var downstream = {
