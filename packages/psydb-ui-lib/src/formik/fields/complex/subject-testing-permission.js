@@ -106,7 +106,7 @@ const Control = (ps) => {
                 extraOnChange={(next) => {
                     if (shouldSetAccessRights) {
                         var accessExists = !!accessRights.find(it => (
-                            it.researchGroupId === value
+                            it.researchGroupId === next
                         ));
                         var path = inline`
                             $

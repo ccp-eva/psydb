@@ -14,7 +14,9 @@ export const createDefaults = (options) => {
         scientific: {
             custom: Custom({ fieldDefinitions, subChannelKey: 'scientific' }),
             testingPermissions: [],
-            systemPermissions: SystemPermissions({ permissions }),
+            systemPermissions: SystemPermissions({
+                permissions, noPreset: permissions.isRoot() ? true : false
+            }),
             comment: '',
         }
     }
