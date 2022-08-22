@@ -186,6 +186,10 @@ var experimentCalendar = async (context, next) => {
             { $sort: { 'state.interval.start': 1 }}
         ]).toArray()
     );
+    
+    var experimentStudyIds = (
+        experimentRecords.map(it => it.studyId)
+    );
 
     var subjectIds = [];
     for (var it of experimentRecords) {
@@ -264,7 +268,11 @@ var experimentCalendar = async (context, next) => {
     var experimentOperatorTeamRecords = await (
         db.collection('experimentOperatorTeam').aggregate([
             { $match: {
-                studyId: { $in: studyIds }
+                studyId: { $in: studyIds },
+                $or: [
+                    { 'state.hidden': false },
+                    { studyId: { $in: experimentStudyIds }},
+                ]
             }},
             //{ $match: {
             //    _id: { $in: experimentRecords.map(it => (
