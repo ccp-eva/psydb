@@ -138,7 +138,27 @@ var experimentCalendar = async (context, next) => {
         );
     }
 
-    var studyIds = studyRecords.map(it => it._id);
+    var settingRecords = await (
+        db.collection('experimentVariantSetting').aggregate([
+            { $match: {
+                studyId: { $in: studyRecords.map(it => it._id) },
+                type: experimentType,
+            }},
+            { $project: {
+                studyId: true,
+            }}
+        ]).toArray()
+    );
+
+    var studyIds = (
+        studyRecords
+        .filter(study => (
+            settingRecords.find(setting => (
+                compareIds(study._id, setting.studyId))
+            )
+        ))
+        .map(it => it._id)
+    );
     
     var studiesById = keyBy({
         items: studyRecords,
@@ -244,7 +264,7 @@ var experimentCalendar = async (context, next) => {
     var experimentOperatorTeamRecords = await (
         db.collection('experimentOperatorTeam').aggregate([
             { $match: {
-                studyId: { $in: studyRecords.map(it => it._id) }
+                studyId: { $in: studyIds }
             }},
             //{ $match: {
             //    _id: { $in: experimentRecords.map(it => (
