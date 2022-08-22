@@ -4,4 +4,6 @@ module.exports = {
     unmarshalDateTime: require('./unmarshal-date-time'),
     unmarshalDateOnlyServerSide: require('./unmarshal-date-only-server-side'),
     unmarshalMongodbObjectId: require('./unmarshal-mongodb-object-id'),
+    
+    sanitizeGermanStreetSuffix: require('./sanitize-german-street-suffix'),
 }

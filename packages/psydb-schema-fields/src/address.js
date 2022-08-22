@@ -63,7 +63,8 @@ var Address = (bag = {}) => {
                 default: '',
                 ...( !enableMigrationMode && {
                     minLength: required.includes('street') ? 1 : 0,
-                })
+                }),
+                sanitizeGermanStreetSuffix: true
             }),
             housenumber: SaneString({
                 systemProps: { uiWrapper: 'MultiLineWrapper' },

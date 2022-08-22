@@ -63,6 +63,10 @@ var AjvWrapper = ({
         'unmarshalMongodbObjectId',
         psydbKeywords.unmarshalMongodbObjectId
     );
+    ajv.addKeyword(
+        'sanitizeGermanStreetSuffix',
+        psydbKeywords.sanitizeGermanStreetSuffix
+    );
 
     var initializeValidateContext = (data) => {
         var serverTimezone = getSystemTimezone();
