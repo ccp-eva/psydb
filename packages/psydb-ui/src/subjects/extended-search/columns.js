@@ -1,11 +1,8 @@
 import React from 'react';
 
-import {
-    gatherCustomColumns,
-    CRTSettings
-} from '@mpieva/psydb-common-lib';
-
 import { withField } from '@cdxoo/formik-utils';
+
+import { CRTSettings } from '@mpieva/psydb-common-lib';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
 import { Fields } from '@mpieva/psydb-ui-lib';
@@ -21,9 +18,6 @@ export const Columns = (ps) => {
     var permissions = usePermissions();
     
     var crt = CRTSettings({ data: crtSettings });
-    //var customColumns = gatherCustomColumns({
-    //    schema, subChannelKeys: [ 'gdpr', 'scientific' ]
-    //});
     var customColumns = crt.allCustomFields().map(it => ({
         pointer: it.pointer,
         label: it.displayName
@@ -65,16 +59,17 @@ export const Columns = (ps) => {
         }
     }
 
-    console.log(crtSettings);
-    console.log(crt.findCustomFields({ type: 'Address' }));
-
     var sortableColumns = [
         { pointer: '/sequenceNumber', label: 'ID Nr.' },
         { pointer: '/onlineId', label: 'Online ID Code' },
         ...(permissions.isRoot() ? [
             { pointer: '/_id', label: 'Interne ID' }
         ] : []),
-        ...customColumns
+        ...customColumns,
+
+        ...addressFieldExtraBlocks.reduce((acc, block) => ([
+            ...acc, ...block
+        ]), []),
     ];
 
     var specialColumns = [

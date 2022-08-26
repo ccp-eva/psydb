@@ -139,8 +139,6 @@ var subjectExtendedSearch = async (context, next) => {
         }
     }
 
-    console.log(availableDisplayFieldData);
-
     var { subChannelFields } = crt.state.settings;
 
     var customFields = {
