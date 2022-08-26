@@ -18,6 +18,7 @@ export const ColumnSelect = withField({ Control: (ps) => {
         columnBlocks,
         dataXPath,
         required,
+        enableColumnOrder = true,
         children
     } = ps;
 
@@ -27,10 +28,17 @@ export const ColumnSelect = withField({ Control: (ps) => {
         ...toOptions(block, { value: 'pointer' })
     }), {});
 
+    var leftClassName = 'w-50 pr-3';
+    var rightClassName = 'w-50 pl-3';
+
+    if (!enableColumnOrder) {
+        leftClassName = '';
+    }
+
     return (
         <>
             <div className='d-flex'>
-                <div className='w-50 pr-3'>
+                <div className={ leftClassName }>
                     <header className='mb-2 border-bottom'>
                         <b>{ columnLabel }</b>
                     </header>
@@ -43,17 +51,19 @@ export const ColumnSelect = withField({ Control: (ps) => {
                         />
                     ))}
                 </div>
-                <div className='w-50 pl-3'>
-                    { children }
+                { enableColumnOrder && (
+                    <div className={ rightClassName }>
+                        { children }
 
-                    <header className='mb-2 border-bottom'>
-                        <b>{ orderLabel }</b>
-                    </header>
-                    <ColumnOrder
-                        dataXPath={ dataXPath }
-                        allOptions={ allOptions }
-                    />
-                </div>
+                        <header className='mb-2 border-bottom'>
+                            <b>{ orderLabel }</b>
+                        </header>
+                        <ColumnOrder
+                            dataXPath={ dataXPath }
+                            allOptions={ allOptions }
+                        />
+                    </div>
+                )}
             </div>
         </>
     )
