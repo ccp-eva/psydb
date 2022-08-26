@@ -13,6 +13,7 @@ var CustomTypeGroup = MessageHandlerGroup([
     require('./set-record-label-definition'),
     require('./set-display-fields'),
     require('./set-form-order'),
+    require('./set-duplicate-check-settings'),
     require('./commit-settings'),
 ]);
 

@@ -32,7 +32,7 @@ export const ColumnSelect = withField({ Control: (ps) => {
     var rightClassName = 'w-50 pl-3';
 
     if (!enableColumnOrder) {
-        leftClassName = '';
+        leftClassName = 'w-100';
     }
 
     return (

@@ -28,7 +28,12 @@ const DuplicateCheckFieldEditor = (ps) => {
 
     return (
         <div>
-            <Modal crt={ crt } { ...modal.passthrough } />
+            <Modal
+                id={ record._id }
+                crt={ crt }
+                onSuccessfulUpdate={ onSuccessfulUpdate }
+                { ...modal.passthrough }
+            />
             <FieldPointerList
                 dataPointers={ fieldSettings.map(it => it.pointer) }
                 availableFieldDataByPointer={
