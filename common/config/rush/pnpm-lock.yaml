@@ -149,6 +149,7 @@ dependencies:
   react-router: 5.2.1_react@17.0.2
   react-router-bootstrap: 0.25.0_62c1e2e51c879567e9d8554c591f581c
   react-router-dom: 5.2.1_react@17.0.2
+  sift: 16.0.0
   snap-shot-it: 7.9.6
   statuses: 2.0.1
   style-loader: 2.0.0_webpack@5.65.0
@@ -8238,6 +8239,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-q5XPytqFEIKHkGdiMIrY10mvLRvnQh42/+GoBlFW3b2LXLE2xxJpZFdm94we0BaoV3RwJyGqg5wS7epxTv0Zvw==
+  /sift/16.0.0:
+    dev: false
+    resolution:
+      integrity: sha512-ILTjdP2Mv9V1kIxWMXeMTIRbOBrqKc4JAXmFMnFq3fKeyQ2Qwa3Dw1ubcye3vR+Y6ofA0b9gNDr/y2t6eUeIzQ==
   /signal-exit/3.0.6:
     dev: false
     resolution:
@@ -10000,10 +10005,11 @@ packages:
       json-schema-traverse: 1.0.0
       jsonpointer: 4.1.0
       mocha: 8.1.3
+      sift: 16.0.0
     dev: false
     name: '@rush-temp/psydb-common-lib'
     resolution:
-      integrity: sha512-505Vm8Tbmt8DwsO4lro/xXaERGLx0SzKeNcKSYNv5dr6NsZNrTW4EsJem73HFKh6bjj7Jl9zLGncX8UlQfkPSw==
+      integrity: sha512-EYyzXmZAZN2S/+HwLXHkF07mrK0KUG/5C7hD9ui7pvxwIKc1B1bkAq8wo7CkYB8wmJSwHkf7+DnlJIBjz10SjQ==
       tarball: 'file:projects/psydb-common-lib.tgz'
     version: 0.0.0
   'file:projects/psydb-common-utils.tgz':
@@ -10032,6 +10038,7 @@ packages:
       '@cdxoo/flat': 0.0.4
       '@cdxoo/jsonpointer-to-objectpath': 1.0.0
       '@cdxoo/objectpath-to-jsonpointer': 1.0.0
+      '@cdxoo/tiny-ejson': 1.0.0
       chai: 4.2.0
       deepmerge: 4.2.2
       is-what: 3.14.1
@@ -10040,7 +10047,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-core-utils'
     resolution:
-      integrity: sha512-paq+m+J93ltdj0xAZzrLQOd1E6q9OJG+WX7mKHYmkjk6XbPp0OJ8gQfEqpLQezkjqMd8RBaPz7t8yQ3j1dVjZw==
+      integrity: sha512-3WYVh36c/0p0eJMu9JmCTT6sS1TaSxFJ2DNpUkoW8dsPuFNUdyZeJMhk/LcxwG/SopugjMvg0empZ75gwXvHHA==
       tarball: 'file:projects/psydb-core-utils.tgz'
     version: 0.0.0
   'file:projects/psydb-date-interval-fns.tgz':
@@ -10359,6 +10366,7 @@ packages:
       '@babel/preset-react': 7.12.13_@babel+core@7.12.17
       '@cdxoo/formik-ajv-async': 0.4.1_formik@2.2.9+react@17.0.2
       '@cdxoo/formik-utils': 0.6.0_formik@2.2.9+react@17.0.2
+      '@cdxoo/inline-string': 1.0.0
       '@cdxoo/omit': 1.0.1
       '@rjsf/bootstrap-4': 2.5.1_5dccca4f99fef0089ce8bea6fe035927
       '@rjsf/core': 2.5.1_react@17.0.2
@@ -10386,7 +10394,7 @@ packages:
     peerDependencies:
       webpack: '*'
     resolution:
-      integrity: sha512-ai6ka8R3V86N0QLWJ+iqcdqRoDEg7cj8dQKTMcgdT7ReVDcfQ9Q0dy+K5GNy232VezZ/3idoidEfRMSr4ikMlg==
+      integrity: sha512-NWABMK5TcN1i4KTQTOvLSZCpH8EcBjpCqRKbPSD08i4PdP0ssp9rJtTns2UOU4JUKAWBrA8kOB4x7dZwA3MHUA==
       tarball: 'file:projects/psydb-ui-lib.tgz'
     version: 0.0.0
   'file:projects/psydb-ui-record-views.tgz':
@@ -10668,6 +10676,7 @@ specifiers:
   react-router: ~5.2.0
   react-router-bootstrap: ~0.25.0
   react-router-dom: ~5.2.0
+  sift: ~16.0.0
   snap-shot-it: ~7.9.6
   statuses: ~2.0.0
   style-loader: ~2.0.0

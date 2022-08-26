@@ -1,6 +1,10 @@
 import React from 'react';
 
-import { gatherCustomColumns } from '@mpieva/psydb-common-lib';
+import {
+    gatherCustomColumns,
+    CRTSettings
+} from '@mpieva/psydb-common-lib';
+
 import { withField } from '@cdxoo/formik-utils';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
@@ -13,12 +17,56 @@ const ColumnSelect = withField({
 })
 
 export const Columns = (ps) => {
-    var { formData, schema } = ps;
+    var { formData, crtSettings, schema } = ps;
     var permissions = usePermissions();
     
-    var customColumns = gatherCustomColumns({
-        schema, subChannelKeys: [ 'gdpr', 'scientific' ]
-    });
+    var crt = CRTSettings({ data: crtSettings });
+    //var customColumns = gatherCustomColumns({
+    //    schema, subChannelKeys: [ 'gdpr', 'scientific' ]
+    //});
+    var customColumns = crt.allCustomFields().map(it => ({
+        pointer: it.pointer,
+        label: it.displayName
+    }));
+
+    // FIXME: generalzie the creation of the field parts
+    // see extended search/subjects/index
+    var addressFields = crt.findCustomFields({ type: 'Address' });
+    var addressFieldExtraBlocks = [];
+    if (addressFields.length > 0) {
+        for (var it of addressFields) {
+            addressFieldExtraBlocks.push([
+                {
+                    ...it,
+                    pointer: it.pointer + '/city',
+                    label: `Ort (${it.displayName})`
+                },
+                {
+                    ...it,
+                    pointer: it.pointer + '/postcode',
+                    label: `PLZ (${it.displayName})`
+                },
+                {
+                    ...it,
+                    pointer: it.pointer + '/street',
+                    label: `Straße (${it.displayName})`
+                },
+                {
+                    ...it,
+                    pointer: it.pointer + '/housenumber',
+                    label: `Nummer (${it.displayName})`
+                },
+                {
+                    ...it,
+                    pointer: it.pointer + '/affix',
+                    label: `Zusatz (${it.displayName})`
+                }
+            ])
+        }
+    }
+
+    console.log(crtSettings);
+    console.log(crt.findCustomFields({ type: 'Address' }));
 
     var sortableColumns = [
         { pointer: '/sequenceNumber', label: 'ID Nr.' },
@@ -49,6 +97,7 @@ export const Columns = (ps) => {
                         ] : []),
                     ],
                     customColumns,
+                    ...addressFieldExtraBlocks,
                     specialColumns,
                 ]}
             >
