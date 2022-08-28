@@ -194,6 +194,13 @@ var createRouting = ({
         })
     );
 
+    router.post(
+        '/search-studies-testable-for-subject',
+        ...withPostStages({
+            endpoint: endpoints.special.searchStudiesTestableForSubject
+        })
+    );
+
     router.post('/invite-confirmation-list',
         withSelfAuth(),
         withPermissions(),
@@ -350,6 +357,13 @@ var createRouting = ({
         withPermissions(),
         withKoaBody(),
         endpoints.subject.relatedExperiments
+    );
+
+    router.post('/location/related-experiments',
+        withSelfAuth(),
+        withPermissions(),
+        withKoaBody(),
+        endpoints.location.relatedExperiments
     );
 
     router.post('/subject/possible-test-intervals',

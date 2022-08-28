@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSendCreate, usePermissions } from '@mpieva/psydb-ui-hooks';
+import { FormBox } from '@mpieva/psydb-ui-layout';
 import { withRecordCreator } from '@mpieva/psydb-ui-lib';
 import MainForm from '../main-form';
 
@@ -13,12 +14,13 @@ const CreateForm = (ps) => {
     })
 
     return (
-        <MainForm.Component
-            title='Neuer Mitarbeiter'
-            initialValues={ MainForm.createDefaults({ permissions }) }
-            onSubmit={ send.exec }
-            permissions={ permissions }
-        />
+        <FormBox title='Neue Mitarbeiter:in'>
+            <MainForm.Component
+                initialValues={ MainForm.createDefaults({ permissions }) }
+                onSubmit={ send.exec }
+                permissions={ permissions }
+            />
+        </FormBox>
     )
 }
 

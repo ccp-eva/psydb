@@ -13,6 +13,7 @@ var {
     ParticipationStatus,
     StringEnum,
     CustomRecordTypeKey,
+    DefaultBool,
 } = require('@mpieva/psydb-schema-fields');
 
 var {
@@ -48,6 +49,7 @@ var Schema = () => {
         }),
         timestamp: DateTime(),
         status: ParticipationStatus(),
+        excludeFromMoreExperimentsInStudy: DefaultBool(),
     };
     var requiredKeys = Object.keys(requiredProps);
 

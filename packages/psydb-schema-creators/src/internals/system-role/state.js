@@ -11,9 +11,16 @@ var {
 
 var WideBool = require('./wide-bool');
 
-var administrativeFlags = require('./administrative-flags');
-var studyCollectionFlags = require('./study-collection-flags');
 var subjectCollectionFlags = require('./subject-collection-flags');
+var locationCollectionFlags = require('./location-collection-flags');
+var studyCollectionFlags = require('./study-collection-flags');
+var studyTopicCollectionFlags = require('./study-topic-collection-flags');
+var personnelCollectionFlags = require('./personnel-collection-flags');
+var externalPersonCollectionFlags = require('./external-person-collection-flags');
+var externalOrganizationCollectionFlags = require('./external-organization-collection-flags');
+var helperSetCollectionFlags = require('./helper-set-collection-flags');
+
+var administrativeFlags = require('./administrative-flags');
 var participationFlags = require('./participation-flags');
 var labOperationFlags = require('./lab-operation-flags');
 
@@ -28,9 +35,17 @@ var SystemRoleState = ({
                 minLength: 1,
             }),
             
-            ...administrativeFlags,
-            ...studyCollectionFlags,
+            
             ...subjectCollectionFlags,
+            ...locationCollectionFlags,
+            ...studyCollectionFlags,
+            ...studyTopicCollectionFlags,
+            ...personnelCollectionFlags,
+            ...externalPersonCollectionFlags,
+            ...externalOrganizationCollectionFlags,
+            ...helperSetCollectionFlags,
+
+            ...administrativeFlags,
             ...participationFlags,
             canViewReceptionCalendar: WideBool({
                 title: 'kann Rezeptionskalender einsehen'

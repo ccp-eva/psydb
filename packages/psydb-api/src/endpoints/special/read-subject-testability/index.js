@@ -4,6 +4,7 @@ var debug = require('debug')(
 );
 
 var jsonpointer = require('jsonpointer');
+var intervalfns = require('@mpieva/psydb-interval-fns');
 
 var {
     convertCRTRecordToSettings,
@@ -26,20 +27,21 @@ var {
 var {
     ExactObject,
     ForeignId,
+    ForeignIdList,
     DateTimeInterval,
     Timezone,
 } = require('@mpieva/psydb-schema-fields');
 
 var RequestBodySchema = () => ExactObject({
     properties: {
-        subjectId: ForeignId({ collection: 'subject' }),
+        subjectIds: ForeignIdList({ collection: 'subject' }),
         studyId: ForeignId({ collection: 'study' }),
         labProcedureTypeKey: { type: 'string' }, // FIXME
         desiredTestInterval: DateTimeInterval(),
         //ageFrameFilters 
     },
     required: [
-        'subjectId',
+        'subjectIds',
         'studyId',
         'labProcedureTypeKey',
     ]
@@ -54,13 +56,13 @@ var readSubjectTestability = async (context, next) => {
     });
 
     // FIXME
-    var dallbackDesiredTestInterval = {
+    var fallbackDesiredTestInterval = {
         start: new Date('1900-01-01T00:00:00.000Z'),
         end: new Date('3000-01-01T00:00:00.000Z')
     };
 
     var {
-        subjectId,
+        subjectIds,
         studyId,
         labProcedureTypeKey,
         desiredTestInterval = fallbackDesiredTestInterval,
@@ -70,9 +72,10 @@ var readSubjectTestability = async (context, next) => {
         db.collection('study').findOne({ _id: studyId })
     );
 
+    // FIXME: can break if multiple subject types are selected
     var { type: subjectTypeKey } = await (
         db.collection('subject').findOne(
-            { _id: subjectId },
+            { _id: { $in: subjectIds } },
             { projection: { type: true }}
         )
     );
@@ -90,7 +93,7 @@ var readSubjectTestability = async (context, next) => {
     var testableSubjects = await (
         db.collection('subject')
         .aggregate([
-            { $match: { _id: subjectId }},
+            { $match: { _id: { $in: subjectIds }}},
             AddSubjectTestabilityFieldsStage({
                 // FIXME: we need to rework this 
                 // to be usable w/o theese paramsa
@@ -115,18 +118,30 @@ var readSubjectTestability = async (context, next) => {
         .toArray()
     );
 
-    var testableIntervals = [];
+    // intervals where all subjects are testable together
+    var testableIntervals = undefined;
     if (testableSubjects.length > 0) {
-        var subject = testableSubjects[0];
+        for (var subject of testableSubjects) {
 
-        var subjectCRTSettings = convertCRTRecordToSettings(subjectCRT);
-        var dobFieldPointer = findCRTAgeFrameField(subjectCRTSettings);
-        var dateOfBirth = jsonpointer.get(subject, dobFieldPointer);
+            var subjectCRTSettings = convertCRTRecordToSettings(subjectCRT);
+            var dobFieldPointer = findCRTAgeFrameField(subjectCRTSettings);
+            var dateOfBirth = jsonpointer.get(subject, dobFieldPointer);
 
-        testableIntervals = calculateTestableIntervals({
-            dateOfBirth,
-            ageFrameIntervals: ageFrameFilters.map(it => it.interval)
-        });
+            var testableIntervalsForSubject = calculateTestableIntervals({
+                dateOfBirth,
+                ageFrameIntervals: ageFrameFilters.map(it => it.interval)
+            });
+
+            if (testableIntervals) {
+                intervalfns.intersect({
+                    setA: testableIntervals,
+                    setB: testableIntervalsForSubject,
+                })
+            }
+            else {
+                testableIntervals = testableIntervalsForSubject;
+            }
+        }
     } 
 
     context.body = ResponseBody({

@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useReducer, useMemo } from 'react';
 import intervalfns from '@mpieva/psydb-date-interval-fns';
-import { checkIsWithin3Days } from '@mpieva/psydb-common-lib';
+import {
+    checkIsWithin3Days,
+    checkShouldEnableCalendarSlotTypes,
+} from '@mpieva/psydb-common-lib';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import datefns from '../../date-fns';
@@ -13,6 +16,8 @@ import {
 import TimeSlot from './time-slot';
 
 const TimeSlotList = ({
+    variant,
+
     studyId,
     locationRecord,
     teamRecords,
@@ -46,12 +51,6 @@ const TimeSlotList = ({
     showPast,
 }) => {
     var permissions = usePermissions();
-    var canCreateReservationsWithinTheNext3Days = (
-        permissions.hasFlag('canCreateReservationsWithinTheNext3Days')
-    );
-    var canCreateExperimentsWithinTheNext3Days = (
-        permissions.hasFlag('canCreateExperimentsWithinTheNext3Days')
-    );
 
     var start = new Date(dayStart.getTime() + startTimeInt);
     var end = new Date(dayStart.getTime() + endTimeInt);
@@ -60,15 +59,12 @@ const TimeSlotList = ({
     var dayIndex = datefns.getISODay(dayStart);
     var dayEnd = datefns.endOfDay(dayStart);
     
-    var now = new Date();
-    var isInPast = now.getTime() > dayEnd.getTime();
-    var isWithin3days = checkIsWithin3Days(dayEnd);
-    var shouldEnable = (
-        !isInPast
-        && canCreateReservationsWithinTheNext3Days ? true : !isWithin3days
-        && canCreateExperimentsWithinTheNext3Days ? true : !isWithin3days
-        // && !([6,7].includes(dayIndex))
-    );
+    var dayNoon = datefns.add(dayStart, { hours: 12 }); 
+    var enabledSlotTypes = checkShouldEnableCalendarSlotTypes({
+        permissions, calendarVariant: variant, refDate: dayNoon
+    });
+    var shouldEnable = showPast || enabledSlotTypes[variant];
+
 
     var isSubjectTestable = false;
     //console.log({ testableIntervals });
@@ -164,6 +160,7 @@ const TimeSlotList = ({
         onSelectExperimentSlot: wrapped.onSelectExperimentSlot,
     
         showPast,
+        isDayEnabled: shouldEnable
     }
 
     return (

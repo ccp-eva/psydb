@@ -15,6 +15,7 @@ var createParticipation = async (context, bag) => {
 
         experimentOperatorTeam,
         experimentOperatorIds,
+        excludeFromMoreExperimentsInStudy,
     } = bag;
 
     var participationItem = {
@@ -33,8 +34,7 @@ var createParticipation = async (context, bag) => {
             experimentId
         }),
 
-        // TODO
-        excludeFromMoreExperimentsInStudy: false
+        excludeFromMoreExperimentsInStudy
     }
 
     if (labProcedureType !== 'online-survey') {

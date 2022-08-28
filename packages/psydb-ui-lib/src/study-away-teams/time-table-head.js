@@ -1,12 +1,17 @@
 import React from 'react';
-import { checkIsWithin3Days } from '@mpieva/psydb-common-lib';
+import {
+    checkIsWithin3Days,
+    checkShouldEnableCalendarSlotTypes,
+} from '@mpieva/psydb-common-lib';
 import { Container, Row, Col } from 'react-bootstrap';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import datefns from '../date-fns';
 
 const TimeTableHead = ({
+    variant,
     allDayStarts,
+    showPast,
 }) => {
     var permissions = usePermissions();
     var canCreateReservationsWithinTheNext3Days = (
@@ -33,23 +38,21 @@ const TimeTableHead = ({
                 { allDayStarts.map(dayStart => {
                     var dayIndex = datefns.getISODay(dayStart);
                     var dayEnd = datefns.endOfDay(dayStart);
+                    var dayNoon = datefns.add(dayStart, { hours: 12 }); 
                     
+                    var enabledSlotTypes = checkShouldEnableCalendarSlotTypes({
+                        permissions, calendarVariant: variant, refDate: dayNoon
+                    });
                     var now = new Date();
                     var isInPast = now.getTime() > dayEnd.getTime();
                     var isWithin3days = checkIsWithin3Days(dayEnd);
 
                     var shouldEnable = (
-                        !isInPast
-                        && (
-                            canCreateReservationsWithinTheNext3Days
-                            ? true : !isWithin3days
-                        )
-                        && (
-                            canCreateExperimentsWithinTheNext3Days
-                            ? true : !isWithin3days
-                        )
-                        && !([6,7].includes(dayIndex))
+                        showPast || enabledSlotTypes[variant]
                     );
+                    if ([6,7].includes(dayIndex)) {
+                        shouldEnable = false;
+                    }
                     
                     var className = (
                         shouldEnable

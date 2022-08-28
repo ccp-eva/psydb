@@ -6,20 +6,21 @@ dependencies:
   '@cdxoo/block-quote': 1.0.1
   '@cdxoo/flat': 0.0.4
   '@cdxoo/formik-ajv-async': 0.4.1_formik@2.2.9+react@17.0.2
-  '@cdxoo/formik-utils': 0.5.0_formik@2.2.9+react@17.0.2
+  '@cdxoo/formik-utils': 0.6.0_formik@2.2.9+react@17.0.2
   '@cdxoo/inline-string': 1.0.0
   '@cdxoo/inline-text': 1.0.2
+  '@cdxoo/json-base64': 1.0.0
   '@cdxoo/jsonpointer-to-objectpath': 1.0.0
   '@cdxoo/koa-mongo-mq': 1.4.0
-  '@cdxoo/koa-mongo-rohrpost': 3.2.1
-  '@cdxoo/mongo-rohrpost': 3.2.1
+  '@cdxoo/koa-mongo-rohrpost': 3.2.2
+  '@cdxoo/mongo-rohrpost': 3.2.2
   '@cdxoo/mongo-test-helpers': 0.6.0
   '@cdxoo/mongodb-escape-keys': 0.1.0
   '@cdxoo/mongodb-restore': 1.1.2
   '@cdxoo/objectpath-to-jsonpointer': 1.0.0
   '@cdxoo/omit': 1.0.1
   '@cdxoo/pick-random-item': 0.0.2
-  '@cdxoo/react-router-url-search-params': 1.0.4_react-router@5.2.1+react@17.0.2
+  '@cdxoo/react-router-url-search-params': 1.2.0_react-router@5.2.1+react@17.0.2
   '@faker-js/faker': 6.2.0
   '@rjsf/bootstrap-4': 2.5.1_5dccca4f99fef0089ce8bea6fe035927
   '@rjsf/core': 2.5.1_react@17.0.2
@@ -109,6 +110,7 @@ dependencies:
   html-webpack-plugin: 5.1.0_webpack@5.65.0
   inflation: 2.0.0
   is-subset: 0.1.1
+  is-what: 3.14.1
   jest: 27.2.5
   js-base64: 3.6.2
   json-schema-merge-allof: 0.8.1
@@ -1368,7 +1370,7 @@ packages:
       react: '>=16.8'
     resolution:
       integrity: sha512-gJHk0c2D44N+Ho3C9tZjOF0hgFB4whlgTYkrBvBSVMjaS53RojkIJ/Wg4aCDF0VBFSdpQ6jAGAJcLejET0SyqQ==
-  /@cdxoo/formik-utils/0.5.0_formik@2.2.9+react@17.0.2:
+  /@cdxoo/formik-utils/0.6.0_formik@2.2.9+react@17.0.2:
     dependencies:
       formik: 2.2.9_react@17.0.2
       react: 17.0.2
@@ -1377,7 +1379,7 @@ packages:
       formik: '>=2.0'
       react: '>=16.8'
     resolution:
-      integrity: sha512-xL6ARqMVyd4WJvW5oQhnNjbJGe9hpwqVPRcx0hfxaogK4p1r27GrrAkx3vIEUda/BDtn8y7uO+kamZlSEjDEew==
+      integrity: sha512-daLtBB0/ET5rvbSDMkRfkqRbSxpa7zVPojPsPS3F/i8R7L4AttQ+uHuNwxk9eG6VZBo+lgRqmkIHZ693r4dQfQ==
   /@cdxoo/inline-string/1.0.0:
     dev: false
     resolution:
@@ -1386,6 +1388,12 @@ packages:
     dev: false
     resolution:
       integrity: sha512-iKWKmwCoHH/WwEV5WBLUUmbB6r5OdBL+I5K6dcOj6h3XWYi7SdeW1kLuzAAaFttGgLpBGq+jnpVznmZlyyUK4w==
+  /@cdxoo/json-base64/1.0.0:
+    dependencies:
+      js-base64: 3.7.2
+    dev: false
+    resolution:
+      integrity: sha512-PCzSQTriNYkKLnI+huKoIWPKkQz8+v/7QQCViL2sHnkJJptd0IRGfh+EG2FXeG/VaKa2IxN4hnBle8Ik91gpOA==
   /@cdxoo/jsonpointer-to-objectpath/1.0.0:
     dev: false
     resolution:
@@ -1396,24 +1404,25 @@ packages:
     dev: false
     resolution:
       integrity: sha512-m3VP18YX+ILk/abLbrJ57RQONYTe9BX3DRKkNE9gnb2+jj7Ht2Sk7fGkydTovIAbk6GlOGuixB+mQLXCbpJ6HA==
-  /@cdxoo/koa-mongo-rohrpost/3.2.1:
+  /@cdxoo/koa-mongo-rohrpost/3.2.2:
     dependencies:
-      '@cdxoo/mongo-rohrpost': 3.2.1
+      '@cdxoo/mongo-rohrpost': 3.2.2
     dev: false
     resolution:
-      integrity: sha512-EHzZXk86pnOa1vb+ASRBpay9D1fHDkD+nKvxECVEUuTjAkphmJEx0mBTDP+evpkmQgwnhFiSZr53FN7DTHORUQ==
+      integrity: sha512-RrpfsxUJ1g8wLAzTgYI9ewJICwIZjgIGDfKPZs643B4aIfSjekSkxVXlPwVDO6GvMkAQ3mGfdc531N8il0GcTg==
   /@cdxoo/mongo-mq/1.4.0:
     dependencies:
       mongodb: 3.6.12
     dev: false
     resolution:
       integrity: sha512-7FtVgsRQBCdz0WkMJfiDjrXNNOC4RFtgm5Ld/lTPO6myJraRxb1g8kX1vauE5B8gmNn0Kw1D+byDJi3Pa88U4g==
-  /@cdxoo/mongo-rohrpost/3.2.1:
+  /@cdxoo/mongo-rohrpost/3.2.2:
     dependencies:
+      '@cdxoo/inline-text': 1.0.2
       mongodb: 3.6.12
     dev: false
     resolution:
-      integrity: sha512-4quM+mi7d3uXFx3K1RmxuaMqGzqEXFmbgwuIFndPZoXSxhIn4sHDh7E2aVxS5IUVWytyN2V2vYGW3QxyL+le0Q==
+      integrity: sha512-msloXmUADsy0hYL7I/wJlH/9C4mSiX/Gd+g4ktxhvbUVJzA0Zrodqz0YjLde2AMvUSfbOnl5PMerKniI+Fuxuw==
   /@cdxoo/mongo-test-helpers/0.6.0:
     dependencies:
       bson: 4.5.4
@@ -1449,7 +1458,7 @@ packages:
     dev: false
     resolution:
       integrity: sha512-DnLA9K2dmVTKJBbLAXPmWfdNto+FjPQMg6QVXmiNRDU8iFZVMKSG40dPgpYdYOvLQaoDBCL+MWjQthgOhqqVWQ==
-  /@cdxoo/react-router-url-search-params/1.0.4_react-router@5.2.1+react@17.0.2:
+  /@cdxoo/react-router-url-search-params/1.2.0_react-router@5.2.1+react@17.0.2:
     dependencies:
       react: 17.0.2
       react-router: 5.2.1_react@17.0.2
@@ -1459,7 +1468,7 @@ packages:
       react: '>=16.8'
       react-router: 5.x
     resolution:
-      integrity: sha512-sQqT4qpIChOn8pSG1Z29J3eScLPoz6eFYVTvYPZC+ODm1QvT14Mxh4Utyb9L1rB05PrMbynZjFxBEMXyy8VAeA==
+      integrity: sha512-gG8CIinv4VzPu5FEm/XqLXaNOeduDZkFugfF1LSzTuBpxQBRLKXdUa5xBpz8MsUdBMmwII1zdWhbzLrpYNYXjw==
   /@cdxoo/traverse/0.0.1:
     dev: false
     resolution:
@@ -5867,6 +5876,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-9xRCVqFwEuPH1SmwknrCRfGjcaUCt+boLjGZt5g/aAr98K8OtR9cI8K89U3cPT8xatgmzWQnJwgRQTd5tq2EOg==
+  /js-base64/3.7.2:
+    dev: false
+    resolution:
+      integrity: sha512-NnRs6dsyqUXejqk/yv2aiXlAvOs56sLkX6nUdeaNezI5LFFLlsZjOThmwnrcwh5ZZRwZlCMnVAY3CvhIhoVEKQ==
   /js-tokens/4.0.0:
     dev: false
     resolution:
@@ -9896,7 +9909,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-api-message-handler-lib'
     resolution:
-      integrity: sha512-Mi701OuBf/01MHpLxY4vPt6vOkJehG803z0MPts5azrHCE7GAyvcZw3QNetvUJDV/ERPnluYQZ7fua9sH80xDQ==
+      integrity: sha512-rFKNfiiqnwOo/7RrlJoXYDNVPS9OqICvPka83m7vAGaIMajCEvu7LZIGuIvmxS7Uc+3mMQfXysyov0QMocj32g==
       tarball: 'file:projects/psydb-api-message-handler-lib.tgz'
     version: 0.0.0
   'file:projects/psydb-api-message-handlers.tgz':
@@ -9919,7 +9932,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-api-message-handlers'
     resolution:
-      integrity: sha512-4Dm6Is+mW6lJxmhiAzg1890ZQIyFo7cQXmKT3YZbKuuH7A/r87sb/joig2f09FsXq4J5xPYpit4pPnfQ6kBALA==
+      integrity: sha512-3RvgIjTExcpXUUfCGwk/BOMH8LgFTTMpesGOvHEylG7ANmjNEaQMixK8bdR05Lv0h6l0YHKdz2/WXQ1B8cBDSg==
       tarball: 'file:projects/psydb-api-message-handlers.tgz'
     version: 0.0.0
   'file:projects/psydb-api.tgz':
@@ -9934,6 +9947,7 @@ packages:
       clone-deep: 4.0.1
       copy-anything: 2.0.3
       date-fns: 2.21.3
+      date-fns-tz: 1.3.4_date-fns@2.21.3
       debug: 4.3.3
       deep-diff: 1.0.2
       escape-string-regexp: 4.0.0
@@ -9956,7 +9970,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-api'
     resolution:
-      integrity: sha512-x/2Jr2IB5fAv7SD4THc3o4BrCR6Y+2iNkMmZDOPtKPQ+Z14asEdS1mZ8483Y/y81P2ILcELikwVFWQXkY/ddKQ==
+      integrity: sha512-h+TwIxwEOLs/i1WAC8Y0QGs18E4AlcnVqK8ddq0AesZkDOIBpHmYhjmRdR3MAujaxmSovY8zKLc69LQkM+tDRA==
       tarball: 'file:projects/psydb-api.tgz'
     version: 0.0.0
   'file:projects/psydb-common-config.tgz':
@@ -10101,8 +10115,8 @@ packages:
     dependencies:
       '@cdxoo/inline-text': 1.0.2
       '@cdxoo/koa-mongo-mq': 1.4.0
-      '@cdxoo/koa-mongo-rohrpost': 3.2.1
-      '@cdxoo/mongo-rohrpost': 3.2.1
+      '@cdxoo/koa-mongo-rohrpost': 3.2.2
+      '@cdxoo/mongo-rohrpost': 3.2.2
       chai: 4.2.0
       copy-anything: 2.0.3
       deepmerge: 4.2.2
@@ -10114,7 +10128,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-koa-event-middleware'
     resolution:
-      integrity: sha512-qrMU0NIWUxMIi4AKoQWILWOHgyFF9LoKoEgYbx9KfDM72nQBwoN/rRS5gInPnXAMJvATEJ2O73WT0Kd3c++xvA==
+      integrity: sha512-Fi8h7Q9NXg3Sc0T6oJFAOVXDBdU1n70VEn1ywhoItfevzI8F1XFfBmhlsA2Q+V8dSYIpHJD8d7Rrx7MGQRguLw==
       tarball: 'file:projects/psydb-koa-event-middleware.tgz'
     version: 0.0.0
   'file:projects/psydb-migration.tgz':
@@ -10222,7 +10236,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-schema-helpers'
     resolution:
-      integrity: sha512-XMIQVROL4Gnd3q/kjsFQO2w1tcVxn88qRG4J+aGZxsWoO3mdUB8RhWaOPCuxezaCEmYWVoAzuLY1zBCVBYptfg==
+      integrity: sha512-9DszJ36fpICcc3p4AzKM6tOs5+fualOHktzomcmIQkrHwMPbVZWVFjZUq10fS1aq/cYrjUWmpgwBBXj0C9a7wg==
       tarball: 'file:projects/psydb-schema-helpers.tgz'
     version: 0.0.0
   'file:projects/psydb-schema-primitives.tgz':
@@ -10285,7 +10299,9 @@ packages:
       '@babel/core': 7.12.17
       '@babel/preset-env': 7.12.17_@babel+core@7.12.17
       '@babel/preset-react': 7.12.13_@babel+core@7.12.17
-      '@cdxoo/react-router-url-search-params': 1.0.4_react-router@5.2.1+react@17.0.2
+      '@cdxoo/json-base64': 1.0.0
+      '@cdxoo/omit': 1.0.1
+      '@cdxoo/react-router-url-search-params': 1.2.0_react-router@5.2.1+react@17.0.2
       babel-loader: 8.2.3_283b913718ac0bcaef1854ef6d4920fc
       chai: 4.2.0
       js-base64: 3.6.2
@@ -10298,7 +10314,7 @@ packages:
     peerDependencies:
       webpack: '*'
     resolution:
-      integrity: sha512-HX0hrPJsN0+wCIVulS0US4w5zxKOnJJNizlJ9V5HEVtNnGB7h2ochf5T2iH+qzm/SnuAPlmBNV7eUncYywnOAQ==
+      integrity: sha512-H9ACVHhiyqUjWniaEelnVCk/OWVpvNOeQ2XhY5gIcqgcY3dLvNvB+s6pmrRW+iBZmoPxqCq5VYOsj/Qi4QaHOg==
       tarball: 'file:projects/psydb-ui-hooks.tgz'
     version: 0.0.0
   'file:projects/psydb-ui-layout.tgz_webpack@5.65.0':
@@ -10332,7 +10348,7 @@ packages:
       '@babel/preset-env': 7.12.17_@babel+core@7.12.17
       '@babel/preset-react': 7.12.13_@babel+core@7.12.17
       '@cdxoo/formik-ajv-async': 0.4.1_formik@2.2.9+react@17.0.2
-      '@cdxoo/formik-utils': 0.5.0_formik@2.2.9+react@17.0.2
+      '@cdxoo/formik-utils': 0.6.0_formik@2.2.9+react@17.0.2
       '@cdxoo/omit': 1.0.1
       '@rjsf/bootstrap-4': 2.5.1_5dccca4f99fef0089ce8bea6fe035927
       '@rjsf/core': 2.5.1_react@17.0.2
@@ -10360,16 +10376,18 @@ packages:
     peerDependencies:
       webpack: '*'
     resolution:
-      integrity: sha512-ZZLQ5KSlc7f/yu4Z/G+J3yZZaqAcdqBlU+FYz21WQXT21F/6sR4gSwgRV+WdG2/v+jyFB4pCjm8V5OlGz1mE/Q==
+      integrity: sha512-ai6ka8R3V86N0QLWJ+iqcdqRoDEg7cj8dQKTMcgdT7ReVDcfQ9Q0dy+K5GNy232VezZ/3idoidEfRMSr4ikMlg==
       tarball: 'file:projects/psydb-ui-lib.tgz'
     version: 0.0.0
   'file:projects/psydb-ui-record-views.tgz':
     dependencies:
       react: 17.0.2
+      react-router: 5.2.1_react@17.0.2
+      react-router-dom: 5.2.1_react@17.0.2
     dev: false
     name: '@rush-temp/psydb-ui-record-views'
     resolution:
-      integrity: sha512-lHTlHS9jC1ppQYlvkhT/bE1FhD1aO7AuPJNpH8VI9ZNY9uTPtgD7EbnmRtQ+oO5bfiGR4o3jG7Gt5gD1+AXhaw==
+      integrity: sha512-5KPsVp3/yatM7MqYiCbZI+Age/HYbe4t6JrQozPousG8RXWsb0ETL734lhn6qExio7FwtXXMcOoNWJgZBnSSfQ==
       tarball: 'file:projects/psydb-ui-record-views.tgz'
     version: 0.0.0
   'file:projects/psydb-ui-request-agents.tgz_debug@4.3.3':
@@ -10409,7 +10427,7 @@ packages:
       '@babel/plugin-proposal-class-properties': 7.13.0_@babel+core@7.12.17
       '@babel/preset-env': 7.12.17_@babel+core@7.12.17
       '@babel/preset-react': 7.12.13_@babel+core@7.12.17
-      '@cdxoo/formik-utils': 0.5.0_formik@2.2.9+react@17.0.2
+      '@cdxoo/formik-utils': 0.6.0_formik@2.2.9+react@17.0.2
       '@cdxoo/omit': 1.0.1
       '@rjsf/bootstrap-4': 2.5.1_5dccca4f99fef0089ce8bea6fe035927
       '@rjsf/core': 2.5.1_react@17.0.2
@@ -10443,7 +10461,7 @@ packages:
     dev: false
     name: '@rush-temp/psydb-ui'
     resolution:
-      integrity: sha512-Z0k41ovoF3YY8ZTReeSFVboL40DoAaXJBFO0HTFbn487a8IXmmQzhQUynwQIzZptjFB9NsA8poqilX7PkEtDow==
+      integrity: sha512-DI6eAumIAem34xI7Zd0XKmS36uA3ZrIWH9hhr132bVhStl0/qlB1/emdYaH+Llo1BUjHUKpa0OyWXPK9NHbvAA==
       tarball: 'file:projects/psydb-ui.tgz'
     version: 0.0.0
   'file:projects/psydb-web.tgz':
@@ -10497,20 +10515,21 @@ specifiers:
   '@cdxoo/block-quote': ~1.0.0
   '@cdxoo/flat': ~0.0.4
   '@cdxoo/formik-ajv-async': ~0.4.1
-  '@cdxoo/formik-utils': ~0.5.0
+  '@cdxoo/formik-utils': ~0.6.0
   '@cdxoo/inline-string': ~1.0.0
   '@cdxoo/inline-text': ~1.0.2
+  '@cdxoo/json-base64': ~1.0.0
   '@cdxoo/jsonpointer-to-objectpath': ~1.0.0
   '@cdxoo/koa-mongo-mq': ~1.4.0
-  '@cdxoo/koa-mongo-rohrpost': ~3.2.1
-  '@cdxoo/mongo-rohrpost': ~3.2.1
+  '@cdxoo/koa-mongo-rohrpost': ~3.2.2
+  '@cdxoo/mongo-rohrpost': ~3.2.2
   '@cdxoo/mongo-test-helpers': ~0.6.0
   '@cdxoo/mongodb-escape-keys': ~0.1.0
   '@cdxoo/mongodb-restore': ~1.1.2
   '@cdxoo/objectpath-to-jsonpointer': ~1.0.0
   '@cdxoo/omit': ~1.0.1
   '@cdxoo/pick-random-item': ~0.0.2
-  '@cdxoo/react-router-url-search-params': ~1.0.4
+  '@cdxoo/react-router-url-search-params': ~1.2.0
   '@faker-js/faker': ~6.2.0
   '@rjsf/bootstrap-4': ~2.5.1
   '@rjsf/core': ~2.5.1
@@ -10600,6 +10619,7 @@ specifiers:
   html-webpack-plugin: 5.1.0
   inflation: ~2.0.0
   is-subset: ~0.1.1
+  is-what: ~3.14.1
   jest: ~27.2.4
   js-base64: ~3.6.0
   json-schema-merge-allof: ~0.8.1

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import {
     Route,
     Switch,
+    Redirect,
     useHistory
 } from 'react-router-dom';
 
@@ -123,8 +124,15 @@ var withEB = (Component) => (ps) => (
     </ErrorBoundary>
 );
 
+var Home = () => {
+    return (
+        <Redirect to='/calendars' />
+    );
+}
+
 var Routing = () => (
     <>
+    <Route exact path='/' component={ Home } />
     <Route path='/custom-record-types' component={ withEB(CustomRecordTypes) } />
     <Route path='/studies' component={ withEB(Studies) } />
     <Route path='/study-topics' component={ withEB(StudyTopics) } />

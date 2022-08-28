@@ -79,6 +79,7 @@ var exportEndpoint = async (context, next) => {
         filters,
         constraints,
         sort,
+        showHidden,
 
         timezone
     } = request.body;
@@ -120,6 +121,7 @@ var exportEndpoint = async (context, next) => {
         displayFields,
         recordLabelDefinition,
         sort,
+        showHidden,
 
         disablePermissionCheck: false
     });

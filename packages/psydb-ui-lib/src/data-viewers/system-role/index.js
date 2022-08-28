@@ -71,23 +71,41 @@ const labels = {
     '/sequenceNumber': 'ID Nr.',
     '/state/name': 'Bezeichnung',
 
+    '/state/canReadLocations': (
+        'kann Locations einsehen (Kigas, Räume, etc.)'
+    ),
     '/state/canWriteLocations': (
         'kann Locations bearbeiten (Kigas, Räume, etc.)'
+    ),
+    '/state/canReadExternalPersons': (
+        'kann Externe Personen einsehen (z.B. Ärzte)'
     ),
     '/state/canWriteExternalPersons': (
         'kann Externe Personen bearbeiten (z.B. Ärzte)'
     ),
+    '/state/canReadExternalOrganizations': (
+        'kann Externe Organisationen einsehen (z.B. Träger)'
+    ),
     '/state/canWriteExternalOrganizations': (
         'kann Externe Organisationen bearbeiten (z.B. Träger)'
+    ),
+    '/state/canReadStudyTopics': (
+        'kann Themengebiete einsehen'
     ),
     '/state/canWriteStudyTopics': (
         'kann Themengebiete bearbeiten'
     ),
+    '/state/canReadHelperSets': (
+        'kann Hilfstabellen einsehen'
+    ),
     '/state/canWriteHelperSets': (
         'kann Hilfstabellen bearbeiten'
     ),
+    '/state/canReadPersonnel': (
+        'kann Mitarbeiter:innen einsehen (d.h. Benutzer-Accounts)'
+    ),
     '/state/canWritePersonnel': (
-        'kann Mitarbeiter bearbeiten (d.h. Benutzer-Accounts)'
+        'kann Mitarbeiter:innen bearbeiten (d.h. Benutzer-Accounts)'
     ),
     '/state/canSetPersonnelPassword': (
         'kann das Passwort anderer Benutzer manuell neu setzen'

@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
+import { UILocaleContext } from '@mpieva/psydb-ui-contexts';
 import { groupBy } from '@mpieva/psydb-common-lib';
 import { Button, Form as BSForm } from '@mpieva/psydb-ui-layout';
 
@@ -10,9 +11,7 @@ import {
 } from '@mpieva/psydb-ui-lib/';
 
 import {
-    unescapeJsonPointer,
     createInitialValues,
-    parseEncodedInterval,
 } from '../utils';
 
 import { StudyPanel } from './study-panel';
@@ -26,12 +25,14 @@ export const SelectionForm = (ps) => {
         onSubmit,
     } = ps;
 
+    var locale = useContext(UILocaleContext);
+
     var grouped = groupBy({
         items: ageFrameRecords,
         byProp: 'studyId',
     });
 
-    var initialValues = createInitialValues({ ageFrameRecords });
+    var initialValues = createInitialValues({ ageFrameRecords, locale });
 
     return (
         <DefaultForm

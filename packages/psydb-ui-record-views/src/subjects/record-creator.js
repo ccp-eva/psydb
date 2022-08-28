@@ -1,45 +1,48 @@
 import React from 'react';
-
-import {
-    useFetch,
-    useSendCreate,
-    usePermissions
-} from '@mpieva/psydb-ui-hooks';
-
-import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
-import { withRecordCreator } from '@mpieva/psydb-ui-lib';
+import { withRecordCreator } from '../lib';
 import MainForm from './main-form';
 
 const CreateForm = (ps) => {
-    var { collection, recordType, onSuccessfulUpdate } = ps;
-    var permissions = usePermissions();
-
-    var [ didFetch, fetched ] = useFetch((agent) => (
-        agent.readCRTSettings({
-            collection, recordType
-        })
-    ), [ collection, recordType ])
-
-    var send = useSendCreate({
+    var {
         collection,
         recordType,
-        onSuccessfulUpdate
-    })
+        permissions,
 
-    if (!didFetch) {
-        return <LoadingIndicator size='lg' />
-    }
+        crtSettings,
+        send
+    } = ps;
 
-    var { fieldDefinitions } = fetched.data;
+    var { fieldDefinitions } = crtSettings;
+
     var initialValues = MainForm.createDefaults({
         fieldDefinitions,
         permissions
     });
 
+    initialValues.scientific.testingPermissions = [{
+        permissionList: (
+            [
+                'inhouse',
+                'online-video-call',
+                'away-team',
+                'online-survey'
+            ].map(it => ({
+                labProcedureTypeKey: it,
+                value: 'unknown'
+            }))
+        )
+    }];
+    var [ primaryResearchGroupId ] = permissions.getResearchGroupIds();
+    if (primaryResearchGroupId) {
+        initialValues.scientific.testingPermissions[0].researchGroupId = (
+            primaryResearchGroupId
+        )
+    }
+
     return (
         <MainForm.Component
             title='Neuer Proband:innen-Datensatz'
-            crtSettings={ fetched.data }
+            crtSettings={ crtSettings }
             initialValues={ initialValues }
             onSubmit={ send.exec }
             permissions={ permissions }
@@ -47,5 +50,8 @@ const CreateForm = (ps) => {
     )
 }
 
-export const RecordCreator = withRecordCreator({ CreateForm });
+export const RecordCreator = withRecordCreator({
+    Body: CreateForm,
+    collection: 'subject',
+});
 

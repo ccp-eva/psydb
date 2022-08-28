@@ -11,6 +11,7 @@ import LocationCalendarList from './location-calendar-list';
 
 
 const StudyInhouseLocations = ({
+    variant = 'experiment',
     studyId,
     studyRecordType,
 
@@ -48,8 +49,8 @@ const StudyInhouseLocations = ({
     // used to force update of the calendar
     calendarRevision = 0,
 }) => {
-    
-    var [ didFetch, fetched ] = useFetchAll((agent) => ({
+   
+    var [ didFetch, fetched, isTransmitting ] = useFetchAll((agent) => ({
         customTypes: agent.readCustomRecordTypeMetadata(),
         /*study:  agent.readRecord({
             collection: 'study',
@@ -61,10 +62,11 @@ const StudyInhouseLocations = ({
         }),
         settings: agent.fetchExperimentVariantSettings({
             studyId,
+            type: currentExperimentType,
         }),
-    }), [ studyId, studyRecordType, activeLocationType, revision ])
+    }), [ studyId, studyRecordType, activeLocationType, revision, currentExperimentType ])
 
-    if (!didFetch) {
+    if (!didFetch || isTransmitting) {
         return (
             <LoadingIndicator size='lg' />
         )
@@ -106,6 +108,7 @@ const StudyInhouseLocations = ({
             />
 
             <LocationCalendarList { ...({
+                variant,
                 className: locationCalendarListClassName,
                 teamRecords,
                 studyId,

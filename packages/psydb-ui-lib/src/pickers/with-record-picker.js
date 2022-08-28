@@ -86,7 +86,7 @@ export const withRecordPicker = (options) => {
         );
 
         var [ didFetch, fetched ] = useFetch((agent) => (
-            shouldRefetch
+            shouldRefetch && cached
             ? agent.readRecord({
                 collection,
                 id: cached._id

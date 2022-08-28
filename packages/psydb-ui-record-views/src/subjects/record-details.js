@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRecordDetails } from '@mpieva/psydb-ui-lib';
+import { withRecordReader } from '../lib';
 import { Subject } from '@mpieva/psydb-ui-lib/data-viewers';
 import * as Themes from '@mpieva/psydb-ui-lib/data-viewer-themes';
 
@@ -46,7 +46,9 @@ const DetailsBody = (ps) => {
     )
 }
 
-export const RecordDetails = withRecordDetails({
-    DetailsBody,
-    shouldFetchSchema: false,
+export const RecordDetails = withRecordReader({
+    Body: DetailsBody,
+
+    collection: 'subject',
+    shouldFetchSchema: false
 });

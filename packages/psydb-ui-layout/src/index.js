@@ -6,6 +6,9 @@ export { default as Pagination } from './pagination';
 
 export * from './icon-buttons';
 
+export { default as ToggleButton } from './toggle-button';
+export * as ToggleButtons from './all-toggle-buttons';
+
 export { default as DetailsIconButton } from './details-icon-button';
 //export { default as StudyIconButton } from './study-icon-button';
 //export { default as ExperimentIconButton } from './experiment-icon-button';
@@ -18,6 +21,7 @@ export { default as TabNav } from './tab-nav';
 
 export { default as PaddedText } from './padded-text';
 export { default as Split } from './split';
+export * from './split-partitioned';
 export { default as Pair } from './pair';
 
 export { default as DetailsBox } from './details-box';
@@ -37,6 +41,8 @@ export * from './simple-list';
 export * from './outer-setting-panel';
 export * from './inner-setting-panel';
 export * from './big-nav-item';
+
+export * from './colored-box';
 
 export * as PageWrappers from './page-wrappers';
 export * as FormHelpers from './form';

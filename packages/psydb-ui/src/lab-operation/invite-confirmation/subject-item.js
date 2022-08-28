@@ -1,5 +1,17 @@
 import React from 'react';
+import { useModalReducer } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
+import {
+    ExperimentSubjectDropdown,
+} from '@mpieva/psydb-ui-lib';
+
+import {
+    MoveSubjectModal,
+    FollowUpSubjectModal,
+    RemoveSubjectModal,
+    PerSubjectCommentModal,
+} from '@mpieva/psydb-ui-lib/src/modals';
+
 
 import applyValueToDisplayFields from '@mpieva/psydb-ui-lib/src/apply-value-to-display-fields';
 
@@ -10,10 +22,12 @@ const SubjectItem = ({
     subjectRelated,
     subjectDisplayFieldData,
     phoneListField,
+    studyRecord,
     
     experimentRecord,
 
     onChangeStatus,
+    onSuccessfulUpdate
 }) => {
     var {
         subjectId,
@@ -23,14 +37,51 @@ const SubjectItem = ({
 
     var subjectRecord = subjectRecordsById[subjectId];
 
+    var commentPerSubjectModal = useModalReducer();
+    var moveSubjectModal = useModalReducer();
+    var followUpSubjectModal = useModalReducer();
+    var removeSubjectModal = useModalReducer();
+
     var withValue = applyValueToDisplayFields({
         displayFieldData: subjectDisplayFieldData,
         record: subjectRecord,
         ...subjectRelated,
     });
 
+    var sharedModalBag = {
+        shouldFetch: true,
+        experimentId: experimentRecord._id,
+        experimentType: experimentRecord.type,
+
+        onSuccessfulUpdate
+    };
+
     return (
         <div className='d-flex'>
+            
+            <PerSubjectCommentModal { ...({
+                ...commentPerSubjectModal.passthrough,
+                payloadData: commentPerSubjectModal.data, // FIXME
+
+                experimentData: { record: experimentRecord },
+                onSuccessfulUpdate,
+            }) } />
+
+            <MoveSubjectModal { ...sharedModalBag } { ...({
+                ...moveSubjectModal.passthrough,
+                payloadData: moveSubjectModal.data, //FIXME
+            }) } />
+
+            <FollowUpSubjectModal { ...sharedModalBag } { ...({
+                ...followUpSubjectModal.passthrough,
+                payloadData: followUpSubjectModal.data, // FIXME
+            }) } />
+
+            <RemoveSubjectModal { ...sharedModalBag } { ...({
+                ...removeSubjectModal.passthrough,
+                payloadData: removeSubjectModal.data, // FIXME
+            }) } />
+
             <div className='flex-grow'>
                 { withValue.map((it, ix) => (
                     <div className='d-flex' key={ ix }>
@@ -96,6 +147,25 @@ const SubjectItem = ({
                             subjectRecord,
                             experimentRecord,
                         }) }
+                    />
+                </div>
+                <div className='d-flex justify-content-end mt-3'>
+                    <ExperimentSubjectDropdown
+                        subjectRecord={ subjectRecord }
+                        experimentType={ experimentRecord.type }
+                        variant='primary'
+                        label='Funktionen'
+
+                        onClickComment={ commentPerSubjectModal.handleShow }
+                        onClickMove={ moveSubjectModal.handleShow }
+                        onClickFollowUp={
+                            studyRecord.state.enableFollowUpExperiments
+                            ? followUpSubjectModal.handleShow
+                            : undefined
+                        }
+                        onClickRemove={ removeSubjectModal.handleShow }
+
+                        enableStatusChanges={ false }
                     />
                 </div>
             </div>

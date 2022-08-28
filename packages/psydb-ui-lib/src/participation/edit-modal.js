@@ -35,6 +35,7 @@ const ParticipationEditModalBody = (ps) => {
 
     var initialValues = {
         labProcedureType,
+        excludeFromMoreExperimentsInStudy,
         ...participation
     };
 

@@ -11,6 +11,7 @@ import {
     useRevision,
     usePermissions,
     useURLSearchParams,
+    useToggleReducer,
 } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -18,6 +19,7 @@ import {
     LoadingIndicator,
     LinkButton,
     Icons,
+    ToggleButtons,
 } from '@mpieva/psydb-ui-layout';
 
 import omit from '@cdxoo/omit';
@@ -51,7 +53,7 @@ const AwayTeamCalendar = ({
     // TODO: study selection
     
     var permissions = usePermissions();
-    var [ showPast, setShowPast ] = useState(false);
+    var showPast = useToggleReducer(false, { as: 'props' });
 
     var [ didFetch, fetched ] = useFetch((agent) => {
         return agent.fetchLocationExperimentCalendar({
@@ -97,10 +99,7 @@ const AwayTeamCalendar = ({
         <div>
             { permissions.isRoot() && (
                 <div className='mb-2'>
-                    <Button
-                        onClick={ () => setShowPast(true) }
-                        size='sm'
-                    >zeige Vergangenheit</Button>
+                    <ToggleButtons.ShowPast { ...showPast } />
                 </div>
             )}
             {/*<div className='bg-light'>
@@ -156,7 +155,7 @@ const AwayTeamCalendar = ({
                     locationDisplayFieldData,
                     
                     url,
-                    showPast,
+                    showPast: showPast.value,
                     onSuccessfulUpdate: increaseRevision
                 }) } />
             ))}

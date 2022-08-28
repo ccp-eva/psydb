@@ -6,6 +6,8 @@ import formatInterval from '@mpieva/psydb-ui-lib/src/format-date-interval';
 import {
     EditIconButtonInline,
     DetailsIconButton,
+    ExperimentIconButton,
+    SubjectIconButton,
     Alert,
 } from '@mpieva/psydb-ui-layout';
 
@@ -111,7 +113,7 @@ const ExperimentSubjectItems = ({
                                 )} />
                             )}
                             { !canWriteSubjects && canReadSubjects && (
-                                <DetailsIconButton
+                                <SubjectIconButton
                                     to={`/subjects/${subjectType}/${it.subjectId}`}
                                     target='_blank'
                                 />
@@ -124,7 +126,7 @@ const ExperimentSubjectItems = ({
                             {' - '}
                             { endTime }
                             {' '}
-                            <DetailsIconButton
+                            <ExperimentIconButton
                                 to={`/experiments/${experimentRecord.type}/${experimentRecord._id}`}
                                 target='_blank'
                             />

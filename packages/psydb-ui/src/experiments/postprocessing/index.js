@@ -50,7 +50,8 @@ const ExperimentPostprocessing = ({
         experimentData,
         opsTeamData,
         locationData,
-        studyData
+        studyData,
+        onSuccessfulUpdate,
     };
 
     var hasProcessedSubjects = !!subjectData.find(

@@ -136,7 +136,8 @@ agent.searchExport = (bag) => {
         searchOptions,
         constraints = {},
         filters = {},
-        sort
+        sort,
+        showHidden,
     } = bag;
 
     return axios.post('/api/search-export', {
@@ -146,6 +147,7 @@ agent.searchExport = (bag) => {
         constraints,
         filters,
         sort,
+        showHidden,
 
         timezone: getSystemTimezone(),
     });
@@ -328,6 +330,9 @@ agent.fetchExperimentCalendar = ({
     experimentType,
     studyId,
     researchGroupId,
+
+    experimentOperatorTeamId,
+    showPast,
 }) => {
     return axios.post(
         '/api/experiment-calendar',
@@ -337,6 +342,9 @@ agent.fetchExperimentCalendar = ({
             interval,
             experimentType,
             researchGroupId,
+
+            experimentOperatorTeamId,
+            showPast
         }
     );
 }
@@ -435,13 +443,19 @@ agent.fetchExperimentVariants = ({
 }
 
 agent.fetchExperimentVariantSettings = ({
+    type,
+    types,
     studyId,
     studyIds,
+    subjectType,
+    subjectTypes
 }) => {
     return axios.post(
         '/api/experiment-variant-settings',
         {
-            studyIds: studyIds || [ studyId ],
+            studyIds: studyIds || (studyId ? [ studyId ] : undefined),
+            types: types || (type ? [ type ] : undefined),
+            subjectTypes: (subjectTypes || subjectType ? [ subjectType ] : undefined)
         }
     );
 }
@@ -510,9 +524,23 @@ agent.fetchSubjectExperiments = (bag) => {
     );
 }
 
+agent.fetchLocationExperiments = (bag) => {
+    var {
+        locationId,
+        includePastExperiments,
+        out = 'full',
+        extraAxiosConfig,
+    } = bag;
+
+    return axios.post(
+        '/api/location/related-experiments',
+        { locationId, includePastExperiments, out },
+        extraAxiosConfig,
+    );
+}
 agent.fetchSubjectPossibleTestIntervals = (bag) => {
     var {
-        subjectId, studyId,
+        subjectIds, studyId,
         labProcedureTypeKey, desiredTestInterval,
         extraAxiosConfig,
     } = bag;
@@ -520,7 +548,7 @@ agent.fetchSubjectPossibleTestIntervals = (bag) => {
     return axios.post(
         '/api/subject/possible-test-intervals',
         { 
-            subjectId, studyId,
+            subjectIds, studyId,
             labProcedureTypeKey, desiredTestInterval
         },
         extraAxiosConfig,

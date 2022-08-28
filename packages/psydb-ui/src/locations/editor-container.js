@@ -20,11 +20,9 @@ const LocationEditorContainer = ({
     return (
         <>
             <RecordEditor { ...editorBag }>
-                {() => (
-                    <LocationEditorFooter
-                        onSuccessfulUpdate={ revision.up }
-                    />
-                )}
+                <LocationEditorFooter
+                    onSuccessfulUpdate={ revision.up }
+                />
             </RecordEditor>
         </>
     )

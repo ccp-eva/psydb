@@ -182,6 +182,16 @@ var ChannelState = ({
         }),
         
         ...( collection === 'subject' && {
+            // FIXME: inhouse/invite
+            // FIXME: rename inviteSelectionRowDisplayFields
+            selectionRowDisplayFields: {
+                type: 'array',
+                default: []
+            },
+            awayTeamSelectionRowDisplayFields: {
+                type: 'array',
+                default: []
+            },
             selectionSummaryDisplayFields: {
                 type: 'array',
                 default: []

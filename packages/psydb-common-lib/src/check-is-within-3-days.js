@@ -2,6 +2,7 @@
 var maybeUseESM = require('./maybe-use-esm');
 var datefns = {
     add: maybeUseESM(require('date-fns/add')),
+    addBusinessDays: maybeUseESM(require('date-fns/addBusinessDays')),
     //set: maybeUseESM(require('date-fns/set')),
 }
 
@@ -26,7 +27,8 @@ var checkIsWithin3Days = (target, options = {}) => {
 
 
     var isTrue = (
-        datefns.add(referenceDate, { days: 3 }).getTime() > target.getTime()
+        //datefns.add(referenceDate, { days: 3 }).getTime() > target.getTime()
+        datefns.addBusinessDays(referenceDate, 3).getTime() > target.getTime()
     );
 
     return isTrue;

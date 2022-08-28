@@ -125,6 +125,13 @@ module.exports = {
                 displayName: 'ID Nr.',
                 props: {},
             },
+            {
+                key: '_comment',
+                systemType: 'FullText',
+                dataPointer: '/state/comment',
+                displayName: 'Kommentar',
+                props: {},
+            },
         ]
     },
     personnel: {
@@ -159,6 +166,24 @@ module.exports = {
                 dataPointer: '/gdpr/state/lastname',
                 displayName: 'Nachname',
             },
+            {
+                key: '_phones',
+                systemType: 'PhoneWithTypeList',
+                dataPointer: '/gdpr/state/phones',
+                displayName: 'Telefon',
+            },
+            {
+                key: '_emails',
+                systemType: 'EmailList',
+                dataPointer: '/gdpr/state/emails',
+                displayName: 'Email',
+            },
+            {
+                key: '_descriptions',
+                systemType: 'FullText',
+                dataPointer: '/gdpr/state/description',
+                displayName: 'Beschreibung',
+            },
         ],
         staticDisplayFields: [
             {
@@ -168,7 +193,19 @@ module.exports = {
             {
                 systemType: 'SaneString',
                 dataPointer: '/gdpr/state/lastname',
-            }
+            },
+            {
+                systemType: 'PhoneWithTypeList',
+                dataPointer: '/gdpr/state/phones',
+            },
+            {
+                systemType: 'EmailList',
+                dataPointer: '/gdpr/state/emails',
+            },
+            {
+                systemType: 'FullText',
+                dataPointer: '/gdpr/state/description',
+            },
         ]
     },
     researchGroup: {

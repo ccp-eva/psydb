@@ -108,14 +108,16 @@ const ExtendedSearch = (ps) => {
         it.dataPointer
     ));
 
-    var defaultValues = decodedFormData || {
+    var defaultValues = {
         studyType: recordType,
         customFilters: {},
         specialFilters: {},
         columns: defaultColumns,
         sort: { column: '/sequenceNumber', direction: 'asc' },
         limit: 0,
-        offset: 0
+        offset: 0,
+
+        ...decodedFormData
     }; // createDefaults({ schema })
 
     return (

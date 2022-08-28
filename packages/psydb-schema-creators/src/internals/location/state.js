@@ -22,6 +22,9 @@ var GenericLocationState = ({
             custom: CustomProps({ customFieldDefinitions }),
             reservationSettings: reservationSettingsSchema,
             systemPermissions: systemPermissionsSchema,
+            comment: FullText({
+                title: 'Kommentar',
+            }),
             
             ...(enableInternalProps && {
                 internals: Internals()

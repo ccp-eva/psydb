@@ -76,6 +76,7 @@ const QuickSearch = ({
             className={ className }
             initialValues={ filters || {} }
             onSubmit={ handleSubmit }
+            enableReinitialize={ true }
         >
             {(formikProps) => {
                 return (
@@ -112,7 +113,7 @@ const QuickSearch = ({
 
 const FieldList = (ps) => {
     var { displayFieldData } = ps;
-    console.log(displayFieldData);
+    //console.log(displayFieldData);
 
     return (
         <>

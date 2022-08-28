@@ -22,12 +22,10 @@
     "chai": "~4.2.0",
     "react": "~17.0.1",
     "react-dom": "~17.0.1",
-
     "@babel/core": "~7.12.10",
     "@babel/preset-env": "~7.12.10",
     "@babel/preset-react": "~7.12.10",
     "@babel/plugin-proposal-class-properties": "~7.13.0",
-
     "webpack-cli": "4.x.x",
     "webpack": "5.x.x",
     "webpack-dev-server": "~3.11.2",
@@ -36,7 +34,6 @@
     "style-loader": "~2.0.0",
     "html-webpack-plugin": "5.1.0",
     "compression-webpack-plugin": "~7.1.2",
-    
     "react-router": "~5.2.0",
     "react-router-dom": "~5.2.0",
     "bootstrap": "~4.6.0",
@@ -45,14 +42,11 @@
     "react-quill": "~1.3.5",
     "react-datetime": "~3.1.1",
     "moment": "~2.29.1",
-
     "@cdxoo/omit": "~1.0.1",
-    "@cdxoo/formik-utils": "~0.5.0",
-
+    "@cdxoo/formik-utils": "~0.6.0",
     "jsonpointer": "~4.1.0",
     "date-fns": "~2.21.1",
     "js-base64": "~3.6.0",
-
     "@mpieva/psydb-timezone-helpers": "~0.1.0-alpha",
     "@mpieva/psydb-core-utils": "~0.1.0-alpha",
     "@mpieva/psydb-date-interval-fns": "~0.1.0-alpha",
@@ -71,7 +65,6 @@
     "@mpieva/psydb-ui-lib": "~0.1.0-alpha",
     "@mpieva/psydb-ui-record-views": "~0.1.0-alpha",
     "@mpieva/psydb-ui-compositions": "~0.1.0-alpha",
-
     "@rjsf/core": "~2.5.1",
     "@rjsf/bootstrap-4": "~2.5.1",
     "@mpieva/rjsf-monkey-patch": "~0.1.0-alpha",
@@ -99,7 +92,7 @@
       ]
     ],
     "plugins": [
-        "@babel/plugin-proposal-class-properties"
+      "@babel/plugin-proposal-class-properties"
     ],
     "ignore": [
       "src/server"

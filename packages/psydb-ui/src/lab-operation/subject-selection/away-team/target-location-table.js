@@ -21,6 +21,7 @@ const TargetLocationTable = ({
     onToggleDetails,
     selectedLocationId,
 
+    onEditLocationComment,
     onSelectSubject,
     onSelectManySubjects,
     selectedSubjectIds,
@@ -53,6 +54,7 @@ const TargetLocationTable = ({
                             onToggleDetails,
                             selectedLocationId,
 
+                            onEditLocationComment,
                             onSelectSubject,
                             onSelectManySubjects,
                             selectedSubjectIds,

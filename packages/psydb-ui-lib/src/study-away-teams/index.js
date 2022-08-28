@@ -7,6 +7,7 @@ import {
 } from './calendar-variants';
 
 const StudyAwayTeams = ({
+    variant = 'experiment',
     studyId,
     studyRecordType,
 
@@ -44,6 +45,7 @@ const StudyAwayTeams = ({
 
     return (
         <WeeklyCalendar { ...({
+            variant,
             studyId,
             teamData,
             

@@ -7,11 +7,13 @@ import {
 } from '@mpieva/psydb-ui-layout';
 
 import {
-    SubjectTestableIntervals
+    formatDateInterval,
+    SubjectTestableIntervals,
 } from '@mpieva/psydb-ui-lib';
+import calculateAge from '@mpieva/psydb-ui-lib/src/calculate-age';
 
 import { FieldDataBodyCols } from '@mpieva/psydb-ui-lib/src/record-list';
-import UpcomingExperiments from '../upcoming-experiments';
+//import UpcomingExperiments from '../upcoming-experiments';
 
 const TableBody = ({
     inviteType,
@@ -34,6 +36,7 @@ const TableBody = ({
             { records.map((record, index) => {
                 return (
                     <TableRow key={ index} { ...({
+                        index,
                         inviteType,
                         desiredTestInterval,
 
@@ -58,6 +61,7 @@ const TableRow = ({
     inviteType,
     desiredTestInterval,
 
+    index,
     subjectType,
     record,
     subjectMetadata,
@@ -71,94 +75,325 @@ const TableRow = ({
     var isRed = (
         record._upcomingExperiments.length > 0
     );
+    var colspan = subjectMetadata.displayFieldData.length;
+    var isEven = (index % 2) === 0;
+    var className = (
+        isRed
+        ? (
+            isEven
+            ? 'bg-medium-red'
+            : 'bg-light-red'
+        )
+        : (
+            isEven
+            ? 'bg-light'
+            : ''
+        )
+    );
     return (
-        <tr
-            key={record._id}
-            className={ isRed ? 'bg-light-red' : '' }
-        >
+        <>
+            <tr
+                key={record._id}
+                className={ className }
+            >
+                <td>{ record._recordLabel }</td>
+                <FieldDataBodyCols { ...({
+                    record,
+                    ...subjectMetadata
+                }) }/>
+                <td>
+                    { calculateAge({
+                        base: record._ageFrameField,
+                        relativeTo: new Date(),
+                    })}
+                </td>
+                <td>
+                    <Participation { ...({
+                        record, subjectMetadata,
+                        className: 'mr-4'
+                    })} />
+                </td>
+                <td>
+                    <UpcomingExperiments { ...({
+                        inviteType,
+                        records: record._upcomingExperiments,
+                        ...subjectExperimentMetadata,
+                        className: 'mr-4'
+                    }) } />
+                </td>
+                <td>
+                    <TestableInStudies { ...({
+                        record, subjectMetadata, desiredTestInterval
+                    })} />
+                </td>
+                <td>
+                    <ActionButtons { ...({
+                        isRed,
 
-            <FieldDataBodyCols { ...({
+                        inviteType,
+                        record,
+                        subjectType,
+                        desiredTestInterval,
+
+                        canWriteSubjects,
+
+                        onInviteSubject,
+                        onViewSubject
+                    }) } />
+                </td>
+            </tr>
+            {/*<ExtendedDataRow { ...({
+                isRed,
+                className,
+                colspan,
+
                 record,
-                ...subjectMetadata
-            }) }/>
-            <td>
-                { 
-                    record.scientific.state
-                        .internals.participatedInStudies
-                        .filter(it => (
-                            it.status === 'participated'
-                        ))
-                        .map(it => (
-                            subjectMetadata
-                            .relatedRecordLabels
-                            .study[it.studyId]._recordLabel
-                        ))
-                        .join(', ')
-                } 
-            </td>
-            <td>
-                <UpcomingExperiments { ...({
-                    inviteType,
-                    records: record._upcomingExperiments,
-                    ...subjectExperimentMetadata
-                }) } />
-            </td>
-            <td>
-                {
-                    record._testableInStudies
-                    .map((studyId, ix) => {
-                        var studyLabel = (
-                            subjectMetadata.relatedRecordLabels
-                            .study[studyId]._recordLabel
-                        );
-                        var testableIntervals = (
-                            record[`_testableIntervals_${studyId}`]
-                        );
+                subjectType,
+                subjectMetadata,
+                subjectExperimentMetadata,
+                inviteType,
+                desiredTestInterval,
 
-                        return (
-                            <SubjectTestableIntervals
-                                key={ ix }
-                                studyLabel={ studyLabel }
-                                desiredTestInterval={ desiredTestInterval }
-                                testableIntervals={ testableIntervals }
-                            />
-                        )
-                    })
-                }
+                canWriteSubjects,
+
+                onInviteSubject,
+                onViewSubject
+            })} />*/}
+        </>
+    )
+}
+
+const ExtendedDataRow = (ps) => {
+    var {
+        isRed,
+        className,
+        colspan,
+
+        record,
+        subjectType,
+        subjectMetadata,
+        subjectExperimentMetadata,
+        inviteType,
+        desiredTestInterval,
+
+        canWriteSubjects,
+
+        onInviteSubject,
+        onViewSubject
+    } = ps;
+    return (
+        <tr className={ className }>
+            <td
+                colSpan={ colspan }
+                className={ 'border-0 pt-0' }
+            >
+                <div className='d-flex justify-content-between'>
+                    <Participation { ...({
+                        record, subjectMetadata,
+                        className: 'mr-4'
+                    })} />
+                    <UpcomingExperiments { ...({
+                        inviteType,
+                        records: record._upcomingExperiments,
+                        ...subjectExperimentMetadata,
+                        className: 'mr-4'
+                    }) } />
+                    <TestableInStudies { ...({
+                        record, subjectMetadata, desiredTestInterval
+                    })} />
+                </div>
             </td>
-            <td>
-                { !isRed && (
-                    <div className='d-flex justify-content-end'>
-                        <Button
-                            size='sm'
-                            onClick={ () => onInviteSubject({
-                                inviteType,
-                                record,
-                                desiredTestInterval,
-                                testableInStudies: (
-                                    record // FIXME
-                                )
-                            }) }
-                        >
-                            Termin
-                        </Button>
-                    </div>
-                )}
-                { isRed && canWriteSubjects && (
-                    <div className='d-flex justify-content-end'>
-                        <EditIconButtonInline
-                            buttonStyle={{ background: 'transparent' }}
-                            onClick={ () => onViewSubject({
-                                title: `Proband:in - ${record._recordLabel}`,
-                                subjectId: record._id,
-                                subjectType
-                            })}
-                        />
-                    </div>
-                )}
+            <td
+                className={ 'border-0 pt-0' }
+            >
+                <div>
+                    <ActionButtons { ...({
+                        isRed,
+
+                        inviteType,
+                        record,
+                        subjectType,
+                        desiredTestInterval,
+
+                        canWriteSubjects,
+
+                        onInviteSubject,
+                        onViewSubject
+                    }) } />
+                </div>
             </td>
         </tr>
+    );
+}
+
+const Participation = (ps) => {
+    var { record, subjectMetadata, className } = ps;
+    var { participatedInStudies } = record.scientific.state.internals;
+
+    var filtered = (
+        participatedInStudies
+        .filter(it => (
+            it.status === 'participated'
+        ))
+    );
+
+    var formatted = (
+        filtered.length > 0
+        ? (
+            filtered
+            .map((it, ix) => (
+                <div key={ ix }> {
+                    subjectMetadata
+                    .relatedRecordLabels
+                    .study[it.studyId]._recordLabel
+                } </div>
+            ))
+        )
+        : (
+            <i className='text-muted'>Keine</i>
+        )
     )
+
+    return formatted;
+
+    //return (
+    //    <div className={ className + ' flex-grow-1 flex-basis-0' }>
+    //        <b>Teilg.Studien:</b>
+    //        {' '}
+    //        { formatted }
+    //    </div>
+    //);
+}
+
+// FIXME: redundant with away-team
+const UpcomingExperiments = ({
+    records,
+    relatedRecordLabels,
+    relatedHelperSetItems,
+    relatedCustomRecordTypeLabels,
+
+    className,
+}) => {
+    var upcoming = (
+        records.length > 0
+        ? (
+            records.map((record, ix) => {
+                var { studyId, interval } = record.state;
+                var { startDate } = formatDateInterval(interval);
+                var study = relatedRecordLabels.study[studyId]._recordLabel;
+                return (
+                    <div key={ ix }>
+                        <a 
+                            key={ ix }
+                            href={`#/experiments/${record.type}/${record._id}`}
+                            className='d-inline-block mr-3'
+                        >
+                            { startDate } - { study }
+                        </a>
+                    </div>
+                );
+            })
+        )
+        : (
+            <i className='text-muted'>Keine</i>
+        )
+    )
+
+    return upcoming;
+
+    //return (
+    //    <div className={ className + ' d-flex flex-grow-1 flex-basis-0' }>
+    //        <b>Termine:</b>
+    //        <div className='ml-3'>
+    //            { upcoming }
+    //        </div>
+    //    </div>
+    //)
+}
+const TestableInStudies = (ps) => {
+    var { record, subjectMetadata, desiredTestInterval } = ps;
+    var formatted = (
+        record._testableInStudies
+        .map((studyId, ix) => {
+            var studyLabel = (
+                subjectMetadata.relatedRecordLabels
+                .study[studyId]._recordLabel
+            );
+            var testableIntervals = (
+                record[`_testableIntervals_${studyId}`]
+            );
+
+            return (
+                <SubjectTestableIntervals
+                    key={ ix }
+                    studyLabel={ studyLabel }
+                    desiredTestInterval={ desiredTestInterval }
+                    testableIntervals={ testableIntervals }
+                />
+            )
+        })
+    );
+
+    return formatted;
+
+    //return (
+    //    <div className='d-flex mr-4 flex-grow-1 flex-basis-0'>
+    //        <b>Mögl.Studien:</b>
+    //        <div className='ml-3'>
+    //            { formatted }
+    //        </div>
+    //    </div>
+    //);
+}
+
+const ActionButtons = (ps) => {
+    var {
+        isRed,
+
+        inviteType,
+        record,
+        subjectType,
+        desiredTestInterval,
+
+        canWriteSubjects,
+
+        onInviteSubject,
+        onViewSubject
+    } = ps;
+
+    return (
+        <>
+            { !isRed && (
+                <div className='d-flex justify-content-end'>
+                    <Button
+                        size='sm'
+                        onClick={ () => onInviteSubject({
+                            inviteType,
+                            record,
+                            desiredTestInterval,
+                            testableInStudies: (
+                                record // FIXME
+                            )
+                        }) }
+                    >
+                        Termin
+                    </Button>
+                </div>
+            )}
+            { isRed && canWriteSubjects && (
+                <div className='d-flex justify-content-end'>
+                    <EditIconButtonInline
+                        buttonStyle={{ background: 'transparent' }}
+                        onClick={ () => onViewSubject({
+                            title: `Proband:in - ${record._recordLabel}`,
+                            subjectId: record._id,
+                            subjectType
+                        })}
+                    />
+                </div>
+            )}
+        </>
+    );
 }
 
 export default TableBody

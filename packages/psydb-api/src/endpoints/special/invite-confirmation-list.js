@@ -78,7 +78,7 @@ var inviteConfirmationList = async (context, next) => {
         labOperationType: 'inhouse',
         flag: 'canConfirmSubjectInvitation',
         permissions,
-    })
+    });
 
     var canAccessOnlineVideoCall = checkLabOperationAccess({
         researchGroupId,
@@ -123,6 +123,7 @@ var inviteConfirmationList = async (context, next) => {
         db.collection('experiment').aggregate([
             MatchIntervalOverlapStage({ start, end }),
             { $match: {
+                'state.studyId': { $in: studyRecords.map(it => it._id) },
                 type: { $in: experimentTypes },
                 // TODO: only for invitation
                 'state.subjectData.invitationStatus': 'scheduled',
@@ -226,6 +227,15 @@ var inviteConfirmationList = async (context, next) => {
         dataPointer: it.dataPointer,
     }))
 
+    var experimentStudyRecords = await (
+        db.collection('study').aggregate([
+            { $match: {
+                _id: { $in: (
+                    experimentRecords.map(it => it.state.studyId)
+                )},
+            }},
+        ]).toArray()
+    );
 
     context.body = ResponseBody({
         data: {
@@ -236,6 +246,7 @@ var inviteConfirmationList = async (context, next) => {
             subjectRelated,
             subjectDisplayFieldData: displayFieldData,
             phoneListField,
+            studyRecords: experimentStudyRecords,
         },
     });
 

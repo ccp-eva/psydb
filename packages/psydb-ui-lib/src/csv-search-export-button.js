@@ -10,11 +10,13 @@ const CSVSearchExportButton = (ps) => {
         constraints,
         searchOptions,
         sort,
+        //showHidden,
 
         className
     } = ps;
 
-    var [ filters ] = useURLSearchParamsB64();
+    var [ query ] = useURLSearchParamsB64();
+    var { showHidden, ...filters } = query;
 
     var fetcher = useFetch((agent) => {
         return agent.searchExport({
@@ -25,6 +27,7 @@ const CSVSearchExportButton = (ps) => {
             constraints,
             filters,
             sort,
+            showHidden,
         })
     }, { useEffect: false });
 

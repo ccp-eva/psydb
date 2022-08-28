@@ -44,6 +44,9 @@ module.exports = {
         require('./search-subjects-testable/online-survey')
     ),
 
+    searchStudiesTestableForSubject: (
+        require('./search-studies-testable-for-subject')
+    ),
 
     selectionSettingsForSubjectTypeAndStudies: (
         require('./selection-settings-for-subject-type-and-studies')

@@ -3,6 +3,7 @@ var debug = require('debug')(
     'psydb:api:endpoints:inhouseExperimentCalendar'
 );
 
+var datefns = require('date-fns');
 var enums = require('@mpieva/psydb-schema-enums');
 
 var {
@@ -35,6 +36,7 @@ var {
 var {
     ExactObject,
     ForeignId,
+    DefaultBool,
     CustomRecordTypeKey,
     DateTimeInterval,
     ExperimentTypeEnum,
@@ -50,6 +52,11 @@ var RequestBodySchema = () => ExactObject({
         researchGroupId: ForeignId({
             collection: 'researchGroup',
         }),
+
+        experimentOperatorTeamId: ForeignId({
+            collection: 'experimentOperatorTeam'
+        }),
+        showPast: DefaultBool(),
     },
     required: [
         'researchGroupId',
@@ -77,7 +84,14 @@ var experimentCalendar = async (context, next) => {
         studyId,
         experimentType,
         researchGroupId,
+
+        experimentOperatorTeamId,
+        showPast,
     } = request.body;
+
+    if (!permissions.isRoot()) {
+        showPast = false;
+    }
 
     var { start, end } = interval;
 
@@ -91,9 +105,20 @@ var experimentCalendar = async (context, next) => {
     var studyRecords = []
     if (studyId) {
         studyRecords = await (
-            db.collection('study').find({
-                _id: studyId,
-            }).toArray()
+            db.collection('study').aggregate([
+                { $match: {
+                    _id: studyId,
+                }},
+                { $project: {
+                    'state.shorthand': true
+                }},
+                { $sort: {
+                    'state.shorthand': 1
+                }}
+            ], {
+                collation: { locale: 'de@collation=phonebook' }
+            })
+            .toArray()
         );
     }
     else {
@@ -119,6 +144,8 @@ var experimentCalendar = async (context, next) => {
         byProp: '_id'
     });
 
+    console.log(experimentOperatorTeamId);
+    var now = new Date();
     var experimentRecords = await (
         db.collection('experiment').aggregate([
             MatchIntervalOverlapStage({ start, end }),
@@ -126,6 +153,13 @@ var experimentCalendar = async (context, next) => {
                 type: experimentType,
                 'state.studyId': { $in: studyIds },
                 'state.isCanceled': false,
+
+                ...(experimentOperatorTeamId && {
+                    'state.experimentOperatorTeamId': experimentOperatorTeamId
+                }),
+                ...(!showPast && {
+                    'state.interval.start': { $gte: datefns.startOfDay(now) }
+                })
             }},
             StripEventsStage(),
             { $sort: { 'state.interval.start': 1 }}
@@ -235,6 +269,7 @@ var experimentCalendar = async (context, next) => {
 
     context.body = ResponseBody({
         data: {
+            studyRecords,
             experimentRecords: experimentRecords.map(it => ({
                 ...it,
                 _canFollowUp: studiesById[it.state.studyId].state.enableFollowUpExperiments

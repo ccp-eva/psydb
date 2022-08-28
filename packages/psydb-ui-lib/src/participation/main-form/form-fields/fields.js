@@ -3,6 +3,7 @@ import { useFetch } from '@mpieva/psydb-ui-hooks';
 import * as enums from '@mpieva/psydb-schema-enums';
 
 import { Fields, useFormikContext } from '../../../formik';
+export const DefaultBool = Fields.DefaultBool;
 
 export const Timestamp = (ps) => {
     return (

@@ -126,7 +126,6 @@ var searchGrouped = async (context, next) => {
         ).map(it => it._id).toArray()
     );
     debug('end find excluded locations');
-    //console.log(excludedLocationIds);
 
     await db.collection('subject').ensureIndex({
         [convertPointerToPath(dobFieldPointer)]: 1
@@ -138,7 +137,7 @@ var searchGrouped = async (context, next) => {
     var stages = [
         { $match: {
             type: subjectTypeKey,
-            isDummy: false,
+            isDummy: { $ne: true },
             'scientific.state.systemPermissions.isHidden': { $ne: true },
             'scientific.state.internals.isRemoved': { $ne: true },
             $and: [
@@ -230,7 +229,7 @@ var searchGrouped = async (context, next) => {
         }}
     ]
 
-    debug('start aggregate');
+    debug('start aggregate sbjects');
     var result = await (
         db.collection('subject')
         .aggregate(stages, {
@@ -239,7 +238,7 @@ var searchGrouped = async (context, next) => {
         })
         .toArray()
     );
-    debug('end aggregate');
+    debug('end aggregate subjects');
 
     var { groupedSubjectRecords, subjectCount, locationCount } = result[0];
     //console.log(groupedSubjectRecords);
@@ -261,19 +260,20 @@ var searchGrouped = async (context, next) => {
     ]), []);
 
     var subjectIds = flatSubjects.map(it => it._id);
-    debug('start fetch upcoming subject');
+    debug('start fetch upcoming subject experiments');
     var upcomingSubjectExperimentData = await fetchUpcomingExperimentData({
         db,
         subjectIds: subjectIds,
         after: now,
     });
-    debug('end fetch upcoming subject');
+    debug('end fetch upcoming subject experiments');
 
     var upcomingBySubjectId = keyBy({
         items: upcomingSubjectExperimentData.upcomingForIds,
         byProp: '_id',
     })
 
+    debug('postprocessing subjects');
     postprocessSubjectRecords({
         subjectRecords: flatSubjects,
         subjectRecordType: subjectTypeKey,
@@ -283,6 +283,7 @@ var searchGrouped = async (context, next) => {
         recordLabelDefinition: subjectRecordLabelDefinition,
     })
 
+    debug('combining response data');
     var combinedSubjectResponseData =  await combineSubjectResponseData({
         db,
 
@@ -308,13 +309,13 @@ var searchGrouped = async (context, next) => {
     });
     debug('end fetch locations');
 
-    debug('start fetch upcoming location');
+    debug('start fetch upcoming location experiments');
     var upcomingLocationExperimentData = await fetchUpcomingExperimentData({
         db,
         locationIds: groupIds,
         after: now,
     });
-    debug('end fetch upcoming location');
+    debug('end fetch upcoming location experiments');
 
     var groupedById = keyBy({
         items: groupedSubjectRecords,

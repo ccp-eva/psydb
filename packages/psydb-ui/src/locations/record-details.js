@@ -40,6 +40,7 @@ export const DetailsBody = (ps) => {
             <Location { ...locationBag }>
                 <Location.SequenceNumber />
                 <Location.Custom />
+                <Location.Comment />
                 <Location.ReservationSettings />
                 <Location.SystemPermissions />
             </Location>

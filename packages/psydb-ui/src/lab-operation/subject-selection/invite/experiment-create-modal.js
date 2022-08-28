@@ -104,7 +104,7 @@ const CreateModal = (ps) => {
             </Modal.Header>
             <Modal.Body>
                 { !isSubjectTestable && (
-                    <Alert variant='warning'>
+                    <Alert variant='danger'>
                         <b>Nicht in Altersfenster</b>
                     </Alert>
                 )} 

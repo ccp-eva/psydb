@@ -15,6 +15,7 @@ import { getSystemTimezone } from '@mpieva/psydb-timezone-helpers';
 
 import agent from '@mpieva/psydb-ui-request-agents';
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
+import intervalfns from '@mpieva/psydb-date-interval-fns';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
 
 import {
@@ -143,6 +144,9 @@ const InviteTestableSubjectList = ({
         relatedCustomRecordTypeLabels,
     } = subjectData;
 
+    var formattedTestInterval = (
+        intervalfns.format(desiredTestInterval, { offsetEnd: 0 })
+    );
 
     return (
         <>
@@ -177,16 +181,31 @@ const InviteTestableSubjectList = ({
                 labProcedureTypeKey={ inviteType }
             />
 
-            <div className='sticky-top border-bottom'>
-                <Pagination { ...pagination } />
+            <div className='border px-3 py-2 mb-3 bg-light'>
+                <b>Gewünschter Zeitraum:</b>
+                {' '}
+                { formattedTestInterval.startDate }
+                {' '}
+                bis
+                {' '}
+                { formattedTestInterval.endDate }
             </div>
 
-            <Table>
-                <thead>
-                    <tr>
+            <Table style={{ borderCollapse: 'separate', borderSpacing: 0 }}>
+                <thead className='sticky-top bg-light'>
+                    <tr className='bg-light'>
+                        <td className='m-0 p-0' colSpan={
+                            subjectData.displayFieldData.length + 6
+                        }>
+                            <Pagination { ...pagination } />
+                        </td>
+                    </tr>
+                    <tr className='bg-white'>
+                        <th>Proband:in</th>
                         <FieldDataHeadCols { ...({
                             displayFieldData: subjectData.displayFieldData
                         })} />
+                        <th>Alter</th>
                         <th>Teilg. Stud.</th>
                         <th>Termine</th>
                         <th>Mögl. Stud.</th>

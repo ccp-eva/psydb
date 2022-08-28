@@ -28,7 +28,16 @@ var {
 var RequestBodySchema = () => ExactObject({
     properties: {
         studyIds: ForeignIdList({ collection: 'study' }),
-        subjectType: CustomRecordTypeKey({ collection: 'subject' }),
+        subjectTypes: {
+            type: 'array',
+            items: CustomRecordTypeKey({ collection: 'subject' }),
+            minItems: 1
+        },
+        types: {
+            type: 'array',
+            items: { type: 'string' }, // FIXME
+            minItems: 1
+        },
     },
     required: [
         'studyIds',
@@ -47,7 +56,7 @@ var experimentVariantSettings = async (context, next) => {
         payload: request.body
     })
 
-    var { studyIds, subjectType } = request.body;
+    var { studyIds, subjectTypes, types } = request.body;
 
     var hasOtherPermission = (
         permissions.hasSomeLabOperationFlags({
@@ -71,8 +80,11 @@ var experimentVariantSettings = async (context, next) => {
         db.collection('experimentVariantSetting').aggregate([
             { $match: {
                 studyId: { $in: studyIds },
-                ...( subjectType && {
-                    'state.subjectTypeKey': subjectType
+                ...(types && {
+                    type: { $in: types }
+                }),
+                ...( subjectTypes && {
+                    'state.subjectTypeKey': { $in: subjectTypes }
                 })
             }},
     

@@ -1,13 +1,16 @@
 import React, { useContext, useState } from 'react';
 import { useRouteMatch, useParams } from 'react-router-dom';
 
+import { groupBy } from '@mpieva/psydb-core-utils';
 import { RecordEditorContext } from '@mpieva/psydb-ui-contexts';
 import { urlUp as up, demuxed } from '@mpieva/psydb-ui-utils';
-import { useModalReducer } from '@mpieva/psydb-ui-hooks';
+import { useFetch, useModalReducer } from '@mpieva/psydb-ui-hooks';
 
 import {
+    LoadingIndicator,
     LinkButton,
     Button,
+    Alert,
     WithDefaultModal
 } from '@mpieva/psydb-ui-layout';
 
@@ -74,9 +77,59 @@ const UpdateVisibilityModalBody = (ps) => {
     var { onHide, id, onSuccessfulUpdate } = ps;
     var [ detachSubjects, setDetachSubjects ] = useState(false);
 
+    var [ didFetchRefs, fetchedReverseRefs ] = useFetch((agent) => (
+        agent.fetchRecordReverseRefs({
+            collection: 'location',
+            id
+        })
+    ), [ id ]);
+
+    var [ didFetchExperiments, fetchedExperiments ] = useFetch((agent) => (
+        agent.fetchLocationExperiments({
+            locationId: id,
+            includePastExperiments: false,
+            out: 'count'
+        })
+    ), [ id ]);
+
+    if (!didFetchRefs || !didFetchExperiments) {
+        return <LoadingIndicator size='lg' />
+    }
+
+    var { reverseRefs } = fetchedReverseRefs.data;
+
+    var groupedReverseRefs = groupBy({
+        items: reverseRefs,
+        byProp: 'collection',
+    });
+
+    var refsFromSubject = groupedReverseRefs.subject || [];
+
     return (
         <div>
-            <div className='mt-4'>
+            { (refsFromSubject.length > 0 || fetchedExperiments.data.count > 0) && (
+                <Alert variant='danger' className='mt-3'>
+                    { refsFromSubject.length > 0 && (
+                        <b className='d-block'>
+                            Es sind noch
+                            {' '}
+                            { refsFromSubject.length }
+                            {' '}
+                            Proband:innen in dieser Location!
+                        </b>
+                    )}
+                    { fetchedExperiments.data.count > 0 && (
+                        <b className='d-block'>
+                            Es existieren noch
+                            {' '}
+                            { fetchedExperiments.data.count }
+                            {' '}
+                            Termine in dieser Location!
+                        </b>
+                    )}
+                </Alert>
+            )} 
+            <div className='mt-3'>
                 <PlainCheckbox
                     id='detach'
                     value={ detachSubjects }

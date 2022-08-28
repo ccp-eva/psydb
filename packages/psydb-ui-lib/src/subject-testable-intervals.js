@@ -9,17 +9,19 @@ const SubjectTestableIntervals = (ps) => {
         testableIntervals
     } = ps;
 
+    //console.log({ desiredTestInterval });
     var desired = intervalfns.dtoi(desiredTestInterval);
     //console.log({ desired });
 
     var indicator = '';
     for (var it of testableIntervals) {
+        //console.log({ it });
         var testable = intervalfns.dtoi(it);
         //console.log({ testable });
         var isSameStart = desired.start === testable.start;
         var isSameEnd = desired.end === testable.end;
 
-        var formatted = intervalfns.format(it);
+        var formatted = intervalfns.format(it, { offsetEnd: 0 });
         if (isSameStart && isSameEnd) {
             indicator += '';
         }

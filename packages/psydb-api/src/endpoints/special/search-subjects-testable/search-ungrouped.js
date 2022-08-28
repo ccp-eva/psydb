@@ -52,6 +52,7 @@ var searchUngrouped = async (context, next) => {
 
     var {
         interval,
+        timezone,
         ageFrameFilters,
         ageFrameValueFilters,
        
@@ -75,6 +76,8 @@ var searchUngrouped = async (context, next) => {
         request,
         labProcedureType: experimentVariant,
     });
+
+    //console.log({ interval });
    
     var subjectCRTSettings = convertCRTRecordToSettings(subjectTypeRecord);
     var dobFieldPointer = findCRTAgeFrameField(subjectCRTSettings);
@@ -215,6 +218,7 @@ var searchUngrouped = async (context, next) => {
         subjectRecords,
         desiredTestInterval: interval,
         dobFieldPointer,
+        clientTimezone: timezone
     });
     
     postprocessSubjectRecords({

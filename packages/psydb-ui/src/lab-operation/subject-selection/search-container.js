@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer, useMemo } from 'react';
+import React, { useState } from 'react';
 
 import {
     Route,
@@ -9,22 +9,12 @@ import {
     useParams
 } from 'react-router-dom';
 
-import jsonpointer from 'jsonpointer';
 import { Base64 } from 'js-base64';
 
-import {
-    DateOnlyServerSideInterval,
-} from '@mpieva/psydb-schema-fields';
-
-import agent from '@mpieva/psydb-ui-request-agents';
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 
 import { useFetchAll } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
-
-import createValueMap from './create-value-map';
-import SelectionSettingsFormSchema from './selection-settings-form-schema';
-import SelectionSettingsForm from './selection-settings-form';
 
 import InhouseSubjectList from './inhouse/testable-subject-list';
 import InhouseGroupSimpleList from './inhouse-group-simple/group-list';

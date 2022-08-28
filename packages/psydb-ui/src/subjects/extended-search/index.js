@@ -108,7 +108,7 @@ const ExtendedSearch = (ps) => {
         it.dataPointer
     ));
 
-    var defaultValues = decodedFormData || {
+    var defaultValues = {
         subjectType: recordType,
         customGdprFilters: {},
         customScientificFilters: {},
@@ -116,7 +116,9 @@ const ExtendedSearch = (ps) => {
         columns: defaultColumns,
         sort: { column: '/sequenceNumber', direction: 'asc' },
         limit: 0,
-        offset: 0
+        offset: 0,
+
+        ...decodedFormData
     };
 
     return (

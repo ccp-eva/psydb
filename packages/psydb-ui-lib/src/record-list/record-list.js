@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { transliterate } from '@mpieva/psydb-core-utils';
+import { entries, transliterate } from '@mpieva/psydb-core-utils';
 
 import {
     useFetch,
     usePaginationReducer,
+    usePaginationURLSearchParams,
     useURLSearchParamsB64,
 } from '@mpieva/psydb-ui-hooks';
 
@@ -38,13 +39,15 @@ var RecordList = ({
     selectedRecordIds,
     onSelectRecord,
 
+    showHidden,
+    setShowHidden,
+
     linkBaseUrl,
     tableClassName,
     bsTableProps,
     CustomActionListComponent,
 }) => {
     var [ isInitialized, setIsInitialized ] = useState(false);
-    var [ showHidden, setShowHidden ] = useState(false);
     var [ payload, setPayload ] = useState([]);
 
     var [ filters, setFilters ] = (
@@ -56,7 +59,11 @@ var RecordList = ({
     var [ didChangeFilters, setDidChangeFilters ] = useState(false);
     //var [ cachedOffset, setCachedOffset ] = useState(0);
 
-    var pagination = usePaginationReducer({ offset: 0, limit: 50 })
+    var pagination = (
+        (target === 'table' || !target)
+        ? usePaginationURLSearchParams({ offset: 0, limit: 50 })
+        : usePaginationReducer({ offset: 0, limit: 50 })
+    )
     var { offset, limit } = pagination;
 
     // FIXME: this renders twice; we need to
@@ -68,6 +75,8 @@ var RecordList = ({
             pagination.selectSpecificPage(0);
         }
 
+        var { showHidden: realShowHidden, ...realFilters } = filters;
+
         return agent.searchRecords({
             target,
             collection,
@@ -78,9 +87,13 @@ var RecordList = ({
             ),
             limit,
             constraints,
-            filters,
+            filters: realFilters,
             sort: defaultSort || undefined,
-            showHidden,
+            showHidden: (
+                target === 'table'
+                ? realShowHidden
+                : showHidden
+            )
         })
         .then((response) => {
             setDidChangeFilters(false);
@@ -90,7 +103,7 @@ var RecordList = ({
     }, [
         collection, recordType, offset, limit,
         filters, searchOptions, showHidden
-]);
+    ]);
 
     if (!didFetch) {
         return (
@@ -116,7 +129,17 @@ var RecordList = ({
                         displayFieldData={ displayFieldData }
                         onSubmit={ ({ filters }) => {
                             setDidChangeFilters(true);
-                            setFilters(filters);
+                            setFilters({
+                                ...filters,
+                                showHidden: (
+                                    entries(filters || {})
+                                    .filter(it => it[1])
+                                    .length > 0
+                                )
+                            });
+                            if (target && target !== 'table') {
+                                setShowHidden(true);
+                            }
                         }}
                     />
                     <div className='pt-2 px-3'>
@@ -136,7 +159,10 @@ var RecordList = ({
                         </div>
                     </div>
                 </div>
-                <Pagination { ...pagination } />
+                <Pagination
+                    { ...pagination }
+                    showJump={ target === 'table' || !target }
+                />
             </div>
 
             <Table { ...({

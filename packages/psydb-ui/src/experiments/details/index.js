@@ -14,6 +14,10 @@ import GeneralInfo from '../general-info';
 import GeneralFunctions from './general-functions';
 import Subjects from './subjects';
 
+import {
+    SubjectLabelOnlyContainer,
+} from '../shared-general-functions';
+
 const ExperimentDetails = ({
     path,
     url,
@@ -65,17 +69,25 @@ const ExperimentDetails = ({
                     opsTeamData,
                     locationData,
                     studyData,
+                    onSuccessfulUpdate,
                 }) } />
                 { showFunctions && (
                     <div className='media-print-hidden'>
                         <hr />
-                        <div className='mt-3 d-flex justify-content-end'>
-                            <GeneralFunctions { ...({
-                                experimentData,
-                                opsTeamData,
-                                studyData,
-                                onSuccessfulUpdate,
-                            }) } />
+                        <div className='mt-3 d-flex justify-content-between'>
+                            <div>
+                                <SubjectLabelOnlyContainer { ...({
+                                    experimentData,
+                                }) } />
+                            </div>
+                            <div>
+                                <GeneralFunctions { ...({
+                                    experimentData,
+                                    opsTeamData,
+                                    studyData,
+                                    onSuccessfulUpdate,
+                                }) } />
+                            </div>
                         </div>
                     </div>
                 )}
