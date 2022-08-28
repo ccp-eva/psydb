@@ -7,12 +7,16 @@ var {
     RecordTypeNotFound
 } = require('@mpieva/psydb-api-lib-errors');
 
+var {
+    convertCRTRecordToSettings,
+    CRTSettings
+} = require('@mpieva/psydb-common-lib');
+
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
-var { convertCRTRecordToSettings } = require('@mpieva/psydb-common-lib');
 var fetchOneCustomRecordType = require('./fetch-one-custom-record-type');
 
 var fetchCRTSettings = async (options) => {
-    var { db, collectionName, recordType } = options;
+    var { db, collectionName, recordType, wrap = false } = options;
 
     var collectionCreatorData = allSchemaCreators[collectionName];
     if (!collectionCreatorData || collectionName === 'customRecordType') {
@@ -43,7 +47,13 @@ var fetchCRTSettings = async (options) => {
         `);
     }
 
-    return convertCRTRecordToSettings(crt);
+    var converted = convertCRTRecordToSettings(crt);
+    if (wrap === true) {
+        return CRTSettings({ data: converted });
+    }
+    else {
+        return converted;
+    }
 }
 
 module.exports = fetchCRTSettings;
