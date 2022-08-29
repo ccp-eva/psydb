@@ -52,6 +52,7 @@ const StudyRouting = (ps) => {
                     enableExtendedSearch={ true }
                     enableCSVExport={ true }
                     enableRecordRowLink={ true }
+                    canSort={ true }
                 />
             </Route>
             

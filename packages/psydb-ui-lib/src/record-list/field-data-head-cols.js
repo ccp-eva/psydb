@@ -3,22 +3,23 @@ import { convertPointerToPath } from '@mpieva/psydb-core-utils';
 
 const FieldDataHeadCols = ({
     displayFieldData,
-    sorter
+    sorter,
+    canSort,
 }) => {
-    var createOnClick = (path) => (
+    var createOnClick = (path, isFirstCol = false) => (
         sorter
         ? () => sorter.setSort({
             sortPath: path,
             sortDirection: (
                 sorter.sortPath === path
                 ? ( sorter.sortDirection === 'asc' ? 'desc' : 'asc' )
-                : 'asc'
+                : isFirstCol ? 'desc' : 'asc'
             )
         })
         : undefined
     );
     return (
-        displayFieldData.map(it => {
+        displayFieldData.map((it, ix) => {
             //console.log(it);
             var { type, systemType, pointer, dataPointer } = it; 
             // FIXME
@@ -29,7 +30,7 @@ const FieldDataHeadCols = ({
             var className = undefined;
             var style = undefined;
             
-            if ([
+            if (canSort && [
                 'SaneString',
                 'Address',
                 'DateOnlyServerSide',
@@ -46,7 +47,7 @@ const FieldDataHeadCols = ({
                     : false
                 );
                 
-                onClick = createOnClick(path);
+                onClick = createOnClick(path, ix === 0);
                 className = 'text-primary';
                 style = { cursor: 'pointer' };
             }

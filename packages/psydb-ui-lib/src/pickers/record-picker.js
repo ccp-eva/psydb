@@ -28,6 +28,8 @@ const RecordPicker = withRecordPicker({ RecordList: (ps) => {
 
             onSelectRecord={ onSelect }
 
+            canSort={ true }
+
             enableNew={ false }
             enableView={ false }
             enableEdit={ false }

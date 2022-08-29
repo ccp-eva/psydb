@@ -91,6 +91,8 @@ const RecordListContainer = ({
     selectedRecordIds,
     onSelectRecord,
 
+    canSort,
+
     className,
     tableClassName,
     bsTableProps,
@@ -175,6 +177,8 @@ const RecordListContainer = ({
 
                 showHidden,
                 setShowHidden,
+
+                canSort,
             }) } />
         </div>
     );

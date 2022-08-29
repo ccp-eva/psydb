@@ -8,6 +8,7 @@ const TableHead = ({
     showSelectionIndicator,
     pagination,
     sorter,
+    canSort,
 }) => {
     /*<thead className='sticky-top bg-light'>*/
     return (
@@ -26,6 +27,7 @@ const TableHead = ({
                 <FieldDataHeadCols
                     displayFieldData={ displayFieldData }
                     sorter={ sorter }
+                    canSort={ canSort }
                 />
                 <th></th>
             </tr>

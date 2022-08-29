@@ -31,6 +31,7 @@ var RecordList = ({
     //offset,
     //limit,
     //filters,
+    canSort,
     defaultSort,
 
     enableView,
@@ -197,6 +198,7 @@ var RecordList = ({
                 onSelectRecord,
                 selectedRecordIds,
 
+                canSort,
                 sorter,
 
                 linkBaseUrl,
