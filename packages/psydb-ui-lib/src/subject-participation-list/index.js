@@ -13,9 +13,18 @@ import { LoadingIndicator, NotFound } from '@mpieva/psydb-ui-layout';
 import ParticipationList from './participation-list';
 
 const Participation = (ps) => {
-    var { id, subjectType, revision } = ps;
+    var {
+        id: manualId,
+        subjectType,
+        revision = {},
+        enableItemFunctions = true,
+    } = ps;
     var { path, url } = useRouteMatch();
     var { id } = useParams();
+
+    if (manualId) {
+        id = manualId;
+    }
 
     var [ didFetch, fetched ] = useFetchAll((agent) => {
         return {
@@ -52,7 +61,8 @@ const Participation = (ps) => {
                 subjectId: id,
                 subjectType,
                 participationData,
-                onSuccessfulUpdate: revision.up
+                onSuccessfulUpdate: revision.up,
+                enableItemFunctions,
             }) }/>
         </div>
     );
@@ -63,6 +73,7 @@ const ParticipationByType = ({
     subjectType,
     participationData,
     onSuccessfulUpdate,
+    enableItemFunctions,
 }) => {
 
     var {
@@ -101,6 +112,7 @@ const ParticipationByType = ({
                     ageFrameFieldValue,
                     ...participationByStudyType[type],
                     onSuccessfulUpdate,
+                    enableItemFunctions,
                 })} />
             )) }
         </>

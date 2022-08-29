@@ -10,6 +10,7 @@ import {
 } from '@mpieva/psydb-ui-layout';
 
 import SubjectModalDetails from './subject-modal-details';
+import SubjectModalParticipation from './subject-modal-participation';
 import SubjectModalSchedule from './subject-modal-schedule';
 
 const SubjectModal = ({
@@ -29,6 +30,7 @@ const SubjectModal = ({
     var permissions = usePermissions();
     var revision = useRevision();
     var canReadSubjects = permissions.hasFlag('canReadSubjects');
+    var canReadParticipation = permissions.hasFlag('canReadParticipation');
 
     var [ state, dispatch ] = useReducer(reducer, {
         activeMainNavKey: (
@@ -67,6 +69,10 @@ const SubjectModal = ({
             key: 'subjectDetails',
             label: 'Proband:innen-Details'
         }),
+        (canReadParticipation && {
+            key: 'subjectParticipation',
+            label: 'Studien-Teilnahme'
+        }),
         {
             key: 'scheduleExperiment',
             label: 'Einladung'
@@ -99,6 +105,14 @@ const SubjectModal = ({
 
                 { activeMainNavKey === 'subjectDetails' && (
                     <SubjectModalDetails
+                        recordType={ subjectRecordType }
+                        id={ record._id }
+                    />
+
+                )}
+                
+                { activeMainNavKey === 'subjectParticipation' && (
+                    <SubjectModalParticipation
                         recordType={ subjectRecordType }
                         id={ record._id }
                     />

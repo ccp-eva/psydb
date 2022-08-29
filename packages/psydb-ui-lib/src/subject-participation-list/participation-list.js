@@ -39,6 +39,7 @@ const ParticipationList = ({
     displayFieldData,
 
     onSuccessfulUpdate,
+    enableItemFunctions,
 }) => {
     var editModal = useModalReducer();
     var removeModal = useModalReducer();
@@ -89,7 +90,9 @@ const ParticipationList = ({
                                 displayFieldData,
 
                                 onEdit: editModal.handleShow,
-                                onRemove: removeModal.handleShow
+                                onRemove: removeModal.handleShow,
+                                
+                                enableItemFunctions,
                             }) } />
                         ))
                     }
@@ -116,6 +119,8 @@ const ParticipationListRow = ({
 
     onEdit,
     onRemove,
+    
+    enableItemFunctions,
 }) => {
     var permissions = usePermissions();
     var canWrite = permissions.hasFlag('canWriteParticipation');
@@ -160,52 +165,59 @@ const ParticipationListRow = ({
             <td>
                 { formatStatus(item.status) }
             </td>
-            <td className='d-flex justify-content-end'>
-                { item.type !== 'manual' && item.experimentId && (
-                    <ExperimentIconButton
-                        to={`/experiments/${item.type}/${item.experimentId}`}
-                    />
-                )}
-                <StudyIconButton
-                    to={`/studies/${item.studyType}/${item.studyId}`}
-                />
-                { canWrite && (
-                    <EditIconButtonInline
-                        onClick={ () => onEdit({
-                            subjectType, subjectId, ...item
-                        }) }
-                        iconStyle={{
-                            ...(
-                                item.experimentId && !permissions.isRoot()
-                                && { color: '#888' }
-                            )
-                        }}
-                        buttonProps={{
-                            disabled: (
-                                item.experimentId && !permissions.isRoot()
-                            )
-                        }}
-                    />
-                )}
-                { canRemove && (
-                    <RemoveIconButtonInline
-                        onClick={ () => onRemove({
-                            ...item
-                        }) }
-                        iconStyle={{
-                            ...(
-                                item.experimentId && !permissions.isRoot()
-                                && { color: '#888' }
-                            )
-                        }}
-                        buttonProps={{
-                            disabled: (
-                                item.experimentId && !permissions.isRoot()
-                            )
-                        }}
-                    />
-                )}
-            </td>
+            { enableItemFunctions
+                ? (
+                    <td className='d-flex justify-content-end'>
+                        { item.type !== 'manual' && item.experimentId && (
+                            <ExperimentIconButton
+                                to={`/experiments/${item.type}/${item.experimentId}`}
+                            />
+                        )}
+                        <StudyIconButton
+                            to={`/studies/${item.studyType}/${item.studyId}`}
+                        />
+                        { canWrite && (
+                            <EditIconButtonInline
+                                onClick={ () => onEdit({
+                                    subjectType, subjectId, ...item
+                                }) }
+                                iconStyle={{
+                                    ...(
+                                        item.experimentId && !permissions.isRoot()
+                                        && { color: '#888' }
+                                    )
+                                }}
+                                buttonProps={{
+                                    disabled: (
+                                        item.experimentId && !permissions.isRoot()
+                                    )
+                                }}
+                            />
+                        )}
+                        { canRemove && (
+                            <RemoveIconButtonInline
+                                onClick={ () => onRemove({
+                                    ...item
+                                }) }
+                                iconStyle={{
+                                    ...(
+                                        item.experimentId && !permissions.isRoot()
+                                        && { color: '#888' }
+                                    )
+                                }}
+                                buttonProps={{
+                                    disabled: (
+                                        item.experimentId && !permissions.isRoot()
+                                    )
+                                }}
+                            />
+                        )}
+                    </td>
+                )
+                : (
+                    <td></td>
+                )
+            }
         </tr>
     );
 }
