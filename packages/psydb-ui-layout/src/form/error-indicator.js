@@ -2,8 +2,12 @@ import React from 'react';
 import { Form } from 'react-bootstrap';
 
 export const ErrorIndicator = (ps) => {
-    var { formikMeta = {} } = ps;
+    var { index, formikMeta = {} } = ps;
     var { error } = formikMeta;
+
+    if (error && index >= 0) {
+        error = error[index];
+    }
 
     return (
         error && error['@@ERRORS']
@@ -23,6 +27,7 @@ export const ErrorIndicator = (ps) => {
 const createFriendlyMessage = (err) => {
     var { keyword, params } = err;
     switch (keyword) {
+        case 'type':
         case 'required':
             return 'Dies ist ein Plichtfeld. Bitte einen Wert eingeben.'
         case 'minLength':

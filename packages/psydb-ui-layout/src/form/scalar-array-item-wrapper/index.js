@@ -1,6 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import * as Icons from '../../icons';
+import { ErrorIndicator } from '../error-indicator';
 
 export const ScalarArrayItemWrapper = (ps) => {
     var {
@@ -11,7 +12,18 @@ export const ScalarArrayItemWrapper = (ps) => {
         enableMove = true,
         enableRemove = true,
         children,
+
+        formikMeta = {}
     } = ps;
+
+    var { error } = formikMeta;
+
+    return (
+        <>
+            { children }
+            <ErrorIndicator { ...ps } />
+        </>
+    )
 
     var className = classnames([
         'ml-3 pl-2',
