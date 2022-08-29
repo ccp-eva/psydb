@@ -60,7 +60,7 @@ var createExtendedSearchQuery = (currentQuery) => {
             customScientificFilters
         }),
     }
-    console.log(extQueryData);
+    //console.log(extQueryData);
 
     if (!Object.keys(extQueryData).length) {
         return undefined;
@@ -104,7 +104,7 @@ const RecordListContainer = ({
         ? useURLSearchParamsB64()
         : useState({})
     );
-    console.log(query);
+    //console.log(query);
     var { showHidden = false } = query;
     var setShowHidden = (next) => updateQuery({ ...query, showHidden: next });
 
