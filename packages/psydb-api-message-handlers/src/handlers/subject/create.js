@@ -128,10 +128,14 @@ var verifyNoDuplicates = async (bag) => {
     console.log(filters);
 
     var possibleDuplicates = await (
-        db.collection(collection).find(filters).limit(4).toArray()
+        db.collection(collection).find(filters, { projection: {
+            '_rohrpostMetadata': false,
+            'gdpr._rohrpostMetadata': false,
+            'scientific._rohrpostMetadata': false,
+            'scientific.state.internals': false
+        }}).limit(4).toArray()
     );
 
-    console.log(crt.getRaw());
     for (var it of possibleDuplicates) {
         it._recordLabel = createRecordLabel({
             record: it,
