@@ -12,16 +12,16 @@ import {
     usePermissions
 } from '@mpieva/psydb-ui-hooks';
 
-import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
-import calculateAge from '@mpieva/psydb-ui-lib/src/calculate-age';
+import datefns from '../date-fns';
+import calculateAge from '../calculate-age';
 
-import FieldDataHeadCols from '@mpieva/psydb-ui-lib/src/record-list/field-data-head-cols';
-import FieldDataBodyCols from '@mpieva/psydb-ui-lib/src/record-list/field-data-body-cols';
+import FieldDataHeadCols from '../record-list/field-data-head-cols';
+import FieldDataBodyCols from '../record-list/field-data-body-cols';
 
 import {
     EditModal,
     RemoveModal
-} from '@mpieva/psydb-ui-lib/src/participation';
+} from '../participation';
 
 const ParticipationList = ({
     subjectId,
