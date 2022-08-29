@@ -279,8 +279,17 @@ var fetchRecordByFilter = async ({
         .aggregate(
             //[ ...preCountStages, ...postCountStages ],
             [
-                ...preCountStages,
-                sortStage,
+                ...(
+                    sort 
+                    ? [
+                        sortStage,
+                        ...preCountStages,
+                    ]
+                    : [
+                        ...preCountStages,
+                        sortStage,
+                    ]
+                ),
                 { $skip: offset },
                 ...(limit ? [{ $limit: limit }] : []),
                 ...postCountStages,

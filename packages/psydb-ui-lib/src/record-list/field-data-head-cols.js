@@ -13,7 +13,7 @@ const FieldDataHeadCols = ({
             sortDirection: (
                 sorter.sortPath === path
                 ? ( sorter.sortDirection === 'asc' ? 'desc' : 'asc' )
-                : isFirstCol ? 'desc' : 'asc'
+                : isFirstCol && !sorter.sortPath ? 'desc' : 'asc'
             )
         })
         : undefined
