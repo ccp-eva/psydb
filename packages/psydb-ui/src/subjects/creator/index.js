@@ -31,6 +31,7 @@ const SubjectCreatorContainer = ({
         <>
             <HandleDuplicateModal
                 { ...duplicateModal.passthrough }
+                recordType={ recordType }
                 onSuccessfulUpdate={ onSuccessfulUpdate }
             />
             <RecordCreator

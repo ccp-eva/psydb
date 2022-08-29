@@ -7,8 +7,9 @@ import {
 } from '@mpieva/psydb-ui-layout';
 
 const HandleDuplicateModalBody = (ps) => {
-    var { onHide, modalPayloadData, onSuccessfulUpdate } = ps;
+    var { onHide, modalPayloadData, onSuccessfulUpdate, recordType } = ps;
     var { responseData, formikForm } = modalPayloadData;
+    var { possibleDuplicates, more } = responseData;
 
     var handleSubmit = () => {
         formikForm.setFieldValue('$.forceDuplicate', true);
@@ -19,9 +20,28 @@ const HandleDuplicateModalBody = (ps) => {
 
     return (
         <div>
-            <div>FOOOOOOOO</div>
-            <div className='d-flex justify-content-end mt-3'>
+            <div className='mt-2'>
+                <header className='pb-1'>
+                    Mögliche Duplikate
+                </header>
+                <div>
+                    { possibleDuplicates.map(it => (
+                        <div>
+                            <a
+                                target='_blank'
+                                href={`#/subjects/${recordType}/${it._id}`}>
+                                { it._recordLabel }
+                            </a>
+                        </div>
+                    ))}
+                </div>
+                { more && (
+                    '... und weitere'
+                )}
+            </div>
+            <div className='d-flex justify-content-end mt-3 border-top pt-3'>
                 <Button
+                    size='sm'
                     onClick={ handleSubmit }
                     variant='danger'
                 >
