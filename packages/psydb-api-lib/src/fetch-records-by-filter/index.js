@@ -216,9 +216,9 @@ var fetchRecordByFilter = async ({
         }
 
         await db.collection(collectionName).ensureIndex({
-            [sortPath]: 1
+            [sort.path]: 1
         }, {
-            name: 'manualSortIndex',
+            name: 'manualSortIndex1',
             collation: { locale: 'de@collation=phonebook' }
         });
 
@@ -287,7 +287,7 @@ var fetchRecordByFilter = async ({
             ],
             {
                 ...(sort && {
-                    hint: 'manualSortIndex',
+                    hint: 'manualSortIndex1',
                 }),
                 //hint: 'searchIndex',
                 allowDiskUse: true,
