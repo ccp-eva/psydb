@@ -209,6 +209,19 @@ var fetchRecordByFilter = async ({
 
     var sortStage;
     if (sort) {
+
+        // FIXME: this is a hotfix
+        if (systemType === 'Address') {
+            sortPath += '.street';
+        }
+
+        await db.collection(collectionName).ensureIndex({
+            [sortPath]: 1
+        }, {
+            name: 'manualSortIndex',
+            collation: { locale: 'de@collation=phonebook' }
+        });
+
         sortStage = {
             $sort: {
                 [sort.path]: sort.direction === 'desc' ? -1 : 1
@@ -273,6 +286,9 @@ var fetchRecordByFilter = async ({
                 ...postCountStages,
             ],
             {
+                ...(sort && {
+                    hint: 'manualSortIndex',
+                }),
                 //hint: 'searchIndex',
                 allowDiskUse: true,
                 collation: { locale: 'de@collation=phonebook' }
