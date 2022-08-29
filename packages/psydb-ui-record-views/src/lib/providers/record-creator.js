@@ -23,6 +23,7 @@ const RecordCreator = (ps) => {
         onFailedUpdate,
 
         shouldFetchCRTSettings = true,
+        disableErrorModal = false,
         
         children
     } = ps;
@@ -40,6 +41,7 @@ const RecordCreator = (ps) => {
         recordType,
         onSuccessfulUpdate,
         onFailedUpdate,
+        disableErrorModal,
     });
 
     var crtSettings = undefined;

@@ -20,10 +20,16 @@ export const Component = (ps) => {
         renderFormBox = true,
     } = ps;
 
+    // FIXME: i dont like how this works
+    var wrappedOnSubmit = (formData, formikBag) => {
+        var { forceDuplicate, ...realData } = formData;
+        return onSubmit(realData, formikBag, { forceDuplicate });
+    }
+
     var renderedForm = (
         <DefaultForm
             initialValues={ initialValues }
-            onSubmit={ onSubmit }
+            onSubmit={ wrappedOnSubmit }
             useAjvAsync
             enableReinitialize
         >

@@ -13,6 +13,7 @@ const withRecordCreator = (options = {}) => {
             recordType,
             onSuccessfulUpdate,
             onFailedUpdate,
+            disableErrorModal,
             ...pass
         } = ps;
 
@@ -22,6 +23,7 @@ const withRecordCreator = (options = {}) => {
             
             onSuccessfulUpdate,
             onFailedUpdate,
+            disableErrorModal,
 
             shouldFetchCRTSettings,
         };
