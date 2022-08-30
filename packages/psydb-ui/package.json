@@ -5,6 +5,10 @@
   "main": "src/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npm run purge-dist && npm run compile-bundle",
+    "purge-dist": "npx rimraf dist/*",
+    "compile-bundle": "npx webpack --progress -c src/webpack.config-prod.js",
+
     "dev": "npx webpack serve -c src/webpack.config.js"
   },
   "repository": {
@@ -22,10 +26,10 @@
     "chai": "~4.2.0",
     "react": "~17.0.1",
     "react-dom": "~17.0.1",
-    "@babel/core": "~7.12.10",
-    "@babel/preset-env": "~7.12.10",
-    "@babel/preset-react": "~7.12.10",
-    "@babel/plugin-proposal-class-properties": "~7.13.0",
+    "@babel/core": "~7.18.13",
+    "@babel/preset-env": "~7.18.10",
+    "@babel/preset-react": "~7.18.6",
+    "@babel/plugin-proposal-class-properties": "~7.18.6",
     "webpack-cli": "4.x.x",
     "webpack": "5.x.x",
     "webpack-dev-server": "~3.11.2",
@@ -72,31 +76,12 @@
     "is-subset": "~0.1.1",
     "pako": "~2.0.4",
     "camelcase": "~6.3.0",
-    "sift": "~16.0.0"
+    "sift": "~16.0.0",
+    "rimraf": "~3.0.2"
   },
   "config": {
     "mongodbMemoryServer": {
       "downloadDir": "/tmp/mongodb-memory-server/"
     }
-  },
-  "babel": {
-    "presets": [
-      [
-        "@babel/preset-react",
-        {}
-      ],
-      [
-        "@babel/preset-env",
-        {
-          "targets": "> 0.25%, not dead"
-        }
-      ]
-    ],
-    "plugins": [
-      "@babel/plugin-proposal-class-properties"
-    ],
-    "ignore": [
-      "src/server"
-    ]
   }
 }
