@@ -1,0 +1,7 @@
+#!/usr/bin/env node
+var co = require('co');
+var createServer = require('../src/server/server');
+
+co(createServer).catch(error => {
+    console.log(error);
+});

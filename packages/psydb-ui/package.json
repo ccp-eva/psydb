@@ -2,7 +2,7 @@
   "name": "@mpieva/psydb-ui",
   "version": "0.1.0-alpha",
   "description": "",
-  "main": "src/server.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npm run purge-dist && npm run compile-bundle",

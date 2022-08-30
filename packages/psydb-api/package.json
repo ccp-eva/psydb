@@ -2,7 +2,7 @@
   "name": "@mpieva/psydb-api",
   "version": "0.1.0-alpha",
   "description": "",
-  "main": "src/server.js",
+  "main": "./src/middleware/api",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "node src/server.js"

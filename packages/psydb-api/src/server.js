@@ -14,7 +14,11 @@ var Koa = require('koa'),
 var app = new Koa();
 
 app.use(
-    createApi(app, psydbConfig)
+    createApi({
+        app,
+        config: psydbConfig,
+        prefix: '/'
+    });
 );
 
 app.listen(3012);

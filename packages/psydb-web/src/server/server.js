@@ -1,41 +1,43 @@
 'use strict';
-var koa = require('koa'),
-    webpack = require('webpack'),
-    createWebpackMiddleware = require('webpack-dev-middleware'),
-    //webpackMiddleware = require('koa-webpack-dev-middleware'),
-    bq = require('@cdxoo/block-quote'),
+// NOTE: forcing UTC here since dumps from
+// diffrent servers that use DateOnlyServerSide
+// would get incompatible with one another
+// when servers have different timezones
+process.env.TZ = 'UTC';
 
-    wpconf = require('../webpack.config');
+//require('debug').enable('*');
 
-var app = new koa();
+var Koa = require('koa');
+var compose = require('koa-compose');
 
-var webpackMiddleware = createWebpackMiddleware(
-    webpack(wpconf),
-    {
-        publicPath: wpconf.output.publicPath
-    }
-);
+var config = require('@mpieva/psydb-api-config');
+var createApi = require('@mpieva/psydb-api');
 
-app.use(async (context, next) => {
-    context.status = 200;
-    await webpackMiddleware(context.req, context.res, next);
-});
+var withStaticContent = require('./with-static-content');
+var withIndexHtmlRoute = require('./with-index-html-route');
+var bundlePath = require('./bundle-path');
 
-app.use(async (context, next) => {
-    
-    context.body = bq`
-        <!DOCTYPE html>
-            <html>
-                <head>
-                    <meta charset="utf-8" />
-                </head>
-            <body>
-                <div id="app"></div>
-                <script type="text/javascript" src="/dist/bundle.js"></script>
-            </body>
-        </html>
-    `;
+var createServer = async (bag) => {
+    var app = new Koa();
+    var composition = compose([
+        await createApi({
+            app,
+            config,
+            prefix: '/api'
+        }),
+        withStaticContent({
+            from: bundlePath,
+            toPublic: '/'
+        }),
+        withIndexHtmlRoute({
+            bundlePath
+        })
+    ]);
 
-    await next();
-});
-app.listen(3000)
+    app.use(composition);
+    app.listen(8080);
+
+    return app;
+}
+
+module.exports = createServer;

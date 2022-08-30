@@ -6,14 +6,15 @@ var compose = require('koa-compose'),
     withErrorHandling = require('./errors'),
     withRouting = require('./routing');
 
-var createApi = (app, config) => {
+var createApi = (bag) => {
+    var { app, config, prefix = '/' } = bag;
 
     var composition = compose([
         withErrorHandling(),
         withMongoDB(config.db),
         withSession(app, config),
         
-        withRouting(config.routing),
+        withRouting({ prefix }),
     ]);
 
     return composition;
