@@ -18,7 +18,7 @@ app.use(
         app,
         config: psydbConfig,
         prefix: '/'
-    });
+    })
 );
 
 app.listen(3012);
