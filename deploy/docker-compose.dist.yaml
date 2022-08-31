@@ -53,4 +53,8 @@ services:
 networks:
   psydb-net:
     driver: "bridge"
+    #ipam:
+    #  config:
+    #    - subnet: 10.6.2.0/24
+    #      gateway: 10.6.2.254
 
