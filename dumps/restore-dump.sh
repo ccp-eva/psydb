@@ -11,5 +11,5 @@ if [ -z $DUMP ]; then
 fi
 
 echo $DUMP
-mongo psydb --eval "printjson(db.dropDatabase())"
-mongorestore --drop -d psydb $DUMP/psydb/
+mongo --host localhost:47017 psydb --eval "printjson(db.dropDatabase())"
+mongorestore --host localhost:47017 --drop -d psydb $DUMP/psydb/
