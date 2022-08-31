@@ -1,9 +1,10 @@
 # vim: syn=dockerfile
 FROM node:14.15.4-alpine as builder
-LABEL stage=psydb_builder
+LABEL stage=psydb-prebuild
 
 RUN mkdir -p /usr/src/app
 RUN mkdir -p /usr/src/app/deploy
+RUN mkdir -p /usr/src/app/config # mount point for user config
 WORKDIR /usr/src/app
 
 # FIXME: maybe not rquired with rush deploy
@@ -19,7 +20,7 @@ RUN NODE_ENV=production \
    && rm -rf ./common/temp/install-run \
    && apk del make gcc g++ python3 curl git sed grep
 
-COPY packages/psydb-ui/dist/ deploy/packages/psydb-ui/ui-bundle
+COPY packages/psydb-ui/dist/ deploy/packages/psydb-ui/dist
 
 # NEW STAGE
 FROM node:14.15.4-alpine
@@ -34,7 +35,8 @@ COPY --from=builder /usr/src/app/deploy/packages packages
 RUN apk add --no-cache tzdata
 ENV TZ="Europe/Berlin"
 
-EXPOSE 80
+EXPOSE 8080
 
 WORKDIR /usr/src/app/packages/psydb-web
+VOLUME /usr/src/app/config
 CMD npm run production
