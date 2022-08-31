@@ -39,7 +39,7 @@ services:
   psydb:
     image: "cdxoo/psydb:0.1.0-alpha.202208310305"
     ports:
-      - "127.0.0.1:3000:8080"
+      - "127.0.0.1:8080:8080"
     volumes:
       - "{{BASE_DIR}}/psydb-config/psydb:/usr/src/app/config"
     networks:
