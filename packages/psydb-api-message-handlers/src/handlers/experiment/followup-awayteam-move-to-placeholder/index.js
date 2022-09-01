@@ -1,6 +1,7 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
 
+var { compareIds } = require('@mpieva/psydb-core-utils');
 var {
     ApiError,
     mongoEscapeDeep,
@@ -53,6 +54,18 @@ handler.checkAllowedAndPlausible = async (context) => {
     }
     if (targetExperiment.state.subjectData.length > 0) {
         throw new ApiError(409, 'TargetNotPlaceHolderExperiment');
+    }
+    if (!compareIds(
+        sourceExperiment.state.locationId,
+        targetExperiment.state.locationId
+    )) {
+        throw new ApiError(409, {
+            apiStatus: 'LocationConflict',
+            data: {
+                sourceLocationId: sourceExperiment.state.locationId,
+                targetLocationId: targetExperiment.state.locationId
+            }
+        });
     }
 
     cache.type = targetExperiment.type;
