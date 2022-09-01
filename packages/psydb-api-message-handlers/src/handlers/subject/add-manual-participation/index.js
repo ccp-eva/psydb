@@ -12,7 +12,6 @@ var OnlineSurveySchema = require('./online-survey-schema');
 
 var createFakeExperiment = require('./create-fake-experiment');
 var createParticipation = require('./create-participation');
-var createLocationVisit = require('./create-location-visit');
 
 var handler = {};
 
@@ -183,10 +182,6 @@ handler.triggerSystemEvents = async (context) => {
     }
 
     await createParticipation(context, { ...bag, experimentId });
-
-    if (labProcedureType !== 'online-survey') {
-        await createLocationVisit(context, { ...bag, experimentId });
-    }
 }
 
 handler.triggerOtherSideEffects = async () => {};

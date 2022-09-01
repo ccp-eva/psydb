@@ -13,7 +13,6 @@ var OnlineSurveySchema = require('./online-survey-schema');
 var setupParticipationItems = require('./setup-participation-items');
 var updateParticipation = require('./update-participation');
 var maybeUpdateRelatedParticipations = require('./maybe-update-related-participations');
-var maybeUpdateLocationVisit = require('./maybe-update-location-visit');
 var maybeUpdateExperiment = require('./maybe-update-experiment');
 
 
@@ -177,7 +176,6 @@ handler.triggerSystemEvents = async (context) => {
     // no location, no experimenters, interval maybe (like a month or so)
     if (labProcedureType !== 'online-survey') {
         await maybeUpdateRelatedParticipations(context);
-        await maybeUpdateLocationVisit(context);
         await maybeUpdateExperiment(context);
     }
     

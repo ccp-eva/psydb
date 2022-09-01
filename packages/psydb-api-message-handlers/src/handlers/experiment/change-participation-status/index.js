@@ -162,26 +162,6 @@ handler.triggerSystemEvents = async ({
             }
         }}
     });
-
-    var locationHasVisitation = (
-        !!location.state.internals.visits.find(it => (
-            compareIds(it.experimentId, experimentId)
-        ))
-    );
-    if (!locationHasVisitation) {
-        await dispatch({
-            collection: 'location',
-            channelId: locationId,
-            payload: { $push: {
-                'state.internals.visits': {
-                    experimentType: experimentRecord.type,
-                    experimentId,
-                    timestamp,
-                    studyId: study._id
-                }
-            }}
-        })
-    }
 }
 
 module.exports = handler;
