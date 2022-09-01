@@ -36,7 +36,7 @@ var createFakeExperiment = async (context, bag) => {
 
         studyId: study._id,
         studyRecordType: study.type,
-        location: location._id,
+        locationId: location._id,
         locationRecordType: location.type,
         
         interval: { start: timestamp, end: timestamp },
