@@ -24,9 +24,6 @@ const Defaults = () => {
     return ({
         name: '',
         
-        // FIXME: obsolete
-        canWriteAdministrativeCollections: false,
-
         canWriteLocations: false,
         canWriteExternalPersons: false,
         canWriteExternalOrganizations: false,
@@ -41,6 +38,11 @@ const Defaults = () => {
         canWriteSubjects: false,
         canReadParticipation: false,
         canWriteParticipation: false,
+        
+        canCreateReservationsWithinTheNext3Days: false,
+        canCreateExperimentsWithinTheNext3Days: false,
+        canUseExtendedSearch: false,
+        canUseCSVExport: false,
 
         canViewReceptionCalendar:  false,
         labOperation: {
