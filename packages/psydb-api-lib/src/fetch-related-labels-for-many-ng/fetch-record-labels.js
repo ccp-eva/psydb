@@ -1,4 +1,6 @@
 'use strict';
+var debug = require('debug')('psydb:api-lib:fetchRelatedLabelsForMany:fetchRecordLabels');
+
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 var { keyBy } = require('@mpieva/psydb-core-utils');
 
@@ -52,6 +54,11 @@ var fetchRecordLabels = async (bag) => {
         await db.collection(collection).aggregate([
             { $match: {
                 _id: { $in: ids }
+            }},
+            { $project: {
+                'state.internals': false,
+                'gdpr.state.internals': false,
+                'scientific.state.internals': false,
             }}
         ]).toArray()
     );

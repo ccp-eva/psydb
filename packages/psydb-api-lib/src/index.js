@@ -3,6 +3,7 @@ module.exports = {
     createId: require('./create-id'),
     compareIds: require('./compare-ids'),
     fromFacets: require('./from-facets'),
+    maybeStages: require('./maybe-stages'),
 
     Ajv: require('./ajv'),
     ApiError: require('./api-error'),

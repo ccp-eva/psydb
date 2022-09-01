@@ -6,7 +6,9 @@ import FieldDataHeadCols from './field-data-head-cols';
 const TableHead = ({
     displayFieldData,
     showSelectionIndicator,
-    pagination
+    pagination,
+    sorter,
+    canSort,
 }) => {
     /*<thead className='sticky-top bg-light'>*/
     return (
@@ -22,7 +24,11 @@ const TableHead = ({
                 { showSelectionIndicator && (
                     <th></th>
                 )}
-                <FieldDataHeadCols displayFieldData={ displayFieldData } />
+                <FieldDataHeadCols
+                    displayFieldData={ displayFieldData }
+                    sorter={ sorter }
+                    canSort={ canSort }
+                />
                 <th></th>
             </tr>
         </thead>

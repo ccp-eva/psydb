@@ -9,6 +9,7 @@ import DisplayFieldEditor from './display-field-editor';
 import RecordLabelDefinitionEditor from './record-label-definition-editor';
 import FormOrderEditor from './form-order-editor';
 import StudyExtraEditors from './study-extra-editors';
+import DuplicateCheckFieldEditor from './duplicate-check-field-editor';
 
 const PanelColumn = (ps) => {
     var { children } = ps;
@@ -61,13 +62,18 @@ const LiveDataEditor = (ps) => {
                     </FormBox>
                     
                     { collection === 'subject' && (
-                        <FormBox title='Spalten bei Einladung (Inhouse, Online-Video-Anruf)'>
+                        <FormBox title='Extra Spalten bei Einladung (Inhouse, Online-Video-Anruf)'>
                             <DisplayFieldEditor target='invite-selection-list' { ...ps } />
                         </FormBox>
                     )}
                     { collection === 'subject' && (
-                        <FormBox title='Spalten bei Auswahl (Extern)'>
+                        <FormBox title='Extra Spalten bei Auswahl (Extern)'>
                             <DisplayFieldEditor target='away-team-selection-list' { ...ps } />
+                        </FormBox>
+                    )}
+                    { collection === 'subject' && (
+                        <FormBox title='Felder für Duplikatsprüfung'>
+                            <DuplicateCheckFieldEditor { ...ps } />
                         </FormBox>
                     )}
                 </PanelColumn>

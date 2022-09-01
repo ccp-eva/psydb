@@ -60,7 +60,7 @@ var createExtendedSearchQuery = (currentQuery) => {
             customScientificFilters
         }),
     }
-    console.log(extQueryData);
+    //console.log(extQueryData);
 
     if (!Object.keys(extQueryData).length) {
         return undefined;
@@ -74,6 +74,7 @@ const RecordListContainer = ({
     collection,
     recordType,
     constraints,
+    excludedIds,
     searchOptions,
     defaultSort,
 
@@ -90,6 +91,8 @@ const RecordListContainer = ({
     selectedRecordIds,
     onSelectRecord,
 
+    canSort,
+
     className,
     tableClassName,
     bsTableProps,
@@ -103,7 +106,7 @@ const RecordListContainer = ({
         ? useURLSearchParamsB64()
         : useState({})
     );
-    console.log(query);
+    //console.log(query);
     var { showHidden = false } = query;
     var setShowHidden = (next) => updateQuery({ ...query, showHidden: next });
 
@@ -140,6 +143,7 @@ const RecordListContainer = ({
                             collection,
                             recordType,
                             constraints,
+                            excludedIds,
                             searchOptions,
                             sort: defaultSort || undefined,
 
@@ -154,6 +158,7 @@ const RecordListContainer = ({
                 collection,
                 recordType,
                 constraints,
+                excludedIds,
                 searchOptions,
                 defaultSort,
 
@@ -172,6 +177,8 @@ const RecordListContainer = ({
 
                 showHidden,
                 setShowHidden,
+
+                canSort,
             }) } />
         </div>
     );

@@ -19,6 +19,7 @@ const s = {};
 for (var k of Object.keys(ScalarFields)) {
     s[`${k}List`] = withFieldArray({
         FieldComponent: ScalarFields[k],
+        ArrayItemWrapper: 'ScalarArrayItemWrapper',
         defaultItemValue: null,
     });
 }
@@ -52,7 +53,6 @@ const {
     EmailWithPrimaryList,
     PhoneWithTypeList,
     ResearchGroupWithRoleList,
-    AccessRightByResearchGroupList,
 } = o;
 
 export {
@@ -73,5 +73,4 @@ export {
     EmailWithPrimaryList,
     PhoneWithTypeList,
     ResearchGroupWithRoleList,
-    AccessRightByResearchGroupList,
 }

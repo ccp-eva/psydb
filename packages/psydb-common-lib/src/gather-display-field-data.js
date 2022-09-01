@@ -1,5 +1,6 @@
 'use strict';
-var allSchemaCreators = require('@mpieva/psydb-schema-creators');
+var convertCRTRecordToSettings = require('./convert-crt-record-to-settings');
+var CRTSettings = require('./crt-settings');
 
 // TODO: should be renamed to gather "field data by pointer"
 
@@ -7,16 +8,9 @@ var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 var gatherDisplayFieldData = ({
     customRecordTypeData
 }) => {
-    var collection = customRecordTypeData.collection;
+    var crtSettings = convertCRTRecordToSettings(customRecordTypeData);
+    var crt = CRTSettings({ data: crtSettings });
 
-    var metadata = allSchemaCreators[collection];
-    var {
-        hasSubChannels,
-        subChannelKeys,
-        availableStaticDisplayFields, // FIXME: not a big fan
-    } = metadata;
-
-    var settings = customRecordTypeData.state.settings;
     var fieldData = [
         {
             key: 'ID',
@@ -24,27 +18,11 @@ var gatherDisplayFieldData = ({
             dataPointer: '/_id', // FIXME
             displayName: 'ID',
         },
-        ...(availableStaticDisplayFields || []),
+        ...crt.allStaticFields(),
+        ...crt.allCustomFields().map(it => ({
+            ...it, dataPointer: it.pointer // FIXME: compat
+        }))
     ];
-    if (hasSubChannels) {
-        for (var subChannelKey of subChannelKeys) {
-            var fields = settings.subChannelFields[subChannelKey]
-            for (var field of fields) {
-                fieldData.push({
-                    ...field,
-                    dataPointer: `/${subChannelKey}/state/custom/${field.key}`
-                });
-            }
-        }
-    }
-    else {
-        for (var field of settings.fields) {
-            fieldData.push({
-                ...field,
-                dataPointer: `/state/custom/${field.key}`
-            });
-        }
-    }
 
     return fieldData;
 };

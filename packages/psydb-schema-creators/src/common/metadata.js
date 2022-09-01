@@ -188,11 +188,11 @@ module.exports = {
         staticDisplayFields: [
             {
                 systemType: 'SaneString',
-                dataPointer: '/gdpr/state/firstname',
+                dataPointer: '/gdpr/state/lastname',
             },
             {
                 systemType: 'SaneString',
-                dataPointer: '/gdpr/state/lastname',
+                dataPointer: '/gdpr/state/firstname',
             },
             {
                 systemType: 'PhoneWithTypeList',
@@ -205,6 +205,16 @@ module.exports = {
             {
                 systemType: 'FullText',
                 dataPointer: '/gdpr/state/description',
+            },
+        ],
+        staticOptionListDisplayFields: [
+            {
+                systemType: 'SaneString',
+                dataPointer: '/gdpr/state/lastname',
+            },
+            {
+                systemType: 'SaneString',
+                dataPointer: '/gdpr/state/firstname',
             },
         ]
     },

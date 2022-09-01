@@ -26,6 +26,7 @@ const ExternalOrganizationTypeView = withRecordTypeView({
                 enableNew={ true }
                 enableEdit={ false }
                 enableRecordRowLink={ true }
+                canSort={ true }
             />
         );
     },

@@ -3,6 +3,8 @@ var debug = require('debug')(
     'psydb:api:endpoints:experimentPostprocessing'
 );
 
+var datefns = require('date-fns');
+
 var {
     groupBy,
     keyBy,
@@ -87,13 +89,14 @@ var experimentPostprocessing = async (context, next) => {
         ]).toArray()
     );
     
+    var now = new Date();
     var studyIds = studyRecords.map(it => it._id);
     var experimentRecords = await (
         db.collection('experiment').aggregate([
             { $match: {
                 'type': experimentType,
                 'state.studyId': { $in: studyIds },
-                'state.interval.start': { $lte: new Date() },
+                'state.interval.start': { $lte: now },
                 'state.isCanceled': false,
                 'state.subjectData': { $elemMatch: {
                     participationStatus: 'unknown',
@@ -104,6 +107,16 @@ var experimentPostprocessing = async (context, next) => {
             { $sort: { 'state.interval.start': 1 }}
         ]).toArray()
     );
+
+    if (experimentType === 'away-team') {
+        experimentRecords = experimentRecords.filter(it => {
+            var { start } = it.state.interval;
+            var noonifiedStart = datefns.add(datefns.startOfDay(start), { hours: 12 });
+            return (
+                noonifiedStart < now
+            )
+        })
+    }
 
     var experimentRelated = await fetchRelatedLabelsForMany({
         db,

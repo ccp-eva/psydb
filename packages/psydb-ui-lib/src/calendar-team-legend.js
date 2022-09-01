@@ -7,6 +7,7 @@ const CalendarTeamLegend = (ps) => {
         studyRecords,
         experimentOperatorTeamRecords,
         //onClickStudy,
+        activeTeamIds = [],
         onClickTeam,
     } = ps;
 
@@ -23,20 +24,25 @@ const CalendarTeamLegend = (ps) => {
         <div>
             <hr />
             <b className='d-block mb-2'><u>Legende</u></b>
-            { studyRecords.map((study, ix) => {
-                var teams = teamsForStudy[study._id];
-                if (!teams) {
-                    return null;
-                }
-                return (
-                    <StudyRow
-                        key={ ix }
-                        studyRecord={ study }
-                        experimentOperatorTeamRecords={ teams }
-                        onClickTeam={ onClickTeam }
-                    />
-                )
-            })}
+            <table>
+                <tbody>
+                    { studyRecords.map((study, ix) => {
+                        var teams = teamsForStudy[study._id];
+                        if (!teams) {
+                            return null;
+                        }
+                        return (
+                            <StudyRow
+                                key={ ix }
+                                studyRecord={ study }
+                                experimentOperatorTeamRecords={ teams }
+                                activeTeamIds={ activeTeamIds }
+                                onClickTeam={ onClickTeam }
+                            />
+                        )
+                    })}
+                </tbody>
+            </table>
         </div>
     )
 }
@@ -45,26 +51,40 @@ const StudyRow = (ps) => {
     var {
         studyRecord,
         experimentOperatorTeamRecords,
+        activeTeamIds,
         onClickTeam
     } = ps;
 
     return (
-        <SplitPartitioned extraClassName='mb-1' partitions={[ 1, 20 ]}>
-            <b>{ studyRecord.state.shorthand }</b>
-            <div className='d-flex'>
-                { experimentOperatorTeamRecords.map((it, ix) => (
-                    <ColoredBox
-                        key={ ix }
-                        onClick={ () => (onClickTeam && onClickTeam(it)) }
-                        className='border px-3 ml-1'
-                        extraStyle={{ cursor: 'pointer' }}
-                        bg={ it.state.color }
-                    >
-                        { it.state.name }
-                    </ColoredBox>
-                ))}
-            </div>
-        </SplitPartitioned>
+        <tr>
+            <td className='pr-3'>
+                <b>{ studyRecord.state.shorthand }</b>
+            </td>
+            <td>
+                <div className='d-flex flex-wrap'>
+                    { experimentOperatorTeamRecords.map((it, ix) => {
+                        var extraStyle = undefined;
+                        if (activeTeamIds.includes(it._id)) {
+                            extraStyle = { fontWeight: 'bold' };
+                        }
+                        return (
+                            <ColoredBox
+                                key={ ix }
+                                onClick={ () => (onClickTeam && onClickTeam(it)) }
+                                className='border px-3 ml-1 mb-1'
+                                bg={ it.state.color }
+                                extraStyle={{
+                                    cursor: 'pointer',
+                                    ...extraStyle
+                                }}
+                            >
+                                { it.state.name }
+                            </ColoredBox>
+                        );
+                    })}
+                </div>
+            </td>
+        </tr>
     )
 }
 

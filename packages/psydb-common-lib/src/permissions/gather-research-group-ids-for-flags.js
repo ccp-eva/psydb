@@ -1,5 +1,5 @@
 'use strict';
-var { flatten, unflatten } = require('flat');
+var { flatten, unflatten } = require('@mpieva/psydb-core-utils');
 
 var gatherResearchGroupIdsForFlags = (options) => {
     var {

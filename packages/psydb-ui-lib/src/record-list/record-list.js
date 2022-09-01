@@ -5,6 +5,8 @@ import {
     useFetch,
     usePaginationReducer,
     usePaginationURLSearchParams,
+    useSortReducer,
+    useSortURLSearchParams,
     useURLSearchParamsB64,
 } from '@mpieva/psydb-ui-hooks';
 
@@ -23,11 +25,13 @@ var RecordList = ({
     collection,
     recordType,
     constraints,
+    excludedIds,
     searchOptions,
 
     //offset,
     //limit,
     //filters,
+    canSort,
     defaultSort,
 
     enableView,
@@ -55,6 +59,12 @@ var RecordList = ({
         ? useURLSearchParamsB64()
         : useState({})
     );
+    var sorter = (
+        (target === 'table' || !target)
+        ? useSortURLSearchParams()
+        : useSortReducer({})
+    );
+    var { sortPath, sortDirection } = sorter;
 
     var [ didChangeFilters, setDidChangeFilters ] = useState(false);
     //var [ cachedOffset, setCachedOffset ] = useState(0);
@@ -87,8 +97,13 @@ var RecordList = ({
             ),
             limit,
             constraints,
+            excludedIds,
             filters: realFilters,
-            sort: defaultSort || undefined,
+            sort: (
+                sortPath
+                ? { path: sortPath, direction: sortDirection }
+                : defaultSort || undefined
+            ),
             showHidden: (
                 target === 'table'
                 ? realShowHidden
@@ -102,7 +117,7 @@ var RecordList = ({
         });
     }, [
         collection, recordType, offset, limit,
-        filters, searchOptions, showHidden
+        filters, searchOptions, showHidden, sortPath, sortDirection
     ]);
 
     if (!didFetch) {
@@ -182,6 +197,9 @@ var RecordList = ({
                 showSelectionIndicator,
                 onSelectRecord,
                 selectedRecordIds,
+
+                canSort,
+                sorter,
 
                 linkBaseUrl,
                 bsTableProps,

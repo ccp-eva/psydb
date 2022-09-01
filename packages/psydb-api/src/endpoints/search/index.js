@@ -41,6 +41,10 @@ var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 var CoreBodySchema = require('./core-body-schema');
 var FullBodySchema = require('./full-body-schema');
 
+// NOTE https://github.com/ajv-validator/ajv/issues/242
+// i assume having it outside the thingy is find then?
+// saves ~60ms
+var ajv = Ajv();
 
 var search = async (context, next) => {
     debug('endpoints/search');
@@ -50,8 +54,9 @@ var search = async (context, next) => {
         request
     } = context;
 
-    var ajv = Ajv(),
-        isValid = false;
+    var isValid = false;
+
+    debug('start validating');
 
     var precheckBody = copy(request.body);
     isValid = ajv.validate(
@@ -108,12 +113,14 @@ var search = async (context, next) => {
         debug('ajv errors', ajv.errors);
         throw new ApiError(400, 'InvalidRequestSchema');
     }
+    debug('done validating');
     
     var {
         collectionName,
         recordType,
         searchOptions = {},
         filters,
+        excludedIds,
         constraints,
         offset,
         limit,
@@ -147,8 +154,7 @@ var search = async (context, next) => {
         enableResearchGroupFilter = true,
     } = searchOptions;
 
-    var d1 = new Date();
-    console.log('>>>>>>>>> START');
+    debug('>>>>>>>>> START');
     var records = await fetchRecordsByFilter({
         db,
         permissions,
@@ -157,6 +163,7 @@ var search = async (context, next) => {
         hasSubChannels,
 
         enableResearchGroupFilter,
+        excludedIds,
         constraints,
         queryFields,
 
@@ -171,8 +178,7 @@ var search = async (context, next) => {
         // can properly quicksearch and search for fk
         disablePermissionCheck: (target === 'optionlist' ? true : false)
     });
-    var d2 = new Date();
-    console.log('<<<<<<<<< END ', (d2.getTime() - d1.getTime()))
+    debug('<<<<<<<<< END')
 
     //console.dir(records, { depth: null });
 

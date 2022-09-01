@@ -6,11 +6,12 @@ const useSendCreate = (options) => {
         collection,
         recordType,
         onSuccessfulUpdate,
+        onFailedUpdate,
         additionalPayloadProps,
         ...otherOptions
     } = options;
 
-    var send = useSend((props) => ({
+    var send = useSend((props, formikBag, moreAdditionalPayloadProps) => ({
         type: (
             recordType
             ? `${collection}/${recordType}/create`
@@ -18,7 +19,8 @@ const useSendCreate = (options) => {
         ),
         payload: {
             props,
-            ...additionalPayloadProps
+            ...additionalPayloadProps,
+            ...moreAdditionalPayloadProps
         }
     }), {
         onSuccessfulUpdate: (response) => {
@@ -26,7 +28,9 @@ const useSendCreate = (options) => {
                 it.collectionName === collection
             )).channelId;
             demuxed([ onSuccessfulUpdate ])({ id: recordId, response })
-        }
+        },
+        onFailedUpdate,
+        ...otherOptions
     });
 
     return send;

@@ -146,7 +146,14 @@ const SubjectTableBody = ({
                             : <td></td>
                         }
 
-                        <td>{ record._recordLabel }</td>
+                        <td>
+                            <a
+                                target='_blank'
+                                href={`#/subjects/${record.type}/${record._id}`}
+                            >
+                                { record._recordLabel }
+                            </a>
+                        </td>
                         <FieldDataBodyCols { ...({
                             record,
                             ...subjectMetadata
@@ -161,9 +168,6 @@ const SubjectTableBody = ({
                             { 
                                 record.scientific.state
                                 .internals.participatedInStudies
-                                .filter(it => (
-                                    it.status === 'participated'
-                                ))
                                 .map(it => (
                                     subjectMetadata
                                     .relatedRecordLabels

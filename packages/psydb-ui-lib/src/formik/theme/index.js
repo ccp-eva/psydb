@@ -42,14 +42,38 @@ export const ArrayContentWrapper = (ps) => {
 
 export const ArrayItemWrapper = (ps) => {
     var { index, hasError, formikMeta } = ps;
+    var { error } = formikMeta;
     return (
-        <FormHelpers.ScalarArrayItemWrapper { ...ps } />
+        <>
+            <FormHelpers.ScalarArrayItemWrapper { ...ps } />
+        </>
     )
 };
 
-export const ArrayItemFieldWrapper = (ps) => (
-    <FallbackTheme.ArrayItemFieldWrapper { ...ps } />
-)
+export const ScalarArrayItemWrapper = (ps) => {
+    var { index, hasError, formikMeta } = ps;
+    var { error } = formikMeta;
+    return (
+        <>
+            <FormHelpers.ScalarArrayItemWrapper { ...ps } />
+        </>
+    )
+};
+export const ArrayItemFieldWrapper = (ps) => {
+    var { index, hasError, formikMeta } = ps;
+    var { error } = formikMeta;
+    return (
+        <FallbackTheme.ArrayItemFieldWrapper { ...ps } />
+    );
+    // FIXME: error should be set in here not in scalar array item wrapper
+    return (
+        <>
+            <div style={{ border: '1px solid blue', padding: '5px' }}>
+                <FallbackTheme.ArrayItemFieldWrapper { ...ps } />
+            </div>
+        </>
+    )
+}
 
 export const ObjectArrayContentWrapper = (ps) => {
     return (

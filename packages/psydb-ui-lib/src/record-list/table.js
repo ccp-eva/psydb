@@ -33,6 +33,8 @@ var RecordListTable = ({
     emptyInfoText,
 
     pagination,
+    sorter,
+    canSort,
 }) => {
     if (!records.length) {
         return (
@@ -84,6 +86,8 @@ var RecordListTable = ({
                 displayFieldData={ displayFieldData }
                 showSelectionIndicator={ showSelectionIndicator }
                 pagination={ pagination }
+                sorter={ sorter }
+                canSort={ canSort }
             />
             <TableBody { ...({
                 records,

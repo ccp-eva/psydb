@@ -21,9 +21,8 @@ import { urlUp as up } from '@mpieva/psydb-ui-utils';
 import RecordTypeNav from '@mpieva/psydb-ui-lib/src/record-type-nav';
 
 import ReceptionCalendar from './reception';
-import InhouseExperimentsRouting from './inhouse-experiments';
+import InviteExperimentsRouting from './invite-experiments';
 import AwayTeamExperimentsRouting from './away-team-experiments';
-import OnlineVideoCallExperimentsRouting from './online-video-call-experiments';
 
 const Calendars = () => {
     var { path, url } = useRouteMatch();
@@ -141,7 +140,8 @@ const Calendars = () => {
                 )}
                 { canViewInhouse && (
                     <Route path={ `${path}/inhouse` }>
-                        <InhouseExperimentsRouting
+                        <InviteExperimentsRouting
+                            inviteType='inhouse'
                             subjectRecordTypes={ subjectTypes }
                         />
                     </Route>
@@ -155,7 +155,8 @@ const Calendars = () => {
                 )}
                 { canViewVideo && (
                     <Route path={ `${path}/online-video-call` }>
-                        <OnlineVideoCallExperimentsRouting
+                        <InviteExperimentsRouting
+                            inviteType='online-video-call'
                             subjectRecordTypes={ subjectTypes }
                         />
                     </Route>
@@ -164,30 +165,6 @@ const Calendars = () => {
         </div>
 
     )
-}
-
-const RedirectOrTypeNav = ({
-    baseUrl,
-    studyTypes,
-    title,
-}) => {
-    if (studyTypes.length === 1) {
-        return (
-            <Redirect to={
-                `${baseUrl}/${studyTypes[0].type}`
-                } />
-        )
-    }
-    else {
-        return (
-            <>
-                { title && (
-                    <h2>{ title }</h2>
-                )}
-                <RecordTypeNav items={ studyTypes } />
-            </>
-        )
-    }
 }
 
 export default Calendars;

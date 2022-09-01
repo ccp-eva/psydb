@@ -36,6 +36,7 @@ const RecordTypeRouting = ({
                     enableNew={ true }
                     enableEdit={ false }
                     enableRecordRowLink={ true }
+                    canSort={ true }
                 />
             </>
         </Route>

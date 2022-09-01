@@ -5,6 +5,7 @@ var debug = require('debug')(
 var { getSystemTimezone } = require('@mpieva/psydb-timezone-helpers');
 
 var {
+    keyBy,
     groupBy,
     compareIds,
 } = require('@mpieva/psydb-core-utils');
@@ -294,6 +295,19 @@ var initSubjects = async ({
             : 'away-team-selection-list'
        )
    });
+
+    var fieldsByPointer = keyBy({
+        items: availableDisplayFieldData,
+        byProp: 'pointer'
+    });
+
+    // NOTE: augmenting displayNames of fields to definition tokens
+    // for quicksearch fields to have proper labeling
+    for (var it of subjectTypeRecord.state.recordLabelDefinition.tokens) {
+        var { dataPointer, pointer } = it;
+        var field = fieldsByPointer[pointer || dataPointer];
+        it.displayName = field.displayName;
+    }
 
     return {
         subjectTypeKey,

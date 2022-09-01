@@ -1,5 +1,6 @@
 'use strict';
 var debug = require('debug')('psydb:api:init-endpoint');
+var { ObjectId } = require('mongodb');
     
 var compose = require('koa-compose'),
     ResponseBody = require('@mpieva/psydb-api-lib/src/response-body'),
@@ -28,7 +29,7 @@ var init = async (context, next) => {
     var eventMiddleware = createEventMiddleware({
         enableMessageChecks: false,
         enableNotifications: false,
-        forcedPersonnelId: data.rootAccountId,
+        forcedPersonnelId: ObjectId(data.rootAccountId),
     })
 
     var processEvent = createProcessEvent({ db, mongoClient, mongoDbName, eventMiddleware });

@@ -35,6 +35,18 @@ var postprocessSubjectRecords = ({
             }
         }
         record._testableInStudies = testableInStudies;
+
+        record.scientific.state.internals.participatedInStudies = (
+            record.scientific.state.internals.participatedInStudies
+            .filter(it => (
+                it.status === 'participated'
+            ))
+            .sort((a, b) => (
+                a.timestamp.getTime() < b.timestamp.getTime()
+                ? 1 : -1
+            ))
+            .slice(0, 3)
+        );
     })
 
     //console.dir(subjectRecords, { depth: null });

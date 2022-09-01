@@ -18,29 +18,53 @@ var fetchUpcomingExperimentData = async ({
         );
     }
     
+    //await db.collection('experiment').ensureIndex({
+    //    'type': 1,
+    //    'state.locationId': 1,
+    //    //'state.subjectData.subjectId': 1,
+    //    'state.isPostprocessed': 1,
+    //    'state.interval.start': 1,
+    //    'state.interval.end': 1,
+    //}, {
+    //    name: 'upcomingExpIndex'
+    //});
+
+    // XXX mongodb indexing is the most stupid shit
+    // ... this is actually the fastest way of doing that
     await db.collection('experiment').ensureIndex({
-        'state.interval.start': 1,
-        'state.interval.end': 1,
+        'state.isPostprocessed': 1,
     }, {
-        name: 'intervalIndex'
+        name: 'upcomingPPIndex'
     });
 
+    // XXX mongodb indexing is the most stupid shit
+    // ... this is actually the fastest way of doing that
+    // we get too many experiments this way but we
+    // filter them later anyway
     var upcomingExperiments = await (
         db.collection('experiment').aggregate([
-            ...(subjectIds ? [{ $unwind: '$state.subjectData' }] : []),
             { $match: {
-                ...( locationIds && {
-                    'state.locationId': { $in: locationIds },
-                }),
-                ...( subjectIds && {
-                    'state.subjectData.subjectId': { $in: subjectIds }
-                }),
-                $or: [
-                    { 'state.interval.start': { $gt: after }},
-                    { 'state.isPostprocessed': false }
-                ],
+                //...( locationIds && {
+                //    'state.locationId': { $in: locationIds },
+                //}),
+                //...( subjectIds && {
+                //    'state.subjectData.subjectId': { $in: subjectIds }
+                //}),
+                //$or: [
+                //    { 'state.interval.start': { $gt: after }},
+                //    { 'state.isPostprocessed': false }
+                //],
+                'state.isPostprocessed': false
             }},
             { $sort: { 'state.interval.start': 1 }},
+
+
+            ...(subjectIds ? [
+                { $unwind: '$state.subjectData' },
+                { $match: {
+                    'state.subjectData.subjectId': { $in: subjectIds }
+                }}
+            ] : []),
             { $project: {
                 _id: true,
                 type: true,
@@ -65,7 +89,7 @@ var fetchUpcomingExperimentData = async ({
                 'upcoming.state.subjectData': false,
                 'upcoming.state.locationId': false,
             }},
-        ]).toArray()
+        ], { hint: 'upcomingPPIndex' }).toArray()
     );
     
     var experimentRelated = await fetchRelatedLabelsForMany({

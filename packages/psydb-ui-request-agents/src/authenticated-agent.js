@@ -107,6 +107,7 @@ agent.searchRecords = ({
     offset,
     limit,
     constraints,
+    excludedIds,
     filters,
     sort,
 
@@ -123,6 +124,7 @@ agent.searchRecords = ({
             limit: limit || 50,
             filters: filters || {},
             constraints: constraints || {},
+            excludedIds,
             sort: sort || undefined,
             showHidden,
         })
@@ -255,6 +257,7 @@ var searchSubjectsTestable = ({
 
     interval,
     filters,
+    quickSearchFilters,
 
     offset = 0,
     limit = 100,
@@ -269,6 +272,7 @@ var searchSubjectsTestable = ({
 
             interval,
             filters,
+            quickSearchFilters,
             
             offset,
             limit,
@@ -331,7 +335,7 @@ agent.fetchExperimentCalendar = ({
     studyId,
     researchGroupId,
 
-    experimentOperatorTeamId,
+    experimentOperatorTeamIds,
     showPast,
 }) => {
     return axios.post(
@@ -343,7 +347,7 @@ agent.fetchExperimentCalendar = ({
             experimentType,
             researchGroupId,
 
-            experimentOperatorTeamId,
+            experimentOperatorTeamIds,
             showPast
         }
     );

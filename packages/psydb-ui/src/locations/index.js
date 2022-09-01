@@ -28,6 +28,7 @@ const LocationTypeView = withRecordTypeView({
                 enableNew={ true }
                 enableEdit={ false }
                 enableRecordRowLink={ true }
+                canSort={ true }
             />
         );
     },

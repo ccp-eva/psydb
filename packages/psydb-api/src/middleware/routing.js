@@ -22,9 +22,9 @@ var withPostStages = ({
     endpoint
 ]);
 
-var createRouting = ({
-    prefix = '/',
-} = {}) => {
+var createRouting = (bag = {}) => {
+    var { prefix = '/' } = bag;
+
     var router = KoaRouter({
         prefix: prefix.replace(/\/$/, ''),
     });

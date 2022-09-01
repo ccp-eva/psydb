@@ -31,6 +31,7 @@ var fetchRelatedLabelsForMany = async (bag) => {
         };
     }
 
+    debug('AAAAAAAAAAAAAAAAAAAa');
     var { hasCustomTypes, FullSchema } = allSchemaCreators[collection];
     var schema;
     if (!hasCustomTypes) {
@@ -51,13 +52,16 @@ var fetchRelatedLabelsForMany = async (bag) => {
         }
         schema = { oneOf: typeSchemas };
     }
+    debug('BBBBBBBBBBBBBBBBBBB');
 
     var possibleRefs = resolvePossibleRefs(schema, {
         systemTypes: [ 'ForeignId', 'HelperSetItemId', 'CustomRecordTypeKey' ]
     });
 
+    debug('CCCCCCCCCCCCCCCCCCCCCC');
 
     var gathered = {};
+    debug(records.length);
     for (var record of records) {
         var result = gatherAllRefValues({
             possibleRefs,
@@ -66,6 +70,7 @@ var fetchRelatedLabelsForMany = async (bag) => {
 
         gathered = merge(gathered, result);
     }
+    debug('DDDDDDDDDDDDDDDDDDDDD');
 
     var out = {
         relatedRecords: {},
@@ -78,11 +83,17 @@ var fetchRelatedLabelsForMany = async (bag) => {
         var collections = Object.keys(gathered.records);
         for (var c of collections) {
             var { ids } = gathered.records[c];
-            //console.log({ ids });
-            out.relatedRecords[c] = await fetchRecordLabels({
-                db, collection: c, ids,
-                keyed: true
-            });
+            if (ids.length > 0) {
+                debug('fetching for collection: ', c);
+                //console.log({ ids });
+                out.relatedRecords[c] = await fetchRecordLabels({
+                    db, collection: c, ids,
+                    keyed: true
+                });
+            }
+            else {
+                out.relatedRecords[c] = {};
+            }
         }
     }
 

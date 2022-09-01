@@ -10,7 +10,7 @@ import {
 } from '@mpieva/psydb-ui-hooks';
 
 import { LinkButton, Button } from '@mpieva/psydb-ui-layout';
-import Participation from './participation';
+import { SubjectParticipationList } from '@mpieva/psydb-ui-lib';
 import {
     CreateModal as ParticipationCreateModal
 } from '@mpieva/psydb-ui-lib/src/participation';
@@ -127,7 +127,7 @@ const SubjectDetailsContainer = ({
                     />
                     <hr />
                     <div className='pr-3 pb-3'>
-                        <Participation
+                        <SubjectParticipationList
                             id={ id }
                             subjectType={ recordType }
                             revision={ revision }

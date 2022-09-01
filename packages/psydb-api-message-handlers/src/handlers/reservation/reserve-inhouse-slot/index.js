@@ -1,8 +1,7 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
 
-var { nanoid } = require('nanoid');
-var { ApiError } = require('@mpieva/psydb-api-lib');
+var { ApiError, createId } = require('@mpieva/psydb-api-lib');
 var { SimpleHandler, checkForeignIdsExist } = require('../../../lib');
 
 var {
@@ -67,7 +66,7 @@ handler.triggerSystemEvents = async ({
         db.collection('location').findOne({ _id: props.locationId })
     );
 
-    props.seriesId = nanoid(); // FIXME: why?
+    props.seriesId = await createId(); // FIXME: why?
     props.locationRecordType = locationRecord.type;
 
     await dispatchProps({

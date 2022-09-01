@@ -1,9 +1,9 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
 
-var { nanoid } = require('nanoid');
 var {
     ApiError,
+    createId,
     compareIds,
     checkIntervalHasReservation,
 } = require('@mpieva/psydb-api-lib');
@@ -118,7 +118,7 @@ handler.triggerSystemEvents = async (context) => {
                 type: reservationType
             },
             props: {
-                seriesId: nanoid(), //FIXME: why?
+                seriesId: await createId(), //FIXME: why?
                 isDeleted: false,
                 studyId,
                 experimentOperatorTeamId: newTeamId,

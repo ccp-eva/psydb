@@ -4,6 +4,8 @@ var debug = require('debug')(
 );
 
 var jsonpointer = require('jsonpointer');
+
+var sift = require('sift');
 var { copy } = require('copy-anything');
 var { keyBy, groupBy } = require('@mpieva/psydb-core-utils');
 var {

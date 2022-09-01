@@ -1,4 +1,6 @@
 import React from 'react';
+import jsonpointer from 'jsonpointer';
+import inline from '@cdxoo/inline-string';
 import { withField, withFieldArray } from '@cdxoo/formik-utils';
 import { without } from '@mpieva/psydb-core-utils';
 import { experimentVariants } from '@mpieva/psydb-schema-enums';
@@ -62,11 +64,27 @@ const Control = (ps) => {
         formikForm,
         disabled,
         related,
+
+        existingResearchGroupIds
     } = ps;
 
+    var { values: allFormValues, setFieldValue } = formikForm;
     var { value } = formikField;
     var { permissionList } = value;
 
+    var accessRightsPointer = inline`
+        /$
+        /scientific/systemPermissions
+        /accessRightsByResearchGroup
+    `;
+
+    var accessRights = jsonpointer.get(
+        allFormValues,
+        accessRightsPointer
+    );
+    var shouldSetAccessRights = !!accessRights;
+
+    // filter existing permission types, to prevent double selection
     var existingTypeValues = [];
     if (Array.isArray(permissionList)) {
         existingTypeValues = (
@@ -84,6 +102,28 @@ const Control = (ps) => {
                 collection='researchGroup'
                 related={ related }
                 required
+                excludedIds={ existingResearchGroupIds }
+                extraOnChange={(next) => {
+                    if (shouldSetAccessRights) {
+                        var accessExists = !!accessRights.find(it => (
+                            it.researchGroupId === next
+                        ));
+                        var path = inline`
+                            $
+                            .scientific.systemPermissions
+                            .accessRightsByResearchGroup
+                        `;
+                        if (accessExists) {
+                            // TODO maybe remove?
+                        }
+                        else {
+                            setFieldValue(path, [
+                                ...accessRights,
+                                { researchGroupId: next, permission: 'write' }
+                            ])
+                        }
+                    }
+                }}
             />
             <LabProcedurePermissionList
                 label='Einstellungen'

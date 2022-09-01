@@ -1,4 +1,5 @@
 module.exports = {
+    CRTSettings: require('./crt-settings'),
     intervalUtils: require('./interval-utils'),
     createSchemaForRecord: require('./create-schema-for-record-type'),
     durations: require('./durations'),

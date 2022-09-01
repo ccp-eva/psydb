@@ -1,5 +1,7 @@
 import React from 'react';
+import { useModalReducer } from '@mpieva/psydb-ui-hooks';
 import { RecordCreator } from '@mpieva/psydb-ui-record-views/subjects';
+import HandleDuplicateModal from './handle-duplicate-modal';
 
 
 const SubjectCreatorContainer = ({
@@ -7,20 +9,36 @@ const SubjectCreatorContainer = ({
     recordType,
     onSuccessfulUpdate,
 }) => {
+    var duplicateModal = useModalReducer();
+
+    var onFailedUpdate = (error, args) => {
+        var [ formData, formikForm ] = args;
+        var { apiStatus, data } = error.response.data;
+        if (apiStatus === 'DuplicateSubject') {
+            duplicateModal.handleShow({ responseData: data, formikForm });
+        }
+        else {
+            throw error
+        }
+    }
+
     var creatorBag = {
-        id, collection, recordType,
+        collection, recordType,
         onSuccessfulUpdate, onFailedUpdate
     };
 
-    var handleDuplicate = () => {}
     return (
-        <RecordCreator { ...creatorBag }>
-            {() => {
-                return (
-                    <div>FOOOOOOOO</div>
-                );
-            }}
-        </RecordCreator>
+        <>
+            <HandleDuplicateModal
+                { ...duplicateModal.passthrough }
+                recordType={ recordType }
+                onSuccessfulUpdate={ onSuccessfulUpdate }
+            />
+            <RecordCreator
+                { ...creatorBag }
+                disableErrorModal={[ 409 ]}
+            />
+        </>
     );
 }
 

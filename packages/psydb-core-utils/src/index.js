@@ -1,8 +1,9 @@
 'use strict';
-var { isPlainObject } = require('is-what');
+var { isPlainObject, isPromise } = require('is-what');
 
 module.exports = {
     isPlainObject,
+    isPromise,
     compareIds: require('./compare-ids'),
 
     arrify: require('./arrify'),
@@ -34,4 +35,5 @@ module.exports = {
     
     flatten: require('@cdxoo/flat').flatten,
     unflatten: require('@cdxoo/flat').unflatten,
+    ejson: require('@cdxoo/tiny-ejson'),
 }

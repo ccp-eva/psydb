@@ -3,6 +3,7 @@ var debug = require('debug')(
     'psydb:api-endpoint-lib:extended-earch:core'
 );
 
+var sift = require('sift');
 var {
     fromFacets,
 
@@ -50,6 +51,65 @@ var extendedSearchCore = async (bag) => {
         customRecordType: recordType,
         target: 'table',
     });
+    
+    // FIXME: generalzie the creation of the field parts
+    // see extended search columns
+    var addressFields = availableDisplayFieldData.filter(
+        sift({ type: 'Address' })
+    );
+    if (addressFields.length > 0) {
+        for (var it of addressFields) {
+            var block = [
+                {
+                    key: it.key + '.city',
+                    type: 'SaneString',
+                    displayName: `Ort (${it.displayName})`,
+                    props: {},
+                    subChannel: it.subChannel,
+                    pointer: it.pointer + '/city',
+                    dataPointer: it.dataPointer + '/city',
+                },
+                {
+                    key: it.key + '.postcode',
+                    type: 'SaneString',
+                    displayName: `PLZ (${it.displayName})`,
+                    props: {},
+                    subChannel: it.subChannel,
+                    pointer: it.pointer + '/postcode',
+                    dataPointer: it.dataPointer + '/postcode',
+                },
+                {
+                    key: it.key + '.street',
+                    type: 'SaneString',
+                    displayName: `Straße (${it.displayName})`,
+                    props: {},
+                    subChannel: it.subChannel,
+                    pointer: it.pointer + '/street',
+                    dataPointer: it.dataPointer + '/street',
+                },
+                {
+                    key: it.key + '.housenumber',
+                    type: 'SaneString',
+                    displayName: `Nummer (${it.displayName})`,
+                    props: {},
+                    subChannel: it.subChannel,
+                    pointer: it.pointer + '/housenumber',
+                    dataPointer: it.dataPointer + '/housenumber',
+                },
+                {
+                    key: it.key + '.affix',
+                    type: 'SaneString',
+                    displayName: `Zusatz (${it.displayName})`,
+                    props: {},
+                    subChannel: it.subChannel,
+                    pointer: it.pointer + '/affix',
+                    dataPointer: it.dataPointer + '/affix',
+                }
+            ];
+
+            availableDisplayFieldData.push(...block);
+        }
+    }
 
     var { fields, subChannelFields } = crt.state.settings;
     if (subChannelFields) {

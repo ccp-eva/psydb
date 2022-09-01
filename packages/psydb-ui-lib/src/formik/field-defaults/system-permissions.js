@@ -1,5 +1,15 @@
 export const SystemPermissions = (options) => {
-    var { permissions } = options;
+    var {
+        permissions,
+        noPreset = false
+    } = options;
+
+    if (noPreset) {
+        return {
+            accessRightsByResearchGroup: [],
+            isHidden: false,
+        }
+    }
 
     // FIXME: use permissions.getResearchGroupIds()
     var {

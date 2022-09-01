@@ -1,9 +1,8 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
 
-var { nanoid } = require('nanoid');
 var { compareIds } = require('@mpieva/psydb-core-utils');
-var { ApiError } = require('@mpieva/psydb-api-lib');
+var { ApiError, createId } = require('@mpieva/psydb-api-lib');
 var { SimpleHandler } = require('../../../lib/');
 var createSchema = require('./schema');
 
@@ -145,7 +144,7 @@ handler.triggerSystemEvents = async ({
         subChannelKey: 'scientific',
         payload: { $push: {
             [spath]: {
-                _id: nanoid(),
+                _id: await createId(),
 
                 type: experimentRecord.type,
                 experimentId,

@@ -28,9 +28,11 @@ var RequestBodySchema = () => ExactObject({
                 ValueFilter(),
             ]}
         }),
+        quickSearchFilters: { type: 'object' }, // FIXME
 
         offset: Integer(),
         limit: Integer(),
+
     },
     required: [
         'timezone',

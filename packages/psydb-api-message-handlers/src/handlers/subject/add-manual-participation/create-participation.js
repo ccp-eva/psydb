@@ -1,5 +1,5 @@
 'use strict';
-var { nanoid } = require('nanoid');
+var { createId } = require('@mpieva/psydb-api-lib');
 
 var createParticipation = async (context, bag) => {
     var { dispatch } = context;
@@ -19,7 +19,7 @@ var createParticipation = async (context, bag) => {
     } = bag;
 
     var participationItem = {
-        _id: nanoid(),
+        _id: await createId(),
 
         type: 'manual',
         realType: labProcedureType,
