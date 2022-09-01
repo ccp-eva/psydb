@@ -7,6 +7,7 @@ var {
     keyBy,
     unique,
     compareIds,
+    ejson,
 } = require('@mpieva/psydb-core-utils');
 
 var {
@@ -54,13 +55,16 @@ var selectableStudies = async (context, next) => {
     // FIXME: we need to provide which context we want the study list in
     // i.e. reservation/suject-selection so that we apply the correct
     // flag here
+    // FIXME: do that for each individual labProcedureType
+    // so we can filter studies properly when i.e. only away-team
+    // writeReservations is allowed
     var userResearchGroupIds = permissions.getAllLabOperationFlagIds({
         types: labProcedureTypes,
-        flags: [ 'canWriteReservation', 'canSelectSubjectsForExperiments' ]
+        flags: [ 'canWriteReservations', 'canSelectSubjectsForExperiments' ]
     });
     var isAllowed = permissions.hasSomeLabOperationFlags({
         types: labProcedureTypes,
-        flags: [ 'canWriteReservation', 'canSelectSubjectsForExperiments' ]
+        flags: [ 'canWriteReservations', 'canSelectSubjectsForExperiments' ]
     });
     if (!isAllowed) {
         throw new ApiError(403, {
