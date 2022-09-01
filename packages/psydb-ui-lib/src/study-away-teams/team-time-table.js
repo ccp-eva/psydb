@@ -77,6 +77,7 @@ const TeamTimeTable = ({
     variant,
 
     teamRecord,
+    onlyLocationId,
     allDayStarts,
 
     reservationRecords,
@@ -170,6 +171,7 @@ const TeamTimeTable = ({
                         <TimeSlot {...({
                             variant,
                             teamRecord,
+                            onlyLocationId,
                             dayStart,
 
                             reservationRecord,
@@ -192,6 +194,7 @@ const TeamTimeTable = ({
 const TimeSlot = ({
     variant,
     teamRecord,
+    onlyLocationId,
     dayStart,
 
     reservationRecord,
@@ -238,6 +241,7 @@ const TimeSlot = ({
         return (
             <ExperimentSlot { ...({
                 teamRecord,
+                onlyLocationId,
                 reservationRecord,
                 experimentRecord,
                 dayStart,

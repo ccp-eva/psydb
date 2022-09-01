@@ -10,6 +10,7 @@ const StudyAwayTeams = ({
     variant = 'experiment',
     studyId,
     studyRecordType,
+    onlyLocationId,
 
     onSelectEmptySlot,
     onSelectReservationSlot,
@@ -48,6 +49,7 @@ const StudyAwayTeams = ({
             variant,
             studyId,
             teamData,
+            onlyLocationId,
             
             onSelectEmptySlot,
             onSelectReservationSlot,

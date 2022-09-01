@@ -7,6 +7,7 @@ import getTextColor from '../bw-text-color-for-background';
 
 export const ExperimentSlot = ({
     teamRecord,
+    onlyLocationId,
     reservationRecord,
     experimentRecord,
     dayStart,
@@ -22,6 +23,7 @@ export const ExperimentSlot = ({
     var role = '';
 
     var isPlaceholder = experimentRecord.state.subjectData.length < 1;
+    var isUnselectablePlaceholder = false;
     var onClick = undefined;
 
     if (!isPlaceholder && onSelectExperimentSlot) {
@@ -34,13 +36,21 @@ export const ExperimentSlot = ({
         });
     }
     if (isPlaceholder && onSelectExperimentPlaceholderSlot) {
-        classNames.push('selectable');
-        role = 'button';
-        onClick = () => onSelectExperimentPlaceholderSlot({
-            teamRecord,
-            reservationRecord,
-            experimentRecord,
-        });
+        if (
+            !onlyLocationId 
+            || experimentRecord.state.locationId === onlyLocationId
+        ) {
+            classNames.push('selectable');
+            role = 'button';
+            onClick = () => onSelectExperimentPlaceholderSlot({
+                teamRecord,
+                reservationRecord,
+                experimentRecord,
+            });
+        }
+        else {
+            isUnselectablePlaceholder = true;
+        }
     }
 
     return (
@@ -55,12 +65,23 @@ export const ExperimentSlot = ({
         >
             { isPlaceholder 
                 ? (
-                    <Icons.RecordCircle style={{
-                        color: getTextColor(teamRecord.state.color),
-                        width: '16px',
-                        height: '16px',
-                        marginTop: '-5px'
-                    }} />
+                    isUnselectablePlaceholder
+                    ? (
+                        <Icons.XOctagon style={{
+                            color: getTextColor(teamRecord.state.color),
+                            width: '16px',
+                            height: '16px',
+                            marginTop: '-5px'
+                        }} />
+                    )
+                    : (
+                        <Icons.RecordCircle style={{
+                            color: getTextColor(teamRecord.state.color),
+                            width: '16px',
+                            height: '16px',
+                            marginTop: '-5px'
+                        }} />
+                    )
                 )
                 : (
                     <Icons.CheckCircleFill style={{

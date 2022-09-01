@@ -74,6 +74,7 @@ const FollowUpExperimentModal = ({
                 onSelectExperimentPlaceholderSlot: confirmModal.handleShow,
                 calendarRevision: revision,
                 withURLSearchParams: false,
+                onlyLocationId: experimentData.record.state.locationId,
             }) } />
         );
         prerenderedConfirmModal = (

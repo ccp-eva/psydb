@@ -24,6 +24,7 @@ export const Calendar = ({
     variant,
     studyId,
     teamData,
+    onlyLocationId,
     
     onSelectEmptySlot,
     onSelectReservationSlot,
@@ -93,6 +94,7 @@ export const Calendar = ({
                             key: teamRecord._id,
                             variant,
                             teamRecord,
+                            onlyLocationId,
 
                             allDayStarts,
                             reservationRecords,

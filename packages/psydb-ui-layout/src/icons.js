@@ -19,6 +19,7 @@ export {
     SquareFill,
     CheckSquareFill,
     XSquareFill,
+    XOctagon,
 
     CheckCircleFill,
     RecordCircle,
