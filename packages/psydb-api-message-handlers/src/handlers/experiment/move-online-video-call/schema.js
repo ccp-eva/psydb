@@ -6,6 +6,7 @@ var {
     ForeignId,
     SaneString,
     DateTimeInterval,
+    DefaultBool,
 } = require('@mpieva/psydb-schema-fields');
 
 var { Message } = require('@mpieva/psydb-schema-helpers');

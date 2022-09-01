@@ -56,4 +56,8 @@ module.exports = {
     dispatchRemoveSubjectEvents: (
         require('./dispatch-remove-subject-events')
     ),
+    
+    resetSubjectInviteStatus: (
+        require('./reset-subject-invite-status')
+    ),
 };

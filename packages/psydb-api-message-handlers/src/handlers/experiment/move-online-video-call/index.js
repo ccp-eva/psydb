@@ -1,7 +1,11 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
 
-var { ApiError } = require('@mpieva/psydb-api-lib');
+var {
+    ApiError,
+    mongoEscapeDeep,
+} = require('@mpieva/psydb-api-lib');
+
 var {
     SimpleHandler,
     removeReservationsInInterval, // FIXME: where to put this?
@@ -13,6 +17,7 @@ var {
     prepareExperimentRecord,
     prepareOpsTeamRecord,
     prepareTargetLocation,
+    resetSubjectInviteStatus,
 } = require('../util');
 
 var createSchema = require('./schema');
@@ -84,7 +89,7 @@ handler.checkAllowedAndPlausible = async (context) => {
 }
 
 handler.triggerSystemEvents = async (context) => {
-    var { cache, message, dispatch } = context;
+    var { cache, message, dispatch, rohrpost, personnelId } = context;
 
     var {
         experimentId,
@@ -102,7 +107,9 @@ handler.triggerSystemEvents = async (context) => {
     var {
         interval: oldExperimentInterval,
         experimentOperatorTeamId: oldTeamId,
-        locationId: oldLocationId
+        locationId: oldLocationId,
+        subjectData: oldSubjectData,
+        studyId,
     } = experimentRecord.state;
 
     if (shouldRemoveOldReservation) {
@@ -116,6 +123,11 @@ handler.triggerSystemEvents = async (context) => {
         });
     }
 
+    var newSubjectData = oldSubjectData.map(it => ({
+        ...it,
+        invitationStatus: 'scheduled'
+    }));
+
     await dispatch({
         collection: 'experiment',
         channelId: experimentId,
@@ -124,7 +136,17 @@ handler.triggerSystemEvents = async (context) => {
             'state.locationRecordType': locationRecord.type,
             'state.locationId': locationRecord._id,
             'state.interval': interval,
+            'state.subjectData': newSubjectData,
         }}
+    });
+    
+    await resetSubjectInviteStatus({
+        rohrpost,
+        experimentId,
+        experimentType: 'online-video-call',
+        studyId,
+        personnelId,
+        subjectIds: oldSubjectData.map(it => it.subjectId)
     });
 }
 
