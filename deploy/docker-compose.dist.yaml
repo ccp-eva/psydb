@@ -6,7 +6,7 @@ services:
     ports:
       - "127.0.0.1:47017:27017"
     volumes:
-      - "{{BASE_DIR}}/psydb-data/mongodb:/data/db"
+      - "./psydb-data/mongodb:/data/db"
     networks:
       - "psydb-net"
 
@@ -16,8 +16,8 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - "{{BASE_DIR}}/psydb-config/nginx:/etc/nginx/conf.d"
-      - "{{BASE_DIR}}/psydb-ssl:/etc/ssl/private"
+      - "./psydb-config/nginx:/etc/nginx/conf.d"
+      - "./psydb-ssl:/etc/ssl/private"
     networks:
       - "psydb-net"
     # make it accessible from outside
@@ -43,7 +43,7 @@ services:
     ports:
       - "127.0.0.1:8080:8080"
     volumes:
-      - "{{BASE_DIR}}/psydb-config/psydb:/usr/src/app/config"
+      - "./psydb-config/psydb:/usr/src/app/config"
     networks:
       - "psydb-net"
     depends_on:
