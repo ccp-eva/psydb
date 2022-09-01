@@ -18,13 +18,6 @@ export const ScalarArrayItemWrapper = (ps) => {
 
     var { error } = formikMeta;
 
-    return (
-        <>
-            { children }
-            <ErrorIndicator { ...ps } />
-        </>
-    )
-
     var className = classnames([
         'ml-3 pl-2',
         !(index === lastIndex) && 'mb-3'
@@ -51,6 +44,7 @@ export const ScalarArrayItemWrapper = (ps) => {
                 })} />
 
             </div>
+            <ErrorIndicator { ...ps } />
         </li>
     );
 }

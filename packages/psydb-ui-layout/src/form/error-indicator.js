@@ -48,6 +48,13 @@ const createFriendlyMessage = (err) => {
                 ? `Muss größer als ${params.limit} sein.`
                 : `Muss größer oder gleich ${params.limit} sein.`
             );
+        case 'format':
+            if (['mongodb-object-id'].includes(params.format)) {
+                return 'Dies ist ein Plichtfeld. Bitte einen Wert eingeben.'
+            }
+            else {
+                return err.message;
+            }
         case 'FakeAjvError':
             return err.message;
         default:
