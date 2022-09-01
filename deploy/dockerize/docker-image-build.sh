@@ -1,6 +1,6 @@
 #!/bin/sh
 SCRIPT_DIR=$(dirname "$0")
-BASE_DIR=$SCRIPT_DIR/../
+BASE_DIR=$SCRIPT_DIR/../../
 
 VERSION=$(node -pe "require('$BASE_DIR/packages/psydb-web/package.json').version");
 DATE=$(date +%Y%m%d%H%M)
@@ -19,6 +19,3 @@ docker build -f $SCRIPT_DIR/Dockerfile -t cdxoo/psydb:latest $BASE_DIR \
     && docker tag cdxoo/psydb $TAG \
     && rush update \
     && docker image prune --filter label=stage=psydb-prebuild
-
-# docker tag local-image:tagname new-repo:tagname
-# docker push new-repo:tagname
