@@ -40,6 +40,7 @@ var postprocessSubjectRecords = require('../postprocess-subject-records');
 var combineSubjectResponseData = require('../combine-subject-response-data');
 var fetchParentDataForGroups = require('../fetch-parent-data-for-groups');
 var fetchUpcomingExperimentData = require('../fetch-upcoming-experiment-data');
+var fetchProcessedExperimentData = require('../fetch-processed-experiment-data');
 
 var prepareGroupByField = require('./prepare-group-by-field');
 var fetchExcludedLocationIds = require('./fetch-excluded-location-ids');
@@ -286,6 +287,13 @@ var searchGrouped = async (context, next) => {
     });
     debug('end fetch upcoming location experiments');
 
+    debug('start fetch processed location experiments');
+    var processedLocationExperimentData = await fetchProcessedExperimentData({
+        db,
+        locationIds: groupIds,
+    });
+    debug('end fetch processed location experiments');
+
     var groupedById = keyBy({
         items: groupedSubjectRecords,
         byProp: '_id',
@@ -293,6 +301,11 @@ var searchGrouped = async (context, next) => {
 
     var upcomingByLocationId = keyBy({
         items: upcomingLocationExperimentData.upcomingForIds,
+        byProp: '_id',
+    })
+
+    var processedByLocationId = keyBy({
+        items: processedLocationExperimentData.processedForIds,
         byProp: '_id',
     })
 
@@ -307,20 +320,28 @@ var searchGrouped = async (context, next) => {
             : []
         ),
         _pastStudies: (
-            it.state.internals.visits
-            .sort((a,b) => (
-                a.timestamp.getTime() > b.timestamp.getTime()
-                ? 1 : -1 // reversed
-            ))
-            .map(it => ({ state: {
-                _id: it.experimentId,
-                type: it.experimentType,
-                studyId: it.studyId,
-                interval: { start: it.timestamp }
-            }}))
-            .slice(0,3)
-            .reverse()
-        )
+            processedByLocationId[it._id]
+            ? (
+                processedByLocationId[it._id].processed
+                .slice(0, 3)
+            )
+            : []
+        ),
+        //_pastStudies: (
+        //    it.state.internals.visits
+        //    .sort((a,b) => (
+        //        a.timestamp.getTime() > b.timestamp.getTime()
+        //        ? 1 : -1 // reversed
+        //    ))
+        //    .map(it => ({ state: {
+        //        _id: it.experimentId,
+        //        type: it.experimentType,
+        //        studyId: it.studyId,
+        //        interval: { start: it.timestamp }
+        //    }}))
+        //    .slice(0,3)
+        //    .reverse()
+        //)
     }));
     //console.dir(merged, { depth: null });
 
@@ -337,6 +358,7 @@ var searchGrouped = async (context, next) => {
                 ...omit('records', locationData),
             },
             locationExperimentMetadata: merge(
+                omit('processedForIds', processedLocationExperimentData),
                 omit('upcomingForIds', upcomingLocationExperimentData),
                 omit('records', locationData),
             ),
