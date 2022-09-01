@@ -1,9 +1,10 @@
 
 ```sh
-sh docker-image-build.sh
+./build.sh
 # for local testing
 docker run --network="host" cdxoo/psydb:latest
+# or ./run.sh
 
 # push to docker registry
-sh docker-image-publish.sh
+./publish.sh
 ```

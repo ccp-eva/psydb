@@ -13,7 +13,7 @@ rush update
 rush build --only @mpieva/psydb-ui
 
 rush unlink \
-    && rm -rf $SCRIPT_DIR/../common/temp/
+    && rm -rf $BASE_DIR/common/temp/
 
 docker build -f $SCRIPT_DIR/Dockerfile -t cdxoo/psydb:latest $BASE_DIR \
     && docker tag cdxoo/psydb $TAG \
