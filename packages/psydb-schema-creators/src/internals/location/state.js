@@ -46,29 +46,8 @@ var GenericLocationState = ({
 };
 
 var Internals = () => ExactObject({
-    properties: {
-        visits: DefaultArray({
-            items: Visit()
-        })
-    },
-    required: [
-        'visits'
-    ]
-});
-
-var Visit = () => ExactObject({
-    properties: {
-        experimentType: { type: 'string' /* FIXME*/ },
-        experimentId: ForeignId({ collection: 'experiment' }),
-        studyId: ForeignId({ collection: 'study' }),
-        timestamp: DateTime(),
-    },
-    required: [
-        'experimentType',
-        'experimentId',
-        'studyId',
-        'timestamp',
-    ]
+    properties: {},
+    required: []
 });
 
 module.exports = GenericLocationState;
