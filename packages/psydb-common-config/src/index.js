@@ -1,3 +1,3 @@
 module.exports = {
-    enableMigrationMode: true
+    enableMigrationMode: false
 }
