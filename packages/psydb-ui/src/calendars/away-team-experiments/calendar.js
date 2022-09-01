@@ -34,7 +34,7 @@ import EmptyDaysRow from './empty-days-row';
 import StudyRow from './study-row';
 
 const headerStyle = {
-    //marginLeft: '35px',
+    marginLeft: '35px', // spacing for study labels
 }
 
 const AwayTeamCalendar = ({
