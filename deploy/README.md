@@ -1,9 +1,9 @@
 
 ```sh
-sh make-docker.sh
+sh docker-image-build.sh
 # for local testing
 docker run --network="host" cdxoo/psydb:latest
 
 # push to docker registry
-sh make-publish.sh
+sh docker-image-publish.sh
 ```
