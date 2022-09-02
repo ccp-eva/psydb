@@ -37,10 +37,10 @@ fns.merge = ({ intervals }) => {
         else {
             // FIXME: boundaries must be merged too
             if (checkHasOverlap(current, interval)) {
-                if (interval.end > current.end) {
+                if (interval.end >= current.end) {
                     current.end = interval.end
                 }
-                if (interval.start < current.end) {
+                if (interval.start <= current.start) {
                     current.start = interval.start
                 }
             }
