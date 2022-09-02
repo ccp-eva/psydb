@@ -36,6 +36,7 @@ const Modals = ({
                 onHide: moveModal.handleHide,
                 payloadData: moveModal.data,
 
+                experimentType: experimentData.record.type,
                 experimentData,
                 studyData,
                 subjectDataByType,
