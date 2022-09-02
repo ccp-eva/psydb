@@ -39,6 +39,8 @@ handler.checkAllowedAndPlausible = async (context) => {
 }
 
 handler.triggerSystemEvents = async (context) => {
+    var now = new Date();
+
     var {
         db,
         rohrpost,
