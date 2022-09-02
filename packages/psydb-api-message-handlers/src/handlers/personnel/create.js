@@ -37,7 +37,12 @@ module.exports = GenericRecordHandler({
     collection: 'personnel',
     op: 'create',
     triggerSystemEvents: async (options) => {
-        var { db, rohrpost, personnelId, message, cache, dispatchProps } = options;
+        var now = new Date();
+        var {
+            db, rohrpost, personnelId,
+            message, cache, dispatchProps
+        } = options;
+
         var destructured = destructureMessage({ message });
 
         var channel = await openChannel({
@@ -63,7 +68,7 @@ module.exports = GenericRecordHandler({
             subChannelKey: 'gdpr',
             props: deepmerge(
                 props.gdpr,
-                { internals: { passwordHash }}
+                { internals: { lastPasswordChange: now }}
             ),
             initialize: true,
         });
@@ -76,6 +81,16 @@ module.exports = GenericRecordHandler({
             initialize: true,
         });
         
+        await db.collection('personnelShadow').updateOne(
+            { _id: channel.id },
+            { $set: {
+                setAt: now,
+                setBy: personnelId,
+                passwordHash: passwordHash,
+            }},
+            { upsert: true }
+        );
+
         cache.generatedPassword = generatedPassword;
     },
     triggerOtherSideEffects: async (options) => {

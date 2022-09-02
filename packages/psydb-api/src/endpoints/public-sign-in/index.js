@@ -42,13 +42,21 @@ var signIn = async (context, next) => {
         debug('personnel record not found');
         throw new ApiError(401); // TODO: 401
     }
-
+    
     if (!hasRootAccess && researchGroupIds.length < 1) {
         debug('user has no researchgroup and is not root user');
         throw new ApiError(401); // TODO: 401
     }
 
-    var storedHash = record.gdpr.state.internals.passwordHash;
+    var shadow = await db.collection('personnelShadow').findOne({
+        _id: record._id,
+    });
+    if (!shadow) {
+        debug('user has no shadow item');
+        throw new ApiError(401); // TODO: 401
+    }
+
+    var storedHash = shadow.passwordHash;
     if (bcrypt.compareSync(password, storedHash)) {
         debug('passwords match, setting session personnelId');
         session.personnelId = record._id;

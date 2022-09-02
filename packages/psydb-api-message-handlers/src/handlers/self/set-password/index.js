@@ -22,13 +22,13 @@ handler.checkAllowedAndPlausible = async (context) => {
 
     var { currentPassword } = message.payload;
 
-    var self = await (
-        db.collection('personnel')
+    var shadow = await (
+        db.collection('personnelShadow')
         .findOne({ _id: personnelId }, { projection: {
-            'gdpr.state.internals.passwordHash': true,
+            'passwordHash': true,
         }})
     );
-    var passwordHash = self.gdpr.state.internals.passwordHash;
+    var { passwordHash } = shadow;
 
     if (bcrypt.compareSync(currentPassword, passwordHash)) {
         debug('passwords match');
@@ -50,12 +50,22 @@ handler.triggerSystemEvents = async (context) => {
     var { newPassword } = message.payload;
     var newPasswordHash = bcrypt.hashSync(newPassword, 10);
 
+    await db.collection('personnelShadow').updateOne(
+        { _id: personnelId },
+        { $set: {
+            setAt: now,
+            setBy: personnelId,
+            passwordHash: newPasswordHash,
+        }},
+        { upsert: true }
+    );
+
     await dispatch({
         collection: 'personnel',
         channelId: personnelId,
         subChannelKey: 'gdpr',
         payload: { $set: {
-            'gdpr.state.internals.passwordHash': newPasswordHash,
+            'gdpr.state.internals.lastPasswordChange': now,
         }}
     });
 }

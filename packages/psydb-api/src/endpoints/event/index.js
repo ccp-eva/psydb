@@ -27,7 +27,16 @@ var createMessageHandling = ({
         redactMessageOnQueue: (incomingMessage) => {
             // we dont want to store password in text form
             // see handlers/set-personnel-password
-            var { password, ...redactedPayload } = incomingMessage.payload;
+            var {
+                password,
+                newPassword,
+                currentPassword,
+                ...redactedPayload
+            } = incomingMessage.payload;
+
+            if (password, newPassword, currentPassword) {
+                console.log('redacting payload password');
+            }
             return {
                 ...incomingMessage,
                 payload: redactedPayload

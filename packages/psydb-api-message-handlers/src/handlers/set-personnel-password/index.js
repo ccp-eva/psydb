@@ -34,14 +34,19 @@ handler.checkAllowedAndPlausible = async ({
     }
 };
 
-handler.triggerSystemEvents = async ({
-    db,
-    rohrpost,
-    message,
-    cache,
-    dispatch,
-}) => {
-    var { type: messageType, personnelId, payload } = message;
+handler.triggerSystemEvents = async (context) => {
+    var now = new Date();
+
+    var {
+        db,
+        rohrpost,
+        message,
+        cache,
+        dispatch,
+        personnelId,
+    } = context;
+
+    var { type: messageType, payload } = message;
     var {
         id: targetRecordId, lastKnownEventId,
         method, password, sendMail
@@ -58,12 +63,22 @@ handler.triggerSystemEvents = async ({
     }
     var passwordHash = bcrypt.hashSync(password, 10);
 
+    await db.collection('personnelShadow').updateOne(
+        { _id: targetRecordId },
+        { $set: {
+            setAt: now,
+            setBy: personnelId,
+            passwordHash,
+        }},
+        { upsert: true }
+    );
+
     await dispatch({
         collection: 'personnel',
         channelId: targetRecordId,
         subChannelKey: 'gdpr',
         payload: { $set: {
-            'gdpr.state.internals.passwordHash': passwordHash,
+            'gdpr.state.internals.lastPasswordChange': now,
         }}
     });
         
