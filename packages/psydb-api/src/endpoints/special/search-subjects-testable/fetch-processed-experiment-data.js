@@ -19,7 +19,7 @@ var fetchProcessedExperimentData = async ({
 
     var processedExperiments = await (
         db.collection('experiment').aggregate([
-            { $sort: { 'state.interval.start': 1 }},
+            { $sort: { 'state.interval.start': -1 }},
             { $match: {
                 'state.locationId': { $in: locationIds },
                 'state.isPostprocessed': true
@@ -31,11 +31,27 @@ var fetchProcessedExperimentData = async ({
                 'state.interval.start': true,
             }},
             { $group: {
+                _id: {
+                    locationId: '$state.locationId',
+                    studyId: '$state.studyId',
+                    timestamp: '$state.interval.start'
+                },
+                first: { $first: '$$ROOT' }
+            }},
+            { $replaceRoot: { newRoot: '$first' }},
+            { $group: {
                 _id: '$state.locationId',
                 processed: { $push: '$$ROOT' }
             }},
         ]).toArray()
     );
+
+    for (var it of processedExperiments) {
+        it.processed = it.processed.sort((a, b) => (
+            a.state.interval.start.getTime() < b.state.interval.start.getTime()
+            ? 1 : -1
+        )).slice(0, 3)
+    }
     
     var experimentRelated = await fetchRelatedLabelsForMany({
         db,
