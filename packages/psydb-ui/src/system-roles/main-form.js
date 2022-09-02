@@ -50,122 +50,98 @@ const FormFields = (ps) => {
             <Bool
                 label='kann Locations einsehen (Kigas, Räume, etc.)'
                 dataXPath='$.canReadLocations'
-                required
             />
             <Bool
                 label='kann Locations bearbeiten (Kigas, Räume, etc.)'
                 dataXPath='$.canWriteLocations'
-                required
             />
             <Bool
                 label='kann Externe Personen einsehen (z.B. Ärzte)'
                 dataXPath='$.canReadExternalPersons'
-                required
             />
             <Bool
                 label='kann Externe Personen bearbeiten (z.B. Ärzte)'
                 dataXPath='$.canWriteExternalPersons'
-                required
             />
             <Bool
                 label='kann Externe Organisationen einsehen (z.B. Träger)'
                 dataXPath='$.canReadExternalOrganizations'
-                required
             />
             <Bool
                 label='kann Externe Organisationen bearbeiten (z.B. Träger)'
                 dataXPath='$.canWriteExternalOrganizations'
-                required
             />
             <Bool
                 label='kann Themengebiete einsehen'
                 dataXPath='$.canReadStudyTopics'
-                required
             />
             <Bool
                 label='kann Themengebiete bearbeiten'
                 dataXPath='$.canWriteStudyTopics'
-                required
             />
             <Bool
                 label='kann Hilfstabellen einsehen'
                 dataXPath='$.canReadHelperSets'
-                required
             />
             <Bool
                 label='kann Hilfstabellen bearbeiten'
                 dataXPath='$.canWriteHelperSets'
-                required
             />
             <Bool
                 label='kann Mitarbeiter:innen einsehen (d.h. Benutzer-Accounts)'
                 dataXPath='$.canReadPersonnel'
-                required
             />
             <Bool
                 label='kann Mitarbeiter:innen bearbeiten (d.h. Benutzer-Accounts)'
                 dataXPath='$.canWritePersonnel'
-                required
             />
             <Bool
                 label='kann das Passwort anderer Benutzer manuell neu setzen'
                 dataXPath='$.canSetPersonnelPassword'
-                required
             />
             <Bool
                 label='kann Studien einsehen'
                 dataXPath='$.canReadStudies'
-                required
             />
             <Bool
                 label='kann Studien anlegen und bearbeiten'
                 dataXPath='$.canWriteStudies'
-                required
             />
             <Bool
                 label='kann Proband:innen einsehen'
                 dataXPath='$.canReadSubjects'
-                required
             />
             <Bool
                 label='kann Proband:innen anlegen und bearbeiten'
                 dataXPath='$.canWriteSubjects'
-                required
             />
             <Bool
                 label='kann einsehen welche Proband:innen an einer Studie teilgeommen haben'
                 dataXPath='$.canReadParticipation'
-                required
             />
             <Bool
                 label='kann manuell Proband:innen in eine Studie eintragen'
                 dataXPath='$.canWriteParticipation'
-                required
             />
             <Bool
                 label='kann Räume/Teams innerhalb der nächsten 3 Tage reservieren'
                 dataXPath='$.canCreateReservationsWithinTheNext3Days'
-                required
             />
             <Bool
                 label='kann Termine innerhalb der nächsten 3 Tage machen'
                 dataXPath='$.canCreateExperimentsWithinTheNext3Days'
-                required
             />
             <Bool
                 label='kann die Erweiterte Suche benutzen'
                 dataXPath='$.canUseExtendedSearch'
-                required
             />
             <Bool
                 label='kann CSV-Export benutzen'
                 dataXPath='$.canUseCSVExport'
-                required
             />
             <Bool
                 label='kann Rezeptionskalender einsehen'
                 dataXPath='$.canViewReceptionCalendar'
-                required
             />
 
             <LabOperationFields
@@ -204,39 +180,32 @@ const LabOperationFields = (ps) => {
                     : 'kann Experimenter:innen-Teams planen'
                 }
                 dataXPath={ `${dataXPath}.canWriteReservations` }
-                required
             />
             <Bool
                 label='kann Proband:innen für Termine auswählen'
                 dataXPath={ `${dataXPath}.canSelectSubjectsForExperiments` }
-                required
             />
             { hasInvitation && (
                 <Bool
                     label='kann Termine bestätigen'
                     dataXPath={ `${dataXPath}.canConfirmSubjectInvitation` }
-                    required
                 />
             )}
             <Bool
                 label='kann Terminkalender einsehen'
                 dataXPath={ `${dataXPath}.canViewExperimentCalendar` }
-                required
             />
             <Bool
                 label='kann Termine verschieben und absagen'
                 dataXPath={ `${dataXPath}.canMoveAndCancelExperiments` }
-                required
             />
             <Bool
                 label='kann Experimenter:innen-Teams ändern'
                 dataXPath={ `${dataXPath}.canChangeOpsTeam` }
-                required
             />
             <Bool
                 label='kann Termine nachbereiten'
                 dataXPath={ `${dataXPath}.canPostprocessExperiments` }
-                required
             />
         </>
     )
@@ -252,7 +221,6 @@ const SurveyFields = (ps) => {
             <Bool
                 label='kann Online-Umfragen durchführen'
                 dataXPath={ `${dataXPath}.canPerformOnlineSurveys` }
-                required
             />
         </>
     )
@@ -272,7 +240,6 @@ const OpsHeader = (ps) => {
 const Bool = (ps) => {
     return (
         <Fields.DefaultBool
-            required
             uiSplit={[ 8, 4 ]}
             { ...ps }
         />
