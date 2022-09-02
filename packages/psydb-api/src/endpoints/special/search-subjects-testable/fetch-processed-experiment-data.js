@@ -22,7 +22,8 @@ var fetchProcessedExperimentData = async ({
             { $sort: { 'state.interval.start': -1 }},
             { $match: {
                 'state.locationId': { $in: locationIds },
-                'state.isPostprocessed': true
+                'state.isPostprocessed': true,
+                'state.interval.start': { $gte: new Date('2015-01-01')} // XXX
             }},
             { $project: {
                 _id: true,
