@@ -33,7 +33,7 @@ COPY --from=builder /usr/src/app/deploy/packages packages
 
 # FIXME: not sure if we want UTC instead
 RUN apk add --no-cache tzdata
-ENV TZ="Europe/Berlin"
+ENV TZ="UTC"
 
 EXPOSE 8080
 
