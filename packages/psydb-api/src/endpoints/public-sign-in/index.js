@@ -29,6 +29,7 @@ var signIn = async (context, next) => {
                 email,
                 isPrimary: true,
             }},
+            'scientific.state.canLogIn': true
         },
         projection: {
             'scientific.state': true,

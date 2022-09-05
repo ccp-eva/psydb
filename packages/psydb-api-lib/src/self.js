@@ -48,6 +48,9 @@ var Self = async ({
                 ],
                 ...query
             }},
+            { $match: {
+                'scientific.state.internals.isRemoved': { $ne: true },
+            }},
             // TODO: i think its better to have a seperate password
             // collection to avoid always having to project here
             // ane in other places
