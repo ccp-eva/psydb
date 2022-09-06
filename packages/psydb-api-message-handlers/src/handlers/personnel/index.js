@@ -12,11 +12,8 @@ var {
 
 var PersonnelGroup = MessageHandlerGroup([
     require('./create'),
+    require('./patch'),
     
-    GenericRecordHandler({
-        collection: 'personnel',
-        op: 'patch',
-    }),
     GenericHideRecordHandler({ collection: 'personnel' }),
     GenericUnhideRecordHandler({ collection: 'personnel' }),
     

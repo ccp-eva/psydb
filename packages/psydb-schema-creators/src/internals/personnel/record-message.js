@@ -8,10 +8,16 @@ var internals = require('../');
 
 var PersonnelRecordMessage = ({
     op, // create/patch/delete
+    enableCanLogIn,
+    enableHasRootAccess,
 }) => {
     return MultiChannelRecordMessage({
         op,
         collection: 'personnel',
+        extraOptions: {
+            enableCanLogIn,
+            enableHasRootAccess,
+        },
         subChannelStateSchemaCreators: {
             scientific: internals.PersonnelScientificState,
             gdpr: internals.PersonnelGdprState

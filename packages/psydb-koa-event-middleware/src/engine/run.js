@@ -90,7 +90,13 @@ var run = ({
     }
 
     var dispatchProps = context.dispatchProps = async (ps) => {
-        var { initialize, recordType, props = {}, ...pass } = ps;
+        var {
+            initialize,
+            recordType,
+            props = {},
+            additionalSchemaCreatorArgs,
+            ...pass
+        } = ps;
         var { collection, subChannelKey } = pass;
        
         var defaults = {};
@@ -100,6 +106,7 @@ var run = ({
                 collection,
                 subChannelKey,
                 recordType,
+                additionalSchemaCreatorArgs,
             });
             props = merge(defaults.state, props);
         }

@@ -19,10 +19,12 @@ var subChannelKeys = [
     'gdpr'
 ];
 
-var createPayloadPropsSchema = ({
-    subChannelCustomFieldDefinitions,
-    subChannelStateSchemaCreators
-}) => {
+var createPayloadPropsSchema = (bag) => {
+    var {
+        subChannelCustomFieldDefinitions,
+        subChannelStateSchemaCreators,
+        extraOptions = {}
+    } = bag;
     subChannelCustomFieldDefinitions = subChannelCustomFieldDefinitions || {};
     
 
@@ -33,7 +35,8 @@ var createPayloadPropsSchema = ({
         
         subChannelSchemas[key] = SchemaCreator({
             enableInternalProps: false,
-            customFieldDefinitions
+            customFieldDefinitions,
+            extraOptions
         });
     }
 
@@ -49,15 +52,18 @@ var createPayloadPropsSchema = ({
     });
 }
 
-var MultiChannelRecordCreateMessage = ({
-    collection,
-    type,
+var MultiChannelRecordCreateMessage = (bag) => {
+    var {
+        collection,
+        type,
+        extraOptions = {},
 
-    staticCreatePropSchemas,
+        staticCreatePropSchemas = {},
 
-    subChannelCustomFieldDefinitions,
-    subChannelStateSchemaCreators
-}) => {
+        subChannelCustomFieldDefinitions,
+        subChannelStateSchemaCreators
+    } = bag;
+
     staticCreatePropSchemas = staticCreatePropSchemas || {};
     
     if (staticCreatePropSchemas.id !== undefined) {
@@ -74,7 +80,8 @@ var MultiChannelRecordCreateMessage = ({
 
     var payloadPropsSchema = createPayloadPropsSchema({
         subChannelCustomFieldDefinitions,
-        subChannelStateSchemaCreators
+        subChannelStateSchemaCreators,
+        extraOptions
     });
 
     return Message({
@@ -98,17 +105,19 @@ var MultiChannelRecordCreateMessage = ({
     });
 }
 
-var MultiChannelRecordPatchMessage = ({
-    collection,
-    type,
-
-    subChannelCustomFieldDefinitions,
-    subChannelStateSchemaCreators
-}) => {
+var MultiChannelRecordPatchMessage = (bag) => {
+    var {
+        collection,
+        type,
+        extraOptions = {},
+        subChannelCustomFieldDefinitions,
+        subChannelStateSchemaCreators
+    } = bag;
 
     var payloadPropsSchema = createPayloadPropsSchema({
         subChannelCustomFieldDefinitions,
-        subChannelStateSchemaCreators
+        subChannelStateSchemaCreators,
+        extraOptions
     });
 
 
@@ -130,16 +139,6 @@ var MultiChannelRecordPatchMessage = ({
                             ...acc,
                             [key]: EventId()
                         }), {})
-                    ),
-                    required: (
-                        // FIXME: redundant see above
-                        subChannelKeys
-                        .filter(key => (
-                            // staticly defined collections
-                            // dont have custom field defs
-                            !subChannelCustomFieldDefinitions
-                            || subChannelCustomFieldDefinitions[key].length > 0
-                        ))
                     ),
                 }),
                 props: payloadPropsSchema,

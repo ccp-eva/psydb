@@ -8,15 +8,26 @@ var {
     DefaultBool,
 } = require('@mpieva/psydb-schema-fields');
 
-var PersonnelScientificState = () => {
+var PersonnelScientificState = (bag) => {
+    var { extraOptions = {} } = bag;
+    var {
+        enableCanLogIn = false,
+        enableHasRootAccess = false,
+    } = extraOptions;
+
     var schema = ExactObject({
         properties: {
-            canLogIn: DefaultBool({
-                title: 'Log-In erlauben'
+            ...(enableCanLogIn && {
+                canLogIn: DefaultBool({
+                    title: 'Log-In erlauben'
+                }),
             }),
-            hasRootAccess: DefaultBool({
-                title: 'Admin-Zugriff',
+            ...(enableHasRootAccess && {
+                hasRootAccess: DefaultBool({
+                    title: 'Admin-Zugriff',
+                }),
             }),
+
             researchGroupSettings: {
                 title: 'Forschungsgruppen',
                 type: 'array',
@@ -49,8 +60,9 @@ var PersonnelScientificState = () => {
             }),
         },
         required: [
-            'canLogIn',
-            'hasRootAccess',
+            ...(enableCanLogIn ? [ 'canLogIn' ] : []),
+            ...(enableHasRootAccess ? [ 'hasRootAccess' ] : []),
+
             'researchGroupSettings',
             'systemPermissions',
         ],

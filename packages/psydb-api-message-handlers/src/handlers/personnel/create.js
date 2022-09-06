@@ -5,9 +5,12 @@ var bcrypt = require('bcrypt');
 var deepmerge = require('deepmerge');
 var ejson = require('@cdxoo/tiny-ejson');
 var config = require('@mpieva/psydb-api-config');
+var allSchemaCreators = require('@mpieva/psydb-schema-creators');
+
 var {
     createInitialChannelState,
     pathifyProps,
+    validateOrThrow,
 } = require('@mpieva/psydb-api-lib');
 
 var GenericRecordHandler = require('../../lib/generic-record-handler');
@@ -36,6 +39,23 @@ var getRecipientMail = (emails) => {
 module.exports = GenericRecordHandler({
     collection: 'personnel',
     op: 'create',
+    checkSchema: async (context) => {
+        var { db, message, permissions } = context;
+        var { RecordMessage } = allSchemaCreators['personnel'];
+
+        var isRoot = permissions.isRoot();
+
+        var schema = RecordMessage({
+            op: 'create',
+            enableCanLogIn: isRoot,
+            enableHasRootAccess: isRoot,
+        });
+
+        validateOrThrow({
+            schema,
+            payload: message
+        });
+    },
     triggerSystemEvents: async (options) => {
         var now = new Date();
         var {
@@ -79,6 +99,12 @@ module.exports = GenericRecordHandler({
             subChannelKey: 'scientific',
             props: props.scientific,
             initialize: true,
+            additionalSchemaCreatorArgs: {
+                extraOptions: {
+                    enableCanLogIn: true,
+                    enableHasRootAccess: true
+                }
+            }
         });
         
         await db.collection('personnelShadow').updateOne(
