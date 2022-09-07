@@ -157,7 +157,7 @@ var reverseRefs = async (context, next) => {
         }
     }
 
-    console.dir(ejson(reverseRefsWithLabel), { depth: null });
+    //console.dir(ejson(reverseRefsWithLabel), { depth: null });
 
     context.body = ResponseBody({
         data: {

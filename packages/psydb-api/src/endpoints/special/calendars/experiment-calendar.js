@@ -110,9 +110,6 @@ var experimentCalendar = async (context, next) => {
                 { $match: {
                     _id: studyId,
                 }},
-                { $project: {
-                    'state.shorthand': true
-                }},
                 { $sort: {
                     'state.shorthand': 1
                 }}
