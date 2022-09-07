@@ -64,7 +64,8 @@ export const withRecordRemover = (options) => {
         var id = manualId || paramId;
 
         var permissions = usePermissions();
-        if (!permissions.isRoot()) {
+        var canRemove = permissions.hasCollectionFlag(collection, 'remove');
+        if (!canRemove) {
             return <PermissionDenied />
         }
 

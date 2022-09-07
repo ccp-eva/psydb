@@ -21,9 +21,8 @@ const GenericRecordEditorFooter = (ps) => {
 
     var { path, url } = useRouteMatch();
 
-    var isRoot = permissions.isRoot();
     var canEdit = permissions.hasCollectionFlag(collection, 'write');
-    var canRemove = permissions.hasCollectionFlag(collection, 'delete');
+    var canRemove = permissions.hasCollectionFlag(collection, 'remove');
 
     var { record } = fetched;
 
@@ -35,7 +34,7 @@ const GenericRecordEditorFooter = (ps) => {
 
     return (
         <>
-            { (isRoot || canEdit) && (enableHide || enableRemove) && (
+            { (canRemove || canEdit) && (enableHide || enableRemove) && (
                 <>
                     <div className='d-flex justify-content-between mt-4 mb-4'>
                         { canEdit && enableHide && (
@@ -47,7 +46,7 @@ const GenericRecordEditorFooter = (ps) => {
                             />
                         )}
                         
-                        { isRoot && enableRemove && (
+                        { canRemove && enableRemove && (
                             <LinkButton
                                 variant='danger'
                                 to={`${up(url, 1)}/remove` }

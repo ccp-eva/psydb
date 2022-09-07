@@ -29,6 +29,7 @@ var filterResearchGroupsByPermissionFlags = (options) => {
     var possibleFlagPointersByAction = {
         read: getCollectionReadFlagPointers({ collection }),
         write: getCollectionWriteFlagPointers({ collection }),
+        remove: getCollectionRemoveFlagPointers({ collection }),
     }
 
     var out = {};
@@ -127,6 +128,15 @@ var getCollectionWriteFlagPointers = ({ collection }) => {
         case 'helperSetItem':
             return [ '/canWriteHelperSets' ];
 
+        default:
+            return []
+    }
+}
+
+var getCollectionRemoveFlagPointers = ({ collection }) => {
+    switch (collection) {
+        case 'subject':
+            return [ '/canRemoveSubjects' ];
         default:
             return []
     }

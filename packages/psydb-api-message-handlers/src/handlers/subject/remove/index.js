@@ -21,7 +21,7 @@ handler.checkAllowedAndPlausible = async ({
     message,
     cache,
 }) => {
-    if (!permissions.isRoot()) {
+    if (!permissions.hasCollectionFlag('subject', 'remove')) {
         throw new ApiError(403);
     }
 

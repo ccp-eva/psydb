@@ -8,10 +8,12 @@ var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 var {
     keyBy,
     groupBy,
-    unique
+    unique,
+    ejson,
 } = require('@mpieva/psydb-core-utils');
 
 var {
+    ApiError,
     ResponseBody,
     validateOrThrow,
     verifyRecordExists,
@@ -55,16 +57,21 @@ var reverseRefs = async (context, next) => {
         request,
     } = context;
 
-    if (!permissions.isRoot()) {
-        throw new ApiError(403);
-    }
-
     validateOrThrow({
         schema: RequestParamsSchema(),
         payload: params
     });
-
+    
     var { collection, id: recordId } = params;
+
+    var canAccess = (
+        permissions.hasCollectionFlag(collection, 'remove')
+    );
+
+    if (!canAccess) {
+        throw new ApiError(403);
+    }
+
 
     await verifyRecordExists({
         db,
@@ -149,7 +156,7 @@ var reverseRefs = async (context, next) => {
         }
     }
 
-    console.dir(reverseRefsWithLabel, { depth: null });
+    console.dir(ejson(reverseRefsWithLabel), { depth: null });
 
     context.body = ResponseBody({
         data: {
