@@ -3,7 +3,9 @@ var debug = require('debug')(
     'psydb:api:endpoints:reverseRefs'
 );
 
+var inline = require('@cdxoo/inline-text');
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
+var intervalfns = require('@mpieva/psydb-date-interval-fns');
 
 var {
     keyBy,
@@ -72,7 +74,6 @@ var reverseRefs = async (context, next) => {
         throw new ApiError(403);
     }
 
-
     await verifyRecordExists({
         db,
         collection,
@@ -137,7 +138,7 @@ var reverseRefs = async (context, next) => {
             var { recordLabelDefinition } = collectionCreatorData;
             
             var augmented = undefined;
-            if (recordLabelDefinition) {
+            if (recordLabelDefinition || collection === 'experiment') {
                 augmented = await fetchLabeledRefs({
                     db,
                     collection,
@@ -175,35 +176,101 @@ var fetchLabeledRefs = async (options) => {
         reverseRefs
     } = options;
 
-    var result = await (
-        db.collection(collection).aggregate([
-            { $match: {
-                _id: { $in: reverseRefs.map(it => it._id )}
-            }},
-            SeperateRecordLabelDefinitionFieldsStage({
-                recordLabelDefinition
-            }),
-            { $project: {
-                _id: true,
-                '_recordLabelDefinitionFields': true
-            }}
-        ]).toArray()
-    );
-    
-    var resultsById = keyBy({
-        items: result,
-        byProp: '_id',
-    });
+    // FIXME: we need label caching on record
+    if (collection === 'experiment') {
+        var experiments = await (
+            db.collection('experiment').aggregate([
+                { $match: {
+                    _id: { $in: reverseRefs.map(it => it._id )}
+                }},
+                { $project: {
+                    _id: true,
+                    type: true,
+                    realType: true,
+                    'state.interval': true,
+                    'state.studyId': true
+                }}
+            ]).toArray()
+        );
 
-    return (
-        reverseRefs.map(it => ({
-            ...it,
-            _recordLabel: createRecordLabel({
-                record: resultsById[it._id]._recordLabelDefinitionFields,
-                definition: recordLabelDefinition
-            })
-        }))
-    )
+        var studies = await (
+            db.collection('study').aggregate([
+                { $match: {
+                    _id: { $in: experiments.map(it => it.state.studyId) }
+                }},
+                { $project: {
+                    'state.shorthand': true
+                }}
+            ]).toArray()
+        );
+
+        var studiesById = keyBy({
+            items: studies,
+            byProp: '_id'
+        });
+
+        var labels = {};
+        for (var it of experiments) {
+            var { _id, type, realType, state: { interval, studyId }} = it;
+
+            type = type === 'manual' ? realType : type
+
+            var study = studiesById[studyId];
+            
+            var typeLabel = {
+                'inhouse': 'Intern',
+                'away-team': 'Extern',
+                'online-video-call': 'Video',
+            }[type];
+
+            var formatted = intervalfns.format(interval);
+
+            labels[_id] = inline`
+                ${formatted.startDate}
+                ${study.state.shorthand}
+                (${typeLabel})
+            `;
+        }
+
+        return (
+            reverseRefs.map(it => ({
+                ...it,
+                _recordLabel: labels[it._id],
+            }))
+        )
+
+    }
+    else {
+        var result = await (
+            db.collection(collection).aggregate([
+                { $match: {
+                    _id: { $in: reverseRefs.map(it => it._id )}
+                }},
+                SeperateRecordLabelDefinitionFieldsStage({
+                    recordLabelDefinition
+                }),
+                { $project: {
+                    _id: true,
+                    '_recordLabelDefinitionFields': true
+                }}
+            ]).toArray()
+        );
+
+        var resultsById = keyBy({
+            items: result,
+            byProp: '_id',
+        });
+
+        return (
+            reverseRefs.map(it => ({
+                ...it,
+                _recordLabel: createRecordLabel({
+                    record: resultsById[it._id]._recordLabelDefinitionFields,
+                    definition: recordLabelDefinition
+                })
+            }))
+        )
+    }
 }
 
 module.exports = reverseRefs;
