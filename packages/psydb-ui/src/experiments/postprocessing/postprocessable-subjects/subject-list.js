@@ -1,4 +1,5 @@
 import React from 'react';
+import jsonpointer from 'jsonpointer';
 import { usePermissions, useModalReducer } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -9,6 +10,7 @@ import {
     DetailsIconButton,
 } from '@mpieva/psydb-ui-layout';
 
+import calculateAge from '@mpieva/psydb-ui-lib/src/calculate-age';
 import PostprocessSubjectForm from '@mpieva/psydb-ui-lib/src/experiments/postprocess-subject-form';
 import { DetailedPostprocessModal } from '@mpieva/psydb-ui-compositions';
 
@@ -61,6 +63,18 @@ const SubjectList = ({
                 var subjectRecord = records.find(record => (
                     record._id === it.subjectId
                 ));
+                
+                var dobFieldValue = (
+                    dateOfBirthField
+                    ? calculateAge({
+                        base: jsonpointer.get(
+                            subjectRecord, dateOfBirthField.dataPointer
+                        ),
+                        relativeTo: experimentRecord.state.interval.start
+                    })
+                    : undefined
+                );
+
                 return <PostprocessSubjectRow { ...({
                     key: it.subjectId,
 
@@ -70,6 +84,7 @@ const SubjectList = ({
                     subjectId: subjectRecord._id,
                     subjectType: subjectRecord.type,
                     subjectRecordLabel: subjectRecord._recordLabel,
+                    dobFieldValue, 
                     studyData,
                     
                     canReadSubjects,
@@ -89,6 +104,7 @@ const PostprocessSubjectRow = ({
     subjectId,
     subjectType,
     subjectRecordLabel,
+    dobFieldValue,
 
     studyData,
 
@@ -111,6 +127,9 @@ const PostprocessSubjectRow = ({
                     <Col sm={5} className='d-flex align-items-center'>
                         <span className='d-inline-block mr-2'>
                             { subjectRecordLabel }
+                            { dobFieldValue && (
+                                '  Alter: ' + `(${dobFieldValue})`
+                            )}
                         </span>
                         
                         { canWriteSubjects && (
