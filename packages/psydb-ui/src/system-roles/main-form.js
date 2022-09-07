@@ -117,7 +117,7 @@ const FormFields = (ps) => {
             />
             <Bool
                 label='kann Proband:innen löschen'
-                dataXPath='$.canDeleteSubjects'
+                dataXPath='$.canRemoveSubjects'
             />
             <Bool
                 label='kann einsehen welche Proband:innen an einer Studie teilgeommen haben'

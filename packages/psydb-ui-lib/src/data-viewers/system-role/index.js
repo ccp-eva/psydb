@@ -122,7 +122,7 @@ const labels = {
     '/state/canWriteSubjects': (
         'kann Proband:innen anlegen und bearbeiten'
     ),
-    '/state/canDeleteSubjects': (
+    '/state/canRemoveSubjects': (
         'kann Proband:innen löschen'
     ),
     '/state/canReadParticipation': (

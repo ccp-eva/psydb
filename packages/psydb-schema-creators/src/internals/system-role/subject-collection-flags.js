@@ -9,7 +9,7 @@ module.exports = {
     canWriteSubjects: WideBool({
         title: 'kann Proband:innen anlegen und bearbeiten',
     }),
-    canDeleteSubjects: WideBool({
+    canRemoveSubjects: WideBool({
         title: 'kann Proband:innen löschen',
     }),
 }

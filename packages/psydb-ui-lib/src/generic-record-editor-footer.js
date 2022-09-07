@@ -23,6 +23,7 @@ const GenericRecordEditorFooter = (ps) => {
 
     var isRoot = permissions.isRoot();
     var canEdit = permissions.hasCollectionFlag(collection, 'write');
+    var canRemove = permissions.hasCollectionFlag(collection, 'delete');
 
     var { record } = fetched;
 
