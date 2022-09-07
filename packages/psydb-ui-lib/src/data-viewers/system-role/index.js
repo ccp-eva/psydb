@@ -122,6 +122,9 @@ const labels = {
     '/state/canWriteSubjects': (
         'kann Proband:innen anlegen und bearbeiten'
     ),
+    '/state/canDeleteSubjects': (
+        'kann Proband:innen löschen'
+    ),
     '/state/canReadParticipation': (
         'kann einsehen welche Proband:innen an einer Studie teilgeommen haben'
     ),

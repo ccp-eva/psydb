@@ -294,6 +294,11 @@
        "reviewCategory": "production"
     },
     
+    {
+       "packageName": "@mpieva/psydb-database-scripts",
+       "projectFolder": "packages/psydb-database-scripts",
+       "reviewCategory": "production"
+    },
     
     {
        "packageName": "@mpieva/psydb-api-integration-test-helpers",
