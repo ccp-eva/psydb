@@ -1,4 +1,5 @@
 'use strict';
+var { ObjectId } = require('mongodb');
 var escapeRX = require('escape-string-regexp');
 
 var {
@@ -71,7 +72,7 @@ var createOneCustomQueryValueObject = (options) => {
             var op = filter.negate ? '$nin' : '$in';
             return (
                 filter.values && filter.values.length > 0
-                ? { [pointer]: { [op]: filter.values }}
+                ? { [pointer]: { [op]: filter.values.map(ObjectId) }}
                 : undefined
             )
 
