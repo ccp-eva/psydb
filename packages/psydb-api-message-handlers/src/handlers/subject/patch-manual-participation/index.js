@@ -15,6 +15,8 @@ var updateParticipation = require('./update-participation');
 var maybeUpdateRelatedParticipations = require('./maybe-update-related-participations');
 var maybeUpdateExperiment = require('./maybe-update-experiment');
 
+// XXX multiple schema checks + unmarshalling
+var jsonify = (that) => JSON.parse(JSON.stringify(that))
 
 var handler = {};
 
@@ -26,7 +28,7 @@ handler.checkSchema = async ({ db, message }) => {
     var ajv = Ajv();
     var isValid = undefined;
 
-    isValid = ajv.validate(BaseSchema(), message);
+    isValid = ajv.validate(BaseSchema(), jsonify(message));
     if (!isValid) {
         debug('ajv errors', ajv.errors);
         throw new ApiError(400, {
