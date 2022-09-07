@@ -15,7 +15,7 @@ handler.checkAllowedAndPlausible = async (context) => {
 
     var isAllowed = (
         permissions.hasSomeLabOperationFlags({
-            types: 'any', flags: [ 'canMoveOrCancelExperiments' ]
+            types: 'any', flags: [ 'canMoveAndCancelExperiments' ]
         })
     )
     if (!isAllowed) {
