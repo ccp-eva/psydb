@@ -12,11 +12,8 @@ var {
 
 var SubjectGroup = MessageHandlerGroup([
     require('./create'),
+    require('./patch'),
 
-    GenericRecordHandler({
-        collection: 'subject',
-        op: 'patch',
-    }),
     GenericHideRecordHandler({ collection: 'subject' }),
     GenericUnhideRecordHandler({ collection: 'subject' }),
 

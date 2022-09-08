@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button } from '@mpieva/psydb-ui-layout';
+import { SubmitAndChangeVisibilityButton } from '@mpieva/psydb-ui-lib';
 
 import {
     DefaultForm,
@@ -14,16 +15,18 @@ export const Component = (ps) => {
         initialValues,
         onSubmit,
 
+        record,        
         related,
         permissions,
 
         renderFormBox = true,
+        renderVisibilityButton = false,
     } = ps;
 
     // FIXME: i dont like how this works
     var wrappedOnSubmit = (formData, formikBag) => {
-        var { forceDuplicate, ...realData } = formData;
-        return onSubmit(realData, formikBag, { forceDuplicate });
+        var { forceDuplicate, setIsHidden, ...realData } = formData;
+        return onSubmit(realData, formikBag, { forceDuplicate, setIsHidden });
     }
 
     var renderedForm = (
@@ -41,7 +44,16 @@ export const Component = (ps) => {
                         related={ related }
                         permissions={ permissions }
                     />
-                    <Button type='submit'>Speichern</Button>
+                    <hr />
+                    <div className='d-flex justify-content-between'>
+                        <Button type='submit'>Speichern</Button>
+                        { renderVisibilityButton && (
+                            <SubmitAndChangeVisibilityButton
+                                record={ record }
+                                formikForm={ formikProps }
+                            />
+                        )}
+                    </div>
                 </>
             )}
         </DefaultForm>

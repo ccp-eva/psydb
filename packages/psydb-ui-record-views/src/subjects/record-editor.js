@@ -16,6 +16,7 @@ const EditForm = (ps) => {
         send,
 
         renderFormBox = true,
+        renderVisibilityButton = false,
     } = ps;
 
     var { record, crtSettings, related } = fetched;
@@ -95,9 +96,13 @@ const EditForm = (ps) => {
                 crtSettings={ crtSettings }
                 initialValues={ initialValues }
                 onSubmit={ send.exec }
+
+                record={ record }
                 related={ related }
                 permissions={ permissions }
+
                 renderFormBox={ false }
+                renderVisibilityButton={ renderVisibilityButton }
             />
             { isHidden && (
                 <>

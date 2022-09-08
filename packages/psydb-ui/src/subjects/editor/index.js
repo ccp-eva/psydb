@@ -20,10 +20,13 @@ const SubjectEditorContainer = ({
                 <RecordEditor.Context.Consumer>
                     {(context) => (
                         <>
-                            <RecordEditor.Body { ...context } />
+                            <RecordEditor.Body
+                                { ...context }
+                                renderVisibilityButton={ true }
+                            />
                             <GenericRecordEditorFooter.RAW
                                 { ...context }
-                                enableHide={ true }
+                                enableHide={ false }
                                 enableRemove={ true }
                                 onSuccessfulUpdate={ revision.up }
                             />

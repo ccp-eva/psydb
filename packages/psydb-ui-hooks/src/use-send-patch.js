@@ -12,7 +12,7 @@ const useSendPatch = (options) => {
         ...otherOptions
     } = options;
 
-    var send = useSend((props) => ({
+    var send = useSend((props, formikBag, moreAdditionalPayloadProps) => ({
         type: (
             recordType
             ? `${collection}/${recordType}/patch`
@@ -22,7 +22,8 @@ const useSendPatch = (options) => {
             id: record._id,
             ...createEventIdProps(record, subChannels),
             props,
-            ...additionalPayloadProps
+            ...additionalPayloadProps,
+            ...moreAdditionalPayloadProps,
         }
     }), {
         onSuccessfulUpdate: (response) => {

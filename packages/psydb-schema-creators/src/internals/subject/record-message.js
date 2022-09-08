@@ -25,8 +25,11 @@ var SubjectRecordMessage = ({
     // if its kept we need to restrict this to nanoid specifically
     schema.properties.payload.properties.onlineId = { type: 'string' };
     
-    // FIXME
+    // XXX
     schema.properties.payload.properties.forceDuplicate = { type: 'boolean', default: false };
+    // XXX
+    schema.properties.payload.properties.setIsHidden = { type: 'boolean', default: false };
+
     return schema;
 }
 

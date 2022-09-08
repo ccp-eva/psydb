@@ -37,14 +37,14 @@ const GenericRecordEditorFooter = (ps) => {
             { (canRemove || canEdit) && (enableHide || enableRemove) && (
                 <>
                     <div className='d-flex justify-content-between mt-4 mb-4'>
-                        { canEdit && enableHide && (
+                        { (canEdit && enableHide) ? (
                             <UpdateRecordVisibilityButton
                                 collection={ collection }
                                 id={ id }
                                 isHidden={ isHidden }
                                 onSuccessfulUpdate={ onSuccessfulUpdate }
                             />
-                        )}
+                        ) : <div />}
                         
                         { canRemove && enableRemove && (
                             <LinkButton
