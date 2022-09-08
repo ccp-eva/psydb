@@ -38,6 +38,7 @@ const EditForm = (ps) => {
         from: record.state,
         paths: [
             'custom',
+            'comment',
             'reservationSettings',
             'systemPermissions',
         ]
