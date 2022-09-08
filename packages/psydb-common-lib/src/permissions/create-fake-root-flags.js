@@ -22,6 +22,7 @@ var createFakeRootFlags = () => ({
         ...acc,
         [`canRead${it}`]: true,
         [`canWrite${it}`]: true,
+        [`canRemove${it}`]: true,
     }), {}),
 
     canReadParticipation: true,
