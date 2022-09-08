@@ -4,7 +4,7 @@ import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import GeneralInfo from '../general-info';
 import GeneralFunctions from './general-functions';
 import AllSubjects from './all-subjects';
-import RemoveUnprocessedButton from './remove-unprocessed-button';
+import AutoProcessButton from './auto-process-button';
 import PostprocessableSubjects from './postprocessable-subjects';
 import PostprocessedSubjects from './postprocessed-subjects';
 
@@ -106,7 +106,7 @@ const ExperimentPostprocessing = ({
                             <h4 className='border-bottom d-flex justify-content-between pb-1'>
                                 Nachzubereitende Proband:innen
                                 { experimentData.record.type === 'away-team' && (
-                                    <RemoveUnprocessedButton
+                                    <AutoProcessButton
                                         experimentId={ experimentData.record._id }
                                         onSuccessfulUpdate={ onSuccessfulUpdate }
                                     />

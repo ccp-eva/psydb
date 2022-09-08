@@ -2,7 +2,7 @@ import React from 'react';
 import { useSend } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
 
-const RemoveUnprocessedButton = (ps) => {
+const AutoProcessButton = (ps) => {
     var { experimentId, onSuccessfulUpdate } = ps;
 
     var send = useSend(() => ({
@@ -20,4 +20,4 @@ const RemoveUnprocessedButton = (ps) => {
     )
 }
 
-export default RemoveUnprocessedButton;
+export default AutoProcessButton;
