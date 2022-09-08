@@ -4,6 +4,7 @@ import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import GeneralInfo from '../general-info';
 import GeneralFunctions from './general-functions';
 import AllSubjects from './all-subjects';
+import RemoveUnprocessedButton from './remove-unprocessed-button';
 import PostprocessableSubjects from './postprocessable-subjects';
 import PostprocessedSubjects from './postprocessed-subjects';
 
@@ -102,13 +103,19 @@ const ExperimentPostprocessing = ({
                 ? (
                     <>
                         <div className='mt-3'>
-                            <h4 className='border-bottom'>
+                            <h4 className='border-bottom d-flex justify-content-between pb-1'>
                                 Nachzubereitende Proband:innen
+                                { experimentData.record.type === 'away-team' && (
+                                    <RemoveUnprocessedButton
+                                        experimentId={ experimentData.record._id }
+                                        onSuccessfulUpdate={ onSuccessfulUpdate }
+                                    />
+                                )}
                             </h4>
                             <PostprocessableSubjects { ...subjectsBag } />
                         </div>
                         <div className='mt-3'>
-                            <h4 className='border-bottom'>
+                            <h4 className='border-bottom pb-1'>
                                 Nachbereitete Proband:innen
                             </h4>
                             <PostprocessedSubjects { ...subjectsBag } />

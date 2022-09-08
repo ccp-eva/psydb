@@ -7,9 +7,6 @@ var compareIds = require('@mpieva/psydb-api-lib/src/compare-ids');
 var SimpleHandler = require('../../../lib/simple-handler'),
     checkForeignIdsExist = require('../../../lib/check-foreign-ids-exist');
 
-var PutMaker = require('../../../lib/put-maker'),
-    PushMaker = require('../../../lib/push-maker');
-
 var {
     dispatchRemoveSubjectEvents,
 } = require('../util');

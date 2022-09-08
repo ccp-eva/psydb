@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from '@mpieva/psydb-ui-layout';
 import { withLabProcedureSettingsIterator } from '@mpieva/psydb-ui-lib';
 import SubjectTypeContainer from './subject-type-container';
 
@@ -57,14 +58,16 @@ const PostprocessableSubjects = withLabProcedureSettingsIterator({
         }
                 
         return (
-            <SubjectTypeContainer { ...({
-                subjectTypeKey,
-                subjectTypeLabel,
-                subjectsPerExperiment,
+            <>
+                <SubjectTypeContainer { ...({
+                    subjectTypeKey,
+                    subjectTypeLabel,
+                    subjectsPerExperiment,
 
-                fullSubjectData,
-                ...pass
-            })} />
+                    fullSubjectData,
+                    ...pass
+                })} />
+            </>
         );
     }
 })
