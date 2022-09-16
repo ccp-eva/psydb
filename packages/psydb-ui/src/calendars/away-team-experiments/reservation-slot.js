@@ -1,4 +1,5 @@
 import React from 'react';
+import getTextColor from '@mpieva/psydb-ui-lib/src/bw-text-color-for-background';
 
 const ReservationSlot = ({
     reservationRecord,
@@ -25,10 +26,15 @@ const ReservationSlot = ({
     ));
    
     return (
-        <div className='mb-2' style={{
+        <div className='pl-2 pr-2 pb-1 pt-1 mb-2' style={{
             background: teamRecord.state.color,
+            color: getTextColor(teamRecord.state.color),
             ...style
-        }} />
+        }}>
+            <div className='text-small'>
+                { teamRecord.state.name }
+            </div>
+        </div>
     );
 }
 
