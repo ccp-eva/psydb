@@ -54,7 +54,7 @@ const ExperimentScheduleModal = ({
                 <Modal.Header closeButton>
                     <Modal.Title>Termin eintragen</Modal.Title>
                 </Modal.Header>
-                <Modal.Body className='bg-light'>
+                <Modal.Body className='bg-white pt-0'>
                     <StudyAwayTeams { ...({
                         studyId,
                         studyRecordType: studyType,
