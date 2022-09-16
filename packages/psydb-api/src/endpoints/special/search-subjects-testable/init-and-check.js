@@ -204,16 +204,23 @@ var initAgeFrames = async ({
                 }},
                 { $unwind: '$state.conditions' },
                 { $unwind: '$state.conditions.values' },
+                { $addFields: {
+                    stringlyValue: { $toString: '$state.conditions.values'}
+                }},
                 { $match: {
                     // only enabled values of enabled ageframes
                     $or: valueFilters.map(it => ({
                         _id: it.ageFrameId,
                         'state.conditions.pointer': it.pointer,
-                        'state.conditions.values': it.value
+                        // FIXME: valueFilters value is always string
+                        //'state.conditions.values': it.value
+                        stringlyValue: it.value,
                     }))
                 }}
             ]).toArray()
         );
+        //console.log(valueFilters);
+        //console.log(unwoundAgeFrameRecords);
 
         if (unwoundAgeFrameRecords.length != valueFilters.length) {
             throw new ApiError(400, {
