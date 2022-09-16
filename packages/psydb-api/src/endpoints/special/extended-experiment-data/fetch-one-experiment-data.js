@@ -3,6 +3,8 @@ var debug = require('debug')(
     'psydb:api:endpoints:extendedExperimentData'
 );
 
+var { ejson } = require('@mpieva/psydb-core-utils');
+
 var {
     StripEventsStage,
     AddLastKnownEventIdStage
@@ -28,13 +30,18 @@ var fetchOneExperimentData = async (options) => {
         db.collection('experiment').aggregate([
             { $match: {
                 _id: experimentId,
-                type: experimentType,
+                $or: [
+                    { type: experimentType },
+                    { realType: experimentType },
+                ]
             }},
             AddLastKnownEventIdStage(),
             StripEventsStage(),
         ]).toArray()
     );
     var experimentRecord = experimentRecords[0];
+
+    //console.dir(ejson(experimentRecord), { depth: null });
 
     // FIXME: question is should we 404 or 403 when access is denied?
     // well 404 for now and treat it as if it wasnt found kinda

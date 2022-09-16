@@ -109,4 +109,5 @@ module.exports = {
     ),
 
     reverseRefs: require('./reverse-refs'),
+    subjectReverseRefs: require('./subject-reverse-refs'),
 }

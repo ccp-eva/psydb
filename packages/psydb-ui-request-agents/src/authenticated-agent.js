@@ -186,10 +186,13 @@ agent.fetchParticipatedSubjectsForStudy = ({
 
 agent.fetchParticipatedStudiesForSubject = ({
     subjectId,
+    onlyParticipated,
     extraAxiosConfig,
 }) => {
     var baseUrl = '/api/participated-studies-for-subject';
-    return axios.get(`${baseUrl}/${subjectId}`, extraAxiosConfig);
+    return axios.post(baseUrl, {
+        subjectId, onlyParticipated
+    }, extraAxiosConfig);
 }
 
 agent.fetchStudyLocationReservationCalendar = ({
@@ -495,6 +498,16 @@ agent.fetchRecordReverseRefs = ({
 }) => {
     return axios.get(
         `/api/record-reverse-refs/${collection}/${id}`,
+        extraAxiosConfig
+    );
+}
+
+agent.fetchSubjectReverseRefs = ({
+    id,
+    extraAxiosConfig
+}) => {
+    return axios.get(
+        `/api/subject-reverse-refs/${id}`,
         extraAxiosConfig
     );
 }

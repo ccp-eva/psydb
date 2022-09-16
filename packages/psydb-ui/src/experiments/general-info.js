@@ -132,7 +132,13 @@ const InviteVariant = (ps) => {
                     { studyLabel }
                 </Pair>
                 <Pair label='Team'>
-                    <TeamNameAndColor teamRecord={ opsTeamData.record } />
+                    { 
+                        opsTeamData
+                        ? <TeamNameAndColor
+                            teamRecord={ opsTeamData.record }
+                        />
+                        : 'Unbekannt'
+                    }
                 </Pair>
             </Split>
 
@@ -207,7 +213,13 @@ const AwayTeamVariant = (ps) => {
                         { studyLabel }
                     </Pair>
                     <Pair label='Team'>
-                        <TeamNameAndColor teamRecord={ opsTeamData.record } />
+                        { 
+                            opsTeamData
+                            ? <TeamNameAndColor
+                                teamRecord={ opsTeamData.record }
+                            />
+                            : 'Unbekannt'
+                        }
                     </Pair>
                     <Pair label='Datum'>
                         <a href={`#/calendars/away-team/${locationType}/${firstResearchGroupId}?d=${weekStartTimestamp}`}>

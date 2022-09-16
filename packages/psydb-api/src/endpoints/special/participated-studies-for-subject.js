@@ -33,11 +33,13 @@ var {
 var {
     ExactObject,
     ForeignId,
+    DefaultBool,
 } = require('@mpieva/psydb-schema-fields');
 
-var RequestParamsSchema = () => ExactObject({
+var RequestBodySchema = () => ExactObject({
     properties: {
         subjectId: ForeignId({ collection: 'subject' }),
+        onlyParticipated: DefaultBool(),
     },
     required: [
         'subjectId',
@@ -48,17 +50,18 @@ var participatedStudiesForSubject = async (context, next) => {
     var { 
         db,
         permissions,
-        params,
+        request,
     } = context;
 
     validateOrThrow({
-        schema: RequestParamsSchema(),
-        payload: params
+        schema: RequestBodySchema(),
+        payload: request.body
     })
 
     var {
         subjectId,
-    } = params;
+        onlyParticipated,
+    } = request.body;
 
 
     await verifySubjectAccess({
@@ -83,7 +86,11 @@ var participatedStudiesForSubject = async (context, next) => {
     participatedInStudies = participatedInStudies.filter(it => {
         // FIXME maybe not store it in subject at all then?
         // keep in experiment though
-        return !(['didnt-participate'].includes(it.status));
+        return (
+            onlyParticipated
+            ? it.status === 'participated'
+            : !(['didnt-participate'].includes(it.status))
+        )
     })
 
     var {

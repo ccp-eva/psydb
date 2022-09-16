@@ -36,16 +36,16 @@ const SafetyForm = (ps) => {
     });
 
     var [ didFetchRefs, fetchedReverseRefs ] = useFetch((agent) => (
-        agent.fetchRecordReverseRefs({
-            collection,
+        agent.fetchSubjectReverseRefs({
             id
         })
-    ), [ collection, id ]);
+    ), [ id ]);
 
     var [ didFetchParticipation, fetchedParticipation ] = (
         useFetch((agent) => (
             agent.fetchParticipatedStudiesForSubject({
                 subjectId: id,
+                onlyParticipated: true,
                 extraAxiosConfig: { disableErrorModal: [ 404 ] },
             })
         ), [ id ])

@@ -1,6 +1,6 @@
 'use strict';
 var debug = require('debug')(
-    'psydb:api:endpoints:reverseRefs'
+    'psydb:api:endpoints:subjectReverseRefs'
 );
 
 var inline = require('@cdxoo/inline-text');
@@ -36,17 +36,9 @@ var {
 
 var RequestParamsSchema = () => ExactObject({
     properties: {
-        // FIXME: we currently only allow subject/personnel to be removed
-        collection: StringEnum([
-            'subject',
-            'personnel',
-            'externalOrganization',
-            'location',
-        ]),
         id: Id(),
     },
     required: [
-        'collection',
         'id',
     ]
 })
@@ -64,10 +56,10 @@ var reverseRefs = async (context, next) => {
         payload: params
     });
     
-    var { collection, id: recordId } = params;
+    var { id: subjectId } = params;
 
     var canAccess = (
-        permissions.hasCollectionFlag(collection, 'remove')
+        permissions.hasCollectionFlag('subject', 'remove')
     );
 
     if (!canAccess) {
@@ -76,14 +68,14 @@ var reverseRefs = async (context, next) => {
 
     await verifyRecordExists({
         db,
-        collection,
-        recordId,
+        collection: 'subject',
+        recordId: subjectId,
     });
 
     var reverseRefs = await fetchRecordReverseRefs({
         db,
-        recordId,
-        refTargetCollection: collection
+        recordId: subjectId,
+        refTargetCollection: 'subject'
     });
 
     var groupedReverseRefs = groupBy({
@@ -128,7 +120,8 @@ var reverseRefs = async (context, next) => {
                     recordLabelDefinition: (
                         crtsByType[key].state.recordLabelDefinition
                     ),
-                    reverseRefs: crtReverseRefs[key]
+                    reverseRefs: crtReverseRefs[key],
+                    subjectId
                 });
 
                 reverseRefsWithLabel.push(...augmented);
@@ -143,7 +136,8 @@ var reverseRefs = async (context, next) => {
                     db,
                     collection,
                     recordLabelDefinition,
-                    reverseRefs: collectionReverseRefs
+                    reverseRefs: collectionReverseRefs,
+                    subjectId,
                 });
             }
             else {
@@ -173,7 +167,8 @@ var fetchLabeledRefs = async (options) => {
         db,
         collection,
         recordLabelDefinition,
-        reverseRefs
+        reverseRefs,
+        subjectId
     } = options;
 
     // FIXME: we need label caching on record
@@ -181,7 +176,9 @@ var fetchLabeledRefs = async (options) => {
         var experiments = await (
             db.collection('experiment').aggregate([
                 { $match: {
-                    _id: { $in: reverseRefs.map(it => it._id )}
+                    _id: { $in: reverseRefs.map(it => it._id )},
+                    'state.isPostprocessed': { $ne: true },
+                    'state.isCanceled': { $ne: true },
                 }},
                 { $project: {
                     _id: true,
@@ -209,6 +206,7 @@ var fetchLabeledRefs = async (options) => {
             byProp: '_id'
         });
 
+        var isRelevant = {};
         var labels = {};
         var realTypes = {};
         for (var it of experiments) {
@@ -226,6 +224,7 @@ var fetchLabeledRefs = async (options) => {
 
             var formatted = intervalfns.format(interval);
 
+            isRelevant[_id] = true;
             realTypes[_id] = type;
             labels[_id] = inline`
                 ${formatted.startDate}
@@ -235,7 +234,7 @@ var fetchLabeledRefs = async (options) => {
         }
 
         return (
-            reverseRefs.map(it => ({
+            reverseRefs.filter(it => isRelevant[it._id]).map(it => ({
                 ...it,
                 type: realTypes[it._id],
                 _recordLabel: labels[it._id],

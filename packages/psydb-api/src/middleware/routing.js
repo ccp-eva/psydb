@@ -127,10 +127,11 @@ var createRouting = (bag = {}) => {
         endpoints.special.participatedSubjectsForStudy
     );
 
-    router.get('/participated-studies-for-subject/:subjectId',
-        withSelfAuth(),
-        withPermissions(),
-        endpoints.special.participatedStudiesForSubject
+    router.post(
+        '/participated-studies-for-subject',
+        ...withPostStages({
+            endpoint: endpoints.special.participatedStudiesForSubject
+        })
     );
 
     router.post(
@@ -336,6 +337,13 @@ var createRouting = (bag = {}) => {
         withPermissions(),
         withKoaBody(),
         endpoints.special.reverseRefs
+    );
+    
+    router.get('/subject-reverse-refs/:id',
+        withSelfAuth(),
+        withPermissions(),
+        withKoaBody(),
+        endpoints.special.subjectReverseRefs
     );
 
     router.get('/record-reverse-refs/:collection/:id',

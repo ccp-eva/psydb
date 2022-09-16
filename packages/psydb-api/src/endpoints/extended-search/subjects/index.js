@@ -166,6 +166,9 @@ var subjectExtendedSearch = async (context, next) => {
 
     var stages = [
         { $match: {
+            isDummy: { $ne: true },
+            'scientific.state.internals.isRemoved': { $ne: true },
+
             ...convertPointerKeys(customQueryValues),
             ...createSpecialFilterConditions(specialFilters),
         }},

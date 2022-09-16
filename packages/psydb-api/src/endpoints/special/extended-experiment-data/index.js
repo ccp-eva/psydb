@@ -147,10 +147,12 @@ var extendedExperimentData = async (context, next) => {
         id: locationId,
     });
 
-    var opsTeamData = await fetchOneOpsTeamData({
-        db,
-        _id: experimentOperatorTeamId,
-    });
+    if (experimentOperatorTeamId) {
+        var opsTeamData = await fetchOneOpsTeamData({
+            db,
+            _id: experimentOperatorTeamId,
+        });
+    }
 
     var subjectTypeKeys = labProcedureSettingData.records.map(
         it => it.state.subjectTypeKey
@@ -251,10 +253,12 @@ var extendedExperimentData = async (context, next) => {
                 records: labProcedureSettingData.records,
                 ...labProcedureSettingData.related,
             },
-            opsTeamData: {
-                record: opsTeamData.record,
-                ...opsTeamData.related,
-            },
+            ...(opsTeamData && {
+                opsTeamData: {
+                    record: opsTeamData.record,
+                    ...opsTeamData.related,
+                },
+            }),
             
             locationData,
             subjectDataByType,
