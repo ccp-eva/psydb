@@ -91,7 +91,8 @@ handler.checkAllowedAndPlausible = async ({
     var reverseRefs = await fetchRecordReverseRefs({
         db,
         recordId: id,
-        refTargetCollection: 'subject'
+        refTargetCollection: 'subject',
+        excludedCollections: [ 'experiment' ], // done manually
     });
 
     if (reverseRefs.length > 0) {

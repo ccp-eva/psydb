@@ -1,22 +1,25 @@
 'use strict';
-var { unique } = require('@mpieva/psydb-core-utils');
+var { unique, without } = require('@mpieva/psydb-core-utils');
 
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 var createSchemaForRecordType = require('./create-schema-for-record-type');
 var resolvePossibleRefs = require('./resolve-possible-refs');
 
-var fetchRecordReverseRefs = async ({
-    db,
-    recordId,
-    refTargetCollection,
-}) => {
+var fetchRecordReverseRefs = async (bag) => {
+    var {
+        db,
+        recordId,
+        refTargetCollection,
+        excludedCollections = []
+    } = bag;
+
     var allReferencingRecords = [];
 
     var staticCollections = [
         'experiment',
         'experimentOperatorTeam'
     ];
-    for (var collection of staticCollections) {
+    for (var collection of without(staticCollections, excludedCollections)) {
         var { FullSchema } = allSchemaCreators[collection];
         var schema = FullSchema({ enableInternalProps: true });
         
@@ -47,6 +50,9 @@ var fetchRecordReverseRefs = async ({
     );
 
     for (var crt of crts) {
+        if (excludedCollections.includes(crt.collection)) {
+            continue;
+        }
         //console.log(crt.collection);
         var schema = await createSchemaForRecordType({
             db,
