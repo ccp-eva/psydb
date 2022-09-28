@@ -46,6 +46,7 @@ var FullBodySchema = ({
                 availableFilterFields
             }),
             constraints: SearchConstraints({ availableConstraints }),
+            extraIds: IdList(),
             
             ...pagination.properties,
             sort: Sort(),

@@ -109,15 +109,20 @@ export const withRecordPicker = (options) => {
             return null;
         }
 
+        var recordId = undefined;
         if (fetched) {
             if (
                 fetched.data && fetched.data.record
                 && cached && !cached._recordLabel // FIXME: hasInvalidRecord
             ) {
+                recordId = fetched.data.record._id;
                 displayValue = fetched.data.record._recordLabel;
                 hasInvalidRecord = false;
             }
             else {
+                recordId = (
+                    cached ? cached._id : undefined
+                );
                 displayValue = (
                     cached
                     ? cached._recordLabel || cached[idLabelProp]
@@ -131,6 +136,7 @@ export const withRecordPicker = (options) => {
                 <RecordPickerModal { ...({
                     ...modal.passthrough,
                     ...downstream,
+                    extraIds: recordId ? [ recordId ] : [],
                     collection,
                     recordType,
                     onSelect,

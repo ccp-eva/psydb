@@ -43,6 +43,7 @@ var fetchRecordByFilter = async ({
     hasSubChannels,
 
     enableResearchGroupFilter = true,
+    extraIds, // TODO: how to best handle extraIds ?
     excludedIds,
     constraints,
     queryFields,

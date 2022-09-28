@@ -120,6 +120,7 @@ var search = async (context, next) => {
         recordType,
         searchOptions = {},
         filters,
+        extraIds,
         excludedIds,
         constraints,
         offset,
@@ -163,6 +164,7 @@ var search = async (context, next) => {
         hasSubChannels,
 
         enableResearchGroupFilter,
+        extraIds,
         excludedIds,
         constraints,
         queryFields,
@@ -176,7 +178,7 @@ var search = async (context, next) => {
         showHidden,
         // TODO remove this as soon as we
         // can properly quicksearch and search for fk
-        disablePermissionCheck: (target === 'optionlist' ? true : false)
+        //disablePermissionCheck: (target === 'optionlist' ? true : false)
     });
     debug('<<<<<<<<< END')
 
