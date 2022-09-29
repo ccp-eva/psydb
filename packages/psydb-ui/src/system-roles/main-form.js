@@ -217,6 +217,12 @@ const LabOperationFields = (ps) => {
                     dataXPath={ `${dataXPath}.canChangeExperimentStudy` }
                 />
             )}
+            { type === 'away-team' && (
+                <Bool
+                    label='kann Proband:innen aus existierenden Terminen entfernen'
+                    dataXPath={ `${dataXPath}.canRemoveExperimentSubject` }
+                />
+            )}
         </>
     )
 }

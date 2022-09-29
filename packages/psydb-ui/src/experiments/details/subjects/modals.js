@@ -7,6 +7,8 @@ import {
     RemoveSubjectModal,
 } from '@mpieva/psydb-ui-lib/src/modals';
 
+import { RemoveSubjectManualModal } from '../../remove-subject-manual-modal';
+
 const Modals = ({
     experimentData,
     studyData,
@@ -16,11 +18,16 @@ const Modals = ({
     moveModal,
     followupModal,
     removeModal,
+    removeManualModal,
 
     onSuccessfulUpdate,
 }) => {
     return (
         <>
+            <RemoveSubjectManualModal
+                experimentData= { experimentData }
+                { ...removeManualModal.passthrough }
+            />
             <PerSubjectCommentModal { ...({
                 show: commentModal.show,
                 onHide: commentModal.handleHide,

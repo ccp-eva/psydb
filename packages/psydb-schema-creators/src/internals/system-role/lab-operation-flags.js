@@ -8,6 +8,7 @@ var LabOperationPermissions = (options) => {
         title,
         hasInvitation = false,
         enableCanChangeExperimentStudy = false,
+        enableCanRemoveExperimentSubject = false,
         reservationType = 'location-with-team',
     } = options;
 
@@ -50,6 +51,11 @@ var LabOperationPermissions = (options) => {
                     title: 'kann Studie von existierenden Terminen ändern',
                 }),
             }),
+            ...(enableCanRemoveExperimentSubject && {
+                canRemoveExperimentSubject: WideBool({
+                    title: 'kann Proband:innen aus existierenden Terminen entfernen',
+                }),
+            }),
         },
         required: [
             'canWriteReservations',
@@ -61,6 +67,9 @@ var LabOperationPermissions = (options) => {
             'canPostprocessExperiments',
             ...(enableCanChangeExperimentStudy ? [
                 'canChangeExperimentStudy'
+            ] : []),
+            ...(enableCanRemoveExperimentSubject ? [
+                'canRemoveExperimentSubject'
             ] : []),
         ]
     })
@@ -93,6 +102,7 @@ module.exports = {
                 title: 'Externe Termine',
                 hasInvitation: false,
                 enableCanChangeExperimentStudy: true,
+                enableCanRemoveExperimentSubject: true,
             }),
             'online-video-call': LabOperationPermissions({
                 title: 'Online-Video Termine',

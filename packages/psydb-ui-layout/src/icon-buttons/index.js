@@ -39,6 +39,11 @@ export const RemoveIconButtonInline = withIconButton({
         size: 'sm',
         variant: 'outline-danger'
     },
+    defaultButtonStyle: {
+        marginTop: '-3px', // FIXME: in lists only
+        borderRadius: '.2rem',
+        border: 0,
+    }
 });
 
 export const EditIconButtonInline = withIconButton({

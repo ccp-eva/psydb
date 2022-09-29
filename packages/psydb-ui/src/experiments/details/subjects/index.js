@@ -2,7 +2,11 @@ import React, { createContext, useContext } from 'react';
 
 import { useSend, useModalReducer, usePermissions } from '@mpieva/psydb-ui-hooks';
 
-import { SubjectIconButton } from '@mpieva/psydb-ui-layout';
+import {
+    SubjectIconButton,
+    RemoveIconButtonInline,
+} from '@mpieva/psydb-ui-layout';
+
 import SubjectDropdown from '@mpieva/psydb-ui-lib/src/experiment-subject-dropdown';
 
 import SubjectsContainer from '../../subjects-container';
@@ -23,6 +27,7 @@ const Subjects = ({
     var moveModal = useModalReducer({ show: false });
     var followupModal = useModalReducer({ show: false });
     var removeModal = useModalReducer({ show: false });
+    var removeManualModal = useModalReducer({ show: false });
 
     var send = useSend(({ subjectId, status }) => ({
         type: 'experiment/change-invitation-status',
@@ -52,6 +57,7 @@ const Subjects = ({
                 moveModal,
                 followupModal,
                 removeModal,
+                removeManualModal,
 
                 onSuccessfulUpdate,
             }) } />
@@ -67,6 +73,7 @@ const Subjects = ({
                     : undefined
                 ),
                 onClickRemove: removeModal.handleShow,
+                onClickRemoveManual: removeManualModal.handleShow,
 
                 onClickConfirm,
                 onClickMailbox,
@@ -96,6 +103,10 @@ const ActionsComponent = ({
     var context = useContext(ActionsContext);
     var permissions = usePermissions();
 
+    var canRemoveSubject = permissions.hasLabOperationFlag(
+        experimentType, 'canRemoveExperimentSubject'
+    );
+
     var {
         experimentType,
 
@@ -103,6 +114,7 @@ const ActionsComponent = ({
         onClickMove,
         onClickFollowUp,
         onClickRemove,
+        onClickRemoveManual,
 
         onClickConfirm,
         onClickMailbox,
@@ -134,6 +146,16 @@ const ActionsComponent = ({
                     experimentType,
                     enableSubjectDetailsLink: false,
                 }) } />
+            )}
+            
+            { canRemoveSubject && (
+                <RemoveIconButtonInline
+                    onClick={ () => {
+                        return onClickRemoveManual({
+                            subjectRecord,
+                        })
+                    }}
+                />
             )}
         </div>
     )

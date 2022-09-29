@@ -62,6 +62,9 @@ const awayTeamLabOpsLabels = (type) => ({
     [labOpsPath(type, 'canChangeExperimentStudy')]: (
         'kann Studie von existierenden Terminen ändern'
     ),
+    [labOpsPath(type, 'canRemoveExperimentSubject')]: (
+        'kann Proband:innen aus existierenden Terminen entfernen'
+    ),
 });
 
 const surveyLabOpsLabels = (type) => ({

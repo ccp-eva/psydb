@@ -53,7 +53,8 @@ var ExperimentSubjectDropdown = (ps) => {
     var sharedPayload = {
         subjectId,
         subjectType,
-        subjectRecord
+        subjectRecord,
+        experimentType,
     };
 
     var wrappedOnClickComment = useCallback(() => (
