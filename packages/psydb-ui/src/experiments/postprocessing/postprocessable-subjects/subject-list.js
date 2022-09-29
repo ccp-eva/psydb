@@ -8,11 +8,14 @@ import {
     Col,
     EditIconButtonInline,
     DetailsIconButton,
+    Button,
+    Icons,
 } from '@mpieva/psydb-ui-layout';
 
 import calculateAge from '@mpieva/psydb-ui-lib/src/calculate-age';
 import PostprocessSubjectForm from '@mpieva/psydb-ui-lib/src/experiments/postprocess-subject-form';
 import { DetailedPostprocessModal } from '@mpieva/psydb-ui-compositions';
+import { RemoveSubjectManualModal } from '../../remove-subject-manual-modal';
 
 const SubjectList = ({
     studyData,
@@ -29,10 +32,15 @@ const SubjectList = ({
     ...other
 }) => {
     var subjectModal = useModalReducer();
+    var removeManualModal = useModalReducer();
 
     var permissions = usePermissions();
     var canReadSubjects = permissions.hasFlag('canReadSubjects');
     var canWriteSubjects = permissions.hasFlag('canWriteSubjects');
+    var canRemoveSubject = permissions.hasLabOperationFlag(
+        experimentRecord.type, 'canRemoveExperimentSubject'
+    );
+
 
     var dateOfBirthField = displayFieldData.find(it => (
         it.props.isSpecialAgeFrameField
@@ -55,6 +63,11 @@ const SubjectList = ({
 
     return (
         <div>
+            <RemoveSubjectManualModal
+                experimentData={{ record: experimentRecord }}
+                onSuccessfulUpdate={ onSuccessfulUpdate }
+                { ...removeManualModal.passthrough }
+            />
             <DetailedPostprocessModal
                 { ...subjectModal.passthrough }
                 onSuccessfulUpdate={ onSuccessfulUpdate }
@@ -84,13 +97,16 @@ const SubjectList = ({
                     subjectId: subjectRecord._id,
                     subjectType: subjectRecord.type,
                     subjectRecordLabel: subjectRecord._recordLabel,
+                    subjectRecord,
                     dobFieldValue, 
                     studyData,
                     
                     canReadSubjects,
                     canWriteSubjects,
+                    canRemoveSubject,
                     subjectModal,
                     
+                    onClickRemoveManual: removeManualModal.handleShow,
                     onSuccessfulUpdate,
                     ...other
                 })} />
@@ -104,6 +120,7 @@ const PostprocessSubjectRow = ({
     subjectId,
     subjectType,
     subjectRecordLabel,
+    subjectRecord,
     dobFieldValue,
 
     studyData,
@@ -113,8 +130,10 @@ const PostprocessSubjectRow = ({
 
     canReadSubjects,
     canWriteSubjects,
+    canRemoveSubject,
     subjectModal,
 
+    onClickRemoveManual,
     onSuccessfulUpdate,
 }) => {
     var { type: experimentType } = experimentRecord;
@@ -160,13 +179,33 @@ const PostprocessSubjectRow = ({
                         )}
                     </Col>
                     <Col sm={7}>
-                        <PostprocessSubjectForm { ...({
-                            experimentType,
-                            experimentId,
-                            subjectId,
-                            enableFollowUpExperiments,
-                            onSuccessfulUpdate
-                        }) } />
+                        <div className='d-flex'>
+                            <div className='flex-grow-1 mr-3'>
+                                <PostprocessSubjectForm { ...({
+                                    experimentType,
+                                    experimentId,
+                                    subjectId,
+                                    enableFollowUpExperiments,
+                                    onSuccessfulUpdate
+                                }) } />
+                            </div>
+                            { canRemoveSubject && (
+                                <Button
+                                    variant='danger'
+                                    onClick={ () => {
+                                        return onClickRemoveManual({
+                                            subjectRecord,
+                                        })
+                                    }}
+                                >
+                                    <Icons.X style={{
+                                        width: '20px',
+                                        height: '20px',
+                                        marginTop: '-2px'
+                                    }} />
+                                </Button>
+                            )}
+                        </div>
                     </Col>
                 </Row>
             </Container>
