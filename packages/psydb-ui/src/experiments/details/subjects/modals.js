@@ -25,7 +25,8 @@ const Modals = ({
     return (
         <>
             <RemoveSubjectManualModal
-                experimentData= { experimentData }
+                experimentData={ experimentData }
+                onSuccessfulUpdate={ onSuccessfulUpdate }
                 { ...removeManualModal.passthrough }
             />
             <PerSubjectCommentModal { ...({

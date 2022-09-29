@@ -32,6 +32,7 @@ var ExperimentGroup = MessageHandlerGroup([
 
     require('./add-subject'),
     require('./remove-subject'),
+    require('./remove-subject-manual'),
     require('./auto-process-subjects'),
 ]);
 
