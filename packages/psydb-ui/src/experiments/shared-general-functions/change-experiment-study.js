@@ -1,4 +1,5 @@
 import React from 'react';
+import { demuxed } from '@mpieva/psydb-ui-utils';
 import { useFetch, useSend, useModalReducer } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
 
@@ -42,11 +43,18 @@ const ChangeExperimentStudyModalBody = (ps) => {
         onHide,
         experimentData,
         opsTeamData,
+        onSuccessfulUpdate,
     } = ps;
 
-    var send = useSend(() => ({
-        type: 'experiment/change-study'
-    }));
+    var send = useSend((formData) => ({
+        type: 'experiment/change-study',
+        payload: {
+            experimentId: experimentData.record._id,
+            ...formData
+        }
+    }), { onSuccessfulUpdate: demuxed([
+        onHide, onSuccessfulUpdate
+    ]) });
 
     var studyLabel = (
         experimentData.relatedRecords.study[experimentData.record.state.studyId]._recordLabel
@@ -76,10 +84,11 @@ const ChangeExperimentStudyModalBody = (ps) => {
                 initialValues={{}}
                 onSubmit={ send.exec }
                 useAjvAsync
+                ajvErrorInstancePathPrefix = '/payload'
             >
                 {(formikProps) => {
                     var { values, setFieldValue } = formikProps;
-                    var { studyId, teamId } = values['$'];
+                    var { studyId, labTeamId } = values['$'];
                     return <>
                         <div className='pt-3 bg-white border'>
                             <Fields.ForeignId
@@ -87,16 +96,16 @@ const ChangeExperimentStudyModalBody = (ps) => {
                                 dataXPath='$.studyId'
                                 collection='study'
                                 extraOnChange={(nextStudyId) => {
-                                    setFieldValue('$.teamId', undefined)
+                                    setFieldValue('$.labTeamId', undefined)
                                 }}
                             />
                             { studyId && (
                                 <FormPair label='Team'>
                                     <TeamList {...({
                                         studyId,
-                                        selectedTeamId: teamId,
+                                        selectedTeamId: labTeamId,
                                         onSelectTeam: (value) => (
-                                            setFieldValue('$.teamId', value)
+                                            setFieldValue('$.labTeamId', value)
                                         ),
                                     }) } />
                                 </FormPair>
@@ -105,7 +114,7 @@ const ChangeExperimentStudyModalBody = (ps) => {
                         <div className='mt-3 d-flex justify-content-end'>
                             <Button
                                 type='submit'
-                                disabled={ !(studyId && teamId ) }
+                                disabled={ !(studyId && labTeamId ) }
                             >
                                 Speichern
                             </Button>
