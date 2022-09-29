@@ -4,8 +4,13 @@ var debug = require('debug')(
 );
 
 var sift = require('sift');
+var jsonpointer = require('jsonpointer');
 var { copy } = require('copy-anything');
-var { groupBy } = require('@mpieva/psydb-core-utils');
+var { groupBy, convertPointerToPath } = require('@mpieva/psydb-core-utils');
+var {
+    calculateAge,
+    findCRTAgeFrameField
+} = require('@mpieva/psydb-common-lib');
 
 var {
     ResponseBody,
@@ -54,6 +59,8 @@ var subjectExtendedSearch = async (context, next) => {
         schema: RequestBodySchema.Full(crtSettings),
         payload: request.body
     });
+
+    var dobFieldPointer = findCRTAgeFrameField(crtSettings);
 
     var {
         customGdprFilters,
@@ -183,6 +190,9 @@ var subjectExtendedSearch = async (context, next) => {
             ...(columns.includes('/_specialStudyParticipation') && {
                 'scientific.state.internals.participatedInStudies': true
             }),
+            ...(dobFieldPointer && columns.includes('/_specialAgeToday') && {
+                [convertPointerToPath(dobFieldPointer)]: true
+            }),
         }},
 
         SortStage({ ...sort }),
@@ -209,6 +219,16 @@ var subjectExtendedSearch = async (context, next) => {
     );
     
     var [ records, recordsCount ] = fromFacets(facets);
+    var now = new Date();
+    if (dobFieldPointer && columns.includes('/_specialAgeToday')) {
+        records = records.map(it => {
+            return { ...it, _specialAgeToday: calculateAge({
+                base: jsonpointer.get(it, dobFieldPointer),
+                relativeTo: now,
+                asString: true,
+            }) }
+        })
+    }
 
     var experiments = (
         await fetchUpcomingExperiments({ db, records })

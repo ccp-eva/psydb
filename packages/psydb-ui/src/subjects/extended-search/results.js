@@ -143,6 +143,9 @@ const TableHead = (ps) => {
                     columns.map(it => keyed[it]).filter(it => !!it)
                 ),
             })} />
+            { columns.includes('/_specialAgeToday') && (
+                <th>Alter</th>
+            )}
             { columns.includes('/_specialStudyParticipation') && (
                 <th>Studien</th>
             )}
@@ -170,6 +173,9 @@ const TableBody = (ps) => {
                         ),
                         ...related
                     })} />
+                    { columns.includes('/_specialAgeToday') && (
+                        <td>{ it._specialAgeToday }</td>
+                    )}
                     { columns.includes('/_specialStudyParticipation') && (
                         <ParticipationColumn
                             participation={

@@ -3,14 +3,21 @@ var debug = require('debug')(
     'psydb:api:endpoints:extended-search-export:studies'
 );
 
-var jsonpointer = require('jsonpointer');
-
 var sift = require('sift');
+var jsonpointer = require('jsonpointer');
 var { copy } = require('copy-anything');
-var { keyBy, groupBy } = require('@mpieva/psydb-core-utils');
+
+var { 
+    keyBy,
+    groupBy,
+    convertPointerToPath
+} = require('@mpieva/psydb-core-utils');
+
 var {
     stringifyFieldValue,
-    fieldStringifiers
+    fieldStringifiers,
+    calculateAge,
+    findCRTAgeFrameField
 } = require('@mpieva/psydb-common-lib');
 
 var {
@@ -50,6 +57,8 @@ var subjectExtendedSearchExport = async (context, next) => {
         payload: request.body
     });
 
+    var dobFieldPointer = findCRTAgeFrameField(crtSettings);
+
     var {
         customGdprFilters,
         customScientificFilters,
@@ -83,6 +92,9 @@ var subjectExtendedSearchExport = async (context, next) => {
             ...(columns.includes('/_specialStudyParticipation') && {
                 'scientific.state.internals.participatedInStudies': true
             }),
+            ...(dobFieldPointer && columns.includes('/_specialAgeToday') && {
+                [convertPointerToPath(dobFieldPointer)]: true
+            }),
         }
     });
 
@@ -93,6 +105,17 @@ var subjectExtendedSearchExport = async (context, next) => {
         items: experiments,
         byPointer: '/state/subjectId',
     });
+
+    var now = new Date();
+    if (dobFieldPointer && columns.includes('/_specialAgeToday')) {
+        records = records.map(it => {
+            return { ...it, _specialAgeToday: calculateAge({
+                base: jsonpointer.get(it, dobFieldPointer),
+                relativeTo: now,
+                asString: true,
+            }) }
+        })
+    }
 
     records = records.map(it => ({
         ...it,
@@ -110,6 +133,8 @@ var subjectExtendedSearchExport = async (context, next) => {
     csv.addLine(columns.map(pointer => {
         var fieldDefinition = columnDefinitions[pointer];
         switch (pointer) {
+            case '/_specialAgeToday':
+                return 'Alter';
             case '/_specialStudyParticipation':
                 return 'Studien';
             case '/_specialUpcomingExperiments':
@@ -123,6 +148,9 @@ var subjectExtendedSearchExport = async (context, next) => {
         csv.addLine(columns.map(pointer => {
        
             switch (pointer) {
+                case '/_specialAgeToday':
+                    return record._specialAgeToday;
+                    break;
                 case '/_specialStudyParticipation':
                     return formatStudyParticipation({
                         record, related, timezone
