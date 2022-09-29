@@ -164,6 +164,13 @@ var subjectFieldRequirementChecks = createEnumFromMap({
     'inter-subject-equality': 'ist Gleich im Termin'
 })
 
+var labMethods = createEnumFromMap({
+    'inhouse': 'Interne Termine',
+    'away-team': 'Externe Termine',
+    'online-video-call': 'Online-Video-Termine',
+    'online-survey': 'Online-Umfrage',
+});
+
 module.exports = {
     awayTeamParticipationStatus,
     awayTeamUnparticipationStatus,
@@ -183,4 +190,5 @@ module.exports = {
 
     experimentTypes,
     inviteExperimentTypes,
+    labMethods,
 }

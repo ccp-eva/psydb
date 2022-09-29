@@ -26,3 +26,4 @@ export * from './date-only-server-side-interval';
 export * from './integer-interval';
 
 export * from './address';
+export * from './has-testing-permission';

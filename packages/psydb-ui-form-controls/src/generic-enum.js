@@ -34,6 +34,7 @@ export const GenericEnum = (ps) => {
         value,
         onChange,
         useRawOnChange = false,
+        alwaysIncludeEmptyOption = false,
 
         ...pass
     } = ps;
@@ -57,7 +58,8 @@ export const GenericEnum = (ps) => {
 
     var hasEmptyOption = (
         (useRawOnChange && !enumeration.keys.includes(value)) ||
-        (!useRawOnChange && value === -1)
+        (!useRawOnChange && value === -1) ||
+        alwaysIncludeEmptyOption
     );
 
     // FIXME: either use names xor labels

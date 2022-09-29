@@ -39,6 +39,10 @@ export const Filters = (ps) => {
                 subChannelKey='scientific'
                 fieldDefinitions={ fieldDefinitions }
             />
+            <Fields.HasTestingPermission
+                dataXPath='$.specialFilters.hasTestingPermission'
+                label='Hat Teilnahme-Erlaubnis'
+            />
             <Fields.ForeignIdList
                 dataXPath='$.specialFilters.didParticipateIn'
                 label='Hat Teilgenommen an'

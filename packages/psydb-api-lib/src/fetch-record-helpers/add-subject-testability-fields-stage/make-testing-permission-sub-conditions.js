@@ -36,6 +36,7 @@ var makeTestingPermissionSubConditions = ({
     return subConditions;
 }
 
+// FIXME: move to mongo-stages
 var ItemsExistExpr = ({
     inputPath,
     as,

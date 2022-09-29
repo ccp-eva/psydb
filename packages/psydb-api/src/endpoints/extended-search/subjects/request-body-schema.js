@@ -9,6 +9,7 @@ var {
     Integer,
     StringEnum,
     SaneString,
+    ForeignId,
     ForeignIdList,
 
     AgeFrameInterval,
@@ -54,6 +55,14 @@ RequestBodySchema.Full = () => ExactObject({
                 didNotParticipateIn: ForeignIdList({
                     collection: 'study',
                 }),
+                hasTestingPermission: ExactObject({
+                    properties: {
+                        labMethod: { type: 'string' },
+                        researchGroupId: ForeignId({
+                            collection: 'researchGroup'
+                        })
+                    },
+                })
             }
         }),
 

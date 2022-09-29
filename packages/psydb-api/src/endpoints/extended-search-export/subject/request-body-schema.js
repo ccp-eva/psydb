@@ -10,6 +10,7 @@ var {
     DefaultBool,
     StringEnum,
     SaneString,
+    ForeignId,
     ForeignIdList,
     
     Timezone,
@@ -53,6 +54,14 @@ RequestBodySchema.Full = () => ExactObject({
                 didNotParticipateIn: ForeignIdList({
                     collection: 'study',
                 }),
+                hasTestingPermission: ExactObject({
+                    properties: {
+                        labMethod: { type: 'string' },
+                        researchGroupId: ForeignId({
+                            collection: 'researchGroup'
+                        })
+                    },
+                })
             }
         }),
 

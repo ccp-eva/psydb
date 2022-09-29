@@ -173,7 +173,8 @@ var createSpecialFilterConditions = (filters) => {
         onlineId,
         sequenceNumber,
         didParticipateIn,
-        didNotParticipateIn
+        didNotParticipateIn,
+        hasTestingPermission
     } = filters;
 
     var AND = [];
@@ -208,6 +209,37 @@ var createSpecialFilterConditions = (filters) => {
         )}});
     }
 
+    var { labMethod, researchGroupId } = (hasTestingPermission || {});
+    if (
+        labMethod || researchGroupId
+    ) {
+        AND.push({ $expr: ItemsExistExpr({
+            inputPath: '$scientific.state.testingPermissions',
+            as: 'group',
+            cond: { $and: [
+                ...(researchGroupId ? [
+                    { $eq: [
+                        '$$group.researchGroupId',
+                        hasTestingPermission.researchGroupId
+                    ]}
+                ] : []),
+                ItemsExistExpr({
+                    inputPath: '$$group.permissionList',
+                    as: 'perm',
+                    cond: { $and: [
+                        ...(labMethod ? [
+                            { $eq: [
+                                '$$perm.labProcedureTypeKey',
+                                hasTestingPermission.labMethod
+                            ]}
+                        ] : []),
+                        { $eq: [ '$$perm.value', 'yes' ]}
+                    ]}
+                })
+            ]}
+        })})
+    }
+
     return (
         AND.length > 0
         ? { $and: AND }
@@ -215,6 +247,23 @@ var createSpecialFilterConditions = (filters) => {
     )
 }
 
+// FIXME: move to mongo-stages
+var ItemsExistExpr = ({
+    inputPath,
+    as,
+    cond
+}) => ({
+    $gt: [
+        { $size: {
+            $filter: {
+                input: inputPath,
+                as,
+                cond
+            }
+        }},
+        0,
+    ]
+})
 module.exports = {
     createCustomQueryValues,
     convertPointerKeys,
