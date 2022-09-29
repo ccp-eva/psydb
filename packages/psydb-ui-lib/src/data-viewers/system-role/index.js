@@ -59,6 +59,9 @@ const awayTeamLabOpsLabels = (type) => ({
     [labOpsPath(type, 'canPostprocessExperiments')]: (
         'kann Termine nachbereiten'
     ),
+    [labOpsPath(type, 'canChangeExperimentStudy')]: (
+        'kann Studie von existierenden Terminen ändern'
+    ),
 });
 
 const surveyLabOpsLabels = (type) => ({

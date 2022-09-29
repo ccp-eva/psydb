@@ -48,6 +48,7 @@ var createFakeRootFlags = () => ({
             canMoveAndCancelExperiments: true,
             canChangeOpsTeam: true,
             canPostprocessExperiments: true,
+            canChangeExperimentStudy: true,
         },
         'online-video-call': {
             canWriteReservations: true,

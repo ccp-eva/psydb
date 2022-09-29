@@ -211,6 +211,12 @@ const LabOperationFields = (ps) => {
                 label='kann Termine nachbereiten'
                 dataXPath={ `${dataXPath}.canPostprocessExperiments` }
             />
+            { type === 'away-team' && (
+                <Bool
+                    label='kann Studie von existierenden Terminen ändern'
+                    dataXPath={ `${dataXPath}.canChangeExperimentStudy` }
+                />
+            )}
         </>
     )
 }

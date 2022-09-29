@@ -6,7 +6,8 @@ var WideBool = require('./wide-bool');
 var LabOperationPermissions = (options) => {
     var {
         title,
-        hasInvitation,
+        hasInvitation = false,
+        enableCanChangeExperimentStudy = false,
         reservationType = 'location-with-team',
     } = options;
 
@@ -44,6 +45,11 @@ var LabOperationPermissions = (options) => {
             canPostprocessExperiments: WideBool({
                 title: 'kann Termine nachbearbeiten',
             }),
+            ...(enableCanChangeExperimentStudy && {
+                canChangeExperimentStudy: WideBool({
+                    title: 'kann Studie von existierenden Terminen ändern',
+                }),
+            }),
         },
         required: [
             'canWriteReservations',
@@ -53,6 +59,9 @@ var LabOperationPermissions = (options) => {
             'canMoveAndCancelExperiments',
             'canChangeOpsTeam',
             'canPostprocessExperiments',
+            ...(enableCanChangeExperimentStudy ? [
+                'canChangeExperimentStudy'
+            ] : []),
         ]
     })
 }
@@ -82,11 +91,12 @@ module.exports = {
             }),
             'away-team': LabOperationPermissions({
                 title: 'Externe Termine',
-                hasInvitation: false
+                hasInvitation: false,
+                enableCanChangeExperimentStudy: true,
             }),
             'online-video-call': LabOperationPermissions({
                 title: 'Online-Video Termine',
-                hasInvitation: true
+                hasInvitation: true,
             }),
             'online-survey': SurveyPermissions({
                 title: 'Online-Umfragen',
