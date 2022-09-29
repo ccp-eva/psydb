@@ -120,6 +120,7 @@ const ChangeOpsTeamForm = (ps) => {
     )
 }
 
+// FIXME: make formik field
 const TeamList = ({
     studyId,
     selectedTeamId,

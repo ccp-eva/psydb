@@ -12,6 +12,7 @@ import {
 import { Button } from '@mpieva/psydb-ui-layout';
 import {
     SelectSubjectContainer,
+    ChangeExperimentStudyContainer,
     FollowUpExperimentContainer,
     CancelExperimentContainer
 } from '../shared-general-functions';
@@ -28,6 +29,9 @@ const GeneralFunctions = ({
     var permissions = usePermissions();
     var canSelectSubjects = permissions.hasLabOperationFlag(
         experimentType, 'canSelectSubjectsForExperiments'
+    );
+    var canChangeStudy = permissions.hasLabOperationFlag(
+        experimentType, 'canChangeExperimentStudy'
     );
     var canChangeOpsTeam = permissions.hasLabOperationFlag(
         experimentType, 'canChangeOpsTeam'
@@ -47,6 +51,13 @@ const GeneralFunctions = ({
                     onSuccessfulUpdate,
                 }) } />
             )*/}
+            { canChangeStudy && (
+                <ChangeExperimentStudyContainer { ...({
+                    experimentData,
+                    opsTeamData,
+                    onSuccessfulUpdate,
+                }) } />
+            )}
             { canChangeOpsTeam && (
                 <ChangeTeamContainer { ...({
                     experimentType,
