@@ -4,6 +4,7 @@ import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
 
 import {
+    ChangeExperimentStudyContainer,
     FollowUpExperimentContainer,
     CancelExperimentContainer
 } from '../shared-general-functions';
@@ -23,6 +24,9 @@ const GeneralFunctions = ({
     var { url } = useRouteMatch();
 
     var permissions = usePermissions();
+    var canChangeStudy = permissions.hasLabOperationFlag(
+        experimentType, 'canChangeExperimentStudy'
+    );
     var canMove = permissions.hasLabOperationFlag(
         experimentType, 'canMoveAndCancelExperiments'
     );
@@ -32,6 +36,13 @@ const GeneralFunctions = ({
 
     return (
         <>
+            { canChangeStudy && (
+                <ChangeExperimentStudyContainer { ...({
+                    experimentData,
+                    opsTeamData,
+                    onSuccessfulUpdate,
+                }) } />
+            )}
             { canMove && experimentType === 'away-team' && (
                 <FollowUpExperimentContainer { ...({
                     experimentData,
