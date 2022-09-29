@@ -38,6 +38,10 @@ const ReservationFormContainer = ({
         slotDuration
     } = confirmData;
 
+    var experimentSubjectData = experimentState.subjectData.find(it => (
+        it.subjectId === subjectData.record._id
+    ));
+
     var {
         end,
         comment,
@@ -46,7 +50,9 @@ const ReservationFormContainer = ({
         onChangeEnd,
         onChangeComment,
         onChangeAutoConfirm,
-    } = useControlStates({ start, slotDuration });
+    } = useControlStates({ start, slotDuration, defaults: {
+        comment: experimentSubjectData.comment
+    }});
 
     var handleSubmit = createSend(() => ({
         type: `experiment/move-subject-${experimentType}`,

@@ -44,6 +44,7 @@ var triggerSystemEvents = async (context) => {
             ...context,
             experimentRecord: targetCache.experimentRecord,            
             subjectRecord,
+            comment,
         });
     }
     else {

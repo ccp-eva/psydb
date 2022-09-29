@@ -24,7 +24,13 @@ const ExperimentFormContainer = ({
     var { type: experimentType } = experimentRecord;
     var target = confirmData.experimentRecord;
 
-    var [ comment, setComment ] = useState('');
+    var experimentSubjectData = experimentRecord.state.subjectData.find(it => (
+        it.subjectId === subjectData.record._id
+    ));
+
+    var [ comment, setComment ] = useState(
+        experimentSubjectData.comment || ''
+    );
     var [ autoConfirm, setAutoConfirm ] = useState(false);
 
     var handleSubmit = createSend(() => ({
