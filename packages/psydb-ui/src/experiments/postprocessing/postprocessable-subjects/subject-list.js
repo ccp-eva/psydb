@@ -189,7 +189,7 @@ const PostprocessSubjectRow = ({
                                     onSuccessfulUpdate
                                 }) } />
                             </div>
-                            { canRemoveSubject && (
+                            { experimentType === 'away-team' && canRemoveSubject && (
                                 <Button
                                     variant='danger'
                                     onClick={ () => {
