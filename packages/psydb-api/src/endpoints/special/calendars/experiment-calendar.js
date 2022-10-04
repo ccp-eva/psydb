@@ -185,7 +185,7 @@ var experimentCalendar = async (context, next) => {
     );
     
     var experimentStudyIds = (
-        experimentRecords.map(it => it.studyId)
+        experimentRecords.map(it => it.state.studyId)
     );
 
     var subjectIds = [];
