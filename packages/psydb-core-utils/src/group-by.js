@@ -1,12 +1,17 @@
 'use strict';
 var jsonpointer = require('jsonpointer');
+var defaultTransform = it => it;
 
-var groupBy = ({
-    items,
-    byProp,
-    byPointer,
-    createKey
-}) => {
+var groupBy = (options) => {
+    var {
+        items,
+        byProp,
+        byPointer,
+        createKey,
+
+        transform = defaultTransform
+    } = options;
+
     if (byProp) {
         createKey = (item) => item[byProp];
     }
@@ -16,10 +21,11 @@ var groupBy = ({
     return genericGroupBy({
         items,
         createKey,
+        transform,
     });
 }
 
-var genericGroupBy = ({ items, createKey }) => {
+var genericGroupBy = ({ items, createKey, transform }) => {
     var grouped = items.reduce((acc, item) => {
         var group = [],
             key = createKey(item);
@@ -30,7 +36,7 @@ var genericGroupBy = ({ items, createKey }) => {
             ...acc,
             [key]: [
                 ...group,
-                item
+                transform(item)
             ]
         };
     }, {});

@@ -151,6 +151,8 @@ var extendedSearchCore = async (bag) => {
 
     var stages = [
         { $match: {
+            isDummy: { $ne: true },
+            ...(recordType && { type: recordType }),
             ...convertPointerKeys(customQueryValues),
             ...specialFilterConditions,
         }},

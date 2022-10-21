@@ -317,6 +317,12 @@ var createRouting = (bag = {}) => {
         withKoaBody(),
         endpoints.extendedSearch.studies
     );
+    router.post('/extended-search/locations',
+        withSelfAuth(),
+        withPermissions(),
+        withKoaBody(),
+        endpoints.extendedSearch.locations
+    );
 
     router.post('/extended-search-export/subject',
         withSelfAuth(),
