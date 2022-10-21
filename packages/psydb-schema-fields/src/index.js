@@ -61,6 +61,9 @@ module.exports = {
     
     WeekdayBoolObject: require('./weekday-bool-object'),
 
+    URLString: require('./url-string'),
+    URLStringList: require('./url-string-list'),
+
     ListOfObjects: require('./list-of-objects'),
     StringEnum: require('./string-enum'),
     StringConst: require('./string-const'),
