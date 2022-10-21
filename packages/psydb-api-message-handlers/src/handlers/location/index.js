@@ -23,6 +23,8 @@ var LocationGroup = MessageHandlerGroup([
     
     require('./hide-record'),
     GenericUnhideRecordHandler({ collection: 'location' }),
+    
+    require('./remove'),
 ]);
 
 module.exports = LocationGroup;

@@ -502,6 +502,16 @@ agent.fetchRecordReverseRefs = ({
     );
 }
 
+agent.fetchLocationReverseRefs = ({
+    id,
+    extraAxiosConfig
+}) => {
+    return axios.get(
+        `/api/location-reverse-refs/${id}`,
+        extraAxiosConfig
+    );
+}
+
 agent.fetchSubjectReverseRefs = ({
     id,
     extraAxiosConfig

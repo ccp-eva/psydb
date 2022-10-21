@@ -12,6 +12,8 @@ var collectionUILinks = {
     'externalOrganization': 'external-organizations',
     'systemRole': 'system-roles',
     'experiment': 'experiments',
+
+    '_participation': 'experiments',
 }
 
 export const ReverseRefList = (ps) => {
@@ -24,7 +26,11 @@ export const ReverseRefList = (ps) => {
 
     return (
         Object.keys(groupedReverseRefs).map(collection => {
-            var collectionLabel = collectionEnum.mapping[collection];
+            var collectionLabel = (
+                collection === '_participation'
+                ? 'Studien-Teilnahmen'
+                : collectionEnum.mapping[collection]
+            );
             var collectionReverseRefs = groupedReverseRefs[collection];
             return (
                 <div key={ collection }>

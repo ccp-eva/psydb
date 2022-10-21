@@ -345,6 +345,13 @@ var createRouting = (bag = {}) => {
         withKoaBody(),
         endpoints.special.subjectReverseRefs
     );
+    
+    router.get('/location-reverse-refs/:id',
+        withSelfAuth(),
+        withPermissions(),
+        withKoaBody(),
+        endpoints.special.locationReverseRefs
+    );
 
     router.get('/record-reverse-refs/:collection/:id',
         withSelfAuth(),
