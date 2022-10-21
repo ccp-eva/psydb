@@ -4,6 +4,11 @@ import { withIconButton } from './with-icon-button';
 
 export { withIconButton };
 
+export const LocationIconButton = withIconButton({
+    Icon: Icons.HouseDoor,
+    defaultTitle: 'zur Location'
+});
+
 export const StudyIconButton = withIconButton({
     Icon: Icons.ClipboardData,
     defaultTitle: 'zur Studie'
