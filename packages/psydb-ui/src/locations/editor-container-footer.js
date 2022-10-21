@@ -134,7 +134,7 @@ const UpdateVisibilityModalBody = (ps) => {
                     id='detach'
                     value={ detachSubjects }
                     onChange={ setDetachSubjects }
-                    label='Proband:innen aus Kindergarten herausnehmen'
+                    label='Proband:innen aus Location herausnehmen (z.B. bei Kindergarten)'
                 />
             </div>
             <hr />
@@ -158,7 +158,7 @@ const UpdateVisibilityModalBody = (ps) => {
 
 const UpdateVisibilityModal = WithDefaultModal({
     title: 'Location ausblenden',
-    size: 'md',
+    size: 'lg',
     bodyClassName: 'bg-light pt-0 pr-3 pl-3',
     Body: UpdateVisibilityModalBody,
 });
