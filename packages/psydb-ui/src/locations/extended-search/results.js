@@ -167,7 +167,7 @@ const TableBody = (ps) => {
                     })} />
                     { columns.includes('/_specialStudyReverseRefs') && (
                         <td>
-                            { it._specialStudyReverseRefs.map((it, index) => (
+                            { (it._specialStudyReverseRefs || []).map((it, index) => (
                                 <>
                                     { index > 0 && ', ' }
                                     <a href={ `#/studies/${it.type}/${it._id}` }>
