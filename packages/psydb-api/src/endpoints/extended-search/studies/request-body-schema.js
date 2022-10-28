@@ -59,6 +59,8 @@ RequestBodySchema.Full = () => ExactObject({
                 studyTopicIds: NegatableForeignIdList({
                     collection: 'studyTopic'
                 }),
+
+                isHidden: StringEnum([ 'any', 'only-true', 'only-false' ])
             }
         }),
 

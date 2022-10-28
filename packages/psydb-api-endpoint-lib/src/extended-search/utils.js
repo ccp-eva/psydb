@@ -56,6 +56,21 @@ var createOneCustomQueryValueObject = (options) => {
                 : undefined
             )
 
+        case 'DefaultBool':
+            var value = undefined;
+            if (filter === 'only-true') {
+                value = true;
+            }
+            if (filter === 'only-false') {
+                value = false;
+            }
+            return (
+                value !== undefined
+                ? { [pointer]: value }
+                : undefined
+            )
+
+
         case 'ForeignId':
         case 'ForeignIdList':
         case 'HelperSetItemId':

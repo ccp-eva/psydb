@@ -21,7 +21,7 @@ export const Filters = (ps) => {
             />
             { permissions.isRoot() && (
                 <Fields.SaneString
-                    dataXPath='$.specialFilters.studyId'
+                    dataXPath='$.specialFilters.locationId'
                     label='Interne ID'
                 />
             )}
@@ -29,6 +29,16 @@ export const Filters = (ps) => {
             <Fields.Custom
                 dataXPath='$.customFilters'
                 fieldDefinitions={ fieldDefinitions }
+            />
+
+            <Fields.GenericRadioGroup
+                dataXPath='$.specialFilters.isHidden'
+                label='Ausgeblendete'
+                options={{
+                    'any': 'Alle Anzeigen',
+                    'only-false': 'Nicht Anzeigen',
+                    'only-true': 'Nur Ausgeblendete Anzeigen'
+                }}
             />
 
             <Button type='submit'>

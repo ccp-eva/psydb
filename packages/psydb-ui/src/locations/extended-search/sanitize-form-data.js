@@ -55,17 +55,13 @@ const sanitizeCustomFieldValues = (options) => {
 
 const sanitizeSpecialFilters = (values) => {
     var sanitized = sanitizeCustomFieldValues({
-        fieldDefinitions: [
-            { key: 'scientistIds', type: 'ForeignIdList' },
-            { key: 'studyTopicIds', type: 'ForeignIdList' },
-            { key: 'researchGroupIds', type: 'ForeignIdList' },
-        ],
+        fieldDefinitions: [],
         values
     })
-    var { studyId, sequenceNumber, name, shorthand } = values;
+    var { locationId, sequenceNumber, isHidden } = values;
     return {
-        studyId, name, shorthand,
         ...(typeof sequenceNumber === 'number' && { sequenceNumber }),
+        ...(isHidden !== '' && { isHidden }),
         ...sanitized,
     };
 }

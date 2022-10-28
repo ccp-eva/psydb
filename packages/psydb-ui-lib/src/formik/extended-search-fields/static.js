@@ -17,6 +17,9 @@ export {
 export * from './plain-checkbox';
 export * from './generic-multi-checkbox';
 
+export * from './plain-radio';
+export * from './generic-radio-group';
+
 export * from './biological-gender';
 export * from './ext-bool';
 export * from './negatable-foreign-id-list';

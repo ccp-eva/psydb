@@ -62,10 +62,11 @@ const sanitizeSpecialFilters = (values) => {
         ],
         values
     })
-    var { studyId, sequenceNumber, name, shorthand } = values;
+    var { studyId, sequenceNumber, isHidden, name, shorthand } = values;
     return {
         studyId, name, shorthand,
         ...(typeof sequenceNumber === 'number' && { sequenceNumber }),
+        ...(isHidden !== '' && { isHidden }),
         ...sanitized,
     };
 }

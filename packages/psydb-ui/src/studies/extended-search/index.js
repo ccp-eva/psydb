@@ -111,7 +111,9 @@ const ExtendedSearch = (ps) => {
     var defaultValues = {
         studyType: recordType,
         customFilters: {},
-        specialFilters: {},
+        specialFilters: {
+            isHidden: 'only-false'
+        },
         columns: defaultColumns,
         sort: { column: '/sequenceNumber', direction: 'asc' },
         limit: 0,

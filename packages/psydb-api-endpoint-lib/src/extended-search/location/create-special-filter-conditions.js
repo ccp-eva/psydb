@@ -10,6 +10,7 @@ var createSpecialFilterConditions = (filters) => {
     var {
         locationId,
         sequenceNumber,
+        isHidden
     } = filters;
 
     var AND = [];
@@ -27,6 +28,20 @@ var createSpecialFilterConditions = (filters) => {
                 regex: new RegExp(escapeRX(String(sequenceNumber)), 'i')
             }
         }});
+    }
+
+    var statics = createCustomQueryValues({
+        fields: [
+            {
+                key: 'isHidden',
+                pointer: '/state/systemPermissions/isHidden',
+                type: 'DefaultBool'
+            },
+        ],
+        filters,
+    });
+    if (Object.keys(statics).length > 0 ) {
+        AND.push(convertPointerKeys(statics));
     }
 
     return (

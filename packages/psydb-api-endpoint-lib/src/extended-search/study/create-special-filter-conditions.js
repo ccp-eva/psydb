@@ -32,6 +32,11 @@ var createSpecialFilterConditions = (filters) => {
     var statics = createCustomQueryValues({
         fields: [
             {
+                key: 'isHidden',
+                pointer: '/state/systemPermissions/isHidden',
+                type: 'DefaultBool'
+            },
+            {
                 key: 'name',
                 pointer: '/state/name',
                 type: 'SaneString'
