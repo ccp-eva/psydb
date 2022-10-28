@@ -146,8 +146,42 @@ const LocationCalendarList = ({
                     })}
                 />
             ))}
+            
+            <hr />
+
+            <div className='mt-3'>
+                <b><u>Legende</u></b>
+                {
+                    teamRecords
+                    .filter(it => !it.state.hidden)
+                    .map(teamRecord => {
+                        return (
+                            <TeamLabel teamRecord={ teamRecord }/>
+                        )
+                    })
+                }
+            </div>
         </div>
     )
 }
+
+const TeamLabel = (ps) => {
+    var { teamRecord } = ps;
+    return (
+        <div className='d-flex align-items-center'>
+            <div
+                className='m-1 mr-2'
+                style={{
+                    width: '30px',
+                    height: '26px',
+                    backgroundColor: teamRecord.state.color
+                }}
+            >
+            </div>
+            <span>{ teamRecord.state.name }</span>
+        </div>
+    )
+}
+
 const WrappedLocationCalendarList = withWeeklyCalendarPages(LocationCalendarList);
 export default WrappedLocationCalendarList;
