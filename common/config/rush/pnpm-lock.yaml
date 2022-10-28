@@ -10812,10 +10812,11 @@ packages:
     dev: false
 
   file:projects/psydb-api-endpoint-lib.tgz:
-    resolution: {integrity: sha512-sD86Nb7tKlVPwtIVRH7hwh3gVURwRyj4OPHU005AfsncBu0B3CRJCs4LCNpp/oqJIeMqMhlyUtMty8MdygKtkQ==, tarball: file:projects/psydb-api-endpoint-lib.tgz}
+    resolution: {integrity: sha512-94g/4YzggTMf0wmgSpOSoSJmpr/2dc1HooV/LnGOi8LhiN8jrQDNIrW3fsmWsmkxQcfz5S7hv/6O6PzQtYs4ww==, tarball: file:projects/psydb-api-endpoint-lib.tgz}
     name: '@rush-temp/psydb-api-endpoint-lib'
     version: 0.0.0
     dependencies:
+      '@cdxoo/inline-string': 1.0.0
       chai: 4.2.0
       debug: 4.3.3
       escape-string-regexp: 4.0.0

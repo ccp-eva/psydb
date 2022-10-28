@@ -4,6 +4,8 @@ var debug = require('debug')(
 );
 
 var sift = require('sift');
+var inline = require('@cdxoo/inline-string');
+
 var {
     fromFacets,
 
@@ -22,6 +24,7 @@ var extendedSearchCore = async (bag) => {
     var {
         db,
         collection,
+        permissions,
         recordType,
 
         specialFilterConditions,
@@ -113,6 +116,7 @@ var extendedSearchCore = async (bag) => {
 
     var { fields, subChannelFields } = crt.state.settings;
     if (subChannelFields) {
+        var permissionStatePath = 'scientific.state';
         var customFields = {
             scientific: (
                 subChannelFields.scientific.filter(it => !it.isRemoved)
@@ -134,6 +138,7 @@ var extendedSearchCore = async (bag) => {
         }
     }
     else {
+        var permissionStatePath = 'state';
         var customFields = (
             fields.filter(it => !it.isRemoved)
         );
@@ -146,6 +151,13 @@ var extendedSearchCore = async (bag) => {
         }
     }
 
+    var permissionFullPath = inline`
+        ${permissionStatePath}
+        .systemPermissions
+        .accessRightsByResearchGroup
+        .researchGroupId
+    `;
+
     //console.dir(customQueryValues, { depth: null })
     //console.log(specialFilterConditions);
 
@@ -156,6 +168,14 @@ var extendedSearchCore = async (bag) => {
             ...convertPointerKeys(customQueryValues),
             ...specialFilterConditions,
         }},
+
+        ...(permissions.isRoot() ? [] : [
+            { $match: {
+                [permissionFullPath]: { $in: (
+                    permissions.getCollectionFlagIds(collection, 'read')
+                )}
+            }},
+        ]),
         
         { $project: {
             sequenceNumber: true,
@@ -165,6 +185,8 @@ var extendedSearchCore = async (bag) => {
                 [ convertPointerToPath(pointer) ]: true
             }), {}),
             ...specialFilterProjection,
+
+            _isHidden: `$${permissionStatePath}.systemPermissions.isHidden`
         }},
 
         SortStage({ ...sort }),
@@ -177,8 +199,6 @@ var extendedSearchCore = async (bag) => {
             recordsCount: [{ $count: 'COUNT' }]
         }}
     ].filter(it => !!it);
-
-    //console.dir({ stages }, { depth: null });
 
     var facets = await (
         db.collection(collection).aggregate(

@@ -123,7 +123,7 @@ const ExtendedSearch = (ps) => {
     }; // createDefaults({ schema })
 
     return (
-        <PageWrappers.Level3 title='Erweiterte Studiensuche'>
+        <PageWrappers.Level3 title='Erweiterte Locationsuche'>
             <DefaultForm
                 onSubmit={ (formData) => { handleSwitchTab({
                     nextTab: getNextTabKey(tab),

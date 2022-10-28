@@ -58,6 +58,7 @@ var locationExtendedSearch = async (context, next) => {
         displayFieldData,
     } = await extendedSearch.core({
         db,
+        permissions,
         collection: 'location',
         recordType: locationType,
 
