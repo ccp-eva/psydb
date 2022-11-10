@@ -77,6 +77,7 @@ var subjectExtendedSearchExport = async (context, next) => {
         displayFieldData,
     } = await extendedSearch.core({
         db,
+        permissions,
         collection: 'subject',
         recordType: subjectType,
 
