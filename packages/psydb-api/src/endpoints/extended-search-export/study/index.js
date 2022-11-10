@@ -61,6 +61,7 @@ var studyExtendedSearchExport = async (context, next) => {
         displayFieldData,
     } = await extendedSearch.core({
         db,
+        permissions,
         collection: 'study',
         recordType: studyType,
 
