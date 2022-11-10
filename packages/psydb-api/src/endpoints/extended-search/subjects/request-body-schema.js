@@ -31,16 +31,6 @@ RequestBodySchema.Full = () => ExactObject({
         customGdprFilters: { type: 'object' },
         customScientificFilters: {
             type: 'object',
-            /*properties: { dateOfBirth: { oneOf: [
-                ExactObject({
-                    properties: { interval: DateOnlyServerSideInterval() },
-                    required: ['interval']
-                }),
-                ExactObject({
-                    properties: { ageFrame: AgeFrameInterval() },
-                    required: ['ageFrame']
-                })
-            ]}}*/
         },
         
         specialFilters: ExactObject({
@@ -48,7 +38,6 @@ RequestBodySchema.Full = () => ExactObject({
                 subjectId: SaneString(),
                 onlineId: SaneString(),
                 sequenceNumber: Integer(),
-                //didParticipate: StringEnum([ 'yes'. 'no', 'any' ]),
                 didParticipateIn: ForeignIdList({
                     collection: 'study'
                 }),
