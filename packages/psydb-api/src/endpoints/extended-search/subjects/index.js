@@ -80,7 +80,7 @@ var subjectExtendedSearch = async (context, next) => {
         customScientificFilters,
         customGdprFilters,
         specialFilterConditions: (
-            extendedSearch.location.createSpecialFilterConditions(specialFilters)
+            extendedSearch.subject.createSpecialFilterConditions(specialFilters)
         ),
         specialFilterProjection: {
             ...(columns.includes('/_specialStudyParticipation') && {

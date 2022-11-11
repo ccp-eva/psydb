@@ -51,7 +51,8 @@ RequestBodySchema.Full = () => ExactObject({
                             collection: 'researchGroup'
                         })
                     },
-                })
+                }),
+                isHidden: StringEnum([ 'any', 'only-true', 'only-false' ])
             }
         }),
 

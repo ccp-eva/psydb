@@ -53,6 +53,17 @@ export const Filters = (ps) => {
                 label='Hat nicht Teilgenommen an'
                 collection='study'
             />
+            
+            <Fields.GenericRadioGroup
+                dataXPath='$.specialFilters.isHidden'
+                label='Ausgeblendete'
+                options={{
+                    'any': 'Alle Anzeigen',
+                    'only-false': 'Nicht Anzeigen',
+                    'only-true': 'Nur Ausgeblendete Anzeigen'
+                }}
+            />
+
             <Button type='submit'>
                 Weiter
             </Button>

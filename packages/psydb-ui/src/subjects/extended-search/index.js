@@ -112,7 +112,9 @@ const ExtendedSearch = (ps) => {
         subjectType: recordType,
         customGdprFilters: {},
         customScientificFilters: {},
-        specialFilters: {},
+        specialFilters: {
+            isHidden: 'only-false'
+        },
         columns: defaultColumns,
         sort: { column: '/sequenceNumber', direction: 'asc' },
         limit: 0,

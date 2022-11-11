@@ -8,6 +8,8 @@ var {
 } = require('@mpieva/psydb-mongo-stages').expressions;
 
 var {
+    createCustomQueryValues,
+    convertPointerKeys,
     escapeRX // FIXME: use makeRX
 } = require('../utils');
 
@@ -18,7 +20,8 @@ var createSpecialFilterConditions = (filters) => {
         sequenceNumber,
         didParticipateIn,
         didNotParticipateIn,
-        hasTestingPermission
+        hasTestingPermission,
+        isHidden
     } = filters;
 
     var AND = [];
@@ -83,6 +86,21 @@ var createSpecialFilterConditions = (filters) => {
             ]}
         })})
     }
+    
+    var statics = createCustomQueryValues({
+        fields: [
+            {
+                key: 'isHidden',
+                pointer: '/scientific/state/systemPermissions/isHidden',
+                type: 'DefaultBool'
+            },
+        ],
+        filters,
+    });
+    if (Object.keys(statics).length > 0 ) {
+        AND.push(convertPointerKeys(statics));
+    }
+
     return (
         AND.length > 0
         ? { $and: AND }
