@@ -280,6 +280,20 @@ var experimentCalendar = async (context, next) => {
         ]).toArray()
     );
 
+    var _upcomingLabTeamExperimentCounts = await (
+        fetchUpcomingLabTeamExperimentCounts({
+            db,
+            experimentType,
+            labTeamIds: experimentOperatorTeamRecords.map(it => it._id)
+        })
+    );
+
+    for (var it of experimentOperatorTeamRecords) {
+        it._upcomingExperimentCount = (
+            _upcomingLabTeamExperimentCounts[it._id]
+        );
+    }
+
     var subjectRecordsById = keyBy({
         items: subjectRecords,
         byProp: '_id'
@@ -315,5 +329,35 @@ var experimentCalendar = async (context, next) => {
     await next();
 }
 
+var fetchUpcomingLabTeamExperimentCounts = async (bag) => {
+    var { db, experimentType, labTeamIds } = bag;
+    var now = new Date();
+    var start = datefns.startOfDay(now);
+
+    var upcoming = await (
+        db.collection('experiment').aggregate([
+            { $match: {
+                type: experimentType,
+                'state.isCanceled': false,
+                'state.interval.start': { $gte: start }
+            }},
+            { $project: {
+                _id: true,
+                'state.experimentOperatorTeamId': true
+            }}
+        ]).toArray()
+    );
+
+    var upcomingForLabTeamId = groupBy({
+        items: upcoming,
+        byPointer: '/state/experimentOperatorTeamId'
+    });
+
+    for (var key of Object.keys(upcomingForLabTeamId)) {
+        upcomingForLabTeamId[key] = upcomingForLabTeamId[key].length
+    }
+
+    return upcomingForLabTeamId;
+}
 
 module.exports = experimentCalendar;

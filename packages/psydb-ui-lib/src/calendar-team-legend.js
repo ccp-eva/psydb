@@ -79,6 +79,9 @@ const StudyRow = (ps) => {
                                 }}
                             >
                                 { it.state.name }
+                                { it._upcomingExperimentCount && (
+                                    ` (${it._upcomingExperimentCount})`
+                                )}
                             </ColoredBox>
                         );
                     })}
