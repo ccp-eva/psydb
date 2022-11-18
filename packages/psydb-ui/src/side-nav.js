@@ -9,6 +9,8 @@ import {
     WhenAllowed
 } from '@mpieva/psydb-ui-lib';
 
+import Logo from './main-logo';
+
 const Link = ({
     to,
     className,
@@ -22,14 +24,7 @@ const Link = ({
 const SideNav = (ps) => {
     return (
         <>
-            <h2
-                className='text-center pt-3 pb-3 m-0'
-                style={{ background: '#006c66'}}
-            >
-                <Link to='/'>
-                    <b className='text-white'>PsyDB</b>
-                </Link>
-            </h2>
+            <Logo />
             <Nav
                 className='flex-column navbar navbar-light bg-light border'
                 as='nav'

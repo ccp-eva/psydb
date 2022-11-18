@@ -5410,6 +5410,17 @@ packages:
       pend: 1.2.0
     dev: false
 
+  /file-loader/6.2.0_webpack@5.65.0:
+    resolution: {integrity: sha512-qo3glqyTa61Ytg4u73GultjHGjdRyig3tG6lPtyX/jOEJvHif9uB0/OCI2Kif6ctF3caQTW2G5gym21oAsI4pw==}
+    engines: {node: '>= 10.13.0'}
+    peerDependencies:
+      webpack: ^4.0.0 || ^5.0.0
+    dependencies:
+      loader-utils: 2.0.2
+      schema-utils: 3.1.1
+      webpack: 5.65.0_webpack-cli@4.9.1
+    dev: false
+
   /file-uri-to-path/1.0.0:
     resolution: {integrity: sha512-0Zt+s3L7Vf1biwWZ29aARiVYLx7iMGnEUl9x33fbB/j3jR81u/O2LbqK+Bm1CDSNDKVtJ/YjwY7TUd5SkeLQLw==}
     requiresBuild: true
@@ -9734,6 +9745,16 @@ packages:
     engines: {node: '>= 0.4'}
     dev: false
 
+  /svg-url-loader/8.0.0_webpack@5.65.0:
+    resolution: {integrity: sha512-5doSXvl18hY1fGsRLdhWAU5jgzgxJ06/gc/26cpuDnN0xOz1HmmfhkpL29SSrdIvhtxQ1UwGzmk7wTT/l48mKw==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      webpack: ^5.0.0
+    dependencies:
+      file-loader: 6.2.0_webpack@5.65.0
+      webpack: 5.65.0_webpack-cli@4.9.1
+    dev: false
+
   /symbol-tree/3.2.4:
     resolution: {integrity: sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw==}
     dev: false
@@ -11537,7 +11558,7 @@ packages:
     dev: false
 
   file:projects/psydb-ui.tgz:
-    resolution: {integrity: sha512-Pv72xDUsFRhMuUkV5bTKO4JrNedaOqGCwJw4TPzNakq56T5dV+320Vn+p/FyWzutHBEQdlaeWaxzpaD64EwEoA==, tarball: file:projects/psydb-ui.tgz}
+    resolution: {integrity: sha512-Hs1WSIdnJ4EH4SMD5P1s55CXKnZaz2gXAqXd0RbNt9+tOnc+73+zJ3xs6b9LjUngROvEzTxGUPvbyFSD1dXoNg==, tarball: file:projects/psydb-ui.tgz}
     name: '@rush-temp/psydb-ui'
     version: 0.0.0
     dependencies:
@@ -11575,6 +11596,7 @@ packages:
       rimraf: 3.0.2
       sift: 16.0.0
       style-loader: 2.0.0_webpack@5.65.0
+      svg-url-loader: 8.0.0_webpack@5.65.0
       webpack: 5.65.0_webpack-cli@4.9.1
       webpack-cli: 4.9.1_67fcf41834cce67d43f7f32edd2da555
       webpack-dev-server: 3.11.3_webpack-cli@4.9.1+webpack@5.65.0

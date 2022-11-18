@@ -83,5 +83,8 @@
     "mongodbMemoryServer": {
       "downloadDir": "/tmp/mongodb-memory-server/"
     }
+  },
+  "dependencies": {
+    "svg-url-loader": "~8.0.0"
   }
 }
