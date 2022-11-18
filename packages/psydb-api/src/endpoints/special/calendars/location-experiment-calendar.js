@@ -135,6 +135,10 @@ var locationExperimentCalendar = async (context, next) => {
         ]).toArray()
     );
 
+    var experimentStudyIds = (
+        experimentRecords.map(it => it.state.studyId)
+    );
+
     var reservationRecords = await (
         db.collection('reservation').aggregate([
             MatchIntervalOverlapStage({ start, end }),
@@ -145,6 +149,10 @@ var locationExperimentCalendar = async (context, next) => {
             StripEventsStage(),
             { $sort: { 'state.interval.start': 1 }}
         ]).toArray()
+    );
+    
+    var reservationStudyIds = (
+        reservationRecords.map(it => it.state.studyId)
     );
 
     var locationIds = [];
@@ -233,16 +241,19 @@ var locationExperimentCalendar = async (context, next) => {
     var experimentOperatorTeamRecords = await (
         db.collection('experimentOperatorTeam').aggregate([
             { $match: {
-                _id: { $in: [
-                    ...experimentRecords.map(it => (
-                        it.state.experimentOperatorTeamId
-                    )),
-                    ...reservationRecords.map(it => (
-                        it.state.experimentOperatorTeamId
-                    ))
-                ]},
+                studyId: { $in: studyIds },
+                $or: [
+                    { 'state.hidden': false },
+                    { _id: { $in: [
+                        ...experimentRecords.map(it => (
+                            it.state.experimentOperatorTeamId
+                        )),
+                        ...reservationRecords.map(it => (
+                            it.state.experimentOperatorTeamId
+                        ))
+                    ]}},
+                ]
             }},
-            StripEventsStage(),
         ]).toArray()
     );
 
@@ -270,6 +281,7 @@ var locationExperimentCalendar = async (context, next) => {
 
     context.body = ResponseBody({
         data: {
+            studyRecords,
             experimentRecords,
             experimentRelated,
 

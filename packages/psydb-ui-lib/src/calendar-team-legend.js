@@ -74,7 +74,9 @@ const StudyRow = (ps) => {
                                 className='border px-3 ml-1 mb-1'
                                 bg={ it.state.color }
                                 extraStyle={{
-                                    cursor: 'pointer',
+                                    ...(onClickTeam && {
+                                        cursor: 'pointer',
+                                    }),
                                     ...extraStyle
                                 }}
                             >

@@ -28,6 +28,7 @@ import getDayStartsInInterval from '@mpieva/psydb-ui-lib/src/get-day-starts-in-i
 
 import withWeeklyCalendarPages from '@mpieva/psydb-ui-lib/src/with-weekly-calendar-pages';
 import CalendarNav from '@mpieva/psydb-ui-lib/src/calendar-nav';
+import { CalendarTeamLegend } from '@mpieva/psydb-ui-lib';
 
 import DaysHeader from './days-header';
 import EmptyDaysRow from './empty-days-row';
@@ -80,6 +81,7 @@ const AwayTeamCalendar = ({
     }
 
     var {
+        studyRecords,
         experimentRecords,
         experimentRelated,
 
@@ -160,6 +162,14 @@ const AwayTeamCalendar = ({
                 }) } />
             ))}
 
+            <CalendarTeamLegend { ...({
+                studyRecords,
+                experimentOperatorTeamRecords,
+                //activeTeamIds: teamSelection.value,
+                //onClickTeam: (team) => {
+                //    teamSelection.toggle(team._id)
+                //}
+            })} />
         </div>
     )
 }
