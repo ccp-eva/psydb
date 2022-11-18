@@ -164,7 +164,10 @@ const TableBody = (ps) => {
     return (
         <tbody>
             { records.map(it => (
-                <tr key={ it._id }>
+                <tr
+                    key={ it._id }
+                    className={ it._isHidden && 'bg-light text-grey' }
+                >
                     <FieldDataBodyCols { ...({
                         record: it,
                         //displayFieldData: selectedFieldData,
