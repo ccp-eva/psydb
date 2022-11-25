@@ -39,12 +39,26 @@ var {
     ForeignId,
 } = require('@mpieva/psydb-schema-fields');
 
-var RequestParamsSchema = () => ExactObject({
+var RequestBodySchema = () => ExactObject({
     properties: {
         studyId: ForeignId({ collection: 'study' }),
+        sort: ExactObject({
+            properties: {
+                path: {
+                    type: 'string',
+                    minLength: 1,
+                },
+                direction: {
+                    type: 'string',
+                    enum: [ 'asc', 'desc' ]
+                }
+            },
+            required: [ 'path', 'direction' ]
+        }),
     },
     required: [
         'studyId',
+        'sort',
     ]
 });
 
@@ -52,17 +66,18 @@ var participatedSubjectsForStudy = async (context, next) => {
     var { 
         db,
         permissions,
-        params,
+        request,
     } = context;
 
     validateOrThrow({
-        schema: RequestParamsSchema(),
-        payload: params
+        schema: RequestBodySchema(),
+        payload: request.body
     })
 
     var {
         studyId,
-    } = params;
+        sort,
+    } = request.body;
 
     await verifyStudyAccess({
         db,
@@ -94,6 +109,7 @@ var participatedSubjectsForStudy = async (context, next) => {
             db,
             subjectType,
             studyId,
+            sort,
         });
 
         dataBySubjectType[subjectType] = data;
@@ -114,6 +130,7 @@ var fetchParticipation = async ({
     db,
     subjectType,
     studyId,
+    sort,
 }) => {
 
     var {
@@ -142,6 +159,9 @@ var fetchParticipation = async ({
                     'scientific.state.internals.participatedInStudies': true 
                 }
             }),
+            { $sort: {
+                [sort.path]: sort.direction === 'desc' ? -1 : 1
+            }}
         ]).toArray()
     );
 

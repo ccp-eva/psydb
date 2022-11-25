@@ -121,10 +121,11 @@ var createRouting = (bag = {}) => {
         endpoints.special.experimentOperatorTeamsForStudy
     );
 
-    router.get('/participated-subjects-for-study/:studyId',
-        withSelfAuth(),
-        withPermissions(),
-        endpoints.special.participatedSubjectsForStudy
+    router.post(
+        '/participated-subjects-for-study',
+        ...withPostStages({
+            endpoint: endpoints.special.participatedSubjectsForStudy
+        })
     );
 
     router.post(

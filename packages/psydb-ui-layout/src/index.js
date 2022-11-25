@@ -35,6 +35,7 @@ export * from './nbsp';
 export * from './permission-denied';
 export * from './not-found';
 
+export * from './sortable-th';
 export * from './option-select-indicator';
 export * from './option-deselect-indicator';
 export * from './simple-list';

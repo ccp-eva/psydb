@@ -179,9 +179,14 @@ agent.fetchExperimentOperatorTeamsForStudy = ({
 
 agent.fetchParticipatedSubjectsForStudy = ({
     studyId,
+    sort,
+    extraAxiosConfig,
 }) => {
     var baseUrl = '/api/participated-subjects-for-study';
-    return axios.get(`${baseUrl}/${studyId}`);
+    return axios.post(baseUrl, {
+        studyId,
+        sort,
+    }, extraAxiosConfig);
 }
 
 agent.fetchParticipatedStudiesForSubject = ({

@@ -1,13 +1,15 @@
 import React, { useEffect, useReducer, useMemo } from 'react';
 import jsonpointer from 'jsonpointer';
+import { convertPointerToPath } from '@mpieva/psydb-core-utils';
 
 import {
     useModalReducer,
-    usePermissions
+    usePermissions,
 } from '@mpieva/psydb-ui-hooks';
 
 import {
     Table,
+    SortableTH,
     SubjectIconButton,
     ExperimentIconButton,
     EditIconButtonInline,
@@ -17,6 +19,7 @@ import {
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 import calculateAge from '@mpieva/psydb-ui-lib/src/calculate-age';
 
+// FIXME: those import are bad; move thos somewhere else
 import FieldDataHeadCols from '@mpieva/psydb-ui-lib/src/record-list/field-data-head-cols';
 import FieldDataBodyCols from '@mpieva/psydb-ui-lib/src/record-list/field-data-body-cols';
 
@@ -34,6 +37,7 @@ const ParticipationList = ({
     relatedCustomRecordTypeLabels,
     displayFieldData,
 
+    sorter,
     className,
     onSuccessfulUpdate,
 }) => {
@@ -68,12 +72,28 @@ const ParticipationList = ({
                     <tr>
                         <FieldDataHeadCols
                             displayFieldData={ displayFieldData }
+                            sorter={ sorter }
+                            canSort={ true }
                         />
-                        <th>Zeitpunkt</th>
+                        <SortableTH
+                            label='Zeitpunkt'
+                            sorter={ sorter }
+                            path='scientific.state.internals.participatedInStudies.timestamp'
+                        />
                         { dateOfBirthField && (
-                            <th>Alter</th>
+                            <SortableTH
+                                label='Alter'
+                                sorter={ sorter }
+                                path={ convertPointerToPath(
+                                    dateOfBirthField.pointer
+                                )}
+                            />
                         )}
-                        <th>Status</th>
+                        <SortableTH
+                            label='Status'
+                            sorter={ sorter }
+                            path='scientific.state.internals.participatedInStudies.status'
+                        />
                     </tr>
                 </thead>
                 <tbody>

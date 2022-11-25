@@ -6,7 +6,8 @@ import { keyBy } from '@mpieva/psydb-common-lib';
 import {
     useFetchAll,
     useRevision,
-    useModalReducer
+    useModalReducer,
+    useSortURLSearchParams,
 } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -24,6 +25,10 @@ const StudyParticipation = ({}) => {
     var { id } = useParams();
 
     var revision = useRevision();
+    var sorter = useSortURLSearchParams({
+        sortPath: 'scientific.state.internals.participatedInStudies.timestamp',
+        sortDirection: 'asc',
+    });
     var modalReducer = useModalReducer();
 
     var [ selectedSubjectType, setSelectedSubjectType ] = useState();
@@ -33,9 +38,13 @@ const StudyParticipation = ({}) => {
             collection: 'subject'
         }),
         participation: agent.fetchParticipatedSubjectsForStudy({
-            studyId: id
+            studyId: id,
+            sort: {
+                path: sorter.sortPath,
+                direction: sorter.sortDirection,
+            }
         })
-    }), [ id, revision.value ]);
+    }), [ id, revision.value, sorter.sortPath, sorter.sortDirection ]);
 
     if (!didFetch) {
         return <LoadingIndicator size='lg' />
@@ -81,6 +90,7 @@ const StudyParticipation = ({}) => {
 
                 <ParticipationList
                     className='mt-1 bg-white'
+                    sorter={ sorter }
                     onSuccessfulUpdate={ revision.up }
                     { ...dataBySubjectType[selectedSubjectType] } 
                 />

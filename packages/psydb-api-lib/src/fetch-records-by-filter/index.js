@@ -210,6 +210,7 @@ var fetchRecordByFilter = async ({
     var sortStage;
     if (sort) {
 
+        // XXX: that doesnt do shit
         // FIXME: this is a hotfix
         if (systemType === 'Address') {
             sortPath += '.street';
