@@ -103,10 +103,6 @@ const ActionsComponent = ({
     var context = useContext(ActionsContext);
     var permissions = usePermissions();
 
-    var canRemoveSubject = permissions.hasLabOperationFlag(
-        experimentType, 'canRemoveExperimentSubject'
-    );
-
     var {
         experimentType,
 
@@ -120,6 +116,10 @@ const ActionsComponent = ({
         onClickMailbox,
         onClickContactFailed,
     } = context;
+
+    var canRemoveSubject = permissions.hasLabOperationFlag(
+        experimentType, 'canRemoveExperimentSubject'
+    );
 
     return (
         <div className='d-flex justify-content-end media-print-hidden'>
