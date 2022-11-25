@@ -161,6 +161,7 @@ var extendedSearchCore = async (bag) => {
     //console.dir(customQueryValues, { depth: null })
     //console.log(specialFilterConditions);
 
+    console.log(columns);
     var stages = [
         { $match: {
             isDummy: { $ne: true },

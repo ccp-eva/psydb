@@ -11,6 +11,7 @@ var {
     SaneString,
     ForeignId,
     ForeignIdList,
+    FullText,
 
     AgeFrameInterval,
     DateOnlyServerSideInterval,
@@ -52,6 +53,7 @@ RequestBodySchema.Full = () => ExactObject({
                         })
                     },
                 }),
+                comment: FullText(),
                 isHidden: StringEnum([ 'any', 'only-true', 'only-false' ])
             }
         }),

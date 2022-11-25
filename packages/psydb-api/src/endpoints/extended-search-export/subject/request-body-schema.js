@@ -12,6 +12,7 @@ var {
     SaneString,
     ForeignId,
     ForeignIdList,
+    FullText,
     
     Timezone,
 } = require('@mpieva/psydb-schema-fields');
@@ -62,6 +63,7 @@ RequestBodySchema.Full = () => ExactObject({
                         })
                     },
                 }),
+                comment: FullText(),
                 isHidden: StringEnum([ 'any', 'only-true', 'only-false' ])
             }
         }),

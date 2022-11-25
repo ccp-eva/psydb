@@ -21,7 +21,8 @@ var createSpecialFilterConditions = (filters) => {
         didParticipateIn,
         didNotParticipateIn,
         hasTestingPermission,
-        isHidden
+        isHidden,
+        comment,
     } = filters;
 
     var AND = [];
@@ -89,6 +90,11 @@ var createSpecialFilterConditions = (filters) => {
     
     var statics = createCustomQueryValues({
         fields: [
+            {
+                key: 'comment',
+                pointer: '/scientific/state/comment',
+                type: 'FullText'
+            },
             {
                 key: 'isHidden',
                 pointer: '/scientific/state/systemPermissions/isHidden',

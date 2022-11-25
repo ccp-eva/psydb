@@ -54,6 +54,11 @@ export const Filters = (ps) => {
                 collection='study'
             />
             
+            <Fields.FullText
+                dataXPath='$.specialFilters.comment'
+                label='Kommentar'
+            />
+
             <Fields.GenericRadioGroup
                 dataXPath='$.specialFilters.isHidden'
                 label='Ausgeblendete'

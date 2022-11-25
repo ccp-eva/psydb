@@ -76,6 +76,7 @@ export const Columns = (ps) => {
         { pointer: '/_specialStudyParticipation', label: 'Studien' },
         { pointer: '/_specialUpcomingExperiments', label: 'Termine' },
         { pointer: '/_specialAgeToday', label: 'Alter' },
+        { pointer: '/scientific/state/comment', label: 'Kommentar' },
     ];
 
     return (
