@@ -5,7 +5,8 @@ var debug = require('debug')(
 
 var {
     keyBy,
-    compareIds
+    compareIds,
+    ejson,
 } = require('@mpieva/psydb-core-utils');
 
 var {
@@ -22,7 +23,7 @@ var {
     createRecordLabel,
     fetchRecordById,
     createSchemaForRecordType,
-    fetchRelatedLabels,
+    fetchRelatedLabelsForMany,
     gatherDisplayFieldsForRecordType,
     fetchOneCustomRecordType,
     applyRecordLabels,
@@ -161,26 +162,15 @@ var fetchParticipation = async ({
         fullSchema: true
     });
 
-    // FIXME: this is really hacky
-    var resolveSchema = {
-        type: 'object',
-        properties: {
-            records: {
-                type: 'array',
-                items: recordSchema,
-            }
-        }
-    }
-
     var {
         relatedRecords,
         relatedHelperSetItems,
         relatedCustomRecordTypes,
-    } = await fetchRelatedLabels({
+    } = await fetchRelatedLabelsForMany({
         db,
-        data: { records: subjectRecords },
-        schema: resolveSchema,
-    });
+        collectionName: 'subject',
+        records: subjectRecords
+    })
 
     var availableDisplayFieldDataByPointer = keyBy({
         items: availableDisplayFieldData,

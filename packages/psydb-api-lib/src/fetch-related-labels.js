@@ -10,7 +10,10 @@ var fetchRelatedLabels = async ({
     schema,
     data,
 }) => {
-    
+
+    console.warn('WARNING: fetchRelatedLabels(): there is an issue with related helper sets it seams');
+    console.warn('WARNING: fetchRelatedLabels(): move to fetchRelatedLabelsForMany()')
+
     var {
         helperSetItemIdRelationData,
         foreignIdRelationData,
