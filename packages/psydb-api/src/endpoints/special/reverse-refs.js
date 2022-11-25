@@ -68,6 +68,7 @@ var reverseRefs = async (context, next) => {
 
     var canAccess = (
         permissions.hasCollectionFlag(collection, 'remove')
+        || permissions.hasCollectionFlag(collection, 'write')
     );
 
     if (!canAccess) {
