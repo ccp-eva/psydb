@@ -1,6 +1,7 @@
 import React from 'react';
 import {
     Table,
+    SortableTH,
     StudyIconButton,
     ExperimentIconButton,
     EditIconButtonInline,
@@ -24,6 +25,7 @@ import {
 } from '../participation';
 
 const ParticipationList = ({
+    sorter,
     subjectId,
     subjectType,
 
@@ -59,12 +61,24 @@ const ParticipationList = ({
                         {/*<FieldDataHeadCols
                             displayFieldData={ displayFieldData }
                         />*/}
-                        <th>Studie</th>
-                        <th>Zeitpunkt</th>
+                        <SortableTH
+                            label='Studie'
+                            sorter={ sorter }
+                            path='study.shorthand'
+                        />
+                        <SortableTH
+                            label='Zeitpunkt'
+                            sorter={ sorter }
+                            path='timestamp'
+                        />
                         { ageFrameField && (
                             <th>Alter</th>
                         )}
-                        <th>Status</th>
+                        <SortableTH
+                            label='Status'
+                            sorter={ sorter }
+                            path='status'
+                        />
                         <th></th>
                     </tr>
                 </thead>

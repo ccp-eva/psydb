@@ -58,7 +58,6 @@ var RequestBodySchema = () => ExactObject({
     },
     required: [
         'studyId',
-        'sort',
     ]
 });
 
@@ -159,9 +158,9 @@ var fetchParticipation = async ({
                     'scientific.state.internals.participatedInStudies': true 
                 }
             }),
-            { $sort: {
+            ...(sort ? [{ $sort: {
                 [sort.path]: sort.direction === 'desc' ? -1 : 1
-            }}
+            }}] : [])
         ]).toArray()
     );
 

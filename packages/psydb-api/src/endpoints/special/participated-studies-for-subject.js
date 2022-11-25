@@ -4,6 +4,7 @@ var debug = require('debug')(
 );
 
 var {
+    ejson,
     groupBy,
     keyBy,
     compareIds
@@ -40,6 +41,19 @@ var RequestBodySchema = () => ExactObject({
     properties: {
         subjectId: ForeignId({ collection: 'subject' }),
         onlyParticipated: DefaultBool(),
+        sort: ExactObject({
+            properties: {
+                path: {
+                    type: 'string',
+                    minLength: 1,
+                },
+                direction: {
+                    type: 'string',
+                    enum: [ 'asc', 'desc' ]
+                }
+            },
+            required: [ 'path', 'direction' ]
+        }),
     },
     required: [
         'subjectId',
@@ -61,6 +75,7 @@ var participatedStudiesForSubject = async (context, next) => {
     var {
         subjectId,
         onlyParticipated,
+        sort
     } = request.body;
 
 
@@ -78,20 +93,35 @@ var participatedStudiesForSubject = async (context, next) => {
         permissions,
     });
 
-    //console.log(dataBySubjectType);
+    var r = await db.collection('subject').aggregate([
+        { $match: { _id: subjectId }},
+        { $unwind: '$scientific.state.internals.participatedInStudies' },
+        { $replaceRoot: {
+            newRoot: '$scientific.state.internals.participatedInStudies'
+        }},
+        { $match: {
+            status: (
+                onlyParticipated
+                ? 'participated'
+                : { $nin: [ 'didnt-participate' ]}
+            )
+        }},
+        { $lookup: {
+            from: 'study',
+            let: { id: '$studyId' },
+            pipeline: [
+                { $match: { $expr: { $eq: ['$_id', '$$id'] }}},
+                { $project: { 'shorthand': '$state.shorthand' }}
+            ],
+            as: 'study',
+        }},
+        { $unwind: '$study' }, // lookup pipeline return array
+        ...(sort ? [{ $sort: {
+            [sort.path]: sort.direction === 'desc' ? -1 : 1
+        }}] : [])
+    ]).toArray();
 
-    var { participatedInStudies } = (
-        subjectData.record.scientific.state.internals
-    );
-    participatedInStudies = participatedInStudies.filter(it => {
-        // FIXME maybe not store it in subject at all then?
-        // keep in experiment though
-        return (
-            onlyParticipated
-            ? it.status === 'participated'
-            : !(['didnt-participate'].includes(it.status))
-        )
-    })
+    var participatedInStudies = r;
 
     var {
         studyTypes,

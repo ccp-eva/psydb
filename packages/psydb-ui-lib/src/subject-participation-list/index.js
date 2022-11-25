@@ -7,7 +7,11 @@ import {
 
 import jsonpointer from 'jsonpointer';
 
-import { useFetchAll } from '@mpieva/psydb-ui-hooks';
+import {
+    useFetchAll,
+    useSortReducer,
+    useSortURLSearchParams,
+} from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator, NotFound } from '@mpieva/psydb-ui-layout';
 
 import ParticipationList from './participation-list';
@@ -18,9 +22,21 @@ const Participation = (ps) => {
         subjectType,
         revision = {},
         enableItemFunctions = true,
+        //inModal = true,
     } = ps;
     var { path, url } = useRouteMatch();
     var { id } = useParams();
+
+    var initialSort = {
+        sortPath: 'timestamp',
+        sortDirection: 'asc',
+    }
+    //var sorter = (
+    //    inModal
+    //    ? useSortReducer(initialSort)
+    //    : useSortURLSearchParams(initialSort)
+    //);
+    var sorter = useSortReducer(initialSort);
 
     if (manualId) {
         id = manualId;
@@ -31,10 +47,14 @@ const Participation = (ps) => {
             fetchRecordTypeMetadata: agent.readCustomRecordTypeMetadata(),
             fetchParticipationData: agent.fetchParticipatedStudiesForSubject({
                 subjectId: id,
+                sort: {
+                    path: sorter.sortPath,
+                    direction: sorter.sortDirection
+                },
                 extraAxiosConfig: { disableErrorModal: [ 404 ] },
             })
         }
-    }, [ id, revision.value ]);
+    }, [ id, revision.value, sorter.sortPath, sorter.sortDirection ]);
 
     if (!didFetch) {
         return (
@@ -58,6 +78,7 @@ const Participation = (ps) => {
     return (
         <div>
             <ParticipationByType {...({
+                sorter,
                 subjectId: id,
                 subjectType,
                 participationData,
@@ -69,6 +90,7 @@ const Participation = (ps) => {
 }
 
 const ParticipationByType = ({
+    sorter,
     subjectId,
     subjectType,
     participationData,
@@ -105,6 +127,7 @@ const ParticipationByType = ({
             { studyTypes.map(type => (
                 <ParticipationList { ...({
                     key: type,
+                    sorter,
                     subjectId,
                     subjectType,
                     studyType: type,

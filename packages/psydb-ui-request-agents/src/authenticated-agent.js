@@ -192,11 +192,12 @@ agent.fetchParticipatedSubjectsForStudy = ({
 agent.fetchParticipatedStudiesForSubject = ({
     subjectId,
     onlyParticipated,
+    sort,
     extraAxiosConfig,
 }) => {
     var baseUrl = '/api/participated-studies-for-subject';
     return axios.post(baseUrl, {
-        subjectId, onlyParticipated
+        subjectId, onlyParticipated, sort
     }, extraAxiosConfig);
 }
 

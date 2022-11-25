@@ -7,7 +7,7 @@ import {
     useFetchAll,
     useRevision,
     useModalReducer,
-    useSortURLSearchParams,
+    useSortReducer,
 } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -20,16 +20,27 @@ import { CreateModal } from '@mpieva/psydb-ui-lib/src/participation';
 import ParticipationList from './participation-list';
 
 
-const StudyParticipation = ({}) => {
+const StudyParticipation = (ps) => {
+    var {
+        // inModal = true
+    } = ps;
+
     var { path, url } = useRouteMatch();
     var { id } = useParams();
 
     var revision = useRevision();
-    var sorter = useSortURLSearchParams({
+    var modalReducer = useModalReducer();
+    
+    var initialSort = {
         sortPath: 'scientific.state.internals.participatedInStudies.timestamp',
         sortDirection: 'asc',
-    });
-    var modalReducer = useModalReducer();
+    }
+    //var sorter = (
+    //    inModal
+    //    ? useSortReducer(initialSort)
+    //    : useSortURLSearchParams(initialSort)
+    //);
+    var sorter = useSortReducer(initialSort);
 
     var [ selectedSubjectType, setSelectedSubjectType ] = useState();
 
