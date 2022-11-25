@@ -78,7 +78,7 @@ const SignIn = ({ onSignedIn }) => {
                         className='py-2 m-0 border-top text-muted'
                         style={{
                             textAlign: 'right',
-                            width: '310px',
+                            width: '315px',
                             position: 'absolute',
                             right: 0,
                             bottom: '5px',
