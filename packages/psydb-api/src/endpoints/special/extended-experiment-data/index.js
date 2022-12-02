@@ -4,6 +4,7 @@ var debug = require('debug')(
 );
 
 var {
+    ejson,
     keyBy,
     groupBy,
     compareIds,
@@ -174,17 +175,27 @@ var extendedExperimentData = async (context, next) => {
         var dobFieldPointer = findCRTAgeFrameField(crtSettings);
         var dobFieldPath = convertPointerToPath(dobFieldPointer);
 
+
         var recordLabelDefinition = (
             customRecordTypeData.state.recordLabelDefinition
         );
 
         debug('gathering subject type display field data');
         var {
-            displayFields,
+            //displayFields,
             availableDisplayFieldData,
         } = await gatherDisplayFieldsForRecordType({
             prefetched: customRecordTypeData,
         });
+
+        var displayFields = [
+            ...crtSettings.tableDisplayFields,
+            ...(
+                experimentType === 'away-team'
+                ? crtSettings.awayTeamSelectionRowDisplayFields
+                : crtSettings.selectionRowDisplayFields
+            )
+        ];
 
         debug('fetching subject records');
         var records = await fetchRecordsByFilter({
