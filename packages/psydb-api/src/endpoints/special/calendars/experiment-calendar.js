@@ -13,6 +13,10 @@ var {
 } = require('@mpieva/psydb-core-utils');
 
 var {
+    convertCRTRecordToSettings
+} = require('@mpieva/psydb-common-lib');
+
+var {
     ApiError,
     ResponseBody,
     
@@ -213,11 +217,18 @@ var experimentCalendar = async (context, next) => {
     });
 
     var {
-        displayFields,
+        //displayFields,
         availableDisplayFieldData,
     } = await gatherDisplayFieldsForRecordType({
         prefetched: subjectRecordTypeData,
     });
+    
+    var crtSettings = convertCRTRecordToSettings(subjectRecordTypeData);
+    var displayFields = [
+        ...crtSettings.tableDisplayFields,
+        ...crtSettings.selectionRowDisplayFields
+    ];
+
 
     // TODO: theese fields needs a flag of some kind so that they are allowed
     // to be shown here

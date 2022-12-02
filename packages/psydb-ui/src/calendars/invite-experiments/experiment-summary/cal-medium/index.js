@@ -324,12 +324,16 @@ const SubjectItem = ({
             <div className='d-flex mb-1'>
                 <div className='flex-grow'>
                     { withValue.map(it => (
-                        <div className='d-flex' key={ it.key }>
-                            <span style={{ width: '90px' }}>
-                                { it.displayName }
-                            </span>
-                            <b className='flex-grow ml-3'>{ it.value }</b>
-                        </div>
+                        it.value === undefined || it.value === ''
+                        ? null
+                        : (
+                            <div className='d-flex' key={ it.key }>
+                                <span style={{ width: '90px' }}>
+                                    { it.displayName }
+                                </span>
+                                <b className='flex-grow ml-3'>{ it.value }</b>
+                            </div>
+                        )
                     )) }
                     <div className='d-flex'>
                         <span style={{ width: '90px' }}>
