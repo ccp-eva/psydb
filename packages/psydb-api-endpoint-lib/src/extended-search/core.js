@@ -164,6 +164,7 @@ var extendedSearchCore = async (bag) => {
     var stages = [
         { $match: {
             isDummy: { $ne: true },
+            'scientific.state.internals.isRemoved': { $ne: true },
             ...(recordType && { type: recordType }),
             ...convertPointerKeys(customQueryValues),
             ...specialFilterConditions,
