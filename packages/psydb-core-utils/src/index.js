@@ -11,7 +11,7 @@ module.exports = {
     entries: require('./entries'),
 
     hasNone: require('./has-none'),
-    hsaOnlyOne: reuqire('./has-only-one'),
+    hsaOnlyOne: require('./has-only-one'),
 
     groupBy: require('./group-by'),
     keyBy: require('./key-by'),
