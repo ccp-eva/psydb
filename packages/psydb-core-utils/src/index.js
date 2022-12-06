@@ -10,6 +10,9 @@ module.exports = {
     unique: require('./unique'),
     entries: require('./entries'),
 
+    hasNone: require('./has-none'),
+    hsaOnlyOne: reuqire('./has-only-one'),
+
     groupBy: require('./group-by'),
     keyBy: require('./key-by'),
     unwind: require('./unwind'),
