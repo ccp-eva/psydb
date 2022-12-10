@@ -23,7 +23,7 @@
     "debug": "~4.3.4",
     "koa": "~2.13.0",
     "koa-body": "~4.2.0",
-    "koa-compose": "^4.1.0",
+    "koa-compose": "~4.1.0",
     "koa-session": "^5.13.1",
     "mongodb": "~3.6.3",
     "@cdxoo/inline-string": "~1.0.0",

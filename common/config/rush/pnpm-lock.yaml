@@ -9,6 +9,7 @@ specifiers:
   '@cdxoo/block-quote': ~1.0.0
   '@cdxoo/flat': ~0.0.4
   '@cdxoo/formik-ajv-async': ~0.4.1
+  '@cdxoo/formik-utils': ~0.7.0
   '@cdxoo/inline-string': ~1.0.0
   '@cdxoo/inline-text': ~1.0.2
   '@cdxoo/json-base64': ~1.0.0
@@ -16,7 +17,9 @@ specifiers:
   '@cdxoo/koa-mongo-mq': ~1.4.0
   '@cdxoo/koa-mongo-rohrpost': ~3.3.0
   '@cdxoo/mongo-rohrpost': ~3.3.0
+  '@cdxoo/mongo-test-helpers': ~0.7.1
   '@cdxoo/mongodb-escape-keys': ~0.1.1
+  '@cdxoo/mongodb-restore': 2.0.0-alpha.2
   '@cdxoo/objectpath-to-jsonpointer': ~1.0.0
   '@cdxoo/omit': ~1.0.1
   '@cdxoo/pick-random-item': ~0.0.2
@@ -130,6 +133,7 @@ specifiers:
   jsonpointer: ~5.0.1
   koa: ~2.13.0
   koa-body: ~4.2.0
+  koa-compose: ~4.1.0
   koa-mount: ~4.0.0
   koa-router: ~10.0.0
   koa-session: ^5.13.1
@@ -185,6 +189,7 @@ dependencies:
   '@cdxoo/block-quote': 1.0.1
   '@cdxoo/flat': 0.0.4
   '@cdxoo/formik-ajv-async': 0.4.1_formik@2.4.3+react@17.0.2
+  '@cdxoo/formik-utils': 0.7.0_formik@2.4.3+react@17.0.2
   '@cdxoo/inline-string': 1.0.0
   '@cdxoo/inline-text': 1.0.2
   '@cdxoo/json-base64': 1.0.0
@@ -192,7 +197,9 @@ dependencies:
   '@cdxoo/koa-mongo-mq': 1.4.0
   '@cdxoo/koa-mongo-rohrpost': 3.3.0
   '@cdxoo/mongo-rohrpost': 3.3.0
+  '@cdxoo/mongo-test-helpers': 0.7.1
   '@cdxoo/mongodb-escape-keys': 0.1.1
+  '@cdxoo/mongodb-restore': 2.0.0-alpha.2
   '@cdxoo/objectpath-to-jsonpointer': 1.0.0
   '@cdxoo/omit': 1.0.1
   '@cdxoo/pick-random-item': 0.0.2
@@ -306,6 +313,7 @@ dependencies:
   jsonpointer: 5.0.1
   koa: 2.13.4
   koa-body: 4.2.0
+  koa-compose: 4.1.0
   koa-mount: 4.0.0
   koa-router: 10.0.0
   koa-session: 5.13.1
@@ -1722,8 +1730,8 @@ packages:
       react: 17.0.2
     dev: false
 
-  /@cdxoo/formik-utils/0.6.1_formik@2.4.3+react@17.0.2:
-    resolution: {integrity: sha512-zfmL8K2ALeDMEjjSvtBoIVNL6ZXUUd7UZHoHWRhDTVXNn0Dx68btrxX/VoihyRej+Bja98cUQ8mvBv/HpnH92Q==}
+  /@cdxoo/formik-utils/0.7.0_formik@2.4.3+react@17.0.2:
+    resolution: {integrity: sha512-syUSu+OgAXxPCN2G4EsRACP3dHEqL9evrLRK0jpK1dpMIK9PEqtcQZouPHO24JJdXwL1dyeSc7g9m9cFXHrpdw==}
     peerDependencies:
       formik: '>=2.0'
       react: '>=16.8'
@@ -1803,22 +1811,6 @@ packages:
       - snappy
     dev: false
 
-  /@cdxoo/mongo-test-helpers/0.6.0:
-    resolution: {integrity: sha512-9xwPgRYmcBYBOrLotyA+QS0GveFP3P1B62n8bvK2fFc/YFCNqIheOXeJRxOscoHv/xRz6kSogIlX0iMIDq0WCw==}
-    dependencies:
-      bson: 4.5.4
-      mongodb-memory-server: 7.6.3
-      nanoid: 3.3.4
-    transitivePeerDependencies:
-      - aws4
-      - bson-ext
-      - kerberos
-      - mongodb-client-encryption
-      - mongodb-extjson
-      - snappy
-      - supports-color
-    dev: false
-
   /@cdxoo/mongo-test-helpers/0.7.1:
     resolution: {integrity: sha512-NmGO82GszR2QPiF0/LxORr2yR4NxOFQ9M4PeumufaWt3lw2Jp1xystn60SMWG0JMqyboXrfZme9gU9XrXfBRyg==}
     dependencies:
@@ -1841,20 +1833,6 @@ packages:
       '@cdxoo/jsonpointer-to-objectpath': 1.0.0
       '@cdxoo/objectpath-to-jsonpointer': 1.0.0
       '@cdxoo/traverse': 0.0.1
-    dev: false
-
-  /@cdxoo/mongodb-restore/1.1.2:
-    resolution: {integrity: sha512-D6oOWFyciymHgAu4BMPFZtm0C0peTUFIG401DcVk0s8c3GeLCbkaERSYrdkjcDA+hT7fK+xerMnQ1r2jXBw7lw==}
-    dependencies:
-      bson: 4.6.0
-      mongodb: 3.6.12
-    transitivePeerDependencies:
-      - aws4
-      - bson-ext
-      - kerberos
-      - mongodb-client-encryption
-      - mongodb-extjson
-      - snappy
     dev: false
 
   /@cdxoo/mongodb-restore/2.0.0-alpha.2:
@@ -10843,12 +10821,12 @@ packages:
     dev: false
 
   file:projects/psydb-api-integration-test-helpers.tgz:
-    resolution: {integrity: sha512-bIP9Lhdpvabpai8TmOyneFFhKeiAP8NIyUz5pRB9o080m539vCwhWjJPLAc7BB8vimZhc9SofiD4415/y6Bj4g==, tarball: file:projects/psydb-api-integration-test-helpers.tgz}
+    resolution: {integrity: sha512-jcUvXx2I0zT9O5u7ey+h27VLQPnXBfLoxdLtphsMNycG3kfjv/Su2cDY6s+Gm21i4ROkO6Hfb67KEFwiA7J3XA==, tarball: file:projects/psydb-api-integration-test-helpers.tgz}
     name: '@rush-temp/psydb-api-integration-test-helpers'
     version: 0.0.0
     dependencies:
-      '@cdxoo/mongo-test-helpers': 0.6.0
-      '@cdxoo/mongodb-restore': 1.1.2
+      '@cdxoo/mongo-test-helpers': 0.7.1
+      '@cdxoo/mongodb-restore': 2.0.0-alpha.2
       date-fns: 2.29.3
       koa: 2.13.4
       snap-shot-it: 7.9.6
@@ -11004,7 +10982,7 @@ packages:
     dev: false
 
   file:projects/psydb-api.tgz:
-    resolution: {integrity: sha512-FhcJFtyxaiXy4+67BdG77Zu9fBlEzvRm5ciodlyNam7+vczpPuFsFxXG/0ApmwYIiU0yr5klxH8eAXEhrr8KbA==, tarball: file:projects/psydb-api.tgz}
+    resolution: {integrity: sha512-9yeTcYmHTTx2SFkjDLoSGQD0z+UcfUKPTFdnA3pRObnHQQI1e/9AJ1DwPw2mYI6qg98bxYOKMH4omt8Xab6Jbg==, tarball: file:projects/psydb-api.tgz}
     name: '@rush-temp/psydb-api'
     version: 0.0.0
     dependencies:
@@ -11235,7 +11213,7 @@ packages:
     dev: false
 
   file:projects/psydb-koa-event-middleware.tgz:
-    resolution: {integrity: sha512-oOXBGiUcpo/6AU1scc7S2ngZLixztdadTWueDAVkoWKQCdaaVvRXTtU3e3RIGStp2jkCYli2k5QTV48oZpdA0w==, tarball: file:projects/psydb-koa-event-middleware.tgz}
+    resolution: {integrity: sha512-Ax/mDOANLMzW1J/KspysjLV8Lk7fdNZMBtlSOpB6Ylp2Pi0PmWgwI9gGLInsr4Hw1Z7/NUb4Xo/Fg2w3CfxXMw==, tarball: file:projects/psydb-koa-event-middleware.tgz}
     name: '@rush-temp/psydb-koa-event-middleware'
     version: 0.0.0
     dependencies:
@@ -11500,7 +11478,7 @@ packages:
     dev: false
 
   file:projects/psydb-ui-lib.tgz_webpack@5.65.0:
-    resolution: {integrity: sha512-BADOmBfs4bgiDzSL+N2VGw3fpQnQwrvqUGUECTA4bNbYlriH/Vop0vMmQVygUbJEDffLQsQ+jGZ/7i7UOx0luQ==, tarball: file:projects/psydb-ui-lib.tgz}
+    resolution: {integrity: sha512-HoUR60E6QvsgQtQKYRmHYRUc8nZEiCcXgKCiIxRMIVJRgv9tP3wzYgmjRW++lKTg7cYPyFKN2bRygeN5PwezRg==, tarball: file:projects/psydb-ui-lib.tgz}
     id: file:projects/psydb-ui-lib.tgz
     name: '@rush-temp/psydb-ui-lib'
     version: 0.0.0
@@ -11509,7 +11487,7 @@ packages:
       '@babel/preset-env': 7.18.10_@babel+core@7.18.13
       '@babel/preset-react': 7.18.6_@babel+core@7.18.13
       '@cdxoo/formik-ajv-async': 0.4.1_formik@2.4.3+react@17.0.2
-      '@cdxoo/formik-utils': 0.6.1_formik@2.4.3+react@17.0.2
+      '@cdxoo/formik-utils': 0.7.0_formik@2.4.3+react@17.0.2
       '@cdxoo/inline-string': 1.0.0
       '@cdxoo/omit': 1.0.1
       '@rjsf/bootstrap-4': 2.5.1_5dccca4f99fef0089ce8bea6fe035927
@@ -11582,7 +11560,7 @@ packages:
     dev: false
 
   file:projects/psydb-ui.tgz:
-    resolution: {integrity: sha512-uIUUB/GGrS941ZH7RPz72ldRNF05IXiO09eWUliDAVaoRcc3yD/Svu/rx2yVJTSlGjtg23Z/yXuK71iDot6/+Q==, tarball: file:projects/psydb-ui.tgz}
+    resolution: {integrity: sha512-Y+vozee1WEwABYlkCe+BS0/0BeSKKPnh+dLaoY4VFmVlxeoUMw4G2l6s69hoFBG0V4vrnYEffEvVacpF2zfrjQ==, tarball: file:projects/psydb-ui.tgz}
     name: '@rush-temp/psydb-ui'
     version: 0.0.0
     dependencies:
@@ -11590,7 +11568,7 @@ packages:
       '@babel/plugin-proposal-class-properties': 7.18.6_@babel+core@7.18.13
       '@babel/preset-env': 7.18.10_@babel+core@7.18.13
       '@babel/preset-react': 7.18.6_@babel+core@7.18.13
-      '@cdxoo/formik-utils': 0.6.1_formik@2.4.3+react@17.0.2
+      '@cdxoo/formik-utils': 0.7.0_formik@2.4.3+react@17.0.2
       '@cdxoo/omit': 1.0.1
       '@rjsf/bootstrap-4': 2.5.1_5dccca4f99fef0089ce8bea6fe035927
       '@rjsf/core': 2.5.1_react@17.0.2

@@ -46,7 +46,7 @@
     "react-datetime": "~3.1.1",
     "moment": "~2.29.1",
     "@cdxoo/omit": "~1.0.1",
-    "@cdxoo/formik-utils": "~0.6.0",
+    "@cdxoo/formik-utils": "~0.7.0",
     "jsonpointer": "~5.0.1",
     "date-fns": "~2.29.3",
     "js-base64": "~3.6.0",
