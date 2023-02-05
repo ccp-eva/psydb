@@ -12,7 +12,11 @@ import {
     useSortReducer,
     useSortURLSearchParams,
 } from '@mpieva/psydb-ui-hooks';
-import { LoadingIndicator, NotFound } from '@mpieva/psydb-ui-layout';
+import {
+    LoadingIndicator,
+    NotFound,
+    UnexpectedResponseError
+} from '@mpieva/psydb-ui-layout';
 
 import ParticipationList from './participation-list';
 
@@ -67,6 +71,13 @@ const Participation = (ps) => {
         var { status } = errorResponse;
         if (status === 404) {
             return <NotFound />
+        }
+        else {
+            return (
+                <UnexpectedResponseError
+                    errorResponse={ errorResponse }
+                />
+            )
         }
     }
 

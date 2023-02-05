@@ -47,6 +47,7 @@ var createErrorsMiddleware = () => async (context, next) => {
             // the stack
             data: {
                 message: error.message,
+                stack: error.stack,
                 ...data,
             }
         });

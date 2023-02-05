@@ -34,6 +34,7 @@ export * from './nbsp';
 
 export * from './permission-denied';
 export * from './not-found';
+export * from './unexpected-response-error';
 
 export * from './sortable-th';
 export * from './option-select-indicator';

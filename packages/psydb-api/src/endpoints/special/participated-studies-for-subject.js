@@ -207,6 +207,7 @@ var fetchSubjectData = async ({
 
     // FIXME: question is should we 404 or 403 when access is denied?
     // well 404 for now and treat it as if it wasnt found kinda
+    throw new Error('FOOOOOOOOO');
     if (!subjectRecord) {
         throw new ApiError(404, 'NoAccessibleStudyRecordFound');
     }
