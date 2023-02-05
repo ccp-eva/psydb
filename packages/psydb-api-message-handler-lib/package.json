@@ -32,8 +32,8 @@
     "deepmerge": "~4.2.2"
   },
   "devDependencies": {
-    "mocha": "~8.1.3",
-    "chai": "~4.2.0",
+    "mocha": "~9.2.2",
+    "chai": "~4.3.6",
     "mongodb-memory-server": "~6.9.2",
     "@mpieva/psydb-fixtures": "~0.1.0-alpha"
   },

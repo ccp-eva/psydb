@@ -8,7 +8,6 @@
     "build": "npm run purge-dist && npm run compile-bundle",
     "purge-dist": "npx rimraf dist/*",
     "compile-bundle": "npx webpack --progress -c src/webpack.config-prod.js",
-
     "dev": "npx webpack serve -c src/webpack.config.js"
   },
   "repository": {
@@ -22,8 +21,8 @@
   },
   "homepage": "https://github.com/cdxOo/psydb#readme",
   "devDependencies": {
-    "mocha": "~8.1.3",
-    "chai": "~4.2.0",
+    "mocha": "~9.2.2",
+    "chai": "~4.3.6",
     "react": "~17.0.1",
     "react-dom": "~17.0.1",
     "@babel/core": "~7.18.13",
