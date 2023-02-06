@@ -60,8 +60,11 @@ handler.checkAllowedAndPlausible = async ({
                     _id: { $in: invitedForExperiments.map(it => (
                         it.experimentId
                     ))},
-                    'state.isPostprocessed': false,
-                    'state.isCanceled': false
+                    'state.isCanceled': false,
+                    $or: [
+                        { 'state.selectedSubjectIds': id },
+                        { 'state.subjectData.subjectId': id },
+                    ]
                 },
                 { projection: {
                     _id: true,
