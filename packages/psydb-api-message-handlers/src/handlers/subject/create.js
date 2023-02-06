@@ -122,7 +122,11 @@ var verifyNoDuplicates = async (bag) => {
             pointer.replace('/state', '')
         );
 
-        filters[path] = new RegExp(escapeRX(value), 'i');
+        filters[path] = (
+            typeof value === 'string'
+            ? new RegExp(escapeRX(value), 'i')
+            : value
+        );
     }
     console.log(data);
     console.log(filters);
