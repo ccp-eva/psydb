@@ -70,7 +70,7 @@ handler.triggerSystemEvents = async (context) => {
             collection: 'experiment',
             channelId: experimentId,
             payload: { $pull: {
-                'state.selectedSubjectIds': { subjectId },
+                'state.selectedSubjectIds': subjectId,
                 'state.subjectData': { subjectId }
             }}
         });

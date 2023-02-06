@@ -71,10 +71,12 @@ handler.checkAllowedAndPlausible = async ({
             ).toArray()
         );
 
-        throw new ApiError(409, {
-            apiStatus: 'SubjectHasExperimentInvitations',
-            data: { experiments }
-        });
+        if (experiments.length > 0) {
+            throw new ApiError(409, {
+                apiStatus: 'SubjectHasExperimentInvitations',
+                data: { experiments }
+            });
+        }
     }
 
     if (participatedInStudies.length > 0) {
