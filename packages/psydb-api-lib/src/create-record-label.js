@@ -2,7 +2,7 @@
 var jsonpointer = require('jsonpointer');
 var stringifiers = require('@mpieva/psydb-common-lib/src/field-stringifiers');
 
-var createRecordLabel = ({ definition, record }) => {
+var createRecordLabel = ({ definition, record, timezone }) => {
     if (!definition) {
         return `${record._id}`;
     }
@@ -24,7 +24,7 @@ var createRecordLabel = ({ definition, record }) => {
         else {
             var stringify = stringifiers[systemType];
             if (stringify) {
-                value = stringify(value, { short: true });
+                value = stringify(value, { short: true, timezone });
             }
         }
         label = label.replace(

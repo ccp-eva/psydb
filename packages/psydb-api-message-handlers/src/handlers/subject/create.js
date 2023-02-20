@@ -30,10 +30,12 @@ module.exports = GenericRecordHandler({
             collection,
             recordType,
             props,
-            additionalCreateProps
+            additionalCreateProps,
+            timezone
         } = destructured;
        
         console.log(additionalCreateProps);
+        console.log(timezone);
         var { forceDuplicate } = additionalCreateProps;
 
         if (!forceDuplicate) {
@@ -41,7 +43,8 @@ module.exports = GenericRecordHandler({
                 db,
                 collection,
                 recordType,
-                data: props
+                data: props,
+                timezone,
             })
         }
     },
@@ -95,7 +98,7 @@ module.exports = GenericRecordHandler({
 });
 
 var verifyNoDuplicates = async (bag) => {
-    var { db, collection, recordType, data } = bag;
+    var { db, collection, recordType, data, timezone } = bag;
 
     var crt = await fetchCRTSettings({
         db, collectionName: collection, recordType,
@@ -144,6 +147,7 @@ var verifyNoDuplicates = async (bag) => {
         it._recordLabel = createRecordLabel({
             record: it,
             definition: recordLabelDefinition,
+            timezone
         });
     }
 

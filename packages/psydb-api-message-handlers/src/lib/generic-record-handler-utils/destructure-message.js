@@ -3,7 +3,7 @@ var { parseRecordMessageType } = require('./parse-record-message-type');
 
 var destructureMessage = (options) => {
     var { message } = options;
-    var { type: messageType, payload } = message;
+    var { type: messageType, payload, timezone } = message;
     
     var { 
         op, collection, 
@@ -29,6 +29,7 @@ var destructureMessage = (options) => {
         lastKnownSubChannelEventIds,
         props,
         additionalCreateProps,
+        timezone
     }
 }
 
