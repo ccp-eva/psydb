@@ -33,7 +33,8 @@
     "@mpieva/psydb-api-lib": "~0.1.0-alpha",
     "@mpieva/psydb-api-config": "~0.1.0-alpha",
     "sift": "~16.0.0",
-    "@cdxoo/inline-string": "~1.0.0"
+    "@cdxoo/inline-string": "~1.0.0",
+    "diacritic-regex": "~1.1.0"
   },
   "devDependencies": {
     "mocha": "~9.2.2",

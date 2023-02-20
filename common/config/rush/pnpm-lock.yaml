@@ -105,6 +105,7 @@ specifiers:
   debug: ~4.3.1
   deep-diff: ~1.0.2
   deepmerge: ~4.2.2
+  diacritic-regex: ~1.1.0
   escape-string-regexp: ~4.0.0
   flat: ~5.0.2
   formik: ~2.2.6
@@ -129,6 +130,7 @@ specifiers:
   map-obj: ~4.3.0
   microsoft-translator-languages: ~0.1.19
   mocha: ~9.2.2
+  mocha-jsdom: ~2.0.0
   mockdate: ~3.0.5
   moment: ~2.29.1
   mongodb: ~3.6.3
@@ -269,6 +271,7 @@ dependencies:
   debug: 4.3.3
   deep-diff: 1.0.2
   deepmerge: 4.2.2
+  diacritic-regex: 1.1.0
   escape-string-regexp: 4.0.0
   flat: 5.0.2
   formik: 2.2.9_react@17.0.2
@@ -293,6 +296,7 @@ dependencies:
   map-obj: 4.3.0
   microsoft-translator-languages: 0.1.19
   mocha: 9.2.2
+  mocha-jsdom: 2.0.0_mocha@9.2.2
   mockdate: 3.0.5
   moment: 2.29.1
   mongodb: 3.6.12
@@ -5112,6 +5116,10 @@ packages:
 
   /detect-node/2.1.0:
     resolution: {integrity: sha512-T0NIuQpnTvFDATNuHN5roPwSBG83rFsuO+MXXH9/3N1eFbn4wcPjttvjMLEPWJ0RGUYgQE7cGgS3tNxbqCGM7g==}
+    dev: false
+
+  /diacritic-regex/1.1.0:
+    resolution: {integrity: sha512-NE7HrrF1GsbMPepx6Cagp6dKFpjEXv7GTcBfq0WUgZ1fMCEtXPP1S2BjdOkar7V39EErRhR3QCXFETv/BXlQQw==}
     dev: false
 
   /diff-sequences/27.4.0:
@@ -11307,13 +11315,14 @@ packages:
     dev: false
 
   file:projects/psydb-api-endpoint-lib.tgz:
-    resolution: {integrity: sha512-UQ4CRvj9tiSaddIXpWEchg0cUeQDHRZv6uu0MaxAdVAgvuRdggLhwG92w4ZyZDH/RvyCuTUvhC5lTNT/XJz1Ng==, tarball: file:projects/psydb-api-endpoint-lib.tgz}
+    resolution: {integrity: sha512-/Cbh+5L5s+huGXv+ArB75veEY/T7id6lZAHzAAOpnGGMxQIVvgVm+ghS1fAmZ7nOjfm9607NXGiVFFC3OZocAA==, tarball: file:projects/psydb-api-endpoint-lib.tgz}
     name: '@rush-temp/psydb-api-endpoint-lib'
     version: 0.0.0
     dependencies:
       '@cdxoo/inline-string': 1.0.0
       chai: 4.3.7
       debug: 4.3.3
+      diacritic-regex: 1.1.0
       escape-string-regexp: 4.0.0
       jsonpointer: 4.1.0
       mocha: 9.2.2
@@ -11382,7 +11391,7 @@ packages:
     dev: false
 
   file:projects/psydb-api-lib.tgz:
-    resolution: {integrity: sha512-HRiZtXqCcCaDDaUUm1vLSF+xC2QNwV5LkoYXMt4IwrLtMWJl1w2KuB+KYNpCQAPjqhSjS2CKKCarWK/iBs0/wA==, tarball: file:projects/psydb-api-lib.tgz}
+    resolution: {integrity: sha512-oSJMf8qEzovoSLvlgz7l5SkxN37uGuEUtS8twH3wKlWgF3oySLFCzpZl/i0S4VPpOXEZ17jbwo3gptOwdmwogg==, tarball: file:projects/psydb-api-lib.tgz}
     name: '@rush-temp/psydb-api-lib'
     version: 0.0.0
     dependencies:
@@ -11397,6 +11406,7 @@ packages:
       date-fns: 2.21.3
       debug: 4.3.3
       deep-diff: 1.0.2
+      diacritic-regex: 1.1.0
       escape-string-regexp: 4.0.0
       json-schema-traverse: 1.0.0
       jsonpointer: 4.1.0

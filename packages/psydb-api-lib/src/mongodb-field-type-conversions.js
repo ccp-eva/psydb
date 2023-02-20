@@ -1,5 +1,6 @@
 'use strict';
 var escape = require('escape-string-regexp');
+var { toRegex } = require('diacritic-regex');
 
 module.exports = {
     Address: {
@@ -19,7 +20,7 @@ module.exports = {
         ) }),
     },
     SaneString: {
-        alterValue: (value) => new RegExp(escape(value), 'i')
+        alterValue: (value) => toRegex()(escape(value))
     },
 
     EmailList: {

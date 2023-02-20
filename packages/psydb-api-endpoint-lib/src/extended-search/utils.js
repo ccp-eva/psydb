@@ -1,6 +1,7 @@
 'use strict';
 var { ObjectId } = require('mongodb');
 var escapeRX = require('escape-string-regexp');
+var { toRegex } = require('diacritic-regex');
 
 var { timeshiftAgeFrame } = require('@mpieva/psydb-common-lib');
 var {
@@ -8,7 +9,7 @@ var {
 } = require('@mpieva/psydb-api-lib');
 
 var makeRX = (str) => (
-    new RegExp(escapeRX(str), 'i')
+    toRegex()(escapeRX(str))
 )
 
 var createCustomQueryValues = (options) => {
