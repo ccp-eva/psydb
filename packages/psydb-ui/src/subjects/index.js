@@ -7,6 +7,7 @@ import {
 
 import Creator from './creator';
 import Details from './details';
+import History from './history';
 import Editor from './editor';
 import IntraTypeRouting from './intra-type-routing'
 
@@ -19,6 +20,7 @@ const SubjectTypeView = withRecordTypeView({
     RecordCreator: Creator,
     RecordEditor: Editor,
     RecordDetails: Details,
+    RecordHistory: History,
     //RecordDetails,
     RecordRemover,
     CustomRouting: IntraTypeRouting,

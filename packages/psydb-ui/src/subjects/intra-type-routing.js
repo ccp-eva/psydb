@@ -19,6 +19,7 @@ const RecordTypeRouting = ({
 
     RecordList,
     RecordDetails,
+    RecordHistory,
     RecordCreator,
     RecordEditor,
     RecordRemover,
@@ -68,6 +69,13 @@ const RecordTypeRouting = ({
 
         <Route path={`${path}/:id/details`}>
             <RecordDetails
+                collection={ collection }
+                recordType={ recordType }
+            />
+        </Route>
+
+        <Route path={`${path}/:id/channel-history`}>
+            <RecordHistory
                 collection={ collection }
                 recordType={ recordType }
             />

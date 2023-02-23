@@ -11391,7 +11391,7 @@ packages:
     dev: false
 
   file:projects/psydb-api-lib.tgz:
-    resolution: {integrity: sha512-oSJMf8qEzovoSLvlgz7l5SkxN37uGuEUtS8twH3wKlWgF3oySLFCzpZl/i0S4VPpOXEZ17jbwo3gptOwdmwogg==, tarball: file:projects/psydb-api-lib.tgz}
+    resolution: {integrity: sha512-PEgCX6WaJCxxMME5sQBxCSsOOIlA8NBEL8aW7cDjmz1vnon/vtPUz/AMrSiXHUCzJoEHZXJe1+O3phWD6pjWrw==, tarball: file:projects/psydb-api-lib.tgz}
     name: '@rush-temp/psydb-api-lib'
     version: 0.0.0
     dependencies:
@@ -11414,6 +11414,7 @@ packages:
       mocha: 9.2.2
       mongodb: 3.6.12
       nanoid: 3.1.30
+      sift: 16.0.0
       snap-shot-it: 7.9.6
       statuses: 2.0.1
     transitivePeerDependencies:

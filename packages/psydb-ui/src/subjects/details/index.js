@@ -26,6 +26,10 @@ const Header = ({
     editUrl,
     onEditClick,
     canEdit,
+    
+    historyLabel,
+    historyUrl,
+    canHistory,
 
     subjectId,
     subjectType,
@@ -37,11 +41,17 @@ const Header = ({
 
     title = title || 'Datensatz-Details';
     editLabel = editLabel || 'Bearbeiten';
+    historyLabel = historyLabel || 'Historie';
 
     return (
         <h5 className='d-flex justify-content-between align-items-start'>
             <span className='d-inline-block pt-3'>{ title }</span>
             <div>
+                { canHistory && historyUrl && (
+                    <LinkButton className='mr-3' to={ historyUrl }>
+                        { historyLabel }
+                    </LinkButton>
+                )}
                 { canEdit && editUrl && (
                     <LinkButton to={ editUrl }>
                         { editLabel }
@@ -77,6 +87,7 @@ const SubjectDetailsContainer = ({
 
     var isRoot = permissions.isRoot();
     var canEdit = permissions.hasCollectionFlag(collection, 'write');
+    var canHistory = permissions.isRoot();
     var canReadParticipation = permissions.hasFlag('canReadParticipation');
     var canWriteParticipation = permissions.hasFlag('canWriteParticipation');
 
@@ -94,9 +105,11 @@ const SubjectDetailsContainer = ({
                 <Header
                     title='Erfasste Daten'
                     editUrl={ `${up(url, 1)}/edit` }
+                    historyUrl={ `${up(url, 1)}/channel-history` }
                     subjectId={ id }
                     subjectType={ recordType }
                     canEdit= { canEdit }
+                    canHistory= { canHistory }
                     canWriteParticipation={ canWriteParticipation }
                     canSelectSubjectsForExperiments={ canSelectSubjectsForExperiments }
                 />

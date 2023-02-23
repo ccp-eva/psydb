@@ -14,7 +14,7 @@ const LinkButton = ({
         <a
             target={ target }
             href={ `#${to}` }
-            className={ `btn btn-primary btn-${other.size}` }
+            className={ `btn btn-primary btn-${other.size} ${other.className}` }
             alt={ title }
         >
             { other.children }

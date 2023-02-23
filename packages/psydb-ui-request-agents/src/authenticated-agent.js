@@ -571,6 +571,7 @@ agent.fetchLocationExperiments = (bag) => {
         extraAxiosConfig,
     );
 }
+
 agent.fetchSubjectPossibleTestIntervals = (bag) => {
     var {
         subjectIds, studyId,
@@ -587,4 +588,12 @@ agent.fetchSubjectPossibleTestIntervals = (bag) => {
         extraAxiosConfig,
     );
 }
+
+agent.fetchChannelHistory = ({
+    channelId, 
+}) => {
+    var url = `/api/channel-history/${channelId}`;
+    return axios.get(url);
+}
+
 export default agent;

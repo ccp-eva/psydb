@@ -395,6 +395,12 @@ var createRouting = (bag = {}) => {
         endpoints.special.readSubjectTestability
     );
 
+    router.get('/channel-history/:channelId',
+        withSelfAuth(),
+        withPermissions(),
+        endpoints.channelHistory
+    );
+
     return compose([
         router.routes(),
         router.allowedMethods(),

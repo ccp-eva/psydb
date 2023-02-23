@@ -21,6 +21,12 @@ const DefaultRecordDetails = (ps) => (
     </Alert>
 )
 
+const DefaultRecordHistory = (ps) => (
+    <Alert variant='danger'>
+        <b>ERROR: RecordHistory component not set</b>
+    </Alert>
+)
+
 const DefaultRecordEditor = (ps) => (
     <Alert variant='danger'>
         <b>ERROR: RecordEditor component not set</b>
@@ -37,6 +43,7 @@ const DefaultRecordCreator = (ps) => (
 const withRecordTypeView = ({
     RecordList,
     RecordDetails,
+    RecordHistory,
     RecordCreator,
     RecordEditor,
     RecordRemover,
@@ -46,6 +53,7 @@ const withRecordTypeView = ({
 }) => {
     RecordList = RecordList || GenericRecordListContainer;
     RecordDetails = RecordDetails || DefaultRecordDetails;
+    RecordHistory = RecordHistory || DefaultRecordHistory;
     RecordEditor = RecordEditor || DefaultRecordEditor;
     RecordCreator = RecordCreator || DefaultRecordCreator;
 
@@ -113,6 +121,7 @@ const withRecordTypeView = ({
 
                     RecordList,
                     RecordDetails,
+                    RecordHistory,
                     RecordCreator,
                     RecordEditor,
                     RecordRemover,
