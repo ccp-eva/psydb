@@ -38,11 +38,12 @@ describe('unmarchal-date-time', () => {
             unmarshalDateOnlyServerSide
         );
 
+        console.log(validData)
+        console.log(invalidData)
+
         expect(ajv.validate(schema, validData)).to.eql(true);
         expect(ajv.validate(schema, invalidData)).to.eql(false);
 
-        console.log(validData)
-        console.log(invalidData)
 
     });
 

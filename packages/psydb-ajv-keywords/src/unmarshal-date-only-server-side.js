@@ -30,6 +30,8 @@ var unmarshalDateOnlyServerSide = {
             return true;
         }
 
+        console.log(data);
+
         var {
             clientTimezone,
             serverTimezone,
@@ -57,6 +59,8 @@ var unmarshalDateOnlyServerSide = {
             
             
             parentData[parentDataProperty] = dayStart;
+            console.log({ clientTimezone, serverTimezone, dayStart });
+
 
             return true;
         }

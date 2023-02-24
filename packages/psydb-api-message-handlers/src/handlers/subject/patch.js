@@ -32,6 +32,8 @@ module.exports = GenericRecordHandler({
             additionalCreateProps // FIXME: rename extraPayload
         } = destructured;
 
+        throw new Error();
+
         var { setIsHidden } = additionalCreateProps;
 
         var channel = await openChannel({
