@@ -60,7 +60,7 @@ var fetchRecordLabels = async (bag) => {
                 'gdpr.state.internals': false,
                 'scientific.state.internals': false,
             }}
-        ]).toArray()
+        ], { allowDiskUse: true }).toArray()
     );
 
     var labeled = records.map(it => ({

@@ -161,7 +161,7 @@ var extendedSearchCore = async (bag) => {
     //console.dir(customQueryValues, { depth: null })
     //console.log(specialFilterConditions);
 
-    var stages = [
+    var mainStages = [
         { $match: {
             isDummy: { $ne: true },
             'scientific.state.internals.isRemoved': { $ne: true },
@@ -192,27 +192,47 @@ var extendedSearchCore = async (bag) => {
 
         SortStage({ ...sort }),
 
-        { $facet: {
-            records: [
+        // NOTE: hits limit "generated document in $facet" ist 100MB or sth
+        //{ $facet: {
+        //    records: [
+        //        { $skip: offset },
+        //        ...(limit ? [{ $limit: limit }] : [])
+        //    ],
+        //    recordsCount: [{ $count: 'COUNT' }]
+        //}}
+    ].filter(it => !!it);
+
+    debug('counting records');
+    var countResult = await (
+        db.collection(collection)
+        .aggregate(
+            [ ...mainStages, { $count: 'COUNT' } ],
+            { allowDiskUse: true }
+        )
+        .toArray()
+    );
+    debug('done counting records');
+    var recordsCount = (
+        countResult && countResult[0] ? countResult[0].COUNT : 0
+    );
+
+    debug('searching records');
+    var records = await (
+        db.collection(collection).aggregate(
+            [
+                ...mainStages,
+                SortStage({ ...sort }),
                 { $skip: offset },
                 ...(limit ? [{ $limit: limit }] : [])
             ],
-            recordsCount: [{ $count: 'COUNT' }]
-        }}
-    ].filter(it => !!it);
-
-    var facets = await (
-        db.collection(collection).aggregate(
-            stages,
             {
                 allowDiskUse: true,
                 collation: { locale: 'de@collation=phonebook' }
             }
         ).toArray()
     );
+    debug('done searching records');
     
-    var [ records, recordsCount ] = fromFacets(facets);
-
     var related = await fetchRelatedLabelsForMany({
         db,
         collectionName: collection,
