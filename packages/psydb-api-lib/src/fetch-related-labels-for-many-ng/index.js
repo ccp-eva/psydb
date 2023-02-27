@@ -62,6 +62,7 @@ var fetchRelatedLabelsForMany = async (bag) => {
 
     var gathered = {};
     debug(records.length);
+    //console.log(possibleRefs);
     for (var record of records) {
         var result = gatherAllRefValues({
             possibleRefs,

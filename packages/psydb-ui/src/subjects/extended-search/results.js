@@ -152,6 +152,9 @@ const TableHead = (ps) => {
             { columns.includes('/_specialUpcomingExperiments') && (
                 <th>Termine</th>
             )}
+            { columns.includes('/_specialHistoricExperimentLocations') && (
+                <th>Historische Termin-Locations</th>
+            )}
             <th></th>
         </tr></thead>
     )
@@ -181,6 +184,16 @@ const TableBody = (ps) => {
                     )}
                     { columns.includes('/_specialStudyParticipation') && (
                         <ParticipationColumn
+                            participation={
+                                it
+                                .scientific.state
+                                .internals.participatedInStudies
+                            }
+                            related={ related }
+                        />
+                    )}
+                    { columns.includes('/_specialHistoricExperimentLocations') && (
+                        <HistoricExperimentLocationsColumn
                             participation={
                                 it
                                 .scientific.state
@@ -226,6 +239,28 @@ const ParticipationColumn = (ps) => {
     )
 }
 
+const HistoricExperimentLocationsColumn = (ps) => {
+    var { participation, related } = ps;
+    var relatedLocations = related.relatedRecordLabels.location;
+    return (
+        <td>
+            {
+                participation
+                .filter(it => it.status === 'participated')
+                .map(it => {
+                    var locationLabel = (
+                        relatedLocations[it.locationId]._recordLabel
+                    );
+                    var date = datefns.format(
+                        new Date(it.timestamp), 'dd.MM.yyyy'
+                    );
+                    return `${locationLabel} (${date})`;
+                })
+                .join('; ')
+            }
+        </td>
+    )
+}
 const ExperimentColumn = (ps) => {
     var { experiments, related } = ps;
     var items = (

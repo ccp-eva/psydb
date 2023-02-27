@@ -90,7 +90,10 @@ var subjectExtendedSearchExport = async (context, next) => {
             extendedSearch.subject.createSpecialFilterConditions(specialFilters)
         ),
         specialFilterProjection: {
-            ...(columns.includes('/_specialStudyParticipation') && {
+            ...((
+                columns.includes('/_specialStudyParticipation')
+                || columns.includes('/_specialHistoricExperimentLocations')
+            ) && {
                 'scientific.state.internals.participatedInStudies': true
             }),
             ...(dobFieldPointer && columns.includes('/_specialAgeToday') && {
@@ -140,6 +143,8 @@ var subjectExtendedSearchExport = async (context, next) => {
                 return 'Studien';
             case '/_specialUpcomingExperiments':
                 return 'Termine';
+            case '/_specialHistoricExperimentLocations':
+                return 'Historische Termin-Locations';
             default:
                 return fieldDefinition.displayName;
         }
@@ -154,6 +159,11 @@ var subjectExtendedSearchExport = async (context, next) => {
                     break;
                 case '/_specialStudyParticipation':
                     return formatStudyParticipation({
+                        record, related, timezone
+                    });
+                    break;
+                case '/_specialHistoricExperimentLocations':
+                    return formatHistoricExperimentLocations({
                         record, related, timezone
                     });
                     break;
@@ -243,6 +253,30 @@ var formatStudyParticipation = (bag) => {
                 it.timestamp, { timezone }
             )
             return `${studyLabel} (${date})`;
+        })
+        .join('; ')
+    );
+
+    return formatted;
+}
+
+var formatHistoricExperimentLocations = (bag) => {
+    var { record, related, timezone } = bag;
+    
+    var participation = (
+        record.scientific.state.internals.participatedInStudies
+    );
+
+    var relatedLocations = related.relatedRecordLabels.location;
+    var formatted = (
+        participation
+        .filter(it => it.status === 'participated')
+        .map(it => {
+            var locationLabel = relatedLocations[it.locationId]._recordLabel;
+            var date = fieldStringifiers.DateOnlyServerSide(
+                it.timestamp, { timezone }
+            )
+            return `${locationLabel} (${date})`;
         })
         .join('; ')
     );

@@ -22,12 +22,16 @@ var ManualParticipation = () => ExactObject({
         studyId: ForeignId({
             collection: 'study',
         }),
+        locationId: ForeignId({
+            collection: 'location',
+        }),
         timestamp: DateTime(),
         status: ParticipationStatus(),
     },
     require: [
         'type',
         'studyId',
+        'locationId',
         'timestamp',
         'status'
     ]
@@ -66,12 +70,16 @@ var ExperimentParticipation = ({ type }) => ExactObject({
         experimentId: ForeignId({
             collection: 'experiment',
         }),
+        locationId: ForeignId({
+            collection: 'location',
+        }),
         timestamp: DateTime(),
         status: ParticipationStatus(),
     },
     require: [
         'type',
         'studyId',
+        'locationId',
         'experimentId',
         'timestamp',
         'status',

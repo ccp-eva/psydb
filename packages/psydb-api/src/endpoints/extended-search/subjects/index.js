@@ -83,7 +83,10 @@ var subjectExtendedSearch = async (context, next) => {
             extendedSearch.subject.createSpecialFilterConditions(specialFilters)
         ),
         specialFilterProjection: {
-            ...(columns.includes('/_specialStudyParticipation') && {
+            ...((
+                columns.includes('/_specialStudyParticipation')
+                || columns.includes('/_specialHistoricExperimentLocations')
+            ) && {
                 'scientific.state.internals.participatedInStudies': true
             }),
             ...(dobFieldPointer && columns.includes('/_specialAgeToday') && {

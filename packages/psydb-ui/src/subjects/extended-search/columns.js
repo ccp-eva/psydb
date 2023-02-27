@@ -75,6 +75,10 @@ export const Columns = (ps) => {
     var specialColumns = [
         { pointer: '/_specialStudyParticipation', label: 'Studien' },
         { pointer: '/_specialUpcomingExperiments', label: 'Termine' },
+        {
+            pointer: '/_specialHistoricExperimentLocations',
+            label: 'Historische Termin-Locations'
+        },
         { pointer: '/_specialAgeToday', label: 'Alter' },
         { pointer: '/scientific/state/comment', label: 'Kommentar' },
     ];
