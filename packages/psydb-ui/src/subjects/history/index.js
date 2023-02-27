@@ -53,7 +53,7 @@ const History = (ps) => {
             <div className='border p-3 bg-light'>
                 <div className='d-flex'>
                     <div className='w-50 flex-grow-1 pr-2'>
-                        <h5>Datenkanal: Standard</h5>
+                        <h5 className='mb-3'>Datenkanal: Standard</h5>
                         { filterHistory({
                             history: fetched.data.scientific,
                             //path: 'scientific.state.custom.kigaId'
@@ -66,7 +66,7 @@ const History = (ps) => {
                         ))}
                     </div>
                     <div className='w-50 flex-grow-1 pl-2'>
-                        <h5>Datenkanal: Datenschutz</h5>
+                        <h5 className='mb-3'>Datenkanal: Datenschutz</h5>
                         { filterHistory({
                             history: fetched.data.gdpr,
                             //path: 'scientific.state.custom.kigaId'
