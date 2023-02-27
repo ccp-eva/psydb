@@ -101,6 +101,7 @@ specifiers:
   country-list: ~2.2.0
   css-loader: ~5.2.1
   date-fns: ~2.21.1
+  date-fns-tz: ~1.3.4
   debug: ~4.3.1
   deep-diff: ~1.0.2
   deepmerge: ~4.2.2
@@ -266,6 +267,7 @@ dependencies:
   country-list: 2.2.0
   css-loader: 5.2.7_webpack@5.65.0
   date-fns: 2.21.3
+  date-fns-tz: 1.3.4_date-fns@2.21.3
   debug: 4.3.3
   deep-diff: 1.0.2
   deepmerge: 4.2.2
@@ -4823,14 +4825,6 @@ packages:
 
   /date-fns-tz/1.3.4_date-fns@2.21.3:
     resolution: {integrity: sha512-O47vEyz85F2ax/ZdhMBJo187RivZGjH6V0cPjPzpm/yi6YffJg4upD/8ibezO11ezZwP3QYlBHh/t4JhRNx0Ow==}
-    peerDependencies:
-      date-fns: '>=2.0.0'
-    dependencies:
-      date-fns: 2.21.3
-    dev: false
-
-  /date-fns-tz/2.0.0_date-fns@2.21.3:
-    resolution: {integrity: sha512-OAtcLdB9vxSXTWHdT8b398ARImVwQMyjfYGkKD2zaGpHseG2UPHbHjXELReErZFxWdSLph3c2zOaaTyHfOhERQ==}
     peerDependencies:
       date-fns: '>=2.0.0'
     dependencies:
@@ -11877,12 +11871,12 @@ packages:
     dev: false
 
   file:projects/psydb-timezone-helpers.tgz_date-fns@2.21.3:
-    resolution: {integrity: sha512-m9oKNJTNhxgd695Ok2bOB+Fw9FO539w3mjv04BDOw0IPVoSsGf6owjG0r5wNAp0shNPh41KrkWEOJBqjSVje3A==, tarball: file:projects/psydb-timezone-helpers.tgz}
+    resolution: {integrity: sha512-tqKXiFbR7JLPmxjPcU30FbdyLSat4/pmr5Y2LLqFGyQrpo6Hyw4XTW1zUQ8/km78DP8SRfwr5W/pb9Fgyz7m4Q==, tarball: file:projects/psydb-timezone-helpers.tgz}
     id: file:projects/psydb-timezone-helpers.tgz
     name: '@rush-temp/psydb-timezone-helpers'
     version: 0.0.0
     dependencies:
-      date-fns-tz: 2.0.0_date-fns@2.21.3
+      date-fns-tz: 1.3.4_date-fns@2.21.3
       jest: 27.2.5
     transitivePeerDependencies:
       - bufferutil
