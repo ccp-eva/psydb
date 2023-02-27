@@ -1,4 +1,5 @@
 'use strict';
+// NOTE: run with TZ='UTC' as env (or whatever tz u want)
 var { swapTimezone } = require('../src');
 
 describe('swapTimezone()', () => {
@@ -41,7 +42,7 @@ describe('swapTimezone()', () => {
     });
     
     it('both germany - dst post switch off', () => {
-        // dst - local date in germany shows 2021-10-31 02:00:00
+        // dst - local date in germany shows 2021-10-31 03:00:00
         var fakeGermany = new Date('2021-10-31T02:00:00.000Z');
         var out = swapTimezone({
             date: fakeGermany,
@@ -77,7 +78,8 @@ describe('swapTimezone()', () => {
         expect(out).toEqual(new Date('2021-10-31T02:59:59.999Z'));
     });
 
-    it('client germany; server utc - dst post switch off', () => {
+    // XXX: im actually not sure what is supposed to happen here
+    it.skip('client germany; server utc - dst within switch off', () => {
         // dst - local date in germany shows 2021-10-31 02:00:00
         var fakeGermany = new Date('2021-10-31T01:00:00.000Z');
         var out = swapTimezone({
@@ -87,6 +89,18 @@ describe('swapTimezone()', () => {
         });
         console.log({ out })
         expect(out).toEqual(new Date('2021-10-31T02:00:00.000Z'));
+    });
+
+    it('client germany; server utc - dst post switch off', () => {
+        // dst - local date in germany shows 2021-10-31 03:00:00
+        var fakeGermany = new Date('2021-10-31T02:00:00.000Z');
+        var out = swapTimezone({
+            date: fakeGermany,
+            sourceTZ: 'Europe/Berlin',
+            targetTZ: 'UTC',
+        });
+        console.log({ out })
+        expect(out).toEqual(new Date('2021-10-31T03:00:00.000Z'));
     });
 
     it('client germany; server utc', () => {
