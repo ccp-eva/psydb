@@ -5,13 +5,13 @@ var generate = require('./generate');
 // FIXME fix rohrpost to store allevents in
 // topmost _rohrpostmetadaata
 var _augmentedGenerate = (bag) => {
-    var { orderedEventIds, events, messagesById } = bag;
+    var { orderedEventIds, events, messagesById, omitPaths } = bag;
 
     var sortedEvents = getSortedEvents(
         events, orderedEventIds
     );
 
-    var history = generate({ events: sortedEvents });
+    var history = generate({ events: sortedEvents, omitPaths });
     history = history.map(it => ({
         ...it,
         message: messagesById[it.event.correlationId]
@@ -21,7 +21,7 @@ var _augmentedGenerate = (bag) => {
 }
 
 var generateChannelHistory = async (bag) => {
-    var { db, channelId } = bag;
+    var { db, channelId, omit: omitPaths } = bag;
     var events = await db.collection('rohrpostEvents').find({
         channelId,
     }).toArray();
@@ -44,7 +44,7 @@ var generateChannelHistory = async (bag) => {
         throw new Error(`channel not found ${collection}/${channelId}`);
     }
 
-    var sharedBag = { events, messagesById };
+    var sharedBag = { events, messagesById, omitPaths };
 
     if (record._rohrpostMetadata.hasSubChannels) {
         return {

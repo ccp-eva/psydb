@@ -49,7 +49,14 @@ var channelHistory = async (context, next) => {
 
     var { channelId } = params;
 
-    var history = await generateChannelHistory({ db, channelId });
+    var history = await generateChannelHistory({
+        db, channelId,
+        omit: [
+            'state.internals',
+            'scientific.state.internals',
+            'gdpr.state.internals'
+        ]
+    });
 
     context.body = ResponseBody({
         data: history

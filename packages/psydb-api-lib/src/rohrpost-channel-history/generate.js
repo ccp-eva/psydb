@@ -1,7 +1,7 @@
 'usr strict';
 var { copy } = require('copy-anything');
 var diff = require('deep-diff');
-var { entries } = require('@mpieva/psydb-core-utils');
+var { entries, omit, ejson } = require('@mpieva/psydb-core-utils');
 
 var SET = require('./set');
 var UNSET = require('./unset');
@@ -9,7 +9,7 @@ var PUSH = require('./push');
 var PULL = require('./pull');
 
 var generate = (bag = {}) => {
-    var { events } = bag;
+    var { events, omitPaths } = bag;
 
     var history = [];
     var virtualChannel = {};
@@ -28,8 +28,15 @@ var generate = (bag = {}) => {
             message.payload,
             additionalChannelProps
         );
-        console.dir(virtualChannel, { depth: null });
+        if (omitPaths) {
+            virtualChannel = omit({
+                from: virtualChannel,
+                paths: omitPaths
+            });
+        }
 
+        // NOTE: diff is not safe when in situ changing diffed objects
+        var clone = copy(virtualChannel);
         history.push({
             event: {
                 ...(isNewChannel && { isNewChannel }),
@@ -37,8 +44,8 @@ var generate = (bag = {}) => {
                 message,
                 ...(additionalChannelProps && { additionalChannelProps }),
             },
-            version: copy(virtualChannel),
-            diff: diff(preUpdate, virtualChannel),
+            version: clone,
+            diff: diff(preUpdate, clone),
         });
     }
 

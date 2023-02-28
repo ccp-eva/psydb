@@ -17,6 +17,7 @@ module.exports = {
     keyBy: require('./key-by'),
     unwind: require('./unwind'),
     only: require('./only'),
+    omit: require('./omit'),
     range: require('./range'),
     transliterate: require('./transliterate'),
     
