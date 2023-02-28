@@ -17,5 +17,6 @@ module.exports = {
     opsTeam: require('./entities/ops-team'),
     subject: require('./entities/subject'),
     location: require('./entities/location'),
+    personnel: require('./entities/personnel'),
     channelHistory: require('./channel-history')
 };

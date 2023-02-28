@@ -8,6 +8,8 @@ import { urlUp as up } from '@mpieva/psydb-ui-utils';
 import { Personnel } from '@mpieva/psydb-ui-lib/data-viewers';
 import * as Themes from '@mpieva/psydb-ui-lib/data-viewer-themes';
 
+import { PersonnelParticipationList } from './personnel-participation-list';
+
 const DetailsBody = (ps) => {
     var {
         fetched,
@@ -19,6 +21,7 @@ const DetailsBody = (ps) => {
     
     var isRoot = permissions.isRoot();
     var canEdit = permissions.hasCollectionFlag('personnel', 'write');
+    var canReadParticipation = permissions.hasFlag('canReadParticipation');
 
     var personnelBag = {
         theme: Themes.HorizontalSplit,
@@ -48,6 +51,18 @@ const DetailsBody = (ps) => {
                     <Personnel.SystemPermissions />
                 </Personnel>
             </DetailsBox>
+
+            { canReadParticipation && (
+                <div className='border pl-3 bg-light mt-4 mb-4'>
+                    <h5 className='d-flex justify-content-between align-items-start'>
+                        <span className='d-inline-block pt-3'>Durchgeführte Termine</span>
+                    </h5>
+                    <hr />
+                    <div className='pr-3 pb-3'>
+                        <PersonnelParticipationList id={ record._id } />
+                    </div>
+                </div>
+            )}
         </>
     )
 }

@@ -64,7 +64,7 @@ SimpleRecordList.fetchData = (context) => async (options) => {
     else {
         var related = await fetchRelatedLabelsForMany({
             db,
-            collectionName: 'experiment',
+            collectionName: 'experiment', // XXX: ???
             records,
         });
         //console.dir(related, { depth: null });

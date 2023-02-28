@@ -572,6 +572,19 @@ agent.fetchLocationExperiments = (bag) => {
     );
 }
 
+agent.fetchPersonnelParticipation = (bag) => {
+    var {
+        personnelId,
+        extraAxiosConfig,
+    } = bag;
+
+    return axios.post(
+        '/api/personnel/related-participation',
+        { personnelId },
+        extraAxiosConfig,
+    );
+}
+
 agent.fetchSubjectPossibleTestIntervals = (bag) => {
     var {
         subjectIds, studyId,

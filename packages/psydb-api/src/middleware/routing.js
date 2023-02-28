@@ -367,6 +367,13 @@ var createRouting = (bag = {}) => {
         endpoints.special.reverseRefs
     );
 
+    router.post('/personnel/related-participation',
+        withSelfAuth(),
+        withPermissions(),
+        withKoaBody(),
+        endpoints.personnel.relatedParticipation
+    );
+
     router.post('/ops-team/related-experiments',
         withSelfAuth(),
         withPermissions(),

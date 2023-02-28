@@ -125,7 +125,10 @@ handler.triggerSystemEvents = async ({
                 [`${epath}.excludeFromMoreExperimentsInStudy`]: true
             }),
             ...(shouldSetPostprocessedFlag && {
-                'state.isPostprocessed': true
+                'state.isPostprocessed': true,
+                // XXX: we need to migrate data here
+                // personnel ids are currently only stored in participation
+                'state.experimentOperatorIds': personnelIds,
             }),
         }}
     });
