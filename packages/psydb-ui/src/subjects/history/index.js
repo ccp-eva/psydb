@@ -177,6 +177,27 @@ var DiffKindE = (ps) => {
     var definition = fields.find(it => (
         it.pointer === pointer
     ));
+    if (!definition) {
+        return (
+            <pre className='ml-4 mb-0 p-3 border-top'>
+                <header><b>{ pointer }</b></header>
+                <div>
+                    <div className='d-flex'>
+                        <b className='text-danger'>---{' '}</b>
+                        <div>
+                            { JSON.stringify(diff.lhs, null, 4) }
+                        </div>
+                    </div>
+                    <div className='d-flex'>
+                        <b className='text-success'>+++{' '}</b>
+                        <div>
+                            { JSON.stringify(diff.rhs, null, 4) }
+                        </div>
+                    </div>
+                </div>
+            </pre>
+        )
+    }
 
     var FieldComponent = StaticFields[fixSystemType(definition.type)];
 
@@ -190,7 +211,7 @@ var DiffKindE = (ps) => {
                     <b className='text-danger'>---{' '}</b>
                     <div>
                         <FieldComponent
-                            value={ diff.rhs }
+                            value={ diff.lhs }
                             props={ definition.props }
                         />
                     </div>
@@ -199,7 +220,7 @@ var DiffKindE = (ps) => {
                     <b className='text-success'>+++{' '}</b>
                     <div>
                         <FieldComponent
-                            value={ diff.lhs }
+                            value={ diff.rhs }
                             props={ definition.props }
                         />
                     </div>
