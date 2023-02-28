@@ -58,7 +58,9 @@ export const HelperSetItemIdList = (ps) => {
 
     return (
         <span>{ value.map(it => (
-            related.relatedHelperSetItems[setId][it].state.label
+            related
+            ? related.relatedHelperSetItems[setId][it].state.label
+            : it
         )).join(', ') }</span>
     )
 }
@@ -68,7 +70,9 @@ export const HelperSetItemId = (ps) => {
     var { setId } = props;
 
     return (
-        related.relatedHelperSetItems[setId][value].state.label
+        related
+        ? related.relatedHelperSetItems[setId][value].state.label
+        : value
     );
 }
 
@@ -282,7 +286,9 @@ export const ForeignId = (ps) => {
     }
     
     var label = (
-        related.relatedRecordLabels[collection][value]._recordLabel
+        related
+        ? related.relatedRecordLabels[collection][value]._recordLabel
+        : value
     );
     
     var collectionUI = collectionUIMapping[collection];

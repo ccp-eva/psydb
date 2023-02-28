@@ -1,8 +1,10 @@
 import React from 'react';
 import * as datefns from 'date-fns';
 import { useParams } from 'react-router'
-import { useFetch } from '@mpieva/psydb-ui-hooks'
+import { useFetchAll } from '@mpieva/psydb-ui-hooks'
 import { LoadingIndicator } from '@mpieva/psydb-ui-layout'
+// XXX
+import { Custom, StaticFields } from '@mpieva/psydb-ui-lib/src/diff-viewers/utility-components';
 
 const filterDiff = (bag) => {
     var { diff, path } = bag;
@@ -37,15 +39,21 @@ const History = (ps) => {
     var { collection, recordType } = ps;
     var { id } = useParams();
 
-    var [didFetch, fetched ] = useFetch((agent) => (
-        agent.fetchChannelHistory({
+    var [didFetch, fetched ] = useFetchAll((agent) => ({
+        crtSettings: agent.readCRTSettings({
+            collection, recordType
+        }),
+        history: agent.fetchChannelHistory({
             channelId: id
         })
-    ),[id]);
+    }),[ collection, recordType, id ]);
 
     if (!didFetch) {
         return <LoadingIndicator size='lg' />
     }
+
+    var crtSettings = fetched.crtSettings;
+    var history = fetched.history;
 
     return (
         <>
@@ -55,12 +63,14 @@ const History = (ps) => {
                     <div className='w-50 flex-grow-1 pr-2'>
                         <h5 className='mb-3'>Datenkanal: Standard</h5>
                         { filterHistory({
-                            history: fetched.data.scientific,
+                            history: history.data.scientific,
                             //path: 'scientific.state.custom.kigaId'
                         }).map((it, ix) => (
                             <HistoryItem
                                 key={ ix }
                                 item={ it }
+                                subChannelKey='scientific'
+                                crtSettings={ crtSettings.data }
                                 //onlyPath={ 'scientific.state.custom.kigaId' }
                             />
                         ))}
@@ -68,12 +78,14 @@ const History = (ps) => {
                     <div className='w-50 flex-grow-1 pl-2'>
                         <h5 className='mb-3'>Datenkanal: Datenschutz</h5>
                         { filterHistory({
-                            history: fetched.data.gdpr,
+                            history: history.data.gdpr,
                             //path: 'scientific.state.custom.kigaId'
                         }).map((it, ix) => (
                             <HistoryItem
                                 key={ ix }
                                 item={ it }
+                                subChannelKey='gdpr'
+                                crtSettings={ crtSettings.data }
                                 //onlyPath={ 'scientific.state.custom.kigaId' }
                             />
                         ))}
@@ -85,7 +97,7 @@ const History = (ps) => {
 }
 
 var HistoryItem = (ps) => {
-    var { item, onlyPath } = ps;
+    var { item, onlyPath, subChannelKey, crtSettings } = ps;
     var { event, diff, version, message } = item;
     return (
         <div className='bg-white p-3 mb-3 border'>
@@ -103,13 +115,15 @@ var HistoryItem = (ps) => {
             <DiffViewer
                 diff={ diff }
                 onlyPath={ onlyPath }
+                subChannelKey={ subChannelKey }
+                crtSettings={ crtSettings }
             />
         </div>
     )
 }
 
 var DiffViewer = (ps) => {
-    var { diff, onlyPath } = ps;
+    var { diff, onlyPath, ...pass } = ps;
     var items = filterDiff({ diff, path: onlyPath });
 
     return (
@@ -120,35 +134,76 @@ var DiffViewer = (ps) => {
                     'E': DiffKindE,
                 }[it.kind] || DiffKindFallback;
 
-                return <Component key={ ix } diff={ it } />
+                return <Component key={ ix } diff={ it } { ...pass } />
             })}
         </div>
     )
 }
 
 var DiffKindN = (ps) => {
-    var { diff } = ps;
+    var { diff, subChannelKey, crtSettings } = ps;
     return (
-        <pre className='ml-4 mb-0 p-3 border-top'>
+        <pre className='ml-4 mb-0 py-3 border-top'>
             <div>
                 { diff.path.join('.') }
             </div>
             <div>
-                +++ { JSON.stringify(diff.rhs, null, 4) }
+                { diff.rhs?.state?.custom ? (
+                    <Custom
+                        diffKind='N'
+                        value={ diff.rhs.state.custom }
+                        subChannelKey={ subChannelKey }
+                        crtSettings={ crtSettings }
+                    />
+                ) : (
+                    '+++' + JSON.stringify(diff.rhs, null, 4)
+                )}
             </div>
         </pre>
     )
 }
 
 var DiffKindE = (ps) => {
-    var { diff } = ps;
+    var { diff, subChannelKey, crtSettings } = ps;
+    var pointer = '/' + diff.path.join('/');
+    
+    var { fieldDefinitions } = crtSettings;
+    var fields = (
+        subChannelKey
+        ? fieldDefinitions[subChannelKey]
+        : fieldDefinitions
+    );
+
+    var definition = fields.find(it => (
+        it.pointer === pointer
+    ));
+
+    var FieldComponent = StaticFields[fixSystemType(definition.type)];
+
     return (
         <pre className='ml-4 mb-0 p-3 border-top'>
+            <header>
+                <b>{ definition.displayName }</b>
+            </header>
             <div>
-                { diff.path.join('.') }
-            </div>
-            <div>
-                { String(diff.lhs) } => { String(diff.rhs) }
+                <div className='d-flex'>
+                    <b className='text-danger'>---{' '}</b>
+                    <div>
+                        <FieldComponent
+                            value={ diff.rhs }
+                            props={ definition.props }
+                        />
+                    </div>
+                </div>
+                <div className='d-flex'>
+                    <b className='text-success'>+++{' '}</b>
+                    <div>
+                        <FieldComponent
+                            value={ diff.lhs }
+                            props={ definition.props }
+                        />
+                    </div>
+                </div>
             </div>
         </pre>
     )
@@ -163,4 +218,15 @@ var DiffKindFallback = (ps) => {
     )
 }
 
+const fixSystemType = (systemType) => {
+    // TODO: make sure that we dont need this mapping anymore
+    switch (systemType) {
+        case 'EmailList':
+            return 'EmailWithPrimaryList';
+        case 'PhoneWithTypeList':
+            return 'PhoneWithTypeList';
+        default:
+            return systemType;
+    }
+};
 export default History;
