@@ -580,7 +580,10 @@ agent.fetchPersonnelParticipation = (bag) => {
 
     return axios.post(
         '/api/personnel/related-participation',
-        { personnelId },
+        {
+            personnelId,
+            timezone: getSystemTimezone(),
+        },
         extraAxiosConfig,
     );
 }

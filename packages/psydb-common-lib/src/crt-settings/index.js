@@ -1,6 +1,6 @@
 'use strict';
 var sift = require('sift').default;
-var { arrify } = require('@mpieva/psydb-core-utils');
+var { arrify, convertPointerToPath } = require('@mpieva/psydb-core-utils');
 
 var CRTSettings = ({ data }) => {
     var crt = {};
@@ -32,6 +32,7 @@ var CRTSettings = ({ data }) => {
 
     crt.getRaw = () => data;
     crt.getCollection = () => data.collection;
+    crt.getRecordLabelDefinition = () => data.recordLabelDefinition;
     crt.allStaticFields = () => (data.staticFieldDefinitions || []);
 
     crt.getSubChannelKeys = () => {
@@ -65,6 +66,30 @@ var CRTSettings = ({ data }) => {
             ? fields.filter(sift(filter))
             : fields
         );
+    }
+
+    crt.getRecordLabelPointers = () => {
+        return data.recordLabelDefinition.tokens.map(it => it.dataPointer);
+    }
+    crt.getRecordLabelProjection = (options = {}) => {
+        var { as: projectAs } = options;
+        return crt.getRecordLabelPointers().reduce((acc, pointer) => {
+            var sourcePath = convertPointerToPath(pointer);
+            var targetPath = (
+                projectAs 
+                ? projectAs + '.' + pointer
+                : sourcePath
+            );
+            var projectionValue = (
+                projectAs
+                ? '$' + sourcePath
+                : true
+            );
+            return {
+                ...acc,
+                [targetPath]: projectionValue
+            }
+        }, {})
     }
 
     return crt;

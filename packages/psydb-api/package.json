@@ -4,7 +4,7 @@
   "description": "",
   "main": "./src/middleware/api",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npx mocha --config mocha.config.json test/",
     "dev": "node src/server.js"
   },
   "repository": {
@@ -76,7 +76,9 @@
     "chai": "~4.3.6",
     "mongodb-memory-server": "~6.9.2",
     "supertest": "~6.0.1",
-    "@mpieva/psydb-fixtures": "~0.1.0-alpha"
+    "@mpieva/psydb-fixtures": "~0.1.0-alpha",
+    "@cdxoo/mongo-test-helpers": "~0.7.1",
+    "@cdxoo/mongodb-restore": "2.0.0-alpha.2"
   },
   "config": {
     "mongodbMemoryServer": {

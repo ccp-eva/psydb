@@ -1,0 +1,3 @@
+#!/bin/sh
+SCRIPT_DIR=$(dirname "$0")
+mongodump --host localhost:47017 -d psydb -o $SCRIPT_DIR/bson/$(date +%Y-%m-%d__%H%M)

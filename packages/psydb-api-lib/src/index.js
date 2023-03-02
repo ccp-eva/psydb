@@ -23,9 +23,13 @@ module.exports = {
     checkForeignIdsExist: require('./check-foreign-ids-exist'),
     checkIntervalHasReservation: require('./check-interval-has-reservation'),
 
+    createAllRecordLabels: require('./create-all-record-labels'),
+
     createRecordLabel: require('./create-record-label'),
     createRecordLabelFromCRT: require('./create-record-label-from-crt'),
     applyRecordLabels: require('./apply-record-labels'),
+
+    mergeRecordLabelProjections: require('./merge-record-label-projections'),
 
     createSchemaForRecord: require('./create-schema-for-record'),
     createSchemaForRecordType: require('./create-schema-for-record-type'),
@@ -34,12 +38,15 @@ module.exports = {
     fetchCustomRecordTypes: require('./fetch-custom-record-types'),
 
     fetchCRTSettings: require('./fetch-crt-settings'),
+    fetchAllCRTSettings: require('./fetch-all-crt-settings'),
 
     fetchRecordById: require('./fetch-record-by-id'),
     fetchRecordDisplayDataById: require('./fetch-record-display-data-by-id'),
     fetchRecordReverseRefs: require('./fetch-record-reverse-refs'),
     fetchRecordsByFilter: require('./fetch-records-by-filter'),
     fetchRecordsInInterval: require('./fetch-records-in-interval'),
+
+    fetchRecordLabelsManual: require('./fetch-record-labels-manual'),
 
     fetchRelatedLabels: require('./fetch-related-labels'),
     fetchRelatedLabelsForMany: require('./fetch-related-labels-for-many-ng'),

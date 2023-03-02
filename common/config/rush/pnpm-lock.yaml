@@ -13,9 +13,7 @@ specifiers:
   '@cdxoo/koa-mongo-mq': ~1.4.0
   '@cdxoo/koa-mongo-rohrpost': ~3.3.0
   '@cdxoo/mongo-rohrpost': ~3.3.0
-  '@cdxoo/mongo-test-helpers': ~0.6.0
   '@cdxoo/mongodb-escape-keys': ~0.1.1
-  '@cdxoo/mongodb-restore': ~1.1.2
   '@cdxoo/objectpath-to-jsonpointer': ~1.0.0
   '@cdxoo/omit': ~1.0.1
   '@cdxoo/pick-random-item': ~0.0.2
@@ -179,9 +177,7 @@ dependencies:
   '@cdxoo/koa-mongo-mq': 1.4.0
   '@cdxoo/koa-mongo-rohrpost': 3.3.0
   '@cdxoo/mongo-rohrpost': 3.3.0
-  '@cdxoo/mongo-test-helpers': 0.6.0
   '@cdxoo/mongodb-escape-keys': 0.1.1
-  '@cdxoo/mongodb-restore': 1.1.2
   '@cdxoo/objectpath-to-jsonpointer': 1.0.0
   '@cdxoo/omit': 1.0.1
   '@cdxoo/pick-random-item': 0.0.2
@@ -2698,7 +2694,23 @@ packages:
     dependencies:
       bson: 4.5.4
       mongodb-memory-server: 7.6.3
-      nanoid: 3.1.30
+      nanoid: 3.3.1
+    transitivePeerDependencies:
+      - aws4
+      - bson-ext
+      - kerberos
+      - mongodb-client-encryption
+      - mongodb-extjson
+      - snappy
+      - supports-color
+    dev: false
+
+  /@cdxoo/mongo-test-helpers/0.7.1:
+    resolution: {integrity: sha512-NmGO82GszR2QPiF0/LxORr2yR4NxOFQ9M4PeumufaWt3lw2Jp1xystn60SMWG0JMqyboXrfZme9gU9XrXfBRyg==}
+    dependencies:
+      bson: 4.5.4
+      mongodb-memory-server: 7.6.3
+      nanoid: 3.3.1
     transitivePeerDependencies:
       - aws4
       - bson-ext
@@ -2719,6 +2731,21 @@ packages:
 
   /@cdxoo/mongodb-restore/1.1.2:
     resolution: {integrity: sha512-D6oOWFyciymHgAu4BMPFZtm0C0peTUFIG401DcVk0s8c3GeLCbkaERSYrdkjcDA+hT7fK+xerMnQ1r2jXBw7lw==}
+    dependencies:
+      bson: 4.6.0
+      mongodb: 3.6.12
+    transitivePeerDependencies:
+      - aws4
+      - bson-ext
+      - kerberos
+      - mongodb-client-encryption
+      - mongodb-extjson
+      - snappy
+    dev: false
+
+  /@cdxoo/mongodb-restore/2.0.0-alpha.2:
+    resolution: {integrity: sha512-witUtbuAwgan2FpEc+n2u0hmcavB6d58TxMlM30cFk6hC86nM2ZhDHSPea82UUct0dTJwqaudh5oCVrPHRBpcg==}
+    engines: {node: '>=6.4.0'}
     dependencies:
       bson: 4.6.0
       mongodb: 3.6.12
@@ -11493,12 +11520,14 @@ packages:
     dev: false
 
   file:projects/psydb-api.tgz:
-    resolution: {integrity: sha512-ihG6+1rNKKGMJsx09KKdLLRqg6vjcyTus+vuz67IpX8QlyCDQlp2V2d3PJNIFv85eyT7fvH9XxJhbR/v3s7zmA==, tarball: file:projects/psydb-api.tgz}
+    resolution: {integrity: sha512-3PJUIXDovd6yBPcwAhlGRyWI0BFV7DuRDFn3TWx4gkFOqgAsMUvjurwFmlQwF/tt9m3RTTXPdXfpCrR6EYNiPQ==, tarball: file:projects/psydb-api.tgz}
     name: '@rush-temp/psydb-api'
     version: 0.0.0
     dependencies:
       '@cdxoo/inline-string': 1.0.0
       '@cdxoo/inline-text': 1.0.2
+      '@cdxoo/mongo-test-helpers': 0.7.1
+      '@cdxoo/mongodb-restore': 2.0.0-alpha.2
       '@cdxoo/omit': 1.0.1
       ajv: 6.12.6
       ajv-keywords: 3.5.2_ajv@6.12.6
