@@ -83,7 +83,7 @@ var fetchRecordReverseRefs = async (bag) => {
         allReferencingRecords.push(...fetchedRefs);
     }
 
-    console.log('all', allReferencingRecords);
+    //console.log('all', allReferencingRecords);
     return allReferencingRecords;
 }
 
@@ -104,6 +104,12 @@ var fetchReferencingRecords = async (options) => {
         ))
     );
 
+    if (collection === 'subject') {
+        searchPaths = searchPaths.filter(it => (
+            !it.startsWith('scientific.state.internals.participatedInStudies')
+        ));
+    }
+
     //console.log(searchPaths);
     if (searchPaths.length > 0) {
         var query = {
@@ -112,7 +118,7 @@ var fetchReferencingRecords = async (options) => {
                 [it]: recordId
             }))
         };
-        console.log(collection, query);
+        //console.log(collection, query);
         var referencingRecords = await (
             db.collection(collection)
             .find(query, { projection: {
@@ -121,7 +127,7 @@ var fetchReferencingRecords = async (options) => {
             }})
             .toArray()
         );
-        console.log(referencingRecords);
+        //console.log(referencingRecords);
         
         return referencingRecords.map(it => ({
             ...it, collection,
