@@ -99,6 +99,7 @@ const History = (ps) => {
 var HistoryItem = (ps) => {
     var { item, onlyPath, subChannelKey, crtSettings } = ps;
     var { event, diff, version, message } = item;
+    var { personnelId } = message;
     return (
         <div className='bg-white p-3 mb-3 border'>
             <header className='mb-1 pb-1'>
@@ -109,7 +110,16 @@ var HistoryItem = (ps) => {
                     ) }</b>
                 <div>
                 </div>
-                    Versions-ID: { event._id }
+                    <div>
+                        Versions-ID: { event._id }
+                    </div>
+                    <div>
+                        Geändert durch:
+                        {' '}
+                        <a href={`#/personnel/${personnelId}`}>
+                            { personnelId }
+                        </a>
+                    </div>
                 </div>
             </header>
             <DiffViewer
@@ -142,10 +152,11 @@ var DiffViewer = (ps) => {
 
 var DiffKindN = (ps) => {
     var { diff, subChannelKey, crtSettings } = ps;
+    var pointer = '/' + diff.path.join('/');
     return (
         <pre className='ml-4 mb-0 py-3 border-top'>
             <div>
-                { diff.path.join('.') }
+                { pointer }
             </div>
             <div>
                 { diff.rhs?.state?.custom ? (
