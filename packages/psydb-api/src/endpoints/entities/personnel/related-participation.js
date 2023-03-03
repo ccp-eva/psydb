@@ -45,13 +45,21 @@ var relatedParticipation = async (context, next) => {
     var records = await db.collection('subject').aggregate([
         { $unwind: '$' + path },
         { $match: {
-            [`${path}.experimentOperatorIds`]: personnelId
+            [`${path}.experimentOperatorIds`]: personnelId,
+            [`${path}.status`]: 'participated',
         }},
         { $project: {
             type: true,
             ...subjectLabelProjection,
             '_participation': '$' + path
         }},
+        { $addFields: {
+            '_participation.subjectId': '$_id',
+            '_participation.subjectType': '$type'
+        }},
+        { $sort: {
+            '_participation.timestamp': 1
+        }}
     ], {
         allowDiskUse: true,
         collation: { locale: 'de@collation=phonebook' }
