@@ -42,7 +42,14 @@ var relatedParticipation = async (context, next) => {
     );
 
     var path = 'scientific.state.internals.participatedInStudies';
+    await db.collection('subject').ensureIndex({
+        [`${path}.experimentOperatorIds`]: 1,
+    });
     var records = await db.collection('subject').aggregate([
+        { $match: {
+            [`${path}.experimentOperatorIds`]: personnelId,
+            [`${path}.status`]: 'participated',
+        }},
         { $unwind: '$' + path },
         { $match: {
             [`${path}.experimentOperatorIds`]: personnelId,
