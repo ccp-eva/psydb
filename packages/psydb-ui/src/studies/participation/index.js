@@ -5,6 +5,7 @@ import { keyBy } from '@mpieva/psydb-common-lib';
 
 import {
     useFetchAll,
+    usePermissions,
     useRevision,
     useModalReducer,
     useSortReducer,
@@ -18,6 +19,7 @@ import {
 
 import { CreateModal } from '@mpieva/psydb-ui-lib/src/participation';
 import ParticipationList from './participation-list';
+import CSVImportModal from './csv-import-modal';
 
 
 const StudyParticipation = (ps) => {
@@ -29,7 +31,12 @@ const StudyParticipation = (ps) => {
     var { id } = useParams();
 
     var revision = useRevision();
-    var modalReducer = useModalReducer();
+
+    var permissions = usePermissions();
+    var canImportCSV = permissions.isRoot();
+
+    var createModal = useModalReducer();
+    var csvImportModal = useModalReducer();
     
     var initialSort = {
         sortPath: 'scientific.state.internals.participatedInStudies.timestamp',
@@ -76,10 +83,16 @@ const StudyParticipation = (ps) => {
         <div className='mt-3'>
 
             <CreateModal
-                { ...modalReducer.passthrough }
+                { ...createModal.passthrough }
                 onSuccessfulUpdate={ revision.up }
                 studyId={ id }
                 subjectRecordType={ selectedSubjectType }
+            />
+
+            <CSVImportModal
+                { ...csvImportModal.passthrough }
+                onSuccessfulUpdate={ revision.up }
+                studyId={ id }
             />
             
             { subjectTypeKeys > 1 && (
@@ -95,9 +108,18 @@ const StudyParticipation = (ps) => {
 
             <div className='mt-3'>
 
-                <Button onClick={ modalReducer.handleShow }>
+                <Button onClick={ createModal.handleShow }>
                     Proband:innen hinzufügen
                 </Button>
+                
+                { canImportCSV && (
+                    <Button
+                        className='ml-2'
+                        onClick={ csvImportModal.handleShow }
+                    >
+                        CSV-Import
+                    </Button>
+                )}
 
                 <ParticipationList
                     className='mt-1 bg-white'

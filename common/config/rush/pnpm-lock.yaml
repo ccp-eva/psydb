@@ -106,6 +106,7 @@ specifiers:
   diacritic-regex: ~1.1.0
   escape-string-regexp: ~4.0.0
   flat: ~5.0.2
+  formidable: ~2.1.1
   formik: ~2.2.6
   graphql: ~15.3.0
   html-entities: ~2.3.2
@@ -146,6 +147,7 @@ specifiers:
   react-bootstrap-icons: ~1.8.0
   react-datetime: ~3.1.1
   react-dom: ~17.0.1
+  react-dropzone: ~3.13.4
   react-is: ~17.0.2
   react-quill: ~1.3.5
   react-router: ~5.2.0
@@ -270,6 +272,7 @@ dependencies:
   diacritic-regex: 1.1.0
   escape-string-regexp: 4.0.0
   flat: 5.0.2
+  formidable: 2.1.1
   formik: 2.2.9_react@17.0.2
   graphql: 15.3.0
   html-entities: 2.3.2
@@ -310,6 +313,7 @@ dependencies:
   react-bootstrap-icons: 1.8.1_react@17.0.2
   react-datetime: 3.1.1_moment@2.29.1+react@17.0.2
   react-dom: 17.0.2_react@17.0.2
+  react-dropzone: 3.13.4_react@17.0.2
   react-is: 17.0.2
   react-quill: 1.3.5_react@17.0.2
   react-router: 5.2.1_react@17.0.2
@@ -3834,6 +3838,13 @@ packages:
     hasBin: true
     dev: false
 
+  /attr-accept/1.1.3:
+    resolution: {integrity: sha512-iT40nudw8zmCweivz6j58g+RT33I4KbaIvRUhjNmDwO2WmsQUxFEZZYZ5w3vXe5x5MX9D7mfvA/XaLOZYFR9EQ==}
+    engines: {node: '>=4'}
+    dependencies:
+      core-js: 2.6.12
+    dev: false
+
   /available-typed-arrays/1.0.5:
     resolution: {integrity: sha512-DMD0KiN46eipeziST1LPP/STfDU0sufISXmjSgvVsoU2tqxctQeASejWcfNtxYKqETM1UxQ8sp2OrSBWpHY6sw==}
     engines: {node: '>= 0.4'}
@@ -4501,7 +4512,7 @@ packages:
     resolution: {integrity: sha512-sX/LQ7LqUhgyaxzbe7IqwPeTr2yfpfUIQ/dgpKo6ZI4y4lpQA0YxAomWIY+7I7rHWcG02PG+OuPREzMW/5tszQ==}
     dependencies:
       inflation: 2.0.0
-      qs: 6.10.2
+      qs: 6.11.1
       raw-body: 2.4.2
       type-is: 1.6.18
     dev: false
@@ -9154,6 +9165,16 @@ packages:
       scheduler: 0.20.2
     dev: false
 
+  /react-dropzone/3.13.4_react@17.0.2:
+    resolution: {integrity: sha512-QBQcXVFRJoIhGv26N6VuMfpF5NAJVTI8IrdDnKUh8ZJfTBq8fQfIksD2TR95LD7Sw0EIkY1OxIE9d1YMfSDSaw==}
+    peerDependencies:
+      react: '>=0.14.0'
+    dependencies:
+      attr-accept: 1.1.3
+      prop-types: 15.7.2
+      react: 17.0.2
+    dev: false
+
   /react-fast-compare/2.0.4:
     resolution: {integrity: sha512-suNP+J1VU1MWFKcyt7RtjiSWUjvidmQSlqu+eHslq+342xCbGTYmC0mEhPCOHxlW0CywylOC1u2DFAT+bv4dBw==}
     dev: false
@@ -12031,7 +12052,7 @@ packages:
     dev: false
 
   file:projects/psydb-ui-lib.tgz_webpack@5.65.0:
-    resolution: {integrity: sha512-0kHvIrDV7UH81yyBYYkae6eaxx536KO57eCeurZJnAbgCcKyaKSPIjTOpnYr9TVucWNJUhZeiTXfnqykWXJFkg==, tarball: file:projects/psydb-ui-lib.tgz}
+    resolution: {integrity: sha512-zUQ/p8GV4nPzmnJD7lH5dtGg2/CYeimbtgwW2XoA3ElNGaGl58epWetGPHpKfil8sULoHI73aqLSRKFT7gN5dg==, tarball: file:projects/psydb-ui-lib.tgz}
     id: file:projects/psydb-ui-lib.tgz
     name: '@rush-temp/psydb-ui-lib'
     version: 0.0.0
@@ -12061,6 +12082,7 @@ packages:
       react-bootstrap: 1.5.2_react-dom@17.0.2+react@17.0.2
       react-datetime: 3.1.1_moment@2.29.1+react@17.0.2
       react-dom: 17.0.2_react@17.0.2
+      react-dropzone: 3.13.4_react@17.0.2
       react-router: 5.2.1_react@17.0.2
       react-router-dom: 5.2.1_react@17.0.2
     transitivePeerDependencies:

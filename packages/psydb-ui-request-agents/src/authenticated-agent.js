@@ -612,4 +612,21 @@ agent.fetchChannelHistory = ({
     return axios.get(url);
 }
 
+agent.uploadFiles = (bag) => {
+    var {
+        files,
+        extraAxiosConfig,
+    } = bag;
+
+    var formData = new FormData();
+    for (var [ ix, it ] of files.entries()) {
+        formData.append(`file_${ix}`, it);
+    }
+
+    return axios.post(
+        '/api/file/upload',
+        formData,
+        extraAxiosConfig,
+    );
+}
 export default agent;

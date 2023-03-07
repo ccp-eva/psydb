@@ -61,3 +61,5 @@ export { default as CalendarTeamLegend } from './calendar-team-legend';
 
 export { default as QuickSearch } from './quick-search';
 export { default as SubjectParticipationList } from './subject-participation-list';
+
+export * from './file-upload';
