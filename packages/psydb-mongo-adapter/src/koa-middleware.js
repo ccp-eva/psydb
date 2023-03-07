@@ -5,6 +5,7 @@ module.exports = (config) => async (context, next) => {
         await MongoConnection(config).connect();
     }
 
+    context.mongoConnector = MongoConnection();
     context.mongoClient = MongoConnection().getConnection();
     context.mongoDbName = MongoConnection().getSelectedDbName();
     context.db = MongoConnection().getSelectedDb();

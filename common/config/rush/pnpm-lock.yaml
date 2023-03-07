@@ -5145,6 +5145,13 @@ packages:
     resolution: {integrity: sha512-T0NIuQpnTvFDATNuHN5roPwSBG83rFsuO+MXXH9/3N1eFbn4wcPjttvjMLEPWJ0RGUYgQE7cGgS3tNxbqCGM7g==}
     dev: false
 
+  /dezalgo/1.0.4:
+    resolution: {integrity: sha512-rXSP0bf+5n0Qonsb+SVVfNfIsimO4HEtmnIpPHY8Q1UCzKlQrDMfdobr8nJOOsRgWCyMRqeSBQzmWUMq7zvVig==}
+    dependencies:
+      asap: 2.0.6
+      wrappy: 1.0.2
+    dev: false
+
   /diacritic-regex/1.1.0:
     resolution: {integrity: sha512-NE7HrrF1GsbMPepx6Cagp6dKFpjEXv7GTcBfq0WUgZ1fMCEtXPP1S2BjdOkar7V39EErRhR3QCXFETv/BXlQQw==}
     dev: false
@@ -5789,6 +5796,15 @@ packages:
     deprecated: 'Please upgrade to latest, formidable@v2 or formidable@v3! Check these notes: https://bit.ly/2ZEqIau'
     dev: false
 
+  /formidable/2.1.1:
+    resolution: {integrity: sha512-0EcS9wCFEzLvfiks7omJ+SiYJAiD+TzK4Pcw1UlUoGnhUxDcMKjt0P7x8wEb0u6OHu8Nb98WG3nxtlF5C7bvUQ==}
+    dependencies:
+      dezalgo: 1.0.4
+      hexoid: 1.0.0
+      once: 1.4.0
+      qs: 6.11.1
+    dev: false
+
   /formik/2.2.9_react@17.0.2:
     resolution: {integrity: sha512-LQLcISMmf1r5at4/gyJigGn0gOwFbeEAlji+N9InZF6LIMXnFNkO42sCI8Jt84YZggpD4cPWObAZaxpEFtSzNA==}
     peerDependencies:
@@ -6134,6 +6150,11 @@ packages:
   /he/1.2.0:
     resolution: {integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==}
     hasBin: true
+    dev: false
+
+  /hexoid/1.0.0:
+    resolution: {integrity: sha512-QFLV0taWQOZtvIRIAdBChesmogZrtuXvVWsFHZTk2SU+anspqZ2vMnoLg7IE1+Uk16N19APic1BuF8bC8c2m5g==}
+    engines: {node: '>=8'}
     dev: false
 
   /history/4.10.1:
@@ -8976,6 +8997,13 @@ packages:
       side-channel: 1.0.4
     dev: false
 
+  /qs/6.11.1:
+    resolution: {integrity: sha512-0wsrzgTz/kAVIeuxSjnpGC56rzYtr6JT/2BwEvMaPhFIoYa1aGO8LbzuU1R0uUYQkLpWBTOj0l/CLAJB64J6nQ==}
+    engines: {node: '>=0.6'}
+    dependencies:
+      side-channel: 1.0.4
+    dev: false
+
   /qs/6.5.3:
     resolution: {integrity: sha512-qxXIEh4pCGfHICj1mAJQ2/2XVZkjCDTcEgfoSQxc/fYivUZxTkk7L3bDBJSoNrEzXI17oUO5Dp07ktqE5KzczA==}
     engines: {node: '>=0.6'}
@@ -11520,7 +11548,7 @@ packages:
     dev: false
 
   file:projects/psydb-api.tgz:
-    resolution: {integrity: sha512-3PJUIXDovd6yBPcwAhlGRyWI0BFV7DuRDFn3TWx4gkFOqgAsMUvjurwFmlQwF/tt9m3RTTXPdXfpCrR6EYNiPQ==, tarball: file:projects/psydb-api.tgz}
+    resolution: {integrity: sha512-R2PiVI+v7nKZhN0kX+ajp+gZjbZgqvh+ONR/6GTM8MriQ5Ynkkj5hcXpVXzZrZByKpe+V/8+n6TQPFbeguU5Pg==, tarball: file:projects/psydb-api.tgz}
     name: '@rush-temp/psydb-api'
     version: 0.0.0
     dependencies:
@@ -11540,6 +11568,7 @@ packages:
       debug: 4.3.3
       deep-diff: 1.0.2
       escape-string-regexp: 4.0.0
+      formidable: 2.1.1
       is-what: 3.14.1
       json-schema-traverse: 1.0.0
       jsonpointer: 4.1.0

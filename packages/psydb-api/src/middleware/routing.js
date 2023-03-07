@@ -408,6 +408,12 @@ var createRouting = (bag = {}) => {
         endpoints.channelHistory
     );
 
+    router.post('/file/upload',
+        withSelfAuth(),
+        withPermissions(),
+        endpoints.file.upload
+    );
+
     return compose([
         router.routes(),
         router.allowedMethods(),

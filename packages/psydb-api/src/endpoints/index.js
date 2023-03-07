@@ -13,10 +13,12 @@ module.exports = {
     extendedSearchExport: require('./extended-search-export'),
 
     special: require('./special'),
+    channelHistory: require('./channel-history'),
+
+    file: require('./entities/file'),
 
     opsTeam: require('./entities/ops-team'),
     subject: require('./entities/subject'),
     location: require('./entities/location'),
     personnel: require('./entities/personnel'),
-    channelHistory: require('./channel-history')
 };
