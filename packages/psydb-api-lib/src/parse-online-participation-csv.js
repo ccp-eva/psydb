@@ -29,6 +29,9 @@ var parseOnlineParticipationCSV = (bag) => {
 
     var out = [];
     for (var it of lines) {
+        if (!it) {
+            continue;
+        }
         var datacols = it.split(/[;,]/);
         if (datacols.length !== 2) {
             throw new ApiError(

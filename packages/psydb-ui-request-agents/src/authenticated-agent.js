@@ -629,4 +629,23 @@ agent.uploadFiles = (bag) => {
         extraAxiosConfig,
     );
 }
+
+agent.fetchCSVImportPreview = (bag) => {
+    var {
+        fileId,
+        studyId,
+        extraAxiosConfig,
+    } = bag;
+
+    return axios.post(
+        '/api/csv-import/preview',
+        { 
+            fileId, studyId,
+            timezone: getSystemTimezone(),
+        },
+        extraAxiosConfig,
+    );
+}
+
+
 export default agent;

@@ -30,6 +30,8 @@ var allHandlers = [
     
     require('./handlers/external-organization'),
     require('./handlers/external-person'),
+    
+    require('./handlers/csv-import'),
 ];
 
 module.exports = allHandlers;

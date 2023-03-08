@@ -11,7 +11,7 @@ describe('endpoints/csv-import/preview', function () {
     var db, agent;
     beforeEach(async function () {
         await this.restore(
-            '2023-03-02__1546'
+            '2023-03-08__0217'
         );
         
         this.createKoaApi();
@@ -22,22 +22,9 @@ describe('endpoints/csv-import/preview', function () {
     })
 
     it('does the thing', async function () {
-        var buffer = Buffer.from([
-            'onlineId,timestamp',
-            'R3vr6dx7,2023-01-01T00:00:00.000Z',
-            'F2PCzMQx,2023-02-02T00:00:00.000Z',
-        ].join("\n"))
-
-        var upload = await (
-            agent.post('/file/upload').attach(
-                'file', buffer, 'some-import.csv'
-            )
-        );
-        var fileId = upload.body.data.records[0]._id;
-        
         var preview = await (
             agent.post('/csv-import/preview').send({
-                fileId,
+                fileId: '6407e1e30e6da87147750f31',
                 studyId: '631272148dde11df80a50c05',
                 timezone: 'Europe/Berlin'
             })
