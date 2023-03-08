@@ -413,6 +413,13 @@ var createRouting = (bag = {}) => {
         withPermissions(),
         endpoints.file.upload
     );
+    
+    router.post('/csv-import/preview',
+        withSelfAuth(),
+        withPermissions(),
+        withKoaBody(),
+        endpoints.csvImport.preview
+    );
 
     return compose([
         router.routes(),

@@ -2,10 +2,13 @@
 var fs = require('fs');
 var formidable = require('formidable');
 var { entries } = require('@mpieva/psydb-core-utils');
-var { createId, ResponseBody } = require('@mpieva/psydb-api-lib');
+var { createId, ResponseBody, ApiError } = require('@mpieva/psydb-api-lib');
 
 var fileUploadEndpoint = async (context, next) => {
     var { db, permissions, self } = context;
+    if (!permissions.isRoot()) {
+        throw new ApiError(403);
+    }
 
     var form = formidable({
         hashAlgorithm: 'md5',

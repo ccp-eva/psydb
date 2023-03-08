@@ -71,6 +71,10 @@ module.exports = {
 
     convertFiltersToQueryFields: require('./convert-filters-to-query-fields'),
     convertConstraintsToMongoPath: require('./convert-constraints-to-mongo-path'),
+    
+    ...require('./parse-online-participation-csv'),
+    ...require('./match-online-participation-csv'),
+    
     ...require('./rohrpost-channel-history'),
 
 }

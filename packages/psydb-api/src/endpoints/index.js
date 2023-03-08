@@ -16,6 +16,7 @@ module.exports = {
     channelHistory: require('./channel-history'),
 
     file: require('./entities/file'),
+    csvImport: require('./entities/csv-import'),
 
     opsTeam: require('./entities/ops-team'),
     subject: require('./entities/subject'),
