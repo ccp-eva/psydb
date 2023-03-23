@@ -28,7 +28,7 @@
     "jsonpointer": "~5.0.1",
     "@cdxoo/inline-string": "~1.0.0",
     "date-fns": "~2.29.3",
-    "nanoid": "~3.1.22",
+    "nanoid": "~3.3.4",
     "mongodb": "~3.6.3",
     "@mpieva/json-schema-lazy-resolve-oneof": "~0.1.0-alpha",
     "@mpieva/json-schema-convert-pointer": "~0.1.0-alpha",
