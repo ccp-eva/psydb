@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/cdxOo/psydb#readme",
   "dependencies": {
-    "debug": "~4.3.1",
+    "debug": "~4.3.4",
     "co": "~4.6.0",
     "koa": "~2.13.0",
     "koa-compose": "~4.1.0",

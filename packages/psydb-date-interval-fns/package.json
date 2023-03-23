@@ -8,7 +8,7 @@
   "license": "MIT",
   "dependencies": {
     "jsonpointer": "~5.0.1",
-    "date-fns": "~2.21.1",
+    "date-fns": "~2.29.3",
     "@mpieva/psydb-core-utils": "~0.1.0-alpha",
     "@mpieva/psydb-interval-fns": "~0.1.0-alpha"
   },

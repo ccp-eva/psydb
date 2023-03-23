@@ -58,7 +58,7 @@
     "@rjsf/bootstrap-4": "~2.5.1",
     "@mpieva/rjsf-monkey-patch": "~0.1.0-alpha",
     "classnames": "~2.3.1",
-    "date-fns": "~2.21.1",
+    "date-fns": "~2.29.3",
     "camelcase": "~6.3.0",
     "react-dropzone": "~3.13.4"
   },

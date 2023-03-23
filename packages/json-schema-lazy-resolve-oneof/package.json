@@ -13,12 +13,12 @@
     "chai": "~4.3.7"
   },
   "dependencies": {
-    "debug": "~4.3.1",
+    "debug": "~4.3.4",
     "json-schema-traverse": "~1.0.0",
     "jsonpointer": "~5.0.1",
     "@cdxoo/inline-text": "~1.0.2",
     "@mpieva/json-schema-convert-pointer": "~0.1.0-alpha",
     "@mpieva/json-schema-deconstruct-arrays": "~0.1.0-alpha",
-    "copy-anything": "~2.0.3"
+    "copy-anything": "~2.0.6"
   }
 }

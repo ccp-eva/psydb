@@ -7,7 +7,7 @@
   "author": "Jan Schwalbe",
   "license": "MIT",
   "dependencies": {
-    "date-fns": "~2.21.1",
+    "date-fns": "~2.29.3",
     "@mpieva/psydb-core-utils": "~0.1.0-alpha",
     "@mpieva/psydb-interval-fns": "~0.1.0-alpha",
     "@mpieva/psydb-date-interval-fns": "~0.1.0-alpha",

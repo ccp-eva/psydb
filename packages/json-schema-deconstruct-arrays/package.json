@@ -16,6 +16,6 @@
     "json-schema-traverse": "~1.0.0",
     "jsonpointer": "~5.0.1",
     "@cdxoo/inline-text": "~1.0.2",
-    "copy-anything": "~2.0.3"
+    "copy-anything": "~2.0.6"
   }
 }

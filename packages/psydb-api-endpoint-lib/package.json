@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/cdxOo/psydb#readme",
   "dependencies": {
-    "debug": "~4.3.1",
+    "debug": "~4.3.4",
     "mongodb": "~3.6.3",
     "jsonpointer": "~5.0.1",
     "escape-string-regexp": "~4.0.0",
