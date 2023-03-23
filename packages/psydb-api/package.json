@@ -32,7 +32,7 @@
     "@mpieva/psydb-ajv-formats": "~0.1.0-alpha",
     "@mpieva/psydb-ajv-keywords": "~0.1.0-alpha",
     "nanoid": "~3.1.22",
-    "jsonpointer": "~4.1.0",
+    "jsonpointer": "~5.0.1",
     "@mpieva/psydb-mongo-adapter": "~0.1.0-alpha",
     "@mpieva/psydb-mongo-stages": "~0.1.0-alpha",
     "koa-router": "~10.0.0",
@@ -73,8 +73,8 @@
     "formidable": "~2.1.1"
   },
   "devDependencies": {
-    "mocha": "~9.2.2",
-    "chai": "~4.3.6",
+    "mocha": "~10.1.0",
+    "chai": "~4.3.7",
     "mongodb-memory-server": "~6.9.2",
     "supertest": "~6.0.1",
     "@mpieva/psydb-fixtures": "~0.1.0-alpha",

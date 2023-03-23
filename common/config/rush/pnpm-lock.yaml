@@ -90,7 +90,7 @@ specifiers:
   bootstrap: ~4.6.0
   bson: ~4.2.2
   camelcase: ~6.3.0
-  chai: ~4.3.6
+  chai: ~4.3.7
   classnames: ~2.3.1
   clone-deep: ~4.0.1
   co: ~4.6.0
@@ -118,7 +118,7 @@ specifiers:
   js-base64: ~3.6.0
   json-schema-merge-allof: ~0.8.1
   json-schema-traverse: ~1.0.0
-  jsonpointer: ~4.1.0
+  jsonpointer: ~5.0.1
   koa: ~2.13.0
   koa-body: ~4.2.0
   koa-mount: ~4.0.0
@@ -128,7 +128,7 @@ specifiers:
   lodash: ~4.17.21
   map-obj: ~4.3.0
   microsoft-translator-languages: ~0.1.19
-  mocha: ~9.2.2
+  mocha: ~10.1.0
   mocha-jsdom: ~2.0.0
   mockdate: ~3.0.5
   moment: ~2.29.1
@@ -284,7 +284,7 @@ dependencies:
   js-base64: 3.6.2
   json-schema-merge-allof: 0.8.1
   json-schema-traverse: 1.0.0
-  jsonpointer: 4.1.0
+  jsonpointer: 5.0.1
   koa: 2.13.4
   koa-body: 4.2.0
   koa-mount: 4.0.0
@@ -294,8 +294,8 @@ dependencies:
   lodash: 4.17.21
   map-obj: 4.3.0
   microsoft-translator-languages: 0.1.19
-  mocha: 9.2.2
-  mocha-jsdom: 2.0.0_mocha@9.2.2
+  mocha: 10.1.0
+  mocha-jsdom: 2.0.0_mocha@10.1.0
   mockdate: 3.0.5
   moment: 2.29.1
   mongodb: 3.6.12
@@ -374,7 +374,7 @@ packages:
       '@babel/traverse': 7.18.13
       '@babel/types': 7.18.13
       convert-source-map: 1.8.0
-      debug: 4.3.3
+      debug: 4.3.4
       gensync: 1.0.0-beta.2
       json5: 2.2.1
       lodash: 4.17.21
@@ -399,7 +399,7 @@ packages:
       '@babel/traverse': 7.18.13
       '@babel/types': 7.18.13
       convert-source-map: 1.8.0
-      debug: 4.3.3
+      debug: 4.3.4
       gensync: 1.0.0-beta.2
       json5: 2.2.1
       semver: 6.3.0
@@ -549,7 +549,7 @@ packages:
       '@babel/core': 7.18.13
       '@babel/helper-compilation-targets': 7.18.9_@babel+core@7.18.13
       '@babel/helper-plugin-utils': 7.18.9
-      debug: 4.3.3
+      debug: 4.3.4
       lodash.debounce: 4.0.8
       resolve: 1.21.0
       semver: 6.3.0
@@ -2538,7 +2538,7 @@ packages:
       '@babel/helper-split-export-declaration': 7.16.7
       '@babel/parser': 7.18.13
       '@babel/types': 7.18.13
-      debug: 4.3.3
+      debug: 4.3.4
       globals: 11.12.0
     transitivePeerDependencies:
       - supports-color
@@ -2556,7 +2556,7 @@ packages:
       '@babel/helper-split-export-declaration': 7.18.6
       '@babel/parser': 7.18.13
       '@babel/types': 7.18.13
-      debug: 4.3.3
+      debug: 4.3.4
       globals: 11.12.0
     transitivePeerDependencies:
       - supports-color
@@ -2698,7 +2698,7 @@ packages:
     dependencies:
       bson: 4.5.4
       mongodb-memory-server: 7.6.3
-      nanoid: 3.3.1
+      nanoid: 3.3.3
     transitivePeerDependencies:
       - aws4
       - bson-ext
@@ -2714,7 +2714,7 @@ packages:
     dependencies:
       bson: 4.5.4
       mongodb-memory-server: 7.6.3
-      nanoid: 3.3.1
+      nanoid: 3.3.3
     transitivePeerDependencies:
       - aws4
       - bson-ext
@@ -3577,7 +3577,7 @@ packages:
     resolution: {integrity: sha512-RZNwNclF7+MS/8bDg70amg32dyeZGZxiDuQmZxKLAlQjr3jGyLx+4Kkk58UO7D2QdgFIQCovuSuZESne6RG6XQ==}
     engines: {node: '>= 6.0.0'}
     dependencies:
-      debug: 4.3.3
+      debug: 4.3.4
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -4150,6 +4150,12 @@ packages:
     dependencies:
       balanced-match: 1.0.2
       concat-map: 0.0.1
+    dev: false
+
+  /brace-expansion/2.0.1:
+    resolution: {integrity: sha512-XnAIvQ8eM+kC6aULx6wuQiwVsnzsi9d3WxzV3FpWTGA19F621kwdbsAcFKXgKUHZWsy+mY6iL1sHTxWEFCytDA==}
+    dependencies:
+      balanced-match: 1.0.2
     dev: false
 
   /braces/2.3.2:
@@ -4943,8 +4949,33 @@ packages:
       supports-color: 6.1.0
     dev: false
 
-  /debug/4.3.3_supports-color@8.1.1:
-    resolution: {integrity: sha512-/zxw5+vh1Tfv+4Qn7a5nsbcJKPaSvCDhojn6FEl9vupwK2VCSDtEiEtqr8DFtzYFOdz63LBkxec7DYuc2jon6Q==}
+  /debug/4.3.4:
+    resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
+    engines: {node: '>=6.0'}
+    peerDependencies:
+      supports-color: '*'
+    peerDependenciesMeta:
+      supports-color:
+        optional: true
+    dependencies:
+      ms: 2.1.2
+    dev: false
+
+  /debug/4.3.4_supports-color@6.1.0:
+    resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
+    engines: {node: '>=6.0'}
+    peerDependencies:
+      supports-color: '*'
+    peerDependenciesMeta:
+      supports-color:
+        optional: true
+    dependencies:
+      ms: 2.1.2
+      supports-color: 6.1.0
+    dev: false
+
+  /debug/4.3.4_supports-color@8.1.1:
+    resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
     engines: {node: '>=6.0'}
     peerDependencies:
       supports-color: '*'
@@ -6300,7 +6331,7 @@ packages:
     dependencies:
       '@tootallnate/once': 1.1.2
       agent-base: 6.0.2
-      debug: 4.3.3
+      debug: 4.3.4
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -6865,7 +6896,7 @@ packages:
     resolution: {integrity: sha512-n3s8EwkdFIJCG3BPKBYvskgXGoy88ARzvegkitk60NxRdwltLOTaH7CUiMRXvwYorl0Q712iEjcWB+fK/MrWVw==}
     engines: {node: '>=10'}
     dependencies:
-      debug: 4.3.3
+      debug: 4.3.4
       istanbul-lib-coverage: 3.2.0
       source-map: 0.6.1
     transitivePeerDependencies:
@@ -7547,6 +7578,11 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: false
 
+  /jsonpointer/5.0.1:
+    resolution: {integrity: sha512-p/nXbhSEcu3pZRdkW1OfJhpsVtW1gd4Wa1fnQc9YLiTfAjn0312eMKimbdIQzuZl9aa9xUGaRlP9T/CJE/ditQ==}
+    engines: {node: '>=0.10.0'}
+    dev: false
+
   /jsprim/1.4.2:
     resolution: {integrity: sha512-P2bSOMAc/ciLz6DzgjVlGJP9+BrJWu5UDGK70C2iweC5QBIeFf0ZXRvGjEj2uYgrY2MkAAhsSWHDWlFtEroZWw==}
     engines: {node: '>=0.6.0'}
@@ -7989,11 +8025,11 @@ packages:
       brace-expansion: 1.1.11
     dev: false
 
-  /minimatch/4.2.1:
-    resolution: {integrity: sha512-9Uq1ChtSZO+Mxa/CL1eGizn2vRn3MlLgzhT0Iz8zaY8NdvxvB0d5QdPFmCKf7JKA9Lerx5vRrnwO03jsSfGG9g==}
+  /minimatch/5.0.1:
+    resolution: {integrity: sha512-nLDxIFRyhDblz3qMuq+SoRZED4+miJ/G+tdDrjkkkRnjAsBexeGpgjLEQ0blJy7rHhR2b93rhQY4SvyWu9v03g==}
     engines: {node: '>=10'}
     dependencies:
-      brace-expansion: 1.1.11
+      brace-expansion: 2.0.1
     dev: false
 
   /minimist/1.2.5:
@@ -8036,13 +8072,41 @@ packages:
     hasBin: true
     dev: false
 
-  /mocha-jsdom/2.0.0_mocha@9.2.2:
+  /mocha-jsdom/2.0.0_mocha@10.1.0:
     resolution: {integrity: sha512-+3D++FPXHXEesbBD7Q/r4dkc3XzVFMPLJVIECaQ685dj9qKQYzliqX8IXyIUbUL4x1QfgD9h8Zao8cn03NKKEA==}
     peerDependencies:
       mocha: '*'
     dependencies:
       jsdom: 11.12.0
-      mocha: 9.2.2
+      mocha: 10.1.0
+    dev: false
+
+  /mocha/10.1.0:
+    resolution: {integrity: sha512-vUF7IYxEoN7XhQpFLxQAEMtE4W91acW4B6En9l97MwE9stL1A9gusXfoHZCLVHDUJ/7V5+lbCM6yMqzo5vNymg==}
+    engines: {node: '>= 14.0.0'}
+    hasBin: true
+    dependencies:
+      ansi-colors: 4.1.1
+      browser-stdout: 1.3.1
+      chokidar: 3.5.3
+      debug: 4.3.4_supports-color@8.1.1
+      diff: 5.0.0
+      escape-string-regexp: 4.0.0
+      find-up: 5.0.0
+      glob: 7.2.0
+      he: 1.2.0
+      js-yaml: 4.1.0
+      log-symbols: 4.1.0
+      minimatch: 5.0.1
+      ms: 2.1.3
+      nanoid: 3.3.3
+      serialize-javascript: 6.0.0
+      strip-json-comments: 3.1.1
+      supports-color: 8.1.1
+      workerpool: 6.2.1
+      yargs: 16.2.0
+      yargs-parser: 20.2.4
+      yargs-unparser: 2.0.0
     dev: false
 
   /mocha/8.4.0:
@@ -8072,37 +8136,6 @@ packages:
       which: 2.0.2
       wide-align: 1.1.3
       workerpool: 6.1.0
-      yargs: 16.2.0
-      yargs-parser: 20.2.4
-      yargs-unparser: 2.0.0
-    dev: false
-
-  /mocha/9.2.2:
-    resolution: {integrity: sha512-L6XC3EdwT6YrIk0yXpavvLkn8h+EU+Y5UcCHKECyMbdUIxyMuZj4bX4U9e1nvnvUUvQVsV2VHQr5zLdcUkhW/g==}
-    engines: {node: '>= 12.0.0'}
-    hasBin: true
-    dependencies:
-      '@ungap/promise-all-settled': 1.1.2
-      ansi-colors: 4.1.1
-      browser-stdout: 1.3.1
-      chokidar: 3.5.3
-      debug: 4.3.3_supports-color@8.1.1
-      diff: 5.0.0
-      escape-string-regexp: 4.0.0
-      find-up: 5.0.0
-      glob: 7.2.0
-      growl: 1.10.5
-      he: 1.2.0
-      js-yaml: 4.1.0
-      log-symbols: 4.1.0
-      minimatch: 4.2.1
-      ms: 2.1.3
-      nanoid: 3.3.1
-      serialize-javascript: 6.0.0
-      strip-json-comments: 3.1.1
-      supports-color: 8.1.1
-      which: 2.0.2
-      workerpool: 6.2.0
       yargs: 16.2.0
       yargs-parser: 20.2.4
       yargs-unparser: 2.0.0
@@ -8156,7 +8189,7 @@ packages:
       '@types/tmp': 0.2.3
       async-mutex: 0.3.2
       camelcase: 6.3.0
-      debug: 4.3.3
+      debug: 4.3.4
       find-cache-dir: 3.3.2
       get-port: 5.1.1
       https-proxy-agent: 5.0.0
@@ -8341,8 +8374,8 @@ packages:
     hasBin: true
     dev: false
 
-  /nanoid/3.3.1:
-    resolution: {integrity: sha512-n6Vs/3KGyxPQd6uO0eH4Bv0ojGSUvuLlIHtC3Y0kEO23YRge8H9x1GCzLn28YX0H66pMkxuaeESFq4tKISKwdw==}
+  /nanoid/3.3.3:
+    resolution: {integrity: sha512-p1sjXuopFs0xg+fPASzQ28agW1oHD7xDsd9Xkf3T15H3c/cifrFHVwrh74PdoklAPi+i7MdRsE47vm2r6JoB+w==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
     dev: false
@@ -8381,7 +8414,7 @@ packages:
     resolution: {integrity: sha512-KOH3BNZcTKPzEkaJgG2iSUaurxKmefqRKmCOYH+8xqJytNIgjqU4J88BHfK+gy/UlEzlhccLyuJDJAcCgexSwA==}
     engines: {node: '>=12.22.0'}
     dependencies:
-      debug: 4.3.3
+      debug: 4.3.4
       tslib: 2.3.1
     transitivePeerDependencies:
       - supports-color
@@ -9989,7 +10022,7 @@ packages:
   /spdy-transport/3.0.0_supports-color@6.1.0:
     resolution: {integrity: sha512-hsLVFE5SjA6TCisWeJXFKniGGOpBgMLmerfO2aCyCU5s7nJ/rpAepqmFifv/GCbSbueEeAJJnmSQ2rKC/g8Fcw==}
     dependencies:
-      debug: 4.3.3_supports-color@6.1.0
+      debug: 4.3.4_supports-color@6.1.0
       detect-node: 2.1.0
       hpack.js: 2.1.6
       obuf: 1.1.2
@@ -11096,8 +11129,8 @@ packages:
     resolution: {integrity: sha512-toV7q9rWNYha963Pl/qyeZ6wG+3nnsyvolaNUS8+R5Wtw6qJPTxIlOP1ZSvcGhEJw+l3HMMmtiNo9Gl61G4GVg==}
     dev: false
 
-  /workerpool/6.2.0:
-    resolution: {integrity: sha512-Rsk5qQHJ9eowMH28Jwhe8HEbmdYDX4lwoMWshiCXugjtHqMD9ZbiqSDLxcsfdqsETPzVUtX5s1Z5kStiIM6l4A==}
+  /workerpool/6.2.1:
+    resolution: {integrity: sha512-ILEIE97kDZvF9Wb9f6h5aXK4swSlKGUcOEGiIYb2OOu/IrDU9iwj0fD//SsA6E5ibwJxpEvhullJY4Sl4GcpAw==}
     dev: false
 
   /wrap-ansi/5.1.0:
@@ -11245,12 +11278,12 @@ packages:
     dev: false
 
   file:projects/convert-ajv-to-formik-errors.tgz:
-    resolution: {integrity: sha512-TITvdKw1+qCX7fVJNPMTNn830GhOv62SYc3Hc0z3tgoGm9h08iH3QOK3dpQs450fNTz3RqTT4UI/SYeLvKIb3w==, tarball: file:projects/convert-ajv-to-formik-errors.tgz}
+    resolution: {integrity: sha512-W4OQn5+FzSJRp+WWULEv16EcXN+PwgVUInXeAWyToO+MihWAPff3aQTDWzy6PE2wcIQvx/vY4bb3Njbxs3Wk6w==, tarball: file:projects/convert-ajv-to-formik-errors.tgz}
     name: '@rush-temp/convert-ajv-to-formik-errors'
     version: 0.0.0
     dependencies:
       jest: 27.2.5
-      jsonpointer: 4.1.0
+      jsonpointer: 5.0.1
     transitivePeerDependencies:
       - bufferutil
       - canvas
@@ -11261,24 +11294,24 @@ packages:
     dev: false
 
   file:projects/json-schema-convert-pointer.tgz:
-    resolution: {integrity: sha512-rIwj5z+WnCCEn2Sy9FKc9BWuZubQ9t2e21ttrBf5eii5W5ws6jsFXZizBrwp2mZJrDUFg6LRcsY8s8szIlOCBA==, tarball: file:projects/json-schema-convert-pointer.tgz}
+    resolution: {integrity: sha512-oeO50Z0ODemJjS8ep9SnznfUOJbytddtMVlbsGrj0/qtixbGAdq9CtB0ymsZewjiq7YLe8idvnYEKRJrkjbcyA==, tarball: file:projects/json-schema-convert-pointer.tgz}
     name: '@rush-temp/json-schema-convert-pointer'
     version: 0.0.0
     dependencies:
       '@cdxoo/inline-string': 1.0.0
       '@cdxoo/inline-text': 1.0.2
       chai: 4.3.7
-      jsonpointer: 4.1.0
-      mocha: 9.2.2
+      jsonpointer: 5.0.1
+      mocha: 10.1.0
     dev: false
 
   file:projects/json-schema-create-defaults.tgz:
-    resolution: {integrity: sha512-isCgLVbFaQYRAtFD1TuAh5cNOkBMdKY+flC/bgnJ8KQcgab5vDdV7QR2uRzaeK+GqfSdmKFjX5iezZpxeqU/xQ==, tarball: file:projects/json-schema-create-defaults.tgz}
+    resolution: {integrity: sha512-igITA7phxBArFmAoR4bgbnOHXSKvEd51ZHIgtUMQ4lzvP8cBvBarFZpf4ivkB1b02ytWqRv2IEWobDbqblM4ig==, tarball: file:projects/json-schema-create-defaults.tgz}
     name: '@rush-temp/json-schema-create-defaults'
     version: 0.0.0
     dependencies:
       jest: 27.2.5
-      jsonpointer: 4.1.0
+      jsonpointer: 5.0.1
     transitivePeerDependencies:
       - bufferutil
       - canvas
@@ -11289,7 +11322,7 @@ packages:
     dev: false
 
   file:projects/json-schema-deconstruct-arrays.tgz:
-    resolution: {integrity: sha512-JwcpRmnvOIeY5VCbIFsF8BX0JG4X1mzQPhRvfbzaXtQNFWitQtPLPtOH/jgX0XwhcF0vMVrXSaghVDFZuQgw+w==, tarball: file:projects/json-schema-deconstruct-arrays.tgz}
+    resolution: {integrity: sha512-GzVhNlA9RHH6rPZCadSFwjxS3m/WWQ8OUIvPEzCI3O1CRPBNbhd0xRPjyNwvRI2JQScJcL15jcvsIghft77UDw==, tarball: file:projects/json-schema-deconstruct-arrays.tgz}
     name: '@rush-temp/json-schema-deconstruct-arrays'
     version: 0.0.0
     dependencies:
@@ -11297,12 +11330,12 @@ packages:
       chai: 4.3.7
       copy-anything: 2.0.3
       json-schema-traverse: 1.0.0
-      jsonpointer: 4.1.0
-      mocha: 9.2.2
+      jsonpointer: 5.0.1
+      mocha: 10.1.0
     dev: false
 
   file:projects/json-schema-lazy-resolve-oneof.tgz:
-    resolution: {integrity: sha512-QSn7pxiGtaEUmeq3Ig8wcrGe7z6DJToQuRIG4xbwgwqkdQb3ZOmiX7FIIBUd3I91uSs5uTwURaz+/+N/FTov8g==, tarball: file:projects/json-schema-lazy-resolve-oneof.tgz}
+    resolution: {integrity: sha512-TvjFIOUHu9J4aqvGR+XyTLPRJgmCqdbgVAFdxcvxyfXLjDnEE9TNBs+PDhYWc4SMt0p0Uxm2ggBXmy1Ts2LbKQ==, tarball: file:projects/json-schema-lazy-resolve-oneof.tgz}
     name: '@rush-temp/json-schema-lazy-resolve-oneof'
     version: 0.0.0
     dependencies:
@@ -11311,14 +11344,14 @@ packages:
       copy-anything: 2.0.3
       debug: 4.3.3
       json-schema-traverse: 1.0.0
-      jsonpointer: 4.1.0
-      mocha: 9.2.2
+      jsonpointer: 5.0.1
+      mocha: 10.1.0
     transitivePeerDependencies:
       - supports-color
     dev: false
 
   file:projects/json-schema-merge-xof.tgz:
-    resolution: {integrity: sha512-ATKcIdk78HB53PuxTma6OzZ5klVQ/Bdot9PL+EnPLPLiIwHBzyfHxqaj42jb/9K9J68jdQCxQbM23VL8Vs/1kw==, tarball: file:projects/json-schema-merge-xof.tgz}
+    resolution: {integrity: sha512-QRtouD9KDGcCB113F29lb5OMNsYxVD1Xkn1b9IFj16Xb1nNMtGqP77F2w+kFs4gsH9l9mm2qZW0SWRn4ho45Zw==, tarball: file:projects/json-schema-merge-xof.tgz}
     name: '@rush-temp/json-schema-merge-xof'
     version: 0.0.0
     dependencies:
@@ -11326,47 +11359,47 @@ packages:
       chai: 4.3.7
       copy-anything: 2.0.3
       json-schema-traverse: 1.0.0
-      jsonpointer: 4.1.0
-      mocha: 9.2.2
+      jsonpointer: 5.0.1
+      mocha: 10.1.0
     dev: false
 
   file:projects/json-schema-to-graphql.tgz:
-    resolution: {integrity: sha512-igbg6YEomTB8hBmFUeBd3Mo5eQae1ThE3cpOSEMOR3el7K9UgAJ26rZbiFKx8lbYMiZ48+LADgARpaijYlp89g==, tarball: file:projects/json-schema-to-graphql.tgz}
+    resolution: {integrity: sha512-LDzs9UxltpUHhQVFCDmmtJqmTYhST3Al+lxQfusEo7GKdDtmL7n/J6mOTzqGMeul5Nl3mO6zFXUuZKveLXwMbQ==, tarball: file:projects/json-schema-to-graphql.tgz}
     name: '@rush-temp/json-schema-to-graphql'
     version: 0.0.0
     dependencies:
       '@cdxoo/block-quote': 1.0.1
       chai: 4.3.7
       graphql: 15.3.0
-      mocha: 9.2.2
+      mocha: 10.1.0
       pascal-case: 3.1.2
     dev: false
 
   file:projects/koa-mongo-extjson-body.tgz:
-    resolution: {integrity: sha512-W25bM4PJJVUpioyOp1ht7N9UXLOwLlKq9zmJYXhcvwz7/21UVHZex5n4/DClK/hcO8l4vx0/5wzlTAJePIXY8g==, tarball: file:projects/koa-mongo-extjson-body.tgz}
+    resolution: {integrity: sha512-U7xnpoBW0X7XfkpqPdRL95FBNS5OQcmDKZ384eWLfOSDb4+Od++4wHfxPfOEJLYavXIS5ohoexMyeNEoU1xqAA==, tarball: file:projects/koa-mongo-extjson-body.tgz}
     name: '@rush-temp/koa-mongo-extjson-body'
     version: 0.0.0
     dependencies:
       bson: 4.2.3
       chai: 4.3.7
       inflation: 2.0.0
-      mocha: 9.2.2
+      mocha: 10.1.0
       raw-body: 2.4.2
     dev: false
 
   file:projects/psydb-ajv-formats.tgz:
-    resolution: {integrity: sha512-yaw7YfW2R+Mx28a0xizk6vKqzN3v0LE5iPgm9873TMq84a00oitK/vDxtBdqoNA2G1olaZu0SC3gHzLWD+8uKQ==, tarball: file:projects/psydb-ajv-formats.tgz}
+    resolution: {integrity: sha512-+YZYZmdCqdElXlI0EiOEONAq23qBhr4vinoQ/ti5AcBqm1rZ8Au2rtsT1rQrusDzmDQAyhRjBmPGQXgPKGMK/A==, tarball: file:projects/psydb-ajv-formats.tgz}
     name: '@rush-temp/psydb-ajv-formats'
     version: 0.0.0
     dependencies:
       ajv: 6.12.6
       ajv-formats: 0.6.1
       chai: 4.3.7
-      mocha: 9.2.2
+      mocha: 10.1.0
     dev: false
 
   file:projects/psydb-ajv-keywords.tgz_date-fns@2.21.3:
-    resolution: {integrity: sha512-4wYM7bdAigKEBAsTFSKnYQZiz0K7PRQ+LiA/ImI2hdVByFSn3r4BFOQxfbVjCL88n65/pRL4B9QZMlwI+bXJIA==, tarball: file:projects/psydb-ajv-keywords.tgz}
+    resolution: {integrity: sha512-MWLWjO2UA9zbbmMObmk7hbimevoARlJV0f4aoPo2Dvk+iQ576MjggLcaFshaXt/Ssun/1KCknF6ZaIuDVNivgA==, tarball: file:projects/psydb-ajv-keywords.tgz}
     id: file:projects/psydb-ajv-keywords.tgz
     name: '@rush-temp/psydb-ajv-keywords'
     version: 0.0.0
@@ -11375,7 +11408,7 @@ packages:
       ajv-formats: 0.6.1
       chai: 4.3.7
       date-fns-tz: 1.3.4_date-fns@2.21.3
-      mocha: 9.2.2
+      mocha: 10.1.0
       mongodb: 3.6.12
     transitivePeerDependencies:
       - aws4
@@ -11394,7 +11427,7 @@ packages:
     dev: false
 
   file:projects/psydb-api-endpoint-lib.tgz:
-    resolution: {integrity: sha512-/Cbh+5L5s+huGXv+ArB75veEY/T7id6lZAHzAAOpnGGMxQIVvgVm+ghS1fAmZ7nOjfm9607NXGiVFFC3OZocAA==, tarball: file:projects/psydb-api-endpoint-lib.tgz}
+    resolution: {integrity: sha512-vDWBpIkO/XHA5Mq5QZR5tSnGSwT8TIKSnbysQeiCg56y9Me4dInSRHeQh0VboEUxKKgS7qKFDaIyUbM4B2MPTA==, tarball: file:projects/psydb-api-endpoint-lib.tgz}
     name: '@rush-temp/psydb-api-endpoint-lib'
     version: 0.0.0
     dependencies:
@@ -11403,8 +11436,8 @@ packages:
       debug: 4.3.3
       diacritic-regex: 1.1.0
       escape-string-regexp: 4.0.0
-      jsonpointer: 4.1.0
-      mocha: 9.2.2
+      jsonpointer: 5.0.1
+      mocha: 10.1.0
       mongodb: 3.6.12
       mongodb-memory-server: 6.9.6
       sift: 16.0.0
@@ -11470,7 +11503,7 @@ packages:
     dev: false
 
   file:projects/psydb-api-lib.tgz:
-    resolution: {integrity: sha512-PEgCX6WaJCxxMME5sQBxCSsOOIlA8NBEL8aW7cDjmz1vnon/vtPUz/AMrSiXHUCzJoEHZXJe1+O3phWD6pjWrw==, tarball: file:projects/psydb-api-lib.tgz}
+    resolution: {integrity: sha512-RzQ4Tf2R3c95kX+p4cINqlbHdbZ2pDVitKFFSXXsKEtVSkdMKCculkRXMeUsuwAaQg+zEjUUsXCz2kfpG+D5Ig==, tarball: file:projects/psydb-api-lib.tgz}
     name: '@rush-temp/psydb-api-lib'
     version: 0.0.0
     dependencies:
@@ -11488,9 +11521,9 @@ packages:
       diacritic-regex: 1.1.0
       escape-string-regexp: 4.0.0
       json-schema-traverse: 1.0.0
-      jsonpointer: 4.1.0
+      jsonpointer: 5.0.1
       map-obj: 4.3.0
-      mocha: 9.2.2
+      mocha: 10.1.0
       mongodb: 3.6.12
       nanoid: 3.1.30
       sift: 16.0.0
@@ -11507,7 +11540,7 @@ packages:
     dev: false
 
   file:projects/psydb-api-message-handler-lib.tgz:
-    resolution: {integrity: sha512-BkjkZHE8TI1+aLw9hO1ZQNibj01DeNLop1lLypdntCif2/r5ogOzuulPY7kaSH8GFHIt+JAhFlzvEYCaju3FOA==, tarball: file:projects/psydb-api-message-handler-lib.tgz}
+    resolution: {integrity: sha512-5YoKmusHVXnvBSSZsAhLa2esO3aFKNhblg7+mq4jsHvUPuE5lDNxuwHaMB8JeNvkCRuXnQDvdnDBlZcPid/U3w==, tarball: file:projects/psydb-api-message-handler-lib.tgz}
     name: '@rush-temp/psydb-api-message-handler-lib'
     version: 0.0.0
     dependencies:
@@ -11521,8 +11554,8 @@ packages:
       deep-diff: 1.0.2
       deepmerge: 4.2.2
       is-subset: 0.1.1
-      jsonpointer: 4.1.0
-      mocha: 9.2.2
+      jsonpointer: 5.0.1
+      mocha: 10.1.0
       mongodb-memory-server: 6.9.6
       nanoid: 3.1.30
       nodemailer: 6.7.2
@@ -11537,7 +11570,7 @@ packages:
     dev: false
 
   file:projects/psydb-api-message-handlers.tgz:
-    resolution: {integrity: sha512-YT56+LiX/abV8eIWLoMcGHF4aXw3WftyZWa3jOh3mvtJgZhcjbwUJ1toeHFaOL44RHHLcKzNNq4AjekMh7uVag==, tarball: file:projects/psydb-api-message-handlers.tgz}
+    resolution: {integrity: sha512-+7scxyynvkfLlIMQQ02WcztS32OGKZLY/izT3owNCTkn6yzPjtjMQ/Mw48cJGOkOETUkjBEI5KtWtHzm2fANuQ==, tarball: file:projects/psydb-api-message-handlers.tgz}
     name: '@rush-temp/psydb-api-message-handlers'
     version: 0.0.0
     dependencies:
@@ -11553,8 +11586,8 @@ packages:
       deepmerge: 4.2.2
       escape-string-regexp: 4.0.0
       is-subset: 0.1.1
-      jsonpointer: 4.1.0
-      mocha: 9.2.2
+      jsonpointer: 5.0.1
+      mocha: 10.1.0
       mongodb-memory-server: 6.9.6
       nanoid: 3.1.30
       nodemailer: 6.7.2
@@ -11569,7 +11602,7 @@ packages:
     dev: false
 
   file:projects/psydb-api.tgz:
-    resolution: {integrity: sha512-R2PiVI+v7nKZhN0kX+ajp+gZjbZgqvh+ONR/6GTM8MriQ5Ynkkj5hcXpVXzZrZByKpe+V/8+n6TQPFbeguU5Pg==, tarball: file:projects/psydb-api.tgz}
+    resolution: {integrity: sha512-+UCqZesxLlwIC+5SOKwdmmG39PjoBCq1mbN2igPYU+yHs6d8WhArvbdDcTPWU6ABMthhIuac9S/0CxEbvVNGYg==, tarball: file:projects/psydb-api.tgz}
     name: '@rush-temp/psydb-api'
     version: 0.0.0
     dependencies:
@@ -11592,13 +11625,13 @@ packages:
       formidable: 2.1.1
       is-what: 3.14.1
       json-schema-traverse: 1.0.0
-      jsonpointer: 4.1.0
+      jsonpointer: 5.0.1
       koa: 2.13.4
       koa-body: 4.2.0
       koa-compose: 4.1.0
       koa-router: 10.0.0
       koa-session: 5.13.1
-      mocha: 9.2.2
+      mocha: 10.1.0
       mongodb: 3.6.12
       mongodb-memory-server: 6.9.6
       nanoid: 3.1.30
@@ -11624,7 +11657,7 @@ packages:
     dev: false
 
   file:projects/psydb-common-lib.tgz:
-    resolution: {integrity: sha512-QDUwpfwzSAwygnfU+syYqn/pXZsh2KV3HzALQleabzHPqJ+CxzcHsc1NEeCPNxswHSFuHcPsaW04dhYqitMmPw==, tarball: file:projects/psydb-common-lib.tgz}
+    resolution: {integrity: sha512-QKlOy/DkU4eBqoOL9ZkTfgAu0XRGkIcOfH1Y/4ygMMvGpfyiPktsc5o1PO/Y5BgT9hhvNw8rEGefLqB3p3VDPw==, tarball: file:projects/psydb-common-lib.tgz}
     name: '@rush-temp/psydb-common-lib'
     version: 0.0.0
     dependencies:
@@ -11635,8 +11668,8 @@ packages:
       flat: 5.0.2
       jest: 27.2.5
       json-schema-traverse: 1.0.0
-      jsonpointer: 4.1.0
-      mocha: 9.2.2
+      jsonpointer: 5.0.1
+      mocha: 10.1.0
       sift: 16.0.0
     transitivePeerDependencies:
       - bufferutil
@@ -11648,26 +11681,26 @@ packages:
     dev: false
 
   file:projects/psydb-common-utils.tgz:
-    resolution: {integrity: sha512-VYtGI+nE83dIexX2GL6jFajoF9emofed80aKmNqTzYtXRwk1kY0uQhaZo2J6oXroL3h+TuKsdUrANjb+j8T99g==, tarball: file:projects/psydb-common-utils.tgz}
+    resolution: {integrity: sha512-IQUdJIQrXGxcjW+shanTvAwGrLBhxsohdU/RRUKGQmDdXtWInB1xx+cV6v9zRF1ZrEevY3q2IOac8Bk6FpQSfA==, tarball: file:projects/psydb-common-utils.tgz}
     name: '@rush-temp/psydb-common-utils'
     version: 0.0.0
     dependencies:
       chai: 4.3.7
-      mocha: 9.2.2
+      mocha: 10.1.0
     dev: false
 
   file:projects/psydb-common-verify-helpers.tgz:
-    resolution: {integrity: sha512-K6c9H7KW+7k1w1XIV0927v+6CAEA7v/BG9aPYSKz52mnssZO/5B2jKEwfo/oQSsJZi7NjabdQ7MgOgQIqUgivg==, tarball: file:projects/psydb-common-verify-helpers.tgz}
+    resolution: {integrity: sha512-s67R7OMaLNaSxuvfPyPIxVTLqoZBx0wsbsS/2J6bpGV+zIvoQlOv3gxJjFuSdXRHSailCIuJ0HnLSlCcku6IvQ==, tarball: file:projects/psydb-common-verify-helpers.tgz}
     name: '@rush-temp/psydb-common-verify-helpers'
     version: 0.0.0
     dependencies:
       '@cdxoo/inline-text': 1.0.2
       chai: 4.3.7
-      mocha: 9.2.2
+      mocha: 10.1.0
     dev: false
 
   file:projects/psydb-core-utils.tgz:
-    resolution: {integrity: sha512-IOsowE7on1+zvISG8XGqCBMuz1vnjsZR/nSF0BOAA7weWbFjywVrJgAcwWpL2drHKwMkQZQGK3TZM1jOkmTo/Q==, tarball: file:projects/psydb-core-utils.tgz}
+    resolution: {integrity: sha512-EYLjGf22vPQ0APZm+E7Oc8+uu+H0mEX0fLXC9bSef0WyOrqiw4khGljNmlJg714XcZromjFVXNfWFhqHCo846Q==, tarball: file:projects/psydb-core-utils.tgz}
     name: '@rush-temp/psydb-core-utils'
     version: 0.0.0
     dependencies:
@@ -11678,8 +11711,8 @@ packages:
       chai: 4.3.7
       deepmerge: 4.2.2
       is-what: 3.14.1
-      jsonpointer: 4.1.0
-      mocha: 9.2.2
+      jsonpointer: 5.0.1
+      mocha: 10.1.0
     dev: false
 
   file:projects/psydb-database-scripts.tgz:
@@ -11699,22 +11732,22 @@ packages:
     dev: false
 
   file:projects/psydb-date-interval-fns.tgz:
-    resolution: {integrity: sha512-Ja5B0fCiw6qXtD3VqQ6MR3IcjqaKIAh2AqrW/fmjzBUxj/ldbOEAbCwlorsbKTZD/bYu5qIXkZdWBexvQ5R8pQ==, tarball: file:projects/psydb-date-interval-fns.tgz}
+    resolution: {integrity: sha512-pF1m8B2Fdlp8fnpAMxis3kxSctbgIULak4eWRvCWBR8hhmbKhnv++Y0gz4YgF7qbxb8vznBmS+JMdBi6nMzASg==, tarball: file:projects/psydb-date-interval-fns.tgz}
     name: '@rush-temp/psydb-date-interval-fns'
     version: 0.0.0
     dependencies:
       chai: 4.3.7
       date-fns: 2.21.3
-      jsonpointer: 4.1.0
-      mocha: 9.2.2
+      jsonpointer: 5.0.1
+      mocha: 10.1.0
     dev: false
 
   file:projects/psydb-driver-nodejs.tgz:
-    resolution: {integrity: sha512-A1B0r6+3GJ8CRpJxxuGqifkx83kke8/UiVW8WfTVOlfK7yvgIauuqdns8+0T/ESi0ozJTaYKVLqh81iPrbkHAA==, tarball: file:projects/psydb-driver-nodejs.tgz}
+    resolution: {integrity: sha512-n5rDDJ28e3tiaOAxcx0GPVE5GVeXhUVL+SE3f8GKTGXVVccoJiUm2kpc9Shl0pnLIr+9dwmgTFRCYGvREH2quA==, tarball: file:projects/psydb-driver-nodejs.tgz}
     name: '@rush-temp/psydb-driver-nodejs'
     version: 0.0.0
     dependencies:
-      jsonpointer: 4.1.0
+      jsonpointer: 5.0.1
       superagent: 6.1.0
     transitivePeerDependencies:
       - supports-color
@@ -11756,13 +11789,13 @@ packages:
     dev: false
 
   file:projects/psydb-fixture-initializer.tgz:
-    resolution: {integrity: sha512-VVXNV0kNW/Gt+I57KhKrlJfi8JuxsH14DBKZYczm5E8PJxPEGR7ZpAC7sFQXLOYEm9S1hoJLSQ7AfE2Zz/X5MQ==, tarball: file:projects/psydb-fixture-initializer.tgz}
+    resolution: {integrity: sha512-t2+i7YLd88qUptXB4Zh3hIKlVfsTJKp5Cd5owSS/DhADMvFu+WsxD47dCl5SSqvxPCZNR02dKzJTXz6A0YwL/Q==, tarball: file:projects/psydb-fixture-initializer.tgz}
     name: '@rush-temp/psydb-fixture-initializer'
     version: 0.0.0
     dependencies:
       chai: 4.3.7
       debug: 4.3.3
-      mocha: 9.2.2
+      mocha: 10.1.0
       superagent: 6.1.0
       superagent-prefix: 0.0.2
     transitivePeerDependencies:
@@ -11778,16 +11811,16 @@ packages:
     dev: false
 
   file:projects/psydb-interval-fns.tgz:
-    resolution: {integrity: sha512-HBaBVO3mOUFEs8HN8yB/5J9t8u56bOpPBTHfMiUp20pLW3oGVC94VHKSZNyGP5NvFJbDwCRSRtALOjq7n9/exw==, tarball: file:projects/psydb-interval-fns.tgz}
+    resolution: {integrity: sha512-XLZsZNYtOZ26n4HzcCURN1zHSYCLWZJkWeeF4uF79f2nrvhS/AfuaYHsaaXhF661AZ5bLkeIvznwA8q8FINweg==, tarball: file:projects/psydb-interval-fns.tgz}
     name: '@rush-temp/psydb-interval-fns'
     version: 0.0.0
     dependencies:
       chai: 4.3.7
-      mocha: 9.2.2
+      mocha: 10.1.0
     dev: false
 
   file:projects/psydb-koa-event-middleware.tgz:
-    resolution: {integrity: sha512-jWetgyram3iH7BFlvlthEqUAvJaDAJTTUx7GjT76Y7tGrhVijM6C8gTcsJ46QcswDiPlwHcZX7eWGjCJg8E65w==, tarball: file:projects/psydb-koa-event-middleware.tgz}
+    resolution: {integrity: sha512-2oG5Y9/e1kuVxVr0gnh8T1JAbBW5po/hANN6l+MunEAxH20GbfA+cZtLfy8VT5pLYhrcCjkY67DSFV4BqKCLwg==, tarball: file:projects/psydb-koa-event-middleware.tgz}
     name: '@rush-temp/psydb-koa-event-middleware'
     version: 0.0.0
     dependencies:
@@ -11801,7 +11834,7 @@ packages:
       deepmerge: 4.2.2
       koa-compose: 4.1.0
       map-obj: 4.3.0
-      mocha: 9.2.2
+      mocha: 10.1.0
       mongodb: 3.6.12
       mongodb-memory-server: 6.9.6
     transitivePeerDependencies:
@@ -11863,13 +11896,13 @@ packages:
     dev: false
 
   file:projects/psydb-mongo-stages.tgz:
-    resolution: {integrity: sha512-3y6lGiutf3PgGspn2UJ2CHZCcPnXiQApcGH7WbAkgXdhlb5OUiVUldiL7NH2c5k1PTRS8jy5aqjpewEqSIHA1w==, tarball: file:projects/psydb-mongo-stages.tgz}
+    resolution: {integrity: sha512-fwaKRKlFp+vc6quPuEUFZqFT0Zq1lXMpM5KVMvNVsEhDv6N9x/e4+V8PyZ/hrshWMur/KmYZGp3YEpfrJ9JJdw==, tarball: file:projects/psydb-mongo-stages.tgz}
     name: '@rush-temp/psydb-mongo-stages'
     version: 0.0.0
     dependencies:
       '@cdxoo/inline-string': 1.0.0
       jest: 27.2.5
-      jsonpointer: 4.1.0
+      jsonpointer: 5.0.1
       nanoid: 3.1.30
     transitivePeerDependencies:
       - bufferutil
@@ -11887,66 +11920,66 @@ packages:
     dev: false
 
   file:projects/psydb-schema-creators.tgz:
-    resolution: {integrity: sha512-vkR7KVpO2cUFaRITJw0iUPfO4g4BFilv9zvE6koO28vmpA3PeX3Qxks7O20Srj1odOy+kywbgmX3KeHJZ7ewiw==, tarball: file:projects/psydb-schema-creators.tgz}
+    resolution: {integrity: sha512-3q4dY4dJPvUNQ96ir885hIC+KZrBfs7ILqGZcVfSTyl8zhnoime5GZ+S+ugH4waZW6NNkRrzL4wsiECJTsfbFQ==, tarball: file:projects/psydb-schema-creators.tgz}
     name: '@rush-temp/psydb-schema-creators'
     version: 0.0.0
     dependencies:
       '@cdxoo/inline-text': 1.0.2
       '@cdxoo/omit': 1.0.1
       chai: 4.3.7
-      jsonpointer: 4.1.0
-      mocha: 9.2.2
+      jsonpointer: 5.0.1
+      mocha: 10.1.0
       nanoid: 3.1.30
     dev: false
 
   file:projects/psydb-schema-enums.tgz:
-    resolution: {integrity: sha512-W2wjjJjwmHES1bFWSSIa12lhewyXYInVCuprlJSMrBz0iBQfMvKqhy15LOYrczVBGSm+rVuOHUQJO9x0Y1xd9w==, tarball: file:projects/psydb-schema-enums.tgz}
+    resolution: {integrity: sha512-G2DnXPeI6WpJ4YNtpbGOKI4k1T8HsP0nUyTQ1a46JrIYRASfDCmUzB7AGQgK2fH+GzdPJHKXskW75I5Kneu09Q==, tarball: file:projects/psydb-schema-enums.tgz}
     name: '@rush-temp/psydb-schema-enums'
     version: 0.0.0
     dependencies:
       chai: 4.3.7
-      mocha: 9.2.2
+      mocha: 10.1.0
     dev: false
 
   file:projects/psydb-schema-fields-special.tgz:
-    resolution: {integrity: sha512-uFuJFQXP8/ixG351bz3vY4PtAUT01zQ7ffRpdhsRcbBE2ZheiJyAWy0nzwuMZ7gLxGPdqYbbkWLrHjFMg/9D+A==, tarball: file:projects/psydb-schema-fields-special.tgz}
+    resolution: {integrity: sha512-v6sRyYsFnrlvR8HzB7eXWZZXEtm7+7PzV5xtW3oOjx8tvPpo8AbHXxDIl0+bIrmurDQX6U3uPlt7w9awWdDtqA==, tarball: file:projects/psydb-schema-fields-special.tgz}
     name: '@rush-temp/psydb-schema-fields-special'
     version: 0.0.0
     dependencies:
       '@cdxoo/inline-text': 1.0.2
       '@cdxoo/omit': 1.0.1
       chai: 4.3.7
-      mocha: 9.2.2
+      mocha: 10.1.0
     dev: false
 
   file:projects/psydb-schema-fields.tgz:
-    resolution: {integrity: sha512-BFEnXZh75dkYtNe6FNNmRCXs3JzBu8KQDfA3Jb9Q2P2bZus+9+ul6fOTIAlBWhYuxGkwz0GLC6AS7LlZt0ujoQ==, tarball: file:projects/psydb-schema-fields.tgz}
+    resolution: {integrity: sha512-QWFJCNHRZQX/CyLOMnzjcecubV9xu8yOjxH+oTgXDfqKt5S9ghekrGXrQHOVkdgFELwfZLxvNyuG0TQ1s82fOw==, tarball: file:projects/psydb-schema-fields.tgz}
     name: '@rush-temp/psydb-schema-fields'
     version: 0.0.0
     dependencies:
       '@cdxoo/inline-text': 1.0.2
       chai: 4.3.7
-      mocha: 9.2.2
+      mocha: 10.1.0
     dev: false
 
   file:projects/psydb-schema-helpers.tgz:
-    resolution: {integrity: sha512-g8wdwLVPCeWeejzLU0bVTGLMg6JFr4cxVRnLANQYXdDLjQ0pVFZenEP757Rrn0rGdsJVsR4gqVDp9GajW9RhIw==, tarball: file:projects/psydb-schema-helpers.tgz}
+    resolution: {integrity: sha512-1VxbyXO48am5VcqiZEnEzMZN5FEWUo+2H/PLN2PjYH++X7OV6jLe/j/4OoN3NzR5WmAvtRKpzpKbZ0Sh0BGjdg==, tarball: file:projects/psydb-schema-helpers.tgz}
     name: '@rush-temp/psydb-schema-helpers'
     version: 0.0.0
     dependencies:
       '@cdxoo/inline-text': 1.0.2
       chai: 4.3.7
       is-what: 3.14.1
-      mocha: 9.2.2
+      mocha: 10.1.0
     dev: false
 
   file:projects/psydb-schema-primitives.tgz:
-    resolution: {integrity: sha512-v7V6vElFXXe4vj4ZH+RIkWRCSZ05ZILMUqRFwpxquz0mgd7OxH1S3nAmUdXSVPNt8zkVzmQVSKT7rlZn6Hsfhw==, tarball: file:projects/psydb-schema-primitives.tgz}
+    resolution: {integrity: sha512-0vM5iuWOWgmkuLm0En4KMRYIyD5Tzff2EsufZBZPrrEOwisGR66LeUiediG/zYsm7tc4kQa+dcJQOw6ECO8HYA==, tarball: file:projects/psydb-schema-primitives.tgz}
     name: '@rush-temp/psydb-schema-primitives'
     version: 0.0.0
     dependencies:
       chai: 4.3.7
-      mocha: 9.2.2
+      mocha: 10.1.0
     dev: false
 
   file:projects/psydb-timezone-helpers.tgz_date-fns@2.21.3:
@@ -12000,7 +12033,7 @@ packages:
     dev: false
 
   file:projects/psydb-ui-hooks.tgz_webpack@5.65.0:
-    resolution: {integrity: sha512-k/nwCwuPS1HmYWL6toNS94rwK83OdeWIyUd2K0bhd7lZlVDTi+PnD17D7WIz4uMFghlG+oeRFPVAt+qEwxQE8g==, tarball: file:projects/psydb-ui-hooks.tgz}
+    resolution: {integrity: sha512-yNftNgig+DGxjMQtUmPJnIIGQ6Ofty8kY/+SXekUZt7WR2zZpakRKinO9WeSIK/CPHxqiXCujlBdsRMbAlW3Cw==, tarball: file:projects/psydb-ui-hooks.tgz}
     id: file:projects/psydb-ui-hooks.tgz
     name: '@rush-temp/psydb-ui-hooks'
     version: 0.0.0
@@ -12016,8 +12049,8 @@ packages:
       babel-loader: 8.2.3_283b913718ac0bcaef1854ef6d4920fc
       chai: 4.3.7
       js-base64: 3.6.2
-      mocha: 9.2.2
-      mocha-jsdom: 2.0.0_mocha@9.2.2
+      mocha: 10.1.0
+      mocha-jsdom: 2.0.0_mocha@10.1.0
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-router: 5.2.1_react@17.0.2
@@ -12027,7 +12060,7 @@ packages:
     dev: false
 
   file:projects/psydb-ui-layout.tgz_webpack@5.65.0:
-    resolution: {integrity: sha512-Arq+i+cTcgU5yZiKAkwAPdFWw99brzoittZN3CMfEipN5egHaWAvuLk9LXiA7K/fjWVBMKZaDSlrknMSp43i3w==, tarball: file:projects/psydb-ui-layout.tgz}
+    resolution: {integrity: sha512-wd7OUFM25vsxC4ip/+taGEWcroAQnNrChZV6sLIB927N3T404Q/E88JKB36PGDmwdFOY4kB6YPS5dkfsT6pHWg==, tarball: file:projects/psydb-ui-layout.tgz}
     id: file:projects/psydb-ui-layout.tgz
     name: '@rush-temp/psydb-ui-layout'
     version: 0.0.0
@@ -12039,7 +12072,7 @@ packages:
       chai: 4.3.7
       classnames: 2.3.1
       date-fns: 2.21.3
-      mocha: 9.2.2
+      mocha: 10.1.0
       react: 17.0.2
       react-bootstrap: 1.5.2_react-dom@17.0.2+react@17.0.2
       react-bootstrap-icons: 1.8.1_react@17.0.2
@@ -12052,7 +12085,7 @@ packages:
     dev: false
 
   file:projects/psydb-ui-lib.tgz_webpack@5.65.0:
-    resolution: {integrity: sha512-zUQ/p8GV4nPzmnJD7lH5dtGg2/CYeimbtgwW2XoA3ElNGaGl58epWetGPHpKfil8sULoHI73aqLSRKFT7gN5dg==, tarball: file:projects/psydb-ui-lib.tgz}
+    resolution: {integrity: sha512-FNAs1vofAkC615uJqnGE5gu+K13/+jfvyalrLpgh5CpBAkhQHqZPj3356GnCH1X0xKazTp016hwgRvN0p/Eo5Q==, tarball: file:projects/psydb-ui-lib.tgz}
     id: file:projects/psydb-ui-lib.tgz
     name: '@rush-temp/psydb-ui-lib'
     version: 0.0.0
@@ -12075,8 +12108,8 @@ packages:
       formik: 2.2.9_react@17.0.2
       is-what: 3.14.1
       js-base64: 3.6.2
-      jsonpointer: 4.1.0
-      mocha: 9.2.2
+      jsonpointer: 5.0.1
+      mocha: 10.1.0
       moment: 2.29.1
       react: 17.0.2
       react-bootstrap: 1.5.2_react-dom@17.0.2+react@17.0.2
@@ -12103,20 +12136,20 @@ packages:
     dev: false
 
   file:projects/psydb-ui-request-agents.tgz_debug@4.3.3:
-    resolution: {integrity: sha512-zqR+kQQZx5cYlzB35E0UKR0tC/zBv5+uoa+Ei3wEWc9RBHK0Tjvt9HYmu59Z0DrG6kf0cKaxdHxIFu1SjWa5Ig==, tarball: file:projects/psydb-ui-request-agents.tgz}
+    resolution: {integrity: sha512-YJozMkSB4NoXteXkH6AztN/tZ1l35l98azCWnD/93NRoRN8aBrnNQQkooBrNMIpKTPj8h8YFo3m4HpVDSLPtkA==, tarball: file:projects/psydb-ui-request-agents.tgz}
     id: file:projects/psydb-ui-request-agents.tgz
     name: '@rush-temp/psydb-ui-request-agents'
     version: 0.0.0
     dependencies:
       axios: 0.24.0_debug@4.3.3
       chai: 4.3.7
-      mocha: 9.2.2
+      mocha: 10.1.0
     transitivePeerDependencies:
       - debug
     dev: false
 
   file:projects/psydb-ui-utils.tgz_webpack@5.65.0:
-    resolution: {integrity: sha512-Yhv0PIbmvQphgdVHSHJGyftLeiAlwMHS4/QuwjR/2SW1qWBmwhboM5wUUqEQKpvR6mms+MylPUNW3fUAXmX12g==, tarball: file:projects/psydb-ui-utils.tgz}
+    resolution: {integrity: sha512-C4zPRmkAMzJoaxThCYRVRqLdOcTpPZr5Y4eHTgxuLLOvF+yo29WrX+3SbHkV9S1R6cEFssmuida+vuM6XOCBKw==, tarball: file:projects/psydb-ui-utils.tgz}
     id: file:projects/psydb-ui-utils.tgz
     name: '@rush-temp/psydb-ui-utils'
     version: 0.0.0
@@ -12126,14 +12159,14 @@ packages:
       '@cdxoo/flat': 0.0.4
       babel-loader: 8.2.3_283b913718ac0bcaef1854ef6d4920fc
       chai: 4.3.7
-      mocha: 9.2.2
+      mocha: 10.1.0
     transitivePeerDependencies:
       - supports-color
       - webpack
     dev: false
 
   file:projects/psydb-ui.tgz:
-    resolution: {integrity: sha512-S9g8RkfjWEtlLAdKOAh+um+sTtnXEPziIWs+RJLIGTeskbBFLHsHyZyaqwyZFRHrFm3cyVARQ1zuMGD5pfrvjw==, tarball: file:projects/psydb-ui.tgz}
+    resolution: {integrity: sha512-RuvY4Qzqctdh8nimAVoFyKlQBLMnV5QLhyfGvNcKFF2qEr6LAcqQnnch9YLthEHIg8bKVxGj/U3T4G9AqvBO5w==, tarball: file:projects/psydb-ui.tgz}
     name: '@rush-temp/psydb-ui'
     version: 0.0.0
     dependencies:
@@ -12157,8 +12190,8 @@ packages:
       html-webpack-plugin: 5.1.0_webpack@5.65.0
       is-subset: 0.1.1
       js-base64: 3.6.2
-      jsonpointer: 4.1.0
-      mocha: 9.2.2
+      jsonpointer: 5.0.1
+      mocha: 10.1.0
       moment: 2.29.1
       pako: 2.0.4
       react: 17.0.2
@@ -12188,7 +12221,7 @@ packages:
     dev: false
 
   file:projects/psydb-web.tgz:
-    resolution: {integrity: sha512-Mu0/IYG7/+QbhUJtQm+RCYrl9WwsMmKz1Nz1EKQgAMmvvwlyqu54jbUC/GChrbnTYMyz265J+cbPYMtowIQhNg==, tarball: file:projects/psydb-web.tgz}
+    resolution: {integrity: sha512-1or99REVO/jweLmuFgjjXFf7dcgT5EaeO/n/SMzSiaxYZw99icW0TMDIFYZRqA35bM00qgGCdpIcNewHISM6lg==, tarball: file:projects/psydb-web.tgz}
     name: '@rush-temp/psydb-web'
     version: 0.0.0
     dependencies:
@@ -12205,7 +12238,7 @@ packages:
       koa-mount: 4.0.0
       koa-router: 10.0.0
       koa-static-cache: 5.1.4
-      mocha: 9.2.2
+      mocha: 10.1.0
       mongodb-memory-server: 6.9.6
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
@@ -12229,7 +12262,7 @@ packages:
     dev: false
 
   file:projects/rjsf-monkey-patch.tgz:
-    resolution: {integrity: sha512-uxbJgj2brIJ2TSwsJ4+SNvxMh80eGJFFIzpxGraGE2PVulMWPs8ZmliH1ogj/uYapkfmNbwIGu5qYZJsrT96oA==, tarball: file:projects/rjsf-monkey-patch.tgz}
+    resolution: {integrity: sha512-8LsCAqlkByoujNZfAnz3oy3FDwD4WffizKv4tZBhk+K2KVmS0CSOAjN6Qlzg8YrUiiyjirrQ/KJ/5z0bkEkYDQ==, tarball: file:projects/rjsf-monkey-patch.tgz}
     name: '@rush-temp/rjsf-monkey-patch'
     version: 0.0.0
     dependencies:
@@ -12238,9 +12271,9 @@ packages:
       ajv-keywords: 3.5.2_ajv@6.12.6
       chai: 4.3.7
       json-schema-merge-allof: 0.8.1
-      jsonpointer: 4.1.0
+      jsonpointer: 5.0.1
       lodash: 4.17.21
-      mocha: 9.2.2
+      mocha: 10.1.0
       nanoid: 3.1.30
       prop-types: 15.7.2
       react: 17.0.2

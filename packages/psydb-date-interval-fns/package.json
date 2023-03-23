@@ -7,13 +7,13 @@
   "author": "Jan Schwalbe",
   "license": "MIT",
   "dependencies": {
-    "jsonpointer": "~4.1.0",
+    "jsonpointer": "~5.0.1",
     "date-fns": "~2.21.1",
     "@mpieva/psydb-core-utils": "~0.1.0-alpha",
     "@mpieva/psydb-interval-fns": "~0.1.0-alpha"
   },
   "devDependencies": {
-    "mocha": "~9.2.2",
-    "chai": "~4.3.6"
+    "mocha": "~10.1.0",
+    "chai": "~4.3.7"
   }
 }

@@ -9,13 +9,13 @@
   "author": "Jan Schwalbe",
   "license": "MIT",
   "devDependencies": {
-    "mocha": "~9.2.2",
-    "chai": "~4.3.6"
+    "mocha": "~10.1.0",
+    "chai": "~4.3.7"
   },
   "dependencies": {
     "@mpieva/psydb-schema-fields": "~0.1.0-alpha",
     "@cdxoo/inline-text": "~1.0.2",
-    "jsonpointer": "~4.1.0",
+    "jsonpointer": "~5.0.1",
     "@mpieva/psydb-schema-helpers": "~0.1.0-alpha",
     "@cdxoo/omit": "~1.0.1",
     "@mpieva/psydb-schema-fields-special": "~0.1.0-alpha",

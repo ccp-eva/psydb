@@ -10,7 +10,7 @@
     "@mpieva/psydb-quicksort": "~0.1.0-alpha"
   },
   "devDependencies": {
-    "mocha": "~9.2.2",
-    "chai": "~4.3.6"
+    "mocha": "~10.1.0",
+    "chai": "~4.3.7"
   }
 }

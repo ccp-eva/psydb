@@ -17,8 +17,8 @@
   },
   "homepage": "https://github.com/cdxOo/psydb#readme",
   "devDependencies": {
-    "mocha": "~9.2.2",
-    "chai": "~4.3.6",
+    "mocha": "~10.1.0",
+    "chai": "~4.3.7",
     "axios": "~0.24.0",
     "@mpieva/psydb-timezone-helpers": "~0.1.0-alpha"
   },

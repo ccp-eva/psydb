@@ -9,8 +9,8 @@
   "author": "Jan Schwalbe",
   "license": "MIT",
   "devDependencies": {
-    "mocha": "~9.2.2",
-    "chai": "~4.3.6",
+    "mocha": "~10.1.0",
+    "chai": "~4.3.7",
     "react": "~17.0.1",
     "@rjsf/core": "~2.5.1",
     "ajv": "~6.12.6",
@@ -19,7 +19,7 @@
     "lodash": "~4.17.21",
     "nanoid": "~3.1.22",
     "json-schema-merge-allof": "~0.8.1",
-    "jsonpointer": "~4.1.0",
+    "jsonpointer": "~5.0.1",
     "react-is": "~17.0.2"
   },
   "dependencies": {

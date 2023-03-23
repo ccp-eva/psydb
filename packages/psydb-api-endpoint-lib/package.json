@@ -19,7 +19,7 @@
   "dependencies": {
     "debug": "~4.3.1",
     "mongodb": "~3.6.3",
-    "jsonpointer": "~4.1.0",
+    "jsonpointer": "~5.0.1",
     "escape-string-regexp": "~4.0.0",
     "@mpieva/psydb-schema-helpers": "~0.1.0-alpha",
     "@mpieva/psydb-schema-fields": "~0.1.0-alpha",
@@ -37,8 +37,8 @@
     "diacritic-regex": "~1.1.0"
   },
   "devDependencies": {
-    "mocha": "~9.2.2",
-    "chai": "~4.3.6",
+    "mocha": "~10.1.0",
+    "chai": "~4.3.7",
     "mongodb-memory-server": "~6.9.2",
     "supertest": "~6.0.1",
     "@mpieva/psydb-fixtures": "~0.1.0-alpha"

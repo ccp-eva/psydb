@@ -9,12 +9,12 @@
   "author": "Jan Schwalbe",
   "license": "MIT",
   "devDependencies": {
-    "mocha": "~9.2.2",
-    "chai": "~4.3.6"
+    "mocha": "~10.1.0",
+    "chai": "~4.3.7"
   },
   "dependencies": {
     "json-schema-traverse": "~1.0.0",
-    "jsonpointer": "~4.1.0",
+    "jsonpointer": "~5.0.1",
     "@cdxoo/inline-text": "~1.0.2",
     "copy-anything": "~2.0.3"
   }

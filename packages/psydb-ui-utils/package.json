@@ -17,8 +17,8 @@
   },
   "homepage": "https://github.com/cdxOo/psydb#readme",
   "devDependencies": {
-    "mocha": "~9.2.2",
-    "chai": "~4.3.6",
+    "mocha": "~10.1.0",
+    "chai": "~4.3.7",
     "@babel/core": "~7.12.10",
     "@babel/preset-env": "~7.12.10",
     "babel-loader": "~8.2.2",

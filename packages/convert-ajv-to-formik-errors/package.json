@@ -12,6 +12,6 @@
     "jest": "~27.2.4"
   },
   "dependencies": {
-    "jsonpointer": "~4.1.0"
+    "jsonpointer": "~5.0.1"
   }
 }
