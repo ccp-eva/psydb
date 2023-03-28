@@ -7,6 +7,8 @@ import { LinkButton, Button } from '@mpieva/psydb-ui-layout';
 import UpdateRecordVisibilityButton from './update-record-visibility-button';
 
 const GenericRecordEditorFooter = (ps) => {
+    var { path, url } = useRouteMatch();
+
     var {
         id,
         collection,
@@ -16,10 +18,12 @@ const GenericRecordEditorFooter = (ps) => {
 
         enableHide,
         enableRemove,
-        onSuccessfulUpdate
+        onSuccessfulUpdate,
+
+        removeUrl = `${up(url, 1)}/remove`,
+        className = 'd-flex justify-content-between mt-4 mb-4'
     } = ps;
 
-    var { path, url } = useRouteMatch();
 
     var canEdit = permissions.hasCollectionFlag(collection, 'write');
     var canRemove = permissions.hasCollectionFlag(collection, 'remove');
@@ -36,7 +40,7 @@ const GenericRecordEditorFooter = (ps) => {
         <>
             { (canRemove || canEdit) && (enableHide || enableRemove) && (
                 <>
-                    <div className='d-flex justify-content-between mt-4 mb-4'>
+                    <div className={ className }>
                         { (canEdit && enableHide) ? (
                             <UpdateRecordVisibilityButton
                                 collection={ collection }
@@ -49,7 +53,7 @@ const GenericRecordEditorFooter = (ps) => {
                         { canRemove && enableRemove && (
                             <LinkButton
                                 variant='danger'
-                                to={`${up(url, 1)}/remove` }
+                                to={ removeUrl }
                             >
                                 Löschen
                             </LinkButton>

@@ -14,6 +14,7 @@ import { FormBox } from '@mpieva/psydb-ui-lib';
 
 import StudyRecordContainer from './record-container';
 import RecordCreator from './record-creator';
+import { RecordRemover } from './record-remover';
 
 import {
     withCollectionView,
@@ -76,6 +77,16 @@ const StudyRouting = (ps) => {
                     )
                     : <PermissionDenied />
                 }
+            </Route>
+            <Route path={`${path}/:id/remove`}>
+                <RecordRemover
+                    collection={ collection }
+                    recordType={ recordType }
+                    successInfoBackLink={ `#${url}` }
+                    onSuccessfulUpdate={ ({ id }) => {
+                        history.push(`${url}/${id}/remove/success`)
+                    }}
+                />
             </Route>
             <Route path={`${path}/:id`}>
                 <StudyRecordContainer

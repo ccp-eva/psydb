@@ -37,11 +37,13 @@ var {
 var {
     ExactObject,
     ForeignId,
+    DefaultBool,
 } = require('@mpieva/psydb-schema-fields');
 
 var RequestBodySchema = () => ExactObject({
     properties: {
         studyId: ForeignId({ collection: 'study' }),
+        onlyParticipated: DefaultBool(),
         sort: ExactObject({
             properties: {
                 path: {
@@ -75,6 +77,7 @@ var participatedSubjectsForStudy = async (context, next) => {
 
     var {
         studyId,
+        onlyParticipated,
         sort,
     } = request.body;
 
@@ -108,6 +111,7 @@ var participatedSubjectsForStudy = async (context, next) => {
             db,
             subjectType,
             studyId,
+            onlyParticipated,
             sort,
         });
 
@@ -129,6 +133,7 @@ var fetchParticipation = async ({
     db,
     subjectType,
     studyId,
+    onlyParticipated,
     sort,
 }) => {
 
@@ -147,6 +152,9 @@ var fetchParticipation = async ({
             { $match: {
                 'type': subjectType,
                 'scientific.state.internals.participatedInStudies.studyId': studyId,
+                ...(onlyParticipated && {
+                    'scientific.state.internals.participatedInStudies.status': 'participated'
+                })
             }},
             StripEventsStage({
                 subChannels: [ 'scientific', 'gdpr' ]

@@ -20,13 +20,13 @@ const ExternalPersonEditorContainer = ({
     return (
         <>
             <RecordEditor { ...editorBag }>
-                {/*() => (
+                {() => (
                     <GenericRecordEditorFooter
                         enableHide={ true }
-                        enableRemove={ false }
+                        enableRemove={ true }
                         onSuccessfulUpdate={ revision.up }
                     />
-                )*/}
+                )}
             </RecordEditor>
         </>
     )

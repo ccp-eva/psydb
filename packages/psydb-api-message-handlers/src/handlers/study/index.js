@@ -57,6 +57,8 @@ var StudyGroup = MessageHandlerGroup([
     //require('./remove-general-condition'),
 
     require('./set-excluded-other-study-ids'),
+    
+    require('./remove'),
 ]);
 
 module.exports = StudyGroup;

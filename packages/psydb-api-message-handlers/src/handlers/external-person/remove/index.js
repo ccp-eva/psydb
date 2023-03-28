@@ -11,7 +11,7 @@ var createSchema = require('./schema');
 
 
 var handler = SimpleHandler({
-    messageType: 'externalOrganization/remove',
+    messageType: 'externalPerson/remove',
     createSchema,
 });
 
@@ -21,14 +21,14 @@ handler.checkAllowedAndPlausible = async ({
     message,
     cache,
 }) => {
-    if (!permissions.hasCollectionFlag('externalOrganization', 'remove')) {
+    if (!permissions.hasCollectionFlag('externalPerson', 'remove')) {
         throw new ApiError(403);
     }
 
     var { id } = message.payload;
 
     var record = await (
-        db.collection('externalOrganization')
+        db.collection('externalPerson')
         .findOne({ _id: id })
     );
     if (!record) {
@@ -40,7 +40,7 @@ handler.checkAllowedAndPlausible = async ({
     var reverseRefs = await fetchRecordReverseRefs({
         db,
         recordId: id,
-        refTargetCollection: 'externalOrganization'
+        refTargetCollection: 'externalPerson'
     });
 
     if (reverseRefs.length > 0) {
@@ -63,7 +63,7 @@ handler.triggerSystemEvents = async ({
     var { id } = message.payload;
 
     await dispatch({
-        collection: 'externalOrganization',
+        collection: 'externalPerson',
         channelId: id,
         payload: { $set: {
             'state.internals.isRemoved': true

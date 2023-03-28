@@ -73,6 +73,9 @@ var selectableStudiesForCalendar = async (context, next) => {
     // FIXME: this should actually be the interval of the calendar
     var now = new Date();
     var stages = [
+        { $match: {
+            'state.internals.isRemoved': { $ne: true }
+        }},
         MatchIntervalAroundStage({
             recordIntervalPath: 'state.runningPeriod',
             recordIntervalEndCanBeNull: true,

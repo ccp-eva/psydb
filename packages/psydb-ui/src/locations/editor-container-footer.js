@@ -29,6 +29,7 @@ const LocationEditorFooter = (ps) => {
 
     var isRoot = permissions.isRoot();
     var canEdit = permissions.hasCollectionFlag(collection, 'write');
+    var canRemove = permissions.hasCollectionFlag(collection, 'remove');
 
     var { record } = fetched;
     var { isHidden } = record.state.systemPermissions;
@@ -58,7 +59,7 @@ const LocationEditorFooter = (ps) => {
                             )
                         )}
                         
-                        { isRoot && (
+                        { canRemove && (
                             <LinkButton
                                 variant='danger'
                                 to={`${up(url, 1)}/remove` }

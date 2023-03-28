@@ -54,7 +54,7 @@ var getCollectionReadFlagPointers = ({ collection }) => {
             return [
                 '/canReadSubjects',
                 '/canWriteSubjects'
-    ];
+            ];
         case 'study':
             return [
                 '/canReadStudies',
@@ -137,6 +137,19 @@ var getCollectionRemoveFlagPointers = ({ collection }) => {
     switch (collection) {
         case 'subject':
             return [ '/canRemoveSubjects' ];
+        case 'location':
+            return [ '/canRemoveLocations' ];
+        case 'externalPerson':
+            return [ '/canRemoveExternalPersons' ];
+        case 'externalOrganization':
+            return [ '/canRemoveExternalOrganizations' ];
+        case 'study':
+            return [ '/canRemoveStudies' ];
+        case 'studyTopic':
+            return [ '/canRemoveStudyTopic' ];
+        case 'helperSet':
+        case 'helperSetItem':
+            return [ '/canRemoveHelperSet' ];
         default:
             return []
     }

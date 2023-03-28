@@ -22,6 +22,8 @@ var ExternalPersonGroup = MessageHandlerGroup([
     
     GenericHideRecordHandler({ collection: 'externalPerson' }),
     GenericUnhideRecordHandler({ collection: 'externalPerson' }),
+    
+    require('./remove'),
 ]);
 
 module.exports = ExternalPersonGroup;

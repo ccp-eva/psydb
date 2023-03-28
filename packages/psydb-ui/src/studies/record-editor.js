@@ -1,9 +1,14 @@
 import React from 'react';
+import { useRouteMatch, useParams } from 'react-router-dom';
 
 import { only } from '@mpieva/psydb-core-utils';
+import { urlUp as up } from '@mpieva/psydb-ui-utils';
 import { usePermissions, useSendPatch } from '@mpieva/psydb-ui-hooks';
 import { Pair } from '@mpieva/psydb-ui-layout';
-import { withRecordEditor } from '@mpieva/psydb-ui-lib';
+import {
+    withRecordEditor,
+    GenericRecordEditorFooter
+} from '@mpieva/psydb-ui-lib';
 import MainForm from './main-form';
 
 
@@ -19,6 +24,7 @@ const EditForm = (ps) => {
     var { record, crtSettings, related } = fetched;
     var { fieldDefinitions } = crtSettings;
     
+    var { path, url } = useRouteMatch();
     var permissions = usePermissions();
 
     var send = useSendPatch({
@@ -85,6 +91,21 @@ const EditForm = (ps) => {
                 related={ related }
                 permissions={ permissions }
                 renderFormBox={ false }
+            />
+            <hr />
+            <GenericRecordEditorFooter.RAW
+                id={ id }
+                collection={ collection }
+                recordType={ recordType }
+                fetched={ fetched }
+                permissions={ permissions } 
+
+                enableHide={ false }
+                enableRemove={ true }
+                onSuccessfulUpdate={ () => {} }
+           
+                removeUrl={`${up(url, 2)}/remove`}
+                className='d-flex justify-content-between mt-3 mb-3'
             />
         </>
     );
