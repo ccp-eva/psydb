@@ -3,11 +3,6 @@ import { withField } from '@cdxoo/formik-utils';
 import { ButtonGroup, Button } from '@mpieva/psydb-ui-layout';
 import { GenericEnum } from './generic-enum';
 
-const enumeration = {
-    keys: [ true, false ],
-    labels: [ 'Ja', 'Nein' ],
-}
-
 export const DefaultBool = withField({ Control: (ps) => {
     var { dataXPath, formikField, formikForm } = ps;
     var { setFieldValue } = formikForm;
@@ -25,7 +20,6 @@ export const DefaultBool = withField({ Control: (ps) => {
         </ButtonGroup>
     )
 
-    //<GenericEnum enum={ enumeration } { ...ps } />
 }});
 
 var Yes = (ps) => {
@@ -44,7 +38,7 @@ var No = (ps) => {
     var { value, onChange } = ps;
     return (
         <YNButton
-            active={ value !== true }
+            active={ value === false }
             variant='danger'
             onClick={ () => onChange(false) }
             { ...ps }

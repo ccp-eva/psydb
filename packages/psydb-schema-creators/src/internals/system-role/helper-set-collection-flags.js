@@ -2,10 +2,7 @@
 var WideBool = require('./wide-bool');
 
 module.exports = {
-    canReadHelperSets: WideBool({
-        title: 'kann Hilfstabellen einsehen'
-    }),
-    canWriteHelperSets: WideBool({
-        title: 'kann Hilfstabellen bearbeiten'
-    }),
+    canReadHelperSets: WideBool(),
+    canWriteHelperSets: WideBool(),
+    canRemoveHelperSets: WideBool(),
 }

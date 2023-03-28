@@ -83,30 +83,50 @@ const labels = {
     '/state/canWriteLocations': (
         'kann Locations bearbeiten (Kigas, Räume, etc.)'
     ),
+    '/state/canRemoveLocations': (
+        'kann Locations löschen (Kigas, Räume, etc.)'
+    ),
+
     '/state/canReadExternalPersons': (
         'kann Externe Personen einsehen (z.B. Ärzte)'
     ),
     '/state/canWriteExternalPersons': (
         'kann Externe Personen bearbeiten (z.B. Ärzte)'
     ),
+    '/state/canRemoveExternalPersons': (
+        'kann Externe Personen löschen (z.B. Ärzte)'
+    ),
+
     '/state/canReadExternalOrganizations': (
         'kann Externe Organisationen einsehen (z.B. Träger)'
     ),
     '/state/canWriteExternalOrganizations': (
         'kann Externe Organisationen bearbeiten (z.B. Träger)'
     ),
+    '/state/canRemoveExternalOrganizations': (
+        'kann Externe Organisationen löschen (z.B. Träger)'
+    ),
+
     '/state/canReadStudyTopics': (
         'kann Themengebiete einsehen'
     ),
     '/state/canWriteStudyTopics': (
         'kann Themengebiete bearbeiten'
     ),
+    '/state/canRemoveStudyTopics': (
+        'kann Themengebiete löschen'
+    ),
+
     '/state/canReadHelperSets': (
         'kann Hilfstabellen einsehen'
     ),
     '/state/canWriteHelperSets': (
         'kann Hilfstabellen bearbeiten'
     ),
+    '/state/canRemoveHelperSets': (
+        'kann Hilfstabellen löschen'
+    ),
+
     '/state/canReadPersonnel': (
         'kann Mitarbeiter:innen einsehen (d.h. Benutzer-Accounts)'
     ),
@@ -116,12 +136,17 @@ const labels = {
     '/state/canSetPersonnelPassword': (
         'kann das Passwort anderer Benutzer manuell neu setzen'
     ),
+
     '/state/canReadStudies': (
         'kann Studien einsehen'
     ),
     '/state/canWriteStudies': (
         'kann Studien anlegen und bearbeiten'
     ),
+    '/state/canRemoveStudies': (
+        'kann Studien löschen'
+    ),
+
     '/state/canReadSubjects': (
         'kann Proband:innen einsehen'
     ),
@@ -131,6 +156,7 @@ const labels = {
     '/state/canRemoveSubjects': (
         'kann Proband:innen löschen'
     ),
+
     '/state/canReadParticipation': (
         'kann einsehen welche Proband:innen an einer Studie teilgeommen haben'
     ),
