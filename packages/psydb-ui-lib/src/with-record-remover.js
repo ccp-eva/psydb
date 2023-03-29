@@ -24,6 +24,7 @@ export const withRecordRemover = (options) => {
     var {
         SafetyForm,
         SuccessInfo,
+        urlIdParam = 'id',
         noRouting = false,
     } = options;
 
@@ -63,8 +64,8 @@ export const withRecordRemover = (options) => {
     var RecordRemover = (ps) => {
         var { collection, recordType, id: manualId } = ps;
         var { path } = useRouteMatch();
-        var { id: paramId } = useParams();
-        var id = manualId || paramId;
+        var params = useParams();
+        var id = manualId || params[urlIdParam];
 
         var permissions = usePermissions();
         var canRemove = permissions.hasCollectionFlag(collection, 'remove');

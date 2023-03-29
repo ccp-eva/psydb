@@ -32,6 +32,7 @@ var CRTSettings = ({ data }) => {
 
     crt.getRaw = () => data;
     crt.getCollection = () => data.collection;
+    crt.getDisplayName = () => data.label;
     crt.getRecordLabelDefinition = () => data.recordLabelDefinition;
     crt.allStaticFields = () => (data.staticFieldDefinitions || []);
 

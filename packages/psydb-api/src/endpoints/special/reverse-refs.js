@@ -36,7 +36,6 @@ var {
 
 var RequestParamsSchema = () => ExactObject({
     properties: {
-        // FIXME: we currently only allow subject/personnel to be removed
         collection: StringEnum([
             'subject',
             'personnel',

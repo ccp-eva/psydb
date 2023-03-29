@@ -13,6 +13,7 @@ module.exports = {
     CSV: require('./csv'),
 
     validateOrThrow: require('./validate-or-throw'),
+    ...require('./verify-collection-access'),
 
     verifyRecordExists: require('./verify-record-exists'),
     verifyRecordAccess: require('./verify-record-access'),
@@ -76,5 +77,5 @@ module.exports = {
     ...require('./match-online-participation-csv'),
     
     ...require('./rohrpost-channel-history'),
-
+    ...require('./fetch-helper-set-pre-remove-info'),
 }

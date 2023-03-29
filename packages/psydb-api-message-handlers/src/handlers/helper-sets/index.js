@@ -14,6 +14,8 @@ var HelperSetsGroup = MessageHandlerGroup([
         collection: 'helperSet',
         op: 'patch',
     }),
+
+    require('./remove'),
 ]);
 
 module.exports = HelperSetsGroup;

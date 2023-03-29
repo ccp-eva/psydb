@@ -18,6 +18,7 @@ const HelperSetRouting = ({
     RecordDetails,
     RecordCreator,
     RecordEditor,
+    RecordRemover,
 }) => {
     return (
         <Switch>
@@ -54,6 +55,16 @@ const HelperSetRouting = ({
 
             <Route path={ `${path}/:setId/items` }>
                 <HelperSetItems />
+            </Route>
+
+            <Route path={ `${path}/:setId/remove` }>
+                <RecordRemover
+                    collection='helperSet'
+                    successInfoBackLink={ `#${url}` }
+                    onSuccessfulUpdate={ ({ id }) => {
+                        history.push(`${url}/${id}/remove/success`)
+                    }}
+                />
             </Route>
             
         </Switch>

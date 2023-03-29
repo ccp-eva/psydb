@@ -530,6 +530,16 @@ agent.fetchSubjectReverseRefs = ({
     );
 }
 
+agent.fetchHelperSetPreRemoveInfo = ({
+    id,
+    extraAxiosConfig
+}) => {
+    return axios.get(
+        `/api/helper-set-pre-remove-info/${id}`,
+        extraAxiosConfig
+    );
+}
+
 agent.fetchOpsTeamExperiments = (bag) => {
     var {
         teamId,

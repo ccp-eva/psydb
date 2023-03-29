@@ -61,3 +61,13 @@ export const EditIconButtonInline = withIconButton({
     },
 });
 
+export const ItemsIconButtonInline = withIconButton({
+    Icon: Icons.List,
+    defaultTitle: 'Einträge',
+    defaultIconStyle: {
+        width: '16px',
+        height: '16px',
+        marginTop: '-2px'
+    },
+});
+

@@ -359,6 +359,12 @@ var createRouting = (bag = {}) => {
         withKoaBody(),
         endpoints.special.locationReverseRefs
     );
+    
+    router.get('/helper-set-pre-remove-info/:id',
+        withSelfAuth(),
+        withPermissions(),
+        endpoints.special.helperSetPreRemoveInfo
+    );
 
     router.get('/record-reverse-refs/:collection/:id',
         withSelfAuth(),
