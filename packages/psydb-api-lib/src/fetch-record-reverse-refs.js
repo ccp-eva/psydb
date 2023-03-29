@@ -10,7 +10,10 @@ var fetchRecordReverseRefs = async (bag) => {
         db,
         recordId,
         refTargetCollection,
-        excludedCollections = []
+        excludedCollections = [],
+
+        // FIXME: this sould maybe be hae a seperate function?
+        recordIsHelperSetItem = false
     } = bag;
 
     var allReferencingRecords = [];
@@ -26,7 +29,11 @@ var fetchRecordReverseRefs = async (bag) => {
         
         var possibleRefs = (
             resolvePossibleRefs(schema, {
-                systemTypes: [ 'ForeignId' ]
+                systemTypes: (
+                    recordIsHelperSetItem
+                    ? [ 'HelperSetItemId' ]
+                    : [ 'ForeignId' ]
+                )
             })
             .filter(it => {
                 var { systemProps: { collection }} = it;
@@ -65,12 +72,20 @@ var fetchRecordReverseRefs = async (bag) => {
 
         var possibleRefs = (
             resolvePossibleRefs(schema, {
-                systemTypes: [ 'ForeignId' ]
+                systemTypes: (
+                    recordIsHelperSetItem
+                    ? [ 'HelperSetItemId' ]
+                    : [ 'ForeignId' ]
+                )
             })
             .filter(it => {
                 var { systemProps: { collection }} = it;
                 //return true;
-                return collection === refTargetCollection
+                return (
+                    recordIsHelperSetItem
+                    ? true
+                    : collection === refTargetCollection
+                )
             })
         );
         

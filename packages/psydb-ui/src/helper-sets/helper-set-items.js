@@ -19,7 +19,11 @@ import {
 
 import RecordListContainer from '@mpieva/psydb-ui-lib/src/record-list-container';
 
-import { RecordCreator, RecordEditor } from './items';
+import {
+    RecordCreator,
+    RecordEditorContainer,
+    RecordRemover
+} from './items';
 
 const HelperSetItems = () => {
     var { path, url } = useRouteMatch();
@@ -56,12 +60,10 @@ const HelperSetItems = () => {
                         linkBaseUrl={ url }
                         collection='helperSetItem'
                         enableNew={ true }
+                        enableRecordRowLink={ true }
                         constraints={{
                             '/setId': setId
                         }}
-                        CustomActionListComponent={
-                            HelperSetItemRecordActions
-                        }
                     />
                 </Route>
 
@@ -75,35 +77,27 @@ const HelperSetItems = () => {
                     />
                 </Route>
 
-                <Route path={`${path}/:id/edit`}>
-                    <RecordEditor
+                <Route path={`${path}/:id/remove`}>
+                    <RecordRemover
+                        collection='helperSetItem'
+                        successInfoBackLink={ `#${url}` }
+                        onSuccessfulUpdate={ ({ id }) => {
+                            history.push(`${url}/${id}/remove/success`)
+                        }}
+                    />
+                </Route>
+
+                <Route path={`${path}/:id`}>
+                    <RecordEditorContainer
                         collection='helperSetItem'
                         onSuccessfulUpdate={ ({ id }) => {
                             history.push(`${url}`)
                         }}
                     />
                 </Route>
-
             </Switch>
         </>
     );
-}
-
-const HelperSetItemRecordActions = ({
-    linkBaseUrl,
-    record,
-}) => {
-    return (
-        <>
-            <LinkButton
-                size='sm'
-                variant='outline-primary'
-                to={ `${linkBaseUrl}/${record._id}/edit`}
-            >
-                <Icons.PencilFill style={{ width: '20px', marginTop: '-3px' }} />
-            </LinkButton>
-        </>
-    )
 }
 
 export default HelperSetItems;

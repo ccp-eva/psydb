@@ -45,6 +45,8 @@ var RequestParamsSchema = () => ExactObject({
             'location',
             'study',
             'studyTopic',
+
+            'helperSetItem',
         ]),
         id: Id(),
     },
@@ -87,7 +89,8 @@ var reverseRefs = async (context, next) => {
     var reverseRefs = await fetchRecordReverseRefs({
         db,
         recordId,
-        refTargetCollection: collection
+        refTargetCollection: collection,
+        recordIsHelperSetItem: collection === 'helperSetItem',
     });
 
     var groupedReverseRefs = groupBy({

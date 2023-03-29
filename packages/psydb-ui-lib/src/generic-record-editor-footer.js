@@ -32,8 +32,8 @@ const GenericRecordEditorFooter = (ps) => {
 
     var isHidden = (
         record.scientific
-        ? record.scientific.state.systemPermissions.isHidden
-        : record.state.systemPermissions.isHidden
+        ? record.scientific.state.systemPermissions?.isHidden
+        : record.state.systemPermissions?.isHidden
     );
 
     return (
