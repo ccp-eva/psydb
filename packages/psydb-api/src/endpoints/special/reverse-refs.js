@@ -44,6 +44,7 @@ var RequestParamsSchema = () => ExactObject({
             'externalPerson',
             'location',
             'study',
+            'studyTopic',
         ]),
         id: Id(),
     },

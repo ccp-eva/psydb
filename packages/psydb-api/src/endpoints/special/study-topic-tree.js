@@ -52,6 +52,7 @@ var studyTopicTree = async (context, next) => {
         records = await (
             db.collection('studyTopic').aggregate([
                 { $match: {
+                    'state.internals.isRemoved': { $ne: true },
                     $or: [
                         { 'state.name': new RegExp(name, 'i') },
                         ...(Array.isArray(activeIds) && activeIds.length > 0 ? [
@@ -109,6 +110,9 @@ var studyTopicTree = async (context, next) => {
     else {
         records = await (
             db.collection('studyTopic').aggregate([
+                { $match: {
+                    'state.internals.isRemoved': { $ne: true },
+                }},
                 /*{ $addFields: {
                     _matchesQuery: true
                 }},*/

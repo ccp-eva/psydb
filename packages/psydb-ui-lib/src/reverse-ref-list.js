@@ -17,12 +17,30 @@ var collectionUILinks = {
 }
 
 export const ReverseRefList = (ps) => {
-    var { reverseRefs } = ps;
+    var { reverseRefs, shouldInlineItems = false } = ps;
 
     var groupedReverseRefs = groupBy({
         items: reverseRefs,
         byProp: 'collection',
     });
+
+    var ItemWrapper = (
+        shouldInlineItems
+        ? ({ index, ...pass }) => (
+            <span
+                { ...(
+                    index !== 0
+                    ?  {
+                        className: 'd-inline-block ml-2 pl-2',
+                        style: { borderLeft: '1px solid black' }
+                    }
+                    : { className: 'd-inline-block' }
+                )}
+                { ...pass }
+            />
+        )
+        : ({ index, ...pass }) => <div { ...pass } />
+    )
 
     return (
         Object.keys(groupedReverseRefs).map(collection => {
@@ -38,7 +56,7 @@ export const ReverseRefList = (ps) => {
                         <b>{ collectionLabel }</b>
                     </header>
                     <div className='pl-3'>
-                        { collectionReverseRefs.map(it => {
+                        { collectionReverseRefs.map((it, ix) => {
                             var { type, _id, _recordLabel } = it;
                             var clink = collectionUILinks[collection];
 
@@ -58,11 +76,10 @@ export const ReverseRefList = (ps) => {
                             else {
                                 renderedText = _recordLabel;
                             }
-
                             return (
-                                <div key={ _id }>
+                                <ItemWrapper index={ ix } key={ _id }>
                                     { renderedText }
-                                </div>
+                                </ItemWrapper>
                             )
                         })}
                     </div>

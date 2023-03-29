@@ -146,10 +146,10 @@ var getCollectionRemoveFlagPointers = ({ collection }) => {
         case 'study':
             return [ '/canRemoveStudies' ];
         case 'studyTopic':
-            return [ '/canRemoveStudyTopic' ];
+            return [ '/canRemoveStudyTopics' ];
         case 'helperSet':
         case 'helperSetItem':
-            return [ '/canRemoveHelperSet' ];
+            return [ '/canRemoveHelperSets' ];
         default:
             return []
     }

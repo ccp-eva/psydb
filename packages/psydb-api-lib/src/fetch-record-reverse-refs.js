@@ -16,6 +16,7 @@ var fetchRecordReverseRefs = async (bag) => {
     var allReferencingRecords = [];
 
     var staticCollections = [
+        'studyTopic',
         'experiment',
         'experimentOperatorTeam'
     ];

@@ -8,6 +8,7 @@ export const TreeList = (ps) => {
     var {
         onCreate,
         onEdit,
+        onRemove,
         onSelect,
         selectedTopicId,
         selectedTopicIds,
@@ -23,6 +24,7 @@ export const TreeList = (ps) => {
         <ActionContext.Provider value={{
             onCreate,
             onEdit,
+            onRemove,
             onSelect,
             selectedTopicIds
         }}>
@@ -37,6 +39,7 @@ const Topic = (ps) => {
     var {
         onCreate,
         onEdit,
+        onRemove,
         onSelect,
         selectedTopicIds
     } = useContext(ActionContext);
@@ -45,6 +48,7 @@ const Topic = (ps) => {
     var { _id, _matchesQuery, state } = record;
     var { name, parentId } = state;
 
+    var isLeaf = children.length < 1;
     var isSelected = selectedTopicIds && selectedTopicIds.includes(_id);
     
     //var Name = [0,1].includes(level) ? `h${4+level}` : 'div'
@@ -79,6 +83,9 @@ const Topic = (ps) => {
                         )}
                         { onEdit && (
                             <EditButton onClick={ () => onEdit(_id) } />
+                        )}
+                        { onRemove && isLeaf && (
+                            <RemoveButton onClick={ () => onRemove(_id) } />
                         )}
                     </>
                 )}
@@ -123,6 +130,21 @@ const EditButton = (ps) => {
         >
             <Icons.PencilFill
                 viewBox='0 0 18 18'
+            />
+        </a>
+    )
+}
+
+const RemoveButton = (ps) => {
+    var { onClick } = ps;
+    return (
+        <a
+            className='btn btn-link p-0 m-0 border-0 ml-1 text-danger'
+            style={{ verticalAlign: 'baseline' }}
+            onClick={ onClick }
+        >
+            <Icons.X
+                viewBox='3 3 12 12'
             />
         </a>
     )

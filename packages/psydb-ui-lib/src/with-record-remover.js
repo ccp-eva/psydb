@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
     useRouteMatch,
@@ -6,6 +6,8 @@ import {
     Switch,
     Route
 } from 'react-router-dom';
+
+import { demuxed } from '@mpieva/psydb-ui-utils';
 
 import {
     NotFound,
@@ -21,7 +23,8 @@ import {
 export const withRecordRemover = (options) => {
     var {
         SafetyForm,
-        SuccessInfo
+        SuccessInfo,
+        noRouting = false,
     } = options;
 
     var SafetyFormWrapper = (ps) => {
@@ -69,16 +72,34 @@ export const withRecordRemover = (options) => {
             return <PermissionDenied />
         }
 
-        return (
-            <Switch>
-                <Route exact path={ `${path}`}>
-                    <SafetyFormWrapper { ...ps } id={ id }/>
-                </Route>
-                <Route exact path={ `${path}/success` }>
-                    <SuccessInfoWrapper { ...ps } id={ id } />
-                </Route>
-            </Switch>
-        )
+        if (noRouting) {
+            var [ isSuccessful, setIsSuccessful ] = useState(false);
+            var { onSuccessfulUpdate, ...pass } = ps;
+            return (
+                !isSuccessful
+                ? <SafetyFormWrapper
+                    { ...pass }
+                    id={ id }
+                    onSuccessfulUpdate={ demuxed([
+                        () => setIsSuccessful(true),
+                        onSuccessfulUpdate
+                    ])}
+                />
+                : <SuccessInfoWrapper { ...ps } id={ id } />
+            )
+        }
+        else {
+            return (
+                <Switch>
+                    <Route exact path={ `${path}`}>
+                        <SafetyFormWrapper { ...ps } id={ id }/>
+                    </Route>
+                    <Route exact path={ `${path}/success` }>
+                        <SuccessInfoWrapper { ...ps } id={ id } />
+                    </Route>
+                </Switch>
+            )
+        }
     }
 
     return RecordRemover;

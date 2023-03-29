@@ -6,6 +6,7 @@ var {
 var StudyTopicGroup = MessageHandlerGroup([
     require('./create'),
     require('./patch'),
+    require('./remove'),
 ]);
 
 module.exports = StudyTopicGroup;

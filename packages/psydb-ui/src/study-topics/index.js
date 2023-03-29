@@ -20,6 +20,7 @@ import { StudyTopic } from '@mpieva/psydb-ui-lib';
 
 import CreateModal from './create-modal';
 import EditModal from './edit-modal';
+import RemoveModal from './remove-modal';
 
 const StudyTopics = () => {
     var permissions = usePermissions();
@@ -27,15 +28,19 @@ const StudyTopics = () => {
 
     var createModal = useModalReducer();
     var editModal = useModalReducer();
+    var removeModal = useModalReducer();
 
     var [ query, updateQuery ] = useURLSearchParams();
 
     var onCreate = (parent = { _id: null }) => (
         createModal.handleShow({ parent })
-    );
+    )
     var onEdit = (id) => (
         editModal.handleShow({ id })
-    );
+    )
+    var onRemove = (id) => (
+        removeModal.handleShow({ id })
+    )
     var onSelect = (record) => (
         updateQuery({ ...query, selectedTopicId: record._id })
     )
@@ -69,6 +74,11 @@ const StudyTopics = () => {
                     { ...editModal.passthrough }
                     onSuccessfulUpdate={ revision.up }
                 />
+                
+                <RemoveModal
+                    { ...removeModal.passthrough }
+                    onSuccessfulUpdate={ revision.up }
+                />
 
                 <Button onClick={ () => onCreate() }>
                     Neues Themengebiet
@@ -91,6 +101,7 @@ const StudyTopics = () => {
                         trees,
                         onCreate,
                         onEdit,
+                        onRemove,
                         onSelect,
                         selectedTopicId: query.selectedTopicId
                     })}/>
