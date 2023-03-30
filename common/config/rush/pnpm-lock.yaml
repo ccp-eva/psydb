@@ -10619,7 +10619,7 @@ packages:
     dev: false
 
   file:projects/psydb-api-message-handlers.tgz:
-    resolution: {integrity: sha512-uUNWR/k6HWqzY2tsVIQKbw2E8Cr0geSIJR5/w+7zsM7JfQZ9VfAygNXNBrc7vLIJdjLhsNZ9MN/dybFBcW880A==, tarball: file:projects/psydb-api-message-handlers.tgz}
+    resolution: {integrity: sha512-rRrJPLUXThw6Hj+Hlbvci/Cq6LBOLcu7zOJ9Yc/Ccjg+4gug8c0L3ORgS2no2/8rEU1nqYgmfOAZbQ5njX4NVA==, tarball: file:projects/psydb-api-message-handlers.tgz}
     name: '@rush-temp/psydb-api-message-handlers'
     version: 0.0.0
     dependencies:
@@ -10640,6 +10640,7 @@ packages:
       mongodb-memory-server: 6.9.6
       nanoid: 3.3.4
       nodemailer: 6.8.0
+      sift: 16.0.0
     transitivePeerDependencies:
       - aws4
       - bson-ext

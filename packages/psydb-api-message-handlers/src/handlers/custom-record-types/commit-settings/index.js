@@ -1,5 +1,6 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
+var sift = require('sift');
 var omit = require('@cdxoo/omit');
 
 var { without, keyBy } = require('@mpieva/psydb-core-utils');
@@ -82,6 +83,11 @@ handler.triggerSystemEvents = async ({
         `);
     }
 
+    await maybeRestoreHelperSets({
+        db, dispatch,
+        hasSubChannels, nextSettings,
+    });
+
     //console.dir(record, { depth: null })
     var { hasSubChannels } = collectionCreatorData;
     await dispatch({
@@ -93,6 +99,48 @@ handler.triggerSystemEvents = async ({
             ...createCleanupOps({ hasSubChannels }),
         }}
     });
+}
+
+var maybeRestoreHelperSets = async (bag) => {
+    var { db, dispatch, hasSubChannels, nextSettings } = bag;
+    var helperSetIds = [];
+    var fieldFilter = sift({
+        type: { $in: ['HelperSetItemId', 'HelperSetItemIdList'] },
+        isDirty: true,
+        isRemoved: false
+    })
+
+    if (hasSubChannels) {
+        var copy = {};
+        ['gdpr', 'scientific'].forEach(key => {
+            var fields = nextSettings.subChannelFields[key].filter(
+                fieldFilter
+            );
+            helperSetIds.push(...fields.map(it => it.props.setId));
+        });
+    }
+    else {
+        var fields = nextSettings.fields.filter(fieldFilter);
+        helperSetIds.push(...fields.map(it => it.props.setId));
+    }
+
+    var todoHelperSets = await (
+        db.collection('helperSet').find({
+            '_id': { $in: helperSetIds },
+            'state.internals.isRemoved': true
+        }, { project: { _id: true }}).toArray()
+    );
+
+    for (var it of todoHelperSets) {
+        dispatch({
+            collection: 'helperSet',
+            channelId: it._id,
+            payload: { $set: {
+                'state.internals.isRemoved': false
+            }}
+        })
+    }
+
 }
 
 var createCopyOps = ({ hasSubChannels, nextSettings }) => {

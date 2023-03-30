@@ -28,8 +28,7 @@ var fetchHelperSetPreRemoveInfo = async (bag) => {
             var fields = crt.allCustomFields().filter(sift({
                 'type': { $in: [ 'HelperSetItemId', 'HelperSetItemIdList' ]},
                 'props.setId': setId,
-                // FIXME: idk
-                //'isRemoved': { $ne: true }
+                'isRemoved': { $ne: true }
             }));
             if (fields.length > 0) {
                 crtFieldRefs.push({
