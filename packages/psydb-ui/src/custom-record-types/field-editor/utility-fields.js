@@ -17,99 +17,109 @@ export const SubChannelKey = (ps) => {
 }
 
 export const DisplayName = (ps) => {
-    var { extraOnChange } = ps;
+    var { dataXPath, extraOnChange } = ps;
     return (
         <Fields.SaneString
             label='Anzeigename'
-            dataXPath='$.props.displayName'
+            dataXPath={ `${dataXPath}.displayName` }
             extraOnChange={ extraOnChange }
             required
         />
     )
 }
 
-export const KeyAndDisplayName = () => {
+export const KeyAndDisplayName = (ps) => {
+    var { dataXPath } = ps;
     var { setFieldValue } = useFormikContext();
 
     return (
         <>
-            <DisplayName extraOnChange={ (next) => {
-                setFieldValue(
-                    '$.props.key',
+            <DisplayName
+                dataXPath={ dataXPath }
+                extraOnChange={ (next) => setFieldValue(
+                    `${dataXPath}.key`,
                     next.toLowerCase().replaceAll(/[^A-Za-z0-9]/g, '_')
-                );
-            }} />
+                )}
+            />
             <Fields.SaneString
                 label='Interner Key'
-                dataXPath='$.props.key'
+                dataXPath={ `${dataXPath}.key` }
                 required
             />
         </>
     )
 }
 
-export const MinItemsProp = () => {
+export const MinItemsProp = (ps) => {
+    var { dataXPath } = ps;
     return (
         <Fields.Integer
             label='Mindestanzahl'
-            dataXPath='$.props.props.minItems'
+            dataXPath={ `${dataXPath}.props.minItems` }
             min={ 0 }
         />
     )
 }
 
-export const MinLengthProp = () => {
+export const MinLengthProp = (ps) => {
+    var { dataXPath } = ps;
     return (
         <Fields.Integer
             label='Zeichen (mindestens)'
-            dataXPath='$.props.props.minLength'
+            dataXPath={ `${dataXPath}.props.minLength` }
             min={ 0 }
         />
     )
 }
 
-export const IsNullableProp = () => {
+export const IsNullableProp = (ps) => {
+    var { dataXPath } = ps;
     return (
         <Fields.DefaultBool
             label='Optional'
-            dataXPath='$.props.props.isNullable'
+            dataXPath={ `${dataXPath}.props.isNullable` }
             required
         />
     )
 }
 
-export const IsSpecialAgeFrameFieldProp = () => {
+export const IsSpecialAgeFrameFieldProp = (ps) => {
+    var { dataXPath } = ps;
     return (
         <Fields.DefaultBool
             label='Altersfenster-Referenz'
-            dataXPath='$.props.props.isSpecialAgeFrameField'
+            dataXPath={ `${dataXPath}.props.isSpecialAgeFrameField` }
+            required
         />
     )
 }
 
-export const SetIdProp = () => {
+export const SetIdProp = (ps) => {
+    var { dataXPath } = ps;
     return (
         <Fields.ForeignId
             label='Hilfs-Tabelle'
             collection='helperSet'
-            dataXPath='$.props.props.setId'
+            dataXPath={ `${dataXPath}.props.setId` }
+            required
         />
     )
 }
 
-export const SharedForeignIdProps = () => {
+export const SharedForeignIdProps = (ps) => {
+    var { dataXPath } = ps;
     var { values } = useFormikContext();
     return (
         <>
             <Fields.GenericEnum
                 label='Haupt-Tabelle'
-                dataXPath='$.props.props.collection'
+                dataXPath={ `${dataXPath}.props.collection` }
                 enum={ enums.customRecordTypeCollections }
                 required
             />
             <Fields.SaneString
                 label='Datensatz-Typ'
-                dataXPath='$.props.props.recordType'
+                dataXPath={ `${dataXPath}.props.recordType` }
                 disabled={ !values['$']?.props?.props?.collection }
                 required
             />

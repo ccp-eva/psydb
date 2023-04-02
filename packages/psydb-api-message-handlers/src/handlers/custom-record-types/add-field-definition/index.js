@@ -27,7 +27,7 @@ var checkSchema = async (context) => {
     var FieldSchema = FieldSchemas[message.payload.props.type];
     
     validateOrThrow({
-        schema: FieldSchema,
+        schema: FieldSchema(),
         payload: message
     });
 }

@@ -16,7 +16,7 @@ const NewFieldModalBody = (ps) => {
 
 const NewFieldModal = WithDefaultModal({
     title: 'Neues Daten-Feld',
-    size: 'lg',
+    size: 'xl',
     Body: NewFieldModalBody
 });
 

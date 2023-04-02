@@ -3,7 +3,7 @@ import { Fields, useFormikContext } from '@mpieva/psydb-ui-lib';
 import {
     MinItemsProp,
     MinLengthProp,
-    IsNullable,
+    IsNullableProp,
     IsSpecialAgeFrameFieldProp,
     SetIdProp,
     SharedForeignIdProps,
@@ -12,7 +12,7 @@ import {
 export const SaneString = (ps) => {
     return (
         <>
-            <MinLengthProp />
+            <MinLengthProp { ...ps } />
         </>
     )
 }
@@ -20,20 +20,21 @@ export const SaneString = (ps) => {
 export const FullText = (ps) => {
     return (
         <>
-            <MinLengthProp />
+            <MinLengthProp { ...ps } />
         </>
     )
 }
 
 export const Integer = (ps) => {
+    var { dataXPath } = ps;
     return (
         <>
             <Fields.Integer
                 label='Minimum'
-                dataXPath='$.props.props.minimum'
+                dataXPath={ `${dataXPath}.props.minimum` }
                 required
             />
-            <IsNullableProp />
+            <IsNullableProp { ...ps } />
         </>
     )
 }
@@ -47,16 +48,16 @@ export const ExtBool = (ps) => {
 export const DateTime = (ps) => {
     return (
         <>
-            <IsSpecialAgeFrameFieldProp />
-            <IsNullableProp />
+            <IsSpecialAgeFrameFieldProp { ...ps } />
+            <IsNullableProp { ...ps } />
         </>
     )
 }
 export const DateOnlyServerSide = (ps) => {
     return (
         <>
-            <IsSpecialAgeFrameFieldProp />
-            <IsNullableProp />
+            <IsSpecialAgeFrameFieldProp { ...ps } />
+            <IsNullableProp { ...ps } />
         </>
     )
 }
@@ -64,8 +65,8 @@ export const DateOnlyServerSide = (ps) => {
 export const HelperSetItemId = (ps) => {
     return (
         <>
-            <SetIdProp />
-            <IsNullableProp />
+            <SetIdProp { ...ps } />
+            <IsNullableProp { ...ps } />
         </>
     )
 }
@@ -73,8 +74,8 @@ export const HelperSetItemId = (ps) => {
 export const HelperSetItemIdList = (ps) => {
     return (
         <>
-            <SetIdProp />
-            <MinItemsProp />
+            <SetIdProp { ...ps } />
+            <MinItemsProp { ...ps } />
         </>
     )
 }
@@ -82,7 +83,7 @@ export const HelperSetItemIdList = (ps) => {
 export const ForeignId = (ps) => {
     return (
         <>
-            <SharedForeignIdProps />
+            <SharedForeignIdProps { ...ps } />
         </>
     )
 }
@@ -90,43 +91,44 @@ export const ForeignId = (ps) => {
 export const ForeignIdList = (ps) => {
     return (
         <>
-            <SharedForeignIdProps />
-            <MinItemsProp />
+            <SharedForeignIdProps { ...ps } />
+            <MinItemsProp { ...ps } />
         </>
     )
 }
 
 export const Address = (ps) => {
+    var { dataXPath } = ps;
     return (
         <>
             <Fields.DefaultBool
                 label='Straße ist Pflichtfeld'
-                dataXPath='$.props.props.isStreetRequired'
+                dataXPath={ `${dataXPath}.props.isStreetRequired` }
                 uiSplit={[ 6,6 ]}
             />
             <Fields.DefaultBool
                 label='Hausnummer ist Pflichtfeld'
-                dataXPath='$.props.props.isHousenumberRequired'
+                dataXPath={ `${dataXPath}.props.isHousenumberRequired` }
                 uiSplit={[ 6,6 ]}
             />
             <Fields.DefaultBool
                 label='Affix ist Pflichtfeld'
-                dataXPath='$.props.props.isAffixRequired'
+                dataXPath={ `${dataXPath}.props.isAffixRequired` }
                 uiSplit={[ 6,6 ]}
             />
             <Fields.DefaultBool
                 label='PLZ ist Pflichtfeld'
-                dataXPath='$.props.props.isPostcodeRequired'
+                dataXPath={ `${dataXPath}.props.isPostcodeRequired` }
                 uiSplit={[ 6,6 ]}
             />
             <Fields.DefaultBool
                 label='Stadt ist Pflichtfeld'
-                dataXPath='$.props.props.isCityRequired'
+                dataXPath={ `${dataXPath}.props.isCityRequired` }
                 uiSplit={[ 6,6 ]}
             />
             <Fields.DefaultBool
                 label='Land ist Pflichtfeld'
-                dataXPath='$.props.props.isCountryRequired'
+                dataXPath={ `${dataXPath}.props.isCountryRequired` }
                 uiSplit={[ 6,6 ]}
             />
         </>
@@ -147,7 +149,7 @@ export const Email = (ps) => {
 export const EmailList = (ps) => {
     return (
         <>
-            <MinItemsProp />
+            <MinItemsProp { ...ps } />
         </>
     )
 }
@@ -159,14 +161,14 @@ export const Phone = (ps) => {
 export const PhoneList = (ps) => {
     return (
         <>
-            <MinItemsProp />
+            <MinItemsProp { ...ps } />
         </>
     )
 }
 export const PhoneWithTypeList = (ps) => {
     return (
         <>
-            <MinItemsProp />
+            <MinItemsProp { ...ps } />
         </>
     )
 }

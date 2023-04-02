@@ -1,27 +1,42 @@
 import React from 'react';
-import { entries } from '@mpieva/psydb-core-utils';
+import { omit, entries } from '@mpieva/psydb-core-utils';
 import { Fields, useFormikContext } from '@mpieva/psydb-ui-lib';
 import { DisplayName, KeyAndDisplayName } from './utility-fields';
 
 const CoreDefinitions = (ps) => {
-    var { enableInternalKey } = ps;
+    var {
+        dataXPath,
+        enableInternalKey,
+        omittedFieldTypes = []
+    } = ps;
+
     var { setFieldValue } = useFormikContext();
+
     return (
         <>
             <Fields.GenericEnum
                 label='Feld-Typ'
-                dataXPath='$.props.type'
-                options={ fieldtypes }
+                dataXPath={ `${dataXPath}.type` }
+                options={ omit({
+                    from: fieldtypes,
+                    paths: omittedFieldTypes
+                })}
                 extraOnChange={ (next) => {
-                    setFieldValue('$.props.props', {})
+                    var defaults = {
+                        'ListOfObjects': { fields: [] }
+                    }
+                    setFieldValue(
+                        `${dataXPath}.props`,
+                        defaults[next] || {}
+                    );
                 }}
                 required
             />
             <hr />
             { enableInternalKey ? (
-                <KeyAndDisplayName />
+                <KeyAndDisplayName dataXPath={ dataXPath } />
             ) : (
-                <DisplayName />
+                <DisplayName dataXPath={ dataXPath } />
             )}
             <hr />
         </>
@@ -54,7 +69,7 @@ const fieldtypes = entries({
     'PhoneList': 'Liste von Telefon-Nummern ohne Typ',
     'PhoneWithTypeList': 'Liste von Telefon-Nummern mit Typ',
 
-    //'ListOfObjects': 'Benutzerdefinierte Unterliste',
+    'ListOfObjects': 'Benutzerdefinierte Unterliste',
 }).sort(([keyA], [keyB]) => (
     keyA < keyB ? -1 : 1
 )).reduce((acc, [ key, value ]) => ({
