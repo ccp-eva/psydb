@@ -5,7 +5,7 @@ import { MainForm } from './main-form';
 
 
 const Defaults = () => {
-    var LabOperation = ({ hasInvitation } = {}) => ({
+    var LabOperation = ({ hasInvitation, type } = {}) => ({
         canWriteReservations: false,
         canSelectSubjectsForExperiments: false,
         ...(hasInvitation && {
@@ -15,6 +15,10 @@ const Defaults = () => {
         canMoveAndCancelExperiments: false,
         canChangeOpsTeam: false,
         canPostprocessExperiments: false,
+        ...(type === 'away-team' && {
+            canChangeExperimentStudy: false,
+            canRemoveExperimentSubject: false,
+        })
     });
 
     var Survey = () => ({
@@ -24,18 +28,38 @@ const Defaults = () => {
     return ({
         name: '',
         
+        canReadLocations: false,
         canWriteLocations: false,
+        canRemoveLocations: false,
+
+        canReadExternalPersons: false,
         canWriteExternalPersons: false,
+        canRemoveExternalPersons: false,
+
+        canReadExternalOrganizations: false,
         canWriteExternalOrganizations: false,
+        canRemoveExternalOrganizations: false,
+
+        canReadStudyTopics: false,
         canWriteStudyTopics: false,
+        canRemoveStudyTopics: false,
+
+        canReadHelperSets: false,
         canWriteHelperSets: false,
+        canRemoveHelperSets: false,
+
+        canReadPersonnel: false,
         canWritePersonnel: false,
         canSetPersonnelPassword: false,
 
         canReadStudies: false,
         canWriteStudies: false,
+        canRemoveStudies: false,
+
         canReadSubjects: false,
         canWriteSubjects: false,
+        canRemoveSubjects: false,
+
         canReadParticipation: false,
         canWriteParticipation: false,
         
@@ -47,7 +71,7 @@ const Defaults = () => {
         canViewReceptionCalendar:  false,
         labOperation: {
             'inhouse': LabOperation({ hasInvitation: true }),
-            'away-team': LabOperation(),
+            'away-team': LabOperation({ type: 'away-team' }),
             'online-video-call': LabOperation({ hasInvitation: true }),
             'online-survey': Survey(),
         }
