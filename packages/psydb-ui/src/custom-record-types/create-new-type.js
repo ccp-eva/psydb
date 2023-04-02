@@ -7,7 +7,6 @@ import {
     Fields,
     FormBox,
     useFormikContext,
-    SchemaForm
 } from '@mpieva/psydb-ui-lib';
 
 const CreateNewType = ({ onCreated }) => {

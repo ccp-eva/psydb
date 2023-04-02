@@ -100,7 +100,8 @@ var HelperSetItemIdListFieldDefinition = () => FieldDefinition({
     props: {
         setId: ForeignId({
             collection: 'helperSet'
-        })
+        }),
+        minItems: MinItemsProp(),
     },
     required: [
         'setId'
