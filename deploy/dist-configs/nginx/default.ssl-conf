@@ -27,19 +27,8 @@ server {
         # since the browser would be able to spoof this header otherwise
         # see https://github.com/koajs/koa/issues/599#issuecomment-239493311
         # see https://github.com/cloudfoundry/gorouter/issues/179
-        #
-        # FIXME: we might also want to add Forwarded-For header since this
-        # header is now a standard header replacing X-Forwarded-For
-        # see: https://serverfault.com/a/920060
-        #
-        # keep in mind that the application needs to have
-        # http.isBehindProxy enabled for this headers to set
-        # ctx.ip properly
-        #
-        #proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-For $remote_addr;
 
-        #proxy_pass http://host.docker.internal:8080;
         proxy_pass http://psydb:8080;
 
         proxy_connect_timeout       600;
