@@ -20,7 +20,7 @@ var Schema = () => {
                 id: Id(),
                 
                 collection: CustomTypeRecordCollection(),
-                type: IdentifierString(),
+                type: IdentifierString({ minLength: 1 }),
 
                 props: ExactObject({
                     properties: {
