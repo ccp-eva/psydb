@@ -1,92 +1,41 @@
-import React, { useState, useEffect } from 'react';
-import omit from '@cdxoo/omit';
+import React from 'react';
 
+import { omit } from '@mpieva/psydb-core-utils';
+import { useSend } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
-import { SchemaForm } from '@mpieva/psydb-ui-lib';
-
-import agent from '@mpieva/psydb-ui-request-agents';
-import FieldDefinitionSchemas from '@mpieva/psydb-common-lib/src/field-definition-schemas';
-
-var createSchema = ({ field }) => {
-    if (field.isNew) {
-        return {
-            type: 'object',
-            oneOf: Object.values(FieldDefinitionSchemas).map(f => f())
-        };
-    }
-    else {
-        var baseSchema = FieldDefinitionSchemas[field.type]();
-        return {
-            type: 'object',
-            properties: {
-                // FIXME: so we probably want some of the other field props
-                // such as min length maybe?
-                displayName: baseSchema.properties.displayName,
-                //oneOf: Object.values(FieldDefinitionSchemas).map(f => f())
-            }
-        }
-    }
-};
-
-var uiSchema = {
-    'type': {
-        // FIXME: there are some margins still left unfortunately
-        // https://github.com/rjsf-team/react-jsonschema-form/pull/2175
-        'ui:widget': 'hidden'
-    }
-}
+import MainForm from './main-form';
 
 const EditFieldForm = ({ record, field, onSuccess }) => {
+    var hasSubChannels = (
+        record.state.settings.subChannelFields
+    );
 
-    console.log(field);
-
-    var schema = createSchema({ field });
-
-    var onSubmit = ({ formData, ...unused }) => {
-        var message = {
-            type: 'custom-record-types/patch-field-definition',
-            payload: {
-                id: record._id,
-                lastKnownEventId: record._lastKnownEventId,
-                subChannelKey: field.subChannelKey,
-                fieldKey: field.key,
-                props: {
-                    ...formData
-                }
-            }
+    var send = useSend((formData) => ({
+        type: 'custom-record-types/patch-field-definition',
+        payload: {
+            id: record._id,
+            fieldKey: field.key,
+            ...formData
         }
+    }), { onSuccessfulUpdate: onSuccess });
 
-        return (
-            agent.send({ message })
-            .then(
-                (response) => {
-                    console.log(response);
-                    onSuccess();
-                },
-            )
-        )
-    };
+    // FIXME: im confused about why subchannelkey is 
+    // th that specific place; check api or create and patch handler
     return (
-        <div>
-            <SchemaForm
-                schema={ schema }
-                uiSchema={ uiSchema }
-                formData={
-                    field.isNew
-                    ? omit(
-                        [ 'isDirty', 'isNew', 'subChannelKey'],
-                        field
-                    )
-                    : ({
-                        // FIXME
-                        displayName: field.displayName
-                    })
-                }
-                onSubmit={ onSubmit }
-            />
-        </div>
+        <MainForm.Component
+            initialValues={{
+                subChannelKey: field.subChannelKey,
+                props: omit({ from: field, paths: [
+                    'isNew', 'isDirty', 'subChannelKey'
+                ] })
+            }}
+            onSubmit={ send.exec }
+            hasSubChannels={ hasSubChannels }
+            isUnrestricted={ false }
+            // TODO
+            //isUnrestricted={ field.isNew }
+        />
     )
-
 }
 
 export default EditFieldForm;

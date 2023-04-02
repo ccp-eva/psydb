@@ -21,7 +21,7 @@ const NewFieldForm = (ps) => {
             initialValues={{ props: {} }}
             onSubmit={ send.exec }
             hasSubChannels={ hasSubChannels }
-            isUnrestricted
+            isUnrestricted={ true }
         />
     )
 }
