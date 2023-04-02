@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import * as enums from '@mpieva/psydb-schema-enums';
 
 import { entries } from '@mpieva/psydb-core-utils';
+import { useSend } from '@mpieva/psydb-ui-hooks';
 import { Button, Alert } from '@mpieva/psydb-ui-layout';
 
 import { withTheme } from '@mpieva/rjsf-monkey-patch';
@@ -98,6 +99,15 @@ const NewFieldForm = ({ record, onSuccess }) => {
             )
         )
     };
+    
+    var send = useSend((formData) => ({
+        type: 'custom-record-types/add-field-definition',
+        payload: {
+            id: record._id,
+            ...formData
+        }
+    }), { onSuccessfulUpdate: onSuccess });
+
     return (
         <div>
             <SchemaForm
@@ -123,7 +133,7 @@ const NewFieldForm = ({ record, onSuccess }) => {
 
             <DefaultForm
                 initialValues={{ props: {} }}
-                onSubmit={ onSubmit }
+                onSubmit={ send.exec }
                 useAjvAsync
                 ajvErrorInstancePathPrefix = '/payload'
             >
@@ -164,12 +174,16 @@ const FormFields = (os) => {
 }
 
 const CoreFields = (ps) => {
+    var { setFieldValue } = useFormikContext();
     return (
         <>
             <Fields.GenericEnum
                 label='Feld-Typ'
                 dataXPath='$.props.type'
                 options={ fieldtypes }
+                extraOnChange={ (next) => {
+                    setFieldValue('$.props.props', {})
+                }}
                 required
             />
             <hr />
@@ -190,10 +204,10 @@ const fieldtypes = entries({
     'DateTime': 'Datum + Zeit',
     'DateOnlyServerSide': 'Datum mit Server-Zeitzone',
 
-    'HelperSetItemId': 'Hilfstabellen-Eintrag',
-    'HelperSetItemIdList': 'Liste von Hisfstabellen-Einträgen',
-    'ForeignId': 'Eintrag anderer Haupt-Tabellen (ForeignId)',
-    'ForeignIdList': 'Liste von Einträgen anderer Haupt-Tabellen',
+    'HelperSetItemId': 'Eintrag aus Hilfs-Tabelle',
+    'HelperSetItemIdList': 'Liste von Einträgen aus Hilfs-Tabelle',
+    'ForeignId': 'Eintrag aus anderer Haupt-Tabellen',
+    'ForeignIdList': 'Liste von Einträgen aus anderer Haupt-Tabellen',
     
     'Address': 'Adresse',
     'GeoCoords': 'Geo-Koordinaten',

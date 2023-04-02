@@ -25,7 +25,7 @@ var Schema = () => {
                 props: {
                     type: 'object',
                     properties: {
-                        key: IdentifierString(),
+                        key: IdentifierString({ minLength: 1 }),
                         type: {
                             type: 'string',
                             enum: [
@@ -50,12 +50,13 @@ var Schema = () => {
                                 'Integer',
                             ],
                         },
-                    }
+                        displayName: SaneString({ minLength: 1 })
+                    },
+                    required: [ 'type', 'key', 'displayName' ]
                 },
             },
             required: [
                 'id',
-                'lastKnownEventId',
                 'props',
             ]
         })

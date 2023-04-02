@@ -2,9 +2,11 @@
 var debug = require('debug')('psydb:api:message-handlers');
 var util = require('util'); // because debug depth
 
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
-    compareIds = require('@mpieva/psydb-api-lib/src/compare-ids'),
-    Ajv = require('@mpieva/psydb-api-lib/src/ajv');
+var {
+    ApiError,
+    compareIds,
+    validateOrThrow
+} = require('@mpieva/psydb-api-lib');
 
 var BaseSchema = require('./schema'),
     FieldSchemas = require('./field-payload-schemas'),
@@ -14,22 +16,20 @@ var shouldRun = (message) => (
     message.type === 'custom-record-types/add-field-definition'
 )
 
-var checkSchema = async ({ message }) => {
-    var ajv = Ajv(),
-        isValid = false;
-
-    isValid = ajv.validate(BaseSchema(), message);
-    if (!isValid) {
-        debug('ajv errors', util.inspect(ajv.errors, { depth: null }));
-        throw new ApiError(400, 'InvalidMessageSchema');
-    }
+var checkSchema = async (context) => {
+    var { message } = context;
+    
+    validateOrThrow({
+        schema: BaseSchema(),
+        payload: message
+    });
 
     var FieldSchema = FieldSchemas[message.payload.props.type];
-    isValid = ajv.validate(FieldSchema(), message);
-    if (!isValid) {
-        debug('ajv errors', util.inspect(ajv.errors, { depth: null }));
-        throw new ApiError(400, 'InvalidMessageSchema');
-    }
+    
+    validateOrThrow({
+        schema: FieldSchema,
+        payload: message
+    });
 }
 
 var checkAllowedAndPlausible = async ({
