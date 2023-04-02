@@ -32,7 +32,7 @@ var createRouting = (bag = {}) => {
     router.post('/sign-in', withKoaBody(), endpoints.publicSignIn);
     router.post('/sign-out', endpoints.publicSignOut);
 
-    router.post('/init',
+    router.get('/init',
         init
     );
 

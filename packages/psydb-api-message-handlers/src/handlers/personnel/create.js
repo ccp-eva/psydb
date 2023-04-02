@@ -121,6 +121,7 @@ module.exports = GenericRecordHandler({
     },
     triggerOtherSideEffects: async (options) => {
         var { db, rohrpost, personnelId, message, cache } = options;
+        var { sendMail = true } = message.payload;
         var { generatedPassword } = cache;
 
         var destructured = destructureMessage({ message });
@@ -131,7 +132,7 @@ module.exports = GenericRecordHandler({
 
         var recipient = getRecipientMail(emails);
 
-        if (canLogIn && recipient) {
+        if (sendMail && canLogIn && recipient) {
             var transport = nodemailer.createTransport({
                 ...config.smtp
             });

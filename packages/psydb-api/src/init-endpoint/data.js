@@ -7,6 +7,7 @@ var messages = [
         type: 'personnel/create',
         payload: {
             id: rootAccountId,
+            sendMail: false,
             props: {
                 gdpr: {
                     firstname: 'ROOT',
@@ -30,7 +31,7 @@ var messages = [
             lastKnownEventId: knownEventIds.personnel.gdpr[rootAccountId],
             method: 'manual',
             password: 'test1234',
-            sendMail: true,
+            sendMail: false,
         }
     }),
 ];
