@@ -7,7 +7,6 @@ import {
     useFormikContext
 } from '@mpieva/psydb-ui-lib';
 
-import { KeyAndDisplayName } from './utility-fields';
 import CoreDefinitions from './core-definitions';
 import * as allBasicPropDefinitions from './basic-prop-definitions';
 

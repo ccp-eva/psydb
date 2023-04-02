@@ -1,12 +1,12 @@
 import React from 'react';
 import { omit, entries } from '@mpieva/psydb-core-utils';
 import { Fields, useFormikContext } from '@mpieva/psydb-ui-lib';
-import { DisplayName, KeyAndDisplayName } from './utility-fields';
+import { KeyAndDisplayName } from './utility-fields';
 
 const CoreDefinitions = (ps) => {
     var {
         dataXPath,
-        enableInternalKey,
+        isUnrestricted,
         omittedFieldTypes = []
     } = ps;
 
@@ -30,14 +30,14 @@ const CoreDefinitions = (ps) => {
                         defaults[next] || {}
                     );
                 }}
+                disabled={ !isUnrestricted }
                 required
             />
             <hr />
-            { enableInternalKey ? (
-                <KeyAndDisplayName dataXPath={ dataXPath } />
-            ) : (
-                <DisplayName dataXPath={ dataXPath } />
-            )}
+            <KeyAndDisplayName
+                dataXPath={ dataXPath }
+                isUnrestricted={ isUnrestricted }
+            />
             <hr />
         </>
     )

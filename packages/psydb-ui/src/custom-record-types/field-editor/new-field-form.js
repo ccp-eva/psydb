@@ -17,6 +17,7 @@ import CoreDefinitions from './core-definitions';
 import * as allBasicPropDefinitions from './basic-prop-definitions';
 import * as allSpecialPropDefinitions from './special-prop-definitions';
 
+import MainForm from './main-form';
 
 import { withTheme } from '@mpieva/rjsf-monkey-patch';
 import { RJSFCustomTheme } from '@mpieva/psydb-ui-lib';
@@ -112,7 +113,7 @@ const NewFieldForm = (ps) => {
 
     return (
         <div>
-            <SchemaForm
+            {/*<SchemaForm
                 noHtml5Validate={ true }
                 showErrorList={ false }
                 schema={ schema }
@@ -131,58 +132,16 @@ const NewFieldForm = (ps) => {
                         Save
                     </Button>
                 </div>
-            </SchemaForm>
+            </SchemaForm>*/}
 
-            <DefaultForm
+            <MainForm.Component
                 initialValues={{ props: {} }}
                 onSubmit={ send.exec }
-                useAjvAsync
-                ajvErrorInstancePathPrefix = '/payload'
-            >
-                {(formikProps) => (
-                    <>
-                        <FormFields hasSubChannel={ hasSubChannels } />
-                        <Button type='submit'>Speichern</Button>
-                    </>
-                )}
-            </DefaultForm>
+                isUnrestricted
+            />
         </div>
     )
 }
 
-const FormFields = (ps) => {
-    var { hasSubChannels } = ps;
-    var { values } = useFormikContext();
-    var { type } = values['$'].props;
-
-    if (!type) {
-        return (
-            <>
-                { hasSubChannels && (
-                    <SubChannelKey />
-                )}
-                <CoreDefinitions dataXPath='$.props' enableInternalKey />
-                <Alert variant='danger'>
-                    <b>Bitte Feld-Typ auswählen!</b>
-                </Alert>
-            </>
-        )
-    }
-    
-    var PropDefinitions = {
-        ...allBasicPropDefinitions,
-        ...allSpecialPropDefinitions,
-    }[type];
-
-    return (
-        <>
-            { hasSubChannels && (
-                <SubChannelKey />
-            )}
-            <CoreDefinitions dataXPath='$.props' enableInternalKey />
-            <PropDefinitions dataXPath='$.props' />
-        </>
-    )
-}
 
 export default NewFieldForm;

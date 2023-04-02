@@ -26,12 +26,13 @@ export const FullText = (ps) => {
 }
 
 export const Integer = (ps) => {
-    var { dataXPath } = ps;
+    var { dataXPath, isUnrestricted } = ps;
     return (
         <>
             <Fields.Integer
                 label='Minimum'
                 dataXPath={ `${dataXPath}.props.minimum` }
+                disabled={ !isUnrestricted }
                 required
             />
             <IsNullableProp { ...ps } />
@@ -98,36 +99,42 @@ export const ForeignIdList = (ps) => {
 }
 
 export const Address = (ps) => {
-    var { dataXPath } = ps;
+    var { dataXPath, isUnrestricted } = ps;
     return (
         <>
             <Fields.DefaultBool
                 label='Straße ist Pflichtfeld'
                 dataXPath={ `${dataXPath}.props.isStreetRequired` }
+                disabled={ !isUnrestricted }
                 uiSplit={[ 6,6 ]}
             />
             <Fields.DefaultBool
                 label='Hausnummer ist Pflichtfeld'
                 dataXPath={ `${dataXPath}.props.isHousenumberRequired` }
+                disabled={ !isUnrestricted }
                 uiSplit={[ 6,6 ]}
             />
             <Fields.DefaultBool
                 label='Affix ist Pflichtfeld'
                 dataXPath={ `${dataXPath}.props.isAffixRequired` }
+                disabled={ !isUnrestricted }
                 uiSplit={[ 6,6 ]}
             />
             <Fields.DefaultBool
                 label='PLZ ist Pflichtfeld'
                 dataXPath={ `${dataXPath}.props.isPostcodeRequired` }
+                disabled={ !isUnrestricted }
                 uiSplit={[ 6,6 ]}
             />
             <Fields.DefaultBool
                 label='Stadt ist Pflichtfeld'
                 dataXPath={ `${dataXPath}.props.isCityRequired` }
+                disabled={ !isUnrestricted }
                 uiSplit={[ 6,6 ]}
             />
             <Fields.DefaultBool
                 label='Land ist Pflichtfeld'
+                disabled={ !isUnrestricted }
                 dataXPath={ `${dataXPath}.props.isCountryRequired` }
                 uiSplit={[ 6,6 ]}
             />
