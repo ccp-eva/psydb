@@ -3,7 +3,7 @@ var debug = require('debug')('psydb:api:message-handlers');
 var sift = require('sift');
 var omit = require('@cdxoo/omit');
 
-var { without, keyBy } = require('@mpieva/psydb-core-utils');
+var { ejson, without, keyBy } = require('@mpieva/psydb-core-utils');
 var { gatherDisplayFieldData } = require('@mpieva/psydb-common-lib');
 var { ApiError } = require('@mpieva/psydb-api-lib');
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
@@ -82,6 +82,8 @@ handler.triggerSystemEvents = async ({
             "${record.collection}"
         `);
     }
+    
+    var { hasSubChannels } = collectionCreatorData;
 
     await maybeRestoreHelperSets({
         db, dispatch,
@@ -89,7 +91,6 @@ handler.triggerSystemEvents = async ({
     });
 
     //console.dir(record, { depth: null })
-    var { hasSubChannels } = collectionCreatorData;
     await dispatch({
         collection: 'customRecordType',
         channelId: id,
