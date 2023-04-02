@@ -4,14 +4,31 @@ import * as Controls from '@mpieva/psydb-ui-form-controls';
 
 export const SaneString = withField({
     Control: (ps) => {
-        var { formikField, formikMeta, disabled } = ps;
+        var {
+            dataXPath,
+            formikField,
+            formikMeta,
+            formikForm,
+
+            extraOnChange,
+            ...pass
+        } = ps;
+
         var { error } = formikMeta;
+        var { setFieldValue } = formikForm;
+        var { value } = formikField;
+
         return (
             <Controls.SaneString
                 type='text'
-                disabled={ disabled }
+                value={ value }
                 isInvalid={ !!error }
-                { ...formikField }
+                onChange={ (ev) => {
+                    var next = ev.target.value;
+                    extraOnChange && extraOnChange(next);
+                    setFieldValue(dataXPath, next)
+                }}
+                { ...pass }
             />
         )
     }

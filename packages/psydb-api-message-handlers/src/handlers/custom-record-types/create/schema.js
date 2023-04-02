@@ -24,7 +24,7 @@ var Schema = () => {
 
                 props: ExactObject({
                     properties: {
-                        label: SaneString(),
+                        label: SaneString({ minLength: 1 }),
                     },
                     required: [
                         'label',
