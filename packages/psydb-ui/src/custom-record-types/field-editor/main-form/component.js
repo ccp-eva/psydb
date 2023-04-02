@@ -28,7 +28,7 @@ export const Component = (ps) => {
                 <>
                     <FormFields
                         isUnrestricted={ isUnrestricted }
-                        hasSubChannel={ hasSubChannels }
+                        hasSubChannels={ hasSubChannels }
                     />
                     <Button type='submit'>Speichern</Button>
                 </>
