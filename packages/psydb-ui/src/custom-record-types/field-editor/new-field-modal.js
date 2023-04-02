@@ -1,26 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { demuxed } from '@mpieva/psydb-ui-utils';
+import { WithDefaultModal } from '@mpieva/psydb-ui-layout';
 
-import { Modal, Button } from 'react-bootstrap';
 import NewFieldForm from './new-field-form';
 
-const NewFieldModal = ({ show, onHide, record, onSuccessfulUpdate }) => {
-    var handleSuccess = () => {
-        onSuccessfulUpdate();
-        onHide()
-    }
+const NewFieldModalBody = (ps) => {
+    var { record, onSuccessfulUpdate, onHide } = ps;
     return (
-        <Modal show={show} onHide={ onHide } size='lg'>
-            <Modal.Header closeButton>
-                <Modal.Title>Neues Feld</Modal.Title>
-            </Modal.Header>
-            <Modal.Body className='bg-light'>
-                <NewFieldForm
-                    record={ record }
-                    onSuccess={ handleSuccess }
-                />
-            </Modal.Body>
-        </Modal>
+        <NewFieldForm
+            record={ record }
+            onSuccess={ demuxed([ onSuccessfulUpdate, onHide ]) }
+        />
     );
 }
+
+const NewFieldModal = WithDefaultModal({
+    title: 'Neues Daten-Feld',
+    size: 'lg',
+    Body: NewFieldModalBody
+});
 
 export default NewFieldModal;

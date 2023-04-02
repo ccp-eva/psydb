@@ -1,38 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { demuxed } from '@mpieva/psydb-ui-utils';
+import { WithDefaultModal } from '@mpieva/psydb-ui-layout';
 
-import { Modal, Button } from 'react-bootstrap';
 import EditFieldForm from './edit-field-form';
 
-const EditFieldModal = (ps) => {
-    var {
-        show,
-        onHide,
-        modalPayloadData,
-        record,
-        onSuccessfulUpdate
-    } = ps;
-
-    var { field } = (modalPayloadData || {});
-
-    var handleSuccess = () => {
-        onSuccessfulUpdate();
-        onHide()
-    }
-
+const EditFieldModalBody = (ps) => {
+    var { record, onSuccessfulUpdate, onHide, modalPayloadData = {}} = ps;
+    var { field } = modalPayloadData;
     return (
-        <Modal show={show} onHide={ onHide } size='lg'>
-            <Modal.Header closeButton>
-                <Modal.Title>Feld Bearbeiten</Modal.Title>
-            </Modal.Header>
-            <Modal.Body className='bg-light'>
-                <EditFieldForm
-                    record={ record }
-                    field={ field }
-                    onSuccess={ handleSuccess }
-                />
-            </Modal.Body>
-        </Modal>
+        <EditFieldForm
+            record={ record }
+            field={ field }
+            onSuccess={ demuxed([ onSuccessfulUpdate, onHide ]) }
+        />
     );
 }
+
+const EditFieldModal = WithDefaultModal({
+    title: 'Daten-Feld bearbeiten',
+    size: 'lg',
+    Body: EditFieldModalBody
+});
 
 export default EditFieldModal;
