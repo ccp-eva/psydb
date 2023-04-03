@@ -1,5 +1,6 @@
 import React from 'react';
 import { CustomField } from './custom-field';
+import { ListOfObjectsField } from './list-of-objects-field';
 
 /*
     <Fields.Dynamic
@@ -37,13 +38,21 @@ export const Custom = (ps) => {
     }))
     //console.log(fields);
 
-    return fields.map(it => (
-        <CustomField
-            key={ it.dataXPath }
-            dataXPath={ it.dataXPath }
-            definition={ it.definition }
-            related={ related }
-            extraTypeProps={ extraTypeProps }
-        />
-    ));
+    return fields.map(it => {
+        var { systemType } = it.definition;
+        var Component = (
+            systemType === 'ListOfObjects'
+            ? ListOfObjectsField
+            : CustomField
+        )
+        return (
+            <Component
+                key={ it.dataXPath }
+                dataXPath={ it.dataXPath }
+                definition={ it.definition }
+                related={ related }
+                extraTypeProps={ extraTypeProps }
+            />
+        )
+    });
 }

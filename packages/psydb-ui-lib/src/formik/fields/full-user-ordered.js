@@ -4,7 +4,10 @@ import {
     without,
     convertPointerToPath
 } from '@mpieva/psydb-core-utils';
+
 import { CustomField } from './custom-field';
+import { ListOfObjectsField } from './list-of-objects-field';
+
 
 export const FullUserOrdered = (ps) => {
     var { related, crtSettings, extraTypeProps, exclude = [] } = ps; 
@@ -48,8 +51,13 @@ export const FullUserOrdered = (ps) => {
                     '$.' + convertPointerToPath(fixedPointer)
                 );
 
+                var Component = (
+                    def.type === 'ListOfObjects'
+                    ? ListOfObjectsField
+                    : CustomField
+                )
                 return (
-                    <CustomField 
+                    <Component
                         key={ dataXPath }
                         dataXPath={ dataXPath }
                         definition={ def }

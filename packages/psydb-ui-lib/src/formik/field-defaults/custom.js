@@ -58,6 +58,10 @@ const CustomFieldDefault = (options) => {
         case 'ForeignIdList':
             var { minItems } = props;
             return range(minItems || 0).map(() => undefined);
+
+        case 'ListOfObjects':
+            return range(minItems || 0).map(() => ({}));
+
         default:
             throw new Error(`unknown systemType "${type}"`)
     }
