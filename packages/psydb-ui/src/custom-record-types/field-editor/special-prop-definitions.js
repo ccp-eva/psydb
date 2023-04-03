@@ -7,13 +7,14 @@ import {
     useFormikContext
 } from '@mpieva/psydb-ui-lib';
 
+import { MinItemsProp } from './utility-fields';
 import CoreDefinitions from './core-definitions';
 import * as allBasicPropDefinitions from './basic-prop-definitions';
 
 const ListOfObjectsFieldDefinition = withField({
     DefaultWrapper: 'NoneWrapper',
     Control: (ps) => {
-        var { dataXPath, formikField } = ps;
+        var { dataXPath, formikField, isUnrestricted } = ps;
         var { value } = formikField;
         var { type } = value;
     
@@ -26,10 +27,13 @@ const ListOfObjectsFieldDefinition = withField({
                 <CoreDefinitions
                     dataXPath={ dataXPath }
                     omittedFieldTypes={[ 'ListOfObjects' ]}
-                    enableInternalKey
+                    isUnrestricted={ isUnrestricted }
                 />
                 { PropDefinitions && (
-                    <PropDefinitions dataXPath={ dataXPath } />
+                    <PropDefinitions
+                        dataXPath={ dataXPath }
+                        isUnrestricted={ isUnrestricted }
+                    />
                 )}
             </>
         )
@@ -44,11 +48,14 @@ const ListOfObjectsFieldDefinitionList = withFieldArray({
 })
 
 export const ListOfObjects = (ps) => {
-    var { dataXPath } = ps;
+    var { dataXPath, isUnrestricted } = ps;
     return (
         <>
+            <MinItemsProp { ...ps  } />
             <ListOfObjectsFieldDefinitionList
-                dataXPath={ `${dataXPath}.fields` }
+                label='Unterfelder'
+                dataXPath={ `${dataXPath}.props.fields` }
+                isUnrestricted={ isUnrestricted }
             />
         </>
     )
