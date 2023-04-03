@@ -2,6 +2,7 @@ import React from 'react';
 import jsonpointer from 'jsonpointer';
 import { keyBy } from '@mpieva/psydb-core-utils';
 import { CustomField } from './custom-field';
+import { ListOfObjectsField } from './list-of-objects-field';
 
 export const createFullUserOrdered = (options) => (ps) => {
     var { extraFieldComponents = {} } = options;
@@ -49,11 +50,20 @@ export const createFullUserOrdered = (options) => (ps) => {
                     related,
                 };
 
-                return (
-                    Extra
-                    ? <Extra { ...shared } label={ displayName } />
-                    : <CustomField { ...shared } definition={ def } />
-                )
+                if (Extra) {
+                    return <Extra { ...shared } label={ displayName } />
+                }
+                else if (def.type === 'ListOfObjects') {
+                    return (
+                        <ListOfObjectsField
+                            { ...shared }
+                            definition={ def }
+                        />
+                    )
+                }
+                else {
+                    return <CustomField { ...shared } definition={ def } />
+                }
             })}
         </>
     );

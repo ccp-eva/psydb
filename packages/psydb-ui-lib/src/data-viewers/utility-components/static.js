@@ -113,6 +113,18 @@ export const DateOnlyServerSide = (ps) => {
     )
 }
 
+export const DateTime = (ps) => {
+    var { value, props, related } = ps;
+    var formatted = (
+        value === undefined || value === null
+        ? '-' 
+        : datefns.format(new Date(value), 'dd.MM.yyyy HH:mm')
+    );
+    return (
+        <span>{ formatted }</span>
+    )
+}
+
 export const Address = (ps) => {
     var { value } = ps;
     
