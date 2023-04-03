@@ -271,30 +271,29 @@ var fetchRecordByFilter = async ({
         displayFieldStage
     ].filter(it => !!it);
 
-    //console.dir({ postCountStages }, { depth: null });
 
-    //console.dir(stages, { depth: null });
     debug('searching records');
+    var searchStages = [
+        ...(
+            sort 
+            ? [
+                sortStage,
+                ...preCountStages,
+            ]
+            : [
+                ...preCountStages,
+                sortStage,
+            ]
+        ),
+        { $skip: offset },
+        ...(limit ? [{ $limit: limit }] : []),
+        ...postCountStages,
+    ].filter(it => !!it); // FIXME: sortstage might be undefined
+
     var resultSet = await (
         db.collection(collectionName)
         .aggregate(
-            //[ ...preCountStages, ...postCountStages ],
-            [
-                ...(
-                    sort 
-                    ? [
-                        sortStage,
-                        ...preCountStages,
-                    ]
-                    : [
-                        ...preCountStages,
-                        sortStage,
-                    ]
-                ),
-                { $skip: offset },
-                ...(limit ? [{ $limit: limit }] : []),
-                ...postCountStages,
-            ],
+            searchStages,
             {
                 //...(sort && {
                 //    hint: 'manualSortIndex1',
