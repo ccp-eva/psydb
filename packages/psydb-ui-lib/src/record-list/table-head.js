@@ -1,7 +1,8 @@
 import React from 'react';
+import { TableHead } from '@mpieva/psydb-ui-layout';
 import FieldDataHeadCols from './field-data-head-cols';
 
-const TableHead = (ps) => {
+const RLTableHead = (ps) => {
     var {
         displayFieldData,
         sorter,
@@ -10,23 +11,21 @@ const TableHead = (ps) => {
         canSort = false,
     } = ps;
 
+    var headBag = {
+        showActionColumn,
+        showSelectionIndicator,
+    }
+    var columnBag = {
+        displayFieldData,
+        sorter,
+        canSort
+    }
+
     return (
-        <thead>
-            <tr className='bg-white'>
-                { showSelectionIndicator && (
-                    <th></th>
-                )}
-                <FieldDataHeadCols
-                    displayFieldData={ displayFieldData }
-                    sorter={ sorter }
-                    canSort={ canSort }
-                />
-                { showActionColumn && (
-                    <th></th>
-                )}
-            </tr>
-        </thead>
-    );
+        <TableHead { ...headBag }>
+            <FieldDataHeadCols { ...columnBag } />
+        </TableHead>
+    )
 }
 
-export default TableHead;
+export default RLTableHead;

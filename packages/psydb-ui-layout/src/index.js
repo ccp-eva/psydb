@@ -36,6 +36,8 @@ export * from './permission-denied';
 export * from './not-found';
 export * from './unexpected-response-error';
 
+export * from './table-head';
+export * from './table-head-custom-cols';
 export * from './sortable-th';
 export * from './option-select-indicator';
 export * from './option-deselect-indicator';
