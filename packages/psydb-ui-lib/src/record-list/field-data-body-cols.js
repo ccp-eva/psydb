@@ -24,7 +24,7 @@ const FieldDataBodyCols = ({
         definitions = __fixDefinitions(displayFieldData)
     }
     if (!related) {
-        var related = fixRelated({
+        related = fixRelated({
             relatedRecordLabels,
             relatedHelperSetItems,
             relatedCustomRecordTypeLabels,

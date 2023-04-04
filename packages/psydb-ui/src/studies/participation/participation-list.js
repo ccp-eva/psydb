@@ -5,6 +5,9 @@ import {
     hasNone
 } from '@mpieva/psydb-core-utils';
 
+import { createDefaultFieldDataTransformer } from '@mpieva/psydb-common-lib';
+import { fixRelated, __fixDefinitions } from '@mpieva/psydb-ui-utils';
+
 import {
     useModalReducer,
     usePermissions,
@@ -14,6 +17,7 @@ import {
     Table,
     TableHead,
     TableHeadCustomCols,
+    TableBodyCustomCols,
     TableEmptyFallback,
 
     SortableTH,
@@ -43,12 +47,22 @@ const ParticipationList = (ps) => {
         relatedHelperSetItems,
         relatedCustomRecordTypeLabels,
         displayFieldData,
+        timezone,
 
         sorter,
         className,
         onSuccessfulUpdate,
     } = ps;
 
+    var definitions = __fixDefinitions(displayFieldData);
+    var related = fixRelated({
+        relatedRecordLabels,
+        relatedHelperSetItems,
+        relatedCustomRecordTypeLabels,
+    }, { isResponse: false });
+
+    var permissions = usePermissions();
+    
     var editModal = useModalReducer();
     var removeModal = useModalReducer();
 
@@ -65,50 +79,44 @@ const ParticipationList = (ps) => {
         return !(['didnt-participate'].includes(participationStatus));
     })
 
+    var transformer = createDefaultFieldDataTransformer({
+        related,
+        timezone,
+    })
+
+    var modalBag = { onSuccessfulUpdate };
+    var headBag = { definitions, dateOfBirthField, sorter }
+
     if (hasNone(records)) {
         return (
             <TableEmptyFallback
                 tableExtraClassName={ className }
                 emptyInfoText='Keine Studienteilnahmen gefunden'
             >
-                <TableHeadCols
-                    definitions={ displayFieldData }
-                    dateOfBirthField={ dateOfBirthField }
-                />
+                <TableHeadCols { ...headBag } />
             </TableEmptyFallback>
         )
     }
 
     return (
         <>
-            <EditModal
-                { ...editModal.passthrough }
-                onSuccessfulUpdate={ onSuccessfulUpdate }
-            />
-            <RemoveModal
-                { ...removeModal.passthrough }
-                onSuccessfulUpdate={ onSuccessfulUpdate }
-            />
+            <EditModal { ...modalBag } { ...editModal.passthrough } />
+            <RemoveModal { ...modalBag } { ...removeModal.passthrough } />
+
             <Table className={ className }>
                 <TableHead>
-                    <TableHeadCols
-                        definitions={ displayFieldData }
-                        dateOfBirthField={ dateOfBirthField }
-                        sorter={ sorter }
-                        canSort={ true }
-                    />
+                    <TableHeadCols { ...headBag } canSort />
                 </TableHead>
                 <tbody>
-                    { records.map((it, index) => (
-                        <ParticipationListRow { ...({
-                            key: index,
-                            record: it,
-                            relatedRecordLabels,
-                            relatedHelperSetItems,
-                            relatedCustomRecordTypeLabels,
-                            displayFieldData,
+                    { records.map((record, ix) => (
+                        <ParticipationListRow key={ ix } { ...({
+                            permissions,
+
+                            record,
+                            definitions,
+                            transformer,
                             dateOfBirthField,
-                            
+
                             onEdit: editModal.handleShow,
                             onRemove: removeModal.handleShow
                         })} />
@@ -159,20 +167,19 @@ const TableHeadCols = (ps) => {
 
 const ParticipationListRow = (ps) => {
     var {
+        permissions,
+
         record,
-        relatedRecordLabels,
-        relatedHelperSetItems,
-        relatedCustomRecordTypeLabels,
-        displayFieldData,
+        definitions,
+        transformer,
         dateOfBirthField,
 
         onEdit,
         onRemove,
     } = ps;
 
-    var permissions = usePermissions();
-    var canWrite = permissions.hasFlag('canWriteParticipation');
-    var canRemove = permissions.hasFlag('canWriteParticipation');
+    var showEdit = permissions.hasFlag('canWriteParticipation');
+    var showRemove = permissions.hasFlag('canWriteParticipation');
 
     var { _id: subjectId, type: subjectType } = record;
 
@@ -197,19 +204,17 @@ const ParticipationListRow = (ps) => {
         experimentId,
     } = participationData;
 
-    var hasExperiment = (
-        participationType !== 'manual' && experimentId
-    );
+    var hasExperiment = ( participationType !== 'manual' && experimentId );
+    var enableEdit = ( !hasExperiment && permissions.isRoot() );
+    var enableRemove = ( !hasExperiment && permissions.isRoot() );
 
     return (
         <tr>
-            <FieldDataBodyCols { ...({
+            <TableBodyCustomCols { ...({
                 record,
-                relatedRecordLabels,
-                relatedHelperSetItems,
-                relatedCustomRecordTypeLabels,
-                displayFieldData,
-            })} />
+                definitions,
+                transformer,
+            }) } />
             <td>{ is1970 ? '-' : formattedDate }</td>
             { dateOfBirthField && (
                 <td>
@@ -237,7 +242,7 @@ const ParticipationListRow = (ps) => {
                 <SubjectIconButton
                     to={`/subjects/${record.type}/${record._id}`}
                 />
-                { canWrite && (
+                { showEdit && (
                     <EditIconButtonInline
                         onClick={ () => onEdit({
                             subjectId, subjectType,
@@ -245,34 +250,20 @@ const ParticipationListRow = (ps) => {
                             ...participationData
                         }) }
                         iconStyle={{
-                            ...(
-                                experimentId && !permissions.isRoot()
-                                && { color: '#888' }
-                            )
+                            ...(!enableEdit && { color: '#888' })
                         }}
-                        buttonProps={{
-                            disabled: (
-                                experimentId && !permissions.isRoot()
-                            )
-                        }}
+                        buttonProps={{ disabled: !enableEdit }}
                     />
                 )}
-                { canRemove && (
+                { showRemove && (
                     <RemoveIconButtonInline
                         onClick={ () => onRemove({
                             ...participationData
                         }) }
                         iconStyle={{
-                            ...(
-                                hasExperiment && !permissions.isRoot()
-                                && { color: '#888' }
-                            )
+                            ...(!enableRemove && { color: '#888' })
                         }}
-                        buttonProps={{
-                            disabled: (
-                                hasExperiment && !permissions.isRoot()
-                            )
-                        }}
+                        buttonProps={{ disabled: !enableRemove }}
                     />
                 )}
             </td>
