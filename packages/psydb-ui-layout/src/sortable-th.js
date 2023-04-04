@@ -3,6 +3,10 @@ import React from 'react';
 export const SortableTH = (ps) => {
     var { label, sorter, path, isFirstCol = false } = ps;
 
+    if (!sorter) {
+        return <th>{ label }</th>
+    }
+
     var onClick = () => sorter.setSort({
         sortPath: path,
         sortDirection: (

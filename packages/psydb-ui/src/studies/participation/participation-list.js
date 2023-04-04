@@ -11,8 +11,11 @@ import {
 } from '@mpieva/psydb-ui-hooks';
 
 import {
-    Alert,
     Table,
+    TableHead,
+    TableHeadCustomCols,
+    TableEmptyFallback,
+
     SortableTH,
     SubjectIconButton,
     ExperimentIconButton,
@@ -24,7 +27,6 @@ import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 import calculateAge from '@mpieva/psydb-ui-lib/src/calculate-age';
 
 // FIXME: those import are bad; move thos somewhere else
-import FieldDataHeadCols from '@mpieva/psydb-ui-lib/src/record-list/field-data-head-cols';
 import FieldDataBodyCols from '@mpieva/psydb-ui-lib/src/record-list/field-data-body-cols';
 
 import {
@@ -34,17 +36,19 @@ import {
 
 
 
-const ParticipationList = ({
-    records,
-    relatedRecordLabels,
-    relatedHelperSetItems,
-    relatedCustomRecordTypeLabels,
-    displayFieldData,
+const ParticipationList = (ps) => {
+    var {
+        records,
+        relatedRecordLabels,
+        relatedHelperSetItems,
+        relatedCustomRecordTypeLabels,
+        displayFieldData,
 
-    sorter,
-    className,
-    onSuccessfulUpdate,
-}) => {
+        sorter,
+        className,
+        onSuccessfulUpdate,
+    } = ps;
+
     var editModal = useModalReducer();
     var removeModal = useModalReducer();
 
@@ -63,12 +67,15 @@ const ParticipationList = ({
 
     if (hasNone(records)) {
         return (
-            <Fallback
-                className={ className }
-                displayFieldData={ displayFieldData }
-                sorter={ sorter }
-                dateOfBirthField={ dateOfBirthField }
-            />
+            <TableEmptyFallback
+                tableExtraClassName={ className }
+                emptyInfoText='Keine Studienteilnahmen gefunden'
+            >
+                <TableHeadCols
+                    definitions={ displayFieldData }
+                    dateOfBirthField={ dateOfBirthField }
+                />
+            </TableEmptyFallback>
         )
     }
 
@@ -83,11 +90,14 @@ const ParticipationList = ({
                 onSuccessfulUpdate={ onSuccessfulUpdate }
             />
             <Table className={ className }>
-                <TableHead
-                    displayFieldData={ displayFieldData }
-                    sorter={ sorter }
-                    dateOfBirthField={ dateOfBirthField }
-                />
+                <TableHead>
+                    <TableHeadCols
+                        definitions={ displayFieldData }
+                        dateOfBirthField={ dateOfBirthField }
+                        sorter={ sorter }
+                        canSort={ true }
+                    />
+                </TableHead>
                 <tbody>
                     { records.map((it, index) => (
                         <ParticipationListRow { ...({
@@ -109,80 +119,57 @@ const ParticipationList = ({
     )
 }
 
-const Fallback = (ps) => {
+const TableHeadCols = (ps) => {
     var {
-        className,
-        displayFieldData,
+        definitions,
+        dateOfBirthField,
         sorter,
-        dateOfBirthField
+        canSort,
     } = ps;
 
     return (
-        <div className={ className }>
-            <Table className='mb-1'>
-                <TableHead
-                    displayFieldData={ displayFieldData }
+        <>
+            <TableHeadCustomCols
+                definitions={ definitions }
+                sorter={ sorter }
+                canSort={ canSort }
+            />
+            <SortableTH
+                label='Zeitpunkt'
+                sorter={ sorter }
+                path='scientific.state.internals.participatedInStudies.timestamp'
+            />
+            { dateOfBirthField && (
+                <SortableTH
+                    label='Alter'
                     sorter={ sorter }
-                    dateOfBirthField={ dateOfBirthField }
+                    path={ convertPointerToPath(
+                        dateOfBirthField.pointer
+                    )}
                 />
-            </Table>
-            <Alert variant='info' className='mt-1'>
-                <i>Keine Studienteilnahmen gefunden</i>
-            </Alert>
-        </div>
+            )}
+            <SortableTH
+                label='Status'
+                sorter={ sorter }
+                path='scientific.state.internals.participatedInStudies.status'
+            />
+        </>
     )
 }
 
-const TableHead = (ps) => {
+const ParticipationListRow = (ps) => {
     var {
+        record,
+        relatedRecordLabels,
+        relatedHelperSetItems,
+        relatedCustomRecordTypeLabels,
         displayFieldData,
-        sorter,
-        dateOfBirthField
+        dateOfBirthField,
+
+        onEdit,
+        onRemove,
     } = ps;
 
-    return (
-        <thead>
-            <tr>
-                <FieldDataHeadCols
-                    displayFieldData={ displayFieldData }
-                    sorter={ sorter }
-                    canSort={ true }
-                />
-                <SortableTH
-                    label='Zeitpunkt'
-                    sorter={ sorter }
-                    path='scientific.state.internals.participatedInStudies.timestamp'
-                />
-                { dateOfBirthField && (
-                    <SortableTH
-                        label='Alter'
-                        sorter={ sorter }
-                        path={ convertPointerToPath(
-                            dateOfBirthField.pointer
-                        )}
-                    />
-                )}
-                <SortableTH
-                    label='Status'
-                    sorter={ sorter }
-                    path='scientific.state.internals.participatedInStudies.status'
-                />
-            </tr>
-        </thead>
-    )
-}
-
-const ParticipationListRow = ({
-    record,
-    relatedRecordLabels,
-    relatedHelperSetItems,
-    relatedCustomRecordTypeLabels,
-    displayFieldData,
-    dateOfBirthField,
-
-    onEdit,
-    onRemove,
-}) => {
     var permissions = usePermissions();
     var canWrite = permissions.hasFlag('canWriteParticipation');
     var canRemove = permissions.hasFlag('canWriteParticipation');
@@ -228,13 +215,13 @@ const ParticipationListRow = ({
                 <td>
                     { 
                         is1970
-                        ? '-'
-                        : calculateAge({
-                            base: jsonpointer.get(
-                                record, dateOfBirthField.dataPointer
-                            ),
-                            relativeTo: participationData.timestamp
-                        })
+                            ? '-'
+                            : calculateAge({
+                                base: jsonpointer.get(
+                                    record, dateOfBirthField.dataPointer
+                                ),
+                                relativeTo: participationData.timestamp
+                            })
                     }
                 </td>
             )}
