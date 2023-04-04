@@ -10,6 +10,7 @@ import {
 } from 'react-router-dom';
 
 import { without } from '@mpieva/psydb-core-utils';
+import { demuxed } from '@mpieva/psydb-ui-utils';
 import * as enums from '@mpieva/psydb-schema-enums';
 
 import {
@@ -34,9 +35,12 @@ import {
 
 import VariantList from './variant-list';
 
-const ExperimentSettings = ({
-    studyType,
-}) => {
+const ExperimentSettings = (ps) => {
+    var {
+        studyType,
+        onSuccessfulUpdate
+    } = ps;
+
     var { path, url } = useRouteMatch();
     var { id: studyId } = useParams();
     
@@ -98,7 +102,7 @@ const ExperimentSettings = ({
 
     var modalBag = {
         studyId,
-        onSuccessfulUpdate: revision.up
+        onSuccessfulUpdate: demuxed([ onSuccessfulUpdate, revision.up ])
     }
 
     return (

@@ -86,7 +86,6 @@ const StudyRecordContainer = ({
                 key: 'participation',
                 label: 'Studienteilnahme',
                 disabled: fetchedSettings.data.records.length < 1,
-                disabled: true
             }
         ),
     ].filter(it => !!it);
@@ -147,6 +146,7 @@ const StudyRecordContainer = ({
                     { tabKey === 'experiment-settings' && (        
                         <ExperimentSettings
                             studyType={ recordType }
+                            onSuccessfulUpdate={ revision.up }
                         />
                     )}
 
