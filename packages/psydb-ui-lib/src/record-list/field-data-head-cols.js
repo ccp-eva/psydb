@@ -1,72 +1,47 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { convertPointerToPath } from '@mpieva/psydb-core-utils';
+import { SortableTH } from '@mpieva/psydb-ui-layout';
 
-const FieldDataHeadCols = ({
-    displayFieldData,
-    sorter,
-    canSort,
-}) => {
-    var createOnClick = (path, isFirstCol = false) => (
-        sorter
-        ? () => sorter.setSort({
-            sortPath: path,
-            sortDirection: (
-                sorter.sortPath === path
-                ? ( sorter.sortDirection === 'asc' ? 'desc' : 'asc' )
-                : isFirstCol && !sorter.sortPath ? 'desc' : 'asc'
+const FieldDataHeadCols = (ps) => {
+    var {
+        displayFieldData,
+        sorter,
+        canSort = false,
+    } = ps;
+
+    return displayFieldData.map((it, ix) => {
+        var { type, systemType, displayName, pointer, dataPointer } = it; 
+        // FIXME
+        pointer = pointer || dataPointer;
+        type = type || systemType;
+
+        var canSortColumn = canSort && [
+            'SaneString',
+            'Address',
+            'DateOnlyServerSide',
+            'BiologicalGender',
+            'Integer',
+            'DateTime',
+            'ExtBool'
+        ].includes(type);
+
+        return (
+            canSortColumn
+            ? (
+                <SortableTH
+                    key={ ix }
+                    sorter={ sorter }
+                    label={ displayName }
+                    path={ convertPointerToPath(pointer) }
+                    isFirstColumn={ ix === 0 }
+                />
             )
-        })
-        : undefined
-    );
-    return (
-        displayFieldData.map((it, ix) => {
-            //console.log(it);
-            var { type, systemType, pointer, dataPointer } = it; 
-            // FIXME
-            pointer = pointer || dataPointer;
-            type = type || systemType;
+            : (
+                <th>{ displayName }</th>
+            )
+        );
+    })
 
-            var onClick = undefined;
-            var className = undefined;
-            var style = undefined;
-            
-            if (canSort && [
-                'SaneString',
-                'Address',
-                'DateOnlyServerSide',
-                'BiologicalGender',
-                'Integer',
-                'DateTime',
-                'ExtBool'
-            ].includes(type)) {
-                //console.log(it);
-                var path = convertPointerToPath(pointer);
-                var isSelected = (
-                    sorter && path === sorter.sortPath
-                    ? true
-                    : false
-                );
-                
-                onClick = createOnClick(path, ix === 0);
-                className = 'text-primary';
-                style = { cursor: 'pointer' };
-            }
-            return (
-                <th 
-                    key={ it.key }
-                    onClick={ onClick }
-                    className={ className }
-                    style={ style }
-                >
-                    { 
-                        isSelected
-                        ? <u>{ it.displayName }</u>
-                        : it.displayName
-                    }
-                </th>
-            );
-        })
-    );
 }
 
 export default FieldDataHeadCols;
