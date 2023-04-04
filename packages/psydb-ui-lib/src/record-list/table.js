@@ -5,7 +5,12 @@ import {
     Alert,
 } from 'react-bootstrap';
 
-import TableHead from './table-head';
+import {
+    TableHead,
+    TableHeadCustomCols,
+    TableEmptyFallback
+} from '@mpieva/psydb-ui-layout';
+
 import TableBody from './table-body';
 
 var RecordListTable = ({
@@ -38,17 +43,12 @@ var RecordListTable = ({
 }) => {
     if (!records.length) {
         return (
-            <>
-                <Table className={ 'mb-1 ' + className } { ...bsTableProps }>
-                    <TableHead
-                        displayFieldData={ displayFieldData }
-                        showSelectionIndicator={ showSelectionIndicator }
-                    />
-                </Table>
-                <Alert variant='info'>
-                    <i>{ emptyInfoText || 'Keine Datensätze gefunden'}</i>
-                </Alert>
-            </>
+            <TableEmptyFallback
+                tableExtraClassName={ className }
+                { ...bsTableProps }
+            >
+                <TableHeadCustomCols definitions={ displayFieldData } />
+            </TableEmptyFallback>
         );
     }
 
@@ -83,12 +83,16 @@ var RecordListTable = ({
             className={ className } { ...bsTableProps }
         >
             <TableHead
-                displayFieldData={ displayFieldData }
+                showActionColumn={ true }
                 showSelectionIndicator={ showSelectionIndicator }
-                pagination={ pagination }
-                sorter={ sorter }
-                canSort={ canSort }
-            />
+            >
+                <TableHeadCustomCols
+                    definitions={ displayFieldData }
+                    sorter={ sorter }
+                    canSort={ canSort }
+                />
+            </TableHead>
+
             <TableBody { ...({
                 records,
                 displayFieldData,

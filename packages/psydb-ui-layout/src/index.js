@@ -36,6 +36,7 @@ export * from './permission-denied';
 export * from './not-found';
 export * from './unexpected-response-error';
 
+export * from './table-empty-fallback';
 export * from './table-head';
 export * from './table-head-custom-cols';
 export * from './sortable-th';
