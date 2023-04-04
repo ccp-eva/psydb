@@ -9,12 +9,13 @@ const enumeration = {
 }
 
 export const ExtBool = withField({ Control: (ps) => {
-    var { dataXPath, formikField, formikForm } = ps;
+    var { dataXPath, formikField, formikForm, disabled } = ps;
     var { setFieldValue } = formikForm;
     var { value } = formikField;
 
     var bag = {
         value,
+        disabled,
         onChange: (next) => setFieldValue(dataXPath, next)
     };
 
@@ -30,11 +31,16 @@ export const ExtBool = withField({ Control: (ps) => {
 }});
 
 var Yes = (ps) => {
-    var { value, onChange } = ps;
+    var { value, onChange, disabled } = ps;
+    var variant = (
+        disabled
+        ? 'secondary'
+        : 'primary'
+    );
     return (
         <YNButton
             active={ value === 'yes' }
-            variant='primary'
+            variant={ variant }
             onClick={ () => onChange('yes') }
             { ...ps }
         />
@@ -42,11 +48,16 @@ var Yes = (ps) => {
 }
 
 var No = (ps) => {
-    var { value, onChange } = ps;
+    var { value, onChange, disabled } = ps;
+    var variant = (
+        disabled
+        ? 'secondary'
+        : 'danger'
+    );
     return (
         <YNButton
             active={ value === 'no' }
-            variant='danger'
+            variant={ variant }
             onClick={ () => onChange('no') }
             { ...ps }
         />
@@ -54,7 +65,7 @@ var No = (ps) => {
 }
 
 var Unknown = (ps) => {
-    var { value, onChange } = ps;
+    var { value, onChange, disabled } = ps;
     return (
         <YNButton
             active={ value === 'unknown' }

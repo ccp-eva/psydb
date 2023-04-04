@@ -4,12 +4,13 @@ import { ButtonGroup, Button } from '@mpieva/psydb-ui-layout';
 import { GenericEnum } from './generic-enum';
 
 export const DefaultBool = withField({ Control: (ps) => {
-    var { dataXPath, formikField, formikForm } = ps;
+    var { dataXPath, formikField, formikForm, disabled } = ps;
     var { setFieldValue } = formikForm;
     var { value } = formikField;
 
     var bag = {
         value,
+        disabled,
         onChange: (next) => setFieldValue(dataXPath, next)
     };
 
@@ -23,11 +24,16 @@ export const DefaultBool = withField({ Control: (ps) => {
 }});
 
 var Yes = (ps) => {
-    var { value, onChange } = ps;
+    var { value, onChange, disabled } = ps;
+    var variant = (
+        disabled
+        ? 'secondary'
+        : 'primary'
+    );
     return (
         <YNButton
             active={ value === true }
-            variant='primary'
+            variant={ variant }
             onClick={ () => onChange(true) }
             { ...ps }
         />
@@ -35,11 +41,16 @@ var Yes = (ps) => {
 }
 
 var No = (ps) => {
-    var { value, onChange } = ps;
+    var { value, onChange, disabled } = ps;
+    var variant = (
+        disabled
+        ? 'secondary'
+        : 'danger'
+    );
     return (
         <YNButton
             active={ value === false }
-            variant='danger'
+            variant={ variant }
             onClick={ () => onChange(false) }
             { ...ps }
         />
