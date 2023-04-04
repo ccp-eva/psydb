@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-    jsonpointer,
-    convertPointerToPath,
-    hasNone
-} from '@mpieva/psydb-core-utils';
-
-import { createDefaultFieldDataTransformer } from '@mpieva/psydb-common-lib';
-import { fixRelated, __fixDefinitions } from '@mpieva/psydb-ui-utils';
+import { convertPointerToPath, hasNone } from '@mpieva/psydb-core-utils';
 
 import {
     useModalReducer,
@@ -27,46 +20,30 @@ import {
     RemoveIconButtonInline,
 } from '@mpieva/psydb-ui-layout';
 
-import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
-import calculateAge from '@mpieva/psydb-ui-lib/src/calculate-age';
-
-// FIXME: those import are bad; move thos somewhere else
-import FieldDataBodyCols from '@mpieva/psydb-ui-lib/src/record-list/field-data-body-cols';
-
 import {
     EditModal,
     RemoveModal
 } from '@mpieva/psydb-ui-lib/src/participation';
 
-
+import TimestampAndMaybeAge from './timestamp-and-maybe-age';
 
 const ParticipationList = (ps) => {
     var {
         records,
-        relatedRecordLabels,
-        relatedHelperSetItems,
-        relatedCustomRecordTypeLabels,
-        displayFieldData,
-        timezone,
-
+        definitions,
+        transformer,
         sorter,
+
         className,
         onSuccessfulUpdate,
     } = ps;
-
-    var definitions = __fixDefinitions(displayFieldData);
-    var related = fixRelated({
-        relatedRecordLabels,
-        relatedHelperSetItems,
-        relatedCustomRecordTypeLabels,
-    }, { isResponse: false });
 
     var permissions = usePermissions();
     
     var editModal = useModalReducer();
     var removeModal = useModalReducer();
 
-    var dateOfBirthField = displayFieldData.find(it => (
+    var dateOfBirthField = definitions.find(it => (
         it.props.isSpecialAgeFrameField
     ));
 
@@ -77,11 +54,6 @@ const ParticipationList = (ps) => {
         // FIXME maybe not store it in subject at all then?a
         // keep in experiment though
         return !(['didnt-participate'].includes(participationStatus));
-    })
-
-    var transformer = createDefaultFieldDataTransformer({
-        related,
-        timezone,
     })
 
     var modalBag = { onSuccessfulUpdate };
@@ -151,9 +123,7 @@ const TableHeadCols = (ps) => {
                 <SortableTH
                     label='Alter'
                     sorter={ sorter }
-                    path={ convertPointerToPath(
-                        dateOfBirthField.pointer
-                    )}
+                    path={ convertPointerToPath( dateOfBirthField.pointer )}
                 />
             )}
             <SortableTH
@@ -187,21 +157,10 @@ const ParticipationListRow = (ps) => {
         record.scientific.state.internals.participatedInStudies[0]
     );
 
-    var date = new Date(participationData.timestamp);
-    var formattedDate = datefns.format(
-        date,
-        'dd.MM.yyyy HH:mm'
-    );
-    // FIXME: this is really hacky but we have
-    // experiments old stuff in db
-    var is1970 = (
-        date.toISOString() === '1970-01-01T00:00:00.000Z'
-        //formattedDate === '01.01.1970 00:00'
-    );
-
     var {
         type: participationType,
         experimentId,
+        timestamp,
     } = participationData;
 
     var hasExperiment = ( participationType !== 'manual' && experimentId );
@@ -215,33 +174,23 @@ const ParticipationListRow = (ps) => {
                 definitions,
                 transformer,
             }) } />
-            <td>{ is1970 ? '-' : formattedDate }</td>
-            { dateOfBirthField && (
-                <td>
-                    { 
-                        is1970
-                            ? '-'
-                            : calculateAge({
-                                base: jsonpointer.get(
-                                    record, dateOfBirthField.dataPointer
-                                ),
-                                relativeTo: participationData.timestamp
-                            })
-                    }
-                </td>
-            )}
+            <TimestampAndMaybeAge { ...({
+                timestamp,
+                record,
+                dateOfBirthField
+            })} />
             <td>
                 { formatStatus(participationData.status) }
             </td>
             <td className='d-flex justify-content-end'>
                 { hasExperiment && (
-                    <ExperimentIconButton
-                        to={`/experiments/${participationType}/${experimentId}`}
-                    />
+                    <ExperimentIconButton to={
+                        `/experiments/${participationType}/${experimentId}`
+                    } />
                 )}
-                <SubjectIconButton
-                    to={`/subjects/${record.type}/${record._id}`}
-                />
+                <SubjectIconButton to={
+                    `/subjects/${record.type}/${record._id}`
+                } />
                 { showEdit && (
                     <EditIconButtonInline
                         onClick={ () => onEdit({
@@ -264,6 +213,7 @@ const ParticipationListRow = (ps) => {
         </tr>
     );
 }
+
 
 var formatStatus = (status) => {
     return {

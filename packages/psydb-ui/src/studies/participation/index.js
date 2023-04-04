@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { useRouteMatch, useParams } from 'react-router-dom';
 
-import { keyBy } from '@mpieva/psydb-common-lib';
+import { keyBy } from '@mpieva/psydb-core-utils';
+import { createDefaultFieldDataTransformer } from '@mpieva/psydb-common-lib';
+import { fixRelated, __fixDefinitions } from '@mpieva/psydb-ui-utils';
 
 import {
     useFetchAll,
@@ -79,20 +81,34 @@ const StudyParticipation = (ps) => {
         selectedSubjectType = subjectTypeKeys[0];
     }
 
+    var onSuccessfulUpdate = revision.up;
+    var modalBag = { studyId: id, onSuccessfulUpdate };
+    
+    // FIXME
+    var { 
+        displayFieldData,
+        records,
+        related,
+    } = fixRelated(dataBySubjectType[selectedSubjectType]);
+    var definitions = __fixDefinitions(displayFieldData);
+
+    var transformer = createDefaultFieldDataTransformer({
+        related,
+        //timezone,
+    })
+
     return (
         <div className='mt-3'>
 
             <CreateModal
+                { ...modalBag }
                 { ...createModal.passthrough }
-                onSuccessfulUpdate={ revision.up }
-                studyId={ id }
                 subjectRecordType={ selectedSubjectType }
             />
 
             <CSVImportModal
+                { ...modalBag }
                 { ...csvImportModal.passthrough }
-                onSuccessfulUpdate={ revision.up }
-                studyId={ id }
             />
             
             { subjectTypeKeys > 1 && (
@@ -121,12 +137,14 @@ const StudyParticipation = (ps) => {
                     </Button>
                 )}
 
-                <ParticipationList
-                    className='mt-1 bg-white'
-                    sorter={ sorter }
-                    onSuccessfulUpdate={ revision.up }
-                    { ...dataBySubjectType[selectedSubjectType] } 
-                />
+                <ParticipationList { ...({
+                    className: 'mt-1 bg-white',
+                    records,
+                    definitions,
+                    transformer,
+                    sorter,
+                    onSuccessfulUpdate,
+                }) } />
             </div>
 
         </div>
