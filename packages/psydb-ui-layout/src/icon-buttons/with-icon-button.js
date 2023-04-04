@@ -45,11 +45,18 @@ export const withIconButton = (options) => {
             iconStyle,
             target,
             title,
+
+            disabled,
         } = ps;
 
         var mergedButtonProps = { ...defaultButtonProps, ...buttonProps };
         var mergedButtonStyle = { ...defaultButtonStyle, ...buttonStyle };
         var mergedIconStyle = { ...defaultIconStyle, ...iconStyle };
+
+        if (disabled) {
+            mergedButtonProps = { ...mergedButtonProps, disabled };
+            mergedIconStyle = { ...mergedIconStyle, color: '#888' };
+        }
 
         if (to && !target) {
             return (

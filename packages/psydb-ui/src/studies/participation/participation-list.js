@@ -249,10 +249,7 @@ const ParticipationListRow = (ps) => {
                             title: `Teilnahme - ${record._recordLabel}`,
                             ...participationData
                         }) }
-                        iconStyle={{
-                            ...(!enableEdit && { color: '#888' })
-                        }}
-                        buttonProps={{ disabled: !enableEdit }}
+                        disabled={ !enableEdit }
                     />
                 )}
                 { showRemove && (
@@ -260,10 +257,7 @@ const ParticipationListRow = (ps) => {
                         onClick={ () => onRemove({
                             ...participationData
                         }) }
-                        iconStyle={{
-                            ...(!enableRemove && { color: '#888' })
-                        }}
-                        buttonProps={{ disabled: !enableRemove }}
+                        disabled={ !enableRemove }
                     />
                 )}
             </td>
