@@ -1,21 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import jsonpointer from 'jsonpointer';
-import classnames from 'classnames';
+import React from 'react';
+import { classnames } from '@mpieva/psydb-ui-utils';
+import { LinkButton, TableBodyCustomCols } from '@mpieva/psydb-ui-layout';
 
-import { LinkButton } from '@mpieva/psydb-ui-layout';
-
-import * as stringifiers from '@mpieva/psydb-common-lib/src/field-stringifiers';
 import CheckColumn from '../check-column';
-
-import FieldDataBodyCols from './field-data-body-cols';
 
 const TableRow = (ps) => {
     var {
-        displayFieldData,
         record,
-        relatedRecordLabels,
-        relatedHelperSetItems,
-        relatedCustomRecordTypeLabels,
+        definitions,
+        transformer,
         
         enableView,
         enableEdit_old,
@@ -31,7 +24,6 @@ const TableRow = (ps) => {
         CustomActionListComponent,
     } = ps;
 
-
     var className = classnames([
         record._isHidden && 'bg-light text-grey'
     ]);
@@ -40,11 +32,9 @@ const TableRow = (ps) => {
         <tr
             className={ className }
             style={{
-                ...(
-                    (onSelectRecord && !showSelectionIndicator) && {
-                        cursor: 'pointer'
-                    }
-                )
+                ...((onSelectRecord && !showSelectionIndicator) && {
+                    cursor: 'pointer'
+                })
             }}
             role={(
                 (!showSelectionIndicator || wholeRowIsClickable) && onSelectRecord
@@ -64,11 +54,9 @@ const TableRow = (ps) => {
 
 const TDs = (ps) => {
     var {
-        displayFieldData,
         record,
-        relatedRecordLabels,
-        relatedHelperSetItems,
-        relatedCustomRecordTypeLabels,
+        definitions,
+        transformer,
         
         enableView,
         enableEdit_old,
@@ -84,7 +72,6 @@ const TDs = (ps) => {
         CustomActionListComponent,
     } = ps;
 
-
     return (
         <>
             { (showSelectionIndicator && wholeRowIsClickable) && (
@@ -94,17 +81,14 @@ const TDs = (ps) => {
                     selectedRecordIds,
                 }) } />
             )}
-            <FieldDataBodyCols { ...({
+            <TableBodyCustomCols { ...({
                 record,
-                relatedRecordLabels,
-                relatedHelperSetItems,
-                relatedCustomRecordTypeLabels,
-                displayFieldData,
-
+                definitions,
+                transformer,
                 ...(enableRecordRowLink && {
                     wrapAsLinkTo: `#${linkBaseUrl}/${record._id}`
                 })
-            })} />
+            }) } />
             <td>
                 <div className='d-flex justify-content-end pb-0 pt-0'>
                 {

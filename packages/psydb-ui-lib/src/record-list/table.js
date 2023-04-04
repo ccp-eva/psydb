@@ -1,4 +1,6 @@
 import React from 'react';
+import { createDefaultFieldDataTransformer } from '@mpieva/psydb-common-lib';
+import { fixRelated, __fixDefinitions } from '@mpieva/psydb-ui-utils';
 
 import {
     Table,
@@ -9,41 +11,56 @@ import {
 
 import TableBody from './table-body';
 
-var RecordListTable = ({
-    className,
+var RecordListTable = (ps) => {
+    var {
+        className,
 
-    records,
-    displayFieldData,
-    relatedRecordLabels,
-    relatedHelperSetItems,
-    relatedCustomRecordTypeLabels,
-    
-    enableView,
-    enableEdit_old,
-    enableRecordRowLink,
-    
-    enableSelectRecords,
-    showSelectionIndicator,
-    wholeRowIsClickable,
-    selectedRecordIds,
-    onSelectRecord,
-    
-    linkBaseUrl,
-    CustomActionListComponent,
-    bsTableProps,
-    emptyInfoText,
+        records,
+        displayFieldData,
+        relatedRecordLabels,
+        relatedHelperSetItems,
+        relatedCustomRecordTypeLabels,
+        timezone,
+        
+        enableView,
+        enableEdit_old,
+        enableRecordRowLink,
+        
+        enableSelectRecords,
+        showSelectionIndicator,
+        wholeRowIsClickable,
+        selectedRecordIds,
+        onSelectRecord,
+        
+        linkBaseUrl,
+        CustomActionListComponent,
+        bsTableProps,
+        emptyInfoText,
 
-    pagination,
-    sorter,
-    canSort,
-}) => {
+        pagination,
+        sorter,
+        canSort,
+    } = ps;
+
+    var definitions = __fixDefinitions(displayFieldData);
+    var related = fixRelated({
+        relatedRecordLabels,
+        relatedHelperSetItems,
+        relatedCustomRecordTypeLabels,
+    }, { isResponse: false });
+
+    var transformer = createDefaultFieldDataTransformer({
+        related,
+        timezone,
+    });
+
     if (!records.length) {
         return (
             <TableEmptyFallback
                 tableExtraClassName={ className }
                 { ...bsTableProps }
             >
-                <TableHeadCustomCols definitions={ displayFieldData } />
+                <TableHeadCustomCols definitions={ definitions } />
             </TableEmptyFallback>
         );
     }
@@ -83,7 +100,7 @@ var RecordListTable = ({
                 showSelectionIndicator={ showSelectionIndicator }
             >
                 <TableHeadCustomCols
-                    definitions={ displayFieldData }
+                    definitions={ definitions }
                     sorter={ sorter }
                     canSort={ canSort }
                 />
@@ -91,10 +108,8 @@ var RecordListTable = ({
 
             <TableBody { ...({
                 records,
-                displayFieldData,
-                relatedRecordLabels,
-                relatedHelperSetItems,
-                relatedCustomRecordTypeLabels,
+                definitions,
+                transformer,
 
                 enableView,
                 enableEdit_old,

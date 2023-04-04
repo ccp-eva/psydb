@@ -2,6 +2,7 @@
 import { flatten, unflatten } from '@cdxoo/flat';
 
 const fixRelated = (raw, options = {}) => {
+    console.info('FIXING RELATED');
     var {
         isResponse = true,
         labelize = false

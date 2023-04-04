@@ -1,43 +1,49 @@
-import React, { useState, useEffect } from 'react';
-import applyValueToDisplayFields from '../apply-value-to-display-fields';
+import React from 'react';
+import { createDefaultFieldDataTransformer } from '@mpieva/psydb-common-lib';
+import { TableBodyCustomCols } from '@mpieva/psydb-ui-layout';
+import { fixRelated, __fixDefinitions } from '@mpieva/psydb-ui-utils';
 
+// FIXME: compat
+// TODO: remove
 const FieldDataBodyCols = ({
     record,
+    definitions,
+    related,
+    timezone,
+    
+    wrapAsLinkTo,
+
+    // FIXME
     relatedRecordLabels,
     relatedHelperSetItems,
     relatedCustomRecordTypeLabels,
     displayFieldData,
-    wrapAsLinkTo,
 }) => {
 
-    var withValue = applyValueToDisplayFields({
-        record,
-        relatedRecordLabels,
-        relatedHelperSetItems,
-        relatedCustomRecordTypeLabels,
-        displayFieldData,
-    });
+    if (!definitions) {
+        definitions = __fixDefinitions(displayFieldData)
+    }
+    if (!related) {
+        var related = fixRelated({
+            relatedRecordLabels,
+            relatedHelperSetItems,
+            relatedCustomRecordTypeLabels,
+        }, { isResponse: false });
+    }
+    
+    var transformer = createDefaultFieldDataTransformer({
+        related,
+        timezone,
+    })
 
     return (
-        withValue.map(it => (
-            wrapAsLinkTo
-            ? (
-                <td key={ it.key } className='p-0'>
-                    <a
-                        href={wrapAsLinkTo}
-                        className='d-block text-reset'
-                        style={{
-                            textDecoration: 'none',
-                            padding: '0.75rem'
-                        }}
-                    >
-                            { it.value }
-                    </a>
-                </td>
-            )
-            : <td key={ it.key }>{ it.value }</td>
-        ))
-    );
+        <TableBodyCustomCols
+            record={ record }
+            definitions={ definitions }
+            transformer={ transformer }
+            wrapAsLinkTo={ wrapAsLinkTo }
+        />
+    )
 }
 
 export default FieldDataBodyCols;

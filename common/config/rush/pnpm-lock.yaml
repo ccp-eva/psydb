@@ -11201,7 +11201,7 @@ packages:
     dev: false
 
   file:projects/psydb-ui-utils.tgz_webpack@5.65.0:
-    resolution: {integrity: sha512-TKAlixLsvM3D5NlgPx8NeM27toN2cV8ENdC4xp6RqoXWhjAmlfkKWfWqJ1V7kpOP0iACsSaF2EpNQbwgQyJbkg==, tarball: file:projects/psydb-ui-utils.tgz}
+    resolution: {integrity: sha512-XpJP+6SMuyD1MQfrWg9PSqykf/RcVhZkIfiNFeEt6nVXo8uagzm4s+R/WvXiNu0tkbQpMt+X3xUZTPKG0VYZdw==, tarball: file:projects/psydb-ui-utils.tgz}
     id: file:projects/psydb-ui-utils.tgz
     name: '@rush-temp/psydb-ui-utils'
     version: 0.0.0
@@ -11211,6 +11211,7 @@ packages:
       '@cdxoo/flat': 0.0.4
       babel-loader: 8.2.3_b113956521dc20fff6d7586fe3ac84bd
       chai: 4.3.7
+      classnames: 2.3.1
       mocha: 10.1.0
     transitivePeerDependencies:
       - supports-color

@@ -46,4 +46,7 @@ module.exports = {
     ),
 
     calculateTestableIntervals: require('./calculate-testable-intervals'),
+    createDefaultFieldDataTransformer: (
+        require('./create-default-field-data-transformer')
+    ),
 }
