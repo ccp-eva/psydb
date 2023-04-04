@@ -141,6 +141,17 @@ var collections = createEnumFromKV({
     ]
 })
 
+var foreignIdFieldCollections = createEnumFromKV({
+    keys: [
+        ...customRecordTypeCollections.keys,
+        'personnel',
+    ],
+    names: [
+        ...customRecordTypeCollections.names,
+        'Mitarbeiter:in',
+    ]
+})
+
 // FIXME: rename labProcedureTypes
 var experimentVariants = createEnumFromMap({
     'inhouse': 'Interne Termine',
@@ -185,6 +196,7 @@ module.exports = {
     unparticipationStatus,
 
     customRecordTypeCollections,
+    foreignIdFieldCollections,
     collections,
 
     experimentVariants,
@@ -192,5 +204,6 @@ module.exports = {
 
     experimentTypes,
     inviteExperimentTypes,
+
     labMethods,
 }

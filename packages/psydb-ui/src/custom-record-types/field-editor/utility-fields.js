@@ -1,6 +1,7 @@
 import React from 'react';
 import * as enums from '@mpieva/psydb-schema-enums';
 import { Fields, useFormikContext } from '@mpieva/psydb-ui-lib';
+import getFieldValue from './get-field-value';
 
 export const SubChannelKey = (ps) => {
     return (
@@ -94,9 +95,8 @@ export const IsSpecialAgeFrameFieldProp = (ps) => {
 export const SetIdProp = (ps) => {
     var { dataXPath, isUnrestricted } = ps;
     return (
-        <Fields.ForeignId
+        <Fields.HelperSetId
             label='Hilfs-Tabelle'
-            collection='helperSet'
             dataXPath={ `${dataXPath}.props.setId` }
             disabled={ !isUnrestricted }
             required
@@ -107,22 +107,31 @@ export const SetIdProp = (ps) => {
 export const SharedForeignIdProps = (ps) => {
     var { dataXPath, isUnrestricted } = ps;
     var { values } = useFormikContext();
+    var { collection } = getFieldValue(values, `${dataXPath}.props`);
+
     return (
         <>
             <Fields.GenericEnum
                 label='Haupt-Tabelle'
                 dataXPath={ `${dataXPath}.props.collection` }
-                enum={ enums.customRecordTypeCollections }
+                //enum={ enums.customRecordTypeCollections }
+                enum={ enums.foreignIdFieldCollections }
                 disabled={ !isUnrestricted }
                 required
             />
-            <Fields.SaneString
+            <Fields.GenericTypeKey
+                label='Datensatz-Typ'
+                collection={ collection }
+                dataXPath={ `${dataXPath}.props.recordType` }
+                disabled={ !isUnrestricted || !collection }
+                required
+            />
+            {/*<Fields.SaneString
                 label='Datensatz-Typ'
                 dataXPath={ `${dataXPath}.props.recordType` }
-                disabled={ !values['$']?.props?.props?.collection }
                 disabled={ !isUnrestricted }
                 required
-            />
+            />*/}
         </>
     )
 }
