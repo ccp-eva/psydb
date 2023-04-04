@@ -14,6 +14,7 @@ import { urlUp as up } from '@mpieva/psydb-ui-utils';
 import {
     useRevision,
     usePermissions,
+    useFetch,
     useReadRecord
 } from '@mpieva/psydb-ui-hooks';
 
@@ -59,13 +60,19 @@ const StudyRecordContainer = ({
     var canReadParticipation = permissions.hasFlag('canReadParticipation');
 
     var revision = useRevision();
-    var [ didFetch, fetched ] = useReadRecord({
+    var [ didFetchStudy, fetchedStudy ] = useReadRecord({
         collection: 'study',
         recordType,
         id,
     }, [ revision.value ]);
 
-    if (!didFetch) {
+    var [ didFetchSettings, fetchedSettings ] = useFetch(() => (
+        agent.fetchExperimentVariantSettings({
+            studyId: id
+        })
+    ), [ revision.value ])
+
+    if (!didFetchStudy || !didFetchSettings) {
         return <LoadingIndicator size='lg' />
     }
 
@@ -75,7 +82,12 @@ const StudyRecordContainer = ({
         { key: 'experiment-settings', label: 'Ablauf-Einstellungen' },
         { key: 'teams', label: 'Teams' },
         canReadParticipation && (
-            { key: 'participation', label: 'Studienteilnahme' }
+            { 
+                key: 'participation',
+                label: 'Studienteilnahme',
+                disabled: fetchedSettings.data.records.length < 1,
+                disabled: true
+            }
         ),
     ].filter(it => !!it);
 
@@ -88,9 +100,9 @@ const StudyRecordContainer = ({
                 >
                     Studien-Details
                     {' - '}
-                    { fetched.record.state.name }
+                    { fetchedStudy.record.state.name }
                     {' '}
-                    ({ fetched.record.state.shorthand })
+                    ({ fetchedStudy.record.state.shorthand })
                 </h5>
                 <hr />
 
@@ -110,7 +122,7 @@ const StudyRecordContainer = ({
                             <Route exact path={path}>
                                 <StudyRecordDetails
                                     recordType={ recordType }
-                                    fetched={ fetched }
+                                    fetched={ fetchedStudy }
                                 />
                             </Route>
                             <Route exact path={`${path}/edit`}>

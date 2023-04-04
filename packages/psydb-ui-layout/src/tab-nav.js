@@ -10,6 +10,13 @@ const styleBase = {
     backgroundColor: 'transparent',
 }
 
+const styleDisabled = {
+    ...styleBase,
+    color: '#ccc',
+    borderBottom: '3px solid #dee2e6',
+    cursor: 'default'
+}
+
 const styleActive = {
     ...styleBase,
     color: '#006c66',
@@ -36,15 +43,21 @@ const TabNav = ({
                     <Nav.Item
                         className={ itemClassName }
                         key={ it.key }
-                        onClick={ () => onItemClick(it.key) }
+                        onClick={
+                            it.disabled
+                            ? undefined
+                            : () => onItemClick(it.key)
+                        }
                         style={{}}
                     >
                         <Nav.Link
                             active={ it.key === activeKey }
                             style={
-                                it.key === activeKey
-                                ? styleActive
-                                : styleInactive
+                                it.disabled
+                                ? styleDisabled
+                                : it.key === activeKey
+                                    ? styleActive
+                                    : styleInactive
                             }
                         >
                             { it.label }
