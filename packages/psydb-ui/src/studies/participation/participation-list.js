@@ -1,6 +1,9 @@
-import React, { useEffect, useReducer, useMemo } from 'react';
-import jsonpointer from 'jsonpointer';
-import { convertPointerToPath } from '@mpieva/psydb-core-utils';
+import React from 'react';
+import {
+    jsonpointer,
+    convertPointerToPath,
+    hasNone
+} from '@mpieva/psydb-core-utils';
 
 import {
     useModalReducer,
@@ -8,6 +11,7 @@ import {
 } from '@mpieva/psydb-ui-hooks';
 
 import {
+    Alert,
     Table,
     SortableTH,
     SubjectIconButton,
@@ -57,6 +61,17 @@ const ParticipationList = ({
         return !(['didnt-participate'].includes(participationStatus));
     })
 
+    if (hasNone(records)) {
+        return (
+            <Fallback
+                className={ className }
+                displayFieldData={ displayFieldData }
+                sorter={ sorter }
+                dateOfBirthField={ dateOfBirthField }
+            />
+        )
+    }
+
     return (
         <>
             <EditModal
@@ -68,34 +83,11 @@ const ParticipationList = ({
                 onSuccessfulUpdate={ onSuccessfulUpdate }
             />
             <Table className={ className }>
-                <thead>
-                    <tr>
-                        <FieldDataHeadCols
-                            displayFieldData={ displayFieldData }
-                            sorter={ sorter }
-                            canSort={ true }
-                        />
-                        <SortableTH
-                            label='Zeitpunkt'
-                            sorter={ sorter }
-                            path='scientific.state.internals.participatedInStudies.timestamp'
-                        />
-                        { dateOfBirthField && (
-                            <SortableTH
-                                label='Alter'
-                                sorter={ sorter }
-                                path={ convertPointerToPath(
-                                    dateOfBirthField.pointer
-                                )}
-                            />
-                        )}
-                        <SortableTH
-                            label='Status'
-                            sorter={ sorter }
-                            path='scientific.state.internals.participatedInStudies.status'
-                        />
-                    </tr>
-                </thead>
+                <TableHead
+                    displayFieldData={ displayFieldData }
+                    sorter={ sorter }
+                    dateOfBirthField={ dateOfBirthField }
+                />
                 <tbody>
                     { records.map((it, index) => (
                         <ParticipationListRow { ...({
@@ -114,6 +106,69 @@ const ParticipationList = ({
                 </tbody>
             </Table>
         </>
+    )
+}
+
+const Fallback = (ps) => {
+    var {
+        className,
+        displayFieldData,
+        sorter,
+        dateOfBirthField
+    } = ps;
+
+    return (
+        <div className={ className }>
+            <Table className='mb-1'>
+                <TableHead
+                    displayFieldData={ displayFieldData }
+                    sorter={ sorter }
+                    dateOfBirthField={ dateOfBirthField }
+                />
+            </Table>
+            <Alert variant='info' className='mt-1'>
+                <i>Keine Studienteilnahmen gefunden</i>
+            </Alert>
+        </div>
+    )
+}
+
+const TableHead = (ps) => {
+    var {
+        displayFieldData,
+        sorter,
+        dateOfBirthField
+    } = ps;
+
+    return (
+        <thead>
+            <tr>
+                <FieldDataHeadCols
+                    displayFieldData={ displayFieldData }
+                    sorter={ sorter }
+                    canSort={ true }
+                />
+                <SortableTH
+                    label='Zeitpunkt'
+                    sorter={ sorter }
+                    path='scientific.state.internals.participatedInStudies.timestamp'
+                />
+                { dateOfBirthField && (
+                    <SortableTH
+                        label='Alter'
+                        sorter={ sorter }
+                        path={ convertPointerToPath(
+                            dateOfBirthField.pointer
+                        )}
+                    />
+                )}
+                <SortableTH
+                    label='Status'
+                    sorter={ sorter }
+                    path='scientific.state.internals.participatedInStudies.status'
+                />
+            </tr>
+        </thead>
     )
 }
 
@@ -155,6 +210,10 @@ const ParticipationListRow = ({
         experimentId,
     } = participationData;
 
+    var hasExperiment = (
+        participationType !== 'manual' && experimentId
+    );
+
     return (
         <tr>
             <FieldDataBodyCols { ...({
@@ -183,7 +242,7 @@ const ParticipationListRow = ({
                 { formatStatus(participationData.status) }
             </td>
             <td className='d-flex justify-content-end'>
-                { participationType !== 'manual' && experimentId && (
+                { hasExperiment && (
                     <ExperimentIconButton
                         to={`/experiments/${participationType}/${experimentId}`}
                     />
@@ -218,13 +277,13 @@ const ParticipationListRow = ({
                         }) }
                         iconStyle={{
                             ...(
-                                experimentId && !permissions.isRoot()
+                                hasExperiment && !permissions.isRoot()
                                 && { color: '#888' }
                             )
                         }}
                         buttonProps={{
                             disabled: (
-                                experimentId && !permissions.isRoot()
+                                hasExperiment && !permissions.isRoot()
                             )
                         }}
                     />

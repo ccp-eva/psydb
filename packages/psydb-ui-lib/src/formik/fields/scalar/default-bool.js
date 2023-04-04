@@ -1,17 +1,25 @@
 import React from 'react';
 import { withField } from '@cdxoo/formik-utils';
 import { ButtonGroup, Button } from '@mpieva/psydb-ui-layout';
-import { GenericEnum } from './generic-enum';
 
 export const DefaultBool = withField({ Control: (ps) => {
-    var { dataXPath, formikField, formikForm, disabled } = ps;
+    var {
+        dataXPath,
+        formikField,
+        formikForm,
+        extraOnChange,
+        disabled
+    } = ps;
     var { setFieldValue } = formikForm;
     var { value } = formikField;
 
     var bag = {
         value,
+        onChange: (next) => {
+            extraOnChange && extraOnChange(next);
+            setFieldValue(dataXPath, next);
+        },
         disabled,
-        onChange: (next) => setFieldValue(dataXPath, next)
     };
 
     return (
