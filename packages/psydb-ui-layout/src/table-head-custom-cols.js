@@ -37,7 +37,7 @@ export const TableHeadCustomCols = (ps) => {
                 />
             )
             : (
-                <th>{ displayName }</th>
+                <th key={ ix }>{ displayName }</th>
             )
         );
     })
