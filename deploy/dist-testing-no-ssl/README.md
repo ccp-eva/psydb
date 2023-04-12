@@ -25,4 +25,6 @@
       and the database structure according to how the EVA ChildLab uses
       the application
     * "init-childlab-with-dummy-data" is the same as above but includes
-      some dummy data as well
+      some dummy data as well; this dump also creates 2 other users
+      that have different roles with reduced permissions
+      (use their email as username; passwords are "test1234" as well)
