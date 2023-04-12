@@ -54,15 +54,21 @@ agent.readRecordSchema = ({
 }
 
 agent.readCRTSettings = ({
+    id,
     collection,
-    recordType
+    recordType,
+    extraAxiosConfig,
 }) => {
     var url = (
-        recordType
-        ? `/api/metadata/crt-settings/${collection}/${recordType}`
-        : `/api/metadata/crt-settings/${collection}`
+        id
+        ? `/api/metadata/crt-settings-by-id/${id}`
+        : (
+            recordType
+            ? `/api/metadata/crt-settings/${collection}/${recordType}`
+            : `/api/metadata/crt-settings/${collection}`
+        )
     );
-    return axios.get(url);
+    return axios.get(url, extraAxiosConfig);
 }
 
 agent.fetchCollectionCRTs = ({
@@ -536,6 +542,16 @@ agent.fetchHelperSetPreRemoveInfo = ({
 }) => {
     return axios.get(
         `/api/helper-set-pre-remove-info/${id}`,
+        extraAxiosConfig
+    );
+}
+
+agent.fetchCRTPreRemoveInfo = ({
+    id,
+    extraAxiosConfig
+}) => {
+    return axios.get(
+        `/api/custom-record-type/pre-remove-info/${id}`,
         extraAxiosConfig
     );
 }

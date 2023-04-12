@@ -77,5 +77,6 @@ module.exports = {
     ...require('./match-online-participation-csv'),
     
     ...require('./rohrpost-channel-history'),
+    ...require('./fetch-crt-pre-remove-info'),
     ...require('./fetch-helper-set-pre-remove-info'),
 }

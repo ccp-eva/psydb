@@ -9,7 +9,8 @@ var fetchCustomRecordType = async ({ db, collection, type }) => {
     var customRecordTypes = await (
         db.collection('customRecordType').aggregate([
             { $match: {
-                collection, type
+                collection, type,
+                'state.internals.isRemoved': { $ne: true }
             }},
             StripEventsStage(),
             /*{ $project: {

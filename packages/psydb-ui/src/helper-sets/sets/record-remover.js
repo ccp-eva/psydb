@@ -1,6 +1,4 @@
 import React from 'react';
-
-import { collections as collectionEnum } from '@mpieva/psydb-schema-enums';
 import { useFetch, useSendRemove } from '@mpieva/psydb-ui-hooks';
 import {
     Pair,
@@ -8,32 +6,13 @@ import {
     Icons,
     LoadingIndicator,
     Alert,
+    CRTFieldRefList,
+    FormBox,
 } from '@mpieva/psydb-ui-layout';
 
 import {
     withRecordRemover,
-    FormBox,
 } from '@mpieva/psydb-ui-lib';
-
-const CRTFieldRefList = (ps) => {
-    var { crtFieldRefs } = ps;
-    return (
-        <>
-            <b>Felder</b>
-            <div className='pl-3'>
-                { crtFieldRefs.map(it => (
-                    <div>
-                        { collectionEnum.mapping[it.collection] }
-                        {' -> '}
-                        { it.recordTypeLabel }
-                        {' -> '}
-                        { it.fields.map(it => it.displayName).join(', ')}
-                    </div>
-                ))}
-            </div>
-        </>
-    )
-}
 
 const SafetyForm = (ps) => {
     var {

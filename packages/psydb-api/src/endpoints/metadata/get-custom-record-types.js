@@ -70,6 +70,7 @@ var getCustomRecordTypes = async (context, next) => {
         db.collection('customRecordType').aggregate([
             { $match: {
                 'state.isNew': false,
+                'state.internals.isRemoved': { $ne: true },
                 ...(only && { $or: filters })
             }},
             { $project: {

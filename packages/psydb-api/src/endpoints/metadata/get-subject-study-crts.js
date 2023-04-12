@@ -17,6 +17,7 @@ var getSubjectStudyCRTs = async (context, next) => {
         .find({ collection: 'study' }, { projection: {
             type: true,
             'state.label': true,
+            'state.internals.isRemoved': { $ne: true }
         }})
         .toArray()
     );

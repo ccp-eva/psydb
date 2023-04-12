@@ -15,6 +15,7 @@ var CustomTypeGroup = MessageHandlerGroup([
     require('./set-form-order'),
     require('./set-duplicate-check-settings'),
     require('./commit-settings'),
+    require('./remove'),
 ]);
 
 module.exports = CustomTypeGroup;

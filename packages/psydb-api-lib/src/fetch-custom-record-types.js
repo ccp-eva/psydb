@@ -11,6 +11,7 @@ var fetchCustomRecordTypes = async ({ db, collection, additionalStages }) => {
             { $match: {
                 collection,
                 'state.isNew': false,
+                'state.internals.isRemoved': { $ne: true }
             }},
             StripEventsStage(),
             ...(additionalStages ? additionalStages : [])

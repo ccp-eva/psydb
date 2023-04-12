@@ -35,6 +35,7 @@ var fetchRelatedCustomRecordTypes = async ({
             { $match: {
                 $or: Object.keys(matchCollectionGroups).map(collection => ({
                     collection,
+                    'state.internals.isRemoved': { $ne: true },
                     type: { $in: (
                         matchCollectionGroups[collection].map(it => it.value )
                     )}

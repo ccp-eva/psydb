@@ -40,12 +40,19 @@ const useFetch = (...args) => {
             dispatch({ type: 'set-transmitting' });
             var promise = createPromise(contextAgent);
             if (promise) {
-                promise.then((response) => {
+                promise
+                .then((response) => {
                     extraEffect && extraEffect(response);
                     dispatch({ type: 'init-data', payload: {
                         response: response,
                         data: response.data.data
                     }})
+                })
+                .catch((err) => {
+                    console.log(err.response);
+                    dispatch({ type: 'rejected', payload: {
+                        errorResponse: err.response,
+                    }});
                 })
             }
             else {
@@ -87,6 +94,14 @@ const createReducer = (init) => (state, action) => {
                 ...state,
                 didFetch: true,
                 isTransmitting: false,
+            })
+        case 'rejected':
+            return ({
+                ...state,
+                didFetch: true,
+                didReject: true,
+                isTransmitting: false,
+                errorResponse: payload.errorResponse,
             })
     }
 }

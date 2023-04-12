@@ -50,6 +50,7 @@ export * from './inner-setting-panel';
 export * from './big-nav-item';
 
 export * from './colored-box';
+export * from './crt-field-ref-list';
 
 export * as PageWrappers from './page-wrappers';
 export * as FormHelpers from './form';

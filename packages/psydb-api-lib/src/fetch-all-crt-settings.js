@@ -36,6 +36,7 @@ var fetchAllCRTSettings = async (db, todo, options = {}) => {
     }
 
     var records = await db.collection('customRecordType').find({
+        'state.internals.isRemoved': { $ne: true },
         $or: OR
     }).toArray();
 

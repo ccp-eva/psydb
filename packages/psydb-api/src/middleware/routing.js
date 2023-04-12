@@ -373,6 +373,12 @@ var createRouting = (bag = {}) => {
         endpoints.special.reverseRefs
     );
 
+    router.get('/custom-record-type/pre-remove-info/:id',
+        withSelfAuth(),
+        withPermissions(),
+        endpoints.customRecordType.preRemoveInfo
+    );
+
     router.post('/personnel/related-participation',
         withSelfAuth(),
         withPermissions(),

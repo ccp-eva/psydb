@@ -11,15 +11,17 @@ import {
 
 import agent from '@mpieva/psydb-ui-request-agents';
 
-import { urlUp as up } from '@mpieva/psydb-ui-utils';
-import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
+import { URL } from '@mpieva/psydb-ui-utils';
+import { LoadingIndicator, LinkButton } from '@mpieva/psydb-ui-layout';
 
 //import createSchemaForRecordType from '@mpieva/psydb-common-lib/src/create-schema-for-record-type';
 
 import DirtyAlert from './dirty-alert';
 import EditTypePanel from './edit-type-panel';
 
-const EditType = ({}) => {
+const EditType = (ps) => {
+    var { removeUrl } = ps;
+
     var { path, url } = useRouteMatch();
     var { id } = useParams();
 
@@ -91,7 +93,16 @@ const EditType = ({}) => {
                         onSuccessfulUpdate: handleSuccessfulUpdate
                     }) } />
                 </Route>
-        </Switch>
+            </Switch>
+
+            <hr />
+
+            <LinkButton
+                variant='danger'
+                to={ URL.fill(removeUrl, { id }) }
+            >
+                Löschen
+            </LinkButton>
         </div>
     )
 }

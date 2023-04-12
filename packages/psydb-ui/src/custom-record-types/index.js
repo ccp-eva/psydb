@@ -14,6 +14,7 @@ import { LinkContainer, LinkButton } from '@mpieva/psydb-ui-layout';
 import RecordListContainer from '@mpieva/psydb-ui-lib/src/record-list-container';
 import CreateNewType from './create-new-type';
 import EditType from './edit';
+import RemoveType from './remove';
 
 const EditButton = (ps) => {
     var { linkBaseUrl, record } = ps;
@@ -67,7 +68,14 @@ const CustomRecordTypes = () => {
                     </div>
                 </Route>
                 <Route path={`${path}/:id/edit`}>
-                    <EditType />
+                    <EditType
+                        removeUrl={`${url}/:id/remove`}
+                    />
+                </Route>
+                <Route path={`${path}/:id/remove`}>
+                    <RemoveType
+                        successInfoBackLink={`${url}`}
+                    />
                 </Route>
             </Switch>
         </div>

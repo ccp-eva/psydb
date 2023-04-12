@@ -15,6 +15,7 @@ var getCollectionCRTs = async (context, next) => {
             type: true,
             'state.label': true,
             'state.hasSubChannels': true,
+            'state.internals.isRemoved': { $ne: true }
         }})
         .toArray()
     );
