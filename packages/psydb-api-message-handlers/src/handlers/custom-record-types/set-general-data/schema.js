@@ -30,7 +30,7 @@ var Schema = ({ collection, isPrecheck } = {}) => {
             },
             required: [
                 'id',
-                'lastKnownEventId',
+                //'lastKnownEventId',
                 'label',
                 ...(
                     collection === 'location' && !isPrecheck

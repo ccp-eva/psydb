@@ -162,7 +162,7 @@ var ChannelState = ({
                 'away-team',
                 'inhouse',
                 //'no-reservation' // FIXME
-            ]),
+            ], { default: 'inhouse' }),
         }),
         recordLabelDefinition: RecordLabelDefinition(),
         tableDisplayFields: {
