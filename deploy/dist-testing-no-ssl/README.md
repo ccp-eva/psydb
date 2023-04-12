@@ -17,8 +17,8 @@
   connections from other machines (also no SSL); MailHog only serves for
   testing SMTP capabilities and sould be replaced with an actual mail server;
   configure ./psydb-config-volume/psydb/config.js accordingly
-* additionally on 127.0.0.1:8080 you can access the psydb instance directly
-  this sould not be neccessary under normal circumstances
+* additionally the psydb instance is accessible on 127.0.0.1:8080;
+  this should not be neccessary under normal circumstances
 * there exist 3 initial database dumps in ./mongodb-dumps
     * "init-minimal" only creates the initial root user
     * "init-childlab-structure-only" creates the initial root user
