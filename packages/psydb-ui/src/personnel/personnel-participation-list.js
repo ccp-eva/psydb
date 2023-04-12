@@ -1,5 +1,6 @@
 import React from 'react';
 import * as datefns from 'date-fns';
+import { hasNone } from '@mpieva/psydb-core-utils';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 import {
     LoadingIndicator,
@@ -14,6 +15,7 @@ import {
 import {
     Table,
     SortableTH,
+    Alert,
 } from '@mpieva/psydb-ui-layout';
 
 export const PersonnelParticipationList = (ps) => {
@@ -28,6 +30,13 @@ export const PersonnelParticipationList = (ps) => {
     }
 
     var { records, related } = fetched.data;
+    if (hasNone(records)) {
+        return (
+            <Alert variant='info'>
+                <i>Keine durchgeführten Termine gefunden</i>
+            </Alert>
+        );
+    }
 
     return (
         <>
@@ -71,4 +80,4 @@ export const PersonnelParticipationList = (ps) => {
             </Table>
         </>
     )
-} 
+}
