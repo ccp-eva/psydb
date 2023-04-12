@@ -96,7 +96,10 @@ const Control = (ps) => {
                         dataXPath={ `${dataXPath}.country` }
                         disabled={ disabled }
                         required={ isCountryRequired }
-                        options={{ 'DE': 'Deutschland' }}
+                        options={{
+                            'DE': 'Deutschland',
+                            //'US': 'United States'
+                        }}
                         labelClassName={ labelClassName }
                     />
                 </div>
