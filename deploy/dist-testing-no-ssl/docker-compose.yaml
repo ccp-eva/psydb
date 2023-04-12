@@ -36,7 +36,7 @@ services:
       - "host.docker.internal:host-gateway"
 
   psydb:
-    image: "cdxoo/psydb:0.1.0-alpha.202209030411"
+    image: "cdxoo/psydb:0.1.0-alpha.202304120434"
     ports:
       - "127.0.0.1:8080:8080"
     volumes:
