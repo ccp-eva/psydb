@@ -12,6 +12,11 @@ var PULL = (channel, opData) => {
             : value
         );
         var target = jsonpointer.get(channel, pointer);
+        // FIXME: this is an issue with ommited paths i.e.
+        // pulling from participatedInStudies
+        if (!target) {
+            continue;
+        }
         var updated = target.filter((...args) => !sift(unescaped)(...args));
         
         target.splice(0, target.length);
