@@ -139,7 +139,7 @@ var collections = createEnumFromKV({
         'Hilfstabellen',
         'System-Rollen',
         'Datensatz-Typen',
-        'Themengebiete'
+        'Themengebiete',
     ]
 })
 
@@ -147,10 +147,12 @@ var foreignIdFieldCollections = createEnumFromKV({
     keys: [
         ...customRecordTypeCollections.keys,
         'personnel',
+        'studyTopic',
     ],
     names: [
         ...customRecordTypeCollections.names,
         'Mitarbeiter:in',
+        'Themengebiete',
     ]
 })
 
