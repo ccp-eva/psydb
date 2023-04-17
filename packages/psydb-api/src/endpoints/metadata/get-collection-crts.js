@@ -3,13 +3,15 @@ var debug = require('debug')('psydb:api:endpoints:metadata');
 
 var {
     ResponseBody,
+    withRetracedErrors
 } = require('@mpieva/psydb-api-lib');
+
 
 var getCollectionCRTs = async (context, next) => {
     var { db, params } = context;
     var { collectionName } = params;
     
-    var results = await (
+    var results = await withRetracedErrors(
         db.collection('customRecordType')
         .find({
             collection: collectionName,

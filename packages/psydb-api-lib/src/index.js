@@ -7,6 +7,7 @@ module.exports = {
 
     Ajv: require('./ajv'),
     ApiError: require('./api-error'),
+    withRetracedErrors: require('./with-retraced-errors'),
     FakeAjvError: require('./fake-ajv-error'),
     ResponseBody: require('./response-body'),
     Self: require('./self'),
