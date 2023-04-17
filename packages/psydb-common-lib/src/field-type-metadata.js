@@ -91,6 +91,7 @@ module.exports = {
     },
 
     ...[
+        'DefaultBool',
         'ExtBool',
         'SaneString',
         'BiologicalGender',
