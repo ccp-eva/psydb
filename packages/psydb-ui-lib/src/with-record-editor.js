@@ -11,7 +11,8 @@ import {
 
 import {
     usePermissions,
-    useReadRecord
+    useReadRecord,
+    useRevision,
 } from '@mpieva/psydb-ui-hooks';
 
 var isFunction = (it) => (typeof it === 'function');
@@ -27,6 +28,9 @@ export const withRecordEditor = (options) => {
         var { collection, recordType, id: manualId, revision, children } = ps;
         var { id: paramId } = useParams();
         var id = manualId || paramId;
+
+        var internalRevision = useRevision();
+        revision = revision || internalRevision;
 
         var permissions = usePermissions();
         var canWrite = permissions.hasCollectionFlag(
@@ -60,11 +64,15 @@ export const withRecordEditor = (options) => {
         }
 
         var context = {
-            id, collection, recordType, fetched, permissions
+            id, collection, recordType, fetched, permissions, revision
         };
         return (
             <>
-                <EditForm { ...ps } id={ id } fetched={ fetched } />
+                <EditForm { ...ps }
+                    id={ id }
+                    fetched={ fetched }
+                    revision={ revision }
+                />
                 
                 <RecordEditorContext.Provider value={ context }>
                     { isFunction(children) ? children() : children }

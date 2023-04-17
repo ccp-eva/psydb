@@ -10,7 +10,11 @@ import {
 } from 'react-router-dom';
 
 import { useFetch } from '@mpieva/psydb-ui-hooks';
-import { LoadingIndicator, PageWrappers } from '@mpieva/psydb-ui-layout';
+import {
+    LoadingIndicator,
+    PageWrappers,
+    Alert
+} from '@mpieva/psydb-ui-layout';
 
 import GenericRecordListContainer from '../record-list-container';
 import RecordTypeRouting from './record-type-routing';
@@ -40,22 +44,21 @@ const DefaultRecordCreator = (ps) => (
 )
 
 
-const withRecordTypeView = ({
-    RecordList,
-    RecordDetails,
-    RecordHistory,
-    RecordCreator,
-    RecordEditor,
-    RecordRemover,
+const withRecordTypeView = (options) => {
+    var {
+        RecordList = GenericRecordListContainer,
+        RecordDetails,
+        RecordHistory = DefaultRecordHistory,
+        RecordCreator = DefaultRecordCreator,
+        RecordEditor = DefaultRecordEditor,
+        RecordRemover,
 
-    CustomRouting,
-    shouldFetchCollectionTypes,
-}) => {
-    RecordList = RecordList || GenericRecordListContainer;
-    RecordDetails = RecordDetails || DefaultRecordDetails;
-    RecordHistory = RecordHistory || DefaultRecordHistory;
-    RecordEditor = RecordEditor || DefaultRecordEditor;
-    RecordCreator = RecordCreator || DefaultRecordCreator;
+        CustomRouting,
+        shouldFetchCollectionTypes = false,
+    } = options;
+
+    // NOTE: allow omission of record details if only editor present
+    RecordDetails = RecordDetails || RecordEditor;
 
     const Routing = CustomRouting || RecordTypeRouting;
 

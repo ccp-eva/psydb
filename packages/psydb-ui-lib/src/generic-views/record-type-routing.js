@@ -6,21 +6,23 @@ import {
     Switch,
 } from 'react-router-dom';
 
-const RecordTypeRouting = ({
-    collection,
-    recordType,
+const RecordTypeRouting = (ps) => {
+    var {
+        collection,
+        recordType,
 
-    url,
-    path,
-    history,
+        url,
+        path,
+        history,
 
-    RecordList,
-    RecordDetails,
-    RecordCreator,
-    RecordEditor,
-    RecordRemover,
-}) => (
-    <Switch>
+        RecordList,
+        RecordDetails: RecordDetailsOrEditor,
+        RecordCreator,
+        RecordEditor,
+        RecordRemover,
+    } = ps;
+
+    return <Switch>
          <Route exact path={`${path}`}>
             <RecordList
                 linkBaseUrl={ url }
@@ -55,9 +57,13 @@ const RecordTypeRouting = ({
         />
 
         <Route path={`${path}/:id/details`}>
-            <RecordDetails
+            <RecordDetailsOrEditor
                 collection={ collection }
                 recordType={ recordType }
+                removeUrl={ `${url}/:id/remove` }
+                onSuccessfulUpdate={ ({ id }) => {
+                    history.push(`${url}/${id}`)
+                }}
             />
         </Route>
 
@@ -66,6 +72,7 @@ const RecordTypeRouting = ({
                 type='edit'
                 collection={ collection }
                 recordType={ recordType }
+                removeUrl={ `${url}/:id/remove` }
                 onSuccessfulUpdate={ ({ id }) => {
                     history.push(`${url}/${id}`)
                 }}
@@ -86,6 +93,6 @@ const RecordTypeRouting = ({
             </Route>
         )}
     </Switch>
-);
+};
 
 export default RecordTypeRouting;

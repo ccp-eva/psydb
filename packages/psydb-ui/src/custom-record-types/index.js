@@ -9,25 +9,77 @@ import {
     useParams
 } from 'react-router-dom';
 
+import {
+    withUntypedCollectionView
+} from '@mpieva/psydb-ui-lib/src/generic-views'
+
 import { LinkContainer, LinkButton } from '@mpieva/psydb-ui-layout';
 
 import RecordListContainer from '@mpieva/psydb-ui-lib/src/record-list-container';
 import CreateNewType from './create-new-type';
-import EditType from './edit';
+import EditorContainer from './editor-container';
+
+//import CreateNewType from './create-new-type';
+//import EditType from './edit';
 import RemoveType from './remove';
 
-const EditButton = (ps) => {
-    var { linkBaseUrl, record } = ps;
+//const EditButton = (ps) => {
+//    var { linkBaseUrl, record } = ps;
+//    return (
+//        <LinkButton
+//            size='sm'
+//            to={`${linkBaseUrl}/${record._id}/edit`}>
+//            Bearbeiten
+//        </LinkButton>
+//    )
+//}
+
+const RecordCreator = (ps) => {
+    var { onSuccessfulUpdate } = ps;
     return (
-        <LinkButton
-            size='sm'
-            to={`${linkBaseUrl}/${record._id}/edit`}>
-            Bearbeiten
-        </LinkButton>
+        <CreateNewType onCreated={ onSuccessfulUpdate } />
+    );
+}
+
+const RecordRemover = (ps) => {
+    var { successInfoBackLink } = ps;
+    return (
+        <RemoveType
+            successInfoBackLink={ successInfoBackLink }
+        />
     )
 }
 
+const RecordList = (ps) => {
+    return (
+        <RecordListContainer
+            { ...ps }
+            searchOptions={{
+                enableResearchGroupFilter: false
+            }}
+            defaultSort={{
+                path: 'state.label',
+                direction: 'asc',
+            }}
+        />
+    );
+}
+
+const CRTCollectionView = withUntypedCollectionView({
+    collection: 'customRecordType',
+    RecordList,
+    RecordEditor: EditorContainer,
+    RecordCreator,
+    RecordRemover,
+});
+
 const CustomRecordTypes = () => {
+    return (
+        <CRTCollectionView />
+    )
+}
+
+/*const CustomRecordTypes = () => {
     var { path, url } = useRouteMatch();
     var history =  useHistory();
 
@@ -80,6 +132,6 @@ const CustomRecordTypes = () => {
             </Switch>
         </div>
     )
-}
+}*/
 
 export default CustomRecordTypes;
