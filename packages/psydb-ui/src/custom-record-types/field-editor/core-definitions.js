@@ -23,7 +23,9 @@ const CoreDefinitions = (ps) => {
                 })}
                 extraOnChange={ (next) => {
                     var defaults = {
-                        'ListOfObjects': { fields: [] }
+                        'ListOfObjects': { fields: [] },
+                        'ForeignId': { constraints: {} },
+                        'ForeignIdList': { constraints: {} },
                     }
                     setFieldValue(
                         `${dataXPath}.props`,

@@ -85,6 +85,7 @@ export const ForeignId = (ps) => {
     return (
         <>
             <SharedForeignIdProps { ...ps } />
+            <IsNullableProp { ...ps } />
         </>
     )
 }

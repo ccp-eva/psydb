@@ -10,11 +10,16 @@ var fetchCRTPreRemoveInfo = async (bag) => {
         db.collection('customRecordType').findOne({ _id: crtId })
     );
     var { collection: targetCollection, type: targetType } = crt;
+    var hasSubChannels = !!crt.state.settings.subChannelFields;
 
     var existingRecordCount = await (
         db.collection(targetCollection).countDocuments({
             type: targetType,
-            'state.internals.isRemoved': { $ne: true }
+            ...(hasSubChannels ? {
+                'scientific.state.internals.isRemoved': { $ne: true }
+            } : {
+                'state.internals.isRemoved': { $ne: true }
+            })
         })
     );
     
