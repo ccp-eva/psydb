@@ -11,11 +11,13 @@ var getCollectionCRTs = async (context, next) => {
     
     var results = await (
         db.collection('customRecordType')
-        .find({ collection: collectionName }, { projection: {
+        .find({
+            collection: collectionName,
+            'state.internals.isRemoved': { $ne: true }
+        }, { projection: {
             type: true,
             'state.label': true,
             'state.hasSubChannels': true,
-            'state.internals.isRemoved': { $ne: true }
         }})
         .toArray()
     );
