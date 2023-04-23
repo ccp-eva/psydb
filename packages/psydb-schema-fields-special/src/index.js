@@ -14,4 +14,9 @@ module.exports = {
     SubjectSelectionSettingsList: require('./subject-selection-settings-list'),
 
     BlockFromTesting: require('./block-from-testing'),
+
+    ...require('./search-filters'),
+    ...require('./search-constraints'),
+    ...require('./pagination'),
+    ...require('./sort'),
 }
