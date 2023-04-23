@@ -32,6 +32,7 @@ module.exports = {
     convertPointerToPath: require('@cdxoo/jsonpointer-to-objectpath'),
 
     merge: require('./deep-merge'),
+    pathify: require('./pathify'),
     queryObject: require('./query-object'),
     forcePush: require('./force-push'),
 
