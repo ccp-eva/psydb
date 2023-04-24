@@ -26,7 +26,7 @@ var openChannel = async (options) => {
                     { [seqpath]: { $lt: sequenceNumber }},
                 ]},
                 { $set: { [seqpath]: sequenceNumber }},
-                { returnOriginal: false }
+                { returnDocument: 'after' }
             )
         );
     }
@@ -35,7 +35,7 @@ var openChannel = async (options) => {
             db.collection('sequenceNumbers').findOneAndUpdate(
                 { _id: 1 },
                 { $inc: { [seqpath]: 1 }},
-                { returnOriginal: false }
+                { returnDocument: 'after' }
             )
         );
         sequenceNumber = (
