@@ -1,21 +1,44 @@
 'use strict';
-var debug = require('debug')('psydb:api:middleware:self-auth'),
-    ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
-    Self = require('@mpieva/psydb-api-lib/src/self');
+var debug = require('debug')('psydb:api:middleware:self-auth');
+var { hasNone, hasOnlyOne } = require('@mpieva/psydb-core-utils');
+var { ApiError, Self } = require('@mpieva/psydb-api-lib');
 
-var createSelfAuthMiddleware = ({
-} = {}) => async(context, next) => {
-    var { db, session } = context;
+var createSelfAuthMiddleware = (options = {}) => async(context, next) => {
+    var { enableApiKeyAuthentication = false } = options;
+    var { db, session, request } = context;
+    var { apiKey } = request.query;
 
-    if (!session.personnelId) {
-        debug('session personnelId not set');
+    var { personnelId } = session;
+
+    if (enableApiKeyAuthentication && apiKey) {
+        debug('apiKey:', apiKey);
+        
+        var apiKeyRecords = await db.collection('apiKey').find({
+            'apiKey': apiKey,
+            'state.internals.isRemoved': { $ne: true }
+        }).toArray()
+
+        if (hasNone(apiKeyRecords)) {
+            debug('cant find apiKey')
+            throw new ApiError(401) // TODO
+        }
+        if (!hasOnlyOne(apiKeyRecords)) {
+            debug('found duplicate apiKey')
+            throw new ApiError(409) // TODO
+        }
+
+        ({ personnelId } = apiKeyRecords[0]);
+    }
+
+    if (!personnelId) {
+        debug('cant get personnelId from session or apiKey');
         throw new ApiError(401); // TODO
     }
 
     var self = await Self({
         db,
         query: {
-            _id: session.personnelId
+            _id: personnelId
         },
         // see FIXME in self
         /*projection: {

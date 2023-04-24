@@ -10,9 +10,7 @@ var createContextSetupMiddleware = ({
     }
 
     context.personnelId = (
-        context.session && context.session.personnelId
-        ? context.session.personnelId
-        : forcedPersonnelId
+        context.self.personnelId || forcedPersonnelId
     );
 
     if (!context.personnelId){

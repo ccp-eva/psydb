@@ -68,6 +68,8 @@ var Self = async ({
     }
 
     if (self.record) {
+        self.personnelId = self.record._id;
+
         var {
             hasRootAccess,
             researchGroupSettings,
