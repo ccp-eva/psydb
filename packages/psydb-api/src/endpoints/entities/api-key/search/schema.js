@@ -12,6 +12,8 @@ var {
     Sort,
 } = require('@mpieva/psydb-schema-fields-special');
 
+var metadata = require('@mpieva/psydb-common-lib/src/field-type-metadata');
+
 var Core = (bag = {}) => {
     return BasicObject({
         target: StringEnum([ 'table', 'optionlist' ]),
@@ -30,7 +32,10 @@ var Full = (bag = {}) => {
         properties: {
             target: StringEnum([ 'table', 'optionlist' ]),
 
-            filters: SearchFilters({ availableFilterFields }),
+            filters: SearchFilters({
+                metadata,
+                availableFilterFields
+            }),
             constraints: SearchConstraints({ availableConstraints }),
             
             ...pagination.properties,

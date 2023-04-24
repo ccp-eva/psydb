@@ -1,9 +1,8 @@
 'use strict';
 var fields = require('@mpieva/psydb-schema-fields');
-var metadata = require('@mpieva/psydb-common-lib/src/field-type-metadata');
 
 var SearchFilters = (bag) => {
-    var { availableFilterFields } = bag;
+    var { metadata, availableFilterFields } = bag;
 
     var filters = {};
     for (var field of availableFilterFields) {

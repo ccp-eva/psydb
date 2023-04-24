@@ -41,7 +41,10 @@ var FullBodySchema = ({
             showHidden: DefaultBool(),
             excludedIds: IdList(),
             
-            filters: SearchFilters({ availableFilterFields }),
+            filters: SearchFilters({
+                metadata,
+                availableFilterFields
+            }),
             constraints: SearchConstraints({ availableConstraints }),
             
             ...pagination.properties,
