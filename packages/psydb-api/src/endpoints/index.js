@@ -23,4 +23,5 @@ module.exports = {
     subject: require('./entities/subject'),
     location: require('./entities/location'),
     personnel: require('./entities/personnel'),
+    apiKey: require('./entities/api-key'),
 };

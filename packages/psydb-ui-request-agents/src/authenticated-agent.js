@@ -119,8 +119,13 @@ agent.searchRecords = ({
 
     showHidden,
 }) => {
+    var url = (
+        ['apiKey'].includes(collection)
+        ? '/api/api-key/search'
+        : '/api/search'
+    )
     return (
-        axios.post('/api/search', {
+        axios.post(url, {
             target,
             collectionName: collection,
             recordType,

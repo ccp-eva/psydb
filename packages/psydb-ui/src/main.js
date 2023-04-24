@@ -40,6 +40,7 @@ import HelperSets from './helper-sets';
 import Calendars from './calendars';
 import LabOperation from './lab-operation';
 import Experiments from './experiments';
+import ApiKeys from './api-keys';
 
 import AwayTeamCalendar from './calendars/away-team-experiments/calendar';
 
@@ -149,6 +150,7 @@ var Routing = () => (
     <Route path='/calendars' component={ withEB(Calendars) } />
     <Route path='/lab-operation' component={ withEB(LabOperation) } />
     <Route path='/experiments' component={ withEB(Experiments) } />
+    <Route path='/api-keys' component={ withEB(ApiKeys) } />
     </>
 )
 

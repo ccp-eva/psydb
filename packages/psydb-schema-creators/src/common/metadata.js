@@ -579,4 +579,56 @@ module.exports = {
         ]
     },
 
+    apiKey: {
+        collection: 'apiKey',
+        isGenericRecord: false,
+        hasCustomTypes: false,
+        hasSubChannels: false,
+        recordLabelDefinition: {
+            format: '${#}',
+            tokens: [
+                {
+                    systemType: 'SaneString',
+                    dataPointer: '/state/label',
+                },
+            ]
+        },
+        availableStaticDisplayFields: [
+            {
+                key: '_personnelId',
+                systemType: 'ForeignId',
+                props: {
+                    collection: 'personnel',
+                },
+                dataPointer: '/personnelId',
+                displayName: 'Account',
+            },
+            {
+                key: '_apiKey',
+                systemType: 'SaneString',
+                dataPointer: '/apiKey',
+                displayName: 'ApiKey',
+            },
+            {
+                key: '_name',
+                systemType: 'SaneString',
+                dataPointer: '/state/label',
+                displayName: 'Name',
+            },
+        ],
+        staticDisplayFields: [
+            {
+                systemType: 'ForeignId',
+                dataPointer: '/personnelId',
+            },
+            {
+                systemType: 'SaneString',
+                dataPointer: '/state/label',
+            },
+            {
+                systemType: 'SaneString',
+                dataPointer: '/apiKey',
+            },
+        ]
+    },
 }

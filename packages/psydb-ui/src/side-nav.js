@@ -150,6 +150,7 @@ const SideNav = (ps) => {
                         <Link to='/research-groups'>Forschungsgruppen</Link>
                         <Link to='/system-roles'>System-Rollen</Link>
                         <Link to='/custom-record-types'>Datensatz-Typen</Link>
+                        <Link to='/api-keys'>Api-Keys</Link>
                     </WhenAllowed>
                 </div>
             </Nav>

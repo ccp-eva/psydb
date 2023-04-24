@@ -83,3 +83,6 @@ module.exports.InhouseGroupSimpleExperimentVariantSettingState = (
 module.exports.AwayTeamExperimentVariantSettingState = (
     require('./experiment-variant-setting/away-team-state')
 )
+
+module.exports.ApiKeyFullSchema = require('./api-key/full-schema');
+module.exports.ApiKeyState = require('./api-key/state');

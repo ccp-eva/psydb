@@ -414,6 +414,10 @@ var createRouting = (bag = {}) => {
         endpoints.special.readSubjectTestability
     );
 
+    router.post('/api-key/search', ...withPostStages({
+        endpoint: endpoints.apiKey.search
+    }));
+
     router.get('/channel-history/:channelId',
         withSelfAuth(),
         withPermissions(),

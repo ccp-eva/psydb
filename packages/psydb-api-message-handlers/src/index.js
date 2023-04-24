@@ -32,6 +32,7 @@ var allHandlers = [
     require('./handlers/external-person'),
     
     require('./handlers/csv-import'),
+    require('./handlers/api-key'),
 ];
 
 module.exports = allHandlers;

@@ -137,4 +137,9 @@ module.exports = {
         RecordMessage: internals.ExternalPersonMessage 
     },
 
+    apiKey: {
+        ...metadata.apiKey,
+        FullSchema: internals.ApiKeyFullSchema,
+        State: internals.ApiKeyState,
+    },
 }
