@@ -46,7 +46,13 @@ var beforeAll = async function () {
             await next();
         });
         
-        var agent = supertest.agent(app.callback());
+        var agent = (
+            supertest
+            .agent(app.callback())
+            .on('error', (e) => {
+                throw e
+            })
+        );
         var driver = Driver({ agent });
 
         this.context.api.app = app;
