@@ -5,7 +5,7 @@ var {
 
 var ApiKeyGroup = MessageHandlerGroup([
     require('./create'),
-    //require('./remove'),
+    require('./remove'),
 ]);
 
 module.exports = ApiKeyGroup;
