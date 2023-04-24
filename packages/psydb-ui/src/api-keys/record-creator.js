@@ -25,7 +25,7 @@ const CreateForm = (ps) => {
 
     return (
         <MainForm.Component
-            title='Neuer ApiKey'
+            title='Neuer Api-Key'
             initialValues={ MainForm.createDefaults() }
             onSubmit={ send.exec }
         />

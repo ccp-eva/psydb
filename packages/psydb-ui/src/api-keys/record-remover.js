@@ -33,50 +33,18 @@ const SafetyForm = (ps) => {
         onSuccessfulUpdate
     });
 
-    var [ didFetchInfo, fetchedInfo ] = useFetch((agent) => (
-        agent.fetchHelperSetPreRemoveInfo({ id })
-    ), [ id ]);
-
-    if (!didFetchInfo) {
-        return <LoadingIndicator size='lg' />
-    }
-    var { existingItemCount, crtFieldRefs } = fetchedInfo.data;
-
     return (
-        <FormBox title='Hilfstabelle löschen' titleClassName='text-danger'>
+        <FormBox title='Api-Key löschen' titleClassName='text-danger'>
             <Pair 
-                label='Hilfstabelle'
+                label='Api-Key'
                 wLeft={ 3 } wRight={ 9 } className='px-3'
             >
                 { label }
             </Pair>
             <hr />
-            { existingItemCount > 0 && (
-                <>
-                    <Alert variant='danger'><b>
-                        Es existieren noch Einträge in dieser Hilfstabelle
-                    </b></Alert>
-                    <hr />
-                </>
-            )}
-            { crtFieldRefs.length > 0 && (
-                <>
-                    <Alert variant='danger'><b>
-                        Hilfstabelle wird von Feldern
-                        in Datensatztypen referenziert
-                    </b></Alert>
-
-                    <CRTFieldRefList crtFieldRefs={ crtFieldRefs} />
-                    <hr />
-                </>
-            )}
             <Button
                 variant='danger'
                 onClick={ send.exec }
-                disabled={
-                    existingItemCount > 0
-                    || crtFieldRefs.length > 0
-                }
             >
                 Löschen
             </Button>
@@ -87,8 +55,8 @@ const SafetyForm = (ps) => {
 const SuccessInfo = (ps) => {
     var { successInfoBackLink } = ps;
     return (
-        <FormBox titleClassName='text-success' title='Hilfstabelle gelöscht'>
-            <i>Hilfstabelle wurde erfolgreich gelöscht</i>
+        <FormBox titleClassName='text-success' title='Api-Key gelöscht'>
+            <i>Api-Key wurde erfolgreich gelöscht</i>
             { successInfoBackLink && (
                 <>
                     <hr />
@@ -106,5 +74,5 @@ const SuccessInfo = (ps) => {
 export const RecordRemover = withRecordRemover({
     SafetyForm,
     SuccessInfo,
-    urlIdParam: 'setId',
+    urlIdParam: 'id',
 });

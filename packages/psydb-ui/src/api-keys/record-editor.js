@@ -28,7 +28,7 @@ const EditForm = (ps) => {
     return (
         <>
             <MainForm.Component
-                title='Hilfstabelle bearbeiten'
+                title='Api-Key bearbeiten'
                 initialValues={ initialValues }
                 onSubmit={ send.exec }
             />

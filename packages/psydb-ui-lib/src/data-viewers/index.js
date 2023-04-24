@@ -8,3 +8,4 @@ export { default as Study } from './study';
 export { default as LabProcedureSettings } from './lab-procedure-settings';
 export { default as ExternalPerson } from './external-person';
 export { default as ExternalOrganization } from './external-organization';
+export { default as ApiKey } from './api-key';
