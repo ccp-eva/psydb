@@ -4,6 +4,7 @@ var ejson = require('@cdxoo/tiny-ejson');
 var { merge } = require('@mpieva/psydb-core-utils');
 
 var {
+    withRetracedErrors,
     createInitialChannelState,
     pathifyProps,
     mongoEscapeDeep,
@@ -53,10 +54,12 @@ var run = ({
             })
         );
         
-        var meta = await channel.dispatch({ subChannelKey, message: {
-            personnelId,
-            payload: mongoEscapeDeep(payload) 
-        }, mongoArrayFilters });
+        var meta = await withRetracedErrors(
+            channel.dispatch({ subChannelKey, message: {
+                personnelId,
+                payload: mongoEscapeDeep(payload) 
+            }, mongoArrayFilters })
+        );
 
         meta.collectionName = meta.collection; // FIXME
         meta.isNew = isNew; // FIXME
@@ -71,15 +74,18 @@ var run = ({
             ({ channelId } = meta);
         }
         
-        await db.collection(collection).updateOne(
-            { _id: channelId },
-            payload
+        await withRetracedErrors(
+            db.collection(collection).updateOne(
+                { _id: channelId },
+                payload
+            )
         );
         
         //context.modifiedChannels = rohrpost.getModifiedChannels();
-        //console.log('AAAAAAAAAAAAAAA')
         //console.log(context.modifiedChannels);
-        await rohrpost.unlockModifiedChannels();
+        await withRetracedErrors(
+            rohrpost.unlockModifiedChannels()
+        );
         //console.log(rohrpost.getModifiedChannels());
         //console.log('BBBBBBBBBBBBBBB')
 
@@ -148,7 +154,9 @@ var run = ({
     if (modded.length !== 0) {
         throw new Error('temp error 2');
         context.modifiedChannels = modded;
-        await rohrpost.unlockModifiedChannels();
+        await withRetracedErrors(
+            rohrpost.unlockModifiedChannels()
+        );
     }
     
     // mails etc

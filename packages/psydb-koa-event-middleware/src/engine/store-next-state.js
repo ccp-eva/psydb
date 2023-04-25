@@ -1,4 +1,6 @@
 'use strict';
+var { withRetracedErrors } = require('@mpieva/psydb-api-lib');
+
 var storeNextState = async ({
     createInitialChannelState,
     handleChannelEvent,
@@ -35,7 +37,7 @@ var storeNextState = async ({
 
         //////////////////
 
-        var storedRecord = await (
+        var storedRecord = await withRetracedErrors(
             db.collection(collectionName).findOne({ _id: channelId })
         );
 
@@ -45,8 +47,8 @@ var storeNextState = async ({
             : storedRecord.events
         );*/
 
-        var channelEvents = (
-            await rohrpost.openCollection(collectionName).openChannel({
+        var channelEvents = await withRetracedErrors(
+            rohrpost.openCollection(collectionName).openChannel({
                 id: channelId
             }).fetchOrderedEvents({ subChannelKey })
         );
@@ -82,7 +84,7 @@ var storeNextState = async ({
             }, {})
         );
 
-        await (
+        await withRetracedErrors(
             db.collection(collectionName).updateOne(
                 { _id: channelId },
                 { $set: updates }

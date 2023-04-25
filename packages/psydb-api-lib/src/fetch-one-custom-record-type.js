@@ -1,12 +1,13 @@
 'use strict';
 var inline = require('@cdxoo/inline-text');
+var withRetracedErrors = require('./with-retraced-errors');
 
 var { 
     StripEventsStage,
 } = require('./fetch-record-helpers');
 
 var fetchCustomRecordType = async ({ db, collection, type }) => {
-    var customRecordTypes = await (
+    var customRecordTypes = await withRetracedErrors(
         db.collection('customRecordType').aggregate([
             { $match: {
                 collection, type,
