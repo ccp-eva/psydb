@@ -18,7 +18,7 @@ module.exports = GenericRecordHandler({
 
         var intendedResearchGroupIds = permissions.getResearchGroupIds();
         for (var it of intendedResearchGroupIds) {
-            dispatch({
+            await dispatch({
                 collection: 'researchGroup',
                 channelId: it,
                 payload: { $push: {
