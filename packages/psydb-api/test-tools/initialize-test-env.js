@@ -34,6 +34,10 @@ var beforeAll = async function () {
 
     this.createKoaApi = (options = {}) => {
         var app = new Koa();
+        app.use(async (context, next) => {
+            await next();
+            context.mongoConnector.close();
+        });
         app.use(withApi({ app, config: {
             db: {
                 url: this.context.mongo.uri,
@@ -41,10 +45,6 @@ var beforeAll = async function () {
                 useUnifiedTopology: true,
             }
         }}));
-        app.use(async (context, next) => {
-            context.mongoConnector.close();
-            await next();
-        });
         
         var agent = (
             supertest
