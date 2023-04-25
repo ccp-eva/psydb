@@ -1,6 +1,8 @@
 'use strict';
 var debug = require('debug')('psydb:api:lib:self');
-var keyBy = require('@mpieva/psydb-common-lib/src/key-by');
+var { keyBy } = require('@mpieva/psydb-core-utils');
+var withRetracedErrors = require('./with-retraced-errors');
+
     
 var Self = async ({
     db,
@@ -37,7 +39,7 @@ var Self = async ({
         : requiredProjection
     );
 
-    var personnelRecords = await (
+    var personnelRecords = await withRetracedErrors(
         db.collection('personnel').aggregate([
             { $match: {
                 $or: [
@@ -81,7 +83,7 @@ var Self = async ({
         self.hasRootAccess = hasRootAccess;
         self.forcedResearchGroupId = forcedResearchGroupId;
         
-        var roles = await (
+        var roles = await withRetracedErrors(
             db.collection('systemRole')
             .find({
                 _id: { $in: (
