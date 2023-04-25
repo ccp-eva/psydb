@@ -11,7 +11,7 @@ describe('endpoints/file/upload', function () {
     var db, agent;
     beforeEach(async function () {
         await this.restore(
-            '2023-03-02__1546'
+            'init-childlab-with-dummy-data'
         );
         
         this.createKoaApi();
