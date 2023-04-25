@@ -5,7 +5,6 @@ var { pathify } = require('@mpieva/psydb-core-utils');
 var {
     ApiError,
     validateOrThrow,
-    generateApiKey,
 } = require('@mpieva/psydb-api-lib');
 
 var Schema = require('./schema');
@@ -19,7 +18,7 @@ var __createHandler = () => ({
 });
 
 var shouldRun = (message) => (
-    message.type === 'apiKey/create'
+    message.type === 'apiKey/patch'
 )
 
 var checkSchema = async (context) => {
@@ -40,8 +39,8 @@ var checkAllowedAndPlausible = async (context) => {
 }
 
 var triggerSystemEvents = async (context) => {
-    var { dispatch, message, personnelId } = context;
-    var { props } = message.payload;
+    var { dispatch, message } = context;
+    var { id, props } = message.payload;
     
     var defaults = {
         isEnabled: false,
@@ -51,10 +50,7 @@ var triggerSystemEvents = async (context) => {
 
     await dispatch({
         collection: 'apiKey',
-        additionalChannelProps: {
-            apiKey: generateApiKey(),
-            personnelId,
-        },
+        channelId: id,
         payload: { $set: (
             // FIXME: merge(defaults, pathify(props)) ??
             pathify({ ...defaults, ...props }, { prefix: 'state' })

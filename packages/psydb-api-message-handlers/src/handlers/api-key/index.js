@@ -5,6 +5,7 @@ var {
 
 var ApiKeyGroup = MessageHandlerGroup([
     require('./create'),
+    require('./patch'),
     require('./remove'),
 ]);
 

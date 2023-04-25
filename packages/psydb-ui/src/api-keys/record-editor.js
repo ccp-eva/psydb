@@ -22,7 +22,7 @@ const EditForm = (ps) => {
 
     var initialValues = only({
         from: record.state,
-        paths: [ 'label' ]
+        paths: [ 'label', 'isEnabled', 'permissions' ]
     });
 
     return (
