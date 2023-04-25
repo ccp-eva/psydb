@@ -1,7 +1,7 @@
 'use strict';
 var debug = require('debug')('psydb:api:middleware:self-auth');
 var { hasNone, hasOnlyOne } = require('@mpieva/psydb-core-utils');
-var { ApiError, Self } = require('@mpieva/psydb-api-lib');
+var { ApiError, Self, withRetracedErrors } = require('@mpieva/psydb-api-lib');
 
 var createSelfAuthMiddleware = (options = {}) => async(context, next) => {
     var { enableApiKeyAuthentication = false } = options;
@@ -13,10 +13,12 @@ var createSelfAuthMiddleware = (options = {}) => async(context, next) => {
     if (enableApiKeyAuthentication && apiKey) {
         debug('apiKey:', apiKey);
         
-        var apiKeyRecords = await db.collection('apiKey').find({
-            'apiKey': apiKey,
-            'state.internals.isRemoved': { $ne: true }
-        }).toArray()
+        var apiKeyRecords = await withRetracedErrors(
+            db.collection('apiKey').find({
+                'apiKey': apiKey,
+                'state.internals.isRemoved': { $ne: true }
+            }).toArray()
+        );
 
         if (hasNone(apiKeyRecords)) {
             debug('cant find apiKey')

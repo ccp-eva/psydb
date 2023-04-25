@@ -18,7 +18,7 @@ describe('endpoints/event : api-key automation', function () {
 
         agent = this.getApiAgent();
         db = this.getDbHandle();
-    })
+    });
 
     var apiKey = [
         'xA3S5M1_2uEhgelRVaZyYjg5qw_UehHV',
@@ -34,10 +34,10 @@ describe('endpoints/event : api-key automation', function () {
             }}
         })
 
-        //var records = await (
-        //    db.collection('helperSet').find().toArray()
-        //);
+        var records = await (
+            db.collection('mqMessageHistory').find().toArray()
+        );
 
-        //console.dir(ejson(records), { depth: null });
+        console.dir(ejson(records), { depth: null });
     })
 })
