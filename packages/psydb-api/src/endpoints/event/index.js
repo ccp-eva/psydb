@@ -21,9 +21,13 @@ var createMessageHandling = ({
 
     var mqSettings = {
         createId: () => nanoid(),
-        createAdditionalEnvelopeProps: (context) => ({
-            personnelId: context.personnelId
-        }),
+        createAdditionalEnvelopeProps: (context) => {
+            var { personnelId, apiKey } = context.self;
+            return {
+                personnelId,
+                ...(apiKey && { apiKey }),
+            }
+        },
         redactMessageOnQueue: (incomingMessage) => {
             // we dont want to store password in text form
             // see handlers/set-personnel-password

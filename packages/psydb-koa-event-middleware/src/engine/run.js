@@ -24,8 +24,9 @@ var run = ({
         db,
         rohrpost,
         messageHandler,
-        personnelId,
+        self,
     } = context;
+    var { personnelId, apiKey } = self;
 
     var usedDispatch = false;
     context.modifiedChannels = [];
@@ -57,6 +58,7 @@ var run = ({
         var meta = await withRetracedErrors(
             channel.dispatch({ subChannelKey, message: {
                 personnelId,
+                ...(apiKey && { apiKey }),
                 payload: mongoEscapeDeep(payload) 
             }, mongoArrayFilters })
         );

@@ -34,10 +34,21 @@ describe('endpoints/event : api-key automation', function () {
             }}
         })
 
-        var records = await (
-            db.collection('mqMessageHistory').find().toArray()
+        var mqMessage = await (
+            db.collection('mqMessageHistory').findOne({
+                'message.type': 'helperSet/create'
+            })
         );
+        //console.dir(ejson(mqMessage), { depth: null });
+        expect(mqMessage.apiKey).equal(apiKey);
 
-        console.dir(ejson(records), { depth: null });
+        var rohrpostEvent = await (
+            db.collection('rohrpostEvents').findOne({
+                correlationId: mqMessage._id
+            })
+        );
+        
+        //console.dir(ejson(rohrpostEvent), { depth: null });
+        expect(rohrpostEvent.message.apiKey).equal(apiKey);
     })
 })

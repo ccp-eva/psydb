@@ -7,6 +7,7 @@ var withRetracedErrors = require('./with-retraced-errors');
 var Self = async ({
     db,
     query,
+    apiKey,
     //projection // see FIXME
 }) => {
     // FIXME
@@ -71,6 +72,7 @@ var Self = async ({
 
     if (self.record) {
         self.personnelId = self.record._id;
+        self.apiKey = apiKey;
 
         var {
             hasRootAccess,

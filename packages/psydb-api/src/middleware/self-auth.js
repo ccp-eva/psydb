@@ -6,9 +6,8 @@ var { ApiError, Self, withRetracedErrors } = require('@mpieva/psydb-api-lib');
 var createSelfAuthMiddleware = (options = {}) => async(context, next) => {
     var { enableApiKeyAuthentication = false } = options;
     var { db, session, request } = context;
-    var { apiKey } = request.query;
-
     var { personnelId } = session;
+    var { apiKey } = request.query;
 
     if (enableApiKeyAuthentication && apiKey) {
         debug('apiKey:', apiKey);
@@ -37,11 +36,14 @@ var createSelfAuthMiddleware = (options = {}) => async(context, next) => {
         throw new ApiError(401); // TODO
     }
 
+    // FIXME: maybe pass personnelId w/o query and
+    // query db in self itself
     var self = await Self({
         db,
         query: {
             _id: personnelId
         },
+        apiKey,
         // see FIXME in self
         /*projection: {
             'scientific.state': true,
