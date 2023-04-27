@@ -64,6 +64,11 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/psydb-axios-test-wrapper",
+       "projectFolder": "packages/psydb-axios-test-wrapper",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-timezone-helpers",
        "projectFolder": "packages/psydb-timezone-helpers",
        "reviewCategory": "production"
@@ -161,6 +166,11 @@
     {
        "packageName": "@mpieva/psydb-common-config",
        "projectFolder": "packages/psydb-common-config",
+       "reviewCategory": "production"
+    },
+    {
+       "packageName": "@mpieva/psydb-api-automation-scripts",
+       "projectFolder": "packages/psydb-api-automation-scripts",
        "reviewCategory": "production"
     },
     {

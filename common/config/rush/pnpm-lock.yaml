@@ -37,6 +37,7 @@ specifiers:
   '@rush-temp/psydb-ajv-formats': file:./projects/psydb-ajv-formats.tgz
   '@rush-temp/psydb-ajv-keywords': file:./projects/psydb-ajv-keywords.tgz
   '@rush-temp/psydb-api': file:./projects/psydb-api.tgz
+  '@rush-temp/psydb-api-automation-scripts': file:./projects/psydb-api-automation-scripts.tgz
   '@rush-temp/psydb-api-config': file:./projects/psydb-api-config.tgz
   '@rush-temp/psydb-api-endpoint-lib': file:./projects/psydb-api-endpoint-lib.tgz
   '@rush-temp/psydb-api-endpoint-schemas': file:./projects/psydb-api-endpoint-schemas.tgz
@@ -46,6 +47,7 @@ specifiers:
   '@rush-temp/psydb-api-lib-errors': file:./projects/psydb-api-lib-errors.tgz
   '@rush-temp/psydb-api-message-handler-lib': file:./projects/psydb-api-message-handler-lib.tgz
   '@rush-temp/psydb-api-message-handlers': file:./projects/psydb-api-message-handlers.tgz
+  '@rush-temp/psydb-axios-test-wrapper': file:./projects/psydb-axios-test-wrapper.tgz
   '@rush-temp/psydb-common-config': file:./projects/psydb-common-config.tgz
   '@rush-temp/psydb-common-lib': file:./projects/psydb-common-lib.tgz
   '@rush-temp/psydb-common-utils': file:./projects/psydb-common-utils.tgz
@@ -206,6 +208,7 @@ dependencies:
   '@rush-temp/psydb-ajv-formats': file:projects/psydb-ajv-formats.tgz
   '@rush-temp/psydb-ajv-keywords': file:projects/psydb-ajv-keywords.tgz_date-fns@2.29.3
   '@rush-temp/psydb-api': file:projects/psydb-api.tgz
+  '@rush-temp/psydb-api-automation-scripts': file:projects/psydb-api-automation-scripts.tgz
   '@rush-temp/psydb-api-config': file:projects/psydb-api-config.tgz
   '@rush-temp/psydb-api-endpoint-lib': file:projects/psydb-api-endpoint-lib.tgz
   '@rush-temp/psydb-api-endpoint-schemas': file:projects/psydb-api-endpoint-schemas.tgz
@@ -215,6 +218,7 @@ dependencies:
   '@rush-temp/psydb-api-lib-errors': file:projects/psydb-api-lib-errors.tgz
   '@rush-temp/psydb-api-message-handler-lib': file:projects/psydb-api-message-handler-lib.tgz
   '@rush-temp/psydb-api-message-handlers': file:projects/psydb-api-message-handlers.tgz
+  '@rush-temp/psydb-axios-test-wrapper': file:projects/psydb-axios-test-wrapper.tgz_debug@4.3.4
   '@rush-temp/psydb-common-config': file:projects/psydb-common-config.tgz
   '@rush-temp/psydb-common-lib': file:projects/psydb-common-lib.tgz
   '@rush-temp/psydb-common-utils': file:projects/psydb-common-utils.tgz
@@ -4945,7 +4949,7 @@ packages:
     resolution: {integrity: sha512-oWb1Z6mkHIskLzEJ/XWX0srkpkTQ7vaopMQkyaEIoq0fmtFVxOthb8cCxeT+p3ynTdkk/RZwbgG4brR5BeWECw==}
     engines: {node: '>= 4.0'}
     os: [darwin]
-    deprecated: fsevents 1 will break on node v14+ and could be using insecure binaries. Upgrade to fsevents 2.
+    deprecated: The v1 package contains DANGEROUS / INSECURE binaries. Upgrade to safe fsevents v2
     requiresBuild: true
     dependencies:
       bindings: 1.5.0
@@ -10468,6 +10472,28 @@ packages:
       - snappy
     dev: false
 
+  file:projects/psydb-api-automation-scripts.tgz:
+    resolution: {integrity: sha512-KkBZQzBaKAObwHasJVV3U90aCD4JyNbD6deQjoxYWFiQS7AVicVxsxQBbeLOVYZ3dpDqVdf0pMPpxKN2tOwNVw==, tarball: file:projects/psydb-api-automation-scripts.tgz}
+    name: '@rush-temp/psydb-api-automation-scripts'
+    version: 0.0.0
+    dependencies:
+      '@cdxoo/mongo-test-helpers': 0.7.1
+      '@cdxoo/mongodb-restore': 2.0.0-alpha.2
+      chai: 4.3.7
+      co: 4.6.0
+      koa: 2.13.4
+      mocha: 10.1.0
+      mongodb: 3.6.12
+    transitivePeerDependencies:
+      - aws4
+      - bson-ext
+      - kerberos
+      - mongodb-client-encryption
+      - mongodb-extjson
+      - snappy
+      - supports-color
+    dev: false
+
   file:projects/psydb-api-config.tgz:
     resolution: {integrity: sha512-V6mldtBY9nNnuWWdsM65QRcjz6cDY73qdYXIlgr6/I63hbtQqx24KkPkM4IcDvc4P+inF6fdsheASv3O7txWSg==, tarball: file:projects/psydb-api-config.tgz}
     name: '@rush-temp/psydb-api-config'
@@ -10700,6 +10726,17 @@ packages:
       - mongodb-extjson
       - snappy
       - supports-color
+    dev: false
+
+  file:projects/psydb-axios-test-wrapper.tgz_debug@4.3.4:
+    resolution: {integrity: sha512-z/2xe2e8Gsv3Ah8SNAbY6LBxvgH5f9gU+E0dIs7aOBSwUv+A0f9+gtwbeRNE1sgegHjuugfsCwrmcHw7iUhuLg==, tarball: file:projects/psydb-axios-test-wrapper.tgz}
+    id: file:projects/psydb-axios-test-wrapper.tgz
+    name: '@rush-temp/psydb-axios-test-wrapper'
+    version: 0.0.0
+    dependencies:
+      axios: 0.24.0_debug@4.3.4
+    transitivePeerDependencies:
+      - debug
     dev: false
 
   file:projects/psydb-common-config.tgz:
@@ -10994,7 +11031,7 @@ packages:
     dev: false
 
   file:projects/psydb-schema-fields-special.tgz:
-    resolution: {integrity: sha512-v6sRyYsFnrlvR8HzB7eXWZZXEtm7+7PzV5xtW3oOjx8tvPpo8AbHXxDIl0+bIrmurDQX6U3uPlt7w9awWdDtqA==, tarball: file:projects/psydb-schema-fields-special.tgz}
+    resolution: {integrity: sha512-9/dIILwX3qJaGFIOCJVyBPlhs74ynzKpulrG5qdrja3skaTxOuXCWPtUlLxrJMHZBEVfgUd08fbwBbZr5zpvxQ==, tarball: file:projects/psydb-schema-fields-special.tgz}
     name: '@rush-temp/psydb-schema-fields-special'
     version: 0.0.0
     dependencies:
@@ -11112,7 +11149,7 @@ packages:
     dev: false
 
   file:projects/psydb-ui-layout.tgz_webpack@5.65.0:
-    resolution: {integrity: sha512-Tvd3GcD+bVyKCnRNziufXhBbK/gxzohEl3g28X6Ttsp9GQJE7Jc1hd1uTBpzbP4jNUa3tGzYLtEhyGZFsvR0IA==, tarball: file:projects/psydb-ui-layout.tgz}
+    resolution: {integrity: sha512-9G9lwehqpJ5Ff3kbTxVi0H7QxEGp2Fttk0t5cFp5EQEMS8yh5dz7ti+EYWFZy9nTsy3MvBsMDUW43WLqpIrjGQ==, tarball: file:projects/psydb-ui-layout.tgz}
     id: file:projects/psydb-ui-layout.tgz
     name: '@rush-temp/psydb-ui-layout'
     version: 0.0.0

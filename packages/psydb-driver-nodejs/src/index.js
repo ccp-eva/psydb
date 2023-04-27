@@ -63,24 +63,52 @@ class DriverError extends Error {
 
 class RequestFailed extends DriverError {
     constructor (response) {
-        var { body, status } = response;
-        super(JSON.stringify(body, null, '\t'));
+        var { data, status } = response;
+        var errorMessage = `RequestFailed : ${status}`;
+        var isApiError = !!data?.apiStatus;
+        
+        if (isApiError) {
+            errorMessage = data.data.message;
+        }
+
+        super(errorMessage);
         this.name = 'RequestFailed';
         this.response = response;
+
+        if (isApiError) {
+            this.httpsStatusCode = data.statusCode;
+            this.httpStatus = data.status;
+            this.apiStatus = data.apiStatus;
+            this.apiMessage = data.data.message;
+            this.apiStack = data.data.stack;
+        }
+
+        //super(JSON.stringify(data, null, '\t'));
 
         //console.dir(body, { depth: null });
     }
 }
 
 var defaultWriteRequest = async ({ agent, url, message, options = {} }) => {
-    var { status, body } = await agent.post(url).send({
-        timezone: options.forceTZ || getSystemTimezone(),
-        ...message,
-    });
-    if (status !== 200) {
-        throw new RequestFailed({ status, body });
+    var { forceTZ = false, apiKey } = options;
+
+    var url = (
+        apiKey
+        ? `${url}?apiKey=${apiKey}`
+        : url
+    );
+
+    try {
+        var { status, data } = await agent.post(url, {
+            timezone: forceTZ || getSystemTimezone(),
+            ...message,
+        });
     }
-    return { status, body };
+    catch (e) {
+        throw new RequestFailed(e.response);
+    }
+
+    return { status, data };
 }
 
 var Driver = ({
@@ -112,17 +140,42 @@ var Driver = ({
     )
 
     driver.sendMessage = async (message, options = {}) => {
-        var { status, body } = await writeRequest({
-            agent, url: '/', message, options
-        });
+        try {
+            var { status, data } = await writeRequest({
+                agent, url: '/', message, options
+            });
 
-        var modified = body.data;
-        for (var it of modified) {
-            cache.setLastChannelId({ ...it });
-            cache.setLastKnownEventId({ ...it });
+            var modified = data.data;
+            for (var it of modified) {
+                cache.setLastChannelId({ ...it });
+                cache.setLastKnownEventId({ ...it });
+            }
+
+            return { status, data };
         }
+        catch (e) {
+            if (e instanceof RequestFailed) {
 
-        return { status, body };
+                if (e.response.status === 400) {
+                    // NOTE: i could potentially overwrite stack
+                    // and put additional info there, but that would
+                    // pretty hacky and would break stuff that
+                    // relies on stack being a specific format
+                    // NOTE: mabe at least instead of console
+                    // use debug
+                    console.error(
+                        'API ERROR STACK::',
+                        e.apiStack
+                    );
+                    console.error(
+                        'AJV ERRORS:',
+                        e.response.data.data.ajvErrors
+                    );
+                }
+            }
+
+            throw e;
+        }
     }
 
     driver.lastEventId = ({ collection, channel, subChannel }) => {
@@ -148,6 +201,10 @@ var Driver = ({
     driver.clearCache = () => (
         cache.clear()
     )
+
+    driver.getCache = () => {
+        return cache; 
+    }
 
     return driver;
 }

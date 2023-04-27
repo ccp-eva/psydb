@@ -1,0 +1,16 @@
+{
+  "name": "@mpieva/psydb-axios-test-wrapper",
+  "version": "0.1.0-alpha",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {},
+  "author": "Jan Schwalbe",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "~0.24.0"
+  },
+  "devDependencies": {
+  },
+  "config": {
+  }
+}

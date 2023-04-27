@@ -1,6 +1,10 @@
 var MongoConnection = require('./mongo-connection');
 
 module.exports = (config) => async (context, next) => {
+    if (!config) {
+        throw new Error('missing db config - check that "config.db" is set');
+    }
+
     if (!MongoConnection()) {
         await MongoConnection(config).connect();
     }

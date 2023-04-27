@@ -11,7 +11,7 @@ describe('endpoints/event : api-key automation', function () {
     var db, agent;
     beforeEach(async function () {
         await this.restore(
-            '2023-04-24__2315'
+            'init-minimal-with-api-key'
         );
         
         this.createKoaApi();
