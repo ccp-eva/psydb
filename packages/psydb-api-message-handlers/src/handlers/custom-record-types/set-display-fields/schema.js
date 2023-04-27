@@ -38,7 +38,6 @@ var Schema = () => {
             },
             required: [
                 'id',
-                'lastKnownEventId',
                 'target',
                 'fieldPointers',
             ]
