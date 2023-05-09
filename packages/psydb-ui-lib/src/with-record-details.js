@@ -8,6 +8,7 @@ import {
 } from '@mpieva/psydb-ui-layout';
 
 import {
+    useRevision,
     usePermissions,
     useReadRecord
 } from '@mpieva/psydb-ui-hooks';
@@ -24,6 +25,7 @@ export const withRecordDetails = (options) => {
         var { id: paramId } = useParams();
         var id = manualId || paramId;
 
+        var revision = useRevision();
         var permissions = usePermissions();
         var canRead = permissions.hasCollectionFlag(
             collection, 'read'
@@ -37,7 +39,7 @@ export const withRecordDetails = (options) => {
             shouldFetchSchema,
             shouldFetchCRTSettings,
             extraAxiosConfig: { disableErrorModal: 404 }
-        });
+        }, [ revision.value ]);
 
         if (!didFetch) {
             return <LoadingIndicator size='lg' />
@@ -57,6 +59,7 @@ export const withRecordDetails = (options) => {
                 id={ id }
                 fetched={ fetched }
                 permissions={ permissions }
+                revision={ revision }
             />
         )
     }
