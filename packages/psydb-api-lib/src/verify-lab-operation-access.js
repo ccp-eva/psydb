@@ -8,11 +8,18 @@ var verifyLabOperationAccess = (options) => {
     var {
         permissions,
         labOperationType,
+        labOperationTypes,
         flag,
         flags,
         researchGroupId,
-        checkJoin = 'and'
+        checkJoin = 'and',
+        matchTypes,
+        matchFlags,
     } = options;
+
+    if (labOperationType) {
+        labOperationTypes = [ labOperationType ];
+    }
 
     if (flag) {
         flags = [ flag ];
@@ -26,8 +33,10 @@ var verifyLabOperationAccess = (options) => {
             data: {
                 flags,
                 checkJoin,
+                matchTypes,
+                matchFlags,
                 researchGroupId,
-                labOperationType
+                labOperationTypes
             }
         })
     }

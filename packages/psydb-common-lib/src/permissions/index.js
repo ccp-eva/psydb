@@ -1,5 +1,10 @@
 'use strict';
-var { unique, intersect } = require('@mpieva/psydb-core-utils');
+var {
+    unique,
+    intersect,
+    compareIds,
+} = require('@mpieva/psydb-core-utils');
+
 var DataHolder = require('./data-holder');
 
 var anyLabOperationTypes = [
@@ -76,11 +81,60 @@ var Permissions = (options) => {
         flags.some(it => hasFlag(it))
     );
 
-    var hasLabOperationFlag = (type, flag) => (
-        isRoot()
-        ? true
-        : getLabOperationFlagIds(type, flag).length > 0
-    );
+    var hasLabOperationFlag = (type, flag, researchGroupId) => {
+        if (isRoot()) {
+            return true;
+        }
+        var ids = getLabOperationFlagIds(type, flag);
+        return (
+            researchGroupId
+            ? !!ids.find(it => compareIds(it, researchGroupId))
+            : ids.length > 0
+        )
+    };
+
+    // NOTE: drop in for hasSomeLabOperationFlags
+    var hasLabOpsFlags = (bag) => {
+        var {
+            types,
+            flags,
+            matchFlags = 'some',
+            matchTypes = 'some',
+
+            researchGroupId = undefined
+        } = bag;
+        
+        var typesFN = matchTypes === 'some' ? 'some' : 'every';
+        var flagsFN = matchFlags === 'some' ? 'some' : 'every';
+
+        if (types === 'any') {
+            types = anyLabOperationTypes;
+        }
+        
+        return types[typesFN](t => (
+            flags[flagsFN](f => (
+                hasLabOperationFlag(t, f, researchGroupId)
+            ))
+        ))
+    }
+
+    var getAllowedLabOpsForFlags = (bag) => {
+        var {
+            onlyTypes,
+            flags,
+            matchFlags = 'some',
+            researchGroupId = undefined
+        } = bag;
+
+        var types = onlyTypes || anyLabOperationTypes;
+        var flagsFN = matchFlags === 'some' ? 'some' : 'every';
+
+        return (types.filter(t => (
+            flags[flagsFN](f => (
+                hasLabOperationFlag(t, f, researchGroupId)
+            ))
+        )))
+    }
 
     var hasSomeLabOperationFlags = ({ types, flags }) => {
         if (types === 'any') {
@@ -119,6 +173,9 @@ var Permissions = (options) => {
         hasLabOperationFlag,
         hasSomeLabOperationFlags,
         hasCollectionFlag,
+        
+        getAllowedLabOpsForFlags,
+        hasLabOpsFlags,
     }
 
     return out;
