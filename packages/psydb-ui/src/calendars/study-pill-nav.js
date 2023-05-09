@@ -1,42 +1,32 @@
-import React, { useReducer, useEffect } from 'react';
+import React from 'react';
 
-import agent from '@mpieva/psydb-ui-request-agents';
+import { useFetch } from '@mpieva/psydb-ui-hooks';
 import {
     LoadingIndicator,
     PillNav,
 } from '@mpieva/psydb-ui-layout';
 
-const StudyPillNav = ({
-    subjectRecordType,
-    experimentType,
-    researchGroupId,
-
-    selectedStudyId,
-    onSelectStudy,
-}) => {
-    var [ state, dispatch ] = useReducer(reducer, {});
+const StudyPillNav = (ps) => {
     var {
-        records,
-    } = state;
+        experimentType,
+        researchGroupId = undefined,
 
-    useEffect(() => {
+        selectedStudyId,
+        onSelectStudy,
+    } = ps;
+
+    var [ didFetch, fetched ] = useFetch((agent) => (
         agent.fetchSelectableStudiesForCalendar({
-            subjectRecordType,
-            experimentType,
+            experimentTypes: [ experimentType ],
             researchGroupId,
         })
-        .then(response => {
-            dispatch({ type: 'init', payload: {
-                ...response.data.data
-            }})
-        })
-    }, [ subjectRecordType, experimentType ])
+    ), [ experimentType, researchGroupId ]);
 
-    if (!records) {
-        return (
-            <LoadingIndicator size='lg' />
-        );
+    if (!didFetch) {
+        return <LoadingIndicator size='lg' />
     }
+
+    var { records } = fetched.data;
 
     return (
         <div>
@@ -56,16 +46,5 @@ const StudyPillNav = ({
         </div>
     )
 };
-
-var reducer = (state, action) => {
-    var { type, payload } = action;
-    switch (type) {
-        case 'init':
-            return {
-                ...state,
-                records: payload.records,
-            }
-    }
-}
 
 export default StudyPillNav;

@@ -27,6 +27,7 @@ var {
 
 var {
     ExactObject,
+    DefaultArray,
     ForeignId,
     CustomRecordTypeKey,
     ExperimentTypeEnum,
@@ -35,13 +36,14 @@ var {
 var RequestBodySchema = () => ExactObject({
     properties: {
         researchGroupId: ForeignId({ collection: 'researchGroup' }),
-        //subjectRecordType: CustomRecordTypeKey({ collection: 'subject' }),
-        experimentType: ExperimentTypeEnum(),
+        experimentTypes: DefaultArray({
+            items: ExperimentTypeEnum(),
+            minLength: 1,
+        }),
     },
     required: [
-        'researchGroupId',
-        //'subjectRecordType',
-        'experimentType',
+        //'researchGroupId',
+        'experimentTypes',
     ]
 });
 
@@ -58,16 +60,24 @@ var selectableStudiesForCalendar = async (context, next) => {
     })
 
     var {
-        experimentType,
-        //subjectRecordType,
-        researchGroupId,
+        experimentTypes,
+        researchGroupId = undefined,
     } = request.body
 
     verifyLabOperationAccess({
         researchGroupId,
-        labOperationType: experimentType,
+        labOperationTypes: experimentTypes,
         flag: 'canViewExperimentCalendar',
         permissions,
+
+        matchTypes: 'some',
+        matchFlags: 'every',
+    });
+
+    var allowedExperimentTypes = permissions.getAllowedLabOpsForFlags({
+        onlyTypes: experimentTypes,
+        flags: [ 'canViewExperimentCalendar' ],
+        researchGroupId
     });
 
     // FIXME: this should actually be the interval of the calendar
@@ -82,9 +92,9 @@ var selectableStudiesForCalendar = async (context, next) => {
             start: now,
             end: now,
         }),
-        { $match: {
+        ...(researchGroupId ? [{ $match: {
             'state.researchGroupIds': researchGroupId
-        }},
+        }}] : []),
         { $sort: {
             'state.shorthand': 1,
             'state.name': 1
@@ -102,7 +112,7 @@ var selectableStudiesForCalendar = async (context, next) => {
         db.collection('experimentVariantSetting').aggregate([
             { $match: {
                 studyId: { $in: records.map(it => it._id) },
-                type: experimentType,
+                type: { $in: allowedExperimentTypes },
             }},
             { $project: {
                 studyId: true,

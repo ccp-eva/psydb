@@ -416,15 +416,13 @@ agent.fetchSelectableStudies = ({
 }
 
 agent.fetchSelectableStudiesForCalendar = ({
-    subjectRecordType,
-    experimentType,
+    experimentTypes,
     researchGroupId,
 }) => {
     return axios.post(
         '/api/selectable-studies-for-calendar',
         {
-            subjectRecordType,
-            experimentType,
+            experimentTypes,
             researchGroupId,
         }
     );
