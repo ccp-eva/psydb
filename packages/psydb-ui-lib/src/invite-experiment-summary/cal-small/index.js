@@ -1,16 +1,16 @@
-import React, { useReducer, useEffect, useMemo } from 'react';
+import React from 'react';
 
 import { useModalReducer } from '@mpieva/psydb-ui-hooks';
+import { bwTextColorForBackground } from '@mpieva/psydb-ui-utils';
 import { LinkContainer } from '@mpieva/psydb-ui-layout';
 
-import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
-import getTextColor from '@mpieva/psydb-ui-lib/src/bw-text-color-for-background';
+import datefns from '../../date-fns';
+import ExperimentDropdown from '../../experiment-dropdown';
 
-import ExperimentDropdown from '@mpieva/psydb-ui-lib/src/experiment-dropdown';
 import {
     MoveExperimentModal,
     ChangeTeamModal,
-} from '@mpieva/psydb-ui-lib/src/modals';
+} from '../../modals';
 
 const ExperimentSummarySmall = ({
     inviteType,
@@ -49,7 +49,7 @@ const ExperimentSummarySmall = ({
     var isPlaceholder = subjectData.length < 1;
 
     // TODO: we might also want to send a flag to api
-    // so we dont send dent data of those at all
+    // so we dont fetch data of those at all
     if (!showPast && isInPast && (isPlaceholder || isPostprocessed)) {
         return null;
     }
@@ -60,7 +60,7 @@ const ExperimentSummarySmall = ({
     return (
         <div className='pl-2 pr-2 pb-1 pt-1 mb-2' style={{
             background: teamRecord.state.color,
-            color: getTextColor(teamRecord.state.color),
+            color: bwTextColorForBackground(teamRecord.state.color),
         }}>
             
             <MoveExperimentModal { ...({

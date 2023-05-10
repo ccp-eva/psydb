@@ -1,22 +1,20 @@
-import React, { useReducer, useEffect, useMemo, useCallback } from 'react';
-
-import { LinkContainer } from '@mpieva/psydb-ui-layout';
+import React from 'react';
+import enums from '@mpieva/psydb-schema-enums';
 
 import {
     useModalReducer,
     usePermissions
 } from '@mpieva/psydb-ui-hooks';
 
-import enums from '@mpieva/psydb-schema-enums';
+import { bwTextColorForBackground } from '@mpieva/psydb-ui-utils';
+import { LinkContainer } from '@mpieva/psydb-ui-layout';
 
 import agent from '@mpieva/psydb-ui-request-agents';
-import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 
-import getTextColor from '@mpieva/psydb-ui-lib/src/bw-text-color-for-background';
-import applyValueToDisplayFields from '@mpieva/psydb-ui-lib/src/apply-value-to-display-fields';
-
-import ExperimentDropdown from '@mpieva/psydb-ui-lib/src/experiment-dropdown';
-import ExperimentSubjectDropdown from '@mpieva/psydb-ui-lib/src/experiment-subject-dropdown';
+import datefns from '../../date-fns';
+import applyValueToDisplayFields from '../../apply-value-to-display-fields';
+import ExperimentDropdown from '../../experiment-dropdown';
+import ExperimentSubjectDropdown from '../../experiment-subject-dropdown';
 
 import {
     MoveExperimentModal,
@@ -25,7 +23,7 @@ import {
     FollowUpSubjectModal,
     RemoveSubjectModal,
     PerSubjectCommentModal,
-} from '@mpieva/psydb-ui-lib/src/modals';
+} from '../../modals';
 
 const ExperimentSummaryMedium = ({
     inviteType,
@@ -95,7 +93,7 @@ const ExperimentSummaryMedium = ({
     );
     var isPlaceholder = subjectData.length < 1;
     // TODO: we might also want to send a flag to api
-    // so we dont send dent data of those at all
+    // so we dont fetch data of those at all
     if (!showPast && isInPast && (isPlaceholder || isPostprocessed)) {
         return null;
     }
@@ -106,7 +104,7 @@ const ExperimentSummaryMedium = ({
     return (
         <div className='pl-2 pr-2 pb-1 pt-1 mb-2' style={{
             background: teamRecord.state.color,
-            color: getTextColor(teamRecord.state.color),
+            color: bwTextColorForBackground(teamRecord.state.color),
         }}>
 
             <MoveExperimentModal { ...({

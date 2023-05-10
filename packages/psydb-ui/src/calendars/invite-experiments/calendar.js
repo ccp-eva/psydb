@@ -28,15 +28,13 @@ import {
     CalendarTeamLegend,
 
     withExperimentCalendarDays,
+    InviteExperimentSummary
 } from '@mpieva/psydb-ui-lib';
 
-import ExperimentSummarySmall  from './experiment-summary/cal-small';
-import ExperimentSummaryMedium  from './experiment-summary/cal-medium';
-
 const DaysContainer = withExperimentCalendarDays({
-    ExperimentSummaryDaily: ExperimentSummaryMedium,
-    ExperimentSummary3Day: ExperimentSummaryMedium,
-    ExperimentSummaryWeekly: ExperimentSummarySmall,
+    ExperimentSummaryDaily: InviteExperimentSummary.Medium,
+    ExperimentSummary3Day: InviteExperimentSummary.Medium,
+    ExperimentSummaryWeekly: InviteExperimentSummary.Small,
 })
 
 const Calendar = (ps) => {
