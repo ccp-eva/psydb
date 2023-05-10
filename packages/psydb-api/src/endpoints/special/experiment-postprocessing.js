@@ -34,7 +34,9 @@ var {
 
 var RequestBodySchema = () => ExactObject({
     properties: {
-        experimentType: { type: 'string', enum: [ 'inhouse', 'away-team' ] },
+        experimentType: { type: 'string', enum: [
+            'inhouse', 'away-team', 'online-video-call'
+        ]},
         subjectRecordType: CustomRecordTypeKey({ collection: 'subject' }),
         researchGroupId: ForeignId({
             collection: 'researchGroup',

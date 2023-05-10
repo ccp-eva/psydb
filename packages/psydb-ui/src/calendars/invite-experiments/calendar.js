@@ -107,8 +107,8 @@ const Calendar = (ps) => {
         experimentRelated,
         subjectRecordsById,
         subjectRelated,
+
         subjectDisplayFieldData,
-        phoneListField,
     } = fetched.data;
 
     var experimentsByDayStart = groupRecordsByDayStarts({

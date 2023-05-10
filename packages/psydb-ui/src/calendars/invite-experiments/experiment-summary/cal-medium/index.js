@@ -292,7 +292,6 @@ const SubjectItem = ({
     subjectRecordsById,
     subjectRelated,
     subjectDisplayFieldData,
-    phoneListField,
     
     experimentRecord,
 

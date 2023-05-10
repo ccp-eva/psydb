@@ -78,6 +78,20 @@ const ExperimentPostprocessingListLoader = ({
             }) } />
         );
     }
+    else if (experimentType === 'online-video-call') {
+        return (
+            <InhouseList {...({
+                subjectType,
+
+                records,
+                relatedCustomRecordTypeLabels,
+                relatedHelperSetItems,
+                relatedRecordLabels,
+
+                onSuccessfulUpdate: revision.up
+            }) } />
+        );
+    }
     else if (experimentType === 'away-team') {
         return (
             <ExperimentPostprocessingList {...({
@@ -182,6 +196,7 @@ const getExperimentTypeLabel = (type) => (
     {
         'away-team': 'Extern',
         'inhouse': 'Intern',
+        'online-video-call': 'Video',
     }[type] || 'UNKNOWN'
 )
 

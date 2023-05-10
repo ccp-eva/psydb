@@ -18,6 +18,7 @@ import ExperimentPostprocessingList from './experiment-postprocessing-list';
 var experimentTypeNavItems = [
     { label: 'Interne Termine', linkTo: 'inhouse' },
     { label: 'Externe Termine', linkTo: 'away-team' },
+    { label: 'Video Termine', linkTo: 'online-video-call' },
 ]
 
 const ExperimentPostprocessingRouting = ({
