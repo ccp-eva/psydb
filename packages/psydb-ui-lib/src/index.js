@@ -57,6 +57,7 @@ export { default as SubjectParticipationList } from './subject-participation-lis
 export * from './file-upload';
 
 
+export { default as groupRecordsByDayStarts } from './group-records-by-day-starts';
 export { default as getDayStartsInInterval } from './get-day-starts-in-interval';
 export { default as withVariableCalendarPages } from './with-variable-calendar-pages';
 export { default as withWeeklyCalendarPages } from './with-weekly-calendar-pages';
@@ -68,3 +69,4 @@ export * from './calendar-range-pill-nav';
 export * from './calendar-study-pill-nav';
 
 export * from './with-calendar-variant-container';
+export * from './with-experiment-calendar-days';

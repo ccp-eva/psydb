@@ -9,8 +9,6 @@ import {
     useParams
 } from 'react-router-dom';
 
-import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
-
 import {
     useFetch,
     useRevision,
@@ -23,13 +21,23 @@ import {
 } from '@mpieva/psydb-ui-layout';
 
 import {
+    groupRecordsByDayStarts,
     getDayStartsInInterval,
     withCalendarVariantContainer,
     CalendarNav,
     CalendarTeamLegend,
+
+    withExperimentCalendarDays,
 } from '@mpieva/psydb-ui-lib';
 
-import DaysContainer from './days-container';
+import ExperimentSummarySmall  from './experiment-summary/cal-small';
+import ExperimentSummaryMedium  from './experiment-summary/cal-medium';
+
+const DaysContainer = withExperimentCalendarDays({
+    ExperimentSummaryDaily: ExperimentSummaryMedium,
+    ExperimentSummary3Day: ExperimentSummaryMedium,
+    ExperimentSummaryWeekly: ExperimentSummarySmall,
+})
 
 const Calendar = (ps) => {
     var {
@@ -103,26 +111,11 @@ const Calendar = (ps) => {
         phoneListField,
     } = fetched.data;
 
-    var experimentsByDayStart = (() => {
-        var groups = {};
-        for (var start of allDayStarts) {
-            var startT = start.getTime();
-            var endT = datefns.endOfDay(start).getTime();
-            groups[startT] = [];
-            if (experimentRecords) {
-                groups[startT] = experimentRecords.filter(it => {
-                    var expStartT = (
-                        new Date(it.state.interval.start).getTime()
-                    )
-                    return (
-                        expStartT >= startT
-                        && expStartT <= endT
-                    )
-                })
-            }
-        }
-        return groups;
-    })();
+    var experimentsByDayStart = groupRecordsByDayStarts({
+        interval: { start: currentPageStart, end: currentPageEnd },
+        records: experimentRecords,
+        timestampPointer: '/state/interval/start'
+    });
 
     return (
         <div>
