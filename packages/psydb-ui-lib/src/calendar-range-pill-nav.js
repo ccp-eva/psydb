@@ -2,7 +2,7 @@ import React from 'react';
 
 import { PillNav } from '@mpieva/psydb-ui-layout';
 
-const CalRangePillNav = ({
+export const CalendarRangePillNav = ({
     selectedVariant,
     onSelectVariant,
 }) => {
@@ -20,5 +20,3 @@ const CalRangePillNav = ({
         </div>
     )
 };
-
-export default CalRangePillNav;

@@ -6,7 +6,7 @@ import {
     PillNav,
 } from '@mpieva/psydb-ui-layout';
 
-const StudyPillNav = (ps) => {
+export const CalendarStudyPillNav = (ps) => {
     var {
         experimentType,
         researchGroupId = undefined,
@@ -46,5 +46,3 @@ const StudyPillNav = (ps) => {
         </div>
     )
 };
-
-export default StudyPillNav;

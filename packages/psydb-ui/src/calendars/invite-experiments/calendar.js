@@ -25,8 +25,10 @@ import CalendarNav from '@mpieva/psydb-ui-lib/src/calendar-nav';
 import withVariableCalendarPages from '@mpieva/psydb-ui-lib/src/with-variable-calendar-pages';
 import getDayStartsInInterval from '@mpieva/psydb-ui-lib/src/get-day-starts-in-interval';
 
-import CalRangePillNav from '../cal-range-pill-nav';
-import StudyPillNav from '../study-pill-nav';
+import {
+    CalendarRangePillNav,
+    CalendarStudyPillNav
+} from '@mpieva/psydb-ui-lib';
 
 import DaysContainer from './days-container';
 
@@ -245,7 +247,7 @@ const CalendarVariantContainer = (ps) => {
                     <b>Ansicht</b>
                 </div>
                 <div className='flex-grow'>
-                    <CalRangePillNav { ...({
+                    <CalendarRangePillNav { ...({
                         selectedVariant: calendarVariant,
                         onSelectVariant: (next) => updateQuery({
                             ...query, cal: next
@@ -259,8 +261,7 @@ const CalendarVariantContainer = (ps) => {
                     <b>Studien</b>
                 </div>
                 <div className='flex-grow'>
-                    <StudyPillNav { ...({
-                        subjectRecordType: ps.subjectRecordType,
+                    <CalendarStudyPillNav { ...({
                         experimentType: inviteType,
                         researchGroupId,
                         selectedStudyId,

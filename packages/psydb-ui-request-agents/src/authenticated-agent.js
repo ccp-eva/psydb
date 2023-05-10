@@ -415,10 +415,12 @@ agent.fetchSelectableStudies = ({
     );
 }
 
-agent.fetchSelectableStudiesForCalendar = ({
-    experimentTypes,
-    researchGroupId,
-}) => {
+agent.fetchSelectableStudiesForCalendar = (bag) => {
+    var {
+        experimentTypes,
+        researchGroupId = undefined
+    } = bag;
+
     return axios.post(
         '/api/selectable-studies-for-calendar',
         {
