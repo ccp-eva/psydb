@@ -19,12 +19,6 @@ export { default as FormBox } from './form-box';
 export { default as RecordTypeNav } from './record-type-nav';
 export { default as RedirectOrTypeNav } from './redirect-or-type-nav';
 export { default as ResearchGroupNav } from './research-group-nav';
-export { default as CalendarNav } from './calendar-nav';
-
-
-export { default as withDailyCalendarPages } from './with-daily-calendar-pages';
-export { default as withWeeklyCalendarPages } from './with-weekly-calendar-pages';
-export { default as with3DayCalendarPages } from './with-3day-calendar-pages';
 
 
 export { default as StudySelectList } from './study-select-list';
@@ -57,12 +51,20 @@ export { default as UpdateRecordVisibilityButton } from './update-record-visibil
 export { default as GenericRecordEditorFooter } from './generic-record-editor-footer';
 export { default as SubmitAndChangeVisibilityButton } from './submit-and-change-visibility-button';
 
-export { default as CalendarTeamLegend } from './calendar-team-legend';
-
 export { default as QuickSearch } from './quick-search';
 export { default as SubjectParticipationList } from './subject-participation-list';
 
 export * from './file-upload';
 
+
+export { default as getDayStartsInInterval } from './get-day-starts-in-interval';
+export { default as withVariableCalendarPages } from './with-variable-calendar-pages';
+export { default as withWeeklyCalendarPages } from './with-weekly-calendar-pages';
+export { default as with3DayCalendarPages } from './with-3day-calendar-pages';
+export { default as withDailyCalendarPages } from './with-daily-calendar-pages';
+export { default as CalendarTeamLegend } from './calendar-team-legend';
+export { default as CalendarNav } from './calendar-nav';
 export * from './calendar-range-pill-nav';
 export * from './calendar-study-pill-nav';
+
+export * from './with-calendar-variant-container';

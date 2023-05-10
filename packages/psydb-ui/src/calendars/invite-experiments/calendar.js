@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useMemo, useState, useCallback } from 'react';
+import React, { useMemo } from 'react';
 
 import {
     Route,
@@ -9,40 +9,41 @@ import {
     useParams
 } from 'react-router-dom';
 
-import agent from '@mpieva/psydb-ui-request-agents';
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 
 import {
+    useFetch,
+    useRevision,
     usePermissions,
-    useToggleReducer,
-    useSelectionReducer
+    useSelectionReducer,
 } from '@mpieva/psydb-ui-hooks';
 
-import { LoadingIndicator, ToggleButtons } from '@mpieva/psydb-ui-layout';
-import { CalendarTeamLegend } from '@mpieva/psydb-ui-lib';
-
-import CalendarNav from '@mpieva/psydb-ui-lib/src/calendar-nav';
-import withVariableCalendarPages from '@mpieva/psydb-ui-lib/src/with-variable-calendar-pages';
-import getDayStartsInInterval from '@mpieva/psydb-ui-lib/src/get-day-starts-in-interval';
+import {
+    LoadingIndicator,
+} from '@mpieva/psydb-ui-layout';
 
 import {
-    CalendarRangePillNav,
-    CalendarStudyPillNav
+    getDayStartsInInterval,
+    withCalendarVariantContainer,
+    CalendarNav,
+    CalendarTeamLegend,
 } from '@mpieva/psydb-ui-lib';
 
 import DaysContainer from './days-container';
 
-const Calendar = ({
-    inviteType,
+const Calendar = (ps) => {
+    var {
+        inviteType,
 
-    currentPageStart,
-    currentPageEnd,
-    onPageChange,
-    selectedStudyId,
-    calendarVariant,
-    showPast,
-    onSelectDay,
-}) => {
+        currentPageStart,
+        currentPageEnd,
+        onPageChange,
+        selectedStudyId,
+        calendarVariant,
+        showPast,
+        onSelectDay,
+    } = ps;
+
     var { path, url } = useRouteMatch();
 
     var {
@@ -51,24 +52,10 @@ const Calendar = ({
         researchGroupId,
     } = useParams();
 
+    var revision = useRevision();
     var teamSelection = useSelectionReducer();
-    var [ state, dispatch ] = useReducer(reducer, {});
 
-    var {
-        studyRecords,
-        experimentRecords,
-        experimentOperatorTeamRecords,
-        experimentRelated,
-        subjectRecordsById,
-        subjectRelated,
-        subjectDisplayFieldData,
-        phoneListField,
-
-        revision,
-    } = state;
-
-    useEffect(() => {
-
+    var [ didFetch, fetched ] = useFetch((agent) => (
         agent.fetchExperimentCalendar({
             subjectRecordType: subjectType,
             interval: {
@@ -88,15 +75,9 @@ const Calendar = ({
             ),
             showPast,
         })
-        .then(response => {
-            dispatch({ type: 'init', payload: {
-                ...response.data.data
-            }})
-        })
-
-    }, [ 
+    ), [ 
         studyType, subjectType, researchGroupId,
-        currentPageStart, currentPageEnd, revision,
+        currentPageStart, currentPageEnd, revision.value,
         selectedStudyId, teamSelection.value
     ])
 
@@ -107,7 +88,22 @@ const Calendar = ({
         })
     ), [ currentPageStart, currentPageEnd ]);
 
-    var experimentsByDayStart = useMemo(() => {
+    if (!didFetch) {
+        return <LoadingIndicator size='lg' />
+    }
+
+    var {
+        studyRecords,
+        experimentRecords,
+        experimentOperatorTeamRecords,
+        experimentRelated,
+        subjectRecordsById,
+        subjectRelated,
+        subjectDisplayFieldData,
+        phoneListField,
+    } = fetched.data;
+
+    var experimentsByDayStart = (() => {
         var groups = {};
         for (var start of allDayStarts) {
             var startT = start.getTime();
@@ -126,15 +122,7 @@ const Calendar = ({
             }
         }
         return groups;
-    }, [ experimentRecords ])
-
-    var handleSuccessfulUpdate = useCallback(() => {
-        dispatch({ type: 'increase-revision' });
-    }, []);
-
-    if (!experimentRecords) {
-        return <LoadingIndicator size='lg' />
-    }
+    })();
 
     return (
         <div>
@@ -167,7 +155,7 @@ const Calendar = ({
                 calendarVariant,
                 showPast,
                 onSelectDay,
-                onSuccessfulUpdate: handleSuccessfulUpdate
+                onSuccessfulUpdate: revision.up
             }) }/>
 
             <CalendarTeamLegend { ...({
@@ -182,120 +170,8 @@ const Calendar = ({
     )
 }
 
-const reducer = (state, action) => {
-    var { type, payload } = action;
-    switch (type) {
-        case 'init':
-            return {
-                ...state,
-                studyRecords: payload.studyRecords,
-                experimentRecords: payload.experimentRecords,
-                experimentOperatorTeamRecords: payload.experimentOperatorTeamRecords,
-                experimentRelated: payload.experimentRelated,
-                subjectRecordsById: payload.subjectRecordsById,
-                subjectRelated: payload.subjectRelated,
-                subjectDisplayFieldData: payload.subjectDisplayFieldData,
-                phoneListField: payload.phoneListField,
-
-            }
-        
-        case 'increase-revision':
-            return {
-                ...state,
-                revision: (state.revision || 0) + 1
-            }
-    }
-}
-
-const WrappedCalendar = (
-    withVariableCalendarPages(Calendar, { withURLSearchParams: true })
+const CalendarVariantContainer= (
+    withCalendarVariantContainer({ Calendar })
 );
-
-import { useURLSearchParams } from '@mpieva/psydb-ui-hooks';
-import omit from '@cdxoo/omit';
-
-const CalendarVariantContainer = (ps) => {
-    var { inviteType } = ps;
-
-    var {
-        studyType,
-        subjectType,
-        researchGroupId,
-    } = useParams();
-
-    var [ query, updateQuery ] = useURLSearchParams();
-    var permissions = usePermissions();
-    var showPast = useToggleReducer(false, { as: 'props' });
-    
-    var {
-        cal: calendarVariant,
-        study: selectedStudyId,
-    } = query;
-
-    calendarVariant = calendarVariant || '3-day';
-    selectedStudyId = selectedStudyId || null;
-
-    return (
-        <>
-            { permissions.isRoot() && (
-                <div className='mb-2'>
-                    <ToggleButtons.ShowPast { ...showPast } />
-                </div>
-            )}
-            <div className='d-flex mb-2'>
-                <div style={{ width: '100px', paddingTop: '.2rem' }}>
-                    <b>Ansicht</b>
-                </div>
-                <div className='flex-grow'>
-                    <CalendarRangePillNav { ...({
-                        selectedVariant: calendarVariant,
-                        onSelectVariant: (next) => updateQuery({
-                            ...query, cal: next
-                        })
-                    }) } />
-                </div>
-            </div>
-
-            <div className='d-flex mb-2'>
-                <div style={{ width: '100px', paddingTop: '.2rem' }}>
-                    <b>Studien</b>
-                </div>
-                <div className='flex-grow'>
-                    <CalendarStudyPillNav { ...({
-                        experimentType: inviteType,
-                        researchGroupId,
-                        selectedStudyId,
-                        onSelectStudy: (next) => {
-                            if (next) {
-                                updateQuery({
-                                    ...query, study: next
-                                })
-                            }
-                            else {
-                                updateQuery(omit('study', query));
-                            }
-                        }
-                    }) } />
-
-                </div>
-            </div>
-            
-            <WrappedCalendar { ...({
-                calendarVariant,
-                selectedStudyId,
-                showPast: showPast.value,
-                //onSelectStudy: handleSelectStudyId,
-                onSelectDay: (date) => {
-                    updateQuery({
-                        ...query,
-                        cal: 'daily',
-                        d: date.getTime()
-                    })
-                },
-                ...ps
-            }) } />
-        </>
-    )
-}
 
 export default CalendarVariantContainer;

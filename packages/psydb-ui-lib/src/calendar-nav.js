@@ -1,15 +1,17 @@
-import React, { useState, useEffect, useReducer, useMemo } from 'react';
+import React from 'react';
 import { Icons } from '@mpieva/psydb-ui-layout';
 
 import datefns from './date-fns';
 
-const CalendarNav = ({
-    className = '',
-    currentPageStart,
-    currentPageEnd,
-    onPageChange,
-    showCalendarWeek = true,
-}) => {
+const CalendarNav = (ps) => {
+    var {
+        className = '',
+        currentPageStart,
+        currentPageEnd,
+        onPageChange,
+        showCalendarWeek = true,
+    } = ps;
+
     var isSameDay = false
     if (datefns.isSameDay(currentPageStart, currentPageEnd)) {
         isSameDay = true;
