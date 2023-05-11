@@ -2,7 +2,7 @@
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
 var convertCRTRecordToSettings = (crtRecord) => {
-    var { collection } = crtRecord; 
+    var { collection, type } = crtRecord; 
     
     var {
         hasSubChannels,
@@ -40,6 +40,7 @@ var convertCRTRecordToSettings = (crtRecord) => {
 
     return {
         collection,
+        type,
         hasSubChannels,
         fieldDefinitions,
         staticFieldDefinitions,

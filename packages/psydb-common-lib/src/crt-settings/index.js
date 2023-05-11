@@ -1,6 +1,10 @@
 'use strict';
 var sift = require('sift').default;
-var { arrify, convertPointerToPath } = require('@mpieva/psydb-core-utils');
+var {
+    arrify,
+    keyBy,
+    convertPointerToPath
+} = require('@mpieva/psydb-core-utils');
 
 var CRTSettings = ({ data }) => {
     var crt = {};
@@ -31,11 +35,12 @@ var CRTSettings = ({ data }) => {
     }
 
     crt.getRaw = () => data;
+    crt.getType = () => data.type;
     crt.getCollection = () => data.collection;
     crt.getDisplayName = () => data.label;
     crt.getRecordLabelDefinition = () => data.recordLabelDefinition;
     crt.allStaticFields = () => (data.staticFieldDefinitions || []);
-
+   
     crt.getSubChannelKeys = () => {
         if (data.hasSubChannels) {
             return Object.keys(data.fieldDefinitions);
@@ -93,6 +98,32 @@ var CRTSettings = ({ data }) => {
         }, {})
     }
 
+    // XXX oh gawd
+    // FIXME: rename to just 'allFields()' ???
+    var __availableDisplayFieldsByPointer = keyBy({ items: [
+        {
+            key: 'ID',
+            systemType: 'Id',
+            dataPointer: '/_id', // FIXME
+            displayName: 'ID',
+        },
+        ...crt.allStaticFields(),
+        ...crt.allCustomFields().map(it => ({
+            ...it,
+            systemType: it.type, // FIXME: compat
+            dataPointer: it.pointer // FIXME: compat
+        })),
+    ], byProp: 'pointer' });
+
+    crt.availableDisplayFields = () => (
+        Object.values(__availableDisplayFieldsByPointer)
+    );
+    crt.augmentedDisplayFields = (target) => {
+        var displayFields = data[`${target}DisplayFields`];
+        return displayFields.map(it => (
+            __availableDisplayFieldsByPointer[it.pointer || it.dataPointer]
+        ));
+    }
     return crt;
 }
 

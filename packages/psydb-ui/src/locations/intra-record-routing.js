@@ -36,7 +36,8 @@ const IntraRecordRoutingBody = (ps) => {
     var history = useHistory();
     var { path, url } = useRouteMatch();
 
-    var { canBeReserved } = fetched.record.state.reservationSettings;
+    var { record } = fetched;
+    var { canBeReserved } = record.state.reservationSettings;
 
     //var enableEdit = permissions.hasCollectionFlag('location', 'write');
     var enableCalendar = permissions.hasSomeLabOperationFlags({
@@ -117,9 +118,14 @@ const IntraRecordRoutingBody = (ps) => {
                     
                     <Route path={`${path}/calendar`}>
                         { canBeReserved ? (
-                            <InviteCalendar />
+                            <InviteCalendar
+                                locationId={record._id }
+                                experimentTypes={[
+                                    'inhouse', 'online-video-call'
+                                ]}
+                            />
                         ) : (
-                            <AwayTeamCalendar />
+                            <AwayTeamCalendar locationId={record._id } />
                         )}
                     </Route>
 

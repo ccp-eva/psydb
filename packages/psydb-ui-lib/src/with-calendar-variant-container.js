@@ -44,7 +44,9 @@ export const withCalendarVariantContainer = (options = {}) => {
     );
 
     const CalendarVariantContainer = (ps) => {
-        var { inviteType } = ps;
+        var { inviteType, experimentTypes } = ps;
+        experimentTypes = experimentTypes || [ inviteType ];
+
         var { researchGroupId } = useParams();
 
         var [ query, updateQuery ] = useURLSearchParams();
@@ -89,7 +91,7 @@ export const withCalendarVariantContainer = (options = {}) => {
                 { showStudySelect && (
                     <PillNavContainer label='Studien'>
                         <CalendarStudyPillNav { ...({
-                            experimentType: inviteType,
+                            experimentTypes,
                             researchGroupId,
                             selectedStudyId,
                             onSelectStudy: (next) => {

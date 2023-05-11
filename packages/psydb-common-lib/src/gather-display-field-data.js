@@ -11,20 +11,22 @@ var gatherDisplayFieldData = ({
     var crtSettings = convertCRTRecordToSettings(customRecordTypeData);
     var crt = CRTSettings({ data: crtSettings });
 
-    var fieldData = [
-        {
-            key: 'ID',
-            systemType: 'Id',
-            dataPointer: '/_id', // FIXME
-            displayName: 'ID',
-        },
-        ...crt.allStaticFields(),
-        ...crt.allCustomFields().map(it => ({
-            ...it, dataPointer: it.pointer // FIXME: compat
-        }))
-    ];
+    return crt.availableDisplayFields();
 
-    return fieldData;
+    //var fieldData = [
+    //    {
+    //        key: 'ID',
+    //        systemType: 'Id',
+    //        dataPointer: '/_id', // FIXME
+    //        displayName: 'ID',
+    //    },
+    //    ...crt.allStaticFields(),
+    //    ...crt.allCustomFields().map(it => ({
+    //        ...it, dataPointer: it.pointer // FIXME: compat
+    //    }))
+    //];
+
+    //return fieldData;
 };
 
 module.exports = gatherDisplayFieldData;

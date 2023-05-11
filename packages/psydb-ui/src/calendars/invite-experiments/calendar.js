@@ -12,7 +12,6 @@ import {
 import {
     useFetch,
     useRevision,
-    usePermissions,
     useSelectionReducer,
 } from '@mpieva/psydb-ui-hooks';
 

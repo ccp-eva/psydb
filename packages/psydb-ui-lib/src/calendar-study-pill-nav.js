@@ -8,7 +8,7 @@ import {
 
 export const CalendarStudyPillNav = (ps) => {
     var {
-        experimentType,
+        experimentTypes,
         researchGroupId = undefined,
 
         selectedStudyId,
@@ -17,10 +17,10 @@ export const CalendarStudyPillNav = (ps) => {
 
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.fetchSelectableStudiesForCalendar({
-            experimentTypes: [ experimentType ],
+            experimentTypes,
             researchGroupId,
         })
-    ), [ experimentType, researchGroupId ]);
+    ), [ experimentTypes.join(','), researchGroupId ]);
 
     if (!didFetch) {
         return <LoadingIndicator size='lg' />

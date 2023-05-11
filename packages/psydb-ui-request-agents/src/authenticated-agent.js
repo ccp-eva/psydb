@@ -351,11 +351,14 @@ agent.fetchInviteConfirmationList = ({
 }
 
 agent.fetchExperimentCalendar = ({
-    subjectRecordType,
     interval,
+
     experimentType,
+    experimentTypes,
+    subjectRecordType,
     studyId,
     researchGroupId,
+    locationId,
 
     experimentOperatorTeamIds,
     showPast,
@@ -363,11 +366,13 @@ agent.fetchExperimentCalendar = ({
     return axios.post(
         '/api/experiment-calendar',
         {
+            interval,
+
+            experimentTypes: experimentTypes || [ experimentType ],
             subjectRecordType,
             studyId,
-            interval,
-            experimentType,
             researchGroupId,
+            locationId,
 
             experimentOperatorTeamIds,
             showPast
