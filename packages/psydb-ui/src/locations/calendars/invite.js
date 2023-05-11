@@ -103,6 +103,24 @@ const InviteCalendarBody = (ps) => {
                 marginRight: '15em',
             }}/>
             
+            <DaysContainer { ...({
+                //inviteType,
+
+                allDayStarts,
+                experimentsByDayStart,
+
+                experimentRelated,
+                experimentOperatorTeamRecords,
+                subjectRecordsById,
+                subjectRelated,
+                subjectDisplayFieldData,
+
+                //url,
+                calendarVariant,
+                showPast,
+                onSelectDay,
+                onSuccessfulUpdate: revision.up
+            }) }/>
         </div>
     )
 }

@@ -12,20 +12,21 @@ import {
     ChangeTeamModal,
 } from '../../modals';
 
-const ExperimentSummarySmall = ({
-    inviteType,
-    experimentRecord,
+const ExperimentSummarySmall = (ps) => {
+    var {
+        experimentRecord,
 
-    experimentRelated,
-    experimentOperatorTeamRecords,
-    subjectRecordsById,
-    subjectRelated,
-    subjectDisplayFieldData,
+        experimentRelated,
+        experimentOperatorTeamRecords,
+        subjectRecordsById,
+        subjectRelated,
+        subjectDisplayFieldData,
 
-    url,
-    showPast,
-    onSuccessfulUpdate,
-}) => {
+        showPast,
+        onSuccessfulUpdate,
+    } = ps;
+    var { type: inviteType } = experimentRecord;
+
     var moveExperimentModal = useModalReducer({ show: false });
     var changeTeamModal = useModalReducer({ show: false });
 

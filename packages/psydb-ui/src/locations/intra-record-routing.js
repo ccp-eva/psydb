@@ -117,16 +117,20 @@ const IntraRecordRoutingBody = (ps) => {
                     </Route>
                     
                     <Route path={`${path}/calendar`}>
-                        { canBeReserved ? (
-                            <InviteCalendar
-                                locationId={record._id }
-                                experimentTypes={[
-                                    'inhouse', 'online-video-call'
-                                ]}
-                            />
-                        ) : (
-                            <AwayTeamCalendar locationId={record._id } />
-                        )}
+                        <div className='border p-3'>
+                            { canBeReserved ? (
+                                <InviteCalendar
+                                    locationId={record._id }
+                                    experimentTypes={[
+                                        'inhouse', 'online-video-call'
+                                    ]}
+                                />
+                            ) : (
+                                <AwayTeamCalendar
+                                    locationId={record._id }
+                                />
+                            )}
+                        </div>
                     </Route>
 
                     <Route path={`${path}/reservation`}>

@@ -25,20 +25,21 @@ import {
     PerSubjectCommentModal,
 } from '../../modals';
 
-const ExperimentSummaryMedium = ({
-    inviteType,
-    experimentRecord,
+const ExperimentSummaryMedium = (ps) => {
+    var {
+        experimentRecord,
 
-    experimentRelated,
-    experimentOperatorTeamRecords,
-    subjectRecordsById,
-    subjectRelated,
-    subjectDisplayFieldData,
+        experimentRelated,
+        experimentOperatorTeamRecords,
+        subjectRecordsById,
+        subjectRelated,
+        subjectDisplayFieldData,
 
-    url,
-    showPast,
-    onSuccessfulUpdate,
-}) => {
+        showPast,
+        onSuccessfulUpdate,
+    } = ps;
+
+    var { type: inviteType } = experimentRecord;
     var permissions = usePermissions();
 
     var moveExperimentModal = useModalReducer({ show: false });
@@ -311,7 +312,11 @@ const SubjectItem = ({
     var subjectRecord = subjectRecordsById[subjectId];
 
     var withValue = applyValueToDisplayFields({
-        displayFieldData: subjectDisplayFieldData,
+        displayFieldData: (
+            Array.isArray(subjectDisplayFieldData)
+            ? subjectDisplayFieldData
+            : subjectDisplayFieldData[subjectRecord.type]
+        ),
         record: subjectRecord,
         ...subjectRelated,
     });
