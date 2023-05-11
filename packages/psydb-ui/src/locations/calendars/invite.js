@@ -44,6 +44,7 @@ const InviteCalendarBody = (ps) => {
     } = ps;
 
     var revision = useRevision();
+    var teamSelection = useSelectionReducer();
     
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.fetchExperimentCalendar({
@@ -56,11 +57,16 @@ const InviteCalendarBody = (ps) => {
             ...(selectedStudyId && {
                 studyId: selectedStudyId
             }),
+            experimentOperatorTeamIds: (
+                teamSelection.value.length > 0
+                ? teamSelection.value
+                : undefined
+            ),
             showPast,
         })
     ), [ 
         currentPageStart, currentPageEnd, revision.value,
-        selectedStudyId,
+        selectedStudyId, teamSelection.value.join(',')
     ])
     
     if (!didFetch) {
@@ -104,8 +110,6 @@ const InviteCalendarBody = (ps) => {
             }}/>
             
             <DaysContainer { ...({
-                //inviteType,
-
                 allDayStarts,
                 experimentsByDayStart,
 
@@ -115,12 +119,20 @@ const InviteCalendarBody = (ps) => {
                 subjectRelated,
                 subjectDisplayFieldData,
 
-                //url,
                 calendarVariant,
                 showPast,
                 onSelectDay,
                 onSuccessfulUpdate: revision.up
             }) }/>
+            
+            <CalendarTeamLegend { ...({
+                studyRecords,
+                experimentOperatorTeamRecords,
+                activeTeamIds: teamSelection.value,
+                onClickTeam: (team) => {
+                    teamSelection.toggle(team._id)
+                }
+            })} />
         </div>
     )
 }

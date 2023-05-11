@@ -83,7 +83,7 @@ const Calendar = (ps) => {
     ), [ 
         studyType, subjectType, researchGroupId,
         currentPageStart, currentPageEnd, revision.value,
-        selectedStudyId, teamSelection.value
+        selectedStudyId, teamSelection.value.join(',')
     ])
 
     var allDayStarts = useMemo(() => (
@@ -130,7 +130,7 @@ const Calendar = (ps) => {
             }}/>
             
             <DaysContainer { ...({
-                inviteType,
+                //inviteType,
 
                 allDayStarts,
                 experimentsByDayStart,
@@ -141,7 +141,7 @@ const Calendar = (ps) => {
                 subjectRelated,
                 subjectDisplayFieldData,
 
-                url,
+                //url,
                 calendarVariant,
                 showPast,
                 onSelectDay,
