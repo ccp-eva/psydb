@@ -16,19 +16,19 @@ var {
 
 var {
     ExactObject,
-    ForeignId,
+    ForeignIdList,
     DateTime,
     DefaultBool
 } = require('@mpieva/psydb-schema-fields');
 
 var RequestBodySchema = () => ExactObject({
     properties: {
-        locationId: ForeignId({ collection: 'location' }),
+        locationIds: ForeignIdList({ collection: 'location' }),
         start: DateTime(),
         end: DateTime(),
     },
     required: [
-        'locationId',
+        'locationIds',
         'start',
         'end',
     ]
@@ -47,7 +47,7 @@ var reservableLocationTimeTable = async (context, next) => {
     });
 
     var {
-        locationId,
+        locationIds,
         start,
         end,
     } = request.body;
@@ -71,7 +71,7 @@ var reservableLocationTimeTable = async (context, next) => {
         additionalStages: [
             { $match: {
                 type: 'inhouse',
-                'state.locationId': locationId,
+                'state.locationId': { $in: locationIds },
             }}
         ]
     });
@@ -82,7 +82,7 @@ var reservableLocationTimeTable = async (context, next) => {
         additionalStages: [
             { $match: {
                 type: { $in: [ 'inhouse', 'online-video-call' ] },
-                'state.locationId': locationId,
+                'state.locationId': { $in: locationIds },
                 'state.isCanceled': false,
             }}
         ]

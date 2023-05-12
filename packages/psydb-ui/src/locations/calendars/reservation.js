@@ -34,7 +34,7 @@ const ReservationCalendarBody = (ps) => {
             id: locationId
         }),
         timetable: agent.fetchReservableLocationTimeTable({
-            locationId,
+            locationIds: [ locationId ],
             start: currentPageStart,
             end: currentPageEnd,
             //showPast, // FIXME

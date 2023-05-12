@@ -75,3 +75,6 @@ export * as InviteExperimentSummary from './invite-experiment-summary';
 export {
     default as LocationTimeTable
 } from './study-inhouse-locations/location-time-table';
+export {
+    default as LocationTimeSlotList
+} from './study-inhouse-locations/location-time-table/time-slot-list';

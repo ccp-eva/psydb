@@ -49,6 +49,7 @@ const TimeSlotList = ({
     
     calculateNewExperimentMaxEnd,
     showPast,
+    showHeader = true,
 }) => {
     var permissions = usePermissions();
 
@@ -165,10 +166,12 @@ const TimeSlotList = ({
 
     return (
         <div>
-            <header className={ className }>
-                <div><b>{ datefns.format(start, 'cccccc dd.MM.') }</b></div>
-                <div>Uhrzeit</div>
-            </header>
+            { showHeader && (
+                <header className={ className }>
+                    <div><b>{ datefns.format(start, 'cccccc dd.MM.') }</b></div>
+                    <div>Uhrzeit</div>
+                </header>
+            )}
             { slots.map(
                 ({
                     timestamp,

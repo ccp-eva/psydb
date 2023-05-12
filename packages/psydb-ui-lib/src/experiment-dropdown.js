@@ -29,11 +29,13 @@ var ExperimentDropdown = (ps) => {
         enableFollowUp = true,
         enableMove = true,
         enableChangeTeam = true,
+        enableChangeLocation = true,
         enableCancel = true,
 
         onClickFollowUp,
         onClickMove,
         onClickChangeTeam,
+        onClickChangeLocation,
         onClickCancel,
         
         disabled,
@@ -59,6 +61,11 @@ var ExperimentDropdown = (ps) => {
     var canChangeOpsTeam = permissions.hasLabOperationFlag(
         experimentType, 'canChangeOpsTeam'
     );
+    // TODO
+    //var canChangeLocation = permissions.hasLabOperationFlag(
+    //    experimentType, 'canChangeLocation'
+    //);
+    var canChangeLocation = permissions.isRoot();
 
 
     var style = (
@@ -119,6 +126,15 @@ var ExperimentDropdown = (ps) => {
                         onClick={ onClickChangeTeam }
                     >
                         Team ändern
+                    </Dropdown.Item>
+                )}
+                { enableChangeLocation && (
+                    <Dropdown.Item
+                        as='button'
+                        disabled={ !canChangeLocation || !onClickChangeLocation }
+                        onClick={ onClickChangeLocation }
+                    >
+                        Raum ändern
                     </Dropdown.Item>
                 )}
 

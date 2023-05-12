@@ -19,6 +19,7 @@ import ExperimentSubjectDropdown from '../../experiment-subject-dropdown';
 import {
     MoveExperimentModal,
     ChangeTeamModal,
+    ChangeInviteLocationModal,
     MoveSubjectModal,
     FollowUpSubjectModal,
     RemoveSubjectModal,
@@ -44,6 +45,7 @@ const ExperimentSummaryMedium = (ps) => {
 
     var moveExperimentModal = useModalReducer({ show: false });
     var changeTeamModal = useModalReducer({ show: false });
+    var changeLocationModal = useModalReducer({ show: false });
 
     var commentPerSubjectModal = useModalReducer({ show: false });
     var moveSubjectModal = useModalReducer({ show: false });
@@ -133,6 +135,19 @@ const ExperimentSummaryMedium = (ps) => {
                 onSuccessfulUpdate,
             }) } />
 
+            <ChangeInviteLocationModal { ...({
+                show: changeLocationModal.show,
+                onHide: changeLocationModal.handleHide,
+                payloadData: changeLocationModal.data,
+
+                experimentId: experimentRecord._id,
+                experimentStart: experimentRecord.state.interval.start,
+                experimentEnd: experimentRecord.state.interval.end,
+                studyId: experimentRecord.state.studyId,
+                currentLocationId: experimentRecord.state.locationId,
+
+                onSuccessfulUpdate,
+            }) } />
 
             <PerSubjectCommentModal { ...({
                 show: commentPerSubjectModal.show,
@@ -199,7 +214,8 @@ const ExperimentSummaryMedium = (ps) => {
                         variant: 'calendar',
                         detailsLink: `/experiments/${inviteType}/${experimentRecord._id}`,
                         onClickMove: moveExperimentModal.handleShow,
-                        onClickChangeTeam: changeTeamModal.handleShow
+                        onClickChangeTeam: changeTeamModal.handleShow,
+                        onClickChangeLocation: changeLocationModal.handleShow,
                     })} />
                 </div>
             </div>

@@ -234,13 +234,13 @@ agent.fetchStudyLocationReservationCalendar = ({
 }
 
 agent.fetchReservableLocationTimeTable = ({
-    locationId,
+    locationIds,
     start,
     end,
 }) => {
     var baseUrl = '/api/reservable-location-time-table';
     return axios.post(baseUrl, {
-        locationId,
+        locationIds,
         start,
         end,
     });

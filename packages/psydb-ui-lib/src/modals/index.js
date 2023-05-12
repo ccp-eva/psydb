@@ -1,4 +1,5 @@
 export { default as ChangeTeamModal } from './change-team';
+export { default as ChangeInviteLocationModal } from './change-invite-location';
 export { default as PerSubjectCommentModal } from './per-subject-comment';
 export { default as MoveExperimentModal } from './move-experiment';
 export { default as FollowUpExperimentModal } from './follow-up-experiment';
