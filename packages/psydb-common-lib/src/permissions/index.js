@@ -1,5 +1,6 @@
 'use strict';
 var {
+    entries,
     unique,
     intersect,
     compareIds,
@@ -34,6 +35,14 @@ var Permissions = (options) => {
     var isRoot = () => (
         hasRootAccess && !forcedResearchGroupId
     )
+
+    var getFlags = (flag) => {
+        var out = {};
+        for (var [ key, rgids ] of entries(researchGroupIdsByFlag)) {
+            out[key] = isRoot() || (rgids.length > 0)
+        }
+        return out;
+    }
 
     var getFlagIds = (flag) => (
         researchGroupIdsByFlag[flag] || []
@@ -162,6 +171,7 @@ var Permissions = (options) => {
         ...wrapper,
 
         isRoot,
+        getFlags,
         getFlagIds,
         getLabOperationFlagIds,
         getAllLabOperationFlagIds,

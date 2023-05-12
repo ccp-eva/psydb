@@ -145,6 +145,13 @@ var createRouting = (bag = {}) => {
         })
     )
 
+    router.post(
+        '/reservable-location-time-table',
+        ...withPostStages({
+            endpoint: endpoints.special.reservableLocationTimeTable
+        })
+    )
+
     router.get(
         inline`
             /study-away-team-reservation-calendar

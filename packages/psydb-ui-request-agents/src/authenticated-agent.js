@@ -233,6 +233,19 @@ agent.fetchStudyLocationReservationCalendar = ({
     });
 }
 
+agent.fetchReservableLocationTimeTable = ({
+    locationId,
+    start,
+    end,
+}) => {
+    var baseUrl = '/api/reservable-location-time-table';
+    return axios.post(baseUrl, {
+        locationId,
+        start,
+        end,
+    });
+}
+
 agent.fetchStudyAwayTeamReservationCalendar = ({
     studyId,
     start,

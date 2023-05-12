@@ -33,12 +33,11 @@ const TimeSlot = (ps) => {
     }
 
     var permissions = usePermissions();
-    var canCreateReservationsWithinTheNext3Days = (
-        permissions.hasFlag('canCreateReservationsWithinTheNext3Days')
-    );
-    var canCreateExperimentsWithinTheNext3Days = (
-        permissions.hasFlag('canCreateExperimentsWithinTheNext3Days')
-    );
+
+    var {
+        canCreateReservationsWithinTheNext3Days,
+        canCreateExperimentsWithinTheNext3Days
+    } = permissions.getFlags()
 
     var now = new Date();
     if (experimentRecord) {

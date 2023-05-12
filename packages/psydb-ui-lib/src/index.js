@@ -72,3 +72,6 @@ export * from './with-calendar-variant-container';
 export * from './with-experiment-calendar-days';
 
 export * as InviteExperimentSummary from './invite-experiment-summary';
+export {
+    default as LocationTimeTable
+} from './study-inhouse-locations/location-time-table';

@@ -66,6 +66,10 @@ module.exports = {
     locationExperimentCalendar: (
         require('./calendars/location-experiment-calendar')
     ),
+    
+    reservableLocationTimeTable: (
+        require('./calendars/reservable-location-time-table')
+    ),
 
     selectableStudies: (
         require('./lab-operation/selectable-studies')

@@ -12,6 +12,7 @@ const usePermissions = () => {
     var {
         isRoot,
         
+        getFlags,
         getFlagIds,
         getLabOperationFlagIds,
         getAllLabOperationFlagIds,
@@ -23,6 +24,8 @@ const usePermissions = () => {
         hasLabOperationFlag,
         hasSomeLabOperationFlags,
         hasCollectionFlag,
+    
+        hasLabOpsFlags,
 
         ...raw
     } = wrappedPermissions;
@@ -31,6 +34,7 @@ const usePermissions = () => {
         raw,
 
         isRoot,
+        getFlags,
         getFlagIds,
         getLabOperationFlagIds,
         getAllLabOperationFlagIds,
@@ -42,6 +46,8 @@ const usePermissions = () => {
         hasLabOperationFlag,
         hasSomeLabOperationFlags,
         hasCollectionFlag,
+        
+        hasLabOpsFlags,
     }
 }
 

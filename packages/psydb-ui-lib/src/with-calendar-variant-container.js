@@ -34,6 +34,7 @@ const PillNavContainer = (ps) => {
 export const withCalendarVariantContainer = (options = {}) => {
     var {
         Calendar,
+        defaultVariant = '3-day',
         showVariantSelect = true,
         showStudySelect = true,
         // withURLSearchParams = true // TODO
@@ -67,7 +68,7 @@ export const withCalendarVariantContainer = (options = {}) => {
             study: selectedStudyId,
         } = query;
 
-        calendarVariant = calendarVariant || '3-day';
+        calendarVariant = calendarVariant || defaultVariant;
         selectedStudyId = selectedStudyId || null;
 
         return (
@@ -110,13 +111,17 @@ export const withCalendarVariantContainer = (options = {}) => {
                     calendarVariant,
                     selectedStudyId,
                     showPast: showPast.value,
-                    onSelectDay: (date) => {
-                        updateQuery({
-                            ...query,
-                            cal: 'daily',
-                            d: date.getTime()
-                        })
-                    },
+                    onSelectDay: (
+                        showVariantSelect
+                        ? (date) => {
+                            updateQuery({
+                                ...query,
+                                cal: 'daily',
+                                d: date.getTime()
+                            })
+                        }
+                        : undefined
+                    ),
                     ...ps
                 }) } />
             </>

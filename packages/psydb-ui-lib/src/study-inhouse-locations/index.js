@@ -10,46 +10,43 @@ import { LoadingIndicator, TabNav } from '@mpieva/psydb-ui-layout';
 import LocationCalendarList from './location-calendar-list';
 
 
-const StudyInhouseLocations = ({
-    variant = 'experiment',
-    studyId,
-    studyRecordType,
+const StudyInhouseLocations = (ps) => {
+    var {
+        variant = 'experiment',
+        studyId,
+        studyRecordType,
 
-    subjectRecordType,
-    currentExperimentId,
-    currentExperimentType,
-    currentSubjectRecord,
-    
-    desiredTestInterval,
-    testableIntervals,
+        subjectRecordType,
+        currentExperimentId,
+        currentExperimentType,
+        currentSubjectRecord,
 
-    activeLocationType,
-    onSelectLocationType,
+        desiredTestInterval,
+        testableIntervals,
 
-    __useNewCanSelect,
-    checkEmptySlotSelectable,
-    checkReservationSlotSelectable,
-    checkExperimentSlotSelectable,
+        activeLocationType,
+        onSelectLocationType,
 
-    onSelectEmptySlot,
-    onSelectReservationSlot,
-    onSelectExperimentSlot,
+        __useNewCanSelect,
+        checkEmptySlotSelectable,
+        checkReservationSlotSelectable,
+        checkExperimentSlotSelectable,
 
-    calculateNewExperimentMaxEnd,
+        onSelectEmptySlot,
+        onSelectReservationSlot,
+        onSelectExperimentSlot,
 
-    /*currentPageStart,
-    currentPageEnd,
-    onPageChange,*/
+        calculateNewExperimentMaxEnd,
 
-    locationCalendarListClassName,
+        locationCalendarListClassName,
 
-    // used to force reloading the whole component
-    revision = 0,
+        // used to force reloading the whole component
+        revision = 0,
 
-    // used to force update of the calendar
-    calendarRevision = 0,
-}) => {
-   
+        // used to force update of the calendar
+        calendarRevision = 0,
+    } = ps;
+
     var [ didFetch, fetched, isTransmitting ] = useFetchAll((agent) => ({
         customTypes: agent.readCustomRecordTypeMetadata(),
         /*study:  agent.readRecord({
@@ -64,7 +61,10 @@ const StudyInhouseLocations = ({
             studyId,
             type: currentExperimentType,
         }),
-    }), [ studyId, studyRecordType, activeLocationType, revision, currentExperimentType ])
+    }), [
+        studyId, studyRecordType, activeLocationType,
+        revision, currentExperimentType
+    ])
 
     if (!didFetch || isTransmitting) {
         return (
@@ -115,7 +115,7 @@ const StudyInhouseLocations = ({
 
                 settingRecords,
                 settingRelated,
-                
+
                 currentExperimentId,
                 currentExperimentType,
                 subjectRecordType,

@@ -137,7 +137,15 @@ const reducer = (state, action) => {
                 [payload.key]: {
                     data: payload.data,
                     response: payload.response,
-                }
+                },
+                _stageDatas: {
+                    ...state?._stageDatas,
+                    [payload.key]: payload.data
+                },
+                _stageResponses: {
+                    ...state?._stageResponses,
+                    [payload.key]: payload.response
+                },
             });
         case 'fetched-all':
             return ({

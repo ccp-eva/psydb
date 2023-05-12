@@ -77,7 +77,7 @@ var experimentCalendar = async (context, next) => {
 
     verifyLabOperationAccess({
         researchGroupId,
-        labOperationType: experimentTypes,
+        labOperationTypes: experimentTypes,
         flag: 'canViewExperimentCalendar',
         permissions,
         
