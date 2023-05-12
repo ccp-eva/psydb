@@ -11,6 +11,7 @@ var ExperimentGroup = MessageHandlerGroup([
     require('./create-followup-awayteam'),
 
     require('./change-study'),
+    require('./change-location'),
     require('./change-experiment-operator-team'),
     require('./change-invitation-status'),
     require('./change-participation-status'),

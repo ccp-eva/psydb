@@ -86,7 +86,7 @@ const ChangeInviteLocationModalBody = (ps) => {
         type: `experiment/change-location`,
         payload: {
             experimentId,
-            locationId,
+            locationId: selection.value[0],
             // forceOverrideReservation // XXX ???
         }
     }), { onSuccessfulUpdate: [ onHide, onSuccessfulUpdate ] })
