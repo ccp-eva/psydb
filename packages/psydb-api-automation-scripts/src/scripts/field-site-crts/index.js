@@ -8,11 +8,6 @@ var createFSScientistRole = require('./create-fs-scientist-role');
 var createResearchGroup = require('./create-research-group');
 var createDummyScientist = require('./create-dummy-scientist');
 
-var apiKey = [
-    'xA3S5M1_2uEhgelRVaZyYjg5qw_UehHV',
-    'B1bGmH9X7-S8x8sslsUxIFH5_n85Tkdh'
-].join('');
-
 var sites = [
     { type: 'camreoon', label: 'Kamerun' },
     { type: 'namibia', label: 'Namibia' },
@@ -30,7 +25,7 @@ var defaultSubjectFormOrder = [
 ]
 
 module.exports = async (bag) => {
-    var { driver } = bag;
+    var { driver, apiKey, extraOptions } = bag;
     var cache = {};
 
     var systemRoleId = await createFSScientistRole({ apiKey, driver });
@@ -73,7 +68,7 @@ module.exports = async (bag) => {
     }
 
     await createCongoSpecialFields({
-        driver, subjectCrtId
+        driver, apiKey, subjectCrtId
     });
 
     console.dir(ejson(
@@ -82,7 +77,7 @@ module.exports = async (bag) => {
 }
 
 
-var createCongoSpecialFields = async ({ driver, subjectCrtId }) => {
+var createCongoSpecialFields = async ({ driver, apiKey, subjectCrtId }) => {
 
     await driver.sendMessage({
         type: `custom-record-types/add-field-definition`,

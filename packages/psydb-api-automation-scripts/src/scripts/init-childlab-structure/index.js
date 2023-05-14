@@ -1,27 +1,25 @@
 'use strict';
 var { ejson } = require('@mpieva/psydb-core-utils');
-var Cache = require('../../cache');
+var WrappedCache = require('../../wrapped-cache');
 
-var apiKey = [
-    'xA3S5M1_2uEhgelRVaZyYjg5qw_UehHV',
-    'B1bGmH9X7-S8x8sslsUxIFH5_n85Tkdh'
-].join('');
+var createRARole = require('./create-ra-role');
+var createScientistRole = require('./create-scientist-role');
+var createHiwiRole = require('./create-hiwi-role');
+var createReceptionRole = require('./create-reception-role');
 
+var createLanguageSet = require('./create-language-set');
+var createNovelSet = require('./create-novel-set');
+var createAcquisitionSet = require('./create-acquisition-set');
 
-var WrappedCache = ({ driver }) => {
-    var cache = Cache();
+var createKigaUmbrellaOrgCRT = require('./create-kiga-umbrella-org-crt');
+var createKigaCRT = require('./create-kiga-crt');
+var createInstituteRoomCRT = require('./create-instituteroom-crt');
+var childCRT = require('./create-child-crt');
+var studyCRT = require('./create-study-crt');
 
-    cache.addId = ({ collection, as }) => {
-        var id = driver.getCache().lastChannelIds[collection];
-        cache.merge({ [collection]: { [as]: id }});
-        return id;
-    }
-
-    return cache;
-}
 
 module.exports = async (bag) => {
-    var { driver } = bag;
+    var { driver, apiKey, extraOptions } = bag;
     var cache = WrappedCache({ driver });
     var context = { apiKey, driver, cache };
 

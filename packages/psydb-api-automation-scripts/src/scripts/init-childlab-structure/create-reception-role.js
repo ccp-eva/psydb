@@ -73,6 +73,7 @@ module.exports = async (context) => {
                 'online-video-call': {
                     canWriteReservations: false,
                     canSelectSubjectsForExperiments: false,
+                    canConfirmSubjectInvitation: false,
                     canViewExperimentCalendar: false,
                     canMoveAndCancelExperiments: false,
                     canChangeOpsTeam: false,

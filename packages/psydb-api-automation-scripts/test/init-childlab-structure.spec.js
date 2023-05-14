@@ -1,9 +1,9 @@
 'use strict';
 var { expect } = require('chai');
 var { ejson } = require('@cdxoo/mongo-test-helpers');
-var script = require('../src/scripts/field-site-crts');
+var script = require('../src/scripts/init-childlab-structure');
 
-describe('field-site-crts', function () {
+describe('init-childlab-structure', function () {
     var db;
     beforeEach(async function () {
         await this.restore(

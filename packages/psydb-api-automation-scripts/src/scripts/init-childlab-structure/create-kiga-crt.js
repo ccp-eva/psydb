@@ -66,7 +66,8 @@ module.exports = async ({ apiKey, driver, cache, as }) => {
             displayName: 'Betreuer:in',
             props: {
                 collection: 'personnel',
-                isNullable: true
+                isNullable: true,
+                constraints: {},
             }
         }},
     }, { apiKey });
@@ -111,6 +112,7 @@ module.exports = async ({ apiKey, driver, cache, as }) => {
                 collection: 'externalOrganization',
                 recordType: 'kigaUmbrellaOrg',
                 isNullable: false,
+                constraints: {},
             }
         }},
     }, { apiKey });

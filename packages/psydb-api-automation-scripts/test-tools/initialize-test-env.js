@@ -33,7 +33,9 @@ var beforeAll = async function () {
         return out;
     };
 
-    this.execute = async (lambda) => {
+    this.execute = async ({ script, apiKey, extraOptions }) => {
+        var { mongo } = this.context;
+
         var app = new Koa();
         app.use(async (context, next) => {
             await next();
@@ -41,14 +43,19 @@ var beforeAll = async function () {
         });
         app.use(withApi({ app, config: {
             db: {
-                url: this.context.mongo.uri,
-                dbName: this.context.mongo.dbName,
+                url: mongo.uri,
+                dbName: mongo.dbName,
                 useUnifiedTopology: true,
             }
         }}));
 
         var agent = createAgent(app.callback());
-        var out = await executeWithDriver({ agent, script: lambda })
+        var out = await executeWithDriver({
+            agent, apiKey, extraOptions: {
+                mongodbConnectString: `${mongo.uri}${mongo.dbName}`
+            },
+            script,
+        })
         agent.close();
         return out;
     }

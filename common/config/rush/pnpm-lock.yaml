@@ -3650,6 +3650,11 @@ packages:
       delayed-stream: 1.0.0
     dev: false
 
+  /commander/10.0.1:
+    resolution: {integrity: sha512-y4Mg2tXshplEbSGzx7amzPwKKOCGuoSRP/CjEdwwk0FOGlUbq6lKuoyDZTNZkmxHdJtp54hdfY/JUrdL7Xfdug==}
+    engines: {node: '>=14'}
+    dev: false
+
   /commander/2.20.3:
     resolution: {integrity: sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==}
     dev: false
@@ -10473,7 +10478,7 @@ packages:
     dev: false
 
   file:projects/psydb-api-automation-scripts.tgz:
-    resolution: {integrity: sha512-KkBZQzBaKAObwHasJVV3U90aCD4JyNbD6deQjoxYWFiQS7AVicVxsxQBbeLOVYZ3dpDqVdf0pMPpxKN2tOwNVw==, tarball: file:projects/psydb-api-automation-scripts.tgz}
+    resolution: {integrity: sha512-IXSDmRGBAALhbr55O1eH+6miTaH7SAh/b8VzywSF3B8Du+8A36Xlz9rzKdozIeNqf5/1CQyl0Q69OvbXxQysJg==, tarball: file:projects/psydb-api-automation-scripts.tgz}
     name: '@rush-temp/psydb-api-automation-scripts'
     version: 0.0.0
     dependencies:
@@ -10481,6 +10486,7 @@ packages:
       '@cdxoo/mongodb-restore': 2.0.0-alpha.2
       chai: 4.3.7
       co: 4.6.0
+      commander: 10.0.1
       koa: 2.13.4
       mocha: 10.1.0
       mongodb: 3.6.12

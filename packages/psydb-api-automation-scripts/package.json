@@ -12,7 +12,8 @@
     "co": "~4.6.0",
     "mongodb": "~3.6.3",
     "@mpieva/psydb-core-utils": "~0.1.0-alpha",
-    "@mpieva/psydb-driver-nodejs": "~0.1.0-alpha"
+    "@mpieva/psydb-driver-nodejs": "~0.1.0-alpha",
+    "commander": "~10.0.1"
   },
   "devDependencies": {
     "mocha": "~10.1.0",

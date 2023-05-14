@@ -10,13 +10,13 @@ var Cache = () => {
     }
 
     cache.get = (maybeKeyOrPointer) => {
-        if (!maybePropOrPointer) {
+        if (!maybeKeyOrPointer) {
             return internal;
         }
 
         if (maybeKeyOrPointer.startsWith('/')) {
             var pointer = maybeKeyOrPointer;
-            return jsonpointer.get(cache, pointer);
+            return jsonpointer.get(internal, pointer);
         }
         else {
             var key = maybeKeyOrPointer;
@@ -30,7 +30,7 @@ var Cache = () => {
             var value = undefined;
             if (keyOrPointer.startsWith('/')) {
                 var pointer = keyOrPointer;
-                value = jsonpointer.get(cache, pointer);
+                value = jsonpointer.get(internal, pointer);
             }
             else {
                 value = internal[key]

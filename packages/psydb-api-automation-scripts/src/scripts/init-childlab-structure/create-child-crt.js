@@ -56,6 +56,23 @@ module.exports = async (context) => {
     await driver.sendMessage({
         type: `custom-record-types/add-field-definition`,
         payload: { id: crtId, subChannelKey: 'gdpr', props: {
+            type: 'Address',
+            key: 'address',
+            displayName: 'Adresse',
+            props: {
+                isStreetRequired: false,
+                isHousenumberRequired: false,
+                isAffixRequired: false,
+                isPostcodeRequired: false,
+                isCityRequired: false,
+                isCountryRequired: false,
+            }
+        }},
+    }, { apiKey });
+
+    await driver.sendMessage({
+        type: `custom-record-types/add-field-definition`,
+        payload: { id: crtId, subChannelKey: 'gdpr', props: {
             type: 'EmailList',
             key: 'emails',
             displayName: 'Email-Adressen',
@@ -197,7 +214,7 @@ module.exports = async (context) => {
             tokens: [
                 '/gdpr/state/custom/lastname',
                 '/gdpr/state/custom/firstname',
-                '/gdpr/state/custom/biologicalGender',
+                '/scientific/state/custom/biologicalGender',
             ]
         }}
     }, { apiKey });
@@ -211,7 +228,7 @@ module.exports = async (context) => {
                 '/sequenceNumber',
                 '/gdpr/state/custom/lastname',
                 '/gdpr/state/custom/firstname',
-                '/gdpr/state/custom/biologicalGender',
+                '/scientific/state/custom/biologicalGender',
                 '/scientific/state/custom/dateOfBirth',
             ]
         }
@@ -226,7 +243,7 @@ module.exports = async (context) => {
                 '/sequenceNumber',
                 '/gdpr/state/custom/lastname',
                 '/gdpr/state/custom/firstname',
-                '/gdpr/state/custom/biologicalGender',
+                '/scientific/state/custom/biologicalGender',
                 '/scientific/state/custom/dateOfBirth',
             ]
         }
