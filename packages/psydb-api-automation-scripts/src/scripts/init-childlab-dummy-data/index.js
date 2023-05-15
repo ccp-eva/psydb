@@ -4,9 +4,16 @@ var { ejson } = require('@mpieva/psydb-core-utils');
 var WrappedCache = require('../../wrapped-cache');
 
 var prepareCache = require('./prepare-cache');
+
+var createAcquisitionItems = require('./create-acquisition-items');
+var createLanguageItems = require('./create-language-items');
+var createNovelItems = require('./create-novel-items');
+
 var createResearchGroups = require('./create-research-groups');
 var createPersonnel = require('./create-personnel');
-//var createChildren = require('./create-children');
+var createKigaUmbrellaOrgs = require('./create-kiga-umbrella-orgs');
+var createKigas = require('./create-kigas');
+var createChildren = require('./create-children');
 
 module.exports = async (bag) => {
     var { driver, apiKey, extraOptions = {}} = bag;
@@ -26,9 +33,16 @@ module.exports = async (bag) => {
     var context = { apiKey, driver, db, cache };
 
     await prepareCache(context);
+    
+    await createAcquisitionItems(context);
+    await createLanguageItems(context);
+    await createNovelItems(context);
+
     await createResearchGroups(context);
-    await createPersonnel(context)
-    //await createChildren(context);
+    await createPersonnel(context);
+    await createKigaUmbrellaOrgs(context);
+    await createKigas(context);
+    await createChildren(context);
 
     mongo.close();
 }
