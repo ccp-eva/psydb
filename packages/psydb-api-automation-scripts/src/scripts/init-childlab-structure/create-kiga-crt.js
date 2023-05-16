@@ -5,7 +5,7 @@ module.exports = async ({ apiKey, driver, cache, as }) => {
         payload: {
             collection: 'location',
             type: 'kiga',
-            props: { label: 'Kiga' }
+            props: { label: 'Kindergärten' }
         },
     }, { apiKey });
 
@@ -174,7 +174,7 @@ module.exports = async ({ apiKey, driver, cache, as }) => {
         type: `custom-record-types/set-general-data`,
         payload: {
             id: crtId,
-            label: 'Kiga',
+            label: 'Kindergärten',
             reservationType: 'away-team',
         }
     }, { apiKey });

@@ -1,4 +1,5 @@
 'use strict';
+var debug = require('debug')('psydb:driver-node-js');
 var superagent = require('superagent'),
     jsonpointer = require('jsonpointer');
 
@@ -99,10 +100,12 @@ var defaultWriteRequest = async ({ agent, url, message, options = {} }) => {
     );
 
     try {
-        var { status, data } = await agent.post(url, {
+        var body = {
             timezone: forceTZ || getSystemTimezone(),
             ...message,
-        });
+        };
+        debug(agent.defaults.baseURL, url, JSON.stringify(body));
+        var { status, data } = await agent.post(url, body);
     }
     catch (e) {
         throw new RequestFailed(e.response);

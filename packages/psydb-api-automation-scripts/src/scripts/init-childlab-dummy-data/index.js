@@ -21,7 +21,7 @@ var createStudies = require('./create-studies');
 
 module.exports = async (bag) => {
     var { driver, apiKey, extraOptions = {}} = bag;
-    var { mongodbConnectString } = extraOptions;
+    var { mongodb: mongodbConnectString } = extraOptions;
     if (!mongodbConnectString) {
         throw new Error('script requires mongodb connect string');
     }

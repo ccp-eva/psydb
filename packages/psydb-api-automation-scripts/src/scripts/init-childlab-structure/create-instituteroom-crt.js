@@ -80,7 +80,7 @@ module.exports = async (context) => {
         type: `custom-record-types/set-general-data`,
         payload: {
             id: crtId,
-            label: 'Kiga',
+            label: 'Instituts-Räume',
             reservationType: 'inhouse',
         }
     }, { apiKey });

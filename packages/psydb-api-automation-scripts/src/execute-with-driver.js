@@ -1,18 +1,19 @@
 'use strict';
+var Axios = require('axios');
 var Driver = require('@mpieva/psydb-driver-nodejs');
 
 var executeWithDriver = async (bag) => {
     var {
         url,
-        apiKey,
         script,
+        apiKey,
         agent = undefined,
         
         extraOptions,
     } = bag;
 
     if (!agent) {
-        agent = Axios.createAgent({
+        agent = Axios.create({
             baseURL: url
         })
     }

@@ -1,8 +1,11 @@
 'use strict';
+var fspath = require('path');
 var co = require('co');
 var { program } = require('commander');
 var pkg = require('../package.json');
 var execute = require('./execute-with-driver');
+
+var cwd = process.cwd();
 
 program
     .version(pkg.version)
@@ -19,7 +22,7 @@ var cliOptions = [
         long: 'url',
         arg: 'url',
         description: 'psydb url',
-        defaults: 'http://127.0.0.1:8080',
+        defaults: 'http://127.0.0.1:8080/api/',
     },
     {
         long: 'mongodb',
@@ -54,13 +57,23 @@ for (var it of cliOptions) {
 
 program.parse(process.argv);
 
+var developmentApiKey = [
+    'xA3S5M1_2uEhgelRVaZyYjg5qw_UehHV',
+    'B1bGmH9X7-S8x8sslsUxIFH5_n85Tkdh'
+].join('');
+
 co(async () => {
     var scripts = [];
     for (var it of program.args) {
-        scripts.push(require(it));
+        var path = fspath.join(cwd, it);
+        scripts.push(require(path));
     }
 
-    var { url, apiKey, ...extraOptions } = program.opts();
+    var {
+        url,
+        apiKey = developmentApiKey,
+        ...extraOptions
+    } = program.opts();
 
     for (var it of scripts) {
         await execute({
