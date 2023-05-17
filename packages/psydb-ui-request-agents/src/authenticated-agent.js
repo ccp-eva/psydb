@@ -579,6 +579,26 @@ agent.fetchCRTPreRemoveInfo = ({
     );
 }
 
+agent.fetchExperimentVariantPreRemoveInfo = ({
+    id,
+    extraAxiosConfig
+}) => {
+    return axios.get(
+        `/api/experiment-variant/pre-remove-info/${id}`,
+        extraAxiosConfig
+    );
+}
+
+agent.fetchExperimentVariantSettingPreRemoveInfo = ({
+    id,
+    extraAxiosConfig
+}) => {
+    return axios.get(
+        `/api/experiment-variant-setting/pre-remove-info/${id}`,
+        extraAxiosConfig
+    );
+}
+
 agent.fetchOpsTeamExperiments = (bag) => {
     var {
         teamId,

@@ -388,6 +388,19 @@ var createRouting = (bag = {}) => {
         withPermissions(),
         endpoints.customRecordType.preRemoveInfo
     );
+    
+    router.get('/experiment-variant/pre-remove-info/:id',
+        withSelfAuth(),
+        withPermissions(),
+        endpoints.experimentVariant.preRemoveInfo
+    );
+    
+    router.get('/experiment-variant-setting/pre-remove-info/:id',
+        withSelfAuth(),
+        withPermissions(),
+        endpoints.experimentVariantSetting.preRemoveInfo
+    );
+
 
     router.post('/personnel/related-participation',
         withSelfAuth(),

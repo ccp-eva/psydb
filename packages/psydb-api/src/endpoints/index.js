@@ -24,4 +24,7 @@ module.exports = {
     location: require('./entities/location'),
     personnel: require('./entities/personnel'),
     apiKey: require('./entities/api-key'),
+    
+    experimentVariant: require('./entities/experiment-variant'),
+    experimentVariantSetting: require('./entities/experiment-variant-setting'),
 };
