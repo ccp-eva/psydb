@@ -161,11 +161,15 @@ var Permissions = (options) => {
     );
 
     // FIXME: since root does have no ids we need to check that seperately
-    var getResearchGroupIds = (intersectIds) => (
-        intersectIds
-        ? intersect(intersectIds, userResearchGroupIds)
-        : userResearchGroupIds
-    );
+    var getResearchGroupIds = (intersectIds) => {
+        return (
+            intersectIds
+            ? intersect(intersectIds, userResearchGroupIds, {
+                compare: compareIds
+            })
+            : userResearchGroupIds
+        );
+    };
 
     var out = {
         ...wrapper,
