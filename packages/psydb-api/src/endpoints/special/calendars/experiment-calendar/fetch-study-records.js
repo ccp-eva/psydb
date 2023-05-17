@@ -15,6 +15,13 @@ var fetchStudyRecords = async (bag) => {
                 { $match: {
                     _id: studyId,
                 }},
+                ...(isRoot ? [] : [
+                    { $match: {
+                        'state.researchGroupIds': { $in: (
+                            allowedResearchGroupIds
+                        )}
+                    }},
+                ]),
                 { $sort: {
                     'state.shorthand': 1
                 }}
