@@ -20,7 +20,8 @@ module.exports = {
     omit: require('./omit'),
     range: require('./range'),
     transliterate: require('./transliterate'),
-    
+
+    includes: require('./includes'),
     intersect: require('./intersect'),
     without: require('./without'),
 
