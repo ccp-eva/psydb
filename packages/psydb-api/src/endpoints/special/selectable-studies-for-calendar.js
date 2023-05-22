@@ -5,7 +5,8 @@ var debug = require('debug')(
 
 var {
     keyBy,
-    compareIds
+    compareIds,
+    hasNone,
 } = require('@mpieva/psydb-core-utils');
 
 var {
@@ -84,6 +85,9 @@ var selectableStudiesForCalendar = async (context, next) => {
     var allowedResearchGroupIds = permissions.getResearchGroupIds(
         researchGroupId ? [ researchGroupId ] : undefined
     );
+    if (isRoot && researchGroupId) {
+        allowedResearchGroupIds = [ researchGroupId ];
+    }
 
     // FIXME: this should actually be the interval of the calendar
     var now = new Date();
@@ -97,7 +101,7 @@ var selectableStudiesForCalendar = async (context, next) => {
             start: now,
             end: now,
         }),
-        ...(isRoot ? [] : [{ $match: {
+        ...(isRoot && hasNone(allowedResearchGroupIds) ? [] : [{ $match: {
             'state.researchGroupIds': { $in: allowedResearchGroupIds }
         }}]),
         { $sort: {

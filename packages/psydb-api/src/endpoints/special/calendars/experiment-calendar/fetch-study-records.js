@@ -1,4 +1,5 @@
 'use strict';
+var { hasNone } = require('@mpieva/psydb-core-utils');
 var {
     MatchIntervalAroundStage,
     StripEventsStage,
@@ -15,7 +16,7 @@ var fetchStudyRecords = async (bag) => {
                 { $match: {
                     _id: studyId,
                 }},
-                ...(isRoot ? [] : [
+                ...(isRoot && hasNone(allowedResearchGroupIds) ? [] : [
                     { $match: {
                         'state.researchGroupIds': { $in: (
                             allowedResearchGroupIds
@@ -40,7 +41,7 @@ var fetchStudyRecords = async (bag) => {
                     start,
                     end,
                 }),
-                ...(isRoot ? [] : [
+                ...(isRoot && hasNone(allowedResearchGroupIds) ? [] : [
                     { $match: {
                         'state.researchGroupIds': { $in: (
                             allowedResearchGroupIds

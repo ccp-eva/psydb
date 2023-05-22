@@ -96,6 +96,9 @@ var experimentCalendar = async (context, next) => {
     var allowedResearchGroupIds = permissions.getResearchGroupIds(
         researchGroupId ? [ researchGroupId ] : undefined
     );
+    if (isRoot && researchGroupId) {
+        allowedResearchGroupIds = [ researchGroupId ];
+    }
 
     var studyRecords = await fetchStudyRecords({
         db, isRoot, allowedResearchGroupIds, studyId, start, end

@@ -70,16 +70,18 @@ const IntraRecordRoutingBody = (ps) => {
 
     return (
         <div className='d-flex'>
-            <div style={{ width: '175px' }}>
-                <Route path={ `${path}/:navKey`}>
-                    <RoutedSideNav
-                        className='bg-light border'
-                        param='navKey'
-                        items={ navItems }
-                        remap={{ edit: 'details', remove: 'details' }}
-                    />
-                </Route>
-            </div>
+            { canBeReserved && (
+                <div style={{ width: '175px' }}>
+                    <Route path={ `${path}/:navKey`}>
+                        <RoutedSideNav
+                            className='bg-light border'
+                            param='navKey'
+                            items={ navItems }
+                            remap={{ edit: 'details', remove: 'details' }}
+                        />
+                    </Route>
+                </div>
+            )}
             <div className='ml-2 flex-grow'>
                 <Switch>
                     <Route exact path={`${path}`} render={ (ps) => (
