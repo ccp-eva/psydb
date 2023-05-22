@@ -7,7 +7,7 @@ var {
 
 
 var fetchStudyRecords = async (bag) => {
-    var { db, isRoot, allowedResearchGroupIds, studyId, start, end } = bag;
+    var { db, allowedResearchGroupIds, studyId, start, end } = bag;
 
     var studyRecords = []
     if (studyId) {
@@ -15,14 +15,10 @@ var fetchStudyRecords = async (bag) => {
             db.collection('study').aggregate([
                 { $match: {
                     _id: studyId,
+                    'state.researchGroupIds': { $in: (
+                        allowedResearchGroupIds
+                    )}
                 }},
-                ...(isRoot && hasNone(allowedResearchGroupIds) ? [] : [
-                    { $match: {
-                        'state.researchGroupIds': { $in: (
-                            allowedResearchGroupIds
-                        )}
-                    }},
-                ]),
                 { $sort: {
                     'state.shorthand': 1
                 }}
@@ -41,13 +37,11 @@ var fetchStudyRecords = async (bag) => {
                     start,
                     end,
                 }),
-                ...(isRoot && hasNone(allowedResearchGroupIds) ? [] : [
-                    { $match: {
-                        'state.researchGroupIds': { $in: (
-                            allowedResearchGroupIds
-                        )}
-                    }},
-                ])
+                { $match: {
+                    'state.researchGroupIds': { $in: (
+                        allowedResearchGroupIds
+                    )}
+                }},
             ]).toArray()
         );
     }

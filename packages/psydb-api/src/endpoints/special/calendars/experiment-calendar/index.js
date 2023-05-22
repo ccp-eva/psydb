@@ -92,16 +92,12 @@ var experimentCalendar = async (context, next) => {
     });
 
     // FIXME:root should have all available research groups in permissions
-    var isRoot = permissions.isRoot();
     var allowedResearchGroupIds = permissions.getResearchGroupIds(
         researchGroupId ? [ researchGroupId ] : undefined
     );
-    if (isRoot && researchGroupId) {
-        allowedResearchGroupIds = [ researchGroupId ];
-    }
 
     var studyRecords = await fetchStudyRecords({
-        db, isRoot, allowedResearchGroupIds, studyId, start, end
+        db, allowedResearchGroupIds, studyId, start, end
     });
 
     // XXX: why are ids filtered but records arent??

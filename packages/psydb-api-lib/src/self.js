@@ -84,7 +84,22 @@ var Self = async ({
 
         self.hasRootAccess = hasRootAccess;
         self.forcedResearchGroupId = forcedResearchGroupId;
+
+        var researchGroups = await withRetracedErrors(
+            db.collection('researchGroup')
+            .find((
+                hasRootAccess
+                ? {}
+                : { _id: { $in: (
+                    researchGroupSettings.map(it => it.researchGroupId)
+                )}}
+            ), { projection: { _id: true }}).toArray()
+        );
         
+        for (var it of researchGroups) {
+            self.researchGroupIds.push(it._id);
+        }
+
         var roles = await withRetracedErrors(
             db.collection('systemRole')
             .find({
@@ -101,10 +116,9 @@ var Self = async ({
             });
 
             for (var it of researchGroupSettings) {
-                var gid = it.researchGroupId,
-                    role = rolesById[it.systemRoleId];
+                var gid = it.researchGroupId;
+                var role = rolesById[it.systemRoleId];
                 self.rolesByResearchGroupId[gid] = role;
-                self.researchGroupIds.push(gid);
             }
         }
     }

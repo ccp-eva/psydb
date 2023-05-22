@@ -81,13 +81,9 @@ var selectableStudiesForCalendar = async (context, next) => {
         researchGroupId
     });
 
-    var isRoot = permissions.isRoot();
     var allowedResearchGroupIds = permissions.getResearchGroupIds(
         researchGroupId ? [ researchGroupId ] : undefined
     );
-    if (isRoot && researchGroupId) {
-        allowedResearchGroupIds = [ researchGroupId ];
-    }
 
     // FIXME: this should actually be the interval of the calendar
     var now = new Date();
@@ -101,9 +97,9 @@ var selectableStudiesForCalendar = async (context, next) => {
             start: now,
             end: now,
         }),
-        ...(isRoot && hasNone(allowedResearchGroupIds) ? [] : [{ $match: {
+        { $match: {
             'state.researchGroupIds': { $in: allowedResearchGroupIds }
-        }}]),
+        }},
         { $sort: {
             'state.shorthand': 1,
             'state.name': 1
