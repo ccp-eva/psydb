@@ -40,12 +40,13 @@ var fetchLabProcedureSettingData = require('./fetch-lab-procedure-setting-data')
 var {
     ExactObject,
     Id,
-    ExperimentTypeEnum,
+    //ExperimentTypeEnum,
+    LabMethodKey,
 } = require('@mpieva/psydb-schema-fields');
 
 var RequestParamsSchema = () => ExactObject({
     properties: {
-        experimentType: ExperimentTypeEnum(),
+        experimentType: LabMethodKey(),
         experimentId: Id(),
     },
     required: [
@@ -140,13 +141,16 @@ var extendedExperimentData = async (context, next) => {
         }
     });
 
-    debug('fetch location display data');
-    var locationData = await fetchRecordDisplayDataById({
-        db,
-        collection: 'location',
-        recordType: locationRecordType,
-        id: locationId,
-    });
+    if (locationId) {
+        debug('fetch location display data');
+        var locationData = await fetchRecordDisplayDataById({
+            db,
+            collection: 'location',
+            recordType: locationRecordType,
+            id: locationId,
+            permissions,
+        });
+    }
 
     if (experimentOperatorTeamId) {
         var opsTeamData = await fetchOneOpsTeamData({
