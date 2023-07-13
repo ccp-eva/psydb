@@ -7,7 +7,7 @@ import { StudyTopicPickerView } from './study-topic-picker-view';
 
 
 export const withRecordPicker = (options) => {
-    var { RecordList } = options;
+    var { RecordList, modalSize } = options;
 
     var DefaultModalView = (ps) => {
         var { collection, recordType } = ps;
@@ -61,6 +61,8 @@ export const withRecordPicker = (options) => {
             disabled,
             canClear = true,
             idLabelProp = '_id',
+
+            modalSize,
 
             collection,
             recordType,
@@ -140,6 +142,8 @@ export const withRecordPicker = (options) => {
                     collection,
                     recordType,
                     onSelect,
+
+                    modalSize
                 })} />
 
                 <PickerInput { ...({

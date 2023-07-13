@@ -54,6 +54,7 @@ export const HelperSetItemId = withField({ Control: (ps) => {
 
             disabled,
             isFormik: true,
+            modalSize: 'lg',
 
             ...related,
         })} />

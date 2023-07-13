@@ -19,6 +19,7 @@ const WithDefaultModal = (options) => (ps) => {
         show,
         onHide,
         modalPayloadData,
+        modalSize: propsModalSize,
         propsTitle,
     } = ps;
 
@@ -47,7 +48,7 @@ const WithDefaultModal = (options) => (ps) => {
         <Modal { ...({
             show,
             onHide,
-            size,
+            size: propsModalSize || size,
             className,
             backdropClassName
         }) }>
