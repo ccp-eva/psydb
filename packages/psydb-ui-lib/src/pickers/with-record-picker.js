@@ -46,7 +46,7 @@ export const withRecordPicker = (options) => {
 
     var RecordPickerModal = WithDefaultModal({
         title: 'Auswählen',
-        size: 'lg',
+        size: 'xl',
         className: '',
         backdropClassName: '',
         bodyClassName: 'bg-light pt-0 pr-3 pl-3',
