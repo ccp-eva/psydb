@@ -25,7 +25,6 @@ var Schema = () => {
             },
             required: [
                 'id',
-                'lastKnownEventId',
                 'key',
             ]
         })
