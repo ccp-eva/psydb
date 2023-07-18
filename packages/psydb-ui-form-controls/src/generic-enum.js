@@ -36,6 +36,11 @@ export const GenericEnum = (ps) => {
         useRawOnChange = false,
         alwaysIncludeEmptyOption = false,
 
+        // FIXME: why are thei here?
+        enableUnknownValue,
+        extraContentWrapperProps,
+        extraItemWrapperProps,
+
         ...pass
     } = ps;
 
