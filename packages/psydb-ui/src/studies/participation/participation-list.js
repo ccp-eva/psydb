@@ -164,8 +164,8 @@ const ParticipationListRow = (ps) => {
     } = participationData;
 
     var hasExperiment = ( participationType !== 'manual' && experimentId );
-    var enableEdit = ( !hasExperiment && permissions.isRoot() );
-    var enableRemove = ( !hasExperiment && permissions.isRoot() );
+    var enableEdit = ( !hasExperiment || permissions.isRoot() );
+    var enableRemove = ( !hasExperiment || permissions.isRoot() );
 
     return (
         <tr>
