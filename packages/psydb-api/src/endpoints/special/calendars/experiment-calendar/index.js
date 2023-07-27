@@ -206,17 +206,13 @@ var experimentCalendar = async (context, next) => {
     var experimentOperatorTeamRecords = await (
         db.collection('experimentOperatorTeam').aggregate([
             { $match: {
-                studyId: { $in: filteredStudyIds },
                 $or: [
                     { 'state.hidden': false },
-                    { studyId: { $in: experimentStudyIds }},
+                    { _id: { $in: experimentRecords.map(it => (
+                        it.state.experimentOperatorTeamId
+                    ))}},
                 ]
             }},
-            //{ $match: {
-            //    _id: { $in: experimentRecords.map(it => (
-            //        it.state.experimentOperatorTeamId
-            //    ))},
-            //}},
             StripEventsStage(),
         ]).toArray()
     );
