@@ -30,7 +30,9 @@ const CreateModalBody = (ps) => {
 
     var minEnd = new Date(start.getTime() + slotDuration);
     var [ end, setEnd ] = useState(new Date(minEnd.getTime() - 1));
-    var [ teamId, setTeamId ] = useState(teamRecords[0]._id);
+    var [ teamId, setTeamId ] = useState(
+        teamRecords.find(it => !it.state.hidden)?._id
+    );
 
     var send = useSend(() => ({
         type: 'reservation/reserve-inhouse-slot',
