@@ -20,23 +20,22 @@ handler.checkAllowedAndPlausible = async (handlerContext) => {
     var { db, permissions, message, cache } = handlerContext;
     var { experimentId, studyId, labTeamId } = message.payload;
 
-    var isAllowed = permissions.hasLabOperationFlag(
-        'away-team', 'canChangeExperimentStudy'
-    );
-    if (!isAllowed) {
-        throw new ApiError(403);
-    }
-
     var experiment = await db.collection('experiment').findOne({
         _id: experimentId
     });
-
     if (!experiment) {
         throw new ApiError(400, 'InvalidExperimentId');
     }
 
-    if (experiment.type !== 'away-team') {
-        throw new ApiError(400, 'InvalidExperimentType');
+    var { type, realType } = experiment;
+    type = realType || type;
+
+    // NOTE: root can do that
+    var isAllowed = permissions.hasLabOperationFlag(
+        type, 'canChangeExperimentStudy'
+    );
+    if (!isAllowed) {
+        throw new ApiError(403);
     }
 
     var study = await db.collection('study').findOne({
@@ -49,8 +48,7 @@ handler.checkAllowedAndPlausible = async (handlerContext) => {
 
     var validExperimentVariants = await (
         db.collection('experimentVariant').find({
-            studyId,
-            type: 'away-team'
+            studyId, type,
         }).toArray()
     );
     if (validExperimentVariants.length < 1) {
@@ -60,7 +58,7 @@ handler.checkAllowedAndPlausible = async (handlerContext) => {
                 FakeAjvError({
                     dataPath: '/payload/studyId',
                     errorClass: 'ImplausibleStudyId',
-                    message: 'Studie erlaubt keine externen Termine'
+                    message: 'Studie erlaubt keine Termine dieser Art'
                 })
             ]}
         })
