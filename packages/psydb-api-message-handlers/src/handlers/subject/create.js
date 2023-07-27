@@ -131,16 +131,22 @@ var verifyNoDuplicates = async (bag) => {
             : value
         );
     }
-    console.log(data);
-    console.log(filters);
+    //console.log(data);
+    //console.log(filters);
 
     var possibleDuplicates = await (
-        db.collection(collection).find(filters, { projection: {
-            '_rohrpostMetadata': false,
-            'gdpr._rohrpostMetadata': false,
-            'scientific._rohrpostMetadata': false,
-            'scientific.state.internals': false
-        }}).limit(4).toArray()
+        db.collection(collection).find(
+            {
+                ...filters,
+                'scientific.state.internals.isRemoved': { $ne: true }
+            },
+            { projection: {
+                '_rohrpostMetadata': false,
+                'gdpr._rohrpostMetadata': false,
+                'scientific._rohrpostMetadata': false,
+                'scientific.state.internals': false
+            }}
+        ).limit(4).toArray()
     );
 
     for (var it of possibleDuplicates) {
