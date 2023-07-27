@@ -151,7 +151,7 @@ export const InviteLocation = (ps) => {
 }
 
 export const AwayLocation = (ps) => {
-    var { label, locationId, locationLabel } = ps;
+    var { label, locationId, locationLabel, disabled } = ps;
 
     return (
         <Fields.GenericEnum
@@ -162,6 +162,7 @@ export const AwayLocation = (ps) => {
                     [locationId]: locationLabel
                 })
             }}
+            disabled={ disabled }
         />
     )
 }

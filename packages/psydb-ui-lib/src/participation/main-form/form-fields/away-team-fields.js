@@ -19,7 +19,8 @@ export const AwayTeamFields = (ps) => {
     var { subjectLocationFieldPointer } = settings.state;
 
     var formikForm = useFormikContext();
-    var { setFieldValue } = formikForm;
+    var { values, setFieldValue } = formikForm;
+    console.log(values);
 
     var [ fieldDef, setFieldDef ] = useState();
 
@@ -41,10 +42,12 @@ export const AwayTeamFields = (ps) => {
             var def = crtSettings.fieldDefinitions.scientific.find(it => (
                 it.pointer === subjectLocationFieldPointer
             ));
-            var locationId = jsonpointer.get(record, def.pointer);
-
-            setFieldValue('$.locationId', locationId);
             setFieldDef(def);
+            
+            if (!values['$'].locationId) {
+                var locationId = jsonpointer.get(record, def.pointer);
+                setFieldValue('$.locationId', locationId);
+            }
         }
     });
 
@@ -52,7 +55,10 @@ export const AwayTeamFields = (ps) => {
         return null;
     }
     var { record, ...related } = fetched.subjectData.data;
-    var locationId = jsonpointer.get(record, fieldDef.pointer);
+    var subjectLocationId = jsonpointer.get(record, fieldDef.pointer)
+    var locationId = (
+        values['$'].locationId || subjectLocationId
+    );
 
     if (!locationId) {
         return (
@@ -83,6 +89,7 @@ export const AwayTeamFields = (ps) => {
                 dataXPath='$.locationId'
                 locationId={ locationId }
                 locationLabel={ locationLabel }
+                disabled={ !subjectLocationId || true }
             />
         </>
     )
