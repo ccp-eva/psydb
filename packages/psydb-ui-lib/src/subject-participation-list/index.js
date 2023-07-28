@@ -141,6 +141,7 @@ const ParticipationByType = ({
                     sorter,
                     subjectId,
                     subjectType,
+                    subjectRecord: subjectData.record,
                     studyType: type,
                     ageFrameField,
                     ageFrameFieldValue,

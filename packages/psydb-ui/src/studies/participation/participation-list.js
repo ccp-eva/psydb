@@ -159,12 +159,16 @@ const ParticipationListRow = (ps) => {
 
     var {
         type: participationType,
+        status: participationStatus,
         experimentId,
         timestamp,
     } = participationData;
 
     var hasExperiment = ( participationType !== 'manual' && experimentId );
-    var enableEdit = ( !hasExperiment || permissions.isRoot() );
+    var enableEdit = (
+        participationStatus === 'participated'
+        && (!hasExperiment || permissions.isRoot())
+    );
     var enableRemove = ( !hasExperiment || permissions.isRoot() );
 
     return (

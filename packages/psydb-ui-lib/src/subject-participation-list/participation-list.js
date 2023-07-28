@@ -24,10 +24,13 @@ import {
     RemoveModal
 } from '../participation';
 
+import TimestampAndMaybeAge from './timestamp-and-maybe-age';
+
 const ParticipationList = ({
     sorter,
     subjectId,
     subjectType,
+    subjectRecord,
 
     studyType,
     ageFrameField,
@@ -92,6 +95,7 @@ const ParticipationList = ({
 
                                 subjectId,
                                 subjectType,
+                                subjectRecord,
 
                                 studyType,
                                 ageFrameField,
@@ -116,122 +120,93 @@ const ParticipationList = ({
     )
 }
 
-const ParticipationListRow = ({
-    subjectId,
-    subjectType,
+const ParticipationListRow = (ps) => {
+    var {
+        subjectRecord,
 
-    item,
+        item: participationData,
 
-    studyType,
-    ageFrameField,
-    ageFrameFieldValue,
-    studyRecordsById,
-    relatedRecordLabels,
-    relatedHelperSetItems,
-    relatedCustomRecordTypeLabels,
-    displayFieldData,
+        studyType,
+        ageFrameField,
+        ageFrameFieldValue,
+        studyRecordsById,
+        relatedRecordLabels,
+        relatedHelperSetItems,
+        relatedCustomRecordTypeLabels,
+        displayFieldData,
 
-    onEdit,
-    onRemove,
-    
-    enableItemFunctions,
-}) => {
+        onEdit,
+        onRemove,
+        
+        enableItemFunctions: showItemFunctions,
+    } = ps;
+
+    var { _id: subjectId, type: subjectType } = subjectRecord;
+
     var permissions = usePermissions();
-    var canWrite = permissions.hasFlag('canWriteParticipation');
-    var canRemove = permissions.hasFlag('canWriteParticipation');
 
-    var date = new Date(item.timestamp);
-    var formattedDate = datefns.format(
-        date,
-        'dd.MM.yyyy HH:mm'
+    var showEdit = permissions.hasFlag('canWriteParticipation');
+    var showRemove = permissions.hasFlag('canWriteParticipation');
+
+    var {
+        type: participationType,
+        status: participationStatus,
+        experimentId,
+        studyId,
+        studyType,
+        timestamp,
+    } = participationData;
+
+    var hasExperiment = ( participationType !== 'manual' && experimentId );
+    var enableEdit = (
+        participationStatus === 'participated'
+        && (!hasExperiment || permissions.isRoot())
     );
-    // FIXME: this is really hacky but we have
-    // experiments old stuff in db
-    var is1970 = (
-        date.toISOString() === '1970-01-01T00:00:00.000Z'
-        //formattedDate === '01.01.1970 00:00'
-    );
+    var enableRemove = ( !hasExperiment || permissions.isRoot() );
 
     return (
         <tr>
-            {/*<FieldDataBodyCols { ...({
-                record: studyRecordsById[item.studyId],
-                relatedRecordLabels,
-                relatedHelperSetItems,
-                relatedCustomRecordTypeLabels,
-                displayFieldData,
-            })} />*/}
-            <td>{ studyRecordsById[item.studyId]?.state.shorthand || item.studyId  }</td>
+            <td>{ studyRecordsById[studyId]?.state.shorthand || studyId  }</td>
+            <TimestampAndMaybeAge { ...({
+                timestamp,
+                record: subjectRecord,
+                dateOfBirthField: ageFrameField
+            })} />
 
-            <td>{ is1970 ? '-' : formattedDate }</td>
-            { ageFrameField && (
-                <td>
-                    { 
-                        is1970
-                        ? '-'
-                        : calculateAge({
-                            base: ageFrameFieldValue,
-                            relativeTo: item.timestamp
-                        })
-                    }
-                </td>
-            )}
             <td>
-                { formatStatus(item.status) }
+                { formatStatus(participationData.status) }
             </td>
-            { enableItemFunctions
-                ? (
-                    <td className='d-flex justify-content-end'>
-                        { item.type !== 'manual' && item.experimentId && (
-                            <ExperimentIconButton
-                                to={`/experiments/${item.type}/${item.experimentId}`}
-                            />
-                        )}
-                        <StudyIconButton
-                            to={`/studies/${item.studyType}/${item.studyId}`}
+            { showItemFunctions ? (
+                <td className='d-flex justify-content-end'>
+                    { hasExperiment && (
+                        <ExperimentIconButton to={
+                            `/experiments/${participationType}/${experimentId}`
+                        } />
+                    )}
+                    <StudyIconButton
+                        to={`/studies/${studyType}/${studyId}`}
+                    />
+                    { showEdit && (
+                        <EditIconButtonInline
+                            onClick={ () => onEdit({
+                                subjectId, subjectType,
+                                ...participationData
+                            }) }
+                            disabled={ !enableEdit }
                         />
-                        { canWrite && (
-                            <EditIconButtonInline
-                                onClick={ () => onEdit({
-                                    subjectType, subjectId, ...item
-                                }) }
-                                iconStyle={{
-                                    ...(
-                                        item.experimentId && !permissions.isRoot()
-                                        && { color: '#888' }
-                                    )
-                                }}
-                                buttonProps={{
-                                    disabled: (
-                                        item.experimentId && !permissions.isRoot()
-                                    )
-                                }}
-                            />
-                        )}
-                        { canRemove && (
-                            <RemoveIconButtonInline
-                                onClick={ () => onRemove({
-                                    ...item
-                                }) }
-                                iconStyle={{
-                                    ...(
-                                        item.experimentId && !permissions.isRoot()
-                                        && { color: '#888' }
-                                    )
-                                }}
-                                buttonProps={{
-                                    disabled: (
-                                        item.experimentId && !permissions.isRoot()
-                                    )
-                                }}
-                            />
-                        )}
-                    </td>
-                )
-                : (
-                    <td></td>
-                )
-            }
+                    )}
+                    { showRemove && (
+                        <RemoveIconButtonInline
+                            onClick={ () => onRemove({
+                                ...participationData
+                            }) }
+                            disabled={ !enableRemove }
+                        />
+                    )}
+                </td>
+            ) : (
+                <td></td>
+            )}
         </tr>
     );
 }
