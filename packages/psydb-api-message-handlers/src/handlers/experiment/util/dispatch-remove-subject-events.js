@@ -3,8 +3,10 @@ var debug = require('debug')('psydb:api:message-handlers');
 
 var enums = require('@mpieva/psydb-schema-enums');
 var { compareIds } = require('@mpieva/psydb-core-utils');
+var { createId } = require('@mpieva/psydb-api-lib');
 
 var dispatchRemoveSubjectEvents = async ({
+    db,
     dispatch,
 
     experimentRecord,
@@ -17,6 +19,18 @@ var dispatchRemoveSubjectEvents = async ({
     dontTrackSubjectParticipatedInStudies,
 }) => {
     
+    var study = await db.collection('study').findOne({
+        _id: experimentRecord.state.studyId
+    });
+    
+    var { experimentOperatorIds } = experimentRecord.state;
+    if (!(experimentOperatorIds?.length)) {
+        var labTeam = await db.collection('experimentOperatorTeam').findOne({
+            _id: experimentRecord.state.experimentOperatorTeamId
+        });
+        experimentOperatorIds = labTeam.state.personnelIds;
+    }
+
     var subjectDataIndex = undefined;
     for (var [index, it] of experimentRecord.state.subjectData.entries()) {
         if (
@@ -75,9 +89,17 @@ var dispatchRemoveSubjectEvents = async ({
     var pushUpdates = {
         ...(!dontTrackSubjectParticipatedInStudies && {
             'scientific.state.internals.participatedInStudies': {
-                type: 'inhouse',
+                _id: await createId(),
+                experimentId: experimentRecord._id,
+                type: experimentRecord.type,
                 studyId: experimentRecord.state.studyId,
+                studyType: study.type,
+                locationId: experimentRecord.state.locationId,
+                locationType: experimentRecord.state.locationRecordType,
                 timestamp: experimentRecord.state.interval.start,
+                experimentOperatorIds,
+                excludeFromMoreExperimentsInStudy: false, // FIXME
+
                 status: unparticipateStatus,
             }
         })
