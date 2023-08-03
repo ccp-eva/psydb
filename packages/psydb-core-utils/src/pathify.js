@@ -5,11 +5,13 @@ var pathify = (that, options = {}) => {
     var {
         delimiter = '.',
         //traverseArrays = false,
-        prefix
+        prefix,
+        maxDepth,
     } = options;
 
     var flat = flatten(that, {
         delimiter,
+        maxDepth,
         //traverseArrays // FIXME: flatten doesnt pass that down i think
     });
 
