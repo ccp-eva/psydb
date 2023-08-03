@@ -32,12 +32,13 @@ var handler = GenericRecordHandler({
             schema: core
         });
 
-        var { id } = message.payload;
+        var { id } = precheckMessage.payload;
         var experimentCount = await (
             db.collection('experiment')
             .countDocuments({ 'state.experimentOperatorTeamId': id })
         );
 
+        console.log(experimentCount);
         var full = Schema.Full({
             messageType: type,
             hasExperiments: experimentCount > 0
