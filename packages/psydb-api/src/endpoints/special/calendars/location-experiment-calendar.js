@@ -115,6 +115,10 @@ var locationExperimentCalendar = async (context, next) => {
                     end,
                 }),
                 { $match: {
+                    // FIXME: showPast needs to control that
+                    // also i assume someone set study to hidden
+                    // but didnt set runningPeriod.end?
+                    'state.systemPermissions.isHidden': { $ne: true },
                     'state.researchGroupIds': researchGroupId
                 }}
             ]).toArray()
