@@ -140,6 +140,7 @@ const StudyParticipation = (ps) => {
                 <ParticipationList { ...({
                     className: 'mt-1 bg-white',
                     records,
+                    related,
                     definitions,
                     transformer,
                     sorter,

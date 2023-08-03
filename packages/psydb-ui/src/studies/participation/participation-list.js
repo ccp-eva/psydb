@@ -30,6 +30,7 @@ import TimestampAndMaybeAge from './timestamp-and-maybe-age';
 const ParticipationList = (ps) => {
     var {
         records,
+        related,
         definitions,
         transformer,
         sorter,
@@ -85,6 +86,7 @@ const ParticipationList = (ps) => {
                             permissions,
 
                             record,
+                            related,
                             definitions,
                             transformer,
                             dateOfBirthField,
@@ -126,6 +128,9 @@ const TableHeadCols = (ps) => {
                     path={ convertPointerToPath( dateOfBirthField.pointer )}
                 />
             )}
+            <th>
+                T-Location
+            </th>
             <SortableTH
                 label='Status'
                 sorter={ sorter }
@@ -140,6 +145,7 @@ const ParticipationListRow = (ps) => {
         permissions,
 
         record,
+        related,
         definitions,
         transformer,
         dateOfBirthField,
@@ -183,6 +189,10 @@ const ParticipationListRow = (ps) => {
                 record,
                 dateOfBirthField
             })} />
+            <td> {
+                related.records
+                .location[participationData.locationId]._recordLabel
+            }</td>
             <td>
                 { formatStatus(participationData.status) }
             </td>
