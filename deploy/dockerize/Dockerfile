@@ -12,6 +12,8 @@ COPY rush.json /usr/src/app/
 
 COPY common common
 COPY packages packages
+# NOTE make image smaller
+RUN rm -rf ./packages/psydb-fixtures/bson
 
 RUN NODE_ENV=production \
    && apk add --no-cache make gcc g++ python3 curl git sed grep \
