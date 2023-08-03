@@ -69,7 +69,9 @@ handler.checkAllowedAndPlausible = async (context) => {
     var shouldCancelSource = false;
     switch (subjectOp) {
         case 'copy':
-            subjectDataForOp = subjectData;
+            subjectDataForOp = subjectData.filter(it => (
+                !it.excludeFromMoreExperimentsInStudy
+            ));
             break;
         case 'move-unprocessed':
             var movable = ['unknown', 'didnt-participate'];
