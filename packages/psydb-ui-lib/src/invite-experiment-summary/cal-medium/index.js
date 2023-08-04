@@ -150,9 +150,7 @@ const ExperimentSummaryMedium = (ps) => {
             }) } />
 
             <PerSubjectCommentModal { ...({
-                show: commentPerSubjectModal.show,
-                onHide: commentPerSubjectModal.handleHide,
-                payloadData: commentPerSubjectModal.data,
+                ...commentPerSubjectModal.passthrough,
 
                 experimentData: { record: experimentRecord },
                 onSuccessfulUpdate,
@@ -353,12 +351,14 @@ const SubjectItem = ({
                             </div>
                         )
                     )) }
-                    <div className='d-flex'>
-                        <span style={{ width: '90px' }}>
-                            Kommentar
-                        </span>
-                        <i className='flex-grow ml-3'>{ comment }</i>
-                    </div>
+                    { comment && (
+                        <div className='d-flex'>
+                            <span style={{ width: '90px' }}>
+                                Kommentar
+                            </span>
+                            <i className='flex-grow ml-3'>{ comment }</i>
+                        </div>
+                    )}
                 </div>
                 <div
                     style={{ width: '35px' }}

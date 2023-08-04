@@ -1,37 +1,26 @@
 import React from 'react';
-import { Modal, Button } from '@mpieva/psydb-ui-layout';
-
-import { useFetch } from '@mpieva/psydb-ui-hooks';
-import { createSend } from '@mpieva/psydb-ui-utils';
-import { SchemaForm } from '../schema-form';
+import { useFetch, useSend } from '@mpieva/psydb-ui-hooks';
+import { Button, WithDefaultModal } from '@mpieva/psydb-ui-layout';
 
 import {
-    ExactObject,
-    DefaultBool,
-    FullText,
-    SaneString,
-} from '@mpieva/psydb-schema-fields';
+    DefaultForm,
+    Fields,
+} from '../formik';
 
-var schema = ExactObject({
-    properties: {
-        comment: SaneString({ title: 'Kommentar' })
-    },
-    required: [ 'comment' ],
-})
+const PerSubjectCommentModalBody = (ps) => {
+    var {
+        onHide,
 
-const PerSubjectCommentModal = ({
-    show,
-    onHide,
+        shouldFetch,
+        experimentId,
+        experimentType,
 
-    shouldFetch,
-    experimentId,
-    experimentType,
+        experimentData,
+        //payloadData,
+        modalPayloadData,
 
-    experimentData,
-    payloadData,
-
-    onSuccessfulUpdate,
-}) => {
+        onSuccessfulUpdate,
+    } = ps;
 
     var [ didFetch, fetched ] = useFetch((agent) => {
         if (shouldFetch) {
@@ -51,13 +40,13 @@ const PerSubjectCommentModal = ({
     var {
         subjectId,
         subjectType
-    } = payloadData;
+    } = modalPayloadData;
 
     var subjectData = experimentData.record.state.subjectData.find(it => (
         it.subjectId === subjectId
     ));
 
-    var handleSubmit = createSend(({ formData }) => ({
+    var send = useSend((formData) => ({
         type: 'experiment/change-per-subject-comment',
         payload: {
             experimentId: experimentData.record._id,
@@ -67,38 +56,33 @@ const PerSubjectCommentModal = ({
     }), { onSuccessfulUpdate: [ onHide, onSuccessfulUpdate ] });
 
     return (
-        <Modal
-            show={ show }
-            onHide={ onHide }
-            size='lg'
-            className='team-modal'
-            backdropClassName='team-modal-backdrop'
+        <DefaultForm
+            initialValues={{ comment: subjectData.comment }}
+            onSubmit={ send.exec }
+            useAjvAsync
         >
-            <Modal.Header closeButton>
-                <Modal.Title>Termin-Kommentar</Modal.Title>
-            </Modal.Header>
-            <Modal.Body className='bg-light'>
-                <SchemaForm
-                    schema={ schema }
-                    formData={{
-                        comment: subjectData.comment,
-                    }}
-                    onSubmit={ handleSubmit }
-                />
-            </Modal.Body>
-        </Modal>
+            { (formikProps) => (
+                <>
+                    <Fields.SaneString
+                        label='Terminkommentar'
+                        dataXPath='$.comment'
+                    />
+                    <div className='mt-3 d-flex justify-content-end'>
+                        <Button size='sm' type='submit'>
+                            Speichern
+                        </Button>
+                    </div>
+                </>
+            )}
+        </DefaultForm>
     )
 }
 
-const PerSubjectCommentModalWrapper = (ps) => {
-    if (!ps.show) {
-        return null;
-    }
-    return (
-        <PerSubjectCommentModal { ...ps } />
-    );
-}
+const PerSubjectCommentModal = WithDefaultModal({
+    title: 'Terminkommentar bearbeiten',
+    size: 'lg',
+    Body: PerSubjectCommentModalBody
+});
 
 
-
-export default PerSubjectCommentModalWrapper;
+export default PerSubjectCommentModal;

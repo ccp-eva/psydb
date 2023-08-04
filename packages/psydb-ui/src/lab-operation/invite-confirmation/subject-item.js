@@ -61,7 +61,6 @@ const SubjectItem = ({
             
             <PerSubjectCommentModal { ...({
                 ...commentPerSubjectModal.passthrough,
-                payloadData: commentPerSubjectModal.data, // FIXME
 
                 experimentData: { record: experimentRecord },
                 onSuccessfulUpdate,
