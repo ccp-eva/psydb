@@ -122,6 +122,13 @@ var ExtBool = (value, { short } = {}) => {
     }
 }
 
+var DefaultBool = (value) => {
+    return {
+        'true': 'Ja',
+        'false': 'Nein',
+    }[String(value)] || 'ERROR';
+}
+
 module.exports = {
     Address,
     
@@ -137,5 +144,6 @@ module.exports = {
     DateTime,
     DateOnlyServerSide,
     BiologicalGender,
-    ExtBool
+    ExtBool,
+    DefaultBool
 }

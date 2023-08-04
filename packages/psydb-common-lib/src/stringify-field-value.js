@@ -85,6 +85,23 @@ var stringifyFieldValue = ({
         var stringify = stringifiers[type];
         str = stringify(rawValue, { timezone });
     }
+    else if (type === 'PersonnelResearchGroupSettingsList') {
+        if (relatedRecordLabels) {
+            str = (rawValue || []).map(it => {
+                var { researchGroupId: rgid, systemRoleId: sid } = it;
+                var _rel = relatedRecordLabels;
+                var rg_label = _rel.researchGroup[rgid]._recordLabel;
+                var s_label = _rel.systemRole[sid]._recordLabel;
+
+                return `${rg_label}=${s_label}`;
+            }).join();
+        }
+        else {
+            str = (rawValue || []).map(it => (
+                `${it.researchGroupId}=${it.systemRoleId}`
+            )).join('; ')
+        }
+    }
     else {
         var stringify = stringifiers[type];
         if (stringify) {

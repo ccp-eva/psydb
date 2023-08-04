@@ -179,6 +179,18 @@ module.exports = {
                 displayName: 'Email',
             },
             {
+                key: '_researchGroupSettings',
+                systemType: 'PersonnelResearchGroupSettingsList',
+                dataPointer: '/scientific/state/researchGroupSettings',
+                displayName: 'System-Rollen',
+            },
+            {
+                key: '_canLogIn',
+                systemType: 'DefaultBool',
+                dataPointer: '/scientific/state/canLogIn',
+                displayName: 'Log-In?',
+            },
+            {
                 key: '_descriptions',
                 systemType: 'FullText',
                 dataPointer: '/gdpr/state/description',
@@ -201,6 +213,14 @@ module.exports = {
             {
                 systemType: 'EmailList',
                 dataPointer: '/gdpr/state/emails',
+            },
+            {
+                systemType: 'PersonnelResearchGroupSettingsList',
+                dataPointer: '/scientific/state/researchGroupSettings',
+            },
+            {
+                systemType: 'DefaultBool',
+                dataPointer: '/scientific/state/canLogIn',
             },
             {
                 systemType: 'FullText',

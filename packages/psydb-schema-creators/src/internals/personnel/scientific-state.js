@@ -29,6 +29,7 @@ var PersonnelScientificState = (bag) => {
             }),
 
             researchGroupSettings: {
+                systemType: 'PersonnelResearchGroupSettingsList',
                 title: 'Forschungsgruppen',
                 type: 'array',
                 default: [],

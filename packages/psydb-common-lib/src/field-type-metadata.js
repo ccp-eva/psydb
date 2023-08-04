@@ -90,6 +90,13 @@ module.exports = {
         canSearch: false,
     },
 
+    PersonnelResearchGroupSettingsList : {
+        canBeCustomField: false,
+        canBeLabelToken: false,
+        canBeDisplayField: true,
+        canSearch: false,
+    },
+
     ...[
         'DefaultBool',
         'ExtBool',
