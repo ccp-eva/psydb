@@ -14,6 +14,7 @@ var {
 } = require('@mpieva/psydb-common-lib');
 
 var {
+    ApiError,
     ResponseBody,
     validateOrThrow,
     fetchCRTSettings,
@@ -81,110 +82,115 @@ var searchStudiesTestableForSubject = async (context, next) => {
         .intersect({ userPermissions: permissions })
     );
 
-    
     if (testingPermissions.allowedLabOps().length < 1) {
-        throw new ApiError(403, { apiStatus: 'LabOperationAccessDenied' })
+        //throw new ApiError(403, { apiStatus: 'LabOperationAccessDenied' })
+        context.body = ResponseBody({
+            data: []
+        });
     }
+    else {
 
-    var studyExclusion = await fetchExcludedStudiesForSubject({
-        db, subjectRecord
-    });
-    
-    studyExclusion = groupBy({
-        items: studyExclusion,
-        byProp: 'type'
-    });
+        var studyExclusion = await fetchExcludedStudiesForSubject({
+            db, subjectRecord
+        });
+        
+        studyExclusion = groupBy({
+            items: studyExclusion,
+            byProp: 'type'
+        });
 
-    var now = new Date();
-    var studyRecords = await withRetracedErrors(
-        db.collection('study').aggregate([
-            MatchIntervalAroundStage({
-                recordIntervalPath: 'state.runningPeriod',
-                recordIntervalEndCanBeNull: true,
-                start: now,
-                end: now,
-            }),
-            ...SystemPermissionStages({
-                collection: 'study',
-                permissions
-            }),
-            { $match: {
-                _id: { $nin: (
-                    (studyExclusion.excluded || []).map(it => it.studyId)
-                )}
-            }},
-            { $project: {
-                'type': true,
-                'state.name': true,
-                'state.shorthand': true,
-                'state.enableFollowUpExperiments': true,
-                'state.researchGroupIds': true,
-            }},
-            { $sort: {
-                'state.shorthand': 1,
-                'state.name': 1
-            }},
-        ], {
-            collation: { locale: 'de@collation=phonebook' }
-        }).toArray()
-    );
+        var now = new Date();
+        var studyRecords = await withRetracedErrors(
+            db.collection('study').aggregate([
+                MatchIntervalAroundStage({
+                    recordIntervalPath: 'state.runningPeriod',
+                    recordIntervalEndCanBeNull: true,
+                    start: now,
+                    end: now,
+                }),
+                ...SystemPermissionStages({
+                    collection: 'study',
+                    permissions
+                }),
+                { $match: {
+                    _id: { $nin: (
+                        (studyExclusion.excluded || []).map(it => it.studyId)
+                    )}
+                }},
+                { $project: {
+                    'type': true,
+                    'state.name': true,
+                    'state.shorthand': true,
+                    'state.enableFollowUpExperiments': true,
+                    'state.researchGroupIds': true,
+                }},
+                { $sort: {
+                    'state.shorthand': 1,
+                    'state.name': 1
+                }},
+            ], {
+                collation: { locale: 'de@collation=phonebook' }
+            }).toArray()
+        );
 
-    var { ageFrameFilters, ageFrameValueFilters } = await initAgeFrames({
-        db,
-        subjectTypeKey: subjectRecord.type,
-        studyIds: studyRecords.map(it => it._id),
-    });
+        var { ageFrameFilters, ageFrameValueFilters } = await initAgeFrames({
+            db,
+            subjectTypeKey: subjectRecord.type,
+            studyIds: studyRecords.map(it => it._id),
+        });
 
-    //console.log({
-    //    studyIds: studyRecords.map(it => it._id),
-    //    ageFrameFilters
-    //})
+        //console.log({
+        //    studyIds: studyRecords.map(it => it._id),
+        //    ageFrameFilters
+        //})
 
-    var testableIntervalsByStudyId = calculateAllTestableIntervals({
-        subjectCRTSettings,
-        subjectRecord,
-        ageFrameFilters,
-        ageFrameValueFilters,
-        desiredTestInterval,
-    });
-    
-    var onlyFollowUpAllowed = keyBy({
-        items: studyExclusion['only-followup'] || [],
-        byProp: 'studyId'
-    });
+        var testableIntervalsByStudyId = calculateAllTestableIntervals({
+            subjectCRTSettings,
+            subjectRecord,
+            ageFrameFilters,
+            ageFrameValueFilters,
+            desiredTestInterval,
+        });
+        
+        var onlyFollowUpAllowed = keyBy({
+            items: studyExclusion['only-followup'] || [],
+            byProp: 'studyId'
+        });
 
-    var testableStudies = [];
-    for (var study of studyRecords) {
-        var testableIntervals = testableIntervalsByStudyId[study._id];
+        var testableStudies = [];
+        for (var study of studyRecords) {
+            var testableIntervals = testableIntervalsByStudyId[study._id];
 
-        if (testableIntervals) {
-            testableStudies.push({
-                ...study,
-                _onlyFollowUp: !!onlyFollowUpAllowed[study._id],
-                _testableIntervals: testableIntervals,
-            });
+            if (testableIntervals) {
+                testableStudies.push({
+                    ...study,
+                    _onlyFollowUp: !!onlyFollowUpAllowed[study._id],
+                    _testableIntervals: testableIntervals,
+                });
+            }
         }
+
+        var possibleProceduresByStudyId = await fetchPossibleProcedureKeys({
+            db,
+            studyRecords,
+            subjectType: subjectRecord.type,
+            testingPermissions,
+        });
+        testableStudies = (
+            testableStudies
+            .map(it => ({
+                ...it,
+                _possibleProcedures: possibleProceduresByStudyId[it._id]
+            }))
+            .filter(it => it._possibleProcedures)
+        );
+        //console.log(testableStudies);
+
+        context.body = ResponseBody({
+            data: testableStudies
+        });
+
     }
-
-    var possibleProceduresByStudyId = await fetchPossibleProcedureKeys({
-        db,
-        studyRecords,
-        subjectType: subjectRecord.type,
-        testingPermissions,
-    });
-    testableStudies = (
-        testableStudies
-        .map(it => ({
-            ...it,
-            _possibleProcedures: possibleProceduresByStudyId[it._id]
-        }))
-        .filter(it => it._possibleProcedures)
-    );
-    //console.log(testableStudies);
-
-    context.body = ResponseBody({
-        data: testableStudies
-    });
 
     await next();
 }
