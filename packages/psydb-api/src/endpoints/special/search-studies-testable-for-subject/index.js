@@ -17,6 +17,7 @@ var {
     ResponseBody,
     validateOrThrow,
     fetchCRTSettings,
+    withRetracedErrors,
 } = require('@mpieva/psydb-api-lib');
 
 var {
@@ -64,7 +65,7 @@ var searchStudiesTestableForSubject = async (context, next) => {
         desiredTestInterval = fallbackDesiredTestInterval,
     } = request.body;
 
-    var subjectRecord = await (
+    var subjectRecord = await withRetracedErrors(
         db.collection('subject').findOne({ _id: subjectId })
     );
 
@@ -95,7 +96,7 @@ var searchStudiesTestableForSubject = async (context, next) => {
     });
 
     var now = new Date();
-    var studyRecords = await (
+    var studyRecords = await withRetracedErrors(
         db.collection('study').aggregate([
             MatchIntervalAroundStage({
                 recordIntervalPath: 'state.runningPeriod',
@@ -194,7 +195,7 @@ var initAgeFrames = async ({
     studyIds
 }) => {
 
-    var ageFrameRecords = await (
+    var ageFrameRecords = await withRetracedErrors(
         db.collection('ageFrame').aggregate([
             { $match: {
                 studyId: { $in: studyIds },
@@ -203,7 +204,7 @@ var initAgeFrames = async ({
         ]).toArray()
     );
 
-    var unwoundAgeFrameRecords = await (
+    var unwoundAgeFrameRecords = await withRetracedErrors(
         db.collection('ageFrame').aggregate([
             { $match: {
                 studyId: { $in: studyIds },

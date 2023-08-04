@@ -1,4 +1,5 @@
 'use strict';
+var { withRetracedErrors } = require('@mpieva/psydb-api-lib');
 
 var fetchPossibleProcedureKeys = async (bag) => {
     var { db, studyRecords, subjectType, testingPermissions } = bag;
@@ -29,17 +30,21 @@ var fetchPossibleProcedureKeys = async (bag) => {
 
     //console.dir({ OR }, { depth: null });
     
-    var settings = await (
-        db.collection('experimentVariantSetting').aggregate([
-            { $match: {
-                'state.subjectTypeKey': subjectType,
-                $or: OR
-            }},
-            { $project: {
-                'studyId': true,
-                'type': true
-            }}
-        ]).toArray()
+    var settings = (
+        OR.length > 0
+        ? await withRetracedErrors(
+            db.collection('experimentVariantSetting').aggregate([
+                { $match: {
+                    'state.subjectTypeKey': subjectType,
+                    $or: OR
+                }},
+                { $project: {
+                    'studyId': true,
+                    'type': true
+                }}
+            ]).toArray()
+        )
+        : []
     );
 
     var out = {};

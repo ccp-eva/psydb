@@ -26,23 +26,31 @@ const SelectableStudies = (ps) => {
         return <LoadingIndicator size='lg' />
     }
 
+    var items = fetched.data;
+
     return (
         <SplitPartitioned partitions={[ 2, 10 ]}>
             <b className='d-inline-block' style={{ paddingTop: '2px' }}>
                 Mögl.Studien:
             </b>
-            <PillNav
-                items={[
-                    ...fetched.data.map(it => ({
-                        key: it._id,
-                        label: it.state.shorthand
-                    }))
-                ]}
-                activeKey={ selectedStudy?._id }
-                onItemClick={ (id) => (
-                    onSelect(fetched.data.find(it => it._id === id))
-                ) }
-            />
+            { items.length > 0 ? (
+                <PillNav
+                    items={[
+                        ...items.map(it => ({
+                            key: it._id,
+                            label: it.state.shorthand
+                        }))
+                    ]}
+                    activeKey={ selectedStudy?._id }
+                    onItemClick={ (id) => (
+                        onSelect(items.find(it => it._id === id))
+                    ) }
+                />
+            ) : (
+                <i className='text-danger'>
+                    Keine möglichen Studien gefunden
+                </i>
+            )}
         </SplitPartitioned>
     )
 }

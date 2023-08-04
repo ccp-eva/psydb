@@ -1,5 +1,6 @@
 'use strict';
 var { unique, keyBy, compareIds } = require('@mpieva/psydb-core-utils');
+var { withRetracedErrors } = require('@mpieva/psydb-api-lib');
 
 var fetchExcludedStudiesForSubject = async (bag) => {
     var { db, subjectRecord } = bag;
@@ -9,7 +10,7 @@ var fetchExcludedStudiesForSubject = async (bag) => {
         participatedInStudies,
     } = subjectRecord.scientific.state.internals;
 
-    var subjectStudies = await (
+    var subjectStudies = await withRetracedErrors(
         db.collection('study').aggregate([
             { $match: {
                 _id: { $in: [
