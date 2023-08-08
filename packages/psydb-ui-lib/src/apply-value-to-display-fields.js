@@ -20,6 +20,8 @@ const applyValueToDisplayFields = ({
                 relatedRecordLabels,
                 relatedHelperSetItems,
                 relatedCustomRecordTypeLabels,
+
+                record,
             });
 
             return {
