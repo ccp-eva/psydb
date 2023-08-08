@@ -19,7 +19,7 @@
 var debug = require('debug')('psydb:api:endpoints:search');
 
 var { copy } = require('copy-anything');
-var { keyBy } = require('@mpieva/psydb-core-utils');
+var { keyBy, entries } = require('@mpieva/psydb-core-utils');
 var { fieldTypeMetadata } = require('@mpieva/psydb-common-lib');
 var {
     ApiError,
@@ -100,6 +100,7 @@ var search = async (context, next) => {
         collectionName,
         customRecordType: recordType,
         target,
+        permissions
     });
 
     isValid = ajv.validate(
@@ -127,6 +128,12 @@ var search = async (context, next) => {
         limit,
         sort,
     } = request.body;
+
+    // FIXME: thtas a hotfixed for $in in constraint values
+    constraints = entries(constraints).reduce((acc, [key, value]) => ({
+        ...acc,
+        [key]: Array.isArray(value) ? { $in: value } : value
+    }), {});
 
     var queryFields = convertFiltersToQueryFields({
         filters,
