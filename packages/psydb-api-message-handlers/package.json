@@ -3,7 +3,9 @@
   "version": "0.1.0-alpha",
   "description": "",
   "main": "./src/index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "npx mocha --config mocha.config.json test"
+  },
   "author": "Jan Schwalbe",
   "license": "MIT",
   "dependencies": {
@@ -16,11 +18,13 @@
     "@mpieva/psydb-core-utils": "~0.1.0-alpha",
     "@mpieva/psydb-common-verify-helpers": "~0.1.0-alpha",
     "@mpieva/psydb-common-lib": "~0.1.0-alpha",
+    "@mpieva/psydb-api-config": "~0.1.0-alpha",
     "@mpieva/psydb-api-lib": "~0.1.0-alpha",
     "@mpieva/psydb-api-message-handler-lib": "~0.1.0-alpha",
     "@mpieva/psydb-api-message-handler-compat": "~0.1.0-alpha",
     "@cdxoo/omit": "~1.0.1",
     "@cdxoo/inline-text": "~1.0.2",
+    "@cdxoo/tiny-ejson": "~1.0.0",
     "sift": "~16.0.0",
     "date-fns": "~2.29.3",
     "debug": "~4.3.4",
@@ -31,16 +35,17 @@
     "jsonpointer": "~5.0.1",
     "is-subset": "~0.1.1",
     "nodemailer": "~6.8.0",
-    "@mpieva/psydb-api-config": "~0.1.0-alpha",
     "deepmerge": "~4.2.2",
-    "@cdxoo/tiny-ejson": "~1.0.0",
     "escape-string-regexp": "~4.0.0"
   },
   "devDependencies": {
     "mocha": "~10.1.0",
     "chai": "~4.3.7",
-    "mongodb-memory-server": "~6.9.2",
-    "@mpieva/psydb-fixtures": "~0.1.0-alpha"
+    "chai-subset": "~1.6.0",
+    "mocha-chai-jest-snapshot": "~1.1.4",
+    "@mpieva/psydb-fixtures": "~0.1.0-alpha",
+    "@cdxoo/mongo-test-helpers": "~0.7.1",
+    "mongodb-memory-server": "~6.9.2"
   },
   "config": {
     "mongodbMemoryServer": {
