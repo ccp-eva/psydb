@@ -11,6 +11,7 @@ export const SaneString = withField({
             formikForm,
 
             extraOnChange,
+            labelClassName,
             ...pass
         } = ps;
 
