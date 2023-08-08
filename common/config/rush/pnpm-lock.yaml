@@ -46,6 +46,7 @@ specifiers:
   '@rush-temp/psydb-api-integration-tests': file:./projects/psydb-api-integration-tests.tgz
   '@rush-temp/psydb-api-lib': file:./projects/psydb-api-lib.tgz
   '@rush-temp/psydb-api-lib-errors': file:./projects/psydb-api-lib-errors.tgz
+  '@rush-temp/psydb-api-message-handler-compat': file:./projects/psydb-api-message-handler-compat.tgz
   '@rush-temp/psydb-api-message-handler-lib': file:./projects/psydb-api-message-handler-lib.tgz
   '@rush-temp/psydb-api-message-handlers': file:./projects/psydb-api-message-handlers.tgz
   '@rush-temp/psydb-axios-test-wrapper': file:./projects/psydb-axios-test-wrapper.tgz
@@ -219,6 +220,7 @@ dependencies:
   '@rush-temp/psydb-api-integration-tests': file:projects/psydb-api-integration-tests.tgz
   '@rush-temp/psydb-api-lib': file:projects/psydb-api-lib.tgz
   '@rush-temp/psydb-api-lib-errors': file:projects/psydb-api-lib-errors.tgz
+  '@rush-temp/psydb-api-message-handler-compat': file:projects/psydb-api-message-handler-compat.tgz
   '@rush-temp/psydb-api-message-handler-lib': file:projects/psydb-api-message-handler-lib.tgz
   '@rush-temp/psydb-api-message-handlers': file:projects/psydb-api-message-handlers.tgz
   '@rush-temp/psydb-axios-test-wrapper': file:projects/psydb-axios-test-wrapper.tgz_debug@4.3.4
@@ -10635,6 +10637,16 @@ packages:
       - supports-color
     dev: false
 
+  file:projects/psydb-api-message-handler-compat.tgz:
+    resolution: {integrity: sha512-xj270mYy5EdXA8DDARp3hTTgWQgTRHktrKWEj0C7ng2AqYmaihXtyQg5UkgL+zj5MmfNwHY4OkuuIStDt2rb+A==, tarball: file:projects/psydb-api-message-handler-compat.tgz}
+    name: '@rush-temp/psydb-api-message-handler-compat'
+    version: 0.0.0
+    dependencies:
+      debug: 4.3.4
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
   file:projects/psydb-api-message-handler-lib.tgz:
     resolution: {integrity: sha512-UxV9SBDbuRRyzrJMTLrMIWaduq0QC4iw6zd1qRKlcsCtOhSD+ElYjHC511JEk2kDIz7+403ovc+UIC5w/ABJtw==, tarball: file:projects/psydb-api-message-handler-lib.tgz}
     name: '@rush-temp/psydb-api-message-handler-lib'
@@ -10667,7 +10679,7 @@ packages:
     dev: false
 
   file:projects/psydb-api-message-handlers.tgz:
-    resolution: {integrity: sha512-rRrJPLUXThw6Hj+Hlbvci/Cq6LBOLcu7zOJ9Yc/Ccjg+4gug8c0L3ORgS2no2/8rEU1nqYgmfOAZbQ5njX4NVA==, tarball: file:projects/psydb-api-message-handlers.tgz}
+    resolution: {integrity: sha512-iFn6PY+GKIsbhvUiyWhNuH/e8ZCG+MJpu6HmsPYty92UEGGU5kQzi8GqK/MBZMYo+eMWhXWQwDd686EMgQYhjg==, tarball: file:projects/psydb-api-message-handlers.tgz}
     name: '@rush-temp/psydb-api-message-handlers'
     version: 0.0.0
     dependencies:

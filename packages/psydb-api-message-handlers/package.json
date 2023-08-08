@@ -18,6 +18,7 @@
     "@mpieva/psydb-common-lib": "~0.1.0-alpha",
     "@mpieva/psydb-api-lib": "~0.1.0-alpha",
     "@mpieva/psydb-api-message-handler-lib": "~0.1.0-alpha",
+    "@mpieva/psydb-api-message-handler-compat": "~0.1.0-alpha",
     "@cdxoo/omit": "~1.0.1",
     "@cdxoo/inline-text": "~1.0.2",
     "sift": "~16.0.0",
