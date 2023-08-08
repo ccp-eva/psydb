@@ -1,0 +1,25 @@
+{
+  "name": "@mpieva/psydb-api-message-handler-compat",
+  "version": "0.1.0-alpha",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cdxOo/psydb.git"
+  },
+  "author": "Jan Schwalbe",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cdxOo/psydb/issues"
+  },
+  "homepage": "https://github.com/cdxOo/psydb#readme",
+  "dependencies": {
+    "debug": "~4.3.4",
+    "@mpieva/psydb-schema-helpers": "~0.1.0-alpha",
+    "@mpieva/psydb-api-lib": "~0.1.0-alpha"
+  },
+  "devDependencies": {}
+}
