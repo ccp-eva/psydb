@@ -1,13 +1,20 @@
 'use strict';
 var debug = require('debug')('psydb:api:message-handlers');
 
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
-    compareIds = require('@mpieva/psydb-api-lib/src/compare-ids'),
-    createSchemaForRecordType = require('@mpieva/psydb-api-lib/src/create-schema-for-record-type');
+var { keyBy, compareIds } = require('@mpieva/psydb-core-utils');
+var {
+    convertCRTRecordToSettings,
+    CRTSettings
+} = require('@mpieva/psydb-common-lib');
+
+var {
+    ApiError,
+    createSchemaForRecordType,
+    resolveDataPointer,
+    fetchCRTSettingsById,
+} = require('@mpieva/psydb-api-lib');
 
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
-
-var resolveDataPointer = require('@mpieva/psydb-api-lib/src/resolve-data-pointer');
 
 var SimpleHandler = require('../../../lib/simple-handler'),
     PutMaker = require('../../../lib/put-maker');
@@ -25,8 +32,8 @@ handler.checkAllowedAndPlausible = async ({
     cache,
     message
 }) => {
-    if (!permissions.hasRootAccess) {
-        //throw new ApiError(403);
+    if (!permissions.isRoot()) {
+        throw new ApiError(403);
     }
 
     var {
@@ -34,25 +41,26 @@ handler.checkAllowedAndPlausible = async ({
         fieldPointers,
     } = message.payload;
 
-    var record = await (
-        db.collection('customRecordType').findOne({
-            _id: id
-        })
-    );
+    var crtSettings = await fetchCRTSettingsById({
+        db, id, wrap: true
+    });
 
-    if (!record) {
-        throw new ApiError(404, 'CustomRecordTypeNotFound');
-    }
-    
+    var { collection, type } = crtSettings.getRaw();
+
+    var definitionsByPointer = keyBy({
+        items: crtSettings.allFieldDefinitions(),
+        byProp: 'pointer',
+    });
+
     //console.dir(record, { depth: null });
 
     var targetRecordSchema = await createSchemaForRecordType({
         db,
-        collectionName: record.collection,
-        recordType: record.type,
+        collectionName: collection,
+        recordType: type,
         fullSchema: true,
         additionalSchemaCreatorArgs: {
-            enableOnlineId: record.collection === 'subject' ? true : false,
+            enableOnlineId: collection === 'subject' ? true : false,
             enableSequenceNumber: true,
         }
     });

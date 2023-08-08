@@ -21,6 +21,7 @@ specifiers:
   '@cdxoo/omit': ~1.0.1
   '@cdxoo/pick-random-item': ~0.0.2
   '@cdxoo/react-router-url-search-params': ~1.2.0
+  '@cdxoo/switch-koa-compose': ~1.0.0
   '@cdxoo/tiny-ejson': ~1.0.0
   '@cdxoo/traverse': ~0.0.1
   '@faker-js/faker': ~6.2.0
@@ -193,6 +194,7 @@ dependencies:
   '@cdxoo/omit': 1.0.1
   '@cdxoo/pick-random-item': 0.0.2
   '@cdxoo/react-router-url-search-params': 1.2.0_react-router@5.2.1+react@17.0.2
+  '@cdxoo/switch-koa-compose': 1.0.1
   '@cdxoo/tiny-ejson': 1.0.0
   '@cdxoo/traverse': 0.0.1
   '@faker-js/faker': 6.2.0
@@ -1885,6 +1887,13 @@ packages:
       react: 17.0.2
       react-router: 5.2.1_react@17.0.2
       url-search-params-polyfill: 8.1.1
+    dev: false
+
+  /@cdxoo/switch-koa-compose/1.0.1:
+    resolution: {integrity: sha512-LHgwdYcAARVLCI5iypnKAuKbAKArWPb5XHXPVZocYu0/QeQicZ8UvhWYlKXM/Uup2xnf8jv1l33dBOL6bgm1jQ==}
+    dependencies:
+      jsonpointer: 5.0.1
+      koa-compose: 4.1.0
     dev: false
 
   /@cdxoo/tiny-ejson/1.0.0:
@@ -10588,13 +10597,14 @@ packages:
     dev: false
 
   file:projects/psydb-api-lib.tgz:
-    resolution: {integrity: sha512-ZGQt2Tw2tyEIXuLcD9FCAaI82AvEYqWpge0Ubl/PHtA2bQ9O2Xl989Td3T7Ihwl/qABr4srf2F9ALZ8W4kvxwQ==, tarball: file:projects/psydb-api-lib.tgz}
+    resolution: {integrity: sha512-ztGMFJdsU7ZAL2rxbMAQlblH4MIepow2Uwxxgl24Co8XeLmlSZqYH8AkfqRv0cEPtmsP/VNF1Xpjf2WmA4S+cQ==, tarball: file:projects/psydb-api-lib.tgz}
     name: '@rush-temp/psydb-api-lib'
     version: 0.0.0
     dependencies:
       '@cdxoo/inline-string': 1.0.0
       '@cdxoo/inline-text': 1.0.2
       '@cdxoo/mongodb-escape-keys': 0.1.1
+      '@cdxoo/switch-koa-compose': 1.0.1
       '@cdxoo/traverse': 0.0.1
       ajv: 6.12.6
       ajv-keywords: 3.5.2_ajv@6.12.6
@@ -10607,6 +10617,7 @@ packages:
       escape-string-regexp: 4.0.0
       json-schema-traverse: 1.0.0
       jsonpointer: 5.0.1
+      koa-compose: 4.1.0
       map-obj: 4.3.0
       mocha: 10.1.0
       mongodb: 3.6.12

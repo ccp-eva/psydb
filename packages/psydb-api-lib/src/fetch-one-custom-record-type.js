@@ -6,11 +6,15 @@ var {
     StripEventsStage,
 } = require('./fetch-record-helpers');
 
-var fetchCustomRecordType = async ({ db, collection, type }) => {
+var fetchCustomRecordType = async ({ db, collection, type, id }) => {
     var customRecordTypes = await withRetracedErrors(
         db.collection('customRecordType').aggregate([
             { $match: {
-                collection, type,
+                ...(
+                    id
+                    ? { _id: id }
+                    : { collection, type }
+                ),
                 'state.internals.isRemoved': { $ne: true }
             }},
             StripEventsStage(),

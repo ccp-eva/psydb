@@ -40,6 +40,7 @@ module.exports = {
     fetchCustomRecordTypes: require('./fetch-custom-record-types'),
 
     fetchCRTSettings: require('./fetch-crt-settings'),
+    fetchCRTSettingsById: require('./fetch-crt-settings-by-id'),
     fetchAllCRTSettings: require('./fetch-all-crt-settings'),
 
     fetchRecordById: require('./fetch-record-by-id'),
@@ -74,6 +75,9 @@ module.exports = {
     convertFiltersToQueryFields: require('./convert-filters-to-query-fields'),
     convertConstraintsToMongoPath: require('./convert-constraints-to-mongo-path'),
     
+    compose: require('koa-compose'),
+    switchComposition: require('@cdxoo/switch-koa-compose'),
+
     ...require('./parse-online-participation-csv'),
     ...require('./match-online-participation-csv'),
     

@@ -100,6 +100,7 @@ var CRTSettings = ({ data }) => {
 
     // XXX oh gawd
     // FIXME: rename to just 'allFields()' ???
+    // allFieldDefinitions?
     var __availableDisplayFieldsByPointer = keyBy({ items: [
         {
             key: 'ID',
@@ -115,6 +116,9 @@ var CRTSettings = ({ data }) => {
         })),
     ], byProp: 'pointer' });
 
+    crt.allFieldDefinitions = () => (
+        Object.values(__availableDisplayFieldsByPointer)
+    );
     crt.availableDisplayFields = () => (
         Object.values(__availableDisplayFieldsByPointer)
     );
