@@ -40,6 +40,11 @@ export const Custom = (ps) => {
 
     return fields.map(it => {
         var { systemType } = it.definition;
+        
+        if (systemType === 'Lambda') {
+            return null;
+        }
+
         var Component = (
             systemType === 'ListOfObjects'
             ? ListOfObjectsField

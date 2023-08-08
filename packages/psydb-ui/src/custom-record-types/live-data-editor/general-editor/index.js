@@ -20,12 +20,39 @@ const GeneralEditor = (ps) => {
             <div>
                 Anzeigename: { label }
             </div>
+            { collection === 'subject'  && (
+                <div>
+                    { 
+                        record.state.requiresTestingPermissions
+                        ? 'Benötigt Test-Erlaubnis'
+                        : 'Ohne Test-Erlaubnis'
+                    }
+                </div>
+            )}
             { collection === 'location' && (
                 <div>
                     Reservierung/Termine:
                     {' '}
                     { reservationTypes[reservationType] || 'inhouse' }
                 </div>
+            )}
+            { collection === 'study'  && (
+                <>
+                    <div>
+                        { 
+                            record.state.enableSubjectSelectionSettings
+                            ? 'Mit Auswahl-Bedingungen'
+                            : 'Ohne Auswahl-Bedingungen'
+                        }
+                    </div>
+                    <div>
+                        { 
+                            record.state.enableLabTeams
+                            ? 'Mit Lab-Teams'
+                            : 'Ohne Lab-Teams'
+                        }
+                    </div>
+                </>
             )}
             <div className='mt-3'>
                 <Button onClick={ modal.handleShow }>
@@ -49,7 +76,14 @@ const Modal = WithDefaultModal({
             _id,
             _lastKnownEventId,
             collection,
-            state: { label, reservationType }
+            state: {
+                label,
+                reservationType = 'inhouse',
+                requiresTestingPermissions = false,
+
+                enableSubjectSelectionSettings = false,
+                enableLabTeams = false,
+            }
         } = record;
 
         var send = useSend((formData) => ({
@@ -65,9 +99,16 @@ const Modal = WithDefaultModal({
 
         var initialValues = {
             label,
+            ...(collection === 'subject' && {
+                requiresTestingPermissions
+            }),
             ...(collection === 'location' && {
-                reservationType: reservationType || 'inhouse'
-            })
+                reservationType
+            }),
+            ...(collection === 'study' && {
+                enableSubjectSelectionSettings,
+                enableLabTeams,
+            }),
         };
         return (
             <Form
@@ -94,6 +135,12 @@ const Form = (ps) => {
                         dataXPath='$.label'
                         required
                     />
+                    { collection === 'subject' && (
+                        <Fields.DefaultBool
+                            label='Benötigt Test-Erlaubnis'
+                            dataXPath='$.requiresTestingPermissions'
+                        />
+                    )}
                     { collection === 'location' && (
                         <Fields.GenericEnum
                             label='Reservierung/Termine'
@@ -101,6 +148,18 @@ const Form = (ps) => {
                             options={ reservationTypes }
                             required
                         />
+                    )}
+                    { collection === 'study' && (
+                        <>
+                            <Fields.DefaultBool
+                                label='Lab-Teams'
+                                dataXPath='$.enableLabTeams'
+                            />
+                            <Fields.DefaultBool
+                                label='Auswahl-Bedingungen'
+                                dataXPath='$.enableSubjectSelectionSettings'
+                            />
+                        </>
                     )}
                     <Button type='submit'>Speichern</Button>
                 </>

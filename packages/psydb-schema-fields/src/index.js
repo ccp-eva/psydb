@@ -52,6 +52,9 @@ module.exports = {
     
     InvitationStatus: require('./invitation-status'),
     SaneString: require('./sane-string'),
+    URLString: require('./url-string'),
+    SaneStringList: require('./sane-string-list'),
+    URLStringList: require('./url-string-list'),
     Time: require('./time'),
     TimeInterval: require('./time-interval'),
     SpecialHumanName: require('./special-human-name'),
@@ -71,5 +74,6 @@ module.exports = {
     ExperimentVariantEnum: require('./experiment-variant-enum'),
     ExperimentTypeEnum: require('./experiment-type-enum'),
 
+    LabMethodKey: require('./lab-method-key'),
     Timezone: require('./timezone'),
 }

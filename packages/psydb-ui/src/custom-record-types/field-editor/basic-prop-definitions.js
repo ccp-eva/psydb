@@ -7,7 +7,11 @@ import {
     IsSpecialAgeFrameFieldProp,
     SetIdProp,
     SharedForeignIdProps,
+    DisplayEmptyAsUnknownProp,
 } from './utility-fields';
+
+import getFieldValue from './get-field-value';
+
 
 export const SaneString = (ps) => {
     return (
@@ -68,6 +72,7 @@ export const HelperSetItemId = (ps) => {
         <>
             <SetIdProp { ...ps } />
             <IsNullableProp { ...ps } />
+            <DisplayEmptyAsUnknownProp { ...ps } />
         </>
     )
 }
@@ -82,9 +87,39 @@ export const HelperSetItemIdList = (ps) => {
 }
 
 export const ForeignId = (ps) => {
+    var { dataXPath, isUnrestricted } = ps;
+    var { values } = useFormikContext();
+    var {
+        collection,
+        recordType,
+        addReferenceToTarget
+    } = getFieldValue(values, `${dataXPath}.props`);
+
+    console.log(collection, recordType, addReferenceToTarget)
+
     return (
         <>
             <SharedForeignIdProps { ...ps } />
+            <DisplayEmptyAsUnknownProp { ...ps } />
+
+            <Fields.DefaultBool
+                label='Referenz in Ziel'
+                dataXPath={ `${dataXPath}.props.addReferenceToTarget` }
+                disabled={ !isUnrestricted }
+            />
+
+            <Fields.CRTFieldPointer
+                label='Ziel-Feld'
+                collection={ collection }
+                recordType={ recordType }
+                dataXPath={ `${dataXPath}.props.targetReferenceField` }
+                required
+                disabled={
+                    !collection
+                    || !recordType
+                    || !addReferenceToTarget
+                }
+            />
             <IsNullableProp { ...ps } />
         </>
     )
@@ -180,3 +215,27 @@ export const PhoneWithTypeList = (ps) => {
         </>
     )
 }
+
+export const Lambda = (ps) => {
+    var { dataXPath, isUnrestricted } = ps;
+    return (
+        <>
+            <Fields.GenericEnum
+                label='Funktion'
+                dataXPath={ `${dataXPath}.props.fn` }
+                options={{
+                    'deltaYMD': 'Altersberechnung'
+                }}
+                disabled={ !isUnrestricted }
+                required
+            />
+            <Fields.SaneString
+                label='Input'
+                dataXPath={ `${dataXPath}.props.input` }
+                disabled={ !isUnrestricted }
+                required
+            />
+        </>
+    )
+}
+

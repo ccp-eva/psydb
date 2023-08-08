@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormBox } from '@mpieva/psydb-ui-lib';
-import PanelPair from './panel-pair';
+import { PanelPair } from './util';
 import DisplayFieldEditor from './display-field-editor';
 
 const StudyExtraEditors = (ps) => {

@@ -25,6 +25,7 @@ var RecordList = ({
     collection,
     recordType,
     constraints,
+    extraIds,
     excludedIds,
     searchOptions,
 
@@ -97,6 +98,7 @@ var RecordList = ({
             ),
             limit,
             constraints,
+            extraIds,
             excludedIds,
             filters: realFilters,
             sort: (
@@ -132,7 +134,7 @@ var RecordList = ({
         displayFieldData,
         relatedRecordLabels,
         relatedHelperSetItems,
-        relatedCustomRecordTypeLabels
+        relatedCustomRecordTypes
     } = fetched.data;
   
     return (
@@ -140,6 +142,7 @@ var RecordList = ({
             <div className='sticky-top border-bottom'>
                 <div className='d-flex justify-content-between bg-light border-bottom'>
                     <QuickSearch
+                        target={ target }
                         filters={ filters }
                         displayFieldData={ displayFieldData }
                         onSubmit={ ({ filters }) => {
@@ -187,7 +190,7 @@ var RecordList = ({
                 displayFieldData,
                 relatedRecordLabels,
                 relatedHelperSetItems,
-                relatedCustomRecordTypeLabels,
+                relatedCustomRecordTypes,
 
                 enableView,
                 enableEdit_old,

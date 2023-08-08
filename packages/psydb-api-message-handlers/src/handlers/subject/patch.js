@@ -14,7 +14,8 @@ var {
     destructureMessage,
     openChannel,
     createRecordPropMessages,
-    dispatchRecordPropMessages
+    dispatchRecordPropMessages,
+    maybeUpdateForeignIdTargets
 } = require('../../lib/generic-record-handler-utils');
 
 module.exports = GenericRecordHandler({
@@ -28,11 +29,16 @@ module.exports = GenericRecordHandler({
         var {
             collection,
             recordType,
+            id: channelId,
             props,
             additionalCreateProps // FIXME: rename extraPayload
         } = destructured;
 
         var { setIsHidden } = additionalCreateProps;
+
+        var record = await (
+            db.collection(collection).findOne({ _id: channelId })
+        );
 
         var channel = await openChannel({
             db,
@@ -57,7 +63,6 @@ module.exports = GenericRecordHandler({
         });
 
         if (setIsHidden === true || setIsHidden === false) {
-            console.log('changing visibility');
             var path = 'scientific.state.systemPermissions.isHidden';
             await dispatch({
                 collection: 'subject',
@@ -68,5 +73,19 @@ module.exports = GenericRecordHandler({
                 }}
             });
         }
+        
+        await maybeUpdateForeignIdTargets({
+            db,
+            dispatch,
+            collection,
+            recordType,
+            currentChannelId: channelId,
+            currentProps: {
+                gdpr: record.gdpr.state,
+                scientific: record.scientific.state,
+            },
+            nextProps: props,
+            op: 'patch'
+        });
     },
 });

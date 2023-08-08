@@ -3,7 +3,7 @@ import { useSend } from '@mpieva/psydb-ui-hooks';
 import MainForm from './main-form';
 
 const NewFieldForm = (ps) => {
-    var { record, onSuccess } = ps;
+    var { record, onSuccess: onSuccessfulUpdate } = ps;
     var hasSubChannels = (
         record.state.settings.subChannelFields
     );
@@ -14,7 +14,7 @@ const NewFieldForm = (ps) => {
             id: record._id,
             ...formData
         }
-    }), { onSuccessfulUpdate: onSuccess });
+    }), { onSuccessfulUpdate });
 
     return (
         <MainForm.Component

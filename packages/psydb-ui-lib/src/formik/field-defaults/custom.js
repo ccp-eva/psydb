@@ -8,10 +8,17 @@ export const Custom = (options) => {
         : fieldDefinitions
     );
     
-    return fields.reduce((acc, it) => ({
-        ...acc,
-        [it.key]: CustomFieldDefault(it)
-    }), {})
+    return (
+        fields
+        .filter(it => (
+            !it.isRemoved
+            && (it.type || it.systemType) !== 'Lambda'
+        ))
+        .reduce((acc, it) => ({
+            ...acc,
+            [it.key]: CustomFieldDefault(it)
+        }), {})
+    )
 }
 
 const CustomFieldDefault = (options) => {
@@ -36,6 +43,13 @@ const CustomFieldDefault = (options) => {
 
         case 'DateOnlyServerSide':
         case 'DateTime':
+            var { isNullable } = props;
+            return (
+                isNullable
+                ? null
+                : undefined
+            );
+            break;
         case 'ExtBool':
         case 'BiologicalGender':
             return undefined;
@@ -53,6 +67,8 @@ const CustomFieldDefault = (options) => {
             var { minItems } = props;
             return range(minItems || 0).map(() => ({}));
 
+        case 'SaneStringList':
+        case 'URLStringList':
         case 'PhoneList':
         case 'HelperSetItemIdList':
         case 'ForeignIdList':

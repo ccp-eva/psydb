@@ -2,6 +2,13 @@
 
 module.exports = {
     
+    Lambda: {
+        canBeCustomField: true,
+        canBeDisplayField: true,
+        canBeLabelField: false,
+        canSearch: false,
+    },
+
     Integer: {
         canBeCustomField: true,
         canBeDisplayField: true,
@@ -88,6 +95,14 @@ module.exports = {
         canBeDisplayField: true,
         canBeLabelField: true,
         canSearch: false,
+    },
+
+    CustomRecordTypeKey : {
+        canBeCustomField: false,
+        canBeLabelToken: false,
+        canBeDisplayField: true,
+        canSearch: false,
+        searchDisplayType: 'CustomRecordTypeKey',
     },
 
     PersonnelResearchGroupSettingsList : {

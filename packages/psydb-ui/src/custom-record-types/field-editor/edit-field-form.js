@@ -1,11 +1,11 @@
 import React from 'react';
-
-import { omit } from '@mpieva/psydb-core-utils';
+import { omit, only } from '@mpieva/psydb-core-utils';
 import { useSend } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
 import MainForm from './main-form';
 
-const EditFieldForm = ({ record, field, onSuccess }) => {
+const EditFieldForm = (ps) => {
+    var { record, field, onSuccess: onSuccessfulUpdate } = ps;
     var hasSubChannels = (
         record.state.settings.subChannelFields
     );
@@ -17,7 +17,7 @@ const EditFieldForm = ({ record, field, onSuccess }) => {
             fieldKey: field.key,
             ...formData
         }
-    }), { onSuccessfulUpdate: onSuccess });
+    }), { onSuccessfulUpdate });
 
     // FIXME: im confused about why subchannelkey is 
     // th that specific place; check api or create and patch handler

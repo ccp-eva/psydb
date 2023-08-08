@@ -51,6 +51,10 @@ export const FullUserOrdered = (ps) => {
                     '$.' + convertPointerToPath(fixedPointer)
                 );
 
+                if (def.type === 'Lambda') {
+                    return null;
+                }
+
                 var Component = (
                     def.type === 'ListOfObjects'
                     ? ListOfObjectsField

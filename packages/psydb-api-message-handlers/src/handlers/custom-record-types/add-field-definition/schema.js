@@ -17,7 +17,6 @@ var Schema = () => {
         payload: ExactObject({
             properties: {
                 id: Id(),
-                lastKnownEventId: EventId(),
                 subChannelKey: {
                     type: 'string',
                     enum: [ 'scientific', 'gdpr' ]
@@ -30,6 +29,9 @@ var Schema = () => {
                             type: 'string',
                             enum: [
                                 'SaneString',
+                                'SaneStringList',
+                                'URLString',
+                                'URLStringList',
                                 'Address',
                                 'HelperSetItemId',
                                 'HelperSetItemIdList',
@@ -48,6 +50,7 @@ var Schema = () => {
                                 'ListOfObjects',
 
                                 'Integer',
+                                'Lambda',
                             ],
                         },
                         displayName: SaneString({ minLength: 1 })

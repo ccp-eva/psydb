@@ -19,7 +19,7 @@ var RecordListTable = (ps) => {
         displayFieldData,
         relatedRecordLabels,
         relatedHelperSetItems,
-        relatedCustomRecordTypeLabels,
+        relatedCustomRecordTypes,
         timezone,
         
         enableView,
@@ -46,7 +46,7 @@ var RecordListTable = (ps) => {
     var related = fixRelated({
         relatedRecordLabels,
         relatedHelperSetItems,
-        relatedCustomRecordTypeLabels,
+        relatedCustomRecordTypes,
     }, { isResponse: false });
 
     var transformer = createDefaultFieldDataTransformer({

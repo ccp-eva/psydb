@@ -22,7 +22,7 @@ const fixSystemType = (systemType) => {
 };
 
 export const CustomField = (ps) => {
-    var { definition, value, related } = ps;
+    var { definition, value, record, related } = ps;
     var { displayName, type, props } = definition;
 
     type = fixSystemType(type);
@@ -45,6 +45,8 @@ export const CustomField = (ps) => {
             <Component
                 value={ value }
                 props={ props }
+                definition={ definition }
+                record={ record }
                 related={ related }
             />
         </Field>

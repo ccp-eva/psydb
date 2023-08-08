@@ -24,6 +24,7 @@ export const addComponents = (target, context, labels, items) => {
                     value={ propValue }
                     { ...pass }
                     { ...ps }
+                    record={ value }
                 />
             );
         }

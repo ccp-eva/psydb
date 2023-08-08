@@ -72,6 +72,7 @@ const fieldtypes = entries({
     'PhoneWithTypeList': 'Liste von Telefon-Nummern mit Typ',
 
     'ListOfObjects': 'Benutzerdefinierte Unterliste',
+    'Lambda': 'Dynamische Berechnung',
 }).sort(([keyA], [keyB]) => (
     keyA < keyB ? -1 : 1
 )).reduce((acc, [ key, value ]) => ({

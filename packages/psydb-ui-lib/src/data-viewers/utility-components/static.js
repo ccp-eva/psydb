@@ -1,4 +1,6 @@
 import React from 'react';
+import { jsonpointer } from '@mpieva/psydb-core-utils';
+import { calculateAge } from '@mpieva/psydb-common-lib';
 import { Icons } from '@mpieva/psydb-ui-layout';
 import datefns from '../../date-fns';
 
@@ -14,8 +16,12 @@ var collectionUIMapping = {
 }
 
 // TODO: put elsewhere
-const NoValue = () => (
-    <i className='text-muted'>Keine Angabe</i>
+const NoValue = ({ unknown }) => (
+    unknown
+    ? 'Unbekannt'
+    : (
+        <i style={{ color: '#bbb' }}>Keine Angabe</i>
+    )
 );
 
 // TODO: put elsewhere
@@ -30,10 +36,73 @@ const Joined = ({ delimiter, children }) => (
     ]), [])
 )
 
+export const Lambda = (ps) => {
+    var { record, definition } = ps;
+    var { fn, input } = definition.props;
+    if (!record) {
+        return <span className='text-dange'>'ERROR'</span>
+    }
+
+    if (fn === 'deltaYMD') {
+        fn = (it) => it ? calculateAge({
+            base: it,
+            relativeTo: new Date(),
+            asString: true
+        }) : 'Unbekannt';
+    }
+    
+    return (
+        <span>
+            { fn(jsonpointer.get(record, input)) }
+        </span>
+    );
+
+}
+
 export const SaneString = (ps) => {
     var { value } = ps;
+    if (!value) {
+        return <NoValue />
+    }
     return (
         <span>{ String(value) }</span>
+    );
+}
+
+export const SaneStringList = (ps) => {
+    var { value } = ps;
+    
+    if (!(Array.isArray(value) && value.length)) {
+        return <NoValue />
+    }
+
+    var formatted = (
+        value
+        .map((it, ix) => (
+            <span key={ ix }>
+                { it }
+            </span>
+        ))
+    );
+    
+    return (
+        <Joined delimiter=', '>{ formatted }</Joined>
+    )
+}
+
+export const URLStringList = (ps) => {
+    var { value } = ps;
+    
+    if (!(Array.isArray(value) && value.length)) {
+        return <NoValue />
+    }
+
+    return (
+        value.map((it, ix ) => (
+            <div key={ ix }>
+                <a href={ it } target='_blank'>{ it }</a>
+            </div>
+        ))
     );
 }
 
@@ -53,9 +122,9 @@ export const FullText = (ps) => {
 export const HelperSetItemIdList = (ps) => {
     var { value, props, related } = ps;
     var { setId } = props;
-    
+
     if (!(Array.isArray(value) && value.length)) {
-        return <i className='text-muted'>Keine Angabe</i>
+        return <NoValue />
     }
 
     return (
@@ -70,6 +139,10 @@ export const HelperSetItemIdList = (ps) => {
 export const HelperSetItemId = (ps) => {
     var { value, props, related } = ps;
     var { setId } = props;
+
+    if (!value) {
+        return <NoValue unknown={ props.displayEmptyAsUnknown } />
+    }
 
     return (
         related
@@ -104,14 +177,32 @@ export const ForeignIdList = (ps) => {
 }
 
 export const DateOnlyServerSide = (ps) => {
-    var { value, props, related } = ps;
+    var { value, props = {}, related } = ps;
+    
     var formatted = (
         value === undefined || value === null
-        ? '-' 
+        ? <NoValue />
         : datefns.format(new Date(value), 'dd.MM.yyyy')
     );
+
+    var age = calculateAge({
+        base: value,
+        relativeTo: new Date(),
+        asString: true
+    });
+
     return (
-        <span>{ formatted }</span>
+        <span>
+            { formatted }
+            { value && props.isSpecialAgeFrameField && (
+                <>
+                    {' '}
+                    <span style={{ color: '#bbb' }}>
+                        (Alter: { age })
+                    </span>
+                </>
+            )}
+        </span>
     )
 }
 
@@ -215,7 +306,11 @@ export const PhoneList = (ps) => {
     )
 }
 export const BiologicalGender = (ps) => {
-    var { value = 'unknown' } = ps;
+    var { value } = ps;
+
+    if (!value) {
+        return <NoValue />
+    }
 
     var fieldOptions = {
         'female': 'Weiblich',
@@ -296,7 +391,7 @@ export const ForeignId = (ps) => {
     var { value, props, related } = ps;
     var { collection, recordType } = props;
     if (!value) {
-        return <NoValue />
+        return <NoValue unknown={ props.displayEmptyAsUnknown} />
     }
     
     var label = (
@@ -328,4 +423,20 @@ export const Integer = (ps) => {
         ? <NoValue />
         : String(ps.value)
     );
+}
+
+export const CustomRecordTypeKey = (ps) => {
+    var { value, props, related } = ps;
+    var { collection } = props;
+    if (!value) {
+        return <NoValue />
+    }
+   
+    var label = (
+        related
+        ? related.relatedCustomRecordTypes[collection][value].state.label
+        : value
+    );
+
+    return label;
 }

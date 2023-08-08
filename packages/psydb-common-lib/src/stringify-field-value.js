@@ -9,21 +9,32 @@ var stringifyFieldValue = ({
     relatedHelperSetItems,
     relatedCustomRecordTypeLabels,
 
+    record,
     timezone,
 }) => {
+
+    var {
+        type,
+        systemType, // FIXME: use this in static declarations
+        props,
+    } = fieldDefinition;
+    
+    var str = undefined;
+    type = type || systemType; // FIXME
+
+    if (type === 'Lambda') {
+        var stringify = stringifiers.Lambda;
+        return stringify({
+            definition: fieldDefinition,
+            record,
+            timezone
+        });
+    }
 
     if (rawValue === undefined) {
         return '-';
     }
 
-    var {
-        type,
-        systemType, // FIXME: u ise this in static declarations
-        props,
-    } = fieldDefinition;
-
-    var str = undefined;
-    type = type || systemType; // FIXME
 
     if (type === 'ForeignId') {
         if (rawValue === null) {

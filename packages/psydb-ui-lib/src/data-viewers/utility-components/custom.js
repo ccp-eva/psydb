@@ -6,7 +6,7 @@ import * as Fields from './static';
 import { CustomField } from './custom-field';
 
 export const Custom = (ps) => {
-    var { value, related, crtSettings, subChannelKey, onlyKeys } = ps;
+    var { value, record, related, crtSettings, subChannelKey, onlyKeys } = ps;
     var { fieldDefinitions } = crtSettings;
 
     var fields = (
@@ -31,6 +31,7 @@ export const Custom = (ps) => {
                     key={ ix }
                     definition={ fieldsByKey[k] }
                     value={ value[k] }
+                    record={ record }
                     related={ related }
                 />
             ))}

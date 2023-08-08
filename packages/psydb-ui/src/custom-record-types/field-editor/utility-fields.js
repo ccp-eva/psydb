@@ -1,5 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { withField } from '@cdxoo/formik-utils';
+
 import * as enums from '@mpieva/psydb-schema-enums';
+import { SplitPartitioned } from '@mpieva/psydb-ui-layout';
+import * as Controls from '@mpieva/psydb-ui-form-controls';
 import { Fields, useFormikContext } from '@mpieva/psydb-ui-lib';
 import getFieldValue from './get-field-value';
 
@@ -126,6 +130,11 @@ export const SharedForeignIdProps = (ps) => {
                 disabled={ !isUnrestricted || !collection }
                 required
             />
+            <ForeignIdConstraints
+                label='Constraint'
+                dataXPath={ `${dataXPath}.props.constraints` }
+                disabled={ !isUnrestricted || !collection }
+            />
             {/*<Fields.SaneString
                 label='Datensatz-Typ'
                 dataXPath={ `${dataXPath}.props.recordType` }
@@ -133,5 +142,120 @@ export const SharedForeignIdProps = (ps) => {
                 required
             />*/}
         </>
+    )
+}
+
+const ForeignIdConstraints = withField({ Control: (ps) => {
+    var { label, dataXPath, disabled } = ps;
+    var { values, setFieldValue } = useFormikContext();
+    var constraints = getFieldValue(values, `${dataXPath}`)
+    var [ internal, setInternal ] = useState(
+        Object.keys(constraints).length > 0
+        ? Object.keys(constraints).map(it => ({
+            key: it,
+            value: constraints[it]
+        }))
+        : [{ key: '', value: '' }]
+    )
+    
+    console.log(constraints);
+    
+    var performUpdate = ({ index, nextKey, nextValue }) => {
+        var nextInternal = [ ...internal ];
+
+        if (nextKey !== undefined) {
+            internal[index].key = nextKey;
+        }
+        if (nextValue !== undefined) {
+            internal[index].value = nextValue;
+        }
+
+        var nextConstraints = nextInternal.reduce((acc, it) => ({
+            ...acc,
+            ...(String(it.key) !== '' && { [String(it.key)]: (
+                it.value
+            ) })
+        }), {});
+        
+        setInternal(nextInternal);
+        setFieldValue(`${dataXPath}`, nextConstraints);
+    }
+
+    return (
+        <div>
+            <b className='text-danger'>
+                DANGER: Experimental feature!!
+            </b>
+            { internal.map((it, ix) => (
+                <ConstraintPair
+                    key={ ix }
+                    disabled={ disabled }
+                    index={ ix }
+                    internal={ internal }
+                    onChangeKey={(ev) => {
+                        var next = ev.target.value;
+                        next = next.replace(/\s/g, '_');
+                        performUpdate({
+                            index: ix,
+                            nextKey: next
+                        });
+                        
+                    }}
+                    onChangeValue={(ev) => {
+                        performUpdate({
+                            index: ix,
+                            nextValue: ev.target.value
+                        });
+                    }}
+                />
+            ))}
+            { !disabled && (
+                <a 
+                    role='button'
+                    onClick={ () => setInternal([
+                        ...internal, { key: '', value: '' }
+                    ])}
+                >
+                    <b>
+                        + additional Constraint
+                    </b>
+                </a>
+            )}
+        </div>
+    );
+}})
+
+const ConstraintPair = (ps) => {
+    var { index, internal, onChangeKey, onChangeValue, disabled } = ps;
+
+    return (
+        <SplitPartitioned partitions={[1,1]}>
+            <Controls.SaneString
+                type='text'
+                placeholder='Key'
+                value={ internal[index].key }
+                disabled={ disabled }
+                onChange={ onChangeKey }
+            />
+            <Controls.SaneString
+                type='text'
+                value={ internal[index].value }
+                placeholder='Value'
+                disabled={ disabled }
+                onChange={ onChangeValue }
+            />
+        </SplitPartitioned>
+    )
+}
+
+export const DisplayEmptyAsUnknownProp = (ps) => {
+    var { dataXPath, isUnrestricted } = ps;
+    return (
+        <Fields.DefaultBool
+            label='Leer als "Unbekannt"'
+            dataXPath={ `${dataXPath}.props.displayEmptyAsUnknown` }
+            disabled={ !isUnrestricted }
+            required
+        />
     )
 }

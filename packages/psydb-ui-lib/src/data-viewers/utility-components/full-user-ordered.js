@@ -6,7 +6,7 @@ import { ListOfObjectsField } from './list-of-objects-field';
 
 export const createFullUserOrdered = (options) => (ps) => {
     var { extraFieldComponents = {} } = options;
-    var { value, related, crtSettings  } = ps;
+    var { value, related, crtSettings, exclude = []  } = ps;
 
     var {
         hasSubChannels,
@@ -37,6 +37,10 @@ export const createFullUserOrdered = (options) => (ps) => {
         ...keyedStaticFieldDefinitions
     };
 
+    formOrder = formOrder.filter(it => (
+        !exclude.includes(it)
+    ));
+
     return (
         <>
             { formOrder.map((pointer, ix) => {
@@ -47,6 +51,7 @@ export const createFullUserOrdered = (options) => (ps) => {
                 var shared = {
                     key: ix,
                     value: jsonpointer.get(value, pointer),
+                    record: value,
                     related,
                 };
 

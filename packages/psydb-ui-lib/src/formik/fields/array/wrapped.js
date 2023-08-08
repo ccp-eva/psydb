@@ -39,11 +39,14 @@ const {
     GenericEnumList,
     IntegerEnumList,
     SaneStringList,
+    URLStringList,
     DefaultBoolList,
     ExtBoolList,
     BiologicalGenderList,
     EmailList,
     PhoneList,
+    LabMethodKeyList,
+    LocationTypeKeyList,
 } = s;
 
 const {
@@ -61,11 +64,14 @@ export {
     GenericEnumList,
     IntegerEnumList,
     SaneStringList,
+    URLStringList,
     DefaultBoolList,
     ExtBoolList,
     BiologicalGenderList,
     EmailList,
     PhoneList,
+    LabMethodKeyList,
+    LocationTypeKeyList,
 
     AgeFrameBoundaryList,
     SubjectFieldRequirementList,

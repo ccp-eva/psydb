@@ -8,6 +8,10 @@ var CustomProps = ({ customFieldDefinitions }) => {
     for (var definition of customFieldDefinitions) {
         var { key, type, displayName, props } = definition;
         
+        if (type === 'Lambda') {
+            continue;
+        }
+        
         //console.log(key, type);
         
         schemaProperties[key] = (

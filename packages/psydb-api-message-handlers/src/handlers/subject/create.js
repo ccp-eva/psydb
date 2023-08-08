@@ -14,7 +14,8 @@ var {
     destructureMessage,
     openChannel,
     createRecordPropMessages,
-    dispatchRecordPropMessages
+    dispatchRecordPropMessages,
+    maybeUpdateForeignIdTargets
 } = require('../../lib/generic-record-handler-utils');
 
 module.exports = GenericRecordHandler({
@@ -49,14 +50,32 @@ module.exports = GenericRecordHandler({
         }
     },
     triggerSystemEvents: async (options) => {
-        var { db, rohrpost, personnelId, message, cache, dispatchProps } = options;
+        var {
+            db,
+            rohrpost,
+            personnelId,
+            message,
+            cache,
+            dispatch,
+            dispatchProps
+        } = options;
+
         var destructured = destructureMessage({ message });
         var {
             collection,
             recordType,
             props,
-            additionalCreateProps
+            additionalCreateProps: extra, // FIXME: rename extraPayload
         } = destructured;
+        
+        var { setIsHidden, ...additionalCreateProps } = extra;
+
+        var channel = await openChannel({
+            db,
+            rohrpost,
+            ...destructured
+        });
+        var currentChannelId = channel.id;
 
         var { forceDuplicate } = additionalCreateProps;
         delete additionalCreateProps.forceDuplicate;
@@ -71,12 +90,6 @@ module.exports = GenericRecordHandler({
             )();
         }
 
-        var channel = await openChannel({
-            db,
-            rohrpost,
-            ...destructured
-        });
-    
         await dispatchProps({
             collection,
             channel,
@@ -94,6 +107,29 @@ module.exports = GenericRecordHandler({
             props: props.scientific,
             initialize: true,
         });
+        
+        if (setIsHidden === true || setIsHidden === false) {
+            var path = 'scientific.state.systemPermissions.isHidden';
+            await dispatch({
+                collection: 'subject',
+                channelId: channel.id,
+                subChannelKey: 'scientific',
+                payload: { $set: {
+                    [path]: setIsHidden
+                }}
+            });
+        }
+
+        await maybeUpdateForeignIdTargets({
+            db,
+            dispatch,
+            collection,
+            recordType,
+            currentChannelId,
+            nextProps: props,
+            op: 'create'
+        });
+
     },
 });
 

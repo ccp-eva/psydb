@@ -1,7 +1,7 @@
 import React from 'react';
 import { arrify } from '@mpieva/psydb-core-utils';
 
-const PanelPair = (ps) => {
+export const PanelPair = (ps) => {
     var { children } = ps;
     var [ left, right ] = arrify(children);
     return (
@@ -16,4 +16,16 @@ const PanelPair = (ps) => {
     )
 }
 
-export default PanelPair;
+export const PanelColumn = (ps) => {
+    var { children } = ps;
+    children = arrify(children);
+    
+    return (
+        <>
+            { children.map((it, ix) => (
+                <div key={ ix } className='mb-4'>{ it }</div>
+            ))}
+        </>
+    )
+}
+

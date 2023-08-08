@@ -11,7 +11,9 @@ var deLocale = maybeUseESM(require('date-fns/locale/de'));
 
 var { formatInTimeZone } = require('date-fns-tz');
 
+var { jsonpointer } = require('@mpieva/psydb-core-utils');
 var ageFrameUtils = require('./age-frame-utils');
+var calculateAge = require('./calculate-age');
 
 var AgeFrameEdge = (value) => {
     var { years, months, days } = ageFrameUtils.split(value);
@@ -30,6 +32,15 @@ var Address = (value) => (
     .filter(it => !!it)
     .join(' ')
 );
+
+var SaneStringList = (value) => (
+    value.join(', ')
+);
+
+var URLStringList = (value) => (
+    value.join(', ')
+);
+
 
 var EmailList = (value) => (
     value.map(it => it.email).join(', ')
@@ -122,6 +133,20 @@ var ExtBool = (value, { short } = {}) => {
     }
 }
 
+var Lambda = (bag = {}) => {
+    var { definition, record, timezone } = bag;
+    var { fn, input } = definition.props;
+    if (fn === 'deltaYMD') {
+        fn = (it) => it ? calculateAge({
+            base: it,
+            relativeTo: new Date(),
+            asString: true
+        }) : '-';
+    }
+
+    return fn(jsonpointer.get(record, input))
+};
+
 var DefaultBool = (value) => {
     return {
         'true': 'Ja',
@@ -139,11 +164,15 @@ module.exports = {
     AgeFrameBoundary,
     AgeFrameInterval,
 
+    SaneStringList,
+    URLStringList,
     EmailList,
     PhoneWithTypeList,
     DateTime,
     DateOnlyServerSide,
     BiologicalGender,
     ExtBool,
-    DefaultBool
+    DefaultBool,
+
+    Lambda
 }

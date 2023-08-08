@@ -17,7 +17,7 @@ var createDefaultFieldDataTransformer = (bag) => {
         relatedCustomRecordTypeLabels = related.crts;
     }
 
-    var transformer = ({ value, definition }) => (
+    var transformer = ({ value, definition, record }) => (
         stringifyFieldValue({
             rawValue: value,
             fieldDefinition: definition,
@@ -25,6 +25,9 @@ var createDefaultFieldDataTransformer = (bag) => {
             relatedRecordLabels,
             relatedHelperSetItems,
             relatedCustomRecordTypeLabels,
+
+            record,
+            timezone,
         })
     );
 

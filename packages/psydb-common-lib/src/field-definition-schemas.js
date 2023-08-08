@@ -9,6 +9,7 @@ var {
     EventId,
     IdentifierString,
     SaneString,
+    StringEnum,
     CollectionEnum,
 
     DefaultArray,
@@ -116,10 +117,12 @@ var HelperSetItemIdFieldDefinition = () => FieldDefinition({
             collection: 'helperSet'
         }),
         isNullable: IsNullableProp(),
+        displayEmptyAsUnknown: DefaultBool(),
     },
     required: [
         'setId',
         'isNullable',
+        'displayEmptyAsUnknown',
     ],
 })
 
@@ -134,11 +137,13 @@ var ForeignIdListFieldDefinition = () => FieldDefinition({
             // TODO: { schoolId: { $data: '1/school' }}
         },
         minItems: MinItemsProp(),
+        readOnly: DefaultBool(),
     },
     required: [
         'collection',
         'constraints',
         'minItems',
+        'readOnly'
     ]
 })
 
@@ -153,11 +158,17 @@ var ForeignIdFieldDefinition = () => FieldDefinition({
             // TODO: { schoolId: { $data: '1/school' }}
         },
         isNullable: IsNullableProp(),
+        displayEmptyAsUnknown: DefaultBool(),
+        addReferenceToTarget: DefaultBool(),
+        targetReferenceField: { type: 'string' } // TODO jsonpointer
     },
     required: [
         'collection',
         'constraints',
         'isNullable',
+        'displayEmptyAsUnknown',
+        'addReferenceToTarget',
+        //'targetReferenceField'
     ]
 })
 
@@ -186,6 +197,24 @@ var SaneStringFieldDefinition = () => FieldDefinition({
     required: [],
     props: {
         minLength: MinLengthProp(),
+    }
+});
+
+var SaneStringListFieldDefinition = () => FieldDefinition({
+    type: 'SaneStringList',
+    title: 'Liste von Freitext-Feldern - Einzeilig (SaneStringList)',
+    required: [],
+    props: {
+        minLength: MinItemsProp(),
+    }
+});
+
+var URLStringListFieldDefinition = () => FieldDefinition({
+    type: 'URLStringList',
+    title: 'Liste von URLs - Einzeilig (URLStringList)',
+    required: [],
+    props: {
+        minLength: MinItemsProp(),
     }
 });
 
@@ -228,6 +257,7 @@ var BiologicalGenderFieldDefinition = () => FieldDefinition({
     type: 'BiologicalGender',
     title: 'Geschlecht (BiologicalGender)',
     props: {
+        enableUnknownValue: DefaultBool(),
         // enableUnknwonValue
     },
 });
@@ -296,6 +326,19 @@ var ListOfObjectsFieldDefinition = () => FieldDefinition({
     ]
 });
 
+var LambdaFieldDefinition = () => FieldDefinition({
+    type: 'Lambda',
+    title: 'Dynamische Berechnung',
+    props: {
+        fn: StringEnum([ 'deltaYMD' ]),
+        input: { type: 'string' } //XXX jsonpointer
+    },
+    required: [
+        'fn',
+        'input',
+    ]
+})
+
 var ScalarFields = {
     SaneString: SaneStringFieldDefinition,
     FullText: FullTextFieldDefinition,
@@ -320,6 +363,8 @@ var ObjectFields = {
 }
 
 var ListFields = {
+    URLStringList: URLStringListFieldDefinition,
+    SaneStringList: SaneStringListFieldDefinition,
     EmailList: EmailListFieldDefinition,
     PhoneWithTypeList: PhoneWithTypeListFieldDefinition,
     PhoneList: PhoneListFieldDefinition,
@@ -333,4 +378,6 @@ module.exports = {
     ...ScalarFields,
     ...ObjectFields,
     ...ListFields,
+
+    Lambda: LambdaFieldDefinition,
 }

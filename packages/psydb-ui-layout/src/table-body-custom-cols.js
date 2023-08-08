@@ -15,7 +15,7 @@ export const TableBodyCustomCols = (ps) => {
         var value = jsonpointer.get(record, pointer);
 
         if (transformer) {
-            value = transformer({ value, definition });
+            value = transformer({ value, definition, record });
         }
 
         return (
