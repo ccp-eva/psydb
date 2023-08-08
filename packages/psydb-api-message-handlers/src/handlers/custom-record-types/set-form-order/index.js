@@ -66,24 +66,31 @@ handler.checkAllowedAndPlausible = async ({
 
     var gatheredFieldData = [];
     for (var fieldPointer of formOrder) {
-        var resolved = resolveDataPointer({
-            schema: targetRecordSchema,
-            pointer: fieldPointer
-        });
-        if (!resolved) {
-            debug(record.collection, record.type, fieldPointer, 'notResolved');
-            throw new ApiError(400, 'InvalidFieldPointer');
+        var def = definitionsByPointer[fieldPointer];
+        if (def && def.systemType === 'Lambda') {
+            gatheredFieldData.push({
+                systemType: def.systemType,
+                dataPointer: fieldPointer,
+            });
         }
-        if (!resolved.schema.systemType) {
-            debug(record.collection, record.type, fieldPointer, 'noType');
-            throw new ApiError(400, 'InvalidFieldPointer');
+        else {
+            var resolved = resolveDataPointer({
+                schema: targetRecordSchema,
+                pointer: fieldPointer
+            });
+            if (!resolved) {
+                debug(collection, type, fieldPointer, 'notResolved');
+                throw new ApiError(400, 'InvalidFieldPointer');
+            }
+            if (!resolved.schema.systemType) {
+                debug(collection, type, fieldPointer, 'noType');
+                throw new ApiError(400, 'InvalidFieldPointer');
+            }
+            gatheredFieldData.push({
+                systemType: resolved.schema.systemType,
+                dataPointer: fieldPointer,
+            });
         }
-        gatheredFieldData.push({
-            // FIXME: not sure if we wanna store that
-            //inSchemaPointer: resolved.inSchemaPointer,
-            systemType: resolved.schema.systemType,
-            dataPointer: fieldPointer,
-        });
     }
 
     cache.gatheredFieldData = gatheredFieldData;
