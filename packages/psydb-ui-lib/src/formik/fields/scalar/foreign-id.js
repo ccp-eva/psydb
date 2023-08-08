@@ -1,5 +1,6 @@
 import React from 'react';
 import { withField } from '@cdxoo/formik-utils';
+import { entries, jsonpointer } from '@mpieva/psydb-core-utils';
 import RecordPicker from '../../../pickers/record-picker';
 
 export const ForeignId = withField({ Control: (ps) => {
@@ -15,6 +16,7 @@ export const ForeignId = withField({ Control: (ps) => {
         recordType,
         constraints,
         isNullable,
+        readOnly,
 
         disabled,
         related,
@@ -23,7 +25,7 @@ export const ForeignId = withField({ Control: (ps) => {
     } = ps;
 
     var { value: recordId } = formikField;
-    var { setFieldValue } = formikForm;
+    var { values: formValues, setFieldValue } = formikForm;
 
     var onChange = (record) => {
         var fallback = isNullable ? null : undefined;
@@ -45,6 +47,36 @@ export const ForeignId = withField({ Control: (ps) => {
         record = { _id: recordId };
     }
 
+    var hasMissingConstraintValues = false;
+    if (constraints) {
+        constraints = (
+            entries(constraints).reduce((acc, [ key, value ]) => ({
+                ...acc,
+                [key]: (
+                    value.startsWith('$data:')
+                    ? (
+                        jsonpointer.get(
+                            formValues,
+                            // XXX: state is omitted in custom record forms
+                            // so we need to remove '/state'
+                            // path token in addition to the
+                            // '$data:' prefix
+                            '/$' + value.replace(/(?:\$data:|state\/)/g, '')
+                        )
+                    )
+                    : value
+                )
+            }), {})
+        )
+        
+        hasMissingConstraintValues = (
+            Object.values(constraints)
+            .filter(it => (it === null || it === undefined))
+            .length > 0
+        );
+    }
+
+
     return (
         <RecordPicker { ...({
             ...formikField,
@@ -57,7 +89,8 @@ export const ForeignId = withField({ Control: (ps) => {
             constraints,
             excludedIds,
 
-            disabled,
+            disabled: disabled || hasMissingConstraintValues,
+            readOnly,
             isFormik: true,
 
             ...related,
