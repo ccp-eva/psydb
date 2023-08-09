@@ -72,13 +72,13 @@ const FormFields = (ps) => {
 const ReservationFields = (ps) => {
     var { reservationType, ...pass } = ps;
     switch (reservationType) {
+        case 'no-reservation':
+            return null
         case 'away-team':
             return <AwayTeamReservationFields { ...pass } />
         case 'inhouse':
         default:
             return <InhouseReservationFields { ...pass } />
-        //case 'no-reservation': // FIXME
-        //    return null
     }
 }
 

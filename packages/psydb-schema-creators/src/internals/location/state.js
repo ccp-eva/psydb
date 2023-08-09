@@ -16,6 +16,10 @@ var GenericLocationState = ({
     enableInternalProps,
     customFieldDefinitions,
 } = {}) => {
+
+    // TODO: actually make the schema aware of the reservation settings
+    // in crt general settings
+
     var schema = ExactObject({
         type: 'object',
         properties: {

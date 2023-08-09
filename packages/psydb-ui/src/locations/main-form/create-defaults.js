@@ -33,8 +33,6 @@ const ReservationDefaults = (options) => {
                 reservationSlotDuration: 15 * MINUTE,
                 timezone: 'Europe/Berlin',
             }
-        //case 'no-reservation': //FIXME
-        //    return undefined;
     }
 }
 
@@ -42,6 +40,10 @@ export const createDefaults = (options) => {
     var { reservationType, fieldDefinitions, permissions } = options;
     return {
         custom: Custom({ fieldDefinitions }),
+        // TODO see location schema creator
+        //...(reservationType !== 'no-reservation' && {
+        //    reservationSettings: ReservationDefaults({ reservationType }),
+        //}),
         reservationSettings: ReservationDefaults({ reservationType }),
         systemPermissions: SystemPermissions({ permissions }),
     }

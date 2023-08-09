@@ -7,7 +7,7 @@ import { DefaultForm, Fields } from '@mpieva/psydb-ui-lib';
 const reservationTypes = {
     'inhouse': 'Reservierbar (z.B. Instituts-Räume)',
     'away-team': 'Terminierbar (t.B. Kindergärten)',
-    //'no-reservation': 'Nein'
+    'no-reservation': 'Nein'
 }
 
 const GeneralEditor = (ps) => {
