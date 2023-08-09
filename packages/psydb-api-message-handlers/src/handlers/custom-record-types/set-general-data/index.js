@@ -2,6 +2,7 @@
 var debug = require('debug')('psydb:api:message-handlers');
 
 var { copy } = require('copy-anything');
+var { merge } = require('@mpieva/psydb-core-utils');
 var { ApiError, Ajv } = require('@mpieva/psydb-api-lib');
 
 var createSchema = require('./schema');
@@ -56,28 +57,79 @@ var checkAllowedAndPlausible = async (context) => {
     var { id, label, reservationType } = message.payload;
     var { record } = cache;
 
-    if (!permissions.hasRootAccess) {
-        //throw new ApiError(403);
+    if (!permissions.isRoot()) {
+        throw new ApiError(403);
     }
     
 }
 
 var triggerSystemEvents = async (context) => {
     var { rohrpost, cache, personnelId, message, dispatch } = context;
-    var { id, label, reservationType } = message.payload;
+    var {
+        id,
+        label,
+        reservationType,
+        requiresTestingPermissions,
+        commentFieldIsSensitive,
+        showSequenceNumber,
+        showOnlineId,
+        
+        enableSubjectSelectionSettings,
+        enableLabTeams,
+    } = message.payload;
+
     var { record } = cache;
     var { collection } = record;
-   
+  
+    // TODO push/pull testinPermissions/sequenceNumber/onlineId
+    // in form order
+    
+    var formOrderUpdates = merge(
+        maybeUpdateFormOrder(record, '/sequenceNumber', showSequenceNumber),
+        maybeUpdateFormOrder(record, '/onlineId', showOnlineId),
+        maybeUpdateFormOrder(record, '/scientific/state/testingPermissions', requiresTestingPermissions)
+    );
+
+    //console.log(record.state.formOrder);
+    //console.log(formOrderUpdates);
+    
     await dispatch({
         collection: 'customRecordType',
         channelId: id,
-        payload: { $set: {
-            'state.label': label,
-            ...(collection === 'location' && {
-                'state.reservationType': reservationType
-            })
-        }}
+        payload: {
+            $set: {
+                'state.label': label,
+                ...(collection === 'subject' && {
+                    'state.requiresTestingPermissions': requiresTestingPermissions,
+                    'state.commentFieldIsSensitive': commentFieldIsSensitive,
+                    'state.showSequenceNumber': showSequenceNumber,
+                    'state.showOnlineId': showOnlineId,
+                }),
+                ...(collection === 'location' && {
+                    'state.reservationType': reservationType
+                }),
+                ...(collection === 'study' && {
+                    'state.enableSubjectSelectionSettings': (
+                        enableSubjectSelectionSettings
+                    ),
+                    'state.enableLabTeams': enableLabTeams
+                })
+            },
+            ...formOrderUpdates
+        },
     });
+}
+
+var maybeUpdateFormOrder = (record, key, flag) => {
+    if (record.state.formOrder.includes(key) && !flag) {
+        return { $pull: { 'state.formOrder': { $in: [ key ] }}}
+    }
+    else if (!record.state.formOrder.includes(key) && flag) {
+        return { $push: { 'state.formOrder': { $each: [ key ] }}}
+    }
+    else {
+        return {}
+    }
 }
 
 // no-op
