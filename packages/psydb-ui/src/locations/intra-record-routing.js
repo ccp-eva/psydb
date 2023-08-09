@@ -36,7 +36,9 @@ const IntraRecordRoutingBody = (ps) => {
     var history = useHistory();
     var { path, url } = useRouteMatch();
 
-    var { record } = fetched;
+    var { record, crtSettings } = fetched;
+    var { reservationType } = crtSettings;
+    console.log(reservationType);
     var { canBeReserved } = record.state.reservationSettings;
 
     //var enableEdit = permissions.hasCollectionFlag('location', 'write');
@@ -57,20 +59,22 @@ const IntraRecordRoutingBody = (ps) => {
         //    label: 'Beabeiten',
         //    disabled: !enableEdit,
         //},
-        {
-            key: 'calendar',
-            label: 'Termine'
-        },
-        {
-            key: 'reservation',
-            label: 'Reservierung',
-            show: canBeReserved
-        }
+        ...(reservationType !== 'no-reservation' ? ([
+            {
+                key: 'calendar',
+                label: 'Termine'
+            },
+            {
+                key: 'reservation',
+                label: 'Reservierung',
+                show: canBeReserved
+            }
+        ]) : [])
     ];
 
     return (
         <div className='d-flex'>
-            { canBeReserved && (
+            { (canBeReserved && reservationType !== 'no-reservation') && (
                 <div
                     className='flex-shrink-0'
                     style={{ width: '175px' }}
