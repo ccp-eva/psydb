@@ -40,6 +40,9 @@ var createOneCustomQueryValueObject = (options) => {
         case 'FullText':
             return { [pointer]: makeRX(filter) };
 
+        case 'URLStringList':
+            return { [pointer]: makeRX(filter) };
+
         case 'PhoneList': // FIXME: make this a seperate thing
             return { [pointer]: makeRX(filter) };
 

@@ -63,6 +63,7 @@ const fixSystemType = (systemType) => {
     switch (systemType) {
         case 'PhoneList':
         case 'PhoneWithTypeList':
+        case 'URLStringList':
         case 'EmailList':
             return 'SaneString';
 
