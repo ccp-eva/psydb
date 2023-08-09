@@ -28,7 +28,7 @@
     "react-router": "~5.2.0",
     "react-router-dom": "~5.2.0",
     "is-what": "~3.14.1",
-    "formik": "~2.2.6",
+    "formik": "~2.4.3",
     "jsonpointer": "~5.0.1",
     "js-base64": "~3.6.0",
     "@cdxoo/inline-string": "~1.0.0",
