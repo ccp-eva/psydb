@@ -71,7 +71,10 @@ const IntraRecordRoutingBody = (ps) => {
     return (
         <div className='d-flex'>
             { canBeReserved && (
-                <div style={{ width: '175px' }}>
+                <div
+                    className='flex-shrink-0'
+                    style={{ width: '175px' }}
+                >
                     <Route path={ `${path}/:navKey`}>
                         <RoutedSideNav
                             className='bg-light border'
