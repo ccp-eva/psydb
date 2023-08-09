@@ -2,6 +2,7 @@
 var createFakeRootFlags = () => ({
     //canWriteAdministrativeCollections: true,
     canWritePersonnel: true,
+    canAllowLogin: true,
     canSetPersonnelPassword: true,
     canUseExtendedSearch: true,
     canUseCSVExport: true,

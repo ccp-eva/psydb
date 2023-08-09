@@ -43,11 +43,12 @@ module.exports = GenericRecordHandler({
         var { db, message, permissions } = context;
         var { RecordMessage } = allSchemaCreators['personnel'];
 
+        var canAllowLogin = permissions.hasFlag('canAllowLogin');
         var isRoot = permissions.isRoot();
 
         var schema = RecordMessage({
             op: 'create',
-            enableCanLogIn: isRoot,
+            enableCanLogIn: canAllowLogin,
             enableHasRootAccess: isRoot,
         });
 

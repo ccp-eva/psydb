@@ -20,7 +20,7 @@ const EditForm = (ps) => {
             >
                 <EditorMainForm { ...ps } />
             </FormBox>
-            { permissions.isRoot() && (
+            { permissions.hasFlag('canSetPersonnelPassword') && (
                 <div className='mt-3'>
                     <PasswordForm { ...ps } />
                 </div>

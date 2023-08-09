@@ -133,8 +133,11 @@ const labels = {
     '/state/canWritePersonnel': (
         'kann Mitarbeiter:innen bearbeiten (d.h. Benutzer-Accounts)'
     ),
+    '/state/canAllowLogin': (
+        'kann Mitarbeiter:innen Login-Erlaubnis gewähren und entziehen'
+    ),
     '/state/canSetPersonnelPassword': (
-        'kann das Passwort anderer Benutzer manuell neu setzen'
+        'kann das Passwort anderer Mitarbeiter:innen manuell neu setzen'
     ),
 
     '/state/canReadStudies': (

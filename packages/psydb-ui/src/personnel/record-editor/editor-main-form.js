@@ -49,14 +49,12 @@ export const EditorMainForm = (ps) => {
             'gdpr.description',
             'scientific.researchGroupSettings',
             'scientific.systemPermissions',
-            ...(
-                permissions.isRoot()
-                ? [
+            ...(permissions.hasFlag('canAllowLogin') ? [
                     'scientific.canLogIn',
-                    'scientific.hasRootAccess',
-                ]
-                : []
-            )
+            ] : []),
+            ...(permissions.isRoot() ? [
+                'scientific.hasRootAccess',
+            ] : []),
         ]
     })
 

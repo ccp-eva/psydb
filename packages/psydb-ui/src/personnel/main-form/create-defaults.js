@@ -14,8 +14,10 @@ export const createDefaults = (options) => {
         scientific: {
             researchGroupSettings: [{}],
             systemPermissions: SystemPermissions({ permissions }),
-            ...(permissions.isRoot() && {
+            ...(permissions.hasFlag('canAllowLogin') && {
                 canLogIn: false,
+            }),
+            ...(permissions.isRoot() && {
                 hasRootAccess: false,
             })
         }

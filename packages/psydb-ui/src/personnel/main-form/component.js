@@ -80,13 +80,17 @@ const FormFields = (ps) => {
                 related={ related }
                 required
             />
-            { permissions.isRoot() && (
+            { permissions.hasFlag('canAllowLogin') && (
                 <>
                     <Fields.DefaultBool
                         label='Log-In erlauben'
                         dataXPath='$.scientific.canLogIn'
                         required
                     />
+                </>
+            )}
+            { permissions.isRoot() && (
+                <>
                     <Fields.DefaultBool
                         label='MA hat Admin-Zugriff'
                         dataXPath='$.scientific.hasRootAccess'

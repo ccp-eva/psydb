@@ -137,7 +137,11 @@ const FormFields = (ps) => {
                     dataXPath='$.canWritePersonnel'
                 />
                 <Bool
-                    label='kann das Passwort anderer Benutzer manuell neu setzen'
+                    label='kann Mitarbeiter:innen Login-Erlaubnis gewähren und entziehen'
+                    dataXPath='$.canAllowLogin'
+                />
+                <Bool
+                    label='kann das Passwort anderer Mitarbeiter:innen manuell neu setzen'
                     dataXPath='$.canSetPersonnelPassword'
                 />
             </PermBox>

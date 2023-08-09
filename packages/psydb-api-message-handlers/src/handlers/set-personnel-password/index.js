@@ -29,7 +29,7 @@ handler.checkAllowedAndPlausible = async ({
         throw new ApiError(400);
     }
 
-    if (!permissions.isRoot()) {
+    if (!permissions.hasFlag('canSetPersonnelPassword')) {
         throw new ApiError(403);
     }
 };

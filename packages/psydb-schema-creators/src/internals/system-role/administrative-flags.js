@@ -3,11 +3,8 @@ var inline = require('@cdxoo/inline-text');
 var WideBool = require('./wide-bool');
 
 module.exports = {
-    canSetPersonnelPassword: WideBool({
-        title: inline`
-            kann das Passwort anderer Benutzer manuell neu setzen
-        `,
-    }),
+    canAllowLogin: WideBool(),
+    canSetPersonnelPassword: WideBool(),
     canUseExtendedSearch: WideBool({
         title: 'kann die Erweiterte Suche benutzen',
     }),
