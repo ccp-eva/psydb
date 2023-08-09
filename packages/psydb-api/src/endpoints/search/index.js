@@ -162,6 +162,10 @@ var search = async (context, next) => {
         enableResearchGroupFilter = true,
     } = searchOptions;
 
+    var onlyIds = undefined;
+    if (target === 'optionlist' && collectionName === 'researchGroup') {
+        onlyIds = permissions.getResearchGroupIds();
+    }
     debug('>>>>>>>>> START');
     var records = await fetchRecordsByFilter({
         db,
@@ -171,6 +175,7 @@ var search = async (context, next) => {
         hasSubChannels,
 
         enableResearchGroupFilter,
+        onlyIds,
         extraIds,
         excludedIds,
         constraints,
