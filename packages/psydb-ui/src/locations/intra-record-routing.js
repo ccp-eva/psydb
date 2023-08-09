@@ -38,7 +38,6 @@ const IntraRecordRoutingBody = (ps) => {
 
     var { record, crtSettings } = fetched;
     var { reservationType } = crtSettings;
-    console.log(reservationType);
     var { canBeReserved } = record.state.reservationSettings;
 
     //var enableEdit = permissions.hasCollectionFlag('location', 'write');
