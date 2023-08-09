@@ -101,7 +101,7 @@ const IntraRecordRoutingBody = (ps) => {
                             collection={ collection }
                             recordType={ recordType }
                             onSuccessfulUpdate={ ({ id }) => {
-                                history.push(`${url}/${id}`)
+                                history.push(`${url}`)
                             }}
                         />
                     </Route>
