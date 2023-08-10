@@ -116,7 +116,7 @@ specifiers:
   escape-string-regexp: ~4.0.0
   flat: ~5.0.2
   formidable: ~2.1.1
-  formik: ~2.2.6
+  formik: ~2.4.3
   graphql: ~15.3.0
   html-entities: ~2.3.2
   html-webpack-plugin: 5.1.0
@@ -184,7 +184,7 @@ dependencies:
   '@babel/register': 7.18.9_@babel+core@7.18.13
   '@cdxoo/block-quote': 1.0.1
   '@cdxoo/flat': 0.0.4
-  '@cdxoo/formik-ajv-async': 0.4.1_formik@2.2.9+react@17.0.2
+  '@cdxoo/formik-ajv-async': 0.4.1_formik@2.4.3+react@17.0.2
   '@cdxoo/inline-string': 1.0.0
   '@cdxoo/inline-text': 1.0.2
   '@cdxoo/json-base64': 1.0.0
@@ -292,7 +292,7 @@ dependencies:
   escape-string-regexp: 4.0.0
   flat: 5.0.2
   formidable: 2.1.1
-  formik: 2.2.9_react@17.0.2
+  formik: 2.4.3_react@17.0.2
   graphql: 15.3.0
   html-entities: 2.3.2
   html-webpack-plugin: 5.1.0_webpack@5.65.0
@@ -1711,24 +1711,24 @@ packages:
       '@cdxoo/traverse': 0.0.1
     dev: false
 
-  /@cdxoo/formik-ajv-async/0.4.1_formik@2.2.9+react@17.0.2:
+  /@cdxoo/formik-ajv-async/0.4.1_formik@2.4.3+react@17.0.2:
     resolution: {integrity: sha512-gJHk0c2D44N+Ho3C9tZjOF0hgFB4whlgTYkrBvBSVMjaS53RojkIJ/Wg4aCDF0VBFSdpQ6jAGAJcLejET0SyqQ==}
     peerDependencies:
       formik: '>=2.0'
       react: '>=16.8'
     dependencies:
-      formik: 2.2.9_react@17.0.2
+      formik: 2.4.3_react@17.0.2
       jsonpointer: 4.1.0
       react: 17.0.2
     dev: false
 
-  /@cdxoo/formik-utils/0.6.1_formik@2.2.9+react@17.0.2:
+  /@cdxoo/formik-utils/0.6.1_formik@2.4.3+react@17.0.2:
     resolution: {integrity: sha512-zfmL8K2ALeDMEjjSvtBoIVNL6ZXUUd7UZHoHWRhDTVXNn0Dx68btrxX/VoihyRej+Bja98cUQ8mvBv/HpnH92Q==}
     peerDependencies:
       formik: '>=2.0'
       react: '>=16.8'
     dependencies:
-      formik: 2.2.9_react@17.0.2
+      formik: 2.4.3_react@17.0.2
       react: 17.0.2
     dev: false
 
@@ -3416,7 +3416,7 @@ packages:
     dev: false
 
   /buffer-crc32/0.2.13:
-    resolution: {integrity: sha1-DTM+PwDqxQqhRUq9MO+MKl2ackI=}
+    resolution: {integrity: sha512-VO9Ht/+p3SN7SKWqcrgEzjGbRSJYTx+Q1pTQC0wrWqHx0vpJraQ6GtHx8tvcg1rlK1byhU5gccxgOgj7B0TDkQ==}
     dev: false
 
   /buffer-from/1.1.2:
@@ -4863,7 +4863,7 @@ packages:
     dev: false
 
   /fd-slicer/1.1.0:
-    resolution: {integrity: sha1-JcfInLH5B3+IkbvmHY85Dq4lbx4=}
+    resolution: {integrity: sha512-cE1qsB/VwyQozZ+q1dGxR8LBYNZeofhEdUNGSMbQD3Gw2lAzX9Zb3uIU6Ebc/Fmyjo9AWWfnn0AUCHqtevs/8g==}
     dependencies:
       pend: 1.2.0
     dev: false
@@ -5027,8 +5027,8 @@ packages:
       qs: 6.11.1
     dev: false
 
-  /formik/2.2.9_react@17.0.2:
-    resolution: {integrity: sha512-LQLcISMmf1r5at4/gyJigGn0gOwFbeEAlji+N9InZF6LIMXnFNkO42sCI8Jt84YZggpD4cPWObAZaxpEFtSzNA==}
+  /formik/2.4.3_react@17.0.2:
+    resolution: {integrity: sha512-2Dy79Szw3zlXmZiokUdKsn+n1ow4G8hRrC/n92cOWHNTWXCRpQXlyvz6HcjW7aSQZrldytvDOavYjhfmDnUq8Q==}
     peerDependencies:
       react: '>=16.8.0'
     dependencies:
@@ -5039,7 +5039,7 @@ packages:
       react: 17.0.2
       react-fast-compare: 2.0.4
       tiny-warning: 1.0.3
-      tslib: 1.14.1
+      tslib: 2.3.1
     dev: false
 
   /forwarded/0.2.0:
@@ -5626,7 +5626,7 @@ packages:
     dev: false
 
   /inherits/2.0.3:
-    resolution: {integrity: sha1-Yzwsg+PaQqUC9SRmAiSA9CCCYd4=}
+    resolution: {integrity: sha512-x00IRNXNy63jwGkJmzPigoySHbaqpNuzKbBOmzK+g2OdZpQ9w+sxCN+VSB3ja7IAge2OP2qpfxTjeNcyjmW1uw==}
     dev: false
 
   /inherits/2.0.4:
@@ -8112,7 +8112,7 @@ packages:
     dev: false
 
   /pend/1.2.0:
-    resolution: {integrity: sha1-elfrVQpng/kRUzH89GY9XI4AelA=}
+    resolution: {integrity: sha512-F3asv42UuXchdzt+xXqfW1OGlVBe+mxa2mqI0pg5yAHZPvFmY3Y6drSf/GQ1A86WgWEN9Kzh/WrgKa6iGcHXLg==}
     dev: false
 
   /performance-now/2.1.0:
@@ -9862,10 +9862,6 @@ packages:
       punycode: 2.1.1
     dev: false
 
-  /tslib/1.14.1:
-    resolution: {integrity: sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==}
-    dev: false
-
   /tslib/2.3.1:
     resolution: {integrity: sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==}
     dev: false
@@ -10623,7 +10619,7 @@ packages:
     dev: false
 
   /yauzl/2.10.0:
-    resolution: {integrity: sha1-x+sXyT4RLLEIb6bY5R+wZnt5pfk=}
+    resolution: {integrity: sha512-p4a9I6X6nu6IhoGmBqAcbJy1mlC4j27vEPZX9F4L4/vZT3Lyq1VkFHw/V/PUcB9Buo+DG3iHkT0x3Qya58zc3g==}
     dependencies:
       buffer-crc32: 0.2.13
       fd-slicer: 1.1.0
@@ -11504,7 +11500,7 @@ packages:
     dev: false
 
   file:projects/psydb-ui-lib.tgz_webpack@5.65.0:
-    resolution: {integrity: sha512-GARuiYYnAh+zK/XXlZL/VN2YPTXw+dQk6EaHmK9Knyr81CxBDoebwXL5CE7XapZR36ARlRCs3V8ZtwqRHMMT4w==, tarball: file:projects/psydb-ui-lib.tgz}
+    resolution: {integrity: sha512-BADOmBfs4bgiDzSL+N2VGw3fpQnQwrvqUGUECTA4bNbYlriH/Vop0vMmQVygUbJEDffLQsQ+jGZ/7i7UOx0luQ==, tarball: file:projects/psydb-ui-lib.tgz}
     id: file:projects/psydb-ui-lib.tgz
     name: '@rush-temp/psydb-ui-lib'
     version: 0.0.0
@@ -11512,8 +11508,8 @@ packages:
       '@babel/core': 7.18.13
       '@babel/preset-env': 7.18.10_@babel+core@7.18.13
       '@babel/preset-react': 7.18.6_@babel+core@7.18.13
-      '@cdxoo/formik-ajv-async': 0.4.1_formik@2.2.9+react@17.0.2
-      '@cdxoo/formik-utils': 0.6.1_formik@2.2.9+react@17.0.2
+      '@cdxoo/formik-ajv-async': 0.4.1_formik@2.4.3+react@17.0.2
+      '@cdxoo/formik-utils': 0.6.1_formik@2.4.3+react@17.0.2
       '@cdxoo/inline-string': 1.0.0
       '@cdxoo/omit': 1.0.1
       '@rjsf/bootstrap-4': 2.5.1_5dccca4f99fef0089ce8bea6fe035927
@@ -11524,7 +11520,7 @@ packages:
       chai: 4.3.7
       classnames: 2.3.1
       date-fns: 2.29.3
-      formik: 2.2.9_react@17.0.2
+      formik: 2.4.3_react@17.0.2
       is-what: 3.14.1
       js-base64: 3.6.2
       jsonpointer: 5.0.1
@@ -11586,7 +11582,7 @@ packages:
     dev: false
 
   file:projects/psydb-ui.tgz:
-    resolution: {integrity: sha512-VY614PsJ2m94u4G7LLp7Lu5bu9Pfrqwm4meYgICr9zcI+OiA8zO73q7IgnsuCiYbe0QJeWbAHbPm4xCdKBqagg==, tarball: file:projects/psydb-ui.tgz}
+    resolution: {integrity: sha512-uIUUB/GGrS941ZH7RPz72ldRNF05IXiO09eWUliDAVaoRcc3yD/Svu/rx2yVJTSlGjtg23Z/yXuK71iDot6/+Q==, tarball: file:projects/psydb-ui.tgz}
     name: '@rush-temp/psydb-ui'
     version: 0.0.0
     dependencies:
@@ -11594,7 +11590,7 @@ packages:
       '@babel/plugin-proposal-class-properties': 7.18.6_@babel+core@7.18.13
       '@babel/preset-env': 7.18.10_@babel+core@7.18.13
       '@babel/preset-react': 7.18.6_@babel+core@7.18.13
-      '@cdxoo/formik-utils': 0.6.1_formik@2.2.9+react@17.0.2
+      '@cdxoo/formik-utils': 0.6.1_formik@2.4.3+react@17.0.2
       '@cdxoo/omit': 1.0.1
       '@rjsf/bootstrap-4': 2.5.1_5dccca4f99fef0089ce8bea6fe035927
       '@rjsf/core': 2.5.1_react@17.0.2
@@ -11606,7 +11602,7 @@ packages:
       compression-webpack-plugin: 7.1.2_webpack@5.65.0
       css-loader: 5.2.7_webpack@5.65.0
       date-fns: 2.29.3
-      formik: 2.2.9_react@17.0.2
+      formik: 2.4.3_react@17.0.2
       html-webpack-plugin: 5.1.0_webpack@5.65.0
       is-subset: 0.1.1
       js-base64: 3.6.2
