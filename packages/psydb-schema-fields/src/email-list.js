@@ -6,12 +6,10 @@ var inline = require('@cdxoo/inline-text'),
     Email = require('./email');
 
 var EmailList = ({ minItems, ...additionalProperties }) => DefaultArray({
-    systemType: 'EmailList',
+    systemType: 'EmailList', // FIXME: rename to EmailWithPrimaryList
     minItems: (minItems || 0),
-    // unqiueItemProperties requires "ajv-keywords"
-    uniqueItemProperties: [ 'email' ],
     items: ExactObject({
-        systemType: 'EmailListItem',
+        systemType: 'EmailListItem', // FIXME: rename to EMailWithPrimaryItem
         properties: {
             email: Email(),
             isPrimary: DefaultBool({
@@ -29,6 +27,8 @@ var EmailList = ({ minItems, ...additionalProperties }) => DefaultArray({
         ]
     }),
     title: 'Emails',
+    // unqiueItemProperties requires "ajv-keywords"
+    uniqueItemProperties: [ 'email', 'isPrimary'],
     ...additionalProperties,
 })
 

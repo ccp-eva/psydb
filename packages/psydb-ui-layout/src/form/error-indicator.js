@@ -55,6 +55,13 @@ const createFriendlyMessage = (err) => {
             else {
                 return err.message;
             }
+        
+        case 'uniqueItemProperties':
+            // FIXME: this error message is basically useless
+            // FIXME: also the original just says 'should pass
+            // uniqteItemProperties' which is also useless
+            return 'Enthält ungültige Duplikat-Daten';
+
         case 'FakeAjvError':
             return err.message;
         default:
