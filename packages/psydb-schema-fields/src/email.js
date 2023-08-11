@@ -1,6 +1,6 @@
 var Email = ({ ...keywords } = {}) => ({
     type: 'string',
-    //format: 'email', // TODO: reenable
+    format: 'email',
     title: 'Email',
     systemType: 'Email',
     ...keywords

@@ -26,6 +26,7 @@ export const ErrorIndicator = (ps) => {
 
 const createFriendlyMessage = (err) => {
     var { keyword, params } = err;
+    console.log(err);
     switch (keyword) {
         case 'type':
         case 'required':
@@ -51,6 +52,9 @@ const createFriendlyMessage = (err) => {
         case 'format':
             if (['mongodb-object-id'].includes(params.format)) {
                 return 'Dies ist ein Plichtfeld. Bitte einen Wert eingeben.'
+            }
+            else if (['email'].includes(params.format)) {
+                return 'Dies ist keine valide EMail-Adresse.'
             }
             else {
                 return err.message;
