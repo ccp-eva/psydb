@@ -15,22 +15,29 @@ import {
     Fields
 } from '../../formik';
 
-const FormContainer = ({
-    onHide,
-    
-    experimentData,
-    teamData,
-    studyData,
-   
-    nextExperimentRecord,
+const FormContainer = (ps) => {
+    var {
+        onHide,
+        
+        experimentData,
+        teamData,
+        studyData,
+       
+        nextExperimentRecord,
 
-    nextReservationRecord,
-    nextTeamRecord,
-    nextInterval,
+        nextReservationRecord,
+        nextTeamRecord,
+        nextInterval,
 
-    onSuccessfulUpdate,
-}) => {
+        onSuccessfulUpdate,
+    } = ps;
+
+    var now = new Date();
     var { enableFollowUpExperiments } = studyData.record.state;
+    var {
+        _id: experimentId,
+        state: { isPostprocessed }
+    } = experimentData.record;
     
     var handleSubmit = undefined;
     var isPlaceholder = false;
@@ -123,7 +130,7 @@ const FormContainer = ({
                                         options={{
                                             'none': 'Keine Aktion',
                                             'move-unprocessed': 'Verbleibende Mitnehmen', 
-                                            ...( enableFollowUpExperiments && {
+                                            ...( isPostprocessed && enableFollowUpExperiments && {
                                                 'copy': 'Alle Kopieren',
                                             }),
                                         }}
