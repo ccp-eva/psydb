@@ -120,6 +120,16 @@ const SubjectTableBody = ({
     onSelectSubject,
     selectedSubjectIds,
 }) => {
+
+    var quickSelectSubjects = (
+        subjectRecords
+        .filter((record) => (
+            record._upcomingExperiments.filter(it => (
+                studyIds.includes(it.state.studyId)
+            )).length === 0
+        ))
+    );
+
     return (
         <tbody>
             { subjectRecords.map(record => {
@@ -190,29 +200,38 @@ const SubjectTableBody = ({
             })}
             <tr>
                 <td
+                    className='user-select-none'
                     role='button'
                     onClick={ () => {
-                        var filtered = (
-                            subjectRecords.filter((record) => (
-                                record._upcomingExperiments.filter(it => (
-                                    studyIds.includes(it.state.studyId)
-                                )).length === 0
-                            ))
-                        );
-                        onSelectManySubjects(filtered)
+                        onSelectManySubjects(quickSelectSubjects)
                     }}
                 >
-                    {
-                        selectedSubjectIds.length > 0 
-                        ? <Icons.CheckSquareFill />
-                        : <Icons.Square />
-                    }
+                    {(
+                        selectedSubjectIds.length 
+                        === quickSelectSubjects.length
+                    ) ? (
+                        <Icons.CheckSquareFill />
+                    ) : (
+                        <Icons.Square />
+                    )}
                 </td>
-                <td 
+                <td
+                    className='user-select-none'
                     colSpan={ subjectMetadata.displayFieldData.length + 4 }
                     style={{ color: '#006c66' }}
+                    role='button'
+                    onClick={ () => {
+                        onSelectManySubjects(quickSelectSubjects)
+                    }}
                 >
-                    Alle auswählen
+                    <b>{(
+                        selectedSubjectIds.length 
+                        === quickSelectSubjects.length
+                    ) ? (
+                        'Alle abwählen'
+                    ) : (
+                        'Alle auswählen'
+                    )}</b>
                 </td>
             </tr>
         </tbody>

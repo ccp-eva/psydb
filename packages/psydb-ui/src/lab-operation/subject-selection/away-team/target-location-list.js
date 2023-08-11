@@ -9,6 +9,7 @@ import {
 
 import omit from '@cdxoo/omit';
 
+import { without } from '@mpieva/psydb-core-utils';
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
 
@@ -119,8 +120,12 @@ const TargetLocationList = ({
     }
 
     var handleSelectManySubjects = ({ locationId, subjectRecords }) => {
+        var delta = without(
+            subjectRecords.map(it => it._id),
+            selectedSubjectIds || [],
+        )
         var set = (
-            selectedSubjectIds.length > 0
+            selectedSubjectIds.length > 0 && delta.length === 0
             ? []
             : subjectRecords
         );
