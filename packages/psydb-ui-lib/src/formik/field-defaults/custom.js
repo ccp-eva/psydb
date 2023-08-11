@@ -7,8 +7,8 @@ export const Custom = (options) => {
         ? fieldDefinitions[subChannelKey]
         : fieldDefinitions
     );
-    
-    return (
+   
+    var defaults = (
         fields
         .filter(it => (
             !it.isRemoved
@@ -18,7 +18,9 @@ export const Custom = (options) => {
             ...acc,
             [it.key]: CustomFieldDefault(it)
         }), {})
-    )
+    );
+
+    return defaults;
 }
 
 const CustomFieldDefault = (options) => {
@@ -63,6 +65,10 @@ const CustomFieldDefault = (options) => {
             );
 
         case 'EmailWithPrimaryList':
+            var { minItems } = props;
+            return range(minItems || 0).map(() => ({
+                isPrimary: true
+            }));
         case 'PhoneWithTypeList':
             var { minItems } = props;
             return range(minItems || 0).map(() => ({}));
