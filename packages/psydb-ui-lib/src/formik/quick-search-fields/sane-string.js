@@ -4,11 +4,12 @@ import WithField from '../with-field';
 
 export const SaneString = WithField({
     Control: (ps) => {
-        var { formikField, disabled } = ps;
+        var { formikField, disabled, autoFocus } = ps;
         return (
             <Form.Control
                 type='text'
                 disabled={ disabled }
+                autoFocus={ autoFocus }
                 { ...formikField }
             />
         )

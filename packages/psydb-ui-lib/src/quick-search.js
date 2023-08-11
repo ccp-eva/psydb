@@ -117,13 +117,14 @@ const FieldList = (ps) => {
 
     return (
         <>
-            { displayFieldData.map(it => {
+            { displayFieldData.map((it, ix) => {
                 var Field = QuickSearchFields[it.type || it.systemType];
                 if (!Field) {
                     return null;
                 }
                 return (
                     <Field
+                        autoFocus={ ix === 0 }
                         key={ it.key }
                         label={ it.displayName }
                         dataXPath={ `$.${it.dataPointer}` }

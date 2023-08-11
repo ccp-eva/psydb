@@ -4,12 +4,13 @@ import WithField from '../with-field';
 
 export const Integer = WithField({
     Control: (ps) => {
-        var { formikField, disabled } = ps;
+        var { formikField, disabled, autoFocus } = ps;
         return (
             <Form.Control
                 type='number'
                 step='1'
                 disabled={ disabled }
+                autoFocus={ autoFocus }
                 { ...formikField }
             />
         )
