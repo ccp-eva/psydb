@@ -51,35 +51,47 @@ const SideNav = (ps) => {
                     <WhenAllowed flags={[
                         'canReadStudies', 'canWriteStudies'
                     ]}>
-                        <Link to='/studies'><b>Studien</b></Link>
+                        <Link to='/studies'><b>
+                            { translate('Studies') }
+                        </b></Link>
                     </WhenAllowed>
 
 
-                    <Link to='/calendars'><b>Kalender</b></Link>
+                    <Link to='/calendars'><b>
+                        { translate('Calendars') }
+                    </b></Link>
                     <Nav className='flex-column pl-3'>
                         <WhenAllowed flag='canViewReceptionCalendar'>
-                            <Link to='/calendars/reception'>Rezeption</Link>
+                            <Link to='/calendars/reception'>
+                                { translate('Reception') }
+                            </Link>
                         </WhenAllowed>
 
                         <WhenAllowed
                             labType='inhouse'
                             labFlag='canViewExperimentCalendar'
                         >
-                            <Link to='/calendars/inhouse'>Interne Termine</Link>
+                            <Link to='/calendars/inhouse'>
+                                { translate('Inhouse Appointments') }
+                            </Link>
                         </WhenAllowed>
 
                         <WhenAllowed
                             labType='away-team'
                             labFlag='canViewExperimentCalendar'
                         >
-                            <Link to='/calendars/away-team'>Externe Termine</Link>
+                            <Link to='/calendars/away-team'>
+                                { translate('External Appointments') }
+                            </Link>
                         </WhenAllowed>
 
                         <WhenAllowed
                             labType='online-video-call'
                             labFlag='canViewExperimentCalendar'
                         >
-                            <Link to='/calendars/online-video-call'>Video Termine</Link>
+                            <Link to='/calendars/online-video-call'>
+                                { translate('Video Appointments') }
+                            </Link>
                         </WhenAllowed>
                     </Nav>
 
@@ -89,28 +101,32 @@ const SideNav = (ps) => {
                         'canConfirmSubjectInvitation',
                         'canPostprocessExperiments',
                     ]}>
-                        <Link to='/lab-operation'><b>Studienbetrieb</b></Link>
+                        <Link to='/lab-operation'><b>
+                            { translate('Lab Operation') }
+                        </b></Link>
                         <Nav className='flex-column pl-3'>
 
                             <WhenAllowed labFlag='canWriteReservations'>
-                                <Link to='/lab-operation/reservation'>Reservierung</Link>
+                                <Link to='/lab-operation/reservation'>
+                                    { translate('Reservation') }
+                                </Link>
                             </WhenAllowed>
 
                             <WhenAllowed labFlag='canSelectSubjectsForExperiments'>
                                 <Link to='/lab-operation/subject-selection'>
-                                    Proband:innenauswahl
+                                    { translate('Subject Selection') }
                                 </Link>
                             </WhenAllowed>
 
                             <WhenAllowed labFlag='canConfirmSubjectInvitation'>
                                 <Link to='/lab-operation/invite-confirmation'>
-                                    Terminbestätigung
+                                    { translate('Confirm Appointments') }
                                 </Link>
                             </WhenAllowed>
 
                             <WhenAllowed labFlag='canPostprocessExperiments'>
                                 <Link to='/lab-operation/experiment-postprocessing'>
-                                    Nachbereitung
+                                    { translate('Postprocessing') }
                                 </Link>
                             </WhenAllowed>
                         </Nav>
@@ -121,40 +137,58 @@ const SideNav = (ps) => {
                     <WhenAllowed flags={[
                         'canReadLocations', 'canWriteLocations'
                     ]}>
-                        <Link to='/locations'>Locations</Link>
+                        <Link to='/locations'>
+                            { translate('Locations') }
+                        </Link>
                     </WhenAllowed>
                     <WhenAllowed flags={[
                         'canReadExternalPersons', 'canWriteExternalPersons'
                     ]}>
-                        <Link to='/external-persons'>Externe Personen</Link>
+                        <Link to='/external-persons'>
+                            { translate('External Persons') }
+                        </Link>
                     </WhenAllowed>
                     <WhenAllowed flags={[
                         'canReadExternalOrganizations', 'canWriteExternalOrganizations'
                     ]}>
-                        <Link to='/external-organizations'>Externe Organsationen</Link>
+                        <Link to='/external-organizations'>
+                            { translate('External Organizations') }
+                        </Link>
                     </WhenAllowed>
                     <WhenAllowed flags={[
                         'canReadStudyTopics', 'canWriteStudyTopics'
                     ]}>
-                        <Link to='/study-topics'>Themengebiete</Link>
+                        <Link to='/study-topics'>
+                            { translate('Study Topics') }
+                        </Link>
                     </WhenAllowed>
                     <WhenAllowed flags={[
                         'canReadHelperSets', 'canWriteHelperSets'
                     ]}>
-                        <Link to='/helper-sets'>Hilfstabellen</Link>
+                        <Link to='/helper-sets'>
+                            { translate('Helper Tables') }
+                        </Link>
                     </WhenAllowed>
                     <WhenAllowed flags={[
                         'canReadPersonnel', 'canWritePersonnel'
                     ]}>
-                        <Link to='/personnel'>Mitarbeiter:innen</Link>
+                        <Link to='/personnel'>
+                            { translate('Personnel') }
+                        </Link>
                     </WhenAllowed>
 
                     <div className='border-top mt-2 mb-2' />
 
                     <WhenAllowed isRoot>
-                        <Link to='/research-groups'>Forschungsgruppen</Link>
-                        <Link to='/system-roles'>System-Rollen</Link>
-                        <Link to='/custom-record-types'>Datensatz-Typen</Link>
+                        <Link to='/research-groups'>
+                            { translate('Research Groups') }
+                        </Link>
+                        <Link to='/system-roles'>
+                            { translate('System Roles') }
+                        </Link>
+                        <Link to='/custom-record-types'>
+                            { translate('Record Types') }
+                        </Link>
                         {/*<Link to='/api-keys'>Api-Keys</Link>*/}
                     </WhenAllowed>
                 </div>
