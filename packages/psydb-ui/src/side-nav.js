@@ -1,15 +1,9 @@
 import React from 'react';
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
+import { Nav, LinkContainer } from '@mpieva/psydb-ui-layout';
+import { WhenAllowed } from '@mpieva/psydb-ui-lib';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { createTranslate } from '@mpieva/psydb-ui-translations';
-
-import {
-    Nav,
-    LinkContainer
-} from '@mpieva/psydb-ui-layout';
-
-import {
-    WhenAllowed
-} from '@mpieva/psydb-ui-lib';
 
 import Logo from './main-logo';
 
@@ -25,6 +19,16 @@ const Link = ({
 
 const SideNav = (ps) => {
     var translate = useUITranslation();
+    
+    var permissions = usePermissions();
+    var canViewAnyCalendar = (
+        permissions.hasSomeLabOperationFlags({
+            types: 'any',
+            flags: [ 'canViewExperimentCalendar' ]
+        })
+        || permissions.hasFlag('canViewReceptionCalendar')
+    );
+    
     return (
         <>
             <Logo />
@@ -57,43 +61,47 @@ const SideNav = (ps) => {
                     </WhenAllowed>
 
 
-                    <Link to='/calendars'><b>
-                        { translate('Calendars') }
-                    </b></Link>
-                    <Nav className='flex-column pl-3'>
-                        <WhenAllowed flag='canViewReceptionCalendar'>
-                            <Link to='/calendars/reception'>
-                                { translate('Reception') }
-                            </Link>
-                        </WhenAllowed>
+                    { canViewAnyCalendar && (
+                        <>
+                            <Link to='/calendars'><b>
+                                { translate('Calendars') }
+                            </b></Link>
+                            <Nav className='flex-column pl-3'>
+                                <WhenAllowed flag='canViewReceptionCalendar'>
+                                    <Link to='/calendars/reception'>
+                                        { translate('Reception') }
+                                    </Link>
+                                </WhenAllowed>
 
-                        <WhenAllowed
-                            labType='inhouse'
-                            labFlag='canViewExperimentCalendar'
-                        >
-                            <Link to='/calendars/inhouse'>
-                                { translate('Inhouse Appointments') }
-                            </Link>
-                        </WhenAllowed>
+                                <WhenAllowed
+                                    labType='inhouse'
+                                    labFlag='canViewExperimentCalendar'
+                                >
+                                    <Link to='/calendars/inhouse'>
+                                        { translate('Inhouse Appointments') }
+                                    </Link>
+                                </WhenAllowed>
 
-                        <WhenAllowed
-                            labType='away-team'
-                            labFlag='canViewExperimentCalendar'
-                        >
-                            <Link to='/calendars/away-team'>
-                                { translate('External Appointments') }
-                            </Link>
-                        </WhenAllowed>
+                                <WhenAllowed
+                                    labType='away-team'
+                                    labFlag='canViewExperimentCalendar'
+                                >
+                                    <Link to='/calendars/away-team'>
+                                        { translate('External Appointments') }
+                                    </Link>
+                                </WhenAllowed>
 
-                        <WhenAllowed
-                            labType='online-video-call'
-                            labFlag='canViewExperimentCalendar'
-                        >
-                            <Link to='/calendars/online-video-call'>
-                                { translate('Video Appointments') }
-                            </Link>
-                        </WhenAllowed>
-                    </Nav>
+                                <WhenAllowed
+                                    labType='online-video-call'
+                                    labFlag='canViewExperimentCalendar'
+                                >
+                                    <Link to='/calendars/online-video-call'>
+                                        { translate('Video Appointments') }
+                                    </Link>
+                                </WhenAllowed>
+                            </Nav>
+                        </>
+                    )}
 
                     <WhenAllowed labFlags={[
                         'canWriteReservations',
