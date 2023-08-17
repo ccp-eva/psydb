@@ -197,6 +197,10 @@ var maps = [
         en: 'Week',
         de: 'Woche'
     },
+    {
+        en: 'All',
+        de: 'Alle'
+    }
 ]
 
 export const createTranslate = (lang = 'en') => (template, props) => {

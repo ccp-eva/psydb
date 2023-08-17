@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useReducer } from 'react';
+import enUSLocale from 'date-fns/locale/en-US';
 import deLocale from 'date-fns/locale/de';
 
 import {
@@ -28,8 +29,14 @@ const App = () => {
     var [ self, setSelf ] = useState();
     var [ isInitialized, setIsInitialized ] = useState(false);
 
-    var [ language, setLanguage ] = useState('en');
-    var [ locale, setLocale ] = useState(deLocale);
+    var [ state, dispatch ] = useReducer(i18nReducer, {
+        language: 'en',
+        locale: enUSLocale
+    });
+
+    var { language, locale } = state;
+    var setI18N = (value) => dispatch({ type: 'set-i18n', value });
+    var setLocale = (value) => dispatch({ type: 'set-locale', value });
 
     var onSignedIn = (selfArg) => {
         setIsSignedIn(true);
@@ -56,12 +63,11 @@ const App = () => {
         )
     }, [ isSignedIn ]);
 
-    var locale = deLocale;
     var translate = createTranslate(language);
 
     var sharedBag = {
-        locale: [ locale, setLocale ],
-        language: [ language, setLanguage ],
+        language: [ language, setI18N ],
+        locale,
         translate,
     }
 
@@ -130,5 +136,22 @@ function compose(...funcs) {
   return funcs.reduce((a, b) => (...args) => a(b(...args)))
 }
 
+var i18nReducer = (state, action) => {
+    var { type, value } = action;
+    switch (type) {
+        case 'set-language':
+            return { ...state, language: value };
+        case 'set-date-locale':
+            return { ...state, locale: value };
+        case 'set-i18n':
+            return {
+                ...state,
+                language: value,
+                locale: (value === 'de' ? deLocale : enUSLocale )
+            };
+        default:
+            throw new Error(`unknown action type "${type}"`);
+    }
+}
 
 export default App;

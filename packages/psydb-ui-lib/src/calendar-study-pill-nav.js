@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 import {
     LoadingIndicator,
@@ -14,6 +15,8 @@ export const CalendarStudyPillNav = (ps) => {
         selectedStudyId,
         onSelectStudy,
     } = ps;
+
+    var translate = useUITranslation();
 
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.fetchSelectableStudiesForCalendar({
@@ -34,7 +37,7 @@ export const CalendarStudyPillNav = (ps) => {
                 items={[
                     // FIXME: key cannot be undefined but null
                     // works w/o warnings
-                    { key: null, label: 'Alle' },
+                    { key: null, label: translate('All') },
                     ...records.map(it => ({
                         key: it._id,
                         label: it._recordLabel
