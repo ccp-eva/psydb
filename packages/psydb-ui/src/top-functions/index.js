@@ -35,6 +35,7 @@ const TopFunctions = (ps) => {
         >
             <SwitchResearchGroupModal { ...switchRGModal.passthrough } />
             <ChangePasswordModal { ...changePasswordModal.passthrough } />
+
             <AccountFunctionDropdown { ...({
                 onClickForceResearchGroup: switchRGModal.handleShow,
                 onClickChangePassword: changePasswordModal.handleShow

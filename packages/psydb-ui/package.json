@@ -60,6 +60,7 @@
     "@mpieva/psydb-schema-creators": "~0.1.0-alpha",
     "@mpieva/psydb-api-endpoint-schemas": "~0.1.0-alpha",
     "@mpieva/psydb-ui-request-agents": "~0.1.0-alpha",
+    "@mpieva/psydb-ui-translations": "~0.1.0-alpha",
     "@mpieva/psydb-ui-utils": "~0.1.0-alpha",
     "@mpieva/psydb-ui-contexts": "~0.1.0-alpha",
     "@mpieva/psydb-ui-hooks": "~0.1.0-alpha",

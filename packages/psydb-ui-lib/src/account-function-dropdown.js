@@ -1,4 +1,6 @@
 import React, { useCallback } from 'react';
+import { useUILanguage } from '@mpieva/psydb-ui-contexts';
+
 import {
     LinkContainer,
     Dropdown,
@@ -19,6 +21,7 @@ export const AccountFunctionDropdown = ({
     
     disabled,
 }) => {
+    var [ language, setLanguage ] = useUILanguage();
 
     return (
         <Dropdown>
@@ -50,6 +53,17 @@ export const AccountFunctionDropdown = ({
                     Forschungsgruppe wählen
                 </Dropdown.Item>
                 
+                <Dropdown.Divider />
+
+                <Dropdown.Item
+                    as='button'
+                    onClick={ () => (
+                        setLanguage(language === 'en' ? 'de' : 'en' )
+                    )}
+                >
+                    Sprache: {{ 'en': 'English', 'de': 'Deutsch' }[language]}
+                </Dropdown.Item>
+
                 <Dropdown.Divider />
 
                 <Dropdown.Item

@@ -264,6 +264,11 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/psydb-ui-translations",
+       "projectFolder": "packages/psydb-ui-translations",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-ui-contexts",
        "projectFolder": "packages/psydb-ui-contexts",
        "reviewCategory": "production"

@@ -1,4 +1,6 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { createTranslate } from '@mpieva/psydb-ui-translations';
 
 import {
     Nav,
@@ -22,6 +24,7 @@ const Link = ({
 )
 
 const SideNav = (ps) => {
+    var translate = useUITranslation();
     return (
         <>
             <Logo />
@@ -34,7 +37,9 @@ const SideNav = (ps) => {
                     <WhenAllowed flags={[
                         'canReadSubjects', 'canWriteSubjects'
                     ]}>
-                        <Link to='/subjects'><b>Proband:innen</b></Link>
+                        <Link to='/subjects'><b>
+                            { translate('Subjects') }
+                        </b></Link>
                     </WhenAllowed>
                     
                     {/*<WhenAllowed flags={[
