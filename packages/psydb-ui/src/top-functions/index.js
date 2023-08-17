@@ -1,5 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useModalReducer } from '@mpieva/psydb-ui-hooks';
 import { Icons } from '@mpieva/psydb-ui-layout';
 import { AccountFunctionDropdown } from '@mpieva/psydb-ui-lib';
@@ -14,6 +15,7 @@ const TopFunctions = (ps) => {
         extraClassName
     } = ps;
 
+    var translate = useUITranslation();
     var switchRGModal = useModalReducer();
     var changePasswordModal = useModalReducer();
 
@@ -47,7 +49,7 @@ const TopFunctions = (ps) => {
             >
                 <Icons.DoorClosedFill className='align-middle' />
                 <u className='d-inline-block ml-1 align-middle'>
-                    Abmelden
+                    { translate('Sign Out') }
                 </u>
             </a>
         </div>

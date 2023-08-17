@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { Icons } from '@mpieva/psydb-ui-layout';
 
 import datefns from './date-fns';
@@ -11,6 +12,8 @@ const CalendarNav = (ps) => {
         onPageChange,
         showCalendarWeek = true,
     } = ps;
+
+    var translate = useUITranslation();
 
     var isSameDay = false
     if (datefns.isSameDay(currentPageStart, currentPageEnd)) {
@@ -26,7 +29,7 @@ const CalendarNav = (ps) => {
                 >
                     <Icons.ChevronLeft />
                     <span className='d-inline-block ml-2'>
-                        Vorherige Seite
+                        { translate('Previous Page') }
                     </span>
                 </div>
 
@@ -38,7 +41,7 @@ const CalendarNav = (ps) => {
                                 <>
                                     <b>{ datefns.format(currentPageStart, 'P') }</b>
                                     {' '}
-                                    bis
+                                    { translate('to') }
                                     {' '}
                                     <b>{ datefns.format(currentPageEnd, 'P') }</b>
                                 </>
@@ -50,7 +53,7 @@ const CalendarNav = (ps) => {
                     </div>
                     <div className='text-center'>
                         {showCalendarWeek && (
-                            'KW ' + datefns.format(currentPageStart, 'ww') + ' '
+                            translate('Calendar Week') + ' ' + datefns.format(currentPageStart, 'ww') + ' '
                         )}
                     </div>
                 </div>
@@ -61,7 +64,7 @@ const CalendarNav = (ps) => {
                     onClick={ () => onPageChange({ relativeChange: 'next' }) }
                 >
                     <span className='d-inline-block mr-2'>
-                        Nächste Seite
+                        { translate('Next Page') }
                     </span>
                     <Icons.ChevronRight />
                 </div>

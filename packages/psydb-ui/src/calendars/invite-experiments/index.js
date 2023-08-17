@@ -1,4 +1,5 @@
-import React, { useMemo, useEffect, useReducer } from 'react';
+import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -21,8 +22,8 @@ import Calendar from './calendar';
 
 const getTitleByType = (inviteType) => {
     var title = {
-        'inhouse': 'Interne-Termine',
-        'online-video-call': 'Video-Termine'
+        'inhouse': 'Inhouse Appointments',
+        'online-video-call': 'Video Appointments'
     }[inviteType];
 
     title = title || inviteType;
@@ -30,18 +31,21 @@ const getTitleByType = (inviteType) => {
     return title;
 }
 
-const InviteExperimentsRouting = ({
-    subjectRecordTypes,
-    inviteType
-}) => {
+const InviteExperimentsRouting = (ps) => {
+    var {
+        subjectRecordTypes,
+        inviteType
+    } = ps;
     var { path, url } = useRouteMatch();
+    
+    var translate = useUITranslation();
     var permissions = usePermissions();
 
     return (
         <>
             <LinkContainer to={ url }>
                 <h5 className='mt-0 mb-3 text-muted' role='button'>
-                    { getTitleByType(inviteType) }
+                    { translate(getTitleByType(inviteType)) }
                 </h5>
             </LinkContainer>
                 

@@ -1,6 +1,7 @@
 import React  from 'react';
 import omit from '@cdxoo/omit';
 import { useParams } from 'react-router-dom';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
 import {
     usePermissions,
@@ -52,6 +53,7 @@ export const withCalendarVariantContainer = (options = {}) => {
 
         var [ query, updateQuery ] = useURLSearchParams();
         var permissions = usePermissions();
+        var translate = useUITranslation();
         //var showPast = useToggleReducer(false, { as: 'props' });
         // FIXME: move to togglebutton and add property withURLSearchParams?
         // FIXME: can we add conversions to withURLSearchParams hook?
@@ -79,7 +81,7 @@ export const withCalendarVariantContainer = (options = {}) => {
                     </div>
                 )}
                 { showVariantSelect && (
-                    <PillNavContainer label='Ansicht'>
+                    <PillNavContainer label={ translate('View') }>
                         <CalendarRangePillNav { ...({
                             selectedVariant: calendarVariant,
                             onSelectVariant: (next) => updateQuery({
@@ -90,7 +92,7 @@ export const withCalendarVariantContainer = (options = {}) => {
                 )}
 
                 { showStudySelect && (
-                    <PillNavContainer label='Studien'>
+                    <PillNavContainer label={ translate('Studies') }>
                         <CalendarStudyPillNav { ...({
                             experimentTypes,
                             researchGroupId,

@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { usePermissions } from '@mpieva/psydb-ui-hooks';
+import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { usePermissions, useFetch } from '@mpieva/psydb-ui-hooks';
 
 import {
     Route,
@@ -13,7 +14,8 @@ import {
 import {
     BigNav,
     LinkContainer,
-    PermissionDenied
+    PermissionDenied,
+    LoadingIndicator,
 } from '@mpieva/psydb-ui-layout';
 
 import agent from '@mpieva/psydb-ui-request-agents';
@@ -26,7 +28,8 @@ import AwayTeamExperimentsRouting from './away-team-experiments';
 
 const Calendars = () => {
     var { path, url } = useRouteMatch();
-    
+   
+    var translate = useUITranslation();
     var permissions = usePermissions();
     
     var canViewReception = permissions.hasFlag(
@@ -45,7 +48,7 @@ const Calendars = () => {
         return (
             <>
                 <h1 className='mb-0 border-bottom' role='button'>
-                    Kalender
+                    { translate('Calendars') }
                 </h1>
                 <div className='mt-3'>
                     <PermissionDenied />
@@ -64,23 +67,15 @@ const Calendars = () => {
         'online-video-call', 'canViewExperimentCalendar',
     );
 
-    var [ isInitialized, setIsInitialized ] = useState(false);
-    var [ metadata, setMetadata ] = useState();
+    var [ didFetch, fetched ] = useFetch((agent) => (
+        agent.readCustomRecordTypeMetadata()
+    ), [])
 
-    useEffect(() => {
-        agent.readCustomRecordTypeMetadata().then(
-            (response) => {
-                setMetadata(response.data.data);
-                setIsInitialized(true)
-            }
-        )
-    }, [])
-
-    if (!isInitialized) {
-        return (
-            <div>Loading...</div>
-        );
+    if (!didFetch) {
+        return <LoadingIndicator size='lg' />
     }
+
+    var metadata = fetched.data;
 
     var studyTypes = (
         metadata.customRecordTypes.filter(it => (
@@ -103,19 +98,19 @@ const Calendars = () => {
 
     var navItems = [
         (canViewReception && { 
-            label: 'Rezeption',
+            label: translate('Reception'),
             linkUrl: `${url}/reception`,
         }),
         (canViewInhouse && { 
-            label: 'Interne Termine',
+            label: translate('Inhouse Appointments'),
             linkUrl: `${url}/inhouse`,
         }),
         (canViewAwayTeam && {
-            label: 'Externe Termine',
+            label: translate('External Appointments'),
             linkUrl: `${url}/away-team`,
         }),
         (canViewVideo && {
-            label: 'Video Termine',
+            label: translate('Video Appointments'),
             linkUrl: `${url}/online-video-call`,
         }),
     ].filter(it => !!it)
@@ -125,7 +120,7 @@ const Calendars = () => {
             <header>
                 <LinkContainer to={ url }>
                     <h1 className='mb-0 border-bottom' role='button'>
-                        Kalender
+                        { translate('Calendars') }
                     </h1>
                 </LinkContainer>
             </header>

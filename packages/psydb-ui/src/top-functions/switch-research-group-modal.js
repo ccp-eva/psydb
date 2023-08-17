@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { useHistory } from 'react-router';
 import { Permissions } from '@mpieva/psydb-common-lib';
-import { SelfContext } from '@mpieva/psydb-ui-contexts';
+import { useUITranslation, SelfContext } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useSend } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -11,10 +11,11 @@ import {
 } from '@mpieva/psydb-ui-layout';
 
 export const SwitchResearchGroupModal = WithDefaultModal({
-    title: 'Forschungsgruppe wechseln',
+    title: 'Select Research Group',
     Body: (ps) => {
         var { onHide } = ps;
         var history = useHistory();
+        var translate = useUITranslation();
         var { setSelf, ...self } = useContext(SelfContext);
 
         var [ didFetch, fetched ] = useFetch((agent) => (
@@ -63,7 +64,7 @@ export const SwitchResearchGroupModal = WithDefaultModal({
                     isActive={ !forcedResearchGroupId }
                     onClick={ () => send.exec(null) }
                 >
-                    Alle Verfügbaren
+                    { translate('All Available') }
                 </BigNavItem>
                 { fetched.data.records.map(it => (
                     <BigNavItem

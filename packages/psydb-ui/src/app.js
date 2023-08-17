@@ -28,7 +28,7 @@ const App = () => {
     var [ self, setSelf ] = useState();
     var [ isInitialized, setIsInitialized ] = useState(false);
 
-    var [ language, setLanguage ] = useState('de');
+    var [ language, setLanguage ] = useState('en');
     var [ locale, setLocale ] = useState(deLocale);
 
     var onSignedIn = (selfArg) => {

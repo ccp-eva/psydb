@@ -1,6 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator, Alert } from '@mpieva/psydb-ui-layout';
 
@@ -79,6 +80,8 @@ const ResearchGroup = (ps) => {
         experiments
     } = ps;
 
+    var translate = useUITranslation();
+
     var className = classnames([
         'flex-grow-1',
         index > 0 && 'ml-3'
@@ -91,7 +94,7 @@ const ResearchGroup = (ps) => {
             </header>
             { experiments.length < 1 && (
                 <Alert variant='info'>
-                    <i>Keine Termine</i>
+                    <i>{ translate('No Appointments') }</i>
                 </Alert>
             )}
             { experiments.map((it, index) => (

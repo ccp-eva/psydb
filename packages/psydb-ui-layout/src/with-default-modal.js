@@ -1,5 +1,6 @@
 import React from 'react';
 import { Modal } from 'react-bootstrap';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
 const WithDefaultModal = (options) => (ps) => {
     var {
@@ -23,8 +24,14 @@ const WithDefaultModal = (options) => (ps) => {
         propsTitle,
     } = ps;
 
+    var translate = useUITranslation();
+
     var { title: modalPayloadTitle } = modalPayloadData || {};
     var title = modalPayloadTitle || propsTitle || optionsTitle;
+
+    if (title) {
+        title = translate(title);
+    }
 
     if (forceShow) {
         show = true;

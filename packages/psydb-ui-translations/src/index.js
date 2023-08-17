@@ -27,7 +27,7 @@ var maps = [
     },
     {
         en: 'Video Appointments',
-        de: 'Video Termine',
+        de: 'Video-Termine',
     },
     {
         en: 'Lab Operation',
@@ -84,6 +84,118 @@ var maps = [
     {
         en: 'Record Types',
         de: 'Datensatz-Typen'
+    },
+
+    {
+        en: 'Sign Out',
+        de: 'Abmelden'
+    },
+
+    {
+        en: 'Functions',
+        de: 'Funktionen'
+    },
+    {
+        en: 'Select Research Group',
+        de: 'Forschungsgruppe wählen'
+    },
+    {
+        en: 'Language: ${lang}',
+        de: 'Sprache: ${lang}'
+    },
+    {
+        en: 'Change Password',
+        de: 'Passwort ändern'
+    },
+    
+    {
+        en: 'All Available',
+        de: 'Alle Verfügbaren'
+    },
+    {
+        en: 'New password and repeated are not the same!',
+        de: 'Neues Passwort und Wiederholung sind nicht identisch!'
+    },
+    {
+        en: 'New password is too weak!',
+        de: 'Neues Passwort is zu schwach!'
+    },
+    {
+        en: 'Current password is invalid!',
+        de: 'Aktuelles Passwort ist ungültig!'
+    },
+    
+    {
+        en: 'Current Password',
+        de: 'Aktuelles Passwort'
+    },
+    {
+        en: 'New Password',
+        de: 'Neues Passwort'
+    },
+    {
+        en: 'Repeat New Password',
+        de: 'Wiederholen'
+    },
+    {
+        en: 'Error',
+        de: 'Fehler'
+    },
+    {
+        en: 'Save',
+        de: 'Speichern'
+    },
+    {
+        en: 'Password changed!',
+        de: 'Passwort geändert!'
+    },
+    {
+        en: 'Close',
+        de: 'Schliessen'
+    },
+    {
+        en: 'No Appointments',
+        de: 'Keine Termine'
+    },
+    {
+        en: 'Calendar Week',
+        de: 'KW'
+    },
+    {
+        en: 'Previous Page',
+        de: 'Vorherige Seite'
+    },
+    {
+        en: 'Next Page',
+        de: 'Nächste Seite'
+    },
+    {
+        en: 'No research groups found',
+        de: 'Keine Forschungsgruppen gefunden'
+    },
+    {
+        en: 'Research Group',
+        de: 'Forschungsgruppe'
+    },
+    {
+        en: 'to',
+        de: 'bis'
+    },
+    {
+        en: 'View',
+        de: 'Ansicht'
+    },
+    {
+        en: 'Day',
+        de: 'tag'
+    },
+    {
+        en: '3-Day',
+        de: '3-Tage'
+    },
+    {
+        en: 'Week',
+        de: 'Woche'
     },
 ]
 

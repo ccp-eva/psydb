@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';
-import { SelfContext } from '@mpieva/psydb-ui-contexts';
+import { useUITranslation, SelfContext } from '@mpieva/psydb-ui-contexts';
 import { useSend } from '@mpieva/psydb-ui-hooks';
 import { WithDefaultModal, Button, Alert } from '@mpieva/psydb-ui-layout';
 import { DefaultForm, Fields } from '@mpieva/psydb-ui-lib';
 
 export const ChangePasswordModal = WithDefaultModal({
-    title: 'Passwort ändern',
+    title: 'Change Password',
     size: 'lg',
     Body: (ps) => {
         var { onHide } = ps;
         var [ wasSuccessful, setSuccessful ] = useState(false);
         var [ error, setError ] = useState();
+        
+        var translate = useUITranslation();
 
         var send = useSend((payload) => ({
             type: 'self/set-password',
@@ -29,7 +31,7 @@ export const ChangePasswordModal = WithDefaultModal({
             } = formData;
 
             if (newPassword !== newPasswordRepeat) {
-                setError('Neues Passwort und wiederholung sind nicht identisch');
+                setError(translate('New password and repeated are not the same!'));
                 return; // FIXME: withAjvError does not handle that properly
             }
 
@@ -46,11 +48,11 @@ export const ChangePasswordModal = WithDefaultModal({
                             it.dataPath === '.payload.newPassword'
                         ))
                         if (newPasswordError) {
-                            setError('Neues Passwort ist zu schwach.');
+                            setError(translate('New password is too weak!'));
                         }
                     }
                     else if (apiStatus === 'PasswordMismatch') {
-                        setError('Aktuelles Passwort ist ungültig.');
+                        setError(translate('Current password is invalid!'));
                     }
                     else {
                         throw err;
@@ -71,6 +73,8 @@ export const ChangePasswordModal = WithDefaultModal({
 const Form = (ps) => {
     var { error, onSubmit } = ps;
 
+    var translate = useUITranslation();
+
     var initialValues = {
         currentPassword: '',
         newPassword: '',
@@ -80,7 +84,7 @@ const Form = (ps) => {
         <div>
             { error && (
                 <Alert variant='danger'>
-                    <b>Fehler:</b> { error }
+                    <b>{ translate('Error') }:</b> { error }
                 </Alert>
             )}
             <DefaultForm
@@ -90,22 +94,24 @@ const Form = (ps) => {
                 {() => (
                     <>
                         <Fields.Password
-                            label='Aktuelles Passwort'
+                            label={ translate('Current Password') }
                             dataXPath='$.currentPassword'
                             required
                         />
                         <hr />
                         <Fields.Password
-                            label='Neues Passwort'
+                            label={ translate('New Password') }
                             dataXPath='$.newPassword'
                             required
                         />
                         <Fields.Password
-                            label='Wiederholen'
+                            label={ translate('Repeat New Password') }
                             dataXPath='$.newPasswordRepeat'
                             required
                         />
-                        <Button type='submit'>Speichern</Button>
+                        <Button type='submit'>
+                            { translate('Save') }
+                        </Button>
                     </>
                 )}
             </DefaultForm>
@@ -115,12 +121,14 @@ const Form = (ps) => {
 
 const SuccessIndicator = (ps) => {
     var { onHide } = ps;
+    var translate = useUITranslation();
+
     return (
         <>
             <Alert variant='success'>
-                Passwort geändert!
+                { translate('Password changed!') }
             </Alert>
-            <Button onClick={ onHide }>Schliessen</Button>
+            <Button onClick={ onHide }>{ translate('Close') }</Button>
         </>
     )
 }

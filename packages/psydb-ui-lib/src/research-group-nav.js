@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch, usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -13,11 +14,13 @@ import {
 } from '@mpieva/psydb-ui-layout';
 
 const ResearchGroupNav = (ps) => {
-    var { url } = useRouteMatch();
     var {
         autoRedirect,
         filterIds
     } = ps;
+
+    var { url } = useRouteMatch();
+    var translate = useUITranslation();
 
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.getAxios().get('/api/self/research-groups')
@@ -37,7 +40,7 @@ const ResearchGroupNav = (ps) => {
     if (records.length === 0) {
         return (
             <Alert variant='info'>
-                <i>Keine Forschungsgruppen gefunden</i>
+                <i>{ translate('No research groups found') }</i>
             </Alert>
         )
     }
@@ -49,7 +52,7 @@ const ResearchGroupNav = (ps) => {
     return (
         <BigNav items={
             fetched.data.records.map(it => ({
-                label: `Forschungsgruppe ${it._recordLabel}`,
+                label: `${translate('Research Group')} ${ it._recordLabel}`,
                 linkTo: it._id
             }))
         } />

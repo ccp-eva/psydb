@@ -32,7 +32,8 @@
     "classnames": "~2.3.1",
     "@mpieva/psydb-core-utils": "~0.1.0-alpha",
     "@mpieva/psydb-schema-enums": "~0.1.0-alpha",
-    "@mpieva/psydb-ui-utils": "~0.1.0-alpha"
+    "@mpieva/psydb-ui-utils": "~0.1.0-alpha",
+    "@mpieva/psydb-ui-contexts": "~0.1.0-alpha"
   },
   "config": {
     "mongodbMemoryServer": {

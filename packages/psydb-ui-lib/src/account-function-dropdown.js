@@ -1,5 +1,9 @@
-import React, { useCallback } from 'react';
-import { useUILanguage } from '@mpieva/psydb-ui-contexts';
+import React from 'react';
+
+import {
+    useUITranslation,
+    useUILanguage
+} from '@mpieva/psydb-ui-contexts';
 
 import {
     LinkContainer,
@@ -22,6 +26,7 @@ export const AccountFunctionDropdown = ({
     disabled,
 }) => {
     var [ language, setLanguage ] = useUILanguage();
+    var translate = useUITranslation();
 
     return (
         <Dropdown>
@@ -41,7 +46,7 @@ export const AccountFunctionDropdown = ({
                     className='d-inline-block ml-1 align-middle text-primary'
                     style={{ fontSize: '1rem' }}
                 >
-                    Funktionen
+                    { translate('Functions') }
                 </u>
             </Dropdown.Toggle>
             <Dropdown.Menu align='right'>
@@ -50,7 +55,7 @@ export const AccountFunctionDropdown = ({
                     disabled={ !onClickForceResearchGroup }
                     onClick={ onClickForceResearchGroup }
                 >
-                    Forschungsgruppe wählen
+                    { translate('Select Research Group') }
                 </Dropdown.Item>
                 
                 <Dropdown.Divider />
@@ -61,7 +66,12 @@ export const AccountFunctionDropdown = ({
                         setLanguage(language === 'en' ? 'de' : 'en' )
                     )}
                 >
-                    Sprache: {{ 'en': 'English', 'de': 'Deutsch' }[language]}
+                    { translate(
+                        'Language: ${lang}',
+                        { lang: (
+                            { 'en': 'English', 'de': 'Deutsch' }[language]
+                        )}
+                    ) }
                 </Dropdown.Item>
 
                 <Dropdown.Divider />
@@ -71,7 +81,7 @@ export const AccountFunctionDropdown = ({
                     disabled={ !onClickChangePassword }
                     onClick={ onClickChangePassword }
                 >
-                    Passwort ändern
+                    { translate('Change Password') }
                 </Dropdown.Item>
             </Dropdown.Menu>
         </Dropdown>
