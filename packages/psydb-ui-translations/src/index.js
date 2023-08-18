@@ -286,17 +286,32 @@ var maps = [
         de: 'Bestätigen'
     },
     {
-        en: 'Voice-Mail',
+        en: 'Mailbox',
         de: 'Anrufbeantworter'
     },
     {
-        en: 'Could Not Contact',
+        en: 'Failed to Contact',
         de: 'Nicht Erreicht'
+    },
+    {
+        internal: 'confirmed_icon',
+        en: 'C',
+        de: 'B'
+    },
+    {
+        internal: 'mailbox_icon',
+        en: 'MB',
+        de: 'AB'
+    },
+    {
+        internal: 'contact-failed_icon',
+        en: 'F',
+        de: 'NE'
     },
 ]
 
 export const createTranslate = (lang = 'en') => (template, props) => {
-    var map = maps.find(it => it.en === template);
+    var map = maps.find(it => it.internal === template || it.en === template);
 
     var translatedTemplate = map && map[lang];
     if (translatedTemplate) {

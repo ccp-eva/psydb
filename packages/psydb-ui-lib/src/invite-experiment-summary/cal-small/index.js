@@ -1,16 +1,22 @@
 import React from 'react';
 
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useModalReducer } from '@mpieva/psydb-ui-hooks';
-import { bwTextColorForBackground } from '@mpieva/psydb-ui-utils';
-import { LinkContainer } from '@mpieva/psydb-ui-layout';
 
-import datefns from '../../date-fns';
 import ExperimentDropdown from '../../experiment-dropdown';
 
 import {
     MoveExperimentModal,
     ChangeTeamModal,
 } from '../../modals';
+
+import {
+    ColorBox,
+    CalItemInterval,
+    CalItemPair,
+    SubjectListContainer,
+    PostprocessingStatus
+} from '../shared';
 
 const ExperimentSummarySmall = (ps) => {
     var {
@@ -25,11 +31,13 @@ const ExperimentSummarySmall = (ps) => {
         showPast,
         onSuccessfulUpdate,
     } = ps;
+
+    var translate = useUITranslation();
+
+    var moveExperimentModal = useModalReducer();
+    var changeTeamModal = useModalReducer();
+
     var { type: inviteType } = experimentRecord;
-
-    var moveExperimentModal = useModalReducer({ show: false });
-    var changeTeamModal = useModalReducer({ show: false });
-
     var { state: {
         studyId,
         locationId,
@@ -55,15 +63,13 @@ const ExperimentSummarySmall = (ps) => {
         return null;
     }
 
-    start = new Date(start);
-    end = new Date(new Date(end).getTime() + 1); // FIXME: 1ms offset
+    var _related = experimentRelated.relatedRecordLabels;
 
     return (
-        <div className='pl-2 pr-2 pb-1 pt-1 mb-2' style={{
-            background: teamRecord.state.color,
-            color: bwTextColorForBackground(teamRecord.state.color),
-        }}>
-            
+        <ColorBox
+            className='pl-2 pr-2 pb-1 pt-1 mb-2'
+            background={ teamRecord.state.color }
+        >
             <MoveExperimentModal { ...({
                 show: moveExperimentModal.show,
                 onHide: moveExperimentModal.handleHide,
@@ -90,45 +96,28 @@ const ExperimentSummarySmall = (ps) => {
             }) } />
 
 
-            <div>
-                <b>
-                    { datefns.format(start, 'p') }
-                    {' - '}
-                    { datefns.format(end, 'p') }
-                </b>
-            </div>
+            <CalItemInterval start={ start } end={ end } />
             
-            { isPlaceholder && (
-                <div>
-                    <small>Platzhalter</small>
-                </div>
-            )}
-            { !isPlaceholder && !isPostprocessed && hasProcessedSubjects && (
-                <div>
-                    <small>in Nachbereitung</small>
-                </div>
-            )}
-            { !isPlaceholder && !isPostprocessed && !hasProcessedSubjects && isInPast && (
-                <div>
-                    <small>offene Nachbereitung</small>
-                </div>
-            )}
-            { isPostprocessed && (
-                <div>
-                    <small>Abgeschlossen</small>
-                </div>
+            { isPlaceholder ? (
+                <small className='d-block'>
+                    { translate('Placeholder') }
+                </small>
+            ) : (
+                <PostprocessingStatus
+                    shouldPostprocess={ isInPast }
+                    isPostprocessed={ isPostprocessed }
+                    hasProcessedSubjects={ hasProcessedSubjects }
+                />
             )}
 
-            <div className='d-flex text-small mt-2'>
-                <b className='flex-shrink-0' style={{ width: '70px' }}>Raum</b>
-                {
-                    experimentRelated.relatedRecordLabels.location[locationId]._recordLabel
-                }
-            </div>
-            <div className=''>
-                <small><b>Proband:innen:</b></small>
-            </div>
-            <ul className='m-0' style={{ paddingLeft: '20px', fontSize: '80%' }}>
+            <CalItemPair
+                label={ translate('Room') }
+                extraClassName='mt-2'
+            >
+                { _related.location[locationId]._recordLabel }
+            </CalItemPair>
+
+            <SubjectListContainer label={ translate('Subjects') }>
                 { 
                     subjectData
                     .filter(it => (
@@ -152,17 +141,22 @@ const ExperimentSummarySmall = (ps) => {
                         }) } />
                     ))
                 }
-            </ul>
-            <div className='d-flex text-small mt-3'>
-                <b className='flex-shrink-0' style={{ width: '70px' }}>Team</b>
+            </SubjectListContainer>
+            
+            <CalItemPair
+                label={ translate('Team') }
+                extraClassName='mt-3'
+            >
                 { teamRecord.state.name }
-            </div>
-            <div className='d-flex text-small'>
-                <b className='flex-shrink-0' style={{ width: '70px' }}>Studie</b>
-                {
-                    experimentRelated.relatedRecordLabels.study[studyId]._recordLabel
-                }
-            </div>
+            </CalItemPair>
+            
+            <CalItemPair
+                label={ translate('Study') }
+                extraClassName=''
+            >
+                { _related.study[studyId]._recordLabel }
+            </CalItemPair>
+
             <div className='mt-1 d-flex justify-content-end'>
                 <ExperimentDropdown { ...({
                     experimentType: inviteType,
@@ -172,7 +166,7 @@ const ExperimentSummarySmall = (ps) => {
                     onClickChangeTeam: changeTeamModal.handleShow
                 })} />
             </div>
-        </div>
+        </ColorBox>
     )
 }
 

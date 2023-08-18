@@ -1,16 +1,9 @@
 import React from 'react';
 import enums from '@mpieva/psydb-schema-enums';
 
-import { format as formatDateInterval } from '@mpieva/psydb-date-interval-fns';
-import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
-import { useModalReducer, usePermissions } from '@mpieva/psydb-ui-hooks';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useModalReducer, useSend } from '@mpieva/psydb-ui-hooks';
 
-import { bwTextColorForBackground } from '@mpieva/psydb-ui-utils';
-import { LinkContainer } from '@mpieva/psydb-ui-layout';
-
-import agent from '@mpieva/psydb-ui-request-agents';
-
-import datefns from '../../date-fns';
 import applyValueToDisplayFields from '../../apply-value-to-display-fields';
 import ExperimentDropdown from '../../experiment-dropdown';
 import ExperimentSubjectDropdown from '../../experiment-subject-dropdown';
@@ -24,6 +17,14 @@ import {
     RemoveSubjectModal,
     PerSubjectCommentModal,
 } from '../../modals';
+
+import {
+    ColorBox,
+    CalItemInterval,
+    CalItemPair,
+    SubjectListContainer,
+    PostprocessingStatus
+} from '../shared';
 
 const ExperimentSummaryMedium = (ps) => {
     var {
@@ -39,10 +40,7 @@ const ExperimentSummaryMedium = (ps) => {
         onSuccessfulUpdate,
     } = ps;
 
-    var { type: inviteType } = experimentRecord;
     var translate = useUITranslation();
-    var locale = useUILocale();
-    var permissions = usePermissions();
 
     var moveExperimentModal = useModalReducer({ show: false });
     var changeTeamModal = useModalReducer({ show: false });
@@ -53,21 +51,18 @@ const ExperimentSummaryMedium = (ps) => {
     var followUpSubjectModal = useModalReducer({ show: false });
     var removeSubjectModal = useModalReducer({ show: false });
 
-    var changeStatusThunk = (status) => ({ subjectId }) => {
-        var message = {
-            type: 'experiment/change-invitation-status',
-            payload: {
-                experimentId: experimentData.record._id,
-                subjectId: subjectId,
-                invitationStatus: status
-            }
+    var changeStatus = useSend(({ subjectId, status }) => ({
+        type: 'experiment/change-invitation-status',
+        payload: {
+            experimentId: experimentData.record._id,
+            subjectId: subjectId,
+            invitationStatus: status
         }
+    }), { onSuccessfulUpdate });
 
-        agent.send({ message })
-        .then(response => {
-            onSuccessfulUpdate && onSuccessfulUpdate({ response });
-        })
-    };
+    var changeStatusThunk = (status) => ({ subjectId }) => (
+        changeStatus.exec({ subjectId, status })
+    );
     
     var onClickConfirm = changeStatusThunk('confirmed');
     var onClickMailbox = changeStatusThunk('mailbox');
@@ -78,6 +73,7 @@ const ExperimentSummaryMedium = (ps) => {
         ...experimentRelated,
     };
 
+    var { type: inviteType } = experimentRecord;
     var { state: {
         studyId,
         locationId,
@@ -102,19 +98,13 @@ const ExperimentSummaryMedium = (ps) => {
         return null;
     }
 
-    start = new Date(start);
-    end = new Date(new Date(end).getTime() + 1); // FIXME: 1ms offset
-
-    var { startTime, endTime } = formatDateInterval(
-        { start, end },
-        { locale }
-    );
+    var _related = experimentRelated.relatedRecordLabels;
 
     return (
-        <div className='pl-2 pr-2 pb-1 pt-1 mb-2' style={{
-            background: teamRecord.state.color,
-            color: bwTextColorForBackground(teamRecord.state.color),
-        }}>
+        <ColorBox
+            className='pl-2 pr-2 pb-1 pt-1 mb-2'
+            background={ teamRecord.state.color }
+        >
 
             <MoveExperimentModal { ...({
                 show: moveExperimentModal.show,
@@ -201,13 +191,7 @@ const ExperimentSummaryMedium = (ps) => {
             
             <div className='d-flex'>
                 <div className='flex-grow'>
-                    <div>
-                        <b>
-                            { startTime }
-                            {' - '}
-                            { endTime }
-                        </b>
-                    </div>
+                    <CalItemInterval start={ start } end={ end } />
                 </div>
                 <div
                     style={{ width: '35px' }}
@@ -224,44 +208,26 @@ const ExperimentSummaryMedium = (ps) => {
                 </div>
             </div>
 
-            { isPlaceholder && (
-                <div>
-                    <small>{ translate('Placeholder') }</small>
-                </div>
-            )}
-            { !isPlaceholder && !isPostprocessed && hasProcessedSubjects && (
-                <div>
-                    <small>{ translate('In Postprocessing') }</small>
-                </div>
-            )}
-            { !isPlaceholder && !isPostprocessed && !hasProcessedSubjects && isInPast && (
-                <div>
-                    <small>{ translate('Open Postprocessing') }</small>
-                </div>
-            )}
-            { isPostprocessed && (
-                <div>
-                    <small>{ translate('Completed') }</small>
-                </div>
+            { isPlaceholder ? (
+                <small className='d-block'>
+                    { translate('Placeholder') }
+                </small>
+            ) : (
+                <PostprocessingStatus
+                    shouldPostprocess={ isInPast }
+                    isPostprocessed={ isPostprocessed }
+                    hasProcessedSubjects={ hasProcessedSubjects }
+                />
             )}
 
-            <div className='d-flex text-small mt-2'>
-                <b className='flex-shrink-0' style={{ width: '70px' }}>
-                    { translate('Room') }
-                </b>
-                {
-                    experimentRelated.relatedRecordLabels.location[locationId]._recordLabel
-                }
-            </div>
-            <div className=''>
-                <small><b>
-                    { translate('Subjects') }
-                </b></small>
-            </div>
-            <ul 
-                className='m-0'
-                style={{ paddingLeft: '20px', fontSize: '80%' }}
+            <CalItemPair
+                label={ translate('Room') }
+                extraClassName='mt-2'
             >
+                { _related.location[locationId]._recordLabel }
+            </CalItemPair>
+            
+            <SubjectListContainer label={ translate('Subjects') }>
                 { 
                     subjectData
                     .filter(it => (
@@ -295,23 +261,23 @@ const ExperimentSummaryMedium = (ps) => {
                         }) } />
                     ))
                 }
-            </ul>
-            <div className='d-flex text-small mt-3'>
-                <b className='flex-shrink-0' style={{ width: '70px' }}>
-                    { translate('Team') }
-                </b>
-                { teamRecord.state.name }
-            </div>
-            <div className='d-flex text-small'>
-                <b className='flex-shrink-0' style={{ width: '70px' }}>
-                    { translate('Study') }
-                </b>
-                {
-                    experimentRelated.relatedRecordLabels.study[studyId]._recordLabel
-                }
-            </div>
+            </SubjectListContainer>
 
-        </div>
+            <CalItemPair
+                label={ translate('Team') }
+                extraClassName='mt-3'
+            >
+                { teamRecord.state.name }
+            </CalItemPair>
+            
+            <CalItemPair
+                label={ translate('Study') }
+                extraClassName=''
+            >
+                { _related.study[studyId]._recordLabel }
+            </CalItemPair>
+
+        </ColorBox>
     )
 }
 
@@ -334,6 +300,8 @@ const SubjectItem = ({
     onClickMailbox,
     onClickContactFailed,
 }) => {
+    var translate = useUITranslation();
+
     var {
         subjectId,
         invitationStatus,
@@ -371,7 +339,7 @@ const SubjectItem = ({
                     { comment && (
                         <div className='d-flex'>
                             <span style={{ width: '90px' }}>
-                                Kommentar
+                                { translate('Comment') }
                             </span>
                             <i className='flex-grow ml-3'>{ comment }</i>
                         </div>
@@ -400,7 +368,7 @@ const SubjectItem = ({
                             className='pl-2 pr-2'
                             style={{ fontSize: '120%', border: '1px solid' }}
                         >
-                            { invitationStatusLabels[invitationStatus]}
+                            { translate(invitationStatusLabels[invitationStatus] )}
                         </b>
                     )}
                 </div>
@@ -410,10 +378,9 @@ const SubjectItem = ({
 }
 
 const invitationStatusLabels = {
-    'scheduled': '',
-    'confirmed': 'B',
-    'mailbox': 'AB',
-    'contact-failed': 'NE',
+    'confirmed': 'confirmed_icon',
+    'mailbox': 'mailbox_icon',
+    'contact-failed': 'contact-failed_icon',
 }
 
 export default ExperimentSummaryMedium;

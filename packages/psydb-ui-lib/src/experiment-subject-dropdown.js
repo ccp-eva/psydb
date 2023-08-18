@@ -214,7 +214,7 @@ var ExperimentSubjectDropdown = (ps) => {
                             disabled={ !canConfirm || !onClickMailbox }
                             onClick={ wrappedOnClickMailbox }
                         >
-                            { translate('Voice-Mail') }
+                            { translate('Mailbox') }
                         </Dropdown.Item>
 
                         <Dropdown.Item
@@ -222,7 +222,7 @@ var ExperimentSubjectDropdown = (ps) => {
                             disabled={ !canConfirm || !onClickContactFailed }
                             onClick={ wrappedOnClickContactFailed }
                         >
-                            { translate('Could Not Contact') }
+                            { translate('Failed to Contact') }
                         </Dropdown.Item>
                     </>
                 )}
