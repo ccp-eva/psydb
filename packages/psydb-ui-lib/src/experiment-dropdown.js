@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -46,6 +47,7 @@ var ExperimentDropdown = (ps) => {
         label
     } = ps;
 
+    var translate = useUITranslation();
     var permissions = usePermissions();
 
     
@@ -92,7 +94,7 @@ var ExperimentDropdown = (ps) => {
                     : 'dropdown-toggle-no-caret'
                 }
                 disabled={ disabled }
-                title='Termin Funktionen'
+                title={ translate('Appointment Functions') }
             >
                 { 
                     label 
@@ -113,7 +115,7 @@ var ExperimentDropdown = (ps) => {
             <Dropdown.Menu>
                 <LinkContainer to={ detailsLink }>
                     <Dropdown.Item disabled={ !detailsLink } >
-                        Termin Details
+                        { translate('Appointment Details') }
                     </Dropdown.Item>
                 </LinkContainer>
 
@@ -125,7 +127,7 @@ var ExperimentDropdown = (ps) => {
                         disabled={ !canChangeOpsTeam || !onClickChangeTeam }
                         onClick={ onClickChangeTeam }
                     >
-                        Team ändern
+                        { translate('Change Team') }
                     </Dropdown.Item>
                 )}
                 { enableChangeLocation && (
@@ -134,7 +136,7 @@ var ExperimentDropdown = (ps) => {
                         disabled={ !canChangeLocation || !onClickChangeLocation }
                         onClick={ onClickChangeLocation }
                     >
-                        Raum ändern
+                        { translate('Change Room') }
                     </Dropdown.Item>
                 )}
 
@@ -144,7 +146,7 @@ var ExperimentDropdown = (ps) => {
                         disabled={ !canCreateFollowUp || !onClickFollowUp }
                         onClick={ onClickFollowUp }
                     >
-                        Folgetermin
+                        { translate('Follow-Up Appointment') }
                     </Dropdown.Item>
                 )}
 
@@ -154,7 +156,7 @@ var ExperimentDropdown = (ps) => {
                         disabled={ !canMove || !onClickMove }
                         onClick={ onClickMove }
                     >
-                        Verschieben
+                        { translate('Reschedule') }
                     </Dropdown.Item>
                 )}
                 
@@ -164,7 +166,7 @@ var ExperimentDropdown = (ps) => {
                         disabled={ !canCancel || !onClickCancel }
                         onClick={ onClickCancel }
                     >
-                        Absagen
+                        { translate('Cancel') }
                     </Dropdown.Item>
                 )}
             </Dropdown.Menu>

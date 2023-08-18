@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -85,6 +86,7 @@ var ExperimentSubjectDropdown = (ps) => {
         onClickContactFailed(sharedPayload)
     ), [ onClickContactFailed, subjectRecord ]);
 
+    var translate = useUITranslation();
     var permissions = usePermissions();
     var canViewSubject = permissions.hasCollectionFlag(
         'subject', 'read'
@@ -135,7 +137,7 @@ var ExperimentSubjectDropdown = (ps) => {
                     : 'dropdown-toggle-no-caret'
                 }
                 disabled={ disabled }
-                title='Proband:innen Funktionen für Termin'
+                title={ translate('Subject Functions for Appointment') }
             >
                 { 
                     label 
@@ -161,7 +163,7 @@ var ExperimentSubjectDropdown = (ps) => {
                             disabled={ !canViewSubject }
                             href={`#/subjects/${subjectType}/${subjectId}`}
                         >
-                            Proband:innen Details
+                            { translate('Subject Details') }
                         </Dropdown.Item>
                         <Dropdown.Divider />
                     </>
@@ -171,28 +173,28 @@ var ExperimentSubjectDropdown = (ps) => {
                     disabled={ !canComment || !onClickComment }
                     onClick={ wrappedOnClickComment }
                 >
-                    Kommentar
+                    { translate('Comment') }
                 </Dropdown.Item>
                 <Dropdown.Item
                     as='button'
                     disabled={ !canMove || !onClickMove }
                     onClick={ wrappedOnClickMove }
                 >
-                    Verschieben
+                    { translate('Reschedule') }
                 </Dropdown.Item>
                 <Dropdown.Item
                     as='button'
                     disabled={ !canMove || !onClickFollowUp }
                     onClick={ wrappedOnClickFollowUp }
                 >
-                    Folgetermin
+                    { translate('Follow-Up Appointment') }
                 </Dropdown.Item>
                 <Dropdown.Item
                     as='button'
                     disabled={ !canMove || !onClickRemove }
                     onClick={ wrappedOnClickRemove }
                 >
-                    Entfernen
+                    { translate('Remove') }
                 </Dropdown.Item>
 
                 { enableStatusChanges && (
@@ -204,7 +206,7 @@ var ExperimentSubjectDropdown = (ps) => {
                             disabled={ !canConfirm || !onClickConfirm }
                             onClick={ wrappedOnClickConfirm }
                         >
-                            Bestätigen
+                            { translate('Confirm') }
                         </Dropdown.Item>
 
                         <Dropdown.Item
@@ -212,7 +214,7 @@ var ExperimentSubjectDropdown = (ps) => {
                             disabled={ !canConfirm || !onClickMailbox }
                             onClick={ wrappedOnClickMailbox }
                         >
-                            Anrufbeantworter
+                            { translate('Voice-Mail') }
                         </Dropdown.Item>
 
                         <Dropdown.Item
@@ -220,7 +222,7 @@ var ExperimentSubjectDropdown = (ps) => {
                             disabled={ !canConfirm || !onClickContactFailed }
                             onClick={ wrappedOnClickContactFailed }
                         >
-                            Nicht Erreicht
+                            { translate('Could Not Contact') }
                         </Dropdown.Item>
                     </>
                 )}

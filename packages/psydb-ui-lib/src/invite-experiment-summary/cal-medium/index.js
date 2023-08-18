@@ -1,10 +1,9 @@
 import React from 'react';
 import enums from '@mpieva/psydb-schema-enums';
 
-import {
-    useModalReducer,
-    usePermissions
-} from '@mpieva/psydb-ui-hooks';
+import { format as formatDateInterval } from '@mpieva/psydb-date-interval-fns';
+import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
+import { useModalReducer, usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import { bwTextColorForBackground } from '@mpieva/psydb-ui-utils';
 import { LinkContainer } from '@mpieva/psydb-ui-layout';
@@ -41,6 +40,8 @@ const ExperimentSummaryMedium = (ps) => {
     } = ps;
 
     var { type: inviteType } = experimentRecord;
+    var translate = useUITranslation();
+    var locale = useUILocale();
     var permissions = usePermissions();
 
     var moveExperimentModal = useModalReducer({ show: false });
@@ -103,6 +104,11 @@ const ExperimentSummaryMedium = (ps) => {
 
     start = new Date(start);
     end = new Date(new Date(end).getTime() + 1); // FIXME: 1ms offset
+
+    var { startTime, endTime } = formatDateInterval(
+        { start, end },
+        { locale }
+    );
 
     return (
         <div className='pl-2 pr-2 pb-1 pt-1 mb-2' style={{
@@ -197,9 +203,9 @@ const ExperimentSummaryMedium = (ps) => {
                 <div className='flex-grow'>
                     <div>
                         <b>
-                            { datefns.format(start, 'p') }
+                            { startTime }
                             {' - '}
-                            { datefns.format(end, 'p') }
+                            { endTime }
                         </b>
                     </div>
                 </div>
@@ -220,35 +226,42 @@ const ExperimentSummaryMedium = (ps) => {
 
             { isPlaceholder && (
                 <div>
-                    <small>Platzhalter</small>
+                    <small>{ translate('Placeholder') }</small>
                 </div>
             )}
             { !isPlaceholder && !isPostprocessed && hasProcessedSubjects && (
                 <div>
-                    <small>in Nachbereitung</small>
+                    <small>{ translate('In Postprocessing') }</small>
                 </div>
             )}
             { !isPlaceholder && !isPostprocessed && !hasProcessedSubjects && isInPast && (
                 <div>
-                    <small>offene Nachbereitung</small>
+                    <small>{ translate('Open Postprocessing') }</small>
                 </div>
             )}
             { isPostprocessed && (
                 <div>
-                    <small>Abgeschlossen</small>
+                    <small>{ translate('Completed') }</small>
                 </div>
             )}
 
             <div className='d-flex text-small mt-2'>
-                <b className='flex-shrink-0' style={{ width: '70px' }}>Raum</b>
+                <b className='flex-shrink-0' style={{ width: '70px' }}>
+                    { translate('Room') }
+                </b>
                 {
                     experimentRelated.relatedRecordLabels.location[locationId]._recordLabel
                 }
             </div>
             <div className=''>
-                <small><b>Proband:innen:</b></small>
+                <small><b>
+                    { translate('Subjects') }
+                </b></small>
             </div>
-            <ul className='m-0' style={{ paddingLeft: '20px', fontSize: '80%' }}>
+            <ul 
+                className='m-0'
+                style={{ paddingLeft: '20px', fontSize: '80%' }}
+            >
                 { 
                     subjectData
                     .filter(it => (
@@ -284,11 +297,15 @@ const ExperimentSummaryMedium = (ps) => {
                 }
             </ul>
             <div className='d-flex text-small mt-3'>
-                <b className='flex-shrink-0' style={{ width: '70px' }}>Team</b>
+                <b className='flex-shrink-0' style={{ width: '70px' }}>
+                    { translate('Team') }
+                </b>
                 { teamRecord.state.name }
             </div>
             <div className='d-flex text-small'>
-                <b className='flex-shrink-0' style={{ width: '70px' }}>Studie</b>
+                <b className='flex-shrink-0' style={{ width: '70px' }}>
+                    { translate('Study') }
+                </b>
                 {
                     experimentRelated.relatedRecordLabels.study[studyId]._recordLabel
                 }

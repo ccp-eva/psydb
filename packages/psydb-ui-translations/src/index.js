@@ -200,7 +200,99 @@ var maps = [
     {
         en: 'All',
         de: 'Alle'
-    }
+    },
+    {
+        en: 'Show Past',
+        de: 'Vergangenheit anzeigen'
+    },
+    {
+        en: 'Hide Past',
+        de: 'Vergangenheit ausblenden'
+    },
+    {
+        en: 'Placeholder',
+        de: 'Platzhalter'
+    },
+    {
+        en: 'Open Postprocessing',
+        de: 'Offene Nachbereitung'
+    },
+    {
+        en: 'In Postprocessing',
+        de: 'In Nachbereitung'
+    },
+    {
+        en: 'Completed',
+        de: 'Abgeschlossen'
+    },
+    {
+        en: 'Room',
+        de: 'Raum'
+    },
+    {
+        en: 'Team',
+        de: 'Team'
+    },
+    {
+        en: 'Study',
+        de: 'Studie'
+    },
+    {
+        en: 'Appointment Functions',
+        de: 'Termin-Funktionen'
+    },
+    {
+        en: 'Appointment Details',
+        de: 'Termin-Details'
+    },
+    {
+        en: 'Change Team',
+        de: 'Team ändern'
+    },
+    {
+        en: 'Change Room',
+        de: 'Raum ändern'
+    },
+    {
+        en: 'Follow-Up Appointment',
+        de: 'Folgetermin'
+    },
+    {
+        en: 'Reschedule',
+        de: 'Verschieben'
+    },
+    {
+        en: 'Cancel',
+        de: 'Absagen'
+    },
+    {
+        en: 'Subject Functions for Appointment',
+        de: 'Proband:innen Funktionen für Termin'
+    },
+    {
+        en: 'Subject Details',
+        de: 'Proband:innen Details'
+    },
+    {
+        en: 'Comment',
+        de: 'Kommentar'
+    },
+    {
+        en: 'Remove',
+        de: 'Entfernen'
+    },
+    {
+        en: 'Confirm',
+        de: 'Bestätigen'
+    },
+    {
+        en: 'Voice-Mail',
+        de: 'Anrufbeantworter'
+    },
+    {
+        en: 'Could Not Contact',
+        de: 'Nicht Erreicht'
+    },
 ]
 
 export const createTranslate = (lang = 'en') => (template, props) => {

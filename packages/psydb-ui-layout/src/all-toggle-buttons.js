@@ -1,19 +1,22 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import ToggleButton from './toggle-button';
 
 export const ShowPast = (ps) => {
     var { value, onToggle } = ps;
+    var translate = useUITranslation();
+
     return (
         <ToggleButton
             size='sm'
             value={ value }
             onToggle={ onToggle }
             offBag={{
-                label: 'zeige Vergangenheit',
+                label: translate('Show Past'),
                 variant: 'primary'
             }}
             onBag={{
-                label: 'verstecke Vergangenheit',
+                label: translate('Hide Past'),
                 variant: 'secondary'
             }}
         />

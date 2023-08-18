@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
 
 import {
     Container,
@@ -10,11 +11,15 @@ import datefns from './date-fns';
 
 const Header = (ps) => {
     var { className, dayStart, onSelectDay } = ps;
+    var locale = useUILocale();
 
     return (
         <header className={ className }>
             <div role='button' onClick={ () => onSelectDay(dayStart) }>
-                <b>{ datefns.format(dayStart, 'cccccc dd.MM.') }</b>
+                <b>{ datefns.format(
+                    dayStart, 'cccccc dd.MM.',
+                    { locale }
+                )}</b>
             </div>
         </header>
     );
@@ -65,6 +70,8 @@ export const withExperimentCalendarDays = (options) => {
             ...pass
         } = ps;
 
+        var translate = useUITranslation();
+
         var dayIndex = datefns.getISODay(dayStart);
         var dayEnd = datefns.endOfDay(dayStart);
         
@@ -103,7 +110,7 @@ export const withExperimentCalendarDays = (options) => {
                     (!experiments || experiments.length < 1)
                         ? (
                             <div className='text-muted text-center'>
-                                <i>Keine Termine</i>
+                                <i>{ translate('No Appointments') }</i>
                             </div>
                         )
                         : (

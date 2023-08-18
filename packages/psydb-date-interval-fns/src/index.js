@@ -101,8 +101,8 @@ var dtos = (source, options = {}) => {
 
 var format = (interval, options = {}) => {
     var {
-        dateFormat = 'dd.MM.yyyy',
-        timeFormat = 'HH:mm',
+        dateFormat = 'P',
+        timeFormat = 'p',
         offsetEnd = 1,
         locale,
     } = options;
@@ -119,12 +119,12 @@ var format = (interval, options = {}) => {
 
     return {
         ...(start !== undefined && {
-            startDate: datefns.format(start, dateFormat),
-            startTime: datefns.format(start, timeFormat),
+            startDate: datefns.format(start, dateFormat, { locale }),
+            startTime: datefns.format(start, timeFormat, { locale }),
         }),
         ...(end !== undefined && {
-            endDate: datefns.format(end, dateFormat),
-            endTime: datefns.format(end, timeFormat),
+            endDate: datefns.format(end, dateFormat, { locale }),
+            endTime: datefns.format(end, timeFormat, { locale }),
         })
     }
 }

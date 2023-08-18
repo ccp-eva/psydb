@@ -1,6 +1,7 @@
 import React from 'react';
 import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
 import { Icons } from '@mpieva/psydb-ui-layout';
+import { format as formatDateInterval } from '@mpieva/psydb-date-interval-fns';
 
 import datefns from './date-fns';
 
@@ -80,24 +81,25 @@ var DateInfo = (ps) => {
         isSameDay = true;
     }
 
+    var { startDate, endDate } = formatDateInterval(
+        { start: currentPageStart, end: currentPageEnd },
+        { locale }
+    );
+
+    var calendarWeek = datefns.format(currentPageStart, 'ww', { locale });
+
     return (
         <div>
             <div className='text-center'>
                 { isSameDay ? (
-                    <b>{ datefns.format(currentPageStart, 'P') }</b>
+                    <b>{ startDate }</b>
                 ) : (
                     <>
-                        <b>{ datefns.format(
-                            currentPageStart, 'P',
-                            { locale }
-                        )}</b>
+                        <b>{ startDate }</b>
                         {' '}
                         { translate('to') }
                         {' '}
-                        <b>{ datefns.format(
-                            currentPageEnd, 'P',
-                            { locale }
-                        )}</b>
+                        <b>{ endDate }</b>
                     </>
                 )}
             </div>
@@ -105,7 +107,7 @@ var DateInfo = (ps) => {
                 <div className='text-center'>
                     { translate('Calendar Week') }
                     {' '}
-                    { datefns.format(currentPageStart, 'ww', { locale }) }
+                    { calendarWeek }
                 </div>
             )}
         </div>
