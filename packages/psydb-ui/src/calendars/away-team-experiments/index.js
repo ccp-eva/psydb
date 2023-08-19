@@ -1,32 +1,32 @@
-import React, { useMemo, useEffect, useReducer } from 'react';
-import { usePermissions } from '@mpieva/psydb-ui-hooks';
+import React  from 'react';
 
 import {
     Route,
     Switch,
-    Redirect,
     useRouteMatch,
-    useHistory,
-    useParams
 } from 'react-router-dom';
 
-import { LinkContainer } from '@mpieva/psydb-ui-layout';
-import { ResearchGroupNav } from '@mpieva/psydb-ui-lib';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
-import RecordTypeNav from '@mpieva/psydb-ui-lib/src/record-type-nav';
+import { LinkContainer } from '@mpieva/psydb-ui-layout';
+import { RedirectOrTypeNav, ResearchGroupNav } from '@mpieva/psydb-ui-lib';
+
+
 import Calendar from './calendar';
 
-const AwayTeamExperimentsRouting = ({
-    locationTypes
-}) => {
+const AwayTeamExperimentsRouting = (ps) => {
+    var { locationTypes } = ps;
     var { path, url } = useRouteMatch();
+    
+    var translate = useUITranslation();
     var permissions = usePermissions();
 
     return (
         <>
             <LinkContainer to={ url }>
                 <h5 className='mt-0 mb-3 text-muted' role='button'>
-                    Externe Termine
+                    { translate('External Appointments') }
                 </h5>
             </LinkContainer>
                 
@@ -34,7 +34,11 @@ const AwayTeamExperimentsRouting = ({
                 <Route exact path={`${path}`}>
                     <RedirectOrTypeNav
                         baseUrl={ `${url}` }
-                        locationTypes={ locationTypes }
+                        recordTypes={
+                            locationTypes.filter(it => (
+                                it.state.reservationType === 'away-team'
+                            ))
+                        }
                     />
                 </Route>
                 <Route exact path={`${path}/:locationType`}>
@@ -55,34 +59,6 @@ const AwayTeamExperimentsRouting = ({
             </Switch>
         </>
     );
-}
-
-// FIXME redundant
-const RedirectOrTypeNav = ({
-    baseUrl,
-    locationTypes,
-    title,
-}) => {
-    locationTypes = locationTypes.filter(it => (
-        it.state.reservationType === 'away-team'
-    ));
-    if (locationTypes.length === 1) {
-        return (
-            <Redirect to={
-                `${baseUrl}/${locationTypes[0].type}`
-            } />
-        )
-    }
-    else {
-        return (
-            <>
-                { title && (
-                    <h2>{ title }</h2>
-                )}
-                <RecordTypeNav items={ locationTypes } />
-            </>
-        )
-    }
 }
 
 export default AwayTeamExperimentsRouting;

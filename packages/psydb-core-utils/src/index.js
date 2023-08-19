@@ -11,6 +11,7 @@ module.exports = {
     entries: require('./entries'),
 
     hasNone: require('./has-none'),
+    hasSome: require('./has-some'),
     hasOnlyOne: require('./has-only-one'),
 
     groupBy: require('./group-by'),

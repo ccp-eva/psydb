@@ -1,23 +1,21 @@
 import React from 'react';
-import { Container, Col, Row } from 'react-bootstrap';
 
-import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { Container, Col, Row } from '@mpieva/psydb-ui-layout';
+import { datefns } from '@mpieva/psydb-ui-lib';
 
-const EmptyDaysRow = ({
-    allDayStarts,
-    style,
-}) => {
+const EmptyDaysRow = (ps) => {
+    var { allDays, ...pass } = ps;
+    var translate = useUITranslation();
+
     return (
-        <div style={ style }>
+        <div { ...pass }>
             <Container style={{ maxWidth: '100%' }}>
                 <Row>
-                    { allDayStarts.map(dayStart => (
-                        <Col
-                            key={ dayStart.getTime() }
-                            className='p-1'
-                        >
+                    { allDays.map((day, ix) => (
+                        <Col key={ ix } className='p-1'>
                             <div className='text-muted text-center'>
-                                <i>Keine Termine</i>
+                                <i>{ translate('No Appointments') }</i>
                             </div>
                         </Col>
                     ))}

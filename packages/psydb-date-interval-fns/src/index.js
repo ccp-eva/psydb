@@ -26,6 +26,69 @@ var compareStarts = (a, b, options = {}) => {
     return aStart.getTime() < bStart.getTime() ? -1 : 1;
 };
 
+var compareEnds = (a, b, options = {}) => {
+    var { prefix = '' } = options;
+    if (prefix && !prefix.startsWith('/')) {
+        prefix = '/' + prefix;
+    }
+    
+    var pointer = prefix;
+
+    var aEnd = jsonpointer.get(a, pointer).end;
+    var bEnd = jsonpointer.get(b, pointer).end;
+
+    if (aEnd === null) {
+        return 1;
+    }
+    if (bEnd === null) {
+        return -1;
+    }
+
+    return new Date(aEnd).getTime() < new Date(bEnd).getTime() ? -1 : 1;
+};
+
+var sliceDays = (interval) => {
+    var { start, end } = interval;
+
+    start = new Date(start);
+    end = new Date(end);
+
+    var it = datefns.startOfDay(start);
+    var out = [];
+    while (it.getTime() < end.getTime()) {
+        out.push({
+            start: it, end: datefns.endOfDay(it)
+        });
+        it = datefns.startOfDay(datefns.add(it, { days: 1 }))
+    }
+
+    out[0].start = start;
+    out[out.length - 1].end = end;
+
+    return out;
+}
+
+var sliceMonths = (interval) => {
+    var { start, end } = interval;
+
+    start = new Date(start);
+    end = new Date(end);
+
+    var it = datefns.startOfMonth(start);
+    var out = [];
+    while (it.getTime() < end.getTime()) {
+        out.push({
+            start: it, end: datefns.endOfMonth(it)
+        });
+        it = datefns.startOfMonth(datefns.add(it, { months: 1 }))
+    }
+
+    out[0].start = start;
+    out[out.length - 1].end = end;
+
+    return out;
+}
+
 var intersect = (setA, setB) => (
     intervalfns.intersect({
         setA: arrify(setA).map(dtoi),
@@ -195,15 +258,43 @@ var add = (interval, options = {}) => {
     }
 }
 
+var closeEnd = (interval) => {
+    var { start, end, ...rest } = interval;
+    if (end instanceof Date) {
+        end = new Date(end.getTime() + 1);
+    }
+    else {
+        end = end + 1;
+    }
+    return { start, end, ...rest };
+}
+
+var openEnd = (interval) => {
+    var { start, end, ...rest } = interval;
+    if (end instanceof Date) {
+        end = new Date(end.getTime() - 1);
+    }
+    else {
+        end = end - 1;
+    }
+    return { start, end, ...rest };
+}
 
 module.exports = {
     checkHasOverlap,
     compareStarts,
+    compareEnds,
+    
+    sliceDays,
+    sliceMonths,
+
     intersect,
     //width,
     dtoi,
     itod,
 
+    openEnd,
+    closeEnd,
     /////////////
     dtos,
     format,

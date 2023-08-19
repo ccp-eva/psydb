@@ -1,50 +1,60 @@
 import React, { useReducer, useEffect, useMemo } from 'react';
 
-import {
-    Container,
-    Col,
-    Row,
-    LinkContainer
-} from '@mpieva/psydb-ui-layout';
+import { hasNone } from '@mpieva/psydb-core-utils';
+import { dtoi } from '@mpieva/psydb-date-interval-fns';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
-import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
-import getTextColor from '@mpieva/psydb-ui-lib/src/bw-text-color-for-background';
-import applyValueToDisplayFields from '@mpieva/psydb-ui-lib/src/apply-value-to-display-fields';
+import { Container, Col, Row } from '@mpieva/psydb-ui-layout';
 
 import ReservationSlot from './reservation-slot';
 import ExperimentSummary from './experiment-summary';
 
-const DaysContainer = ({
-    allDayStarts,
-    experimentsByDayStart,
-    reservationsByDayStart,
-    ...other
-}) => {
+// NOTE
+//var rewired = rewire(that, {
+//    foo: [ 'a', 'b' ],
+//    bar: [ 'b', 'c' ]
+//});
+//var { foo, bar } = rewired;
+
+const DaysContainer = (ps) => {
+    var {
+        allDays,
+        experimentsByDayStart,
+        reservationsByDayStart,
+        ...pass
+    } = ps;
+    
     return (
         <Container style={{ maxWidth: '100%' }}>
             <Row>
-                { allDayStarts.map(dayStart => (
-                    <Col
-                        key={ dayStart.getTime() }
-                        className='p-1'
-                    >
-                        <ItemsInDay { ...({
-                            start: dayStart,
-                            experiments: (
-                                experimentsByDayStart[dayStart.getTime()]
-                            ),
-                            reservations: (
-                                reservationsByDayStart[dayStart.getTime()]
-                            ),
-                            ...other
-                        }) } />
+                { allDays.map((day, ix) => {
+                    var { start } = dtoi(day);
+                    
+                    var bag = {
+                        start,
+                        experiments: experimentsByDayStart[start],
+                        reservations: reservationsByDayStart[start],
+                        ...pass
+                    }
+
+                    return <Col key={ ix } className='p-1'>
+                        <ItemsInDay { ...bag } />
                     </Col>
-                )) }
+                }) }
             </Row>
         </Container>
     );
 }
 
+// FIXME: OMG
+// => compareBy({ a, b, paths: [
+//     'state.interval.start',
+//     'state.interval.end',
+//     'state.experimentOperatorTeamId'
+// ]}) or something
+//
+// type === reservation && compareBy(...) === 0 .... for equality
+//
 const mergeItems = ({ experiments, reservations }) => {
     var merged = reservations.map(record => ({
         type: 'reservation', record
@@ -76,66 +86,50 @@ const mergeItems = ({ experiments, reservations }) => {
     return merged;
 }
 
-const ItemsInDay = ({
-    start,
-    experiments,
-    reservations,
-    ...other
-}) => {
+const ItemsInDay = (ps) => {
+    var {
+        start,
+        experiments = [],
+        reservations = [],
+        ...pass
+    } = ps;
 
-    var hasItems = (
-        ( experiments && experiments.length > 0 ) ||
-        ( reservations && reservations.length > 0 )
-    )
+    var translate = useUITranslation();
 
-    var merged = useMemo(() => (
-        !hasItems ? [] : mergeItems({ experiments, reservations })
-    ), [ experiments, reservations ]);
+    if (hasNone(experiments) && hasNone(reservations)) {
+        return (
+            <div className='text-muted text-center'>
+                <i>{ translate('No Appointments') }</i>
+            </div>
+        );
+    }
 
+    var merged = mergeItems({ experiments, reservations });
     return (
-        <div>
+        <div> {
+            merged.map((it, ix) => {
+                var { type, record } = it;
+                
+                var sharedBag = {
+                    key: ix,
+                    style: { minHeight: '130px' },
+                    ...pass
+                };
 
-            { /*<header className='text-center border-bottom mb-2'>
-                <div role='button' onClick={ () => onSelectDay(start) }>
-                    <b>{ datefns.format(start, 'cccccc dd.MM.') }</b>
-                </div>
-            </header>*/ }
-
-            { 
-                !hasItems
-                ? (
-                    <div className='text-muted text-center'>
-                        <i>Keine Termine</i>
-                    </div>
-                )
-                : (
-                    merged.map((it, index) => (
-                        it.type === 'experiment'
-                        ? (
-                            <ExperimentSummary { ...({
-                                key: index,
-                                style: itemStyle,
-                                experimentRecord: it.record,
-                                ...other,
-                            }) } />
-                        )
-                        : (
-                            <ReservationSlot { ...({
-                                key: index,
-                                style: itemStyle,
-                                reservationRecord: it.record,
-                                ...other
-                            })} />
-                        )
-                    ))
-                )
-            }
-        </div>
+                return (
+                    type === 'experiment'
+                    ? <ExperimentSummary
+                        { ...sharedBag }
+                        experimentRecord={ record }
+                    />
+                    : <ReservationSlot 
+                        { ...sharedBag }
+                        reservationRecord={ record }
+                    />
+                );
+            })
+        }</div>
     );
-}
-
-const itemStyle = {
-    minHeight: '130px'
 }
 
 export default DaysContainer;

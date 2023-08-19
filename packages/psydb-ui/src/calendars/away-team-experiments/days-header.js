@@ -1,55 +1,51 @@
 import React from 'react';
-import { Container, Col, Row } from 'react-bootstrap';
 
-import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
+import { useUILocale } from '@mpieva/psydb-ui-contexts';
+import { Container, Col, Row } from '@mpieva/psydb-ui-layout';
+import { datefns, CalendarDayHeader } from '@mpieva/psydb-ui-lib';
 
-const DaysHeader = ({
-    allDayStarts,
-    onSelectDay,
-    style,
-}) => {
-    var role = '',
-        onClick = undefined;
-    if (onSelectDay) {
-        role = 'button';
-        onClick = onSelect
-    }
+const AllDayHeaders = (ps) => {
+    var { allDays, onSelectDay, ...pass } = ps;
 
     return (
-        <div style={ style }>
+        <div { ...pass }>
             <Container style={{ maxWidth: '100%' }}>
                 <Row>
-                    { allDayStarts.map(dayStart => {
-                        var dayIndex = datefns.getISODay(dayStart);
-                        var dayEnd = datefns.endOfDay(dayStart);
-                        var isInPast = new Date().getTime() > dayEnd.getTime();
-                        var shouldEnable = (
-                            !isInPast
-                            // && !([6,7].includes(dayIndex))
-                        );
-                        var className = (
-                            shouldEnable
-                            ? 'text-center border-bottom mb-2'
-                            : 'text-center text-grey border-bottom mb-2'
-                        )
-                        return <Col
-                            key={ dayStart.getTime() }
-                            className='p-1'
-                        >
-                            <header className={ className }>
-                                <div
-                                    role={ role }
-                                    onClick={ onClick && (() => onClick(dayStart)) }
-                                >
-                                    <b>{ datefns.format(dayStart, 'cccccc dd.MM.') }</b>
-                                </div>
-                            </header>
+                    { allDays.map((day, ix) => (
+                        <Col key={ ix } className='p-1'>
+                            <CalendarDayHeader
+                                day={ day }
+                                className={ getClassName({ day }) }
+                                onClick={ () => (
+                                    onSelectDay && onSelectDay(day.start)
+                                )}
+                            />
                         </Col>
-                    })}
+                    ))}
                 </Row>
             </Container>
         </div>
     );
 };
 
-export default DaysHeader;
+var getClassName = (bag) => {
+    var { day } = bag;
+    var { start, end } = day;
+
+    var isInPast = new Date().getTime() > end.getTime();
+    var dayIndex = datefns.getISODay(start);
+    
+    var shouldEnable = (
+        !isInPast
+        // && !([6,7].includes(dayIndex))
+    );
+    var className = (
+        shouldEnable
+        ? 'text-center border-bottom mb-2'
+        : 'text-center border-bottom mb-2 text-grey'
+    )
+
+    return className;
+}
+
+export default AllDayHeaders;

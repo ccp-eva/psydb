@@ -1,29 +1,9 @@
 import React from 'react';
 import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
+import { Container, Col, Row } from '@mpieva/psydb-ui-layout';
 
-import {
-    Container,
-    Col,
-    Row,
-} from '@mpieva/psydb-ui-layout';
-
+import CalendarDayHeader from './calendar-day-header';
 import datefns from './date-fns';
-
-const Header = (ps) => {
-    var { className, dayStart, onSelectDay } = ps;
-    var locale = useUILocale();
-
-    return (
-        <header className={ className }>
-            <div role='button' onClick={ () => onSelectDay(dayStart) }>
-                <b>{ datefns.format(
-                    dayStart, 'cccccc dd.MM.',
-                    { locale }
-                )}</b>
-            </div>
-        </header>
-    );
-}
 
 export const withExperimentCalendarDays = (options) => {
     var {
@@ -83,7 +63,7 @@ export const withExperimentCalendarDays = (options) => {
         var headerClassName = (
             shouldEnable
             ? 'text-center border-bottom mb-2'
-            : 'text-center text-grey border-bottom mb-2'
+            : 'text-center border-bottom mb-2 text-grey'
         );
 
         var ExperimentSummary = undefined;
@@ -101,10 +81,10 @@ export const withExperimentCalendarDays = (options) => {
 
         return (
             <div>
-                <Header
+                <CalendarDayHeader
                     className={ headerClassName }
-                    onSelectDay={ onSelectDay }
-                    dayStart={ dayStart }
+                    onClick={ () => onSelectDay(dayStart) }
+                    day={{ start: dayStart }}
                 />
                 { 
                     (!experiments || experiments.length < 1)

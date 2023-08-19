@@ -1,10 +1,6 @@
-import React, { useState, useMemo } from 'react';
-
-import {
-    useRouteMatch,
-    useHistory,
-    useParams
-} from 'react-router-dom';
+import React, { useMemo } from 'react';
+import { useRouteMatch, useParams } from 'react-router-dom';
+import { sliceDays } from '@mpieva/psydb-date-interval-fns';
 
 import {
     useFetch,
@@ -14,21 +10,13 @@ import {
     useToggleReducer,
 } from '@mpieva/psydb-ui-hooks';
 
+import { LoadingIndicator, ToggleButtons } from '@mpieva/psydb-ui-layout';
+
 import {
-    Button,
-    LoadingIndicator,
-    LinkButton,
-    Icons,
-    ToggleButtons,
-} from '@mpieva/psydb-ui-layout';
-
-import omit from '@cdxoo/omit';
-
-import getDayStartsInInterval from '@mpieva/psydb-ui-lib/src/get-day-starts-in-interval';
-
-import withWeeklyCalendarPages from '@mpieva/psydb-ui-lib/src/with-weekly-calendar-pages';
-import CalendarNav from '@mpieva/psydb-ui-lib/src/calendar-nav';
-import { CalendarTeamLegend } from '@mpieva/psydb-ui-lib';
+    withWeeklyCalendarPages,
+    CalendarNav,
+    CalendarTeamLegend
+} from '@mpieva/psydb-ui-lib';
 
 import DaysHeader from './days-header';
 import EmptyDaysRow from './empty-days-row';
@@ -38,24 +26,19 @@ const headerStyle = {
     marginLeft: '35px', // spacing for study labels
 }
 
-const AwayTeamCalendar = ({
-    currentPageStart,
-    currentPageEnd,
-    onPageChange,
-}) => {
-    var { path, url } = useRouteMatch();
-    var {
-        locationType,
-        researchGroupId,
-    } = useParams();
+const AwayTeamCalendar = (ps) => {
+    var { currentPageStart, currentPageEnd, onPageChange } = ps;
 
-    var { value: revision, up: increaseRevision } = useRevision();
+    var { path, url } = useRouteMatch();
+    var { locationType, researchGroupId } = useParams();
+
+    var permissions = usePermissions();
+    var revision = useRevision();
+    
+    var showPast = useToggleReducer(false, { as: 'props' });
     var [ query, updateQuery ] = useURLSearchParams();
     // TODO: study selection
     
-    var permissions = usePermissions();
-    var showPast = useToggleReducer(false, { as: 'props' });
-
     var [ didFetch, fetched ] = useFetch((agent) => {
         return agent.fetchLocationExperimentCalendar({
             experimentType: 'away-team',
@@ -67,14 +50,14 @@ const AwayTeamCalendar = ({
                 end: currentPageEnd,
             },
         });
-    }, [ currentPageStart, currentPageEnd, revision ])
+    }, [ currentPageStart, currentPageEnd, revision.value ])
 
-    var allDayStarts = useMemo(() => (
-        getDayStartsInInterval({
-            start: currentPageStart,
-            end: currentPageEnd
-        })
-    ), [ currentPageStart, currentPageEnd ]);
+    var allDays = useMemo(() => sliceDays({
+        start: currentPageStart,
+        end: currentPageEnd
+    }), [ currentPageStart, currentPageEnd ]);
+
+    var allDayStarts = allDays.map(it => it.start);
 
     if (!didFetch) {
         return <LoadingIndicator size='lg' />
@@ -104,17 +87,6 @@ const AwayTeamCalendar = ({
                     <ToggleButtons.ShowPast { ...showPast } />
                 </div>
             )}
-            {/*<div className='bg-light'>
-                <LinkButton to={ `/calendars` }>
-                    <Icons.ArrowLeftShort style={{
-                        height: '25px',
-                        width: '25px',
-                        merginLeft: '-10px',
-                        marginTop: '-3px',
-                    }} />
-                    Zurück
-                </LinkButton>
-            </div>*/}
 
             <CalendarNav { ...({
                 className: 'mt-3 mr-5 ml-5',
@@ -129,20 +101,20 @@ const AwayTeamCalendar = ({
             }}/>
 
             <DaysHeader { ...({
-                allDayStarts,
+                allDays,
                 style: headerStyle,
             }) } />
 
             { studyRecordLabels.length < 1 && (
                 <EmptyDaysRow { ...({
-                    allDayStarts,
+                    allDays,
                     style: headerStyle,
                 }) } />
             )}
 
             { studyRecordLabels.map(it => (
                 <StudyRow key={ it._id } { ...({
-                    allDayStarts,
+                    allDays,
 
                     studyId: it._id,
                     studyLabel: it._recordLabel,
@@ -158,7 +130,7 @@ const AwayTeamCalendar = ({
                     
                     url,
                     showPast: showPast.value,
-                    onSuccessfulUpdate: increaseRevision
+                    onSuccessfulUpdate: revision.up
                 }) } />
             ))}
 

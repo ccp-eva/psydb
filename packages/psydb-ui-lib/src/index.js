@@ -65,6 +65,7 @@ export { default as with3DayCalendarPages } from './with-3day-calendar-pages';
 export { default as withDailyCalendarPages } from './with-daily-calendar-pages';
 export { default as CalendarTeamLegend } from './calendar-team-legend';
 export { default as CalendarNav } from './calendar-nav';
+export { default as CalendarDayHeader } from './calendar-day-header';
 export * from './calendar-range-pill-nav';
 export * from './calendar-study-pill-nav';
 

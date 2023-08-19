@@ -1,45 +1,38 @@
 import React from 'react';
-import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
+import { groupBy } from '@mpieva/psydb-core-utils';
+import { dtoi } from '@mpieva/psydb-date-interval-fns';
 
 import DaysContainer from './days-container';
 
-const groupRecordsByDayStart = ({ allDayStarts, records }) => {
-    var groups = {};
-    for (var start of allDayStarts) {
-        var startT = start.getTime();
-        var endT = datefns.endOfDay(start).getTime();
-        groups[startT] = records.filter(it => {
-            var expStartT = (
-                new Date(it.state.interval.start).getTime()
-            )
-            return (
-                expStartT >= startT
-                && expStartT <= endT
-            )
-        })
-    }
-    return groups;
-}
+const StudyRow = (ps) => {
+    var {
+        allDays,
 
-const StudyRow = ({
-    allDayStarts,
+        studyId,
+        studyLabel,
+        experimentRecords,
+        reservationRecords,
 
-    studyId,
-    studyLabel,
-    experimentRecords,
-    reservationRecords,
+        ...other
+    } = ps;
+   
+    var buckets = allDays.reduce((acc, day) => ({
+        ...acc,
+        [day.start.getTime()]: []
+    }), {});
 
-    ...other
-}) => {
-    
-    var experimentsByDayStart = groupRecordsByDayStart({
-        allDayStarts,
-        records: experimentRecords.filter(it => it.state.studyId === studyId)
+    var compareStudyIds = (it) => (
+        it.state.studyId === studyId
+    )
+
+    var experimentsByDayStart = groupBy({
+        items: experimentRecords.filter(compareStudyIds),
+        createKey: (it) => dtoi(it.state.interval).start
     });
 
-    var reservationsByDayStart = groupRecordsByDayStart({
-        allDayStarts,
-        records: reservationRecords.filter(it => it.state.studyId === studyId)
+    var reservationsByDayStart = groupBy({
+        items: reservationRecords.filter(compareStudyIds),
+        createKey: (it) => dtoi(it.state.interval).start
     });
 
     return (
@@ -50,13 +43,15 @@ const StudyRow = ({
                 transform: 'rotate(-180deg)',
                 textAlign: 'center',
                 paddingRight: '5px',
+                paddingTop: '5px',
+                paddingBottom: '5px',
                 width: '35px',
             }}>
                 <b>{ studyLabel }</b>
             </div>
 
             <DaysContainer { ...({
-                allDayStarts,
+                allDays,
                 experimentsByDayStart,
                 reservationsByDayStart,
                  ...other
