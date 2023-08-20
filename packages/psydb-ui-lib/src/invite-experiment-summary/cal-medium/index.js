@@ -3,6 +3,7 @@ import enums from '@mpieva/psydb-schema-enums';
 
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useModalReducer, useSend } from '@mpieva/psydb-ui-hooks';
+import { ColoredBox } from '@mpieva/psydb-ui-layout';
 
 import applyValueToDisplayFields from '../../apply-value-to-display-fields';
 import ExperimentDropdown from '../../experiment-dropdown';
@@ -19,7 +20,6 @@ import {
 } from '../../modals';
 
 import {
-    ColorBox,
     CalItemInterval,
     CalItemPair,
     SubjectListContainer,
@@ -101,9 +101,9 @@ const ExperimentSummaryMedium = (ps) => {
     var _related = experimentRelated.relatedRecordLabels;
 
     return (
-        <ColorBox
+        <ColoredBox
             className='pl-2 pr-2 pb-1 pt-1 mb-2'
-            background={ teamRecord.state.color }
+            bg={ teamRecord.state.color }
         >
 
             <MoveExperimentModal { ...({
@@ -277,7 +277,7 @@ const ExperimentSummaryMedium = (ps) => {
                 { _related.study[studyId]._recordLabel }
             </CalItemPair>
 
-        </ColorBox>
+        </ColoredBox>
     )
 }
 

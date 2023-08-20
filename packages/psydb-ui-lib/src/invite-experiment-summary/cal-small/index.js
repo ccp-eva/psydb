@@ -2,6 +2,7 @@ import React from 'react';
 
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useModalReducer } from '@mpieva/psydb-ui-hooks';
+import { ColoredBox } from '@mpieva/psydb-ui-layout';
 
 import ExperimentDropdown from '../../experiment-dropdown';
 
@@ -11,7 +12,6 @@ import {
 } from '../../modals';
 
 import {
-    ColorBox,
     CalItemInterval,
     CalItemPair,
     SubjectListContainer,
@@ -66,9 +66,9 @@ const ExperimentSummarySmall = (ps) => {
     var _related = experimentRelated.relatedRecordLabels;
 
     return (
-        <ColorBox
+        <ColoredBox
             className='pl-2 pr-2 pb-1 pt-1 mb-2'
-            background={ teamRecord.state.color }
+            bg={ teamRecord.state.color }
         >
             <MoveExperimentModal { ...({
                 show: moveExperimentModal.show,
@@ -166,7 +166,7 @@ const ExperimentSummarySmall = (ps) => {
                     onClickChangeTeam: changeTeamModal.handleShow
                 })} />
             </div>
-        </ColorBox>
+        </ColoredBox>
     )
 }
 
