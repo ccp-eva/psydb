@@ -130,7 +130,8 @@ var ExperimentDropdown = (ps) => {
                         { translate('Change Team') }
                     </Dropdown.Item>
                 )}
-                { enableChangeLocation && (
+                {
+                    enableChangeLocation && ['inhouse', 'online-video-call'].includes(experimentType) && (
                     <Dropdown.Item
                         as='button'
                         disabled={ !canChangeLocation || !onClickChangeLocation }
