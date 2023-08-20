@@ -6,16 +6,17 @@ import { ColoredBox } from '@mpieva/psydb-ui-layout';
 
 import ExperimentDropdown from '../../experiment-dropdown';
 
+import { CalendarItemInterval } from '../../calendar-item-interval';
+import { CalendarPostprocessingStatus } from '../../calendar-postprocessing-status';
+
 import {
     MoveExperimentModal,
     ChangeTeamModal,
 } from '../../modals';
 
 import {
-    CalItemInterval,
     CalItemPair,
     SubjectListContainer,
-    PostprocessingStatus
 } from '../shared';
 
 const ExperimentSummarySmall = (ps) => {
@@ -96,14 +97,14 @@ const ExperimentSummarySmall = (ps) => {
             }) } />
 
 
-            <CalItemInterval start={ start } end={ end } />
+            <CalendarItemInterval start={ start } end={ end } />
             
             { isPlaceholder ? (
                 <small className='d-block'>
                     { translate('Placeholder') }
                 </small>
             ) : (
-                <PostprocessingStatus
+                <CalendarPostprocessingStatus
                     shouldPostprocess={ isInPast }
                     isPostprocessed={ isPostprocessed }
                     hasProcessedSubjects={ hasProcessedSubjects }

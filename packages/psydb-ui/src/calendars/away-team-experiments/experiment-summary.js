@@ -1,16 +1,13 @@
-import React, { useReducer, useEffect, useMemo, useCallback } from 'react';
+import React from 'react';
 
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useModalReducer } from '@mpieva/psydb-ui-hooks';
-import { LinkContainer } from '@mpieva/psydb-ui-layout';
+import { ColoredBox } from '@mpieva/psydb-ui-layout';
 
-import enums from '@mpieva/psydb-schema-enums';
-
-import agent from '@mpieva/psydb-ui-request-agents';
-import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
-import getTextColor from '@mpieva/psydb-ui-lib/src/bw-text-color-for-background';
-import applyValueToDisplayFields from '@mpieva/psydb-ui-lib/src/apply-value-to-display-fields';
-
-import ExperimentDropdown from '@mpieva/psydb-ui-lib/src/experiment-dropdown';
+import {
+    ExperimentDropdown,
+    CalendarPostprocessingStatus
+} from '@mpieva/psydb-ui-lib';
 
 import {
     FollowUpExperimentModal,
@@ -19,21 +16,24 @@ import {
     ChangeTeamModal,
 } from '@mpieva/psydb-ui-lib/src/modals';
 
-const ExperimentSummary = ({
-    experimentRecord,
-    experimentRelated,
-    experimentOperatorTeamRecords,
+const ExperimentSummary = (ps) => {
+    var {
+        experimentRecord,
+        experimentRelated,
+        experimentOperatorTeamRecords,
 
-    locationRecordsById,
-    locationRelated,
-    locationDisplayFieldData,
+        locationRecordsById,
+        locationRelated,
+        locationDisplayFieldData,
 
-    url,
-    showPast,
-    onSuccessfulUpdate,
+        url,
+        showPast,
+        onSuccessfulUpdate,
 
-    style,
-}) => {
+        style,
+    } = ps;
+
+    var translate = useUITranslation();
 
     var changeTeamModal = useModalReducer({ show: false });
     var moveExperimentModal = useModalReducer({ show: false });
@@ -72,15 +72,12 @@ const ExperimentSummary = ({
         return null;
     }
     
-    start = new Date(start);
-    end = new Date(new Date(end).getTime() + 1); // FIXME: 1ms offset
-
     return (
-        <div className='pl-2 pr-2 pb-1 pt-1 mb-2' style={{
-            background: teamRecord.state.color,
-            color: getTextColor(teamRecord.state.color),
-            ...style
-        }}>
+        <ColoredBox
+            className='pl-2 pr-2 pb-1 pt-1 mb-2'
+            bg={ teamRecord.state.color }
+            extraStyle={ style }
+        >
 
             <MoveExperimentModal { ...({
                 show: moveExperimentModal.show,
@@ -173,35 +170,28 @@ const ExperimentSummary = ({
                 }) } />
             </div>
 
-            { isPlaceholder && (
-                <div>
-                    <small>Platzhalter</small>
-                </div>
+            { isPlaceholder ? (
+                <small className='d-block'>
+                    { translate('Placeholder') }
+                </small>
+            ) : (
+                <CalendarPostprocessingStatus
+                    shouldPostprocess={ isInPast }
+                    isPostprocessed={ isPostprocessed }
+                    hasProcessedSubjects={ hasProcessedSubjects }
+                />
             )}
-            { !isPlaceholder && !isPostprocessed && hasProcessedSubjects && (
-                <div>
-                    <small>in Nachbereitung</small>
-                </div>
-            )}
-            { !isPlaceholder && !isPostprocessed && !hasProcessedSubjects && isInPast && (
-                <div>
-                    <small>offene Nachbereitung</small>
-                </div>
-            )}
-            { isPostprocessed && (
-                <div>
-                    <small>Abgeschlossen</small>
-                </div>
-            )}
-        </div>
+
+        </ColoredBox>
     )
 }
 
-const LocationInfo = ({
-    locationRecord,
-    locationRelated,
-    locationDisplayFieldData,
-}) => {
+const LocationInfo = (ps) => {
+    var {
+        locationRecord,
+        locationRelated,
+        locationDisplayFieldData,
+    } = ps;
 
     return (
         <div style={{ fontSize: '100%' }}>

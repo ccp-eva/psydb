@@ -68,6 +68,8 @@ export { default as CalendarNav } from './calendar-nav';
 export { default as CalendarDayHeader } from './calendar-day-header';
 export * from './calendar-range-pill-nav';
 export * from './calendar-study-pill-nav';
+export * from './calendar-item-interval';
+export * from './calendar-postprocessing-status';
 
 export * from './with-calendar-variant-container';
 export * from './with-experiment-calendar-days';

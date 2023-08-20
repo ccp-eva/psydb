@@ -1,11 +1,12 @@
 import React from 'react';
-import getTextColor from '@mpieva/psydb-ui-lib/src/bw-text-color-for-background';
+import { ColoredBox } from '@mpieva/psydb-ui-layout';
 
-const ReservationSlot = ({
-    reservationRecord,
-    experimentOperatorTeamRecords,
-    style,
-}) => {
+const ReservationSlot = (ps) => {
+    var {
+        reservationRecord,
+        experimentOperatorTeamRecords,
+        style,
+    } = ps;
 
     var { state: {
         experimentOperatorTeamId,
@@ -20,21 +21,20 @@ const ReservationSlot = ({
         return null;
     }
     
-
     var teamRecord = experimentOperatorTeamRecords.find(it => (
         it._id === experimentOperatorTeamId
     ));
    
     return (
-        <div className='pl-2 pr-2 pb-1 pt-1 mb-2' style={{
-            background: teamRecord.state.color,
-            color: getTextColor(teamRecord.state.color),
-            ...style
-        }}>
+        <ColoredBox
+            className='pl-2 pr-2 pb-1 pt-1 mb-2' 
+            bg={ teamRecord.state.color }
+            extraStyle={ style }
+        >
             <div className='text-small'>
                 { teamRecord.state.name }
             </div>
-        </div>
+        </ColoredBox>
     );
 }
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
-export const PostprocessingStatus = (ps) => {
+export const CalendarPostprocessingStatus = (ps) => {
     var { isPostprocessed, hasProcessedSubjects, shouldPostprocess } = ps;
     
     var translate = useUITranslation();

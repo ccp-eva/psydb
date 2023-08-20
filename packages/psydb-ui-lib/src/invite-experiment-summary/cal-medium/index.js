@@ -9,6 +9,9 @@ import applyValueToDisplayFields from '../../apply-value-to-display-fields';
 import ExperimentDropdown from '../../experiment-dropdown';
 import ExperimentSubjectDropdown from '../../experiment-subject-dropdown';
 
+import { CalendarItemInterval } from '../../calendar-item-interval';
+import { CalendarPostprocessingStatus } from '../../calendar-postprocessing-status';
+
 import {
     MoveExperimentModal,
     ChangeTeamModal,
@@ -20,10 +23,8 @@ import {
 } from '../../modals';
 
 import {
-    CalItemInterval,
     CalItemPair,
     SubjectListContainer,
-    PostprocessingStatus
 } from '../shared';
 
 const ExperimentSummaryMedium = (ps) => {
@@ -191,7 +192,7 @@ const ExperimentSummaryMedium = (ps) => {
             
             <div className='d-flex'>
                 <div className='flex-grow'>
-                    <CalItemInterval start={ start } end={ end } />
+                    <CalendarItemInterval start={ start } end={ end } />
                 </div>
                 <div
                     style={{ width: '35px' }}
@@ -213,7 +214,7 @@ const ExperimentSummaryMedium = (ps) => {
                     { translate('Placeholder') }
                 </small>
             ) : (
-                <PostprocessingStatus
+                <CalendarPostprocessingStatus
                     shouldPostprocess={ isInPast }
                     isPostprocessed={ isPostprocessed }
                     hasProcessedSubjects={ hasProcessedSubjects }

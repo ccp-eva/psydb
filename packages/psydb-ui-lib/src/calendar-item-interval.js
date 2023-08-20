@@ -2,7 +2,7 @@ import React from 'react';
 import { format } from '@mpieva/psydb-date-interval-fns';
 import { useUILocale } from '@mpieva/psydb-ui-contexts';
 
-export const CalItemInterval = (ps) => {
+export const CalendarItemInterval = (ps) => {
     var { start, end } = ps;
     
     var locale = useUILocale();
