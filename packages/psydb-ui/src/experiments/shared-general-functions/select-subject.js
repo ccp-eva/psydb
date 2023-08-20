@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useModalReducer } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
 
@@ -7,8 +8,11 @@ import {
     LoadingIndicator,
 } from '@mpieva/psydb-ui-layout';
 
+// TODO
 export const SelectSubjectContainer = (ps) => {
+    var translate = useUITranslation();
     var modal = useModalReducer();
+
     return (
         <>
             <Button
@@ -16,7 +20,7 @@ export const SelectSubjectContainer = (ps) => {
                 className='mr-3'
                 onClick={ modal.handleShow }
             >
-                Proband:in hinzufügen
+                { translate('Add Subject') }
             </Button>
             <SelectSubjectModal
                 { ...modal.passthrough }
@@ -41,7 +45,7 @@ const SelectSubjectModalBody = (ps) => {
 }
 
 const SelectSubjectModal = WithDefaultModal({
-    title: 'Proband:in hinzufügen',
+    title: 'Add Subject',
     size: 'xl',
     bodyClassName: 'bg-light pt-0 pr-3 pl-3',
     Body: SelectSubjectModalBody,

@@ -1,7 +1,8 @@
-import React, { useState, useCallback } from 'react';
+import React from 'react';
 import enums from '@mpieva/psydb-schema-enums';
 
 import { groupBy } from '@mpieva/psydb-core-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useModalReducer } from '@mpieva/psydb-ui-hooks';
 import { WithDefaultModal, Button } from '@mpieva/psydb-ui-layout';
 
@@ -40,17 +41,18 @@ const SubjectLabelOnlyModalBody = (ps) => {
 }
 
 const SubjectLabelOnlyModal = WithDefaultModal({
-    title: 'Proband:innen (kurz)',
+    title: 'Subjects (short)',
     size: 'md',
     //bodyClassName: 'bg-light pt-0 pr-3 pl-3',
     Body: SubjectLabelOnlyModalBody,
 });
 
-export const SubjectLabelOnlyContainer = ({
-    experimentData,
-}) => {
-   
+export const SubjectLabelOnlyContainer = (ps) => {
+    var { experimentData } = ps; 
+
+    var translate = useUITranslation();
     var modal = useModalReducer();
+
     return (
         <>
             <Button 
@@ -59,7 +61,7 @@ export const SubjectLabelOnlyContainer = ({
                 className='mr-3'
                 onClick={ modal.handleShow }
             >
-                nur Namen
+                { translate('Only Names') }
             </Button>
             <SubjectLabelOnlyModal
                 { ...modal.passthrough }

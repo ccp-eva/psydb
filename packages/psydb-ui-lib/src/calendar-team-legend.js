@@ -1,5 +1,6 @@
 import React from 'react';
 import { groupBy } from '@mpieva/psydb-core-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { SplitPartitioned, ColoredBox } from '@mpieva/psydb-ui-layout';
 
 const CalendarTeamLegend = (ps) => {
@@ -10,6 +11,8 @@ const CalendarTeamLegend = (ps) => {
         activeTeamIds = [],
         onClickTeam,
     } = ps;
+
+    var translate = useUITranslation();
 
     var teamsForStudy = groupBy({
         items: experimentOperatorTeamRecords,
@@ -23,7 +26,9 @@ const CalendarTeamLegend = (ps) => {
     return (
         <div>
             <hr />
-            <b className='d-block mb-2'><u>Legende</u></b>
+            <b className='d-block mb-2'><u>
+                { translate('Legend') }
+            </u></b>
             <table>
                 <tbody>
                     { studyRecords.map((study, ix) => {

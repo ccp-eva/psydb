@@ -1,26 +1,30 @@
 import React from 'react';
-import jsonpointer from 'jsonpointer';
-import { Table } from 'react-bootstrap';
+
+import { jsonpointer } from '@mpieva/psydb-core-utils';
+import { calculateAge } from '@mpieva/psydb-common-lib';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { Table, TableHeadCustomCols } from '@mpieva/psydb-ui-layout';
 
 import enums from '@mpieva/psydb-schema-enums';
-import calculateAge from '@mpieva/psydb-ui-lib/src/calculate-age';
-import FieldDataHeadCols from '@mpieva/psydb-ui-lib/src/record-list/field-data-head-cols';
+// FIXME
 import FieldDataBodyCols from '@mpieva/psydb-ui-lib/src/record-list/field-data-body-cols';
 
-import SubjectDropdown from '@mpieva/psydb-ui-lib/src/experiment-subject-dropdown';
+const SubjectList = (ps) => {
+    var {
+        experimentRecord,
 
-const SubjectList = ({
-    experimentRecord,
+        records,
+        relatedRecordLabels,
+        relatedHelperSetItems,
+        relatedCustomRecordTypeLabels,
+        displayFieldData,
 
-    records,
-    relatedRecordLabels,
-    relatedHelperSetItems,
-    relatedCustomRecordTypeLabels,
-    displayFieldData,
+        className,
+        ...other
+    } = ps;
 
-    className,
-    ...other
-}) => {
+    var translate = useUITranslation();
+
     var dateOfBirthField = displayFieldData.find(it => (
         it.props.isSpecialAgeFrameField
     ));
@@ -29,15 +33,15 @@ const SubjectList = ({
         <Table className={ className }>
             <thead>
                 <tr>
-                    <FieldDataHeadCols
-                        displayFieldData={ displayFieldData }
+                    <TableHeadCustomCols
+                        definitions={ displayFieldData }
                     />
                     { dateOfBirthField && (
-                        <th>Alter</th>
+                        <th>{ translate('T-Age') }</th>
                     )}
-                    <th>Teilg. Stud.</th>
-                    <th>Status</th>
-                    <th>Kommentar</th>
+                    <th>{ translate('Part. Stud.') }</th>
+                    <th>{ translate('Status') }</th>
+                    <th>{ translate('Comment') }</th>
                     <th></th>
                 </tr>
             </thead>
@@ -63,18 +67,22 @@ const SubjectList = ({
     )
 }
 
-const SubjectListRow = ({
-    experimentRecord,
+const SubjectListRow = (ps) => {
+    var {
+        experimentRecord,
 
-    record,
-    relatedRecordLabels,
-    relatedHelperSetItems,
-    relatedCustomRecordTypeLabels,
-    displayFieldData,
-    dateOfBirthField,
+        record,
+        relatedRecordLabels,
+        relatedHelperSetItems,
+        relatedCustomRecordTypeLabels,
+        displayFieldData,
+        dateOfBirthField,
 
-    ActionsComponent,
-}) => {
+        ActionsComponent,
+    } = ps;
+
+    var translate = useUITranslation();
+
     var experimentSubjectData = (
         experimentRecord.state.subjectData.find(it => (
             it.subjectId === record._id
@@ -143,7 +151,7 @@ const SubjectListRow = ({
                 } 
             </td>
 
-            <td>{ formattedStatus }</td>
+            <td>{ formattedStatus && translate(formattedStatus) }</td>
             <td><i>{ comment }</i></td>
             <td>
                 { ActionsComponent && (
@@ -163,9 +171,9 @@ const SubjectListRow = ({
 var formatInvitationStatus = (status) => {
     var s = {
         'scheduled': '',
-        'confirmed': 'B',
-        'mailbox': 'AB',
-        'contact-failed': 'NE'
+        'confirmed': 'confirmed_icon',
+        'mailbox': 'mailbox_icon',
+        'contact-failed': 'contact-failed_icon'
     }[status]
     return (
         s === undefined
@@ -176,15 +184,15 @@ var formatInvitationStatus = (status) => {
 
 var formatParticipationStatus = (status) => {
     return {
-        'unknown': 'unb.',
-        'participated': 't.g.',
-        'didnt-participate': 'n.t.g.',
+        'unknown': 'unknwon_short',
+        'participated': 'participated_short',
+        'didnt-participate': 'didnt-participate_short',
 
-        'showed-up-but-didnt-participate': 'gek.',
-        'didnt-show-up': 'n. gek.',
-        'canceled-by-participant': 'abg.',
-        'canceled-by-institute': 'ausg.',
-        'moved': 'versch.',
+        'showed-up-but-didnt-participate': 'showed-up-but-didnt-participate_short',
+        'didnt-show-up': 'didnt-show-up_short',
+        'canceled-by-participant': 'canceled-by-participant_short',
+        'canceled-by-institute': 'canceled-by-institute_short',
+        'moved': 'moved_short',
     }[status] || 'ERROR'
 }
 

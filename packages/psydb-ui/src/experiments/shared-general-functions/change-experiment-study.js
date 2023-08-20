@@ -1,5 +1,6 @@
 import React from 'react';
 import { demuxed } from '@mpieva/psydb-ui-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useSend, useModalReducer } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
 
@@ -20,7 +21,9 @@ import {
 import StudyTeamListItem from '@mpieva/psydb-ui-lib/src/experiment-operator-team-list-item';
 
 export const ChangeExperimentStudyContainer = (ps) => {
+    var translate = useUITranslation();
     var modal = useModalReducer();
+
     return (
         <>
             <Button
@@ -28,7 +31,7 @@ export const ChangeExperimentStudyContainer = (ps) => {
                 className='mr-3'
                 onClick={ modal.handleShow }
             >
-                Studie ändern
+                { translate('Change Study') }
             </Button>
             <ChangeExperimentStudyModal
                 { ...modal.passthrough }
@@ -45,6 +48,8 @@ const ChangeExperimentStudyModalBody = (ps) => {
         opsTeamData,
         onSuccessfulUpdate,
     } = ps;
+    
+    var translate = useUITranslation();
 
     var send = useSend((formData) => ({
         type: 'experiment/change-study',
@@ -63,9 +68,11 @@ const ChangeExperimentStudyModalBody = (ps) => {
     return (
         <div className='mt-3'>
 
-            <header className='pb-1'><b>Aktuell</b></header>
+            <header className='pb-1'><b>
+                { translate('Current') }
+            </b></header>
             <div className='p-2 bg-white border mb-3'>
-                <Pair label='Studie'>
+                <Pair label={ translate('Study') }>
                     { studyLabel }
                 </Pair>
                 <Pair label='Team'>
@@ -79,7 +86,9 @@ const ChangeExperimentStudyModalBody = (ps) => {
                 </Pair>
             </div>
 
-            <header className='pb-1'><b>Ändern zu</b></header>
+            <header className='pb-1'><b>
+                { translate('Change To') }
+            </b></header>
             <DefaultForm
                 initialValues={{}}
                 onSubmit={ send.exec }
@@ -92,7 +101,7 @@ const ChangeExperimentStudyModalBody = (ps) => {
                     return <>
                         <div className='pt-3 bg-white border'>
                             <Fields.ForeignId
-                                label='Studie'
+                                label={ translate('Studie') }
                                 dataXPath='$.studyId'
                                 collection='study'
                                 extraOnChange={(nextStudyId) => {
@@ -100,7 +109,7 @@ const ChangeExperimentStudyModalBody = (ps) => {
                                 }}
                             />
                             { studyId && (
-                                <FormPair label='Team'>
+                                <FormPair label={ translate('Team') }>
                                     <TeamList {...({
                                         studyId,
                                         selectedTeamId: labTeamId,
@@ -116,7 +125,7 @@ const ChangeExperimentStudyModalBody = (ps) => {
                                 type='submit'
                                 disabled={ !(studyId && labTeamId ) }
                             >
-                                Speichern
+                                { translate('Save') }
                             </Button>
                         </div>
                     </>
@@ -207,7 +216,7 @@ const Pair = (ps) => {
 }
 
 const ChangeExperimentStudyModal = WithDefaultModal({
-    title: 'Studie ändern',
+    title: 'Change Study',
     size: 'lg',
     bodyClassName: 'bg-light pt-0 pr-3 pl-3',
     Body: ChangeExperimentStudyModalBody,

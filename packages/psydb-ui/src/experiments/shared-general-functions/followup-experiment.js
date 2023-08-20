@@ -1,24 +1,27 @@
-import React, { useState, useCallback } from 'react';
+import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useModalReducer } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
 import { FollowUpExperimentModal } from '@mpieva/psydb-ui-lib/src/modals';
 
-export const FollowUpExperimentContainer = ({
-    experimentData,
-    opsTeamData,
-    studyData,
-    onSuccessfulUpdate,
-}) => {
-    var [ show, setShow ] = useState(false);
-    var handleShow = useCallback(() => setShow(true), []);
-    var handleHide = useCallback(() => setShow(false), []);
+export const FollowUpExperimentContainer = (ps) => {
+    var {
+        experimentData,
+        opsTeamData,
+        studyData,
+        onSuccessfulUpdate,
+    } = ps;
+
+    var translate = useUITranslation();
+    var modal = useModalReducer();
+
     return (
         <>
-            <Button size='sm' className='mr-3' onClick={ handleShow }>
-                Folgetermin
+            <Button size='sm' className='mr-3' onClick={ modal.handleShow }>
+                { translate('Follow-Up Appointment') }
             </Button>
             <FollowUpExperimentModal { ...({
-                show,
-                onHide: handleHide,
+                ...modal.passthrough,
                 
                 experimentType: experimentData.record.type,
                 experimentData,

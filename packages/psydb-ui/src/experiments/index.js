@@ -9,41 +9,43 @@ import {
     useParams
 } from 'react-router-dom';
 
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { PageWrappers } from '@mpieva/psydb-ui-layout';
 import { FormBox } from '@mpieva/psydb-ui-lib';
 import ExperimentContainer from './experiment-container';
 
 const Experiments = () => {
     var { path, url } = useRouteMatch();
-    
+    var translate = useUITranslation();
+
     return (
-        <div>
-            <header>
-                <h1 className='mb-0 border-bottom' role='button'>
-                    Termin
-                </h1>
-            </header>
-            <h5 className='mt-0 mb-3 text-muted' role='button'>
-                Details
-            </h5>
-            <Switch>
-                <Route exact path={ `${path}/:experimentType/remove-success` }>
-                    <RemoveSuccessInfo />
-                </Route>
-                <Route path={ `${path}/:experimentType/:id` }>
-                    <ExperimentContainer />
-                </Route>
-            </Switch>
-        </div>
+        <PageWrappers.Level1 title={ translate('Appointment') }>
+            <PageWrappers.Level2 title={ translate('Details') }>
+                <Switch>
+                    <Route exact path={ `${path}/:experimentType/remove-success` }>
+                        <RemoveSuccessInfo />
+                    </Route>
+                    <Route path={ `${path}/:experimentType/:id` }>
+                        <ExperimentContainer />
+                    </Route>
+                </Switch>
+            </PageWrappers.Level2>
+        </PageWrappers.Level1>
     );
 }
 
 const RemoveSuccessInfo = (ps) => {
     var { experimentType } = useParams();
+    var translate = useUITranslation();
+
     var successInfoBackLink = getSuccessInfoBackLink(experimentType);
 
     return (
-        <FormBox titleClassName='text-success' title='Termin gelöscht'>
-            <i>Termin wurde erfolgreich gelöscht</i>
+        <FormBox
+            titleClassName='text-success'
+            title={ translate('Appointment Deleted') }
+        >
+            <i>{ translate('Appointment was deleted successfully') }</i>
             {/* successInfoBackLink && (
                 <>
                     <hr />

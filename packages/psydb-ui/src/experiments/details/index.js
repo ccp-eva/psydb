@@ -1,14 +1,6 @@
-import React, { useEffect, useReducer, useCallback } from 'react';
+import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
-
-import {
-    Route,
-    Switch,
-    Redirect,
-    useRouteMatch,
-    useHistory,
-    useParams
-} from 'react-router-dom';
 
 import GeneralInfo from '../general-info';
 import GeneralFunctions from './general-functions';
@@ -18,23 +10,25 @@ import {
     SubjectLabelOnlyContainer,
 } from '../shared-general-functions';
 
-const ExperimentDetails = ({
-    path,
-    url,
-    experimentType,
-    id,
+const ExperimentDetails = (ps) => {
+    var {
+        path,
+        url,
+        experimentType,
+        id,
 
-    experimentData,
-    labProcedureSettingData,
-    opsTeamData,
-    locationData,
-    studyData,
-    subjectDataByType,
+        experimentData,
+        labProcedureSettingData,
+        opsTeamData,
+        locationData,
+        studyData,
+        subjectDataByType,
 
-    onSuccessfulUpdate,
-}) => {
+        onSuccessfulUpdate,
+    } = ps;
     var { type: experimentType } = experimentData.record;
     
+    var translate = useUITranslation();
     var permissions = usePermissions();
 
     var showFunctions = (
@@ -56,12 +50,12 @@ const ExperimentDetails = ({
             <div className='border bg-light p-3'>
                 { !isCanceled && isPlaceholder && (
                     <h5 className='text-grey'>
-                        Platzhalter
+                        { translate('Placeholder') }
                     </h5>
                 )}
                 { isCanceled && (
                     <h5 className='text-danger'>
-                        Abgesagt
+                        { translate('Canceled') }
                     </h5>
                 )}
                 <GeneralInfo { ...({

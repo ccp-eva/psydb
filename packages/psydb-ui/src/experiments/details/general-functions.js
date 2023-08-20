@@ -1,5 +1,6 @@
-import React, { useState, useCallback } from 'react';
+import React from 'react';
 import { useRouteMatch, useHistory } from 'react-router';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { usePermissions, useModalReducer } from '@mpieva/psydb-ui-hooks';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
 
@@ -18,12 +19,13 @@ import {
 } from '../shared-general-functions';
 
 
-const GeneralFunctions = ({
-    experimentData,
-    opsTeamData,
-    studyData,
-    onSuccessfulUpdate,
-}) => {
+const GeneralFunctions = (ps) => {
+    var {
+        experimentData,
+        opsTeamData,
+        studyData,
+        onSuccessfulUpdate,
+    } = ps;
     var { type: experimentType } = experimentData.record;
     
     var permissions = usePermissions();
@@ -101,24 +103,25 @@ const GeneralFunctions = ({
 }
 
 
-const ChangeTeamContainer = ({
-    experimentType,
-    experimentId,
-    studyId,
-    currentTeamId,
-    onSuccessfulUpdate,
-}) => {
-    var [ show, setShow ] = useState(false);
-    var handleShow = useCallback(() => setShow(true), []);
-    var handleHide = useCallback(() => setShow(false), []);
+const ChangeTeamContainer = (ps) => {
+    var {
+        experimentType,
+        experimentId,
+        studyId,
+        currentTeamId,
+        onSuccessfulUpdate,
+    } = ps;
+
+    var translate = useUITranslation();
+    var modal = useModalReducer();
+
     return (
         <>
-            <Button size='sm' className='mr-3' onClick={ handleShow }>
-                Team ändern
+            <Button size='sm' className='mr-3' onClick={ modal.handleShow }>
+                { translate('Change Team') }
             </Button>
             <ChangeTeamModal { ...({
-                show,
-                onHide: handleHide,
+                ...modal.passthrough,
 
                 experimentType,
                 experimentId,
@@ -130,23 +133,24 @@ const ChangeTeamContainer = ({
     );
 };
 
-const MoveExperimentContainer = ({
-    experimentData,
-    opsTeamData,
-    studyData,
-    onSuccessfulUpdate,
-}) => {
-    var [ show, setShow ] = useState(false);
-    var handleShow = useCallback(() => setShow(true), []);
-    var handleHide = useCallback(() => setShow(false), []);
+const MoveExperimentContainer = (ps) => {
+    var {
+        experimentData,
+        opsTeamData,
+        studyData,
+        onSuccessfulUpdate,
+    } = ps;
+
+    var translate = useUITranslation();
+    var modal = useModalReducer();
+
     return (
         <>
-            <Button size='sm' className='mr-3' onClick={ handleShow }>
-                Verschieben
+            <Button size='sm' className='mr-3' onClick={ modal.handleShow }>
+                { translate('Reschedule') }
             </Button>
             <MoveExperimentModal { ...({
-                show,
-                onHide: handleHide,
+                ...modal.passthrough,
                 
                 experimentType: experimentData.record.type,
                 experimentData,

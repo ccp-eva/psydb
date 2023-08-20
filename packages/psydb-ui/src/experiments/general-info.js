@@ -1,6 +1,7 @@
 import React from 'react';
 import jsonpointer from 'jsonpointer';
 
+import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
 import {
     usePermissions,
     useModalReducer,
@@ -36,13 +37,14 @@ import TeamNameAndColor from '@mpieva/psydb-ui-lib/src/team-name-and-color';
 import createStringifier from '@mpieva/psydb-ui-lib/src/record-field-stringifier';
 import applyValueToDisplayFields from '@mpieva/psydb-ui-lib/src/apply-value-to-display-fields';
 
-const General = ({
-    experimentData,
-    opsTeamData,
-    locationData,
-    studyData,
-    onSuccessfulUpdate
-}) => {
+const General = (ps) => {
+    var {
+        experimentData,
+        opsTeamData,
+        locationData,
+        studyData,
+        onSuccessfulUpdate
+    } = ps;
     var permissions = usePermissions();
 
     var experimentRecord = experimentData.record;
@@ -121,52 +123,57 @@ const InviteVariant = (ps) => {
         opsTeamData,
     } = ps;
 
+    var locale = useUILocale();
+    var translate = useUITranslation();
+
     var {
         startDate, startTime, endTime
-    } = formatDateInterval(interval);
+    } = formatDateInterval(interval, { locale });
 
     return (
         <>
             <Split num={2}>
-                <Pair label='Studie'>
+                <Pair label={ translate('Study') }>
                     { studyLabel }
                 </Pair>
-                <Pair label='Team'>
+                <Pair label={ translate('Team') }>
                     { 
                         opsTeamData
                         ? <TeamNameAndColor
                             teamRecord={ opsTeamData.record }
                         />
-                        : 'Unbekannt'
+                        : translate('Unknown')
                     }
                 </Pair>
             </Split>
 
             <Split num={2}>
-                <Pair label='Datum'>
+                <Pair label={ translate('Date') }>
                     { startDate }
                 </Pair>
-                <Pair label='Uhrzeit'>
+                <Pair label={ translate('Time') }>
                     { startTime }
-                    {' bis '}
+                    {' '}
+                    { translate('to') }
+                    {' '}
                     { endTime }
                 </Pair>
             </Split>
 
             <Split>
-                <Pair label='Forschungsgruppe'>
+                <Pair label={ translate('Research Group') }>
                     { researchGroupLabel }
                 </Pair>
-                <Pair label='Typ'>
+                <Pair label={ translate('Type') }>
                     { experimentTypeLabel }
                 </Pair>
             </Split>
             
             <Split>
-                <Pair label='Location'>
+                <Pair label={ translate('Location') }>
                     { locationData.record._recordLabel}
                 </Pair>
-                <Pair label='Location-Typ'>
+                <Pair label={ translate('Location Type') }>
                     { locationData.recordTypeLabel}
                 </Pair>
             </Split>
@@ -189,13 +196,16 @@ const AwayTeamVariant = (ps) => {
         onSuccessfulUpdate
     } = ps;
 
+    var locale = useUILocale();
+    var translate = useUITranslation();
+
     var commentModal = useModalReducer();
 
     var locationType = locationData.record.type;
     var weekStart = datefns.startOfWeek(new Date(interval.start));
     var weekStartTimestamp = weekStart.getTime();
     
-    var { startDate } = formatDateInterval(interval);
+    var { startDate } = formatDateInterval(interval, { locale });
 
     var withValue = applyValueToDisplayFields({
         ...locationData,
@@ -209,32 +219,32 @@ const AwayTeamVariant = (ps) => {
             />
             <Split num={2}>
                 <div>
-                    <Pair label='Studie'>
+                    <Pair label={ translate('Study') }>
                         { studyLabel }
                     </Pair>
-                    <Pair label='Team'>
+                    <Pair label={ translate('Team') }>
                         { 
                             opsTeamData
                             ? <TeamNameAndColor
                                 teamRecord={ opsTeamData.record }
                             />
-                            : 'Unbekannt'
+                            : translate('Unknown')
                         }
                     </Pair>
-                    <Pair label='Datum'>
+                    <Pair label={ translate('Date') }>
                         <a href={`#/calendars/away-team/${locationType}/${firstResearchGroupId}?d=${weekStartTimestamp}`}>
                             { startDate }
                         </a>
                     </Pair>
-                    <Pair label='Forschungsgruppe'>
+                    <Pair label={ translate('Research Group') }>
                         { researchGroupLabel }
                     </Pair>
-                    <Pair label='Typ'>
+                    <Pair label={ translate('Type') }>
                         { experimentTypeLabel }
                     </Pair>
                 </div>
                 <div>
-                    <Pair label='Location-Typ'>
+                    <Pair label={ translate('Location Type') }>
                         { locationData.recordTypeLabel }
                     </Pair>
                     <div className='ml-3 pl-3' style={{
@@ -252,7 +262,7 @@ const AwayTeamVariant = (ps) => {
                 </div>
             </Split>
             <header className='mt-3'>
-                <b>Kommentar</b>
+                <b>{ translate('Comment') }</b>
                 <EditIconButtonInline
                     onClick={ () => commentModal.handleShow({
                         experimentId,
@@ -261,45 +271,16 @@ const AwayTeamVariant = (ps) => {
                 />
             </header>
             <div className='px-3 py-2 bg-white border'>
-                { comment ? comment : <i className='text-muted'>Kein Kommentar</i> }
+                { comment ? (
+                    comment
+                ) : (
+                    <i className='text-muted'>
+                        { translate('No Comment') }
+                    </i>
+                )}
             </div>
         </>
     )
 };
-
-const LocationInfo = ({
-    isInviteExperiment,
-    experimentType,
-    locationData,
-}) => {
-    if (isInviteExperiment) {
-    }
-    else {
-
-        var withValue = applyValueToDisplayFields({
-            ...locationData,
-        });
-
-        return (
-            <div>
-                <Pair label='Location-Typ'>
-                    { locationData.recordTypeLabel }
-                </Pair>
-                <div className='ml-3 pl-3' style={{
-                    borderLeft: '3px solid #dfe0e1'
-                }}>
-                    { withValue.map((it, index) => (
-                        <Pair
-                            key={ index } wLeft={ 2 }
-                            label={ it.displayName }
-                        >
-                            { it.value }
-                        </Pair>
-                    )) }
-                </div>
-            </div>
-        )
-    }
-}
 
 export default General;

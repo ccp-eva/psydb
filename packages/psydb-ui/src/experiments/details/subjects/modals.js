@@ -9,19 +9,21 @@ import {
 
 import { RemoveSubjectManualModal } from '../../remove-subject-manual-modal';
 
-const Modals = ({
-    experimentData,
-    studyData,
-    subjectDataByType,
+const Modals = (ps) => {
+    var {
+        experimentData,
+        studyData,
+        subjectDataByType,
 
-    commentModal,
-    moveModal,
-    followupModal,
-    removeModal,
-    removeManualModal,
+        commentModal,
+        moveModal,
+        followupModal,
+        removeModal,
+        removeManualModal,
 
-    onSuccessfulUpdate,
-}) => {
+        onSuccessfulUpdate,
+    } = ps;
+
     return (
         <>
             <RemoveSubjectManualModal

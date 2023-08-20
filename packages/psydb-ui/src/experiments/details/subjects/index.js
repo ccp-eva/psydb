@@ -1,26 +1,31 @@
 import React, { createContext, useContext } from 'react';
 
-import { useSend, useModalReducer, usePermissions } from '@mpieva/psydb-ui-hooks';
+import {
+    useSend,
+    useModalReducer,
+    usePermissions
+} from '@mpieva/psydb-ui-hooks';
 
 import {
     SubjectIconButton,
     RemoveIconButtonInline,
 } from '@mpieva/psydb-ui-layout';
 
-import SubjectDropdown from '@mpieva/psydb-ui-lib/src/experiment-subject-dropdown';
+import { ExperimentSubjectDropdown } from '@mpieva/psydb-ui-lib';
 
 import SubjectsContainer from '../../subjects-container';
 import Modals from './modals';
 
 const ActionsContext = createContext({});
 
-const Subjects = ({
-    experimentData,
-    labProcedureSettingData,
-    studyData,
-    subjectDataByType,
-    onSuccessfulUpdate,
-}) => {
+const Subjects = (ps) => {
+    var {
+        experimentData,
+        labProcedureSettingData,
+        studyData,
+        subjectDataByType,
+        onSuccessfulUpdate,
+    } = ps;
     var { type: experimentType } = experimentData.record;
 
     var commentModal = useModalReducer({ show: false });
@@ -130,7 +135,7 @@ const ActionsComponent = ({
             )}
 
             { experimentType !== 'away-team' && (
-                <SubjectDropdown { ...({
+                <ExperimentSubjectDropdown { ...({
                     subjectRecord,
                     
                     onClickComment,

@@ -266,6 +266,10 @@ var maps = [
         de: 'Absagen'
     },
     {
+        en: 'Canceled',
+        de: 'Abgesagt'
+    },
+    {
         en: 'Subject Functions for Appointment',
         de: 'Proband:innen Funktionen für Termin'
     },
@@ -308,6 +312,130 @@ var maps = [
         en: 'F',
         de: 'NE'
     },
+    {
+        en: 'Legend',
+        de: 'Legende'
+    },
+    {
+        en: 'Appointment',
+        de: 'Termin'
+    },
+    {
+        en: 'Details',
+        de: 'Details'
+    },
+    {
+        en: 'Appointment Deleted',
+        de: 'Termin gelöscht'
+    },
+    {
+        en: 'Appointment was deleted successfully',
+        de: 'Termin erfolgreich gelöscht'
+    },
+    {
+        en: 'Date',
+        de: 'Datum'
+    },
+    {
+        en: 'Time',
+        de: 'Uhrzeit'
+    },
+    {
+        en: 'Type',
+        de: 'Typ'
+    },
+    {
+        en: 'Location Type',
+        de: 'Location-Typ'
+    },
+    {
+        en: 'Location',
+        de: 'Location'
+    },
+    {
+        en: 'Unknown',
+        de: 'Unbekannt'
+    },
+    {
+        en: 'No Comment',
+        de: 'Kein Kommentar'
+    },
+    {
+        en: 'Current',
+        de: 'Aktuell'
+    },
+    {
+        en: 'Change To',
+        de: 'Ändern zu'
+    },
+    {
+        en: 'Change Study',
+        de: 'Studie ändern'
+    },
+    {
+        en: 'Add Subject',
+        de: 'Proband:in hinzufügen'
+    },
+    {
+        en: 'Subjects (short)',
+        de: 'Proband:innen (kurz)'
+    },
+    {
+        en: 'Only Names',
+        de: 'nur Namen'
+    },
+    {
+        en: 'T-Age',
+        de: 'T-Alter'
+    },
+    {
+        en: 'Part. Stud.',
+        de: 'Teilg. Stud.'
+    },
+    {
+        en: 'Status',
+        de: 'Status'
+    },
+    {
+        internal: 'unknown_short',
+        en: 'unk.',
+        de: 'unb.',
+    },
+    {
+        internal: 'participated_short',
+        en: 'p.',
+        de: 't.g.',
+    },
+    {
+        interbal: 'didnt-participate_short',
+        en: 'not p.',
+        de: 'n.t.g.',
+    },
+    {
+        internal: 'showed-up-but-didnt-participate_short',
+        en: 'only s.u.',
+        de: 'gek.',
+    },
+    {
+        internal: 'didnt-show-up_short',
+        en: 'not s.u.',
+        de: 'n. gek.',
+    },
+    {
+        internal: 'canceled-by-participant_short',
+        en: 'canceled b.p.',
+        de: 'abg.',
+    },
+    {
+        internal: 'canceled-by-institute_short',
+        en: 'uninv.',
+        de: 'ausg.',
+    },
+    {
+        internal: 'moved_short',
+        en: 'mv.',
+        de: 'versch.',
+    }
 ]
 
 export const createTranslate = (lang = 'en') => (template, props) => {
