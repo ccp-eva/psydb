@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React from 'react';
 
 import {
     Route,
@@ -9,23 +9,26 @@ import {
     useParams
 } from 'react-router-dom';
 
-import {
-    useFetchAll,
-    usePermissions,
-} from '@mpieva/psydb-ui-hooks';
-
-import { LoadingIndicator, Alert, Icons } from '@mpieva/psydb-ui-layout';
-import { ReservationTypeRouting } from './reservation-type-routing';
-
-import agent from '@mpieva/psydb-ui-request-agents';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
-import { RecordPicker } from '@mpieva/psydb-ui-lib';
-import { StudyPicker } from './study-picker';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useFetchAll } from '@mpieva/psydb-ui-hooks';
+import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
-export const Main = ({ customRecordTypes }) => {
+import { checkTeamsReservable, checkLocationsReservable } from '../utils';
+
+import usePFlags from './use-pflags';
+import LabMethodSettingsError from './lab-method-settings-error';
+import ReservationTypeRouting from './reservation-type-routing';
+import StudyPicker from './study-picker';
+
+const Main = (ps) => {
+    var { customRecordTypes } = ps;
+
+    var translate = useUITranslation();
+    var pflags = usePFlags();
+
     var { path, url } = useRouteMatch();
     var { studyType, studyId } = useParams();
-    console.log(useParams());
     var history =  useHistory();
 
     var [ didFetch, fetched ] = useFetchAll((agent) => ({
@@ -37,51 +40,48 @@ export const Main = ({ customRecordTypes }) => {
                 labelOnly: true
             }
         }),
-        teams: agent.fetchExperimentOperatorTeamsForStudy({
+        labTeams: agent.fetchExperimentOperatorTeamsForStudy({
             studyId,
         }),
-        labProcedureSettings: agent.fetchExperimentVariantSettings({
+        labMethodSettings: agent.fetchExperimentVariantSettings({
             studyId,
         })
     }), [ studyType, studyId ]);
-
-    var permissions = usePermissions();
 
     if (!didFetch) {
         return <LoadingIndicator size='lg' />
     }
 
-    var studyRecord = fetched.study.data.record;
-    var teamRecords = fetched.teams.data.records;
-    var settingRecords = fetched.labProcedureSettings.data.records;
+    var {
+        study,
+        labTeams,
+        labMethodSettings
+    } = fetched._stageDatas;
 
+    var studyRecord = study.record;
+    var teamRecords = labTeams.records;
+    var settingRecords = labMethodSettings.records;
+
+    // FIXME: pass types to api maybe?
     settingRecords = settingRecords.filter(it => (
         ['inhouse', 'away-team', 'online-video-call'].includes(it.type)
     ))
 
     var canReserveLocations = (
-        settingRecords.find(it => (
-            ['inhouse', 'online-video-call'].includes(it.type)
-        ))
-        && permissions.hasSomeLabOperationFlags({
-            types: [ 'inhouse', 'online-video-call' ],
-            flags: [ 'canWriteReservations' ]
-        })
+        checkLocationsReservable(settingRecords)
+        && pflags.has('canReserveLocations')
     );
 
     var canReserveTeams = (
-        settingRecords.find(it => (
-            ['away-team'].includes(it.type)
-        ))
-        && permissions.hasSomeLabOperationFlags({
-            types: [ 'away-team' ],
-            flags: [ 'canWriteReservations ']
-        })
+        checkTeamsReservable(settingRecords)
+        && pflags.has('canReserveTeams')
     );
 
     var renderedPicker = (
         <>
-            <header><b>Studie</b></header>
+            <header><b>
+                { translate('Study') }
+            </b></header>
             <StudyPicker
                 collection='study'
                 recordType={ studyType }
@@ -100,12 +100,12 @@ export const Main = ({ customRecordTypes }) => {
             <>
                 { renderedPicker }
                 <hr />
-                <ErrorFallback
+                <LabMethodSettingsError
                     studyRecord={ studyRecord }
                     urlAffix='/teams'
                 >
-                    Keine Experimenter:innen-Teams in dieser Studie
-                </ErrorFallback>
+                    { translate('No lab teams exist for this study.')}
+                </LabMethodSettingsError>
             </>
         )
     }
@@ -114,12 +114,14 @@ export const Main = ({ customRecordTypes }) => {
             <>
                 { renderedPicker }
                 <hr />
-                <ErrorFallback
+                <LabMethodSettingsError
                     studyRecord={ studyRecord }
                     urlAffix='/experiment-settings'
                 >
-                    Für diese Studie ist keine Reservierung möglich
-                </ErrorFallback>
+                    { translate(
+                        'Reservations are not available for this study.'
+                    )}
+                </LabMethodSettingsError>
             </>
         )
     }
@@ -138,7 +140,11 @@ export const Main = ({ customRecordTypes }) => {
                 </Route>
                 <Route path={`${path}/:navItem`}>
                     <ReservationTypeRouting { ...({
+                        canReserveLocations,
+                        canReserveTeams,
+                        
                         customRecordTypes,
+
                         studyRecord,
                         teamRecords,
                         settingRecords,
@@ -150,24 +156,4 @@ export const Main = ({ customRecordTypes }) => {
     );
 }
 
-const ErrorFallback = (ps) => {
-    var { studyRecord, urlAffix = '', children } = ps;
-    var { _id: studyId, type: studyType } = studyRecord;
-    return (
-        <Alert variant='danger' className='mt-3'>
-            { children }
-            {' '}
-            <a 
-                className='text-reset'
-                href={`#/studies/${studyType}/${studyId}${urlAffix}`}
-            >
-                <b>Zu den Studien-Einstellungen</b>
-                {' '}
-                <Icons.ArrowRightShort style={{
-                    height: '20px',
-                    width: '20px', marginTop: '-4px'
-                }} />
-            </a>
-        </Alert>
-    )
-}
+export default Main;

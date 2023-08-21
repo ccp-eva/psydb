@@ -2,7 +2,7 @@ import React from 'react';
 import { OptionSelectIndicator } from '@mpieva/psydb-ui-layout';
 import { StudySelectList, withRecordPicker } from '@mpieva/psydb-ui-lib';
 
-export const StudyPicker = withRecordPicker({ RecordList: (ps) => {
+const StudyPicker = withRecordPicker({ RecordList: (ps) => {
     var {
         onSelect,
         recordType: studyType,
@@ -34,3 +34,5 @@ export const StudyPicker = withRecordPicker({ RecordList: (ps) => {
         />
     )
 }})
+
+export default StudyPicker;

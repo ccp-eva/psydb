@@ -5,19 +5,22 @@ import {
     Switch,
     Redirect,
     useRouteMatch,
-    useHistory,
-    useParams
 } from 'react-router-dom';
 
-import { Alert, Icons } from '@mpieva/psydb-ui-layout';
-import { Locations } from './locations';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
-export const LocationTypeRouting = ({
-    customRecordTypes,
-    studyRecord,
-    teamRecords,
-    settingRecords,
-}) => {
+import LabMethodSettingsError from './lab-method-settings-error';
+import Locations from './locations';
+
+const LocationTypeRouting = (ps) => {
+    var {
+        customRecordTypes,
+        studyRecord,
+        teamRecords,
+        settingRecords,
+    } = ps;
+
+    var translate = useUITranslation();
     var { path, url } = useRouteMatch();
 
     var firstSetting = settingRecords.find(it => (
@@ -26,7 +29,16 @@ export const LocationTypeRouting = ({
     ));
 
     if (!firstSetting) {
-        return <NoLocationsFallback studyRecord={ studyRecord } />
+        return (
+            <LabMethodSettingsError
+                studyRecord={ studyRecord }
+                urlAffix='/experiment-settings'
+            >
+                { translate(
+                    'No rooms for inhouse/video appointments set.'
+                )}
+            </LabMethodSettingsError>
+        )
     }
 
     var firstLocationType = (
@@ -51,24 +63,4 @@ export const LocationTypeRouting = ({
     );
 }
 
-const NoLocationsFallback = (ps) => {
-    var { studyRecord } = ps;
-    var { _id: studyId, type: studyType } = studyRecord;
-    return (
-        <Alert variant='danger' className='mt-3'>
-            Keine Räumlichkeiten für Interne/Online-Video-Termine festgelegt.
-            {' '}
-            <a 
-                className='text-reset'
-                href={`#/studies/${studyType}/${studyId}/experiment-settings`}
-            >
-                <b>Zu den Studien-Einstellungen</b>
-                {' '}
-                <Icons.ArrowRightShort style={{
-                    height: '20px',
-                    width: '20px', marginTop: '-4px'
-                }} />
-            </a>
-        </Alert>
-    );
-}
+export default LocationTypeRouting;

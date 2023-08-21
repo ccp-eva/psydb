@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer, useMemo } from 'react';
+import React from 'react';
 
 import {
     useRouteMatch,
@@ -8,16 +8,17 @@ import {
 
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
 import { useModalReducer, useRevision } from '@mpieva/psydb-ui-hooks';
-
-import StudyInhouseLocations from '@mpieva/psydb-ui-lib/src/study-inhouse-locations';
+import { StudyInhouseLocations } from '@mpieva/psydb-ui-lib';
 
 import { CreateModal, DeleteModal } from './modals';
 
-export const Locations = ({
-    studyRecord,
-    teamRecords,
-    customRecordTypeData,
-}) => {
+const Locations = (ps) => {
+    var {
+        studyRecord,
+        teamRecords,
+        customRecordTypeData,
+    } = ps;
+
     var { path, url } = useRouteMatch();
     var { studyId, studyType, locationRecordType } = useParams();
     var history = useHistory();
@@ -59,3 +60,5 @@ export const Locations = ({
         </>
     );
 }
+
+export default Locations;

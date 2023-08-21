@@ -518,7 +518,36 @@ var maps = [
     {
         en: 'Permission Denied',
         de: 'Zugriff Verweigert'
-    }
+    },
+    {
+        en: 'Study Selection',
+        de: 'Studienauswahl'
+    },
+    {
+        en: 'No lab teams exist for this study.',
+        de: 'Keine Experimenter:innen-Teams in dieser Studie.'
+    },
+    {
+        en: 'Reservations are not available for this study.',
+        de: 'Für diese Studie ist keine Reservierung möglich.'
+    },
+    {
+        en: 'Go To Study Settings',
+        de: 'Zu den Studien-Einstellungen'
+    },
+    {
+        en: 'Away Teams',
+        de: 'Außen-Teams'
+    },
+    {
+        internal: 'reservable_locations',
+        en: 'Rooms',
+        de: 'Räumlichkeiten'
+    },
+    {
+        en: 'No rooms for inhouse/video appointments set.',
+        de: 'Keine Räumlichkeiten für Interne/Video-Termine festgelegt.'
+    },
 ]
 
 export const createTranslate = (lang = 'en') => (template, props) => {

@@ -1,56 +1,51 @@
 import React from 'react';
 
 import {
-    Route,
-    Switch,
-    Redirect,
     useRouteMatch,
     useHistory,
     useParams
 } from 'react-router-dom';
 
+import { only } from '@mpieva/psydb-core-utils';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
-import { usePermissions } from '@mpieva/psydb-ui-hooks';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { TabNav } from '@mpieva/psydb-ui-layout';
-import { LocationTypeRouting } from './location-type-routing';
+
+import LocationTypeRouting from './location-type-routing';
 import { AwayTeamRouting } from './away-team-routing';
 
-export const ReservationTypeRouting = (ps) => {
+
+const ReservationTypeRouting = (ps) => {
     var {
-        settingRecords
+        canReserveLocations,
+        canReserveTeams,
     } = ps;
+
+    var pass = only({ from: ps, paths: [
+        'customRecordTypes',
+        'studyRecord',
+        'teamRecords',
+        'settingRecords',
+    ]});
 
     var { path, url } = useRouteMatch();
     var { navItem } = useParams();
     var history =  useHistory();
-    var permissions = usePermissions();
-
-    var canReserveLocations = (
-        settingRecords.find(it => (
-            ['inhouse', 'online-video-call'].includes(it.type)
-        ))
-        && permissions.hasSomeLabOperationFlags({
-            types: [ 'inhouse', 'online-video-call' ],
-            flags: [ 'canWriteReservations' ]
-        })
-    );
-
-    var canReserveTeams = (
-        settingRecords.find(it => (
-            ['away-team'].includes(it.type)
-        ))
-        && permissions.hasSomeLabOperationFlags({
-            types: [ 'away-team' ],
-            flags: [ 'canWriteReservations']
-        })
-    );
+    
+    var translate = useUITranslation();
 
     var tabs = [];
     if (canReserveLocations) {
-        tabs.push({ key: 'locations', label: 'Räumlichkeiten' });
+        tabs.push({
+            key: 'locations',
+            label: translate('reservable_locations')
+        });
     }
     if (canReserveTeams) {
-        tabs.push({ key: 'away-teams', label: 'Aussen-Teams' });
+        tabs.push({
+            key: 'away-teams',
+            label: translate('Away Teams')
+        });
     }
 
     return (
@@ -65,11 +60,13 @@ export const ReservationTypeRouting = (ps) => {
                 }}
             />
             { canReserveLocations && navItem === 'locations' && (
-                <LocationTypeRouting { ...ps } />
+                <LocationTypeRouting { ...pass } />
             )}
             { canReserveTeams && navItem === 'away-teams' && (
-                <AwayTeamRouting { ...ps } />
+                <AwayTeamRouting { ...pass } />
             )}
         </>
     )
 }
+
+export default ReservationTypeRouting;
