@@ -1,220 +1,87 @@
-import React, { useState, useEffect } from 'react';
-import { usePermissions } from '@mpieva/psydb-ui-hooks';
+import React from 'react';
+import { useRouteMatch, Switch, Route, Redirect } from 'react-router-dom';
 
-import {
-    Route,
-    Switch,
-    Redirect,
-    useRouteMatch,
-    useHistory,
-    useParams
-} from 'react-router-dom';
-
-import agent from '@mpieva/psydb-ui-request-agents';
+import { groupBy } from '@mpieva/psydb-core-utils';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
-import { BigNav, PageWrappers } from '@mpieva/psydb-ui-layout';
-import RecordTypeNav from '@mpieva/psydb-ui-lib/src/record-type-nav';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { usePermissions, useFetch } from '@mpieva/psydb-ui-hooks';
+import { PermissionDenied, LoadingIndicator } from '@mpieva/psydb-ui-layout';
+import { RedirectOrTypeNav } from '@mpieva/psydb-ui-lib';
 
-import ReservationRouting from './reservation';
-import SubjectSelectionRouting from './subject-selection';
-import InviteConfirmationRouting from './invite-confirmation';
-import ExperimentPostprocessingRouting from './experiment-postprocessing';
+import PageWrapper from './page-wrapper';
+import IndexNav from './index-nav';
+import IndexRouting from './index-routing';
+
 
 const LabOperation = () => {
     var { path, url } = useRouteMatch();
+    
+    var translate = useUITranslation();
     var permissions = usePermissions();
 
-    var [ isInitialized, setIsInitialized ] = useState(false);
-    var [ metadata, setMetadata ] = useState();
+    var pflags = permissions.gatherFlags((p) => ({
+        canWriteReservations: p.hasSomeLabOperationFlags({
+            types: 'any', flags: [ 'canWriteReservations' ],
+        }),
+        canSelectSubjects: p.hasSomeLabOperationFlags({
+            types: 'any', flags: [
+                'canSelectSubjectsForExperiments',
+                'canPerformOnlineSurveys'
+            ],
+        }),
+        canConfirmInvitations: p.hasSomeLabOperationFlags({
+            types: 'any', flags: [ 'canConfirmSubjectInvitation' ],
+        }),
+        canPostprocess: p.hasSomeLabOperationFlags({
+            types: 'any', flags: [ 'canPostprocessExperiments' ],
+        }),
+    }))
 
-    useEffect(() => {
-        agent.readCustomRecordTypeMetadata().then(
-            (response) => {
-                setMetadata(response.data.data);
-                setIsInitialized(true)
-            }
-        )
-    }, [])
-
-    if (!isInitialized) {
+    if (!pflags.hasAny()) {
         return (
-            <div>Loading...</div>
-        );
+            <PageWrapper>
+                <PermissionDenied className='mt-2' />
+            </PageWrapper>
+        )
     }
 
-    var studyTypes = (
-        metadata.customRecordTypes.filter(it => (
-            it.collection ===  'study'
-        ))
-    );
+    var [ didFetch, fetched ] = useFetch((agent) => (
+        agent.readCustomRecordTypeMetadata()
+    ), [])
 
-    var subjectTypes = (
-        metadata.customRecordTypes.filter(it => (
-            it.collection ===  'subject'
-        ))
-    );
+    if (!didFetch) {
+        return <LoadingIndicator size='lg' />
+    }
 
-    var canWriteReservations = permissions.hasSomeLabOperationFlags({
-        types: 'any', flags: [ 'canWriteReservations' ],
+    var { customRecordTypes } = fetched.data;
+    var groupedCRTs = groupBy({
+        items: customRecordTypes,
+        byProp: 'collection'
     });
-    var canSelectSubjects = permissions.hasSomeLabOperationFlags({
-        types: 'any', flags: [
-            'canSelectSubjectsForExperiments',
-            'canPerformOnlineSurveys'
-        ],
-    });
-    var canConfirmInvitations = permissions.hasSomeLabOperationFlags({
-        types: 'any', flags: [ 'canConfirmSubjectInvitation' ],
-    });
-    var canPostprocess = permissions.hasSomeLabOperationFlags({
-        types: 'any', flags: [ 'canPostprocessExperiments' ],
-    });
-
 
     return (
-        <PageWrappers.Level1 title='Studienbetrieb'>
+        <PageWrapper>
             <Switch>
                 <Route exact path={`${path}`}>
                     <RedirectOrTypeNav
                         baseUrl={ `${url}/index` }
-                        studyTypes={ studyTypes }
+                        recordTypes={ groupedCRTs.study }
                     />
                 </Route>
+
                 <Route exact path={`${path}/index/:studyType`}>
-                    <OperationNav {...({
-                        canWriteReservations,
-                        canSelectSubjects,
-                        canConfirmInvitations,
-                        canPostprocess,
-                    })} />
+                    <IndexNav { ...pflags.all() } />
                 </Route>
 
-                { canWriteReservations && (
-                    <Route exact path={`${path}/reservation`}>
-                        <RedirectOrTypeNav
-                            baseUrl={ `${url}/reservation` }
-                            studyTypes={ studyTypes }
-                        />
-                    </Route>
-                )}
-                { canWriteReservations && (
-                    <Route path={`${path}/reservation/:studyType`}>
-                        <ReservationRouting customRecordTypes={
-                            metadata.customRecordTypes
-                        } />
-                    </Route>
-                )}
-
-                { canSelectSubjects && (
-                    <Route exact path={`${path}/subject-selection`}>
-                        <RedirectOrTypeNav
-                            baseUrl={ `${url}/subject-selection` }
-                            studyTypes={ studyTypes }
-                        />
-                    </Route>
-                )}
-                { canSelectSubjects && (
-                    <Route path={`${path}/subject-selection/:studyType`}>
-                        <SubjectSelectionRouting />
-                    </Route>
-                )}
-
-                { canConfirmInvitations && (
-                    <Route exact path={`${path}/invite-confirmation`}>
-                        <RedirectOrTypeNav
-                            baseUrl={ `${url}/invite-confirmation` }
-                            studyTypes={ studyTypes }
-                        />
-                    </Route>
-                )}
-                { canConfirmInvitations && (
-                    <Route path={`${path}/invite-confirmation/:studyType`}>
-                        <InviteConfirmationRouting
-                            subjectRecordTypes={ subjectTypes }
-                        />
-                    </Route>
-                )}
-
-                { canPostprocess && (
-                    <Route exact path={`${path}/experiment-postprocessing`}>
-                        <RedirectOrTypeNav
-                            baseUrl={ `${url}/experiment-postprocessing` }
-                            studyTypes={ studyTypes }
-                        />
-                    </Route>
-                )}
-                { canPostprocess && (
-                    <Route path={`${path}/experiment-postprocessing/:studyType`}>
-                        <ExperimentPostprocessingRouting
-                            subjectRecordTypes={ subjectTypes }
-                        />
-                    </Route>
-                )}
+                <IndexRouting
+                    customRecordTypes={ customRecordTypes }
+                    groupedCRTs={ groupedCRTs }
+                    { ...pflags.all() }
+                />
 
             </Switch>
-        </PageWrappers.Level1>
+        </PageWrapper>
     )
-}
-
-const RedirectOrTypeNav = ({
-    baseUrl,
-    studyTypes,
-    title,
-}) => {
-    if (studyTypes.length === 1) {
-        return (
-            <Redirect to={
-                `${baseUrl}/${studyTypes[0].type}`
-            } />
-        )
-    }
-    else {
-        return (
-            <>
-                { title && (
-                    <h2>{ title }</h2>
-                )}
-                <RecordTypeNav items={ studyTypes } />
-            </>
-        )
-    }
-}
-
-const OperationNav = (ps) => {
-    var { path, url } = useRouteMatch();
-    var { studyType } = useParams();
-
-    var {
-        canWriteReservations,
-        canSelectSubjects,
-        canConfirmInvitations,
-        canPostprocess,
-    } = ps;
-
-    var baseUrl = up(url, 2);
-
-    var navItems = [
-        (canWriteReservations && { 
-            label: 'Reservierung',
-            linkUrl: `${baseUrl}/reservation/${studyType}`,
-        }),
-        (canSelectSubjects && {
-            label: 'Proband:innenauswahl',
-            linkUrl: `${baseUrl}/subject-selection/${studyType}`,
-        }),
-        (canConfirmInvitations && {
-            label: 'Terminbestätigung',
-            linkUrl: `${baseUrl}/invite-confirmation/${studyType}`,
-        }),
-        (canPostprocess && {
-            label: 'Nachbereitung',
-            linkUrl: `${baseUrl}/experiment-postprocessing/${studyType}`,
-        }),
-    ].filter(it => !!it)
-
-    return (
-        <BigNav items={ navItems } />
-    );
 }
 
 export default LabOperation;
