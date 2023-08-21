@@ -1,7 +1,6 @@
 import React from 'react';
-import jsonpointer from 'jsonpointer';
-
 import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
+
 import {
     usePermissions,
     useModalReducer,

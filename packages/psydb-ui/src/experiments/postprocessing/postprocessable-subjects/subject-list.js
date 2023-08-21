@@ -1,5 +1,7 @@
 import React from 'react';
-import jsonpointer from 'jsonpointer';
+import { jsonpointer } from '@mpieva/psydb-core-utils';
+import { calculateAge } from '@mpieva/psydb-common-lib';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { usePermissions, useModalReducer } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -12,34 +14,37 @@ import {
     Icons,
 } from '@mpieva/psydb-ui-layout';
 
-import calculateAge from '@mpieva/psydb-ui-lib/src/calculate-age';
-import PostprocessSubjectForm from '@mpieva/psydb-ui-lib/src/experiments/postprocess-subject-form';
 import { DetailedPostprocessModal } from '@mpieva/psydb-ui-compositions';
+import PostprocessSubjectForm from '@mpieva/psydb-ui-lib/src/experiments/postprocess-subject-form';
+
 import { RemoveSubjectManualModal } from '../../remove-subject-manual-modal';
 
-const SubjectList = ({
-    studyData,
-    experimentRecord,
+const SubjectList = (ps) => {
+    var {
+        studyData,
+        experimentRecord,
 
-    records,
-    relatedRecordLabels,
-    relatedHelperSetItems,
-    relatedCustomRecordTypeLabels,
-    displayFieldData,
+        records,
+        relatedRecordLabels,
+        relatedHelperSetItems,
+        relatedCustomRecordTypeLabels,
+        displayFieldData,
 
-    className,
-    onSuccessfulUpdate,
-    ...other
-}) => {
-    var subjectModal = useModalReducer();
-    var removeManualModal = useModalReducer();
+        className,
+        onSuccessfulUpdate,
+        ...other
+    } = ps;
 
     var permissions = usePermissions();
+
     var canReadSubjects = permissions.hasFlag('canReadSubjects');
     var canWriteSubjects = permissions.hasFlag('canWriteSubjects');
     var canRemoveSubject = permissions.hasLabOperationFlag(
         experimentRecord.type, 'canRemoveExperimentSubject'
     );
+
+    var subjectModal = useModalReducer();
+    var removeManualModal = useModalReducer();
 
 
     var dateOfBirthField = displayFieldData.find(it => (
@@ -115,102 +120,120 @@ const SubjectList = ({
     )
 }
 
-const PostprocessSubjectRow = ({
-    experimentId,
-    subjectId,
-    subjectType,
-    subjectRecordLabel,
-    subjectRecord,
-    dobFieldValue,
+const PostprocessSubjectRow = (ps) => {
+    var {
+        experimentId,
+        subjectId,
+        subjectType,
+        subjectRecordLabel,
+        subjectRecord,
+        dobFieldValue,
 
-    studyData,
+        studyData,
 
-    experimentRecord,
-    relatedRecordLabels,
+        experimentRecord,
+        relatedRecordLabels,
 
-    canReadSubjects,
-    canWriteSubjects,
-    canRemoveSubject,
-    subjectModal,
+        canReadSubjects,
+        canWriteSubjects,
+        canRemoveSubject,
+        subjectModal,
 
-    onClickRemoveManual,
-    onSuccessfulUpdate,
-}) => {
+        onClickRemoveManual,
+        onSuccessfulUpdate,
+    } = ps;
+
     var { type: experimentType } = experimentRecord;
     var { enableFollowUpExperiments } = studyData.record.state;
 
+    var translate = useUITranslation();
+
+    var handleEdit = () => (
+        subjectModal.handleShow({
+            title: translate(
+                'Edit (${subjectLabel})',
+                { subjectLabel: subjectRecordLabel }
+            ),
+            subjectType,
+            subjectId,
+            experimentRecord,
+            relatedRecordLabels,
+        })
+    )
+
+    return (
+        <RowWrapper>
+            <Col sm={5} className='d-flex align-items-center'>
+                <span className='d-inline-block mr-2'>
+                    { subjectRecordLabel }
+                    { dobFieldValue && (
+                        ` ${translate('T-Age')}: ${dobFieldValue}`
+                    )}
+                </span>
+                
+                { canWriteSubjects && (
+                    <EditIconButtonInline
+                        buttonStyle={{
+                            background: 'transparent',
+                            marginTop: '0px'
+                        }}
+                        onClick={ handleEdit }
+                    />
+                )}
+                { !canWriteSubjects && canReadSubjects && (
+                    <DetailsIconButton
+                        buttonStyle={{
+                            background: 'transparent',
+                            marginTop: '0px'
+                        }}
+                        to={`/subjects/${subjectType}/${subjectId}`}
+                    />
+                )}
+            </Col>
+            <Col sm={7}>
+                <div className='d-flex'>
+                    <div className='flex-grow-1 mr-3'>
+                        <PostprocessSubjectForm { ...({
+                            experimentType,
+                            experimentId,
+                            subjectId,
+                            enableFollowUpExperiments,
+                            onSuccessfulUpdate
+                        }) } />
+                    </div>
+                    { experimentType === 'away-team' && canRemoveSubject && (
+                        <Button
+                            variant='danger'
+                            onClick={ () => {
+                                return onClickRemoveManual({
+                                    subjectRecord,
+                                })
+                            }}
+                        >
+                            <Icons.X style={{
+                                width: '20px',
+                                height: '20px',
+                                marginTop: '-2px'
+                            }} />
+                        </Button>
+                    )}
+                </div>
+            </Col>
+        </RowWrapper>
+    );
+}
+
+var RowWrapper = (ps) => {
+    var { children } = ps;
     return (
         <div className='bg-light border mb-2 p-3'>
             <Container>
                 <Row className='align-items-center'>
-                    <Col sm={5} className='d-flex align-items-center'>
-                        <span className='d-inline-block mr-2'>
-                            { subjectRecordLabel }
-                            { dobFieldValue && (
-                                '  Alter: ' + `(${dobFieldValue})`
-                            )}
-                        </span>
-                        
-                        { canWriteSubjects && (
-                            <EditIconButtonInline
-                                buttonStyle={{
-                                    background: 'transparent',
-                                    marginTop: '0px'
-                                }}
-                                onClick={ () => (
-                                    subjectModal.handleShow({
-                                        title: `Nachbereitung (${subjectRecordLabel})`,
-                                        subjectType,
-                                        subjectId,
-                                        experimentRecord,
-                                        relatedRecordLabels,
-                                    })
-                                )}
-                            />
-                        )}
-                        { !canWriteSubjects && canReadSubjects && (
-                            <DetailsIconButton
-                                buttonStyle={{
-                                    background: 'transparent',
-                                    marginTop: '0px'
-                                }}
-                                to={`/subjects/${subjectType}/${subjectId}`}
-                            />
-                        )}
-                    </Col>
-                    <Col sm={7}>
-                        <div className='d-flex'>
-                            <div className='flex-grow-1 mr-3'>
-                                <PostprocessSubjectForm { ...({
-                                    experimentType,
-                                    experimentId,
-                                    subjectId,
-                                    enableFollowUpExperiments,
-                                    onSuccessfulUpdate
-                                }) } />
-                            </div>
-                            { experimentType === 'away-team' && canRemoveSubject && (
-                                <Button
-                                    variant='danger'
-                                    onClick={ () => {
-                                        return onClickRemoveManual({
-                                            subjectRecord,
-                                        })
-                                    }}
-                                >
-                                    <Icons.X style={{
-                                        width: '20px',
-                                        height: '20px',
-                                        marginTop: '-2px'
-                                    }} />
-                                </Button>
-                            )}
-                        </div>
-                    </Col>
+                    { children }
                 </Row>
             </Container>
         </div>
-    );
+    )
 }
 
 export default SubjectList;

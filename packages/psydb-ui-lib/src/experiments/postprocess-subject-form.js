@@ -2,6 +2,8 @@ import React, { useState, useCallback } from 'react';
 import { Form, Button, InputGroup } from 'react-bootstrap';
 import enums from '@mpieva/psydb-schema-enums';
 
+import { entries } from '@mpieva/psydb-core-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useSend } from '@mpieva/psydb-ui-hooks';
 import { DefaultForm, Fields, withField } from '../formik';
 
@@ -18,6 +20,9 @@ const PostprocessSubjectForm = (ps) => {
         enableFollowUpExperiments,
         onSuccessfulUpdate
     } = ps;
+
+    var translate = useUITranslation();
+
     var send = useSend((formData) => ({
         type: 'experiment/change-participation-status',
         payload: {
@@ -27,7 +32,7 @@ const PostprocessSubjectForm = (ps) => {
         }
     }), { onSuccessfulUpdate });
 
-    var options = (
+    var options = entries(
         experimentType === 'away-team'
         ? {
             ...enums.awayTeamParticipationStatus.mapping,
@@ -37,14 +42,19 @@ const PostprocessSubjectForm = (ps) => {
             ...enums.inviteParticipationStatus.mapping,
             ...enums.inviteUnparticipationStatus.mapping,
         }
-    )
+    ).reduce((acc, [ key ]) => ({
+        ...acc, [key]: translate(key)
+    }), {})
 
     var initialValues = {
         participationStatus: 'participated',
         excludeFromMoreExperimentsInStudy: false,
     };
     return (
-        <DefaultForm onSubmit={ send.exec }initialValues={ initialValues }>
+        <DefaultForm
+            onSubmit={ send.exec }
+            initialValues={ initialValues }
+        >
             {(formikProps) => (
                 <InputGroup>
                     <Select
@@ -56,14 +66,14 @@ const PostprocessSubjectForm = (ps) => {
                             <InputGroup.Text>
                                 <Fields.PlainCheckbox
                                     dataXPath='$.excludeFromMoreExperimentsInStudy'
-                                    label='Letzter Termin?'
+                                    label={ translate('Last Appointment?') }
                                 />
                             </InputGroup.Text>
                         </InputGroup.Append>
                     )}
                     <InputGroup.Append>
                         <Button type='submit'>
-                            Speichern
+                            { translate('Save') }
                         </Button>
                     </InputGroup.Append>
                 </InputGroup>

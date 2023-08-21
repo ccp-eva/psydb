@@ -1,6 +1,8 @@
-import React, { useEffect, useReducer, useCallback } from 'react';
+import React from 'react';
 import { unique } from '@mpieva/psydb-core-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
+
 import GeneralInfo from '../general-info';
 import GeneralFunctions from './general-functions';
 import AllSubjects from './all-subjects';
@@ -8,17 +10,21 @@ import AutoProcessButton from './auto-process-button';
 import PostprocessableSubjects from './postprocessable-subjects';
 import PostprocessedSubjects from './postprocessed-subjects';
 
-const ExperimentPostprocessing = ({
-    experimentData,
-    labProcedureSettingData,
-    opsTeamData,
-    locationData,
-    studyData,
-    subjectDataByType,
+const ExperimentPostprocessing = (ps) => {
+    var {
+        experimentData,
+        labProcedureSettingData,
+        opsTeamData,
+        locationData,
+        studyData,
+        subjectDataByType,
 
-    onSuccessfulUpdate,
-}) => {
+        onSuccessfulUpdate,
+    } = ps;
+
+    var translate = useUITranslation();
     var permissions = usePermissions();
+
     var {
         type: experimentType,
         state: { subjectData }
@@ -75,16 +81,19 @@ const ExperimentPostprocessing = ({
         <div>
             <div className='border bg-light p-3'>
                 <h5 className='text-orange'>
-                    { !isPlaceholder && (
+                    { isPlaceholder ? (
+                        <span className='text-grey'>
+                            { translate('Placeholder (in Past)') }
+                        </span>
+                    ) : (
                         hasProcessedSubjects
-                        ? <span>in Nachbereitung</span>
-                        : <span>offene Nachbereitung</span>
-                    )}
-                    { isPlaceholder && (
-                        <span className='text-grey'>Platzhalter (in Vergangenheit)</span>
+                        ? <span>{ translate('In Postprocessing') }</span>
+                        : <span>{ translate('Open Postprocessing') }</span>
                     )}
                 </h5>
+
                 <GeneralInfo { ...infoBag } />
+
                 { showFunctions && (
                     <>
                         <hr />
@@ -101,26 +110,11 @@ const ExperimentPostprocessing = ({
             </div>
             { !isPlaceholder && canPostprocess
                 ? (
-                    <>
-                        <div className='mt-3'>
-                            <h4 className='border-bottom d-flex justify-content-between pb-1'>
-                                Nachzubereitende Proband:innen
-                                { experimentData.record.type === 'away-team' && (
-                                    <AutoProcessButton
-                                        experimentId={ experimentData.record._id }
-                                        onSuccessfulUpdate={ onSuccessfulUpdate }
-                                    />
-                                )}
-                            </h4>
-                            <PostprocessableSubjects { ...subjectsBag } />
-                        </div>
-                        <div className='mt-3'>
-                            <h4 className='border-bottom pb-1'>
-                                Nachbereitete Proband:innen
-                            </h4>
-                            <PostprocessedSubjects { ...subjectsBag } />
-                        </div>
-                    </>
+                    <ProcessingLists
+                        experimentData={ experimentData }
+                        onSuccessfulUpdate={ onSuccessfulUpdate }
+                        subjectsBag={ subjectsBag }
+                    />
                 )
                 : (
                     <AllSubjects { ...subjectsBag } className='p-3' />
@@ -129,6 +123,39 @@ const ExperimentPostprocessing = ({
         </div>
 
     );
+}
+
+const ProcessingLists = (ps) => {
+    var {
+        experimentData,
+        onSuccessfulUpdate,
+        subjectsBag
+    } = ps;
+    
+    var translate = useUITranslation();
+
+    return (
+        <>
+            <div className='mt-3'>
+                <h4 className='border-bottom d-flex justify-content-between pb-1'>
+                    { translate('Subjects to Postprocess') }
+                    { experimentData.record.type === 'away-team' && (
+                        <AutoProcessButton
+                            experimentId={ experimentData.record._id }
+                            onSuccessfulUpdate={ onSuccessfulUpdate }
+                        />
+                    )}
+                </h4>
+                <PostprocessableSubjects { ...subjectsBag } />
+            </div>
+            <div className='mt-3'>
+                <h4 className='border-bottom pb-1'>
+                    { translate('Postprocessed Subjects') }
+                </h4>
+                <PostprocessedSubjects { ...subjectsBag } />
+            </div>
+        </>
+    )
 }
 
 export default ExperimentPostprocessing;

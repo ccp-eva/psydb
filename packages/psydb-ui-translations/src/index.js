@@ -433,9 +433,72 @@ var maps = [
     },
     {
         internal: 'moved_short',
-        en: 'mv.',
+        en: 'resc.',
         de: 'versch.',
-    }
+    },
+    
+    {
+        internal: 'unknown',
+        en: 'Unknown',
+        de: 'Unbekannt',
+    },
+    {
+        internal: 'participated',
+        en: 'Participated',
+        de: 'Teilgenommen',
+    },
+    {
+        interbal: 'didnt-participate',
+        en: 'Did Not Participate',
+        de: 'Nicht Teilgenommen',
+    },
+    {
+        internal: 'showed-up-but-didnt-participate',
+        en: 'Only Showed Up',
+        de: 'Gekommen',
+    },
+    {
+        internal: 'didnt-show-up',
+        en: 'Did Not Show Up',
+        de: 'Nicht Gekommen',
+    },
+    {
+        internal: 'canceled-by-participant',
+        en: 'Canceled by Participant',
+        de: 'Abgesagt',
+    },
+    {
+        internal: 'canceled-by-institute',
+        en: 'Uninvited',
+        de: 'Ausgeladen',
+    },
+    {
+        internal: 'moved',
+        en: 'Rescheduled',
+        de: 'Verschoben',
+    },
+
+
+    {
+        en: 'Subjects to Postprocess',
+        de: 'Nachzubereitende Proband:innen',
+    },
+    {
+        en: 'Postprocessed Subjects',
+        de: 'Nachbereitete Proband:innen',
+    },
+    {
+        en: 'Set Remaining to "Not Participated"',
+        de: 'Verbleibende auf "Nicht Teilgenommen" setzen',
+    },
+    {
+        en: 'Edit (${subjectLabel})',
+        de: 'Bearbeitung (${subjectLabel})',
+    },
+    {
+        en: 'Last Appointment?',
+        de: 'Letzter Termin?',
+    },
 ]
 
 export const createTranslate = (lang = 'en') => (template, props) => {

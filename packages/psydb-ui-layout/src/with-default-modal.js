@@ -25,13 +25,12 @@ const WithDefaultModal = (options) => (ps) => {
     } = ps;
 
     var translate = useUITranslation();
+    if (optionsTitle) {
+        optionsTitle = translate(optionsTitle);
+    }
 
     var { title: modalPayloadTitle } = modalPayloadData || {};
     var title = modalPayloadTitle || propsTitle || optionsTitle;
-
-    if (title) {
-        title = translate(title);
-    }
 
     if (forceShow) {
         show = true;
