@@ -515,6 +515,10 @@ var maps = [
         en: 'No subjects have been postprocessed yet.',
         de: 'Bisher keine Proband:innen nachbereitet.'
     },
+    {
+        en: 'Permission Denied',
+        de: 'Zugriff Verweigert'
+    }
 ]
 
 export const createTranslate = (lang = 'en') => (template, props) => {
