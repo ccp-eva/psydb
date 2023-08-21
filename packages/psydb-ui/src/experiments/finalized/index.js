@@ -1,22 +1,28 @@
-import React, { useEffect, useReducer, useCallback } from 'react';
+import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+
 import GeneralInfo from '../general-info';
 import AllSubjects from './all-subjects';
 
-const ExperimentFinalized = ({
-    experimentData,
-    labProcedureSettingData,
-    opsTeamData,
-    locationData,
-    studyData,
-    subjectDataByType,
+const ExperimentFinalized = (ps) => {
+    var {
+        experimentData,
+        labProcedureSettingData,
+        opsTeamData,
+        locationData,
+        studyData,
+        subjectDataByType,
 
-    onSuccessfulUpdate,
-}) => {
+        onSuccessfulUpdate,
+    } = ps;
+
+    var translate = useUITranslation();
+
     return (
         <div>
             <div className='border bg-light p-3'>
                 <h5 className='text-success'>
-                    Abgeschlossen
+                    { translate('Completed') }
                 </h5>
                 <GeneralInfo { ...({
                     experimentData,

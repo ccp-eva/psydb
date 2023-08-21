@@ -6,17 +6,17 @@ export { withIconButton };
 
 export const LocationIconButton = withIconButton({
     Icon: Icons.HouseDoor,
-    defaultTitle: 'zur Location'
+    defaultTitle: 'Location'
 });
 
 export const StudyIconButton = withIconButton({
     Icon: Icons.ClipboardData,
-    defaultTitle: 'zur Studie'
+    defaultTitle: 'Study'
 });
 
 export const ExperimentIconButton = withIconButton({
     Icon: Icons.CalendarDate,
-    defaultTitle: 'zum Termin'
+    defaultTitle: 'Appointment'
 });
 
 export const SubjectIconButton = withIconButton({
@@ -29,7 +29,7 @@ export const SubjectIconButton = withIconButton({
     //Icon: Icons.Postcard,
     
     Icon: Icons.PersonVideo2,
-    defaultTitle: 'zur Proband:in',
+    defaultTitle: 'Subject',
     defaultIconStyle: {
         width: '22px',
         height: '22px',
@@ -39,7 +39,7 @@ export const SubjectIconButton = withIconButton({
 
 export const RemoveIconButtonInline = withIconButton({
     Icon: Icons.X,
-    defaultTitle: 'Löschen',
+    defaultTitle: 'Delete',
     defaultButtonProps: {
         size: 'sm',
         variant: 'outline-danger'
@@ -53,7 +53,7 @@ export const RemoveIconButtonInline = withIconButton({
 
 export const EditIconButtonInline = withIconButton({
     Icon: Icons.PencilFill,
-    defaultTitle: 'Bearbeiten',
+    defaultTitle: 'Edit',
     defaultIconStyle: {
         width: '16px',
         height: '16px',
@@ -63,7 +63,7 @@ export const EditIconButtonInline = withIconButton({
 
 export const ItemsIconButtonInline = withIconButton({
     Icon: Icons.List,
-    defaultTitle: 'Einträge',
+    defaultTitle: 'Items',
     defaultIconStyle: {
         width: '16px',
         height: '16px',

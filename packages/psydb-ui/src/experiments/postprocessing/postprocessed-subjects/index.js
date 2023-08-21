@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { Alert, SubjectIconButton } from '@mpieva/psydb-ui-layout';
 import { withLabProcedureSettingsIterator } from '@mpieva/psydb-ui-lib';
@@ -19,6 +20,8 @@ const PostprocessedSubjects = withLabProcedureSettingsIterator({
             ...pass
         } = ps;
 
+        var translate = useUITranslation();
+
         var fullSubjectData = subjectDataByType[subjectTypeKey];
         if (fullSubjectData.records.length < 1) {
             return null;
@@ -31,9 +34,9 @@ const PostprocessedSubjects = withLabProcedureSettingsIterator({
         );
         if (unprocessedSubjects.length < 1) {
             return (
-                <Alert variant='info'>
-                    <i>Bisher keine Proband:innen nachbereitet</i>
-                </Alert>
+                <Alert variant='info'><i>
+                    { translate('No subjects have been postprocessed yet.') }
+                </i></Alert>
             );
         }
 

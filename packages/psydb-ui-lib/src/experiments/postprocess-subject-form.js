@@ -1,8 +1,7 @@
-import React, { useState, useCallback } from 'react';
+import React from 'react';
 import { Form, Button, InputGroup } from 'react-bootstrap';
 import enums from '@mpieva/psydb-schema-enums';
 
-import { entries } from '@mpieva/psydb-core-utils';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useSend } from '@mpieva/psydb-ui-hooks';
 import { DefaultForm, Fields, withField } from '../formik';
@@ -32,7 +31,7 @@ const PostprocessSubjectForm = (ps) => {
         }
     }), { onSuccessfulUpdate });
 
-    var options = entries(
+    var options = Object.keys(
         experimentType === 'away-team'
         ? {
             ...enums.awayTeamParticipationStatus.mapping,
@@ -42,7 +41,7 @@ const PostprocessSubjectForm = (ps) => {
             ...enums.inviteParticipationStatus.mapping,
             ...enums.inviteUnparticipationStatus.mapping,
         }
-    ).reduce((acc, [ key ]) => ({
+    ).reduce((acc, key) => ({
         ...acc, [key]: translate(key)
     }), {})
 

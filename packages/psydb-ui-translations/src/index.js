@@ -407,7 +407,7 @@ var maps = [
         de: 't.g.',
     },
     {
-        interbal: 'didnt-participate_short',
+        internal: 'didnt-participate_short',
         en: 'not p.',
         de: 'n.t.g.',
     },
@@ -448,7 +448,7 @@ var maps = [
         de: 'Teilgenommen',
     },
     {
-        interbal: 'didnt-participate',
+        internal: 'didnt-participate',
         en: 'Did Not Participate',
         de: 'Nicht Teilgenommen',
     },
@@ -498,6 +498,22 @@ var maps = [
     {
         en: 'Last Appointment?',
         de: 'Letzter Termin?',
+    },
+    {
+        en: 'Edit',
+        de: 'Bearbeiten'
+    },
+    {
+        en: 'Items',
+        de: 'Einträge',
+    },
+    {
+        en: 'Subject',
+        de: 'Proband:in'
+    },
+    {
+        en: 'No subjects have been postprocessed yet.',
+        de: 'Bisher keine Proband:innen nachbereitet.'
     },
 ]
 
