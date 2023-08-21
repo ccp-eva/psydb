@@ -26,6 +26,7 @@ const usePermissions = () => {
         hasCollectionFlag,
     
         hasLabOpsFlags,
+        gatherFlags,
 
         ...raw
     } = wrappedPermissions;
@@ -48,6 +49,7 @@ const usePermissions = () => {
         hasCollectionFlag,
         
         hasLabOpsFlags,
+        gatherFlags,
     }
 }
 

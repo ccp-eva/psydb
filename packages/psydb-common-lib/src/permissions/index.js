@@ -171,7 +171,7 @@ var Permissions = (options) => {
         );
     };
 
-    var out = {
+    var intermediate = {
         ...wrapper,
 
         isRoot,
@@ -190,6 +190,30 @@ var Permissions = (options) => {
         
         getAllowedLabOpsForFlags,
         hasLabOpsFlags,
+    }
+
+    var gatherFlags = (lambda) => {
+        var gathered = lambda(intermediate);
+        var pflags = {
+            all: () => gathered,
+            has: (key) => gathered[key] === true,
+            hasAny: () => {
+                var has = false;
+                for (var [key, value] of entries(gathered)) {
+                    if (has) {
+                        break;
+                    }
+                    has = value === true
+                }
+                return has;
+            }
+        }
+        return pflags;
+    }
+
+    var out = {
+        ...intermediate,
+        gatherFlags
     }
 
     return out;
