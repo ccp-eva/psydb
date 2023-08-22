@@ -35,6 +35,7 @@ const StudyParticipation = (ps) => {
     var revision = useRevision();
 
     var permissions = usePermissions();
+    var canAddSubjects = permissions.hasFlag('canWriteParticipation');
     var canImportCSV = permissions.isRoot();
 
     var createModal = useModalReducer();
@@ -124,9 +125,11 @@ const StudyParticipation = (ps) => {
 
             <div className='mt-3'>
 
-                <Button onClick={ createModal.handleShow }>
-                    Proband:innen hinzufügen
-                </Button>
+                { canAddSubjects && (
+                    <Button onClick={ createModal.handleShow }>
+                        Proband:innen hinzufügen
+                    </Button>
+                )}
                 
                 { canImportCSV && (
                     <Button
