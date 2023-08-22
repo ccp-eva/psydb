@@ -28,7 +28,12 @@ var EmailList = ({ minItems, ...additionalProperties }) => DefaultArray({
     }),
     title: 'Emails',
     // unqiueItemProperties requires "ajv-keywords"
-    uniqueItemProperties: [ 'email', 'isPrimary'],
+    uniqueItemProperties: [
+        'email',
+        // TODO create keyword that checks "at least one is true"
+        // for nested props on object array
+        //'isPrimary'
+    ],
     ...additionalProperties,
 })
 
