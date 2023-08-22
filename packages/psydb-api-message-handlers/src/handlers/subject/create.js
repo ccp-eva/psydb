@@ -70,13 +70,6 @@ module.exports = GenericRecordHandler({
         
         var { setIsHidden, ...additionalCreateProps } = extra;
 
-        var channel = await openChannel({
-            db,
-            rohrpost,
-            ...destructured
-        });
-        var currentChannelId = channel.id;
-
         var { forceDuplicate } = additionalCreateProps;
         delete additionalCreateProps.forceDuplicate;
 
@@ -89,6 +82,14 @@ module.exports = GenericRecordHandler({
                 ].join(''), 8
             )();
         }
+
+        var channel = await openChannel({
+            db,
+            rohrpost,
+            ...destructured,
+            additionalCreateProps,
+        });
+        var currentChannelId = channel.id;
 
         await dispatchProps({
             collection,
