@@ -1,29 +1,26 @@
 import React from 'react';
-
-import {
-    Container,
-    Col,
-    Row,
-} from 'react-bootstrap';
+import { dtoi } from '@mpieva/psydb-date-interval-fns';
+import { Container, Col, Row } from '@mpieva/psydb-ui-layout';
 
 import TimeSlotList from './time-slot-list';
 
-const LocationTimeTable = ({ allDayStarts, ...other }) => (
-    <Container>
-        <Row>
-            { allDayStarts.map(dayStart => (
-                <Col
-                    key={ dayStart.getTime() }
-                    className='p-0'
-                >
-                    <TimeSlotList
-                        { ...other }
-                        dayStart={ dayStart }
-                    />
-                </Col>
-            )) }
-        </Row>
-    </Container>
-)
+const LocationTimeTable = (ps) => {
+    var { allDays, ...pass } = ps;
+    return (
+        <Container>
+            <Row>
+                { allDays.map((day, ix) => (
+                    <Col key={ ix } className='p-0'>
+                        <TimeSlotList
+                            { ...pass }
+                            day={ day }
+                            dayStart={ day.start }
+                        />
+                    </Col>
+                )) }
+            </Row>
+        </Container>
+    )
+}
 
 export default LocationTimeTable;

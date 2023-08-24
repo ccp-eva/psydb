@@ -1,45 +1,49 @@
 import React, { useMemo } from 'react';
+import { sliceDays } from '@mpieva/psydb-date-interval-fns';
 import { useRouteMatch } from 'react-router-dom';
 
-import getDayStartsInInterval from '../../get-day-starts-in-interval';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import TimeTable from '../location-time-table';
 
-const LocationCalendar = ({
-    variant,
+const LocationCalendar = (ps) => {
+    var {
+        variant,
 
-    studyId,
-    locationRecord,
-    reservationRecords,
-    experimentRecords,
-    teamRecords,
+        studyId,
+        locationRecord,
+        reservationRecords,
+        experimentRecords,
+        teamRecords,
 
-    settingRecords,
-    settingRelated,
+        settingRecords,
+        settingRelated,
 
-    currentPageStart,
-    currentPageEnd,
-    onPageChange,
+        currentPageStart,
+        currentPageEnd,
+        onPageChange,
 
-    subjectRecordType,
-    currentExperimentId,
-    currentSubjectRecord,
-    desiredTestInterval,
-    testableIntervals,
+        subjectRecordType,
+        currentExperimentId,
+        currentSubjectRecord,
+        desiredTestInterval,
+        testableIntervals,
 
-    __useNewCanSelect,
-    checkEmptySlotSelectable,
-    checkReservationSlotSelectable,
-    checkExperimentSlotSelectable,
+        __useNewCanSelect,
+        checkEmptySlotSelectable,
+        checkReservationSlotSelectable,
+        checkExperimentSlotSelectable,
 
-    onSelectEmptySlot,
-    onSelectReservationSlot,
-    onSelectExperimentSlot,
+        onSelectEmptySlot,
+        onSelectReservationSlot,
+        onSelectExperimentSlot,
 
-    calculateNewExperimentMaxEnd,
+        calculateNewExperimentMaxEnd,
 
-    className,
-    showPast,
-}) => {
+        className,
+        showPast,
+    } = ps;
+
+    var translate = useUITranslation();
     var { path, url } = useRouteMatch();
 
     var {
@@ -55,12 +59,14 @@ const LocationCalendar = ({
         end: endTimeInt
     } = possibleReservationTimeInterval;
 
-    var allDayStarts = useMemo(() => (
-        getDayStartsInInterval({
-            start: currentPageStart,
-            end: currentPageEnd
-        })
-    ), [ currentPageStart, currentPageEnd ]);
+    // FIXME: does that memo do anything? bc
+    // deps are dates
+    var allDays = useMemo(() => sliceDays({
+        start: currentPageStart,
+        end: currentPageEnd
+    }), [ currentPageStart, currentPageEnd ]);
+
+    var allDayStarts = allDays.map(it => it.start);
 
     var filteredReservationRecords = reservationRecords.filter(it => (
         it.state.locationId === locationRecord._id
@@ -72,7 +78,11 @@ const LocationCalendar = ({
     return (
         <div className={ className }>
             <h5 className='pl-3 pt-2 pb-2 m-0 bg-light'>
-                <u>Raum: { locationRecord._recordLabel }</u>
+                <u>
+                    { translate('Room') }
+                    {': '}
+                    { locationRecord._recordLabel }
+                </u>
             </h5>
             <TimeTable { ...({
                 variant,
@@ -86,7 +96,7 @@ const LocationCalendar = ({
                 settingRecords,
                 settingRelated,
 
-                allDayStarts,
+                allDays,
                 startTimeInt,
                 endTimeInt,
                 slotDuration: reservationSlotDuration,

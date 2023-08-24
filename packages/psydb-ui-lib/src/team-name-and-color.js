@@ -1,12 +1,13 @@
 import React from 'react';
 
-const TeamNameAndColor = ({
-    teamRecord
-}) => {
+const TeamNameAndColor = (ps) => {
+    var { teamRecord, as = 'div', ...pass } = ps;
     var { name, color } = teamRecord.state;
 
+    var Wrapper = as;
+
     return (
-        <>
+        <Wrapper { ...pass }>
             <span className='d-inline-block mr-2' style={{
                 backgroundColor: color,
                 height: '24px',
@@ -14,7 +15,7 @@ const TeamNameAndColor = ({
                 verticalAlign: 'bottom',
             }} />
             <span>{ name }</span>
-        </>
+        </Wrapper>
     );
 }
 

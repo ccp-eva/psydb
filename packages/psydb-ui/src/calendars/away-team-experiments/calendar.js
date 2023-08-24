@@ -57,8 +57,6 @@ const AwayTeamCalendar = (ps) => {
         end: currentPageEnd
     }), [ currentPageStart, currentPageEnd ]);
 
-    var allDayStarts = allDays.map(it => it.start);
-
     if (!didFetch) {
         return <LoadingIndicator size='lg' />
     }

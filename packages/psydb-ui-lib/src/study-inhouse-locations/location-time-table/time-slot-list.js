@@ -4,9 +4,11 @@ import {
     checkIsWithin3Days,
     checkShouldEnableCalendarSlotTypes,
 } from '@mpieva/psydb-common-lib';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import datefns from '../../date-fns';
+import CalendarDayHeader from '../../calendar-day-header';
 
 import {
     useRecordSlotifier,
@@ -15,82 +17,64 @@ import {
 
 import TimeSlot from './time-slot';
 
-const TimeSlotList = ({
-    variant,
+const TimeSlotList = (ps) => {
+    var {
+        day,
+        variant,
 
-    studyId,
-    locationRecord,
-    teamRecords,
-    reservationRecords,
-    experimentRecords,
-    
-    settingRecords,
-    settingRelated,
+        studyId,
+        locationRecord,
+        teamRecords,
+        reservationRecords,
+        experimentRecords,
+        
+        settingRecords,
+        settingRelated,
 
-    dayStart,
-    startTimeInt,
-    endTimeInt,
-    slotDuration,
-    
-    subjectRecordType,
-    currentExperimentId,
-    currentSubjectRecord,
-    desiredTestInterval,
-    testableIntervals,
+        startTimeInt,
+        endTimeInt,
+        slotDuration,
+        
+        subjectRecordType,
+        currentExperimentId,
+        currentSubjectRecord,
+        desiredTestInterval,
+        testableIntervals,
 
-    __useNewCanSelect,
-    checkEmptySlotSelectable,
-    checkReservationSlotSelectable,
-    checkExperimentSlotSelectable,
+        __useNewCanSelect,
+        checkEmptySlotSelectable,
+        checkReservationSlotSelectable,
+        checkExperimentSlotSelectable,
 
-    onSelectEmptySlot,
-    onSelectReservationSlot,
-    onSelectExperimentSlot,
-    
-    calculateNewExperimentMaxEnd,
-    showPast,
-    showHeader = true,
-}) => {
+        onSelectEmptySlot,
+        onSelectReservationSlot,
+        onSelectExperimentSlot,
+        
+        calculateNewExperimentMaxEnd,
+        showPast,
+        showHeader = true,
+    } = ps;
+
+    var translate = useUITranslation();
     var permissions = usePermissions();
 
-    var start = new Date(dayStart.getTime() + startTimeInt);
-    var end = new Date(dayStart.getTime() + endTimeInt);
+    var locationDay = intervalfns.add(
+        { start: day.start, end: day.start },
+        { start: startTimeInt, end: endTimeInt }
+    );
 
-    var dayStart = start;
-    var dayIndex = datefns.getISODay(dayStart);
-    var dayEnd = datefns.endOfDay(dayStart);
+    //var dayIndex = datefns.getISODay(day.start);
     
-    var dayNoon = datefns.add(dayStart, { hours: 12 }); 
-    var enabledSlotTypes = checkShouldEnableCalendarSlotTypes({
-        permissions, calendarVariant: variant, refDate: dayNoon
+    var isDayEnabled = checkIsDayEnabled({
+        day, showPast, calendarVariant: variant, permissions
     });
-    var shouldEnable = showPast || enabledSlotTypes[variant];
-
-
-    var isSubjectTestable = false;
-    //console.log({ testableIntervals });
-    if (testableIntervals) {
-        var intersections = intervalfns.intersect(
-            [{ start: dayStart, end: dayEnd }],
-            testableIntervals
-        );
-        //console.log({ intersections });
-        isSubjectTestable = intersections.length > 0;
-    }
-
-    var className = 'text-center border-bottom bg-light';
-
-    if (isSubjectTestable) {
-        className = 'text-center text-success border-bottom bg-light';
-    }
-    if (!shouldEnable) {
-        className = 'text-center text-grey border-bottom bg-light'
-    }
-
     var { _id: locationId } = locationRecord;
 
     var slotify = useRecordSlotifier({
-        locationId, start, end, slotDuration
+        locationId,
+        start: locationDay.start,
+        end: locationDay.end,
+        slotDuration
     });
     var slottedReservationRecords = slotify(reservationRecords);
     var slottedExperimentRecords = slotify(experimentRecords)
@@ -98,7 +82,10 @@ const TimeSlotList = ({
     var slots = useMemo(() => {
         var tmp = [];
         var visitedExperiments = {};
-        for (var t = start.getTime(); t < end.getTime(); t += slotDuration) {
+        for (var it of intervalfns.sliceMillis(locationDay, slotDuration)) {
+            var t = it.start.getTime();
+        //for (var t = locationDay.start.getTime(); t < locationDay.end.getTime(); t += slotDuration) {
+
             var reservationRecord = slottedReservationRecords[t].item;
             var experimentRecord = slottedExperimentRecords[t].item;
 
@@ -133,7 +120,7 @@ const TimeSlotList = ({
         reservationRecords,
         experimentRecords,
         slotDuration,
-        upperBoundary: end,
+        upperBoundary: locationDay.end,
 
         calculateNewExperimentMaxEnd,
     });
@@ -161,37 +148,70 @@ const TimeSlotList = ({
         onSelectExperimentSlot: wrapped.onSelectExperimentSlot,
     
         showPast,
-        isDayEnabled: shouldEnable
+        isDayEnabled,
     }
 
     return (
         <div>
             { showHeader && (
-                <header className={ className }>
-                    <div><b>{ datefns.format(start, 'cccccc dd.MM.') }</b></div>
-                    <div>Uhrzeit</div>
-                </header>
+                <CalendarDayHeader
+                    day={ day }
+                    extraLabel={ translate('Time') }
+                    className={ getHeaderClassName({
+                        locationDay, isDayEnabled, testableIntervals
+                    })}
+                />
             )}
-            { slots.map(
-                ({
-                    timestamp,
-                    isFirstSlotOfExperiment,
-                    reservationRecord,
-                    experimentRecord
-                }) => (
-                    <TimeSlot key={ timestamp } { ...({
-                        timestamp,
-                        isFirstSlotOfExperiment,
-                        reservationRecord,
-                        experimentRecord,
-
-                        ...sharedSlotProps
-                    })} />
-                )
-            )}
+            { slots.map((it) => (
+                <TimeSlot
+                    key={ it.timestamp }
+                    { ...it }
+                    { ...sharedSlotProps }
+                />
+            ))}
         </div>
     )
 }
 
+const getHeaderClassName = (bag) => {
+    var { locationDay, isDayEnabled, testableIntervals } = bag;
+    
+    if (!isDayEnabled) {
+        return 'text-center text-grey border-bottom bg-light'
+    }
+    else {
+        var isSubjectTestable = false;
+        //console.log({ testableIntervals });
+        if (testableIntervals) {
+            var intersections = intervalfns.intersect(
+                [ locationDay ],
+                testableIntervals
+            );
+            //console.log({ intersections });
+            isSubjectTestable = intersections.length > 0;
+        }
+
+        if (isSubjectTestable) {
+            return 'text-center text-success border-bottom bg-light';
+        }
+        else {
+            return 'text-center border-bottom bg-light';
+        }
+    }
+}
+
+const checkIsDayEnabled = (bag) => {
+    var { day, showPast, calendarVariant, permissions } = bag;
+
+    // XXX: this had a bug before where 12 hours was added to not the
+    // day start but the location day start so im adding 8 hours for now
+    var dayNoon = datefns.add(day.start, { hours: 20 }); 
+    //var dayNoon = datefns.add(day.start, { hours: 12 }); 
+    var enabledSlotTypes = checkShouldEnableCalendarSlotTypes({
+        permissions, calendarVariant, refDate: dayNoon
+    });
+
+    return showPast || enabledSlotTypes[calendarVariant];
+}
 
 export default TimeSlotList;

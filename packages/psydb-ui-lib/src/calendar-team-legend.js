@@ -1,7 +1,11 @@
 import React from 'react';
 import { groupBy } from '@mpieva/psydb-core-utils';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
-import { SplitPartitioned, ColoredBox } from '@mpieva/psydb-ui-layout';
+import {
+    SplitPartitioned,
+    ColoredBox,
+    Legend
+} from '@mpieva/psydb-ui-layout';
 
 const CalendarTeamLegend = (ps) => {
     var {
@@ -23,31 +27,31 @@ const CalendarTeamLegend = (ps) => {
         return null;
     }
 
+    // FIXME that <hr /> doesnt belong here
     return (
         <div>
             <hr />
-            <b className='d-block mb-2'><u>
-                { translate('Legend') }
-            </u></b>
-            <table>
-                <tbody>
-                    { studyRecords.map((study, ix) => {
-                        var teams = teamsForStudy[study._id];
-                        if (!teams) {
-                            return null;
-                        }
-                        return (
-                            <StudyRow
-                                key={ ix }
-                                studyRecord={ study }
-                                experimentOperatorTeamRecords={ teams }
-                                activeTeamIds={ activeTeamIds }
-                                onClickTeam={ onClickTeam }
-                            />
-                        )
-                    })}
-                </tbody>
-            </table>
+            <Legend>
+                <table>
+                    <tbody>
+                        { studyRecords.map((study, ix) => {
+                            var teams = teamsForStudy[study._id];
+                            if (!teams) {
+                                return null;
+                            }
+                            return (
+                                <StudyRow
+                                    key={ ix }
+                                    studyRecord={ study }
+                                    experimentOperatorTeamRecords={ teams }
+                                    activeTeamIds={ activeTeamIds }
+                                    onClickTeam={ onClickTeam }
+                                />
+                            )
+                        })}
+                    </tbody>
+                </table>
+            </Legend>
         </div>
     )
 }

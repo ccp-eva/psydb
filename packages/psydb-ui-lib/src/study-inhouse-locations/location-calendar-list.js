@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
+
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
 import {
     useFetch,
@@ -9,52 +11,58 @@ import {
 import {
     Button,
     LoadingIndicator,
-    ToggleButtons
+    ToggleButtons,
+    Legend,
+    NarrowHR
 } from '@mpieva/psydb-ui-layout';
 
 import datefns from '../date-fns';
 import CalendarNav from '../calendar-nav';
 
 import withWeeklyCalendarPages from '../with-weekly-calendar-pages';
+import TeamNameAndColor from '../team-name-and-color';
 import LocationReservationCalendar from './location-reservation-calendar';
 
-const LocationCalendarList = ({
-    variant,
+const LocationCalendarList = (ps) => {
+    var {
+        variant,
 
-    studyId,
-    subjectRecordType,
-    currentExperimentId,
-    currentExperimentType,
-    currentSubjectRecord,
-    desiredTestInterval,
-    testableIntervals,
+        studyId,
+        subjectRecordType,
+        currentExperimentId,
+        currentExperimentType,
+        currentSubjectRecord,
+        desiredTestInterval,
+        testableIntervals,
 
-    locationRecordType,
-    teamRecords,
-    
-    settingRecords,
-    settingRelated,
+        locationRecordType,
+        teamRecords,
+        
+        settingRecords,
+        settingRelated,
 
-    currentPageStart,
-    currentPageEnd,
-    onPageChange,
-   
-    __useNewCanSelect,
-    checkEmptySlotSelectable,
-    checkReservationSlotSelectable,
-    checkExperimentSlotSelectable,
+        currentPageStart,
+        currentPageEnd,
+        onPageChange,
+       
+        __useNewCanSelect,
+        checkEmptySlotSelectable,
+        checkReservationSlotSelectable,
+        checkExperimentSlotSelectable,
 
-    onSelectEmptySlot,
-    onSelectReservationSlot,
-    onSelectExperimentSlot,
+        onSelectEmptySlot,
+        onSelectReservationSlot,
+        onSelectExperimentSlot,
 
-    calculateNewExperimentMaxEnd,
+        calculateNewExperimentMaxEnd,
 
-    className,
+        className,
 
-    // used to force reloading the calendar data
-    revision = 0,
-}) => {
+        // used to force reloading the calendar data
+        revision = 0,
+    } = ps;
+
+    var translate = useUITranslation();
     var permissions = usePermissions();
     var showPast = useToggleReducer(false, { as: 'props' });
 
@@ -103,10 +111,9 @@ const LocationCalendarList = ({
                 currentPageEnd,
                 onPageChange,
             })} />
-            <hr className='mt-1 mb-1' style={{
-                marginLeft: '15em',
-                marginRight: '15em',
-            }}/>
+
+            <NarrowHR />
+
             { locationRecords.map(locationRecord => (
                 <LocationReservationCalendar
                     key={ locationRecord._id }
@@ -146,42 +153,27 @@ const LocationCalendarList = ({
                     })}
                 />
             ))}
-            
+          
             <hr />
 
-            <div className='mt-3'>
-                <b><u>Legende</u></b>
+            <Legend>
                 {
                     teamRecords
                     .filter(it => !it.state.hidden)
-                    .map(teamRecord => {
-                        return (
-                            <TeamLabel teamRecord={ teamRecord }/>
-                        )
-                    })
+                    .map(teamRecord => (
+                        <TeamNameAndColor
+                            className='my-1'
+                            teamRecord={ teamRecord }
+                        />
+                    ))
                 }
-            </div>
+            </Legend>
         </div>
     )
 }
 
-const TeamLabel = (ps) => {
-    var { teamRecord } = ps;
-    return (
-        <div className='d-flex align-items-center'>
-            <div
-                className='m-1 mr-2'
-                style={{
-                    width: '30px',
-                    height: '26px',
-                    backgroundColor: teamRecord.state.color
-                }}
-            >
-            </div>
-            <span>{ teamRecord.state.name }</span>
-        </div>
-    )
-}
 
-const WrappedLocationCalendarList = withWeeklyCalendarPages(LocationCalendarList);
+const WrappedLocationCalendarList = withWeeklyCalendarPages(
+    LocationCalendarList
+);
 export default WrappedLocationCalendarList;
