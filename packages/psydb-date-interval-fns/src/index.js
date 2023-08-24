@@ -47,6 +47,27 @@ var compareEnds = (a, b, options = {}) => {
     return new Date(aEnd).getTime() < new Date(bEnd).getTime() ? -1 : 1;
 };
 
+var sliceMillis = (interval, millis) => {
+    var { start, end } = interval;
+
+    start = new Date(start);
+    end = new Date(end);
+
+    var it = new Date(start);
+    var out = [];
+    while (it.getTime() < end.getTime()) {
+        out.push({
+            start: it, end: datefns.addMilliseconds(it, millis - 1)
+        });
+        it = datefns.addMilliseconds(it, millis)
+    }
+
+    out[0].start = start;
+    out[out.length - 1].end = end;
+
+    return out;
+}
+
 var sliceDays = (interval) => {
     var { start, end } = interval;
 
@@ -243,10 +264,20 @@ var add = (interval, options = {}) => {
     var start = interval.start;
     var end = interval.end;
     if (durationStart) {
-        start = datefns.add(interval.start, durationStart);
+        if (Number.isFinite(durationStart)) {
+            start = new Date(interval.start.getTime() + durationStart);
+        }
+        else {
+            start = datefns.add(interval.start, durationStart);
+        }
     }
     if (durationEnd) {
-        end = datefns.add(interval.end, durationEnd);
+        if (Number.isFinite(durationEnd)) {
+            end = new Date(interval.end.getTime() + durationEnd);
+        }
+        else {
+            end = datefns.add(interval.end, durationEnd);
+        }
     }
 
     switch (as) {
@@ -280,11 +311,26 @@ var openEnd = (interval) => {
     return { start, end, ...rest };
 }
 
+var sanitizeInterval = (interval) => {
+    var { start, end, ...keep } = interval;
+
+    if (start !== undefined) {
+        start = new Date(start);
+    }
+    if (end !== undefined) {
+        end = new Date(end);
+    }
+
+    // FIXME: this creates a new object not sure if thats good in all cases
+    return { start, end, ...keep };
+}
+
 module.exports = {
     checkHasOverlap,
     compareStarts,
     compareEnds,
-    
+   
+    sliceMillis,
     sliceDays,
     sliceMonths,
 
@@ -302,5 +348,5 @@ module.exports = {
     monthIntervalOf,
     weekIntervalOf,
 
-    add
+    add,
 }
