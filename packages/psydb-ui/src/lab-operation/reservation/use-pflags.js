@@ -10,7 +10,7 @@ const usePFlags = () => {
         }),
         canReserveTeams: p.hasSomeLabOperationFlags({
             types: [ 'away-team' ],
-            flags: [ 'canWriteReservations ']
+            flags: [ 'canWriteReservations' ]
         })
     }));
 
