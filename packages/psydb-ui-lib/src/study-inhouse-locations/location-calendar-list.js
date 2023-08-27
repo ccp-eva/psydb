@@ -160,8 +160,9 @@ const LocationCalendarList = (ps) => {
                 {
                     teamRecords
                     .filter(it => !it.state.hidden)
-                    .map(teamRecord => (
+                    .map((teamRecord, ix) => (
                         <TeamNameAndColor
+                            key={ ix }
                             className='my-1'
                             teamRecord={ teamRecord }
                         />

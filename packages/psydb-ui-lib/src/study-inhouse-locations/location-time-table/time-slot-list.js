@@ -4,7 +4,7 @@ import {
     checkIsWithin3Days,
     checkShouldEnableCalendarSlotTypes,
 } from '@mpieva/psydb-common-lib';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import datefns from '../../date-fns';
@@ -55,6 +55,7 @@ const TimeSlotList = (ps) => {
         showHeader = true,
     } = ps;
 
+    var locale = useUILocale();
     var translate = useUITranslation();
     var permissions = usePermissions();
 
@@ -149,6 +150,7 @@ const TimeSlotList = (ps) => {
     
         showPast,
         isDayEnabled,
+        locale
     }
 
     return (

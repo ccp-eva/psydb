@@ -4,6 +4,7 @@ import datefns from '../../../date-fns';
 const EmptySlot = (ps) => {
     var {
         timestamp,
+        locale,
 
         slotDuration,
         studyId,
@@ -39,7 +40,7 @@ const EmptySlot = (ps) => {
                 })
             }}
         >
-            { datefns.format(date, 'p') }
+            { datefns.format(date, 'p', { locale }) }
         </div>
     );
 }
