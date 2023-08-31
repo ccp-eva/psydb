@@ -1,19 +1,24 @@
 import React from 'react';
-import { Modal, Button } from 'react-bootstrap';
-
+import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
 import { useSend } from '@mpieva/psydb-ui-hooks';
-import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
-import { Pair } from '@mpieva/psydb-ui-layout';
 
-const CreateModal = ({
-    show,
-    onHide,
-    modalPayloadData,
-    studyId,
+import { Pair, Button, WithDefaultModal } from '@mpieva/psydb-ui-layout';
+import { datefns } from '@mpieva/psydb-ui-lib';
 
-    onSuccessfulUpdate
-}) => {
+
+const CreateModalBody = (ps) => {
+    var {
+        onHide,
+        modalPayloadData,
+        studyId,
+
+        onSuccessfulUpdate
+    } = ps;
+
     var { teamRecord, interval } = modalPayloadData;
+    
+    var locale = useUILocale();
+    var translate = useUITranslation();
 
     var send = useSend(() => ({
         type: 'reservation/reserve-awayteam-slot',
@@ -27,47 +32,37 @@ const CreateModal = ({
     }), { onSuccessfulUpdate: [ onHide, onSuccessfulUpdate ] });
 
     return (
-        <Modal
-            show={show}
-            onHide={ onHide }
-            size='md'
-            className='team-modal'
-            backdropClassName='team-modal-backdrop'
-        >
-            <Modal.Header closeButton>
-                <Modal.Title>Zeit reservieren</Modal.Title>
-            </Modal.Header>
-            <Modal.Body className='bg-light'>
-                <Pair label='Team'>
-                    <span className='d-inline-block mr-2' style={{
-                        backgroundColor: teamRecord.state.color,
-                        height: '24px',
-                        width: '24px',
-                        verticalAlign: 'bottom',
-                    }} />
-                    { teamRecord.state.name }
-                </Pair>
-                <Pair label='Datum'>
-                    { datefns.format(interval.start, 'cccc P')}
-                </Pair>
-                <hr />
-                <div className='d-flex justify-content-end'>
-                    <Button onClick={ send.exec }>
-                        Reservieren
-                    </Button>
-                </div>
-            </Modal.Body>
-            
-        </Modal>
-
+        <div>
+            <Pair label={ translate('Team') }>
+                <span className='d-inline-block mr-2' style={{
+                    backgroundColor: teamRecord.state.color,
+                    height: '24px',
+                    width: '24px',
+                    verticalAlign: 'bottom',
+                }} />
+                { teamRecord.state.name }
+            </Pair>
+            <Pair label={ translate('Date') }>
+                { datefns.format(interval.start, 'cccc P', { locale })}
+            </Pair>
+            <hr />
+            <div className='d-flex justify-content-end'>
+                <Button size='sm' onClick={ send.exec }>
+                    { translate('Reserve') }
+                </Button>
+            </div>
+        </div>
     );
 }
 
-const WrappedCreateModal = (ps) => {
-    if (!ps.modalPayloadData) {
-        return null;
-    }
-    return <CreateModal { ...ps } />
-}
+const CreateModal = WithDefaultModal({
+    Body: CreateModalBody,
 
-export default WrappedCreateModal;
+    size: 'md',
+    title: 'Reservation',
+    className: 'team-modal',
+    backdropClassName: 'team-modal-backdrop',
+    bodyClassName: 'bg-light'
+});
+
+export default CreateModal;

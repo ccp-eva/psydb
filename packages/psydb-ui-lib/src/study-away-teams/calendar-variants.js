@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { sliceDays } from '@mpieva/psydb-date-interval-fns';
 
 import {
     useFetch,
@@ -8,9 +9,13 @@ import {
 
 import {
     Button,
+    Legend,
+    NarrowHR,
     LoadingIndicator,
     ToggleButtons
 } from '@mpieva/psydb-ui-layout';
+
+import TeamNameAndColor from '../team-name-and-color';
 
 import getDayStartsInInterval from '../get-day-starts-in-interval';
 import withWeeklyCalendarPages from '../with-weekly-calendar-pages';
@@ -20,33 +25,37 @@ import CalendarNav from '../calendar-nav';
 import TimeTableHead from './time-table-head';
 import TeamTimeTable from './team-time-table';
 
-export const Calendar = ({
-    variant,
-    studyId,
-    teamData,
-    onlyLocationId,
-    
-    onSelectEmptySlot,
-    onSelectReservationSlot,
-    onSelectExperimentSlot,
-    onSelectExperimentPlaceholderSlot,
+export const Calendar = (ps) => {
+    var {
+        variant,
+        studyId,
+        teamData,
+        onlyLocationId,
+        
+        onSelectEmptySlot,
+        onSelectReservationSlot,
+        onSelectExperimentSlot,
+        onSelectExperimentPlaceholderSlot,
 
-    className,
-    revision = 0,
+        className,
+        revision = 0,
 
-    currentPageStart,
-    currentPageEnd,
-    onPageChange,
-}) => {
+        currentPageStart,
+        currentPageEnd,
+        onPageChange,
+    } = ps;
+
     var permissions = usePermissions();
     var showPast = useToggleReducer(false, { as: 'props' });
 
-    var allDayStarts = useMemo(() => (
-        getDayStartsInInterval({
-            start: currentPageStart,
-            end: currentPageEnd
-        })
-    ), [ currentPageStart, currentPageEnd ]);
+    // FIXME: does that memo do anything? bc
+    // deps are dates
+    var allDays = useMemo(() => sliceDays({
+        start: currentPageStart,
+        end: currentPageEnd
+    }), [ currentPageStart, currentPageEnd ]);
+
+    var allDayStarts = allDays.map(it => it.start);
 
     var [ didFetch, state ] = useFetch((agent) => {
         return agent.fetchStudyAwayTeamReservationCalendar({
@@ -57,9 +66,7 @@ export const Calendar = ({
     }, [ studyId, currentPageStart, currentPageEnd, revision ]);
 
     if (!didFetch) {
-        return (
-            <LoadingIndicator size='lg' />
-        );
+        return <LoadingIndicator size='lg' />
     }
 
     var {
@@ -75,14 +82,12 @@ export const Calendar = ({
                 currentPageEnd,
                 onPageChange,
             })} />
-            <hr className='mt-1 mb-1' style={{
-                marginLeft: '15em',
-                marginRight: '15em',
-            }}/>
             
+            <NarrowHR />
+
             <TimeTableHead { ...({
                 variant,
-                allDayStarts,
+                allDays,
                 showPast: showPast.value,
             }) }/>
             <div className='border-bottom'>
@@ -96,6 +101,7 @@ export const Calendar = ({
                             teamRecord,
                             onlyLocationId,
 
+                            allDays,
                             allDayStarts,
                             reservationRecords,
                             experimentRecords,
@@ -110,18 +116,20 @@ export const Calendar = ({
                     })
                 }
             </div>
-            <div className='mt-3'>
-                <b><u>Legende</u></b>
+
+            <Legend className='mt-3'>
                 {
                     teamData.records
                     .filter(it => !it.state.hidden)
-                    .map(teamRecord => {
-                        return (
-                            <TeamLabel teamRecord={ teamRecord }/>
-                        )
-                    })
+                    .map((teamRecord, ix) => (
+                        <TeamNameAndColor
+                            key={ ix }
+                            className='my-1'
+                            teamRecord={ teamRecord }
+                        />
+                    ))
                 }
-            </div>
+            </Legend>
 
             { permissions.isRoot() && (
                 <div className='mt-3'>

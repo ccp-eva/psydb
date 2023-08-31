@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
 
 import {
     Row,
@@ -25,6 +26,9 @@ const EndControl = (ps) => {
         onChangeEnd,
     } = ps;
 
+    var locale = useUILocale();
+    var translate = useUITranslation();
+
     if (onChangeEnd) {
         var onChange = wrapOnChange((nextEnd) => {
             // since intervals shouldn overlap i.e. [...)
@@ -33,7 +37,7 @@ const EndControl = (ps) => {
         return (
             <Row className='mb-2'>
                 <Form.Label className='col-sm-4 col-form-label'>
-                    Ende
+                    { translate('End') }
                 </Form.Label>
                 <Col sm={8}>
                     <SlotControl
@@ -49,8 +53,8 @@ const EndControl = (ps) => {
     }
     else {
         return (
-            <Pair className='mb-2' label='Ende'>
-                { datefns.format(new Date(end), 'p') }
+            <Pair className='mb-2' label={ translate('End') }>
+                { datefns.format(new Date(end), 'p', { locale }) }
             </Pair>
         )
     }
@@ -63,12 +67,14 @@ const TeamControl = (ps) => {
         teamRecords,
         onChangeTeamId
     } = ps;
+    
+    var translate = useUITranslation();
 
     if (onChangeTeamId) {
         return (
             <Row className='mb-2'>
                 <Form.Label className='col-sm-4 col-form-label'>
-                    Team
+                    { translate('Team') }
                 </Form.Label>
                 <Col sm={8}>
                     {
@@ -95,7 +101,7 @@ const TeamControl = (ps) => {
         return (
             <Row className='mb-2'>
                 <Form.Label className='col-sm-4 col-form-label'>
-                    Team
+                    { translate('Team') }
                 </Form.Label>
                 <Col sm={8}>
                     <StudyTeamListItem record={ teamRecords[0] } />

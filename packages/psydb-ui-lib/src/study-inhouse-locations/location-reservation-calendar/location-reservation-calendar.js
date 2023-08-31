@@ -66,8 +66,6 @@ const LocationCalendar = (ps) => {
         end: currentPageEnd
     }), [ currentPageStart, currentPageEnd ]);
 
-    var allDayStarts = allDays.map(it => it.start);
-
     var filteredReservationRecords = reservationRecords.filter(it => (
         it.state.locationId === locationRecord._id
     ));

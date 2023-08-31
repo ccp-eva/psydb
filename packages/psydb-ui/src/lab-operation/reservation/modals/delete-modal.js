@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useSend } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -6,7 +7,7 @@ import {
     WithDefaultModal,
 } from '@mpieva/psydb-ui-layout';
 
-import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
+import { datefns } from '@mpieva/psydb-ui-lib';
 import ExperimentShortControls from '@mpieva/psydb-ui-lib/src/experiment-short-controls';
 
 const DeleteModalBody = (ps) => {
@@ -25,6 +26,8 @@ const DeleteModalBody = (ps) => {
         slotDuration,
         maxEnd,
     } = modalPayloadData;
+    
+    var translate = useUITranslation();
 
     var locationId = locationRecord._id;
     var { experimentOperatorTeamId } = reservationRecord.state;
@@ -64,7 +67,7 @@ const DeleteModalBody = (ps) => {
             <hr />
             <div className='d-flex justify-content-end'>
                 <Button size='sm' variant='danger' onClick={ send.exec }>
-                    Löschen
+                    { translate('Delete') }
                 </Button>
             </div>
         </>
@@ -75,7 +78,7 @@ export const DeleteModal = WithDefaultModal({
     Body: DeleteModalBody,
 
     size: 'md',
-    title: 'Löschen',
+    title: 'Delete',
     className: '',
     backdropClassName: '',
     bodyClassName: 'bg-white'

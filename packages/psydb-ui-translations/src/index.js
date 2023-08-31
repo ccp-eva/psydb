@@ -548,6 +548,30 @@ var maps = [
         en: 'No rooms for inhouse/video appointments set.',
         de: 'Keine Räumlichkeiten für Interne/Video-Termine festgelegt.'
     },
+    {
+        en: 'Start',
+        de: 'Beginn'
+    },
+    {
+        en: 'End',
+        de: 'Ende'
+    },
+    {
+        en: 'Yes',
+        de: 'Ja'
+    },
+    {
+        en: 'No',
+        de: 'Nein'
+    },
+    {
+        en: 'Delete',
+        de: 'Löschen'
+    },
+    {
+        en: 'Reserve',
+        de: 'Reservieren'
+    },
 ]
 
 export const createTranslate = (lang = 'en') => (template, props) => {
@@ -558,8 +582,8 @@ export const createTranslate = (lang = 'en') => (template, props) => {
         return render(translatedTemplate, props);
     }
     else {
-        //return render('[!! ' + template + ' !!]', props);
+        return render('[!! ' + template + ' !!]', props);
         // FIXME: temp compat
-        return render(template, props);
+        //return render(template, props);
     }
 }

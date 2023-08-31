@@ -1,24 +1,107 @@
-import React, { useCallback } from 'react';
-
-import {
-    checkIsWithin3Days,
-    checkShouldEnableCalendarSlotTypes,
-} from '@mpieva/psydb-common-lib';
-
-import { usePermissions } from '@mpieva/psydb-ui-hooks';
+import React from 'react';
+import { dtoi, isotoi } from '@mpieva/psydb-date-interval-fns';
 
 import {
     Container,
     Row,
     Col,
-    Icons
+    ColoredBox,
 } from '@mpieva/psydb-ui-layout';
 
-import keyBy from '@mpieva/psydb-common-lib/src/key-by';
 import datefns from '../date-fns';
-import getTextColor from '../bw-text-color-for-background';
+import TeamTimeSlot from './team-time-slot';
 
-import { ExperimentSlot } from './experiment-slot';
+const TeamTimeTable = (ps) => {
+    var {
+        variant,
+
+        teamRecord,
+        onlyLocationId,
+        allDays,
+        allDayStarts,
+
+        reservationRecords,
+        experimentRecords,
+
+        onSelectEmptySlot,
+        onSelectReservationSlot,
+        onSelectExperimentSlot,
+        onSelectExperimentPlaceholderSlot,
+
+        showPast,
+    } = ps;
+
+    var filteredExperiments = experimentRecords.filter(it => (
+        it.state.experimentOperatorTeamId === teamRecord._id
+    ));
+    var filteredReservations = reservationRecords.filter(it => (
+        it.state.experimentOperatorTeamId === teamRecord._id
+    ));
+
+    var itemsByDayStart = {};
+    allDays.forEach(day => {
+        var k = day.start.toISOString();
+        
+        // FIXME: this is still a hack
+        var reservationRecord = spliceWithMaxOverlap({
+            items: filteredReservations,
+            interval: day,
+        });
+        var experimentRecord = spliceWithMaxOverlap({
+            items: filteredExperiments,
+            interval: day
+        });
+
+        itemsByDayStart[k] = {
+            reservationRecord,
+            experimentRecord,
+        }
+    })
+
+
+    return (
+        <Container>
+            <Row>
+                <Col className='p-0' style={{ flexGrow: 0 }}>
+                    <ColoredBox
+                        className='m-1'
+                        bg={ teamRecord.state.color }
+                        extraStyle={{ width: '30px', height: '26px' }}
+                    />
+                </Col>
+
+                { allDays.map((day, ix) => {
+                    var k = day.start.toISOString();
+                    
+                    var {
+                        reservationRecord,
+                        experimentRecord,
+                    } = itemsByDayStart[k]
+
+                    return <Col key={ ix } className='p-0'>
+                        <TeamTimeSlot {...({
+                            variant,
+                            teamRecord,
+                            onlyLocationId,
+                            day,
+                            dayStart: day.start,
+
+                            reservationRecord,
+                            experimentRecord,
+
+                            onSelectEmptySlot,
+                            onSelectReservationSlot,
+                            onSelectExperimentSlot,
+                            onSelectExperimentPlaceholderSlot,
+
+                            showPast
+                        }) } />
+                    </Col>
+                }) }
+            </Row>
+        </Container>
+    )
+}
 
 var calculateOverlap = (that, other) => {
     // FIXME: breaks when start/end are reversed in that/other
@@ -40,23 +123,14 @@ var calculateOverlap = (that, other) => {
     return (minEnd - maxStart);
 }
 
-var toIntInterval = ({ start, end }) => ({
-    start: start.getTime(),
-    end: end.getTime(),
-});
-
-var toDateInterval = ({ start, end }) => ({
-    start: new Date(start),
-    end: new Date(end),
-})
-
+// FIXME: hackjob
 var spliceWithMaxOverlap = ({ items, interval }) => {
     var maxOverlap = 0;
     var maxIndex = undefined;
     for (var [ index, it ] of items.entries()) {
         var overlap = calculateOverlap(
-            toIntInterval(toDateInterval(it.state.interval)),
-            toIntInterval(toDateInterval(interval)),
+            isotoi(it.state.interval),
+            dtoi(interval)
         );
         if (overlap > maxOverlap) {
             maxOverlap = overlap;
@@ -73,326 +147,4 @@ var spliceWithMaxOverlap = ({ items, interval }) => {
     }
 }
 
-const TeamTimeTable = ({
-    variant,
-
-    teamRecord,
-    onlyLocationId,
-    allDayStarts,
-
-    reservationRecords,
-    experimentRecords,
-
-    onSelectEmptySlot,
-    onSelectReservationSlot,
-    onSelectExperimentSlot,
-    onSelectExperimentPlaceholderSlot,
-
-    showPast,
-}) => {
-
-    var filteredExperiments = experimentRecords.filter(it => (
-        it.state.experimentOperatorTeamId === teamRecord._id
-    ));
-    var filteredReservations = reservationRecords.filter(it => (
-        it.state.experimentOperatorTeamId === teamRecord._id
-    ));
-
-    var itemsByDayStart = {};
-    allDayStarts.forEach(dayStart => {
-        var k = dayStart.toISOString();
-        
-        // FIXME: this is still a hack
-        var interval = {
-            start: dayStart,
-            end: datefns.endOfDay(dayStart)
-        };
-        var reservationRecord = spliceWithMaxOverlap({
-            items: filteredReservations,
-            interval
-        });
-        var experimentRecord = spliceWithMaxOverlap({
-            items: filteredExperiments,
-            interval
-        });
-
-        itemsByDayStart[k] = {
-            reservationRecord,
-            experimentRecord,
-        }
-    })
-
-
-    /*var keyedExperiments = keyBy({
-        items: experimentRecords.filter(it => (
-            it.state.experimentOperatorTeamId === teamRecord._id
-        )),
-        byPointer: '/state/interval/start'
-    });
-
-    var keyedReservations = keyBy({
-        items: reservationRecords.filter(it => (
-            it.state.experimentOperatorTeamId === teamRecord._id
-        )),
-        byPointer: '/state/interval/start'
-    });*/
-
-
-    return (
-        <Container>
-            <Row>
-                <Col className='p-0' style={{
-                    flexGrow: 0,
-                }}>
-                    <div
-                        className='m-1'
-                        style={{
-                            width: '30px',
-                            height: '26px',
-                            backgroundColor: teamRecord.state.color
-                        }}
-                    >
-                    </div>
-                </Col>
-                { allDayStarts.map(dayStart => {
-                    var k = dayStart.toISOString();
-                    
-                    var {
-                        reservationRecord,
-                        experimentRecord,
-                    } = itemsByDayStart[k]
-                    //var reservationRecord = keyedReservations[k];
-                    //var experimentRecord = keyedExperiments[k];
-
-                    return <Col
-                        key={ dayStart.getTime() }
-                        className='p-0'
-                    >
-                        <TimeSlot {...({
-                            variant,
-                            teamRecord,
-                            onlyLocationId,
-                            dayStart,
-
-                            reservationRecord,
-                            experimentRecord,
-
-                            onSelectEmptySlot,
-                            onSelectReservationSlot,
-                            onSelectExperimentSlot,
-                            onSelectExperimentPlaceholderSlot,
-
-                            showPast
-                        }) } />
-                    </Col>
-                }) }
-            </Row>
-        </Container>
-    )
-}
-
-const TimeSlot = ({
-    variant,
-    teamRecord,
-    onlyLocationId,
-    dayStart,
-
-    reservationRecord,
-    experimentRecord,
-
-    onSelectEmptySlot,
-    onSelectReservationSlot,
-    onSelectExperimentSlot,
-    onSelectExperimentPlaceholderSlot,
-
-    showPast
-}) => {
-    
-    var permissions = usePermissions();
-
-    var now = new Date();
-    var dayIndex = datefns.getISODay(dayStart);
-    var dayEnd = datefns.endOfDay(dayStart);
-    var dayNoon = datefns.add(dayStart, { hours: 12 });
-
-    var enabledSlotTypes = checkShouldEnableCalendarSlotTypes({
-        permissions, calendarVariant: variant, refDate: dayNoon
-    });
-    
-    if (!showPast && !enabledSlotTypes[variant]) {
-        return <DisabledSlot />
-    }
-    if ([6,7].includes(dayIndex)) {
-        return <DisabledSlot />
-    }
-
-    if (experimentRecord) {
-        var end = experimentRecord.state.interval.end;
-        var isInPast = now.getTime() > new Date(end).getTime();
-        //var isWithin3days = checkIsWithin3Days(dayEnd);
-        var shouldEnable = (
-            !isInPast
-            //&& canCreateExperimentsWithinTheNext3Days ? true : !isWithin3days
-            //&& !([6,7].includes(dayIndex))
-        );
-        if (!showPast && !shouldEnable) {
-            return <DisabledSlot />
-        }
-        return (
-            <ExperimentSlot { ...({
-                teamRecord,
-                onlyLocationId,
-                reservationRecord,
-                experimentRecord,
-                dayStart,
-                onSelectExperimentSlot,
-                onSelectExperimentPlaceholderSlot,
-            }) } />
-        );
-    }
-    else if (reservationRecord) {
-        var end = reservationRecord.state.interval.end;
-        var isInPast = now.getTime() > new Date(end).getTime();
-        //var isWithin3days = checkIsWithin3Days(dayEnd);
-        var shouldEnable = (
-            !isInPast
-            //&& canCreateExperimentsWithinTheNext3Days ? true : !isWithin3days
-            //&& !([6,7].includes(dayIndex))
-        );
-        if (!showPast && !shouldEnable) {
-            return <DisabledSlot />
-        }
-        return (
-            <ReservationSlot { ...({
-                teamRecord,
-                reservationRecord,
-                dayStart,
-                onSelectReservationSlot,
-            }) } />
-        );
-    }
-    else {
-        var isInPast = now.getTime() > dayEnd.getTime();
-        //var isWithin3days = checkIsWithin3Days(dayEnd);
-        var shouldEnable = (
-            !isInPast
-            //&& canCreateReservationsWithinTheNext3Days ? true : !isWithin3days
-            //&& !([6,7].includes(dayIndex))
-        );
-        if (!showPast && !shouldEnable) {
-            return <DisabledSlot />
-        }
-        return (
-            <EmptySlot { ...({
-                teamRecord,
-                dayStart,
-                onSelectEmptySlot,
-            }) } />
-        );
-    }
-}
-
-
-const ReservationSlot = ({
-    teamRecord,
-    reservationRecord,
-    dayStart,
-    onSelectReservationSlot,
-}) => {
-    var classNames = [
-        'text-center',
-        'm-1',
-        'team-time-slot',
-        'empty',
-    ];
-    var role = '';
-
-    if (onSelectReservationSlot) {
-        classNames.push('selectable');
-        role = 'button';
-    }
-
-    var onClick = useCallback(() => {
-        onSelectReservationSlot && onSelectReservationSlot({
-            teamRecord,
-            reservationRecord,
-            interval: {
-                start: dayStart,
-                end: datefns.endOfDay(dayStart)
-            }
-        })
-    })
-
-    return (
-        <div
-            role={ role }
-            className={ classNames.join(' ') }
-            style={{
-                height: '26px',
-                backgroundColor: teamRecord.state.color
-            }}
-            onClick={ onClick }
-        />
-    )
-}
-
-const EmptySlot = ({
-    teamRecord,
-    dayStart,
-    onSelectEmptySlot,
-}) => {
-    var classNames = [
-        'text-center',
-        'm-1',
-        'team-time-slot',
-        'empty',
-    ];
-    var role = '';
-
-    if (onSelectEmptySlot) {
-        classNames.push('selectable');
-        role = 'button';
-    }
-
-    var onClick = useCallback(() => {
-        onSelectEmptySlot && onSelectEmptySlot({
-            teamRecord,
-            interval: {
-                start: dayStart,
-                end: datefns.endOfDay(dayStart)
-            }
-        })
-    })
-
-    return (
-        <div
-            role={ role }
-            className={ classNames.join(' ') }
-            style={{
-                height: '26px',
-            }}
-            onClick={ onClick }
-        />
-    )
-}
-
-const DisabledSlot = () => {
-    var classNames = [
-        'text-center',
-        'm-1',
-        'team-time-slot',
-        'disabled',
-        'bg-light'
-    ];
-    var role = '';
-
-    return (
-        <div
-            className={ classNames.join(' ') }
-            style={{
-                height: '26px',
-            }}
-        />
-    )
-}
 export default TeamTimeTable;

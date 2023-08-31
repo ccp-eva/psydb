@@ -87,9 +87,7 @@ const LocationCalendarList = (ps) => {
     ]);
 
     if (!didFetch) {
-        return (
-            <LoadingIndicator size='lg' />
-        );
+        return <LoadingIndicator size='lg' />
     }
 
     var {

@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useSend } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -6,7 +7,7 @@ import {
     WithDefaultModal,
 } from '@mpieva/psydb-ui-layout';
 
-import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
+import { datefns } from '@mpieva/psydb-ui-lib';
 import ExperimentShortControls from '@mpieva/psydb-ui-lib/src/experiment-short-controls';
 
 const CreateModalBody = (ps) => {
@@ -26,6 +27,7 @@ const CreateModalBody = (ps) => {
         maxEnd,
     } = modalPayloadData;
 
+    var translate = useUITranslation();
     var locationId = locationRecord._id;
 
     var minEnd = new Date(start.getTime() + slotDuration);
@@ -70,7 +72,7 @@ const CreateModalBody = (ps) => {
             <hr />
             <div className='d-flex justify-content-end'>
                 <Button size='sm' onClick={ send.exec }>
-                    Speichern
+                    { translate('Reserve') }
                 </Button>
             </div>
         </>
@@ -81,7 +83,7 @@ export const CreateModal = WithDefaultModal({
     Body: CreateModalBody,
 
     size: 'md',
-    title: 'Reservierung',
+    title: 'Reservation',
     className: '',
     backdropClassName: '',
     bodyClassName: 'bg-white'

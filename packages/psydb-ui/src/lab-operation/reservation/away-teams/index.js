@@ -1,40 +1,26 @@
 import React from 'react';
+import { useRouteMatch, useParams } from 'react-router-dom';
 
-import {
-    useRouteMatch,
-    useHistory,
-    useParams
-} from 'react-router-dom';
-
-import {
-    useRevision,
-    useModalReducer
-} from '@mpieva/psydb-ui-hooks';
-
+import { useRevision, useModalReducer } from '@mpieva/psydb-ui-hooks';
 import StudyAwayTeams from '@mpieva/psydb-ui-lib/src/study-away-teams';
+
 import CreateModal from './create-modal';
 import DeleteModal from './delete-modal';
 
-const AwayTeamContainer = ({}) => {
+
+const AwayTeamContainer = (ps) => {
     var { path, url } = useRouteMatch();
     var { studyId, studyType } = useParams();
 
     var createModal = useModalReducer();
     var deleteModal = useModalReducer();
-    var { value: revision, up: incrementRevision } = useRevision();
-
-    var handleSuccessfulUpdate = () => {
-        incrementRevision();
-    }
+    var revision = useRevision();
 
     return (
         <>
             <CreateModal { ...({
-                show: createModal.show,
-                onHide: createModal.handleHide,
-                modalPayloadData: createModal.data,
-
-                onSuccessfulUpdate: handleSuccessfulUpdate,
+                ...createModal.passthrough,
+                onSuccessfulUpdate: revision.up,
 
                 studyId,
                 studyRecordType: studyType,
@@ -42,7 +28,7 @@ const AwayTeamContainer = ({}) => {
 
             <DeleteModal { ...({
                 ...deleteModal.passthrough,
-                onSuccessfulUpdate: handleSuccessfulUpdate,
+                onSuccessfulUpdate: revision.up,
             })} />
 
             <StudyAwayTeams { ...({
@@ -52,7 +38,7 @@ const AwayTeamContainer = ({}) => {
 
                 onSelectEmptySlot: createModal.handleShow,
                 onSelectReservationSlot: deleteModal.handleShow,
-                calendarRevision: revision
+                calendarRevision: revision.value
             }) } />
         </>
     )

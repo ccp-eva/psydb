@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Form } from 'react-bootstrap';
+import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
+import { Form } from '@mpieva/psydb-ui-layout';
 
 import datefns from '../date-fns';
 
@@ -8,14 +9,18 @@ const wrapOnChange = (onChange) => (event) => {
     return onChange(value);
 }
 
-const BoolControl = ({
-    value,
-    onChange
-}) => {
+const BoolControl = (ps) => {
+    var {
+        value,
+        onChange
+    } = ps;
+
+    var translate = useUITranslation();
     var [ internalValue, setInternalValue ] = useState(0);
+
     var options = [
-        { label: 'Nein', value: false },
-        { label: 'Ja' , value: true }
+        { label: translate('No'), value: false },
+        { label: translate('Yes') , value: true }
     ];
 
     var wrappedOnChange = (event) => {
@@ -43,13 +48,17 @@ const BoolControl = ({
     )
 }
 
-const SlotControl = ({
-    value,
-    onChange,
-    min,
-    max,
-    step,
-}) => {
+const SlotControl = (ps) => {
+    var {
+        value,
+        onChange,
+        min,
+        max,
+        step,
+    } = ps;
+
+    var locale = useUILocale();
+
     var slots = [];
     for (var t = min.getTime(); t < max.getTime(); t += step) {
         slots.push(new Date(t));
@@ -75,7 +84,9 @@ const SlotControl = ({
                     key={ it }
                     value={ index }
                 >
-                    { datefns.format(new Date(it.getTime() + 1), 'p') }
+                    { datefns.format(
+                        new Date(it.getTime() + 1), 'p', { locale }
+                    ) }
                 </option>
             ))}
         </Form.Control>

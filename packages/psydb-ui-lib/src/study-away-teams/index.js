@@ -6,23 +6,25 @@ import {
     WeeklyCalendar
 } from './calendar-variants';
 
-const StudyAwayTeams = ({
-    variant = 'experiment',
-    studyId,
-    studyRecordType,
-    onlyLocationId,
+const StudyAwayTeams = (ps) => {
+    var {
+        variant = 'experiment',
+        studyId,
+        studyRecordType,
+        onlyLocationId,
 
-    onSelectEmptySlot,
-    onSelectReservationSlot,
-    onSelectExperimentSlot,
-    onSelectExperimentPlaceholderSlot,
+        onSelectEmptySlot,
+        onSelectReservationSlot,
+        onSelectExperimentSlot,
+        onSelectExperimentPlaceholderSlot,
 
-    className,
-    revision = 0,
-    calendarRevision = 0,
+        className,
+        revision = 0,
+        calendarRevision = 0,
 
-    withURLSearchParams,
-}) => {
+        withURLSearchParams,
+    } = ps;
+
     var [ didFetch, state ] = useFetchAll((agent) => {
         
         var fetchTeams = agent.fetchExperimentOperatorTeamsForStudy({

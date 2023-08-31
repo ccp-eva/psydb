@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
 import { Pair } from '@mpieva/psydb-ui-layout';
 
 import datefns from '../date-fns';
@@ -23,18 +24,21 @@ const ScheduleItemControls = (ps) => {
         onChangeTeamId,
     } = ps;
 
+    var locale = useUILocale();
+    var translate = useUITranslation();
+
     if (minEnd === undefined) {
         minEnd = new Date(start.getTime() + slotDuration - 1);
     }
 
     return (
         <>
-            <Pair className='mb-2' label='Datum'>
-                { datefns.format(new Date(start), 'P') }
+            <Pair className='mb-2' label={ translate('Date') }>
+                { datefns.format(new Date(start), 'P', { locale }) }
             </Pair>
 
-            <Pair className='mb-2'label='Beginn'>
-                { datefns.format(new Date(start), 'p') }
+            <Pair className='mb-2'label={ translate('Start') }>
+                { datefns.format(new Date(start), 'p', { locale }) }
             </Pair>
 
             <EndControl { ...({

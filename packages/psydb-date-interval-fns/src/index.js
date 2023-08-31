@@ -325,6 +325,18 @@ var sanitizeInterval = (interval) => {
     return { start, end, ...keep };
 }
 
+var isotod = (isoStringInterval) => {
+    var { start, end } = isoStringInterval;
+    return {
+        start: start ? new Date(start) : undefined,
+        end: end ? new Date(end) : undefined,
+    }
+}
+
+var isotoi = (isoStringInterval) => (
+    dtoi(isotod(isoStringInterval))
+)
+
 module.exports = {
     checkHasOverlap,
     compareStarts,
@@ -338,6 +350,8 @@ module.exports = {
     //width,
     dtoi,
     itod,
+    isotod,
+    isotoi,
 
     openEnd,
     closeEnd,
