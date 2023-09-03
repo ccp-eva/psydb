@@ -54,6 +54,7 @@ var {
 var searchGrouped = async (context, next) => {
     var { 
         db,
+        timezone,
         permissions,
         request,
 
@@ -245,6 +246,7 @@ var searchGrouped = async (context, next) => {
 
     debug('postprocessing subjects');
     postprocessSubjectRecords({
+        timezone,
         subjectRecords: flatSubjects,
         subjectRecordType: subjectTypeKey,
         studyRecords,

@@ -237,6 +237,7 @@ var searchUngrouped = async (context, next) => {
     });
     
     postprocessSubjectRecords({
+        timezone,
         subjectRecords,
         subjectRecordType: subjectTypeKey,
         studyRecords,

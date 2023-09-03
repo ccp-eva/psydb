@@ -7,6 +7,7 @@ var createRecordLabel = require(
 );
 
 var postprocessSubjectRecords = ({
+    timezone,
     subjectRecords,
     subjectRecordType,
     studyRecords,
@@ -19,6 +20,7 @@ var postprocessSubjectRecords = ({
         record._recordLabel = createRecordLabel({
             record: record._recordLabelDefinitionFields,
             definition: recordLabelDefinition,
+            timezone,
         });
         delete record._recordLabelDefinitionFields;
 
