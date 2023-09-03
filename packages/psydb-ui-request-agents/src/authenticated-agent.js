@@ -16,6 +16,15 @@ const axios = Axios.create();
 //    }
 //)
 
+axios.interceptors.request.use(
+    (config) => {
+        var timezone = getSystemTimezone();
+        config.headers.timezone = timezone;
+        return config;
+    },
+    (error) => Promise.reject(error)
+);
+
 var agent = {
     getAxios: () => axios,
 }

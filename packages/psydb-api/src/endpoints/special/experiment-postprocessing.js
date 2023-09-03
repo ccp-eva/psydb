@@ -57,6 +57,8 @@ var experimentPostprocessing = async (context, next) => {
         request,
     } = context;
 
+    var { timezone } = request.headers;
+
     validateOrThrow({
         schema: RequestBodySchema(),
         payload: request.body
@@ -123,7 +125,8 @@ var experimentPostprocessing = async (context, next) => {
     var experimentRelated = await fetchRelatedLabelsForMany({
         db,
         collectionName: 'experiment',
-        records: experimentRecords
+        records: experimentRecords,
+        timezone,
     })
 
     var studiesById = keyBy({
