@@ -1,16 +1,18 @@
 'use strict';
-var compose = require('koa-compose'),
-    withMongoDB = require('@mpieva/psydb-mongo-adapter').createMiddleware,
+var compose = require('koa-compose');
+var withMongoDB = require('@mpieva/psydb-mongo-adapter').createMiddleware;
     
-    withSession = require('./session'),
-    withErrorHandling = require('./errors'),
-    withRouting = require('./routing');
+var withClientTimezone = require('./with-client-timezone');
+var withSession = require('./session');
+var withErrorHandling = require('./errors');
+var withRouting = require('./routing');
 
 var createApi = (bag) => {
     var { app, config, prefix = '/' } = bag;
 
     var composition = compose([
         withErrorHandling(),
+        withClientTimezone(),
         withMongoDB(config.db),
         withSession(app, config),
         
