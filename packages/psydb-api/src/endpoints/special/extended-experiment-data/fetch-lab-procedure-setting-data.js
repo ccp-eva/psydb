@@ -16,7 +16,7 @@ var {
 
 
 var fetchLabProcedureSettingData = async (options) => {
-    var { db, match } = options;
+    var { db, timezone, match } = options;
 
     var records = await (
         db.collection('experimentVariantSetting')
@@ -53,6 +53,7 @@ var fetchLabProcedureSettingData = async (options) => {
         db,
         data: { records },
         schema: recordSchema,
+        timezone,
     });
 
     return {

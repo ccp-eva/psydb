@@ -9,7 +9,7 @@ var {
 } = require('@mpieva/psydb-api-lib/src/fetch-record-helpers');
 
 var fetchExperiments = async (context, options) => {
-    var { db } = context;
+    var { db, timezone } = context;
     var { studyIds, start, end } = options;
 
     var records = await (
@@ -26,7 +26,7 @@ var fetchExperiments = async (context, options) => {
     );
 
     var related = await fetchRelatedLabelsForMany({
-        db,
+        db, timezone,
         collectionName: 'experiment',
         records,
     });

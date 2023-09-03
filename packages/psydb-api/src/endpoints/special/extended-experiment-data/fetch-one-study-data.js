@@ -5,11 +5,11 @@ var debug = require('debug')(
 
 var {
     createSchemaForRecordType,
-    fetchRelatedLabels,
+    fetchRelatedLabelsForMany,
 } = require('@mpieva/psydb-api-lib');
 
 var fetchOneStudyData = async (options) => {
-    var { db, _id } = options;
+    var { db, timezone, _id } = options;
 
     debug('fetch study record');
     var studyRecord = await (
@@ -27,10 +27,11 @@ var fetchOneStudyData = async (options) => {
     });
 
     debug('fetch study related labels');
-    var studyRelated = await fetchRelatedLabels({
+    var studyRelated = await fetchRelatedLabelsForMany({
         db,
-        data: studyRecord,
-        schema: studyRecordSchema,
+        collectionName: 'study',
+        records: [ studyRecord ],
+        timezone,
     });
 
     return {

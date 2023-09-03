@@ -10,7 +10,7 @@ var {
 } = require('@mpieva/psydb-api-lib');
 
 var fetchOneOpsTeamData = async (options) => {
-    var { db, _id } = options;
+    var { db, timezone, _id } = options;
 
     debug('fetch operator team record');
     var opsTeamRecord = await (
@@ -32,6 +32,7 @@ var fetchOneOpsTeamData = async (options) => {
         db,
         data: opsTeamRecord,
         schema: opsTeamRecordSchema,
+        timezone,
     });
     
     return {

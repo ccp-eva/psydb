@@ -1,7 +1,5 @@
 'use strict';
-var debug = require('debug')(
-    'psydb:api:endpoints:extendedExperimentData'
-);
+var debug = require('debug')('psydb:api:endpoints:extendedExperimentData');
 
 var { ejson } = require('@mpieva/psydb-core-utils');
 
@@ -14,7 +12,7 @@ var {
     ApiError,
     fetchRecordById,
     createSchemaForRecordType,
-    fetchRelatedLabels
+    fetchRelatedLabelsForMany
 } = require('@mpieva/psydb-api-lib');
 
 var fetchOneExperimentData = async (options) => {
@@ -23,6 +21,7 @@ var fetchOneExperimentData = async (options) => {
         experimentType,
         experimentId,
         permissions,
+        timezone,
     } = options;
 
     debug('fetch experiment record');
@@ -59,10 +58,11 @@ var fetchOneExperimentData = async (options) => {
     });
 
     debug('fetch experiment related labels');
-    var experimentRelated = await fetchRelatedLabels({
+    var experimentRelated = await fetchRelatedLabelsForMany({
         db,
-        data: experimentRecord,
-        schema: experimentRecordSchema,
+        collectionName: 'experiment',
+        records: [ experimentRecord ],
+        timezone,
     });
 
     return {

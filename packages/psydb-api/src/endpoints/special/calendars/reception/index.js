@@ -32,7 +32,7 @@ var fetchOpsTeams = require('./fetch-ops-teams');
 var fetchSubjectsOfType = require('./fetch-subjects-of-type');
 
 var receptionCalendar = async (context, next) => {
-    var { db, permissions, request } = context;
+    var { db, permissions, request, timezone } = context;
     var { hasRootAccess, projectedResearchGroupIds } = permissions;
     
     validateOrThrow({

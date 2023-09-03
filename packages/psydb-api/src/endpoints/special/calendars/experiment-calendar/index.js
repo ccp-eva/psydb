@@ -49,6 +49,7 @@ var experimentCalendar = async (context, next) => {
         db,
         permissions,
         request,
+        timezone,
     } = context;
 
     validateOrThrow({
@@ -188,13 +189,13 @@ var experimentCalendar = async (context, next) => {
     }
 
     var subjectRelated = await fetchRelatedLabelsForMany({
-        db,
+        db, timezone,
         collectionName: 'subject',
-        records: subjectRecords
+        records: subjectRecords,
     })
 
     var experimentRelated = await fetchRelatedLabelsForMany({
-        db,
+        db, timezone,
         collectionName: 'experiment',
         records: experimentRecords
     })

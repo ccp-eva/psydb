@@ -16,7 +16,6 @@ var fetchExperimentRecords = async (bag) => {
         experimentOperatorTeamIds,
     } = bag;
 
-    console.log(experimentOperatorTeamIds);
     var now = new Date();
     var experimentRecords = await (
         db.collection('experiment').aggregate([
