@@ -1,9 +1,7 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
-import {
-    stringifyFieldValue,
-    Fields
-} from '@mpieva/psydb-ui-lib/';
+import { stringifyFieldValue, Fields } from '@mpieva/psydb-ui-lib';
 
 import {
     escapeJsonPointer,
@@ -17,6 +15,8 @@ export const StudyPanel = (ps) => {
         ageFrameRecords,
         ageFrameRelated
     } = ps;
+    
+    var translate = useUITranslation();
 
     var { relatedRecordLabels } = ageFrameRelated;
     var title = relatedRecordLabels.study[studyId]._recordLabel;
@@ -24,7 +24,7 @@ export const StudyPanel = (ps) => {
     return (
         <div>
             <header className='pb-1 mb-3 border-bottom'>
-                <b>Studie - { title }</b>
+                <b>{ translate('Study') } - { title }</b>
             </header>
             { ageFrameRecords.map((it, index) => (
                 <AgeFrame key={ index } { ...({
@@ -54,6 +54,7 @@ const AgeFrame = (ps) => {
         conditions
     } = state;
 
+    var translate = useUITranslation();
     var formKey = createAgeFrameKey(ageFrameRecord);
 
     var stringifiedAgeFrame = stringifyFieldValue({
@@ -61,7 +62,7 @@ const AgeFrame = (ps) => {
         fieldDefinition: { type: 'AgeFrameInterval' }
     });
 
-    var title = `Altersfenster  ${stringifiedAgeFrame}`;
+    var title = `${translate('Age Range')}  ${stringifiedAgeFrame}`;
 
     return (
         <div className='p-3 mb-3 border bg-white'>

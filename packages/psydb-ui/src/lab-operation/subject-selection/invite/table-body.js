@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import {
     Button,
@@ -15,17 +16,19 @@ import calculateAge from '@mpieva/psydb-ui-lib/src/calculate-age';
 import { FieldDataBodyCols } from '@mpieva/psydb-ui-lib/src/record-list';
 //import UpcomingExperiments from '../upcoming-experiments';
 
-const TableBody = ({
-    inviteType,
-    desiredTestInterval,
+const TableBody = (ps) => {
+    var {
+        inviteType,
+        desiredTestInterval,
 
-    subjectType,
-    subjectData,
-    subjectExperimentMetadata,
+        subjectType,
+        subjectData,
+        subjectExperimentMetadata,
 
-    onInviteSubject,
-    onViewSubject,
-}) => {
+        onInviteSubject,
+        onViewSubject,
+    } = ps;
+
     var { records, ...subjectMetadata } = subjectData;
     
     var permissions = usePermissions();
@@ -230,6 +233,8 @@ const Participation = (ps) => {
     var { record, subjectMetadata, className } = ps;
     var { participatedInStudies } = record.scientific.state.internals;
 
+    var translate = useUITranslation();
+
     var filtered = (
         participatedInStudies
         .filter(it => (
@@ -250,7 +255,7 @@ const Participation = (ps) => {
             ))
         )
         : (
-            <i className='text-muted'>Keine</i>
+            <i className='text-muted'>{ translate('None') }</i>
         )
     )
 
@@ -266,20 +271,25 @@ const Participation = (ps) => {
 }
 
 // FIXME: redundant with away-team
-const UpcomingExperiments = ({
-    records,
-    relatedRecordLabels,
-    relatedHelperSetItems,
-    relatedCustomRecordTypeLabels,
+const UpcomingExperiments = (ps) => {
+    var {
+        records,
+        relatedRecordLabels,
+        relatedHelperSetItems,
+        relatedCustomRecordTypeLabels,
 
-    className,
-}) => {
+        className,
+    } = ps;
+
+    var translate = useUITranslation();
+    var locale = useUILocale();
+
     var upcoming = (
         records.length > 0
         ? (
             records.map((record, ix) => {
                 var { studyId, interval } = record.state;
-                var { startDate } = formatDateInterval(interval);
+                var { startDate } = formatDateInterval(interval, { locale });
                 var study = relatedRecordLabels.study[studyId]._recordLabel;
                 return (
                     <div key={ ix }>
@@ -295,7 +305,7 @@ const UpcomingExperiments = ({
             })
         )
         : (
-            <i className='text-muted'>Keine</i>
+            <i className='text-muted'>{ translate('None') }</i>
         )
     )
 
@@ -310,6 +320,7 @@ const UpcomingExperiments = ({
     //    </div>
     //)
 }
+
 const TestableInStudies = (ps) => {
     var { record, subjectMetadata, desiredTestInterval } = ps;
     var formatted = (
@@ -360,6 +371,8 @@ const ActionButtons = (ps) => {
         onInviteSubject,
         onViewSubject
     } = ps;
+    
+    var translate = useUITranslation();
 
     return (
         <>
@@ -376,7 +389,7 @@ const ActionButtons = (ps) => {
                             )
                         }) }
                     >
-                        Termin
+                        { translate('Appointment') }
                     </Button>
                 </div>
             )}
@@ -385,7 +398,7 @@ const ActionButtons = (ps) => {
                     <EditIconButtonInline
                         buttonStyle={{ background: 'transparent' }}
                         onClick={ () => onViewSubject({
-                            title: `Proband:in - ${record._recordLabel}`,
+                            title: `${translate('Subject')} - ${record._recordLabel}`,
                             subjectId: record._id,
                             subjectType
                         })}

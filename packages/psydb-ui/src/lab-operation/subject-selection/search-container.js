@@ -24,9 +24,9 @@ import OnlineSubjectList from './online/testable-subject-list';
 
 import { SelectionForm } from './selection-form';
 
-const SearchContainer = ({
-    experimentType,
-}) => {
+const SearchContainer = (ps) => {
+    var { experimentType } = ps;
+
     var { path, url } = useRouteMatch();
     var history = useHistory();
     var { studyIds, subjectRecordType } = useParams();

@@ -6,6 +6,7 @@ import {
    // Redirect, // TODO
 } from 'react-router-dom';
 
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { PageWrappers } from '@mpieva/psydb-ui-layout';
 
 import StudySelect from './study-select';
@@ -21,13 +22,14 @@ const IndexRouting = (ps) => {
     } = ps;
 
     var { url, path } = useRouteMatch();
+    var translate = useUITranslation();
 
     return (
         <>
             { canSelectInhouse && (
                 <Route path={ `${path}/inhouse`}>
                     <TypedSelectionContainer
-                        title='Für Interne Studie'
+                        title={ translate('Inhouse Study') }
                         type='inhouse'
                     />
                 </Route>
@@ -35,7 +37,7 @@ const IndexRouting = (ps) => {
             { canSelectAwayTeam && (
                 <Route path={ `${path}/away-team`}>
                     <TypedSelectionContainer
-                        title='Für Externe Studie'
+                        title={ translate('External Study') }
                         type='away-team'
                         singleStudy={ true }
                     />
@@ -44,7 +46,7 @@ const IndexRouting = (ps) => {
             { canSelectVideo && (
                 <Route path={ `${path}/online-video-call`}>
                     <TypedSelectionContainer
-                        title='Für Online-Video-Anruf'
+                        title={ translate('Online Video Anruf') }
                         type='online-video-call'
                     />
                 </Route>
@@ -52,7 +54,7 @@ const IndexRouting = (ps) => {
             { canSelectOnlineSurvey && (
                 <Route path={ `${path}/online-survey`}>
                     <TypedSelectionContainer
-                        title='Für Online-Umfrage'
+                        title={ translate('Online Umfrage') }
                         type='online-survey'
                         singleStudy={ true }
                     />

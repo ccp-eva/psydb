@@ -1,18 +1,16 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
 
-import { UILocaleContext } from '@mpieva/psydb-ui-contexts';
 import { groupBy } from '@mpieva/psydb-common-lib';
-import { Button, Form as BSForm } from '@mpieva/psydb-ui-layout';
+import { Button } from '@mpieva/psydb-ui-layout';
 
 import {
     stringifyFieldValue,
     DefaultForm,
     Fields
-} from '@mpieva/psydb-ui-lib/';
+} from '@mpieva/psydb-ui-lib';
 
-import {
-    createInitialValues,
-} from '../utils';
+import { createInitialValues } from '../utils';
 
 import { StudyPanel } from './study-panel';
 
@@ -25,7 +23,8 @@ export const SelectionForm = (ps) => {
         onSubmit,
     } = ps;
 
-    var locale = useContext(UILocaleContext);
+    var locale = useUILocale();
+    var translate = useUITranslation();
 
     var grouped = groupBy({
         items: ageFrameRecords,
@@ -42,14 +41,14 @@ export const SelectionForm = (ps) => {
             {(formikProps) => (
                 <>
                     <header className='pb-1 mb-3 border-bottom'>
-                        <b>Zeitraum</b>
+                        <b>{ translate('Appointment Time Range') }</b>
                     </header>
                     <Fields.DateOnlyServerSide
-                        label='Von'
+                        label={ translate('Start') }
                         dataXPath='$.interval.start'
                     />
                     <Fields.DateOnlyServerSide
-                        label='Bis'
+                        label={ translate('End') }
                         dataXPath='$.interval.end'
                     />
                     { Object.keys(grouped).map((key) => (
@@ -62,7 +61,7 @@ export const SelectionForm = (ps) => {
                     ))}
                     <hr />
                     <Button type='submit'>
-                        Suchen
+                        { translate('Search') }
                     </Button>
                 </>
             )}

@@ -7,24 +7,25 @@ import { useFetch } from '@mpieva/psydb-ui-hooks';
 import { Table } from '../record-list';
 import { QuickSearch } from './quick-search';
 
-const StudySelectList = ({
-    studyRecordType,
-    experimentType,
-    experimentTypes,
+const StudySelectList = (ps) => {
+    var {
+        studyRecordType,
+        experimentType,
+        experimentTypes,
 
-    target,
-    className,
-    emptyInfoText,
+        target,
+        className,
+        emptyInfoText,
 
-    enableSelectRecords,
-    showSelectionIndicator,
-    wholeRowIsClickable,
-    selectedRecordIds,
-    onSelectRecord,
+        enableSelectRecords,
+        showSelectionIndicator,
+        wholeRowIsClickable,
+        selectedRecordIds,
+        onSelectRecord,
 
-    bsTableProps,
-    CustomActionListComponent,
-}) => {
+        bsTableProps,
+        CustomActionListComponent,
+    } = ps;
     var [ query, updateQuery ] = useState({});
 
     var [ didFetch, fetched ] = useFetch((agent) => {

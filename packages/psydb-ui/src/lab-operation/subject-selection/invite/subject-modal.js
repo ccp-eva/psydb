@@ -1,32 +1,30 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useReducer } from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { usePermissions, useRevision } from '@mpieva/psydb-ui-hooks';
 
-import {
-    Modal
-} from 'react-bootstrap';
-
-import {
-    TabNav
-} from '@mpieva/psydb-ui-layout';
+import { Modal, TabNav } from '@mpieva/psydb-ui-layout';
 
 import SubjectModalDetails from './subject-modal-details';
 import SubjectModalParticipation from './subject-modal-participation';
 import SubjectModalSchedule from './subject-modal-schedule';
 
-const SubjectModal = ({
-    show,
-    onHide,
+const SubjectModal = (ps) => {
+    var {
+        show,
+        onHide,
 
-    inviteType,
+        inviteType,
 
-    studyData,
-    studyNavItems,
-    studyRecordType,
-    subjectRecordType,
-    subjectModalData,
+        studyData,
+        studyNavItems,
+        studyRecordType,
+        subjectRecordType,
+        modalPayloadData: subjectModalData,
 
-    onSuccessfulUpdate,
-}) => {
+        onSuccessfulUpdate,
+    } = ps;
+
+    var translate = useUITranslation();
     var permissions = usePermissions();
     var revision = useRevision();
     var canReadSubjects = permissions.hasFlag('canReadSubjects');
@@ -67,15 +65,15 @@ const SubjectModal = ({
     var navItems = [
         (canReadSubjects && {
             key: 'subjectDetails',
-            label: 'Proband:innen-Details'
+            label: translate('Subject Details')
         }),
         (canReadParticipation && {
             key: 'subjectParticipation',
-            label: 'Studien-Teilnahme'
+            label: translate('Study Participation')
         }),
         {
             key: 'scheduleExperiment',
-            label: 'Einladung'
+            label: translate('Invitation')
         }
     ].filter(it => !!it)
 
@@ -88,7 +86,11 @@ const SubjectModal = ({
             backdropClassName='team-modal-backdrop'
         >
             <Modal.Header closeButton>
-                <Modal.Title>Termin-Einladung - { record._recordLabel }</Modal.Title>
+                <Modal.Title>
+                    { translate('Appointment Invitation') }
+                    {' - '}
+                    { record._recordLabel }
+                </Modal.Title>
             </Modal.Header>
             <Modal.Body className='bg-light'>
                 { navItems.length > 1 && (

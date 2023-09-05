@@ -178,6 +178,7 @@ var maps = [
         de: 'Forschungsgruppe'
     },
     {
+        internal: 'timerange_to',
         en: 'to',
         de: 'bis'
     },
@@ -587,6 +588,74 @@ var maps = [
     {
         en: 'Online Survey',
         de: 'Online-Umfrage'
+    },
+    {
+        en: 'Next',
+        de: 'Weiter'
+    },
+    {
+        en: 'Selected',
+        de: 'Ausgewählt'
+    },
+    {
+        en: 'No active studies found.',
+        de: 'Keine laufenden Studien gefunden.'
+    },
+    {
+        en: 'Search',
+        de: 'Suchen'
+    },
+    {
+        en: 'Appointment Time Range',
+        de: 'Terminzeitraum'
+    },
+    {
+        en: 'Age Range',
+        de: 'Altersfenster'
+    },
+    {
+        en: 'Desired Time Range',
+        de: 'Gewünschter Zeitraum'
+    },
+    {
+        en: 'Age Today',
+        de: 'Alter Heute'
+    },
+    {
+        en: 'Part. Studies',
+        de: 'Teilg. Studien'
+    },
+    {
+        en: 'Part. Studies',
+        de: 'Teilg. Studien'
+    },
+    {
+        en: 'Appointments',
+        de: 'Termine'
+    },
+    {
+        en: 'Poss. Studies',
+        de: 'Mögl. Studien'
+    },
+    {
+        en: 'None',
+        de: 'Keine'
+    },
+    {
+        en: 'Appointment',
+        de: 'Termin'
+    },
+    {
+        en: 'Study Participation',
+        de: 'Studien-Teilnahme'
+    },
+    {
+        en: 'Invitation',
+        de: 'Einladung'
+    },
+    {
+        en: 'Appointment Invitation',
+        de: 'Termin-Einladung'
     },
 ]
 

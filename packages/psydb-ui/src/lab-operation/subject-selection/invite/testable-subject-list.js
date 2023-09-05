@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer, useMemo } from 'react';
+import React, { useState } from 'react';
 
 import {
     Redirect,
@@ -6,17 +6,11 @@ import {
     useParams
 } from 'react-router-dom';
 
-import {
-    Table
-} from 'react-bootstrap';
-
 import { Base64 } from 'js-base64';
-import { getSystemTimezone } from '@mpieva/psydb-timezone-helpers';
 
-import agent from '@mpieva/psydb-ui-request-agents';
-import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 import intervalfns from '@mpieva/psydb-date-interval-fns';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
+import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
 
 import {
     useFetch,
@@ -26,13 +20,13 @@ import {
 } from '@mpieva/psydb-ui-hooks';
 
 import {
+    Table,
+    TableHeadCustomCols,
     LoadingIndicator,
     Pagination,
 } from '@mpieva/psydb-ui-layout';
 
-import { FieldDataHeadCols } from '@mpieva/psydb-ui-lib/src/record-list';
-import { QuickSearch } from '@mpieva/psydb-ui-lib';
-
+import { datefns, QuickSearch } from '@mpieva/psydb-ui-lib';
 import { SubjectRecordViewModal } from '@mpieva/psydb-ui-compositions';
 
 import { convertFilters } from '../convert-filters';
@@ -41,13 +35,18 @@ import TableBody from './table-body';
 import InviteModal from './subject-modal';
 import StudySummaryList from '../study-summary-list';
 
-const InviteTestableSubjectList = ({
-    inviteType,
-    studyLabelItems,
-}) => {
+
+const InviteTestableSubjectList = (ps) => {
+    var {
+        inviteType,
+        studyLabelItems,
+    } = ps;
+
     if (!['inhouse', 'online-video-call'].includes(inviteType)) {
         throw new Error(`unknown inviteType "${inviteType}"`);
     }
+
+    var translate = useUITranslation();
 
     var { path, url } = useRouteMatch();
     var {
@@ -57,7 +56,6 @@ const InviteTestableSubjectList = ({
         searchSettings64
     } = useParams();
     var [ quickSearchFilters, setQuickSearchFilters ] = useState({});
-
 
     var studyIds = joinedStudyIds.split(',');
 
@@ -147,29 +145,21 @@ const InviteTestableSubjectList = ({
         relatedCustomRecordTypeLabels,
     } = subjectData;
 
-    var formattedTestInterval = (
-        intervalfns.format(desiredTestInterval, { offsetEnd: 0 })
-    );
-
-
     return (
         <>
             <InviteModal
-                show={ inviteModal.show }
-                onHide={ inviteModal.handleHide }
+                { ...inviteModal.passthrough }
                 
                 inviteType={ inviteType }
+                subjectRecordType={ subjectRecordType }
                
+                studyRecordType={ studyType }
                 studyData={ studyData }
                 studyNavItems={ studyData.records.map(it => ({
                     key: it._id,
                     label: it.state.shorthand
                 })) }
-                studyRecordType={ studyType }
                 
-                subjectRecordType={ subjectRecordType }
-                subjectModalData={ inviteModal.data }
-
                 onSuccessfulUpdate={ increaseRevision }
             />
 
@@ -185,15 +175,7 @@ const InviteTestableSubjectList = ({
                 labProcedureTypeKey={ inviteType }
             />
 
-            <div className='border px-3 py-2 mb-3 bg-light'>
-                <b>Gewünschter Zeitraum:</b>
-                {' '}
-                { formattedTestInterval.startDate }
-                {' '}
-                bis
-                {' '}
-                { formattedTestInterval.endDate }
-            </div>
+            <DesiredTimeRange interval={ desiredTestInterval}/>
 
             <Table style={{ borderCollapse: 'separate', borderSpacing: 0 }}>
                 <thead className='sticky-top bg-light'>
@@ -220,14 +202,14 @@ const InviteTestableSubjectList = ({
                         </td>
                     </tr>
                     <tr className='bg-white'>
-                        <th>Proband:in</th>
-                        <FieldDataHeadCols { ...({
-                            displayFieldData: subjectData.displayFieldData
+                        <th>{ translate('Subject') }</th>
+                        <TableHeadCustomCols { ...({
+                            definitions: subjectData.displayFieldData
                         })} />
-                        <th>Alter</th>
-                        <th>Teilg. Stud.</th>
-                        <th>Termine</th>
-                        <th>Mögl. Stud.</th>
+                        <th>{ translate('Age Today') }</th>
+                        <th>{ translate('Part. Studies') }</th>
+                        <th>{ translate('Appointments') }</th>
+                        <th>{ translate('Poss. Studies') }</th>
                         <th />
                     </tr>
                 </thead>
@@ -246,5 +228,27 @@ const InviteTestableSubjectList = ({
         </>
     );
 }
+
+const DesiredTimeRange = (ps) => {
+    var { interval } = ps;
+    
+    var translate = useUITranslation();
+    var locale = useUILocale();
+
+    var { startDate, endDate } = intervalfns.format(
+        interval, { offsetEnd: 0, locale }
+    )
+    return (
+        <div className='border px-3 py-2 mb-3 bg-light'>
+            <b>{ translate('Desired Time Range') }:</b>
+            {' '}
+            { startDate }
+            {' '}
+            { translate('timerange_to') }
+            {' '}
+            { endDate }
+        </div>
+    )
+} 
 
 export default InviteTestableSubjectList;

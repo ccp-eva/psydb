@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React from 'react';
 
 import {
     useRouteMatch,
@@ -6,17 +6,22 @@ import {
     useHistory,
 } from 'react-router-dom';
 
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useSelectionReducer } from '@mpieva/psydb-ui-hooks';
 import { LinkButton, OptionSelectIndicator } from '@mpieva/psydb-ui-layout';
 import { StudySelectList } from '@mpieva/psydb-ui-lib';
 
-const StudySelect = ({
-    experimentType,
-    singleStudy,
-}) => {
+const StudySelect = (ps) => {
+    var {
+        experimentType,
+        singleStudy,
+    } = ps;
+
     var { path, url } = useRouteMatch();
     var { studyType } = useParams();
     var history =  useHistory();
+
+    var translate = useUITranslation();
 
     var selection = useSelectionReducer({
         selected: [],
@@ -41,13 +46,13 @@ const StudySelect = ({
                     <b>{
                         singleStudy
                         ? '' 
-                        : `Ausgewählt: ${selectedStudies.length}`
+                        : `${translate('Selected')}: ${selectedStudies.length}`
                     }</b>
                     <LinkButton
                         to={ `${url}/${selectedStudies.map(it => it._id).join(',')}`}
                         disabled={ selectedStudies.length < 1 }
                     >
-                        Weiter
+                        { translate('Next') }
                     </LinkButton>
                 </div>
             )}
@@ -59,7 +64,7 @@ const StudySelect = ({
                 showSelectionIndicator={ singleStudy ? false : true }
                 wholeRowIsClickable={ true }
                 bsTableProps={{ hover: true }}
-                emptyInfoText='Keine laufenden Studien vorhanden'
+                emptyInfoText={ translate('No active studies found.') }
 
                 selectedRecordIds={ selectedStudies.map(it => it._id) }
                 onSelectRecord={ ({ type, payload }) => {
