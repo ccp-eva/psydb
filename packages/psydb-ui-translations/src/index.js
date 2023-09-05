@@ -572,6 +572,22 @@ var maps = [
         en: 'Reserve',
         de: 'Reservieren'
     },
+    {
+        en: 'Inhouse Study',
+        de: 'Interne Studie'
+    },
+    {
+        en: 'External Study',
+        de: 'Externe Studie'
+    },
+    {
+        en: 'Online Video Call',
+        de: 'Online-Video-Anruf'
+    },
+    {
+        en: 'Online Survey',
+        de: 'Online-Umfrage'
+    },
 ]
 
 export const createTranslate = (lang = 'en') => (template, props) => {
