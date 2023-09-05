@@ -582,8 +582,8 @@ export const createTranslate = (lang = 'en') => (template, props) => {
         return render(translatedTemplate, props);
     }
     else {
-        //return render('[!! ' + template + ' !!]', props);
+        return render('[!! ' + template + ' !!]', props);
         // FIXME: temp compat
-        return render(template, props);
+        //return render(template, props);
     }
 }

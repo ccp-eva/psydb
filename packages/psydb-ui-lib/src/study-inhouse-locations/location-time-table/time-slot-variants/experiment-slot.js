@@ -1,9 +1,9 @@
 import React from 'react';
 import classnames from 'classnames';
-import { Icons } from '@mpieva/psydb-ui-layout';
+import { useUILocale } from '@mpieva/psydb-ui-contexts';
+import { ColoredBox, Icons } from '@mpieva/psydb-ui-layout';
 
 import datefns from '../../../date-fns';
-import getTextColor from '../../../bw-text-color-for-background';
 
 import OtherStudySlot from './other-study-slot';
 
@@ -29,6 +29,8 @@ const ExperimentSlot = (ps) => {
         checkExperimentSlotSelectable,
         onSelectExperimentSlot,
     } = ps;
+
+    var locale = useUILocale();
 
     var canSelect = (
         checkExperimentSlotSelectable
@@ -91,23 +93,17 @@ const ExperimentSlot = (ps) => {
         );
     }
 
-    var textColor = getTextColor(teamRecord.state.color);
-
     return (
-        <div
-            role={ canClick ? 'button' : undefined }
+        <ColoredBox
+            bg={ teamRecord.state.color }
+            role={ canClick ? 'button' : '' }
             className='text-center m-1'
-            style={{
+            extraStyle={{
                 height: '26px',
                 background: teamRecord.state.color,
-                color: textColor,
                 ...(!canClick && {
                     opacity: 0.5
                 }),
-                //borderWidth: '2px',
-                //borderStyle: 'dashed',
-                //borderColor: getTextColor(teamRecord.state.color),
-                //boxSizing: 'border-box'
             }}
             onClick={ () => {
                 canClick && onSelectExperimentSlot({
@@ -123,7 +119,6 @@ const ExperimentSlot = (ps) => {
             <div className='d-flex'>
                 <ExperimentSlotPosIndicator { ...({
                     isFirstSlotOfExperiment,
-                    textColor,
                 }) } />
                 <b className='d-inline-block pl-1 pr-1 flex-grow' style={{
                     height: '26px',
@@ -131,7 +126,7 @@ const ExperimentSlot = (ps) => {
                     //borderRight: '4px solid',
                     //borderColor: getTextColor(teamRecord.state.color),
                 }}>
-                    <span>{ datefns.format(date, 'p') }</span>
+                    <span>{ datefns.format(date, 'p', { locale }) }</span>
                 </b>
                 <SubjectCountIndicator { ...({
                     experimentRecord,
@@ -142,7 +137,7 @@ const ExperimentSlot = (ps) => {
                     missingCount,
                 })} />
             </div>
-        </div>
+        </ColoredBox>
     );
 }
 
@@ -187,10 +182,7 @@ var countMissing = (options)  => {
 }
 
 const ExperimentSlotPosIndicator = (ps) => {
-    var {
-        isFirstSlotOfExperiment,
-        textColor
-    } = ps;
+    var { isFirstSlotOfExperiment } = ps;
 
     var Indication = (
         isFirstSlotOfExperiment
@@ -204,8 +196,6 @@ const ExperimentSlotPosIndicator = (ps) => {
         <span
             className={`text-center`}
             style={{
-                color: textColor,
-
                 height: '26px',
                 width: '30px'
             }}

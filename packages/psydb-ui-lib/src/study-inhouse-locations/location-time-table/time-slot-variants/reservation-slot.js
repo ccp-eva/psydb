@@ -1,7 +1,8 @@
 import React from 'react';
+import { useUILocale } from '@mpieva/psydb-ui-contexts';
+import { ColoredBox } from '@mpieva/psydb-ui-layout';
 
 import datefns from '../../../date-fns';
-import getTextColor from '../../../bw-text-color-for-background';
 
 import OtherStudySlot from './other-study-slot';
 
@@ -18,6 +19,8 @@ const ReservationSlot = (ps) => {
         checkReservationSlotSelectable,
         onSelectReservationSlot,
     } = ps;
+    
+    var locale = useUILocale();
     
     var canSelect = (
         checkReservationSlotSelectable
@@ -39,13 +42,12 @@ const ReservationSlot = (ps) => {
     }
 
     return (
-        <div
-            role={ onSelectReservationSlot ? 'button' : undefined }
+        <ColoredBox
+            bg={ teamRecord.state.color }
+            role={ onSelectReservationSlot ? 'button' : '' }
             className='text-center m-1'
-            style={{
+            extraStyle={{
                 height: '26px',
-                background: teamRecord.state.color,
-                color: getTextColor(teamRecord.state.color),
                 borderWidth: '1px',
                 borderStyle: 'solid',
                 borderColor: teamRecord.state.color
@@ -62,8 +64,8 @@ const ReservationSlot = (ps) => {
                 })
             }}
         >
-            { datefns.format(date, 'p') }
-        </div>
+            { datefns.format(date, 'p', { locale }) }
+        </ColoredBox>
     );
 }
 

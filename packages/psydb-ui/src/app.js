@@ -30,8 +30,8 @@ const App = () => {
     var [ isInitialized, setIsInitialized ] = useState(false);
 
     var [ state, dispatch ] = useReducer(i18nReducer, {
-        language: 'de',
-        locale: deLocale
+        language: 'en',
+        locale: enUSLocale
     });
 
     var { language, locale } = state;
