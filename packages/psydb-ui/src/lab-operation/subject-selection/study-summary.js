@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetchChain } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
@@ -11,6 +12,8 @@ import * as Themes from '@mpieva/psydb-ui-lib/data-viewer-themes';
 
 const StudySummary = (ps) => {
     var { studyId, settings, settingsRelated, subjectCRTSettings } = ps;
+
+    var translate = useUITranslation();
 
     var [ didFetch, fetched ] = useFetchChain(() => ([
         ({ agent }) => ({
@@ -58,10 +61,10 @@ const StudySummary = (ps) => {
                         { settings && (
                             <LabProcedureSettings { ...settingsBag }>
                                 <LabProcedureSettings.SubjectsPerExperiment
-                                    label='pro Termin'
+                                    label={ translate('per Appointment') }
                                 />
                                 <LabProcedureSettings.SubjectFieldRequirements
-                                    label='Bedingungen'
+                                    label={ translate('Conditions') }
                                 />
                             </LabProcedureSettings>
                         )}

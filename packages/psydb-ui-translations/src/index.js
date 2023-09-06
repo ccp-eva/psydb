@@ -673,6 +673,75 @@ var maps = [
         en: 'Not in Age Range',
         de: 'Nicht in Altersfenster'
     },
+    {
+        en: 'Add',
+        de: 'Hinzufügen'
+    },
+    {
+        en: 'No study participations found.',
+        de: 'Keine Studienteilnahmen gefunden.'
+    },
+    {
+        en: 'Date/Time',
+        de: 'Zeitpunkt'
+    },
+    {
+        en: 'per Appointment',
+        de: 'pro Termin'
+    },
+    {
+        en: 'Conditions',
+        de: 'Bedingungen'
+    },
+    {
+        en: 'ID No.',
+        de: 'ID Nr.'
+    },
+    {
+        internal: '_designation',
+        en: 'Name',
+        de: 'Bezeichnung'
+    },
+    {
+        en: 'Shorthand',
+        de: 'Kürzel'
+    },
+    {
+        en: 'Subjects can be tested multiple times',
+        de: 'Proband:innen können mehrfach getestet werden'
+    },
+    {
+        en: 'Scientists',
+        de: 'Wissenschaftler:innen'
+    },
+    {
+        en: 'Record Access for',
+        de: 'Zugriff auf diesen Datensatz für'
+    },
+    {
+        en: 'Read',
+        de: 'Lesen'
+    },
+    {
+        en: 'Write',
+        de: 'Schreiben'
+    },
+    {
+        en: 'Not Specified',
+        de: 'Keine Angabe'
+    },
+    {
+        en: 'primary',
+        de: 'primär'
+    },
+    {
+        en: 'Female',
+        de: 'Weiblich'
+    },
+    {
+        en: 'Male',
+        de: 'Männlich'
+    },
 ]
 
 export const createTranslate = (lang = 'en') => (template, props) => {

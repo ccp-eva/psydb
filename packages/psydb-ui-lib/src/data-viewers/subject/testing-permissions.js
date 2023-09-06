@@ -1,5 +1,6 @@
 import React from 'react';
 import * as enums from '@mpieva/psydb-schema-enums';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { Icons } from '@mpieva/psydb-ui-layout';
 import {
     ForeignId,
@@ -8,9 +9,11 @@ import {
 
 const TestingPermissions = (ps) => {
     var { value, related } = ps;
+    var translate = useUITranslation();
+
     if (value.length < 1) {
         return (
-            <i className='text-muted'>Keine</i>
+            <i className='text-muted'>{ translate('None') }</i>
         )
     }
 
@@ -51,6 +54,8 @@ const ResearchGroupTestingPermissions = (ps) => {
 
 const PermissionItem = (ps) => {
     var { labProcedureTypeKey, value } = ps.value;
+    var translate = useUITranslation();
+
     if (value === 'unknown') {
         return null;
     }
@@ -76,6 +81,9 @@ const PermissionItem = (ps) => {
             />
             <span className='d-inline-block ml-2'>
                 { enums.experimentVariants.getLabel(labProcedureTypeKey) }
+                { /* TODO translate(
+                    enums.experimentVariants.getLabel(labProcedureTypeKey)
+                ) */ }
             </span>
         </span>
     )

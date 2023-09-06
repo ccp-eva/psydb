@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import {
     Row,
     Col,
@@ -13,12 +14,14 @@ import {
 
 const CommentControl = (ps) => {
     var { comment, onChangeComment } = ps;
+    var translate = useUITranslation();
+
     if (onChangeComment) {
         var onChange = wrapOnChange(onChangeComment);
         return (
             <Row className='mb-2'>
                 <Form.Label className='col-sm-4 col-form-label'>
-                    Kommentar
+                    { translate('Comment') }
                 </Form.Label>
                 <Col sm={8}>
                     <Form.Control
@@ -32,7 +35,11 @@ const CommentControl = (ps) => {
     }
     else {
         return (
-            <Pair className='mb-2' label="Kommentar" textWrap='span'>
+            <Pair
+                className='mb-2'
+                label={ translate('Comment') }
+                textWrap='span'
+            >
                 <i className='text-muted'>{ comment }</i>
             </Pair>
         )
@@ -41,12 +48,14 @@ const CommentControl = (ps) => {
 
 const AutoConfirmControl = (ps) => {
     var { autoConfirm, onChangeAutoConfirm } = ps;
+    var translate = useUITranslation();
+    
     if (onChangeAutoConfirm) {
         var onChange = wrapOnChange(onChangeAutoConfirm);
         return (
             <Row className='mb-2'>
                 <Form.Label className='col-sm-4 col-form-label'>
-                    Bestätigen
+                    { translate('Confirm') }
                 </Form.Label>
                 <Col sm={8}>
                     <BoolControl

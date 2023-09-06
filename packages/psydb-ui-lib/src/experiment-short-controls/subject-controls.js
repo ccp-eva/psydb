@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { Pair } from '@mpieva/psydb-ui-layout';
 
 import {
@@ -15,9 +16,11 @@ const SubjectControls = (ps) => {
         onChangeAutoConfirm,
     } = ps;
 
+    var translate = useUITranslation();
+
     return (
         <>
-            <Pair className='mb-2' label="Proband:in">
+            <Pair className='mb-2' label={ translate('Subject') }>
                 { subjectLabel }
             </Pair>
             <CommentControl { ...({

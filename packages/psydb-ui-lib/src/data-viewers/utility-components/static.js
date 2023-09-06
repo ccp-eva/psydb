@@ -1,6 +1,7 @@
 import React from 'react';
 import { jsonpointer } from '@mpieva/psydb-core-utils';
 import { calculateAge } from '@mpieva/psydb-common-lib';
+import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
 import { Icons } from '@mpieva/psydb-ui-layout';
 import datefns from '../../date-fns';
 
@@ -16,13 +17,18 @@ var collectionUIMapping = {
 }
 
 // TODO: put elsewhere
-const NoValue = ({ unknown }) => (
-    unknown
-    ? 'Unbekannt'
-    : (
-        <i style={{ color: '#bbb' }}>Keine Angabe</i>
+const NoValue = (ps) => {
+    var { unknown } = ps;
+    var translate = useUITranslation();
+
+    return (
+        unknown
+        ? translate('Unknown')
+        : (
+            <i style={{ color: '#bbb' }}>{ translate('Not Specified') }</i>
+        )
     )
-);
+};
 
 // TODO: put elsewhere
 const Joined = ({ delimiter, children }) => (
@@ -39,8 +45,11 @@ const Joined = ({ delimiter, children }) => (
 export const Lambda = (ps) => {
     var { record, definition } = ps;
     var { fn, input } = definition.props;
+    
+    var translate = useUITranslation();
+    
     if (!record) {
-        return <span className='text-dange'>'ERROR'</span>
+        return <span className='text-danger'>'ERROR'</span>
     }
 
     if (fn === 'deltaYMD') {
@@ -48,7 +57,7 @@ export const Lambda = (ps) => {
             base: it,
             relativeTo: new Date(),
             asString: true
-        }) : 'Unbekannt';
+        }) : translate('Unknown');
     }
     
     return (
@@ -179,10 +188,13 @@ export const ForeignIdList = (ps) => {
 export const DateOnlyServerSide = (ps) => {
     var { value, props = {}, related } = ps;
     
+    var translate = useUITranslation();
+    var locale = useUILocale();
+    
     var formatted = (
         value === undefined || value === null
         ? <NoValue />
-        : datefns.format(new Date(value), 'dd.MM.yyyy')
+        : datefns.format(new Date(value), 'P', { locale })
     );
 
     var age = calculateAge({
@@ -198,7 +210,7 @@ export const DateOnlyServerSide = (ps) => {
                 <>
                     {' '}
                     <span style={{ color: '#bbb' }}>
-                        (Alter: { age })
+                        ({ translate('Age Today')}: { age })
                     </span>
                 </>
             )}
@@ -208,10 +220,12 @@ export const DateOnlyServerSide = (ps) => {
 
 export const DateTime = (ps) => {
     var { value, props, related } = ps;
+    var locale = useUILocale();
+
     var formatted = (
         value === undefined || value === null
         ? '-' 
-        : datefns.format(new Date(value), 'dd.MM.yyyy HH:mm')
+        : datefns.format(new Date(value), 'P p', { locale })
     );
     return (
         <span>{ formatted }</span>
@@ -247,6 +261,7 @@ export const Address = (ps) => {
 
 export const EmailWithPrimaryList = (ps) => {
     var { value } = ps;
+    var translate = useUITranslation();
     
     if (!(Array.isArray(value) && value.length)) {
         return <NoValue />
@@ -259,7 +274,7 @@ export const EmailWithPrimaryList = (ps) => {
                 {' '}
                 { it.isPrimary && (
                     <span className='text-primary'>
-                        (primär)
+                        ({ translate('primary') })
                     </span>
                 )}
             </div>
@@ -269,9 +284,10 @@ export const EmailWithPrimaryList = (ps) => {
 
 export const PhoneWithTypeList = (ps) => {
     var { value } = ps;
+    var translate = useUITranslation();
     
     if (!(Array.isArray(value) && value.length)) {
-        return <i className='text-muted'>Keine</i>
+        return <i className='text-muted'>{ translate('None') }</i>
     }
 
     var fieldOptions = {
@@ -305,17 +321,19 @@ export const PhoneList = (ps) => {
         value.join(', ')
     )
 }
+
 export const BiologicalGender = (ps) => {
     var { value } = ps;
+    var translate = useUITranslation();
 
     if (!value) {
         return <NoValue />
     }
 
     var fieldOptions = {
-        'female': 'Weiblich',
-        'male': 'Männlich',
-        'unknown': 'Unbekannt'
+        'female': translate('Female'),
+        'male': translate('Male'),
+        'unknown': translate('Unknown')
     }
 
     return fieldOptions[value];
@@ -323,6 +341,7 @@ export const BiologicalGender = (ps) => {
 
 export const ExtBool = (ps) => {
     var { value = 'unknown' } = ps;
+    var translate = useUITranslation();
 
     var colorClasses = {
         'yes': 'text-primary',
@@ -331,9 +350,9 @@ export const ExtBool = (ps) => {
     };
 
     var fieldOptions = {
-        'yes': 'Ja',
-        'no': 'Nein',
-        'unknown': 'Unbekannt',
+        'yes': translate('Yes'),
+        'no': translate('No'),
+        'unknown': translate('Unbekannt'),
     };
 
     var icons = {
@@ -358,6 +377,8 @@ export const ExtBool = (ps) => {
 export const DefaultBool = (ps) => {
     var { value } = ps;
     value = String(!!value);
+    
+    var translate = useUITranslation();
 
     var colorClasses = {
         'true': 'text-primary',
@@ -365,8 +386,8 @@ export const DefaultBool = (ps) => {
     };
 
     var fieldOptions = {
-        'true': 'Ja',
-        'false': 'Nein',
+        'true': translate('Yes'),
+        'false': translate('No'),
     };
 
     var icons = {
@@ -391,7 +412,7 @@ export const ForeignId = (ps) => {
     var { value, props, related } = ps;
     var { collection, recordType } = props;
     if (!value) {
-        return <NoValue unknown={ props.displayEmptyAsUnknown} />
+        return <NoValue unknown={ props.displayEmptyAsUnknown } />
     }
     
     var label = (

@@ -2,11 +2,15 @@ import React from 'react';
 import {
     subjectFieldRequirementChecks as checksEnum,
 } from '@mpieva/psydb-schema-enums';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+
 
 const SubjectFieldRequirements = (ps) => {
     var { value, subjectCRTSettings } = ps;
     var { fieldDefinitions } = subjectCRTSettings;
     
+    var translate = useUITranslation();
+
     var fieldLabels = (
         fieldDefinitions.scientific
         .reduce((acc, field) => {
@@ -17,7 +21,7 @@ const SubjectFieldRequirements = (ps) => {
 
     return (
         !(Array.isArray(value) && value.length > 0)
-        ? <i className='text-muted'>Keine</i>
+        ? <i className='text-muted'>{ translate('None') }</i>
         : (
             <div>
                 { value.map((req, index) => {

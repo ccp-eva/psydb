@@ -1,4 +1,10 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import {
+    useModalReducer,
+    usePermissions
+} from '@mpieva/psydb-ui-hooks';
+
 import {
     Table,
     SortableTH,
@@ -7,11 +13,6 @@ import {
     EditIconButtonInline,
     RemoveIconButtonInline,
 } from '@mpieva/psydb-ui-layout';
-
-import {
-    useModalReducer,
-    usePermissions
-} from '@mpieva/psydb-ui-hooks';
 
 import datefns from '../date-fns';
 import calculateAge from '../calculate-age';
@@ -26,28 +27,32 @@ import {
 
 import TimestampAndMaybeAge from './timestamp-and-maybe-age';
 
-const ParticipationList = ({
-    sorter,
-    subjectId,
-    subjectType,
-    subjectRecord,
+const ParticipationList = (ps) => {
+    var {
+        sorter,
+        subjectId,
+        subjectType,
+        subjectRecord,
 
-    studyType,
-    ageFrameField,
-    ageFrameFieldValue,
+        studyType,
+        ageFrameField,
+        ageFrameFieldValue,
 
-    participation,
-    studyRecordsById,
-    relatedRecordLabels,
-    relatedHelperSetItems,
-    relatedCustomRecordTypeLabels,
-    displayFieldData,
+        participation,
+        studyRecordsById,
+        relatedRecordLabels,
+        relatedHelperSetItems,
+        relatedCustomRecordTypeLabels,
+        displayFieldData,
 
-    onSuccessfulUpdate,
-    enableItemFunctions,
-}) => {
+        onSuccessfulUpdate,
+        enableItemFunctions,
+    } = ps;
+
+    var translate = useUITranslation();
     var editModal = useModalReducer();
     var removeModal = useModalReducer();
+    
     return (
         <>
             <EditModal
@@ -65,20 +70,20 @@ const ParticipationList = ({
                             displayFieldData={ displayFieldData }
                         />*/}
                         <SortableTH
-                            label='Studie'
+                            label={ translate('Study') }
                             sorter={ sorter }
                             path='study.shorthand'
                         />
                         <SortableTH
-                            label='Zeitpunkt'
+                            label={ translate('Date/Time') }
                             sorter={ sorter }
                             path='timestamp'
                         />
                         { ageFrameField && (
-                            <th>Alter</th>
+                            <th>{ translate('T-Age') }</th>
                         )}
                         <SortableTH
-                            label='Status'
+                            label={ translate('Status') }
                             sorter={ sorter }
                             path='status'
                         />
@@ -143,6 +148,7 @@ const ParticipationListRow = (ps) => {
 
     var { _id: subjectId, type: subjectType } = subjectRecord;
 
+    var translate = useUITranslation();
     var permissions = usePermissions();
 
     var showEdit = permissions.hasFlag('canWriteParticipation');
@@ -174,7 +180,7 @@ const ParticipationListRow = (ps) => {
             })} />
 
             <td>
-                { formatStatus(participationData.status) }
+                { translate(formatStatus(participationData.status)) }
             </td>
             { showItemFunctions ? (
                 <td className='d-flex justify-content-end'>
@@ -213,13 +219,15 @@ const ParticipationListRow = (ps) => {
 
 var formatStatus = (status) => {
     return {
-        'unknown': 'unb.',
-        'participated': 't.g.',
-        'didnt-participate': 'n.t.g.',
-        'showed-up-but-didnt-participate': 'gek.',
-        'didnt-show-up': 'n. gek.',
-        'canceled-by-participant': 'abg.',
-        'canceled-by-institute': 'ausg.',
+        'unknown': 'unknwon_short',
+        'participated': 'participated_short',
+        'didnt-participate': 'didnt-participate_short',
+
+        'showed-up-but-didnt-participate': 'showed-up-but-didnt-participate_short',
+        'didnt-show-up': 'didnt-show-up_short',
+        'canceled-by-participant': 'canceled-by-participant_short',
+        'canceled-by-institute': 'canceled-by-institute_short',
+        'moved': 'moved_short',
     }[status] || 'ERROR'
 }
 

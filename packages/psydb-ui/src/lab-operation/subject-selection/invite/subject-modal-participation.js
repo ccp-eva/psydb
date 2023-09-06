@@ -4,11 +4,13 @@ import { SubjectParticipationList } from '@mpieva/psydb-ui-lib';
 const SubjectModalParticipation = (ps) => {
     var { id, recordType } = ps;
     return (
-        <SubjectParticipationList
-            id={ id }
-            subjectType={ recordType }
-            enableItemFunctions={ false }
-        />
+        <div className='my-2'>
+            <SubjectParticipationList
+                id={ id }
+                subjectType={ recordType }
+                enableItemFunctions={ false }
+            />
+        </div>
     )
 }
 

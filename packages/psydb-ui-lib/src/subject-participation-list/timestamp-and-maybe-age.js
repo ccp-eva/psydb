@@ -2,11 +2,14 @@ import React from 'react';
 import { jsonpointer } from '@mpieva/psydb-core-utils';
 import { calculateAge } from '@mpieva/psydb-common-lib';
 import { check1970 } from '@mpieva/psydb-ui-utils';
+import { useUILocale } from '@mpieva/psydb-ui-contexts';
 
 import datefns from '../date-fns';
 
 const TimestampAndMaybeAge = (ps) => {
     var { record, timestamp, dateOfBirthField } = ps;
+    var locale = useUILocale();
+
     if (check1970(timestamp)) {
         return (
             <>
@@ -17,7 +20,7 @@ const TimestampAndMaybeAge = (ps) => {
     }
     else {
         var formattedTS = datefns.format(
-            new Date(timestamp), 'dd.MM.yyyy HH:mm'
+            new Date(timestamp), 'P p', { locale }
         );
 
         var out = [

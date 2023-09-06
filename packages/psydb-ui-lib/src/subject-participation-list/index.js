@@ -5,8 +5,8 @@ import {
     useParams
 } from 'react-router-dom';
 
-import jsonpointer from 'jsonpointer';
-
+import { jsonpointer } from '@mpieva/psydb-core-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import {
     useFetchAll,
     useSortReducer,
@@ -14,6 +14,7 @@ import {
 } from '@mpieva/psydb-ui-hooks';
 import {
     LoadingIndicator,
+    Alert,
     NotFound,
     UnexpectedResponseError
 } from '@mpieva/psydb-ui-layout';
@@ -100,19 +101,22 @@ const Participation = (ps) => {
     );
 }
 
-const ParticipationByType = ({
-    sorter,
-    subjectId,
-    subjectType,
-    participationData,
-    onSuccessfulUpdate,
-    enableItemFunctions,
-}) => {
+const ParticipationByType = (ps) => {
+    var {
+        sorter,
+        subjectId,
+        subjectType,
+        participationData,
+        onSuccessfulUpdate,
+        enableItemFunctions,
+    } = ps;
 
     var {
         subjectData,
         participationByStudyType
     } = participationData;
+
+    var translate = useUITranslation();
 
     var ageFrameField = subjectData.displayFieldData.find(it => (
         it.props && it.props.isSpecialAgeFrameField
@@ -129,7 +133,11 @@ const ParticipationByType = ({
     var studyTypes = Object.keys(participationByStudyType);
     if (studyTypes.length < 1) {
         return (
-            <i className='text-muted'>Keine Studienteilnahmen vorhanden</i>
+            <Alert variant='info'>
+                <i className='text-muted'>
+                    { translate('No study participations found.') }
+                </i>
+            </Alert>
         )
     }
 

@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
-import jsonpointer from 'jsonpointer';
+import { jsonpointer } from '@mpieva/psydb-core-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { withPair } from './with-pair';
 
 export const addComponents = (target, context, labels, items) => {
@@ -11,6 +12,8 @@ export const addComponents = (target, context, labels, items) => {
         }
 
         target[cname] = (ps) => {
+            var translate = useUITranslation();
+
             var { value, ...pass } = useContext(context);
             var propLabel = labels[path];
             var propValue = (
@@ -20,7 +23,7 @@ export const addComponents = (target, context, labels, items) => {
             );
             return (
                 <Component
-                    label={ propLabel }
+                    label={ translate(propLabel) }
                     value={ propValue }
                     { ...pass }
                     { ...ps }

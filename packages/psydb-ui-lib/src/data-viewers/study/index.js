@@ -12,17 +12,17 @@ import {
 import ExtraDescription from './extra-description';
 
 const labels = {
-    '/sequenceNumber': 'ID Nr.',
-    '/state/name': 'Bezeichnung',
-    '/state/shorthand': 'Kürzel',
-    '/state/runningPeriod/start': 'Beginn',
-    '/state/runningPeriod/end': 'Ende',
+    '/sequenceNumber': 'ID No.',
+    '/state/name': '_designation',
+    '/state/shorthand': 'Shorthand',
+    '/state/runningPeriod/start': 'Start',
+    '/state/runningPeriod/end': 'End',
     '/state/enableFollowUpExperiments': (
-        'Proband:innen können mehrfach getestet werden'
+        'Subjects can be tested multiple times'
     ),
-    '/state/researchGroupIds': 'Forschungsgruppen',
-    '/state/scientistIds': 'Wissenschaftler:innen',
-    '/state/studyTopicIds': 'Themengebiete',
+    '/state/researchGroupIds': 'Research Groups',
+    '/state/scientistIds': 'Scientists',
+    '/state/studyTopicIds': 'Study Topics',
 }
 
 const [ Study, StudyContext ] = createBase();

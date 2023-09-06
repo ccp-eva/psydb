@@ -74,6 +74,8 @@ const SubjectModalSchedule = (ps) => {
         studyData,
         subjectId,
         subjectLabel,
+
+        onSuccessfulUpdate,
     }
 
     return (
@@ -81,15 +83,11 @@ const SubjectModalSchedule = (ps) => {
             <ExperimentCreateModal
                 { ...experimentCreateModal.passthrough }
                 { ...sharedModalBag }
-
-                onSuccessfulCreate={ onSuccessfulUpdate }
             />
 
             <ExperimentUpdateModal
                 { ...experimentUpdateModal.passthrough }
                 { ...sharedModalBag }
-                
-                onSuccessfulUpdate={ onSuccessfulUpdate }
             />
 
             <TabNav

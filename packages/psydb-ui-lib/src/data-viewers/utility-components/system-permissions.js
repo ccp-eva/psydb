@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useThemeContext } from '../core/theme-context';
 import {
     ForeignId,
@@ -6,11 +7,12 @@ import {
 
 export const SystemPermissions = (ps) => {
     var { value, related } = ps;
+    var translate = useUITranslation();
     var { Field } = useThemeContext();
 
     return (
         <>
-            <Field label='Zugriff auf diesen Datensatz für'>
+            <Field label={ translate('Record Access for') }>
                 { value.accessRightsByResearchGroup.map((it, ix) => (
                     <SystemPermissionItem
                         key={ ix }
@@ -27,9 +29,11 @@ const SystemPermissionItem = (ps) => {
     var { value, related } = ps;
     var { researchGroupId, permission } = value;
     
+    var translate = useUITranslation();
+    
     var permissionOptions = {
-        'read': 'Lesen',
-        'write': 'Schreiben'
+        'read': translate('Read'),
+        'write': translate('Write')
     };
 
     return (
