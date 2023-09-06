@@ -1,21 +1,21 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState } from 'react';
 
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
-
-import {
-    Button,
-    Alert,
-} from '@mpieva/psydb-ui-layout';
+import { Button, Alert } from '@mpieva/psydb-ui-layout';
 
 import {
     RecordDetails,
     RecordEditor
 } from '@mpieva/psydb-ui-record-views/subjects';
 
-const SubjectModalDetails = ({
-    recordType,
-    id
-}) => {
+
+const SubjectModalDetails = (ps) => {
+    var {
+        recordType,
+        id
+    } = ps;
+
     var permissions = usePermissions();
     var canEdit = permissions.hasFlag('canWriteSubjects');
     var [ hasEdited, setHasEdited ] = useState(false);
@@ -54,11 +54,13 @@ const SubjectModalDetails = ({
 
 const HasEditedInfo = (ps) => {
     var { onReEdit } = ps;
+    var translate = useUITranslation();
+    
     return (
         <Alert variant='info' className='d-flex justify-content-between'>
-            <i>Proband:innendaten gespeichert!</i>
+            <i>{ translate('Subject data saved!') }</i>
             <a role='button' className='force-hover' onClick={ onReEdit }>
-                <b>Erneut bearbeiten</b>
+                <b>{ translate('Edit Again') }</b>
             </a>
         </Alert>
     );

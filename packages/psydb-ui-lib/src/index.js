@@ -82,3 +82,7 @@ export {
 export {
     default as LocationTimeSlotList
 } from './study-inhouse-locations/location-time-table/time-slot-list';
+
+export {
+    default as ExistingSubjectExperiments
+} from './experiments/shortlist-by-study-and-subject';

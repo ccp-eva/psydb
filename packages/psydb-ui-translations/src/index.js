@@ -657,6 +657,22 @@ var maps = [
         en: 'Appointment Invitation',
         de: 'Termin-Einladung'
     },
+    {
+        en: 'Subject data saved!',
+        de: 'Proband:innendaten gespeichert!'
+    },
+    {
+        en: 'Edit Again',
+        de: 'Erneut Bearbeiten'
+    },
+    {
+        en: 'Subject Appointments in ${study}',
+        de: 'Termine der Proband:in in ${study}'
+    },
+    {
+        en: 'Not in Age Range',
+        de: 'Nicht in Altersfenster'
+    },
 ]
 
 export const createTranslate = (lang = 'en') => (template, props) => {

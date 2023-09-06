@@ -1,49 +1,51 @@
 import React, { useState } from 'react';
 
-import {
-    TabNav
-} from '@mpieva/psydb-ui-layout';
-
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import {
     useFetch,
     useModalReducer,
     useCallbackMaybe
 } from '@mpieva/psydb-ui-hooks';
 
-import ExistingSubjectExperiments from '@mpieva/psydb-ui-lib/src/experiments/shortlist-by-study-and-subject';
-import StudyInhouseLocations from '@mpieva/psydb-ui-lib/src/study-inhouse-locations';
+import { TabNav, LoadingIndicator } from '@mpieva/psydb-ui-layout';
+
+import {
+    StudyInhouseLocations,
+    ExistingSubjectExperiments,
+} from '@mpieva/psydb-ui-lib';
 
 import ExperimentCreateModal from './experiment-create-modal';
 import ExperimentUpdateModal from './experiment-update-modal';
 
-const SubjectModalSchedule = ({
-    onHide,
-    revision,
+const SubjectModalSchedule = (ps) => {
+    var {
+        onHide,
+        revision,
 
-    inviteType,
-    desiredTestInterval,
-    testableInStudies,
+        inviteType,
+        desiredTestInterval,
+        testableInStudies,
 
-    studyData,
-    subjectId,
-    subjectRecordType,
-    subjectLabel,
-    studyNavItems,
-    studyRecordType,
+        studyData,
+        subjectId,
+        subjectRecordType,
+        subjectLabel,
+        studyNavItems,
+        studyRecordType,
 
-    onSuccessfulUpdate,
-}) => {
+        onSuccessfulUpdate,
+    } = ps;
+
+    var translate = useUITranslation();
+    var experimentCreateModal = useModalReducer();
+    var experimentUpdateModal = useModalReducer();
 
     var [ studyId, setStudyId ] = useState(studyNavItems[0].key);
+
     var studyLabel = studyNavItems.find(it => it.key === studyId).label;
     var studyRecord = studyData.records.find(it => it._id === studyId);
     var { enableFollowUpExperiments } = studyRecord.state;
     
-    var experimentCreateModal = useModalReducer();
-    var experimentUpdateModal = useModalReducer();
-
-    var handleExperimentCreated = useCallbackMaybe(onSuccessfulUpdate);
-
     var testableIntervals = (
         // FIXME
         testableInStudies[`_testableIntervals_${studyId}`]
@@ -60,53 +62,49 @@ const SubjectModalSchedule = ({
     ), [ studyId, subjectId ]);
 
     if (!didFetch) {
-        return null;
+        return <LoadingIndicator size='lg' />;
     }
 
     var { testableIntervals: fetchedIntervals } = fetched.data;
+    var sharedModalBag = {
+        inviteType,
+        desiredTestInterval,
+        testableIntervals: (testableIntervals || fetchedIntervals),
+        
+        studyData,
+        subjectId,
+        subjectLabel,
+    }
 
     return (
         <div>
             <ExperimentCreateModal
-                show={ experimentCreateModal.show }
-                onHide={ experimentCreateModal.handleHide }
-                onSuccessfulCreate={ handleExperimentCreated }
-                
-                inviteType={ inviteType }
-                desiredTestInterval={ desiredTestInterval }
-                testableIntervals={ testableIntervals || fetchedIntervals }
-                
-                studyData={ studyData }
-                subjectId={ subjectId }
-                subjectLabel={ subjectLabel }
-                { ...experimentCreateModal.data }
+                { ...experimentCreateModal.passthrough }
+                { ...sharedModalBag }
+
+                onSuccessfulCreate={ onSuccessfulUpdate }
             />
 
             <ExperimentUpdateModal
                 { ...experimentUpdateModal.passthrough }
-                
-                inviteType={ inviteType }
-                desiredTestInterval={ desiredTestInterval }
-                testableIntervals={ testableIntervals || fetchedIntervals }
-
-                studyData={ studyData }
-                subjectId={ subjectId }
-                subjectLabel={ subjectLabel }
+                { ...sharedModalBag }
                 
                 onSuccessfulUpdate={ onSuccessfulUpdate }
             />
 
-                <TabNav
-                    label='Studie:'
-                    items={ studyNavItems }
-                    activeKey={ studyId }
-                    onItemClick={ setStudyId }
-                />
+            <TabNav
+                items={ studyNavItems }
+                activeKey={ studyId }
+                onItemClick={ setStudyId }
+            />
 
             { enableFollowUpExperiments && (
                 <>
                     <header className='mb-1 mt-2'>
-                        <b>Termine der Proband:in in { studyLabel }</b>
+                        <b>{ translate(
+                            'Subject Appointments in ${study}',
+                            { study: studyLabel }
+                        ) }</b>
                     </header>
                     <div className='bg-white border px-3 py-2 mb-2'>
                         <ExistingSubjectExperiments

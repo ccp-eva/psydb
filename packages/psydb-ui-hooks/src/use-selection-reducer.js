@@ -1,5 +1,6 @@
 import { useReducer, useCallback, useMemo } from 'react';
 
+// FIXME: this should be named useSelectManyReducer()
 const useSelectionReducer = (options = {}) => {
     var {
         defaultSelection: selected = [],

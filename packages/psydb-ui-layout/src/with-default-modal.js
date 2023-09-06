@@ -25,13 +25,6 @@ const WithDefaultModal = (options) => (ps) => {
     } = ps;
 
     var translate = useUITranslation();
-    if (optionsTitle) {
-        optionsTitle = translate(optionsTitle);
-    }
-
-    var { title: modalPayloadTitle } = modalPayloadData || {};
-    var title = modalPayloadTitle || propsTitle || optionsTitle;
-
     if (forceShow) {
         show = true;
     }
@@ -39,6 +32,20 @@ const WithDefaultModal = (options) => (ps) => {
     if (!show) {
         return <Modal show={ show } onHide={ onHide } />
     }
+
+    if (optionsTitle) {
+        var shouldTranslate = true;
+        if (typeof optionsTitle === 'function') {
+            optionsTitle = optionsTitle(ps);
+            shouldTranslate = false
+        }
+        if (shouldTranslate) {
+            optionsTitle = translate(optionsTitle);
+        }
+    }
+
+    var { title: modalPayloadTitle } = modalPayloadData || {};
+    var title = modalPayloadTitle || propsTitle || optionsTitle;
 
     var renderedContent = (
         Body

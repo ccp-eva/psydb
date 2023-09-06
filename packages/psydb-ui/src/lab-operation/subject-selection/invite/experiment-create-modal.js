@@ -1,27 +1,31 @@
 import React, { useState } from 'react';
 
 import intervalfns from '@mpieva/psydb-date-interval-fns';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useSend } from '@mpieva/psydb-ui-hooks';
-import { Modal, Button, Alert } from '@mpieva/psydb-ui-layout';
+import { WithDefaultModal, Button, Alert } from '@mpieva/psydb-ui-layout';
 
+import { datefns } from '@mpieva/psydb-ui-lib';
 import ExperimentShortControls from '@mpieva/psydb-ui-lib/src/experiment-short-controls';
 
-import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 
-const CreateModal = (ps) => {
+const CreateModalBody = (ps) => {
     var {
-        show,
         onHide,
+        modalPayloadData,
 
         inviteType,
+        desiredTestInterval,
+        testableIntervals,
 
         studyData,
         subjectId,
         subjectLabel,
 
-        desiredTestInterval,
-        testableIntervals,
+        onSuccessfulUpdate,
+    } = ps;
 
+    var {
         studyId,
         locationRecord,
         reservationRecord,
@@ -29,13 +33,9 @@ const CreateModal = (ps) => {
         start,
         slotDuration,
         maxEnd,
+    } = modalPayloadData;
 
-        onSuccessfulCreate,
-    } = ps;
-
-    if (!show) {
-        return null;
-    }
+    var translate = useUITranslation();
 
     var studyRecord = studyData.records.find(it => it._id === studyId);
     var { enableFollowUpExperiments } = studyRecord.state;
@@ -51,12 +51,6 @@ const CreateModal = (ps) => {
     var minEnd = new Date(start.getTime() + slotDuration);
     var [ end, setEnd ] = useState(new Date(minEnd.getTime() - 1));
 
-    var wrappedOnSuccessfulUpdate = (...args) => {
-        var shouldHide = !enableFollowUpExperiments;
-        onHide();
-        onSuccessfulCreate && onSuccessfulCreate(shouldHide, ...args);
-    };
-
     var isSubjectTestable = false;
     //console.log({ testableIntervals });
     if (testableIntervals) {
@@ -67,6 +61,12 @@ const CreateModal = (ps) => {
         //console.log({ intersections });
         isSubjectTestable = intersections.length > 0;
     }
+
+    var shouldHide = !enableFollowUpExperiments;
+    var wrappedOnSuccessfulUpdate = (...args) => {
+        onHide();
+        onSuccessfulUpdate && onSuccessfulUpdate(shouldHide, ...args);
+    };
 
     var messageType = undefined;
     if (inviteType === 'inhouse') {
@@ -98,42 +98,47 @@ const CreateModal = (ps) => {
     });
 
     return (
-        <Modal show={show} onHide={ onHide } size='md'>
-            <Modal.Header closeButton>
-                <Modal.Title>Termin</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                { !isSubjectTestable && (
-                    <Alert variant='danger'>
-                        <b>Nicht in Altersfenster</b>
-                    </Alert>
-                )} 
-                <ExperimentShortControls { ...({
-                    subjectLabel,
+        <>
+            { !isSubjectTestable && (
+                <Alert variant='danger'>
+                    <b>{ translate('Not in Age Range') }</b>
+                </Alert>
+            )} 
+            <ExperimentShortControls { ...({
+                subjectLabel,
 
-                    start,
-                    end,
-                    minEnd,
-                    maxEnd,
-                    slotDuration,
+                start,
+                end,
+                minEnd,
+                maxEnd,
+                slotDuration,
 
-                    comment,
-                    autoConfirm,
+                comment,
+                autoConfirm,
 
-                    onChangeComment: setComment,
-                    onChangeAutoConfirm: setAutoConfirm,
-                    onChangeEnd: setEnd,
-                })} />
+                onChangeComment: setComment,
+                onChangeAutoConfirm: setAutoConfirm,
+                onChangeEnd: setEnd,
+            })} />
 
-                <hr />
-                <div className='d-flex justify-content-end'>
-                    <Button size='sm' onClick={ send.exec }>
-                        Speichern
-                    </Button>
-                </div>
-            </Modal.Body>
-        </Modal>
+            <hr />
+            <div className='d-flex justify-content-end'>
+                <Button size='sm' onClick={ send.exec }>
+                    { translate('Save') }
+                </Button>
+            </div>
+        </>
     );
 }
+
+const CreateModal = WithDefaultModal({
+    Body: CreateModalBody,
+
+    size: 'md',
+    title: 'Appointment',
+    className: '',
+    backdropClassName: '',
+    bodyClassName: 'bg-white'
+});
 
 export default CreateModal;
