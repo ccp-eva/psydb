@@ -1,49 +1,58 @@
 import React, { useState } from 'react';
 import classnames from 'classnames';
 import { Form, Button } from 'react-bootstrap';
-import * as Icons from './icons';
 
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+
+import * as Icons from './icons';
 import PaddedText from './padded-text';
 
-const Pagination = ({
-    extraClassName,
-    totalLabel,
+const Pagination = (ps) => {
+    var {
+        extraClassName,
+        totalLabel,
 
-    offset,
-    limit,
-    total,
-    
-    page,
-    maxPage,
+        offset,
+        limit,
+        total,
+        
+        page,
+        maxPage,
 
-    setOffset,
-    setLimit,
-    selectNextPage,
-    selectPrevPage,
-    selectSpecificPage,
+        setOffset,
+        setLimit,
+        selectNextPage,
+        selectPrevPage,
+        selectSpecificPage,
 
-    showTotal = true,
-    showLimit = true,
-    showPages = true,
-    showJump = true,
-}) => {
+        showTotal = true,
+        showLimit = true,
+        showPages = true,
+        showJump = true,
+    } = ps;
+
+    var translate = useUITranslation();
+
     var className = classnames([
         'bg-light pt-2 pb-2 pr-3 pl-3',
         'd-flex align-items-center',
         //'media-print-hidden',
         extraClassName,
     ]);
+
     return (
         <div className={ className }>
             { showTotal && (
                 <span style={{ width: '150px' }}>
-                    <b>{ totalLabel || 'Gesamt:' }</b> { total }
+                    <b>{ totalLabel || translate('Total') + ':' }</b>
+                    {' '}
+                    { total }
                 </span>
             )}
 
             { showLimit && (
                 <>
-                    <b className='mr-3'>pro Seite:</b>
+                    <b className='mr-3'>{ translate('per Page') }:</b>
                     <LimitControl
                         value={ limit }
                         onChange={ setLimit }
@@ -69,10 +78,12 @@ const Pagination = ({
 }
 
 
-const LimitControl = ({
-    value,
-    onChange,
-}) => {
+const LimitControl = (ps) => {
+    var {
+        value,
+        onChange,
+    } = ps;
+
     var steps = [ 2, 25, 50, 100, 250, 500, 1000 ];
     return (
         <div className='user-select-none'>
@@ -95,15 +106,19 @@ const LimitControl = ({
 
 const range = (n) => [ ...Array(n).keys() ];
 
-const PageNav = ({
-    page,
-    maxPage,
-    selectNextPage,
-    selectPrevPage,
-    selectSpecificPage,
+const PageNav = (ps) => {
+    var {
+        page,
+        maxPage,
+        selectNextPage,
+        selectPrevPage,
+        selectSpecificPage,
 
-    showJump,
-}) => {
+        showJump,
+    } = ps;
+
+    var translate = useUITranslation();
+
     var start = page - 1;
     var end = page + 2;
 
@@ -144,7 +159,7 @@ const PageNav = ({
                 <div className='d-flex align-items-center mr-3'>
                     <input
                         type='number'
-                        placeholder='zu Seite'
+                        placeholder={ translate('to Page') }
                         min={ 1 } step={ 1 } max={ maxPage }
                         style={{
                             width: '150px',
@@ -170,7 +185,9 @@ const PageNav = ({
                 </div>
             )}
             <div className='user-select-none'>
-                <b className='d-inline-block mr-3'>Seite:</b>
+                <b className='d-inline-block mr-3'>
+                    { translate('Page') }:
+                </b>
                 { page > 0 && (
                     <span
                         role='button'
@@ -203,7 +220,7 @@ const PageNav = ({
                     </span>
                 )}
                 <span>
-                    von { maxPage }
+                    { translate('_pagination_of') } { maxPage }
                 </span>
             </div>
         </div>

@@ -1,5 +1,7 @@
 import React, { useMemo } from 'react';
 import classnames from 'classnames';
+
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { Button, Icons } from '@mpieva/psydb-ui-layout';
 
 import * as fieldSchemas from '@mpieva/psydb-schema-fields';
@@ -46,11 +48,15 @@ const createSchema = (displayFieldData) => {
     });
 }
 
-const QuickSearch = ({
-    displayFieldData,
-    filters,
-    onSubmit
-}) => {
+const QuickSearch = (ps) => {
+    var {
+        displayFieldData,
+        filters,
+        onSubmit
+    } = ps;
+
+    var translate = useUITranslation();
+
     var className = classnames([
         'bg-light',
         'pr-3 pl-3 pt-2 pb-2',
@@ -88,7 +94,7 @@ const QuickSearch = ({
                             className=''
                             type='submit'
                         >
-                            Suchen
+                            { translate('Search') }
                         </Button>
                         <Button
                             className='ml-2'

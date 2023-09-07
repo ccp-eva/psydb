@@ -742,6 +742,27 @@ var maps = [
         en: 'Male',
         de: 'Männlich'
     },
+    {
+        en: 'Total',
+        de: 'Gesamt'
+    },
+    {
+        en: 'per Page',
+        de: 'pro Seite'
+    },
+    {
+        en: 'to Page',
+        de: 'zu Seite'
+    },
+    {
+        en: 'Page',
+        de: 'Seite'
+    },
+    {
+        internal: '_pagination_of',
+        en: 'of',
+        de: 'von'
+    },
 ]
 
 export const createTranslate = (lang = 'en') => (template, props) => {
