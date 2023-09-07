@@ -805,6 +805,39 @@ var maps = [
         en: 'Cancel Appointment',
         de: 'Termin Absagen'
     },
+    {
+        en: 'No unconfirmed appointments on this day.',
+        de: 'Keine unbestätigten Termine an diesem Tag.'
+    },
+    {
+        en: 'Unknown Appointment Type',
+        de: 'Unbekannter Termintyp'
+    },
+    {
+        en: 'Inhouse Appointment',
+        de: 'Interner Termin'
+    },
+    {
+        en: 'Online Video Appointment',
+        de: 'Online-Video-Termin'
+    },
+    {
+        en: 'Edit Appointment Comment',
+        de: 'Terminkommentar Bearbeiten'
+    },
+    {
+        internal: '_appointment_comment',
+        en: 'App. Comment', // FIXME: Appointment Comment is too long
+        de: 'Terminkommentar'
+    },
+    {
+        en: 'Reschedule Subject',
+        de: 'Proband:in Verschieben'
+    },
+    {
+        en: 'Reschedule To',
+        de: 'Verschieben Nach'
+    },
 ]
 
 export const createTranslate = (lang = 'en') => (template, props) => {

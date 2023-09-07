@@ -1,19 +1,21 @@
 import React, { useState }  from 'react';
-import { Container, Button } from 'react-bootstrap';
-import { createSend } from '@mpieva/psydb-ui-utils';
+
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useSend } from '@mpieva/psydb-ui-hooks';
+import { Button, Container } from '@mpieva/psydb-ui-layout';
 
 import ExperimentIntervalSummary from '../../experiment-interval-summary';
 import { SubjectControls } from '../../experiment-short-controls';
 
-const ExperimentFormContainer = ({
-    onHide,
-    confirmData,
-    experimentData,
-    studyData,
-    subjectData,
+const ExperimentFormContainer = (ps) => {
+    var {
+        confirmData,
+        experimentData,
+        studyData,
+        subjectData,
 
-    onSuccessfulUpdate,
-}) => {
+        onSuccessfulUpdate,
+    } = ps;
 
     var {
         _id: studyId,
@@ -27,7 +29,9 @@ const ExperimentFormContainer = ({
     var [ comment, setComment ] = useState('');
     var [ autoConfirm, setAutoConfirm ] = useState(false);
 
-    var handleSubmit = createSend(() => ({
+    var translate = useUITranslation();
+
+    var send = useSend(() => ({
         type: `experiment/followup-subject-${experimentType}`,
         payload: {
             experimentId: experimentData.record._id,
@@ -61,22 +65,26 @@ const ExperimentFormContainer = ({
 
             <hr />
 
-            <header className='pb-1'><b>Aktuell</b></header>
+            <header className='pb-1'><b>
+                { translate('Current') }
+            </b></header>
             <div className='p-2 bg-white border'>
                 <ExperimentIntervalSummary
                     experimentRecord={ experimentRecord }
                 />
             </div>
 
-            <header className='pb-1 mt-3'><b>Folgetermin</b></header>
+            <header className='pb-1 mt-3'><b>
+                { translate('Follow-Up Appointment') }
+            </b></header>
             <div className='p-2 bg-white border'>
                 <ExperimentIntervalSummary
                     experimentRecord={ target }
                 />
             </div>
             <div className='d-flex justify-content-end mt-3'>
-                <Button size="sm" onClick={ handleSubmit }>
-                    Speichern
+                <Button size="sm" onClick={ send.exec }>
+                    { translate('Save') }
                 </Button>
             </div>
         </div>

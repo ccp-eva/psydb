@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Container, Button } from 'react-bootstrap';
 
-import { createSend } from '@mpieva/psydb-ui-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useSend } from '@mpieva/psydb-ui-hooks';
+import { Button, Container } from '@mpieva/psydb-ui-layout';
 
 import ExperimentIntervalSummary from '../../experiment-interval-summary';
 import {
@@ -10,15 +11,15 @@ import {
     useControlStates
 } from '../../experiment-short-controls';
 
-const ReservationFormContainer = ({
-    onHide,
-    confirmData,
-    experimentData,
-    studyData,
-    subjectData,
+const ReservationFormContainer = (ps) => {
+    var {
+        confirmData,
+        experimentData,
+        studyData,
+        subjectData,
 
-    onSuccessfulUpdate,
-}) => {
+        onSuccessfulUpdate,
+    } = ps;
 
     var {
         _id: studyId,
@@ -48,7 +49,9 @@ const ReservationFormContainer = ({
         onChangeAutoConfirm,
     } = useControlStates({ start, slotDuration });
 
-    var handleSubmit = createSend(() => ({
+    var translate = useUITranslation();
+
+    var send = useSend(() => ({
         type: `experiment/followup-subject-${experimentType}`,
         payload: {
             experimentId: experimentData.record._id,
@@ -83,14 +86,18 @@ const ReservationFormContainer = ({
 
             <hr />
 
-            <header className='pb-1'><b>Aktuell</b></header>
+            <header className='pb-1'><b>
+                { translate('Current') }
+            </b></header>
             <div className='p-2 bg-white border'>
                 <ExperimentIntervalSummary
                     experimentRecord={ experimentData.record }
                 />
             </div>
 
-            <header className='pb-1 mt-3'><b>Folgetermin</b></header>
+            <header className='pb-1 mt-3'><b>
+                { translate('Follow-Up Appointment') }
+            </b></header>
             <div className='p-2 bg-white border'>
                 <Container>
                     <ScheduleItemControls { ...({
@@ -104,8 +111,8 @@ const ReservationFormContainer = ({
                 </Container>
             </div>
             <div className='d-flex justify-content-end mt-3'>
-                <Button size='sm' onClick={ handleSubmit }>
-                    Speichern
+                <Button size='sm' onClick={ send.exec }>
+                    { translate('Save') }
                 </Button>
             </div>
         </div>

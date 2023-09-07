@@ -2,8 +2,9 @@ import React from 'react';
 import { useRouteMatch, useParams } from 'react-router-dom';
 
 import { keyBy } from '@mpieva/psydb-core-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useSend, useRevision } from '@mpieva/psydb-ui-hooks';
-import { Alert, LoadingIndicator } from '@mpieva/psydb-ui-layout';
+import { Alert, LoadingIndicator, NarrowHR } from '@mpieva/psydb-ui-layout';
 import { 
     CalendarNav,
     withDailyCalendarPages
@@ -27,7 +28,9 @@ const InviteConfirmationList = (ps) => {
         researchGroupId,
     } = useParams();
 
+    var translate = useUITranslation();
     var revision = useRevision();
+
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.fetchInviteConfirmationList({
             subjectRecordType: subjectType,
@@ -80,18 +83,12 @@ const InviteConfirmationList = (ps) => {
                 onPageChange,
             })} />
 
-            <hr className='mt-1 mb-3' style={{
-                marginLeft: '15em',
-                marginRight: '15em',
-            }}/>
+            <NarrowHR />
 
             { experimentRecords.length < 1 && (
-                <Alert variant='info'>
-                    <i>
-                        Keine offenen Terminbestätigungen
-                        an diesem Tag
-                    </i>
-                </Alert>
+                <Alert variant='info'><i>
+                    { translate('No unconfirmed appointments on this day.') }
+                </i></Alert>
             )}
 
             { experimentRecords.map(it => (

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useModalReducer } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
 import {
@@ -15,20 +16,22 @@ import {
 
 import applyValueToDisplayFields from '@mpieva/psydb-ui-lib/src/apply-value-to-display-fields';
 
-const SubjectItem = ({
-    subjectDataItem,
-    experimentOperatorTeamRecords,
-    subjectRecordsById,
-    subjectRelated,
-    subjectDisplayFieldData,
-    phoneListField,
-    studyRecord,
-    
-    experimentRecord,
+const SubjectItem = (ps) => {
+    var {
+        subjectDataItem,
+        experimentOperatorTeamRecords,
+        subjectRecordsById,
+        subjectRelated,
+        subjectDisplayFieldData,
+        phoneListField,
+        studyRecord,
+        
+        experimentRecord,
 
-    onChangeStatus,
-    onSuccessfulUpdate
-}) => {
+        onChangeStatus,
+        onSuccessfulUpdate
+    } = ps;
+
     var {
         subjectId,
         invitationStatus,
@@ -36,6 +39,8 @@ const SubjectItem = ({
     } = subjectDataItem;
 
     var subjectRecord = subjectRecordsById[subjectId];
+
+    var translate = useUITranslation();
 
     var commentPerSubjectModal = useModalReducer();
     var moveSubjectModal = useModalReducer();
@@ -68,12 +73,10 @@ const SubjectItem = ({
 
             <MoveSubjectModal { ...sharedModalBag } { ...({
                 ...moveSubjectModal.passthrough,
-                payloadData: moveSubjectModal.data, //FIXME
             }) } />
 
             <FollowUpSubjectModal { ...sharedModalBag } { ...({
                 ...followUpSubjectModal.passthrough,
-                payloadData: followUpSubjectModal.data, // FIXME
             }) } />
 
             <RemoveSubjectModal { ...sharedModalBag } { ...({
@@ -108,7 +111,7 @@ const SubjectItem = ({
                 </div>
                 { comment && (
                     <div className='mt-3'>
-                        <b><u>Kommentar</u></b>
+                        <b><u>{ translate('Comment') }</u></b>
                         <div>
                             <i>{ comment }</i>
                         </div>
@@ -118,7 +121,7 @@ const SubjectItem = ({
             <div>
                 <div>
                     <StatusButton
-                        label='NE'
+                        label={ translate('contact-failed_icon') }
                         buttonStatus='contact-failed'
                         currentStatus={ invitationStatus }
                         onClick={ (status) => onChangeStatus({
@@ -128,7 +131,7 @@ const SubjectItem = ({
                         }) }
                     />
                     <StatusButton
-                        label='AB'
+                        label={ translate('mailbox_icon') }
                         buttonStatus='mailbox'
                         currentStatus={ invitationStatus }
                         onClick={ (status) => onChangeStatus({
@@ -138,7 +141,7 @@ const SubjectItem = ({
                         }) }
                     />
                     <StatusButton
-                        label='B'
+                        label={ translate('confirmed_icon') }
                         buttonStatus='confirmed'
                         currentStatus={ invitationStatus }
                         onClick={ (status) => onChangeStatus({
@@ -153,7 +156,7 @@ const SubjectItem = ({
                         subjectRecord={ subjectRecord }
                         experimentType={ experimentRecord.type }
                         variant='primary'
-                        label='Funktionen'
+                        label={ translate('Functions') }
 
                         onClickComment={ commentPerSubjectModal.handleShow }
                         onClickMove={ moveSubjectModal.handleShow }
@@ -172,12 +175,14 @@ const SubjectItem = ({
     )
 }
 
-var StatusButton = ({
-    label,
-    buttonStatus,
-    currentStatus,
-    onClick
-}) => {
+var StatusButton = (ps) => {
+    var {
+        label,
+        buttonStatus,
+        currentStatus,
+        onClick
+    } = ps;
+
     var variant = (
         buttonStatus === currentStatus
         ? 'primary'

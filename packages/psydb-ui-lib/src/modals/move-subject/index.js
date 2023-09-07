@@ -1,42 +1,34 @@
 import React from 'react';
+import { demuxed } from '@mpieva/psydb-ui-utils';
+import { useFetch, useModalReducer } from '@mpieva/psydb-ui-hooks';
 import {
-    Modal,
+    WithDefaultModal,
     LoadingIndicator
 } from '@mpieva/psydb-ui-layout';
-
-import {
-    useFetch,
-    useModalReducer
-} from '@mpieva/psydb-ui-hooks';
 
 import StudyInhouseLocations from '../../study-inhouse-locations';
 
 import ConfirmModal from './confirm-modal';
 
-const MoveSubjectModalWrapper = (ps) => {
-    if (!ps.show) {
-        return null;
-    }
-    return (
-        <MoveSubjectModal { ...ps } />
-    );
-}
+const MoveSubjectModalBody = (ps) => {
+    var {
+        show,
+        onHide,
 
-const MoveSubjectModal = ({
-    show,
-    onHide,
+        shouldFetch,
+        experimentId,
+        experimentType,
 
-    shouldFetch,
-    experimentId,
-    experimentType,
+        experimentData,
+        studyData,
+        subjectDataByType,
+        payloadData, // FIXME: make obsolete
+        modalPayloadData,
 
-    experimentData,
-    studyData,
-    subjectDataByType,
-    payloadData,
+        onSuccessfulUpdate,
+    } = ps;
 
-    onSuccessfulUpdate,
-}) => {
+    modalPayloadData = modalPayloadData || payloadData;
     
     var [ didFetch, fetched ] = useFetch((agent) => {
         if (shouldFetch) {
@@ -49,7 +41,7 @@ const MoveSubjectModal = ({
 
     var [ didFetchTestability, fetchedTestability ] = useFetch((agent) => {
         if (didFetch) {
-            var { subjectId } = payloadData;
+            var { subjectId } = modalPayloadData;
         
             studyData = studyData || fetched.data.studyData;
             var studyId = studyData.record._id;
@@ -77,7 +69,7 @@ const MoveSubjectModal = ({
 
     var studyId = studyData.record._id;
     var studyRecordType = studyData.record.type;
-    var { subjectId, subjectType, subjectRecord } = payloadData;
+    var { subjectId, subjectType, subjectRecord } = modalPayloadData;
 
     var subjectRecord = subjectDataByType[subjectType].records.find(it => (
         it._id === subjectId
@@ -89,54 +81,52 @@ const MoveSubjectModal = ({
     };
 
     return (
-        <Modal
-            show={show}
-            onHide={ onHide }
-            size='xl'
-            className='team-modal'
-            backdropClassName='team-modal-backdrop'
-        >
-            <Modal.Header closeButton>
-                <Modal.Title>Proband:in verschieben</Modal.Title>
-            </Modal.Header>
-            <Modal.Body className='bg-light'>
+        <>
+            <ConfirmModal { ...({
+                ...confirmModal.passthrough,
 
-                <ConfirmModal { ...({
-                    ...confirmModal.passthrough,
+                experimentData,
+                studyData,
+                subjectData: { record: subjectRecord },
 
-                    experimentData,
-                    studyData,
-                    subjectData: { record: subjectRecord },
+                testableIntervals: fetchedTestability.data.testableIntervals,
+                onSuccessfulUpdate: demuxed([
+                    onHide, onSuccessfulUpdate
+                ]),
+            }) } />
 
-                    testableIntervals: fetchedTestability.data.testableIntervals,
-                    onSuccessfulUpdate: wrappedOnSuccessfulUpdate,
-                }) } />
+            <StudyInhouseLocations
+                studyId={ studyId }
+                studyRecordType={ studyRecordType }
+                subjectRecordType={ subjectType }
+                currentExperimentId={ experimentId }
+                currentExperimentType={ experimentType }
+                currentSubjectRecord={ subjectRecord }
+                testableIntervals={ fetchedTestability.data.testableIntervals }
 
-                <StudyInhouseLocations
-                    studyId={ studyId }
-                    studyRecordType={ studyRecordType }
-                    subjectRecordType={ subjectType }
-                    currentExperimentId={ experimentId }
-                    currentExperimentType={ experimentType }
-                    currentSubjectRecord={ subjectRecord }
-                    testableIntervals={ fetchedTestability.data.testableIntervals }
-
-                    //activeLocationType={ 'instituteroom' }
-                    onSelectReservationSlot={ 
-                        confirmModal.handleShow
-                    }
-                    onSelectExperimentSlot={
-                        confirmModal.handleShow
-                    }
-                    calendarRevision={ 0 }
-                    
-                    locationCalendarListClassName='bg-white p-2 border-left border-bottom border-right'
-                />
-
-            </Modal.Body>
-        </Modal>
+                //activeLocationType={ 'instituteroom' }
+                onSelectReservationSlot={ 
+                    confirmModal.handleShow
+                }
+                onSelectExperimentSlot={
+                    confirmModal.handleShow
+                }
+                calendarRevision={ 0 }
+                
+                locationCalendarListClassName='bg-white p-2 border-left border-bottom border-right'
+            />
+        </>
     )
 }
 
+const MoveSubjectModal = WithDefaultModal({
+    Body: MoveSubjectModalBody,
 
-export default MoveSubjectModalWrapper;
+    size: 'xl',
+    title: 'Reschedule Subject',
+    className: 'team-modal',
+    backdropClassName: 'team-modal-backdrop',
+    bodyClassName: 'bg-light'
+});
+
+export default MoveSubjectModal;

@@ -1,5 +1,6 @@
-import React, { useMemo, useEffect, useReducer } from 'react';
+import React from 'react';
 import { unique } from '@mpieva/psydb-core-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -7,8 +8,6 @@ import {
     Switch,
     Redirect,
     useRouteMatch,
-    useHistory,
-    useParams
 } from 'react-router-dom';
 
 var { PageWrappers } = require('@mpieva/psydb-ui-layout');
@@ -24,6 +23,7 @@ const InviteConfirmationRouting = (ps) => {
     var { subjectRecordTypes } = ps;
 
     var { path, url } = useRouteMatch();
+    var translate = useUITranslation();
     var permissions = usePermissions();
 
     var researchGroupIds = (
@@ -40,7 +40,9 @@ const InviteConfirmationRouting = (ps) => {
     );
 
     return (
-        <PageWrappers.Level2 title='Terminbestätigung'>
+        <PageWrappers.Level2 title={
+            translate('Confirm Appointments')
+        }>
             <Switch>
                 <Route exact path={`${path}`}>
                     <RedirectOrTypeNav

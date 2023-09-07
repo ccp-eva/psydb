@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { Container, Button } from 'react-bootstrap';
+import React from 'react';
 
-import { createSend } from '@mpieva/psydb-ui-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useSend } from '@mpieva/psydb-ui-hooks';
+import { Button, Container } from '@mpieva/psydb-ui-layout';
 
 import ExperimentIntervalSummary from '../../experiment-interval-summary';
 import {
@@ -10,15 +11,15 @@ import {
     useControlStates
 } from '../../experiment-short-controls';
 
-const ReservationFormContainer = ({
-    onHide,
-    confirmData,
-    experimentData,
-    studyData,
-    subjectData,
+const ReservationFormContainer = (ps) => {
+    var {
+        confirmData,
+        experimentData,
+        studyData,
+        subjectData,
 
-    onSuccessfulUpdate,
-}) => {
+        onSuccessfulUpdate,
+    } = ps;
 
     var {
         _id: studyId,
@@ -42,6 +43,8 @@ const ReservationFormContainer = ({
         it.subjectId === subjectData.record._id
     ));
 
+    var translate = useUITranslation();
+
     var {
         end,
         comment,
@@ -54,7 +57,7 @@ const ReservationFormContainer = ({
         comment: experimentSubjectData.comment
     }});
 
-    var handleSubmit = createSend(() => ({
+    var send = useSend(() => ({
         type: `experiment/move-subject-${experimentType}`,
         payload: {
             experimentId: experimentData.record._id,
@@ -91,14 +94,18 @@ const ReservationFormContainer = ({
 
             <hr />
 
-            <header className='pb-1'><b>Aktuell</b></header>
+            <header className='pb-1'><b>
+                { translate('Current') }
+            </b></header>
             <div className='p-2 bg-white border'>
                 <ExperimentIntervalSummary
                     experimentRecord={ experimentData.record }
                 />
             </div>
 
-            <header className='pb-1 mt-3'><b>Verschieben Nach</b></header>
+            <header className='pb-1 mt-3'><b>
+                { translate('Reschedule To') }
+            </b></header>
             <div className='p-2 bg-white border'>
                 <Container>
                     <ScheduleItemControls { ...({
@@ -112,8 +119,8 @@ const ReservationFormContainer = ({
                 </Container>
             </div>
             <div className='d-flex justify-content-end mt-3'>
-                <Button size='sm' onClick={ handleSubmit }>
-                    Verschieben
+                <Button size='sm' onClick={ send.exec }>
+                    { translate('Reschedule') }
                 </Button>
             </div>
         </div>

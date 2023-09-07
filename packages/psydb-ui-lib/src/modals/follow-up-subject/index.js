@@ -1,44 +1,38 @@
 import React from 'react';
+import { demuxed } from '@mpieva/psydb-ui-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useFetch, useModalReducer } from '@mpieva/psydb-ui-hooks';
 import {
-    Modal,
+    WithDefaultModal,
     LoadingIndicator
 } from '@mpieva/psydb-ui-layout';
-
-import {
-    useFetch,
-    useModalReducer
-} from '@mpieva/psydb-ui-hooks';
 
 import StudyInhouseLocations from '../../study-inhouse-locations';
 import Experiments from '../../experiments/shortlist-by-study-and-subject';
 
 import ConfirmModal from './confirm-modal';
 
-const FollowUpSubjectModalWrapper = (ps) => {
-    if (!ps.show) {
-        return null;
-    }
-    return (
-        <FollowUpSubjectModal { ...ps } />
-    );
-}
+const FollowUpSubjectModalBody = (ps) => {
+    var {
+        onHide,
 
-const FollowUpSubjectModal = ({
-    show,
-    onHide,
+        shouldFetch,
+        experimentId,
+        experimentType,
 
-    shouldFetch,
-    experimentId,
-    experimentType,
+        experimentData,
+        studyData,
+        subjectDataByType,
+        payloadData, // FIXME: make obsolete
+        modalPayloadData,
 
-    experimentData,
-    studyData,
-    subjectDataByType,
-    payloadData,
-
-    onSuccessfulUpdate,
-}) => {
+        onSuccessfulUpdate,
+    } = ps;
     
+    modalPayloadData = modalPayloadData || payloadData;
+    
+    var translate = useUITranslation();
+
     var [ didFetch, fetched ] = useFetch((agent) => {
         if (shouldFetch) {
             return agent.fetchExtendedExperimentData({
@@ -85,70 +79,66 @@ const FollowUpSubjectModal = ({
         it._id === subjectId
     ));
 
-    var wrappedOnSuccessfulUpdate = (...args) => {
-        onHide(),
-        onSuccessfulUpdate && onSuccessfulUpdate(...args);
-    };
-
     return (
-        <Modal
-            show={show}
-            onHide={ onHide }
-            size='xl'
-            className='team-modal'
-            backdropClassName='team-modal-backdrop'
-        >
-            <Modal.Header closeButton>
-                <Modal.Title>Folgetermin</Modal.Title>
-            </Modal.Header>
-            <Modal.Body className='bg-light'>
+        <>
+            <ConfirmModal { ...({
+                ...confirmModal.passthrough,
 
-                <ConfirmModal { ...({
-                    ...confirmModal.passthrough,
+                experimentData,
+                studyData,
+                subjectData: { record: subjectRecord },
 
-                    experimentData,
-                    studyData,
-                    subjectData: { record: subjectRecord },
+                testableIntervals: fetchedTestability.data.testableIntervals,
+                onSuccessfulUpdate: demuxed([
+                    onHide, onSuccessfulUpdate
+                ]),
+            }) } />
 
-                    testableIntervals: fetchedTestability.data.testableIntervals,
-                    onSuccessfulUpdate: wrappedOnSuccessfulUpdate,
-                }) } />
-
-                <header className='mb-1'>
-                    <b>Termine der Proband:in in { studyLabel }</b>
-                </header>
-                <div className='bg-white border px-3 py-2 mb-3'>
-                    <Experiments
-                        studyId={ studyId }
-                        subjectId={ subjectId }
-                    />
-                </div>
-
-                <StudyInhouseLocations
+            <header className='mb-1'><b>
+                { translate(
+                    'Subject Appointments in ${study}',
+                    { study: studyLabel}
+                )}
+            </b></header>
+            <div className='bg-white border px-3 py-2 mb-3'>
+                <Experiments
                     studyId={ studyId }
-                    studyRecordType={ studyRecordType }
-                    subjectRecordType={ subjectType }
-                    currentExperimentId={ experimentId }
-                    currentExperimentType={ experimentType }
-                    currentSubjectRecord={ subjectRecord }
-                    testableIntervals={ fetchedTestability.data.testableIntervals }
-
-                    //activeLocationType={ 'instituteroom' }
-                    onSelectReservationSlot={ 
-                        confirmModal.handleShow
-                    }
-                    onSelectExperimentSlot={
-                        confirmModal.handleShow
-                    }
-                    calendarRevision={ 0 }
-                    
-                    locationCalendarListClassName='bg-white p-2 border-left border-bottom border-right'
+                    subjectId={ subjectId }
                 />
+            </div>
 
-            </Modal.Body>
-        </Modal>
+            <StudyInhouseLocations
+                studyId={ studyId }
+                studyRecordType={ studyRecordType }
+                subjectRecordType={ subjectType }
+                currentExperimentId={ experimentId }
+                currentExperimentType={ experimentType }
+                currentSubjectRecord={ subjectRecord }
+                testableIntervals={ fetchedTestability.data.testableIntervals }
+
+                //activeLocationType={ 'instituteroom' }
+                onSelectReservationSlot={ 
+                    confirmModal.handleShow
+                }
+                onSelectExperimentSlot={
+                    confirmModal.handleShow
+                }
+                calendarRevision={ 0 }
+                
+                locationCalendarListClassName='bg-white p-2 border-left border-bottom border-right'
+            />
+        </>
     )
 }
 
+const FollowUpSubjectModal = WithDefaultModal({
+    Body: FollowUpSubjectModalBody,
 
-export default FollowUpSubjectModalWrapper;
+    size: 'xl',
+    title: 'Follow-Up Appointment',
+    className: 'team-modal',
+    backdropClassName: 'team-modal-backdrop',
+    bodyClassName: 'bg-light'
+});
+
+export default FollowUpSubjectModal;

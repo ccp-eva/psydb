@@ -1,5 +1,6 @@
 import React from 'react';
 import { fixRelated } from '@mpieva/psydb-ui-utils';
+import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
 import { useModalReducer } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -22,6 +23,8 @@ const ExperimentContainer = (ps) => {
 
     related = fixRelated(related, { isResponse: false, labelize: true });
 
+    var locale = useUILocale();
+    var translate = useUITranslation();
     var moveExperimentModal = useModalReducer();
 
     var { _id, type, state: {
@@ -34,7 +37,9 @@ const ExperimentContainer = (ps) => {
     var locationLabel = related.records.location[locationId];
 
     var title = getTitle(type);
-    var { startDate, startTime, endTime } = formatDateInterval(interval);
+    var { startDate, startTime, endTime } = formatDateInterval(
+        interval, { locale }
+    );
 
     return (
         <div className='border p-3 mb-3 bg-light'>
@@ -52,7 +57,7 @@ const ExperimentContainer = (ps) => {
             }) } />
 
             <header className='border-bottom mb-2 pb-1'>
-                <b>{ getTitle(type)}</b>
+                <b>{ translate(getTitle(type)) }</b>
             </header>
             <div className='d-flex'>
                 <div style={{ minWidth: '400px' }}>
@@ -65,10 +70,14 @@ const ExperimentContainer = (ps) => {
                         </div>
                         <div style={{ width: '250px' }}>
                             <div>
-                                Studie: <b>{ studyLabel }</b>
+                                { translate('Study') }
+                                {': '}
+                                <b>{ studyLabel }</b>
                             </div>
                             <div>
-                                Ort: <b>{ locationLabel }</b>
+                                { translate('Location') }
+                                {': '}
+                                <b>{ locationLabel }</b>
                             </div>
                         </div>
                     </div>
@@ -78,7 +87,7 @@ const ExperimentContainer = (ps) => {
                             experimentType={ type }
                             detailsLink={`/experiments/${type}/${_id}`}
                             variant='primary'
-                            label='Funktionen'
+                            label={ translate('Functions') }
                             
                             onClickMove={ moveExperimentModal.handleShow }
                             enableChangeTeam={ false }
@@ -97,11 +106,11 @@ const ExperimentContainer = (ps) => {
 const getTitle = (type) => {
     switch (type) {
         case 'inhouse':
-            return 'Interner Termin';
+            return 'Inhouse Appointment';
         case 'online-video-call':
-            return 'Online-Video-Termin';
+            return 'Online Video Appointment';
         default:
-            return 'Unbekannter Termin';
+            return 'Unknown Appointment Type';
     }
 }
 

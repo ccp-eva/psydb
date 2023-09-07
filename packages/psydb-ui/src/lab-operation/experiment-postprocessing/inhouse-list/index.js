@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table } from 'react-bootstrap';
+import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
 import { usePermissions, useModalReducer } from '@mpieva/psydb-ui-hooks';
 
 import formatInterval from '@mpieva/psydb-ui-lib/src/format-date-interval';
@@ -9,22 +9,25 @@ import {
     ExperimentIconButton,
     SubjectIconButton,
     Alert,
+    Table,
 } from '@mpieva/psydb-ui-layout';
 
 import PostprocessSubjectForm from '@mpieva/psydb-ui-lib/src/experiments/postprocess-subject-form';
 
 import { DetailedPostprocessModal } from '@mpieva/psydb-ui-compositions';
 
-const InhouseList = ({
-    subjectType,
+const InhouseList = (ps) => {
+    var {
+        subjectType,
 
-    records,
-    relatedCustomRecordTypeLabels,
-    relatedHelperSetItems,
-    relatedRecordLabels,
+        records,
+        relatedCustomRecordTypeLabels,
+        relatedHelperSetItems,
+        relatedRecordLabels,
 
-    onSuccessfulUpdate
-}) => {
+        onSuccessfulUpdate
+    } = ps;
+
     var subjectModal = useModalReducer();
 
     var permissions = usePermissions();
@@ -64,16 +67,20 @@ const InhouseList = ({
     )
 }
 
-const ExperimentSubjectItems = ({
-    subjectType,
-    experimentRecord,
-    relatedRecordLabels,
-    
-    canReadSubjects,
-    canWriteSubjects,
-    subjectModal,
-    onSuccessfulUpdate
-}) => {
+const ExperimentSubjectItems = (ps) => {
+    var {
+        subjectType,
+        experimentRecord,
+        relatedRecordLabels,
+        
+        canReadSubjects,
+        canWriteSubjects,
+        subjectModal,
+        onSuccessfulUpdate
+    } = ps;
+
+    var locale = useUILocale();
+
     var { _enableFollowUpExperiments, state } = experimentRecord;
     var { subjectData } = state;
     subjectData = subjectData.filter(it => (
@@ -88,7 +95,7 @@ const ExperimentSubjectItems = ({
         startDate,
         startTime,
         endTime
-    } = formatInterval(experimentRecord.state.interval);
+    } = formatInterval(experimentRecord.state.interval, { locale });
 
     return (
         <>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useSend } from '@mpieva/psydb-ui-hooks';
 import { Button, WithDefaultModal } from '@mpieva/psydb-ui-layout';
 
@@ -16,11 +17,12 @@ const PerSubjectCommentModalBody = (ps) => {
         experimentType,
 
         experimentData,
-        //payloadData,
         modalPayloadData,
 
         onSuccessfulUpdate,
     } = ps;
+
+    var translate = useUITranslation();
 
     var [ didFetch, fetched ] = useFetch((agent) => {
         if (shouldFetch) {
@@ -64,12 +66,12 @@ const PerSubjectCommentModalBody = (ps) => {
             { (formikProps) => (
                 <>
                     <Fields.SaneString
-                        label='Terminkommentar'
+                        label={ translate('_appointment_comment') }
                         dataXPath='$.comment'
                     />
                     <div className='mt-3 d-flex justify-content-end'>
                         <Button size='sm' type='submit'>
-                            Speichern
+                            { translate('Save') }
                         </Button>
                     </div>
                 </>
@@ -79,7 +81,7 @@ const PerSubjectCommentModalBody = (ps) => {
 }
 
 const PerSubjectCommentModal = WithDefaultModal({
-    title: 'Terminkommentar bearbeiten',
+    title: 'Edit Appointment Comment',
     size: 'lg',
     Body: PerSubjectCommentModalBody
 });

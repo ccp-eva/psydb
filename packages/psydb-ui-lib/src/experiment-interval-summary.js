@@ -1,24 +1,35 @@
 import React from 'react';
+
+import {
+    format as formatDateInterval
+} from '@mpieva/psydb-date-interval-fns';
+
+import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
 import { Container, Pair } from '@mpieva/psydb-ui-layout';
 
-import datefns from './date-fns';
-
-const ExperimentIntervalSummary = ({ experimentRecord }) => {
+const ExperimentIntervalSummary = (ps) => {
+    var { experimentRecord } = ps;
     var { start, end } = experimentRecord.state.interval;
+    
+    var translate = useUITranslation();
+    var locale = useUILocale();
+
+    var { startDate, startTime, endTime } = formatDateInterval(
+        experimentRecord.state.interval,
+        { locale }
+    );
+
     return (
         <Container>
-            <Pair label='Datum'>
-                { datefns.format(new Date(start), 'dd.MM.yyyy') }
+            <Pair label={ translate('Date') }>
+                { startDate }
             </Pair>
 
-            <Pair label='Beginn'>
-                { datefns.format(new Date(start), 'HH:mm') }
+            <Pair label={ translate('Start') }>
+                { startTime }
             </Pair>
-            <Pair label='Ende'>
-                { datefns.format(
-                    new Date(end).getTime() + 1,
-                    'HH:mm'
-                ) }
+            <Pair label={ translate('End') }>
+                { endTime }
             </Pair>
         </Container>
     )

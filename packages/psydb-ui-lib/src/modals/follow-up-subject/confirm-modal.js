@@ -1,7 +1,9 @@
-import React, { useMemo, useEffect, useReducer, useCallback, useState } from 'react';
+import React from 'react';
 import intervalfns from '@mpieva/psydb-date-interval-fns';
+import { demuxed } from '@mpieva/psydb-ui-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import {
-    Modal,
+    WithDefaultModal,
     Button,
     Pair,
     Split,
@@ -11,27 +13,20 @@ import {
 import ReservationFormContainer from './reservation-form-container';
 import ExperimentFormContainer from './experiment-form-container';
 
-const ConfirmModal = ({
-    show,
-    onHide,
-    modalPayloadData,
+const ConfirmModalBody = (ps) => {
+    var {
+        onHide,
+        modalPayloadData,
 
-    experimentData,
-    studyData,
-    subjectData,
-    testableIntervals,
+        experimentData,
+        studyData,
+        subjectData,
+        testableIntervals,
 
-    onSuccessfulUpdate,
-}) => {
+        onSuccessfulUpdate,
+    } = ps;
 
-    if (!show) {
-        return null;
-    }
-
-    var wrappedOnSuccessfulUpdate = (...args) => {
-        onHide(),
-        onSuccessfulUpdate && onSuccessfulUpdate(...args);
-    };
+    var translate = useUITranslation();
 
     var FormContainer = (
         modalPayloadData.experimentRecord
@@ -52,31 +47,34 @@ const ConfirmModal = ({
     }
 
     return (
-        <Modal
-            show={show}
-            onHide={ onHide }
-            size='md'
-        >
-            <Modal.Header closeButton>
-                <Modal.Title>Folgetermin</Modal.Title>
-            </Modal.Header>
-            <Modal.Body className='bg-light'>
-                { !isSubjectTestable && (
-                    <Alert variant='danger'>
-                        <b>Nicht in Altersfenster</b>
-                    </Alert>
-                )} 
-                <FormContainer { ...({
-                    confirmData: modalPayloadData,
-                    experimentData,
-                    studyData,
-                    subjectData,
+        <>
+            { !isSubjectTestable && (
+                <Alert variant='danger'>
+                    <b>{ translate('Not in Age Range') }</b>
+                </Alert>
+            )} 
+            <FormContainer { ...({
+                confirmData: modalPayloadData,
+                experimentData,
+                studyData,
+                subjectData,
 
-                    onSuccessfulUpdate: wrappedOnSuccessfulUpdate,
-                }) } />
-            </Modal.Body>
-        </Modal>
+                onSuccessfulUpdate: demuxed([
+                    onHide, onSuccessfulUpdate,
+                ]),
+            }) } />
+        </>
     )
 }
+
+const ConfirmModal = WithDefaultModal({
+    Body: ConfirmModalBody,
+
+    size: 'md',
+    title: 'Follow-Up Appointment',
+    className: '',
+    backdropClassName: '',
+    bodyClassName: 'bg-light'
+});
 
 export default ConfirmModal;
