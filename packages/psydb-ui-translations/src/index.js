@@ -763,6 +763,40 @@ var maps = [
         en: 'of',
         de: 'von'
     },
+    {
+        internal: '_count_short',
+        en: 'Count',
+        de: 'Anz.'
+    },
+    {
+        en: 'Subjects Found',
+        de: 'Gefundene Proband:innen'
+    },
+    {
+        internal: '_not_at_weekday',
+        en: 'not on',
+        de: 'nicht am'
+    },
+    {
+        en: 'Location Comment',
+        de: 'Location Kommentar'
+    },
+    {
+        en: 'Select All',
+        de: 'Alle Auswählen'
+    },
+    {
+        en: 'Deselect All',
+        de: 'Alle Abwählen'
+    },
+    {
+        en: 'Create Appointment',
+        de: 'Termin Eintragen'
+    },
+    {
+        en: 'Edit Location Comment',
+        de: 'Location-Kommentar Bearbeiten'
+    },
 ]
 
 export const createTranslate = (lang = 'en') => (template, props) => {

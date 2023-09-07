@@ -1,41 +1,41 @@
 import React from 'react';
 
-import {
-    Table
-} from 'react-bootstrap';
-
-import {
-    FieldDataHeadCols,
-} from '@mpieva/psydb-ui-lib/src/record-list';
+import { Table, TableHeadCustomCols } from '@mpieva/psydb-ui-layout';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
 import TargetLocationRow from './target-location-row';
 
-const TargetLocationTable = ({
-    studyIds,
-    mergedRecords,
-    subjectMetadata,
-    subjectExperimentMetadata,
-    locationMetadata,
-    locationExperimentMetadata,
 
-    onToggleDetails,
-    selectedLocationId,
+const TargetLocationTable = (ps) => {
+    var {
+        studyIds,
+        mergedRecords,
+        subjectMetadata,
+        subjectExperimentMetadata,
+        locationMetadata,
+        locationExperimentMetadata,
 
-    onEditLocationComment,
-    onSelectSubject,
-    onSelectManySubjects,
-    selectedSubjectIds,
+        onToggleDetails,
+        selectedLocationId,
 
-    onCreateExperiment,
-}) => {
+        onEditLocationComment,
+        onSelectSubject,
+        onSelectManySubjects,
+        selectedSubjectIds,
+
+        onCreateExperiment,
+    } = ps;
+
+    var translate = useUITranslation();
+
     return (
         <Table>
             <thead>
                 <tr>
-                    <FieldDataHeadCols { ...({
-                        displayFieldData: locationMetadata.displayFieldData
+                    <TableHeadCustomCols { ...({
+                        definitions: locationMetadata.displayFieldData
                     })}/>
-                    <th>Anz.</th>
+                    <th>{ translate('_count_short') }</th>
                     <th></th>
                 </tr>
             </thead>

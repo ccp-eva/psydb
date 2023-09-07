@@ -2,6 +2,7 @@ import React from 'react';
 import { withField } from '@cdxoo/formik-utils';
 
 import { demuxed } from '@mpieva/psydb-ui-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useSend } from '@mpieva/psydb-ui-hooks';
 import { Button, WithDefaultModal } from '@mpieva/psydb-ui-layout';
 
@@ -18,6 +19,8 @@ const CommentField = withField({
 const Body = (ps) => {
     var { onHide, modalPayloadData, onSuccessfulUpdate } = ps;
     var { locationId, locationLabel, locationComment } = modalPayloadData;
+
+    var translate = useUITranslation();
 
     var send = useSend((formData) => ({
         type: 'location/change-comment',
@@ -38,15 +41,17 @@ const Body = (ps) => {
             { (formikProps) => (
                 <>
                     <div className='mb-3'>
-                        Location: <b>{ locationLabel }</b>
+                        { translate('Location') }
+                        {': '}
+                        <b>{ locationLabel }</b>
                     </div>
                     <CommentField
-                        label='Kommentar'
+                        label={ translate('Comment') }
                         dataXPath='$.comment'
                     />
                     <div className='mt-3 d-flex justify-content-end'>
                         <Button size='sm' type='submit'>
-                            Speichern
+                            { translate('Save') }
                         </Button>
                     </div>
                 </>
@@ -57,7 +62,7 @@ const Body = (ps) => {
 
 
 const EditLocationCommentModal = WithDefaultModal({
-    title: 'Kommentar bearbeiten',
+    title: 'Edit Location Comment',
     size: 'lg',
     Body,
 });

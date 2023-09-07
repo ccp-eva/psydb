@@ -1,7 +1,10 @@
 import React from 'react';
 
+import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
+
 import {
     Table,
+    TableHeadCustomCols,
     Button,
     Pair,
     Icons,
@@ -10,39 +13,42 @@ import {
 } from '@mpieva/psydb-ui-layout';
 
 import {
-    FieldDataHeadCols,
     FieldDataBodyCols,
 } from '@mpieva/psydb-ui-lib/src/record-list';
 
-import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
-import calculateAge from '@mpieva/psydb-ui-lib/src/calculate-age';
+import { calculateAge } from '@mpieva/psydb-common-lib';
+import { datefns } from '@mpieva/psydb-ui-lib';
 
 import CheckColumn from '@mpieva/psydb-ui-lib/src/check-column';
 
 import UpcomingExperiments from '../upcoming-experiments';
 
-const DetailContainer = ({
-    studyIds,
-    locationId,
-    locationComment,
-    locationRecord,
-    subjectRecords,
-    subjectMetadata,
-    subjectExperimentMetadata,
+const DetailContainer = (ps) => {
+    var {
+        studyIds,
+        locationId,
+        locationComment,
+        locationRecord,
+        subjectRecords,
+        subjectMetadata,
+        subjectExperimentMetadata,
 
-    onEditLocationComment,
-    onSelectSubject,
-    onSelectManySubjects,
-    selectedSubjectIds,
+        onEditLocationComment,
+        onSelectSubject,
+        onSelectManySubjects,
+        selectedSubjectIds,
 
-    onCreateExperiment
-}) => {
+        onCreateExperiment
+    } = ps;
+
+    var translate = useUITranslation();
+
     return (
         <div className='border bg-light pr-3 pl-3'>
             <div className='py-2'>
                 <SplitPartitioned partitions={[ 2, 10 ]}>
                     <div className='py-2'>
-                        Location Kommentar
+                        { translate('Location Comment') }
                         {' '}
                         <EditIconButtonInline
                             onClick={ () => (
@@ -60,7 +66,7 @@ const DetailContainer = ({
                             ? <b style={{ fontWeight: 600 }}>
                                 { locationComment }
                             </b>
-                            : <i>Keine Angabe</i>
+                            : <i>{ translate('Not Specified') }</i>
                         }
                     </div>
                 </SplitPartitioned>
@@ -70,14 +76,14 @@ const DetailContainer = ({
                 <thead>
                     <tr>
                         <th />
-                        <th>Proband:in</th>
-                        <FieldDataHeadCols { ...({
-                            displayFieldData: subjectMetadata.displayFieldData
+                        <th>{ translate('Subject') }</th>
+                        <TableHeadCustomCols { ...({
+                            definitions: subjectMetadata.displayFieldData
                         })}/>
-                        <th>Alter</th>
-                        <th>Teilg. Stud.</th>
-                        <th>Termine</th>
-                        <th>Kommentar</th>
+                        <th>{ translate('Age Today') }</th>
+                        <th>{ translate('Part. Studies') }</th>
+                        <th>{ translate('Appointments') }</th>
+                        <th>{ translate('Comment') }</th>
                     </tr>
                 </thead>
 
@@ -103,23 +109,26 @@ const DetailContainer = ({
                     disabled={ selectedSubjectIds.length < 1 }
                     onClick={ () => onCreateExperiment({ locationRecord }) }
                 >
-                    Termin eintragen
+                    { translate('Create Appointment') }
                 </Button>
             </div>
         </div>
     );
 }
 
-const SubjectTableBody = ({
-    studyIds,
-    subjectRecords,
-    subjectMetadata,
-    subjectExperimentMetadata,
+const SubjectTableBody = (ps) => {
+    var {
+        studyIds,
+        subjectRecords,
+        subjectMetadata,
+        subjectExperimentMetadata,
 
-    onSelectManySubjects,
-    onSelectSubject,
-    selectedSubjectIds,
-}) => {
+        onSelectManySubjects,
+        onSelectSubject,
+        selectedSubjectIds,
+    } = ps;
+
+    var translate = useUITranslation();
 
     var quickSelectSubjects = (
         subjectRecords
@@ -228,9 +237,9 @@ const SubjectTableBody = ({
                         selectedSubjectIds.length 
                         === quickSelectSubjects.length
                     ) ? (
-                        'Alle abwählen'
+                        translate('Deselect All')
                     ) : (
-                        'Alle auswählen'
+                        translate('Select All')
                     )}</b>
                 </td>
             </tr>

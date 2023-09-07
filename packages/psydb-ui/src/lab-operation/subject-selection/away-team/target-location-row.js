@@ -1,7 +1,8 @@
 import React from 'react';
 
-import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
-import { formatDateInterval } from '@mpieva/psydb-ui-lib';
+import { entries } from '@mpieva/psydb-core-utils';
+import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
+import { datefns, formatDateInterval } from '@mpieva/psydb-ui-lib';
 
 import {
     FieldDataBodyCols,
@@ -10,24 +11,26 @@ import {
 import UncollapseButton from './uncollapse-button';
 import DetailContainer from './detail-container';
 
-const TargetLocationRow = ({
-    studyIds,
-    record,
-    subjectMetadata,
-    subjectExperimentMetadata,
-    locationMetadata,
-    locationExperimentMetadata,
+const TargetLocationRow = (ps) => {
+    var {
+        studyIds,
+        record,
+        subjectMetadata,
+        subjectExperimentMetadata,
+        locationMetadata,
+        locationExperimentMetadata,
 
-    onToggleDetails,
-    selectedLocationId,
+        onToggleDetails,
+        selectedLocationId,
 
-    onEditLocationComment,
-    onSelectSubject,
-    onSelectManySubjects,
-    selectedSubjectIds,
+        onEditLocationComment,
+        onSelectSubject,
+        onSelectManySubjects,
+        selectedSubjectIds,
 
-    onCreateExperiment
-}) => {
+        onCreateExperiment
+    } = ps;
+
     var colspan = locationMetadata.displayFieldData.length + 2;
     var showDetails = selectedLocationId === record._id;
 
@@ -101,20 +104,25 @@ const TargetLocationRow = ({
 }
 
 // FIXME: redundant with invite
-const UpcomingExperiments = ({
-    records,
-    relatedRecordLabels,
-    relatedHelperSetItems,
-    relatedCustomRecordTypeLabels,
+const UpcomingExperiments = (ps) => {
+    var {
+        records,
+        relatedRecordLabels,
+        relatedHelperSetItems,
+        relatedCustomRecordTypeLabels,
 
-    className,
-}) => {
+        className,
+    } = ps;
+
+    var locale = useUILocale();
+    var translate = useUITranslation();
+
     var upcoming = (
         records.length > 0
         ? (
             records.map((record, ix) => {
                 var { studyId, interval } = record.state;
-                var { startDate } = formatDateInterval(interval);
+                var { startDate } = formatDateInterval(interval, { locale });
                 var study = relatedRecordLabels.study[studyId]._recordLabel;
                 return (
                     <b key={ ix } className='d-inline-block mr-3'>
@@ -124,13 +132,15 @@ const UpcomingExperiments = ({
             })
         )
         : (
-            <i className='text-muted'>Keine</i>
+            <i className='text-muted'>
+                { translate('None') }
+            </i>
         )
     )
     return (
         <div className={ className }>
-            Termine:
-            {' '}
+            { translate('Appointments') }
+            {': '}
             { upcoming }
         </div>
     )
@@ -144,12 +154,15 @@ const PastStudies = (ps) => {
         relatedCustomRecordTypeLabels,
     } = ps;
 
+    var locale = useUILocale();
+    var translate = useUITranslation();
+
     var past = (
         records.length > 0
         ? (
             records.map((record, ix) => {
                 var { studyId, interval } = record.state;
-                var { startDate } = formatDateInterval(interval);
+                var { startDate } = formatDateInterval(interval, { locale });
                 var study = relatedRecordLabels.study[studyId]._recordLabel;
                 return (
                     <b key={ ix } className='d-inline-block mr-3'>
@@ -159,39 +172,48 @@ const PastStudies = (ps) => {
             })
         )
         : (
-            <i className='text-muted'>Keine</i>
+            <i className='text-muted'>
+                { translate('None') }
+            </i>
         )
     )
     
     return (
         <div>
-            Studien:
-            {' '}
+            { translate('Studies') }
+            {': '}
             { past }
         </div>
     )
 }
 
-// FIXME: localization
-const dayLabels = {
-    mon: 'Mo',
-    tue: 'Di',
-    wed: 'Mi',
-    thu: 'Do',
-    fri: 'Fr',
-    sat: 'Sa',
-    sun: 'So',
-};
+const ExcludedWeekdays = (ps) => {
+    var { excluded } = ps;
 
-const ExcludedWeekdays = ({
-    excluded
-}) => {
+    var translate = useUITranslation();
+    var locale = useUILocale();
+
+    var dayLabels = (
+        entries([ 'mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun' ])
+        .reduce((acc, [ ix, day ]) => ({
+            ...acc,
+            [day]: locale.localize.day(ix + 1, { width: 'short' })
+        }), {})
+    );
+
     var labels = Object.keys(excluded).reduce((acc, key) => [
         ...acc, ...( excluded[key] === true ? [ dayLabels[key] ] : [] )
     ], [])
+
     return (
         labels.length > 0
-        ? <div className='mr-5'>nicht am: <b>{ labels.join(', ') }</b></div>
+        ? (
+            <div className='mr-5'>
+                { translate('_not_at_weekday') }
+                {': '}
+                <b>{ labels.join(', ') }</b>
+            </div>
+        )
         : null
     );
 }

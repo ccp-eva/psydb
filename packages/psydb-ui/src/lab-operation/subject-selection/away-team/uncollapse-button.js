@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
 import {
     Button,
@@ -13,18 +14,24 @@ var defaultIconStyle = {
     color: '#006c66',
 }
 
-var UncollapseButton = ({
-    onClick,
-    iconStyle,
-    direction,
-}) => {
+var UncollapseButton = (ps) => {
+    var {
+        onClick,
+        iconStyle,
+        direction,
+    } = ps;
+
+    var translate = useUITranslation();
+    var style = { ...defaultIconStyle, ...iconStyle };
     return (
         <a role='button' onClick={ onClick }>
-            <b style={{ color: '#006c66' }}>Details:</b>
+            <b style={{ color: '#006c66' }}>
+                { translate('Details') }:
+            </b>
             {
                 direction === 'down'
-                ? <Icons.CaretDownFill style={{ ...defaultIconStyle, ...iconStyle }} />
-                : <Icons.CaretUpFill style={{ ...defaultIconStyle, ...iconStyle }} />
+                ? <Icons.CaretDownFill style={ style } />
+                : <Icons.CaretUpFill style={ style } />
             }
         </a>
     )

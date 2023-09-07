@@ -7,12 +7,9 @@ import {
     useParams
 } from 'react-router-dom';
 
-import omit from '@cdxoo/omit';
-
-import { without } from '@mpieva/psydb-core-utils';
-import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
+import { without, omit } from '@mpieva/psydb-core-utils';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
-
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import {
     useFetch,
     useRevision,
@@ -26,6 +23,9 @@ import {
     Pagination
 } from '@mpieva/psydb-ui-layout';
 
+import { datefns } from '@mpieva/psydb-ui-lib';
+
+
 import { convertFilters } from '../convert-filters';
 
 import StudySummary from '../study-summary';
@@ -33,9 +33,10 @@ import TargetLocationTable from './target-location-table';
 import EditLocationCommentModal from './edit-location-comment-modal';
 import ExperimentScheduleModal from './experiment-schedule-modal';
 
-const TargetLocationList = ({
-    studyLabelItems
-}) => {
+const TargetLocationList = (ps) => {
+    var {
+        studyLabelItems
+    } = ps;
 
     var { path, url } = useRouteMatch();
     var {
@@ -59,6 +60,7 @@ const TargetLocationList = ({
         )
     }
 
+    var translate = useUITranslation();
     var { value: revision, up: increaseRevision } = useRevision();
 
     var pagination = usePaginationReducer();
@@ -138,7 +140,7 @@ const TargetLocationList = ({
     var { location: selectedLocationId } = query;
     var handleToggleDetails = ({ locationId }) => {
         if (selectedLocationId === locationId) {
-            updateQuery({ ...omit('location', query) });
+            updateQuery(omit({ from: query, paths: [ 'location' ] }));
         }
         else {
             updateQuery({ ...query, location: locationId });
@@ -152,9 +154,7 @@ const TargetLocationList = ({
     var createExperimentModal = useModalReducer();
 
     if (!didFetch) {
-        return (
-            <LoadingIndicator size='lg' />
-        )
+        return <LoadingIndicator size='lg' />
     }
 
     var {
@@ -175,9 +175,7 @@ const TargetLocationList = ({
                 onSuccessfulUpdate={ increaseRevision }
             />
             <ExperimentScheduleModal { ...({
-                show: createExperimentModal.show,
-                onHide: createExperimentModal.handleHide,
-                modalPayloadData: createExperimentModal.data,
+                ...createExperimentModal.passthrough,
                 studyId: joinedStudyIds.split(',')[0],
                 studyType,
                 
@@ -188,10 +186,10 @@ const TargetLocationList = ({
 
             <div className='sticky-top border-bottom'>
                 <div className='bg-light pt-2 pb-2 pr-3 pl-3 border-bottom'>
-                    <b>gefundene Proband:innen:</b> { subjectCount }
+                    <b>{ translate('Subjects Found') }:</b> { subjectCount }
                 </div>
                 <Pagination
-                    totalLabel='Locations:'
+                    totalLabel={ translate('Locations') + ':' }
                     { ...pagination }
                 />
             </div>
