@@ -42,7 +42,7 @@ const Body = (ps) => {
                         dataXPath='$.comment'
                     />
                     <div className='mt-3 d-flex justify-content-end'>
-                        <Button size='sm' type='submit'>
+                        <Button type='submit'>
                             Speichern
                         </Button>
                     </div>

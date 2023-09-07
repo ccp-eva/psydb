@@ -1,53 +1,40 @@
-import React, { useMemo, useEffect, useReducer, useCallback } from 'react';
-import { Modal, Form, Container, Col, Row, Button } from 'react-bootstrap';
+import React from 'react';
+import * as enums from '@mpieva/psydb-schema-enums';
+import { demuxed } from '@mpieva/psydb-ui-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useFetch, useSend } from '@mpieva/psydb-ui-hooks';
+import {
+    WithDefaultModal,
+    LoadingIndicator,
+    Split,
+    SplitPartitioned,
+    Button,
+} from '@mpieva/psydb-ui-layout';
 
-import { useFetch } from '@mpieva/psydb-ui-hooks';
-import { createSend } from '@mpieva/psydb-ui-utils';
-import { Split } from '@mpieva/psydb-ui-layout';
-
-import { SchemaForm } from '../../schema-form';
+import { DefaultForm, Fields, useFormikContext } from '../../formik';
 import ExperimentIntervalSummary from '../../experiment-interval-summary';
 
-import {
-    ExactObject,
-    DefaultBool,
-    FullText,
-    SaneString,
-    UnparticipationStatus,
-} from '@mpieva/psydb-schema-fields';
 
-import {
-    BlockFromTesting
-} from '@mpieva/psydb-schema-fields-special';
+const UnscheduleSubjectModalBody = (ps) => {
+    var {
+        onHide,
 
-var schema = ExactObject({
-    properties: {
+        shouldFetch,
+        experimentId,
+        experimentType,
 
-        unparticipateStatus: UnparticipationStatus({ title: 'Grund' }),
-        blockSubjectFromTesting: BlockFromTesting({ title: 'Proband:in sperren' }),
-        subjectComment: FullText({ title: 'Kommentar zum Proband:innen' }),
-    },
-    required: [
-        'unparticipateStatus',
-        'subjectComment',
-        'blockSubjectFromTesting'
-    ],
-})
+        experimentData,
+        subjectDataByType,
+        payloadData, // FIXME: make obsolete
+        modalPayloadData,
 
-const RemoveSubjectModal = ({
-    show,
-    onHide,
+        onSuccessfulUpdate,
+    } = ps;
 
-    shouldFetch,
-    experimentId,
-    experimentType,
+    modalPayloadData = modalPayloadData || payloadData;
 
-    experimentData,
-    subjectDataByType,
-    payloadData,
+    var translate = useUITranslation();
 
-    onSuccessfulUpdate,
-}) => {
     var [ didFetch, fetched ] = useFetch((agent) => {
         if (shouldFetch) {
             return agent.fetchExtendedExperimentData({
@@ -56,6 +43,15 @@ const RemoveSubjectModal = ({
             })
         }
     }, [ experimentId ]);
+
+    var send = useSend((formData) => ({
+        type: 'experiment/remove-subject',
+        payload: {
+            experimentId,
+            subjectId,
+            ...formData
+        }
+    }), { onSuccessfulUpdate: [ onHide, onSuccessfulUpdate ] });
 
     if (shouldFetch && !didFetch) {
         return null;
@@ -67,7 +63,7 @@ const RemoveSubjectModal = ({
     var {
         subjectId,
         subjectType
-    } = payloadData;
+    } = modalPayloadData;
 
     var subjectData = experimentData.record.state.subjectData.find(it => (
         it.subjectId === subjectId
@@ -77,79 +73,132 @@ const RemoveSubjectModal = ({
         it._id === subjectId
     ));
 
-    var wrappedOnSuccessfulUpdate = (...args) => {
-        onHide(),
-        onSuccessfulUpdate && onSuccessfulUpdate(...args);
+    var initialValues = {
+        unparticipateStatus: 'canceled-by-participant',
+        blockSubjectFromTesting: { shouldBlock: false },
+        subjectComment: subjectRecord.scientific.state.comment,
     };
 
-    var handleSubmit = createSend(({ formData }) => ({
-        type: 'experiment/remove-subject',
-        payload: {
-            experimentId: experimentData.record._id,
-            subjectId,
-            ...formData
-        }
-    }), { onSuccessfulUpdate: wrappedOnSuccessfulUpdate });
-
     return (
-        <Modal
-            show={show}
-            onHide={ onHide }
-            size='lg'
-            className='team-modal'
-            backdropClassName='team-modal-backdrop'
-        >
-            <Modal.Header closeButton>
-                <Modal.Title>Proband:in austragen</Modal.Title>
-            </Modal.Header>
-            <Modal.Body className='bg-light'>
-                
-                <Split>
-                    <div>
-                        <header><b>Proband:in</b></header>
-                        <div className='pt-2 pb-2 pl-4 mb-1'>{
-                            subjectRecord._recordLabel
-                        }</div>
-                        <header><b>Kommentar im Termin</b></header>
-                        <div className='pt-2 pb-2 pl-4 mb-1'><i>{
-                            subjectData.comment
-                        }</i></div>
-                    </div>
-                    
-                    <div>
-                        <header className='pb-1'><b>Zeitpunkt</b></header>
-                        <div className='p-2 bg-white border'>
-                            <ExperimentIntervalSummary
-                                experimentRecord={ experimentData.record }
-                            />
+        <>
+            <SplitPartitioned
+                partitions={[ 3, 9 ]}
+                extraClassName='mb-3'
+            >
+                <b className='d-block py-2 pl-3'>
+                    { translate('Subject') }
+                </b>
+                <div className='py-2 px-3 bg-white border'>
+                    { subjectRecord._recordLabel }
+                </div>
+            </SplitPartitioned>
+            <SplitPartitioned
+                partitions={[ 3, 9 ]}
+                extraClassName='mb-3'
+            >
+                <b className='d-block py-2 pl-3'>
+                    { translate('Appointment') }
+                </b>
+                <div className='bg-white border py-2'>
+                    <SplitPartitioned partitions={[ 1, 1 ]}>
+                        <ExperimentIntervalSummary
+                            experimentRecord={ experimentData.record }
+                        />
+                        <div style={{
+                            paddingTop: 'calc(0.375rem + 1px)',
+                            paddingBottom: 'calc(0.375rem + 1px)',
+                        }}>
+                            <header>
+                                <b><u>{ translate('Comment') }</u></b>
+                            </header>
+                            <div className=''><i>{
+                                subjectData.comment || translate('No Comment')
+                            }</i></div>
                         </div>
-                    </div>
-                </Split>
-                
-                <hr />
+                    </SplitPartitioned>
+                </div>
+            </SplitPartitioned>
+            
+            <hr />
 
-                <SchemaForm
-                    schema={ schema }
-                    formData={{
-                        unparticipateStatus: 'canceled-by-participant',
-                        blockSubjectFromTesting: { shouldBlock: false },
-                        subjectComment: subjectRecord.scientific.state.comment,
-                    }}
-                    onSubmit={ handleSubmit }
-                />
-            </Modal.Body>
-        </Modal>
+            <DefaultForm
+                onSubmit={ send.exec }
+                initialValues={ initialValues }
+                useAjvAsync={ true }
+                ajvErrorInstancePathPrefix='/payload'
+            >
+                { () => (
+                    <>
+                        <FormFields />
+                        
+                        <div className='d-flex justify-content-end mt-3'>
+                            <Button type='submit'>
+                                { translate('Save') }
+                            </Button>
+                        </div>
+                    </>
+                )}
+            </DefaultForm>
+        </>
     )
 }
 
-const RemoveSubjectModalWrapper = (ps) => {
-    if (!ps.show) {
-        return null;
-    }
+const FormFields = (ps) => {
+    var translate = useUITranslation();
+    var { getFieldProps } = useFormikContext();
+    
+    var shouldBlock = getFieldProps(
+        '$.blockSubjectFromTesting.shouldBlock'
+    ).value;
+
     return (
-        <RemoveSubjectModal { ...ps } />
-    );
+        <>
+            <Fields.GenericEnum
+                label={ translate('Reason') }
+                dataXPath='$.unparticipateStatus'
+                options={
+                    enums.unparticipationStatus.keys
+                    .reduce((acc, key) => ({
+                        ...acc,
+                        [key]: translate('_participationStatus_' + key)
+                    }), {})
+                }
+            />
+            <Fields.GenericEnum
+                label={ translate('Block Subject') }
+                dataXPath='$.blockSubjectFromTesting.shouldBlock'
+                enum={{
+                    keys: [ false, true ],
+                    names:[
+                        translate('No'),
+                        translate('Yes')
+                    ]
+                }}
+            />
+
+            { shouldBlock && (
+                <Fields.DateOnlyServerSide
+                    label={ translate('Block Until') }
+                    dataXPath='$.blockSubjectFromTesting.blockUntil'
+                />
+            )}
+
+            <Fields.FullText
+                label={ translate('Subject Comment') }
+                dataXPath='$.subjectComment'
+            />    
+        </>
+    )
 }
 
+const UnscheduleSubjectModal = WithDefaultModal({
+    Body: UnscheduleSubjectModalBody,
 
-export default RemoveSubjectModalWrapper;
+    size: 'lg',
+    title: 'Unschedule Subject',
+    className: 'team-modal',
+    backdropClassName: 'team-modal-backdrop',
+    bodyClassName: 'bg-light'
+});
+
+export default UnscheduleSubjectModal;

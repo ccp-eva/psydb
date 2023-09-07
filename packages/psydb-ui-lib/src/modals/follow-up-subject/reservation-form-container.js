@@ -111,7 +111,7 @@ const ReservationFormContainer = (ps) => {
                 </Container>
             </div>
             <div className='d-flex justify-content-end mt-3'>
-                <Button size='sm' onClick={ send.exec }>
+                <Button onClick={ send.exec }>
                     { translate('Save') }
                 </Button>
             </div>

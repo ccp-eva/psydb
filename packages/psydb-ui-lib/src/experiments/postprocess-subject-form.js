@@ -42,7 +42,7 @@ const PostprocessSubjectForm = (ps) => {
             ...enums.inviteUnparticipationStatus.mapping,
         }
     ).reduce((acc, key) => ({
-        ...acc, [key]: translate(key)
+        ...acc, [key]: translate('_participationStatus_' + key)
     }), {})
 
     var initialValues = {

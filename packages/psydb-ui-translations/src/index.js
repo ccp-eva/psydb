@@ -439,44 +439,49 @@ var maps = [
     },
     
     {
-        internal: 'unknown',
+        internal: '_participationStatus_unknown',
         en: 'Unknown',
         de: 'Unbekannt',
     },
     {
-        internal: 'participated',
+        internal: '_participationStatus_participated',
         en: 'Participated',
         de: 'Teilgenommen',
     },
     {
-        internal: 'didnt-participate',
+        internal: '_participationStatus_didnt-participate',
         en: 'Did Not Participate',
         de: 'Nicht Teilgenommen',
     },
     {
-        internal: 'showed-up-but-didnt-participate',
+        internal: '_participationStatus_showed-up-but-didnt-participate',
         en: 'Only Showed Up',
         de: 'Gekommen',
     },
     {
-        internal: 'didnt-show-up',
+        internal: '_participationStatus_didnt-show-up',
         en: 'Did Not Show Up',
         de: 'Nicht Gekommen',
     },
     {
-        internal: 'canceled-by-participant',
+        internal: '_participationStatus_canceled-by-participant',
         en: 'Canceled by Participant',
         de: 'Abgesagt',
     },
     {
-        internal: 'canceled-by-institute',
+        internal: '_participationStatus_canceled-by-institute',
         en: 'Uninvited',
         de: 'Ausgeladen',
     },
     {
-        internal: 'moved',
+        internal: '_participationStatus_moved',
         en: 'Rescheduled',
         de: 'Verschoben',
+    },
+    {
+        internal: '_participationStatus_deleted',
+        en: 'Deleted',
+        de: 'Gelöscht',
     },
 
 
@@ -826,6 +831,10 @@ var maps = [
         de: 'Terminkommentar Bearbeiten'
     },
     {
+        en: 'Appointment Comment', // FIXME: Appointment Comment is too long
+        de: 'Terminkommentar'
+    },
+    {
         internal: '_appointment_comment',
         en: 'App. Comment', // FIXME: Appointment Comment is too long
         de: 'Terminkommentar'
@@ -837,6 +846,30 @@ var maps = [
     {
         en: 'Reschedule To',
         de: 'Verschieben Nach'
+    },
+    {
+        en: 'Unschedule Subject',
+        de: 'Proband:in austragen'
+    },
+    {
+        en: 'No Comment',
+        de: 'Kein Kommentar'
+    },
+    {
+        en: 'Subject Comment',
+        de: 'Kommentar zu Proband:in'
+    },
+    {
+        en: 'Reason',
+        de: 'Grund'
+    },
+    {
+        en: 'Block Subject',
+        de: 'Proband:in Sperren'
+    },
+    {
+        en: 'Block Until',
+        de: 'Sperren Bis'
     },
 ]
 

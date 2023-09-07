@@ -47,7 +47,7 @@ const CreateModalBody = (ps) => {
             </Pair>
             <hr />
             <div className='d-flex justify-content-end'>
-                <Button size='sm' onClick={ send.exec }>
+                <Button onClick={ send.exec }>
                     { translate('Reserve') }
                 </Button>
             </div>

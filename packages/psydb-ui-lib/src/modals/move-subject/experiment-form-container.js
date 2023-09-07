@@ -89,7 +89,7 @@ const ExperimentFormContainer = (ps) => {
                 />
             </div>
             <div className='d-flex justify-content-end mt-3'>
-                <Button size="sm" onClick={ send.exec }>
+                <Button onClick={ send.exec }>
                     { translate('Reschedule') }
                 </Button>
             </div>

@@ -90,7 +90,7 @@ const ExperimentUpdateModalBody = (ps) => {
             })} />
             <hr />
             <div className='d-flex justify-content-end'>
-                <Button size="sm" onClick={ send.exec }>
+                <Button onClick={ send.exec }>
                     { translate('Add') }
                 </Button>
             </div>

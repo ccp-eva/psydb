@@ -44,7 +44,7 @@ const FollowUpSubjectModalBody = (ps) => {
 
     var [ didFetchTestability, fetchedTestability ] = useFetch((agent) => {
         if (didFetch) {
-            var { subjectId } = payloadData;
+            var { subjectId } = modalPayloadData;
         
             studyData = studyData || fetched.data.studyData;
             var studyId = studyData.record._id;
@@ -73,7 +73,7 @@ const FollowUpSubjectModalBody = (ps) => {
     var studyId = studyData.record._id;
     var studyLabel = studyData.record.state.shorthand;
     var studyRecordType = studyData.record.type;
-    var { subjectId, subjectType, subjectRecord } = payloadData;
+    var { subjectId, subjectType, subjectRecord } = modalPayloadData;
 
     var subjectRecord = subjectDataByType[subjectType].records.find(it => (
         it._id === subjectId
