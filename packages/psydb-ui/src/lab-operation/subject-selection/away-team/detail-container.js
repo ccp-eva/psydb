@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
 import {
     Table,

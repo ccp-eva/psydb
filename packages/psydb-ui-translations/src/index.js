@@ -188,7 +188,7 @@ var maps = [
     },
     {
         en: 'Day',
-        de: 'tag'
+        de: 'Tag'
     },
     {
         en: '3-Day',
@@ -796,6 +796,14 @@ var maps = [
     {
         en: 'Edit Location Comment',
         de: 'Location-Kommentar Bearbeiten'
+    },
+    {
+        en: 'Really cancel the appointment?',
+        de: 'Den Termin wirklich absagen?'
+    },
+    {
+        en: 'Cancel Appointment',
+        de: 'Termin Absagen'
     },
 ]
 

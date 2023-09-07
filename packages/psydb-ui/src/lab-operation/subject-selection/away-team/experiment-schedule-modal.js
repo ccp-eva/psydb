@@ -1,22 +1,23 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React from 'react';
 
-import { Modal } from 'react-bootstrap';
-
+import { demuxed } from '@mpieva/psydb-ui-utils';
 import { useModalReducer } from '@mpieva/psydb-ui-hooks';
-import StudyAwayTeams from '@mpieva/psydb-ui-lib/src/study-away-teams';
+import { WithDefaultModal } from '@mpieva/psydb-ui-layout';
 
+import StudyAwayTeams from '@mpieva/psydb-ui-lib/src/study-away-teams';
 import ConfirmModal from './confirm-modal';
 
-const ExperimentScheduleModal = ({
-    show,
-    onHide,
+const SelectAwayTeamSlotModalBody = (ps) => {
+    var {
+        onHide,
 
-    studyId,
-    studyType,
-    modalPayloadData,
+        studyId,
+        studyType,
+        modalPayloadData,
 
-    onSuccessfulUpdate,
-}) => {
+        onSuccessfulUpdate,
+    } = ps;
+
     var {
         locationRecord,
         selectedSubjectRecords
@@ -24,58 +25,40 @@ const ExperimentScheduleModal = ({
 
     var confirmModal = useModalReducer();
 
-    var wrappedOnSuccessfulUpdate = (...args) => {
-        onSuccessfulUpdate && onSuccessfulUpdate(...args);
-        onHide();
-    };
-
     return (
         <>
             
             <ConfirmModal { ...({
-                show: confirmModal.show,
-                onHide: confirmModal.handleHide,
-                
-                modalPayloadData: confirmModal.data,
+                ...confirmModal.passthrough,
                 
                 studyId,
                 locationRecord,
                 selectedSubjectRecords,
-                onSuccessfulUpdate: wrappedOnSuccessfulUpdate,
+                onSuccessfulUpdate: demuxed([
+                    onHide,
+                    onSuccessfulUpdate
+                ]),
             }) } />
 
-            <Modal
-                show={show}
-                onHide={ onHide }
-                size='xl'
-                className='team-modal'
-                backdropClassName='team-modal-backdrop'
-            >
-                <Modal.Header closeButton>
-                    <Modal.Title>Termin eintragen</Modal.Title>
-                </Modal.Header>
-                <Modal.Body className='bg-white pt-0'>
-                    <StudyAwayTeams { ...({
-                        studyId,
-                        studyRecordType: studyType,
-                        
-                        onSelectReservationSlot: confirmModal.handleShow
-                    }) } />
-                </Modal.Body>
-            </Modal>
+            <StudyAwayTeams { ...({
+                studyId,
+                studyRecordType: studyType,
+                
+                onSelectReservationSlot: confirmModal.handleShow
+            }) } />
         </>
     )
 }
 
 
-const ExperimentScheduleModalWrapper = (ps) => {
-    if (!ps.modalPayloadData) {
-        return null;
-    }
-    return (
-        <ExperimentScheduleModal { ...ps } />
-    );
-}
+const SelectAwayTeamSlotModal = WithDefaultModal({
+    Body: SelectAwayTeamSlotModalBody,
 
+    size: 'xl',
+    title: 'Create Appointment',
+    className: 'team-modal',
+    backdropClassName: 'team-modal-backdrop',
+    bodyClassName: 'bg-white pt-0'
+});
 
-export default ExperimentScheduleModalWrapper;
+export default SelectAwayTeamSlotModal;

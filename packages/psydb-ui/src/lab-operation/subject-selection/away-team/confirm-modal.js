@@ -1,14 +1,19 @@
 import React from 'react';
-import { Modal, Button, Table } from 'react-bootstrap';
 import { withField } from '@cdxoo/formik-utils';
 
-import { demuxed } from '@mpieva/psydb-ui-utils';
+import { calculateAge } from '@mpieva/psydb-common-lib';
+import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
 import { useSend } from '@mpieva/psydb-ui-hooks';
-import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
-import calculateAge from '@mpieva/psydb-ui-lib/src/calculate-age';
-import { Pair } from '@mpieva/psydb-ui-layout';
+import {
+    WithDefaultModal,
+    Table,
+    Button,
+    Pair,
+    TeamLabel,
+} from '@mpieva/psydb-ui-layout';
 
 import {
+    datefns,
     DefaultForm,
     Fields,
 } from '@mpieva/psydb-ui-lib';
@@ -18,21 +23,22 @@ const CommentField = withField({
     DefaultWrapper: 'FieldWrapperMultiline'
 });
 
-const ConfirmModal = ({
-    show,
-    onHide,
-    modalPayloadData,
-    studyId,
-    locationRecord,
-    selectedSubjectRecords,
+const CreateExperimentModalBody = (ps) => {
+    var {
+        show,
+        onHide,
+        modalPayloadData,
+        studyId,
+        locationRecord,
+        selectedSubjectRecords,
 
-    onSuccessfulUpdate
-}) => {
+        onSuccessfulUpdate
+    } = ps;
+
     var { teamRecord, interval } = modalPayloadData;
 
-    var wrappedOnSuccessfulUpdate = demuxed([
-        onHide, onSuccessfulUpdate
-    ]);
+    var translate = useUITranslation();
+    var locale = useUILocale();
 
     var send = useSend((formData) => ({
         type: 'experiment/create-from-awayteam-reservation',
@@ -46,103 +52,92 @@ const ConfirmModal = ({
                 comment: formData.comment
             }
         }
-    }), { onSuccessfulUpdate: wrappedOnSuccessfulUpdate });
+    }), { onSuccessfulUpdate: [ onHide, onSuccessfulUpdate ] });
 
     var initialValues = {
         comment: ''
     };
 
     return (
-        <Modal
-            show={ show }
-            onHide={ onHide }
-            size='md'
+        <DefaultForm
+            initialValues={ initialValues }
+            onSubmit={ send.exec }
+            useAjvAsync
         >
-            <Modal.Header closeButton>
-                <Modal.Title>Bestätigen</Modal.Title>
-            </Modal.Header>
-            <Modal.Body className='bg-light'>
-                <DefaultForm
-                    initialValues={ initialValues }
-                    onSubmit={ send.exec }
-                    useAjvAsync
-                >
-                    { (formikProps) => (
-                        <>
-                            <Pair label='Team'>
-                                <span className='d-inline-block mr-2' style={{
-                                    backgroundColor: teamRecord.state.color,
-                                    height: '24px',
-                                    width: '24px',
-                                    verticalAlign: 'bottom',
-                                }} />
-                                { teamRecord.state.name }
-                            </Pair>
-                            <Pair label='Tag'>
-                                { datefns.format(interval.start, 'cccc P')}
-                            </Pair>
-                            
-                            <Pair label='Location'>
-                                { locationRecord._recordLabel }
-                            </Pair>
+            { (formikProps) => (
+                <>
+                    <Pair label={ translate('Team') }>
+                        <TeamLabel
+                            className='text-bold'
+                            { ...teamRecord.state }
+                        />
+                    </Pair>
+                    <Pair label={ translate('Date')}>
+                        { datefns.format(
+                            interval.start, 'cccc P', { locale }
+                        )}
+                    </Pair>
+                    
+                    <Pair label={ translate('Location') }>
+                        { locationRecord._recordLabel }
+                    </Pair>
 
-                            <CommentField
-                                labelClassName='border-0 text-bold m-0 p-0'
-                                label='Kommentar'
-                                dataXPath='$.comment'
-                                rows={ 3 }
-                            />
-                           
-                            <Table size='sm' className='bg-white border mt-2'>
-                                <thead>
-                                    <tr>
-                                        <th>Proband:in</th>
-                                        <th>Alter am Tag</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    { selectedSubjectRecords.map(record => {
-                                        var isRed = (
-                                            record._upcomingExperiments.length > 0
-                                        );
-                                        return <tr
-                                            key={ record._id }
-                                            className={ isRed ? 'bg-light-red' : '' }
-                                        >
-                                            <td>
-                                                { record._recordLabel }
-                                            </td>
-                                            <td>
-                                                { calculateAge({
-                                                    base: record._ageFrameField,
-                                                    relativeTo: interval.start,
-                                                })}
-                                            </td>
-                                        </tr>
-                                    })}
-                                </tbody>
-                            </Table>
+                    <CommentField
+                        labelClassName='border-0 text-bold m-0 p-0'
+                        label={ translate('Comment') }
+                        dataXPath='$.comment'
+                        rows={ 3 }
+                    />
+                   
+                    <Table size='sm' className='bg-white border mt-2'>
+                        <thead>
+                            <tr>
+                                <th>{ translate('Subject') }</th>
+                                <th>{ translate('T-Age') }</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            { selectedSubjectRecords.map(record => {
+                                var isRed = (
+                                    record._upcomingExperiments.length > 0
+                                );
+                                return <tr
+                                    key={ record._id }
+                                    className={ isRed ? 'bg-light-red' : '' }
+                                >
+                                    <td>
+                                        { record._recordLabel }
+                                    </td>
+                                    <td>
+                                        { calculateAge({
+                                            base: record._ageFrameField,
+                                            relativeTo: interval.start,
+                                        })}
+                                    </td>
+                                </tr>
+                            })}
+                        </tbody>
+                    </Table>
 
-                            <div className='d-flex justify-content-end'>
-                                <Button type='submit'>
-                                    Bestätigen
-                                </Button>
-                            </div>
-                        </>
-                    )}
-                </DefaultForm>
-            </Modal.Body>
-            
-        </Modal>
-
+                    <div className='d-flex justify-content-end'>
+                        <Button type='submit'>
+                            { translate('Confirm') }
+                        </Button>
+                    </div>
+                </>
+            )}
+        </DefaultForm>
     );
 }
 
-const WrappedConfirmModal = (ps) => {
-    if (!ps.modalPayloadData) {
-        return null;
-    }
-    return <ConfirmModal { ...ps } />
-}
+const CreateExperimentModal = WithDefaultModal({
+    Body: CreateExperimentModalBody,
 
-export default WrappedConfirmModal;
+    size: 'md',
+    title: 'Confirm',
+    className: '',
+    backdropClassName: '',
+    bodyClassName: 'bg-light'
+});
+
+export default CreateExperimentModal;
