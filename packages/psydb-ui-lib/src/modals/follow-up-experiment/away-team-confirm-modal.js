@@ -1,19 +1,23 @@
-import React, { useMemo, useEffect, useReducer, useCallback, useState } from 'react';
-
-import datefns from '../../date-fns';
-import { createSend } from '@mpieva/psydb-ui-utils';
+import React from 'react';
 
 import {
-    Modal,
+    format as formatDateInterval
+} from '@mpieva/psydb-date-interval-fns';
+
+import { demuxed } from '@mpieva/psydb-ui-utils';
+import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
+import { useSend } from '@mpieva/psydb-ui-hooks';
+
+import {
+    WithDefaultModal,
     Container,
     Pair,
-    Button
+    Button,
+    TeamLabel
 } from '@mpieva/psydb-ui-layout';
 
-import {
-    DefaultForm,
-    Fields
-} from '../../formik';
+import datefns from '../../date-fns';
+import { DefaultForm, Fields } from '../../formik';
 
 const FormContainer = (ps) => {
     var {
@@ -32,6 +36,9 @@ const FormContainer = (ps) => {
         onSuccessfulUpdate,
     } = ps;
 
+    var translate = useUITranslation();
+    var locale = useUILocale();
+
     var now = new Date();
     var { enableFollowUpExperiments } = studyData.record.state;
     var {
@@ -39,7 +46,7 @@ const FormContainer = (ps) => {
         state: { isPostprocessed }
     } = experimentData.record;
     
-    var handleSubmit = undefined;
+    var send = undefined;
     var isPlaceholder = false;
 
     if (nextExperimentRecord) {
@@ -47,7 +54,7 @@ const FormContainer = (ps) => {
         nextInterval = nextExperimentRecord.state.interval;
 
         if (isPlaceholder) {
-            handleSubmit = createSend((formData) => ({
+            send = useSend((formData) => ({
                 type: 'experiment/followup-awayteam-move-to-placeholder',
                 payload: {
                     sourceExperimentId: experimentData.record._id,
@@ -60,7 +67,7 @@ const FormContainer = (ps) => {
         }
     }
     else {
-        handleSubmit = createSend((formData) => ({
+        send = useSend((formData) => ({
             type: 'experiment/create-followup-awayteam',
             payload: {
                 sourceExperimentId: experimentData.record._id,
@@ -71,75 +78,59 @@ const FormContainer = (ps) => {
         }), { onSuccessfulUpdate })
     }
 
+    var formatOptions = { dateFormat: 'cccc P', locale };
+    var formattedNow = formatDateInterval(
+        experimentData.record.state.interval, formatOptions
+    );
+    var formattedNext = formatDateInterval(
+        nextInterval, formatOptions
+    );
 
     return (
         <div>
-            <header className='pb-1'><b>Aktuell</b></header>
+            <header className='pb-1'><b>
+                { translate('Current') }
+            </b></header>
             <div className='p-2 bg-white border'>
                 <Container>
-                    <Pair label='Datum'>
-                        { datefns.format(
-                            new Date(
-                                experimentData.record.state.interval.start
-                            ),
-                            'cccc P'
-                        ) }
+                    <Pair label={ translate('Date') }>
+                        { formattedNow.startDate }
                     </Pair>
                     <Pair label='Team'>
-                        <span className='d-inline-block mr-2' style={{
-                            backgroundColor: teamData.record.state.color,
-                            height: '24px',
-                            width: '24px',
-                            verticalAlign: 'bottom',
-                        }} />
-                        { teamData.record.state.name }
+                        <TeamLabel { ...teamData.record.state } />
                     </Pair>
                 </Container>
             </div>
 
-            <header className='pb-1 mt-3'><b>Folgetermin</b></header>
+            <header className='pb-1 mt-3'><b>
+                { translate('Follow-Up Appointment') }
+            </b></header>
             <DefaultForm 
                 initialValues={{ subjectOp: 'none' }}
-                onSubmit={ handleSubmit }
+                onSubmit={ send.exec }
             >
                 {(formikProps) => (
                     <>
                         <div className='p-2 bg-white border'>
                             <Container>
-                                <Pair label='Datum'>
-                                    { datefns.format(
-                                        new Date(nextInterval.start),
-                                        'ccc P'
-                                    ) }
+                                <Pair label={ translate('Date') }>
+                                    { formattedNext.startDate }
                                 </Pair>
-                                <Pair label='Team'>
-                                    <span className='d-inline-block mr-2' style={{
-                                        backgroundColor: nextTeamRecord.state.color,
-                                        height: '24px',
-                                        width: '24px',
-                                        verticalAlign: 'bottom',
-                                    }} />
-                                    { nextTeamRecord.state.name }
+                                <Pair label={ translate('Team') }>
+                                    <TeamLabel { ...nextTeamRecord.state } />
                                 </Pair>
                                 { !nextExperimentRecord && (
-                                    <Fields.GenericEnum
-                                        dataXPath='$.subjectOp'
-                                        uiSplit={[ 4, 8 ]}
-                                        labelClassName='px-0'
-                                        label='Proband:innen'
-                                        options={{
-                                            'none': 'Keine Aktion',
-                                            'move-unprocessed': 'Verbleibende Mitnehmen', 
-                                            ...( isPostprocessed && enableFollowUpExperiments && {
-                                                'copy': 'Alle Kopieren',
-                                            }),
-                                        }}
-                                    />
+                                    <SubjectOpField { ...({
+                                        isPostprocessed,
+                                        enableFollowUpExperiments
+                                    })} />
                                 )}
                             </Container>
                         </div>
                         <div className='d-flex justify-content-end mt-3'>
-                            <Button type='submit'>Speichern</Button>
+                            <Button type='submit'>
+                                { translate('Save') }
+                            </Button>
                         </div>
                     </>
                 )}
@@ -149,21 +140,43 @@ const FormContainer = (ps) => {
 
 }
 
-const AwayTeamConfirmModal = ({
-    show,
-    onHide,
+var SubjectOpField = (ps) => {
+    var {
+        isPostprocessed,
+        enableFollowUpExperiments
+    } = ps;
 
-    experimentData,
-    teamData,
-    studyData,
-    modalPayloadData,
+    var translate = useUITranslation();
 
-    onSuccessfulUpdate,
-}) => {
+    return (
+        <Fields.GenericEnum
+            dataXPath='$.subjectOp'
+            uiSplit={[ 4, 8 ]}
+            labelClassName='px-0'
+            label={ translate('Subjects') }
+            options={{
+                'none': translate('_followUpExpSubjectOp_none'),
+                'move-unprocessed': translate('_followUpExpSubjectOp_move-unprocessed'), 
+                ...( isPostprocessed && enableFollowUpExperiments && {
+                    'copy': translate('_followUpExpSubjectOp_copy'),
+                }),
+            }}
+        />
+    )
+}
 
-    if (!modalPayloadData) {
-        return null;
-    }
+
+const AwayTeamConfirmModalBody = (ps) => {
+    var {
+        onHide,
+
+        experimentData,
+        teamData,
+        studyData,
+        modalPayloadData,
+
+        onSuccessfulUpdate,
+    } = ps;
 
     var {
         experimentRecord: nextExperimentRecord,
@@ -172,36 +185,33 @@ const AwayTeamConfirmModal = ({
         interval: nextInterval,
     } = modalPayloadData;
 
-    var wrappedOnSuccessfulUpdate = (...args) => {
-        onHide();
-        onSuccessfulUpdate && onSuccessfulUpdate(...args);
-    };
-
     return (
-        <Modal
-            show={show}
-            onHide={ onHide }
-            size='md'
-        >
-            <Modal.Header closeButton>
-                <Modal.Title>Folgetermin</Modal.Title>
-            </Modal.Header>
-            <Modal.Body className='bg-light'>
-                <FormContainer { ...({
-                    experimentData,
-                    teamData,
-                    studyData,
+        <>
+            <FormContainer { ...({
+                experimentData,
+                teamData,
+                studyData,
 
-                    nextExperimentRecord,
-                    nextReservationRecord,
-                    nextTeamRecord,
-                    nextInterval,
+                nextExperimentRecord,
+                nextReservationRecord,
+                nextTeamRecord,
+                nextInterval,
 
-                    onSuccessfulUpdate: wrappedOnSuccessfulUpdate,
-                }) } /> 
-            </Modal.Body>
-        </Modal>
+                onSuccessfulUpdate: demuxed([
+                    onHide, onSuccessfulUpdate
+                ]),
+            }) } />
+        </>
     )
 }
+
+const AwayTeamConfirmModal = WithDefaultModal({
+    Body: AwayTeamConfirmModalBody,
+    title: 'Follow-Up Appointment',
+    size: 'md',
+    className: '',
+    backdropClassName: '',
+    bodyClassName: 'bg-light'
+});
 
 export default AwayTeamConfirmModal;

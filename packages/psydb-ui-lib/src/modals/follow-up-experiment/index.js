@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, useReducer, useCallback } from 'react';
+import React from 'react';
 
 import {
     inviteExperimentTypes
@@ -12,7 +12,7 @@ import {
 } from '@mpieva/psydb-ui-hooks';
 
 import {
-    Modal,
+    WithDefaultModal,
     LoadingIndicator
 } from '@mpieva/psydb-ui-layout';
 
@@ -22,20 +22,21 @@ import StudyAwayTeams from '../../study-away-teams';
 import InhouseConfirmModal from './inhouse-confirm-modal';
 import AwayTeamConfirmModal from './away-team-confirm-modal';
 
-const FollowUpExperimentModal = ({
-    show,
-    onHide,
+const FollowUpExperimentModalBody = (ps) => {
+    var {
+        onHide,
 
-    shouldFetch,
-    experimentId,
-    experimentType,
+        shouldFetch,
+        experimentId,
+        experimentType,
 
-    experimentData,
-    teamData,
-    studyData,
+        experimentData,
+        teamData,
+        studyData,
 
-    onSuccessfulUpdate,
-}) => {
+        onSuccessfulUpdate,
+    } = ps;
+
     var confirmModal = useModalReducer({ show: false });
     var { value: revision, up: increaseRevision } = useRevision();
 
@@ -118,35 +119,22 @@ const FollowUpExperimentModal = ({
     }
 
     return (
-        <Modal
-            show={show}
-            onHide={ onHide }
-            size='xl'
-            className='team-modal'
-            backdropClassName='team-modal-backdrop'
-        >
-            <Modal.Header closeButton>
-                <Modal.Title>Folgetermin</Modal.Title>
-            </Modal.Header>
-            <Modal.Body className='bg-light'>
-
-                { prerenderedConfirmModal }
-                { prerenderedCalendar }
-       
-            </Modal.Body>
-        </Modal>
+        <>
+            { prerenderedConfirmModal }
+            { prerenderedCalendar }
+        </>
     )
 }
 
 
-const FollowUpExperimentModalWrapper = (ps) => {
-    if (!ps.show) {
-        return null;
-    }
-    return (
-        <FollowUpExperimentModal { ...ps } />
-    );
-}
+const FollowUpExperimentModal = WithDefaultModal({
+    Body: FollowUpExperimentModalBody,
 
+    size: 'xl',
+    title: 'Follow-Up Appointment',
+    className: 'team-modal',
+    backdropClassName: 'team-modal-backdrop',
+    bodyClassName: 'bg-light'
+});
 
-export default FollowUpExperimentModalWrapper;
+export default FollowUpExperimentModal;

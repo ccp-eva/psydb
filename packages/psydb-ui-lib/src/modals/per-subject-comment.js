@@ -17,10 +17,13 @@ const PerSubjectCommentModalBody = (ps) => {
         experimentType,
 
         experimentData,
+        payloadData, // FIXME
         modalPayloadData,
 
         onSuccessfulUpdate,
     } = ps;
+
+    modalPayloadData = modalPayloadData || payloadData;
 
     var translate = useUITranslation();
 

@@ -1,6 +1,7 @@
 import React, { useMemo, useEffect, useReducer, useCallback, useState } from 'react';
 // FIXME: invite-confirm-modal as its also video-calls now
 
+import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
 import intervalfns from '@mpieva/psydb-date-interval-fns';
 import { withField } from '@cdxoo/formik-utils';
 import { useSend } from '@mpieva/psydb-ui-hooks';
@@ -22,16 +23,11 @@ import ExperimentIntervalSummary from '../../experiment-interval-summary';
 
 import datefns from '../../date-fns';
 
-var formatDate = (datelike) => (
-    datefns.format(new Date(datelike), 'dd.MM.yyyy')
-);
-
-var formatTime = (datelike) => (
-    datefns.format(new Date(datelike), 'HH:mm')
+var formatTime = (datelike, options = {}) => (
+    datefns.format(new Date(datelike), 'p', options)
 );
 
 const FormContainer = (ps) => {
-    console.log(ps);
     var {
         experimentData,
         studyData,
@@ -44,27 +40,38 @@ const FormContainer = (ps) => {
         state: experimentState
     } = experimentData.record;
 
+    var locale = useUILocale();
+    var translate = useUITranslation();
+
+    var { startDate, startTime } = intervalfns.format(
+        confirmData, { locale }
+    );
+
     return (
         <div>
-            <header className='pb-1'><b>Aktuell</b></header>
+            <header className='pb-1'><b>
+                { translate('Current') }
+            </b></header>
             <div className='p-2 bg-white border'>
                 <ExperimentIntervalSummary
                     experimentRecord={ experimentData.record }
                 />
             </div>
 
-            <header className='pb-1 mt-3'><b>nach Verschiebung</b></header>
+            <header className='pb-1 mt-3'><b>
+                { translate('Reschedule To') }
+            </b></header>
             <div className='p-2 bg-white border'>
                 <Container>
-                    <Pair label='Datum'>
-                        { formatDate(confirmData.start) }
+                    <Pair label={ translate('Date') }>
+                        { startDate }
                     </Pair>
-                    <Pair label='Beginn'>
-                        { formatTime(confirmData.start) }
+                    <Pair label={ translate('Start') }>
+                        { startTime }
                     </Pair>
                     <Row>
                         <Form.Label className='col-sm-4 col-form-label'>
-                            Ende
+                            { translate('End') }
                         </Form.Label>
                         <Col sm={8}>
                             <SlotControl
@@ -80,9 +87,11 @@ const FormContainer = (ps) => {
             <div className='d-flex justify-content-between mt-3'>
                 <Fields.PlainCheckbox
                     dataXPath='$.shouldRemoveOldReservation'
-                    label='Alte Reservierung entfernen'
+                    label={ translate('Remove Old Reservation') }
                 />
-                <Button type='submit'>Verschieben</Button>
+                <Button type='submit'>
+                    { translate('Reschedule') }
+                </Button>
             </div>
         </div>
     )
@@ -178,7 +187,7 @@ const InhouseConfirmModalBody = (ps) => {
 
 const InhouseConfirmModal = WithDefaultModal({
     Body: InhouseConfirmModalBody,
-    title: 'Termin verschieben',
+    title: 'Reschedule Appointment',
     size: 'md',
     className: '',
     backdropClassName: '',
@@ -187,6 +196,8 @@ const InhouseConfirmModal = WithDefaultModal({
 const SlotControl = withField({
     Control: (ps) => {
         var { dataXPath, formikField, min, max, step } = ps;
+
+        var locale = useUILocale();
 
         var slots = [];
         for (var t = min.getTime(); t < max.getTime(); t += step) {
@@ -203,7 +214,7 @@ const SlotControl = withField({
                         key={ it }
                         value={ new Date(it).toISOString() }
                     >
-                        { formatTime(it + 1) }
+                        { formatTime(it + 1, { locale }) }
                     </option>
                 ))}
             </Form.Control>

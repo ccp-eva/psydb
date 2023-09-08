@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, useReducer, useCallback } from 'react';
+import React from 'react';
 
 import {
     inviteExperimentTypes
@@ -12,7 +12,7 @@ import {
 } from '@mpieva/psydb-ui-hooks';
 
 import {
-    Modal,
+    WithDefaultModal,
     LoadingIndicator
 } from '@mpieva/psydb-ui-layout';
 
@@ -21,21 +21,23 @@ import StudyAwayTeams from '../../study-away-teams';
 
 import InhouseConfirmModal from './inhouse-confirm-modal';
 import AwayTeamConfirmModal from './away-team-confirm-modal';
+import createCalculateNewExperimentMaxEnd from './create-calculate-new-experiment-max-end';
 
-const MoveExperimentModal = ({
-    show,
-    onHide,
+const RescheduleExperimentModalBody = (ps) => {
+    var {
+        onHide,
 
-    shouldFetch,
-    experimentId,
-    experimentType,
+        shouldFetch,
+        experimentId,
+        experimentType,
 
-    experimentData,
-    teamData,
-    studyData,
+        experimentData,
+        teamData,
+        studyData,
 
-    onSuccessfulUpdate,
-}) => {
+        onSuccessfulUpdate,
+    } = ps;
+
     var confirmModal = useModalReducer({ show: false });
     var { value: revision, up: increaseRevision } = useRevision();
 
@@ -149,146 +151,21 @@ const MoveExperimentModal = ({
     }
 
     return (
-        <Modal
-            show={show}
-            onHide={ onHide }
-            size='xl'
-            className='team-modal'
-            backdropClassName='team-modal-backdrop'
-        >
-            <Modal.Header closeButton>
-                <Modal.Title>Termin verschieben</Modal.Title>
-            </Modal.Header>
-            <Modal.Body className='bg-light'>
-
-                { prerenderedConfirmModal }
-                { prerenderedCalendar }
-       
-            </Modal.Body>
-        </Modal>
+        <>
+            { prerenderedConfirmModal }
+            { prerenderedCalendar }
+        </>
     )
 }
 
+const RescheduleExperimentModal = WithDefaultModal({
+    Body: RescheduleExperimentModalBody,
 
-const MoveExperimentModalWrapper = (ps) => {
-    if (!ps.show) {
-        return null;
-    }
-    return (
-        <MoveExperimentModal { ...ps } />
-    );
-}
+    size: 'xl',
+    title: 'Reschedule Appointment',
+    className: 'team-modal',
+    backdropClassName: 'team-modal-backdrop',
+    bodyClassName: 'bg-light'
+});
 
-
-const createCalculateNewExperimentMaxEnd = (currentExperimentId) => ({
-    start,
-    selectedReservationRecord,
-    selectedExperimentRecord,
-    reservationRecords,
-    experimentRecords,
-    upperBoundary,
-    slotDuration,
-}) => {
-   
-    // FIXME
-    if (selectedExperimentRecord) {
-        selectedReservationRecord = selectedExperimentRecord;
-    }
-
-    var maxEnd = undefined;
-    
-    var orderedReservations = (
-        reservationRecords
-        .filter(it => {
-            var resEnd = (
-                new Date(it.state.interval.end).getTime()
-            );
-            var selectedStart = (
-                new Date(start).getTime()
-            );
-
-            return (
-                resEnd > selectedStart
-            );
-        })
-        .sort((a,b) => {
-            var startA = new Date(a.state.interval.end).getTime();
-            var startB = new Date(b.state.interval.end).getTime();
-            return (
-                startA < startB ? -1 : 1
-            )
-        })
-    );
-    for (var item of orderedReservations) {
-        var reservationStart = new Date(item.state.interval.start);
-        var reservationEnd = new Date(item.state.interval.end);
-
-        var isOtherTeam = (
-            item.state.experimentOperatorTeamId
-            !== selectedReservationRecord.state.experimentOperatorTeamId
-        );
-        if (isOtherTeam) {
-            break;
-        }
-
-        var isOutOfBounds = reservationEnd > upperBoundary;
-        if (isOutOfBounds) {
-            maxEnd = upperBoundary;
-            break;
-        }
-        
-        if (maxEnd !== undefined) {
-            // check if continous
-            var hasGap = (
-                maxEnd.getTime() + 1 !== reservationStart.getTime()
-            );
-            if (hasGap) {
-                break;
-            }
-        }
-
-        maxEnd = reservationEnd;
-    }
-
-    var orderedExperiments = (
-        experimentRecords
-        .filter(it => {
-            var expStart = (
-                new Date(it.state.interval.start).getTime()
-            );
-            var selectedStart = (
-                new Date(start).getTime()
-            );
-
-            return (
-                currentExperimentId !== it._id
-                && expStart > selectedStart
-            );
-        })
-        .sort((a,b) => {
-            var startA = new Date(a.state.interval.start).getTime();
-            var startB = new Date(b.state.interval.start).getTime();
-            return (
-                startA < startB ? -1 : 1
-            )
-        })
-    );
-    
-    var nextExperiment = orderedExperiments[0];
-    if (nextExperiment) {
-        var nextExperimentStart = (
-            new Date(nextExperiment.state.interval.start)
-        );
-        if (nextExperimentStart.getTime() < maxEnd.getTime()) {
-            maxEnd = new Date(nextExperimentStart.getTime() - 1);
-        }
-    }
-    //console.log({ maxEnd: maxEnd.toISOString() });
-
-
-
-    var out = new Date(maxEnd.getTime() + slotDuration);
-    return out;
-}
-
-export default MoveExperimentModalWrapper;
+export default RescheduleExperimentModal;

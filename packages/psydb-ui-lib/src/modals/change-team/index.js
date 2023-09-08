@@ -1,35 +1,36 @@
 import React, { useState } from 'react';
 
-import { useFetch } from '@mpieva/psydb-ui-hooks';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useFetch, useSend } from '@mpieva/psydb-ui-hooks';
 import { createSend } from '@mpieva/psydb-ui-utils';
 import {
-    Modal,
+    WithDefaultModal,
     Button,
     LoadingIndicator
 } from '@mpieva/psydb-ui-layout';
 
 import { DefaultForm, Fields } from '../../formik';
-
 import StudyTeamListItem from '../../experiment-operator-team-list-item';
 
-const ChangeTeamModal = ({
-    show,
-    onHide,
-    
-    experimentType,
-    experimentId,
-    studyId,
-    currentTeamId,
+const ChangeTeamModalBody = (ps) => {
+    var {
+        onHide,
+        
+        experimentType,
+        experimentId,
+        studyId,
+        currentTeamId,
 
-    onSuccessfulUpdate,
-}) => {
+        onSuccessfulUpdate,
+    } = ps;
+
     var [ selectedTeamId, handleSelectTeam ] = useState(currentTeamId);
 
     if (!experimentId || !studyId) {
         return null;
     }
 
-    var handleSubmit = createSend((formData) => ({
+    var send = useSend((formData) => ({
         type: 'experiment/change-experiment-operator-team',
         payload: {
             experimentId,
@@ -39,27 +40,15 @@ const ChangeTeamModal = ({
     }), { onSuccessfulUpdate: [ onHide, onSuccessfulUpdate ] });
 
     return (
-
-        <Modal
-            show={ show }
-            onHide={ onHide }
-            size='md'
-            className='team-modal'
-            backdropClassName='team-modal-backdrop'
-        >
-            <Modal.Header closeButton>
-                <Modal.Title>Team ändern</Modal.Title>
-            </Modal.Header>
-            <Modal.Body className='bg-light'>
-                <ChangeOpsTeamForm { ...({
-                    experimentType,
-                    experimentId,
-                    studyId,
-                    selectedTeamId,
-                    onSubmit: handleSubmit
-                }) } />
-            </Modal.Body>
-        </Modal>
+        <>
+            <ChangeOpsTeamForm { ...({
+                experimentType,
+                experimentId,
+                studyId,
+                selectedTeamId,
+                onSubmit: send.exec
+            }) } />
+        </>
     );
 }
 
@@ -71,6 +60,8 @@ const ChangeOpsTeamForm = (ps) => {
         selectedTeamId,
         onSubmit
     } = ps;
+
+    var translate = useUITranslation();
 
     var initialValues = {
         experimentOperatorTeamId: selectedTeamId,
@@ -104,13 +95,13 @@ const ChangeOpsTeamForm = (ps) => {
                                 ? (
                                     <Fields.PlainCheckbox
                                         dataXPath='$.shouldRemoveOldReservation'
-                                        label='Alte Reservierung entfernen'
+                                        label={ translate('Remove Old Reservation') }
                                     />
                                 )
                                 : <div />
                             }
                             <Button type='submit'>
-                                Speichern
+                                { translate('Save') }
                             </Button>
                         </div>
                     </>
@@ -167,14 +158,14 @@ const TeamList = ({
     );
 }
 
-const ChangeTeamModalWrapper = (ps) => {
-    if (!ps.show) {
-        return null;
-    }
-    return (
-        <ChangeTeamModal { ...ps } />
-    );
-}
+const ChangeTeamModal = WithDefaultModal({
+    Body: ChangeTeamModalBody,
 
+    size: 'md',
+    title: 'Change Team',
+    className: 'team-modal',
+    backdropClassName: 'team-modal-backdrop',
+    bodyClassName: 'bg-light'
+});
 
 export default ChangeTeamModal;

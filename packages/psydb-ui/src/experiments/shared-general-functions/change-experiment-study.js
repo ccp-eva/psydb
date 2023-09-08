@@ -101,7 +101,7 @@ const ChangeExperimentStudyModalBody = (ps) => {
                     return <>
                         <div className='pt-3 bg-white border'>
                             <Fields.ForeignId
-                                label={ translate('Studie') }
+                                label={ translate('Study') }
                                 dataXPath='$.studyId'
                                 collection='study'
                                 extraOnChange={(nextStudyId) => {

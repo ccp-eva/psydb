@@ -845,7 +845,7 @@ var maps = [
     },
     {
         en: 'Reschedule To',
-        de: 'Verschieben Nach'
+        de: 'Verschieben Auf'
     },
     {
         en: 'Unschedule Subject',
@@ -870,6 +870,29 @@ var maps = [
     {
         en: 'Block Until',
         de: 'Sperren Bis'
+    },
+    {
+        en: 'Remove Old Reservation',
+        de: 'Alte Reservierung Entfernen'
+    },
+    {
+        en: 'Reschedule Appointment',
+        de: 'Termin Verschieben'
+    },
+    {
+        internal: '_followUpExpSubjectOp_none',
+        en: 'No Action',
+        de: 'Keine Aktion'
+    },
+    {
+        internal: '_followUpExpSubjectOp_move-unprocessed',
+        en: 'Move Remaining',
+        de: 'Verbleibende Mitnehmen'
+    },
+    {
+        internal: '_followUpExpSubjectOp_copy',
+        en: 'Copy All',
+        de: 'Alle Kopieren'
     },
 ]
 

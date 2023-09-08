@@ -1,17 +1,22 @@
-import React, { useMemo, useEffect, useReducer, useCallback, useState } from 'react';
+import React from 'react';
 
-import datefns from '../../date-fns';
+import {
+    format as formatDateInterval
+} from '@mpieva/psydb-date-interval-fns';
+
+import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
 import { useSend } from '@mpieva/psydb-ui-hooks';
 
 import {
-    Modal,
     Container,
     Pair,
     Button,
 
-    WithDefaultModal
+    WithDefaultModal,
+    TeamLabel
 } from '@mpieva/psydb-ui-layout';
 
+import datefns from '../../date-fns';
 import { DefaultForm, Fields } from '../../formik';
 
 const FormContainer = (ps) => {
@@ -23,57 +28,54 @@ const FormContainer = (ps) => {
         nextInterval,
     } = ps;
 
+    var translate = useUITranslation();
+    var locale = useUILocale();
+
+    var formatOptions = { dateFormat: 'cccc P', locale };
+    var formattedNow = formatDateInterval(
+        experimentData.record.state.interval, formatOptions
+    );
+    var formattedNext = formatDateInterval(
+        nextInterval, formatOptions
+    );
+
     return (
         <div>
-            <header className='pb-1'><b>Aktuell</b></header>
+            <header className='pb-1'><b>
+                { translate('Current') }
+            </b></header>
             <div className='p-2 bg-white border'>
                 <Container>
-                    <Pair label='Datum'>
-                        { datefns.format(
-                            new Date(
-                                experimentData.record.state.interval.start
-                            ),
-                            'dd.MM.yyyy HH:mm'
-                        ) }
+                    <Pair label={ translate('Date') }>
+                        { formattedNow.startDate }
                     </Pair>
-                    <Pair label='Team'>
-                        <span className='d-inline-block mr-2' style={{
-                            backgroundColor: teamData.record.state.color,
-                            height: '24px',
-                            width: '24px',
-                            verticalAlign: 'bottom',
-                        }} />
-                        { teamData.record.state.name }
+                    <Pair label={ translate('Team') }>
+                        <TeamLabel { ...teamData.record.state } />
                     </Pair>
                 </Container>
             </div>
 
-            <header className='pb-1 mt-3'><b>nach Verschiebung</b></header>
+            <header className='pb-1 mt-3'><b>
+                { translate('Reschedule To') }
+            </b></header>
             <div className='p-2 bg-white border'>
                 <Container>
-                    <Pair label='Datum'>
-                        { datefns.format(
-                            new Date(nextInterval.start),
-                            'dd.MM.yyyy HH:mm'
-                        ) }
+                    <Pair label={ translate('Date') }>
+                        { formattedNext.startDate }
                     </Pair>
-                     <Pair label='Team'>
-                        <span className='d-inline-block mr-2' style={{
-                            backgroundColor: nextTeamRecord.state.color,
-                            height: '24px',
-                            width: '24px',
-                            verticalAlign: 'bottom',
-                        }} />
-                        { nextTeamRecord.state.name }
+                     <Pair label={ translate('Team') }>
+                        <TeamLabel { ...nextTeamRecord.state } />
                     </Pair>
                 </Container>
             </div>
             <div className='d-flex justify-content-between mt-3'>
                 <Fields.PlainCheckbox
                     dataXPath='$.shouldRemoveOldReservation'
-                    label='Alte Reservierung entfernen'
+                    label={ translate('Remove Old Reservation') }
                 />
-                <Button type='submit'>Verschieben</Button>
+                <Button type='submit'>
+                    { translate('Reschedule') }
+                </Button>
             </div>
         </div>
     )
@@ -127,10 +129,11 @@ const AwayTeamConfirmModalBody = (ps) => {
 
 const AwayTeamConfirmModal = WithDefaultModal({
     Body: AwayTeamConfirmModalBody,
-    title: 'Termin verschieben',
+    title: 'Reschedule Appointment',
     size: 'md',
     className: '',
     backdropClassName: '',
+    bodyClassName: 'bg-light'
 });
 
 export default AwayTeamConfirmModal;
