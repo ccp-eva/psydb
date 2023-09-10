@@ -31,20 +31,16 @@ const Modals = (ps) => {
                 onSuccessfulUpdate={ onSuccessfulUpdate }
                 { ...removeManualModal.passthrough }
             />
+
             <PerSubjectCommentModal { ...({
-                show: commentModal.show,
-                onHide: commentModal.handleHide,
-                payloadData: commentModal.data,
+                ...commentModal.passthrough,
 
                 experimentData,
-
                 onSuccessfulUpdate,
             }) } />
 
             <MoveSubjectModal { ...({
-                show: moveModal.show,
-                onHide: moveModal.handleHide,
-                payloadData: moveModal.data,
+                ...moveModal.passthrough,
 
                 experimentType: experimentData.record.type,
                 experimentData,
@@ -55,9 +51,7 @@ const Modals = (ps) => {
             }) } />
             
             <FollowUpSubjectModal { ...({
-                show: followupModal.show,
-                onHide: followupModal.handleHide,
-                payloadData: followupModal.data,
+                ...followupModal.passthrough,
 
                 experimentType: experimentData.record.type,
                 experimentData,
@@ -68,9 +62,7 @@ const Modals = (ps) => {
             }) } />
 
             <RemoveSubjectModal { ...({
-                show: removeModal.show,
-                onHide: removeModal.handleHide,
-                payloadData: removeModal.data,
+                ...removeModal.passthrough,
 
                 experimentData,
                 subjectDataByType,

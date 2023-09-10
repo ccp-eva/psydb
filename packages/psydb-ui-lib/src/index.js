@@ -86,3 +86,7 @@ export {
 export {
     default as ExistingSubjectExperiments
 } from './experiments/shortlist-by-study-and-subject';
+
+export {
+    default as PostprocessSubjectForm
+} from './experiments/postprocess-subject-form';

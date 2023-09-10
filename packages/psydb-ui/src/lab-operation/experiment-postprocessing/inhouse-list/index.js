@@ -1,8 +1,12 @@
 import React from 'react';
+
+import {
+    format as formatDateInterval
+} from '@mpieva/psydb-date-interval-fns';
+
 import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
 import { usePermissions, useModalReducer } from '@mpieva/psydb-ui-hooks';
 
-import formatInterval from '@mpieva/psydb-ui-lib/src/format-date-interval';
 import {
     EditIconButtonInline,
     DetailsIconButton,
@@ -12,8 +16,7 @@ import {
     Table,
 } from '@mpieva/psydb-ui-layout';
 
-import PostprocessSubjectForm from '@mpieva/psydb-ui-lib/src/experiments/postprocess-subject-form';
-
+import { PostprocessSubjectForm } from '@mpieva/psydb-ui-lib';
 import { DetailedPostprocessModal } from '@mpieva/psydb-ui-compositions';
 
 const InhouseList = (ps) => {
@@ -80,6 +83,7 @@ const ExperimentSubjectItems = (ps) => {
     } = ps;
 
     var locale = useUILocale();
+    var translate = useUITranslation();
 
     var { _enableFollowUpExperiments, state } = experimentRecord;
     var { subjectData } = state;
@@ -95,7 +99,7 @@ const ExperimentSubjectItems = (ps) => {
         startDate,
         startTime,
         endTime
-    } = formatInterval(experimentRecord.state.interval, { locale });
+    } = formatDateInterval(experimentRecord.state.interval, { locale });
 
     return (
         <>
@@ -104,20 +108,29 @@ const ExperimentSubjectItems = (ps) => {
                     relatedRecordLabels
                     .subject[it.subjectId]._recordLabel
                 );
+
+                var onClickEdit = () => subjectModal.handleShow({
+                    title: translate(
+                        'Postprocessing (${subject} - ${study})',
+                        {
+                            subject: subjectLabel,
+                            study: studyLabel
+                        }
+                    ),
+                    subjectType,
+                    subjectId: it.subjectId,
+                    experimentRecord,
+                    relatedRecordLabels,
+                });
+
                 return (
                     <tr key={ `${experimentRecord._id}_${it.subjectId}` }>
                         <Cell>
                             { subjectLabel }
                             { canWriteSubjects && (
-                                <EditIconButtonInline onClick={ () => (
-                                    subjectModal.handleShow({
-                                        title: `Nachbereitung (${subjectLabel} - ${studyLabel})`,
-                                        subjectType,
-                                        subjectId: it.subjectId,
-                                        experimentRecord,
-                                        relatedRecordLabels,
-                                    })
-                                )} />
+                                <EditIconButtonInline
+                                    onClick={ onClickEdit }
+                                />
                             )}
                             { !canWriteSubjects && canReadSubjects && (
                                 <SubjectIconButton
@@ -164,26 +177,28 @@ const Cell = ({ children }) => (
 );
 
 const TableHead = (ps) => {
+    var translate = useUITranslation();
     return (
         <thead>
             <tr>
-                <th>Proband:in</th>
-                <th>Datum</th>
-                <th>Studie</th>
-                <th>Status</th>
+                <th>{ translate('Subject') }</th>
+                <th>{ translate('Date') }</th>
+                <th>{ translate('Study') }</th>
+                <th>{ translate('Status') }</th>
             </tr>
         </thead>
     );
 }
 
 const Fallback = (ps) => {
+    var translate = useUITranslation();
     return (
         <>
             <Table className='mb-1'>
                 <TableHead />
             </Table>
             <Alert variant='info'>
-                <i>Keine offenen Nachbereitungen gefunden</i>
+                <i>{ translate('No unprocessed appointments found.') }</i>
             </Alert>
         </>
     )

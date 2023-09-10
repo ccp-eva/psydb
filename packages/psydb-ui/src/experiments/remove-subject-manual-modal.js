@@ -1,5 +1,6 @@
 import React from 'react';
 import { demuxed } from '@mpieva/psydb-ui-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useSend, useModalReducer } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
 
@@ -20,6 +21,8 @@ const RemoveSubjectManualModalBody = (ps) => {
     } = ps;
 
     var { subjectRecord } = modalPayloadData;
+    
+    var translate = useUITranslation();
 
     var send = useSend((formData) => ({
         type: 'experiment/remove-subject-manual',
@@ -36,15 +39,12 @@ const RemoveSubjectManualModalBody = (ps) => {
 
             <Alert variant='danger'>
                 <header>
-                    <b>Diese Proband:in wirklich aus Termin austragen?</b>
+                    <b>{ translate('Really remove this Subject from the Appointment?')}</b>
                 </header>
-                <i>
-                    Die Proband:in wird dabei endgültig aus dem Termin
-                    entfernt!
-                </i>
+                <i>{ translate('This will remove the subject from the appointment completely!')}</i>
             </Alert>
             <div className='py-2 px-3 bg-white border mb-3'>
-                <header><b>Proband:in</b></header>
+                <header><b>{ translate('Subject') }</b></header>
                 { subjectRecord._recordLabel }
             </div>
             <div className='d-flex justify-content-end'>
@@ -52,7 +52,7 @@ const RemoveSubjectManualModalBody = (ps) => {
                     variant='danger'
                     onClick={ () => send.exec() }
                 >
-                    Austragen
+                    { translate('Remove') }
                 </Button>
             </div>
         </div>
@@ -60,7 +60,7 @@ const RemoveSubjectManualModalBody = (ps) => {
 }
 
 export const RemoveSubjectManualModal = WithDefaultModal({
-    title: 'Proband:in austragen',
+    title: 'Remove Subject from Appointment',
     size: 'lg',
     bodyClassName: 'bg-light pt-0 pr-3 pl-3',
     Body: RemoveSubjectManualModalBody,

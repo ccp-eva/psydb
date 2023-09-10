@@ -1,5 +1,4 @@
 import React, { useReducer, useEffect, useMemo, useCallback } from 'react';
-import { Table } from 'react-bootstrap';
 
 import {
     Route,
@@ -11,6 +10,11 @@ import {
 } from 'react-router-dom';
 
 import {
+    format as formatDateInterval
+} from '@mpieva/psydb-date-interval-fns';
+
+import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
+import {
     useFetch,
     useRevision,
     usePermissions
@@ -21,19 +25,19 @@ import {
     DetailsIconButton,
     ExperimentIconButton,
     Alert,
+    Table,
 } from '@mpieva/psydb-ui-layout';
 
-import agent from '@mpieva/psydb-ui-request-agents';
-import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
-import formatInterval from '@mpieva/psydb-ui-lib/src/format-date-interval';
-import createStringifier from '@mpieva/psydb-ui-lib/src/record-field-stringifier';
+import {
+    datefns,
+    PostprocessSubjectForm
+} from '@mpieva/psydb-ui-lib';
 
-import PostprocessSubjectForm from '@mpieva/psydb-ui-lib/src/experiments/postprocess-subject-form';
+import createStringifier from '@mpieva/psydb-ui-lib/src/record-field-stringifier';
 
 import InhouseList from './inhouse-list';
 
-const ExperimentPostprocessingListLoader = ({
-}) => {
+const ExperimentPostprocessingListLoader = (ps) => {
     var { path, url } = useRouteMatch();
 
     var {
@@ -107,13 +111,18 @@ const ExperimentPostprocessingListLoader = ({
 }
 
 
-const ExperimentPostprocessingList = ({
-    records,
-    relatedCustomRecordTypeLabels,
-    relatedHelperSetItems,
-    relatedRecordLabels,
-    onSuccessfulUpdate,
-}) => {
+const ExperimentPostprocessingList = (ps) => {
+    var {
+        records,
+        relatedCustomRecordTypeLabels,
+        relatedHelperSetItems,
+        relatedRecordLabels,
+        onSuccessfulUpdate,
+    } = ps;
+
+    var locale = useUILocale();
+    var translate = useUITranslation();
+
     if (records.length < 1) {
         return <Fallback />
     }
@@ -134,12 +143,10 @@ const ExperimentPostprocessingList = ({
 
                     var {
                         startDate,
-                        startTime,
-                        endTime
-                    } = formatInterval(state.interval);
+                    } = formatDateInterval(state.interval, { locale });
 
                     return <tr key={ it._id }>
-                        <td>{ getExperimentTypeLabel(type) }</td>
+                        <td>{ translate(getExperimentTypeLabel(type)) }</td>
                         <td>
                             { stringifyExperimentValue({
                                 ptr: '/state/studyId',
@@ -166,13 +173,14 @@ const ExperimentPostprocessingList = ({
 }
 
 const TableHead = (ps) => {
+    var translate = useUITranslation();
     return (
         <thead>
             <tr>
-                <th>Typ</th>
-                <th>Studie</th>
-                <th>Ort</th>
-                <th>Datum</th>
+                <th>{ translate('Type') }</th>
+                <th>{ translate('Study') }</th>
+                <th>{ translate('Location') }</th>
+                <th>{ translate('Date') }</th>
                 <th></th>
             </tr>
         </thead>
@@ -180,13 +188,14 @@ const TableHead = (ps) => {
 }
 
 const Fallback = (ps) => {
+    var translate = useUITranslation();
     return (
         <>
             <Table className='mb-1'>
                 <TableHead />
             </Table>
             <Alert variant='info'>
-                <i>Keine offenen Nachbereitungen gefunden</i>
+                <i>{ translate('No unprocessed appointments found.') }</i>
             </Alert>
         </>
     )
@@ -194,9 +203,9 @@ const Fallback = (ps) => {
 
 const getExperimentTypeLabel = (type) => (
     {
-        'away-team': 'Extern',
-        'inhouse': 'Intern',
-        'online-video-call': 'Video',
+        'away-team': 'External Appointment',
+        'inhouse': 'Inhouse Appointment',
+        'online-video-call': 'Online Video Appointment',
     }[type] || 'UNKNOWN'
 )
 

@@ -1,4 +1,4 @@
-import jsonpointer from 'jsonpointer';
+import { jsonpointer } from '@mpieva/psydb-core-utils';
 import stringifyFieldValue from './stringify-field-value';
 
 const createStringifier = ({

@@ -1,34 +1,42 @@
-import React, { useMemo, useEffect, useReducer } from 'react';
+import React from 'react';
 
 import {
     Route,
     Switch,
-    Redirect,
+    Redirect, // TODO
     useRouteMatch,
-    useHistory,
-    useParams
 } from 'react-router-dom';
 
-import agent from '@mpieva/psydb-ui-request-agents';
-import ResearchGroupNav from '@mpieva/psydb-ui-lib/src/research-group-nav';
-import RedirectOrTypeNav from '@mpieva/psydb-ui-lib/src/redirect-or-type-nav';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { BigNav } from '@mpieva/psydb-ui-layout';
+import { ResearchGroupNav, RedirectOrTypeNav } from '@mpieva/psydb-ui-lib';
 import ExperimentPostprocessingList from './experiment-postprocessing-list';
 
-var experimentTypeNavItems = [
-    { label: 'Interne Termine', linkTo: 'inhouse' },
-    { label: 'Externe Termine', linkTo: 'away-team' },
-    { label: 'Video Termine', linkTo: 'online-video-call' },
-]
+const ExperimentPostprocessingRouting = (ps) => {
+    var { subjectRecordTypes } = ps;
 
-const ExperimentPostprocessingRouting = ({
-    subjectRecordTypes
-}) => {
+    var translate = useUITranslation();
     var { path, url } = useRouteMatch();
+
+    var experimentTypeNavItems = [
+        {
+            label: translate('Inhouse Appointments'),
+            linkTo: 'inhouse'
+        },
+        {
+            label: translate('External Appointments'),
+            linkTo: 'away-team'
+        },
+        {
+            label: translate('Online Video Appointments'),
+            linkTo: 'online-video-call'
+        },
+    ]
+
     return (
         <>
             <h5 className='mt-0 mb-3 text-muted'>
-                Nachbereitung
+                { translate('Postprocessing') }
             </h5>
             <Switch>
                 <Route exact path={`${path}`}>
@@ -44,9 +52,8 @@ const ExperimentPostprocessingRouting = ({
     );
 }
 
-const ExperimentTypeRouting = ({
-    subjectRecordTypes
-}) => {
+const ExperimentTypeRouting = (ps) => {
+    var { subjectRecordTypes } = ps;
     var { path, url } = useRouteMatch();
 
     return (

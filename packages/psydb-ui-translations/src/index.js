@@ -22,6 +22,10 @@ var maps = [
         de: 'Interne Termine'
     },
     {
+        en: 'External Appointment',
+        de: 'Externer Termin'
+    },
+    {
         en: 'External Appointments',
         de: 'Externe Termine'
     },
@@ -827,6 +831,10 @@ var maps = [
         de: 'Online-Video-Termin'
     },
     {
+        en: 'Online Video Appointments',
+        de: 'Online-Video-Termine'
+    },
+    {
         en: 'Edit Appointment Comment',
         de: 'Terminkommentar Bearbeiten'
     },
@@ -894,6 +902,22 @@ var maps = [
         en: 'Copy All',
         de: 'Alle Kopieren'
     },
+    {
+        en: 'Really remove this Subject from the Appointment?',
+        de: 'Diese Proband:in wirklich aus Termin austragen?',
+    },
+    {
+        en: 'This will remove the subject from the appointment completely!',
+        de: 'Die Proband:in wird dabei endgültig aus dem Termin entfernt!',
+    },
+    {
+        en: 'Remove Subject from Appointment',
+        de: 'Proband:in aus Termin entfernen'
+    },
+    {
+        en: 'No unprocessed appointments found.',
+        de: 'Keine offenen Nachbereitungen gefunden.'
+    }
 ]
 
 export const createTranslate = (lang = 'en') => (template, props) => {
