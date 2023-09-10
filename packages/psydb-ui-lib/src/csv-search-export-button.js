@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useURLSearchParamsB64 } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
 
@@ -15,6 +16,7 @@ const CSVSearchExportButton = (ps) => {
         className
     } = ps;
 
+    var translate = useUITranslation();
     var [ query ] = useURLSearchParamsB64();
     var { showHidden, ...filters } = query;
 
@@ -57,7 +59,7 @@ const CSVSearchExportButton = (ps) => {
 
     return (
         <Button onClick={ handleExport } className={ className }>
-            CSV Export
+            { translate('CSV Export') }
         </Button>
     )
 }

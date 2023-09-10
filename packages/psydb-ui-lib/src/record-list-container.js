@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Base64 } from 'js-base64';
 import { useRouteMatch } from 'react-router-dom';
 
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import {
     usePermissions,
     useURLSearchParams,
@@ -69,37 +70,40 @@ var createExtendedSearchQuery = (currentQuery) => {
     return Base64.encode(JSON.stringify(extQueryData));
 }
 
-const RecordListContainer = ({
-    target,
-    collection,
-    recordType,
-    constraints,
-    extraIds,
-    excludedIds,
-    searchOptions,
-    defaultSort,
+const RecordListContainer = (ps) => {
+    var {
+        target,
+        collection,
+        recordType,
+        constraints,
+        extraIds,
+        excludedIds,
+        searchOptions,
+        defaultSort,
 
-    enableNew,
-    enableView,
-    enableEdit_old,
-    enableRecordRowLink,
+        enableNew,
+        enableView,
+        enableEdit_old,
+        enableRecordRowLink,
 
-    enableExtendedSearch,
-    enableCSVExport,
+        enableExtendedSearch,
+        enableCSVExport,
 
-    enableSelectRecords,
-    showSelectionIndicator,
-    selectedRecordIds,
-    onSelectRecord,
+        enableSelectRecords,
+        showSelectionIndicator,
+        selectedRecordIds,
+        onSelectRecord,
 
-    canSort,
+        canSort,
 
-    className,
-    tableClassName,
-    bsTableProps,
-    CustomActionListComponent,
-}) => {
+        className,
+        tableClassName,
+        bsTableProps,
+        CustomActionListComponent,
+    } = ps;
+
     var { path, url } = useRouteMatch();
+    var translate = useUITranslation();
     var permissions = usePermissions();
     
     var [ query, updateQuery ] = (
@@ -128,13 +132,13 @@ const RecordListContainer = ({
             <div className='media-print-hidden mb-3 d-flex justify-content-between'>
                 { enableNew && canCreate && (
                     <LinkButton to={`${url}/new`}>
-                        Neuer Eintrag
+                        { translate('New Record') }
                     </LinkButton>
                 )}
                 <div>
                     { enableExtendedSearch && canUseExtendedSearch && (
                         <LinkButton to={ extQueryUrl }>
-                            Erweiterte Suche
+                            { translate('Advanced Search') }
                         </LinkButton>
                     )}
                     { enableCSVExport && canUseCSVExport && (

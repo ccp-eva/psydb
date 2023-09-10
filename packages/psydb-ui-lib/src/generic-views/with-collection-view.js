@@ -4,6 +4,7 @@ import { useRouteMatch } from 'react-router-dom';
 import * as enums from '@mpieva/psydb-schema-enums';
 import allSchemaCreators from '@mpieva/psydb-schema-creators';
 
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import {
     PermissionDenied,
@@ -41,7 +42,10 @@ const withCollectionView = (options) => {
             noSpacer
         } = ps;
 
-        var title = enums.collections.getLabel(collection) || collection;
+        var translate = useUITranslation();
+        var title = translate(
+            enums.collections.getLabel(collection) || collection
+        );
 
         var permissions = usePermissions();
         var canRead = permissions.hasCollectionFlag(collection, 'read');

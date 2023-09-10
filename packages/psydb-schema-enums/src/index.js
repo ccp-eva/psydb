@@ -111,10 +111,10 @@ var customRecordTypeCollections = createEnumFromKV({
     ],
     names: [
         'Locations',
-        'Proband:innen',
-        'Studien',
-        'Externe Personen',
-        'Externe Organisationen'
+        'Subjects',
+        'Studies',
+        'External Persons',
+        'External Organizations'
     ]
 })
 
@@ -132,14 +132,14 @@ var collections = createEnumFromKV({
     ],
     names: [
         ...customRecordTypeCollections.names,
-        'Mitarbeiter:in',
-        'Forschungsgruppen',
-        'Experimenter:innen-Teams',
-        'Termine',
-        'Hilfstabellen',
-        'System-Rollen',
-        'Datensatz-Typen',
-        'Themengebiete',
+        'Personnel',
+        'Research Groups',
+        'Lab Teams',
+        'Appointments',
+        'Helper Tables',
+        'System Roles',
+        'Record Types',
+        'Study Topics',
     ]
 })
 

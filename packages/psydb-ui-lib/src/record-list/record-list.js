@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { entries, transliterate } from '@mpieva/psydb-core-utils';
 
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import {
     useFetch,
     usePaginationReducer,
@@ -20,48 +21,52 @@ import {
 import QuickSearch from '../quick-search';
 import Table from './table';
 
-var RecordList = ({
-    target,
-    collection,
-    recordType,
-    constraints,
-    extraIds,
-    excludedIds,
-    searchOptions,
+var RecordList = (ps) => {
+    var {
+        target = 'table',
+        collection,
+        recordType,
+        constraints,
+        extraIds,
+        excludedIds,
+        searchOptions,
 
-    //offset,
-    //limit,
-    //filters,
-    canSort,
-    defaultSort,
+        //offset,
+        //limit,
+        //filters,
+        canSort,
+        defaultSort,
 
-    enableView,
-    enableEdit_old,
-    enableRecordRowLink,
+        enableView,
+        enableEdit_old,
+        enableRecordRowLink,
 
-    enableSelectRecords,
-    showSelectionIndicator,
-    selectedRecordIds,
-    onSelectRecord,
+        enableSelectRecords,
+        showSelectionIndicator,
+        selectedRecordIds,
+        onSelectRecord,
 
-    showHidden,
-    setShowHidden,
+        showHidden,
+        setShowHidden,
 
-    linkBaseUrl,
-    tableClassName,
-    bsTableProps,
-    CustomActionListComponent,
-}) => {
+        linkBaseUrl,
+        tableClassName,
+        bsTableProps,
+        CustomActionListComponent,
+    } = ps;
+
+    var translate = useUITranslation();
+
     var [ isInitialized, setIsInitialized ] = useState(false);
     var [ payload, setPayload ] = useState([]);
 
     var [ filters, setFilters ] = (
-        (target === 'table' || !target)
+        target === 'table'
         ? useURLSearchParamsB64()
         : useState({})
     );
     var sorter = (
-        (target === 'table' || !target)
+        target === 'table'
         ? useSortURLSearchParams()
         : useSortReducer({})
     );
@@ -71,7 +76,7 @@ var RecordList = ({
     //var [ cachedOffset, setCachedOffset ] = useState(0);
 
     var pagination = (
-        (target === 'table' || !target)
+        target === 'table'
         ? usePaginationURLSearchParams({ offset: 0, limit: 50 })
         : usePaginationReducer({ offset: 0, limit: 50 })
     )
@@ -155,7 +160,7 @@ var RecordList = ({
                                     .length > 0
                                 )
                             });
-                            if (target && target !== 'table') {
+                            if (target !== 'table') {
                                 setShowHidden(true);
                             }
                         }}
@@ -172,14 +177,14 @@ var RecordList = ({
                                 : <Icons.Square />
                             }
                             <span className='ml-2'>
-                                Ausgeblendete anzeigen
+                                { translate('Show Hidden') }
                             </span>
                         </div>
                     </div>
                 </div>
                 <Pagination
                     { ...pagination }
-                    showJump={ target === 'table' || !target }
+                    showJump={ target === 'table' }
                 />
             </div>
 

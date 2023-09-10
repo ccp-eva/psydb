@@ -917,7 +917,27 @@ var maps = [
     {
         en: 'No unprocessed appointments found.',
         de: 'Keine offenen Nachbereitungen gefunden.'
-    }
+    },
+    {
+        en: 'New Record',
+        de: 'Neuer Eintrag',
+    },
+    {
+        en: 'Advanced Search',
+        de: 'Erweiterte Suche'
+    },
+    {
+        en: 'CSV Export',
+        de: 'CSV-Export'
+    },
+    {
+        en: 'No Records found.',
+        de: 'Keine Datensätze gefunden.'
+    },
+    {
+        en: 'Show Hidden',
+        de: 'Ausgeblendete Anzeigen'
+    },
 ]
 
 export const createTranslate = (lang = 'en') => (template, props) => {

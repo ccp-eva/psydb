@@ -9,6 +9,7 @@ import {
     useParams
 } from 'react-router-dom';
 
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 import {
     LoadingIndicator,
@@ -62,13 +63,16 @@ const withRecordTypeView = (options) => {
 
     const Routing = CustomRouting || RecordTypeRouting;
 
-    const RecordTypeView = ({
-        collection,
-        collectionRecordTypes,
-        noSpacer
-    }) => {
+    const RecordTypeView = (ps) => {
+        var {
+            collection,
+            collectionRecordTypes,
+            noSpacer
+        } = ps;
+
         collectionRecordTypes = collectionRecordTypes || [];
 
+        var translate = useUITranslation();
         var { path, url } = useRouteMatch();
         var { recordType } = useParams();
         var history = useHistory();
@@ -101,7 +105,7 @@ const withRecordTypeView = (options) => {
 
         var title = (
             typeData
-            ? `Typ: ${typeData.state.label}`
+            ? `${translate('Type')}: ${typeData.state.label}`
             : undefined
         );
         return (
