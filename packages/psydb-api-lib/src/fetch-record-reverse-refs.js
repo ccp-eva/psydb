@@ -130,6 +130,10 @@ var fetchReferencingRecords = async (options) => {
     if (searchPaths.length > 0) {
         var query = {
             ...(type && { type }),
+            $and: [
+                { 'state.internals.isRemoved': { $ne: true }},
+                { 'scientific.state.internals.isRemoved': { $ne: true }},
+            ],
             $or: searchPaths.map(it => ({
                 [it]: recordId
             }))
