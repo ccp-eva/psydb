@@ -28,7 +28,7 @@ const CreateTopicModalBody = (ps) => {
 }
 
 const CreateTopicModal = WithDefaultModal({
-    title: 'Neues Themengebiet',
+    title: 'New Study Topic',
     size: 'md',
 
     Body: CreateTopicModalBody

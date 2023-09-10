@@ -938,6 +938,38 @@ var maps = [
         en: 'Show Hidden',
         de: 'Ausgeblendete Anzeigen'
     },
+    {
+        en: 'Overview',
+        de: 'Übersicht'
+    },
+    {
+        en: 'Study Topic',
+        de: 'Themengebiet'
+    },
+    {
+        en: 'New Study Topic',
+        de: 'Neues Themengebiet'
+    },
+    {
+        en: 'Edit Study Topic',
+        de: 'Themengebiet Bearbeiten'
+    },
+    {
+        en: 'Delete Study Topic',
+        de: 'Themengebiet Löschen'
+    },
+    {
+        en: 'Study topic is referenced by other Records!',
+        de: 'Themengebiet wird von anderen Datensätzen referenziert!'
+    },
+    {
+        en: 'Study topic was deleted successfully!',
+        de: 'Themengebiet wurde erfolgreich gelöscht!'
+    },
+    {
+        en: 'Back to List',
+        de: 'Zurück zur Liste'
+    },
 ]
 
 export const createTranslate = (lang = 'en') => (template, props) => {

@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useSendRemove } from '@mpieva/psydb-ui-hooks';
 import {
     Pair,
@@ -23,6 +24,8 @@ const SafetyForm = (ps) => {
         fetched,
         onSuccessfulUpdate
     } = ps;
+
+    var translate = useUITranslation();
 
     var { record } = fetched;
     var { sequenceNumber, _recordLabel } = record;
@@ -49,7 +52,7 @@ const SafetyForm = (ps) => {
     return (
         <>
             <Pair 
-                label='Themengebiet'
+                label={ translate('Study Topic') }
                 wLeft={ 3 } wRight={ 9 } className='px-3'
             >
                 { _recordLabel }
@@ -58,7 +61,7 @@ const SafetyForm = (ps) => {
             { reverseRefs.length > 0 && (
                 <>
                     <Alert variant='danger'><b>
-                        Themengebiet wird von anderen Datensätzen referenziert
+                        { translate('Study topic is referenced by other Records!') }
                     </b></Alert>
 
                     <ReverseRefList
@@ -73,7 +76,7 @@ const SafetyForm = (ps) => {
                 onClick={ send.exec }
                 disabled={ reverseRefs.length > 0 }
             >
-                Löschen
+                { translate('Delete') }
             </Button>
         </>
     )
@@ -81,17 +84,18 @@ const SafetyForm = (ps) => {
 
 const SuccessInfo = (ps) => {
     var { successInfoBackLink, onHide } = ps;
+    var translate = useUITranslation();
     return (
         <>
             <div className='text-success'>
-                Themengebiet wurde erfolgreich gelöscht
+                { translate('Study topic was deleted successfully!') }
             </div>
             <>
                 <hr />
                 <a onClick={ onHide } style={{ cursor: 'pointer' }}>
                     <Icons.ArrowLeftShort />
                     {' '}
-                    <b>zurück zur Liste</b>
+                    <b>{ translate('Back to List') }</b>
                 </a>
             </>
         </>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useSend } from '@mpieva/psydb-ui-hooks';
 import { Button, LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
@@ -19,6 +20,8 @@ export const TopicForm = (ps) => {
         parentId,
         onSuccessfulUpdate
     } = ps;
+
+    var translate = useUITranslation();
 
     var recordId, lastKnownEventId, recordState;
     if (record) {
@@ -67,12 +70,12 @@ export const TopicForm = (ps) => {
                     return (
                         <>
                             <Fields.SaneString
-                                label='Name'
+                                label={ translate('Name') }
                                 dataXPath='$.name'
                                 required={ true }
                             />
                             <Button type='submit'>
-                                Speichern
+                                { translate('Save') }
                             </Button>
                         </>
                     );

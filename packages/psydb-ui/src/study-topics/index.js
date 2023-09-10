@@ -1,7 +1,8 @@
 import React  from 'react';
 import classnames from 'classnames';
-import omit from '@cdxoo/omit';
 
+import { omit } from '@mpieva/psydb-core-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import {
     useFetch,
     usePermissions,
@@ -23,6 +24,7 @@ import EditModal from './edit-modal';
 import RemoveModal from './remove-modal';
 
 const StudyTopics = () => {
+    var translate = useUITranslation();
     var permissions = usePermissions();
     var revision = useRevision();
 
@@ -63,8 +65,8 @@ const StudyTopics = () => {
     var { trees, recordsCount } = fetched.data;
 
     return (
-        <PageWrappers.Level1 title='Themengebiete'>
-            <PageWrappers.Level2 title='Übersicht'>
+        <PageWrappers.Level1 title={ translate('Study Topics') }>
+            <PageWrappers.Level2 title={ translate('Overview') }>
                 <CreateModal
                     { ...createModal.passthrough }
                     onSuccessfulUpdate={ revision.up }
@@ -81,14 +83,14 @@ const StudyTopics = () => {
                 />
 
                 <Button onClick={ () => onCreate() }>
-                    Neues Themengebiet
+                    { translate('New Study Topic') }
                 </Button>
 
                 <StudyTopic.QuickSearch
                     className='bg-light border-bottom pb-2 pt-1 mt-2 border-top px-3'
                     searchValues={ query }
                     onSubmit={ (next) => updateQuery(
-                        omit('selectedTopicId', next)
+                        omit({ from: next, paths: ['selectedTopicId' ] })
                     )}
                 />
                 <StudyTopic.Pagination

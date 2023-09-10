@@ -45,7 +45,7 @@ const EditTopicModalBody = (ps) => {
 }
 
 const EditTopicModal = WithDefaultModal({
-    title: 'Themengebiet bearbeiten',
+    title: 'Edit Study Topic',
     size: 'md',
 
     Body: EditTopicModalBody

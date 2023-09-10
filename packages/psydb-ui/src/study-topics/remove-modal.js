@@ -24,7 +24,7 @@ const RemoveTopicModalBody = (ps) => {
 }
 
 const RemoveTopicModal = WithDefaultModal({
-    title: 'Themengebiet löschen',
+    title: 'Delete Study Topic',
     size: 'md',
 
     Body: RemoveTopicModalBody
