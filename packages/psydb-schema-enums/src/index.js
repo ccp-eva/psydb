@@ -132,7 +132,7 @@ var collections = createEnumFromKV({
     ],
     names: [
         ...customRecordTypeCollections.names,
-        'Staff',
+        'Staff Members',
         'Research Groups',
         'Lab Teams',
         'Appointments',
