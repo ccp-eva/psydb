@@ -1,7 +1,11 @@
 import React from 'react';
-import { withRecordReader } from '../lib';
+
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { Subject } from '@mpieva/psydb-ui-lib/data-viewers';
 import * as Themes from '@mpieva/psydb-ui-lib/data-viewer-themes';
+
+import { withRecordReader } from '../lib';
+
 
 const DetailsBody = (ps) => {
     var {
@@ -12,6 +16,8 @@ const DetailsBody = (ps) => {
         renderFormBox = true,
         onSuccessfulUpdate
     } = ps;
+
+    var translate = useUITranslation();
 
     var { record, crtSettings, related } = fetched;
     var { fieldDefinitions } = crtSettings;
@@ -30,7 +36,7 @@ const DetailsBody = (ps) => {
             { isHidden && (
                 <>
                     <h5 className='text-muted'>
-                        Datensatz ist Ausgeblendet
+                        { translate('Hidden Record') }
                     </h5>
                     <hr />
                 </>

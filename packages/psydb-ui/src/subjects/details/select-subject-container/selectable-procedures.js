@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import {
     SplitPartitioned,
     PillNav
@@ -12,14 +13,16 @@ const SelectableProcedures = (ps) => {
         onSelect
     } = ps;
 
+    var translate = useUITranslation();
+
     if (!selectedStudy) {
         return null; // FIXME: better failover
     }
 
     return (
-        <SplitPartitioned partitions={[ 2, 10 ]}>
+        <SplitPartitioned partitions={[ 2.3, 11 ]}>
             <b className='d-inline-block' style={{ paddingTop: '2px' }}>
-                Termin-Typ:
+                { translate('Appointment Type') }:
             </b>
             <PillNav
                 items={ selectedStudy._possibleProcedures.map(it => ({
@@ -36,11 +39,11 @@ const SelectableProcedures = (ps) => {
 const getProcedureLabel = (key) => {
     switch (key) {
         case 'inhouse':
-            return 'Interner Termin'
+            return 'Inhouse Appointment'
         case 'online-video-call':
-            return 'Video Termin'
+            return 'Online Video Appointment'
         case 'away-team':
-            return 'Externer Termin'
+            return 'External Appointment'
     }
 }
 

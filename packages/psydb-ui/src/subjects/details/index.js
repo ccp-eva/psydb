@@ -2,6 +2,7 @@ import React from 'react';
 import { useRouteMatch, useParams } from 'react-router-dom';
 
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
 import {
     usePermissions,
@@ -38,10 +39,11 @@ const Header = ({
     canSelectSubjectsForExperiments,
 }) => {
     var { path, url } = useRouteMatch();
+    var translate = useUITranslation();
 
-    title = title || 'Datensatz-Details';
-    editLabel = editLabel || 'Bearbeiten';
-    historyLabel = historyLabel || 'Historie';
+    title = title || translate('Record Details');
+    editLabel = editLabel || translate('Edit');
+    historyLabel = historyLabel || translate('History');
 
     return (
         <h5 className='d-flex justify-content-between align-items-start'>
@@ -81,6 +83,7 @@ const SubjectDetailsContainer = ({
 }) => {
     var { path, url } = useRouteMatch();
     var { id } = useParams();
+    var translate = useUITranslation();
     var revision = useRevision();
     var permissions = usePermissions();
     var participationModal = useModalReducer();
@@ -100,10 +103,12 @@ const SubjectDetailsContainer = ({
 
     return (
         <>
-            <h3 className='border-bottom'>Proband:innen-Details</h3>
+            <h3 className='border-bottom'>
+                { translate('Subject Details') }
+            </h3>
             <div className='border pl-3 bg-light'>
                 <Header
-                    title='Erfasste Daten'
+                    title={ translate('Collected Data') }
                     editUrl={ `${up(url, 1)}/edit` }
                     historyUrl={ `${up(url, 1)}/channel-history` }
                     subjectId={ id }
@@ -131,8 +136,8 @@ const SubjectDetailsContainer = ({
                         onSuccessfulUpdate={ revision.up }
                     />
                     <Header
-                        title='Studienteilnahme'
-                        editLabel='Studie hinzufügen'
+                        title={ translate('Study Participation') }
+                        editLabel={ translate('Add Participation') }
                         canEdit={ canWriteParticipation }
                         onEditClick={ () => (
                             participationModal.handleShow()

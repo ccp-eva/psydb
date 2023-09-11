@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { withRecordCreator } from '../lib';
 import MainForm from './main-form';
 
@@ -13,6 +14,8 @@ const CreateForm = (ps) => {
     } = ps;
 
     var { fieldDefinitions } = crtSettings;
+
+    var translate = useUITranslation();
 
     var initialValues = MainForm.createDefaults({
         fieldDefinitions,
@@ -41,7 +44,7 @@ const CreateForm = (ps) => {
 
     return (
         <MainForm.Component
-            title='Neuer Proband:innen-Datensatz'
+            title={ translate('New Subject') }
             crtSettings={ crtSettings }
             initialValues={ initialValues }
             onSubmit={ send.exec }

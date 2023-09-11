@@ -1,8 +1,11 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { Button } from '@mpieva/psydb-ui-layout';
 
 const SubmitAndChangeVisibilityButton = (ps) => {
     var { record, formikForm } = ps;
+    
+    var translate = useUITranslation();
     
     var isHidden = (
         record.scientific
@@ -18,7 +21,11 @@ const SubmitAndChangeVisibilityButton = (ps) => {
                 return formikForm.submitForm();
             }}
         >
-            { isHidden ? 'Speichern und Einblenden' : 'Speichern und Ausblenden' }
+            { isHidden ? (
+                translate('Save and Unhide')
+            ) : (
+                translate('Save and Hide')
+            )}
         </Button>
     );
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useModalReducer } from '@mpieva/psydb-ui-hooks';
 import { Alert } from '@mpieva/psydb-ui-layout';
 
@@ -19,6 +20,8 @@ const Schedule = (ps) => {
         onSuccessfulUpdate
     } = ps;
 
+    var translate = useUITranslation();
+
     var experimentCreateModal = useModalReducer();
     var experimentUpdateModal = useModalReducer();
     
@@ -30,16 +33,14 @@ const Schedule = (ps) => {
     return (
         !selectedStudy || !inviteType
         ? (
-            <Alert variant='info'>
-                <i>Bitte Studie und Termin-Typ wählen</i>
-            </Alert>
+            <Alert variant='info'><i>
+                { translate('Please select study and appointment type.') }
+            </i></Alert>
         )
         : (
             <>
                 <ExperimentCreateModal
-                    show={ experimentCreateModal.show }
-                    onHide={ experimentCreateModal.handleHide }
-                    onSuccessfulCreate={ onSuccessfulUpdate }
+                    { ...experimentCreateModal.passthrough }
                     
                     inviteType={ inviteType }
                     //desiredTestInterval={ desiredTestInterval }
@@ -48,7 +49,8 @@ const Schedule = (ps) => {
                     studyData={ studyData }
                     subjectId={ subjectId }
                     subjectLabel={ subjectLabel }
-                    { ...experimentCreateModal.data }
+                    
+                    onSuccessfulUpdate={ onSuccessfulUpdate }
                 />
 
                 <ExperimentUpdateModal
@@ -75,7 +77,7 @@ const Schedule = (ps) => {
 
                     //activeLocationType={ 'instituteroom' }
                     onSelectReservationSlot={ experimentCreateModal.handleShow }
-                    onSelectExperimentSlot={ experimentUpdateModal.handleShow}
+                    onSelectExperimentSlot={ experimentUpdateModal.handleShow }
                     calendarRevision={ revision || 0 }
                     
                     //locationCalendarListClassName='bg-white p-2 border-left border-bottom border-right'

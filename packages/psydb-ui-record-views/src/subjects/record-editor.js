@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { only } from '@mpieva/psydb-core-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { Pair, FormBox } from '@mpieva/psydb-ui-layout';
 import { withRecordEditor } from '../lib';
 import MainForm from './main-form';
@@ -21,6 +22,8 @@ const EditForm = (ps) => {
 
     var { record, crtSettings, related } = fetched;
     var { fieldDefinitions } = crtSettings;
+
+    var translate = useUITranslation();
 
     var defaults = MainForm.createDefaults({
         fieldDefinitions,
@@ -67,14 +70,14 @@ const EditForm = (ps) => {
             { isHidden && (
                 <>
                     <h5 className='text-muted'>
-                        Datensatz ist Ausgeblendet
+                        { translate('Hidden Record') }
                     </h5>
                     <hr />
                 </>
             )}
             { sequenceNumber && (
                 <Pair 
-                    label='ID Nr.'
+                    label={ translate('ID No.') }
                     wLeft={ 3 } wRight={ 9 } className='px-3'
                 >
                     { sequenceNumber }
@@ -82,7 +85,7 @@ const EditForm = (ps) => {
             )}
             { onlineId && (
                 <Pair 
-                    label='Online ID Code'
+                    label={ translate('Online ID Code') }
                     wLeft={ 3 } wRight={ 9 } className='px-3'
                 >
                     { onlineId }
@@ -92,7 +95,7 @@ const EditForm = (ps) => {
                 <hr />
             )}
             <MainForm.Component
-                title='Proband:in bearbeiten'
+                title={ translate('Edit Subject') }
                 crtSettings={ crtSettings }
                 initialValues={ initialValues }
                 onSubmit={ send.exec }
@@ -108,7 +111,7 @@ const EditForm = (ps) => {
                 <>
                     <hr />
                     <h5 className='text-muted'>
-                        Datensatz ist Ausgeblendet
+                        { translate('Hidden Record') }
                     </h5>
                 </>
             )}
@@ -118,7 +121,7 @@ const EditForm = (ps) => {
     var renderedForm = (
         renderFormBox
         ? (
-            <FormBox title='Proband:in bearbeiten'>
+            <FormBox title={ translate('Edit Subject') }>
                 { renderedContent }
             </FormBox>
         )

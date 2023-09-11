@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';
-import jsonpointer from 'jsonpointer';
+import { jsonpointer } from '@mpieva/psydb-core-utils';
 
 import {
     findCRTAgeFrameField,
     calculateAge,
 } from '@mpieva/psydb-common-lib';
+
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
 import {
     useFetch,
@@ -34,14 +36,17 @@ import Schedule from './schedule';
 
 const SelectSubjectContainer = (ps) => {
     var { className, ...pass } = ps;
+
+    var translate = useUITranslation();
     var modal = useModalReducer();
+    
     return (
         <>
             <Button
                 className={ className }
                 onClick={ modal.handleShow }
             >
-                in Termin entragen
+                { translate('Add to Appointment') }
             </Button>
             <SelectSubjectModal
                 { ...modal.passthrough }
@@ -139,7 +144,7 @@ const SelectSubjectModalBody = (ps) => {
 
 
 const SelectSubjectModal = WithDefaultModal({
-    title: 'Termin für Proband:in',
+    title: 'Appointment for Subject',
     size: 'xl',
     bodyClassName: 'bg-light pt-0 pr-3 pl-3',
     Body: SelectSubjectModalBody,

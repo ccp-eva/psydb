@@ -1,11 +1,11 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { Button } from '@mpieva/psydb-ui-layout';
-import { SubmitAndChangeVisibilityButton } from '@mpieva/psydb-ui-lib';
-
 import {
     DefaultForm,
     Fields,
     FormBox,
+    SubmitAndChangeVisibilityButton
 } from '@mpieva/psydb-ui-lib';
 
 export const Component = (ps) => {
@@ -22,6 +22,8 @@ export const Component = (ps) => {
         renderFormBox = true,
         renderVisibilityButton = false,
     } = ps;
+
+    var translate = useUITranslation();
 
     // FIXME: i dont like how this works
     var wrappedOnSubmit = (formData, formikBag) => {
@@ -46,7 +48,9 @@ export const Component = (ps) => {
                     />
                     <hr />
                     <div className='d-flex justify-content-between'>
-                        <Button type='submit'>Speichern</Button>
+                        <Button type='submit'>
+                            { translate('Save') }
+                        </Button>
                         { renderVisibilityButton && (
                             <SubmitAndChangeVisibilityButton
                                 record={ record }

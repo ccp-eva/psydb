@@ -819,8 +819,12 @@ var maps = [
         de: 'Keine unbestätigten Termine an diesem Tag.'
     },
     {
+        en: 'Appointment Type',
+        de: 'Termin-Typ'
+    },
+    {
         en: 'Unknown Appointment Type',
-        de: 'Unbekannter Termintyp'
+        de: 'Unbekannter Termin-Typ'
     },
     {
         en: 'Inhouse Appointment',
@@ -1193,6 +1197,82 @@ var maps = [
     {
         en: 'Location was deleted successfully!',
         de: 'Location erfolgreich gelöscht!'
+    },
+    {
+        en: 'New Subject',
+        de: 'Neue Proband:in'
+    },
+    {
+        en: 'Edit Subject',
+        de: 'Proband:in Bearbeiten'
+    },
+    {
+        en: 'Delete Subject',
+        de: 'Proband:in Löschen'
+    },
+    {
+        en: 'Subject Deleted',
+        de: 'Proband:in Gelöscht'
+    },
+    {
+        en: 'Subject was deleted successfully!',
+        de: 'Proband:in erfolgreich gelöscht!'
+    },
+    {
+        en: 'Subject is referenced by other records!',
+        de: 'Proband:in wird von anderen Datensätzen referenziert!'
+    },
+    {
+        en: 'Online ID Code',
+        de: 'Online ID Code'
+    },
+    {
+        en: 'Save and Unhide',
+        de: 'Speichern und Einblenden'
+    },
+    {
+        en: 'Save and Hide',
+        de: 'Speichern und Ausblenden'
+    },
+    {
+        en: 'Subject has participated in studies!',
+        de: 'Proband:in hat an Studien teilgenommen!'
+    },
+    {
+        en: 'Collected Data',
+        de: 'Erfasste Daten'
+    },
+    {
+        en: 'Record Details',
+        de: 'Datensatz-Details'
+    },
+    {
+        en: 'History',
+        de: 'Historie'
+    },
+    {
+        en: 'Add Participation',
+        de: 'Teilnahme Hinzfügen'
+    },
+    {
+        en: 'Appointment for Subject',
+        de: 'Termin für Proband:in'
+    },
+    {
+        en: 'Add to Appointment',
+        de: 'In Termin Eintragen'
+    },
+    {
+        en: 'Possible Studies',
+        de: 'Mögliche Studien'
+    },
+    {
+        en: 'No possible studies found.',
+        de: 'Keine möglichen Studien gefunden.'
+    },
+    {
+        en: 'Please select study and appointment type.',
+        de: 'Bitte Studie und Termin-Typ wählen.'
     },
 ]
 

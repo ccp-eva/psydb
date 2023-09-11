@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 import {
     LoadingIndicator,
@@ -15,6 +16,8 @@ const SelectableStudies = (ps) => {
         onSelect
     } = ps;
 
+    var translate = useUITranslation();
+
     var [ didFetch, fetched, isTransmitting ] = useFetch((agent) => (
         agent.getAxios().post('/api/search-studies-testable-for-subject', {
             subjectId,
@@ -29,9 +32,9 @@ const SelectableStudies = (ps) => {
     var items = fetched.data;
 
     return (
-        <SplitPartitioned partitions={[ 2, 10 ]}>
+        <SplitPartitioned partitions={[ 2.3, 11 ]}>
             <b className='d-inline-block' style={{ paddingTop: '2px' }}>
-                Mögl.Studien:
+                { translate('Possible Studies') }
             </b>
             { items.length > 0 ? (
                 <PillNav
@@ -48,7 +51,7 @@ const SelectableStudies = (ps) => {
                 />
             ) : (
                 <i className='text-danger'>
-                    Keine möglichen Studien gefunden
+                    { translate('No possible studies found.') }
                 </i>
             )}
         </SplitPartitioned>
