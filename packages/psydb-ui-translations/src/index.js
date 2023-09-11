@@ -74,7 +74,7 @@ var maps = [
         de: 'Hilfstabellen'
     },
     {
-        en: 'Personnel',
+        en: 'Staff',
         de: 'Mitarbeiter:innen'
     },
     {

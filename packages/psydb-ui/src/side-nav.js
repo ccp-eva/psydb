@@ -181,7 +181,7 @@ const SideNav = (ps) => {
                         'canReadPersonnel', 'canWritePersonnel'
                     ]}>
                         <Link to='/personnel'>
-                            { translate('Personnel') }
+                            { translate('Staff') }
                         </Link>
                     </WhenAllowed>
 
