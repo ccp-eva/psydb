@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import {
     useFetch,
     useSendCreate,
@@ -12,6 +13,8 @@ import MainForm from './main-form';
 
 const CreateForm = (ps) => {
     var { collection, recordType, onSuccessfulUpdate } = ps;
+
+    var translate = useUITranslation();
     var permissions = usePermissions();
 
     var [ didFetch, fetched ] = useFetch((agent) => (
@@ -38,7 +41,7 @@ const CreateForm = (ps) => {
     });
 
     return (
-        <FormBox title='Neue Location'>
+        <FormBox title={ translate('New Location') }>
             <MainForm.Component
                 reservationType={ reservationType }
                 fieldDefinitions={ fieldDefinitions }

@@ -2,7 +2,10 @@ import React, { useContext, useState } from 'react';
 import { useRouteMatch, useParams } from 'react-router-dom';
 
 import { groupBy } from '@mpieva/psydb-core-utils';
-import { RecordEditorContext } from '@mpieva/psydb-ui-contexts';
+import {
+    useUITranslation,
+    RecordEditorContext
+} from '@mpieva/psydb-ui-contexts';
 import { urlUp as up, demuxed } from '@mpieva/psydb-ui-utils';
 import { useFetch, useModalReducer } from '@mpieva/psydb-ui-hooks';
 
@@ -21,7 +24,9 @@ const LocationEditorFooter = (ps) => {
     var { onSuccessfulUpdate } = ps;
 
     var { path, url } = useRouteMatch();
+    var translate = useUITranslation();
     var modal = useModalReducer();
+
     var context = useContext(RecordEditorContext);
     var {
         id, collection, recordType, fetched, permissions,
@@ -54,7 +59,7 @@ const LocationEditorFooter = (ps) => {
                             />
                             : (
                                 <Button variant='secondary' onClick={ modal.handleShow }>
-                                    Ausblenden
+                                    { translate('Hide') }
                                 </Button>
                             )
                         )}
@@ -64,7 +69,7 @@ const LocationEditorFooter = (ps) => {
                                 variant='danger'
                                 to={`${up(url, 1)}/remove` }
                             >
-                                Löschen
+                                { translate('Delete') }
                             </LinkButton>
                         )}
                     </div>
@@ -76,6 +81,8 @@ const LocationEditorFooter = (ps) => {
 
 const UpdateVisibilityModalBody = (ps) => {
     var { onHide, id, onSuccessfulUpdate } = ps;
+
+    var translate = useUITranslation();
     var [ detachSubjects, setDetachSubjects ] = useState(false);
 
     var [ didFetchRefs, fetchedReverseRefs ] = useFetch((agent) => (
@@ -112,20 +119,18 @@ const UpdateVisibilityModalBody = (ps) => {
                 <Alert variant='danger' className='mt-3'>
                     { refsFromSubject.length > 0 && (
                         <b className='d-block'>
-                            Es sind noch
-                            {' '}
-                            { refsFromSubject.length }
-                            {' '}
-                            Proband:innen in dieser Location!
+                            { translate(
+                                'There are still ${count} subjects in this location!',
+                                { count: refsFromSubject.length }
+                            ) }
                         </b>
                     )}
                     { fetchedExperiments.data.count > 0 && (
                         <b className='d-block'>
-                            Es existieren noch
-                            {' '}
-                            { fetchedExperiments.data.count }
-                            {' '}
-                            Termine in dieser Location!
+                            { translate(
+                                'There still exist ${count} appointments in this location!',
+                                { count: fetchedExperiments.data.count }
+                            ) }
                         </b>
                     )}
                 </Alert>
@@ -135,7 +140,7 @@ const UpdateVisibilityModalBody = (ps) => {
                     id='detach'
                     value={ detachSubjects }
                     onChange={ setDetachSubjects }
-                    label='Proband:innen aus Location herausnehmen (z.B. bei Kindergarten)'
+                    label={ translate('Detach subjects from this location (e.g. for kindergardens)') }
                 />
             </div>
             <hr />
@@ -158,7 +163,7 @@ const UpdateVisibilityModalBody = (ps) => {
 }
 
 const UpdateVisibilityModal = WithDefaultModal({
-    title: 'Location ausblenden',
+    title: 'Hide Location',
     size: 'lg',
     bodyClassName: 'bg-light pt-0 pr-3 pl-3',
     Body: UpdateVisibilityModalBody,

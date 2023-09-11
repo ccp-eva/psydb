@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useSendRemove } from '@mpieva/psydb-ui-hooks';
 import {
     Pair,
@@ -27,6 +28,8 @@ const SafetyForm = (ps) => {
     var { record } = fetched;
     var { sequenceNumber, _recordLabel } = record;
 
+    var translate = useUITranslation();
+
     var send = useSendRemove({
         collection,
         recordType,
@@ -44,15 +47,18 @@ const SafetyForm = (ps) => {
     var { reverseRefs } = fetchedReverseRefs.data;
 
     return (
-        <FormBox title='Location löschen' titleClassName='text-danger'>
+        <FormBox
+            title={ translate('Delete Location') }
+            titleClassName='text-danger'
+        >
             <Pair 
-                label='Location'
+                label={ translate('Location') }
                 wLeft={ 3 } wRight={ 9 } className='px-3'
             >
                 { _recordLabel }
             </Pair>
             <Pair 
-                label='ID Nr.'
+                label={ translate('ID No.') }
                 wLeft={ 3 } wRight={ 9 } className='px-3'
             >
                 { sequenceNumber }
@@ -61,7 +67,7 @@ const SafetyForm = (ps) => {
             { reverseRefs.length > 0 && (
                 <>
                     <Alert variant='danger'><b>
-                        Location wird von anderen Datensätzen referenziert
+                        { translate('Location is referenced by other records!') }
                     </b></Alert>
 
                     <ReverseRefList reverseRefs={ reverseRefs } />
@@ -74,7 +80,7 @@ const SafetyForm = (ps) => {
                 onClick={ send.exec }
                 disabled={ reverseRefs.length > 0 }
             >
-                Löschen
+                { translate('Delete') }
             </Button>
         </FormBox>
     )
@@ -82,16 +88,20 @@ const SafetyForm = (ps) => {
 
 const SuccessInfo = (ps) => {
     var { successInfoBackLink } = ps;
+    var translate = useUITranslation();
     return (
-        <FormBox titleClassName='text-success' title='Location gelöscht'>
-            <i>Location wurde erfolgreich gelöscht</i>
+        <FormBox
+            titleClassName='text-success'
+            title={ translate('Location Deleted') }
+        >
+            <i>{ translate('Location was deleted successfully!') }</i>
             { successInfoBackLink && (
                 <>
                     <hr />
                     <a href={ successInfoBackLink }>
                         <Icons.ArrowLeftShort />
                         {' '}
-                        <b>zurück zur Liste</b>
+                        <b>{ translate('Back to List') }</b>
                     </a>
                 </>
             )}

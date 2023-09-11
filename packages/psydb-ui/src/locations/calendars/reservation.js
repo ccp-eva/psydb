@@ -1,15 +1,16 @@
 import React from 'react';
 
+import { sliceDays } from '@mpieva/psydb-date-interval-fns';
 import { useFetchAll } from '@mpieva/psydb-ui-hooks';
 import {
     LoadingIndicator,
+    NarrowHR,
 } from '@mpieva/psydb-ui-layout';
 import {
     LocationTimeTable,
     CalendarNav,
     CalendarTeamLegend,
-    withCalendarVariantContainer,
-    getDayStartsInInterval,
+    withCalendarVariantContainer
 } from '@mpieva/psydb-ui-lib';
 
 const ReservationCalendarBody = (ps) => {
@@ -68,7 +69,7 @@ const ReservationCalendarBody = (ps) => {
         end: endTimeInt
     } = possibleReservationTimeInterval;
 
-    var allDayStarts = getDayStartsInInterval({
+    var allDays = sliceDays({
         start: currentPageStart,
         end: currentPageEnd
     });
@@ -81,11 +82,8 @@ const ReservationCalendarBody = (ps) => {
                 currentPageEnd,
                 onPageChange,
             })} />
-            
-            <hr className='mt-1 mb-3' style={{
-                marginLeft: '15em',
-                marginRight: '15em',
-            }}/>
+    
+            <NarrowHR />
 
             <LocationTimeTable { ...({
                 variant: 'reservation',
@@ -96,7 +94,7 @@ const ReservationCalendarBody = (ps) => {
                 teamRecords: timetable.labTeamRecords,
                 settingRecords: timetable.labSettingsRecords,
                 
-                allDayStarts,
+                allDays,
                 startTimeInt,
                 endTimeInt,
                 slotDuration: reservationSlotDuration,

@@ -1130,6 +1130,70 @@ var maps = [
         en: 'Edit Research Group',
         de: 'Forschungsgruppe Bearbeiten'
     },
+    {
+        en: 'New Location',
+        de: 'Neue Location'
+    },
+    {
+        en: 'Appointments Not on',
+        de: 'Neue Forschungsgruppe'
+    },
+    {
+        en: 'Reservable From',
+        de: 'Reservierbar Von'
+    },
+    {
+        en: 'Reservable To',
+        de: 'Reservierbar Bis'
+    },
+    {
+        en: 'Reservable From/To',
+        de: 'Reservierbar Von/Bis'
+    },
+    {
+        en: 'Weekdays',
+        de: 'Wochentage'
+    },
+    {
+        en: 'Location Details',
+        de: 'Location-Details'
+    },
+    {
+        en: 'Edit Location',
+        de: 'Location Bearbeiten'
+    },
+    {
+        en: 'Hide Location',
+        de: 'Location Ausblenden'
+    },
+    {
+        en: 'There are still ${count} subjects in this location!',
+        de: 'Es sind noch ${count} Proband:innen in dieser Location!'
+    },
+    {
+        en: 'There still exist ${count} appointments in this location!',
+        de: 'Es existieren noch ${count} Termine in dieser Location!'
+    },
+    {
+        en: 'Detach subjects from this location (e.g. for kindergardens)',
+        de: 'Proband:innen aus dieser Location herausnehmen (z.B. bei Kindergärten)'
+    },
+    {
+        en: 'Delete Location',
+        de: 'Location Löschen'
+    },
+    {
+        en: 'Location is referenced by other records!',
+        de: 'Location wird von anderen Datensätzen referenziert!'
+    },
+    {
+        en: 'Location Deleted',
+        de: 'Location Gelöscht'
+    },
+    {
+        en: 'Location was deleted successfully!',
+        de: 'Location erfolgreich gelöscht!'
+    },
 ]
 
 export const createTranslate = (lang = 'en') => (template, props) => {

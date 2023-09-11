@@ -11,6 +11,7 @@ import {
 } from 'react-router-dom';
 
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { RoutedSideNav } from '@mpieva/psydb-ui-layout';
 import { withRecordDetails } from '@mpieva/psydb-ui-lib';
 import {
@@ -33,6 +34,7 @@ const IntraRecordRoutingBody = (ps) => {
         RecordRemover,
     } = ps;
 
+    var translate = useUITranslation();
     var history = useHistory();
     var { path, url } = useRouteMatch();
 
@@ -51,7 +53,7 @@ const IntraRecordRoutingBody = (ps) => {
     var navItems = [
         {
             key: 'details',
-            label: 'Details'
+            label: translate('Details')
         },
         //{
         //    key: 'edit',
@@ -61,11 +63,11 @@ const IntraRecordRoutingBody = (ps) => {
         ...(reservationType !== 'no-reservation' ? ([
             {
                 key: 'calendar',
-                label: 'Termine'
+                label: translate('Appointments')
             },
             {
                 key: 'reservation',
-                label: 'Reservierung',
+                label: translate('Reservation'),
                 show: canBeReserved
             }
         ]) : [])

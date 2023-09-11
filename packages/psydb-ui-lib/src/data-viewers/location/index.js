@@ -10,8 +10,8 @@ import {
 import ReservationSettings from './reservation-settings';
 
 const labels = {
-    '/sequenceNumber': 'ID Nr.',
-    '/state/comment': 'Kommentar',
+    '/sequenceNumber': 'ID No.',
+    '/state/comment': 'Comment',
 }
 
 const [ Location, LocationContext ] = createBase();

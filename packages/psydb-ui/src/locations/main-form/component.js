@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { Button } from '@mpieva/psydb-ui-layout';
 
 import {
@@ -19,31 +20,38 @@ export const Component = (ps) => {
         permissions,
     } = ps;
 
+    var translate = useUITranslation();
+
     return (
-            <DefaultForm
-                initialValues={ initialValues }
-                onSubmit={ onSubmit }
-                useAjvAsync
-                enableReinitialize
-            >
-                {(formikProps) => (
-                    <>
-                        { /*console.log(formikProps.values) || ''*/ }
-                        <FormFields
-                            fieldDefinitions={ fieldDefinitions }
-                            reservationType={ reservationType }
-                            related={ related }
-                            permissions={ permissions }
-                        />
-                        <Button type='submit'>Speichern</Button>
-                    </>
-                )}
-            </DefaultForm>
+        <DefaultForm
+            initialValues={ initialValues }
+            onSubmit={ onSubmit }
+            useAjvAsync
+            enableReinitialize
+        >
+            {(formikProps) => (
+                <>
+                    { /*console.log(formikProps.values) || ''*/ }
+                    <FormFields
+                        fieldDefinitions={ fieldDefinitions }
+                        reservationType={ reservationType }
+                        related={ related }
+                        permissions={ permissions }
+                    />
+                    <Button type='submit'>
+                        { translate('Save') }
+                    </Button>
+                </>
+            )}
+        </DefaultForm>
     );
 }
 
 const FormFields = (ps) => {
     var { fieldDefinitions, related, permissions } = ps;
+    
+    var translate = useUITranslation();
+    
     var customFieldBag = {
         fieldDefinitions,
         related,
@@ -55,12 +63,12 @@ const FormFields = (ps) => {
         <>
             <Fields.Custom { ...customFieldBag } />
             <Fields.FullText
-                label='Kommentar'
+                label={ translate('Comment') }
                 dataXPath='$.comment'
             />
             <ReservationFields { ...ps } />
             <Fields.AccessRightByResearchGroupList
-                label='Zugriff auf diesen Datensatz für'
+                label={ translate('Record Access for') }
                 dataXPath='$.systemPermissions.accessRightsByResearchGroup'
                 related={ related }
                 required
@@ -84,11 +92,12 @@ const ReservationFields = (ps) => {
 
 const AwayTeamReservationFields = (ps) => {
     var { related, permissions } = ps;
+    var translate = useUITranslation();
     var prefix = '$.reservationSettings';
     return (
         <>
             <Fields.WeekdayBoolObject
-                label='Termine nicht am'
+                label={ translate('Appointments Not on')}
                 dataXPath={`${prefix}.excludedExperimentWeekdays`}
             />
         </>
@@ -97,19 +106,20 @@ const AwayTeamReservationFields = (ps) => {
 
 const InhouseReservationFields = (ps) => {
     var { related, permissions } = ps;
+    var translate = useUITranslation();
     var prefix = '$.reservationSettings';
     return (
         <>
             <Fields.WeekdayBoolObject
-                label='Wochentage'
+                label={ translate('Weekdays') }
                 dataXPath={`${prefix}.possibleReservationWeekdays`}
             />
             <Fields.Time
-                label='Reservierbar Von'
+                label={ translate('Reservable From') }
                 dataXPath={`${prefix}.possibleReservationTimeInterval.start`}
             />
             <Fields.Time
-                label='Reservierbar Bis'
+                label={ translate('Reservable To') }
                 dataXPath={`${prefix}.possibleReservationTimeInterval.end`}
             />
         </>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { FormattedDuration } from '@mpieva/psydb-common-lib/src/durations';
 import { useThemeContext } from '../core/theme-context';
 
@@ -18,14 +19,16 @@ const ReservationSettings = (ps) => {
 
 const InhouseReservationSettings = (ps) => {
     var { value, related } = ps;
+    
+    var translate = useUITranslation();
     var { Field } = useThemeContext();
 
     return (
         <>
-            <Field label='Wochentage'>
+            <Field label={ translate('Weekdays') }>
                 <Weekdays value={ value.possibleReservationWeekdays } />
             </Field>
-            <Field label='Reservierbar von/bis'>
+            <Field label={ translate('Reservable From/To') }>
                 <TimeOnlyInterval value={
                     value.possibleReservationTimeInterval
                 } />

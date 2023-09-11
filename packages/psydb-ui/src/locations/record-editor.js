@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { only } from '@mpieva/psydb-core-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { usePermissions, useSendPatch } from '@mpieva/psydb-ui-hooks';
 import { withRecordEditor, FormBox } from '@mpieva/psydb-ui-lib';
 import MainForm from './main-form';
@@ -25,6 +26,7 @@ const EditForm = (ps) => {
         fieldDefinitions
     } = crtSettings;
 
+    var translate = useUITranslation();
     var permissions = usePermissions();
 
     var send = useSendPatch({
@@ -47,7 +49,10 @@ const EditForm = (ps) => {
     var isHidden = record.state.systemPermissions.isHidden;
 
     return (
-        <FormBox title='Location bearbeiten' isRecordHidden={ isHidden }>
+        <FormBox
+            title={ translate('Edit Location') }
+            isRecordHidden={ isHidden }
+        >
             <MainForm.Component
                 reservationType={ reservationType }
                 fieldDefinitions={ fieldDefinitions }
