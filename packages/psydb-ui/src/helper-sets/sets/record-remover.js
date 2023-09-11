@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useSendRemove } from '@mpieva/psydb-ui-hooks';
 import {
     Pair,
@@ -26,6 +27,8 @@ const SafetyForm = (ps) => {
     var { record } = fetched;
     var { state: { label }} = record;
 
+    var translate = useUITranslation();
+
     var send = useSendRemove({
         collection,
         recordType,
@@ -43,9 +46,12 @@ const SafetyForm = (ps) => {
     var { existingItemCount, crtFieldRefs } = fetchedInfo.data;
 
     return (
-        <FormBox title='Hilfstabelle löschen' titleClassName='text-danger'>
+        <FormBox
+            title={ 'Delete Helper Table' }
+            titleClassName='text-danger'
+        >
             <Pair 
-                label='Hilfstabelle'
+                label={ 'Helper Table' }
                 wLeft={ 3 } wRight={ 9 } className='px-3'
             >
                 { label }
@@ -54,7 +60,7 @@ const SafetyForm = (ps) => {
             { existingItemCount > 0 && (
                 <>
                     <Alert variant='danger'><b>
-                        Es existieren noch Einträge in dieser Hilfstabelle
+                        { translate('There are still records in this helper table!') }
                     </b></Alert>
                     <hr />
                 </>
@@ -62,11 +68,10 @@ const SafetyForm = (ps) => {
             { crtFieldRefs.length > 0 && (
                 <>
                     <Alert variant='danger'><b>
-                        Hilfstabelle wird von Feldern
-                        in Datensatztypen referenziert
+                        { translate('Helper table is referenced by record type fields!') }
                     </b></Alert>
 
-                    <CRTFieldRefList crtFieldRefs={ crtFieldRefs} />
+                    <CRTFieldRefList crtFieldRefs={ crtFieldRefs } />
                     <hr />
                 </>
             )}
@@ -78,7 +83,7 @@ const SafetyForm = (ps) => {
                     || crtFieldRefs.length > 0
                 }
             >
-                Löschen
+                { translate('Delete') }
             </Button>
         </FormBox>
     )
@@ -86,16 +91,20 @@ const SafetyForm = (ps) => {
 
 const SuccessInfo = (ps) => {
     var { successInfoBackLink } = ps;
+    var translate = useUITranslation();
     return (
-        <FormBox titleClassName='text-success' title='Hilfstabelle gelöscht'>
-            <i>Hilfstabelle wurde erfolgreich gelöscht</i>
+        <FormBox
+            titleClassName='text-success'
+            title={ translate('Helper Table Deleted') }
+        >
+            <i>{ translate('Helper table deleted succcessfully.') }</i>
             { successInfoBackLink && (
                 <>
                     <hr />
                     <a href={ successInfoBackLink }>
                         <Icons.ArrowLeftShort />
                         {' '}
-                        <b>zurück zur Liste</b>
+                        <b>{ translate('Back to List') }</b>
                     </a>
                 </>
             )}

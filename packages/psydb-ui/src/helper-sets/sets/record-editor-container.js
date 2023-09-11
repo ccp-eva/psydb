@@ -5,11 +5,13 @@ import { useRevision } from '@mpieva/psydb-ui-hooks';
 import { GenericRecordEditorFooter } from '@mpieva/psydb-ui-lib';
 import { RecordEditor } from './record-editor';
 
-export const RecordEditorContainer = ({
-    collection,
-    recordType,
-    onSuccessfulUpdate,
-}) => {
+export const RecordEditorContainer = (ps) => {
+    var {
+        collection,
+        recordType,
+        onSuccessfulUpdate,
+    } = ps;
+
     var { id } = useParams();
     var { url } = useRouteMatch();
     var revision = useRevision();

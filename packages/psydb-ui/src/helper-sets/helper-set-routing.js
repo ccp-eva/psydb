@@ -6,20 +6,21 @@ import {
     Switch,
 } from 'react-router-dom';
 
-const HelperSetRouting = ({
-    collection,
-    recordType,
-    
-    path,
-    url,
-    history,
+const HelperSetRouting = (ps) => {
+    var {
+        collection,
+        recordType,
+        
+        path,
+        url,
+        history,
 
-    RecordList,
-    RecordDetails,
-    RecordCreator,
-    RecordEditor,
-    RecordRemover,
-}) => {
+        RecordList,
+        RecordDetails,
+        RecordCreator,
+        RecordEditor,
+        RecordRemover,
+    } = ps;
     return (
         <Switch>
             

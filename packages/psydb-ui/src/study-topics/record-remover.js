@@ -61,7 +61,7 @@ const SafetyForm = (ps) => {
             { reverseRefs.length > 0 && (
                 <>
                     <Alert variant='danger'><b>
-                        { translate('Study topic is referenced by other Records!') }
+                        { translate('Study topic is referenced by other records!') }
                     </b></Alert>
 
                     <ReverseRefList

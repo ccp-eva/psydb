@@ -8,6 +8,7 @@ import {
     useHistory,
 } from 'react-router-dom';
 
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useReadRecord } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -29,6 +30,8 @@ const HelperSetItems = () => {
     var { path, url } = useRouteMatch();
     var { setId } = useParams();
     var history = useHistory();
+    
+    var translate = useUITranslation();
 
     var [ didFetch, fetched ] = useReadRecord({
         collection: 'helperSet',
@@ -49,7 +52,9 @@ const HelperSetItems = () => {
         <>
             <LinkContainer to={ url }>
                 <h5 className='mt-0 mb-3 text-muted' role='button'>
-                    Tabelle: { record._recordLabel }
+                    { translate('Helper Table') }
+                    {': '}
+                    { record._recordLabel }
                 </h5>
             </LinkContainer>
 

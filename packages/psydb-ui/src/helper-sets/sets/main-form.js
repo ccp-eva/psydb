@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { Button } from '@mpieva/psydb-ui-layout';
 
 import {
@@ -17,6 +18,8 @@ const Component = (ps) => {
         permissions,
     } = ps;
 
+    var translate = useUITranslation();
+
     return (
         <FormBox title={ title }>
             <DefaultForm
@@ -27,10 +30,12 @@ const Component = (ps) => {
                 {(formikProps) => (
                     <>
                         <Fields.SaneString
-                            label='Bezeichnung'
+                            label={ translate('_designation') }
                             dataXPath='$.label'
                         />
-                        <Button type='submit'>Speichern</Button>
+                        <Button type='submit'>
+                            { translate('Save') }
+                        </Button>
                     </>
                 )}
             </DefaultForm>

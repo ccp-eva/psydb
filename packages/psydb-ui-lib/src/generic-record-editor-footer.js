@@ -1,12 +1,17 @@
 import React, { useContext } from 'react';
 import { useRouteMatch, useParams } from 'react-router-dom';
 
-import { RecordEditorContext } from '@mpieva/psydb-ui-contexts';
+import {
+    useUITranslation,
+    RecordEditorContext
+} from '@mpieva/psydb-ui-contexts';
+
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
 import { LinkButton, Button } from '@mpieva/psydb-ui-layout';
 import UpdateRecordVisibilityButton from './update-record-visibility-button';
 
 const GenericRecordEditorFooter = (ps) => {
+    var translate = useUITranslation();
     var { path, url } = useRouteMatch();
 
     var {
@@ -55,7 +60,7 @@ const GenericRecordEditorFooter = (ps) => {
                                 variant='danger'
                                 to={ removeUrl }
                             >
-                                Löschen
+                                { translate('Delete') }
                             </LinkButton>
                         )}
                     </div>

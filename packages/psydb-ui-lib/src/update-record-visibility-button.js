@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { Button } from '@mpieva/psydb-ui-layout';
 import { useSend } from '@mpieva/psydb-ui-hooks';
 
@@ -14,6 +15,8 @@ const UpdateRecordVisibilityButton = (ps) => {
         forcedVariant,
         size
     } = ps;
+
+    var translate = useUITranslation();
 
     var sendHide = useSend(() => ({
         type: `${collection}/hide-record`,
@@ -34,7 +37,11 @@ const UpdateRecordVisibilityButton = (ps) => {
                 (isHidden ? sendUnhide : sendHide).exec()
             )}
         >
-            { isHidden ? 'Einblenden' : 'Ausblenden' }
+            { isHidden ? (
+                translate('Unhide')
+            ) : (
+                translate('Hide')
+            )}
         </Button>
     );
 }
