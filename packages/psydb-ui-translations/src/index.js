@@ -1114,6 +1114,22 @@ var maps = [
         en: 'Hidden Record',
         de: 'Ausgeblendeter Datensatz'
     },
+    {
+        en: 'Address',
+        de: 'Adresse'
+    },
+    {
+        en: 'New Research Group',
+        de: 'Neue Forschungsgruppe'
+    },
+    {
+        en: 'Research Group Details',
+        de: 'Forschungsgruppen-Details'
+    },
+    {
+        en: 'Edit Research Group',
+        de: 'Forschungsgruppe Bearbeiten'
+    },
 ]
 
 export const createTranslate = (lang = 'en') => (template, props) => {

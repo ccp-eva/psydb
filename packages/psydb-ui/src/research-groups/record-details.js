@@ -1,10 +1,11 @@
 import React from 'react';
 import { useRouteMatch, useParams } from 'react-router-dom';
 
-import { withRecordDetails } from '@mpieva/psydb-ui-lib';
-import { DetailsBox } from '@mpieva/psydb-ui-layout';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { DetailsBox } from '@mpieva/psydb-ui-layout';
 
+import { withRecordDetails } from '@mpieva/psydb-ui-lib';
 import { ResearchGroup } from '@mpieva/psydb-ui-lib/data-viewers';
 import * as Themes from '@mpieva/psydb-ui-lib/data-viewer-themes';
 
@@ -16,6 +17,7 @@ const DetailsBody = (ps) => {
     
     var { record, related } = fetched;
     var { url } = useRouteMatch();
+    var translate = useUITranslation();
     
     var canEdit = permissions.hasCollectionFlag('researchGroup', 'write');
 
@@ -26,7 +28,7 @@ const DetailsBody = (ps) => {
     }
 
     //var title = `${crtSettings.label} Datensatz-Details`;
-    var title = 'Datensatz-Details';
+    var title = translate('Research Group Details');
     return (
         <>
             <DetailsBox

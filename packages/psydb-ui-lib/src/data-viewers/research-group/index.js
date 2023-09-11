@@ -7,12 +7,12 @@ import {
 } from '../utility-components';
 
 const labels = {
-    '/sequenceNumber': 'ID Nr.',
+    '/sequenceNumber': 'ID No.',
     
-    '/state/name': 'Bezeichnung',
-    '/state/shorthand': 'Kürzel',
-    '/state/address': 'Adresse',
-    '/state/description': 'Beschreibung',
+    '/state/name': '_designation',
+    '/state/shorthand': 'Shorthand',
+    '/state/address': 'Address',
+    '/state/description': 'Description',
 }
 
 const [ Personnel, PersonnelContext ] = createBase();

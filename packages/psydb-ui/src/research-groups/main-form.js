@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { Button } from '@mpieva/psydb-ui-layout';
 
 import {
@@ -17,6 +18,8 @@ export const MainForm = (ps) => {
         permissions,
     } = ps;
 
+    var translate = useUITranslation();
+
     return (
         <FormBox title={ title }>
             <DefaultForm
@@ -30,7 +33,9 @@ export const MainForm = (ps) => {
                             related={ related }
                             permissions={ permissions }
                         />
-                        <Button type='submit'>Speichern</Button>
+                        <Button type='submit'>
+                            { translate('Save') }
+                        </Button>
                     </>
                 )}
             </DefaultForm>
@@ -40,24 +45,25 @@ export const MainForm = (ps) => {
 
 const FormFields = (ps) => {
     var { related, permissions } = ps;
+    var translate = useUITranslation();
     return (
         <>
             <Fields.SaneString
-                label='Bezeichnung'
+                label={ translate('_designation') }
                 dataXPath='$.name'
                 required
             />
             <Fields.SaneString
-                label='Kürzel'
+                label={ translate('Shorthand') }
                 dataXPath='$.shorthand'
                 required
             />
             <Fields.Address
-                label='Adresse'
+                label={ translate('Address') }
                 dataXPath='$.address'
             />
             <Fields.FullText
-                label='Beschreibung'
+                label={ translate('Description') }
                 dataXPath='$.description'
             />
         </>
