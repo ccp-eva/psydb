@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { withRecordEditor, FormBox } from '@mpieva/psydb-ui-lib';
 import { EditorMainForm } from './editor-main-form';
@@ -9,13 +10,14 @@ const EditForm = (ps) => {
     var { fetched } = ps;
     var { record } = fetched;
 
+    var translate = useUITranslation();
     var permissions = usePermissions();
     
     var isHidden = record.scientific.state.systemPermissions.isHidden;
     return (
         <>
             <FormBox
-                title='Mitarbeiter:in bearbeiten'
+                title={ translate('Edit Staff Member') }
                 isRecordHidden={ isHidden }
             >
                 <EditorMainForm { ...ps } />

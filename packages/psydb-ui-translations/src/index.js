@@ -1042,6 +1042,78 @@ var maps = [
         en: 'New Helper Table Item',
         de: 'Neuer Hilfstabellen-Eintrag'
     },
+    {
+        en: 'Firstname',
+        de: 'Vorname'
+    },
+    {
+        en: 'Lastname',
+        de: 'Nachname'
+    },
+    {
+        en: 'E-Mails',
+        de: 'E-Mails'
+    },
+    {
+        en: 'Phone',
+        de: 'Telefon'
+    },
+    {
+        en: 'Description',
+        de: 'Beschreibung'
+    },
+    {
+        en: 'Allow Log-In',
+        de: 'Log-In Erlauben'
+    },
+    {
+        en: 'Has Admin Access',
+        de: 'Hat Admin-Zugriff'
+    },
+    {
+        en: 'Edit Staff Member',
+        de: 'Mitarbeiter:in Bearbeiten'
+    },
+    {
+        en: 'Staff Member Details',
+        de: 'Mitarbeiter:innen-Details'
+    },
+    {
+        en: 'Past Appointments',
+        de: 'Vergangene Termine'
+    },
+    {
+        en: 'Generate Automatically',
+        de: 'Automatisch Generieren'
+    },
+    {
+        en: 'Set Manually',
+        de: 'Manuell Setzen'
+    },
+    {
+        en: 'Change Staff Member Password',
+        de: 'Mitarbeiter:innen-Passwort Ändern'
+    },
+    {
+        en: 'Method',
+        de: 'Methode'
+    },
+    {
+        en: 'Change Password',
+        de: 'Passwort Ändern'
+    },
+    {
+        en: 'No past appointments found.',
+        de: 'Keine vergangenen Termine gefunden.'
+    },
+    {
+        en: 'In theese Studies',
+        de: 'In diesen Studien'
+    },
+    {
+        en: 'Hidden Record',
+        de: 'Ausgeblendeter Datensatz'
+    },
 ]
 
 export const createTranslate = (lang = 'en') => (template, props) => {

@@ -1,10 +1,11 @@
 import React from 'react';
 import { useRouteMatch, useParams } from 'react-router-dom';
 
-import { withRecordDetails } from '@mpieva/psydb-ui-lib';
-import { DetailsBox, LinkButton } from '@mpieva/psydb-ui-layout';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { DetailsBox, LinkButton } from '@mpieva/psydb-ui-layout';
 
+import { withRecordDetails } from '@mpieva/psydb-ui-lib';
 import { Personnel } from '@mpieva/psydb-ui-lib/data-viewers';
 import * as Themes from '@mpieva/psydb-ui-lib/data-viewer-themes';
 
@@ -17,6 +18,8 @@ const DetailsBody = (ps) => {
     } = ps;
     
     var { record, related } = fetched;
+    
+    var translate = useUITranslation();
     var { url } = useRouteMatch();
     
     var isRoot = permissions.isRoot();
@@ -31,7 +34,7 @@ const DetailsBody = (ps) => {
 
     var isHidden = record.scientific.state.systemPermissions.isHidden;
     //var title = `${crtSettings.label} Datensatz-Details`;
-    var title = 'Mitarbeiter:in-Details';
+    var title = translate('Staff Member Details');
     return (
         <>
             <DetailsBox
@@ -55,7 +58,9 @@ const DetailsBody = (ps) => {
             { canReadParticipation && (
                 <div className='border pl-3 bg-light mt-4 mb-4'>
                     <h5 className='d-flex justify-content-between align-items-start'>
-                        <span className='d-inline-block pt-3'>Durchgeführte Termine</span>
+                        <span className='d-inline-block pt-3'>
+                            { translate('Past Appointments') }
+                        </span>
                     </h5>
                     <hr />
                     <div className='pr-3 pb-3'>

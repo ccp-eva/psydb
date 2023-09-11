@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { demuxed } from '@mpieva/psydb-ui-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { Button } from '@mpieva/psydb-ui-layout';
 
 import {
@@ -15,6 +16,8 @@ export const PasswordForm = (ps) => {
     var { id, fetched, onSuccessfulUpdate } = ps;
     var { record } = fetched;
 
+    var translate = useUITranslation();
+
     var sendManualPassword = useSend((formData) => ({
         type: 'set-personnel-password',
         payload: {
@@ -26,11 +29,14 @@ export const PasswordForm = (ps) => {
 
     var methodEnum = {
         keys: [ 'auto', 'manual' ],
-        labels: [ 'automatisch erzeugen', 'manuell setzen' ],
+        labels: [
+            translate('Generate Automatically'),
+            translate('Set Manually')
+        ],
     }
 
     return (
-        <FormBox title='Mitarbeiter:in-Passwort ändern'>
+        <FormBox title={ translate('Change Staff Member Password')}>
             <DefaultForm
                 initialValues={{ method: 'auto' }}
                 onSubmit={ sendManualPassword.exec }
@@ -40,7 +46,7 @@ export const PasswordForm = (ps) => {
                     <>
                         { /*console.log(formikProps.values) || ''*/ }
                         <Fields.GenericEnum
-                            label='Methode'
+                            label={ translate('Method') }
                             dataXPath='$.method'
                             enum={ methodEnum }
                             manualOnChange={ (e) => {
@@ -66,7 +72,9 @@ export const PasswordForm = (ps) => {
                                 />
                             </>
                         )}
-                        <Button type='submit'>Passwort ändern</Button>
+                        <Button type='submit'>
+                            { translate('Change Password') }
+                        </Button>
                     </>
                 )}
             </DefaultForm>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { Button } from '@mpieva/psydb-ui-layout';
 
 import {
@@ -17,6 +18,8 @@ export const Component = (ps) => {
         permissions,
     } = ps;
 
+    var translate = useUITranslation();
+
     return (
             <DefaultForm
                 initialValues={ initialValues }
@@ -31,7 +34,9 @@ export const Component = (ps) => {
                             related={ related }
                             permissions={ permissions }
                         />
-                        <Button type='submit'>Speichern</Button>
+                        <Button type='submit'>
+                            { translate('Save') }
+                        </Button>
                     </>
                 )}
             </DefaultForm>
@@ -40,42 +45,43 @@ export const Component = (ps) => {
 
 const FormFields = (ps) => {
     var { related, permissions } = ps;
+    var translate = useUITranslation();
     return (
         <>
             <Fields.SaneString
-                label='Vorname'
+                label={ translate('Firstname') }
                 dataXPath='$.gdpr.firstname'
                 required
             />
             <Fields.SaneString
-                label='Nachname'
+                label={ translate('Lastname') }
                 dataXPath='$.gdpr.lastname'
                 required
             />
             <Fields.EmailWithPrimaryList
-                label='Emails'
+                label={ translate('E-Mails') }
                 dataXPath='$.gdpr.emails'
                 required
             />
             <Fields.PhoneWithTypeList
-                label='Telefon'
+                label={ translate('Phone') }
                 dataXPath='$.gdpr.phones'
                 required
             />
             
             <Fields.FullText
-                label='Beschreibung'
+                label={ translate('Description') }
                 dataXPath='$.gdpr.description'
             />
 
             <Fields.ResearchGroupWithRoleList
-                label='Forschungsgruppen'
+                label={ translate('Research Groups') }
                 dataXPath='$.scientific.researchGroupSettings'
                 related={ related }
                 required
             />
             <Fields.AccessRightByResearchGroupList
-                label='Zugriff auf diesen Datensatz für'
+                label={ translate('Record Access for') }
                 dataXPath='$.scientific.systemPermissions.accessRightsByResearchGroup'
                 related={ related }
                 required
@@ -83,7 +89,7 @@ const FormFields = (ps) => {
             { permissions.hasFlag('canAllowLogin') && (
                 <>
                     <Fields.DefaultBool
-                        label='Log-In erlauben'
+                        label={ translate('Allow Log-In') }
                         dataXPath='$.scientific.canLogIn'
                         required
                     />
@@ -92,7 +98,7 @@ const FormFields = (ps) => {
             { permissions.isRoot() && (
                 <>
                     <Fields.DefaultBool
-                        label='MA hat Admin-Zugriff'
+                        label={ translate('Has Admin Access') }
                         dataXPath='$.scientific.hasRootAccess'
                         required
                     />

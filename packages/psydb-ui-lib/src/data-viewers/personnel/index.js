@@ -12,15 +12,15 @@ import {
 import ResearchGroupSettings from './research-group-settings';
 
 const labels = {
-    '/sequenceNumber': 'ID Nr.',
+    '/sequenceNumber': 'ID No.',
     
-    '/gdpr/state/firstname': 'Vorname',
-    '/gdpr/state/lastname': 'Nachname',
-    '/gdpr/state/emails': 'E-Mail',
-    '/gdpr/state/phones': 'Telefon',
-    '/gdpr/state/description': 'Beschreibung',
+    '/gdpr/state/firstname': 'Firstname',
+    '/gdpr/state/lastname': 'Lastname',
+    '/gdpr/state/emails': 'E-Mails',
+    '/gdpr/state/phones': 'Phone',
+    '/gdpr/state/description': 'Description',
 
-    '/scientific/state/researchGroupSettings': 'Forschungsgruppen',
+    '/scientific/state/researchGroupSettings': 'Research Groups',
 }
 
 const [ Personnel, PersonnelContext ] = createBase();

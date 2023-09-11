@@ -1,7 +1,8 @@
 import React from 'react';
 import classnames from 'classnames';
-
 import { Button } from 'react-bootstrap';
+
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import LinkButton from './link-button';
 
 const DetailsBox = (ps) => {
@@ -47,9 +48,11 @@ const DetailsBox = (ps) => {
 }
 
 const Header = (ps) => {
+    var translate = useUITranslation();
+
     var {
-        title = 'Datensatz-Details',
-        editLabel = 'Bearbeiten',
+        title = translate('Record Details'),
+        editLabel = translate('Edit'),
 
         canEdit,
         editUrl,
@@ -70,7 +73,7 @@ const Header = (ps) => {
                 { title }
                 { isRecordHidden && (
                     <span className='d-inline-block text-muted ml-2'>
-                        (Datensatz ist Ausgeblendet)
+                        ({ translate('Hidden Record') })
                     </span>
                 )}
             </span>
