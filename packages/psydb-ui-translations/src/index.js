@@ -1274,6 +1274,70 @@ var maps = [
         en: 'Please select study and appointment type.',
         de: 'Bitte Studie und Termin-Typ wählen.'
     },
+    {
+        en: 'Lab Workflow',
+        de: 'Ablauf-Typ'
+    },
+    {
+        en: 'Experimenters',
+        de: 'Experimenter:innen'
+    },
+    {
+        en: 'Add Study Participation',
+        de: 'Studienteilnahme Hinzufügen'
+    },
+    {
+        en: 'Edit Participation',
+        de: 'Studienteilnahme Bearbeiten'
+    },
+    {
+        en: 'Delete Participation',
+        de: 'Studienteilnahme Löschen'
+    },
+    {
+        en: 'Selection Settings',
+        de: 'Auswahlbedingungen'
+    },
+    {
+        en: 'Lab Workflow Settings',
+        de: 'Ablauf-Einstellungen'
+    },
+    {
+        en: 'General',
+        de: 'Allgemein'
+    },
+    {
+        en: 'Teams',
+        de: 'Teams'
+    },
+    {
+        en: 'Study Details',
+        de: 'Studien-Details'
+    },
+    {
+        en: 'Scientists',
+        de: 'Wissenschaftler:innen'
+    },
+    {
+        en: 'Hidden',
+        de: 'Ausgeblendet'
+    },
+    {
+        en: 'Delete Study',
+        de: 'Studie Löschen'
+    },
+    {
+        en: 'Study is referenced by other records!',
+        de: 'Studie wird von anderen Datensätzen referenziert!'
+    },
+    {
+        en: 'Study was deleted successfully!',
+        de: 'Studie wurde erfolgreich gelöscht!'
+    },
+    {
+        en: 'There exist study participations!',
+        de: 'Es existieren Studienteilnahmen!'
+    },
 ]
 
 export const createTranslate = (lang = 'en') => (template, props) => {

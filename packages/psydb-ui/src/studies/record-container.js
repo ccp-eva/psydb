@@ -8,9 +8,9 @@ import {
     useParams
 } from 'react-router-dom';
 
-import agent from '@mpieva/psydb-ui-request-agents';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
 
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import {
     useRevision,
     usePermissions,
@@ -32,9 +32,8 @@ import ExperimentSettings from './experiment-settings';
 import StudyTeams from './teams';
 import StudyParticipation from './participation';
 
-const StudyRecordRouting = ({
-    recordType,
-}) => {
+const StudyRecordRouting = (ps) => {
+    var { recordType } = ps;
     var { path, url } = useRouteMatch();
 
     return (
@@ -49,13 +48,14 @@ const StudyRecordRouting = ({
     )
 }
 
-const StudyRecordContainer = ({
-    recordType
-}) => {
+const StudyRecordContainer = (ps) => {
+    var { recordType } = ps;
+
     var { path, url } = useRouteMatch();
     var { id, tabKey } = useParams();
     var history =  useHistory();
 
+    var translate = useUITranslation();
     var permissions = usePermissions();
     var canReadParticipation = permissions.hasFlag('canReadParticipation');
 
@@ -66,7 +66,7 @@ const StudyRecordContainer = ({
         id,
     }, [ revision.value ]);
 
-    var [ didFetchSettings, fetchedSettings ] = useFetch(() => (
+    var [ didFetchSettings, fetchedSettings ] = useFetch((agent) => (
         agent.fetchExperimentVariantSettings({
             studyId: id
         })
@@ -77,14 +77,26 @@ const StudyRecordContainer = ({
     }
 
     var navItems = [
-        { key: 'details', label: 'Allgemein' },
-        { key: 'selection-settings', label: 'Auswahlbedingungen' },
-        { key: 'experiment-settings', label: 'Ablauf-Einstellungen' },
-        { key: 'teams', label: 'Teams' },
+        {
+            key: 'details',
+            label: translate('General')
+        },
+        {
+            key: 'selection-settings',
+            label: translate('Selection Settings')
+        },
+        {
+            key: 'experiment-settings',
+            label: translate('Lab Workflow Settings')
+        },
+        {
+            key: 'teams',
+            label: translate('Teams')
+        },
         canReadParticipation && (
             { 
                 key: 'participation',
-                label: 'Studienteilnahme',
+                label: translate('Study Participation'),
                 disabled: fetchedSettings.data.records.length < 1,
             }
         ),
@@ -97,7 +109,7 @@ const StudyRecordContainer = ({
                     className='d-flex justify-content-between align-items-end'
                     style={{ minHeight: '38px' }}
                 >
-                    Studien-Details
+                    { translate('Study Details') }
                     {' - '}
                     { fetchedStudy.record.state.name }
                     {' '}

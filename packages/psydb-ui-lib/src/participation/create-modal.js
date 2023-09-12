@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import { demuxed } from '@mpieva/psydb-ui-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetchAll, useSend } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -21,6 +22,8 @@ const ParticipationCreateModalBody = (ps) => {
         onHide,
         onSuccessfulUpdate
     } = ps;
+
+    var translate = useUITranslation();
 
     var [ didFetch, fetched ] = useFetchAll((agent) => ({
         studyTypes: agent.fetchCollectionCRTs({ collection: 'study' }),
@@ -85,7 +88,7 @@ const ParticipationCreateModalBody = (ps) => {
 }
 
 const ParticipationCreateModal = WithDefaultModal({
-    title: 'Teilnahme hinzufügen',
+    title: 'Add Study Participation',
     size: 'lg',
 
     Body: ParticipationCreateModalBody

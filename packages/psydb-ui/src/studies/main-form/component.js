@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { Button } from '@mpieva/psydb-ui-layout';
 
 import {
@@ -20,6 +21,8 @@ export const Component = (ps) => {
         renderFormBox = true,
     } = ps;
 
+    var translate = useUITranslation();
+
     var renderedForm = (
         <DefaultForm
             initialValues={ initialValues }
@@ -33,7 +36,9 @@ export const Component = (ps) => {
                         related={ related }
                         permissions={ permissions }
                     />
-                    <Button type='submit'>Speichern</Button>
+                    <Button type='submit'>
+                        { translate('Save') }
+                    </Button>
                 </>
             )}
         </DefaultForm>
@@ -54,42 +59,44 @@ const FormFields = (ps) => {
     var { crtSettings, related, permissions } = ps;
     var { fieldDefinitions } = crtSettings;
     
+    var translate = useUITranslation();
+
     return (
         <>
             <Fields.SaneString
-                label='Bezeichnung'
+                label={ translate('_designation') }
                 dataXPath='$.name'
             />
             <Fields.SaneString
-                label='Kürzel'
+                label={ translate('Shorthand') }
                 dataXPath='$.shorthand'
             />
             <Fields.DateOnlyServerSide
-                label='Beginn'
+                label={ translate('Start') }
                 dataXPath='$.runningPeriod.start'
             />
             <Fields.DateOnlyServerSide
-                label='Ende'
+                label={ translate('End') }
                 dataXPath='$.runningPeriod.end'
             />
             <Fields.DefaultBool
-                label='Proband:innen können mehrfach getestet werden'
+                label={ translate('Subjects can be tested multiple times') }
                 dataXPath='$.enableFollowUpExperiments'
             />
             <Fields.ForeignIdList
-                label='Forschungsgruppen'
+                label={ translate('Research Groups') }
                 dataXPath='$.researchGroupIds'
                 collection='researchGroup'
                 required
             />
             <Fields.ForeignIdList
-                label='Wissenschaftler:innen'
+                label={ translate('Scientists') }
                 dataXPath='$.scientistIds'
                 collection='personnel'
                 required
             />
             <Fields.ForeignIdList
-                label='Themengebiete'
+                label={ translate('Study Topics') }
                 dataXPath='$.studyTopicIds'
                 collection='studyTopic'
             />
@@ -100,13 +107,13 @@ const FormFields = (ps) => {
             />
 
             <Fields.AccessRightByResearchGroupList
-                label='Zugriff auf diesen Datensatz für'
+                label={ translate('Record Access for') }
                 dataXPath='$.systemPermissions.accessRightsByResearchGroup'
                 related={ related }
                 required
             />
             <Fields.DefaultBool
-                label='Ausgeblendet'
+                label={ translate('Hidden') }
                 dataXPath='$.systemPermissions.isHidden'
             />
         </>

@@ -1,5 +1,6 @@
 import React from 'react';
 import * as enums from '@mpieva/psydb-schema-enums';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
 import {
     DefaultForm,
@@ -20,6 +21,8 @@ export const FormFields = (ps) => {
 
         enableTeamSelect,
     } = ps;
+
+    var translate = useUITranslation();
 
     var { values } = useFormikContext();
     var {
@@ -43,7 +46,7 @@ export const FormFields = (ps) => {
         <>
             { showSubjectTypeSelect && (
                 <Fields.GenericEnum
-                    label='Proband:innen-Typ'
+                    label={ translate('Subject Type') }
                     dataXPath='$.subjectType'
                     options={ subjectTypes.reduce((acc, it) => ({
                         ...acc, [it.type]: it.label
@@ -52,7 +55,7 @@ export const FormFields = (ps) => {
             )}
             { enableSubjectId && (
                 <Fields.ForeignId
-                    label='Proband:in'
+                    label={ translate('Subject') }
                     dataXPath='$.subjectId'
                     collection='subject'
                     recordType={ subjectType }
@@ -61,7 +64,7 @@ export const FormFields = (ps) => {
 
             { showStudyTypeSelect && (
                 <Fields.GenericEnum
-                    label='Studien-Typ'
+                    label={ translate('Study Type') }
                     dataXPath='$.studyType'
                     options={ studyTypes.reduce((acc, it) => ({
                         ...acc, [it.type]: it.label
@@ -70,7 +73,7 @@ export const FormFields = (ps) => {
             )}
             { enableStudyId && (
                 <Fields.ForeignId
-                    label='Studie'
+                    label={ translate('Study') }
                     dataXPath='$.studyId'
                     collection='study'
                     recordType={ studyType }

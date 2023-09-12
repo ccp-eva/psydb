@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { only, entries } from '@mpieva/psydb-core-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useSendRemove } from '@mpieva/psydb-ui-hooks';
 import {
     Pair,
@@ -27,6 +28,8 @@ const SafetyForm = (ps) => {
 
     var { record } = fetched;
     var { sequenceNumber, _recordLabel } = record;
+
+    var translate = useUITranslation();
 
     var send = useSendRemove({
         collection,
@@ -60,15 +63,18 @@ const SafetyForm = (ps) => {
     var subjectTypes = Object.keys(dataBySubjectType);
 
     return (
-        <FormBox title='Studie löschen' titleClassName='text-danger'>
+        <FormBox
+            title={ translate('Delete Study') }
+            titleClassName='text-danger'
+        >
             <Pair 
-                label='Studie'
+                label={ translate('Study') }
                 wLeft={ 3 } wRight={ 9 } className='px-3'
             >
                 { _recordLabel }
             </Pair>
             <Pair 
-                label='ID Nr.'
+                label={ translate('ID No.') }
                 wLeft={ 3 } wRight={ 9 } className='px-3'
             >
                 { sequenceNumber }
@@ -77,7 +83,7 @@ const SafetyForm = (ps) => {
             { reverseRefs.length > 0 && (
                 <>
                     <Alert variant='danger'><b>
-                        Studie wird von anderen Datensätzen referenziert
+                        { translate('Study is referenced by other records!') }
                     </b></Alert>
 
                     <ReverseRefList reverseRefs={ reverseRefs } />
@@ -96,7 +102,7 @@ const SafetyForm = (ps) => {
                 onClick={ send.exec }
                 disabled={ reverseRefs.length > 0 }
             >
-                Löschen
+                { translate('Delete') }
             </Button>
         </FormBox>
     )
@@ -106,6 +112,8 @@ const ParticipationList = (ps) => {
     var {
         dataBySubjectType
     } = ps;
+
+    var translate = useUITranslation();
 
     var allSubjectsById = {};
     for (var [ subjectType, data ] of entries(dataBySubjectType)) {
@@ -124,10 +132,10 @@ const ParticipationList = (ps) => {
     return (
         <div>
             <Alert variant='danger'><b>
-                Es existieren Studen-Teilnahmen
+                { translate('There exist study participations!') }
             </b></Alert>
             <header className='pb-1 mt-3'><b>
-                Proband:innen
+                { translate('Subjects') }
             </b></header>
             { Object.values(allSubjectsById).map((it, ix) => {
                 var { _id, _recordLabel, type } = it;
@@ -147,16 +155,20 @@ const ParticipationList = (ps) => {
 
 const SuccessInfo = (ps) => {
     var { successInfoBackLink } = ps;
+    var translate = useUITranslation();
     return (
-        <FormBox titleClassName='text-success' title='Studie gelöscht'>
-            <i>Studie wurde erfolgreich gelöscht</i>
+        <FormBox
+            titleClassName='text-success'
+            title={ translate('Study Deleted') }
+        >
+            <i>{ translate('Study was deleted successfully!') }</i>
             { successInfoBackLink && (
                 <>
                     <hr />
                     <a href={ successInfoBackLink }>
                         <Icons.ArrowLeftShort />
                         {' '}
-                        <b>zurück zur Liste</b>
+                        <b>{ translate('Back to List') }</b>
                     </a>
                 </>
             )}

@@ -3,6 +3,7 @@ import { useRouteMatch, useParams } from 'react-router-dom';
 
 import { only } from '@mpieva/psydb-core-utils';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { usePermissions, useSendPatch } from '@mpieva/psydb-ui-hooks';
 import { Pair } from '@mpieva/psydb-ui-layout';
 import {
@@ -25,6 +26,8 @@ const EditForm = (ps) => {
     var { fieldDefinitions } = crtSettings;
     
     var { path, url } = useRouteMatch();
+    
+    var translate = useUITranslation();
     var permissions = usePermissions();
 
     var send = useSendPatch({
@@ -74,7 +77,7 @@ const EditForm = (ps) => {
         <>
             { sequenceNumber && (
                 <Pair 
-                    label='ID Nr.'
+                    label={ translate('ID No.') }
                     wLeft={ 3 } wRight={ 9 } className='px-3'
                 >
                     { sequenceNumber }
@@ -84,7 +87,7 @@ const EditForm = (ps) => {
                 <hr />
             )}
             <MainForm.Component
-                title='Studie bearbeiten'
+                title={ translate('Edit Study') }
                 crtSettings={ crtSettings }
                 initialValues={ initialValues }
                 onSubmit={ send.exec }

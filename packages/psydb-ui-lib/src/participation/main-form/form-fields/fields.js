@@ -1,14 +1,16 @@
 import React from 'react';
-import { useFetch } from '@mpieva/psydb-ui-hooks';
 import * as enums from '@mpieva/psydb-schema-enums';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useFetch } from '@mpieva/psydb-ui-hooks';
 
 import { Fields, useFormikContext } from '../../../formik';
 export const DefaultBool = Fields.DefaultBool;
 
 export const Timestamp = (ps) => {
+    var translate = useUITranslation();
     return (
         <Fields.DateTime
-            label='Test-Zeitpunkt'
+            label={ translate('Date/Time') }
             dataXPath='$.timestamp'
         />
     );
@@ -16,6 +18,8 @@ export const Timestamp = (ps) => {
 
 export const Team = (ps) => {
     var { studyId, disabled } = ps;
+    
+    var translate = useUITranslation();
     var { setFieldValue } = useFormikContext();
 
     var [ didFetch, fetched ] = useFetch((agent) => (
@@ -50,7 +54,7 @@ export const Team = (ps) => {
 
     return (
         <Fields.OpsTeamSelect
-            label='Team'
+            label={ translate('Team') }
             dataXPath='$.experimentOperatorTeamId'
             teamRecords={ filtered }
             disabled={ disabled }
@@ -60,6 +64,7 @@ export const Team = (ps) => {
 
 export const Status = (ps) => {
     var { type } = ps;
+    var translate = useUITranslation();
 
     var options = ({
         'invite': {
@@ -78,17 +83,20 @@ export const Status = (ps) => {
 
     return (
         <Fields.GenericEnum
-            label='Status'
+            label={ translate('Status') }
             dataXPath='$.status'
-            options={ options }
+            options={ Object.keys(options).reduce((acc, key) => ({
+                ...acc, [key]: translate('_participationStatus_' + key)
+            }), {}) }
         />
     );
 }
 
 export const ExperimentOperators = (ps) => {
+    var translate = useUITranslation();
     return (
         <Fields.ForeignIdList
-            label='Experimenter:innen'
+            label={ translate('Experimenters') }
             dataXPath='$.experimentOperatorIds'
             collection='personnel'
         />
@@ -97,11 +105,12 @@ export const ExperimentOperators = (ps) => {
 
 export const LabProcedureType = (ps) => {
     var { settingsByType, types, disabled } = ps;
+    var translate = useUITranslation();
     var { setFieldValue } = useFormikContext();
 
     return (
         <Fields.GenericEnum
-            label='Ablauf-Typ'
+            label={ translate('Lab Workflow') }
             dataXPath='$.labProcedureType'
             options={ types.reduce((acc, it) => ({
                 ...acc, [it]: enums.experimentVariants.getLabel(it)
@@ -129,9 +138,10 @@ export const LabProcedureType = (ps) => {
 
 export const InviteLocation = (ps) => {
     var { locations, related } = ps;
+    var translate = useUITranslation();
     return (
         <Fields.GenericEnum
-            label='Raum'
+            label={ translate('Room') }
             dataXPath='$.locationId'
             options={ locations.reduce((acc, it) => {
                 var type = it.customRecordTypeKey;

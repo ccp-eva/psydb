@@ -2,6 +2,7 @@ import React from 'react';
 
 import { useRouteMatch  } from 'react-router-dom';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { LinkButton, Icons } from '@mpieva/psydb-ui-layout';
 
@@ -32,6 +33,8 @@ const StudyRecordDetails = (ps) => {
 
     var { record, crtSettings, related } = fetched;
     var { path, url } = useRouteMatch();
+    
+    var translate = useUITranslation();
     var permissions = usePermissions();
     var canEdit = permissions.hasCollectionFlag('study', 'write');
 
@@ -65,7 +68,7 @@ const StudyRecordDetails = (ps) => {
                     position: 'absolute', right: '0px', top: '0px'
                 }}>
                     <EditLinkButton
-                        label='Bearbeiten'
+                        label={ translate('Edit') }
                         to={ `${url}/edit` }
                     />
                 </div>

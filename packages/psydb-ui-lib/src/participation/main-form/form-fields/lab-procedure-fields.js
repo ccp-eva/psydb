@@ -2,6 +2,7 @@ import React from 'react';
 
 import { keyBy } from '@mpieva/psydb-core-utils';
 import { fixRelated } from '@mpieva/psydb-ui-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 
 import { useFormikContext } from '../../../formik';
@@ -21,6 +22,8 @@ export const LabProcedureFields = (ps) => {
         
         enableTeamSelect,
     } = ps;
+
+    var translate = useUITranslation();
 
     var { values, setFieldValue, dirty: isFormDirty } = useFormikContext();
     var { labProcedureType } = values['$'];
@@ -124,7 +127,7 @@ export const LabProcedureFields = (ps) => {
                     { study.state.enableFollowUpExperiments && (
                         <Fields.DefaultBool
                             dataXPath='$.excludeFromMoreExperimentsInStudy'
-                            label='Ist Letzter Termin'
+                            label={ translate('Last Appointment?') }
                         />
                     )}
                 </>
