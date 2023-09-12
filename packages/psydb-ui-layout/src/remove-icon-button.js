@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Button } from 'react-bootstrap';
 import { XLg } from 'react-bootstrap-icons';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import LinkButton from './link-button';
 
 var buttonProps = {
@@ -15,19 +16,23 @@ var iconStyle = {
     marginTop: '-2px'
 }
 
-const RemoveIconButton = ({
-    className,
-    to,
-    onClick,
-    title,
-}) => {
+const RemoveIconButton = (ps) => {
+    var {
+        className,
+        to,
+        onClick,
+        title,
+    } = ps;
+
+    var translate = useUITranslation();
+
     if (to) {
         return (
             <LinkButton
                 { ...buttonProps }
                 className={ className }
                 to={ to }
-                title={ title || 'Löschen' }
+                title={ title || translate('Delete') }
             >
                 <XLg style={ iconStyle } />
             </LinkButton>
@@ -39,7 +44,7 @@ const RemoveIconButton = ({
                 { ...buttonProps }
                 className={ className }
                 onClick={ onClick }
-                title={ title || 'Löschen' }
+                title={ title || translate('Delete') }
             >
                 <XLg style={ iconStyle } />
             </Button>
