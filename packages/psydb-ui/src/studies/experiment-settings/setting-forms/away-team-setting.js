@@ -1,6 +1,7 @@
 import React from 'react';
 import isSubset from 'is-subset';
-import keyBy from '@mpieva/psydb-common-lib/src/key-by';
+import { keyBy } from '@mpieva/psydb-core-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useSend, useFetch } from '@mpieva/psydb-ui-hooks';
 import { Button, LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
@@ -31,6 +32,8 @@ export const AwayTeamSetting = (ps) => {
     if (![ 'create', 'patch' ].includes(op)) {
         throw new Error(`unknown op "${op}"`);
     }
+
+    var translate = useUITranslation();
 
     var [ didFetch, fetched ] = useFetch((agent) => {
         return agent.readCustomRecordTypeMetadata()
@@ -114,19 +117,19 @@ export const AwayTeamSetting = (ps) => {
                         <>
                             <Fields.GenericEnum { ...({
                                 dataXPath: '$.subjectTypeKey',
-                                label: 'Proband:innentyp',
+                                label: translate('Subject Type'),
                                 required: true,
                                 options: allowedSubjectTypes
                             })} />
                             <Fields.GenericEnum { ...({
                                 dataXPath: '$.subjectLocationFieldPointer',
-                                label: 'Termine in',
+                                label: translate('Appointments In'),
                                 required: true,
                                 options: fieldOptions,
                                 disabled: !selectedType
                             })} />
                             <Button type='submit'>
-                                Speichern
+                                { translate('Save') }
                             </Button>
                         </>
                     );

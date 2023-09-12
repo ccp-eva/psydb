@@ -1451,6 +1451,46 @@ var maps = [
         en: 'Is Equal in Appointment',
         de: 'Ist Gleich im Termin'
     },
+    {
+        en: 'Edit Settings',
+        de: 'Einstellungen bearbeiten'
+    },
+    {
+        en: 'Appointments In',
+        de: 'Termine In'
+    },
+    {
+        en: 'Delete Settings',
+        de: 'Einstellungen löschen'
+    },
+    {
+        en: 'Delete Lab Workflow',
+        de: 'Ablauf löschen'
+    },
+    {
+        en: 'Really delete this lab workflow?',
+        de: 'Diesen Ablauf wirklich löschen?'
+    },
+    {
+        en: 'Really delete theese lab workflow settings?',
+        de: 'Diese Ablauf-Einstellung wirklich löschen?'
+    },
+    {
+        en: 'There are still appointments with this lab workflow!',
+        de: 'Es gibt noch Termine mit diesem Ablauf!'
+    },
+    {
+        en: 'There are still appointments with this lab workflow and subject type!',
+        de: 'Es gibt noch Termine mit diesem Ablauf und Proband:innen-Typ!'
+    },
+    {
+        en: '${count} upcoming appointments',
+        de: '${count} Termine in der Zukunft'
+    },
+    {
+        en: '${count} unprocessed appointments',
+        de: '${count} Termine die nicht nachbereitet wurden'
+    },
 ]
 
 export const createTranslate = (lang = 'en') => {

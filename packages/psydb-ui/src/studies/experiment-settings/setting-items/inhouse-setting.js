@@ -4,6 +4,7 @@ import {
     subjectFieldRequirementChecks as checksEnum,
 } from '@mpieva/psydb-schema-enums';
 
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { Pair } from '@mpieva/psydb-ui-layout';
 import { DefaultSettingWrapper } from './utils';
 
@@ -23,6 +24,8 @@ export const InhouseSetting = (ps) => {
 
     var { relatedRecords } = settingRelated;
 
+    var translate = useUITranslation();
+
     var subjectType = customRecordTypes.find(it => (
         it.collection === 'subject' && it.type === subjectTypeKey
     ));
@@ -40,10 +43,13 @@ export const InhouseSetting = (ps) => {
 
     return (
         <DefaultSettingWrapper { ...ps }>
-            <Pair label='Anzahl pro Termin'>
+            <Pair label={ translate('per Appointment') }>
                 { subjectsPerExperiment }
             </Pair>
-            <Pair label='Terminbedingungen' textWrap='div'>
+            <Pair
+                label={ translate('Appointment Conditions') }
+                textWrap='div'
+            >
                 { subjectFieldRequirements.map((req, index) => {
                     var { pointer, check } = req;
                     return (
@@ -63,11 +69,11 @@ export const InhouseSetting = (ps) => {
                 }) }
                 { subjectFieldRequirements.length < 1 && (
                     <b style={{ fontWeight: 600 }}>
-                        Keine
+                        { translate('None') }
                     </b>
                 )}
             </Pair>
-            <Pair label='Räumlichkeiten'>
+            <Pair label={ translate('reservable_locations') }>
                 { locations.map(it => {
                     return (
                         relatedRecords
@@ -75,7 +81,9 @@ export const InhouseSetting = (ps) => {
                     );
                 }).join(', ')}
                 { locations.length < 1 && (
-                    <span>Keine</span>
+                    <span>
+                        { translate('None') }
+                    </span>
                 )}
             </Pair>
         </DefaultSettingWrapper>

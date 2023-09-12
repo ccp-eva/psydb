@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import WithField from '../../with-field';
 import {
     GenericEnum,
@@ -23,20 +24,21 @@ const Control = (ps) => {
         getFieldProps(`${dataXPath}.customRecordTypeKey`).value
     );
 
-    console.log({ related });
+    var translate = useUITranslation();
+    //console.log({ related });
 
     return (
         <>
             <GenericEnum { ...({
                 dataXPath: `${dataXPath}.customRecordTypeKey`,
-                label: 'Typ',
+                label: translate('Type'),
                 required: true,
                 options: typeOptions,
                 disabled,
             }) } />
             <ForeignId { ...({
                 dataXPath: `${dataXPath}.locationId`,
-                label: 'Location',
+                label: translate('Location'),
                 required: true,
                 collection: 'location',
                 recordType: selectedType,

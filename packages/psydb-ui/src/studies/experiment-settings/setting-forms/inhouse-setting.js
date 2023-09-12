@@ -147,7 +147,7 @@ export const InhouseSetting = (ps) => {
                             })} />
 
                             <Button type='submit'>
-                                Speichern
+                                { translate('Save') }
                             </Button>
                         </>
                     );

@@ -6,6 +6,7 @@ import {
 
 import { hasNone } from '@mpieva/psydb-core-utils';
 import { demuxed } from '@mpieva/psydb-ui-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useSend, useFetch } from '@mpieva/psydb-ui-hooks';
 import {
     Alert,
@@ -25,6 +26,7 @@ const RemoveVariantModalBody = (ps) => {
     var { index, variantRecord } = modalPayloadData;
     var { _id: variantId, type: variantType } = variantRecord;
 
+    var translate = useUITranslation();
 
     var send = useSend(() => ({
         type: `experiment-variant/remove`,
@@ -49,36 +51,38 @@ const RemoveVariantModalBody = (ps) => {
     return (
         canRemove ? (
             <div>
-                <div className='text-danger mb-2'>
-                    <b>Diesen Ablauf wirklich löschen?</b>
-                </div>
+                <div className='text-danger mb-2'><b>
+                    { translate('Really delete this lab workflow?') }
+                </b></div>
                 <div className='p-3 border bg-white'>
-                    Ablauf { index + 1}
+                    { translate('Lab Workflow') } { index + 1}
                     {' - '}
                     { variantsEnum.mapping[variantType] }
                 </div>
                 <div className='mt-3 d-flex justify-content-end'>
                     <Button variant='danger' onClick={ send.exec }>
-                        Löschen
+                        { translate('Delete') }
                     </Button>
                 </div>
             </div>
         ) : (
             <Alert variant='danger'>
-                <b>Es existieren noch Termine mit diesem Ablauf!</b>
+                <b>{ translate('There are still appointments with this lab workflow!') }</b>
                 <ul className='m-0'>
                     { !hasNone(upcomingExperiments) && (
                         <li><b>
-                            { upcomingExperiments.length }
-                            {' '}
-                            Termine in der Zukunft.
+                            { translate(
+                                '${count} upcoming appointments',
+                                { count: upcomingExperiments.length }
+                            )}
                         </b></li>
                     )}
                     { !hasNone(unprocessedExperiments) && (
                         <li><b>
-                            { unprocessedExperiments.length }
-                            {' '}
-                            Termine die nicht nachbereitet wurden.
+                            { translate(
+                                '${count} unprocessed appointments',
+                                { count: unprocessedExperiments.length }
+                            )}
                         </b></li>
                     )}
                 </ul>
@@ -88,7 +92,7 @@ const RemoveVariantModalBody = (ps) => {
 }
 
 const RemoveVariantModal = WithDefaultModal({
-    title: 'Einstellungen löschen',
+    title: 'Delete Lab Workflow',
     size: 'lg',
 
     Body: RemoveVariantModalBody

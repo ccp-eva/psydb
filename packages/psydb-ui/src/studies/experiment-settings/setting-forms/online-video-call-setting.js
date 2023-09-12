@@ -1,6 +1,7 @@
 import React from 'react';
 import isSubset from 'is-subset';
-import keyBy from '@mpieva/psydb-common-lib/src/key-by';
+import { keyBy } from '@mpieva/psydb-core-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useSend, useFetch } from '@mpieva/psydb-ui-hooks';
 import { Button, LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
@@ -26,6 +27,8 @@ export const OnlineVideoCallSetting = (ps) => {
         allowedSubjectTypes,
         onSuccessfulUpdate
     } = ps;
+
+    var translate = useUITranslation();
 
     var settingId, settingState;
     if (settingRecord) {
@@ -116,13 +119,13 @@ export const OnlineVideoCallSetting = (ps) => {
                         <>
                             <Fields.GenericEnum { ...({
                                 dataXPath: '$.subjectTypeKey',
-                                label: 'Proband:innentyp',
+                                label: translate('Subject Type'),
                                 required: true,
                                 options: allowedSubjectTypes
                             })} />
                             <Fields.Integer { ...({
                                 dataXPath: '$.subjectsPerExperiment',
-                                label: 'Anzahl pro Termin',
+                                label: translate('per Appointment'),
                                 required: true,
                                 min: 1,
                                 disabled: !selectedType
@@ -130,20 +133,20 @@ export const OnlineVideoCallSetting = (ps) => {
                             
                             <Fields.SubjectFieldRequirementList { ...({
                                 dataXPath: '$.subjectFieldRequirements',
-                                label: 'Terminbedingungen',
+                                label: translate('Appointment Conditions'),
                                 subjectScientificFields,
                                 disabled: !selectedType
                             })} />
                             <Fields.TypedLocationIdList { ...({
                                 dataXPath: '$.locations',
-                                label: 'Räumlichkeiten',
+                                label: translate('reservable_locations'),
                                 typeOptions: allowedLocationTypes,
                                 disabled: !selectedType,
 
                                 related: settingRelated,
                             })} />
                             <Button type='submit'>
-                                Speichern
+                                { translate('Save') }
                             </Button>
                         </>
                     );

@@ -54,7 +54,7 @@ const EditSettingModalBody = (ps) => {
 }
 
 const EditSettingModal = WithDefaultModal({
-    title: 'Einstellungen bearbeiten',
+    title: 'Edit Settings',
     size: 'lg',
 
     Body: EditSettingModalBody

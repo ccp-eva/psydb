@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useSend, useFetch } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
 import {
@@ -16,6 +17,8 @@ export const OnlineSurveySetting = (ps) => {
         allowedSubjectTypes,
         onSuccessfulUpdate
     } = ps;
+
+    var translate = useUITranslation();
 
     var settingId, settingState;
     if (settingRecord) {
@@ -58,12 +61,12 @@ export const OnlineSurveySetting = (ps) => {
                     <>
                         <Fields.GenericEnum { ...({
                             dataXPath: '$.subjectTypeKey',
-                            label: 'Proband:innentyp',
+                            label: translate('Subject Type'),
                             required: true,
                             options: allowedSubjectTypes
                         })} />
                         <Button type='submit'>
-                            Speichern
+                            { translate('Save') }
                         </Button>
                     </>
                 )}
