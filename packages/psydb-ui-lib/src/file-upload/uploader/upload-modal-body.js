@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Dropzone from 'react-dropzone';
 
 import { demuxed } from '@mpieva/psydb-ui-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useWriteRequest } from '@mpieva/psydb-ui-hooks';
 
 import LoadingIndicator from './loading-indicator';
@@ -92,20 +93,22 @@ const TheDropzone = (ps) => {
     );
 }
 
-const Default = ({ isHighlighted }) => (
-    <div style={{ color: '#c0c0c0' }}>
-        <i 
-            className='fas fa-upload fa-5x'
-            style={{
-                ...(isHighlighted && { color: '#00bbf0' })
-            }}
-        />
-        <div style={{ marginTop: '10px' }}>
-            Dateien hierher ziehen um sie hochzuladen oder
-            klicken um Dateien zu wählen.
+const Default = ({ isHighlighted }) => {
+    var translate = useUITranslation();
+    return (
+        <div style={{ color: '#c0c0c0' }}>
+            <i 
+                className='fas fa-upload fa-5x'
+                style={{
+                    ...(isHighlighted && { color: '#00bbf0' })
+                }}
+            />
+            <div style={{ marginTop: '10px' }}>
+                { translate('Drag files here to upload them or click to select files for upload.') }
+            </div>
         </div>
-    </div>
-);
+    )
+};
 
 const Loading = () => (
     <CenteredContent>

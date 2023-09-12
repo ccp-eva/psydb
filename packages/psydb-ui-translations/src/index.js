@@ -394,6 +394,10 @@ var maps = [
         de: 'T-Alter'
     },
     {
+        en: 'T-Location',
+        de: 'T-Location'
+    },
+    {
         en: 'Part. Stud.',
         de: 'Teilg. Stud.'
     },
@@ -656,7 +660,7 @@ var maps = [
     },
     {
         en: 'Study Participation',
-        de: 'Studien-Teilnahme'
+        de: 'Studienteilnahme'
     },
     {
         en: 'Invitation',
@@ -1514,6 +1518,39 @@ var maps = [
     {
         en: 'Really hide this team?',
         de: 'Dieses Team wirklich ausblenden?'
+    },
+    {
+        en: 'CSV Import',
+        de: 'CSV-Import'
+    },
+    {
+        en: '${count} errors found!',
+        de: '${count} Fehler gefunden!'
+    },
+    {
+        en: 'No errors found!',
+        de: 'Keine Fehler gefunden!'
+    },
+    {
+        en: 'Please wait...',
+        de: 'Bitte warten...'
+    },
+    {
+        internal: '_perform_import',
+        en: 'Import',
+        de: 'Importieren'
+    },
+    {
+        en: 'Drag files here to upload them or click to select files for upload.',
+        de: 'Dateien hierher ziehen um sie hochzuladen oder klicken um Dateien für den Upload auszuwählen.'
+    },
+    {
+        en: 'Delete Study Participation',
+        de: 'Studienteilnahme Löschen'
+    },
+    {
+        en: 'Really delete this study participation?',
+        de: 'Diese Studienteilnnahme wirklich löschen?'
     },
 ]
 

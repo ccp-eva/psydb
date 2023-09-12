@@ -1,6 +1,7 @@
 import React from 'react';
 import { convertPointerToPath, hasNone } from '@mpieva/psydb-core-utils';
 
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import {
     useModalReducer,
     usePermissions,
@@ -39,6 +40,7 @@ const ParticipationList = (ps) => {
         onSuccessfulUpdate,
     } = ps;
 
+    var translate = useUITranslation();
     var permissions = usePermissions();
     
     var editModal = useModalReducer();
@@ -64,7 +66,7 @@ const ParticipationList = (ps) => {
         return (
             <TableEmptyFallback
                 tableExtraClassName={ className }
-                emptyInfoText='Keine Studienteilnahmen gefunden'
+                emptyInfoText={ translate('No study participations found.') }
             >
                 <TableHeadCols { ...headBag } />
             </TableEmptyFallback>
@@ -109,6 +111,8 @@ const TableHeadCols = (ps) => {
         canSort,
     } = ps;
 
+    var translate = useUITranslation();
+
     return (
         <>
             <TableHeadCustomCols
@@ -117,22 +121,22 @@ const TableHeadCols = (ps) => {
                 canSort={ canSort }
             />
             <SortableTH
-                label='Zeitpunkt'
+                label={ translate('Date/Time') }
                 sorter={ sorter }
                 path='scientific.state.internals.participatedInStudies.timestamp'
             />
             { dateOfBirthField && (
                 <SortableTH
-                    label='Alter'
+                    label={ translate('T-Age') }
                     sorter={ sorter }
                     path={ convertPointerToPath( dateOfBirthField.pointer )}
                 />
             )}
             <th>
-                T-Location
+                { translate('T-Location') }
             </th>
             <SortableTH
-                label='Status'
+                label={ translate('Status') }
                 sorter={ sorter }
                 path='scientific.state.internals.participatedInStudies.status'
             />
@@ -154,6 +158,8 @@ const ParticipationListRow = (ps) => {
         onRemove,
     } = ps;
 
+    var translate = useUITranslation();
+
     var showEdit = permissions.hasFlag('canWriteParticipation');
     var showRemove = permissions.hasFlag('canWriteParticipation');
 
@@ -165,6 +171,7 @@ const ParticipationListRow = (ps) => {
 
     var {
         type: participationType,
+        realType: realParticipationType,
         status: participationStatus,
         experimentId,
         timestamp,
@@ -191,7 +198,11 @@ const ParticipationListRow = (ps) => {
             })} />
             <td> {
                 related.records
-                .location[participationData.locationId]._recordLabel
+                .location[participationData.locationId]?._recordLabel
+                || (
+                    participationType === 'online-survey'
+                    || realParticipationType === 'online-survey'
+                ) ? 'Online' : '-'
             }</td>
             <td>
                 { formatStatus(participationData.status) }
@@ -209,7 +220,7 @@ const ParticipationListRow = (ps) => {
                     <EditIconButtonInline
                         onClick={ () => onEdit({
                             subjectId, subjectType,
-                            title: `Teilnahme - ${record._recordLabel}`,
+                            title: `${translate('Study Participation')} - ${record._recordLabel}`,
                             ...participationData
                         }) }
                         disabled={ !enableEdit }

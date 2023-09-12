@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import * as datefns from 'date-fns';
+import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useSend } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -49,6 +50,8 @@ const CSVPreview = (ps) => {
     var { file, studyId, send } = ps;
     var fileId = file._id;
 
+    var translate = useUITranslation();
+
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.fetchCSVImportPreview({ fileId, studyId })
     ), [ fileId, studyId ]);
@@ -64,20 +67,23 @@ const CSVPreview = (ps) => {
     return (
         <>
             { hasErrors ? (
-                <Alert variant='danger'>
-                    <b>{ erroneousItems.length } Fehler gefunden</b>
-                </Alert>
+                <Alert variant='danger'><b>
+                    { translate(
+                        '${count} errors found!',
+                        { count: erroneousItems.length }
+                    )}
+                </b></Alert>
             ) : (
                 <Alert variant='success'>
-                    Keine Fehler gefunden!
+                    { translate('No errors found!') }
                 </Alert>
             )}
             <Table className='bg-white'>
                 <thead>
                     <tr>
-                        <th>Proband:in</th>
-                        <th>OnlineId</th>
-                        <th>Zeitpunkt</th>
+                        <th>{ translate('Subject') }</th>
+                        <th>{ translate('Online ID Code') }</th>
+                        <th>{ translate('Date/Time') }</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -92,7 +98,11 @@ const CSVPreview = (ps) => {
                 onClick={ send.exec }
                 disabled={ hasErrors || send.isTransmitting }
             >
-                { send.isTransmitting ? 'Bitte Warten...' : 'Importieren' }
+                { send.isTransmitting ? (
+                    translate('Please wait...')
+                ) : (
+                    translate('_perform_import')
+                )}
             </Button>
         </>
     )
@@ -101,11 +111,12 @@ const CSVPreview = (ps) => {
 const Row = (ps) => {
     var { previewItem, related } = ps;
     var { subjectId, timestamp, onlineId, error } = previewItem;
+    var locale = useUILocale();
     return (
         <tr className={ error ? 'text-danger' : '' }>
             <td>{ subjectId ? related.subject[subjectId] : '' }</td>
             <td>{ onlineId }</td>
-            <td>{ datefns.format(new Date(timestamp), 'dd.MM.yyyy HH:mm')}</td>
+            <td>{ datefns.format(new Date(timestamp), 'P p', { locale })}</td>
             <td>{ error }</td> 
         </tr>
     )

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useRouteMatch, useParams } from 'react-router-dom';
 
 import { keyBy } from '@mpieva/psydb-core-utils';
@@ -34,6 +35,7 @@ const StudyParticipation = (ps) => {
 
     var revision = useRevision();
 
+    var translate = useUITranslation();
     var permissions = usePermissions();
     var canAddSubjects = permissions.hasFlag('canWriteParticipation');
     var canImportCSV = permissions.isRoot();
@@ -127,7 +129,7 @@ const StudyParticipation = (ps) => {
 
                 { canAddSubjects && (
                     <Button onClick={ createModal.handleShow }>
-                        Proband:innen hinzufügen
+                        { translate('Add Participation') }
                     </Button>
                 )}
                 
@@ -136,7 +138,7 @@ const StudyParticipation = (ps) => {
                         className='ml-2'
                         onClick={ csvImportModal.handleShow }
                     >
-                        CSV-Import
+                        { translate('CSV Import') }
                     </Button>
                 )}
 
