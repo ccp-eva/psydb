@@ -1,5 +1,6 @@
 import React from 'react';
 import { subjectFieldRequirementChecks } from '@mpieva/psydb-schema-enums';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import WithField from '../../with-field';
 import { GenericEnum } from '../scalar';
 
@@ -31,6 +32,8 @@ const Control = (ps) => {
         disabled,
     } = ps;
 
+    var translate = useUITranslation();
+
     var { getFieldProps } = formikForm;
     var selectedPointer = (
         getFieldProps(`${dataXPath}.pointer`).value
@@ -53,7 +56,7 @@ const Control = (ps) => {
         <>
             <GenericEnum { ...({
                 dataXPath: `${dataXPath}.pointer`,
-                label: 'Feld',
+                label: translate('Field'),
                 required: true,
                 options: fieldOptions,
                 disabled,
@@ -61,9 +64,9 @@ const Control = (ps) => {
             
             <GenericEnum { ...({
                 dataXPath: `${dataXPath}.check`,
-                label: 'Bedingung',
+                label: translate('Condition'),
                 required: true,
-                options: checkOptions,
+                options: translate.options(checkOptions),
                 disabled: disabled || !selectedPointer
             }) } />
         </>

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import * as enums from '@mpieva/psydb-schema-enums';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useSend } from '@mpieva/psydb-ui-hooks';
 import { WithDefaultModal, Button } from '@mpieva/psydb-ui-layout';
 
@@ -12,6 +13,8 @@ import {
 const Form = (ps) => {
     var { onSubmit, allowedLabOpsTypes } = ps;
 
+    var translate = useUITranslation();
+
     return (
         <DefaultForm
             onSubmit={ onSubmit }
@@ -21,12 +24,14 @@ const Form = (ps) => {
             {(formikProps) => (
                 <>
                     <Fields.GenericEnum
-                        label='Ablauf-Typ'
+                        label={ translate('Lab Workflow Type') }
                         dataXPath='$.type'
                         options={ enums.experimentVariants.mapping }
                         allowedValues={ allowedLabOpsTypes }
                     />
-                    <Button type='submit'>Speichern</Button>
+                    <Button type='submit'>
+                        { translate('Save') }
+                    </Button>
                 </>
             )}
         </DefaultForm>
@@ -63,8 +68,8 @@ const NewVariantModalBody = (ps) => {
 }
 
 const NewVariantModal = WithDefaultModal({
-    title: 'Neuer Ablauf',
-    size: 'md',
+    title: 'Add Lab Workflow',
+    size: 'lg',
 
     Body: NewVariantModalBody
 });

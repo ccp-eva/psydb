@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -24,13 +25,14 @@ const SettingList = (ps) => {
 
     var { type: variantType } = variantRecord;
 
+    var translate = useUITranslation();
     var permissions = usePermissions();
     var canWrite = permissions.hasFlag('canWriteStudies');
 
     if (settingRecords.length < 1) {
         return (
             <div className='p-3 text-danger'>
-                <b>Keine Proband:innen-Einstellungen</b>
+                <b>{ translate('Please add settings for at least one subject type.') }</b>
             </div>
         )
     }

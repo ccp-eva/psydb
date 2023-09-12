@@ -40,7 +40,7 @@ const NewSettingModalBody = (ps) => {
 }
 
 const NewSettingModal = WithDefaultModal({
-    title: 'Einstellungen hinzufügen',
+    title: 'Add Settings',
     size: 'lg',
 
     Body: NewSettingModalBody

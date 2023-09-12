@@ -178,7 +178,7 @@ var inviteExperimentTypes = createEnumFromMap({
 });
 
 var subjectFieldRequirementChecks = createEnumFromMap({
-    'inter-subject-equality': 'ist Gleich im Termin'
+    'inter-subject-equality': 'Is Equal in Appointment'
 })
 
 var labMethods = createEnumFromMap({

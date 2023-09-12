@@ -1,5 +1,6 @@
 import React from 'react';
-import groupBy from '@mpieva/psydb-common-lib/src/group-by';
+import { groupBy } from '@mpieva/psydb-core-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { SimpleList } from '@mpieva/psydb-ui-layout';
 import VariantListItem from './variant-list-item';
 
@@ -15,6 +16,8 @@ const VariantList = (ps) => {
         ...downstream
     } = ps;
 
+    var translate = useUITranslation();
+
     var groupedSettings = groupBy({
         items: settingRecords,
         byProp: 'experimentVariantId'
@@ -23,8 +26,8 @@ const VariantList = (ps) => {
     return (
         <SimpleList { ...({
             items: variantRecords,
-            emptyLabel:'Keine Ablauf-Einstellungen vorhanden',
-            addButtonLabel: '+ Ablauf',
+            emptyLabel: translate('Please add at least one lab workflow.'),
+            addButtonLabel: '+ ' + translate('Lab Workflow'),
             showAddButton: !!onAddVariant,
             disableAddButton: disableAddLabOps,
             onAdd: onAddVariant,

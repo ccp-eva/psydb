@@ -699,6 +699,10 @@ var maps = [
         de: 'pro Termin'
     },
     {
+        en: 'Condition',
+        de: 'Bedingung'
+    },
+    {
         en: 'Conditions',
         de: 'Bedingungen'
     },
@@ -1275,10 +1279,6 @@ var maps = [
         de: 'Bitte Studie und Termin-Typ wählen.'
     },
     {
-        en: 'Lab Workflow',
-        de: 'Ablauf-Typ'
-    },
-    {
         en: 'Experimenters',
         de: 'Experimenter:innen'
     },
@@ -1415,18 +1415,66 @@ var maps = [
         en: 'Really delete this subject type from the study?',
         de: 'Wirklich diesen Proband:innen-Typ aus dieser Studie löschen?'
     },
+    {
+        en: 'Please add at least one lab workflow.',
+        de: 'Bitte mindestens einen Ablauf hinzufügen.'
+    },
+    {
+        en: 'Lab Workflow Type',
+        de: 'Ablauf-Typ'
+    },
+    {
+        en: 'Add Lab Workflow',
+        de: 'Ablauf hinzufügen'
+    },
+    {
+        en: 'Please add settings for at least one subject type.',
+        de: 'Bitte Einstellungen für mndestens einen Proband:innen-Typ hinzufügen.'
+    },
+    {
+        en: 'Add Settings',
+        de: 'Einstellungen hinzufügen'
+    },
+    {
+        en: 'Lab Workflow',
+        de: 'Ablauf'
+    },
+    {
+        en: 'Settings',
+        de: 'Einstellungen'
+    },
+    {
+        en: 'Appointment Conditions',
+        de: 'Terminbedingungen'
+    },
+    {
+        en: 'Is Equal in Appointment',
+        de: 'Ist Gleich im Termin'
+    },
 ]
 
-export const createTranslate = (lang = 'en') => (template, props) => {
-    var map = maps.find(it => it.internal === template || it.en === template);
+export const createTranslate = (lang = 'en') => {
+    var translate = (template, props) => {
+        var map = maps.find(it => (
+            it.internal === template || it.en === template
+        ));
 
-    var translatedTemplate = map && map[lang];
-    if (translatedTemplate) {
-        return render(translatedTemplate, props);
+        var translatedTemplate = map && map[lang];
+        if (translatedTemplate) {
+            return render(translatedTemplate, props);
+        }
+        else {
+            return render('[!! ' + template + ' !!]', props);
+            // FIXME: temp compat
+            //return render(template, props);
+        }
     }
-    else {
-        return render('[!! ' + template + ' !!]', props);
-        // FIXME: temp compat
-        //return render(template, props);
-    }
+
+    translate.options = (options) => (
+        Object.keys(options).reduce((acc, key) => ({
+            ...acc, [key]: translate(options[key])
+        }), {})
+    );
+
+    return translate;
 }
