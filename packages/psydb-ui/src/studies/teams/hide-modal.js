@@ -1,11 +1,14 @@
 import React from 'react';
-import { WithDefaultModal, Button } from '@mpieva/psydb-ui-layout';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useSend } from '@mpieva/psydb-ui-hooks';
+import { WithDefaultModal, Button } from '@mpieva/psydb-ui-layout';
 
 
 const HideOpsTeamModalBody = (ps) => {
     var { modalPayloadData, onHide, onSuccessfulUpdate } = ps;
     var teamId = modalPayloadData;
+
+    var translate = useUITranslation();
 
     var send = useSend((formData) => ({
         type: 'experimentOperatorTeam/set-visibility',
@@ -17,7 +20,7 @@ const HideOpsTeamModalBody = (ps) => {
     return (
         <>
             <div>
-                Team wirklich ausblenden?
+                { translate('Really hide this team?') }
             </div>
             <hr />
             <div className='d-flex justify-content-end'>
@@ -25,7 +28,7 @@ const HideOpsTeamModalBody = (ps) => {
                     size='sm' variant='danger'
                     onClick={ send.exec }
                 >
-                    Ausblenden
+                    { translate('Hide') }
                 </Button>
             </div>
         </>
@@ -33,7 +36,7 @@ const HideOpsTeamModalBody = (ps) => {
 }
 
 const HideOpsTeamModal = WithDefaultModal({
-    title: 'Team ausblenden',
+    title: 'Hide Team',
     size: 'md',
 
     Body: HideOpsTeamModalBody

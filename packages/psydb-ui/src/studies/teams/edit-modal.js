@@ -62,7 +62,7 @@ const EditOpsTeamModalBody = (ps) => {
 }
 
 const EditOpsTeamModal = WithDefaultModal({
-    title: 'Team bearbeiten',
+    title: 'Edit Team',
     size: 'lg',
 
     Body: EditOpsTeamModalBody

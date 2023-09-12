@@ -1,10 +1,13 @@
 import React from 'react';
 
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { Button } from '@mpieva/psydb-ui-layout';
 import { DefaultForm, Fields } from '@mpieva/psydb-ui-lib';
 
 export const Component = (ps) => {
     var { initialValues, onSubmit, ...pass } = ps;
+
+    var translate = useUITranslation();
 
     return (
         <DefaultForm
@@ -17,7 +20,9 @@ export const Component = (ps) => {
                     <FormFields { ...pass } />
                     <hr />
                     <div className='d-flex justify-content-end'>
-                        <Button type='submit'>Speichern</Button>
+                        <Button type='submit'>
+                            { translate('Save') }
+                        </Button>
                     </div>
                 </>
             )}
@@ -28,11 +33,13 @@ export const Component = (ps) => {
 const FormFields = (ps) => {
     var { hasExperiments, enableVisibility } = ps;
 
+    var translate = useUITranslation();
+
     return (
         <>
             <Fields.Color
                 dataXPath='$.color'
-                label='Farbe'
+                label={ translate('Color') }
             />
             { hasExperiments && (
                 <div className='mb-3'>
@@ -44,14 +51,14 @@ const FormFields = (ps) => {
             )}
             <Fields.ForeignIdList
                 dataXPath='$.personnelIds'
-                label='Experimenter:innen'
+                label={ translate('Experimenters') }
                 collection='personnel'
                 disabled={ hasExperiments }
             />
             { enableVisibility && (
                 <Fields.DefaultBool
                     dataXPath='$.hidden'
-                    label='Ausgeblendet'
+                    label={ translate('Hidden') }
                 />
             )}
         </>

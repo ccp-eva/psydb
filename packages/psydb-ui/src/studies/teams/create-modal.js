@@ -25,7 +25,7 @@ const CreateOpsTeamModalBody = (ps) => {
 }
 
 const CreateOpsTeamModal = WithDefaultModal({
-    title: 'Neues Team',
+    title: 'New Team',
     size: 'lg',
 
     Body: CreateOpsTeamModalBody

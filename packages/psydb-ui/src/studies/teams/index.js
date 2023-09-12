@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 
 import {
     Route,
@@ -8,6 +8,8 @@ import {
     useHistory,
     useParams
 } from 'react-router-dom';
+
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
 import {
     LoadingIndicator,
@@ -33,11 +35,11 @@ const StudyTeams = (ps) => {
     var { path, url } = useRouteMatch();
     var { id: studyId } = useParams();
 
-    var revision = useRevision();
-
+    var translate = useUITranslation();
     var permissions = usePermissions();
     var canEdit = permissions.hasFlag('canWriteStudies');
 
+    var revision = useRevision();
     var createModal = useModalReducer();
     var editModal = useModalReducer();
     var hideModal = useModalReducer();
@@ -61,7 +63,7 @@ const StudyTeams = (ps) => {
             <div className='d-flex justify-content-between mb-3'>
                 { canEdit && (
                     <Button onClick={ createModal.handleShow }>
-                        Neues Team
+                        { translate('New Team') }
                     </Button>
                 )}
                 <div
@@ -75,7 +77,7 @@ const StudyTeams = (ps) => {
                         : <Icons.Square />
                     }
                     <span className='ml-2'>
-                        Ausgeblendete anzeigen
+                        { translate('Show Hidden') }
                     </span>
                 </div>
             </div>
@@ -125,8 +127,11 @@ const StudyTeams = (ps) => {
 }
 
 var Fallback = (ps) => {
+    var translate = useUITranslation();
     return (
-        <Alert variant='info'>Keine Teams vorhanden</Alert>
+        <Alert variant='info'>
+            { translate('No teams in this study.') }
+        </Alert>
     )
 }
 

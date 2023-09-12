@@ -1,5 +1,6 @@
 import React, { useEffect, useReducer } from 'react';
 import classnames from 'classnames';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { Button, Icons } from '@mpieva/psydb-ui-layout';
 
 const StudyTeamListItem = ({
@@ -87,12 +88,13 @@ const StudyTeamListItem = ({
 const TeamEditButton = ({
     onClick
 }) => {
+    var translate = useUITranslation();
     return (
         <TeamButton
             className='bg-white border-left border-bottom'
             style={{ color: '#006066', borderRight: 0, borderTop: 0 }}
             onClick={ onClick }
-            title='Bearbeiten'
+            title={ translate('Edit') }
         >
             <Icons.PencilFill style={{ marginTop: '-2px' }} />
         </TeamButton>
@@ -102,12 +104,13 @@ const TeamEditButton = ({
 const TeamDeleteButton = ({
     onClick
 }) => {
+    var translate = useUITranslation();
     return (
         <TeamButton
             className='bg-white border-left border-top text-danger'
             style={{ borderRight: 0, borderBottom: 0 }}
             onClick={ onClick }
-            title='Löschen'
+            title={ translate('Hide') }
         >
             <Icons.X style={{ marginTop: '-2px', width: '22px', height: '22px' }} />
         </TeamButton>

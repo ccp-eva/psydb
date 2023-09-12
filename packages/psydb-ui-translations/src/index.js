@@ -1491,6 +1491,30 @@ var maps = [
         en: '${count} unprocessed appointments',
         de: '${count} Termine die nicht nachbereitet wurden'
     },
+    {
+        en: 'New Team',
+        de: 'Neues Team'
+    },
+    {
+        en: 'Edit Team',
+        de: 'Team Bearbeiten'
+    },
+    {
+        en: 'No teams in this study.',
+        de: 'Keine Teams in dieser Studie.'
+    },
+    {
+        en: 'Color',
+        de: 'Farbe'
+    },
+    {
+        en: 'Hide Team',
+        de: 'Team Ausblenden'
+    },
+    {
+        en: 'Really hide this team?',
+        de: 'Dieses Team wirklich ausblenden?'
+    },
 ]
 
 export const createTranslate = (lang = 'en') => {
