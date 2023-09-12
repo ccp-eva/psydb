@@ -1,6 +1,7 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { InnerSettingPanel, EditIconButton } from '@mpieva/psydb-ui-layout';
-import { stringifyFieldValue } from '@mpieva/psydb-ui-lib/';
+import { stringifyFieldValue } from '@mpieva/psydb-ui-lib';
 import { AgeFrameCondition } from './age-frame-condition';
 
 
@@ -19,6 +20,8 @@ export const AgeFrame = (ps) => {
         ...downstream
     } = ps;
 
+    var translate = useUITranslation();
+
     var { interval, conditions } = ageFrameRecord.state;
 
     var stringifiedAgeFrame = stringifyFieldValue({
@@ -27,7 +30,7 @@ export const AgeFrame = (ps) => {
     });
 
     var panelProps = {
-        label: `Altersfenster  ${stringifiedAgeFrame}`,
+        label: `${translate('Age Range')}  ${stringifiedAgeFrame}`,
         showEditButton: !!showButtons && !!onEdit,
         showRemoveButton: !!showButtons && !!onRemove,
         onEdit: () => onEdit({

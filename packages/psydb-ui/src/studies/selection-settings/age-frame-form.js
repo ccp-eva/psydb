@@ -1,6 +1,7 @@
 import React from 'react';
 import isSubset from 'is-subset';
-import keyBy from '@mpieva/psydb-common-lib/src/key-by';
+import { keyBy } from '@mpieva/psydb-core-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useSend, useFetch } from '@mpieva/psydb-ui-hooks';
 import { Button, LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
@@ -39,6 +40,8 @@ export const AgeFrameForm = (ps) => {
     if (![ 'create', 'patch' ].includes(op)) {
         throw new Error(`unknown op "${op}"`);
     }
+
+    var translate = useUITranslation();
 
     var [ didFetch, fetched ] = useFetch((agent) => {
         return agent.readCustomRecordTypeMetadata()
@@ -95,17 +98,17 @@ export const AgeFrameForm = (ps) => {
                     return (
                         <>
                             <Fields.AgeFrameBoundary
-                                label='Start'
+                                label={ translate('Start') }
                                 dataXPath='$.interval.start'
                             />
                             <Fields.AgeFrameBoundary
-                                label='Ende'
+                                label={ translate('End') }
                                 dataXPath='$.interval.end'
                             />
                             
                             <div className='pl-3'>
                                 <header className='border-bottom pb-1 mb-2'>
-                                    <b>Bedingungen</b>
+                                    <b>{ translate('Conditions') }</b>
                                 </header>
                                 <Fields.SubjectFieldConditionList { ...({
                                     dataXPath: '$.conditions',
@@ -115,7 +118,7 @@ export const AgeFrameForm = (ps) => {
                             </div>
 
                             <Button type='submit'>
-                                Speichern
+                                { translate('Save') }
                             </Button>
                         </>
                     );

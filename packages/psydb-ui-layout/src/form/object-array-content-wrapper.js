@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import * as Icons from '../icons';
 import { ErrorIndicator } from './error-indicator';
 
@@ -26,22 +27,25 @@ export const ObjectArrayContentWrapper = (ps) => {
     );
 }
 
-const Fallback = (ps) => (
-    <div>
-        <div className='border p-3' style={{
-            position: 'relative',
-        }}>
-            <div className='text-muted' style={{
-                paddingLeft: '15px',
-                opacity: ps.disabled ? 0.5 : 1
+const Fallback = (ps) => {
+    var translate = useUITranslation();
+    return (
+        <div>
+            <div className='border p-3' style={{
+                position: 'relative',
             }}>
-                <i>Keine Einträge</i>
-                <ErrorIndicator { ...ps } />
+                <div className='text-muted' style={{
+                    paddingLeft: '15px',
+                    opacity: ps.disabled ? 0.5 : 1
+                }}>
+                    <i>{ translate('No Items') }</i>
+                    <ErrorIndicator { ...ps } />
+                </div>
             </div>
+            <Footer { ...ps } />
         </div>
-        <Footer { ...ps } />
-    </div>
-)
+    );
+}
 
 const Footer = ({ formikArrayHelpers, defaultItemValue, disabled }) => (
     <AddButtonWrapper>

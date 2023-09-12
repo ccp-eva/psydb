@@ -1,5 +1,7 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { FormHelpers } from '@mpieva/psydb-ui-layout';
+
 import factory from '../../field-array-factory';
 import WithField from '../../with-field';
 import WithFieldArray from '../../with-field-array';
@@ -65,6 +67,8 @@ const Control = (ps) => {
         disabled,
     } = ps;
 
+    var translate = useUITranslation();
+
     var { getFieldProps } = formikForm;
     var selectedPointer = (
         getFieldProps(`${dataXPath}.pointer`).value
@@ -93,7 +97,7 @@ const Control = (ps) => {
         <>
             <ScalarFields.GenericEnum { ...({
                 dataXPath: `${dataXPath}.pointer`,
-                label: 'Feld',
+                label: translate('Field'),
                 required: true,
                 options: fieldOptions,
                 disabled,
@@ -101,7 +105,7 @@ const Control = (ps) => {
 
             <ConditionValueFieldList { ...({
                 dataXPath: `${dataXPath}.values`,
-                label: 'Werte',
+                label: translate('Values'),
                 required: true,
                 disabled: disabled || !selectedPointer,
                 targetField,

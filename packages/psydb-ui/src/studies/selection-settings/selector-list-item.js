@@ -2,6 +2,7 @@ import React from 'react';
 import {
     experimentSelectors as selectorsEnum,
 } from '@mpieva/psydb-schema-enums';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { OuterSettingPanel } from '@mpieva/psydb-ui-layout';
 import AgeFrameList from './age-frame-list';
 
@@ -16,6 +17,8 @@ const SelectorListItem = (ps) => {
         ...downstream
     } = ps;
 
+    var translate = useUITranslation();
+
     var {
         studyId,
         subjectTypeKey,
@@ -26,7 +29,7 @@ const SelectorListItem = (ps) => {
 
     var panelProps = {
         label: `${subjectTypeRecord.state.label}`,
-        addButtonLabel: '+ Altersfenster',
+        addButtonLabel: '+ ' + translate('Age Range'),
         showAddButton: !!onAddAgeFrame,
         showRemoveButton: !!onRemove,
         onAdd: () => onAddAgeFrame({ selectorRecord }),

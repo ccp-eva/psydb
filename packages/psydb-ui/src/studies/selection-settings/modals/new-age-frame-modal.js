@@ -28,7 +28,7 @@ const NewAgeFrameModalBody = (ps) => {
 }
 
 const NewAgeFrameModal = WithDefaultModal({
-    title: 'Altersfenster hinzufügen',
+    title: 'Add Age Range',
     size: 'lg',
 
     Body: NewAgeFrameModalBody

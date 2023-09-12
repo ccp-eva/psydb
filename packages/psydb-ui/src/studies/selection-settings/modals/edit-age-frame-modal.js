@@ -39,7 +39,7 @@ const EditAgeFrameModalBody = (ps) => {
 }
 
 const EditAgeFrameModal = WithDefaultModal({
-    title: 'Altersfenster bearbeiten',
+    title: 'Edit Age Range',
     size: 'lg',
 
     Body: EditAgeFrameModalBody

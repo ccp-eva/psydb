@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import {
     useFetch,
     useModalReducer,
@@ -24,6 +25,7 @@ const StudyExclusion = (ps) => {
     var { studyTopicIds, excludedOtherStudyIds } = studyRecord.state;
     var { relatedRecordLabels } = studyRelated;
 
+    var translate = useUITranslation();
     var permissions = usePermissions();
     var canWrite = permissions.hasCollectionFlag('study', 'write');
 
@@ -50,7 +52,7 @@ const StudyExclusion = (ps) => {
             ))
             .join(', ')
         )
-        : 'Keine anderen Studien ausgeschlossen'
+        : translate('No other studies are excluded')
     );
 
     var renderedContent = (
@@ -81,7 +83,7 @@ const StudyExclusion = (ps) => {
                 onSuccessfulUpdate,
             })} />
 
-            <Pair label='Studien-Ausschluss'>
+            <Pair label={ translate('Excluded Studies') }>
                 { renderedContent }
             </Pair>
         </div>

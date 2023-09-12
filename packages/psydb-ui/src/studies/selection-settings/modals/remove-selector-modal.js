@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { demuxed } from '@mpieva/psydb-ui-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useSend } from '@mpieva/psydb-ui-hooks';
 import { Button, WithDefaultModal } from '@mpieva/psydb-ui-layout';
 
@@ -16,6 +16,7 @@ const RemoveSelectorModalBody = (ps) => {
     var { index, selectorRecord } = modalPayloadData;
     var { _id: selectorId, subjectTypeKey } = selectorRecord;
 
+    var translate = useUITranslation();
 
     var send = useSend(() => ({
         type: `subjectSelector/remove`,
@@ -28,8 +29,7 @@ const RemoveSelectorModalBody = (ps) => {
         <div>
             <div className='text-danger mb-2'>
                 <b>
-                    Auswahlbedingungen für diesen
-                    {' '}Proband:innentyp wirklich löschen?
+                    { translate('Really delete this subject type from the study?') }
                 </b>
             </div>
             <div className='p-3 border bg-white'>
@@ -37,7 +37,7 @@ const RemoveSelectorModalBody = (ps) => {
             </div>
             <div className='mt-3 d-flex justify-content-end'>
                 <Button selector='danger' onClick={ send.exec }>
-                    Löschen
+                    { translate('Delete') }
                 </Button>
             </div>
         </div>
@@ -45,7 +45,7 @@ const RemoveSelectorModalBody = (ps) => {
 }
 
 const RemoveSelectorModal = WithDefaultModal({
-    title: 'Proband:innentyp löschen',
+    title: 'Delete Subject Type',
     size: 'lg',
 
     Body: RemoveSelectorModalBody

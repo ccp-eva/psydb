@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useSend } from '@mpieva/psydb-ui-hooks';
 import { WithDefaultModal, Button } from '@mpieva/psydb-ui-layout';
 
@@ -10,6 +11,7 @@ import {
 
 const Form = (ps) => {
     var { onSubmit, subjectTypeMap } = ps;
+    var translate = useUITranslation();
 
     return (
         <DefaultForm
@@ -20,11 +22,13 @@ const Form = (ps) => {
             {(formikProps) => (
                 <>
                     <Fields.GenericEnum
-                        label='Proband:innentyp'
+                        label={ translate('Subject Type') }
                         dataXPath='$.subjectTypeKey'
                         options={ subjectTypeMap }
                     />
-                    <Button type='submit'>Speichern</Button>
+                    <Button type='submit'>
+                        { translate('Save') }
+                    </Button>
                 </>
             )}
         </DefaultForm>
@@ -71,7 +75,7 @@ const NewSelectorModalBody = (ps) => {
 }
 
 const NewSelectorModal = WithDefaultModal({
-    title: 'Proband:innentyp hinzufügen',
+    title: 'Add Subject Type',
     size: 'lg',
 
     Body: NewSelectorModalBody

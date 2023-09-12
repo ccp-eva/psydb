@@ -1,5 +1,6 @@
 import React from 'react';
-import groupBy from '@mpieva/psydb-common-lib/src/group-by';
+import { groupBy } from '@mpieva/psydb-core-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { SimpleList } from '@mpieva/psydb-ui-layout';
 import SelectorListItem from './selector-list-item';
 
@@ -15,6 +16,8 @@ const SelectorList = (ps) => {
         ...downstream
     } = ps;
 
+    var translate = useUITranslation();
+
     var groupedAgeFrames = groupBy({
         items: ageFrameRecords,
         byProp: 'subjectSelectorId'
@@ -23,9 +26,11 @@ const SelectorList = (ps) => {
     return (
         <SimpleList { ...({
             items: selectorRecords,
-            emptyLabel: 'Keine Proband:innentypen mit Auswahlbedingungen',
+            emptyLabel: (
+                translate('No subject types with selection settings.')
+            ),
             emptyClassName: 'text-muted',
-            addButtonLabel: '+ Proband:innentyp',
+            addButtonLabel: '+ ' + translate('Subject Type'),
             onAdd: onAddSelector,
             showAddButton: !!onAddSelector,
             disableAddButton: disableAddSelector,

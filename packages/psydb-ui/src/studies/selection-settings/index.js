@@ -1,6 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import {
     useFetch,
     useRevision,
@@ -13,6 +14,8 @@ import StudyExclusion from './study-exclusion';
 const SelectionSettings = (ps) => {
     var { recordType: studyType } = ps;
     var { id: studyId } = useParams();
+    
+    var translate = useUITranslation();
     var revision = useRevision();
     
     var [ didFetch, fetched ] = useFetch((agent) => (
@@ -35,7 +38,7 @@ const SelectionSettings = (ps) => {
     return (
         <>
             <h5 className='mt-3 mb-2 border-bottom pb-1'>
-                Allgemeine Bedingungen
+                { translate('General Conditions') }
             </h5>
             <div className='mb-3 p-3 border bg-white'>
                 <StudyExclusion {...({
@@ -47,7 +50,7 @@ const SelectionSettings = (ps) => {
                 })} />
             </div>
             <h5 className='mb-2 border-bottom pb-1'>
-                Zugeordnete Proband:innentypen
+                { translate('Enabled Subject Types') }
             </h5>
             <div className='mb-3'>
                 <SubjectTypeSettings studyId={ studyId } />

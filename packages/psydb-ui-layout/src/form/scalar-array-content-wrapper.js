@@ -1,6 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import { Button } from 'react-bootstrap';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import * as Icons from '../icons';
 import { ErrorIndicator } from './error-indicator';
 
@@ -39,22 +40,26 @@ export const ScalarArrayContentWrapper = (ps) => {
     );
 }
 
-const Fallback = (ps) => (
-    <div>
-        <div className={ ps.className } style={{
-            position: 'relative',
-        }}>
-            <div className='text-muted' style={{
-                paddingLeft: '15px',
-                opacity: ps.disabled ? 0.5 : 1
+const Fallback = (ps) => {
+    var translate = useUITranslation();
+
+    return (
+        <div>
+            <div className={ ps.className } style={{
+                position: 'relative',
             }}>
-                <i>{ ps.fallbackLabel || 'Keine Einträge' }</i>
-                <ErrorIndicator { ...ps } />
+                <div className='text-muted' style={{
+                    paddingLeft: '15px',
+                    opacity: ps.disabled ? 0.5 : 1
+                }}>
+                    <i>{ ps.fallbackLabel || translate('No Items') }</i>
+                    <ErrorIndicator { ...ps } />
+                </div>
+                <Footer { ...ps } />
             </div>
-            <Footer { ...ps } />
         </div>
-    </div>
-)
+    )
+}
 
 const Footer = ({ formikArrayHelpers, defaultItemValue, disabled }) => (
     <div className='mt-3'>

@@ -1338,6 +1338,83 @@ var maps = [
         en: 'There exist study participations!',
         de: 'Es existieren Studienteilnahmen!'
     },
+    {
+        en: 'General Conditions',
+        de: 'Allgemeine Bedingungen'
+    },
+    {
+        en: 'Enabled Subject Types',
+        de: 'Zugeordnete Proband:innentypen'
+    },
+    {
+        en: 'No other studies are excluded',
+        de: 'Keine anderen Studien ausgeschlossen'
+    },
+    {
+        en: 'Excluded Studies',
+        de: 'Studien-Ausschluss'
+    },
+    {
+        en: 'No subject types with selection settings.',
+        de: 'Keine Proband:innentypen mit Auswahlbedingungen.'
+    },
+    {
+        en: 'Study Type',
+        de: 'Studien-Typ'
+    },
+    {
+        en: 'Subject Type',
+        de: 'Proband:innen-Typ'
+    },
+    {
+        en: 'Add Subject Type',
+        de: 'Proband:innen-Typ hinzufügen'
+    },
+    {
+        en: 'Add Age Range',
+        de: 'Altersfenster hinzufügen'
+    },
+    {
+        en: 'No Age Ranges',
+        de: 'Keine Altersfenster'
+    },
+    {
+        internal: '_age_frame_placeholder',
+        en: 'Y/M/D',
+        de: 'J/M/T'
+    },
+    {
+        en: 'Field',
+        de: 'Feld'
+    },
+    {
+        en: 'Values',
+        de: 'Werte'
+    },
+    {
+        en: 'No Items',
+        de: 'Keine Einträge'
+    },
+    {
+        en: 'Edit Age Range',
+        de: 'Altersfenster Bearbeiten'
+    },
+    {
+        en: 'Delete Age Range',
+        de: 'Altersfenster Löschen'
+    },
+    {
+        en: 'Really delete the age range?',
+        de: 'Dieses Altersfenster wirklich löschen?'
+    },
+    {
+        en: 'Delete Subject Type',
+        de: 'Proband:innen-Typ Löschen'
+    },
+    {
+        en: 'Really delete this subject type from the study?',
+        de: 'Wirklich diesen Proband:innen-Typ aus dieser Studie löschen?'
+    },
 ]
 
 export const createTranslate = (lang = 'en') => (template, props) => {
