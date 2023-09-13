@@ -3,6 +3,7 @@ import React from 'react';
 import { withField } from '@cdxoo/formik-utils';
 
 import { CRTSettings } from '@mpieva/psydb-common-lib';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
 import { Fields } from '@mpieva/psydb-ui-lib';
@@ -15,6 +16,8 @@ const ColumnSelect = withField({
 
 export const Columns = (ps) => {
     var { formData, crtSettings, schema } = ps;
+    
+    var translate = useUITranslation();
     var permissions = usePermissions();
     
     var crt = CRTSettings({ data: crtSettings });
@@ -33,37 +36,37 @@ export const Columns = (ps) => {
                 {
                     ...it,
                     pointer: it.pointer + '/city',
-                    label: `Ort (${it.displayName})`
+                    label: `${translate('_address_city')} (${it.displayName})`
                 },
                 {
                     ...it,
                     pointer: it.pointer + '/postcode',
-                    label: `PLZ (${it.displayName})`
+                    label: `${translate('_address_postcode')} (${it.displayName})`
                 },
                 {
                     ...it,
                     pointer: it.pointer + '/street',
-                    label: `Straße (${it.displayName})`
+                    label: `${translate('_address_street')} (${it.displayName})`
                 },
                 {
                     ...it,
                     pointer: it.pointer + '/housenumber',
-                    label: `Nummer (${it.displayName})`
+                    label: `${translate('_address_housenumber')} (${it.displayName})`
                 },
                 {
                     ...it,
                     pointer: it.pointer + '/affix',
-                    label: `Zusatz (${it.displayName})`
+                    label: `${translate('_address_affix')} (${it.displayName})`
                 }
             ])
         }
     }
 
     var sortableColumns = [
-        { pointer: '/sequenceNumber', label: 'ID Nr.' },
-        { pointer: '/onlineId', label: 'Online ID Code' },
+        { pointer: '/sequenceNumber', label: translate('ID No.') },
+        { pointer: '/onlineId', label: translate('Online ID Code') },
         ...(permissions.isRoot() ? [
-            { pointer: '/_id', label: 'Interne ID' }
+            { pointer: '/_id', label: translate('Internal ID') }
         ] : []),
         ...customColumns,
 
@@ -73,37 +76,51 @@ export const Columns = (ps) => {
     ];
 
     var specialColumns = [
-        { pointer: '/_specialStudyParticipation', label: 'Studien' },
-        { pointer: '/_specialUpcomingExperiments', label: 'Termine' },
+        { 
+            pointer: '/_specialStudyParticipation',
+            label: translate('Studies')
+        },
+        {
+            pointer: '/_specialUpcomingExperiments',
+            label: translate('Appointments')
+        },
         {
             pointer: '/_specialHistoricExperimentLocations',
-            label: 'Historische Termin-Locations'
+            label: translate('Historical Appointment Locations')
         },
-        { pointer: '/_specialAgeToday', label: 'Alter' },
-        { pointer: '/scientific/state/comment', label: 'Kommentar' },
+        {
+            pointer: '/_specialAgeToday',
+            label: translate('Age Today')
+        },
+        {
+            pointer: '/scientific/state/comment',
+            label: translate('Comment')
+        },
+    ];
+
+    var columnBlocks = [
+        [
+            { pointer: '/sequenceNumber', label: translate('ID No.') },
+            { pointer: '/onlineId', label: translate('Online ID Code') },
+            ...(permissions.isRoot() ? [
+                { pointer: '/_id', label: translate('Internal ID') }
+            ] : []),
+        ],
+        customColumns,
+        ...addressFieldExtraBlocks,
+        specialColumns,
     ];
 
     return (
         <div className='bg-light p-3 border border-top-0'>
             <ColumnSelect
-                columnLabel='Ausgewählt'
-                orderLabel='Anordnung'
+                columnLabel={ translate('Selected') }
+                orderLabel={ translate('Column Order') }
                 dataXPath='$.columns'
-                columnBlocks={[
-                    [
-                        { pointer: '/sequenceNumber', label: 'ID Nr.' },
-                        { pointer: '/onlineId', label: 'Online ID Code' },
-                        ...(permissions.isRoot() ? [
-                            { pointer: '/_id', label: 'Interne ID' }
-                        ] : []),
-                    ],
-                    customColumns,
-                    ...addressFieldExtraBlocks,
-                    specialColumns,
-                ]}
+                columnBlocks={ columnBlocks }
             >
                 <header className='mb-2 border-bottom'>
-                    <b>Sortierung</b>
+                    <b>{ translate('Sort Order') }</b>
                 </header>
                 <Fields.GenericEnum
                     dataXPath='$.sort.column'
@@ -115,16 +132,16 @@ export const Columns = (ps) => {
                 />
                 <Fields.GenericEnum
                     dataXPath='$.sort.direction'
-                    label='Richtung'
-                    options={{
-                        asc: 'Aufsteigend',
-                        desc: 'Absteigend',
-                    }}
+                    label={ translate('_sort_direction') }
+                    options={ translate.options({
+                        asc: '_sort_direction_asc',
+                        desc: '_sort_direction_desc',
+                    })}
                 />
             </ColumnSelect>
             <div>
                 <Button type='submit'>
-                    Weiter
+                    { translate('Next') }
                 </Button>
             </div>
         </div>

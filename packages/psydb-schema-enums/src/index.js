@@ -182,10 +182,10 @@ var subjectFieldRequirementChecks = createEnumFromMap({
 })
 
 var labMethods = createEnumFromMap({
-    'inhouse': 'Interne Termine',
-    'away-team': 'Externe Termine',
-    'online-video-call': 'Online-Video-Termine',
-    'online-survey': 'Online-Umfrage',
+    'inhouse': 'Inhouse Appointments',
+    'away-team': 'External Appointments',
+    'online-video-call': 'Online Video Appointments',
+    'online-survey': 'Online Survey',
 });
 
 module.exports = {

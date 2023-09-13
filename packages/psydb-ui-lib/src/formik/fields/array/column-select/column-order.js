@@ -18,7 +18,7 @@ export const ColumnOrder = withField({
                 <table className='table table-hover table-borderless table-sm table-selectable m-0'>
                     <tbody>
                         { value.map((it, index) => (
-                            <tr key={ it }><td>
+                            <tr key={ index }><td>
                                 <ColumnOrderItem
                                     index={ index }
                                     lastIndex={ value.length - 1 }

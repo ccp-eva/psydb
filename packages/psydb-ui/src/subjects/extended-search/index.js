@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Base64 } from 'js-base64';
 import { useHistory, useLocation } from 'react-router';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
 import {
     useFetchAll,
@@ -83,6 +84,8 @@ const ExtendedSearch = (ps) => {
 
     var location = useLocation();
     var history = useHistory();
+    var translate = useUITranslation();
+
     var [ query, updateQuery ] = useURLSearchParams({
         defaults: { tab: 'filters' }
     });
@@ -124,7 +127,7 @@ const ExtendedSearch = (ps) => {
     };
 
     return (
-        <PageWrappers.Level3 title='Erweiterte Proband:innensuche'>
+        <PageWrappers.Level3 title={ translate('Advanced Subject Search') }>
             <DefaultForm
                 onSubmit={ (formData) => { handleSwitchTab({
                     nextTab: getNextTabKey(tab),
@@ -147,9 +150,9 @@ const ExtendedSearch = (ps) => {
 }
 
 const tabs = [
-    { key: 'filters', label: '1. Suchbedingungen' },
-    { key: 'columns', label: '2. Spalten' },
-    { key: 'results', label: '3. Ergebnisliste' },
+    { key: 'filters', label: '_extended_search_filters_tab' },
+    { key: 'columns', label: '_extended_search_columns_tab' },
+    { key: 'results', label: '_extended_search_results_tab' },
 ]
 
 const getNextTabKey = (current) => {
@@ -170,6 +173,8 @@ const Inner = (ps) => {
         formData,
     } = ps;
 
+    var translate = useUITranslation();
+
     var Component = {
         filters: Filters,
         columns: Columns,
@@ -185,7 +190,10 @@ const Inner = (ps) => {
                 activeKey={ activeTab }
                 className='d-flex media-print-hidden'
                 itemClassName='flex-grow'
-                items={ tabs }
+                items={ tabs.map((it, ix) => ({
+                    key: it.key,
+                    label: `${ix + 1}. ${translate(it.label)}`
+                })) }
             />
             <Component
                 formData={ formData }

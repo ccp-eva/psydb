@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
 import {
@@ -11,22 +12,24 @@ import {
 export const Filters = (ps) => {
     var { crtSettings, schema } = ps;
     var { fieldDefinitions } = crtSettings;
+    
+    var translate = useUITranslation();
     var permissions = usePermissions();
     
     return (
-        <FormBox title='Suchbedingungen'>
+        <FormBox title={ translate('_extended_search_filters_tab') }>
             <Fields.Integer
                 dataXPath='$.specialFilters.sequenceNumber'
-                label='ID Nr.'
+                label={ translate('ID No.') }
             />
             <Fields.SaneString
                 dataXPath='$.specialFilters.onlineId'
-                label='Online ID Code'
+                label={ translate('Online ID Code') }
             />
             { permissions.isRoot() && (
                 <Fields.SaneString
                     dataXPath='$.specialFilters.subjectId'
-                    label='Interne ID'
+                    label={ translate('Internal ID') }
                 />
             )}
             <Fields.Custom
@@ -41,36 +44,36 @@ export const Filters = (ps) => {
             />
             <Fields.HasTestingPermission
                 dataXPath='$.specialFilters.hasTestingPermission'
-                label='Hat Teilnahme-Erlaubnis'
+                label={ translate('Has Participation Permission')  }
             />
             <Fields.ForeignIdList
                 dataXPath='$.specialFilters.didParticipateIn'
-                label='Hat Teilgenommen an'
+                label={ translate('Has Participated in') }
                 collection='study'
             />
             <Fields.ForeignIdList
                 dataXPath='$.specialFilters.didNotParticipateIn'
-                label='Hat nicht Teilgenommen an'
+                label={ translate('Has Not Participated in') }
                 collection='study'
             />
             
             <Fields.FullText
                 dataXPath='$.specialFilters.comment'
-                label='Kommentar'
+                label={ translate('Comment') }
             />
 
             <Fields.GenericRadioGroup
                 dataXPath='$.specialFilters.isHidden'
-                label='Ausgeblendete'
-                options={{
-                    'any': 'Alle Anzeigen',
-                    'only-false': 'Nicht Anzeigen',
-                    'only-true': 'Nur Ausgeblendete Anzeigen'
-                }}
+                label={ translate('Hidden Records') }
+                options={translate.options({
+                    'any': '_isHidden_any',
+                    'only-false': '_isHidden_only-false',
+                    'only-true': '_isHidden_only-true'
+                })}
             />
 
             <Button type='submit'>
-                Weiter
+                { translate('Next') }
             </Button>
         </FormBox>
     )

@@ -1,13 +1,19 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { GenericMultiCheckbox } from './generic-multi-checkbox';
 
-export const ExtBool = (ps) => (
-    <GenericMultiCheckbox
-        options={{
-            'yes': 'Ja',
-            'no': 'Nein',
-            'unknown': 'Unbekannt',
-        }}
-        { ...ps }
-    />
-)
+const options = {
+    'yes': 'Yes',
+    'no': 'No',
+    'unknown': 'Unknown',
+}
+
+export const ExtBool = (ps) => {
+    var translate = useUITranslation();
+    return (
+        <GenericMultiCheckbox
+            options={ translate.options(options) }
+            { ...ps }
+        />
+    )
+}

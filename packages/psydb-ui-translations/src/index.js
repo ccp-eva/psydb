@@ -1589,7 +1589,7 @@ var maps = [
     {
         internal: '_address_city',
         en: 'City',
-        de: 'Stadt'
+        de: 'Ort'
     },
     {
         internal: '_address_country',
@@ -1693,6 +1693,125 @@ var maps = [
         internal: '_form_array_add_button',
         en: 'New Item',
         de: 'Neuer Eintrag',
+    },
+    {
+        en: 'Advanced Subject Search',
+        de: 'Erweiterte Proband:innen-Suche',
+    },
+    {
+        internal: '_extended_search_filters_tab',
+        en: 'Search Conditions',
+        de: 'Suchbedingungen',
+    },
+    {
+        internal: '_extended_search_columns_tab',
+        en: 'Columns',
+        de: 'Spalten',
+    },
+    {
+        internal: '_extended_search_results_tab',
+        en: 'Result List',
+        de: 'Regebnisliste',
+    },
+    {
+        en: 'Internal ID',
+        de: 'Interne ID',
+    },
+    {
+        en: 'Has Participation Permission',
+        de: 'Hat Teilnahme-Erlaubnis',
+    },
+    {
+        en: 'Has Participated in',
+        de: 'Hat Teilgenommen an',
+    },
+    {
+        en: 'Has Not Participated in',
+        de: 'Hat Nicht Teilgenommen an',
+    },
+    {
+        internal: '_isHidden_any',
+        en: 'Show All',
+        de: 'Alle Anzeigen',
+    },
+    {
+        internal: '_isHidden_only-false',
+        en: 'Do Not Show',
+        de: 'Nicht Anzeigen',
+    },
+    {
+        internal: '_isHidden_only-true',
+        en: 'Only Show Hidden',
+        de: 'Nur Ausgeblendete Anzeigen',
+    },
+    {
+        en: 'Hidden Records',
+        de: 'Ausgeblendete Datensätze',
+    },
+    {
+        en: 'Minimum',
+        de: 'Minimum',
+    },
+    {
+        en: 'Maximum',
+        de: 'Maximum',
+    },
+    {
+        en: 'No Conditions',
+        de: 'Keine Bedingungen',
+    },
+    {
+        en: 'Not with theese Values',
+        de: 'Nicht mit diesen Werten',
+    },
+    {
+        en: 'Values',
+        de: 'Werte',
+    },
+    {
+        internal: '_range_from',
+        en: 'From',
+        de: 'Von',
+    },
+    {
+        internal: '_range_to',
+        en: 'To',
+        de: 'Bis',
+    },
+    {
+        en: 'Date Range',
+        de: 'Zeitraum'
+    },
+    {
+        en: 'Time Range',
+        de: 'Zeitraum'
+    },
+    {
+        en: 'Historical Appointment Locations',
+        de: 'Historische Termin-Locations'
+    },
+    {
+        en: 'Sort Order',
+        de: 'Sortierung'
+    },
+    {
+        en: 'Column Order',
+        de: 'Spalten Anordnung'
+    },
+    {
+        internal: '_sort_direction',
+        en: 'Direction',
+        de: 'Richtung'
+    },
+    {
+        internal: '_sort_direction_asc',
+        en: 'Ascending',
+        de: 'Aufsteigend'
+    },
+    {
+        internal: '_sort_direction_desc',
+        en: 'Descending',
+        de: 'Absteigend'
     },
 ]
 
