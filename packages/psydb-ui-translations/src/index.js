@@ -2013,6 +2013,36 @@ var maps = [
         en: 'System Role Details',
         de: 'System-Rollen-Details',
     },
+
+
+    {
+        en: 'This Field is Required. Please provide a value.',
+        de: 'Dies ist ein Plichtfeld. Bitte einen Wert eingeben.'
+    },
+    {
+        en: 'Must have at least ${count} items.',
+        de: 'Muss mindestens ${count} Einträge haben.'
+    },
+    {
+        en: 'Must have at least ${count} characters.',
+        de: 'Muss mindestens ${count} Zeichen haben.'
+    },
+    {
+        en: 'Must be greater than ${limit}.',
+        de: 'Muss grösser als ${limit} sein.'
+    },
+    {
+        en: 'Must be greater than or equal ${limit}.',
+        de: 'Muss grösser oder gleich ${limit} sein.'
+    },
+    {
+        en: 'This is not a valid e-mail address.',
+        de: 'Dies is keine valide E-Mail-Adresse.'
+    },
+    {
+        en: 'Contains invalid duplicate data.',
+        de: 'Enthält ungültige Duplikat-Daten.'
+    },
 ]
 
 export const createTranslate = (lang = 'en') => {

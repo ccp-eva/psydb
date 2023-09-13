@@ -1,9 +1,12 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
 export const ErrorIndicator = (ps) => {
     var { index, formikMeta = {} } = ps;
     var { error } = formikMeta;
+
+    var translate = useUITranslation();
 
     if (error && index >= 0) {
         error = error[index];
@@ -15,7 +18,7 @@ export const ErrorIndicator = (ps) => {
             <div className='text-danger' style={{ fontSize: '80%' }}>
                 { error['@@ERRORS'].map((err, index) => (
                     <div key={ index }>
-                        { createFriendlyMessage(err) }
+                        { createFriendlyMessage(err, translate) }
                     </div>
                 )) }
             </div>
@@ -24,37 +27,49 @@ export const ErrorIndicator = (ps) => {
     );
 }
 
-const createFriendlyMessage = (err) => {
+const createFriendlyMessage = (err, translate) => {
     var { keyword, params } = err;
     console.log(err);
     switch (keyword) {
         case 'type':
         case 'required':
-            return 'Dies ist ein Plichtfeld. Bitte einen Wert eingeben.'
+            return translate('This Field is Required. Please provide a value.');
         case 'minLength':
             return (
                 params.limit === 1
-                ? 'Dies ist ein Plichtfeld. Bitte einen Wert eingeben.'
-                : `Muss mindestens ${params.limit} Zeichen haben.`
+                ? translate('This Field is Required. Please provide a value.')
+                : translate(
+                    'Must have at least ${count} characters.',
+                    { count: params.limit }
+                )
             );
         case 'minItems':
             return (
                 params.limit === 1
-                ? 'Dies ist ein Plichtfeld. Bitte einen Wert eingeben.'
-                : `Muss mindestens ${params.limit} Einträge haben.`
+                ? translate('This Field is Required. Please provide a value.')
+                : translate(
+                    'Must have at least ${count} items.',
+                    { count: params.limit }
+                )
             );
         case 'minimum':
             return (
                 params.exclusive
-                ? `Muss größer als ${params.limit} sein.`
-                : `Muss größer oder gleich ${params.limit} sein.`
+                ? translate(
+                    'Must be greater than ${limit}.',
+                    { limit: params.limit }
+                )
+                : translate(
+                    'Must be greater than or equal ${limit}.',
+                    { limit: params.limit }
+                )
             );
         case 'format':
             if (['mongodb-object-id'].includes(params.format)) {
-                return 'Dies ist ein Plichtfeld. Bitte einen Wert eingeben.'
+                return translate('This Field is Required. Please provide a value.');
             }
             else if (['email'].includes(params.format)) {
-                return 'Dies ist keine valide EMail-Adresse.'
+                return translate('This is not a valid e-mail address.')
             }
             else {
                 return err.message;
@@ -64,7 +79,7 @@ const createFriendlyMessage = (err) => {
             // FIXME: this error message is basically useless
             // FIXME: also the original just says 'should pass
             // uniqteItemProperties' which is also useless
-            return 'Enthält ungültige Duplikat-Daten';
+            return translate('Contains invalid duplicate data.');
 
         case 'FakeAjvError':
             return err.message;
