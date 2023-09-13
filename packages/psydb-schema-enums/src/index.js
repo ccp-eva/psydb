@@ -158,23 +158,23 @@ var foreignIdFieldCollections = createEnumFromKV({
 
 // FIXME: rename labProcedureTypes
 var experimentVariants = createEnumFromMap({
-    'inhouse': 'Interne Termine',
-    'away-team': 'Externe Termine',
-    'online-video-call': 'Online-Video-Termine',
-    'online-survey': 'Online-Umfrage',
+    'inhouse': 'Inhouse Appointments',
+    'away-team': 'External Appointments',
+    'online-video-call': 'Online Video Appointments',
+    'online-survey': 'Online Survey',
     //'inhouse-group-simple': 'Interne Gruppen Termine (WKPRC)'
 });
 
 var experimentTypes = createEnumFromMap({
-    'inhouse': 'Interne Termine',
-    'away-team': 'Externe Termine',
-    'online-video-call': 'Online-Video-Termine',
+    'inhouse': 'Inhouse Appointments',
+    'away-team': 'External Appointments',
+    'online-video-call': 'Online Video Appointments',
     //'inhouse-group-simple': 'Interne Gruppen Termine (WKPRC)'
 });
 
 var inviteExperimentTypes = createEnumFromMap({
-    'inhouse': 'Interne Termine',
-    'online-video-call': 'Online-Video-Termine',
+    'inhouse': 'Inhouse Appointments',
+    'online-video-call': 'Online Video Appointments',
 });
 
 var subjectFieldRequirementChecks = createEnumFromMap({

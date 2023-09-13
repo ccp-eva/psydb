@@ -1,6 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { Form, InputGroup } from '@mpieva/psydb-ui-layout';
 import { EditButton, ClearButton } from './buttons';
 
@@ -16,6 +17,8 @@ export const PickerInput = (ps) => {
         onClear
     } = ps;
     
+    var translate = useUITranslation();
+
     var className = classnames([
         'border pl-3',
         !disabled && 'bg-white',
@@ -33,7 +36,7 @@ export const PickerInput = (ps) => {
             <Form.Control
                 className={ className }
                 value={ displayValue }
-                placeholder='Bitte Datensatz wählen'
+                placeholder={ translate('_record_picker_placeholder') }
                 plaintext
                 readOnly
                 onClick={ onEdit }

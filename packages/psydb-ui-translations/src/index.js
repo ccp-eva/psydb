@@ -1644,6 +1644,56 @@ var maps = [
         en: 'System Role',
         de: 'System-Rolle'
     },
+    {
+        internal: '_testing_permission_for',
+        en: 'For',
+        de: 'Für'
+    },
+    {
+        internal: '_testing_permission_value',
+        en: 'Permission',
+        de: 'Erlaubnis'
+    },
+    {
+        internal: '_record_picker_placeholder',
+        en: 'Select Record',
+        de: 'Datensatz Auswählen'
+    },
+    {
+        internal: '_record_picker_modal_title',
+        en: 'Select Record',
+        de: 'Datensatz Auswählen'
+    },
+    {
+        internal: '_record_picker_change_button',
+        en: 'Change Value',
+        de: 'Wert Ändern'
+    },
+    {
+        internal: '_record_picker_reset_button',
+        en: 'Reset',
+        de: 'Zurücksetzen',
+    },
+    {
+        internal: '_form_array_moveup_button',
+        en: 'Move Up',
+        de: 'Nach Oben',
+    },
+    {
+        internal: '_form_array_movedown_button',
+        en: 'Move Down',
+        de: 'Nach Unten',
+    },
+    {
+        internal: '_form_array_remove_button',
+        en: 'Remove',
+        de: 'Entfernen',
+    },
+    {
+        internal: '_form_array_add_button',
+        en: 'New Item',
+        de: 'Neuer Eintrag',
+    },
 ]
 
 export const createTranslate = (lang = 'en') => {
@@ -1668,6 +1718,16 @@ export const createTranslate = (lang = 'en') => {
             ...acc, [key]: translate(options[key])
         }), {})
     );
+
+    // FIXME: that dsoenst work with GenericEnum
+    // and simply shallow cloning doenst wont work either i think
+    // maybe we can add mapping prop
+    //translate.enum = (enumeration) => {
+    //    return {
+    //        keys: enumeration.keys,
+    //        labels: enumeration.labels.map(it => translate(label))
+    //    }
+    //};
 
     return translate;
 }

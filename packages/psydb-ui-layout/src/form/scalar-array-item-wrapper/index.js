@@ -1,5 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import * as Icons from '../../icons';
 import { ErrorIndicator } from '../error-indicator';
 
@@ -59,6 +60,8 @@ var Aside = (ps) => {
         hasRemove,
     } = ps;
 
+    var translate = useUITranslation();
+
     var moveUp = () => formikArrayHelpers.swap(index, index - 1);
     var moveDown = () => formikArrayHelpers.swap(index, index + 1);
     var remove = () => formikArrayHelpers.remove(index);
@@ -79,7 +82,7 @@ var Aside = (ps) => {
             { hasMoveUp && (
                 <MoveButton
                     onClick={ moveUp } disabled={ disabled }
-                    title='nach oben schieben'
+                    title={ translate('_form_array_moveup_button') }
                 >
                     <Icons.ArrowUpShort style={{
                         width: '24px',
@@ -91,7 +94,7 @@ var Aside = (ps) => {
             { hasMoveDown && (
                 <MoveButton
                     onClick={ moveDown } disabled={ disabled }
-                    title='nach unten schieben'
+                    title={ translate('_form_array_moveup_button') }
                 >
                     <Icons.ArrowDownShort style={{
                         width: '24px',
@@ -132,21 +135,25 @@ const MoveButton = ({ children, onClick, disabled, title }) => (
     </button>
 )
 
-const RemoveButton = ({ children, onClick, disabled }) => (
-    <button
-        type='button'
-        role={ disabled ? '': 'button' }
-        onClick={ disabled ? undefined : onClick }
-        style={{
-            color: disabled ? '#ccc' : '#c00',
-            paddingTop: '3px',
-            paddingBottom: '3px',
-            width: '42px',
-            height: '38px',
-        }}
-        className='bg-white border d-flex align-items-center justify-content-center text-danger'
-        title='Löschen'
-    >
-        { children }
-    </button>
-)
+const RemoveButton = (ps) => {
+    var { children, onClick, disabled } = ps;
+    var translate = useUITranslation();
+    return (
+        <button
+            type='button'
+            role={ disabled ? '': 'button' }
+            onClick={ disabled ? undefined : onClick }
+            style={{
+                color: disabled ? '#ccc' : '#c00',
+                paddingTop: '3px',
+                paddingBottom: '3px',
+                width: '42px',
+                height: '38px',
+            }}
+            className='bg-white border d-flex align-items-center justify-content-center text-danger'
+            title={ translate('_form_array_remove_button') }
+        >
+            { children }
+        </button>
+    )
+}

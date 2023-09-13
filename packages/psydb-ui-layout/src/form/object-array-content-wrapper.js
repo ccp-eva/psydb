@@ -71,21 +71,25 @@ const AddButtonWrapper = ({ children }) => (
     </div>
 );
 
-const AddButton = ({ children, onClick, style, disabled }) => (
-    <button
-        type='button'
-        role={ disabled ? '': 'button' }
-        onClick={ disabled ? undefined : onClick }
-        style={{
-            color: disabled ? '#ccc' : '#006066',
-            paddingTop: '3px',
-            paddingBottom: '3px',
-            width: '100px',
-            ...style,
-        }}
-        className=' border d-flex align-items-center justify-content-center bg-white'
-        title='neuer Eintrag'
-    >
-        { children }
-    </button>
-)
+const AddButton = (ps) => {
+    var { children, onClick, style, disabled } = ps;
+    var translate = useUITranslation();
+    return (
+        <button
+            type='button'
+            role={ disabled ? '': 'button' }
+            onClick={ disabled ? undefined : onClick }
+            style={{
+                color: disabled ? '#ccc' : '#006066',
+                paddingTop: '3px',
+                paddingBottom: '3px',
+                width: '100px',
+                ...style,
+            }}
+            className=' border d-flex align-items-center justify-content-center bg-white'
+            title={ translate('_form_array_add_button') }
+        >
+            { children }
+        </button>
+    )
+}

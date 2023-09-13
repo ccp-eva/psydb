@@ -1,6 +1,7 @@
 import React from 'react';
 import jsonpointer from 'jsonpointer';
 import inline from '@cdxoo/inline-string';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { withField, withFieldArray } from '@cdxoo/formik-utils';
 import { without } from '@mpieva/psydb-core-utils';
 import { experimentVariants } from '@mpieva/psydb-schema-enums';
@@ -17,6 +18,8 @@ const LabProcedurePermission = withField({
             existingTypeValues,
         } = ps;
         
+        var translate = useUITranslation();
+
         var { value } = formikField;
         var allowedValues = [
             ...without(
@@ -30,8 +33,8 @@ const LabProcedurePermission = withField({
             <>
                 <ScalarFields.GenericEnum
                     dataXPath={ `${dataXPath}.labProcedureTypeKey` }
-                    label='Für'
-                    enum={ experimentVariants }
+                    label={ translate('_testing_permission_for') }
+                    options={ translate.options(experimentVariants.mapping) }
 
                     allowedValues={ allowedValues }
 
@@ -39,7 +42,7 @@ const LabProcedurePermission = withField({
                 />
                 <ScalarFields.ExtBool
                     dataXPath={ `${dataXPath}.value` }
-                    label='Erlaubnis'
+                    label={ translate('_testing_permission_value') }
                     required
                 />
             </>

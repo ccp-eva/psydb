@@ -1,4 +1,5 @@
 import React, { useState }  from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 import { WithDefaultModal } from '@mpieva/psydb-ui-layout';
 import { usePickerHandling } from './use-picker-handling';
@@ -45,7 +46,7 @@ export const withRecordPicker = (options) => {
     );
 
     var RecordPickerModal = WithDefaultModal({
-        title: 'Auswählen',
+        title: '_record_picker_modal_title',
         size: 'xl',
         className: '',
         backdropClassName: '',

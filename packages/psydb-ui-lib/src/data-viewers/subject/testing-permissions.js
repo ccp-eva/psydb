@@ -80,10 +80,9 @@ const PermissionItem = (ps) => {
                 style={{ marginTop: '-3px' }}
             />
             <span className='d-inline-block ml-2'>
-                { enums.experimentVariants.getLabel(labProcedureTypeKey) }
-                { /* TODO translate(
+                { translate(
                     enums.experimentVariants.getLabel(labProcedureTypeKey)
-                ) */ }
+                )}
             </span>
         </span>
     )

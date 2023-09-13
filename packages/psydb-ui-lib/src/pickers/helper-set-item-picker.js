@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
 import {
     Form,
@@ -19,6 +20,8 @@ const HelperSetItemPicker = (ps) => {
         onChange,
         hasErrors,
     } = ps;
+
+    var translate = useUITranslation();
 
     var {
         modal, cached, onEdit, onSelect, onClear
@@ -42,7 +45,7 @@ const HelperSetItemPicker = (ps) => {
                 <Form.Control
                     className={ classes }
                     value={ displayValue }
-                    placeholder='Bitte Datensatz wählen'
+                    placeholder={ translate('Please Select Record') }
                     plaintext
                     readOnly
                 />
