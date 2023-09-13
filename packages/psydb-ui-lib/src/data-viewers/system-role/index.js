@@ -18,168 +18,168 @@ const labOpsPath = (type, flag) => (
 
 const inviteLabOpsLabels = (type) => ({
     [labOpsPath(type, 'canWriteReservations')]: (
-        'kann Räumlichkeiten reservieren'
+        'Can Reserve Rooms'
     ),
     [labOpsPath(type, 'canSelectSubjectsForExperiments')]: (
-        'kann Proband:innen für Termine auswählen'
+        'Can Select Subjects for Appointments'
     ),
     [labOpsPath(type, 'canConfirmSubjectInvitation')]: (
-        'kann Termine bestätigen'
+        'Can Confirm Appointments'
     ),
     [labOpsPath(type, 'canViewExperimentCalendar')]: (
-        'kann Terminkalender einsehen'
+        'Can View Appointment Calendar'
     ),
     [labOpsPath(type, 'canMoveAndCancelExperiments')]: (
-        'kann Termine verschieben und absagen'
+        'Can Move and Cancel Appointments'
     ),
     [labOpsPath(type, 'canChangeOpsTeam')]: (
-        'kann Experimenter:innen-Teams ändern'
+        'Can Change Experimenter Teams'
     ),
     [labOpsPath(type, 'canPostprocessExperiments')]: (
-        'kann Termine nachbereiten'
+        'Can Postprocess Appointments'
     ),
 })
 
 const awayTeamLabOpsLabels = (type) => ({
     [labOpsPath(type, 'canWriteReservations')]: (
-        'kann Experimenter:innen-Teams planen'
+        'Can Schedule Experimenter Teams'
     ),
     [labOpsPath(type, 'canSelectSubjectsForExperiments')]: (
-        'kann Proband:innen für Termine auswählen'
+        'Can Select Subjects for Appointments'
     ),
     [labOpsPath(type, 'canViewExperimentCalendar')]: (
-        'kann Terminkalender einsehen'
+        'Can View Appointment Calendar'
     ),
     [labOpsPath(type, 'canMoveAndCancelExperiments')]: (
-        'kann Termine verschieben und absagen'
+        'Can Move and Cancel Appointments'
     ),
     [labOpsPath(type, 'canChangeOpsTeam')]: (
-        'kann Experimenter:innen-Teams ändern'
+        'Can Change Experimenter Teams'
     ),
     [labOpsPath(type, 'canPostprocessExperiments')]: (
-        'kann Termine nachbereiten'
+        'Can Postprocess Appointments'
     ),
     [labOpsPath(type, 'canChangeExperimentStudy')]: (
-        'kann Studie von existierenden Terminen ändern'
+        'Can Change Study of Existing Appointments'
     ),
     [labOpsPath(type, 'canRemoveExperimentSubject')]: (
-        'kann Proband:innen aus existierenden Terminen entfernen'
+        'Can Remove Subjects from Existing Appointments'
     ),
 });
 
 const surveyLabOpsLabels = (type) => ({
     [labOpsPath(type, 'canPerformOnlineSurveys')]: (
-        'kann Online-Umfragen durchführen'
+        'Can Carry Out Only Surveys'
     ),
 })
 
 const labels = {
-    '/sequenceNumber': 'ID Nr.',
-    '/state/name': 'Bezeichnung',
+    '/sequenceNumber': 'ID No.',
+    '/state/name': 'Name',
 
     '/state/canReadLocations': (
-        'kann Locations einsehen (Kigas, Räume, etc.)'
+        'Can View Locations (Kigas, Rooms, etc.)'
     ),
     '/state/canWriteLocations': (
-        'kann Locations bearbeiten (Kigas, Räume, etc.)'
+        'Can Edit Locations (Kigas, Rooms, etc.)'
     ),
     '/state/canRemoveLocations': (
-        'kann Locations löschen (Kigas, Räume, etc.)'
+        'Can Delete Locations (Kigas, Rooms, etc.)'
     ),
 
     '/state/canReadExternalPersons': (
-        'kann Externe Personen einsehen (z.B. Ärzte)'
+        'Can View External Persons (e.g. Doctors)'
     ),
     '/state/canWriteExternalPersons': (
-        'kann Externe Personen bearbeiten (z.B. Ärzte)'
+        'Can Edit External Persons (e.g. Doctors)'
     ),
     '/state/canRemoveExternalPersons': (
-        'kann Externe Personen löschen (z.B. Ärzte)'
+        'Can Delete External Persons (e.g. Doctors)'
     ),
 
     '/state/canReadExternalOrganizations': (
-        'kann Externe Organisationen einsehen (z.B. Träger)'
+        'Can View External Organizations (e.g. Kiga Umbrella Orgs)'
     ),
     '/state/canWriteExternalOrganizations': (
-        'kann Externe Organisationen bearbeiten (z.B. Träger)'
+        'Can Edit External Organizations (e.g. Kiga Umbrella Orgs)'
     ),
     '/state/canRemoveExternalOrganizations': (
-        'kann Externe Organisationen löschen (z.B. Träger)'
+        'Can Delete External Organizations (e.g. Kiga Umbrella Orgs)'
     ),
 
     '/state/canReadStudyTopics': (
-        'kann Themengebiete einsehen'
+        'Can View Study Topics'
     ),
     '/state/canWriteStudyTopics': (
-        'kann Themengebiete bearbeiten'
+        'Can Edit Study Topics'
     ),
     '/state/canRemoveStudyTopics': (
-        'kann Themengebiete löschen'
+        'Can Delete Study Topics'
     ),
 
     '/state/canReadHelperSets': (
-        'kann Hilfstabellen einsehen'
+        'Can View Helper Tables'
     ),
     '/state/canWriteHelperSets': (
-        'kann Hilfstabellen bearbeiten'
+        'Can Edit Helper Tables'
     ),
     '/state/canRemoveHelperSets': (
-        'kann Hilfstabellen löschen'
+        'Can Delete Helper Tables'
     ),
 
     '/state/canReadPersonnel': (
-        'kann Mitarbeiter:innen einsehen (d.h. Benutzer-Accounts)'
+        'Can View Staff Members (i.e. User Accounts)'
     ),
     '/state/canWritePersonnel': (
-        'kann Mitarbeiter:innen bearbeiten (d.h. Benutzer-Accounts)'
+        'Can Edit Staff Members (i.e. User Accounts)'
     ),
     '/state/canAllowLogin': (
-        'kann Mitarbeiter:innen Login-Erlaubnis gewähren und entziehen'
+        'Can Grant and Revoke Staff Members Log-In Permission'
     ),
     '/state/canSetPersonnelPassword': (
-        'kann das Passwort anderer Mitarbeiter:innen manuell neu setzen'
+        'Can Set Password of Other Staff Members'
     ),
 
     '/state/canReadStudies': (
-        'kann Studien einsehen'
+        'Can View Studies'
     ),
     '/state/canWriteStudies': (
-        'kann Studien anlegen und bearbeiten'
+        'Can Edit Studies'
     ),
     '/state/canRemoveStudies': (
-        'kann Studien löschen'
+        'Can Delete Studies'
     ),
 
     '/state/canReadSubjects': (
-        'kann Proband:innen einsehen'
+        'Can View Subjects'
     ),
     '/state/canWriteSubjects': (
-        'kann Proband:innen anlegen und bearbeiten'
+        'Can Edit Subjects'
     ),
     '/state/canRemoveSubjects': (
-        'kann Proband:innen löschen'
+        'Can Delete Subjects'
     ),
 
     '/state/canReadParticipation': (
-        'kann einsehen welche Proband:innen an einer Studie teilgeommen haben'
+        'Can View Study Participation'
     ),
     '/state/canWriteParticipation': (
-        'kann manuell Proband:innen in eine Studie eintragen'
+        'Can Add Study Participations Manually'
     ),
     '/state/canCreateReservationsWithinTheNext3Days': (
-        'kann Räume/Teams innerhalb der nächsten 3 Tage reservieren'
+        'Can Reserve Rooms/Teams Within the Next 3 Days'
     ),
     '/state/canCreateExperimentsWithinTheNext3Days': (
-        'kann Termine innerhalb der nächsten 3 Tage machen'
+        'Can Make Appointments Within the Next 3 Days'
     ),
     '/state/canUseExtendedSearch': (
-        'kann die Erweiterte Suche benutzen'
+        'Can Use Advanced Search'
     ),
     '/state/canUseCSVExport': (
-        'kann CSV-Export benutzen'
+        'Can Use CSV Export'
     ),
     '/state/canViewReceptionCalendar': (
-        'kann Rezeptionskalender einsehen'
+        'Can View Receptionist Calendar'
     ),
 
     ...inviteLabOpsLabels('inhouse'),
