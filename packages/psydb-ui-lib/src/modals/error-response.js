@@ -1,6 +1,6 @@
 import React from 'react';
-
 import { Modal, Button } from 'react-bootstrap';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
 const ErrorResponseModal = ({
     show,
@@ -14,6 +14,8 @@ const ErrorResponseModal = ({
         : errorResponse
     );
 
+    var translate = useUITranslation();
+    
     if (!errorResponse) {
         return null;
     }
@@ -33,7 +35,7 @@ const ErrorResponseModal = ({
         <Modal show={show} onHide={ onHide } size='lg'>
             <Modal.Header closeButton>
                 <Modal.Title>
-                    <span className='text-danger'>{ title }</span>
+                    <span className='text-danger'>{ translate(title) }</span>
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -46,11 +48,11 @@ const ErrorResponseModal = ({
 const getErrorComponents = (statusCode) => {
     switch (statusCode) {
         case 404:
-            return [ 'Nicht gefunden', NotFoundError ];
+            return [ '_404_not_found', NotFoundError ];
         case 400:
-            return [ 'Fehlerhafte Eingaben', BadRequestError ];
+            return [ '_400_bad_request', BadRequestError ];
         default:
-            return [ 'System-Fehler', DefaultServerError ];
+            return [ '_XXX_system_error', DefaultServerError ];
     }
 } 
 
@@ -60,6 +62,7 @@ const DefaultServerError = ({
     apiStatus,
     data
 }) => {
+    var translate = useUITranslation();
     return (
         <div>
             <h5>{ status } ({ statusCode })</h5>
@@ -76,9 +79,10 @@ const NotFoundError = ({
     apiStatus,
     data
 }) => {
+    var translate = useUITranslation();
     return (
         <div className='text-danger'>
-            Die angegebene URL konnte nicht gefunden werden.
+            { translate('The given url could not be found.') }
         </div>
     )
 }
@@ -90,9 +94,10 @@ const BadRequestError = ({
     apiStatus,
     data
 }) => {
+    var translate = useUITranslation();
     return (
         <div className='text-danger'>
-            Die abgesendeten Daten enthalten fehlerhafte Eingaben.
+            { translate('The data sent contains invalid values.') }
         </div>
     )
 }

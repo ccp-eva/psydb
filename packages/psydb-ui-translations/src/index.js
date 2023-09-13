@@ -2043,6 +2043,29 @@ var maps = [
         en: 'Contains invalid duplicate data.',
         de: 'Enthält ungültige Duplikat-Daten.'
     },
+    {
+        internal: '_404_not_found',
+        en: 'Not Found',
+        de: 'Nicht Gefunden'
+    },
+    {
+        internal: '_400_bad_request',
+        en: 'Invalid Values',
+        de: 'Fehlerhafete Eingaben'
+    },
+    {
+        internal: '_XXX_system-error',
+        en: 'System Error',
+        de: 'System-Fehler'
+    },
+    {
+        en: 'The given url could not be found.',
+        de: 'Die angegebene URL konnte nicht gefunden werden.'
+    },
+    {
+        en: 'The data sent contains invalid values.',
+        de: 'Die abgesendeten Daten enthalten fehlerhafte Eingaben.'
+    },
 ]
 
 export const createTranslate = (lang = 'en') => {
