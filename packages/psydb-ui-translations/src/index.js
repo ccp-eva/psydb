@@ -1813,6 +1813,18 @@ var maps = [
         en: 'Descending',
         de: 'Absteigend'
     },
+    {
+        en: 'Advanced Study Search',
+        de: 'Erweiterte Studien-Suche',
+    },
+    {
+        en: 'Column',
+        de: 'Spalte'
+    },
+    {
+        en: 'Advanced Location Search',
+        de: 'Erweiterte Location-Suche',
+    },
 ]
 
 export const createTranslate = (lang = 'en') => {

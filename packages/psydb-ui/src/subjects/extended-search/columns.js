@@ -124,7 +124,7 @@ export const Columns = (ps) => {
                 </header>
                 <Fields.GenericEnum
                     dataXPath='$.sort.column'
-                    label='Spalte'
+                    label={ translate('Column') }
                     options={ sortableColumns.reduce((acc, it) => ({
                         ...acc,
                         [it.pointer]: it.label

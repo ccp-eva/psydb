@@ -2,6 +2,7 @@ import React from 'react';
 
 import { gatherCustomColumns } from '@mpieva/psydb-common-lib';
 import { withField } from '@cdxoo/formik-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
 import { Fields } from '@mpieva/psydb-ui-lib';
@@ -14,37 +15,39 @@ const ColumnSelect = withField({
 
 export const Columns = (ps) => {
     var { formData, schema } = ps;
+    
+    var translate = useUITranslation();
     var permissions = usePermissions();
     
     var customColumns = gatherCustomColumns({ schema });
 
     var sortableColumns = [
+        { pointer: '/sequenceNumber', label: translate('ID No.') },
         ...(permissions.isRoot() ? [
-            { pointer: '/_id', label: 'Interne ID' }
+            { pointer: '/_id', label: translate('Internal ID') }
         ] : []),
-        { pointer: '/sequenceNumber', label: 'ID Nr.' },
-        { pointer: '/state/name', label: 'Studienname' },
-        { pointer: '/state/shorthand', label: 'Kürzel' },
+        { pointer: '/state/name', label: translate('Name') },
+        { pointer: '/state/shorthand', label: translate('Shorthand') },
 
-        { pointer: '/state/runningPeriod/start', label: 'Start' },
-        { pointer: '/state/runningPeriod/end', label: 'Ende' },
+        { pointer: '/state/runningPeriod/start', label: translate('Start') },
+        { pointer: '/state/runningPeriod/end', label: translate('End') },
 
-        { pointer: '/state/researchGroupIds', label: 'Forschungsgruppen' },
-        { pointer: '/state/scientistIds', label: 'Wissenschaftler:innen' },
-        { pointer: '/state/studyTopicIds', label: 'Themengebiete' },
+        { pointer: '/state/researchGroupIds', label: translate('Research Groups') },
+        { pointer: '/state/scientistIds', label: translate('Scientists') },
+        { pointer: '/state/studyTopicIds', label: translate('Study Topics') },
         ...customColumns
     ];
 
     var staticColumns = [
-        { pointer: '/state/name', label: 'Studienname' },
-        { pointer: '/state/shorthand', label: 'Kürzel' },
+        { pointer: '/state/name', label: translate('Name') },
+        { pointer: '/state/shorthand', label: translate('Shorthand') },
 
-        { pointer: '/state/runningPeriod/start', label: 'Start' },
-        { pointer: '/state/runningPeriod/end', label: 'Ende' },
+        { pointer: '/state/runningPeriod/start', label: translate('Start') },
+        { pointer: '/state/runningPeriod/end', label: translate('End') },
 
-        { pointer: '/state/researchGroupIds', label: 'Forschungsgruppen' },
-        { pointer: '/state/scientistIds', label: 'Wissenschaftler:innen' },
-        { pointer: '/state/studyTopicIds', label: 'Themengebiete' },
+        { pointer: '/state/researchGroupIds', label: translate('Research Groups') },
+        { pointer: '/state/scientistIds', label: translate('Scientists') },
+        { pointer: '/state/studyTopicIds', label: translate('Study Topics') },
     ];
 
     var specialColumns = [];
@@ -52,14 +55,14 @@ export const Columns = (ps) => {
     return (
         <div className='bg-light p-3 border border-top-0'>
             <ColumnSelect
-                columnLabel='Ausgewählt'
-                orderLabel='Anordnung'
+                columnLabel={ translate('Selected') }
+                orderLabel={ translate('Column Order') }
                 dataXPath='$.columns'
                 columnBlocks={[
                     [
-                        { pointer: '/sequenceNumber', label: 'ID Nr.' },
+                        { pointer: '/sequenceNumber', label: translate('ID No.') },
                         ...(permissions.isRoot() ? [
-                            { pointer: '/_id', label: 'Interne ID' }
+                            { pointer: '/_id', label: translate('Internal ID') }
                         ] : []),
                     ],
                     staticColumns,
@@ -68,11 +71,11 @@ export const Columns = (ps) => {
                 ]}
             >
                 <header className='mb-2 border-bottom'>
-                    <b>Sortierung</b>
+                    <b>{ translate('Sort Order') }</b>
                 </header>
                 <Fields.GenericEnum
                     dataXPath='$.sort.column'
-                    label='Spalte'
+                    label={ translate('Column') }
                     options={ sortableColumns.reduce((acc, it) => ({
                         ...acc,
                         [it.pointer]: it.label
@@ -80,16 +83,16 @@ export const Columns = (ps) => {
                 />
                 <Fields.GenericEnum
                     dataXPath='$.sort.direction'
-                    label='Richtung'
-                    options={{
-                        asc: 'Aufsteigend',
-                        desc: 'Absteigend',
-                    }}
+                    label={ translate('_sort_direction') }
+                    options={ translate.options({
+                        asc: '_sort_direction_asc',
+                        desc: '_sort_direction_desc',
+                    })}
                 />
             </ColumnSelect>
             <div>
                 <Button type='submit'>
-                    Weiter
+                    { translate('Next') }
                 </Button>
             </div>
         </div>

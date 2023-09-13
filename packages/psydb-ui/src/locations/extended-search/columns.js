@@ -2,6 +2,7 @@ import React from 'react';
 
 import { gatherCustomColumns } from '@mpieva/psydb-common-lib';
 import { withField } from '@cdxoo/formik-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
 import { Fields } from '@mpieva/psydb-ui-lib';
@@ -14,33 +15,35 @@ const ColumnSelect = withField({
 
 export const Columns = (ps) => {
     var { formData, schema } = ps;
+    
+    var translate = useUITranslation();
     var permissions = usePermissions();
     
     var customColumns = gatherCustomColumns({ schema });
 
     var sortableColumns = [
+        { pointer: '/sequenceNumber', label: translate('ID No.') },
         ...(permissions.isRoot() ? [
-            { pointer: '/_id', label: 'Interne ID' }
+            { pointer: '/_id', label: translate('Internal ID') }
         ] : []),
-        { pointer: '/sequenceNumber', label: 'ID Nr.' },
         ...customColumns
     ];
 
     var specialColumns = [
-        { pointer: '/_specialStudyReverseRefs', label: 'Studien' },
+        { pointer: '/_specialStudyReverseRefs', label: translate('Studies') },
     ];
 
     return (
         <div className='bg-light p-3 border border-top-0'>
             <ColumnSelect
-                columnLabel='Ausgewählt'
-                orderLabel='Anordnung'
+                columnLabel={ translate('Selected') }
+                orderLabel={ translate('Column Order') }
                 dataXPath='$.columns'
                 columnBlocks={[
                     [
-                        { pointer: '/sequenceNumber', label: 'ID Nr.' },
+                        { pointer: '/sequenceNumber', label: translate('ID No.') },
                         ...(permissions.isRoot() ? [
-                            { pointer: '/_id', label: 'Interne ID' }
+                            { pointer: '/_id', label: translate('Internal ID') }
                         ] : []),
                     ],
                     customColumns,
@@ -48,11 +51,11 @@ export const Columns = (ps) => {
                 ]}
             >
                 <header className='mb-2 border-bottom'>
-                    <b>Sortierung</b>
+                    <b>{ translate('Sort Order') }</b>
                 </header>
                 <Fields.GenericEnum
                     dataXPath='$.sort.column'
-                    label='Spalte'
+                    label={ translate('Column') }
                     options={ sortableColumns.reduce((acc, it) => ({
                         ...acc,
                         [it.pointer]: it.label
@@ -60,16 +63,16 @@ export const Columns = (ps) => {
                 />
                 <Fields.GenericEnum
                     dataXPath='$.sort.direction'
-                    label='Richtung'
-                    options={{
-                        asc: 'Aufsteigend',
-                        desc: 'Absteigend',
-                    }}
+                    label={ translate('_sort_direction') }
+                    options={ translate.options({
+                        asc: '_sort_direction_asc',
+                        desc: '_sort_direction_desc',
+                    })}
                 />
             </ColumnSelect>
             <div>
                 <Button type='submit'>
-                    Weiter
+                    { translate('Next') }
                 </Button>
             </div>
         </div>
