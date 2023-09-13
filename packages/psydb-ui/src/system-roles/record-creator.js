@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useSendCreate, usePermissions } from '@mpieva/psydb-ui-hooks';
 import { withRecordCreator } from '@mpieva/psydb-ui-lib';
 import { MainForm } from './main-form';
@@ -80,6 +81,8 @@ const Defaults = () => {
 
 const CreateForm = (ps) => {
     var { collection, onSuccessfulUpdate } = ps;
+    
+    var translate = useUITranslation();
     var permissions = usePermissions();
 
     var send = useSendCreate({
@@ -91,7 +94,7 @@ const CreateForm = (ps) => {
 
     return (
         <MainForm
-            title='Neue System-Rolle'
+            title={ translate('New System Role') }
             initialValues={ initialValues }
             onSubmit={ send.exec }
             permissions={ permissions }

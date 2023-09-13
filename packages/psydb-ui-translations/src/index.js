@@ -2001,6 +2001,18 @@ var maps = [
         en: 'Can View Receptionist Calendar',
         de: 'Kann Rezeptionskalender einsehen',
     },
+    {
+        en: 'New System Role',
+        de: 'Neue System-Rolle',
+    },
+    {
+        en: 'Edit System Role',
+        de: 'System-Rolle Bearbeiten',
+    },
+    {
+        en: 'System Role Details',
+        de: 'System-Rollen-Details',
+    },
 ]
 
 export const createTranslate = (lang = 'en') => {

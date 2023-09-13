@@ -2,6 +2,7 @@ import React from 'react';
 import camelcase from 'camelcase';
 
 import { useRouteMatch  } from 'react-router-dom';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { withRecordDetails } from '@mpieva/psydb-ui-lib';
 import { DetailsBox } from '@mpieva/psydb-ui-layout';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
@@ -34,8 +35,10 @@ export const DetailsBody = (ps) => {
         related
     }
 
+    var translate = useUITranslation();
+
     //var title = `${crtSettings.label} Datensatz-Details`;
-    var title = 'Datensatz-Details';
+    var title = translate('System Role Details');
     return (
         <DetailsBox
             title={ title }
@@ -68,12 +71,13 @@ const BaseFlags = (ps) => {
 }
 
 const AllLabOpsFlags = (ps) => {
+    var translate = useUITranslation();
     return (
         [
-            [ 'inhouse', 'Interne Termine' ],
-            [ 'away-team', 'Externe Termine' ],
-            [ 'online-video-call', 'Online-Video-Termine' ],
-            [ 'online-survey', 'Online-Umfrage' ]
+            [ 'inhouse', translate('Inhouse Appointments') ],
+            [ 'away-team', translate('External Appointments') ],
+            [ 'online-video-call', translate('Online Video Appointments') ],
+            [ 'online-survey', translate('Online Survey') ]
         ]
         .map(([ type, title ], ix) => (
             <div key={ ix }>
