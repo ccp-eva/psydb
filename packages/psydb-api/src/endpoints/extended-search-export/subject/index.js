@@ -182,6 +182,7 @@ var subjectExtendedSearchExport = async (context, next) => {
                         fieldDefinition,
                         ...related,
 
+                        record,
                         timezone,
                     });
 
