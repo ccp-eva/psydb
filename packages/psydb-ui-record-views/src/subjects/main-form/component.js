@@ -77,6 +77,8 @@ export const Component = (ps) => {
 const FormFields = (ps) => {
     var { crtSettings, related, permissions } = ps;
     
+    var translate = useUITranslation();
+
     return (
         <>
             <Fields.FullUserOrdered
@@ -96,7 +98,7 @@ const FormFields = (ps) => {
             />
 
             <Fields.AccessRightByResearchGroupList
-                label='Zugriff auf diesen Datensatz für'
+                label={ translate('Record Access for') }
                 dataXPath='$.scientific.systemPermissions.accessRightsByResearchGroup'
                 related={ related }
                 required

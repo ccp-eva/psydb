@@ -1,11 +1,12 @@
 import React from 'react';
 import { withField } from '@cdxoo/formik-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
 import { ForeignId, GenericEnum } from '../scalar';
 
 var accessOptions = {
-    'read': 'Lesen',
-    'write': 'Schreiben',
+    'read': 'Read',
+    'write': 'Write',
 }
 
 const Control = (ps) => {
@@ -21,11 +22,13 @@ const Control = (ps) => {
         related,
     } = ps;
 
+    var translate = useUITranslation();
+
     return (
         <>
             <ForeignId { ...({
                 dataXPath: `${dataXPath}.researchGroupId`,
-                label: 'Gruppe',
+                label: translate('Research Group'),
                 required: true,
                 collection: 'researchGroup',
                 disabled,
@@ -35,8 +38,8 @@ const Control = (ps) => {
             })} />
             <GenericEnum
                 dataXPath={ `${dataXPath}.permission`}
-                label='Berechtigung'
-                options={ accessOptions }
+                label={ translate('Permission') }
+                options={ translate.options(accessOptions) }
                 disabled={ disabled }
                 required
             />

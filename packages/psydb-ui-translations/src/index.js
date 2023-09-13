@@ -1552,6 +1552,98 @@ var maps = [
         en: 'Really delete this study participation?',
         de: 'Diese Studienteilnnahme wirklich löschen?'
     },
+    {
+        internal: '_date_placeholder',
+        en: 'mm/dd/yyyy',
+        de: 'tt.mm.jjjj',
+    },
+    {
+        internal: '_date_time_placeholder',
+        en: 'mm/dd/yyyy --:-- am/pm',
+        de: 'tt.mm.jjjj --:--',
+    },
+    {
+        en: 'Permission',
+        de: 'Berechtigung'
+    },
+    {
+        internal: '_address_street',
+        en: 'Street',
+        de: 'Straße'
+    },
+    {
+        internal: '_address_housenumber',
+        en: 'Number',
+        de: 'Nummer'
+    },
+    {
+        internal: '_address_affix',
+        en: 'Affix',
+        de: 'Zusatz'
+    },
+    {
+        internal: '_address_postcode',
+        en: 'Postcode',
+        de: 'PLZ'
+    },
+    {
+        internal: '_address_city',
+        en: 'City',
+        de: 'Stadt'
+    },
+    {
+        internal: '_address_country',
+        en: 'Country',
+        de: 'Land'
+    },
+    {
+        internal: '_email_is_primary',
+        en: 'Primary Address',
+        de: 'Primäre Adresse'
+    },
+    {
+        en: 'E-Mail',
+        de: 'E-Mail'
+    },
+    {
+        internal: '_phone_number',
+        en: 'Number',
+        de: 'Nummer'
+    },
+    {
+        internal: '_phone_type_business',
+        en: 'Business',
+        de: 'Geschäftlich'
+    },
+    {
+        internal: '_phone_type_private',
+        en: 'Personal',
+        de: 'Privat'
+    },
+    {
+        internal: '_phone_type_mobile',
+        en: 'Mobile',
+        de: 'Mobil'
+    },
+    {
+        internal: '_phone_type_fax',
+        en: 'Fax',
+        de: 'Fax'
+    },
+    {
+        internal: '_phone_type_mother',
+        en: 'Phone Mother',
+        de: 'Tel. Mutter'
+    },
+    {
+        internal: '_phone_type_father',
+        en: 'Phone Father',
+        de: 'Tel. Vater'
+    },
+    {
+        en: 'System Role',
+        de: 'System-Rolle'
+    },
 ]
 
 export const createTranslate = (lang = 'en') => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
 import { FormattedDuration } from '@mpieva/psydb-common-lib/src/durations';
 import { useThemeContext } from '../core/theme-context';
 
@@ -39,10 +39,13 @@ const InhouseReservationSettings = (ps) => {
 
 const AwayTeamReservationSettings = (ps) => {
     var { value, related } = ps;
+    
+    var translate = useUITranslation();
     var { Field } = useThemeContext();
+    
     return (
         <>
-            <Field label='Termine nicht am'>
+            <Field label={ translate('Appointments Not on') }>
                 <Weekdays value={ value.excludedExperimentWeekdays } />
             </Field>
         </>
@@ -51,22 +54,18 @@ const AwayTeamReservationSettings = (ps) => {
 
 const Weekdays = (ps) => {
     var { value } = ps;
+    
+    var locale = useUILocale();
+    
     return (
         Object.keys(value)
-        .filter(key => !!value[key])
-        .map(key => weekdayMap[key])
+        .map((key, ix) => ({ key, ix }))
+        .filter(it => !!value[it.key])
+        .map(it => (
+            locale.localize.day(it.ix + 1, { width: 'wide' })
+        ))
         .join(', ')
     )
-}
-
-var weekdayMap = {
-    'mon': 'Montag',
-    'tue': 'Dienstag',
-    'wed': 'Mittwoch',
-    'thu': 'Donnerstag',
-    'fri': 'Freitag',
-    'sat': 'Samstag',
-    'sun': 'Sonntag',
 }
 
 const TimeOnlyInterval = (ps) => {

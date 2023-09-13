@@ -1,5 +1,6 @@
 import React from 'react';
 import { withField } from '@cdxoo/formik-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
 import { SaneString, GenericEnum } from '../scalar';
 
@@ -15,32 +16,34 @@ const Control = (ps) => {
         enableParentNumbers,
     } = ps;
 
+    var translate = useUITranslation();
+
     var fieldOptions = {
-        'business': 'geschäftlich',
-        'private': 'privat',
-        'mobile': 'mobil',
+        'business': '_phone_type_business',
+        'private': '_phone_type_private',
+        'mobile': '_phone_type_mobile',
         // FIXME: theese 3 need to be controllable
         // in CRT field props
         ...(enableFaxNumber && {
-            'fax': 'Fax',
+            'fax': '_phone_type_fax',
         }),
         ...(enableParentNumbers && {
-            'mother': 'Tel. Mutter',
-            'father': 'Tel. Vater',
+            'mother': '_phone_type_mother',
+            'father': '_phone_type_father',
         })
     }
 
     return (
         <>
             <SaneString
-                label='Nummer'
+                label={ translate('_phone_number') }
                 dataXPath={ `${dataXPath}.number` }
                 disabled={ disabled }
             />
             <GenericEnum
-                label='Typ'
+                label={ translate('Type') }
                 dataXPath={ `${dataXPath}.type` }
-                options={ fieldOptions }
+                options={ translate.options(fieldOptions) }
                 disabled={ disabled }
             />
         </>

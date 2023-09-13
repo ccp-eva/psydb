@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { withField } from '@cdxoo/formik-utils';
 
 import { ForeignId } from '../scalar';
@@ -19,11 +20,13 @@ const Control = (ps) => {
         related,
     } = ps;
 
+    var translate = useUITranslation();
+
     return (
         <>
             <ForeignId { ...({
                 dataXPath: `${dataXPath}.researchGroupId`,
-                label: 'Gruppe',
+                label: translate('Research Group'),
                 required: true,
                 collection: 'researchGroup',
                 disabled,
@@ -32,7 +35,7 @@ const Control = (ps) => {
             })} />
             <ForeignId { ...({
                 dataXPath: `${dataXPath}.systemRoleId`,
-                label: 'Rolle',
+                label: translate('System Role'),
                 required: true,
                 collection: 'systemRole',
                 disabled,

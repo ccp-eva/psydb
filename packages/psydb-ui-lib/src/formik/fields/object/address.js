@@ -1,5 +1,6 @@
 import React from 'react';
 import { withField } from '@cdxoo/formik-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import * as Scalars from '../scalar';
 
 const SaneString = withField({
@@ -29,6 +30,8 @@ const Control = (ps) => {
         isCountryRequired = false
     } = ps;
 
+    var translate = useUITranslation();
+
     var labelClassName = 'd-block m-0 text-small';
 
     return (
@@ -39,7 +42,7 @@ const Control = (ps) => {
             >
                 <div className='flex-grow'>
                     <SaneString
-                        label='Straße'
+                        label={ translate('Street') }
                         dataXPath={ `${dataXPath}.street` }
                         disabled={ disabled }
                         required={ isStreetRequired }
@@ -48,7 +51,7 @@ const Control = (ps) => {
                 </div>
                 <div className='pl-2' style={{ flexBasis: '7rem' }}>
                     <SaneString
-                        label='Nummer'
+                        label={ translate('_address_housenumber') }
                         dataXPath={ `${dataXPath}.housenumber` }
                         disabled={ disabled }
                         required={ isHousenumberRequired }
@@ -57,7 +60,7 @@ const Control = (ps) => {
                 </div>
                 <div className='pl-2' style={{ flexBasis: '7rem' }}>
                     <SaneString
-                        label='Zusatz'
+                        label={ translate('_address_affix') }
                         dataXPath={ `${dataXPath}.affix` }
                         disabled={ disabled }
                         required={ isAffixRequired }
@@ -71,7 +74,7 @@ const Control = (ps) => {
             >
                 <div style={{ flexBasis: '7rem' }}>
                     <SaneString
-                        label='PLZ'
+                        label={ translate('_address_postcode') }
                         dataXPath={ `${dataXPath}.postcode` }
                         disabled={ disabled }
                         required={ isPostcodeRequired }
@@ -80,7 +83,7 @@ const Control = (ps) => {
                 </div>
                 <div className='flex-grow pl-2'>
                     <SaneString
-                        label='Stadt'
+                        label={ translate('_address_city') }
                         dataXPath={ `${dataXPath}.city` }
                         disabled={ disabled }
                         required={ isCityRequired }
@@ -92,7 +95,7 @@ const Control = (ps) => {
                     style={{ flexBasis: '27%' }}
                 >
                     <GenericEnum
-                        label='Land'
+                        label={ translate('_address_country') }
                         dataXPath={ `${dataXPath}.country` }
                         disabled={ disabled }
                         required={ isCountryRequired }

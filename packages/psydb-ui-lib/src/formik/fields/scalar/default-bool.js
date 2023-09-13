@@ -1,5 +1,6 @@
 import React from 'react';
 import { withField } from '@cdxoo/formik-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { ButtonGroup, Button } from '@mpieva/psydb-ui-layout';
 
 export const DefaultBool = withField({ Control: (ps) => {
@@ -13,6 +14,8 @@ export const DefaultBool = withField({ Control: (ps) => {
     var { setFieldValue } = formikForm;
     var { value } = formikField;
 
+    var translate = useUITranslation();
+
     var bag = {
         value,
         onChange: (next) => {
@@ -24,8 +27,8 @@ export const DefaultBool = withField({ Control: (ps) => {
 
     return (
         <ButtonGroup className='mt-1'>
-            <Yes { ...bag }>Ja</Yes>
-            <No { ...bag }>Nein</No>
+            <Yes { ...bag }>{ translate('Yes') }</Yes>
+            <No { ...bag }>{ translate('No') }</No>
         </ButtonGroup>
     )
 

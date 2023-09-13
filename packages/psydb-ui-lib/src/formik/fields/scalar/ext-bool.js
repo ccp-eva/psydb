@@ -1,17 +1,15 @@
 import React from 'react';
 import { withField } from '@cdxoo/formik-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { ButtonGroup, Button } from '@mpieva/psydb-ui-layout';
 import { GenericEnum } from './generic-enum';
-
-const enumeration = {
-    keys: [ 'yes', 'no', 'unknown' ],
-    labels: [ 'Ja', 'Nein', 'Unbekannt' ],
-}
 
 export const ExtBool = withField({ Control: (ps) => {
     var { dataXPath, formikField, formikForm, disabled } = ps;
     var { setFieldValue } = formikForm;
     var { value } = formikField;
+
+    var translate = useUITranslation();
 
     var bag = {
         value,
@@ -21,13 +19,12 @@ export const ExtBool = withField({ Control: (ps) => {
 
     return (
         <ButtonGroup className='mt-1'>
-            <Yes { ...bag }>Ja</Yes>
-            <No { ...bag }>Nein</No>
-            <Unknown { ...bag }>Unbekannt</Unknown>
+            <Yes { ...bag }>{ translate('Yes') }</Yes>
+            <No { ...bag }>{ translate('No') }</No>
+            <Unknown { ...bag }>{ translate('Unknown') }</Unknown>
         </ButtonGroup>
     )
 
-    //<GenericEnum enum={ enumeration } { ...ps } />
 }});
 
 var Yes = (ps) => {

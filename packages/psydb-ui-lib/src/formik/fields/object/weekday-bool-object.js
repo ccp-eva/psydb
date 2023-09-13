@@ -1,5 +1,6 @@
 import React from 'react';
 import { withField } from '@cdxoo/formik-utils';
+import { useUILocale } from '@mpieva/psydb-ui-contexts';
 import * as Scalars from '../scalar';
 
 const PlainCheckbox = withField({
@@ -19,12 +20,15 @@ export const WeekdayBoolObject = withField({
     Control: (ps) => {
         var { dataXPath, disabled } = ps;
 
+        var locale = useUILocale();
         return (
             <div className='border p-3 d-flex justify-content-between'>
-                { days.map((key, index) => (
+                { days.map((key, ix) => (
                     <PlainCheckbox
-                        key={ index }
-                        label={ labels[index] }
+                        key={ ix }
+                        label={(
+                            locale.localize.day(ix + 1, { width: 'wide' })
+                        )}
                         dataXPath={ `${dataXPath}.${key}` }
                         disabled={ disabled }
                     />
