@@ -7,6 +7,7 @@ import {
     CRTSettings
 } from '@mpieva/psydb-common-lib';
 
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useModalReducer } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
 import FieldPointerList from '../field-pointer-list';
@@ -14,6 +15,8 @@ import Modal from './modal';
 
 const DuplicateCheckFieldEditor = (ps) => {
     var { record, onSuccessfulUpdate } = ps;
+    
+    var translate = useUITranslation();
     var modal = useModalReducer();
 
     var crtSettings = convertCRTRecordToSettings(record);
@@ -41,7 +44,7 @@ const DuplicateCheckFieldEditor = (ps) => {
                 }
             />
             <Button onClick={ modal.handleShow }>
-                Edit
+                { translate('Edit') }
             </Button>
         </div>
     )

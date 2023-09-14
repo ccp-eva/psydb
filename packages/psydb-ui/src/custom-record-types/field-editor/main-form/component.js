@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { Button, Alert } from '@mpieva/psydb-ui-layout';
 import { DefaultForm, useFormikContext } from '@mpieva/psydb-ui-lib';
 
@@ -17,6 +18,8 @@ export const Component = (ps) => {
         onSubmit,
     } = ps;
 
+    var translate = useUITranslation();
+
     return (
         <DefaultForm
             initialValues={ initialValues }
@@ -30,7 +33,9 @@ export const Component = (ps) => {
                         isUnrestricted={ isUnrestricted }
                         hasSubChannels={ hasSubChannels }
                     />
-                    <Button type='submit'>Speichern</Button>
+                    <Button type='submit'>
+                        { translate('Save') }
+                    </Button>
                 </>
             )}
         </DefaultForm>
@@ -65,9 +70,10 @@ const FormFields = (ps) => {
 }
 
 const Fallback = (ps) => {
+    var translate = useUITranslation();
     return (
         <Alert variant='danger'>
-            <b>Bitte Feld-Typ auswählen!</b>
+            <b>{ translate('Please select field type!') }</b>
         </Alert>
     )
 }

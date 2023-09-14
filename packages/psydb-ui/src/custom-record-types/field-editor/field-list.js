@@ -1,4 +1,6 @@
 import React from 'react';
+import allSchemaCreators from '@mpieva/psydb-schema-creators';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
 import {
     Button,
@@ -7,14 +9,13 @@ import {
     RemoveIconButton
 } from '@mpieva/psydb-ui-layout';
 
-import allSchemaCreators from '@mpieva/psydb-schema-creators';
-
 const FieldList = ({
     record,
     onEditField,
     onRemoveField,
     onRestoreField,
 }) => {
+    var translate = useUITranslation();
 
     var {
         hasSubChannels,
@@ -42,11 +43,11 @@ const FieldList = ({
         <Table size='md'>
             <thead>
                 <tr>
-                    <th>DisplayName</th>
-                    <th>Internal Key</th>
-                    <th>Type</th>
+                    <th>{ translate('Display Name') }</th>
+                    <th>{ translate('Internal Key') }</th>
+                    <th>{ translate('Type') }</th>
                     { hasSubChannels && (
-                        <th>SubChannel</th>
+                        <th>{ translate('Data Channel') }</th>
                     )}
                     <th></th>
                 </tr>
@@ -74,6 +75,8 @@ const Row = ({
     onRemoveField,
     onRestoreField,
 }) => {
+    var translate = useUITranslation();
+    
     var className = [];
     var style = {};
     if (field.isRemoved) {
@@ -87,7 +90,12 @@ const Row = ({
                 { field.displayName }
                 { field.isDirty && (
                     <span className='text-danger'>
-                        { field.isNew ? ' (neu)' : ' (bearbeitet)' }
+                        {' '}
+                        { field.isNew ? (
+                            translate('(new)')
+                        ): (
+                            translate('(edited)')
+                        )}
                     </span>
                 )}
             </td>
@@ -103,7 +111,7 @@ const Row = ({
                             size='sm'
                             onClick={ () => onRestoreField({ field })}
                         >
-                            Restore
+                            { translate('Restore') }
                         </Button>
                     )
                     : (

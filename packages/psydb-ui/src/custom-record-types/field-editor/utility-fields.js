@@ -2,20 +2,22 @@ import React, { useState } from 'react';
 import { withField } from '@cdxoo/formik-utils';
 
 import * as enums from '@mpieva/psydb-schema-enums';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { SplitPartitioned } from '@mpieva/psydb-ui-layout';
 import * as Controls from '@mpieva/psydb-ui-form-controls';
 import { Fields, useFormikContext } from '@mpieva/psydb-ui-lib';
 import getFieldValue from './get-field-value';
 
 export const SubChannelKey = (ps) => {
+    var translate = useUITranslation();
     return (
         <Fields.GenericEnum
-            label='Daten-Kanal'
+            label={ translate('Data Channel') }
             dataXPath='$.subChannelKey'
-            options={{
-                'scientific': 'Normal',
-                'gdpr': 'Datenschutz',
-            }}
+            options={translate.options({
+                'scientific': 'Default',
+                'gdpr': 'Data Protection (GDPR)',
+            })}
             required
         />
     )
@@ -23,12 +25,14 @@ export const SubChannelKey = (ps) => {
 
 export const KeyAndDisplayName = (ps) => {
     var { dataXPath, isUnrestricted } = ps;
+    
+    var translate = useUITranslation();
     var { setFieldValue } = useFormikContext();
 
     return (
         <>
             <Fields.SaneString
-                label='Anzeigename'
+                label={ translate('Display Name') }
                 dataXPath={ `${dataXPath}.displayName` }
                 extraOnChange={ (next) => setFieldValue(
                     `${dataXPath}.key`,
@@ -37,7 +41,7 @@ export const KeyAndDisplayName = (ps) => {
                 required
             />
             <Fields.SaneString
-                label='Interner Key'
+                label={ translate('Internal Key') }
                 dataXPath={ `${dataXPath}.key` }
                 disabled={ !isUnrestricted }
                 required
@@ -50,7 +54,7 @@ export const MinItemsProp = (ps) => {
     var { dataXPath, isUnrestricted } = ps;
     return (
         <Fields.Integer
-            label='Mindestanzahl'
+            label={ translate('Minimum Number') }
             dataXPath={ `${dataXPath}.props.minItems` }
             disabled={ !isUnrestricted }
             required
@@ -61,9 +65,10 @@ export const MinItemsProp = (ps) => {
 
 export const MinLengthProp = (ps) => {
     var { dataXPath, isUnrestricted } = ps;
+    var translate = useUITranslation();
     return (
         <Fields.Integer
-            label='Zeichen (mindestens)'
+            label={ translate('Characters (Minimum)') }
             dataXPath={ `${dataXPath}.props.minLength` }
             disabled={ !isUnrestricted }
             required
@@ -74,9 +79,10 @@ export const MinLengthProp = (ps) => {
 
 export const IsNullableProp = (ps) => {
     var { dataXPath, isUnrestricted } = ps;
+    var translate = useUITranslation();
     return (
         <Fields.DefaultBool
-            label='Optional'
+            label={ translate('Optional') }
             dataXPath={ `${dataXPath}.props.isNullable` }
             disabled={ !isUnrestricted }
             required
@@ -86,9 +92,10 @@ export const IsNullableProp = (ps) => {
 
 export const IsSpecialAgeFrameFieldProp = (ps) => {
     var { dataXPath, isUnrestricted } = ps;
+    var translate = useUITranslation();
     return (
         <Fields.DefaultBool
-            label='Altersfenster-Referenz'
+            label={ translate('Age Range Anchor') }
             dataXPath={ `${dataXPath}.props.isSpecialAgeFrameField` }
             disabled={ !isUnrestricted }
             required
@@ -98,9 +105,10 @@ export const IsSpecialAgeFrameFieldProp = (ps) => {
 
 export const SetIdProp = (ps) => {
     var { dataXPath, isUnrestricted } = ps;
+    var translate = useUITranslation();
     return (
         <Fields.HelperSetId
-            label='Hilfs-Tabelle'
+            label={ translate('Helper Table') }
             dataXPath={ `${dataXPath}.props.setId` }
             disabled={ !isUnrestricted }
             required
@@ -110,13 +118,16 @@ export const SetIdProp = (ps) => {
 
 export const SharedForeignIdProps = (ps) => {
     var { dataXPath, isUnrestricted } = ps;
+    
+    var translate = useUITranslation();
     var { values } = useFormikContext();
+    
     var { collection } = getFieldValue(values, `${dataXPath}.props`);
 
     return (
         <>
             <Fields.GenericEnum
-                label='Haupt-Tabelle'
+                label={ translate('Main Table') }
                 dataXPath={ `${dataXPath}.props.collection` }
                 //enum={ enums.customRecordTypeCollections }
                 enum={ enums.foreignIdFieldCollections }
@@ -124,23 +135,17 @@ export const SharedForeignIdProps = (ps) => {
                 required
             />
             <Fields.GenericTypeKey
-                label='Datensatz-Typ'
+                label={ translate('Record Type') }
                 collection={ collection }
                 dataXPath={ `${dataXPath}.props.recordType` }
                 disabled={ !isUnrestricted || !collection }
                 required
             />
             <ForeignIdConstraints
-                label='Constraint'
+                label={ translate('Constraint') }
                 dataXPath={ `${dataXPath}.props.constraints` }
                 disabled={ !isUnrestricted || !collection }
             />
-            {/*<Fields.SaneString
-                label='Datensatz-Typ'
-                dataXPath={ `${dataXPath}.props.recordType` }
-                disabled={ !isUnrestricted }
-                required
-            />*/}
         </>
     )
 }
@@ -250,9 +255,10 @@ const ConstraintPair = (ps) => {
 
 export const DisplayEmptyAsUnknownProp = (ps) => {
     var { dataXPath, isUnrestricted } = ps;
+    var translate = useUITranslation();
     return (
         <Fields.DefaultBool
-            label='Leer als "Unbekannt"'
+            label={ translate('Empty as "Unknown"') }
             dataXPath={ `${dataXPath}.props.displayEmptyAsUnknown` }
             disabled={ !isUnrestricted }
             required

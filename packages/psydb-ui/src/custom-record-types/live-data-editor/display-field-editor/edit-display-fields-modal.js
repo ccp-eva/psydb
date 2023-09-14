@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
 import { Modal, Button } from 'react-bootstrap';
@@ -34,7 +34,7 @@ const EditDisplayFieldsModal = ({
                     {
                         target === 'optionlist'
                         ? translate('Columns (Option Select)')
-                        : translate('Columns (General)')
+                        : translate('Columns')
                     }
                 </Modal.Title>
             </Modal.Header>

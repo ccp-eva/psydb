@@ -1,12 +1,9 @@
 import React from 'react';
 
-import {
-    Button,
-} from '@mpieva/psydb-ui-layout';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useSend, useModalReducer } from '@mpieva/psydb-ui-hooks';
 
-import { useModalReducer } from '@mpieva/psydb-ui-hooks';
-import { useSend } from '@mpieva/psydb-ui-hooks';
-
+import { Button } from '@mpieva/psydb-ui-layout';
 import { ErrorResponseModal } from '@mpieva/psydb-ui-lib/src/modals';
 
 import NewFieldModal from './new-field-modal';
@@ -14,7 +11,10 @@ import EditFieldModal from './edit-field-modal';
 
 import FieldList from './field-list';
 
-const FieldEditor = ({ record, onSuccessfulUpdate }) => {
+const FieldEditor = (ps) => {
+    var { record, onSuccessfulUpdate } = ps;
+
+    var translate = useUITranslation();
 
     var newFieldModal = useModalReducer();
     var editFieldModal = useModalReducer();
@@ -55,7 +55,7 @@ const FieldEditor = ({ record, onSuccessfulUpdate }) => {
     return (
         <div>
             <Button onClick={ newFieldModal.handleShow }>
-                Neues Feld
+                { translate('New Field') }
             </Button>
 
             <NewFieldModal
@@ -90,7 +90,7 @@ const FieldEditor = ({ record, onSuccessfulUpdate }) => {
                     !(record.state.isDirty || record.state.isNew)
                 }
             >
-                Felder fixieren
+                { translate('Commit Fields') }
             </Button>
 
         </div>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { withField } from '@cdxoo/formik-utils';
 
 import { demuxed } from '@mpieva/psydb-ui-utils';
@@ -17,6 +18,9 @@ const ColumnField = withField({
 
 const Body = (ps) => {
     var { id, crt, onHide, modalPayloadData, onSuccessfulUpdate } = ps;
+    
+    var translate = useUITranslation();
+    
     var { duplicateCheckSettings = {} } = crt.getRaw();
     var { fieldSettings = [] } = duplicateCheckSettings;
 
@@ -41,7 +45,7 @@ const Body = (ps) => {
             { (formikProps) => (
                 <>
                     <ColumnField
-                        columnLabel='Felder'
+                        columnLabel={ translate('Fields') }
                         dataXPath='$.columns'
                         columns={(
                             crt
@@ -61,7 +65,7 @@ const Body = (ps) => {
                     />
                     <div className='mt-3 d-flex justify-content-end'>
                         <Button size='sm' type='submit'>
-                            Speichern
+                            { translate('Save') }
                         </Button>
                     </div>
                 </>
@@ -72,7 +76,7 @@ const Body = (ps) => {
 
 
 const EditDuplicateCheckFieldsModal = WithDefaultModal({
-    title: 'Duplikatsprüfung bearbeiten',
+    title: 'Fields for Duplication Check',
     size: 'lg',
     Body,
 });

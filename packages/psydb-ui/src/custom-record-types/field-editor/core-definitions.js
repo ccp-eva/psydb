@@ -1,5 +1,6 @@
 import React from 'react';
 import { omit, entries } from '@mpieva/psydb-core-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { Fields, useFormikContext } from '@mpieva/psydb-ui-lib';
 import { KeyAndDisplayName } from './utility-fields';
 
@@ -10,17 +11,24 @@ const CoreDefinitions = (ps) => {
         omittedFieldTypes = []
     } = ps;
 
+    var translate = useUITranslation();
     var { setFieldValue } = useFormikContext();
 
     return (
         <>
             <Fields.GenericEnum
-                label='Feld-Typ'
+                label={ translate('Field Type') }
                 dataXPath={ `${dataXPath}.type` }
-                options={ omit({
-                    from: fieldtypes,
-                    paths: omittedFieldTypes
-                })}
+                options={(
+                    fieldtypes
+                    .filter(type => (
+                        !omittedFieldTypes.includes(type)
+                    ))
+                    .reduce((acc, key) => {
+                        var t = translate(`_fieldtype_${key}`);
+                        return { ...acc, [key]: `${key} - ${t}` }
+                    }, {})
+                )}
                 extraOnChange={ (next) => {
                     var defaults = {
                         'ListOfObjects': { fields: [] },
@@ -45,39 +53,36 @@ const CoreDefinitions = (ps) => {
     )
 }
 
-const fieldtypes = entries({
-    'SaneString': 'Freitext einzelig',
-    'FullText': 'Freitext mehrzeilig',
+const fieldtypes = [
+    'SaneString',
+    'FullText',
     
-    'Integer': 'Ganz-Zahl',
-    'DefaultBool': 'Ja/Nein-Wert',
-    'ExtBool': 'Ja/Nein/Unbekannt-Wert',
+    'Integer',
+    'DefaultBool',
+    'ExtBool',
     
-    'DateTime': 'Datum + Zeit',
-    'DateOnlyServerSide': 'Datum mit Server-Zeitzone',
+    'DateTime',
+    'DateOnlyServerSide',
 
-    'HelperSetItemId': 'Eintrag aus Hilfs-Tabelle',
-    'HelperSetItemIdList': 'Liste von Einträgen aus Hilfs-Tabelle',
-    'ForeignId': 'Eintrag aus anderer Haupt-Tabellen',
-    'ForeignIdList': 'Liste von Einträgen aus anderer Haupt-Tabellen',
+    'HelperSetItemId',
+    'HelperSetItemIdList',
+    'ForeignId',
+    'ForeignIdList',
     
-    'Address': 'Adresse',
-    'GeoCoords': 'Geo-Koordinaten',
-    'BiologicalGender': 'Geschlecht',
+    'Address',
+    'GeoCoords',
+    'BiologicalGender',
 
-    'Email': 'Email-Adresse',
-    'EmailList': 'Liste von Email-Adressen',
-    'Phone': 'Telefonnummer',
-    'PhoneList': 'Liste von Telefon-Nummern ohne Typ',
-    'PhoneWithTypeList': 'Liste von Telefon-Nummern mit Typ',
+    'Email',
+    'EmailList',
+    'Phone',
+    'PhoneList',
+    'PhoneWithTypeList',
 
-    'ListOfObjects': 'Benutzerdefinierte Unterliste',
-    'Lambda': 'Dynamische Berechnung',
-}).sort(([keyA], [keyB]) => (
+    'ListOfObjects',
+    'Lambda',
+].sort((keyA, keyB) => (
     keyA < keyB ? -1 : 1
-)).reduce((acc, [ key, value ]) => ({
-    ...acc,
-    [key]: `${key} - ${value}`
-}), {});
+))
 
 export default CoreDefinitions;
