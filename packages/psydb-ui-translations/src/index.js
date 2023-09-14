@@ -2269,11 +2269,11 @@ var maps = [
         de: 'Datenschutz (DSGVO)'
     },
     {
-        en: 'Minimul Number',
+        en: 'Minimum Number',
         de: 'Mindestanzahl'
     },
     {
-        en: 'Character (Minimum)',
+        en: 'Characters (Minimum)',
         de: 'Zeichen (Mindestens)'
     },
     {
@@ -2405,7 +2405,62 @@ var maps = [
         internal: '_fieldtype_Lambda',
         en: 'Dynamic Calculation',
         de: 'Dynamische Berechnung',
-    }
+    },
+    {
+        en: 'Reference in Target',
+        de: 'Referenz in Ziel',
+    },
+    {
+        en: 'Target Field',
+        de: 'Zielfeld',
+    },
+    {
+        en: 'Street Is Required',
+        de: 'Strasse Ist Pflichtfeld',
+    },
+    {
+        en: 'Housenumber Is Required',
+        de: 'Hausnummer Ist Pflichtfeld',
+    },
+    {
+        en: 'Affix Is Required',
+        de: 'Zusatz Ist Pflichtfeld',
+    },
+    {
+        en: 'Postcode Is Required',
+        de: 'PLZ Ist Pflichtfeld',
+    },
+    {
+        en: 'City Is Required',
+        de: 'Stadt Ist Pflichtfeld',
+    },
+    {
+        en: 'Country Is Required',
+        de: 'Land Ist Pflichtfeld',
+    },
+    {
+        internal: '_lambda_function',
+        en: 'Function',
+        de: 'Funktion',
+    },
+    {
+        internal: '_lambda_function_deltaYMD',
+        en: 'Age Calculation',
+        de: 'Altersberechnung',
+    },
+    {
+        internal: '_lambda_input',
+        en: 'Input',
+        de: 'Input',
+    },
+    {
+        en: 'Edit Field',
+        de: 'Feld Bearbeiten',
+    },
+    {
+        en: 'Sub List Fields',
+        de: 'Unterfelder',
+    },
 ]
 
 export const createTranslate = (lang = 'en') => {

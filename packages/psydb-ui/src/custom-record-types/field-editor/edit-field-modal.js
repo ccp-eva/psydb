@@ -17,7 +17,7 @@ const EditFieldModalBody = (ps) => {
 }
 
 const EditFieldModal = WithDefaultModal({
-    title: 'Daten-Feld bearbeiten',
+    title: 'Edit Field',
     size: 'lg',
     Body: EditFieldModalBody
 });

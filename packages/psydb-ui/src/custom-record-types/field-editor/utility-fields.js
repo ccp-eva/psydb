@@ -52,6 +52,7 @@ export const KeyAndDisplayName = (ps) => {
 
 export const MinItemsProp = (ps) => {
     var { dataXPath, isUnrestricted } = ps;
+    var translate = useUITranslation();
     return (
         <Fields.Integer
             label={ translate('Minimum Number') }

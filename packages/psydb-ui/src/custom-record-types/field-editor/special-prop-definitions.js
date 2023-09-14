@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
 import {
     Fields,
@@ -49,11 +50,12 @@ const ListOfObjectsFieldDefinitionList = withFieldArray({
 
 export const ListOfObjects = (ps) => {
     var { dataXPath, isUnrestricted } = ps;
+    var translate = useUITranslation();
     return (
         <>
             <MinItemsProp { ...ps  } />
             <ListOfObjectsFieldDefinitionList
-                label='Unterfelder'
+                label={ translate('Sub List Fields') }
                 dataXPath={ `${dataXPath}.props.fields` }
                 isUnrestricted={ isUnrestricted }
             />

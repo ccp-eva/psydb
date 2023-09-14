@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { Fields, useFormikContext } from '@mpieva/psydb-ui-lib';
 import {
     MinItemsProp,
@@ -31,10 +32,11 @@ export const FullText = (ps) => {
 
 export const Integer = (ps) => {
     var { dataXPath, isUnrestricted } = ps;
+    var translate = useUITranslation();
     return (
         <>
             <Fields.Integer
-                label='Minimum'
+                label={ translate('Minimum') }
                 dataXPath={ `${dataXPath}.props.minimum` }
                 disabled={ !isUnrestricted }
                 required
@@ -88,7 +90,10 @@ export const HelperSetItemIdList = (ps) => {
 
 export const ForeignId = (ps) => {
     var { dataXPath, isUnrestricted } = ps;
+    
+    var translate = useUITranslation();
     var { values } = useFormikContext();
+    
     var {
         collection,
         recordType,
@@ -103,13 +108,13 @@ export const ForeignId = (ps) => {
             <DisplayEmptyAsUnknownProp { ...ps } />
 
             <Fields.DefaultBool
-                label='Referenz in Ziel'
+                label={ translate('Reference in Target') }
                 dataXPath={ `${dataXPath}.props.addReferenceToTarget` }
                 disabled={ !isUnrestricted }
             />
 
             <Fields.CRTFieldPointer
-                label='Ziel-Feld'
+                label={ translate('Target Field') }
                 collection={ collection }
                 recordType={ recordType }
                 dataXPath={ `${dataXPath}.props.targetReferenceField` }
@@ -136,40 +141,41 @@ export const ForeignIdList = (ps) => {
 
 export const Address = (ps) => {
     var { dataXPath, isUnrestricted } = ps;
+    var translate = useUITranslation();
     return (
         <>
             <Fields.DefaultBool
-                label='Straße ist Pflichtfeld'
+                label={ translate('Street Is Required') }
                 dataXPath={ `${dataXPath}.props.isStreetRequired` }
                 disabled={ !isUnrestricted }
                 uiSplit={[ 6,6 ]}
             />
             <Fields.DefaultBool
-                label='Hausnummer ist Pflichtfeld'
+                label={ translate('Housenumber Is Required') }
                 dataXPath={ `${dataXPath}.props.isHousenumberRequired` }
                 disabled={ !isUnrestricted }
                 uiSplit={[ 6,6 ]}
             />
             <Fields.DefaultBool
-                label='Affix ist Pflichtfeld'
+                label={ translate('Affix Is Required') }
                 dataXPath={ `${dataXPath}.props.isAffixRequired` }
                 disabled={ !isUnrestricted }
                 uiSplit={[ 6,6 ]}
             />
             <Fields.DefaultBool
-                label='PLZ ist Pflichtfeld'
+                label={ translate('Postcode Is Required') }
                 dataXPath={ `${dataXPath}.props.isPostcodeRequired` }
                 disabled={ !isUnrestricted }
                 uiSplit={[ 6,6 ]}
             />
             <Fields.DefaultBool
-                label='Stadt ist Pflichtfeld'
+                label={ translate('City Is Required') }
                 dataXPath={ `${dataXPath}.props.isCityRequired` }
                 disabled={ !isUnrestricted }
                 uiSplit={[ 6,6 ]}
             />
             <Fields.DefaultBool
-                label='Land ist Pflichtfeld'
+                label={ translate('Country Is Required') }
                 disabled={ !isUnrestricted }
                 dataXPath={ `${dataXPath}.props.isCountryRequired` }
                 uiSplit={[ 6,6 ]}
@@ -218,19 +224,20 @@ export const PhoneWithTypeList = (ps) => {
 
 export const Lambda = (ps) => {
     var { dataXPath, isUnrestricted } = ps;
+    var translate = useUITranslation();
     return (
         <>
             <Fields.GenericEnum
-                label='Funktion'
+                label={ translate('_lambda_function') }
                 dataXPath={ `${dataXPath}.props.fn` }
-                options={{
-                    'deltaYMD': 'Altersberechnung'
-                }}
+                options={translate.options({
+                    'deltaYMD': '_lambda_function_deltaYMD'
+                })}
                 disabled={ !isUnrestricted }
                 required
             />
             <Fields.SaneString
-                label='Input'
+                label={ translate('_lambda_input') }
                 dataXPath={ `${dataXPath}.props.input` }
                 disabled={ !isUnrestricted }
                 required
