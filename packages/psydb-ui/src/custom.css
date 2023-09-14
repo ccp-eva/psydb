@@ -127,6 +127,14 @@ a:hover {
 .bg-medium-red {
     background-color: #f1d2d2;
 }
+
+.cursor-default {
+    cursor: default;
+}
+.cursor-pointer {
+    cursor: pointer;
+}
+
 .quick-search-fixes .form-group {
     margin-bottom: 0px;
     margin-right: .5rem;

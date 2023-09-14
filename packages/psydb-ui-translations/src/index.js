@@ -2461,6 +2461,28 @@ var maps = [
         en: 'Sub List Fields',
         de: 'Unterfelder',
     },
+
+
+    {
+        en: 'Invalid authentication data!',
+        de: 'Ungültige Anmeldedaten!'
+    },
+    {
+        en: 'Password',
+        de: 'Passwort'
+    },
+    {
+        en: 'Sign In',
+        de: 'Anmelden'
+    },
+    {
+        en: 'PsyDB Sign In',
+        de: 'PsyDB Anmeldung'
+    },
+    {
+        en: 'Language',
+        de: 'Sprache'
+    },
 ]
 
 export const createTranslate = (lang = 'en') => {

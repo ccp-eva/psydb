@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useUITranslation, useUILanguage } from '@mpieva/psydb-ui-contexts';
 
 import { Button } from '@mpieva/psydb-ui-layout';
 import { useWriteRequest } from '@mpieva/psydb-ui-hooks';
@@ -8,26 +9,27 @@ import logoTextColor from './mp-logo-farbig-rgb.svg';
 
 const SignInFormBody = (ps) => {
     var { hasError } = ps;
+    var translate = useUITranslation();
     return (
         <>
             <Fields.Email
-                label='Email'
+                label={ translate('E-Mail') }
                 dataXPath='$.email'
             />
             <Fields.Password
-                label='Passwort'
+                label={ translate('Password') }
                 dataXPath='$.password'
             />
             <div className='d-flex justify-content-between align-items-center pt-2'>
                 <div>
                     { hasError && (
                         <span className='text-danger'>
-                            Ungültige Anmeldedaten!
+                            { translate('Invalid authentication data!') }
                         </span>
                     )}
                 </div>
                 <Button type='submit'>
-                    Anmelden
+                    { translate('Sign In') }
                 </Button>
             </div>
         </>
@@ -35,6 +37,7 @@ const SignInFormBody = (ps) => {
 }
 
 const SignIn = ({ onSignedIn }) => {
+    var translate = useUITranslation(); 
     var [ hasError, setHasError ] = useState(false);
 
     var write = useWriteRequest((agent, formData) => {
@@ -89,7 +92,7 @@ const SignIn = ({ onSignedIn }) => {
                             //color: '#555'
                         }}
                     >
-                        PsyDB Login
+                        { translate('PsyDB Sign In') }
                     </h5>
                     <img
                         style={{
@@ -115,7 +118,40 @@ const SignIn = ({ onSignedIn }) => {
                     )}
                 </DefaultForm>
             </div>
+            <div className='mt-1 d-flex justify-content-end'>
+                <span>{ translate('Language') }:</span>
+                <LangButton code='en' />
+                <LangButton code='de' />
+            </div>
         </div>
+    )
+}
+
+const LangButton = (ps) => {
+    var { code } = ps;
+    var [ language, setLanguage ] = useUILanguage();
+    
+    var isActive = ( language === code );
+
+    var className = (
+        isActive
+        ? 'ml-2 text-primary text-bold cursor-default'
+        : 'ml-2 text-primary cursor-pointer'
+    );
+
+    var onClick = (
+        isActive
+        ? undefined
+        : () => setLanguage(code)
+    );
+
+    var bag = {
+        className,
+        onClick
+    }
+
+    return (
+        <span { ...bag  }>{ code.toUpperCase() }</span>
     )
 }
 
