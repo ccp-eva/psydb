@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { Button } from '@mpieva/psydb-ui-layout';
 
 import {
@@ -17,6 +18,8 @@ export const MainForm = (ps) => {
         permissions,
     } = ps;
 
+    var translate = useUITranslation();
+
     return (
         <FormBox title={ title }>
             <DefaultForm
@@ -30,7 +33,9 @@ export const MainForm = (ps) => {
                             related={ related }
                             permissions={ permissions }
                         />
-                        <Button type='submit'>Speichern</Button>
+                        <Button type='submit'>
+                            { translate('Save') }
+                        </Button>
                     </>
                 )}
             </DefaultForm>
@@ -40,200 +45,201 @@ export const MainForm = (ps) => {
 
 const FormFields = (ps) => {
     var { related, permissions } = ps;
+    var translate = useUITranslation();
     return (
         <>
             <Fields.SaneString
-                label='Bezeichnung'
+                label={ translate('Name') }
                 dataXPath='$.name'
                 required
             />
-            
+
             <MainHeader>
-                Allgemeine Berechtigungen
+                { translate('General Permissions') }
             </MainHeader>
 
-            <PermBox title='Locations'>
+            <PermBox title={ translate('Locations') }>
                 <Bool
-                    label='kann Locations einsehen (Kigas, Räume, etc.)'
+                    label='Can View Locations (Kigas, Rooms, etc.)'
                     dataXPath='$.canReadLocations'
                 />
                 <Bool
-                    label='kann Locations bearbeiten (Kigas, Räume, etc.)'
+                    label='Can Edit Locations (Kigas, Rooms, etc.)'
                     dataXPath='$.canWriteLocations'
                 />
                 <Bool
-                    label='kann Locations löschen (Kigas, Räume, etc.)'
+                    label='Can Delete Locations (Kigas, Rooms, etc.)'
                     dataXPath='$.canRemoveLocations'
                 />
             </PermBox>
 
-            <PermBox title='Externe Personen (z.B. Ärzte)'>
+            <PermBox title={ translate('External Persons') }>
                 <Bool
-                    label='kann Externe Personen einsehen'
+                    label='Can View External Persons (e.g. Doctors)'
                     dataXPath='$.canReadExternalPersons'
                 />
                 <Bool
-                    label='kann Externe Personen bearbeiten'
+                    label='Can Edit External Persons (e.g. Doctors)'
                     dataXPath='$.canWriteExternalPersons'
                 />
                 <Bool
-                    label='kann Externe Personen löschen'
+                    label='Can Delete External Persons (e.g. Doctors)'
                     dataXPath='$.canRemoveExternalPersons'
                 />
             </PermBox>
 
-            <PermBox title='Externe Organisationen (z.B. Träger)'>
+            <PermBox title={ translate('External Organizations') }>
                 <Bool
-                    label='kann Externe Organisationen einsehen'
+                    label='Can View External Organizations (e.g. Kiga Umbrella Orgs)'
                     dataXPath='$.canReadExternalOrganizations'
                 />
                 <Bool
-                    label='kann Externe Organisationen bearbeiten'
+                    label='Can Edit External Organizations (e.g. Kiga Umbrella Orgs)'
                     dataXPath='$.canWriteExternalOrganizations'
                 />
                 <Bool
-                    label='kann Externe Organisationen löschen'
+                    label='Can Delete External Organizations (e.g. Kiga Umbrella Orgs)'
                     dataXPath='$.canRemoveExternalOrganizations'
                 />
             </PermBox>
 
-            <PermBox title='Themengebiete'>
+            <PermBox title={ translate('Study Topics') }>
                 <Bool
-                    label='kann Themengebiete einsehen'
+                    label='Can View Study Topics'
                     dataXPath='$.canReadStudyTopics'
                 />
                 <Bool
-                    label='kann Themengebiete bearbeiten'
+                    label='Can Edit Study Topics'
                     dataXPath='$.canWriteStudyTopics'
                 />
                 <Bool
-                    label='kann Themengebiete löschen'
+                    label='Can Delete Study Topics'
                     dataXPath='$.canRemoveStudyTopics'
                 />
             </PermBox>
 
-            <PermBox title='Hilfstabellen'>
+            <PermBox title={ translate('Helper Tables') }>
                 <Bool
-                    label='kann Hilfstabellen einsehen'
+                    label='Can View Helper Tables'
                     dataXPath='$.canReadHelperSets'
                 />
                 <Bool
-                    label='kann Hilfstabellen bearbeiten'
+                    label='Can Edit Helper Tables'
                     dataXPath='$.canWriteHelperSets'
                 />
                 <Bool
-                    label='kann Hilfstabellen löschen'
+                    label='Can Delete Helper Tables'
                     dataXPath='$.canRemoveHelperSets'
                 />
             </PermBox>
 
-            <PermBox title='Mitarbeiter:innen (d.h. Benutzer-Accounts)'>
+            <PermBox title={ translate('Staff Members') }>
                 <Bool
-                    label='kann Mitarbeiter:innen einsehen'
+                    label='Can View Staff Members (i.e. User Accounts)'
                     dataXPath='$.canReadPersonnel'
                 />
                 <Bool
-                    label='kann Mitarbeiter:innen bearbeiten'
+                    label='Can Edit Staff Members (i.e. User Accounts)'
                     dataXPath='$.canWritePersonnel'
                 />
                 <Bool
-                    label='kann Mitarbeiter:innen Login-Erlaubnis gewähren und entziehen'
+                    label='Can Grant and Revoke Staff Members Log-In Permission'
                     dataXPath='$.canAllowLogin'
                 />
                 <Bool
-                    label='kann das Passwort anderer Mitarbeiter:innen manuell neu setzen'
+                    label='Can Set Password of Other Staff Members'
                     dataXPath='$.canSetPersonnelPassword'
                 />
             </PermBox>
 
-            <PermBox title='Studien'>
+            <PermBox title={ translate('Studies') }>
                 <Bool
-                    label='kann Studien einsehen'
+                    label='Can View Studies'
                     dataXPath='$.canReadStudies'
                 />
                 <Bool
-                    label='kann Studien anlegen und bearbeiten'
+                    label='Can Edit Studies'
                     dataXPath='$.canWriteStudies'
                 />
                 <Bool
-                    label='kann Studien löschen'
+                    label='Can Delete Studies'
                     dataXPath='$.canRemoveStudies'
                 />
             </PermBox>
 
-            <PermBox title='Proband:innen'>
+            <PermBox title={ translate('Subjects') }>
                 <Bool
-                    label='kann Proband:innen einsehen'
+                    label='Can View Subjects'
                     dataXPath='$.canReadSubjects'
                 />
                 <Bool
-                    label='kann Proband:innen anlegen und bearbeiten'
+                    label='Can Edit Subjects'
                     dataXPath='$.canWriteSubjects'
                 />
                 <Bool
-                    label='kann Proband:innen löschen'
+                    label='Can Delete Subjects'
                     dataXPath='$.canRemoveSubjects'
                 />
             </PermBox>
 
-            <PermBox title='Studien-Teilnahme'>
+            <PermBox title={ translate('Study Participation') }>
                 <Bool
-                    label='kann einsehen welche Proband:innen an einer Studie teilgeommen haben'
+                    label='Can View Study Participation'
                     dataXPath='$.canReadParticipation'
                 />
                 <Bool
-                    label='kann manuell Proband:innen in eine Studie eintragen'
+                    label='Can Add Study Participations Manually'
                     dataXPath='$.canWriteParticipation'
                 />
             </PermBox>
 
-            <PermBox title='Terminierung Allgemein'>
+            <PermBox title={ translate('General Scheduling') }>
                 <Bool
-                    label='kann Räume/Teams innerhalb der nächsten 3 Tage reservieren'
+                    label='Can Reserve Rooms/Teams Within the Next 3 Days'
                     dataXPath='$.canCreateReservationsWithinTheNext3Days'
                 />
                 <Bool
-                    label='kann Termine innerhalb der nächsten 3 Tage machen'
+                    label='Can Make Appointments Within the Next 3 Days'
                     dataXPath='$.canCreateExperimentsWithinTheNext3Days'
                 />
             </PermBox>
 
-            <PermBox title='Erweiterte Funktionen'>
+            <PermBox title={ translate('Advanced Functions') }>
                 <Bool
-                    label='kann die Erweiterte Suche benutzen'
+                    label='Can Use Advanced Search'
                     dataXPath='$.canUseExtendedSearch'
                 />
                 <Bool
-                    label='kann CSV-Export benutzen'
+                    label='Can Use CSV Export'
                     dataXPath='$.canUseCSVExport'
                 />
                 <Bool
-                    label='kann Rezeptionskalender einsehen'
+                    label='Can View Receptionist Calendar'
                     dataXPath='$.canViewReceptionCalendar'
                 />
             </PermBox>
 
             <MainHeader>
-                Ablaufbezogene Berechtigungen
+                { translate('Lab Workflow Related Permissions') }
             </MainHeader>
 
             <LabOperationFields
                 type='inhouse'
-                title='Interne Termine'
+                title={ translate('Inhouse Appointments') }
                 hasInvitation
             />
             <LabOperationFields
                 type='away-team'
-                title='Externe Termine'
+                title={ translate('External Appointments') }
             />
             <LabOperationFields
                 type='online-video-call'
-                title='Online-Video-Termine'
+                title={ translate('Online Video Appointments') }
                 hasInvitation
             />
             <SurveyFields
                 type='online-survey'
-                title='Online-Umfrage'
+                title={ translate('Online Survey') }
             />
         </>
     );
@@ -243,51 +249,53 @@ const LabOperationFields = (ps) => {
     var { type, title, hasInvitation } = ps;
     var dataXPath = `$.labOperation.${type}`;
 
+    var translate = useUITranslation();
+
     return (
         <PermBox title={ title }>
             <Bool
                 label={
                     hasInvitation
-                    ? 'kann Räumlichkeiten reservieren'
-                    : 'kann Experimenter:innen-Teams planen'
+                        ? 'Can Reserve Rooms'
+                        : 'Can Schedule Experimenter Teams'
                 }
                 dataXPath={ `${dataXPath}.canWriteReservations` }
             />
             <Bool
-                label='kann Proband:innen für Termine auswählen'
+                label='Can Select Subjects for Appointments'
                 dataXPath={ `${dataXPath}.canSelectSubjectsForExperiments` }
             />
             { hasInvitation && (
                 <Bool
-                    label='kann Termine bestätigen'
+                    label='Can Confirm Appointments'
                     dataXPath={ `${dataXPath}.canConfirmSubjectInvitation` }
                 />
             )}
             <Bool
-                label='kann Terminkalender einsehen'
+                label='Can View Appointment Calendar'
                 dataXPath={ `${dataXPath}.canViewExperimentCalendar` }
             />
             <Bool
-                label='kann Termine verschieben und absagen'
+                label='Can Move and Cancel Appointments'
                 dataXPath={ `${dataXPath}.canMoveAndCancelExperiments` }
             />
             <Bool
-                label='kann Experimenter:innen-Teams ändern'
+                label='Can Change Experimenter Teams'
                 dataXPath={ `${dataXPath}.canChangeOpsTeam` }
             />
             <Bool
-                label='kann Termine nachbereiten'
+                label='Can Postprocess Appointments'
                 dataXPath={ `${dataXPath}.canPostprocessExperiments` }
             />
             { type === 'away-team' && (
                 <Bool
-                    label='kann Studie von existierenden Terminen ändern'
+                    label='Can Change Study of Existing Appointments'
                     dataXPath={ `${dataXPath}.canChangeExperimentStudy` }
                 />
             )}
             { type === 'away-team' && (
                 <Bool
-                    label='kann Proband:innen aus existierenden Terminen entfernen'
+                    label='Can Remove Subjects from Existing Appointments'
                     dataXPath={ `${dataXPath}.canRemoveExperimentSubject` }
                 />
             )}
@@ -299,10 +307,12 @@ const SurveyFields = (ps) => {
     var { type, title } = ps;
     var dataXPath = `$.labOperation.${type}`;
 
+    var translate = useUITranslation();
+
     return (
         <PermBox title={ title }>
             <Bool
-                label='kann Online-Umfragen durchführen'
+                label='Can Carry Out Only Surveys'
                 dataXPath={ `${dataXPath}.canPerformOnlineSurveys` }
             />
         </PermBox>
@@ -321,10 +331,13 @@ const MainHeader = (ps) => {
 }
 
 const Bool = (ps) => {
+    var { label, ...pass } = ps;
+    var translate = useUITranslation();
     return (
         <Fields.DefaultBool
             uiSplit={[ 8, 4 ]}
-            { ...ps }
+            label={ translate(label) }
+            { ...pass }
         />
     )
 }

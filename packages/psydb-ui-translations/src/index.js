@@ -2066,6 +2066,27 @@ var maps = [
         en: 'The data sent contains invalid values.',
         de: 'Die abgesendeten Daten enthalten fehlerhafte Eingaben.'
     },
+
+    //////////////
+    
+    {
+        en: 'General Permissions',
+        de: 'Allgemeine Berechtigungen'
+    },
+    {
+        en: 'Scheduling General',
+        de: 'Terminierung Allgemein'
+    },
+    {
+        en: 'Advanced Functions',
+        de: 'Erweiterte Funktionen'
+    },
+    {
+        en: 'Lab Workflow Related Permissions',
+        de: 'Ablaufbezogene Berechtigungen'
+    },
+
+
 ]
 
 export const createTranslate = (lang = 'en') => {
