@@ -5,7 +5,13 @@ import { Button } from '@mpieva/psydb-ui-layout';
 import { useWriteRequest } from '@mpieva/psydb-ui-hooks';
 import { DefaultForm, Fields } from '@mpieva/psydb-ui-lib';
 
-import logoTextColor from './mp-logo-farbig-rgb.svg';
+import logoDETextColor from './mp-logo-farbig-rgb.svg';
+import logoENTextColor from './mp-logo-en-farbig-rgb.svg';
+
+const logosByLanguage = {
+    'en': logoENTextColor,
+    'de': logoDETextColor,
+}
 
 const SignInFormBody = (ps) => {
     var { hasError } = ps;
@@ -38,6 +44,8 @@ const SignInFormBody = (ps) => {
 
 const SignIn = ({ onSignedIn }) => {
     var translate = useUITranslation(); 
+    
+    var [ language ] = useUILanguage();
     var [ hasError, setHasError ] = useState(false);
 
     var write = useWriteRequest((agent, formData) => {
@@ -102,7 +110,7 @@ const SignIn = ({ onSignedIn }) => {
                             //marginBottom: '-20px',
                             marginBottom: '-25px',
                         }}
-                        src={ logoTextColor } alt=''
+                        src={ logosByLanguage[language] } alt=''
                     />
                 </div>
             </div>
