@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useReducer } from 'react';
+import { CookiesProvider, useCookies } from 'react-cookie';
+
 import enUSLocale from 'date-fns/locale/en-US';
 import deLocale from 'date-fns/locale/de';
 
@@ -23,20 +25,33 @@ import ErrorBoundary from './error-boundary';
 import SignIn from './sign-in';
 import Main from './main'
 
+const localesByCode = [
+    enUSLocale,
+    deLocale
+].reduce((acc, locale) => ({
+    ...acc,
+    [locale.code]: locale
+}), {});
+
 const App = () => {
 
     var [ isSignedIn, setIsSignedIn ] = useState(false);
     var [ self, setSelf ] = useState();
     var [ isInitialized, setIsInitialized ] = useState(false);
 
-    var [ state, dispatch ] = useReducer(i18nReducer, {
-        language: 'en',
-        locale: enUSLocale
-    });
+    var [ cookies, setCookie ] = useCookies([ 'i18n' ]);
+    var { i18n = {}} = cookies;
+    var { language = 'en', localeCode = 'en-US' } = i18n;
 
-    var { language, locale } = state;
-    var setI18N = (value) => dispatch({ type: 'set-i18n', value });
-    var setLocale = (value) => dispatch({ type: 'set-locale', value });
+    var locale = localesByCode[localeCode];
+
+    var setI18N = (value) => {
+        setCookie('i18n', {
+            language: value,
+            localeCode: value === 'de' ? deLocale.code : enUSLocale.code
+        });
+    };
+    //var setLocale = (value) => dispatch({ type: 'set-locale', value });
 
     var onSignedIn = (selfArg) => {
         setIsSignedIn(true);
@@ -136,22 +151,12 @@ function compose(...funcs) {
   return funcs.reduce((a, b) => (...args) => a(b(...args)))
 }
 
-var i18nReducer = (state, action) => {
-    var { type, value } = action;
-    switch (type) {
-        case 'set-language':
-            return { ...state, language: value };
-        case 'set-date-locale':
-            return { ...state, locale: value };
-        case 'set-i18n':
-            return {
-                ...state,
-                language: value,
-                locale: (value === 'de' ? deLocale : enUSLocale )
-            };
-        default:
-            throw new Error(`unknown action type "${type}"`);
-    }
+var withCookiesProvider = (Component) => (ps) => {
+    return (
+        <CookiesProvider defaultSetOptions={{ path: '/' }}>
+            <Component { ...ps} />
+        </CookiesProvider>
+    )
 }
 
-export default App;
+export default withCookiesProvider(App);
