@@ -1,5 +1,6 @@
 import React from 'react';
 import * as enums from '@mpieva/psydb-schema-enums';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useSend } from '@mpieva/psydb-ui-hooks';
 import { Button, Row, Col } from '@mpieva/psydb-ui-layout';
 import {
@@ -9,7 +10,10 @@ import {
     useFormikContext,
 } from '@mpieva/psydb-ui-lib';
 
-const CreateNewType = ({ onCreated }) => {
+const CreateNewType = (ps) => {
+    var { onCreated } = ps;
+    var translate = useUITranslation();
+
     var onSuccessfulUpdate = (response) => {
         var recordId = response.data.data.find(it => (
             it.collectionName === 'customRecordType'
@@ -27,7 +31,7 @@ const CreateNewType = ({ onCreated }) => {
     }), { onSuccessfulUpdate });
 
     return (
-        <FormBox title='Neuer Datensatz-Typ'>
+        <FormBox title={ translate('New Record Type') }>
             <DefaultForm
                 initialValues={{ props: {} }}
                 onSubmit={ send.exec }
@@ -37,7 +41,9 @@ const CreateNewType = ({ onCreated }) => {
                 {(formikProps) => (
                     <>
                         <FormFields />
-                        <Button type='submit'>Speichern</Button>
+                        <Button type='submit'>
+                            { translate('Save') }
+                        </Button>
                     </>
                 )}
             </DefaultForm>
@@ -47,16 +53,17 @@ const CreateNewType = ({ onCreated }) => {
 
 const FormFields = (ps) => {
     var { setFieldValue } = useFormikContext();
+    var translate = useUITranslation();
     return (
         <>
             <Fields.GenericEnum
-                label='Collection'
+                label={ translate('Collection') }
                 dataXPath='$.collection'
                 enum={ enums.customRecordTypeCollections }
                 required
             />
             <Fields.SaneString
-                label='Anzeigename'
+                label={ translate('Display Name') }
                 dataXPath='$.props.label'
                 extraOnChange={ (next) => {
                     setFieldValue(
@@ -69,13 +76,13 @@ const FormFields = (ps) => {
             <hr />
             <div className='px-3'>
                 <small className='text-muted'>
-                    Der Interne Type-Key wird automatisch anhand des
-                    Anzeigenamens generiert kann aber manuell
-                    überschrieben werden.
+                    { translate(
+                        'The internal type key is generated automatically based on the display name but can be overridden manually.'
+                    ) }
                 </small>
             </div>
             <Fields.SaneString
-                label='Interner Type-Key'
+                label={ translate('Internal Type Key') }
                 dataXPath='$.type'
                 required
             />

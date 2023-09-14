@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { demuxed } from '@mpieva/psydb-ui-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useSend, useModalReducer } from '@mpieva/psydb-ui-hooks';
 import { Button, WithDefaultModal } from '@mpieva/psydb-ui-layout';
 
@@ -37,6 +38,7 @@ const withGeneralSettingsEditor = (bag) => {
     });
 
     var WrappedView = (ps) => {
+        var translate = useUITranslation();
         var modal = useModalReducer();
         return (
             <>
@@ -45,7 +47,7 @@ const withGeneralSettingsEditor = (bag) => {
                 <Modal { ...ps } { ...modal.passthrough } />
                 <div className='mt-3'>
                     <Button onClick={ modal.handleShow }>
-                        Bearbeiten
+                        { translate('Edit') }
                     </Button>
                 </div>
             </>

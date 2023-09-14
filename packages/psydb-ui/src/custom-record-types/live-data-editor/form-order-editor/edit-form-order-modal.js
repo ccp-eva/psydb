@@ -1,6 +1,7 @@
 import React from 'react';
 import { withField } from '@cdxoo/formik-utils';
 
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useSend } from '@mpieva/psydb-ui-hooks';
 import { Button, WithDefaultModal } from '@mpieva/psydb-ui-layout';
 
@@ -25,6 +26,8 @@ const EditFormOrderModalBody = (ps) => {
         onSuccessfulUpdate,
     } = ps;
     
+    var translate = useUITranslation();
+
     var send = useSend((formData) => ({
         type: 'custom-record-types/set-form-order',
         payload: {
@@ -55,7 +58,9 @@ const EditFormOrderModalBody = (ps) => {
                         dataXPath='$.columns'
                         columns={ columns }
                     />
-                    <Button type='submit'>Speichern</Button>
+                    <Button type='submit'>
+                        { translate('Save') }
+                    </Button>
                 </>
             )}
         </DefaultForm>
@@ -63,7 +68,7 @@ const EditFormOrderModalBody = (ps) => {
 };
 
 const EditFormOrderModal = WithDefaultModal({
-    title: 'Sortierung bearbeiten',
+    title: 'Field Order in Forms',
     size: 'lg',
     Body: EditFormOrderModalBody
 });

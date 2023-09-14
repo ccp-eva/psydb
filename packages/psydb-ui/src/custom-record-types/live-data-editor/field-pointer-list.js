@@ -1,23 +1,22 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { Table, Button, Icons } from '@mpieva/psydb-ui-layout';
 
-import {
-    Table,
-    Button,
-    Icons
-} from '@mpieva/psydb-ui-layout';
+const FieldPointerList = (ps) => {
+    var {
+        onMoveItem,
+        onRemoveItem,
+        dataPointers = [],
+        availableFieldDataByPointer,
+    } = ps;
 
-const FieldPointerList = ({
-    onMoveItem,
-    onRemoveItem,
-    dataPointers = [],
-    availableFieldDataByPointer,
-}) => {
-    // TODO: andle move/remove
+    var translate = useUITranslation();
+
     if (dataPointers.length < 1) {
         return (
-            <p>
-                Keine Anzeigefelder festgelegt
-            </p>
+            <p><i className='text-muted'>
+                { translate('No display fields set.') }
+            </i></p>
         )
     }
 
@@ -26,7 +25,7 @@ const FieldPointerList = ({
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Feld</th>
+                    <th>{ translate('Field') }</th>
                 </tr>
             </thead>
             <tbody>

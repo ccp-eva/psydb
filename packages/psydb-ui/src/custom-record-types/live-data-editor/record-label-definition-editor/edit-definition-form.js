@@ -1,6 +1,7 @@
 import React from 'react';
 import { withField } from '@cdxoo/formik-utils';
 
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useSend } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
 import {
@@ -23,6 +24,8 @@ const EditDefinitionForm = (ps) => {
         onSuccess,
     } = ps;
     
+    var translate = useUITranslation();
+
     var send = useSend((formData) => ({
         type: 'custom-record-types/set-record-label-definition',
         payload: {
@@ -60,16 +63,18 @@ const EditDefinitionForm = (ps) => {
                 <>
                     <Fields.SaneString
                         labelClassName='px-0'
-                        label='Anzeige-Format'
+                        label={ translate('Format') }
                         dataXPath='$.format'
                     />
                     <ColumnSelect
-                        columnLabel='Platzhalterauswahl'
-                        orderLabel='Anordnung'
+                        columnLabel={ translate('Fields') }
+                        orderLabel={ translate('Field Order') }
                         dataXPath='$.tokens'
                         columns={ columns }
                     />
-                    <Button type='submit'>Speichern</Button>
+                    <Button type='submit'>
+                        { translate('Save') }
+                    </Button>
                 </>
             )}
         </DefaultForm>

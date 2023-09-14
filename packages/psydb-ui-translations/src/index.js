@@ -2087,6 +2087,143 @@ var maps = [
     },
 
 
+    {
+        en: 'New Record Type',
+        de: 'Neuer Datensatz-Typ'
+    },
+    {
+        en: 'Collection',
+        de: 'Collection'
+    },
+    {
+        en: 'Display Name',
+        de: 'Anzeigename'
+    },
+    {
+        en: 'Internal Type Key',
+        de: 'Interner Type-Key'
+    },
+    {
+        en: 'The internal type key is generated automatically based on the display name but can be overridden manually.',
+        de: 'Der Interne Type-Key wird automatisch anhand des Anzeigenamens generiert kann aber manuell überschrieben werden.'
+    },
+    {
+        en: 'Delete Record Type',
+        de: 'Datensatz-Typ Löschen'
+    },
+    {
+        en: 'Record Type',
+        de: 'Datensatz-Typ'
+    },
+    {
+        en: 'There are still records of this record type!',
+        de: 'Es gibt noch Datensätze mit diesem Datensatz-Typ'
+    },
+    {
+        en: 'This record type is referenced in fields of other record types!',
+        de: 'Dieser Datensatz-Typ wird von Feldern anderer Datensatz-Typen referenziert!'
+    },
+    {
+        en: 'Record Type Deleted',
+        de: 'Datensatz-Typ Gelöscht'
+    },
+    {
+        en: 'Record type was deleted successfully!',
+        de: 'Datensatz-Typ wurde erfolgreich gelöscht!'
+    },
+    {
+        en: 'Record not found!',
+        de: 'Datensatz nicht gefunden!'
+    },
+    {
+        en: 'Live Settings',
+        de: 'Live-Settings'
+    },
+    {
+        en: 'Field Editor',
+        de: 'Feld-Editor'
+    },
+    {
+        en: 'Uncommited Field Changes',
+        de: 'Unfixierte Feldänderungen'
+    },
+    {
+        internal: '_crt_uncommited_fields_hint',
+        en: 'The record type contains uncommited field changes! They have to be commited in the field editor before they are available in live settings and in records of this type.',
+        de: 'Der Datensatz-Typ enthält unfixierte Feldänderungen! Diese müssen im Feld-Editor fixiert werden, bevor sie in den Live-Settings und in den Datensätzen dieses Datensatz-Types verfügbar sind.'
+    },
+    {
+        en: 'General Settings',
+        de: 'Allgemeine Einstellungen'
+    },
+    {
+        en: 'Short Label when Referencing',
+        de: 'Kurzanzeige bei Referenzierung'
+    },
+    {
+        en: 'Field Order in Forms',
+        de: 'Feldreihenfolge in Formularen'
+    },
+    {
+        en: 'Columns (General)',
+        de: 'Tabellenspalten (Allgemein)'
+    },
+    {
+        en: 'Columns (Option Select)',
+        de: 'Tabellenspalten (Optionssauswahl)'
+    },
+    {
+        en: 'Extra Fields for Summary',
+        de: 'Extra Felder für Zusammenfassung'
+    },
+    {
+        en: 'Extra Columns for Subject Selection (Inhouse/Video)',
+        de: 'Extra Spalten bei Proband:innen-Auswahl (Intern/Video)'
+    },
+    {
+        en: 'Extra Columns for Subject Selection (External)',
+        de: 'Extra Spalten bei Proband:innen-Auswahl (Extern)'
+    },
+    {
+        en: 'Fields for Duplication Check',
+        de: 'Felder für Duplikatsprüfung'
+    },
+    {
+        en: 'Requires Participation Permissions',
+        de: 'Benötigt Teilnahmeerlaubnis'
+    },
+    {
+        en: 'Comment Field Requires Extra Permission',
+        de: 'Kommentarfeld Benötigt Extra Berechtigung'
+    },
+    {
+        en: 'Show ID No.',
+        de: 'ID Nr. Anzeigen'
+    },
+    {
+        en: 'Show Online ID Code',
+        de: 'Online-ID-Code Anzeigen'
+    },
+    {
+        en: 'Missing',
+        de: 'Fehlt'
+    },
+    {
+        en: 'Not Set',
+        de: 'Nicht Festgelegt'
+    },
+    {
+        en: 'Format',
+        de: 'Format'
+    },
+    {
+        en: 'No display fields set.',
+        de: 'Keine Anzeigefelder festgelegt.'
+    },
+    {
+        en: 'Field Order',
+        de: 'Feld Reihenfolge'
+    },
 ]
 
 export const createTranslate = (lang = 'en') => {

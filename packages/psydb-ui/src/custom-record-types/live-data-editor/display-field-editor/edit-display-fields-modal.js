@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
 import { Modal, Button } from 'react-bootstrap';
 import EditDisplayFieldsForm from './edit-display-fields-form';
@@ -13,6 +14,8 @@ const EditDisplayFieldsModal = ({
     onSuccessfulUpdate,
 }) => {
     target = target || 'table';
+    
+    var translate = useUITranslation();
 
     var handleSuccess = () => {
         onSuccessfulUpdate();
@@ -28,11 +31,11 @@ const EditDisplayFieldsModal = ({
         >
             <Modal.Header closeButton>
                 <Modal.Title>
-                    {(
+                    {
                         target === 'optionlist'
-                        ? 'Optionsfelder'
-                        : 'Tabellenfelder'
-                    )} bearbeiten
+                        ? translate('Columns (Option Select)')
+                        : translate('Columns (General)')
+                    }
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body className='bg-light'>

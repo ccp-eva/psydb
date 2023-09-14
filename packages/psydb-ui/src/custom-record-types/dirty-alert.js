@@ -1,13 +1,15 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
 const DirtyAlert = (ps) => {
+    var translate = useUITranslation();
     return (
         <div className='text-danger small mt-3'>
-            <header><b>Unfixierte Felder</b></header>
+            <header><b>
+                { translate('Uncommited Field Changes') }
+            </b></header>
             <div>
-                Datensatz-Typ enthält noch unfixierte Feldänderungen,
-                bevor diese in den Live-Settings und in den Datensätzen
-                verfügbar sind müssen sie vorher im Feld-Editor fixiert werden.
+                { translate('_crt_uncommited_fields_hint') }
             </div>
         </div>
     );

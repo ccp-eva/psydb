@@ -1,4 +1,5 @@
 export * from './core/theme-context';
+export { default as CRT } from './custom-record-type';
 export { default as ResearchGroup } from './research-group';
 export { default as SystemRole } from './system-role';
 export { default as Personnel } from './personnel';

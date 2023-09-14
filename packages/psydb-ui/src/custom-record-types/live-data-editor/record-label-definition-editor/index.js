@@ -1,28 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
-import { Button, Table } from 'react-bootstrap';
+import { keyBy } from '@mpieva/psydb-core-utils';
+import { gatherDisplayFieldData } from '@mpieva/psydb-common-lib';
 
-import keyBy from '@mpieva/psydb-common-lib/src/key-by';
-import gatherDisplayFieldData from '@mpieva/psydb-common-lib/src/gather-display-field-data';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useModalReducer } from '@mpieva/psydb-ui-hooks';
+import { Button, Table } from '@mpieva/psydb-ui-layout';
 
 import EditDefinitionModal from './edit-definition-modal';
 import FieldPointerList from '../field-pointer-list';
 
 
-const RecordLabelDefinitionEditor = ({
-    record,
-    onSuccessfulUpdate,
-}) => {
+const RecordLabelDefinitionEditor = (ps) => {
+    var {
+        record,
+        onSuccessfulUpdate,
+    } = ps;
 
-    var [ showEditModal, setShowEditModal ] = useState(false);
-
-    var handleShowEditModal = () => {
-        setShowEditModal(true);
-    }
-
-    var handleCloseEditModal = () => {
-        setShowEditModal(false);
-    }
+    var translate = useUITranslation();
+    var modal = useModalReducer();
 
     var availableDisplayFieldData = gatherDisplayFieldData({
         customRecordTypeData: record,
@@ -42,12 +38,9 @@ const RecordLabelDefinitionEditor = ({
         <div>
             <p>
                 <b>
-                    Format:{' '}
-                    {(
-                        format
-                        ? format
-                        : 'Nicht festgelegt'
-                    )}
+                    { translate('Format') }
+                    {': '}
+                    { format || translate('Not Set') }
                 </b>
             </p>
             <FieldPointerList
@@ -56,12 +49,12 @@ const RecordLabelDefinitionEditor = ({
                     availableFieldDataByPointer
                 }
             />
-            <Button onClick={ handleShowEditModal }>
-                Edit
+            <Button onClick={ modal.handleShow }>
+                { translate('Edit') }
             </Button>
             <EditDefinitionModal
-                show={ showEditModal }
-                onHide={ handleCloseEditModal }
+                { ...modal.passthrough }
+
                 record={ record }
                 format={ format }
                 tokens={ tokens }

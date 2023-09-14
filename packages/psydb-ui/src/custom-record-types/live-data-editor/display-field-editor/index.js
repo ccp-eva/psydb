@@ -1,30 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
-import { Button, Table } from 'react-bootstrap';
+import { keyBy } from '@mpieva/psydb-core-utils';
+import { gatherDisplayFieldData } from '@mpieva/psydb-common-lib';
 
-import keyBy from '@mpieva/psydb-common-lib/src/key-by';
-import gatherDisplayFieldData from '@mpieva/psydb-common-lib/src/gather-display-field-data';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useModalReducer } from '@mpieva/psydb-ui-hooks';
+import { Button, Table } from '@mpieva/psydb-ui-layout';
 
 import EditDisplayFieldsModal from './edit-display-fields-modal';
 import FieldPointerList from '../field-pointer-list';
 
 
-const DisplayFieldEditor = ({
-    target,
-    record,
-    onSuccessfulUpdate,
-}) => {
+const DisplayFieldEditor = (ps) => {
+    var {
+        target,
+        record,
+        onSuccessfulUpdate,
+    } = ps;
+
     var { collection } = record;
 
-    var [ showEditModal, setShowEditModal ] = useState(false);
-
-    var handleShowEditModal = () => {
-        setShowEditModal(true);
-    }
-
-    var handleCloseEditModal = () => {
-        setShowEditModal(false);
-    }
+    var translate = useUITranslation();
+    var modal = useModalReducer();
 
     var availableDisplayFieldData = gatherDisplayFieldData({
         customRecordTypeData: record,
@@ -48,12 +45,12 @@ const DisplayFieldEditor = ({
                     availableFieldDataByPointer
                 }
             />
-            <Button onClick={ handleShowEditModal }>
-                Edit
+            <Button onClick={ modal.handleShow }>
+                { translate('Edit') }
             </Button>
             <EditDisplayFieldsModal
-                show={ showEditModal }
-                onHide={ handleCloseEditModal }
+                { ...modal.passthrough }
+
                 target={ target }
                 record={ record }
                 currentDataPointers={ currentDataPointers }

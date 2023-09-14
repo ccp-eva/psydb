@@ -8,6 +8,7 @@ import {
 } from 'react-router-dom';
 
 import { URL, demuxed } from '@mpieva/psydb-ui-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
 import {
     usePermissions,
@@ -36,6 +37,8 @@ const SafetyForm = (ps) => {
 
     var { state: { label }} = fetched.data;
 
+    var translate = useUITranslation();
+
     var send = useSend(() => ({
         type: 'custom-record-types/remove',
         payload: { id }
@@ -51,9 +54,12 @@ const SafetyForm = (ps) => {
     var { existingRecordCount, crtFieldRefs } = fetchedInfo.data;
 
     return (
-        <FormBox title='Datensatz-Typ löschen' titleClassName='text-danger'>
+        <FormBox
+            title={ translate('Delete Record Type') }
+            titleClassName='text-danger'
+        >
             <Pair 
-                label='Datensatz-Typ'
+                label={ translate('Record Type') }
                 wLeft={ 3 } wRight={ 9 } className='px-3'
             >
                 { label }
@@ -62,7 +68,7 @@ const SafetyForm = (ps) => {
             { existingRecordCount > 0 && (
                 <>
                     <Alert variant='danger'><b>
-                        Es existieren noch Einträge für diesen Datensatz-Typ
+                        { translate('There are still records of this record type!') }
                     </b></Alert>
                     <hr />
                 </>
@@ -70,8 +76,7 @@ const SafetyForm = (ps) => {
             { crtFieldRefs.length > 0 && (
                 <>
                     <Alert variant='danger'><b>
-                        Datensatz-Typ wird von Feldern
-                        in anderen Datensatztypen referenziert
+                        { translate('This record type is referenced in fields of other record types!') }}
                     </b></Alert>
 
                     <CRTFieldRefList crtFieldRefs={ crtFieldRefs } />
@@ -86,7 +91,7 @@ const SafetyForm = (ps) => {
                     || crtFieldRefs.length > 0
                 }
             >
-                Löschen
+                { translate('Delete') }
             </Button>
         </FormBox>
     )
@@ -94,16 +99,21 @@ const SafetyForm = (ps) => {
 
 const SuccessInfo = (ps) => {
     var { successInfoBackLink } = ps;
+    var translate = useUITranslation();
+
     return (
-        <FormBox titleClassName='text-success' title='Datensatz-Typ gelöscht'>
-            <i>Datensatz-Typ wurde erfolgreich gelöscht</i>
+        <FormBox
+            titleClassName='text-success'
+            title={ translate('Record Type Deleted') }
+        >
+            <i>{ translate('Record type was deleted successfully!') }</i>
             { successInfoBackLink && (
                 <>
                     <hr />
                     <a href={ URL.hashify(successInfoBackLink) }>
                         <Icons.ArrowLeftShort />
                         {' '}
-                        <b>zurück zur Liste</b>
+                        <b>{ translate('Back to List') }</b>
                     </a>
                 </>
             )}

@@ -1,6 +1,9 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { Button } from '@mpieva/psydb-ui-layout';
 import { DefaultForm, Fields } from '@mpieva/psydb-ui-lib';
+import * as Themes from '@mpieva/psydb-ui-lib/data-viewer-themes';
+import { CRT } from '@mpieva/psydb-ui-lib/data-viewers';
 import withGeneralSettingsEditor from '../with-general-settings-editor';
 
 const Form = (ps) => {
@@ -21,6 +24,8 @@ const Form = (ps) => {
         showOnlineId,
     };
         
+    var translate = useUITranslation();
+
     return (
         <DefaultForm
             initialValues={ initialValues }
@@ -29,29 +34,31 @@ const Form = (ps) => {
             {(formikProps) => (
                 <>
                     <Fields.SaneString
-                        label='Anzeigename'
+                        label={ translate('Display Name') }
                         dataXPath='$.label'
                         required
                     />
                     <Fields.DefaultBool
-                        label='Benötigt Test-Erlaubnis'
+                        label={ translate('Requires Participation Permissions') }
                         dataXPath='$.requiresTestingPermissions'
                     />
                     <Fields.DefaultBool
-                        label='Kommentarfeld erfordert zusätzliche Berechtigung'
+                        label={ translate('Comment Field Requires Extra Permission') }
                         dataXPath='$.commentFieldIsSensitive'
                     />
                     
                     <Fields.DefaultBool
-                        label='ID Nr. anzeigen'
+                        label={ translate('Show ID No.') }
                         dataXPath='$.showSequenceNumber'
                     />
                     <Fields.DefaultBool
-                        label='Online-ID anzeigen'
+                        label={ translate('Show Online ID Code') }
                         dataXPath='$.showOnlineId'
                     />
 
-                    <Button type='submit'>Speichern</Button>
+                    <Button type='submit'>
+                        { translate('Save') }
+                    </Button>
                 </>
             )}
         </DefaultForm>
@@ -68,45 +75,26 @@ const View = (ps) => {
         showOnlineId = true,
     }} = record;
 
+    var crtBag = {
+        theme: Themes.HorizontalSplit,
+        value: record,
+        related : {},
+        wLeft: 6,
+    }
+
     return (
-        <>
-            <div>
-                Anzeigename: { label }
-            </div>
-            <div>
-                { 
-                    requiresTestingPermissions
-                    ? 'Benötigt Test-Erlaubnis'
-                    : 'Ohne Test-Erlaubnis'
-                }
-            </div>
-            <div>
-                { 
-                    commentFieldIsSensitive
-                    ? 'Kommentarfeld benötigt extra Berechtigung'
-                    : 'Kommentarfeld ist für alle Sichtbar'
-                }
-            </div>
-            <div>
-                { 
-                    showSequenceNumber
-                    ? 'ID Nr. wird angezeigt'
-                    : 'ID Nr. wird nicht angezeigt'
-                }
-            </div>
-            <div>
-                { 
-                    showOnlineId
-                    ? 'Online-ID wird angezeigt'
-                    : 'Online-ID wird nicht angezeigt'
-                }
-            </div>
-        </>
+        <CRT { ...crtBag }>
+            <CRT.Label />
+            <CRT.RequiresTestingPermissions />
+            <CRT.CommentFieldIsSensitive />
+            <CRT.ShowSequenceNumber />
+            <CRT.ShowOnlineId />
+        </CRT>
     )
 }
 
 const GeneralEditor = withGeneralSettingsEditor({
-    title: 'Allgemeine Einstellungen',
+    title: 'General Settings',
     size: 'lg',
 
     View,

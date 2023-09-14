@@ -1,12 +1,27 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { Pair } from '@mpieva/psydb-ui-layout';
 
 export const Field = (ps) => {
-    var { label, handleMissing = 'warn', noWrapper, children, value } = ps;
+    var {
+        label,
+        handleMissing = 'warn',
+        noWrapper,
+        children,
+        value,
+        wLeft,
+        wRight
+    } = ps;
+
+    var translate = useUITranslation();
 
     if (children === undefined) {
         if (handleMissing === 'warn') {
-            children = <span className='bs5 text-danger'>Fehlt</span>
+            children = (
+                <span className='bs5 text-danger'>
+                    { translate('Missing') }
+                </span>
+            )
         }
         else if (handleMissing === 'ignore') {
             children = '';
@@ -19,11 +34,12 @@ export const Field = (ps) => {
         children = children;
     }
     
+    var pass = { wRight, wLeft };
     return (
         noWrapper
         ? children
         : (
-            <Pair label={ label }>
+            <Pair label={ label } { ...pass }>
                 { children }
             </Pair>
         )

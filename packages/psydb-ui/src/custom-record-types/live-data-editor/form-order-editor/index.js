@@ -1,6 +1,7 @@
 import React from 'react';
 import { keyBy } from '@mpieva/psydb-core-utils';
 import { gatherDisplayFieldData } from '@mpieva/psydb-common-lib';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useModalReducer } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
 
@@ -16,6 +17,7 @@ const FormOrderEditor = (ps) => {
     var { collection, state } = record;
     var { formOrder } = state;
 
+    var translate = useUITranslation();
     var editModal = useModalReducer();
 
     var availableDisplayFieldData = gatherDisplayFieldData({
@@ -36,7 +38,7 @@ const FormOrderEditor = (ps) => {
                 }
             />
             <Button onClick={ editModal.handleShow }>
-                Edit
+                { translate('Edit') }
             </Button>
             
             <EditFormOrderModal

@@ -1,6 +1,7 @@
 import React from 'react';
 import { withField } from '@cdxoo/formik-utils';
 
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useSend } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
 import {
@@ -15,13 +16,16 @@ const ColumnSelect = withField({
     DefaultWrapper: 'NoneWrapper'
 });
 
-const EditDisplayFieldForm = ({
-    target,
-    record,
-    currentDataPointers,
-    availableFieldDataByPointer,
-    onSuccess,
-}) => {
+const EditDisplayFieldForm = (ps) => {
+    var {
+        target,
+        record,
+        currentDataPointers,
+        availableFieldDataByPointer,
+        onSuccess,
+    } = ps;
+
+    var translate = useUITranslation();
 
     var send = useSend((formData) => ({
         type: 'custom-record-types/set-display-fields',
@@ -52,12 +56,14 @@ const EditDisplayFieldForm = ({
             {(formikProps) => (
                 <>
                     <ColumnSelect
-                        columnLabel='Spaltenauswahl'
-                        orderLabel='Anordnung'
+                        columnLabel={ translate('Columns') }
+                        orderLabel={ translate('Column Order') }
                         dataXPath='$.columns'
                         columns={ columns }
                     />
-                    <Button type='submit'>Speichern</Button>
+                    <Button type='submit'>
+                        { translate('Save') }
+                    </Button>
                 </>
             )}
         </DefaultForm>

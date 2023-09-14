@@ -10,8 +10,9 @@ import {
 } from 'react-router-dom';
 
 import { URL } from '@mpieva/psydb-ui-utils';
-import { withRecordEditor } from '@mpieva/psydb-ui-lib';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { RoutedTabNav, LinkButton } from '@mpieva/psydb-ui-layout';
+import { withRecordEditor } from '@mpieva/psydb-ui-lib';
 
 import DirtyAlert from './dirty-alert';
 import LiveDataEditor from './live-data-editor';
@@ -34,17 +35,26 @@ const Inner = (ps) => {
     } = fetched;
 
     var { path, url } = useRouteMatch();
+    var translate = useUITranslation();
 
     return (
         <>
             <div>
                 <div className='d-flex'>
-                    <div style={{ width: '25%'}}>Collection</div>
-                    <div><b>{ record.collection }</b></div>
+                    <div style={{ width: '25%'}}>
+                        { translate('Collection') }
+                    </div>
+                    <div>
+                        <b>{ record.collection }</b>
+                    </div>
                 </div>
                 <div className='d-flex'>
-                    <div style={{ width: '25%'}}>Interner Type-Key</div>
-                    <div><b>{ record.type }</b></div>
+                    <div style={{ width: '25%'}}>
+                        { translate('Internal Type Key') }
+                    </div>
+                    <div>
+                        <b>{ record.type }</b>
+                    </div>
                 </div>
             </div>
 
@@ -80,7 +90,7 @@ const Inner = (ps) => {
                 variant='danger'
                 to={ URL.fill(removeUrl, { id }) }
             >
-                Löschen
+                { translate('Delete') }
             </LinkButton>
         </>
     );
@@ -88,7 +98,20 @@ const Inner = (ps) => {
 
 const BaseRouting = (ps) => {
     var { children } = ps;
+    
     var { path, url } = useRouteMatch();
+    var translate = useUITranslation();
+
+    var navItems = [
+        {
+            key: 'live',
+            label: translate('Live Settings')
+        },
+        {
+            key: 'fields',
+            label: translate('Field Editor')
+        },
+    ];
 
     return (
         <Switch>
@@ -101,10 +124,7 @@ const BaseRouting = (ps) => {
                     param='tabKey'
                     className='d-flex'
                     itemClassName='flex-grow'
-                    items={[
-                        { key: 'live', label: 'Live-Settings' },
-                        { key: 'fields', label: 'Feld-Editor' },
-                    ]}
+                    items={ navItems }
                 />
 
                 { children }

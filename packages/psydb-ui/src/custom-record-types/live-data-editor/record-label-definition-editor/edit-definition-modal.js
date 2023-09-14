@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
 import { Modal, Button } from 'react-bootstrap';
 import EditDefinitionForm from './edit-definition-form';
@@ -12,6 +13,8 @@ const EditDefinitionModal = ({
     availableFieldDataByPointer,
     onSuccessfulUpdate,
 }) => {
+    var translate = useUITranslation();
+
     var handleSuccess = () => {
         onSuccessfulUpdate();
         onHide()
@@ -26,7 +29,7 @@ const EditDefinitionModal = ({
         >
             <Modal.Header closeButton>
                 <Modal.Title>
-                    Kurzanzeige bearbeiten
+                    { translate('Short Label when Referencing') }
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body className='bg-light'>

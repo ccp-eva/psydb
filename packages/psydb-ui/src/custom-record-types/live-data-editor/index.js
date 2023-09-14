@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { FormBox, LinkButton } from '@mpieva/psydb-ui-lib';
 import { PanelPair, PanelColumn } from './util';
 
@@ -17,6 +18,8 @@ const LiveDataEditor = (ps) => {
     var { collection, type, state } = record;
     var { label } = state;
 
+    var translate = useUITranslation();
+
     if (collection === 'subject') {
         return (
             <SubjectTypeEditor { ...ps } />
@@ -27,19 +30,19 @@ const LiveDataEditor = (ps) => {
         <div>
             <PanelPair>
                 <PanelColumn>
-                    <FormBox title='Allgemeine Einstellungen'>
+                    <FormBox title={ translate('General Settings') }>
                         <GeneralEditor { ...ps }/>
                     </FormBox>
 
-                    <FormBox title='Kurzanzeige bei Referenzierung'>
+                    <FormBox title={ translate('Short Label when Referencing') }>
                         <RecordLabelDefinitionEditor { ...ps } />
                     </FormBox>
                     
-                    { collection === 'subject' && ( 
-                        <FormBox title='Feldsortierung im Formular'>
+                    { /*collection === 'subject' && ( 
+                        <FormBox title={ translate('Field Order in Forms') }>
                             <FormOrderEditor { ...ps } />
                         </FormBox>
-                    )}
+                    )*/}
 
                     { collection === 'study' && (
                         <StudyExtraEditors { ...ps } />
@@ -47,29 +50,13 @@ const LiveDataEditor = (ps) => {
 
                 </PanelColumn>
                 <PanelColumn>
-                    <FormBox title='Tabellenspalten (Allgemein)'>
+                    <FormBox title={ translate('Columns (General)') }>
                         <DisplayFieldEditor target='table' { ...ps } />
                     </FormBox>
                     
-                    <FormBox title='Tabellenspalten (Options-Auswahl)'>
+                    <FormBox title={ translate('Columns (Option Select)') }>
                         <DisplayFieldEditor target='optionlist' { ...ps } />
                     </FormBox>
-                    
-                    { collection === 'subject' && (
-                        <FormBox title='Extra Spalten bei Einladung (Inhouse, Online-Video-Anruf)'>
-                            <DisplayFieldEditor target='invite-selection-list' { ...ps } />
-                        </FormBox>
-                    )}
-                    { collection === 'subject' && (
-                        <FormBox title='Extra Spalten bei Auswahl (Extern)'>
-                            <DisplayFieldEditor target='away-team-selection-list' { ...ps } />
-                        </FormBox>
-                    )}
-                    { collection === 'subject' && (
-                        <FormBox title='Felder für Duplikatsprüfung'>
-                            <DuplicateCheckFieldEditor { ...ps } />
-                        </FormBox>
-                    )}
                 </PanelColumn>
             </PanelPair>
 
