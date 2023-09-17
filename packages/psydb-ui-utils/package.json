@@ -21,7 +21,6 @@
     "chai": "~4.3.7",
     "@babel/core": "~7.18.13",
     "@babel/preset-env": "~7.18.10",
-    "babel-loader": "~8.2.2",
     "classnames": "~2.3.1",
     "@mpieva/psydb-core-utils": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-common-lib": "workspace:~0.1.0-alpha",
