@@ -1,9 +1,4 @@
 export { default as datefns } from './date-fns';
-export {
-    ROSchemaForm,
-    SchemaForm,
-    RJSFCustomTheme
-} from './schema-form';
 
 export {
     RecordPicker,

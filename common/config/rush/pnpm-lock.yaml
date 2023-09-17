@@ -1116,9 +1116,6 @@ importers:
       '@mpieva/psydb-ui-request-agents': workspace:~0.1.0-alpha
       '@mpieva/psydb-ui-translations': workspace:~0.1.0-alpha
       '@mpieva/psydb-ui-utils': workspace:~0.1.0-alpha
-      '@mpieva/rjsf-monkey-patch': workspace:~0.1.0-alpha
-      '@rjsf/bootstrap-4': ~2.5.1
-      '@rjsf/core': ~2.5.1
       babel-loader: ~8.2.2
       bootstrap: ~4.6.0
       camelcase: ~6.3.0
@@ -1176,9 +1173,6 @@ importers:
       '@mpieva/psydb-ui-request-agents': link:../psydb-ui-request-agents
       '@mpieva/psydb-ui-translations': link:../psydb-ui-translations
       '@mpieva/psydb-ui-utils': link:../psydb-ui-utils
-      '@mpieva/rjsf-monkey-patch': link:../rjsf-monkey-patch
-      '@rjsf/bootstrap-4': 2.5.1_5dccca4f99fef0089ce8bea6fe035927
-      '@rjsf/core': 2.5.1_react@17.0.2
       babel-loader: 8.2.5_f5975a70e9cb8593656d54cbace21b8c
       bootstrap: 4.6.2
       camelcase: 6.3.0
@@ -1366,9 +1360,6 @@ importers:
       '@mpieva/psydb-ui-layout': workspace:~0.1.0-alpha
       '@mpieva/psydb-ui-request-agents': workspace:~0.1.0-alpha
       '@mpieva/psydb-ui-utils': workspace:~0.1.0-alpha
-      '@mpieva/rjsf-monkey-patch': workspace:~0.1.0-alpha
-      '@rjsf/bootstrap-4': ~2.5.1
-      '@rjsf/core': ~2.5.1
       bootstrap: ~4.6.0
       camelcase: ~6.3.0
       chai: ~4.3.7
@@ -1410,9 +1401,6 @@ importers:
       '@mpieva/psydb-ui-layout': link:../psydb-ui-layout
       '@mpieva/psydb-ui-request-agents': link:../psydb-ui-request-agents
       '@mpieva/psydb-ui-utils': link:../psydb-ui-utils
-      '@mpieva/rjsf-monkey-patch': link:../rjsf-monkey-patch
-      '@rjsf/bootstrap-4': 2.5.1_5dccca4f99fef0089ce8bea6fe035927
-      '@rjsf/core': 2.5.1_react@17.0.2
       bootstrap: 4.6.2
       camelcase: 6.3.0
       chai: 4.3.8
@@ -3384,19 +3372,6 @@ packages:
     dependencies:
       dequal: 2.0.3
       react: 17.0.2
-    dev: true
-
-  /@rjsf/bootstrap-4/2.5.1_5dccca4f99fef0089ce8bea6fe035927:
-    resolution: {integrity: sha512-USijizR4MkYtMOdbZWt3HDDc9vWmMvmiskqXwV2jEUBMPSu1UG0bZS2HKzqfnMJcJRT1P7Tj4O3sGwgE+7FCpw==}
-    peerDependencies:
-      '@rjsf/core': ^2.0.0-alpha.6
-      react: '>=16'
-      react-bootstrap: ^1.0.1
-    dependencies:
-      '@rjsf/core': 2.5.1_react@17.0.2
-      react: 17.0.2
-      react-bootstrap: 1.5.2_react-dom@17.0.2+react@17.0.2
-      react-icons: 3.11.0_react@17.0.2
     dev: true
 
   /@rjsf/core/2.5.1_react@17.0.2:
@@ -9316,15 +9291,6 @@ packages:
 
   /react-fast-compare/2.0.4:
     resolution: {integrity: sha512-suNP+J1VU1MWFKcyt7RtjiSWUjvidmQSlqu+eHslq+342xCbGTYmC0mEhPCOHxlW0CywylOC1u2DFAT+bv4dBw==}
-    dev: true
-
-  /react-icons/3.11.0_react@17.0.2:
-    resolution: {integrity: sha512-JRgiI/vdF6uyBgyZhVyYJUZAop95Sy4XDe/jmT3R/bKliFWpO/uZBwvSjWEdxwzec7SYbEPNPck0Kff2tUGM2Q==}
-    peerDependencies:
-      react: '*'
-    dependencies:
-      camelcase: 5.3.1
-      react: 17.0.2
     dev: true
 
   /react-is/16.13.1:
