@@ -30,7 +30,7 @@
     "is-what": "~3.14.1",
     "formik": "~2.4.3",
     "jsonpointer": "~5.0.1",
-    "js-base64": "~3.6.0",
+    "js-base64": "~3.7.5",
     "@cdxoo/inline-string": "~1.0.0",
     "@cdxoo/omit": "~1.0.1",
     "@cdxoo/formik-utils": "~0.7.0",

@@ -49,7 +49,7 @@
     "@cdxoo/formik-utils": "~0.7.0",
     "jsonpointer": "~5.0.1",
     "date-fns": "~2.29.3",
-    "js-base64": "~3.6.0",
+    "js-base64": "~3.7.5",
     "@mpieva/psydb-timezone-helpers": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-core-utils": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-date-interval-fns": "workspace:~0.1.0-alpha",
