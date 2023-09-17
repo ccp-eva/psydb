@@ -78,14 +78,12 @@
     "camelcase": "~6.3.0",
     "sift": "~16.0.0",
     "rimraf": "~5.0.1",
-    "react-cookie": "~6.1.1"
+    "react-cookie": "~6.1.1",
+    "svg-url-loader": "~8.0.0"
   },
   "config": {
     "mongodbMemoryServer": {
       "downloadDir": "/tmp/mongodb-memory-server/"
     }
-  },
-  "dependencies": {
-    "svg-url-loader": "~8.0.0"
   }
 }
