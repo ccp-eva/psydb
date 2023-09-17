@@ -7,7 +7,7 @@
   "author": "Jan Schwalbe",
   "license": "MIT",
   "dependencies": {
-    "@mpieva/psydb-quicksort": "~0.1.0-alpha"
+    "@mpieva/psydb-quicksort": "workspace:~0.1.0-alpha"
   },
   "devDependencies": {
     "mocha": "~10.1.0",

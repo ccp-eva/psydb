@@ -9,6 +9,6 @@
   "license": "MIT",
   "dependencies": {
     "bson": "~4.2.2",
-    "@mpieva/psydb-common-lib": "~0.1.0-alpha"
+    "@mpieva/psydb-common-lib": "workspace:~0.1.0-alpha"
   }
 }

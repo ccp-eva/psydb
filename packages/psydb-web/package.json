@@ -25,9 +25,9 @@
     "koa-compose": "~4.1.0",
     "koa-static-cache": "~5.1.4",
     "koa-mount": "~4.0.0",
-    "@mpieva/psydb-api-config": "~0.1.0-alpha",
-    "@mpieva/psydb-api": "~0.1.0-alpha",
-    "@mpieva/psydb-ui": "~0.1.0-alpha",
+    "@mpieva/psydb-api-config": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-api": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-ui": "workspace:~0.1.0-alpha",
     "@cdxoo/block-quote": "~1.0.0",
     "koa-router": "~10.0.0"
   },

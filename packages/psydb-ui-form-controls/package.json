@@ -18,7 +18,7 @@
   "homepage": "https://github.com/cdxOo/psydb#readme",
   "devDependencies": {
     "react": "~17.0.1",
-    "@mpieva/psydb-common-lib": "~0.1.0-alpha",
-    "@mpieva/psydb-ui-layout": "~0.1.0-alpha"
+    "@mpieva/psydb-common-lib": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-ui-layout": "workspace:~0.1.0-alpha"
   }
 }

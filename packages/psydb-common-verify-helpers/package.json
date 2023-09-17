@@ -7,9 +7,9 @@
   "author": "Jan Schwalbe",
   "license": "MIT",
   "dependencies": {
-    "@mpieva/psydb-core-utils": "~0.1.0-alpha",
-    "@mpieva/psydb-schema-enums": "~0.1.0-alpha",
-    "@mpieva/psydb-common-utils": "~0.1.0-alpha",
+    "@mpieva/psydb-core-utils": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-schema-enums": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-common-utils": "workspace:~0.1.0-alpha",
     "@cdxoo/inline-text": "~1.0.2"
   },
   "devDependencies": {

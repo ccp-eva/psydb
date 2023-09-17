@@ -13,11 +13,11 @@
     "chai": "~4.3.7"
   },
   "dependencies": {
-    "@mpieva/psydb-common-config": "~0.1.0-alpha",
-    "@mpieva/psydb-core-utils": "~0.1.0-alpha",
-    "@mpieva/psydb-timezone-helpers": "~0.1.0-alpha",
-    "@mpieva/psydb-schema-primitives": "~0.1.0-alpha",
-    "@mpieva/psydb-schema-enums": "~0.1.0-alpha",
+    "@mpieva/psydb-common-config": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-core-utils": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-timezone-helpers": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-schema-primitives": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-schema-enums": "workspace:~0.1.0-alpha",
     "@cdxoo/inline-text": "~1.0.2"
   }
 }

@@ -19,13 +19,13 @@
   "devDependencies": {
     "react": "~17.0.1",
 
-    "@mpieva/psydb-core-utils": "~0.1.0-alpha",
-    "@mpieva/psydb-common-lib": "~0.1.0-alpha",
-    "@mpieva/psydb-ui-utils": "~0.1.0-alpha",
-    "@mpieva/psydb-ui-contexts": "~0.1.0-alpha",
-    "@mpieva/psydb-ui-hooks": "~0.1.0-alpha",
-    "@mpieva/psydb-ui-layout": "~0.1.0-alpha",
-    "@mpieva/psydb-ui-lib": "~0.1.0-alpha",
-    "@mpieva/psydb-ui-record-views": "~0.1.0-alpha"
+    "@mpieva/psydb-core-utils": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-common-lib": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-ui-utils": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-ui-contexts": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-ui-hooks": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-ui-layout": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-ui-lib": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-ui-record-views": "workspace:~0.1.0-alpha"
   }
 }

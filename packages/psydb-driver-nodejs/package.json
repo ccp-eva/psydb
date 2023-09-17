@@ -10,6 +10,6 @@
     "debug": "~4.3.4",
     "superagent": "~6.1.0",
     "jsonpointer": "~5.0.1",
-    "@mpieva/psydb-timezone-helpers": "~0.1.0-alpha"
+    "@mpieva/psydb-timezone-helpers": "workspace:~0.1.0-alpha"
   }
 }

@@ -9,8 +9,8 @@
   "author": "Jan Schwalbe",
   "license": "MIT",
   "dependencies": {
-    "@mpieva/psydb-core-utils": "~0.1.0-alpha",
-    "@mpieva/psydb-schema-creators": "~0.1.0-alpha",
+    "@mpieva/psydb-core-utils": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-schema-creators": "workspace:~0.1.0-alpha",
     "jsonpointer": "~5.0.1",
     "@cdxoo/inline-string": "~1.0.0",
     "nanoid": "~3.3.4"

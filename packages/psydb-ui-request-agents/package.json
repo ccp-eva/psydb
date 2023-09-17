@@ -20,7 +20,7 @@
     "mocha": "~10.1.0",
     "chai": "~4.3.7",
     "axios": "~0.24.0",
-    "@mpieva/psydb-timezone-helpers": "~0.1.0-alpha"
+    "@mpieva/psydb-timezone-helpers": "workspace:~0.1.0-alpha"
   },
   "config": {
     "mongodbMemoryServer": {

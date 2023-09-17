@@ -18,10 +18,10 @@
   "homepage": "https://github.com/cdxOo/psydb#readme",
   "dependencies": {
     "debug": "~4.3.4",
-    "@mpieva/psydb-driver-nodejs": "~0.1.0-alpha",
-    "@mpieva/psydb-fixtures": "~0.1.0-alpha",
-    "@mpieva/psydb-api-config": "~0.1.0-alpha",
-    "@mpieva/psydb-mongo-adapter": "~0.1.0-alpha",
+    "@mpieva/psydb-driver-nodejs": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-fixtures": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-api-config": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-mongo-adapter": "workspace:~0.1.0-alpha",
     "superagent": "~6.1.0",
     "superagent-prefix": "~0.0.2"
   },
