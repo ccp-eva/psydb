@@ -16,7 +16,7 @@
     "@cdxoo/tiny-ejson": "~1.0.0"
   },
   "devDependencies": {
-    "mocha": "~10.1.0",
+    "mocha": "~10.2.0",
     "chai": "~4.3.7"
   }
 }

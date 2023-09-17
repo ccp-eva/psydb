@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "jest": "~27.2.4",
-    "mocha": "~10.1.0",
+    "mocha": "~10.2.0",
     "chai": "~4.3.7"
   },
   "config": {

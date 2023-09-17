@@ -20,14 +20,14 @@ importers:
       '@cdxoo/inline-text': ~1.0.2
       chai: ~4.3.7
       jsonpointer: ~5.0.1
-      mocha: ~10.1.0
+      mocha: ~10.2.0
     dependencies:
       '@cdxoo/inline-string': 1.0.0
       '@cdxoo/inline-text': 1.0.2
       jsonpointer: 5.0.1
     devDependencies:
       chai: 4.3.8
-      mocha: 10.1.0
+      mocha: 10.2.0
 
   ../../packages/json-schema-create-defaults:
     specifiers:
@@ -45,7 +45,7 @@ importers:
       copy-anything: ~2.0.6
       json-schema-traverse: ~1.0.0
       jsonpointer: ~5.0.1
-      mocha: ~10.1.0
+      mocha: ~10.2.0
     dependencies:
       '@cdxoo/inline-text': 1.0.2
       copy-anything: 2.0.6
@@ -53,7 +53,7 @@ importers:
       jsonpointer: 5.0.1
     devDependencies:
       chai: 4.3.8
-      mocha: 10.1.0
+      mocha: 10.2.0
 
   ../../packages/json-schema-lazy-resolve-oneof:
     specifiers:
@@ -65,7 +65,7 @@ importers:
       debug: ~4.3.4
       json-schema-traverse: ~1.0.0
       jsonpointer: ~5.0.1
-      mocha: ~10.1.0
+      mocha: ~10.2.0
     dependencies:
       '@cdxoo/inline-text': 1.0.2
       '@mpieva/json-schema-convert-pointer': link:../json-schema-convert-pointer
@@ -76,7 +76,7 @@ importers:
       jsonpointer: 5.0.1
     devDependencies:
       chai: 4.3.8
-      mocha: 10.1.0
+      mocha: 10.2.0
 
   ../../packages/json-schema-merge-xof:
     specifiers:
@@ -85,7 +85,7 @@ importers:
       copy-anything: ~2.0.6
       json-schema-traverse: ~1.0.0
       jsonpointer: ~5.0.1
-      mocha: ~10.1.0
+      mocha: ~10.2.0
     dependencies:
       '@cdxoo/inline-text': 1.0.2
       copy-anything: 2.0.6
@@ -93,14 +93,14 @@ importers:
       jsonpointer: 5.0.1
     devDependencies:
       chai: 4.3.8
-      mocha: 10.1.0
+      mocha: 10.2.0
 
   ../../packages/json-schema-to-graphql:
     specifiers:
       '@cdxoo/block-quote': ~1.0.0
       chai: ~4.3.7
       graphql: ~15.3.0
-      mocha: ~10.1.0
+      mocha: ~10.2.0
       pascal-case: ~3.1.1
     dependencies:
       '@cdxoo/block-quote': 1.0.1
@@ -108,14 +108,14 @@ importers:
     devDependencies:
       chai: 4.3.8
       graphql: 15.3.0
-      mocha: 10.1.0
+      mocha: 10.2.0
 
   ../../packages/koa-mongo-extjson-body:
     specifiers:
       bson: ~4.2.2
       chai: ~4.3.7
       inflation: ~2.0.0
-      mocha: ~10.1.0
+      mocha: ~10.2.0
       raw-body: ~2.4.1
     dependencies:
       bson: 4.2.3
@@ -123,20 +123,20 @@ importers:
       raw-body: 2.4.3
     devDependencies:
       chai: 4.3.8
-      mocha: 10.1.0
+      mocha: 10.2.0
 
   ../../packages/psydb-ajv-formats:
     specifiers:
       ajv: ~6.12.6
       ajv-formats: ~0.6.1
       chai: ~4.3.7
-      mocha: ~10.1.0
+      mocha: ~10.2.0
     dependencies:
       ajv-formats: 0.6.1
     devDependencies:
       ajv: 6.12.6
       chai: 4.3.8
-      mocha: 10.1.0
+      mocha: 10.2.0
 
   ../../packages/psydb-ajv-keywords:
     specifiers:
@@ -146,7 +146,7 @@ importers:
       ajv-formats: ~0.6.1
       chai: ~4.3.7
       date-fns-tz: ~1.3.4
-      mocha: ~10.1.0
+      mocha: ~10.2.0
       mongodb: ~3.6.3
     dependencies:
       '@mpieva/psydb-ajv-formats': link:../psydb-ajv-formats
@@ -157,7 +157,7 @@ importers:
     devDependencies:
       ajv: 6.12.6
       chai: 4.3.8
-      mocha: 10.1.0
+      mocha: 10.2.0
 
   ../../packages/psydb-api:
     specifiers:
@@ -212,7 +212,7 @@ importers:
       koa-compose: ~4.1.0
       koa-router: ~10.0.0
       koa-session: ^5.13.1
-      mocha: ~10.1.0
+      mocha: ~10.2.0
       mongodb: ~3.6.3
       mongodb-memory-server: ~6.9.2
       nanoid: ~3.3.4
@@ -280,7 +280,7 @@ importers:
       '@cdxoo/mongodb-restore': 2.0.0-alpha.2
       '@mpieva/psydb-fixtures': link:../psydb-fixtures
       chai: 4.3.8
-      mocha: 10.1.0
+      mocha: 10.2.0
       mongodb-memory-server: 6.9.6
       supertest: 6.0.1
 
@@ -299,7 +299,7 @@ importers:
       co: ~4.6.0
       commander: ~10.0.1
       koa: ~2.13.0
-      mocha: ~10.1.0
+      mocha: ~10.2.0
       mongodb: ~3.6.3
     dependencies:
       '@mpieva/psydb-common-lib': link:../psydb-common-lib
@@ -317,7 +317,7 @@ importers:
       '@mpieva/psydb-fixtures': link:../psydb-fixtures
       chai: 4.3.8
       koa: 2.13.4
-      mocha: 10.1.0
+      mocha: 10.2.0
 
   ../../packages/psydb-api-config:
     specifiers:
@@ -345,7 +345,7 @@ importers:
       diacritic-regex: ~1.1.0
       escape-string-regexp: ~4.0.0
       jsonpointer: ~5.0.1
-      mocha: ~10.1.0
+      mocha: ~10.2.0
       mongodb: ~3.6.3
       mongodb-memory-server: ~6.9.2
       sift: ~16.0.0
@@ -372,7 +372,7 @@ importers:
     devDependencies:
       '@mpieva/psydb-fixtures': link:../psydb-fixtures
       chai: 4.3.8
-      mocha: 10.1.0
+      mocha: 10.2.0
       mongodb-memory-server: 6.9.6
       supertest: 6.0.1
 
@@ -455,7 +455,7 @@ importers:
       jsonpointer: ~5.0.1
       koa-compose: ~4.1.0
       map-obj: ~4.3.0
-      mocha: ~10.1.0
+      mocha: ~10.2.0
       mongodb: ~3.6.3
       nanoid: ~3.3.4
       sift: ~16.0.0
@@ -497,7 +497,7 @@ importers:
       statuses: 2.0.1
     devDependencies:
       chai: 4.3.8
-      mocha: 10.1.0
+      mocha: 10.2.0
       snap-shot-it: 7.9.10
 
   ../../packages/psydb-api-lib-errors:
@@ -538,7 +538,7 @@ importers:
       deepmerge: ~4.2.2
       is-subset: ~0.1.1
       jsonpointer: ~5.0.1
-      mocha: ~10.1.0
+      mocha: ~10.2.0
       mongodb-memory-server: ~6.9.2
       nanoid: ~3.3.4
       nodemailer: ~6.8.0
@@ -569,7 +569,7 @@ importers:
     devDependencies:
       '@mpieva/psydb-fixtures': link:../psydb-fixtures
       chai: 4.3.8
-      mocha: 10.1.0
+      mocha: 10.2.0
       mongodb-memory-server: 6.9.6
 
   ../../packages/psydb-api-message-handlers:
@@ -603,7 +603,7 @@ importers:
       escape-string-regexp: ~4.0.0
       is-subset: ~0.1.1
       jsonpointer: ~5.0.1
-      mocha: ~10.1.0
+      mocha: ~10.2.0
       mocha-chai-jest-snapshot: ~1.1.4
       mongodb-memory-server: ~6.9.2
       nanoid: ~3.3.4
@@ -643,7 +643,7 @@ importers:
       '@mpieva/psydb-fixtures': link:../psydb-fixtures
       chai: 4.3.8
       chai-subset: 1.6.0
-      mocha: 10.1.0
+      mocha: 10.2.0
       mocha-chai-jest-snapshot: 1.1.4_chai@4.3.8
       mongodb-memory-server: 6.9.6
 
@@ -673,7 +673,7 @@ importers:
       jest: ~27.2.4
       json-schema-traverse: ~1.0.0
       jsonpointer: ~5.0.1
-      mocha: ~10.1.0
+      mocha: ~10.2.0
       sift: ~16.0.0
     dependencies:
       '@cdxoo/inline-text': 1.0.2
@@ -693,20 +693,20 @@ importers:
     devDependencies:
       chai: 4.3.8
       jest: 27.2.5
-      mocha: 10.1.0
+      mocha: 10.2.0
 
   ../../packages/psydb-common-utils:
     specifiers:
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
       '@mpieva/psydb-schema-enums': workspace:~0.1.0-alpha
       chai: ~4.3.7
-      mocha: ~10.1.0
+      mocha: ~10.2.0
     dependencies:
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
       '@mpieva/psydb-schema-enums': link:../psydb-schema-enums
     devDependencies:
       chai: 4.3.8
-      mocha: 10.1.0
+      mocha: 10.2.0
 
   ../../packages/psydb-common-verify-helpers:
     specifiers:
@@ -715,7 +715,7 @@ importers:
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
       '@mpieva/psydb-schema-enums': workspace:~0.1.0-alpha
       chai: ~4.3.7
-      mocha: ~10.1.0
+      mocha: ~10.2.0
     dependencies:
       '@cdxoo/inline-text': 1.0.2
       '@mpieva/psydb-common-utils': link:../psydb-common-utils
@@ -723,7 +723,7 @@ importers:
       '@mpieva/psydb-schema-enums': link:../psydb-schema-enums
     devDependencies:
       chai: 4.3.8
-      mocha: 10.1.0
+      mocha: 10.2.0
 
   ../../packages/psydb-core-utils:
     specifiers:
@@ -735,7 +735,7 @@ importers:
       deepmerge: ~4.2.2
       is-what: ~3.14.1
       jsonpointer: ~5.0.1
-      mocha: ~10.1.0
+      mocha: ~10.2.0
     dependencies:
       '@cdxoo/flat': 0.0.10
       '@cdxoo/jsonpointer-to-objectpath': 1.0.0
@@ -746,7 +746,7 @@ importers:
       jsonpointer: 5.0.1
     devDependencies:
       chai: 4.3.8
-      mocha: 10.1.0
+      mocha: 10.2.0
 
   ../../packages/psydb-database-scripts:
     specifiers:
@@ -771,7 +771,7 @@ importers:
       chai: ~4.3.7
       date-fns: ~2.29.3
       jsonpointer: ~5.0.1
-      mocha: ~10.1.0
+      mocha: ~10.2.0
     dependencies:
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
       '@mpieva/psydb-interval-fns': link:../psydb-interval-fns
@@ -779,7 +779,7 @@ importers:
       jsonpointer: 5.0.1
     devDependencies:
       chai: 4.3.8
-      mocha: 10.1.0
+      mocha: 10.2.0
 
   ../../packages/psydb-driver-nodejs:
     specifiers:
@@ -845,7 +845,7 @@ importers:
       '@mpieva/psydb-mongo-adapter': workspace:~0.1.0-alpha
       chai: ~4.3.7
       debug: ~4.3.4
-      mocha: ~10.1.0
+      mocha: ~10.2.0
       superagent: ~6.1.0
       superagent-prefix: ~0.0.2
     dependencies:
@@ -858,7 +858,7 @@ importers:
       superagent-prefix: 0.0.2
     devDependencies:
       chai: 4.3.8
-      mocha: 10.1.0
+      mocha: 10.2.0
 
   ../../packages/psydb-fixtures:
     specifiers:
@@ -872,12 +872,12 @@ importers:
     specifiers:
       '@mpieva/psydb-quicksort': workspace:~0.1.0-alpha
       chai: ~4.3.7
-      mocha: ~10.1.0
+      mocha: ~10.2.0
     dependencies:
       '@mpieva/psydb-quicksort': link:../psydb-quicksort
     devDependencies:
       chai: 4.3.8
-      mocha: 10.1.0
+      mocha: 10.2.0
 
   ../../packages/psydb-koa-event-middleware:
     specifiers:
@@ -893,7 +893,7 @@ importers:
       deepmerge: ~4.2.2
       koa-compose: ~4.1.0
       map-obj: ~4.3.0
-      mocha: ~10.1.0
+      mocha: ~10.2.0
       mongodb: ~3.6.3
       mongodb-memory-server: ~6.9.2
     dependencies:
@@ -911,7 +911,7 @@ importers:
       mongodb: 3.6.12
     devDependencies:
       chai: 4.3.8
-      mocha: 10.1.0
+      mocha: 10.2.0
       mongodb-memory-server: 6.9.6
 
   ../../packages/psydb-migration:
@@ -991,7 +991,7 @@ importers:
       '@mpieva/psydb-schema-helpers': workspace:~0.1.0-alpha
       chai: ~4.3.7
       jsonpointer: ~5.0.1
-      mocha: ~10.1.0
+      mocha: ~10.2.0
       nanoid: ~3.3.4
     dependencies:
       '@cdxoo/inline-text': 1.0.2
@@ -1003,15 +1003,15 @@ importers:
       nanoid: 3.3.6
     devDependencies:
       chai: 4.3.8
-      mocha: 10.1.0
+      mocha: 10.2.0
 
   ../../packages/psydb-schema-enums:
     specifiers:
       chai: ~4.3.7
-      mocha: ~10.1.0
+      mocha: ~10.2.0
     devDependencies:
       chai: 4.3.8
-      mocha: 10.1.0
+      mocha: 10.2.0
 
   ../../packages/psydb-schema-fields:
     specifiers:
@@ -1022,7 +1022,7 @@ importers:
       '@mpieva/psydb-schema-primitives': workspace:~0.1.0-alpha
       '@mpieva/psydb-timezone-helpers': workspace:~0.1.0-alpha
       chai: ~4.3.7
-      mocha: ~10.1.0
+      mocha: ~10.2.0
     dependencies:
       '@cdxoo/inline-text': 1.0.2
       '@mpieva/psydb-common-config': link:../psydb-common-config
@@ -1032,7 +1032,7 @@ importers:
       '@mpieva/psydb-timezone-helpers': link:../psydb-timezone-helpers
     devDependencies:
       chai: 4.3.8
-      mocha: 10.1.0
+      mocha: 10.2.0
 
   ../../packages/psydb-schema-fields-special:
     specifiers:
@@ -1041,7 +1041,7 @@ importers:
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
       '@mpieva/psydb-schema-fields': workspace:~0.1.0-alpha
       chai: ~4.3.7
-      mocha: ~10.1.0
+      mocha: ~10.2.0
     dependencies:
       '@cdxoo/inline-text': 1.0.2
       '@cdxoo/omit': 1.0.1
@@ -1049,7 +1049,7 @@ importers:
       '@mpieva/psydb-schema-fields': link:../psydb-schema-fields
     devDependencies:
       chai: 4.3.8
-      mocha: 10.1.0
+      mocha: 10.2.0
 
   ../../packages/psydb-schema-helpers:
     specifiers:
@@ -1058,7 +1058,7 @@ importers:
       '@mpieva/psydb-schema-fields': workspace:~0.1.0-alpha
       chai: ~4.3.7
       is-what: ~3.14.1
-      mocha: ~10.1.0
+      mocha: ~10.2.0
     dependencies:
       '@cdxoo/inline-text': 1.0.2
       '@mpieva/psydb-common-config': link:../psydb-common-config
@@ -1066,15 +1066,15 @@ importers:
       is-what: 3.14.1
     devDependencies:
       chai: 4.3.8
-      mocha: 10.1.0
+      mocha: 10.2.0
 
   ../../packages/psydb-schema-primitives:
     specifiers:
       chai: ~4.3.7
-      mocha: ~10.1.0
+      mocha: ~10.2.0
     devDependencies:
       chai: 4.3.8
-      mocha: 10.1.0
+      mocha: 10.2.0
 
   ../../packages/psydb-timezone-helpers:
     specifiers:
@@ -1128,7 +1128,7 @@ importers:
       is-subset: ~0.1.1
       js-base64: ~3.6.0
       jsonpointer: ~5.0.1
-      mocha: ~10.1.0
+      mocha: ~10.2.0
       moment: ~2.29.1
       pako: ~2.0.4
       react: ~17.0.1
@@ -1190,7 +1190,7 @@ importers:
       is-subset: 0.1.1
       js-base64: 3.6.2
       jsonpointer: 5.0.1
-      mocha: 10.1.0
+      mocha: 10.2.0
       moment: 2.29.4
       pako: 2.0.4
       react: 17.0.2
@@ -1274,13 +1274,13 @@ importers:
       babel-loader: ~8.2.2
       chai: ~4.3.7
       js-base64: ~3.6.0
-      mocha: ~10.1.0
+      mocha: ~10.2.0
       mocha-jsdom: ~2.0.0
       react: ~17.0.1
       react-dom: ~17.0.1
       react-router: ~5.2.0
     dependencies:
-      mocha-jsdom: 2.0.0_mocha@10.1.0
+      mocha-jsdom: 2.0.0_mocha@10.2.0
     devDependencies:
       '@babel/core': 7.18.13
       '@babel/preset-env': 7.18.10_@babel+core@7.18.13
@@ -1298,7 +1298,7 @@ importers:
       babel-loader: 8.2.5_@babel+core@7.18.13
       chai: 4.3.8
       js-base64: 3.6.2
-      mocha: 10.1.0
+      mocha: 10.2.0
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-router: 5.2.1_react@17.0.2
@@ -1316,7 +1316,7 @@ importers:
       chai: ~4.3.7
       classnames: ~2.3.1
       date-fns: ~2.29.3
-      mocha: ~10.1.0
+      mocha: ~10.2.0
       react: ~17.0.1
       react-bootstrap: ~1.5.2
       react-bootstrap-icons: ~1.8.0
@@ -1336,7 +1336,7 @@ importers:
       babel-loader: 8.2.5_@babel+core@7.18.13
       chai: 4.3.8
       classnames: 2.3.2
-      mocha: 10.1.0
+      mocha: 10.2.0
       react: 17.0.2
       react-bootstrap: 1.5.2_react-dom@17.0.2+react@17.0.2
       react-bootstrap-icons: 1.8.4_react@17.0.2
@@ -1381,7 +1381,7 @@ importers:
       is-what: ~3.14.1
       js-base64: ~3.6.0
       jsonpointer: ~5.0.1
-      mocha: ~10.1.0
+      mocha: ~10.2.0
       moment: ~2.29.1
       react: ~17.0.1
       react-bootstrap: ~1.5.2
@@ -1426,7 +1426,7 @@ importers:
       is-what: 3.14.1
       js-base64: 3.6.2
       jsonpointer: 5.0.1
-      mocha: 10.1.0
+      mocha: 10.2.0
       moment: 2.29.4
       react: 17.0.2
       react-bootstrap: 1.5.2_react-dom@17.0.2+react@17.0.2
@@ -1465,12 +1465,12 @@ importers:
       '@mpieva/psydb-timezone-helpers': workspace:~0.1.0-alpha
       axios: ~0.24.0
       chai: ~4.3.7
-      mocha: ~10.1.0
+      mocha: ~10.2.0
     devDependencies:
       '@mpieva/psydb-timezone-helpers': link:../psydb-timezone-helpers
       axios: 0.24.0
       chai: 4.3.8
-      mocha: 10.1.0
+      mocha: 10.2.0
 
   ../../packages/psydb-ui-translations:
     specifiers:
@@ -1493,7 +1493,7 @@ importers:
       babel-loader: ~8.2.2
       chai: ~4.3.7
       classnames: ~2.3.1
-      mocha: ~10.1.0
+      mocha: ~10.2.0
     devDependencies:
       '@babel/core': 7.18.13
       '@babel/preset-env': 7.18.10_@babel+core@7.18.13
@@ -1504,7 +1504,7 @@ importers:
       babel-loader: 8.2.5_@babel+core@7.18.13
       chai: 4.3.8
       classnames: 2.3.2
-      mocha: 10.1.0
+      mocha: 10.2.0
 
   ../../packages/psydb-web:
     specifiers:
@@ -1524,7 +1524,7 @@ importers:
       koa-mount: ~4.0.0
       koa-router: ~10.0.0
       koa-static-cache: ~5.1.4
-      mocha: ~10.1.0
+      mocha: ~10.2.0
       mongodb-memory-server: ~6.9.2
       react: ~17.0.1
       react-dom: ~17.0.1
@@ -1549,7 +1549,7 @@ importers:
       '@babel/preset-react': 7.18.6_@babel+core@7.18.13
       babel-loader: 8.2.5_f5975a70e9cb8593656d54cbace21b8c
       chai: 4.3.8
-      mocha: 10.1.0
+      mocha: 10.2.0
       mongodb-memory-server: 6.9.6
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
@@ -1567,7 +1567,7 @@ importers:
       json-schema-merge-allof: ~0.8.1
       jsonpointer: ~5.0.1
       lodash: ~4.17.21
-      mocha: ~10.1.0
+      mocha: ~10.2.0
       nanoid: ~3.3.4
       prop-types: ~15.7.2
       react: ~17.0.1
@@ -1583,7 +1583,7 @@ importers:
       json-schema-merge-allof: 0.8.1
       jsonpointer: 5.0.1
       lodash: 4.17.21
-      mocha: 10.1.0
+      mocha: 10.2.0
       nanoid: 3.3.6
       react: 17.0.2
       react-is: 17.0.2
@@ -8373,17 +8373,17 @@ packages:
       - supports-color
     dev: true
 
-  /mocha-jsdom/2.0.0_mocha@10.1.0:
+  /mocha-jsdom/2.0.0_mocha@10.2.0:
     resolution: {integrity: sha512-+3D++FPXHXEesbBD7Q/r4dkc3XzVFMPLJVIECaQ685dj9qKQYzliqX8IXyIUbUL4x1QfgD9h8Zao8cn03NKKEA==}
     peerDependencies:
       mocha: '*'
     dependencies:
       jsdom: 11.12.0
-      mocha: 10.1.0
+      mocha: 10.2.0
     dev: false
 
-  /mocha/10.1.0:
-    resolution: {integrity: sha512-vUF7IYxEoN7XhQpFLxQAEMtE4W91acW4B6En9l97MwE9stL1A9gusXfoHZCLVHDUJ/7V5+lbCM6yMqzo5vNymg==}
+  /mocha/10.2.0:
+    resolution: {integrity: sha512-IDY7fl/BecMwFHzoqF2sg/SHHANeBoMMXFlS9r0OXKDssYE1M5O43wUY/9BVPeIvfH2zmEbBfseqN9gBQZzXkg==}
     engines: {node: '>= 14.0.0'}
     hasBin: true
     dependencies:

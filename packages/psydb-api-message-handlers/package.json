@@ -39,7 +39,7 @@
     "escape-string-regexp": "~4.0.0"
   },
   "devDependencies": {
-    "mocha": "~10.1.0",
+    "mocha": "~10.2.0",
     "chai": "~4.3.7",
     "chai-subset": "~1.6.0",
     "mocha-chai-jest-snapshot": "~1.1.4",

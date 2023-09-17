@@ -9,7 +9,7 @@
   "author": "Jan Schwalbe",
   "license": "MIT",
   "devDependencies": {
-    "mocha": "~10.1.0",
+    "mocha": "~10.2.0",
     "chai": "~4.3.7",
     "ajv": "~6.12.6"
   },
