@@ -21,7 +21,7 @@
   "dependencies": {
     "debug": "~4.3.4",
     "co": "~4.6.0",
-    "koa": "~2.13.0",
+    "koa": "~2.14.2",
     "koa-compose": "~4.1.0",
     "koa-static-cache": "~5.1.4",
     "koa-mount": "~4.0.0",
@@ -29,7 +29,7 @@
     "@mpieva/psydb-api": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-ui": "workspace:~0.1.0-alpha",
     "@cdxoo/block-quote": "~1.0.1",
-    "koa-router": "~10.0.0"
+    "koa-router": "~10.1.1"
   },
   "devDependencies": {
     "mocha": "~10.2.0",

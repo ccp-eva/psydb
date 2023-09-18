@@ -20,7 +20,7 @@
   "devDependencies": {
     "mocha": "~10.2.0",
     "chai": "~4.3.7",
-    "koa": "~2.13.0",
+    "koa": "~2.14.2",
     "@mpieva/psydb-api": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-axios-test-wrapper": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-fixtures": "workspace:~0.1.0-alpha",
