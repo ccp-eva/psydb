@@ -33,7 +33,7 @@
     "@cdxoo/inline-string": "~1.0.0",
     "@cdxoo/omit": "~1.0.1",
     "@cdxoo/formik-utils": "~0.7.0",
-    "@cdxoo/formik-ajv-async": "~0.4.1",
+    "@cdxoo/formik-ajv-async": "~0.4.2",
     "@mpieva/psydb-timezone-helpers": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-core-utils": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-date-interval-fns": "workspace:~0.1.0-alpha",
