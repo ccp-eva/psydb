@@ -76,11 +76,6 @@
        "reviewCategory": "production"
     },
     {
-       "packageName": "@mpieva/rjsf-monkey-patch",
-       "projectFolder": "packages/rjsf-monkey-patch",
-       "reviewCategory": "production"
-    },
-    {
        "packageName": "@mpieva/psydb-mongo-adapter",
        "projectFolder": "packages/psydb-mongo-adapter",
        "reviewCategory": "production"
