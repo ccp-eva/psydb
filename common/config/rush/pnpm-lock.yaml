@@ -833,10 +833,8 @@ importers:
   ../../packages/psydb-fixtures:
     specifiers:
       '@mpieva/psydb-common-lib': workspace:~0.1.0-alpha
-      bson: ~4.7.2
     dependencies:
       '@mpieva/psydb-common-lib': link:../psydb-common-lib
-      bson: 4.7.2
 
   ../../packages/psydb-interval-fns:
     specifiers:
@@ -4372,6 +4370,7 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       buffer: 5.7.1
+    dev: true
 
   /buffer-crc32/0.2.13:
     resolution: {integrity: sha512-VO9Ht/+p3SN7SKWqcrgEzjGbRSJYTx+Q1pTQC0wrWqHx0vpJraQ6GtHx8tvcg1rlK1byhU5gccxgOgj7B0TDkQ==}
