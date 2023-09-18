@@ -2,7 +2,6 @@
 var compose = require('koa-compose'),
     KoaRouter = require('koa-router'),
     withKoaBody = require('koa-body'),
-    withMongoBody = require('@mpieva/koa-mongo-extjson-body'),
 
     withSelfAuth = require('./self-auth'),
     withPermissions = require('./permissions'),

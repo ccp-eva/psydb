@@ -8,9 +8,7 @@
   },
   "author": "Jan Schwalbe",
   "license": "MIT",
-  "devDependencies": {
-  },
   "dependencies": {
-    "@mpieva/psydb-schema-fields": "~0.1.0-alpha"
+    "@mpieva/psydb-schema-fields": "workspace:~0.1.0-alpha"
   }
 }

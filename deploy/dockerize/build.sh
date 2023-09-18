@@ -12,10 +12,11 @@ echo $TAG;
 rush update
 rush build --only @mpieva/psydb-ui
 
-rush unlink \
+# NOTE: Unlinking is not supported when using workspaces. Run "rush purge" to remove project node_modules folders.
+rush purge \
     && rm -rf $BASE_DIR/common/temp/
 
 docker build -f $SCRIPT_DIR/Dockerfile -t cdxoo/psydb:latest $BASE_DIR \
     && docker tag cdxoo/psydb $TAG \
-    && rush update \
+    && rush update --purge \
     && docker image prune --filter label=stage=psydb-prebuild

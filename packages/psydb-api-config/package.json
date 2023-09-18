@@ -17,8 +17,6 @@
   },
   "homepage": "https://github.com/cdxOo/psydb#readme",
   "dependencies": {
-      "@mpieva/psydb-common-config": "~0.1.0-alpha"
-  },
-  "devDependencies": {
+      "@mpieva/psydb-common-config": "workspace:~0.1.0-alpha"
   }
 }

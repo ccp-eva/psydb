@@ -4,10 +4,12 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/rush/v5/rush.schema.json",
 
-  "rushVersion": "5.66.2",
+  "rushVersion": "5.86.0",
   "pnpmVersion": "6.32.7",
-  "pnpmOptions": {},
-  "nodeSupportedVersionRange": ">=12.13.0 <17.0.0",
+  "pnpmOptions": {
+      "useWorkspaces": true
+  },
+  "nodeSupportedVersionRange": ">=14.21.0 <20.0.0",
   "gitPolicy": {},
   "repository": {
     "url": "https://github.com/cdxOo/psydb",
@@ -23,11 +25,6 @@
   },
   "variants": [],
   "projects": [
-    {
-       "packageName": "@mpieva/json-schema-to-graphql",
-       "projectFolder": "packages/json-schema-to-graphql",
-       "reviewCategory": "production"
-    },
     {
        "packageName": "@mpieva/convert-ajv-to-formik-errors",
        "projectFolder": "packages/convert-ajv-to-formik-errors",
@@ -59,11 +56,6 @@
        "reviewCategory": "production"
     },
     {
-       "packageName": "@mpieva/koa-mongo-extjson-body",
-       "projectFolder": "packages/koa-mongo-extjson-body",
-       "reviewCategory": "production"
-    },
-    {
        "packageName": "@mpieva/psydb-axios-test-wrapper",
        "projectFolder": "packages/psydb-axios-test-wrapper",
        "reviewCategory": "production"
@@ -71,11 +63,6 @@
     {
        "packageName": "@mpieva/psydb-timezone-helpers",
        "projectFolder": "packages/psydb-timezone-helpers",
-       "reviewCategory": "production"
-    },
-    {
-       "packageName": "@mpieva/rjsf-monkey-patch",
-       "projectFolder": "packages/rjsf-monkey-patch",
        "reviewCategory": "production"
     },
     {

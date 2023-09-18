@@ -9,12 +9,12 @@
   "author": "Jan Schwalbe",
   "license": "MIT",
   "devDependencies": {
-    "mocha": "~10.1.0",
+    "mocha": "~10.2.0",
     "chai": "~4.3.7"
   },
   "dependencies": {
-    "@mpieva/psydb-core-utils": "~0.1.0-alpha",
-    "@mpieva/psydb-schema-fields": "~0.1.0-alpha",
+    "@mpieva/psydb-core-utils": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-schema-fields": "workspace:~0.1.0-alpha",
     "@cdxoo/inline-text": "~1.0.2",
     "@cdxoo/omit": "~1.0.1"
   }

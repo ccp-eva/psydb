@@ -1,7 +1,7 @@
 version: "2"
 services:
   mongodb:
-    image: "mongo:4.2-bionic"
+    image: "mongo:4.4.24"
     ports:
       - "127.0.0.1:47017:27017"
     volumes:
@@ -10,7 +10,7 @@ services:
       - "psydb-net"
 
   nginx-reverse:
-    image: "nginx"
+    image: "nginx:1.25.2"
     ports:
       - "80:80"
     volumes:

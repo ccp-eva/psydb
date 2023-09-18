@@ -18,8 +18,7 @@
   "homepage": "https://github.com/cdxOo/psydb#readme",
   "dependencies": {
     "debug": "~4.3.4",
-    "@mpieva/psydb-schema-helpers": "~0.1.0-alpha",
-    "@mpieva/psydb-api-lib": "~0.1.0-alpha"
-  },
-  "devDependencies": {}
+    "@mpieva/psydb-schema-helpers": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-api-lib": "workspace:~0.1.0-alpha"
+  }
 }
