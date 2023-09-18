@@ -26,11 +26,6 @@
   "variants": [],
   "projects": [
     {
-       "packageName": "@mpieva/json-schema-to-graphql",
-       "projectFolder": "packages/json-schema-to-graphql",
-       "reviewCategory": "production"
-    },
-    {
        "packageName": "@mpieva/convert-ajv-to-formik-errors",
        "projectFolder": "packages/convert-ajv-to-formik-errors",
        "reviewCategory": "production"
