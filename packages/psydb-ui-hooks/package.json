@@ -18,6 +18,7 @@
   "homepage": "https://github.com/cdxOo/psydb#readme",
   "devDependencies": {
     "mocha": "~10.2.0",
+    "mocha-jsdom": "~2.0.0",
     "chai": "~4.3.7",
     "js-base64": "~3.7.5",
     "react": "~17.0.1",
@@ -53,8 +54,5 @@
     "ignore": [
       "src/server"
     ]
-  },
-  "dependencies": {
-    "mocha-jsdom": "~2.0.0"
   }
 }
