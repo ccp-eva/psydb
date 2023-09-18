@@ -19,6 +19,6 @@
     "@mpieva/psydb-schema-helpers": "workspace:~0.1.0-alpha",
     "@cdxoo/omit": "~1.0.1",
     "@mpieva/psydb-schema-fields-special": "workspace:~0.1.0-alpha",
-    "nanoid": "~3.3.4"
+    "nanoid": "~3.3.6"
   }
 }

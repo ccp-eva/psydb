@@ -1,5 +1,5 @@
 # vim: syn=dockerfile
-FROM node:14.15.4-alpine as builder
+FROM node:18.17.1-alpine as builder
 LABEL stage=psydb-prebuild
 
 RUN mkdir -p /usr/src/app
@@ -25,7 +25,7 @@ RUN NODE_ENV=production \
 COPY packages/psydb-ui/dist/ deploy/packages/psydb-ui/dist
 
 # NEW STAGE
-FROM node:14.15.4-alpine
+FROM node:18.17.1-alpine
 
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app

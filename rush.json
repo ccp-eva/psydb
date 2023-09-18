@@ -9,7 +9,7 @@
   "pnpmOptions": {
       "useWorkspaces": true
   },
-  "nodeSupportedVersionRange": ">=12.13.0 <17.0.0",
+  "nodeSupportedVersionRange": ">=14.21.0 <20.0.0",
   "gitPolicy": {},
   "repository": {
     "url": "https://github.com/cdxOo/psydb",

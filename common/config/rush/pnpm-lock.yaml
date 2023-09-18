@@ -97,7 +97,7 @@ importers:
 
   ../../packages/json-schema-to-graphql:
     specifiers:
-      '@cdxoo/block-quote': ~1.0.0
+      '@cdxoo/block-quote': ~1.0.1
       chai: ~4.3.7
       graphql: ~15.3.0
       mocha: ~10.2.0
@@ -112,13 +112,13 @@ importers:
 
   ../../packages/koa-mongo-extjson-body:
     specifiers:
-      bson: ~4.2.2
+      bson: ~4.7.2
       chai: ~4.3.7
       inflation: ~2.0.0
       mocha: ~10.2.0
       raw-body: ~2.4.1
     dependencies:
-      bson: 4.2.3
+      bson: 4.7.2
       inflation: 2.0.0
       raw-body: 2.4.3
     devDependencies:
@@ -145,16 +145,16 @@ importers:
       ajv: ~6.12.6
       ajv-formats: ~0.6.1
       chai: ~4.3.7
-      date-fns: ~2.29.3
-      date-fns-tz: ~1.3.4
+      date-fns: ~2.30.0
+      date-fns-tz: ~1.3.8
       mocha: ~10.2.0
       mongodb: ~3.6.3
     dependencies:
       '@mpieva/psydb-ajv-formats': link:../psydb-ajv-formats
       '@mpieva/psydb-timezone-helpers': link:../psydb-timezone-helpers
       ajv-formats: 0.6.1
-      date-fns: 2.29.3
-      date-fns-tz: 1.3.8_date-fns@2.29.3
+      date-fns: 2.30.0
+      date-fns-tz: 1.3.8_date-fns@2.30.0
       mongodb: 3.6.12
     devDependencies:
       ajv: 6.12.6
@@ -196,12 +196,12 @@ importers:
       '@mpieva/psydb-timezone-helpers': workspace:~0.1.0-alpha
       ajv: ~6.12.6
       ajv-keywords: ~3.5.2
-      bcrypt: ~5.1.0
+      bcrypt: ~5.1.1
       chai: ~4.3.7
       clone-deep: ~4.0.1
       copy-anything: ~2.0.6
-      date-fns: ~2.29.3
-      date-fns-tz: ~1.3.4
+      date-fns: ~2.30.0
+      date-fns-tz: ~1.3.8
       debug: ~4.3.4
       deep-diff: ~1.0.2
       escape-string-regexp: ~4.0.0
@@ -217,10 +217,10 @@ importers:
       mocha: ~10.2.0
       mongodb: ~3.6.3
       mongodb-memory-server: ~6.9.2
-      nanoid: ~3.3.4
+      nanoid: ~3.3.6
       performant-array-to-tree: ~1.9.1
-      sift: ~16.0.0
-      statuses: ~2.0.0
+      sift: ~16.0.1
+      statuses: ~2.0.1
       superagent-prefix: ~0.0.2
       supertest: ~6.0.1
     dependencies:
@@ -257,8 +257,8 @@ importers:
       bcrypt: 5.1.1
       clone-deep: 4.0.1
       copy-anything: 2.0.6
-      date-fns: 2.29.3
-      date-fns-tz: 1.3.8_date-fns@2.29.3
+      date-fns: 2.30.0
+      date-fns-tz: 1.3.8_date-fns@2.30.0
       debug: 4.3.4
       deep-diff: 1.0.2
       escape-string-regexp: 4.0.0
@@ -350,7 +350,7 @@ importers:
       mocha: ~10.2.0
       mongodb: ~3.6.3
       mongodb-memory-server: ~6.9.2
-      sift: ~16.0.0
+      sift: ~16.0.1
       supertest: ~6.0.1
     dependencies:
       '@cdxoo/inline-string': 1.0.0
@@ -392,7 +392,7 @@ importers:
       '@mpieva/psydb-common-lib': workspace:~0.1.0-alpha
       '@mpieva/psydb-driver-nodejs': workspace:~0.1.0-alpha
       '@mpieva/psydb-fixtures': workspace:~0.1.0-alpha
-      date-fns: ~2.29.3
+      date-fns: ~2.30.0
       koa: ~2.13.0
       snap-shot-it: ~7.9.6
       supertest: ~6.0.1
@@ -403,7 +403,7 @@ importers:
       '@mpieva/psydb-common-lib': link:../psydb-common-lib
       '@mpieva/psydb-driver-nodejs': link:../psydb-driver-nodejs
       '@mpieva/psydb-fixtures': link:../psydb-fixtures
-      date-fns: 2.29.3
+      date-fns: 2.30.0
       koa: 2.13.4
       snap-shot-it: 7.9.10
       supertest: 6.0.1
@@ -448,7 +448,7 @@ importers:
       ajv-keywords: ~3.5.2
       chai: ~4.3.7
       copy-anything: ~2.0.6
-      date-fns: ~2.29.3
+      date-fns: ~2.30.0
       debug: ~4.3.4
       deep-diff: ~1.0.2
       diacritic-regex: ~1.1.0
@@ -459,10 +459,10 @@ importers:
       map-obj: ~4.3.0
       mocha: ~10.2.0
       mongodb: ~3.6.3
-      nanoid: ~3.3.4
-      sift: ~16.0.0
+      nanoid: ~3.3.6
+      sift: ~16.0.1
       snap-shot-it: ~7.9.6
-      statuses: ~2.0.0
+      statuses: ~2.0.1
     dependencies:
       '@cdxoo/inline-string': 1.0.0
       '@cdxoo/inline-text': 1.0.2
@@ -484,7 +484,7 @@ importers:
       ajv: 6.12.6
       ajv-keywords: 3.5.2_ajv@6.12.6
       copy-anything: 2.0.6
-      date-fns: 2.29.3
+      date-fns: 2.30.0
       debug: 4.3.4
       deep-diff: 1.0.2
       diacritic-regex: 1.1.0
@@ -531,10 +531,10 @@ importers:
       '@mpieva/psydb-schema-fields': workspace:~0.1.0-alpha
       '@mpieva/psydb-schema-fields-special': workspace:~0.1.0-alpha
       '@mpieva/psydb-schema-helpers': workspace:~0.1.0-alpha
-      bcrypt: ~5.1.0
+      bcrypt: ~5.1.1
       chai: ~4.3.7
       copy-anything: ~2.0.6
-      date-fns: ~2.29.3
+      date-fns: ~2.30.0
       debug: ~4.3.4
       deep-diff: ~1.0.2
       deepmerge: ~4.2.2
@@ -542,7 +542,7 @@ importers:
       jsonpointer: ~5.0.1
       mocha: ~10.2.0
       mongodb-memory-server: ~6.9.2
-      nanoid: ~3.3.4
+      nanoid: ~3.3.6
       nodemailer: ~6.8.0
     dependencies:
       '@cdxoo/inline-text': 1.0.2
@@ -560,7 +560,7 @@ importers:
       '@mpieva/psydb-schema-helpers': link:../psydb-schema-helpers
       bcrypt: 5.1.1
       copy-anything: 2.0.6
-      date-fns: 2.29.3
+      date-fns: 2.30.0
       debug: 4.3.4
       deep-diff: 1.0.2
       deepmerge: 4.2.2
@@ -594,11 +594,11 @@ importers:
       '@mpieva/psydb-schema-fields': workspace:~0.1.0-alpha
       '@mpieva/psydb-schema-fields-special': workspace:~0.1.0-alpha
       '@mpieva/psydb-schema-helpers': workspace:~0.1.0-alpha
-      bcrypt: ~5.1.0
+      bcrypt: ~5.1.1
       chai: ~4.3.7
       chai-subset: ~1.6.0
       copy-anything: ~2.0.6
-      date-fns: ~2.29.3
+      date-fns: ~2.30.0
       debug: ~4.3.4
       deep-diff: ~1.0.2
       deepmerge: ~4.2.2
@@ -608,9 +608,9 @@ importers:
       mocha: ~10.2.0
       mocha-chai-jest-snapshot: ~1.1.4
       mongodb-memory-server: ~6.9.2
-      nanoid: ~3.3.4
+      nanoid: ~3.3.6
       nodemailer: ~6.8.0
-      sift: ~16.0.0
+      sift: ~16.0.1
     dependencies:
       '@cdxoo/inline-text': 1.0.2
       '@cdxoo/omit': 1.0.1
@@ -630,7 +630,7 @@ importers:
       '@mpieva/psydb-schema-helpers': link:../psydb-schema-helpers
       bcrypt: 5.1.1
       copy-anything: 2.0.6
-      date-fns: 2.29.3
+      date-fns: 2.30.0
       debug: 4.3.4
       deep-diff: 1.0.2
       deepmerge: 4.2.2
@@ -669,14 +669,14 @@ importers:
       '@mpieva/psydb-schema-enums': workspace:~0.1.0-alpha
       '@mpieva/psydb-schema-fields': workspace:~0.1.0-alpha
       chai: ~4.3.7
-      date-fns: ~2.29.3
-      date-fns-tz: ~1.3.4
+      date-fns: ~2.30.0
+      date-fns-tz: ~1.3.8
       flat: ~5.0.2
       jest: ~29.7.0
       json-schema-traverse: ~1.0.0
       jsonpointer: ~5.0.1
       mocha: ~10.2.0
-      sift: ~16.0.0
+      sift: ~16.0.1
     dependencies:
       '@cdxoo/inline-text': 1.0.2
       '@mpieva/json-schema-convert-pointer': link:../json-schema-convert-pointer
@@ -686,8 +686,8 @@ importers:
       '@mpieva/psydb-schema-creators': link:../psydb-schema-creators
       '@mpieva/psydb-schema-enums': link:../psydb-schema-enums
       '@mpieva/psydb-schema-fields': link:../psydb-schema-fields
-      date-fns: 2.29.3
-      date-fns-tz: 1.3.8_date-fns@2.29.3
+      date-fns: 2.30.0
+      date-fns-tz: 1.3.8_date-fns@2.30.0
       flat: 5.0.2
       json-schema-traverse: 1.0.0
       jsonpointer: 5.0.1
@@ -757,7 +757,7 @@ importers:
       '@mpieva/psydb-mongo-adapter': workspace:~0.1.0-alpha
       co: ~4.6.0
       mongodb: ~3.6.3
-      nanoid: ~3.3.4
+      nanoid: ~3.3.6
     dependencies:
       '@mpieva/psydb-api-config': link:../psydb-api-config
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
@@ -771,13 +771,13 @@ importers:
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
       '@mpieva/psydb-interval-fns': workspace:~0.1.0-alpha
       chai: ~4.3.7
-      date-fns: ~2.29.3
+      date-fns: ~2.30.0
       jsonpointer: ~5.0.1
       mocha: ~10.2.0
     dependencies:
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
       '@mpieva/psydb-interval-fns': link:../psydb-interval-fns
-      date-fns: 2.29.3
+      date-fns: 2.30.0
       jsonpointer: 5.0.1
     devDependencies:
       chai: 4.3.8
@@ -808,14 +808,14 @@ importers:
       '@mpieva/psydb-mongo-adapter': workspace:~0.1.0-alpha
       co: ~4.6.0
       country-list: ~2.2.0
-      date-fns: ~2.29.3
+      date-fns: ~2.30.0
       debug: ~4.3.4
       html-entities: ~2.3.2
       jest: ~29.7.0
       koa: ~2.13.0
       microsoft-translator-languages: ~0.1.19
       mongodb: ~3.6.3
-      nanoid: ~3.3.4
+      nanoid: ~3.3.6
       supertest: ~6.0.1
     dependencies:
       '@cdxoo/inline-text': 1.0.2
@@ -829,7 +829,7 @@ importers:
       '@mpieva/psydb-mongo-adapter': link:../psydb-mongo-adapter
       co: 4.6.0
       country-list: 2.2.0
-      date-fns: 2.29.3
+      date-fns: 2.30.0
       debug: 4.3.4
       html-entities: 2.3.6
       jest: 29.7.0
@@ -865,10 +865,10 @@ importers:
   ../../packages/psydb-fixtures:
     specifiers:
       '@mpieva/psydb-common-lib': workspace:~0.1.0-alpha
-      bson: ~4.2.2
+      bson: ~4.7.2
     dependencies:
       '@mpieva/psydb-common-lib': link:../psydb-common-lib
-      bson: 4.2.3
+      bson: 4.7.2
 
   ../../packages/psydb-interval-fns:
     specifiers:
@@ -928,14 +928,14 @@ importers:
       '@mpieva/psydb-fixtures': workspace:~0.1.0-alpha
       '@mpieva/psydb-mongo-adapter': workspace:~0.1.0-alpha
       co: ~4.6.0
-      date-fns: ~2.29.3
+      date-fns: ~2.30.0
       debug: ~4.3.4
       html-entities: ~2.3.2
       jest: ~29.7.0
       koa: ~2.13.0
       mongodb: ~3.6.3
       mysql: ~2.18.1
-      nanoid: ~3.3.4
+      nanoid: ~3.3.6
       supertest: ~6.0.1
     dependencies:
       '@cdxoo/inline-text': 1.0.2
@@ -948,7 +948,7 @@ importers:
       '@mpieva/psydb-fixtures': link:../psydb-fixtures
       '@mpieva/psydb-mongo-adapter': link:../psydb-mongo-adapter
       co: 4.6.0
-      date-fns: 2.29.3
+      date-fns: 2.30.0
       debug: 4.3.4
       html-entities: 2.3.6
       jest: 29.7.0
@@ -960,7 +960,7 @@ importers:
 
   ../../packages/psydb-mongo-adapter:
     specifiers:
-      mongodb: ~3.6.3
+      mongodb: ~3.6.12
     dependencies:
       mongodb: 3.6.12
 
@@ -971,7 +971,7 @@ importers:
       '@mpieva/psydb-schema-creators': workspace:~0.1.0-alpha
       jest: ~29.7.0
       jsonpointer: ~5.0.1
-      nanoid: ~3.3.4
+      nanoid: ~3.3.6
     dependencies:
       '@cdxoo/inline-string': 1.0.0
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
@@ -994,7 +994,7 @@ importers:
       chai: ~4.3.7
       jsonpointer: ~5.0.1
       mocha: ~10.2.0
-      nanoid: ~3.3.4
+      nanoid: ~3.3.6
     dependencies:
       '@cdxoo/inline-text': 1.0.2
       '@cdxoo/omit': 1.0.1
@@ -1080,12 +1080,12 @@ importers:
 
   ../../packages/psydb-timezone-helpers:
     specifiers:
-      date-fns: ~2.29.3
-      date-fns-tz: ~1.3.4
+      date-fns: ~2.30.0
+      date-fns-tz: ~1.3.8
       jest: ~29.7.0
     dependencies:
-      date-fns: 2.29.3
-      date-fns-tz: 1.3.8_date-fns@2.29.3
+      date-fns: 2.30.0
+      date-fns-tz: 1.3.8_date-fns@2.30.0
     devDependencies:
       jest: 29.7.0
 
@@ -1123,7 +1123,7 @@ importers:
       classnames: ~2.3.1
       compression-webpack-plugin: ~7.1.2
       css-loader: ~5.2.1
-      date-fns: ~2.29.3
+      date-fns: ~2.30.0
       formik: ~2.4.3
       html-webpack-plugin: 5.1.0
       is-subset: ~0.1.1
@@ -1132,16 +1132,16 @@ importers:
       mocha: ~10.2.0
       moment: ~2.29.1
       pako: ~2.0.4
-      react: ~17.0.1
+      react: ~17.0.2
       react-bootstrap: ~1.5.2
       react-cookie: ~6.1.1
       react-datetime: ~3.1.1
-      react-dom: ~17.0.1
+      react-dom: ~17.0.2
       react-quill: ~1.3.5
       react-router: ~5.2.0
       react-router-dom: ~5.2.0
       rimraf: ~5.0.1
-      sift: ~16.0.0
+      sift: ~16.0.1
       style-loader: ~2.0.0
       svg-url-loader: ~8.0.0
       webpack: 5.x.x
@@ -1180,7 +1180,7 @@ importers:
       classnames: 2.3.2
       compression-webpack-plugin: 7.1.2_webpack@5.88.2
       css-loader: 5.2.7_webpack@5.88.2
-      date-fns: 2.29.3
+      date-fns: 2.30.0
       formik: 2.4.4_react@17.0.2
       html-webpack-plugin: 5.1.0_webpack@5.88.2
       is-subset: 0.1.1
@@ -1215,7 +1215,7 @@ importers:
       '@mpieva/psydb-ui-lib': workspace:~0.1.0-alpha
       '@mpieva/psydb-ui-record-views': workspace:~0.1.0-alpha
       '@mpieva/psydb-ui-utils': workspace:~0.1.0-alpha
-      react: ~17.0.1
+      react: ~17.0.2
     devDependencies:
       '@mpieva/psydb-common-lib': link:../psydb-common-lib
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
@@ -1229,7 +1229,7 @@ importers:
 
   ../../packages/psydb-ui-contexts:
     specifiers:
-      react: ~17.0.1
+      react: ~17.0.2
     devDependencies:
       react: 17.0.2
 
@@ -1237,7 +1237,7 @@ importers:
     specifiers:
       '@mpieva/psydb-common-lib': workspace:~0.1.0-alpha
       '@mpieva/psydb-ui-layout': workspace:~0.1.0-alpha
-      react: ~17.0.1
+      react: ~17.0.2
     devDependencies:
       '@mpieva/psydb-common-lib': link:../psydb-common-lib
       '@mpieva/psydb-ui-layout': link:../psydb-ui-layout
@@ -1247,7 +1247,7 @@ importers:
     specifiers:
       '@mpieva/psydb-common-lib': workspace:~0.1.0-alpha
       '@mpieva/psydb-ui-layout': workspace:~0.1.0-alpha
-      react: ~17.0.1
+      react: ~17.0.2
     devDependencies:
       '@mpieva/psydb-common-lib': link:../psydb-common-lib
       '@mpieva/psydb-ui-layout': link:../psydb-ui-layout
@@ -1272,8 +1272,8 @@ importers:
       js-base64: ~3.7.5
       mocha: ~10.2.0
       mocha-jsdom: ~2.0.0
-      react: ~17.0.1
-      react-dom: ~17.0.1
+      react: ~17.0.2
+      react-dom: ~17.0.2
       react-router: ~5.2.0
     devDependencies:
       '@babel/core': 7.18.13
@@ -1308,12 +1308,12 @@ importers:
       '@mpieva/psydb-ui-utils': workspace:~0.1.0-alpha
       chai: ~4.3.7
       classnames: ~2.3.1
-      date-fns: ~2.29.3
+      date-fns: ~2.30.0
       mocha: ~10.2.0
-      react: ~17.0.1
+      react: ~17.0.2
       react-bootstrap: ~1.5.2
       react-bootstrap-icons: ~1.8.0
-      react-dom: ~17.0.1
+      react-dom: ~17.0.2
       react-router-bootstrap: ~0.25.0
       react-router-dom: ~5.2.0
     devDependencies:
@@ -1326,7 +1326,7 @@ importers:
       '@mpieva/psydb-ui-utils': link:../psydb-ui-utils
       chai: 4.3.8
       classnames: 2.3.2
-      date-fns: 2.29.3
+      date-fns: 2.30.0
       mocha: 10.2.0
       react: 17.0.2
       react-bootstrap: 1.5.2_react-dom@17.0.2+react@17.0.2
@@ -1363,17 +1363,17 @@ importers:
       camelcase: ~6.3.0
       chai: ~4.3.7
       classnames: ~2.3.1
-      date-fns: ~2.29.3
+      date-fns: ~2.30.0
       formik: ~2.4.3
       is-what: ~3.14.1
       js-base64: ~3.7.5
       jsonpointer: ~5.0.1
       mocha: ~10.2.0
       moment: ~2.29.1
-      react: ~17.0.1
+      react: ~17.0.2
       react-bootstrap: ~1.5.2
       react-datetime: ~3.1.1
-      react-dom: ~17.0.1
+      react-dom: ~17.0.2
       react-dropzone: ~3.13.4
       react-router: ~5.2.0
       react-router-dom: ~5.2.0
@@ -1404,7 +1404,7 @@ importers:
       camelcase: 6.3.0
       chai: 4.3.8
       classnames: 2.3.2
-      date-fns: 2.29.3
+      date-fns: 2.30.0
       formik: 2.4.4_react@17.0.2
       is-what: 3.14.1
       js-base64: 3.7.5
@@ -1428,7 +1428,7 @@ importers:
       '@mpieva/psydb-ui-layout': workspace:~0.1.0-alpha
       '@mpieva/psydb-ui-lib': workspace:~0.1.0-alpha
       '@mpieva/psydb-ui-utils': workspace:~0.1.0-alpha
-      react: ~17.0.1
+      react: ~17.0.2
       react-router: ~5.2.0
       react-router-dom: ~5.2.0
     devDependencies:
@@ -1492,7 +1492,7 @@ importers:
       '@babel/core': ~7.18.13
       '@babel/preset-env': ~7.18.10
       '@babel/preset-react': ~7.18.6
-      '@cdxoo/block-quote': ~1.0.0
+      '@cdxoo/block-quote': ~1.0.1
       '@mpieva/psydb-api': workspace:~0.1.0-alpha
       '@mpieva/psydb-api-config': workspace:~0.1.0-alpha
       '@mpieva/psydb-ui': workspace:~0.1.0-alpha
@@ -1507,8 +1507,8 @@ importers:
       koa-static-cache: ~5.1.4
       mocha: ~10.2.0
       mongodb-memory-server: ~6.9.2
-      react: ~17.0.1
-      react-dom: ~17.0.1
+      react: ~17.0.2
+      react-dom: ~17.0.2
       webpack: 5.x.x
       webpack-cli: 4.x.x
       webpack-dev-server: ~3.11.2
@@ -2715,7 +2715,6 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       regenerator-runtime: 0.14.0
-    dev: true
 
   /@babel/template/7.22.15:
     resolution: {integrity: sha512-QPErUVm4uyJa60rkI73qneDacvdvzxshT3kksGqlGWYdOTIUOwJ7RDUL8sGqslY1uXWSL6xMFKEXDS3ox2uF0w==}
@@ -3412,7 +3411,7 @@ packages:
     resolution: {integrity: sha512-ELCPqAdroMdcuxqwMgUpifQyRoTpyYCNr1V9xKyF40VsBobsj+BbWNRvwGchMgBPGqkw655ypkjj2MEF5ywVwg==}
     deprecated: This is a stub types definition. bson provides its own type definitions, so you do not need this installed.
     dependencies:
-      bson: 4.2.3
+      bson: 4.7.2
     dev: true
 
   /@types/classnames/2.3.1:
@@ -4365,12 +4364,6 @@ packages:
     resolution: {integrity: sha512-EvVNVeGo4tHxwi8L6bPj3y3itEvStdwvvlojVxxbyYfoaxJ6keLgrTuKdyfEAszFK+H3olzBuafE0yoh0D1gdg==}
     engines: {node: '>=0.6.19'}
 
-  /bson/4.2.3:
-    resolution: {integrity: sha512-3ztgjpKp0itFxGqzrLMHWqyZH5oMOIRWsjeY61yNVzrDGB/KxtgD6djFlz9n3vx7lLr2r6bkHagBCgyk1ZjETA==}
-    engines: {node: '>=6.9.0'}
-    dependencies:
-      buffer: 5.7.1
-
   /bson/4.5.4:
     resolution: {integrity: sha512-wIt0bPACnx8Ju9r6IsS2wVtGDHBr9Dxb+U29A1YED2pu8XOhS8aKjOnLZ8sxyXkPwanoK7iWWVhS1+coxde6xA==}
     engines: {node: '>=6.9.0'}
@@ -4383,7 +4376,6 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       buffer: 5.7.1
-    dev: true
 
   /buffer-crc32/0.2.13:
     resolution: {integrity: sha512-VO9Ht/+p3SN7SKWqcrgEzjGbRSJYTx+Q1pTQC0wrWqHx0vpJraQ6GtHx8tvcg1rlK1byhU5gccxgOgj7B0TDkQ==}
@@ -4964,17 +4956,19 @@ packages:
       whatwg-url: 7.1.0
     dev: true
 
-  /date-fns-tz/1.3.8_date-fns@2.29.3:
+  /date-fns-tz/1.3.8_date-fns@2.30.0:
     resolution: {integrity: sha512-qwNXUFtMHTTU6CFSFjoJ80W8Fzzp24LntbjFFBgL/faqds4e5mo9mftoRLgr3Vi1trISsg4awSpYVsOQCRnapQ==}
     peerDependencies:
       date-fns: '>=2.0.0'
     dependencies:
-      date-fns: 2.29.3
+      date-fns: 2.30.0
     dev: false
 
-  /date-fns/2.29.3:
-    resolution: {integrity: sha512-dDCnyH2WnnKusqvZZ6+jA1O51Ibt8ZMRNkDZdyAyK4YfbDwa/cEmuztzG5pk6hqlp9aSBPYcjOlktquahGwGeA==}
+  /date-fns/2.30.0:
+    resolution: {integrity: sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw==}
     engines: {node: '>=0.11'}
+    dependencies:
+      '@babel/runtime': 7.22.15
 
   /debug/2.6.9:
     resolution: {integrity: sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==}
@@ -8148,7 +8142,7 @@ packages:
       uuid: 8.3.2
       yauzl: 2.10.0
     optionalDependencies:
-      mongodb: 3.6.12
+      mongodb: 3.7.4
     transitivePeerDependencies:
       - aws4
       - bson-ext
@@ -9344,7 +9338,6 @@ packages:
 
   /regenerator-runtime/0.14.0:
     resolution: {integrity: sha512-srw17NI0TUWHuGa5CFGGmhfNIeja30WMBfbslPNhf6JrqQlLN5gcrvig1oqPxiVaXb0oW0XRKtH6Nngs5lKCIA==}
-    dev: true
 
   /regenerator-transform/0.15.2:
     resolution: {integrity: sha512-hfMp2BoF0qOk3uc5V20ALGDS2ddjQaLrdl7xrGXvAIow7qeWRM2VA2HuCHkUKk9slq3VwEwLNK3DFBqDfPGYtg==}

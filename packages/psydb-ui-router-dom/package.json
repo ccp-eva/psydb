@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/cdxOo/psydb#readme",
   "devDependencies": {
-    "react": "~17.0.1",
+    "react": "~17.0.2",
     "react-router": "~5.2.0",
     "react-router-dom": "~5.2.0",
     "@mpieva/psydb-ui-layout": "~0.1.0-alpha",

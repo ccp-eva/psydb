@@ -7,7 +7,7 @@
   "author": "Jan Schwalbe",
   "license": "MIT",
   "dependencies": {
-    "date-fns": "~2.29.3",
+    "date-fns": "~2.30.0",
     "@mpieva/psydb-core-utils": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-interval-fns": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-date-interval-fns": "workspace:~0.1.0-alpha",
@@ -19,8 +19,8 @@
     "@mpieva/json-schema-convert-pointer": "workspace:~0.1.0-alpha",
     "@cdxoo/inline-text": "~1.0.2",
     "flat": "~5.0.2",
-    "date-fns-tz": "~1.3.4",
-    "sift": "~16.0.0"
+    "date-fns-tz": "~1.3.8",
+    "sift": "~16.0.1"
   },
   "devDependencies": {
     "jest": "~29.7.0",

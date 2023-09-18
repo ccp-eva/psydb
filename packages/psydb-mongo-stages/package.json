@@ -13,7 +13,7 @@
     "@mpieva/psydb-schema-creators": "workspace:~0.1.0-alpha",
     "jsonpointer": "~5.0.1",
     "@cdxoo/inline-string": "~1.0.0",
-    "nanoid": "~3.3.4"
+    "nanoid": "~3.3.6"
   },
   "devDependencies": {
     "jest": "~29.7.0"

@@ -23,8 +23,8 @@
   "devDependencies": {
     "mocha": "~10.2.0",
     "chai": "~4.3.7",
-    "react": "~17.0.1",
-    "react-dom": "~17.0.1",
+    "react": "~17.0.2",
+    "react-dom": "~17.0.2",
     "@babel/core": "~7.18.13",
     "@babel/preset-env": "~7.18.10",
     "@babel/preset-react": "~7.18.6",
@@ -48,7 +48,7 @@
     "@cdxoo/omit": "~1.0.1",
     "@cdxoo/formik-utils": "~0.7.0",
     "jsonpointer": "~5.0.1",
-    "date-fns": "~2.29.3",
+    "date-fns": "~2.30.0",
     "js-base64": "~3.7.5",
     "@mpieva/psydb-timezone-helpers": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-core-utils": "workspace:~0.1.0-alpha",
@@ -73,7 +73,7 @@
     "is-subset": "~0.1.1",
     "pako": "~2.0.4",
     "camelcase": "~6.3.0",
-    "sift": "~16.0.0",
+    "sift": "~16.0.1",
     "rimraf": "~5.0.1",
     "react-cookie": "~6.1.1",
     "svg-url-loader": "~8.0.0"
