@@ -27,7 +27,6 @@
     "koa-session": "^5.13.1",
     "mongodb": "~3.6.3",
     "@cdxoo/inline-string": "~1.0.0",
-    "@mpieva/koa-mongo-extjson-body": "workspace:~0.1.0-alpha",
     "ajv-keywords": "~3.5.2",
     "@mpieva/psydb-ajv-formats": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-ajv-keywords": "workspace:~0.1.0-alpha",

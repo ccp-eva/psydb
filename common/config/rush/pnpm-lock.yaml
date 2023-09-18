@@ -95,21 +95,6 @@ importers:
       chai: 4.3.8
       mocha: 10.2.0
 
-  ../../packages/koa-mongo-extjson-body:
-    specifiers:
-      bson: ~4.7.2
-      chai: ~4.3.7
-      inflation: ~2.0.0
-      mocha: ~10.2.0
-      raw-body: ~2.4.1
-    dependencies:
-      bson: 4.7.2
-      inflation: 2.0.0
-      raw-body: 2.4.3
-    devDependencies:
-      chai: 4.3.8
-      mocha: 10.2.0
-
   ../../packages/psydb-ajv-formats:
     specifiers:
       ajv: ~6.12.6
@@ -155,7 +140,6 @@ importers:
       '@cdxoo/omit': ~1.0.1
       '@mpieva/json-schema-convert-pointer': workspace:~0.1.0-alpha
       '@mpieva/json-schema-lazy-resolve-oneof': workspace:~0.1.0-alpha
-      '@mpieva/koa-mongo-extjson-body': workspace:~0.1.0-alpha
       '@mpieva/psydb-ajv-formats': workspace:~0.1.0-alpha
       '@mpieva/psydb-ajv-keywords': workspace:~0.1.0-alpha
       '@mpieva/psydb-api-config': workspace:~0.1.0-alpha
@@ -214,7 +198,6 @@ importers:
       '@cdxoo/omit': 1.0.1
       '@mpieva/json-schema-convert-pointer': link:../json-schema-convert-pointer
       '@mpieva/json-schema-lazy-resolve-oneof': link:../json-schema-lazy-resolve-oneof
-      '@mpieva/koa-mongo-extjson-body': link:../koa-mongo-extjson-body
       '@mpieva/psydb-ajv-formats': link:../psydb-ajv-formats
       '@mpieva/psydb-ajv-keywords': link:../psydb-ajv-keywords
       '@mpieva/psydb-api-config': link:../psydb-api-config
