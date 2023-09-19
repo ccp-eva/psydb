@@ -1,12 +1,14 @@
 import React from 'react';
-import jsonpointer from 'jsonpointer';
-import { keyBy } from '@mpieva/psydb-core-utils';
+import { keyBy, jsonpointer } from '@mpieva/psydb-core-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { CustomField } from './custom-field';
 import { ListOfObjectsField } from './list-of-objects-field';
 
 export const createFullUserOrdered = (options) => (ps) => {
     var { extraFieldComponents = {} } = options;
     var { value, related, crtSettings, exclude = []  } = ps;
+
+    var translate = useUITranslation();
 
     var {
         hasSubChannels,
@@ -28,7 +30,9 @@ export const createFullUserOrdered = (options) => (ps) => {
     });
 
     var keyedStaticFieldDefinitions = keyBy({
-        items: staticFieldDefinitions,
+        items: staticFieldDefinitions.map(it => ({
+            ...it, displayName: translate(it.displayName)
+        })),
         byProp: 'dataPointer' // FIXME
     });
 

@@ -2483,6 +2483,10 @@ var maps = [
         en: 'Language',
         de: 'Sprache'
     },
+    {
+        en: 'Participation Permissions',
+        de: 'Teilnahme-Erlaubnis',
+    }
 ]
 
 export const createTranslate = (lang = 'en') => {

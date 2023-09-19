@@ -12,10 +12,10 @@ import {
 import TestingPermissions from './testing-permissions';
 
 const labels = {
-    '/sequenceNumber': 'ID Nr.',
+    '/sequenceNumber': 'ID No.',
     '/onlineId': 'Online ID Code',
-    '/scientific/state/comment': 'Kommentar',
-    '/scientific/state/testingPermissions': 'Teilnahme-Erlaubnis',
+    '/scientific/state/comment': 'Comment',
+    '/scientific/state/testingPermissions': 'Participation Permissions',
 }
 
 const [ Subject, SubjectContext ] = createBase();
