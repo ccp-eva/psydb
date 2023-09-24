@@ -1,3 +1,8 @@
 module.exports = {
-    enableMigrationMode: false
+    enableMigrationMode: false,
+    i18n: {
+        enableI18NSelect: false,
+        defaultLanguage: 'de',
+        defaultLocaleCode: 'de',
+    }
 }

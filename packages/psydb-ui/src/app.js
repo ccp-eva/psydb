@@ -1,20 +1,19 @@
 import React, { useEffect, useState, useReducer } from 'react';
 import { CookiesProvider, useCookies } from 'react-cookie';
+import { HashRouter as Router } from 'react-router-dom';
 
 import enUSLocale from 'date-fns/locale/en-US';
 import deLocale from 'date-fns/locale/de';
 
-import {
-    HashRouter as Router,
-} from 'react-router-dom';
-
 import agent, { simple as publicAgent } from '@mpieva/psydb-ui-request-agents';
 
+import config from '@mpieva/psydb-common-config';
 import { createTranslate } from '@mpieva/psydb-ui-translations';
 
 import {
     SelfContext,
     AgentContext,
+    UIConfigContext,
     UILocaleContext,
     UILanguageContext,
     UITranslationContext,
@@ -33,6 +32,24 @@ const localesByCode = [
     [locale.code]: locale
 }), {});
 
+var applyI18N = (bag) => {
+    var { cookies, config } = bag;
+    var { enableI18NSelect, defaultLanguage, defaultLocaleCode } = config.i18n;
+    if (enableI18NSelect) {
+        var { i18n = {}} = cookies;
+        var {
+            language = defaultLanguage,
+            localeCode = defaultLocaleCode
+        } = i18n;
+    }
+    else {
+        var language = defaultLanguage;
+        var localeCode = defaultLocaleCode;
+    }
+
+    return { language, localeCode };
+}
+
 const App = () => {
 
     var [ isSignedIn, setIsSignedIn ] = useState(false);
@@ -40,9 +57,7 @@ const App = () => {
     var [ isInitialized, setIsInitialized ] = useState(false);
 
     var [ cookies, setCookie ] = useCookies([ 'i18n' ]);
-    var { i18n = {}} = cookies;
-    var { language = 'en', localeCode = 'en-US' } = i18n;
-
+    var { language, localeCode } = applyI18N({ cookies, config });
     var locale = localesByCode[localeCode];
 
     var setI18N = (value) => {
@@ -81,6 +96,7 @@ const App = () => {
     var translate = createTranslate(language);
 
     var sharedBag = {
+        config,
         language: [ language, setI18N ],
         locale,
         translate,
@@ -131,6 +147,7 @@ var withContext = (Context, propKey) => (Next) => (ps) => {
     )
 }
 var CommonContexts = compose(
+    withContext(UIConfigContext, 'config'),
     withContext(UILocaleContext, 'locale'),
     withContext(UILanguageContext, 'language'),
     withContext(UITranslationContext, 'translate'),

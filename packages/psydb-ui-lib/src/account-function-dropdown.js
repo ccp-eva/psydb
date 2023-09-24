@@ -1,6 +1,7 @@
 import React from 'react';
 
 import {
+    useUIConfig,
     useUITranslation,
     useUILanguage
 } from '@mpieva/psydb-ui-contexts';
@@ -25,6 +26,7 @@ export const AccountFunctionDropdown = ({
     
     disabled,
 }) => {
+    var config = useUIConfig();
     var [ language, setLanguage ] = useUILanguage();
     var translate = useUITranslation();
 
@@ -60,21 +62,26 @@ export const AccountFunctionDropdown = ({
                 
                 <Dropdown.Divider />
 
-                <Dropdown.Item
-                    as='button'
-                    onClick={ () => (
-                        setLanguage(language === 'en' ? 'de' : 'en' )
-                    )}
-                >
-                    { translate(
-                        'Language: ${lang}',
-                        { lang: (
-                            { 'en': 'English', 'de': 'Deutsch' }[language]
-                        )}
-                    ) }
-                </Dropdown.Item>
-
-                <Dropdown.Divider />
+                { config.i18n.enableI18NSelect && (
+                    <>
+                        <Dropdown.Item
+                            as='button'
+                            onClick={ () => (
+                                setLanguage(language === 'en' ? 'de' : 'en' )
+                            )}
+                        >
+                            { translate(
+                                'Language: ${lang}',
+                                { lang: {
+                                    'en': 'English',
+                                    'de': 'Deutsch'
+                                }[language] }
+                            ) }
+                        </Dropdown.Item>
+                        
+                        <Dropdown.Divider />
+                    </>
+                )}
 
                 <Dropdown.Item
                     as='button'

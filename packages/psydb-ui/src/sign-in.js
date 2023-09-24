@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
-import { useUITranslation, useUILanguage } from '@mpieva/psydb-ui-contexts';
+import {
+    useUIConfig,
+    useUITranslation,
+    useUILanguage
+} from '@mpieva/psydb-ui-contexts';
 
 import { Button } from '@mpieva/psydb-ui-layout';
 import { useWriteRequest } from '@mpieva/psydb-ui-hooks';
@@ -43,6 +47,7 @@ const SignInFormBody = (ps) => {
 }
 
 const SignIn = ({ onSignedIn }) => {
+    var config = useUIConfig();
     var translate = useUITranslation(); 
     
     var [ language ] = useUILanguage();
@@ -126,11 +131,13 @@ const SignIn = ({ onSignedIn }) => {
                     )}
                 </DefaultForm>
             </div>
-            <div className='mt-1 d-flex justify-content-end'>
-                <span>{ translate('Language') }:</span>
-                <LangButton code='en' />
-                <LangButton code='de' />
-            </div>
+            { config.i18n.enableI18NSelect && (
+                <div className='mt-1 d-flex justify-content-end'>
+                    <span>{ translate('Language') }:</span>
+                    <LangButton code='en' />
+                    <LangButton code='de' />
+                </div>
+            )}
         </div>
     )
 }
