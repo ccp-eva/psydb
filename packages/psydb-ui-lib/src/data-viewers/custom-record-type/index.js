@@ -20,12 +20,39 @@ const labels = {
     '/state/enableSubjectSelectionSettings': 'Enable Subject Selection',
 }
 
+var DisplayNameDE = withPair(SaneString);
+
+const DisplayNameI18N = (ps) => {
+    var { value = {}, ...pass } = ps;
+    var translate = useUITranslation();
+
+    return (
+        <DisplayNameDE
+            { ...pass }
+            value={ value.de }
+            label={ translate('Display Name (DE)') }
+        />
+    )
+}
+
+const ReservationType = (ps) => {
+    var { value } = ps;
+    var translate = useUITranslation();
+
+    return translate(`_reservationType_${value}`);
+}
+
 const [ CRT, CRTContext ] = createBase();
 addComponents(CRT, CRTContext, labels, [
     {
         cname: 'Label',
         path: '/state/label',
         Component: withPair(SaneString)
+    },
+    {
+        cname: 'DisplayNameI18N',
+        path: '/state/displayNameI18N',
+        Component: DisplayNameI18N
     },
     {
         cname: 'RequiresTestingPermissions',
@@ -60,12 +87,7 @@ addComponents(CRT, CRTContext, labels, [
     {
         cname: 'ReservationType',
         path: '/state/reservationType',
-        Component: withPair((ps) => {
-            var { value } = ps;
-            var translate = useUITranslation();
-
-            return translate(`_reservationType_${value}`);
-        })
+        Component: withPair(ReservationType)
     },
 ]);
 

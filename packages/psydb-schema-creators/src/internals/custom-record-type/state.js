@@ -1,6 +1,7 @@
 'use strict';
 var {
     ExactObject,
+    OpenObject,
     SaneString,
     StringEnum,
     IdentifierString,
@@ -157,6 +158,9 @@ var ChannelState = ({
 }) => ExactObject({
     properties: {
         label: SaneString(),
+        displayNameI18N: OpenObject({
+            de: SaneString(),
+        }),
         ...( collection === 'location' && {
             reservationType: StringEnum([
                 'away-team',
@@ -211,6 +215,7 @@ var ChannelState = ({
     },
     required: [
         'label',
+        'displayNameI18N',
         'nextSettings',
         'settings',
     ],

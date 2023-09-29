@@ -33,7 +33,9 @@ const CreateNewType = (ps) => {
     return (
         <FormBox title={ translate('New Record Type') }>
             <DefaultForm
-                initialValues={{ props: {} }}
+                initialValues={{ props: {
+                    displayNameI18N: {},
+                }}}
                 onSubmit={ send.exec }
                 useAjvAsync
                 ajvErrorInstancePathPrefix = '/payload'
@@ -72,6 +74,10 @@ const FormFields = (ps) => {
                     );
                 }}
                 required
+            />
+            <Fields.SaneString
+                label={ translate('Display Name (DE)') }
+                dataXPath='$.props.displayNameI18N.de'
             />
             <hr />
             <div className='px-3'>

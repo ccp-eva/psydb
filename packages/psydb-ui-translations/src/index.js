@@ -2514,6 +2514,10 @@ var maps = [
         en: 'No Reservation',
         de: 'Keine Reservierung',
     },
+    {
+        en: 'Display Name (DE)',
+        de: 'Anzeigename (DE)',
+    },
 ]
 
 export const createTranslate = (lang = 'en') => {

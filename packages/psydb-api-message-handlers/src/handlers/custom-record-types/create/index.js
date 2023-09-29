@@ -17,13 +17,11 @@ var handler = SimpleHandler({
     createSchema,
 });
 
-handler.checkAllowedAndPlausible = async ({
-    db,
-    permissions,
-    message
-}) => {
-    if (!permissions.hasRootAccess) {
-        //throw new ApiError(403);
+handler.checkAllowedAndPlausible = async (context) => {
+    var { db, permissions, message } = context;
+    
+    if (!permissions.isRoot()) {
+        throw new ApiError(403);
     }
 
     var {
@@ -43,14 +41,16 @@ handler.checkAllowedAndPlausible = async ({
     }
 }
 
-handler.triggerSystemEvents = async ({
-    db,
-    rohrpost,
-    message,
-    personnelId,
+handler.triggerSystemEvents = async (context) => {
+    var {
+        db,
+        rohrpost,
+        message,
+        personnelId,
 
-    dispatchProps,
-}) => {
+        dispatchProps,
+    } = context;
+
     var { id, collection, type, props } = message.payload;
 
     var defaults = await createInitialChannelState({

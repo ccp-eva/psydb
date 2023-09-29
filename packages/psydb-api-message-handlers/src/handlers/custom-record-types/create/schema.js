@@ -1,6 +1,7 @@
 'use strict';
 var {
     ExactObject,
+    OpenObject,
     Id,
     IdentifierString,
     SaneString,
@@ -25,9 +26,13 @@ var Schema = () => {
                 props: ExactObject({
                     properties: {
                         label: SaneString({ minLength: 1 }),
+                        displayNameI18N: OpenObject({
+                            de: SaneString()
+                        }),
                     },
                     required: [
                         'label',
+                        'displayNameI18N',
                     ]
                 })
             },

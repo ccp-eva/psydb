@@ -16,6 +16,7 @@ const Form = (ps) => {
     var { record, send } = ps;
     var { collection, state: {
         label,
+        displayNameI18N = {},
         enableLabTeams = true,
         enableSubjectSelectionSettings = true,
         reservationType,
@@ -23,6 +24,7 @@ const Form = (ps) => {
 
     var initialValues = {
         label,
+        displayNameI18N,
         ...(collection === 'study' && {
             enableLabTeams,
             enableSubjectSelectionSettings,
@@ -47,6 +49,11 @@ const Form = (ps) => {
                         label={ translate('Display Name') }
                         dataXPath='$.label'
                         required
+                    />
+                    <Fields.SaneString
+                        uiSplit={ uiSplit }
+                        label={ translate('Display Name (DE)') }
+                        dataXPath='$.displayNameI18N.de'
                     />
                     { collection === 'location' && (
                         <Fields.GenericEnum
@@ -94,6 +101,7 @@ const View = (ps) => {
     return (
         <CRT { ...crtBag }>
             <CRT.Label />
+            <CRT.DisplayNameI18N />
             
             { collection === 'study' && (
                 <>

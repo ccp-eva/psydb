@@ -10,6 +10,7 @@ const Form = (ps) => {
     var { record, send } = ps;
     var { state: {
         label,
+        displayNameI18N = {},
         requiresTestingPermissions = false,
         commentFieldIsSensitive = false,
         showSequenceNumber = true,
@@ -18,6 +19,7 @@ const Form = (ps) => {
 
     var initialValues = {
         label,
+        displayNameI18N,
         requiresTestingPermissions,
         commentFieldIsSensitive,
         showSequenceNumber,
@@ -37,6 +39,10 @@ const Form = (ps) => {
                         label={ translate('Display Name') }
                         dataXPath='$.label'
                         required
+                    />
+                    <Fields.SaneString
+                        label={ translate('Display Name (DE)') }
+                        dataXPath='$.displayNameI18N.de'
                     />
                     <Fields.DefaultBool
                         label={ translate('Requires Participation Permissions') }
@@ -85,6 +91,7 @@ const View = (ps) => {
     return (
         <CRT { ...crtBag }>
             <CRT.Label />
+            <CRT.DisplayNameI18N />
             <CRT.RequiresTestingPermissions />
             <CRT.CommentFieldIsSensitive />
             <CRT.ShowSequenceNumber />

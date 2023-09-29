@@ -68,6 +68,7 @@ var triggerSystemEvents = async (context) => {
     var {
         id,
         label,
+        displayNameI18N = {},
         reservationType,
         requiresTestingPermissions,
         commentFieldIsSensitive,
@@ -99,6 +100,7 @@ var triggerSystemEvents = async (context) => {
         payload: {
             $set: {
                 'state.label': label,
+                'state.displayNameI18N': displayNameI18N,
                 ...(collection === 'subject' && {
                     'state.requiresTestingPermissions': requiresTestingPermissions,
                     'state.commentFieldIsSensitive': commentFieldIsSensitive,

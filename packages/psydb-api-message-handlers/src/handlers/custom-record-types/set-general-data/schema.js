@@ -1,6 +1,7 @@
 'use strict';
 var {
     ExactObject,
+    OpenObject,
     Id,
     EventId,
     IdentifierString,
@@ -21,6 +22,9 @@ var Schema = ({ collection, isPrecheck } = {}) => {
                 id: Id(),
                 lastKnownEventId: EventId(),
                 label: SaneString({ minLength: 1 }),
+                displayNameI18N: OpenObject({
+                    de: SaneString()
+                }),
                 ...((collection === 'subject' || isPrecheck) && {
                     requiresTestingPermissions: DefaultBool(),
                     commentFieldIsSensitive: DefaultBool(),
@@ -43,6 +47,7 @@ var Schema = ({ collection, isPrecheck } = {}) => {
                 'id',
                 //'lastKnownEventId',
                 'label',
+                'displayNameI18N',
                 ...(
                     collection === 'subject' && !isPrecheck
                     ? [
