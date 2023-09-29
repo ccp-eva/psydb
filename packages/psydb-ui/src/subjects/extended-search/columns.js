@@ -1,9 +1,8 @@
 import React from 'react';
-
 import { withField } from '@cdxoo/formik-utils';
 
 import { CRTSettings } from '@mpieva/psydb-common-lib';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useUITranslation, useUILanguage } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
 import { Fields } from '@mpieva/psydb-ui-lib';
@@ -17,14 +16,18 @@ const ColumnSelect = withField({
 export const Columns = (ps) => {
     var { formData, crtSettings, schema } = ps;
     
+    var [ language ] = useUILanguage();
     var translate = useUITranslation();
     var permissions = usePermissions();
     
     var crt = CRTSettings({ data: crtSettings });
-    var customColumns = crt.allCustomFields().map(it => ({
-        pointer: it.pointer,
-        label: it.displayName
-    }));
+    var customColumns = crt.allCustomFields().map(it => {
+        var { pointer, displayName, displayNameI18N = {} } = it;
+        return {
+            pointer,
+            label: displayNameI18N[language] || displayName
+        }
+    });
 
     // FIXME: generalzie the creation of the field parts
     // see extended search/subjects/index

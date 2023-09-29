@@ -1,8 +1,8 @@
 import React from 'react';
-
-import { gatherCustomColumns } from '@mpieva/psydb-common-lib';
 import { withField } from '@cdxoo/formik-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+
+import { CRTSettings } from '@mpieva/psydb-common-lib';
+import { useUITranslation, useUILanguage } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
 import { Fields } from '@mpieva/psydb-ui-lib';
@@ -14,12 +14,20 @@ const ColumnSelect = withField({
 })
 
 export const Columns = (ps) => {
-    var { formData, schema } = ps;
+    var { formData, crtSettings, schema } = ps;
     
+    var [ language ] = useUILanguage();
     var translate = useUITranslation();
     var permissions = usePermissions();
     
-    var customColumns = gatherCustomColumns({ schema });
+    var crt = CRTSettings({ data: crtSettings });
+    var customColumns = crt.allCustomFields().map(it => {
+        var { pointer, displayName, displayNameI18N = {} } = it;
+        return {
+            pointer,
+            label: displayNameI18N[language] || displayName
+        }
+    });
 
     var sortableColumns = [
         { pointer: '/sequenceNumber', label: translate('ID No.') },
