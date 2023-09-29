@@ -2521,7 +2521,15 @@ var maps = [
     {
         en: 'Assigned Studies',
         de: 'Studienzuordnung'
-    }
+    },
+    {
+        en: 'Language Settings',
+        de: 'Spracheinstellungen',
+    },
+    {
+        en: 'Date/Time Format',
+        de: 'Datums-/Zeitformat',
+    },
 ]
 
 export const createTranslate = (lang = 'en') => {

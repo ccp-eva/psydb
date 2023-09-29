@@ -3,6 +3,7 @@ import { CookiesProvider, useCookies } from 'react-cookie';
 import { HashRouter as Router } from 'react-router-dom';
 
 import enUSLocale from 'date-fns/locale/en-US';
+import enGBLocale from 'date-fns/locale/en-GB';
 import deLocale from 'date-fns/locale/de';
 
 import agent, { simple as publicAgent } from '@mpieva/psydb-ui-request-agents';
@@ -26,6 +27,7 @@ import Main from './main'
 
 const localesByCode = [
     enUSLocale,
+    enGBLocale,
     deLocale
 ].reduce((acc, locale) => ({
     ...acc,
@@ -61,10 +63,12 @@ const App = () => {
     var locale = localesByCode[localeCode];
 
     var setI18N = (value) => {
-        setCookie('i18n', {
-            language: value,
-            localeCode: value === 'de' ? deLocale.code : enUSLocale.code
-        });
+        var [ language, localeCode ] = (
+            typeof value === 'string'
+            ? [ value, value === 'de' ? deLocale.code : enUSLocale.code ]
+            : [ value.language, value.localeCode ]
+        )
+        setCookie('i18n', { language, localeCode });
     };
     //var setLocale = (value) => dispatch({ type: 'set-locale', value });
 

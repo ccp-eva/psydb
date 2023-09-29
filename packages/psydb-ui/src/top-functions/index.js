@@ -7,6 +7,7 @@ import { AccountFunctionDropdown } from '@mpieva/psydb-ui-lib';
 
 import { SwitchResearchGroupModal } from './switch-research-group-modal';
 import { ChangePasswordModal } from './change-password-modal';
+import { I18NModal } from './i18n-modal';
 
 
 const TopFunctions = (ps) => {
@@ -18,6 +19,7 @@ const TopFunctions = (ps) => {
     var translate = useUITranslation();
     var switchRGModal = useModalReducer();
     var changePasswordModal = useModalReducer();
+    var i18nModal = useModalReducer();
 
     var className = classnames([
         'd-flex justify-content-end pt-2 pb-1 media-print-hidden',
@@ -37,10 +39,12 @@ const TopFunctions = (ps) => {
         >
             <SwitchResearchGroupModal { ...switchRGModal.passthrough } />
             <ChangePasswordModal { ...changePasswordModal.passthrough } />
+            <I18NModal { ...i18nModal.passthrough } />
 
             <AccountFunctionDropdown { ...({
                 onClickForceResearchGroup: switchRGModal.handleShow,
-                onClickChangePassword: changePasswordModal.handleShow
+                onClickChangePassword: changePasswordModal.handleShow,
+                onClickI18N: i18nModal.handleShow
             })} />
 
             <a

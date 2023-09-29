@@ -23,6 +23,7 @@ var style = {
 export const AccountFunctionDropdown = ({
     onClickForceResearchGroup,
     onClickChangePassword,
+    onClickI18N,
     
     disabled,
 }) => {
@@ -66,17 +67,9 @@ export const AccountFunctionDropdown = ({
                     <>
                         <Dropdown.Item
                             as='button'
-                            onClick={ () => (
-                                setLanguage(language === 'en' ? 'de' : 'en' )
-                            )}
+                            onClick={ onClickI18N }
                         >
-                            { translate(
-                                'Language: ${lang}',
-                                { lang: {
-                                    'en': 'English',
-                                    'de': 'Deutsch'
-                                }[language] }
-                            ) }
+                            { translate('Language Settings') }
                         </Dropdown.Item>
                         
                         <Dropdown.Divider />
