@@ -1,171 +1,121 @@
 import React from 'react';
-import { demuxed } from '@mpieva/psydb-ui-utils';
-import { useSend, useModalReducer } from '@mpieva/psydb-ui-hooks';
-import { Button, WithDefaultModal } from '@mpieva/psydb-ui-layout';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { Button } from '@mpieva/psydb-ui-layout';
 import { DefaultForm, Fields } from '@mpieva/psydb-ui-lib';
+import * as Themes from '@mpieva/psydb-ui-lib/data-viewer-themes';
+import { CRT } from '@mpieva/psydb-ui-lib/data-viewers';
+import withGeneralSettingsEditor from '../with-general-settings-editor';
 
 const reservationTypes = {
-    'inhouse': 'Reservierbar (z.B. Instituts-Räume)',
-    'away-team': 'Terminierbar (t.B. Kindergärten)',
-    'no-reservation': 'Nein'
+    'inhouse': '_reservationType_inhouse',
+    'away-team': '_reservationType_away-team',
+    'no-reservation': '_reservationType_no-reservation',
 }
-
-const GeneralEditor = (ps) => {
-    var { record } = ps;
-    var { collection, state: { label, reservationType }} = record;
-
-    var modal = useModalReducer();
-    return (
-        <>
-            <div>
-                Anzeigename: { label }
-            </div>
-            { collection === 'subject'  && (
-                <div>
-                    { 
-                        record.state.requiresTestingPermissions
-                        ? 'Benötigt Test-Erlaubnis'
-                        : 'Ohne Test-Erlaubnis'
-                    }
-                </div>
-            )}
-            { collection === 'location' && (
-                <div>
-                    Reservierung/Termine:
-                    {' '}
-                    { reservationTypes[reservationType] || 'inhouse' }
-                </div>
-            )}
-            { collection === 'study'  && (
-                <>
-                    <div>
-                        { 
-                            record.state.enableSubjectSelectionSettings
-                            ? 'Mit Auswahl-Bedingungen'
-                            : 'Ohne Auswahl-Bedingungen'
-                        }
-                    </div>
-                    <div>
-                        { 
-                            record.state.enableLabTeams
-                            ? 'Mit Lab-Teams'
-                            : 'Ohne Lab-Teams'
-                        }
-                    </div>
-                </>
-            )}
-            <div className='mt-3'>
-                <Button onClick={ modal.handleShow }>
-                    Edit
-                </Button>
-            </div>
-            <Modal
-                { ...ps }
-                { ...modal.passthrough }
-            />
-        </>
-    )
-}
-
-const Modal = WithDefaultModal({
-    title: 'Allgemeine Einstellungen',
-    size: 'lg',
-    Body: (ps) => {
-        var { record, onHide, onSuccessfulUpdate } = ps;
-        var {
-            _id,
-            _lastKnownEventId,
-            collection,
-            state: {
-                label,
-                reservationType = 'inhouse',
-                requiresTestingPermissions = false,
-
-                enableSubjectSelectionSettings = false,
-                enableLabTeams = false,
-            }
-        } = record;
-
-        var send = useSend((formData) => ({
-            type: 'custom-record-types/set-general-data',
-            payload: {
-                id: _id,
-                lastKnownEventId: _lastKnownEventId,
-                ...formData
-            }
-        }), {
-            onSuccessfulUpdate: demuxed([ onSuccessfulUpdate, onHide ])
-        })
-
-        var initialValues = {
-            label,
-            ...(collection === 'subject' && {
-                requiresTestingPermissions
-            }),
-            ...(collection === 'location' && {
-                reservationType
-            }),
-            ...(collection === 'study' && {
-                enableSubjectSelectionSettings,
-                enableLabTeams,
-            }),
-        };
-        return (
-            <Form
-                collection={ collection }
-                initialValues={ initialValues }
-                onSubmit={ send.exec }
-            />
-        )
-    }
-});
 
 const Form = (ps) => {
-    var { collection, initialValues, onSubmit } = ps;
-        
+    var { record, send } = ps;
+    var { collection, state: {
+        label,
+        enableLabTeams = true,
+        enableSubjectSelectionSettings = true,
+        reservationType,
+    }} = record;
+
+    var initialValues = {
+        label,
+        ...(collection === 'study' && {
+            enableLabTeams,
+            enableSubjectSelectionSettings,
+        }),
+        ...(collection === 'location' && {
+            reservationType
+        }),
+    };
+
+    var translate = useUITranslation();
+    var uiSplit = [ 4, 8 ];
+
     return (
         <DefaultForm
             initialValues={ initialValues }
-            onSubmit={ onSubmit }
+            onSubmit={ send.exec }
         >
             {(formikProps) => (
                 <>
                     <Fields.SaneString
-                        label='Anzeigename'
+                        uiSplit={ uiSplit }
+                        label={ translate('Display Name') }
                         dataXPath='$.label'
                         required
                     />
-                    { collection === 'subject' && (
-                        <Fields.DefaultBool
-                            label='Benötigt Test-Erlaubnis'
-                            dataXPath='$.requiresTestingPermissions'
-                        />
-                    )}
                     { collection === 'location' && (
                         <Fields.GenericEnum
-                            label='Reservierung/Termine'
+                            uiSplit={ uiSplit }
+                            label={ translate('Reservation Type') }
                             dataXPath='$.reservationType'
-                            options={ reservationTypes }
+                            options={ translate.options(reservationTypes) }
                             required
                         />
                     )}
                     { collection === 'study' && (
                         <>
                             <Fields.DefaultBool
-                                label='Lab-Teams'
+                                uiSplit={ uiSplit }
+                                label={ translate('Enable Lab Teams') }
                                 dataXPath='$.enableLabTeams'
                             />
                             <Fields.DefaultBool
-                                label='Auswahl-Bedingungen'
+                                uiSplit={ uiSplit }
+                                label={ translate('Enable Subject Selection') }
                                 dataXPath='$.enableSubjectSelectionSettings'
                             />
                         </>
                     )}
-                    <Button type='submit'>Speichern</Button>
+                    <Button type='submit'>
+                        { translate('Save') }
+                    </Button>
                 </>
             )}
         </DefaultForm>
     )
 }
+
+const View = (ps) => {
+    var { record } = ps;
+    var { collection } = record;
+
+    var crtBag = {
+        theme: Themes.HorizontalSplit,
+        value: record,
+        related : {},
+        wLeft: 6,
+    }
+
+    return (
+        <CRT { ...crtBag }>
+            <CRT.Label />
+            
+            { collection === 'study' && (
+                <>
+                    <CRT.EnableLabTeams />
+                    <CRT.EnableSubjectSelectionSettings />
+                </>
+            )}
+            { collection === 'location' && (
+                <>
+                    <CRT.ReservationType />
+                </>
+            )}
+        </CRT>
+    )
+}
+
+const GeneralEditor = withGeneralSettingsEditor({
+    title: 'General Settings',
+    size: 'lg',
+
+    View,
+    Form,
+});
 
 export default GeneralEditor;

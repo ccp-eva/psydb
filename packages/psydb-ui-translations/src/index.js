@@ -2486,7 +2486,34 @@ var maps = [
     {
         en: 'Participation Permissions',
         de: 'Teilnahme-Erlaubnis',
-    }
+    },
+    {
+        en: 'Enable Lab Teams',
+        de: 'Mit Teams',
+    },
+    {
+        en: 'Enable Subject Selection',
+        de: 'Mit Proband:innen-Auswahl',
+    },
+    {
+        en: 'Reservation Type',
+        de: 'Reservierungs-Typ',
+    },
+    {
+        internal: '_reservationType_inhouse',
+        en: 'Inhouse Appointments',
+        de: 'Interne Termine',
+    },
+    {
+        internal: '_reservationType_away-team',
+        en: 'External Appointments',
+        de: 'Externe Termine',
+    },
+    {
+        internal: '_reservationType_no-reservation',
+        en: 'No Reservation',
+        de: 'Keine Reservierung',
+    },
 ]
 
 export const createTranslate = (lang = 'en') => {
