@@ -1,8 +1,7 @@
 import React from 'react';
-import jsonpointer from 'jsonpointer';
-
+import { keyBy, jsonpointer } from '@mpieva/psydb-core-utils';
 import { getSystemTimezone } from '@mpieva/psydb-timezone-helpers';
-import { keyBy } from '@mpieva/psydb-core-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
 import {
     useFetch,
@@ -110,13 +109,14 @@ export const Results = (ps) => {
 
 
 const Fallback = (ps) => {
+    var translate = useUITranslation();
     return (
         <>
             <Table>
                 <TableHead { ...ps } />
             </Table>
             <Alert variant='info'>
-                <i>Keine Datensätze gefunden</i>
+                <i>{ translate('No Records found.') }</i>
             </Alert>
         </>
     )

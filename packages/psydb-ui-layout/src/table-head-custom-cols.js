@@ -37,19 +37,21 @@ export const TableHeadCustomCols = (ps) => {
             'ExtBool'
         ].includes(type);
 
+        var label = displayNameI18N[language] || displayName;
+
         return (
             canSortColumn
             ? (
                 <SortableTH
                     key={ ix }
                     sorter={ sorter }
-                    label={ displayNameI18N[language] || displayName }
+                    label={ label }
                     path={ convertPointerToPath(pointer) }
                     isFirstColumn={ ix === 0 }
                 />
             )
             : (
-                <th key={ ix }>{ displayName }</th>
+                <th key={ ix }>{ label }</th>
             )
         );
     })

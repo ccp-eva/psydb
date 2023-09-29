@@ -2518,6 +2518,10 @@ var maps = [
         en: 'Display Name (DE)',
         de: 'Anzeigename (DE)',
     },
+    {
+        en: 'Assigned Studies',
+        de: 'Studienzuordnung'
+    }
 ]
 
 export const createTranslate = (lang = 'en') => {
