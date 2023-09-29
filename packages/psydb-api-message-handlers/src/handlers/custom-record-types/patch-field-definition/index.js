@@ -100,7 +100,7 @@ var triggerSystemEvents = async (context) => {
     var { fieldIndex } = cache;
 
     var { id, subChannelKey, fieldKey, props } = message.payload;
-    var { displayName } = props;
+    var { displayName, displayNameI18N } = props;
 
     var allFieldsPath = (
         subChannelKey
@@ -120,6 +120,7 @@ var triggerSystemEvents = async (context) => {
                 'state.isDirty': true,
                 [`${fieldPath}.isDirty`]: true,
                 [`${fieldPath}.displayName`]: displayName,
+                [`${fieldPath}.displayNameI18N`]: displayNameI18N,
             }
         }
     });

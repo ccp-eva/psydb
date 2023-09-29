@@ -18,7 +18,9 @@ const NewFieldForm = (ps) => {
 
     return (
         <MainForm.Component
-            initialValues={{ props: {} }}
+            initialValues={{ props: {
+                displayNameI18N: {},
+            } }}
             onSubmit={ send.exec }
             hasSubChannels={ hasSubChannels }
             isUnrestricted={ true }

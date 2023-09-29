@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import classnames from 'classnames';
 
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useUITranslation, useUILanguage } from '@mpieva/psydb-ui-contexts';
 import { Button, Icons } from '@mpieva/psydb-ui-layout';
 
 import * as fieldSchemas from '@mpieva/psydb-schema-fields';
@@ -11,42 +11,6 @@ import {
     DefaultForm,
     QuickSearchFields
 } from './formik';
-
-const createSchema = (displayFieldData) => {
-    var properties = {};
-    for (var it of displayFieldData.slice(0,4)) {
-        //console.log(displayFieldData);
-        // FIXME: there is an issue with static fields
-        // having a different key for their type
-        var type = it.type || it.systemType;
-
-        var meta = fieldMetadata[type];
-        if (meta && meta.canSearch) {
-            var realType = (
-                meta.searchDisplayType || meta.searchType || type
-            );
-            properties[it.dataPointer] = fieldSchemas[realType]({
-                title: it.displayName,
-                systemProps: { uiWrapper: 'MultiLineWrapper' },
-              
-                // cannot pass all props since the might include
-                // string constraints like minLength
-                ...(it.props && ({
-                    collection: it.props.collection,
-                    recordType: it.props.recordType,
-                    constraints: it.props.constraints,
-                    setId: it.props.setId,
-                })),
-            });
-        }
-    }
-
-    //console.log(properties);
-
-    return fieldSchemas.ExactObject({
-        properties,
-    });
-}
 
 const QuickSearch = (ps) => {
     var {
@@ -119,21 +83,36 @@ const QuickSearch = (ps) => {
 
 const FieldList = (ps) => {
     var { displayFieldData } = ps;
+    var [ language ] = useUILanguage();
     //console.log(displayFieldData);
 
     return (
         <>
             { displayFieldData.map((it, ix) => {
-                var Field = QuickSearchFields[it.type || it.systemType];
+                var {
+                    key,
+                    type,
+                    systemType,
+                    displayName,
+                    displayNameI18N = {},
+                    pointer,
+                    dataPointer
+                } = it; 
+                
+                // FIXME: use fixDefintions()
+                pointer = pointer || dataPointer;
+                type = type || systemType;
+
+                var Field = QuickSearchFields[type];
                 if (!Field) {
                     return null;
                 }
                 return (
                     <Field
                         autoFocus={ ix === 0 }
-                        key={ it.key }
-                        label={ it.displayName }
-                        dataXPath={ `$.${it.dataPointer}` }
+                        key={ key }
+                        label={ displayNameI18N[language] || displayName }
+                        dataXPath={ `$.${pointer}` }
                     />
                 )
             }) }

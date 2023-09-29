@@ -9,7 +9,7 @@ import {
     useParams
 } from 'react-router-dom';
 
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useUITranslation, useUILanguage } from '@mpieva/psydb-ui-contexts';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 import {
     LoadingIndicator,
@@ -72,6 +72,7 @@ const withRecordTypeView = (options) => {
 
         collectionRecordTypes = collectionRecordTypes || [];
 
+        var [ language ] = useUILanguage();
         var translate = useUITranslation();
         var { path, url } = useRouteMatch();
         var { recordType } = useParams();
@@ -96,18 +97,20 @@ const withRecordTypeView = (options) => {
         }
 
         var typeData = undefined;
+        var title = undefined;
+
         if (recordType) {
             typeData = collectionRecordTypes.find(it => (
                 (it.type === recordType)
                 && it.collection === collection
             ));
+
+            var { label, displayNameI18N = {} } = typeData.state;
+            var displayName = displayNameI18N[language] || label;
+            
+            title = `${translate('Type')}: ${displayName}`;
         }
 
-        var title = (
-            typeData
-            ? `${translate('Type')}: ${typeData.state.label}`
-            : undefined
-        );
         return (
             <PageWrappers.Level2
                 showTitle={ !!title }

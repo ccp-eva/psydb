@@ -4,6 +4,7 @@
 
 var {
     ExactObject,
+    OpenObject,
     Id,
     ForeignId,
     EventId,
@@ -54,6 +55,9 @@ var FieldDefinition = ({
             title: 'Anzeigename',
             minLength: 1
         }),
+        displayNameI18N: OpenObject({
+            de: SaneString()
+        }),
         props: {
             // so for some wierd reason RJSF explodes when this is an
             // ExactObject that prohibits additionalProps
@@ -67,6 +71,7 @@ var FieldDefinition = ({
         'key',
         'type',
         'displayName',
+        'displayNameI18N',
         'props',
     ]
 })

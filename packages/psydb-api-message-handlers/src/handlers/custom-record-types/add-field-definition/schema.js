@@ -1,6 +1,7 @@
 'use strict';
 var {
     ExactObject,
+    OpenObject,
     Id,
     EventId,
     IdentifierString,
@@ -53,9 +54,17 @@ var Schema = () => {
                                 'Lambda',
                             ],
                         },
-                        displayName: SaneString({ minLength: 1 })
+                        displayName: SaneString({ minLength: 1 }),
+                        displayNameI18N: OpenObject({
+                            de: SaneString()
+                        })
                     },
-                    required: [ 'type', 'key', 'displayName' ]
+                    required: [
+                        'type',
+                        'key',
+                        'displayName',
+                        'displayNameI18N'
+                    ]
                 },
             },
             required: [

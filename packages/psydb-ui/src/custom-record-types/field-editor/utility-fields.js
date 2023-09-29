@@ -41,6 +41,10 @@ export const KeyAndDisplayName = (ps) => {
                 required
             />
             <Fields.SaneString
+                label={ translate('Display Name (DE)') }
+                dataXPath={ `${dataXPath}.displayNameI18N.de` }
+            />
+            <Fields.SaneString
                 label={ translate('Internal Key') }
                 dataXPath={ `${dataXPath}.key` }
                 disabled={ !isUnrestricted }

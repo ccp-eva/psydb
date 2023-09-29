@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUILanguage } from '@mpieva/psydb-ui-contexts';
 import { convertPointerToPath } from '@mpieva/psydb-core-utils';
 import { SortableTH } from './sortable-th';
 
@@ -9,9 +10,20 @@ export const TableHeadCustomCols = (ps) => {
         canSort = false,
     } = ps;
 
+    var [ language ] = useUILanguage();
+
     return definitions.map((it, ix) => {
-        var { type, systemType, displayName, pointer, dataPointer } = it; 
+        var {
+            type,
+            systemType,
+            displayName,
+            displayNameI18N = {},
+            pointer,
+            dataPointer
+        } = it; 
+
         // FIXME
+        // FIXME use fixDefinitions()
         pointer = pointer || dataPointer;
         type = type || systemType;
 
@@ -31,7 +43,7 @@ export const TableHeadCustomCols = (ps) => {
                 <SortableTH
                     key={ ix }
                     sorter={ sorter }
-                    label={ displayName }
+                    label={ displayNameI18N[language] || displayName }
                     path={ convertPointerToPath(pointer) }
                     isFirstColumn={ ix === 0 }
                 />

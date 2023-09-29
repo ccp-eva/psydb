@@ -1,6 +1,7 @@
 'use strict';
 var {
     ExactObject,
+    OpenObject,
     Id,
     EventId,
     IdentifierString,
@@ -26,7 +27,10 @@ var BaseSchema = () => {
                 props: {
                     type: 'object',
                     properties: {
-                        displayName: SaneString({ minLength: 1 })
+                        displayName: SaneString({ minLength: 1 }),
+                        displayNameI18N: OpenObject({
+                            de: SaneString()
+                        })
                     }
                 },
             },

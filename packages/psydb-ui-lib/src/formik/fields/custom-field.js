@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUILanguage } from '@mpieva/psydb-ui-contexts';
 import * as Fields from './static';
 
 const CustomFieldFallback = (ps) => {
@@ -21,7 +22,14 @@ const fixSystemType = (systemType) => {
 
 export const CustomField = (ps) => {
     var { dataXPath, definition, related, extraTypeProps } = ps;
-    var { displayName, type, props } = definition;
+    var {
+        displayName,
+        displayNameI18N = {},
+        type,
+        props
+    } = definition;
+
+    var [ language ] = useUILanguage();
 
     type = fixSystemType(type);
     var isRequired = true;
@@ -60,7 +68,7 @@ export const CustomField = (ps) => {
     return (
         <Component
             dataXPath={ dataXPath }
-            label={ displayName }
+            label={ displayNameI18N[language] || displayName }
             related={ related }
             required={ isRequired }
             { ...props }

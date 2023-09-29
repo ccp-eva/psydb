@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUILanguage } from '@mpieva/psydb-ui-contexts';
 import { useThemeContext } from '../core/theme-context';
 import * as Fields from './static';
 
@@ -23,7 +24,14 @@ const fixSystemType = (systemType) => {
 
 export const CustomField = (ps) => {
     var { definition, value, record, related } = ps;
-    var { displayName, type, props } = definition;
+    var {
+        displayName,
+        displayNameI18N = {},
+        type,
+        props
+    } = definition;
+
+    var [ language ] = useUILanguage();
 
     type = fixSystemType(type);
     var Component = Fields[type];
@@ -41,7 +49,7 @@ export const CustomField = (ps) => {
     }
 
     return (
-        <Field label={ displayName }>
+        <Field label={ displayNameI18N[language] || displayName }>
             <Component
                 value={ value }
                 props={ props }
