@@ -1,4 +1,5 @@
 import render from 'es6-template-strings';
+import { keyBy } from '@mpieva/psydb-core-utils';
 
 var maps = [
     {
@@ -1711,7 +1712,7 @@ var maps = [
     {
         internal: '_extended_search_results_tab',
         en: 'Result List',
-        de: 'Regebnisliste',
+        de: 'Ergebnisliste',
     },
     {
         en: 'Internal ID',
@@ -2532,11 +2533,22 @@ var maps = [
     },
 ]
 
+const byInternal = keyBy({
+    items: maps.filter(it => it.internal),
+    byProp: 'internal',
+});
+
+const byEN = keyBy({
+    items: maps.filter(it => it.en),
+    byProp: 'en',
+});
+
 export const createTranslate = (lang = 'en') => {
     var translate = (template, props) => {
-        var map = maps.find(it => (
-            it.internal === template || it.en === template
-        ));
+        var map = byInternal[template] || byEN[template];
+        //var map = maps.find(it => (
+        //    it.internal === template || it.en === template
+        //));
 
         var translatedTemplate = map && map[lang];
         if (translatedTemplate) {
