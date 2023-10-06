@@ -61,6 +61,7 @@ module.exports = {
     ExactObject: require('./exact-object'), // TODO: rename PartialObject
     OpenObject: require('./open-object'),
     ClosedObject: require('./closed-object'), // TODO: rename ExactObject
+    MaxObject: require('./max-object'),
     Integer: require('./integer'),
     
     WeekdayBoolObject: require('./weekday-bool-object'),

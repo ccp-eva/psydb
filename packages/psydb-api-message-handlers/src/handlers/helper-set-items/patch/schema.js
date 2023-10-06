@@ -2,6 +2,7 @@
 var {
     ClosedObject,
     OpenObject,
+    MaxObject,
     Id,
     SaneString,
 } = require('@mpieva/psydb-schema-fields');
@@ -15,7 +16,7 @@ var createSchema = () => (
             id: Id(),
             props: ClosedObject({
                 label: SaneString({ minLength: 1 }),
-                displayNameI18N: OpenObject({
+                displayNameI18N: MaxObject({
                     de: SaneString()
                 })
             })

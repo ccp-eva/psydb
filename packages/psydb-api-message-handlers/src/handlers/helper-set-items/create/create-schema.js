@@ -2,7 +2,7 @@
 var {
     ExactObject,
     ClosedObject,
-    OpenObject,
+    MaxObject,
     Id,
     ForeignId,
     SaneString,
@@ -10,16 +10,16 @@ var {
 
 var { Message } = require('@mpieva/psydb-schema-helpers');
 
-var createSchema = ({ op }) => (
+var createSchema = () => (
     Message({
-        type: `helperSetItem/${op}`,
+        type: `helperSetItem/create`,
         payload: ExactObject({
             properties: {
                 id: Id(),
                 setId: ForeignId({ collection: 'helperSet' }),
                 props: ClosedObject({
                     label: SaneString({ minLength: 1 }),
-                    displayNameI18N: OpenObject({
+                    displayNameI18N: MaxObject({
                         de: SaneString()
                     })
                 })

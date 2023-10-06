@@ -1,21 +1,15 @@
 'use strict';
 var {
-    ExactObject,
-    OpenObject,
+    ClosedObject,
+    MaxObject,
     SaneString,
 } = require('@mpieva/psydb-schema-fields');
 
-var HelperSetItemState = () => ExactObject({
-    properties: {
-        label: SaneString({ minLength: 1 }),
-        displayNameI18N: OpenObject({
-            de: SaneString()
-        })
-    },
-    required: [
-        'label',
-        'displayNameI18N',
-    ]
+var HelperSetItemState = () => ClosedObject({
+    label: SaneString({ minLength: 1 }),
+    displayNameI18N: MaxObject({
+        de: SaneString()
+    })
 })
 
 module.exports = HelperSetItemState;
