@@ -5,6 +5,7 @@ var createDefaultFieldDataTransformer = (bag) => {
     var {
         related,
         timezone,
+        locale,
 
         relatedRecordLabels,
         relatedHelperSetItems,
@@ -28,6 +29,7 @@ var createDefaultFieldDataTransformer = (bag) => {
 
             record,
             timezone,
+            locale,
         })
     );
 

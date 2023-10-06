@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useUILocale, useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useRouteMatch, useParams } from 'react-router-dom';
 
 import { keyBy } from '@mpieva/psydb-core-utils';
@@ -35,6 +35,7 @@ const StudyParticipation = (ps) => {
 
     var revision = useRevision();
 
+    var locale = useUILocale();
     var translate = useUITranslation();
     var permissions = usePermissions();
     var canAddSubjects = permissions.hasFlag('canWriteParticipation');
@@ -98,6 +99,7 @@ const StudyParticipation = (ps) => {
     var transformer = createDefaultFieldDataTransformer({
         related,
         //timezone,
+        locale
     })
 
     return (

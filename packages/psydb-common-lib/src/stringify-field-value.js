@@ -11,6 +11,7 @@ var stringifyFieldValue = ({
 
     record,
     timezone,
+    locale,
 }) => {
 
     var {
@@ -27,7 +28,8 @@ var stringifyFieldValue = ({
         return stringify({
             definition: fieldDefinition,
             record,
-            timezone
+            timezone,
+            locale
         });
     }
 
@@ -94,7 +96,7 @@ var stringifyFieldValue = ({
     }
     else if (['DateOnlyServerSide', 'DateTime'].includes(type)) {
         var stringify = stringifiers[type];
-        str = stringify(rawValue, { timezone });
+        str = stringify(rawValue, { timezone, locale });
     }
     else if (type === 'PersonnelResearchGroupSettingsList') {
         if (relatedRecordLabels) {

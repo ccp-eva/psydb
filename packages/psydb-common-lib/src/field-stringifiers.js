@@ -5,10 +5,6 @@ var formatDate = maybeUseESM(require('date-fns/format'));
 //var formatDate_ESM = require('date-fns/format');
 //var formatDate = formatDate_ESM.default || formatDate_ESM;
 
-var deLocale = maybeUseESM(require('date-fns/locale/de'));
-//var deLocale_ESM = require('date-fns/locale/de');
-//var deLocale = deLocale_ESM.default || deLocale_ESM;
-
 var { formatInTimeZone } = require('date-fns-tz');
 
 var { jsonpointer } = require('@mpieva/psydb-core-utils');
@@ -53,13 +49,13 @@ var PhoneWithTypeList = (value) => (
 );
 
 var DateTime = (value, options = {}) => {
-    var { timezone } = options;
+    var { timezone, locale } = options;
 
     if (value === null) {
         return '-';
     }
 
-    var other = [ 'P p', { locale: deLocale } ];
+    var other = [ 'P p', { locale } ];
     return (
         timezone
         ? formatInTimeZone(new Date(value), timezone, ...other)
@@ -68,13 +64,13 @@ var DateTime = (value, options = {}) => {
 };
 
 var DateOnlyServerSide = (value, options = {}) => {
-    var { timezone } = options;
+    var { timezone, locale } = options;
 
     if (value === null) {
         return '-';
     }
 
-    var other = [ 'P', { locale: deLocale } ];
+    var other = [ 'P', { locale } ];
     return (
         timezone
         ? formatInTimeZone(new Date(value), timezone, ...other)

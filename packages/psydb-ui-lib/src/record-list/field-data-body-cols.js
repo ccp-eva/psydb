@@ -1,7 +1,8 @@
 import React from 'react';
 import { createDefaultFieldDataTransformer } from '@mpieva/psydb-common-lib';
-import { TableBodyCustomCols } from '@mpieva/psydb-ui-layout';
 import { fixRelated, __fixDefinitions } from '@mpieva/psydb-ui-utils';
+import { useUILocale } from '@mpieva/psydb-ui-contexts';
+import { TableBodyCustomCols } from '@mpieva/psydb-ui-layout';
 
 // FIXME: compat
 // TODO: remove
@@ -20,6 +21,8 @@ const FieldDataBodyCols = ({
     displayFieldData,
 }) => {
 
+    var locale = useUILocale();
+
     if (!definitions) {
         definitions = __fixDefinitions(displayFieldData)
     }
@@ -34,6 +37,7 @@ const FieldDataBodyCols = ({
     var transformer = createDefaultFieldDataTransformer({
         related,
         timezone,
+        locale,
     })
 
     return (
