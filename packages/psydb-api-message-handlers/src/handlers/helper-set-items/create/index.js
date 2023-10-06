@@ -1,6 +1,8 @@
 'use strict';
-var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
-    Ajv = require('@mpieva/psydb-api-lib/src/ajv');
+var {
+    ApiError,
+    validateOrThrow,
+} = require('@mpieva/psydb-api-lib');
 
 var createSchema = require('./create-schema');
 
@@ -9,13 +11,10 @@ var shouldRun = (message) => (
 )
 
 var checkSchema = async ({ message }) => {
-    var schema = createSchema({ op: 'create' }),
-        ajv = Ajv(),
-        isValid = ajv.validate(schema, message);
-
-    if (!isValid) {
-        throw new ApiError(400, 'InvalidMessageSchema');
-    }
+    validateOrThrow({
+        schema: createSchema({ op: 'create' }),
+        payload: message
+    });
 }
 
 var checkAllowedAndPlausible = async ({
@@ -25,9 +24,9 @@ var checkAllowedAndPlausible = async ({
 }) => {
     var { setId, props } = message.payload;
     
-    //if (!permissions.canCreateHelperSetItem()) {
-        //throw new ApiError(403);
-    //}
+    if (!permissions.hasCollectionFlag('helperSetItem', 'write')) {
+        throw new ApiError(403);
+    }
 
     var existingSet = await (
         db.collection('helperSet').findOne({

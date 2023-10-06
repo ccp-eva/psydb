@@ -9,6 +9,7 @@ const useSendPatch = (options) => {
         subChannels,
         additionalPayloadProps,
         onSuccessfulUpdate,
+        __noLastKnownEventId = false,
         ...otherOptions
     } = options;
 
@@ -20,7 +21,9 @@ const useSendPatch = (options) => {
         ),
         payload: {
             id: record._id,
-            ...createEventIdProps(record, subChannels),
+            ...(!__noLastKnownEventId && (
+                createEventIdProps(record, subChannels)
+            )),
             props,
             ...additionalPayloadProps,
             ...moreAdditionalPayloadProps,

@@ -1,23 +1,20 @@
 'use strict';
-var { Ajv, ApiError } = require('@mpieva/psydb-api-lib');
+var {
+    ApiError,
+    validateOrThrow,
+} = require('@mpieva/psydb-api-lib');
+
+var Schema = require('./schema');
 
 var shouldRun = (message) => (
     message.type === 'helperSetItem/patch'
 )
 
-var Schema = require('./schema');
-
 var checkSchema = async ({ message }) => {
-    var schema = Schema(),
-        ajv = Ajv(),
-        isValid = ajv.validate(schema, message);
-
-    if (!isValid) {
-        throw new ApiError(400, {
-            apiStatus: 'InvalidMessageSchema',
-            data: { ajvErrors: ajv.errors }
-        });
-    }
+    validateOrThrow({
+        schema: Schema(),
+        payload: message
+    });
 }
 
 var checkAllowedAndPlausible = async ({
@@ -31,14 +28,11 @@ var checkAllowedAndPlausible = async ({
         throw new ApiError(403);
     }
 
-    console.log(id);
     var existing = await (
         db.collection('helperSetItem').findOne({
             _id: id,
         })
     );
-    console.log(existing);
-
     if (!existing) {
         throw new ApiError(400, 'HelperSetItemNotFound');
     }

@@ -1,6 +1,8 @@
 'use strict';
 var {
     ExactObject,
+    ClosedObject,
+    OpenObject,
     Id,
     ForeignId,
     SaneString,
@@ -14,16 +16,12 @@ var createSchema = ({ op }) => (
         payload: ExactObject({
             properties: {
                 id: Id(),
-                setId: ForeignId({
-                    collection: 'helperSet'
-                }),
-                props: ExactObject({
-                    properties: {
-                        label: SaneString(),
-                    },
-                    required: [
-                        'label'
-                    ]
+                setId: ForeignId({ collection: 'helperSet' }),
+                props: ClosedObject({
+                    label: SaneString({ minLength: 1 }),
+                    displayNameI18N: OpenObject({
+                        de: SaneString()
+                    })
                 })
             },
             required: [
