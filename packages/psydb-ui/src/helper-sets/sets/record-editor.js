@@ -1,5 +1,5 @@
 import React from 'react';
-import { only } from '@mpieva/psydb-core-utils';
+import { merge, only } from '@mpieva/psydb-core-utils';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { usePermissions, useSendPatch } from '@mpieva/psydb-ui-hooks';
 import { withRecordEditor } from '@mpieva/psydb-ui-lib';
@@ -20,13 +20,17 @@ const EditForm = (ps) => {
     var send = useSendPatch({
         collection,
         record,
-        onSuccessfulUpdate
+        onSuccessfulUpdate,
+        __noLastKnownEventId: true
     });
 
-    var initialValues = only({
-        from: record.state,
-        paths: [ 'label' ]
-    });
+    var initialValues = merge(
+        MainForm.createDefaults(),
+        only({
+            from: record.state,
+            paths: [ 'label', 'displayNameI18N' ]
+        })
+    );
 
     return (
         <>

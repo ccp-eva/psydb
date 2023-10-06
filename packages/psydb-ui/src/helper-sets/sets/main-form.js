@@ -30,8 +30,13 @@ const Component = (ps) => {
                 {(formikProps) => (
                     <>
                         <Fields.SaneString
-                            label={ translate('_designation') }
+                            label={ translate('Display Name') }
                             dataXPath='$.label'
+                            required
+                        />
+                        <Fields.SaneString
+                            label={ translate('Display Name (DE)') }
+                            dataXPath='$.displayNameI18N.de'
                         />
                         <Button type='submit'>
                             { translate('Save') }
@@ -44,7 +49,10 @@ const Component = (ps) => {
 }
 
 const createDefaults = (options) => {
-    return { label: '' }
+    return {
+        label: '',
+        displayNameI18N: {},
+    }
 }
 
 const out = {
