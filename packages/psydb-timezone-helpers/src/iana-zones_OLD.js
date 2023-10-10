@@ -1,4 +1,5 @@
 // https://stackoverflow.com/a/54500197/1158560
+// XXX incomplete; remove
 
 var IANAZones = [
   'UTC', // FIXME: not sure if that belongs here but we need this value
