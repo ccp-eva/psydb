@@ -2052,7 +2052,7 @@ var maps = [
     {
         internal: '_400_bad_request',
         en: 'Invalid Values',
-        de: 'Fehlerhafete Eingaben'
+        de: 'Fehlerhafte Eingaben'
     },
     {
         internal: '_XXX_system-error',
