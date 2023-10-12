@@ -6,7 +6,7 @@ import enUSLocale from 'date-fns/locale/en-US';
 import enGBLocale from 'date-fns/locale/en-GB';
 import deLocale from 'date-fns/locale/de';
 
-import agent, { simple as publicAgent } from '@mpieva/psydb-ui-request-agents';
+import createAgent, { simple as publicAgent } from '@mpieva/psydb-ui-request-agents';
 
 import config from '@mpieva/psydb-common-config';
 import { createTranslate } from '@mpieva/psydb-ui-translations';
@@ -105,6 +105,8 @@ const App = () => {
         locale,
         translate,
     }
+
+    var agent = createAgent({ language, localeCode: locale.code });
 
     var View = undefined;
     if (isInitialized) {
