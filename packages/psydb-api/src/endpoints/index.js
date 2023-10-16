@@ -25,6 +25,9 @@ module.exports = {
     personnel: require('./entities/personnel'),
     apiKey: require('./entities/api-key'),
     
+    helperSet: require('./entities/helper-set'),
+    //helperSetItem: require('./entities/helper-set-item'),
+    
     experimentVariant: require('./entities/experiment-variant'),
     experimentVariantSetting: require('./entities/experiment-variant-setting'),
 };

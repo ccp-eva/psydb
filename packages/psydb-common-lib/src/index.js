@@ -49,4 +49,6 @@ module.exports = {
     createDefaultFieldDataTransformer: (
         require('./create-default-field-data-transformer')
     ),
+    
+    SmartArray: require('./smart-array'),
 }

@@ -1,7 +1,13 @@
 'use strict';
-var hasSome = (ary) => {
+var hasSome = (ary, options = {}) => {
+    var { strict = true } = options;
     if (!Array.isArray(ary)) {
-        throw new Error('hasSome() requires an array');
+        if (strict) {
+            throw new Error('hasSome() requires an array');
+        }
+        else {
+            return false;
+        }
     }
     return ( ary.length > 0 );
 }

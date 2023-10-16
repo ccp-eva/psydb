@@ -103,6 +103,17 @@ var createRouting = (bag = {}) => {
         withKoaBody(),
         endpoints.search
     );
+
+    router.post('/helperSet/search', ...withPostStages({
+        endpoint: endpoints.helperSet.search
+    }));
+    
+    //router.post('/search/helperSetItem',
+    //    withSelfAuth(),
+    //    withPermissions(),
+    //    withKoaBody(),
+    //    endpoints.helperSetItem.search
+    //);
     
     router.post('/search-export',
         withSelfAuth(),
@@ -436,7 +447,7 @@ var createRouting = (bag = {}) => {
         endpoints.special.readSubjectTestability
     );
 
-    router.post('/api-key/search', ...withPostStages({
+    router.post('/apiKey/search', ...withPostStages({
         endpoint: endpoints.apiKey.search
     }));
 

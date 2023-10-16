@@ -10,6 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "@mpieva/psydb-core-utils": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-common-lib": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-schema-creators": "workspace:~0.1.0-alpha",
     "jsonpointer": "~5.0.1",
     "@cdxoo/inline-string": "~1.0.0",

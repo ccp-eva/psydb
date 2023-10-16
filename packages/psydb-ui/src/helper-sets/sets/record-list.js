@@ -5,9 +5,10 @@ import {
 } from '@mpieva/psydb-ui-layout';
 
 import RecordListContainer from '@mpieva/psydb-ui-lib/src/record-list-container';
+import HelperSetDefaultListContainer from './helper-set-default-list-container';
 
 export const RecordList = (ps) => (
-    <RecordListContainer
+    <HelperSetDefaultListContainer
         { ...ps }
         CustomActionListComponent={ Actions }
     />

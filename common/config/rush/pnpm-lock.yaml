@@ -933,6 +933,7 @@ importers:
   ../../packages/psydb-mongo-stages:
     specifiers:
       '@cdxoo/inline-string': ~1.0.0
+      '@mpieva/psydb-common-lib': workspace:~0.1.0-alpha
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
       '@mpieva/psydb-schema-creators': workspace:~0.1.0-alpha
       jest: ~29.7.0
@@ -940,6 +941,7 @@ importers:
       nanoid: ~3.3.6
     dependencies:
       '@cdxoo/inline-string': 1.0.0
+      '@mpieva/psydb-common-lib': link:../psydb-common-lib
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
       '@mpieva/psydb-schema-creators': link:../psydb-schema-creators
       jsonpointer: 5.0.1
