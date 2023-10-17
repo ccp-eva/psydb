@@ -1,11 +1,14 @@
 import React from 'react';
 import { withField } from '@cdxoo/formik-utils';
+import { useUILanguage } from '@mpieva/psydb-ui-contexts';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 import { GenericEnum } from './generic-enum';
 
 export const HelperSetId = withField({ Control: (ps) => {
     var { collection, ...pass } = ps;
+
+    var [ language ] = useUILanguage();
 
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.searchRecords({
@@ -21,7 +24,10 @@ export const HelperSetId = withField({ Control: (ps) => {
     
     var options = fetched.data.records.reduce((acc, it) => ({
         ...acc,
-        [it._id]: it._recordLabel
+        [it._id]: (
+            (it.state.displayNameI18N || {})[language]
+            || it.state.label
+        )
     }), {});
 
     return (

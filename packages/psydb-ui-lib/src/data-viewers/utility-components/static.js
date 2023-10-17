@@ -1,7 +1,13 @@
 import React from 'react';
 import { jsonpointer } from '@mpieva/psydb-core-utils';
 import { calculateAge } from '@mpieva/psydb-common-lib';
-import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
+
+import {
+    useUILanguage,
+    useUITranslation,
+    useUILocale
+} from '@mpieva/psydb-ui-contexts';
+
 import { Icons } from '@mpieva/psydb-ui-layout';
 import datefns from '../../date-fns';
 
@@ -132,32 +138,45 @@ export const HelperSetItemIdList = (ps) => {
     var { value, props, related } = ps;
     var { setId } = props;
 
+    var [ language ] = useUILanguage();
+
     if (!(Array.isArray(value) && value.length)) {
         return <NoValue />
     }
 
     return (
-        <span>{ value.map(it => (
-            related
-            ? related.relatedHelperSetItems[setId][it].state.label
-            : it
-        )).join(', ') }</span>
+        <span>{ value.map(it => {
+            if (!related) {
+                return it;
+            }
+            var relatedItem = related.relatedHelperSetItems[setId][it];
+            return (
+                (relatedItem.state.displayNameI18N || {})[language]
+                || relatedItem.state.label
+            )
+        }).join(', ') }</span>
     )
 }
 
 export const HelperSetItemId = (ps) => {
     var { value, props, related } = ps;
     var { setId } = props;
+    
+    var [ language ] = useUILanguage();
 
     if (!value) {
         return <NoValue unknown={ props.displayEmptyAsUnknown } />
     }
 
+    if (!related) {
+        return value;
+    }
+    
+    var relatedItem = related.relatedHelperSetItems[setId][value];
     return (
-        related
-        ? related.relatedHelperSetItems[setId][value].state.label
-        : value
-    );
+        (relatedItem.state.displayNameI18N || {})[language]
+        || relatedItem.state.label
+    )
 }
 
 export const ForeignIdList = (ps) => {

@@ -1,5 +1,6 @@
 import React from 'react';
 import { withField } from '@cdxoo/formik-utils';
+import { useUILanguage } from '@mpieva/psydb-ui-contexts';
 import RecordPicker from '../../../pickers/record-picker';
 
 export const HelperSetItemId = withField({ Control: (ps) => {
@@ -17,6 +18,8 @@ export const HelperSetItemId = withField({ Control: (ps) => {
         related,
     } = ps;
 
+    var [ language ] = useUILanguage();
+
     var collection = 'helperSetItem';
     var constraints = { '/setId': setId };
 
@@ -33,7 +36,10 @@ export const HelperSetItemId = withField({ Control: (ps) => {
     if (relatedHelperSetItems && relatedHelperSetItems[setId]) {
         record = relatedHelperSetItems[setId][recordId];
         if (record) {
-            record._recordLabel = record.state.label;
+            record._recordLabel = (
+                (record.state.displayNameI18N || {})[language]
+                || record.state.label
+            );
         }
     }
 
