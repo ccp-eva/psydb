@@ -1,5 +1,5 @@
 'use strict';
-var translationExists = require('./translation-exists');
+var { translationExists } = require('@mpieva/psydb-i18n');
 
 var getMongoCollation = (bag = {}) => {
     var { language } = bag;

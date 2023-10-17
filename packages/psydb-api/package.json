@@ -43,6 +43,7 @@
     "@mpieva/psydb-driver-nodejs": "workspace:~0.1.0-alpha",
     "copy-anything": "~2.0.6",
     "deep-diff": "~1.0.2",
+    "@mpieva/psydb-i18n": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-timezone-helpers": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-koa-event-middleware": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-schema-creators": "workspace:~0.1.0-alpha",

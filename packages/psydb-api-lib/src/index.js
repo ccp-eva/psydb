@@ -88,4 +88,7 @@ module.exports = {
     ...require('./fetch-experiment-variant-setting-pre-remove-info'),
 
     ...require('./generate-api-key'),
+    
+    getMongoCollation: require('./get-mongo-collation'),
+    aggregateToArray: require('./aggregate-to-array'),
 }

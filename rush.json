@@ -146,6 +146,11 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/psydb-i18n",
+       "projectFolder": "packages/psydb-i18n",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-api",
        "projectFolder": "packages/psydb-api",
        "reviewCategory": "production"

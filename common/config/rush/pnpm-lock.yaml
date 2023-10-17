@@ -153,6 +153,7 @@ importers:
       '@mpieva/psydb-date-interval-fns': workspace:~0.1.0-alpha
       '@mpieva/psydb-driver-nodejs': workspace:~0.1.0-alpha
       '@mpieva/psydb-fixtures': workspace:~0.1.0-alpha
+      '@mpieva/psydb-i18n': workspace:~0.1.0-alpha
       '@mpieva/psydb-interval-fns': workspace:~0.1.0-alpha
       '@mpieva/psydb-koa-event-middleware': workspace:~0.1.0-alpha
       '@mpieva/psydb-mongo-adapter': workspace:~0.1.0-alpha
@@ -210,6 +211,7 @@ importers:
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
       '@mpieva/psydb-date-interval-fns': link:../psydb-date-interval-fns
       '@mpieva/psydb-driver-nodejs': link:../psydb-driver-nodejs
+      '@mpieva/psydb-i18n': link:../psydb-i18n
       '@mpieva/psydb-interval-fns': link:../psydb-interval-fns
       '@mpieva/psydb-koa-event-middleware': link:../psydb-koa-event-middleware
       '@mpieva/psydb-mongo-adapter': link:../psydb-mongo-adapter
@@ -408,6 +410,7 @@ importers:
       '@mpieva/psydb-common-lib': workspace:~0.1.0-alpha
       '@mpieva/psydb-common-verify-helpers': workspace:~0.1.0-alpha
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
+      '@mpieva/psydb-i18n': workspace:~0.1.0-alpha
       '@mpieva/psydb-mongo-stages': workspace:~0.1.0-alpha
       '@mpieva/psydb-schema-creators': workspace:~0.1.0-alpha
       '@mpieva/psydb-schema-fields': workspace:~0.1.0-alpha
@@ -445,6 +448,7 @@ importers:
       '@mpieva/psydb-common-lib': link:../psydb-common-lib
       '@mpieva/psydb-common-verify-helpers': link:../psydb-common-verify-helpers
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
+      '@mpieva/psydb-i18n': link:../psydb-i18n
       '@mpieva/psydb-mongo-stages': link:../psydb-mongo-stages
       '@mpieva/psydb-schema-creators': link:../psydb-schema-creators
       '@mpieva/psydb-schema-fields': link:../psydb-schema-fields
@@ -835,6 +839,14 @@ importers:
       '@mpieva/psydb-common-lib': workspace:~0.1.0-alpha
     dependencies:
       '@mpieva/psydb-common-lib': link:../psydb-common-lib
+
+  ../../packages/psydb-i18n:
+    specifiers:
+      '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
+      es6-template-strings: ~2.0.1
+    dependencies:
+      '@mpieva/psydb-core-utils': link:../psydb-core-utils
+      es6-template-strings: 2.0.1
 
   ../../packages/psydb-interval-fns:
     specifiers:

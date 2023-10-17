@@ -2,7 +2,11 @@
 var debug = require('debug')('psydb:api:endpoints:helperSet:search');
 
 var { copy } = require('copy-anything');
-var { SmartArray, fieldTypeMetadata } = require('@mpieva/psydb-common-lib');
+var { translationExists } = require('@mpieva/psydb-i18n');
+var {
+    SmartArray,
+    fieldTypeMetadata
+} = require('@mpieva/psydb-common-lib');
 
 var {
     SearchBaseStages,
@@ -16,6 +20,9 @@ var {
     withRetracedErrors,
     ResponseBody,
 
+    getMongoCollation,
+    aggregateToArray,
+
     gatherAvailableConstraintsForRecordType,
     convertFiltersToQueryFields, 
 } = require('@mpieva/psydb-api-lib');
@@ -26,13 +33,6 @@ var fieldTypeConversions = (
 
 var CoreBodySchema = require('./core-body-schema');
 var FullBodySchema = require('./full-body-schema');
-
-var {
-    getMongoCollation,
-    aggregateToArray,
-
-    translationExists,
-} = require('./utils');
 
 // NOTE https://github.com/ajv-validator/ajv/issues/242
 // i assume having it outside the thingy is find then?
