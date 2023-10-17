@@ -14,7 +14,8 @@ import {
     Icons
 } from '@mpieva/psydb-ui-layout';
 
-import agent from '@mpieva/psydb-ui-request-agents';
+//import agent from '@mpieva/psydb-ui-request-agents';
+import { useRequestAgent } from '@mpieva/psydb-ui-contexts';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
@@ -46,6 +47,7 @@ import AwayTeamCalendar from './calendars/away-team-experiments/calendar';
 
 const Main = ({ onSignedOut, onSignedIn }) => {
     var history = useHistory();
+    var agent = useRequestAgent();
 
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.fetchServerTimezone()
