@@ -104,11 +104,16 @@ var defaultWriteRequest = async ({ agent, url, message, options = {} }) => {
             timezone: forceTZ || getSystemTimezone(),
             ...message,
         };
-        debug(agent.defaults.baseURL, url, JSON.stringify(body));
+        debug(agent?.defaults?.baseURL, url, JSON.stringify(body));
         var { status, data } = await agent.post(url, body);
     }
     catch (e) {
-        throw new RequestFailed(e.response);
+        if (e.response) {
+            throw new RequestFailed(e.response);
+        }
+        else {
+            throw new Error(e);
+        }
     }
 
     return { status, data };

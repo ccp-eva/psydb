@@ -1,9 +1,9 @@
 'use strict';
 var Koa = require('koa');
-var supertest = require('supertest');
 var mongoHelpers = require('@cdxoo/mongo-test-helpers');
 var restore = require('@cdxoo/mongodb-restore');
 
+var createAgent = require('@mpieva/psydb-axios-test-wrapper');
 var Driver = require('@mpieva/psydb-driver-nodejs');
 var fixtures = require('@mpieva/psydb-fixtures');
 var withApi = require('../src/middleware/api');
@@ -46,13 +46,7 @@ var beforeAll = async function () {
             }
         }}));
         
-        var agent = (
-            supertest
-            .agent(app.callback())
-            .on('error', (e) => {
-                throw e
-            })
-        );
+        var agent = createAgent(app.callback(), { enableCookies: true });
         var driver = Driver({ agent });
 
         this.context.api.app = app;
@@ -75,6 +69,7 @@ var beforeAll = async function () {
 
     this.signOut = async () => {
         await this.context.api.driver.signOut()
+        this.context.api.agent?.close();
     }
 }
 
@@ -85,6 +80,7 @@ var afterEach = async function () {
 }
 
 var afterAll = async function () {
+    this.context.api.agent?.close();
     await mongoHelpers.teardown(this.context.mongo)();
 }
 

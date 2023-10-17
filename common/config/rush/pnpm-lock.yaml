@@ -147,6 +147,7 @@ importers:
       '@mpieva/psydb-api-lib': workspace:~0.1.0-alpha
       '@mpieva/psydb-api-lib-errors': workspace:~0.1.0-alpha
       '@mpieva/psydb-api-message-handlers': workspace:~0.1.0-alpha
+      '@mpieva/psydb-axios-test-wrapper': workspace:~0.1.0-alpha
       '@mpieva/psydb-common-lib': workspace:~0.1.0-alpha
       '@mpieva/psydb-common-utils': workspace:~0.1.0-alpha
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
@@ -250,6 +251,7 @@ importers:
     devDependencies:
       '@cdxoo/mongo-test-helpers': 0.7.1
       '@cdxoo/mongodb-restore': 2.0.0-alpha.2
+      '@mpieva/psydb-axios-test-wrapper': link:../psydb-axios-test-wrapper
       '@mpieva/psydb-fixtures': link:../psydb-fixtures
       chai: 4.3.8
       mocha: 10.2.0
@@ -624,8 +626,12 @@ importers:
   ../../packages/psydb-axios-test-wrapper:
     specifiers:
       axios: ~0.24.0
+      axios-cookiejar-support: ~4.0.7
+      tough-cookie: ~4.1.3
     dependencies:
       axios: 0.24.0
+      axios-cookiejar-support: 4.0.7_axios@0.24.0+tough-cookie@4.1.3
+      tough-cookie: 4.1.3
 
   ../../packages/psydb-common-config:
     specifiers: {}
@@ -3791,6 +3797,15 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
+  /agent-base/7.1.0:
+    resolution: {integrity: sha512-o/zjMZRhJxny7OyEF+Op8X+efiELC7k7yOjMzgfzVqOzXqkBkWI79YoTdOtsuWd5BWhAGAuOY/Xa6xpiaWXiNg==}
+    engines: {node: '>= 14'}
+    dependencies:
+      debug: 4.3.4
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
   /ajv-errors/1.0.1_ajv@6.12.6:
     resolution: {integrity: sha512-DCRfO/4nQ+89p/RK43i8Ezd41EqdGIU4ld7nGF8OQ14oc/we5rEntLCUa7+jrn3nn83BosfwZA0wb4pon2o8iQ==}
     peerDependencies:
@@ -4068,6 +4083,22 @@ packages:
   /aws4/1.12.0:
     resolution: {integrity: sha512-NmWvPnx0F1SfrQbYwOi7OeaNGokp9XhzNioJ/CSBs8Qa4vxug81mhJEAVZwxXuBmYB5KDRfMq/F3RR0BIU7sWg==}
     dev: true
+
+  /axios-cookiejar-support/4.0.7_axios@0.24.0+tough-cookie@4.1.3:
+    resolution: {integrity: sha512-9vpE3y/a2l2Vs2XEJE4L2z0GWnlpJ4Xj+kDaoCtrpPfS1J3oikXBrxRJX6H62/ZcelOGe+519yW7mqXCIoPXuw==}
+    engines: {node: '>=14.18.0 <15.0.0 || >=16.0.0'}
+    peerDependencies:
+      axios: '>=0.20.0'
+      tough-cookie: '>=4.0.0'
+    dependencies:
+      axios: 0.24.0
+      http-cookie-agent: 5.0.4_tough-cookie@4.1.3
+      tough-cookie: 4.1.3
+    transitivePeerDependencies:
+      - deasync
+      - supports-color
+      - undici
+    dev: false
 
   /axios/0.24.0:
     resolution: {integrity: sha512-Q6cWsys88HoPgAaFAVUb0WpPk0O8iTeisR9IMqy9G8AbO4NlpVknrnQS03zzF9PGAWgO3cgletO3VjV/P7VztA==}
@@ -6348,6 +6379,25 @@ packages:
     dependencies:
       deep-equal: 1.0.1
       http-errors: 1.8.1
+
+  /http-cookie-agent/5.0.4_tough-cookie@4.1.3:
+    resolution: {integrity: sha512-OtvikW69RvfyP6Lsequ0fN5R49S+8QcS9zwd58k6VSr6r57T8G29BkPdyrBcSwLq6ExLs9V+rBlfxu7gDstJag==}
+    engines: {node: '>=14.18.0 <15.0.0 || >=16.0.0'}
+    peerDependencies:
+      deasync: ^0.1.26
+      tough-cookie: ^4.0.0
+      undici: ^5.11.0
+    peerDependenciesMeta:
+      deasync:
+        optional: true
+      undici:
+        optional: true
+    dependencies:
+      agent-base: 7.1.0
+      tough-cookie: 4.1.3
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
 
   /http-deceiver/1.2.7:
     resolution: {integrity: sha512-LmpOGxTfbpgtGVxJrj5k7asXHCgNZp5nLfp+hWc8QQRqtb7fUy6kRY3BO1h9ddF6yIPYUARgxGOwB42DnxIaNw==}
@@ -8985,7 +9035,6 @@ packages:
 
   /psl/1.9.0:
     resolution: {integrity: sha512-E/ZsdU4HLs/68gYzgGTkMicWTLPdAftJLfJFlLUAAKZGkStNU72sZjT66SnMDVOfOWY/YAoiD7Jxa9iHvngcag==}
-    dev: true
 
   /pump/3.0.0:
     resolution: {integrity: sha512-LwZy+p3SFs1Pytd/jYct4wpv49HiYCqd9Rlc5ZVdk0V+8Yzv6jR5Blk3TRmPL1ft69TxP0IMZGJ+WPFU2BFhww==}
@@ -9025,7 +9074,6 @@ packages:
 
   /querystringify/2.2.0:
     resolution: {integrity: sha512-FIqgj2EUvTa7R50u0rGsyTftzjYmv/a3hO345bZNrqabNqjtgiDMgmo4mkUjd+nzU5oF3dClKqFIPUKybUyqoQ==}
-    dev: true
 
   /quill-delta/3.6.3:
     resolution: {integrity: sha512-wdIGBlcX13tCHOXGMVnnTVFtGRLoP0imqxM696fIPwIf5ODIYUHIvHbZcyvGlZFiFhK5XzDC2lpjbxRhnM05Tg==}
@@ -9500,7 +9548,6 @@ packages:
 
   /requires-port/1.0.0:
     resolution: {integrity: sha512-KigOCHcocU3XODJxsu8i/j8T9tzT4adHiecwORRQ0ZZFcp7ahwXuRU1m+yuO90C5ZUyGeGfocHDI14M3L3yDAQ==}
-    dev: true
 
   /resolve-cwd/2.0.0:
     resolution: {integrity: sha512-ccu8zQTrzVr954472aUVPLEcB3YpKSYR3cg/3lo1okzobPBM+1INXBbBZlDbnI/hbEocnf8j0QVo43hQKrbchg==}
@@ -10379,6 +10426,16 @@ packages:
       punycode: 2.3.0
     dev: true
 
+  /tough-cookie/4.1.3:
+    resolution: {integrity: sha512-aX/y5pVRkfRnfmuX+OdbSdXvPe6ieKX/G2s7e98f4poJHnqH3281gDPm/metm6E/WRamfx7WC4HUqkWHfQHprw==}
+    engines: {node: '>=6'}
+    dependencies:
+      psl: 1.9.0
+      punycode: 2.3.0
+      universalify: 0.2.0
+      url-parse: 1.5.10
+    dev: false
+
   /tr46/0.0.3:
     resolution: {integrity: sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==}
     dev: false
@@ -10489,6 +10546,11 @@ packages:
       cookie: 0.5.0
     dev: true
 
+  /universalify/0.2.0:
+    resolution: {integrity: sha512-CJ1QgKmNg3CwvAv/kOFmtnEN05f0D/cn9QntgNOQlQF9dgvVTHj3t+8JPdjqawCHk7V/KA+fbUqzZ9XWhcqPUg==}
+    engines: {node: '>= 4.0.0'}
+    dev: false
+
   /unpipe/1.0.0:
     resolution: {integrity: sha512-pjy2bYhSsufwWlKwPc+l3cN7+wuJlK6uz0YdJEOlQDbl6jo/YlPi4mb8agUkVC8BF7V8NuzeyPNqRksA3hztKQ==}
     engines: {node: '>= 0.8'}
@@ -10531,7 +10593,6 @@ packages:
     dependencies:
       querystringify: 2.2.0
       requires-port: 1.0.0
-    dev: true
 
   /url-search-params-polyfill/8.2.5:
     resolution: {integrity: sha512-FOEojW4XReTmtZOB7xqSHmJZhrNTmClhBriwLTmle4iA7bwuCo6ldSfbtsFSb8bTf3E0a3XpfonAdaur9vqq8A==}

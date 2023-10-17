@@ -49,6 +49,11 @@ var search = async (context, next) => {
         request
     } = context;
 
+    console.log(permissions);
+    if (!permissions.hasCollectionFlag('helperSet', 'read')) {
+        throw new ApiError(403);
+    }
+
     var { language = 'en', locale, timezone } = request.headers;
 
     var precheckBody = copy(request.body);

@@ -7,40 +7,40 @@ var jsonify = (that) => (
 var noop = async () => {};
 var picard = ObjectId("6312720d8dde11df80a50aa2");
 
-
-var endpoints = require('../../../src/endpoints');
-
 describe('endpoints/helper-set/search', function () {
-    var db;
+    var db, agent;
     beforeEach(async function () {
         await this.restore(
             '2023-10-16__2324'
         );
+        
+        this.createKoaApi();
+        await this.signIn();
+
+        agent = this.getApiAgent();
         db = this.getDbHandle();
-    })
+    });
 
-    it('proper response', async function () {
-        var context = {
-            db,
-            request: {
-                headers: {
-                    language: 'de'
+    afterEach(async function () {
+        await this.signOut();
+    });
+
+    it('does the thing', async function () {
+        var response = await (
+            agent.post('/helperSet/search', jsonify({
+                filters: {
+                    //'/state/displayNameI18N/de': 'de2'
                 },
-                body: jsonify({
-                    filters: {
-                        //'/state/displayNameI18N/de': 'de2'
-                    },
-                    constraints: {
-                        '/state/displayNameI18N/de': 'de2'
-                    },
-                    limit: 100,
-                    offset: 0
-                })
-            },
-            response: {}
-        };
-        await endpoints.helperSet.search(context, noop);
-
-        console.dir(ejson(context.body), { depth: null });
+                constraints: {
+                    '/state/displayNameI18N/de': 'de2'
+                },
+                limit: 100,
+                offset: 0
+            }), {
+                language: 'de'
+            })
+        );
+        
+        console.dir(ejson(response.data), { depth: null });
     })
 })
