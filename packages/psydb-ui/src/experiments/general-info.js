@@ -1,5 +1,9 @@
 import React from 'react';
-import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
+import {
+    useUITranslation,
+    useUILocale,
+    useUILanguage,
+} from '@mpieva/psydb-ui-contexts';
 
 import {
     usePermissions,
@@ -195,6 +199,7 @@ const AwayTeamVariant = (ps) => {
         onSuccessfulUpdate
     } = ps;
 
+    var [ language ] = useUILanguage();
     var locale = useUILocale();
     var translate = useUITranslation();
 
@@ -208,6 +213,8 @@ const AwayTeamVariant = (ps) => {
 
     var withValue = applyValueToDisplayFields({
         ...locationData,
+        locale,
+        language,
     });
 
     return (
@@ -252,7 +259,10 @@ const AwayTeamVariant = (ps) => {
                         { withValue.map((it, index) => (
                             <Pair
                                 key={ index } wLeft={ 3 }
-                                label={ it.displayName }
+                                label={
+                                    (it.displayNameI18N || {})[language]
+                                    || it.displayName
+                                }
                             >
                                 { it.value }
                             </Pair>
