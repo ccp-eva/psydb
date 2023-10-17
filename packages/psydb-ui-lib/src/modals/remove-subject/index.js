@@ -33,6 +33,11 @@ const UnscheduleSubjectModalBody = (ps) => {
 
     modalPayloadData = modalPayloadData || payloadData;
 
+    // FIXME
+    if (!experimentId && experimentData) {
+        experimentId = experimentData.record._id;
+    }
+
     var translate = useUITranslation();
 
     var [ didFetch, fetched ] = useFetch((agent) => {
