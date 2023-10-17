@@ -1,5 +1,5 @@
 'use strict';
-var debug = require('debug')('psydb:api:endpoints:helperSet:search');
+var debug = require('debug')('psydb:api:endpoints:helperSetItem:search');
 
 var { translationExists } = require('@mpieva/psydb-i18n');
 var {
@@ -86,7 +86,7 @@ var search = async (context, next) => {
     ];
     
     var [{ totalRecordCount } = {}] = await withRetracedErrors(
-        aggregateToArray({ db, helperSet: countStages, mongoSettings })
+        aggregateToArray({ db, helperSetItem: countStages, mongoSettings })
     );
    
     var searchStages = SmartArray([
@@ -97,7 +97,7 @@ var search = async (context, next) => {
     ], { spreadArrayItems: true });
 
     var records = await withRetracedErrors(
-        aggregateToArray({ db, helperSet: searchStages, mongoSettings })
+        aggregateToArray({ db, helperSetItem: searchStages, mongoSettings })
     );
 
     context.body = ResponseBody({

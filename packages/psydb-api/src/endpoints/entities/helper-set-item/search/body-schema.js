@@ -1,19 +1,10 @@
 'use strict';
-var psydbSchemaFields = require('@mpieva/psydb-schema-fields');
-
 var {
-    BasicObject,
-    ExactObject,
     OpenObject,
-    Id,
     IdList,
-    IdentifierString,
-    JsonPointer,
     DefaultBool,
     StringEnum,
-} = psydbSchemaFields;
-
-var metadata = require('@mpieva/psydb-common-lib/src/field-type-metadata');
+} = require('@mpieva/psydb-schema-fields');
 
 var {
     SearchFilters,
@@ -22,10 +13,14 @@ var {
     Sort,
 } = require('@mpieva/psydb-schema-fields-special');
 
-var FullBodySchema = ({
-    availableConstraints,
-    availableFilterFields
-}) => {
+var metadata = require('@mpieva/psydb-common-lib/src/field-type-metadata');
+
+var RequestBodySchema = (bag) => {
+    var {
+        availableConstraints,
+        availableFilterFields
+    } = bag;
+
     var pagination = Pagination({ maxLimit: 1000 });
 
     var schema = OpenObject({ // FIXME: compat
@@ -53,4 +48,4 @@ var FullBodySchema = ({
     return schema;
 };
 
-module.exports = FullBodySchema;
+module.exports = RequestBodySchema;

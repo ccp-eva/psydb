@@ -107,6 +107,9 @@ var createRouting = (bag = {}) => {
     router.post('/helperSet/search', ...withPostStages({
         endpoint: endpoints.helperSet.search
     }));
+    router.post('/helperSetItem/search', ...withPostStages({
+        endpoint: endpoints.helperSetItem.search
+    }));
     
     //router.post('/search/helperSetItem',
     //    withSelfAuth(),
