@@ -29,16 +29,16 @@ var validate = async (context) => {
 
 var makeDisplayFields = () => (
     [
-        { key: '_labelEN', pointer: '/state/label' },
-        { key: '_labelDE', pointer: '/state/displayNameI18N/de' },
+        { key: 'EN', pointer: '/state/label' },
+        { key: 'DE', pointer: '/state/displayNameI18N/de' },
     ].map(({ key, pointer }) => ({
-        key,
+        key: `_label${key}`,
         pointer,
         dataPointer: pointer, // FIXME
         
         systemType: 'SaneString',
-        displayName: 'Table Name',
-        displayNameI18N: { de: 'Tabellen-Bezeichnung' },
+        displayName: `Table Name (${key})`,
+        displayNameI18N: { de: `Tabellen-Bezeichnung (${key})` },
     }))
 )
 
