@@ -1,7 +1,12 @@
 import React from 'react';
 import enums from '@mpieva/psydb-schema-enums';
 
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import {
+    useUITranslation,
+    useUILanguage,
+    useUILocale
+} from '@mpieva/psydb-ui-contexts';
+
 import { useModalReducer, useSend } from '@mpieva/psydb-ui-hooks';
 import { ColoredBox } from '@mpieva/psydb-ui-layout';
 
@@ -301,6 +306,8 @@ const SubjectItem = ({
     onClickMailbox,
     onClickContactFailed,
 }) => {
+    var [ language ] = useUILanguage();
+    var locale = useUILocale();
     var translate = useUITranslation();
 
     var {
@@ -319,6 +326,9 @@ const SubjectItem = ({
         ),
         record: subjectRecord,
         ...subjectRelated,
+
+        language,
+        locale,
     });
 
     return (
@@ -331,7 +341,10 @@ const SubjectItem = ({
                         : (
                             <div className='d-flex' key={ it.key }>
                                 <span style={{ width: '90px' }}>
-                                    { it.displayName }
+                                    { 
+                                        (it.displayNameI18N || {})[language]
+                                        || it.displayName
+                                    }
                                 </span>
                                 <b className='flex-grow ml-3'>{ it.value }</b>
                             </div>

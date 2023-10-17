@@ -1,18 +1,30 @@
 'use strict';
+var fixRelated = require('./fix-related');
 var stringifiers = require('./field-stringifiers');
 
 var stringifyFieldValue = ({
     rawValue,
     fieldDefinition,
 
-    relatedRecordLabels,
-    relatedHelperSetItems,
-    relatedCustomRecordTypeLabels,
+    related,
+    relatedRecordLabels, // FIXME
+    relatedHelperSetItems, // FIXME
+    relatedCustomRecordTypeLabels, // FIXME
 
     record,
-    timezone,
+
+    language,
     locale,
+    timezone,
 }) => {
+
+    if (!related) {
+        related = fixRelated({
+            relatedRecordLabels,
+            relatedHelperSetItems,
+            relatedCustomRecordTypeLabels,
+        }, { isResponse: false })
+    }
 
     var {
         type,
@@ -66,8 +78,10 @@ var stringifyFieldValue = ({
             str = '';
         }
         else if (relatedHelperSetItems) {
+            var relatedItem = related.helperSets[props.setId][rawValue];
             str = (
-                relatedHelperSetItems[props.setId][rawValue].state.label
+                (relatedItem.state.displayNameI18N || {})[language]
+                || relatedItem.state.label
             );
         }
         else {
@@ -76,9 +90,13 @@ var stringifyFieldValue = ({
     }
     else if (type === 'HelperSetItemIdList') {
         if (relatedHelperSetItems) {
-            str = (rawValue || []).map(id => (
-                relatedHelperSetItems[props.setId][id].state.label
-            )).join();
+            str = (rawValue || []).map(id => {
+                var relatedItem = related.helperSets[props.setId][rawValue];
+                return (
+                    (relatedItem.state.displayNameI18N || {})[language]
+                    || relatedItem.state.label
+                );
+            }).join();
         }
         else {
             str = (rawValue || []).join(', ')

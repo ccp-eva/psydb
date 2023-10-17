@@ -51,4 +51,5 @@ module.exports = {
     ),
     
     SmartArray: require('./smart-array'),
+    fixRelated: require('./fix-related'),
 }
