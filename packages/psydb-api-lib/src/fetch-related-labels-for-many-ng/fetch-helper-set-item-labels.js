@@ -13,7 +13,8 @@ var fetchHelperSetItemLabels = async (bag) => {
             }},
             { $project: {
                 'setId': true,
-                'state.label': true
+                'state.label': true,
+                'state.displayNameI18N': true,
             }}
         ]).toArray()
     );
