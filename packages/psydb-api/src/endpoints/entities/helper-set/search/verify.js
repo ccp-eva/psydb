@@ -4,9 +4,9 @@ var { ApiError } = require('@mpieva/psydb-api-lib');
 var verifyAllowedAndPlausible = async (context) => {
     var { permissions } = context;
 
-    if (!permissions.hasCollectionFlag('helperSet', 'read')) {
-        throw new ApiError(403);
-    }
+    //if (!permissions.hasCollectionFlag('helperSet', 'read')) {
+    //    throw new ApiError(403);
+    //}
 }
 
 module.exports = verifyAllowedAndPlausible;
