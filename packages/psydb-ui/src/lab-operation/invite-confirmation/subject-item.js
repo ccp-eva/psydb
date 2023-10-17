@@ -1,5 +1,10 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import {
+    useUITranslation,
+    useUILanguage,
+    useUILocale,
+} from '@mpieva/psydb-ui-contexts';
+
 import { useModalReducer } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
 import {
@@ -40,6 +45,8 @@ const SubjectItem = (ps) => {
 
     var subjectRecord = subjectRecordsById[subjectId];
 
+    var [ language ] = useUILanguage();
+    var locale = useUILocale();
     var translate = useUITranslation();
 
     var commentPerSubjectModal = useModalReducer();
@@ -51,6 +58,9 @@ const SubjectItem = (ps) => {
         displayFieldData: subjectDisplayFieldData,
         record: subjectRecord,
         ...subjectRelated,
+
+        language,
+        locale
     });
 
     var sharedModalBag = {
@@ -88,13 +98,19 @@ const SubjectItem = (ps) => {
                 { withValue.map((it, ix) => (
                     <div className='d-flex' key={ ix }>
                         <span className='flx-grow w-25'>
-                            { it.displayName }
+                            { 
+                                (it.displayNameI18N || {})[language]
+                                || it.displayName
+                            }
                         </span>
                         <b className='flex-grow ml-3'>{ it.value }</b>
                     </div>
                 )) }
                 <div className='mt-3 font-weight-bold'>
-                    <u>{ phoneListField.displayName }</u>
+                    <u>{
+                        (phoneListField.displayNameI18N || {})[language]
+                        || phoneListField.displayName
+                    }</u>
                     <div>
                         { 
                             subjectRecord
