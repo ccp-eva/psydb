@@ -27,12 +27,13 @@ describe('endpoints/helper-set-item/search', function () {
 
     it('does the thing', async function () {
         var headers = {
-            language: 'en'
+            language: 'de'
         }
         var response = await (
             agent.post('/helperSetItem/search', jsonify({
+                target: 'optionlist',
                 filters: {
-                    '/state/label': 'Ac'
+                    //'/state/label': 'Ac'
                     //'/state/displayNameI18N/de': 'Ak'
                 },
                 constraints: {

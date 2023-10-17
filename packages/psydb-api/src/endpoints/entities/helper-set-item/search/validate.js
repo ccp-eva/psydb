@@ -27,8 +27,17 @@ var validate = async (context) => {
     });
 }
 
-var makeDisplayFields = () => (
-    [
+var makeDisplayFields = () => ([
+    {
+        key: '_label',
+        pointer: '/_translatedLabel',
+        dataPointer: '/_translatedLabel',
+        
+        systemType: 'SaneString',
+        displayName: 'Label',
+        displayNameI18N: { de: 'Bezeichnung' },
+    },
+    ...[
         { key: 'EN', pointer: '/state/label' },
         { key: 'DE', pointer: '/state/displayNameI18N/de' },
     ].map(({ key, pointer }) => ({
@@ -40,6 +49,6 @@ var makeDisplayFields = () => (
         displayName: `Label (${key})`,
         displayNameI18N: { de: `Bezeichnung (${key})` },
     }))
-)
+])
 
 module.exports = validate;

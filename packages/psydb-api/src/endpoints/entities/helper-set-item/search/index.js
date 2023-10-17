@@ -1,6 +1,7 @@
 'use strict';
 var debug = require('debug')('psydb:api:endpoints:helperSetItem:search');
 
+var { entries } = require('@mpieva/psydb-core-utils');
 var { translationExists } = require('@mpieva/psydb-i18n');
 var {
     SmartArray,
@@ -49,6 +50,7 @@ var search = async (context, next) => {
     var { language = 'en', locale, timezone } = request.headers;
 
     var {
+        target = 'table',
         searchOptions = {},
         filters,
         extraIds = [], // TODO
@@ -90,6 +92,13 @@ var search = async (context, next) => {
     );
    
     var searchStages = SmartArray([
+        // FIXME: ghetto
+        { $addFields: {
+            _translatedLabel: { $ifNull: [
+                `$state.displayNameI18N.${language}`,
+                '$state.label'
+            ]},
+        }},
         ...baseStages,
         StripRohrpostMetadataStage(),
         SortStage({ language }),
@@ -99,6 +108,13 @@ var search = async (context, next) => {
     var records = await withRetracedErrors(
         aggregateToArray({ db, helperSetItem: searchStages, mongoSettings })
     );
+
+    // FIXME: ghetto
+    displayFields = displayFields.filter(it => (
+        target === 'optionlist'
+        ? it.key === '_label'
+        : it.key !== '_label'
+    ));
 
     context.body = ResponseBody({
         data: {
