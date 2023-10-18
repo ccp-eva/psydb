@@ -12,7 +12,6 @@ import {
     Button
 } from 'react-bootstrap';
 
-import agent from '@mpieva/psydb-ui-request-agents';
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
 

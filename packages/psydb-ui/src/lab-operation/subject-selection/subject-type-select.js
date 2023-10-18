@@ -9,14 +9,14 @@ import {
     useParams
 } from 'react-router-dom';
 
-import agent from '@mpieva/psydb-ui-request-agents';
-
+import { useRequestAgent } from '@mpieva/psydb-ui-contexts';
 import { LinkButton } from '@mpieva/psydb-ui-layout';
 import RecordTypeNav from '@mpieva/psydb-ui-lib/src/record-type-nav';
 
 const StudyTypeSelect = ({ labProcedureType }) => {
     var { path, url } = useRouteMatch();
     var { studyIds } = useParams();
+    var agent = useRequestAgent();
 
     var [
         subjectRecordTypeRecords,

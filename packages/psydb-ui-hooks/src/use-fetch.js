@@ -1,6 +1,5 @@
 import { useEffect, useReducer, useContext } from 'react';
 import { AgentContext } from '@mpieva/psydb-ui-contexts';
-//import agent from '@mpieva/psydb-ui-request-agents';
 
 const useFetch = (...args) => {
     if (args.length < 3) {

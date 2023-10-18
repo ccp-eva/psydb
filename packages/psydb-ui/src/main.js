@@ -14,7 +14,6 @@ import {
     Icons
 } from '@mpieva/psydb-ui-layout';
 
-//import agent from '@mpieva/psydb-ui-request-agents';
 import { useRequestAgent } from '@mpieva/psydb-ui-contexts';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator } from '@mpieva/psydb-ui-layout';

@@ -1,6 +1,5 @@
 import React, { useEffect, useReducer, useContext } from 'react';
 import { AgentContext } from '@mpieva/psydb-ui-contexts';
-//import agent from '@mpieva/psydb-ui-request-agents';
 
 const useFetchAll = (createPromises, dependenciesOrOptions = []) => {
     var options = dependenciesOrOptions;

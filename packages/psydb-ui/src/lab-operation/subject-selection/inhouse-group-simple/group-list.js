@@ -13,7 +13,6 @@ import {
 import { Base64 } from 'js-base64';
 import { getSystemTimezone } from '@mpieva/psydb-timezone-helpers';
 
-import agent from '@mpieva/psydb-ui-request-agents';
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
 

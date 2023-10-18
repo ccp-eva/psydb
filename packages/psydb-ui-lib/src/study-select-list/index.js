@@ -1,6 +1,5 @@
 import React, { useReducer, useEffect, useState } from 'react';
 
-import agent from '@mpieva/psydb-ui-request-agents';
 import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 

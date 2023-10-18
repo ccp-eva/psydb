@@ -1,4 +1,5 @@
 import React  from 'react';
+import { sliceDays } from '@mpieva/psydb-date-interval-fns';
 import { compareIds, groupBy } from '@mpieva/psydb-core-utils';
 
 import {
@@ -10,8 +11,12 @@ import {
     LinkButton,
 } from '@mpieva/psydb-ui-layout';
 
-import { useFetchChain, useSelectionReducer } from '@mpieva/psydb-ui-hooks';
-import { createSend } from '@mpieva/psydb-ui-utils';
+import {
+    useSend,
+    useFetchChain,
+    useSelectionReducer
+} from '@mpieva/psydb-ui-hooks';
+
 import datefns from '../../date-fns';
 import {
     default as LocationTimeSlotList
@@ -53,6 +58,15 @@ const ChangeInviteLocationModalBody = (ps) => {
         })
     ]), [ studyId, experimentStart, experimentEnd ]);
 
+    var { exec: handleSubmit } = useSend((formData) => ({
+        type: `experiment/change-location`,
+        payload: {
+            experimentId,
+            locationId: selection.value[0],
+            // forceOverrideReservation // XXX ???
+        }
+    }), { onSuccessfulUpdate: [ onHide, onSuccessfulUpdate ] })
+
     if (!didFetch) {
         return <LoadingIndicator size='lg' />;
     }
@@ -82,23 +96,16 @@ const ChangeInviteLocationModalBody = (ps) => {
         byPointer: '/state/locationId'
     });
 
-    var handleSubmit = createSend((formData) => ({
-        type: `experiment/change-location`,
-        payload: {
-            experimentId,
-            locationId: selection.value[0],
-            // forceOverrideReservation // XXX ???
-        }
-    }), { onSuccessfulUpdate: [ onHide, onSuccessfulUpdate ] })
-
-    var dayStart = datefns.startOfDay(new Date(
-        experimentStart
-    ));
+    var t = new Date(experimentStart);
+    var day = {
+        start: datefns.startOfDay(t),
+        end: datefns.startOfDay(t),
+    };
     var startTimeInt = (
-        new Date(experimentStart).getTime() - dayStart.getTime()
+        new Date(experimentStart).getTime() - day.start.getTime()
     );
     var endTimeInt = (
-        new Date(experimentEnd).getTime() - dayStart.getTime()
+        new Date(experimentEnd).getTime() - day.start.getTime()
     );
 
     return (
@@ -127,7 +134,7 @@ const ChangeInviteLocationModalBody = (ps) => {
                                 teamRecords: timetable.labTeamRecords,
                                 settingRecords: timetable.labSettingsRecords,
                                 
-                                dayStart,
+                                day,
                                 startTimeInt,
                                 endTimeInt,
                                 slotDuration: 15 * 60 * 1000, // XXX
@@ -169,7 +176,7 @@ const ChangeInviteLocationModalBody = (ps) => {
 }
 
 const ChangeInviteLocationModal = WithDefaultModal({
-    title: 'Raum ändern',
+    title: 'Change Room',
     size: 'lg',
     bodyClassName: 'bg-light pt-0 pr-3 pl-3',
     Body: ChangeInviteLocationModalBody,

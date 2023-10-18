@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useSend } from '@mpieva/psydb-ui-hooks';
-import { createSend } from '@mpieva/psydb-ui-utils';
 import {
     WithDefaultModal,
     Button,

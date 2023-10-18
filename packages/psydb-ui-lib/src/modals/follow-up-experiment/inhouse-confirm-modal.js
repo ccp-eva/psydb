@@ -12,7 +12,7 @@ import {
     Form,
 } from '@mpieva/psydb-ui-layout';
 
-import agent from '@mpieva/psydb-ui-request-agents';
+import { useRequestAgent } from '@mpieva/psydb-ui-contexts';
 import datefns from '../../date-fns';
 
 import {
@@ -37,6 +37,8 @@ const FormContainer = (ps) => {
 
         onSuccessfulUpdate,
     } = ps;
+    
+    var agent = useRequestAgent();
 
     var {
         _id: studyId,
