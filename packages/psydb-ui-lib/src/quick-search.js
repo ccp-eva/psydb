@@ -1,9 +1,13 @@
 import React, { useMemo } from 'react';
 import classnames from 'classnames';
 
+import { entries } from '@mpieva/psydb-core-utils';
+import { __fixDefinitions } from '@mpieva/psydb-ui-utils';
+
 import { useUITranslation, useUILanguage } from '@mpieva/psydb-ui-contexts';
 import { Button, Icons } from '@mpieva/psydb-ui-layout';
 
+import allSchemaCreators from '@mpieva/psydb-schema-creators';
 import * as fieldSchemas from '@mpieva/psydb-schema-fields';
 import fieldMetadata from '@mpieva/psydb-common-lib/src/field-type-metadata'
 
@@ -14,12 +18,16 @@ import {
 
 const QuickSearch = (ps) => {
     var {
+        target,
         displayFieldData,
         filters,
         onSubmit
     } = ps;
 
     var translate = useUITranslation();
+
+    // TODO: make this controllable via crt settings
+    var maxFields = (target === 'table' || !target) ? 5 : 3;
 
     var className = classnames([
         'bg-light',
@@ -51,9 +59,10 @@ const QuickSearch = (ps) => {
             {(formikProps) => {
                 return (
                     <>
-                        <FieldList displayFieldData={
-                            displayFieldData.slice(0,4)
-                        } />
+                        <FieldList
+                            displayFieldData={ displayFieldData }
+                            maxFields={ maxFields }
+                        />
                         <Button
                             className=''
                             type='submit'
@@ -82,42 +91,63 @@ const QuickSearch = (ps) => {
 }
 
 const FieldList = (ps) => {
-    var { displayFieldData } = ps;
+    var { displayFieldData: definitions, maxFields } = ps;
+    var definitions = __fixDefinitions(definitions);
+    
     var [ language ] = useUILanguage();
     //console.log(displayFieldData);
 
-    return (
-        <>
-            { displayFieldData.map((it, ix) => {
-                var {
-                    key,
-                    type,
-                    systemType,
-                    displayName,
-                    displayNameI18N = {},
-                    pointer,
-                    dataPointer
-                } = it; 
-                
-                // FIXME: use fixDefintions()
-                pointer = pointer || dataPointer;
-                type = type || systemType;
+    var count = 0;
+    var rendered = [];
+    for (var [ix, def] of definitions.entries()) {
+        var {
+            key,
+            systemType,
+            displayName,
+            displayNameI18N = {},
+            pointer,
+            props
+        } = def;
+       
+        // XXX hotfix for quick search in subject groups
+        if (systemType === 'ForeignId' && !props.recordType) {
+            var c = allSchemaCreators[props.collection];
+            if (c.hasCustomTypes) {
+                continue;
+            }
+        }
+        
+        var Field = QuickSearchFields[systemType];
+        if (!Field) {
+            continue;
+        }
 
-                var Field = QuickSearchFields[type];
-                if (!Field) {
-                    return null;
-                }
-                return (
-                    <Field
-                        autoFocus={ ix === 0 }
-                        key={ key }
-                        label={ displayNameI18N[language] || displayName }
-                        dataXPath={ `$.${pointer}` }
-                    />
-                )
-            }) }
-        </>
-    );
+        if (props && props.constraints) {
+            props.constraints = entries(props.constraints).reduce(
+                (acc, [key, value]) => ({
+                    ...acc,
+                    ...(!value.startsWith('$data') && { [key]: value })
+                }), {}
+            )
+        }
+
+        rendered.push(
+            <Field
+                key={ key }
+                label={ displayNameI18N[language] || displayName }
+                dataXPath={ `$.${pointer}` }
+                autoFocus={ ix === 0 }
+                { ...props }
+            />
+        );
+        count += 1;
+        
+        if (count >= maxFields) {
+            break;
+        }
+    }
+
+    return rendered;
 }
 
 export default QuickSearch;

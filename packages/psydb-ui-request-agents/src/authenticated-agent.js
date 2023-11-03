@@ -50,9 +50,9 @@ const createAgent = (options = {}) => {
     }
 
     agent.readCustomRecordTypeMetadata = ({
-        only,
+        only, ignoreResearchGroups
     } = {}) => {
-        return axios.post(`/api/metadata/custom-record-types`, { only });
+        return axios.post(`/api/metadata/custom-record-types`, { only, ignoreResearchGroups });
     }
 
     agent.readRecordSchema = ({
@@ -97,6 +97,13 @@ const createAgent = (options = {}) => {
     }) => {
         var url = `/api/metadata/subject-study-crts/${subjectType}`;
         return axios.get(url);
+    }
+
+    agent.readManySubjects = (options) => {
+        var { ids, extraAxiosConfig } = options;
+        return axios.post('/api/subject/read-many', {
+            ids
+        }, extraAxiosConfig);
     }
 
     agent.readRecord = ({
@@ -591,6 +598,16 @@ const createAgent = (options = {}) => {
     }) => {
         return axios.get(
             `/api/custom-record-type/pre-remove-info/${id}`,
+            extraAxiosConfig
+        );
+    }
+
+    agent.fetchSubjectGroupPreRemoveInfo = ({
+        id,
+        extraAxiosConfig
+    }) => {
+        return axios.get(
+            `/api/subject-group/pre-remove-info/${id}`,
             extraAxiosConfig
         );
     }

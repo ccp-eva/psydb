@@ -470,32 +470,56 @@ module.exports = {
         },
         availableStaticDisplayFields: [
             {
+                key: '_subjectType',
+                systemType: 'CustomRecordTypeKey',
+                props: {
+                    collection: 'subject',
+                },
+                dataPointer: '/subjectType',
+                displayName: 'Proband:innen-Typ',
+            },
+            {
                 key: '_name',
                 systemType: 'SaneString',
                 dataPointer: '/state/name',
                 displayName: 'Name',
-                displayNameI18N: { de: 'Name' },
             },
             {
-                key: '_researchGroupId',
+                key: '_locationType',
+                systemType: 'CustomRecordTypeKey',
+                props: {
+                    collection: 'location',
+                },
+                dataPointer: '/state/locationType',
+                displayName: 'Location-Typ',
+            },
+            {
+                key: '_locationId',
                 systemType: 'ForeignId',
                 props: {
-                    collection: 'researchGroup',
+                    collection: 'location',
                 },
-                dataPointer: '/state/researchGroupId',
-                displayName: 'Research Group',
-                displayNameI18N: { de: 'Forschungsgruppe' },
+                dataPointer: '/state/locationId',
+                displayName: 'Location',
             },
         ],
         staticDisplayFields: [
             {
-                systemType: 'SaneString',
-                dataPointer: '/state/name',
+                systemType: 'CustomRecordTypeKey',
+                dataPointer: '/subjectType',
+            },
+            {
+                systemType: 'CustomRecordTypeKey',
+                dataPointer: '/state/locationType',
             },
             {
                 systemType: 'ForeignId',
-                dataPointer: '/state/researchGroupId',
-            }
+                dataPointer: '/state/locationId',
+            },
+            {
+                systemType: 'SaneString',
+                dataPointer: '/state/name',
+            },
         ]
     },
 
