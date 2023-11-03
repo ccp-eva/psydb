@@ -2531,6 +2531,59 @@ var maps = [
         en: 'Date/Time Format',
         de: 'Datums-/Zeitformat',
     },
+    
+    // WKPRC
+    
+    {
+        en: 'WKPRC',
+        de: 'WKPRC'
+    },
+    {
+        en: 'Group',
+        de: 'Gruppe'
+    },
+    {
+        en: 'Subject Groups',
+        de: 'Proband:innen-Gruppen'
+    },
+    {
+        internal: '_wkprc_experimentName',
+        en: 'Experiment Name',
+        de: 'Test-Bezeichnung'
+    },
+    {
+        internal: '_wkprc_roomOrEnclosure',
+        en: 'Room/Enclosure',
+        de: 'Raum/Gehege'
+    },
+    {
+        en: 'Can View Subject Groups',
+        de: 'Kann Proband:innen-Gruppen Einsehen'
+    },
+    {
+        en: 'Can Edit Subject Groups',
+        de: 'Kann Proband:innen-Gruppen Bearbeiten'
+    },
+    {
+        en: 'Can Delete Subject Groups',
+        de: 'Kann Proband:innen-Gruppen Löschen'
+    },
+    {
+        en: 'Can View Lab Workflow Settings of Studies',
+        de: 'Kann Ablauf-Einstellungen von Studien einsehen'
+    },
+    {
+        en: 'Can Access Sensitive Fields (e.g. WKPRC-Comment)',
+        de: 'kann sensible Felder einsehen (z.B. WKPRC-Kommentar)'
+    },
+    
+    // Field sites
+
+    {
+        en: 'Field Sites',
+        de: 'Field-Sites'
+    },
+
 ]
 
 const byInternal = keyBy({
