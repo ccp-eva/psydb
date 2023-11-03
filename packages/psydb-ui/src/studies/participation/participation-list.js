@@ -199,10 +199,10 @@ const ParticipationListRow = (ps) => {
             <td> {
                 related.records
                 .location[participationData.locationId]?._recordLabel
-                || (
+                || ((
                     participationType === 'online-survey'
                     || realParticipationType === 'online-survey'
-                ) ? 'Online' : '-'
+                ) ? 'Online' : '-')
             }</td>
             <td>
                 { formatStatus(participationData.status) }
