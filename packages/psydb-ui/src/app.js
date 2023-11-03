@@ -176,7 +176,9 @@ function compose(...funcs) {
 
 var withCookiesProvider = (Component) => (ps) => {
     return (
-        <CookiesProvider defaultSetOptions={{ path: '/' }}>
+        <CookiesProvider defaultSetOptions={{
+            path: '/', maxAge: 365*24*60*60
+        }}>
             <Component { ...ps} />
         </CookiesProvider>
     )
