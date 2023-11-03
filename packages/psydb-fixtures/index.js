@@ -12,4 +12,6 @@ var getFixturePath = (dumpName, { db = false } = {}) => {
     }
 };
 
-module.exports = getFixturePath;
+module.exports = {
+    get: getFixturePath
+};

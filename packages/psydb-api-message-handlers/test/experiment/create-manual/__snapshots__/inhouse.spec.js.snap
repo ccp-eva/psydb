@@ -1,0 +1,179 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`experiment/create-manual inhouse can create experiment 1`] = `
+Object {
+  "color": "#febeed",
+  "experimentOperatorIds": Array [
+    Object {
+      "$oid": "6312720d8dde11df80a50aa2",
+    },
+  ],
+  "experimentOperatorTeamId": Object {
+    "$oid": "633ba68136f3eed05ee21467",
+  },
+  "generalComment": "",
+  "interval": Object {
+    "end": Object {
+      "$date": "2022-12-09T12:30:00.000Z",
+    },
+    "start": Object {
+      "$date": "2022-12-09T12:30:00.000Z",
+    },
+  },
+  "isCanceled": false,
+  "isPostprocessed": true,
+  "locationId": Object {
+    "$oid": "633ba65e36f3eed05ee21461",
+  },
+  "locationRecordType": "instituteroom",
+  "selectedSubjectGroupIds": Array [],
+  "selectedSubjectIds": Array [
+    Object {
+      "$oid": "633ba54936f3eed05ee2144e",
+    },
+  ],
+  "studyId": Object {
+    "$oid": "633ba59a36f3eed05ee21452",
+  },
+  "studyRecordType": "default",
+  "subjectData": Array [
+    Object {
+      "comment": "",
+      "excludeFromMoreExperimentsInStudy": false,
+      "invitationStatus": "scheduled",
+      "participationStatus": "participated",
+      "subjectId": Object {
+        "$oid": "633ba54936f3eed05ee2144e",
+      },
+      "subjectType": "child",
+    },
+  ],
+}
+`;
+
+exports[`experiment/create-manual inhouse can create experiment 2`] = `
+Object {
+  "custom": Object {
+    "address": Object {
+      "city": "Leipzig",
+      "country": "DE",
+      "housenumber": "12",
+      "postcode": "12345",
+      "street": "Blumenweg",
+    },
+    "emails": Array [
+      Object {
+        "email": "paul_test@example.com",
+        "isPrimary": true,
+      },
+    ],
+    "fathersName": "",
+    "firstname": "Paul",
+    "lastname": "Test",
+    "mothersName": "",
+    "phones": Array [
+      Object {
+        "number": "0341/1234567",
+        "type": "private",
+      },
+    ],
+  },
+}
+`;
+
+exports[`experiment/create-manual inhouse can create experiment 3`] = `
+Object {
+  "comment": "TEST",
+  "custom": Object {
+    "acquisitions": Array [
+      Object {
+        "$oid": "6312720f8dde11df80a50b15",
+      },
+    ],
+    "allowedToEat": "yes",
+    "biologicalGender": "male",
+    "consentcard": "yes",
+    "dateOfBirth": Object {
+      "$date": "2022-06-07T00:00:00.000Z",
+    },
+    "isMultiBirth": "no",
+    "kigaId": Object {
+      "$oid": "633ba61f36f3eed05ee2145e",
+    },
+    "languages": Array [
+      Object {
+        "$oid": "6312720f8dde11df80a50b0c",
+      },
+    ],
+    "weekOfPregnancy": 40,
+    "weightAtBirth": 3500,
+  },
+  "internals": Object {
+    "invitedForExperiments": Array [],
+    "isRemoved": false,
+  },
+  "systemPermissions": Object {
+    "accessRightsByResearchGroup": Array [
+      Object {
+        "permission": "write",
+        "researchGroupId": Object {
+          "$oid": "6312720c8dde11df80a50a82",
+        },
+      },
+    ],
+    "isHidden": false,
+  },
+  "testingPermissions": Array [
+    Object {
+      "permissionList": Array [
+        Object {
+          "labProcedureTypeKey": "inhouse",
+          "value": "yes",
+        },
+        Object {
+          "labProcedureTypeKey": "online-video-call",
+          "value": "yes",
+        },
+        Object {
+          "labProcedureTypeKey": "away-team",
+          "value": "yes",
+        },
+        Object {
+          "labProcedureTypeKey": "online-survey",
+          "value": "yes",
+        },
+      ],
+      "researchGroupId": Object {
+        "$oid": "6312720c8dde11df80a50a82",
+      },
+    },
+  ],
+}
+`;
+
+exports[`experiment/create-manual inhouse can create experiment 4`] = `
+Array [
+  Object {
+    "excludeFromMoreExperimentsInStudy": false,
+    "experimentOperatorIds": Array [
+      Object {
+        "$oid": "6312720d8dde11df80a50aa2",
+      },
+    ],
+    "locationId": Object {
+      "$oid": "633ba65e36f3eed05ee21461",
+    },
+    "locationType": "instituteroom",
+    "realType": "inhouse",
+    "status": "participated",
+    "studyId": Object {
+      "$oid": "633ba59a36f3eed05ee21452",
+    },
+    "studyType": "default",
+    "timestamp": Object {
+      "$date": "2022-12-09T12:30:00.000Z",
+    },
+    "type": "manual",
+  },
+]
+`;

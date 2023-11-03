@@ -1,0 +1,313 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`experiment/create-manual-for-many-subjects apestudies-wkprc-default can create experiments 1`] = `
+Object {
+  "color": "#000000",
+  "experimentName": "the exp name",
+  "experimentOperatorIds": Array [
+    Object {
+      "$oid": "6333f5fc1cc4009a891643a7",
+    },
+  ],
+  "experimentOperatorTeamId": null,
+  "generalComment": "",
+  "interval": Object {
+    "end": Object {
+      "$date": "2022-12-09T12:30:00.000Z",
+    },
+    "start": Object {
+      "$date": "2022-12-09T12:30:00.000Z",
+    },
+  },
+  "isCanceled": false,
+  "isPostprocessed": true,
+  "locationId": Object {
+    "$oid": "6333f8f41cc4009a891643d7",
+  },
+  "locationRecordType": "wkprc_location",
+  "selectedSubjectGroupIds": Array [],
+  "selectedSubjectIds": Array [
+    Object {
+      "$oid": "6333f8441cc4009a891643c7",
+    },
+  ],
+  "studyId": Object {
+    "$oid": "6333f8871cc4009a891643cb",
+  },
+  "studyRecordType": "wkprc_studie",
+  "studyTopicIds": Array [
+    Object {
+      "$oid": "6333f6f71cc4009a891643ad",
+    },
+    Object {
+      "$oid": "6333f7011cc4009a891643b0",
+    },
+  ],
+  "subjectData": Array [
+    Object {
+      "comment": "",
+      "excludeFromMoreExperimentsInStudy": false,
+      "invitationStatus": "scheduled",
+      "participationStatus": "participated",
+      "subjectId": Object {
+        "$oid": "6333f8441cc4009a891643c7",
+      },
+      "subjectType": "schimpansen",
+    },
+  ],
+}
+`;
+
+exports[`experiment/create-manual-for-many-subjects apestudies-wkprc-default can create experiments 2`] = `
+Object {
+  "color": "#000000",
+  "experimentName": "the exp name",
+  "experimentOperatorIds": Array [
+    Object {
+      "$oid": "6333f5fc1cc4009a891643a7",
+    },
+  ],
+  "experimentOperatorTeamId": null,
+  "generalComment": "",
+  "interval": Object {
+    "end": Object {
+      "$date": "2022-12-10T14:45:00.000Z",
+    },
+    "start": Object {
+      "$date": "2022-12-10T14:45:00.000Z",
+    },
+  },
+  "isCanceled": false,
+  "isPostprocessed": true,
+  "locationId": Object {
+    "$oid": "6333f8f41cc4009a891643d7",
+  },
+  "locationRecordType": "wkprc_location",
+  "selectedSubjectGroupIds": Array [],
+  "selectedSubjectIds": Array [
+    Object {
+      "$oid": "6333f8371cc4009a891643c3",
+    },
+  ],
+  "studyId": Object {
+    "$oid": "6333f8871cc4009a891643cb",
+  },
+  "studyRecordType": "wkprc_studie",
+  "studyTopicIds": Array [
+    Object {
+      "$oid": "6333f6f71cc4009a891643ad",
+    },
+    Object {
+      "$oid": "6333f7011cc4009a891643b0",
+    },
+  ],
+  "subjectData": Array [
+    Object {
+      "comment": "",
+      "excludeFromMoreExperimentsInStudy": false,
+      "invitationStatus": "scheduled",
+      "participationStatus": "participated",
+      "subjectId": Object {
+        "$oid": "6333f8371cc4009a891643c3",
+      },
+      "subjectType": "schimpansen",
+    },
+  ],
+}
+`;
+
+exports[`experiment/create-manual-for-many-subjects apestudies-wkprc-default can create experiments 3`] = `
+Object {
+  "custom": Object {},
+}
+`;
+
+exports[`experiment/create-manual-for-many-subjects apestudies-wkprc-default can create experiments 4`] = `
+Object {
+  "comment": "",
+  "custom": Object {
+    "name": "Star",
+  },
+  "internals": Object {
+    "invitedForExperiments": Array [],
+    "isRemoved": false,
+  },
+  "systemPermissions": Object {
+    "accessRightsByResearchGroup": Array [
+      Object {
+        "permission": "write",
+        "researchGroupId": Object {
+          "$oid": "6333f3591cc4009a89164347",
+        },
+      },
+    ],
+    "isHidden": false,
+  },
+  "testingPermissions": Array [],
+}
+`;
+
+exports[`experiment/create-manual-for-many-subjects apestudies-wkprc-default can create experiments 5`] = `
+Array [
+  Object {
+    "excludeFromMoreExperimentsInStudy": false,
+    "experimentName": "Co-Op Experiment A",
+    "experimentOperatorIds": Array [
+      Object {
+        "$oid": "6333f5d61cc4009a891643a1",
+      },
+    ],
+    "locationId": Object {
+      "$oid": "6333f8f41cc4009a891643d7",
+    },
+    "locationType": "wkprc_location",
+    "principalInvestigatorId": Object {
+      "$oid": "6333f5d61cc4009a891643a1",
+    },
+    "realType": "apestudies-wkprc-default",
+    "status": "participated",
+    "studyId": Object {
+      "$oid": "6333f8871cc4009a891643cb",
+    },
+    "studyTopicIds": Array [
+      Object {
+        "$oid": "6333f6f71cc4009a891643ad",
+      },
+    ],
+    "studyType": "wkprc_studie",
+    "timestamp": Object {
+      "$date": "2022-10-02T22:00:00.000Z",
+    },
+    "type": "manual",
+  },
+  Object {
+    "excludeFromMoreExperimentsInStudy": false,
+    "experimentName": "the exp name",
+    "experimentOperatorIds": Array [
+      Object {
+        "$oid": "6333f5fc1cc4009a891643a7",
+      },
+    ],
+    "locationId": Object {
+      "$oid": "6333f8f41cc4009a891643d7",
+    },
+    "locationType": "wkprc_location",
+    "realType": "apestudies-wkprc-default",
+    "status": "participated",
+    "studyId": Object {
+      "$oid": "6333f8871cc4009a891643cb",
+    },
+    "studyTopicIds": Array [
+      Object {
+        "$oid": "6333f6f71cc4009a891643ad",
+      },
+      Object {
+        "$oid": "6333f7011cc4009a891643b0",
+      },
+    ],
+    "studyType": "wkprc_studie",
+    "timestamp": Object {
+      "$date": "2022-12-09T12:30:00.000Z",
+    },
+    "type": "manual",
+  },
+]
+`;
+
+exports[`experiment/create-manual-for-many-subjects apestudies-wkprc-default can create experiments 6`] = `
+Object {
+  "custom": Object {},
+}
+`;
+
+exports[`experiment/create-manual-for-many-subjects apestudies-wkprc-default can create experiments 7`] = `
+Object {
+  "comment": "",
+  "custom": Object {
+    "name": "Sarah",
+  },
+  "internals": Object {
+    "invitedForExperiments": Array [],
+    "isRemoved": false,
+  },
+  "systemPermissions": Object {
+    "accessRightsByResearchGroup": Array [
+      Object {
+        "permission": "write",
+        "researchGroupId": Object {
+          "$oid": "6333f3591cc4009a89164347",
+        },
+      },
+    ],
+    "isHidden": false,
+  },
+  "testingPermissions": Array [],
+}
+`;
+
+exports[`experiment/create-manual-for-many-subjects apestudies-wkprc-default can create experiments 8`] = `
+Array [
+  Object {
+    "excludeFromMoreExperimentsInStudy": false,
+    "experimentName": "Co-Op Experiment A",
+    "experimentOperatorIds": Array [
+      Object {
+        "$oid": "6333f5d61cc4009a891643a1",
+      },
+    ],
+    "locationId": Object {
+      "$oid": "6333f8f41cc4009a891643d7",
+    },
+    "locationType": "wkprc_location",
+    "principalInvestigatorId": Object {
+      "$oid": "6333f5d61cc4009a891643a1",
+    },
+    "realType": "apestudies-wkprc-default",
+    "status": "participated",
+    "studyId": Object {
+      "$oid": "6333f8871cc4009a891643cb",
+    },
+    "studyTopicIds": Array [
+      Object {
+        "$oid": "6333f6f71cc4009a891643ad",
+      },
+    ],
+    "studyType": "wkprc_studie",
+    "timestamp": Object {
+      "$date": "2022-10-02T22:00:00.000Z",
+    },
+    "type": "manual",
+  },
+  Object {
+    "excludeFromMoreExperimentsInStudy": false,
+    "experimentName": "the exp name",
+    "experimentOperatorIds": Array [
+      Object {
+        "$oid": "6333f5fc1cc4009a891643a7",
+      },
+    ],
+    "locationId": Object {
+      "$oid": "6333f8f41cc4009a891643d7",
+    },
+    "locationType": "wkprc_location",
+    "realType": "apestudies-wkprc-default",
+    "status": "participated",
+    "studyId": Object {
+      "$oid": "6333f8871cc4009a891643cb",
+    },
+    "studyTopicIds": Array [
+      Object {
+        "$oid": "6333f6f71cc4009a891643ad",
+      },
+      Object {
+        "$oid": "6333f7011cc4009a891643b0",
+      },
+    ],
+    "studyType": "wkprc_studie",
+    "timestamp": Object {
+      "$date": "2022-12-10T14:45:00.000Z",
+    },
+    "type": "manual",
+  },
+]
+`;
