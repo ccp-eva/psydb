@@ -161,6 +161,12 @@ var ChannelState = ({
         displayNameI18N: OpenObject({
             de: SaneString(),
         }),
+        ...( collection === 'subject' && {
+            requiresTestingPermissions: DefaultBool(),
+            commentFieldIsSensitive: DefaultBool(),
+            showSequenceNumber: DefaultBool({ default: true }),
+            showOnlineId: DefaultBool({ default: true }),
+        }),
         ...( collection === 'location' && {
             reservationType: StringEnum([
                 'away-team',

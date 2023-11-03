@@ -15,7 +15,7 @@ import {
 } from '@mpieva/psydb-ui-layout';
 
 import { useRequestAgent } from '@mpieva/psydb-ui-contexts';
-import { useFetch } from '@mpieva/psydb-ui-hooks';
+import { useFetch, usePermissions } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
 import ErrorBoundary from './error-boundary';
@@ -127,8 +127,19 @@ var withEB = (Component) => (ps) => (
 );
 
 var Home = () => {
+    var permissions = usePermissions();
+    var canViewAnyCalendar = (
+        permissions.hasSomeLabOperationFlags({
+            types: 'any',
+            flags: [ 'canViewExperimentCalendar' ]
+        })
+        || permissions.hasFlag('canViewReceptionCalendar')
+    );
+
     return (
-        <Redirect to='/calendars' />
+        canViewAnyCalendar
+        ? <Redirect to='/calendars' />
+        : <Redirect to='/studies' />
     );
 }
 

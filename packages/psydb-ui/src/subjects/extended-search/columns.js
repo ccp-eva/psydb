@@ -21,13 +21,17 @@ export const Columns = (ps) => {
     var permissions = usePermissions();
     
     var crt = CRTSettings({ data: crtSettings });
-    var customColumns = crt.allCustomFields().map(it => {
-        var { pointer, displayName, displayNameI18N = {} } = it;
-        return {
-            pointer,
-            label: displayNameI18N[language] || displayName
-        }
-    });
+    var customColumns = (
+        crt.allCustomFields()
+        .filter(it => !it.isRemoved)
+        .map(it => {
+            var { pointer, displayName, displayNameI18N = {} } = it;
+            return {
+                pointer,
+                label: displayNameI18N[language] || displayName
+            }
+        })
+    );
 
     // FIXME: generalzie the creation of the field parts
     // see extended search/subjects/index

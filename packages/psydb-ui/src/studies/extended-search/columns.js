@@ -21,13 +21,17 @@ export const Columns = (ps) => {
     var permissions = usePermissions();
     
     var crt = CRTSettings({ data: crtSettings });
-    var customColumns = crt.allCustomFields().map(it => {
-        var { pointer, displayName, displayNameI18N = {} } = it;
-        return {
-            pointer,
-            label: displayNameI18N[language] || displayName
-        }
-    });
+    var customColumns = (
+        crt.allCustomFields()
+        .filter(it => !it.isRemoved)
+        .map(it => {
+            var { pointer, displayName, displayNameI18N = {} } = it;
+            return {
+                pointer,
+                label: displayNameI18N[language] || displayName
+            }
+        })
+    );
 
     var sortableColumns = [
         { pointer: '/sequenceNumber', label: translate('ID No.') },

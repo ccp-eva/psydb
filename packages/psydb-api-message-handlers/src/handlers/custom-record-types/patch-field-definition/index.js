@@ -100,7 +100,7 @@ var triggerSystemEvents = async (context) => {
     var { fieldIndex } = cache;
 
     var { id, subChannelKey, fieldKey, props } = message.payload;
-    var { displayName, displayNameI18N } = props;
+    var { displayName, displayNameI18N, props: fieldProps } = props;
 
     var allFieldsPath = (
         subChannelKey
@@ -112,6 +112,9 @@ var triggerSystemEvents = async (context) => {
         `${allFieldsPath}.${fieldIndex}`
     );
 
+    var pathified = pathify(fieldProps, { prefix: `${fieldPath}.props`});
+    console.log(pathified);
+
     await dispatch({
         collection: 'customRecordType',
         channelId: id,
@@ -121,6 +124,7 @@ var triggerSystemEvents = async (context) => {
                 [`${fieldPath}.isDirty`]: true,
                 [`${fieldPath}.displayName`]: displayName,
                 [`${fieldPath}.displayNameI18N`]: displayNameI18N,
+                ...(fieldProps && pathified)
             }
         }
     });
