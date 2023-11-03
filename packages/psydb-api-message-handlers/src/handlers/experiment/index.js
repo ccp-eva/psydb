@@ -4,6 +4,11 @@ var {
 } = require('@mpieva/psydb-koa-event-middleware');
 
 var ExperimentGroup = MessageHandlerGroup([
+    require('./create-manual'),
+    require('./create-manual-for-many-subjects'),
+
+    require('./patch-manual'),
+
     require('./create-from-awayteam-reservation'),
     require('./create-from-inhouse-reservation'),
     require('./create-from-online-video-call-reservation'),
