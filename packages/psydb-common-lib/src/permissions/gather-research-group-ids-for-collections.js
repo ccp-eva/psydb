@@ -55,6 +55,11 @@ var getCollectionReadFlagPointers = ({ collection }) => {
                 '/canReadSubjects',
                 '/canWriteSubjects'
             ];
+        case 'subjectGroup':
+            return [
+                '/canReadSubjectGroups',
+                '/canWriteSubjectGroups'
+            ];
         case 'study':
             return [
                 '/canReadStudies',
@@ -108,6 +113,8 @@ var getCollectionWriteFlagPointers = ({ collection }) => {
     switch (collection) {
         case 'subject':
             return [ '/canWriteSubjects' ];
+        case 'subjectGroup':
+            return [ '/canWriteSubjectGroups' ];
         case 'study':
             return [ '/canWriteStudies' ];
         case 'personnel':
@@ -137,6 +144,8 @@ var getCollectionRemoveFlagPointers = ({ collection }) => {
     switch (collection) {
         case 'subject':
             return [ '/canRemoveSubjects' ];
+        case 'subjectGroup':
+            return [ '/canRemoveSubjectGroups' ];
         case 'location':
             return [ '/canRemoveLocations' ];
         case 'externalPerson':
@@ -206,6 +215,7 @@ var allCollections = [
     'helperSetItem',
     'location',
     'studyTopic',
+    'subjectGroup',
 
     // theese have special read/write flags
     // but the same stuff about search for fk applies here

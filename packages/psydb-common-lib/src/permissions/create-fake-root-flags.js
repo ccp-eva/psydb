@@ -12,6 +12,7 @@ var createFakeRootFlags = () => ({
 
     ...([
         'Subjects',
+        'SubjectGroups',
         'Studies',
         'Locations',
         'ExternalPersons',
@@ -31,6 +32,8 @@ var createFakeRootFlags = () => ({
 
 
     canViewReceptionCalendar: true,
+    canViewStudyLabOpsSettings: true,
+    canAccessSensitiveFields: true,
 
     labOperation: {
         'inhouse': {
