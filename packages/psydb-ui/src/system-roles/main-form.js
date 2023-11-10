@@ -165,6 +165,10 @@ const FormFields = (ps) => {
                     label='Can Delete Studies'
                     dataXPath='$.canRemoveStudies'
                 />
+                <Bool
+                    label='Can View Lab Workflow Settings of Studies'
+                    dataXPath='$.canViewStudyLabOpsSettings'
+                />
             </PermBox>
 
             <PermBox title={ translate('Subjects') }>
@@ -179,6 +183,21 @@ const FormFields = (ps) => {
                 <Bool
                     label='Can Delete Subjects'
                     dataXPath='$.canRemoveSubjects'
+                />
+            </PermBox>
+
+            <PermBox title={ translate('Subject Groups') }>
+                <Bool
+                    label='Can View Subject Groups'
+                    dataXPath='$.canReadSubjectGroups'
+                />
+                <Bool
+                    label='Can Edit Subject Groups'
+                    dataXPath='$.canWriteSubjectGroups'
+                />
+                <Bool
+                    label='Can Delete Subject Groups'
+                    dataXPath='$.canRemoveSubjectGroups'
                 />
             </PermBox>
 
@@ -214,6 +233,10 @@ const FormFields = (ps) => {
                     dataXPath='$.canUseCSVExport'
                 />
                 <Bool
+                    label='Can Access Sensitive Fields (e.g. WKPRC-Comment)'
+                    dataXPath='$.canAccessSensitiveFields'
+                />
+                <Bool
                     label='Can View Receptionist Calendar'
                     dataXPath='$.canViewReceptionCalendar'
                 />
@@ -222,7 +245,6 @@ const FormFields = (ps) => {
             <MainHeader>
                 { translate('Lab Workflow Related Permissions') }
             </MainHeader>
-
             <LabOperationFields
                 type='inhouse'
                 title={ translate('Inhouse Appointments') }

@@ -12,6 +12,7 @@ var {
 var WideBool = require('./wide-bool');
 
 var subjectCollectionFlags = require('./subject-collection-flags');
+var subjectGroupCollectionFlags = require('./subject-group-collection-flags');
 var locationCollectionFlags = require('./location-collection-flags');
 var studyCollectionFlags = require('./study-collection-flags');
 var studyTopicCollectionFlags = require('./study-topic-collection-flags');
@@ -37,6 +38,7 @@ var SystemRoleState = ({
             
             
             ...subjectCollectionFlags,
+            ...subjectGroupCollectionFlags,
             ...locationCollectionFlags,
             ...studyCollectionFlags,
             ...studyTopicCollectionFlags,

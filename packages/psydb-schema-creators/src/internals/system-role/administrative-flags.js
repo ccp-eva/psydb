@@ -23,4 +23,14 @@ module.exports = {
             kann Termine innerhalb der nächsten 3 Tage machen
         `,
     }),
+    canViewStudyLabOpsSettings: WideBool({
+        title: inline`
+            kann Ablauf-Einstellungen von Studien einsehen
+        `,
+    }),
+    canAccessSensitiveFields: WideBool({
+        title: inline`
+            kann sensible Felder einsehen (z.B. WKPRC-Kommentar)
+        `,
+    })
 }
