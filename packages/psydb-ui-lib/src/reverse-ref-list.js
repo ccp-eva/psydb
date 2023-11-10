@@ -58,6 +58,11 @@ export const ReverseRefList = (ps) => {
                     <div className='pl-3'>
                         { collectionReverseRefs.map((it, ix) => {
                             var { type, _id, _recordLabel } = it;
+
+                            // FIXME: fallback because pre-remove info
+                            // currently does not return _recordLabel
+                            _recordLabel = _recordLabel || _id;
+
                             var clink = collectionUILinks[collection];
 
                             var renderedText = undefined;

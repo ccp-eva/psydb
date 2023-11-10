@@ -39,10 +39,14 @@ var fetchSubjectGroupPreRemoveInfo = async (bag) => {
 
     var reverseRefs = await fetchRecordReverseRefs({
         db,
-        recordId: subjectGroupId,
+        //recordId: subjectGroupId, // FIXME maybe other have this issue too
+        recordId: subjectGroupRecord._id,
         refTargetCollection: 'subjectGroup',
         excludedCollections: [ 'experiment' ], // done manually
     });
+
+    // TODO: return value of reverse refs does not have _recordLabel
+    // property
 
     var canRemove = (
         hasNone(experiments) && hasNone(reverseRefs)
