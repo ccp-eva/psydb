@@ -51,6 +51,7 @@ var createRouting = (bag = {}) => {
         //withSelfAuth(),
         ...endpoints.metadata({ middleware: [
             withSelfAuth(),
+            withPermissions(),
         ]})
     );
 
@@ -434,6 +435,24 @@ var createRouting = (bag = {}) => {
         withPermissions(),
         withKoaBody(),
         endpoints.subject.relatedExperiments
+    );
+
+    
+
+
+
+
+
+
+
+    // FIXME
+    //router.post('/api-key/search', ...withPostStages({
+    //    endpoint: endpoints.subjectGroup.search
+    //}));
+    router.get('/subject-group/pre-remove-info/:id',
+        withSelfAuth(),
+        withPermissions(),
+        endpoints.subjectGroup.preRemoveInfo
     );
 
     router.post('/location/related-experiments',

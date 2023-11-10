@@ -60,7 +60,6 @@ const SideNav = (ps) => {
                         </b></Link>
                     </WhenAllowed>
 
-
                     { canViewAnyCalendar && (
                         <>
                             <Link to='/calendars'><b>
@@ -161,6 +160,13 @@ const SideNav = (ps) => {
                     ]}>
                         <Link to='/external-organizations'>
                             { translate('External Organizations') }
+                        </Link>
+                    </WhenAllowed>
+                    <WhenAllowed flags={[
+                        'canReadSubjectGroups', 'canWriteSubjectGroups'
+                    ]}>
+                        <Link to='/subject-groups'>
+                            { translate('Subject Groups') }
                         </Link>
                     </WhenAllowed>
                     <WhenAllowed flags={[

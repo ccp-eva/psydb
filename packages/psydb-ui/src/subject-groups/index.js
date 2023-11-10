@@ -1,28 +1,22 @@
 import React from 'react';
 
 import {
-    withCollectionView,
-    withRecordTypeView
+    withUntypedCollectionView
 } from '@mpieva/psydb-ui-lib/src/generic-views'
 
-import { RecordEditor } from './record-editor';
+import { RecordList } from './record-list'
+import { RecordDetails } from './record-details';
 import { RecordCreator } from './record-creator';
+import { RecordEditorContainer } from './record-editor-container';
+import { RecordRemover } from './record-remover';
 
-const SubjectGroupTypeView = withRecordTypeView({
-    RecordEditor,
-    RecordCreator,
-});
-
-const SubjectGroupCollectionView = withCollectionView({
+const SubjectGroupCollectionView = withUntypedCollectionView({
     collection: 'subjectGroup',
-    RecordTypeView: SubjectGroupTypeView
+    RecordList,
+    RecordDetails,
+    RecordCreator,
+    RecordEditor: RecordEditorContainer,
+    RecordRemover,
 });
 
-const SubjectGroups = () => {
-    return (
-        <SubjectGroupCollectionView />
-    );
-}
-
-
-export default SubjectGroups;
+export default SubjectGroupCollectionView;

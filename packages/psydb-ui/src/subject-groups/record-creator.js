@@ -1,13 +1,8 @@
 import React from 'react';
 import { useSendCreate, usePermissions } from '@mpieva/psydb-ui-hooks';
 import { withRecordCreator } from '@mpieva/psydb-ui-lib';
-import { MainForm } from './main-form';
+import MainForm from './main-form';
 
-
-const Defaults = () => ({
-    name: '',
-    subjectsForType: [],
-});
 
 const CreateForm = (ps) => {
     var { collection, onSuccessfulUpdate } = ps;
@@ -18,14 +13,20 @@ const CreateForm = (ps) => {
         onSuccessfulUpdate
     })
 
-    var initialValues = Defaults();
+    var wrappedSend = (formData, formikBag) => {
+        var { subjectType, props } = formData;
+        return send.exec(props, formikBag, { subjectType })
+    }
+
+    var initialValues = MainForm.createDefaults();
 
     return (
-        <MainForm
+        <MainForm.Component
             title='Neue Proband:innen-Gruppe'
             initialValues={ initialValues }
-            onSubmit={ send.exec }
+            onSubmit={ wrappedSend }
             permissions={ permissions }
+            enableSubjectTypeSelect={ true }
         />
     )
 }

@@ -21,6 +21,7 @@ module.exports = {
 
     opsTeam: require('./entities/ops-team'),
     subject: require('./entities/subject'),
+    subjectGroup: require('./entities/subject-group'),
     location: require('./entities/location'),
     personnel: require('./entities/personnel'),
     apiKey: require('./entities/api-key'),

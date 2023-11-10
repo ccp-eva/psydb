@@ -65,7 +65,6 @@ module.exports.ExternalPersonMessage = require('./external-person/record-message
             
 module.exports.SubjectGroupFullSchema = require('./subject-group/full-schema');
 module.exports.SubjectGroupState = require('./subject-group/state');
-module.exports.SubjectGroupRecordMessage = require('./subject-group/record-message');
 
 
 module.exports.OnlineSurveyExperimentVariantSettingState = (
@@ -77,12 +76,13 @@ module.exports.OnlineVideoCallExperimentVariantSettingState = (
 module.exports.InhouseExperimentVariantSettingState = (
     require('./experiment-variant-setting/inhouse-state')
 );
-module.exports.InhouseGroupSimpleExperimentVariantSettingState = (
-    require('./experiment-variant-setting/inhouse-group-simple-state')
-);
 module.exports.AwayTeamExperimentVariantSettingState = (
     require('./experiment-variant-setting/away-team-state')
 )
+
+module.exports.InhouseGroupSimpleExperimentVariantSettingState = (
+    require('./experiment-variant-setting/inhouse-group-simple-state')
+);
 
 module.exports.ApiKeyFullSchema = require('./api-key/full-schema');
 module.exports.ApiKeyState = require('./api-key/state');

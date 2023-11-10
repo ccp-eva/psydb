@@ -129,6 +129,7 @@ var collections = createEnumFromKV({
         'systemRole',
         'customRecordType',
         'studyTopic',
+        'subjectGroup',
     ],
     names: [
         ...customRecordTypeCollections.names,
@@ -140,6 +141,7 @@ var collections = createEnumFromKV({
         'System Roles',
         'Record Types',
         'Study Topics',
+        'Subject Groups'
     ]
 })
 
@@ -148,11 +150,13 @@ var foreignIdFieldCollections = createEnumFromKV({
         ...customRecordTypeCollections.keys,
         'personnel',
         'studyTopic',
+        'subjectGroup',
     ],
     names: [
         ...customRecordTypeCollections.names,
         'Mitarbeiter:in',
         'Themengebiete',
+        'Proband:innen-Gruppe',
     ]
 })
 
