@@ -1,5 +1,6 @@
 import React from 'react';
 import { only } from '@mpieva/psydb-core-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { usePermissions, useSendPatch } from '@mpieva/psydb-ui-hooks';
 import { withRecordEditor } from '@mpieva/psydb-ui-lib';
 import MainForm from './main-form';
@@ -13,6 +14,7 @@ const EditForm = (ps) => {
     } = ps;
 
     var { record, related } = fetched;
+    var translate = useUITranslation();
 
     var send = useSendPatch({
         collection,
@@ -43,7 +45,7 @@ const EditForm = (ps) => {
     return (
         <>
             <MainForm.Component
-                title='Proband:innen-Gruppe bearbeiten'
+                title={ translate('Edit Subject Group') }
                 initialValues={ initialValues }
                 onSubmit={ wrappedSend }
                 subjectType={ subjectType }

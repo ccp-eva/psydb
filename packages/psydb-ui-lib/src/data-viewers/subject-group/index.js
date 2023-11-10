@@ -8,11 +8,11 @@ import {
 
 
 const labels = {
-    '/subjectType': 'Proband:innen-Typ',
-    '/state/locationType': 'Location-Typ',
+    '/subjectType': 'Subject Type',
+    '/state/locationType': 'Location Type',
     '/state/locationId': 'Location',
-    '/state/name': 'Bezeichnung',
-    '/state/comment': 'Kommentar',
+    '/state/name': '_designation',
+    '/state/comment': 'Comment',
 }
 
 const [ SubjectGroup, Context ] = createBase();

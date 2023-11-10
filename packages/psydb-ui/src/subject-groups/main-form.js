@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { Pair, Button } from '@mpieva/psydb-ui-layout';
 
 import {
@@ -26,6 +27,8 @@ const Component = (ps) => {
         enableSubjectTypeSelect
     }
 
+    var translate = useUITranslation();
+
     return (
         <FormBox title={ title }>
             <DefaultForm
@@ -40,7 +43,9 @@ const Component = (ps) => {
                             formikProps={ formikProps }
                             { ...formFieldsBag }
                         />
-                        <Button type='submit'>Speichern</Button>
+                        <Button type='submit'>
+                            { translate('Save') }
+                        </Button>
                     </>
                 )}
             </DefaultForm>
@@ -58,31 +63,33 @@ const FormFields = (ps) => {
     } = ps;
     var { props: { locationType }} = formikProps.values['$'];
 
+    var translate = useUITranslation();
+
     return (
         <>
             { enableSubjectTypeSelect ? (
                 <Fields.GenericTypeKey
-                    label='Proband:innen-Typ'
+                    label={ translate('Subject Type')}
                     dataXPath='$.subjectType'
                     collection='subject'
                     required
                 />
             ) : (
                 <Pair
-                    label='Proband:innen-Typ'
+                    label={ translate('Subject Type')}
                     wLeft={ 3 } wRight={ 9 } className='px-3'
                 >
                     { related.relatedCustomRecordTypes.subject[subjectType].state.label }
                 </Pair>
             )}
             <Fields.GenericTypeKey
-                label='Location-Typ'
+                label={ translate('Location Type')}
                 dataXPath='$.props.locationType'
                 collection='location'
                 required
             />
             <Fields.ForeignId
-                label='Location'
+                label={ translate('Location')}
                 dataXPath='$.props.locationId'
                 collection='location'
                 recordType={ locationType }
@@ -90,16 +97,16 @@ const FormFields = (ps) => {
                 required
             />
             <Fields.SaneString
-                label='Bezeichnung'
+                label={ translate('_designation')}
                 dataXPath='$.props.name'
                 required
             />
             <Fields.FullText
-                label='Kommentar'
+                label={ translate('Comment')}
                 dataXPath='$.props.comment'
             />
             <Fields.AccessRightByResearchGroupList
-                label='Zugriff auf diesen Datensatz für'
+                label={ translate('Record Access for') }
                 dataXPath='$.props.systemPermissions.accessRightsByResearchGroup'
                 related={ related }
                 required

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useRouteMatch, useParams } from 'react-router-dom';
 
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { withRecordDetails } from '@mpieva/psydb-ui-lib';
 import { DetailsBox, LinkButton } from '@mpieva/psydb-ui-layout';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
@@ -16,6 +17,7 @@ const DetailsBody = (ps) => {
     
     var { record, related } = fetched;
     var { url } = useRouteMatch();
+    var translate = useUITranslation();
     
     var canEdit = permissions.hasCollectionFlag('subjectGroup', 'write');
 
@@ -25,7 +27,7 @@ const DetailsBody = (ps) => {
         related
     }
 
-    var title = 'Proband:innen-Gruppen-Details';
+    var title = translate('Subject Group Details')
     return (
         <>
             <DetailsBox

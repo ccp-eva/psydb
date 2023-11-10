@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useSendRemove } from '@mpieva/psydb-ui-hooks';
 import {
     Pair,
@@ -29,6 +30,8 @@ const SafetyForm = (ps) => {
     var { record } = fetched;
     var { state: { name }} = record;
 
+    var translate = useUITranslation();
+
     var send = useSendRemove({
         collection,
         recordType,
@@ -46,9 +49,12 @@ const SafetyForm = (ps) => {
     var { canRemove, experiments, reverseRefs } = fetchedInfo.data;
 
     return (
-        <FormBox title='Proband:innen-Gruppe löschen' titleClassName='text-danger'>
+        <FormBox
+            title={ translate('Delete Subject Group') }
+            titleClassName='text-danger'
+        >
             <Pair 
-                label='Proband:innen-Gruppe'
+                label={ translate('Subject Group')}
                 wLeft={ 3 } wRight={ 9 } className='px-3'
             >
                 { name }
@@ -57,7 +63,7 @@ const SafetyForm = (ps) => {
             { experiments.length > 0 && (
                 <>
                     <Alert variant='danger'><b>
-                        Gruppe in Studienteilnahmen referenziert
+                        { translate('Subject group is referenced by study participations!') }
                     </b></Alert>
 
                     <ExperimentList experiments={ experiments } />
@@ -67,7 +73,7 @@ const SafetyForm = (ps) => {
             { reverseRefs.length > 0 && (
                 <>
                     <Alert variant='danger'><b>
-                        Gruppe wird von anderen Datensätzen referenziert
+                        { translate('Subject group is referenced by other records!') }
                     </b></Alert>
 
                     <ReverseRefList reverseRefs={ reverseRefs } />
@@ -79,7 +85,7 @@ const SafetyForm = (ps) => {
                 onClick={ send.exec }
                 disabled={ !canRemove }
             >
-                Löschen
+                { translate('Delete') }
             </Button>
         </FormBox>
     )
@@ -87,16 +93,22 @@ const SafetyForm = (ps) => {
 
 const SuccessInfo = (ps) => {
     var { successInfoBackLink } = ps;
+    var translate = useUITranslation();
     return (
-        <FormBox titleClassName='text-success' title='Proband:innen-Gruppe gelöscht'>
-            <i>Proband:innen-Gruppe wurde erfolgreich gelöscht</i>
+        <FormBox
+            titleClassName='text-success'
+            title={ translate('Subject Group Deleted') }
+        >
+            <i>
+                { translate('Subject group was deleted successfully!') }
+            </i>
             { successInfoBackLink && (
                 <>
                     <hr />
                     <a href={ successInfoBackLink }>
                         <Icons.ArrowLeftShort />
                         {' '}
-                        <b>zurück zur Liste</b>
+                        <b>{ translate('Back to List') }</b>
                     </a>
                 </>
             )}

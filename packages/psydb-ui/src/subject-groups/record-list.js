@@ -3,6 +3,7 @@ import { useRouteMatch } from 'react-router-dom';
 import RecordListContainer from '@mpieva/psydb-ui-lib/src/record-list-container';
 
 import { entries, keyBy, groupBy } from '@mpieva/psydb-core-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
 import {
     useFetch,
@@ -33,6 +34,7 @@ export const RecordList = (ps) => {
     var { path, url } = useRouteMatch();
     var revision = useRevision();
     
+    var translate = useUITranslation();
     var permissions = usePermissions();
     var enableNew = true;
     var canCreate = permissions.hasCollectionFlag('subjectGroup', 'write');
@@ -98,7 +100,7 @@ export const RecordList = (ps) => {
             { enableNew && canCreate && (
                 <div className='mb-2'>
                     <LinkButton to={`${url}/new`}>
-                        Neuer Eintrag
+                        { translate('New Record') }
                     </LinkButton>
                 </div>
             )}
