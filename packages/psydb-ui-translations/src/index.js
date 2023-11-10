@@ -355,6 +355,10 @@ var maps = [
         de: 'Location-Typ'
     },
     {
+        en: 'Location Types',
+        de: 'Location-Typen'
+    },
+    {
         en: 'Location',
         de: 'Location'
     },
@@ -1368,8 +1372,16 @@ var maps = [
         de: 'Studien-Typ'
     },
     {
+        en: 'Study Types',
+        de: 'Studien-Typen'
+    },
+    {
         en: 'Subject Type',
         de: 'Proband:innen-Typ'
+    },
+    {
+        en: 'Subject Types',
+        de: 'Proband:innen-Typen'
     },
     {
         en: 'Add Subject Type',
@@ -1439,6 +1451,10 @@ var maps = [
     {
         en: 'Add Settings',
         de: 'Einstellungen hinzufügen'
+    },
+    {
+        en: 'Lab Workflows',
+        de: 'Abläufe' // FIXME: Labor-Abläufe?
     },
     {
         en: 'Lab Workflow',
