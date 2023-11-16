@@ -730,6 +730,7 @@ importers:
 
   ../../packages/psydb-database-scripts:
     specifiers:
+      '@cdxoo/mongodb-escape-keys': ~0.1.1
       '@mpieva/psydb-api-config': workspace:~0.1.0-alpha
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
       '@mpieva/psydb-mongo-adapter': workspace:~0.1.0-alpha
@@ -737,6 +738,7 @@ importers:
       mongodb: ~3.6.3
       nanoid: ~3.3.6
     dependencies:
+      '@cdxoo/mongodb-escape-keys': 0.1.1
       '@mpieva/psydb-api-config': link:../psydb-api-config
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
       '@mpieva/psydb-mongo-adapter': link:../psydb-mongo-adapter
