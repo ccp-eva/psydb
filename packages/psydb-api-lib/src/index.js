@@ -83,6 +83,7 @@ module.exports = {
     
     ...require('./rohrpost-channel-history'),
     ...require('./fetch-crt-pre-remove-info'),
+    ...require('./fetch-subject-group-pre-remove-info'),
     ...require('./fetch-helper-set-pre-remove-info'),
     ...require('./fetch-experiment-variant-pre-remove-info'),
     ...require('./fetch-experiment-variant-setting-pre-remove-info'),

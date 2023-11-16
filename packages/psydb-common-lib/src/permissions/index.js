@@ -30,6 +30,13 @@ var Permissions = (options) => {
         forcedResearchGroupId,
         researchGroupIdsByFlag,
         researchGroupIdsByCollection,
+
+        availableSubjectTypes,
+        availableLocationTypes,
+        availableStudyTypes,
+        availableLabMethods,
+        availableHelperSetIds,
+        availableSystemRoleIds,
     } = wrapper;
 
     var isRoot = () => (
@@ -171,6 +178,16 @@ var Permissions = (options) => {
         );
     };
 
+    var isLabMethodAvailable = (labMethod) => (
+        isRoot() ? true : availableLabMethods.includes(labMethod)
+    );
+    
+    var isSubjectTypeAvailable = (keyOrId) => (
+        isRoot() ? true : !!availableSubjectTypes.find((it) => (
+            it.key === keyOrId || it.id === keyOrId
+        ))
+    );
+
     var intermediate = {
         ...wrapper,
 
@@ -187,6 +204,16 @@ var Permissions = (options) => {
         hasLabOperationFlag,
         hasSomeLabOperationFlags,
         hasCollectionFlag,
+        
+        availableSubjectTypes,
+        availableLocationTypes,
+        availableStudyTypes,
+        availableLabMethods,
+        availableHelperSetIds,
+        availableSystemRoleIds,
+
+        isLabMethodAvailable,
+        isSubjectTypeAvailable,
         
         getAllowedLabOpsForFlags,
         hasLabOpsFlags,

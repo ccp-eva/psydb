@@ -160,11 +160,27 @@ const labels = {
         'Can Delete Subjects'
     ),
 
+    '/state/canReadSubjectGroups': (
+        'Can View Subject Groups'
+    ),
+    '/state/canWriteSubjectGroups': (
+        'Can Edit Subject Groups'
+    ),
+    '/state/canRemoveSubjectGroups': (
+        'Can Delete Subject Groups'
+    ),
+
     '/state/canReadParticipation': (
         'Can View Study Participation'
     ),
     '/state/canWriteParticipation': (
         'Can Add Study Participations Manually'
+    ),
+    '/state/canViewStudyLabOpsSettings': (
+        'Can View Lab Workflow Settings of Studies'
+    ),
+    '/state/canAccessSensitiveFields': (
+        'Can Access Sensitive Fields (e.g. WKPRC-Comment)'
     ),
     '/state/canCreateReservationsWithinTheNext3Days': (
         'Can Reserve Rooms/Teams Within the Next 3 Days'

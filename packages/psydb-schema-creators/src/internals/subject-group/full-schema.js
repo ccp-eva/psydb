@@ -1,17 +1,18 @@
 'use strict';
 var {
-    ExactObject,
+    ClosedObject,
+    Id,
+    CustomRecordTypeKey,
 } = require('@mpieva/psydb-schema-fields');
 
-var State = require('./state');
+var internals = require('../');
 
-var FullSchema = ({ enableInternalProps } = {}) => ExactObject({
-    properties: {
-        state: State({ enableInternalProps })
-    },
-    required: [
-        'state',
-    ]
+var FullSchema = (bag) => ClosedObject({
+    _id: Id(),
+    subjectType: CustomRecordTypeKey({
+        collection: 'subject'
+    }),
+    state: internals.SubjectGroupState(bag)
 });
 
 module.exports = FullSchema;

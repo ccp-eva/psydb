@@ -1,18 +1,14 @@
 import React from 'react';
-import { Button } from '@mpieva/psydb-ui-layout';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { Pair, Button } from '@mpieva/psydb-ui-layout';
 
 import {
     DefaultForm,
     Fields,
     FormBox,
-    withFieldArray,
-    withField,
-    useFormikContext,
 } from '@mpieva/psydb-ui-lib';
 
-import { useFetch } from '@mpieva/psydb-ui-hooks';
-
-export const MainForm = (ps) => {
+const Component = (ps) => {
     var {
         title,
         initialValues,
@@ -20,22 +16,36 @@ export const MainForm = (ps) => {
 
         related,
         permissions,
+        subjectType,
+        enableSubjectTypeSelect,
     } = ps;
+
+    var formFieldsBag = {
+        related,
+        permissions,
+        subjectType,
+        enableSubjectTypeSelect
+    }
+
+    var translate = useUITranslation();
 
     return (
         <FormBox title={ title }>
             <DefaultForm
                 initialValues={ initialValues }
                 onSubmit={ onSubmit }
+                ajvErrorInstancePathPrefix='/payload'
                 useAjvAsync
             >
                 {(formikProps) => (
                     <>
                         <FormFields
-                            related={ related }
-                            permissions={ permissions }
+                            formikProps={ formikProps }
+                            { ...formFieldsBag }
                         />
-                        <Button type='submit'>Speichern</Button>
+                        <Button type='submit'>
+                            { translate('Save') }
+                        </Button>
                     </>
                 )}
             </DefaultForm>
@@ -44,87 +54,82 @@ export const MainForm = (ps) => {
 }
 
 const FormFields = (ps) => {
-    var { related, permissions } = ps;
+    var {
+        formikProps,
+        related,
+        permissions,
+        subjectType,
+        enableSubjectTypeSelect
+    } = ps;
+    var { props: { locationType }} = formikProps.values['$'];
+
+    var translate = useUITranslation();
+
     return (
         <>
-            <Fields.SaneString
-                label='Name'
-                dataXPath='$.name'
+            { enableSubjectTypeSelect ? (
+                <Fields.GenericTypeKey
+                    label={ translate('Subject Type')}
+                    dataXPath='$.subjectType'
+                    collection='subject'
+                    required
+                />
+            ) : (
+                <Pair
+                    label={ translate('Subject Type')}
+                    wLeft={ 3 } wRight={ 9 } className='px-3'
+                >
+                    { related.relatedCustomRecordTypes.subject[subjectType].state.label }
+                </Pair>
+            )}
+            <Fields.GenericTypeKey
+                label={ translate('Location Type')}
+                dataXPath='$.props.locationType'
+                collection='location'
                 required
             />
             <Fields.ForeignId
-                label='Forschungsgruppe'
-                dataXPath='$.researchGroupId'
-                collection='researchGroup'
+                label={ translate('Location')}
+                dataXPath='$.props.locationId'
+                collection='location'
+                recordType={ locationType }
+                disabled={ !locationType }
                 required
             />
-            <SubjectsForTypeList
-                dataXPath='$.subjectsForType'
-                label='Proband:innen'
-                { ...ps }
+            <Fields.SaneString
+                label={ translate('_designation')}
+                dataXPath='$.props.name'
+                required
+            />
+            <Fields.FullText
+                label={ translate('Comment')}
+                dataXPath='$.props.comment'
+            />
+            <Fields.AccessRightByResearchGroupList
+                label={ translate('Record Access for') }
+                dataXPath='$.props.systemPermissions.accessRightsByResearchGroup'
+                related={ related }
+                required
             />
         </>
     );
 }
 
-const SubjectsForType = withField({
-    Control: (ps) => {
-        var {
-            dataXPath,
-            formikField,
-            formikMeta,
-            formikForm,
-
-            disabled,
-        } = ps;
-
-        var { value = {} } = formikField;
-        var { subjectType } = value;
-        
-        return (
-            <>
-                <CRTPicker
-                    dataXPath={ `${dataXPath}.subjectType` }
-                    label='Proband:innen-Typ'
-                    collection='subject'
-                />
-                <Fields.ForeignIdList
-                    dataXPath={ `${dataXPath}.subjectIds` }
-                    label='Proband:innen'
-                    collection='subject'
-                    recordType={ subjectType }
-                    disabled={ !subjectType }
-                />
-            </>
-        )
+const createDefaults = (options) => {
+    return {
+        props: {
+            name: '',
+            comment: '',
+            systemPermissions: {
+                accessRightsByResearchGroup: [],
+                isHidden: false,
+            }
+        }
     }
-});
-
-const SubjectsForTypeList = withFieldArray({
-    FieldComponent: SubjectsForType,
-    ArrayContentWrapper: 'ObjectArrayContentWrapper',
-    ArrayItemWrapper: 'ObjectArrayItemWrapper',
-});
-
-
-//TODO make actal picker
-const CRTPicker = (ps) => {
-    var { collection, ...pass } = ps;
-    
-    var [ didFetch, fetched ] = useFetch((agent) => (
-        agent.fetchCollectionCRTs({ collection })
-    ), [ collection ]);
-
-    if (!didFetch) {
-        return null;
-    }
-
-    var options = fetched.data.reduce((acc, it) => ({
-        ...acc,
-        [it.type]: it.label
-    }), {});
-
-    return (
-        <Fields.GenericEnum { ...pass } options={ options } />
-    )
 }
+
+const out = {
+    Component,
+    createDefaults
+}
+export default out;

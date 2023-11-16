@@ -1,8 +1,9 @@
 import React from 'react';
-
+import { only } from '@mpieva/psydb-core-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { usePermissions, useSendPatch } from '@mpieva/psydb-ui-hooks';
 import { withRecordEditor } from '@mpieva/psydb-ui-lib';
-import { MainForm } from './main-form';
+import MainForm from './main-form';
 
 const EditForm = (ps) => {
     var {
@@ -12,30 +13,43 @@ const EditForm = (ps) => {
         onSuccessfulUpdate
     } = ps;
 
-    var {
-        record,
-        schema,
-        related
-    } = fetched;
-
-    var permissions = usePermissions();
+    var { record, related } = fetched;
+    var translate = useUITranslation();
 
     var send = useSendPatch({
         collection,
         record,
         onSuccessfulUpdate
     });
+    
+    var wrappedSend = (formData, formikBag) => {
+        var { props } = formData;
+        return send.exec(props, formikBag)
+    }
 
-    var initialValues = record.state;
+    var initialValues = {
+        props: only({
+            from: record.state,
+            paths: [
+                'name',
+                'locationType',
+                'locationId',
+                'comment',
+                'systemPermissions'
+            ]
+        })
+    };
+
+    var { subjectType } = record;
 
     return (
         <>
-            <MainForm
-                title='Proband:innen-Gruppe bearbeiten'
+            <MainForm.Component
+                title={ translate('Edit Subject Group') }
                 initialValues={ initialValues }
-                onSubmit={ send.exec }
+                onSubmit={ wrappedSend }
+                subjectType={ subjectType }
                 related={ related }
-                permissions={ permissions }
             />
         </>
     )

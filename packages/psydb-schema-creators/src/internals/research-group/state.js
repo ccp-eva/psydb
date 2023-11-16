@@ -7,7 +7,10 @@ var {
     Address,
     FullText,
     DefaultArray,
+    ForeignId,
     CustomRecordTypeKey,
+    LabMethodKey,
+    ForeignIdList,
 } = require('@mpieva/psydb-schema-fields');
 
 var ResearchGroupState = ({} = {}) => {
@@ -28,6 +31,51 @@ var ResearchGroupState = ({} = {}) => {
             description: FullText({
                 title: 'Beschreibung',
             }),
+            
+            studyTypes: DefaultArray({
+                items: ExactObject({
+                    properties: {
+                        id: ForeignId({ collection: 'customRecordType' }),
+                        key: CustomRecordTypeKey({ collection: 'study' }),
+                    },
+                    required: [ 'key' ]
+                }),
+                minItems: 0,
+            }),
+            subjectTypes: DefaultArray({
+                items: ExactObject({
+                    properties: {
+                        id: ForeignId({ collection: 'customRecordType' }),
+                        key: CustomRecordTypeKey({ collection: 'subject' }),
+                    },
+                    required: [ 'key' ]
+                }),
+                minItems: 0,
+            }),
+            locationTypes: DefaultArray({
+                items: ExactObject({
+                    properties: {
+                        id: ForeignId({ collection: 'customRecordType' }),
+                        key: CustomRecordTypeKey({ collection: 'location' })
+                    },
+                    required: [ 'key' ]
+                }),
+                minItems: 0,
+            }),
+
+            labMethods: DefaultArray({
+                items: LabMethodKey(),
+                minItems: 0,
+            }),
+
+            helperSetIds: ForeignIdList({
+                collection: 'helperSet',
+            }),
+            
+            systemRoleIds: ForeignIdList({
+                collection: 'systemRole',
+            }),
+            
             // TODO: permissions????
             // should they be readable to all?
             // and writable only to root accounts?

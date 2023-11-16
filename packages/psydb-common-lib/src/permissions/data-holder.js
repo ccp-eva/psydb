@@ -13,9 +13,16 @@ var PermissionsDataHolder = ({
     rolesByResearchGroupId,
 
     researchGroupIds: availableResearchGroupIds,
+    researchGroups: availableResearchGroups,
     forcedResearchGroupId,
+     
+    availableSubjectTypes,
+    availableLocationTypes,
+    availableStudyTypes,
+    availableLabMethods,
+    availableHelperSetIds,
+    availableSystemRoleIds,
 }) => {
-
     var internal = setupInternalResearchGroupIds({
         hasRootAccess,
         availableResearchGroupIds,
@@ -32,6 +39,29 @@ var PermissionsDataHolder = ({
             })
         )
     );
+
+    // FIXME: somehow this triggers in frontend if 'availableResearchGroups'
+    // is ommitted
+    if (hasRootAccess && forcedResearchGroupId && availableResearchGroups) {
+        ({
+            subjectTypes: availableSubjectTypes = [],
+            locationTypes: availableLocationTypes = [],
+            studyTypes: availableStudyTypes = [],
+            labMethods: availableLabMethods = [],
+            helperSetIds: availableHelperSetIds = [],
+        } = (
+            availableResearchGroups.find(it => (
+                compareIds(it._id, forcedResearchGroupId)
+            )).state
+        ))
+    }
+
+    //console.log({
+    //    availableSubjectTypes,
+    //    availableLocationTypes,
+    //    availableStudyTypes,
+    //    availableLabMethods,
+    //});
 
     var researchGroupIdsByCollection = (
         gatherResearchGroupIdsForCollections({
@@ -59,6 +89,13 @@ var PermissionsDataHolder = ({
         flagsByResearchGroupId,
         researchGroupIdsByCollection,
         researchGroupIdsByFlag,
+        
+        availableSubjectTypes,
+        availableLocationTypes,
+        availableStudyTypes,
+        availableLabMethods,
+        availableHelperSetIds,
+        availableSystemRoleIds,
     };
 
     return permissions;
