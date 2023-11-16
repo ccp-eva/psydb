@@ -437,12 +437,12 @@ var createRouting = (bag = {}) => {
         endpoints.subject.relatedExperiments
     );
 
-    
-
-
-
-
-
+    router.post('/subject/read-many',
+        withSelfAuth(),
+        withPermissions(),
+        withKoaBody(),
+        endpoints.subject.readMany
+    );
 
 
     // FIXME
