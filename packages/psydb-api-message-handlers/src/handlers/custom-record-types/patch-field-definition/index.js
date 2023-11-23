@@ -1,6 +1,7 @@
 'use strict';
 
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
+var { pathify } = require('@mpieva/psydb-core-utils');
 var {
     ApiError,
     validateOrThrow,
@@ -124,7 +125,10 @@ var triggerSystemEvents = async (context) => {
                 [`${fieldPath}.isDirty`]: true,
                 [`${fieldPath}.displayName`]: displayName,
                 [`${fieldPath}.displayNameI18N`]: displayNameI18N,
-                ...(fieldProps && pathified)
+                ...(
+                    (fieldProps && Object.keys(fieldProps).length > 0)
+                    && pathified
+                )
             }
         }
     });
