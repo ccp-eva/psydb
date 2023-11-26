@@ -5,6 +5,7 @@ var {
     SaneString,
     StringEnum,
     IdentifierString,
+    DefaultBool
 } = require('@mpieva/psydb-schema-fields');
 
 /*var {

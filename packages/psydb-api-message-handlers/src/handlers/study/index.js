@@ -5,17 +5,6 @@ var {
 
 var GenericRecordHandler = require('../../lib/generic-record-handler');
 
-/*var StudyGroup = MessageHandlerGroup([
-    GenericRecordHandler({
-        collection: 'study',
-        op: 'create',
-    }),
-    GenericRecordHandler({
-        collection: 'study',
-        op: 'patch',
-    }),
-]);*/
-
 // TODO
 var StudyGroup = MessageHandlerGroup([
     // creates new record and add core attributes
@@ -29,10 +18,11 @@ var StudyGroup = MessageHandlerGroup([
         op: 'create',
     }),
 
-    GenericRecordHandler({
-        collection: 'study',
-        op: 'patch',
-    }),
+    require('./patch'),
+    //GenericRecordHandler({
+    //    collection: 'study',
+    //    op: 'patch',
+    //}),
 
     require('./add-inhouse-test-location-type'),
     require('./update-inhouse-test-location-type-settings'),

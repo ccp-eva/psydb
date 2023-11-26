@@ -1153,7 +1153,7 @@ var maps = [
     },
     {
         en: 'Appointments Not on',
-        de: 'Neue Forschungsgruppe'
+        de: 'Termine Nicht am'
     },
     {
         en: 'Reservable From',
