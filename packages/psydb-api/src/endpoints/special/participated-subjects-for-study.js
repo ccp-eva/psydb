@@ -10,10 +10,6 @@ var {
 } = require('@mpieva/psydb-core-utils');
 
 var {
-    gatherSubjectTypesFromLabProcedureSettings
-} = require('@mpieva/psydb-common-lib');
-
-var {
     ApiError,
     ResponseBody,
 
@@ -43,6 +39,7 @@ var {
 var RequestBodySchema = () => ExactObject({
     properties: {
         studyId: ForeignId({ collection: 'study' }),
+        subjectType: { type: 'string' }, // FIXME
         onlyParticipated: DefaultBool(),
         sort: ExactObject({
             properties: {
@@ -63,6 +60,10 @@ var RequestBodySchema = () => ExactObject({
     ]
 });
 
+var ppath = () => (
+    'scientific.state.internals.participatedInStudies'
+);
+
 var participatedSubjectsForStudy = async (context, next) => {
     var { 
         db,
@@ -77,6 +78,7 @@ var participatedSubjectsForStudy = async (context, next) => {
 
     var {
         studyId,
+        subjectType,
         onlyParticipated,
         sort,
     } = request.body;
@@ -89,21 +91,28 @@ var participatedSubjectsForStudy = async (context, next) => {
         additionalFlags: [ 'canReadParticipation' ]
     });
 
-    var settingRecords = await (
-        db.collection('experimentVariantSetting').aggregate([
-            { $match: {
-                studyId,
-            }},
-            { $project: { _id: true, 'state.subjectTypeKey': true }},
-        ]).toArray()
-    );
-    if (settingRecords.length < 1) {
-        throw new ApiError(400, 'StudyHasNoLabProcedureSettings');
-    }
+    var subjectTypeKeys = (
+        subjectType
+        ? [ subjectType ]
+        : await (
+            db.collection('subject').aggregate([
+                { $unwind: '$' + ppath() },
+                { $match: {
+                    ...(subjectType && { type: subjectType }),
 
-    var subjectTypeKeys = gatherSubjectTypesFromLabProcedureSettings({
-        settingRecords
-    });
+                    [ ppath() + '.studyId' ]: studyId,
+                    ...(onlyParticipated && {
+                        [ ppath() + '.status' ]: 'participated',
+                    }),
+                }},
+                { $project: {
+                    type: true,
+                }}
+            ]).map(it => it.type).toArray()
+        )
+    );
+
+    console.log(subjectTypeKeys);
 
     var dataBySubjectType = {};
     for (var subjectType of subjectTypeKeys) {
@@ -148,12 +157,12 @@ var fetchParticipation = async ({
 
     var subjectRecords = await (
         db.collection('subject').aggregate([
-            { $unwind: '$scientific.state.internals.participatedInStudies' },
+            { $unwind: '$' + ppath() },
             { $match: {
                 'type': subjectType,
-                'scientific.state.internals.participatedInStudies.studyId': studyId,
+                [ ppath() + '.studyId' ]: studyId,
                 ...(onlyParticipated && {
-                    'scientific.state.internals.participatedInStudies.status': 'participated'
+                    [ ppath() + '.status' ]: 'participated',
                 })
             }},
             StripEventsStage({
@@ -163,7 +172,7 @@ var fetchParticipation = async ({
                 displayFields,
                 additionalProjection: {
                     'type': true,
-                    'scientific.state.internals.participatedInStudies': true 
+                    [ ppath() ]: true 
                 }
             }),
             ...(sort ? [{ $sort: {
