@@ -751,6 +751,18 @@ const createAgent = (options = {}) => {
         );
     }
 
+    agent.fetchStudySubjectTypeInfos = (bag) => {
+        var {
+            studyId,
+            extraAxiosConfig,
+        } = bag;
+
+        return axios.post(
+            '/api/study/subject-type-infos',
+            { studyId },
+            extraAxiosConfig,
+        );
+    }
     return agent;
 }
 

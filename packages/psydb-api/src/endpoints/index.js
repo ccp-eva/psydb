@@ -24,6 +24,7 @@ module.exports = {
     subjectGroup: require('./entities/subject-group'),
     location: require('./entities/location'),
     personnel: require('./entities/personnel'),
+    study: require('./entities/study'),
     apiKey: require('./entities/api-key'),
     
     helperSet: require('./entities/helper-set'),

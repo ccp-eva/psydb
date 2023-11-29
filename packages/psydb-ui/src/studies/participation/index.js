@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
-import { useUILocale, useUITranslation } from '@mpieva/psydb-ui-contexts';
+import {
+    useUILocale,
+    useUILanguage,
+    useUITranslation,
+} from '@mpieva/psydb-ui-contexts';
 import { useRouteMatch, useParams } from 'react-router-dom';
 
 import { keyBy } from '@mpieva/psydb-core-utils';
@@ -37,6 +41,8 @@ const StudyParticipation = (ps) => {
 
     var locale = useUILocale();
     var translate = useUITranslation();
+    var [ language ] = useUILanguage();
+
     var permissions = usePermissions();
     var canAddSubjects = permissions.hasFlag('canWriteParticipation');
     var canImportCSV = permissions.isRoot();
@@ -58,43 +64,47 @@ const StudyParticipation = (ps) => {
     var [ selectedSubjectType, setSelectedSubjectType ] = useState();
 
     var [ didFetch, fetched ] = useFetchAll((agent) => ({
-        subjectRecordTypes: agent.fetchCollectionCRTs({
-            collection: 'subject'
+        subjectTypeInfos: agent.fetchStudySubjectTypeInfos({
+            studyId: id,
         }),
         participation: agent.fetchParticipatedSubjectsForStudy({
             studyId: id,
+            subjectType: selectedSubjectType,
             sort: {
                 path: sorter.sortPath,
                 direction: sorter.sortDirection,
             }
         })
-    }), [ id, revision.value, sorter.sortPath, sorter.sortDirection ]);
+    }), [
+        id, selectedSubjectType,
+        revision.value,
+        sorter.sortPath, sorter.sortDirection,
+    ]);
 
     if (!didFetch) {
         return <LoadingIndicator size='lg' />
     }
 
-    var { dataBySubjectType } = fetched.participation.data;
-    var subjectTypeKeys = Object.keys(dataBySubjectType);
-    var allSubjectTypes = keyBy({
-        items: fetched.subjectRecordTypes.data,
-        byProp: 'type'
-    });
+    var { subjectTypeInfos, participation } = fetched._stageDatas;
 
     if (!selectedSubjectType) {
-        selectedSubjectType = subjectTypeKeys[0];
+        selectedSubjectType = subjectTypeInfos[0].type;
     }
-
-    var onSuccessfulUpdate = revision.up;
-    var modalBag = { studyId: id, onSuccessfulUpdate };
     
+    var selectedSubjectTypeInfo = subjectTypeInfos.find(it => (
+        it.type === selectedSubjectType
+    ));
+    
+    var {
+        displayFieldDefinitions: definitions
+    } = selectedSubjectTypeInfo;
+
+    var { dataBySubjectType } = participation;
     // FIXME
     var { 
-        displayFieldData,
-        records,
-        related,
-    } = fixRelated(dataBySubjectType[selectedSubjectType]);
-    var definitions = __fixDefinitions(displayFieldData);
+        records = [],
+        related = {},
+    } = fixRelated(dataBySubjectType[selectedSubjectType] || {});
 
     var transformer = createDefaultFieldDataTransformer({
         related,
@@ -102,6 +112,9 @@ const StudyParticipation = (ps) => {
         locale
     })
 
+    var onSuccessfulUpdate = revision.up;
+    var modalBag = { studyId: id, onSuccessfulUpdate };
+    
     return (
         <div className='mt-3'>
 
@@ -116,12 +129,15 @@ const StudyParticipation = (ps) => {
                 { ...csvImportModal.passthrough }
             />
             
-            { subjectTypeKeys > 1 && (
+            { subjectTypeInfos > 1 && (
                 <TabNav
                     activeKey={ selectedSubjectType }
-                    items={ subjectTypeKeys.map(type => ({
-                        key: type,
-                        label: allSubjectTypes[type].label
+                    items={ sbjectTypeInfos.map(it => ({
+                        key: it.type,
+                        label: (
+                            (it.displayNameI18N || {})[language]
+                            || it.displayName
+                        )
                     }))}
                     onItemClick={ (key) => setSelectedSubjectType(key) }
                 />
