@@ -43,6 +43,8 @@ module.exports = {
     flatten: require('@cdxoo/flat').flatten,
     unflatten: require('@cdxoo/flat').unflatten,
     ejson: require('@cdxoo/tiny-ejson'),
-    
+   
+    prefixify: require('./prefixify'),
+
     jsonpointer: require('jsonpointer'),
 }
