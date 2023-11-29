@@ -736,8 +736,10 @@ importers:
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
       '@mpieva/psydb-mongo-adapter': workspace:~0.1.0-alpha
       co: ~4.6.0
+      mingo: ~6.4.9
       mongodb: ~3.6.3
       nanoid: ~3.3.6
+      sift: ~16.0.1
     dependencies:
       '@cdxoo/inline-string': 1.0.0
       '@cdxoo/mongodb-escape-keys': 0.1.1
@@ -745,8 +747,10 @@ importers:
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
       '@mpieva/psydb-mongo-adapter': link:../psydb-mongo-adapter
       co: 4.6.0
+      mingo: 6.4.9
       mongodb: 3.6.12
       nanoid: 3.3.6
+      sift: 16.0.1
 
   ../../packages/psydb-date-interval-fns:
     specifiers:
@@ -8046,6 +8050,10 @@ packages:
   /mimic-fn/2.1.0:
     resolution: {integrity: sha512-OqbOk5oEQeAZ8WXWydlu9HJjz9WVdEIvamMCcXmuqUYjTknH/sqsWvhQ3vgwKFRR1HpjvNBKQ37nbJgYzGqGcg==}
     engines: {node: '>=6'}
+
+  /mingo/6.4.9:
+    resolution: {integrity: sha512-jsOiIEJ19UtTaWjNFN4CnuKWqELm2sINZcHqI/nmjezMvXthBIQOftJrlT85NuIDoSFc0vrbjD+GnrzEgYnPbA==}
+    dev: false
 
   /mini-create-react-context/0.4.1_prop-types@15.8.1+react@17.0.2:
     resolution: {integrity: sha512-YWCYEmd5CQeHGSAKrYvXgmzzkrvssZcuuQDDeqkT+PziKGMgE+0MCCtcKbROzocGBG1meBLl2FotlRwf4gAzbQ==}
