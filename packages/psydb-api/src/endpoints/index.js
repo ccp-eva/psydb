@@ -32,4 +32,7 @@ module.exports = {
     
     experimentVariant: require('./entities/experiment-variant'),
     experimentVariantSetting: require('./entities/experiment-variant-setting'),
+
+    // XXX
+    temp_fixesChecker: require('./temp_fixesChecker'),
 };

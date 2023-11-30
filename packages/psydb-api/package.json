@@ -70,7 +70,8 @@
     "performant-array-to-tree": "~1.9.1",
     "escape-string-regexp": "~4.0.0",
     "sift": "~16.0.1",
-    "formidable": "~2.1.2"
+    "formidable": "~2.1.2",
+    "@cdxoo/mongodb-escape-keys": "~0.2.0-beta.0"
   },
   "devDependencies": {
     "mocha": "~10.2.0",

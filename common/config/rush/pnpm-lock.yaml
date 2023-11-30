@@ -136,6 +136,7 @@ importers:
       '@cdxoo/inline-string': ~1.0.0
       '@cdxoo/inline-text': ~1.0.2
       '@cdxoo/mongo-test-helpers': ~0.7.1
+      '@cdxoo/mongodb-escape-keys': ~0.2.0-beta.0
       '@cdxoo/mongodb-restore': 2.0.0-alpha.2
       '@cdxoo/omit': ~1.0.1
       '@mpieva/json-schema-convert-pointer': workspace:~0.1.0-alpha
@@ -197,6 +198,7 @@ importers:
     dependencies:
       '@cdxoo/inline-string': 1.0.0
       '@cdxoo/inline-text': 1.0.2
+      '@cdxoo/mongodb-escape-keys': 0.2.0-beta.0
       '@cdxoo/omit': 1.0.1
       '@mpieva/json-schema-convert-pointer': link:../json-schema-convert-pointer
       '@mpieva/json-schema-lazy-resolve-oneof': link:../json-schema-lazy-resolve-oneof
@@ -731,7 +733,7 @@ importers:
   ../../packages/psydb-database-scripts:
     specifiers:
       '@cdxoo/inline-string': ~1.0.0
-      '@cdxoo/mongodb-escape-keys': ~0.1.1
+      '@cdxoo/mongodb-escape-keys': ~0.2.0-beta.0
       '@mpieva/psydb-api-config': workspace:~0.1.0-alpha
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
       '@mpieva/psydb-mongo-adapter': workspace:~0.1.0-alpha
@@ -742,7 +744,7 @@ importers:
       sift: ~16.0.1
     dependencies:
       '@cdxoo/inline-string': 1.0.0
-      '@cdxoo/mongodb-escape-keys': 0.1.1
+      '@cdxoo/mongodb-escape-keys': 0.2.0-beta.0
       '@mpieva/psydb-api-config': link:../psydb-api-config
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
       '@mpieva/psydb-mongo-adapter': link:../psydb-mongo-adapter
@@ -2908,6 +2910,14 @@ packages:
       '@cdxoo/jsonpointer-to-objectpath': 1.0.0
       '@cdxoo/objectpath-to-jsonpointer': 1.0.0
       '@cdxoo/traverse': 0.0.1
+    dev: false
+
+  /@cdxoo/mongodb-escape-keys/0.2.0-beta.0:
+    resolution: {integrity: sha512-gfTApgNaVZ/gWLdAlRrVvhj75m/LLON6N7WkkZaxmktB0fZuWFPxGWaDJeNKsOlhE0Q1y9/lamm6IgstyFlPHg==}
+    dependencies:
+      '@cdxoo/jsonpointer-to-objectpath': 1.0.0
+      '@cdxoo/objectpath-to-jsonpointer': 1.0.0
+      '@cdxoo/traverse': 0.0.2
     dev: false
 
   /@cdxoo/mongodb-restore/2.0.0-alpha.2:

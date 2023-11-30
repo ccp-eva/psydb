@@ -496,6 +496,14 @@ var createRouting = (bag = {}) => {
         endpoint: endpoints.study.subjectTypeInfos
     }));
 
+    // XXX
+    router.post('/fixed-add-event-list', ...withPostStages({
+        endpoint: endpoints.temp_fixesChecker.fixedAddEventList
+    }));
+    router.post('/fixed-add-event-details', ...withPostStages({
+        endpoint: endpoints.temp_fixesChecker.fixedAddEventDetails
+    }));
+
     return compose([
         router.routes(),
         router.allowedMethods(),

@@ -44,6 +44,8 @@ import ApiKeys from './api-keys';
 
 import AwayTeamCalendar from './calendars/away-team-experiments/calendar';
 
+import FixesChecker from './temp_fixesChecker';
+
 const Main = ({ onSignedOut, onSignedIn }) => {
     var history = useHistory();
     var agent = useRequestAgent();
@@ -163,6 +165,8 @@ var Routing = () => (
     <Route path='/lab-operation' component={ withEB(LabOperation) } />
     <Route path='/experiments' component={ withEB(Experiments) } />
     <Route path='/api-keys' component={ withEB(ApiKeys) } />
+
+    <Route path='/fixes-checker' component={ withEB(FixesChecker) } />
     </>
 )
 
