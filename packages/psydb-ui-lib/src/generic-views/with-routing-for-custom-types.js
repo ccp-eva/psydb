@@ -9,6 +9,7 @@ import {
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 import RedirectOrTypeNav from '../redirect-or-type-nav';
+import RecordTypeRedirector from './record-type-redirector';
 
 
 const withRoutingForCustomTypes = (options) => {
@@ -58,6 +59,9 @@ const withRoutingForCustomTypes = (options) => {
                         recordTypes={ collectionRecordTypes }
                         enableRedirect={ enableRedirect }
                     />
+                </Route>
+                <Route exact path={ `${path}/:id([0-9a-f]{24})` }>
+                    <RecordTypeRedirector collection={ collection} />
                 </Route>
                 <Route path={`${path}/:recordType`}>
                     <RecordTypeView { ...({
