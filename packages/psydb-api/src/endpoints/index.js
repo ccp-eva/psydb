@@ -30,6 +30,7 @@ module.exports = {
     helperSet: require('./entities/helper-set'),
     helperSetItem: require('./entities/helper-set-item'),
     
+    experiment: require('./entities/experiment'),
     experimentVariant: require('./entities/experiment-variant'),
     experimentVariantSetting: require('./entities/experiment-variant-setting'),
 
