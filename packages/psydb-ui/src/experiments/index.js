@@ -12,6 +12,8 @@ import {
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { PageWrappers } from '@mpieva/psydb-ui-layout';
 import { FormBox } from '@mpieva/psydb-ui-lib';
+
+import ExperimentRedirector from './experiment-redirector';
 import ExperimentContainer from './experiment-container';
 
 const Experiments = () => {
@@ -22,6 +24,9 @@ const Experiments = () => {
         <PageWrappers.Level1 title={ translate('Appointment') }>
             <PageWrappers.Level2 title={ translate('Details') }>
                 <Switch>
+                    <Route exact path={ `${path}/:id([0-9a-f]{24})`}>
+                        <ExperimentRedirector />
+                    </Route>
                     <Route exact path={ `${path}/:experimentType/remove-success` }>
                         <RemoveSuccessInfo />
                     </Route>
