@@ -763,7 +763,15 @@ const createAgent = (options = {}) => {
             extraAxiosConfig,
         );
     }
-   
+
+    agent.fetchOneRecord = (bag) => {
+        var { extraAxiosConfig, collection, ...payload } = bag;
+        return axios.post(
+            `/api/${collection}/read`,
+            payload, extraAxiosConfig,
+        );
+    }
+
     // XXX
     agent.fetchFixedAddEventList = (bag) => {
         var { extraAxiosConfig, ...payload } = bag;
