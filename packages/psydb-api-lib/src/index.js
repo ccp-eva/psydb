@@ -92,4 +92,6 @@ module.exports = {
     
     getMongoCollation: require('./get-mongo-collation'),
     aggregateToArray: require('./aggregate-to-array'),
+
+    mappifyPointer: require('./mappify-pointer'),
 }
