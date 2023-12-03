@@ -29,6 +29,8 @@ const FixedAddEventList = (ps) => {
         return <LoadingIndicator size='lg' />
     }
 
+    var { updates, related } = fetched.data;
+
     return (
         <PageWrappers.Level1 title='Fixed Add-Events'>
             <PageWrappers.Level2 title='List'>
@@ -40,8 +42,8 @@ const FixedAddEventList = (ps) => {
                 </div>
             </PageWrappers.Level2>
         
-            { fetched.data.updates.map((it, ix) => (
-                <UpdateItem key={ ix } { ...it } />
+            { updates.map((it, ix) => (
+                <UpdateItem key={ ix } { ...it } related={ related } />
             ))}
         </PageWrappers.Level1>
     )
@@ -51,7 +53,9 @@ const UpdateItem = (ps) => {
     var {
         _id: updateId, source,
         correlationId, isOnlineSurvey,
-        timestamp, ops
+        timestamp, ops,
+
+        related
     } = ps;
 
     var style = {
@@ -75,7 +79,12 @@ const UpdateItem = (ps) => {
                         <b>Operations</b>
                     </header>
                     { ops.map((it, ix) => (
-                        <OpsItem key={ ix } index={ ix } { ...it} />
+                        <OpsItem
+                            key={ ix }
+                            index={ ix }
+                            { ...it }
+                            related={ related }
+                        />
                     ))}
                 </div>
             </SplitPartitioned>
@@ -84,15 +93,23 @@ const UpdateItem = (ps) => {
 }
 
 const OpsItem = (ps) => {
-    var { index, op, collection, args } = ps;
+    var { index, op, collection, args, related } = ps;
+
+    var { _id } = args[0];
+    var label = related[collection] ? related[collection][_id] : '-';
+    var href = {
+        'subject': `/#/subjects/${_id}`,
+        'experiment': `/#/experiments/${_id}`,
+    }[collection];
 
     return (
-        <SplitPartitioned partitions={[ 1,2,2,2 ]}>
+        <SplitPartitioned partitions={[ 1,2,2,3,3 ]}>
             <b>{ index } </b>
             <span>{ op }</span>
             <span>{ collection }</span>
-            <a>
-                { args[0]._id }
+            <span>{ label }</span>
+            <a href={ href }>
+                { _id }
             </a>
         </SplitPartitioned>
     )
