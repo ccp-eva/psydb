@@ -1,4 +1,6 @@
 import React from 'react';
+import { useRouteMatch } from 'react-router';
+
 import {
     usePaginationURLSearchParams,
     useFetch
@@ -58,6 +60,8 @@ const UpdateItem = (ps) => {
         related
     } = ps;
 
+    var { url } = useRouteMatch();
+
     var style = {
         border: '1px solid #dee2e6',
         borderLeftWidth: '5px',
@@ -67,7 +71,11 @@ const UpdateItem = (ps) => {
         <div className='p-3 mt-2' style={ style }>
             <SplitPartitioned partitions={[ 1, 2 ]}>
                 <div>
-                    <Label125 text='Update ID' />{ updateId }<br />
+                    <Label125 text='Update ID' />
+                    <a href={ `#${url}/${updateId}` }>
+                        { updateId }
+                    </a>
+                    <br />
                     <Label125 text='Correlation ID' />{ correlationId }<br />
                     <Label125 text='Timestamp' />{ timestamp }<br />
                     { isOnlineSurvey && (
