@@ -772,6 +772,14 @@ const createAgent = (options = {}) => {
         );
     }
 
+    agent.fetchSpooledRecord = (bag) => {
+        var { extraAxiosConfig, collection, ...payload } = bag;
+        return axios.post(
+            `/api/${collection}/read-spooled`,
+            payload, extraAxiosConfig,
+        );
+    }
+
     // XXX
     agent.fetchFixedAddEventList = (bag) => {
         var { extraAxiosConfig, ...payload } = bag;
