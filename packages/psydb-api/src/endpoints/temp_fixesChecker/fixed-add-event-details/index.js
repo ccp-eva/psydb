@@ -32,7 +32,7 @@ var fixedAddEventDetails = async (context, next) => {
         op.args = op.args.map(a => unescape(a, { traverseArrays: true }))
     }
 
-    console.dir(ejson(update), { depth: null });
+    //console.dir(ejson(update), { depth: null });
 
     context.body = ResponseBody({
         data: { update },
