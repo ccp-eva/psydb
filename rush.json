@@ -76,6 +76,11 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/psydb-rohrpost-utils",
+       "projectFolder": "packages/psydb-rohrpost-utils",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-ajv-keywords",
        "projectFolder": "packages/psydb-ajv-keywords",
        "reviewCategory": "production"
