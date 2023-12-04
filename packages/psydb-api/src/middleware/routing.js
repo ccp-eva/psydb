@@ -499,6 +499,9 @@ var createRouting = (bag = {}) => {
     router.post('/experiment/read', ...withPostStages({
         endpoint: endpoints.experiment.read
     }));
+    router.post('/experiment/read-spooled', ...withPostStages({
+        endpoint: endpoints.experiment.readSpooled
+    }));
 
     router.post('/subject/read', ...withPostStages({
         endpoint: endpoints.subject.read
