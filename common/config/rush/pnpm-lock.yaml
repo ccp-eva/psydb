@@ -160,6 +160,7 @@ importers:
       '@mpieva/psydb-koa-event-middleware': workspace:~0.1.0-alpha
       '@mpieva/psydb-mongo-adapter': workspace:~0.1.0-alpha
       '@mpieva/psydb-mongo-stages': workspace:~0.1.0-alpha
+      '@mpieva/psydb-rohrpost-utils': workspace:~0.1.0-alpha
       '@mpieva/psydb-schema-creators': workspace:~0.1.0-alpha
       '@mpieva/psydb-schema-enums': workspace:~0.1.0-alpha
       '@mpieva/psydb-schema-fields': workspace:~0.1.0-alpha
@@ -219,6 +220,7 @@ importers:
       '@mpieva/psydb-koa-event-middleware': link:../psydb-koa-event-middleware
       '@mpieva/psydb-mongo-adapter': link:../psydb-mongo-adapter
       '@mpieva/psydb-mongo-stages': link:../psydb-mongo-stages
+      '@mpieva/psydb-rohrpost-utils': link:../psydb-rohrpost-utils
       '@mpieva/psydb-schema-creators': link:../psydb-schema-creators
       '@mpieva/psydb-schema-enums': link:../psydb-schema-enums
       '@mpieva/psydb-schema-fields': link:../psydb-schema-fields
@@ -979,6 +981,18 @@ importers:
 
   ../../packages/psydb-quicksort:
     specifiers: {}
+
+  ../../packages/psydb-rohrpost-utils:
+    specifiers:
+      '@cdxoo/mongodb-escape-keys': ~0.2.0-beta.0
+      '@cdxoo/tiny-ejson': ~1.1.0-beta.0
+      mingo: ~6.4.9
+      mongodb: ~3.6.3
+    dependencies:
+      '@cdxoo/mongodb-escape-keys': 0.2.0-beta.0
+      '@cdxoo/tiny-ejson': 1.1.0-beta.0
+      mingo: 6.4.9
+      mongodb: 3.6.12
 
   ../../packages/psydb-schema-creators:
     specifiers:
@@ -2966,6 +2980,10 @@ packages:
 
   /@cdxoo/tiny-ejson/1.0.0:
     resolution: {integrity: sha512-L7gCaEFXndZZmmGEVwlkht7HtWik7yaGj/Ly6pTQT7ejxIsIrvfcryw9Ph1yqtYs6hDVMHYJ1HIV0o22PU6E/Q==}
+    dev: false
+
+  /@cdxoo/tiny-ejson/1.1.0-beta.0:
+    resolution: {integrity: sha512-UiEmylhMKx1wxkcUqpv/ubdM7Li4n/1VIgduj3qRcql2ocyBpdsyFGU3XgWVo3T0Pf370x4wJLiahefUWe5JsQ==}
     dev: false
 
   /@cdxoo/traverse/0.0.1:
