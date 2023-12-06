@@ -113,13 +113,13 @@ const SpooledExperiment = (ps) => {
             <div>
                 <b>Cached Record</b>
                 <pre className='bg-light p-3 border'>
-                    { JSON.stringify(record.state, null, 4) }
+                    { JSON.stringify(record, null, 4) }
                 </pre>
             </div>
             <div>
                 <b>Recalculation from Event Chain</b>
                 <pre className='bg-light p-3 border'>
-                    { JSON.stringify(spooled.state, null, 4) }
+                    { JSON.stringify(spooled, null, 4) }
                 </pre>
             </div>
         </SplitPartitioned>
