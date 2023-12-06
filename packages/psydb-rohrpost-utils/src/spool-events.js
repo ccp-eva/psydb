@@ -14,7 +14,43 @@ var spoolEvents = (bag) => {
     //var updateObject = createUpdater({ cloneMode: "deep" });
     var updateObject = createUpdater();
     for (var it of events) {
-        var { message } = it;
+        var {
+            _id: eventId,
+            sessionId,
+            timestamp,
+            channelId,
+            additionalChannelProps,
+            message
+        } = it;
+        
+        if (!onto._id) {
+            onto._id = channelId;
+        }
+        if (!onto._rohrpostMetadata) {
+            onto._rohrpostMetadata = {
+                hasSubChannels: false, // FIXME
+                createdAt: timestamp,
+                updatedAt: timestamp,
+                lastKnownSessionId: sessionId,
+                lastKnownEventId: eventId,
+                eventIds: [ eventId ],
+                unprocessedEventIds: []
+            };
+        }
+        else {
+            onto._rohrpostMetadata.updatedAt = timestamp;
+            onto._rohrpostMetadata.lastKnownSessionId = sessionId;
+            onto._rohrpostMetadata.lastKnownEventId = eventId;
+            onto._rohrpostMetadata.eventIds.unshift(eventId)
+        }
+
+        if (additionalChannelProps) {
+            for (var key of Object.keys(additionalChannelProps)) {
+                onto[key] = additionalChannelProps[key];
+            }
+        }
+        //console.dir(ejson(it), { depth: null });
+
         //NOTE arrayFilters dont exist yet
         var { payload, arrayFilters } = message;
         // FIXME: mingo bug when pulling ObjectId from array
