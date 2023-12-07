@@ -18,7 +18,7 @@ var mapArgIds = ({ ops, collection }) => (
     .map(it => it.args[0]._id)
 )
 
-var fixedAddEventList = async (context, next) => {
+var fixedImportEventList = async (context, next) => {
     var { db, permissions, request } = context;
 
     validateOrThrow({
@@ -33,14 +33,14 @@ var fixedAddEventList = async (context, next) => {
 
     var total = await (
         db.collection('temp_fixParticipationUpdates').count({
-            source: 'fixAddEvents'
+            source: 'fixImportEvents'
         })
     );
 
     var updates = await withRetracedErrors(
         aggregateToArray({ db, temp_fixParticipationUpdates: [
             { $match: {
-                source: 'fixAddEvents'
+                source: 'fixImportEvents'
             }},
             { $skip: offset },
             { $limit: limit },
@@ -68,4 +68,4 @@ var fixedAddEventList = async (context, next) => {
     });
 }
 
-module.exports = { fixedAddEventList };
+module.exports = { fixedImportEventList };

@@ -20,7 +20,7 @@ const FixedAddEventList = (ps) => {
 
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent
-        .fetchFixedAddEventList({ offset, limit })
+        .fetchFixedImportEventList({ offset, limit })
         .then((response) => {
             pagination.setTotal(response.data.data.total)
             return response;

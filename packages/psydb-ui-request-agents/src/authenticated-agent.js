@@ -797,6 +797,22 @@ const createAgent = (options = {}) => {
         );
     }
 
+    // XXX
+    agent.fetchFixedImportEventList = (bag) => {
+        var { extraAxiosConfig, ...payload } = bag;
+        return axios.post(
+            '/api/fixed-import-event-list',
+            payload, extraAxiosConfig,
+        );
+    }
+    // XXX
+    agent.fetchFixedImportEventDetails = (bag) => {
+        var { extraAxiosConfig, ...payload } = bag;
+        return axios.post(
+            '/api/fixed-import-event-details',
+            payload, extraAxiosConfig,
+        );
+    }
     return agent;
 }
 

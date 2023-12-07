@@ -517,6 +517,9 @@ var createRouting = (bag = {}) => {
     router.post('/fixed-add-event-details', ...withPostStages({
         endpoint: endpoints.temp_fixesChecker.fixedAddEventDetails
     }));
+    router.post('/fixed-import-event-list', ...withPostStages({
+        endpoint: endpoints.temp_fixesChecker.fixedImportEventList
+    }));
 
     return compose([
         router.routes(),
