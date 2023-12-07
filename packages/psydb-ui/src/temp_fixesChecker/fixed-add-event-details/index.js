@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router';
+import { flatten, unflatten } from '@mpieva/psydb-core-utils';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -71,9 +72,15 @@ const FixedAddEventDetails = () => {
                     ]}
                     onItemClick={ setActiveKey }
                 />
-                { experimentId && (
+                { (experimentId && activeKey === 'experiment') && (
                     <SpooledExperiment
                         id={ experimentId }
+                        showEventChain={ showEventChain }
+                    />
+                )}
+                { (subjectId && activeKey === 'subject') && (
+                    <SpooledSubject
+                        id={ subjectId }
                         showEventChain={ showEventChain }
                     />
                 )}
@@ -84,9 +91,42 @@ const FixedAddEventDetails = () => {
 
 const SpooledExperiment = (ps) => {
     var { id, showEventChain } = ps;
+    return (
+        <SpooledRecord
+            collection='experiment'
+            id={ id }
+            showEventChain={ showEventChain }
+        />
+    )
+}
+
+const SpooledSubject = (ps) => {
+    var { id, showEventChain } = ps;
+    return (
+        <SpooledRecord
+            collection='subject'
+            id={ id }
+            showEventChain={ showEventChain }
+        />
+    )
+}
+
+const orderKeysDeep = (that) => {
+    var flat = flatten(that);
+    var orderedflat = {};
+    for (var key of Object.keys(flat).sort()) {
+        orderedflat[key] = flat[key];
+    }
+
+    var out = unflatten(orderedflat);
+    return out;
+}
+
+const SpooledRecord = (ps) => {
+    var { collection, id, showEventChain } = ps;
 
     var [ didFetch, fetched ] = useFetch((agent) => (
-        agent.fetchSpooledRecord({ collection: 'experiment', id })
+        agent.fetchSpooledRecord({ collection, id })
     ), [ id ]);
 
     if (!didFetch) {
@@ -113,17 +153,16 @@ const SpooledExperiment = (ps) => {
             <div>
                 <b>Cached Record</b>
                 <pre className='bg-light p-3 border'>
-                    { JSON.stringify(record, null, 4) }
+                    { JSON.stringify(orderKeysDeep(record), null, 4) }
                 </pre>
             </div>
             <div>
                 <b>Recalculation from Event Chain</b>
                 <pre className='bg-light p-3 border'>
-                    { JSON.stringify(spooled, null, 4) }
+                    { JSON.stringify(orderKeysDeep(spooled), null, 4) }
                 </pre>
             </div>
         </SplitPartitioned>
     )
 }
-
 export default FixedAddEventDetails;

@@ -985,12 +985,14 @@ importers:
   ../../packages/psydb-rohrpost-utils:
     specifiers:
       '@cdxoo/mongodb-escape-keys': ~0.2.0-beta.0
-      '@cdxoo/tiny-ejson': ~1.1.0-beta.0
+      '@cdxoo/tiny-ejson': ~1.1.0-beta.1
+      jsonpointer: ~5.0.1
       mingo: ~6.4.9
       mongodb: ~3.6.3
     dependencies:
       '@cdxoo/mongodb-escape-keys': 0.2.0-beta.0
-      '@cdxoo/tiny-ejson': 1.1.0-beta.0
+      '@cdxoo/tiny-ejson': 1.1.0-beta.1
+      jsonpointer: 5.0.1
       mingo: 6.4.9
       mongodb: 3.6.12
 
@@ -2982,8 +2984,8 @@ packages:
     resolution: {integrity: sha512-L7gCaEFXndZZmmGEVwlkht7HtWik7yaGj/Ly6pTQT7ejxIsIrvfcryw9Ph1yqtYs6hDVMHYJ1HIV0o22PU6E/Q==}
     dev: false
 
-  /@cdxoo/tiny-ejson/1.1.0-beta.0:
-    resolution: {integrity: sha512-UiEmylhMKx1wxkcUqpv/ubdM7Li4n/1VIgduj3qRcql2ocyBpdsyFGU3XgWVo3T0Pf370x4wJLiahefUWe5JsQ==}
+  /@cdxoo/tiny-ejson/1.1.0-beta.1:
+    resolution: {integrity: sha512-pKVfAdGYdftVAadSagFJ8OBDOyRFGVXRx2ZsAXDQdiFvRLg++/JixEKyJ/3sJprvhp9mIFuJwAKYcT23OX9Dbw==}
     dev: false
 
   /@cdxoo/traverse/0.0.1:

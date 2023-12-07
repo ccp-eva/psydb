@@ -1,5 +1,6 @@
 'use strict';
 require('mingo/init/system');
+var jsonpointer = require('jsonpointer');
 
 var { createUpdater } = require('mingo/updater');
 var { unescape } = require('@cdxoo/mongodb-escape-keys');
@@ -8,8 +9,35 @@ var { unescape } = require('@cdxoo/mongodb-escape-keys');
 var { ObjectId } = require('mongodb');
 var ejson = require('@cdxoo/tiny-ejson');
 
+var Injector = (target) => {
+    var set = (pointer, value) => {
+        jsonpointer.set(target, pointer, value);
+    }
+
+    var maybeSet = (pointer, value) => {
+        if (undefined === jsonpointer.get(target, pointer)) {
+            set(pointer, value)
+        }
+    }
+
+    var unshift = (pointer, value) => {
+        if (!jsonpointer.get(target, pointer)) {
+            jsonpointer.set(target, pointer, []);
+        }
+        jsonpointer.get(target, pointer).unshift(value);
+    }
+
+    return {
+        set,
+        maybeSet,
+        unshift,
+    }
+}
+
 var spoolEvents = (bag) => {
     var { onto = {}, events } = bag;
+
+    var { set, maybeSet, unshift } = Injector(onto);
 
     //var updateObject = createUpdater({ cloneMode: "deep" });
     var updateObject = createUpdater();
@@ -19,36 +47,41 @@ var spoolEvents = (bag) => {
             sessionId,
             timestamp,
             channelId,
+            subChannelKey,
             additionalChannelProps,
             message
         } = it;
-        
-        if (!onto._id) {
-            onto._id = channelId;
-        }
-        if (!onto._rohrpostMetadata) {
-            onto._rohrpostMetadata = {
-                hasSubChannels: false, // FIXME
-                createdAt: timestamp,
-                updatedAt: timestamp,
-                lastKnownSessionId: sessionId,
-                lastKnownEventId: eventId,
-                eventIds: [ eventId ],
-                unprocessedEventIds: []
-            };
-        }
-        else {
-            onto._rohrpostMetadata.updatedAt = timestamp;
-            onto._rohrpostMetadata.lastKnownSessionId = sessionId;
-            onto._rohrpostMetadata.lastKnownEventId = eventId;
-            onto._rohrpostMetadata.eventIds.unshift(eventId)
-        }
+
+        maybeSet('/_id', channelId);
+        maybeSet('/_rohrpostMetadata', {});
 
         if (additionalChannelProps) {
             for (var key of Object.keys(additionalChannelProps)) {
                 onto[key] = additionalChannelProps[key];
             }
         }
+
+        var t = undefined;
+        if (subChannelKey) {
+            set('/_rohrpostMetadata/hasSubChannels', true);
+            maybeSet('/_rohrpostMetadata/createdAt', timestamp);
+
+            t = `/${subChannelKey}/_rohrpostMetadata`;
+            maybeSet(`${t}`, {});
+            maybeSet(`${t}/subChannelKey`, subChannelKey);
+        }
+        else {
+            t = `/_rohrpostMetadata`;
+            maybeSet(`${t}/hasSubChannels`, false);
+            maybeSet(`${t}/createdAt`, timestamp);
+        }
+
+        set(`${t}/updatedAt`, timestamp);
+        set(`${t}/lastKnownSessionId`, sessionId);
+        set(`${t}/lastKnownEventId`, eventId);
+        unshift(`${t}/eventIds`, eventId);
+        maybeSet(`${t}/unprocessedEventIds`, []);
+
         //console.dir(ejson(it), { depth: null });
 
         //NOTE arrayFilters dont exist yet

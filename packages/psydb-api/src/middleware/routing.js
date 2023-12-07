@@ -506,6 +506,9 @@ var createRouting = (bag = {}) => {
     router.post('/subject/read', ...withPostStages({
         endpoint: endpoints.subject.read
     }));
+    router.post('/subject/read-spooled', ...withPostStages({
+        endpoint: endpoints.subject.readSpooled
+    }));
 
     // XXX
     router.post('/fixed-add-event-list', ...withPostStages({
