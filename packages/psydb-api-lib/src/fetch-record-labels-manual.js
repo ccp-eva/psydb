@@ -20,14 +20,22 @@ var fetchRecordLabelsManual = async (db, idsForCollection, options = {}) => {
 
     var sharedBag = { db, idsForCollection, options };
     
-    var relatedNoCRT = await handleNoCRT({
-        collections: collections.noCRT,
-        ...sharedBag
-    })
-    var relatedWithCRT = await handleWithCRT({
-        collections: collections.withCRT,
-        ...sharedBag
-    });
+    var relatedNoCRT = (
+        collections.noCRT?.length > 0
+        ? await handleNoCRT({
+            collections: collections.noCRT,
+            ...sharedBag
+        })
+        : undefined
+    );
+    var relatedWithCRT = (
+        collections.withCRT?.length > 0
+        ? await handleWithCRT({
+            collections: collections.withCRT,
+            ...sharedBag
+        })
+        : undefined
+    );
 
     var related = {
         ...relatedNoCRT,
