@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router';
-import { flatten, unflatten } from '@mpieva/psydb-core-utils';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -11,15 +10,50 @@ import {
     Button,
 } from '@mpieva/psydb-ui-layout';
 
+import { JsonRaw, SpooledRecord } from '../detail-utils';
+
 var findId = ({ ops, collection }) => (
     ops.find(it => it.collection === collection)?.args[0]?._id
 )
 
+var makeChunks = ({ from, chunkSize }) => {
+    var out = [];
+    for (var i = 0; i < from.length; i += chunkSize) {
+        var chunk = from.slice(i, i + chunkSize);
+        out.push(chunk);
+    }
+    return out;
+}
+
+var splitOps = ({ ops }) => {
+    var outChunks = [];
+    for (var c of makeChunks({ from: ops, chunkSize: 4 })) {
+        var pairs = makeChunks({ from: c, chunkSize: 2 });
+
+        var outPairs = [];
+        var targetCollection = undefined;
+        for (var p of pairs) {
+            var outItem = {};
+            for (var it of p) {
+                var { collection, args } = it;
+                var { _id } = args[0];
+
+                outItem[collection] = { targetId: _id, ...it };
+                if (collection !== 'rohrpostEvents') {
+                    targetCollection = collection;
+                }
+            }
+            outPairs.push({ targetCollection, pair: outItem });
+        }
+        outChunks.push(outPairs);
+    }
+    return outChunks;
+}
+
 const FixedAddEventDetails = () => {
     var { id } = useParams();
 
-    var [ showEventChain, setShowEventChain ] = useState(false);
-    var [ activeKey, setActiveKey ] = useState('experiment')
+    var [ activeKey, setActiveKey ] = useState('update')
 
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.fetchFixedAddEventDetails({ updateId: id })
@@ -31,6 +65,12 @@ const FixedAddEventDetails = () => {
 
     var { update } = fetched.data;
     var { ops } = update;
+
+    var chunked = splitOps({ ops });
+    console.log(chunked);
+
+
+
 
     var experimentId = findId({ ops, collection: 'experiment' });
     var subjectId = findId({ ops, collection: 'subject' });
@@ -57,112 +97,111 @@ const FixedAddEventDetails = () => {
                             </a>
                         )}
                     </div>
-                    <Button
-                        onClick={() => setShowEventChain(!showEventChain)}
-                    >Show Event Chain</Button>
                 </div>
-                <TabNav
-                    className='mb-3'
-                    activeKey={ activeKey }
-                    items={[
-                        { key: 'experiment', label: 'Experiment' },
-                        ...(subjectId ? [
-                            { key: 'subject', label: 'Subject' }
-                        ] : [])
-                    ]}
-                    onItemClick={ setActiveKey }
-                />
-                { (experimentId && activeKey === 'experiment') && (
-                    <SpooledExperiment
-                        id={ experimentId }
-                        showEventChain={ showEventChain }
-                    />
-                )}
-                { (subjectId && activeKey === 'subject') && (
-                    <SpooledSubject
-                        id={ subjectId }
-                        showEventChain={ showEventChain }
-                    />
-                )}
+                <Chunks update={ update } />
             </PageWrappers.Level2>
         </PageWrappers.Level1>
     )
 }
 
-const SpooledExperiment = (ps) => {
-    var { id, showEventChain } = ps;
+
+const Chunks = (ps) => {
+    var { update } = ps;
+    var { ops } = update;
+    var chunked = splitOps({ ops });
+
+    var [ activeKey, setActiveKey ] = useState('raw-update');
+    
     return (
-        <SpooledRecord
-            collection='experiment'
-            id={ id }
-            showEventChain={ showEventChain }
-        />
-    )
-}
-
-const SpooledSubject = (ps) => {
-    var { id, showEventChain } = ps;
-    return (
-        <SpooledRecord
-            collection='subject'
-            id={ id }
-            showEventChain={ showEventChain }
-        />
-    )
-}
-
-const orderKeysDeep = (that) => {
-    var flat = flatten(that);
-    var orderedflat = {};
-    for (var key of Object.keys(flat).sort()) {
-        orderedflat[key] = flat[key];
-    }
-
-    var out = unflatten(orderedflat);
-    return out;
-}
-
-const SpooledRecord = (ps) => {
-    var { collection, id, showEventChain } = ps;
-
-    var [ didFetch, fetched ] = useFetch((agent) => (
-        agent.fetchSpooledRecord({ collection, id })
-    ), [ id ]);
-
-    if (!didFetch) {
-        return <LoadingIndicator size='lg' />
-    }
-
-    var { record, spooled, eventChain } = fetched.data;
-
-    var partitions = [1,1];
-    partitions.unshift(
-        showEventChain ? 1 : 0
-    );
-
-    return (
-        <SplitPartitioned partitions={ partitions }>
-            { showEventChain && (
-                <div>
-                    <b>Event Chain</b>
-                    <pre className='bg-light p-3 border'>
-                        { JSON.stringify(eventChain, null, 4) }
-                    </pre>
-                </div>
+        <>
+            <TabNav
+                activeKey={ activeKey }
+                onItemClick={ setActiveKey }
+                items={[
+                    { key: 'raw-update', label: 'Raw Update' },
+                    ...chunked.map((it, ix) => ({
+                        key: String(ix), label: `Op-Chunk ${ix}`
+                    }))
+                ]}
+            />
+            { activeKey === 'raw-update' ? (
+                <JsonRaw data={ update } />
+            ) : (
+                <OpChunk
+                    chunk={ chunked[parseInt(activeKey)] }
+                />
             )}
-            <div>
-                <b>Cached Record</b>
-                <pre className='bg-light p-3 border'>
-                    { JSON.stringify(orderKeysDeep(record), null, 4) }
-                </pre>
-            </div>
-            <div>
-                <b>Recalculation from Event Chain</b>
-                <pre className='bg-light p-3 border'>
-                    { JSON.stringify(orderKeysDeep(spooled), null, 4) }
-                </pre>
-            </div>
-        </SplitPartitioned>
+            
+        </>
     )
 }
+
+import { ucfirst } from '@mpieva/psydb-core-utils';
+const OpChunk = (ps) => {
+    var { chunk } = ps;
+    
+    var [ activeKey, setActiveKey ] = useState('0');
+
+    return (
+        <>
+            <TabNav
+                activeKey={ activeKey }
+                onItemClick={ setActiveKey }
+                items={[
+                    ...chunk.map((it, ix) => ({
+                        key: String(ix), label: ucfirst(it.targetCollection)
+                    }))
+                ]}
+            />
+            <OpPair
+                pair={ chunk[parseInt(activeKey)].pair }
+            />
+        </>
+    )
+}
+
+const OpPair = (ps) => {
+    var { pair } = ps;
+    
+    var [ activeKey, setActiveKey ] = useState('raw-ops');
+    
+    var content = null;
+    if (activeKey === 'raw-ops') {
+        content = (
+            <JsonRaw data={ pair } />
+        )
+    }
+    else if (activeKey === 'rohrpostEvents') {
+        content = (
+            <b>cant render yet</b>
+        )
+    }
+    else if (pair[activeKey]) {
+        content = (
+            <SpooledRecord
+                collection={ activeKey }
+                id={ pair[activeKey].targetId }
+                showEventChain={ true }
+            />
+        )
+    }
+
+    return (
+        <>
+            <TabNav
+                className='mb-3'
+                activeKey={ activeKey }
+                onItemClick={ setActiveKey }
+                items={[
+                    { key: 'raw-ops', label: 'Raw Ops' },
+                    ...Object.keys(pair).map((key, ix) => ({
+                        key, label: ucfirst(key)
+                    }))
+                ]}
+            />
+            { content }
+        </>
+    )
+}
+
 export default FixedAddEventDetails;

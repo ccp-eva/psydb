@@ -21,6 +21,7 @@ module.exports = {
     omit: require('./omit'),
     range: require('./range'),
     transliterate: require('./transliterate'),
+    ucfirst: require('./ucfirst'),
 
     includes: require('./includes'),
     intersect: require('./intersect'),
