@@ -1,5 +1,6 @@
 'use strict';
 var { unescape } = require('@cdxoo/mongodb-escape-keys');
+var { forcePush } = require('@mpieva/psydb-core-utils');
 
 var {
     validateOrThrow,
@@ -11,12 +12,6 @@ var {
 } = require('@mpieva/psydb-api-lib');
 
 var Schema = require('./schema');
-
-var mapArgIds = ({ ops, collection }) => (
-    ops
-    .filter(it => it.collection === collection)
-    .map(it => it.args[0]._id)
-)
 
 var fixedAddEventList = async (context, next) => {
     var { db, permissions, request } = context;
@@ -47,21 +42,29 @@ var fixedAddEventList = async (context, next) => {
         ]})
     )
 
+    var relatedIds = {};
     for (var u of updates) {
         var { ops } = u;
+        
         for (var o of ops) {
             o.args = o.args.map(a => unescape(a, { traverseArray: true }))
         }
 
-        u.experimentIds = mapArgIds({ ops, collection: 'experiment' });
-        u.subjectIds = mapArgIds({ ops, collection: 'subject' });
+        for (var o of ops) {
+            var { collection, args } = o;
+            if (collection === 'rohrpostEvents') {
+                continue;
+            }
+
+            forcePush({
+                into: relatedIds,
+                pointer: `/${collection}`,
+                values: [ args[0]._id ]
+            })
+        }
     }
 
-    var fromItems = mappifyPointer(updates);
-    var related = await fetchRecordLabelsManual(db, {
-        experiment: fromItems('/experimentIds').flat(),
-        subject: fromItems('/subjectIds').flat()
-    });
+    var related = await fetchRecordLabelsManual(db, relatedIds);
 
     context.body = ResponseBody({
         data: { updates, total, related },

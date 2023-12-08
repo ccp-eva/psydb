@@ -781,6 +781,14 @@ const createAgent = (options = {}) => {
     }
 
     // XXX
+    agent.fetchFixedEventDetails = (bag) => {
+        var { extraAxiosConfig, ...payload } = bag;
+        return axios.post(
+            '/api/fixed-event-details',
+            payload, extraAxiosConfig,
+        );
+    }
+    // XXX
     agent.fetchFixedAddEventList = (bag) => {
         var { extraAxiosConfig, ...payload } = bag;
         return axios.post(
@@ -789,27 +797,10 @@ const createAgent = (options = {}) => {
         );
     }
     // XXX
-    agent.fetchFixedAddEventDetails = (bag) => {
-        var { extraAxiosConfig, ...payload } = bag;
-        return axios.post(
-            '/api/fixed-add-event-details',
-            payload, extraAxiosConfig,
-        );
-    }
-
-    // XXX
     agent.fetchFixedImportEventList = (bag) => {
         var { extraAxiosConfig, ...payload } = bag;
         return axios.post(
             '/api/fixed-import-event-list',
-            payload, extraAxiosConfig,
-        );
-    }
-    // XXX
-    agent.fetchFixedImportEventDetails = (bag) => {
-        var { extraAxiosConfig, ...payload } = bag;
-        return axios.post(
-            '/api/fixed-import-event-details',
             payload, extraAxiosConfig,
         );
     }

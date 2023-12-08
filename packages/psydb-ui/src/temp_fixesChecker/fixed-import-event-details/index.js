@@ -10,7 +10,7 @@ import {
 import { UpdateSummary } from '../shared-utils';
 import { JsonRaw, Chunks } from '../detail-utils';
 
-const FixedAddEventDetails = () => {
+const FixedImportEventDetails = () => {
     var { id } = useParams();
 
     var [ didFetch, fetched ] = useFetch((agent) => (
@@ -25,7 +25,7 @@ const FixedAddEventDetails = () => {
     var { ops } = update;
 
     return (
-        <PageWrappers.Level1 title='Fixed Add-Events'>
+        <PageWrappers.Level1 title='Fixed Import-Events'>
             <PageWrappers.Level2 title='Details'>
                 <UpdateSummary update={ update } />
                 <Chunks update={ update } related={ related } />
@@ -36,4 +36,4 @@ const FixedAddEventDetails = () => {
 
 
 
-export default FixedAddEventDetails;
+export default FixedImportEventDetails;

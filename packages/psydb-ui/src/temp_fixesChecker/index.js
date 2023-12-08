@@ -12,6 +12,7 @@ import { BigNav } from '@mpieva/psydb-ui-layout';
 import FixedAddEventList from './fixed-add-event-list';
 import FixedAddEventDetails from './fixed-add-event-details';
 import FixedImportEventList from './fixed-import-event-list';
+import FixedImportEventDetails from './fixed-import-event-details';
 
 const Routing = (ps) => {
     var permissions = usePermissions();
@@ -47,6 +48,9 @@ const Routing = (ps) => {
             </Route>
             <Route exact path={ `${path}/fixed-import-events`}>
                 <FixedImportEventList />
+            </Route>
+            <Route exact path={ `${path}/fixed-import-events/:id`}>
+                <FixedImportEventDetails />
             </Route>
         </Switch>
     )    

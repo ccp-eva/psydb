@@ -511,11 +511,11 @@ var createRouting = (bag = {}) => {
     }));
 
     // XXX
+    router.post('/fixed-event-details', ...withPostStages({
+        endpoint: endpoints.temp_fixesChecker.fixedEventDetails
+    }));
     router.post('/fixed-add-event-list', ...withPostStages({
         endpoint: endpoints.temp_fixesChecker.fixedAddEventList
-    }));
-    router.post('/fixed-add-event-details', ...withPostStages({
-        endpoint: endpoints.temp_fixesChecker.fixedAddEventDetails
     }));
     router.post('/fixed-import-event-list', ...withPostStages({
         endpoint: endpoints.temp_fixesChecker.fixedImportEventList
