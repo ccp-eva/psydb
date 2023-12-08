@@ -18,6 +18,9 @@ export const chunkOps = ({ ops }) => {
                     targetCollection = collection;
                 }
             }
+            if (!targetCollection) {
+                targetCollection = 'rohrpostEvents'
+            }
             outPairs.push({ targetCollection, pair: outItem });
         }
         outChunks.push(outPairs);

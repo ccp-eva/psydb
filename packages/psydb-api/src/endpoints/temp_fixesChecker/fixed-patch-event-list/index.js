@@ -1,7 +1,4 @@
 'use strict';
-var { unescape } = require('@cdxoo/mongodb-escape-keys');
-var { ejson, forcePush } = require('@mpieva/psydb-core-utils');
-
 var {
     validateOrThrow,
     ResponseBody,
@@ -11,8 +8,7 @@ var {
 var { fetchUpdates, fetchEvents, postprocessUpdates } = require('../utils');
 var Schema = require('./schema');
 
-
-var fixedEventDetails = async (context, next) => {
+var fixedPatchEventList = async (context, next) => {
     var { db, permissions, request } = context;
 
     validateOrThrow({
@@ -20,22 +16,21 @@ var fixedEventDetails = async (context, next) => {
         payload: request.body
     })
 
-    var {
-        updateId
-    } = request.body;
-   
+    var { offset, limit } = request.body;
     var { updates, total } = await fetchUpdates({
-        db, match: { _id: updateId }, offset: 0, limit: 1
+        db,
+        match: { source: 'fixPatchEvents' },
+        offset, limit
     });
 
     var events = await fetchEvents({ db, updates });
-
-    var { relatedIds } = postprocessUpdates({ updates, events  });
+    
+    var { relatedIds } = postprocessUpdates({ updates, events });
     var related = await fetchRecordLabelsManual(db, relatedIds);
 
     context.body = ResponseBody({
-        data: { update: updates[0], related },
+        data: { updates, total, related },
     });
 }
 
-module.exports = { fixedEventDetails };
+module.exports = { fixedPatchEventList };

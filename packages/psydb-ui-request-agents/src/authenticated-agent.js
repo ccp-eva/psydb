@@ -804,6 +804,14 @@ const createAgent = (options = {}) => {
             payload, extraAxiosConfig,
         );
     }
+    // XXX
+    agent.fetchFixedPatchEventList = (bag) => {
+        var { extraAxiosConfig, ...payload } = bag;
+        return axios.post(
+            '/api/fixed-patch-event-list',
+            payload, extraAxiosConfig,
+        );
+    }
     return agent;
 }
 

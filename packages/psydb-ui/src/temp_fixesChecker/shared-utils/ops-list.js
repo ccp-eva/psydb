@@ -25,36 +25,63 @@ export const OpsList = (ps) => {
 }
 
 const OpsItem = (ps) => {
-    var { index, op, collection, args, related } = ps;
+    var { index, op, collection, args, event, related } = ps;
 
     var { _id } = args[0];
-    var label = related[collection] ? related[collection][_id] : '-';
+
+    var targetCollection = (
+        event
+        ? event.collectionName
+        : collection
+    );
+    var targetChannelId = (
+        event
+        ? event.channelId
+        : _id
+    );
+
+    var label = (
+        related[targetCollection]
+        ? related[targetCollection][targetChannelId]
+        : '-'
+    );
+
     var href = {
-        'subject': `/#/subjects/${_id}`,
-        'experiment': `/#/experiments/${_id}`,
-    }[collection];
+        'subject': `/#/subjects/${targetChannelId}`,
+        'experiment': `/#/experiments/${targetChannelId}`,
+    }[targetCollection];
+
+    var psydb = 'https://psydb.eva.mpg.de'
 
     return (
-        <SplitPartitioned partitions={[ 1,1,2,4,3,1 ]}>
+        <SplitPartitioned partitions={[ 3,10,15,50,40 ]}>
             <b>{ index } </b>
             <span>{ op }</span>
             <span>{ collection }</span>
-            <span>{ label }</span>
             { href ? (
-                <a href={ href } target='_blank'>
-                    { _id }
-                </a>
+                <SplitPartitioned partitions={[ 12, 8 ]}>
+                    <a href={ href } target='_blank'>
+                        { label }
+                    </a>
+                    <a href={ psydb + href } target='_blank'>
+                        <b>(original)</b>
+                    </a>
+                </SplitPartitioned>
+            ) : (
+                <span>{ label }</span>
+            )}
+            { collection === 'rohrpostEvents' ? (
+                <SplitPartitioned partitions={[ 12, 8 ]}>
+                    <a href={`/#/rohrpost-events/${_id}`} target='_blank'>
+                        { _id }
+                    </a>
+                    <a href={`${psydb}/#/rohrpost-events/${_id}`} target='_blank'>
+                        <b>(original)</b>
+                    </a>
+                </SplitPartitioned>
             ) : (
                 <span>{ _id }</span>
-            )}
-            { href ? (
-                <a
-                    href={ 'https://psydb.eva.mpg.de'+ href }
-                    target='_blank'
-                >
-                    -> PsyDB
-                </a>
-            ) : <i /> }
+            ) }
         </SplitPartitioned>
     )
 }
