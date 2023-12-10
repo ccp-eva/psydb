@@ -64,6 +64,7 @@ export * from './team-label';
 export * from './legend';
 export * from './narrow-hr';
 
+export * from './json-raw';
 
 export {
     Nav,

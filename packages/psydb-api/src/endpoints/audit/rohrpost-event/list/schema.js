@@ -14,12 +14,13 @@ var Schema = (bag = {}) => {
 
     return ExactObject({
         properties: {
-            correlationId: { type: 'string' }, // XXX
+            eventId: SaneString(),
+            correlationId: SaneString(), // XXX
             triggeredBy: ForeignId({ collection: 'personnel' }),
             interval: DateTimeInterval(),
 
-            channelId: Id(),
-            collectionName: { type: 'string' }, // XXX
+            channelId: SaneString(),
+            collectionName: SaneString(), // XXX
 
             ...pagination.properties,
         },

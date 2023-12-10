@@ -26,8 +26,8 @@ var readEndpoint = async (context, next) => {
     );
 
     var related = await fetchRecordLabelsManual(db, {
-        personnel: [ record.payload.personnelId ],
-        [record.collectionName]: [ record.channelId ]
+        personnel: [ record.message.personnelId ],
+        //[record.collectionName]: [ record.channelId ]
     });
 
     context.body = ResponseBody({

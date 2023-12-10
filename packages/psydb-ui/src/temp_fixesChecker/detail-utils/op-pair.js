@@ -6,12 +6,12 @@ import { OpsList } from '../shared-utils';
 
 import { JsonRaw } from './json-raw';
 import { SpooledRecord } from './spooled-record';
+import { RohrpostEventRecord } from './rohrpost-event-record';
 
 export const OpPair = (ps) => {
     var { pair, related } = ps;
-    
     var [ activeKey, setActiveKey ] = useState('raw-ops');
-    
+   
     var content = null;
     if (activeKey === 'raw-ops') {
         content = (
@@ -30,7 +30,9 @@ export const OpPair = (ps) => {
     }
     else if (activeKey === 'rohrpostEvents') {
         content = (
-            <b>cant render yet</b>
+            <RohrpostEventRecord
+                id={ pair[activeKey].args[0]._id }
+            />
         )
     }
     else if (pair[activeKey]) {

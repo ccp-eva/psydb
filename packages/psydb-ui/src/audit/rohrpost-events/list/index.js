@@ -61,9 +61,9 @@ const List = () => {
                         }}
                         displayFieldData={[
                             {
-                                key: 'messageType',
-                                pointer: 'messageType',
-                                displayName: 'Action Type',
+                                key: 'eventId',
+                                pointer: 'eventId',
+                                displayName: 'Event ID',
                                 systemType: 'SaneString'
                             },
                             {
@@ -78,6 +78,12 @@ const List = () => {
                                 pointer: 'correlationId',
                                 displayName: 'Correlation Id',
                                 systemType: 'SaneString',
+                            },
+                            {
+                                key: 'channelId',
+                                pointer: 'channelId',
+                                displayName: 'Channel ID',
+                                systemType: 'SaneString'
                             },
                         ]}
                     />
@@ -110,6 +116,7 @@ const RecordTable = (ps) => {
                     <th>Timestamp</th>
                     <th>Triggered By</th>
                     <th>CorrelationId</th>
+                    <th>Action Type</th>
                     <th>Collection</th>
                     <th>Channel ID</th>
                     {/*<th>Channel Label</th>*/}
@@ -129,10 +136,13 @@ const TableRow = (ps) => {
 
     var {
         _id, timestamp, correlationId, collectionName, channelId,
-        message: { personnelId }
+        message: { personnelId },
+        
+        _messageType
     } = record;
 
-    var q = JsonBase64.encode({ correlationId })
+    var qCorrelationId = JsonBase64.encode({ correlationId })
+    var qChannelId = JsonBase64.encode({ channelId })
     return (
         <tr>
             <td>
@@ -142,9 +152,18 @@ const TableRow = (ps) => {
             </td>
             <td>{ timestamp }</td>
             <td>{ related.personnel[personnelId] }</td>
-            <td>{ correlationId }</td>
+            <td>
+                <a href={`#/audit/rohrpost-events?q=${qCorrelationId}`}>
+                    { correlationId }
+                </a>
+            </td>
+            <td>{ _messageType }</td>
             <td>{ collectionName }</td>
-            <td>{ channelId }</td>
+            <td>
+                <a href={`#/audit/rohrpost-events?q=${qChannelId}`}>
+                    { channelId }
+                </a>
+            </td>
             {/*<td>{ related[collectionName][channelId] }</td>*/}
         </tr>
     )

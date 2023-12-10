@@ -1,5 +1,5 @@
 'use strict';
-var { forcePush, escapeRX } = require('@mpieva/psydb-core-utils');
+var { keyBy, forcePush, escapeRX } = require('@mpieva/psydb-core-utils');
 var {
     validateOrThrow,
     ResponseBody,
@@ -74,8 +74,26 @@ var listEndpoint = async (context, next) => {
         ])})
     );
 
+    var messages = await withRetracedErrors(
+        aggregateToArray({ db, mqMessageHistory: [
+            { $match: {
+                _id: { $in: records.map(it => it.correlationId )}
+            }},
+            { $project: {
+                '_id': true,
+                'messageType': '$message.type'
+            }}
+        ]})
+    );
+
+    var messagesById = keyBy({
+        items: messages, byProp: '_id'
+    });
+
     var relatedChannelIds = {};
     for (var it of records) {
+        it._messageType = messagesById[it.correlationId].messageType;
+
         forcePush({
             into: relatedChannelIds,
             pointer: `/${it.collectionName}`,
