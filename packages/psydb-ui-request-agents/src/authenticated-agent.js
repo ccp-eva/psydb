@@ -790,16 +790,16 @@ const createAgent = (options = {}) => {
 
     agent.fetchMQMessageHistoryList = dumpPOST({
         url: '/api/audit/mq-message-history/list'
-    })
+    });
     agent.fetchMQMessageHistoryRecord = dumpPOST({
         url: '/api/audit/mq-message-history/read'
-    })
+    });
     agent.fetchRohrpostEventList = dumpPOST({
         url: '/api/audit/rohrpost-event/list'
-    })
+    });
     agent.fetchRohrpostEventRecord = dumpPOST({
         url: '/api/audit/rohrpost-event/read'
-    })
+    });
 
     // XXX
     agent.fetchFixedEventDetails = (bag) => {

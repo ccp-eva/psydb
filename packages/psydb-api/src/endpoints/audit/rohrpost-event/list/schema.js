@@ -23,9 +23,9 @@ var Schema = (bag = {}) => {
 
             ...pagination.properties,
         },
-        required: {
+        required: [
             ...pagination.required,
-        }
+        ]
     })
 }
 

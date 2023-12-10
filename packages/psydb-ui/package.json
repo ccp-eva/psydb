@@ -78,7 +78,8 @@
     "rimraf": "~5.0.1",
     "react-cookie": "~6.1.1",
     "svg-url-loader": "~8.0.0",
-    "react-diff-viewer": "~3.1.1"
+    "react-diff-viewer": "~3.1.1",
+    "@cdxoo/json-base64": "~1.0.0"
   },
   "config": {
     "mongodbMemoryServer": {

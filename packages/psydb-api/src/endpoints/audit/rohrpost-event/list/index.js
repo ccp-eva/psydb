@@ -1,5 +1,5 @@
 'use strict';
-var { forcePush } = require('@mpieva/psydb-core-utils');
+var { forcePush, escapeRX } = require('@mpieva/psydb-core-utils');
 var {
     validateOrThrow,
     ResponseBody,
@@ -20,6 +20,7 @@ var listEndpoint = async (context, next) => {
     })
 
     var {
+        eventId,
         correlationId,
         triggeredBy,
         interval,
@@ -32,24 +33,28 @@ var listEndpoint = async (context, next) => {
     } = request.body;
 
     var AND = SmartArray([
-        correlationId && { correlationId: {
-            $regex: new RegExp(correlationId)
+        eventId && { $regexMatch: {
+            input: '$_id',
+            regex: new RegExp(escapeRX(eventId), 'i')
         }},
-        triggeredBy && {
-            'payload.personnelId': triggeredBy,
-        },
+        correlationId && { $regexMatch: {
+            input: '$correlationId',
+            regex: new RegExp(escapeRX(correlationId), 'i')
+        }},
+        triggeredBy && { $eq: [
+            '$messgae.payload.personnelId', triggeredBy,
+        ]},
         // interval && { ... } // TODO
 
-        channelId && {
-            $regexMatch: {
-                input: { $toString: '$channelId' },
-                regex: new RegExp(channelId)
-            }
-        },
-        collectionName && { collectionName: {
-            $regex: new RegExp(collectionName, 'i')
-        }}
-    ])
+        channelId && { $regexMatch: {
+            input: { $toString: '$channelId' },
+            regex: new RegExp(escapeRX(channelId))
+        }},
+        collectionName && { $regexMatch: {
+            input: '$collectionName',
+            regex: new RegExp(escapeRX(collectionName), 'i')
+        }},
+    ]);
 
     var MATCH = (
         AND.length > 0
@@ -62,7 +67,7 @@ var listEndpoint = async (context, next) => {
     );
 
     var records = await withRetracedErrors(
-        aggregateToArray({ db, mqMessageHistory: SmartArray([
+        aggregateToArray({ db, rohrpostEvents: SmartArray([
             MATCH && { $match: MATCH },
             { $skip: offset },
             { $limit: limit  }
@@ -71,16 +76,20 @@ var listEndpoint = async (context, next) => {
 
     var relatedChannelIds = {};
     for (var it of records) {
-        forcePush(relatedChannelIds, `/${it.collectionName}`, it.channelId)
+        forcePush({
+            into: relatedChannelIds,
+            pointer: `/${it.collectionName}`,
+            values: [ it.channelId ]
+        })
     }
 
     var related = await fetchRecordLabelsManual(db, {
-        personnel: records.map(it => it.payload.personnelId),
-        ...relatedChannelIds
+        personnel: records.map(it => it.message.personnelId),
+        //...relatedChannelIds // TODO
     });
 
     context.body = ResponseBody({
-        data: { records, related },
+        data: { records, total, related },
     });
 }
 

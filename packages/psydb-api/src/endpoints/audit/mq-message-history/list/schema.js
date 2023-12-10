@@ -13,6 +13,7 @@ var Schema = (bag = {}) => {
 
     return ExactObject({
         properties: {
+            correlationId: SaneString(),
             messageType: SaneString(),
             interval: DateTimeInterval(),
             triggeredBy: ForeignId({ collection: 'personnel' }),
