@@ -717,6 +717,7 @@ importers:
       '@cdxoo/tiny-ejson': ~1.0.0
       chai: ~4.3.7
       deepmerge: ~4.2.2
+      escape-string-regexp: ~4.0.0
       is-what: ~3.14.1
       jsonpointer: ~5.0.1
       mocha: ~10.2.0
@@ -726,6 +727,7 @@ importers:
       '@cdxoo/objectpath-to-jsonpointer': 1.0.0
       '@cdxoo/tiny-ejson': 1.0.0
       deepmerge: 4.2.2
+      escape-string-regexp: 4.0.0
       is-what: 3.14.1
       jsonpointer: 5.0.1
     devDependencies:
@@ -1110,6 +1112,7 @@ importers:
       '@babel/preset-env': ~7.22.20
       '@babel/preset-react': ~7.22.15
       '@cdxoo/formik-utils': ~0.7.0
+      '@cdxoo/json-base64': ~1.0.0
       '@cdxoo/omit': ~1.0.1
       '@mpieva/psydb-api-endpoint-schemas': workspace:~0.1.0-alpha
       '@mpieva/psydb-common-config': workspace:~0.1.0-alpha
@@ -1169,6 +1172,7 @@ importers:
       '@babel/preset-env': 7.22.20_@babel+core@7.22.20
       '@babel/preset-react': 7.22.15_@babel+core@7.22.20
       '@cdxoo/formik-utils': 0.7.0_formik@2.4.5+react@17.0.2
+      '@cdxoo/json-base64': 1.0.0
       '@cdxoo/omit': 1.0.1
       '@mpieva/psydb-api-endpoint-schemas': link:../psydb-api-endpoint-schemas
       '@mpieva/psydb-common-config': link:../psydb-common-config
