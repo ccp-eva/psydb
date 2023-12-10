@@ -204,6 +204,9 @@ const SideNav = (ps) => {
                             { translate('Record Types') }
                         </Link>
                         {/*<Link to='/api-keys'>Api-Keys</Link>*/}
+                        <Link to='/audit'>
+                            { translate('Audit') }
+                        </Link>
                     </WhenAllowed>
                 </div>
             </Nav>

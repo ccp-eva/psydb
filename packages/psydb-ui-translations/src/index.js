@@ -2636,6 +2636,11 @@ var maps = [
         de: 'Field-Sites'
     },
 
+    // audit
+    {
+        en: 'Audit',
+        de: 'Audit'
+    },
 ]
 
 const byInternal = keyBy({

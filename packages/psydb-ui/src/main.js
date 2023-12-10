@@ -41,6 +41,7 @@ import Calendars from './calendars';
 import LabOperation from './lab-operation';
 import Experiments from './experiments';
 import ApiKeys from './api-keys';
+import Audit from './audit';
 
 import AwayTeamCalendar from './calendars/away-team-experiments/calendar';
 
@@ -165,6 +166,7 @@ var Routing = () => (
     <Route path='/lab-operation' component={ withEB(LabOperation) } />
     <Route path='/experiments' component={ withEB(Experiments) } />
     <Route path='/api-keys' component={ withEB(ApiKeys) } />
+    <Route path='/audit' component={ withEB(Audit) } />
 
     <Route path='/fixes-checker' component={ withEB(FixesChecker) } />
     </>
