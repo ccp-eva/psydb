@@ -207,6 +207,12 @@ const SideNav = (ps) => {
                         <Link to='/audit'>
                             { translate('Audit') }
                         </Link>
+                        
+                        <div className='border-top mt-2 mb-2' />
+
+                        <Link to='/fixes-checker'>
+                            Fixes Checker
+                        </Link>
                     </WhenAllowed>
                 </div>
             </Nav>
