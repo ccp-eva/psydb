@@ -19,7 +19,7 @@ const MQMessageHistoryRouting = () => {
                 <Route exact path={ `${path}`}>
                     <List />
                 </Route>
-                <Route exact path={ `${path}/:id`}>
+                <Route exact path={ `${path}/:id` }>
                     <Details />
                 </Route>
             </Switch>

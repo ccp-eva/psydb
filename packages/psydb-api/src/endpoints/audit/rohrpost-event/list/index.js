@@ -1,10 +1,12 @@
 'use strict';
+var { forcePush } = require('@mpieva/psydb-core-utils');
 var {
     validateOrThrow,
     ResponseBody,
     withRetracedErrors,
     aggregateToArray,
     fetchRecordLabelsManual,
+    SmartArray,
 } = require('@mpieva/psydb-api-lib');
 
 var Schema = require('./schema');
@@ -18,31 +20,63 @@ var listEndpoint = async (context, next) => {
     })
 
     var {
-        messageType,
+        correlationId,
+        triggeredBy,
         interval,
-        personnelId,
+
+        channelId,
+        collectionName,
+
         offset,
         limit
     } = request.body;
 
-    var MATCH = {
-        'message.type': new RegExp(messageType)
-    };
+    var AND = SmartArray([
+        correlationId && { correlationId: {
+            $regex: new RegExp(correlationId)
+        }},
+        triggeredBy && {
+            'payload.personnelId': triggeredBy,
+        },
+        // interval && { ... } // TODO
+
+        channelId && {
+            $regexMatch: {
+                input: { $toString: '$channelId' },
+                regex: new RegExp(channelId)
+            }
+        },
+        collectionName && { collectionName: {
+            $regex: new RegExp(collectionName, 'i')
+        }}
+    ])
+
+    var MATCH = (
+        AND.length > 0
+        ? { $expr: { $and: AND }}
+        : undefined
+    );
 
     var total = await withRetracedErrors(
-        db.collection('mqMessageHistory').countDocuments(MATCH)
+        db.collection('rohrpostEvents').countDocuments(MATCH)
     );
 
     var records = await withRetracedErrors(
-        aggregateToArray({ db, mqMessageHistory: [
-            { $match: MATCH },
+        aggregateToArray({ db, mqMessageHistory: SmartArray([
+            MATCH && { $match: MATCH },
             { $skip: offset },
             { $limit: limit  }
-        ]})
+        ])})
     );
 
+    var relatedChannelIds = {};
+    for (var it of records) {
+        forcePush(relatedChannelIds, `/${it.collectionName}`, it.channelId)
+    }
+
     var related = await fetchRecordLabelsManual(db, {
-        personnelIds: records.map(it => it.personnelId)
+        personnel: records.map(it => it.payload.personnelId),
+        ...relatedChannelIds
     });
 
     context.body = ResponseBody({

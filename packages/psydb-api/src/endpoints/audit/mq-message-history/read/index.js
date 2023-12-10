@@ -17,17 +17,16 @@ var readEndpoint = async (context, next) => {
         payload: request.body
     })
 
-    var { recordId } = request.body;
+    var { correlationId } = request.body;
 
     var record = await withRetracedErrors(
-        db.collection('rohrpostEvents').findOne({
-            _id: recordId
+        db.collection('mqMessageHistory').findOne({
+            _id: correlationId
         })
     );
 
     var related = await fetchRecordLabelsManual(db, {
-        personnel: [ record.payload.personnelId ],
-        [record.collectionName]: [ record.channelId ]
+        personnel: [ record.personnelId ]
     });
 
     context.body = ResponseBody({

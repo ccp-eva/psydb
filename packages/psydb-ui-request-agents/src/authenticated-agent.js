@@ -6,6 +6,14 @@ const createAgent = (options = {}) => {
 
     const axios = Axios.create();
 
+    const dumpPOST = ({ url }) => (bag) => {
+        var { extraAxiosConfig, ...payload } = bag;
+        return axios.post(
+            url,
+            payload, extraAxiosConfig,
+        );
+    }
+
     //axios.interceptors.response.use(
     //    (response) => (response),
     //    (error) => {
@@ -779,6 +787,19 @@ const createAgent = (options = {}) => {
             payload, extraAxiosConfig,
         );
     }
+
+    agent.fetchMQMessageHistoryList = dumpPOST({
+        url: '/api/audit/mq-message-history/list'
+    })
+    agent.fetchMQMessageHistoryRecord = dumpPOST({
+        url: '/api/audit/mq-message-history/read'
+    })
+    agent.fetchRohrpostEventList = dumpPOST({
+        url: '/api/audit/rohrpost-event/list'
+    })
+    agent.fetchRohrpostEventRecord = dumpPOST({
+        url: '/api/audit/rohrpost-event/read'
+    })
 
     // XXX
     agent.fetchFixedEventDetails = (bag) => {

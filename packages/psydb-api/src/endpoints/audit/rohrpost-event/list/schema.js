@@ -15,8 +15,8 @@ var Schema = (bag = {}) => {
     return ExactObject({
         properties: {
             correlationId: { type: 'string' }, // XXX
-            interval: DateTimeInterval(),
             triggeredBy: ForeignId({ collection: 'personnel' }),
+            interval: DateTimeInterval(),
 
             channelId: Id(),
             collectionName: { type: 'string' }, // XXX

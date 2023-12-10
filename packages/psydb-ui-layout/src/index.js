@@ -28,6 +28,7 @@ export * from './split-partitioned';
 export { default as Pair } from './pair';
 
 export { default as DetailsBox } from './details-box';
+export { default as DetailsBoxPlain } from './details-box-plain';
 export { default as FormBox } from './form-box';
 
 // FIXME: this should be withDefaultModal non capitalized

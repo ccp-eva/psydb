@@ -510,6 +510,19 @@ var createRouting = (bag = {}) => {
         endpoint: endpoints.subject.readSpooled
     }));
 
+    router.post('/audit/mq-message-history/list', ...withPostStages({
+        endpoint: endpoints.audit.mqMessageHistory.list
+    }));
+    router.post('/audit/mq-message-history/read', ...withPostStages({
+        endpoint: endpoints.audit.mqMessageHistory.read
+    }));
+    router.post('/audit/rohrpost-event/list', ...withPostStages({
+        endpoint: endpoints.audit.rohrpostEvent.list
+    }));
+    router.post('/audit/rohrpost-event/read', ...withPostStages({
+        endpoint: endpoints.audit.rohrpostEvent.read
+    }));
+
     // XXX
     router.post('/fixed-event-details', ...withPostStages({
         endpoint: endpoints.temp_fixesChecker.fixedEventDetails

@@ -35,10 +35,10 @@ const Routing = (ps) => {
                     ]} />
                 </PageWrappers.Level1>
             </Route>
-            <Route exact path={ `${path}/mq-message-history`}>
+            <Route path={ `${path}/mq-message-history`}>
                 <MQMessageHistoryRouting />
             </Route>
-            <Route exact path={ `${path}/rohrpost-events`}>
+            <Route path={ `${path}/rohrpost-events`}>
                 <RohrpostEventsRouting />
             </Route>
         </Switch>

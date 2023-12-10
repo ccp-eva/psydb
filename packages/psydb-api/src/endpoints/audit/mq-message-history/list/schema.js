@@ -18,9 +18,9 @@ var Schema = (bag = {}) => {
             triggeredBy: ForeignId({ collection: 'personnel' }),
             ...pagination.properties,
         },
-        required: {
+        required: [
             ...pagination.required,
-        }
+        ]
     })
 }
 

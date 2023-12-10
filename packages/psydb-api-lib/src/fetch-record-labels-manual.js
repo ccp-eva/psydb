@@ -59,6 +59,16 @@ var handleNoCRT = async (bag) => {
         ];
         
         var [ projection, definition ] = {
+            'personnel': [
+                { 
+                    'gdpr.state.firstname': true,
+                    'gdpr.state.lastname': true,
+                },
+                { format: '${#} ${#}', tokens: [
+                    { dataPointer: '/gdpr/state/firstname' },
+                    { dataPointer: '/gdpr/state/lastname' },
+                ]}
+            ],
             'experiment': [
                 { 
                     '__type': { $ifNull: [ '$realType', '$type'] },

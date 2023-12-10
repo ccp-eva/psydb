@@ -94,4 +94,5 @@ module.exports = {
     aggregateToArray: require('./aggregate-to-array'),
 
     mappifyPointer: require('./mappify-pointer'),
+    SmartArray: require('./smart-array'),
 }
