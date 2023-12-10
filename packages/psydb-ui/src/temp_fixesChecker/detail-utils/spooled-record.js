@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ReactDiffViewer from 'react-diff-viewer';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 import {
     LoadingIndicator,
@@ -6,6 +7,7 @@ import {
     Button
 } from '@mpieva/psydb-ui-layout';
 
+import { JsonDiff } from './json-diff';
 import { JsonRaw } from './json-raw';
 
 export const SpooledRecord = (ps) => {
@@ -22,7 +24,7 @@ export const SpooledRecord = (ps) => {
 
     var { record, spooled, eventChain } = fetched.data;
 
-    var partitions = [1,1];
+    var partitions = [1];
     partitions.push(
         showEventChain ? 1 : 0
     );
@@ -35,13 +37,11 @@ export const SpooledRecord = (ps) => {
                 >Show Event Chain</Button>
             </div>
             <SplitPartitioned partitions={ partitions }>
-                <JsonRaw
-                    title='Cached Record'
-                    data={ record } orderKeys
-                />
-                <JsonRaw
-                    title='Recalculation from Event Chain'
-                    data={ spooled } orderKeys
+                <JsonDiff
+                    oldValue={ record }
+                    newValue={ spooled }
+                    orderKeys
+                    splitView
                 />
                 { showEventChain && (
                     <JsonRaw title='Event Chain' data={ eventChain } />
@@ -50,3 +50,13 @@ export const SpooledRecord = (ps) => {
         </div>
     )
 }
+/*
+                <JsonRaw
+                    title='Cached Record'
+                    data={ record } orderKeys
+                />
+                <JsonRaw
+                    title='Recalculation from Event Chain'
+                    data={ spooled } orderKeys
+                />
+*/

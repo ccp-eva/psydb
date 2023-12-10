@@ -89,7 +89,18 @@ var spoolEvents = (bag) => {
         // FIXME: mingo bug when pulling ObjectId from array
         var ops = ejson(unescape(payload), { prefix: '/' });
 
-        updateObject(onto, ops, arrayFilters);
+        if (Object.keys(ops).length > 1) {
+            // NOTE: updateObject() cant handle multiple
+            // update expressions at once so we have to split them
+            for (var key of Object.keys(ops)) {
+                var subop = { [key]: ops[key] };
+                console.dir(subop, { depth: null });
+                updateObject(onto, subop, arrayFilters)
+            }
+        }
+        else {
+            updateObject(onto, ops, arrayFilters);
+        }
     }
 
     onto = ejson.parse(JSON.stringify(onto), {
