@@ -35,7 +35,7 @@ const usePaginationURLSearchParams = (initial = {}) => {
 
     var selectPrevPage = () => {
         if ((offset - limit) >= 0) {
-            setOffset(offset - lmit);
+            setOffset(offset - limit);
         }
         else {
             setOffset(0)

@@ -50,7 +50,7 @@ const FixedImportEventList = (ps) => {
                 <div className='sticky-top border-bottom'>
                     <Pagination
                         { ...pagination }
-                        showJump={ false }
+                        showJump={ true }
                     />
                 </div>
             </PageWrappers.Level2>
