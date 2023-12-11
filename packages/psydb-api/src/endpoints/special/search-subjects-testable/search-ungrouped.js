@@ -86,7 +86,7 @@ var searchUngrouped = async (context, next) => {
     });
 
     var queryFields = convertFiltersToQueryFields({
-        filters: quickSearchFilters,
+        filters: quickSearchFilters || {},
         displayFields: subjectRecordLabelDefinition.tokens,
         fieldTypeMetadata,
     });

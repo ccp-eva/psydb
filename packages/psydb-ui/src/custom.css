@@ -234,3 +234,53 @@ a {
         padding-right: 0 !important;
     }
 }
+
+/* extra helpers we added manually that weer not included in bootsrap 4 */
+
+.gapx-0 {
+  column-gap: 0 !important;
+}
+
+.gapx-1 {
+  column-gap: 0.25rem !important;
+}
+
+.gapx-2 {
+  column-gap: 0.5rem !important;
+}
+
+.gapx-3 {
+  column-gap: 1rem !important;
+}
+
+.gapx-4 {
+  column-gap: 1.5rem !important;
+}
+
+.gapx-5 {
+  column-gap: 3rem !important;
+}
+
+.gapy-0 {
+  row-gap: 0 !important;
+}
+
+.gapy-1 {
+  row-gap: 0.25rem !important;
+}
+
+.gapy-2 {
+  row-gap: 0.5rem !important;
+}
+
+.gapy-3 {
+  row-gap: 1rem !important;
+}
+
+.gapy-4 {
+  row-gap: 1.5rem !important;
+}
+
+.gapy-5 {
+  row-gap: 3rem !important;
+}
