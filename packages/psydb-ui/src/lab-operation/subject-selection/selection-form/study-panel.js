@@ -77,14 +77,20 @@ const AgeFrame = (ps) => {
                     label={ title }
                 />
             </header>
-            { conditions.map((it, index) => (
-                <Condition key={ index } { ...({
-                    formKey,
-                    subjectTypeRecord,
-                    condition: it,
-                    ageFrameRelated,
-                })} />
-            ))}
+            { conditions.length > 0 ? (
+                conditions.map((it, index) => (
+                    <Condition key={ index } { ...({
+                        formKey,
+                        subjectTypeRecord,
+                        condition: it,
+                        ageFrameRelated,
+                    })} />
+                ))
+            ) : (
+                <i className='text-muted ml-3'>
+                    { translate('No further Conditions')}
+                </i>
+            )}
         </div>
     )
 }

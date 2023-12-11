@@ -51,7 +51,9 @@ export const AgeFrame = (ps) => {
         return (
             <InnerSettingPanel { ...panelProps }>
                 <div className='pl-3'>
-                    <i className='text-muted'>Keine weiteren Bedingungen</i>
+                    <i className='text-muted'>
+                        { translate('No further Conditions') }
+                    </i>
                 </div>
             </InnerSettingPanel>
         );

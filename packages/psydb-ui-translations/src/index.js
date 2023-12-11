@@ -2551,6 +2551,10 @@ var maps = [
         en: 'No age frames were defined for this study.',
         de: 'Es sind keine Altersfenster für diese Studie definiert.',
     },
+    {
+        en: 'No further Conditions',
+        de: 'Keine weiteren Bedingungen',
+    },
     
     // WKPRC
     
