@@ -2547,6 +2547,10 @@ var maps = [
         en: 'Date/Time Format',
         de: 'Datums-/Zeitformat',
     },
+    {
+        en: 'No age frames were defined for this study.',
+        de: 'Es sind keine Altersfenster für diese Studie definiert.',
+    },
     
     // WKPRC
     

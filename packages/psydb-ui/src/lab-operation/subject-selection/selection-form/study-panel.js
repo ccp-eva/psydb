@@ -1,6 +1,7 @@
 import React from 'react';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
+import { Alert } from '@mpieva/psydb-ui-layout';
 import { stringifyFieldValue, Fields } from '@mpieva/psydb-ui-lib';
 
 import {
@@ -11,28 +12,32 @@ import {
 export const StudyPanel = (ps) => {
     var {
         studyId,
+        shorthand,
         subjectTypeRecord,
-        ageFrameRecords,
+        ageFrameRecords = [],
         ageFrameRelated
     } = ps;
     
     var translate = useUITranslation();
 
-    var { relatedRecordLabels } = ageFrameRelated;
-    var title = relatedRecordLabels.study[studyId]._recordLabel;
-
     return (
         <div>
             <header className='pb-1 mb-3 border-bottom'>
-                <b>{ translate('Study') } - { title }</b>
+                <b>{ translate('Study') } - { shorthand }</b>
             </header>
-            { ageFrameRecords.map((it, index) => (
-                <AgeFrame key={ index } { ...({
-                    subjectTypeRecord,
-                    ageFrameRecord: it,
-                    ageFrameRelated,
-                })} />
-            ))}
+            { ageFrameRecords.length > 0 ? (
+                ageFrameRecords.map((it, index) => (
+                    <AgeFrame key={ index } { ...({
+                        subjectTypeRecord,
+                        ageFrameRecord: it,
+                        ageFrameRelated,
+                    })} />
+                ))
+            ) : (
+                <i className='text-muted'>
+                    { translate('No age frames were defined for this study.')}
+                </i>
+            )}
         </div>
     )
 }
