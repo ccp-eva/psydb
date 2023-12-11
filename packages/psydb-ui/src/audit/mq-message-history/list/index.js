@@ -146,7 +146,7 @@ const TableRow = (ps) => {
             </td>
             <td>
                 <ItemsIconButtonInline
-                    to={ `/${here}/${correlationId}`}
+                    to={ `${here}/${correlationId}`}
                 />
             </td>
         </tr>

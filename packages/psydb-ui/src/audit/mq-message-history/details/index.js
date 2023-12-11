@@ -8,6 +8,7 @@ import {
     PageWrappers,
     DetailsBoxPlain,
     Pair,
+    JsonRaw
 } from '@mpieva/psydb-ui-layout';
 
 const Details = () => {
@@ -42,6 +43,14 @@ const Details = () => {
                     </Pair>
                     <Pair label='Correlation ID'>{ correlationId }</Pair>
                 </DetailsBoxPlain>
+                
+                <JsonRaw
+                    className='mt-4'
+                    title='Raw Action Data'
+                    data={ record }
+                    orderKeys
+                />
+
             </PageWrappers.Level2>
         </PageWrappers.Level1>
     )
