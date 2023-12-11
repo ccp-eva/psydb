@@ -6,7 +6,11 @@ var debug = require('debug')(
 var omit = require('@cdxoo/omit');
 var datefns = require('date-fns');
 
-var { keyBy, convertPointerToPath } = require('@mpieva/psydb-core-utils');
+var {
+    ejson,
+    keyBy,
+    convertPointerToPath
+} = require('@mpieva/psydb-core-utils');
 
 var {
     calculateAge,
@@ -20,7 +24,9 @@ var {
 var {
     ApiError,
     Ajv,
-    ResponseBody
+    ResponseBody,
+    withRetracedErrors,
+    SmartArray,
 } = require('@mpieva/psydb-api-lib');
 
 var {
@@ -116,7 +122,7 @@ var searchUngrouped = async (context, next) => {
     //);
     //debug('end exclude query');
 
-    var preCountStages = [
+    var preCountStages = SmartArray([
         { $match: {
             type: subjectTypeKey,
             isDummy: false,
@@ -125,20 +131,22 @@ var searchUngrouped = async (context, next) => {
         }},
         // NOTE: prefiltering possbile age frames to make index use easier
         // and get better performance
-        { $match: { $or: (
-            ageFrameFilters.map(it => {
-                var p = convertPointerToPath(dobFieldPointer);
-                var shifted = timeshiftAgeFrame({
-                    targetInterval: interval,
-                    ageFrame: it.interval
-                });
-                    
-                return { $and: [
-                    { [p]: { $gte: shifted.start }},
-                    { [p]: { $lt: shifted.end }},
-                ]}
-            })
-        )}},
+        (ageFrameFilters.length > 0) && (
+            { $match: { $or: (
+                ageFrameFilters.map(it => {
+                    var p = convertPointerToPath(dobFieldPointer);
+                    var shifted = timeshiftAgeFrame({
+                        targetInterval: interval,
+                        ageFrame: it.interval
+                    });
+                        
+                    return { $and: [
+                        { [p]: { $gte: shifted.start }},
+                        { [p]: { $lt: shifted.end }},
+                    ]}
+                })
+            )}}
+        ),
 
         // TODO: quicksearch
         ...QuickSearchStages({
@@ -164,7 +172,7 @@ var searchUngrouped = async (context, next) => {
         HasAnyTestabilityStage({
             studyIds
         }),
-    ];
+    ]);
 
     var stages = [
         ...preCountStages,
@@ -201,8 +209,10 @@ var searchUngrouped = async (context, next) => {
         name: 'ageFrameIndex'
     });
 
+    console.dir(ejson(stages), { depth: null });
+
     debug('start aggregate');
-    var result = await (
+    var result = await withRetracedErrors(
         db.collection('subject')
         .aggregate(stages, {
             hint: 'ageFrameIndex',
