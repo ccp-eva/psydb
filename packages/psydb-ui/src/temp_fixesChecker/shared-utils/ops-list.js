@@ -51,7 +51,7 @@ const OpsItem = (ps) => {
         'experiment': `/#/experiments/${targetChannelId}`,
     }[targetCollection];
 
-    var psydb = 'https://psydb.eva.mpg.de'
+    var psydb = 'https://childdb.eva.mpg.de'
 
     return (
         <SplitPartitioned partitions={[ 3,10,15,50,40 ]}>
@@ -72,10 +72,10 @@ const OpsItem = (ps) => {
             )}
             { collection === 'rohrpostEvents' ? (
                 <SplitPartitioned partitions={[ 12, 8 ]}>
-                    <a href={`/#/rohrpost-events/${_id}`} target='_blank'>
+                    <a href={`/#/audit/rohrpost-events/${_id}`} target='_blank'>
                         { _id }
                     </a>
-                    <a href={`${psydb}/#/rohrpost-events/${_id}`} target='_blank'>
+                    <a href={`${psydb}/#/audit/rohrpost-events/${_id}`} target='_blank'>
                         <b>(original)</b>
                     </a>
                 </SplitPartitioned>
