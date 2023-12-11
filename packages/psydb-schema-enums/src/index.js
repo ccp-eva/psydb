@@ -173,6 +173,7 @@ var experimentTypes = createEnumFromMap({
     'inhouse': 'Inhouse Appointments',
     'away-team': 'External Appointments',
     'online-video-call': 'Online Video Appointments',
+    'online-survey': 'Online Survey',
     //'inhouse-group-simple': 'Interne Gruppen Termine (WKPRC)'
 });
 

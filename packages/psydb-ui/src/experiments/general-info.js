@@ -83,9 +83,11 @@ const General = (ps) => {
         collection: 'researchGroup'
     });
 
+    var t = experimentRecord.realType || experimentRecord.type;
+
     var sharedBag = {
         experimentId: experimentRecord._id,
-        experimentTypeLabel: experimentTypes.mapping[experimentRecord.type],
+        experimentTypeLabel: experimentTypes.mapping[t],
         studyLabel: studyRecord.state.shorthand,
         firstResearchGroupId,
         researchGroupLabel,
@@ -96,26 +98,82 @@ const General = (ps) => {
         onSuccessfulUpdate
     }
 
+    var content = null;
+    if (t === 'online-survey') {
+        content = (
+            <OnlineSurveyVariant { ...sharedBag } />
+        );
+    }
+    else if (isInviteExperiment) {
+        content = (
+            <InviteVariant { ...sharedBag } />
+        );
+    }
+    else {
+        content = (
+            <AwayTeamVariant
+                { ...sharedBag }
+                comment={ experimentRecord.state.comment }
+            />
+        );
+    }
+
     return (
             <Container>
-                {
-                    isInviteExperiment
-                    ? (
-                        <InviteVariant
-                            { ...sharedBag }
-                        />
-                    )
-                    : (
-                        <AwayTeamVariant
-                            { ...sharedBag }
-                            comment={ experimentRecord.state.comment }
-                        />
-                    )
-                }
+                { content }
             </Container>
     );
 }
 
+const OnlineSurveyVariant = (ps) => {
+    var {
+        experimentTypeLabel,
+        studyLabel,
+        researchGroupLabel,
+        interval,
+        locationData,
+        opsTeamData,
+    } = ps;
+
+    var locale = useUILocale();
+    var translate = useUITranslation();
+
+    var {
+        startDate, startTime, endTime
+    } = formatDateInterval(interval, { locale });
+
+    return (
+        <>
+            <Split num={2}>
+                <Pair label={ translate('Study') }>
+                    { studyLabel }
+                </Pair>
+                <Pair label={ translate('Type') }>
+                    { experimentTypeLabel }
+                </Pair>
+            </Split>
+
+            <Split num={2}>
+                <Pair label={ translate('Date') }>
+                    { startDate }
+                </Pair>
+                <Pair label={ translate('Time') }>
+                    { startTime }
+                    {' '}
+                    { translate('to') }
+                    {' '}
+                    { endTime }
+                </Pair>
+            </Split>
+
+            <Split num={2}>
+                <Pair label={ translate('Research Group') }>
+                    { researchGroupLabel }
+                </Pair>
+            </Split>
+        </>
+    )
+};
 const InviteVariant = (ps) => {
     var {
         experimentTypeLabel,
