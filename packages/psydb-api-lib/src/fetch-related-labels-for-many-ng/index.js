@@ -18,7 +18,14 @@ var fetchHelperSetItemLabels = require('./fetch-helper-set-item-labels');
 
 var fetchRelatedLabelsForMany = async (bag) => {
     debug('start fetchRelatedLabelsForMany()');
-    var { db, collectionName: collection, records, timezone } = bag;
+    var {
+        db,
+        collectionName: collection,
+        records,
+        timezone,
+        language,
+        locale,
+    } = bag;
 
     // FIXME: thats a hack
     if (collection === 'customRecordType') {
@@ -88,7 +95,8 @@ var fetchRelatedLabelsForMany = async (bag) => {
                 debug('fetching for collection: ', c);
                 //console.log({ ids });
                 out.relatedRecords[c] = await fetchRecordLabels({
-                    db, collection: c, ids, timezone,
+                    db, collection: c, ids,
+                    timezone, language, locale,
                     keyed: true
                 });
             }
@@ -101,7 +109,8 @@ var fetchRelatedLabelsForMany = async (bag) => {
     if (gathered.helperSetItems) {
         debug('fetching helper set items');
         out.relatedHelperSetItems = await fetchHelperSetItemLabels({
-            db, ids: gathered.helperSetItems.ids, timezone,
+            db, ids: gathered.helperSetItems.ids,
+            timezone, language, locale,
             keyed: true
         });
     }
@@ -118,7 +127,7 @@ var fetchRelatedLabelsForMany = async (bag) => {
         out.relatedCustomRecordTypes = await fetchCRTLabels({
             db,
             filter,
-            timezone,
+            timezone, language, locale,
             keyed: true
         });
     }
