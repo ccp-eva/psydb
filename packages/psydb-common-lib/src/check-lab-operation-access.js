@@ -33,6 +33,7 @@ var checkLabOperationAccess = (options) => {
         flags,
         matchTypes: matchTypes || checkJoin === 'or' ? 'some' : 'every',
         matchFlags: matchFlags || checkJoin === 'or' ? 'some' : 'every',
+        // XXX: shouldnt researchGroupId be passed here??
     })
 
     //console.log({ x });

@@ -31,7 +31,7 @@ var readMany = async (context, next) => {
     // the user has access to on per record basis
     verifyLabOperationAccess({
         permissions,
-        labOperationType: 'any',
+        labOperationTypes: 'any',
         flags: [
             'canSelectSubjectsForExperiments',
         ],

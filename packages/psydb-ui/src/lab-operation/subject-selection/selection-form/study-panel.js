@@ -34,7 +34,7 @@ export const StudyPanel = (ps) => {
                     })} />
                 ))
             ) : (
-                <i className='text-muted'>
+                <i className='text-muted ml-3'>
                     { translate('No age frames were defined for this study.')}
                 </i>
             )}
