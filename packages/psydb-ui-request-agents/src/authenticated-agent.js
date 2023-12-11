@@ -788,6 +788,11 @@ const createAgent = (options = {}) => {
         );
     }
 
+    // FIXME: use es6-template-strings to build url
+    agent.fetchManyRecords = ({ collection, ...pass }) => (
+        dumpPOST({ url: `/api/${collection}/read-many` })(pass)
+    );
+
     agent.fetchMQMessageHistoryList = dumpPOST({
         url: '/api/audit/mq-message-history/list'
     });

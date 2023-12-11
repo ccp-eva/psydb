@@ -492,6 +492,9 @@ var createRouting = (bag = {}) => {
         endpoints.csvImport.preview
     );
 
+    router.post('/study/read-many', ...withPostStages({
+        endpoint: endpoints.study.readMany
+    }));
     router.post('/study/subject-type-infos', ...withPostStages({
         endpoint: endpoints.study.subjectTypeInfos
     }));
