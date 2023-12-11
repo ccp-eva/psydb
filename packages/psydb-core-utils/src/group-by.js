@@ -26,21 +26,16 @@ var groupBy = (options) => {
 }
 
 var genericGroupBy = ({ items, createKey, transform }) => {
-    var grouped = items.reduce((acc, item) => {
-        var group = [],
-            key = createKey(item);
-        if (acc[key]) {
-            group = acc[key];
+    var grouped = {};
+    for (var item of items) {
+        var key = createKey(item);
+
+        if (!grouped[key]) {
+            grouped[key] = [];
         }
-        return {
-            ...acc,
-            [key]: [
-                ...group,
-                transform(item)
-            ]
-        };
-    }, {});
-    
+
+        grouped[key].push(transform(item));
+    }
     return grouped;
 }
 

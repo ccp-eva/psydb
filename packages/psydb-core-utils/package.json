@@ -3,9 +3,11 @@
   "version": "0.1.0-alpha",
   "description": "",
   "main": "src/index.js",
-  "scripts": {},
   "author": "Jan Schwalbe",
   "license": "MIT",
+  "scripts": {
+    "test": "npx mocha --config ./mocha.config.json ./test"
+  },
   "dependencies": {
     "jsonpointer": "~5.0.1",
     "deepmerge": "~4.2.2",

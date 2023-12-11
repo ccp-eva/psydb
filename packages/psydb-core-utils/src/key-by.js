@@ -26,12 +26,11 @@ var keyBy = (options) => {
 }
 
 var genericKeyBy = ({ items, createKey, transform }) => {
-    var keyed = items.reduce((acc, item) => ({
-        ...acc,
-        [createKey(item)]: transform(item)
-    }), {});
-
-    return keyed;
+    var out = {};
+    for (var item of items) {
+        out[createKey(item)] = transform ? transform(item) : item;
+    }
+    return out;
 }
 
 module.exports = keyBy;
