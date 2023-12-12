@@ -1,4 +1,5 @@
 'use strict';
+var { ObjectId } = require('mongodb');
 var { keyBy, forcePush, escapeRX } = require('@mpieva/psydb-core-utils');
 var {
     validateOrThrow,
@@ -10,6 +11,26 @@ var {
 } = require('@mpieva/psydb-api-lib');
 
 var Schema = require('./schema');
+
+var maybeAsObjectId = (that) => {
+    var out = undefined;
+    try {
+        if (String(that).length === 24) {
+            out = new ObjectId(that);
+        }
+    }
+    catch (e) {}
+
+    return out;
+}
+
+var maybeAsNanoid = (that) => {
+    var out = undefined
+    if (String(that).length === 21) {
+        out = that;
+    }
+    return out;
+}
 
 var listEndpoint = async (context, next) => {
     var { db, permissions, request } = context;
@@ -32,24 +53,36 @@ var listEndpoint = async (context, next) => {
         limit
     } = request.body;
 
+    var channelObjectId = maybeAsObjectId(channelId);
+    var correlationNanoId = maybeAsNanoid(correlationId);
+
     var AND = SmartArray([
         eventId && { $regexMatch: {
             input: '$_id',
             regex: new RegExp(escapeRX(eventId), 'i')
         }},
-        correlationId && { $regexMatch: {
-            input: '$correlationId',
-            regex: new RegExp(escapeRX(correlationId), 'i')
-        }},
+        correlationNanoId ? (
+            { $eq: [ '$correlationId', correlationNanoId ]}
+        ) : (
+            correlationId && { $regexMatch: {
+                input: '$correlationId',
+                regex: new RegExp(escapeRX(correlationId), 'i')
+            }}
+        ),
         triggeredBy && { $eq: [
-            '$messgae.payload.personnelId', triggeredBy,
+            '$message.personnelId', triggeredBy,
         ]},
         // interval && { ... } // TODO
 
-        channelId && { $regexMatch: {
-            input: { $toString: '$channelId' },
-            regex: new RegExp(escapeRX(channelId))
-        }},
+        channelObjectId ? (
+            { $eq: [ '$channelId', channelObjectId ]}
+        ) : (
+            channelId && { $regexMatch: {
+                input: { $toString: '$channelId' },
+                regex: new RegExp(escapeRX(channelId))
+            }}
+        ),
+
         collectionName && { $regexMatch: {
             input: '$collectionName',
             regex: new RegExp(escapeRX(collectionName), 'i')
