@@ -91,15 +91,15 @@ var stringifyFieldValue = ({
     else if (type === 'HelperSetItemIdList') {
         if (relatedHelperSetItems) {
             str = (rawValue || []).map(id => {
-                var relatedItem = related.helperSets[props.setId][rawValue];
+                var relatedItem = related.helperSets[props.setId][id];
                 return (
                     (relatedItem.state.displayNameI18N || {})[language]
                     || relatedItem.state.label
                 );
-            }).join();
+            }).join('; ');
         }
         else {
-            str = (rawValue || []).join(', ')
+            str = (rawValue || []).join('; ')
         }
     }
     else if (type === 'CustomRecordTypeKey') {
@@ -125,7 +125,7 @@ var stringifyFieldValue = ({
                 var s_label = _rel.systemRole[sid]._recordLabel;
 
                 return `${rg_label}=${s_label}`;
-            }).join();
+            }).join('; ');
         }
         else {
             str = (rawValue || []).map(it => (
