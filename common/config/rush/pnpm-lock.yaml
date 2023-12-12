@@ -403,6 +403,7 @@ importers:
 
   ../../packages/psydb-api-lib:
     specifiers:
+      '@cdxoo/debug-js-fork': ~0.0.1
       '@cdxoo/inline-string': ~1.0.0
       '@cdxoo/inline-text': ~1.0.2
       '@cdxoo/mongodb-escape-keys': ~0.1.1
@@ -441,6 +442,7 @@ importers:
       snap-shot-it: ~7.9.6
       statuses: ~2.0.1
     dependencies:
+      '@cdxoo/debug-js-fork': 0.0.1
       '@cdxoo/inline-string': 1.0.0
       '@cdxoo/inline-text': 1.0.2
       '@cdxoo/mongodb-escape-keys': 0.1.1
@@ -2812,6 +2814,18 @@ packages:
 
   /@cdxoo/block-quote/1.0.1:
     resolution: {integrity: sha512-VDMjQuGRJdz9jxU85/srmZg3ePjhQTNOcMQuziecvqSwPrNMmBApMSbC45IAoxqAW9fVVhacMBFdzMtf81o+EQ==}
+    dev: false
+
+  /@cdxoo/debug-js-fork/0.0.1:
+    resolution: {integrity: sha512-Apf6YF64BdlM5LY/yGfhVdmhVB6g5fLjQQSZ6HWBGhaeqln/TKAqfN+UnTEqN3Wiz0kjc5e60RA4ucGGjwsFiA==}
+    engines: {node: '>=6.0'}
+    peerDependencies:
+      supports-color: '*'
+    peerDependenciesMeta:
+      supports-color:
+        optional: true
+    dependencies:
+      ms: 2.1.2
     dev: false
 
   /@cdxoo/flat/0.0.10:

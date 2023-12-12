@@ -1,5 +1,8 @@
 'use strict';
-var debug = require('debug')('psydb:api-lib:fetchRelatedLabelsForMany');
+var debug = require('@cdxoo/debug-js-fork')(
+    'psydb:api-lib:fetchRelatedLabelsForMany'
+);
+
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
 var {
@@ -69,6 +72,7 @@ var fetchRelatedLabelsForMany = async (bag) => {
 
     var gathered = {};
     debug(records.length);
+    var t = new Date();
     //console.log(possibleRefs);
     for (var record of records) {
         var result = gatherAllRefValues({
@@ -78,7 +82,8 @@ var fetchRelatedLabelsForMany = async (bag) => {
 
         gathered = merge(gathered, result);
     }
-    debug('DDDDDDDDDDDDDDDDDDDDD');
+    var delta = new Date() - t;
+    debug('DDDDDDDDDDDDDDDDDDDDD', delta);
 
     var out = {
         relatedRecords: {},
