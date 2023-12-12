@@ -46,7 +46,6 @@ var subjectTypeInfos = async (context, next) => {
     var fromExistingParticipations = unique(
         await (
             db.collection('subject').aggregate([
-                { $unwind: '$' + ppath() },
                 { $match: {
                     [ ppath() + '.studyId' ]: studyId,
                 }},
