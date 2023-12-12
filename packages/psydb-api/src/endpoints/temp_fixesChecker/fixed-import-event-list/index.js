@@ -9,7 +9,10 @@ var { fetchUpdates, fetchEvents, postprocessUpdates } = require('../utils');
 var Schema = require('./schema');
 
 var fixedImportEventList = async (context, next) => {
-    var { db, permissions, request } = context;
+    var {
+        db, permissions, request,
+        timezone, language, locale
+    } = context;
 
     validateOrThrow({
         schema: Schema(),
@@ -26,7 +29,9 @@ var fixedImportEventList = async (context, next) => {
     var events = await fetchEvents({ db, updates });
     
     var { relatedIds } = postprocessUpdates({ updates, events });
-    var related = await fetchRecordLabelsManual(db, relatedIds);
+    var related = await fetchRecordLabelsManual(db, relatedIds, {
+        timezone, language, locale
+    });
 
     context.body = ResponseBody({
         data: { updates, total, related },

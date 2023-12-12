@@ -9,7 +9,7 @@ var createRecordLabel = require('./create-record-label');
 var mergeRecordLabelProjections = require('./merge-record-label-projections');
 
 var fetchRecordLabelsManual = async (db, idsForCollection, options = {}) => {
-    var { timezone } = options;
+    var { timezone, language, locale } = options;
 
     var collections = groupBy({
         items: Object.keys(idsForCollection),
@@ -47,7 +47,7 @@ var fetchRecordLabelsManual = async (db, idsForCollection, options = {}) => {
 
 var handleNoCRT = async (bag) => {
     var { db, collections, idsForCollection, options } = bag;
-    var { timezone } = options;
+    var { timezone, language, locale } = options;
 
     var related = {};
     for (var collection of collections) {
@@ -95,9 +95,8 @@ var handleNoCRT = async (bag) => {
         related[collection] = {}
         for (var record of records) {
             related[collection][record._id] = createRecordLabel({
-                record,
-                definition,
-                timezone
+                record, definition,
+                timezone, language, locale
             })
         }
     }
@@ -107,7 +106,7 @@ var handleNoCRT = async (bag) => {
 
 var handleWithCRT = async (bag) => {
     var { db, collections, idsForCollection, options } = bag;
-    var { timezone } = options;
+    var { timezone, language, locale } = options;
 
     var allCRTSettings = await fetchAllCRTSettings(db, [
         ...collections.map(
@@ -144,7 +143,7 @@ var handleWithCRT = async (bag) => {
                     .getRecordLabelDefinition()
                 ),
                 from: '_labelProjection',
-                timezone
+                timezone, language, locale
             })
         }
     }

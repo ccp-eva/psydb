@@ -208,11 +208,11 @@ const SideNav = (ps) => {
                             { translate('Audit') }
                         </Link>
                         
-                        {/*<div className='border-top mt-2 mb-2' />
+                        <div className='border-top mt-2 mb-2' />
 
                         <Link to='/fixes-checker'>
                             Fixes Checker
-                        </Link>*/}
+                        </Link>
                     </WhenAllowed>
                 </div>
             </Nav>
