@@ -6,6 +6,7 @@ var debug = require('debug')(
 var {
     keyBy,
     compareIds,
+    unique,
     ejson,
 } = require('@mpieva/psydb-core-utils');
 
@@ -91,31 +92,37 @@ var participatedSubjectsForStudy = async (context, next) => {
         additionalFlags: [ 'canReadParticipation' ]
     });
 
+    debug('fetching subject types');
     var subjectTypeKeys = (
         subjectType
         ? [ subjectType ]
         : await (
             db.collection('subject').aggregate([
-                { $unwind: '$' + ppath() },
                 { $match: {
                     ...(subjectType && { type: subjectType }),
-
-                    [ ppath() + '.studyId' ]: studyId,
-                    ...(onlyParticipated && {
-                        [ ppath() + '.status' ]: 'participated',
-                    }),
+                    [ppath()]: { $elemMatch: {
+                        studyId,
+                        ...(onlyParticipated && {
+                            status: 'participated'
+                        })
+                    }}
                 }},
-                { $project: {
-                    type: true,
+                { $group: {
+                    _id: '$type',
+                    type: { $first: '$type' }
                 }}
             ]).map(it => it.type).toArray()
         )
     );
+    
+    subjectTypeKeys = unique(subjectTypeKeys);
 
-    console.log(subjectTypeKeys);
+    debug('done fetching subject types');
 
+    debug('fetching data');
     var dataBySubjectType = {};
     for (var subjectType of subjectTypeKeys) {
+        debug({ subjectType })
         var data = await fetchParticipation({
             db,
             subjectType,
@@ -126,6 +133,7 @@ var participatedSubjectsForStudy = async (context, next) => {
 
         dataBySubjectType[subjectType] = data;
     }
+    debug('fetching done');
 
     //console.log(dataBySubjectType);
 
@@ -155,6 +163,7 @@ var fetchParticipation = async ({
         customRecordType: subjectType
     });
 
+    debug('fetching subject records');
     var subjectRecords = await (
         db.collection('subject').aggregate([
             { $unwind: '$' + ppath() },
@@ -180,6 +189,7 @@ var fetchParticipation = async ({
             }}] : [])
         ]).toArray()
     );
+    debug('done fetching subject records');
 
     //throw new Error();
     
