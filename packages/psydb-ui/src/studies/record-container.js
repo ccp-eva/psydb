@@ -96,8 +96,8 @@ const StudyRecordContainer = (ps) => {
         canReadParticipation && (
             { 
                 key: 'participation',
-                label: translate('Study Participation') + '(Temporarily Disabled)',
-                disabled: true || fetchedSettings.data.records.length < 1,
+                label: translate('Study Participation'),
+                disabled: fetchedSettings.data.records.length < 1,
             }
         ),
     ].filter(it => !!it);

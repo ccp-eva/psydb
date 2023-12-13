@@ -9,6 +9,8 @@ var {
     isPlainObject,
     merge,
     unique,
+    ejson,
+    convertSchemaPointerToMongoPath,
 } = require('@mpieva/psydb-core-utils');
 
 var resolvePossibleRefs = require('../resolve-possible-refs');
@@ -72,18 +74,12 @@ var fetchRelatedLabelsForMany = async (bag) => {
 
     var gathered = {};
     debug(records.length);
-    var t = new Date();
-    //console.log(possibleRefs);
-    for (var record of records) {
-        var result = gatherAllRefValues({
-            possibleRefs,
-            from: record,
-        });
-
-        gathered = merge(gathered, result);
-    }
-    var delta = new Date() - t;
-    debug('DDDDDDDDDDDDDDDDDDDDD', delta);
+    //console.dir(ejson(records[0]), { depth: null });
+    var gathered = gatherAllRefValues({
+        possibleRefs,
+        from: records,
+    });
+    debug('DDDDDDDDDDDDDDDDDDDDD');
 
     var out = {
         relatedRecords: {},
