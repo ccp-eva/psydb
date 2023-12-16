@@ -1,0 +1,13 @@
+[Unit]
+Description=PsyDB API Service
+Wants=mongodb.service
+After=mongodb.service
+After=network.target
+
+[Service]
+User=psydb
+ExecStart=/srv/psydb-deployment/psydb-api.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
