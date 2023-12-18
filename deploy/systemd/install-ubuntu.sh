@@ -54,6 +54,7 @@ EOF
 
 sudo apt update
 sudo apt install -y nginx
+sudo systemctl disable --now nginx
 
 sudo cp -v $SCRIPT_DIR/../dist-configs/nginx/default.nossl-conf \
     /etc/nginx/conf.d/default.conf
