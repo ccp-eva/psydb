@@ -12,8 +12,11 @@ User=psydb
 #ExecStartPre=mkdir /run/psydb
 #ExecStartPre=chown psydb /run/psydb
 #ExecStart=/usr/bin/node /src/psydb-deploymentpsydb-src/packages/psydb-api/src/server.js
-ExecStart=/usr/bin/node /src/psydb-deployment/psydb-src/packages/psydb-web/bin/www
+ExecStart=/usr/bin/node /srv/psydb-deployment/psydb-src/packages/psydb-web/bin/www
 Restart=always
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=PsyDB
 
 [Install]
 WantedBy=multi-user.target
