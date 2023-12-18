@@ -38,15 +38,19 @@ sudo apt install -y nodejs
 
 ### nginx
 ### https://nginx.org/en/linux_packages.html#Ubuntu
-sudo apt install curl gnupg2 ca-certificates lsb-release ubuntu-keyring
+sudo apt install -y curl gnupg2 ca-certificates lsb-release ubuntu-keyring
 curl -fsSL https://nginx.org/keys/nginx_signing.key \
     | sudo gpg -o /usr/share/keyrings/nginx-archive-keyring.gpg --dearmor
 
 echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] http://nginx.org/packages/mainline/ubuntu $(lsb_release -cs) nginx" \
     | sudo tee /etc/apt/sources.list.d/nginx.list
 
-echo -e "Package: *\nPin: origin nginx.org\nPin: release o=nginx\nPin-Priority: 900\n" \
-    | sudo tee /etc/apt/preferences.d/99nginx
+sudo cat > /etc/apt/preferences.d/99nginx <<EOF
+Package: *
+Pin: origin nginx.org
+Pin: release o=nginx
+Pin-Priority: 900
+EOF
 
 sudo apt update
 sudo apt install -y nginx
@@ -58,15 +62,15 @@ sudo sed -i -e 's/psydb:8080/127.0.0.1:8080/g' /etc/nginx/conf.d/default.conf
 
 ### psydb
 ###
-#sudo groupadd psydb
-#sudo mkdir /srv/psydb-deployment
-#sudo useradd -M -d /srv/psydb-deployment -s /sbin/nologin psydb -g psydb
-#
-#cd /srv/psydb-deployment
-#sudo cp -a $SCRIPT_DIR/../../ ./psydb-src
-#
-#sudo cp ./psydb-src/deploy/systemd/psydb.service /usr/lib/systemd/system/
-#
+sudo groupadd psydb
+sudo mkdir /srv/psydb-deployment
+sudo useradd -M -d /srv/psydb-deployment -s /sbin/nologin psydb -g psydb
+
+cd /srv/psydb-deployment
+sudo cp -a $SCRIPT_DIR/../../ ./psydb-src
+
+sudo cp ./psydb-src/deploy/systemd/psydb.service /usr/lib/systemd/system/
+
 #cd ./psydb-src
 #rush update
 #cd ./packages/psydb-ui
