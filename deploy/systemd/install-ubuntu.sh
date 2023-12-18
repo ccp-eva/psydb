@@ -1,7 +1,7 @@
 #!/bin/bash
 # git clone git@github.com:cdxOo/psydb.git psydb-src
 
-SCRIPT_DIR=$(dirname "$0")
+SCRIPT_DIR=$(realpath $(dirname "$0"))
 
 ### mongodb
 ### https://www.mongodb.com/docs/v6.0/tutorial/install-mongodb-on-ubuntu/
@@ -54,7 +54,9 @@ EOF
 
 sudo apt update
 sudo apt install -y nginx
-sudo systemctl disable --now nginx
+
+# FIXME: there is an issue when not waiting here a little
+sleep 2
 
 sudo cp -v $SCRIPT_DIR/../dist-configs/nginx/default.nossl-conf \
     /etc/nginx/conf.d/default.conf
@@ -70,14 +72,17 @@ sudo useradd -M -d /srv/psydb-deployment -s /sbin/nologin psydb -g psydb
 cd /srv/psydb-deployment
 sudo cp -a $SCRIPT_DIR/../../ ./psydb-src
 
-sudo cp ./psydb-src/deploy/systemd/psydb.service /usr/lib/systemd/system/
+sudo cp -v ./psydb-src/deploy/systemd/psydb.service /usr/lib/systemd/system/
 
-#cd ./psydb-src
+cd ./psydb-src
+#npm install -g @microsoft/rush
 #rush update
-#cd ./packages/psydb-ui
-#npm run build
-#
-#cd /srv/psydb-deployment
-#
-#sudo systemctl enable --now psydb
-#sudo systemclt enable --now nginx
+node ./common/scripts/install-run-rush.js update
+
+cd ./packages/psydb-ui
+npm run build
+
+cd /srv/psydb-deployment
+
+sudo systemctl enable --now psydb
+sudo systemclt enable --now nginx
