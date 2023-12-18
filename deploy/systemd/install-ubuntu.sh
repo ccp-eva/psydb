@@ -1,3 +1,6 @@
+#!/bin/bash
+# git clone git@github.com:cdxOo/psydb.git psydb-src
+
 SCRIPT_DIR=$(dirname "$0")
 
 ### mongodb
@@ -56,14 +59,11 @@ sed -i -e 's/psydb:8080/127.0.0.1:8080/g'
 ### psydb
 ###
 groupadd psydb
+mkdir /srv/psydb-deployment
 useradd -M -d /srv/psydb-deployment -s /sbin/nologin psydb -g psydb
 
 cd /srv/psydb-deployment
 cp -a $SCRIPT_DIR/../../ ./psydb-src
 
-cp ./psydb-src/deploy/systemd/psydb-api.sh ./
-cp ./psydb-src/deploy/systemd/psydb-ui.sh ./
-
-cp ./psydb-src/deploy/systemd/psydb-api.service /usr/lib/systemd/system/
-cp ./psydb-src/deploy/systemd/psydb-ui.service /usr/lib/systemd/system/
+cp ./psydb-src/deploy/systemd/psydb.service /usr/lib/systemd/system/
 

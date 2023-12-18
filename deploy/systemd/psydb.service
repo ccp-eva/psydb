@@ -1,0 +1,19 @@
+[Unit]
+Description=PsyDB Service
+Wants=mongodb.service
+After=mongodb.service
+After=network.target
+
+[Service]
+User=psydb
+#Type=forking
+#PIDFile=/run/psydb/psydb-api.pid
+#ExecStart=/srv/psydb-deployment/psydb-api.sh
+#ExecStartPre=mkdir /run/psydb
+#ExecStartPre=chown psydb /run/psydb
+#ExecStart=/usr/bin/node /src/psydb-deploymentpsydb-src/packages/psydb-api/src/server.js
+ExecStart=/usr/bin/node /src/psydb-deployment/psydb-src/packages/psydb-web/bin/www
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
