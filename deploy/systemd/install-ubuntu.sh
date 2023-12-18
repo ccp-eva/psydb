@@ -1,6 +1,5 @@
 SCRIPT_DIR=$(dirname "$0")
 
-
 ### mongodb
 ### https://www.mongodb.com/docs/v6.0/tutorial/install-mongodb-on-ubuntu/
 apt install -y gnupg curl
@@ -49,11 +48,15 @@ echo -e "Package: *\nPin: origin nginx.org\nPin: release o=nginx\nPin-Priority: 
 apt update
 apt install -y nginx
 
+cp -v $SCRIPT_DIR/../dist-configs/nginx/default.nossl-conf \
+    /etc/nginx/conf.d/default.conf
+
+sed -i -e 's/psydb:8080/127.0.0.1:8080/g'
 
 ### psydb
 ###
 groupadd psydb
-useradd -m -d /srv/psydb-deployment -s /sbin/nologin psydb -g psydb
+useradd -M -d /srv/psydb-deployment -s /sbin/nologin psydb -g psydb
 
 cd /srv/psydb-deployment
 cp -a $SCRIPT_DIR/../../ ./psydb-src
