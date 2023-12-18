@@ -85,4 +85,8 @@ npm run build
 cd /srv/psydb-deployment
 
 sudo systemctl enable --now psydb
-sudo systemclt enable --now nginx
+sudo systemctl enable --now nginx
+
+cp -a ./psydb-src/deploy/mongodb-initializer-dumps/ ./mongodb-dumps
+cp -a ./psydb-src/deploy/make-dump.sh ./
+cp -a ./psydb-src/deploy/restore-dump.sh ./
