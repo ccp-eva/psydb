@@ -87,6 +87,6 @@ cd /srv/psydb-deployment
 sudo systemctl enable --now psydb
 sudo systemctl enable --now nginx
 
-cp -a ./psydb-src/deploy/mongodb-initializer-dumps/ ./mongodb-dumps
-cp -a ./psydb-src/deploy/make-dump.sh ./
-cp -a ./psydb-src/deploy/restore-dump.sh ./
+sudo cp -a ./psydb-src/deploy/mongodb-initializer-dumps/ ./mongodb-dumps
+sudo cp -a ./psydb-src/deploy/make-dump.sh ./
+sudo cp -a ./psydb-src/deploy/restore-dump.sh ./
