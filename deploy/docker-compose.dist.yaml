@@ -9,6 +9,7 @@ services:
       - "./psydb-data/mongodb:/data/db"
     networks:
       - "psydb-net"
+    restart: "unless-stopped"
 
   nginx-reverse:
     image: "nginx:1.25.2"
@@ -25,6 +26,7 @@ services:
       - "host.docker.internal:host-gateway"
     depends_on:
       - psydb
+    restart: "unless-stopped"
 
   # remove if using an actual mail server
   mailhog:
@@ -37,6 +39,7 @@ services:
     # make it accessible from the host machine
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    restart: "unless-stopped"
 
   psydb:
     image: "cdxoo/psydb:0.1.0-alpha.202209030411"
@@ -49,6 +52,7 @@ services:
     depends_on:
       - mongodb
       - mailhog
+    restart: "unless-stopped"
 
 networks:
   psydb-net:
