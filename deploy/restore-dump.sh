@@ -2,6 +2,10 @@
 SCRIPT_DIR=$(dirname "$0")
 DUMP=$1
 
+echo Want to restore $1 to localhost:47017?
+printf ">>> Press enter to continue"
+read _
+
 # use latest dump if arg is ommited
 if [ -z $DUMP ]; then
     # sort by time
