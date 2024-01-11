@@ -107,6 +107,13 @@ const createAgent = (options = {}) => {
         return axios.get(url);
     }
 
+    agent.readSubjectForInviteMail = (options) => {
+        var { id, extraAxiosConfig } = options;
+        return axios.post('/api/subject/read-for-invite-mail', {
+            id
+        }, extraAxiosConfig);
+    }
+
     agent.readManySubjects = (options) => {
         var { ids, extraAxiosConfig } = options;
         return axios.post('/api/subject/read-many', {
