@@ -6,6 +6,7 @@ import {
     WithDefaultModal,
     Modal,
     Button,
+    AsyncButton,
     LoadingIndicator,
 } from '@mpieva/psydb-ui-layout';
 
@@ -21,10 +22,7 @@ const MailInviteModalBody = (ps) => {
         studyRecordType,
         subjectRecordType,
 
-        totalSubjectCount,
-
         selectedSubjects,
-        fallbackPreviewSubject,
 
         studyId,
         displayFieldData,
@@ -34,12 +32,19 @@ const MailInviteModalBody = (ps) => {
 
     var [ editorState, setEditorState ] = useState({})
 
-    var previewSubject = fallbackPreviewSubject;
-    if (selectedSubjects.length > 0) {
-        previewSubject = selectedSubjects[0];
-        totalSubjectCount = selectedSubjects.length;
-    }
+    var previewSubject = selectedSubjects[0];
+    var totalSubjectCount = selectedSubjects.length;
    
+    var send = useSend(() => ({
+        type: 'experiment/create-for-online-survey',
+        payload: {
+            studyId,
+            subjectIds: selectedSubjects.map(it => it._id),
+            mailSubject: editorState.mailSubject,
+            mailBody: editorState.mailText,
+        }
+    }), { onSuccessfulUpdate: undefined })
+
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.readSubjectForInviteMail({ id: previewSubject._id })
     ), [ previewSubject._id ])
@@ -50,17 +55,6 @@ const MailInviteModalBody = (ps) => {
    
     var previewInfo = fetched.data;
     console.log({ previewInfo });
-
-    var allSubjectPlaceholders = [
-        ...displayFieldData.map(it => ({
-            key: it.key,
-            dataPointer: it.dataPointer
-        })),
-        {
-            key: 'onlineId',
-            dataPointer: '/onlineId',
-        }
-    ];
 
     return (
         <div>
@@ -91,24 +85,18 @@ const MailInviteModalBody = (ps) => {
                 </>
             )}
             <div className='d-flex justify-content-end mt-3'>
-                <Button>
+                <AsyncButton
+                    onClick={ send.exec }
+                    isTransmitting={ send.isTransmitting }
+                >
                     <b className='d-inline-block mr-2'>
                         { totalSubjectCount }
                     </b>
                     Proband:innen per Mail benachrichtigen
-                </Button>
+                </AsyncButton>
             </div>
         </div>
     );
-}
-
-const Fallback = () => {
-    return (
-        <Alert variant='danger'>
-            <b>No Subjects Selected</b>
-            <p>Please select at least one subject</p>
-        </Alert>
-    )
 }
 
 const MailInviteModal = WithDefaultModal({

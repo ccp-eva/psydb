@@ -57,7 +57,11 @@ var createPreCountStages = (bag) => {
             type: subjectTypeKey,
             isDummy: false,
             'scientific.state.systemPermissions.isHidden': { $ne: true },
-            'scientific.state.internals.isRemoved': { $ne: true }
+            'scientific.state.internals.isRemoved': { $ne: true },
+            // XXX: thats a hack
+            ...(experimentVariant === 'online-survey' && {
+                'gdpr.state.custom.emails.0': { $exists: true }
+            })
         }},
         // NOTE: prefiltering possbile age frames to make index use easier
         // and get better performance
