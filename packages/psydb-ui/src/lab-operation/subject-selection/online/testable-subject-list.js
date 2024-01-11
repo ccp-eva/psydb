@@ -89,30 +89,32 @@ const OnlineTestableSubjectList = (ps) => {
             <Redirect to={`${up(url, 1)}`} />
         )
     }
-    
+   
+    var {
+        interval,
+        filters,
+    } = userSearchSettings;
+
+    var { start, end } = interval;
+
+    var fetchBag = {
+        subjectTypeKey: subjectRecordType,
+        studyTypeKey: studyType,
+        studyIds: joinedStudyIds.split(','),
+        interval: {
+            start: datefns.startOfDay(new Date(start)),
+            end: datefns.endOfDay(new Date(end)),
+        },
+        filters: convertFilters(filters),
+        quickSearchFilters,
+
+        offset,
+        limit,
+    }
+
     var [ didFetch, fetched ] = useFetch((agent) => {
-        var {
-            interval,
-            filters,
-        } = userSearchSettings;
-
-        var { start, end } = interval;
-
         return (
-            agent.searchSubjectsTestableInOnlineSurvey({
-                subjectTypeKey: subjectRecordType,
-                studyTypeKey: studyType,
-                studyIds: joinedStudyIds.split(','),
-                interval: {
-                    start: datefns.startOfDay(new Date(start)),
-                    end: datefns.endOfDay(new Date(end)),
-                },
-                filters: convertFilters(filters),
-                quickSearchFilters,
-
-                offset,
-                limit,
-            })
+            agent.searchSubjectsTestableInOnlineSurvey(fetchBag)
             .then((response) => {
                 pagination.setTotal(
                     response.data.data.subjectData.count
@@ -189,6 +191,7 @@ const OnlineTestableSubjectList = (ps) => {
             <ExtraFunctionBar
                 subjectSelection={ subjectSelection }
                 onClickInvite={ mailInviteModal.handleShow }
+                fetchBag={ fetchBag }
             />
 
             <Table style={{ borderCollapse: 'separate', borderSpacing: 0 }}>

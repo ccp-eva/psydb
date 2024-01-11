@@ -4,14 +4,21 @@ import { useFetch } from '@mpieva/psydb-ui-hooks';
 import { Button, AsyncButton } from '@mpieva/psydb-ui-layout';
 
 const ExtraFunctionBar = (ps) => {
-    var { subjectSelection, onClickInvite } = ps;
+    var { subjectSelection, fetchBag, onClickInvite } = ps;
 
     var sample = useFetch((agent) => (
         agent.fetchServerTimezone()
     ), { useEffect: false });
 
     var selectAll = useFetch((agent) => (
-        agent.fetchServerTimezone()
+        agent.searchSubjectsTestableInOnlineSurvey({
+            ...fetchBag,
+            output: 'only-ids'
+        }).then((response) => {
+            var { ids } = response.data.data;
+            subjectSelection.set(ids.map(_id => ({ _id })))
+            return response;
+        })
     ), { useEffect: false });
 
     return (
