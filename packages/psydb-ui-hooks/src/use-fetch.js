@@ -63,8 +63,18 @@ const useFetch = (...args) => {
         return [ state.didFetch, state, state.isTransmitting ];
     }
     else {
-        var exec = () => createPromise(contextAgent);
-        return { exec };
+        var exec = () => {
+            dispatch({ type: 'set-transmitting' });
+            return createPromise(contextAgent).then((response) => {
+                console.log(response);
+                dispatch({ type: 'init-data', payload: {
+                    response: response,
+                    data: response.data.data
+                }})
+                return response.data.data
+            })
+        };
+        return { exec, isTransmitting: state.isTransmitting };
     }
 }
 
