@@ -2,10 +2,12 @@
 var jsonpointer = require('jsonpointer');
 var convertPathToPointer = require('./convert-path-to-pointer');
 
-var only = ({ from, paths }) => {
+var only = ({ from, paths, pointers }) => {
     var out = {};
-    for (var path of paths) {
-        var pointer = convertPathToPointer(path);
+    if (!pointers) {
+        pointers = paths.map(convertPathToPointer);
+    }
+    for (var pointer of pointers) {
         var value = jsonpointer.get(from, pointer);
         jsonpointer.set(out, pointer, value);
     }
