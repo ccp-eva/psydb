@@ -34,13 +34,14 @@ var {
     ProjectDisplayFieldsStage,
 } = require('@mpieva/psydb-api-lib/src/fetch-record-helpers');
 
-
-var initAndCheck = require('../init-and-check');
-var postprocessSubjectRecords = require('../postprocess-subject-records');
-var combineSubjectResponseData = require('../combine-subject-response-data');
-var fetchParentDataForGroups = require('../fetch-parent-data-for-groups');
-var fetchUpcomingExperimentData = require('../fetch-upcoming-experiment-data');
-var fetchProcessedExperimentData = require('../fetch-processed-experiment-data');
+var {
+    initAndCheck,
+    postprocessSubjectRecords,
+    combineSubjectResponseData,
+    fetchParentDataForGroups,
+    fetchUpcomingExperimentData,
+    fetchProcessedExperimentData,
+} = require('../common-helpers');
 
 var prepareGroupByField = require('./prepare-group-by-field');
 var fetchExcludedLocationIds = require('./fetch-excluded-location-ids');

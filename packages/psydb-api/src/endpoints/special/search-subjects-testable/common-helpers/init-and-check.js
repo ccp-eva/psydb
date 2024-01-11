@@ -25,8 +25,6 @@ var {
 
 var RequestBodySchema = require('./request-body-schema');
 
-
-
 var {
     zonedTimeToUtc,
     utcToZonedTime

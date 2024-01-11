@@ -27,6 +27,7 @@ var {
     ResponseBody,
     withRetracedErrors,
     SmartArray,
+    fromFacets,
 } = require('@mpieva/psydb-api-lib');
 
 var {
@@ -45,14 +46,13 @@ var {
 } = require('@mpieva/psydb-api-lib');
 var fieldTypeConversions = require('@mpieva/psydb-api-lib/src/mongodb-field-type-conversions');
 
-
-var initAndCheck = require('./init-and-check');
-var postprocessSubjectRecords = require('./postprocess-subject-records');
-var combineSubjectResponseData = require('./combine-subject-response-data');
-var fetchUpcomingExperimentData = require('./fetch-upcoming-experiment-data');
-var augmentSubjectTestableIntervals = require('./augment-subject-testable-intervals');
-
-var fromFacets = require('./from-facets');
+var {
+    initAndCheck,
+    postprocessSubjectRecords,
+    combineSubjectResponseData,
+    fetchUpcomingExperimentData,
+    augmentSubjectTestableIntervals,
+} = require('../common-helpers');
 
 var searchUngrouped = async (context, next) => {
     var { 
