@@ -25,6 +25,7 @@ var createPreCountStages = (bag) => {
     var {
         interval,
         timezone,
+        sampleSize,
         ageFrameFilters,
         ageFrameValueFilters,
         quickSearchFilters,
@@ -42,6 +43,8 @@ var createPreCountStages = (bag) => {
         dobFieldPointer,
         queryFields
     } = bag;
+
+    console.log({ sampleSize })
 
     var queryFields = convertFiltersToQueryFields({
         filters: quickSearchFilters || {},
@@ -80,6 +83,7 @@ var createPreCountStages = (bag) => {
             queryFields, 
             fieldTypeConversions,
         }),
+
         // TODO: optimization
         // first match children that ar in any of the timeshifted
         // age frames; this should reduce the size enough most of the time
@@ -100,6 +104,8 @@ var createPreCountStages = (bag) => {
         HasAnyTestabilityStage({
             studyIds
         }),
+        
+        (sampleSize > 0 && { $sample: { size: sampleSize }}),
     ]);
 
     return preCountStages;

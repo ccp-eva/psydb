@@ -334,7 +334,8 @@ const createAgent = (options = {}) => {
 
         offset = 0,
         limit = 100,
-        output = 'full'
+        output = 'full',
+        sampleSize,
     }) => {
         return axios.post(
             `/api/search-subjects-testable/${labProcedureTypeKey}`,
@@ -351,7 +352,8 @@ const createAgent = (options = {}) => {
                 offset,
                 limit,
 
-                output
+                output,
+                sampleSize
             }
         );
     }

@@ -33,7 +33,8 @@ var RequestBodySchema = () => ExactObject({
 
         offset: Integer(),
         limit: Integer(),
-
+    
+        sampleSize: Integer(),
         output: StringEnum([ 'full', 'only-ids' ]),
     },
     required: [

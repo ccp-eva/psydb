@@ -7,7 +7,15 @@ const ExtraFunctionBar = (ps) => {
     var { subjectSelection, fetchBag, onClickInvite } = ps;
 
     var sample = useFetch((agent) => (
-        agent.fetchServerTimezone()
+        agent.searchSubjectsTestableInOnlineSurvey({
+            ...fetchBag,
+            output: 'only-ids',
+            sampleSize: 500,
+        }).then((response) => {
+            var { ids } = response.data.data;
+            subjectSelection.set(ids.map(_id => ({ _id })))
+            return response;
+        })
     ), { useEffect: false });
 
     var selectAll = useFetch((agent) => (
