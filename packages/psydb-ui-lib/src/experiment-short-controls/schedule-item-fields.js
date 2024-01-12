@@ -6,6 +6,7 @@ import {
     Col,
     Form,
     Pair,
+    PaddedText
 } from '@mpieva/psydb-ui-layout';
 
 import datefns from '../date-fns';
@@ -71,28 +72,37 @@ const TeamControl = (ps) => {
     var translate = useUITranslation();
 
     if (onChangeTeamId) {
+        var filteredTeamRecords = teamRecords.filter(it => (
+            it.state.hidden !== true
+        ));
+
         return (
             <Row className='mb-2'>
                 <Form.Label className='col-sm-4 col-form-label'>
                     { translate('Team') }
                 </Form.Label>
                 <Col sm={8}>
-                    {
-                        teamRecords
-                            .filter(it => it.state.hidden !== true)
-                            .map(it => (
-                                <StudyTeamListItem { ...({
-                                    key: it._id,
-                                    record: it,
-                                    active: it._id === teamId,
-                                    onClick: onChangeTeamId
-                                   // studyId,
-                                   // record,
-                                   // relatedRecordLabels,
-                                   // onClick: onSelectTeam,
-                                }) } />
-                            ))
-                    }
+                    { filteredTeamRecords.length > 0 ? (
+                        filteredTeamRecords
+                        .map(it => (
+                            <StudyTeamListItem { ...({
+                                key: it._id,
+                                record: it,
+                                active: it._id === teamId,
+                                onClick: onChangeTeamId
+                               // studyId,
+                               // record,
+                               // relatedRecordLabels,
+                               // onClick: onSelectTeam,
+                            }) } />
+                        ))
+                    ) : (
+                        <PaddedText>
+                            <b className='text-danger'>
+                                { translate('No teams in this study.') }
+                            </b>
+                        </PaddedText>
+                    )}
                 </Col>
             </Row>
         )
