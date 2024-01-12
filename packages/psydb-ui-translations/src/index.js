@@ -1446,7 +1446,7 @@ var maps = [
     },
     {
         en: 'Please add settings for at least one subject type.',
-        de: 'Bitte Einstellungen für mndestens einen Proband:innen-Typ hinzufügen.'
+        de: 'Bitte Einstellungen für mindestens einen Proband:innen-Typ hinzufügen.'
     },
     {
         en: 'Add Settings',
