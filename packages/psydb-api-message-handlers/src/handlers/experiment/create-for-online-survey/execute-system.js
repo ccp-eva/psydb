@@ -13,16 +13,36 @@ var doit = async (context, next = noop) => {
     var { db, message, cache } = context;
     var { subjectIds } = message.payload;
 
+    // TODO: create mail record so we can
+    //       check qhat mails where send to whom
     // TODO: create experiments
     // TODO: insert participation items into subjects
     //
     // XXX:
     // - should the invites subjects show as read in other
-    //   subject selection
+    //   subject selection; yes that has to be tracked somehow
     // - should the onlien survey be shown as upcoming experiments?
     // - invitedAt timestamp/invited status in experiments?
     // - where to postprocess that stuff; we need to be able to
     //   do this manually somewhere
+    // - who do we show what ppl were invited? we need ui for that
+    // - we need ui for tha sent mail
+    //
+    // - correlation id tracking für einzelteilnahmen;
+    // muss auch dann im csv import irgendwie sein
+    // - "eingeladen", 'erinnert', 'teilgenommen'
+    //
+    // - nachbereiten liste für angeschriebene
+    //  - erinnern oder nicht teilgenommen
+    //
+    // gutschein codes?
+    // pro person; und müssen gespeichert werden
+    //
+    // forschungsreise@eva
+    //
+    // hey willst du wirklich 100000 kinder anschreiben?
+    // nochmal die anzahl eingeben
+    //
 
     var mapping = [
         { 
