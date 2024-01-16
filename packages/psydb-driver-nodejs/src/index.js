@@ -179,10 +179,15 @@ var Driver = ({
                         'AJV ERRORS:',
                         e.response.data.data.ajvErrors
                     );
+                    throw new Error('BadRequest')
+                }
+                else {
+                    throw e;
                 }
             }
-
-            throw e;
+            else {
+                throw e;
+            }
         }
     }
 
