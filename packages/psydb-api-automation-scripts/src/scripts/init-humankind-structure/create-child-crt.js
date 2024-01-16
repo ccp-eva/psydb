@@ -38,62 +38,62 @@ module.exports = async (context) => {
         }},
     }, { apiKey });
 
-    //await driver.sendMessage({
-    //    type: `custom-record-types/add-field-definition`,
-    //    payload: { id: crtId, subChannelKey: 'gdpr', props: {
-    //        type: 'ListOfObjects',
-    //        key: 'parents',
-    //        displayName: 'Parents',
-    //        displayNameI18N: { 'de': 'Eltern' },
-    //        props: {
-    //            minItems: 0,
-    //            fields: [
-    //                {
-    //                    type: 'SaneString',
-    //                    key: 'lastname',
-    //                    displayName: 'Lastname',
-    //                    displayNameI18N: { 'de': 'Nachname' },
-    //                    props: { minLength: 1 }
-    //                },
-    //                {
-    //                    type: 'SaneString',
-    //                    key: 'firstname',
-    //                    displayName: 'Firstname',
-    //                    displayNameI18N: { 'de': 'Vorname' },
-    //                    props: { minLength: 1 }
-    //                },
-    //                {
-    //                    type: 'Phone',
-    //                    key: 'phone',
-    //                    displayName: 'Phone',
-    //                    displayNameI18N: { 'de': 'Telefon' },
-    //                    props: { minLength: 1 }
-    //                },
-    //                {
-    //                    type: 'Email',
-    //                    key: 'email',
-    //                    displayName: 'E-Mail',
-    //                    displayNameI18N: { 'de': 'E-Mail' },
-    //                    props: { minLength: 1 }
-    //                },
-    //                {
-    //                    type: 'Address',
-    //                    key: 'address',
-    //                    displayName: 'Address',
-    //                    displayNameI18N: { 'de': 'Adresse' },
-    //                    props: {
-    //                        isStreetRequired: false,
-    //                        isHousenumberRequired: false,
-    //                        isAffixRequired: false,
-    //                        isPostcodeRequired: false,
-    //                        isCityRequired: false,
-    //                        isCountryRequired: false,
-    //                    }
-    //                }
-    //            ]
-    //        },
-    //    }},
-    //}, { apiKey });
+    await driver.sendMessage({
+        type: `custom-record-types/add-field-definition`,
+        payload: { id: crtId, subChannelKey: 'gdpr', props: {
+            type: 'ListOfObjects',
+            key: 'parents',
+            displayName: 'Parents',
+            displayNameI18N: { 'de': 'Eltern' },
+            props: {
+                minItems: 0,
+                fields: [
+                    {
+                        type: 'SaneString',
+                        key: 'lastname',
+                        displayName: 'Lastname',
+                        displayNameI18N: { 'de': 'Nachname' },
+                        props: { minLength: 1 }
+                    },
+                    {
+                        type: 'SaneString',
+                        key: 'firstname',
+                        displayName: 'Firstname',
+                        displayNameI18N: { 'de': 'Vorname' },
+                        props: { minLength: 1 }
+                    },
+                    {
+                        type: 'Phone',
+                        key: 'phone',
+                        displayName: 'Phone',
+                        displayNameI18N: { 'de': 'Telefon' },
+                        props: { minLength: 1 }
+                    },
+                    {
+                        type: 'Email',
+                        key: 'email',
+                        displayName: 'E-Mail',
+                        displayNameI18N: { 'de': 'E-Mail' },
+                        props: { minLength: 1 }
+                    },
+                    {
+                        type: 'Address',
+                        key: 'address',
+                        displayName: 'Address',
+                        displayNameI18N: { 'de': 'Adresse' },
+                        props: {
+                            isStreetRequired: false,
+                            isHousenumberRequired: false,
+                            isAffixRequired: false,
+                            isPostcodeRequired: false,
+                            isCityRequired: false,
+                            isCountryRequired: false,
+                        }
+                    }
+                ]
+            },
+        }},
+    }, { apiKey });
     
     await driver.sendMessage({
         type: `custom-record-types/add-field-definition`,
@@ -273,7 +273,7 @@ module.exports = async (context) => {
             '/onlineId',
             '/gdpr/state/custom/firstname',
             '/gdpr/state/custom/lastname',
-            //'/gdpr/state/custom/parents',
+            '/gdpr/state/custom/parents',
             '/scientific/state/custom/dateOfBirth',
             '/scientific/state/custom/gender',
             '/scientific/state/custom/siblingCount',
