@@ -779,14 +779,14 @@ importers:
 
   ../../packages/psydb-driver-nodejs:
     specifiers:
+      '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
       '@mpieva/psydb-timezone-helpers': workspace:~0.1.0-alpha
       debug: ~4.3.4
-      jsonpointer: ~5.0.1
       superagent: ~6.1.0
     dependencies:
+      '@mpieva/psydb-core-utils': link:../psydb-core-utils
       '@mpieva/psydb-timezone-helpers': link:../psydb-timezone-helpers
       debug: 4.3.4
-      jsonpointer: 5.0.1
       superagent: 6.1.0
 
   ../../packages/psydb-faker:
