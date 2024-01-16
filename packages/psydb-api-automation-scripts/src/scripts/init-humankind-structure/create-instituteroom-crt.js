@@ -85,8 +85,9 @@ module.exports = async (context) => {
         type: `custom-record-types/set-general-data`,
         payload: {
             id: crtId,
-            label: 'Instituts-Räume',
             reservationType: 'inhouse',
+            label: 'Institute Rooms',
+            displayNameI18N: { 'de': 'Instituts-Räume' }
         }
     }, { apiKey });
 

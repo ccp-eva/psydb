@@ -76,6 +76,8 @@ module.exports = async ({ apiKey, driver, cache, as }) => {
                 collection: 'personnel',
                 isNullable: true,
                 constraints: {},
+                displayEmptyAsUnknown: false,
+                addReferenceToTarget: false,
             }
         }},
     }, { apiKey });
@@ -125,6 +127,8 @@ module.exports = async ({ apiKey, driver, cache, as }) => {
                 recordType: 'kigaUmbrellaOrg',
                 isNullable: false,
                 constraints: {},
+                displayEmptyAsUnknown: false,
+                addReferenceToTarget: false,
             }
         }},
     }, { apiKey });
@@ -133,8 +137,9 @@ module.exports = async ({ apiKey, driver, cache, as }) => {
         type: `custom-record-types/add-field-definition`,
         payload: { id: crtId, props: {
             type: 'SaneString',
-            key: 'roomName',
-            displayName: 'Raum',
+            key: 'roomInfo',
+            displayName: 'Room Info',
+            displayNameI18N: { 'de': 'Raum Info' },
             props: { minLength: 0 }
         }},
     }, { apiKey });
@@ -186,8 +191,9 @@ module.exports = async ({ apiKey, driver, cache, as }) => {
         type: `custom-record-types/set-general-data`,
         payload: {
             id: crtId,
-            label: 'Kindergärten',
             reservationType: 'away-team',
+            label: 'Kindergardens',
+            displayNameI18N: { 'de': 'Kindergärten' },
         }
     }, { apiKey });
 

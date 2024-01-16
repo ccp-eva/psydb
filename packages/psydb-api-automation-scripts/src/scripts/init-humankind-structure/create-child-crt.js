@@ -20,17 +20,6 @@ module.exports = async (context) => {
         type: `custom-record-types/add-field-definition`,
         payload: { id: crtId, subChannelKey: 'gdpr', props: {
             type: 'SaneString',
-            key: 'firstname',
-            displayName: 'Firstname',
-            displayNameI18N: { 'de': 'Vorname' },
-            props: { minLength: 1 }
-        }},
-    }, { apiKey });
-
-    await driver.sendMessage({
-        type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, subChannelKey: 'gdpr', props: {
-            type: 'SaneString',
             key: 'lastname',
             displayName: 'Lastname',
             displayNameI18N: { 'de': 'Nachname' },
@@ -42,65 +31,77 @@ module.exports = async (context) => {
         type: `custom-record-types/add-field-definition`,
         payload: { id: crtId, subChannelKey: 'gdpr', props: {
             type: 'SaneString',
-            key: 'mothersName',
-            displayName: 'Mutter',
-            props: { minLength: 0 }
+            key: 'firstname',
+            displayName: 'Firstname',
+            displayNameI18N: { 'de': 'Vorname' },
+            props: { minLength: 1 }
         }},
     }, { apiKey });
 
-    await driver.sendMessage({
-        type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, subChannelKey: 'gdpr', props: {
-            type: 'SaneString',
-            key: 'fathersName',
-            displayName: 'Vater',
-            props: { minLength: 0 }
-        }},
-    }, { apiKey });
-
-    await driver.sendMessage({
-        type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, subChannelKey: 'gdpr', props: {
-            type: 'Address',
-            key: 'address',
-            displayName: 'Adresse',
-            props: {
-                isStreetRequired: false,
-                isHousenumberRequired: false,
-                isAffixRequired: false,
-                isPostcodeRequired: false,
-                isCityRequired: false,
-                isCountryRequired: false,
-            }
-        }},
-    }, { apiKey });
-
-    await driver.sendMessage({
-        type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, subChannelKey: 'gdpr', props: {
-            type: 'EmailList',
-            key: 'emails',
-            displayName: 'Email-Adressen',
-            props: { minItems: 0 }
-        }},
-    }, { apiKey });
-    
-    await driver.sendMessage({
-        type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, subChannelKey: 'gdpr', props: {
-            type: 'PhoneWithTypeList',
-            key: 'phones',
-            displayName: 'Telefon',
-            props: { minItems: 0 }
-        }},
-    }, { apiKey });
+    //await driver.sendMessage({
+    //    type: `custom-record-types/add-field-definition`,
+    //    payload: { id: crtId, subChannelKey: 'gdpr', props: {
+    //        type: 'ListOfObjects',
+    //        key: 'parents',
+    //        displayName: 'Parents',
+    //        displayNameI18N: { 'de': 'Eltern' },
+    //        props: {
+    //            minItems: 0,
+    //            fields: [
+    //                {
+    //                    type: 'SaneString',
+    //                    key: 'lastname',
+    //                    displayName: 'Lastname',
+    //                    displayNameI18N: { 'de': 'Nachname' },
+    //                    props: { minLength: 1 }
+    //                },
+    //                {
+    //                    type: 'SaneString',
+    //                    key: 'firstname',
+    //                    displayName: 'Firstname',
+    //                    displayNameI18N: { 'de': 'Vorname' },
+    //                    props: { minLength: 1 }
+    //                },
+    //                {
+    //                    type: 'Phone',
+    //                    key: 'phone',
+    //                    displayName: 'Phone',
+    //                    displayNameI18N: { 'de': 'Telefon' },
+    //                    props: { minLength: 1 }
+    //                },
+    //                {
+    //                    type: 'Email',
+    //                    key: 'email',
+    //                    displayName: 'E-Mail',
+    //                    displayNameI18N: { 'de': 'E-Mail' },
+    //                    props: { minLength: 1 }
+    //                },
+    //                {
+    //                    type: 'Address',
+    //                    key: 'address',
+    //                    displayName: 'Address',
+    //                    displayNameI18N: { 'de': 'Adresse' },
+    //                    props: {
+    //                        isStreetRequired: false,
+    //                        isHousenumberRequired: false,
+    //                        isAffixRequired: false,
+    //                        isPostcodeRequired: false,
+    //                        isCityRequired: false,
+    //                        isCountryRequired: false,
+    //                    }
+    //                }
+    //            ]
+    //        },
+    //    }},
+    //}, { apiKey });
     
     await driver.sendMessage({
         type: `custom-record-types/add-field-definition`,
         payload: { id: crtId, subChannelKey: 'scientific', props: {
             type: 'DateOnlyServerSide',
             key: 'dateOfBirth',
-            displayName: 'Geburtsdatum',
+            displayName: 'Date of Birth',
+            displayNameI18N: { 'de': 'Geburtsdatum' },
             props: { isNullable: false, isSpecialAgeFrameField: true }
         }},
     }, { apiKey });
@@ -109,8 +110,84 @@ module.exports = async (context) => {
         type: `custom-record-types/add-field-definition`,
         payload: { id: crtId, subChannelKey: 'scientific', props: {
             type: 'BiologicalGender',
-            key: 'biologicalGender',
-            displayName: 'Geschlecht',
+            key: 'gender',
+            displayName: 'Gender',
+            displayNameI18N: { 'de': 'Geschlecht' },
+            props: {
+                enableUnknownValue: false
+            }
+        }},
+    }, { apiKey });
+    
+    await driver.sendMessage({
+        type: `custom-record-types/add-field-definition`,
+        payload: { id: crtId, subChannelKey: 'scientific', props: {
+            type: 'Integer',
+            key: 'siblingCount',
+            displayName: 'Siblings',
+            displayNameI18N: { 'de': 'Geschwister' },
+            props: { minimum: 0, isNullable: true },
+        }},
+    }, { apiKey });
+
+    await driver.sendMessage({
+        type: `custom-record-types/add-field-definition`,
+        payload: { id: crtId, subChannelKey: 'scientific', props: {
+            type: 'HelperSetItemId',
+            key: 'nativeLanguage',
+            displayName: 'Native Language',
+            displayNameI18N: { 'de': 'Muttersprache' },
+            props: {
+                setId: cache.get('/helperSet/language'),
+                isNullable: true,
+                displayEmptyAsUnknown: false,
+            },
+        }},
+    }, { apiKey });
+
+    await driver.sendMessage({
+        type: `custom-record-types/add-field-definition`,
+        payload: { id: crtId, subChannelKey: 'scientific', props: {
+            type: 'HelperSetItemIdList',
+            key: 'otherLanguages',
+            displayName: 'Other Languages',
+            displayNameI18N: { 'de': 'Weitere Sprachen' },
+            props: {
+                setId: cache.get('/helperSet/language'),
+                minItems: 0,
+            },
+        }},
+    }, { apiKey });
+
+    await driver.sendMessage({
+        type: `custom-record-types/add-field-definition`,
+        payload: { id: crtId, subChannelKey: 'scientific', props: {
+            type: 'ForeignId',
+            key: 'kigaId',
+            displayName: 'Kindergarden',
+            displayNameI18N: { 'de': 'Kindergarten' },
+            props: {
+                collection: 'location',
+                recordType: 'kiga',
+                isNullable: true,
+                constraints: {},
+                displayEmptyAsUnknown: false,
+                addReferenceToTarget: false,
+            },
+        }},
+    }, { apiKey });
+
+    await driver.sendMessage({
+        type: `custom-record-types/add-field-definition`,
+        payload: { id: crtId, subChannelKey: 'scientific', props: {
+            type: 'ExtBool',
+            key: 'doesDBRegistrationConsentOnPaperExist',
+            displayName: (
+                'DB-Registration consent exists on paper?'
+            ),
+            displayNameI18N: { 'de': (
+                'Einverständnis für DB-Registrierung in Papierform vorhanden?'
+            )},
             props: {}
         }},
     }, { apiKey });
@@ -119,8 +196,13 @@ module.exports = async (context) => {
         type: `custom-record-types/add-field-definition`,
         payload: { id: crtId, subChannelKey: 'scientific', props: {
             type: 'ExtBool',
-            key: 'consentcard',
-            displayName: 'Consent-Card',
+            key: 'canParticipateInStudiesWithHealthyChildren',
+            displayName: (
+                'Can participate in studies with children that are healthy, born on schedule and developed age appropriatly?'
+            ),
+            displayNameI18N: { 'de': (
+                'Kann an Studien mit gesunden, termingerecht gebohrenen und altersgerecht entwickelten Kindern teilnehmen?'
+            )},
             props: {}
         }},
     }, { apiKey });
@@ -130,69 +212,12 @@ module.exports = async (context) => {
         payload: { id: crtId, subChannelKey: 'scientific', props: {
             type: 'ExtBool',
             key: 'allowedToEat',
-            displayName: 'Ess-Erlaubnis',
+            displayName: 'Allowed to Eat',
+            displayNameI18N: { 'de': 'Ess-Erlaubnis' },
             props: {}
         }},
     }, { apiKey });
-    
-    await driver.sendMessage({
-        type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, subChannelKey: 'scientific', props: {
-            type: 'ExtBool',
-            key: 'isMultiBirth',
-            displayName: 'Mehrlinge',
-            props: {}
-        }},
-    }, { apiKey });
-    
-    await driver.sendMessage({
-        type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, subChannelKey: 'scientific', props: {
-            type: 'HelperSetItemIdList',
-            key: 'languages',
-            displayName: 'Sprachen',
-            props: {
-                setId: cache.get('/helperSet/language'),
-                minItems: 0,
-            },
-        }},
-    }, { apiKey });
-    
-    await driver.sendMessage({
-        type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, subChannelKey: 'scientific', props: {
-            type: 'ForeignId',
-            key: 'kigaId',
-            displayName: 'Kindergarten',
-            props: {
-                collection: 'location',
-                recordType: 'kiga',
-                isNullable: true,
-                constraints: {},
-            },
-        }},
-    }, { apiKey });
-
-    await driver.sendMessage({
-        type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, subChannelKey: 'scientific', props: {
-            type: 'Integer',
-            key: 'weightAtBirth',
-            displayName: 'Geburtsgewicht',
-            props: { minimum: 1, isNullable: true },
-        }},
-    }, { apiKey });
-    
-    await driver.sendMessage({
-        type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, subChannelKey: 'scientific', props: {
-            type: 'Integer',
-            key: 'weekOfPregnancy',
-            displayName: 'Schwangerschaftswoche',
-            props: { minimum: 1, isNullable: true },
-        }},
-    }, { apiKey });
-    
+     
     await driver.sendMessage({
         type: `custom-record-types/commit-settings`,
         payload: { id: crtId }
@@ -206,7 +231,7 @@ module.exports = async (context) => {
             tokens: [
                 '/gdpr/state/custom/lastname',
                 '/gdpr/state/custom/firstname',
-                '/scientific/state/custom/biologicalGender',
+                '/scientific/state/custom/gender',
             ]
         }}
     }, { apiKey });
@@ -220,7 +245,7 @@ module.exports = async (context) => {
                 '/sequenceNumber',
                 '/gdpr/state/custom/lastname',
                 '/gdpr/state/custom/firstname',
-                '/scientific/state/custom/biologicalGender',
+                '/scientific/state/custom/gender',
                 '/scientific/state/custom/dateOfBirth',
             ]
         }
@@ -235,7 +260,7 @@ module.exports = async (context) => {
                 '/sequenceNumber',
                 '/gdpr/state/custom/lastname',
                 '/gdpr/state/custom/firstname',
-                '/scientific/state/custom/biologicalGender',
+                '/scientific/state/custom/gender',
                 '/scientific/state/custom/dateOfBirth',
             ]
         }
@@ -248,20 +273,16 @@ module.exports = async (context) => {
             '/onlineId',
             '/gdpr/state/custom/firstname',
             '/gdpr/state/custom/lastname',
-            '/gdpr/state/custom/mothersName',
-            '/gdpr/state/custom/fathersName',
-            '/gdpr/state/custom/address',
-            '/gdpr/state/custom/emails',
-            '/gdpr/state/custom/phones',
+            //'/gdpr/state/custom/parents',
             '/scientific/state/custom/dateOfBirth',
-            '/scientific/state/custom/biologicalGender',
-            '/scientific/state/custom/consentcard',
-            '/scientific/state/custom/allowedToEat',
-            '/scientific/state/custom/isMultiBirth',
-            '/scientific/state/custom/languages',
+            '/scientific/state/custom/gender',
+            '/scientific/state/custom/siblingCount',
+            '/scientific/state/custom/nativeLanguage',
+            '/scientific/state/custom/otherLanguages',
             '/scientific/state/custom/kigaId',
-            '/scientific/state/custom/weightAtBirth',
-            '/scientific/state/custom/weekOfPregnancy',
+            '/scientific/state/custom/doesDBRegistrationConsentOnPaperExist',
+            '/scientific/state/custom/canParticipateInStudiesWithHealthyChildren',
+            '/scientific/state/custom/allowedToEat',
             '/scientific/state/testingPermissions',
             '/scientific/state/comment'
         ]}

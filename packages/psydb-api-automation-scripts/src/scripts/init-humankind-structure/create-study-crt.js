@@ -27,6 +27,9 @@ module.exports = async (context) => {
                 minItems: 1,
                 collection: 'personnel',
                 constraints: {},
+                displayEmptyAsUnknown: false,
+                addReferenceToTarget: false,
+                readOnly: false,
             }
         }},
     }, { apiKey });
