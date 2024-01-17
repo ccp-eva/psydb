@@ -14,6 +14,8 @@ var allowedFields = {
     ForeignId: require('./foreign-id'),
     HelperSetItemId: require('./helper-set-item-id'),
     DefaultBool: require('./default-bool'),
+
+    Address: require('./address'),
 }
 
 var ListOfObjects = ({
