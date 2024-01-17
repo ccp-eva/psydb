@@ -28,14 +28,16 @@ export const InlineWrapper = (ps) => {
 
     return (
         <Form.Group className={ className }>
-            <Form.Label
-                htmlFor={ id }
-                className={ `col-sm-${uiSplit[0]} col-form-label ${labelClassName}`}
-            >
-                { label }
-                <NBSP />
-                { label && required ? '*' : null }
-            </Form.Label>
+            { label && (
+                <Form.Label
+                    htmlFor={ id }
+                    className={ `col-sm-${uiSplit[0]} col-form-label ${labelClassName}`}
+                >
+                    { label }
+                    <NBSP />
+                    { label && required ? '*' : null }
+                </Form.Label>
+            )}
             <div className={`col-sm-${uiSplit[1]} pl-0 pr-0 ${valueClassName}`}>
                 { children }
                 <ErrorIndicator { ...ps } />

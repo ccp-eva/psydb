@@ -1,9 +1,10 @@
 import React from 'react';
-import jsonpointer from 'jsonpointer';
 import inline from '@cdxoo/inline-string';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { withField, withFieldArray } from '@cdxoo/formik-utils';
-import { without } from '@mpieva/psydb-core-utils';
+
+import { without, jsonpointer } from '@mpieva/psydb-core-utils';
+import { SplitPartitioned } from '@mpieva/psydb-ui-layout';
 import { experimentVariants } from '@mpieva/psydb-schema-enums';
 import * as ScalarFields from '../scalar';
 
@@ -30,22 +31,26 @@ const LabProcedurePermission = withField({
         ].filter(it => !!it);
 
         return (
-            <>
+            <SplitPartitioned partitions={[ 3, 2 ]}>
                 <ScalarFields.GenericEnum
                     dataXPath={ `${dataXPath}.labProcedureTypeKey` }
-                    label={ translate('_testing_permission_for') }
+                    //label={ translate('_testing_permission_for') }
                     options={ translate.options(experimentVariants.mapping) }
 
                     allowedValues={ allowedValues }
+                    formGroupClassName='m-0'
+                    uiSplit={[ 0,12 ]}
 
                     required
                 />
                 <ScalarFields.ExtBool
                     dataXPath={ `${dataXPath}.value` }
-                    label={ translate('_testing_permission_value') }
+                    //label={ translate('_testing_permission_value') }
+                    formGroupClassName='pl-4 m-0'
+                    uiSplit={[ 0,12 ]}
                     required
                 />
-            </>
+            </SplitPartitioned>
         )
     },
     DefaultWrapper: 'NoneWrapper',
@@ -54,8 +59,8 @@ const LabProcedurePermission = withField({
 
 export const LabProcedurePermissionList = withFieldArray({
     FieldComponent: LabProcedurePermission,
-    ArrayContentWrapper: 'ObjectArrayContentWrapper',
-    ArrayItemWrapper: 'ObjectArrayItemWrapper',
+    //ArrayContentWrapper: 'ObjectArrayContentWrapper',
+    ArrayItemWrapper: 'ScalarArrayItemWrapper',
     defaultItemValue: { value: 'yes' }
 });
 
@@ -102,6 +107,7 @@ const Control = (ps) => {
     return (
         <>
             <ScalarFields.ForeignId
+                uiSplit={[ 2,10 ]}
                 label={ translate('Research Group') }
                 dataXPath={ `${dataXPath}.researchGroupId` }
                 collection='researchGroup'
@@ -131,10 +137,12 @@ const Control = (ps) => {
                 }}
             />
             <LabProcedurePermissionList
-                label={ translate('Settings') }
+                uiSplit={[ 2,10 ]}
+                label={ translate('Permission') }
                 dataXPath={ `${dataXPath}.permissionList` }
                 existingTypeValues={ existingTypeValues }
                 required
+                enableMove={ false }
             />
         </>
     );
