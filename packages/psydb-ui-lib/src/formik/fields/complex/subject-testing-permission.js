@@ -71,6 +71,8 @@ const Control = (ps) => {
         existingResearchGroupIds
     } = ps;
 
+    var translate = useUITranslation();
+
     var { values: allFormValues, setFieldValue } = formikForm;
     var { value } = formikField;
     var { permissionList } = value;
@@ -100,7 +102,7 @@ const Control = (ps) => {
     return (
         <>
             <ScalarFields.ForeignId
-                label='Forschungsgruppe'
+                label={ translate('Research Group') }
                 dataXPath={ `${dataXPath}.researchGroupId` }
                 collection='researchGroup'
                 related={ related }
@@ -129,7 +131,7 @@ const Control = (ps) => {
                 }}
             />
             <LabProcedurePermissionList
-                label='Einstellungen'
+                label={ translate('Settings') }
                 dataXPath={ `${dataXPath}.permissionList` }
                 existingTypeValues={ existingTypeValues }
                 required
