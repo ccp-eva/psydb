@@ -2,10 +2,10 @@ import React from 'react';
 import { withFieldArray } from '@cdxoo/formik-utils';
 import { EmailWithPrimary } from '../object';
 
-export const EmailWithPrimaryList = withFieldArray({
+const EmailWithPrimaryListInner = withFieldArray({
     FieldComponent: EmailWithPrimary,
-    ArrayContentWrapper: 'ObjectArrayContentWrapper',
-    ArrayItemWrapper: 'ObjectArrayItemWrapper',
+    //ArrayContentWrapper: 'ObjectArrayContentWrapper',
+    ArrayItemWrapper: 'ScalarArrayItemWrapper',
     defaultItemValue: (ps) => {
         var { formikField } = ps;
         var { value = [] } = formikField;
@@ -18,3 +18,9 @@ export const EmailWithPrimaryList = withFieldArray({
         }
     }
 });
+
+export const EmailWithPrimaryList = (ps) => {
+    return (
+        <EmailWithPrimaryListInner enableMove={ false } { ...ps } />
+    )
+}
