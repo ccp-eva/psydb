@@ -54,7 +54,6 @@ const {
     SubjectFieldRequirementList,
     TypedLocationIdList,
     PhoneWithTypeList,
-    ResearchGroupWithRoleList,
 } = o;
 
 export {
@@ -76,5 +75,4 @@ export {
     SubjectFieldRequirementList,
     TypedLocationIdList,
     PhoneWithTypeList,
-    ResearchGroupWithRoleList,
 }
