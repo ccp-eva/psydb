@@ -30,7 +30,7 @@ export const SystemPermissions = (options) => {
     return {
         accessRightsByResearchGroup: [{
             researchGroupId: presetResearchGroupId,
-            permission: presetResearchGroupId ? 'write' : undefined,
+            permission: 'write'
         }],
         isHidden: false,
     }

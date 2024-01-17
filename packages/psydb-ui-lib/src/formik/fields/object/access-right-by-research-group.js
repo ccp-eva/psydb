@@ -1,6 +1,7 @@
 import React from 'react';
 import { withField } from '@cdxoo/formik-utils';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { SplitPartitioned } from '@mpieva/psydb-ui-layout';
 
 import { ForeignId, GenericEnum } from '../scalar';
 
@@ -25,25 +26,29 @@ const Control = (ps) => {
     var translate = useUITranslation();
 
     return (
-        <>
-            <ForeignId { ...({
-                dataXPath: `${dataXPath}.researchGroupId`,
-                label: translate('Research Group'),
-                required: true,
-                collection: 'researchGroup',
-                disabled,
+        <SplitPartitioned partitions={[ 5,3 ]}>
+            <ForeignId
+                dataXPath={ `${dataXPath}.researchGroupId` }
+                label={ translate('Research Group') }
+                required={ true }
+                collection='researchGroup'
+                disabled={ disabled }
+                formGroupClassName='m-0'
+                uiSplit={[ 3,9 ]}
 
-                related,
-                excludedIds: existingResearchGroupIds
-            })} />
+                related={ related }
+                excludedIds={ existingResearchGroupIds }
+            />
             <GenericEnum
                 dataXPath={ `${dataXPath}.permission`}
                 label={ translate('Permission') }
                 options={ translate.options(accessOptions) }
                 disabled={ disabled }
+                formGroupClassName='pl-4 m-0'
+                uiSplit={[ 4,8 ]}
                 required
             />
-        </>
+        </SplitPartitioned>
     )
 }
 
