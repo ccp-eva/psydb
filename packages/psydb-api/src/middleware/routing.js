@@ -443,6 +443,10 @@ var createRouting = (bag = {}) => {
         withKoaBody(),
         endpoints.subject.readMany
     );
+    
+    router.post('/subject/read-for-invite-mail', ...withPostStages({
+        endpoint: endpoints.subject.readForInviteMail
+    }));
 
 
     // FIXME

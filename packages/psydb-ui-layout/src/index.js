@@ -35,6 +35,7 @@ export { default as FormBox } from './form-box';
 export { default as WithDefaultModal } from './with-default-modal';
 
 export * from './nbsp';
+export * from './async-button';
 
 export * from './permission-denied';
 export * from './not-found';

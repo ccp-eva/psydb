@@ -10,10 +10,10 @@ import ReactQuill from 'react-quill';
 var defaults = {
     mailSubject: 'Einladung zu Online-Studie',
     mailText: `
-        <p>Sehr geehrte Familie {{lastname}}</p>
+        <p>Sehr geehrte Familie {{gdpr.lastname}}</p>
         <br>
         <p>
-            wir möchten Sie herzlich einladen, mit ihrem Kind {{firstname}},
+            wir möchten Sie herzlich einladen, mit ihrem Kind {{gdpr.firstname}},
             an einer Online-Studie teilzunehmen.
         </p>
         <br>

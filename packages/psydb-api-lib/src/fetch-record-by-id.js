@@ -2,6 +2,7 @@
 var debug = require('debug')('psydb:api:lib:fetch-record-by-id');
 
 var inlineString = require('@cdxoo/inline-string');
+var { translationExists } = require('@mpieva/psydb-i18n');
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
 var convertPointerToPath = require('./convert-pointer-to-path');
@@ -40,6 +41,8 @@ var fetchRecordById = async ({
     recordLabelDefinition,
     id,
     labelOnly,
+    language,
+    locale
 }) => {
     var { hasSubChannels } = allSchemaCreators[collectionName];
 
@@ -97,11 +100,22 @@ var fetchRecordById = async ({
         return undefined;
     }
 
-    if (recordLabelDefinition) {
-        record._recordLabel = createRecordLabel({
-            record: record,
-            definition: recordLabelDefinition,
-        });
+    if (['helperSet', 'helperSetItem'].includes(collectionName)) {
+        record._recordLabel = (
+            translationExists({ language })
+            ? record.state.displayNameI18N[language]
+            : record.state.label
+        );
+    }
+    else {
+        if (recordLabelDefinition) {
+            record._recordLabel = createRecordLabel({
+                record: record,
+                definition: recordLabelDefinition,
+                language,
+                locale
+            });
+        }
     }
 
     return (

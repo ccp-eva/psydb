@@ -39,10 +39,10 @@ import { convertFilters } from '../convert-filters';
 import TableBody from './table-body';
 import SubjectModal from './subject-modal';
 import MailInviteModal from './mail-invite-modal';
+import ExtraFunctionBar from './extra-function-bar';
 
-const OnlineTestableSubjectList = ({
-    studyLabelItems,
-}) => {
+const OnlineTestableSubjectList = (ps) => {
+    var { studyLabelItems } = ps;
     var translate = useUITranslation();
     
     var { path, url } = useRouteMatch();
@@ -89,30 +89,32 @@ const OnlineTestableSubjectList = ({
             <Redirect to={`${up(url, 1)}`} />
         )
     }
-    
+   
+    var {
+        interval,
+        filters,
+    } = userSearchSettings;
+
+    var { start, end } = interval;
+
+    var fetchBag = {
+        subjectTypeKey: subjectRecordType,
+        studyTypeKey: studyType,
+        studyIds: joinedStudyIds.split(','),
+        interval: {
+            start: datefns.startOfDay(new Date(start)),
+            end: datefns.endOfDay(new Date(end)),
+        },
+        filters: convertFilters(filters),
+        quickSearchFilters,
+
+        offset,
+        limit,
+    }
+
     var [ didFetch, fetched ] = useFetch((agent) => {
-        var {
-            interval,
-            filters,
-        } = userSearchSettings;
-
-        var { start, end } = interval;
-
         return (
-            agent.searchSubjectsTestableInOnlineSurvey({
-                subjectTypeKey: subjectRecordType,
-                studyTypeKey: studyType,
-                studyIds: joinedStudyIds.split(','),
-                interval: {
-                    start: datefns.startOfDay(new Date(start)),
-                    end: datefns.endOfDay(new Date(end)),
-                },
-                filters: convertFilters(filters),
-                quickSearchFilters,
-
-                offset,
-                limit,
-            })
+            agent.searchSubjectsTestableInOnlineSurvey(fetchBag)
             .then((response) => {
                 pagination.setTotal(
                     response.data.data.subjectData.count
@@ -179,39 +181,18 @@ const OnlineTestableSubjectList = ({
                 totalSubjectCount={ total }
                 studyId={ studyId }
                 selectedSubjects={ subjectSelection.value }
-                previewSubject={ records[0] }
+                fallbackPreviewSubject={ records[0] }
                 displayFieldData={ displayFieldData }
 
                 onMailsSend={ increaseRevision }
 
             />
-            
-            <div
-                className='p-2 d-flex justify-content-between align-items-center'
-                style={{
-                    position: 'sticky',
-                    top: 0,
-                    background: '#ffffff',
-                }}
-            >
-                <b>Ausgewählt: { subjectSelection.value.length }</b>
-
-                <Button
-                    variant={
-                        subjectSelection.value.length < 1
-                        ? 'danger'
-                        : 'primary'
-                    }
-                    onClick={ mailInviteModal.handleShow }
-                >
-                    { 
-                        subjectSelection.value.length < 1
-                        ? 'Alle Einladen'
-                        : 'Gewählte Einladen'
-                    }
-                </Button>
-
-            </div>
+           
+            <ExtraFunctionBar
+                subjectSelection={ subjectSelection }
+                onClickInvite={ mailInviteModal.handleShow }
+                fetchBag={ fetchBag }
+            />
 
             <Table style={{ borderCollapse: 'separate', borderSpacing: 0 }}>
                 <thead className='sticky-top bg-light'>

@@ -11,6 +11,11 @@ var {
 } = require('@mpieva/psydb-core-utils');
 
 var {
+    convertCRTRecordToSettings,
+    findCRTAgeFrameField,
+} = require('@mpieva/psydb-common-lib');
+
+var {
     ApiError,
     validateOrThrow,
 
@@ -24,8 +29,6 @@ var {
 } = require('@mpieva/psydb-api-lib/src/fetch-record-helpers');
 
 var RequestBodySchema = require('./request-body-schema');
-
-
 
 var {
     zonedTimeToUtc,
@@ -111,6 +114,7 @@ var initAndCheck = async ({
         ...subjectData,
         ageFrameFilters,
         ageFrameValueFilters,
+        now: new Date(),
     });
 }
 
@@ -316,6 +320,9 @@ var initSubjects = async ({
         it.displayName = field.displayName;
     }
 
+    var subjectCRTSettings = convertCRTRecordToSettings(subjectTypeRecord);
+    var dobFieldPointer = findCRTAgeFrameField(subjectCRTSettings);
+
     return {
         subjectTypeKey,
         subjectTypeRecord,
@@ -324,6 +331,7 @@ var initSubjects = async ({
         subjectRecordLabelDefinition: (
             subjectTypeRecord.state.recordLabelDefinition
         ),
+        dobFieldPointer,
     }
 }
 

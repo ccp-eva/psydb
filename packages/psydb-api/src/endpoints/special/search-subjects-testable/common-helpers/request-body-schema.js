@@ -11,6 +11,7 @@ var {
     DateTimeInterval,
     Integer,
     Timezone,
+    StringEnum,
 } = require('@mpieva/psydb-schema-fields');
 
 var RequestBodySchema = () => ExactObject({
@@ -32,7 +33,9 @@ var RequestBodySchema = () => ExactObject({
 
         offset: Integer(),
         limit: Integer(),
-
+    
+        sampleSize: Integer(),
+        output: StringEnum([ 'full', 'only-ids' ]),
     },
     required: [
         'timezone',
