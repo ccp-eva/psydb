@@ -14,7 +14,8 @@ var psydbExtraStatuses = {
 var ResponseBody = ({
     statusCode,
     apiStatus,
-    data
+    data,
+    remoteErrors
 }) => {
     statusCode = statusCode || 200;
     var status = getHttpStatus(statusCode);
@@ -22,7 +23,8 @@ var ResponseBody = ({
         statusCode,
         status,
         apiStatus: apiStatus || status,
-        data: data || {}
+        data: data || {},
+        remoteErrors, // XXX: not sure about prop name
     });
 }
 

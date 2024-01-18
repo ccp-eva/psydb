@@ -61,7 +61,7 @@ const getErrorComponents = (statusCode) => {
             return [ '_404_not_found', NotFoundError ];
         case 400:
             return [ '_400_bad_request', BadRequestError ];
-        case 700:
+        case 200: // XXX this is BS
             return [ ExternalDelegateErrorTitle, ExternalDelegationError ];
         default:
             return [ '_XXX_system_error', DefaultServerError ];
@@ -121,28 +121,32 @@ const ExternalDelegateErrorTitle = (ps) => {
     )
 }
 const ExternalDelegationError = (ps) => {
-    var { apiStatus, data } = ps;
+    var { remoteErrors } = ps;
     var translate = useUITranslation();
-    if (apiStatus === 'SmtpDelegationFailed') {
-        return (
-            <div>
+    var out = [];
+    for (var it of remoteErrors) {
+        var { apiStatus, data } = it;
+        if (apiStatus === 'SmtpDelegationFailed') {
+            return (
                 <div>
-                    { translate('Could not send email!') }
-                    {' '}
-                    { translate('Mail-Server response is:') }
+                    <div>
+                        { translate('Could not send email!') }
+                        {' '}
+                        { translate('Mail-Server response is:') }
+                    </div>
+                    <div className='mt-3 p-3 bg-light border'>
+                        { data.originalMessage }
+                    </div>
                 </div>
-                <div className='mt-3 p-3 bg-light border'>
-                    { data.originalMessage }
+            )
+        }
+        else {
+            return (
+                <div>
+                    { apiStatus } { data.originalMessage }
                 </div>
-            </div>
-        )
-    }
-    else {
-        return (
-            <div>
-                { apiStatus } { data.originalMessage }
-            </div>
-        )
+            )
+        }
     }
 }
 export default ErrorResponseModal;
