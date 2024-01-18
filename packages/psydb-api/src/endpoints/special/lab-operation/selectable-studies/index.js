@@ -60,11 +60,19 @@ var selectableStudies = async (context, next) => {
     // writeReservations is allowed
     var userResearchGroupIds = permissions.getAllLabOperationFlagIds({
         types: labProcedureTypes,
-        flags: [ 'canWriteReservations', 'canSelectSubjectsForExperiments' ]
+        flags: [
+            'canWriteReservations',
+            'canSelectSubjectsForExperiments',
+            'canPerformOnlineSurveys'
+        ]
     });
     var isAllowed = permissions.hasSomeLabOperationFlags({
         types: labProcedureTypes,
-        flags: [ 'canWriteReservations', 'canSelectSubjectsForExperiments' ]
+        flags: [
+            'canWriteReservations',
+            'canSelectSubjectsForExperiments',
+            'canPerformOnlineSurveys'
+        ]
     });
     if (!isAllowed) {
         throw new ApiError(403, {
@@ -74,6 +82,7 @@ var selectableStudies = async (context, next) => {
                 flags: [
                     'canWriteReservations',
                     'canSelectSubjectsForExperiments',
+                    'canPerformOnlineSurveys'
                 ],
                 checkJoin: 'or',
             }

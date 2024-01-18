@@ -14,9 +14,21 @@ var Schema = require('./schema');
 var read = async (context, next) => {
     var { db, request, permissions } = context;
 
-    // TODO: permissions
-    if (!permissions.isRoot()) {
-        throw new ApiError(403)
+    var labMethods = [ 'online-survey' ];
+    var pflags = [ 'canPerformOnlineSurveys' ];
+    var isAllowed = permissions.hasSomeLabOperationFlags({
+        types: labMethods,
+        flags: pflags
+    });
+    if (!isAllowed) {
+        throw new ApiError(403, {
+            apiStatus: 'LabOperationAccessDenied',
+            data: {
+                labProcedureTypes: labMethods,
+                flags: pflags,
+                checkJoin: 'or',
+            }
+        })
     }
 
     validateOrThrow({
