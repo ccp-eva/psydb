@@ -4,7 +4,7 @@ var getHttpStatus = require('./psydb-http-statuses');
 
 class ApiError extends Error {
     constructor (statusCode, apiStatusOrAdditionalProps) {
-        var status = getHttpStatus(statusCode).replace(/\s+/, '');
+        var status = getHttpStatus(statusCode).replace(/\s+/g, '');
 
         var apiStatus,
             additionalProps,
