@@ -15,6 +15,7 @@ module.exports = {
     // for other available options
     // (configured for mailhog container by default)
     smtp: {
+        senderEmail: 'psydb-noreply@example.com',
         host: 'mailhog',
         port: 1025,
         secure: false,

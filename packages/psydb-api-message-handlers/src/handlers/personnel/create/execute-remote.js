@@ -27,17 +27,18 @@ var maybeSendPasswordMail = async (context, next = noop) => {
 
     var recipient = getRecipientMail(emails);
     if (sendMail && canLogIn && recipient) {
+        var { senderEmail, ...transportConfig } = config.smtp;
         try {
             var transport = nodemailer.createTransport({
-                ...config.smtp
+                ...transportConfig
             });
 
             await transport.sendMail({
-                from: 'psydb-noreply@eva.mpg.de',
+                from: senderEmail,
                 to: recipient,
-                subject: 'PsyDB - Account',
+                subject: 'PsyDB - Account Created',
                 text: `Password: ${generatedPassword}`,
-            })
+            });
         }
         catch (e) {
             // XXX: addRemoteError()
