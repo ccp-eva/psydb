@@ -15,7 +15,7 @@ const ErrorResponseModalSetup = (ps) => {
                 var disableErrorModal = false;
 
                 // XXX: i feel that this is a hack
-                if (data?.remoteErrors && !disableErrorModal) {
+                if (data?.remoteErrors?.length > 0 && !disableErrorModal) {
                     errorResponseModal.handleShow(response);
                 }
                 return response
