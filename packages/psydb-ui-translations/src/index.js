@@ -2649,6 +2649,20 @@ var maps = [
         en: 'Audit',
         de: 'Audit'
     },
+
+    ///////////////////
+    {
+        en: 'Warning',
+        de: 'Warnung'
+    },
+    {
+        en: 'Could not send email!',
+        de: 'E-Mail konnte nicht versand werden!'
+    },
+    {
+        en: 'Mail-Server response is:',
+        de: 'Reponse des Mail-Servers ist:'
+    },
 ]
 
 const byInternal = keyBy({
