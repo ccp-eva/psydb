@@ -48,11 +48,16 @@ var matchOnlineParticipationCSV = async (bag) => {
                 matchedData.push({
                     ...shared,
                     subjectId: subject._id,
+                    subjectType: subject.type,
                     error: 'duplicate-participation'
                 });
             }
             else {
-                matchedData.push({ ...shared, subjectId: subject._id });
+                matchedData.push({
+                    ...shared,
+                    subjectId: subject._id,
+                    subjectType: subject.type,
+                });
             }
         }
     }
