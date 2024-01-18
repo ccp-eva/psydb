@@ -1,6 +1,6 @@
 'use strict';
-var getHttpStatus = require('statuses');
 var { VerifyError } = require('@mpieva/psydb-common-verify-helpers');
+var getHttpStatus = require('./psydb-http-statuses');
 
 class ApiError extends Error {
     constructor (statusCode, apiStatusOrAdditionalProps) {

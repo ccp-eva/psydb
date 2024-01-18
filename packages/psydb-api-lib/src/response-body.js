@@ -1,6 +1,15 @@
 'use strict';
-var debug = require('debug')('psydb:api:lib:response-body'),
-    httpStatuses = require('statuses');
+var debug = require('debug')('psydb:api:lib:response-body');
+var getHttpStatus = require('./psydb-http-statuses');
+
+var psydbExtraStatuses = {
+    // NOTE: when the server deletgates internally
+    // i.e. to aother service we control
+    '600': 'Internal Delegation Error',
+    // NOTE: when the server deletgates externally
+    // i.e. requesting a service we have no control over
+    '700': 'External Delegation Error',
+}
 
 var ResponseBody = ({
     statusCode,
@@ -8,7 +17,7 @@ var ResponseBody = ({
     data
 }) => {
     statusCode = statusCode || 200;
-    var status = httpStatuses(statusCode);
+    var status = getHttpStatus(statusCode);
     return ({
         statusCode,
         status,
