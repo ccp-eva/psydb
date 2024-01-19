@@ -6,7 +6,7 @@ module.exports = async (context) => {
     await driver.sendMessage({
         type: 'systemRole/create',
         payload: { props: {
-            name: 'ChildLab RA',
+            name: 'Humankind RA',
             
             canReadLocations: true,
             canWriteLocations: true,

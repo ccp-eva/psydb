@@ -49,6 +49,15 @@ module.exports = async (context) => {
                 minItems: 0,
                 fields: [
                     {
+                        type: 'BiologicalGender',
+                        key: 'gender',
+                        displayName: 'Gender',
+                        displayNameI18N: { 'de': 'Geschlecht' },
+                        props: {
+                            enableUnknownValue: false
+                        }
+                    },
+                    {
                         type: 'SaneString',
                         key: 'lastname',
                         displayName: 'Lastname',
@@ -180,22 +189,28 @@ module.exports = async (context) => {
     await driver.sendMessage({
         type: `custom-record-types/add-field-definition`,
         payload: { id: crtId, subChannelKey: 'scientific', props: {
-            type: 'ExtBool',
+            type: 'DefaultBool',
             key: 'doesDBRegistrationConsentOnPaperExist',
             displayName: (
-                'DB-Registration consent exists on paper?'
+                'DB-Consent (Paper)'
             ),
             displayNameI18N: { 'de': (
-                'Einverständnis für DB-Registrierung in Papierform vorhanden?'
+                'DB-Einverständnis (Papier)'
             )},
+            //displayName: (
+            //    'DB-Registration consent exists on paper?'
+            //),
+            //displayNameI18N: { 'de': (
+            //    'Einverständnis für DB-Registrierung in Papierform vorhanden?'
+            //)},
             props: {}
         }},
     }, { apiKey });
-    
+     
     await driver.sendMessage({
         type: `custom-record-types/add-field-definition`,
         payload: { id: crtId, subChannelKey: 'scientific', props: {
-            type: 'ExtBool',
+            type: 'DefaultBool',
             key: 'canParticipateInStudiesWithHealthyChildren',
             displayName: (
                 'Can participate in studies with children that are healthy, born on schedule and developed age appropriatly?'
@@ -206,7 +221,7 @@ module.exports = async (context) => {
             props: {}
         }},
     }, { apiKey });
-    
+
     await driver.sendMessage({
         type: `custom-record-types/add-field-definition`,
         payload: { id: crtId, subChannelKey: 'scientific', props: {
@@ -217,6 +232,7 @@ module.exports = async (context) => {
             props: {}
         }},
     }, { apiKey });
+    
      
     await driver.sendMessage({
         type: `custom-record-types/commit-settings`,
