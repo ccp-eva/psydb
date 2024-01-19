@@ -136,7 +136,7 @@ var stringifyFieldValue = ({
     else {
         var stringify = stringifiers[type];
         if (stringify) {
-            str = stringify(rawValue)
+            str = stringify(rawValue, { language })
         }
         else {
             str = String(rawValue);

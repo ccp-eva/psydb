@@ -95,37 +95,73 @@ var AgeFrameInterval = (value) => {
     return `${start} - ${end}`;
 }
 
-var BiologicalGender = (value, { short } = {}) => {
-    if (short) {
-        return {
-            'male': 'm',
-            'female': 'w',
-            'unknown': 'u',
-        }[value];
+var BiologicalGender = (value, { short, language } = {}) => {
+    if (language === 'de') {
+        if (short) {
+            return {
+                'male': 'm',
+                'female': 'w',
+                'unknown': 'u',
+            }[value];
+        }
+        else {
+            return {
+                'male': 'Männlich',
+                'female': 'Weiblich',
+                'unknown': 'Unbekannt',
+            }[value];
+        }
     }
     else {
-        return {
-            'male': 'Männlich',
-            'female': 'Weiblich',
-            'unknown': 'Unbekannt',
-        }[value];
+        if (short) {
+            return {
+                'male': 'm',
+                'female': 'f',
+                'unknown': 'u',
+            }[value];
+        }
+        else {
+            return {
+                'male': 'Male',
+                'female': 'Female',
+                'unknown': 'Unknown',
+            }[value];
+        }
     }
 }
 
-var ExtBool = (value, { short } = {}) => {
-    if (short) {
-        return {
-            'yes': 'J',
-            'no': 'N',
-            'unknown': 'U',
-        }[value];
+var ExtBool = (value, { short, language } = {}) => {
+    if (language === 'de') {
+        if (short) {
+            return {
+                'yes': 'J',
+                'no': 'N',
+                'unknown': 'U',
+            }[value];
+        }
+        else {
+            return {
+                'yes': 'Ja',
+                'no': 'Nein',
+                'unknown': 'Unbekannt',
+            }[value];
+        }
     }
     else {
-        return {
-            'yes': 'Ja',
-            'no': 'Nein',
-            'unknown': 'Unbekannt',
-        }[value];
+        if (short) {
+            return {
+                'yes': 'Y',
+                'no': 'N',
+                'unknown': 'U',
+            }[value];
+        }
+        else {
+            return {
+                'yes': 'Yes',
+                'no': 'No',
+                'unknown': 'Unknown',
+            }[value];
+        }
     }
 }
 
@@ -143,11 +179,19 @@ var Lambda = (bag = {}) => {
     return fn(jsonpointer.get(record, input))
 };
 
-var DefaultBool = (value) => {
-    return {
-        'true': 'Ja',
-        'false': 'Nein',
-    }[String(value)] || 'ERROR';
+var DefaultBool = (value, { language } = {}) => {
+    if (language === 'de') {
+        return {
+            'true': 'Ja',
+            'false': 'Nein',
+        }[String(value)] || 'ERROR';
+    }
+    else {
+        return {
+            'true': 'Yes',
+            'false': 'No',
+        }[String(value)] || 'ERROR';
+    }
 }
 
 module.exports = {

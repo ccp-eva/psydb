@@ -176,11 +176,7 @@ handler.triggerSystemEvents = async (context) => {
         excludeFromMoreExperimentsInStudy,
     };
 
-    var experimentId = undefined;
-    if (labProcedureType !== 'online-survey') {
-        experimentId = await createFakeExperiment(context, bag);
-    }
-
+    var experimentId = await createFakeExperiment(context, bag);
     await createParticipation(context, { ...bag, experimentId });
 }
 

@@ -176,10 +176,8 @@ handler.triggerSystemEvents = async (context) => {
     // TODO: decide if online survey should have an experiment or not
     // and what this would look like
     // no location, no experimenters, interval maybe (like a month or so)
-    if (labProcedureType !== 'online-survey') {
-        await maybeUpdateRelatedParticipations(context);
-        await maybeUpdateExperiment(context);
-    }
+    await maybeUpdateRelatedParticipations(context);
+    await maybeUpdateExperiment(context);
     
 }
 

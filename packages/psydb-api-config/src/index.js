@@ -21,6 +21,7 @@ else {
             useUnifiedTopology: true,
         },
         smtp: {
+            senderEmail: 'psydb-noreply@example.com',
             host: '127.0.0.1',
             port: 1025,
             secure: false,

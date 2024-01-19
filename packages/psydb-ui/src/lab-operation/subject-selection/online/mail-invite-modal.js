@@ -84,10 +84,14 @@ const MailInviteModalBody = (ps) => {
                     />
                 </>
             )}
-            <div className='d-flex justify-content-end mt-3'>
+            <div className='d-flex justify-content-end mt-3 gapx-3 align-items-center'>
+                <b className='text-danger'>
+                    Feature Currently Disabled!
+                </b>
                 <AsyncButton
                     onClick={ send.exec }
                     isTransmitting={ send.isTransmitting }
+                    disabled={ true }
                 >
                     <b className='d-inline-block mr-2'>
                         { totalSubjectCount }

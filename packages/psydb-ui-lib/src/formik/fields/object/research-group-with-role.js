@@ -1,6 +1,7 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { withField } from '@cdxoo/formik-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { SplitPartitioned } from '@mpieva/psydb-ui-layout';
 
 import { ForeignId } from '../scalar';
 
@@ -23,26 +24,30 @@ const Control = (ps) => {
     var translate = useUITranslation();
 
     return (
-        <>
-            <ForeignId { ...({
-                dataXPath: `${dataXPath}.researchGroupId`,
-                label: translate('Research Group'),
-                required: true,
-                collection: 'researchGroup',
-                disabled,
+        <SplitPartitioned partitions={[ 5,3 ]}>
+            <ForeignId
+                dataXPath={ `${dataXPath}.researchGroupId` }
+                label={ translate('Research Group') }
+                required={ true }
+                collection='researchGroup'
+                disabled={ disabled }
+                formGroupClassName='m-0'
+                uiSplit={[ 3,9 ]}
 
-                related,
-            })} />
-            <ForeignId { ...({
-                dataXPath: `${dataXPath}.systemRoleId`,
-                label: translate('System Role'),
-                required: true,
-                collection: 'systemRole',
-                disabled,
+                related={ related }
+            />
+            <ForeignId
+                dataXPath={ `${dataXPath}.systemRoleId` }
+                label={ translate('System Role') }
+                required={ true }
+                collection={ 'systemRole' }
+                disabled={ disabled }
 
-                related,
-            })} />
-        </>
+                formGroupClassName='pl-4 m-0'
+                uiSplit={[ 4,8 ]}
+                related={ related }
+            />
+        </SplitPartitioned>
     )
 }
 

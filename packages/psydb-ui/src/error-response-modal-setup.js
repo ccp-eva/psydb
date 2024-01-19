@@ -9,13 +9,24 @@ const ErrorResponseModalSetup = (ps) => {
 
     if (agent.getAxios().interceptors.response.handlers.length === 0) {
         agent.getAxios().interceptors.response.use(
-            (response) => (response),
+            (response) => {
+                var { status, data } = response;
+                //var { disableErrorModal } = config; // XXX
+                var disableErrorModal = false;
+
+                // XXX: i feel that this is a hack
+                if (data?.remoteErrors?.length > 0 && !disableErrorModal) {
+                    errorResponseModal.handleShow(response);
+                }
+                return response
+            },
             (error) => {
                 var { config, response } = error;
                 var { status } = response;
                 var { disableErrorModal } = config;
 
                 console.log('axios error', status);
+                
                 if (response && !disableErrorModal) {
                     errorResponseModal.handleShow(response);
                     throw error;

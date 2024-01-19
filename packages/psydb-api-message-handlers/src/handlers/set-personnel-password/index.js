@@ -103,15 +103,16 @@ handler.triggerOtherSideEffects = async (options) => {
 
     var recipient = getRecipientMail(record.gdpr.state.emails);
     if (recipient) {
+        var { senderEmail, ...transportConfig } = config.smtp;
         var transport = nodemailer.createTransport({
-            ...config.smtp
+            ...transportConfig
         });
 
         await transport.sendMail({
-            from: 'psydb-noreply@eva.mpg.de',
+            from: senderEmail,
             to: recipient,
-            subject: 'PsyDB - Passwort wurde geändert',
-            text: `Neues Passwort: ${password}`,
+            subject: 'PsyDB - Password Change',
+            text: `New Password: ${password}`,
         })
     }
 };

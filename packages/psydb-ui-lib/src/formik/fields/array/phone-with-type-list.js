@@ -1,9 +1,9 @@
 import React from 'react';
 import { withFieldArray } from '@cdxoo/formik-utils';
-import { EmailWithPrimary } from '../object';
+import { PhoneWithType } from '../object';
 
-const EmailWithPrimaryListInner = withFieldArray({
-    FieldComponent: EmailWithPrimary,
+const PhoneWithTypeListInner = withFieldArray({
+    FieldComponent: PhoneWithType,
     //ArrayContentWrapper: 'ObjectArrayContentWrapper',
     ArrayItemWrapper: 'ScalarArrayItemWrapper',
     defaultItemValue: (ps) => {
@@ -19,8 +19,8 @@ const EmailWithPrimaryListInner = withFieldArray({
     }
 });
 
-export const EmailWithPrimaryList = (ps) => {
+export const PhoneWithTypeList = (ps) => {
     return (
-        <EmailWithPrimaryListInner enableMove={ false } { ...ps } />
+        <PhoneWithTypeListInner enableMove={ false } { ...ps } />
     )
 }

@@ -14,9 +14,10 @@ var doit = async (context, next = noop) => {
     var { subjects, mapping } = cache.get();
     var { mailSubject, mailBody } = message.payload;
 
+    var { senderEmail, ...transportConfig } = config.smtp;
     var transport = nodemailer.createTransport({
         pool: true,
-        ...config.smtp
+        ...transportConfig
     });
 
     debug('sending to', subjects.length);
@@ -36,7 +37,7 @@ var doit = async (context, next = noop) => {
             }
 
             promises.push(transport.sendMail({
-                from: 'psydb-noreply@eva.mpg.de',
+                from: senderEmail,
                 to: email,
                 subject: mailSubject,
                 html: thisMailBody

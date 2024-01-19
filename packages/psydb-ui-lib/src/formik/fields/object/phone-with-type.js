@@ -1,6 +1,7 @@
 import React from 'react';
 import { withField } from '@cdxoo/formik-utils';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { SplitPartitioned } from '@mpieva/psydb-ui-layout';
 
 import { SaneString, GenericEnum } from '../scalar';
 
@@ -34,19 +35,23 @@ const Control = (ps) => {
     }
 
     return (
-        <>
+        <SplitPartitioned partitions={[ 5,3 ]}>
             <SaneString
                 label={ translate('_phone_number') }
                 dataXPath={ `${dataXPath}.number` }
                 disabled={ disabled }
+                formGroupClassName='m-0'
+                uiSplit={[ 3,9 ]}
             />
             <GenericEnum
                 label={ translate('Type') }
                 dataXPath={ `${dataXPath}.type` }
                 options={ translate.options(fieldOptions) }
                 disabled={ disabled }
+                formGroupClassName='pl-4 m-0'
+                uiSplit={[ 4,8 ]}
             />
-        </>
+        </SplitPartitioned>
     )
 }
 

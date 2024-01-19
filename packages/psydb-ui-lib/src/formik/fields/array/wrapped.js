@@ -53,8 +53,6 @@ const {
     AgeFrameBoundaryList,
     SubjectFieldRequirementList,
     TypedLocationIdList,
-    PhoneWithTypeList,
-    ResearchGroupWithRoleList,
 } = o;
 
 export {
@@ -75,6 +73,4 @@ export {
     AgeFrameBoundaryList,
     SubjectFieldRequirementList,
     TypedLocationIdList,
-    PhoneWithTypeList,
-    ResearchGroupWithRoleList,
 }

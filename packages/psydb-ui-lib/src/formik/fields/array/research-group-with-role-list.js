@@ -1,15 +1,14 @@
 import React from 'react';
 import { withField, withFieldArray } from '@cdxoo/formik-utils';
-import { AccessRightByResearchGroup } from '../object';
+import { ResearchGroupWithRole } from '../object';
 
-const AccessRightByResearchGroupListArray = withFieldArray({
-    FieldComponent: AccessRightByResearchGroup,
+const ResearchGroupWithRoleListArray = withFieldArray({
+    FieldComponent: ResearchGroupWithRole,
     //ArrayContentWrapper: 'ObjectArrayContentWrapper',
     ArrayItemWrapper: 'ScalarArrayItemWrapper',
-    defaultItemValue: { permission: 'write' }
 })
 
-export const AccessRightByResearchGroupList = withField({
+export const ResearchGroupWithRoleList = withField({
     Control: (ps) => {
         var { formikField } = ps;
         var { value = [] } = formikField;
@@ -21,7 +20,7 @@ export const AccessRightByResearchGroupList = withField({
         )
 
         return (
-            <AccessRightByResearchGroupListArray
+            <ResearchGroupWithRoleListArray
                 { ...ps }
                 existingResearchGroupIds={ existingResearchGroupIds }
                 enableMove={ false }
