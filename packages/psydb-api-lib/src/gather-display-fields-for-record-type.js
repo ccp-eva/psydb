@@ -5,12 +5,19 @@ var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
 var fetchOneCustomRecordType = require('./fetch-one-custom-record-type');
 
+var {
+    convertCRTRecordToSettings,
+    CRTSettings
+} = require('@mpieva/psydb-common-lib');
+
+
 var gatherDisplayFieldsForRecordType =  async ({
     db,
     collectionName,
     customRecordType,
     target,
     prefetched,
+    permissions,
 }) => {
     target = target || 'table';
 
@@ -38,8 +45,10 @@ var gatherDisplayFieldsForRecordType =  async ({
 
     var displayFields = undefined,
         availableDisplayFieldData = undefined;
+    var mergedDisplayFieldData = undefined;
+    
+    var customRecordTypeRecord = undefined;
     if (hasCustomTypes) {
-        var customRecordTypeRecord = undefined;
         if (prefetched) {
             customRecordTypeRecord = prefetched;
         }
@@ -51,20 +60,37 @@ var gatherDisplayFieldsForRecordType =  async ({
             });
         }
 
-        recordLabelDefinition = (
-            customRecordTypeRecord.state.recordLabelDefinition
+        var _converted = convertCRTRecordToSettings(customRecordTypeRecord);
+        var crt = CRTSettings({ data: _converted });
+
+        recordLabelDefinition = crt.getRecordLabelDefinition();
+        availableDisplayFieldData = (
+            crt.allFieldDefinitions().filter(it => {
+                if (
+                    permissions
+                    && !permissions.hasFlag('canAccessSensitiveFields')
+                ) {
+                    if (it.props?.isSensitive) {
+                        return false
+                    }
+                }
+                return true
+            })
         );
 
-        displayFields = customRecordTypeRecord.state[
+        mergedDisplayFieldData = displayFields = crt.augmentedDisplayFields(
             mapDisplayTargetToValueProperty(target)
-        ];
-
-        availableDisplayFieldData = [
-            ...(availableStaticDisplayFields || []),
-            ...gatherDisplayFieldData({
-                customRecordTypeData: customRecordTypeRecord
-            })
-        ]
+        ).filter(it => {
+            if (
+                permissions
+                && !permissions.hasFlag('canAccessSensitiveFields')
+            ) {
+                if (it.props?.isSensitive) {
+                    return false
+                }
+            }
+            return true
+        });
     }
     // TODO: fixed types maybe
     else {
@@ -79,17 +105,23 @@ var gatherDisplayFieldsForRecordType =  async ({
             displayFields = staticDisplayFields || [];
         }
         availableDisplayFieldData = availableStaticDisplayFields || [];
+
+        var availableDisplayFieldDataByPointer = keyBy({
+            items: availableDisplayFieldData,
+            byProp: 'dataPointer'
+        });
+
+        mergedDisplayFieldData = (
+            displayFields
+            .filter(it => (
+                !!availableDisplayFieldDataByPointer[it.dataPointer]
+            ))
+            .map(it => ({
+                ...availableDisplayFieldDataByPointer[it.dataPointer],
+                dataPointer: it.dataPointer,
+            })
+        ))
     }
-
-    var availableDisplayFieldDataByPointer = keyBy({
-        items: availableDisplayFieldData,
-        byProp: 'dataPointer'
-    });
-
-    var mergedDisplayFieldData = displayFields.map(it => ({
-        ...availableDisplayFieldDataByPointer[it.dataPointer],
-        dataPointer: it.dataPointer,
-    }))
 
     return ({
         displayFields,
