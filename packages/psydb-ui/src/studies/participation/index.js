@@ -129,39 +129,44 @@ const StudyParticipation = (ps) => {
                 { ...csvImportModal.passthrough }
             />
             
-            { subjectTypeInfos > 1 && (
-                <TabNav
-                    activeKey={ selectedSubjectType }
-                    items={ sbjectTypeInfos.map(it => ({
-                        key: it.type,
-                        label: (
-                            (it.displayNameI18N || {})[language]
-                            || it.displayName
-                        )
-                    }))}
-                    onItemClick={ (key) => setSelectedSubjectType(key) }
-                />
-            )}
-
             <div className='mt-3'>
-
-                { canAddSubjects && (
-                    <Button onClick={ createModal.handleShow }>
-                        { translate('Add Participation') }
-                    </Button>
-                )}
-                
-                { canImportCSV && (
-                    <Button
-                        className='ml-2'
-                        onClick={ csvImportModal.handleShow }
-                    >
-                        { translate('CSV Import') }
-                    </Button>
-                )}
+                <div className='d-flex justify-content-between align-items-center'>
+                    { subjectTypeInfos > 1 ? (
+                        <TabNav
+                            activeKey={ selectedSubjectType }
+                            items={ sbjectTypeInfos.map(it => ({
+                                key: it.type,
+                                label: (
+                                    (it.displayNameI18N || {})[language]
+                                    || it.displayName
+                                )
+                            }))}
+                            onItemClick={ (key) => setSelectedSubjectType(key) }
+                        />
+                    ) : (
+                        <div />
+                    )}
+                    <div>
+                        { canAddSubjects && (
+                            <Button onClick={ createModal.handleShow }>
+                                { translate('Add Participation') }
+                            </Button>
+                        )}
+                        
+                        { canImportCSV && (
+                            <Button
+                                className='ml-2'
+                                onClick={ csvImportModal.handleShow }
+                            >
+                                { translate('CSV Import') }
+                            </Button>
+                        )}
+                    </div>
+                </div>
 
                 <ParticipationList { ...({
                     className: 'mt-1 bg-white',
+                    studyId: id,
                     records,
                     related,
                     definitions,
