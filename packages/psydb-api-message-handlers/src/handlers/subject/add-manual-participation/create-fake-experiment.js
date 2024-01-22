@@ -8,7 +8,7 @@ var createFakeExperiment = async (context, bag) => {
         timestamp,
         status,
 
-        subject,
+        subjects,
         study,
         location,
 
@@ -35,15 +35,15 @@ var createFakeExperiment = async (context, bag) => {
 
         interval: { start: timestamp, end: timestamp },
 
-        selectedSubjectIds: [ subject._id ],
-        subjectData: [{
-            subjectId: subject._id,
-            subjectType: subject.type,
+        selectedSubjectIds: subjects.map(it => it._id),
+        subjectData: subjects.map(it => ({
+            subjectId: it._id,
+            subjectType: it.type,
             invitationStatus: "scheduled",
             participationStatus: status,
             comment: "",
             excludeFromMoreExperimentsInStudy,
-        }],
+        })),
 
         ...(location && {
             locationId: location._id,
@@ -57,6 +57,20 @@ var createFakeExperiment = async (context, bag) => {
         ...(experimentOperatorIds && {
             experimentOperatorIds,
         }),
+    }
+
+    if (labProcedureType === 'apestudies-wkprc-default') {
+        var {
+            // apestudies
+            studyTopics,
+            experimentName,
+        } = bag;
+
+        experimentState = {
+            ...experimentState,
+            studyTopicIds: studyTopics.map(it => it._id),
+            experimentName
+        };
     }
 
     await dispatchProps({
