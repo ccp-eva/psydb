@@ -9,7 +9,7 @@ import deLocale from 'date-fns/locale/de';
 import createAgent, { simple as publicAgent } from '@mpieva/psydb-ui-request-agents';
 
 import config from '@mpieva/psydb-common-config';
-import { createTranslate } from '@mpieva/psydb-ui-translations';
+import { createTranslate } from '@mpieva/psydb-common-translations';
 
 import {
     SelfContext,

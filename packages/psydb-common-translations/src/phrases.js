@@ -1,7 +1,5 @@
-import render from 'es6-template-strings';
-import { keyBy } from '@mpieva/psydb-core-utils';
-
-var maps = [
+'use strict';
+module.exports = [
     {
         en: 'Subjects',
         de: 'Proband:innen'
@@ -2664,50 +2662,3 @@ var maps = [
         de: 'Reponse des Mail-Servers ist:'
     },
 ]
-
-const byInternal = keyBy({
-    items: maps.filter(it => it.internal),
-    byProp: 'internal',
-});
-
-const byEN = keyBy({
-    items: maps.filter(it => it.en),
-    byProp: 'en',
-});
-
-export const createTranslate = (lang = 'en') => {
-    var translate = (template, props) => {
-        var map = byInternal[template] || byEN[template];
-        //var map = maps.find(it => (
-        //    it.internal === template || it.en === template
-        //));
-
-        var translatedTemplate = map && map[lang];
-        if (translatedTemplate) {
-            return render(translatedTemplate, props);
-        }
-        else {
-            return render('[!! ' + template + ' !!]', props);
-            // FIXME: temp compat
-            //return render(template, props);
-        }
-    }
-
-    translate.options = (options) => (
-        Object.keys(options).reduce((acc, key) => ({
-            ...acc, [key]: translate(options[key])
-        }), {})
-    );
-
-    // FIXME: that dsoenst work with GenericEnum
-    // and simply shallow cloning doenst wont work either i think
-    // maybe we can add mapping prop
-    //translate.enum = (enumeration) => {
-    //    return {
-    //        keys: enumeration.keys,
-    //        labels: enumeration.labels.map(it => translate(label))
-    //    }
-    //};
-
-    return translate;
-}

@@ -1,9 +1,9 @@
 import React from 'react';
+import { createTranslate } from '@mpieva/psydb-common-translations';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { Nav, LinkContainer } from '@mpieva/psydb-ui-layout';
 import { WhenAllowed } from '@mpieva/psydb-ui-lib';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
-import { createTranslate } from '@mpieva/psydb-ui-translations';
 
 import Logo from './main-logo';
 
