@@ -24,7 +24,7 @@ import {
     TabNav,
 } from '@mpieva/psydb-ui-layout';
 
-import { CreateModal } from '@mpieva/psydb-ui-lib/src/participation';
+import { CreateModal } from '@mpieva/psydb-ui-lib/src/participation/for-study';
 import ParticipationList from './participation-list';
 import CSVImportModal from './csv-import-modal';
 

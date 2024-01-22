@@ -22,7 +22,10 @@ import {
 } from '@mpieva/psydb-ui-layout';
 
 import {
-    EditModal,
+    EditModal
+} from '@mpieva/psydb-ui-lib/src/participation/for-study';
+
+import {
     RemoveModal
 } from '@mpieva/psydb-ui-lib/src/participation';
 
