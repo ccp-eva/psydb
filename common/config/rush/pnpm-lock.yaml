@@ -681,6 +681,16 @@ importers:
       jest: 29.7.0
       mocha: 10.2.0
 
+  ../../packages/psydb-common-translations:
+    specifiers:
+      '@mpieva/psydb-common-lib': workspace:~0.1.0-alpha
+      '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
+      es6-template-strings: ~2.0.1
+    dependencies:
+      '@mpieva/psydb-common-lib': link:../psydb-common-lib
+      '@mpieva/psydb-core-utils': link:../psydb-core-utils
+      es6-template-strings: 2.0.1
+
   ../../packages/psydb-common-utils:
     specifiers:
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
@@ -713,7 +723,7 @@ importers:
 
   ../../packages/psydb-core-utils:
     specifiers:
-      '@cdxoo/flat': ~0.0.10
+      '@cdxoo/flat': ~0.0.11
       '@cdxoo/jsonpointer-to-objectpath': ~1.0.0
       '@cdxoo/objectpath-to-jsonpointer': ~1.0.0
       '@cdxoo/tiny-ejson': ~1.0.0
@@ -724,7 +734,7 @@ importers:
       jsonpointer: ~5.0.1
       mocha: ~10.2.0
     dependencies:
-      '@cdxoo/flat': 0.0.10
+      '@cdxoo/flat': 0.0.11
       '@cdxoo/jsonpointer-to-objectpath': 1.0.0
       '@cdxoo/objectpath-to-jsonpointer': 1.0.0
       '@cdxoo/tiny-ejson': 1.0.0
@@ -1119,6 +1129,7 @@ importers:
       '@mpieva/psydb-api-endpoint-schemas': workspace:~0.1.0-alpha
       '@mpieva/psydb-common-config': workspace:~0.1.0-alpha
       '@mpieva/psydb-common-lib': workspace:~0.1.0-alpha
+      '@mpieva/psydb-common-translations': workspace:~0.1.0-alpha
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
       '@mpieva/psydb-date-interval-fns': workspace:~0.1.0-alpha
       '@mpieva/psydb-schema-creators': workspace:~0.1.0-alpha
@@ -1134,7 +1145,6 @@ importers:
       '@mpieva/psydb-ui-lib': workspace:~0.1.0-alpha
       '@mpieva/psydb-ui-record-views': workspace:~0.1.0-alpha
       '@mpieva/psydb-ui-request-agents': workspace:~0.1.0-alpha
-      '@mpieva/psydb-ui-translations': workspace:~0.1.0-alpha
       '@mpieva/psydb-ui-utils': workspace:~0.1.0-alpha
       babel-loader: ~8.3.0
       bootstrap: ~4.6.0
@@ -1179,6 +1189,7 @@ importers:
       '@mpieva/psydb-api-endpoint-schemas': link:../psydb-api-endpoint-schemas
       '@mpieva/psydb-common-config': link:../psydb-common-config
       '@mpieva/psydb-common-lib': link:../psydb-common-lib
+      '@mpieva/psydb-common-translations': link:../psydb-common-translations
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
       '@mpieva/psydb-date-interval-fns': link:../psydb-date-interval-fns
       '@mpieva/psydb-schema-creators': link:../psydb-schema-creators
@@ -1194,7 +1205,6 @@ importers:
       '@mpieva/psydb-ui-lib': link:../psydb-ui-lib
       '@mpieva/psydb-ui-record-views': link:../psydb-ui-record-views
       '@mpieva/psydb-ui-request-agents': link:../psydb-ui-request-agents
-      '@mpieva/psydb-ui-translations': link:../psydb-ui-translations
       '@mpieva/psydb-ui-utils': link:../psydb-ui-utils
       babel-loader: 8.3.0_25a65da429f0caf829b5a5ec143a685b
       bootstrap: 4.6.2
@@ -1479,21 +1489,11 @@ importers:
       chai: 4.3.8
       mocha: 10.2.0
 
-  ../../packages/psydb-ui-translations:
-    specifiers:
-      '@mpieva/psydb-common-lib': workspace:~0.1.0-alpha
-      '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
-      es6-template-strings: ~2.0.1
-    dependencies:
-      '@mpieva/psydb-common-lib': link:../psydb-common-lib
-      '@mpieva/psydb-core-utils': link:../psydb-core-utils
-      es6-template-strings: 2.0.1
-
   ../../packages/psydb-ui-utils:
     specifiers:
       '@babel/core': ~7.22.20
       '@babel/preset-env': ~7.22.20
-      '@cdxoo/flat': ~0.0.4
+      '@cdxoo/flat': ~0.0.11
       '@mpieva/psydb-common-lib': workspace:~0.1.0-alpha
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
       '@mpieva/psydb-ui-request-agents': workspace:~0.1.0-alpha
@@ -1503,7 +1503,7 @@ importers:
     devDependencies:
       '@babel/core': 7.22.20
       '@babel/preset-env': 7.22.20_@babel+core@7.22.20
-      '@cdxoo/flat': 0.0.10
+      '@cdxoo/flat': 0.0.11
       '@mpieva/psydb-common-lib': link:../psydb-common-lib
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
       '@mpieva/psydb-ui-request-agents': link:../psydb-ui-request-agents
@@ -2828,8 +2828,8 @@ packages:
       ms: 2.1.2
     dev: false
 
-  /@cdxoo/flat/0.0.10:
-    resolution: {integrity: sha512-iWO2dK6AvGXfzXdOz+j+URBnqV0gYJLoFeuhnnRvtJjCdpDHjxbR+TtRp6x40lQFOpd3y56YbWsjQnyOWEnw5g==}
+  /@cdxoo/flat/0.0.11:
+    resolution: {integrity: sha512-qvG4cFof/bdyywsXUXO9AouctMM+YTqPVcGMz7kwT9Sxvk1In00AQ3gHwHbcZ/LpnnyGB3j5CdAcdQSSEo2SzA==}
     dependencies:
       '@cdxoo/traverse': 0.0.2
 

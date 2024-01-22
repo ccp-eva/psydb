@@ -1,13 +1,25 @@
 'use strict';
-var maps = [
-    {
-        en: 'Subjects',
-        de: 'Proband:innen'
-    },
-    {
-        en: 'Studies',
-        de: 'Studien',
-    },
+module.exports = [
+    ...require('./appointments'),
+    ...require('./studies'),
+    ...require('./subjects'),
+    ...require('./subject-groups'),
+    ...require('./locations'),
+    ...require('./external-organizations'),
+
+    ...require('./lab-workflows'),
+
+    ...require('./helper-tables'),
+    ...require('./permissions'),
+    ...require('./crt-editor'),
+
+    ...require('./_fieldtype'),
+    ...require('./_participationStatus'),
+    ...require('./_phone'),
+    ...require('./_address'),
+    ...require('./_record_picker'),
+    ...require('./_form_array'),
+
     {
         en: 'Calendars',
         de: 'Kalender'
@@ -15,22 +27,6 @@ var maps = [
     {
         en: 'Reception',
         de: 'Rezeption',
-    },
-    {
-        en: 'Inhouse Appointments',
-        de: 'Interne Termine'
-    },
-    {
-        en: 'External Appointment',
-        de: 'Externer Termin'
-    },
-    {
-        en: 'External Appointments',
-        de: 'Externe Termine'
-    },
-    {
-        en: 'Video Appointments',
-        de: 'Video-Termine',
     },
     {
         en: 'Lab Operation',
@@ -41,36 +37,16 @@ var maps = [
         de: 'Reservierung'
     },
     {
-        en: 'Subject Selection',
-        de: 'Proband:innenauswahl'
-    },
-    {
-        en: 'Confirm Appointments',
-        de: 'Terminbestätigung'
-    },
-    {
         en: 'Postprocessing',
         de: 'Nachbereitung'
-    },
-    {
-        en: 'Locations',
-        de: 'Locations'
     },
     {
         en: 'External Persons',
         de: 'Externe Personen'
     },
     {
-        en: 'External Organizations',
-        de: 'Externe Organisationen'
-    },
-    {
         en: 'Study Topics',
         de: 'Themengebiete'
-    },
-    {
-        en: 'Helper Tables',
-        de: 'Hilfstabellen'
     },
     {
         en: 'Staff Members',
@@ -157,10 +133,6 @@ var maps = [
         de: 'Schliessen'
     },
     {
-        en: 'No Appointments',
-        de: 'Keine Termine'
-    },
-    {
         en: 'Calendar Week',
         de: 'KW'
     },
@@ -238,28 +210,12 @@ var maps = [
         de: 'Team'
     },
     {
-        en: 'Study',
-        de: 'Studie'
-    },
-    {
-        en: 'Appointment Functions',
-        de: 'Termin-Funktionen'
-    },
-    {
-        en: 'Appointment Details',
-        de: 'Termin-Details'
-    },
-    {
         en: 'Change Team',
         de: 'Team ändern'
     },
     {
         en: 'Change Room',
         de: 'Raum ändern'
-    },
-    {
-        en: 'Follow-Up Appointment',
-        de: 'Folgetermin'
     },
     {
         en: 'Reschedule',
@@ -276,10 +232,6 @@ var maps = [
     {
         en: 'Subject Functions for Appointment',
         de: 'Proband:innen Funktionen für Termin'
-    },
-    {
-        en: 'Subject Details',
-        de: 'Proband:innen Details'
     },
     {
         en: 'Comment',
@@ -321,20 +273,8 @@ var maps = [
         de: 'Legende'
     },
     {
-        en: 'Appointment',
-        de: 'Termin'
-    },
-    {
         en: 'Details',
         de: 'Details'
-    },
-    {
-        en: 'Appointment Deleted',
-        de: 'Termin gelöscht'
-    },
-    {
-        en: 'Appointment was deleted successfully',
-        de: 'Termin erfolgreich gelöscht'
     },
     {
         en: 'Date',
@@ -347,14 +287,6 @@ var maps = [
     {
         en: 'Type',
         de: 'Typ'
-    },
-    {
-        en: 'Location Type',
-        de: 'Location-Typ'
-    },
-    {
-        en: 'Location',
-        de: 'Location'
     },
     {
         en: 'Unknown',
@@ -373,28 +305,12 @@ var maps = [
         de: 'Ändern zu'
     },
     {
-        en: 'Change Study',
-        de: 'Studie ändern'
-    },
-    {
-        en: 'Add Subject',
-        de: 'Proband:in hinzufügen'
-    },
-    {
-        en: 'Subjects (short)',
-        de: 'Proband:innen (kurz)'
-    },
-    {
         en: 'Only Names',
         de: 'nur Namen'
     },
     {
         en: 'T-Age',
         de: 'T-Alter'
-    },
-    {
-        en: 'T-Location',
-        de: 'T-Location'
     },
     {
         en: 'Part. Stud.',
@@ -446,71 +362,12 @@ var maps = [
     },
     
     {
-        internal: '_participationStatus_unknown',
-        en: 'Unknown',
-        de: 'Unbekannt',
-    },
-    {
-        internal: '_participationStatus_participated',
-        en: 'Participated',
-        de: 'Teilgenommen',
-    },
-    {
-        internal: '_participationStatus_didnt-participate',
-        en: 'Did Not Participate',
-        de: 'Nicht Teilgenommen',
-    },
-    {
-        internal: '_participationStatus_showed-up-but-didnt-participate',
-        en: 'Only Showed Up',
-        de: 'Gekommen',
-    },
-    {
-        internal: '_participationStatus_didnt-show-up',
-        en: 'Did Not Show Up',
-        de: 'Nicht Gekommen',
-    },
-    {
-        internal: '_participationStatus_canceled-by-participant',
-        en: 'Canceled by Participant',
-        de: 'Abgesagt',
-    },
-    {
-        internal: '_participationStatus_canceled-by-institute',
-        en: 'Uninvited',
-        de: 'Ausgeladen',
-    },
-    {
-        internal: '_participationStatus_moved',
-        en: 'Rescheduled',
-        de: 'Verschoben',
-    },
-    {
-        internal: '_participationStatus_deleted',
-        en: 'Deleted',
-        de: 'Gelöscht',
-    },
-
-
-    {
-        en: 'Subjects to Postprocess',
-        de: 'Nachzubereitende Proband:innen',
-    },
-    {
-        en: 'Postprocessed Subjects',
-        de: 'Nachbereitete Proband:innen',
-    },
-    {
         en: 'Set Remaining to "Not Participated"',
         de: 'Verbleibende auf "Nicht Teilgenommen" setzen',
     },
     {
         en: 'Edit (${subjectLabel})',
         de: 'Bearbeitung (${subjectLabel})',
-    },
-    {
-        en: 'Last Appointment?',
-        de: 'Letzter Termin?',
     },
     {
         en: 'Edit',
@@ -521,20 +378,8 @@ var maps = [
         de: 'Einträge',
     },
     {
-        en: 'Subject',
-        de: 'Proband:in'
-    },
-    {
-        en: 'No subjects have been postprocessed yet.',
-        de: 'Bisher keine Proband:innen nachbereitet.'
-    },
-    {
         en: 'Permission Denied',
         de: 'Zugriff Verweigert'
-    },
-    {
-        en: 'Study Selection',
-        de: 'Studienauswahl'
     },
     {
         en: 'No lab teams exist for this study.',
@@ -543,10 +388,6 @@ var maps = [
     {
         en: 'Reservations are not available for this study.',
         de: 'Für diese Studie ist keine Reservierung möglich.'
-    },
-    {
-        en: 'Go To Study Settings',
-        de: 'Zu den Studien-Einstellungen'
     },
     {
         en: 'Away Teams',
@@ -586,14 +427,6 @@ var maps = [
         de: 'Reservieren'
     },
     {
-        en: 'Inhouse Study',
-        de: 'Interne Studie'
-    },
-    {
-        en: 'External Study',
-        de: 'Externe Studie'
-    },
-    {
         en: 'Online Video Call',
         de: 'Online-Video-Anruf'
     },
@@ -610,16 +443,8 @@ var maps = [
         de: 'Ausgewählt'
     },
     {
-        en: 'No active studies found.',
-        de: 'Keine laufenden Studien gefunden.'
-    },
-    {
         en: 'Search',
         de: 'Suchen'
-    },
-    {
-        en: 'Appointment Time Range',
-        de: 'Terminzeitraum'
     },
     {
         en: 'Age Range',
@@ -642,20 +467,8 @@ var maps = [
         de: 'Teilg. Studien'
     },
     {
-        en: 'Appointments',
-        de: 'Termine'
-    },
-    {
-        en: 'Poss. Studies',
-        de: 'Mögl. Studien'
-    },
-    {
         en: 'None',
         de: 'Keine'
-    },
-    {
-        en: 'Appointment',
-        de: 'Termin'
     },
     {
         en: 'Study Participation',
@@ -664,14 +477,6 @@ var maps = [
     {
         en: 'Invitation',
         de: 'Einladung'
-    },
-    {
-        en: 'Appointment Invitation',
-        de: 'Termin-Einladung'
-    },
-    {
-        en: 'Subject data saved!',
-        de: 'Proband:innendaten gespeichert!'
     },
     {
         en: 'Edit Again',
@@ -698,10 +503,6 @@ var maps = [
         de: 'Zeitpunkt'
     },
     {
-        en: 'per Appointment',
-        de: 'pro Termin'
-    },
-    {
         en: 'Condition',
         de: 'Bedingung'
     },
@@ -721,10 +522,6 @@ var maps = [
     {
         en: 'Shorthand',
         de: 'Kürzel'
-    },
-    {
-        en: 'Subjects can be tested multiple times',
-        de: 'Proband:innen können mehrfach getestet werden'
     },
     {
         en: 'Scientists',
@@ -785,17 +582,9 @@ var maps = [
         de: 'Anz.'
     },
     {
-        en: 'Subjects Found',
-        de: 'Gefundene Proband:innen'
-    },
-    {
         internal: '_not_at_weekday',
         en: 'not on',
         de: 'nicht am'
-    },
-    {
-        en: 'Location Comment',
-        de: 'Location Kommentar'
     },
     {
         en: 'Select All',
@@ -806,85 +595,16 @@ var maps = [
         de: 'Alle Abwählen'
     },
     {
-        en: 'Create Appointment',
-        de: 'Termin Eintragen'
-    },
-    {
-        en: 'Edit Location Comment',
-        de: 'Location-Kommentar Bearbeiten'
-    },
-    {
-        en: 'Really cancel the appointment?',
-        de: 'Den Termin wirklich absagen?'
-    },
-    {
-        en: 'Cancel Appointment',
-        de: 'Termin Absagen'
-    },
-    {
-        en: 'No unconfirmed appointments on this day.',
-        de: 'Keine unbestätigten Termine an diesem Tag.'
-    },
-    {
-        en: 'Appointment Type',
-        de: 'Termin-Typ'
-    },
-    {
-        en: 'Unknown Appointment Type',
-        de: 'Unbekannter Termin-Typ'
-    },
-    {
-        en: 'Inhouse Appointment',
-        de: 'Interner Termin'
-    },
-    {
-        en: 'Online Video Appointment',
-        de: 'Online-Video-Termin'
-    },
-    {
-        en: 'Online Video Appointments',
-        de: 'Online-Video-Termine'
-    },
-    {
-        en: 'Edit Appointment Comment',
-        de: 'Terminkommentar Bearbeiten'
-    },
-    {
-        en: 'Appointment Comment', // FIXME: Appointment Comment is too long
-        de: 'Terminkommentar'
-    },
-    {
-        internal: '_appointment_comment',
-        en: 'App. Comment', // FIXME: Appointment Comment is too long
-        de: 'Terminkommentar'
-    },
-    {
-        en: 'Reschedule Subject',
-        de: 'Proband:in Verschieben'
-    },
-    {
         en: 'Reschedule To',
         de: 'Verschieben Auf'
-    },
-    {
-        en: 'Unschedule Subject',
-        de: 'Proband:in austragen'
     },
     {
         en: 'No Comment',
         de: 'Kein Kommentar'
     },
     {
-        en: 'Subject Comment',
-        de: 'Kommentar zu Proband:in'
-    },
-    {
         en: 'Reason',
         de: 'Grund'
-    },
-    {
-        en: 'Block Subject',
-        de: 'Proband:in Sperren'
     },
     {
         en: 'Block Until',
@@ -893,10 +613,6 @@ var maps = [
     {
         en: 'Remove Old Reservation',
         de: 'Alte Reservierung Entfernen'
-    },
-    {
-        en: 'Reschedule Appointment',
-        de: 'Termin Verschieben'
     },
     {
         internal: '_followUpExpSubjectOp_none',
@@ -924,10 +640,6 @@ var maps = [
     {
         en: 'Remove Subject from Appointment',
         de: 'Proband:in aus Termin entfernen'
-    },
-    {
-        en: 'No unprocessed appointments found.',
-        de: 'Keine offenen Nachbereitungen gefunden.'
     },
     {
         en: 'New Record',
@@ -982,14 +694,6 @@ var maps = [
         de: 'Zurück zur Liste'
     },
     {
-        en: 'Helper Table',
-        de: 'Hilfstabelle'
-    },
-    {
-        en: 'Edit Helper Table',
-        de: 'Hilfstabelle Bearbeiten'
-    },
-    {
         en: 'Hide',
         de: 'Ausblenden'
     },
@@ -998,60 +702,8 @@ var maps = [
         de: 'Einblenden'
     },
     {
-        en: 'Delete Helper Table',
-        de: 'Hilfstabelle Löschen'
-    },
-    {
-        en: 'There are still records in this helper table!',
-        de: 'Es existieren noch Einträge in dieser Hilfstabelle!'
-    },
-    {
-        en: 'Helper table is referenced by record type fields!',
-        de: 'Hilfstabelle wird von Feldern in Datensatztypen referenziert!'
-    },
-    {
         en: 'Fields',
         de: 'Felder'
-    },
-    {
-        en: 'Helper Table Deleted',
-        de: 'Hilfstabelle Gelöscht'
-    },
-    {
-        en: 'Helper table deleted succcessfully.',
-        de: 'Hilfstabelle wurde erfolgreich gelöscht.'
-    },
-    {
-        en: 'Edit Helper Table Item',
-        de: 'Hilfstabellen-Eintrag Bearbeiten'
-    },
-    {
-        en: 'Delete Helper Table Item',
-        de: 'Hilfstabellen-Eintrag Löschen'
-    },
-    {
-        en: 'Helper Table Item',
-        de: 'Hilfstabellen-Eintrag'
-    },
-    {
-        en: 'Helper table item is referenced by other records!',
-        de: 'Hilfstabellen-Eintrag wird von anderen Datensätzen referenziert!'
-    },
-    {
-        en: 'Helper table item deleted succcessfully.',
-        de: 'Hilfstabellen-Entrag wurde erfolgreich gelöscht.'
-    },
-    {
-        en: 'Helper Table Item Deleted',
-        de: 'Hilfstabellen-Eintrag Gelöscht'
-    },
-    {
-        en: 'New Helper Table',
-        de: 'Neue Hilfstabelle'
-    },
-    {
-        en: 'New Helper Table Item',
-        de: 'Neuer Hilfstabellen-Eintrag'
     },
     {
         en: 'Firstname',
@@ -1090,10 +742,6 @@ var maps = [
         de: 'Mitarbeiter:innen-Details'
     },
     {
-        en: 'Past Appointments',
-        de: 'Vergangene Termine'
-    },
-    {
         en: 'Generate Automatically',
         de: 'Automatisch Generieren'
     },
@@ -1112,14 +760,6 @@ var maps = [
     {
         en: 'Change Password',
         de: 'Passwort Ändern'
-    },
-    {
-        en: 'No past appointments found.',
-        de: 'Keine vergangenen Termine gefunden.'
-    },
-    {
-        en: 'In theese Studies',
-        de: 'In diesen Studien'
     },
     {
         en: 'Hidden Record',
@@ -1142,14 +782,6 @@ var maps = [
         de: 'Forschungsgruppe Bearbeiten'
     },
     {
-        en: 'New Location',
-        de: 'Neue Location'
-    },
-    {
-        en: 'Appointments Not on',
-        de: 'Neue Forschungsgruppe'
-    },
-    {
         en: 'Reservable From',
         de: 'Reservierbar Von'
     },
@@ -1166,18 +798,6 @@ var maps = [
         de: 'Wochentage'
     },
     {
-        en: 'Location Details',
-        de: 'Location-Details'
-    },
-    {
-        en: 'Edit Location',
-        de: 'Location Bearbeiten'
-    },
-    {
-        en: 'Hide Location',
-        de: 'Location Ausblenden'
-    },
-    {
         en: 'There are still ${count} subjects in this location!',
         de: 'Es sind noch ${count} Proband:innen in dieser Location!'
     },
@@ -1188,46 +808,6 @@ var maps = [
     {
         en: 'Detach subjects from this location (e.g. for kindergardens)',
         de: 'Proband:innen aus dieser Location herausnehmen (z.B. bei Kindergärten)'
-    },
-    {
-        en: 'Delete Location',
-        de: 'Location Löschen'
-    },
-    {
-        en: 'Location is referenced by other records!',
-        de: 'Location wird von anderen Datensätzen referenziert!'
-    },
-    {
-        en: 'Location Deleted',
-        de: 'Location Gelöscht'
-    },
-    {
-        en: 'Location was deleted successfully!',
-        de: 'Location erfolgreich gelöscht!'
-    },
-    {
-        en: 'New Subject',
-        de: 'Neue Proband:in'
-    },
-    {
-        en: 'Edit Subject',
-        de: 'Proband:in Bearbeiten'
-    },
-    {
-        en: 'Delete Subject',
-        de: 'Proband:in Löschen'
-    },
-    {
-        en: 'Subject Deleted',
-        de: 'Proband:in Gelöscht'
-    },
-    {
-        en: 'Subject was deleted successfully!',
-        de: 'Proband:in erfolgreich gelöscht!'
-    },
-    {
-        en: 'Subject is referenced by other records!',
-        de: 'Proband:in wird von anderen Datensätzen referenziert!'
     },
     {
         en: 'Online ID Code',
@@ -1266,18 +846,6 @@ var maps = [
         de: 'Termin für Proband:in'
     },
     {
-        en: 'Add to Appointment',
-        de: 'In Termin Eintragen'
-    },
-    {
-        en: 'Possible Studies',
-        de: 'Mögliche Studien'
-    },
-    {
-        en: 'No possible studies found.',
-        de: 'Keine möglichen Studien gefunden.'
-    },
-    {
         en: 'Please select study and appointment type.',
         de: 'Bitte Studie und Termin-Typ wählen.'
     },
@@ -1302,20 +870,12 @@ var maps = [
         de: 'Auswahlbedingungen'
     },
     {
-        en: 'Lab Workflow Settings',
-        de: 'Ablauf-Einstellungen'
-    },
-    {
         en: 'General',
         de: 'Allgemein'
     },
     {
         en: 'Teams',
         de: 'Teams'
-    },
-    {
-        en: 'Study Details',
-        de: 'Studien-Details'
     },
     {
         en: 'Scientists',
@@ -1326,18 +886,6 @@ var maps = [
         de: 'Ausgeblendet'
     },
     {
-        en: 'Delete Study',
-        de: 'Studie Löschen'
-    },
-    {
-        en: 'Study is referenced by other records!',
-        de: 'Studie wird von anderen Datensätzen referenziert!'
-    },
-    {
-        en: 'Study was deleted successfully!',
-        de: 'Studie wurde erfolgreich gelöscht!'
-    },
-    {
         en: 'There exist study participations!',
         de: 'Es existieren Studienteilnahmen!'
     },
@@ -1346,32 +894,8 @@ var maps = [
         de: 'Allgemeine Bedingungen'
     },
     {
-        en: 'Enabled Subject Types',
-        de: 'Zugeordnete Proband:innentypen'
-    },
-    {
-        en: 'No other studies are excluded',
-        de: 'Keine anderen Studien ausgeschlossen'
-    },
-    {
-        en: 'Excluded Studies',
-        de: 'Studien-Ausschluss'
-    },
-    {
         en: 'No subject types with selection settings.',
         de: 'Keine Proband:innentypen mit Auswahlbedingungen.'
-    },
-    {
-        en: 'Study Type',
-        de: 'Studien-Typ'
-    },
-    {
-        en: 'Subject Type',
-        de: 'Proband:innen-Typ'
-    },
-    {
-        en: 'Add Subject Type',
-        de: 'Proband:innen-Typ hinzufügen'
     },
     {
         en: 'Add Age Range',
@@ -1411,36 +935,16 @@ var maps = [
         de: 'Dieses Altersfenster wirklich löschen?'
     },
     {
-        en: 'Delete Subject Type',
-        de: 'Proband:innen-Typ Löschen'
-    },
-    {
         en: 'Really delete this subject type from the study?',
         de: 'Wirklich diesen Proband:innen-Typ aus dieser Studie löschen?'
     },
     {
-        en: 'Please add at least one lab workflow.',
-        de: 'Bitte mindestens einen Ablauf hinzufügen.'
-    },
-    {
-        en: 'Lab Workflow Type',
-        de: 'Ablauf-Typ'
-    },
-    {
-        en: 'Add Lab Workflow',
-        de: 'Ablauf hinzufügen'
-    },
-    {
         en: 'Please add settings for at least one subject type.',
-        de: 'Bitte Einstellungen für mndestens einen Proband:innen-Typ hinzufügen.'
+        de: 'Bitte Einstellungen für mindestens einen Proband:innen-Typ hinzufügen.'
     },
     {
         en: 'Add Settings',
         de: 'Einstellungen hinzufügen'
-    },
-    {
-        en: 'Lab Workflow',
-        de: 'Ablauf'
     },
     {
         en: 'Settings',
@@ -1459,24 +963,8 @@ var maps = [
         de: 'Einstellungen bearbeiten'
     },
     {
-        en: 'Appointments In',
-        de: 'Termine In'
-    },
-    {
         en: 'Delete Settings',
         de: 'Einstellungen löschen'
-    },
-    {
-        en: 'Delete Lab Workflow',
-        de: 'Ablauf löschen'
-    },
-    {
-        en: 'Really delete this lab workflow?',
-        de: 'Diesen Ablauf wirklich löschen?'
-    },
-    {
-        en: 'Really delete theese lab workflow settings?',
-        de: 'Diese Ablauf-Einstellung wirklich löschen?'
     },
     {
         en: 'There are still appointments with this lab workflow!',
@@ -1485,14 +973,6 @@ var maps = [
     {
         en: 'There are still appointments with this lab workflow and subject type!',
         de: 'Es gibt noch Termine mit diesem Ablauf und Proband:innen-Typ!'
-    },
-    {
-        en: '${count} upcoming appointments',
-        de: '${count} Termine in der Zukunft'
-    },
-    {
-        en: '${count} unprocessed appointments',
-        de: '${count} Termine die nicht nachbereitet wurden'
     },
     {
         en: 'New Team',
@@ -1566,36 +1046,6 @@ var maps = [
         de: 'Berechtigung'
     },
     {
-        internal: '_address_street',
-        en: 'Street',
-        de: 'Straße'
-    },
-    {
-        internal: '_address_housenumber',
-        en: 'Number',
-        de: 'Nummer'
-    },
-    {
-        internal: '_address_affix',
-        en: 'Affix',
-        de: 'Zusatz'
-    },
-    {
-        internal: '_address_postcode',
-        en: 'Postcode',
-        de: 'PLZ'
-    },
-    {
-        internal: '_address_city',
-        en: 'City',
-        de: 'Ort'
-    },
-    {
-        internal: '_address_country',
-        en: 'Country',
-        de: 'Land'
-    },
-    {
         internal: '_email_is_primary',
         en: 'Primary Address',
         de: 'Primäre Adresse'
@@ -1603,41 +1053,6 @@ var maps = [
     {
         en: 'E-Mail',
         de: 'E-Mail'
-    },
-    {
-        internal: '_phone_number',
-        en: 'Number',
-        de: 'Nummer'
-    },
-    {
-        internal: '_phone_type_business',
-        en: 'Business',
-        de: 'Geschäftlich'
-    },
-    {
-        internal: '_phone_type_private',
-        en: 'Personal',
-        de: 'Privat'
-    },
-    {
-        internal: '_phone_type_mobile',
-        en: 'Mobile',
-        de: 'Mobil'
-    },
-    {
-        internal: '_phone_type_fax',
-        en: 'Fax',
-        de: 'Fax'
-    },
-    {
-        internal: '_phone_type_mother',
-        en: 'Phone Mother',
-        de: 'Tel. Mutter'
-    },
-    {
-        internal: '_phone_type_father',
-        en: 'Phone Father',
-        de: 'Tel. Vater'
     },
     {
         en: 'System Role',
@@ -1654,50 +1069,6 @@ var maps = [
         de: 'Erlaubnis'
     },
     {
-        internal: '_record_picker_placeholder',
-        en: 'Select Record',
-        de: 'Datensatz Auswählen'
-    },
-    {
-        internal: '_record_picker_modal_title',
-        en: 'Select Record',
-        de: 'Datensatz Auswählen'
-    },
-    {
-        internal: '_record_picker_change_button',
-        en: 'Change Value',
-        de: 'Wert Ändern'
-    },
-    {
-        internal: '_record_picker_reset_button',
-        en: 'Reset',
-        de: 'Zurücksetzen',
-    },
-    {
-        internal: '_form_array_moveup_button',
-        en: 'Move Up',
-        de: 'Nach Oben',
-    },
-    {
-        internal: '_form_array_movedown_button',
-        en: 'Move Down',
-        de: 'Nach Unten',
-    },
-    {
-        internal: '_form_array_remove_button',
-        en: 'Remove',
-        de: 'Entfernen',
-    },
-    {
-        internal: '_form_array_add_button',
-        en: 'New Item',
-        de: 'Neuer Eintrag',
-    },
-    {
-        en: 'Advanced Subject Search',
-        de: 'Erweiterte Proband:innen-Suche',
-    },
-    {
         internal: '_extended_search_filters_tab',
         en: 'Search Conditions',
         de: 'Suchbedingungen',
@@ -1710,7 +1081,7 @@ var maps = [
     {
         internal: '_extended_search_results_tab',
         en: 'Result List',
-        de: 'Regebnisliste',
+        de: 'Ergebnisliste',
     },
     {
         en: 'Internal ID',
@@ -1813,193 +1184,10 @@ var maps = [
         de: 'Absteigend'
     },
     {
-        en: 'Advanced Study Search',
-        de: 'Erweiterte Studien-Suche',
-    },
-    {
         en: 'Column',
         de: 'Spalte'
     },
-    {
-        en: 'Advanced Location Search',
-        de: 'Erweiterte Location-Suche',
-    },
 
-    {
-        en: 'Can Reserve Rooms',
-        de: 'Kann Räumlichkeiten Reservieren',
-    },
-    {
-        en: 'Can Select Subjects for Appointments',
-        de: 'Kann Proband:innen für Termine Auswählen',
-    },
-    {
-        en: 'Can Confirm Appointments',
-        de: 'Kann Termine Bestätigen',
-    },
-    {
-        en: 'Can View Appointment Calendar',
-        de: 'Kann Terminkalender Einsehen',
-    },
-    {
-        en: 'Can Move and Cancel Appointments',
-        de: 'Kann Termine Verschieben und Absagen',
-    },
-    {
-        en: 'Can Change Experimenter Teams',
-        de: 'Kann Experimenter:innen-Teams Ändern',
-    },
-    {
-        en: 'Can Postprocess Appointments',
-        de: 'Kann Termine Nachbereiten',
-    },
-
-    {
-        en: 'Can Schedule Experimenter Teams',
-        de: 'Kann Experimenter:innen-Teams Planen',
-    },
-    {
-        en: 'Can Change Study of Existing Appointments',
-        de: 'Kann Studie von Existierenden Terminen Ändern',
-    },
-    {
-        en: 'Can Remove Subjects from Existing Appointments',
-        de: 'Kann Proband:innen aus Existierenden Terminen Entfernen',
-    },
-    {
-        en: 'Can Carry Out Only Surveys',
-        de: 'Kann Online-Umfragen Durchführen',
-    },
-
-    {
-        en: 'Can View Locations (Kigas, Rooms, etc.)',
-        de: 'Kann Locations Einsehen (Kigas, Räume, etc.)',
-    },
-    {
-        en: 'Can Edit Locations (Kigas, Rooms, etc.)',
-        de: 'Kann Locations Bearbeiten (Kigas, Räume, etc.)',
-    },
-    {
-        en: 'Can Delete Locations (Kigas, Rooms, etc.)',
-        de: 'Kann Locations Löschen (Kigas, Räume, etc.)',
-    },
-    {
-        en: 'Can View External Persons (e.g. Doctors)',
-        de: 'Kann Externe Personen Einsehen (e.g. Ärzte)',
-    },
-    {
-        en: 'Can Edit External Persons (e.g. Doctors)',
-        de: 'Kann Externe Personen Bearbeiten (e.g. Ärzte)',
-    },
-    {
-        en: 'Can Delete External Persons (e.g. Doctors)',
-        de: 'Kann Externe Personen Löschen (e.g. Ärzte)',
-    },
-    {
-        en: 'Can View External Organizations (e.g. Kiga Umbrella Orgs)',
-        de: 'Kann Externe Organisationen Einsehen (e.g. Kiga-Träger)',
-    },
-    {
-        en: 'Can Edit External Organizations (e.g. Kiga Umbrella Orgs)',
-        de: 'Kann Externe Organisationen Bearbeiten (e.g. Kiga-Träger)',
-    },
-    {
-        en: 'Can Delete External Organizations (e.g. Kiga Umbrella Orgs)',
-        de: 'Kann Externe Organisationen Löschen (e.g. Kiga-Träger)',
-    },
-    {
-        en: 'Can View Study Topics',
-        de: 'Kann Themengebiete Einsehen',
-    },
-    {
-        en: 'Can Edit Study Topics',
-        de: 'Kann Themengebiete Bearbeiten',
-    },
-    {
-        en: 'Can Delete Study Topics',
-        de: 'Kann Themengebiete Löschen',
-    },
-    {
-        en: 'Can View Helper Tables',
-        de: 'Kann Hilfstabellen Einsehen',
-    },
-    {
-        en: 'Can Edit Helper Tables',
-        de: 'Kann Hilfstabellen Bearbeiten',
-    },
-    {
-        en: 'Can Delete Helper Tables',
-        de: 'Kann Hilfstabellen Löschen',
-    },
-
-    {
-        en: 'Can View Staff Members (i.e. User Accounts)',
-        de: 'Kann Mitarbeiter:innen Einsehen (d.h. Benutzer-Accounts)',
-    },
-    {
-        en: 'Can Edit Staff Members (i.e. User Accounts)',
-        de: 'Kann Mitarbeiter:innen Bearbeiten (d.h. Benutzer-Accounts)',
-    },
-    {
-        en: 'Can Grant and Revoke Staff Members Log-In Permission',
-        de: 'Kann Mitarbeiter:innen Login-Erlaubnis Gewähren und Entziehen'
-    },
-    {
-        en: 'Can Set Password of Other Staff Members',
-        de: 'Kann Passwort Anderer Mitarbeiter:innen Neusetzen'
-    },
-    {
-        en: 'Can View Studies',
-        de: 'Kann Studien Einsehen',
-    },
-    {
-        en: 'Can Edit Studies',
-        de: 'Kann Studien Bearbeiten',
-    },
-    {
-        en: 'Can Delete Studies',
-        de: 'Kann Studien Löschen',
-    },
-    {
-        en: 'Can View Subjects',
-        de: 'Kann Proband:innen Einsehen',
-    },
-    {
-        en: 'Can Edit Subjects',
-        de: 'Kann Proband:innen Bearbeiten',
-    },
-    {
-        en: 'Can Delete Subjects',
-        de: 'Kann Proband:innen Löschen',
-    },
-    {
-        en: 'Can View Study Participation',
-        de: 'Kann Studienteilnahme Einsehen',
-    },
-    {
-        en: 'Can Add Study Participations Manually',
-        de: 'Kann Studienteilnahmen Manuell Hinzufügen',
-    },
-    {
-        en: 'Can Reserve Rooms/Teams Within the Next 3 Days',
-        de: 'Kann Räume/Teams Innerhalb der Nächsten 3 Tage Reservieren',
-    },
-    {
-        en: 'Can Make Appointments Within the Next 3 Days',
-        de: 'Kann Termine Innerhalb der Nächsten 3 Tage Machen',
-    },
-    {
-        en: 'Can Use Advanced Search',
-        de: 'Kann Erweiterte Suche Benutzen',
-    },
-    {
-        en: 'Can Use CSV Export',
-        de: 'Kann CSV-Export Benutzen',
-    },
-    {
-        en: 'Can View Receptionist Calendar',
-        de: 'Kann Rezeptionskalender einsehen',
-    },
     {
         en: 'New System Role',
         de: 'Neue System-Rolle',
@@ -2050,7 +1238,7 @@ var maps = [
     {
         internal: '_400_bad_request',
         en: 'Invalid Values',
-        de: 'Fehlerhafete Eingaben'
+        de: 'Fehlerhafte Eingaben'
     },
     {
         internal: '_XXX_system-error',
@@ -2065,11 +1253,203 @@ var maps = [
         en: 'The data sent contains invalid values.',
         de: 'Die abgesendeten Daten enthalten fehlerhafte Eingaben.'
     },
+
+    //////////////
+    
+
+
+    {
+        en: 'Missing',
+        de: 'Fehlt'
+    },
+    {
+        en: 'Not Set',
+        de: 'Nicht Festgelegt'
+    },
+    {
+        en: 'Format',
+        de: 'Format'
+    },
+    {
+        en: '(new)',
+        de: '(neu)'
+    },
+    {
+        en: '(edited)',
+        de: '(bearbeitet)'
+    },
+    {
+        en: 'Restore',
+        de: 'Wiederherstellen'
+    },
+    {
+        en: 'Default',
+        de: 'Standard'
+    },
+    {
+        en: 'Minimum Number',
+        de: 'Mindestanzahl'
+    },
+    {
+        en: 'Optional',
+        de: 'Optional'
+    },
+
+
+    {
+        en: 'Invalid authentication data!',
+        de: 'Ungültige Anmeldedaten!'
+    },
+    {
+        en: 'Password',
+        de: 'Passwort'
+    },
+    {
+        en: 'Sign In',
+        de: 'Anmelden'
+    },
+    {
+        en: 'PsyDB Sign In',
+        de: 'PsyDB Anmeldung'
+    },
+    {
+        en: 'Language',
+        de: 'Sprache'
+    },
+    {
+        en: 'Participation Permissions',
+        de: 'Teilnahme-Erlaubnis',
+    },
+    {
+        en: 'Enable Lab Teams',
+        de: 'Mit Teams',
+    },
+    {
+        en: 'Reservation Type',
+        de: 'Reservierungs-Typ',
+    },
+    {
+        internal: '_reservationType_inhouse',
+        en: 'Inhouse Appointments',
+        de: 'Interne Termine',
+    },
+    {
+        internal: '_reservationType_away-team',
+        en: 'External Appointments',
+        de: 'Externe Termine',
+    },
+    {
+        internal: '_reservationType_no-reservation',
+        en: 'No Reservation',
+        de: 'Keine Reservierung',
+    },
+    {
+        en: 'Display Name (DE)',
+        de: 'Anzeigename (DE)',
+    },
+    {
+        en: 'Language Settings',
+        de: 'Spracheinstellungen',
+    },
+    {
+        en: 'Date/Time Format',
+        de: 'Datums-/Zeitformat',
+    },
+    {
+        en: 'No age frames were defined for this study.',
+        de: 'Es sind keine Altersfenster für diese Studie definiert.',
+    },
+    {
+        en: 'No further Conditions',
+        de: 'Keine weiteren Bedingungen',
+    },
+    
+    // WKPRC
+    
+    {
+        en: 'WKPRC',
+        de: 'WKPRC'
+    },
+    {
+        en: 'Group',
+        de: 'Gruppe'
+    },
+    {
+        internal: '_wkprc_experimentName',
+        en: 'Experiment Name',
+        de: 'Test-Bezeichnung'
+    },
+    {
+        internal: '_wkprc_roomOrEnclosure',
+        en: 'Room/Enclosure',
+        de: 'Raum/Gehege'
+    },
+    
+    // Field sites
+
+    {
+        en: 'Field Sites',
+        de: 'Field-Sites'
+    },
+
+    // audit
+    {
+        en: 'Audit',
+        de: 'Audit'
+    },
+
+    ///////////////////
+    {
+        en: 'Warning',
+        de: 'Warnung'
+    },
+    {
+        en: 'Could not send email!',
+        de: 'E-Mail konnte nicht versand werden!'
+    },
+    {
+        en: 'Mail-Server response is:',
+        de: 'Reponse des Mail-Servers ist:'
+    },
+
+
+    /////////////////
+    
+    {
+        en: 'Study Exclusion',
+        de: 'Studienausschluss',
+    },
+    {
+        en: 'All Studies',
+        de: 'Alle Studien',
+    },
+    {
+        en: 'Excluded',
+        de: 'Ausgeschlossen',
+    },
+    {
+        en: 'No Topic Constraints',
+        de: 'Keine Themen-Enschränkung',
+    },
+    {
+        en: 'Topics of this Study',
+        de: 'Themen der Studie',
+    },
+    {
+        en: 'Name/Shorthand',
+        de: 'Name/Kürzel',
+    },
+    {
+        en: 'No Studies with theese criteria.',
+        de: 'Keine Studien für diese Kriterien.',
+    },
+    {
+        en: 'The current study is excluded automatically.',
+        de: 'Die aktuelle Studie wird automatisch mit ausgeschlossen.',
+    },
+    {
+        en: 'No other studies excluded.',
+        de: 'Keine anderen ausgeschlossenen Studien.',
+    },
+    
 ]
-
-
-console.log('en,de,internal');
-for (var it of maps) {
-    var { de, en, internal = '' } = it;
-    console.log(`'${de}','${en}','${internal}'`);
-}

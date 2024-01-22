@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import {
     Icons,
     Button,
@@ -17,6 +18,8 @@ export const QuickSearch = (ps) => {
         onSubmit
     } = ps;
 
+    var translate = useUITranslation();
+
     return (
         <div className={ className }>
             <DefaultForm
@@ -28,7 +31,7 @@ export const QuickSearch = (ps) => {
                     return (
                         <>
                             <QuickSearchFields.SaneString
-                                label='Name/Kürzel'
+                                label={ translate('Name/Shorthand') }
                                 dataXPath='$.nameOrShorthand'
                                 groupClassName='flex-grow'
                             />
@@ -36,7 +39,7 @@ export const QuickSearch = (ps) => {
                                 className=''
                                 type='submit'
                             >
-                                Suchen
+                                { translate('Search') }
                             </Button>
                             <Button
                                 className='ml-2'
