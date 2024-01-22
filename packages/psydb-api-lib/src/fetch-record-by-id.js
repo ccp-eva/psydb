@@ -8,6 +8,7 @@ var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 var convertPointerToPath = require('./convert-pointer-to-path');
 var SystemPermissionStages = require('./fetch-record-helpers/system-permission-stages');
 var createRecordLabel = require('./create-record-label');
+var fetchCRTSettings = require('./fetch-crt-settings');
 
 var OmitRemovedCustomFieldsStage = ({
     removedCustomFields
@@ -44,7 +45,10 @@ var fetchRecordById = async ({
     language,
     locale
 }) => {
-    var { hasSubChannels } = allSchemaCreators[collectionName];
+    var {
+        hasSubChannels,
+        hasCustomTypes
+    } = allSchemaCreators[collectionName];
 
     var preprocessingStages = (
         hasSubChannels
@@ -71,6 +75,40 @@ var fetchRecordById = async ({
             }},
         ]
     );
+
+    var { type } = await (
+        db.collection(collectionName).findOne(
+            { _id: id }, { projection: { type: true }}
+        )
+    );
+
+    if (hasCustomTypes) {
+        // FIXME
+        var crtSettings = await fetchCRTSettings({
+            db, collectionName, recordType: type, wrap: true
+        });
+
+        if (crtSettings) {
+            if (
+                (crtSettings && permissions)
+                && !permissions.hasFlag('canAccessSensitiveFields')
+            ) {
+                removedCustomFields = [
+                    ...removedCustomFields,
+                    ...crtSettings.findCustomFields({
+                        'props.isSensitive': true
+                    })
+                ];
+                if (crtSettings.getRaw().commentFieldIsSensitive) {
+                    removedCustomFields = [
+                        ...removedCustomFields,
+                        { pointer: '/scientific/state/comment' }
+                    ];
+                }
+            }
+        }
+        //
+    }
 
     var resultSet = await (
         db.collection(collectionName).aggregate([
