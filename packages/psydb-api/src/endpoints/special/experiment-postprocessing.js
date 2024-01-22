@@ -55,6 +55,8 @@ var experimentPostprocessing = async (context, next) => {
         db,
         permissions,
         request,
+        language,
+        locale,
     } = context;
 
     var { timezone } = request.headers;
@@ -127,6 +129,8 @@ var experimentPostprocessing = async (context, next) => {
         collectionName: 'experiment',
         records: experimentRecords,
         timezone,
+        language,
+        locale,
     })
 
     var studiesById = keyBy({
