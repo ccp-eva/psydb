@@ -1411,4 +1411,45 @@ module.exports = [
         en: 'Mail-Server response is:',
         de: 'Reponse des Mail-Servers ist:'
     },
+
+
+    /////////////////
+    
+    {
+        en: 'Study Exclusion',
+        de: 'Studienausschluss',
+    },
+    {
+        en: 'All Studies',
+        de: 'Alle Studien',
+    },
+    {
+        en: 'Excluded',
+        de: 'Ausgeschlossen',
+    },
+    {
+        en: 'No Topic Constraints',
+        de: 'Keine Themen-Enschränkung',
+    },
+    {
+        en: 'Topics of this Study',
+        de: 'Themen der Studie',
+    },
+    {
+        en: 'Name/Shorthand',
+        de: 'Name/Kürzel',
+    },
+    {
+        en: 'No Studies with theese criteria.',
+        de: 'Keine Studien für diese Kriterien.',
+    },
+    {
+        en: 'The current study is excluded automatically.',
+        de: 'Die aktuelle Studie wird automatisch mit ausgeschlossen.',
+    },
+    {
+        en: 'No other studies excluded.',
+        de: 'Keine anderen ausgeschlossenen Studien.',
+    },
+    
 ]

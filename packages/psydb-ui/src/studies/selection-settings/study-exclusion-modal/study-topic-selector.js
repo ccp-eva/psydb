@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator, Icons } from '@mpieva/psydb-ui-layout';
 import { StudyTopic } from '@mpieva/psydb-ui-lib';
@@ -10,6 +11,9 @@ export const StudyTopicSelector = (ps) => {
         onSelect,
         onReset,
     } = ps;
+    
+    var translate = useUITranslation();
+
     var [ quickSelect, setQuickSelect ] = useState('study-topics');
     var [ query, updateQuery ] = useState({ name: undefined });
 
@@ -46,7 +50,7 @@ export const StudyTopicSelector = (ps) => {
                         onReset();
                     }
                 }) }>
-                    Keine Themen-Einschränkung
+                    { translate('No Topic Constraints') }
                 </QuickSelect>
                 
                 <QuickSelect { ...({
@@ -56,7 +60,7 @@ export const StudyTopicSelector = (ps) => {
                         onReset(studyTopicIds);
                     }
                 }) }>
-                    Themen der Studie
+                    { translate('Topics of this Study') }
                 </QuickSelect>
             </div>
             <div
