@@ -22,12 +22,9 @@ import {
 } from '@mpieva/psydb-ui-layout';
 
 import {
-    EditModal
-} from '@mpieva/psydb-ui-lib/src/participation/for-study';
-
-import {
+    EditModal,
     RemoveModal
-} from '@mpieva/psydb-ui-lib/src/participation';
+} from '@mpieva/psydb-ui-lib/src/participation/for-study';
 
 import TimestampAndMaybeAge from './timestamp-and-maybe-age';
 

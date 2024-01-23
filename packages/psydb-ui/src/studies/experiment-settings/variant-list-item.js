@@ -34,7 +34,7 @@ const VariantListItem = (ps) => {
     );
 
     var panelProps = {
-        label: `${translate('Lab Workflow')} ${index + 1} - ${variantsEnum.mapping[variantType]}`,
+        label: `${translate('Lab Workflow')} ${index + 1} - ${translate(variantsEnum.mapping[variantType])}`,
         addButtonLabel: '+ ' + translate('Settings'),
         showAddButton: !!onAddSetting,
         disableAddButton: hasNoSubjectTypesLeft,

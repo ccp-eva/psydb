@@ -1,6 +1,6 @@
 import React from 'react';
-import isSubset from 'is-subset';
-import keyBy from '@mpieva/psydb-common-lib/src/key-by';
+import { keys, keyBy } from '@mpieva/psydb-core-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useSend, useFetch } from '@mpieva/psydb-ui-hooks';
 import { Button, LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
@@ -24,6 +24,8 @@ export const ApestudiesWKPRCDefaultSetting = (ps) => {
         allowedSubjectTypes,
         onSuccessfulUpdate
     } = ps;
+
+    var translate = useUITranslation();
 
     var settingId, settingState;
     if (settingRecord) {
@@ -110,20 +112,20 @@ export const ApestudiesWKPRCDefaultSetting = (ps) => {
                         <>
                             <Fields.GenericEnum { ...({
                                 dataXPath: '$.subjectTypeKey',
-                                label: 'Proband:innentyp',
+                                label: translate('Subject Type'),
                                 required: true,
                                 options: allowedSubjectTypes
                             })} />
 
                             <Fields.LocationTypeKeyList { ...({
                                 dataXPath: '$.locationTypeKeys',
-                                label: 'Locations',
-                                allowedTypes: Object.keys(allowedLocationTypes),
+                                label: translate('Locations'),
+                                allowedTypes: keys(allowedLocationTypes),
                                 disabled: !selectedType,
                             })} />
 
                             <Button type='submit'>
-                                Speichern
+                                { translate('Save') }
                             </Button>
                         </>
                     );

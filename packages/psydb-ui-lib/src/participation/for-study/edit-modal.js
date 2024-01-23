@@ -57,7 +57,7 @@ const ParticipationEditModalBody = (ps) => {
 }
 
 const ParticipationEditModal = WithDefaultModal({
-    title: 'Teilnahme bearbeiten',
+    title: 'Edit Participation',
     size: 'lg',
 
     Body: ParticipationEditModalBody

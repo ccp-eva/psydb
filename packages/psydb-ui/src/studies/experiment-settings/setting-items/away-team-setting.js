@@ -3,7 +3,6 @@ import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { Pair } from '@mpieva/psydb-ui-layout';
 import { DefaultSettingWrapper } from './utils';
 
-
 export const AwayTeamSetting = (ps) => {
     var {
         settingRecord,
@@ -29,7 +28,7 @@ export const AwayTeamSetting = (ps) => {
             var pointer = (
                 `/scientific/state/custom/${key}`
             );
-            return { ...acc, [pointer]: displayName };
+            return { ...acc, [pointer]: translate.fieldDefinition(field) };
         }, {})
     );
 

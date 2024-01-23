@@ -1,9 +1,6 @@
 import React from 'react';
 
-import {
-    subjectFieldRequirementChecks as checksEnum,
-} from '@mpieva/psydb-schema-enums';
-
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { Pair } from '@mpieva/psydb-ui-layout';
 import { DefaultSettingWrapper } from './utils';
 
@@ -20,17 +17,16 @@ export const ApestudiesWKPRCDefaultSetting = (ps) => {
 
     var { relatedCustomRecordTypes } = settingRelated;
 
+    var translate = useUITranslation();
+
     return (
         <DefaultSettingWrapper { ...ps }>
-            <Pair label='Locations'>
-                { locationTypeKeys.map(it => {
-                    return (
-                        relatedCustomRecordTypes
-                        .location[it].state.label
-                    );
-                }).join(', ')}
+            <Pair label={ translate('Locations') }>
+                { locationTypeKeys.map(it => (
+                    translate.crt(relatedCustomRecordTypes.location[it])
+                )).join(', ')}
                 { locationTypeKeys.length < 1 && (
-                    <span>Keine</span>
+                    <span>{ translate('None') }</span>
                 )}
             </Pair>
         </DefaultSettingWrapper>
