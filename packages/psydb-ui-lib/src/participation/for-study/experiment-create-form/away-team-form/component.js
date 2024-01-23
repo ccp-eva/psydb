@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUILanguage, useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetchAll } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator, Alert } from '@mpieva/psydb-ui-layout';
 
@@ -6,6 +7,7 @@ import { DefaultForm } from '../../../../formik';
 import * as Fields from '../form-fields/fields';
 
 import {
+    MultiSubjectHint,
     withSubjectTypeSelect,
     Footer
 } from '../shared';
@@ -72,8 +74,11 @@ const FormBody = (ps) => {
     var { values } = formik;
     var { locationId } = values['$'];
 
+    var [ language ] = useUILanguage();
+    var translate = useUITranslation();
+
     var subjectFieldsBag = {
-        label: 'Proband:innen',
+        label: translate('Subjects'),
         dataXPath: '$.subjectData',
         subjectType,
         enableFollowUpExperiments,
@@ -82,10 +87,15 @@ const FormBody = (ps) => {
         locationId,
     }
 
+    var locationFieldLabel = (
+        locationFieldDef.displayNameI18N[language]
+        || locationFieldDef.displayName
+    )
+
     return (
         <>
             <Fields.ForeignId
-                label={ locationFieldDef.displayName }
+                label={ locationFieldLabel }
                 dataXPath='$.locationId'
                 collection={ locationFieldDef.props.collection }
                 recordType={ locationFieldDef.props.recordType }
@@ -102,7 +112,9 @@ const FormBody = (ps) => {
                 </>
             ) : (
                 <Alert variant='info'>
-                    Bitte zuerst { locationFieldDef.displayName } auswählen
+                    { translate('Please select ${that}.', {
+                        that: locationFieldLabel
+                    }) }
                 </Alert>
             )}
         </>

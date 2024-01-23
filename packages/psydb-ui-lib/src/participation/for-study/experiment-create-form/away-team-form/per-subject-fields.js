@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
 import {
     withField,
@@ -16,10 +17,12 @@ const Control = (ps) => {
         locationId,
     } = ps;
 
+    var translate = useUITranslation();
+
     return (
         <div className=''>
             <Fields.ForeignId
-                label='Proband:in'
+                label={ translate('Subject') }
                 dataXPath={`${dataXPath}.subjectId`}
                 collection='subject'
                 recordType={ subjectType }
@@ -32,8 +35,10 @@ const Control = (ps) => {
             />
             { enableFollowUpExperiments && (
                 <Fields.DefaultBool
-                    dataXPath='$.excludeFromMoreExperimentsInStudy'
-                    label='Ist Letzter Termin'
+                    label={ translate('Last Appointment?') }
+                    dataXPath={
+                        `${dataXPath}.excludeFromMoreExperimentsInStudy`
+                    }
                 />
             )}
         </div>

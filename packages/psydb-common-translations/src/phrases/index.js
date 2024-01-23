@@ -1451,5 +1451,28 @@ module.exports = [
         en: 'No other studies excluded.',
         de: 'Keine anderen ausgeschlossenen Studien.',
     },
-    
+   
+
+    {
+        en: 'Hint',
+        de: 'Hinweis',
+    },
+    {
+        internal: '_participation_multi_subject_grouped_hint',
+        en: 'The selection of multiple subjects will be saved as one pair/group participation.',
+        de: 'Bei Auswahl mehrerer Proband:innen wird eine einzelne Paar-/Gruppenteilnahme hinterlegt.',
+    },
+    {
+        internal: '_participation_multi_subject_ungrouped_hint',
+        en: 'The selection of multiple subjects will be saved as multiple independed participations.',
+        de: 'Bei Auswahl mehrerer Proband:innen wird wie mehrere unabhängige Einzelteilnahmen hinterlegt.',
+    },
+    {
+        en: 'Last Survey?',
+        de: 'Letzte Umfrage?',
+    },
+    {
+        en: 'Please select ${that}.',
+        de: 'Bitte ${that} auswählen.',
+    },
 ]

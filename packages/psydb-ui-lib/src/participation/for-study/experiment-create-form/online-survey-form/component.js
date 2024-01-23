@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator, SplitPartitioned } from '@mpieva/psydb-ui-layout';
 
@@ -7,6 +8,7 @@ import * as Fields from '../form-fields/fields';
 
 import {
     withSubjectTypeSelect,
+    MultiSubjectHint,
     Footer
 } from '../shared';
 
@@ -59,19 +61,16 @@ const FormBody = (ps) => {
     var { values } = formik;
     var { subjectsAreTestedTogether } = values['$'];
 
+    var translate = useUITranslation();
+
     return (
         <>
             <SplitPartitioned partitions={[3,9]}>
                 <div />
-                <div className='text-muted'><i>
-                    <b>Hinweis:</b>
-                    {' '}
-                    die Auswal mehrerer Proand:innen wird wie mehrere,
-                    unabhängige Einzeltermine hinterlegt
-                </i></div>
+                <MultiSubjectHint isGrouped={ false } />
             </SplitPartitioned>
             <PerSubjectFields
-                label='Proband:innen'
+                label={ translate('Subjects') }
                 dataXPath='$.subjectData'
                 subjectType={ subjectType }
                 enableMove={ false }

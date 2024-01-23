@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 
-import { unique, hasOnlyOne } from '@mpieva/psydb-core-utils';
+import { only, unique, hasOnlyOne } from '@mpieva/psydb-core-utils';
 import { fixRelated } from '@mpieva/psydb-ui-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useSend } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator, FormHelpers } from '@mpieva/psydb-ui-layout';
 import * as Controls from '@mpieva/psydb-ui-form-controls';
@@ -23,6 +24,8 @@ const ExperimentCreateForm = (ps) => {
         send
     } = fromHooks(ps);
 
+    var translate = useUITranslation();
+
     if (!didFetch) {
         return <LoadingIndicator size='lg' />
     }
@@ -43,13 +46,16 @@ const ExperimentCreateForm = (ps) => {
     return (
         <>
             { showLabMethodSelect && (
-                <FormHelpers.InlineWrapper label='Ablauf-Typ'>
+                <FormHelpers.InlineWrapper
+                    label={ translate('Lab Workflow Type') }
+                >
                     <Controls.GenericEnum
                         value={ labMethodKey }
                         onChange={ setLabMethodKey }
-                        options={ enabledLabMethodKeys.reduce((acc, it) => ({
-                            ...acc, [it]: enums.labMethods.getLabel(it)
-                        }), {})}
+                        options={ translate.options(only({
+                            from: enums.labMethods.mapping,
+                            paths: enabledLabMethodKeys
+                        }))}
                     />
                 </FormHelpers.InlineWrapper>
             )}
