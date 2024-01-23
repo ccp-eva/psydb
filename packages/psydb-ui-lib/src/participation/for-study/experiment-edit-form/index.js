@@ -114,7 +114,7 @@ var fromHooks = (ps) => {
     // XXX: that wont work when no subjects or multiple subject types
     labMethodSettings = (
         labMethodSettings
-        .filter(it => subjectTypes.includes(it.state.subjectTypeKey))
+        //.filter(it => subjectTypes.includes(it.state.subjectTypeKey))
     )[0];
 
     return {

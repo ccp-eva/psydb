@@ -23,7 +23,7 @@ import FieldDataBodyCols from '../record-list/field-data-body-cols';
 import {
     EditModal,
     RemoveModal
-} from '../participation';
+} from '../participation/for-subject';
 
 import TimestampAndMaybeAge from './timestamp-and-maybe-age';
 

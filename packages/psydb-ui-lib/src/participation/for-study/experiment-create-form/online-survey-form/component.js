@@ -9,10 +9,11 @@ import * as Fields from '../form-fields/fields';
 import {
     withSubjectTypeSelect,
     MultiSubjectHint,
-    Footer
+    Footer,
 } from '../shared';
 
 import PerSubjectFields from './per-subject-fields';
+import PreselectedSubjectFields from './preselected-subject-fields';
 
 export const Component = withSubjectTypeSelect((ps) => {
     var {
@@ -78,15 +79,22 @@ const FormBody = (ps) => {
                     } />
                 </SplitPartitioned>
             )}
-            <PerSubjectFields
-                label={ translate('Subjects') }
-                dataXPath='$.subjectData'
-                subjectType={ subjectType }
-                enableMove={ false }
-                enableAdd={ !preselectedSubjectId }
-                enableRemove={ !preselectedSubjectId }
-                enableFollowUpExperiments={ enableFollowUpExperiments }
-            />
+            { preselectedSubjectId ? (
+                <PreselectedSubjectFields
+                    subjectType={ subjectType }
+                    enableFollowUpExperiments={ enableFollowUpExperiments }
+                />
+            ) : (
+                <PerSubjectFields
+                    label={ translate('Subjects') }
+                    dataXPath='$.subjectData'
+                    subjectType={ subjectType }
+                    enableMove={ false }
+                    enableAdd={ !preselectedSubjectId }
+                    enableRemove={ !preselectedSubjectId }
+                    enableFollowUpExperiments={ enableFollowUpExperiments }
+                />
+            )}
         </>
     );
 }
