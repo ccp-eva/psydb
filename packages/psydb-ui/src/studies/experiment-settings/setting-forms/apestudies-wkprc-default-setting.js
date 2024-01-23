@@ -13,7 +13,7 @@ const defaultValues = {
     locationTypeKeys: [],
 }
 
-export const ApestudiesWPKRCDefaultSetting = (ps) => {
+export const ApestudiesWKPRCDefaultSetting = (ps) => {
     var {
         op,
         studyId,

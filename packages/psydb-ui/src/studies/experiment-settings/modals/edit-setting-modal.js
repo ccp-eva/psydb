@@ -37,7 +37,10 @@ const EditSettingModalBody = (ps) => {
         'inhouse': Forms.InhouseSetting,
         'away-team': Forms.AwayTeamSetting,
         'online-video-call': Forms.OnlineVideoCallSetting,
-        'online-survey': Forms.OnlineSurveySetting
+        'online-survey': Forms.OnlineSurveySetting,
+
+        'apestudies-wkprc-default': Forms.ApestudiesWKPRCDefaultSetting,
+        'manual-only-participation': Forms.ManualOnlyParticipationSetting,
     })[variantType];
 
     return (
