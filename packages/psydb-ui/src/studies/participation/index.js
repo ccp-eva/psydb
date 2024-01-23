@@ -131,10 +131,10 @@ const StudyParticipation = (ps) => {
             
             <div className='mt-3'>
                 <div className='d-flex justify-content-between align-items-center'>
-                    { subjectTypeInfos > 1 ? (
+                    { subjectTypeInfos.length > 1 ? (
                         <TabNav
                             activeKey={ selectedSubjectType }
-                            items={ sbjectTypeInfos.map(it => ({
+                            items={ subjectTypeInfos.map(it => ({
                                 key: it.type,
                                 label: (
                                     (it.displayNameI18N || {})[language]
