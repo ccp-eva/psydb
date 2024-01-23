@@ -16,7 +16,12 @@ import ManualOnlyParticipationForm from './manual-only-participation-form';
 
 
 const ExperimentCreateForm = (ps) => {
-    var { studyId, enableTeamSelect } = ps;
+    var {
+        studyId,
+        preselectedSubjectId = undefined,
+        subjectsAreTestedTogetherOverride = undefined,
+        enableTeamSelect = false
+    } = ps;
 
     var {
         didFetch, labMethodSettings, labMethodSettingsRelated,
@@ -64,10 +69,14 @@ const ExperimentCreateForm = (ps) => {
                     useAjvAsync
                     ajvErrorInstancePathPrefix='/payload'
                     onSubmit={ send.exec }
-                    initialValues={ FormContainer.createDefaults() }
+                    initialValues={ FormContainer.createDefaults({
+                        preselectedSubjectId,
+                        subjectsAreTestedTogetherOverride,
+                    }) }
 
                     studyId={ studyId }
                     enableTeamSelect={ enableTeamSelect }
+                    preselectedSubjectId={ preselectedSubjectId }
                     labMethodSettings={ filteredLabMethodSettings }
                     related={ labMethodSettingsRelated }
                 />

@@ -1285,10 +1285,14 @@ importers:
   ../../packages/psydb-ui-form-controls:
     specifiers:
       '@mpieva/psydb-common-lib': workspace:~0.1.0-alpha
+      '@mpieva/psydb-ui-contexts': workspace:~0.1.0-alpha
+      '@mpieva/psydb-ui-hooks': workspace:~0.1.0-alpha
       '@mpieva/psydb-ui-layout': workspace:~0.1.0-alpha
       react: ~17.0.2
     devDependencies:
       '@mpieva/psydb-common-lib': link:../psydb-common-lib
+      '@mpieva/psydb-ui-contexts': link:../psydb-ui-contexts
+      '@mpieva/psydb-ui-hooks': link:../psydb-ui-hooks
       '@mpieva/psydb-ui-layout': link:../psydb-ui-layout
       react: 17.0.2
 

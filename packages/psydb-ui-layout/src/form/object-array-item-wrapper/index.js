@@ -10,16 +10,21 @@ export const ObjectArrayItemWrapper = (ps) => {
         lastIndex,
         disabled,
         children,
+
+        enableMove = true,
+        enableRemove = true,
     } = ps;
+
+    console.log(ps);
 
     var className = classnames([
         'border p-3',
         !(index === lastIndex) && 'mb-3'
     ]);
 
-    var hasRemove = true;
-    var hasMoveUp = (index > 0);
-    var hasMoveDown = (index < lastIndex);
+    var hasRemove = enableRemove;
+    var hasMoveUp = enableMove && (index > 0);
+    var hasMoveDown = enableMove && (index < lastIndex);
 
     var hasFooter = (hasRemove || hasMoveUp || hasMoveDown);
 

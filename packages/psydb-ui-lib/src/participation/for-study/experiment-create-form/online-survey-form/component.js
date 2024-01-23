@@ -21,9 +21,11 @@ export const Component = withSubjectTypeSelect((ps) => {
         related,
 
         studyId,
-        enableTeamSelect,
+        enableTeamSelect = false,
+        preselectedSubjectId = undefined,
         ...pass
     } = ps;
+    
     
     var {
         didFetch,
@@ -36,7 +38,8 @@ export const Component = withSubjectTypeSelect((ps) => {
 
     var formBodyBag = {
         subjectType,
-        enableFollowUpExperiments
+        enableFollowUpExperiments,
+        preselectedSubjectId,
     }
 
     return (
@@ -55,8 +58,10 @@ const FormBody = (ps) => {
     var {
         formik,
         subjectType,
-        enableFollowUpExperiments
+        enableFollowUpExperiments,
+        preselectedSubjectId = undefined,
     } = ps;
+    
 
     var { values } = formik;
     var { subjectsAreTestedTogether } = values['$'];
@@ -65,15 +70,21 @@ const FormBody = (ps) => {
 
     return (
         <>
-            <SplitPartitioned partitions={[3,9]}>
-                <div />
-                <MultiSubjectHint isGrouped={ false } />
-            </SplitPartitioned>
+            { !preselectedSubjectId && (
+                <SplitPartitioned partitions={[3,9]}>
+                    <div />
+                    <MultiSubjectHint isGrouped={
+                        subjectsAreTestedTogether
+                    } />
+                </SplitPartitioned>
+            )}
             <PerSubjectFields
                 label={ translate('Subjects') }
                 dataXPath='$.subjectData'
                 subjectType={ subjectType }
                 enableMove={ false }
+                enableAdd={ !preselectedSubjectId }
+                enableRemove={ !preselectedSubjectId }
                 enableFollowUpExperiments={ enableFollowUpExperiments }
             />
         </>

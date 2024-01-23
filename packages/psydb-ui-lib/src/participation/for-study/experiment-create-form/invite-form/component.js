@@ -21,6 +21,7 @@ export const Component = withSubjectTypeSelect((ps) => {
         related,
 
         studyId,
+        preselectedSubjectIds,
         enableTeamSelect,
         ...pass
     } = ps;
