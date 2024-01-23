@@ -18,6 +18,7 @@ export const ForeignId = withField({ Control: (ps) => {
         isNullable,
         readOnly,
 
+        canClear,
         disabled,
         related,
 
@@ -89,6 +90,7 @@ export const ForeignId = withField({ Control: (ps) => {
             constraints,
             excludedIds,
 
+            canClear,
             disabled: disabled || hasMissingConstraintValues,
             readOnly,
             isFormik: true,

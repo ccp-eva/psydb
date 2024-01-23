@@ -60,6 +60,7 @@ export const withRecordPicker = (options) => {
             value: record,
             hasErrors,
             disabled,
+            readOnly = false,
             canClear = true,
             idLabelProp = '_id',
 
@@ -148,8 +149,12 @@ export const withRecordPicker = (options) => {
                 })} />
 
                 <PickerInput { ...({
+                    collection,
+                    recordType,
+                    recordId,
                     displayValue,
                     disabled,
+                    readOnly,
                     hasErrors,
                     hasInvalidRecord,
                     canClear: cached && canClear,
