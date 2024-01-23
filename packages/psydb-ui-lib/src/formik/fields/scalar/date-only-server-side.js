@@ -7,7 +7,8 @@ import datefns from '../../../date-fns';
 import { withField } from '@cdxoo/formik-utils';
 import { getSystemTimezone } from '@mpieva/psydb-timezone-helpers';
 
-import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
+import { translate } from '@mpieva/psydb-common-translations';
+import { useUILocale } from '@mpieva/psydb-ui-contexts';
 import { Form } from '@mpieva/psydb-ui-layout';
 
 import {
@@ -27,7 +28,6 @@ const Control = (ps) => {
     var { value, onChange } = formikField;
 
     var locale = useUILocale();
-    var translate = useUITranslation();
 
     var isValidDate = (
         /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z/.test(value)
@@ -74,7 +74,7 @@ const Control = (ps) => {
             inputProps={{
                 className: inputClassName,
                 disabled,
-                placeholder: translate('_date_placeholder')
+                placeholder: translate(locale.code, '_date_placeholder')
             }}
         />
     );
