@@ -76,10 +76,7 @@ export const ApestudiesWKPRCDefaultSetting = (ps) => {
     var allowedLocationTypes = (
         customRecordTypes
         .filter(it => it.collection === 'location')
-        .reduce((acc, it) => ({
-            ...acc,
-            [it.type]: it.state.label
-        }), {})
+        .map(it => it.type)
     )
 
     customRecordTypes = keyBy({
@@ -120,7 +117,7 @@ export const ApestudiesWKPRCDefaultSetting = (ps) => {
                             <Fields.LocationTypeKeyList { ...({
                                 dataXPath: '$.locationTypeKeys',
                                 label: translate('Locations'),
-                                allowedTypes: keys(allowedLocationTypes),
+                                allowedTypes: allowedLocationTypes,
                                 disabled: !selectedType,
                             })} />
 

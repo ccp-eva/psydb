@@ -9,9 +9,10 @@ import {
     useParams
 } from 'react-router-dom';
 
+import * as enums from '@mpieva/psydb-schema-enums';
 import { without } from '@mpieva/psydb-core-utils';
 import { demuxed } from '@mpieva/psydb-ui-utils';
-import * as enums from '@mpieva/psydb-schema-enums';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
 import {
     useFetchAll,
@@ -44,6 +45,7 @@ const ExperimentSettings = (ps) => {
     var { path, url } = useRouteMatch();
     var { id: studyId } = useParams();
     
+    var translate = useUITranslation();
     var revision = useRevision();
     var permissions = usePermissions();
     
@@ -88,8 +90,7 @@ const ExperimentSettings = (ps) => {
         customRecordTypes
         .filter(it => it.collection === 'subject')
         .reduce((acc, it) => ({
-            ...acc,
-            [it.type]: it.state.label
+            ...acc, [it.type]: translate.crt(it)
         }), {})
     );
 
