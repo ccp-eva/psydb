@@ -1035,8 +1035,13 @@ importers:
 
   ../../packages/psydb-schema-enums:
     specifiers:
+      '@mpieva/psydb-common-config': workspace:~0.1.0-alpha
+      '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
       chai: ~4.3.7
       mocha: ~10.2.0
+    dependencies:
+      '@mpieva/psydb-common-config': link:../psydb-common-config
+      '@mpieva/psydb-core-utils': link:../psydb-core-utils
     devDependencies:
       chai: 4.3.8
       mocha: 10.2.0

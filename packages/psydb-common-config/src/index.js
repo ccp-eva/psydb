@@ -4,5 +4,13 @@ module.exports = {
         enableI18NSelect: true,
         defaultLanguage: 'en',
         defaultLocaleCode: 'en-US',
-    }
+    },
+    enabledLabMethods: [
+        'inhouse',
+        'away-team',
+        'online-video-call',
+        'online-survey',
+        'apestudies-wkprc-default',
+        'manual-only-participation'
+    ]
 }
