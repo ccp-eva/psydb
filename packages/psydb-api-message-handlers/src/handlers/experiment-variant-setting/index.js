@@ -7,8 +7,11 @@ var SubjectSelectorSettingGroup = MessageHandlerGroup([
     require('./online-survey'),
     require('./online-video-call'),
     require('./inhouse'),
-    require('./inhouse-group-simple'),
     require('./away-team'),
+
+    require('./apestudies-wkprc-default'),
+    require('./manual-only-participation'),
+
     require('./remove')
 ]);
 
