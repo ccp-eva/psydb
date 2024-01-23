@@ -25,7 +25,8 @@ const NewSettingModalBody = (ps) => {
         'away-team': Forms.AwayTeamSetting,
         'online-video-call': Forms.OnlineVideoCallSetting,
         'online-survey': Forms.OnlineSurveySetting,
-        'inhouse-group-simple': Forms.InhouseGroupSimpleSetting
+        'apestudies-wkprc-default': Forms.ApestudiesWPKRCDefaultSetting,
+        'manual-only-participation': Forms.ManualOnlyParticipationSetting,
     })[variantType];
 
     return (
