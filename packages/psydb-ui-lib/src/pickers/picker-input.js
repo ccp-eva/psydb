@@ -37,7 +37,7 @@ export const PickerInput = (ps) => {
     var className = classnames([
         'pl-3',
         !readOnly && 'border',
-        !disabled && 'bg-white',
+        !disabled && !readOnly && 'bg-white',
         hasErrors && 'border-danger',
         hasInvalidRecord && 'text-danger',
     ]);
