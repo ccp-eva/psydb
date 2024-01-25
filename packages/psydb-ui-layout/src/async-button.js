@@ -4,6 +4,7 @@ import LoadingIndicator from './loading-indicator';
 
 export const AsyncButton = (ps) => {
     var {
+        type,
         onClick,
         isTransmitting = false,
         variant,
@@ -20,6 +21,7 @@ export const AsyncButton = (ps) => {
         >
             <Button
                 { ...pass }
+                type={ isTransmitting ? 'button' : type }
                 onClick={ isTransmitting ? undefined : onClick }
                 variant={ variant }
                 //disabled={ disabled || isTransmitting }
