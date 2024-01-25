@@ -1,8 +1,6 @@
 import React from 'react';
-import { jsonpointer } from '@mpieva/psydb-core-utils';
-import { CRTSettings, SmartArray } from '@mpieva/psydb-common-lib';
+import { only } from '@mpieva/psydb-core-utils';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
-import { useFetch, useFetchChain } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
 import { DefaultForm } from '../../../../formik';
@@ -21,17 +19,21 @@ import useCustomFetchChain from './use-custom-fetch-chain';
 import SplitExpSubjectFields from './wkprc-split-exp-subject-fields';
 
 export const Component = withSubjectTypeSelect((ps) => {
-    var {
-        labMethodSettings,
-        subjectType,
-        related,
-        
-        studyId,
-        enableTeamSelect,
-        preselectedSubject,
-        initialValues,
-        ...pass
-    } = ps;
+    var { initialValues } = ps;
+
+    var formBag = only({ from: ps, keys: [
+        'useAjvAsync',
+        'ajvErrorInstancePathPrefix',
+        'onSubmit',
+    ]});
+
+    var formBodyBag = only({ from: ps, keys: [
+        'isTransmitting',
+        'labMethodSettings',
+        'subjectType',
+        'related',
+        'preselectedSubject',
+    ]});
 
     var [ didFetch, fetched ] = useCustomFetchChain(ps);
 
@@ -39,40 +41,25 @@ export const Component = withSubjectTypeSelect((ps) => {
         return <LoadingIndicator size='lg' />
     }
 
-    console.log({ fetched });
-
     var {
         subjectGroupFieldDef,
         subjectGroup,
         location
     } = fetched._stageDatas;
 
-    var formBodyBag = {
-        labMethodSettings,
-        subjectType,
-        related,
-
-        subjectGroupFieldDef,
-        subjectGroup,
-        location,
-        preselectedSubject,
-    };
-
-    initialValues = {
-        ...initialValues,
-        ...(subjectGroup?.record && {
-            subjectGroupId: subjectGroup.record._id
-        }),
-        ...(location?.record && {
-            locationId: location.record._id
-        })
-    }
+    initialValues = withExtraInitialValues(initialValues, {
+        subjectGroup, location
+    });
 
     return (
-        <DefaultForm { ...pass } initialValues={ initialValues }>
+        <DefaultForm { ...formBag } initialValues={ initialValues }>
             {(formikProps) => (
                 <>
-                    <FormBody { ...formBodyBag } formik={ formikProps } />
+                    <FormBody
+                        { ...formBodyBag }
+                        subjectGroupFieldDef={ subjectGroupFieldDef }
+                        formik={ formikProps }
+                    />
                 </>
             )}
         </DefaultForm>
@@ -81,10 +68,10 @@ export const Component = withSubjectTypeSelect((ps) => {
 
 const FormBody = (ps) => {
     var {
+        isTransmitting,
         formik,
         labMethodSettings,
         subjectType,
-        subjectCRTSettings,
         related,
         subjectGroupFieldDef,
         preselectedSubject,
@@ -156,7 +143,7 @@ const FormBody = (ps) => {
 
                     <Fields.ExperimentOperators />
                     
-                    <Footer />
+                    <Footer isTransmitting={ isTransmitting } />
                 </>
             )}
         </>
@@ -194,10 +181,7 @@ const BranchFields = (ps) => {
             <>
                 <GroupExpSubjectFields
                     label={ translate('Subjects') }
-                    dataXPath='$.subjectData'
-                    subjectType={ subjectType }
-                    subjectConstraints={ subjectConstraints }
-                    enableMove={ false }
+                    { ...getMultiSubjectsBag(ps) }
                 />
                 <Fields.DateOnlyTimestamp required />
             </>
@@ -207,13 +191,33 @@ const BranchFields = (ps) => {
         return (
             <SplitExpSubjectFields
                 label={ translate('Subjects') }
-                dataXPath='$.subjectData'
-                subjectType={ subjectType }
-                subjectConstraints={ subjectConstraints }
-                enableMove={ false }
-                required
+                { ...getMultiSubjectsBag(ps) }
             />
         )
     }
 
+}
+
+var withExtraInitialValues = (initialValues, bag) => {
+    var { subjectGroup, location } = bag;
+    return {
+        ...initialValues,
+        ...(subjectGroup?.record && {
+            subjectGroupId: subjectGroup.record._id
+        }),
+        ...(location?.record && {
+            locationId: location.record._id
+        })
+    }
+}
+
+var getMultiSubjectsBag = (ps) => {
+    var { subjectType, subjectConstraints, preselectedSubject } = ps;
+    return {
+        dataXPath: '$.subjectData',
+        subjectType,
+        enableMove: false,
+        fixedIndexes: preselectedSubject ? [ 0 ] : [],
+        required: true
+    }
 }

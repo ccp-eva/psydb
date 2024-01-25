@@ -131,5 +131,6 @@ var getMultiSubjectsBag = (ps) => {
         subjectType,
         enableMove: false,
         fixedIndexes: preselectedSubjectId ? [ 0 ] : [],
+        required: true
     }
 }
