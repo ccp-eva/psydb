@@ -1,16 +1,17 @@
 import React from 'react';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
-import { Button } from '@mpieva/psydb-ui-layout';
+import { AsyncButton } from '@mpieva/psydb-ui-layout';
 
 export const Footer = (ps) => {
+    var { isTransmitting } = ps;
     var translate = useUITranslation();
     return (
         <>
             <hr />
             <div className='d-flex justify-content-end'>
-                <Button type='submit'>
+                <AsyncButton type='submit' isTransmitting={ isTransmitting }>
                     { translate('Save') }
-                </Button>
+                </AsyncButton>
             </div>
         </>
     )

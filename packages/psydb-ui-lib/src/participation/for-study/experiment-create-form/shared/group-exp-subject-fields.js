@@ -19,6 +19,7 @@ const Control = (ps) => {
         dataXPath,
         subjectType,
         subjectConstraints,
+        isFixedIndex,
     } = ps;
 
     return (
@@ -27,6 +28,7 @@ const Control = (ps) => {
             collection='subject'
             recordType={ subjectType }
             constraints={ subjectConstraints }
+            readOnly={ isFixedIndex }
         />
     )
 }

@@ -12,7 +12,9 @@ const Control = (ps) => {
     var {
         dataXPath,
         subjectType,
-        enableFollowUpExperiments
+        enableFollowUpExperiments,
+
+        isFixedIndex,
     } = ps;
 
     var translate = useUITranslation();
@@ -24,6 +26,7 @@ const Control = (ps) => {
                 dataXPath={`${dataXPath}.subjectId`}
                 collection='subject'
                 recordType={ subjectType }
+                readOnly={ isFixedIndex }
             />
             <Fields.Status type='invite'
                 dataXPath={`${dataXPath}.status`}

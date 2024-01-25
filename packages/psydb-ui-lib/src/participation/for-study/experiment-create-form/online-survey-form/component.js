@@ -90,8 +90,6 @@ const FormBody = (ps) => {
                     dataXPath='$.subjectData'
                     subjectType={ subjectType }
                     enableMove={ false }
-                    enableAdd={ !preselectedSubjectId }
-                    enableRemove={ !preselectedSubjectId }
                     enableFollowUpExperiments={ enableFollowUpExperiments }
                 />
             )}

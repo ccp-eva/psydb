@@ -1,7 +1,12 @@
 export const createDefaults = (options = {}) => {
-    var { preselectedSubjectId } = options;
+    var {
+        preselectedSubjectId,
+        subjectsAreTestedTogetherOverride = undefined,
+    } = options;
     return {
-        subjectsAreTestedTogether: false,
+        subjectsAreTestedTogether: (
+            subjectsAreTestedTogetherOverride || false
+        ),
         subjectData: [
             {
                 ...(preselectedSubjectId && {

@@ -69,6 +69,7 @@ const ExperimentCreateForm = (ps) => {
                     useAjvAsync
                     ajvErrorInstancePathPrefix='/payload'
                     onSubmit={ send.exec }
+                    isTransmitting={ send.isTransmitting }
                     initialValues={ FormContainer.createDefaults({
                         preselectedSubjectId,
                         subjectsAreTestedTogetherOverride,
@@ -79,6 +80,9 @@ const ExperimentCreateForm = (ps) => {
                     preselectedSubjectId={ preselectedSubjectId }
                     labMethodSettings={ filteredLabMethodSettings }
                     related={ labMethodSettingsRelated }
+                    subjectsAreTestedTogetherOverride={
+                        subjectsAreTestedTogetherOverride
+                    }
                 />
             )}
         </>

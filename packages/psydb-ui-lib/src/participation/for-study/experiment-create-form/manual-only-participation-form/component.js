@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button } from '@mpieva/psydb-ui-layout';
+import { only } from '@mpieva/psydb-core-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
 import { DefaultForm } from '../../../../formik';
 import * as Fields from '../form-fields/fields';
@@ -14,29 +15,31 @@ import {
 } from '../shared';
 
 export const Component = withSubjectTypeSelect((ps) => {
-    var {
-        labMethodSettings,
-        subjectType,
-        related,
-        
-        studyId,
-        enableTeamSelect,
-        ...pass
-    } = ps;
+    var { isTransmitting } = ps;
+    
+    var formBag = only({ from: ps, keys: [
+        'useAjvAsync',
+        'ajvErrorInstancePathPrefix',
+        'onSubmit',
+        'initialValues',
+    ]});
 
-    var formBodyBag = {
-        studyId,
-        labMethodSettings,
-        subjectType,
-        related,
-    }
+    var formBodyBag = only({ from: ps, keys: [
+        'labMethodSettings',
+        'subjectType',
+        'related',
+        
+        'studyId',
+        'preselectedSubjectId',
+        'subjectsAreTestedTogetherOverride',
+    ]});
 
     return (
-        <DefaultForm { ...pass }>
+        <DefaultForm { ...formBag }>
             {(formikProps) => (
                 <>
                     <FormBody { ...formBodyBag } formik={ formikProps } />
-                    <Footer />
+                    <Footer isTransmitting={ isTransmitting } />
                 </>
             )}
         </DefaultForm>
@@ -48,36 +51,21 @@ const FormBody = (ps) => {
         formik,
         studyId,
         labMethodSettings,
-        subjectType,
-        subjectCRT,
-        related
+        related,
+        subjectsAreTestedTogetherOverride = undefined,
     } = ps;
 
-    var { values } = formik;
-    var { subjectsAreTestedTogether } = values['$'];
+    var branchingValues = only({ from: formik.values['$'], keys: [
+        'subjectsAreTestedTogether'
+    ]});
 
     return (
         <>
-            <SubjectsAreTestedTogetherField />
-
-            { subjectsAreTestedTogether ? (
-                <>
-                    <GroupExpSubjectFields
-                        label='Proband:innen'
-                        dataXPath='$.subjectData'
-                        subjectType={ subjectType }
-                        enableMove={ false }
-                    />
-                    <Fields.Timestamp />
-                </>
-            ) : (
-                <SplitExpSubjectFields
-                    label='Proband:innen'
-                    dataXPath='$.subjectData'
-                    subjectType={ subjectType }
-                    enableMove={ false }
-                />
+            { subjectsAreTestedTogetherOverride === undefined && (
+                <SubjectsAreTestedTogetherField />
             )}
+
+            <BranchFields { ...ps } { ...branchingValues } />
             
             <Fields.ApestudiesWKPRCDefaultLocation
                 labMethodSettings={ labMethodSettings }
@@ -86,4 +74,61 @@ const FormBody = (ps) => {
             <Fields.Team studyId={ studyId } />
         </>
     );
+}
+
+// XXX: do fieldsites have group experiments?
+var BranchFields = (ps) => {
+    var {
+        preselectedSubjectId = undefined,
+        subjectsAreTestedTogether,
+
+        subjectType
+    } = ps;
+
+    var translate = useUITranslation();
+
+    if (preselectedSubjectId) {
+        return (
+            <>
+                <Fields.ForeignId
+                    label={ translate('Subject') }
+                    dataXPath='$.subjectData.0.subjectId'
+                    collection='subject'
+                    recordType={ subjectType }
+                    readOnly={ true }
+                />
+                <Fields.Timestamp />
+            </>
+        )
+    }
+    else if (subjectsAreTestedTogether) {
+        return (
+            <>
+                <GroupExpSubjectFields
+                    label={ translate('Subjects') }
+                    { ...getMultiSubjectsBag(ps) }
+                />
+                <Fields.Timestamp />
+            </>
+        )
+    }
+    else {
+        return (
+            <SplitExpSubjectFields 
+                label={ translate('Subject') }
+                { ...getMultiSubjectsBag(ps) }
+            />
+        )
+    }
+
+}
+
+var getMultiSubjectsBag = (ps) => {
+    var { subjectType, preselectedSubjectId } = ps;
+    return {
+        dataXPath: '$.subjectData',
+        subjectType,
+        enableMove: false,
+        fixedIndexes: preselectedSubjectId ? [ 0 ] : [],
+    }
 }

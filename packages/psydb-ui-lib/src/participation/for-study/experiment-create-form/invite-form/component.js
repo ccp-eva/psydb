@@ -21,8 +21,8 @@ export const Component = withSubjectTypeSelect((ps) => {
         related,
 
         studyId,
-        preselectedSubjectIds,
-        enableTeamSelect,
+        preselectedSubjectId = undefined,
+        enableTeamSelect = false,
         ...pass
     } = ps;
 
@@ -42,6 +42,7 @@ export const Component = withSubjectTypeSelect((ps) => {
         related,
 
         studyId,
+        preselectedSubjectId,
         enableTeamSelect,
         enableFollowUpExperiments,
     }
@@ -66,7 +67,8 @@ const FormBody = (ps) => {
         related,
 
         studyId,
-        enableTeamSelect,
+        preselectedSubjectId = undefined,
+        enableTeamSelect = false,
         enableFollowUpExperiments,
     } = ps;
 
@@ -81,14 +83,17 @@ const FormBody = (ps) => {
         subjectType,
         enableFollowUpExperiments,
         enableMove: false,
+        fixedIndexes: preselectedSubjectId ? [ 0 ] : [],
     }
 
     return (
         <>
-            <SplitPartitioned partitions={[3,9]}>
-                <div />
-                <MultiSubjectHint isGrouped={ true } />
-            </SplitPartitioned>
+            { !preselectedSubjectId && (
+                <SplitPartitioned partitions={[3,9]}>
+                    <div />
+                    <MultiSubjectHint isGrouped={ true } />
+                </SplitPartitioned>
+            )}
             <PerSubjectFields { ...subjectFieldsBag } />
             <Fields.Timestamp />
             { 
