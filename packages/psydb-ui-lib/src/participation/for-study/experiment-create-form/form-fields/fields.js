@@ -189,7 +189,7 @@ export const InviteLocation = (ps) => {
 }
 
 export const ApestudiesWKPRCDefaultLocation = (ps) => {
-    var { labMethodSettings, related, disabled, required } = ps;
+    var { labMethodSettings, related, disabled, required, readOnly } = ps;
     var { locationTypeKeys } = labMethodSettings.state;
     
     var translate = useUITranslation();
@@ -216,7 +216,7 @@ export const ApestudiesWKPRCDefaultLocation = (ps) => {
                             )
                         }), {})
                     }
-                    disabled={ disabled }
+                    disabled={ disabled || readOnly }
                     required={ required }
                 />
             )}
@@ -229,6 +229,7 @@ export const ApestudiesWKPRCDefaultLocation = (ps) => {
                     disabled
                     || (!preselectedType && !values.__locationTypeKey)
                 }
+                readOnly={ readOnly }
                 required={ required }
             />
         </>

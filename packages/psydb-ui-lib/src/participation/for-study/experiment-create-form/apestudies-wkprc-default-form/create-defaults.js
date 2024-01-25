@@ -1,6 +1,6 @@
 export const createDefaults = (options = {}) => {
     var {
-        preselectedSubjectId = undefined,
+        preselectedSubject = undefined,
         subjectsAreTestedTogetherOverride = undefined,
     } = options;
 
@@ -10,8 +10,8 @@ export const createDefaults = (options = {}) => {
         ),
         subjectData: [
             {
-                ...(preselectedSubjectId && {
-                    subjectId: preselectedSubjectId,
+                ...(preselectedSubject && {
+                    subjectId: preselectedSubject._id,
                 }),
                 comment: '',
                 status: 'participated',

@@ -18,7 +18,7 @@ const Outer = (ps) => {
 
     var [ didFetch, fetched ] = useFetchAll((agent) => ({
         studyCRTs: agent.fetchCollectionCRTs({ collection: 'study' }),
-        subject: agent.readRecord({ collection: 'subject', id: subjectId  })
+        subject: agent.readRecord({ collection: 'subject', id: subjectId  }),
     }), [ subjectId ]);
 
     if (!didFetch) {

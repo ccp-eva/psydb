@@ -74,14 +74,17 @@ const ExperimentCreateForm = (ps) => {
                     initialValues={ FormContainer.createDefaults({
                         preselectedSubjectId,
                         preselectedSubject,
+                        
                         subjectsAreTestedTogetherOverride,
                         labMethodSettings: filteredLabMethodSettings,
                     }) }
 
                     studyId={ studyId }
                     enableTeamSelect={ enableTeamSelect }
+
                     preselectedSubjectId={ preselectedSubjectId }
                     preselectedSubject={ preselectedSubject }
+
                     labMethodSettings={ filteredLabMethodSettings }
                     related={ labMethodSettingsRelated }
                     subjectsAreTestedTogetherOverride={

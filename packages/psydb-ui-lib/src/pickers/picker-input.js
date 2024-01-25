@@ -7,6 +7,7 @@ import { EditButton, ClearButton } from './buttons';
 
 var collectionUIMapping = {
     'subject': 'subjects',
+    'subjectGroup': 'subject-groups',
     'researchGroup': 'research-groups',
     'location': 'locations',
     'study': 'studies',

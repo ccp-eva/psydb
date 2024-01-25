@@ -1,7 +1,8 @@
 import React from 'react';
-import { CRTSettings } from '@mpieva/psydb-common-lib';
+import { jsonpointer } from '@mpieva/psydb-core-utils';
+import { CRTSettings, SmartArray } from '@mpieva/psydb-common-lib';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
-import { useFetch } from '@mpieva/psydb-ui-hooks';
+import { useFetch, useFetchChain } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
 import { DefaultForm } from '../../../../formik';
@@ -16,6 +17,7 @@ import {
     GroupExpSubjectFields
 } from '../shared';
 
+import useCustomFetchChain from './use-custom-fetch-chain';
 import SplitExpSubjectFields from './wkprc-split-exp-subject-fields';
 
 export const Component = withSubjectTypeSelect((ps) => {
@@ -26,31 +28,48 @@ export const Component = withSubjectTypeSelect((ps) => {
         
         studyId,
         enableTeamSelect,
+        preselectedSubject,
+        initialValues,
         ...pass
     } = ps;
 
-    var [ didFetch, fetched ] = useFetch((agent) => (
-        agent.readCRTSettings({
-            collection: 'subject',
-            recordType: subjectType
-        })
-    ), [ subjectType ]);
+    var [ didFetch, fetched ] = useCustomFetchChain(ps);
 
     if (!didFetch) {
         return <LoadingIndicator size='lg' />
     }
 
-    var subjectCRTSettings = CRTSettings({ data: fetched.data });
+    console.log({ fetched });
+
+    var {
+        subjectGroupFieldDef,
+        subjectGroup,
+        location
+    } = fetched._stageDatas;
 
     var formBodyBag = {
         labMethodSettings,
         subjectType,
-        subjectCRTSettings,
         related,
+
+        subjectGroupFieldDef,
+        subjectGroup,
+        location,
+        preselectedSubject,
+    };
+
+    initialValues = {
+        ...initialValues,
+        ...(subjectGroup?.record && {
+            subjectGroupId: subjectGroup.record._id
+        }),
+        ...(location?.record && {
+            locationId: location.record._id
+        })
     }
 
     return (
-        <DefaultForm { ...pass }>
+        <DefaultForm { ...pass } initialValues={ initialValues }>
             {(formikProps) => (
                 <>
                     <FormBody { ...formBodyBag } formik={ formikProps } />
@@ -66,7 +85,9 @@ const FormBody = (ps) => {
         labMethodSettings,
         subjectType,
         subjectCRTSettings,
-        related
+        related,
+        subjectGroupFieldDef,
+        preselectedSubject,
     } = ps;
 
     var translate = useUITranslation();
@@ -79,15 +100,8 @@ const FormBody = (ps) => {
         subjectData
     } = values['$'];
     
-    var subjectGroupFields = subjectCRTSettings.findCustomFields({
-        'type': 'ForeignId',
-        'props.collection': 'subjectGroup'
-    });
-
-    // FIXME: we cant support multiple group fields currently
-    var subjectGroupConstraintField = subjectGroupFields[0];
     var subjectConstraints = {
-        [subjectGroupConstraintField.pointer]: subjectGroupId
+        [subjectGroupFieldDef.pointer]: subjectGroupId
     }
 
     var hasSelectedSubjects = !!subjectData.find(it => !!it.subjectId);
@@ -98,7 +112,8 @@ const FormBody = (ps) => {
                 labMethodSettings={ labMethodSettings }
                 related={ related }
                 disabled={ hasSelectedSubjects }
-                required
+                readOnly={ !!preselectedSubject }
+                required={ !preselectedSubject }
             />
             <Fields.ForeignId
                 label={ translate('Group') }
@@ -108,35 +123,19 @@ const FormBody = (ps) => {
                     '/subjectType': subjectType || '',
                     '/state/locationId': locationId || ''
                 }}
+                readOnly={ !!preselectedSubject }
                 disabled={ !locationId || hasSelectedSubjects }
-                required
+                required={ !preselectedSubject }
             />
 
             { subjectGroupId && (
                 <>
                     {/*<SubjectsAreTestedTogetherField />*/}
 
-                    { subjectsAreTestedTogether ? (
-                        <>
-                            <GroupExpSubjectFields
-                                label={ translate('Subjects') }
-                                dataXPath='$.subjectData'
-                                subjectType={ subjectType }
-                                subjectConstraints={ subjectConstraints }
-                                enableMove={ false }
-                            />
-                            <Fields.DateOnlyTimestamp />
-                        </>
-                    ) : (
-                        <SplitExpSubjectFields
-                            label={ translate('Subjects') }
-                            dataXPath='$.subjectData'
-                            subjectType={ subjectType }
-                            subjectConstraints={ subjectConstraints }
-                            enableMove={ false }
-                            required
-                        />
-                    )}
+                    <BranchFields
+                        { ...ps }
+                        subjectConstraints={ subjectConstraints }
+                    />
                     
                     <Fields.SaneString
                         label={ translate('_wkprc_experimentName') }
@@ -162,4 +161,59 @@ const FormBody = (ps) => {
             )}
         </>
     );
+}
+
+const BranchFields = (ps) => {
+    var {
+        preselectedSubject = undefined,
+        subjectsAreTestedTogether,
+
+        subjectType,
+        subjectConstraints
+    } = ps;
+
+    var translate = useUITranslation();
+
+    if (preselectedSubject) {
+        return (
+            <>
+                <Fields.ForeignId
+                    label={ translate('Subject') }
+                    dataXPath='$.subjectData.0.subjectId'
+                    collection='subject'
+                    recordType={ subjectType }
+                    //constraints={ subjectConstraints }
+                    readOnly={ true }
+                />
+                <Fields.DateOnlyTimestamp required />
+            </>
+        )
+    }
+    else if (subjectsAreTestedTogether) {
+        return (
+            <>
+                <GroupExpSubjectFields
+                    label={ translate('Subjects') }
+                    dataXPath='$.subjectData'
+                    subjectType={ subjectType }
+                    subjectConstraints={ subjectConstraints }
+                    enableMove={ false }
+                />
+                <Fields.DateOnlyTimestamp required />
+            </>
+        )
+    }
+    else {
+        return (
+            <SplitExpSubjectFields
+                label={ translate('Subjects') }
+                dataXPath='$.subjectData'
+                subjectType={ subjectType }
+                subjectConstraints={ subjectConstraints }
+                enableMove={ false }
+                required
+            />
+        )
+    }
+
 }
