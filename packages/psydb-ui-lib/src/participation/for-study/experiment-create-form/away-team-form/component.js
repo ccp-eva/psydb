@@ -1,4 +1,5 @@
 import React from 'react';
+import { only } from '@mpieva/psydb-core-utils';
 import { useUILanguage, useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetchAll } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator, Alert } from '@mpieva/psydb-ui-layout';
@@ -15,15 +16,14 @@ import {
 import PerSubjectFields from './per-subject-fields';
 
 export const Component = withSubjectTypeSelect((ps) => {
-    var {
-        labMethodSettings,
-        subjectType,
-        related,
+    var { isTransmitting } = ps;
 
-        studyId,
-        enableTeamSelect,
-        ...pass
-    } = ps;
+    var formBag = only({ from: ps, keys: [
+        'useAjvAsync',
+        'ajvErrorInstancePathPrefix',
+        'onSubmit',
+        'initialValues',
+    ]});
 
     var {
         didFetch,
@@ -36,22 +36,27 @@ export const Component = withSubjectTypeSelect((ps) => {
     }
 
     var formBodyBag = {
-        labMethodSettings,
-        subjectType,
-        related,
+        ...only({ from: ps, keys: [
+            'labMethodSettings',
+            'subjectType',
+            'related',
+            
+            'studyId',
+            'preselectedSubjectId',
+            'preselectedSubject',
+            'subjectsAreTestedTogetherOverride',
+            'enableTeamSelect'
+        ]}),
 
-        studyId,
-        enableTeamSelect,
+        locationFieldDef,
         enableFollowUpExperiments,
-        locationFieldDef
     }
 
     return (
-        <DefaultForm { ...pass }>
+        <DefaultForm { ...formBag }>
             {(formikProps) => (
                 <>
                     <FormBody { ...formBodyBag } formik={ formikProps } />
-                    <Footer />
                 </>
             )}
         </DefaultForm>
@@ -66,31 +71,40 @@ const FormBody = (ps) => {
         related,
 
         studyId,
+        preselectedSubject,
         enableTeamSelect,
         enableFollowUpExperiments,
-        locationFieldDef
+        locationFieldDef,
     } = ps;
 
     var { values } = formik;
     var { locationId } = values['$'];
 
-    var [ language ] = useUILanguage();
     var translate = useUITranslation();
+    var locationFieldLabel = translate.fieldDefinition(locationFieldDef);
+
+    if (preselectedSubject && !locationId) {
+        return (
+            <Alert variant='danger'><b>
+                { translate('Subject has Field "${field}" not set!', {
+                    field: locationFieldLabel
+                }) }
+            </b></Alert>
+        )
+    }
 
     var subjectFieldsBag = {
         label: translate('Subjects'),
         dataXPath: '$.subjectData',
+        
         subjectType,
         enableFollowUpExperiments,
-        enableMove: false,
         locationFieldDef,
         locationId,
+        
+        enableMove: false,
+        fixedIndexes: preselectedSubject ? [ 0 ] : [],
     }
-
-    var locationFieldLabel = (
-        locationFieldDef.displayNameI18N[language]
-        || locationFieldDef.displayName
-    )
 
     return (
         <>
@@ -99,6 +113,7 @@ const FormBody = (ps) => {
                 dataXPath='$.locationId'
                 collection={ locationFieldDef.props.collection }
                 recordType={ locationFieldDef.props.recordType }
+                readOnly={ !!preselectedSubject }
             />
             { locationId ? (
                 <>
@@ -117,6 +132,8 @@ const FormBody = (ps) => {
                     }) }
                 </Alert>
             )}
+
+            <Footer />
         </>
     );
 }
@@ -139,14 +156,14 @@ var fromHooks = (ps) => {
         return { didFetch };
     }
 
-    var crtSettings = fetched.crtSettings.data;
+    var { crtSettings, study } = fetched._stageDatas;
+
     var locationFieldDef = (
         crtSettings.fieldDefinitions.scientific.find(it => (
             it.pointer === subjectLocationFieldPointer
         ))
     );
     
-    var study = fetched.study.data;
     var { enableFollowUpExperiments } = study.record.state;
 
     return { didFetch, locationFieldDef, enableFollowUpExperiments };

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
-import { useFetch } from '@mpieva/psydb-ui-hooks';
+import { useFetchAll } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator, FormHelpers } from '@mpieva/psydb-ui-layout';
 import * as Controls from '@mpieva/psydb-ui-form-controls';
 
@@ -16,18 +16,21 @@ const Outer = (ps) => {
 
     var translate = useUITranslation();
 
-    var [ didFetch, fetched ] = useFetch((agent) => (
-        agent.fetchCollectionCRTs({ collection: 'study' })
-    ), []);
+    var [ didFetch, fetched ] = useFetchAll((agent) => ({
+        studyCRTs: agent.fetchCollectionCRTs({ collection: 'study' }),
+        subject: agent.readRecord({ collection: 'subject', id: subjectId  })
+    }), [ subjectId ]);
 
     if (!didFetch) {
         return <LoadingIndicator size='lg' />
     }
 
+    var { studyCRTs, subject } = fetched._stageDatas;
+
     var showStudyTypeSelect = true;
-    if (fetched.data.length === 1) {
+    if (studyCRTs.length === 1) {
         showStudyTypeSelect = false;
-        studyType = fetched.data[0].type
+        studyType = studyCRTs[0].type
     }
 
     return (
@@ -58,6 +61,8 @@ const Outer = (ps) => {
             { studyRecord && (
                 <ExperimentCreateForm
                     preselectedSubjectId={ subjectId }
+                    preselectedSubject={ subject.record }
+
                     subjectsAreTestedTogetherOverride={ true }
                     studyId={ studyRecord._id }
                     enableTeamSelect={ true }

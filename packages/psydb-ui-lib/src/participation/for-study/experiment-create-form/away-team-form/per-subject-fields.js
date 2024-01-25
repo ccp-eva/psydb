@@ -15,6 +15,7 @@ const Control = (ps) => {
         enableFollowUpExperiments,
         locationFieldDef,
         locationId,
+        isFixedIndex,
     } = ps;
 
     var translate = useUITranslation();
@@ -29,6 +30,7 @@ const Control = (ps) => {
                 constraints={{
                     [locationFieldDef.pointer]: locationId
                 }}
+                readOnly={ isFixedIndex }
             />
             <Fields.Status type='away-team'
                 dataXPath={`${dataXPath}.status`}

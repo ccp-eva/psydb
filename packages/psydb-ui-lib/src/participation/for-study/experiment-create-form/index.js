@@ -19,6 +19,7 @@ const ExperimentCreateForm = (ps) => {
     var {
         studyId,
         preselectedSubjectId = undefined,
+        preselectedSubject = undefined,
         subjectsAreTestedTogetherOverride = undefined,
         enableTeamSelect = false
     } = ps;
@@ -72,12 +73,15 @@ const ExperimentCreateForm = (ps) => {
                     isTransmitting={ send.isTransmitting }
                     initialValues={ FormContainer.createDefaults({
                         preselectedSubjectId,
+                        preselectedSubject,
                         subjectsAreTestedTogetherOverride,
+                        labMethodSettings: filteredLabMethodSettings,
                     }) }
 
                     studyId={ studyId }
                     enableTeamSelect={ enableTeamSelect }
                     preselectedSubjectId={ preselectedSubjectId }
+                    preselectedSubject={ preselectedSubject }
                     labMethodSettings={ filteredLabMethodSettings }
                     related={ labMethodSettingsRelated }
                     subjectsAreTestedTogetherOverride={

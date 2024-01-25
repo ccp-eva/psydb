@@ -1506,4 +1506,8 @@ module.exports = [
         en: 'Field Sites',
         de: 'Field-Sites'
     },
+    {
+        en: 'Subject has Field "${field}" not set!',
+        de: 'Proband:in hat Field "${field}" nicht gesetzt!'
+    }
 ]

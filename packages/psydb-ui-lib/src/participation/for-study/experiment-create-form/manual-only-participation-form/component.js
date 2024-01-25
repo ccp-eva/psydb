@@ -31,6 +31,7 @@ export const Component = withSubjectTypeSelect((ps) => {
         
         'studyId',
         'preselectedSubjectId',
+        'preselectedSubject',
         'subjectsAreTestedTogetherOverride',
     ]});
 
