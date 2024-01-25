@@ -8,23 +8,24 @@ export const ObjectArrayItemWrapper = (ps) => {
         formikArrayHelpers,
         index,
         lastIndex,
+        isFixedIndex,
         disabled,
         children,
 
         enableMove = true,
         enableRemove = true,
-    } = ps;
 
-    console.log(ps);
+        extraItemWrapperProps
+    } = ps;
 
     var className = classnames([
         'border p-3',
         !(index === lastIndex) && 'mb-3'
     ]);
 
-    var hasRemove = enableRemove;
-    var hasMoveUp = enableMove && (index > 0);
-    var hasMoveDown = enableMove && (index < lastIndex);
+    var hasRemove = enableRemove && !isFixedIndex;
+    var hasMoveUp = enableMove && (index > 0) && !isFixedIndex;
+    var hasMoveDown = enableMove && (index < lastIndex) && !isFixedIndex;
 
     var hasFooter = (hasRemove || hasMoveUp || hasMoveDown);
 
