@@ -1475,4 +1475,35 @@ module.exports = [
         en: 'Please select ${that}.',
         de: 'Bitte ${that} auswählen.',
     },
+
+    {
+        internal: '_labWorkflow_online-video-call',
+        en: 'Online Video Call',
+        de: 'Online-Video-Anruf'
+    },
+    {
+        internal: '_labWorkflow_online-survey',
+        en: 'Online Survey',
+        de: 'Online-Umfrage'
+    },
+    {
+        internal: '_labWorkflow_inhouse',
+        en: 'Inhouse Appointments',
+        de: 'Interne Termine',
+    },
+    {
+        internal: '_labWorkflow_away-team',
+        en: 'External Appointments',
+        de: 'Externe Termine',
+    },
+    {
+        internal: '_labWorkflow_apestudies-wkprc-default',
+        en: 'WKPRC',
+        de: 'WKPRC'
+    },
+    {
+        internal: '_labWorkflow_manual-only-participation',
+        en: 'Field Sites',
+        de: 'Field-Sites'
+    },
 ]
