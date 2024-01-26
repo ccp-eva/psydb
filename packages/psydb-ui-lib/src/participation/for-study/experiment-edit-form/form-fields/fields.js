@@ -144,6 +144,7 @@ export const ExperimentOperators = (ps) => {
             label={ translate('Experimenters') }
             dataXPath='$.labOperatorIds'
             collection='personnel'
+            enableMove={ false }
             required
         />
     )
@@ -184,28 +185,26 @@ export const LabProcedureType = (ps) => {
 }
 
 export const InviteLocation = (ps) => {
-    var { labMethodSettings, related } = ps;
-    var { locations } = labMethodSettings.state;
+    var { locationItems, related } = ps;
 
     var translate = useUITranslation();
+
+    var options = {};
+    for (var it of locationItems) {
+        var type = it.customRecordTypeKey;
+        var id = it.locationId;
+
+        var typeLabel = related.crts.location[type].state.label;
+        var idLabel = related.records.location[id]._recordLabel;
+        
+        options[id] = `${typeLabel} - ${idLabel}`;
+    }
 
     return (
         <Fields.GenericEnum
             label={ translate('Room') }
             dataXPath='$.locationId'
-            options={ locations.reduce((acc, it) => {
-                var type = it.customRecordTypeKey;
-                var id = it.locationId;
-
-                var typeLabel = (
-                    related.crts.location[type].state.label
-                );
-                var idLabel = (
-                    related.records.location[id]._recordLabel
-                )
-
-                return { ...acc, [id]: `${typeLabel} - ${idLabel}` }
-            }, {}) }
+            options={ options }
         />
     )
 }

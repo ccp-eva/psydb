@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { unique, only } from '@mpieva/psydb-core-utils';
+import { merge, unique, only } from '@mpieva/psydb-core-utils';
 import * as enums from '@mpieva/psydb-schema-enums';
 
 import { fixRelated } from '@mpieva/psydb-ui-utils';
@@ -27,6 +27,7 @@ const ExperimentEditForm = (ps) => {
         experiment, experimentRelated,
         study, studyRelated,
         labMethodSettings, labMethodSettingsRelated,
+        related,
         send
     } = fromHooks(ps);
 
@@ -47,7 +48,7 @@ const ExperimentEditForm = (ps) => {
     }
 
     var FormContainer = switchFormContainer(labMethodKey);
-    var related = experimentRelated; // TODO: merge related maybe?
+    //var related = experimentRelated; // TODO: merge related maybe?
     return (
         <>
             <FormHelpers.InlineWrapper label='Ablauf-Typ'>
@@ -117,12 +118,15 @@ var fromHooks = (ps) => {
         //.filter(it => subjectTypes.includes(it.state.subjectTypeKey))
     )[0];
 
+    var related = merge(
+        experimentRelated, studyRelated, labMethodSettingsRelated
+    );
+
     return {
         didFetch,
         subjectType: labMethodSettings.state.subjectTypeKey,
-        experiment, experimentRelated,
-        study, studyRelated,
-        labMethodSettings, labMethodSettingsRelated,
+        experiment, study, labMethodSettings,
+        related,
         send
     }
 }

@@ -1,5 +1,6 @@
 import React from 'react';
-import { only } from '@mpieva/psydb-core-utils';
+import { only, unique } from '@mpieva/psydb-core-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator, SplitPartitioned } from '@mpieva/psydb-ui-layout';
 
@@ -43,6 +44,7 @@ export const Component = (ps) => {
     var { enableFollowUpExperiments } = study.state;
 
     var formBodyBag = {
+        experiment,
         subjectType,
         labMethodSettings,
         related,
@@ -64,6 +66,7 @@ export const Component = (ps) => {
 const FormBody = (ps) => {
     var {
         formik,
+        experiment,
         labMethodSettings,
         subjectType,
         related,
@@ -73,15 +76,26 @@ const FormBody = (ps) => {
         enableFollowUpExperiments,
     } = ps;
 
-    var { values } = formik;
-    
+    var translate = useUITranslation();
+
     var subjectFieldsBag = {
-        label: 'Proband:innen',
+        label: translate('Subjects'),
         dataXPath: '$.subjectData',
         subjectType,
         enableFollowUpExperiments,
         enableMove: false,
     }
+
+    var locationItems = unique({
+        from: [
+            ...labMethodSettings.state.locations,
+            {
+                locationId: experiment.state.locationId,
+                customRecordTypeKey: experiment.state.locationRecordType
+            }
+        ],
+        transformOption: it => it.locationId
+    });
 
     return (
         <>
@@ -89,7 +103,7 @@ const FormBody = (ps) => {
             <Fields.Interval />
             <Fields.ExperimentOperators />
             <Fields.InviteLocation
-                labMethodSettings={ labMethodSettings }
+                locationItems={ locationItems }
                 related={ related }
             />
         </>
