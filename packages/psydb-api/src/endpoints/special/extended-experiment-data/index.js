@@ -179,7 +179,6 @@ var extendedExperimentData = async (context, next) => {
 
         var crtSettings = convertCRTRecordToSettings(customRecordTypeData);
         var dobFieldPointer = findCRTAgeFrameField(crtSettings);
-        var dobFieldPath = convertPointerToPath(dobFieldPointer);
 
 
         var recordLabelDefinition = (
@@ -220,10 +219,12 @@ var extendedExperimentData = async (context, next) => {
                 'scientific.state.comment': true,
                 'scientific.state.internals.participatedInStudies': true,
             },
-            sort: {
-                path: dobFieldPath,
-                direction: 'asc',
-            },
+            ...(dobFieldPointer && {
+                sort: {
+                    path: convertPointerToPath(dobFieldPointer),
+                    direction: 'asc',
+                },
+            }),
             //offset,
             //limit
             disablePermissionCheck: true,
