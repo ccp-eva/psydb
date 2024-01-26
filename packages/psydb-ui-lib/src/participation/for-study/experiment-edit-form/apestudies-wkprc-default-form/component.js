@@ -34,41 +34,34 @@ export const Component = (ps) => {
     if (!didFetch) {
         return <LoadingIndicator size='lg' />
     }
-
+    
     var subjectCRTSettings = CRTSettings({ data: fetched.data });
 
-    var initialValues = {
-        ...only({ from: experiment.state, paths: [
-            'locationId',
-            'subjectGroupId',
-            'experimentName',
-            'roomOrEnclosure',
-        ]}),
-        timestamp: experiment.state.interval.start,
-        subjectData: [{
-            ...only({
-                from: experiment.state.subjectData[0],
-                paths: [ 'subjectId', 'comment' ],
-            }),
-            status: 'participated',
-            excludeFromMoreExperimentsInStudy: false
-        }],
-        labOperatorIds: experiment.state.experimentOperatorIds,
-    }
+    var formPass = only({ from: ps, keys: [
+        'useAjvAsync',
+        'ajvErrorInstancePathPrefix',
+        'onSubmit'
+    ]});
 
-    var formBodyBag = {
-        labMethodSettings,
-        subjectType,
-        subjectCRTSettings,
-        related,
-    }
+    var formBodyPass = only({ from: ps, keys: [
+        'subjectType',
+        'labMethodSettings',
+        'related',
+    
+        'isTransmitting',
+        'enableSubmit'
+    ]});
+
+    var initialValues = createInitialValues(ps);
 
     return (
-        <DefaultForm initialValues={ initialValues } { ...pass }>
+        <DefaultForm { ...formPass } initialValues={ initialValues }>
             {(formikProps) => (
-                <>
-                    <FormBody { ...formBodyBag } formik={ formikProps } />
-                </>
+                <FormBody
+                    { ...formBodyPass }
+                    subjectCRTSettings={ subjectCRTSettings }
+                    formik={ formikProps }
+                />
             )}
         </DefaultForm>
     );
@@ -85,6 +78,11 @@ const FormBody = (ps) => {
 
     var translate = useUITranslation();
 
+    var footerPass = only({ from: ps, keys: [
+        'isTransmitting',
+        'enableSubmit'
+    ]});
+
     var { values } = formik;
     var {
         locationId,
@@ -93,15 +91,14 @@ const FormBody = (ps) => {
         subjectData
     } = values['$'];
     
-    var subjectGroupFields = subjectCRTSettings.findCustomFields({
+    // FIXME: we cant support multiple group fields currently
+    var [ subjectGroupFieldDef ] = subjectCRTSettings.findCustomFields({
         'type': 'ForeignId',
         'props.collection': 'subjectGroup'
     });
 
-    // FIXME: we cant support multiple group fields currently
-    var subjectGroupConstraintField = subjectGroupFields[0];
     var subjectConstraints = {
-        [subjectGroupConstraintField.pointer]: subjectGroupId
+        [subjectGroupFieldDef.pointer]: subjectGroupId
     }
 
     var hasSelectedSubjects = !!subjectData.find(it => !!it.subjectId);
@@ -165,9 +162,37 @@ const FormBody = (ps) => {
                     />
                     <Fields.ExperimentOperators />
                     
-                    <Footer />
+                    <Footer { ...footerPass } />
                 </>
             )}
         </>
     );
+}
+
+const createInitialValues = (ps) => {
+    var { experiment } = ps;
+    var {
+        interval, subjectData, experimentOperatorIds, ...rest
+    } = experiment.state
+    
+    var initialValues = {
+        ...only({ from: rest, paths: [
+            'locationId',
+            'subjectGroupId',
+            'experimentName',
+            'roomOrEnclosure',
+        ]}),
+        timestamp: interval.start,
+        subjectData: [{
+            ...only({
+                from: subjectData[0],
+                paths: [ 'subjectId', 'comment' ],
+            }),
+            status: 'participated',
+            excludeFromMoreExperimentsInStudy: false
+        }],
+        labOperatorIds: experimentOperatorIds,
+    }
+
+    return initialValues;
 }
