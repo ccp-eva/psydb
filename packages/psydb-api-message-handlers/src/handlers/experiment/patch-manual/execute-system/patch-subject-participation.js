@@ -21,7 +21,7 @@ var compose_patchSubjectParticipation = () => compose([
                 addLocationAndOperators,
             ],
             'away-team': [
-                addLocationAndOperators,
+                addOperators,
             ],
             'apestudies-wkprc-default': [
                 addLocationAndOperators,
@@ -138,6 +138,29 @@ var addLocationAndOperators = async (context, next) => {
             ...it,
             locationId,
             locationType: location.type,
+            experimentOperatorIds: labOperatorIds
+        })
+    });
+
+    cache.merge({ ...mapped });
+    await next();
+}
+
+var addOperators = async (context, next) => {
+    var { message, cache } = context;
+    var { labOperatorIds } = message.payload;
+    var {
+        participationCreateUpdates,
+        participationPatchUpdates,
+    } = cache.get();
+
+    var mapped = mapAll({
+        lists: {
+            participationCreateUpdates,
+            participationPatchUpdates,
+        },
+        lambda: (it) => ({
+            ...it,
             experimentOperatorIds: labOperatorIds
         })
     });

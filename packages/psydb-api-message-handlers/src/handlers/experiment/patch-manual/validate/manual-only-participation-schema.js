@@ -3,6 +3,7 @@ var enums = require('@mpieva/psydb-schema-enums');
 
 var {
     ExactObject,
+    ClosedObject,
     DateTime,
     ForeignId,
     DefaultArray,
@@ -20,17 +21,16 @@ var {
 
 
 var ManualOnlyParticipationSchema = (handlerType) => {
-    var { properties, required } = requireify({
+    var payload = ClosedObject({
         experimentId: ForeignId({ collection: 'experiment' }),
         timestamp: DateTime(), // FIXME: date only server side?
         locationId: ForeignId({ collection: 'location' }),
 
         subjectData: DefaultArray({
-            items: ExactObject(requireify({
+            items: ClosedObject({
                 subjectId: ForeignId({ collection: 'subject' }),
                 status: ParticipationStatus(),
-                excludeFromMoreExperimentsInStudy: DefaultBool(),
-            })),
+            }),
             minItems: 1,
         }),
         labOperatorIds: ForeignIdList({
@@ -41,10 +41,7 @@ var ManualOnlyParticipationSchema = (handlerType) => {
    
     return Message({
         type: handlerType,
-        payload: ExactObject({
-            properties,
-            required,
-        }),
+        payload,
     });
 }
 

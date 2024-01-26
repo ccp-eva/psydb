@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { only } from '@mpieva/psydb-core-utils';
 import { useFetchAll } from '@mpieva/psydb-ui-hooks';
 import {
@@ -38,13 +39,13 @@ export const Component = (ps) => {
     }
 
     var initialValues = {
-        ...only({ from: experiment.state, paths: [
-            'locationId',
-            'interval'
-        ]}),
+        timestamp: experiment.state.interval.start,
         subjectData: experiment.state.subjectData.map(it => ({
             subjectId: it.subjectId,
-            status: it.participationStatus
+            status: it.participationStatus,
+            excludeFromMoreExperimentsInStudy: (
+                it.excludeFromMoreExperimentsInStudy
+            )
         })),
         labOperatorIds: experiment.state.experimentOperatorIds,
     } // TODO: merge defaults?
@@ -54,6 +55,7 @@ export const Component = (ps) => {
 
     var formBodyBag = {
         study,
+        experiment,
         labMethodSettings,
         related,
 
@@ -78,17 +80,19 @@ const FormBody = (ps) => {
         formik,
         study,
         labMethodSettings,
+        experiment,
         related,
 
         enableFollowUpExperiments,
         locationFieldDef
     } = ps;
 
-    var { values } = formik;
-    var { locationId } = values['$'];
+    var translate = useUITranslation();
+
+    var { locationId } = experiment.state;
 
     var subjectFieldsBag = {
-        label: 'Proband:innen',
+        label: translate('Subjects'),
         dataXPath: '$.subjectData',
         enableFollowUpExperiments,
         enableMove: false,
@@ -98,14 +102,16 @@ const FormBody = (ps) => {
 
     return (
         <>
-            <FormHelpers.InlineWrapper label={ locationFieldDef.displayName }>
+            <FormHelpers.InlineWrapper label={
+                translate.fieldDefinition(locationFieldDef)
+            }>
                 <PaddedText>
                     <b>{ related.records.location[locationId]._recordLabel }</b>
                 </PaddedText>
             </FormHelpers.InlineWrapper>
 
             <PerSubjectFields { ...subjectFieldsBag } />
-            <Fields.Interval />
+            <Fields.Timestamp />
             <Fields.ExperimentOperators />
         </>
     );

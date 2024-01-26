@@ -23,8 +23,8 @@ export const Component = (ps) => {
     var initialValues = {
         ...only({ from: experiment.state, paths: [
             'locationId',
-            'interval'
         ]}),
+        timestamp: experiment.state.interval.start,
         subjectData: experiment.state.subjectData.map(it => ({
             subjectId: it.subjectId,
             status: it.participationStatus
@@ -69,7 +69,7 @@ const FormBody = (ps) => {
                 subjectType={ subjectType }
                 enableMove={ false }
             />
-            <Fields.IntervalStartOnly />
+            <Fields.Timestamp />
             
             <Fields.ApestudiesWKPRCDefaultLocation
                 labMethodSettings={ labMethodSettings }
