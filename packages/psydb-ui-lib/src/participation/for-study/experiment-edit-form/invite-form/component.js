@@ -25,38 +25,38 @@ export const Component = (ps) => {
         ...pass
     } = ps;
 
-    var initialValues = {
-        ...only({ from: experiment.state, paths: [
-            'locationId',
-            'interval'
-        ]}),
-        subjectData: experiment.state.subjectData.map(it => ({
-            subjectId: it.subjectId,
-            status: it.participationStatus,
-            excludeFromMoreExperimentsInStudy: (
-                it.excludeFromMoreExperimentsInStudy
-            )
-        })),
-        labOperatorIds: experiment.state.experimentOperatorIds,
-    }
+    var initialValues = createInitialValues(ps);
 
     // NOTE: this should move into lab method settings
     var { enableFollowUpExperiments } = study.state;
 
+    var formBag = only({ from: ps, keys: [
+        'useAjvAsync',
+        'ajvErrorInstancePathPrefix',
+        'onSubmit'
+    ]});
+
     var formBodyBag = {
-        experiment,
-        subjectType,
-        labMethodSettings,
-        related,
+        ...only({ from: ps, keys: [
+            'experiment',
+            'subjectType',
+            'labMethodSettings',
+            'related',
+        ]}),
         enableFollowUpExperiments,
     }
 
+    var footerBag = only({ from: ps, keys: [
+        'isTransmitting',
+        'enableSubmit'
+    ]});
+
     return (
-        <DefaultForm initialValues={ initialValues } { ...pass }>
+        <DefaultForm { ...formBag } initialValues={ initialValues }>
             {(formikProps) => (
                 <>
                     <FormBody { ...formBodyBag } formik={ formikProps } />
-                    <Footer />
+                    <Footer { ...footerBag } />
                 </>
             )}
         </DefaultForm>
@@ -65,13 +65,8 @@ export const Component = (ps) => {
 
 const FormBody = (ps) => {
     var {
-        formik,
-        experiment,
-        labMethodSettings,
         subjectType,
         related,
-
-        studyId,
         enableTeamSelect,
         enableFollowUpExperiments,
     } = ps;
@@ -81,21 +76,13 @@ const FormBody = (ps) => {
     var subjectFieldsBag = {
         label: translate('Subjects'),
         dataXPath: '$.subjectData',
+        enableMove: false,
+
         subjectType,
         enableFollowUpExperiments,
-        enableMove: false,
     }
 
-    var locationItems = unique({
-        from: [
-            ...labMethodSettings.state.locations,
-            {
-                locationId: experiment.state.locationId,
-                customRecordTypeKey: experiment.state.locationRecordType
-            }
-        ],
-        transformOption: it => it.locationId
-    });
+    var locationItems = mergeLocationItems(ps)
 
     return (
         <>
@@ -108,4 +95,44 @@ const FormBody = (ps) => {
             />
         </>
     );
+}
+
+const createInitialValues = (ps) => {
+    var { experiment } = ps;
+
+    var {
+        locationId, interval, subjectData, experimentOperatorIds
+    } = experiment.state;
+
+    var initialValues = {
+        locationId,
+        interval,
+        subjectData: subjectData.map(it => ({
+            subjectId: it.subjectId,
+            status: it.participationStatus,
+            excludeFromMoreExperimentsInStudy: (
+                it.excludeFromMoreExperimentsInStudy
+            )
+        })),
+        labOperatorIds: experimentOperatorIds,
+    }
+
+    return initialValues;
+}
+
+const mergeLocationItems = (ps) => {
+    var { experiment, labMethodSettings } = ps;
+    
+    var locationItems = unique({
+        from: [
+            ...(labMethodSettings?.state?.locations || []),
+            {
+                locationId: experiment.state.locationId,
+                customRecordTypeKey: experiment.state.locationRecordType
+            }
+        ],
+        transformOption: it => it.locationId
+    });
+
+    return locationItems;
 }

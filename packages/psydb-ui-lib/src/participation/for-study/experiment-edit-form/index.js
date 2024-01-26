@@ -1,4 +1,5 @@
 import React from 'react';
+import inline from '@cdxoo/inline-text';
 
 import { merge, unique, only } from '@mpieva/psydb-core-utils';
 import * as enums from '@mpieva/psydb-schema-enums';
@@ -54,6 +55,14 @@ const ExperimentEditForm = (ps) => {
     //var related = experimentRelated; // TODO: merge related maybe?
     return (
         <>
+            { !labMethodSettings && (
+                <Alert variant='danger'><b>
+                    { translate(inline`
+                        WARNING: There is no matching lab workflow
+                        setting in this study!
+                    `)}
+                </b></Alert>
+            )}
             <FormHelpers.InlineWrapper
                 label={ translate('Lab Workflow Type') }
             >
@@ -67,6 +76,7 @@ const ExperimentEditForm = (ps) => {
                     ajvErrorInstancePathPrefix='/payload'
                     onSubmit={ send.exec }
                     isTransmitting={ send.isTransmitting }
+                    enableSubmit={ !!labMethodSettings }
 
                     subjectType={ subjectType }
                     experiment={ experiment }
@@ -118,12 +128,25 @@ var fromHooks = (ps) => {
     var subjectTypes = unique(experiment.state.subjectData.map(it => (
         it.subjectType
     )));
-    
-    // XXX: that wont work when no subjects or multiple subject types
-    labMethodSettings = (
-        labMethodSettings
-        //.filter(it => subjectTypes.includes(it.state.subjectTypeKey))
-    )[0];
+
+    var subjectType = subjectTypes[0];
+    var usedLabMethodSettings = undefined;
+    if (labMethodSettings) {
+        if (subjectType) {
+            var settingsForSubjectType = labMethodSettings.filter(it => (
+                it.state.subjectTypeKey === subjectType
+            ));
+            usedLabMethodSettings = settingsForSubjectType[0];
+        }
+        if (!usedLabMethodSettings) {
+            // XXX: that wont work when no subjects or multiple subject types
+            usedLabMethodSettings = labMethodSettings[0];
+        }
+
+        if (usedLabMethodSettings && !subjectType) {
+            subjectType = labMethodSettings.state.subjectTypeKey;
+        }
+    }
 
     var related = merge(
         experimentRelated, studyRelated, labMethodSettingsRelated
@@ -131,8 +154,8 @@ var fromHooks = (ps) => {
 
     return {
         didFetch,
-        subjectType: labMethodSettings.state.subjectTypeKey,
-        experiment, study, labMethodSettings,
+        subjectType,
+        experiment, study, labMethodSettings: usedLabMethodSettings,
         related,
         send
     }

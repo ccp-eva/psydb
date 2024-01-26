@@ -1509,5 +1509,9 @@ module.exports = [
     {
         en: 'Subject has Field "${field}" not set!',
         de: 'Proband:in hat Field "${field}" nicht gesetzt!'
-    }
+    },
+    {
+        en: 'WARNING: There is no matching lab workflow setting in this study!',
+        de: 'WARNUNG: Es gibt keine passende Ablauf-Einstellung in dieser Studie!',
+    },
 ]
