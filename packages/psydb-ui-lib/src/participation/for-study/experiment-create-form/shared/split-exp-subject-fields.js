@@ -6,7 +6,7 @@ import {
     withFieldArray
 } from '../../../../formik';
 
-import * as Fields from '../form-fields/fields';
+import * as Fields from '../../form-fields';
 
 const Control = (ps) => {
     var {

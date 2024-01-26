@@ -4,7 +4,7 @@ import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
 import { DefaultForm } from '../../../../formik';
-import * as Fields from '../form-fields/fields';
+import * as Fields from '../../form-fields';
 
 import {
     withSubjectTypeSelect,

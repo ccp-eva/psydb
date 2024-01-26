@@ -3,7 +3,7 @@ import { only } from '@mpieva/psydb-core-utils';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
 import { DefaultForm } from '../../../../formik';
-import * as Fields from '../form-fields/fields';
+import * as Fields from '../../form-fields';
 
 import {
     withSubjectTypeSelect,

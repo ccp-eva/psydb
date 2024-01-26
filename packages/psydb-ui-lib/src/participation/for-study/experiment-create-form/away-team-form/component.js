@@ -5,7 +5,7 @@ import { useFetchAll } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator, Alert } from '@mpieva/psydb-ui-layout';
 
 import { DefaultForm } from '../../../../formik';
-import * as Fields from '../form-fields/fields';
+import * as Fields from '../../form-fields';
 
 import {
     MultiSubjectHint,

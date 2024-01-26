@@ -2,7 +2,7 @@ import React from 'react';
 import { only } from '@mpieva/psydb-core-utils';
 
 import { DefaultForm } from '../../../../formik';
-import * as Fields from '../form-fields/fields';
+import * as Fields from '../../form-fields';
 
 import {
     GroupExpSubjectFields,

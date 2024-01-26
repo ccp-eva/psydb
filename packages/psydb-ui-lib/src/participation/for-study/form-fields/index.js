@@ -4,7 +4,7 @@ import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 import * as enums from '@mpieva/psydb-schema-enums';
 
-import { Fields, useFormikContext } from '../../../../formik';
+import { Fields, useFormikContext } from '../../../formik';
 export const SaneString = Fields.SaneString;
 export const GenericEnum = Fields.GenericEnum;
 export const ForeignId = Fields.ForeignId;
@@ -68,8 +68,9 @@ export const IntervalStartOnly = (ps) => {
 
 export const Team = (ps) => {
     var { studyId, disabled } = ps;
-    var { setFieldValue } = useFormikContext();
+    
     var translate = useUITranslation();
+    var { setFieldValue } = useFormikContext();
 
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.fetchExperimentOperatorTeamsForStudy({ studyId })
@@ -150,7 +151,6 @@ export const ExperimentOperators = (ps) => {
             label={ translate('Experimenters') }
             dataXPath='$.labOperatorIds'
             collection='personnel'
-            enableMove={ false }
             required
         />
     )
@@ -216,7 +216,7 @@ export const InviteLocation = (ps) => {
 }
 
 export const ApestudiesWKPRCDefaultLocation = (ps) => {
-    var { labMethodSettings, related, disabled } = ps;
+    var { labMethodSettings, related, disabled, required, readOnly } = ps;
     var { locationTypeKeys } = labMethodSettings.state;
     
     var translate = useUITranslation();
@@ -243,7 +243,8 @@ export const ApestudiesWKPRCDefaultLocation = (ps) => {
                             )
                         }), {})
                     }
-                    disabled={ disabled }
+                    disabled={ disabled || readOnly }
+                    required={ required }
                 />
             )}
             <Fields.ForeignId
@@ -255,6 +256,8 @@ export const ApestudiesWKPRCDefaultLocation = (ps) => {
                     disabled
                     || (!preselectedType && !values.__locationTypeKey)
                 }
+                readOnly={ readOnly }
+                required={ required }
             />
         </>
     )
