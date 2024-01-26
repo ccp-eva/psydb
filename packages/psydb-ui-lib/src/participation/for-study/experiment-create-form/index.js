@@ -97,12 +97,15 @@ const ExperimentCreateForm = (ps) => {
 }
 
 var fromHooks = (ps) => {
-    var { studyId, onSuccessfulUpdate } = ps;
+    var { studyId, preselectedSubject, onSuccessfulUpdate } = ps;
 
     var [ labMethodKey, setLabMethodKey ] = useState();
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.fetchExperimentVariantSettings({
-            studyIds: [ studyId ]
+            studyIds: [ studyId ],
+            ...(preselectedSubject && {
+                subjectType: preselectedSubject.type,
+            })
         })
     ), {
         dependencies: [ studyId ],
