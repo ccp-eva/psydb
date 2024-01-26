@@ -1,4 +1,5 @@
 import React from 'react';
+import { unique } from '@mpieva/psydb-core-utils';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 import * as enums from '@mpieva/psydb-schema-enums';
@@ -36,15 +37,16 @@ export const Timestamp = (ps) => {
 
 export const Interval = (ps) => {
     var { ...pass } = ps;
+    var translate = useUITranslation();
     return (
         <>
             <Fields.DateTime
-                label='Beginn'
+                label={ translate('Start') }
                 dataXPath='$.interval.start'
                 { ...pass }
             />
             <Fields.DateTime
-                label='Ende'
+                label={ translate('End') }
                 dataXPath='$.interval.end'
                 { ...pass }
             />
@@ -54,9 +56,10 @@ export const Interval = (ps) => {
 
 export const IntervalStartOnly = (ps) => {
     var { ...pass } = ps;
+    var translate = useUITranslation();
     return (
         <Fields.DateTime
-            label='Zeitpunkt'
+            label={ translate('Date/Time') }
             dataXPath='$.interval.start'
             { ...pass }
         />
@@ -112,26 +115,29 @@ export const Status = (ps) => {
     var { type, ...pass } = ps;
     var translate = useUITranslation();
 
-    var options = ({
-        'invite': {
-            ...enums.inviteParticipationStatus.mapping,
-            ...enums.inviteUnparticipationStatus.mapping,
-        },
-        'away-team': {
-            ...enums.awayTeamParticipationStatus.mapping,
-            ...enums.awayTeamUnparticipationStatus.mapping,
-        },
-        'online-survey': {
-            ...enums.awayTeamParticipationStatus.mapping,
-            ...enums.awayTeamUnparticipationStatus.mapping,
-        }
+    var keys = unique({
+        'invite': [
+            ...enums.inviteParticipationStatus.keys,
+            ...enums.inviteUnparticipationStatus.keys,
+        ],
+        'away-team': [
+            ...enums.awayTeamParticipationStatus.keys,
+            ...enums.awayTeamUnparticipationStatus.keys,
+        ],
+        'online-survey': [
+            ...enums.awayTeamParticipationStatus.keys,
+            ...enums.awayTeamUnparticipationStatus.keys,
+        ]
     }[type]);
 
     return (
         <Fields.GenericEnum
             label={ translate('Status') }
             dataXPath='$.status'
-            options={ options }
+            options={ translate.options(keys.reduce((acc, key) => ({
+                ...acc,
+                [key]: `_participationStatus_${key}`
+            }), {})) }
             { ...pass }
         />
     );

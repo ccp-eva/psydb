@@ -4,6 +4,7 @@ import { merge, unique, only } from '@mpieva/psydb-core-utils';
 import * as enums from '@mpieva/psydb-schema-enums';
 
 import { fixRelated } from '@mpieva/psydb-ui-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useSend } from '@mpieva/psydb-ui-hooks';
 import {
     LoadingIndicator,
@@ -31,6 +32,8 @@ const ExperimentEditForm = (ps) => {
         send
     } = fromHooks(ps);
 
+    var translate = useUITranslation();
+
     if (!didFetch) {
         return <LoadingIndicator size='lg' />
     }
@@ -51,16 +54,20 @@ const ExperimentEditForm = (ps) => {
     //var related = experimentRelated; // TODO: merge related maybe?
     return (
         <>
-            <FormHelpers.InlineWrapper label='Ablauf-Typ'>
-                <PaddedText>
-                    <b>{ enums.labMethods.getLabel(labMethodKey) }</b>
-                </PaddedText>
+            <FormHelpers.InlineWrapper
+                label={ translate('Lab Workflow Type') }
+            >
+                <PaddedText><b>
+                    { translate(`_labWorkflow_${labMethodKey}`) }
+                </b></PaddedText>
             </FormHelpers.InlineWrapper>
             { FormContainer && (
                 <FormContainer.Component
                     useAjvAsync
                     ajvErrorInstancePathPrefix='/payload'
                     onSubmit={ send.exec }
+                    isTransmitting={ send.isTransmitting }
+
                     subjectType={ subjectType }
                     experiment={ experiment }
                     study={ study }
