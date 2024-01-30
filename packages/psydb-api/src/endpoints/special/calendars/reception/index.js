@@ -29,7 +29,7 @@ var fetchResearchGroups = require('./fetch-research-groups');
 var fetchPersonnel = require('./fetch-personnel');
 var fetchExperiments = require('./fetch-experiments');
 var fetchOpsTeams = require('./fetch-ops-teams');
-var fetchSubjectsOfType = require('./fetch-subjects-of-type');
+//var fetchSubjectsOfType = require('./fetch-subjects-of-type');
 
 var receptionCalendar = async (context, next) => {
     var { db, permissions, request, timezone } = context;

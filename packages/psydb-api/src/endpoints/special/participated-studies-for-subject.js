@@ -218,7 +218,8 @@ var fetchSubjectData = async ({
     } = await gatherDisplayFieldsForRecordType({
         db,
         collectionName: 'subject',
-        customRecordType: subjectRecord.type
+        customRecordType: subjectRecord.type,
+        permissions,
     });
 
     var {

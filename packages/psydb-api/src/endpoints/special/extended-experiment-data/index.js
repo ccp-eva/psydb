@@ -115,6 +115,18 @@ var extendedExperimentData = async (context, next) => {
             break;
         }
     }
+    // FIXME: add canViewExperimentDetails flag or something
+    // to above check or check the availableLabMethod for the specific
+    // researchGroup
+    // XXX: maybe systemRoles should be below researchGroup
+    if ([
+        'apestudies-wkprc-default',
+        'manual-only-participation-default'
+    ].includes(experimentType)) {
+        if (permissions.availableLabMethods.includes(experimentType)) {
+            hasAnyAccess = true;
+        }
+    }
     if (!hasAnyAccess) {
         throw new ApiError(403, {
             apiStatus: 'LabOperationAccessDenied',
@@ -191,6 +203,7 @@ var extendedExperimentData = async (context, next) => {
             availableDisplayFieldData,
         } = await gatherDisplayFieldsForRecordType({
             prefetched: customRecordTypeData,
+            permissions,
         });
 
         var displayFields = [

@@ -166,6 +166,11 @@ var search = async (context, next) => {
     if (target === 'optionlist' && collectionName === 'researchGroup') {
         onlyIds = permissions.getResearchGroupIds();
     }
+    if (target === 'optionlist' && collectionName === 'systemRole') {
+        if (!permissions.isRoot()) {
+            onlyIds = permissions.availableSystemRoleIds;
+        }
+    }
     debug('>>>>>>>>> START');
     var records = await fetchRecordsByFilter({
         db,

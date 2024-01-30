@@ -1,4 +1,5 @@
 'use strict';
+// XXX: OBSOLETE
 var {
     keyBy,
 } = require('@mpieva/psydb-core-utils');
@@ -17,7 +18,7 @@ var {
 
 
 var fetchSubjectsOfType = async (context, options) => {
-    var { db } = context;
+    var { db, permissions } = context;
     var {
         subjectTypeKey,
         subjectIds,
@@ -39,6 +40,7 @@ var fetchSubjectsOfType = async (context, options) => {
             availableDisplayFieldData,
         } = await gatherDisplayFieldsForRecordType({
             prefetched: subjectTypeRecord,
+            permissions
         });
         
 

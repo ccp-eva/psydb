@@ -14,6 +14,7 @@ var fetchParentDataForGroups = async ({
     db,
     groupByField,
     groupIds,
+    permissions,
 }) => {
     // FIXME: only if foreign id
     var { collection, recordType } = groupByField.props;
@@ -24,7 +25,8 @@ var fetchParentDataForGroups = async ({
     } = await gatherDisplayFieldsForRecordType({
         db,
         collectionName: collection,
-        customRecordType: recordType
+        customRecordType: recordType,
+        permissions
     });
 
     var customRecordTypeData = await fetchOneCustomRecordType({
