@@ -58,7 +58,7 @@ module.exports = async (bag) => {
         });
         console.log({ userId })
 
-        cache[site] = {
+        cache[site.type] = {
             ethnologySetId,
             locationCrtId,
             subjectCrtId,
@@ -68,7 +68,7 @@ module.exports = async (bag) => {
     }
 
     await createCongoSpecialFields({
-        driver, apiKey, subjectCrtId
+        driver, apiKey, subjectCrtId: cache['congo'].subjectCrtId
     });
 
     console.dir(ejson(
