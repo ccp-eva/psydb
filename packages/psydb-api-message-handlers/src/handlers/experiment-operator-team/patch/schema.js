@@ -5,6 +5,7 @@ var {
     Id,
     Color,
     DefaultBool,
+    ForeignId,
     ForeignIdList,
 } = require('@mpieva/psydb-schema-fields');
 
@@ -36,6 +37,10 @@ var Full = (bag) => {
                         hidden: DefaultBool(),
 
                         ...(!hasExperiments && ({
+                            researchGroupId: ForeignId({
+                                collection: 'researchGroupId',
+                            }),
+
                             personnelIds: ForeignIdList({
                                 collection: 'personnel',
                                 minItems: 1,
