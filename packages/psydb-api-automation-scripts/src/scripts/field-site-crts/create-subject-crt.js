@@ -9,12 +9,17 @@ var createSubjectCRT = async (bag) => {
         formOrder
     } = bag;
 
+    var label = `FS ${site.labelEN} Subjects`;
+    var displayNameI18N = {
+        de: `FS ${site.labelDE} Proband:innen`,
+    }
+
     await driver.sendMessage({
         type: `custom-record-types/create`,
         payload: {
             collection: 'subject',
             type: `fs_${site.type}_subject`,
-            props: { label: `FS ${site.label} Probanden` }
+            props: { label, displayNameI18N }
         },
     }, { apiKey });
 
@@ -26,6 +31,7 @@ var createSubjectCRT = async (bag) => {
             type: 'SaneString',
             key: 'name',
             displayName: 'Name',
+            displayNameI18N: { de: 'Name' },
             props: { minLength: 1 }
         }},
     }, { apiKey });
@@ -35,7 +41,8 @@ var createSubjectCRT = async (bag) => {
         payload: { id: crtId, subChannelKey: 'scientific', props: {
             type: 'DateOnlyServerSide',
             key: 'dateOfBirth',
-            displayName: 'Geburtsdatum',
+            displayName: 'Date of Birth',
+            displayNameI18N: { de: 'Geburtsdatum' },
             props: { isNullable: false, isSpecialAgeFrameField: true }
         }},
     }, { apiKey });
@@ -45,7 +52,8 @@ var createSubjectCRT = async (bag) => {
         payload: { id: crtId, subChannelKey: 'scientific', props: {
             type: 'DefaultBool',
             key: 'isDateOfBirthReliable',
-            displayName: 'Geburtsdatum gesichert',
+            displayName: 'Date of Birth Reliable',
+            displayNameI18N: { de: 'Geburtsdatum gesichert' },
             props: {},
         }},
     }, { apiKey });
@@ -55,10 +63,12 @@ var createSubjectCRT = async (bag) => {
         payload: { id: crtId, subChannelKey: 'scientific', props: {
             type: 'HelperSetItemId',
             key: 'ethnologyId',
-            displayName: 'Ethnie',
+            displayName: 'Ethnology',
+            displayNameI18N: { de: 'Ethnie' },
             props: {
                 setId: ethnologySetId,
                 isNullable: true,
+                displayEmptyAsUnknown: false,
             },
         }},
     }, { apiKey });
@@ -67,12 +77,15 @@ var createSubjectCRT = async (bag) => {
         type: `custom-record-types/add-field-definition`,
         payload: { id: crtId, subChannelKey: 'scientific', props: {
             type: 'ForeignId',
-            key: 'defaultLocationId',
-            displayName: 'Standard-Location',
+            key: 'mainLocationId',
+            displayName: 'Main Location',
+            displayNameI18N: { de: 'Haupt-Location' },
             props: {
                 collection: 'location',
                 recordType: `fs_${site.type}_location`,
                 isNullable: true,
+                displayEmptyAsUnknown: false,
+                addReferenceToTarget: false,
                 constraints: {},
             },
         }},

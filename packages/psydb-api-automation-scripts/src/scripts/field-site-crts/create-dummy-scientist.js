@@ -13,9 +13,9 @@ var createResearchGroup = async (bag) => {
         payload: { props: {
             gdpr: {
                 firstname: 'Test Scientist',
-                lastname: site.label,
+                lastname: site.labelEN,
                 emails: [
-                    { email: emailify(site.label), isPrimary: true },
+                    { email: emailify(site.labelEN), isPrimary: true },
                 ],
                 phones: [],
                 description: 'Dummy Account',
