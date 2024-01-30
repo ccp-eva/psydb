@@ -95,7 +95,7 @@ const createInitialValues = (ps) => {
             subjectId: it.subjectId,
             status: it.participationStatus,
             excludeFromMoreExperimentsInStudy: (
-                it.excludeFromMoreExperimentsInStudy
+                it.excludeFromMoreExperimentsInStudy || false
             )
         })),
     }
