@@ -10,6 +10,8 @@ var defaultMqSettings = {
 var defaultRohrpostSettings = {
     createChannelId: () => ObjectId(),
     createChannelEventId: () => ObjectId(),
+    enableTransactions: false,
+    enableOptimisticLocking: false
 }
 
 module.exports = {
