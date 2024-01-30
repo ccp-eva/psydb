@@ -50,7 +50,13 @@ var prefilterAgeFrames = (bag) => {
         )
     }
 
-    return { $match: { $or: OR }};
+    var $comment = 'prefilterAgeFrames';
+    return (
+        OR.length > 0
+        ? { $match: { $or: OR }}
+        // FIXME: return undefined and use SmartArray in caller
+        : { $match: { $expr: { $eq: [ 1, 1 ] } }}
+    );
 }
 
 module.exports = {
