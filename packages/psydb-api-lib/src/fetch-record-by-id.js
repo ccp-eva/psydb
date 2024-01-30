@@ -38,7 +38,7 @@ var fetchRecordById = async ({
     collectionName,
     permissions,
     hasSubChannels,
-    removedCustomFields,
+    removedCustomFields = [],
     recordLabelDefinition,
     id,
     labelOnly,

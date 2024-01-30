@@ -46,6 +46,13 @@ var extendedSearchCore = async (bag) => {
         type: recordType
     });
 
+    if (
+        !permissions.hasFlag('canAccessSensitiveFields')
+        && crt.state.commentFieldIsSensitive
+    ) {
+        columns = columns.filter(it => it !== '/scientific/state/comment')
+    }
+
     var {
         availableDisplayFieldData,
     } = await gatherDisplayFieldsForRecordType({
@@ -53,6 +60,7 @@ var extendedSearchCore = async (bag) => {
         collectionName: collection,
         customRecordType: recordType,
         target: 'table',
+        permissions
     });
     
     // FIXME: generalzie the creation of the field parts
