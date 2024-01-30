@@ -25,7 +25,7 @@ var beforeAll = async function () {
             con: this.context.mongo.client,
             database: this.context.mongo.dbName,
             clean: true,
-            from: fixtures(fixtureName, { db: true })
+            from: fixtures.get(fixtureName, { db: true })
         })
         this.context.bsonIds = fixtures.bsonIds;
 
