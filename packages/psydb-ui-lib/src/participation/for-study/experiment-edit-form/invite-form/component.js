@@ -1,8 +1,6 @@
 import React from 'react';
 import { only, unique } from '@mpieva/psydb-core-utils';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
-import { useFetch } from '@mpieva/psydb-ui-hooks';
-import { LoadingIndicator, SplitPartitioned } from '@mpieva/psydb-ui-layout';
 
 import { DefaultForm } from '../../../../formik';
 import * as Fields from '../../form-fields';

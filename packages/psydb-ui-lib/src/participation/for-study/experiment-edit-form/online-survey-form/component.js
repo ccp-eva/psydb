@@ -1,7 +1,6 @@
 import React from 'react';
 import { only } from '@mpieva/psydb-core-utils';
-import { useFetch } from '@mpieva/psydb-ui-hooks';
-import { LoadingIndicator, SplitPartitioned } from '@mpieva/psydb-ui-layout';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
 import { DefaultForm } from '../../../../formik';
 import * as Fields from '../../form-fields';
@@ -10,8 +9,6 @@ import {
     withSubjectTypeSelect,
     Footer
 } from '../shared';
-
-import PerSubjectFields from './per-subject-fields';
 
 export const Component = (ps) => {
     var {
@@ -24,27 +21,33 @@ export const Component = (ps) => {
         ...pass
     } = ps;
     
-    var initialValues = {
-        ...only({ from: experiment.state, paths: [
-            'interval'
-        ]}),
-        subjectData: [ experiment.state.subjectData[0] ]
-    }
+    var initialValues = createInitialValues(ps);
 
     // NOTE: this should move into lab method settings
     var { enableFollowUpExperiments } = study.state;
+
+    var formBag = only({ from: ps, keys: [
+        'useAjvAsync',
+        'ajvErrorInstancePathPrefix',
+        'onSubmit'
+    ]});
 
     var formBodyBag = {
         subjectType,
         enableFollowUpExperiments
     }
 
+    var footerBag = only({ from: ps, keys: [
+        'isTransmitting',
+        'enableSubmit'
+    ]});
+
     return (
-        <DefaultForm initialValues={ initialValues } { ...pass }>
+        <DefaultForm { ...formBag } initialValues={ initialValues }>
             {(formikProps) => (
                 <>
                     <FormBody { ...formBodyBag } formik={ formikProps } />
-                    <Footer />
+                    <Footer { ...footerBag } />
                 </>
             )}
         </DefaultForm>
@@ -58,20 +61,20 @@ const FormBody = (ps) => {
         enableFollowUpExperiments
     } = ps;
 
-    var { values } = formik;
+    var translate = useUITranslation();
 
     return (
         <>
             <Fields.ForeignId
-                label='Proband:in'
+                label={ translate('Subject') }
                 dataXPath={`$.subjectData.0.subjectId`}
                 collection='subject'
                 recordType={ subjectType }
             />
-            <Fields.IntervalStartOnly />
+            <Fields.Timestamp />
             
             <Fields.Status type='online-survey'
-                dataXPath={`$.subjectData.0.participationStatus`}
+                dataXPath={`$.subjectData.0.status`}
             />
             { enableFollowUpExperiments && (
                 <Fields.DefaultBool
@@ -81,4 +84,21 @@ const FormBody = (ps) => {
             )}
         </>
     );
+}
+
+const createInitialValues = (ps) => {
+    var { experiment } = ps;
+
+    var initialValues = {
+        timestamp: experiment.state.interval.start,
+        subjectData: experiment.state.subjectData.map(it => ({
+            subjectId: it.subjectId,
+            status: it.participationStatus,
+            excludeFromMoreExperimentsInStudy: (
+                it.excludeFromMoreExperimentsInStudy
+            )
+        })),
+    }
+
+    return initialValues;
 }
