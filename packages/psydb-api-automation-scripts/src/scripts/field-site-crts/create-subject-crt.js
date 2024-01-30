@@ -68,7 +68,7 @@ var createSubjectCRT = async (bag) => {
             props: {
                 setId: ethnologySetId,
                 isNullable: true,
-                displayEmptyAsUnknown: false,
+                displayEmptyAsUnknown: true,
             },
         }},
     }, { apiKey });
@@ -84,7 +84,7 @@ var createSubjectCRT = async (bag) => {
                 collection: 'location',
                 recordType: `fs_${site.type}_location`,
                 isNullable: true,
-                displayEmptyAsUnknown: false,
+                displayEmptyAsUnknown: true,
                 addReferenceToTarget: false,
                 constraints: {},
             },

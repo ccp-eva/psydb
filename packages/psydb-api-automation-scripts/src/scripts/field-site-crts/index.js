@@ -51,13 +51,6 @@ module.exports = async (bag) => {
         var researchGroupId = await createResearchGroup({ ...shared });
         console.log({ researchGroupId })
 
-        var userId = await createDummyScientist({
-            ...shared,
-            systemRoleId,
-            researchGroupId,
-        });
-        console.log({ userId })
-
         cache[site.type] = {
             ethnologySetId,
             locationCrtId,
