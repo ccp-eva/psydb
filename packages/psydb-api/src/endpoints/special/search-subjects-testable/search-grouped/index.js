@@ -21,12 +21,12 @@ var {
     ApiError,
     Ajv,
     ResponseBody,
+    withRetracedErrors,
 
     fromFacets,
 } = require('@mpieva/psydb-api-lib');
 
 var {
-    MatchIntervalOverlapStage,
     StripEventsStage,
     AddSubjectTestabilityFieldsStage,
     HasAnyTestabilityStage,
@@ -201,8 +201,10 @@ var searchGrouped = async (context, next) => {
         }}
     ]
 
+    console.log(stages);
+
     debug('start aggregate sbjects');
-    var result = await (
+    var result = await withRetracedErrors(
         db.collection('subject')
         .aggregate(stages, {
             hint: 'ageFrameIndex',

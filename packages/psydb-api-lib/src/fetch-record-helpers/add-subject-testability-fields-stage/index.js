@@ -59,7 +59,7 @@ var AddSubjectTestabilityFieldsStage = ({
         ...(ageFrameField && {
             _ageFrameField: `$scientific.state.custom.${ageFrameField.key}`,
         }),
-        ...conditionsByStudy
+        ...conditionsByStudy,
     }};
 
     //console.dir({ stage }, { depth: null });
