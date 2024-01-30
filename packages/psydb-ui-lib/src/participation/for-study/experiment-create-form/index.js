@@ -8,63 +8,62 @@ import { LoadingIndicator, FormHelpers } from '@mpieva/psydb-ui-layout';
 import * as Controls from '@mpieva/psydb-ui-form-controls';
 import * as enums from '@mpieva/psydb-schema-enums';
 
+import {
+    withLabMethodSelect,
+    withSubjectTypeSelect,
+    maybeAutoSelect
+} from './shared';
+
 import InviteForm from './invite-form';
 import AwayTeamForm from './away-team-form';
 import OnlineSurveyForm from './online-survey-form';
 import ApestudiesWKPRCDefaultForm from './apestudies-wkprc-default-form';
 import ManualOnlyParticipationForm from './manual-only-participation-form';
 
+const compose = (C) => (
+    withLabMethodSelect(withSubjectTypeSelect(C))
+)
 
-const ExperimentCreateForm = (ps) => {
+const ExperimentCreateForm = compose((ps) => {
     var {
         studyId,
         preselectedSubjectId = undefined,
         preselectedSubject = undefined,
         subjectsAreTestedTogetherOverride = undefined,
-        enableTeamSelect = false
+        enableTeamSelect = false,
+
+        labMethod,
+        subjectType,
+        specificLabMethodSettings,
+        labMethodSettingsRelated,
+
+        onSuccessfulUpdate,
+        onFailedUpdate,
     } = ps;
 
-    var {
-        didFetch, labMethodSettings, labMethodSettingsRelated,
-        labMethodKey, setLabMethodKey,
-        send
-    } = fromHooks(ps);
+    // XXX
+    var filteredLabMethodSettings = [ specificLabMethodSettings ];
 
     var translate = useUITranslation();
 
-    if (!didFetch) {
-        return <LoadingIndicator size='lg' />
-    }
+    var send = useSend((formData) => {
+        var { subjectsAreTestedTogether, ...otherFormData } = formData;
+        var type = (
+            subjectsAreTestedTogether
+            ? 'experiment/create-manual'
+            : 'experiment/create-manual-for-many-subjects'
+        );
 
-    var enabledLabMethodKeys = unique(labMethodSettings.map(it => it.type));
-    var showLabMethodSelect = true;
-    if (hasOnlyOne(enabledLabMethodKeys)) {
-        labMethodKey = enabledLabMethodKeys[0]
-        showLabMethodSelect = false;
-    }
-    var filteredLabMethodSettings = (
-        labMethodKey
-        ? labMethodSettings.filter(it => it.type === labMethodKey)
-        : []
-    );
+        return { type, payload: {
+            studyId,
+            labMethod,
+            ...otherFormData
+        }}
+    }, { onSuccessfulUpdate });
 
-    var FormContainer = switchFormContainer(labMethodKey);
+    var FormContainer = switchFormContainer(labMethod);
     return (
         <>
-            { showLabMethodSelect && (
-                <FormHelpers.InlineWrapper
-                    label={ translate('Lab Workflow Type') }
-                >
-                    <Controls.GenericEnum
-                        value={ labMethodKey }
-                        onChange={ setLabMethodKey }
-                        options={ translate.options(only({
-                            from: enums.labMethods.mapping,
-                            paths: enabledLabMethodKeys
-                        }))}
-                    />
-                </FormHelpers.InlineWrapper>
-            )}
             { FormContainer && (
                 <FormContainer.Component
                     useAjvAsync
@@ -82,10 +81,13 @@ const ExperimentCreateForm = (ps) => {
                     studyId={ studyId }
                     enableTeamSelect={ enableTeamSelect }
 
+                    subjectType={ subjectType }
+                    labMethod={ labMethod }
+
                     preselectedSubjectId={ preselectedSubjectId }
                     preselectedSubject={ preselectedSubject }
 
-                    labMethodSettings={ filteredLabMethodSettings }
+                    labMethodSettings={ specificLabMethodSettings }
                     related={ labMethodSettingsRelated }
                     subjectsAreTestedTogetherOverride={
                         subjectsAreTestedTogetherOverride
@@ -94,66 +96,10 @@ const ExperimentCreateForm = (ps) => {
             )}
         </>
     )
-}
+});
 
-var fromHooks = (ps) => {
-    var { studyId, preselectedSubject, onSuccessfulUpdate } = ps;
-
-    var [ labMethodKey, setLabMethodKey ] = useState();
-    var [ didFetch, fetched ] = useFetch((agent) => (
-        agent.fetchExperimentVariantSettings({
-            studyIds: [ studyId ],
-            ...(preselectedSubject && {
-                subjectType: preselectedSubject.type,
-            })
-        })
-    ), {
-        dependencies: [ studyId ],
-        extraEffect: (response) => {
-            var records = response?.data?.data?.records;
-            if (records) {
-                var enabledLabMethodKeys = unique(records.map(it => it.type));
-                if (hasOnlyOne(enabledLabMethodKeys)) {
-                    setLabMethodKey(enabledLabMethodKeys[0]);
-                }
-            }
-        }
-    });
-
-    var send = useSend((formData) => {
-        var { subjectsAreTestedTogether, ...otherFormData } = formData;
-        var type = (
-            subjectsAreTestedTogether
-            ? 'experiment/create-manual'
-            : 'experiment/create-manual-for-many-subjects'
-        );
-
-        return { type, payload: {
-            studyId,
-            labMethod: labMethodKey,
-            ...otherFormData
-        }}
-    }, { onSuccessfulUpdate });
-
-    if (!didFetch) {
-        return { didFetch }
-    }
-
-
-    var {
-        records: labMethodSettings,
-        related: labMethodSettingsRelated
-    } = fixRelated(fetched.data);
-
-    return {
-        didFetch, labMethodSettings, labMethodSettingsRelated,
-        labMethodKey, setLabMethodKey,
-        send
-    }
-}
-
-var switchFormContainer = (labMethodKey) => {
-    switch (labMethodKey) {
+var switchFormContainer = (labMethod) => {
+    switch (labMethod) {
         case 'inhouse':
         case 'online-video-call':
             return InviteForm;

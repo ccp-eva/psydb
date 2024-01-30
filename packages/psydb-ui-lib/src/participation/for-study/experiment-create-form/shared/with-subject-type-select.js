@@ -1,85 +1,67 @@
 import React, { useState } from 'react';
 import { unique, keyBy, hasOnlyOne } from '@mpieva/psydb-core-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator, FormHelpers } from '@mpieva/psydb-ui-layout';
 import * as Controls from '@mpieva/psydb-ui-form-controls';
 
+import maybeAutoSelect from './maybe-auto-select';
+
 const withSubjectTypeSelect = (Component) => {
     var WithSubjectTypeSelect = (ps) => {
-        var { labMethodSettings, ...pass } = ps;
+        var { allSettingsOfSelectedLabMethod, ...pass } = ps;
 
-        var {
-            didFetch, fetched,
-            subjectType, setSubjectType
-        } = fromHooks(ps);
+        var [ subjectType, setSubjectType ] = useState();
+        var translate = useUITranslation();
 
-        if (!didFetch) {
-            return <LoadingIndicator size='lg' />
-        }
-
-        // NOTE: theese arent the full crts
-        // but just type and label
-        var subjectCRTs = fetched.data;
-
-        var enabledSubjectTypes = unique(
-            labMethodSettings.map(it => it.state.subjectTypeKey)
-        );
-        var showSubjectTypeSelect = true;
-        if (hasOnlyOne(enabledSubjectTypes)) {
-            showSubjectTypeSelect = false;
-            subjectType = enabledSubjectTypes[0];
-        }
-        
-        var filteredSubjectCRTs = subjectCRTs.filter(it => (
-            enabledSubjectTypes.includes(it.type)
-        ));
-        var subjectTypeOptions = keyBy({
-            items: filteredSubjectCRTs,
-            byProp: 'type',
-            transform: (it) => (it.label)
+        var [ autoSelectedType, enabledSubjectTypes ] = maybeAutoSelect({
+            selectables: unique(
+                allSettingsOfSelectedLabMethod
+                .map(it => it.state.subjectTypeKey)
+            )
         });
-        
+        if (autoSelectedType) {
+            subjectType = autoSelectedType
+        }
 
-        var labMethodSettingsBySubjectType = keyBy({
-            items: labMethodSettings,
-            byPointer: '/state/subjectTypeKey'
-        })
+        var maybeRenderedComponent = null;
+        if (subjectType) {
+            var specificLabMethodSettings = (
+                allSettingsOfSelectedLabMethod
+                .find(it => it.state.subjectTypeKey === subjectType)
+            );
+
+            var componentBag = {
+                specificLabMethodSettings,
+                subjectType,
+                ...pass
+            }
+
+            maybeRenderedComponent = (
+                <Component { ...componentBag } />
+            )
+        }
 
         return (
             <>
-                { showSubjectTypeSelect && (
-                    <FormHelpers.InlineWrapper label='Proband:innen-Typ'>
-                        <Controls.GenericEnum
+                { !autoSelectedType && (
+                    <FormHelpers.InlineWrapper
+                        label={ translate('Subject Type') }
+                    >
+                        <Controls.GenericTypeKey
+                            collection='subject'
+                            allowedTypes={ enabledSubjectTypes }
                             value={ subjectType }
                             onChange={ setSubjectType }
-                            options={ subjectTypeOptions }
                         />
                     </FormHelpers.InlineWrapper>
                 )}
-                { subjectType && (
-                    <Component
-                        labMethodSettings={
-                            labMethodSettingsBySubjectType[subjectType]
-                        }
-                        subjectType={ subjectType }
-                        { ...pass }
-                    />
-                )}
+                { maybeRenderedComponent }
             </>
         );
     }
     
     return WithSubjectTypeSelect;
 };
-
-var fromHooks = (ps) => {
-    var [ didFetch, fetched ] = useFetch((agent) => (
-        agent.fetchCollectionCRTs({ collection: 'subject' })
-    ), []);
-
-    var [ subjectType, setSubjectType ] = useState();
-
-    return { didFetch, fetched, subjectType, setSubjectType };
-}
 
 export default withSubjectTypeSelect;

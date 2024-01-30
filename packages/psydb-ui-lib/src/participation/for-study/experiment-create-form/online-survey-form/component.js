@@ -15,7 +15,7 @@ import {
 import PerSubjectFields from './per-subject-fields';
 import PreselectedSubjectFields from './preselected-subject-fields';
 
-export const Component = withSubjectTypeSelect((ps) => {
+export const Component = (ps) => {
     var {
         labMethodSettings,
         subjectType,
@@ -53,7 +53,7 @@ export const Component = withSubjectTypeSelect((ps) => {
             )}
         </DefaultForm>
     );
-})
+}
 
 const FormBody = (ps) => {
     var {

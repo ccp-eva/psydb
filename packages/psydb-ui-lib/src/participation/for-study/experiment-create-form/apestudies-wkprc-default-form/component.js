@@ -18,7 +18,7 @@ import {
 import useCustomFetchChain from './use-custom-fetch-chain';
 import SplitExpSubjectFields from './wkprc-split-exp-subject-fields';
 
-export const Component = withSubjectTypeSelect((ps) => {
+export const Component = (ps) => {
     var { initialValues } = ps;
 
     var formBag = only({ from: ps, keys: [
@@ -64,7 +64,7 @@ export const Component = withSubjectTypeSelect((ps) => {
             )}
         </DefaultForm>
     );
-})
+}
 
 const FormBody = (ps) => {
     var {

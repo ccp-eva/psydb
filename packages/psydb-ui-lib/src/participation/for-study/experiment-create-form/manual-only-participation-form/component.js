@@ -14,7 +14,7 @@ import {
     GroupExpSubjectFields
 } from '../shared';
 
-export const Component = withSubjectTypeSelect((ps) => {
+export const Component = (ps) => {
     var { isTransmitting } = ps;
     
     var formBag = only({ from: ps, keys: [
@@ -45,7 +45,7 @@ export const Component = withSubjectTypeSelect((ps) => {
             )}
         </DefaultForm>
     );
-})
+}
 
 const FormBody = (ps) => {
     var {
