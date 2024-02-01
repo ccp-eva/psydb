@@ -133,14 +133,14 @@ var gatherDisplayFieldsForRecordType =  async ({
 var mapDisplayTargetToValueProperty = (target) => {
     switch (target) {
         case 'invite-selection-list':
-            return 'selectionRowDisplayFields';
+            return 'selectionRow';
         case 'away-team-selection-list':
-            return 'awayTeamSelectionRowDisplayFields';
+            return 'awayTeamSelection';
         case 'optionlist':
-            return 'optionListDisplayFields';
+            return 'optionList';
         case 'table':
         default:
-            return 'tableDisplayFields';
+            return 'table';
     }
 }
 

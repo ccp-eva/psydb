@@ -83,6 +83,12 @@ var createSchemaForRecordType = ({
                 customRecordType.state.settings.fields
             );
         }
+
+        if (collectionName === 'subject') {
+            args.requiresTestingPermissions = (
+                customRecordType.state.settings.requiresTestingPermissions
+            )
+        }
     }
 
     // theese collection need extra argument
