@@ -9,6 +9,7 @@ var { SimpleHandler, checkForeignIdsExist } = require('../../../lib');
 var BaseSchema = require('./base-schema');
 var DefaultSchema = require('./default-schema');
 var OnlineSurveySchema = require('./online-survey-schema');
+var ApestudiesWKPRCDefaultSchema = require('./apestudies-wkprc-default-schema');
 
 var createFakeExperiment = require('./create-fake-experiment');
 var createParticipation = require('./create-participation');
@@ -42,6 +43,15 @@ handler.checkSchema = async ({ db, message }) => {
             });
         }
     }
+    else if (labProcedureType === 'apestudies-wkprc-default') {
+        isValid = ajv.validate(ApestudiesWKPRCDefaultSchema(), message);
+        if (!isValid) {
+            throw new ApiError(400, {
+                apiStatus: 'InvalidMessageSchema',
+                data: { ajvErrors: ajv.errors }
+            });
+        }
+    }
     else {
         isValid = ajv.validate(DefaultSchema(), message);
         if (!isValid) {
@@ -66,7 +76,7 @@ handler.checkAllowedAndPlausible = async ({
 
     var {
         labProcedureType,
-        subjectId,
+        subjectIds,
         studyId,
         locationId,
 
@@ -80,10 +90,14 @@ handler.checkAllowedAndPlausible = async ({
         throw new ApiError(409, 'StudyNotFound');
     }
 
-    var subject = await db.collection('subject').findOne({ _id: subjectId });
+    var subjects = await (
+        db.collection('subject')
+        .find({ _id: { $in: subjectIds }})
+        .toArray()
+    );
     // TODO: check subject permissions agains study permissions
     // TODO: check subject record type agains study subject types
-    if (!subject) {
+    if (subjects.length !== subjectIds.length) {
         throw new ApiError(409, 'SubjectNotFound');
     }
    
@@ -125,41 +139,83 @@ handler.checkAllowedAndPlausible = async ({
         cache.location = location;
     }
 
+    if (labProcedureType === 'apestudies-wkprc-default') {
+        var {
+            studyTopicIds,
+        } = message.payload;
+
+        var studyTopics = await (
+            db.collection('studyTopic').find({
+                _id: { $in: studyTopicIds }
+            }).toArray()
+        );
+        if (studyTopics.length !== studyTopicIds.length) {
+            throw new ApiError(409, 'StudyTopicNotFound');
+        }
+
+        cache.studyTopics = studyTopics;
+    }
+
     cache.study = study;
-    cache.subject = subject;
+    cache.subjects = subjects;
 }
 
 handler.triggerSystemEvents = async (context) => {
+    var { message, cache } = context;
     var {
-        db,
-        rohrpost,
-        message,
-        personnelId,
-        cache,
+        labProcedureType,
+        subjectsAreTestedTogether = false
+    } = message.payload;
 
-        dispatch,
+    if (subjectsAreTestedTogether) {
+        var bag = _createBag(context);
+        
+        var experimentId = await createFakeExperiment(context, bag);
+        await createParticipation(context, { ...bag, experimentId });
+    }
+    else {
+        var { subjects } = cache;
+        for (var it of subjects) {
+            var bag = _createBag(context);
+            bag.subjects = [ it ];
+
+            var experimentId = await createFakeExperiment(context, bag);
+            await createParticipation(context, { ...bag, experimentId });
+        }
+    }
+}
+
+handler.triggerOtherSideEffects = async () => {};
+
+const _createBag = (context) => {
+    var {
+        message,
+        cache,
     } = context;
 
     var { payload } = message;
     var {
         labProcedureType,
-        //studyId,
-        //subjectId,
-        //locationId,
+        subjectsAretestedTogether = false,
 
         timestamp,
-        status,
+        status = 'participated',
         
-        //experimentOperatorTeamId,
         experimentOperatorIds,
         excludeFromMoreExperimentsInStudy,
+
+        // apestudies
+        experimentName,
     } = payload;
 
     var {
         study,
-        subject,
+        subjects,
         location,
-        experimentOperatorTeam
+        experimentOperatorTeam,
+        
+        // apestudies
+        studyTopics,
     } = cache;
 
     var bag = {
@@ -168,18 +224,18 @@ handler.triggerSystemEvents = async (context) => {
         status,
         
         study,
-        subject,
+        subjects,
         location,
+
+        // apestudies
+        studyTopics,
+        experimentName,
 
         experimentOperatorTeam,
         experimentOperatorIds,
         excludeFromMoreExperimentsInStudy,
     };
 
-    var experimentId = await createFakeExperiment(context, bag);
-    await createParticipation(context, { ...bag, experimentId });
+    return bag;
 }
-
-handler.triggerOtherSideEffects = async () => {};
-
 module.exports = handler;

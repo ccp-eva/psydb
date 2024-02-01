@@ -48,5 +48,6 @@ module.exports = {
     prefixify: require('./prefixify'),
 
     jsonpointer: require('jsonpointer'),
+    keys: Object.keys,
     escapeRX: require('escape-string-regexp'),
 }

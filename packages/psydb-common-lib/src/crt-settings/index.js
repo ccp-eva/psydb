@@ -123,7 +123,13 @@ var CRTSettings = ({ data }) => {
         Object.values(__availableDisplayFieldsByPointer)
     );
     crt.augmentedDisplayFields = (target) => {
-        var displayFields = data[`${target}DisplayFields`];
+        // FIXME:gather-display-fields-for-record-type.js
+        // uses full target name others dont
+        var displayFields = data[
+            /DisplayFields/.test(target)
+            ? target
+            : `${target}DisplayFields`
+        ];
         return displayFields.map(it => (
             __availableDisplayFieldsByPointer[it.pointer || it.dataPointer]
         ));

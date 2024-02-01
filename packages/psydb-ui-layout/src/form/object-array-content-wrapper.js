@@ -28,7 +28,9 @@ export const ObjectArrayContentWrapper = (ps) => {
 }
 
 const Fallback = (ps) => {
+    var { disabled } = ps;
     var translate = useUITranslation();
+    
     return (
         <div>
             <div className='border p-3' style={{
@@ -36,7 +38,7 @@ const Fallback = (ps) => {
             }}>
                 <div className='text-muted' style={{
                     paddingLeft: '15px',
-                    opacity: ps.disabled ? 0.5 : 1
+                    opacity: disabled ? 0.5 : 1
                 }}>
                     <i>{ translate('No Items') }</i>
                     <ErrorIndicator { ...ps } />
@@ -47,18 +49,27 @@ const Fallback = (ps) => {
     );
 }
 
-const Footer = ({ formikArrayHelpers, defaultItemValue, disabled }) => (
-    <AddButtonWrapper>
-        <AddButton
-            disabled={ disabled }
-            onClick={ () => (
-                formikArrayHelpers.push(defaultItemValue || '')
+const Footer = (ps) => {
+    var {
+        formikArrayHelpers, defaultItemValue, disabled,
+        enableAdd = true
+    } = ps;
+
+    return (
+        <AddButtonWrapper>
+            { enableAdd && (
+                <AddButton
+                    disabled={ disabled }
+                    onClick={ () => (
+                        formikArrayHelpers.push(defaultItemValue || '')
+                    )}
+                >
+                    <Icons.Plus />
+                </AddButton>
             )}
-        >
-            <Icons.Plus />
-        </AddButton>
-    </AddButtonWrapper>
-)
+        </AddButtonWrapper>
+    );
+}
 
 const AddButtonWrapper = ({ children }) => (
     <div

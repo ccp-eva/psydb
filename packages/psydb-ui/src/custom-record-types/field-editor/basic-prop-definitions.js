@@ -9,6 +9,7 @@ import {
     SetIdProp,
     SharedForeignIdProps,
     DisplayEmptyAsUnknownProp,
+    IsSensitiveProp,
 } from './utility-fields';
 
 import getFieldValue from './get-field-value';
@@ -26,6 +27,7 @@ export const FullText = (ps) => {
     return (
         <>
             <MinLengthProp { ...ps } />
+            <IsSensitiveProp { ...ps } />
         </>
     )
 }

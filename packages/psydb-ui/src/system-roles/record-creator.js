@@ -6,10 +6,10 @@ import { MainForm } from './main-form';
 
 
 const Defaults = () => {
-    var LabOperation = ({ hasInvitation, type } = {}) => ({
+    var LabOperation = ({ type } = {}) => ({
         canWriteReservations: false,
         canSelectSubjectsForExperiments: false,
-        ...(hasInvitation && {
+        ...(type === 'invite' && {
             canConfirmSubjectInvitation: false,
         }),
         canViewExperimentCalendar: false,
@@ -61,8 +61,14 @@ const Defaults = () => {
         canWriteSubjects: false,
         canRemoveSubjects: false,
 
+        canReadSubjectGroups: false,
+        canWriteSubjectGroups: false,
+        canRemoveSubjectGroups: false,
+        
         canReadParticipation: false,
         canWriteParticipation: false,
+        canViewStudyLabOpsSettings: false,
+        canAccessSensitiveFields: false,
         
         canCreateReservationsWithinTheNext3Days: false,
         canCreateExperimentsWithinTheNext3Days: false,
@@ -71,9 +77,9 @@ const Defaults = () => {
 
         canViewReceptionCalendar:  false,
         labOperation: {
-            'inhouse': LabOperation({ hasInvitation: true }),
+            'inhouse': LabOperation({ type: 'invite' }),
             'away-team': LabOperation({ type: 'away-team' }),
-            'online-video-call': LabOperation({ hasInvitation: true }),
+            'online-video-call': LabOperation({ type: 'invite' }),
             'online-survey': Survey(),
         }
     });

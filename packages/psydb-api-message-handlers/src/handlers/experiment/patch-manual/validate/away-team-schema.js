@@ -3,7 +3,7 @@ var enums = require('@mpieva/psydb-schema-enums');
 
 var {
     ExactObject,
-    DateOnlyServerSide,
+    DateTime,
     ForeignId,
     DefaultArray,
     DefaultBool,
@@ -21,7 +21,7 @@ var {
 var AwayTeamSchema = (handlerType) => {
     var { properties, required } = requireify({
         experimentId: ForeignId({ collection: 'experiment' }),
-        timestamp: DateOnlyServerSide(),
+        timestamp: DateTime(),
 
         subjectData: DefaultArray({
             items: ExactObject(requireify({

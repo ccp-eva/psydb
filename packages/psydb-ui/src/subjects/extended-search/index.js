@@ -4,8 +4,9 @@ import { useHistory, useLocation } from 'react-router';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
 import {
+    usePermissions,
     useFetchAll,
-    useURLSearchParams
+    useURLSearchParams,
 } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -82,6 +83,8 @@ const ExtendedSearch = (ps) => {
     } = ps;
     var { fieldDefinitions } = crtSettings;
 
+    var permissions = usePermissions();
+
     var location = useLocation();
     var history = useHistory();
     var translate = useUITranslation();
@@ -107,9 +110,26 @@ const ExtendedSearch = (ps) => {
         window.scrollTo(0, 0);
     }
 
-    var defaultColumns = crtSettings.tableDisplayFields.map(it => (
-        it.dataPointer
-    ));
+    var defaultColumns = (
+        crtSettings.tableDisplayFields
+        .filter(it => {
+            var out = (
+                !crtSettings.commentFieldIsSensitive
+                || permissions.hasFlag('canAccessSensitiveFields')
+            ) ? (
+                true
+            ) : (
+                it.dataPointer !== '/scientific/state/comment'
+            );
+
+            return out;
+        })
+        .map(it => (
+            it.dataPointer
+        ))
+    );
+
+    console.log(defaultColumns);
 
     var defaultValues = {
         subjectType: recordType,

@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-    experimentVariants as variantsEnum,
-} from '@mpieva/psydb-schema-enums';
+import * as enums from '@mpieva/psydb-schema-enums';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { OuterSettingPanel } from '@mpieva/psydb-ui-layout';
 import SettingList from './setting-list';
@@ -34,7 +32,7 @@ const VariantListItem = (ps) => {
     );
 
     var panelProps = {
-        label: `${translate('Lab Workflow')} ${index + 1} - ${variantsEnum.mapping[variantType]}`,
+        label: `${translate('Lab Workflow')} ${index + 1} - ${translate(enums.labMethods.mapping[variantType])}`,
         addButtonLabel: '+ ' + translate('Settings'),
         showAddButton: !!onAddSetting,
         disableAddButton: hasNoSubjectTypesLeft,

@@ -30,7 +30,6 @@ var fetchEnabledLocationRecordsForStudy = async ({
                 : { $in: [
                     'inhouse',
                     'online-video-call',
-                    'inhouse-group-simple',
                 ]}
             ),
             'state.locations.customRecordTypeKey': locationType

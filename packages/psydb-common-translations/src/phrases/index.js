@@ -1451,5 +1451,71 @@ module.exports = [
         en: 'No other studies excluded.',
         de: 'Keine anderen ausgeschlossenen Studien.',
     },
-    
+   
+
+    {
+        en: 'Hint',
+        de: 'Hinweis',
+    },
+    {
+        internal: '_participation_multi_subject_grouped_hint',
+        en: 'The selection of multiple subjects will be saved as one pair/group participation.',
+        de: 'Bei Auswahl mehrerer Proband:innen wird eine einzelne Paar-/Gruppenteilnahme hinterlegt.',
+    },
+    {
+        internal: '_participation_multi_subject_ungrouped_hint',
+        en: 'The selection of multiple subjects will be saved as multiple independed participations.',
+        de: 'Bei Auswahl mehrerer Proband:innen wird wie mehrere unabhängige Einzelteilnahmen hinterlegt.',
+    },
+    {
+        en: 'Last Survey?',
+        de: 'Letzte Umfrage?',
+    },
+    {
+        en: 'Please select ${that}.',
+        de: 'Bitte ${that} auswählen.',
+    },
+
+    {
+        internal: '_labWorkflow_online-video-call',
+        en: 'Online Video Call',
+        de: 'Online-Video-Anruf'
+    },
+    {
+        internal: '_labWorkflow_online-survey',
+        en: 'Online Survey',
+        de: 'Online-Umfrage'
+    },
+    {
+        internal: '_labWorkflow_inhouse',
+        en: 'Inhouse Appointments',
+        de: 'Interne Termine',
+    },
+    {
+        internal: '_labWorkflow_away-team',
+        en: 'External Appointments',
+        de: 'Externe Termine',
+    },
+    {
+        internal: '_labWorkflow_apestudies-wkprc-default',
+        en: 'WKPRC',
+        de: 'WKPRC'
+    },
+    {
+        internal: '_labWorkflow_manual-only-participation',
+        en: 'Field Sites',
+        de: 'Field-Sites'
+    },
+    {
+        en: 'Subject has Field "${field}" not set!',
+        de: 'Proband:in hat Field "${field}" nicht gesetzt!'
+    },
+    {
+        en: 'WARNING: There is no matching lab workflow setting in this study!',
+        de: 'WARNUNG: Es gibt keine passende Ablauf-Einstellung in dieser Studie!',
+    },
+    {
+        en: 'Experimenters and research group can not be changed, as the team already has appointments.',
+        de: 'Experimenter:innen und Forschungsgruppe sind nicht änderbar, da das Team bereits Termine hat.'
+    },
 ]

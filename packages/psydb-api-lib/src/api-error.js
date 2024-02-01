@@ -1,4 +1,5 @@
 'use strict';
+var debug = require('debug')('psydb-api-lib:api-error');
 var { VerifyError } = require('@mpieva/psydb-common-verify-helpers');
 var getHttpStatus = require('./psydb-http-statuses');
 
@@ -27,6 +28,8 @@ class ApiError extends Error {
             apiStatus,
             data,
         };
+
+        debug('ApiError', this.__info);
     }
 
     getInfo () {
@@ -43,7 +46,7 @@ ApiError.from = (statusCode, otherError) => {
         });
     }
     else {
-        throw new Error('unknown error type');
+        throw otherError;
     }
 }
 

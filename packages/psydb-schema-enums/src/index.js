@@ -1,44 +1,6 @@
 'use strict';
-var createEnum = (list) => {
-    var en = {
-        list,
-        mapping: {},
-        keys: [],
-        names: [],
-    }
-
-    en.getLabel = (key) => {
-        var it = list.find(it => it.key === key);
-        return it ? it.name : undefined;
-    }
-    
-    // since the order within the object is technically not
-    // deterministic we do it the safe way
-    for (var it of list) {
-        en.keys.push(it.key);
-        en.names.push(it.name);
-        en.mapping[it.key] = it.name;
-    }
-
-    return en;
-};
-
-var createEnumFromMap = (map) => {
-    var list = Object.keys(map).map(key => ({
-        key: key, name: map[key]
-    }));
-
-    return createEnum(list);
-}
-
-var createEnumFromKV = ({ keys, names }) => {
-    var list = keys.map((it, ix) => ({
-        key: it,
-        name: names[ix]
-    }));
-
-    return createEnum(list);
-}
+var createEnum = require('./create-enum');
+var { labMethods, inviteLabMethods } = require('./lab-methods');
 
 var safeUnparticipationStatus = {
     keys: [
@@ -55,26 +17,26 @@ var safeUnparticipationStatus = {
     ]
 }
 
-var awayTeamParticipationStatus = createEnumFromMap({
+var awayTeamParticipationStatus = createEnum.fromMap({
     'participated': 'teilgenommen',
 });
 
-var awayTeamUnparticipationStatus = createEnumFromMap({
+var awayTeamUnparticipationStatus = createEnum.fromMap({
     'didnt-participate': 'nicht teilgenommen',
 });
 
-var inviteParticipationStatus = createEnumFromMap({
+var inviteParticipationStatus = createEnum.fromMap({
     'participated': 'teilgenommen',
     'showed-up-but-didnt-participate': 'gekommen',
     'didnt-show-up': 'nicht gekommen',
 });
 
-var inviteUnparticipationStatus = createEnumFromMap({
+var inviteUnparticipationStatus = createEnum.fromMap({
     'canceled-by-participant': 'abgesagt',
     'canceled-by-institute': 'ausgeladen',
 });
 
-var safeParticipationStatus = createEnumFromMap({
+var safeParticipationStatus = createEnum.fromMap({
     ...awayTeamParticipationStatus.mapping,
     ...inviteParticipationStatus.mapping,
 });
@@ -101,7 +63,7 @@ var unparticipationStatus = {
     ]
 }
 
-var customRecordTypeCollections = createEnumFromKV({
+var customRecordTypeCollections = createEnum.fromKV({
     keys: [
         'location',
         'subject',
@@ -118,7 +80,7 @@ var customRecordTypeCollections = createEnumFromKV({
     ]
 })
 
-var collections = createEnumFromKV({
+var collections = createEnum.fromKV({
     keys: [
         ...customRecordTypeCollections.keys,
         'personnel',
@@ -145,7 +107,7 @@ var collections = createEnumFromKV({
     ]
 })
 
-var foreignIdFieldCollections = createEnumFromKV({
+var foreignIdFieldCollections = createEnum.fromKV({
     keys: [
         ...customRecordTypeCollections.keys,
         'personnel',
@@ -160,38 +122,14 @@ var foreignIdFieldCollections = createEnumFromKV({
     ]
 })
 
-// FIXME: rename labProcedureTypes
-var experimentVariants = createEnumFromMap({
-    'inhouse': 'Inhouse Appointments',
-    'away-team': 'External Appointments',
-    'online-video-call': 'Online Video Appointments',
-    'online-survey': 'Online Survey',
-    //'inhouse-group-simple': 'Interne Gruppen Termine (WKPRC)'
-});
-
-var experimentTypes = createEnumFromMap({
-    'inhouse': 'Inhouse Appointments',
-    'away-team': 'External Appointments',
-    'online-video-call': 'Online Video Appointments',
-    'online-survey': 'Online Survey',
-    //'inhouse-group-simple': 'Interne Gruppen Termine (WKPRC)'
-});
-
-var inviteExperimentTypes = createEnumFromMap({
-    'inhouse': 'Inhouse Appointments',
-    'online-video-call': 'Online Video Appointments',
-});
-
-var subjectFieldRequirementChecks = createEnumFromMap({
+var subjectFieldRequirementChecks = createEnum.fromMap({
     'inter-subject-equality': 'Is Equal in Appointment'
-})
-
-var labMethods = createEnumFromMap({
-    'inhouse': 'Inhouse Appointments',
-    'away-team': 'External Appointments',
-    'online-video-call': 'Online Video Appointments',
-    'online-survey': 'Online Survey',
 });
+
+// FIXME:
+var inviteExperimentTypes = inviteLabMethods;
+var experimentVariants = labMethods;
+var experimentTypes = labMethods;
 
 module.exports = {
     awayTeamParticipationStatus,
@@ -208,11 +146,13 @@ module.exports = {
     foreignIdFieldCollections,
     collections,
 
-    experimentVariants,
     subjectFieldRequirementChecks,
 
-    experimentTypes,
-    inviteExperimentTypes,
-
     labMethods,
+    inviteLabMethods,
+
+    // FIXME
+    experimentTypes,
+    experimentVariants,
+    inviteExperimentTypes,
 }

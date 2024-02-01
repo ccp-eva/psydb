@@ -4,7 +4,13 @@ var debug = require('debug')('psydb:api-lib:validateOrThrow');
 var Ajv = require('./ajv');
 var ApiError = require('./api-error');
 
-var validateOrThrow = ({ payload, schema }) => {
+var validateOrThrow = (bag) => {
+    var {
+        payload,
+        schema,
+        apiStatus = 'InvalidRequestSchema'
+    } = bag;
+
     var ajv = Ajv(),
         isValid = false;
 

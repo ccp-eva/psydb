@@ -14,9 +14,11 @@ export const ScalarArrayItemWrapper = (ps) => {
         enableRemove = true,
         children,
 
-        formikMeta = {}
+        formikMeta = {},
+        extraItemWrapperProps = {},
     } = ps;
 
+    var { readOnly = false } = extraItemWrapperProps;
     var { error } = formikMeta;
 
     var className = classnames([
@@ -34,16 +36,16 @@ export const ScalarArrayItemWrapper = (ps) => {
                 <div className='flex-grow mr-3'>
                     { children }
                 </div>
-
-                <Aside { ...({
-                    index,
-                    formikArrayHelpers,
-                    hasMoveUp,
-                    hasMoveDown,
-                    hasRemove,
-                    disabled
-                })} />
-
+                { !readOnly && (
+                    <Aside { ...({
+                        index,
+                        formikArrayHelpers,
+                        hasMoveUp,
+                        hasMoveDown,
+                        hasRemove,
+                        disabled
+                    })} />
+                )}
             </div>
             <ErrorIndicator { ...ps } />
         </li>

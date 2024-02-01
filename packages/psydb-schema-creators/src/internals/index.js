@@ -78,10 +78,13 @@ module.exports.InhouseExperimentVariantSettingState = (
 );
 module.exports.AwayTeamExperimentVariantSettingState = (
     require('./experiment-variant-setting/away-team-state')
-)
+);
 
-module.exports.InhouseGroupSimpleExperimentVariantSettingState = (
-    require('./experiment-variant-setting/inhouse-group-simple-state')
+module.exports.ApestudiesWKPRCDefaultExperimentVariantSettingState = (
+    require('./experiment-variant-setting/apestudies-wkprc-default-state')
+);
+module.exports.ManualOnlyParticipationExperimentVariantSettingState = (
+    require('./experiment-variant-setting/manual-only-participation-state')
 );
 
 module.exports.ApiKeyFullSchema = require('./api-key/full-schema');

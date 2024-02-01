@@ -103,6 +103,7 @@ var selectableStudies = async (context, next) => {
         collectionName: 'study',
         customRecordType: studyRecordType,
         target,
+        permissions
     });
 
     var recordLabelDefinition = (

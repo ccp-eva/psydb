@@ -179,6 +179,7 @@ var locationExperimentCalendar = async (context, next) => {
         availableDisplayFieldData,
     } = await gatherDisplayFieldsForRecordType({
         prefetched: locationTypeData,
+        permissions,
     });
 
     var locationRecords = await (

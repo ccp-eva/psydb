@@ -27,6 +27,7 @@ var fetchRelatedCustomRecordTypes = async ({
             'collection': true,
             'type': true,
             'state.label': true,
+            'state.displayNameI18N': true,
         }}
     }
 

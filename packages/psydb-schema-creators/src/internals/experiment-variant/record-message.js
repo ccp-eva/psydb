@@ -1,7 +1,7 @@
 'use strict';
 var {
     ForeignId,
-    ExperimentVariantEnum
+    LabMethodKey,
 } = require('@mpieva/psydb-schema-fields');
 
 var {
@@ -20,7 +20,7 @@ var ExperimentVariantRecordMessage = ({
         type,
         stateSchemaCreator: internals.ExperimentVariantState,
         staticCreatePropSchemas: {
-            type: ExperimentVariantEnum(),
+            type: LabMethodKey(),
             studyId: ForeignId({
                 collection: 'study',
             }),

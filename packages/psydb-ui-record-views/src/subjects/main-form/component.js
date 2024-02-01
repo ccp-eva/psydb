@@ -28,6 +28,18 @@ export const Component = (ps) => {
     // FIXME: i dont like how this works
     var wrappedOnSubmit = (formData, formikBag) => {
         var { forceDuplicate, setIsHidden, ...realData } = formData;
+        
+        var readOnlyFields = [
+            ...crtSettings.fieldDefinitions.gdpr.filter(it => (
+                it.props.readOnly
+            )).map(it => ({ ...it, subChannelKey: 'gdpr' })),
+            ...crtSettings.fieldDefinitions.scientific.filter(it => (
+                it.props.readOnly
+            )).map(it => ({ ...it, subChannelKey: 'scientific' })),
+        ];
+        for (var it of readOnlyFields) {
+            delete realData[it.subChannelKey].custom[it.key];
+        }
         return onSubmit(realData, formikBag, { forceDuplicate, setIsHidden });
     }
 
@@ -76,6 +88,7 @@ export const Component = (ps) => {
 
 const FormFields = (ps) => {
     var { crtSettings, related, permissions } = ps;
+    var { requiresTestingPermissions } = crtSettings;
     
     var translate = useUITranslation();
 
@@ -86,7 +99,14 @@ const FormFields = (ps) => {
                 related={ related }
                 exclude={[
                     '/sequenceNumber',
-                    '/onlineId'
+                    '/onlineId',
+                    ...(!requiresTestingPermissions ? [
+                        '/scientific/state/testingPermissions'
+                    ] : []),
+                    ...((
+                        !permissions.hasFlag('canAccessSensitiveFields')
+                        && crtSettings.commentFieldIsSensitive
+                    ) ? [ '/scientific/state/comment' ] : [])
                 ]}
                 extraTypeProps={{
                     'PhoneWithTypeList': { enableParentNumbers: true },

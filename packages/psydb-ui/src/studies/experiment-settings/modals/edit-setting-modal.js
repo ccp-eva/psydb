@@ -2,6 +2,7 @@ import React from 'react';
 import omit from '@cdxoo/omit';
 
 import { demuxed } from '@mpieva/psydb-ui-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { WithDefaultModal } from '@mpieva/psydb-ui-layout';
 import * as Forms from '../setting-forms';
 
@@ -24,12 +25,13 @@ const EditSettingModalBody = (ps) => {
 
     var { _id: variantId, type: variantType } = variantRecord;
     var { subjectTypeKey } = settingRecord.state;
+    
+    var translate = useUITranslation();
 
     allowedSubjectTypes = {
         ...omit(existingSubjectTypes, allowedSubjectTypes),
-        [subjectTypeKey]: (
+        [subjectTypeKey]: translate.crt(
             settingRelated.relatedCustomRecordTypes.subject[subjectTypeKey]
-            .state.label
         )
     }
 
@@ -37,7 +39,10 @@ const EditSettingModalBody = (ps) => {
         'inhouse': Forms.InhouseSetting,
         'away-team': Forms.AwayTeamSetting,
         'online-video-call': Forms.OnlineVideoCallSetting,
-        'online-survey': Forms.OnlineSurveySetting
+        'online-survey': Forms.OnlineSurveySetting,
+
+        'apestudies-wkprc-default': Forms.ApestudiesWKPRCDefaultSetting,
+        'manual-only-participation': Forms.ManualOnlyParticipationSetting,
     })[variantType];
 
     return (

@@ -39,6 +39,18 @@ translate.options = (lang, options) => (
 var createTranslate = (lang = 'en') => {
     var _translate = (template, props) => translate(lang, template, props);
     _translate.options = (options) => translate.options(lang, options);
+    _translate.langCode = lang;
+
+    // FIXME: i would like to unify that unter translate.displayNameI18N;
+    _translate.fieldDefinition = (def) => (
+        def.displayNameI18N?.[lang] || def.displayName
+    );
+    _translate.crt = (record) => (
+        record.state.displayNameI18N?.[lang] || record.state.label
+    );
+    _translate.helperSet = (record) => (
+        record.state.displayNameI18N?.[lang] || record.state.label
+    );
 
     // FIXME: that dsoenst work with GenericEnum
     // and simply shallow cloning doenst wont work either i think

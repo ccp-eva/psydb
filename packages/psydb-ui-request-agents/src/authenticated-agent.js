@@ -81,15 +81,22 @@ const createAgent = (options = {}) => {
         recordType,
         extraAxiosConfig,
     }) => {
-        var url = (
-            id
-            ? `/api/metadata/crt-settings-by-id/${id}`
-            : (
-                recordType
-                ? `/api/metadata/crt-settings/${collection}/${recordType}`
-                : `/api/metadata/crt-settings/${collection}`
+        var url = undefined;
+        if (id && !collection) {
+            url = `/api/metadata/crt-settings-by-id/${id}`
+        }
+        else if (id && collection) {
+            url = (
+                `/api/metadata/crt-settings-by-record-id/${collection}/${id}`
             )
-        );
+        }
+        else if (recordType) {
+            url = `/api/metadata/crt-settings/${collection}/${recordType}`;
+        }
+        else {
+            url = `/api/metadata/crt-settings/${collection}`
+        }
+
         return axios.get(url, extraAxiosConfig);
     }
 

@@ -18,7 +18,7 @@ var compose_createExperimentRecord = () => compose([
                 replaceLocationAndOperatorState,
             ],
             'away-team': [
-                replaceLocationAndOperatorState,
+                replaceOperatorState,
             ],
             'apestudies-wkprc-default': [
                 replaceLocationAndOperatorState,
@@ -110,6 +110,19 @@ var replaceLocationAndOperatorState = async (context, next) => {
     await next();
 }
 
+var replaceOperatorState = async (context, next) => {
+    var { message, cache } = context;
+    var { labOperatorIds } = message.payload;
+    var { experimentUpdate } = cache.get();
+
+    experimentUpdate = {
+        ...experimentUpdate,
+        experimentOperatorIds: labOperatorIds,
+    }
+    
+    cache.merge({ experimentUpdate });
+    await next();
+}
 var replaceApestudiesWKPRCDefaultExtraState = async (context, next) => {
     var { message, cache } = context;
     var { experimentUpdate } = cache.get();

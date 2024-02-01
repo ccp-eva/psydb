@@ -17,7 +17,6 @@ import { useFetchAll } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
 import InhouseSubjectList from './inhouse/testable-subject-list';
-import InhouseGroupSimpleList from './inhouse-group-simple/group-list';
 import AwayTeamTargetLocationList from './away-team/target-location-list';
 import OnlineVideoCallSubjectList from './online-video-call/testable-subject-list';
 import OnlineSubjectList from './online/testable-subject-list';
@@ -89,7 +88,6 @@ const SearchContainer = (ps) => {
         'away-team': AwayTeamTargetLocationList,
         'online-video-call': OnlineVideoCallSubjectList,
         'online-survey': OnlineSubjectList,
-        'inhouse-group-simple': InhouseGroupSimpleList,
     }[experimentType];
 
     return (

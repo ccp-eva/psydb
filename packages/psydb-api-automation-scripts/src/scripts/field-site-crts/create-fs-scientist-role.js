@@ -45,6 +45,9 @@ var createFSScientistRole = async ({ apiKey, driver, site }) => {
             canWriteParticipation: true,
 
             canViewReceptionCalendar: false,
+            canAllowLogin: false,
+            canViewStudyLabOpsSettings: false,
+            canAccessSensitiveFields: false,
 
             labOperation: {
                 'inhouse': {

@@ -45,6 +45,9 @@ handler.checkAllowedAndPlausible = async ({
     if (!experimentRecord) {
         throw new ApiError(400, 'InvalidExperimentId');
     }
+    if (experimentRecord.state.experimentOperatorIds?.length) {
+        throw new ApiError(409, 'PostprocessingAlreadyStarted');
+    }
 
     var teamRecord = cache.teamRecord = await (
         db.collection('experimentOperatorTeam').findOne({

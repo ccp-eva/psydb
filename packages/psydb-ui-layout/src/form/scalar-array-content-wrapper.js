@@ -15,8 +15,12 @@ export const ScalarArrayContentWrapper = (ps) => {
 
         className,
         extraClassName,
-        fallbackLabel
+        fallbackLabel,
+
+        extraContentWrapperProps = {},
     } = ps;
+
+    var { readOnly = false } = extraContentWrapperProps;
 
     className = (
         className !== undefined
@@ -34,7 +38,9 @@ export const ScalarArrayContentWrapper = (ps) => {
         <div>
             <ol className={ className }>
                 { children }
-                <Footer { ...ps } />
+                { !readOnly && (
+                    <Footer { ...ps } />
+                )}
             </ol>
         </div>
     );
@@ -55,8 +61,10 @@ const Fallback = (ps) => {
                     <i>{ ps.fallbackLabel || translate('No Items') }</i>
                     <ErrorIndicator { ...ps } />
                 </div>
-                <Footer { ...ps } />
             </div>
+            { !ps.extraContentWrapperProps?.readOnly && (
+                <Footer { ...ps } />
+            )}
         </div>
     )
 }

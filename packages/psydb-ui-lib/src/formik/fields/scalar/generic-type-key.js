@@ -1,32 +1,42 @@
 import React from 'react';
 import { withField } from '@cdxoo/formik-utils';
-import { useFetch } from '@mpieva/psydb-ui-hooks';
-import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
-import { GenericEnum } from './generic-enum';
+import * as Controls from '@mpieva/psydb-ui-form-controls';
 
 export const GenericTypeKey = withField({ Control: (ps) => {
-    var { collection, allowedTypes, ...pass } = ps;
+    var {
+        dataXPath,
+        formikField,
+        formikMeta,
+        formikForm,
 
-    var [ didFetch, fetched ] = useFetch((agent) => (
-        agent.fetchCollectionCRTs({ collection })
-    ), [ collection ]);
+        manualOnChange,
+        extraOnChange,
+        // FIXME: this is the earliest place to prevent
+        // this from being passed down to select which will
+        // give big prop warning; see Address
+        labelClassName,
+        ...pass
+    } = ps;
+    
+    var { error } = formikMeta;
+    var { setFieldValue } = formikForm;
+    var { value } = formikField;
 
-    if (!didFetch) {
-        return <LoadingIndicator size='select' />
-    }
-   
-    var options = (
-        fetched.data.filter(it => (
-            !allowedTypes || allowedTypes.includes(it.type)
-        )).reduce((acc, it) => ({
-            ...acc,
-            [it.type]: it.label
-        }), {})
-    );
-
+    //FIXME: redundandt with generic enum field
     return (
-        <GenericEnum.Control
-            options={ options }
+        <Controls.GenericTypeKey
+            useRawOnChange={ !!manualOnChange }
+            onChange={ (
+                manualOnChange
+                ? manualOnChange
+                : (next) => {
+                    extraOnChange && extraOnChange(next);
+                    setFieldValue(dataXPath, next)
+                }
+            )}
+            value={ value }
+            //options={ downstreamOptions }
+            isInvalid={ !!error }
             { ...pass }
         />
     );

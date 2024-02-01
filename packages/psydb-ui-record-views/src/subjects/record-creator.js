@@ -10,36 +10,44 @@ const CreateForm = (ps) => {
         permissions,
 
         crtSettings,
-        send
+        send,
+        
+        renderVisibilityButton = false,
     } = ps;
 
-    var { fieldDefinitions } = crtSettings;
+    var {
+        fieldDefinitions,
+        requiresTestingPermissions
+    } = crtSettings;
 
     var translate = useUITranslation();
 
     var initialValues = MainForm.createDefaults({
         fieldDefinitions,
+        requiresTestingPermissions,
         permissions
     });
 
-    initialValues.scientific.testingPermissions = [{
-        permissionList: (
-            [
-                'inhouse',
-                'online-video-call',
-                'away-team',
-                'online-survey'
-            ].map(it => ({
-                labProcedureTypeKey: it,
-                value: 'unknown'
-            }))
-        )
-    }];
-    var [ primaryResearchGroupId ] = permissions.getResearchGroupIds();
-    if (primaryResearchGroupId) {
-        initialValues.scientific.testingPermissions[0].researchGroupId = (
-            primaryResearchGroupId
-        )
+    if (requiresTestingPermissions) {
+        initialValues.scientific.testingPermissions = [{
+            permissionList: (
+                [
+                    'inhouse',
+                    'online-video-call',
+                    'away-team',
+                    'online-survey'
+                ].map(it => ({
+                    labProcedureTypeKey: it,
+                    value: 'unknown'
+                }))
+            )
+        }];
+        var [ primaryResearchGroupId ] = permissions.getResearchGroupIds();
+        if (primaryResearchGroupId) {
+            initialValues.scientific.testingPermissions[0].researchGroupId = (
+                primaryResearchGroupId
+            )
+        }
     }
 
     return (
@@ -49,6 +57,7 @@ const CreateForm = (ps) => {
             initialValues={ initialValues }
             onSubmit={ send.exec }
             permissions={ permissions }
+            renderVisibilityButton={ renderVisibilityButton }
         />
     )
 }

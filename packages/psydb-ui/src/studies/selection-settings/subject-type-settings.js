@@ -36,7 +36,9 @@ const SubjectTypeSettings = (ps) => {
 
     var [ didFetch, fetched ] = useFetchAll((agent) => {
         var promises = {
-            crts: agent.readCustomRecordTypeMetadata(),
+            crts: agent.readCustomRecordTypeMetadata({
+                ignoreResearchGroups: true
+            }),
             selectors: agent.fetchSubjectSelectors({
                 studyId,
             }),

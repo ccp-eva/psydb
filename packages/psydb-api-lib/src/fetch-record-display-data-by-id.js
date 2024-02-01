@@ -17,6 +17,7 @@ var fetchRecordDisplayDataById = async ({
     collection,
     recordType,
     id,
+    permissions
 }) => {
     var recordTypeData = await fetchOneCustomRecordType({
         db,
@@ -31,6 +32,7 @@ var fetchRecordDisplayDataById = async ({
         availableDisplayFieldData,
     } = await gatherDisplayFieldsForRecordType({
         prefetched: recordTypeData,
+        permissions
     });
 
     var records = await (
