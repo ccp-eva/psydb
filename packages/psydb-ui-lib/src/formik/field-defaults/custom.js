@@ -47,6 +47,8 @@ const CustomFieldDefault = (options) => {
     switch (type) {
         case 'SaneString':
         case 'FullText':
+        case 'Email':
+        case 'Phone':
             return '';
         case 'DefaultBool':
             return false;
