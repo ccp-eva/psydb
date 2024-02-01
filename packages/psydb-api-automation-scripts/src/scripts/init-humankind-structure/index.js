@@ -12,6 +12,7 @@ var createLanguageSet = require('./create-language-set');
 var createKigaUmbrellaOrgCRT = require('./create-kiga-umbrella-org-crt');
 var createKigaCRT = require('./create-kiga-crt');
 var createInstituteRoomCRT = require('./create-instituteroom-crt');
+var adultCRT = require('./create-adult-crt');
 var childCRT = require('./create-child-crt');
 var studyCRT = require('./create-study-crt');
 
@@ -32,6 +33,7 @@ module.exports = async (bag) => {
     await createKigaCRT({ ...context, as: 'kiga' });
     await createInstituteRoomCRT({ ...context, as: 'instituteroom' });
 
+    await adultCRT({ ...context, as: 'adult' });
     await childCRT({ ...context, as: 'child' });
     await studyCRT({ ...context, as: 'default' });
 }

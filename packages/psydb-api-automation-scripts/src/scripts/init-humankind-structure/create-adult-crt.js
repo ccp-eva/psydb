@@ -6,10 +6,10 @@ module.exports = async (context) => {
         type: `custom-record-types/create`,
         payload: {
             collection: 'subject',
-            type: 'humankindChild',
+            type: 'humankindAdult',
             props: {
-                label: 'Humankind Children',
-                displayNameI18N: { 'de': 'Humankind Kinder' }
+                label: 'Humankind Adults',
+                displayNameI18N: { 'de': 'Humankind Erwachsene' }
             }
         },
     }, { apiKey });
@@ -40,22 +40,41 @@ module.exports = async (context) => {
 
     await driver.sendMessage({
         type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, subChannelKey: 'scientific', props: {
-            type: 'ForeignIdList',
-            key: 'parentIds',
-            displayName: 'Parents',
-            displayNameI18N: { 'de': 'Eltern' },
+        payload: { id: crtId, subChannelKey: 'gdpr', props: {
+            type: 'PhoneList',
+            key: 'phones',
+            displayName: 'Phone',
+            displayNameI18N: { 'de': 'Telefon' },
+            props: { minItems: 1 }
+        }},
+    }, { apiKey });
+
+    await driver.sendMessage({
+        type: `custom-record-types/add-field-definition`,
+        payload: { id: crtId, subChannelKey: 'gdpr', props: {
+            type: 'Email',
+            key: 'email',
+            displayName: 'E-Mail',
+            displayNameI18N: { 'de': 'E-Mail' },
+            props: { minLength: 1 }
+        }},
+    }, { apiKey });
+
+    await driver.sendMessage({
+        type: `custom-record-types/add-field-definition`,
+        payload: { id: crtId, subChannelKey: 'gdpr', props: {
+            type: 'Address',
+            key: 'address',
+            displayName: 'Address',
+            displayNameI18N: { 'de': 'Adresse' },
             props: {
-                collection: 'subject',
-                recordType: 'humankindAdult',
-                minItems: 0,
-                addReferenceToTarget: true,
-                readOnly: false,
-                targetReferenceField: (
-                    '/scientific/state/custom/knownChildrenIds'
-                ),
-                constraints: {},
-            },
+                isStreetRequired: true,
+                isHousenumberRequired: true,
+                isAffixRequired: false,
+                isPostcodeRequired: true,
+                isCityRequired: true,
+                isCountryRequired: true,
+            }
         }},
     }, { apiKey });
     
@@ -86,65 +105,6 @@ module.exports = async (context) => {
     await driver.sendMessage({
         type: `custom-record-types/add-field-definition`,
         payload: { id: crtId, subChannelKey: 'scientific', props: {
-            type: 'Integer',
-            key: 'siblingCount',
-            displayName: 'Siblings',
-            displayNameI18N: { 'de': 'Geschwister' },
-            props: { minimum: 0, isNullable: true },
-        }},
-    }, { apiKey });
-
-    await driver.sendMessage({
-        type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, subChannelKey: 'scientific', props: {
-            type: 'HelperSetItemId',
-            key: 'nativeLanguageId',
-            displayName: 'Native Language',
-            displayNameI18N: { 'de': 'Muttersprache' },
-            props: {
-                setId: cache.get('/helperSet/language'),
-                isNullable: true,
-                displayEmptyAsUnknown: false,
-            },
-        }},
-    }, { apiKey });
-
-    await driver.sendMessage({
-        type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, subChannelKey: 'scientific', props: {
-            type: 'HelperSetItemIdList',
-            key: 'otherLanguageIds',
-            displayName: 'Other Languages',
-            displayNameI18N: { 'de': 'Weitere Sprachen' },
-            props: {
-                setId: cache.get('/helperSet/language'),
-                minItems: 0,
-            },
-        }},
-    }, { apiKey });
-
-    await driver.sendMessage({
-        type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, subChannelKey: 'scientific', props: {
-            type: 'ForeignId',
-            key: 'kigaId',
-            displayName: 'Kindergarden',
-            displayNameI18N: { 'de': 'Kindergarten' },
-            props: {
-                collection: 'location',
-                recordType: 'kiga',
-                isNullable: true,
-                readOnly: false,
-                constraints: {},
-                displayEmptyAsUnknown: false,
-                addReferenceToTarget: false,
-            },
-        }},
-    }, { apiKey });
-
-    await driver.sendMessage({
-        type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, subChannelKey: 'scientific', props: {
             type: 'DefaultBool',
             key: 'doesDBRegistrationConsentOnPaperExist',
             displayName: (
@@ -162,34 +122,24 @@ module.exports = async (context) => {
             props: {}
         }},
     }, { apiKey });
-     
-    await driver.sendMessage({
-        type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, subChannelKey: 'scientific', props: {
-            type: 'DefaultBool',
-            key: 'canParticipateInStudiesWithHealthyChildren',
-            displayName: (
-                'Can participate in studies with children that are healthy, born on schedule and developed age appropriatly?'
-            ),
-            displayNameI18N: { 'de': (
-                'Kann an Studien mit gesunden, termingerecht gebohrenen und altersgerecht entwickelten Kindern teilnehmen?'
-            )},
-            props: {}
-        }},
-    }, { apiKey });
 
     await driver.sendMessage({
         type: `custom-record-types/add-field-definition`,
         payload: { id: crtId, subChannelKey: 'scientific', props: {
-            type: 'ExtBool',
-            key: 'allowedToEat',
-            displayName: 'Allowed to Eat',
-            displayNameI18N: { 'de': 'Ess-Erlaubnis' },
-            props: {}
+            type: 'ForeignIdList',
+            key: 'knownChildrenIds',
+            displayName: 'Children',
+            displayNameI18N: { de: 'Kinder' },
+            props: {
+                collection: 'subject',
+                recordType: `humankindChild`,
+                minItems: 0,
+                readOnly: true,
+                constraints: {},
+            },
         }},
     }, { apiKey });
     
-     
     await driver.sendMessage({
         type: `custom-record-types/commit-settings`,
         payload: { id: crtId }
@@ -245,16 +195,13 @@ module.exports = async (context) => {
             '/onlineId',
             '/gdpr/state/custom/firstname',
             '/gdpr/state/custom/lastname',
+            '/gdpr/state/custom/phones',
+            '/gdpr/state/custom/email',
+            '/gdpr/state/custom/address',
             '/scientific/state/custom/dateOfBirth',
             '/scientific/state/custom/gender',
-            '/scientific/state/custom/siblingCount',
-            '/scientific/state/custom/parentIds',
-            '/scientific/state/custom/nativeLanguageId',
-            '/scientific/state/custom/otherLanguageIds',
-            '/scientific/state/custom/kigaId',
             '/scientific/state/custom/doesDBRegistrationConsentOnPaperExist',
-            '/scientific/state/custom/canParticipateInStudiesWithHealthyChildren',
-            '/scientific/state/custom/allowedToEat',
+            '/scientific/state/custom/knownChildrenIds',
             '/scientific/state/testingPermissions',
             '/scientific/state/comment'
         ]}
