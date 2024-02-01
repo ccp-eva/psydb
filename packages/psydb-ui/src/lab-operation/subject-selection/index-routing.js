@@ -46,7 +46,7 @@ const IndexRouting = (ps) => {
             { canSelectVideo && (
                 <Route path={ `${path}/online-video-call`}>
                     <TypedSelectionContainer
-                        title={ translate('Online Video Anruf') }
+                        title={ translate('Online Video Call') }
                         type='online-video-call'
                     />
                 </Route>
@@ -54,7 +54,7 @@ const IndexRouting = (ps) => {
             { canSelectOnlineSurvey && (
                 <Route path={ `${path}/online-survey`}>
                     <TypedSelectionContainer
-                        title={ translate('Online Umfrage') }
+                        title={ translate('Online Survey') }
                         type='online-survey'
                         singleStudy={ true }
                     />

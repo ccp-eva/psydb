@@ -437,12 +437,16 @@ var createRouting = (bag = {}) => {
         endpoints.subject.relatedExperiments
     );
 
+    router.post('/subject/read-many',
+        withSelfAuth(),
+        withPermissions(),
+        withKoaBody(),
+        endpoints.subject.readMany
+    );
     
-
-
-
-
-
+    router.post('/subject/read-for-invite-mail', ...withPostStages({
+        endpoint: endpoints.subject.readForInviteMail
+    }));
 
 
     // FIXME
@@ -491,6 +495,54 @@ var createRouting = (bag = {}) => {
         withKoaBody(),
         endpoints.csvImport.preview
     );
+
+    router.post('/study/read-many', ...withPostStages({
+        endpoint: endpoints.study.readMany
+    }));
+    router.post('/study/subject-type-infos', ...withPostStages({
+        endpoint: endpoints.study.subjectTypeInfos
+    }));
+    
+    router.post('/experiment/read', ...withPostStages({
+        endpoint: endpoints.experiment.read
+    }));
+    router.post('/experiment/read-spooled', ...withPostStages({
+        endpoint: endpoints.experiment.readSpooled
+    }));
+
+    router.post('/subject/read', ...withPostStages({
+        endpoint: endpoints.subject.read
+    }));
+    router.post('/subject/read-spooled', ...withPostStages({
+        endpoint: endpoints.subject.readSpooled
+    }));
+
+    router.post('/audit/mq-message-history/list', ...withPostStages({
+        endpoint: endpoints.audit.mqMessageHistory.list
+    }));
+    router.post('/audit/mq-message-history/read', ...withPostStages({
+        endpoint: endpoints.audit.mqMessageHistory.read
+    }));
+    router.post('/audit/rohrpost-event/list', ...withPostStages({
+        endpoint: endpoints.audit.rohrpostEvent.list
+    }));
+    router.post('/audit/rohrpost-event/read', ...withPostStages({
+        endpoint: endpoints.audit.rohrpostEvent.read
+    }));
+
+    // XXX
+    router.post('/fixed-event-details', ...withPostStages({
+        endpoint: endpoints.temp_fixesChecker.fixedEventDetails
+    }));
+    router.post('/fixed-add-event-list', ...withPostStages({
+        endpoint: endpoints.temp_fixesChecker.fixedAddEventList
+    }));
+    router.post('/fixed-import-event-list', ...withPostStages({
+        endpoint: endpoints.temp_fixesChecker.fixedImportEventList
+    }));
+    router.post('/fixed-patch-event-list', ...withPostStages({
+        endpoint: endpoints.temp_fixesChecker.fixedPatchEventList
+    }));
 
     return compose([
         router.routes(),

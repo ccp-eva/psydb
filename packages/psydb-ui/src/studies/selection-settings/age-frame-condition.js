@@ -1,16 +1,19 @@
 import React from 'react';
-import stringifyFieldValue from '@mpieva/psydb-ui-lib/src/stringify-field-value';
+import { stringifyFieldValue } from '@mpieva/psydb-common-lib';
+import { useUILanguage, useUILocale } from '@mpieva/psydb-ui-contexts';
 
-export const AgeFrameCondition = ({
-    condition,
-
-    ageFrameRecord,
-    ageFrameRelated,
-
-    subjectTypeRecord,
-    studyData,
-}) => {
+export const AgeFrameCondition = (ps) => {
+    var {
+        condition,
+        ageFrameRecord,
+        ageFrameRelated,
+        subjectTypeRecord,
+        studyData,
+    } = ps;
     var { pointer, values } = condition;
+
+    var [ language ] = useUILanguage();
+    var locale = useUILocale();
 
     var fieldDefinition = (
         subjectTypeRecord.state.settings.subChannelFields.scientific
@@ -42,6 +45,9 @@ export const AgeFrameCondition = ({
                         type: realType
                     },
                     ...ageFrameRelated,
+
+                    language,
+                    locale,
                 })).join(', ') }
             </div>
         </div>

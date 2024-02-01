@@ -21,12 +21,12 @@ var {
     ApiError,
     Ajv,
     ResponseBody,
+    withRetracedErrors,
 
     fromFacets,
 } = require('@mpieva/psydb-api-lib');
 
 var {
-    MatchIntervalOverlapStage,
     StripEventsStage,
     AddSubjectTestabilityFieldsStage,
     HasAnyTestabilityStage,
@@ -34,13 +34,14 @@ var {
     ProjectDisplayFieldsStage,
 } = require('@mpieva/psydb-api-lib/src/fetch-record-helpers');
 
-
-var initAndCheck = require('../init-and-check');
-var postprocessSubjectRecords = require('../postprocess-subject-records');
-var combineSubjectResponseData = require('../combine-subject-response-data');
-var fetchParentDataForGroups = require('../fetch-parent-data-for-groups');
-var fetchUpcomingExperimentData = require('../fetch-upcoming-experiment-data');
-var fetchProcessedExperimentData = require('../fetch-processed-experiment-data');
+var {
+    initAndCheck,
+    postprocessSubjectRecords,
+    combineSubjectResponseData,
+    fetchParentDataForGroups,
+    fetchUpcomingExperimentData,
+    fetchProcessedExperimentData,
+} = require('../common-helpers');
 
 var prepareGroupByField = require('./prepare-group-by-field');
 var fetchExcludedLocationIds = require('./fetch-excluded-location-ids');
@@ -200,8 +201,10 @@ var searchGrouped = async (context, next) => {
         }}
     ]
 
+    console.log(stages);
+
     debug('start aggregate sbjects');
-    var result = await (
+    var result = await withRetracedErrors(
         db.collection('subject')
         .aggregate(stages, {
             hint: 'ageFrameIndex',

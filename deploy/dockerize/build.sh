@@ -2,12 +2,20 @@
 SCRIPT_DIR=$(dirname "$0")
 BASE_DIR=$SCRIPT_DIR/../../
 
+SUFFIX=$1
+
 VERSION=$(node -pe "require('$BASE_DIR/packages/psydb-web/package.json').version");
 DATE=$(date +%Y%m%d%H%M)
 
 echo $VERSION;
 TAG="cdxoo/psydb:$VERSION.$DATE"
+if [ ! -z $SUFFIX ]; then
+    TAG=$TAG"_"$SUFFIX
+fi
 echo $TAG;
+
+printf ">>> Press enter to continue"
+read _
 
 rush update
 rush build --only @mpieva/psydb-ui

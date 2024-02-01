@@ -371,7 +371,7 @@ export const ExtBool = (ps) => {
     var fieldOptions = {
         'yes': translate('Yes'),
         'no': translate('No'),
-        'unknown': translate('Unbekannt'),
+        'unknown': translate('Unknown'),
     };
 
     var icons = {
@@ -479,4 +479,24 @@ export const CustomRecordTypeKey = (ps) => {
     );
 
     return label;
+}
+
+export const Phone = (ps) => {
+    var { value } = ps;
+    
+    if (!value) {
+        return <NoValue />
+    }
+
+    return String(value);
+}
+
+export const Email = (ps) => {
+    var { value } = ps;
+    
+    if (!value) {
+        return <NoValue />
+    }
+
+    return String(value);
 }

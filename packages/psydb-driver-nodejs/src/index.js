@@ -1,8 +1,8 @@
 'use strict';
 var debug = require('debug')('psydb:driver-node-js');
-var superagent = require('superagent'),
-    jsonpointer = require('jsonpointer');
+var superagent = require('superagent');
 
+var { jsonpointer, only } = require('@mpieva/psydb-core-utils');
 var { getSystemTimezone } = require('@mpieva/psydb-timezone-helpers');
 
 var createDefaultAgent = (server) => (
@@ -171,18 +171,29 @@ var Driver = ({
                     // relies on stack being a specific format
                     // NOTE: mabe at least instead of console
                     // use debug
+                    console.log(
+                        'REQUEST CONFIG:',
+                        only({ from: e.response.config, paths: [
+                            'baseURL', 'url', 'data'
+                        ]})
+                    );
                     console.error(
-                        'API ERROR STACK::',
+                        'API ERROR STACK:',
                         e.apiStack
                     );
                     console.error(
                         'AJV ERRORS:',
                         e.response.data.data.ajvErrors
                     );
+                    throw new Error('BadRequest')
+                }
+                else {
+                    throw e;
                 }
             }
-
-            throw e;
+            else {
+                throw e;
+            }
         }
     }
 

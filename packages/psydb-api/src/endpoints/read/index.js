@@ -29,6 +29,9 @@ var read = async (context, next) => {
         db,
         permissions,
         params,
+        timezone,
+        language,
+        locale,
     } = context;
 
     
@@ -92,6 +95,8 @@ var read = async (context, next) => {
         permissions,
         recordLabelDefinition,
         removedCustomFields,
+        language,
+        locale
     });
 
     // FIXME: question is should we 404 or 403 when access is denied?
@@ -129,7 +134,8 @@ var read = async (context, next) => {
     }
 
     var related = await fetchRelatedLabelsForMany({
-        db, collectionName, records: [ record ]
+        db, timezone, language, locale,
+        collectionName, records: [ record ]
     });
 
     /*var {

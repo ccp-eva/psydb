@@ -25,7 +25,7 @@
     "@mpieva/psydb-core-utils": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-common-lib": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-ui-request-agents": "workspace:~0.1.0-alpha",
-    "@cdxoo/flat": "~0.0.4"
+    "@cdxoo/flat": "~0.0.11"
   },
   "babel": {
     "presets": [

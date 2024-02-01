@@ -77,4 +77,6 @@ module.exports = {
 
     LabMethodKey: require('./lab-method-key'),
     Timezone: require('./timezone'),
+
+    ...require('./extra'),
 }

@@ -38,6 +38,7 @@
     "@mpieva/psydb-api-lib-errors": "workspace:~0.1.0-alpha",
     "@cdxoo/mongodb-escape-keys": "~0.1.1",
     "@cdxoo/traverse": "~0.0.1",
+    "@cdxoo/debug-js-fork": "~0.0.1",
     "koa-compose": "~4.1.0",
     "@cdxoo/switch-koa-compose": "~1.0.0",
     "diacritic-regex": "~1.1.0"

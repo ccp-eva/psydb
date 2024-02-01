@@ -1,10 +1,11 @@
 'use strict';
-var getHttpStatus = require('statuses');
+var debug = require('debug')('psydb-api-lib:api-error');
 var { VerifyError } = require('@mpieva/psydb-common-verify-helpers');
+var getHttpStatus = require('./psydb-http-statuses');
 
 class ApiError extends Error {
     constructor (statusCode, apiStatusOrAdditionalProps) {
-        var status = getHttpStatus(statusCode).replace(/\s+/, '');
+        var status = getHttpStatus(statusCode).replace(/\s+/g, '');
 
         var apiStatus,
             additionalProps,
@@ -27,6 +28,8 @@ class ApiError extends Error {
             apiStatus,
             data,
         };
+
+        debug('ApiError', this.__info);
     }
 
     getInfo () {

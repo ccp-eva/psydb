@@ -1,7 +1,7 @@
 import React from 'react';
+import { entries, groupBy } from '@mpieva/psydb-core-utils';
 import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
 
-import { groupBy } from '@mpieva/psydb-common-lib';
 import { Button } from '@mpieva/psydb-ui-layout';
 
 import {
@@ -16,6 +16,7 @@ import { StudyPanel } from './study-panel';
 
 export const SelectionForm = (ps) => {
     var {
+        studyRecords,
         subjectTypeRecord,
         ageFrameRecords,
         ageFrameRelated,
@@ -26,7 +27,7 @@ export const SelectionForm = (ps) => {
     var locale = useUILocale();
     var translate = useUITranslation();
 
-    var grouped = groupBy({
+    var ageFramesForStudy = groupBy({
         items: ageFrameRecords,
         byProp: 'studyId',
     });
@@ -51,11 +52,12 @@ export const SelectionForm = (ps) => {
                         label={ translate('End') }
                         dataXPath='$.interval.end'
                     />
-                    { Object.keys(grouped).map((key) => (
-                        <StudyPanel key={ key } { ...({
-                            studyId: key,
+                    { studyRecords.map((study) => (
+                        <StudyPanel key={ study._id } { ...({
+                            studyId: study._id,
+                            shorthand: study.state.shorthand,
                             subjectTypeRecord,
-                            ageFrameRecords: grouped[key],
+                            ageFrameRecords: ageFramesForStudy[study._id],
                             ageFrameRelated
                         })} />
                     ))}

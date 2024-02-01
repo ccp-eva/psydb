@@ -55,13 +55,13 @@
     "@mpieva/psydb-date-interval-fns": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-common-config": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-common-lib": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-common-translations": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-schema-fields": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-schema-fields-special": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-schema-enums": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-schema-creators": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-api-endpoint-schemas": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-ui-request-agents": "workspace:~0.1.0-alpha",
-    "@mpieva/psydb-ui-translations": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-ui-utils": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-ui-contexts": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-ui-hooks": "workspace:~0.1.0-alpha",
@@ -77,7 +77,9 @@
     "sift": "~16.0.1",
     "rimraf": "~5.0.1",
     "react-cookie": "~6.1.1",
-    "svg-url-loader": "~8.0.0"
+    "svg-url-loader": "~8.0.0",
+    "react-diff-viewer": "~3.1.1",
+    "@cdxoo/json-base64": "~1.0.0"
   },
   "config": {
     "mongodbMemoryServer": {

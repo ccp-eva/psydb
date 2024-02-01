@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import {
     PageWrappers,
     OptionSelectIndicator,
@@ -12,10 +13,12 @@ export const List = (ps) => {
         onSelect
     } = ps;
 
+    var translate = useUITranslation();
+
     if (records.length < 1) {
         return (
             <div className='px-3 py-2 text-muted'>
-                <i>Keine Studien für diese Kriterien</i>
+                <i>{ translate('No Studies with theese criteria.') }</i>
             </div>
         )
     }

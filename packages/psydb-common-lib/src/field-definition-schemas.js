@@ -317,7 +317,8 @@ var ListOfObjectsFieldDefinition = () => FieldDefinition({
             items: {
                 type: 'object',
                 oneOf: [
-                    ...Object.values(ScalarFields).map(it => it())
+                    ...Object.values(ScalarFields).map(it => it()),
+                    AddressFieldDefinition(),
                 ],
             },
             minItems: 1,

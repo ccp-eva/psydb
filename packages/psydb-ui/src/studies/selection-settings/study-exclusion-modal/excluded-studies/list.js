@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { OptionDeselectIndicator } from '@mpieva/psydb-ui-layout';
 
 export const List = (ps) => {
@@ -6,11 +7,13 @@ export const List = (ps) => {
         records,
         onSelect
     } = ps;
+    
+    var translate = useUITranslation();
 
     if (records.length < 1) {
         return (
             <div className='px-3 py-2 text-muted'>
-                <i>Keine anderen ausgeschlossenen Studien</i>
+                <i>{ translate('No other studies excluded.') }</i>
             </div>
         )
     }

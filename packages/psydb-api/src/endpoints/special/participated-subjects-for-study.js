@@ -6,12 +6,9 @@ var debug = require('debug')(
 var {
     keyBy,
     compareIds,
+    unique,
     ejson,
 } = require('@mpieva/psydb-core-utils');
-
-var {
-    gatherSubjectTypesFromLabProcedureSettings
-} = require('@mpieva/psydb-common-lib');
 
 var {
     ApiError,
@@ -43,6 +40,7 @@ var {
 var RequestBodySchema = () => ExactObject({
     properties: {
         studyId: ForeignId({ collection: 'study' }),
+        subjectType: { type: 'string' }, // FIXME
         onlyParticipated: DefaultBool(),
         sort: ExactObject({
             properties: {
@@ -63,6 +61,10 @@ var RequestBodySchema = () => ExactObject({
     ]
 });
 
+var ppath = () => (
+    'scientific.state.internals.participatedInStudies'
+);
+
 var participatedSubjectsForStudy = async (context, next) => {
     var { 
         db,
@@ -77,6 +79,7 @@ var participatedSubjectsForStudy = async (context, next) => {
 
     var {
         studyId,
+        subjectType,
         onlyParticipated,
         sort,
     } = request.body;
@@ -89,24 +92,37 @@ var participatedSubjectsForStudy = async (context, next) => {
         additionalFlags: [ 'canReadParticipation' ]
     });
 
-    var settingRecords = await (
-        db.collection('experimentVariantSetting').aggregate([
-            { $match: {
-                studyId,
-            }},
-            { $project: { _id: true, 'state.subjectTypeKey': true }},
-        ]).toArray()
+    debug('fetching subject types');
+    var subjectTypeKeys = (
+        subjectType
+        ? [ subjectType ]
+        : await (
+            db.collection('subject').aggregate([
+                { $match: {
+                    ...(subjectType && { type: subjectType }),
+                    [ppath()]: { $elemMatch: {
+                        studyId,
+                        ...(onlyParticipated && {
+                            status: 'participated'
+                        })
+                    }}
+                }},
+                { $group: {
+                    _id: '$type',
+                    type: { $first: '$type' }
+                }}
+            ]).map(it => it.type).toArray()
+        )
     );
-    if (settingRecords.length < 1) {
-        throw new ApiError(400, 'StudyHasNoLabProcedureSettings');
-    }
+    
+    subjectTypeKeys = unique(subjectTypeKeys);
 
-    var subjectTypeKeys = gatherSubjectTypesFromLabProcedureSettings({
-        settingRecords
-    });
+    debug('done fetching subject types');
 
+    debug('fetching data');
     var dataBySubjectType = {};
     for (var subjectType of subjectTypeKeys) {
+        debug({ subjectType })
         var data = await fetchParticipation({
             db,
             subjectType,
@@ -117,6 +133,7 @@ var participatedSubjectsForStudy = async (context, next) => {
 
         dataBySubjectType[subjectType] = data;
     }
+    debug('fetching done');
 
     //console.log(dataBySubjectType);
 
@@ -146,14 +163,15 @@ var fetchParticipation = async ({
         customRecordType: subjectType
     });
 
+    debug('fetching subject records');
     var subjectRecords = await (
         db.collection('subject').aggregate([
-            { $unwind: '$scientific.state.internals.participatedInStudies' },
+            { $unwind: '$' + ppath() },
             { $match: {
                 'type': subjectType,
-                'scientific.state.internals.participatedInStudies.studyId': studyId,
+                [ ppath() + '.studyId' ]: studyId,
                 ...(onlyParticipated && {
-                    'scientific.state.internals.participatedInStudies.status': 'participated'
+                    [ ppath() + '.status' ]: 'participated',
                 })
             }},
             StripEventsStage({
@@ -163,7 +181,7 @@ var fetchParticipation = async ({
                 displayFields,
                 additionalProjection: {
                     'type': true,
-                    'scientific.state.internals.participatedInStudies': true 
+                    [ ppath() ]: true 
                 }
             }),
             ...(sort ? [{ $sort: {
@@ -171,6 +189,7 @@ var fetchParticipation = async ({
             }}] : [])
         ]).toArray()
     );
+    debug('done fetching subject records');
 
     //throw new Error();
     

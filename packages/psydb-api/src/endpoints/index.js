@@ -24,11 +24,18 @@ module.exports = {
     subjectGroup: require('./entities/subject-group'),
     location: require('./entities/location'),
     personnel: require('./entities/personnel'),
+    study: require('./entities/study'),
     apiKey: require('./entities/api-key'),
     
     helperSet: require('./entities/helper-set'),
     helperSetItem: require('./entities/helper-set-item'),
     
+    experiment: require('./entities/experiment'),
     experimentVariant: require('./entities/experiment-variant'),
     experimentVariantSetting: require('./entities/experiment-variant-setting'),
+
+    audit: require('./audit'),
+
+    // XXX
+    temp_fixesChecker: require('./temp_fixesChecker'),
 };

@@ -29,30 +29,42 @@ const SearchContainer = (ps) => {
 
     var { path, url } = useRouteMatch();
     var history = useHistory();
-    var { studyIds, subjectRecordType } = useParams();
+    var { studyIds: studyIdsString, subjectRecordType } = useParams();
 
-    var [ schema, setSchema ] = useState();
+    var studyIds = studyIdsString.split(',');
+
     var [ didFetch, fetched ] = useFetchAll((agent) => ({
-        crts: agent.readCustomRecordTypeMetadata({
+        studies: agent.fetchManyRecords({
+            collection: 'study',
+            ids: studyIds
+        }),
+        subjectCRTs: agent.readCustomRecordTypeMetadata({
             only: [{
                 collection: 'subject',
                 types: [ subjectRecordType ]
             }]
         }),
         ageFrames: agent.fetchAgeFrames({
-            studyIds: studyIds.split(','),
+            studyIds,
         })
-    }), [ studyIds, subjectRecordType ]);
+    }), [ studyIdsString, subjectRecordType ]);
 
     if (!didFetch) {
         return <LoadingIndicator size='lg' />
     }
 
-    var subjectTypeRecord = fetched.crts.data.customRecordTypes[0];
+    var {
+        studies,
+        subjectCRTs,
+        ageFrames
+    } = fetched._stageDatas;
+
+    var subjectTypeRecord = subjectCRTs.customRecordTypes[0];
+
     var {
         records: ageFrameRecords,
         ...ageFrameRelated
-    } = fetched.ageFrames.data;
+    } = ageFrames;
 
     var handleSubmit = (formData) => {
         try {
@@ -85,6 +97,7 @@ const SearchContainer = (ps) => {
             <Route exact path={ `${path}` }>
                 <div className='p-3 border bg-light'>
                     <SelectionForm { ...({
+                        studyRecords: studies.records,
                         subjectTypeRecord,
                         ageFrameRecords,
                         ageFrameRelated,

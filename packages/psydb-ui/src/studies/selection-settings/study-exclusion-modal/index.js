@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import { demuxed, arrify } from '@mpieva/psydb-ui-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useSelectionReducer, useSend } from '@mpieva/psydb-ui-hooks';
 import { WithDefaultModal, Button } from '@mpieva/psydb-ui-layout';
 
@@ -21,6 +22,8 @@ const StudyExclusionModalBody = (ps) => {
         onHide,
         onSuccessfulUpdate
     } = ps;
+
+    var translate = useUITranslation();
 
     var [ selectedTopic, onSelectTopic ] = useState();
     var topicIdsSelection = useSelectionReducer({
@@ -54,7 +57,7 @@ const StudyExclusionModalBody = (ps) => {
                 style={{ width: '33.333%' }}
             >
                 <header className='mb-1 pb-1 border-bottom'>
-                    <b>Themengbiete</b>
+                    <b>{ translate('Study Topics') }</b>
                 </header>
                 <StudyTopicSelector
                     studyTopicIds={ studyTopicIds }
@@ -78,7 +81,7 @@ const StudyExclusionModalBody = (ps) => {
                 style={{ width: '33.333%' }}
             >
                 <header className='mb-1 pb-1 border-bottom'>
-                    <b>Alle Studien</b>
+                    <b>{ translate('All Studies') }</b>
                 </header>
                 <AvailableStudies
                     excludedStudyIds={[
@@ -95,14 +98,16 @@ const StudyExclusionModalBody = (ps) => {
                 style={{ width: '33.333%' }}
             >
                 <header className='mb-1 pb-1 border-bottom'>
-                    <b>Ausgeschlossen</b>
+                    <b>{ translate('Excluded') }</b>
                 </header>
                 <ExcludedStudies
                     records={ excludedStudySelection.value }
                     onSelect={ excludedStudySelection.remove }
                 />
                 <div className='d-flex justify-content-end mt-1'>
-                    <Button onClick={ send.exec }>Speichern</Button>
+                    <Button onClick={ send.exec }>
+                        { translate('Save') }
+                    </Button>
                 </div>
             </div>
         </div>
@@ -110,7 +115,7 @@ const StudyExclusionModalBody = (ps) => {
 }
 
 const StudyExclusionModal = WithDefaultModal({
-    title: 'Studienausschluss',
+    title: 'Study Exclusion',
     size: 'xl',
 
     Body: StudyExclusionModalBody

@@ -30,12 +30,22 @@ const ErrorResponseModal = ({
         statusCode = rawStatus,
     } = responseBody;
 
-    var [ title, Body ] = getErrorComponents(statusCode);
+    var [ Title, Body ] = getErrorComponents(statusCode);
+    if (typeof Title === 'string') {
+        var renderedTitle = (
+            <span className='text-danger'>{ translate(Title) }</span>
+        );
+    }
+    else {
+        var renderedTitle = (
+            <Title />
+        )
+    }
     return (
         <Modal show={show} onHide={ onHide } size='lg'>
             <Modal.Header closeButton>
                 <Modal.Title>
-                    <span className='text-danger'>{ translate(title) }</span>
+                    { renderedTitle }
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -51,6 +61,8 @@ const getErrorComponents = (statusCode) => {
             return [ '_404_not_found', NotFoundError ];
         case 400:
             return [ '_400_bad_request', BadRequestError ];
+        case 200: // XXX this is BS
+            return [ ExternalDelegateErrorTitle, ExternalDelegationError ];
         default:
             return [ '_XXX_system_error', DefaultServerError ];
     }
@@ -102,4 +114,39 @@ const BadRequestError = ({
     )
 }
 
+const ExternalDelegateErrorTitle = (ps) => {
+    var translate = useUITranslation();
+    return (
+        <span className='text-warning'>{ translate('Warning') }</span>
+    )
+}
+const ExternalDelegationError = (ps) => {
+    var { remoteErrors } = ps;
+    var translate = useUITranslation();
+    var out = [];
+    for (var it of remoteErrors) {
+        var { apiStatus, data } = it;
+        if (apiStatus === 'SmtpDelegationFailed') {
+            return (
+                <div>
+                    <div>
+                        { translate('Could not send email!') }
+                        {' '}
+                        { translate('Mail-Server response is:') }
+                    </div>
+                    <div className='mt-3 p-3 bg-light border'>
+                        { data.originalMessage }
+                    </div>
+                </div>
+            )
+        }
+        else {
+            return (
+                <div>
+                    { apiStatus } { data.originalMessage }
+                </div>
+            )
+        }
+    }
+}
 export default ErrorResponseModal;

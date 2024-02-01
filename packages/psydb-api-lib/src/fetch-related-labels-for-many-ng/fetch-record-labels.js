@@ -7,7 +7,10 @@ var { keyBy } = require('@mpieva/psydb-core-utils');
 var createRecordLabel = require('../create-record-label');
 
 var fetchRecordLabels = async (bag) => {
-    var { db, collection, ids, keyed = false, timezone } = bag;
+    var {
+        db, collection, ids, keyed = false,
+        timezone, language, locale,
+    } = bag;
    
     // FIXME: e.g. subjectGroup currently
     if (!allSchemaCreators[collection]) {
@@ -40,14 +43,14 @@ var fetchRecordLabels = async (bag) => {
         _createLabel = (record) => createRecordLabel({
             definition: crtsByType[record.type].state.recordLabelDefinition,
             record,
-            timezone
+            timezone, language, locale,
         });
     }
     else {
         _createLabel = (record) => createRecordLabel({
             definition: recordLabelDefinition,
             record,
-            timezone
+            timezone, language, locale,
         });
     }
 

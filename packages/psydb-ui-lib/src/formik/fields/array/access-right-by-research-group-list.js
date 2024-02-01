@@ -4,8 +4,9 @@ import { AccessRightByResearchGroup } from '../object';
 
 const AccessRightByResearchGroupListArray = withFieldArray({
     FieldComponent: AccessRightByResearchGroup,
-    ArrayContentWrapper: 'ObjectArrayContentWrapper',
-    ArrayItemWrapper: 'ObjectArrayItemWrapper',
+    //ArrayContentWrapper: 'ObjectArrayContentWrapper',
+    ArrayItemWrapper: 'ScalarArrayItemWrapper',
+    defaultItemValue: { permission: 'write' }
 })
 
 export const AccessRightByResearchGroupList = withField({
@@ -23,6 +24,7 @@ export const AccessRightByResearchGroupList = withField({
             <AccessRightByResearchGroupListArray
                 { ...ps }
                 existingResearchGroupIds={ existingResearchGroupIds }
+                enableMove={ false }
             />
         )
     },

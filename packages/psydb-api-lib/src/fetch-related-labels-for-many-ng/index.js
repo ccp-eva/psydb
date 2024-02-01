@@ -1,11 +1,16 @@
 'use strict';
-var debug = require('debug')('psydb:api-lib:fetchRelatedLabelsForMany');
+var debug = require('@cdxoo/debug-js-fork')(
+    'psydb:api-lib:fetchRelatedLabelsForMany'
+);
+
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
 var {
     isPlainObject,
     merge,
     unique,
+    ejson,
+    convertSchemaPointerToMongoPath,
 } = require('@mpieva/psydb-core-utils');
 
 var resolvePossibleRefs = require('../resolve-possible-refs');
@@ -18,7 +23,14 @@ var fetchHelperSetItemLabels = require('./fetch-helper-set-item-labels');
 
 var fetchRelatedLabelsForMany = async (bag) => {
     debug('start fetchRelatedLabelsForMany()');
-    var { db, collectionName: collection, records, timezone } = bag;
+    var {
+        db,
+        collectionName: collection,
+        records,
+        timezone,
+        language,
+        locale,
+    } = bag;
 
     // FIXME: thats a hack
     if (collection === 'customRecordType') {
@@ -62,15 +74,11 @@ var fetchRelatedLabelsForMany = async (bag) => {
 
     var gathered = {};
     debug(records.length);
-    //console.log(possibleRefs);
-    for (var record of records) {
-        var result = gatherAllRefValues({
-            possibleRefs,
-            from: record,
-        });
-
-        gathered = merge(gathered, result);
-    }
+    //console.dir(ejson(records[0]), { depth: null });
+    var gathered = gatherAllRefValues({
+        possibleRefs,
+        from: records,
+    });
     debug('DDDDDDDDDDDDDDDDDDDDD');
 
     var out = {
@@ -88,7 +96,8 @@ var fetchRelatedLabelsForMany = async (bag) => {
                 debug('fetching for collection: ', c);
                 //console.log({ ids });
                 out.relatedRecords[c] = await fetchRecordLabels({
-                    db, collection: c, ids, timezone,
+                    db, collection: c, ids,
+                    timezone, language, locale,
                     keyed: true
                 });
             }
@@ -101,7 +110,8 @@ var fetchRelatedLabelsForMany = async (bag) => {
     if (gathered.helperSetItems) {
         debug('fetching helper set items');
         out.relatedHelperSetItems = await fetchHelperSetItemLabels({
-            db, ids: gathered.helperSetItems.ids, timezone,
+            db, ids: gathered.helperSetItems.ids,
+            timezone, language, locale,
             keyed: true
         });
     }
@@ -118,7 +128,7 @@ var fetchRelatedLabelsForMany = async (bag) => {
         out.relatedCustomRecordTypes = await fetchCRTLabels({
             db,
             filter,
-            timezone,
+            timezone, language, locale,
             keyed: true
         });
     }

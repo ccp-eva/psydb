@@ -6,7 +6,7 @@ const SubjectTestableIntervals = (ps) => {
     var {
         studyLabel,
         desiredTestInterval,
-        testableIntervals
+        testableIntervals = []
     } = ps;
 
     //console.log({ desiredTestInterval });

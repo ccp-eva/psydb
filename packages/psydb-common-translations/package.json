@@ -1,0 +1,24 @@
+{
+  "name": "@mpieva/psydb-common-translations",
+  "version": "0.1.0-alpha",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cdxOo/psydb.git"
+  },
+  "author": "Jan Schwalbe",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cdxOo/psydb/issues"
+  },
+  "homepage": "https://github.com/cdxOo/psydb#readme",
+  "dependencies": {
+    "@mpieva/psydb-core-utils": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-common-lib": "workspace:~0.1.0-alpha",
+    "es6-template-strings": "~2.0.1"
+  }
+}

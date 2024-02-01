@@ -6,6 +6,14 @@ const createAgent = (options = {}) => {
 
     const axios = Axios.create();
 
+    const dumpPOST = ({ url }) => (bag) => {
+        var { extraAxiosConfig, ...payload } = bag;
+        return axios.post(
+            url,
+            payload, extraAxiosConfig,
+        );
+    }
+
     //axios.interceptors.response.use(
     //    (response) => (response),
     //    (error) => {
@@ -97,6 +105,13 @@ const createAgent = (options = {}) => {
     }) => {
         var url = `/api/metadata/subject-study-crts/${subjectType}`;
         return axios.get(url);
+    }
+
+    agent.readSubjectForInviteMail = (options) => {
+        var { id, extraAxiosConfig } = options;
+        return axios.post('/api/subject/read-for-invite-mail', {
+            id
+        }, extraAxiosConfig);
     }
 
     agent.readManySubjects = (options) => {
@@ -319,6 +334,8 @@ const createAgent = (options = {}) => {
 
         offset = 0,
         limit = 100,
+        output = 'full',
+        sampleSize,
     }) => {
         return axios.post(
             `/api/search-subjects-testable/${labProcedureTypeKey}`,
@@ -334,6 +351,9 @@ const createAgent = (options = {}) => {
                 
                 offset,
                 limit,
+
+                output,
+                sampleSize
             }
         );
     }
@@ -751,6 +771,85 @@ const createAgent = (options = {}) => {
         );
     }
 
+    agent.fetchStudySubjectTypeInfos = (bag) => {
+        var {
+            studyId,
+            extraAxiosConfig,
+        } = bag;
+
+        return axios.post(
+            '/api/study/subject-type-infos',
+            { studyId },
+            extraAxiosConfig,
+        );
+    }
+
+    agent.fetchOneRecord = (bag) => {
+        var { extraAxiosConfig, collection, ...payload } = bag;
+        return axios.post(
+            `/api/${collection}/read`,
+            payload, extraAxiosConfig,
+        );
+    }
+
+    agent.fetchSpooledRecord = (bag) => {
+        var { extraAxiosConfig, collection, ...payload } = bag;
+        return axios.post(
+            `/api/${collection}/read-spooled`,
+            payload, extraAxiosConfig,
+        );
+    }
+
+    // FIXME: use es6-template-strings to build url
+    agent.fetchManyRecords = ({ collection, ...pass }) => (
+        dumpPOST({ url: `/api/${collection}/read-many` })(pass)
+    );
+
+    agent.fetchMQMessageHistoryList = dumpPOST({
+        url: '/api/audit/mq-message-history/list'
+    });
+    agent.fetchMQMessageHistoryRecord = dumpPOST({
+        url: '/api/audit/mq-message-history/read'
+    });
+    agent.fetchRohrpostEventList = dumpPOST({
+        url: '/api/audit/rohrpost-event/list'
+    });
+    agent.fetchRohrpostEventRecord = dumpPOST({
+        url: '/api/audit/rohrpost-event/read'
+    });
+
+    // XXX
+    agent.fetchFixedEventDetails = (bag) => {
+        var { extraAxiosConfig, ...payload } = bag;
+        return axios.post(
+            '/api/fixed-event-details',
+            payload, extraAxiosConfig,
+        );
+    }
+    // XXX
+    agent.fetchFixedAddEventList = (bag) => {
+        var { extraAxiosConfig, ...payload } = bag;
+        return axios.post(
+            '/api/fixed-add-event-list',
+            payload, extraAxiosConfig,
+        );
+    }
+    // XXX
+    agent.fetchFixedImportEventList = (bag) => {
+        var { extraAxiosConfig, ...payload } = bag;
+        return axios.post(
+            '/api/fixed-import-event-list',
+            payload, extraAxiosConfig,
+        );
+    }
+    // XXX
+    agent.fetchFixedPatchEventList = (bag) => {
+        var { extraAxiosConfig, ...payload } = bag;
+        return axios.post(
+            '/api/fixed-patch-event-list',
+            payload, extraAxiosConfig,
+        );
+    }
     return agent;
 }
 

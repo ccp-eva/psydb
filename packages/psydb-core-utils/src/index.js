@@ -21,6 +21,7 @@ module.exports = {
     omit: require('./omit'),
     range: require('./range'),
     transliterate: require('./transliterate'),
+    ucfirst: require('./ucfirst'),
 
     includes: require('./includes'),
     intersect: require('./intersect'),
@@ -43,6 +44,10 @@ module.exports = {
     flatten: require('@cdxoo/flat').flatten,
     unflatten: require('@cdxoo/flat').unflatten,
     ejson: require('@cdxoo/tiny-ejson'),
-    
+   
+    prefixify: require('./prefixify'),
+
     jsonpointer: require('jsonpointer'),
+    keys: Object.keys,
+    escapeRX: require('escape-string-regexp'),
 }

@@ -15,8 +15,8 @@ var PersonnelGdprState = ({ enableInternalProps } = {}) => {
     var schema = ExactObject({
         type: 'object',
         properties: {
-            firstname: SaneString({ title: 'Vorname' }),
-            lastname: SaneString({ title: 'Nachname' }),
+            firstname: SaneString({ title: 'Vorname', minLength: 1 }),
+            lastname: SaneString({ title: 'Nachname', minLength: 1 }),
             
             // TODO: find out if thats even needed
             /*address: Address({
@@ -25,7 +25,7 @@ var PersonnelGdprState = ({ enableInternalProps } = {}) => {
             
             emails: EmailList({
                 title: 'E-Mail',
-                minItems: 0
+                minItems: 1
             }),
             phones: PhoneWithTypeList({
                 title: 'Telefon',

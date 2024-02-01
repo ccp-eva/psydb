@@ -1,19 +1,20 @@
-import React, { useState, useEffect, useReducer } from 'react';
-import jsonpointer from 'jsonpointer';
+import React from 'react';
+import { jsonpointer } from '@mpieva/psydb-core-utils';
 
-const MailTextPreview = ({
-    mailText,
-    allSubjectPlaceholders,
-    previewSubject,
-}) => {
+const MailTextPreview = (ps) => {
+    var { previewInfo, mailText } = ps;
+
     if (!mailText) {
         return null;
     }
 
-    for (var it of allSubjectPlaceholders) {
+    var { mapping, record } = previewInfo;
+
+    for (var it of mapping) {
+        var { pointer, previewKey } = it;
         mailText = mailText.replaceAll(
-            `{{${it.key}}}`,
-            jsonpointer.get(previewSubject, it.dataPointer)
+            `{{${previewKey}}}`,
+            jsonpointer.get(record, pointer)
         );
     }
 

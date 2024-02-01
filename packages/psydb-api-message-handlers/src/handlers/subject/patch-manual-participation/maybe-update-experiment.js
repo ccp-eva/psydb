@@ -2,68 +2,62 @@
 var { compareIds } = require('@mpieva/psydb-core-utils');
 
 var maybeUpdateExperiment = async (context) => {
-    var { db, cache, dispatch } = context;
-    var { originalItem, patchedItem, location, subject } = cache;
+    var { db, cache, message, dispatch } = context;
+    var {
+        originalItem, patchedItem,
+        location, subject,
+        experimentOperatorTeam,
+    } = cache;
     var { experimentId, timestamp } = patchedItem;
 
     var experiment = await (
         db.collection('experiment').findOne({ _id: experimentId })
     );
 
-    var changedLocation = !compareIds(
-        originalItem.locationId, patchedItem.locationId
-    );
-    var changedTimestamp = (
-        originalItem.timestamp.getTime()
-        !== patchedItem.timestamp.getTime()
-    );
-    if (changedLocation || changedTimestamp) {
-        var { interval } = experiment.state;
-        var duration = interval.end.getTime() - interval.start.getTime();
+    var { interval } = experiment.state;
+    var duration = interval.end.getTime() - interval.start.getTime();
 
-        await dispatch({
-            collection: 'experiment',
-            channelId: experimentId,
-            payload: { $set: {
-                'state.location': location._id,
+    var six = experiment.state.subjectData.findIndex(it => (
+        compareIds(it.subjectId, subject._id)
+    ));
+
+    var basePath = `state.subjectData.${six}`;
+    var participationPath = `${basePath}.participationStatus`;
+    var excludePath = `${basePath}.excludeFromMoreExperimentsInStudy`;
+
+    var {
+        status,
+        experimentOperatorIds,
+        excludeFromMoreExperimentsInStudy,
+    } = patchedItem
+
+    await dispatch({
+        collection: 'experiment',
+        channelId: experimentId,
+        payload: { $set: {
+            'state.interval': {
+                start: timestamp,
+                end: new Date(timestamp.getTime() + duration)
+            },
+            
+            [participationPath]: status,
+            [excludePath]: excludeFromMoreExperimentsInStudy,
+
+            ...(location && {
+                'state.locationId': location._id,
                 'state.locationRecordType': location.type,
-                'state.interval': {
-                    start: timestamp,
-                    end: new Date(timestamp.getTime() + duration)
-                }
-            }},
-        });
-    }
-
-    var changedStatus = (
-        originalItem.status !== patchedItem.status
-    );
-    var changedExcludeFromMoreExperimentsInStudy = (
-        originalItem.excludeFromMoreExperimentsInStudy
-        !== patchedItem.excludeFromMoreExperimentsInStudy
-    );
-    if (changedStatus || changedExcludeFromMoreExperimentsInStudy) {
-        var six = experiment.state.subjectData.findIndex(it => (
-            compareIds(it.subjectId, subject._id)
-        ));
-
-        var basePath = `state.subjectData.${six}`;
-        var participationPath = `${basePath}.participationStatus`;
-        var excludePath = `${basePath}.excludeFromMoreExperimentsInStudy`;
-
-        await dispatch({
-            collection: 'experiment',
-            channelId: experimentId,
-            payload: { $set: {
-                ...(changedStatus && {
-                    [participationPath]: patchedItem.status
-                }),
-                ...(changedExcludeFromMoreExperimentsInStudy && {
-                    [excludePath]: patchedItem.excludeFromMoreExperimentsInStudy
-                }),
-            }},
-        });
-    }
+            }),
+            ...(experimentOperatorTeam && {
+                'state.experimentOperatorTeamId': experimentOperatorTeam._id,
+                'state.experimentOperatorIds': (
+                    experimentOperatorTeam.state.personnelIds
+                ),
+            }),
+            ...(experimentOperatorIds && {
+                'state.experimentOperatorIds': experimentOperatorIds
+            }),
+        }},
+    });
 }
 
 module.exports = maybeUpdateExperiment;

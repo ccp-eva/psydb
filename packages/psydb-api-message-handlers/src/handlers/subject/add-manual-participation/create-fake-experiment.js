@@ -18,10 +18,6 @@ var createFakeExperiment = async (context, bag) => {
         excludeFromMoreExperimentsInStudy,
     } = bag;
     
-    if (labProcedureType === 'online-survey') {
-        return;
-    }
-
     var experimentId = await createId('experiment');
     var seriesId = await createId();
 
@@ -36,9 +32,7 @@ var createFakeExperiment = async (context, bag) => {
 
         studyId: study._id,
         studyRecordType: study.type,
-        locationId: location._id,
-        locationRecordType: location.type,
-        
+
         interval: { start: timestamp, end: timestamp },
 
         selectedSubjectIds: [ subject._id ],
@@ -51,9 +45,18 @@ var createFakeExperiment = async (context, bag) => {
             excludeFromMoreExperimentsInStudy,
         }],
 
+        ...(location && {
+            locationId: location._id,
+            locationRecordType: location.type,
+        }),
+        
         ...(experimentOperatorTeam && {
-            experimentOperatorTeamId: experimentOperatorTeam._id
-        })
+            experimentOperatorTeamId: experimentOperatorTeam._id,
+            experimentOperatorIds: experimentOperatorTeam.state.personnelIds,
+        }),
+        ...(experimentOperatorIds && {
+            experimentOperatorIds,
+        }),
     }
 
     await dispatchProps({

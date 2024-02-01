@@ -1,6 +1,11 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import {
+    useUILanguage,
+    useUILocale,
+    useUITranslation
+} from '@mpieva/psydb-ui-contexts';
 
+import { Alert } from '@mpieva/psydb-ui-layout';
 import { stringifyFieldValue, Fields } from '@mpieva/psydb-ui-lib';
 
 import {
@@ -11,28 +16,32 @@ import {
 export const StudyPanel = (ps) => {
     var {
         studyId,
+        shorthand,
         subjectTypeRecord,
-        ageFrameRecords,
+        ageFrameRecords = [],
         ageFrameRelated
     } = ps;
     
     var translate = useUITranslation();
 
-    var { relatedRecordLabels } = ageFrameRelated;
-    var title = relatedRecordLabels.study[studyId]._recordLabel;
-
     return (
         <div>
             <header className='pb-1 mb-3 border-bottom'>
-                <b>{ translate('Study') } - { title }</b>
+                <b>{ translate('Study') } - { shorthand }</b>
             </header>
-            { ageFrameRecords.map((it, index) => (
-                <AgeFrame key={ index } { ...({
-                    subjectTypeRecord,
-                    ageFrameRecord: it,
-                    ageFrameRelated,
-                })} />
-            ))}
+            { ageFrameRecords.length > 0 ? (
+                ageFrameRecords.map((it, index) => (
+                    <AgeFrame key={ index } { ...({
+                        subjectTypeRecord,
+                        ageFrameRecord: it,
+                        ageFrameRelated,
+                    })} />
+                ))
+            ) : (
+                <i className='text-muted ml-3'>
+                    { translate('No age frames were defined for this study.')}
+                </i>
+            )}
         </div>
     )
 }
@@ -72,14 +81,20 @@ const AgeFrame = (ps) => {
                     label={ title }
                 />
             </header>
-            { conditions.map((it, index) => (
-                <Condition key={ index } { ...({
-                    formKey,
-                    subjectTypeRecord,
-                    condition: it,
-                    ageFrameRelated,
-                })} />
-            ))}
+            { conditions.length > 0 ? (
+                conditions.map((it, index) => (
+                    <Condition key={ index } { ...({
+                        formKey,
+                        subjectTypeRecord,
+                        condition: it,
+                        ageFrameRelated,
+                    })} />
+                ))
+            ) : (
+                <i className='text-muted ml-3'>
+                    { translate('No further Conditions')}
+                </i>
+            )}
         </div>
     )
 }
@@ -93,6 +108,8 @@ const Condition = (ps) => {
     } = ps;
 
     var { pointer, values } = condition;
+    
+    var [ language ] = useUILanguage();
 
     var fieldDefinition = (
         subjectTypeRecord.state.settings.subChannelFields.scientific
@@ -113,7 +130,10 @@ const Condition = (ps) => {
     return (
         <div className='d-flex'>
             <div style={{ width: '20%' }}>
-                { fieldDefinition.displayName }:
+                { 
+                    fieldDefinition.displayNameI18N[language]
+                    || fieldDefinition.displayName
+                }:
             </div>
             <div className='flex-grow'>
                 { values.map((value, index) => (
@@ -137,6 +157,9 @@ const ConditionValue = (ps) => {
         ageFrameRelated,
     } = ps;
 
+    var [ language ] = useUILanguage();
+    var locale = useUILocale();
+
     // FIXME: maybe escape certain values?
     formKey = `${formKey}/${value}`;
 
@@ -144,6 +167,9 @@ const ConditionValue = (ps) => {
         rawValue: value,
         fieldDefinition,
         ...ageFrameRelated,
+
+        language,
+        locale,
     });
 
     return (

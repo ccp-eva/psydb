@@ -63,7 +63,7 @@ handler.checkAllowedAndPlausible = async (context) => {
 }
 
 handler.triggerSystemEvents = async (context) => {
-    var { db, cache, dispatch, personnelId } = context;
+    var { db, cache, dispatch, dispatchProps, personnelId } = context;
     var { study, file, matchedData } = cache;
 
     var now = new Date();
@@ -79,13 +79,39 @@ handler.triggerSystemEvents = async (context) => {
     });
 
     for (var it of matchedData) {
-        var { subjectId, timestamp } = it;
+        var { subjectId, subjectType, timestamp } = it;
 
-        var participationItem = {
-            _id: await createId(),
+        var experimentId = await createId('experiment');
+        var experimentCore = {
             type: 'manual',
             realType: 'online-survey',
             csvImportId,
+        };
+       
+        var experimentState = {
+            seriesId: await createId(),
+            isPostprocessed: true,
+
+            studyId: study._id,
+            studyRecordType: study.type,
+
+            interval: { start: timestamp, end: timestamp },
+
+            selectedSubjectIds: [ subjectId ],
+            subjectData: [{
+                subjectId,
+                subjectType,
+                invitationStatus: 'scheduled',
+                participationStatus: 'participated',
+                comment: '',
+                excludeFromMoreExperimentsInStudy: false,
+            }],
+        }
+
+        var participationItem = {
+            _id: await createId(),
+            experimentId,
+            ...experimentCore,
 
             studyId: study._id,
             studyType: study.type,
@@ -94,6 +120,17 @@ handler.triggerSystemEvents = async (context) => {
             status: 'participated',
             excludeFromMoreExperimentsInStudy: false
         };
+
+        await dispatchProps({
+            collection: 'experiment',
+            channelId: experimentId,
+            isNew: true,
+            additionalChannelProps: experimentCore,
+            props: experimentState,
+
+            initialize: true,
+            recordType: experimentCore.type,
+        });
 
         await dispatch({
             collection: 'subject',

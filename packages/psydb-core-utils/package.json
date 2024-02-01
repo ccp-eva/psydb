@@ -12,9 +12,10 @@
     "jsonpointer": "~5.0.1",
     "deepmerge": "~4.2.2",
     "is-what": "~3.14.1",
+    "escape-string-regexp": "~4.0.0",
     "@cdxoo/jsonpointer-to-objectpath": "~1.0.0",
     "@cdxoo/objectpath-to-jsonpointer": "~1.0.0",
-    "@cdxoo/flat": "~0.0.10",
+    "@cdxoo/flat": "~0.0.11",
     "@cdxoo/tiny-ejson": "~1.0.0"
   },
   "devDependencies": {
