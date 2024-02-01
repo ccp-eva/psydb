@@ -59,6 +59,7 @@ const withCollectionView = (options) => {
         
         // TODO: static types
         // FIXME: noSpacer still needed?
+        // FIXME: we maybe want to have level 2 headline in record list
         return (
             <PageWrappers.Level1 { ...pageWrapperBag }>
                 <div className='mt-3'>
