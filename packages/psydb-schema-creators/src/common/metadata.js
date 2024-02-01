@@ -596,6 +596,9 @@ module.exports = {
             'online-video-call',
             'inhouse',
             'away-team',
+
+            'apestudies-wkprc-default',
+            'manual-only-participation',
         ],
         hasSubChannels: false,
     },

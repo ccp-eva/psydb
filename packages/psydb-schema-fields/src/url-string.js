@@ -1,5 +1,6 @@
 'use strict';
 var URLString = ({
+    type,
     minLength,
     maxLength,
     ...additionalKeywords
@@ -8,7 +9,8 @@ var URLString = ({
         systemType: 'URLString',
         type: 'string',
         default: '',
-        pattern: '^https?://',
+        // TODO: this needs a proper pattern
+        pattern: '^https?://[^\\r\\n]*$',
 
         // FIXME: in my opinion this is a stupid hacky way of doing that
         // but its the only way to transform bevore validation
