@@ -66,14 +66,17 @@ const FormFields = (ps) => {
             <Fields.SaneString
                 label={ translate('_designation') }
                 dataXPath='$.name'
+                required
             />
             <Fields.SaneString
                 label={ translate('Shorthand') }
                 dataXPath='$.shorthand'
+                required
             />
             <Fields.DateOnlyServerSide
                 label={ translate('Start') }
                 dataXPath='$.runningPeriod.start'
+                required
             />
             <Fields.DateOnlyServerSide
                 label={ translate('End') }

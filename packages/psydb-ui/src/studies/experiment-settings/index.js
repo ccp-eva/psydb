@@ -58,6 +58,9 @@ const ExperimentSettings = (ps) => {
 
     var [ didFetch, fetched ] = useFetchAll((agent) => {
         var promises = {
+            allCRTs: agent.readCustomRecordTypeMetadata({
+                ignoreResearchGroups: true
+            }),
             crts: agent.readCustomRecordTypeMetadata(),
             study: agent.readRecord({
                 collection: 'study',
@@ -79,6 +82,8 @@ const ExperimentSettings = (ps) => {
     }
 
     var { customRecordTypes } = fetched.crts.data;
+    var { customRecordTypes: allCustomRecordTypes } = fetched.allCRTs.data;
+
     var studyData = fetched.study.data;
     var variantRecords = fetched.variants.data.records;
     var {
@@ -95,7 +100,9 @@ const ExperimentSettings = (ps) => {
     );
 
     var allowedLabOpsTypes = without(
-        enums.experimentVariants.keys,
+        enums.labMethods.keys.filter(it => (
+            permissions.isLabMethodAvailable(it)
+        )),
         variantRecords.map(it => it.type)
     );
 
@@ -141,6 +148,7 @@ const ExperimentSettings = (ps) => {
                 variantRecords,
                 settingRecords,
                 settingRelated,
+                allCustomRecordTypes,
                 customRecordTypes,
                 
                 allowedSubjectTypes: Object.keys(allowedSubjectTypes),

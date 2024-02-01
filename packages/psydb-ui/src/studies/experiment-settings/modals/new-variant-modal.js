@@ -26,7 +26,9 @@ const Form = (ps) => {
                     <Fields.GenericEnum
                         label={ translate('Lab Workflow Type') }
                         dataXPath='$.type'
-                        options={ enums.experimentVariants.mapping }
+                        options={ translate.options(
+                            enums.labMethods.mapping
+                        )}
                         allowedValues={ allowedLabOpsTypes }
                     />
                     <Button type='submit'>

@@ -30,6 +30,7 @@ import TimestampAndMaybeAge from './timestamp-and-maybe-age';
 
 const ParticipationList = (ps) => {
     var {
+        studyId,
         records,
         related,
         definitions,
@@ -59,7 +60,7 @@ const ParticipationList = (ps) => {
         return !(['didnt-participate'].includes(participationStatus));
     })
 
-    var modalBag = { onSuccessfulUpdate };
+    var modalBag = { studyId, onSuccessfulUpdate };
     var headBag = { definitions, dateOfBirthField, sorter }
 
     if (hasNone(records)) {
@@ -197,12 +198,20 @@ const ParticipationListRow = (ps) => {
                 dateOfBirthField
             })} />
             <td> {
-                related.records
-                .location[participationData.locationId]?._recordLabel
-                || ((
-                    participationType === 'online-survey'
-                    || realParticipationType === 'online-survey'
-                ) ? 'Online' : '-')
+                realParticipationType === 'apestudies-wkprc-default'
+                ? (
+                    related.records
+                    .location[participationData.locationId]?._recordLabel
+                    + ` (${participationData.roomOrEnclosure})`
+                )
+                : (
+                    related.records
+                    .location[participationData.locationId]?._recordLabel
+                    || ((
+                        participationType === 'online-survey'
+                        || realParticipationType === 'online-survey'
+                    ) ? 'Online' : '-')
+                )
             }</td>
             <td>
                 { formatStatus(participationData.status) }

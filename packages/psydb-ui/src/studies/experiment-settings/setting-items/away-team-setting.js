@@ -7,6 +7,7 @@ export const AwayTeamSetting = (ps) => {
     var {
         settingRecord,
         settingRelated,
+        allCustomRecordTypes,
         customRecordTypes,
     } = ps;
 
@@ -16,8 +17,7 @@ export const AwayTeamSetting = (ps) => {
     } = settingRecord.state;
 
     var translate = useUITranslation();
-
-    var subjectType = customRecordTypes.find(it => (
+    var subjectType = allCustomRecordTypes.find(it => (
         it.collection === 'subject' && it.type === subjectTypeKey
     ));
 
