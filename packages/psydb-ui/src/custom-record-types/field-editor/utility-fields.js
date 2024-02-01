@@ -270,3 +270,16 @@ export const DisplayEmptyAsUnknownProp = (ps) => {
         />
     )
 }
+
+export const IsSensitiveProp = (ps) => {
+    var { dataXPath, isUnrestricted } = ps;
+    var translate = useUITranslation();
+    return (
+        <Fields.DefaultBool
+            label={ translate('Is Sensitive') }
+            dataXPath={ `${dataXPath}.props.isSensitive` }
+            disabled={ !isUnrestricted }
+            required
+        />
+    )
+}

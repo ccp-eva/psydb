@@ -23,7 +23,8 @@ import {
 import ServerTimezoneContext from '../../../server-timezone-context';
 
 const Control = (ps) => {
-    var { dataXPath, formikField, formikMeta, disabled } = ps;
+    var { dataXPath, formikField, formikMeta, formikForm, disabled } = ps;
+    var { setFieldValue } = formikForm;
     var { error } = formikMeta;
     var { value, onChange } = formikField;
 
@@ -67,7 +68,7 @@ const Control = (ps) => {
                 else {
                     v = String(stringOrMomentInstance);
                 }
-                return onChange(dataXPath)(v);
+                setFieldValue(dataXPath, v || null);
             }}
             locale={ locale.code }
             timeFormat={ false }

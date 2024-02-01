@@ -30,7 +30,7 @@ export const PickerInput = (ps) => {
         canClear,
 
         onEdit,
-        onClear
+        onClear,
     } = ps;
     
     var translate = useUITranslation();
