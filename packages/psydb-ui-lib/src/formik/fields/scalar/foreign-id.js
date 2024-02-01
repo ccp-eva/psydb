@@ -50,25 +50,23 @@ export const ForeignId = withField({ Control: (ps) => {
 
     var hasMissingConstraintValues = false;
     if (constraints) {
-        constraints = (
-            entries(constraints).reduce((acc, [ key, value ]) => ({
-                ...acc,
-                [key]: (
-                    value.startsWith('$data:')
-                    ? (
-                        jsonpointer.get(
-                            formValues,
-                            // XXX: state is omitted in custom record forms
-                            // so we need to remove '/state'
-                            // path token in addition to the
-                            // '$data:' prefix
-                            '/$' + value.replace(/(?:\$data:|state\/)/g, '')
-                        )
-                    )
-                    : value
+        var processedConstraints = {};
+        for (var [ key, value ] of entries(constraints)) {
+            if (typeof value === 'string' && value.startsWith('$data:')) {
+                processedConstraints[key] = jsonpointer.get(
+                    formValues,
+                    // XXX: state is omitted in custom record forms
+                    // so we need to remove '/state'
+                    // path token in addition to the
+                    // '$data:' prefix
+                    '/$' + value.replace(/(?:\$data:|state\/)/g, '')
                 )
-            }), {})
-        )
+            }
+            else {
+                processedConstraints[key] = value;
+            }
+        }
+        constraints = processedConstraints;
         
         hasMissingConstraintValues = (
             Object.values(constraints)
