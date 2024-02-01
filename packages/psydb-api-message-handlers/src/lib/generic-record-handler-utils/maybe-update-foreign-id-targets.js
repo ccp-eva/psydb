@@ -128,8 +128,6 @@ var maybeUpdateForeignIdTargets = async (bag) => {
             throw new Error(`unknown op "${op}"`);
         }
     }
-    throw new Error();
-
 }
 
 var createWrappedDispatch = (bag) => {
