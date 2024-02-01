@@ -1,4 +1,6 @@
 module.exports = {
+    inlineText: require('@cdxoo/inline-text'),
+
     CRTSettings: require('./crt-settings'),
     intervalUtils: require('./interval-utils'),
     createSchemaForRecord: require('./create-schema-for-record-type'),
@@ -49,7 +51,7 @@ module.exports = {
     createDefaultFieldDataTransformer: (
         require('./create-default-field-data-transformer')
     ),
-    
+   
     SmartArray: require('./smart-array'),
     fixRelated: require('./fix-related'),
 }
