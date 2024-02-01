@@ -48,7 +48,7 @@ module.exports = async (context) => {
             props: {
                 collection: 'subject',
                 recordType: 'humankindAdult',
-                minItems: 1,
+                minItems: 0,
                 addReferenceToTarget: true,
                 readOnly: false,
                 targetReferenceField: (
