@@ -16,7 +16,7 @@ var {
     createRecordLabel,
     fetchRecordById,
     createSchemaForRecordType,
-    fetchRelatedLabels,
+    fetchRelatedLabelsForMany,
 } = require('@mpieva/psydb-api-lib');
 
 var {
@@ -67,10 +67,16 @@ var experimentOperatorTeamsForStudy = async (context, next) => {
         });
     }
 
+
     var experimentOperatorTeamRecords = await (
         db.collection('experimentOperatorTeam').aggregate([
             { $match: {
                 studyId,
+                ...(!permissions.isRoot() && {
+                    'state.researchGroupId': { $in: (
+                        permissions.getResearchGroupIds()
+                    )}
+                })
             }},
             { $project: {
                 events: false
@@ -78,31 +84,14 @@ var experimentOperatorTeamsForStudy = async (context, next) => {
         ]).toArray()
     );
 
-    var recordSchema = await createSchemaForRecordType({
-        db,
-        collectionName: 'experimentOperatorTeam',
-        fullSchema: true
-    });
-
-    // FIXME: this is really hacky
-    var resolveSchema = {
-        type: 'object',
-        properties: {
-            records: {
-                type: 'array',
-                items: recordSchema,
-            }
-        }
-    }
-
     var {
         relatedRecords,
         relatedHelperSetItems,
         relatedCustomRecordTypes,
-    } = await fetchRelatedLabels({
+    } = await fetchRelatedLabelsForMany({
         db,
-        data: { records: experimentOperatorTeamRecords },
-        schema: resolveSchema,
+        collectionName: 'experimentOperatorTeam',
+        records: experimentOperatorTeamRecords,
     });
 
     context.body = ResponseBody({

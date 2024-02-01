@@ -71,7 +71,10 @@ const StudyRouting = (ps) => {
                             collection='study'
                             recordType={ recordType }
                             onSuccessfulUpdate={
-                                ({ id }) => history.push(`${url}/${id}/selection-settings`)
+                                // FIXME: depends on if subject
+                                // selection is available
+                                ({ id }) => history.push(`${url}/${id}`)
+                                //({ id }) => history.push(`${url}/${id}/selection-settings`)
                             }
                         />
                     )

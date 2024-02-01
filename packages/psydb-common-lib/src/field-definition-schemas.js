@@ -33,6 +33,10 @@ var IsNullableProp = () => DefaultBool({
     title: 'Optional'
 });
 
+var IsSensitiveProp = () => DefaultBool({
+    title: 'Is Sensitive'
+});
+
 var FieldDefinition = ({
     type,
     title,
@@ -229,6 +233,7 @@ var FullTextFieldDefinition = () => FieldDefinition({
     required: [],
     props: {
         minLength: MinLengthProp(),
+        isSensitive: IsSensitiveProp(),
     },
 });
 

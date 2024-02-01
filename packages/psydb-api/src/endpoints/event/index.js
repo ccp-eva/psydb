@@ -1,18 +1,19 @@
 'use strict';
 var debug = require('debug')('psydb:api:endpoints:event');
     
-var compose = require('koa-compose'),
-    ObjectId = require('mongodb').ObjectId,
-    nanoid = require('nanoid').nanoid,
+var compose = require('koa-compose');
+var { ObjectId } = require('mongodb');
+var { nanoid } = require('nanoid');
 
-    withContextSetup = require('./context-setup'),
-    withResponseBody = require('./with-response-body');
-    
-var createEngine = require('@mpieva/psydb-koa-event-middleware').createEngine;
+var {
+    withEventEngine,
+    // FIXME: theese will be moved inside handlers themselves
+    // as they are distinct from the actual event engine
+    withDefaultContextSetup,
+    withDefaultResponseBody,
+} = require('@mpieva/psydb-koa-event-middleware');
 
-var availableMessageHandlers = require('@mpieva/psydb-api-message-handlers'),
-    createInitialChannelState = require('./create-initial-channel-state'),
-    handleChannelEvent = require('./handle-channel-event');
+var availableMessageHandlers = require('@mpieva/psydb-api-message-handlers');
 
 var createMessageHandling = ({
     enableMessageChecks = true,
@@ -63,38 +64,22 @@ var createMessageHandling = ({
 
     return compose([
         //async (context, next) => { console.dir(context, { depth: 3}); await next(); },
-        withContextSetup({ forcedPersonnelId }),
+        withDefaultContextSetup({ forcedPersonnelId }),
         async (context, next) => {
             var { type, payload } = context.request.body;
             debug(type, JSON.stringify(payload));
             await next();
         },
 
-        createEngine({
+        withEventEngine({
             mqSettings,
             rohrpostSettings,
             availableMessageHandlers,
 
-            createInitialChannelState,
-            handleChannelEvent,
-
             enableMessageChecks,
         }),
 
-        withResponseBody,
-
-        // TODO: until we have a spearete event collection
-        // we need this to track what stuff has changed
-        // by a message
-        async (context, next) => {
-            //console.dir(context, { depth: 3 });
-            var { db, correlationId, modifiedChannels } = context;
-            //await db.collection('modifiedByMessage').insertOne({
-            //    correlationId,
-            //    modifiedChannels
-            //});
-            await next();
-        },
+        withDefaultResponseBody,
     ]);
 };
 

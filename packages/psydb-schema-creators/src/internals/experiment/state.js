@@ -5,14 +5,18 @@ var {
     ExactObject,
     Id,
     ForeignId,
+    ForeignIdList,
     DateTimeInterval,
     ParticipationStatus,
     InvitationStatus,
     DefaultBool,
     FullText,
     CustomRecordTypeKey,
+    Color,
 } = require('@mpieva/psydb-schema-fields');
 
+// TODO: this is out of date; we need sub schemas for
+// the specific lab methods
 var ExperimentState = ({
     enableInternalProps
 } = {}) => {
@@ -33,9 +37,18 @@ var ExperimentState = ({
             studyId: ForeignId({
                 collection: 'study',
             }),
+            
             experimentOperatorTeamId: ForeignId({
                 collection: 'experimentOperatorTeam',
+                isNullable: true,
             }),
+            // NOTE: those will eb set when no labTeam is assigned
+            // i.e. when experiment s created manually in wkprc
+            color: Color(),
+            experimentOperatorIds: ForeignIdList({
+                collection: 'personnel',
+            }),
+            
             locationId: ForeignId({
                 collection: 'location',
             }),

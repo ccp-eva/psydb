@@ -9,16 +9,20 @@ var SubjectRecordMessage = ({
     op, // create/patch/delete
     type,
     subChannelCustomFieldDefinitions,
+    additionalSchemaCreatorArgs,
+    extraOptions,
 }) => {
     var schema = MultiChannelRecordMessage({
         op,
         collection: 'subject',
         type,
         subChannelCustomFieldDefinitions,
+        additionalSchemaCreatorArgs,
         subChannelStateSchemaCreators: {
             scientific: internals.SubjectScientificState,
             gdpr: internals.SubjectGdprState
-        }
+        },
+        extraOptions,
     });
     // FIXME: this is only for migrating existing onlineIds
     // and can probably removed in the future

@@ -8,8 +8,14 @@ export const ObjectArrayItemWrapper = (ps) => {
         formikArrayHelpers,
         index,
         lastIndex,
+        isFixedIndex,
         disabled,
         children,
+
+        enableMove = true,
+        enableRemove = true,
+
+        extraItemWrapperProps
     } = ps;
 
     var className = classnames([
@@ -17,9 +23,9 @@ export const ObjectArrayItemWrapper = (ps) => {
         !(index === lastIndex) && 'mb-3'
     ]);
 
-    var hasRemove = true;
-    var hasMoveUp = (index > 0);
-    var hasMoveDown = (index < lastIndex);
+    var hasRemove = enableRemove && !isFixedIndex;
+    var hasMoveUp = enableMove && (index > 0) && !isFixedIndex;
+    var hasMoveDown = enableMove && (index < lastIndex) && !isFixedIndex;
 
     var hasFooter = (hasRemove || hasMoveUp || hasMoveDown);
 

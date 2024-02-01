@@ -13,8 +13,6 @@ var destructureMessage = (options) => {
     var {
         id,
         sequenceNumber,
-        lastKnownEventId,
-        lastKnownSubChannelEventIds,
         props,
         ...additionalCreateProps
     } = payload;
@@ -25,8 +23,6 @@ var destructureMessage = (options) => {
         op,
         id,
         sequenceNumber,
-        lastKnownEventId,
-        lastKnownSubChannelEventIds,
         props,
         additionalCreateProps,
         timezone

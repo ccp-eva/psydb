@@ -42,6 +42,8 @@ export const CustomField = (ps) => {
         case 'ForeignId':
         case 'HelperSetItemId':
         case 'Integer':
+        case 'DateTime':
+        case 'DateOnlyServerSide':
             isRequired = !props.isNullable;
             break;
         case 'ForeignIdList':
@@ -50,6 +52,7 @@ export const CustomField = (ps) => {
         case 'PhoneWithTypeList':
         case 'PhoneList':
         case 'SubjectTestingPermissionList':
+        case 'URLStringList':
             isRequired = props.minItems > 0;
             break;
         case 'Address':
@@ -71,6 +74,8 @@ export const CustomField = (ps) => {
             label={ displayNameI18N[language] || displayName }
             related={ related }
             required={ isRequired }
+            extraContentWrapperProps={{ ...props, ...extraTypeProps[type] }}
+            extraItemWrapperProps={{ ...props, ...extraTypeProps[type] }}
             { ...props }
             { ...extraTypeProps[type] }
         />

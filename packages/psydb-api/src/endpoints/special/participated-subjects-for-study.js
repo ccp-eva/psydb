@@ -129,6 +129,7 @@ var participatedSubjectsForStudy = async (context, next) => {
             studyId,
             onlyParticipated,
             sort,
+            permissions
         });
 
         dataBySubjectType[subjectType] = data;
@@ -152,6 +153,7 @@ var fetchParticipation = async ({
     studyId,
     onlyParticipated,
     sort,
+    permissions,
 }) => {
 
     var {
@@ -160,7 +162,8 @@ var fetchParticipation = async ({
     } = await gatherDisplayFieldsForRecordType({
         db,
         collectionName: 'subject',
-        customRecordType: subjectType
+        customRecordType: subjectType,
+        permissions,
     });
 
     debug('fetching subject records');

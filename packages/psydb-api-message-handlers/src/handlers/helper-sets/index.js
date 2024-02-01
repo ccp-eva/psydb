@@ -6,10 +6,8 @@ var {
 var GenericRecordHandler = require('../../lib/generic-record-handler');
 
 var HelperSetsGroup = MessageHandlerGroup([
-    GenericRecordHandler({
-        collection: 'helperSet',
-        op: 'create',
-    }),
+    require('./create'),
+    
     GenericRecordHandler({
         collection: 'helperSet',
         op: 'patch',

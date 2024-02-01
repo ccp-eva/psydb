@@ -19,6 +19,8 @@
   "devDependencies": {
     "react": "~17.0.2",
     "@mpieva/psydb-common-lib": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-ui-contexts": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-ui-hooks": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-ui-layout": "workspace:~0.1.0-alpha"
   }
 }

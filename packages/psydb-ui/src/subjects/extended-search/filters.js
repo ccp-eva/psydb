@@ -56,11 +56,15 @@ export const Filters = (ps) => {
                 label={ translate('Has Not Participated in') }
                 collection='study'
             />
-            
-            <Fields.FullText
-                dataXPath='$.specialFilters.comment'
-                label={ translate('Comment') }
-            />
+            {(
+                !crtSettings.commentFieldIsSensitive
+                || permissions.hasFlag('canAccessSensitiveFields')
+            ) && (
+                <Fields.FullText
+                    dataXPath='$.specialFilters.comment'
+                    label={ translate('Comment') }
+                />
+            )}
 
             <Fields.GenericRadioGroup
                 dataXPath='$.specialFilters.isHidden'

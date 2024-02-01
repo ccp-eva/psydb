@@ -24,7 +24,7 @@ var Schema = () => {
         labProcedureType: StringEnum(
             enums.experimentVariants.keys
         ),
-        subjectId: ForeignId({
+        subjectIds: ForeignIdList({
             collection: 'subject',
         }),
         studyId: ForeignId({

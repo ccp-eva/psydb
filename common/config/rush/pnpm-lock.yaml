@@ -1035,8 +1035,13 @@ importers:
 
   ../../packages/psydb-schema-enums:
     specifiers:
+      '@mpieva/psydb-common-config': workspace:~0.1.0-alpha
+      '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
       chai: ~4.3.7
       mocha: ~10.2.0
+    dependencies:
+      '@mpieva/psydb-common-config': link:../psydb-common-config
+      '@mpieva/psydb-core-utils': link:../psydb-core-utils
     devDependencies:
       chai: 4.3.8
       mocha: 10.2.0
@@ -1123,7 +1128,7 @@ importers:
       '@babel/plugin-proposal-class-properties': ~7.18.6
       '@babel/preset-env': ~7.22.20
       '@babel/preset-react': ~7.22.15
-      '@cdxoo/formik-utils': ~0.7.0
+      '@cdxoo/formik-utils': ~0.8.0
       '@cdxoo/json-base64': ~1.0.0
       '@cdxoo/omit': ~1.0.1
       '@mpieva/psydb-api-endpoint-schemas': workspace:~0.1.0-alpha
@@ -1183,7 +1188,7 @@ importers:
       '@babel/plugin-proposal-class-properties': 7.18.6_@babel+core@7.22.20
       '@babel/preset-env': 7.22.20_@babel+core@7.22.20
       '@babel/preset-react': 7.22.15_@babel+core@7.22.20
-      '@cdxoo/formik-utils': 0.7.0_formik@2.4.5+react@17.0.2
+      '@cdxoo/formik-utils': 0.8.0_formik@2.4.5+react@17.0.2
       '@cdxoo/json-base64': 1.0.0
       '@cdxoo/omit': 1.0.1
       '@mpieva/psydb-api-endpoint-schemas': link:../psydb-api-endpoint-schemas
@@ -1280,10 +1285,14 @@ importers:
   ../../packages/psydb-ui-form-controls:
     specifiers:
       '@mpieva/psydb-common-lib': workspace:~0.1.0-alpha
+      '@mpieva/psydb-ui-contexts': workspace:~0.1.0-alpha
+      '@mpieva/psydb-ui-hooks': workspace:~0.1.0-alpha
       '@mpieva/psydb-ui-layout': workspace:~0.1.0-alpha
       react: ~17.0.2
     devDependencies:
       '@mpieva/psydb-common-lib': link:../psydb-common-lib
+      '@mpieva/psydb-ui-contexts': link:../psydb-ui-contexts
+      '@mpieva/psydb-ui-hooks': link:../psydb-ui-hooks
       '@mpieva/psydb-ui-layout': link:../psydb-ui-layout
       react: 17.0.2
 
@@ -1375,11 +1384,13 @@ importers:
       '@babel/preset-env': ~7.22.20
       '@babel/preset-react': ~7.22.15
       '@cdxoo/formik-ajv-async': ~0.4.2
-      '@cdxoo/formik-utils': ~0.7.0
+      '@cdxoo/formik-utils': ~0.8.0
       '@cdxoo/inline-string': ~1.0.0
+      '@cdxoo/inline-text': ~1.0.2
       '@cdxoo/omit': ~1.0.1
       '@mpieva/psydb-api-endpoint-schemas': workspace:~0.1.0-alpha
       '@mpieva/psydb-common-lib': workspace:~0.1.0-alpha
+      '@mpieva/psydb-common-translations': workspace:~0.1.0-alpha
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
       '@mpieva/psydb-date-interval-fns': workspace:~0.1.0-alpha
       '@mpieva/psydb-schema-creators': workspace:~0.1.0-alpha
@@ -1416,11 +1427,13 @@ importers:
       '@babel/preset-env': 7.22.20_@babel+core@7.22.20
       '@babel/preset-react': 7.22.15_@babel+core@7.22.20
       '@cdxoo/formik-ajv-async': 0.4.2_formik@2.4.5+react@17.0.2
-      '@cdxoo/formik-utils': 0.7.0_formik@2.4.5+react@17.0.2
+      '@cdxoo/formik-utils': 0.8.0_formik@2.4.5+react@17.0.2
       '@cdxoo/inline-string': 1.0.0
+      '@cdxoo/inline-text': 1.0.2
       '@cdxoo/omit': 1.0.1
       '@mpieva/psydb-api-endpoint-schemas': link:../psydb-api-endpoint-schemas
       '@mpieva/psydb-common-lib': link:../psydb-common-lib
+      '@mpieva/psydb-common-translations': link:../psydb-common-translations
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
       '@mpieva/psydb-date-interval-fns': link:../psydb-date-interval-fns
       '@mpieva/psydb-schema-creators': link:../psydb-schema-creators
@@ -2844,8 +2857,8 @@ packages:
       react: 17.0.2
     dev: true
 
-  /@cdxoo/formik-utils/0.7.0_formik@2.4.5+react@17.0.2:
-    resolution: {integrity: sha512-syUSu+OgAXxPCN2G4EsRACP3dHEqL9evrLRK0jpK1dpMIK9PEqtcQZouPHO24JJdXwL1dyeSc7g9m9cFXHrpdw==}
+  /@cdxoo/formik-utils/0.8.0_formik@2.4.5+react@17.0.2:
+    resolution: {integrity: sha512-CnW6AKUA4bF8cAPHxZAHpMgzCW1byHqROwQhoQVmkfUUhsT6V5c1JUVCOtP5cq4NlQ7Z+xY51AxjAAGdccz2sg==}
     peerDependencies:
       formik: '>=2.0'
       react: '>=16.8'
@@ -2859,7 +2872,6 @@ packages:
 
   /@cdxoo/inline-text/1.0.2:
     resolution: {integrity: sha512-iKWKmwCoHH/WwEV5WBLUUmbB6r5OdBL+I5K6dcOj6h3XWYi7SdeW1kLuzAAaFttGgLpBGq+jnpVznmZlyyUK4w==}
-    dev: false
 
   /@cdxoo/json-base64/1.0.0:
     resolution: {integrity: sha512-PCzSQTriNYkKLnI+huKoIWPKkQz8+v/7QQCViL2sHnkJJptd0IRGfh+EG2FXeG/VaKa2IxN4hnBle8Ik91gpOA==}

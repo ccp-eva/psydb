@@ -5,7 +5,7 @@ var {
     SaneString,
     StringEnum,
     IdentifierString,
-    DefaultBool
+    DefaultBool,
 } = require('@mpieva/psydb-schema-fields');
 
 /*var {
@@ -174,6 +174,10 @@ var ChannelState = ({
                 'inhouse',
                 //'no-reservation' // FIXME
             ], { default: 'inhouse' }),
+        }),
+        ...( collection === 'study' && {
+            enableSubjectSelectionSettings: DefaultBool(),
+            enableLabTeams: DefaultBool(),
         }),
         recordLabelDefinition: RecordLabelDefinition(),
         tableDisplayFields: {

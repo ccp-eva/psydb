@@ -50,8 +50,13 @@ const RemoveSettingModalBody = (ps) => {
         'inhouse': Items.InhouseSetting,
         'away-team': Items.AwayTeamSetting,
         'online-video-call': Items.OnlineVideoCallSetting,
-        'online-survey': Items.OnlineSurveySetting
+        'online-survey': Items.OnlineSurveySetting,
+
+        'apestudies-wkprc-default': Items.ApestudiesWKPRCDefaultSetting,
+        'manual-only-participation': Items.ManualOnlyParticipationSetting,
     })[variantType];
+
+    console.log({ variantType, SettingItem })
 
     return (
         canRemove ? (

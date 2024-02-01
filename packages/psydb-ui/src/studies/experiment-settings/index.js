@@ -9,9 +9,10 @@ import {
     useParams
 } from 'react-router-dom';
 
+import * as enums from '@mpieva/psydb-schema-enums';
 import { without } from '@mpieva/psydb-core-utils';
 import { demuxed } from '@mpieva/psydb-ui-utils';
-import * as enums from '@mpieva/psydb-schema-enums';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
 import {
     useFetchAll,
@@ -44,6 +45,7 @@ const ExperimentSettings = (ps) => {
     var { path, url } = useRouteMatch();
     var { id: studyId } = useParams();
     
+    var translate = useUITranslation();
     var revision = useRevision();
     var permissions = usePermissions();
     
@@ -56,6 +58,9 @@ const ExperimentSettings = (ps) => {
 
     var [ didFetch, fetched ] = useFetchAll((agent) => {
         var promises = {
+            allCRTs: agent.readCustomRecordTypeMetadata({
+                ignoreResearchGroups: true
+            }),
             crts: agent.readCustomRecordTypeMetadata(),
             study: agent.readRecord({
                 collection: 'study',
@@ -77,6 +82,8 @@ const ExperimentSettings = (ps) => {
     }
 
     var { customRecordTypes } = fetched.crts.data;
+    var { customRecordTypes: allCustomRecordTypes } = fetched.allCRTs.data;
+
     var studyData = fetched.study.data;
     var variantRecords = fetched.variants.data.records;
     var {
@@ -88,13 +95,14 @@ const ExperimentSettings = (ps) => {
         customRecordTypes
         .filter(it => it.collection === 'subject')
         .reduce((acc, it) => ({
-            ...acc,
-            [it.type]: it.state.label
+            ...acc, [it.type]: translate.crt(it)
         }), {})
     );
 
     var allowedLabOpsTypes = without(
-        enums.experimentVariants.keys,
+        enums.labMethods.keys.filter(it => (
+            permissions.isLabMethodAvailable(it)
+        )),
         variantRecords.map(it => it.type)
     );
 
@@ -140,6 +148,7 @@ const ExperimentSettings = (ps) => {
                 variantRecords,
                 settingRecords,
                 settingRelated,
+                allCustomRecordTypes,
                 customRecordTypes,
                 
                 allowedSubjectTypes: Object.keys(allowedSubjectTypes),

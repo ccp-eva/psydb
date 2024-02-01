@@ -16,18 +16,18 @@ var triggerSystemEvents = async ({
     rohrpost,
     personnelId,
     message,
+    cache,
 
     dispatchProps,
 }) => {
     var destructured = destructureMessage({ message });
+    var { collection, recordType, props } = destructured;
 
     var channel = await openChannel({
         db,
         rohrpost,
         ...destructured
     });
-
-    var { collection, recordType, props } = destructured;
 
     if (props.gdpr || props.scientific) {
         if (props.gdpr) {
@@ -60,6 +60,8 @@ var triggerSystemEvents = async ({
             initialize: channel.isNew,
         })
     }
+
+    cache.currentChannelId = channel.id;
 }
 
 module.exports = triggerSystemEvents;

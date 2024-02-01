@@ -7,11 +7,11 @@ var {
 
 var internals = require('../');
 
-var ApiKeyFullSchema = () => ClosedObject({
+var ApiKeyFullSchema = (bag) => ClosedObject({
     _id: Id(),
     personnelId: ForeignId({ collection: 'personnel' }),
     apiKey: { type: 'string' },
-    state: internals.ApiKeyState(),
+    state: internals.ApiKeyState(bag),
 })
 
 

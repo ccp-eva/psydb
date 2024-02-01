@@ -595,8 +595,10 @@ module.exports = {
             'online-survey',
             'online-video-call',
             'inhouse',
-            'inhouse-group-simple',
             'away-team',
+
+            'apestudies-wkprc-default',
+            'manual-only-participation',
         ],
         hasSubChannels: false,
     },

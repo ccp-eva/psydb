@@ -156,6 +156,7 @@ var inviteConfirmationList = async (context, next) => {
         availableDisplayFieldData,
     } = await gatherDisplayFieldsForRecordType({
         prefetched: subjectRecordTypeData,
+        permissions,
     });
 
     // TODO: theese fields needs a flag of some kind so that they are allowed

@@ -1,4 +1,5 @@
 import React from 'react';
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import {
     experimentSelectors as selectorsEnum,
 } from '@mpieva/psydb-schema-enums';
@@ -27,11 +28,14 @@ const SelectorListItem = (ps) => {
 
     var subjectTypeRecord = subjectTypeMap[subjectTypeKey];
 
+    var permissions = usePermissions();
+    var canEdit = permissions.isSubjectTypeAvailable(subjectTypeKey);
+
     var panelProps = {
         label: `${subjectTypeRecord.state.label}`,
         addButtonLabel: '+ ' + translate('Age Range'),
-        showAddButton: !!onAddAgeFrame,
-        showRemoveButton: !!onRemove,
+        showAddButton: canEdit && !!onAddAgeFrame,
+        showRemoveButton: canEdit && !!onRemove,
         onAdd: () => onAddAgeFrame({ selectorRecord }),
         onRemove: () => onRemove({ index, selectorRecord })
     };
@@ -39,6 +43,7 @@ const SelectorListItem = (ps) => {
     return (
         <OuterSettingPanel { ...panelProps }>
             <AgeFrameList { ...({
+                subjectTypeKey,
                 selectorRecord,
                 subjectTypeRecord,
                 ...downstream

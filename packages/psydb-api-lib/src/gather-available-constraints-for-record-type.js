@@ -1,8 +1,7 @@
 'use strict';
-
-var traverse = require('json-schema-traverse'),
-    convertPointer = require('@mpieva/json-schema-convert-pointer');
-
+var traverse = require('json-schema-traverse');
+var convertPointer = require('@mpieva/json-schema-convert-pointer');
+var { Id } = require('@mpieva/psydb-schema-fields');
 var createSchemaForRecordType = require('./create-schema-for-record-type');
 
 var gatherAvailableConstraintsForRecordType = async ({
@@ -24,7 +23,9 @@ var gatherAvailableConstraintsForRecordType = async ({
 
     //console.log(fullRecordSchema);
     
-    var availableConstraints = {};
+    var availableConstraints = {
+        '/_id': { type: 'array', items: Id() },
+    };
 
     traverse(fullRecordSchema, { allKeys: false }, (...traverseArgs) => {
         var [

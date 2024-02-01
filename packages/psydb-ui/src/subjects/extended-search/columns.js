@@ -99,10 +99,13 @@ export const Columns = (ps) => {
             pointer: '/_specialAgeToday',
             label: translate('Age Today')
         },
-        {
+        ...((
+            !crtSettings.commentFieldIsSensitive
+            || permissions.hasFlag('canAccessSensitiveFields')
+        ) ? [{
             pointer: '/scientific/state/comment',
             label: translate('Comment')
-        },
+        }] : []),
     ];
 
     var columnBlocks = [

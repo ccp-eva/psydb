@@ -215,6 +215,9 @@ var Permissions = (options) => {
         isLabMethodAvailable,
         isSubjectTypeAvailable,
         
+        isLabMethodAvailable,
+        isSubjectTypeAvailable,
+
         getAllowedLabOpsForFlags,
         hasLabOpsFlags,
     }
