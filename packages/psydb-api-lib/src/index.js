@@ -1,6 +1,9 @@
 'use strict';
 module.exports = {
+    // FIXME: createId is async but probably shouldnt be
     createId: require('./create-id'),
+    ObjectId: require('mongodb').ObjectId,
+
     compareIds: require('./compare-ids'),
     fromFacets: require('./from-facets'),
     maybeStages: require('./maybe-stages'),
