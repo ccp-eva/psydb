@@ -1514,4 +1514,8 @@ module.exports = [
         en: 'WARNING: There is no matching lab workflow setting in this study!',
         de: 'WARNUNG: Es gibt keine passende Ablauf-Einstellung in dieser Studie!',
     },
+    {
+        en: 'Experimenters and research group can not be changed, as the team already has appointments.',
+        de: 'Experimenter:innen und Forschungsgruppe sind nicht änderbar, da das Team bereits Termine hat.'
+    },
 ]

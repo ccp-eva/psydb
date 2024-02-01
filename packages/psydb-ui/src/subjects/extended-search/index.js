@@ -6,7 +6,7 @@ import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import {
     usePermissions,
     useFetchAll,
-    useURLSearchParams
+    useURLSearchParams,
 } from '@mpieva/psydb-ui-hooks';
 
 import {

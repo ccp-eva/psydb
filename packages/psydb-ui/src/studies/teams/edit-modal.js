@@ -46,6 +46,7 @@ const EditOpsTeamModalBody = (ps) => {
         from: record.state,
         paths: [
             'color',
+            'researchGroupId',
             'personnelIds',
             'hidden'
         ],
