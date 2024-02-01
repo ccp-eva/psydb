@@ -55,16 +55,26 @@ const StudyTeamListItem = ({
                     <b>{ record.state.name }</b>
                 </div>
                 { relatedRecordLabels && (
-                    <div>
-                        <span className='d-inline-block pr-2'>Experimenter:innen:</span>
-                        {
-                            record.state.personnelIds
-                            .map(id => (
-                                relatedRecordLabels.personnel[id]._recordLabel
-                            ))
-                            .join(', ')
-                        }
-                    </div>
+                    <>
+                        <div>
+                            <span className='d-inline-block pr-2'>Experimenter:innen:</span>
+                            <i className='text-muted'>{
+                                record.state.personnelIds
+                                .map(id => (
+                                    relatedRecordLabels.personnel[id]._recordLabel
+                                ))
+                                .join(', ')
+                            }</i>
+                        </div>
+                        <div>
+                            <span className='d-inline-block pr-2'>Forschungsgruppe:</span>
+                            <i className='text-muted'>{ record.state.researchGroupId ? (
+                                relatedRecordLabels.researchGroup[
+                                    record.state.researchGroupId
+                                ]._recordLabel
+                            ) : 'Keine' }</i>
+                        </div>
+                    </>
                 )}
 
             </div>
