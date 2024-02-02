@@ -1534,5 +1534,13 @@ module.exports = [
     {
         en: 'Code',
         de: 'Code'
+    },
+    {
+        en: 'Send New Code',
+        de: 'Neuen Code Zusenden'
+    },
+    {
+        en: 'Invalid Code!',
+        de: 'Ungültiger Code!',
     }
 ]

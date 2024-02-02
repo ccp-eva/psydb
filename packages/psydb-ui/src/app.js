@@ -54,15 +54,18 @@ var applyI18N = (bag) => {
 }
 
 const App = () => {
-
     var [ isInitialized, setIsInitialized ] = useState(false);
-    var [ needTwoFactorCode, setNeedTwoFactorCode ] = useState(false);
-    var [ isSignedIn, setIsSignedIn ] = useState(false);
-    var [ self, setSelf ] = useState();
+
+    var [ state, setState ] = useState({});
+    var { authResponseStatus, self } = state;
+    var setSelf = (nextSelf) => setState({ ...state, self: nextSelf });
 
     var [ cookies, setCookie ] = useCookies([ 'i18n' ]);
     var { language, localeCode } = applyI18N({ cookies, config });
     var locale = localesByCode[localeCode];
+    var translate = createTranslate(language);
+
+    var agent = createAgent({ language, localeCode: locale.code });
 
     var setI18N = (value) => {
         var [ language, localeCode ] = (
@@ -72,50 +75,52 @@ const App = () => {
         )
         setCookie('i18n', { language, localeCode });
     };
-    //var setLocale = (value) => dispatch({ type: 'set-locale', value });
 
-    var onSignedIn = (selfArg) => {
-        setIsSignedIn(true);
-        setNeedTwoFactorCode(true);
-        if (selfArg) {
-            setSelf(selfArg);
+    var onSuccessfulUpdate = (response) => {
+        // FIXME: find better way to determine logout
+        if (response?.data?.data?.record) {
+            setState({
+                self: response.data.data,
+                authResponseStatus: response.status
+            });
+        }
+        else {
+            // NOTE: reset auth status on logout /api/self on logout
+            setState({});
         }
     }
 
-    var onSignedOut = () => {
-        setIsSignedIn(false);
-        setNeedTwoFactorCode(false);
-        setIsInitialized(false);
+    var onFailedUpdate = (error) => {
+        var statusCode = error.response?.status;
+        if (statusCode) {
+            setState({ authResponseStatus: statusCode });
+        }
+        else {
+            throw error;
+        }
     }
 
+    var is200 = (authResponseStatus === 200);
     useEffect(() => {
         setIsInitialized(false)
         publicAgent.get('/api/self').then(
-            (res) => {
-                var self = res.data.data;
-                onSignedIn(self);
-                setIsInitialized(true)
+            (response) => {
+                onSuccessfulUpdate(response);
+                setIsInitialized(true);
             },
             (error) => {
-                var statusCode = error.response?.status;
-                if ([801, 803].includes(statusCode)) {
-                    setNeedTwoFactorCode(true);
-                }
-                setIsInitialized(error.response.status)
+                onFailedUpdate(error);
+                setIsInitialized(true);
             }
         )
-    }, [ isSignedIn, needTwoFactorCode ]);
+    }, [ is200 ]);
 
-    var translate = createTranslate(language);
-
-    var sharedBag = {
+    var contextBag = {
         config,
         language: [ language, setI18N ],
         locale,
         translate,
     }
-
-    var agent = createAgent({ language, localeCode: locale.code });
 
     if (!isInitialized) {
         return (
@@ -126,33 +131,34 @@ const App = () => {
     }
 
     var renderedView = undefined;
-    if (isSignedIn && self) {
+    if (authResponseStatus === 200 && self) {
         renderedView = (
-            <CommonContexts { ...sharedBag } agent={ agent }>
+            <CommonContexts { ...contextBag } agent={ agent }>
                 <ErrorResponseModalSetup />
                 <SelfContext.Provider value={{ ...self, setSelf }}>
-                    <Main onSignedOut={ onSignedOut } />
+                    <Main onSignedOut={ onSuccessfulUpdate } />
                 </SelfContext.Provider>
             </CommonContexts>
         )
     }
     else {
-        if ([801, 803].includes(isInitialized)) {
+        var publicBag = {
+            authResponseStatus,
+            onSuccessfulUpdate,
+            onFailedUpdate,
+        };
+        if ([801, 803].includes(authResponseStatus)) {
             renderedView = (
-                <CommonContexts { ...sharedBag } agent={ publicAgent }>
-                    <TwoFactorCodeInput
-                        isMismatch={ isInitialized === 803 }
-                        onSignedIn={ onSignedIn }
-                        onSignedOut={ onSignedOut }
-                    />
+                <CommonContexts { ...contextBag } agent={ publicAgent }>
+                    <TwoFactorCodeInput { ...publicBag } />
                 </CommonContexts>
             );
         }
         else {
             renderedView = (
-                <CommonContexts { ...sharedBag } agent={ publicAgent }>
+                <CommonContexts { ...contextBag } agent={ publicAgent }>
                     <SignIn
-                        onSignedIn={ onSignedIn }
+                        { ...publicBag }
                         onTwoFactor={() => setNeedTwoFactorCode(true) }
                     />
                 </CommonContexts>
