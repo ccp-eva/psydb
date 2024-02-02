@@ -1518,4 +1518,21 @@ module.exports = [
         en: 'Experimenters and research group can not be changed, as the team already has appointments.',
         de: 'Experimenter:innen und Forschungsgruppe sind nicht änderbar, da das Team bereits Termine hat.'
     },
+
+    {
+        en: 'Two-Factor-Authentication Required',
+        de: 'Zwei-Factor-Authentifizierung Erforderlich'
+    },
+    {
+        en: 'You should have receved an e-mail containing a code, please enter it here.',
+        de: 'Sie sollten eine E-Mail mit einem Code erhalten haben, bitte geben Sie diesen hier ein.'
+    },
+    {
+        en: 'Back',
+        de: 'Zurück'
+    },
+    {
+        en: 'Code',
+        de: 'Code'
+    }
 ]
