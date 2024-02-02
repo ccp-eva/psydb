@@ -46,7 +46,7 @@ const SignInFormBody = (ps) => {
     )
 }
 
-const SignIn = ({ onSignedIn }) => {
+const SignIn = ({ onSignedIn, onTwoFactor }) => {
     var config = useUIConfig();
     var translate = useUITranslation(); 
     
@@ -60,6 +60,9 @@ const SignIn = ({ onSignedIn }) => {
         onFailedUpdate: (error) => {
             if (error.response.status === 401) {
                 setHasError(true);
+            }
+            else if ([801, 803].includes(error.response.status)) {
+                onTwoFactor && onTwoFactor()
             }
             else {
                 throw error
@@ -125,6 +128,7 @@ const SignIn = ({ onSignedIn }) => {
                     ajvErrorInstancePathPrefix = ''
                     initialValues={{ email: '', password: '' }}
                     onSubmit={ write.exec }
+                    extraOKStatusCodes={[ 801, 803 ]}
                 >
                     {(formikProps) => (
                         <SignInFormBody hasError={ hasError } />

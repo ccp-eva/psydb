@@ -77,7 +77,7 @@ var signIn = async (context, next) => {
         await twoFactorAuthentication.generateAndSendCode({
             db, personnelId: record._id, recipientEmail
         });
-        throw new ApiError(803);
+        throw new ApiError(801);
     }
 
     // we dont want the password hash to be transferred

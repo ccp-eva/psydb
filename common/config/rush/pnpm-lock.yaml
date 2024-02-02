@@ -413,6 +413,7 @@ importers:
       '@mpieva/json-schema-lazy-resolve-oneof': workspace:~0.1.0-alpha
       '@mpieva/psydb-ajv-formats': workspace:~0.1.0-alpha
       '@mpieva/psydb-ajv-keywords': workspace:~0.1.0-alpha
+      '@mpieva/psydb-api-config': workspace:~0.1.0-alpha
       '@mpieva/psydb-api-lib-errors': workspace:~0.1.0-alpha
       '@mpieva/psydb-common-lib': workspace:~0.1.0-alpha
       '@mpieva/psydb-common-verify-helpers': workspace:~0.1.0-alpha
@@ -453,6 +454,7 @@ importers:
       '@mpieva/json-schema-lazy-resolve-oneof': link:../json-schema-lazy-resolve-oneof
       '@mpieva/psydb-ajv-formats': link:../psydb-ajv-formats
       '@mpieva/psydb-ajv-keywords': link:../psydb-ajv-keywords
+      '@mpieva/psydb-api-config': link:../psydb-api-config
       '@mpieva/psydb-api-lib-errors': link:../psydb-api-lib-errors
       '@mpieva/psydb-common-lib': link:../psydb-common-lib
       '@mpieva/psydb-common-verify-helpers': link:../psydb-common-verify-helpers

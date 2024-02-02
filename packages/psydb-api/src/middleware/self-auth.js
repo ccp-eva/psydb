@@ -52,8 +52,8 @@ var createSelfAuthMiddleware = (options = {}) => async(context, next) => {
         throw new ApiError(401); // TODO: 401
     }
 
-    if (self.twoFactorCodeStatus) {
-        var { exists, matches } = self.twoFactorCodeStatus;
+    if (twoFactorCodeStatus) {
+        var { exists, matches } = twoFactorCodeStatus;
         if (exists) {
             if (matches === true) {
                 session.hasFinishedTwoFactorAuthentication = true;
@@ -64,7 +64,7 @@ var createSelfAuthMiddleware = (options = {}) => async(context, next) => {
             }
             else {
                 debug('2FA code input required');
-                throw new ApiError(803); // TODO
+                throw new ApiError(801); // TODO
             }
         }
 

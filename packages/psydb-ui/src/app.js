@@ -23,6 +23,7 @@ import {
 import ErrorResponseModalSetup from './error-response-modal-setup';
 import ErrorBoundary from './error-boundary';
 import SignIn from './sign-in';
+import TwoFactorCodeInput from './two-factor-code-input';
 import Main from './main'
 
 const localesByCode = [
@@ -54,9 +55,10 @@ var applyI18N = (bag) => {
 
 const App = () => {
 
+    var [ isInitialized, setIsInitialized ] = useState(false);
+    var [ needTwoFactorCode, setNeedTwoFactorCode ] = useState(false);
     var [ isSignedIn, setIsSignedIn ] = useState(false);
     var [ self, setSelf ] = useState();
-    var [ isInitialized, setIsInitialized ] = useState(false);
 
     var [ cookies, setCookie ] = useCookies([ 'i18n' ]);
     var { language, localeCode } = applyI18N({ cookies, config });
@@ -74,6 +76,7 @@ const App = () => {
 
     var onSignedIn = (selfArg) => {
         setIsSignedIn(true);
+        setNeedTwoFactorCode(true);
         if (selfArg) {
             setSelf(selfArg);
         }
@@ -81,6 +84,8 @@ const App = () => {
 
     var onSignedOut = () => {
         setIsSignedIn(false);
+        setNeedTwoFactorCode(false);
+        setIsInitialized(false);
     }
 
     useEffect(() => {
@@ -92,10 +97,14 @@ const App = () => {
                 setIsInitialized(true)
             },
             (error) => {
-                setIsInitialized(true)
+                var statusCode = error.response?.status;
+                if ([801, 803].includes(statusCode)) {
+                    setNeedTwoFactorCode(true);
+                }
+                setIsInitialized(error.response.status)
             }
         )
-    }, [ isSignedIn ]);
+    }, [ isSignedIn, needTwoFactorCode ]);
 
     var translate = createTranslate(language);
 
@@ -108,33 +117,53 @@ const App = () => {
 
     var agent = createAgent({ language, localeCode: locale.code });
 
-    var View = undefined;
-    if (isInitialized) {
-        View = (
-            isSignedIn && self
-            ? (
-                <CommonContexts { ...sharedBag } agent={ agent }>
-                    <ErrorResponseModalSetup />
-                    <SelfContext.Provider value={{ ...self, setSelf }}>
-                        <Main onSignedOut={ onSignedOut } />
-                    </SelfContext.Provider>
-                </CommonContexts>
-            )
-            : (
-                <CommonContexts { ...sharedBag } agent={ publicAgent }>
-                    <SignIn onSignedIn={ onSignedIn } />
-                </CommonContexts>
-            )
-        );
+    if (!isInitialized) {
+        return (
+            <ErrorBoundary>
+                <AppInitializing />
+            </ErrorBoundary>
+        )
+    }
+
+    var renderedView = undefined;
+    if (isSignedIn && self) {
+        renderedView = (
+            <CommonContexts { ...sharedBag } agent={ agent }>
+                <ErrorResponseModalSetup />
+                <SelfContext.Provider value={{ ...self, setSelf }}>
+                    <Main onSignedOut={ onSignedOut } />
+                </SelfContext.Provider>
+            </CommonContexts>
+        )
     }
     else {
-        View = <AppInitializing />
+        if ([801, 803].includes(isInitialized)) {
+            renderedView = (
+                <CommonContexts { ...sharedBag } agent={ publicAgent }>
+                    <TwoFactorCodeInput
+                        isMismatch={ isInitialized === 803 }
+                        onSignedIn={ onSignedIn }
+                        onSignedOut={ onSignedOut }
+                    />
+                </CommonContexts>
+            );
+        }
+        else {
+            renderedView = (
+                <CommonContexts { ...sharedBag } agent={ publicAgent }>
+                    <SignIn
+                        onSignedIn={ onSignedIn }
+                        onTwoFactor={() => setNeedTwoFactorCode(true) }
+                    />
+                </CommonContexts>
+            )
+        }
     }
 
     return (
         <ErrorBoundary>
             <Router>
-                { View }
+                { renderedView }
             </Router>
         </ErrorBoundary>
     );

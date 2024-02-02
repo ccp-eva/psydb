@@ -10,7 +10,8 @@ var extraStatuses = {
     '700': 'External Delegation Failed',
 
     // FIXME: not sure about this
-    '803': 'Two Factor Auth Code Required',
+    '801': 'Two Factor Auth Code Required',
+    '803': 'Two Factor Auth Code Mismatch',
 }
 
 var getStatus = (code) => (

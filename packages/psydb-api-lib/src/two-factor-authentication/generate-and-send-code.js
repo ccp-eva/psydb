@@ -3,6 +3,7 @@ var debug = require('debug')('psydb:api-lib:two-factor-authentication');
 var nodemailer = require('nodemailer');
 
 var { range } = require('@mpieva/psydb-core-utils');
+var config = require('@mpieva/psydb-api-config');
 var withRetracedErrors = require('../with-retraced-errors');
 
 var generateAndSendCode = async (bag) => {

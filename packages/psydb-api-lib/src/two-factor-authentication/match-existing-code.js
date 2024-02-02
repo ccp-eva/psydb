@@ -14,7 +14,7 @@ var matchExistingCode = async (bag) => {
     var out = { exists: false };
     if (codeRecord) {
         out.exists = true;
-        if (inputCode) {
+        if (inputCode !== undefined) {
             out.matches = (inputCode === codeRecord.code);
         }
     }
