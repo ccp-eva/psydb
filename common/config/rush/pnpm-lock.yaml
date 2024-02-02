@@ -438,6 +438,7 @@ importers:
       mocha: ~10.2.0
       mongodb: ~3.6.3
       nanoid: ~3.3.6
+      nodemailer: ~6.8.0
       sift: ~16.0.1
       snap-shot-it: ~7.9.6
       statuses: ~2.0.1
@@ -475,6 +476,7 @@ importers:
       map-obj: 4.3.0
       mongodb: 3.6.12
       nanoid: 3.3.6
+      nodemailer: 6.8.0
       sift: 16.0.1
       statuses: 2.0.1
     devDependencies:

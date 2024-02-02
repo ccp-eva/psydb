@@ -12,5 +12,6 @@ module.exports = {
         'online-survey',
         'apestudies-wkprc-default',
         'manual-only-participation'
-    ]
+    ],
+    enableTwoFactorAuth: true,
 }
