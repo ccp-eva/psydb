@@ -24,6 +24,7 @@ import ErrorResponseModalSetup from './error-response-modal-setup';
 import ErrorBoundary from './error-boundary';
 import SignIn from './public-landing/sign-in';
 import TwoFactorCodeInput from './public-landing/two-factor-code-input';
+import PublicLanding from './public-landing';
 import Main from './main'
 
 const localesByCode = [
@@ -147,23 +148,11 @@ const App = () => {
             onSuccessfulUpdate,
             onFailedUpdate,
         };
-        if ([801, 803].includes(authResponseStatus)) {
-            renderedView = (
-                <CommonContexts { ...contextBag } agent={ publicAgent }>
-                    <TwoFactorCodeInput { ...publicBag } />
-                </CommonContexts>
-            );
-        }
-        else {
-            renderedView = (
-                <CommonContexts { ...contextBag } agent={ publicAgent }>
-                    <SignIn
-                        { ...publicBag }
-                        onTwoFactor={() => setNeedTwoFactorCode(true) }
-                    />
-                </CommonContexts>
-            )
-        }
+        renderedView = (
+            <CommonContexts { ...contextBag } agent={ publicAgent }>
+                <PublicLanding { ...publicBag } />
+            </CommonContexts>
+        )
     }
 
     return (
