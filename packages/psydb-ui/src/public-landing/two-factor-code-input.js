@@ -11,7 +11,7 @@ import { useWriteRequest, useModalReducer } from '@mpieva/psydb-ui-hooks';
 import { AsyncButton, SmallFormFooter } from '@mpieva/psydb-ui-layout';
 import { DefaultForm, Fields } from '@mpieva/psydb-ui-lib';
 
-import PublicLayout from './public-landing/public-layout';
+import PublicLayout from './public-layout';
 
 const TwoFactorCodeInput = (ps) => {
     var {

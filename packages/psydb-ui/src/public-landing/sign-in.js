@@ -9,7 +9,7 @@ import { AsyncButton, SmallFormFooter } from '@mpieva/psydb-ui-layout';
 import { useWriteRequest } from '@mpieva/psydb-ui-hooks';
 import { DefaultForm, Fields } from '@mpieva/psydb-ui-lib';
 
-import PublicLayout from './public-landing/public-layout';
+import PublicLayout from './public-layout';
 
 const SignIn = (ps) => {
     var {

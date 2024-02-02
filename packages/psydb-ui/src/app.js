@@ -22,8 +22,8 @@ import {
 
 import ErrorResponseModalSetup from './error-response-modal-setup';
 import ErrorBoundary from './error-boundary';
-import SignIn from './sign-in';
-import TwoFactorCodeInput from './two-factor-code-input';
+import SignIn from './public-landing/sign-in';
+import TwoFactorCodeInput from './public-landing/two-factor-code-input';
 import Main from './main'
 
 const localesByCode = [
