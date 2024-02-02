@@ -1,10 +1,6 @@
-import React, { useEffect, useState, useReducer } from 'react';
-import { CookiesProvider, useCookies } from 'react-cookie';
+import React, { useEffect, useState } from 'react';
+import { CookiesProvider } from 'react-cookie';
 import { HashRouter as Router } from 'react-router-dom';
-
-import enUSLocale from 'date-fns/locale/en-US';
-import enGBLocale from 'date-fns/locale/en-GB';
-import deLocale from 'date-fns/locale/de';
 
 import createAgent, { simple as publicAgent } from '@mpieva/psydb-ui-request-agents';
 
@@ -22,37 +18,12 @@ import {
 
 import ErrorResponseModalSetup from './error-response-modal-setup';
 import ErrorBoundary from './error-boundary';
-import SignIn from './public-landing/sign-in';
-import TwoFactorCodeInput from './public-landing/two-factor-code-input';
+
 import PublicLanding from './public-landing';
 import Main from './main'
 
-const localesByCode = [
-    enUSLocale,
-    enGBLocale,
-    deLocale
-].reduce((acc, locale) => ({
-    ...acc,
-    [locale.code]: locale
-}), {});
-
-var applyI18N = (bag) => {
-    var { cookies, config } = bag;
-    var { enableI18NSelect, defaultLanguage, defaultLocaleCode } = config.i18n;
-    if (enableI18NSelect) {
-        var { i18n = {}} = cookies;
-        var {
-            language = defaultLanguage,
-            localeCode = defaultLocaleCode
-        } = i18n;
-    }
-    else {
-        var language = defaultLanguage;
-        var localeCode = defaultLocaleCode;
-    }
-
-    return { language, localeCode };
-}
+import { withContext, composeAsComponent } from './compose-react-contexts';
+import useCookieI18N from './use-cookie-i18n';
 
 const App = () => {
     var [ isInitialized, setIsInitialized ] = useState(false);
@@ -61,21 +32,11 @@ const App = () => {
     var { authResponseStatus, self } = state;
     var setSelf = (nextSelf) => setState({ ...state, self: nextSelf });
 
-    var [ cookies, setCookie ] = useCookies([ 'i18n' ]);
-    var { language, localeCode } = applyI18N({ cookies, config });
-    var locale = localesByCode[localeCode];
+    var [ i18n, setI18N ] = useCookieI18N({ config });
+    var { language, locale } = i18n;
+    
     var translate = createTranslate(language);
-
     var agent = createAgent({ language, localeCode: locale.code });
-
-    var setI18N = (value) => {
-        var [ language, localeCode ] = (
-            typeof value === 'string'
-            ? [ value, value === 'de' ? deLocale.code : enUSLocale.code ]
-            : [ value.language, value.localeCode ]
-        )
-        setCookie('i18n', { language, localeCode });
-    };
 
     var onSuccessfulUpdate = (response) => {
         // FIXME: find better way to determine logout
@@ -168,35 +129,13 @@ const AppInitializing = () => (
     <div>Loading</div>
 )
 
-var withContext = (Context, propKey) => (Next) => (ps) => {
-    var { [propKey]: value, ...rest } = ps;
-    return (
-        <Context.Provider value={ value }>
-            <Next { ...rest }/>
-        </Context.Provider>
-    )
-}
-var CommonContexts = compose(
+var CommonContexts = composeAsComponent(
     withContext(UIConfigContext, 'config'),
     withContext(UILocaleContext, 'locale'),
     withContext(UILanguageContext, 'language'),
     withContext(UITranslationContext, 'translate'),
     withContext(AgentContext, 'agent')
-)(
-    ({ children }) => children
 );
-
-function compose(...funcs) {
-  if (funcs.length === 0) {
-    return arg => arg
-  }
-
-  if (funcs.length === 1) {
-    return funcs[0]
-  }
-
-  return funcs.reduce((a, b) => (...args) => a(b(...args)))
-}
 
 var withCookiesProvider = (Component) => (ps) => {
     return (
