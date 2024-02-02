@@ -30,7 +30,7 @@ var generateAndSendCode = async (bag) => {
             await transport.sendMail({
                 from: senderEmail,
                 to: recipientEmail,
-                subject: 'PsyDB - Two-Factor Code',
+                subject: `PsyDB - Two-Factor Code: ${code}`,
                 text: `Code: ${code}`,
             })
         }
