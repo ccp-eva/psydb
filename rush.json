@@ -136,6 +136,11 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/psydb-fixtures-extra",
+       "projectFolder": "packages/psydb-fixtures-extra",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-driver-nodejs",
        "projectFolder": "packages/psydb-driver-nodejs",
        "reviewCategory": "production"

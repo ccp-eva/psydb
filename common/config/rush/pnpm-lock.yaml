@@ -896,6 +896,14 @@ importers:
     dependencies:
       '@mpieva/psydb-common-lib': link:../psydb-common-lib
 
+  ../../packages/psydb-fixtures-extra:
+    specifiers:
+      axios: ~0.24.0
+      co: ~4.6.0
+    dependencies:
+      axios: 0.24.0
+      co: 4.6.0
+
   ../../packages/psydb-i18n:
     specifiers:
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha

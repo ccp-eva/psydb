@@ -13,7 +13,7 @@ module.exports = {
         'apestudies-wkprc-default',
         'manual-only-participation'
     ],
-    twoFactorAuthenticiation: {
+    twoFactorAuthentication: {
         isEnabled: true,
     }
 }
