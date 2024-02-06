@@ -34,9 +34,7 @@ describe('endpoints/public-sign-in', function () {
     
     it('two-factor auth', async function () {
         this.createKoaApi({ apiConfig: {
-            twoFactorAuthentication: {
-                isEnabled: true
-            }
+            twoFactorAuthentication: { isEnabled: true }
         }});
         try {
             await this.signIn();
@@ -66,4 +64,83 @@ describe('endpoints/public-sign-in', function () {
 
         await this.signOut();
     })
+
+    it('throws when two-factor is not finished', async function () {
+        this.createKoaApi({ apiConfig: {
+            twoFactorAuthentication: { isEnabled: true }
+        }});
+        try {
+            await this.signIn();
+        }
+        catch (e) {
+            expect(e.response.status).to.eql(801);
+        }
+        var [ codeRecord ] = await (
+            db.collection('twoFactorAuthCodes').find().toArray()
+        );
+
+        //console.log({ codeRecord });
+
+        agent = this.getApiAgent();
+        //await agent.post('/two-factor-code/match', {
+        //    twoFactorCode: codeRecord.code
+        //});
+
+        try {
+            await agent.post('/', {
+                type: 'helperSet/create',
+                timezone: 'Europe/Berlin',
+                payload: { props: {
+                    label: 'Automated Test',
+                    displayNameI18N: { de: 'Automated Test' }
+                }}
+            });
+        } catch (e) {
+            expect(e.response.status).to.eql(801);
+        }
+
+        await this.signOut();
+    });
+
+    it('throws when two-factor code is wrong', async function () {
+        this.createKoaApi({ apiConfig: {
+            twoFactorAuthentication: { isEnabled: true }
+        }});
+        try {
+            await this.signIn();
+        }
+        catch (e) {
+            expect(e.response.status).to.eql(801);
+        }
+        var [ codeRecord ] = await (
+            db.collection('twoFactorAuthCodes').find().toArray()
+        );
+
+        //console.log({ codeRecord });
+
+        agent = this.getApiAgent();
+        try {
+            await agent.post('/two-factor-code/match', {
+                twoFactorCode: 'aaaaaa'
+            });
+        } catch (e) {
+            expect(e.response.status).to.eql(803);
+        }
+
+        try {
+            await agent.post('/', {
+                type: 'helperSet/create',
+                timezone: 'Europe/Berlin',
+                payload: { props: {
+                    label: 'Automated Test',
+                    displayNameI18N: { de: 'Automated Test' }
+                }}
+            });
+        } catch (e) {
+            expect(e.response.status).to.eql(801);
+        }
+
+        await this.signOut();
+    });
+
 })
