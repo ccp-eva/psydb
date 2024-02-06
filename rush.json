@@ -181,6 +181,11 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/psydb-uni-cronjobs",
+       "projectFolder": "packages/psydb-uni-cronjobs",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-api-config",
        "projectFolder": "packages/psydb-api-config",
        "reviewCategory": "production"
