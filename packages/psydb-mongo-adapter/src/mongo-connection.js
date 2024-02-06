@@ -1,5 +1,5 @@
 'use strict';
-var MongoClient = require('mongodb').MongoClient;
+var { MongoClient } = require('mongodb');
 
 var globalConnector = undefined;
 module.exports = (config) => {

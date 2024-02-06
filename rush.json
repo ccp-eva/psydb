@@ -156,6 +156,11 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/psydb-api-mocha-test-tools",
+       "projectFolder": "packages/psydb-api-mocha-test-tools",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-api",
        "projectFolder": "packages/psydb-api",
        "reviewCategory": "production"

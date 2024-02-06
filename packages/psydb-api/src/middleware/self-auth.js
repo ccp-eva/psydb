@@ -1,13 +1,12 @@
 'use strict';
 var debug = require('debug')('psydb:api:middleware:self-auth');
-var config = require('@mpieva/psydb-api-config');
 
 var { hasNone, hasOnlyOne } = require('@mpieva/psydb-core-utils');
 var { ApiError, Self, withRetracedErrors } = require('@mpieva/psydb-api-lib');
 
 var createSelfAuthMiddleware = (options = {}) => async(context, next) => {
     var { enableApiKeyAuthentication = false } = options;
-    var { db, session, request } = context;
+    var { db, session, request, apiConfig } = context;
     var { personnelId, hasFinishedTwoFactorAuthentication } = session;
     var { apiKey } = request.query;
 
@@ -31,7 +30,9 @@ var createSelfAuthMiddleware = (options = {}) => async(context, next) => {
             'scientific.state': true,
             'gdpr.state': true
         }*/
-        enableTwoFactorAuthentication: true,
+        enableTwoFactorAuthentication: (
+            apiConfig.twoFactorAuthentication?.isEnabled
+        ),
         hasFinishedTwoFactorAuthentication
     });
 
@@ -98,7 +99,7 @@ var handleApiKeyAuth = async (bag) => {
         throw new ApiError(409) // TODO
     }
 
-    return apiKeysRecords[0].personnelId;
+    return apiKeyRecords[0].personnelId;
 }
 
 module.exports = createSelfAuthMiddleware;

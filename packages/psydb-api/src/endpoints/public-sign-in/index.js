@@ -2,7 +2,6 @@
 var debug = require('debug')('psydb:api:endpoints:public-sign-in');
 
 var bcrypt = require('bcrypt');
-var config = require('@mpieva/psydb-api-config');
 var { range } = require('@mpieva/psydb-core-utils');
 var {
     ApiError,
@@ -15,7 +14,7 @@ var {
 var Schema = require('./schema');
 
 var signIn = async (context, next) => {
-    var { db, session, request } = context;
+    var { db, session, request, apiConfig } = context;
     
     validateOrThrow({
         schema: Schema(),
@@ -71,7 +70,7 @@ var signIn = async (context, next) => {
         throw new ApiError(401); // TODO: 401
     }
 
-    if (config.enableTwoFactorAuth) {
+    if (apiConfig.twoFactorAuthentication?.isEnabled) {
         debug('2FA Enabled');
         var recipientEmail = getRecipientMail(record.gdpr.state.emails);
         await twoFactorAuthentication.generateAndSendCode({
