@@ -639,6 +639,7 @@ importers:
     specifiers:
       '@cdxoo/mongo-test-helpers': ~0.7.1
       '@cdxoo/mongodb-restore': 2.0.0-alpha.4
+      '@mpieva/psydb-api-config': workspace:~0.1.0-alpha
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
       '@mpieva/psydb-fixtures': workspace:~0.1.0-alpha
       chai: ~4.3.7
@@ -647,6 +648,7 @@ importers:
     dependencies:
       '@cdxoo/mongo-test-helpers': 0.7.1
       '@cdxoo/mongodb-restore': 2.0.0-alpha.4
+      '@mpieva/psydb-api-config': link:../psydb-api-config
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
       '@mpieva/psydb-fixtures': link:../psydb-fixtures
       chai: 4.3.8
