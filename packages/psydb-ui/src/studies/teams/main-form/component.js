@@ -33,9 +33,12 @@ export const Component = (ps) => {
 }
 
 const FormFields = (ps) => {
-    var { hasExperiments, enableVisibility, formikProps } = ps;
+    var { studyRecord, hasExperiments, enableVisibility, formikProps } = ps;
     var { values } = formikProps;
+    
+    var { researchGroupIds = [] } = studyRecord.state;
     var { researchGroupId } = values['$'];
+    
 
     var translate = useUITranslation();
     var permissions = usePermissions();
@@ -55,17 +58,17 @@ const FormFields = (ps) => {
                 </div>
             )}
             
-            <Fields.ForeignId
-                dataXPath='$.researchGroupId'
-                label={ translate('Research Group') }
-                collection='researchGroup'
-                constraints={{
-                    ...(!permissions.isRoot() && {
-                        '/_id': permissions.getResearchGroupIds()
-                    })
-                }}
-                disabled={ hasExperiments }
-            />
+            { (researchGroupIds.length !== 1 || hasExperiments) && (
+                <Fields.ForeignId
+                    dataXPath='$.researchGroupId'
+                    label={ translate('Research Group') }
+                    collection='researchGroup'
+                    constraints={{
+                        '/_id': researchGroupIds
+                    }}
+                    disabled={ hasExperiments }
+                />
+            )}
             <Fields.ForeignIdList
                 dataXPath='$.personnelIds'
                 label={ translate('Experimenters') }
