@@ -1,5 +1,5 @@
 'use strict';
-var { keyBy } = require('@mpieva/psydb-core-utils');
+var { keyBy, entries } = require('@mpieva/psydb-core-utils');
 var withRetracedErrors = require('../with-retraced-errors');
 
 var setup = async ({ db, self }) => {
@@ -25,19 +25,9 @@ var setupRolesAndResearchGroups = async ({ db, self }) => {
         researchGroupSettings,
     } = self.record.scientific.state;
 
-    var _systemRoleIds = [];
-    var _researchGroupIds = [];
-    for (var it of researchGroupSettings) {
-        _systemRoleIds.push(it.systemRoleId);
-        _researchGroupIds.push(it.researchGroupId);
-    }
-    
-    var roles = await withRetracedErrors(
-        db.collection('systemRole')
-        .find({ _id: { $in: _systemRoleIds } })
-        .toArray()
-    );
-
+    var _researchGroupIds = researchGroupSettings.map(it => (
+        it.researchGroupId
+    ));
     var researchGroups = await withRetracedErrors(
         db.collection('researchGroup')
         .find(
@@ -49,20 +39,34 @@ var setupRolesAndResearchGroups = async ({ db, self }) => {
     self.researchGroupIds = researchGroups.map(it => it._id);
     self.researchGroups = researchGroups;
 
-    if (roles.length > 0) {
-        var rolesById = keyBy({
-            items: roles,
-            byProp: '_id'
-        });
+    var userRoleIdsByGID = keyBy({
+        items: researchGroupSettings,
+        byProp: 'researchGroupId',
+        transform: (it) => it.systemRoleId
+    })
 
-        for (var it of researchGroupSettings) {
-            var {
-                researchGroupId: gid,
-                systemRoleId: rid
-            } = it;
-
-            self.rolesByResearchGroupId[gid] = rolesById[rid];
+    for (var it of researchGroups) {
+        var { _id: gid, state: { adminFallbackRoleId }} = it;
+        if (!userRoleIdsByGID[gid] && adminFallbackRoleId) {
+            userRoleIdsByGID[gid] = adminFallbackRoleId;
         }
+    }
+
+    var roles = await withRetracedErrors(
+        db.collection('systemRole')
+        .find({ _id: { $in: (
+            Object.values(userRoleIdsByGID)
+        )}})
+        .toArray()
+    );
+
+    var rolesById = keyBy({
+        items: roles,
+        byProp: '_id'
+    });
+
+    for (var [ gid, roleId] of entries(userRoleIdsByGID)) {
+        self.rolesByResearchGroupId[gid] = rolesById[roleId];
     }
 }
 

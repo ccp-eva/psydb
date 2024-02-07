@@ -58,10 +58,26 @@ var beforeAll = async function () {
         await this.context.api.driver.signOut()
         this.context.api.agent?.close();
     }
+
+    this.createFakeSession = async (bag) => {
+        var { email, finished2FA = false } = bag;
+        var db = this.getDbHandle();
+
+        var { _id: personnelId } = await (
+            db.collection('personnel').findOne({
+                'gdpr.state.emails.email': email
+            })
+        );
+
+        return {
+            personnelId,
+            hasFinishedTwoFactorAuthentication: finished2FA
+        }
+    }
 }
 
 var afterAll = async function () {
-    this.context.api.agent?.close();
+    this.context.api?.agent?.close();
     await teardownDB.call(this);
 }
 
