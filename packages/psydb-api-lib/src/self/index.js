@@ -2,16 +2,18 @@
 var debug = require('debug')('psydb:api:lib:self');
 var { ejson } = require('@mpieva/psydb-core-utils');
 var withRetracedErrors = require('../with-retraced-errors');
+var twoFactorAuthentication = require('../two-factor-authentication')
 var setup = require('./setup');
 
-var Self = async ({
-    db,
-    query,
-    apiKey,
-    //projection // see FIXME
-}) => {
-    // FIXME
-    var projection = undefined;
+var Self = async (bag) => {
+    var {
+        db,
+        query,
+        //projection, // see FIXME
+        apiKey,
+        enableTwoFactorAuthentication = false,
+        twoFactorCode = undefined,
+    } = bag;
 
     var self = {
         record: undefined,
@@ -19,6 +21,41 @@ var Self = async ({
         researchGroupIds: [],
         rolesByResearchGroupId: {},
     }
+
+    var personnelRecords = await fetchPersonnelRecords({
+        db, query
+    });
+    if (personnelRecords.length > 1) {
+        debug(`found ${personnelRecords.length} personnel records`);
+        return;
+    }
+    
+    self.record = personnelRecords[0];
+
+    self.personnelId = self.record._id;
+    self.apiKey = apiKey;
+
+    if (enableTwoFactorAuthentication && !apiKey) {
+        debug('checking 2FA');
+        var status = await twoFactorAuthentication.matchExistingCode({
+            db,
+            personnelId: self.personnelId,
+            inputCode: twoFactorCode
+        });
+        debug('2FA status:', status);
+        self.twoFactorCodeStatus = status;
+    }
+
+    await setup({ db, self });
+
+    //console.dir(ejson(self), { depth: null });
+    return self;
+}
+
+var fetchPersonnelRecords = async (bag) => {
+    var { db, query, /*projection*/ } = bag
+    // FIXME
+    var projection = undefined;
 
     var requiredProjection = {
         // FIXME: i want a minimal projection
@@ -59,22 +96,7 @@ var Self = async ({
         .toArray()
     );
 
-    if (personnelRecords.length === 1) {
-        self.record = personnelRecords[0];
-    }
-    else {
-        debug(`found ${personnelRecords.length} personnel records`);
-    }
-
-    if (self.record) {
-        self.personnelId = self.record._id;
-        self.apiKey = apiKey;
-
-        await setup({ db, self });
-    }
-
-    //console.dir(ejson(self), { depth: null });
-    return self;
+    return personnelRecords;
 }
 
 module.exports = Self;

@@ -31,6 +31,10 @@ var createRouting = (bag = {}) => {
     router.post('/sign-in', withKoaBody(), endpoints.publicSignIn);
     router.post('/sign-out', endpoints.publicSignOut);
 
+    router.post('/two-factor-code/match',
+        withKoaBody(), endpoints.twoFactorCode.match
+    );
+
     router.get('/init',
         init
     );

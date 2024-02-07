@@ -1,7 +1,8 @@
 'use strict';
 var compose = require('koa-compose');
 var withMongoDB = require('@mpieva/psydb-mongo-adapter').createMiddleware;
-    
+
+var withApiConfig = require('./with-api-config');
 var withNowDate = require('./with-client-timezone');
 var withClientTimezone = require('./with-client-timezone');
 var withClientI18N = require('./with-client-i18n');
@@ -13,6 +14,7 @@ var createApi = (bag) => {
     var { app, config, prefix = '/' } = bag;
 
     var composition = compose([
+        withApiConfig(config),
         withNowDate(), // TODO: pass now to mq/rohrpost
         withErrorHandling(),
         withClientTimezone(),

@@ -1,0 +1,21 @@
+{
+  "name": "@mpieva/psydb-uni-cronjobs",
+  "version": "0.1.0-alpha",
+  "description": "",
+  "main": "./index.js",
+  "scripts": {
+      "publicOnlineForm:createSubjectsFromImap": "node ./public-online-form/create-subjects-from-imap"
+  },
+  "author": "Jan Schwalbe",
+  "license": "MIT",
+  "dependencies": {
+    "co": "~4.6.0",
+    "debug": "~4.3.4",
+    "axios": "~0.24.0",
+    "@mpieva/psydb-core-utils": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-common-lib": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-driver-nodejs": "workspace:~0.1.0-alpha",
+    "commander": "~10.0.1",
+    "imapflow": "~1.0.150"
+  }
+}

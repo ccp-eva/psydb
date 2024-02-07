@@ -98,4 +98,6 @@ module.exports = {
 
     mappifyPointer: require('./mappify-pointer'),
     SmartArray: require('./smart-array'),
+
+    twoFactorAuthentication: require('./two-factor-authentication'),
 }

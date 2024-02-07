@@ -1,0 +1,15 @@
+{
+  "name": "@mpieva/psydb-fixtures-extra",
+  "version": "0.1.0-alpha",
+  "description": "",
+  "main": "./index.js",
+  "scripts": {
+      "fullmail:minimal": "node ./full-mail/minimal"
+  },
+  "author": "Jan Schwalbe",
+  "license": "MIT",
+  "dependencies": {
+    "co": "~4.6.0",
+    "axios": "~0.24.0"
+  }
+}

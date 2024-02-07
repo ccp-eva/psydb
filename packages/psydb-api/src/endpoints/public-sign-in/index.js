@@ -1,24 +1,25 @@
 'use strict';
 var debug = require('debug')('psydb:api:endpoints:public-sign-in');
+
 var bcrypt = require('bcrypt');
-var { ApiError, Ajv, Self } = require('@mpieva/psydb-api-lib');
+var { range } = require('@mpieva/psydb-core-utils');
+var {
+    ApiError,
+    Self,
+    validateOrThrow,
+    withRetracedErrors,
+    twoFactorAuthentication,
+} = require('@mpieva/psydb-api-lib');
 
 var Schema = require('./schema');
 
 var signIn = async (context, next) => {
-    var { db, session, request } = context;
+    var { db, session, request, apiConfig } = context;
     
-    var schema = Schema(),
-        ajv = Ajv(),
-        isValid = ajv.validate(schema, request.body);
-
-    if (!isValid) {
-        debug('/sign-in', ajv.errors);
-        throw new ApiError(400, {
-            apiStatus: 'InvalidMessageSchema',
-            data: { ajvErrors: ajv.errors }
-        });
-    }
+    validateOrThrow({
+        schema: Schema(),
+        payload: request.body
+    });
 
     var { email, password } = request.body;
 
@@ -49,9 +50,11 @@ var signIn = async (context, next) => {
         throw new ApiError(401); // TODO: 401
     }
 
-    var shadow = await db.collection('personnelShadow').findOne({
-        _id: record._id,
-    });
+    var shadow = await withRetracedErrors(
+        db.collection('personnelShadow').findOne({
+            _id: record._id,
+        })
+    );
     if (!shadow) {
         debug('user has no shadow item');
         throw new ApiError(401); // TODO: 401
@@ -67,6 +70,15 @@ var signIn = async (context, next) => {
         throw new ApiError(401); // TODO: 401
     }
 
+    if (apiConfig.twoFactorAuthentication?.isEnabled) {
+        debug('2FA Enabled');
+        var recipientEmail = getRecipientMail(record.gdpr.state.emails);
+        await twoFactorAuthentication.generateAndSendCode({
+            db, personnelId: record._id, recipientEmail
+        });
+        throw new ApiError(801);
+    }
+
     // we dont want the password hash to be transferred
     delete self.record.gdpr.state.internals.passwordHash;
 
@@ -79,6 +91,21 @@ var signIn = async (context, next) => {
     };
 
     await next();
+}
+
+// TODO: redundant
+var getRecipientMail = (emails) => {
+    if (!Array.isArray(emails)) {
+        return;
+    }
+
+    var filtered = emails.filter(it => it.isPrimary);
+    if (filtered.length < 1) {
+        return;
+    }
+    else {
+        return filtered[0].email;
+    }
 }
 
 module.exports = signIn;
