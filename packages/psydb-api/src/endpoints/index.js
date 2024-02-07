@@ -35,6 +35,7 @@ module.exports = {
     experimentVariantSetting: require('./entities/experiment-variant-setting'),
 
     audit: require('./audit'),
+    twoFactorCode: require('./two-factor-code'),
 
     // XXX
     temp_fixesChecker: require('./temp_fixesChecker'),

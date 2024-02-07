@@ -6,6 +6,7 @@ export const AsyncButton = (ps) => {
     var {
         type,
         onClick,
+        onSubmit, // for convenicnce
         isTransmitting = false,
         variant,
         disabled,
@@ -13,6 +14,13 @@ export const AsyncButton = (ps) => {
 
         ...pass
     } = ps;
+
+    if (type === 'submit') {
+        onClick = undefined;
+    }
+    else {
+        onClick = onClick || onSubmit;
+    }
 
     return (
         <div
@@ -22,7 +30,7 @@ export const AsyncButton = (ps) => {
             <Button
                 { ...pass }
                 type={ isTransmitting ? 'button' : type }
-                onClick={ isTransmitting ? undefined : onClick }
+                onClick={ isTransmitting ? undefined : () => onClick?.() }
                 variant={ variant }
                 //disabled={ disabled || isTransmitting }
                 disabled={ disabled }

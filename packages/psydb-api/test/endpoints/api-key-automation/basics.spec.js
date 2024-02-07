@@ -26,11 +26,12 @@ describe('endpoints/event : api-key automation', function () {
     ].join('');
 
     it('does the thing', async function () {
-        await agent.post(`/?apiKey=${apiKey}`).send({
+        await agent.post(`/?apiKey=${apiKey}`, {
             type: 'helperSet/create',
             timezone: 'Europe/Berlin',
             payload: { props: {
-                label: 'Automated Test'
+                label: 'Automated Test',
+                displayNameI18N: { de: 'Automated Test' }
             }}
         })
 

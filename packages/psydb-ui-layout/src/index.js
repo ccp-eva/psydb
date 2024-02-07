@@ -64,6 +64,7 @@ export * as Icons from './icons';
 export * from './team-label';
 export * from './legend';
 export * from './narrow-hr';
+export * from './small-form-footer';
 
 export * from './json-raw';
 

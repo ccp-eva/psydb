@@ -8,6 +8,10 @@ var extraStatuses = {
     // NOTE: when the server deletgates externally
     // i.e. requesting a service we have no control over
     '700': 'External Delegation Failed',
+
+    // FIXME: not sure about this
+    '801': 'Two Factor Auth Code Required',
+    '803': 'Two Factor Auth Code Mismatch',
 }
 
 var getStatus = (code) => (
