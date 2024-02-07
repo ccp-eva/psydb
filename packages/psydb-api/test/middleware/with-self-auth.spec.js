@@ -4,6 +4,7 @@ var { ejson } = require('@mpieva/psydb-core-utils');
 var noop = async () => {};
 
 var withSelfAuth = require('../../src/middleware/self-auth');
+var withPermissions = require('../../src/middleware/permissions');
 
 describe('middleware/with-self-auth', function () {
     var db;
@@ -25,10 +26,20 @@ describe('middleware/with-self-auth', function () {
         }
         await mw(context, noop);
 
+        var perm = withPermissions();
+        await perm(context, noop);
+
         var { self } = context;
-        var { rolesByResearchGroupId } = self;
-        console.log({ self });
-        console.log({ rolesByResearchGroupId });
+        //console.log({ self });
+        var { permissions } = context;
+        //console.log({ permissions });
+
+        var flag = permissions.hasSomeLabOperationFlags({
+            types: 'any',
+            flags: [ 'canViewExperimentCalendar' ]
+        });
+
+        console.log({ flag });
     })
     
 })
