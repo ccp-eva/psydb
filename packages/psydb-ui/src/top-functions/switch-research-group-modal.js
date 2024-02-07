@@ -27,7 +27,6 @@ export const SwitchResearchGroupModal = WithDefaultModal({
             payload: { researchGroupId }
         }), {
             onSuccessfulUpdate: [
-                () => history.push('/'),
                 //() => { window.location.reload() },
                 // FIXME: we need to refresh the self context here
                 //() => { window.location.href = '/' },
@@ -49,6 +48,7 @@ export const SwitchResearchGroupModal = WithDefaultModal({
                         }),
                     });
                 },
+                () => history.push('/'),
                 onHide,
             ]
         })
