@@ -61,10 +61,10 @@ const Fallback = (ps) => {
                     <i>{ ps.fallbackLabel || translate('No Items') }</i>
                     <ErrorIndicator { ...ps } />
                 </div>
+                { !ps.extraContentWrapperProps?.readOnly && (
+                    <Footer { ...ps } />
+                )}
             </div>
-            { !ps.extraContentWrapperProps?.readOnly && (
-                <Footer { ...ps } />
-            )}
         </div>
     )
 }
@@ -86,7 +86,7 @@ const AddButton = (ps) => {
     var { children, onClick, style, disabled } = ps;
     var translate = useUITranslation();
     return (
-        <button
+        <a
             type='button'
             role={ disabled ? '': 'button' }
             onClick={ disabled ? undefined : onClick }
@@ -101,6 +101,6 @@ const AddButton = (ps) => {
             title={ translate('_form_array_add_button') }
         >
             { children }
-        </button>
+        </a>
     )
 }
