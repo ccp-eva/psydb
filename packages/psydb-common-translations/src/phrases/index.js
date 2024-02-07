@@ -1033,13 +1033,15 @@ module.exports = [
     },
     {
         internal: '_date_placeholder',
-        en: 'mm/dd/yyyy',
-        de: 'tt.mm.jjjj',
+        'en-US': 'mm/dd/yyyy',
+        'en-GB': 'dd/mm/yyyy',
+        'de': 'tt.mm.jjjj',
     },
     {
         internal: '_date_time_placeholder',
-        en: 'mm/dd/yyyy --:-- am/pm',
-        de: 'tt.mm.jjjj --:--',
+        'en-US': 'mm/dd/yyyy --:-- am/pm',
+        'en-GB': 'dd/mm/yyyy --:--',
+        'de': 'tt.mm.jjjj --:--',
     },
     {
         en: 'Permission',
