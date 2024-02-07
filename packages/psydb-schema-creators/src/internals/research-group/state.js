@@ -76,6 +76,10 @@ var ResearchGroupState = ({} = {}) => {
                 collection: 'systemRole',
             }),
             
+            adminFallbackRoleId: ForeignId({
+                collection: 'systemRole',
+            }),
+            
             // TODO: permissions????
             // should they be readable to all?
             // and writable only to root accounts?
