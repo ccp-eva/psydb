@@ -14,7 +14,8 @@
     "@cdxoo/mongodb-restore": "2.0.0-alpha.4",
     "@cdxoo/mongo-test-helpers": "~0.7.1",
     "@mpieva/psydb-fixtures": "workspace:~0.1.0-alpha",
-    "@mpieva/psydb-core-utils": "workspace:~0.1.0-alpha"
+    "@mpieva/psydb-core-utils": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-api-config": "workspace:~0.1.0-alpha"
   },
   "devDependencies": {}
 }
