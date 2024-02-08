@@ -82,3 +82,5 @@ export {
     InputGroup,
     ButtonGroup,
 } from 'react-bootstrap';
+
+export * as ErrorFallbacks from './error-fallbacks';

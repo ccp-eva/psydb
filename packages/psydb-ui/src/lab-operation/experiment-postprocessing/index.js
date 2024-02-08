@@ -8,7 +8,11 @@ import {
 } from 'react-router-dom';
 
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
-import { BigNav } from '@mpieva/psydb-ui-layout';
+
+import { 
+    PageWrappers, BigNav, ErrorFallbacks
+} from '@mpieva/psydb-ui-layout';
+
 import { ResearchGroupNav, RedirectOrTypeNav } from '@mpieva/psydb-ui-lib';
 import ExperimentPostprocessingList from './experiment-postprocessing-list';
 
@@ -33,11 +37,20 @@ const ExperimentPostprocessingRouting = (ps) => {
         },
     ]
 
+    if (!subjectRecordTypes?.length) {
+        return (
+            <PageWrappers.Level2 title={
+                translate('Postprocessing')
+            }>
+                <ErrorFallbacks.NoSubjectTypesDefined />
+            </PageWrappers.Level2>
+        )
+    }
+
     return (
-        <>
-            <h5 className='mt-0 mb-3 text-muted'>
-                { translate('Postprocessing') }
-            </h5>
+        <PageWrappers.Level2 title={
+            translate('Postprocessing')
+        }>
             <Switch>
                 <Route exact path={`${path}`}>
                     <BigNav items={ experimentTypeNavItems } />
@@ -48,7 +61,7 @@ const ExperimentPostprocessingRouting = (ps) => {
                     />
                 </Route>
             </Switch>
-        </>
+        </PageWrappers.Level2>
     );
 }
 
@@ -65,7 +78,7 @@ const ExperimentTypeRouting = (ps) => {
                 />
             </Route>
             <Route exact path={`${path}/:subjectType`}>
-                <ResearchGroupNav />
+                <ResearchGroupNav autoRedirect={ true } />
             </Route>
             <Route path={`${path}/:subjectType/:researchGroupId`}>
                 <ExperimentPostprocessingList />

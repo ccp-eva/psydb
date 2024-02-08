@@ -1,22 +1,15 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
-import { usePermissions } from '@mpieva/psydb-ui-hooks';
-
 import {
     Route,
     Switch,
-    Redirect,
     useRouteMatch,
-    useHistory,
-    useParams
 } from 'react-router-dom';
 
-import {
-    LinkContainer
-} from '@mpieva/psydb-ui-layout';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
+import { LinkContainer, ErrorFallbacks } from '@mpieva/psydb-ui-layout';
+import { RedirectOrTypeNav, ResearchGroupNav } from '@mpieva/psydb-ui-lib';
 
-import RecordTypeNav from '@mpieva/psydb-ui-lib/src/record-type-nav';
-import { ResearchGroupNav } from '@mpieva/psydb-ui-lib';
 import Calendar from './calendar';
 
 const getTitleByType = (inviteType) => {
@@ -40,6 +33,10 @@ const InviteExperimentsRouting = (ps) => {
     var translate = useUITranslation();
     var permissions = usePermissions();
 
+    if (!subjectRecordTypes?.length) {
+        return <ErrorFallbacks.NoSubjectTypesDefined className='mt-3' />
+    }
+
     return (
         <>
             <LinkContainer to={ url }>
@@ -52,7 +49,7 @@ const InviteExperimentsRouting = (ps) => {
                 <Route exact path={`${path}`}>
                     <RedirectOrTypeNav
                         baseUrl={ `${url}` }
-                        subjectTypes={ subjectRecordTypes }
+                        recordTypes={ subjectRecordTypes }
                     />
                 </Route>
                 <Route exact path={`${path}/:subjectType`}>
@@ -73,31 +70,6 @@ const InviteExperimentsRouting = (ps) => {
             </Switch>
         </>
     );
-}
-
-// FIXME redundant
-const RedirectOrTypeNav = ({
-    baseUrl,
-    subjectTypes,
-    title,
-}) => {
-    if (subjectTypes.length === 1) {
-        return (
-            <Redirect to={
-                `${baseUrl}/${subjectTypes[0].type}`
-            } />
-        )
-    }
-    else {
-        return (
-            <>
-                { title && (
-                    <h2>{ title }</h2>
-                )}
-                <RecordTypeNav items={ subjectTypes } />
-            </>
-        )
-    }
 }
 
 export default InviteExperimentsRouting;

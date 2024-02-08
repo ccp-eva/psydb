@@ -1,5 +1,4 @@
 import React  from 'react';
-
 import {
     Route,
     Switch,
@@ -8,10 +7,8 @@ import {
 
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
-
-import { LinkContainer } from '@mpieva/psydb-ui-layout';
+import { LinkContainer, ErrorFallbacks } from '@mpieva/psydb-ui-layout';
 import { RedirectOrTypeNav, ResearchGroupNav } from '@mpieva/psydb-ui-lib';
-
 
 import Calendar from './calendar';
 
@@ -22,6 +19,9 @@ const AwayTeamExperimentsRouting = (ps) => {
     var translate = useUITranslation();
     var permissions = usePermissions();
 
+    if (!locationTypes?.length) {
+        return <ErrorFallbacks.NoLocationTypesDefined className='mt-3' />
+    }
     return (
         <>
             <LinkContainer to={ url }>

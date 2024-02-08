@@ -1544,5 +1544,18 @@ module.exports = [
     {
         en: 'Invalid Code!',
         de: 'Ungültiger Code!',
-    }
+    },
+
+    {
+        en: 'No study types defined!',
+        de: 'Keine Studien-Typen definiert!'
+    },
+    {
+        en: 'No subject types defined!',
+        de: 'Keine Proband:innen-Typen definiert!'
+    },
+    {
+        en: 'No location types defined!',
+        de: 'Keine Location-Typen definiert!'
+    },
 ]

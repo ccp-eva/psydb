@@ -10,7 +10,7 @@ import {
     useRouteMatch,
 } from 'react-router-dom';
 
-var { PageWrappers } = require('@mpieva/psydb-ui-layout');
+import { PageWrappers, ErrorFallbacks } from '@mpieva/psydb-ui-layout';
 
 import {
     RedirectOrTypeNav,
@@ -25,6 +25,16 @@ const InviteConfirmationRouting = (ps) => {
     var { path, url } = useRouteMatch();
     var translate = useUITranslation();
     var permissions = usePermissions();
+
+    if (!subjectRecordTypes?.length) {
+        return (
+            <PageWrappers.Level2 title={
+                translate('Confirm Appointments')
+            }>
+                <ErrorFallbacks.NoSubjectTypesDefined />
+            </PageWrappers.Level2>
+        )
+    }
 
     var researchGroupIds = (
         permissions.isRoot()
@@ -47,7 +57,7 @@ const InviteConfirmationRouting = (ps) => {
                 <Route exact path={`${path}`}>
                     <RedirectOrTypeNav
                         baseUrl={ `${url}` }
-                        subjectTypes={ subjectRecordTypes }
+                        recordTypes={ subjectRecordTypes }
                     />
                 </Route>
                 <Route exact path={`${path}/:subjectType`}>
