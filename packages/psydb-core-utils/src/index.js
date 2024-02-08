@@ -50,4 +50,6 @@ module.exports = {
     jsonpointer: require('jsonpointer'),
     keys: Object.keys,
     escapeRX: require('escape-string-regexp'),
+
+    jsonify: require('./jsonify'),
 }
