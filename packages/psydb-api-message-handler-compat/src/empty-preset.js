@@ -6,6 +6,7 @@ var emptyPreset = () => ({
     verifyAllowedAndPlausible: noop,
     executeSystemEvents: noop,
     executeRemoteEffects: noop,
+    createResponseBody: noop,
 });
 
 module.exports = emptyPreset;
