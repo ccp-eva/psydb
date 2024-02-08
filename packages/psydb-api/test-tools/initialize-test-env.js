@@ -8,6 +8,10 @@ var [ teardownDB ] = mochaHooks.afterAll;
 
 var Koa = require('koa');
 
+var {
+    hasNone, hasOnlyOne, flatten, entries
+} = require('@mpieva/psydb-core-utils');
+
 var createAgent = require('@mpieva/psydb-axios-test-wrapper');
 var Driver = require('@mpieva/psydb-driver-nodejs');
 var withApi = require('../src/middleware/api');
@@ -73,6 +77,69 @@ var beforeAll = async function () {
             personnelId,
             hasFinishedTwoFactorAuthentication: finished2FA
         }
+    }
+    
+    ////////////////////////////////
+    // FIXME: redundandt see message handlers
+    this.getRecord = async (collection, filters, { subChannels = false } = {}) => {
+        if (['subject', 'personnel'].includes(collection)) {
+            subChannels = true;
+        }
+
+        var { _id, type, ...otherFilters } = filters;
+        var db = this.getDbHandle();
+       
+        // XXX: bug in flattened when empty object passed
+        var flattened = (
+            !hasNone(Object.keys(otherFilters))
+            ? flatten(otherFilters)
+            : {}
+        );
+        var AND = [];
+        for (var [key, value] of entries(flattened)) {
+            if (subChannels) {
+                AND.push({ $or: [
+                    { [`gdpr.state.${key}`]: value },
+                    { [`gdpr.state.custom.${key}`]: value },
+                    { [`scientific.state.${key}`]: value },
+                    { [`scientific.state.custom.${key}`]: value },
+                ]})
+            }
+            else {
+                AND.push({ $or: [
+                    { [`state.${key}`]: value },
+                    { [`state.custom.${key}`]: value },
+                ]})
+            }
+        }
+       
+        var mongoFilter = {
+            ...(_id && { _id }),
+            ...(type && { type }),
+            ...(!hasNone(AND) && {
+                $and: AND
+            })
+        };
+
+        var records = await db.collection(collection).find({
+            ...mongoFilter
+        }).toArray();
+
+        if (hasNone(records)) {
+            console.dir(ejson(mongoFilter), { depth: null })
+            throw new Error('no record found');
+        }
+        if (!hasOnlyOne(records)) {
+            console.dir(ejson(mongoFilter), { depth: null })
+            throw new Error('multiple records found');
+        }
+
+        return records[0];
+    }
+
+    this.getId = async (...args) => {
+        var record = await this.getRecord(...args);
+        return record._id;
     }
 }
 
