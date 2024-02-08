@@ -121,7 +121,7 @@ var extendedExperimentData = async (context, next) => {
     // XXX: maybe systemRoles should be below researchGroup
     if ([
         'apestudies-wkprc-default',
-        'manual-only-participation-default'
+        'manual-only-participation'
     ].includes(experimentType)) {
         if (permissions.availableLabMethods.includes(experimentType)) {
             hasAnyAccess = true;
