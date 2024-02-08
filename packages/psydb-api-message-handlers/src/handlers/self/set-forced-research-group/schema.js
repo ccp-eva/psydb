@@ -1,26 +1,18 @@
 'use strict';
 var {
-    ExactObject,
+    ClosedObject,
     ForeignId,
 } = require('@mpieva/psydb-schema-fields');
 
-var { Message } = require('@mpieva/psydb-schema-helpers');
-
-var createSchema = ({ messageType } = {}) => {
-    return Message({
-        type: messageType,
-        payload: ExactObject({
-            properties: {
-                researchGroupId: ForeignId({
-                    collection: 'researchGroup',
-                    isNullable: true,
-                }),
-            },
-            required: [
-                'researchGroupId'
-            ]
-        })
+var createSchema = (context) => {
+    var schema = ClosedObject({
+        researchGroupId: ForeignId({
+            collection: 'researchGroup',
+            isNullable: true,
+        }),
     });
+
+    return schema;
 }
 
 module.exports = createSchema;
