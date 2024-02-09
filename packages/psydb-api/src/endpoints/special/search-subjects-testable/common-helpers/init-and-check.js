@@ -304,8 +304,8 @@ var initSubjects = async ({
        prefetched: subjectTypeRecord,
        target: (
             ['inhouse', 'online-video-call'].includes(labProcedureType)
-            ? 'invite-selection-list'
-            : 'away-team-selection-list'
+            ? 'invite-selection'
+            : 'away-team-selection'
        ),
        permissions
    });
