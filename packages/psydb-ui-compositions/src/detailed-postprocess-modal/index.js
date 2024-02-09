@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { demuxed } from '@mpieva/psydb-ui-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import {
@@ -32,6 +33,8 @@ const DetailedPostprocessModalBody = (ps) => {
     var canEdit = permissions.hasFlag('canWriteSubjects');
     var [ hasEdited, setHasEdited ] = useState(false);
 
+    var translate = useUITranslation();
+
     return (
         <>
             { 
@@ -51,7 +54,9 @@ const DetailedPostprocessModalBody = (ps) => {
                 <>
                     <hr />
                     <div className='d-flex justify-content-end'>
-                        <Button onClick={ onHide }>Schliessen</Button>
+                        <Button onClick={ onHide }>{
+                            translate('Close')
+                        }</Button>
                     </div>
 
             {/*<Postprocessing { ...({
@@ -72,11 +77,12 @@ const DetailedPostprocessModalBody = (ps) => {
 
 const HasEditedInfo = (ps) => {
     var { onReEdit } = ps;
+    var translate = useUITranslation();
     return (
         <Alert variant='info' className='d-flex justify-content-between'>
-            <i>Proband:innendaten gespeichert!</i>
+            <i>{ translate('Subject saved!') }</i>
             <a role='button' className='force-hover' onClick={ onReEdit }>
-                <b>Erneut bearbeiten</b>
+                <b>{ translate('Edit Again') }</b>
             </a>
         </Alert>
     );

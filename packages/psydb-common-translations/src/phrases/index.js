@@ -41,6 +41,10 @@ module.exports = [
         de: 'Nachbereitung'
     },
     {
+        en: 'Postprocessing (${subject} - ${study})',
+        de: 'Nachbereitung (${subject} - ${study})',
+    },
+    {
         en: 'External Persons',
         de: 'Externe Personen'
     },
@@ -1558,4 +1562,13 @@ module.exports = [
         en: 'No location types defined!',
         de: 'Keine Location-Typen definiert!'
     },
+
+    {
+        en: 'Subject saved!',
+        de: 'Proband:in gespeichert!'
+    },
+    {
+        en: 'Edit Again',
+        de: 'Erneut Bearbeiten'
+    }
 ]
