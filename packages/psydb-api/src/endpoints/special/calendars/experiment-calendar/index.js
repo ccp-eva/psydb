@@ -7,6 +7,7 @@ var datefns = require('date-fns');
 var enums = require('@mpieva/psydb-schema-enums');
 
 var {
+    ejson,
     keyBy,
     groupBy,
     compareIds,
@@ -142,12 +143,10 @@ var experimentCalendar = async (context, next) => {
         ]
     }
 
-    //console.log(subjectIds);
-
     var allCRTSettings = await fetchAllCRTSettings(db, [
         {
             collection: 'subject',
-            ...(subjectRecordType && { recordType: subjectRecordType })
+            ...(subjectRecordType && { recordTypes: [subjectRecordType] })
         },
     ], { wrap: true });
 
@@ -165,16 +164,17 @@ var experimentCalendar = async (context, next) => {
             ...crtSettings.augmentedDisplayFields('table'),
             ...crtSettings.augmentedDisplayFields('selectionRow'),
         ];
-        
-        //console.log(availableDisplayFieldsByCRT[type]);
-        //console.log(shownDisplayFields);
+      
+        console.log('SSSSSSSSSSSSSSSSSSSSSSSSSs')
+        console.log(type);
+        console.log(availableDisplayFieldsByCRT[type]);
+        console.log(shownDisplayFields);
         
         var subjectRecords = await (
             db.collection('subject').aggregate([
                 { $match: {
                     _id: { $in: subjectIds }
                 }},
-                StripEventsStage({ subChannels: ['gdpr', 'scientific' ]}),
 
                 ProjectDisplayFieldsStage({
                     displayFields: shownDisplayFields,
@@ -190,6 +190,7 @@ var experimentCalendar = async (context, next) => {
         //allSubjectRecords = [ ...allSubjectRecords, ...subjectRecords ];
     }
 
+    console.dir(ejson({ subjectRecords }), { depth: null });
     var subjectRelated = await fetchRelatedLabelsForMany({
         db, timezone, language, locale,
         collectionName: 'subject',
