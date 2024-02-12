@@ -12,12 +12,12 @@ var beforeAll = async function () {
     
     await mongoHelpers.startup(this.context.mongo)();
 
-    var getMongoContext = () => {
+    this.getMongoContext = () => {
         return this.context.mongo.local || this.context.mongo;
     }
 
     this.getDbHandle = () => {
-        var { dbHandle } = getMongoContext();
+        var { dbHandle } = this.getMongoContext();
         return dbHandle;
     }
 

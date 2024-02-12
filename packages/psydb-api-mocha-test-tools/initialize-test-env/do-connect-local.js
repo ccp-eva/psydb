@@ -15,6 +15,7 @@ var doConnectLocal = async function (bag = {}) {
     var dbHandle = client.db(dbName);
 
     this.context.mongo.local = {
+        uri: url,
         client,
         dbName,
         dbHandle,
