@@ -1,4 +1,7 @@
 'use strict';
+//var CustomConsole = require('./custom-console');
+//global.console = new CustomConsole(process.stdout, process.stderr);
+
 var compose = require('koa-compose');
 var withMongoDB = require('@mpieva/psydb-mongo-adapter').createMiddleware;
 
