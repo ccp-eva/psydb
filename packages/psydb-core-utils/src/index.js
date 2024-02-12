@@ -25,6 +25,7 @@ module.exports = {
 
     includes: require('./includes'),
     intersect: require('./intersect'),
+    maybeIntersect: require('./maybe-intersect'),
     without: require('./without'),
 
     extractFrom: require('./extract-from'),
