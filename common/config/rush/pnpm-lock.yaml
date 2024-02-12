@@ -133,6 +133,7 @@ importers:
 
   ../../packages/psydb-api:
     specifiers:
+      '@cdxoo/block-quote': ~1.0.1
       '@cdxoo/inline-string': ~1.0.0
       '@cdxoo/inline-text': ~1.0.2
       '@cdxoo/mongo-test-helpers': ~0.7.1
@@ -198,6 +199,7 @@ importers:
       superagent-prefix: ~0.0.2
       supertest: ~6.0.1
     dependencies:
+      '@cdxoo/block-quote': 1.0.1
       '@cdxoo/inline-string': 1.0.0
       '@cdxoo/inline-text': 1.0.2
       '@cdxoo/mongodb-escape-keys': 0.2.0-beta.0
