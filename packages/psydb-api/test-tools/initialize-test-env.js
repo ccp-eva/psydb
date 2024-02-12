@@ -23,6 +23,8 @@ var beforeAll = async function () {
         var { apiConfig } = options;
         this.context.api = {};
 
+        var mongo = this.getMongoContext();
+
         var app = new Koa();
         app.use(async (context, next) => {
             await next();
@@ -31,8 +33,8 @@ var beforeAll = async function () {
         app.use(withApi({ app, config: {
             ...apiConfig,
             db: {
-                url: this.context.mongo.uri,
-                dbName: this.context.mongo.dbName,
+                url: mongo.uri,
+                dbName: mongo.dbName,
                 useUnifiedTopology: true,
             }
         }}));
