@@ -3,14 +3,14 @@ import React from 'react';
 import {
     Route,
     Switch,
-    Redirect, // TODO
     useRouteMatch,
 } from 'react-router-dom';
 
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useFetch, usePermissions } from '@mpieva/psydb-ui-hooks';
 
 import { 
-    PageWrappers, BigNav, ErrorFallbacks
+    PageWrappers, BigNav, ErrorFallbacks, LoadingIndicator
 } from '@mpieva/psydb-ui-layout';
 
 import { ResearchGroupNav, RedirectOrTypeNav } from '@mpieva/psydb-ui-lib';
@@ -22,20 +22,20 @@ const ExperimentPostprocessingRouting = (ps) => {
     var translate = useUITranslation();
     var { path, url } = useRouteMatch();
 
-    var experimentTypeNavItems = [
-        {
-            label: translate('Inhouse Appointments'),
-            linkTo: 'inhouse'
-        },
-        {
-            label: translate('External Appointments'),
-            linkTo: 'away-team'
-        },
-        {
-            label: translate('Online Video Appointments'),
-            linkTo: 'online-video-call'
-        },
-    ]
+    var [ didFetch, fetched ] = useFetch((agent) => (
+        agent.searchResearchGroupMetadata({
+            filters: {
+                labMethods: [ 'inhouse', 'online-video-call', 'away-team' ],
+            },
+            projectedFields: [ 'labMethods', 'subjectTypes' ],
+        })
+    ), []);
+
+    if (!didFetch) {
+        return <LoadingIndicator size='lg' />
+    }
+    var { merged, related } = fetched.data;
+    var { researchGroupIds, subjectTypes, labMethods } = merged;
 
     if (!subjectRecordTypes?.length) {
         return (
@@ -46,6 +46,20 @@ const ExperimentPostprocessingRouting = (ps) => {
             </PageWrappers.Level2>
         )
     }
+    if (!labMethods?.length) {
+        return (
+            <PageWrappers.Level2 title={
+                translate('Postprocessing')
+            }>
+                <ErrorFallbacks.NoLabMethodsDefined />
+            </PageWrappers.Level2>
+        )
+    }
+
+    var navItems = labMethods.map(it => ({
+        label: translate(`_labWorkflow_${it}`),
+        linkTo: it
+    }));
 
     return (
         <PageWrappers.Level2 title={
@@ -53,11 +67,13 @@ const ExperimentPostprocessingRouting = (ps) => {
         }>
             <Switch>
                 <Route exact path={`${path}`}>
-                    <BigNav items={ experimentTypeNavItems } />
+                    <BigNav items={ navItems } />
                 </Route>
                 <Route path={`${path}/:experimentType`}>
                     <ExperimentTypeRouting
-                        subjectRecordTypes={ subjectRecordTypes }
+                        subjectTypes={ subjectTypes }
+                        researchGroupIds={ researchGroupIds }
+                        related={ related }
                     />
                 </Route>
             </Switch>
@@ -66,7 +82,7 @@ const ExperimentPostprocessingRouting = (ps) => {
 }
 
 const ExperimentTypeRouting = (ps) => {
-    var { subjectRecordTypes } = ps;
+    var { researchGroupIds, subjectTypes, related } = ps;
     var { path, url } = useRouteMatch();
 
     return (
@@ -74,11 +90,15 @@ const ExperimentTypeRouting = (ps) => {
             <Route exact path={`${path}`}>
                 <RedirectOrTypeNav
                     baseUrl={ `${url}` }
-                    subjectTypes={ subjectRecordTypes }
+                    recordTypes={ subjectTypes }
+                    related={ related }
                 />
             </Route>
             <Route exact path={`${path}/:subjectType`}>
-                <ResearchGroupNav autoRedirect={ true } />
+                <ResearchGroupNav
+                    autoRedirect={ true }
+                    filterIds={ researchGroupIds }
+                />
             </Route>
             <Route path={`${path}/:subjectType/:researchGroupId`}>
                 <ExperimentPostprocessingList />

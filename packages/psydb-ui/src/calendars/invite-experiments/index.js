@@ -18,6 +18,7 @@ import { RedirectOrTypeNav, ResearchGroupNav } from '@mpieva/psydb-ui-lib';
 
 import Calendar from './calendar';
 
+
 const getTitleByType = (inviteType) => {
     var title = {
         'inhouse': 'Inhouse Appointments',
@@ -40,7 +41,6 @@ const InviteExperimentsRouting = (ps) => {
         agent.searchResearchGroupMetadata({
             filters: { labMethods: [ inviteType ] },
             projectedFields: [ 'subjectTypes' ],
-            includeRecords: false
         })
     ), [ inviteType ]);
 
