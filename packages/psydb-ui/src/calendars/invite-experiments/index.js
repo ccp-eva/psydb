@@ -6,8 +6,14 @@ import {
 } from 'react-router-dom';
 
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
-import { usePermissions } from '@mpieva/psydb-ui-hooks';
-import { LinkContainer, ErrorFallbacks } from '@mpieva/psydb-ui-layout';
+import { useFetch, usePermissions } from '@mpieva/psydb-ui-hooks';
+
+import {
+    PageWrappers,
+    ErrorFallbacks,
+    LoadingIndicator
+} from '@mpieva/psydb-ui-layout';
+
 import { RedirectOrTypeNav, ResearchGroupNav } from '@mpieva/psydb-ui-lib';
 
 import Calendar from './calendar';
@@ -24,51 +30,55 @@ const getTitleByType = (inviteType) => {
 }
 
 const InviteExperimentsRouting = (ps) => {
-    var {
-        subjectRecordTypes,
-        inviteType
-    } = ps;
+    var { inviteType } = ps;
     var { path, url } = useRouteMatch();
     
     var translate = useUITranslation();
     var permissions = usePermissions();
 
-    if (!subjectRecordTypes?.length) {
+    var [ didFetch, fetched ] = useFetch((agent) => (
+        agent.searchResearchGroupMetadata({
+            filters: { labMethods: [ inviteType ] },
+            projectedFields: [ 'subjectTypes' ],
+            includeRecords: false
+        })
+    ), [ inviteType ]);
+
+    if (!didFetch) {
+        return <LoadingIndicator size='lg' />
+    }
+
+    var { merged, related } = fetched.data;
+    var { researchGroupIds, subjectTypes } = merged;
+
+    if (!subjectTypes?.length) {
         return <ErrorFallbacks.NoSubjectTypesDefined className='mt-3' />
     }
 
     return (
-        <>
-            <LinkContainer to={ url }>
-                <h5 className='mt-0 mb-3 text-muted' role='button'>
-                    { translate(getTitleByType(inviteType)) }
-                </h5>
-            </LinkContainer>
-                
+        <PageWrappers.Level2
+            title={ translate(getTitleByType(inviteType)) }
+            titleLinkUrl={ url }
+        >
             <Switch>
                 <Route exact path={`${path}`}>
                     <RedirectOrTypeNav
                         baseUrl={ `${url}` }
-                        recordTypes={ subjectRecordTypes }
+                        recordTypes={ merged.subjectTypes }
+                        related={ related }
                     />
                 </Route>
                 <Route exact path={`${path}/:subjectType`}>
                     <ResearchGroupNav
                         autoRedirect={ true }
-                        filterIds={
-                            permissions.isRoot()
-                            ? permissions.raw.forcedResearchGroupId
-                            : permissions.getLabOperationFlagIds(
-                                inviteType, 'canViewExperimentCalendar'
-                            )
-                        }
+                        filterIds={ researchGroupIds }
                     />
                 </Route>
                 <Route path={`${path}/:subjectType/:researchGroupId`}>
                     <Calendar inviteType={ inviteType } />
                 </Route>
             </Switch>
-        </>
+        </PageWrappers.Level2>
     );
 }
 
