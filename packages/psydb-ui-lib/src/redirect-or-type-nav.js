@@ -9,6 +9,7 @@ const RedirectOrTypeNav = (ps) => {
         subjectTypes,
         recordTypes,
         title,
+        related,
         enableRedirect = true
     } = ps;
 
@@ -29,7 +30,10 @@ const RedirectOrTypeNav = (ps) => {
                 { title && (
                     <h2>{ title }</h2>
                 )}
-                <RecordTypeNav items={ recordTypes } />
+                <RecordTypeNav
+                    items={ recordTypes }
+                    related={ related }
+                />
             </>
         )
     }
