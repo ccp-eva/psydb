@@ -1551,6 +1551,10 @@ module.exports = [
     },
 
     {
+        en: 'No lab workflows defined!',
+        de: 'Keine Lab-Workflows definiert!'
+    },
+    {
         en: 'No study types defined!',
         de: 'Keine Studien-Typen definiert!'
     },
