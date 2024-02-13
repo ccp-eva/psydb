@@ -6,7 +6,6 @@ var {
     CustomRecordTypeKey,
     LabMethodKey,
     StringEnum,
-    DefaultBool,
 } = require('@mpieva/psydb-schema-fields');
 
 var Schema = () => {
@@ -36,12 +35,7 @@ var Schema = () => {
     })
 
     var schema = ExactObject({
-        properties: {
-            filters,
-            projectedFields,
-            includeRecords: DefaultBool({ default: true }),
-            includeMerged: DefaultBool({ default: true }),
-        },
+        properties: { filters, projectedFields },
     });
 
     return schema;

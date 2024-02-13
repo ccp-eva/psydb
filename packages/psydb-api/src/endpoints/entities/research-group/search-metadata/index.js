@@ -7,6 +7,8 @@ var {
     compareIds,
     unique,
     keyBy,
+    ejson,
+    omit,
 } = require('@mpieva/psydb-core-utils');
 
 var {
@@ -14,8 +16,10 @@ var {
     ResponseBody,
     withRetracedErrors,
     validateOrThrow,
+    aggregateOne,
     aggregateToArray,
     createRecordLabel,
+    fetchRecordLabelsManual,
 } = require('@mpieva/psydb-api-lib');
 
 var {
@@ -35,15 +39,16 @@ var searchMetadata = async (context, next) => {
         payload: request.body
     });
 
+    var fieldKeys = [
+        'labMethods',
+        'studyTypes',
+        'subjectTypes',
+        'locationTypes'
+    ]
+
     var {
         filters = {},
-        projectedFields = [
-            'labMethods',
-            'studyTypes',
-            'subjectTypes',
-            'locationTypes'
-        ],
-
+        projectedFields = fieldKeys,
         includeRecords = true,
         includeMerged = true,
     } = request.body;
@@ -58,6 +63,11 @@ var searchMetadata = async (context, next) => {
 
     var { recordLabelDefinition } = allSchemaCreators.researchGroup;
 
+    var UNWINDS = [];
+    for (var it of fieldKeys) {
+        UNWINDS.push({ $unwind: `$state.${it}`});
+    }
+
     var MATCH = { _id: { $in: researchGroupIds }};
     for (var [key, values] of entries(otherFilters)) {
         var path = (
@@ -68,68 +78,45 @@ var searchMetadata = async (context, next) => {
         MATCH[path] = { $in: values };
     }
 
-    var PROJECT = {
-        researchGroupIds: '$_id',
-        _recordLabelDefinitionFields: true,
+    var GROUP = {
+        _id: null,
+        researchGroupIds: { $addToSet: '$_id' }
     };
     for (var it of projectedFields) {
-        PROJECT[it] = (
+        var path = (
             it === 'labMethods'
             ? `$state.${it}`
             : `$state.${it}.key`
-        );
+        )
+        GROUP[it] = { $addToSet: path };
     }
 
-    var records = await withRetracedErrors(
-        aggregateToArray({ db, researchGroup: [
-            { $match: MATCH },
-            SeperateRecordLabelDefinitionFieldsStage({
-                recordLabelDefinition
-            }),
-            { $project: PROJECT }
-        ]})
+    var stages = [
+        ...UNWINDS,
+        { $match: MATCH },
+        { $group: GROUP },
+        { $project: { _id: false }}
+    ]
+
+    var merged = await withRetracedErrors(
+        aggregateOne({ db, researchGroup: stages })
+    ) || {}; // NOTE: this can be undefined
+
+    for (var it of [ 'researchGroupIds', ...projectedFields]) {
+        if (!merged[it]) {
+            merged[it] = []
+        }
+    }
+    
+    var relatedRecords  = await withRetracedErrors(
+        fetchRecordLabelsManual(db, {
+            researchGroup: merged.researchGroupIds
+        }, { ...clientI18N, oldWrappedLabels: true })
     );
 
-    var relatedRecords = {};
     var allTypes = [];
-    var merged = {};
-    for (var it of records) {
-        
-        relatedRecords[it._id] = {
-            _id: it._id,
-            _recordLabel: createRecordLabel({
-                definition: recordLabelDefinition,
-                record: it._recordLabelDefinitionFields,
-                ...clientI18N
-            })
-        }
-        delete it._recordLabelDefinitionFields
-
-        for (var key of ['researchGroupIds', 'labMethods']) {
-            var value = it[key];
-            if (!value) {
-                continue;
-            }
-            forcePush({
-                into: merged, pointer: `/${key}`,
-                values: [ value ]
-            })
-        }
-
-        for (var key of ['studyTypes', 'subjectTypes', 'locationTypes']) {
-            var values = it[key];
-            if (!values) {
-                continue;
-            }
-            forcePush({
-                into: merged, pointer: `/${key}`,
-                values
-            })
-            allTypes.push(...values);
-        }
-    }
-    for (var [key, values] of entries(merged)) {
-        merged[key] = unique({ from: values, transformOption: String })
+    for (var key of ['studyTypes', 'subjectTypes', 'locationTypes']) {
+        allTypes.push(...(merged[key] || []));
     }
 
     var crtRecords = await withRetracedErrors(
@@ -143,12 +130,11 @@ var searchMetadata = async (context, next) => {
                 'state.displayNameI18N': true
             }}
         ]})
-    )
+    );
 
     context.body = ResponseBody({
         data: {
-            ...(includeRecords && { records }),
-            ...(includeMerged && { merged }),
+            merged,
             related: {
                 records: relatedRecords,
                 crts: keyBy({ items: crtRecords, byProp: 'type' })

@@ -34,7 +34,7 @@ describe('endpoints/research-group/search-metadata', function () {
 
         var out = await agent.post('/researchGroup/search-metadata', {
             filters: { labMethods: ['inhouse']},
-            projectedFields: ['subjectTypes'],
+            projectedFields: ['subjectTypes', 'labMethods'],
             includeRecords: false
         });
         console.dir(ejson(out.data), { depth: null });
