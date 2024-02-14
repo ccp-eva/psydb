@@ -1,5 +1,5 @@
 'use strict';
-var { keyBy } = require('@mpieva/psydb-core-utils');
+var { keyBy, entries, compareIds } = require('@mpieva/psydb-core-utils');
 var withRetracedErrors = require('../with-retraced-errors');
 
 var setup = async ({ db, self }) => {
@@ -25,19 +25,9 @@ var setupRolesAndResearchGroups = async ({ db, self }) => {
         researchGroupSettings,
     } = self.record.scientific.state;
 
-    var _systemRoleIds = [];
-    var _researchGroupIds = [];
-    for (var it of researchGroupSettings) {
-        _systemRoleIds.push(it.systemRoleId);
-        _researchGroupIds.push(it.researchGroupId);
-    }
-    
-    var roles = await withRetracedErrors(
-        db.collection('systemRole')
-        .find({ _id: { $in: _systemRoleIds } })
-        .toArray()
-    );
-
+    var _researchGroupIds = researchGroupSettings.map(it => (
+        it.researchGroupId
+    ));
     var researchGroups = await withRetracedErrors(
         db.collection('researchGroup')
         .find(
@@ -49,61 +39,94 @@ var setupRolesAndResearchGroups = async ({ db, self }) => {
     self.researchGroupIds = researchGroups.map(it => it._id);
     self.researchGroups = researchGroups;
 
-    if (roles.length > 0) {
-        var rolesById = keyBy({
-            items: roles,
-            byProp: '_id'
-        });
+    var userRoleIdsByGID = keyBy({
+        items: researchGroupSettings,
+        byProp: 'researchGroupId',
+        transform: (it) => it.systemRoleId
+    })
 
-        for (var it of researchGroupSettings) {
-            var {
-                researchGroupId: gid,
-                systemRoleId: rid
-            } = it;
-
-            self.rolesByResearchGroupId[gid] = rolesById[rid];
+    for (var it of researchGroups) {
+        var { _id: gid, state: { adminFallbackRoleId }} = it;
+        if (!userRoleIdsByGID[gid] && adminFallbackRoleId) {
+            userRoleIdsByGID[gid] = adminFallbackRoleId;
         }
+    }
+
+    var roles = await withRetracedErrors(
+        db.collection('systemRole')
+        .find({ _id: { $in: (
+            Object.values(userRoleIdsByGID)
+        )}})
+        .toArray()
+    );
+
+    var rolesById = keyBy({
+        items: roles,
+        byProp: '_id'
+    });
+
+    for (var [ gid, roleId] of entries(userRoleIdsByGID)) {
+        self.rolesByResearchGroupId[gid] = rolesById[roleId];
     }
 }
 
 var setupAvailableCRTsAndMethods = async ({ db, self }) => {
+    var researchGroups = getActiveResearchGroups({ self });
+    
     self.availableSubjectTypes = unique({
         from: reduceCRTs({
-            items: self.researchGroups,
+            items: researchGroups,
             pointer: '/state/subjectTypes'
         }),
         transformOption: (it) => (it.key)
     })
     self.availableLocationTypes = unique({
         from: reduceCRTs({
-            items: self.researchGroups,
+            items: researchGroups,
             pointer: '/state/locationTypes'
         }),
         transformOption: (it) => (it.key)
     });
     self.availableStudyTypes = unique({
         from : reduceCRTs({
-            items: self.researchGroups,
+            items: researchGroups,
             pointer: '/state/studyTypes'
         }),
         transformOption: (it) => (it.key)
     });
 
     self.availableLabMethods = unique(reduceCRTs({
-        items: self.researchGroups,
+        items: researchGroups,
         pointer: '/state/labMethods'
     }));
 }
 
 var setupAvailableHelperSetIds = async ({ db, self }) => {
-    self.availableHelperSetIds = self.researchGroups.reduce((acc, it) => ([
+    var researchGroups = getActiveResearchGroups({ self });
+    
+    self.availableHelperSetIds = researchGroups.reduce((acc, it) => ([
         ...acc, ...(it.state.helperSetIds || [])
     ]), [])
 }
 var setupAvailableSystemRoleIds = async ({ db, self }) => {
-    self.availableSystemRoleIds = self.researchGroups.reduce((acc, it) => ([
+    var researchGroups = getActiveResearchGroups({ self });
+    
+    self.availableSystemRoleIds = researchGroups.reduce((acc, it) => ([
         ...acc, ...(it.state.systemRoleIds || [])
     ]), [])
+}
+
+var getActiveResearchGroups = (bag) => {
+    var { self } = bag;
+    var { researchGroups, forcedResearchGroupId } = self;
+
+    if (forcedResearchGroupId) {
+        researchGroups = researchGroups.filter(it => (
+            compareIds(it._id, forcedResearchGroupId)
+        ));
+    }
+
+    return researchGroups;
 }
 
 var jsonpointer = require('jsonpointer')

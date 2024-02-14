@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form } from '@mpieva/psydb-ui-layout';
 
+// FIXME: bootstrap setting 'for' in label breaks in lists
 export const PlainCheckbox = (ps) => {
     var { value, checked, onChange, useRawOnChange = false, ...pass } = ps;
     if (!useRawOnChange) {

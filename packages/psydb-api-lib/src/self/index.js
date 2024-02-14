@@ -25,9 +25,9 @@ var Self = async (bag) => {
     var personnelRecords = await fetchPersonnelRecords({
         db, query
     });
-    if (personnelRecords.length > 1) {
+    if (personnelRecords.length != 1) {
         debug(`found ${personnelRecords.length} personnel records`);
-        return;
+        return self;
     }
     
     self.record = personnelRecords[0];

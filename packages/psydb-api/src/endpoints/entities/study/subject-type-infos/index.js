@@ -8,8 +8,10 @@ var {
 
 var {
     ApiError,
-    validateOrThrow,
     ResponseBody,
+    validateOrThrow,
+    withRetracedErrors,
+    aggregateToArray,
 
     fetchAllCRTSettings,
 } = require('@mpieva/psydb-api-lib');
@@ -26,36 +28,11 @@ var subjectTypeInfos = async (context, next) => {
     })
 
     var { studyId } = request.body;
+
+    var { fromSettings, fromExistingParticipations } = await (
+        gatherSubjectTypes(context)
+    );
     
-    var settingRecords = await (
-        db.collection('experimentVariantSetting').aggregate([
-            { $match: {
-                studyId,
-            }},
-            { $project: { _id: true, 'state.subjectTypeKey': true }},
-        ]).toArray()
-    );
-    if (settingRecords.length < 1) {
-        throw new ApiError(400, 'StudyHasNoLabProcedureSettings');
-    }
-
-    var fromSettings = unique(
-        gatherSubjectTypesFromLabProcedureSettings({ settingRecords })
-    );
-
-    var fromExistingParticipations = unique(
-        await (
-            db.collection('subject').aggregate([
-                { $match: {
-                    [ ppath() + '.studyId' ]: studyId,
-                }},
-                { $project: {
-                    type: true,
-                }}
-            ]).map(it => it.type).toArray()
-        )
-    );
-
     var typeInfo = [];
     for (var it of fromSettings) {
         var out = {
@@ -102,5 +79,46 @@ var subjectTypeInfos = async (context, next) => {
 var ppath = () => (
     'scientific.state.internals.participatedInStudies'
 );
+
+var gatherSubjectTypes = async (context) => {
+    var { db, permissions, request } = context;
+    var { availableSubjectTypes = [] } = permissions;
+    var { studyId } = request.body;
+
+    var settingRecords = await withRetracedErrors(
+        aggregateToArray({ db, experimentVariantSetting: [
+            { $match: {
+                studyId,
+                'state.subjectTypeKey': { $in: (
+                    availableSubjectTypes.map(it => it.key)
+                )},
+            }},
+            { $project: { _id: true, 'state.subjectTypeKey': true }},
+        ]})
+    );
+    if (settingRecords.length < 1) {
+        throw new ApiError(400, 'StudyHasNoLabProcedureSettings');
+    }
+
+    var fromSettings = unique(
+        gatherSubjectTypesFromLabProcedureSettings({ settingRecords })
+    );
+
+    var fromExistingParticipations = unique(
+        (await withRetracedErrors(
+            aggregateToArray({ db, subject: [
+                { $match: {
+                    type: { $in: availableSubjectTypes.map(it => it.key) },
+                    [ ppath() + '.studyId' ]: studyId,
+                }},
+                { $project: {
+                    type: true,
+                }}
+            ]})
+        )).map(it => it.type)
+    );
+
+    return { fromSettings, fromExistingParticipations };
+}
 
 module.exports = { subjectTypeInfos };

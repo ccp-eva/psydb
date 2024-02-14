@@ -14,6 +14,6 @@ module.exports = {
         'manual-only-participation'
     ],
     twoFactorAuthentication: {
-        isEnabled: true,
+        isEnabled: false,
     }
 }

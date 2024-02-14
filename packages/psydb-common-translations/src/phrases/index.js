@@ -41,6 +41,10 @@ module.exports = [
         de: 'Nachbereitung'
     },
     {
+        en: 'Postprocessing (${subject} - ${study})',
+        de: 'Nachbereitung (${subject} - ${study})',
+    },
+    {
         en: 'External Persons',
         de: 'Externe Personen'
     },
@@ -1033,13 +1037,15 @@ module.exports = [
     },
     {
         internal: '_date_placeholder',
-        en: 'mm/dd/yyyy',
-        de: 'tt.mm.jjjj',
+        'en-US': 'mm/dd/yyyy',
+        'en-GB': 'dd/mm/yyyy',
+        'de': 'tt.mm.jjjj',
     },
     {
         internal: '_date_time_placeholder',
-        en: 'mm/dd/yyyy --:-- am/pm',
-        de: 'tt.mm.jjjj --:--',
+        'en-US': 'mm/dd/yyyy --:-- am/pm',
+        'en-GB': 'dd/mm/yyyy --:--',
+        'de': 'tt.mm.jjjj --:--',
     },
     {
         en: 'Permission',
@@ -1542,5 +1548,31 @@ module.exports = [
     {
         en: 'Invalid Code!',
         de: 'Ungültiger Code!',
+    },
+
+    {
+        en: 'No lab workflows defined!',
+        de: 'Keine Lab-Workflows definiert!'
+    },
+    {
+        en: 'No study types defined!',
+        de: 'Keine Studien-Typen definiert!'
+    },
+    {
+        en: 'No subject types defined!',
+        de: 'Keine Proband:innen-Typen definiert!'
+    },
+    {
+        en: 'No location types defined!',
+        de: 'Keine Location-Typen definiert!'
+    },
+
+    {
+        en: 'Subject saved!',
+        de: 'Proband:in gespeichert!'
+    },
+    {
+        en: 'Edit Again',
+        de: 'Erneut Bearbeiten'
     }
 ]

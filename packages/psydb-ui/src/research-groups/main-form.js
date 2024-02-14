@@ -105,6 +105,11 @@ const FormFields = (ps) => {
                 dataXPath='$.systemRoleIds'
                 collection='systemRole'
             />
+            <Fields.ForeignId
+                label={ translate('Admin Fallback System Role') }
+                dataXPath='$.adminFallbackRoleId'
+                collection='systemRole'
+            />
         </>
     );
 }

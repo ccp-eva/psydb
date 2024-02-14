@@ -1,6 +1,8 @@
 'use strict';
 
-var createResearchGroup = async ({ apiKey, driver, site }) => {
+var createResearchGroup = async (bag) => {
+    var { apiKey, driver, site, systemRoleId, ethnologySetId } = bag;
+
     await driver.sendMessage({
         type: 'researchGroup/create',
         payload: { props: {
@@ -15,6 +17,22 @@ var createResearchGroup = async ({ apiKey, driver, site }) => {
                 country: 'DE',
             },
             description: '',
+            studyTypes: [],
+            subjectTypes: [
+                { key: `fs_${site.type}_subject` },
+            ],
+            locationTypes: [
+                { key: `fs_${site.type}_location` },
+            ],
+            helperSetIds: [
+                ethnologySetId,
+            ],
+            systemRoleIds: [
+                systemRoleId,
+            ],
+            labMethods: [
+                'manual-only-participation'
+            ]
         }},
     }, { apiKey });
 

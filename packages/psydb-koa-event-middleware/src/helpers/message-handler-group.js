@@ -35,9 +35,10 @@ var MessageHandlerGroup = (specList) => {
         'checkAllowedAndPlausible',
         'triggerSystemEvents',
         'triggerOtherSideEffects',
+        'createResponseBody'
     ].forEach(prop => {
         group[prop] = (context) => (
-            findRunnableHandler(context.message)[prop](context)
+            findRunnableHandler(context.message)[prop]?.(context)
         )
     })
     

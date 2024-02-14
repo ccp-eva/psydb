@@ -133,6 +133,7 @@ importers:
 
   ../../packages/psydb-api:
     specifiers:
+      '@cdxoo/block-quote': ~1.0.1
       '@cdxoo/inline-string': ~1.0.0
       '@cdxoo/inline-text': ~1.0.2
       '@cdxoo/mongo-test-helpers': ~0.7.1
@@ -198,6 +199,7 @@ importers:
       superagent-prefix: ~0.0.2
       supertest: ~6.0.1
     dependencies:
+      '@cdxoo/block-quote': 1.0.1
       '@cdxoo/inline-string': 1.0.0
       '@cdxoo/inline-text': 1.0.2
       '@cdxoo/mongodb-escape-keys': 0.2.0-beta.0
@@ -639,6 +641,7 @@ importers:
     specifiers:
       '@cdxoo/mongo-test-helpers': ~0.7.1
       '@cdxoo/mongodb-restore': 2.0.0-alpha.4
+      '@mpieva/psydb-api-config': workspace:~0.1.0-alpha
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
       '@mpieva/psydb-fixtures': workspace:~0.1.0-alpha
       chai: ~4.3.7
@@ -647,6 +650,7 @@ importers:
     dependencies:
       '@cdxoo/mongo-test-helpers': 0.7.1
       '@cdxoo/mongodb-restore': 2.0.0-alpha.4
+      '@mpieva/psydb-api-config': link:../psydb-api-config
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
       '@mpieva/psydb-fixtures': link:../psydb-fixtures
       chai: 4.3.8

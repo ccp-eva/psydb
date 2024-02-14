@@ -6,7 +6,6 @@ var createLocationCRT = require('./create-location-crt');
 var createSubjectCRT = require('./create-subject-crt');
 var createFSScientistRole = require('./create-fs-scientist-role');
 var createResearchGroup = require('./create-research-group');
-var createDummyScientist = require('./create-dummy-scientist');
 
 var sites = [
     { type: 'camreoon', labelDE: 'Kamerun', labelEN: 'Cameroon' },
@@ -48,15 +47,31 @@ module.exports = async (bag) => {
         });
         console.log({ subjectCrtId })
 
-        var researchGroupId = await createResearchGroup({ ...shared });
-        console.log({ researchGroupId })
-
         cache[site.type] = {
             ethnologySetId,
             locationCrtId,
             subjectCrtId,
+        };
+    }
+    
+    for (var site of sites) {
+        var shared = { apiKey, driver, site };
+        var {
+            ethnologySetId,
+            locationCrtId,
+            subjectCrtId,
+        } = cache[site.type];
+        
+        var researchGroupId = await createResearchGroup({
+            ...shared,
+            systemRoleId,
+            ethnologySetId,
+        });
+        console.log({ researchGroupId })
+        
+        cache[site.type] = {
+            ...cache[site.type],
             researchGroupId,
-            userId,
         };
     }
 

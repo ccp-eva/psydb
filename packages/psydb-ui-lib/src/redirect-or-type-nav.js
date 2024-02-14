@@ -9,6 +9,7 @@ const RedirectOrTypeNav = (ps) => {
         subjectTypes,
         recordTypes,
         title,
+        related,
         enableRedirect = true
     } = ps;
 
@@ -19,7 +20,7 @@ const RedirectOrTypeNav = (ps) => {
     if (enableRedirect && recordTypes.length === 1) {
         return (
             <Redirect to={
-                `${baseUrl}/${recordTypes[0].type}`
+                `${baseUrl}/${recordTypes[0].type || recordTypes[0]}`
             } />
         )
     }
@@ -29,7 +30,10 @@ const RedirectOrTypeNav = (ps) => {
                 { title && (
                     <h2>{ title }</h2>
                 )}
-                <RecordTypeNav items={ recordTypes } />
+                <RecordTypeNav
+                    items={ recordTypes }
+                    related={ related }
+                />
             </>
         )
     }

@@ -137,6 +137,10 @@ var run = () => async (context, next) => {
     // mails etc
     await messageHandler.triggerOtherSideEffects(context);
 
+    if (messageHandler.createResponseBody) {
+        await messageHandler.createResponseBody(context);
+    }
+
     await next();
 }
 

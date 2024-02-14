@@ -27,29 +27,15 @@ export const SwitchResearchGroupModal = WithDefaultModal({
             payload: { researchGroupId }
         }), {
             onSuccessfulUpdate: [
-                () => history.push('/'),
                 //() => { window.location.reload() },
                 // FIXME: we need to refresh the self context here
                 //() => { window.location.href = '/' },
                 (res, [ researchGroupId ]) => {
-                    var oldPermissions = self.permissions;
-                    var {
-                        hasRootAccess,
-                        rolesByResearchGroupId,
-                        availableResearchGroupIds
-                    } = oldPermissions;
-
-                    setSelf({
-                        ...self,
-                        permissions: Permissions({
-                            hasRootAccess,
-                            rolesByResearchGroupId,
-                            researchGroupIds: availableResearchGroupIds,
-                            forcedResearchGroupId: researchGroupId,
-                        }),
-                    });
+                    var { record, permissions } = res.data.data;
+                    setSelf({ record, permissions });
                 },
                 onHide,
+                () => history.push('/'),
             ]
         })
 
