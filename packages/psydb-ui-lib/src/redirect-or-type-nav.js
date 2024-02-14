@@ -20,7 +20,7 @@ const RedirectOrTypeNav = (ps) => {
     if (enableRedirect && recordTypes.length === 1) {
         return (
             <Redirect to={
-                `${baseUrl}/${recordTypes[0].type}`
+                `${baseUrl}/${recordTypes[0].type || recordTypes[0]}`
             } />
         )
     }
