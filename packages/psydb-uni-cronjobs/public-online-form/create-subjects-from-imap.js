@@ -2,8 +2,16 @@ var co = require('co');
 var debug = require('debug')('psydb:uni-cronjobs');
 
 var { program } = require('commander');
-var { ImapFlow } = require('imapflow');
+var compose = require('koa-compose');
 var pkg = require('../package.json');
+
+var withErrorHandling = require('./with-error-handling');
+var withImapClient = require('./with-imap-client');
+var withPsydbDriver = require('./with-psydb-driver');
+var maybeSetupImapFolders = require('./maybe-setup-imap-folders');
+var fetchMails = require('./fetch-mails');
+var parseMailHtml = require('./parse-mail-html');
+var remapMailData = require('./remap-mail-data');
 
 var cwd = process.cwd();
 
@@ -88,10 +96,12 @@ for (var it of cliOptions) {
 
 program.parse(process.argv);
 
+var noop = async () => {};
+
 co(async () => {
-    var options = program.opts();
+    var cliOptions = program.opts();
     var {
-        apiKey,
+        psydbApiKey,
         psydbUrl,
         psydbVerbose,
 
@@ -102,32 +112,28 @@ co(async () => {
         imapSsl,
         imapVerbose,
 
+        errorSmtpHost,
+        errorSmtpPort,
+        errorRecepient,
+
         ...extraOptions
-    } = options;
+    } = cliOptions;
 
-    var client = new ImapFlow({
-        host: imapHost,
-        port: imapPort,
-        secure: imapSsl,
-        logger: imapVerbose,
-        auth: {
-            user: imapUser,
-            pass: imapPassword
-        }
-    });
+    var context = {
+        parserErrors: [],
+        psydbDriverErrors: [],
+    };
+    await compose([
+        withErrorHandling(cliOptions),
+        withImapClient(cliOptions),
+        //withPsydbDriver(cliOptions),
 
-    await client.connect();
+        maybeSetupImapFolders,
 
-    var lock = await client.getMailboxLock('INBOX');
-    try {
-        var fetched = client.fetch('1:*', { envelope: true });
-        for await (var message of fetched) {
-            console.log(`${message.uid}: ${message.envelope.subject}`);
-        }
-    }
-    finally {
-        lock.release();
-    }
-    
-    await client.logout();
+        fetchMails,
+        parseMailHtml,
+        remapMailData,
+        //createSubjects,
+    ])(context, noop);
+
 }).catch(error => { console.log(error) });
