@@ -158,6 +158,10 @@ module.exports = [
         de: 'Leer als "Unbekannt"'
     },
     {
+        en: 'Enable "Unknown" Value',
+        de: 'Wert "Unbekannt" Erlauben'
+    },
+    {
         en: 'Field Type',
         de: 'Feld-Typ'
     },
