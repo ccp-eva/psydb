@@ -12,10 +12,13 @@
     "co": "~4.6.0",
     "debug": "~4.3.4",
     "axios": "~0.24.0",
+    "koa-compose": "~4.1.0",
     "@mpieva/psydb-core-utils": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-common-lib": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-driver-nodejs": "workspace:~0.1.0-alpha",
     "commander": "~10.0.1",
-    "imapflow": "~1.0.150"
+    "imapflow": "~1.0.150",
+    "html-to-text": "~9.0.5",
+    "libqp": "~2.0.1"
   }
 }
