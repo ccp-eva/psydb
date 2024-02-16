@@ -283,3 +283,16 @@ export const IsSensitiveProp = (ps) => {
         />
     )
 }
+
+export const EnableUnknownValueProp = (ps) => {
+    var { dataXPath, isUnrestricted } = ps;
+    var translate = useUITranslation();
+    return (
+        <Fields.DefaultBool
+            label={ translate('Enable "Unknown" Value') }
+            dataXPath={ `${dataXPath}.props.enableUnknownValue` }
+            disabled={ !isUnrestricted }
+            required
+        />
+    )
+}
