@@ -23,6 +23,11 @@ var beforeAll = async function () {
 
     this.connectLocal = (...args) => doConnectLocal.call(this, ...args);
     this.restore = (...args) => doRestore.call(this, ...args);
+    
+    this.fetchAllRecords = (collection) => {
+        var db = this.getDbHandle();
+        return db.collection(collection).find().toArray();
+    }
 }
 
 var beforeEach = async function () {}

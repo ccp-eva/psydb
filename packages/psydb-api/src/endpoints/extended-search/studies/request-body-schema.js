@@ -46,7 +46,7 @@ RequestBodySchema.Full = () => ExactObject({
         specialFilters: ExactObject({
             properties: {
                 studyId: SaneString(),
-                sequenceNumber: Integer(),
+                sequenceNumber: SaneString(),
                 name: SaneString(),
                 shorthand: SaneString(),
                 scientistIds: NegatableForeignIdList({

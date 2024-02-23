@@ -38,7 +38,7 @@ RequestBodySchema.Full = () => ExactObject({
             properties: {
                 subjectId: SaneString(),
                 onlineId: SaneString(),
-                sequenceNumber: Integer(),
+                sequenceNumber: SaneString(),
                 didParticipateIn: ForeignIdList({
                     collection: 'study'
                 }),

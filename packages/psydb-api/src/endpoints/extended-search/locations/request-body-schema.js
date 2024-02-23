@@ -46,7 +46,7 @@ RequestBodySchema.Full = () => ExactObject({
         specialFilters: ExactObject({
             properties: {
                 locationId: SaneString(),
-                sequenceNumber: Integer(),
+                sequenceNumber: SaneString(),
                 isHidden: StringEnum([ 'any', 'only-true', 'only-false' ])
             }
         }),
