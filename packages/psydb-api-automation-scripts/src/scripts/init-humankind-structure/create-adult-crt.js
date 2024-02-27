@@ -97,7 +97,8 @@ module.exports = async (context) => {
             displayName: 'Gender',
             displayNameI18N: { 'de': 'Geschlecht' },
             props: {
-                enableUnknownValue: false
+                enableUnknownValue: false,
+                enableOtherValue: true,
             }
         }},
     }, { apiKey });
