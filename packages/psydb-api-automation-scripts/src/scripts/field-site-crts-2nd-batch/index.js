@@ -1,5 +1,9 @@
 'use strict';
+var { MongoClient } = require('mongodb');
 var { ejson } = require('@mpieva/psydb-core-utils');
+var WrappedCache = require('../../wrapped-cache');
+
+var prepareCache = require('./prepare-cache');
 
 var createEthnologySet = require('./create-ethnology-set');
 var createLocationCRT = require('./create-location-crt');
@@ -10,7 +14,7 @@ var createResearchGroup = require('./create-research-group');
 var sites = [
     { type: 'argentina', labelDE: 'Argentinien', labelEN: 'Argentina' },
     { type: 'mexico', labelDE: 'Mexiko', labelEN: 'Mexico' },
-    { type: 'newzeeland', labelDE: 'Neuseeland', labelEN: 'Newzeeland' },
+    { type: 'newzeeland', labelDE: 'Neuseeland', labelEN: 'New Zeeland' },
     { type: 'nigeria', labelDlE: 'Nigeria', labelEN: 'Nigeria' },
     { type: 'zambia', labelDE: 'Sambia', labelEN: 'Zambia' }
 ];
@@ -26,12 +30,27 @@ var defaultSubjectFormOrder = [
 ]
 
 module.exports = async (bag) => {
-    var { driver, apiKey, extraOptions } = bag;
-    var cache = {};
+    var { driver, apiKey, extraOptions = {}} = bag;
+    var { mongodb: mongodbConnectString } = extraOptions;
+    if (!mongodbConnectString) {
+        throw new Error('script requires mongodb connect string');
+    }
+    
+    var mongo = await MongoClient.connect(
+        mongodbConnectString,
+        { useUnifiedTopology: true }
+    );
 
-    var systemRoleId = await createFSScientistRole({ apiKey, driver });
+    var db = mongo.db();
+
+    var cache = WrappedCache({ driver });
+    var context = { apiKey, driver, db, cache };
+    await prepareCache(context);
+
+    var systemRoleId = cache.get(`/systemRole/FS Scientist`);
     console.log({ systemRoleId });
 
+    cache = cache.get();
     for (var site of sites) {
         var shared = { apiKey, driver, site };
         
@@ -76,6 +95,8 @@ module.exports = async (bag) => {
             researchGroupId,
         };
     }
+
+    mongo.close();
 
     console.dir(ejson(
         driver.getCache().lastChannelIds
