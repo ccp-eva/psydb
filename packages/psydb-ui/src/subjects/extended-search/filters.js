@@ -18,7 +18,7 @@ export const Filters = (ps) => {
     
     return (
         <FormBox title={ translate('_extended_search_filters_tab') }>
-            <Fields.Integer
+            <Fields.SaneString
                 dataXPath='$.specialFilters.sequenceNumber'
                 label={ translate('ID No.') }
             />

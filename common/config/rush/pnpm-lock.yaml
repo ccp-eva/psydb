@@ -419,6 +419,7 @@ importers:
       '@mpieva/psydb-ajv-keywords': workspace:~0.1.0-alpha
       '@mpieva/psydb-api-config': workspace:~0.1.0-alpha
       '@mpieva/psydb-api-lib-errors': workspace:~0.1.0-alpha
+      '@mpieva/psydb-api-mocha-test-tools': workspace:~0.1.0-alpha
       '@mpieva/psydb-common-lib': workspace:~0.1.0-alpha
       '@mpieva/psydb-common-verify-helpers': workspace:~0.1.0-alpha
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
@@ -460,6 +461,7 @@ importers:
       '@mpieva/psydb-ajv-keywords': link:../psydb-ajv-keywords
       '@mpieva/psydb-api-config': link:../psydb-api-config
       '@mpieva/psydb-api-lib-errors': link:../psydb-api-lib-errors
+      '@mpieva/psydb-api-mocha-test-tools': link:../psydb-api-mocha-test-tools
       '@mpieva/psydb-common-lib': link:../psydb-common-lib
       '@mpieva/psydb-common-verify-helpers': link:../psydb-common-verify-helpers
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
@@ -644,6 +646,7 @@ importers:
       '@mpieva/psydb-api-config': workspace:~0.1.0-alpha
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
       '@mpieva/psydb-fixtures': workspace:~0.1.0-alpha
+      '@mpieva/psydb-mongo-adapter': workspace:~0.1.0-alpha
       chai: ~4.3.7
       chai-subset: ~1.6.0
       mocha-chai-jest-snapshot: ~1.1.4
@@ -653,6 +656,7 @@ importers:
       '@mpieva/psydb-api-config': link:../psydb-api-config
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
       '@mpieva/psydb-fixtures': link:../psydb-fixtures
+      '@mpieva/psydb-mongo-adapter': link:../psydb-mongo-adapter
       chai: 4.3.8
       chai-subset: 1.6.0
       mocha-chai-jest-snapshot: 1.1.4_chai@4.3.8

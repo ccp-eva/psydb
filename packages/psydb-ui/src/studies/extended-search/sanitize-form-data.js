@@ -65,7 +65,7 @@ const sanitizeSpecialFilters = (values) => {
     var { studyId, sequenceNumber, isHidden, name, shorthand } = values;
     return {
         studyId, name, shorthand,
-        ...(typeof sequenceNumber === 'number' && { sequenceNumber }),
+        ...(sequenceNumber && { sequenceNumber }),
         ...(isHidden !== '' && { isHidden }),
         ...sanitized,
     };
