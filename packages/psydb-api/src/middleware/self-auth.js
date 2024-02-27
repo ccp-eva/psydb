@@ -105,7 +105,7 @@ var maybeHandleApiKeyAuth = async (options, context) => {
         }
     }
 
-    if (isAllowed) {
+    if (!isAllowed) {
         debug('ip address is not allowed')
         throw new ApiError(401, {
             apiStatus: 'IpAddressNotAllowed',
