@@ -1,7 +1,6 @@
 'use strict';
 var debug = require('debug')('psydb:api:middleware:self-auth');
-var ipaddr = require('ipaddr.js');
-var { matches: ipmatch } = require('ip-matching');
+var checkIpInRange = require('@cdxoo/check-ip-in-range');
 
 var { hasNone, hasOnlyOne } = require('@mpieva/psydb-core-utils');
 var { ApiError, Self, withRetracedErrors } = require('@mpieva/psydb-api-lib');
@@ -93,13 +92,10 @@ var maybeHandleApiKeyAuth = async (options, context) => {
         return;
     }
 
-    // FIXME
-    var saneip = ipaddr.parse(ip).toIPv4Address().toNormalizedString();
-
     var isAllowed = false;
-    for (var pattern of allowedIps) {
+    for (var range of allowedIps) {
         try {
-            isAllowed = ipmatch(saneip, pattern);
+            isAllowed = checkIpInRange({ range, ip });
         }
         catch (e) {
             console.warn(e);

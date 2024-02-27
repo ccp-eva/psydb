@@ -18,6 +18,6 @@ module.exports = {
     },
     apiKeyAuth: {
         isEnabled: true,
-        allowedIps: [ '*.*.*.*' ]
+        allowedIps: [ '::/0' ]
     }
 }
