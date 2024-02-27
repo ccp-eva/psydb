@@ -15,8 +15,12 @@ export const ScalarArrayContentWrapper = (ps) => {
 
         className,
         extraClassName,
-        fallbackLabel
+        fallbackLabel,
+
+        extraContentWrapperProps = {},
     } = ps;
+
+    var { readOnly = false } = extraContentWrapperProps;
 
     className = (
         className !== undefined
@@ -34,7 +38,9 @@ export const ScalarArrayContentWrapper = (ps) => {
         <div>
             <ol className={ className }>
                 { children }
-                <Footer { ...ps } />
+                { !readOnly && (
+                    <Footer { ...ps } />
+                )}
             </ol>
         </div>
     );
@@ -55,7 +61,9 @@ const Fallback = (ps) => {
                     <i>{ ps.fallbackLabel || translate('No Items') }</i>
                     <ErrorIndicator { ...ps } />
                 </div>
-                <Footer { ...ps } />
+                { !ps.extraContentWrapperProps?.readOnly && (
+                    <Footer { ...ps } />
+                )}
             </div>
         </div>
     )
@@ -78,7 +86,7 @@ const AddButton = (ps) => {
     var { children, onClick, style, disabled } = ps;
     var translate = useUITranslation();
     return (
-        <button
+        <a
             type='button'
             role={ disabled ? '': 'button' }
             onClick={ disabled ? undefined : onClick }
@@ -93,6 +101,6 @@ const AddButton = (ps) => {
             title={ translate('_form_array_add_button') }
         >
             { children }
-        </button>
+        </a>
     )
 }

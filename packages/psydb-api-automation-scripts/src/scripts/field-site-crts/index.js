@@ -6,13 +6,12 @@ var createLocationCRT = require('./create-location-crt');
 var createSubjectCRT = require('./create-subject-crt');
 var createFSScientistRole = require('./create-fs-scientist-role');
 var createResearchGroup = require('./create-research-group');
-var createDummyScientist = require('./create-dummy-scientist');
 
 var sites = [
-    { type: 'camreoon', label: 'Kamerun' },
-    { type: 'namibia', label: 'Namibia' },
-    { type: 'congo', label: 'Kongo' },
-    { type: 'malaysia', label: 'Malaysia' }
+    { type: 'camreoon', labelDE: 'Kamerun', labelEN: 'Cameroon' },
+    { type: 'namibia', labelDE: 'Namibia', labelEN: 'Namibia' },
+    { type: 'congo', labelDE: 'Kongo', labelEN: 'Congo' },
+    { type: 'malaysia', labelDE: 'Malaysia', labelEN: 'Malaysia' }
 ];
 var defaultSubjectFormOrder = [
     '/sequenceNumber',
@@ -20,7 +19,7 @@ var defaultSubjectFormOrder = [
     '/scientific/state/custom/dateOfBirth',
     '/scientific/state/custom/isDateOfBirthReliable',
     '/scientific/state/custom/ethnologyId',
-    '/scientific/state/custom/defaultLocationId',
+    '/scientific/state/custom/mainLocationId',
     '/scientific/state/comment',
 ]
 
@@ -48,27 +47,36 @@ module.exports = async (bag) => {
         });
         console.log({ subjectCrtId })
 
-        var researchGroupId = await createResearchGroup({ ...shared });
-        console.log({ researchGroupId })
-
-        var userId = await createDummyScientist({
-            ...shared,
-            systemRoleId,
-            researchGroupId,
-        });
-        console.log({ userId })
-
-        cache[site] = {
+        cache[site.type] = {
             ethnologySetId,
             locationCrtId,
             subjectCrtId,
+        };
+    }
+    
+    for (var site of sites) {
+        var shared = { apiKey, driver, site };
+        var {
+            ethnologySetId,
+            locationCrtId,
+            subjectCrtId,
+        } = cache[site.type];
+        
+        var researchGroupId = await createResearchGroup({
+            ...shared,
+            systemRoleId,
+            ethnologySetId,
+        });
+        console.log({ researchGroupId })
+        
+        cache[site.type] = {
+            ...cache[site.type],
             researchGroupId,
-            userId,
         };
     }
 
     await createCongoSpecialFields({
-        driver, apiKey, subjectCrtId
+        driver, apiKey, subjectCrtId: cache['congo'].subjectCrtId
     });
 
     console.dir(ejson(
@@ -84,14 +92,16 @@ var createCongoSpecialFields = async ({ driver, apiKey, subjectCrtId }) => {
         payload: { id: subjectCrtId, subChannelKey: 'scientific', props: {
             type: 'ListOfObjects',
             key: 'residenceHistory',
-            displayName: 'Wohnorte',
+            displayName: 'Residences',
+            displayNameI18N: { de: 'Wohnorte' },
             props: {
                 minItems: 0,
                 fields: [
                     {
                         type: 'DateTime',
                         key: 'timestamp',
-                        displayName: 'Zeipunkt',
+                        displayName: 'Date/Time',
+                        displayNameI18N: { de: 'Zeitpunkt' },
                         props: {
                             isNullable: false,
                             isSpecialAgeFrameField: false,
@@ -100,7 +110,8 @@ var createCongoSpecialFields = async ({ driver, apiKey, subjectCrtId }) => {
                     {
                         type: 'SaneString',
                         key: 'householdNumber',
-                        displayName: 'Haushaltsnummer',
+                        displayName: 'Household Number',
+                        displayNameI18N: { de: 'Haushaltsnummer' },
                         props: {
                             minLength: 1,
                         }

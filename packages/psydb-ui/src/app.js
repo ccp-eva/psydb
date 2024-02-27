@@ -1,10 +1,6 @@
-import React, { useEffect, useState, useReducer } from 'react';
-import { CookiesProvider, useCookies } from 'react-cookie';
+import React, { useEffect, useState } from 'react';
+import { CookiesProvider } from 'react-cookie';
 import { HashRouter as Router } from 'react-router-dom';
-
-import enUSLocale from 'date-fns/locale/en-US';
-import enGBLocale from 'date-fns/locale/en-GB';
-import deLocale from 'date-fns/locale/de';
 
 import createAgent, { simple as publicAgent } from '@mpieva/psydb-ui-request-agents';
 
@@ -22,119 +18,108 @@ import {
 
 import ErrorResponseModalSetup from './error-response-modal-setup';
 import ErrorBoundary from './error-boundary';
-import SignIn from './sign-in';
+
+import PublicLanding from './public-landing';
 import Main from './main'
 
-const localesByCode = [
-    enUSLocale,
-    enGBLocale,
-    deLocale
-].reduce((acc, locale) => ({
-    ...acc,
-    [locale.code]: locale
-}), {});
-
-var applyI18N = (bag) => {
-    var { cookies, config } = bag;
-    var { enableI18NSelect, defaultLanguage, defaultLocaleCode } = config.i18n;
-    if (enableI18NSelect) {
-        var { i18n = {}} = cookies;
-        var {
-            language = defaultLanguage,
-            localeCode = defaultLocaleCode
-        } = i18n;
-    }
-    else {
-        var language = defaultLanguage;
-        var localeCode = defaultLocaleCode;
-    }
-
-    return { language, localeCode };
-}
+import { withContext, composeAsComponent } from './compose-react-contexts';
+import useCookieI18N from './use-cookie-i18n';
 
 const App = () => {
-
-    var [ isSignedIn, setIsSignedIn ] = useState(false);
-    var [ self, setSelf ] = useState();
     var [ isInitialized, setIsInitialized ] = useState(false);
 
-    var [ cookies, setCookie ] = useCookies([ 'i18n' ]);
-    var { language, localeCode } = applyI18N({ cookies, config });
-    var locale = localesByCode[localeCode];
+    var [ state, setState ] = useState({});
+    var { authResponseStatus, self } = state;
+    var setSelf = (nextSelf) => setState({ ...state, self: nextSelf });
 
-    var setI18N = (value) => {
-        var [ language, localeCode ] = (
-            typeof value === 'string'
-            ? [ value, value === 'de' ? deLocale.code : enUSLocale.code ]
-            : [ value.language, value.localeCode ]
-        )
-        setCookie('i18n', { language, localeCode });
-    };
-    //var setLocale = (value) => dispatch({ type: 'set-locale', value });
+    var [ i18n, setI18N ] = useCookieI18N({ config });
+    var { language, locale } = i18n;
+    
+    var translate = createTranslate(language);
+    var agent = createAgent({ language, localeCode: locale.code });
 
-    var onSignedIn = (selfArg) => {
-        setIsSignedIn(true);
-        if (selfArg) {
-            setSelf(selfArg);
+    var onSuccessfulUpdate = (response) => {
+        // FIXME: find better way to determine logout
+        if (response?.data?.data?.record) {
+            setState({
+                self: response.data.data,
+                authResponseStatus: response.status
+            });
+        }
+        else {
+            // NOTE: reset auth status on logout /api/self on logout
+            setState({});
         }
     }
 
-    var onSignedOut = () => {
-        setIsSignedIn(false);
+    var onFailedUpdate = (error) => {
+        var statusCode = error.response?.status;
+        if (statusCode) {
+            setState({ authResponseStatus: statusCode });
+        }
+        else {
+            throw error;
+        }
     }
 
+    var is200 = (authResponseStatus === 200);
     useEffect(() => {
         setIsInitialized(false)
         publicAgent.get('/api/self').then(
-            (res) => {
-                var self = res.data.data;
-                onSignedIn(self);
-                setIsInitialized(true)
+            (response) => {
+                onSuccessfulUpdate(response);
+                setIsInitialized(true);
             },
             (error) => {
-                setIsInitialized(true)
+                onFailedUpdate(error);
+                setIsInitialized(true);
             }
         )
-    }, [ isSignedIn ]);
+    }, [ is200 ]);
 
-    var translate = createTranslate(language);
-
-    var sharedBag = {
+    var contextBag = {
         config,
         language: [ language, setI18N ],
         locale,
         translate,
     }
 
-    var agent = createAgent({ language, localeCode: locale.code });
+    if (!isInitialized) {
+        return (
+            <ErrorBoundary>
+                <AppInitializing />
+            </ErrorBoundary>
+        )
+    }
 
-    var View = undefined;
-    if (isInitialized) {
-        View = (
-            isSignedIn && self
-            ? (
-                <CommonContexts { ...sharedBag } agent={ agent }>
-                    <ErrorResponseModalSetup />
-                    <SelfContext.Provider value={{ ...self, setSelf }}>
-                        <Main onSignedOut={ onSignedOut } />
-                    </SelfContext.Provider>
-                </CommonContexts>
-            )
-            : (
-                <CommonContexts { ...sharedBag } agent={ publicAgent }>
-                    <SignIn onSignedIn={ onSignedIn } />
-                </CommonContexts>
-            )
-        );
+    var renderedView = undefined;
+    if (authResponseStatus === 200 && self) {
+        renderedView = (
+            <CommonContexts { ...contextBag } agent={ agent }>
+                <ErrorResponseModalSetup />
+                <SelfContext.Provider value={{ ...self, setSelf }}>
+                    <Main onSignedOut={ onSuccessfulUpdate } />
+                </SelfContext.Provider>
+            </CommonContexts>
+        )
     }
     else {
-        View = <AppInitializing />
+        var publicBag = {
+            authResponseStatus,
+            onSuccessfulUpdate,
+            onFailedUpdate,
+        };
+        renderedView = (
+            <CommonContexts { ...contextBag } agent={ publicAgent }>
+                <PublicLanding { ...publicBag } />
+            </CommonContexts>
+        )
     }
 
     return (
         <ErrorBoundary>
             <Router>
-                { View }
+                { renderedView }
             </Router>
         </ErrorBoundary>
     );
@@ -144,35 +129,13 @@ const AppInitializing = () => (
     <div>Loading</div>
 )
 
-var withContext = (Context, propKey) => (Next) => (ps) => {
-    var { [propKey]: value, ...rest } = ps;
-    return (
-        <Context.Provider value={ value }>
-            <Next { ...rest }/>
-        </Context.Provider>
-    )
-}
-var CommonContexts = compose(
+var CommonContexts = composeAsComponent(
     withContext(UIConfigContext, 'config'),
     withContext(UILocaleContext, 'locale'),
     withContext(UILanguageContext, 'language'),
     withContext(UITranslationContext, 'translate'),
     withContext(AgentContext, 'agent')
-)(
-    ({ children }) => children
 );
-
-function compose(...funcs) {
-  if (funcs.length === 0) {
-    return arg => arg
-  }
-
-  if (funcs.length === 1) {
-    return funcs[0]
-  }
-
-  return funcs.reduce((a, b) => (...args) => a(b(...args)))
-}
 
 var withCookiesProvider = (Component) => (ps) => {
     return (

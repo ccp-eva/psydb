@@ -4,10 +4,12 @@ var {
     unique,
     intersect,
     compareIds,
+    only,
 } = require('@mpieva/psydb-core-utils');
 
 var DataHolder = require('./data-holder');
 
+// XXX
 var anyLabOperationTypes = [
     'inhouse', 
     'away-team',
@@ -31,12 +33,12 @@ var Permissions = (options) => {
         researchGroupIdsByFlag,
         researchGroupIdsByCollection,
 
-        availableSubjectTypes,
-        availableLocationTypes,
-        availableStudyTypes,
-        availableLabMethods,
-        availableHelperSetIds,
-        availableSystemRoleIds,
+        availableSubjectTypes = [],
+        availableLocationTypes = [],
+        availableStudyTypes = [],
+        availableLabMethods = [],
+        availableHelperSetIds = [],
+        availableSystemRoleIds = [],
     } = wrapper;
 
     var isRoot = () => (
@@ -215,6 +217,9 @@ var Permissions = (options) => {
         isLabMethodAvailable,
         isSubjectTypeAvailable,
         
+        isLabMethodAvailable,
+        isSubjectTypeAvailable,
+
         getAllowedLabOpsForFlags,
         hasLabOpsFlags,
     }
@@ -244,6 +249,25 @@ var Permissions = (options) => {
     }
 
     return out;
+}
+
+Permissions.fromSelf = ({ self }) => {
+    var pass = only({ from: self, keys: [
+        'hasRootAccess',
+        'researchGroupIds',
+        'researchGroups',
+        'forcedResearchGroupId',
+        'rolesByResearchGroupId',
+        
+        'availableSubjectTypes',
+        'availableLocationTypes',
+        'availableStudyTypes',
+        'availableLabMethods',
+        'availableHelperSetIds',
+        'availableSystemRoleIds',
+    ]});
+
+    return Permissions(pass);
 }
 
 module.exports = Permissions;

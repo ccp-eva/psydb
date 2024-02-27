@@ -16,6 +16,7 @@ const createFormikConfig = (ps) => {
         onSubmit,
         useAjvAsync,
         ajvErrorInstancePathPrefix = '/payload/props',
+        extraOKStatusCodes = [],
         ...formikOptions
     } = ps;
     return {
@@ -25,7 +26,12 @@ const createFormikConfig = (ps) => {
             useAjvAsync
             ? withAjvErrors({
                 callback: (formData, ...other) => (
-                    onSubmit(formData['$'], ...other)
+                    onSubmit(formData['$'], ...other).catch(e => {
+                        var statusCode = e.response?.status;
+                        if (!extraOKStatusCodes.includes(statusCode)) {
+                            throw e
+                        }
+                    })
                 ),
                 errorResponsePath: 'data.data.ajvErrors',
                 errorInstancePathPrefix: ajvErrorInstancePathPrefix,

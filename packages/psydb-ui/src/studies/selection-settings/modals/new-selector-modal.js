@@ -1,8 +1,12 @@
 import React from 'react';
 
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
-import { useSend } from '@mpieva/psydb-ui-hooks';
-import { WithDefaultModal, Button } from '@mpieva/psydb-ui-layout';
+import { useFetch, useSend } from '@mpieva/psydb-ui-hooks';
+import {
+    WithDefaultModal,
+    Button,
+    LoadingIndicator,
+} from '@mpieva/psydb-ui-layout';
 
 import {
     DefaultForm,
@@ -11,7 +15,20 @@ import {
 
 const Form = (ps) => {
     var { onSubmit, subjectTypeMap } = ps;
+
     var translate = useUITranslation();
+
+    var [ didFetch, fetched ] = useFetch((agent) => (
+        agent.readCustomRecordTypeMetadata({ only: [{
+            collection: 'subject'
+        }] })
+    ), []);
+
+    if (!didFetch) {
+        return <LoadingIndicator size='lg' />
+    }
+
+    var { customRecordTypes } = fetched.data;
 
     return (
         <DefaultForm
@@ -24,7 +41,10 @@ const Form = (ps) => {
                     <Fields.GenericEnum
                         label={ translate('Subject Type') }
                         dataXPath='$.subjectTypeKey'
-                        options={ subjectTypeMap }
+                        options={ customRecordTypes.reduce((acc, it) => ({
+                            ...acc,
+                            [it.type]: translate.crt(it)
+                        }), {}) }
                     />
                     <Button type='submit'>
                         { translate('Save') }

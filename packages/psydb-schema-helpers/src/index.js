@@ -1,6 +1,8 @@
 'use strict';
 module.exports = {
     Message: require('./message'),
+    requireify: require('./requireify'),
+    exactlyOneOf: require('./exactly-one-of'),
 
     createRecordMessageType: require('./create-record-message-type'),
 

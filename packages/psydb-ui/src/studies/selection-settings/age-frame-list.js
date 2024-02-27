@@ -5,6 +5,7 @@ import { AgeFrame } from './age-frame';
 
 const AgeFrameList = (ps) => {
     var {
+        subjectTypeKey,
         selectorRecord,
         ageFrameRecords,
         onEditAgeFrame,
@@ -16,7 +17,10 @@ const AgeFrameList = (ps) => {
     
     var translate = useUITranslation();
     var permissions = usePermissions();
-    var canWrite = permissions.hasFlag('canWriteStudies');
+    var canWrite = (
+        permissions.hasFlag('canWriteStudies')
+        && permissions.isSubjectTypeAvailable(subjectTypeKey)
+    );
 
     if (ageFrameRecords.length < 1) {
         return (

@@ -105,6 +105,7 @@ var initAndCheck = async ({
         db,
         subjectTypeKey,
         labProcedureType,
+        permissions
     })
 
     return ({
@@ -287,6 +288,7 @@ var initSubjects = async ({
     db,
     subjectTypeKey,
     labProcedureType,
+    permissions
 }) => {
 
     var subjectTypeRecord = await fetchOneCustomRecordType({
@@ -302,9 +304,10 @@ var initSubjects = async ({
        prefetched: subjectTypeRecord,
        target: (
             ['inhouse', 'online-video-call'].includes(labProcedureType)
-            ? 'invite-selection-list'
-            : 'away-team-selection-list'
-       )
+            ? 'invite-selection'
+            : 'away-team-selection'
+       ),
+       permissions
    });
 
     var fieldsByPointer = keyBy({

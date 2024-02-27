@@ -14,7 +14,7 @@ import { LinkButton, Button } from '@mpieva/psydb-ui-layout';
 import { SubjectParticipationList } from '@mpieva/psydb-ui-lib';
 import {
     CreateModal as ParticipationCreateModal
-} from '@mpieva/psydb-ui-lib/src/participation';
+} from '@mpieva/psydb-ui-lib/src/participation/for-subject';
 
 
 import SelectSubjectContainer from './select-subject-container';

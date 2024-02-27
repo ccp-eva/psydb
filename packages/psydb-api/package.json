@@ -38,6 +38,7 @@
     "koa-router": "~10.1.1",
     "statuses": "~2.0.1",
     "@cdxoo/inline-text": "~1.0.2",
+    "@cdxoo/block-quote": "~1.0.1",
     "@mpieva/psydb-schema-helpers": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-schema-fields": "workspace:~0.1.0-alpha",
     "clone-deep": "~4.0.1",
@@ -81,6 +82,7 @@
     "supertest": "~6.0.1",
     "@mpieva/psydb-fixtures": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-axios-test-wrapper": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-api-mocha-test-tools": "workspace:~0.1.0-alpha",
     "@cdxoo/mongo-test-helpers": "~0.7.1",
     "@cdxoo/mongodb-restore": "2.0.0-alpha.2"
   },

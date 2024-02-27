@@ -1,7 +1,8 @@
 'use strict';
+var { ObjectId } = require('@mpieva/psydb-api-lib');
 var {
-    compareIds,
-    convertPointerToPath
+    convertPointerToPath,
+    arrify, without,
 } = require('@mpieva/psydb-core-utils');
 
 var { fetchCRTSettings } = require('@mpieva/psydb-api-lib');
@@ -19,109 +20,74 @@ var maybeUpdateForeignIdTargets = async (bag) => {
         currentChannelId,
         op,
     } = bag;
-    
+   
     var crtSettings = await fetchCRTSettings({
-        db,
-        collectionName: collection,
-        recordType
+        db, collectionName: collection, recordType,
+        wrap: true,
     });
 
-    var { hasSubChannels, fieldDefinitions } = crtSettings;
-    var foreignIdFieldsWithTargetRef = [];
-    if (hasSubChannels) {
-        for (var sc of Object.keys(fieldDefinitions)) {
-            for (var it of fieldDefinitions[sc]) {
-                if (
-                    it.type === 'ForeignId'
-                    && it.props.addReferenceToTarget
-                ) {
-                    foreignIdFieldsWithTargetRef.push({
-                        subChannelKey: sc,
-                        ...it
-                    });
-                }
-            }
-        }
-    }
-    else {
-        for (var it of fieldDefinitions) {
-            if (
-                it.type === 'ForeignId'
-                && it.props.addReferenceToTarget
-            ) {
-                foreignIdFieldsWithTargetRef.push(it);
-            }
-        }
-    }
+    var foreignIdFieldsWithTargetRef = (
+        crtSettings.findCustomFields({
+            'type': { $in: [ 'ForeignId', 'ForeignIdList' ]},
+            'props.addReferenceToTarget': true
+        })
+    );
 
     for (var it of foreignIdFieldsWithTargetRef) {
-        var sc = it.subChannelKey;
-        var targetFieldPath = convertPointerToPath(
-            it.props.targetReferenceField
-        );
+        var { subChannel, key: fieldKey, props } = it;
+        var { collection, targetReferenceField } = props;
 
-        var dispatchBag = {
-            collection: it.props.collection,
-            ...(it.subChannelKey && {
-                subChannelKey: it.subChannelKey
-            }),
-        };
+        var commonWrapperBag = {
+            dispatch,
+            ourChannelId: currentChannelId,
+            subChannelKey: subChannel,
+            collection,
+            targetReferenceField
+        }
+        var pullUsFromTarget = createWrappedDispatch({
+            ...commonWrapperBag, mongoOp: '$pull'
+        });
+        var addUsToTarget = createWrappedDispatch({
+            ...commonWrapperBag, mongoOp: '$addToSet'
+        });
 
-        var dispatchBag = undefined;
         if (op === 'create') {
-            var nextTargetChannelId = (
-                sc
-                ? nextProps[sc].custom[it.key]
-                : nextProps.custom[it.key]
-            ); 
+            var targetChannelIds = arrify((
+                subChannel
+                ? nextProps[subChannel].custom[fieldKey]
+                : nextProps.custom[fieldKey]
+            ), { removeNullishScalar: true });
 
-            if (nextTargetChannelId) {
-                dispatchBag = {
-                    collection: it.props.collection,
-                    ...(sc && { subChannelKey: sc }),
-                    channelId: nextTargetChannelId,
-                    payload: { $addToSet: {
-                        [targetFieldPath]: currentChannelId
-                    }}
-                };
-
-                await dispatch(dispatchBag);
+            if (targetChannelIds.length > 0) {
+                for (var targetChannelId of targetChannelIds) {
+                    await addUsToTarget({ targetChannelId });
+                }
             }
         }
         else if (op === 'patch') {
-            var currentTargetChannelId = (
-                sc
-                ? currentProps[sc].custom[it.key]
-                : currentProps.custom[it.key]
-            );
-            var nextTargetChannelId = (
-                sc
-                ? nextProps[sc].custom[it.key]
-                : nextProps.custom[it.key]
-            );
+            var currentTargetChannelIds = arrify((
+                subChannel
+                ? currentProps[subChannel].custom[fieldKey]
+                : currentProps.custom[fieldKey]
+            ), { removeNullishScalar: true });
 
-            if (!compareIds(currentTargetChannelId, nextTargetChannelId)) {
-                if (currentTargetChannelId) {
-                    await dispatch({
-                        collection: it.props.collection,
-                        ...(sc && { subChannelKey: sc }),
-                        channelId: currentTargetChannelId,
-                        payload: { $pull: {
-                            [targetFieldPath]: currentChannelId
-                        }}
-                    });
-                }
+            var nextTargetChannelIds = arrify((
+                subChannel
+                ? nextProps[subChannel].custom[fieldKey]
+                : nextProps.custom[fieldKey]
+            ), { removeNullishScalar: true });
 
-                if (nextTargetChannelId) {
-                    await dispatch({
-                        collection: it.props.collection,
-                        ...(sc && { subChannelKey: sc }),
-                        channelId: nextTargetChannelId,
-                        payload: { $addToSet: {
-                            [targetFieldPath]: currentChannelId
-                        }}
-                    });
-                }
+            // FIXME: maybe use comapreIds; patch coreutils/without
+            var [ todoAddToSet, todoPull ] = crossdiff({
+                old: strings(currentTargetChannelIds),
+                next: strings(nextTargetChannelIds)
+            }).map(oids);
+
+            for (var targetChannelId of todoPull) {
+                await pullUsFromTarget({ targetChannelId });
+            }
+            for (var targetChannelId of todoAddToSet) {
+                await addUsToTarget({ targetChannelId });
             }
         }
         /*else if (op === 'remove') {
@@ -162,6 +128,54 @@ var maybeUpdateForeignIdTargets = async (bag) => {
             throw new Error(`unknown op "${op}"`);
         }
     }
+}
+
+var createWrappedDispatch = (bag) => {
+    var {
+        dispatch,
+        ourChannelId,
+
+        subChannelKey,
+        collection,
+        targetReferenceField,
+
+        mongoOp
+    } = bag;
+
+    var targetFieldPath = convertPointerToPath(targetReferenceField);
+
+    return ({ targetChannelId }) => (
+        dispatch({
+            collection,
+            channelId: targetChannelId,
+            ...(subChannelKey && { subChannelKey }),
+            payload: { [mongoOp]: {
+                [targetFieldPath]: ourChannelId,
+            }}
+        })
+    )
+}
+
+var strings = (ary) => (
+    ary.map(String)
+);
+
+var oids = (ary) => (
+    ary.map(ObjectId)
+);
+
+// TODO: maybe core utils?
+var crossdiff = ({ old, next }) => {
+    var removed = without({
+        that: old,
+        without: next,
+    });
+    var created = without({
+        that: next,
+        without: old
+    });
+
+    return [ created, removed ];
 }
 
 module.exports = { maybeUpdateForeignIdTargets };

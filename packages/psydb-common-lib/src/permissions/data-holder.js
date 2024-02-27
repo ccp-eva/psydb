@@ -8,21 +8,23 @@ var {
     createFakeRootFlags,
 } = require('./utils');
 
-var PermissionsDataHolder = ({
-    hasRootAccess,
-    rolesByResearchGroupId,
+var PermissionsDataHolder = (bag) => {
+    var {
+        hasRootAccess,
+        rolesByResearchGroupId,
 
-    researchGroupIds: availableResearchGroupIds,
-    researchGroups: availableResearchGroups,
-    forcedResearchGroupId,
-     
-    availableSubjectTypes,
-    availableLocationTypes,
-    availableStudyTypes,
-    availableLabMethods,
-    availableHelperSetIds,
-    availableSystemRoleIds,
-}) => {
+        researchGroupIds: availableResearchGroupIds,
+        researchGroups: availableResearchGroups,
+        forcedResearchGroupId,
+         
+        availableSubjectTypes,
+        availableLocationTypes,
+        availableStudyTypes,
+        availableLabMethods,
+        availableHelperSetIds,
+        availableSystemRoleIds,
+    } = bag;
+
     var internal = setupInternalResearchGroupIds({
         hasRootAccess,
         availableResearchGroupIds,
@@ -30,14 +32,10 @@ var PermissionsDataHolder = ({
     });
 
     var flagsByResearchGroupId = (
-        hasRootAccess && forcedResearchGroupId
-        ? { [forcedResearchGroupId]: createFakeRootFlags() }
-        : (
-            keyRoleFlagsByResearchGroupId({
-                availableResearchGroupIds,
-                rolesByResearchGroupId
-            })
-        )
+        keyRoleFlagsByResearchGroupId({
+            availableResearchGroupIds: internal.actualIds,
+            rolesByResearchGroupId
+        })
     );
 
     // FIXME: somehow this triggers in frontend if 'availableResearchGroups'

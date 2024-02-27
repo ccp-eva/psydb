@@ -84,6 +84,7 @@ handler.triggerSystemEvents = async ({
         studyId,
         locationId,
         experimentOperatorTeamId,
+        experimentOperatorIds,
     } = experimentRecord.state;
 
     var study = await (
@@ -96,17 +97,31 @@ handler.triggerSystemEvents = async ({
         db.collection('experimentOperatorTeam')
         .findOne({ _id: experimentOperatorTeamId })
     );
-    var { personnelIds } = experimentOperatorTeam.state;
+    var { color, personnelIds } = experimentOperatorTeam.state;
 
     var unprocessedSubjects = (
         experimentRecord.state.subjectData.filter(it => (
             it.participationStatus === 'unknown'
         ))
-    )
+    );
+
+
+    // TODO: for fixating experimentOperatorId
+    // we could:
+    // a) fixate it on the first processing
+    // b) fixate it on the last processing
+    // probably a) is the better solution as
+    // when we in addition prevent changes in the team when that happened
+    // also: we maybe should store the team color as well just in case
+    // TODO: we need to set experimentOperatorIds and labTeamColor
+    // for the experiments that were already postprocessed
+    var shouldFixateExperimentOperatorIds = (
+        !experimentOperatorIds?.length
+    );
     var shouldSetPostprocessedFlag = (
         // subtract 1 since we are processing one right now
         (unprocessedSubjects.length - 1) === 0
-    )
+    );
 
     var experimentId = experimentRecord._id;
     var timestamp = experimentRecord.state.interval.start;
@@ -130,6 +145,10 @@ handler.triggerSystemEvents = async ({
                 // personnel ids are currently only stored in participation
                 'state.experimentOperatorIds': personnelIds,
             }),
+            ...(shouldFixateExperimentOperatorIds && {
+                'state.labTeamColor': color,
+                'state.experimentOperatorIds': personnelIds,
+            })
         }}
     });
 

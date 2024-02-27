@@ -83,6 +83,18 @@ var fetchRecordByFilter = async ({
             ]
         }),
 
+        ...maybeStages({
+            condition: (
+                permissions && collectionName === 'helperSet' && !permissions.isRoot()
+                && permissions.availableHelperSetIds
+            ),
+            stages: () => ([
+                { $match: {
+                    _id: { $in: permissions.availableHelperSetIds }
+                }}
+            ])
+        }),
+
         isNotDummyStage(),
         isNotRemovedStage({ hasSubChannels }),
 

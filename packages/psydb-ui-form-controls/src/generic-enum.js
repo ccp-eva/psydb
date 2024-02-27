@@ -1,4 +1,5 @@
 import React from 'react';
+import { PaddedText } from '@mpieva/psydb-ui-layout';
 import { Control, fixSelectProps } from './core';
 
 const toEnum = (options) => {
@@ -40,6 +41,7 @@ export const GenericEnum = (ps) => {
         enableUnknownValue,
         extraContentWrapperProps,
         extraItemWrapperProps,
+        readOnly,
 
         ...pass
     } = ps;
@@ -72,6 +74,13 @@ export const GenericEnum = (ps) => {
         enumeration.labels = enumeration.names;
     }
 
+    if (readOnly) {
+        return (
+            <PaddedText><b>
+                { enumeration.labels[value] }
+            </b></PaddedText>
+        )
+    }
 
     return (
         <Control

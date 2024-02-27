@@ -57,6 +57,10 @@ const EditForm = (ps) => {
         ...initialValues.scientific.custom
     };
 
+    var {
+        showSequenceNumber,
+        showOnlineId,
+    } = crtSettings;
 
     var {
         sequenceNumber,
@@ -75,7 +79,7 @@ const EditForm = (ps) => {
                     <hr />
                 </>
             )}
-            { sequenceNumber && (
+            { showSequenceNumber && sequenceNumber && (
                 <Pair 
                     label={ translate('ID No.') }
                     wLeft={ 3 } wRight={ 9 } className='px-3'
@@ -83,7 +87,7 @@ const EditForm = (ps) => {
                     { sequenceNumber }
                 </Pair>
             )}
-            { onlineId && (
+            { showOnlineId && onlineId && (
                 <Pair 
                     label={ translate('Online ID Code') }
                     wLeft={ 3 } wRight={ 9 } className='px-3'
@@ -91,7 +95,10 @@ const EditForm = (ps) => {
                     { onlineId }
                 </Pair>
             )}
-            { (sequenceNumber || onlineId) && (
+            { (
+                (showSequenceNumber && sequenceNumber)
+                || (showOnlineId && onlineId)
+            ) && (
                 <hr />
             )}
             <MainForm.Component

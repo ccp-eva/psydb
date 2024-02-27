@@ -8,9 +8,9 @@ const SubmitAndChangeVisibilityButton = (ps) => {
     var translate = useUITranslation();
     
     var isHidden = (
-        record.scientific
-        ? record.scientific.state.systemPermissions.isHidden
-        : record.state.systemPermissions.isHidden
+        record?.scientific
+        ? record?.scientific.state.systemPermissions.isHidden
+        : record?.state.systemPermissions.isHidden
     );
 
     return (

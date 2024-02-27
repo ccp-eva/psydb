@@ -153,15 +153,15 @@ const ExperimentSubjectItems = (ps) => {
                         </Cell>
                         <Cell>{ studyLabel }</Cell>
                         <Cell>
-                        <PostprocessSubjectForm { ...({
-                            subjectLabel,
-                            experimentId: experimentRecord._id,
-                            subjectId: it.subjectId,
-                            onSuccessfulUpdate,
-                            enableFollowUpExperiments: (
-                                _enableFollowUpExperiments
-                            )
-                        }) } />
+                            <PostprocessSubjectForm { ...({
+                                subjectLabel,
+                                experimentId: experimentRecord._id,
+                                subjectId: it.subjectId,
+                                onSuccessfulUpdate,
+                                enableFollowUpExperiments: (
+                                    _enableFollowUpExperiments
+                                )
+                            }) } />
                         </Cell>
                     </tr>
                 );

@@ -13,7 +13,7 @@ var ApiError = require('@mpieva/psydb-api-lib/src/api-error'),
 
 var createSchemaForRecordType = require('@mpieva/psydb-api-lib/src/create-schema-for-record-type');
 
-var checkSchema = async ({ db, getRecordSchemas, message }) => {
+var checkSchema = async ({ db, getRecordSchemas, message, permissions }) => {
     var { 
         op, collection, 
         recordType, recordSubType 
@@ -68,7 +68,11 @@ var checkSchema = async ({ db, getRecordSchemas, message }) => {
 
             args.type = recordType;
 
-            var { settings } = customRecordType.state;
+            var {
+                commentFieldIsSensitive,
+                settings
+            } = customRecordType.state;
+
             if (hasSubChannels) {
                 var { subChannelFields } = settings;
                 args.subChannelCustomFieldDefinitions = (
@@ -76,7 +80,18 @@ var checkSchema = async ({ db, getRecordSchemas, message }) => {
                         var fields = subChannelFields[key];
                         var filtered = (
                             Array.isArray(fields) && fields.length > 0
-                            ? fields.filter(it => !it.isRemoved)
+                            ? fields.filter(it => {
+                                if (it.isRemoved || it.props.readOnly) {
+                                    return false;
+                                }
+                                if (
+                                    !permissions.hasFlag('canAccessSensitiveFields')
+                                    && it.props?.isSensitive
+                                ) {
+                                    return false;
+                                }
+                                return true;
+                            })
                             : fields
                         )
                         return {
@@ -90,13 +105,23 @@ var checkSchema = async ({ db, getRecordSchemas, message }) => {
                 var { fields } = settings;
                 args.customFieldDefinitions = (
                     Array.isArray(fields) && fields.length > 0
-                    ? fields.filter(it => !it.isRemoved)
+                    ? fields.filter(it => (
+                        !it.isRemoved && !it.props.readOnly
+                    ))
                     : fields
                 );
             }
         }
 
-        schema = RecordMessage({ ...args });
+        schema = RecordMessage({
+            ...args,
+            extraOptions: {
+                enableComment: (
+                    !commentFieldIsSensitive
+                    || permissions.hasFlag('canAccessSensitiveFields')
+                )
+            }
+        });
     }
 
     var ajv = Ajv();

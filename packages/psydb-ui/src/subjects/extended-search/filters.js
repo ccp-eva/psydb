@@ -18,7 +18,7 @@ export const Filters = (ps) => {
     
     return (
         <FormBox title={ translate('_extended_search_filters_tab') }>
-            <Fields.Integer
+            <Fields.SaneString
                 dataXPath='$.specialFilters.sequenceNumber'
                 label={ translate('ID No.') }
             />
@@ -56,11 +56,15 @@ export const Filters = (ps) => {
                 label={ translate('Has Not Participated in') }
                 collection='study'
             />
-            
-            <Fields.FullText
-                dataXPath='$.specialFilters.comment'
-                label={ translate('Comment') }
-            />
+            {(
+                !crtSettings.commentFieldIsSensitive
+                || permissions.hasFlag('canAccessSensitiveFields')
+            ) && (
+                <Fields.FullText
+                    dataXPath='$.specialFilters.comment'
+                    label={ translate('Comment') }
+                />
+            )}
 
             <Fields.GenericRadioGroup
                 dataXPath='$.specialFilters.isHidden'

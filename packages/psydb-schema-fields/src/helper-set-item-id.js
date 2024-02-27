@@ -1,14 +1,21 @@
 'use strict';
 var Id = require('./id');
 
-var HelperSetItemId = ({ setId, systemProps, ...additionalKeywords}) => ({
-    ...Id(),
-    systemType: 'HelperSetItemId',
-    systemProps: {
+var HelperSetItemId = (bag) => {
+    var {
         setId,
-        ...systemProps,
-    },
-    ...additionalKeywords
-})
+        systemProps,
+        ...additionalKeywords
+    } = bag;
+
+    return Id({
+        systemType: 'HelperSetItemId',
+        systemProps: {
+            setId,
+            ...systemProps,
+        },
+        ...additionalKeywords
+    });
+}
 
 module.exports = HelperSetItemId;

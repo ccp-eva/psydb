@@ -31,6 +31,10 @@ var createRouting = (bag = {}) => {
     router.post('/sign-in', withKoaBody(), endpoints.publicSignIn);
     router.post('/sign-out', endpoints.publicSignOut);
 
+    router.post('/two-factor-code/match',
+        withKoaBody(), endpoints.twoFactorCode.match
+    );
+
     router.get('/init',
         init
     );
@@ -495,6 +499,10 @@ var createRouting = (bag = {}) => {
         withKoaBody(),
         endpoints.csvImport.preview
     );
+
+    router.post('/researchGroup/search-metadata', ...withPostStages({
+        endpoint: endpoints.researchGroup.searchMetadata
+    }));
 
     router.post('/study/read-many', ...withPostStages({
         endpoint: endpoints.study.readMany

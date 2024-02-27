@@ -35,7 +35,12 @@ const useWriteRequest = (
         })
     }
 
-    return { isTransmitting, exec };
+    var passthrough = {
+        onSubmit: exec,
+        isTransmitting
+    }
+
+    return { isTransmitting, exec, passthrough };
 }
 
 export default useWriteRequest;

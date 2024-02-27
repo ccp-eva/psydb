@@ -9,6 +9,7 @@ var {
     ExactObject,
     DefaultArray,
     IdentifierString,
+    DefaultBool,
 } = require('@mpieva/psydb-schema-fields');
 
 var RequestBodySchema = () => ExactObject({
@@ -21,7 +22,8 @@ var RequestBodySchema = () => ExactObject({
                 },
                 required: [ 'collection' ]
             })
-        })
+        }),
+        ignoreResearchGroups: DefaultBool(),
     },
     required: []
 });
@@ -30,7 +32,14 @@ var getCustomRecordTypes = async (context, next) => {
     var { 
         db,
         request,
+        permissions,
     } = context;
+
+    var {
+        availableSubjectTypes,
+        availableLocationTypes,
+        availableStudyTypes,
+    } = permissions;
 
     var ajv = Ajv(),
         isValid = false;
@@ -48,7 +57,8 @@ var getCustomRecordTypes = async (context, next) => {
     };
 
     var {
-        only
+        only,
+        ignoreResearchGroups
     } = request.body;
 
     var filters = [];
@@ -68,14 +78,31 @@ var getCustomRecordTypes = async (context, next) => {
 
     var customRecordTypes = await (
         db.collection('customRecordType').aggregate([
+            ...(!permissions.isRoot() && !ignoreResearchGroups ? [
+                { $match: {
+                    $or: [
+                        { collection: 'subject', type: {
+                            $in: availableSubjectTypes.map(it => it.key)
+                        }},
+                        { collection: 'location', type: {
+                            $in: availableLocationTypes.map(it => it.key)
+                        }},
+                        { collection: 'study', type: {
+                            $in: availableStudyTypes.map(it => it.key)
+                        }},
+
+                        { collection: { $nin: [
+                            'subject', 'location', 'study'
+                        ]}}
+                    ]
+                }},
+            ] : []),
+
             { $match: {
                 'state.isNew': false,
                 'state.internals.isRemoved': { $ne: true },
                 ...(only && { $or: filters })
             }},
-            { $project: {
-                events: false,
-            }}
         ]).toArray()
     );
 

@@ -61,11 +61,27 @@ handler.triggerSystemEvents = async ({
     cache,
     dispatch
 }) => {
-    var { id } = message.payload;
+    var { id: setId } = message.payload;
+
+    var relatedResearchGroups = await (
+        db.collection('researchGroup').find({
+            'state.helperSetIds': setId
+        }, { _id: true }).toArray()
+    );
+
+    for (var rg of relatedResearchGroups) {
+        await dispatch({
+            collection: 'researchGroup',
+            channelId: rg._id,
+            payload: { $pull: {
+                'state.helperSetIds': setId
+            }}
+        })
+    }
 
     await dispatch({
         collection: 'helperSet',
-        channelId: id,
+        channelId: setId,
         payload: { $set: {
             'state.internals.isRemoved': true
         }}

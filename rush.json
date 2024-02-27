@@ -136,6 +136,11 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/psydb-fixtures-extra",
+       "projectFolder": "packages/psydb-fixtures-extra",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-driver-nodejs",
        "projectFolder": "packages/psydb-driver-nodejs",
        "reviewCategory": "production"
@@ -156,6 +161,11 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/psydb-api-mocha-test-tools",
+       "projectFolder": "packages/psydb-api-mocha-test-tools",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-api",
        "projectFolder": "packages/psydb-api",
        "reviewCategory": "production"
@@ -168,6 +178,11 @@
     {
        "packageName": "@mpieva/psydb-api-automation-scripts",
        "projectFolder": "packages/psydb-api-automation-scripts",
+       "reviewCategory": "production"
+    },
+    {
+       "packageName": "@mpieva/psydb-uni-cronjobs",
+       "projectFolder": "packages/psydb-uni-cronjobs",
        "reviewCategory": "production"
     },
     {

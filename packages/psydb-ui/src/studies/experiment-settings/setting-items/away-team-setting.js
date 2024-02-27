@@ -3,11 +3,11 @@ import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { Pair } from '@mpieva/psydb-ui-layout';
 import { DefaultSettingWrapper } from './utils';
 
-
 export const AwayTeamSetting = (ps) => {
     var {
         settingRecord,
         settingRelated,
+        allCustomRecordTypes,
         customRecordTypes,
     } = ps;
 
@@ -17,8 +17,7 @@ export const AwayTeamSetting = (ps) => {
     } = settingRecord.state;
 
     var translate = useUITranslation();
-
-    var subjectType = customRecordTypes.find(it => (
+    var subjectType = allCustomRecordTypes.find(it => (
         it.collection === 'subject' && it.type === subjectTypeKey
     ));
 
@@ -29,7 +28,7 @@ export const AwayTeamSetting = (ps) => {
             var pointer = (
                 `/scientific/state/custom/${key}`
             );
-            return { ...acc, [pointer]: displayName };
+            return { ...acc, [pointer]: translate.fieldDefinition(field) };
         }, {})
     );
 

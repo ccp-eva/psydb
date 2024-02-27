@@ -3,7 +3,7 @@ import { useUILanguage } from '@mpieva/psydb-ui-contexts';
 import { BigNav, Alert } from '@mpieva/psydb-ui-layout';
 
 const RecordTypeNav = (ps) => {
-    var { items } = ps;
+    var { items, related } = ps;
     var [ language ] = useUILanguage();
 
     if (!items || items.length < 1) {
@@ -14,11 +14,16 @@ const RecordTypeNav = (ps) => {
         );
     }
     var navItems = items.map(it => {
-        var { type, label: manualLabel, state } = it;
-        var { label, displayNameI18N = {}} = state;
+        if (related) {
+            var type = it;
+            var { label, displayNameI18N = {}} = related.crts[it].state;
+        } else {
+            var { type, label: manualLabel, state } = it;
+            var { label, displayNameI18N = {}} = state;
+        }
         return {
             label: manualLabel || displayNameI18N[language] || label,
-            linkTo: `/${it.type}`
+            linkTo: `/${type}`
         }
     })
     return (

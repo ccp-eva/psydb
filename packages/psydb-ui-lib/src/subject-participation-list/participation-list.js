@@ -23,7 +23,7 @@ import FieldDataBodyCols from '../record-list/field-data-body-cols';
 import {
     EditModal,
     RemoveModal
-} from '../participation';
+} from '../participation/for-subject';
 
 import TimestampAndMaybeAge from './timestamp-and-maybe-age';
 
@@ -82,6 +82,7 @@ const ParticipationList = (ps) => {
                         { ageFrameField && (
                             <th>{ translate('T-Age') }</th>
                         )}
+                        <th>{ translate('Lab Workflow') }</th>
                         <SortableTH
                             label={ translate('Status') }
                             sorter={ sorter }
@@ -156,6 +157,7 @@ const ParticipationListRow = (ps) => {
 
     var {
         type: participationType,
+        realType,
         status: participationStatus,
         experimentId,
         studyId,
@@ -163,6 +165,9 @@ const ParticipationListRow = (ps) => {
         timestamp,
     } = participationData;
 
+    var actualParticipationType = (
+        realType ||participationType
+    );
     var hasExperiment = ( participationType !== 'manual' && experimentId );
     var enableEdit = (
         participationStatus === 'participated'
@@ -179,6 +184,9 @@ const ParticipationListRow = (ps) => {
                 dateOfBirthField: ageFrameField
             })} />
 
+            <td>
+                { translate(`_labWorkflow_${actualParticipationType}`) }
+            </td>
             <td>
                 { translate(formatStatus(participationData.status)) }
             </td>

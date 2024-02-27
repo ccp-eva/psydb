@@ -52,7 +52,8 @@ var MessageHandler = (options) => {
         checkSchema: wrap(stages.validateMessage),
         checkAllowedAndPlausible: wrap(stages.verifyAllowedAndPlausible),
         triggerSystemEvents: wrap(stages.executeSystemEvents),
-        triggerOtherSideEffects: wrap(stages.executeRemoteEffects)
+        triggerOtherSideEffects: wrap(stages.executeRemoteEffects),
+        createResponseBody: wrap(stages.createResponseBody)
     }
 
     return handler;

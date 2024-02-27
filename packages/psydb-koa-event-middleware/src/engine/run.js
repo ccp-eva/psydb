@@ -10,16 +10,11 @@ var {
     mongoEscapeDeep,
 } = require('@mpieva/psydb-api-lib');
 
-var storeNextState = require('./store-next-state');
-        
 
 // triggerMussageEffects ??
 // runHandlers ??
 // performUpdates ??
-var run = ({
-    //createInitialChannelState,
-    handleChannelEvent
-}) => async (context, next) => {
+var run = () => async (context, next) => {
     var {
         db,
         rohrpost,
@@ -132,16 +127,6 @@ var run = ({
 
     try {
         await messageHandler.triggerSystemEvents(context);
-        var modded = rohrpost.getModifiedChannels();
-        if (modded.length !== 0) {
-            throw new Error('temp error');
-        }
-
-        await storeNextState({
-            createInitialChannelState,
-            handleChannelEvent,
-            context
-        });
     }
     catch (error) {
         // TODO
@@ -149,20 +134,12 @@ var run = ({
         throw error;
     }
 
-    // cache modified channels in context to be used
-    // by middleware downstream
-    var modded = rohrpost.getModifiedChannels();
-    //console.log(modded);
-    if (modded.length !== 0) {
-        throw new Error('temp error 2');
-        context.modifiedChannels = modded;
-        await withRetracedErrors(
-            rohrpost.unlockModifiedChannels()
-        );
-    }
-    
     // mails etc
     await messageHandler.triggerOtherSideEffects(context);
+
+    if (messageHandler.createResponseBody) {
+        await messageHandler.createResponseBody(context);
+    }
 
     await next();
 }

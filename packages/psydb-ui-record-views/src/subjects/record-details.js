@@ -1,6 +1,7 @@
 import React from 'react';
-
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
+
 import { Subject } from '@mpieva/psydb-ui-lib/data-viewers';
 import * as Themes from '@mpieva/psydb-ui-lib/data-viewer-themes';
 
@@ -22,6 +23,8 @@ const DetailsBody = (ps) => {
     var { record, crtSettings, related } = fetched;
     var { fieldDefinitions } = crtSettings;
 
+    var permissions = usePermissions();
+
     var subjectBag = {
         theme: Themes.HorizontalSplit,
         value: record,
@@ -30,6 +33,12 @@ const DetailsBody = (ps) => {
     }
 
     var isHidden = record.scientific.state.systemPermissions.isHidden;
+    var exclude = [
+        ...((
+            !permissions.hasFlag('canAccessSensitiveFields')
+            && crtSettings.commentFieldIsSensitive
+        ) ? [ '/scientific/state/comment' ] : [])
+    ]
 
     return (
         <>
@@ -43,7 +52,7 @@ const DetailsBody = (ps) => {
             )}
             <div style={ isHidden ? { opacity: 0.5 } : {}}>
                 <Subject { ...subjectBag }>
-                    <Subject.FullUserOrdered />
+                    <Subject.FullUserOrdered exclude={ exclude } />
                     <hr />
                     <Subject.SystemPermissions />
                 </Subject>

@@ -16,6 +16,7 @@ var {
 var {
     ResponseBody,
     withRetracedErrors,
+    SmartArray,
 
     convertFiltersToQueryFields, 
     aggregateToArray,
@@ -43,7 +44,10 @@ var search = async (context, next) => {
     var { 
         db, request,
         __displayFields: displayFields,
+        permissions
     } = context;
+
+    var { isRoot, availableHelperSetIds = [] } = permissions;
 
     // TODO: check headers with ajv
     var { language = 'en', locale, timezone } = request.headers;
@@ -70,15 +74,20 @@ var search = async (context, next) => {
         collation: getMongoCollation({ language }),
     }
 
-    var baseStages = SearchBaseStages({
-        queryFields,
-        fieldTypeConversions,
+    var baseStages = SmartArray([
+        ( !isRoot() && { $match: {
+            _id: { $in: availableHelperSetIds }
+        }}),
+        ...SearchBaseStages({
+            queryFields,
+            fieldTypeConversions,
 
-        constraints,
-        //onlyIds,
-        excludedIds,
-        showHidden
-    });
+            constraints,
+            //onlyIds,
+            excludedIds,
+            showHidden
+        })
+    ]);
 
     var countStages = [
         ...baseStages,

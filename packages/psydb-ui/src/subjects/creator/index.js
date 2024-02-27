@@ -36,6 +36,7 @@ const SubjectCreatorContainer = ({
             />
             <RecordCreator
                 { ...creatorBag }
+                renderVisibilityButton={ true }
                 disableErrorModal={[ 409 ]}
             />
         </>

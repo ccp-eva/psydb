@@ -58,6 +58,7 @@ const StudyRecordContainer = (ps) => {
     var translate = useUITranslation();
     var permissions = usePermissions();
     var canReadParticipation = permissions.hasFlag('canReadParticipation');
+    var canViewStudyLabOpsSettings = permissions.hasFlag('canViewStudyLabOpsSettings');
 
     var revision = useRevision();
     var [ didFetchStudy, fetchedStudy ] = useReadRecord({
@@ -76,23 +77,25 @@ const StudyRecordContainer = (ps) => {
         return <LoadingIndicator size='lg' />
     }
 
+    var { crtSettings, record, related } = fetchedStudy;
+
     var navItems = [
         {
             key: 'details',
             label: translate('General')
         },
-        {
+        crtSettings.enableSubjectSelectionSettings && ({
             key: 'selection-settings',
             label: translate('Selection Settings')
-        },
-        {
+        }),
+        canViewStudyLabOpsSettings && ({
             key: 'experiment-settings',
             label: translate('Lab Workflow Settings')
-        },
-        {
+        }),
+        crtSettings.enableLabTeams && ({
             key: 'teams',
             label: translate('Teams')
-        },
+        }),
         canReadParticipation && (
             { 
                 key: 'participation',

@@ -3,6 +3,7 @@ var inline = require('@cdxoo/inline-text');
 
 var {
     ExactObject,
+    ForeignId,
     ForeignIdList,
     SaneString,
     Color,
@@ -28,6 +29,9 @@ var ExperimentOperatorTeamState = ({
             /*studyId: ForeignId({
                 collection: 'study',
             }),*/
+            researchGroupId: ForeignId({
+                collection: 'researchGroup',
+            }),
             personnelIds: ForeignIdList({
                 title: 'Experimenter:innen',
                 collection: 'personnel',

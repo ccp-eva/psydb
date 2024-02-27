@@ -16,6 +16,10 @@ var findCRTAgeFrameField = (crtSettings, options = {}) => {
         (it.props || {}).isSpecialAgeFrameField
     ));
 
+    if (!definition) {
+        return undefined;
+    }
+
     switch (as) {
         case 'definition':
             return definition;

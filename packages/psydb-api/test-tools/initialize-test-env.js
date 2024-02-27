@@ -1,47 +1,40 @@
 'use strict';
+var {
+    mochaHooks
+} = require('@mpieva/psydb-api-mocha-test-tools/initialize-test-env');
+
+var [ createContext ] = mochaHooks.beforeAll;
+var [ teardownDB ] = mochaHooks.afterAll;
+
 var Koa = require('koa');
-var mongoHelpers = require('@cdxoo/mongo-test-helpers');
-var restore = require('@cdxoo/mongodb-restore');
+
+var {
+    hasNone, hasOnlyOne, flatten, entries
+} = require('@mpieva/psydb-core-utils');
 
 var createAgent = require('@mpieva/psydb-axios-test-wrapper');
 var Driver = require('@mpieva/psydb-driver-nodejs');
-var fixtures = require('@mpieva/psydb-fixtures');
 var withApi = require('../src/middleware/api');
 
 var beforeAll = async function () {
-    this.context = {
-        mongo: {},
-        api: {},
-    };
-    
-    await mongoHelpers.startup(this.context.mongo)();
-
-    this.getDbHandle = () => {
-        return this.context.mongo.dbHandle;
-    }
-    
-    this.restore = async (fixtureName) => {
-        var out = await restore.database({
-            con: this.context.mongo.client,
-            database: this.context.mongo.dbName,
-            clean: true,
-            from: fixtures(fixtureName, { db: true })
-        })
-        this.context.bsonIds = fixtures.bsonIds;
-
-        return out;
-    };
+    await createContext.call(this);
 
     this.createKoaApi = (options = {}) => {
+        var { apiConfig } = options;
+        this.context.api = {};
+
+        var mongo = this.getMongoContext();
+
         var app = new Koa();
         app.use(async (context, next) => {
             await next();
             context.mongoConnector.close();
         });
         app.use(withApi({ app, config: {
+            ...apiConfig,
             db: {
-                url: this.context.mongo.uri,
-                dbName: this.context.mongo.dbName,
+                url: mongo.uri,
+                dbName: mongo.dbName,
                 useUnifiedTopology: true,
             }
         }}));
@@ -71,24 +64,96 @@ var beforeAll = async function () {
         await this.context.api.driver.signOut()
         this.context.api.agent?.close();
     }
-}
 
-var beforeEach = async function () {}
+    this.createFakeSession = async (bag) => {
+        var { email, finished2FA = false } = bag;
+        var db = this.getDbHandle();
 
-var afterEach = async function () {
-    await mongoHelpers.clean(this.context.mongo)();
+        var { _id: personnelId } = await (
+            db.collection('personnel').findOne({
+                'gdpr.state.emails.email': email
+            })
+        );
+
+        return {
+            personnelId,
+            hasFinishedTwoFactorAuthentication: finished2FA
+        }
+    }
+    
+    ////////////////////////////////
+    // FIXME: redundandt see message handlers
+    this.getRecord = async (collection, filters, { subChannels = false } = {}) => {
+        if (['subject', 'personnel'].includes(collection)) {
+            subChannels = true;
+        }
+
+        var { _id, type, ...otherFilters } = filters;
+        var db = this.getDbHandle();
+       
+        // XXX: bug in flattened when empty object passed
+        var flattened = (
+            !hasNone(Object.keys(otherFilters))
+            ? flatten(otherFilters)
+            : {}
+        );
+        var AND = [];
+        for (var [key, value] of entries(flattened)) {
+            if (subChannels) {
+                AND.push({ $or: [
+                    { [`gdpr.state.${key}`]: value },
+                    { [`gdpr.state.custom.${key}`]: value },
+                    { [`scientific.state.${key}`]: value },
+                    { [`scientific.state.custom.${key}`]: value },
+                ]})
+            }
+            else {
+                AND.push({ $or: [
+                    { [`state.${key}`]: value },
+                    { [`state.custom.${key}`]: value },
+                ]})
+            }
+        }
+       
+        var mongoFilter = {
+            ...(_id && { _id }),
+            ...(type && { type }),
+            ...(!hasNone(AND) && {
+                $and: AND
+            })
+        };
+
+        var records = await db.collection(collection).find({
+            ...mongoFilter
+        }).toArray();
+
+        if (hasNone(records)) {
+            console.dir(ejson(mongoFilter), { depth: null })
+            throw new Error('no record found');
+        }
+        if (!hasOnlyOne(records)) {
+            console.dir(ejson(mongoFilter), { depth: null })
+            throw new Error('multiple records found');
+        }
+
+        return records[0];
+    }
+
+    this.getId = async (...args) => {
+        var record = await this.getRecord(...args);
+        return record._id;
+    }
 }
 
 var afterAll = async function () {
-    this.context.api.agent?.close();
-    await mongoHelpers.teardown(this.context.mongo)();
+    this.context.api?.agent?.close();
+    await teardownDB.call(this);
 }
 
 module.exports = {
     mochaHooks: {
+        ...mochaHooks,
         beforeAll: [ beforeAll ],
-        beforeEach: [ beforeEach ],
-        afterEach: [ afterEach ],
         afterAll: [ afterAll ]
     }
 }

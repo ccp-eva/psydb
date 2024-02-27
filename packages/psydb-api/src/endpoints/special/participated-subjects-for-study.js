@@ -7,12 +7,15 @@ var {
     keyBy,
     compareIds,
     unique,
+    intersect,
     ejson,
 } = require('@mpieva/psydb-core-utils');
 
 var {
     ApiError,
     ResponseBody,
+    withRetracedErrors,
+    aggregateToArray,
 
     validateOrThrow,
     verifyStudyAccess,
@@ -93,30 +96,9 @@ var participatedSubjectsForStudy = async (context, next) => {
     });
 
     debug('fetching subject types');
-    var subjectTypeKeys = (
-        subjectType
-        ? [ subjectType ]
-        : await (
-            db.collection('subject').aggregate([
-                { $match: {
-                    ...(subjectType && { type: subjectType }),
-                    [ppath()]: { $elemMatch: {
-                        studyId,
-                        ...(onlyParticipated && {
-                            status: 'participated'
-                        })
-                    }}
-                }},
-                { $group: {
-                    _id: '$type',
-                    type: { $first: '$type' }
-                }}
-            ]).map(it => it.type).toArray()
-        )
+    var subjectTypeKeys = unique(
+        await gatherSubjectTypes(context)
     );
-    
-    subjectTypeKeys = unique(subjectTypeKeys);
-
     debug('done fetching subject types');
 
     debug('fetching data');
@@ -129,6 +111,7 @@ var participatedSubjectsForStudy = async (context, next) => {
             studyId,
             onlyParticipated,
             sort,
+            permissions
         });
 
         dataBySubjectType[subjectType] = data;
@@ -152,6 +135,7 @@ var fetchParticipation = async ({
     studyId,
     onlyParticipated,
     sort,
+    permissions,
 }) => {
 
     var {
@@ -160,7 +144,8 @@ var fetchParticipation = async ({
     } = await gatherDisplayFieldsForRecordType({
         db,
         collectionName: 'subject',
-        customRecordType: subjectType
+        customRecordType: subjectType,
+        permissions,
     });
 
     debug('fetching subject records');
@@ -246,6 +231,40 @@ var fetchParticipation = async ({
         relatedCustomRecordTypeLabels: relatedCustomRecordTypes,
         displayFieldData,
     })
+}
+
+var gatherSubjectTypes = async (context) => {
+    var { db, permissions, request } = context;
+    var { availableSubjectTypes = [] } = permissions;
+    var {
+        studyId,
+        subjectType = undefined,
+        onlyParticipated = false
+    } = request.body;
+
+    if (subjectType) {
+        return intersect([ subjectType ], availableSubjectTypes);
+    }
+    else {
+        var records = await withRetracedErrors(
+            aggregateToArray({ db, subject: [
+                { $match: {
+                    type: { $in: availableSubjectTypes.map(it => it.key) },
+                    [ppath()]: { $elemMatch: {
+                        studyId,
+                        ...(onlyParticipated && {
+                            status: 'participated'
+                        })
+                    }}
+                }},
+                { $group: {
+                    _id: '$type',
+                    type: { $first: '$type' }
+                }}
+            ]})
+        );
+        return records.map(it => it.type)
+    }
 }
 
 module.exports = participatedSubjectsForStudy;

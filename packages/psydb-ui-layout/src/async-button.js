@@ -4,7 +4,9 @@ import LoadingIndicator from './loading-indicator';
 
 export const AsyncButton = (ps) => {
     var {
+        type,
         onClick,
+        onSubmit, // for convenicnce
         isTransmitting = false,
         variant,
         disabled,
@@ -13,6 +15,13 @@ export const AsyncButton = (ps) => {
         ...pass
     } = ps;
 
+    if (type === 'submit') {
+        onClick = undefined;
+    }
+    else {
+        onClick = onClick || onSubmit;
+    }
+
     return (
         <div
             className='bs5 d-flex align-items-center'
@@ -20,7 +29,8 @@ export const AsyncButton = (ps) => {
         >
             <Button
                 { ...pass }
-                onClick={ isTransmitting ? undefined : onClick }
+                type={ isTransmitting ? 'button' : type }
+                onClick={ isTransmitting ? undefined : () => onClick?.() }
                 variant={ variant }
                 //disabled={ disabled || isTransmitting }
                 disabled={ disabled }

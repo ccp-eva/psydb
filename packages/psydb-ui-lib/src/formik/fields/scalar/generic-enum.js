@@ -24,6 +24,7 @@ export const GenericEnum = withField({ Control: (ps) => {
     var { setFieldValue } = formikForm;
     var { value } = formikField;
 
+    //FIXME: redundandt with generic type key field
     return (
         <Controls.GenericEnum
             useRawOnChange={ !!manualOnChange }

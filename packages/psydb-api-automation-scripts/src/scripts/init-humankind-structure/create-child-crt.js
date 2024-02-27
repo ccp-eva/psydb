@@ -6,10 +6,10 @@ module.exports = async (context) => {
         type: `custom-record-types/create`,
         payload: {
             collection: 'subject',
-            type: 'humankindSubjects',
+            type: 'humankindChild',
             props: {
-                label: 'Humankind Subjects',
-                displayNameI18N: { 'de': 'Humankind Proband:innen' }
+                label: 'Humankind Children',
+                displayNameI18N: { 'de': 'Humankind Kinder' }
             }
         },
     }, { apiKey });
@@ -40,66 +40,21 @@ module.exports = async (context) => {
 
     await driver.sendMessage({
         type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, subChannelKey: 'gdpr', props: {
-            type: 'ListOfObjects',
-            key: 'parents',
+        payload: { id: crtId, subChannelKey: 'scientific', props: {
+            type: 'ForeignIdList',
+            key: 'parentIds',
             displayName: 'Parents',
             displayNameI18N: { 'de': 'Eltern' },
             props: {
+                collection: 'subject',
+                recordType: 'humankindAdult',
                 minItems: 0,
-                fields: [
-                    {
-                        type: 'BiologicalGender',
-                        key: 'gender',
-                        displayName: 'Gender',
-                        displayNameI18N: { 'de': 'Geschlecht' },
-                        props: {
-                            enableUnknownValue: false
-                        }
-                    },
-                    {
-                        type: 'SaneString',
-                        key: 'lastname',
-                        displayName: 'Lastname',
-                        displayNameI18N: { 'de': 'Nachname' },
-                        props: { minLength: 1 }
-                    },
-                    {
-                        type: 'SaneString',
-                        key: 'firstname',
-                        displayName: 'Firstname',
-                        displayNameI18N: { 'de': 'Vorname' },
-                        props: { minLength: 1 }
-                    },
-                    {
-                        type: 'Phone',
-                        key: 'phone',
-                        displayName: 'Phone',
-                        displayNameI18N: { 'de': 'Telefon' },
-                        props: { minLength: 1 }
-                    },
-                    {
-                        type: 'Email',
-                        key: 'email',
-                        displayName: 'E-Mail',
-                        displayNameI18N: { 'de': 'E-Mail' },
-                        props: { minLength: 1 }
-                    },
-                    {
-                        type: 'Address',
-                        key: 'address',
-                        displayName: 'Address',
-                        displayNameI18N: { 'de': 'Adresse' },
-                        props: {
-                            isStreetRequired: false,
-                            isHousenumberRequired: false,
-                            isAffixRequired: false,
-                            isPostcodeRequired: false,
-                            isCityRequired: false,
-                            isCountryRequired: false,
-                        }
-                    }
-                ]
+                addReferenceToTarget: true,
+                readOnly: false,
+                targetReferenceField: (
+                    '/scientific/state/custom/knownChildrenIds'
+                ),
+                constraints: {},
             },
         }},
     }, { apiKey });
@@ -143,7 +98,7 @@ module.exports = async (context) => {
         type: `custom-record-types/add-field-definition`,
         payload: { id: crtId, subChannelKey: 'scientific', props: {
             type: 'HelperSetItemId',
-            key: 'nativeLanguage',
+            key: 'nativeLanguageId',
             displayName: 'Native Language',
             displayNameI18N: { 'de': 'Muttersprache' },
             props: {
@@ -158,7 +113,7 @@ module.exports = async (context) => {
         type: `custom-record-types/add-field-definition`,
         payload: { id: crtId, subChannelKey: 'scientific', props: {
             type: 'HelperSetItemIdList',
-            key: 'otherLanguages',
+            key: 'otherLanguageIds',
             displayName: 'Other Languages',
             displayNameI18N: { 'de': 'Weitere Sprachen' },
             props: {
@@ -179,6 +134,7 @@ module.exports = async (context) => {
                 collection: 'location',
                 recordType: 'kiga',
                 isNullable: true,
+                readOnly: false,
                 constraints: {},
                 displayEmptyAsUnknown: false,
                 addReferenceToTarget: false,
@@ -289,12 +245,12 @@ module.exports = async (context) => {
             '/onlineId',
             '/gdpr/state/custom/firstname',
             '/gdpr/state/custom/lastname',
-            '/gdpr/state/custom/parents',
             '/scientific/state/custom/dateOfBirth',
             '/scientific/state/custom/gender',
             '/scientific/state/custom/siblingCount',
-            '/scientific/state/custom/nativeLanguage',
-            '/scientific/state/custom/otherLanguages',
+            '/scientific/state/custom/parentIds',
+            '/scientific/state/custom/nativeLanguageId',
+            '/scientific/state/custom/otherLanguageIds',
             '/scientific/state/custom/kigaId',
             '/scientific/state/custom/doesDBRegistrationConsentOnPaperExist',
             '/scientific/state/custom/canParticipateInStudiesWithHealthyChildren',

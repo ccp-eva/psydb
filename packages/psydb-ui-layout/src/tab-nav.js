@@ -1,8 +1,6 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React from 'react';
 
-import {
-    Nav
-} from 'react-bootstrap';
+import { Nav } from 'react-bootstrap';
 
 const styleBase = {
     borderRadius: 0,

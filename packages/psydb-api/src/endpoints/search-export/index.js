@@ -65,6 +65,7 @@ var exportEndpoint = async (context, next) => {
         collectionName: collection,
         customRecordType: recordType,
         target: 'table',
+        permissions
     });
         
     var isValidFull = ajv.validate(

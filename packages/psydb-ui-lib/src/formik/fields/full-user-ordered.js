@@ -5,12 +5,16 @@ import {
     convertPointerToPath
 } from '@mpieva/psydb-core-utils';
 
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
+
 import { CustomField } from './custom-field';
 import { ListOfObjectsField } from './list-of-objects-field';
 
 
 export const FullUserOrdered = (ps) => {
     var { related, crtSettings, extraTypeProps, exclude = [] } = ps; 
+
+    var permissions = usePermissions();
 
     var {
         hasSubChannels,
@@ -19,15 +23,24 @@ export const FullUserOrdered = (ps) => {
         staticFieldDefinitions
     } = crtSettings;
     
+    var allowedFieldDefs = (
+        hasSubChannels
+        ? Object.keys(fieldDefinitions).reduce(
+            (acc, key) => ([ ...acc, ...fieldDefinitions[key]]),
+            []
+        )
+        : fieldDefinitions
+    ).filter(it => {
+        if (!permissions.hasFlag('canAccessSensitiveFields')) {
+            if (it.props?.isSensitive) {
+                return false;
+            }
+        }
+        return true;
+    });
+    
     var keyedFieldDefinitions = keyBy({
-        items: (
-            hasSubChannels
-            ? Object.keys(fieldDefinitions).reduce(
-                (acc, key) => ([ ...acc, ...fieldDefinitions[key]]),
-                []
-            )
-            : fieldDefinitions
-        ),
+        items: allowedFieldDefs,
         byProp: 'pointer'
     });
 
@@ -45,6 +58,9 @@ export const FullUserOrdered = (ps) => {
         <>
             { without(formOrder, exclude).map((pointer, ix) => {
                 var def = allDefinitions[pointer];
+                if (!def) {
+                    return null;
+                }
                 // FIXME: we maybe can get rid this replace
                 var fixedPointer = pointer.replace('/state', '');
                 var dataXPath = (

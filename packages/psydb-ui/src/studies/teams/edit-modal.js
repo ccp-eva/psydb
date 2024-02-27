@@ -14,6 +14,10 @@ const EditOpsTeamModalBody = (ps) => {
     var teamId = modalPayloadData;
 
     var [ didFetch, fetched ] = useFetchAll((agent) => ({
+        study: agent.readRecord({
+            collection: 'study',
+            id: studyId
+        }),
         team: agent.readRecord({
             collection: 'experimentOperatorTeam',
             id: teamId
@@ -46,6 +50,7 @@ const EditOpsTeamModalBody = (ps) => {
         from: record.state,
         paths: [
             'color',
+            'researchGroupId',
             'personnelIds',
             'hidden'
         ],
@@ -55,6 +60,7 @@ const EditOpsTeamModalBody = (ps) => {
         <MainForm.Component
             initialValues={ initialValues }
             onSubmit={ send.exec }
+            studyRecord={ fetched.study.data.record }
             hasExperiments={ hasExperiments }
             enableVisibility={ record.state.hidden === true }
         />

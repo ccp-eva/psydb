@@ -19,6 +19,7 @@ module.exports = {
     file: require('./entities/file'),
     csvImport: require('./entities/csv-import'),
 
+    researchGroup: require('./entities/research-group'),
     opsTeam: require('./entities/ops-team'),
     subject: require('./entities/subject'),
     subjectGroup: require('./entities/subject-group'),
@@ -35,6 +36,7 @@ module.exports = {
     experimentVariantSetting: require('./entities/experiment-variant-setting'),
 
     audit: require('./audit'),
+    twoFactorCode: require('./two-factor-code'),
 
     // XXX
     temp_fixesChecker: require('./temp_fixesChecker'),

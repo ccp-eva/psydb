@@ -9,6 +9,8 @@ import {
     SetIdProp,
     SharedForeignIdProps,
     DisplayEmptyAsUnknownProp,
+    IsSensitiveProp,
+    EnableUnknownValueProp
 } from './utility-fields';
 
 import getFieldValue from './get-field-value';
@@ -26,6 +28,7 @@ export const FullText = (ps) => {
     return (
         <>
             <MinLengthProp { ...ps } />
+            <IsSensitiveProp { ...ps } />
         </>
     )
 }
@@ -188,7 +191,11 @@ export const GeoCoords = (ps) => {
 }
 
 export const BiologicalGender = (ps) => {
-    return null;
+    return (
+        <>
+            <EnableUnknownValueProp { ...ps } />
+        </>
+    )
 }
 
 export const Email = (ps) => {

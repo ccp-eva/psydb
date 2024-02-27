@@ -3,20 +3,21 @@ var debug = require('debug')(
     'psydb:api:endpoints:experimentOperatorTeamsForStudy'
 );
 
-var {
-    compareIds
-} = require('@mpieva/psydb-core-utils');
+var { ejson, compareIds } = require('@mpieva/psydb-core-utils');
 
 var {
     ResponseBody,
 
     validateOrThrow,
+    withRetracedErrors,
+    aggregateToArray,
     verifyStudyAccess,
 
     createRecordLabel,
     fetchRecordById,
     createSchemaForRecordType,
-    fetchRelatedLabels,
+    fetchRelatedLabelsForMany,
+    SmartArray
 } = require('@mpieva/psydb-api-lib');
 
 var {
@@ -67,47 +68,38 @@ var experimentOperatorTeamsForStudy = async (context, next) => {
         });
     }
 
-    var experimentOperatorTeamRecords = await (
-        db.collection('experimentOperatorTeam').aggregate([
-            { $match: {
-                studyId,
-            }},
-            { $project: {
-                events: false
-            }},
-        ]).toArray()
+    var teamStages = [
+        { $match: {
+            studyId,
+            $or: [
+                { 'state.researchGroupId': { $in: (
+                    permissions.getResearchGroupIds()
+                )}},
+                { 'state.researchGroupId': { $exists: false }}
+            ]
+        }},
+        { $project: {
+            events: false
+        }},
+    ];
+    //console.dir(ejson(teamStages), { depth: null })
+    var teamRecords = await withRetracedErrors(
+        aggregateToArray({ db, experimentOperatorTeam: teamStages })
     );
-
-    var recordSchema = await createSchemaForRecordType({
-        db,
-        collectionName: 'experimentOperatorTeam',
-        fullSchema: true
-    });
-
-    // FIXME: this is really hacky
-    var resolveSchema = {
-        type: 'object',
-        properties: {
-            records: {
-                type: 'array',
-                items: recordSchema,
-            }
-        }
-    }
 
     var {
         relatedRecords,
         relatedHelperSetItems,
         relatedCustomRecordTypes,
-    } = await fetchRelatedLabels({
+    } = await fetchRelatedLabelsForMany({
         db,
-        data: { records: experimentOperatorTeamRecords },
-        schema: resolveSchema,
+        collectionName: 'experimentOperatorTeam',
+        records: teamRecords,
     });
 
     context.body = ResponseBody({
         data: {
-            records: experimentOperatorTeamRecords,
+            records: teamRecords,
             relatedRecordLabels: relatedRecords,
         },
     });

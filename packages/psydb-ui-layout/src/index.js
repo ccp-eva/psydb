@@ -64,6 +64,7 @@ export * as Icons from './icons';
 export * from './team-label';
 export * from './legend';
 export * from './narrow-hr';
+export * from './small-form-footer';
 
 export * from './json-raw';
 
@@ -81,3 +82,5 @@ export {
     InputGroup,
     ButtonGroup,
 } from 'react-bootstrap';
+
+export * as ErrorFallbacks from './error-fallbacks';

@@ -1,5 +1,6 @@
 'use strict';
 var debug = require('debug')('psydb:driver-node-js');
+var { inspect } = require('util');
 var superagent = require('superagent');
 
 var { jsonpointer, only } = require('@mpieva/psydb-core-utils');
@@ -183,7 +184,10 @@ var Driver = ({
                     );
                     console.error(
                         'AJV ERRORS:',
-                        e.response.data.data.ajvErrors
+                        inspect(
+                            e.response.data.data.ajvErrors,
+                            { depth: null, colors: true }
+                        )
                     );
                     throw new Error('BadRequest')
                 }

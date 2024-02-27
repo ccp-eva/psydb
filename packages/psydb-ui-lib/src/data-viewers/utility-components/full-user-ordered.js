@@ -1,5 +1,6 @@
 import React from 'react';
-import { keyBy, jsonpointer } from '@mpieva/psydb-core-utils';
+import { keyBy, jsonpointer, entries } from '@mpieva/psydb-core-utils';
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { CustomField } from './custom-field';
 import { ListOfObjectsField } from './list-of-objects-field';
@@ -8,6 +9,7 @@ export const createFullUserOrdered = (options) => (ps) => {
     var { extraFieldComponents = {} } = options;
     var { value, related, crtSettings, exclude = []  } = ps;
 
+    var permissions = usePermissions();
     var translate = useUITranslation();
 
     var {
@@ -17,15 +19,24 @@ export const createFullUserOrdered = (options) => (ps) => {
         staticFieldDefinitions
     } = crtSettings;
 
+    var allowedFieldDefs = (
+        hasSubChannels
+        ? Object.keys(fieldDefinitions).reduce(
+            (acc, key) => ([ ...acc, ...fieldDefinitions[key]]),
+            []
+        )
+        : fieldDefinitions
+    ).filter(it => {
+        if (!permissions.hasFlag('canAccessSensitiveFields')) {
+            if (it.props?.isSensitive) {
+                return false;
+            }
+        }
+        return true;
+    });
+
     var keyedFieldDefinitions = keyBy({
-        items: (
-            hasSubChannels
-            ? Object.keys(fieldDefinitions).reduce(
-                (acc, key) => ([ ...acc, ...fieldDefinitions[key]]),
-                []
-            )
-            : fieldDefinitions
-        ),
+        items: allowedFieldDefs,
         byProp: 'pointer'
     });
 
@@ -49,6 +60,9 @@ export const createFullUserOrdered = (options) => (ps) => {
         <>
             { formOrder.map((pointer, ix) => {
                 var def = allDefinitions[pointer];
+                if (!def) {
+                    return null;
+                }
                 var { systemType, displayName } = def;
                 
                 var Extra = extraFieldComponents[systemType];

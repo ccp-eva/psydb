@@ -139,10 +139,12 @@ var Home = () => {
         || permissions.hasFlag('canViewReceptionCalendar')
     );
 
+    // TODO: create simple home view
+
     return (
         canViewAnyCalendar
         ? <Redirect to='/calendars' />
-        : <Redirect to='/studies' />
+        : null
     );
 }
 

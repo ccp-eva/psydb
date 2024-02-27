@@ -1,13 +1,16 @@
 'use strict';
 var createLocationCRT = async ({ apiKey, driver, site }) => {
-    var label = `FS ${site.label} Location`;
+    var label = `FS ${site.labelEN} Location`;
+    var displayNameI18N = {
+        de: `FS ${site.labelDE} Location`,
+    }
 
     await driver.sendMessage({
         type: `custom-record-types/create`,
         payload: {
             collection: 'location',
             type: `fs_${site.type}_location`,
-            props: { label }
+            props: { label, displayNameI18N }
         },
     }, { apiKey });
 
@@ -19,6 +22,7 @@ var createLocationCRT = async ({ apiKey, driver, site }) => {
             type: 'SaneString',
             key: 'name',
             displayName: 'Name',
+            displayNameI18N: { de: 'Name' },
             props: { minLength: 1 }
         }},
     }, { apiKey });
@@ -67,7 +71,7 @@ var createLocationCRT = async ({ apiKey, driver, site }) => {
         type: `custom-record-types/set-general-data`,
         payload: {
             id: crtId,
-            label,
+            label, displayNameI18N,
             reservationType: 'away-team',
         }
     }, { apiKey });

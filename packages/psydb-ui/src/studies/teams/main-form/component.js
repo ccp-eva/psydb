@@ -1,6 +1,8 @@
 import React from 'react';
 
+import { inlineText } from '@mpieva/psydb-common-lib';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
 import { DefaultForm, Fields } from '@mpieva/psydb-ui-lib';
 
@@ -17,7 +19,7 @@ export const Component = (ps) => {
         >
             {(formikProps) => (
                 <>
-                    <FormFields { ...pass } />
+                    <FormFields { ...pass } formikProps={ formikProps } />
                     <hr />
                     <div className='d-flex justify-content-end'>
                         <Button type='submit'>
@@ -31,9 +33,15 @@ export const Component = (ps) => {
 }
 
 const FormFields = (ps) => {
-    var { hasExperiments, enableVisibility } = ps;
+    var { studyRecord, hasExperiments, enableVisibility, formikProps } = ps;
+    var { values } = formikProps;
+    
+    var { researchGroupIds = [] } = studyRecord.state;
+    var { researchGroupId } = values['$'];
+    
 
     var translate = useUITranslation();
+    var permissions = usePermissions();
 
     return (
         <>
@@ -43,17 +51,32 @@ const FormFields = (ps) => {
             />
             { hasExperiments && (
                 <div className='mb-3'>
-                    <i>
-                        Team ist bereits Terminen zugeordnet,
-                        Experimenter:innen daher nicht mehr änderbar
-                    </i>
+                    <i>{ translate(inlineText`
+                        Experimenters and research group can not be changed,
+                        as the team already has appointments.
+                    `)}</i>
                 </div>
+            )}
+            
+            { (researchGroupIds.length !== 1 || hasExperiments) && (
+                <Fields.ForeignId
+                    dataXPath='$.researchGroupId'
+                    label={ translate('Research Group') }
+                    collection='researchGroup'
+                    constraints={{
+                        '/_id': researchGroupIds
+                    }}
+                    disabled={ hasExperiments }
+                />
             )}
             <Fields.ForeignIdList
                 dataXPath='$.personnelIds'
                 label={ translate('Experimenters') }
                 collection='personnel'
-                disabled={ hasExperiments }
+                constraints={{
+                    '/scientific/state/researchGroupSettings/researchGroupId': researchGroupId
+                }}
+                disabled={ hasExperiments || !researchGroupId }
             />
             { enableVisibility && (
                 <Fields.DefaultBool

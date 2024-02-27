@@ -124,7 +124,7 @@ module.exports = {
             },
             {
                 key: '_sequenceNumber',
-                systemType: 'Integer',
+                systemType: 'SaneString',
                 dataPointer: '/sequenceNumber',
                 displayName: 'ID No.',
                 displayNameI18N: { de: 'ID Nr.' },
@@ -307,7 +307,7 @@ module.exports = {
             },
             {
                 key: '_sequenceNumber',
-                systemType: 'Integer',
+                systemType: 'SaneString',
                 dataPointer: '/sequenceNumber',
                 displayName: 'ID No.',
                 displayNameI18N: { de: 'ID Nr.' },
@@ -421,7 +421,7 @@ module.exports = {
         availableStaticDisplayFields: [
             {
                 key: '_sequenceNumber',
-                systemType: 'Integer',
+                systemType: 'SaneString',
                 dataPointer: '/sequenceNumber',
                 displayName: 'ID No.',
                 displayNameI18N: { de: 'ID Nr.' },
@@ -595,8 +595,10 @@ module.exports = {
             'online-survey',
             'online-video-call',
             'inhouse',
-            'inhouse-group-simple',
             'away-team',
+
+            'apestudies-wkprc-default',
+            'manual-only-participation',
         ],
         hasSubChannels: false,
     },
@@ -623,7 +625,7 @@ module.exports = {
             },
             {
                 key: '_sequenceNumber',
-                systemType: 'Integer',
+                systemType: 'SaneString',
                 dataPointer: '/sequenceNumber',
                 displayName: 'ID No.',
                 displayNameI18N: { de: 'ID Nr.' },
@@ -646,7 +648,7 @@ module.exports = {
             },
             {
                 key: '_sequenceNumber',
-                systemType: 'Integer',
+                systemType: 'SaneString',
                 dataPointer: '/sequenceNumber',
                 displayName: 'ID No.',
                 displayNameI18N: { de: 'ID Nr.' },

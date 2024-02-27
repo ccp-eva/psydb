@@ -12,35 +12,7 @@ var createPermissionMiddleware = ({
         throw new Error(401); // TODO
     }
 
-    var {
-        hasRootAccess,
-        researchGroupIds,
-        researchGroups,
-        forcedResearchGroupId,
-        rolesByResearchGroupId,
-        
-        availableSubjectTypes,
-        availableLocationTypes,
-        availableStudyTypes,
-        availableLabMethods,
-        availableHelperSetIds,
-        availableSystemRoleIds,
-    } = self;
-
-    context.permissions = Permissions({
-        hasRootAccess,
-        researchGroupIds,
-        researchGroups,
-        forcedResearchGroupId,
-        rolesByResearchGroupId,
-        
-        availableSubjectTypes,
-        availableLocationTypes,
-        availableStudyTypes,
-        availableLabMethods,
-        availableHelperSetIds,
-        availableSystemRoleIds,
-    });
+    context.permissions = Permissions.fromSelf({ self });
 
     await next();
 }

@@ -19,6 +19,7 @@ var getCollectionCRTs = async (context, next) => {
         }, { projection: {
             type: true,
             'state.label': true,
+            'state.displayNameI18N': true,
             'state.hasSubChannels': true,
         }})
         .toArray()
@@ -26,7 +27,8 @@ var getCollectionCRTs = async (context, next) => {
 
     context.body = ResponseBody({ data: results.map(it => ({
         type: it.type,
-        label: it.state.label
+        label: it.state.label,
+        displayNameI18N: it.state.displayNameI18N,
     }))});
 
     await next();

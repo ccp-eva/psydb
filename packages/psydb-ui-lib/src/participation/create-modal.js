@@ -34,7 +34,7 @@ const ParticipationCreateModalBody = (ps) => {
         type: 'subject/add-manual-participation',
         payload: {
             studyId,
-            subjectId,
+            subjectIds: [ subjectId ],
             ...formData,
         }
     }), { onSuccessfulUpdate: [ onHide, onSuccessfulUpdate ]});

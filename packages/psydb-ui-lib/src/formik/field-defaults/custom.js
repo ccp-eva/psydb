@@ -1,7 +1,12 @@
 import { range } from '@mpieva/psydb-core-utils';
 
 export const Custom = (options) => {
-    var { fieldDefinitions, subChannelKey } = options;
+    var {
+        fieldDefinitions,
+        subChannelKey,
+        permissions = undefined
+    } = options;
+
     var fields = (
         subChannelKey
         ? fieldDefinitions[subChannelKey]
@@ -10,10 +15,22 @@ export const Custom = (options) => {
    
     var defaults = (
         fields
-        .filter(it => (
-            !it.isRemoved
-            && (it.type || it.systemType) !== 'Lambda'
-        ))
+        .filter(it => {
+            if (it.isRemoved) {
+                return false;
+            }
+            if ((it.type || it.systemType) === 'Lambda') {
+                return false;
+            }
+            if (
+                it.props?.isSensitive
+                && permissions
+                && !permissions.hasFlag('canAccessSensitiveFields')
+            ) {
+                return false
+            }
+            return true;
+        })
         .reduce((acc, it) => ({
             ...acc,
             [it.key]: CustomFieldDefault(it)
@@ -30,6 +47,8 @@ const CustomFieldDefault = (options) => {
     switch (type) {
         case 'SaneString':
         case 'FullText':
+        case 'Email':
+        case 'Phone':
             return '';
         case 'DefaultBool':
             return false;

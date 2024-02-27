@@ -1,6 +1,9 @@
 'use strict';
 module.exports = {
+    // FIXME: createId is async but probably shouldnt be
     createId: require('./create-id'),
+    ObjectId: require('mongodb').ObjectId,
+
     compareIds: require('./compare-ids'),
     fromFacets: require('./from-facets'),
     maybeStages: require('./maybe-stages'),
@@ -92,7 +95,11 @@ module.exports = {
     
     getMongoCollation: require('./get-mongo-collation'),
     aggregateToArray: require('./aggregate-to-array'),
+    aggregateOne: require('./aggregate-one'),
 
     mappifyPointer: require('./mappify-pointer'),
     SmartArray: require('./smart-array'),
+
+    twoFactorAuthentication: require('./two-factor-authentication'),
+    findAndUpdateSequenceNumber: require('./find-and-update-sequence-number'),
 }

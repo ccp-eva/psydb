@@ -60,7 +60,7 @@ const sanitizeSpecialFilters = (values) => {
     })
     var { locationId, sequenceNumber, isHidden } = values;
     return {
-        ...(typeof sequenceNumber === 'number' && { sequenceNumber }),
+        ...(sequenceNumber && { sequenceNumber }),
         ...(isHidden !== '' && { isHidden }),
         ...sanitized,
     };

@@ -12,17 +12,25 @@ var {
     FullText
 } = require('@mpieva/psydb-schema-fields');
 
-var SubjectScientificState = ({
-    enableInternalProps,
-    customFieldDefinitions,
-} = {}) => {
+var SubjectScientificState = (options = {}) => {
+    var {
+        enableInternalProps,
+        customFieldDefinitions,
+        requiresTestingPermissions,
+        extraOptions = {},
+    } = options;
+
+    var { enableComment = true } = extraOptions;
+
     var schema = ExactObject({
         properties: {
             custom: CustomProps({ customFieldDefinitions }),
             testingPermissions: testingPermissionsSchema,
             systemPermissions: systemPermissionsSchema,
-            comment: FullText({
-                title: 'Kommentar',
+            ...(enableComment && {
+                comment: FullText({
+                    title: 'Kommentar',
+                }),
             }),
             ...(enableInternalProps && {
                 internals: InternalsSchema(),
@@ -30,9 +38,13 @@ var SubjectScientificState = ({
         },
         required: [
             'custom',
-            'testingPermissions',
+            ...(requiresTestingPermissions ? [
+                'testingPermissions'
+            ] : []),
             'systemPermissions',
-            'comment',
+            ...(enableComment ? [
+                'comment',
+            ] : []),
             ...(enableInternalProps ? [
                 'internals',
             ] : [])

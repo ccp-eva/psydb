@@ -281,6 +281,7 @@ var searchGrouped = async (context, next) => {
         db,
         groupByField,
         groupIds,
+        permissions
     });
     debug('end fetch locations');
 

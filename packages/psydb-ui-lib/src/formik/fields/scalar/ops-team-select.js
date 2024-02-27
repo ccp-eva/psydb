@@ -1,6 +1,8 @@
 import React from 'react';
 import classnames from 'classnames';
 import { withField } from '@cdxoo/formik-utils';
+import { hasNone } from '@mpieva/psydb-core-utils';
+import { PaddedText } from '@mpieva/psydb-ui-layout';
 
 export const OpsTeamSelect = withField({ Control: (ps) => {
     var {
@@ -34,8 +36,13 @@ const OpsTeamSelectControl = (ps) => {
     var { value, onChange, teamRecords, disabled } = ps;
 
     return (
-        <>
-            { teamRecords.map((it, ix) => (
+        hasNone(teamRecords)
+        ? (
+            <PaddedText className='text-danger'>
+                Keine Teams vorhanden
+            </PaddedText>
+        )
+        : teamRecords.map((it, ix) => (
                 <OpsTeamItem
                     key={ ix }
                     
@@ -46,8 +53,7 @@ const OpsTeamSelectControl = (ps) => {
                     active={ it._id === value }
                     onClick={ !disabled && onChange }
                 />
-            ))}
-        </>
+        ))
     )
 }
 

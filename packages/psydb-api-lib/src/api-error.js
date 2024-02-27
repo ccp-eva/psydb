@@ -46,7 +46,7 @@ ApiError.from = (statusCode, otherError) => {
         });
     }
     else {
-        throw new Error('unknown error type');
+        throw otherError;
     }
 }
 

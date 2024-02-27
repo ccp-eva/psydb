@@ -12,5 +12,8 @@
     "mocha": "~10.2.0",
     "chai": "~4.3.7"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@mpieva/psydb-core-utils": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-common-config": "workspace:~0.1.0-alpha"
+  }
 }
