@@ -18,7 +18,7 @@ describe('endpoints/event : api-key automation', function () {
             apiConfig: {
                 apiKeyAuth: {
                     isEnabled: true,
-                    allowedIps: [ '*.*.*.*' ]
+                    allowedIps: [ '::/0' ]
                 }
             }
         });
