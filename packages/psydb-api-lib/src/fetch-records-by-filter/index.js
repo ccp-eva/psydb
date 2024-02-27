@@ -35,6 +35,13 @@ var collectionHasSubChannels = (collection) => (
     allSchemaCreators[collection].hasSubChannels
 );
 
+var defaultMongoExtraOptions = {
+    collation: {
+        locale: 'de@collation=phonebook',
+        numericOrdering: true,
+    }
+}
+
 var fetchRecordByFilter = async ({
     db,
     collectionName,
@@ -243,8 +250,8 @@ var fetchRecordByFilter = async ({
         await db.collection(collectionName).ensureIndex({
             [sort.path]: 1
         }, {
+            ...defaultMongoExtraOptions
             //name: 'manualSortIndex__' + sort.path.replace('.', '_'),
-            collation: { locale: 'de@collation=phonebook' }
         });
 
         sortStage = {
@@ -266,7 +273,7 @@ var fetchRecordByFilter = async ({
             await db.collection(collectionName).ensureIndex({
                 [sortPath]: 1
             }, {
-                collation: { locale: 'de@collation=phonebook' }
+                ...defaultMongoExtraOptions
             });
 
             sortStage = {
@@ -319,12 +326,12 @@ var fetchRecordByFilter = async ({
         .aggregate(
             searchStages,
             {
+                ...defaultMongoExtraOptions,
                 //...(sort && {
                 //    hint: 'manualSortIndex1',
                 //}),
                 //hint: 'searchIndex',
                 allowDiskUse: true,
-                collation: { locale: 'de@collation=phonebook' }
             }
         )
         //.explain()
