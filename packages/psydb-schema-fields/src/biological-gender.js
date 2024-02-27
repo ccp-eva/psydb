@@ -5,12 +5,14 @@ var BiologicalGender = ({ ...additionalKeywords }) => ({
     enum: [
         'male',
         'female',
+        'other',
         'unknown',
     ],
     // FIXME: @rjsf/intl
     enumNames: [
         'Männlich',
         'Weiblich',
+        'Divers',
         'Unbekannt',
     ],
     ...additionalKeywords

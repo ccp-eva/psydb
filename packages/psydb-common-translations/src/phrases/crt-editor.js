@@ -162,6 +162,10 @@ module.exports = [
         de: 'Wert "Unbekannt" Erlauben'
     },
     {
+        en: 'Enable "Other" Value',
+        de: 'Wert "Divers" Erlauben'
+    },
+    {
         en: 'Field Type',
         de: 'Feld-Typ'
     },

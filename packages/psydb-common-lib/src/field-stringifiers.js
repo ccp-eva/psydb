@@ -101,6 +101,7 @@ var BiologicalGender = (value, { short, language } = {}) => {
             return {
                 'male': 'm',
                 'female': 'w',
+                'other': 'd',
                 'unknown': 'u',
             }[value];
         }
@@ -108,6 +109,7 @@ var BiologicalGender = (value, { short, language } = {}) => {
             return {
                 'male': 'Männlich',
                 'female': 'Weiblich',
+                'other': 'Divers',
                 'unknown': 'Unbekannt',
             }[value];
         }
@@ -117,6 +119,7 @@ var BiologicalGender = (value, { short, language } = {}) => {
             return {
                 'male': 'm',
                 'female': 'f',
+                'other': 'o',
                 'unknown': 'u',
             }[value];
         }
@@ -124,6 +127,7 @@ var BiologicalGender = (value, { short, language } = {}) => {
             return {
                 'male': 'Male',
                 'female': 'Female',
+                'other': 'Other',
                 'unknown': 'Unknown',
             }[value];
         }

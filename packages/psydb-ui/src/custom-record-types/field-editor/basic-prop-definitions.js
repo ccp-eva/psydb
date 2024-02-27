@@ -191,9 +191,18 @@ export const GeoCoords = (ps) => {
 }
 
 export const BiologicalGender = (ps) => {
+    var { dataXPath, isUnrestricted } = ps;
+    var translate = useUITranslation();
+
     return (
         <>
             <EnableUnknownValueProp { ...ps } />
+            <Fields.DefaultBool
+                label={ translate('Enable "Other" Value') }
+                dataXPath={ `${dataXPath}.props.enableOtherValue` }
+                disabled={ !isUnrestricted }
+                required
+            />
         </>
     )
 }

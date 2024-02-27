@@ -352,6 +352,7 @@ export const BiologicalGender = (ps) => {
     var fieldOptions = {
         'female': translate('Female'),
         'male': translate('Male'),
+        'other': translate('Other'),
         'unknown': translate('Unknown')
     }
 
