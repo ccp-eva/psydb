@@ -1,4 +1,5 @@
 'use strict';
+var { findAndUpdateSequenceNumber } = require('@mpieva/psydb-api-lib');
 
 var openChannel = async (options) => {
     var {
@@ -13,37 +14,10 @@ var openChannel = async (options) => {
         sequenceNumber,
     } = options;
    
-    var seqpath = (
-        recordType
-        ? `${collection}.${recordType}`
-        : collection
-    );
-    if (sequenceNumber) {
-        var { value: seqdoc } = await (
-            db.collection('sequenceNumbers').findOneAndUpdate(
-                { _id: 1, $or: [
-                    { [seqpath]: { $exists: false }},
-                    { [seqpath]: { $lt: sequenceNumber }},
-                ]},
-                { $set: { [seqpath]: sequenceNumber }},
-                { returnDocument: 'after' }
-            )
-        );
-    }
-    else {
-        var { value: seqdoc } = await (
-            db.collection('sequenceNumbers').findOneAndUpdate(
-                { _id: 1 },
-                { $inc: { [seqpath]: 1 }},
-                { returnDocument: 'after' }
-            )
-        );
-        sequenceNumber = (
-            recordType
-            ? seqdoc[collection][recordType]
-            : seqdoc[collection]
-        );
-    }
+    var sequenceNumber = await findAndUpdateSequenceNumber({
+        db, collection, recordType,
+        desiredSequenceNumber: sequenceNumber
+    });
 
     await db.collection(collection).ensureIndex({
         ...( recordType && { type: 1 }),

@@ -69,7 +69,7 @@ const sanitizeSpecialFilters = (values) => {
 
     var sanitized = {
         ...pass,
-        ...(typeof sequenceNumber === 'number' && { sequenceNumber }),
+        ...(sequenceNumber && { sequenceNumber }),
         ...(didParticipateIn && {
             didParticipateIn: didParticipateIn.filter(it => !!it)
         }),
