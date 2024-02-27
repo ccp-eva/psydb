@@ -23,6 +23,7 @@ class ApiError extends Error {
 
         super(`${apiStatus} : http status = ${statusCode} ${status}`);
         this.__info = {
+            ...rest,
             status,
             statusCode,
             apiStatus,

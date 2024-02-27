@@ -134,6 +134,7 @@ importers:
   ../../packages/psydb-api:
     specifiers:
       '@cdxoo/block-quote': ~1.0.1
+      '@cdxoo/check-ip-in-range': ~0.0.1
       '@cdxoo/inline-string': ~1.0.0
       '@cdxoo/inline-text': ~1.0.2
       '@cdxoo/mongo-test-helpers': ~0.7.1
@@ -200,6 +201,7 @@ importers:
       supertest: ~6.0.1
     dependencies:
       '@cdxoo/block-quote': 1.0.1
+      '@cdxoo/check-ip-in-range': 0.0.1
       '@cdxoo/inline-string': 1.0.0
       '@cdxoo/inline-text': 1.0.2
       '@cdxoo/mongodb-escape-keys': 0.2.0-beta.0
@@ -2943,6 +2945,12 @@ packages:
 
   /@cdxoo/block-quote/1.0.1:
     resolution: {integrity: sha512-VDMjQuGRJdz9jxU85/srmZg3ePjhQTNOcMQuziecvqSwPrNMmBApMSbC45IAoxqAW9fVVhacMBFdzMtf81o+EQ==}
+    dev: false
+
+  /@cdxoo/check-ip-in-range/0.0.1:
+    resolution: {integrity: sha512-P9nWhpfF2gYSvZgMx1GXzXFmAOlFgowwc6XwJisMpuCi+3mfyNO0gVkhn942obq0fNKyL94J5gd9/2VR8BTlRg==}
+    dependencies:
+      ip-address: 9.0.5
     dev: false
 
   /@cdxoo/debug-js-fork/0.0.1:
@@ -8684,7 +8692,7 @@ packages:
       uuid: 8.3.2
       yauzl: 2.10.0
     optionalDependencies:
-      mongodb: 3.6.12
+      mongodb: 3.7.4
     transitivePeerDependencies:
       - aws4
       - bson-ext

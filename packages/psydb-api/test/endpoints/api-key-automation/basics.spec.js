@@ -14,7 +14,14 @@ describe('endpoints/event : api-key automation', function () {
             'init-minimal-with-api-key'
         );
         
-        this.createKoaApi();
+        this.createKoaApi({
+            apiConfig: {
+                apiKeyAuth: {
+                    isEnabled: true,
+                    allowedIps: [ '::/0' ]
+                }
+            }
+        });
 
         agent = this.getApiAgent();
         db = this.getDbHandle();
