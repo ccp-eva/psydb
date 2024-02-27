@@ -264,6 +264,7 @@ module.exports = async (context) => {
             '/scientific/state/custom/doesDBRegistrationConsentOnPaperExist',
             '/scientific/state/custom/canParticipateInStudiesWithHealthyChildren',
             '/scientific/state/custom/allowedToEat',
+            '/scientific/state/custom/hasAwayTeamTestingPermissionForNextYear',
             '/scientific/state/testingPermissions',
             '/scientific/state/comment'
         ]}

@@ -52,6 +52,55 @@ module.exports = async (bag) => {
         }, { apiKey });
     }
 
+    var staticAccounts = [
+        { firstname: 'K', lastname: 'R', email: 'k.r@uni-leipzig.de' },
+        { firstname: 'A', lastname: 'G', email: 'a.g@uni-leipzig.de' },
+        { firstname: 'J', lastname: 'S', email: 'j.s@uni-leipzig.de' },
+    ]
+    for (var it of staticAccounts) {
+        var { firstname, lastname, email } = it;
+        var systemRoleId = cache.get(`/systemRole/Humankind RA`);
+
+        await driver.sendMessage({
+            type: 'personnel/create',
+            payload: { props: {
+                gdpr: {
+                    firstname,
+                    lastname,
+                    emails: [
+                        { email, isPrimary: true },
+                    ],
+                    phones: [],
+                    description: '',
+                },
+                scientific: {
+                    canLogIn: true,
+                    hasRootAccess: true,
+                    researchGroupSettings: [
+                        { researchGroupId, systemRoleId }
+                    ],
+                    systemPermissions: {
+                        isHidden: false,
+                        accessRightsByResearchGroup: [
+                            { researchGroupId, permission: 'write' }
+                        ]
+                    }
+                }
+            }},
+        }, { apiKey });
+
+        var personnelId = cache.addId({ collection: 'personnel', as: it });
+
+        await driver.sendMessage({
+            type: 'set-personnel-password',
+            payload: {
+                id: personnelId,
+                method: 'manual',
+                password: 'test1234',
+                sendMail: false,
+            },
+        }, { apiKey });
+    }
 }
 
 

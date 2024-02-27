@@ -11,7 +11,7 @@ module.exports = async (bag) => {
 
     var baseData = [
         { firstname: 'Agatha', gender: 'female' },
-        { firstname: 'Bernard', gender: 'male' },
+        { firstname: 'Bernard', gender: 'other' },
         { firstname: 'Charles', gender: 'male' },
         { firstname: 'Monica', gender: 'female' },
     ];

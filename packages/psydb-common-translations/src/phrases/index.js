@@ -297,6 +297,12 @@ module.exports = [
         de: 'Unbekannt'
     },
     {
+        // FIXME
+        internal: '_biologicalGender_other',
+        en: 'Other',
+        de: 'Divers'
+    },
+    {
         en: 'No Comment',
         de: 'Kein Kommentar'
     },
