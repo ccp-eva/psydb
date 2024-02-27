@@ -12,7 +12,7 @@ var setupInternalResearchGroupIds = (options) => {
         var isForcedRGAllowed = !!available.find(availableId => (
             compareIds(availableId, forced)
         ))
-        if (!(isForcedRGAllowed || hasRootAccess)) {
+        if (!isForcedRGAllowed) {
             forced = undefined;
         }
     }

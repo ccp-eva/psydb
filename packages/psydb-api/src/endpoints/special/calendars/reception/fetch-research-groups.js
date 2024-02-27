@@ -1,6 +1,6 @@
 'use strict';
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
-
+var { maybeIntersect, compareIds } = require('@mpieva/psydb-core-utils');
 var {
     applyRecordLabels
 } = require('@mpieva/psydb-api-lib');
@@ -14,17 +14,18 @@ var {
 var fetchResearchGroups = async (context, options) => {
     var { db, permissions } = context;
     var {
-        hasRootAccess,
-        researchGroupIds: projectedResearchGroupIds
-    } = permissions;
-
-    var {
         researchGroupIds,
         onlyLabels = false,
         applyLabels = true,
         fetchRelated = true, // TODO
         gatherDisplayFields = true, // TODO
     } = options;
+
+    researchGroupIds = maybeIntersect({
+        items: permissions.getResearchGroupIds(),
+        withMaybe: researchGroupIds,
+        compare: compareIds,
+    });
 
     if (onlyLabels) {
         applyLabels = true;
@@ -34,25 +35,10 @@ var fetchResearchGroups = async (context, options) => {
 
     var records = await (
         db.collection('researchGroup').aggregate([
-            
-            researchGroupIds === undefined
-            ? MatchAlwaysStage()
-            : (
-                { $match: {
-                    _id: { $in: researchGroupIds }
-                }}
-            ),
-
-            hasRootAccess && projectedResearchGroupIds.length < 1
-            ? MatchAlwaysStage()
-            : (
-                { $match: {
-                    _id: { $in: (
-                        projectedResearchGroupIds
-                    )}
-                }}
-            ),
-
+            { $match: {
+                '_id': { $in: researchGroupIds },
+                'state.labMethods': { $in: [ 'inhouse' ]}
+            }},
             StripInternalsStage(),
             StripEventsStage(),
         ]).toArray()

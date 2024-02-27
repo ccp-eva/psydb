@@ -5,7 +5,7 @@ import { groupBy } from '@mpieva/psydb-core-utils';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { usePermissions, useFetch } from '@mpieva/psydb-ui-hooks';
-import { PermissionDenied, LoadingIndicator } from '@mpieva/psydb-ui-layout';
+import { LoadingIndicator, ErrorFallbacks } from '@mpieva/psydb-ui-layout';
 import { RedirectOrTypeNav } from '@mpieva/psydb-ui-lib';
 
 import PageWrapper from './page-wrapper';
@@ -40,7 +40,7 @@ const LabOperation = () => {
     if (!pflags.hasAny()) {
         return (
             <PageWrapper>
-                <PermissionDenied className='mt-2' />
+                <ErrorFallbacks.PermissionDenied className='mt-2' />
             </PageWrapper>
         )
     }
@@ -58,6 +58,14 @@ const LabOperation = () => {
         items: customRecordTypes,
         byProp: 'collection'
     });
+
+    if (!groupedCRTs.study?.length) {
+        return (
+            <PageWrapper>
+                <ErrorFallbacks.NoStudyTypesDefined className='mt-2' />
+            </PageWrapper>
+        )
+    }
 
     return (
         <PageWrapper>

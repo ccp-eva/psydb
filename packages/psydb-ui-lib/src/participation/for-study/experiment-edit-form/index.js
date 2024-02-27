@@ -14,6 +14,8 @@ import {
     PaddedText
 } from '@mpieva/psydb-ui-layout';
 
+import * as Controls from '@mpieva/psydb-ui-form-controls';
+
 import InviteForm from './invite-form';
 import AwayTeamForm from './away-team-form';
 import OnlineSurveyForm from './online-survey-form';
@@ -70,6 +72,17 @@ const ExperimentEditForm = (ps) => {
                     { translate(`_labWorkflow_${labMethodKey}`) }
                 </b></PaddedText>
             </FormHelpers.InlineWrapper>
+
+            <FormHelpers.InlineWrapper
+                label={ translate('Subject Type') }
+            >
+                <Controls.GenericTypeKey
+                    collection='subject'
+                    value={ subjectType }
+                    readOnly={ true }
+                />
+            </FormHelpers.InlineWrapper>
+
             { FormContainer && (
                 <FormContainer.Component
                     useAjvAsync

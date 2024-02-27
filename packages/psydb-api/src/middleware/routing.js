@@ -500,6 +500,10 @@ var createRouting = (bag = {}) => {
         endpoints.csvImport.preview
     );
 
+    router.post('/researchGroup/search-metadata', ...withPostStages({
+        endpoint: endpoints.researchGroup.searchMetadata
+    }));
+
     router.post('/study/read-many', ...withPostStages({
         endpoint: endpoints.study.readMany
     }));

@@ -128,6 +128,13 @@ const createAgent = (options = {}) => {
         }, extraAxiosConfig);
     }
 
+    agent.searchResearchGroupMetadata = (options) => {
+        var { extraAxiosConfig, ...pass } = options;
+        return axios.post('/api/researchGroup/search-metadata', {
+            ...pass
+        }, extraAxiosConfig);
+    }
+
     agent.readRecord = ({
         collection,
         recordType,

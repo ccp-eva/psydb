@@ -51,8 +51,8 @@ const ResearchGroupNav = (ps) => {
 
     return (
         <BigNav items={
-            fetched.data.records.map(it => ({
-                label: `${translate('Research Group')} ${ it._recordLabel}`,
+            records.map(it => ({
+                label: `${translate('Research Group')} ${ it._recordLabel }`,
                 linkTo: it._id
             }))
         } />

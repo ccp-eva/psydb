@@ -116,7 +116,7 @@ handler.triggerSystemEvents = async ({
     // TODO: we need to set experimentOperatorIds and labTeamColor
     // for the experiments that were already postprocessed
     var shouldFixateExperimentOperatorIds = (
-        !experimentOperatorTeamIds?.length
+        !experimentOperatorIds?.length
     );
     var shouldSetPostprocessedFlag = (
         // subtract 1 since we are processing one right now

@@ -95,9 +95,11 @@ module.exports = {
     
     getMongoCollation: require('./get-mongo-collation'),
     aggregateToArray: require('./aggregate-to-array'),
+    aggregateOne: require('./aggregate-one'),
 
     mappifyPointer: require('./mappify-pointer'),
     SmartArray: require('./smart-array'),
 
     twoFactorAuthentication: require('./two-factor-authentication'),
+    findAndUpdateSequenceNumber: require('./find-and-update-sequence-number'),
 }

@@ -124,7 +124,7 @@ module.exports = {
             },
             {
                 key: '_sequenceNumber',
-                systemType: 'Integer',
+                systemType: 'SaneString',
                 dataPointer: '/sequenceNumber',
                 displayName: 'ID No.',
                 displayNameI18N: { de: 'ID Nr.' },
@@ -307,7 +307,7 @@ module.exports = {
             },
             {
                 key: '_sequenceNumber',
-                systemType: 'Integer',
+                systemType: 'SaneString',
                 dataPointer: '/sequenceNumber',
                 displayName: 'ID No.',
                 displayNameI18N: { de: 'ID Nr.' },
@@ -421,7 +421,7 @@ module.exports = {
         availableStaticDisplayFields: [
             {
                 key: '_sequenceNumber',
-                systemType: 'Integer',
+                systemType: 'SaneString',
                 dataPointer: '/sequenceNumber',
                 displayName: 'ID No.',
                 displayNameI18N: { de: 'ID Nr.' },
@@ -625,7 +625,7 @@ module.exports = {
             },
             {
                 key: '_sequenceNumber',
-                systemType: 'Integer',
+                systemType: 'SaneString',
                 dataPointer: '/sequenceNumber',
                 displayName: 'ID No.',
                 displayNameI18N: { de: 'ID Nr.' },
@@ -648,7 +648,7 @@ module.exports = {
             },
             {
                 key: '_sequenceNumber',
-                systemType: 'Integer',
+                systemType: 'SaneString',
                 dataPointer: '/sequenceNumber',
                 displayName: 'ID No.',
                 displayNameI18N: { de: 'ID Nr.' },

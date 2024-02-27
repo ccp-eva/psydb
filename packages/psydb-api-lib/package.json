@@ -3,7 +3,9 @@
   "version": "0.1.0-alpha",
   "description": "",
   "main": "src/index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "npx mocha --config ./mocha.config.json tests"
+  },
   "author": "Jan Schwalbe",
   "license": "MIT",
   "dependencies": {
@@ -36,6 +38,7 @@
     "@mpieva/json-schema-convert-pointer": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-ajv-formats": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-ajv-keywords": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-api-mocha-test-tools": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-api-lib-errors": "workspace:~0.1.0-alpha",
     "@cdxoo/mongodb-escape-keys": "~0.1.1",
     "@cdxoo/traverse": "~0.0.1",

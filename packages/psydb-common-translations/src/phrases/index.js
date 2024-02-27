@@ -41,6 +41,10 @@ module.exports = [
         de: 'Nachbereitung'
     },
     {
+        en: 'Postprocessing (${subject} - ${study})',
+        de: 'Nachbereitung (${subject} - ${study})',
+    },
+    {
         en: 'External Persons',
         de: 'Externe Personen'
     },
@@ -1544,5 +1548,31 @@ module.exports = [
     {
         en: 'Invalid Code!',
         de: 'Ungültiger Code!',
+    },
+
+    {
+        en: 'No lab workflows defined!',
+        de: 'Keine Lab-Workflows definiert!'
+    },
+    {
+        en: 'No study types defined!',
+        de: 'Keine Studien-Typen definiert!'
+    },
+    {
+        en: 'No subject types defined!',
+        de: 'Keine Proband:innen-Typen definiert!'
+    },
+    {
+        en: 'No location types defined!',
+        de: 'Keine Location-Typen definiert!'
+    },
+
+    {
+        en: 'Subject saved!',
+        de: 'Proband:in gespeichert!'
+    },
+    {
+        en: 'Edit Again',
+        de: 'Erneut Bearbeiten'
     }
 ]

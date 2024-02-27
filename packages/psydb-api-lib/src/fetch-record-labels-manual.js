@@ -9,7 +9,7 @@ var createRecordLabel = require('./create-record-label');
 var mergeRecordLabelProjections = require('./merge-record-label-projections');
 
 var fetchRecordLabelsManual = async (db, idsForCollection, options = {}) => {
-    var { timezone, language, locale } = options;
+    var { timezone, language, locale, oldWrappedLabels = false } = options;
 
     var collections = groupBy({
         items: Object.keys(idsForCollection),
@@ -47,7 +47,7 @@ var fetchRecordLabelsManual = async (db, idsForCollection, options = {}) => {
 
 var handleNoCRT = async (bag) => {
     var { db, collections, idsForCollection, options } = bag;
-    var { timezone, language, locale } = options;
+    var { timezone, language, locale, oldWrappedLabels = false } = options;
 
     var related = {};
     for (var collection of collections) {
@@ -59,6 +59,12 @@ var handleNoCRT = async (bag) => {
         ];
         
         var [ projection, definition ] = {
+            'researchGroup': [
+                { 'state.shorthand': true },
+                { format: '${#}', tokens: [
+                    { dataPointer: '/state/shorthand' },
+                ]}
+            ],
             'personnel': [
                 { 
                     'gdpr.state.firstname': true,
@@ -91,13 +97,18 @@ var handleNoCRT = async (bag) => {
                 ...projection
             }}
         ]})
-        
+ 
         related[collection] = {}
         for (var record of records) {
-            related[collection][record._id] = createRecordLabel({
+            var label = createRecordLabel({
                 record, definition,
                 timezone, language, locale
-            })
+            });
+            related[collection][record._id] = (
+                oldWrappedLabels
+                ? { _id: record._id, _recordLabel: label }
+                : label
+            )
         }
     }
 
@@ -106,7 +117,7 @@ var handleNoCRT = async (bag) => {
 
 var handleWithCRT = async (bag) => {
     var { db, collections, idsForCollection, options } = bag;
-    var { timezone, language, locale } = options;
+    var { timezone, language, locale, oldWrappedLabels = false } = options;
 
     var allCRTSettings = await fetchAllCRTSettings(db, [
         ...collections.map(
@@ -136,7 +147,7 @@ var handleWithCRT = async (bag) => {
 
         related[collection] = {}
         for (var record of records) {
-            related[collection][record._id] = createRecordLabel({
+            var label = createRecordLabel({
                 record,
                 definition: (
                     allCRTSettings[collection][record.type]
@@ -144,7 +155,12 @@ var handleWithCRT = async (bag) => {
                 ),
                 from: '_labelProjection',
                 timezone, language, locale
-            })
+            });
+            related[collection][record._id] = (
+                oldWrappedLabels
+                ? { _id: record._id, _recordLabel: label }
+                : label
+            )
         }
     }
     return related;

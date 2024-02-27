@@ -25,6 +25,7 @@ module.exports = {
 
     includes: require('./includes'),
     intersect: require('./intersect'),
+    maybeIntersect: require('./maybe-intersect'),
     without: require('./without'),
 
     extractFrom: require('./extract-from'),
@@ -50,4 +51,6 @@ module.exports = {
     jsonpointer: require('jsonpointer'),
     keys: Object.keys,
     escapeRX: require('escape-string-regexp'),
+
+    jsonify: require('./jsonify'),
 }

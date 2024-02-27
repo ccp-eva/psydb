@@ -10,6 +10,7 @@ import {
     SharedForeignIdProps,
     DisplayEmptyAsUnknownProp,
     IsSensitiveProp,
+    EnableUnknownValueProp
 } from './utility-fields';
 
 import getFieldValue from './get-field-value';
@@ -190,7 +191,11 @@ export const GeoCoords = (ps) => {
 }
 
 export const BiologicalGender = (ps) => {
-    return null;
+    return (
+        <>
+            <EnableUnknownValueProp { ...ps } />
+        </>
+    )
 }
 
 export const Email = (ps) => {
