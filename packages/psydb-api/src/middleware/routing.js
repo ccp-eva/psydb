@@ -42,7 +42,7 @@ var createRouting = (bag = {}) => {
     // /api/foo/?apiKey=asdasdads
     router.post('/',
         withSelfAuth({
-            enableApiKeyAuthentication: true
+            enableApiKeyAuth: true
         }),
         withPermissions(),
         withKoaBody(),

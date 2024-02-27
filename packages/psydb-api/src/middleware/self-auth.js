@@ -1,23 +1,24 @@
 'use strict';
 var debug = require('debug')('psydb:api:middleware:self-auth');
+var ipaddr = require('ipaddr.js');
+var { matches: ipmatch } = require('ip-matching');
 
 var { hasNone, hasOnlyOne } = require('@mpieva/psydb-core-utils');
 var { ApiError, Self, withRetracedErrors } = require('@mpieva/psydb-api-lib');
 
 var createSelfAuthMiddleware = (options = {}) => async(context, next) => {
-    var { enableApiKeyAuthentication = false } = options;
+    var { enableApiKeyAuth = false } = options;
     var { db, session, request, apiConfig } = context;
     var { personnelId, hasFinishedTwoFactorAuthentication } = session;
-    var { apiKey } = request.query;
 
-    if (enableApiKeyAuthentication && apiKey) {
-        personnelId = await handleApiKeyAuth({ db, apiKey });
-    }
+    personnelId ||= await maybeHandleApiKeyAuth(options, context);
 
     if (!personnelId) {
         debug('cant get personnelId from session or apiKey');
         throw new ApiError(401); // TODO
     }
+
+    var { apiKey } = request.query;
 
     // FIXME: maybe pass personnelId w/o query and
     // query db in self itself
@@ -79,10 +80,43 @@ var createSelfAuthMiddleware = (options = {}) => async(context, next) => {
     await next();
 }
 
-var handleApiKeyAuth = async (bag) => {
-    var { db, apiKey } = bag;
-    debug('apiKey:', apiKey);
+var maybeHandleApiKeyAuth = async (options, context) => {
+    if (!options.enableApiKeyAuth) {
+        return;
+    }
+
+    var { db, request, apiConfig, ip } = context;
+    var { isEnabled, allowedIps } = apiConfig.apiKeyAuth;
+    var { apiKey } = request.query;
+
+    if (!isEnabled) {
+        return;
+    }
+
+    // FIXME
+    var saneip = ipaddr.parse(ip).toIPv4Address().toNormalizedString();
+
+    var isAllowed = false;
+    for (var pattern of allowedIps) {
+        try {
+            isAllowed = ipmatch(saneip, pattern);
+        }
+        catch (e) {
+            console.warn(e);
+        }
+        if (isAllowed) {
+            break;
+        }
+    }
+
+    if (!isAllowed) {
+        debug('ip address is not allowed')
+        throw new ApiError(401) // TODO
+    }
     
+    debug('ip:', ip);
+    debug('apiKey:', apiKey);
+
     var apiKeyRecords = await withRetracedErrors(
         db.collection('apiKey').find({
             'apiKey': apiKey,
