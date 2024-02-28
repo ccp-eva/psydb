@@ -2,7 +2,7 @@
 var debug = require('debug')('psydb:api:lib:self');
 var { ejson } = require('@mpieva/psydb-core-utils');
 var withRetracedErrors = require('../with-retraced-errors');
-var twoFactorAuth = require('../two-factor-authentication')
+var twoFactorAuth = require('../two-factor-auth')
 var setup = require('./setup');
 
 var Self = async (bag) => {

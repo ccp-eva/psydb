@@ -1,5 +1,5 @@
 'use strict';
-var debug = require('debug')('psydb:api-lib:two-factor-authentication');
+var debug = require('debug')('psydb:api-lib:two-factor-auth');
 var withRetracedErrors = require('../with-retraced-errors');
 
 var removeCode = async (bag) => {
