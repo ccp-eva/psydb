@@ -1,6 +1,6 @@
 'use strict';
 
-var scanInbox = async (context, next) => {
+var fetchMails = async (context, next) => {
     var { imap } = context;
 
     var lock = await imap.getMailboxLock('INBOX');
@@ -27,4 +27,4 @@ var scanInbox = async (context, next) => {
     await next();
 }
 
-module.exports = scanInbox;
+module.exports = fetchMails;

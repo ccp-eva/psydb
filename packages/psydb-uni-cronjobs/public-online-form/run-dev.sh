@@ -1,4 +1,4 @@
-npm run publicOnlineForm:createSubjectsFromImap -- \
+DEBUG='psydb:*' npm run publicOnlineForm:createSubjectsFromImap -- \
     --psydb-api-key \
     'xA3S5M1_2uEhgelRVaZyYjg5qw_UehHVB1bGmH9X7-S8x8sslsUxIFH5_n85Tkdh' \
     --psydb-url 'http://127.0.0.1:8080/api/' \

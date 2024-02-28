@@ -1,4 +1,5 @@
 'use strict';
+var debug = require('debug')('psydb:humankind-cronjobs:remapMailData');
 
 var sane = (v) => String(v).trim();
 var lc = (s) => s.toLowerCase();
@@ -17,9 +18,10 @@ var remapMailData = async (context, next) => {
         var childrenData = [];
         
         var inAdultBlock = true;
-        var childFirstKey = undefined;
-        var childBlockData = {};
+        var childBlockFirstKey = undefined;
+        var childBlockData = undefined;
         for (var [ ix, pair ] of pairs.entries()) {
+            //console.log({ ix, pair });
             if ([
                 'Datenschspeicherung',
                 'Datenschutz',
@@ -30,24 +32,56 @@ var remapMailData = async (context, next) => {
 
             if (/Wieviele Kinder/.test(pair.key)) {
                 inAdultBlock = false;
-                childFirstKey = pairs[ix + 1];
+                childBlockFirstKey = pairs[ix + 1].key;
+                debug({ childBlockFirstKey });
                 continue;
             }
-            else if (inAdultBlock || /Auf welchem/.test(pair.key)) {
-                var handler = AdultFields[pair.key];
+            else {
+                debug(`raw pair is "${pair.key}" = "${pair.value}"`);
+
+                if (pair.key === childBlockFirstKey) {
+                    debug("\n", 'found child block at', pair,)
+                    if (childBlockData) {
+                        childrenData.push(childBlockData);
+                    }
+                    childBlockData = {};
+                }
+
+                var handler, targetBucket;
+                if (inAdultBlock || /Auf welchem/.test(pair.key)) {
+                    handler = AdultFields[pair.key];
+                    targetBucket = adultData;
+                }
+                else {
+                    handler = ChildFields[pair.key];
+                    targetBucket = childBlockData;
+                }
+                
                 if (!handler) {
-                    throw new Error(pair.key);
+                    throw new RemapMailError({ pair });
                 }
-                var { path, value } = handler(
-                    sane(pair.value),
-                    { languages, acquisitions }
-                );
-                console.log({ path, value });
-                if (!value) {
-                    throw new Error(pair.key);
+                var path, value;
+                try {
+                    ({ path, value } = handler(
+                        sane(pair.value),
+                        { languages, acquisitions }
+                    ));
+                    debug(`   remapped: "${path}" = "${value}"`);
+                } catch (e) {
+                    throw new RemapMailError({ pair });
                 }
+                if (!path || !value) {
+                    throw new RemapMailError({ pair });
+                }
+                targetBucket[path] = value;
             }
         }
+
+        if (childBlockData) {
+            childrenData.push(childBlockData);
+        }
+        console.log(adultData);
+        console.log(childrenData);
     }
 
     await next();
@@ -113,10 +147,12 @@ var ChildFields = {
     },
 
     'Geburtsdatum': (value) => {
-        var [ y, m, d ] = value.split('.').map(parseInt).reverse();
+        var [ y, m, d] = (
+            value.split(/\./g).map((it) => parseInt(it)).reverse()
+        );
 
         var date = new Date(0);
-        date.setUTCYear(y);
+        date.setUTCFullYear(y);
         date.setUTCMonth(m - 1);
         date.setUTCDate(d);
 
@@ -142,8 +178,10 @@ var ChildFields = {
         return { path: 'nativeLanguageId', value: id }
     },
     'Zweitsprache des Kindes': (value, extra) => {
-        var { languageMap } = extra;
-        var items = value.split(/,\s*/g).filter(it => !!it);
+        var { languages } = extra;
+        var items = value.split(/,\s*/g).filter(it => (
+            !!it && it !== 'Keine'
+        ));
 
         var out = [];
         for (var it of items) {
@@ -156,7 +194,7 @@ var ChildFields = {
         return { path: 'otherLanguageIds', value: out };
     },
     'andere Zweitsprache': (value, extra) => {
-        var { languageMap } = extra;
+        var { languages } = extra;
         var items = value.split(/,\s*/g).filter(it => !!it);
 
         var out = [];
@@ -169,6 +207,15 @@ var ChildFields = {
         }
         return { path: 'otherLanguageIds', value: out };
     } 
+}
+
+class RemapMailError extends Error {
+    constructor (bag) {
+        var { pair } = bag;
+        var message = `Cannot Remap Pair "${pair.key}=${pair.value}"`
+        super(message);
+        this.name = 'RemapMailError';
+    }
 }
 
 module.exports = remapMailData;
