@@ -2,7 +2,7 @@
 var debug = require('debug')('psydb:api:lib:self');
 var { ejson } = require('@mpieva/psydb-core-utils');
 var withRetracedErrors = require('../with-retraced-errors');
-var twoFactorAuthentication = require('../two-factor-authentication')
+var twoFactorAuth = require('../two-factor-authentication')
 var setup = require('./setup');
 
 var Self = async (bag) => {
@@ -11,7 +11,7 @@ var Self = async (bag) => {
         query,
         //projection, // see FIXME
         apiKey,
-        enableTwoFactorAuthentication = false,
+        enableTwoFactorAuth = false,
         twoFactorCode = undefined,
     } = bag;
 
@@ -35,9 +35,9 @@ var Self = async (bag) => {
     self.personnelId = self.record._id;
     self.apiKey = apiKey;
 
-    if (enableTwoFactorAuthentication && !apiKey) {
+    if (enableTwoFactorAuth && !apiKey) {
         debug('checking 2FA');
-        var status = await twoFactorAuthentication.matchExistingCode({
+        var status = await twoFactorAuth.matchExistingCode({
             db,
             personnelId: self.personnelId,
             inputCode: twoFactorCode

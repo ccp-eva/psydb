@@ -34,7 +34,7 @@ describe('endpoints/public-sign-in', function () {
     
     it('two-factor auth', async function () {
         this.createKoaApi({ apiConfig: {
-            twoFactorAuthentication: { isEnabled: true }
+            twoFactorAuth: { isEnabled: true }
         }});
         try {
             await this.signIn();
@@ -67,7 +67,7 @@ describe('endpoints/public-sign-in', function () {
 
     it('throws when two-factor is not finished', async function () {
         this.createKoaApi({ apiConfig: {
-            twoFactorAuthentication: { isEnabled: true }
+            twoFactorAuth: { isEnabled: true }
         }});
         try {
             await this.signIn();
@@ -104,7 +104,7 @@ describe('endpoints/public-sign-in', function () {
 
     it('throws when two-factor code is wrong', async function () {
         this.createKoaApi({ apiConfig: {
-            twoFactorAuthentication: { isEnabled: true }
+            twoFactorAuth: { isEnabled: true }
         }});
         try {
             await this.signIn();

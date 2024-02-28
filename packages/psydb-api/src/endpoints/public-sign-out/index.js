@@ -1,13 +1,13 @@
 'use strict';
 var {
-    twoFactorAuthentication,
+    twoFactorAuth,
 } = require('@mpieva/psydb-api-lib');
 
 var signOut = async (context, next) => {
     var { db, session } = context;
     if (session) {
         var { personnelId } = session;
-        await twoFactorAuthentication.removeCode({ db, personnelId });
+        await twoFactorAuth.removeCode({ db, personnelId });
     }
     
     context.session = null;

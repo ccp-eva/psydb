@@ -8,7 +8,7 @@ var { ApiError, Self, withRetracedErrors } = require('@mpieva/psydb-api-lib');
 var createSelfAuthMiddleware = (options = {}) => async(context, next) => {
     var { enableApiKeyAuth = false } = options;
     var { db, session, request, apiConfig } = context;
-    var { personnelId, hasFinishedTwoFactorAuthentication } = session;
+    var { personnelId, hasFinishedTwoFactorAuth } = session;
 
     personnelId ||= await maybeHandleApiKeyAuth(options, context);
 
@@ -30,10 +30,10 @@ var createSelfAuthMiddleware = (options = {}) => async(context, next) => {
             'scientific.state': true,
             'gdpr.state': true
         }*/
-        enableTwoFactorAuthentication: (
-            apiConfig.twoFactorAuthentication?.isEnabled
+        enableTwoFactorAuth: (
+            apiConfig.twoFactorAuth?.isEnabled
         ),
-        hasFinishedTwoFactorAuthentication
+        hasFinishedTwoFactorAuth
     });
 
     var {
@@ -57,7 +57,7 @@ var createSelfAuthMiddleware = (options = {}) => async(context, next) => {
         var { exists, matches } = twoFactorCodeStatus;
         if (exists) {
             if (matches === true) {
-                session.hasFinishedTwoFactorAuthentication = true;
+                session.hasFinishedTwoFactorAuth = true;
             }
             else if (matches === false) {
                 debug('2FA code mismatch');

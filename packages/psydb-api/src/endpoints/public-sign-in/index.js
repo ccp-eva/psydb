@@ -8,7 +8,7 @@ var {
     Self,
     validateOrThrow,
     withRetracedErrors,
-    twoFactorAuthentication,
+    twoFactorAuth,
 } = require('@mpieva/psydb-api-lib');
 
 var Schema = require('./schema');
@@ -70,10 +70,10 @@ var signIn = async (context, next) => {
         throw new ApiError(401); // TODO: 401
     }
 
-    if (apiConfig.twoFactorAuthentication?.isEnabled) {
+    if (apiConfig.twoFactorAuth?.isEnabled) {
         debug('2FA Enabled');
         var recipientEmail = getRecipientMail(record.gdpr.state.emails);
-        await twoFactorAuthentication.generateAndSendCode({
+        await twoFactorAuth.generateAndSendCode({
             db, personnelId: record._id, recipientEmail
         });
         throw new ApiError(801);

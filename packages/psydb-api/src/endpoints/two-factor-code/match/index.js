@@ -5,7 +5,7 @@ var {
     ApiError,
     Self,
     validateOrThrow,
-    twoFactorAuthentication,
+    twoFactorAuth,
 } = require('@mpieva/psydb-api-lib');
 
 var Schema = require('./schema');
@@ -30,7 +30,7 @@ var match = async (context, next) => {
     var self = await Self({
         db,
         query: { _id: personnelId },
-        enableTwoFactorAuthentication: true,
+        enableTwoFactorAuth: true,
         twoFactorCode
     });
     
@@ -55,8 +55,8 @@ var match = async (context, next) => {
         var { exists, matches } = twoFactorCodeStatus;
         if (exists) {
             if (matches === true) {
-                session.hasFinishedTwoFactorAuthentication = true;
-                await twoFactorAuthentication.removeCode({ db, personnelId });
+                session.hasFinishedTwoFactorAuth = true;
+                await twoFactorAuth.removeCode({ db, personnelId });
             }
             else if (matches === false) {
                 debug('2FA code mismatch');
