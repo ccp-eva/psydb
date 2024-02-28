@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { only } from '@mpieva/psydb-core-utils';
 import { inlineText } from '@mpieva/psydb-common-lib';
+import { demuxed } from '@mpieva/psydb-ui-utils';
 import {
     useUIConfig,
     useUITranslation,
@@ -8,7 +9,14 @@ import {
 } from '@mpieva/psydb-ui-contexts';
 
 import { useWriteRequest, useModalReducer } from '@mpieva/psydb-ui-hooks';
-import { AsyncButton, SmallFormFooter } from '@mpieva/psydb-ui-layout';
+
+import { 
+    AsyncButton,
+    Button,
+    SmallFormFooter,
+    WithDefaultModal
+} from '@mpieva/psydb-ui-layout';
+
 import { DefaultForm, Fields } from '@mpieva/psydb-ui-lib';
 
 import PublicLayout from './public-layout';
@@ -114,10 +122,44 @@ const TwoFactorCodeResender = () => {
     });
 
     return (
-        <small role='button' className='text-primary' onClick={ () => resend.exec() }>
-            { translate('Send New Code')}
-        </small>
+        <>
+            <TwoFactorCodeResenderModal { ...modal.passthrough } />
+            <small
+                role='button'
+                className='text-primary'
+                onClick={ () => demuxed([
+                    resend.exec,
+                    modal.handleShow
+                ])() }
+            >
+                { translate('Send New Code')}
+            </small>
+        </>
     )
 }
+
+const TwoFactorCodeResenderModalBody = (ps) => {
+    var { onHide } = ps;
+    var translate = useUITranslation();
+
+    return (
+        <div>
+            <div>
+                { translate('A new code was send to your e-mail. Please also check the junk folder.') }
+            </div>
+            <hr />
+            <SmallFormFooter>
+                <Button bsStyle='primary' onClick={() => onHide() }>
+                    { translate('Close') }
+                </Button>
+            </SmallFormFooter>
+        </div>
+    )
+}
+
+const TwoFactorCodeResenderModal = WithDefaultModal({
+    title: 'New Code Sent',
+    Body: TwoFactorCodeResenderModalBody,
+})
 
 export default TwoFactorCodeInput

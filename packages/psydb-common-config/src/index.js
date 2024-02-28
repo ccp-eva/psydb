@@ -14,7 +14,7 @@ module.exports = {
         'manual-only-participation'
     ],
     twoFactorAuthentication: { // FIXME: rename twoFactorAuth
-        isEnabled: false,
+        isEnabled: true,
     },
     apiKeyAuth: {
         isEnabled: true,

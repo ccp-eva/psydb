@@ -20,11 +20,12 @@ var match = async (context, next) => {
     }
     
     validateOrThrow({
-        schema: Schema({ twoFactorCode }),
+        schema: Schema(),
         payload: request.body
     });
     
     var { twoFactorCode } = request.body;
+    twoFactorCode = twoFactorCode.trim();
 
     var self = await Self({
         db,

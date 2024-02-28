@@ -34,6 +34,9 @@ var createRouting = (bag = {}) => {
     router.post('/two-factor-code/match',
         withKoaBody(), endpoints.twoFactorCode.match
     );
+    router.post('/two-factor-code/resend',
+        withKoaBody(), endpoints.twoFactorCode.resend
+    );
 
     router.get('/init',
         init
