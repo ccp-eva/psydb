@@ -16,6 +16,8 @@ var fetchMails = require('./fetch-mails');
 var parseMailHtml = require('./parse-mail-html');
 var remapMailData = require('./remap-mail-data');
 
+var createSubjectsInPsydb = require('./create-subjects-in-psydb');
+
 var noop = async () => {};
 
 co(async () => {
@@ -56,7 +58,7 @@ co(async () => {
         parseMailHtml,
         remapMailData,
 
-        //createSubjects,
+        createSubjectsInPsydb,
     ])(context, noop);
 
 }).catch(error => { console.log(error) });

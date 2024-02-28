@@ -11,6 +11,7 @@ var justremap = (simpleMap) => simpleMap.reduce((acc, it) => {
 var remapMailData = async (context, next) => {
     var { mails, languages, acquisitions } = context;
 
+    var out = [];
     for (var it of mails) {
         var { seq, pairs } = it;
         
@@ -21,7 +22,6 @@ var remapMailData = async (context, next) => {
         var childBlockFirstKey = undefined;
         var childBlockData = undefined;
         for (var [ ix, pair ] of pairs.entries()) {
-            //console.log({ ix, pair });
             if ([
                 'Datenschspeicherung',
                 'Datenschutz',
@@ -80,8 +80,9 @@ var remapMailData = async (context, next) => {
         if (childBlockData) {
             childrenData.push(childBlockData);
         }
-        console.log(adultData);
-        console.log(childrenData);
+    
+        it.adultData = adultData;
+        it.childrenData = childrenData;
     }
 
     await next();
@@ -89,31 +90,32 @@ var remapMailData = async (context, next) => {
 
 var AdultFields = {
     ...justremap([
-        [ 'Nachname', 'lastname' ],
-        [ 'Vorname', 'firstname' ],
-        [ 'E-Mail-Adresse', 'email' ],
-        [ 'Straße', 'address.street' ],
-        [ 'Hausnummer', 'address.housenumber' ],
-        [ 'Stadt', 'address.city' ],
-        [ 'Postleitzahl', 'address.postcode' ],
-        [ 'Adresszusatz', 'address.affix' ],
+        [ 'Nachname', 'gdpr.custom.lastname' ],
+        [ 'Vorname', 'gdpr.custom.firstname' ],
+        [ 'E-Mail-Adresse', 'gdpr.custom.email' ],
+        [ 'Straße', 'gdpr.custom.address.street' ],
+        [ 'Hausnummer', 'gdpr.custom.address.housenumber' ],
+        [ 'Stadt', 'gdpr.custom.address.city' ],
+        [ 'Postleitzahl', 'gdpr.custom.address.postcode' ],
+        [ 'Adresszusatz', 'gdpr.custom.address.affix' ],
     ]),
     
     'Sind Sie Mutter oder Vater?': (value) => {
         var mapped = {
-            'Mutter': 'f',
-            'Vater': 'm'
+            'Mutter': 'female',
+            'Vater': 'male',
+            'Elternteil': 'other',
         }[value];
 
         if (!mapped) {
             throw new Error();
         }
 
-        return { path: 'gender', value: mapped }
+        return { path: 'scientific.custom.gender', value: mapped }
     },
 
     'Telefonnummer': (value) => ({
-        path: 'phones', value: [ value ]
+        path: 'gdpr.custom.phones', value: [ value ]
     }),
     
     'Auf welchem Weg haben sie von uns erfahren?': (value, extra) => {
@@ -123,27 +125,27 @@ var AdultFields = {
             throw new Error();
         }
 
-        return { path: 'acquisitionId', value: id }
+        return { path: 'scientific.custom.acquisitionId', value: id }
     }
 }
 
 var ChildFields = {
     ...justremap([
-        [ 'Nachname', 'lastname' ],
-        [ 'Vorname', 'firstname' ],
+        [ 'Nachname', 'gdpr.custom.lastname' ],
+        [ 'Vorname', 'gdpr.custom.firstname' ],
     ]),
 
     'Geschlecht des Kindes': (value) => {
         var mapped = {
-            'weiblich': 'f',
-            'männlich': 'm',
-            'divers': 'o',
+            'weiblich': 'female',
+            'männlich': 'male',
+            'divers': 'other',
         }[value];
         if (!mapped) {
             throw new Error();
         }
         
-        return { path: 'gender', value: mapped }
+        return { path: 'scientific.custom.gender', value: mapped }
     },
 
     'Geburtsdatum': (value) => {
@@ -156,7 +158,10 @@ var ChildFields = {
         date.setUTCMonth(m - 1);
         date.setUTCDate(d);
 
-        return { path: 'dateOfBirth', value: date.toISOString() }
+        return {
+            path: 'scientific.custom.dateOfBirth',
+            value: date.toISOString()
+        }
     },
 
     'Muttersprache des Kindes': (value, extra) => {
@@ -166,7 +171,7 @@ var ChildFields = {
             throw new Error();
         }
 
-        return { path: 'nativeLanguageId', value: id }
+        return { path: 'scientific.custom.nativeLanguageId', value: id }
     },
     'andere Muttersprache': (value, extra) => {
         var { languages } = extra;
@@ -175,7 +180,7 @@ var ChildFields = {
             throw new Error();
         }
 
-        return { path: 'nativeLanguageId', value: id }
+        return { path: 'scientific.custom.nativeLanguageId', value: id }
     },
     'Zweitsprache des Kindes': (value, extra) => {
         var { languages } = extra;
@@ -191,7 +196,7 @@ var ChildFields = {
             }
             out.push(id)
         }
-        return { path: 'otherLanguageIds', value: out };
+        return { path: 'scientific.custom.otherLanguageIds', value: out };
     },
     'andere Zweitsprache': (value, extra) => {
         var { languages } = extra;
@@ -205,7 +210,7 @@ var ChildFields = {
             }
             out.push(id)
         }
-        return { path: 'otherLanguageIds', value: out };
+        return { path: 'scientific.custom.otherLanguageIds', value: out };
     } 
 }
 
