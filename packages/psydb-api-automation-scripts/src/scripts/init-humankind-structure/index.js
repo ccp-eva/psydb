@@ -8,6 +8,7 @@ var createHiwiRole = require('./create-hiwi-role');
 var createReceptionRole = require('./create-reception-role');
 
 var createLanguageSet = require('./create-language-set');
+var createAcquisitionSet = require('./create-acquisition-set');
 
 var createKigaUmbrellaOrgCRT = require('./create-kiga-umbrella-org-crt');
 var createKigaCRT = require('./create-kiga-crt');
@@ -28,6 +29,7 @@ module.exports = async (bag) => {
     await createReceptionRole({ ...context, as: 'reception' });
 
     await createLanguageSet({ ...context, as: 'language' });
+    await createAcquisitionSet({ ...context, as: 'acquisition' });
 
     await createKigaUmbrellaOrgCRT({ ...context, as: 'kigaUmbrellaOrg' });
     await createKigaCRT({ ...context, as: 'kiga' });

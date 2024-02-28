@@ -6,8 +6,12 @@ module.exports = async (bag) => {
     var labels = [
         { en: 'German', de: 'Deutsch' },
         { en: 'English', de: 'Englisch' },
-        { en: 'French', de: 'Französisch' },
+        { en: 'Arabic', de: 'Arabisch' },
         { en: 'Spanish', de: 'Spanisch' },
+        { en: 'Russian', de: 'Russisch' },
+        { en: 'Turkish', de: 'Türkisch' },
+
+        { en: 'French', de: 'Französisch' },
     ];
 
     for (var [ix, it] of labels.entries()) {

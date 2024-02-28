@@ -127,6 +127,21 @@ module.exports = async (context) => {
     await driver.sendMessage({
         type: `custom-record-types/add-field-definition`,
         payload: { id: crtId, subChannelKey: 'scientific', props: {
+            type: 'HelperSetItemId',
+            key: 'acquisitionId',
+            displayName: 'Acquisition',
+            displayNameI18N: { 'de': 'Akquise' },
+            props: {
+                setId: cache.get('/helperSet/acquisition'),
+                isNullable: true,
+                displayEmptyAsUnknown: false,
+            },
+        }},
+    }, { apiKey });
+
+    await driver.sendMessage({
+        type: `custom-record-types/add-field-definition`,
+        payload: { id: crtId, subChannelKey: 'scientific', props: {
             type: 'ForeignIdList',
             key: 'knownChildrenIds',
             displayName: 'Children',
@@ -202,6 +217,7 @@ module.exports = async (context) => {
             '/scientific/state/custom/dateOfBirth',
             '/scientific/state/custom/gender',
             '/scientific/state/custom/doesDBRegistrationConsentOnPaperExist',
+            '/scientific/state/custom/acquisitionId',
             '/scientific/state/custom/knownChildrenIds',
             '/scientific/state/testingPermissions',
             '/scientific/state/comment'
