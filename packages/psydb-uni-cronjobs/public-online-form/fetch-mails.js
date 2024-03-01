@@ -12,10 +12,21 @@ var fetchMails = async (context, next) => {
         
         var preprocessedMails = [];
         for await (var message of fetched) {
-            var { seq, uid, bodyParts } = message;
+            var { seq, uid, id, envelope, bodyParts } = message;
+            var { date, messageId, sender, from, replyTo } = envelope
             var htmlPart = String(bodyParts.get('2'));
 
-            preprocessedMails.push({ seq, uid, htmlPart });
+            preprocessedMails.push({
+                seq,
+                uid,
+                id,
+                date,
+                messageId,
+                sender,
+                from,
+                replyTo,
+                htmlPart
+            });
         }
     
         context.mails = preprocessedMails;

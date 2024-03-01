@@ -5,4 +5,9 @@ DEBUG='psydb:*' npm run publicOnlineForm:createSubjectsFromImap -- \
     --imap-host '127.0.0.1' \
     --imap-port 3143 \
     --imap-user 'root@example.com' \
-    --imap-password 'test1234'
+    --imap-password 'test1234' \
+    --smtp-host '127.0.0.1' \
+    --smtp-port 3025 \
+    --smtp-user 'root@example.com' \
+    --smtp-password 'test1234' \
+    --error-mail-to 'root@example.com'

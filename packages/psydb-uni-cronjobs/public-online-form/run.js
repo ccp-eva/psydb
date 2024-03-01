@@ -58,7 +58,7 @@ co(async () => {
         parseMailHtml,
         remapMailData,
 
-        createSubjectsInPsydb,
+        //createSubjectsInPsydb,
     ])(context, noop);
 
 }).catch(error => { console.log(error) });

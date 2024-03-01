@@ -1,5 +1,6 @@
 'use strict';
 var debug = require('debug')('psydb:humankind-cronjobs:remapMailData');
+var { RemapMailError } = require('./errors');
 
 var sane = (v) => String(v).trim();
 var lc = (s) => s.toLowerCase();
@@ -57,8 +58,9 @@ var remapMailData = async (context, next) => {
                     targetBucket = childBlockData;
                 }
                 
+                var errorBag = { mail: it, pair }
                 if (!handler) {
-                    throw new RemapMailError({ pair });
+                    throw new RemapMailError(errorBag);
                 }
                 var path, value;
                 try {
@@ -68,10 +70,10 @@ var remapMailData = async (context, next) => {
                     ));
                     debug(`   remapped: "${path}" = "${value}"`);
                 } catch (e) {
-                    throw new RemapMailError({ pair });
+                    throw new RemapMailError(errorBag);
                 }
                 if (!path || !value) {
-                    throw new RemapMailError({ pair });
+                    throw new RemapMailError(errorBag);
                 }
                 targetBucket[path] = value;
             }
@@ -212,15 +214,6 @@ var ChildFields = {
         }
         return { path: 'scientific.custom.otherLanguageIds', value: out };
     } 
-}
-
-class RemapMailError extends Error {
-    constructor (bag) {
-        var { pair } = bag;
-        var message = `Cannot Remap Pair "${pair.key}=${pair.value}"`
-        super(message);
-        this.name = 'RemapMailError';
-    }
 }
 
 module.exports = remapMailData;
