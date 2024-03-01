@@ -1574,11 +1574,14 @@ importers:
       axios: ~0.24.0
       co: ~4.6.0
       commander: ~10.0.1
+      common-tags: ~1.8.2
       debug: ~4.3.4
+      html-entities: ~2.4.0
       html-to-text: ~9.0.5
       imapflow: ~1.0.150
       koa-compose: ~4.1.0
       libqp: ~2.0.1
+      nodemailer: ~6.8.0
     dependencies:
       '@mpieva/psydb-common-lib': link:../psydb-common-lib
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
@@ -1586,11 +1589,14 @@ importers:
       axios: 0.24.0_debug@4.3.4
       co: 4.6.0
       commander: 10.0.1
+      common-tags: 1.8.2
       debug: 4.3.4
+      html-entities: 2.4.0
       html-to-text: 9.0.5
       imapflow: 1.0.152
       koa-compose: 4.1.0
       libqp: 2.0.1
+      nodemailer: 6.8.0
 
   ../../packages/psydb-web:
     specifiers:
@@ -5060,7 +5066,6 @@ packages:
   /common-tags/1.8.2:
     resolution: {integrity: sha512-gk/Z852D2Wtb//0I+kRFNKKE9dIIVirjoqPoA1wJU+XePVXZfGeBpk45+A1rKO4Q43prqWBNY/MiIeRLbPWUaA==}
     engines: {node: '>=4.0.0'}
-    dev: true
 
   /commondir/1.0.1:
     resolution: {integrity: sha512-W9pAhw0ja1Edb5GVdIF1mjZw/ASI0AlShXM83UUGe2DVr5TdAPEA1OA8m/g8zWp9x6On7gqufY+FatDbC3MDQg==}
@@ -6743,6 +6748,10 @@ packages:
 
   /html-entities/2.3.6:
     resolution: {integrity: sha512-9o0+dcpIw2/HxkNuYKxSJUF/MMRZQECK4GnF+oQOmJ83yCVHTWgCH5aOXxK5bozNRmM8wtgryjHD3uloPBDEGw==}
+    dev: false
+
+  /html-entities/2.4.0:
+    resolution: {integrity: sha512-igBTJcNNNhvZFRtm8uA6xMY6xYleeDwn3PeBCkDz7tHttv4F2hsDI2aPgNERWzvRcNYHNT3ymRaQzllmXj4YsQ==}
     dev: false
 
   /html-escaper/2.0.2:
