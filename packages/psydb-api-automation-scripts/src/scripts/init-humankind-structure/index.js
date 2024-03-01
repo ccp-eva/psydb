@@ -6,6 +6,7 @@ var createRARole = require('./create-ra-role');
 var createScientistRole = require('./create-scientist-role');
 var createHiwiRole = require('./create-hiwi-role');
 var createReceptionRole = require('./create-reception-role');
+var createRegistrationBotRole = require('./create-registration-bot-role');
 
 var createLanguageSet = require('./create-language-set');
 var createAcquisitionSet = require('./create-acquisition-set');
@@ -27,6 +28,7 @@ module.exports = async (bag) => {
     await createScientistRole({ ...context, as: 'scientist' });
     await createHiwiRole({ ...context, as: 'hiwi' });
     await createReceptionRole({ ...context, as: 'reception' });
+    await createRegistrationBotRole({ ...context, as: 'registration' });
 
     await createLanguageSet({ ...context, as: 'language' });
     await createAcquisitionSet({ ...context, as: 'acquisition' });
