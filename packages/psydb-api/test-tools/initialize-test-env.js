@@ -77,7 +77,7 @@ var beforeAll = async function () {
 
         return {
             personnelId,
-            hasFinishedTwoFactorAuthentication: finished2FA
+            hasFinishedTwoFactorAuth: finished2FA
         }
     }
     

@@ -1,23 +1,23 @@
 'use strict';
 var debug = require('debug')('psydb:api:middleware:self-auth');
+var checkIpInRange = require('@cdxoo/check-ip-in-range');
 
 var { hasNone, hasOnlyOne } = require('@mpieva/psydb-core-utils');
 var { ApiError, Self, withRetracedErrors } = require('@mpieva/psydb-api-lib');
 
 var createSelfAuthMiddleware = (options = {}) => async(context, next) => {
-    var { enableApiKeyAuthentication = false } = options;
+    var { enableApiKeyAuth = false } = options;
     var { db, session, request, apiConfig } = context;
-    var { personnelId, hasFinishedTwoFactorAuthentication } = session;
-    var { apiKey } = request.query;
+    var { personnelId, hasFinishedTwoFactorAuth } = session;
 
-    if (enableApiKeyAuthentication && apiKey) {
-        personnelId = await handleApiKeyAuth({ db, apiKey });
-    }
+    personnelId ||= await maybeHandleApiKeyAuth(options, context);
 
     if (!personnelId) {
         debug('cant get personnelId from session or apiKey');
         throw new ApiError(401); // TODO
     }
+
+    var { apiKey } = request.query;
 
     // FIXME: maybe pass personnelId w/o query and
     // query db in self itself
@@ -30,10 +30,10 @@ var createSelfAuthMiddleware = (options = {}) => async(context, next) => {
             'scientific.state': true,
             'gdpr.state': true
         }*/
-        enableTwoFactorAuthentication: (
-            apiConfig.twoFactorAuthentication?.isEnabled
+        enableTwoFactorAuth: (
+            apiConfig.twoFactorAuth?.isEnabled
         ),
-        hasFinishedTwoFactorAuthentication
+        hasFinishedTwoFactorAuth
     });
 
     var {
@@ -57,7 +57,7 @@ var createSelfAuthMiddleware = (options = {}) => async(context, next) => {
         var { exists, matches } = twoFactorCodeStatus;
         if (exists) {
             if (matches === true) {
-                session.hasFinishedTwoFactorAuthentication = true;
+                session.hasFinishedTwoFactorAuth = true;
             }
             else if (matches === false) {
                 debug('2FA code mismatch');
@@ -79,10 +79,44 @@ var createSelfAuthMiddleware = (options = {}) => async(context, next) => {
     await next();
 }
 
-var handleApiKeyAuth = async (bag) => {
-    var { db, apiKey } = bag;
-    debug('apiKey:', apiKey);
+var maybeHandleApiKeyAuth = async (options, context) => {
+    if (!options.enableApiKeyAuth) {
+        return;
+    }
+
+    var { db, request, apiConfig, ip } = context;
+    var { isEnabled, allowedIps } = apiConfig.apiKeyAuth;
+    var { apiKey } = request.query;
+
+    if (!isEnabled) {
+        return;
+    }
+
+    var isAllowed = false;
+    for (var range of allowedIps) {
+        try {
+            isAllowed = checkIpInRange({ range, ip });
+        }
+        catch (e) {
+            console.warn(e);
+        }
+        if (isAllowed) {
+            break;
+        }
+    }
+
+    if (!isAllowed) {
+        debug('ip address is not allowed')
+        throw new ApiError(401, {
+            apiStatus: 'IpAddressNotAllowed',
+            ip, // FIXME
+            data: { ip }
+        }) // TODO
+    }
     
+    debug('ip:', ip);
+    debug('apiKey:', apiKey);
+
     var apiKeyRecords = await withRetracedErrors(
         db.collection('apiKey').find({
             'apiKey': apiKey,

@@ -97,6 +97,10 @@ export const BiologicalGender = {
             label='mit "Unbekannt" Wert'
             dataXPath='$.props.enableUnknownValue'
         />
+        <Fields.DefaultBool
+            label='mit "Divers" Wert'
+            dataXPath='$.props.enableOtherValue'
+        />
     )
 }
 

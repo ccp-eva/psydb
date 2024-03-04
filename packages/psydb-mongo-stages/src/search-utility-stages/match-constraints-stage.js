@@ -8,7 +8,7 @@ var MatchConstraintsStage = (bag) => {
     } = bag;
 
     if (__sanitize_$in) {
-        // FIXME: thtas a hotfixed for $in in constraint values
+        // FIXME: thats a hotfixed for non-$in arrays in constraint values
         constraints = entries(constraints).reduce((acc, [key, value]) => ({
             ...acc,
             [key]: Array.isArray(value) ? { $in: value } : value

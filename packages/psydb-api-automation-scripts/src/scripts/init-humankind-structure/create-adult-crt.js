@@ -97,7 +97,8 @@ module.exports = async (context) => {
             displayName: 'Gender',
             displayNameI18N: { 'de': 'Geschlecht' },
             props: {
-                enableUnknownValue: false
+                enableUnknownValue: false,
+                enableOtherValue: true,
             }
         }},
     }, { apiKey });
@@ -120,6 +121,21 @@ module.exports = async (context) => {
             //    'Einverständnis für DB-Registrierung in Papierform vorhanden?'
             //)},
             props: {}
+        }},
+    }, { apiKey });
+
+    await driver.sendMessage({
+        type: `custom-record-types/add-field-definition`,
+        payload: { id: crtId, subChannelKey: 'scientific', props: {
+            type: 'HelperSetItemId',
+            key: 'acquisitionId',
+            displayName: 'Acquisition',
+            displayNameI18N: { 'de': 'Akquise' },
+            props: {
+                setId: cache.get('/helperSet/acquisition'),
+                isNullable: true,
+                displayEmptyAsUnknown: false,
+            },
         }},
     }, { apiKey });
 
@@ -201,6 +217,7 @@ module.exports = async (context) => {
             '/scientific/state/custom/dateOfBirth',
             '/scientific/state/custom/gender',
             '/scientific/state/custom/doesDBRegistrationConsentOnPaperExist',
+            '/scientific/state/custom/acquisitionId',
             '/scientific/state/custom/knownChildrenIds',
             '/scientific/state/testingPermissions',
             '/scientific/state/comment'

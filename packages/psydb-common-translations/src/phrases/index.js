@@ -297,6 +297,12 @@ module.exports = [
         de: 'Unbekannt'
     },
     {
+        // FIXME
+        internal: '_biologicalGender_other',
+        en: 'Other',
+        de: 'Divers'
+    },
+    {
         en: 'No Comment',
         de: 'Kein Kommentar'
     },
@@ -1548,6 +1554,14 @@ module.exports = [
     {
         en: 'Invalid Code!',
         de: 'Ungültiger Code!',
+    },
+    {
+        en: 'New Code Sent',
+        de: 'Neuer Code Versendet'
+    },
+    {
+        en: 'A new code was send to your e-mail. Please also check the junk folder.',
+        de: 'Ein neuer Code wurde an Ihre E-Mail versendet. Bitte prüfen Sie auch den Spam-Ordner.'
     },
 
     {

@@ -13,9 +13,10 @@ var inline = require('@cdxoo/inline-string');
 
 var withPostStages = ({
     protection,
-    endpoint
+    endpoint,
+    enableApiKeyAuth
 }) => ([
-    withSelfAuth(),
+    withSelfAuth({ enableApiKeyAuth }),
     withPermissions(),
     withKoaBody(),
     endpoint
@@ -34,6 +35,9 @@ var createRouting = (bag = {}) => {
     router.post('/two-factor-code/match',
         withKoaBody(), endpoints.twoFactorCode.match
     );
+    router.post('/two-factor-code/resend',
+        withKoaBody(), endpoints.twoFactorCode.resend
+    );
 
     router.get('/init',
         init
@@ -42,7 +46,7 @@ var createRouting = (bag = {}) => {
     // /api/foo/?apiKey=asdasdads
     router.post('/',
         withSelfAuth({
-            enableApiKeyAuthentication: true
+            enableApiKeyAuth: true
         }),
         withPermissions(),
         withKoaBody(),
@@ -110,10 +114,12 @@ var createRouting = (bag = {}) => {
     );
 
     router.post('/helperSet/search', ...withPostStages({
-        endpoint: endpoints.helperSet.search
+        endpoint: endpoints.helperSet.search,
+        enableApiKeyAuth: true,
     }));
     router.post('/helperSetItem/search', ...withPostStages({
-        endpoint: endpoints.helperSetItem.search
+        endpoint: endpoints.helperSetItem.search,
+        enableApiKeyAuth: true,
     }));
     
     //router.post('/search/helperSetItem',

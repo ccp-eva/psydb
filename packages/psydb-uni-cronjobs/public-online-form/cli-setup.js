@@ -1,8 +1,5 @@
-var co = require('co');
-var debug = require('debug')('psydb:uni-cronjobs');
-
+'use strict';
 var { program } = require('commander');
-var { ImapFlow } = require('imapflow');
 var pkg = require('../package.json');
 
 var cwd = process.cwd();
@@ -29,6 +26,7 @@ var cliOptions = [
         description: 'enable verbose psydb driver logging',
         defaults: false
     },
+
     {
         long: 'imap-host',
         arg: 'imapHost',
@@ -61,6 +59,52 @@ var cliOptions = [
         description: 'enable verbose imap logging',
         defaults: false
     },
+
+    {
+        long: 'smtp-host',
+        arg: 'smtpHost',
+        description: 'smtp hostname or ip',
+        defaults: '127.0.0.1'
+    },
+    {
+        long: 'smtp-port',
+        arg: 'smtpPort',
+        description: 'smtp port',
+        defaults: '25'
+    },
+    {
+        long: 'smtp-user',
+        arg: 'smtpUser',
+        description: 'smtp login user',
+    },
+    {
+        long: 'smtp-password',
+        arg: 'smtpPassword',
+        description: 'smtp login user',
+    },
+    {
+        long: 'smtp-ssl',
+        description: 'use ssl for smtp connection',
+        defaults: false
+    },
+    {
+        long: 'smtp-verbose',
+        description: 'enable verbose smtp logging',
+        defaults: false
+    },
+    
+    {
+        long: 'error-mail-from',
+        arg: 'errorMailFrom',
+        description: 'sender address for error mail',
+        defaults: 'online-registration@example.com'
+    },
+    {
+        long: 'error-mail-to',
+        arg: 'errorMailTo',
+        description: 'sender address for error mail',
+        defaults: 'registration-errors@example.com'
+    },
 ];
 
 for (var it of cliOptions) {
@@ -88,46 +132,4 @@ for (var it of cliOptions) {
 
 program.parse(process.argv);
 
-co(async () => {
-    var options = program.opts();
-    var {
-        apiKey,
-        psydbUrl,
-        psydbVerbose,
-
-        imapHost,
-        imapPort,
-        imapUser,
-        imapPassword,
-        imapSsl,
-        imapVerbose,
-
-        ...extraOptions
-    } = options;
-
-    var client = new ImapFlow({
-        host: imapHost,
-        port: imapPort,
-        secure: imapSsl,
-        logger: imapVerbose,
-        auth: {
-            user: imapUser,
-            pass: imapPassword
-        }
-    });
-
-    await client.connect();
-
-    var lock = await client.getMailboxLock('INBOX');
-    try {
-        var fetched = client.fetch('1:*', { envelope: true });
-        for await (var message of fetched) {
-            console.log(`${message.uid}: ${message.envelope.subject}`);
-        }
-    }
-    finally {
-        lock.release();
-    }
-    
-    await client.logout();
-}).catch(error => { console.log(error) });
+module.exports = program;

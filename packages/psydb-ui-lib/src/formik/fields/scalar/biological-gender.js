@@ -5,6 +5,7 @@ import { GenericEnum } from './generic-enum';
 const options = {
     'male': 'Male',
     'female': 'Female',
+    'other': 'Other',
     'unknown': 'Unknown',
 }
 
