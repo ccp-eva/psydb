@@ -1,6 +1,6 @@
 'use strict';
 
-var scanInbox = async (context, next) => {
+var fetchMails = async (context, next) => {
     var { imap } = context;
 
     var lock = await imap.getMailboxLock('INBOX');
@@ -12,10 +12,21 @@ var scanInbox = async (context, next) => {
         
         var preprocessedMails = [];
         for await (var message of fetched) {
-            var { seq, uid, bodyParts } = message;
+            var { seq, uid, id, envelope, bodyParts } = message;
+            var { date, messageId, sender, from, replyTo } = envelope
             var htmlPart = String(bodyParts.get('2'));
 
-            preprocessedMails.push({ seq, uid, htmlPart });
+            preprocessedMails.push({
+                seq,
+                uid,
+                id,
+                date,
+                messageId,
+                sender,
+                from,
+                replyTo,
+                htmlPart
+            });
         }
     
         context.mails = preprocessedMails;
@@ -27,4 +38,4 @@ var scanInbox = async (context, next) => {
     await next();
 }
 
-module.exports = scanInbox;
+module.exports = fetchMails;

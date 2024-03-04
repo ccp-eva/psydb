@@ -100,6 +100,6 @@ module.exports = {
     mappifyPointer: require('./mappify-pointer'),
     SmartArray: require('./smart-array'),
 
-    twoFactorAuthentication: require('./two-factor-authentication'),
+    twoFactorAuth: require('./two-factor-auth'),
     findAndUpdateSequenceNumber: require('./find-and-update-sequence-number'),
 }

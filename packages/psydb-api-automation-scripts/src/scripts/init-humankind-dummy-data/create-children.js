@@ -22,7 +22,7 @@ module.exports = async (bag) => {
         { firstname: 'Bob', gender: 'male', parentIds: [
             Agatha, Bernard,
         ]},
-        { firstname: 'Charlie', gender: 'male', parentIds: [
+        { firstname: 'Charlie', gender: 'other', parentIds: [
             Charles, Monica,
         ]},
         { firstname: 'Mallory', gender: 'female', parentIds: [
@@ -53,6 +53,7 @@ module.exports = async (bag) => {
                         ],
                         doesDBRegistrationConsentOnPaperExist: true,
                         canParticipateInStudiesWithHealthyChildren: true,
+                        hasAwayTeamTestingPermissionForNextYear: 'unknown',
                         allowedToEat: 'unknown',
                         kigaId: null,
                     },

@@ -78,7 +78,8 @@ module.exports = async (context) => {
             displayName: 'Gender',
             displayNameI18N: { 'de': 'Geschlecht' },
             props: {
-                enableUnknownValue: false
+                enableUnknownValue: false,
+                enableOtherValue: true,
             }
         }},
     }, { apiKey });
@@ -153,12 +154,6 @@ module.exports = async (context) => {
             displayNameI18N: { 'de': (
                 'DB-Einverständnis (Papier)'
             )},
-            //displayName: (
-            //    'DB-Registration consent exists on paper?'
-            //),
-            //displayNameI18N: { 'de': (
-            //    'Einverständnis für DB-Registrierung in Papierform vorhanden?'
-            //)},
             props: {}
         }},
     }, { apiKey });
@@ -189,6 +184,20 @@ module.exports = async (context) => {
         }},
     }, { apiKey });
     
+    await driver.sendMessage({
+        type: `custom-record-types/add-field-definition`,
+        payload: { id: crtId, subChannelKey: 'scientific', props: {
+            type: 'ExtBool',
+            key: 'hasAwayTeamTestingPermissionForNextYear',
+            displayName: (
+                'Kiga-Consent for Next Year'
+            ),
+            displayNameI18N: { 'de': (
+                'Kiga-Erlaubnis im Folgejahr'
+            )},
+            props: {}
+        }},
+    }, { apiKey });
      
     await driver.sendMessage({
         type: `custom-record-types/commit-settings`,
@@ -255,6 +264,7 @@ module.exports = async (context) => {
             '/scientific/state/custom/doesDBRegistrationConsentOnPaperExist',
             '/scientific/state/custom/canParticipateInStudiesWithHealthyChildren',
             '/scientific/state/custom/allowedToEat',
+            '/scientific/state/custom/hasAwayTeamTestingPermissionForNextYear',
             '/scientific/state/testingPermissions',
             '/scientific/state/comment'
         ]}

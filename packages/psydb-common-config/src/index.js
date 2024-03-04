@@ -13,8 +13,8 @@ module.exports = {
         'apestudies-wkprc-default',
         'manual-only-participation'
     ],
-    twoFactorAuthentication: { // FIXME: rename twoFactorAuth
-        isEnabled: false,
+    twoFactorAuth: { // FIXME: rename twoFactorAuth
+        isEnabled: true,
     },
     apiKeyAuth: {
         isEnabled: true,

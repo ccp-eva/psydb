@@ -1,4 +1,6 @@
 'use strict';
+var debug = require('debug')('psydb:humankind-cronjobs:remapMailData');
+var { RemapMailError } = require('./errors');
 
 var sane = (v) => String(v).trim();
 var lc = (s) => s.toLowerCase();
@@ -10,6 +12,7 @@ var justremap = (simpleMap) => simpleMap.reduce((acc, it) => {
 var remapMailData = async (context, next) => {
     var { mails, languages, acquisitions } = context;
 
+    var out = [];
     for (var it of mails) {
         var { seq, pairs } = it;
         
@@ -17,8 +20,8 @@ var remapMailData = async (context, next) => {
         var childrenData = [];
         
         var inAdultBlock = true;
-        var childFirstKey = undefined;
-        var childBlockData = {};
+        var childBlockFirstKey = undefined;
+        var childBlockData = undefined;
         for (var [ ix, pair ] of pairs.entries()) {
             if ([
                 'Datenschspeicherung',
@@ -30,24 +33,58 @@ var remapMailData = async (context, next) => {
 
             if (/Wieviele Kinder/.test(pair.key)) {
                 inAdultBlock = false;
-                childFirstKey = pairs[ix + 1];
+                childBlockFirstKey = pairs[ix + 1].key;
+                debug({ childBlockFirstKey });
                 continue;
             }
-            else if (inAdultBlock || /Auf welchem/.test(pair.key)) {
-                var handler = AdultFields[pair.key];
+            else {
+                debug(`raw pair is "${pair.key}" = "${pair.value}"`);
+
+                if (pair.key === childBlockFirstKey) {
+                    debug("\n", 'found child block at', pair,)
+                    if (childBlockData) {
+                        childrenData.push(childBlockData);
+                    }
+                    childBlockData = {};
+                }
+
+                var handler, targetBucket;
+                if (inAdultBlock || /Auf welchem/.test(pair.key)) {
+                    handler = AdultFields[pair.key];
+                    targetBucket = adultData;
+                }
+                else {
+                    handler = ChildFields[pair.key];
+                    targetBucket = childBlockData;
+                }
+                
+                var errorBag = { mail: it, pair }
                 if (!handler) {
-                    throw new Error(pair.key);
+                    throw new RemapMailError(errorBag);
                 }
-                var { path, value } = handler(
-                    sane(pair.value),
-                    { languages, acquisitions }
-                );
-                console.log({ path, value });
-                if (!value) {
-                    throw new Error(pair.key);
+                var path, value;
+                try {
+                    ({ path, value } = handler(
+                        sane(pair.value),
+                        { languages, acquisitions }
+                    ));
+                    debug(`   remapped: "${path}" = "${value}"`);
+                } catch (e) {
+                    throw new RemapMailError(errorBag);
                 }
+                if (!path || !value) {
+                    throw new RemapMailError(errorBag);
+                }
+                targetBucket[path] = value;
             }
         }
+
+        if (childBlockData) {
+            childrenData.push(childBlockData);
+        }
+    
+        it.adultData = adultData;
+        it.childrenData = childrenData;
     }
 
     await next();
@@ -55,31 +92,32 @@ var remapMailData = async (context, next) => {
 
 var AdultFields = {
     ...justremap([
-        [ 'Nachname', 'lastname' ],
-        [ 'Vorname', 'firstname' ],
-        [ 'E-Mail-Adresse', 'email' ],
-        [ 'Straße', 'address.street' ],
-        [ 'Hausnummer', 'address.housenumber' ],
-        [ 'Stadt', 'address.city' ],
-        [ 'Postleitzahl', 'address.postcode' ],
-        [ 'Adresszusatz', 'address.affix' ],
+        [ 'Nachname', 'gdpr.custom.lastname' ],
+        [ 'Vorname', 'gdpr.custom.firstname' ],
+        [ 'E-Mail-Adresse', 'gdpr.custom.email' ],
+        [ 'Straße', 'gdpr.custom.address.street' ],
+        [ 'Hausnummer', 'gdpr.custom.address.housenumber' ],
+        [ 'Stadt', 'gdpr.custom.address.city' ],
+        [ 'Postleitzahl', 'gdpr.custom.address.postcode' ],
+        [ 'Adresszusatz', 'gdpr.custom.address.affix' ],
     ]),
     
     'Sind Sie Mutter oder Vater?': (value) => {
         var mapped = {
-            'Mutter': 'f',
-            'Vater': 'm'
+            'Mutter': 'female',
+            'Vater': 'male',
+            'Elternteil': 'other',
         }[value];
 
         if (!mapped) {
             throw new Error();
         }
 
-        return { path: 'gender', value: mapped }
+        return { path: 'scientific.custom.gender', value: mapped }
     },
 
     'Telefonnummer': (value) => ({
-        path: 'phones', value: [ value ]
+        path: 'gdpr.custom.phones', value: [ value ]
     }),
     
     'Auf welchem Weg haben sie von uns erfahren?': (value, extra) => {
@@ -89,38 +127,43 @@ var AdultFields = {
             throw new Error();
         }
 
-        return { path: 'acquisitionId', value: id }
+        return { path: 'scientific.custom.acquisitionId', value: id }
     }
 }
 
 var ChildFields = {
     ...justremap([
-        [ 'Nachname', 'lastname' ],
-        [ 'Vorname', 'firstname' ],
+        [ 'Nachname', 'gdpr.custom.lastname' ],
+        [ 'Vorname', 'gdpr.custom.firstname' ],
     ]),
 
     'Geschlecht des Kindes': (value) => {
         var mapped = {
-            'weiblich': 'f',
-            'männlich': 'm',
-            'divers': 'o',
+            'weiblich': 'female',
+            'männlich': 'male',
+            'divers': 'other',
         }[value];
         if (!mapped) {
             throw new Error();
         }
         
-        return { path: 'gender', value: mapped }
+        return { path: 'scientific.custom.gender', value: mapped }
     },
 
     'Geburtsdatum': (value) => {
-        var [ y, m, d ] = value.split('.').map(parseInt).reverse();
+        var [ y, m, d] = (
+            value.split(/\./g).map((it) => parseInt(it)).reverse()
+        );
 
         var date = new Date(0);
-        date.setUTCYear(y);
+        date.setUTCFullYear(y);
         date.setUTCMonth(m - 1);
         date.setUTCDate(d);
 
-        return { path: 'dateOfBirth', value: date.toISOString() }
+        return {
+            path: 'scientific.custom.dateOfBirth',
+            value: date.toISOString()
+        }
     },
 
     'Muttersprache des Kindes': (value, extra) => {
@@ -130,7 +173,7 @@ var ChildFields = {
             throw new Error();
         }
 
-        return { path: 'nativeLanguageId', value: id }
+        return { path: 'scientific.custom.nativeLanguageId', value: id }
     },
     'andere Muttersprache': (value, extra) => {
         var { languages } = extra;
@@ -139,11 +182,13 @@ var ChildFields = {
             throw new Error();
         }
 
-        return { path: 'nativeLanguageId', value: id }
+        return { path: 'scientific.custom.nativeLanguageId', value: id }
     },
     'Zweitsprache des Kindes': (value, extra) => {
-        var { languageMap } = extra;
-        var items = value.split(/,\s*/g).filter(it => !!it);
+        var { languages } = extra;
+        var items = value.split(/,\s*/g).filter(it => (
+            !!it && it !== 'Keine'
+        ));
 
         var out = [];
         for (var it of items) {
@@ -153,10 +198,10 @@ var ChildFields = {
             }
             out.push(id)
         }
-        return { path: 'otherLanguageIds', value: out };
+        return { path: 'scientific.custom.otherLanguageIds', value: out };
     },
     'andere Zweitsprache': (value, extra) => {
-        var { languageMap } = extra;
+        var { languages } = extra;
         var items = value.split(/,\s*/g).filter(it => !!it);
 
         var out = [];
@@ -167,7 +212,7 @@ var ChildFields = {
             }
             out.push(id)
         }
-        return { path: 'otherLanguageIds', value: out };
+        return { path: 'scientific.custom.otherLanguageIds', value: out };
     } 
 }
 

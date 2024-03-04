@@ -268,6 +268,7 @@ var BiologicalGenderFieldDefinition = () => FieldDefinition({
     title: 'Geschlecht (BiologicalGender)',
     props: {
         enableUnknownValue: DefaultBool(),
+        enableOtherValue: DefaultBool(),
         // enableUnknwonValue
     },
 });

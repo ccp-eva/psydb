@@ -6,6 +6,7 @@ var WrappedCache = require('../../wrapped-cache');
 var prepareCache = require('./prepare-cache');
 
 var createLanguageItems = require('./create-language-items');
+var createAcquisitionItems = require('./create-acquisition-items');
 var createStudyTopics = require('./create-study-topics');
 
 var createResearchGroups = require('./create-research-groups');
@@ -37,6 +38,7 @@ module.exports = async (bag) => {
     await prepareCache(context);
     
     await createLanguageItems(context);
+    await createAcquisitionItems(context);
     await createStudyTopics(context);
 
     await createResearchGroups(context);

@@ -93,12 +93,7 @@ class RequestFailed extends DriverError {
 
 var defaultWriteRequest = async ({ agent, url, message, options = {} }) => {
     var { forceTZ = false, apiKey } = options;
-
-    var url = (
-        apiKey
-        ? `${url}?apiKey=${apiKey}`
-        : url
-    );
+    url = maybeInjectApiKey({ url, apiKey })
 
     try {
         var body = {
@@ -120,11 +115,22 @@ var defaultWriteRequest = async ({ agent, url, message, options = {} }) => {
     return { status, data };
 }
 
-var Driver = ({
-    server,
-    agent,
-    customWriteRequest,
-} = {}) => {
+var maybeInjectApiKey = ({ url, apiKey }) => {
+    var out = (
+        apiKey
+        ? `${url}?apiKey=${apiKey}`
+        : url
+    );
+    return out;
+}
+
+var Driver = (options) => {
+    var {
+        server,
+        agent,
+        customWriteRequest,
+        apiKey: driverApiKey,
+    } = options;
 
     if (!server && !agent) {
         throw new DriverError(
@@ -138,6 +144,39 @@ var Driver = ({
     var writeRequest = customWriteRequest || defaultWriteRequest;
     agent = agent || createDefaultAgent(server);
 
+    // FIXME: duh
+    driver.post = async (bag) => {
+        var { url, payload, apiKey = driverApiKey } = bag;
+        url = maybeInjectApiKey({ url, apiKey });
+
+        try {
+            var response = await agent.post(url, payload);
+            return response.data;
+        }
+        catch (e) {
+            if (e.response?.data?.data) {
+                console.error(
+                    inspect(
+                        e.response.data.data,
+                        { depth: null, colors: true }
+                    )
+                )
+                throw new Error('BadRequest')
+            }
+            else {
+                throw e;
+            }
+        }
+    };
+
+    driver.get = async (bag) => {
+        var { url, payload, apiKey = driverApiKey } = bag;
+        url = maybeInjectApiKey({ url, apiKey });
+        
+        return agent.get(url)
+    };
+    // FIXME:
+
     driver.signIn = ({ email, password }) => (
         writeRequest({ agent, url: '/sign-in', message: {
             email, password
@@ -149,9 +188,12 @@ var Driver = ({
     )
 
     driver.sendMessage = async (message, options = {}) => {
+        var { apiKey = driverApiKey, ...otherOptions } = options;
         try {
             var { status, data } = await writeRequest({
-                agent, url: '/', message, options
+                agent, url: '/', message, options: {
+                    apiKey, ...otherOptions
+                }
             });
 
             var modified = data.data;

@@ -11,7 +11,7 @@ module.exports = async (bag) => {
 
     var baseData = [
         { firstname: 'Agatha', gender: 'female' },
-        { firstname: 'Bernard', gender: 'male' },
+        { firstname: 'Bernard', gender: 'other' },
         { firstname: 'Charles', gender: 'male' },
         { firstname: 'Monica', gender: 'female' },
     ];
@@ -44,6 +44,7 @@ module.exports = async (bag) => {
                         dateOfBirth: '1980-01-01T00:00:00.000Z',
                         gender,
                         doesDBRegistrationConsentOnPaperExist: true,
+                        acquisitionId: null,
                     },
                     comment: '',
                     testingPermissions: [

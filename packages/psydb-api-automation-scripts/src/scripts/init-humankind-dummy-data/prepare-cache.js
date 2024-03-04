@@ -36,6 +36,7 @@ module.exports = async (context) => {
         transform: (it) => (it._id),
         keys: [
             'language',
+            'acquisition'
         ],
     });
 
