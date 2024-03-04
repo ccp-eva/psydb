@@ -15,10 +15,10 @@ var createSubjectCRT = require('./create-subject-crt');
 var createStudyCRT = require('./create-study-crt');
 
 var subjects = [
-    { type: 'chimpanzee', label: 'Chimpanzee' },
-    { type: 'bonobo', label: 'Bonobo' },
-    { type: 'gorilla', label: 'Gorilla' },
-    { type: 'orang_utan', label: 'Orang-Utan' },
+    { type: 'wkprc_chimpanzee', label: 'Chimpanzee' },
+    { type: 'wkprc_bonobo', label: 'Bonobo' },
+    { type: 'wkprc_gorilla', label: 'Gorilla' },
+    { type: 'wkprc_orangutan', label: 'Orang-Utan' },
 ];
 
 module.exports = async (bag) => {

@@ -18,7 +18,7 @@ var executeWithDriver = async (bag) => {
         })
     }
 
-    var driver = Driver({ agent });
+    var driver = Driver({ agent, apiKey });
     await script({ driver, apiKey, extraOptions });
 }
 
