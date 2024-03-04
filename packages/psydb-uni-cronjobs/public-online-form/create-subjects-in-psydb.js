@@ -54,7 +54,7 @@ var createOneAdult = async (bag) => {
                 { researchGroupId, permissionList: [
                     {
                         labProcedureTypeKey: 'inhouse',
-                        value: 'yes'
+                        value: 'unknown'
                     },
                 ]}
             ],
