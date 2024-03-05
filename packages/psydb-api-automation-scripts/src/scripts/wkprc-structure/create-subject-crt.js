@@ -5,14 +5,14 @@ var asPointers = (keys) => keys.map(it => (
 
 // NOTE: crtKey, crtId, crtRecord, CRT
 var createSubjectCRT = async (bag) => {
-    var { driver, cache, type, label } = bag;
+    var { driver, cache, type, displayNames } = bag;
 
     var definitions = FieldDefinitions({ cache, type });
     var extra = FieldDefinitionsExtra({ cache, type });
 
     var crt = await driver.crt.create({
         collection: 'subject', key: type,
-        displayNames: { 'en': label }
+        displayNames
     });
 
     cache.addCRT(crt.meta);
@@ -48,7 +48,7 @@ var createSubjectCRT = async (bag) => {
     })
 
     await crt.updateGeneralSettings({
-        displayNames: { 'en': label },
+        displayNames,
         requiresTestingPermissions: false,
         showOnlineId: false,
         showSequenceNumber: false,
@@ -63,7 +63,7 @@ var FieldDefinitions = ({ cache, type }) => ({
         type: 'SaneString',
         key: 'name',
         displayName: 'Name',
-        displayNameI18N: {},
+        displayNameI18N: { de: 'Name' },
         props: { minLength: 1 }
     },
 
@@ -71,7 +71,7 @@ var FieldDefinitions = ({ cache, type }) => ({
         type: 'BiologicalGender',
         key: 'biologicalGender',
         displayName: 'Sex',
-        displayNameI18N: {},
+        displayNameI18N: { de: 'Geschlecht' },
         props: {
             enableUnknownValue: true,
             enableOtherValue: false,
@@ -82,7 +82,7 @@ var FieldDefinitions = ({ cache, type }) => ({
         type: 'SaneString',
         key: 'wkprcIdCode',
         displayName: 'WKPRC-ID-Code',
-        displayNameI18N: {},
+        displayNameI18N: { de: 'WKPRC-ID-Code' },
         props: { minLength: 0 }
     },
 
@@ -90,7 +90,7 @@ var FieldDefinitions = ({ cache, type }) => ({
         type: 'DateOnlyServerSide',
         key: 'dateOfBirth',
         displayName: 'Date of Birth',
-        displayNameI18N: {},
+        displayNameI18N: { de: 'Geburtsdatum '},
         props: { isNullable: true, isSpecialAgeFrameField: true }
     },
 
@@ -98,7 +98,7 @@ var FieldDefinitions = ({ cache, type }) => ({
         type: 'Lambda',
         key: 'age',
         displayName: 'Age',
-        displayNameI18N: {},
+        displayNameI18N: { de: 'Alter' },
         props: {
             fn: 'deltaYMD',
             input: '/scientific/state/custom/dateOfBirth'
@@ -109,7 +109,7 @@ var FieldDefinitions = ({ cache, type }) => ({
         type: 'HelperSetItemId',
         key: 'subSpeciesId',
         displayName: 'Sub-Species',
-        displayNameI18N: {},
+        displayNameI18N: { de: 'Sub-Spezies' },
         props: {
             setId: cache.get(`/helperSet/${type}SubSpecies`),
             isNullable: true,
@@ -121,7 +121,7 @@ var FieldDefinitions = ({ cache, type }) => ({
         type: 'ForeignId',
         key: 'motherId',
         displayName: 'Mother',
-        displayNameI18N: {},
+        displayNameI18N: { de: 'Mutter' },
         props: {
             collection: 'subject',
             recordType: type,
@@ -141,7 +141,7 @@ var FieldDefinitions = ({ cache, type }) => ({
         type: 'ForeignId',
         key: 'fatherId',
         displayName: 'Father',
-        displayNameI18N: {},
+        displayNameI18N: { de: 'Vater' },
         props: {
             collection: 'subject',
             recordType: type,
@@ -161,7 +161,7 @@ var FieldDefinitions = ({ cache, type }) => ({
         type: 'ForeignIdList',
         key: 'knownOffspringIds',
         displayName: 'Known Offspring',
-        displayNameI18N: {},
+        displayNameI18N: { de: 'Bekannte Nachkommen' },
         props: {
             collection: 'subject',
             recordType: type,
@@ -175,10 +175,10 @@ var FieldDefinitions = ({ cache, type }) => ({
         type: 'ForeignId',
         key: 'locationId',
         displayName: 'Location',
-        displayNameI18N: {},
+        displayNameI18N: { de: 'Location' },
         props: {
             collection: 'location',
-            recordType: 'wkprc_ape_location',
+            recordType: 'wkprc_apeLocation', // XXX: was wkprc_ape_location
             isNullable: true,
             displayEmptyAsUnknown: true,
             addReferenceToTarget: false,
@@ -190,7 +190,7 @@ var FieldDefinitions = ({ cache, type }) => ({
         type: 'ForeignId',
         key: 'groupId',
         displayName: 'Group',
-        displayNameI18N: {},
+        displayNameI18N: { de: 'Gruppe' },
         props: {
             collection: 'subjectGroup',
             isNullable: true,
@@ -207,7 +207,7 @@ var FieldDefinitions = ({ cache, type }) => ({
         type: 'HelperSetItemId',
         key: 'rearingHistoryId',
         displayName: 'Rearing History',
-        displayNameI18N: {},
+        displayNameI18N: { de: 'Aufzucht' },
         props: {
             setId: cache.get('/helperSet/rearingHistory'),
             isNullable: true,
@@ -219,7 +219,7 @@ var FieldDefinitions = ({ cache, type }) => ({
         type: 'HelperSetItemId',
         key: 'originId',
         displayName: 'Origin',
-        displayNameI18N: {},
+        displayNameI18N: { de: 'Herkunft' },
         props: {
             setId: cache.get('/helperSet/origin'),
             isNullable: true,
@@ -231,7 +231,7 @@ var FieldDefinitions = ({ cache, type }) => ({
         type: 'DateOnlyServerSide',
         key: 'arrivalDate',
         displayName: 'Arrival Date',
-        displayNameI18N: {},
+        displayNameI18N: { de: 'Ankunft Am' },
         props: { isNullable: true, isSpecialAgeFrameField: false }
     },
 
@@ -239,7 +239,7 @@ var FieldDefinitions = ({ cache, type }) => ({
         type: 'SaneString',
         key: 'arrivedFrom',
         displayName: 'Arrived From',
-        displayNameI18N: {},
+        displayNameI18N: { de: 'Ankunft Aus'},
         props: { minLength: 0 }
     },
 
@@ -250,7 +250,7 @@ var FieldDefinitionsExtra = ({ cache, type }) => ({
         type: 'FullText',
         key: 'sensitiveComment', // sensitive_comment
         displayName: 'Sensitive Comment',
-        displayNameI18N: {},
+        displayNameI18N: { de: 'Geschützter Kommentar' },
         props: {
             minLength: 0,
             isSensitive: true,

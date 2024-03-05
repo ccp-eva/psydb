@@ -5,13 +5,16 @@ var asPointers = (keys) => keys.map(it => (
 
 module.exports = async (context) => {
     var { driver, cache, as } = context;
-    var label = 'WKPRC-Study';
+    var displayNames = {
+        en: 'WKPRC Studies',
+        de: 'WKPRC-Studien',
+    };
 
     var definitions = FieldDefinitions({ cache });
 
     var crt = await driver.crt.create({
         collection: 'study', key: 'wkprc_study',
-        displayNames: { 'en': label }
+        displayNames,
     });
 
     cache.addCRT(crt.meta);
@@ -42,7 +45,7 @@ module.exports = async (context) => {
     })
 
     await crt.updateGeneralSettings({
-        displayNames: { 'en': label },
+        displayNames,
         enableLabTeams: false,
         enableSubjectSelectionSettings: false,
     })

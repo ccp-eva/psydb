@@ -1,12 +1,15 @@
 'use strict';
 var createLocationCRT = async (context) => {
     var { driver, cache, as } = context;
-    var label = `Ape-Location`;
+    var displayNames = {
+        en: 'Ape Locations',
+        de: 'Affen-Locations',
+    };
 
     var crt = await driver.crt.create({
         // FIXME: wkprc_ape_location
         collection: 'location', key: 'wkprc_apeLocation',
-        displayNames: { 'en': label }
+        displayNames,
     });
 
     cache.addCRT(crt.meta);
@@ -17,7 +20,7 @@ var createLocationCRT = async (context) => {
             type: 'SaneString',
             key: 'name',
             displayName: 'Name',
-            displayNameI18N: {},
+            displayNameI18N: { 'de': 'Name' },
             props: { minLength: 1 }
         }
     ]});
@@ -42,7 +45,7 @@ var createLocationCRT = async (context) => {
     });
 
     await crt.updateGeneralSettings({
-        displayNames: { en: label },
+        displayNames,
         reservationType: 'away-team',
     })
 
