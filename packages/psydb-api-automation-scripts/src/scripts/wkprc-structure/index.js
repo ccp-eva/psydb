@@ -5,10 +5,9 @@ var WrappedCache = require('../../wrapped-cache');
 var createRARole = require('./create-ra-role');
 var createScientistRole = require('./create-scientist-role');
 
-//var createLocationTypeSet = require('./create-location-type-set');
-var createOriginSet = require('./create-origin-set');
-var createRearingHistorySet = require('./create-rearing-history-set');
-var createSubSpeciesSet = require('./create-sub-species-set');
+//var createOriginSet = require('./create-origin-set');
+//var createRearingHistorySet = require('./create-rearing-history-set');
+//var createSubSpeciesSet = require('./create-sub-species-set');
 
 var createLocationCRT = require('./create-location-crt');
 var createSubjectCRT = require('./create-subject-crt');

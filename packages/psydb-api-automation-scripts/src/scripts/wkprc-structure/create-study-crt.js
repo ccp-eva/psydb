@@ -1,147 +1,122 @@
 'use strict';
+var asPointers = (keys) => keys.map(it => (
+    `/state/${it}`
+));
+
 module.exports = async (context) => {
-    var { apiKey, driver, cache, as } = context;
+    var { driver, cache, as } = context;
+    var label = 'WKPRC-Study';
 
-    await driver.sendMessage({
-        type: `custom-record-types/create`,
-        payload: {
-            collection: 'study',
-            type: 'wkprc_study',
-            props: { label: 'WKPRC-Study' }
-        },
-    }, { apiKey });
+    var definitions = FieldDefinitions({ cache });
 
-    var crtId = cache.addId({ collection: 'customRecordType', as });
+    var crt = await driver.crt.create({
+        collection: 'study', key: 'wkprc_study',
+        displayNames: { 'en': label }
+    });
 
-    await driver.sendMessage({
-        type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, props: {
-            type: 'ForeignIdList',
-            key: 'experimenterIds',
-            displayName: 'Experimenter',
-            props: {
-                minItems: 0,
-                collection: 'personnel',
-                constraints: {},
-                displayEmptyAsUnknown: false,
-                addReferenceToTarget: false,
-                readOnly: false,
-            }
-        }},
-    }, { apiKey });
-    
-    await driver.sendMessage({
-        type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, props: {
-            type: 'ForeignIdList',
-            key: 'herlperPersonIds',
-            displayName: 'Helfer',
-            props: {
-                minItems: 0,
-                collection: 'personnel',
-                constraints: {},
-                displayEmptyAsUnknown: false,
-                addReferenceToTarget: false,
-                readOnly: false,
-            }
-        }},
-    }, { apiKey });
-    
-    await driver.sendMessage({
-        type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, props: {
-            type: 'URLStringList',
-            key: 'equipmentLinks',
-            displayName: 'Links zo Fotos/Videos der Apparatur',
-            props: { minItems: 0 }
-        }},
-    }, { apiKey });
+    cache.addCRT(crt.meta);
+    var { _id: crtId } = crt.meta;
  
-    await driver.sendMessage({
-        type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, props: {
-            type: 'SaneString',
-            key: 'equipmentLocation',
-            displayName: 'Lagerort der Apperatur',
-            props: { minLength: 0 }
-        }},
-    }, { apiKey });
- 
+    await crt.addManyFields({ definitions: [
+        ...Object.values(definitions),
+    ]});
 
-    await driver.sendMessage({
-        type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, props: {
-            type: 'SaneString',
-            key: 'doi',
-            displayName: 'DOI',
-            props: { minLength: 0 }
-        }},
-    }, { apiKey });
- 
+    await crt.commitFields();
 
-    await driver.sendMessage({
-        type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, props: {
-            type: 'FullText',
-            key: 'description',
-            displayName: 'Beschreibung',
-            props: { minLength: 0 }
-        }},
-    }, { apiKey });
- 
-
-    await driver.sendMessage({
-        type: `custom-record-types/commit-settings`,
-        payload: { id: crtId }
-    }, { apiKey });
-
-
-    await driver.sendMessage({
-        type: `custom-record-types/set-record-label-definition`,
-        payload: { id: crtId, props: {
+    await crt.setupDisplaySettings({
+        recordLabelDefinition: {
             format: '${#}',
-            tokens: [
-                '/state/shorthand',
-            ]
-        }}
-    }, { apiKey });
+            tokens: asPointers([ 'shorthand' ])
+        },
+        displayFields: {
+            'table': [ '/sequenceNumber', ...asPointers([
+                'shorthand',
+                'scientistIds',
+                'runningPeriod/start',
+                'runningPeriod/end',
+            ])],
+            'optionlist': [ '/sequenceNumber', ...asPointers([
+                'shorthand',
+            ])]
+        },
+    })
 
-    await driver.sendMessage({
-        type: `custom-record-types/set-display-fields`,
-        payload: {
-            id: crtId,
-            target: 'table',
-            fieldPointers: [
-                '/sequenceNumber',
-                '/state/shorthand',
-                '/state/scientistIds',
-                '/state/runningPeriod/start',
-                '/state/runningPeriod/end',
-            ]
-        }
-    }, { apiKey });
-    
-    await driver.sendMessage({
-        type: `custom-record-types/set-display-fields`,
-        payload: {
-            id: crtId,
-            target: 'optionlist',
-            fieldPointers: [
-                '/sequenceNumber',
-                '/state/shorthand',
-            ]
-        }
-    }, { apiKey });
-
-    await driver.sendMessage({
-        type: `custom-record-types/set-general-data`,
-        payload: {
-            id: crtId,
-            label: 'WKPRC-Study',
-            enableLabTeams: false,
-            enableSubjectSelectionSettings: false,
-        }
-    }, { apiKey });
+    await crt.updateGeneralSettings({
+        displayNames: { 'en': label },
+        enableLabTeams: false,
+        enableSubjectSelectionSettings: false,
+    })
 
     return crtId;
 }
+
+var FieldDefinitions = ({ cache, type }) => ({
+    'experimentIds': {
+        type: 'ForeignIdList',
+        key: 'experimenterIds',
+        displayName: 'Experimenters',
+        displayNameI18N: {
+            'de': 'Experimenter:innen'
+        },
+        props: {
+            minItems: 0,
+            collection: 'personnel',
+            constraints: {},
+            displayEmptyAsUnknown: false,
+            addReferenceToTarget: false,
+            readOnly: false,
+        }
+    },
+    'helperPersonIds': {
+        type: 'ForeignIdList',
+        key: 'helperPersonIds', // XXX: was 'herlper....'
+        displayName: 'Helpers',
+        displayNameI18N: {
+            'de': 'Helfer:innen'
+        },
+        props: {
+            minItems: 0,
+            collection: 'personnel',
+            constraints: {},
+            displayEmptyAsUnknown: false,
+            addReferenceToTarget: false,
+            readOnly: false,
+        }
+    },
+    'equipmentLinks': {
+        type: 'URLStringList',
+        key: 'equipmentLinks',
+        displayName: 'Links to Pictures/Videos of the Apparatus',
+        displayNameI18N: {
+            'de': 'Links zo Fotos/Videos der Apparatur',
+        },
+        props: { minItems: 0 }
+    },
+    'equipmentLocation': {
+        type: 'SaneString',
+        key: 'equipmentLocation',
+        displayName: 'Storage Location of the Apparatus',
+        displayNameI18N: {
+            'de': 'Lagerort der Apparatur'
+        },
+        props: { minLength: 0 }
+    },
+    'doi': {
+        type: 'SaneString',
+        key: 'doi', // FIXME: maybe publicationDOI ?
+        displayName: 'DOI',
+        displayNameI18N: {
+            'de': 'DOI'
+        },
+        props: { minLength: 0 }
+    },
+    'description': {
+        type: 'FullText',
+        key: 'description',
+        displayName: 'Description',
+        displayNameI18N: {
+            'de': 'Beschreibung'
+        },
+        props: { minLength: 0 }
+    }
+})

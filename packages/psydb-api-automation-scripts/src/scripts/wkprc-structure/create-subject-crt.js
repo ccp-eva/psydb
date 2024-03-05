@@ -1,6 +1,4 @@
 'use strict';
-var utils = require('../../utils');
-
 var asPointers = (keys) => keys.map(it => (
     `/scientific/state/custom/${it}`
 ));
@@ -12,8 +10,7 @@ var createSubjectCRT = async (bag) => {
     var definitions = FieldDefinitions({ cache, type });
     var extra = FieldDefinitionsExtra({ cache, type });
 
-    var crt = await utils.crt.create({
-        driver,
+    var crt = await driver.crt.create({
         collection: 'subject', key: type,
         displayNames: { 'en': label }
     });
@@ -70,14 +67,6 @@ var FieldDefinitions = ({ cache, type }) => ({
         props: { minLength: 1 }
     },
 
-    'wkprcIdCode': {
-        type: 'SaneString',
-        key: 'wkprcIdCode',
-        displayName: 'WKPRC-ID-Code',
-        displayNameI18N: {},
-        props: { minLength: 0 }
-    },
-
     'biologicalGender': {
         type: 'BiologicalGender',
         key: 'biologicalGender',
@@ -89,12 +78,31 @@ var FieldDefinitions = ({ cache, type }) => ({
         }
     },
 
+    'wkprcIdCode': {
+        type: 'SaneString',
+        key: 'wkprcIdCode',
+        displayName: 'WKPRC-ID-Code',
+        displayNameI18N: {},
+        props: { minLength: 0 }
+    },
+
     'dateOfBirth': {
         type: 'DateOnlyServerSide',
         key: 'dateOfBirth',
         displayName: 'Date of Birth',
         displayNameI18N: {},
         props: { isNullable: true, isSpecialAgeFrameField: true }
+    },
+
+    'age': {
+        type: 'Lambda',
+        key: 'age',
+        displayName: 'Age',
+        displayNameI18N: {},
+        props: {
+            fn: 'deltaYMD',
+            input: '/scientific/state/custom/dateOfBirth'
+        }
     },
 
     'subSpeciesId': {
@@ -106,61 +114,6 @@ var FieldDefinitions = ({ cache, type }) => ({
             setId: cache.get(`/helperSet/${type}SubSpecies`),
             isNullable: true,
             displayEmptyAsUnknown: true,
-        },
-    },
-
-    'rearingHistoryId': {
-        type: 'HelperSetItemId',
-        key: 'rearingHistoryId',
-        displayName: 'Rearing History',
-        displayNameI18N: {},
-        props: {
-            setId: cache.get('/helperSet/rearingHistory'),
-            isNullable: true,
-            displayEmptyAsUnknown: true,
-        },
-    },
-
-    'originId': {
-        type: 'HelperSetItemId',
-        key: 'originId',
-        displayName: 'Origin',
-        displayNameI18N: {},
-        props: {
-            setId: cache.get('/helperSet/origin'),
-            isNullable: true,
-            displayEmptyAsUnknown: true,
-        },
-    },
-
-    'arrivalDate': {
-        type: 'DateOnlyServerSide',
-        key: 'arrivalDate',
-        displayName: 'Arrival Date',
-        displayNameI18N: {},
-        props: { isNullable: true, isSpecialAgeFrameField: false }
-    },
-
-    'arrivedFrom': {
-        type: 'SaneString',
-        key: 'arrivedFrom',
-        displayName: 'Arrived From',
-        displayNameI18N: {},
-        props: { minLength: 0 }
-    },
-
-    'locationId': {
-        type: 'ForeignId',
-        key: 'locationId',
-        displayName: 'Location',
-        displayNameI18N: {},
-        props: {
-            collection: 'location',
-            recordType: 'wkprc_ape_location',
-            isNullable: true,
-            displayEmptyAsUnknown: true,
-            addReferenceToTarget: false,
-            constraints: {},
         },
     },
 
@@ -204,7 +157,7 @@ var FieldDefinitions = ({ cache, type }) => ({
         },
     },
 
-    'knownOffSpringIds': {
+    'knownOffspringIds': {
         type: 'ForeignIdList',
         key: 'knownOffspringIds',
         displayName: 'Known Offspring',
@@ -217,16 +170,20 @@ var FieldDefinitions = ({ cache, type }) => ({
             constraints: {},
         },
     },
-
-    'age': {
-        type: 'Lambda',
-        key: 'age',
-        displayName: 'Age',
+    
+    'locationId': {
+        type: 'ForeignId',
+        key: 'locationId',
+        displayName: 'Location',
         displayNameI18N: {},
         props: {
-            fn: 'deltaYMD',
-            input: '/scientific/state/custom/dateOfBirth'
-        }
+            collection: 'location',
+            recordType: 'wkprc_ape_location',
+            isNullable: true,
+            displayEmptyAsUnknown: true,
+            addReferenceToTarget: false,
+            constraints: {},
+        },
     },
 
     'groupId': {
@@ -245,6 +202,47 @@ var FieldDefinitions = ({ cache, type }) => ({
             },
         },
     },
+
+    'rearingHistoryId': {
+        type: 'HelperSetItemId',
+        key: 'rearingHistoryId',
+        displayName: 'Rearing History',
+        displayNameI18N: {},
+        props: {
+            setId: cache.get('/helperSet/rearingHistory'),
+            isNullable: true,
+            displayEmptyAsUnknown: true,
+        },
+    },
+
+    'originId': {
+        type: 'HelperSetItemId',
+        key: 'originId',
+        displayName: 'Origin',
+        displayNameI18N: {},
+        props: {
+            setId: cache.get('/helperSet/origin'),
+            isNullable: true,
+            displayEmptyAsUnknown: true,
+        },
+    },
+
+    'arrivalDate': {
+        type: 'DateOnlyServerSide',
+        key: 'arrivalDate',
+        displayName: 'Arrival Date',
+        displayNameI18N: {},
+        props: { isNullable: true, isSpecialAgeFrameField: false }
+    },
+
+    'arrivedFrom': {
+        type: 'SaneString',
+        key: 'arrivedFrom',
+        displayName: 'Arrived From',
+        displayNameI18N: {},
+        props: { minLength: 0 }
+    },
+
 });
 
 var FieldDefinitionsExtra = ({ cache, type }) => ({
