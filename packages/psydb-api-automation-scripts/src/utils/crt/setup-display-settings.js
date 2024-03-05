@@ -1,5 +1,5 @@
 'use strict';
-var setupCRTDisplaySettings = (bag) => {
+var setupCRTDisplaySettings = async (bag) => {
     var {
         driver, crtId,
         recordLabelDefinition,
@@ -14,17 +14,19 @@ var setupCRTDisplaySettings = (bag) => {
         }}
     });
 
-    for (var [target, tokens] of entries(displayFields)) {
+    for (var [target, fieldPointers] of Object.entries(displayFields)) {
         await driver.sendMessage({
             type: `custom-record-types/set-display-fields`,
-            payload: { id: crtId, target, tokens }
+            payload: { id: crtId, target, fieldPointers }
         });
     }
 
-    await driver.sendMessage({
-        type: `custom-record-types/set-form-order`,
-        payload: { id: crtId, formOrder }
-    });
+    if (formOrder) {
+        await driver.sendMessage({
+            type: `custom-record-types/set-form-order`,
+            payload: { id: crtId, formOrder }
+        });
+    }
 }
 
 module.exports = setupCRTDisplaySettings;

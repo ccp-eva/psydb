@@ -7,7 +7,7 @@ var asPointers = (keys) => keys.map(it => (
 
 // NOTE: crtKey, crtId, crtRecord, CRT
 var createSubjectCRT = async (bag) => {
-    var { apiKey, driver, cache, type, label } = bag;
+    var { driver, cache, type, label } = bag;
 
     var definitions = FieldDefinitions({ cache, type });
     var extra = FieldDefinitionsExtra({ cache, type });
@@ -21,13 +21,10 @@ var createSubjectCRT = async (bag) => {
     cache.addCRT(crt.meta);
     var { _id: crtId } = crt.meta;
 
-    await crt.addManyFields({
-        subChannelKey: 'scientific',
-        definitions: [
-            ...Object.values(definitions),
-            ...Object.value(extra)
-        ],
-    });
+    await crt.addManyFields({ subChannelKey: 'scientific', definitions: [
+        ...Object.values(definitions),
+        ...Object.values(extra)
+    ]});
 
     await crt.commitFields();
 
@@ -69,6 +66,7 @@ var FieldDefinitions = ({ cache, type }) => ({
         type: 'SaneString',
         key: 'name',
         displayName: 'Name',
+        displayNameI18N: {},
         props: { minLength: 1 }
     },
 
@@ -76,6 +74,7 @@ var FieldDefinitions = ({ cache, type }) => ({
         type: 'SaneString',
         key: 'wkprcIdCode',
         displayName: 'WKPRC-ID-Code',
+        displayNameI18N: {},
         props: { minLength: 0 }
     },
 
@@ -83,8 +82,10 @@ var FieldDefinitions = ({ cache, type }) => ({
         type: 'BiologicalGender',
         key: 'biologicalGender',
         displayName: 'Sex',
+        displayNameI18N: {},
         props: {
             enableUnknownValue: true,
+            enableOtherValue: false,
         }
     },
 
@@ -92,6 +93,7 @@ var FieldDefinitions = ({ cache, type }) => ({
         type: 'DateOnlyServerSide',
         key: 'dateOfBirth',
         displayName: 'Date of Birth',
+        displayNameI18N: {},
         props: { isNullable: true, isSpecialAgeFrameField: true }
     },
 
@@ -99,6 +101,7 @@ var FieldDefinitions = ({ cache, type }) => ({
         type: 'HelperSetItemId',
         key: 'subSpeciesId',
         displayName: 'Sub-Species',
+        displayNameI18N: {},
         props: {
             setId: cache.get(`/helperSet/${type}SubSpecies`),
             isNullable: true,
@@ -110,6 +113,7 @@ var FieldDefinitions = ({ cache, type }) => ({
         type: 'HelperSetItemId',
         key: 'rearingHistoryId',
         displayName: 'Rearing History',
+        displayNameI18N: {},
         props: {
             setId: cache.get('/helperSet/rearingHistory'),
             isNullable: true,
@@ -121,6 +125,7 @@ var FieldDefinitions = ({ cache, type }) => ({
         type: 'HelperSetItemId',
         key: 'originId',
         displayName: 'Origin',
+        displayNameI18N: {},
         props: {
             setId: cache.get('/helperSet/origin'),
             isNullable: true,
@@ -132,6 +137,7 @@ var FieldDefinitions = ({ cache, type }) => ({
         type: 'DateOnlyServerSide',
         key: 'arrivalDate',
         displayName: 'Arrival Date',
+        displayNameI18N: {},
         props: { isNullable: true, isSpecialAgeFrameField: false }
     },
 
@@ -139,6 +145,7 @@ var FieldDefinitions = ({ cache, type }) => ({
         type: 'SaneString',
         key: 'arrivedFrom',
         displayName: 'Arrived From',
+        displayNameI18N: {},
         props: { minLength: 0 }
     },
 
@@ -146,6 +153,7 @@ var FieldDefinitions = ({ cache, type }) => ({
         type: 'ForeignId',
         key: 'locationId',
         displayName: 'Location',
+        displayNameI18N: {},
         props: {
             collection: 'location',
             recordType: 'wkprc_ape_location',
@@ -160,6 +168,7 @@ var FieldDefinitions = ({ cache, type }) => ({
         type: 'ForeignId',
         key: 'motherId',
         displayName: 'Mother',
+        displayNameI18N: {},
         props: {
             collection: 'subject',
             recordType: type,
@@ -179,6 +188,7 @@ var FieldDefinitions = ({ cache, type }) => ({
         type: 'ForeignId',
         key: 'fatherId',
         displayName: 'Father',
+        displayNameI18N: {},
         props: {
             collection: 'subject',
             recordType: type,
@@ -198,6 +208,7 @@ var FieldDefinitions = ({ cache, type }) => ({
         type: 'ForeignIdList',
         key: 'knownOffspringIds',
         displayName: 'Known Offspring',
+        displayNameI18N: {},
         props: {
             collection: 'subject',
             recordType: type,
@@ -211,6 +222,7 @@ var FieldDefinitions = ({ cache, type }) => ({
         type: 'Lambda',
         key: 'age',
         displayName: 'Age',
+        displayNameI18N: {},
         props: {
             fn: 'deltaYMD',
             input: '/scientific/state/custom/dateOfBirth'
@@ -221,6 +233,7 @@ var FieldDefinitions = ({ cache, type }) => ({
         type: 'ForeignId',
         key: 'groupId',
         displayName: 'Group',
+        displayNameI18N: {},
         props: {
             collection: 'subjectGroup',
             isNullable: true,
@@ -234,11 +247,12 @@ var FieldDefinitions = ({ cache, type }) => ({
     },
 });
 
-var FieldDefinitions = ({ cache, type }) => ({
+var FieldDefinitionsExtra = ({ cache, type }) => ({
     'sensitiveComment': {
         type: 'FullText',
         key: 'sensitiveComment', // sensitive_comment
         displayName: 'Sensitive Comment',
+        displayNameI18N: {},
         props: {
             minLength: 0,
             isSensitive: true,

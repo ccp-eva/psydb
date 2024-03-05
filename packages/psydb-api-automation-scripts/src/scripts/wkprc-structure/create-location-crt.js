@@ -1,77 +1,50 @@
 'use strict';
 var createLocationCRT = async (context) => {
-    var { apiKey, driver, cache, as } = context;
+    var { driver, cache, as } = context;
     var label = `Ape-Location`;
 
-    await driver.sendMessage({
-        type: `custom-record-types/create`,
-        payload: {
-            collection: 'location',
-            type: `wkprc_ape_location`,
-            props: { label }
-        },
-    }, { apiKey });
+    var crt = await driver.crt.create({
+        // FIXME: wkprc_ape_location
+        collection: 'location', key: 'wkprc_apeLocation',
+        displayNames: { 'en': label }
+    });
 
-    var crtId = cache.addId({ collection: 'customRecordType', as });
-
-    await driver.sendMessage({
-        type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, props: {
+    cache.addCRT(crt.meta);
+    var { _id: crtId } = crt.meta;
+    
+    await crt.addManyFields({ definitions: [
+        {
             type: 'SaneString',
             key: 'name',
             displayName: 'Name',
+            displayNameI18N: {},
             props: { minLength: 1 }
-        }},
-    }, { apiKey });
- 
-    await driver.sendMessage({
-        type: `custom-record-types/commit-settings`,
-        payload: { id: crtId }
-    }, { apiKey });
+        }
+    ]});
 
+    await crt.commitFields();
 
-    await driver.sendMessage({
-        type: `custom-record-types/set-record-label-definition`,
-        payload: { id: crtId, props: {
+    await crt.setupDisplaySettings({
+        recordLabelDefinition: {
             format: '${#}',
-            tokens: [
+            tokens: [ '/state/custom/name' ]
+        },
+        displayFields: {
+            'table': [
+                '/sequenceNumber',
                 '/state/custom/name',
-            ]
-        }}
-    }, { apiKey });
-
-    await driver.sendMessage({
-        type: `custom-record-types/set-display-fields`,
-        payload: {
-            id: crtId,
-            target: 'table',
-            fieldPointers: [
+            ],
+            'optionlist': [
                 '/sequenceNumber',
                 '/state/custom/name',
             ]
-        }
-    }, { apiKey });
-    
-    await driver.sendMessage({
-        type: `custom-record-types/set-display-fields`,
-        payload: {
-            id: crtId,
-            target: 'optionlist',
-            fieldPointers: [
-                '/sequenceNumber',
-                '/state/custom/name',
-            ]
-        }
-    }, { apiKey });
+        },
+    });
 
-    await driver.sendMessage({
-        type: `custom-record-types/set-general-data`,
-        payload: {
-            id: crtId,
-            label: 'Ape-Location',
-            reservationType: 'away-team',
-        }
-    }, { apiKey });
+    await crt.updateGeneralSettings({
+        displayNames: { en: label },
+        reservationType: 'away-team',
+    })
 
     return crtId;
 }

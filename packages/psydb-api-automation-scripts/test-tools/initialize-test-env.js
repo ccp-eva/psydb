@@ -27,7 +27,7 @@ var beforeAll = async function () {
             con: this.context.mongo.client,
             database: this.context.mongo.dbName,
             clean: true,
-            from: fixtures(fixtureName, { db: true })
+            from: fixtures.get(fixtureName, { db: true })
         })
 
         return out;
@@ -46,6 +46,10 @@ var beforeAll = async function () {
                 url: mongo.uri,
                 dbName: mongo.dbName,
                 useUnifiedTopology: true,
+            },
+            apiKeyAuth: {
+                isEnabled: true,
+                allowedIps: [ '::/0' ]
             }
         }}));
 

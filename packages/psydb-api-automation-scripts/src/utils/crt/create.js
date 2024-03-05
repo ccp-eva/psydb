@@ -11,8 +11,7 @@ var create = async (bag) => {
     await driver.sendMessage({
         type: `custom-record-types/create`,
         payload: {
-            collection: 'subject',
-            type: key,
+            collection, type: key,
             props: {
                 label: en,
                 displayNameI18N: i18n

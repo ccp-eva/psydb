@@ -22,22 +22,34 @@ var subjects = [
 ];
 
 module.exports = async (bag) => {
-    var { driver, apiKey, extraOptions } = bag;
+    var { driver, extraOptions } = bag;
     var cache = WrappedCache({ driver });
-    var context = { apiKey, driver, cache };
+    var context = { driver, cache };
 
     await createRARole({ ...context, as: 'ra' });
     await createScientistRole({ ...context, as: 'scientist' });
 
     //await createLocationTypeSet({ ...context, as: 'locationType' });
-    await createOriginSet({ ...context, as: 'origin' });
-    await createRearingHistorySet({ ...context, as: 'rearingHistory' });
+    await driver.helperSet.create({
+        displayNames: { 'en': 'WKPRC Origin' },
+    });
+    cache.addId({ collection: 'helperSet', as: 'origin' });
+
+    await driver.helperSet.create({
+        displayNames: { 'en': 'WKPRC Rearing History' },
+    });
+    cache.addId({ collection: 'helperSet', as: 'rearingHistory' });
 
     await createLocationCRT({ ...context, ...it, as: 'location' });
 
     for (var it of subjects) {
         var { type, label } = it;
-        await createSubSpeciesSet({ ...context, type, label });
+        
+        await driver.helperSet.create({
+            displayNames: { 'en': `WKPRC ${label} Sub-Species` },
+        });
+        cache.addId({ collection: 'helperSet', as: `${type}SubSpecies` });
+
         await createSubjectCRT({ ...context, type, label: label + 's' });
     }
 
