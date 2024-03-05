@@ -33,10 +33,10 @@ var createSubjectCRT = async (bag) => {
         displayFields: {
             'table': asPointers([
                 'name', 'wkprcIdCode', 'biologicalGender', 'dateOfBirth',
-                'locationId', 'groupId',
+                'locationId', 'groupId', 'age'
             ]),
             'optionlist': asPointers([
-                'name', 'wkprcIdCode',
+                'name', 'wkprcIdCode', 'biologicalGender',
                 'locationId', 'groupId',
             ])
         },
