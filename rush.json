@@ -344,8 +344,8 @@
     },
     
     {
-       "packageName": "@mpieva/psydb-db-anon-dumper-core",
-       "projectFolder": "tools/psydb-db-anon-dumper-core",
+       "packageName": "@mpieva/psydb-anon-dumper-core",
+       "projectFolder": "tools/psydb-anon-dumper-core",
        "reviewCategory": "production"
     },
   ]

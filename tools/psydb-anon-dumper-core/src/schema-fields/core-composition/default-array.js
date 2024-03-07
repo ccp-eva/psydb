@@ -1,14 +1,14 @@
 'use strict';
 var jss = require('@mpieva/psydb-schema-fields');
-var { MFSchema, SchemaFactory, commonTransformers } = require('../utils');
+var { PsydbSchema, SchemaFactory, commonTransformers } = require('../utils');
 
 var DefaultArray = (keywords) => {
     var sharedBag = { ...keywords };
 
-    var MFSchema = SchemaFactory({
+    var PsydbSchema = SchemaFactory({
         JSONSchema: jss.DefaultArray,
         T: ({ keywords, args }) => {
-            var { items: itemsMFSchema } = keywords;
+            var { items: itemsPsydbSchema } = keywords;
 
             var [{ transform, value: arrayValue, ...internal }] = args;
             var { root = arrayValue, path = [] } = internal;
@@ -35,7 +35,7 @@ var DefaultArray = (keywords) => {
                         ? 'array'
                         : typeof itemValue
                     );
-                    var itemT = itemsMFSchema.transformValue({
+                    var itemT = itemsPsydbSchema.transformValue({
                         transform,
                         root,
                         value: itemValue,
@@ -53,7 +53,7 @@ var DefaultArray = (keywords) => {
         }
     });
     
-    return MFSchema(sharedBag)
+    return PsydbSchema(sharedBag)
 }
 
 module.exports = DefaultArray;

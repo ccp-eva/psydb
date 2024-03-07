@@ -7,20 +7,20 @@ var DefaultArray = require('./default-array');
 
 describe('DefaultArray()', () => {
     it('doit', () => {
-        var mfschema = DefaultArray({
+        var psyschema = DefaultArray({
             items: ExactObject({
                 foo: AnyString({ anonT: 'append' }),
             }),
         })
 
-        var jss = mfschema.createJSONSchema();
+        var jss = psyschema.createJSONSchema();
         console.dir({ jss }, { depth: null });
 
         var a = Anonymizer({ hooks: {
             'pass': ({ value }) => value,
             'append': ({ value }) => `${value} APPEND`
         }})
-        var T = mfschema.transformValue({
+        var T = psyschema.transformValue({
             transform: a.anonymize,
             value: [
                 { foo: 'a' },

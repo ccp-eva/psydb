@@ -58,10 +58,13 @@ module.exports = {
     Time: require('./time'),
     TimeInterval: require('./time-interval'),
     SpecialHumanName: require('./special-human-name'),
+
     ExactObject: require('./exact-object'), // TODO: rename PartialObject
     OpenObject: require('./open-object'),
     ClosedObject: require('./closed-object'), // TODO: rename ExactObject
     MaxObject: require('./max-object'),
+    PatternObject: require('./pattern-object'),
+
     Integer: require('./integer'),
     
     WeekdayBoolObject: require('./weekday-bool-object'),

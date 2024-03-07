@@ -5,7 +5,7 @@ var { SchemaFactory, commonTransformers } = require('../utils');
 var ExactObject = (properties, otherKeywords) => {
     var sharedBag = { properties, ...otherKeywords };
 
-    var MFSchema = SchemaFactory({
+    var PsydbSchema = SchemaFactory({
         JSONSchema: (jssKeywords) => {
             var { properties, ...pass } = jssKeywords
             return jss.ExactObject(properties, pass)
@@ -13,7 +13,7 @@ var ExactObject = (properties, otherKeywords) => {
         T: commonTransformers.object
     });
     
-    return MFSchema(sharedBag)
+    return PsydbSchema(sharedBag)
 }
 
 module.exports = ExactObject;

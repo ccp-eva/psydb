@@ -1,5 +1,5 @@
 'use strict';
-var { without, entries } = require('/psydb-core-utils');
+var { without, entries } = require('@mpieva/psydb-core-utils');
 var { inline } = require('../externals');
 
 var verifyNoMissingHandlers = (bag) => {

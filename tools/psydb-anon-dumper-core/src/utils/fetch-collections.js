@@ -1,5 +1,5 @@
 'use strict';
-var { without } = require('/psydb-core-utils');
+var { without } = require('@mpieva/psydb-core-utils');
 
 var fetchCollections = async (bag) => {
     var {

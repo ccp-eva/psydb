@@ -1,10 +1,16 @@
+'use strict';
+var { MongoClient, ObjectId } = require('mongodb');
 module.exports = {
-    MongoClient: require('mongodb').MongoClient,
-    crc32: require('./crc32'),
-    faker: require('@faker-js/faker'),
+    MongoClient,
+    ObjectId,
 
-    mongodump: require('@cdxoo/mongodb-dump'),
+    crc32: require('crc/crc32'),
+    faker: require('@faker-js/faker').faker,
+
     inline: require('@cdxoo/inline-text'),
-    gatherPossibleJSSPaths: require('@cdxoo/gather-possible-jss-paths'),
+    mongodump: require('@cdxoo/mongodb-dump'),
+    
+    traverse: require('@cdxoo/traverse'),
     stringifyPath: require('@cdxoo/stringify-path-perlstyle'),
+    gatherPossibleJSSPaths: require('@cdxoo/gather-possible-jss-paths'),
 }

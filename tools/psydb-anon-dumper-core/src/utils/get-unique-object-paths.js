@@ -1,10 +1,11 @@
 'use strict';
-// FIXME: newer version than in core-utils
-var traverse = require('@cdxoo/traverse');
+var { isPlainObject, unique } = require('@mpieva/psydb-core-utils');
+var {
+    ObjectId,
+    traverse,
+    stringifyPath,
+} = require('../externals');
 
-var stringifyPath = require('@cdxoo/stringify-path-perlstyle');
-var { isPlainObject, unique } = require('/psydb-core-utils');
-var { ObjectId } = require('/psydb-mongo-adapter');
 
 var getUniqueObjectPaths = (that, options = {}) => {
     var {

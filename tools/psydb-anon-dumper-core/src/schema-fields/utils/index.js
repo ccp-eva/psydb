@@ -1,6 +1,6 @@
 'use strict';
-var { entries, without } = require('/psydb-core-utils');
-var MFSchema = require('./mf-schema');
+var { entries, without } = require('@mpieva/psydb-core-utils');
+var PsydbSchema = require('./psydb-schema');
 var keys = Object.keys;
 
 // NOTE: manually we would have to do this:
@@ -34,25 +34,25 @@ var SchemaFactory = (bag) => {
 
         if (properties) {
             for (var [ key, value ] of entries(properties)) {
-                verifyIsMFSchema(value, `property "${key}"`);
+                verifyIsPsydbSchema(value, `property "${key}"`);
             }
         }
         if (patternProperties) {
             for (var [ key, value ] of entries(patternProperties)) {
-                verifyIsMFSchema(value, `patternProperty "${key}"`);
+                verifyIsPsydbSchema(value, `patternProperty "${key}"`);
             }
         }
 
-        verifyIsMFSchema(items, 'keyword "items"');
-        verifyIsMFSchema(prefixItems, 'keyword "prefixItems"');
+        verifyIsPsydbSchema(items, 'keyword "items"');
+        verifyIsPsydbSchema(prefixItems, 'keyword "prefixItems"');
 
         if (oneOf) {
             for (var it of oneOf) {
-                verifyIsMFSchema(it, `keyword "oneOf[${it}]"`);
+                verifyIsPsydbSchema(it, `keyword "oneOf[${it}]"`);
             }
         }
 
-        return new MFSchema({
+        return new PsydbSchema({
             createJSONSchema: () => {
                 var nestedJSS = {};
 
@@ -88,12 +88,12 @@ var SchemaFactory = (bag) => {
     }
 };
 
-var verifyIsMFSchema = (value, label) => {
+var verifyIsPsydbSchema = (value, label) => {
     if (value === undefined) {
         return;
     }
-    if (!(value instanceof MFSchema)) {
-        throw new Error(`${label} not instance of MFSchema`);
+    if (!(value instanceof PsydbSchema)) {
+        throw new Error(`${label} not instance of PsydbSchema`);
     }
 }
 
@@ -128,7 +128,7 @@ var commonTransformers = {
             var staticPropKeys = keys(properties);
 
             for (var key of staticPropKeys) {
-                var mfschema = properties[key];
+                var psyschema = properties[key];
                 var propValue = objectValue[key];
                 var propType = (
                     Array.isArray(propValue)
@@ -136,7 +136,7 @@ var commonTransformers = {
                     : typeof propValue
                 );
 
-                var propT = mfschema.transformValue({
+                var propT = psyschema.transformValue({
                     transform,
                     root,
                     value: propValue,
@@ -149,7 +149,7 @@ var commonTransformers = {
 
             // FIXME: ambigous patterns?
             for (var pattern of keys(patternProperties)) {
-                var mfschema = patternProperties[pattern];
+                var psyschema = patternProperties[pattern];
                 var rx = new RegExp(pattern);
 
                 var matchingObjectKeys = without({
@@ -165,7 +165,7 @@ var commonTransformers = {
                         : typeof propValue
                     );
 
-                    var propT = mfschema.transformValue({
+                    var propT = psyschema.transformValue({
                         transform,
                         root,
                         value: propValue,
@@ -186,7 +186,7 @@ var commonTransformers = {
 }
 
 module.exports = {
-    MFSchema,
+    PsydbSchema,
     SchemaFactory,
     commonTransformers
 };

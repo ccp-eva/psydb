@@ -5,7 +5,7 @@ var { SchemaFactory, commonTransformers } = require('../utils');
 var PatternObject = (patternProperties, otherKeywords) => {
     var sharedBag = { patternProperties, ...otherKeywords };
 
-    var MFSchema = SchemaFactory({
+    var PsydbSchema = SchemaFactory({
         JSONSchema: (jssKeywords) => {
             var { patternProperties, ...pass } = jssKeywords
             return jss.PatternObject(patternProperties, pass)
@@ -13,7 +13,7 @@ var PatternObject = (patternProperties, otherKeywords) => {
         T: commonTransformers.object
     });
     
-    return MFSchema(sharedBag)
+    return PsydbSchema(sharedBag)
 }
 
 module.exports = PatternObject;

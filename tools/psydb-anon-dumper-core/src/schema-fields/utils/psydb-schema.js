@@ -1,4 +1,4 @@
-class MFSchema {
+class PsydbSchema {
     constructor (bag) {
         var { createJSONSchema, transformValue } = bag;
         this.createJSONSchema = createJSONSchema;
@@ -6,4 +6,4 @@ class MFSchema {
     }
 }
 
-module.exports = MFSchema;
+module.exports = PsydbSchema;

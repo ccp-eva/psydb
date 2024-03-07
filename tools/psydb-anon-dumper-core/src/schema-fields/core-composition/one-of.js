@@ -17,7 +17,7 @@ var OneOf = ({ discriminate, schemas }) => {
         cachedJSS[k] = mfs.createJSONSchema();
     }
 
-    var MFSchema = SchemaFactory({
+    var PsydbSchema = SchemaFactory({
         // FIXME: type override; see jss
         JSONSchema: (keywords) => (
             jss.OneOf({ ...keywords, type: undefined })
@@ -33,8 +33,8 @@ var OneOf = ({ discriminate, schemas }) => {
 
             var keywords = cachedJSS[selected];
 
-            var mfschema = schemas[selected];
-            var T = mfschema.transformValue({
+            var psyschema = schemas[selected];
+            var T = psyschema.transformValue({
                 transform: ({
                     path: localPath, root: localRoot, ...pass
                 }) => (
@@ -50,7 +50,7 @@ var OneOf = ({ discriminate, schemas }) => {
         }
     });
     
-    return MFSchema({ oneOf: Object.values(schemas) });
+    return PsydbSchema({ oneOf: Object.values(schemas) });
 }
 
 module.exports = OneOf;

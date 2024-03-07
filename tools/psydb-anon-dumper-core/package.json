@@ -4,32 +4,27 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "test": "npx mocha --config mocha.config.json test/"
+    "test": "npx mocha --config ./mocha.config.json src/"
   },
   "author": "Jan Schwalbe",
   "license": "MIT",
   "dependencies": {
     "co": "~4.6.0",
     "mongodb": "~3.6.3",
-    "axios": "~0.24.0",
-    "@mpieva/psydb-core-utils": "workspace:~0.1.0-alpha",
-    "@mpieva/psydb-common-lib": "workspace:~0.1.0-alpha",
-    "@mpieva/psydb-driver-nodejs": "workspace:~0.1.0-alpha",
-    "commander": "~10.0.1"
+    "crc": "~4.3.2",
+    "bcrypt": "~5.1.0",
+    "@faker-js/faker": "~8.0.0",
+    "@cdxoo/inline-text": "~1.0.2",
+    "@cdxoo/mongodb-dump": "~0.1.0-alpha.4",
+    "@cdxoo/traverse": "~0.0.2",
+    "@cdxoo/gather-possible-jss-paths": "~0.0.5",
+    "@cdxoo/stringify-path-perlstyle": "~0.0.3",
+    "@mpieva/psydb-core-utils": "workspace:*",
+    "@mpieva/psydb-schema-fields": "workspace:*",
+    "@mpieva/psydb-api-config": "workspace:*"
   },
   "devDependencies": {
     "mocha": "~10.2.0",
-    "chai": "~4.3.7",
-    "koa": "~2.14.2",
-    "@mpieva/psydb-api": "workspace:~0.1.0-alpha",
-    "@mpieva/psydb-axios-test-wrapper": "workspace:~0.1.0-alpha",
-    "@mpieva/psydb-fixtures": "workspace:~0.1.0-alpha",
-    "@cdxoo/mongo-test-helpers": "~0.7.1",
-    "@cdxoo/mongodb-restore": "2.0.0-alpha.2"
-  },
-  "config": {
-    "mongodbMemoryServer": {
-      "downloadDir": "/tmp/mongodb-memory-server/"
-    }
+    "chai": "~4.3.7"
   }
 }
