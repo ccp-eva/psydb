@@ -1,0 +1,35 @@
+{
+  "name": "@mpieva/psydb-anon-dumper-core",
+  "version": "0.1.0-alpha",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "npx mocha --config mocha.config.json test/"
+  },
+  "author": "Jan Schwalbe",
+  "license": "MIT",
+  "dependencies": {
+    "co": "~4.6.0",
+    "mongodb": "~3.6.3",
+    "axios": "~0.24.0",
+    "@mpieva/psydb-core-utils": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-common-lib": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-driver-nodejs": "workspace:~0.1.0-alpha",
+    "commander": "~10.0.1"
+  },
+  "devDependencies": {
+    "mocha": "~10.2.0",
+    "chai": "~4.3.7",
+    "koa": "~2.14.2",
+    "@mpieva/psydb-api": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-axios-test-wrapper": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-fixtures": "workspace:~0.1.0-alpha",
+    "@cdxoo/mongo-test-helpers": "~0.7.1",
+    "@cdxoo/mongodb-restore": "2.0.0-alpha.2"
+  },
+  "config": {
+    "mongodbMemoryServer": {
+      "downloadDir": "/tmp/mongodb-memory-server/"
+    }
+  }
+}

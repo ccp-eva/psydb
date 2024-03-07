@@ -342,5 +342,11 @@
        "projectFolder": "packages/psydb-api-integration-tests",
        "reviewCategory": "production"
     },
+    
+    {
+       "packageName": "@mpieva/psydb-db-anon-dumper-core",
+       "projectFolder": "tools/psydb-db-anon-dumper-core",
+       "reviewCategory": "production"
+    },
   ]
 }
