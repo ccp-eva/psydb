@@ -1,5 +1,5 @@
 {
-  "name": "@mpieva/psydb-wkprc-anon-dumper",
+  "name": "@mpieva/psydb-cli-helpers",
   "version": "0.1.0-alpha",
   "description": "",
   "main": "src/index.js",
@@ -9,11 +9,8 @@
   "author": "Jan Schwalbe",
   "license": "MIT",
   "dependencies": {
-    "mongodb": "~4.17.1",
-    "@faker-js/faker": "~8.0.0",
-    "@mpieva/psydb-core-utils": "workspace:*",
-    "@mpieva/psydb-cli-helpers": "workspace:*",
-    "@mpieva/psydb-anon-dumper-core": "workspace:*"
+    "co": "~4.6.0",
+    "commander": "~10.0.1"
   },
   "devDependencies": {
     "mocha": "~10.2.0",

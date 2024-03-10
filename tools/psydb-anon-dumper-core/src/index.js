@@ -3,5 +3,5 @@ module.exports = {
     Dumper: require('./dumper'),
     Anonymizer: require('./anonymizer'),
 
-    schemafields: require('./schemafields'),
+    schemafields: require('./schema-fields'),
 }

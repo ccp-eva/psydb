@@ -344,6 +344,11 @@
     },
     
     {
+       "packageName": "@mpieva/psydb-cli-helpers",
+       "projectFolder": "tools/psydb-cli-helpers",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-anon-dumper-core",
        "projectFolder": "tools/psydb-anon-dumper-core",
        "reviewCategory": "production"

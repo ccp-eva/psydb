@@ -10,9 +10,10 @@
   "license": "MIT",
   "dependencies": {
     "co": "~4.6.0",
-    "mongodb": "~3.6.3",
+    "mongodb": "~4.17.1",
     "crc": "~4.3.2",
     "bcrypt": "~5.1.0",
+    "debug": "~4.3.4",
     "@faker-js/faker": "~8.0.0",
     "@cdxoo/inline-text": "~1.0.2",
     "@cdxoo/mongodb-dump": "~0.1.0-alpha.4",

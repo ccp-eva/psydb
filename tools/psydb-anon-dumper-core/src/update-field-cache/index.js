@@ -1,20 +1,37 @@
 'use strict';
-var { readdirSync, writeFileSync, unlinkSync } = require('fs');
+var {
+    existsSync,
+    mkdirSync,
+    readdirSync,
+    writeFileSync,
+    unlinkSync
+} = require('fs');
+
 var fspath = require('path');
 
 var { entries } = require('@mpieva/psydb-core-utils');
-var { MongoClient } = require('@mpieva/psydb-mongo-adapter');
+var { MongoClient } = require('../externals');
 
 var {
     fetchCollections,
     fetchCollectionFieldPaths,
 } = require('../utils');
 
-var updateFieldCache = async (bag) => {
-    var { config, cachedir } = bag;
-    var { url, dbName, onlyCollections, skippedCollections } = config;
 
-    var client = new MongoClient(url, {
+var updateFieldCache = async (bag) => {
+    var { config } = bag;
+    var {
+        cachedir,
+        mongodb: mongoConfig, dbName = undefined,
+        onlyCollections,
+        skippedCollections
+    } = config;
+
+    if (!existsSync(cachedir)) {
+        mkdirSync(cachedir)
+    }
+
+    var client = new MongoClient(mongoConfig.url, {
         useUnifiedTopology: true,
     });
 

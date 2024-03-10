@@ -1664,8 +1664,9 @@ importers:
       chai: ~4.3.7
       co: ~4.6.0
       crc: ~4.3.2
+      debug: ~4.3.4
       mocha: ~10.2.0
-      mongodb: ~3.6.3
+      mongodb: ~4.17.1
     dependencies:
       '@cdxoo/gather-possible-jss-paths': 0.0.5
       '@cdxoo/inline-text': 1.0.2
@@ -1679,7 +1680,40 @@ importers:
       bcrypt: 5.1.1
       co: 4.6.0
       crc: 4.3.2
-      mongodb: 3.6.12
+      debug: 4.3.4
+      mongodb: 4.17.2
+    devDependencies:
+      chai: 4.3.10
+      mocha: 10.2.0
+
+  ../../tools/psydb-cli-helpers:
+    specifiers:
+      chai: ~4.3.7
+      co: ~4.6.0
+      commander: ~10.0.1
+      mocha: ~10.2.0
+    dependencies:
+      co: 4.6.0
+      commander: 10.0.1
+    devDependencies:
+      chai: 4.3.10
+      mocha: 10.2.0
+
+  ../../tools/psydb-wkprc-anon-dumper:
+    specifiers:
+      '@faker-js/faker': ~8.0.0
+      '@mpieva/psydb-anon-dumper-core': workspace:*
+      '@mpieva/psydb-cli-helpers': workspace:*
+      '@mpieva/psydb-core-utils': workspace:*
+      chai: ~4.3.7
+      mocha: ~10.2.0
+      mongodb: ~4.17.1
+    dependencies:
+      '@faker-js/faker': 8.0.2
+      '@mpieva/psydb-anon-dumper-core': link:../psydb-anon-dumper-core
+      '@mpieva/psydb-cli-helpers': link:../psydb-cli-helpers
+      '@mpieva/psydb-core-utils': link:../../packages/psydb-core-utils
+      mongodb: 4.17.2
     devDependencies:
       chai: 4.3.10
       mocha: 10.2.0

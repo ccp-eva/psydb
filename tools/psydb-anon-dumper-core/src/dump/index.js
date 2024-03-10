@@ -6,7 +6,6 @@ var { fetchCollections } = require('../utils');
 
 var verifyNoMissingHandlers = require('./verify-no-missing-handlers');
 var createTransformCallback = require('./create-transform-callback');
-var makeCompatCollections = require('./make-compat-collections');
 
 
 var dumpTransformed = async (bag) => {

@@ -7,7 +7,7 @@ var { inline, gatherPossibleJSSPaths } = require('../externals');
 
 var checkAnonymizers = async (bag) => {
     var { config, schemas, anonymizers } = bag;
-    var { url, dbName, onlyCollections, skippedCollections } = config;
+    var { onlyCollections, skippedCollections } = config;
 
     debug('checking anonymizers');
     for (var [ collection, Schema ] of entries(schemas)) {

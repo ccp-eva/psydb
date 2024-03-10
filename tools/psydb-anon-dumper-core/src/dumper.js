@@ -5,27 +5,27 @@ var checkAnonymizers = require('./check-anonymizers');
 var dump = require('./dump');
 
 var Dumper = (bag) => {
-    var { config, cachedir, schemas, anonymizers } = bag;
+    var { config, schemas, anonymizers } = bag;
 
     var dumper = {};
     
     dumper.updateFieldCache = () => updateFieldCache({
-        config, cachedir
+        config
     });
     
     dumper.checkSchemas = () => checkSchemas({
-        config, cachedir, schemas
+        config, schemas
     });
 
     dumper.checkAnonymizers = () => checkAnonymizers({
-        config, cachedir, anonymizers
+        config, anonymizers
     });
 
     dumper.dump = () => dump({
         config, schemas, anonymizers
     });
 
-    return dumpers;
+    return dumper;
 }
 
 module.exports = Dumper;
