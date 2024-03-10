@@ -1,0 +1,20 @@
+{
+  "name": "@mpieva/psydb-wkprc-anon-dumper",
+  "version": "0.1.0-alpha",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "npx mocha --config ./mocha.config.json src/"
+  },
+  "author": "Jan Schwalbe",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "~10.0.1",
+    "@faker-js/faker": "~8.0.0",
+    "@mpieva/psydb-anon-dumper-core": "workspace:~0.1.0-alpha"
+  },
+  "devDependencies": {
+    "mocha": "~10.2.0",
+    "chai": "~4.3.7"
+  }
+}

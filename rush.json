@@ -348,5 +348,10 @@
        "projectFolder": "tools/psydb-anon-dumper-core",
        "reviewCategory": "production"
     },
+    {
+       "packageName": "@mpieva/psydb-wkprc-anon-dumper",
+       "projectFolder": "tools/psydb-wkprc-anon-dumper",
+       "reviewCategory": "production"
+    },
   ]
 }
