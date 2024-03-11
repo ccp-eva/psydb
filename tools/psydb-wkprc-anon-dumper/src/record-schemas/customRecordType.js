@@ -126,8 +126,9 @@ var Schema = () => {
                 'fieldSettings': DefaultArray({
                     items: ClosedObject({
                         'pointer': AnyString({ anonKeep: true }),
-                        'props': ClosedObject({
-                        }, { anonT: 'dupCheckFieldPropsObject' })
+                        'props': ClosedObject({}, {
+                            anonT: 'dupCheckFieldPropsObject'
+                        })
                     })
                 })
             }),

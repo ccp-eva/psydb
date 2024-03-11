@@ -1,27 +1,29 @@
 module.exports = {
-    //sequenceNumbers: require('./sequenceNumbers'),
+    sequenceNumbers: require('./sequenceNumbers'),
     //systemRole: require('./systemRole'),
-    //researchGroup: require('./researchGroup'),
+    researchGroup: require('./researchGroup'),
 
-    //personnel: require('./personnel'),
-    //personnelShadow: require('./personnelShadow'),
+    personnel: require('./personnel'),
+    personnelShadow: require('./personnelShadow'),
     apiKey: require('./apiKey'),
 
-    //helperSet: require('./helperSet'),
-    //helperSetItem: require('./helperSetItem'),
+    helperSet: require('./helperSet'),
+    helperSetItem: require('./helperSetItem'),
     customRecordType: require('./customRecordType'),
 
-    //study: require('./study'),
-    //studyTopic: require('./studyTopic'),
+    study: require('./study'),
+    studyTopic: require('./studyTopic'),
     ageFrame: require('./ageFrame'),
-    //experimentVariant: require('./experimentVariant'),
-    //experimentVariantSetting: require('./experimentVariantSetting'),
-    //experimentOperatorTeam: require('./experimentOperatorTeam'),
+    experimentVariant: require('./experimentVariant'),
+    experimentVariantSetting: require('./experimentVariantSetting'),
+    experimentOperatorTeam: require('./experimentOperatorTeam'),
 
-    //subject: require('./subject'),
+    subject: require('./subject'),
     //subjectGroup: require('./subjectGroup'),
 
-    //location: require('./location'),
-    //externalOrganization: require('./externalOrganization'),
+    location: require('./location'),
+    externalOrganization: require('./externalOrganization'),
     //externalPerson: require('./externalPerson'),
+    
+    experiment: require('./experiment'),
 }

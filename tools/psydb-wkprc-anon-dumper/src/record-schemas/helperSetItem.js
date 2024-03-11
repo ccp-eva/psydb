@@ -5,22 +5,22 @@ var {
     RohrpostMetadata,
 
     MongoId,
+    MongoFk,
     DateTime,
     DefaultBool,
-    MongoFk,
+    DefaultInt,
     AnyString,
+    NullValue,
 } = require('@mpieva/psydb-anon-dumper-core').schemafields;
 
 var Schema = () => {
     var schema = ClosedObject({
         '_id': MongoId({ anonKeep: true }),
         '_rohrpostMetadata': RohrpostMetadata(),
-        'scientific': ClosedObject({
-            'state': ClosedObject({
-                'custom': ClosedObject({
-                    'name': AnyString({ anonT: 'name' })
-                })
-            })
+
+        'setId': MongoFk({ collection: 'helperSet', anonKeep: true }),
+        'state': ClosedObject({
+            'label': AnyString({ anonT: 'label' }),
         })
     })
 

@@ -1,5 +1,5 @@
 'use strict';
-var { ExactObject, DefaultArray } = require('../core-composition');
+var { ClosedObject, DefaultArray } = require('../core-composition');
 var { AnyString } = require('../scalar');
 
 var Address = (bag = {}) => {
@@ -12,12 +12,12 @@ var Address = (bag = {}) => {
 
     // FIXME: thats ugly
     if (anonTPrefix) {
-        return ExactObject({
+        return ClosedObject({
             'affix': AnyString({ anonT: `${anonTPrefix}.affix` }),
             'city': AnyString({ anonT: `${anonTPrefix}.city` }),
-            'number': AnyString({ anonT: `${anonTPrefix}.number` }),
+            'housenumber': AnyString({ anonT: `${anonTPrefix}.number` }),
             'street': AnyString({ anonT: `${anonTPrefix}.street` }),
-            'zip': AnyString({ anonT: `${anonTPrefix}.zip` }),
+            'postcode': AnyString({ anonT: `${anonTPrefix}.zip` }),
 
             ...(enableCountry && {
                 'country': AnyString({ anonT: `${anonTPrefix}.country` }),
@@ -27,12 +27,12 @@ var Address = (bag = {}) => {
         })
     }
     else {
-        return ExactObject({
+        return ClosedObject({
             'affix': AnyString(),
             'city': AnyString(),
-            'number': AnyString(),
+            'housenumber': AnyString(),
             'street': AnyString(),
-            'zip': AnyString(),
+            'postcode': AnyString(),
 
             ...(enableCountry && {
                 'country': AnyString(),

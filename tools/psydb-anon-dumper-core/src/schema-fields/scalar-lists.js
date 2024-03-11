@@ -7,10 +7,10 @@ var scalarLists = {};
 for (let [ key, ScalarSchema ] of Object.entries(scalar)) {
     scalarLists[`${key}List`] = (bag = {}) => {
         var { items = {}} = bag;
-        var { anonKeep, anonT } = items;
+        var { anonKeep, anonT, ...pass } = items;
 
         var psyschema = DefaultArray({
-            items: ScalarSchema({ anonKeep, anonT })
+            items: ScalarSchema({ anonKeep, anonT, ...pass })
         });
 
         return psyschema;
