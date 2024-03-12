@@ -1,6 +1,6 @@
 module.exports = {
     sequenceNumbers: require('./sequenceNumbers'),
-    //systemRole: require('./systemRole'),
+    systemRole: require('./systemRole'),
     researchGroup: require('./researchGroup'),
 
     personnel: require('./personnel'),
@@ -14,12 +14,13 @@ module.exports = {
     study: require('./study'),
     studyTopic: require('./studyTopic'),
     ageFrame: require('./ageFrame'),
+    subjectSelector: require('./subjectSelector'),
     experimentVariant: require('./experimentVariant'),
     experimentVariantSetting: require('./experimentVariantSetting'),
     experimentOperatorTeam: require('./experimentOperatorTeam'),
 
     subject: require('./subject'),
-    //subjectGroup: require('./subjectGroup'),
+    subjectGroup: require('./subjectGroup'),
 
     location: require('./location'),
     externalOrganization: require('./externalOrganization'),
