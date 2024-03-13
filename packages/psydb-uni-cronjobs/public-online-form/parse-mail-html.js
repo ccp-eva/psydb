@@ -3,32 +3,31 @@ var { decode } = require('libqp');
 var { convert } = require('html-to-text');
 
 var parseMailHtml = async (context, next) => {
-    var { psydb, mails } = context;
+    var { mail } = context;
+    var it = mail; // FIXME
 
-    for (var it of mails) {
-        var { htmlPart } = it;
-        var html = String(decode(htmlPart));
+    var { htmlPart } = it;
+    var html = String(decode(htmlPart));
 
-        var out = convert(html, {
-            wordwrap: 999999,
-            selectors: [
-                { selector: '*', format: 'formatter' },
-            ],
-            formatters: {
-                formatter,
-            }
-        })
-
-        var lines = out.split(/\n/g);
-        var pairs = [];
-        for (var ix = 0; ix < lines.length; ix += 2) {
-            var key = lines[ix];
-            var value = lines[ix + 1];
-            pairs.push({ key, value });
+    var out = convert(html, {
+        wordwrap: 999999,
+        selectors: [
+            { selector: '*', format: 'formatter' },
+        ],
+        formatters: {
+            formatter,
         }
+    })
 
-        it.pairs = pairs;
+    var lines = out.split(/\n/g);
+    var pairs = [];
+    for (var ix = 0; ix < lines.length; ix += 2) {
+        var key = lines[ix];
+        var value = lines[ix + 1];
+        pairs.push({ key, value });
     }
+
+    it.pairs = pairs;
 
     await next();
 }

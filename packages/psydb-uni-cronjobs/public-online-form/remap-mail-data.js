@@ -10,82 +10,80 @@ var justremap = (simpleMap) => simpleMap.reduce((acc, it) => {
 }, {});
 
 var remapMailData = async (context, next) => {
-    var { mails, languages, acquisitions } = context;
+    var { mail, languages, acquisitions } = context;
+    var it = mail; // FIXME
 
-    var out = [];
-    for (var it of mails) {
-        var { seq, pairs } = it;
-        
-        var adultData = {};
-        var childrenData = [];
-        
-        var inAdultBlock = true;
-        var childBlockFirstKey = undefined;
-        var childBlockData = undefined;
-        for (var [ ix, pair ] of pairs.entries()) {
-            if ([
-                'Datenschspeicherung',
-                'Datenschutz',
-                'Captcha'
-            ].includes(pair.key)) {
-                continue;
+    var { seq, pairs } = it;
+    
+    var adultData = {};
+    var childrenData = [];
+    
+    var inAdultBlock = true;
+    var childBlockFirstKey = undefined;
+    var childBlockData = undefined;
+    for (var [ ix, pair ] of pairs.entries()) {
+        if ([
+            'Datenschspeicherung',
+            'Datenschutz',
+            'Captcha'
+        ].includes(pair.key)) {
+            continue;
+        }
+
+        if (/Wieviele Kinder/.test(pair.key)) {
+            inAdultBlock = false;
+            childBlockFirstKey = pairs[ix + 1].key;
+            debug({ childBlockFirstKey });
+            continue;
+        }
+        else {
+            debug(`raw pair is "${pair.key}" = "${pair.value}"`);
+
+            if (pair.key === childBlockFirstKey) {
+                debug("\n", 'found child block at', pair,)
+                if (childBlockData) {
+                    childrenData.push(childBlockData);
+                }
+                childBlockData = {};
             }
 
-            if (/Wieviele Kinder/.test(pair.key)) {
-                inAdultBlock = false;
-                childBlockFirstKey = pairs[ix + 1].key;
-                debug({ childBlockFirstKey });
-                continue;
+            var handler, targetBucket;
+            if (inAdultBlock || /Auf welchem/.test(pair.key)) {
+                handler = AdultFields[pair.key];
+                targetBucket = adultData;
             }
             else {
-                debug(`raw pair is "${pair.key}" = "${pair.value}"`);
-
-                if (pair.key === childBlockFirstKey) {
-                    debug("\n", 'found child block at', pair,)
-                    if (childBlockData) {
-                        childrenData.push(childBlockData);
-                    }
-                    childBlockData = {};
-                }
-
-                var handler, targetBucket;
-                if (inAdultBlock || /Auf welchem/.test(pair.key)) {
-                    handler = AdultFields[pair.key];
-                    targetBucket = adultData;
-                }
-                else {
-                    handler = ChildFields[pair.key];
-                    targetBucket = childBlockData;
-                }
-                
-                var errorBag = { mail: it, pair }
-                if (!handler) {
-                    throw new RemapMailError(errorBag);
-                }
-                var path, value;
-                try {
-                    ({ path, value } = handler(
-                        sane(pair.value),
-                        { languages, acquisitions }
-                    ));
-                    debug(`   remapped: "${path}" = "${value}"`);
-                } catch (e) {
-                    throw new RemapMailError(errorBag);
-                }
-                if (!path || !value) {
-                    throw new RemapMailError(errorBag);
-                }
-                targetBucket[path] = value;
+                handler = ChildFields[pair.key];
+                targetBucket = childBlockData;
             }
+            
+            var errorBag = { mail: it, pair }
+            if (!handler) {
+                throw new RemapMailError(errorBag);
+            }
+            var path, value;
+            try {
+                ({ path, value } = handler(
+                    sane(pair.value),
+                    { languages, acquisitions }
+                ));
+                debug(`   remapped: "${path}" = "${value}"`);
+            } catch (e) {
+                throw new RemapMailError(errorBag);
+            }
+            if (!path || !value) {
+                throw new RemapMailError(errorBag);
+            }
+            targetBucket[path] = value;
         }
-
-        if (childBlockData) {
-            childrenData.push(childBlockData);
-        }
-    
-        it.adultData = adultData;
-        it.childrenData = childrenData;
     }
+
+    if (childBlockData) {
+        childrenData.push(childBlockData);
+    }
+
+    it.adultData = adultData;
+    it.childrenData = childrenData;
 
     await next();
 }

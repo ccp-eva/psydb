@@ -30,6 +30,7 @@ describe('public-online-form', function () {
             smtpPort: 3025,
             smtpUser: 'root@example.com',
             smtpPassword: 'test1234',
+            errorMailVerbose: true,
             errorMailFrom: 'db-humankind-registration@example.com',
             errorMailTo: 'root@example.com'
         });

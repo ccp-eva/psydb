@@ -1,30 +1,12 @@
 'use strict';
-var { RemapMailError } = require('./errors');
-
-var withErrorHandling = (cliOptions) => async (context, next) => {
-    var caughtErrors = [];
-    try {
-        await next();
-    }
-    catch (e) {
-        caughtErrors.push(e);
-    }
-    finally {
-        await sendErrorMail({
-            cliOptions,
-            caughtErrors
-        });
-        // send mail to somewhere
-    }
-}
-
 var nodemailer = require('nodemailer');
 var { encode: encodeHtml } = require('html-entities');
+
 var sendErrorMail = async (bag) => {
     var { cliOptions, caughtErrors } = bag;
     var {
         smtpHost, smtpPort, smtpSsl, smtpUser, smtpPassword,
-        errorMailFrom, errorMailTo
+        errorMailFrom, errorMailTo, errorMailVerbose = false
     } = cliOptions;
 
     console.log(caughtErrors);
@@ -36,10 +18,20 @@ var sendErrorMail = async (bag) => {
             </b></p>
             <ol>
                 ${caughtErrors.map(it => (
-                    `<li>
-                        ${encodeHtml(String(it))}<br/>
-                        ${encodeHtml(it.stack)}
-                    </li>`
+                    errorMailVerbose
+                    ? `
+                        <li>
+                            <p>
+                                ${encodeHtml(String(it))}
+                            </p>
+                            <pre>${
+                                encodeHtml(it.stack.split("\n")
+                                .slice(1).join("\n"))
+                            }</pre>
+                        </li>
+                        <hr />
+                    `
+                    : `<li>${encodeHtml(String(it))}</li>`
                 ))}
             </ol>
         </body></html>
@@ -66,4 +58,4 @@ var sendErrorMail = async (bag) => {
     })
 }
 
-module.exports = withErrorHandling;
+module.exports = sendErrorMail;

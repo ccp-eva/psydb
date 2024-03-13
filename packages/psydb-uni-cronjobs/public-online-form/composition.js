@@ -1,9 +1,10 @@
 'use strict';
 var compose = require('koa-compose');
 
-var withErrorHandling = require('./with-error-handling');
+var withGeneralErrorHandling = require('./with-general-error-handling');
 var withImapClient = require('./with-imap-client');
 var withPsydbDriver = require('./with-psydb-driver');
+var forEachMail = require('./for-each-mail');
 
 var fetchHelperSetsFromPsydb = require('./fetch-helper-sets-from-psydb');
 var maybeSetupImapFolders = require('./maybe-setup-imap-folders');
@@ -17,19 +18,22 @@ var createSubjectsInPsydb = require('./create-subjects-in-psydb');
 
 var Composition = (cliOptions) => {
     var c = compose([
-        withErrorHandling(cliOptions),
+        withGeneralErrorHandling(cliOptions),
         withImapClient(cliOptions),
         withPsydbDriver(cliOptions),
         
         fetchHelperSetsFromPsydb,
-        
         maybeSetupImapFolders,
-
         fetchMails,
-        parseMailHtml,
-        remapMailData,
 
-        //createSubjectsInPsydb,
+        forEachMail([
+            parseMailHtml,
+            remapMailData,
+
+            //createSubjectsInPsydb,
+        ]),
+
+        //maybeMoveErroneousMails,
     ]);
 
     return c;

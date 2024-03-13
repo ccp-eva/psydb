@@ -105,6 +105,11 @@ var cliOptions = [
         description: 'sender address for error mail',
         defaults: 'registration-errors@example.com'
     },
+    {
+        long: 'error-mail-verbose',
+        description: 'include stack info in error mail',
+        defaults: false
+    },
 ];
 
 for (var it of cliOptions) {
