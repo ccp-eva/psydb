@@ -10,4 +10,5 @@ DEBUG='psydb:*' npm run publicOnlineForm:createSubjectsFromImap -- \
     --smtp-port 3025 \
     --smtp-user 'root@example.com' \
     --smtp-password 'test1234' \
+    --error-mail-from 'db-humankind-registration@example.com',
     --error-mail-to 'root@example.com'

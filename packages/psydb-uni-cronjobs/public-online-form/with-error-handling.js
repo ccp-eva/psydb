@@ -27,6 +27,8 @@ var sendErrorMail = async (bag) => {
         errorMailFrom, errorMailTo
     } = cliOptions;
 
+    console.log(caughtErrors);
+
     var html = `
         <html><body>
             <p><b>
@@ -34,7 +36,10 @@ var sendErrorMail = async (bag) => {
             </b></p>
             <ol>
                 ${caughtErrors.map(it => (
-                    `<li>${encodeHtml(String(it))}</li>`
+                    `<li>
+                        ${encodeHtml(String(it))}<br/>
+                        ${encodeHtml(it.stack)}
+                    </li>`
                 ))}
             </ol>
         </body></html>

@@ -1568,10 +1568,15 @@ importers:
 
   ../../packages/psydb-uni-cronjobs:
     specifiers:
+      '@mpieva/psydb-api': workspace:*
+      '@mpieva/psydb-api-mocha-test-tools': workspace:*
+      '@mpieva/psydb-axios-test-wrapper': workspace:*
       '@mpieva/psydb-common-lib': workspace:~0.1.0-alpha
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
       '@mpieva/psydb-driver-nodejs': workspace:~0.1.0-alpha
+      '@mpieva/psydb-fixtures': workspace:*
       axios: ~0.24.0
+      chai: ~4.3.7
       co: ~4.6.0
       commander: ~10.0.1
       common-tags: ~1.8.2
@@ -1581,6 +1586,7 @@ importers:
       imapflow: ~1.0.150
       koa-compose: ~4.1.0
       libqp: ~2.0.1
+      mocha: ~10.2.0
       nodemailer: ~6.8.0
     dependencies:
       '@mpieva/psydb-common-lib': link:../psydb-common-lib
@@ -1597,6 +1603,13 @@ importers:
       koa-compose: 4.1.0
       libqp: 2.0.1
       nodemailer: 6.8.0
+    devDependencies:
+      '@mpieva/psydb-api': link:../psydb-api
+      '@mpieva/psydb-api-mocha-test-tools': link:../psydb-api-mocha-test-tools
+      '@mpieva/psydb-axios-test-wrapper': link:../psydb-axios-test-wrapper
+      '@mpieva/psydb-fixtures': link:../psydb-fixtures
+      chai: 4.3.10
+      mocha: 10.2.0
 
   ../../packages/psydb-web:
     specifiers:
@@ -6328,7 +6341,7 @@ packages:
       debug:
         optional: true
     dependencies:
-      debug: 4.3.4
+      debug: 4.3.4_supports-color@6.1.0
 
   /for-each/0.3.3:
     resolution: {integrity: sha512-jqYfLp7mo9vIyQf8ykW2v7A+2N4QjeCeI5+Dz9XraiO1ign81wjiH7Fb9vSOWvQfNtmSa4H2RoQTrrXivdUZmw==}
