@@ -17,4 +17,4 @@ var forEachMail = (stages) => async (context, next) => {
     await next();
 }
 
-module.exports = forEachMail;
+module.exports = { forEachMail }

@@ -1,6 +1,6 @@
 'use strict';
-var { RemapMailError } = require('./errors');
-var { sendErrorMail } = require('./utils');
+var { RemapMailError } = require('../errors');
+var { sendErrorMail } = require('../utils');
 
 var withGeneralErrorHandling = (cliOptions) => async (context, next) => {
     context.caughtErrors = [];
@@ -20,4 +20,4 @@ var withGeneralErrorHandling = (cliOptions) => async (context, next) => {
     }
 }
 
-module.exports = withGeneralErrorHandling;
+module.exports = { withGeneralErrorHandling }

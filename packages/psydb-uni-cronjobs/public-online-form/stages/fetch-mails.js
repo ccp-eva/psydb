@@ -38,4 +38,4 @@ var fetchMails = async (context, next) => {
     await next();
 }
 
-module.exports = fetchMails;
+module.exports = { fetchMails }

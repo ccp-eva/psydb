@@ -19,4 +19,4 @@ var maybeSetupImapFolders = async (context, next) => {
     await next();
 }
 
-module.exports = maybeSetupImapFolders;
+module.exports = { maybeSetupImapFolders }

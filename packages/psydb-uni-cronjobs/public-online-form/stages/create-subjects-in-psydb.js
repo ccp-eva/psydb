@@ -130,4 +130,4 @@ var createOneChild = async (bag) => {
     }, { forceTZ: 'UTC' });
 }
 
-module.exports = createSubjectsInPsydb;
+module.exports = { createSubjectsInPsydb }

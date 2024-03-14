@@ -1,6 +1,6 @@
 'use strict';
 var debug = require('debug')('psydb:humankind-cronjobs:remapMailData');
-var { RemapMailError } = require('./errors');
+var { RemapMailError } = require('../errors');
 
 var sane = (v) => String(v).trim();
 var lc = (s) => s.toLowerCase();
@@ -214,4 +214,4 @@ var ChildFields = {
     } 
 }
 
-module.exports = remapMailData;
+module.exports = { remapMailData }

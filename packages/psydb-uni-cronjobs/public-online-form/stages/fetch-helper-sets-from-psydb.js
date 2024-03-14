@@ -100,4 +100,4 @@ var fetchItemRecords = async (bag) => {
     return records;
 }
 
-module.exports = fetchHelperSetsFromPsydb;
+module.exports = { fetchHelperSetsFromPsydb }

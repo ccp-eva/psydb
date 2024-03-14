@@ -27,4 +27,4 @@ var withImapClient = (cliOptions) => async (context, next) => {
     }
 }
 
-module.exports = withImapClient;
+module.exports = { withImapClient }

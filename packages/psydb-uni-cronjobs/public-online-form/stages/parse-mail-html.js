@@ -47,4 +47,4 @@ var formatter = (elem, walk, builder) => {
     builder.closeBlock({ leadingLineBreaks: 1 });
 }
 
-module.exports = parseMailHtml;
+module.exports = { parseMailHtml }
