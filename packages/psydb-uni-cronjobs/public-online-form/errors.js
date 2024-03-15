@@ -1,4 +1,5 @@
 var { oneLine } = require('common-tags');
+var { omit } = require('@mpieva/psydb-core-utils');
 
 class RemapMailError extends Error {
     constructor (bag) {
@@ -19,15 +20,21 @@ class RemapPairError extends Error {}
 
 class CreateSubjectError extends Error {
     constructor (bag) {
-        var { mail, recordType, props, response } = bag;
+        var { recordType, props, response } = bag;
         var { lastname, firstname } = props?.gdpr?.custom || {};
+
+        var stringifiedData = JSON.stringify(
+            omit({ from: response.data, paths: [
+                'data.stack'
+            ]})
+        );
 
         var message = oneLine`
             Cannot create subject of type "${recordType}"
             with name "${lastname}, ${firstname}"
             [
                 Status: ${response.status};
-                Response: ${JSON.stringify(response.data)}
+                Response: ${stringifiedData}
             ]
 
         `
@@ -42,4 +49,5 @@ class CreateSubjectError extends Error {
 module.exports = {
     RemapMailError,
     RemapPairError,
+    CreateSubjectError
 }

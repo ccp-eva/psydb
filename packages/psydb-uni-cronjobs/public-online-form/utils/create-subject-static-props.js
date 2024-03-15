@@ -20,7 +20,7 @@ var handlers = {
                 researchGroupIds,
                 permissions: { 'inhouse': 'unknown' }
             }),
-            systemPermissions: SystemPermissions()
+            systemPermissions: SystemPermissions({ researchGroupIds }),
         }
     }),
 
@@ -42,7 +42,7 @@ var handlers = {
                 researchGroupIds,
                 permissions: { 'inhouse': 'yes', 'away-team': 'unknown' }
             }),
-            systemPermissions: SystemPermissions({ researchGroupIds })
+            systemPermissions: SystemPermissions({ researchGroupIds }),
         }
     }),
 }

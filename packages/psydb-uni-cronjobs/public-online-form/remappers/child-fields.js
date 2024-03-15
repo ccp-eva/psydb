@@ -74,17 +74,12 @@ var ChildFields = {
     },
     'andere Zweitsprache': (value, extra) => {
         var { languages } = extra;
-        var items = value.split(/,\s*/g).filter(it => !!it);
-
-        var out = [];
-        for (var it of items) {
-            var id = languages[lc(sane(it))];
-            if (!id) {
-                throw new RemapPairError();
-            }
-            out.push(id)
+        var id = languages[lc(value)];
+        if (!id) {
+            throw new RemapPairError();
         }
-        return { path: 'scientific.custom.otherLanguageIds', value: out };
+        
+        return { path: 'scientific.custom.otherLanguageIds', value: [ id ] };
     } 
 }
 

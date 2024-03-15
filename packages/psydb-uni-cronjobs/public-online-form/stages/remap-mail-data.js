@@ -59,7 +59,7 @@ var remapMailData = async (context, next) => {
             try {
                 ({ path, value } = remapHandler(
                     sane(pair.value),
-                    { languages, acquisitions }
+                    { languages, acquisitions, allPairs: pairs }
                 ));
                 debug(`   remapped: "${path}" = "${value}"`);
             } catch (e) {

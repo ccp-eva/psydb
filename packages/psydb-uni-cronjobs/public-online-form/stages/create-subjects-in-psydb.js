@@ -36,19 +36,19 @@ var run = async (bag) => {
 var createOneAdult = async (bag) => {
     var { mail, driver, researchGroupIds } = bag;
     var { adultData: data } = mail;
+    var recordType = 'humankindAdult';
 
     var staticProps = createSubjectStaticProps({
-        recordType: 'humankindChild',
-        researchGroupIds,
+        recordType, researchGroupIds,
     });
 
     var props = unflatten({
         ...staticProps,
-        //...data,
+        ...data,
     });
 
     await tryCreateSubject({
-        mail, driver, recordType: 'humankindAdult', props
+        mail, driver, recordType, props
     });
     
     var id = driver.getCache().lastChannelIds.subject;
@@ -58,9 +58,10 @@ var createOneAdult = async (bag) => {
 var createManyChildren = async (bag) => {
     var { mail, driver, researchGroupIds, parentId } = bag;
     var { childrenData } = mail;
+    var recordType = 'humankindChild';
 
     var staticProps = createSubjectStaticProps({
-        recordType: 'humankindChild',
+        recordType,
         researchGroupIds,
         parentIds: [ parentId ],
         siblingCount: (childrenData.length - 1),
@@ -73,7 +74,7 @@ var createManyChildren = async (bag) => {
         });
 
         await tryCreateSubject({
-            mail, driver, recordType: 'humankindChild', props
+            mail, driver, recordType, props
         });
     }
 }
