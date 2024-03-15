@@ -31,7 +31,7 @@ var handlers = {
                 siblingCount,
 
                 doesDBRegistrationConsentOnPaperExist: false,
-                canParticipateInStudiesWithHealthyChildren: true,
+                canParticipateInStudiesWithHealthyChildren: 'unknown',
                 hasAwayTeamTestingPermissionForNextYear: 'unknown',
                 didConsentToStayInDBAsAdult: 'unknown',
                 allowedToEat: 'unknown',

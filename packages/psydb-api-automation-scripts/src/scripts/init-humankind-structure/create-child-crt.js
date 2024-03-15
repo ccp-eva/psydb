@@ -161,7 +161,7 @@ module.exports = async (context) => {
     await driver.sendMessage({
         type: `custom-record-types/add-field-definition`,
         payload: { id: crtId, subChannelKey: 'scientific', props: {
-            type: 'DefaultBool',
+            type: 'ExtBool',
             key: 'canParticipateInStudiesWithHealthyChildren',
             displayName: (
                 'Can participate in studies with children that are healthy, born on schedule and developed age appropriatly?'

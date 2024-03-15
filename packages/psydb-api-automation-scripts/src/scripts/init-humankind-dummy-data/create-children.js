@@ -52,7 +52,7 @@ module.exports = async (bag) => {
                             English, Spanish
                         ],
                         doesDBRegistrationConsentOnPaperExist: true,
-                        canParticipateInStudiesWithHealthyChildren: true,
+                        canParticipateInStudiesWithHealthyChildren: 'unknown',
                         hasAwayTeamTestingPermissionForNextYear: 'unknown',
                         didConsentToStayInDBAsAdult: 'unknown',
                         allowedToEat: 'unknown',
