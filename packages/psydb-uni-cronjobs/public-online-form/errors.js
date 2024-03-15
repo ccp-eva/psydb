@@ -5,10 +5,6 @@ class RemapMailError extends Error {
         var { mail, pair } = bag;
         var message = oneLine`
             Cannot Remap Pair "${pair.key}=${pair.value}"
-            in mail from
-            "${mail.replyTo[0].name} <${mail.replyTo[0].address}>"
-            received at "${mail.date.toISOString()} UTC"
-            (MessageId: "${mail.messageId}")
         `
         super(message);
         this.name = 'RemapMailError';
@@ -21,6 +17,28 @@ class RemapMailError extends Error {
 
 class RemapPairError extends Error {}
 
+class CreateSubjectError extends Error {
+    constructor (bag) {
+        var { mail, recordType, props, response } = bag;
+        var { lastname, firstname } = props?.gdpr?.custom || {};
+
+        var message = oneLine`
+            Cannot create subject of type "${recordType}"
+            with name "${lastname}, ${firstname}"
+            [
+                Status: ${response.status};
+                Response: ${JSON.stringify(response.data)}
+            ]
+
+        `
+        super(message);
+        this.name = 'CreateSubjectError';
+
+        this.getExtraInfo = () => ({
+            ...bag
+        })
+    }
+}
 module.exports = {
     RemapMailError,
     RemapPairError,

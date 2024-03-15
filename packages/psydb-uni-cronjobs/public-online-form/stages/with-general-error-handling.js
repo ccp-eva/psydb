@@ -8,7 +8,7 @@ var withGeneralErrorHandling = (cliOptions) => async (context, next) => {
         await next();
     }
     catch (e) {
-        context.caughtErrors.push(e);
+        context.caughtErrors.push({ e });
     }
     finally {
         if (context.caughtErrors.length > 0) {

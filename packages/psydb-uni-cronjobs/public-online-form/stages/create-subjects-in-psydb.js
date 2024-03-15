@@ -1,15 +1,14 @@
 'use strict';
 var { flatten, unflatten } = require('@mpieva/psydb-core-utils');
-
-// XXX: read via self?
-var researchGroupId = "65de89c8840da54724b09531";
+var { CreateSubjectError } = require('../errors');
+var { createSubjectStaticProps, tryCreateSubject } = require('../utils');
 
 var createSubjectsInPsydb = async (context, next) => {
-    var { driver, mails } = context;
+    var { driver, researchGroupIds, mail } = context;
 
     //try {
     //    await run({ driver, mails, dry: true });
-          await run({ driver, mails });
+          await run({ driver, mail, researchGroupIds });
     //}
     //catch (e) {
     //    // TODO
@@ -19,115 +18,64 @@ var createSubjectsInPsydb = async (context, next) => {
 }
 
 var run = async (bag) => {
-    var { driver, mails } = bag;
+    var { driver, researchGroupIds, mail } = bag;
+    var it = mail; // FIXME
 
-    for (var it of mails) {
-        var { seq, adultData, childrenData } = it;
-        
-        var parentId = await createOneAdult({ driver, data: adultData });
-        console.log(parentId);
+    var { seq, adultData, childrenData } = it;
+    
+    var parentId = await createOneAdult({
+        mail, driver, researchGroupIds,
+    });
+    console.log(parentId);
 
-        for (var it of childrenData) {
-            await createOneChild({
-                driver,
-                parentId,
-                siblingCount: (childrenData.length - 1),
-                data: it
-            });
-        }
-    }
-
+    await createManyChildren({
+        mail, driver, researchGroupIds, parentId,
+    });
 }
 
 var createOneAdult = async (bag) => {
-    var { driver, data } = bag;
+    var { mail, driver, researchGroupIds } = bag;
+    var { adultData: data } = mail;
 
-    var staticProps = flatten({
-        gdpr: { custom: { address: { country: 'DE' }}},
-        scientific: {
-            custom: {
-                dateOfBirth: '1970-01-01T00:00:00.000Z', // XXX
-                doesDBRegistrationConsentOnPaperExist: false,
-            },
-            comment: '',
-            testingPermissions: [
-                { researchGroupId, permissionList: [
-                    {
-                        labProcedureTypeKey: 'inhouse',
-                        value: 'unknown'
-                    },
-                ]}
-            ],
-            systemPermissions: {
-                isHidden: false,
-                accessRightsByResearchGroup: [
-                    { researchGroupId, permission: 'write' }
-                ]
-            }
-        }
+    var staticProps = createSubjectStaticProps({
+        recordType: 'humankindChild',
+        researchGroupIds,
     });
 
     var props = unflatten({
         ...staticProps,
-        ...data,
+        //...data,
     });
 
-    await driver.sendMessage({
-        type: 'subject/humankindAdult/create',
-        payload: { props },
-    }, { forceTZ: 'UTC' });
+    await tryCreateSubject({
+        mail, driver, recordType: 'humankindAdult', props
+    });
     
     var id = driver.getCache().lastChannelIds.subject;
-
     return id;
 }
 
-var createOneChild = async (bag) => {
-    var { driver, parentId, siblingCount, data } = bag;
+var createManyChildren = async (bag) => {
+    var { mail, driver, researchGroupIds, parentId } = bag;
+    var { childrenData } = mail;
 
-    var staticProps = flatten({
-        scientific: {
-            custom: {
-                parentIds: [ parentId ], 
-                siblingCount,
-
-                doesDBRegistrationConsentOnPaperExist: false,
-                canParticipateInStudiesWithHealthyChildren: true,
-                hasAwayTeamTestingPermissionForNextYear: 'unknown',
-                allowedToEat: 'unknown',
-                kigaId: null,
-            },
-            comment: '',
-            testingPermissions: [
-                { researchGroupId, permissionList: [
-                    {
-                        labProcedureTypeKey: 'inhouse',
-                        value: 'yes'
-                    },
-                    {
-                        labProcedureTypeKey: 'away-team',
-                        value: 'unknown'
-                    },
-                ]}
-            ],
-            systemPermissions: {
-                isHidden: false,
-                accessRightsByResearchGroup: [
-                    { researchGroupId, permission: 'write' }
-                ]
-            }
-        }
-    })
-
-    var props = unflatten({
-        ...staticProps,
-        ...data,
+    var staticProps = createSubjectStaticProps({
+        recordType: 'humankindChild',
+        researchGroupIds,
+        parentIds: [ parentId ],
+        siblingCount: (childrenData.length - 1),
     });
 
-    await driver.sendMessage({
-        type: 'subject/humankindChild/create',
-        payload: { props },
-    }, { forceTZ: 'UTC' });
+    for (var it of childrenData) {
+        var props = unflatten({
+            ...staticProps,
+            ...it,
+        });
+
+        await tryCreateSubject({
+            mail, driver, recordType: 'humankindChild', props
+        });
+    }
 }
 
 module.exports = { createSubjectsInPsydb }

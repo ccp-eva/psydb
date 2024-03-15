@@ -12,13 +12,21 @@ var compose = require('koa-compose'),
 var inline = require('@cdxoo/inline-string');
 
 var withPostStages = ({
-    protection,
     endpoint,
     enableApiKeyAuth
 }) => ([
     withSelfAuth({ enableApiKeyAuth }),
     withPermissions(),
     withKoaBody(),
+    endpoint
+]);
+
+var withGetStages = ({
+    endpoint,
+    enableApiKeyAuth
+}) => ([
+    withSelfAuth({ enableApiKeyAuth }),
+    withPermissions(),
     endpoint
 ]);
 
@@ -68,11 +76,10 @@ var createRouting = (bag = {}) => {
         endpoints.special.serverTimezone
     );
 
-    router.get('/self',
-        withSelfAuth(),
-        withPermissions(),
-        endpoints.self.account
-    );
+    router.get('/self', ...withGetStages({
+        endpoint: endpoints.self.account,
+        enableApiKeyAuth: true,
+    }));
 
     router.get('/self/research-groups',
         withSelfAuth(),

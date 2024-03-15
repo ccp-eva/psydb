@@ -6,13 +6,16 @@ var {
     withPsydbDriver,
     forEachMail,
 
+    fetchResearchGroupsFromPsydb,
     fetchHelperSetsFromPsydb,
     maybeSetupImapFolders,
     fetchMails,
     parseMailHtml,
     remapMailData,
     createSubjectsInPsydb,
-    maybeMoveErroneousMails
+
+    moveProcessedMail,
+    maybeMoveErroneousMails,
 } = require('./stages');
 
 
@@ -22,7 +25,8 @@ var Composition = (cliOptions) => {
         withGeneralErrorHandling(cliOptions),
         withImapClient(cliOptions),
         withPsydbDriver(cliOptions),
-        
+  
+        fetchResearchGroupsFromPsydb,
         fetchHelperSetsFromPsydb,
         maybeSetupImapFolders,
         fetchMails,
@@ -30,8 +34,8 @@ var Composition = (cliOptions) => {
         forEachMail([
             parseMailHtml,
             remapMailData,
-
-            //createSubjectsInPsydb,
+            createSubjectsInPsydb,
+            moveProcessedMail
         ]),
 
         maybeMoveErroneousMails,

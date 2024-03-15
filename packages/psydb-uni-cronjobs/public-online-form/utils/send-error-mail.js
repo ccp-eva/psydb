@@ -9,7 +9,30 @@ var sendErrorMail = async (bag) => {
         errorMailFrom, errorMailTo, errorMailVerbose = false
     } = cliOptions;
 
-    console.log(caughtErrors);
+    var items = caughtErrors.map(({ mail, e }) => {
+        var html = `
+            <p>${encodeHtml(String(e))}</p>
+        `;
+
+        if (mail) {
+            var mailInfo = `
+                in mail from
+                "${mail.replyTo[0].name} <${mail.replyTo[0].address}>"
+                received at "${mail.date.toISOString()} UTC"
+                (MessageId: "${mail.messageId}")
+            `;
+            html += `<p>${encodeHtml(mailInfo)}</p>`;
+        }
+
+        if (errorMailVerbose) {
+            var stack = (
+                (e.stack || '').split("\n").slice(1).join("\n")
+            );
+            html += `<pre>${encodeHtml(stack)}</pre>`;
+        }
+
+        return html;
+    });
 
     var html = `
         <html><body>
@@ -17,21 +40,8 @@ var sendErrorMail = async (bag) => {
                 Errors occured while parsing online registration mails:
             </b></p>
             <ol>
-                ${caughtErrors.map(it => (
-                    errorMailVerbose
-                    ? `
-                        <li>
-                            <p>
-                                ${encodeHtml(String(it))}
-                            </p>
-                            <pre>${
-                                encodeHtml(it.stack.split("\n")
-                                .slice(1).join("\n"))
-                            }</pre>
-                        </li>
-                        <hr />
-                    `
-                    : `<li>${encodeHtml(String(it))}</li>`
+                ${items.map(it => (
+                    `<li>${it}</li>`
                 ))}
             </ol>
         </body></html>
@@ -47,8 +57,6 @@ var sendErrorMail = async (bag) => {
         }
     });
 
-    console.log(errorMailTo);
-
     await transport.sendMail({
         from: errorMailFrom,
         to: errorMailTo,
@@ -58,4 +66,4 @@ var sendErrorMail = async (bag) => {
     })
 }
 
-module.exports = sendErrorMail;
+module.exports = { sendErrorMail }
