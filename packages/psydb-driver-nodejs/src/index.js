@@ -231,7 +231,7 @@ var Driver = (options) => {
                             { depth: null, colors: true }
                         )
                     );
-                    throw new Error('BadRequest')
+                    throw e;
                 }
                 else {
                     throw e;
