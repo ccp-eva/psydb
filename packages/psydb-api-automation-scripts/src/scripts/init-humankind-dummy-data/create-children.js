@@ -54,6 +54,7 @@ module.exports = async (bag) => {
                         doesDBRegistrationConsentOnPaperExist: true,
                         canParticipateInStudiesWithHealthyChildren: true,
                         hasAwayTeamTestingPermissionForNextYear: 'unknown',
+                        didConsentToStayInDBAsAdult: 'unknown',
                         allowedToEat: 'unknown',
                         kigaId: null,
                     },

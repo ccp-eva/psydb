@@ -198,6 +198,21 @@ module.exports = async (context) => {
             props: {}
         }},
     }, { apiKey });
+    
+    await driver.sendMessage({
+        type: `custom-record-types/add-field-definition`,
+        payload: { id: crtId, subChannelKey: 'scientific', props: {
+            type: 'ExtBool',
+            key: 'didConsentToStayInDBAsAdult',
+            displayName: (
+                'Consent to Adult-DB'
+            ),
+            displayNameI18N: { 'de': (
+                'Zustimmung zu Erachsenen-DB'
+            )},
+            props: {}
+        }},
+    }, { apiKey });
      
     await driver.sendMessage({
         type: `custom-record-types/commit-settings`,
@@ -264,6 +279,7 @@ module.exports = async (context) => {
             '/scientific/state/custom/doesDBRegistrationConsentOnPaperExist',
             '/scientific/state/custom/canParticipateInStudiesWithHealthyChildren',
             '/scientific/state/custom/allowedToEat',
+            '/scientific/state/custom/didConsentToStayInDBAsAdult',
             '/scientific/state/custom/hasAwayTeamTestingPermissionForNextYear',
             '/scientific/state/testingPermissions',
             '/scientific/state/comment'

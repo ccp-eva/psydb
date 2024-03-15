@@ -12,7 +12,7 @@ var handlers = {
         gdpr: { custom: { address: { country: 'DE' }}},
         scientific: {
             custom: {
-                dateOfBirth: '1970-01-01T00:00:00.000Z', // XXX
+                dateOfBirth: '1900-01-01T00:00:00.000Z', // XXX
                 doesDBRegistrationConsentOnPaperExist: false,
             },
             comment: '',
@@ -33,6 +33,7 @@ var handlers = {
                 doesDBRegistrationConsentOnPaperExist: false,
                 canParticipateInStudiesWithHealthyChildren: true,
                 hasAwayTeamTestingPermissionForNextYear: 'unknown',
+                didConsentToStayInDBAsAdult: 'unknown',
                 allowedToEat: 'unknown',
                 kigaId: null,
             },
