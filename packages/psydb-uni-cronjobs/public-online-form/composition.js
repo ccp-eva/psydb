@@ -12,6 +12,7 @@ var {
     parseMailHtml,
     remapMailData,
     createSubjectsInPsydb,
+    maybeMoveErroneousMails
 } = require('./stages');
 
 
@@ -33,7 +34,7 @@ var Composition = (cliOptions) => {
             //createSubjectsInPsydb,
         ]),
 
-        //maybeMoveErroneousMails,
+        maybeMoveErroneousMails,
     ]);
 
     return c;

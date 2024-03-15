@@ -12,4 +12,5 @@ module.exports = {
     ...require('./remap-mail-data'),
 
     ...require('./create-subjects-in-psydb'),
+    ...require('./maybe-move-erroneous-mails'),
 }

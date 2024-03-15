@@ -1,4 +1,5 @@
 'use strict';
+var { readFileSync } = require('fs');
 var fspath = require('path');
 var baseDir = __dirname;
 

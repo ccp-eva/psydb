@@ -12,28 +12,29 @@ var config = {
         port: 3143,
         auth: {
             user: 'root@example.com',
-            password: 'test1234'
+            pass: 'test1234'
         }
     }
 }
 
 var setupInbox = async (bag) => {
-    var { fixtures } = bag;
+    var { fixtures: fixtureNames } = bag;
 
-    await Axios.post(`${config.greenmailApi.url}/api/user`, {
-        email: config.imap.auth.user,
-        login: config.imap.auth.user,
-        password: config.imap.auth.password,
-    });
+    //await Axios.post(`${config.greenmailApi.url}/api/user`, {
+    //    email: config.imap.auth.user,
+    //    login: config.imap.auth.user,
+    //    password: config.imap.auth.password,
+    //});
 
     var imap = new ImapFlow(config.imap);
-    await client.connect();
+    await imap.connect();
 
-    for (var it of fixtures) {
-        client.append('INBOX', it, [], new Date());
+    for (var name of fixtureNames) {
+        var data = fixtures.getContent(name);
+        await imap.append('INBOX', data, [], new Date());
     }
 
-    await client.logout();
+    await imap.logout();
 }
 
 module.exports = setupInbox;

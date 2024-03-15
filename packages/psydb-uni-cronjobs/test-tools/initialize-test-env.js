@@ -16,12 +16,22 @@ var createAgent = require('@mpieva/psydb-axios-test-wrapper');
 var Driver = require('@mpieva/psydb-driver-nodejs');
 var withApi = require('@mpieva/psydb-api');
 
+var defaultCLIOptions = require('./default-cli-options');
 var setupInbox = require('./setup-inbox');
 
 var beforeAll = async function () {
     await createContext.call(this);
 
     this.setupInbox = setupInbox;
+
+    this.getDefaultCLIOptions = ({ agent, psydbUrl } = {}) => ({
+        ...defaultCLIOptions,
+        psydbUrl: (
+            psydbUrl
+            || agent?.defaults?.baseURL
+            || this.getApiAgent()?.defaults?.baseURL
+        )
+    });
 
     this.createKoaApi = (options = {}) => {
         var { apiConfig } = options;
@@ -40,7 +50,8 @@ var beforeAll = async function () {
                 url: mongo.uri,
                 dbName: mongo.dbName,
                 useUnifiedTopology: true,
-            }
+            },
+            apiKeyAuth: { isEnabled: true, allowedIps: [ '::/0' ] }
         }}));
         
         var agent = createAgent(app.callback(), { enableCookies: true });
