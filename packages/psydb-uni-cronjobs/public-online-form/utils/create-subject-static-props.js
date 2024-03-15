@@ -15,7 +15,7 @@ var handlers = {
                 dateOfBirth: '1900-01-01T00:00:00.000Z', // XXX
                 doesDBRegistrationConsentOnPaperExist: false,
             },
-            comment: '',
+            comment: 'via Online-Registrierung',
             testingPermissions: TestingPermissions({
                 researchGroupIds,
                 permissions: { 'inhouse': 'unknown' }
@@ -37,7 +37,7 @@ var handlers = {
                 allowedToEat: 'unknown',
                 kigaId: null,
             },
-            comment: '',
+            comment: 'via Online-Registrierung',
 
             testingPermissions: TestingPermissions({
                 researchGroupIds,
