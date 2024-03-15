@@ -1,13 +1,7 @@
 'use strict';
 var debug = require('debug')('psydb:humankind-cronjobs:remapMailData');
-var { RemapMailError } = require('../errors');
-
-var sane = (v) => String(v).trim();
-var lc = (s) => s.toLowerCase();
-var justremap = (simpleMap) => simpleMap.reduce((acc, it) => {
-    var [ str, path ] = it;
-    return { ...acc, [str]: value => ({ path, value })}
-}, {});
+var { sane, AdultFields, ChildFields } = require('../remappers');
+var { RemapMailError, RemapPairError } = require('../errors');
 
 var remapMailData = async (context, next) => {
     var { mail, languages, acquisitions } = context;
@@ -25,7 +19,7 @@ var remapMailData = async (context, next) => {
         if ([
             'Datenschspeicherung',
             'Datenschutz',
-            'Captcha'
+            'Bitte tragen Sie das Ergebnis der Rechnung in das Feld ein.'
         ].includes(pair.key)) {
             continue;
         }
@@ -47,29 +41,34 @@ var remapMailData = async (context, next) => {
                 childBlockData = {};
             }
 
-            var handler, targetBucket;
+            var remapHandler, targetBucket;
             if (inAdultBlock || /Auf welchem/.test(pair.key)) {
-                handler = AdultFields[pair.key];
+                remapHandler = AdultFields[pair.key];
                 targetBucket = adultData;
             }
             else {
-                handler = ChildFields[pair.key];
+                remapHandler = ChildFields[pair.key];
                 targetBucket = childBlockData;
             }
             
             var errorBag = { mail: it, pair }
-            if (!handler) {
+            if (!remapHandler) {
                 throw new RemapMailError(errorBag);
             }
             var path, value;
             try {
-                ({ path, value } = handler(
+                ({ path, value } = remapHandler(
                     sane(pair.value),
                     { languages, acquisitions }
                 ));
                 debug(`   remapped: "${path}" = "${value}"`);
             } catch (e) {
-                throw new RemapMailError(errorBag);
+                if (e instanceof RemapPairError) {
+                    throw new RemapMailError(errorBag);
+                }
+                else {
+                    throw e
+                }
             }
             if (!path || !value) {
                 throw new RemapMailError(errorBag);
@@ -86,132 +85,6 @@ var remapMailData = async (context, next) => {
     it.childrenData = childrenData;
 
     await next();
-}
-
-var AdultFields = {
-    ...justremap([
-        [ 'Nachname', 'gdpr.custom.lastname' ],
-        [ 'Vorname', 'gdpr.custom.firstname' ],
-        [ 'E-Mail-Adresse', 'gdpr.custom.email' ],
-        [ 'Straße', 'gdpr.custom.address.street' ],
-        [ 'Hausnummer', 'gdpr.custom.address.housenumber' ],
-        [ 'Stadt', 'gdpr.custom.address.city' ],
-        [ 'Postleitzahl', 'gdpr.custom.address.postcode' ],
-        [ 'Adresszusatz', 'gdpr.custom.address.affix' ],
-    ]),
-    
-    'Sind Sie Mutter oder Vater?': (value) => {
-        var mapped = {
-            'Mutter': 'female',
-            'Vater': 'male',
-            'Elternteil': 'other',
-        }[value];
-
-        if (!mapped) {
-            throw new Error();
-        }
-
-        return { path: 'scientific.custom.gender', value: mapped }
-    },
-
-    'Telefonnummer': (value) => ({
-        path: 'gdpr.custom.phones', value: [ value ]
-    }),
-    
-    'Auf welchem Weg haben sie von uns erfahren?': (value, extra) => {
-        var { acquisitions } = extra;
-        var id = acquisitions[lc(value)];
-        if (!id) {
-            throw new Error();
-        }
-
-        return { path: 'scientific.custom.acquisitionId', value: id }
-    }
-}
-
-var ChildFields = {
-    ...justremap([
-        [ 'Nachname', 'gdpr.custom.lastname' ],
-        [ 'Vorname', 'gdpr.custom.firstname' ],
-    ]),
-
-    'Geschlecht des Kindes': (value) => {
-        var mapped = {
-            'weiblich': 'female',
-            'männlich': 'male',
-            'divers': 'other',
-        }[value];
-        if (!mapped) {
-            throw new Error();
-        }
-        
-        return { path: 'scientific.custom.gender', value: mapped }
-    },
-
-    'Geburtsdatum': (value) => {
-        var [ y, m, d] = (
-            value.split(/\./g).map((it) => parseInt(it)).reverse()
-        );
-
-        var date = new Date(0);
-        date.setUTCFullYear(y);
-        date.setUTCMonth(m - 1);
-        date.setUTCDate(d);
-
-        return {
-            path: 'scientific.custom.dateOfBirth',
-            value: date.toISOString()
-        }
-    },
-
-    'Muttersprache des Kindes': (value, extra) => {
-        var { languages } = extra;
-        var id = languages[lc(value)];
-        if (!id) {
-            throw new Error();
-        }
-
-        return { path: 'scientific.custom.nativeLanguageId', value: id }
-    },
-    'andere Muttersprache': (value, extra) => {
-        var { languages } = extra;
-        var id = languages[lc(value)];
-        if (!id) {
-            throw new Error();
-        }
-
-        return { path: 'scientific.custom.nativeLanguageId', value: id }
-    },
-    'Zweitsprache des Kindes': (value, extra) => {
-        var { languages } = extra;
-        var items = value.split(/,\s*/g).filter(it => (
-            !!it && it !== 'Keine'
-        ));
-
-        var out = [];
-        for (var it of items) {
-            var id = languages[lc(sane(it))];
-            if (!id) {
-                throw new Error();
-            }
-            out.push(id)
-        }
-        return { path: 'scientific.custom.otherLanguageIds', value: out };
-    },
-    'andere Zweitsprache': (value, extra) => {
-        var { languages } = extra;
-        var items = value.split(/,\s*/g).filter(it => !!it);
-
-        var out = [];
-        for (var it of items) {
-            var id = languages[lc(sane(it))];
-            if (!id) {
-                throw new Error();
-            }
-            out.push(id)
-        }
-        return { path: 'scientific.custom.otherLanguageIds', value: out };
-    } 
 }
 
 module.exports = { remapMailData }

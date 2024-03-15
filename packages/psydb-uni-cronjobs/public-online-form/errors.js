@@ -19,6 +19,9 @@ class RemapMailError extends Error {
     }
 }
 
+class RemapPairError extends Error {}
+
 module.exports = {
     RemapMailError,
+    RemapPairError,
 }
