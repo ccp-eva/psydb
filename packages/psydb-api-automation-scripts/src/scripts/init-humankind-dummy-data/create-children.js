@@ -39,13 +39,13 @@ module.exports = async (bag) => {
                     custom: {
                         firstname,
                         lastname: 'Test Child',
+                        dateOfBirth: '2018-01-01T00:00:00.000Z',
+                        gender,
                     }
                 },
                 scientific: {
                     custom: {
                         parentIds, 
-                        dateOfBirth: '2018-01-01T00:00:00.000Z',
-                        gender,
                         siblingCount: 1,
                         nativeLanguageId: German,
                         otherLanguageIds: [

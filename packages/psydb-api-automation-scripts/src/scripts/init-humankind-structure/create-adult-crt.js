@@ -80,7 +80,7 @@ module.exports = async (context) => {
     
     await driver.sendMessage({
         type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, subChannelKey: 'scientific', props: {
+        payload: { id: crtId, subChannelKey: 'gdpr', props: {
             type: 'DateOnlyServerSide',
             key: 'dateOfBirth',
             displayName: 'Date of Birth',
@@ -91,7 +91,7 @@ module.exports = async (context) => {
     
     await driver.sendMessage({
         type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, subChannelKey: 'scientific', props: {
+        payload: { id: crtId, subChannelKey: 'gdpr', props: {
             type: 'BiologicalGender',
             key: 'gender',
             displayName: 'Gender',
@@ -169,7 +169,7 @@ module.exports = async (context) => {
             tokens: [
                 '/gdpr/state/custom/lastname',
                 '/gdpr/state/custom/firstname',
-                '/scientific/state/custom/gender',
+                '/gdpr/state/custom/gender',
             ]
         }}
     }, { apiKey });
@@ -183,8 +183,8 @@ module.exports = async (context) => {
                 '/sequenceNumber',
                 '/gdpr/state/custom/lastname',
                 '/gdpr/state/custom/firstname',
-                '/scientific/state/custom/gender',
-                '/scientific/state/custom/dateOfBirth',
+                '/gdpr/state/custom/gender',
+                '/gdpr/state/custom/dateOfBirth',
             ]
         }
     }, { apiKey });
@@ -198,8 +198,8 @@ module.exports = async (context) => {
                 '/sequenceNumber',
                 '/gdpr/state/custom/lastname',
                 '/gdpr/state/custom/firstname',
-                '/scientific/state/custom/gender',
-                '/scientific/state/custom/dateOfBirth',
+                '/gdpr/state/custom/gender',
+                '/gdpr/state/custom/dateOfBirth',
             ]
         }
     }, { apiKey });
@@ -214,8 +214,8 @@ module.exports = async (context) => {
             '/gdpr/state/custom/phones',
             '/gdpr/state/custom/email',
             '/gdpr/state/custom/address',
-            '/scientific/state/custom/dateOfBirth',
-            '/scientific/state/custom/gender',
+            '/gdpr/state/custom/dateOfBirth',
+            '/gdpr/state/custom/gender',
             '/scientific/state/custom/doesDBRegistrationConsentOnPaperExist',
             '/scientific/state/custom/acquisitionId',
             '/scientific/state/custom/knownChildrenIds',
