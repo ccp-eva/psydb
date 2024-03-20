@@ -686,8 +686,8 @@ module.exports = {
                 key: '_apiKey',
                 systemType: 'SaneString',
                 dataPointer: '/apiKey',
-                displayName: 'ApiKey',
-                displayNameI18N: { de: 'ApiKey' },
+                displayName: 'API Key',
+                displayNameI18N: { de: 'API-Key' },
             },
             {
                 key: '_name',

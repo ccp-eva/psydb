@@ -1588,5 +1588,50 @@ module.exports = [
     {
         en: 'Edit Again',
         de: 'Erneut Bearbeiten'
+    },
+
+    {
+        en: 'API Keys',
+        de: 'API-Keys'
+    },
+    {
+        en: 'API Key',
+        de: 'API-Key'
+    },
+    {
+        en: 'New API Key',
+        de: 'Neuer API-Key'
+    },
+    {
+        en: 'API Key Details',
+        de: 'API-Key-Details'
+    },
+    {
+        en: 'Edit API Key',
+        de: 'API-Key Bearbeiten'
+    },
+    {
+        en: 'Delete API Key',
+        de: 'API-Key Löschen'
+    },
+    {
+        en: 'API Key Deleted',
+        de: 'API-Key Gelöscht'
+    },
+    {
+        en: 'API Key was deleted successfully!',
+        de: 'API-Key wurde erfolgreich gelöscht!'
+    },
+    {
+        en: 'Label',
+        de: 'Bezeichnung'
+    },
+    {
+        en: 'Enabled',
+        de: 'Aktiv'
+    },
+    {
+        en: 'Account',
+        de: 'Account'
     }
 ]

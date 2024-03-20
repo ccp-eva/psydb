@@ -23,8 +23,8 @@ else {
         smtp: {
             senderEmail: 'psydb-noreply@example.com',
             host: '127.0.0.1',
-            port: 1025, // mailhog
-            //port: 3025, // greenmail
+            //port: 1025, // mailhog
+            port: 3025, // greenmail
             secure: false,
         },
     }

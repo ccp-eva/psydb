@@ -1,6 +1,7 @@
 import React from 'react';
 import { useRouteMatch, useParams } from 'react-router-dom';
 
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { withRecordDetails } from '@mpieva/psydb-ui-lib';
 import { DetailsBox, LinkButton } from '@mpieva/psydb-ui-layout';
 import { urlUp as up } from '@mpieva/psydb-ui-utils';
@@ -16,6 +17,7 @@ const DetailsBody = (ps) => {
     
     var { record, related } = fetched;
     var { url } = useRouteMatch();
+    var translate = useUITranslation();
     
     var canEdit = permissions.hasCollectionFlag('apiKey', 'write');
 
@@ -25,7 +27,7 @@ const DetailsBody = (ps) => {
         related
     }
 
-    var title = 'Api-Key-Details';
+    var title = translate('API Key Details')
     return (
         <>
             <DetailsBox
@@ -37,6 +39,7 @@ const DetailsBody = (ps) => {
                     <ApiKey.Label />
                     <ApiKey.PersonnelId />
                     <ApiKey.ApiKey />
+                    <ApiKey.IsEnabled />
                 </ApiKey>
             </DetailsBox>
         </>
