@@ -696,6 +696,13 @@ module.exports = {
                 displayName: 'Name',
                 displayNameI18N: { de: 'Name' },
             },
+            {
+                key: '_isEnabled',
+                systemType: 'DefaultBool',
+                dataPointer: '/state/isEnabled',
+                displayName: 'Enabled',
+                displayNameI18N: { de: 'Aktiv' },
+            },
         ],
         staticDisplayFields: [
             {
@@ -709,6 +716,10 @@ module.exports = {
             {
                 systemType: 'SaneString',
                 dataPointer: '/apiKey',
+            },
+            {
+                systemType: 'DefaultBool',
+                dataPointer: '/state/isEnabled',
             },
         ]
     },

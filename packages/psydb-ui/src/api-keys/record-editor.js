@@ -19,13 +19,14 @@ const EditForm = (ps) => {
     var send = useSendPatch({
         collection,
         record,
-        onSuccessfulUpdate
+        onSuccessfulUpdate,
+        autoPayload: false
     });
 
-    var initialValues = only({
+    var initialValues = { id: record._id, props: only({
         from: record.state,
         paths: [ 'label', 'isEnabled', 'permissions' ]
-    });
+    })};
 
     return (
         <>
