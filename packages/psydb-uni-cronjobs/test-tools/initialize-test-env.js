@@ -9,7 +9,7 @@ var [ teardownDB ] = mochaHooks.afterAll;
 var Koa = require('koa');
 
 var {
-    hasNone, hasOnlyOne, flatten, entries
+    ejson, hasNone, hasOnlyOne, flatten, entries
 } = require('@mpieva/psydb-core-utils');
 
 var createAgent = require('@mpieva/psydb-axios-test-wrapper');
