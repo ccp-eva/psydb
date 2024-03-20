@@ -18,7 +18,7 @@ var ChildFields = {
             throw new RemapPairError();
         }
         
-        return { path: 'scientific.custom.gender', value: mapped }
+        return { path: 'gdpr.custom.gender', value: mapped }
     },
 
     'Geburtsdatum': (value) => {
@@ -32,7 +32,7 @@ var ChildFields = {
         date.setUTCDate(d);
 
         return {
-            path: 'scientific.custom.dateOfBirth',
+            path: 'gdpr.custom.dateOfBirth',
             value: date.toISOString()
         }
     },

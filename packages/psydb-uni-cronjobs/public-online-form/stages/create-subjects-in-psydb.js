@@ -26,7 +26,6 @@ var run = async (bag) => {
     var parentId = await createOneAdult({
         mail, driver, researchGroupIds,
     });
-    console.log(parentId);
 
     await createManyChildren({
         mail, driver, researchGroupIds, parentId,

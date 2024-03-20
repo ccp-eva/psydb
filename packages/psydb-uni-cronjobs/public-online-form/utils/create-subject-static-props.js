@@ -9,10 +9,12 @@ var createSubjectStaticProps = (bag) => {
 
 var handlers = {
     'humankindAdult': ({ researchGroupIds }) => ({
-        gdpr: { custom: { address: { country: 'DE' }}},
+        gdpr: { custom: {
+            address: { country: 'DE' },
+            dateOfBirth: '1900-01-01T00:00:00.000Z', // XXX
+        }},
         scientific: {
             custom: {
-                dateOfBirth: '1900-01-01T00:00:00.000Z', // XXX
                 doesDBRegistrationConsentOnPaperExist: false,
             },
             comment: 'via Online-Registrierung',

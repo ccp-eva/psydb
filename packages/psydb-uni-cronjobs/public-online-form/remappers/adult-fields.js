@@ -25,7 +25,7 @@ var AdultFields = {
             throw new RemapPairError();
         }
 
-        return { path: 'scientific.custom.gender', value: mapped }
+        return { path: 'gdpr.custom.gender', value: mapped }
     },
 
     'Telefonnummer': (value) => ({
