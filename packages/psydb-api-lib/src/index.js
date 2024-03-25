@@ -53,6 +53,7 @@ module.exports = {
     fetchRecordsInInterval: require('./fetch-records-in-interval'),
 
     fetchRecordLabelsManual: require('./fetch-record-labels-manual'),
+    fetchHelperSetItemLabelsManual: require('./fetch-helper-set-item-labels-manual'),
 
     fetchRelatedLabels: require('./fetch-related-labels'),
     fetchRelatedLabelsForMany: require('./fetch-related-labels-for-many-ng'),
