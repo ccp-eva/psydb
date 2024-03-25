@@ -12,7 +12,8 @@ export {
     SaneString,
     FullText,
     ForeignIdList,
-    Integer
+    Integer,
+    Email
 }
 
 export * from './plain-checkbox';
