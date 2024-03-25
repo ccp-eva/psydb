@@ -1,6 +1,8 @@
 import React from 'react';
 import { stringifyFieldValue } from '@mpieva/psydb-common-lib';
-import { useUILanguage, useUILocale } from '@mpieva/psydb-ui-contexts';
+import {
+    useUILanguage, useUILocale, useUITranslation
+} from '@mpieva/psydb-ui-contexts';
 
 export const AgeFrameCondition = (ps) => {
     var {
@@ -8,41 +10,42 @@ export const AgeFrameCondition = (ps) => {
         ageFrameRecord,
         ageFrameRelated,
         subjectTypeRecord,
+        subjectCRT,
         studyData,
     } = ps;
-    var { pointer, values } = condition;
 
+    var translate = useUITranslation();
     var [ language ] = useUILanguage();
     var locale = useUILocale();
 
-    var fieldDefinition = (
-        subjectTypeRecord.state.settings.subChannelFields.scientific
-        .find(it => (
-            pointer === `/scientific/state/custom/${it.key}`
-        ))
-    );
+    var { pointer, values } = condition;
+    
+    var fieldDefinition = subjectCRT.findCustomFields({
+        'pointer': pointer
+    })[0];
 
     // FIXME: this is lab-operation/../selection-settings-form-schema.js
-    var realType = fieldDefinition.type;
+    var realType = fieldDefinition.systemType;
     // FIXME: maybe we can just cut the "List" suffix via regex
-    if (fieldDefinition.type === 'HelperSetItemIdList') {
+    if (fieldDefinition.systemType === 'HelperSetItemIdList') {
         realType = 'HelperSetItemId';
     }
-    if (fieldDefinition.type === 'ForeignIdList') {
+    if (fieldDefinition.systemType === 'ForeignIdList') {
         realType = 'ForeignId';
     }
 
     return (
         <div className='d-flex'>
             <div style={{ width: '20%' }}>
-                { fieldDefinition.displayName }:
+                { translate.fieldDefinition(fieldDefinition) }:
             </div>
             <div className='flex-grow'>
                 { values.map(rawValue => stringifyFieldValue({
                     rawValue,
                     fieldDefinition: {
                         ...fieldDefinition,
-                        type: realType
+                        type: realType,
+                        systemType: realType,
                     },
                     ...ageFrameRelated,
 

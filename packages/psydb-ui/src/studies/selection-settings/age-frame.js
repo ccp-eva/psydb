@@ -13,6 +13,7 @@ export const AgeFrame = (ps) => {
         ageFrameRelated,
 
         subjectTypeRecord,
+        subjectCRT,
         showButtons = true,
 
         onEdit,
@@ -68,6 +69,7 @@ export const AgeFrame = (ps) => {
                         condition: it,
                 
                         subjectTypeRecord,
+                        subjectCRT,
                         ageFrameRecord,
                         ageFrameRelated,
                         ...downstream
