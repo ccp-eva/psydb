@@ -91,5 +91,16 @@ module.exports = async (context) => {
         }
     }, { apiKey });
 
+    await driver.sendMessage({
+        type: `custom-record-types/set-general-data`,
+        payload: {
+            id: crtId,
+            label: 'Humankind Studies',
+            displayNameI18N: { 'de': 'Humankind-Studien' },
+            enableSubjectSelectionSettings: true,
+            enableLabTeams: true,
+        }
+    }, { apiKey });
+
     return crtId;
 }

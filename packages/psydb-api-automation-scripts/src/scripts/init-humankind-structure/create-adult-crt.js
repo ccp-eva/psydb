@@ -232,5 +232,18 @@ module.exports = async (context) => {
         ]}
     }, { apiKey });
     
+    await driver.sendMessage({
+        type: `custom-record-types/set-general-data`,
+        payload: {
+            id: crtId,
+            label: 'Humankind Adults',
+            displayNameI18N: { 'de': 'Humankind Erwachsene' },
+            requiresTestingPermissions: true,
+            showSequenceNumber: true,
+            showOnlineId: true,
+            commentFieldIsSensitive: false,
+        }
+    }, { apiKey });
+
     return crtId;
 }
