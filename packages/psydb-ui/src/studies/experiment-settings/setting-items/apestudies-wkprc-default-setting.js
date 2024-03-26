@@ -8,7 +8,6 @@ export const ApestudiesWKPRCDefaultSetting = (ps) => {
     var {
         settingRecord,
         settingRelated,
-        customRecordTypes,
     } = ps;
 
     var {

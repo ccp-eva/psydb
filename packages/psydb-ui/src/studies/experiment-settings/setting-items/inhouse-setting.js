@@ -13,7 +13,6 @@ export const InhouseSetting = (ps) => {
         settingRecord,
         settingRelated,
         allCustomRecordTypes,
-        customRecordTypes,
     } = ps;
 
     var {

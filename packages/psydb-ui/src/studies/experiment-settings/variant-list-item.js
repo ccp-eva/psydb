@@ -1,5 +1,6 @@
 import React from 'react';
 import * as enums from '@mpieva/psydb-schema-enums';
+import { only } from '@mpieva/psydb-core-utils';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { OuterSettingPanel } from '@mpieva/psydb-ui-layout';
 import SettingList from './setting-list';
@@ -12,7 +13,6 @@ const VariantListItem = (ps) => {
         allowedSubjectTypes,
         onRemove,
         onAddSetting,
-        ...downstream
     } = ps;
 
     var {
@@ -31,7 +31,7 @@ const VariantListItem = (ps) => {
         allowedSubjectTypes.length <= existingSubjectTypes.length
     );
 
-    var panelProps = {
+    var panelBag = {
         label: `${translate('Lab Workflow')} ${index + 1} - ${translate(enums.labMethods.mapping[variantType])}`,
         addButtonLabel: '+ ' + translate('Settings'),
         showAddButton: !!onAddSetting,
@@ -41,14 +41,28 @@ const VariantListItem = (ps) => {
         onRemove: () => onRemove({ index, variantRecord })
     };
 
+    var listPass = only({ from: ps, keys: [
+        'variantRecord',
+        'settingRecords',
+        'settingRelated',
+        'allowedSubjectTypes',
+
+        'allCustomRecordTypes',
+        'customRecordTypes',
+        'availableSubjectCRTs',
+
+        'onEditSetting',
+        'onRemoveSetting'
+    ]});
+
+    var listBag = {
+        ...listPass,
+        existingSubjectTypes,
+    }
+
     return (
-        <OuterSettingPanel { ...panelProps }>
-            <SettingList { ...({
-                variantRecord,
-                settingRecords,
-                existingSubjectTypes,
-                ...downstream
-            })} />
+        <OuterSettingPanel { ...panelBag }>
+            <SettingList { ...listBag } />
         </OuterSettingPanel>
     )
 }

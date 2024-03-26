@@ -523,6 +523,9 @@ var createRouting = (bag = {}) => {
     router.post('/study/subject-type-infos', ...withPostStages({
         endpoint: endpoints.study.subjectTypeInfos
     }));
+    router.post('/study/available-subject-crts', ...withPostStages({
+        endpoint: endpoints.study.availableSubjectCRTs
+    }));
     
     router.post('/experiment/read', ...withPostStages({
         endpoint: endpoints.experiment.read

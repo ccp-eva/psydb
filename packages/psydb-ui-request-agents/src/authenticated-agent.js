@@ -797,6 +797,19 @@ const createAgent = (options = {}) => {
             extraAxiosConfig,
         );
     }
+    
+    agent.fetchStudyAvailableSubjectCRTs = (bag) => {
+        var {
+            studyId,
+            extraAxiosConfig,
+        } = bag;
+
+        return axios.post(
+            '/api/study/available-subject-crts',
+            { studyId },
+            extraAxiosConfig,
+        );
+    }
 
     agent.fetchOneRecord = (bag) => {
         var { extraAxiosConfig, collection, ...payload } = bag;

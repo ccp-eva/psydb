@@ -717,10 +717,6 @@ module.exports = {
                 systemType: 'SaneString',
                 dataPointer: '/apiKey',
             },
-            {
-                systemType: 'DefaultBool',
-                dataPointer: '/state/isEnabled',
-            },
         ]
     },
 }

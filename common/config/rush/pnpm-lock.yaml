@@ -680,6 +680,7 @@ importers:
     specifiers:
       '@cdxoo/inline-text': ~1.0.2
       '@mpieva/json-schema-convert-pointer': workspace:~0.1.0-alpha
+      '@mpieva/psydb-common-translations': workspace:~0.1.0-alpha
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
       '@mpieva/psydb-date-interval-fns': workspace:~0.1.0-alpha
       '@mpieva/psydb-interval-fns': workspace:~0.1.0-alpha
@@ -698,6 +699,7 @@ importers:
     dependencies:
       '@cdxoo/inline-text': 1.0.2
       '@mpieva/json-schema-convert-pointer': link:../json-schema-convert-pointer
+      '@mpieva/psydb-common-translations': link:../psydb-common-translations
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
       '@mpieva/psydb-date-interval-fns': link:../psydb-date-interval-fns
       '@mpieva/psydb-interval-fns': link:../psydb-interval-fns

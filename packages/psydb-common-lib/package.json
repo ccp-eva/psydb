@@ -14,6 +14,7 @@
     "@mpieva/psydb-schema-enums": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-schema-creators": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-schema-fields": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-common-translations": "workspace:~0.1.0-alpha",
     "json-schema-traverse": "~1.0.0",
     "jsonpointer": "~5.0.1",
     "@mpieva/json-schema-convert-pointer": "workspace:~0.1.0-alpha",
