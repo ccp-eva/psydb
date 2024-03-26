@@ -1536,11 +1536,13 @@ importers:
 
   ../../packages/psydb-ui-request-agents:
     specifiers:
-      '@mpieva/psydb-timezone-helpers': workspace:~0.1.0-alpha
+      '@mpieva/psydb-common-lib': workspace:*
+      '@mpieva/psydb-timezone-helpers': workspace:*
       axios: ~0.24.0
       chai: ~4.3.7
       mocha: ~10.2.0
     devDependencies:
+      '@mpieva/psydb-common-lib': link:../psydb-common-lib
       '@mpieva/psydb-timezone-helpers': link:../psydb-timezone-helpers
       axios: 0.24.0
       chai: 4.3.10
@@ -6343,7 +6345,7 @@ packages:
       debug:
         optional: true
     dependencies:
-      debug: 4.3.4_supports-color@6.1.0
+      debug: 4.3.4
 
   /for-each/0.3.3:
     resolution: {integrity: sha512-jqYfLp7mo9vIyQf8ykW2v7A+2N4QjeCeI5+Dz9XraiO1ign81wjiH7Fb9vSOWvQfNtmSa4H2RoQTrrXivdUZmw==}

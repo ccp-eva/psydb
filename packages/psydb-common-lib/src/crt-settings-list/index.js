@@ -16,6 +16,10 @@ var CRTSettingsList = (bag) => {
         return items;
     }
 
+    list.map = (lambda) => (
+        items.map(lambda)
+    );
+
     list.filter = (siftFilter) => {
         var out = [];
         var compiledFilter = sift(siftFilter);
@@ -49,6 +53,15 @@ var CRTSettingsList = (bag) => {
     }
 
     return list;
+}
+
+CRTSettingsList.wrapResponsePromise = (promise, options = {}) => {
+    promise.then(response => {
+        response.data.data.crts = CRTSettingsList({
+            items: response.data.data.crts
+        });
+        return response;
+    })
 }
 
 module.exports = CRTSettingsList;

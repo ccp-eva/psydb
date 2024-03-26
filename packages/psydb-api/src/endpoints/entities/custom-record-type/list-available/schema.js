@@ -3,6 +3,7 @@ var {
     ExactObject,
     DefaultArray,
     StringEnum,
+    DefaultBool,
 } = require('@mpieva/psydb-schema-fields');
 
 var allCRTCollections = require('./all-crt-collections');
@@ -12,7 +13,8 @@ var Schema = (bag = {}) => {
         properties: {
             collections: DefaultArray({
                 items: StringEnum(allCRTCollections)
-            })
+            }),
+            ignoreResearchGroups: DefaultBool()
         },
         required: []
     })

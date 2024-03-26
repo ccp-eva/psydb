@@ -43,30 +43,10 @@ export const ApestudiesWKPRCDefaultSetting = (ps) => {
 
     var translate = useUITranslation();
 
-    var [ didFetch, fetched ] = useFetch((agent) => {
-        return agent.readCustomRecordTypeMetadata()
-    }, [])
-
-    if (!didFetch) {
-        return (
-            <LoadingIndicator size='lg' />
-        );
-    }
-
-    var { customRecordTypes } = fetched.data;
-
-    var allowedLocationTypes = (
-        customRecordTypes
-        .filter(it => it.collection === 'location')
-        .map(it => it.type)
-    )
-
     var bodyBag = {
         availableSubjectCRTs,
         isTransmitting,
         onHide,
-
-        allowedLocationTypes
     }
 
     return (
@@ -85,9 +65,12 @@ export const ApestudiesWKPRCDefaultSetting = (ps) => {
 
 const FormBody = (ps) => {
     var {
-        formik, availableSubjectCRTs, isTransmitting,
-        allowedLocationTypes
+        formik,
+        availableSubjectCRTs,
+        availableLocationCRTs,
+        isTransmitting,
     } = ps;
+
     var { getFieldProps } = formik;
 
     var language = useUILanguage();
@@ -104,10 +87,10 @@ const FormBody = (ps) => {
                 options: availableSubjectCRTs.asOptions({ language })
             })} />
 
-            <Fields.LocationTypeKeyList { ...({
+            <Fields.GenericTypeKeyList { ...({
                 dataXPath: '$.locationTypeKeys',
                 label: translate('Locations'),
-                allowedTypes: allowedLocationTypes,
+                collection: 'location',
                 disabled: !selectedSubjectType,
             })} />
 

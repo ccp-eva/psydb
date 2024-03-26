@@ -16,7 +16,14 @@ var listAvailable = async (context, next) => {
         payload: request.body
     });
 
-    var { collections = allCRTCollections } = request.body;
+    var {
+        collections = allCRTCollections,
+        ignoreResearchGroups = false
+    } = request.body;
+
+    if (!permissions.isRoot()) {
+        ignoreResearchGroups = false;
+    }
 
     // TODO: move that into permissions itself
     var availableTypesByCollection = {
@@ -31,7 +38,10 @@ var listAvailable = async (context, next) => {
         var recordTypes = availableTypesByCollection[it];
         return {
             collection: it,
-            ...(recordTypes !== 'ALL' && { recordTypes })
+            ...(
+                (!ignoreResearchGroups && recordTypes !== 'ALL')
+                && { recordTypes }
+            )
         }
     });
 

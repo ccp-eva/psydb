@@ -11,7 +11,6 @@ import {
 
 import * as enums from '@mpieva/psydb-schema-enums';
 import { without, only } from '@mpieva/psydb-core-utils';
-import { CRTSettingsList } from '@mpieva/psydb-common-lib';
 
 import { demuxed } from '@mpieva/psydb-ui-utils';
 import { useUITranslation, useUILanguage } from '@mpieva/psydb-ui-contexts';
@@ -76,9 +75,7 @@ const ExperimentSettings = (ps) => {
     var { customRecordTypes } = fetched.crts.data;
     var { customRecordTypes: allCustomRecordTypes } = fetched.allCRTs.data;
 
-    var availableSubjectCRTs = CRTSettingsList({
-        items: fetched.availableSubjectCRTs.data.crts
-    });
+    var availableSubjectCRTs = fetched.availableSubjectCRTs.data.crts;
 
     var variantRecords = fetched.variants.data.records;
     var {
