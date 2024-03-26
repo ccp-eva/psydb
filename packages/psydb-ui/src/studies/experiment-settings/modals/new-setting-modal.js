@@ -1,5 +1,4 @@
 import React from 'react';
-import omit from '@cdxoo/omit';
 
 import { demuxed } from '@mpieva/psydb-ui-utils';
 import { useUILanguage } from '@mpieva/psydb-ui-contexts';

@@ -419,6 +419,10 @@ var createRouting = (bag = {}) => {
         withPermissions(),
         endpoints.customRecordType.preRemoveInfo
     );
+
+    router.post('/custom-record-type/list-available', ...withPostStages({
+        endpoint: endpoints.customRecordType.listAvailable
+    }));
     
     router.get('/experiment-variant/pre-remove-info/:id',
         withSelfAuth(),

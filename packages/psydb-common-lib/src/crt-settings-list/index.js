@@ -12,6 +12,10 @@ var CRTSettingsList = (bag) => {
 
     var list = {};
 
+    list.items = () => {
+        return items;
+    }
+
     list.filter = (siftFilter) => {
         var out = [];
         var compiledFilter = sift(siftFilter);

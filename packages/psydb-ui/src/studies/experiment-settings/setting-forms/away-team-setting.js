@@ -1,18 +1,20 @@
 import React from 'react';
-import isSubset from 'is-subset';
-import { keyBy } from '@mpieva/psydb-core-utils';
 import { useUITranslation, useUILanguage } from '@mpieva/psydb-ui-contexts';
-import { useSend, useFetch } from '@mpieva/psydb-ui-hooks';
-import { Button, LoadingIndicator } from '@mpieva/psydb-ui-layout';
+import { useSend } from '@mpieva/psydb-ui-hooks';
+import {
+    LoadingIndicator,
+    AsyncButton,
+    SmallFormFooter
+} from '@mpieva/psydb-ui-layout';
 
 import {
     DefaultForm,
     Fields,
-    useFormikContext,
 } from '@mpieva/psydb-ui-lib/src/formik';
 
 export const AwayTeamSetting = (ps) => {
     var {
+        onHide,
         onSubmit,
         isTransmitting,
 
@@ -20,7 +22,6 @@ export const AwayTeamSetting = (ps) => {
         variantId,
         settingRecord,
 
-        allowedSubjectTypes,
         availableSubjectCRTs,
         onSuccessfulUpdate
     } = ps;
@@ -37,7 +38,8 @@ export const AwayTeamSetting = (ps) => {
 
     var bodyBag = {
         availableSubjectCRTs,
-        isTransmitting
+        isTransmitting,
+        onHide,
     }
 
     return (
@@ -55,7 +57,7 @@ export const AwayTeamSetting = (ps) => {
 };
 
 var FormBody = (ps) => {
-    var { formik, availableSubjectCRTs } = ps;
+    var { formik, availableSubjectCRTs, isTransmitting } = ps;
     var { getFieldProps } = formik;
 
     var language = useUILanguage();
@@ -63,7 +65,6 @@ var FormBody = (ps) => {
 
     var selectedSubjectType = getFieldProps('$.subjectTypeKey').value;
     var fieldOptions = {};
-    console.log(selectedSubjectType);
     if (selectedSubjectType) {
         var selectedSubjectCRT = availableSubjectCRTs.find({
             type: selectedSubjectType
@@ -98,9 +99,11 @@ var FormBody = (ps) => {
                 options: fieldOptions,
                 disabled: !selectedSubjectType
             })} />
-            <Button type='submit'>
-                { translate('Save') }
-            </Button>
+            <SmallFormFooter extraClassName='pt-2'>
+                <AsyncButton type='submit' isTransmitting={ isTransmitting }>
+                    { translate('Save') }
+                </AsyncButton>
+            </SmallFormFooter>
         </>
     );
 }

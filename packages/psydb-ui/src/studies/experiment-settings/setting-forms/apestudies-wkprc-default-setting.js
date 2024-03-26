@@ -1,8 +1,12 @@
 import React from 'react';
 import { keys, keyBy } from '@mpieva/psydb-core-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useUITranslation, useUILanguage } from '@mpieva/psydb-ui-contexts';
 import { useSend, useFetch } from '@mpieva/psydb-ui-hooks';
-import { Button, LoadingIndicator } from '@mpieva/psydb-ui-layout';
+import {
+    LoadingIndicator,
+    AsyncButton,
+    SmallFormFooter
+} from '@mpieva/psydb-ui-layout';
 
 import {
     DefaultForm,
@@ -15,17 +19,19 @@ const defaultValues = {
 
 export const ApestudiesWKPRCDefaultSetting = (ps) => {
     var {
-        op,
+        onHide,
+        onSubmit,
+        isTransmitting,
+
         studyId,
         variantId,
         settingRecord,
         settingRelated,
 
         allowedSubjectTypes,
+        availableSubjectCRTs,
         onSuccessfulUpdate
     } = ps;
-
-    var translate = useUITranslation();
 
     var settingId, settingState;
     if (settingRecord) {
@@ -34,36 +40,12 @@ export const ApestudiesWKPRCDefaultSetting = (ps) => {
             state: settingState,
         } = settingRecord)
     }
-    if (![ 'create', 'patch' ].includes(op)) {
-        throw new Error(`unknown op "${op}"`);
-    }
+
+    var translate = useUITranslation();
 
     var [ didFetch, fetched ] = useFetch((agent) => {
         return agent.readCustomRecordTypeMetadata()
     }, [])
-
-    var send = useSend((formData, formikProps) => {
-        var type = `experiment-variant-setting/apestudies-wkprc-default/${op}`;
-        var message;
-        switch (op) {
-            case 'create':
-                message = { type, payload: {
-                    studyId,
-                    experimentVariantId: variantId,
-                    props: formData
-                } };
-                break;
-            case 'patch':
-                message = { type, payload: {
-                    id: settingId,
-                    props: formData
-                }};
-                break;
-            default:
-                throw new Error(`unknown op "${op}"`);
-        }
-        return message;
-    }, { onSuccessfulUpdate });
 
     if (!didFetch) {
         return (
@@ -79,55 +61,61 @@ export const ApestudiesWKPRCDefaultSetting = (ps) => {
         .map(it => it.type)
     )
 
-    customRecordTypes = keyBy({
-        items: customRecordTypes,
-        byProp: 'type',
-    });
+    var bodyBag = {
+        availableSubjectCRTs,
+        isTransmitting,
+        onHide,
+
+        allowedLocationTypes
+    }
 
     return (
         <div>
             <DefaultForm
-                onSubmit={ send.exec }
+                onSubmit={ onSubmit }
                 initialValues={ settingState || defaultValues }
             >
-                {(formikProps) => {
-                    var { getFieldProps } = formikProps;
-                    var selectedType = (
-                        getFieldProps('$.subjectTypeKey').value
-                    );
-                    
-                    var subjectScientificFields = (
-                        selectedType
-                        ? (
-                            customRecordTypes[selectedType].state
-                            .settings.subChannelFields.scientific
-                        )
-                        : []
-                    );
-
-                    return (
-                        <>
-                            <Fields.GenericEnum { ...({
-                                dataXPath: '$.subjectTypeKey',
-                                label: translate('Subject Type'),
-                                required: true,
-                                options: allowedSubjectTypes
-                            })} />
-
-                            <Fields.LocationTypeKeyList { ...({
-                                dataXPath: '$.locationTypeKeys',
-                                label: translate('Locations'),
-                                allowedTypes: allowedLocationTypes,
-                                disabled: !selectedType,
-                            })} />
-
-                            <Button type='submit'>
-                                { translate('Save') }
-                            </Button>
-                        </>
-                    );
-                }}
+                {(formik) => (
+                    <FormBody formik={ formik } { ...bodyBag } />
+                )}
             </DefaultForm>
         </div>
     )
 };
+
+const FormBody = (ps) => {
+    var {
+        formik, availableSubjectCRTs, isTransmitting,
+        allowedLocationTypes
+    } = ps;
+    var { getFieldProps } = formik;
+
+    var language = useUILanguage();
+    var translate = useUITranslation();
+
+    var selectedSubjectType = getFieldProps('$.subjectTypeKey').value;
+
+    return (
+        <>
+            <Fields.GenericEnum { ...({
+                dataXPath: '$.subjectTypeKey',
+                label: translate('Subject Type'),
+                required: true,
+                options: availableSubjectCRTs.asOptions({ language })
+            })} />
+
+            <Fields.LocationTypeKeyList { ...({
+                dataXPath: '$.locationTypeKeys',
+                label: translate('Locations'),
+                allowedTypes: allowedLocationTypes,
+                disabled: !selectedSubjectType,
+            })} />
+
+            <SmallFormFooter extraClassName='pt-2'>
+                <AsyncButton type='submit' isTransmitting={ isTransmitting }>
+                    { translate('Save') }
+                </AsyncButton>
+            </SmallFormFooter>
+        </>
+    )
+}

@@ -1,8 +1,8 @@
 import React from 'react';
-import omit from '@cdxoo/omit';
 
 import { demuxed } from '@mpieva/psydb-ui-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useUILanguage } from '@mpieva/psydb-ui-contexts';
+import { useSend } from '@mpieva/psydb-ui-hooks';
 import { WithDefaultModal } from '@mpieva/psydb-ui-layout';
 import * as Forms from '../setting-forms';
 
@@ -10,6 +10,7 @@ const EditSettingModalBody = (ps) => {
     var {
         studyId,
         allowedSubjectTypes,
+        availableSubjectCRTs,
         modalPayloadData,
 
         onHide,
@@ -26,14 +27,17 @@ const EditSettingModalBody = (ps) => {
     var { _id: variantId, type: variantType } = variantRecord;
     var { subjectTypeKey } = settingRecord.state;
     
-    var translate = useUITranslation();
+    var language = useUILanguage();
 
-    allowedSubjectTypes = {
-        ...omit(existingSubjectTypes, allowedSubjectTypes),
-        [subjectTypeKey]: translate.crt(
-            settingRelated.relatedCustomRecordTypes.subject[subjectTypeKey]
-        )
-    }
+    availableSubjectCRTs = availableSubjectCRTs.filter({
+        $or: [
+            { type: subjectTypeKey },
+            { type: { $nin: existingSubjectTypes }},
+        ]
+    });
+
+    // FIXME: compat
+    var allowedSubjectTypes = availableSubjectCRTs.asOptions({ language });
 
     var SettingForm = ({
         'inhouse': Forms.InhouseSetting,
@@ -45,15 +49,24 @@ const EditSettingModalBody = (ps) => {
         'manual-only-participation': Forms.ManualOnlyParticipationSetting,
     })[variantType];
 
+    var send = useSend((formData, formikProps) => ({
+        type: `experiment-variant-setting/${variantType}/patch`,
+        payload: {
+            id: settingId,
+            props: formData
+        }
+    }), { onSuccessfulUpdate: [ onHide, onSuccessfulUpdate ] });
+
     return (
         <SettingForm {...({
-            op: 'patch',
+            ...send.passthrough,
+
             studyId,
             variantId,
             settingRecord,
             settingRelated,
+            availableSubjectCRTs,
             allowedSubjectTypes,
-            onSuccessfulUpdate: demuxed([ onHide, onSuccessfulUpdate ])
         })} />
     );
 }
