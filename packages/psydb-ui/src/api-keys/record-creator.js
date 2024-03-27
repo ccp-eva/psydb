@@ -5,7 +5,8 @@ import {
 } from 'react-router-dom';
 
 import { URL } from '@mpieva/psydb-ui-utils';
-import { useSendCreate } from '@mpieva/psydb-ui-hooks';
+import { useSelf, useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useSendCreate, usePermissions } from '@mpieva/psydb-ui-hooks';
 import { withRecordCreator } from '@mpieva/psydb-ui-lib';
 import MainForm from './main-form';
 
@@ -17,16 +18,22 @@ const CreateForm = (ps) => {
         
     var history = useHistory();
     var { url } = useRouteMatch();
-    
+    var translate = useUITranslation();
+    var self = useSelf();
+
     var send = useSendCreate({
         collection,
-        onSuccessfulUpdate: () => history.push(URL.up(url, 1))
+        onSuccessfulUpdate: () => history.push(URL.up(url, 1)),
+        autoPayload: false,
     })
 
     return (
         <MainForm.Component
-            title='Neuer Api-Key'
-            initialValues={ MainForm.createDefaults() }
+            type='create'
+            title={ translate('New API Key') }
+            initialValues={ MainForm.createDefaults({
+                personnelId: self.record._id
+            }) }
             onSubmit={ send.exec }
         />
     )

@@ -686,8 +686,8 @@ module.exports = {
                 key: '_apiKey',
                 systemType: 'SaneString',
                 dataPointer: '/apiKey',
-                displayName: 'ApiKey',
-                displayNameI18N: { de: 'ApiKey' },
+                displayName: 'API Key',
+                displayNameI18N: { de: 'API-Key' },
             },
             {
                 key: '_name',
@@ -695,6 +695,13 @@ module.exports = {
                 dataPointer: '/state/label',
                 displayName: 'Name',
                 displayNameI18N: { de: 'Name' },
+            },
+            {
+                key: '_isEnabled',
+                systemType: 'DefaultBool',
+                dataPointer: '/state/isEnabled',
+                displayName: 'Enabled',
+                displayNameI18N: { de: 'Aktiv' },
             },
         ],
         staticDisplayFields: [

@@ -1,31 +1,38 @@
 'use strict';
-var { RemapMailError } = require('./errors');
-
-var withErrorHandling = (cliOptions) => async (context, next) => {
-    var caughtErrors = [];
-    try {
-        await next();
-    }
-    catch (e) {
-        caughtErrors.push(e);
-    }
-    finally {
-        await sendErrorMail({
-            cliOptions,
-            caughtErrors
-        });
-        // send mail to somewhere
-    }
-}
-
 var nodemailer = require('nodemailer');
 var { encode: encodeHtml } = require('html-entities');
+
 var sendErrorMail = async (bag) => {
     var { cliOptions, caughtErrors } = bag;
     var {
         smtpHost, smtpPort, smtpSsl, smtpUser, smtpPassword,
-        errorMailFrom, errorMailTo
+        errorMailFrom, errorMailTo, errorMailVerbose = false
     } = cliOptions;
+
+    var items = caughtErrors.map(({ mail, e }) => {
+        var html = `
+            <p>${encodeHtml(String(e))}</p>
+        `;
+
+        if (mail) {
+            var mailInfo = `
+                in mail from
+                "${mail.replyTo[0].name} <${mail.replyTo[0].address}>"
+                received at "${mail.date.toISOString()} UTC"
+                (MessageId: "${mail.messageId}")
+            `;
+            html += `<p>${encodeHtml(mailInfo)}</p>`;
+        }
+
+        if (errorMailVerbose) {
+            var stack = (
+                (e.stack || '').split("\n").slice(1).join("\n")
+            );
+            html += `<pre>${encodeHtml(stack)}</pre>`;
+        }
+
+        return html;
+    });
 
     var html = `
         <html><body>
@@ -33,8 +40,8 @@ var sendErrorMail = async (bag) => {
                 Errors occured while parsing online registration mails:
             </b></p>
             <ol>
-                ${caughtErrors.map(it => (
-                    `<li>${encodeHtml(String(it))}</li>`
+                ${items.map(it => (
+                    `<li>${it}</li>`
                 ))}
             </ol>
         </body></html>
@@ -50,8 +57,6 @@ var sendErrorMail = async (bag) => {
         }
     });
 
-    console.log(errorMailTo);
-
     await transport.sendMail({
         from: errorMailFrom,
         to: errorMailTo,
@@ -61,4 +66,4 @@ var sendErrorMail = async (bag) => {
     })
 }
 
-module.exports = withErrorHandling;
+module.exports = { sendErrorMail }

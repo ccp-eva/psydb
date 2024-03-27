@@ -1,8 +1,10 @@
 import React from 'react';
-import { keys, keyBy } from '@mpieva/psydb-core-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
-import { useSend, useFetch } from '@mpieva/psydb-ui-hooks';
-import { Button, LoadingIndicator } from '@mpieva/psydb-ui-layout';
+import { useUITranslation, useUILanguage } from '@mpieva/psydb-ui-contexts';
+import {
+    LoadingIndicator,
+    AsyncButton,
+    SmallFormFooter
+} from '@mpieva/psydb-ui-layout';
 
 import {
     DefaultForm,
@@ -15,16 +17,19 @@ const defaultValues = {
 
 export const ManualOnlyParticipationSetting = (ps) => {
     var {
-        op,
+        onHide,
+        onSubmit,
+        isTransmitting,
+
         studyId,
         variantId,
         settingRecord,
-        settingRelated,
 
-        allowedSubjectTypes,
+        availableSubjectCRTs,
         onSuccessfulUpdate
     } = ps;
 
+    var [ language ] = useUILanguage();
     var translate = useUITranslation();
 
     var settingId, settingState;
@@ -34,100 +39,64 @@ export const ManualOnlyParticipationSetting = (ps) => {
             state: settingState,
         } = settingRecord)
     }
-    if (![ 'create', 'patch' ].includes(op)) {
-        throw new Error(`unknown op "${op}"`);
+
+    var bodyBag = {
+        availableSubjectCRTs,
+        isTransmitting,
+        onHide,
     }
-
-    var [ didFetch, fetched ] = useFetch((agent) => {
-        return agent.readCustomRecordTypeMetadata()
-    }, [])
-
-    var send = useSend((formData, formikProps) => {
-        var type = `experiment-variant-setting/manual-only-participation/${op}`;
-        var message;
-        switch (op) {
-            case 'create':
-                message = { type, payload: {
-                    studyId,
-                    experimentVariantId: variantId,
-                    props: formData
-                } };
-                break;
-            case 'patch':
-                message = { type, payload: {
-                    id: settingId,
-                    props: formData
-                }};
-                break;
-            default:
-                throw new Error(`unknown op "${op}"`);
-        }
-        return message;
-    }, { onSuccessfulUpdate });
-
-    if (!didFetch) {
-        return (
-            <LoadingIndicator size='lg' />
-        );
-    }
-
-    var { customRecordTypes } = fetched.data;
-
-    var allowedLocationTypes = (
-        customRecordTypes
-        .filter(it => it.collection === 'location')
-        .map(it => it.type)
-    )
-
-    customRecordTypes = keyBy({
-        items: customRecordTypes,
-        byProp: 'type',
-    });
 
     return (
         <div>
             <DefaultForm
-                onSubmit={ send.exec }
+                onSubmit={ onSubmit }
                 initialValues={ settingState || defaultValues }
             >
-                {(formikProps) => {
-                    var { getFieldProps } = formikProps;
-                    var selectedType = (
-                        getFieldProps('$.subjectTypeKey').value
-                    );
-                    
-                    var subjectScientificFields = (
-                        selectedType
-                        ? (
-                            customRecordTypes[selectedType].state
-                            .settings.subChannelFields.scientific
-                        )
-                        : []
-                    );
-
-                    return (
-                        <>
-                            <Fields.GenericEnum { ...({
-                                dataXPath: '$.subjectTypeKey',
-                                label: translate('Subject Type'),
-                                required: true,
-                                options: allowedSubjectTypes
-                            })} />
-
-                            <Fields.LocationTypeKeyList { ...({
-                                dataXPath: '$.locationTypeKeys',
-                                label: translate('Locations'),
-                                allowedTypes: allowedLocationTypes,
-                                disabled: !selectedType,
-                            })} />
-
-                            <Button type='submit'>
-                                { translate('Save') }
-                            </Button>
-                        </>
-                    );
-                }}
+                {(formik) => (
+                    <FormBody formik={ formik } { ...bodyBag } />
+                )}
             </DefaultForm>
         </div>
     )
 };
+
+const FormBody = (ps) => {
+    var {
+        formik,
+        availableSubjectCRTs,
+
+        isTransmitting,
+        onHide,
+    } = ps;
+
+    var { getFieldProps } = formik;
+    
+    var [ language ] = useUILanguage();
+    var translate = useUITranslation();
+
+    var selectedSubjectType = getFieldProps('$.subjectTypeKey').value;
+
+    return (
+        <>
+            <Fields.GenericEnum { ...({
+                dataXPath: '$.subjectTypeKey',
+                label: translate('Subject Type'),
+                required: true,
+                options: availableSubjectCRTs.asOptions({ language })
+            })} />
+
+            <Fields.GenericTypeKeyList { ...({
+                dataXPath: '$.locationTypeKeys',
+                label: translate('Locations'),
+                collection: 'location',
+                disabled: !selectedSubjectType,
+            })} />
+
+            <SmallFormFooter extraClassName='pt-2'>
+                <AsyncButton type='submit' isTransmitting={ isTransmitting }>
+                    { translate('Save') }
+                </AsyncButton>
+            </SmallFormFooter>
+        </>
+    )
+}

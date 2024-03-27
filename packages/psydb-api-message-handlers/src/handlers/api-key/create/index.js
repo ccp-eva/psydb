@@ -26,7 +26,7 @@ var checkSchema = async (context) => {
     var { message } = context;
     
     validateOrThrow({
-        schema: Schema(),
+        schema: Schema(context),
         payload: message
     });
 } 
@@ -37,11 +37,19 @@ var checkAllowedAndPlausible = async (context) => {
     if (!permissions.isRoot()) {
         throw new ApiError(403);
     }
+
+    // TODO: verify personnel record when set
 }
 
 var triggerSystemEvents = async (context) => {
-    var { dispatch, message, personnelId } = context;
-    var { props } = message.payload;
+    var { dispatch, permissions, message, personnelId: authId } = context;
+    var { props, personnelId = undefined } = message.payload;
+
+    var personnelId = (
+        permissions.isRoot()
+        ? personnelId
+        : auth
+    );
     
     var defaults = {
         isEnabled: false,

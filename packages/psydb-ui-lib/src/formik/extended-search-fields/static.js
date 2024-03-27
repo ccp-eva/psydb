@@ -6,12 +6,14 @@ import {
 
 // FIXME: not sure about line breaks when searching
 const FullText = SaneString;
+const Email = SaneString;
 
 export {
     SaneString,
     FullText,
     ForeignIdList,
-    Integer
+    Integer,
+    Email
 }
 
 export * from './plain-checkbox';
@@ -22,6 +24,7 @@ export * from './generic-radio-group';
 
 export * from './biological-gender';
 export * from './ext-bool';
+export * from './default-bool';
 export * from './negatable-foreign-id-list';
 export * from './negatable-helper-set-item-id-list';
 

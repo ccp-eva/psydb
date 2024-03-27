@@ -1,6 +1,7 @@
 import React from 'react';
 import isSubset from 'is-subset';
 import { keyBy } from '@mpieva/psydb-core-utils';
+import { CRTSettings } from '@mpieva/psydb-common-lib';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useSend, useFetch } from '@mpieva/psydb-ui-hooks';
 import { Button, LoadingIndicator } from '@mpieva/psydb-ui-layout';
@@ -44,8 +45,10 @@ export const AgeFrameForm = (ps) => {
     var translate = useUITranslation();
 
     var [ didFetch, fetched ] = useFetch((agent) => {
-        return agent.readCustomRecordTypeMetadata()
-    }, [])
+        return agent.readCRTSettings({
+            collection: 'subject', recordType: subjectTypeKey
+        })
+    }, []);
 
     var send = useSend((formData, formikProps) => {
         var type = `ageFrame/${op}`;
@@ -74,13 +77,8 @@ export const AgeFrameForm = (ps) => {
     if (!didFetch) {
         return <LoadingIndicator size='lg' />
     }
-
-    var { customRecordTypes } = fetched.data;
-
-    customRecordTypes = keyBy({
-        items: customRecordTypes,
-        byProp: 'type',
-    });
+    
+    var crt = CRTSettings({ data: fetched.data });
 
     return (
         <div>
@@ -90,11 +88,6 @@ export const AgeFrameForm = (ps) => {
                 useAjvAsync
             >
                 {(formikProps) => {
-                    var subjectScientificFields = (
-                        customRecordTypes[subjectTypeKey].state
-                        .settings.subChannelFields.scientific
-                    );
-
                     return (
                         <>
                             <Fields.AgeFrameBoundary
@@ -112,7 +105,7 @@ export const AgeFrameForm = (ps) => {
                                 </header>
                                 <Fields.SubjectFieldConditionList { ...({
                                     dataXPath: '$.conditions',
-                                    subjectScientificFields,
+                                    crt,
                                     noWrapper: true
                                 })} />
                             </div>

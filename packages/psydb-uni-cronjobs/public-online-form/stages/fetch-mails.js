@@ -6,14 +6,23 @@ var fetchMails = async (context, next) => {
     var lock = await imap.getMailboxLock('INBOX');
     try {
         var fetched = imap.fetch(
-            { subject: 'Anmeldung Datenbank' },
+            { subject: '[DB-Registration]' },
             { envelope: true, bodyStructure: true, bodyParts: [ '2' ] }
         );
         
         var preprocessedMails = [];
         for await (var message of fetched) {
             var { seq, uid, id, envelope, bodyParts } = message;
-            var { date, messageId, sender, from, replyTo } = envelope
+            var {
+                subject, date, messageId, sender, from, replyTo
+            } = envelope;
+
+            // NOTE: imap search is very limited see:
+            // https://github.com/postalsys/imapflow/issues/154
+            if (!/^\[DB-Registration\]/.test(subject)) {
+                continue;
+            }
+
             var htmlPart = String(bodyParts.get('2'));
 
             preprocessedMails.push({
@@ -38,4 +47,4 @@ var fetchMails = async (context, next) => {
     await next();
 }
 
-module.exports = fetchMails;
+module.exports = { fetchMails }

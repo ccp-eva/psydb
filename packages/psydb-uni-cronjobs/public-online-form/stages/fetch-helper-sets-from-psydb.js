@@ -1,8 +1,6 @@
 'use strict';
 var { keyBy, groupBy } = require('@mpieva/psydb-core-utils');
-
-var sane = (v) => String(v).trim();
-var lc = (s) => s.toLowerCase();
+var { sane, lc } = require('../utils');
 
 var fetchHelperSetsFromPsydb = async (context, next) => {
     var { driver } = context;
@@ -100,4 +98,4 @@ var fetchItemRecords = async (bag) => {
     return records;
 }
 
-module.exports = fetchHelperSetsFromPsydb;
+module.exports = { fetchHelperSetsFromPsydb }

@@ -2,19 +2,21 @@ import React from 'react';
 import { createBase, withPair, addComponents } from '../core';
 import {
     ForeignId,
+    DefaultBool,
 } from '../utility-components';
 
 
 const labels = {
     '/personnelId': 'Account',
-    '/apiKey': 'Api-Key',
-    '/state/label': 'Bezeichnung'
+    '/apiKey': 'API Key',
+    '/state/label': 'Label',
+    '/state/isEnabled': 'Enabled'
 }
 
 const [ ApiKey, Context ] = createBase();
 addComponents(ApiKey, Context, labels, [
     { 
-        cname:'PersonnelId',
+        cname: 'PersonnelId',
         path: '/personnelId',
         Component: withPair((ps) => (
             <ForeignId
@@ -24,12 +26,17 @@ addComponents(ApiKey, Context, labels, [
         ))
     },
     {
-        cname:'ApiKey',
+        cname: 'ApiKey',
         path: '/apiKey'
     },
     {
-        cname:'Label',
+        cname: 'Label',
         path: '/state/label'
+    },
+    {
+        cname:'IsEnabled',
+        path: '/state/isEnabled',
+        Component: withPair(DefaultBool)
     },
 ]);
 

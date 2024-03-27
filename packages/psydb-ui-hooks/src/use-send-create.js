@@ -8,20 +8,25 @@ const useSendCreate = (options) => {
         onSuccessfulUpdate,
         onFailedUpdate,
         additionalPayloadProps,
+        autoPayload = true,
         ...otherOptions
     } = options;
 
-    var send = useSend((props, formikBag, moreAdditionalPayloadProps) => ({
+    var send = useSend((data, formikBag, moreAdditionalPayloadProps) => ({
         type: (
             recordType
             ? `${collection}/${recordType}/create`
             : `${collection}/create`
         ),
-        payload: {
-            props,
-            ...additionalPayloadProps,
-            ...moreAdditionalPayloadProps
-        }
+        ...(autoPayload ? {
+            payload: {
+                props: data,
+                ...additionalPayloadProps,
+                ...moreAdditionalPayloadProps
+            }
+        } : {
+            payload: data
+        })
     }), {
         onSuccessfulUpdate: (response) => {
             var recordId = response.data.data.find(it => (

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useSendRemove } from '@mpieva/psydb-ui-hooks';
 import {
     Pair,
@@ -26,6 +27,8 @@ const SafetyForm = (ps) => {
     var { record } = fetched;
     var { state: { label }} = record;
 
+    var translate = useUITranslation();
+
     var send = useSendRemove({
         collection,
         recordType,
@@ -34,9 +37,12 @@ const SafetyForm = (ps) => {
     });
 
     return (
-        <FormBox title='Api-Key löschen' titleClassName='text-danger'>
+        <FormBox
+            title={ translate('Delete API Key') }
+            titleClassName='text-danger'
+        >
             <Pair 
-                label='Api-Key'
+                label={ translate('API Key')}
                 wLeft={ 3 } wRight={ 9 } className='px-3'
             >
                 { label }
@@ -46,7 +52,7 @@ const SafetyForm = (ps) => {
                 variant='danger'
                 onClick={ send.exec }
             >
-                Löschen
+                { translate('Delete') }
             </Button>
         </FormBox>
     )
@@ -54,16 +60,22 @@ const SafetyForm = (ps) => {
 
 const SuccessInfo = (ps) => {
     var { successInfoBackLink } = ps;
+    var translate = useUITranslation();
     return (
-        <FormBox titleClassName='text-success' title='Api-Key gelöscht'>
-            <i>Api-Key wurde erfolgreich gelöscht</i>
+        <FormBox
+            titleClassName='text-success'
+            title={ translate('API Key Deleted') }
+        >
+            <i>
+                { translate('API Key was deleted successfully!') }
+            </i>
             { successInfoBackLink && (
                 <>
                     <hr />
                     <a href={ successInfoBackLink }>
                         <Icons.ArrowLeftShort />
                         {' '}
-                        <b>zurück zur Liste</b>
+                        <b>{ translate('Back to List') }</b>
                     </a>
                 </>
             )}

@@ -37,12 +37,12 @@ module.exports = async (bag) => {
                         phones: [
                             `0341/12345600${ix}`
                         ],
+                        dateOfBirth: '1980-01-01T00:00:00.000Z',
+                        gender,
                     }
                 },
                 scientific: {
                     custom: {
-                        dateOfBirth: '1980-01-01T00:00:00.000Z',
-                        gender,
                         doesDBRegistrationConsentOnPaperExist: true,
                         acquisitionId: null,
                     },

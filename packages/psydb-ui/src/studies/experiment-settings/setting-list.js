@@ -1,4 +1,5 @@
 import React from 'react';
+import { only } from '@mpieva/psydb-core-utils';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
@@ -48,20 +49,33 @@ const SettingList = (ps) => {
         'manual-only-participation': ManualOnlyParticipationSetting,
     })[variantType];
 
+    var componentPass = only({ from: ps, keys: [
+        'variantRecord',
+        'settingRelated',
+
+        'allowedSubjectTypes',
+        'existingSubjectTypes',
+        
+        'allCustomRecordTypes',
+        'customRecordTypes',
+        'availableSubjectCRTs',
+    ]});
+
+    var handlers = canWrite ? {
+        onEdit: onEditSetting,
+        onRemove: onRemoveSetting,
+    } : {};
+
     return (
         <>
-            { settingRecords.map((settingRecord, index) => (
-                <SettingComponent key={ index } { ...({
-                    variantRecord,
-                    settingRecord,
-                    existingSubjectTypes,
-                    showButtons: !!canWrite,
-                    ...(canWrite && {
-                        onEdit: onEditSetting,
-                        onRemove: onRemoveSetting,
-                    }),
-                    ...downstream
-                })} />
+            { settingRecords.map((it, ix) => (
+                <SettingComponent
+                    key={ ix }
+                    settingRecord={ it }
+                    showButtons={ !!canWrite }
+                    { ...componentPass }
+                    { ...handlers }
+                />
             ))}
         </>
     )

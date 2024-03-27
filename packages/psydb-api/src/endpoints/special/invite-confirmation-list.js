@@ -10,6 +10,7 @@ var {
 } = require('@mpieva/psydb-core-utils');
 
 var {
+    CRTSettings,
     checkLabOperationAccess
 } = require('@mpieva/psydb-common-lib');
 
@@ -17,6 +18,8 @@ var {
     ApiError,
     ResponseBody,
 
+    withRetracedErrors,
+    aggregateToArray,
     validateOrThrow,
 
     convertPointerToPath,
@@ -106,8 +109,8 @@ var inviteConfirmationList = async (context, next) => {
         experimentTypes.push('online-video-call');
     }
 
-    var studyRecords = await (
-        db.collection('study').aggregate([
+    var studyRecords = await withRetracedErrors(
+        aggregateToArray({ db, study: [
             { $match: {
                 'state.researchGroupIds': researchGroupId,
             }},
@@ -116,74 +119,73 @@ var inviteConfirmationList = async (context, next) => {
                 recordIntervalPath: 'state.runningPeriod',
                 recordIntervalEndCanBeNull: true
             }),
-        ]).toArray()
+        ]})
     );
     
-    var experimentRecords = await (
-        db.collection('experiment').aggregate([
+    var experimentRecords = await withRetracedErrors(
+        aggregateToArray({ db, experiment: [
             MatchIntervalOverlapStage({ start, end }),
             { $match: {
+                'type': { $in: experimentTypes },
                 'state.studyId': { $in: studyRecords.map(it => it._id) },
-                type: { $in: experimentTypes },
                 // TODO: only for invitation
                 'state.subjectData.invitationStatus': 'scheduled',
             }},
             StripEventsStage(),
-        ]).toArray()
+        ]})
     );
 
     var subjectIds = [];
     for (var it of experimentRecords) {
         subjectIds = [
             ...subjectIds,
-            ...(
-                it.state.subjectData
-                .map(it => it.subjectId)
-            )
+            ...(it.state.subjectData.map(it => it.subjectId))
         ]
     }
 
     //console.log(subjectIds);
 
-    var subjectRecordTypeData = await fetchOneCustomRecordType({
+    var subjectCRTRecord = await fetchOneCustomRecordType({
         db,
         collection: 'subject',
         type: subjectRecordType,
     });
+    var subjectCRT = CRTSettings.fromRecord(subjectCRTRecord);
 
-    var {
-        displayFields,
-        availableDisplayFieldData,
-    } = await gatherDisplayFieldsForRecordType({
-        prefetched: subjectRecordTypeData,
-        permissions,
-    });
+    var displayFieldData = subjectCRT.augmentedDisplayFields('table');
 
-    // TODO: theese fields needs a flag of some kind so that they are allowed
-    // to be shown here
-    // find the first PhoneWithTypeList field
-    var phoneListField = (
-        subjectRecordTypeData.state.settings.subChannelFields.gdpr
-        .find(field => {
-            return (field.type === 'PhoneWithTypeList');
+    //var {
+    //    displayFields,
+    //    availableDisplayFieldData,
+    //} = await gatherDisplayFieldsForRecordType({
+    //    prefetched: subjectCRTRecord,
+    //    permissions,
+    //});
+
+    // TODO make seperate display field list for invite confirmation
+    var [ phoneField ] = (
+        subjectCRT.findCustomFields({
+            'systemType': { $in: [
+                'Phone', 'PhoneList', 'PhoneWithTypeList'
+            ]}
         })
     );
 
-    var subjectRecords = await (
-        db.collection('subject').aggregate([
+
+    var subjectRecords = await withRetracedErrors(
+        aggregateToArray({ db, subject: [
             { $match: {
                 _id: { $in: subjectIds }
             }},
             StripEventsStage({ subChannels: ['gdpr', 'scientific' ]}),
 
             ProjectDisplayFieldsStage({
-                displayFields,
-                additionalProjection: {
-                    [`gdpr.state.custom.${phoneListField.key}`]: true,
-                    //'scientific.state.internals.invitedForExperiments': true,
-                }
+                displayFields: displayFieldData,
+                additionalProjection: phoneField ? {
+                    [convertPointerToPath(phoneField.pointer)]: true
+                } : {}
             }),
-        ]).toArray()
+        ]})
     );
 
     var subjectRelated = await fetchRelatedLabelsForMany({
@@ -202,31 +204,21 @@ var inviteConfirmationList = async (context, next) => {
 
     //console.log(experimentRecords);
 
-    var experimentOperatorTeamRecords = await (
-        db.collection('experimentOperatorTeam').aggregate([
+    var experimentOperatorTeamRecords = await withRetracedErrors(
+        aggregateToArray({ db, experimentOperatorTeam: [
             { $match: {
                 _id: { $in: experimentRecords.map(it => (
                     it.state.experimentOperatorTeamId
                 ))},
             }},
             StripEventsStage(),
-        ]).toArray()
+        ]})
     );
 
     var subjectRecordsById = keyBy({
         items: subjectRecords,
         byProp: '_id'
     })
-
-    var availableDisplayFieldDataByPointer = keyBy({
-        items: availableDisplayFieldData,
-        byProp: 'dataPointer'
-    });
-
-    var displayFieldData = displayFields.map(it => ({
-        ...availableDisplayFieldDataByPointer[it.dataPointer],
-        dataPointer: it.dataPointer,
-    }))
 
     var experimentStudyRecords = await (
         db.collection('study').aggregate([
@@ -246,7 +238,7 @@ var inviteConfirmationList = async (context, next) => {
             subjectRecordsById,
             subjectRelated,
             subjectDisplayFieldData: displayFieldData,
-            phoneListField,
+            phoneField,
             studyRecords: experimentStudyRecords,
         },
     });

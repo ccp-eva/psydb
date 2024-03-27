@@ -26,7 +26,7 @@ module.exports = async (bag) => {
 
         await driver.sendMessage({
             type: 'personnel/create',
-            payload: { props: {
+            payload: { sendMail: false, props: {
                 gdpr: {
                     firstname: `Test ${it}`,
                     lastname: 'Humankind',
@@ -74,7 +74,7 @@ module.exports = async (bag) => {
 
         await driver.sendMessage({
             type: 'personnel/create',
-            payload: { props: {
+            payload: { sendMail: false, props: {
                 gdpr: {
                     firstname,
                     lastname,
@@ -107,7 +107,7 @@ module.exports = async (bag) => {
 
         await driver.sendMessage({
             type: 'personnel/create',
-            payload: { props: {
+            payload: { sendMail: false, props: {
                 gdpr: {
                     firstname,
                     lastname,
