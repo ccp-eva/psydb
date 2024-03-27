@@ -144,7 +144,7 @@ var AllModals = (ps) => {
     } = ps;
 
     var pass = only({ from: ps, keys: [
-        'studyId', 'onSuccessfulUpdate',
+        'studyId', 'availableSubjectCRTs', 'onSuccessfulUpdate',
     ]});
 
     return (

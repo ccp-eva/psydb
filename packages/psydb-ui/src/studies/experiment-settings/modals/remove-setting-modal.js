@@ -17,6 +17,7 @@ const RemoveSettingModalBody = (ps) => {
     var {
         onHide,
         modalPayloadData,
+        availableSubjectCRTs,
 
         onSuccessfulUpdate,
     } = ps;
@@ -65,6 +66,7 @@ const RemoveSettingModalBody = (ps) => {
                 <div className='bg-white'>
                     <SettingItem
                         { ...modalPayloadData }
+                        availableSubjectCRTs={ availableSubjectCRTs }
                         showButtons={ false }
                     />
                 </div>
