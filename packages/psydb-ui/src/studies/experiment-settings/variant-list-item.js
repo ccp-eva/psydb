@@ -21,6 +21,20 @@ const VariantListItem = (ps) => {
         state: variantState
     } = variantRecord;
 
+    var listPass = only({ from: ps, keys: [
+        'variantRecord',
+        'settingRecords',
+        'settingRelated',
+        'allowedSubjectTypes',
+
+        'allCustomRecordTypes',
+        'customRecordTypes',
+        'availableSubjectCRTs',
+
+        'onEditSetting',
+        'onRemoveSetting'
+    ]});
+
     var translate = useUITranslation();
 
     var existingSubjectTypes = (
@@ -40,20 +54,6 @@ const VariantListItem = (ps) => {
         onAdd: () => onAddSetting({ variantRecord, existingSubjectTypes }),
         onRemove: () => onRemove({ index, variantRecord })
     };
-
-    var listPass = only({ from: ps, keys: [
-        'variantRecord',
-        'settingRecords',
-        'settingRelated',
-        'allowedSubjectTypes',
-
-        'allCustomRecordTypes',
-        'customRecordTypes',
-        'availableSubjectCRTs',
-
-        'onEditSetting',
-        'onRemoveSetting'
-    ]});
 
     var listBag = {
         ...listPass,
