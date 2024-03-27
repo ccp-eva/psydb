@@ -18,7 +18,7 @@ const defaultValues = {
     locations: [],
 }
 
-export const InhouseSetting = (ps) => {
+export const InviteSetting = (ps) => {
     var {
         onHide,
         onSubmit,
@@ -33,7 +33,7 @@ export const InhouseSetting = (ps) => {
         onSuccessfulUpdate
     } = ps;
 
-    var language = useUILanguage();
+    var [ language ] = useUILanguage();
     var translate = useUITranslation();
 
     var settingId, settingState;
@@ -51,9 +51,7 @@ export const InhouseSetting = (ps) => {
     }, [])
 
     if (!didFetch) {
-        return (
-            <LoadingIndicator size='lg' />
-        );
+        return <LoadingIndicator size='lg' />
     }
 
     var availableLocationCRTs = (

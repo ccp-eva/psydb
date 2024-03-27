@@ -30,9 +30,9 @@ const NewSettingModalBody = (ps) => {
     var allowedSubjectTypes = availableSubjectCRTs.asOptions({ language });
 
     var SettingForm = ({
-        'inhouse': Forms.InhouseSetting,
+        'inhouse': Forms.InviteSetting,
+        'online-video-call': Forms.InviteSetting,
         'away-team': Forms.AwayTeamSetting,
-        'online-video-call': Forms.OnlineVideoCallSetting,
         'online-survey': Forms.OnlineSurveySetting,
 
         'apestudies-wkprc-default': Forms.ApestudiesWKPRCDefaultSetting,
