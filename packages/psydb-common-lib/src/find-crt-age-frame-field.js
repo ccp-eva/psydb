@@ -1,20 +1,18 @@
 'use strict';
+var CRTSettings = require('./crt-settings');
+
 var findCRTAgeFrameField = (crtSettings, options = {}) => {
     var { as } = options;
-    var { hasSubChannels, fieldDefinitions } = crtSettings;
     
-    var allFieldDefinitions = (
-        hasSubChannels
-        ? [
-            ...fieldDefinitions.scientific || [],
-            ...fieldDefinitions.gdpr || [],
-        ]
-        : fieldDefinitions
+    var crt = (
+        crtSettings.getRaw
+        ? crtSettings 
+        : CRTSettings({ data: crtSettings })
     );
 
-    var definition = allFieldDefinitions.find(it => (
-        (it.props || {}).isSpecialAgeFrameField
-    ));
+    var [ definition ] = crt.findCustomFields({
+        'props.isSpecialAgeFrameField': true
+    });
 
     if (!definition) {
         return undefined;
