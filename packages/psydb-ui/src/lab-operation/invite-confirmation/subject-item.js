@@ -7,9 +7,7 @@ import {
 
 import { useModalReducer } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
-import {
-    ExperimentSubjectDropdown,
-} from '@mpieva/psydb-ui-lib';
+import { ExperimentSubjectDropdown } from '@mpieva/psydb-ui-lib';
 
 import {
     MoveSubjectModal,
@@ -21,8 +19,6 @@ import {
 import { Subject } from '@mpieva/psydb-ui-lib/data-viewers';
 import * as Themes from '@mpieva/psydb-ui-lib/data-viewer-themes';
 
-
-import applyValueToDisplayFields from '@mpieva/psydb-ui-lib/src/apply-value-to-display-fields';
 
 const SubjectItem = (ps) => {
     var {
@@ -56,15 +52,6 @@ const SubjectItem = (ps) => {
     var moveSubjectModal = useModalReducer();
     var followUpSubjectModal = useModalReducer();
     var removeSubjectModal = useModalReducer();
-
-    var withValue = applyValueToDisplayFields({
-        displayFieldData: subjectDisplayFieldData,
-        record: subjectRecord,
-        ...subjectRelated,
-
-        language,
-        locale
-    });
 
     var sharedModalBag = {
         shouldFetch: true,
@@ -106,25 +93,14 @@ const SubjectItem = (ps) => {
                     <Subject.DisplayOrdered
                         displayFields={ subjectDisplayFieldData }
                     />
-                </Subject>
-                { phoneField && (
-                    <div className='mt-3 font-weight-bold'>
-                        <u>{ translate.fieldDefinition(phoneField) }</u>
-                        <div>
-                            { 
-                                subjectRecord
-                                .gdpr.state.custom[phoneListField.key]
-                                .map((it, index) => {
-                                    return (
-                                        <div key={ index }>
-                                            { it.number }
-                                        </div>
-                                    )
-                                })
-                            }
+                    { phoneField && (
+                        <div className='mt-3 font-weight-bold'>
+                            <Subject.DisplayOrdered
+                                displayFields={[ phoneField ]}
+                            />
                         </div>
-                    </div>
-                )}
+                    )}
+                </Subject>
                 { comment && (
                     <div className='mt-3'>
                         <b><u>{ translate('Comment') }</u></b>
