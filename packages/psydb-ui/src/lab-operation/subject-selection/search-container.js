@@ -13,6 +13,7 @@ import { Base64 } from 'js-base64';
 
 import datefns from '@mpieva/psydb-ui-lib/src/date-fns';
 
+import { CRTSettings } from '@mpieva/psydb-common-lib';
 import { useFetchAll } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
@@ -37,6 +38,10 @@ const SearchContainer = (ps) => {
             collection: 'study',
             ids: studyIds
         }),
+        subjectCRT: agent.readCRTSettings({
+            collection: 'subject',
+            recordType: subjectRecordType
+        }),
         subjectCRTs: agent.readCustomRecordTypeMetadata({
             only: [{
                 collection: 'subject',
@@ -54,10 +59,12 @@ const SearchContainer = (ps) => {
 
     var {
         studies,
+        subjectCRT,
         subjectCRTs,
         ageFrames
     } = fetched._stageDatas;
 
+    subjectCRT = CRTSettings({ data: subjectCRT });
     var subjectTypeRecord = subjectCRTs.customRecordTypes[0];
 
     var {
@@ -96,6 +103,7 @@ const SearchContainer = (ps) => {
                 <div className='p-3 border bg-light'>
                     <SelectionForm { ...({
                         studyRecords: studies.records,
+                        subjectCRT,
                         subjectTypeRecord,
                         ageFrameRecords,
                         ageFrameRelated,

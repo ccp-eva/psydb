@@ -17,6 +17,7 @@ import { StudyPanel } from './study-panel';
 export const SelectionForm = (ps) => {
     var {
         studyRecords,
+        subjectCRT,
         subjectTypeRecord,
         ageFrameRecords,
         ageFrameRelated,
@@ -56,6 +57,7 @@ export const SelectionForm = (ps) => {
                         <StudyPanel key={ study._id } { ...({
                             studyId: study._id,
                             shorthand: study.state.shorthand,
+                            subjectCRT,
                             subjectTypeRecord,
                             ageFrameRecords: ageFramesForStudy[study._id],
                             ageFrameRelated

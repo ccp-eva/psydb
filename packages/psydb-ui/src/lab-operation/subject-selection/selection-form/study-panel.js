@@ -17,6 +17,7 @@ export const StudyPanel = (ps) => {
     var {
         studyId,
         shorthand,
+        subjectCRT,
         subjectTypeRecord,
         ageFrameRecords = [],
         ageFrameRelated
@@ -32,6 +33,7 @@ export const StudyPanel = (ps) => {
             { ageFrameRecords.length > 0 ? (
                 ageFrameRecords.map((it, index) => (
                     <AgeFrame key={ index } { ...({
+                        subjectCRT,
                         subjectTypeRecord,
                         ageFrameRecord: it,
                         ageFrameRelated,
@@ -48,6 +50,7 @@ export const StudyPanel = (ps) => {
 
 const AgeFrame = (ps) => {
     var {
+        subjectCRT,
         subjectTypeRecord,
         ageFrameRecord,
         ageFrameRelated,
@@ -85,6 +88,7 @@ const AgeFrame = (ps) => {
                 conditions.map((it, index) => (
                     <Condition key={ index } { ...({
                         formKey,
+                        subjectCRT,
                         subjectTypeRecord,
                         condition: it,
                         ageFrameRelated,
@@ -104,6 +108,7 @@ const Condition = (ps) => {
         formKey,
         condition,
         ageFrameRelated,
+        subjectCRT,
         subjectTypeRecord,
     } = ps;
 
@@ -111,10 +116,9 @@ const Condition = (ps) => {
     
     var [ language ] = useUILanguage();
 
-    var fieldDefinition = (
-        subjectTypeRecord.state.settings.subChannelFields.scientific
-        .find(it => pointer === it.pointer)
-    );
+    var [ fieldDefinition ] = subjectCRT.findCustomFields({
+        'pointer': pointer
+    });
 
     var condKey = escapeJsonPointer(pointer);
     formKey = `${formKey}/${condKey}`;
