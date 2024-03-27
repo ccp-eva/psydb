@@ -1,7 +1,6 @@
 import React from 'react';
-import { keys, keyBy } from '@mpieva/psydb-core-utils';
 import { useUITranslation, useUILanguage } from '@mpieva/psydb-ui-contexts';
-import { useSend, useFetch } from '@mpieva/psydb-ui-hooks';
+import { useFetch } from '@mpieva/psydb-ui-hooks';
 import {
     LoadingIndicator,
     AsyncButton,
@@ -14,10 +13,12 @@ import {
 } from '@mpieva/psydb-ui-lib/src/formik';
 
 const defaultValues = {
-    locationTypeKeys: [],
+    subjectsPerExperiment: 1,
+    subjectFieldRequirements: [],
+    locations: [],
 }
 
-export const ApestudiesWKPRCDefaultSetting = (ps) => {
+export const InviteSetting = (ps) => {
     var {
         onHide,
         onSubmit,
@@ -32,6 +33,9 @@ export const ApestudiesWKPRCDefaultSetting = (ps) => {
         onSuccessfulUpdate
     } = ps;
 
+    var [ language ] = useUILanguage();
+    var translate = useUITranslation();
+
     var settingId, settingState;
     if (settingRecord) {
         ({
@@ -40,10 +44,24 @@ export const ApestudiesWKPRCDefaultSetting = (ps) => {
         } = settingRecord)
     }
 
-    var translate = useUITranslation();
+    var [ didFetch, fetched ] = useFetch((agent) => {
+        return agent.fetchAvailableCRTs({
+            collections: [ 'location' ]
+        });
+    }, [])
+
+    if (!didFetch) {
+        return <LoadingIndicator size='lg' />
+    }
+
+    var availableLocationCRTs = (
+        fetched.data.crts
+        .filter({ 'reservationType': 'inhouse' })
+    );
 
     var bodyBag = {
         availableSubjectCRTs,
+        availableLocationCRTs,
         isTransmitting,
         onHide,
     }
@@ -60,23 +78,32 @@ export const ApestudiesWKPRCDefaultSetting = (ps) => {
             </DefaultForm>
         </div>
     )
-};
+}
 
 const FormBody = (ps) => {
     var {
         formik,
         availableSubjectCRTs,
         availableLocationCRTs,
+        settingRelated,
+
         isTransmitting,
+        onHide,
     } = ps;
 
     var { getFieldProps } = formik;
-
+    
     var [ language ] = useUILanguage();
     var translate = useUITranslation();
 
     var selectedSubjectType = getFieldProps('$.subjectTypeKey').value;
-
+    var selectedSubjectCRT = undefined;
+    if (selectedSubjectType) {
+        selectedSubjectCRT = availableSubjectCRTs.find({
+            type: selectedSubjectType
+        });
+    }
+    
     return (
         <>
             <Fields.GenericEnum { ...({
@@ -85,12 +112,28 @@ const FormBody = (ps) => {
                 required: true,
                 options: availableSubjectCRTs.asOptions({ language })
             })} />
+            <Fields.Integer { ...({
+                dataXPath: '$.subjectsPerExperiment',
+                label: translate('per Appointment'),
+                required: true,
+                min: 1,
+                disabled: !selectedSubjectType
+            })} />
 
-            <Fields.GenericTypeKeyList { ...({
-                dataXPath: '$.locationTypeKeys',
-                label: translate('Locations'),
-                collection: 'location',
+            <Fields.SubjectFieldRequirementList { ...({
+                dataXPath: '$.subjectFieldRequirements',
+                label: translate('Appointment Conditions'),
+                subjectCRT: selectedSubjectCRT,
+                disabled: !selectedSubjectType
+            })} />
+
+            <Fields.TypedLocationIdList { ...({
+                dataXPath: '$.locations',
+                label: translate('reservable_locations'),
+                typeOptions: availableLocationCRTs.asOptions({ language }),
                 disabled: !selectedSubjectType,
+
+                related: settingRelated,
             })} />
 
             <SmallFormFooter extraClassName='pt-2'>
@@ -99,5 +142,5 @@ const FormBody = (ps) => {
                 </AsyncButton>
             </SmallFormFooter>
         </>
-    )
+    );
 }

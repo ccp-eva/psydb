@@ -8,7 +8,6 @@ export const AwayTeamSetting = (ps) => {
         settingRecord,
         settingRelated,
         allCustomRecordTypes,
-        customRecordTypes,
     } = ps;
 
     var {

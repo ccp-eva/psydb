@@ -14,7 +14,7 @@ var {
 var allSchemaCreators = require('@mpieva/psydb-schema-creators');
 
 var fetchAllCRTSettings = async (db, todo, options = {}) => {
-    var { wrap = false } = options;
+    var { wrap = false, asTree = true } = options;
     
     var OR = [];
     for (var it of todo) {
@@ -40,16 +40,27 @@ var fetchAllCRTSettings = async (db, todo, options = {}) => {
         $or: OR
     }).toArray();
 
-    var out = {}
-    for (var it of records) {
-        var { collection, type } = it;
+    var mapped = records.map(it => {
         var converted = convertCRTRecordToSettings(it);
-        jsonpointer.set(out,  `/${collection}/${type}`, (
-            wrap ? CRTSettings({ data: converted }) : converted
-        ));
+        return (
+            wrap
+            ? CRTSettings({ data: converted })
+            : converted
+        )
+    });
+
+    if (asTree) {
+        var out = {}
+        for (var it of mapped) {
+            var { collection, type } = (wrap ? it.getRaw() : it);
+            jsonpointer.set(out,  `/${collection}/${type}`, it);
+        }
+        return out;
+    }
+    else {
+        return mapped;
     }
 
-    return out;
 }
 
 module.exports = fetchAllCRTSettings

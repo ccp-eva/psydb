@@ -1,5 +1,5 @@
 import React from 'react';
-import { groupBy } from '@mpieva/psydb-core-utils';
+import { groupBy, only } from '@mpieva/psydb-core-utils';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { SimpleList } from '@mpieva/psydb-ui-layout';
 import VariantListItem from './variant-list-item';
@@ -8,13 +8,24 @@ const VariantList = (ps) => {
     var {
         variantRecords,
         settingRecords,
-        
         disableAddLabOps,
 
         onAddVariant,
         onRemoveVariant,
-        ...downstream
     } = ps;
+
+    var pass = only({ from: ps, keys: [
+        'allCustomRecordTypes',
+        'customRecordTypes',
+        'availableSubjectCRTs',
+
+        'settingRelated',
+        'allowedSubjectTypes',
+
+        'onAddSetting',
+        'onEditSetting',
+        'onRemoveSetting',
+    ]})
 
     var translate = useUITranslation();
 
@@ -39,7 +50,7 @@ const VariantList = (ps) => {
                     settingRecords: groupedSettings[it._id] || [],
                     showRemoveButton: !!onRemoveVariant,
                     onRemove: onRemoveVariant,
-                    ...downstream,
+                    ...pass,
                 })} />
             )}
         </SimpleList>

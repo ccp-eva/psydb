@@ -6,6 +6,10 @@ import { GenericEnum } from '../scalar';
 
 // all the non scalar types
 const prohibitedFieldTypes = [
+    'SaneString',
+    'FullText',
+    'DateOnlyServerSide',
+
     'Address',
     'ForeignIdList',
     'HelperSetItemIdList',
@@ -28,7 +32,7 @@ const Control = (ps) => {
         formikField,
         formikMeta,
         formikForm,
-        subjectScientificFields,
+        subjectCRT,
         disabled,
     } = ps;
 
@@ -39,18 +43,16 @@ const Control = (ps) => {
         getFieldProps(`${dataXPath}.pointer`).value
     );
 
-    var fieldOptions = (
-        subjectScientificFields
-        .filter(it => (
-            !it.isRemoved &&
-            !prohibitedFieldTypes.includes(it.type)
-        ))
-        .reduce((acc, field) => {
-            var { key, displayName } = field;
-            var pointer = `/scientific/state/custom/${key}`;
-            return { ...acc, [pointer]: displayName };
-        }, {})
-    );
+    var fieldOptions = {};
+    if (subjectCRT) {
+        var defs = subjectCRT.findCustomFields({
+            'isRemoved': { $ne: true },
+            'systemType': { $nin: prohibitedFieldTypes },
+        })
+        for (var it of defs) {
+            fieldOptions[it.pointer] = translate.fieldDefinition(it);
+        }
+    }
 
     return (
         <>

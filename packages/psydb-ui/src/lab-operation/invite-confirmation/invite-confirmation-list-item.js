@@ -11,7 +11,7 @@ const InviteConfirmationListItem = (ps) => {
         subjectRecordsById,
         subjectRelated,
         subjectDisplayFieldData,
-        phoneListField,
+        phoneField,
         studyRecord,
 
         onChangeStatus,
@@ -35,7 +35,7 @@ const InviteConfirmationListItem = (ps) => {
                             subjectRecordsById,
                             subjectRelated,
                             subjectDisplayFieldData,
-                            phoneListField,
+                            phoneField,
                             studyRecord,
 
                             experimentRecord,

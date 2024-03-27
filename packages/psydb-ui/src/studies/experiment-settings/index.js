@@ -10,9 +10,10 @@ import {
 } from 'react-router-dom';
 
 import * as enums from '@mpieva/psydb-schema-enums';
-import { without } from '@mpieva/psydb-core-utils';
+import { without, only } from '@mpieva/psydb-core-utils';
+
 import { demuxed } from '@mpieva/psydb-ui-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useUITranslation, useUILanguage } from '@mpieva/psydb-ui-contexts';
 
 import {
     useFetchAll,
@@ -45,16 +46,12 @@ const ExperimentSettings = (ps) => {
     var { path, url } = useRouteMatch();
     var { id: studyId } = useParams();
     
+    var language = useUILanguage();
     var translate = useUITranslation();
     var revision = useRevision();
     var permissions = usePermissions();
     
-    var newVariantModal = useModalReducer();
-    var removeVariantModal = useModalReducer();
-    
-    var newSettingModal = useModalReducer();
-    var editSettingModal = useModalReducer();
-    var removeSettingModal = useModalReducer();
+    var [ modalHooks, modalCallbacks ] = useAllModals();
 
     var [ didFetch, fetched ] = useFetchAll((agent) => {
         var promises = {
@@ -62,17 +59,11 @@ const ExperimentSettings = (ps) => {
                 ignoreResearchGroups: true
             }),
             crts: agent.readCustomRecordTypeMetadata(),
-            study: agent.readRecord({
-                collection: 'study',
-                recordType: studyType,
-                id: studyId
-            }),
-            variants: agent.fetchExperimentVariants({
+            availableSubjectCRTs: agent.fetchStudyAvailableSubjectCRTs({
                 studyId,
             }),
-            settings: agent.fetchExperimentVariantSettings({
-                studyId,
-            })
+            variants: agent.fetchExperimentVariants({ studyId }),
+            settings: agent.fetchExperimentVariantSettings({ studyId }),
         }
         return promises;
     }, [ studyId, revision.value ])
@@ -84,7 +75,8 @@ const ExperimentSettings = (ps) => {
     var { customRecordTypes } = fetched.crts.data;
     var { customRecordTypes: allCustomRecordTypes } = fetched.allCRTs.data;
 
-    var studyData = fetched.study.data;
+    var availableSubjectCRTs = fetched.availableSubjectCRTs.data.crts;
+
     var variantRecords = fetched.variants.data.records;
     var {
         records: settingRecords,
@@ -92,11 +84,7 @@ const ExperimentSettings = (ps) => {
     } = fetched.settings.data;
 
     var allowedSubjectTypes = (
-        customRecordTypes
-        .filter(it => it.collection === 'subject')
-        .reduce((acc, it) => ({
-            ...acc, [it.type]: translate.crt(it)
-        }), {})
+        availableSubjectCRTs.asOptions({ language })
     );
 
     var allowedLabOpsTypes = without(
@@ -110,39 +98,19 @@ const ExperimentSettings = (ps) => {
 
     var modalBag = {
         studyId,
-        onSuccessfulUpdate: demuxed([ onSuccessfulUpdate, revision.up ])
-    }
+        onSuccessfulUpdate: demuxed([ onSuccessfulUpdate, revision.up ]),
 
+        allowedLabOpsTypes,
+        allowedSubjectTypes,
+        availableSubjectCRTs,
+    }
+    
     return (
         <div className='mt-3 mb-3'>
-
-            <NewVariantModal { ...({
-                ...newVariantModal.passthrough,
-                ...modalBag,
-                allowedLabOpsTypes,
-            })} />
-
-            <RemoveVariantModal { ...({
-                ...removeVariantModal.passthrough,
-                ...modalBag,
-            })} />
-
-            <NewSettingModal { ...({
-                ...newSettingModal.passthrough,
-                ...modalBag,
-                allowedSubjectTypes,
-            })} />
-
-            <EditSettingModal { ...({
-                ...editSettingModal.passthrough,
-                ...modalBag,
-                allowedSubjectTypes,
-            })} />
-
-            <RemoveSettingModal { ...({
-                ...removeSettingModal.passthrough,
-                ...modalBag,
-            })} />
+            <AllModals
+                { ...modalHooks }
+                { ...modalBag }
+            />
 
             <VariantList { ...({
                 variantRecords,
@@ -150,22 +118,97 @@ const ExperimentSettings = (ps) => {
                 settingRelated,
                 allCustomRecordTypes,
                 customRecordTypes,
+                availableSubjectCRTs,
                 
                 allowedSubjectTypes: Object.keys(allowedSubjectTypes),
                 disableAddLabOps: allowedLabOpsTypes.length < 1,
 
-                ...(canWrite && {
-                    onAddVariant: newVariantModal.handleShow,
-                    onRemoveVariant: removeVariantModal.handleShow,
-
-                    onAddSetting: newSettingModal.handleShow,
-                    onEditSetting: editSettingModal.handleShow,
-                    onRemoveSetting: removeSettingModal.handleShow,
-                })
+                ...(canWrite && modalCallbacks)
             })} />
-            
         </div>
     )
+}
+
+var AllModals = (ps) => {
+    var {
+        allowedLabOpsTypes,
+        allowedSubjectTypes,
+        availableSubjectCRTs,
+
+        newVariantModal,
+        removeVariantModal,
+        
+        newSettingModal,
+        editSettingModal,
+        removeSettingModal,
+    } = ps;
+
+    var pass = only({ from: ps, keys: [
+        'studyId', 'onSuccessfulUpdate',
+    ]});
+
+    return (
+        <>
+            <NewVariantModal { ...({
+                ...newVariantModal.passthrough,
+                ...pass,
+                allowedLabOpsTypes,
+            })} />
+
+            <RemoveVariantModal { ...({
+                ...removeVariantModal.passthrough,
+                ...pass,
+            })} />
+
+            <NewSettingModal { ...({
+                ...newSettingModal.passthrough,
+                ...pass,
+                allowedSubjectTypes,
+                availableSubjectCRTs,
+            })} />
+
+            <EditSettingModal { ...({
+                ...editSettingModal.passthrough,
+                ...pass,
+                allowedSubjectTypes,
+                availableSubjectCRTs,
+            })} />
+
+            <RemoveSettingModal { ...({
+                ...removeSettingModal.passthrough,
+                ...pass,
+            })} />
+        </>
+    );
+}
+
+var useAllModals = (ps) => {
+    var newVariantModal = useModalReducer();
+    var removeVariantModal = useModalReducer();
+    
+    var newSettingModal = useModalReducer();
+    var editSettingModal = useModalReducer();
+    var removeSettingModal = useModalReducer();
+
+    var hooks = {
+        newVariantModal,
+        removeVariantModal,
+        
+        newSettingModal,
+        editSettingModal,
+        removeSettingModal,
+    }
+
+    var callbacks = {
+        onAddVariant: newVariantModal.handleShow,
+        onRemoveVariant: removeVariantModal.handleShow,
+
+        onAddSetting: newSettingModal.handleShow,
+        onEditSetting: editSettingModal.handleShow,
+        onRemoveSetting: removeSettingModal.handleShow,
+    };
+
+    return [ hooks, callbacks ]
 }
 
 export default ExperimentSettings;
