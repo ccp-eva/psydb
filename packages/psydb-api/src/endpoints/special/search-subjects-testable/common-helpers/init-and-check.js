@@ -11,6 +11,7 @@ var {
 } = require('@mpieva/psydb-core-utils');
 
 var {
+    CRTSettings,
     convertCRTRecordToSettings,
     findCRTAgeFrameField,
 } = require('@mpieva/psydb-common-lib');
@@ -323,6 +324,13 @@ var initSubjects = async ({
         it.displayName = field.displayName;
     }
 
+    // TODO
+    //var subjectCRT = CRTSettings.fromRecord(subjectTypeRecord);
+    //var [ dobFieldDef ] = subjectCRT.findCustomFields({
+    //    'props.isSpecialAgeFrameField': true
+    //});
+    //var dobFieldPointer = dobFieldDef.pointer;
+    // FIXME: old
     var subjectCRTSettings = convertCRTRecordToSettings(subjectTypeRecord);
     var dobFieldPointer = findCRTAgeFrameField(subjectCRTSettings);
 
