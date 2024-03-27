@@ -24,13 +24,9 @@ export const InviteSetting = (ps) => {
         onSubmit,
         isTransmitting,
 
-        studyId,
-        variantId,
         settingRecord,
         settingRelated,
-
         availableSubjectCRTs,
-        onSuccessfulUpdate
     } = ps;
 
     var [ language ] = useUILanguage();

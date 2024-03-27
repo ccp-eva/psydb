@@ -11,9 +11,7 @@ import {
 
 import * as enums from '@mpieva/psydb-schema-enums';
 import { without, only } from '@mpieva/psydb-core-utils';
-
 import { demuxed } from '@mpieva/psydb-ui-utils';
-import { useUITranslation, useUILanguage } from '@mpieva/psydb-ui-contexts';
 
 import {
     useFetchAll,
@@ -46,19 +44,12 @@ const ExperimentSettings = (ps) => {
     var { path, url } = useRouteMatch();
     var { id: studyId } = useParams();
     
-    var language = useUILanguage();
-    var translate = useUITranslation();
     var revision = useRevision();
     var permissions = usePermissions();
-    
     var [ modalHooks, modalCallbacks ] = useAllModals();
 
     var [ didFetch, fetched ] = useFetchAll((agent) => {
         var promises = {
-            allCRTs: agent.readCustomRecordTypeMetadata({
-                ignoreResearchGroups: true
-            }),
-            crts: agent.readCustomRecordTypeMetadata(),
             availableSubjectCRTs: agent.fetchStudyAvailableSubjectCRTs({
                 studyId,
             }),
@@ -72,9 +63,6 @@ const ExperimentSettings = (ps) => {
         return <LoadingIndicator size='lg' />
     }
 
-    var { customRecordTypes } = fetched.crts.data;
-    var { customRecordTypes: allCustomRecordTypes } = fetched.allCRTs.data;
-
     var availableSubjectCRTs = fetched.availableSubjectCRTs.data.crts;
 
     var variantRecords = fetched.variants.data.records;
@@ -82,10 +70,6 @@ const ExperimentSettings = (ps) => {
         records: settingRecords,
         ...settingRelated
     } = fetched.settings.data;
-
-    var allowedSubjectTypes = (
-        availableSubjectCRTs.asOptions({ language })
-    );
 
     var allowedLabOpsTypes = without(
         enums.labMethods.keys.filter(it => (
@@ -101,7 +85,6 @@ const ExperimentSettings = (ps) => {
         onSuccessfulUpdate: demuxed([ onSuccessfulUpdate, revision.up ]),
 
         allowedLabOpsTypes,
-        allowedSubjectTypes,
         availableSubjectCRTs,
     }
     
@@ -116,13 +99,9 @@ const ExperimentSettings = (ps) => {
                 variantRecords,
                 settingRecords,
                 settingRelated,
-                allCustomRecordTypes,
-                customRecordTypes,
                 availableSubjectCRTs,
                 
-                allowedSubjectTypes: Object.keys(allowedSubjectTypes),
                 disableAddLabOps: allowedLabOpsTypes.length < 1,
-
                 ...(canWrite && modalCallbacks)
             })} />
         </div>
@@ -132,7 +111,6 @@ const ExperimentSettings = (ps) => {
 var AllModals = (ps) => {
     var {
         allowedLabOpsTypes,
-        allowedSubjectTypes,
         availableSubjectCRTs,
 
         newVariantModal,
@@ -144,7 +122,7 @@ var AllModals = (ps) => {
     } = ps;
 
     var pass = only({ from: ps, keys: [
-        'studyId', 'availableSubjectCRTs', 'onSuccessfulUpdate',
+        'studyId', 'onSuccessfulUpdate',
     ]});
 
     return (
@@ -163,20 +141,19 @@ var AllModals = (ps) => {
             <NewSettingModal { ...({
                 ...newSettingModal.passthrough,
                 ...pass,
-                allowedSubjectTypes,
                 availableSubjectCRTs,
             })} />
 
             <EditSettingModal { ...({
                 ...editSettingModal.passthrough,
                 ...pass,
-                allowedSubjectTypes,
                 availableSubjectCRTs,
             })} />
 
             <RemoveSettingModal { ...({
                 ...removeSettingModal.passthrough,
                 ...pass,
+                availableSubjectCRTs,
             })} />
         </>
     );

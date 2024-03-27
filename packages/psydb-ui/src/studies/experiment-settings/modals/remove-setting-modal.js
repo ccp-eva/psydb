@@ -11,7 +11,9 @@ import {
     Button,
     WithDefaultModal
 } from '@mpieva/psydb-ui-layout';
-import * as Items from '../setting-items';
+
+import LabWorkflowSetting from '../lab-workflow-setting';
+
 
 const RemoveSettingModalBody = (ps) => {
     var {
@@ -22,7 +24,11 @@ const RemoveSettingModalBody = (ps) => {
         onSuccessfulUpdate,
     } = ps;
 
-    var { settingRecord } = modalPayloadData;
+    var {
+        settingRecord,
+        settingRelated,
+    } = modalPayloadData;
+
     var { _id: settingId, type: variantType } = settingRecord;
 
     var translate = useUITranslation();
@@ -47,16 +53,6 @@ const RemoveSettingModalBody = (ps) => {
         unprocessedExperiments,
     } = fetchedInfo.data;
 
-    var SettingItem = ({
-        'inhouse': Items.InviteSetting,
-        'online-video-call': Items.InviteSetting,
-        'away-team': Items.AwayTeamSetting,
-        'online-survey': Items.OnlineSurveySetting,
-
-        'apestudies-wkprc-default': Items.ApestudiesWKPRCDefaultSetting,
-        'manual-only-participation': Items.ManualOnlyParticipationSetting,
-    })[variantType];
-
     return (
         canRemove ? (
             <div>
@@ -64,8 +60,11 @@ const RemoveSettingModalBody = (ps) => {
                     { translate('Really delete theese lab workflow settings?') }
                 </b></div>
                 <div className='bg-white'>
-                    <SettingItem
-                        { ...modalPayloadData }
+                    <LabWorkflowSetting
+                        type={ variantType }
+
+                        settingRecord={ settingRecord }
+                        settingRelated={ settingRelated }
                         availableSubjectCRTs={ availableSubjectCRTs }
                         showButtons={ false }
                     />
