@@ -18,7 +18,6 @@ export const StudyPanel = (ps) => {
         studyId,
         shorthand,
         subjectCRT,
-        subjectTypeRecord,
         ageFrameRecords = [],
         ageFrameRelated
     } = ps;
@@ -34,7 +33,6 @@ export const StudyPanel = (ps) => {
                 ageFrameRecords.map((it, index) => (
                     <AgeFrame key={ index } { ...({
                         subjectCRT,
-                        subjectTypeRecord,
                         ageFrameRecord: it,
                         ageFrameRelated,
                     })} />
@@ -51,7 +49,6 @@ export const StudyPanel = (ps) => {
 const AgeFrame = (ps) => {
     var {
         subjectCRT,
-        subjectTypeRecord,
         ageFrameRecord,
         ageFrameRelated,
     } = ps;
@@ -89,7 +86,6 @@ const AgeFrame = (ps) => {
                     <Condition key={ index } { ...({
                         formKey,
                         subjectCRT,
-                        subjectTypeRecord,
                         condition: it,
                         ageFrameRelated,
                     })} />
@@ -109,7 +105,6 @@ const Condition = (ps) => {
         condition,
         ageFrameRelated,
         subjectCRT,
-        subjectTypeRecord,
     } = ps;
 
     var { pointer, values } = condition;

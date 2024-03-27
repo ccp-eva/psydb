@@ -42,12 +42,6 @@ const SearchContainer = (ps) => {
             collection: 'subject',
             recordType: subjectRecordType
         }),
-        subjectCRTs: agent.readCustomRecordTypeMetadata({
-            only: [{
-                collection: 'subject',
-                types: [ subjectRecordType ]
-            }]
-        }),
         ageFrames: agent.fetchAgeFrames({
             studyIds,
         })
@@ -60,12 +54,10 @@ const SearchContainer = (ps) => {
     var {
         studies,
         subjectCRT,
-        subjectCRTs,
         ageFrames
     } = fetched._stageDatas;
 
     subjectCRT = CRTSettings({ data: subjectCRT });
-    var subjectTypeRecord = subjectCRTs.customRecordTypes[0];
 
     var {
         records: ageFrameRecords,
@@ -104,7 +96,6 @@ const SearchContainer = (ps) => {
                     <SelectionForm { ...({
                         studyRecords: studies.records,
                         subjectCRT,
-                        subjectTypeRecord,
                         ageFrameRecords,
                         ageFrameRelated,
 
