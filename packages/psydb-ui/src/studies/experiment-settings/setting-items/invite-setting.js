@@ -4,16 +4,16 @@ import {
     subjectFieldRequirementChecks as checksEnum,
 } from '@mpieva/psydb-schema-enums';
 
+import { keyBy } from '@mpieva/psydb-core-utils';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { Pair } from '@mpieva/psydb-ui-layout';
 import { DefaultSettingWrapper } from './utils';
 
-
-export const OnlineVideoCallSetting = (ps) => {
+export const InviteSetting = (ps) => {
     var {
         settingRecord,
         settingRelated,
-        customRecordTypes,
+        availableSubjectCRTs,
     } = ps;
 
     var {
@@ -22,25 +22,22 @@ export const OnlineVideoCallSetting = (ps) => {
         subjectFieldRequirements,
         locations,
     } = settingRecord.state;
-
+    
     var { relatedRecords } = settingRelated;
 
+    var subjectCRT = availableSubjectCRTs.find({
+        type: subjectTypeKey
+    });
+    var fieldDefsByPointer = keyBy({
+        items: subjectCRT.findCustomFields({
+            'pointer': { $in: (
+                subjectFieldRequirements.map(it => it.pointer)
+            )}
+        }),
+        byProp: 'pointer'
+    });
+
     var translate = useUITranslation();
-
-    var subjectType = customRecordTypes.find(it => (
-        it.collection === 'subject' && it.type === subjectTypeKey
-    ));
-
-    var fieldLabels = (
-        subjectType.state.settings.subChannelFields.scientific
-        .reduce((acc, field) => {
-            var { key, displayName } = field;
-            var pointer = (
-                `/scientific/state/custom/${key}`
-            );
-            return { ...acc, [pointer]: displayName };
-        }, {})
-    );
 
     return (
         <DefaultSettingWrapper { ...ps }>
@@ -53,15 +50,14 @@ export const OnlineVideoCallSetting = (ps) => {
             >
                 { subjectFieldRequirements.map((req, index) => {
                     var { pointer, check } = req;
+                    var def = fieldDefsByPointer[pointer];
                     return (
                         <div className='d-flex' key={ index }>
-                            <div className='mr-2'>
-                                <b style={{ fontWeight: 600 }}>
-                                    { index + 1 }.
-                                </b>
-                            </div>
+                            <b style={{ fontWeight: 600 }} className='mr-2'>
+                                { index + 1 }.
+                            </b>
                             <b style={{ fontWeight: 600 }}>
-                                { fieldLabels[pointer] }
+                                { translate.fieldDefinition(def) }
                                 {' - '}
                                 { checksEnum.mapping[check] }
                             </b>

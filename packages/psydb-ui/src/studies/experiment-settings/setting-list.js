@@ -3,14 +3,7 @@ import { only } from '@mpieva/psydb-core-utils';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
-import {
-    InhouseSetting,
-    AwayTeamSetting,
-    OnlineVideoCallSetting,
-    OnlineSurveySetting,
-    ApestudiesWKPRCDefaultSetting,
-    ManualOnlyParticipationSetting,
-} from './setting-items';
+import * as Variants from './setting-items';
 
 const SettingList = (ps) => {
     var {
@@ -40,13 +33,13 @@ const SettingList = (ps) => {
     }
 
     var SettingComponent = ({
-        'inhouse': InhouseSetting,
-        'away-team': AwayTeamSetting,
-        'online-video-call': OnlineVideoCallSetting,
-        'online-survey': OnlineSurveySetting,
+        'inhouse': Variants.InviteSetting,
+        'online-video-call': Variants.InviteSetting,
+        'away-team': Variants.AwayTeamSetting,
+        'online-survey': Variants.OnlineSurveySetting,
         
-        'apestudies-wkprc-default': ApestudiesWKPRCDefaultSetting,
-        'manual-only-participation': ManualOnlyParticipationSetting,
+        'apestudies-wkprc-default': Variants.ApestudiesWKPRCDefaultSetting,
+        'manual-only-participation': Variants.ManualOnlyParticipationSetting,
     })[variantType];
 
     var componentPass = only({ from: ps, keys: [
