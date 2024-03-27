@@ -6,6 +6,8 @@ var {
     convertPointerToPath
 } = require('@mpieva/psydb-core-utils');
 
+var convertCRTRecordToSettings = require('../convert-crt-record-to-settings');
+
 var CRTSettings = ({ data }) => {
     var crt = {};
     var flattenedFieldDefinitions = undefined;
@@ -138,5 +140,9 @@ var __compatDef = (def) => ({
     systemType: def.type, // FIXME: compat for new
     dataPointer: def.pointer // FIXME: compat for old
 })
+
+CRTSettings.fromRecord = (record) => (
+    CRTSettings({ data: convertCRTRecordToSettings(record) })
+)
 
 module.exports = CRTSettings;

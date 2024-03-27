@@ -25,7 +25,7 @@ const EditSettingModalBody = (ps) => {
     } = modalPayloadData;
 
     var { _id: variantId, type: variantType } = variantRecord;
-    var { subjectTypeKey } = settingRecord.state;
+    var { _id: settingId, state: { subjectTypeKey }} = settingRecord;
     
     var language = useUILanguage();
 

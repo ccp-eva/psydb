@@ -1,6 +1,5 @@
 import React from 'react';
 import { useUITranslation, useUILanguage } from '@mpieva/psydb-ui-contexts';
-import { useSend } from '@mpieva/psydb-ui-hooks';
 import {
     LoadingIndicator,
     AsyncButton,
@@ -60,7 +59,7 @@ var FormBody = (ps) => {
     var { formik, availableSubjectCRTs, isTransmitting } = ps;
     var { getFieldProps } = formik;
 
-    var language = useUILanguage();
+    var [ language ] = useUILanguage();
     var translate = useUITranslation();
 
     var selectedSubjectType = getFieldProps('$.subjectTypeKey').value;

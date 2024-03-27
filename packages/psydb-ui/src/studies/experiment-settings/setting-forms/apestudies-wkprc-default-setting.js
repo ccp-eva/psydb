@@ -73,7 +73,7 @@ const FormBody = (ps) => {
 
     var { getFieldProps } = formik;
 
-    var language = useUILanguage();
+    var [ language ] = useUILanguage();
     var translate = useUITranslation();
 
     var selectedSubjectType = getFieldProps('$.subjectTypeKey').value;

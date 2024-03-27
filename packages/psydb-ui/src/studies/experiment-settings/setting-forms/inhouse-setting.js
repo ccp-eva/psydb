@@ -1,9 +1,11 @@
 import React from 'react';
-import isSubset from 'is-subset';
-import { keyBy } from '@mpieva/psydb-core-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
-import { useSend, useFetch } from '@mpieva/psydb-ui-hooks';
-import { Button, LoadingIndicator } from '@mpieva/psydb-ui-layout';
+import { useUITranslation, useUILanguage } from '@mpieva/psydb-ui-contexts';
+import { useFetch } from '@mpieva/psydb-ui-hooks';
+import {
+    LoadingIndicator,
+    AsyncButton,
+    SmallFormFooter
+} from '@mpieva/psydb-ui-layout';
 
 import {
     DefaultForm,
@@ -18,16 +20,20 @@ const defaultValues = {
 
 export const InhouseSetting = (ps) => {
     var {
-        op,
+        onHide,
+        onSubmit,
+        isTransmitting,
+
         studyId,
         variantId,
         settingRecord,
         settingRelated,
 
-        allowedSubjectTypes,
+        availableSubjectCRTs,
         onSuccessfulUpdate
     } = ps;
 
+    var language = useUILanguage();
     var translate = useUITranslation();
 
     var settingId, settingState;
@@ -37,36 +43,12 @@ export const InhouseSetting = (ps) => {
             state: settingState,
         } = settingRecord)
     }
-    if (![ 'create', 'patch' ].includes(op)) {
-        throw new Error(`unknown op "${op}"`);
-    }
 
     var [ didFetch, fetched ] = useFetch((agent) => {
-        return agent.readCustomRecordTypeMetadata()
+        return agent.fetchAvailableCRTs({
+            collections: [ 'location' ]
+        });
     }, [])
-
-    var send = useSend((formData, formikProps) => {
-        var type = `experiment-variant-setting/inhouse/${op}`;
-        var message;
-        switch (op) {
-            case 'create':
-                message = { type, payload: {
-                    studyId,
-                    experimentVariantId: variantId,
-                    props: formData
-                } };
-                break;
-            case 'patch':
-                message = { type, payload: {
-                    id: settingId,
-                    props: formData
-                }};
-                break;
-            default:
-                throw new Error(`unknown op "${op}"`);
-        }
-        return message;
-    }, { onSuccessfulUpdate });
 
     if (!didFetch) {
         return (
@@ -74,85 +56,93 @@ export const InhouseSetting = (ps) => {
         );
     }
 
-    var { customRecordTypes } = fetched.data;
+    var availableLocationCRTs = (
+        fetched.data.crts
+        .filter({ 'reservationType': 'inhouse' })
+    );
 
-    var allowedLocationTypes = (
-        customRecordTypes
-        .filter(it => (
-            it.collection === 'location'
-            && it.state.reservationType === 'inhouse'
-        ))
-        .reduce((acc, it) => ({
-            ...acc,
-            [it.type]: it.state.label
-        }), {})
-    )
-
-    customRecordTypes = keyBy({
-        items: customRecordTypes,
-        byProp: 'type',
-    });
+    var bodyBag = {
+        availableSubjectCRTs,
+        availableLocationCRTs,
+        isTransmitting,
+        onHide,
+    }
 
     return (
         <div>
             <DefaultForm
-                onSubmit={ send.exec }
+                onSubmit={ onSubmit }
                 initialValues={ settingState || defaultValues }
             >
-                {(formikProps) => {
-                    var { getFieldProps } = formikProps;
-                    var selectedType = (
-                        getFieldProps('$.subjectTypeKey').value
-                    );
-                    
-                    var subjectScientificFields = (
-                        selectedType
-                        ? (
-                            customRecordTypes[selectedType].state
-                            .settings.subChannelFields.scientific
-                        )
-                        : []
-                    );
-
-                    return (
-                        <>
-                            <Fields.GenericEnum { ...({
-                                dataXPath: '$.subjectTypeKey',
-                                label: translate('Subject Type'),
-                                required: true,
-                                options: allowedSubjectTypes
-                            })} />
-                            <Fields.Integer { ...({
-                                dataXPath: '$.subjectsPerExperiment',
-                                label: translate('per Appointment'),
-                                required: true,
-                                min: 1,
-                                disabled: !selectedType
-                            })} />
-
-                            <Fields.SubjectFieldRequirementList { ...({
-                                dataXPath: '$.subjectFieldRequirements',
-                                label: translate('Appointment Conditions'),
-                                subjectScientificFields,
-                                disabled: !selectedType
-                            })} />
-
-                            <Fields.TypedLocationIdList { ...({
-                                dataXPath: '$.locations',
-                                label: translate('reservable_locations'),
-                                typeOptions: allowedLocationTypes,
-                                disabled: !selectedType,
-
-                                related: settingRelated,
-                            })} />
-
-                            <Button type='submit'>
-                                { translate('Save') }
-                            </Button>
-                        </>
-                    );
-                }}
+                {(formik) => (
+                    <FormBody formik={ formik } { ...bodyBag } />
+                )}
             </DefaultForm>
         </div>
     )
-};
+}
+
+const FormBody = (ps) => {
+    var {
+        formik,
+        availableSubjectCRTs,
+        availableLocationCRTs,
+        settingRelated,
+
+        isTransmitting,
+        onHide,
+    } = ps;
+
+    var { getFieldProps } = formik;
+    
+    var [ language ] = useUILanguage();
+    var translate = useUITranslation();
+
+    var selectedSubjectType = getFieldProps('$.subjectTypeKey').value;
+    var selectedSubjectCRT = undefined;
+    if (selectedSubjectType) {
+        selectedSubjectCRT = availableSubjectCRTs.find({
+            type: selectedSubjectType
+        });
+    }
+    
+    return (
+        <>
+            <Fields.GenericEnum { ...({
+                dataXPath: '$.subjectTypeKey',
+                label: translate('Subject Type'),
+                required: true,
+                options: availableSubjectCRTs.asOptions({ language })
+            })} />
+            <Fields.Integer { ...({
+                dataXPath: '$.subjectsPerExperiment',
+                label: translate('per Appointment'),
+                required: true,
+                min: 1,
+                disabled: !selectedSubjectType
+            })} />
+
+            <Fields.SubjectFieldRequirementList { ...({
+                dataXPath: '$.subjectFieldRequirements',
+                label: translate('Appointment Conditions'),
+                subjectCRT: selectedSubjectCRT,
+                disabled: !selectedSubjectType
+            })} />
+
+            <Fields.TypedLocationIdList { ...({
+                dataXPath: '$.locations',
+                label: translate('reservable_locations'),
+                typeOptions: availableLocationCRTs.asOptions({ language }),
+                disabled: !selectedSubjectType,
+
+                related: settingRelated,
+            })} />
+
+            <SmallFormFooter extraClassName='pt-2'>
+                <AsyncButton type='submit' isTransmitting={ isTransmitting }>
+                    { translate('Save') }
+                </AsyncButton>
+            </SmallFormFooter>
+        </>
+    );
+}

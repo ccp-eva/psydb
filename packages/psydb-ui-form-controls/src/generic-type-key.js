@@ -15,7 +15,7 @@ export const GenericTypeKey = (ps) => {
         ...pass
     } = ps;
 
-    var language = useUILanguage();
+    var [ language ] = useUILanguage();
     
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.fetchAvailableCRTs({
