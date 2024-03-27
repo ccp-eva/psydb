@@ -1,7 +1,7 @@
 import React from 'react';
 import { keyBy, jsonpointer, entries } from '@mpieva/psydb-core-utils';
-import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { CustomField } from './custom-field';
 import { ListOfObjectsField } from './list-of-objects-field';
 

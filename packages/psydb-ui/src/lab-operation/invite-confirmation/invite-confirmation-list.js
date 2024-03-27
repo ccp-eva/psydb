@@ -65,7 +65,7 @@ const InviteConfirmationList = (ps) => {
         subjectRecordsById,
         subjectRelated,
         subjectDisplayFieldData,
-        phoneListField,
+        phoneField,
         studyRecords,
     } = fetched.data;
 
@@ -100,7 +100,7 @@ const InviteConfirmationList = (ps) => {
                     subjectRecordsById,
                     subjectRelated,
                     subjectDisplayFieldData,
-                    phoneListField,
+                    phoneField,
                     studyRecord: studyRecordsById[it.state.studyId],
 
                     onChangeStatus: send.exec,
