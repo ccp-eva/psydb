@@ -9,7 +9,6 @@ import * as Forms from '../setting-forms';
 const EditSettingModalBody = (ps) => {
     var {
         studyId,
-        allowedSubjectTypes,
         availableSubjectCRTs,
         modalPayloadData,
 
@@ -35,9 +34,6 @@ const EditSettingModalBody = (ps) => {
             { type: { $nin: existingSubjectTypes }},
         ]
     });
-
-    // FIXME: compat
-    var allowedSubjectTypes = availableSubjectCRTs.asOptions({ language });
 
     var SettingForm = ({
         'inhouse': Forms.InviteSetting,
@@ -67,7 +63,6 @@ const EditSettingModalBody = (ps) => {
             settingRecord,
             settingRelated,
             availableSubjectCRTs,
-            allowedSubjectTypes,
         })} />
     );
 }

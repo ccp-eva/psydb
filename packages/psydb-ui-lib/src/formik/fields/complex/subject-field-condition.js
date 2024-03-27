@@ -87,8 +87,7 @@ const Control = (ps) => {
     var fieldOptions = {};
     var targetFields = {};
     for (var fieldData of filteredFields) {
-        var { key, type, displayName } = fieldData;
-        var pointer = `/scientific/state/custom/${key}`;
+        var { pointer, key, type, displayName } = fieldData;
         fieldOptions[pointer] = displayName;
         targetFields[pointer] = fieldData;
     }

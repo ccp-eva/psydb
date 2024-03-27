@@ -28,7 +28,6 @@ export const ApestudiesWKPRCDefaultSetting = (ps) => {
         settingRecord,
         settingRelated,
 
-        allowedSubjectTypes,
         availableSubjectCRTs,
         onSuccessfulUpdate
     } = ps;
