@@ -92,7 +92,7 @@ var ageFrames = async (context, next) => {
     ], { wrap: true });
 
     var fieldDefsByPointer = keyBy({
-        items: Object.values(allCRTSettings.subject),
+        items: Object.values(allCRTSettings.subject || {}),
         createKey: (it) => it.getType(),
         transform: (it) => (
             keyBy({
