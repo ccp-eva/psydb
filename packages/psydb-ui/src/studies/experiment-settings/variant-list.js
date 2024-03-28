@@ -15,12 +15,8 @@ const VariantList = (ps) => {
     } = ps;
 
     var pass = only({ from: ps, keys: [
-        'allCustomRecordTypes',
-        'customRecordTypes',
-        'availableSubjectCRTs',
-
         'settingRelated',
-        'allowedSubjectTypes',
+        'availableSubjectCRTs',
 
         'onAddSetting',
         'onEditSetting',

@@ -1,10 +1,5 @@
 import React from 'react';
 
-import {
-    convertCRTRecordToSettings,
-    CRTSettings
-} from '@mpieva/psydb-common-lib';
-
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { AgeFrame } from './age-frame';
@@ -13,19 +8,15 @@ import { AgeFrame } from './age-frame';
 const AgeFrameList = (ps) => {
     var {
         subjectTypeKey,
-        subjectTypeRecord,
+        subjectCRT,
         selectorRecord,
         ageFrameRecords,
+        ageFrameRelated,
         onEditAgeFrame,
         onRemoveAgeFrame,
-        ...downstream
     } = ps;
 
     var { type: selectorType } = selectorRecord;
-    var subjectCRT = CRTSettings({
-        data: convertCRTRecordToSettings(subjectTypeRecord)
-    });
-
     
     var translate = useUITranslation();
     var permissions = usePermissions();
@@ -47,16 +38,15 @@ const AgeFrameList = (ps) => {
             { ageFrameRecords.map((ageFrameRecord, index) => (
                 <AgeFrame key={ index } { ...({
                     index,
-                    subjectTypeRecord,
                     subjectCRT,
 
                     selectorRecord,
                     ageFrameRecord,
+                    ageFrameRelated,
                     ...(canWrite && {
                         onEdit: onEditAgeFrame,
                         onRemove: onRemoveAgeFrame,
                     }),
-                    ...downstream
                 })} />
             ))}
         </>

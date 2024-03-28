@@ -42,9 +42,11 @@ module.exports = {
     fetchOneCustomRecordType: require('./fetch-one-custom-record-type'),
     fetchCustomRecordTypes: require('./fetch-custom-record-types'),
 
+    allCRTCollections: require('./all-crt-collections'),
     fetchCRTSettings: require('./fetch-crt-settings'),
     fetchCRTSettingsById: require('./fetch-crt-settings-by-id'),
     fetchAllCRTSettings: require('./fetch-all-crt-settings'),
+    fetchAvailableCRTSettings: require('./fetch-available-crt-settings'),
 
     fetchRecordById: require('./fetch-record-by-id'),
     fetchRecordDisplayDataById: require('./fetch-record-display-data-by-id'),

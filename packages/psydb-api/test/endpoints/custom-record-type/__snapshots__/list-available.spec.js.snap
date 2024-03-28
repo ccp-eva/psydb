@@ -1,0 +1,1002 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`endpoints/custom-record-type/list-available does the thing 1`] = `
+Object {
+  "apiStatus": "OK",
+  "data": Object {
+    "crts": Array [
+      Object {
+        "awayTeamSelectionRowDisplayFields": Array [],
+        "collection": "subject",
+        "commentFieldIsSensitive": false,
+        "displayNameI18N": Object {
+          "de": "Humankind Erwachsene",
+        },
+        "duplicateCheckSettings": Object {
+          "fieldSettings": Array [
+            Object {
+              "pointer": "/gdpr/state/custom/firstname",
+              "props": Object {},
+            },
+            Object {
+              "pointer": "/gdpr/state/custom/lastname",
+              "props": Object {},
+            },
+          ],
+        },
+        "fieldDefinitions": Object {
+          "gdpr": Array [
+            Object {
+              "displayName": "Lastname",
+              "displayNameI18N": Object {
+                "de": "Nachname",
+              },
+              "key": "lastname",
+              "pointer": "/gdpr/state/custom/lastname",
+              "props": Object {
+                "minLength": 1,
+              },
+              "type": "SaneString",
+            },
+            Object {
+              "displayName": "Firstname",
+              "displayNameI18N": Object {
+                "de": "Vorname",
+              },
+              "key": "firstname",
+              "pointer": "/gdpr/state/custom/firstname",
+              "props": Object {
+                "minLength": 1,
+              },
+              "type": "SaneString",
+            },
+            Object {
+              "displayName": "Phone",
+              "displayNameI18N": Object {
+                "de": "Telefon",
+              },
+              "key": "phones",
+              "pointer": "/gdpr/state/custom/phones",
+              "props": Object {
+                "minItems": 1,
+              },
+              "type": "PhoneList",
+            },
+            Object {
+              "displayName": "E-Mail",
+              "displayNameI18N": Object {
+                "de": "E-Mail",
+              },
+              "key": "email",
+              "pointer": "/gdpr/state/custom/email",
+              "props": Object {
+                "minLength": 1,
+              },
+              "type": "Email",
+            },
+            Object {
+              "displayName": "Address",
+              "displayNameI18N": Object {
+                "de": "Adresse",
+              },
+              "key": "address",
+              "pointer": "/gdpr/state/custom/address",
+              "props": Object {
+                "isAffixRequired": false,
+                "isCityRequired": true,
+                "isCountryRequired": true,
+                "isHousenumberRequired": true,
+                "isPostcodeRequired": true,
+                "isStreetRequired": true,
+              },
+              "type": "Address",
+            },
+            Object {
+              "displayName": "Date of Birth",
+              "displayNameI18N": Object {
+                "de": "Geburtsdatum",
+              },
+              "key": "dateOfBirth",
+              "pointer": "/gdpr/state/custom/dateOfBirth",
+              "props": Object {
+                "isNullable": false,
+                "isSpecialAgeFrameField": true,
+              },
+              "type": "DateOnlyServerSide",
+            },
+            Object {
+              "displayName": "Gender",
+              "displayNameI18N": Object {
+                "de": "Geschlecht",
+              },
+              "key": "gender",
+              "pointer": "/gdpr/state/custom/gender",
+              "props": Object {
+                "enableOtherValue": true,
+                "enableUnknownValue": false,
+              },
+              "type": "BiologicalGender",
+            },
+          ],
+          "scientific": Array [
+            Object {
+              "displayName": "DB-Consent (Paper)",
+              "displayNameI18N": Object {
+                "de": "DB-Einverständnis (Papier)",
+              },
+              "key": "doesDBRegistrationConsentOnPaperExist",
+              "pointer": "/scientific/state/custom/doesDBRegistrationConsentOnPaperExist",
+              "props": Object {},
+              "type": "DefaultBool",
+            },
+            Object {
+              "displayName": "Acquisition",
+              "displayNameI18N": Object {
+                "de": "Akquise",
+              },
+              "key": "acquisitionId",
+              "pointer": "/scientific/state/custom/acquisitionId",
+              "props": Object {
+                "displayEmptyAsUnknown": false,
+                "isNullable": true,
+                "setId": "6600f5dba5f8769c5286805e",
+              },
+              "type": "HelperSetItemId",
+            },
+            Object {
+              "displayName": "Children",
+              "displayNameI18N": Object {
+                "de": "Kinder",
+              },
+              "key": "knownChildrenIds",
+              "pointer": "/scientific/state/custom/knownChildrenIds",
+              "props": Object {
+                "collection": "subject",
+                "constraints": Object {},
+                "minItems": 0,
+                "readOnly": true,
+                "recordType": "humankindChild",
+              },
+              "type": "ForeignIdList",
+            },
+          ],
+        },
+        "formOrder": Array [
+          "/sequenceNumber",
+          "/onlineId",
+          "/gdpr/state/custom/firstname",
+          "/gdpr/state/custom/lastname",
+          "/gdpr/state/custom/phones",
+          "/gdpr/state/custom/email",
+          "/gdpr/state/custom/address",
+          "/gdpr/state/custom/dateOfBirth",
+          "/gdpr/state/custom/gender",
+          "/scientific/state/custom/doesDBRegistrationConsentOnPaperExist",
+          "/scientific/state/custom/acquisitionId",
+          "/scientific/state/custom/knownChildrenIds",
+          "/scientific/state/testingPermissions",
+          "/scientific/state/comment",
+        ],
+        "hasSubChannels": true,
+        "inviteConfirmationSummaryDisplayFields": Array [],
+        "label": "Humankind Adults",
+        "optionListDisplayFields": Array [
+          Object {
+            "dataPointer": "/sequenceNumber",
+            "systemType": "Integer",
+          },
+          Object {
+            "dataPointer": "/gdpr/state/custom/lastname",
+            "systemType": "SaneString",
+          },
+          Object {
+            "dataPointer": "/gdpr/state/custom/firstname",
+            "systemType": "SaneString",
+          },
+          Object {
+            "dataPointer": "/gdpr/state/custom/gender",
+            "systemType": "BiologicalGender",
+          },
+          Object {
+            "dataPointer": "/gdpr/state/custom/dateOfBirth",
+            "systemType": "DateOnlyServerSide",
+          },
+        ],
+        "recordLabelDefinition": Object {
+          "format": "\${#}, \${#} (\${#})",
+          "tokens": Array [
+            Object {
+              "dataPointer": "/gdpr/state/custom/lastname",
+              "systemType": "SaneString",
+            },
+            Object {
+              "dataPointer": "/gdpr/state/custom/firstname",
+              "systemType": "SaneString",
+            },
+            Object {
+              "dataPointer": "/gdpr/state/custom/gender",
+              "systemType": "BiologicalGender",
+            },
+          ],
+        },
+        "requiresTestingPermissions": true,
+        "selectionRowDisplayFields": Array [],
+        "selectionSummaryDisplayFields": Array [],
+        "showOnlineId": true,
+        "showSequenceNumber": true,
+        "staticFieldDefinitions": Array [
+          Object {
+            "dataPointer": "/sequenceNumber",
+            "displayName": "ID No.",
+            "displayNameI18N": Object {
+              "de": "ID Nr.",
+            },
+            "key": "_sequenceNumber",
+            "pointer": "/sequenceNumber",
+            "props": Object {},
+            "systemType": "SaneString",
+            "type": "SaneString",
+          },
+          Object {
+            "dataPointer": "/onlineId",
+            "displayName": "Online ID Code",
+            "displayNameI18N": Object {
+              "de": "Online ID Code",
+            },
+            "key": "_onlineId",
+            "pointer": "/onlineId",
+            "props": Object {},
+            "systemType": "SaneString",
+            "type": "SaneString",
+          },
+          Object {
+            "dataPointer": "/scientific/state/comment",
+            "displayName": "Comment",
+            "displayNameI18N": Object {
+              "de": "Kommentar",
+            },
+            "key": "_comment",
+            "pointer": "/scientific/state/comment",
+            "props": Object {},
+            "systemType": "FullText",
+            "type": "FullText",
+          },
+          Object {
+            "dataPointer": "/scientific/state/testingPermissions",
+            "displayName": "Participation Permissions",
+            "displayNameI18N": Object {
+              "de": "Teilnahme-Erlaubnis",
+            },
+            "key": "_testingPermissions",
+            "pointer": "/scientific/state/testingPermissions",
+            "props": Object {},
+            "systemType": "TestingPermissions",
+            "type": "TestingPermissions",
+          },
+        ],
+        "tableDisplayFields": Array [
+          Object {
+            "dataPointer": "/sequenceNumber",
+            "systemType": "Integer",
+          },
+          Object {
+            "dataPointer": "/gdpr/state/custom/lastname",
+            "systemType": "SaneString",
+          },
+          Object {
+            "dataPointer": "/gdpr/state/custom/firstname",
+            "systemType": "SaneString",
+          },
+          Object {
+            "dataPointer": "/gdpr/state/custom/gender",
+            "systemType": "BiologicalGender",
+          },
+          Object {
+            "dataPointer": "/gdpr/state/custom/dateOfBirth",
+            "systemType": "DateOnlyServerSide",
+          },
+        ],
+        "type": "humankindAdult",
+      },
+      Object {
+        "awayTeamSelectionRowDisplayFields": Array [],
+        "collection": "subject",
+        "commentFieldIsSensitive": false,
+        "displayNameI18N": Object {
+          "de": "Humankind Kinder",
+        },
+        "duplicateCheckSettings": Object {
+          "fieldSettings": Array [
+            Object {
+              "pointer": "/gdpr/state/custom/firstname",
+              "props": Object {},
+            },
+            Object {
+              "pointer": "/gdpr/state/custom/lastname",
+              "props": Object {},
+            },
+          ],
+        },
+        "fieldDefinitions": Object {
+          "gdpr": Array [
+            Object {
+              "displayName": "Lastname",
+              "displayNameI18N": Object {
+                "de": "Nachname",
+              },
+              "key": "lastname",
+              "pointer": "/gdpr/state/custom/lastname",
+              "props": Object {
+                "minLength": 1,
+              },
+              "type": "SaneString",
+            },
+            Object {
+              "displayName": "Firstname",
+              "displayNameI18N": Object {
+                "de": "Vorname",
+              },
+              "key": "firstname",
+              "pointer": "/gdpr/state/custom/firstname",
+              "props": Object {
+                "minLength": 1,
+              },
+              "type": "SaneString",
+            },
+            Object {
+              "displayName": "Date of Birth",
+              "displayNameI18N": Object {
+                "de": "Geburtsdatum",
+              },
+              "key": "dateOfBirth",
+              "pointer": "/gdpr/state/custom/dateOfBirth",
+              "props": Object {
+                "isNullable": false,
+                "isSpecialAgeFrameField": true,
+              },
+              "type": "DateOnlyServerSide",
+            },
+            Object {
+              "displayName": "Gender",
+              "displayNameI18N": Object {
+                "de": "Geschlecht",
+              },
+              "key": "gender",
+              "pointer": "/gdpr/state/custom/gender",
+              "props": Object {
+                "enableOtherValue": true,
+                "enableUnknownValue": false,
+              },
+              "type": "BiologicalGender",
+            },
+          ],
+          "scientific": Array [
+            Object {
+              "displayName": "Parents",
+              "displayNameI18N": Object {
+                "de": "Eltern",
+              },
+              "key": "parentIds",
+              "pointer": "/scientific/state/custom/parentIds",
+              "props": Object {
+                "addReferenceToTarget": true,
+                "collection": "subject",
+                "constraints": Object {},
+                "minItems": 0,
+                "readOnly": false,
+                "recordType": "humankindAdult",
+                "targetReferenceField": "/scientific/state/custom/knownChildrenIds",
+              },
+              "type": "ForeignIdList",
+            },
+            Object {
+              "displayName": "Siblings",
+              "displayNameI18N": Object {
+                "de": "Geschwister",
+              },
+              "key": "siblingCount",
+              "pointer": "/scientific/state/custom/siblingCount",
+              "props": Object {
+                "isNullable": true,
+                "minimum": 0,
+              },
+              "type": "Integer",
+            },
+            Object {
+              "displayName": "Native Language",
+              "displayNameI18N": Object {
+                "de": "Muttersprache",
+              },
+              "key": "nativeLanguageId",
+              "pointer": "/scientific/state/custom/nativeLanguageId",
+              "props": Object {
+                "displayEmptyAsUnknown": false,
+                "isNullable": true,
+                "setId": "6600f5dba5f8769c5286805b",
+              },
+              "type": "HelperSetItemId",
+            },
+            Object {
+              "displayName": "Other Languages",
+              "displayNameI18N": Object {
+                "de": "Weitere Sprachen",
+              },
+              "key": "otherLanguageIds",
+              "pointer": "/scientific/state/custom/otherLanguageIds",
+              "props": Object {
+                "minItems": 0,
+                "setId": "6600f5dba5f8769c5286805b",
+              },
+              "type": "HelperSetItemIdList",
+            },
+            Object {
+              "displayName": "Kindergarden",
+              "displayNameI18N": Object {
+                "de": "Kindergarten",
+              },
+              "key": "kigaId",
+              "pointer": "/scientific/state/custom/kigaId",
+              "props": Object {
+                "addReferenceToTarget": false,
+                "collection": "location",
+                "constraints": Object {},
+                "displayEmptyAsUnknown": false,
+                "isNullable": true,
+                "readOnly": false,
+                "recordType": "kiga",
+              },
+              "type": "ForeignId",
+            },
+            Object {
+              "displayName": "DB-Consent (Paper)",
+              "displayNameI18N": Object {
+                "de": "DB-Einverständnis (Papier)",
+              },
+              "key": "doesDBRegistrationConsentOnPaperExist",
+              "pointer": "/scientific/state/custom/doesDBRegistrationConsentOnPaperExist",
+              "props": Object {},
+              "type": "DefaultBool",
+            },
+            Object {
+              "displayName": "Can participate in studies with children that are healthy, born on schedule and developed age appropriatly?",
+              "displayNameI18N": Object {
+                "de": "Kann an Studien mit gesunden, termingerecht gebohrenen und altersgerecht entwickelten Kindern teilnehmen?",
+              },
+              "key": "canParticipateInStudiesWithHealthyChildren",
+              "pointer": "/scientific/state/custom/canParticipateInStudiesWithHealthyChildren",
+              "props": Object {},
+              "type": "ExtBool",
+            },
+            Object {
+              "displayName": "Allowed to Eat",
+              "displayNameI18N": Object {
+                "de": "Ess-Erlaubnis",
+              },
+              "key": "allowedToEat",
+              "pointer": "/scientific/state/custom/allowedToEat",
+              "props": Object {},
+              "type": "ExtBool",
+            },
+            Object {
+              "displayName": "Kiga-Consent for Next Year",
+              "displayNameI18N": Object {
+                "de": "Kiga-Erlaubnis im Folgejahr",
+              },
+              "key": "hasAwayTeamTestingPermissionForNextYear",
+              "pointer": "/scientific/state/custom/hasAwayTeamTestingPermissionForNextYear",
+              "props": Object {},
+              "type": "ExtBool",
+            },
+            Object {
+              "displayName": "Consent to Adult-DB",
+              "displayNameI18N": Object {
+                "de": "Zustimmung zu Erachsenen-DB",
+              },
+              "key": "didConsentToStayInDBAsAdult",
+              "pointer": "/scientific/state/custom/didConsentToStayInDBAsAdult",
+              "props": Object {},
+              "type": "ExtBool",
+            },
+          ],
+        },
+        "formOrder": Array [
+          "/sequenceNumber",
+          "/onlineId",
+          "/gdpr/state/custom/firstname",
+          "/gdpr/state/custom/lastname",
+          "/gdpr/state/custom/dateOfBirth",
+          "/gdpr/state/custom/gender",
+          "/scientific/state/custom/siblingCount",
+          "/scientific/state/custom/parentIds",
+          "/scientific/state/custom/nativeLanguageId",
+          "/scientific/state/custom/otherLanguageIds",
+          "/scientific/state/custom/kigaId",
+          "/scientific/state/custom/doesDBRegistrationConsentOnPaperExist",
+          "/scientific/state/custom/canParticipateInStudiesWithHealthyChildren",
+          "/scientific/state/custom/allowedToEat",
+          "/scientific/state/custom/didConsentToStayInDBAsAdult",
+          "/scientific/state/custom/hasAwayTeamTestingPermissionForNextYear",
+          "/scientific/state/testingPermissions",
+          "/scientific/state/comment",
+        ],
+        "hasSubChannels": true,
+        "inviteConfirmationSummaryDisplayFields": Array [],
+        "label": "Humankind Children",
+        "optionListDisplayFields": Array [
+          Object {
+            "dataPointer": "/sequenceNumber",
+            "systemType": "Integer",
+          },
+          Object {
+            "dataPointer": "/gdpr/state/custom/lastname",
+            "systemType": "SaneString",
+          },
+          Object {
+            "dataPointer": "/gdpr/state/custom/firstname",
+            "systemType": "SaneString",
+          },
+          Object {
+            "dataPointer": "/gdpr/state/custom/gender",
+            "systemType": "BiologicalGender",
+          },
+          Object {
+            "dataPointer": "/gdpr/state/custom/dateOfBirth",
+            "systemType": "DateOnlyServerSide",
+          },
+        ],
+        "recordLabelDefinition": Object {
+          "format": "\${#}, \${#} (\${#})",
+          "tokens": Array [
+            Object {
+              "dataPointer": "/gdpr/state/custom/lastname",
+              "systemType": "SaneString",
+            },
+            Object {
+              "dataPointer": "/gdpr/state/custom/firstname",
+              "systemType": "SaneString",
+            },
+            Object {
+              "dataPointer": "/gdpr/state/custom/gender",
+              "systemType": "BiologicalGender",
+            },
+          ],
+        },
+        "requiresTestingPermissions": true,
+        "selectionRowDisplayFields": Array [],
+        "selectionSummaryDisplayFields": Array [],
+        "showOnlineId": true,
+        "showSequenceNumber": true,
+        "staticFieldDefinitions": Array [
+          Object {
+            "dataPointer": "/sequenceNumber",
+            "displayName": "ID No.",
+            "displayNameI18N": Object {
+              "de": "ID Nr.",
+            },
+            "key": "_sequenceNumber",
+            "pointer": "/sequenceNumber",
+            "props": Object {},
+            "systemType": "SaneString",
+            "type": "SaneString",
+          },
+          Object {
+            "dataPointer": "/onlineId",
+            "displayName": "Online ID Code",
+            "displayNameI18N": Object {
+              "de": "Online ID Code",
+            },
+            "key": "_onlineId",
+            "pointer": "/onlineId",
+            "props": Object {},
+            "systemType": "SaneString",
+            "type": "SaneString",
+          },
+          Object {
+            "dataPointer": "/scientific/state/comment",
+            "displayName": "Comment",
+            "displayNameI18N": Object {
+              "de": "Kommentar",
+            },
+            "key": "_comment",
+            "pointer": "/scientific/state/comment",
+            "props": Object {},
+            "systemType": "FullText",
+            "type": "FullText",
+          },
+          Object {
+            "dataPointer": "/scientific/state/testingPermissions",
+            "displayName": "Participation Permissions",
+            "displayNameI18N": Object {
+              "de": "Teilnahme-Erlaubnis",
+            },
+            "key": "_testingPermissions",
+            "pointer": "/scientific/state/testingPermissions",
+            "props": Object {},
+            "systemType": "TestingPermissions",
+            "type": "TestingPermissions",
+          },
+        ],
+        "tableDisplayFields": Array [
+          Object {
+            "dataPointer": "/sequenceNumber",
+            "systemType": "Integer",
+          },
+          Object {
+            "dataPointer": "/gdpr/state/custom/lastname",
+            "systemType": "SaneString",
+          },
+          Object {
+            "dataPointer": "/gdpr/state/custom/firstname",
+            "systemType": "SaneString",
+          },
+          Object {
+            "dataPointer": "/gdpr/state/custom/gender",
+            "systemType": "BiologicalGender",
+          },
+          Object {
+            "dataPointer": "/gdpr/state/custom/dateOfBirth",
+            "systemType": "DateOnlyServerSide",
+          },
+          Object {
+            "dataPointer": "/scientific/state/custom/parentIds",
+            "systemType": "ForeignIdList",
+          },
+        ],
+        "type": "humankindChild",
+      },
+      Object {
+        "collection": "location",
+        "displayNameI18N": Object {
+          "de": "Instituts-Räume",
+        },
+        "fieldDefinitions": Array [
+          Object {
+            "displayName": "Room Name",
+            "displayNameI18N": Object {
+              "de": "Raumbezeichnung",
+            },
+            "key": "name",
+            "pointer": "/state/custom/name",
+            "props": Object {
+              "minLength": 1,
+            },
+            "type": "SaneString",
+          },
+          Object {
+            "displayName": "Room Number",
+            "displayNameI18N": Object {
+              "de": "Raumnummer",
+            },
+            "key": "number",
+            "pointer": "/state/custom/number",
+            "props": Object {
+              "minLength": 0,
+            },
+            "type": "SaneString",
+          },
+        ],
+        "formOrder": Array [
+          "/state/comment",
+          "/state/custom/name",
+          "/state/custom/number",
+        ],
+        "hasSubChannels": false,
+        "label": "Institute Rooms",
+        "optionListDisplayFields": Array [
+          Object {
+            "dataPointer": "/sequenceNumber",
+            "systemType": "Integer",
+          },
+          Object {
+            "dataPointer": "/state/custom/name",
+            "systemType": "SaneString",
+          },
+          Object {
+            "dataPointer": "/state/custom/number",
+            "systemType": "SaneString",
+          },
+        ],
+        "recordLabelDefinition": Object {
+          "format": "\${#} (\${#})",
+          "tokens": Array [
+            Object {
+              "dataPointer": "/state/custom/name",
+              "systemType": "SaneString",
+            },
+            Object {
+              "dataPointer": "/state/custom/number",
+              "systemType": "SaneString",
+            },
+          ],
+        },
+        "reservationType": "inhouse",
+        "staticFieldDefinitions": Array [
+          Object {
+            "dataPointer": "/_id",
+            "displayName": "ID",
+            "key": "_id",
+            "pointer": "/_id",
+            "systemType": "SaneString",
+            "type": "SaneString",
+          },
+          Object {
+            "dataPointer": "/sequenceNumber",
+            "displayName": "ID No.",
+            "displayNameI18N": Object {
+              "de": "ID Nr.",
+            },
+            "key": "_sequenceNumber",
+            "pointer": "/sequenceNumber",
+            "props": Object {},
+            "systemType": "SaneString",
+            "type": "SaneString",
+          },
+          Object {
+            "dataPointer": "/state/comment",
+            "displayName": "Comment",
+            "displayNameI18N": Object {
+              "de": "Kommentar",
+            },
+            "key": "_comment",
+            "pointer": "/state/comment",
+            "props": Object {},
+            "systemType": "FullText",
+            "type": "FullText",
+          },
+        ],
+        "tableDisplayFields": Array [
+          Object {
+            "dataPointer": "/sequenceNumber",
+            "systemType": "Integer",
+          },
+          Object {
+            "dataPointer": "/state/custom/name",
+            "systemType": "SaneString",
+          },
+          Object {
+            "dataPointer": "/state/custom/number",
+            "systemType": "SaneString",
+          },
+        ],
+        "type": "instituteroom",
+      },
+      Object {
+        "collection": "location",
+        "displayNameI18N": Object {
+          "de": "Kindergärten",
+        },
+        "fieldDefinitions": Array [
+          Object {
+            "displayName": "Name",
+            "displayNameI18N": Object {
+              "de": "Bezeichnung",
+            },
+            "key": "name",
+            "pointer": "/state/custom/name",
+            "props": Object {
+              "minLength": 1,
+            },
+            "type": "SaneString",
+          },
+          Object {
+            "displayName": "Address",
+            "displayNameI18N": Object {
+              "de": "Adresse",
+            },
+            "key": "address",
+            "pointer": "/state/custom/address",
+            "props": Object {
+              "isAffixRequired": false,
+              "isCityRequired": true,
+              "isCountryRequired": true,
+              "isHousenumberRequired": true,
+              "isPostcodeRequired": true,
+              "isStreetRequired": true,
+            },
+            "type": "Address",
+          },
+          Object {
+            "displayName": "Head",
+            "displayNameI18N": Object {
+              "de": "Leiter:in",
+            },
+            "key": "head",
+            "pointer": "/state/custom/head",
+            "props": Object {
+              "minLength": 0,
+            },
+            "type": "SaneString",
+          },
+          Object {
+            "displayName": "Vice",
+            "displayNameI18N": Object {
+              "de": "Stellvertreter:in",
+            },
+            "key": "vice",
+            "pointer": "/state/custom/vice",
+            "props": Object {
+              "minLength": 0,
+            },
+            "type": "SaneString",
+          },
+          Object {
+            "displayName": "Assigned RA",
+            "displayNameI18N": Object {
+              "de": "Betreuer:in",
+            },
+            "key": "supervisorId",
+            "pointer": "/state/custom/supervisorId",
+            "props": Object {
+              "addReferenceToTarget": false,
+              "collection": "personnel",
+              "constraints": Object {},
+              "displayEmptyAsUnknown": false,
+              "isNullable": true,
+            },
+            "type": "ForeignId",
+          },
+          Object {
+            "displayName": "Phone",
+            "displayNameI18N": Object {
+              "de": "Telefon",
+            },
+            "key": "phones",
+            "pointer": "/state/custom/phones",
+            "props": Object {
+              "minItems": 0,
+            },
+            "type": "PhoneWithTypeList",
+          },
+          Object {
+            "displayName": "Fax",
+            "displayNameI18N": Object {
+              "de": "Fax",
+            },
+            "key": "faxes",
+            "pointer": "/state/custom/faxes",
+            "props": Object {
+              "minItems": 0,
+            },
+            "type": "PhoneList",
+          },
+          Object {
+            "displayName": "E-Mail",
+            "displayNameI18N": Object {
+              "de": "E-Mail",
+            },
+            "key": "emails",
+            "pointer": "/state/custom/emails",
+            "props": Object {
+              "minItems": 0,
+            },
+            "type": "EmailList",
+          },
+          Object {
+            "displayName": "Umrella Org",
+            "displayNameI18N": Object {
+              "de": "Träger",
+            },
+            "key": "kigaUmbrellaOrgId",
+            "pointer": "/state/custom/kigaUmbrellaOrgId",
+            "props": Object {
+              "addReferenceToTarget": false,
+              "collection": "externalOrganization",
+              "constraints": Object {},
+              "displayEmptyAsUnknown": false,
+              "isNullable": false,
+              "recordType": "kigaUmbrellaOrg",
+            },
+            "type": "ForeignId",
+          },
+          Object {
+            "displayName": "Room Info",
+            "displayNameI18N": Object {
+              "de": "Raum Info",
+            },
+            "key": "roomInfo",
+            "pointer": "/state/custom/roomInfo",
+            "props": Object {
+              "minLength": 0,
+            },
+            "type": "SaneString",
+          },
+        ],
+        "formOrder": Array [
+          "/state/comment",
+          "/state/custom/name",
+          "/state/custom/address",
+          "/state/custom/head",
+          "/state/custom/vice",
+          "/state/custom/supervisorId",
+          "/state/custom/phones",
+          "/state/custom/faxes",
+          "/state/custom/emails",
+          "/state/custom/kigaUmbrellaOrgId",
+          "/state/custom/roomInfo",
+        ],
+        "hasSubChannels": false,
+        "label": "Kindergardens",
+        "optionListDisplayFields": Array [
+          Object {
+            "dataPointer": "/sequenceNumber",
+            "systemType": "Integer",
+          },
+          Object {
+            "dataPointer": "/state/custom/address",
+            "systemType": "Address",
+          },
+        ],
+        "recordLabelDefinition": Object {
+          "format": "\${#}",
+          "tokens": Array [
+            Object {
+              "dataPointer": "/state/custom/address",
+              "systemType": "Address",
+            },
+          ],
+        },
+        "reservationType": "away-team",
+        "staticFieldDefinitions": Array [
+          Object {
+            "dataPointer": "/_id",
+            "displayName": "ID",
+            "key": "_id",
+            "pointer": "/_id",
+            "systemType": "SaneString",
+            "type": "SaneString",
+          },
+          Object {
+            "dataPointer": "/sequenceNumber",
+            "displayName": "ID No.",
+            "displayNameI18N": Object {
+              "de": "ID Nr.",
+            },
+            "key": "_sequenceNumber",
+            "pointer": "/sequenceNumber",
+            "props": Object {},
+            "systemType": "SaneString",
+            "type": "SaneString",
+          },
+          Object {
+            "dataPointer": "/state/comment",
+            "displayName": "Comment",
+            "displayNameI18N": Object {
+              "de": "Kommentar",
+            },
+            "key": "_comment",
+            "pointer": "/state/comment",
+            "props": Object {},
+            "systemType": "FullText",
+            "type": "FullText",
+          },
+        ],
+        "tableDisplayFields": Array [
+          Object {
+            "dataPointer": "/sequenceNumber",
+            "systemType": "Integer",
+          },
+          Object {
+            "dataPointer": "/state/custom/name",
+            "systemType": "SaneString",
+          },
+          Object {
+            "dataPointer": "/state/custom/address",
+            "systemType": "Address",
+          },
+          Object {
+            "dataPointer": "/state/custom/head",
+            "systemType": "SaneString",
+          },
+          Object {
+            "dataPointer": "/state/custom/phones",
+            "systemType": "PhoneWithTypeList",
+          },
+        ],
+        "type": "kiga",
+      },
+    ],
+  },
+  "status": "OK",
+  "statusCode": 200,
+}
+`;

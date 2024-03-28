@@ -10,16 +10,23 @@ const VariantListItem = (ps) => {
         index,
         variantRecord,
         settingRecords,
-        allowedSubjectTypes,
+        availableSubjectCRTs,
         onRemove,
         onAddSetting,
     } = ps;
 
-    var {
-        studyId,
-        type: variantType,
-        state: variantState
-    } = variantRecord;
+    var pass = {}
+    pass.list = only({ from: ps, keys: [
+        'variantRecord',
+        'settingRecords',
+        'settingRelated',
+        'availableSubjectCRTs',
+
+        'onEditSetting',
+        'onRemoveSetting'
+    ]});
+
+    var { type: variantType, state: variantState } = variantRecord;
 
     var translate = useUITranslation();
 
@@ -28,7 +35,7 @@ const VariantListItem = (ps) => {
     );
 
     var hasNoSubjectTypesLeft = (
-        allowedSubjectTypes.length <= existingSubjectTypes.length
+        availableSubjectCRTs.items().length <= existingSubjectTypes.length
     );
 
     var panelBag = {
@@ -41,28 +48,12 @@ const VariantListItem = (ps) => {
         onRemove: () => onRemove({ index, variantRecord })
     };
 
-    var listPass = only({ from: ps, keys: [
-        'variantRecord',
-        'settingRecords',
-        'settingRelated',
-        'allowedSubjectTypes',
-
-        'allCustomRecordTypes',
-        'customRecordTypes',
-        'availableSubjectCRTs',
-
-        'onEditSetting',
-        'onRemoveSetting'
-    ]});
-
-    var listBag = {
-        ...listPass,
-        existingSubjectTypes,
-    }
-
     return (
         <OuterSettingPanel { ...panelBag }>
-            <SettingList { ...listBag } />
+            <SettingList
+                { ...pass.list }
+                existingSubjectTypes={ existingSubjectTypes }
+            />
         </OuterSettingPanel>
     )
 }
