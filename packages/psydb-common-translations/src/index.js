@@ -37,10 +37,13 @@ translate.options = (lang, options) => (
 );
 
 translate.crt = (lang = 'en', crt) => {
+    var base = crt;
     var base = (
-        crt.label // detect wrapped crts
-        ? crt
-        : crt.state
+        crt.state // detect crt records
+        ? crt.state
+        : crt.getRaw // detect wrapped crts
+            ? crt.getRaw()
+            : crt
     );
 
     return (

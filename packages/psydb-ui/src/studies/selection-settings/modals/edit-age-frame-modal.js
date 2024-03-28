@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { demuxed } from '@mpieva/psydb-ui-utils';
+import { useSend } from '@mpieva/psydb-ui-hooks';
 import { WithDefaultModal } from '@mpieva/psydb-ui-layout';
 import { AgeFrameForm } from '../age-frame-form';
 
@@ -14,25 +14,31 @@ const EditAgeFrameModalBody = (ps) => {
     } = ps;
 
     var {
-        selectorRecord,
+        //selectorRecord,
         ageFrameRecord,
-        ageFrameRelated
+        ageFrameRelated,
+        subjectCRT,
     } = modalPayloadData;
 
-    var { _id: selectorId, subjectTypeKey } = selectorRecord;
+    var { _id: ageFrameId } = ageFrameRecord; 
+
+    var send = useSend((formData, formikProps) => ({
+        type: `ageFrame/patch`,
+        payload: {
+            id: ageFrameId,
+            props: formData
+        }
+    }), { onSuccessfulUpdate: [ onHide, onSuccessfulUpdate ] });
 
     return (
         <div>
             <AgeFrameForm {...({
-                op: 'patch',
-                studyId,
-                selectorId,
-                subjectTypeKey,
+                ...send.passthrough,
 
                 ageFrameRecord,
                 ageFrameRelated,
-
-                onSuccessfulUpdate: demuxed([ onHide, onSuccessfulUpdate ])
+                subjectCRT,
+                onHide,
             })} />
         </div>
     );

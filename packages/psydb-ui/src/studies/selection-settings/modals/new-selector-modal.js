@@ -1,11 +1,10 @@
 import React from 'react';
-
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
-import { useFetch, useSend } from '@mpieva/psydb-ui-hooks';
+import { useUITranslation, useUILanguage } from '@mpieva/psydb-ui-contexts';
+import { useSend } from '@mpieva/psydb-ui-hooks';
 import {
     WithDefaultModal,
-    Button,
-    LoadingIndicator,
+    AsyncButton,
+    SmallFormFooter
 } from '@mpieva/psydb-ui-layout';
 
 import {
@@ -13,22 +12,12 @@ import {
     Fields,
 } from '@mpieva/psydb-ui-lib';
 
+
 const Form = (ps) => {
-    var { onSubmit, subjectTypeMap } = ps;
+    var { onSubmit, isTransmitting, subjectCRTs } = ps;
 
+    var [ language ] = useUILanguage();
     var translate = useUITranslation();
-
-    var [ didFetch, fetched ] = useFetch((agent) => (
-        agent.readCustomRecordTypeMetadata({ only: [{
-            collection: 'subject'
-        }] })
-    ), []);
-
-    if (!didFetch) {
-        return <LoadingIndicator size='lg' />
-    }
-
-    var { customRecordTypes } = fetched.data;
 
     return (
         <DefaultForm
@@ -41,14 +30,16 @@ const Form = (ps) => {
                     <Fields.GenericEnum
                         label={ translate('Subject Type') }
                         dataXPath='$.subjectTypeKey'
-                        options={ customRecordTypes.reduce((acc, it) => ({
-                            ...acc,
-                            [it.type]: translate.crt(it)
-                        }), {}) }
+                        options={ subjectCRTs.asOptions({ language }) }
                     />
-                    <Button type='submit'>
-                        { translate('Save') }
-                    </Button>
+                    <SmallFormFooter extraClassName='pt-2'>
+                        <AsyncButton
+                            type='submit'
+                            isTransmitting={ isTransmitting }
+                        >
+                            { translate('Save') }
+                        </AsyncButton>
+                    </SmallFormFooter>
                 </>
             )}
         </DefaultForm>
@@ -58,7 +49,7 @@ const Form = (ps) => {
 const NewSelectorModalBody = (ps) => {
     var {
         studyId,
-        subjectTypeMap,
+        availableSubjectCRTs,
         existingSubjectTypes = [],
 
         onHide,
@@ -75,21 +66,16 @@ const NewSelectorModalBody = (ps) => {
                 generalConditions: [],
             }
         }
-    }), {
-        onSuccessfulUpdate: [ onHide, onSuccessfulUpdate ]
+    }), { onSuccessfulUpdate: [ onHide, onSuccessfulUpdate ] });
+    
+    var remainingSubjectCRTs = availableSubjectCRTs.filter({
+        type: { $nin: existingSubjectTypes }
     });
 
     return (
         <Form
-            subjectTypeMap={
-                Object.keys(subjectTypeMap).reduce((acc, key) => ({
-                    ...acc,
-                    ...(!existingSubjectTypes.includes(key) && {
-                        [key]: subjectTypeMap[key].state.label
-                    })
-                }), {})
-            }
-            onSubmit={ send.exec }
+            { ...send.passthrough }
+            subjectCRTs={ remainingSubjectCRTs }
         />
     );
 }

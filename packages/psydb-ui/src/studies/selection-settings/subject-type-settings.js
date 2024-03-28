@@ -27,24 +27,15 @@ const SubjectTypeSettings = (ps) => {
     var { value: revision, up: increaseRevision } = useRevision();
     var permissions = usePermissions();
 
-    var newSelectorModal = useModalReducer();
-    var removeSelectorModal = useModalReducer();
-
-    var newAgeFrameModal = useModalReducer();
-    var editAgeFrameModal = useModalReducer();
-    var removeAgeFrameModal = useModalReducer();
+    var [ modalHooks, modalCallbacks ] = useAllModals();
 
     var [ didFetch, fetched ] = useFetchAll((agent) => {
         var promises = {
-            crts: agent.readCustomRecordTypeMetadata({
-                ignoreResearchGroups: true
-            }),
-            selectors: agent.fetchSubjectSelectors({
+            availableSubjectCRTs: agent.fetchStudyAvailableSubjectCRTs({
                 studyId,
             }),
-            ageFrames: agent.fetchAgeFrames({
-                studyId,
-            })
+            selectors: agent.fetchSubjectSelectors({ studyId }),
+            ageFrames: agent.fetchAgeFrames({ studyId })
         }
         return promises;
     }, [ studyId, revision ])
@@ -53,7 +44,7 @@ const SubjectTypeSettings = (ps) => {
         return <LoadingIndicator size='lg' />
     }
 
-    var { customRecordTypes } = fetched.crts.data;
+    var availableSubjectCRTs = fetched.availableSubjectCRTs.data.crts;
 
     var {
         records: selectorRecords,
@@ -64,58 +55,29 @@ const SubjectTypeSettings = (ps) => {
         ...ageFrameRelated
     } = fetched.ageFrames.data;
 
-    var subjectTypeMap = (
-        customRecordTypes
-        .filter(it => it.collection === 'subject')
-        .reduce((acc, it) => ({
-            ...acc,
-            [it.type]: it
-        }), {})
-    );
-
     var existingSubjectTypes = (
         selectorRecords.map(it => it.subjectTypeKey)
     );
     var hasNoTypesLeft = (
-        Object.keys(subjectTypeMap).length === existingSubjectTypes.length
+        availableSubjectCRTs.items().length <= existingSubjectTypes.length
     );
 
     var canWrite = permissions.hasFlag('canWriteStudies');
 
+    var modalBag = {
+        studyId,
+        existingSubjectTypes,
+        availableSubjectCRTs,
+        
+        onSuccessfulUpdate: increaseRevision
+    }
+
     return (
         <div>
-            
-            <NewSelectorModal { ...({
-                ...newSelectorModal.passthrough,
-                studyId,
-                subjectTypeMap,
-                existingSubjectTypes,
-                
-                onSuccessfulUpdate: increaseRevision
-            })} />
-            
-            <RemoveSelectorModal { ...({
-                ...removeSelectorModal.passthrough,
-                subjectTypeMap,
-                onSuccessfulUpdate: increaseRevision
-            })} />
-
-            <NewAgeFrameModal { ...({
-                ...newAgeFrameModal.passthrough,
-                studyId,
-                onSuccessfulUpdate: increaseRevision
-            })} />
-
-            <EditAgeFrameModal { ...({
-                ...editAgeFrameModal.passthrough,
-                onSuccessfulUpdate: increaseRevision
-            })} />
-
-            <RemoveAgeFrameModal { ...({
-                ...removeAgeFrameModal.passthrough,
-                onSuccessfulUpdate: increaseRevision
-            })} />
-
+            <AllModals
+                { ...modalHooks }
+                { ...modalBag }
+            />
 
             <SelectorList { ...({
                 selectorRecords,
@@ -123,23 +85,94 @@ const SubjectTypeSettings = (ps) => {
                 ageFrameRecords,
                 ageFrameRelated,
 
-                customRecordTypes,
-                subjectTypeMap,
+                availableSubjectCRTs,
 
                 disableAddSelector: hasNoTypesLeft,
-
-                ...(canWrite && {
-                    onAddSelector: newSelectorModal.handleShow,
-                    onRemoveSelector: removeSelectorModal.handleShow,
-
-                    onAddAgeFrame: newAgeFrameModal.handleShow,
-                    onEditAgeFrame: editAgeFrameModal.handleShow,
-                    onRemoveAgeFrame: removeAgeFrameModal.handleShow,
-                })
+                ...(canWrite && modalCallbacks)
             })} />
-
         </div>
     )
+}
+
+var AllModals = (ps) => {
+    var {
+        studyId,
+        existingSubjectTypes,
+        availableSubjectCRTs,
+        onSuccessfulUpdate,
+
+        newSelectorModal,
+        removeSelectorModal,
+
+        newAgeFrameModal,
+        editAgeFrameModal,
+        removeAgeFrameModal,
+    } = ps;
+    
+    var shared = { onSuccessfulUpdate }
+
+    return (
+        <>
+            <NewSelectorModal { ...({
+                ...newSelectorModal.passthrough,
+                ...shared,
+                studyId,
+                existingSubjectTypes,
+                availableSubjectCRTs,
+            })} />
+            
+            <RemoveSelectorModal { ...({
+                ...removeSelectorModal.passthrough,
+                ...shared,
+                availableSubjectCRTs,
+            })} />
+
+            <NewAgeFrameModal { ...({
+                ...newAgeFrameModal.passthrough,
+                ...shared,
+                studyId,
+            })} />
+
+            <EditAgeFrameModal { ...({
+                ...editAgeFrameModal.passthrough,
+                ...shared,
+            })} />
+
+            <RemoveAgeFrameModal { ...({
+                ...removeAgeFrameModal.passthrough,
+                ...shared,
+            })} />
+        </>
+    )
+}
+
+var useAllModals = (ps) => {
+    var newSelectorModal = useModalReducer();
+    var removeSelectorModal = useModalReducer();
+
+    var newAgeFrameModal = useModalReducer();
+    var editAgeFrameModal = useModalReducer();
+    var removeAgeFrameModal = useModalReducer();
+
+    var hooks = {
+        newSelectorModal,
+        removeSelectorModal,
+
+        newAgeFrameModal,
+        editAgeFrameModal,
+        removeAgeFrameModal,
+    }
+
+    var callbacks = {
+        onAddSelector: newSelectorModal.handleShow,
+        onRemoveSelector: removeSelectorModal.handleShow,
+
+        onAddAgeFrame: newAgeFrameModal.handleShow,
+        onEditAgeFrame: editAgeFrameModal.handleShow,
+        onRemoveAgeFrame: removeAgeFrameModal.handleShow,
+    }
+
+    return [ hooks, callbacks ];
 }
 
 export default SubjectTypeSettings;
