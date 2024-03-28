@@ -28,7 +28,7 @@ var fetchAvailableCRTSettings = async (bag) => {
         // how would we even do that?
         var study = await withRetracedErrors(
             aggregateOne({ db, study: [
-                { $match: { _id: studyId }}
+                { $match: { _id: byStudyId }}
             ]})
         );
 
@@ -68,7 +68,7 @@ var fetchCRTKeysForResearchGroups = async (bag) => {
     var researchGroups = await withRetracedErrors(
         aggregateToArray({ db, researchGroup: [
             { $match: {
-                _id: { $in: study.state.researchGroupIds }
+                _id: { $in: researchGroupIds }
             }}
         ]})
     );
