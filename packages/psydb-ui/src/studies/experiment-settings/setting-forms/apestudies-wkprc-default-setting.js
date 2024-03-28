@@ -23,13 +23,9 @@ export const ApestudiesWKPRCDefaultSetting = (ps) => {
         onSubmit,
         isTransmitting,
 
-        studyId,
-        variantId,
         settingRecord,
         settingRelated,
-
         availableSubjectCRTs,
-        onSuccessfulUpdate
     } = ps;
 
     var settingId, settingState;

@@ -8,7 +8,8 @@ var {
 } = require('@mpieva/psydb-core-utils');
 
 var fixtures = require('@mpieva/psydb-fixtures');
-var { compose } = require('@mpieva/psydb-api-lib');
+var { Permissions } = require('@mpieva/psydb-common-lib');
+var { compose, Self } = require('@mpieva/psydb-api-lib');
 
 var {
     withEventEngine,
@@ -67,12 +68,29 @@ var beforeAll = async function () {
         return { ...koaContext, ...extraContext };
     }
 
+    this.createFakeLogin = async (bag) => {
+        var { email } = bag;
+
+        var db = this.getDbHandle();
+        var self = await Self({ db, query: {
+            'gdpr.state.emails.email': email
+        }});
+        
+        var permissions = Permissions.fromSelf({ self });
+
+        return {
+            session: { personnelId: self.record._id },
+            self,
+            permissions,
+        }
+    }
+
     this.createMessenger = (options) => {
-        var { RootHandler } = options;
+        var { RootHandler, ...extraOptionsContext } = options;
 
         var send = async (message, extraContext) => {
             var koaContext = this.createKoaContext(
-                message, extraContext
+                message, { ...extraOptionsContext, ...extraContext }
             );
             var next = async () => {}
 

@@ -6,7 +6,8 @@ var {
     DefaultBool,
 } = require('@mpieva/psydb-schema-fields');
 
-var allCRTCollections = require('./all-crt-collections');
+var { allCRTCollections } = require('@mpieva/psydb-api-lib');
+
 
 var Schema = (bag = {}) => {
     return ExactObject({

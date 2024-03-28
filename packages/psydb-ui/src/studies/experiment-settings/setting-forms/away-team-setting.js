@@ -17,12 +17,8 @@ export const AwayTeamSetting = (ps) => {
         onSubmit,
         isTransmitting,
 
-        studyId,
-        variantId,
         settingRecord,
-
         availableSubjectCRTs,
-        onSuccessfulUpdate
     } = ps;
 
     var settingId, settingState;

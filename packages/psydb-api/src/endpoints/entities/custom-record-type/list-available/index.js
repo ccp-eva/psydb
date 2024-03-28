@@ -2,11 +2,14 @@
 var {
     ResponseBody,
     validateOrThrow,
-    fetchAllCRTSettings
+
+    allCRTCollections,
+    fetchAllCRTSettings,
+    fetchAvailableCRTSettings,
 } = require('@mpieva/psydb-api-lib');
 
-var allCRTCollections = require('./all-crt-collections');
 var Schema = require('./schema');
+
 
 var listAvailable = async (context, next) => {
     var { db, permissions, request } = context;
@@ -25,34 +28,21 @@ var listAvailable = async (context, next) => {
         ignoreResearchGroups = false;
     }
 
-    // TODO: move that into permissions itself
-    var availableTypesByCollection = {
-        'subject': permissions.availableSubjectTypes.map(it => it.key),
-        'study': permissions.availableStudyTypes.map(it => it.key),
-        'location': permissions.availableLocationTypes.map(it => it.key),
-        'externalPerson': 'ALL', // FIXME
-        'externalOrganization': 'ALL', // FIXME
+    var crts = undefined;
+    if (ignoreResearchGroups) {
+        crts = await fetchAllCRTSettings(db, [
+            ...collections.map(it => ({ collection }))
+        ], { wrap: false, asTree: false });
+    }
+    else {
+        crts = await fetchAvailableCRTSettings({
+            db, permissions, collections,
+            wrap: false, asTree: false
+        });
     }
 
-    var filter = collections.map(it => {
-        var recordTypes = availableTypesByCollection[it];
-        return {
-            collection: it,
-            ...(
-                (!ignoreResearchGroups && recordTypes !== 'ALL')
-                && { recordTypes }
-            )
-        }
-    });
-
-    var crts = await fetchAllCRTSettings(db, [
-        ...filter
-    ], { wrap: false, asTree: false });
-
     context.body = ResponseBody({
-        data: {
-            crts,
-        },
+        data: { crts },
     });
 
     await next();

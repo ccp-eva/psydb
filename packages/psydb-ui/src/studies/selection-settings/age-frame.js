@@ -12,13 +12,11 @@ export const AgeFrame = (ps) => {
         ageFrameRecord,
         ageFrameRelated,
 
-        subjectTypeRecord,
         subjectCRT,
         showButtons = true,
 
         onEdit,
         onRemove,
-        ...downstream
     } = ps;
 
     var translate = useUITranslation();
@@ -30,22 +28,19 @@ export const AgeFrame = (ps) => {
         fieldDefinition: { type: 'AgeFrameInterval' }
     });
 
+    var actionBag = {
+        selectorRecord,
+        ageFrameRecord,
+        ageFrameRelated,
+        subjectCRT,
+    }
+
     var panelProps = {
         label: `${translate('Age Range')}  ${stringifiedAgeFrame}`,
         showEditButton: !!showButtons && !!onEdit,
         showRemoveButton: !!showButtons && !!onRemove,
-        onEdit: () => onEdit({
-            selectorRecord,
-            ageFrameRecord,
-            ageFrameRelated,
-            subjectTypeRecord,
-        }),
-        onRemove: () => onRemove({
-            selectorRecord,
-            ageFrameRecord,
-            ageFrameRelated,
-            subjectTypeRecord,
-        })
+        onEdit: () => onEdit(actionBag),
+        onRemove: () => onRemove(actionBag)
     };
 
     if (conditions.length < 1) {
@@ -67,12 +62,8 @@ export const AgeFrame = (ps) => {
                     <AgeFrameCondition key={ index } { ...({
                         index,
                         condition: it,
-                
-                        subjectTypeRecord,
                         subjectCRT,
-                        ageFrameRecord,
                         ageFrameRelated,
-                        ...downstream
                     }) } />
                 </div>
             ))}

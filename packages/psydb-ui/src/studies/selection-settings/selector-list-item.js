@@ -1,4 +1,5 @@
 import React from 'react';
+import { only } from '@mpieva/psydb-core-utils';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import {
     experimentSelectors as selectorsEnum,
@@ -11,12 +12,19 @@ const SelectorListItem = (ps) => {
     var {
         index,
         selectorRecord,
+        availableSubjectCRTs,
         subjectTypeMap,
 
         onRemove,
         onAddAgeFrame,
-        ...downstream
     } = ps;
+
+    var pass = only({ from: ps, keys: [
+        'ageFrameRecords',
+        'ageFrameRelated',
+        'onEditAgeFrame',
+        'onRemoveAgeFrame',
+    ]})
 
     var translate = useUITranslation();
 
@@ -26,17 +34,17 @@ const SelectorListItem = (ps) => {
         state: selectorState
     } = selectorRecord;
 
-    var subjectTypeRecord = subjectTypeMap[subjectTypeKey];
+    var subjectCRT = availableSubjectCRTs.find({ type: subjectTypeKey });
 
     var permissions = usePermissions();
     var canEdit = permissions.isSubjectTypeAvailable(subjectTypeKey);
 
     var panelProps = {
-        label: `${subjectTypeRecord.state.label}`,
+        label: translate.crt(subjectCRT),
         addButtonLabel: '+ ' + translate('Age Range'),
         showAddButton: canEdit && !!onAddAgeFrame,
         showRemoveButton: canEdit && !!onRemove,
-        onAdd: () => onAddAgeFrame({ selectorRecord }),
+        onAdd: () => onAddAgeFrame({ selectorRecord, subjectCRT }),
         onRemove: () => onRemove({ index, selectorRecord })
     };
 
@@ -45,8 +53,8 @@ const SelectorListItem = (ps) => {
             <AgeFrameList { ...({
                 subjectTypeKey,
                 selectorRecord,
-                subjectTypeRecord,
-                ...downstream
+                subjectCRT,
+                ...pass
             })} />
         </OuterSettingPanel>
     )

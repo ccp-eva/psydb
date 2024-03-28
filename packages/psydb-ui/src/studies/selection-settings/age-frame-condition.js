@@ -7,11 +7,8 @@ import {
 export const AgeFrameCondition = (ps) => {
     var {
         condition,
-        ageFrameRecord,
         ageFrameRelated,
-        subjectTypeRecord,
         subjectCRT,
-        studyData,
     } = ps;
 
     var translate = useUITranslation();
@@ -20,9 +17,9 @@ export const AgeFrameCondition = (ps) => {
 
     var { pointer, values } = condition;
     
-    var fieldDefinition = subjectCRT.findCustomFields({
+    var [ fieldDefinition ] = subjectCRT.findCustomFields({
         'pointer': pointer
-    })[0];
+    });
 
     // FIXME: this is lab-operation/../selection-settings-form-schema.js
     var realType = fieldDefinition.systemType;

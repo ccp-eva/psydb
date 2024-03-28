@@ -17,12 +17,8 @@ export const OnlineSurveySetting = (ps) => {
         onSubmit,
         isTransmitting,
 
-        studyId,
-        variantId,
         settingRecord,
-
         availableSubjectCRTs,
-        onSuccessfulUpdate
     } = ps;
 
     var [ language ] = useUILanguage();

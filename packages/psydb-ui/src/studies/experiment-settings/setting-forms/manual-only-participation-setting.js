@@ -21,8 +21,6 @@ export const ManualOnlyParticipationSetting = (ps) => {
         onSubmit,
         isTransmitting,
 
-        studyId,
-        variantId,
         settingRecord,
 
         availableSubjectCRTs,

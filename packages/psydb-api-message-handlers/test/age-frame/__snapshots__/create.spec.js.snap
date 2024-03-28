@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ageFrame/create does the thing 1`] = `
+Object {
+  "isDummy": false,
+  "sequenceNumber": "14",
+  "state": Object {
+    "conditions": Array [
+      Object {
+        "pointer": "/gdpr/state/custom/gender",
+        "values": Array [
+          "male",
+          "female",
+        ],
+      },
+    ],
+    "interval": Object {
+      "end": Object {
+        "days": 1,
+        "months": 1,
+        "years": 1,
+      },
+      "start": Object {
+        "days": 0,
+        "months": 0,
+        "years": 0,
+      },
+    },
+  },
+  "studyId": Object {
+    "$oid": "6600f821a5f8769c528681df",
+  },
+  "subjectSelectorId": Object {
+    "$oid": "6604cdcd8df35a1505347aac",
+  },
+  "subjectTypeKey": "humankindAdult",
+}
+`;

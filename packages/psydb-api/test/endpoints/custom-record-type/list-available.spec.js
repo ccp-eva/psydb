@@ -1,5 +1,5 @@
 'use strict';
-var { expect } = require('chai');
+var { expect } = require('@mpieva/psydb-api-mocha-test-tools/chai');
 var { ejson, ObjectId } = require('@cdxoo/mongo-test-helpers');
 var jsonify = (that) => (
     JSON.parse(JSON.stringify(that))
@@ -34,5 +34,6 @@ describe('endpoints/custom-record-type/list-available', function () {
         );
         
         console.dir(ejson(response.data), { depth: null });
+        expect(response.data).toMatchSnapshot();
     })
 })
