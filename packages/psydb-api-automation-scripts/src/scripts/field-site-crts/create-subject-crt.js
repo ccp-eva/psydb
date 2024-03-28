@@ -39,6 +39,20 @@ var createSubjectCRT = async (bag) => {
     await driver.sendMessage({
         type: `custom-record-types/add-field-definition`,
         payload: { id: crtId, subChannelKey: 'scientific', props: {
+            type: 'BiologicalGender',
+            key: 'biologicalGender',
+            displayName: 'Gender',
+            displayNameI18N: { 'de': 'Geschlecht' },
+            props: {
+                enableUnknownValue: true,
+                enableOtherValue: false,
+            }
+        }},
+    }, { apiKey });
+
+    await driver.sendMessage({
+        type: `custom-record-types/add-field-definition`,
+        payload: { id: crtId, subChannelKey: 'scientific', props: {
             type: 'DateOnlyServerSide',
             key: 'dateOfBirth',
             displayName: 'Date of Birth',

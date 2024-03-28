@@ -15,7 +15,7 @@ var sites = [
     { type: 'argentina', labelDE: 'Argentinien', labelEN: 'Argentina' },
     { type: 'mexico', labelDE: 'Mexiko', labelEN: 'Mexico' },
     { type: 'newzeeland', labelDE: 'Neuseeland', labelEN: 'New Zeeland' },
-    { type: 'nigeria', labelDlE: 'Nigeria', labelEN: 'Nigeria' },
+    { type: 'nigeria', labelDE: 'Nigeria', labelEN: 'Nigeria' },
     { type: 'zambia', labelDE: 'Sambia', labelEN: 'Zambia' }
 ];
 var defaultSubjectFormOrder = [
