@@ -75,6 +75,23 @@ var CRTSettings = ({ data }) => {
             : fields
         );
     }
+    crt.findRequiredCustomFields = () => {
+        var required = crt.findRequiredCustomFields({ $or: [
+            { 'props.minLength': { $gt: 0 }},
+            { 'props.minItems': { $gt: 0 }},
+            {
+                'systemType': { $in: [
+                    'ForeignId',
+                    'HelperSetItem',
+                    'DateOnlyServerSide',
+                    'DateTime',
+                    'Integer',
+                ]},
+                'props.isNullable': { $ne: true }
+            },
+        ]});
+        return required;
+    }
 
     crt.getRecordLabelPointers = () => {
         return data.recordLabelDefinition.tokens.map(it => it.dataPointer);
