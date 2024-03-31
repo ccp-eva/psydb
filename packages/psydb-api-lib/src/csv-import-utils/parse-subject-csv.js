@@ -4,6 +4,12 @@ var { jsonpointer } = require('@mpieva/psydb-core-utils');
 var { ObjectId } = require('@mpieva/psydb-mongo-adapter');
 var { UnknownCSVColumnKeys } = require('./errors');
 
+var isUnsupportedType = (systemType) => {
+    return [
+        'ListOfObjects',
+    ].includes(systemType)
+}
+
 var parseSubjectCSV = (bag) => {
     var { data, subjectCRT } = bag;
 
@@ -103,12 +109,6 @@ var deserializers = {
             return i;
         }
     }
-}
-
-var isUnsupportedType = (systemType) => {
-    return [
-        'ListOfObjects',
-    ].includes(systemType)
 }
 
 var createCSVColumnMapping = (bag) => {
