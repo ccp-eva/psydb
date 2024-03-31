@@ -1,5 +1,7 @@
 'use strict';
 var { CsvError, parse: parseCSV } = require('csv-parse/sync');
+var { jsonpointer } = require('@mpieva/psydb-core-utils');
+var { ObjectId } = require('@mpieva/psydb-mongo-adapter');
 var { UnknownCSVColumnKeys } = require('./errors');
 
 var parseSubjectCSV = (bag) => {
@@ -11,7 +13,7 @@ var parseSubjectCSV = (bag) => {
    
     var head, lines;
     try {
-        ([ head, ...lines ] = csv.parse(data));
+        ([ head, ...lines ] = parseCSV(data));
     }
     catch (e) {
         if (e instanceof CsvError) {
@@ -23,34 +25,90 @@ var parseSubjectCSV = (bag) => {
     }
 
     var mapping = createCSVColumnMapping({
-        subjectCRT, csvColumns
+        subjectCRT, csvColumns: head
     });
 
     var out = [];
     for (var linedata of lines) {
-        var item = {};
+        var parsedline = [];
         for (var entry of linedata.entries()) {
             var [ ix, value ] = entry;
             var { definition, realKey, extraPath } = mapping[ix];
             var { systemType, pointer } = definition;
 
-            var fullPointer = [pointer, ...extraPath].join('/');
-            if (sytemType === 'ListOfObjects') {
+            var fullPointer = [ pointer, ...extraPath ].join('/');
+            if (isUnsupportedType(systemType)) {
+                // FIXME
                 throw new Error('unsupported field type');
             }
-            if (isArrayType(systemType)) {
-                value = value.split(/\s*,\s*/);
-            }
-            jsonpointer.set(item, fullPointer, value);
+            var deserialize = deserializers[systemType] || ((v) => (v));
+            parsedline.push({
+                definition, realKey, extraPath,
+                value: deserialize(String(value).trim(), definition)
+            });
+        }
+        out.push(parsedline);
+    }
+
+    return out;
+}
+
+var maybeAsObjectId = (value) => (
+    /[0-9A-Fa-f]{24}/.test(value)
+    ? ObjectId(value)
+    : value
+);
+var split = (value) => value.split(/\s*,\s*/);
+var deserializers = {
+    'HelperSetItemIdList': (value, definition) => (
+        split(value).map(maybeAsObjectId)
+    ),
+    'ForeignIdList': (value, definition) => (
+        split(value).map(maybeAsObjectId)
+    ),
+    'HelperSetItemId': (value, definition) => (
+        maybeAsObjectId(value)
+    ),
+    'ForeignId': (value, definition) => (
+        maybeAsObjectId(value)
+    ),
+    'EmailList': (value, definition) => (
+        split(value).map((it, ix) => ({
+            email: it, isPrimary: ix === 0,
+        }))
+    ),
+    'PhoneWithTypeList': (value, definition) => (
+        split(value).map((it, ix) => ({
+            number: it, type: 'private'
+        }))
+    ),
+    'PhoneList': split,
+    'SaneStringList': split,
+    'URLStringList': split,
+    'DefaultBool': (value, definition) => {
+        var lcvalue = value.toLowerCase();
+        if (['true', 'false'].includes(lcvalue)) {
+            return (lcvalue === 'true');
+        }
+        else {
+            return value;
+        }
+    },
+    'Integer': (value, definition) => {
+        var i = parseInt(value);
+        if (Number.isNaN(i)) {
+            return value;
+        }
+        else {
+            return i;
         }
     }
 }
 
-var isArrayType = (systemType) {
+var isUnsupportedType = (systemType) => {
     return [
-        'HelperSetItemIdList',
-        'ForeignIdList'
-    ].includes(systemType);
+        'ListOfObjects',
+    ].includes(systemType)
 }
 
 var createCSVColumnMapping = (bag) => {
@@ -58,7 +116,7 @@ var createCSVColumnMapping = (bag) => {
 
     var infos = [];
     var unknownCSVColumnKeys = [];
-    for (var entry of headcols.entries()) {
+    for (var entry of csvColumns.entries()) {
         var [ ix, csvColumnKey ] = entry;
 
         var tokens = csvColumnKey.split(/\./);
@@ -73,11 +131,17 @@ var createCSVColumnMapping = (bag) => {
                 realKey, extraPath
             });
         }
+        else if (realKey === 'comment') {
+            infos.push({
+                definition: { pointer: '/scientific/state/comment' },
+                realKey, extraPath
+            });
+        }
         else {
             var found = subjectCRT.findCustomFields({ key: realKey });
 
             if (found < 1) {
-                unknownCSVColumnKeys.push(key)
+                unknownCSVColumnKeys.push(realKey)
             }
             else if (found > 1) {
                 throw new Error(
@@ -85,7 +149,7 @@ var createCSVColumnMapping = (bag) => {
                 );
             }
             else {
-                infos.push({ definition: found, realKey, extraPath });
+                infos.push({ definition: found[0], realKey, extraPath });
             }
         }
     }
@@ -96,3 +160,5 @@ var createCSVColumnMapping = (bag) => {
 
     return infos;
 }
+
+module.exports = parseSubjectCSV;

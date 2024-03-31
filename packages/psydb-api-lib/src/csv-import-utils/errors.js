@@ -9,8 +9,8 @@ class CSVImportError extends Error {
 }
 
 class UnknownCSVColumnKeys extends CSVImportError {
-    constructor (unknownColumnKeys) {
-        super(`unknown csv column keys: "${unknownColumnKeys}"`, {
+    constructor (unknownCSVColumnKeys) {
+        super(`unknown csv column keys: "${unknownCSVColumnKeys}"`, {
             unknownCSVColumnKeys
         })
     }

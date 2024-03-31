@@ -76,7 +76,7 @@ var CRTSettings = ({ data }) => {
         );
     }
     crt.findRequiredCustomFields = () => {
-        var required = crt.findRequiredCustomFields({ $or: [
+        var required = crt.findCustomFields({ $or: [
             { 'props.minLength': { $gt: 0 }},
             { 'props.minItems': { $gt: 0 }},
             {

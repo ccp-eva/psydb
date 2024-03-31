@@ -425,7 +425,9 @@ importers:
       '@mpieva/psydb-common-lib': workspace:~0.1.0-alpha
       '@mpieva/psydb-common-verify-helpers': workspace:~0.1.0-alpha
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
+      '@mpieva/psydb-fixtures': workspace:~0.1.0-alpha
       '@mpieva/psydb-i18n': workspace:~0.1.0-alpha
+      '@mpieva/psydb-mongo-adapter': workspace:~0.1.0-alpha
       '@mpieva/psydb-mongo-stages': workspace:~0.1.0-alpha
       '@mpieva/psydb-schema-creators': workspace:~0.1.0-alpha
       '@mpieva/psydb-schema-fields': workspace:~0.1.0-alpha
@@ -469,6 +471,7 @@ importers:
       '@mpieva/psydb-common-verify-helpers': link:../psydb-common-verify-helpers
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
       '@mpieva/psydb-i18n': link:../psydb-i18n
+      '@mpieva/psydb-mongo-adapter': link:../psydb-mongo-adapter
       '@mpieva/psydb-mongo-stages': link:../psydb-mongo-stages
       '@mpieva/psydb-schema-creators': link:../psydb-schema-creators
       '@mpieva/psydb-schema-fields': link:../psydb-schema-fields
@@ -492,6 +495,7 @@ importers:
       sift: 16.0.1
       statuses: 2.0.1
     devDependencies:
+      '@mpieva/psydb-fixtures': link:../psydb-fixtures
       chai: 4.3.10
       mocha: 10.2.0
       snap-shot-it: 7.9.10
