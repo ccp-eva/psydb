@@ -1,6 +1,5 @@
 'use strict';
 var { CsvError, parse: parseCSV } = require('csv-parse/sync');
-var { jsonpointer } = require('@mpieva/psydb-core-utils');
 var { ObjectId } = require('@mpieva/psydb-mongo-adapter');
 var { UnknownCSVColumnKeys } = require('../errors');
 
