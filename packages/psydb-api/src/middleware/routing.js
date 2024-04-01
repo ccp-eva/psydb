@@ -12,13 +12,21 @@ var compose = require('koa-compose'),
 var inline = require('@cdxoo/inline-string');
 
 var withPostStages = ({
-    protection,
     endpoint,
     enableApiKeyAuth
 }) => ([
     withSelfAuth({ enableApiKeyAuth }),
     withPermissions(),
     withKoaBody(),
+    endpoint
+]);
+
+var withGetStages = ({
+    endpoint,
+    enableApiKeyAuth
+}) => ([
+    withSelfAuth({ enableApiKeyAuth }),
+    withPermissions(),
     endpoint
 ]);
 
@@ -68,11 +76,10 @@ var createRouting = (bag = {}) => {
         endpoints.special.serverTimezone
     );
 
-    router.get('/self',
-        withSelfAuth(),
-        withPermissions(),
-        endpoints.self.account
-    );
+    router.get('/self', ...withGetStages({
+        endpoint: endpoints.self.account,
+        enableApiKeyAuth: true,
+    }));
 
     router.get('/self/research-groups',
         withSelfAuth(),
@@ -412,6 +419,10 @@ var createRouting = (bag = {}) => {
         withPermissions(),
         endpoints.customRecordType.preRemoveInfo
     );
+
+    router.post('/custom-record-type/list-available', ...withPostStages({
+        endpoint: endpoints.customRecordType.listAvailable
+    }));
     
     router.get('/experiment-variant/pre-remove-info/:id',
         withSelfAuth(),
@@ -515,6 +526,9 @@ var createRouting = (bag = {}) => {
     }));
     router.post('/study/subject-type-infos', ...withPostStages({
         endpoint: endpoints.study.subjectTypeInfos
+    }));
+    router.post('/study/available-subject-crts', ...withPostStages({
+        endpoint: endpoints.study.availableSubjectCRTs
     }));
     
     router.post('/experiment/read', ...withPostStages({

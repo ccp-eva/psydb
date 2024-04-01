@@ -7,6 +7,10 @@ var {
     DefaultBool,
 } = require('@mpieva/psydb-schema-fields');
 
+var {
+    AccessRightsByResearchGroup // TODO: use that here
+} = require('@mpieva/psydb-schema-fields-special');
+
 var systemPermissionsSchema = ExactObject({
     title: 'System-Einstellungen',
     systemType: 'SystemPermissions',

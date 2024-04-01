@@ -41,7 +41,10 @@ module.exports = async (context) => {
                 cache.get('/systemRole/Humankind Scientist'),
                 cache.get('/systemRole/Humankind Hiwi'),
                 cache.get('/systemRole/Humankind Reception'),
-            ]
+            ],
+            adminFallbackRoleId: (
+                cache.get('/systemRole/Humankind RA')
+            ),
         }},
     }, { apiKey });
 

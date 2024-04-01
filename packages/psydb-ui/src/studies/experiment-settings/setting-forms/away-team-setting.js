@@ -1,9 +1,10 @@
 import React from 'react';
-import isSubset from 'is-subset';
-import { keyBy } from '@mpieva/psydb-core-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
-import { useSend, useFetch } from '@mpieva/psydb-ui-hooks';
-import { Button, LoadingIndicator } from '@mpieva/psydb-ui-layout';
+import { useUITranslation, useUILanguage } from '@mpieva/psydb-ui-contexts';
+import {
+    LoadingIndicator,
+    AsyncButton,
+    SmallFormFooter
+} from '@mpieva/psydb-ui-layout';
 
 import {
     DefaultForm,
@@ -12,13 +13,12 @@ import {
 
 export const AwayTeamSetting = (ps) => {
     var {
-        op,
-        studyId,
-        variantId,
-        settingRecord,
+        onHide,
+        onSubmit,
+        isTransmitting,
 
-        allowedSubjectTypes,
-        onSuccessfulUpdate
+        settingRecord,
+        availableSubjectCRTs,
     } = ps;
 
     var settingId, settingState;
@@ -29,112 +29,76 @@ export const AwayTeamSetting = (ps) => {
         } = settingRecord)
     }
 
-    if (![ 'create', 'patch' ].includes(op)) {
-        throw new Error(`unknown op "${op}"`);
-    }
-
     var translate = useUITranslation();
 
-    var [ didFetch, fetched ] = useFetch((agent) => {
-        return agent.readCustomRecordTypeMetadata()
-    }, [])
-
-    var send = useSend((formData, formikProps) => {
-        var type = `experiment-variant-setting/away-team/${op}`;
-        var message;
-        switch (op) {
-            case 'create':
-                message = { type, payload: {
-                    studyId,
-                    experimentVariantId: variantId,
-                    props: formData
-                } };
-                break;
-            case 'patch':
-                message = { type, payload: {
-                    id: settingId,
-                    props: formData
-                }};
-                break;
-            default:
-                throw new Error(`unknown op "${op}"`);
-        }
-        return message;
-    }, { onSuccessfulUpdate });
-
-    if (!didFetch) {
-        return (
-            <LoadingIndicator size='lg' />
-        );
+    var bodyBag = {
+        availableSubjectCRTs,
+        isTransmitting,
+        onHide,
     }
-
-    var { customRecordTypes } = fetched.data;
-    customRecordTypes = keyBy({
-        items: customRecordTypes,
-        byProp: 'type',
-    });
 
     return (
         <div>
             <DefaultForm
-                onSubmit={ send.exec }
+                onSubmit={ onSubmit }
                 initialValues={ settingState || {}}
             >
-                {(formikProps) => {
-                    var { getFieldProps } = formikProps;
-                    var selectedType = (
-                        getFieldProps('$.subjectTypeKey').value
-                    );
-                    var fieldOptions = (
-                        selectedType
-                        ? (
-                            customRecordTypes[selectedType].state.settings
-                            .subChannelFields.scientific
-                            .filter(it => (
-                                !it.isRemoved &&
-                                isSubset(it, {
-                                    type: 'ForeignId',
-                                    props: {
-                                        collection: 'location'
-                                        // TODO: when we have
-                                        // external/internal locations
-                                        // we need to further filter that
-                                    }
-                                })
-                            ))
-                            .reduce((acc, field) => {
-                                var { key, displayName } = field;
-                                var pointer = (
-                                    `/scientific/state/custom/${key}`
-                                );
-                                return { ...acc, [pointer]: displayName };
-                            }, {})
-                        )
-                        : {}
-                    );
-
-                    return (
-                        <>
-                            <Fields.GenericEnum { ...({
-                                dataXPath: '$.subjectTypeKey',
-                                label: translate('Subject Type'),
-                                required: true,
-                                options: allowedSubjectTypes
-                            })} />
-                            <Fields.GenericEnum { ...({
-                                dataXPath: '$.subjectLocationFieldPointer',
-                                label: translate('Appointments In'),
-                                required: true,
-                                options: fieldOptions,
-                                disabled: !selectedType
-                            })} />
-                            <Button type='submit'>
-                                { translate('Save') }
-                            </Button>
-                        </>
-                    );
-                }}
+                {(formik) => (
+                    <FormBody formik={ formik } { ...bodyBag } />
+                )}
             </DefaultForm>
         </div>
     )
 };
+
+var FormBody = (ps) => {
+    var { formik, availableSubjectCRTs, isTransmitting } = ps;
+    var { getFieldProps } = formik;
+
+    var [ language ] = useUILanguage();
+    var translate = useUITranslation();
+
+    var selectedSubjectType = getFieldProps('$.subjectTypeKey').value;
+    var fieldOptions = {};
+    if (selectedSubjectType) {
+        var selectedSubjectCRT = availableSubjectCRTs.find({
+            type: selectedSubjectType
+        });
+
+        var defs = selectedSubjectCRT.findCustomFields({
+            'isRemoved': { $ne: true },
+            'systemType': 'ForeignId',
+            'props.collection': 'location',
+            // TODO: when we have
+            // external/internal locations
+            // we need to further filter that
+            // NOTE: that todo still a thing?
+        });
+        for (var it of defs) {
+            fieldOptions[it.pointer] = translate.fieldDefinition(it);
+        }
+    }
+    
+    return (
+        <>
+            <Fields.GenericEnum { ...({
+                dataXPath: '$.subjectTypeKey',
+                label: translate('Subject Type'),
+                required: true,
+                options: availableSubjectCRTs.asOptions({ language })
+            })} />
+            <Fields.GenericEnum { ...({
+                dataXPath: '$.subjectLocationFieldPointer',
+                label: translate('Appointments In'),
+                required: true,
+                options: fieldOptions,
+                disabled: !selectedSubjectType
+            })} />
+            <SmallFormFooter extraClassName='pt-2'>
+                <AsyncButton type='submit' isTransmitting={ isTransmitting }>
+                    { translate('Save') }
+                </AsyncButton>
+            </SmallFormFooter>
+        </>
+    );
+}

@@ -1,7 +1,10 @@
 'use strict'
 var datefns = require('date-fns');
-var jsonpointer = require('jsonpointer');
-var { groupBy } = require('@mpieva/psydb-core-utils');
+var {
+    groupBy,
+    jsonpointer,
+    convertPointerToPath
+} = require('@mpieva/psydb-core-utils');
 
 var {
     convertCRTRecordToSettings,
@@ -57,7 +60,9 @@ var AddSubjectTestabilityFieldsStage = ({
 
     var stage = { $addFields: {
         ...(ageFrameField && {
-            _ageFrameField: `$scientific.state.custom.${ageFrameField.key}`,
+            _ageFrameField: (
+                `$${convertPointerToPath(ageFrameField.pointer)}`
+            ),
         }),
         ...conditionsByStudy,
     }};

@@ -1,4 +1,6 @@
 import React from 'react';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
 
 import {
@@ -9,6 +11,7 @@ import {
 
 const Component = (ps) => {
     var {
+        type,
         title,
         initialValues,
         onSubmit,
@@ -16,6 +19,9 @@ const Component = (ps) => {
         related,
         permissions,
     } = ps;
+
+    var translate = useUITranslation();
+    var permissions = usePermissions();
 
     return (
         <FormBox title={ title }>
@@ -26,11 +32,26 @@ const Component = (ps) => {
             >
                 {(formikProps) => (
                     <>
+                        { (type === 'create' && permissions.isRoot()) && (
+                            <Fields.ForeignId
+                                label={ translate('Account')}
+                                dataXPath='$.personnelId'
+                                collection='personnel'
+                            />
+                        )}
                         <Fields.SaneString
-                            label='Bezeichnung'
-                            dataXPath='$.label'
+                            label={ translate('Label')}
+                            dataXPath='$.props.label'
                         />
-                        <Button type='submit'>Speichern</Button>
+                        { type === 'edit' && (
+                            <Fields.DefaultBool
+                                label={ translate('Enabled')}
+                                dataXPath='$.props.isEnabled'
+                            />
+                        )}
+                        <Button type='submit'>
+                            { translate('Save')}
+                        </Button>
                     </>
                 )}
             </DefaultForm>
@@ -39,10 +60,14 @@ const Component = (ps) => {
 }
 
 const createDefaults = (options) => {
+    var { personnelId } = options;
     return {
-        label: '',
-        isEnabled: true,
-        permissions: {}
+        ...(personnelId && { personnelId }),
+        props: {
+            label: '',
+            isEnabled: true,
+            permissions: {}
+        }
     }
 }
 

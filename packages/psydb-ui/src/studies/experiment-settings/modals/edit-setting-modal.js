@@ -1,15 +1,14 @@
 import React from 'react';
-import omit from '@cdxoo/omit';
-
-import { demuxed } from '@mpieva/psydb-ui-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useSend } from '@mpieva/psydb-ui-hooks';
 import { WithDefaultModal } from '@mpieva/psydb-ui-layout';
-import * as Forms from '../setting-forms';
+
+import LabWorkflowSettingForm from '../lab-workflow-setting-form';
+
 
 const EditSettingModalBody = (ps) => {
     var {
         studyId,
-        allowedSubjectTypes,
+        availableSubjectCRTs,
         modalPayloadData,
 
         onHide,
@@ -23,38 +22,32 @@ const EditSettingModalBody = (ps) => {
         existingSubjectTypes,
     } = modalPayloadData;
 
-    var { _id: variantId, type: variantType } = variantRecord;
-    var { subjectTypeKey } = settingRecord.state;
+    var { type: variantType } = variantRecord;
+    var { _id: settingId, state: { subjectTypeKey }} = settingRecord;
     
-    var translate = useUITranslation();
+    var thisAvailableSubjectCRTs = availableSubjectCRTs.filter({
+        $or: [
+            { type: subjectTypeKey },
+            { type: { $nin: existingSubjectTypes }},
+        ]
+    });
 
-    allowedSubjectTypes = {
-        ...omit(existingSubjectTypes, allowedSubjectTypes),
-        [subjectTypeKey]: translate.crt(
-            settingRelated.relatedCustomRecordTypes.subject[subjectTypeKey]
-        )
-    }
-
-    var SettingForm = ({
-        'inhouse': Forms.InhouseSetting,
-        'away-team': Forms.AwayTeamSetting,
-        'online-video-call': Forms.OnlineVideoCallSetting,
-        'online-survey': Forms.OnlineSurveySetting,
-
-        'apestudies-wkprc-default': Forms.ApestudiesWKPRCDefaultSetting,
-        'manual-only-participation': Forms.ManualOnlyParticipationSetting,
-    })[variantType];
+    var send = useSend((formData, formikProps) => ({
+        type: `experiment-variant-setting/${variantType}/patch`,
+        payload: {
+            id: settingId,
+            props: formData
+        }
+    }), { onSuccessfulUpdate: [ onHide, onSuccessfulUpdate ] });
 
     return (
-        <SettingForm {...({
-            op: 'patch',
-            studyId,
-            variantId,
-            settingRecord,
-            settingRelated,
-            allowedSubjectTypes,
-            onSuccessfulUpdate: demuxed([ onHide, onSuccessfulUpdate ])
-        })} />
+        <LabWorkflowSettingForm
+            { ...send.passthrough }
+            type={ variantType }
+            settingRecord={ settingRecord }
+            settingRelated={ settingRelated }
+            availableSubjectCRTs={ thisAvailableSubjectCRTs }
+        />
     );
 }
 

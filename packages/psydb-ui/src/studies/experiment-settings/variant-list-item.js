@@ -1,5 +1,6 @@
 import React from 'react';
 import * as enums from '@mpieva/psydb-schema-enums';
+import { only } from '@mpieva/psydb-core-utils';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { OuterSettingPanel } from '@mpieva/psydb-ui-layout';
 import SettingList from './setting-list';
@@ -9,17 +10,23 @@ const VariantListItem = (ps) => {
         index,
         variantRecord,
         settingRecords,
-        allowedSubjectTypes,
+        availableSubjectCRTs,
         onRemove,
         onAddSetting,
-        ...downstream
     } = ps;
 
-    var {
-        studyId,
-        type: variantType,
-        state: variantState
-    } = variantRecord;
+    var pass = {}
+    pass.list = only({ from: ps, keys: [
+        'variantRecord',
+        'settingRecords',
+        'settingRelated',
+        'availableSubjectCRTs',
+
+        'onEditSetting',
+        'onRemoveSetting'
+    ]});
+
+    var { type: variantType, state: variantState } = variantRecord;
 
     var translate = useUITranslation();
 
@@ -28,10 +35,10 @@ const VariantListItem = (ps) => {
     );
 
     var hasNoSubjectTypesLeft = (
-        allowedSubjectTypes.length <= existingSubjectTypes.length
+        availableSubjectCRTs.items().length <= existingSubjectTypes.length
     );
 
-    var panelProps = {
+    var panelBag = {
         label: `${translate('Lab Workflow')} ${index + 1} - ${translate(enums.labMethods.mapping[variantType])}`,
         addButtonLabel: '+ ' + translate('Settings'),
         showAddButton: !!onAddSetting,
@@ -42,13 +49,11 @@ const VariantListItem = (ps) => {
     };
 
     return (
-        <OuterSettingPanel { ...panelProps }>
-            <SettingList { ...({
-                variantRecord,
-                settingRecords,
-                existingSubjectTypes,
-                ...downstream
-            })} />
+        <OuterSettingPanel { ...panelBag }>
+            <SettingList
+                { ...pass.list }
+                existingSubjectTypes={ existingSubjectTypes }
+            />
         </OuterSettingPanel>
     )
 }

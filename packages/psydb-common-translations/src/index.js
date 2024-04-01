@@ -36,6 +36,21 @@ translate.options = (lang, options) => (
     }), {})
 );
 
+translate.crt = (lang = 'en', crt) => {
+    var base = crt;
+    var base = (
+        crt.state // detect crt records
+        ? crt.state
+        : crt.getRaw // detect wrapped crts
+            ? crt.getRaw()
+            : crt
+    );
+
+    return (
+        base.displayNameI18N?.[lang] || base.label
+    );
+}
+
 var createTranslate = (lang = 'en') => {
     var _translate = (template, props) => translate(lang, template, props);
     _translate.options = (options) => translate.options(lang, options);
@@ -45,8 +60,8 @@ var createTranslate = (lang = 'en') => {
     _translate.fieldDefinition = (def) => (
         def.displayNameI18N?.[lang] || def.displayName
     );
-    _translate.crt = (record) => (
-        record.state.displayNameI18N?.[lang] || record.state.label
+    _translate.crt = (crt) => (
+        translate.crt(lang, crt)
     );
     _translate.helperSet = (record) => (
         record.state.displayNameI18N?.[lang] || record.state.label

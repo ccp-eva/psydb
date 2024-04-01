@@ -92,6 +92,7 @@ var collections = createEnum.fromKV({
         'customRecordType',
         'studyTopic',
         'subjectGroup',
+        'apiKey',
     ],
     names: [
         ...customRecordTypeCollections.names,
@@ -103,7 +104,8 @@ var collections = createEnum.fromKV({
         'System Roles',
         'Record Types',
         'Study Topics',
-        'Subject Groups'
+        'Subject Groups',
+        'API Keys',
     ]
 })
 

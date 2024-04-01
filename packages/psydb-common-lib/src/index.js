@@ -2,6 +2,8 @@ module.exports = {
     inlineText: require('@cdxoo/inline-text'),
 
     CRTSettings: require('./crt-settings'),
+    CRTSettingsList: require('./crt-settings-list'),
+
     intervalUtils: require('./interval-utils'),
     createSchemaForRecord: require('./create-schema-for-record-type'),
     durations: require('./durations'),

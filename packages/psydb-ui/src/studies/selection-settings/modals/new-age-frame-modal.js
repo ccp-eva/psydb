@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { demuxed } from '@mpieva/psydb-ui-utils';
+import { useSend } from '@mpieva/psydb-ui-hooks';
 import { WithDefaultModal } from '@mpieva/psydb-ui-layout';
 import { AgeFrameForm } from '../age-frame-form';
 
@@ -13,16 +13,24 @@ const NewAgeFrameModalBody = (ps) => {
         onSuccessfulUpdate,
     } = ps;
 
-    var { selectorRecord } = modalPayloadData;
+    var { selectorRecord, subjectCRT } = modalPayloadData;
     var { _id: selectorId, subjectTypeKey } = selectorRecord;
+
+    var send = useSend((formData, formikProps) => ({
+        type: `ageFrame/create`,
+        payload: {
+            subjectTypeKey,
+            studyId,
+            subjectSelectorId: selectorId,
+            props: formData
+        }
+    }), { onSuccessfulUpdate: [ onHide, onSuccessfulUpdate ] });
 
     return (
         <AgeFrameForm {...({
-            op: 'create',
-            studyId,
-            selectorId,
-            subjectTypeKey,
-            onSuccessfulUpdate: demuxed([ onHide, onSuccessfulUpdate ])
+            ...send.passthrough,
+            subjectCRT,
+            onHide,
         })} />
     );
 }

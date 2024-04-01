@@ -1,5 +1,6 @@
 import Axios from 'axios';
 import { getSystemTimezone } from '@mpieva/psydb-timezone-helpers';
+import { CRTSettingsList } from '@mpieva/psydb-common-lib';
 
 const createAgent = (options = {}) => {
     var { language, localeCode } = options;
@@ -635,6 +636,28 @@ const createAgent = (options = {}) => {
             extraAxiosConfig
         );
     }
+    
+    agent.fetchAvailableCRTs = (bag) => {
+        var {
+            collections,
+            ignoreResearchGroups = false,
+            wrap = true,
+            extraAxiosConfig,
+        } = bag;
+
+        var p = axios.post(
+            '/api/custom-record-type/list-available',
+            { collections, ignoreResearchGroups },
+            extraAxiosConfig,
+        );
+
+        if (wrap) {
+            CRTSettingsList.wrapResponsePromise(p);
+        }
+
+        return p;
+    }
+
 
     agent.fetchSubjectGroupPreRemoveInfo = ({
         id,
@@ -796,6 +819,25 @@ const createAgent = (options = {}) => {
             { studyId },
             extraAxiosConfig,
         );
+    }
+    
+    agent.fetchStudyAvailableSubjectCRTs = (bag) => {
+        var {
+            studyId,
+            wrap = true,
+            extraAxiosConfig,
+        } = bag;
+
+        var p =  axios.post(
+            '/api/study/available-subject-crts',
+            { studyId },
+            extraAxiosConfig,
+        );
+
+        if (wrap) {
+            CRTSettingsList.wrapResponsePromise(p);
+        }
+        return p;
     }
 
     agent.fetchOneRecord = (bag) => {

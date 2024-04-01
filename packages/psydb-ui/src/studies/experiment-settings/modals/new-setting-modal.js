@@ -1,14 +1,14 @@
 import React from 'react';
-import omit from '@cdxoo/omit';
-
-import { demuxed } from '@mpieva/psydb-ui-utils';
+import { useSend } from '@mpieva/psydb-ui-hooks';
 import { WithDefaultModal } from '@mpieva/psydb-ui-layout';
-import * as Forms from '../setting-forms';
+
+import LabWorkflowSettingForm from '../lab-workflow-setting-form';
+
 
 const NewSettingModalBody = (ps) => {
     var {
         studyId,
-        allowedSubjectTypes,
+        availableSubjectCRTs,
         modalPayloadData,
 
         onHide,
@@ -18,26 +18,25 @@ const NewSettingModalBody = (ps) => {
     var { variantRecord, existingSubjectTypes } = modalPayloadData;
     var { _id: variantId, type: variantType } = variantRecord;
 
-    allowedSubjectTypes = omit(existingSubjectTypes, allowedSubjectTypes)
+    var thisAvailableSubjectCRTs = availableSubjectCRTs.filter({
+        type: { $nin: existingSubjectTypes }
+    });
 
-    var SettingForm = ({
-        'inhouse': Forms.InhouseSetting,
-        'away-team': Forms.AwayTeamSetting,
-        'online-video-call': Forms.OnlineVideoCallSetting,
-        'online-survey': Forms.OnlineSurveySetting,
-
-        'apestudies-wkprc-default': Forms.ApestudiesWKPRCDefaultSetting,
-        'manual-only-participation': Forms.ManualOnlyParticipationSetting,
-    })[variantType];
+    var send = useSend((formData, formikProps) => ({
+        type: `experiment-variant-setting/${variantType}/create`,
+        payload: {
+            studyId,
+            experimentVariantId: variantId,
+            props: formData
+        }
+    }), { onSuccessfulUpdate: [ onHide, onSuccessfulUpdate ] });
 
     return (
-        <SettingForm {...({
-            op: 'create',
-            studyId,
-            variantId,
-            allowedSubjectTypes,
-            onSuccessfulUpdate: demuxed([ onHide, onSuccessfulUpdate ])
-        })} />
+        <LabWorkflowSettingForm
+            { ...send.passthrough }
+            type={ variantType }
+            availableSubjectCRTs={ thisAvailableSubjectCRTs }
+        />
     );
 }
 

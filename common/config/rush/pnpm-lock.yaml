@@ -425,7 +425,9 @@ importers:
       '@mpieva/psydb-common-lib': workspace:~0.1.0-alpha
       '@mpieva/psydb-common-verify-helpers': workspace:~0.1.0-alpha
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
+      '@mpieva/psydb-fixtures': workspace:~0.1.0-alpha
       '@mpieva/psydb-i18n': workspace:~0.1.0-alpha
+      '@mpieva/psydb-mongo-adapter': workspace:~0.1.0-alpha
       '@mpieva/psydb-mongo-stages': workspace:~0.1.0-alpha
       '@mpieva/psydb-schema-creators': workspace:~0.1.0-alpha
       '@mpieva/psydb-schema-fields': workspace:~0.1.0-alpha
@@ -434,6 +436,7 @@ importers:
       ajv-keywords: ~3.5.2
       chai: ~4.3.7
       copy-anything: ~2.0.6
+      csv-parse: ~5.5.5
       date-fns: ~2.30.0
       debug: ~4.3.4
       deep-diff: ~1.0.2
@@ -468,6 +471,7 @@ importers:
       '@mpieva/psydb-common-verify-helpers': link:../psydb-common-verify-helpers
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
       '@mpieva/psydb-i18n': link:../psydb-i18n
+      '@mpieva/psydb-mongo-adapter': link:../psydb-mongo-adapter
       '@mpieva/psydb-mongo-stages': link:../psydb-mongo-stages
       '@mpieva/psydb-schema-creators': link:../psydb-schema-creators
       '@mpieva/psydb-schema-fields': link:../psydb-schema-fields
@@ -475,6 +479,7 @@ importers:
       ajv: 6.12.6
       ajv-keywords: 3.5.2_ajv@6.12.6
       copy-anything: 2.0.6
+      csv-parse: 5.5.5
       date-fns: 2.30.0
       debug: 4.3.4
       deep-diff: 1.0.2
@@ -490,6 +495,7 @@ importers:
       sift: 16.0.1
       statuses: 2.0.1
     devDependencies:
+      '@mpieva/psydb-fixtures': link:../psydb-fixtures
       chai: 4.3.10
       mocha: 10.2.0
       snap-shot-it: 7.9.10
@@ -576,6 +582,7 @@ importers:
       '@mpieva/psydb-api-lib': workspace:~0.1.0-alpha
       '@mpieva/psydb-api-message-handler-compat': workspace:~0.1.0-alpha
       '@mpieva/psydb-api-message-handler-lib': workspace:~0.1.0-alpha
+      '@mpieva/psydb-api-mocha-test-tools': workspace:~0.1.0-alpha
       '@mpieva/psydb-common-lib': workspace:~0.1.0-alpha
       '@mpieva/psydb-common-verify-helpers': workspace:~0.1.0-alpha
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
@@ -634,6 +641,7 @@ importers:
       sift: 16.0.1
     devDependencies:
       '@cdxoo/mongo-test-helpers': 0.7.1
+      '@mpieva/psydb-api-mocha-test-tools': link:../psydb-api-mocha-test-tools
       '@mpieva/psydb-fixtures': link:../psydb-fixtures
       chai: 4.3.10
       chai-subset: 1.6.0
@@ -680,6 +688,7 @@ importers:
     specifiers:
       '@cdxoo/inline-text': ~1.0.2
       '@mpieva/json-schema-convert-pointer': workspace:~0.1.0-alpha
+      '@mpieva/psydb-common-translations': workspace:~0.1.0-alpha
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
       '@mpieva/psydb-date-interval-fns': workspace:~0.1.0-alpha
       '@mpieva/psydb-interval-fns': workspace:~0.1.0-alpha
@@ -698,6 +707,7 @@ importers:
     dependencies:
       '@cdxoo/inline-text': 1.0.2
       '@mpieva/json-schema-convert-pointer': link:../json-schema-convert-pointer
+      '@mpieva/psydb-common-translations': link:../psydb-common-translations
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
       '@mpieva/psydb-date-interval-fns': link:../psydb-date-interval-fns
       '@mpieva/psydb-interval-fns': link:../psydb-interval-fns
@@ -1464,6 +1474,7 @@ importers:
       react-dropzone: ~3.13.4
       react-router: ~5.2.0
       react-router-dom: ~5.2.0
+      sift: ~16.0.1
     devDependencies:
       '@babel/core': 7.22.20
       '@babel/preset-env': 7.22.20_@babel+core@7.22.20
@@ -1507,6 +1518,7 @@ importers:
       react-dropzone: 3.13.4_react@17.0.2
       react-router: 5.2.1_react@17.0.2
       react-router-dom: 5.2.1_react@17.0.2
+      sift: 16.0.1
 
   ../../packages/psydb-ui-record-views:
     specifiers:
@@ -1534,11 +1546,13 @@ importers:
 
   ../../packages/psydb-ui-request-agents:
     specifiers:
-      '@mpieva/psydb-timezone-helpers': workspace:~0.1.0-alpha
+      '@mpieva/psydb-common-lib': workspace:*
+      '@mpieva/psydb-timezone-helpers': workspace:*
       axios: ~0.24.0
       chai: ~4.3.7
       mocha: ~10.2.0
     devDependencies:
+      '@mpieva/psydb-common-lib': link:../psydb-common-lib
       '@mpieva/psydb-timezone-helpers': link:../psydb-timezone-helpers
       axios: 0.24.0
       chai: 4.3.10
@@ -1568,10 +1582,15 @@ importers:
 
   ../../packages/psydb-uni-cronjobs:
     specifiers:
+      '@mpieva/psydb-api': workspace:*
+      '@mpieva/psydb-api-mocha-test-tools': workspace:*
+      '@mpieva/psydb-axios-test-wrapper': workspace:*
       '@mpieva/psydb-common-lib': workspace:~0.1.0-alpha
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
       '@mpieva/psydb-driver-nodejs': workspace:~0.1.0-alpha
+      '@mpieva/psydb-fixtures': workspace:*
       axios: ~0.24.0
+      chai: ~4.3.7
       co: ~4.6.0
       commander: ~10.0.1
       common-tags: ~1.8.2
@@ -1581,6 +1600,7 @@ importers:
       imapflow: ~1.0.150
       koa-compose: ~4.1.0
       libqp: ~2.0.1
+      mocha: ~10.2.0
       nodemailer: ~6.8.0
     dependencies:
       '@mpieva/psydb-common-lib': link:../psydb-common-lib
@@ -1597,6 +1617,13 @@ importers:
       koa-compose: 4.1.0
       libqp: 2.0.1
       nodemailer: 6.8.0
+    devDependencies:
+      '@mpieva/psydb-api': link:../psydb-api
+      '@mpieva/psydb-api-mocha-test-tools': link:../psydb-api-mocha-test-tools
+      '@mpieva/psydb-axios-test-wrapper': link:../psydb-axios-test-wrapper
+      '@mpieva/psydb-fixtures': link:../psydb-fixtures
+      chai: 4.3.10
+      mocha: 10.2.0
 
   ../../packages/psydb-web:
     specifiers:
@@ -5321,6 +5348,10 @@ packages:
   /csstype/3.1.3:
     resolution: {integrity: sha512-M1uQkMl8rQK/szD0LNhtqxIPLpimGm8sOBwU7lLnCpSbTyY3yeU1Vc7l4KT5zT4s/yOxHH5O7tIuuLOCnLADRw==}
     dev: true
+
+  /csv-parse/5.5.5:
+    resolution: {integrity: sha512-erCk7tyU3yLWAhk6wvKxnyPtftuy/6Ak622gOO7BCJ05+TYffnPCJF905wmOQm+BpkX54OdAl8pveJwUdpnCXQ==}
+    dev: false
 
   /d/1.0.1:
     resolution: {integrity: sha512-m62ShEObQ39CfralilEQRjH6oAMtNCV1xJyEx5LpRYUVN+EviphDgUc/F3hnYbADmkiNs67Y+3ylmlG7Lnu+FA==}

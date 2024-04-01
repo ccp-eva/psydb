@@ -6,6 +6,8 @@ var {
     convertPointerToPath
 } = require('@mpieva/psydb-core-utils');
 
+var convertCRTRecordToSettings = require('../convert-crt-record-to-settings');
+
 var CRTSettings = ({ data }) => {
     var crt = {};
     var flattenedFieldDefinitions = undefined;
@@ -17,15 +19,15 @@ var CRTSettings = ({ data }) => {
             if (subChannels) {
                 for (var sc of subChannels) {
                     for (var field of data.fieldDefinitions[sc]) {
-                        flattened.push({
+                        flattened.push(__compatDef({
                             ...field,
                             subChannel: sc,
-                        })
+                        }))
                     }
                 }
             }
             else {
-                flattened = data.fieldDefinitions;
+                flattened = data.fieldDefinitions.map(__compatDef);
             }
 
             flattenedFieldDefinitions = flattened;
@@ -73,6 +75,23 @@ var CRTSettings = ({ data }) => {
             : fields
         );
     }
+    crt.findRequiredCustomFields = () => {
+        var required = crt.findCustomFields({ $or: [
+            { 'props.minLength': { $gt: 0 }},
+            { 'props.minItems': { $gt: 0 }},
+            {
+                'systemType': { $in: [
+                    'ForeignId',
+                    'HelperSetItem',
+                    'DateOnlyServerSide',
+                    'DateTime',
+                    'Integer',
+                ]},
+                'props.isNullable': { $ne: true }
+            },
+        ]});
+        return required;
+    }
 
     crt.getRecordLabelPointers = () => {
         return data.recordLabelDefinition.tokens.map(it => it.dataPointer);
@@ -109,11 +128,7 @@ var CRTSettings = ({ data }) => {
             displayName: 'ID',
         },
         ...crt.allStaticFields(),
-        ...crt.allCustomFields().map(it => ({
-            ...it,
-            systemType: it.type, // FIXME: compat
-            dataPointer: it.pointer // FIXME: compat
-        })),
+        ...crt.allCustomFields(),
     ], byProp: 'pointer' });
 
     crt.allFieldDefinitions = () => (
@@ -136,5 +151,15 @@ var CRTSettings = ({ data }) => {
     }
     return crt;
 }
+
+var __compatDef = (def) => ({
+    ...def,
+    systemType: def.type, // FIXME: compat for new
+    dataPointer: def.pointer // FIXME: compat for old
+})
+
+CRTSettings.fromRecord = (record) => (
+    CRTSettings({ data: convertCRTRecordToSettings(record) })
+)
 
 module.exports = CRTSettings;

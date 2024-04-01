@@ -9,25 +9,30 @@ const useSendPatch = (options) => {
         subChannels,
         additionalPayloadProps,
         onSuccessfulUpdate,
+        autoPayload = true,
         __noLastKnownEventId = false,
         ...otherOptions
     } = options;
 
-    var send = useSend((props, formikBag, moreAdditionalPayloadProps) => ({
+    var send = useSend((data, formikBag, moreAdditionalPayloadProps) => ({
         type: (
             recordType
             ? `${collection}/${recordType}/patch`
             : `${collection}/patch`
         ),
-        payload: {
-            id: record._id,
-            ...(!__noLastKnownEventId && (
-                createEventIdProps(record, subChannels)
-            )),
-            props,
-            ...additionalPayloadProps,
-            ...moreAdditionalPayloadProps,
-        }
+        ...(autoPayload ? {
+            payload: {
+                id: record._id,
+                ...(!__noLastKnownEventId && (
+                    createEventIdProps(record, subChannels)
+                )),
+                props: data,
+                ...additionalPayloadProps,
+                ...moreAdditionalPayloadProps,
+            }
+        } : {
+            payload: data
+        })
     }), {
         onSuccessfulUpdate: (response) => {
             var recordId = response.data.data.find(it => (

@@ -7,9 +7,7 @@ import {
 
 import { useModalReducer } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
-import {
-    ExperimentSubjectDropdown,
-} from '@mpieva/psydb-ui-lib';
+import { ExperimentSubjectDropdown } from '@mpieva/psydb-ui-lib';
 
 import {
     MoveSubjectModal,
@@ -18,8 +16,9 @@ import {
     PerSubjectCommentModal,
 } from '@mpieva/psydb-ui-lib/src/modals';
 
+import { Subject } from '@mpieva/psydb-ui-lib/data-viewers';
+import * as Themes from '@mpieva/psydb-ui-lib/data-viewer-themes';
 
-import applyValueToDisplayFields from '@mpieva/psydb-ui-lib/src/apply-value-to-display-fields';
 
 const SubjectItem = (ps) => {
     var {
@@ -28,7 +27,7 @@ const SubjectItem = (ps) => {
         subjectRecordsById,
         subjectRelated,
         subjectDisplayFieldData,
-        phoneListField,
+        phoneField,
         studyRecord,
         
         experimentRecord,
@@ -53,15 +52,6 @@ const SubjectItem = (ps) => {
     var moveSubjectModal = useModalReducer();
     var followUpSubjectModal = useModalReducer();
     var removeSubjectModal = useModalReducer();
-
-    var withValue = applyValueToDisplayFields({
-        displayFieldData: subjectDisplayFieldData,
-        record: subjectRecord,
-        ...subjectRelated,
-
-        language,
-        locale
-    });
 
     var sharedModalBag = {
         shouldFetch: true,
@@ -95,36 +85,22 @@ const SubjectItem = (ps) => {
             }) } />
 
             <div className='flex-grow'>
-                { withValue.map((it, ix) => (
-                    <div className='d-flex' key={ ix }>
-                        <span className='flx-grow w-25'>
-                            { 
-                                (it.displayNameI18N || {})[language]
-                                || it.displayName
-                            }
-                        </span>
-                        <b className='flex-grow ml-3'>{ it.value }</b>
-                    </div>
-                )) }
-                <div className='mt-3 font-weight-bold'>
-                    <u>{
-                        (phoneListField.displayNameI18N || {})[language]
-                        || phoneListField.displayName
-                    }</u>
-                    <div>
-                        { 
-                            subjectRecord
-                            .gdpr.state.custom[phoneListField.key]
-                            .map((it, index) => {
-                                return (
-                                    <div key={ index }>
-                                        { it.number }
-                                    </div>
-                                )
-                            })
-                        }
-                    </div>
-                </div>
+                <Subject
+                    value={ subjectRecord }
+                    related={ subjectRelated }
+                    theme={ Themes.HorizontalSplitDense }
+                >
+                    <Subject.DisplayOrdered
+                        displayFields={ subjectDisplayFieldData }
+                    />
+                    { phoneField && (
+                        <div className='mt-3 font-weight-bold'>
+                            <Subject.DisplayOrdered
+                                displayFields={[ phoneField ]}
+                            />
+                        </div>
+                    )}
+                </Subject>
                 { comment && (
                     <div className='mt-3'>
                         <b><u>{ translate('Comment') }</u></b>

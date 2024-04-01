@@ -34,7 +34,9 @@ export const TableHeadCustomCols = (ps) => {
             'BiologicalGender',
             'Integer',
             'DateTime',
-            'ExtBool'
+            'ExtBool',
+            'Email',
+            'DefaultBool',
         ].includes(type);
 
         var label = displayNameI18N[language] || displayName;

@@ -89,10 +89,7 @@ var checkAllowedAndPlausible = async ({
     // TODO: do we have a better idea? since this feels just wrong
     var hasSpecialAgeFrameFlag = false;
     if (props.props.isSpecialAgeFrameField) {
-        if (
-            record.collection === 'subject'
-            && subChannelKey === 'scientific'
-        ) {
+        if (record.collection === 'subject') {
             hasSpecialAgeFrameFlag = true;
         }
         else {
