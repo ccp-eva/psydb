@@ -1,4 +1,0 @@
-study_id,experiment,experiment_name,year,month,day,participant,age_original,sex,role,participant_2,age_original_2,sex_2,role_2,species,dyad,session,trial,subgroup,room_or_enclosure,comment,location,experimenters,variable1,variable2,drop_out
-"dyad2023example","1","choice_task","2023","03","22","C_JAR_123456","12","m","focal_participant","","","","","chimpanzee","no-dyad","1","1","A-Chimps","Observation Room","Some Comment","bob@example.com;alice@example.com","v1","v2","FALSE"
-"dyad2023example","1","choice_task","2023","03","23","C_JAR_123456","12","m","focal_participant","","","","","chimpanzee","no-dyad","2","1","A-Chimps","Observation Room","Some Comment","bob@example.com;alice@example.com","v1","v2","FALSE"
-"dyad2023example","1","choice_task","2023","03","24","C_JAR_123456","12","m","partner","C_STA_123456","6","f","stooge","chimpanzee","jaro_star","1","1","A-Chimps","Outdoor Enclosure","Some Comment","bob@example.com;alice@example.com","v1","v2","FALSE"
