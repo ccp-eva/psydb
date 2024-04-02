@@ -22,8 +22,7 @@ var compose_verifyAllowedAndPlausible = () => compose([
     verifyFileRecord,
     verifyFileMimeType,
 
-    tryParseCSV,
-    tryMatchData,
+    tryPrepareImport,
 ]);
 
 var verifyFileMimeType = async (context) => {
@@ -85,7 +84,7 @@ var verifySubjectType = async (context, next) => {
     });
 
     if (!subjectCRT) {
-        throw new ApiError(400, 'InvalidSubjectRecordType');
+        throw new ApiError(400, 'InvalidSubjectType');
     }
 
     cache.merge({ subjectCRT });

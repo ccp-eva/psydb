@@ -5,5 +5,7 @@ module.exports = {
         require('./verify-no-conflicting-location-experiments')
     ),
     noop: require('./noop'),
+
     ...require('./verify-one-record'),
+    ...require('./verify-one-crt'),
 };

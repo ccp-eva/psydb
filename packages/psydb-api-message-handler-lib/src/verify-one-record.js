@@ -1,5 +1,5 @@
 'use strict';
-var jsonpointer = require('jsonpointer');
+var { jsonpointer } = require('@mpieva/psydb-core-utils');
 var { ApiError } = require('@mpieva/psydb-api-lib');
 var noop = require('./noop');
 

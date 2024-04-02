@@ -3,7 +3,10 @@ var { createId } = require('@mpieva/psydb-api-lib');
 
 var executeSystemEvents = async (context) => {
     var { db, cache, dispatch, dispatchProps } = context;
-    var { study, location, file, matchedData } = cache.get();
+    var {
+        study, location, file, subjectGroup, labOperators,
+        matchedData, preparedObjects
+    } = cache.get();
 
     var csvImportId = await createId();
     await db.collection('csvImport').insert({
@@ -15,10 +18,21 @@ var executeSystemEvents = async (context) => {
         locationId: location._id,
         studyId: study._id,
         matchedData,
+        preparedObjects,
     });
 
-    for (var it of matchedData) {
-        var { subjectId, subjectType, timestamp } = it;
+    for (var obj of preparedObjects) {
+        var { 
+            timestamp,
+            subjectData,
+            experimentName,
+            roomOrEnclosure,
+            comment,
+        } = obj;
+
+        timestamp = convertYMDToDateOnlyServerSide({
+            ...timestamp, clientTimezone: timezone
+        });
 
         var experimentId = await createId('experiment');
         var experimentCore = {
@@ -42,14 +56,18 @@ var executeSystemEvents = async (context) => {
             selectedSubjectIds: subjectData.map(it => it.subjectId),
             subjectData: subjectData.map(it => ({
                 ...it,
+                comment,
+
                 invitationStatus: 'scheduled',
                 participationStatus: 'participated',
-                comment: '',
                 excludeFromMoreExperimentsInStudy: false,
             })),
 
-            experimentOperatorIds: [], // XXX
-            subjectGroup: null, // XXX
+            experimentOperatorIds: labOperatorIds,
+            subjectGroupId: subjectGroup._id,
+
+            experimentName,
+            roomOrEnclosure,
         }
         
         var participationItem = {

@@ -1,15 +1,29 @@
 'use strict';
 var { ApiError, compose } = require('@mpieva/psydb-api-lib');
-var { verifyOneRecord } = require('@mpieva/psydb-api-message-handler-lib');
+var {
+    verifyOneRecord
+    verifyRecordType,
+} = require('@mpieva/psydb-api-message-handler-lib');
+
+var {
+    EVApeCognitionCSV,
+    CSVImportError
+} = require('@mpieva/psydb-api-lib/csv-import-utils');
 
 var compose_verifyAllowedAndPlausible = () => compose([
     verifyPermissions,
-    verifyStudy,
-    verifyLocation,
+
+    verifyStudyRecord,
+    verifyLocationRecord,
+    verifyLabOperatorRecords,
 
     verifyFileRecord,
-    verifyFileParsable,
-    verifyFileDataMatchable
+    verifyFileMimeType,
+    
+    verifySubjectType,
+    tryPrepareImport,
+
+    verifySameSubjectGroup, // TODO
 ]);
 
 var verifyPermissions = async (context) => {
@@ -31,33 +45,41 @@ var verifyStudy = verifyOneRecord({
     cache: true
 });
 
-var verifyFileRecord = async (context) => {
-    var { db, message, cache } = context;
-    var { fileId } = message.payload;
+var verifyFileRecord = verifyOneRecord({
+    collection: 'file',
+    by: '/payload/fileId',
+    cache: true,
+});
 
-    var file = await db.collection('file').findOne({ _id: fileId });
-    if (!file) {
-        throw new ApiError(409, 'FileNotFound');
-    }
+var verifyFileMimeType = async (context) => {
+    var { cache } = context;
+    var { file } = cache.get();
+    
     if (file.mimetype !== 'text/csv') {
         throw new ApiError(409, 'file mime-type is not "text/csv"');
     }
-
-    cache.merge({ file })
 }
 
-var verifyFileParsable = async (context) => {
-    var { cache } = context;
+var tryPrepareImport = async (context) => {
+    var { db, cache } = context;
     var { file } = cache.get();
 
     try {
-        var parsed = parseEVApeCognitionCSV({
+        var parsedLines = EVApeCognitionCSV.parseLines({
             data: file.blob.toString()
         });
-        cache.merge({ parsed })
+        var matchedData = await EVApeCognitionCSV.matchData({
+            db, parsedLines, subjectType
+        });
+        var preparedObjects = EVApeCognitionCSV.makeObjects({
+            matchedData, skipEmptyValues: true
+        });
+        var preparedObjects
+        cache.merge({ matchedData, preparedObjects });
     }
     catch (e) {
-        if (e instanceof CSVParseError) {
+        if (e instanceof CSVImportError) {
+            // TODO
             throw new ApiError(409, 'cannot parse csv contents');
         }
         else {
@@ -66,19 +88,25 @@ var verifyFileParsable = async (context) => {
     }
 }
 
-var verifyFileDataMatchable = async (context) => {
-    var { cache } = context;
-    var { parsed } = cache.get();
-
-    var matchedData = await matchOnlineParticipationCSV({
-        db, parsed, studyId
+var verifySubjectType = async (context, next) => {
+    var { db, message, cache } = context;
+    var { studyId, subjectType } = message.payload;
+    
+    var subjectCRTs = await fetchAvailableCRTSettings({
+        db, collections: [ 'subject' ], byStudyId,
+        wrap: false, asTree: false
     });
-    var hasErrors = matchedData.find(it => !!it.error);
-    if (hasErrors) {
-        throw new ApiError(409, 'csv has matching errors');
+    // FIXME: move that into above when asTree is false
+    var subjectCRT = CRTSettingsList({ items: subjectCRTs }).find({
+        'type': subjectType
+    });
+
+    if (!subjectCRT) {
+        throw new ApiError(400, 'InvalidSubjectType');
     }
 
-    cache.merge({ matchedData });
+    cache.merge({ subjectCRT });
+    await next();
 }
 
 module.exports = {

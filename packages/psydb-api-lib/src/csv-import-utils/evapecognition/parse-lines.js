@@ -105,12 +105,6 @@ var createCSVColumnMapping = (bag) => {
 }
 
 var definitions = [
-    { 
-        csvColumnKey: 'experment_name',
-        systemType: 'SaneString',
-        pointer: '/experimentName'
-    },
-
      //systemType: 'YMDServerSide', // XXX: ???
     {
         csvColumnKey: 'year',
@@ -142,6 +136,11 @@ var definitions = [
         pointer: '/subjectData/1/subjectId', // XXX
     },
 
+    { 
+        csvColumnKey: 'experment_name',
+        systemType: 'SaneString',
+        pointer: '/experimentName'
+    },
     {
         csvColumnKey: 'room_or_enclosure',
         systemType: 'SaneString', // XXX
