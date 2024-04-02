@@ -8,7 +8,12 @@ var {
 
 
 var replaceRefs = (bag) => {
-    var { parsedLines, resolvedRecords, resolvedHSIs } = bag;
+    var {
+        parsedLines,
+        resolvedRecords,
+        resolvedHSIs,
+        skipEmptyRefs = false,
+    } = bag;
     
     for (var line of parsedLines) {
         for (var lineitem of line) {
@@ -22,6 +27,10 @@ var replaceRefs = (bag) => {
                 }
                 if (hasHSIValues(systemType)) {
                     bucket = resolvedHSIs[props.setId];
+                }
+
+                if (skipEmptyRefs &&  value === '') {
+                    continue;
                 }
 
                 var matched = matchRefs({

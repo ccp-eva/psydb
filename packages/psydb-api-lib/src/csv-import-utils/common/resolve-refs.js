@@ -12,13 +12,17 @@ var aggregateToArray = require('../../aggregate-to-array');
 
 
 var resolveRefs = async (bag) => {
-    var { db, recordRefs, hsiRefs } = bag;
+    var {
+        db, recordRefs, hsiRefs,
+        extraRecordResolvePointers = {},
+    } = bag;
 
     var resolvedRecords = {};
     for (var [ collection, refs ] of entries(recordRefs)) {
+        var extraPointers = extraRecordResolvePointers[collection] || [];
         resolvedRecords[collection] = await withRetracedErrors(
             aggregateFromRefs({ db, [collection]: refs, pointers: [
-                '/_id', '/sequenceNumber',
+                '/_id', '/sequenceNumber', ...extraPointers
             ]})
         )
     }
@@ -44,7 +48,6 @@ var aggregateFromRefs = async (bag) => {
     var { db, pointers, extraMatch, ...rest } = bag;
     var [ collection, values ] = entries(rest)[0];
 
-    console.log({ collection, values });
     var resolved = await Promise.all(pointers.map(pointer => {
         var path = convertPointerToPath(pointer);
         return aggregateToArray({ db, [collection]: [

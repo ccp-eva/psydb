@@ -2,7 +2,7 @@
 var sift = require('sift');
 var { ObjectId } = require('@mpieva/psydb-mongo-adapter');
 var { UnknownCSVColumnKeys } = require('../errors');
-var dumpParseCSV = require('../dumb-parse-csv');
+var dumbParseCSV = require('../dumb-parse-csv');
 
 var parseLines = (bag) => {
     var { data } = bag;
@@ -76,10 +76,10 @@ var createCSVColumnMapping = (bag) => {
         var tokens = csvColumnKey.split(/\./);
         var [ realKey, ...extraPath ] = tokens;
 
-        var found = definitions(sift({
+        var found = definitions.filter(sift({
             $or: [
                 { csvColumnKey },
-                { csvColumnKey: { $exist: false }, key: realKey }
+                { csvColumnKey: { $exists: false }, key: realKey }
             ]
         }));
 
@@ -100,6 +100,8 @@ var createCSVColumnMapping = (bag) => {
     if (throwUnknown && unknownCSVColumnKeys.length > 0) {
         throw new UnknownCSVColumnKeys(unknownCSVColumnKeys);
     }
+
+    return infos;
 }
 
 var definitions = [
@@ -142,13 +144,13 @@ var definitions = [
 
     {
         csvColumnKey: 'room_or_enclosure',
-        definition: { systemType: 'SaneString' }, // XXX
-        realKey: 'roomOrEnclosure',
-        extraPath: []
+        systemType: 'SaneString', // XXX
+        pointer: '/roomOrEnclosure',
     },
     {
         csvColumnKey: 'comment',
-        systemType: 'SaneString'// XXX
+        systemType: 'SaneString', // XXX
+        pointer: '/comment'
     },
 ]
 

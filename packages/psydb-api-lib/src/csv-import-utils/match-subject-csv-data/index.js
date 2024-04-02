@@ -1,11 +1,6 @@
 'use strict';
-var {
-    jsonpointer, arrify, forcePush, entries, convertPointerToPath, ejson
-} = require('@mpieva/psydb-core-utils');
-
-var gatherRefs = require('./gather-refs');
-var resolveRefs = require('./resolve-refs');
-var replaceRefs = require('./replace-refs');
+var { ejson } = require('@mpieva/psydb-core-utils');
+var { gatherRefs, resolveRefs, replaceRefs } = require('../common');
 
 
 var matchSubjectCSVData = async (bag) => {
