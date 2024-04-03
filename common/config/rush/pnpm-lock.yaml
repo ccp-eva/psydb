@@ -110,6 +110,7 @@ importers:
 
   ../../packages/psydb-ajv-keywords:
     specifiers:
+      '@cdxoo/tiny-ejson': ~1.0.0
       '@mpieva/psydb-ajv-formats': workspace:~0.1.0-alpha
       '@mpieva/psydb-timezone-helpers': workspace:~0.1.0-alpha
       ajv: ~6.12.6
@@ -127,6 +128,7 @@ importers:
       date-fns-tz: 1.3.8_date-fns@2.30.0
       mongodb: 3.6.12
     devDependencies:
+      '@cdxoo/tiny-ejson': 1.0.0
       ajv: 6.12.6
       chai: 4.3.10
       mocha: 10.2.0
@@ -593,6 +595,7 @@ importers:
       '@mpieva/psydb-schema-fields': workspace:~0.1.0-alpha
       '@mpieva/psydb-schema-fields-special': workspace:~0.1.0-alpha
       '@mpieva/psydb-schema-helpers': workspace:~0.1.0-alpha
+      '@mpieva/psydb-timezone-helpers': workspace:~0.1.0-alpha
       bcrypt: ~5.1.1
       chai: ~4.3.7
       chai-subset: ~1.6.0
@@ -627,6 +630,7 @@ importers:
       '@mpieva/psydb-schema-fields': link:../psydb-schema-fields
       '@mpieva/psydb-schema-fields-special': link:../psydb-schema-fields-special
       '@mpieva/psydb-schema-helpers': link:../psydb-schema-helpers
+      '@mpieva/psydb-timezone-helpers': link:../psydb-timezone-helpers
       bcrypt: 5.1.1
       copy-anything: 2.0.6
       date-fns: 2.30.0
@@ -727,11 +731,9 @@ importers:
 
   ../../packages/psydb-common-translations:
     specifiers:
-      '@mpieva/psydb-common-lib': workspace:~0.1.0-alpha
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
       es6-template-strings: ~2.0.1
     dependencies:
-      '@mpieva/psydb-common-lib': link:../psydb-common-lib
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
       es6-template-strings: 2.0.1
 
@@ -3179,7 +3181,6 @@ packages:
 
   /@cdxoo/tiny-ejson/1.0.0:
     resolution: {integrity: sha512-L7gCaEFXndZZmmGEVwlkht7HtWik7yaGj/Ly6pTQT7ejxIsIrvfcryw9Ph1yqtYs6hDVMHYJ1HIV0o22PU6E/Q==}
-    dev: false
 
   /@cdxoo/tiny-ejson/1.1.0-beta.1:
     resolution: {integrity: sha512-pKVfAdGYdftVAadSagFJ8OBDOyRFGVXRx2ZsAXDQdiFvRLg++/JixEKyJ/3sJprvhp9mIFuJwAKYcT23OX9Dbw==}
@@ -6359,7 +6360,7 @@ packages:
       debug:
         optional: true
     dependencies:
-      debug: 4.3.4
+      debug: 4.3.4_supports-color@6.1.0
 
   /for-each/0.3.3:
     resolution: {integrity: sha512-jqYfLp7mo9vIyQf8ykW2v7A+2N4QjeCeI5+Dz9XraiO1ign81wjiH7Fb9vSOWvQfNtmSa4H2RoQTrrXivdUZmw==}
