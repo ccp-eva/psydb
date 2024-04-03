@@ -30,7 +30,7 @@ var unmarshalDateOnlyServerSide = {
             return true;
         }
 
-        console.log(data);
+        //console.log(data);
 
         var {
             clientTimezone,
@@ -53,13 +53,16 @@ var unmarshalDateOnlyServerSide = {
             });
 
             var dayStart = new Date(swapped);
+            // XXX: this is not local but utc
+            // but we enforce UTC in server process.env
+            // so it curently doesnt matter
             dayStart.setUTCHours(0,0,0,0); // sets server tz local hours
 
             //console.log({ received, swapped, dayStart });
             
             
             parentData[parentDataProperty] = dayStart;
-            console.log({ clientTimezone, serverTimezone, dayStart });
+            //console.log({ clientTimezone, serverTimezone, dayStart });
 
 
             return true;
