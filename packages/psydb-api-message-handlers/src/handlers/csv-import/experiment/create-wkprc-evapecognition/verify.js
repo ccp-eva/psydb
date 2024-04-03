@@ -2,7 +2,7 @@
 var { ApiError, compose } = require('@mpieva/psydb-api-lib');
 var {
     verifyOneRecord
-    verifyRecordType,
+    verifyOneCRT,
 } = require('@mpieva/psydb-api-message-handler-lib');
 
 var {
@@ -20,10 +20,12 @@ var compose_verifyAllowedAndPlausible = () => compose([
     verifyFileRecord,
     verifyFileMimeType,
     
-    verifySubjectType,
+    verifySubjectCRT,
     tryPrepareImport,
 
-    verifySameSubjectGroup, // TODO
+    cacheSubjectIds,
+    verifySameSubjectType,
+    verifySameSubjectGroup,
 ]);
 
 var verifyPermissions = async (context) => {
@@ -74,7 +76,6 @@ var tryPrepareImport = async (context) => {
         var preparedObjects = EVApeCognitionCSV.makeObjects({
             matchedData, skipEmptyValues: true
         });
-        var preparedObjects
         cache.merge({ matchedData, preparedObjects });
     }
     catch (e) {
@@ -88,25 +89,102 @@ var tryPrepareImport = async (context) => {
     }
 }
 
-var verifySubjectType = async (context, next) => {
-    var { db, message, cache } = context;
-    var { studyId, subjectType } = message.payload;
-    
-    var subjectCRTs = await fetchAvailableCRTSettings({
-        db, collections: [ 'subject' ], byStudyId,
-        wrap: false, asTree: false
-    });
-    // FIXME: move that into above when asTree is false
-    var subjectCRT = CRTSettingsList({ items: subjectCRTs }).find({
-        'type': subjectType
-    });
+var verifySubjectCRT = verifyOneCRT({
+    collection: 'subject',
+    by: '/payload/subjectType',
+    byStudyId: '/payload/studyId',
+    cache: true
+});
 
-    if (!subjectCRT) {
-        throw new ApiError(400, 'InvalidSubjectType');
+//var verifySubjectType = async (context, next) => {
+//    var { db, message, cache } = context;
+//    var { studyId, subjectType } = message.payload;
+//    
+//    var subjectCRTs = await fetchAvailableCRTSettings({
+//        db, collections: [ 'subject' ], byStudyId,
+//        wrap: false, asTree: false
+//    });
+//    // FIXME: move that into above when asTree is false
+//    var subjectCRT = CRTSettingsList({ items: subjectCRTs }).find({
+//        'type': subjectType
+//    });
+//
+//    if (!subjectCRT) {
+//        throw new ApiError(400, 'InvalidSubjectType');
+//    }
+//
+//    cache.merge({ subjectCRT });
+//    await next();
+//}
+
+var cacheSubjectIds = async (context, next) => {
+    var { db, cache } = context;
+    var { preparedObjects } = cache.get();
+    
+    var subjectIds = [];
+    for (var it of preparedObjects) {
+        var { subjectData } = it;
+        subjectIds.push(...subjectData.map(it => it.subjectId))
+    }
+    
+    cache.merge({ subjectIds });
+    await next();
+}
+
+var verifySameSubjectType = async (context, next) => {
+    var { db, cache } = context;
+    var { subjectCRT, subjectIds } = cache.get();
+
+    var invalid = await withRetracedErrors(
+        aggregateToArray({ db, subject: [
+            { $match: {
+                _id: { $in: subjectIds },
+                type: { $ne: subjectCRT.getType() }
+            }},
+            { $project: { _id: true }}
+        ]})
+    );
+    if (invalid.length > 0) {
+        throw new ApiError(409); // TODO
     }
 
-    cache.merge({ subjectCRT });
     await next();
+}
+
+var verifySameSubjectGroup = async (context, next) => {
+    var { db, cache } = context;
+    var { subjectIds, preparedObjects } = cache.get();
+    
+    var records = await withRetracedErrors(
+        aggregateToArray({ db, subject: [
+            { $match: { _id: { $in: subjectIds }}},
+            { $project: {
+                'groupId': '$scientific.state.custom.groupId', // XXX
+            }}
+        ]})
+    );
+
+    var groupIdsBySubject = keyBy({
+        items: records,
+        byProp: '_id',
+        transform: (it => it.groupId)
+    });
+
+    var invalid = [];
+    for (var [ oix, obj ] of preparedObjects.entries()) {
+        var { subjectData } = obj;
+        var groupId = undefined;
+        for (var it of subjectData) {
+            var itemGroupId = groupIdsBySubject[it.subjectId];
+            if (groupId && !compareIds(groupId, itemGroupId)) {
+                invalid.push({ ix: oix, item: obj });
+            }
+        }
+    }
+
+    if (invalid.length > 0) {
+        throw new ApiError(409); // TODO
+    }
 }
 
 module.exports = {
