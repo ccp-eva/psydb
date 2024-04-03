@@ -6,7 +6,7 @@ var jsonify = (that) => (
     JSON.parse(JSON.stringify(that))
 );
 
-var RootHandler = require('../../src/');
+var RootHandler = require('../../../src/');
 
 var omitNonsense = ({ from }) => omit({
     from, paths: [ '_id', '_rohrpostMetadata' ]

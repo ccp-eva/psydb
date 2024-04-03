@@ -1,7 +1,13 @@
 'use strict';
 var { jsonpointer } = require('@mpieva/psydb-core-utils');
-var { ApiError } = require('@mpieva/psydb-api-lib');
+var { CRTSettingsList } = require('@mpieva/psydb-common-lib');
+var {
+    ApiError,
+    fetchAvailableCRTSettings
+} = require('@mpieva/psydb-api-lib');
+
 var noop = require('./noop');
+
 
 var verifyOneCRT = (bag) => {
     var {

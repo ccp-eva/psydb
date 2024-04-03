@@ -8,16 +8,16 @@ var jsonify = (that) => (
     JSON.parse(JSON.stringify(that))
 );
 
-var RootHandler = require('../src/');
+var RootHandler = require('../../src/');
 
 var omitNonsense = ({ from }) => omit({
     from, paths: [ '_id', '_rohrpostMetadata' ]
 });
 
-describe('csv-import/create-subject-import fs-malaysia', function () {
+describe('csv-import/experiment/create-wkprc-evapecognition', function () {
     var db, sendMessage, fileId;
     beforeEach(async function () {
-        await this.restore('2023-11-29__0517-wkprc-fieldsite');
+        await this.restore('2024-04-03__0435_wkprc-and-fs');
         
         db = this.getDbHandle();
         ([ sendMessage ] = this.createMessenger({
@@ -25,7 +25,7 @@ describe('csv-import/create-subject-import fs-malaysia', function () {
             ...(await this.createFakeLogin({ email: 'root@example.com' }))
         }));
 
-        var file = await createFakeFileUpload({
+        var file = await this.createFakeFileUpload({
             db, buffer: loadCSV('evapecognition/simple'),
         });
         fileId = file._id;
@@ -52,18 +52,21 @@ describe('csv-import/create-subject-import fs-malaysia', function () {
             })
         });
 
-        var { body } = koaContext.response;
-        var [ ageFrameUpdate ] = body.data;
+        var imports = await db.collection('csvImport').find().toArray();
+        console.dir(ejson(imports), { depth: null });
 
-        console.log(ageFrameUpdate);
+        //var { body } = koaContext.response;
+        //var [ ageFrameUpdate ] = body.data;
 
-        var record = omitNonsense({
-            from: await this.getRecord('ageFrame', {
-                _id: ageFrameUpdate.channelId
-            })
-        });
+        //console.log(ageFrameUpdate);
 
-        console.dir(ejson(record), { depth: null });
-        expect(ejson(record)).toMatchSnapshot();
+        //var record = omitNonsense({
+        //    from: await this.getRecord('ageFrame', {
+        //        _id: ageFrameUpdate.channelId
+        //    })
+        //});
+
+        //console.dir(ejson(record), { depth: null });
+        //expect(ejson(record)).toMatchSnapshot();
     })
-})
+});

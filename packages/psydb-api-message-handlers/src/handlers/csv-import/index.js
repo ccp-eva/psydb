@@ -4,7 +4,8 @@ var {
 } = require('@mpieva/psydb-koa-event-middleware');
 
 var CSVImportGroup = MessageHandlerGroup([
-    require('./create-online-participation-import')
+    require('./create-online-participation-import'),
+    require('./experiment/create-wkprc-evapecognition'),
 ]);
 
 module.exports = CSVImportGroup;

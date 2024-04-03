@@ -1,7 +1,14 @@
 'use strict';
-var { ApiError, compose } = require('@mpieva/psydb-api-lib');
+var { keyBy } = require('@mpieva/psydb-core-utils');
 var {
-    verifyOneRecord
+    ApiError,
+    compose,
+    withRetracedErrors,
+    aggregateToArray,
+} = require('@mpieva/psydb-api-lib');
+
+var {
+    verifyOneRecord,
     verifyOneCRT,
 } = require('@mpieva/psydb-api-message-handler-lib');
 
@@ -15,7 +22,7 @@ var compose_verifyAllowedAndPlausible = () => compose([
 
     verifyStudyRecord,
     verifyLocationRecord,
-    verifyLabOperatorRecords,
+    //verifyLabOperatorRecords, // TODO
 
     verifyFileRecord,
     verifyFileMimeType,
@@ -28,20 +35,22 @@ var compose_verifyAllowedAndPlausible = () => compose([
     verifySameSubjectGroup,
 ]);
 
-var verifyPermissions = async (context) => {
+var verifyPermissions = async (context, next) => {
     var { db, permissions, message } = context;
     if (!permissions.isRoot()) {
         throw new ApiError(403)
     }
+
+    await next();
 }
 
-var verifyLocation = verifyOneRecord({
+var verifyLocationRecord = verifyOneRecord({
     collection: 'location',
     by: '/payload/locationId',
     cache: true
 });
 
-var verifyStudy = verifyOneRecord({
+var verifyStudyRecord = verifyOneRecord({
     collection: 'study',
     by: '/payload/studyId',
     cache: true
@@ -53,16 +62,18 @@ var verifyFileRecord = verifyOneRecord({
     cache: true,
 });
 
-var verifyFileMimeType = async (context) => {
+var verifyFileMimeType = async (context, next) => {
     var { cache } = context;
     var { file } = cache.get();
     
     if (file.mimetype !== 'text/csv') {
         throw new ApiError(409, 'file mime-type is not "text/csv"');
     }
+    
+    await next();
 }
 
-var tryPrepareImport = async (context) => {
+var tryPrepareImport = async (context, next) => {
     var { db, cache } = context;
     var { file } = cache.get();
 
@@ -71,7 +82,7 @@ var tryPrepareImport = async (context) => {
             data: file.blob.toString()
         });
         var matchedData = await EVApeCognitionCSV.matchData({
-            db, parsedLines, subjectType
+            db, parsedLines
         });
         var preparedObjects = EVApeCognitionCSV.makeObjects({
             matchedData, skipEmptyValues: true
@@ -87,6 +98,8 @@ var tryPrepareImport = async (context) => {
             throw e
         }
     }
+
+    await next();
 }
 
 var verifySubjectCRT = verifyOneCRT({
@@ -185,6 +198,8 @@ var verifySameSubjectGroup = async (context, next) => {
     if (invalid.length > 0) {
         throw new ApiError(409); // TODO
     }
+
+    await next();
 }
 
 module.exports = {

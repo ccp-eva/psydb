@@ -2,12 +2,13 @@
 var { createId } = require('@mpieva/psydb-api-lib');
 
 var executeSystemEvents = async (context) => {
-    var { db, cache, dispatch, dispatchProps } = context;
+    var { db, cache, personnelId, dispatch, dispatchProps } = context;
     var {
         study, location, file, subjectGroup, labOperators,
         matchedData, preparedObjects
     } = cache.get();
 
+    var now = new Date();
     var csvImportId = await createId();
     await db.collection('csvImport').insert({
         _id: csvImportId,
@@ -20,6 +21,8 @@ var executeSystemEvents = async (context) => {
         matchedData,
         preparedObjects,
     });
+
+    return; ///XXX
 
     for (var obj of preparedObjects) {
         var { 
