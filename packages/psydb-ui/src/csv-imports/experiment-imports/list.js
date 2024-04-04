@@ -20,7 +20,7 @@ const List = (ps) => {
     var createModal = useModalReducer();
 
     var [ didFetch, fetched ] = useFetch((agent) => (
-        agent.searchCSVImports()
+        agent.searchCSVExperimentImports()
     ), [ revision.value ]);
 
     if (!didFetch) {

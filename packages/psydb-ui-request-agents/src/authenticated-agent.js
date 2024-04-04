@@ -808,6 +808,17 @@ const createAgent = (options = {}) => {
         );
     }
 
+    agent.searchCSVExperimentImports = (bag = {}) => {
+        var {
+            extraAxiosConfig,
+        } = bag;
+
+        return axios.post(
+            '/api/csv-import/experiment/search',
+            {}, extraAxiosConfig,
+        );
+    }
+
     agent.fetchStudySubjectTypeInfos = (bag) => {
         var {
             studyId,

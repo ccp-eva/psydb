@@ -516,6 +516,13 @@ var createRouting = (bag = {}) => {
         withKoaBody(),
         endpoints.csvImport.preview
     );
+    router.post(
+        '/csv-import/experiment/search',
+        ...withPostStages({
+            endpoint: endpoints.csvImport.experiment.search
+        })
+    );
+
 
     router.post('/researchGroup/search-metadata', ...withPostStages({
         endpoint: endpoints.researchGroup.searchMetadata
