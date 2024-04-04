@@ -1,5 +1,5 @@
 'use strict';
-var { keyBy } = require('@mpieva/psydb-core-utils');
+var { keyBy, compareIds } = require('@mpieva/psydb-core-utils');
 var {
     ApiError,
     compose,
@@ -192,7 +192,13 @@ var verifySameSubjectGroup = async (context, next) => {
             if (groupId && !compareIds(groupId, itemGroupId)) {
                 invalid.push({ ix: oix, item: obj });
             }
+            else {
+                groupId = itemGroupId;
+            }
         }
+
+        // FIXME: i dont like that
+        obj.subjectGroupId = groupId;
     }
 
     if (invalid.length > 0) {

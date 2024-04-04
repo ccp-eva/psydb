@@ -1,12 +1,20 @@
 'use strict';
+var { swapTimezone } = require('@mpieva/psydb-timezone-helpers');
 var { createId } = require('@mpieva/psydb-api-lib');
 
+
 var executeSystemEvents = async (context) => {
-    var { db, cache, personnelId, dispatch, dispatchProps } = context;
     var {
-        study, location, file, subjectGroup, labOperators,
+        db, message, cache, personnelId,
+        dispatch, dispatchProps
+    } = context;
+
+    var { timezone, payload: { labOperatorIds }} = message;
+    var {
+        study, location, file, labOperators,
         matchedData, preparedObjects
     } = cache.get();
+
 
     var now = new Date();
     var csvImportId = await createId();
@@ -22,8 +30,6 @@ var executeSystemEvents = async (context) => {
         preparedObjects,
     });
 
-    return; ///XXX
-
     for (var obj of preparedObjects) {
         var { 
             timestamp,
@@ -31,10 +37,12 @@ var executeSystemEvents = async (context) => {
             experimentName,
             roomOrEnclosure,
             comment,
+
+            subjectGroupId,
         } = obj;
 
-        timestamp = convertYMDToDateOnlyServerSide({
-            ...timestamp, clientTimezone: timezone
+        timestamp = convertYMDToClientNoon({
+            ...timestamp, clientTZ: timezone,
         });
 
         var experimentId = await createId('experiment');
@@ -67,10 +75,11 @@ var executeSystemEvents = async (context) => {
             })),
 
             experimentOperatorIds: labOperatorIds,
-            subjectGroupId: subjectGroup._id,
 
+            subjectGroupId,
             experimentName,
             roomOrEnclosure,
+            timezone,
         }
         
         var participationItem = {
@@ -83,7 +92,8 @@ var executeSystemEvents = async (context) => {
 
             timestamp,
             status: 'participated',
-            excludeFromMoreExperimentsInStudy: false
+            excludeFromMoreExperimentsInStudy: false,
+            timezone,
         };
 
         await dispatchProps({
@@ -97,6 +107,32 @@ var executeSystemEvents = async (context) => {
             recordType: experimentCore.type,
         });
     }
+
+    cache.merge({ csvImportId });
+}
+
+var convertYMDToClientNoon = (bag) => {
+    var { year, month, day, clientTZ } = bag;
+    if (year <= 1894) {
+        // FIXME:
+        // on 1894-04-01 something wird happened
+        // also all dates before 100 AD cannot be timezone corrected properly
+        throw new Error('dates in 1894 or earlier cannot be converted')
+    }
+
+    var date = new Date();
+    date.setUTCHours(12,0,0,0); // NOTE: 12:00 for safety reasons
+    date.setUTCFullYear(year);
+    date.setUTCMonth(month - 1);
+    date.setUTCDate(day);
+
+    var swapped = swapTimezone({
+        date,
+        sourceTZ: 'UTC',
+        targetTZ: clientTZ,
+    });
+
+    return swapped;
 }
 
 module.exports = { executeSystemEvents }

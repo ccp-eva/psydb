@@ -12,7 +12,7 @@ var handler = MessageHandler({
         }),
         ...require('./verify'),
         ...require('./execute-system'),
-        //...require('./response'),
+        ...require('./response'),
     }
 })
 

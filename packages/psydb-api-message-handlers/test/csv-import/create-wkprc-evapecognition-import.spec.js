@@ -1,7 +1,9 @@
 'use strict';
-var { ejson, omit } = require('@mpieva/psydb-core-utils');
 var { expect } = require('@mpieva/psydb-api-mocha-test-tools/chai');
+
 var { ObjectId } = require('@cdxoo/mongo-test-helpers');
+var { ejson, omit } = require('@mpieva/psydb-core-utils');
+var { aggregateToArray } = require('@mpieva/psydb-api-lib');
 var { getContent: loadCSV } = require('@mpieva/psydb-fixtures/csv');
 
 var jsonify = (that) => (
@@ -42,7 +44,7 @@ describe('csv-import/experiment/create-wkprc-evapecognition', function () {
 
         var koaContext = await sendMessage({
             type: 'csv-import/experiment/create-wkprc-evapecognition',
-            timezone: 'UTC',
+            timezone: 'Europe/Berlin',
             payload: jsonify({
                 subjectType,
                 studyId,
@@ -52,8 +54,17 @@ describe('csv-import/experiment/create-wkprc-evapecognition', function () {
             })
         });
 
-        var imports = await db.collection('csvImport').find().toArray();
-        console.dir(ejson(imports), { depth: null });
+        var { csvImportId } = koaContext.response.body.data;
+        console.log(csvImportId);
+
+        var experiments = await aggregateToArray({ db, experiment: [
+            { $match: { csvImportId }}
+        ]});
+        console.dir(ejson(experiments), { depth: null });
+        
+
+        //var imports = await db.collection('csvImport').find().toArray();
+        //console.dir(ejson(imports), { depth: null });
 
         //var { body } = koaContext.response;
         //var [ ageFrameUpdate ] = body.data;

@@ -137,7 +137,7 @@ var definitions = [
     },
 
     { 
-        csvColumnKey: 'experment_name',
+        csvColumnKey: 'experiment_name',
         systemType: 'SaneString',
         pointer: '/experimentName'
     },
