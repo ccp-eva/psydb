@@ -130,6 +130,7 @@ var inviteConfirmationList = async (context, next) => {
                 'state.studyId': { $in: studyRecords.map(it => it._id) },
                 // TODO: only for invitation
                 'state.subjectData.invitationStatus': 'scheduled',
+                'state.subjectData.subjectType': subjectRecordType
             }},
             StripEventsStage(),
         ]})
