@@ -85,6 +85,13 @@ const ExperimentImportCreateForm = (ps) => {
                     />
                 </FormHelpers.InlineWrapper>
             )}
+            { csvImporter && (
+                <CSVImporterFormSwitch
+                    studyId={ studyRecord._id }
+                    subjectType={ subjectType }
+                    csvImporter={ csvImporter }
+                />
+            )}
         </>
     )
 }
@@ -102,10 +109,10 @@ const StudyCSVImporterSelect = (ps) => {
     ), {
         dependencies: [ studyId, subjectType, importType ],
         extraEffect: (response) => {
-            //var crts = response?.data?.data?.crts;
-            //if (crts.items().length === 1) {
-            //    onChange(crts.items()[0].getType());
-            //}
+            var csvImporters = response?.data?.data?.csvImporters;
+            if (csvImporters.length === 1) {
+                onChange(csvImporters[0]);
+            }
         }
     });
 
@@ -162,6 +169,30 @@ const StudySubjectTypeSelect = (ps) => {
             onChange={ onChange }
             options={ crts.asOptions({ language }) }
         />
+    )
+}
+
+const CSVImporterFormSwitch = (ps) => {
+    var { csvImporter } = ps;
+    
+    var pass = only({ from: ps, keys: [
+        'studyId', 'subjectType'
+    ]});
+
+    var CSVImporterForm = {
+        'wkprc-evapecognition': WKPRCEVApeCognition
+    }[csvImporter];
+
+    return <CSVImporterForm { ...pass }/>
+}
+
+
+// TODO
+const WKPRCEVApeCognition = (ps) => {
+    return (
+        <div>
+            FOOFOFOFOF
+        </div>
     )
 }
 
