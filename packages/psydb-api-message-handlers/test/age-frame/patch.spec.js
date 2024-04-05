@@ -12,7 +12,7 @@ var omitNonsense = ({ from }) => omit({
     from, paths: [ '_id', '_rohrpostMetadata' ]
 });
 
-describe('ageFrame/create', function () {
+describe('ageFrame/patch', function () {
     var db, sendMessage;
     beforeEach(async function () {
         await this.restore('2024-03-28__0556_humankind');
@@ -57,13 +57,31 @@ describe('ageFrame/create', function () {
         });
 
         var { body } = koaContext.response;
-        var [ ageFrameUpdate ] = body.data;
+        var [{ channelId: ageFrameId }] = body.data;
 
-        console.log(ageFrameUpdate);
+        koaContext = await sendMessage({
+            type: 'ageFrame/patch',
+            timezone: 'Europe/Berlin',
+            payload: jsonify({ id: ageFrameId, props: {
+                interval: {
+                    start: { years: 0, months: 0, days: 0 },
+                    end: { years: 2, months: 2, days: 2 },
+                },
+                conditions: [
+                    { pointer: '/gdpr/state/custom/gender', values: [
+                        'female'
+                    ]},
+                    { 
+                        pointer: '/scientific/state/custom/nativeLanguageId',
+                        values: [ arabicId ]
+                    }
+                ]
+            }})
+        });
 
         var record = omitNonsense({
             from: await this.getRecord('ageFrame', {
-                _id: ageFrameUpdate.channelId
+                _id: ageFrameId
             })
         });
 

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ageFrame/create does the thing 1`] = `
+exports[`ageFrame/patch does the thing 1`] = `
 Object {
   "isDummy": false,
   "sequenceNumber": "14",
@@ -9,7 +9,6 @@ Object {
       Object {
         "pointer": "/gdpr/state/custom/gender",
         "values": Array [
-          "male",
           "female",
         ],
       },
@@ -19,17 +18,14 @@ Object {
           Object {
             "$oid": "6600f5e0a5f8769c52868145",
           },
-          Object {
-            "$oid": "6600f5e0a5f8769c52868142",
-          },
         ],
       },
     ],
     "interval": Object {
       "end": Object {
-        "days": 1,
-        "months": 1,
-        "years": 1,
+        "days": 2,
+        "months": 2,
+        "years": 2,
       },
       "start": Object {
         "days": 0,
