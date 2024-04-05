@@ -588,6 +588,7 @@ importers:
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
       '@mpieva/psydb-fixtures': workspace:~0.1.0-alpha
       '@mpieva/psydb-koa-event-middleware': workspace:~0.1.0-alpha
+      '@mpieva/psydb-mongo-adapter': workspace:~0.1.0-alpha
       '@mpieva/psydb-schema-creators': workspace:~0.1.0-alpha
       '@mpieva/psydb-schema-enums': workspace:~0.1.0-alpha
       '@mpieva/psydb-schema-fields': workspace:~0.1.0-alpha
@@ -622,6 +623,7 @@ importers:
       '@mpieva/psydb-common-verify-helpers': link:../psydb-common-verify-helpers
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
       '@mpieva/psydb-koa-event-middleware': link:../psydb-koa-event-middleware
+      '@mpieva/psydb-mongo-adapter': link:../psydb-mongo-adapter
       '@mpieva/psydb-schema-creators': link:../psydb-schema-creators
       '@mpieva/psydb-schema-enums': link:../psydb-schema-enums
       '@mpieva/psydb-schema-fields': link:../psydb-schema-fields
@@ -727,11 +729,9 @@ importers:
 
   ../../packages/psydb-common-translations:
     specifiers:
-      '@mpieva/psydb-common-lib': workspace:~0.1.0-alpha
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
       es6-template-strings: ~2.0.1
     dependencies:
-      '@mpieva/psydb-common-lib': link:../psydb-common-lib
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
       es6-template-strings: 2.0.1
 
@@ -6359,7 +6359,7 @@ packages:
       debug:
         optional: true
     dependencies:
-      debug: 4.3.4
+      debug: 4.3.4_supports-color@6.1.0
 
   /for-each/0.3.3:
     resolution: {integrity: sha512-jqYfLp7mo9vIyQf8ykW2v7A+2N4QjeCeI5+Dz9XraiO1ign81wjiH7Fb9vSOWvQfNtmSa4H2RoQTrrXivdUZmw==}
