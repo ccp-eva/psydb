@@ -851,6 +851,35 @@ const createAgent = (options = {}) => {
         return p;
     }
 
+    agent.fetchStudyEnabledSubjectCRTs = (bag) => {
+        var {
+            studyId,
+            wrap = true,
+            extraAxiosConfig,
+        } = bag;
+
+        var p =  axios.post(
+            '/api/study/enabled-subject-crts',
+            { studyId },
+            extraAxiosConfig,
+        );
+
+        if (wrap) {
+            CRTSettingsList.wrapResponsePromise(p);
+        }
+        return p;
+    }
+
+    agent.fetchStudyEnabledCSVImporters = (bag) => {
+        var { studyId, subjectType, importType, extraAxiosConfig } = bag;
+
+        return axios.post(
+            '/api/study/enabled-csv-importers',
+            { studyId, subjectType, importType },
+            extraAxiosConfig,
+        );
+    }
+
     agent.fetchOneRecord = (bag) => {
         var { extraAxiosConfig, collection, ...payload } = bag;
         return axios.post(

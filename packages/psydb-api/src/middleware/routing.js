@@ -537,6 +537,12 @@ var createRouting = (bag = {}) => {
     router.post('/study/available-subject-crts', ...withPostStages({
         endpoint: endpoints.study.availableSubjectCRTs
     }));
+    router.post('/study/enabled-subject-crts', ...withPostStages({
+        endpoint: endpoints.study.enabledSubjectCRTs
+    }));
+    router.post('/study/enabled-csv-importers', ...withPostStages({
+        endpoint: endpoints.study.enabledCSVImporters
+    }));
     
     router.post('/experiment/read', ...withPostStages({
         endpoint: endpoints.experiment.read

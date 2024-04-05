@@ -13,6 +13,7 @@ import {
     TableHead,
 } from '@mpieva/psydb-ui-layout';
 
+import CreateModal from './create-modal';
 
 const List = (ps) => {
     var translate = useUITranslation();
@@ -33,17 +34,13 @@ const List = (ps) => {
                 { ...createModal.passthrough }
                 onSuccessfulUpdate={ revision.up }
             />
-            <Button onClick={ () => onCreate() }>
+            <Button onClick={ createModal.handleShow }>
                 { translate('New Import') }
             </Button>
 
             <RecordTable { ...fetched.data } />
         </>
     )
-}
-
-const CreateModal = () => {
-    return null;
 }
 
 const RecordTable = (ps) => {
