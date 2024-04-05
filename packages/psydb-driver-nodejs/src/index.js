@@ -220,17 +220,28 @@ var Driver = (options) => {
                             'baseURL', 'url', 'data'
                         ]})
                     );
+                    
                     console.error(
-                        'API ERROR STACK:',
-                        e.apiStack
-                    );
-                    console.error(
-                        'AJV ERRORS:',
+                        'ERROR REPONSE DATA:',
                         inspect(
-                            e.response.data.data.ajvErrors,
+                            e.response.data.data,
                             { depth: null, colors: true }
                         )
                     );
+
+                    //console.error(
+                    //    'API ERROR STACK:',
+                    //    e.apiStack
+                    //);
+                    //console.error(
+                    //    'AJV ERRORS:',
+                    //    inspect(
+                    //        e.response.data.data.ajvErrors,
+                    //        { depth: null, colors: true }
+                    //    )
+                    //);
+                    //throw new Error('BadRequest')
+                    
                     throw e;
                 }
                 else {

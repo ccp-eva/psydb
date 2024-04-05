@@ -1,4 +1,6 @@
 'use strict';
+var { ObjectId } = require('@mpieva/psydb-mongo-adapter');
+var { keyBy } = require('@mpieva/psydb-core-utils');
 var { compose, switchComposition } = require('@mpieva/psydb-api-lib');
 var { openChannel } = require('../../../lib/generic-record-handler-utils');
 
@@ -13,6 +15,26 @@ var createRecord = async (context, next) => {
         id, sequenceNumber, // NOTE: was used when migrating ignored now
         studyId, subjectSelectorId, subjectTypeKey, props
     } = payload;
+
+    var { subjectCRT } = cache.get();
+
+    // FIXME: schema needs to handle this actually
+    var defsByPointer = keyBy({
+        items: subjectCRT.allCustomFields(),
+        byProp: 'pointer'
+    });
+    for (var it of props.conditions) {
+        var { pointer, values } = it;
+        var def = defsByPointer[pointer];
+        if ([
+            'HelperSetItemId',
+            'HelperSetItemIdList',
+            'ForeignId',
+            'ForeignIdList'
+        ].includes(def.systemType)) {
+            it.values = it.values.map(ObjectId)
+        }
+    }
 
     var collection = 'ageFrame';
     var channel = await openChannel({

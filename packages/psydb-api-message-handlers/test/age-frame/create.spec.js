@@ -28,13 +28,16 @@ describe('ageFrame/create', function () {
         var studyId = ObjectId("6600f821a5f8769c528681df");
         var subjectSelectorId = ObjectId("6604cdcd8df35a1505347aac");
 
+        var arabicId = ObjectId('6600f5e0a5f8769c52868145');
+        var englishId = ObjectId('6600f5e0a5f8769c52868142');
+
         var koaContext = await sendMessage({
             type: 'ageFrame/create',
             timezone: 'Europe/Berlin',
             payload: jsonify({
                 studyId,
                 subjectSelectorId,
-                subjectTypeKey: 'humankindAdult',
+                subjectTypeKey: 'humankindChild',
                 props: {
                     interval: {
                         start: { years: 0, months: 0, days: 0 },
@@ -43,7 +46,11 @@ describe('ageFrame/create', function () {
                     conditions: [
                         { pointer: '/gdpr/state/custom/gender', values: [
                             'male', 'female'
-                        ]}
+                        ]},
+                        { 
+                            pointer: '/scientific/state/custom/nativeLanguageId',
+                            values: [ arabicId, englishId ]
+                        }
                     ]
                 }
             })

@@ -13,6 +13,17 @@ Object {
           "female",
         ],
       },
+      Object {
+        "pointer": "/scientific/state/custom/nativeLanguageId",
+        "values": Array [
+          Object {
+            "$oid": "6600f5e0a5f8769c52868145",
+          },
+          Object {
+            "$oid": "6600f5e0a5f8769c52868142",
+          },
+        ],
+      },
     ],
     "interval": Object {
       "end": Object {
@@ -33,6 +44,6 @@ Object {
   "subjectSelectorId": Object {
     "$oid": "6604cdcd8df35a1505347aac",
   },
-  "subjectTypeKey": "humankindAdult",
+  "subjectTypeKey": "humankindChild",
 }
 `;

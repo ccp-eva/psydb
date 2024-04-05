@@ -425,7 +425,9 @@ importers:
       '@mpieva/psydb-common-lib': workspace:~0.1.0-alpha
       '@mpieva/psydb-common-verify-helpers': workspace:~0.1.0-alpha
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
+      '@mpieva/psydb-fixtures': workspace:~0.1.0-alpha
       '@mpieva/psydb-i18n': workspace:~0.1.0-alpha
+      '@mpieva/psydb-mongo-adapter': workspace:~0.1.0-alpha
       '@mpieva/psydb-mongo-stages': workspace:~0.1.0-alpha
       '@mpieva/psydb-schema-creators': workspace:~0.1.0-alpha
       '@mpieva/psydb-schema-fields': workspace:~0.1.0-alpha
@@ -434,6 +436,7 @@ importers:
       ajv-keywords: ~3.5.2
       chai: ~4.3.7
       copy-anything: ~2.0.6
+      csv-parse: ~5.5.5
       date-fns: ~2.30.0
       debug: ~4.3.4
       deep-diff: ~1.0.2
@@ -468,6 +471,7 @@ importers:
       '@mpieva/psydb-common-verify-helpers': link:../psydb-common-verify-helpers
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
       '@mpieva/psydb-i18n': link:../psydb-i18n
+      '@mpieva/psydb-mongo-adapter': link:../psydb-mongo-adapter
       '@mpieva/psydb-mongo-stages': link:../psydb-mongo-stages
       '@mpieva/psydb-schema-creators': link:../psydb-schema-creators
       '@mpieva/psydb-schema-fields': link:../psydb-schema-fields
@@ -475,6 +479,7 @@ importers:
       ajv: 6.12.6
       ajv-keywords: 3.5.2_ajv@6.12.6
       copy-anything: 2.0.6
+      csv-parse: 5.5.5
       date-fns: 2.30.0
       debug: 4.3.4
       deep-diff: 1.0.2
@@ -490,6 +495,7 @@ importers:
       sift: 16.0.1
       statuses: 2.0.1
     devDependencies:
+      '@mpieva/psydb-fixtures': link:../psydb-fixtures
       chai: 4.3.10
       mocha: 10.2.0
       snap-shot-it: 7.9.10
@@ -582,6 +588,7 @@ importers:
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
       '@mpieva/psydb-fixtures': workspace:~0.1.0-alpha
       '@mpieva/psydb-koa-event-middleware': workspace:~0.1.0-alpha
+      '@mpieva/psydb-mongo-adapter': workspace:~0.1.0-alpha
       '@mpieva/psydb-schema-creators': workspace:~0.1.0-alpha
       '@mpieva/psydb-schema-enums': workspace:~0.1.0-alpha
       '@mpieva/psydb-schema-fields': workspace:~0.1.0-alpha
@@ -616,6 +623,7 @@ importers:
       '@mpieva/psydb-common-verify-helpers': link:../psydb-common-verify-helpers
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
       '@mpieva/psydb-koa-event-middleware': link:../psydb-koa-event-middleware
+      '@mpieva/psydb-mongo-adapter': link:../psydb-mongo-adapter
       '@mpieva/psydb-schema-creators': link:../psydb-schema-creators
       '@mpieva/psydb-schema-enums': link:../psydb-schema-enums
       '@mpieva/psydb-schema-fields': link:../psydb-schema-fields
@@ -721,11 +729,9 @@ importers:
 
   ../../packages/psydb-common-translations:
     specifiers:
-      '@mpieva/psydb-common-lib': workspace:~0.1.0-alpha
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
       es6-template-strings: ~2.0.1
     dependencies:
-      '@mpieva/psydb-common-lib': link:../psydb-common-lib
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
       es6-template-strings: 2.0.1
 
@@ -5343,6 +5349,10 @@ packages:
     resolution: {integrity: sha512-M1uQkMl8rQK/szD0LNhtqxIPLpimGm8sOBwU7lLnCpSbTyY3yeU1Vc7l4KT5zT4s/yOxHH5O7tIuuLOCnLADRw==}
     dev: true
 
+  /csv-parse/5.5.5:
+    resolution: {integrity: sha512-erCk7tyU3yLWAhk6wvKxnyPtftuy/6Ak622gOO7BCJ05+TYffnPCJF905wmOQm+BpkX54OdAl8pveJwUdpnCXQ==}
+    dev: false
+
   /d/1.0.1:
     resolution: {integrity: sha512-m62ShEObQ39CfralilEQRjH6oAMtNCV1xJyEx5LpRYUVN+EviphDgUc/F3hnYbADmkiNs67Y+3ylmlG7Lnu+FA==}
     dependencies:
@@ -6349,7 +6359,7 @@ packages:
       debug:
         optional: true
     dependencies:
-      debug: 4.3.4
+      debug: 4.3.4_supports-color@6.1.0
 
   /for-each/0.3.3:
     resolution: {integrity: sha512-jqYfLp7mo9vIyQf8ykW2v7A+2N4QjeCeI5+Dz9XraiO1ign81wjiH7Fb9vSOWvQfNtmSa4H2RoQTrrXivdUZmw==}

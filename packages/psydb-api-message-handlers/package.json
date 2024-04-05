@@ -10,6 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "@mpieva/psydb-koa-event-middleware": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-mongo-adapter": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-schema-creators": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-schema-enums": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-schema-fields": "workspace:~0.1.0-alpha",

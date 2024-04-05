@@ -80,11 +80,23 @@ handler.checkAllowedAndPlausible = async ({
             });
             if (!resolved) {
                 debug(collection, type, fieldPointer, 'notResolved');
-                throw new ApiError(400, 'InvalidFieldPointer');
+                throw new ApiError(400, {
+                    apiStatus: 'InvalidFieldPointer',
+                    data: {
+                        collection, recordType: type, fieldPointer,
+                        errorType: 'pointerNotResolved'
+                    }
+                });
             }
             if (!resolved.schema.systemType) {
                 debug(collection, type, fieldPointer, 'noType');
-                throw new ApiError(400, 'InvalidFieldPointer');
+                throw new ApiError(400, {
+                    apiStatus: 'InvalidFieldPointer',
+                    data: {
+                        collection, recordType: type, fieldPointer,
+                        errorType: 'missingSystemType'
+                    }
+                });
             }
             gatheredFieldData.push({
                 systemType: resolved.schema.systemType,
