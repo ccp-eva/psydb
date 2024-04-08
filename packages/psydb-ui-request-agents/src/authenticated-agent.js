@@ -557,7 +557,7 @@ const createAgent = (options = {}) => {
             {
                 studyIds: studyIds || (studyId ? [ studyId ] : undefined),
                 types: types || (type ? [ type ] : undefined),
-                subjectTypes: (subjectTypes || subjectType ? [ subjectType ] : undefined)
+                subjectTypes: (subjectTypes || (subjectType ? [ subjectType ] : undefined))
             }
         );
     }

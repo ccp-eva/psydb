@@ -18,7 +18,7 @@ import CreateModal from './create-modal';
 const List = (ps) => {
     var translate = useUITranslation();
     var revision = useRevision();
-    var createModal = useModalReducer();
+    var createModal = useModalReducer({ show: true });
 
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.searchCSVExperimentImports()

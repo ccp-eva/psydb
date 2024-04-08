@@ -1,4 +1,5 @@
 module.exports = {
+    sift: require('sift'),
     inlineText: require('@cdxoo/inline-text'),
 
     CRTSettings: require('./crt-settings'),

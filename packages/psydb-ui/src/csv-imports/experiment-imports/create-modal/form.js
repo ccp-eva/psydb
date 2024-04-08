@@ -7,6 +7,8 @@ import { LoadingIndicator, FormHelpers } from '@mpieva/psydb-ui-layout';
 import { RecordPicker } from '@mpieva/psydb-ui-lib';
 import * as Controls from '@mpieva/psydb-ui-form-controls';
 
+import { switchComponent } from './specific-importer-form-sections';
+
 const ExperimentImportCreateForm = (ps) => {
     
     var triggerBag = only({ from: ps, keys: [
@@ -15,9 +17,9 @@ const ExperimentImportCreateForm = (ps) => {
     ]});
 
     var translate = useUITranslation();
-    var [ studyType, setStudyType ] = useState();
-    var [ studyRecord, setStudyRecord ] = useState();
-    var [ subjectType, setSubjectType ] = useState();
+    var [ studyType, setStudyType ] = useState('wkprc_study');
+    var [ studyRecord, setStudyRecord ] = useState({ _id: '6566b5c26c830cb226c1389b' });
+    var [ subjectType, setSubjectType ] = useState('');
     var [ csvImporter, setCSVImporter ] = useState();
 
     var [ didFetch, fetched ] = useFetchAll((agent) => ({
@@ -179,21 +181,9 @@ const CSVImporterFormSwitch = (ps) => {
         'studyId', 'subjectType'
     ]});
 
-    var CSVImporterForm = {
-        'wkprc-evapecognition': WKPRCEVApeCognition
-    }[csvImporter];
-
+    var CSVImporterForm = switchComponent(csvImporter);
     return <CSVImporterForm { ...pass }/>
 }
 
-
-// TODO
-const WKPRCEVApeCognition = (ps) => {
-    return (
-        <div>
-            FOOFOFOFOF
-        </div>
-    )
-}
 
 export default ExperimentImportCreateForm;
