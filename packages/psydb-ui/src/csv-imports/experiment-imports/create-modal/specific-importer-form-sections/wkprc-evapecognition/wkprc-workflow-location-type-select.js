@@ -1,26 +1,23 @@
 import React from 'react';
 import { unique } from '@mpieva/psydb-core-utils';
+import { maybeGetValueWhenUnspread } from'@mpieva/psydb-common-lib';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 import * as Controls from '@mpieva/psydb-ui-form-controls';
-import { withField } from '@mpieva/psydb-ui-lib';
+import { withField, useFormikTheme } from '@mpieva/psydb-ui-lib';
 
+// onChangeReceivesEvents: false
 const WKPRCWorkflowLocationTypeSelectControl = (ps) => {
     var {
         studyId,
         subjectType,
-
-        dataXPath,
-        formikField,
-        formikForm,
-        formikMeta,
-
+        saneFormikField,
         ...pass
     } = ps;
-    // FIXME: thtas really dump withField sould have an option to pass
-    // value/onChange diretcly in here
-    var { setFieldValue } = formikForm;
-    var { value } = formikField;
+
+    var { value, onChange } = saneFormikField;
+
+    var theme = useFormikTheme();
 
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.fetchExperimentVariantSettings({
@@ -31,11 +28,11 @@ const WKPRCWorkflowLocationTypeSelectControl = (ps) => {
         dependencies: [ studyId, subjectType ],
         extraEffect: (response) => {
             var settings = response?.data?.data?.records;
-            if (settings.length === 1) {
-                var { locationTypeKeys } = settings[0].state;
-                if (locationTypeKeys.length === 1) {
-                    setFieldValue(dataXPath, locationTypeKeys[0]);
-                }
+            var { hasSpread, value } = maybeGetValueWhenUnspread(
+                settings || [], '/0/state/locationTypeKeys/0'
+            );
+            if (!hasSpread) {
+                onChange(value);
             }
         }
     });
@@ -52,7 +49,7 @@ const WKPRCWorkflowLocationTypeSelectControl = (ps) => {
     locationTypes = unique(locationTypes);
 
     if (locationTypes.length === 1) {
-        //return null;
+        return null;
     }
 
     var options = {};
@@ -60,20 +57,25 @@ const WKPRCWorkflowLocationTypeSelectControl = (ps) => {
         options[it] = it; // FIXME
     }
 
+    var Wrapper = theme.getWrapperForFieldControl({
+        DefaultWrapper: 'FieldWrapper',
+    }, ps);
+
+    // FIXME: control should get passed more props
     return (
-        <Controls.GenericEnum
-            { ...pass }
-            value={ value }
-            onChange={(next) => {
-                setFieldValue(dataXPath, next);
-            }}
-            options={ options }
-        />
+        <Wrapper { ...ps }>
+            <Controls.GenericEnum
+                { ...saneFormikField }
+                options={ options }
+            />
+        </Wrapper>
     )
 }
 
 const WKPRCWorkflowLocationTypeSelect = withField({
-    Control: WKPRCWorkflowLocationTypeSelectControl
+    Control: WKPRCWorkflowLocationTypeSelectControl,
+    isThemed: false,
+    onChangeReceivesEvents: false,
 })
 
 export default WKPRCWorkflowLocationTypeSelect;

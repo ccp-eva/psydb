@@ -34,6 +34,8 @@ module.exports = {
     keyBy: require('./key-by'),
     compareIds: require('./compare-ids'),
 
+    maybeGetValueWhenUnspread: require('./maybe-get-value-when-unspread'),
+
     stringifyFieldValue: require('./stringify-field-value'),
     quicksort: require('./quicksort'),
     perceivedBrightness: require('./perceived-brightness'),

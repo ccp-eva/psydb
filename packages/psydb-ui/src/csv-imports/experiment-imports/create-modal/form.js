@@ -8,6 +8,7 @@ import { RecordPicker } from '@mpieva/psydb-ui-lib';
 import * as Controls from '@mpieva/psydb-ui-form-controls';
 
 import { switchComponent } from './specific-importer-form-sections';
+import * as HelperControls from './helper-controls';
 
 const ExperimentImportCreateForm = (ps) => {
     
@@ -41,51 +42,37 @@ const ExperimentImportCreateForm = (ps) => {
     return (
         <>
             { showStudyTypeSelect && (
-                <FormHelpers.InlineWrapper
+                <HelperControls.StudyTypeSelect
                     label={ translate('Study Type') }
-                >
-                    <Controls.GenericTypeKey
-                        value={ studyType }
-                        onChange={ setStudyType }
-                        collection='study'
-                    />
-                </FormHelpers.InlineWrapper>
+                    value={ studyType }
+                    onChange={ setStudyType }
+                />
             )}
             { studyType && (
-                <FormHelpers.InlineWrapper
+                <HelperControls.StudyRecordPicker
                     label={ translate('Study') }
-                >
-                    <RecordPicker
-                        value={ studyRecord }
-                        onChange={ setStudyRecord }
-                        collection='study'
-                        recordType={ studyType }
-                    />
-                </FormHelpers.InlineWrapper>
+                    value={ studyRecord }
+                    onChange={ setStudyRecord }
+                    studyType={ studyType }
+                />
             )}
             { studyRecord && (
-                <FormHelpers.InlineWrapper
+                <HelperControls.StudySubjectTypeSelect
                     label={ translate('Subject Type') }
-                >
-                    <StudySubjectTypeSelect
-                        value={ subjectType }
-                        onChange={ setSubjectType }
-                        studyId={ studyRecord._id }
-                    />
-                </FormHelpers.InlineWrapper>
+                    value={ subjectType }
+                    onChange={ setSubjectType }
+                    studyId={ studyRecord._id }
+                />
             )}
             { subjectType && (
-                <FormHelpers.InlineWrapper
+                <HelperControls.StudyCSVImporterSelect
                     label={ translate('Import Type') }
-                >
-                    <StudyCSVImporterSelect
-                        value={ csvImporter }
-                        onChange={ setCSVImporter }
-                        studyId={ studyRecord._id }
-                        subjectType={ subjectType }
-                        importType='experiment'
-                    />
-                </FormHelpers.InlineWrapper>
+                    value={ csvImporter }
+                    onChange={ setCSVImporter }
+                    studyId={ studyRecord._id }
+                    subjectType={ subjectType }
+                    importType='experiment'
+                />
             )}
             { csvImporter && (
                 <CSVImporterFormSwitch
@@ -98,82 +85,6 @@ const ExperimentImportCreateForm = (ps) => {
     )
 }
 
-const StudyCSVImporterSelect = (ps) => {
-    var { value, onChange, studyId, subjectType, importType } = ps;
-    
-    var translate = useUITranslation();
-    var [ language ] = useUILanguage();
-
-    var [ didFetch, fetched ] = useFetch((agent) => (
-        agent.fetchStudyEnabledCSVImporters({
-            studyId, subjectType, importType
-        })
-    ), {
-        dependencies: [ studyId, subjectType, importType ],
-        extraEffect: (response) => {
-            var csvImporters = response?.data?.data?.csvImporters;
-            if (csvImporters.length === 1) {
-                onChange(csvImporters[0]);
-            }
-        }
-    });
-
-    if (!didFetch) {
-        return null;
-    }
-
-    var { csvImporters } = fetched.data;
-
-    var options = {};
-    for (var it of csvImporters) {
-        options[it] = 'csvImporter_experiment_' + it;
-    }
-    return (
-        <Controls.GenericEnum
-            value={ value }
-            onChange={ onChange }
-            options={ translate.options(options) }
-        />
-    )
-}
-
-const StudySubjectTypeSelect = (ps) => {
-    var { value, onChange, studyId } = ps;
-    var [ language ] = useUILanguage();
-
-    var [ didFetch, fetched ] = useFetch((agent) => (
-        agent.fetchStudyEnabledSubjectCRTs({
-            studyId
-        })
-    ), {
-        dependencies: [ studyId ],
-        extraEffect: (response) => {
-            var crts = response?.data?.data?.crts;
-            if (crts.items().length === 1) {
-                onChange(crts.items()[0].getType());
-            }
-        }
-    });
-
-    if (!didFetch) {
-        return null;
-    }
-
-    var { crts } = fetched.data;
-
-    //if (crts.items().length === 1) {
-    //    return null;
-    //}
-
-    return (
-        <Controls.GenericEnum
-            value={ value }
-            onChange={ onChange }
-            options={ crts.asOptions({ language }) }
-        />
-    )
-}
-
 const CSVImporterFormSwitch = (ps) => {
     var { csvImporter } = ps;
     
@@ -182,7 +93,12 @@ const CSVImporterFormSwitch = (ps) => {
     ]});
 
     var CSVImporterForm = switchComponent(csvImporter);
-    return <CSVImporterForm { ...pass }/>
+    return (
+        <>
+            <hr />
+            <CSVImporterForm { ...pass }/>
+        </>
+    )
 }
 
 
