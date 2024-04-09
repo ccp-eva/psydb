@@ -4,7 +4,8 @@ var {
     ResponseBody,
     validateOrThrow,
     withRetracedErrors,
-    aggregateOne
+    aggregateOne,
+    findOne_RAW
 } = require('@mpieva/psydb-api-lib');
 
 var {
@@ -15,7 +16,7 @@ var {
 var Schema = require('./schema');
 
 var preview = async (context, next) => {
-    var { db, permissions, request } = context;
+    var { db, permissions, request, timezone } = context;
     
     if (!permissions.isRoot()) {
         throw new ApiError(403);
@@ -36,16 +37,24 @@ var preview = async (context, next) => {
     } = request.body;
 
     var file = await withRetracedErrors(
-        aggregateOne({ db, file: [
-            { $match: { _id: fileId }},
-        ]})
+        findOne_RAW({ db, file: { _id: fileId }})
     );
 
+    var study = await withRetracedErrors(
+        findOne_RAW({ db, study: { _id: studyId }})
+    );
+    
+    var location = await withRetracedErrors(
+        findOne_RAW({ db, location: { _id: locationId }})
+    );
+
+
+
     try {
-        var parsedLines = EVApeCognition.parseLines({
+        var parsedLines = EVApeCognitionCSV.parseLines({
             data: file.blob.toString()
         });
-        var matchedData = await EVApeCognition.matchData({
+        var matchedData = await EVApeCognitionCSV.matchData({
             db, parsedLines
         })
         var preparedObjects = EVApeCognitionCSV.makeObjects({
@@ -62,8 +71,30 @@ var preview = async (context, next) => {
         }
     }
 
+    var previewRecords = [];
+    for (var obj of preparedObjects) {
+        var {
+            record,
+            parts: experimentParts
+        } = EVApeCognitionCSV.makeExperiment({
+            preparedObject: obj,
+            
+            csvImportId: null,
+            study,
+            location,
+            labOperatorIds,
+            timezone
+        });
+
+        previewRecords.push(record);
+        //var participations = EVApeCognition.makeParticipationItems({
+        //    experimentParts,
+        //});
+    }
     context.body = ResponseBody({ data: {
+        matchedData,
         preparedObjects,
+        previewRecords,
     }});
 
     await next();

@@ -519,12 +519,12 @@ var createRouting = (bag = {}) => {
         withKoaBody(),
         endpoints.csvImport.preview
     );
-    router.post(
-        '/csv-import/experiment/search',
-        ...withPostStages({
-            endpoint: endpoints.csvImport.experiment.search
-        })
-    );
+    router.post('/csv-import/experiment/search', ...withPostStages({
+        endpoint: endpoints.csvImport.experiment.search
+    }));
+    router.post('/csv-import/experiment/preview', ...withPostStages({
+        endpoint: endpoints.csvImport.experiment.preview
+    }));
 
 
     router.post('/researchGroup/search-metadata', ...withPostStages({

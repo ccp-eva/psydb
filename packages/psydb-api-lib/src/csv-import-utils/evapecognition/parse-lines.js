@@ -128,12 +128,22 @@ var definitions = [
         props: { collection: 'subject', /* XXX: recordType??? */ },
         pointer: '/subjectData/0/subjectId', // XXX
     },
+    {
+        csvColumnKey: 'role',
+        systemType: 'SaneString',
+        pointer: '/subjectData/0/role', // XXX
+    },
 
     {
         csvColumnKey: 'participant_2',
         systemType: 'ForeignId',
         props: { collection: 'subject', /* XXX: recordType??? */ },
         pointer: '/subjectData/1/subjectId', // XXX
+    },
+    {
+        csvColumnKey: 'role_2',
+        systemType: 'SaneString',
+        pointer: '/subjectData/1/role', // XXX
     },
 
     { 
