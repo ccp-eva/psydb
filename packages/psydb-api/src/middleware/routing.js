@@ -509,6 +509,9 @@ var createRouting = (bag = {}) => {
         withPermissions(),
         endpoints.file.upload
     );
+    router.post('/file/read', ...withPostStages({
+        endpoint: endpoints.file.read
+    }));
     
     router.post('/csv-import/preview',
         withSelfAuth(),

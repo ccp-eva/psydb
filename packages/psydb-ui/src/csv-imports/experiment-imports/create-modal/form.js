@@ -18,6 +18,8 @@ const ExperimentImportCreateForm = (ps) => {
     ]});
 
     var translate = useUITranslation();
+    var [ stage, setStage ] = useState('prepare');
+
     var [ studyType, setStudyType ] = useState('wkprc_study');
     var [ studyRecord, setStudyRecord ] = useState({ _id: '6566b5c26c830cb226c1389b' });
     var [ subjectType, setSubjectType ] = useState('');
@@ -38,6 +40,57 @@ const ExperimentImportCreateForm = (ps) => {
         showStudyTypeSelect = false;
         studyType = studyCRTs[0].getType()
     }
+
+    var helperBag = {
+        showStudyTypeSelect,
+
+        studyType, setStudyType,
+        studyRecord, setStudyRecord,
+        subjectType, setSubjectType,
+        csvImporter, setCSVImporter
+    }
+    return (
+        <>
+            { stage === 'prepare' && (
+                <HelperControlsContainer { ...helperBag } />
+            )}
+            { csvImporter && (
+                <CSVImporterFormSwitch
+                    studyId={ studyRecord._id }
+                    subjectType={ subjectType }
+                    csvImporter={ csvImporter }
+                    stage={ stage }
+                    setStage={ setStage }
+                />
+            )}
+        </>
+    )
+}
+
+const CSVImporterFormSwitch = (ps) => {
+    var { csvImporter } = ps;
+    
+    var pass = only({ from: ps, keys: [
+        'studyId', 'subjectType', 'stage', 'setStage'
+    ]});
+
+    var CSVImporterForm = switchComponent(csvImporter);
+    return (
+        <CSVImporterForm { ...pass }/>
+    )
+}
+
+const HelperControlsContainer = (ps) => {
+    var {
+        showStudyTypeSelect,
+
+        studyType, setStudyType,
+        studyRecord, setStudyRecord,
+        subjectType, setSubjectType,
+        csvImporter, setCSVImporter
+    } = ps;
+    
+    var translate = useUITranslation();
 
     return (
         <>
@@ -74,29 +127,7 @@ const ExperimentImportCreateForm = (ps) => {
                     importType='experiment'
                 />
             )}
-            { csvImporter && (
-                <CSVImporterFormSwitch
-                    studyId={ studyRecord._id }
-                    subjectType={ subjectType }
-                    csvImporter={ csvImporter }
-                />
-            )}
-        </>
-    )
-}
-
-const CSVImporterFormSwitch = (ps) => {
-    var { csvImporter } = ps;
-    
-    var pass = only({ from: ps, keys: [
-        'studyId', 'subjectType'
-    ]});
-
-    var CSVImporterForm = switchComponent(csvImporter);
-    return (
-        <>
             <hr />
-            <CSVImporterForm { ...pass }/>
         </>
     )
 }

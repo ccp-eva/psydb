@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { only } from '@mpieva/psydb-core-utils';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useSend } from '@mpieva/psydb-ui-hooks';
-import { AsyncButton, LoadingIndicator } from '@mpieva/psydb-ui-layout';
+import { Alert, Button, SmallFormFooter } from '@mpieva/psydb-ui-layout';
 import { UploadModalBody } from '@mpieva/psydb-ui-lib';
 
 import {
@@ -15,53 +15,115 @@ import { CSVUploadField } from '../helper-fields';
 import WKPRCWorkflowLocationTypeSelect from './wkprc-workflow-location-type-select';
 
 export const WKPRCEVApeCognition = (ps) => {
-    var { studyId, subjectType } = ps;
+    var { studyId, subjectType, stage, setStage } = ps;
     var triggerBag = only({ from: ps, keys: [
         'onSuccessfulUpdate', 'onFailedUpdate'
     ]});
 
     var translate = useUITranslation();
-
-    var [ file, setFile ] = useState();
-    var onSuccessfulFileUpload = (responseData) => {
-        setFile(responseData.records[0]);
+    var initialValues = {
+        locationId: '64d42de0443aa279ca4cb2e8',
+        labOperatorIds: [
+            '64d42ddf443aa279ca4cb2c9',
+            '64d42ddf443aa279ca4cb2c5',
+        ],
+        fileId: '661514ed89d1fac3794ca120',
     }
-
 
     return (
         <DefaultForm
-            initialValues={{}}
+            initialValues={ initialValues }
         >
             { (formik) => {
                 var { values } = formik;
-                var { locationType } = values['$'];
-                return (
-                    <>
-                        <WKPRCWorkflowLocationTypeSelect
-                            label={ translate('Location Type') }
-                            dataXPath='$.locationType'
-                            studyId={ studyId }
-                            subjectType={ subjectType }
-                        />
-                        <Fields.ForeignId
-                            label={ translate('Location') }
-                            dataXPath='$.locationId'
-                            collection='location'
-                            recordType={ locationType }
-                        />
-                        <Fields.ForeignIdList
-                            label={ translate('Experimenters') }
-                            dataXPath='$.labOperatorIds'
-                            collection='personnel'
-                        />
+                var stageBag = {
+                    studyId,
+                    subjectType,
+                    formValues: values,
 
-                        <CSVUploadField
-                            label={ translate('File') }
-                            dataXPath='$.file'
-                        />
-                    </>
-                )
+                    gotoPrepare: () => setStage('prepare'),
+                    gotoPreview: () => setStage('preview')
+                }
+                if (stage === 'preview') {
+                    return <PreviewStage { ...stageBag } />
+                }
+                else {
+                    return <PrepareStage { ...stageBag } />
+                }
             }}
         </DefaultForm>
     )
 }
+
+var PrepareStage = (ps) => {
+    var { studyId, subjectType, formValues, gotoPreview } = ps;
+    var {
+        locationType,
+        locationId,
+        labOperatorIds = [],
+        fileId,
+    } = formValues['$'];
+
+    var translate = useUITranslation();
+
+    return (
+        <>
+            <WKPRCWorkflowLocationTypeSelect
+                label={ translate('Location Type') }
+                dataXPath='$.locationType'
+                studyId={ studyId }
+                subjectType={ subjectType }
+            />
+            <Fields.ForeignId
+                label={ translate('Location') }
+                dataXPath='$.locationId'
+                collection='location'
+                recordType={ locationType }
+            />
+            <Fields.ForeignIdList
+                label={ translate('Experimenters') }
+                dataXPath='$.labOperatorIds'
+                collection='personnel'
+            />
+            <hr />
+            { (locationId && filterTruthy(labOperatorIds).length > 0) ? (
+                <CSVUploadField
+                    label={ translate('Upload File') }
+                    dataXPath='$.fileId'
+                />
+            ) : (
+                <Alert variant='info'>
+                    <i>
+                        Please select Location and Experimenters
+                    </i>
+                </Alert>
+            )}
+            <hr />
+            <SmallFormFooter>
+                <Button disabled={ !fileId } onClick={ gotoPreview }>
+                    { translate('Next') }
+                </Button>
+            </SmallFormFooter>
+        </>
+    )
+}
+
+const PreviewStage = (ps) => {
+    var { studyId, subjectType, formValues, gotoPrepare } = ps;
+    var {
+        locationType,
+        locationId,
+        labOperatorIds = [],
+        fileId,
+    } = formValues['$'];
+
+    var saneLabOperatorIds = filterTruthy(labOperatorIds);
+    
+    return (
+        <div>
+            FOOFOFFO
+        </div>
+    )
+}
+
+var filterTruthy = (ary) => ary.filter(it => !!it);
