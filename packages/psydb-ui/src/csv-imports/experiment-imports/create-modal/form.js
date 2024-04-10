@@ -61,6 +61,7 @@ const ExperimentImportCreateForm = (ps) => {
                     csvImporter={ csvImporter }
                     stage={ stage }
                     setStage={ setStage }
+                    { ...triggerBag }
                 />
             )}
         </>
@@ -71,7 +72,8 @@ const CSVImporterFormSwitch = (ps) => {
     var { csvImporter } = ps;
     
     var pass = only({ from: ps, keys: [
-        'studyId', 'subjectType', 'stage', 'setStage'
+        'studyId', 'subjectType', 'stage', 'setStage',
+        'onSuccessfulUpdate', 'onFailedUpdate'
     ]});
 
     var CSVImporterForm = switchComponent(csvImporter);

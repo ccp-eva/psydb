@@ -43,7 +43,9 @@ export const WKPRCEVApeCognition = (ps) => {
                     formValues: values,
 
                     gotoPrepare: () => setStage('prepare'),
-                    gotoPreview: () => setStage('preview')
+                    gotoPreview: () => setStage('preview'),
+
+                    ...triggerBag
                 }
                 if (stage === 'preview') {
                     return <PreviewStage { ...stageBag } />

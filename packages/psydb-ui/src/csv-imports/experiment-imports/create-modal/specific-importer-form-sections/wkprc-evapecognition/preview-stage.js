@@ -9,6 +9,7 @@ import {
     SmallFormFooter,
     LoadingIndicator,
     SplitPartitioned,
+    AsyncButton,
 } from '@mpieva/psydb-ui-layout';
 
 // FIXME
@@ -26,7 +27,13 @@ const PreviewStage = (ps) => {
         fileId,
     } = formValues['$'];
 
+    var triggerBag = only({ from: ps, keys: [
+        'onSuccessfulUpdate', 'onFailedUpdate'
+    ]});
+
     var saneLabOperatorIds = filterTruthy(labOperatorIds);
+
+    var translate = useUITranslation();
 
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.previewCSVExperimentImport({
@@ -38,6 +45,17 @@ const PreviewStage = (ps) => {
         })
     ), []);
 
+    var send = useSend(() => ({
+        type: 'csv-import/experiment/create-wkprc-evapecognition',
+        payload: {
+            subjectType,
+            studyId,
+            locationId,
+            labOperatorIds,
+            fileId,
+        }
+    }), { ...triggerBag })
+
     if (!didFetch) {
         return <LoadingIndicator size='lg' />
     }
@@ -46,6 +64,19 @@ const PreviewStage = (ps) => {
     
     return (
         <>
+            <SmallFormFooter>
+                <AsyncButton { ...send.passthrough }>
+                    { translate('Import') }
+                </AsyncButton>
+                <Button
+                    disabled={ send.isTransmitting }
+                    variant='outline-primary'
+                    onClick={ gotoPrepare }
+                >
+                    { translate('Back') }
+                </Button>
+            </SmallFormFooter>
+            <hr />
             <div className='d-flex flex-column gapy-2'>
                 { previewRecords.map((it, ix) => {
                     return (
