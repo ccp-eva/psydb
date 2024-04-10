@@ -12,9 +12,11 @@ var executeSystemEvents = async (context) => {
     var { timezone, payload: { labOperatorIds }} = message;
     var {
         study, location, file, labOperators,
-        matchedData, preparedObjects
+        pipelineOutput
     } = cache.get();
 
+    var { matchedData, preparedObjects, transformed } = pipelineOutput;
+    var { experiments, participations } = transformed;
 
     var now = new Date();
     var csvImportId = await createId();
@@ -30,82 +32,22 @@ var executeSystemEvents = async (context) => {
         preparedObjects,
     });
 
-    for (var obj of preparedObjects) {
-        var { 
-            timestamp,
-            subjectData,
-            experimentName,
-            roomOrEnclosure,
-            comment,
-
-            subjectGroupId,
-        } = obj;
-
-        timestamp = convertYMDToClientNoon({
-            ...timestamp, clientTZ: timezone,
-        });
-
-        var experimentId = await createId('experiment');
-        var experimentCore = {
-            type: 'manual',
-            realType: 'apestudies-wkprc-default',
-            csvImportId,
-        };
-       
-        var experimentState = {
-            seriesId: await createId(),
-            isPostprocessed: true,
-
-            studyId: study._id,
-            studyRecordType: study.type,
-
-            locationId: location._id,
-            locationRecordType: location.type,
-
-            interval: { start: timestamp, end: timestamp },
-
-            selectedSubjectIds: subjectData.map(it => it.subjectId),
-            subjectData: subjectData.map(it => ({
-                ...it,
-                comment,
-
-                invitationStatus: 'scheduled',
-                participationStatus: 'participated',
-                excludeFromMoreExperimentsInStudy: false,
-            })),
-
-            experimentOperatorIds: labOperatorIds,
-
-            subjectGroupId,
-            experimentName,
-            roomOrEnclosure,
-            timezone,
-        }
-        
-        var participationItem = {
-            _id: await createId(),
-            experimentId,
-            ...experimentCore,
-
-            studyId: study._id,
-            studyType: study.type,
-
-            timestamp,
-            status: 'participated',
-            excludeFromMoreExperimentsInStudy: false,
-            timezone,
-        };
-
+    for (var it of experiments) {
+        var { parts } = it;
         await dispatchProps({
             collection: 'experiment',
-            channelId: experimentId,
+            channelId: parts._id,
             isNew: true,
-            additionalChannelProps: experimentCore,
-            props: experimentState,
+            additionalChannelProps: { ...parts.core, csvImportId },
+            props: parts.state,
 
             initialize: true,
-            recordType: experimentCore.type,
+            recordType: parts.core.type,
         });
+    }
+
+    for (var it of participations) {
+        var [ subjectId, data ] = it;
     }
 
     cache.merge({ csvImportId });

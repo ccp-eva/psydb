@@ -29,10 +29,6 @@ var compose_verifyAllowedAndPlausible = () => compose([
     
     verifySubjectCRT,
     tryPrepareImport,
-
-    cacheSubjectIds,
-    verifySameSubjectType,
-    verifySameSubjectGroup,
 ]);
 
 var verifyPermissions = async (context, next) => {
@@ -74,20 +70,23 @@ var verifyFileMimeType = async (context, next) => {
 }
 
 var tryPrepareImport = async (context, next) => {
-    var { db, cache } = context;
-    var { file } = cache.get();
+    var { db, message, cache } = context;
+    var { timezone, payload: { labOperatorIds }} = message;
+    var { subjectCRT, study, location, file } = cache.get();
 
     try {
-        var parsedLines = EVApeCognitionCSV.parseLines({
-            data: file.blob.toString()
+        var pipelineOutput = await EVApeCognitionCSV.runPipeline({
+            db,
+            csvLines: file.blob.toString(),
+
+            subjectType: subjectCRT.getType(),
+            study,
+            location,
+            labOperators: labOperatorIds.map(it => ({ _id: it })), // FIXME
+            timezone,
         });
-        var matchedData = await EVApeCognitionCSV.matchData({
-            db, parsedLines
-        });
-        var preparedObjects = EVApeCognitionCSV.makeObjects({
-            matchedData, skipEmptyValues: true
-        });
-        cache.merge({ matchedData, preparedObjects });
+
+        cache.merge({ pipelineOutput });
     }
     catch (e) {
         if (e instanceof CSVImportError) {
@@ -129,84 +128,6 @@ var verifySubjectCRT = verifyOneCRT({
 //    cache.merge({ subjectCRT });
 //    await next();
 //}
-
-var cacheSubjectIds = async (context, next) => {
-    var { db, cache } = context;
-    var { preparedObjects } = cache.get();
-    
-    var subjectIds = [];
-    for (var it of preparedObjects) {
-        var { subjectData } = it;
-        subjectIds.push(...subjectData.map(it => it.subjectId))
-    }
-    
-    cache.merge({ subjectIds });
-    await next();
-}
-
-var verifySameSubjectType = async (context, next) => {
-    var { db, cache } = context;
-    var { subjectCRT, subjectIds } = cache.get();
-
-    var invalid = await withRetracedErrors(
-        aggregateToArray({ db, subject: [
-            { $match: {
-                _id: { $in: subjectIds },
-                type: { $ne: subjectCRT.getType() }
-            }},
-            { $project: { _id: true }}
-        ]})
-    );
-    if (invalid.length > 0) {
-        throw new ApiError(409); // TODO
-    }
-
-    await next();
-}
-
-var verifySameSubjectGroup = async (context, next) => {
-    var { db, cache } = context;
-    var { subjectIds, preparedObjects } = cache.get();
-    
-    var records = await withRetracedErrors(
-        aggregateToArray({ db, subject: [
-            { $match: { _id: { $in: subjectIds }}},
-            { $project: {
-                'groupId': '$scientific.state.custom.groupId', // XXX
-            }}
-        ]})
-    );
-
-    var groupIdsBySubject = keyBy({
-        items: records,
-        byProp: '_id',
-        transform: (it => it.groupId)
-    });
-
-    var invalid = [];
-    for (var [ oix, obj ] of preparedObjects.entries()) {
-        var { subjectData } = obj;
-        var groupId = undefined;
-        for (var it of subjectData) {
-            var itemGroupId = groupIdsBySubject[it.subjectId];
-            if (groupId && !compareIds(groupId, itemGroupId)) {
-                invalid.push({ ix: oix, item: obj });
-            }
-            else {
-                groupId = itemGroupId;
-            }
-        }
-
-        // FIXME: i dont like that
-        obj.subjectGroupId = groupId;
-    }
-
-    if (invalid.length > 0) {
-        throw new ApiError(409); // TODO
-    }
-
-    await next();
-}
 
 module.exports = {
     verifyAllowedAndPlausible: compose_verifyAllowedAndPlausible()

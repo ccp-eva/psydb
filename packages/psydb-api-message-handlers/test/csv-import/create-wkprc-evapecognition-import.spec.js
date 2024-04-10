@@ -61,6 +61,18 @@ describe('csv-import/experiment/create-wkprc-evapecognition', function () {
             { $match: { csvImportId }}
         ]});
         console.dir(ejson(experiments), { depth: null });
+
+        var participations = await aggregateToArray({ db, subject: [
+            { $project: {
+                '_id': true,
+                '_P': '$scientific.state.internals.participatedInStudies',
+            }},
+            { $unwind: '$_P' },
+            { $match: {
+                '_P.csvImportId': csvImportId
+            }}
+        ]});
+        console.dir(ejson(participations), { depth: null });
         
 
         //var imports = await db.collection('csvImport').find().toArray();
