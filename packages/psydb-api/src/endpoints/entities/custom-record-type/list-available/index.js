@@ -31,7 +31,7 @@ var listAvailable = async (context, next) => {
     var crts = undefined;
     if (ignoreResearchGroups) {
         crts = await fetchAllCRTSettings(db, [
-            ...collections.map(it => ({ collection }))
+            ...collections.map(it => ({ collection: it }))
         ], { wrap: false, asTree: false });
     }
     else {
