@@ -49,32 +49,18 @@ var preview = async (context, next) => {
         findOne_RAW({ db, location: { _id: locationId }})
     );
 
-    // run pipeline
-    var parsedLines = EVApeCognitionCSV.parseLines({
-        data: file.blob.toString()
-    });
-    var matchedData = await EVApeCognitionCSV.matchData({
-        db, parsedLines
-    })
-    var preparedObjects = EVApeCognitionCSV.makeObjects({
-        matchedData, skipEmptyValues: true
-    });
+    var pipelineOutput = await EVApeCognitionCSV.runPipeline({
+        db,
+        csvLines: file.blob.toString(),
 
-    await EVApeCognitionCSV.verifySameSubjectType({
-        db, subjectType, preparedObjects
-    });
-    
-    await EVApeCognitionCSV.verifySameSubjectGroup({
-        db, preparedObjects
-    });
-
-    var transformed = EVApeCognitionCSV.transformPrepared({
-        preparedObjects,
+        subjectType,
         study,
         location,
         labOperators: labOperatorIds.map(it => ({ _id: it})), // FIXME
         timezone
     });
+
+    var { matchedData, preparedObjects, transformed } = pipelineOutput;
     
     var previewRecords = transformed.experiments.map(it => ({
         ...it.record,

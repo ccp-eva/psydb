@@ -11,4 +11,6 @@ module.exports = {
     makeParticipationItems: require('./make-participation-items'),
 
     transformPrepared: require('./transform-prepared'),
+
+    runPipeline: require('./run-pipeline'),
 }
