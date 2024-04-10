@@ -9,7 +9,7 @@ var makeExperiment = (bag) => {
         csvImportId,
         study,
         location,
-        labOperatorIds,
+        labOperators,
         timezone
     } = bag
     
@@ -56,7 +56,7 @@ var makeExperiment = (bag) => {
             excludeFromMoreExperimentsInStudy: false,
         })),
 
-        experimentOperatorIds: labOperatorIds,
+        experimentOperatorIds: labOperators.map(it => it._id),
 
         subjectGroupId,
         experimentName,

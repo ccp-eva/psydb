@@ -1,4 +1,6 @@
 'use strict';
+var { ObjectId } = require('@mpieva/psydb-mongo-adapter');
+
 var makeParticipationItems = (bag) => {
     var { experimentParts } = bag;
     var {

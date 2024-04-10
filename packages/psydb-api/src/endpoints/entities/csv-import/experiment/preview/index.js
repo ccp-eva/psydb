@@ -1,5 +1,6 @@
 'use strict';
 var {
+    compose,
     ApiError,
     ResponseBody,
     validateOrThrow,
@@ -48,16 +49,50 @@ var preview = async (context, next) => {
         findOne_RAW({ db, location: { _id: locationId }})
     );
 
+    // run pipeline
+    var parsedLines = EVApeCognitionCSV.parseLines({
+        data: file.blob.toString()
+    });
+    var matchedData = await EVApeCognitionCSV.matchData({
+        db, parsedLines
+    })
+    var preparedObjects = EVApeCognitionCSV.makeObjects({
+        matchedData, skipEmptyValues: true
+    });
+
+    await EVApeCognitionCSV.verifySameSubjectType({
+        db, subjectType, preparedObjects
+    });
+    
+    await EVApeCognitionCSV.verifySameSubjectGroup({
+        db, preparedObjects
+    });
+
+    var transformed = EVApeCognitionCSV.transformPrepared({
+        preparedObjects,
+        study,
+        location,
+        labOperators: labOperatorIds.map(it => ({ _id: it})), // FIXME
+        timezone
+    });
+    
+    var previewRecords = transformed.experiments.map(it => ({
+        ...it.record,
+        csvImportId: null,
+    }));
+
+    context.body = ResponseBody({ data: {
+        matchedData,
+        preparedObjects,
+        previewRecords,
+    }});
+
+    await next();
+}
+
+var withCSVImportErrorHandling = () => async (context, next) => {
     try {
-        var parsedLines = EVApeCognitionCSV.parseLines({
-            data: file.blob.toString()
-        });
-        var matchedData = await EVApeCognitionCSV.matchData({
-            db, parsedLines
-        })
-        var preparedObjects = EVApeCognitionCSV.makeObjects({
-            matchedData, skipEmptyValues: true
-        });
+        await next();
     }
     catch (e) {
         if (e instanceof CSVImportError) {
@@ -68,34 +103,9 @@ var preview = async (context, next) => {
             throw e
         }
     }
-
-    var previewRecords = [];
-    for (var obj of preparedObjects) {
-        var {
-            record,
-            parts: experimentParts
-        } = EVApeCognitionCSV.makeExperiment({
-            preparedObject: obj,
-            
-            csvImportId: null,
-            study,
-            location,
-            labOperatorIds,
-            timezone
-        });
-
-        previewRecords.push(record);
-        //var participations = EVApeCognition.makeParticipationItems({
-        //    experimentParts,
-        //});
-    }
-    context.body = ResponseBody({ data: {
-        matchedData,
-        preparedObjects,
-        previewRecords,
-    }});
-
-    await next();
 }
 
-module.exports = preview;
+module.exports = compose([
+    withCSVImportErrorHandling(),
+    preview
+]);
