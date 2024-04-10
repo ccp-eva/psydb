@@ -1,4 +1,5 @@
 'use strict';
+var { only } = require('@mpieva/psydb-core-utils');
 var {
     compose,
     ApiError,
@@ -6,6 +7,8 @@ var {
     validateOrThrow,
     withRetracedErrors,
     aggregateOne,
+    fetchRecordLabelsManual,
+
     findOne_RAW
 } = require('@mpieva/psydb-api-lib');
 
@@ -17,7 +20,11 @@ var {
 var Schema = require('./schema');
 
 var preview = async (context, next) => {
-    var { db, permissions, request, timezone } = context;
+    var { db, permissions, request } = context;
+    
+    var i18n = only({ from: context, keys: [
+        'language', 'locale', 'timezone'
+    ]});
     
     if (!permissions.isRoot()) {
         throw new ApiError(403);
@@ -57,7 +64,7 @@ var preview = async (context, next) => {
         study,
         location,
         labOperators: labOperatorIds.map(it => ({ _id: it})), // FIXME
-        timezone
+        timezone: i18n.timezone
     });
 
     var { matchedData, preparedObjects, transformed } = pipelineOutput;
@@ -67,10 +74,22 @@ var preview = async (context, next) => {
         csvImportId: null,
     }));
 
+    var relatedIds = { subject: [], subjectGroup: [] };
+    for (var it of previewRecords) {
+        var { subjectGroupId, selectedSubjectIds } = it.state;
+        
+        relatedIds.subject.push(...selectedSubjectIds);
+        relatedIds.subjectGroup.push(subjectGroupId);
+    }
+    var related = {
+        records: await fetchRecordLabelsManual(db, relatedIds, i18n)
+    };
+
     context.body = ResponseBody({ data: {
         matchedData,
         preparedObjects,
         previewRecords,
+        related,
     }});
 
     await next();
