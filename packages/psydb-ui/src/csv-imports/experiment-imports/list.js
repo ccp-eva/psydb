@@ -64,4 +64,13 @@ const RecordTable = (ps) => {
     )
 }
 
+const RecordRow = (ps) => {
+    var { record, related } = ps;
+    return (
+        <>
+            <td>XXX</td>
+        </>
+    )
+}
+
 export default List;
