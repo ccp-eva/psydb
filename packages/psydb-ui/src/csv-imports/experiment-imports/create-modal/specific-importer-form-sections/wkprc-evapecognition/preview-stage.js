@@ -11,6 +11,12 @@ import {
     SplitPartitioned,
 } from '@mpieva/psydb-ui-layout';
 
+// FIXME
+import {
+    DateTime,
+    ForeignId
+} from '@mpieva/psydb-ui-lib/src/data-viewers/utility-components';
+
 const PreviewStage = (ps) => {
     var { studyId, subjectType, formValues, gotoPrepare } = ps;
     var {
@@ -65,24 +71,45 @@ const PreviewRecord = (ps) => {
         roomOrEnclosure
     } = previewRecord.state;
 
+    var translate = useUITranslation();
+
     return (
         <div className='bg-white py-2 px-3 border'>
-            <SplitPartitioned partitions={[ 1, 1 ]}>
-                <div>Zeitpunkt: { interval.start }</div>
-                <div>SubjectGroup: { subjectGroupId }</div>
+            <SplitPartitioned partitions={[ 1, 1, 1, 1 ]}>
+                <span>Zeitpunkt:</span>
+                <BE><DateTime value={ interval.start } /></BE>
+
+                <span>{ translate('Subject Group') }:</span>
+                <BE><ForeignId
+                    value={ subjectGroupId }
+                    props={{ collection: 'subjectGroup' }}
+                    related={ related }
+                    newTab={ true }
+                    __useNewRelated={ true }
+                /></BE>
             </SplitPartitioned>
-            <SplitPartitioned partitions={[ 1, 1 ]}>
-                <div>Experiment Name: { experimentName }</div>
-                <div>RoomOrEnclosure: { roomOrEnclosure }</div>
+            <SplitPartitioned partitions={[ 1, 1, 1, 1 ]}>
+                <span>{ translate('Experiment Name') }:</span>
+                <BE>{ experimentName }</BE>
+                <span>{ translate('Room/Enclosure') }:</span>
+                <BE>{ roomOrEnclosure }</BE>
             </SplitPartitioned>
             <div className='mt-2 border-top pt-2'>
-                <header><b>Subjects</b></header>
+                <header><b>
+                    { translate('Subjects') }
+                </b></header>
                 { subjectData.map((it, ix) => {
                     var { subjectId, comment } = it;
                     return (
                         <SplitPartitioned partitions={[ 1, 1 ]}>
-                            <div>{ subjectId }</div>
-                            <div>{ comment }</div>
+                            <ForeignId
+                                value={ subjectId }
+                                props={{ collection: 'subject' }}
+                                related={ related }
+                                newTab={ true }
+                                __useNewRelated={ true }
+                            />
+                            <i>{ comment }</i>
                         </SplitPartitioned>
                     )
                 })}
@@ -91,6 +118,9 @@ const PreviewRecord = (ps) => {
     );
 }
 
+var BE = (ps) => (
+    <b style={{ fontWeight: 600 }} { ...ps } />
+);
 var filterTruthy = (ary) => ary.filter(it => !!it);
 
 export default PreviewStage;
