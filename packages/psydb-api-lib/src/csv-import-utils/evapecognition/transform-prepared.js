@@ -20,10 +20,10 @@ var transformPrepared = (bag) => {
         });
         transformed.experiments.push({ record, parts });
 
-        var [ subjectId, data ] = makeParticipationItems({
+        var items = makeParticipationItems({
             experimentParts: parts,
         });
-        transformed.participations.push([ subjectId, data ]);
+        transformed.participations.push(...items);
     }
     return transformed;
 }

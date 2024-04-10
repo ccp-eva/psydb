@@ -48,6 +48,17 @@ var executeSystemEvents = async (context) => {
 
     for (var it of participations) {
         var [ subjectId, data ] = it;
+        console.log({ subjectId, data });
+        await dispatch({
+            collection: 'subject',
+            channelId: subjectId,
+            subChannelKey: 'scientific',
+            payload: { $push: {
+                'scientific.state.internals.participatedInStudies': {
+                    ...data, csvImportId
+                },
+            }}
+        });
     }
 
     cache.merge({ csvImportId });
