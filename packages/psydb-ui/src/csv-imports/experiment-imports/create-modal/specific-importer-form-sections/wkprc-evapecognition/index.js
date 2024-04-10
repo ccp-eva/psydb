@@ -13,6 +13,7 @@ import {
 
 import { CSVUploadField } from '../helper-fields';
 import WKPRCWorkflowLocationTypeSelect from './wkprc-workflow-location-type-select';
+import PreviewStage from './preview-stage';
 
 export const WKPRCEVApeCognition = (ps) => {
     var { studyId, subjectType, stage, setStage } = ps;
@@ -105,24 +106,6 @@ var PrepareStage = (ps) => {
                 </Button>
             </SmallFormFooter>
         </>
-    )
-}
-
-const PreviewStage = (ps) => {
-    var { studyId, subjectType, formValues, gotoPrepare } = ps;
-    var {
-        locationType,
-        locationId,
-        labOperatorIds = [],
-        fileId,
-    } = formValues['$'];
-
-    var saneLabOperatorIds = filterTruthy(labOperatorIds);
-    
-    return (
-        <div>
-            FOOFOFFO
-        </div>
     )
 }
 

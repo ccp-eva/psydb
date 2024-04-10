@@ -48,8 +48,6 @@ var preview = async (context, next) => {
         findOne_RAW({ db, location: { _id: locationId }})
     );
 
-
-
     try {
         var parsedLines = EVApeCognitionCSV.parseLines({
             data: file.blob.toString()

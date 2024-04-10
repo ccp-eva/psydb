@@ -818,6 +818,15 @@ const createAgent = (options = {}) => {
             {}, extraAxiosConfig,
         );
     }
+    
+    agent.previewCSVExperimentImport = (bag = {}) => {
+        var { extraAxiosConfig, ...payload } = bag;
+
+        return axios.post(
+            '/api/csv-import/experiment/preview',
+            payload, extraAxiosConfig,
+        );
+    }
 
     agent.fetchStudySubjectTypeInfos = (bag) => {
         var {
