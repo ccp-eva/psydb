@@ -11,7 +11,7 @@ import {
     Fields
 } from '@mpieva/psydb-ui-lib/src/formik';
 
-import { CSVUploadField } from '../helper-fields';
+import CSVUploadField from '../../../../csv-upload-field';
 import WKPRCWorkflowLocationTypeSelect from './wkprc-workflow-location-type-select';
 import PreviewStage from './preview-stage';
 
@@ -59,7 +59,7 @@ export const WKPRCEVApeCognition = (ps) => {
     )
 }
 
-var PrepareStage = (ps) => {
+const PrepareStage = (ps) => {
     var { studyId, subjectType, formValues, gotoPreview } = ps;
     var {
         locationType,

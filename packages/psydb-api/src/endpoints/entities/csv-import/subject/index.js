@@ -1,4 +1,4 @@
 module.exports = {
-    //search: require('./search'),
+    search: require('./search'),
     preview: require('./preview'),
 }

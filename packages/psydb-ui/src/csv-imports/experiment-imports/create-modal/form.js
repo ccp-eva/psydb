@@ -13,8 +13,7 @@ import * as HelperControls from './helper-controls';
 const ExperimentImportCreateForm = (ps) => {
     
     var triggerBag = only({ from: ps, keys: [
-        'onSuccessfulUpdate',
-        'onFailedUpdate'
+        'onSuccessfulUpdate', 'onFailedUpdate'
     ]});
 
     var translate = useUITranslation();

@@ -2,14 +2,14 @@ import React from 'react';
 import { demuxed } from '@mpieva/psydb-ui-utils';
 import { WithDefaultModal } from '@mpieva/psydb-ui-layout';
 
-import ExperimentImportCreateForm from './form';
+import SubjectImportCreateForm from './form';
 
-const ExperimentImportCreateModalBody = (ps) => {
+const SubjectImportCreateModalBody = (ps) => {
     var { onHide, onSuccessfulUpdate } = ps;
 
     return (
         <>
-            <ExperimentImportCreateForm
+            <SubjectImportCreateForm
                 onSuccessfulUpdate={ demuxed([
                     onHide,
                     onSuccessfulUpdate
@@ -19,10 +19,10 @@ const ExperimentImportCreateModalBody = (ps) => {
     );
 }
 
-const ExperimentImportCreateModal = WithDefaultModal({
-    Body: ExperimentImportCreateModalBody,
-    title: 'New Import',
+const SubjectImportCreateModal = WithDefaultModal({
+    Body: SubjectImportCreateModalBody,
+    title: 'Import Subjects',
     size: 'xl',
 });
 
-export default ExperimentImportCreateModal;
+export default SubjectImportCreateModal;

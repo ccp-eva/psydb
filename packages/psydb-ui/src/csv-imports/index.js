@@ -4,6 +4,7 @@ import { useRouteMatch, Switch, Route, Redirect } from 'react-router-dom';
 import PageWrapper from './page-wrapper';
 import IndexNavOrRedirect from './index-nav-or-redirect';
 import ExperimentImportRouting from './experiment-imports';
+import SubjectImportRouting from './subject-imports';
 
 const CSVImportRouting = () => {
     var { url, path } = useRouteMatch();
@@ -21,6 +22,9 @@ const CSVImportRouting = () => {
                 </Route>
                 <Route path={ `${path}/participation` }>
                     <ExperimentImportRouting />
+                </Route>
+                <Route path={ `${path}/subject` }>
+                    <SubjectImportRouting />
                 </Route>
             </Switch>
         </PageWrapper>
