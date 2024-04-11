@@ -2,12 +2,13 @@
 var { UnknownCSVColumnKeys } = require('../errors');
 var { deserializers, parseDefinedCSV } = require('../common');
 
-var parseSubjectCSV = (bag) => {
+var parseLines = (bag) => {
     var { data, subjectCRT } = bag;
     
     var combinedDefinitions = {
         ...subjectCRT.allCustomFields(),
-        ...extraDefinitions
+        // TODO determine if testing permissions allowed
+        //...extraDefinitions
     }
     
     var combinedDeserializers = {
@@ -72,4 +73,4 @@ var extraDeserializers = {
     }),
 }
 
-module.exports = parseSubjectCSV;
+module.exports = parseLines;

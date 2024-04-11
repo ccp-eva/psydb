@@ -2,10 +2,16 @@
 var { sift } = require('@mpieva/psydb-common-lib');
 var { UnknownCSVColumnKeys } = require('../errors');
 var dumbParseCSV = require('./dumb-parse-csv');
-var deserializers = require('./deserializers');
+var commonDeserializers = require('./deserializers');
 
 var parseDefinedCSV = (bag) => {
-    var { csvData, definitions, throwUnknown = true } = bag;
+    var {
+        csvData,
+        definitions,
+        deserializers = commonDeserializers,
+        throwUnknown = true
+    } = bag;
+
     var { csvColumns, csvLines } = dumbParseCSV(csvData);
     
     var mapping = createCSVColumnMapping({

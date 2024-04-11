@@ -6,7 +6,6 @@ var { swapTimezone } = require('@mpieva/psydb-timezone-helpers');
 var makeExperiment = (bag) => {
     var {
         preparedObject,
-        csvImportId,
         study,
         location,
         labOperators,
@@ -31,7 +30,7 @@ var makeExperiment = (bag) => {
     var experimentCore = {
         type: 'manual',
         realType: 'apestudies-wkprc-default',
-        csvImportId,
+        csvImportId: null,
     }
 
     var experimentState = {
