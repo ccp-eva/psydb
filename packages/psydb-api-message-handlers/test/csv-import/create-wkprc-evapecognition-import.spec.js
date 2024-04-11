@@ -12,7 +12,7 @@ var jsonify = (that) => (
 
 var RootHandler = require('../../src/');
 
-var omitNonsense = ({ from }) => omit({
+var omitNonsense = (from) => omit({
     from, paths: [ '_id', '_rohrpostMetadata' ]
 });
 
@@ -74,6 +74,15 @@ describe('csv-import/experiment/create-wkprc-evapecognition', function () {
         ]});
         console.dir(ejson(participations), { depth: null });
         
+        expect(ejson(omit({
+            fromItems: experiments,
+            paths: [ '_id', '_rohrpostMetadata', 'csvImportId', 'state.seriesId' ],
+        }))).toMatchSnapshot();
+
+        expect(ejson(omit({
+            fromItems: participations,
+            paths: [ '_P._id', '_P.csvImportId', '_P.experimentId' ]
+        }))).toMatchSnapshot();
 
         //var imports = await db.collection('csvImport').find().toArray();
         //console.dir(ejson(imports), { depth: null });
