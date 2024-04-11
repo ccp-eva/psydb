@@ -504,6 +504,8 @@ var createRouting = (bag = {}) => {
         endpoints.channelHistory
     );
 
+
+
     router.post('/file/upload',
         withSelfAuth(),
         withPermissions(),
@@ -525,6 +527,11 @@ var createRouting = (bag = {}) => {
     router.post('/csv-import/experiment/preview', ...withPostStages({
         endpoint: endpoints.csvImport.experiment.preview
     }));
+
+    router.post('/csv-import/subject/preview', ...withPostStages({
+        endpoint: endpoints.csvImport.subject.preview
+    }));
+
 
 
     router.post('/researchGroup/search-metadata', ...withPostStages({
