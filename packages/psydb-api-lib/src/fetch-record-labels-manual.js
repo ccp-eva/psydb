@@ -136,7 +136,7 @@ var handleWithCRT = async (bag) => {
         var ids = idsForCollection[collection];
 
         var recordLabelProjection = mergeRecordLabelProjections(
-            allCRTSettings[collection], { as: '_labelProjection' }
+            (allCRTSettings[collection] || []), { as: '_labelProjection' }
         );
 
         var records = await (

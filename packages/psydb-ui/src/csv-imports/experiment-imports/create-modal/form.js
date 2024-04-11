@@ -20,9 +20,13 @@ const ExperimentImportCreateForm = (ps) => {
     var translate = useUITranslation();
     var [ stage, setStage ] = useState('prepare');
 
-    var [ studyType, setStudyType ] = useState('wkprc_study');
-    var [ studyRecord, setStudyRecord ] = useState({ _id: '6566b5c26c830cb226c1389b' });
-    var [ subjectType, setSubjectType ] = useState('');
+    var [ studyType, setStudyType ] = useState(
+        // 'wkprc_study'
+    );
+    var [ studyRecord, setStudyRecord ] = useState(
+        // { _id: '6566b5c26c830cb226c1389b' }
+    );
+    var [ subjectType, setSubjectType ] = useState();
     var [ csvImporter, setCSVImporter ] = useState();
 
     var [ didFetch, fetched ] = useFetchAll((agent) => ({

@@ -9,7 +9,7 @@ const CSVImportRouting = () => {
     var { url, path } = useRouteMatch();
 
     var pflags = {
-        canViewSubjectImports: false,
+        canViewSubjectImports: true,
         canViewExperimentImports: true,
     }
 
