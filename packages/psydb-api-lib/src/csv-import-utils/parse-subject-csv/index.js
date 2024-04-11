@@ -160,4 +160,36 @@ var createCSVColumnMapping = (bag) => {
     return infos;
 }
 
+var extraDefinitions = [
+    {
+        csvColumnKey: 'testingPermissions.inhouse',
+        systemType: 'InhousePermissionListItem',
+        pointer: '/scientific/state/testingPermissions/0/permissionList/-'
+    },
+    {
+        csvColumnKey: 'comment',
+        systemType: 'FullText',
+        pointer: '/scientific/state/comment'
+    }
+]
+
+var extraDeserializers = {
+    'InhousePermissionListItem': ({ value, definition }) => ({
+        labProcedureKey: 'inhouse',
+        value,
+    }),
+    'AwayTeamPermissionListItem': ({ value, definition }) => ({
+        labProcedureKey: 'away-team',
+        value,
+    }),
+    'OnlineVideoCallPermissionListItem': ({ value, definition }) => ({
+        labProcedureKey: 'online-video-call',
+        value,
+    }),
+    'OnlineSurveyPermissionListItem': ({ value, definition }) => ({
+        labProcedureKey: 'online-video-call',
+        value,
+    }),
+}
+
 module.exports = parseSubjectCSV;
