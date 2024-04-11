@@ -15,7 +15,8 @@ var Schema = async (context) => {
     var schema = ClosedObject({
         subjectType: CustomRecordTypeKey({ collection: 'subject' }),
         fileId: ForeignId({ collection: 'file' }),
-        accessRightsByBesearchGroup: AccessRightsByResearchGroup()
+        researchGroupId: ForeignId({ collection: 'researchGroup' }),
+        //accessRightsByBesearchGroup: AccessRightsByResearchGroup()
     });
     
     return schema;

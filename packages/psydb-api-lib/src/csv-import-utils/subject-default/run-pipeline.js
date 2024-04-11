@@ -10,7 +10,7 @@ var runPipeline = async (bag) => {
         csvLines,
 
         subjectCRT,
-        researchGroupId,
+        researchGroup,
         timezone
     } = bag;
 
@@ -22,7 +22,7 @@ var runPipeline = async (bag) => {
         preparedObjects,
 
         subjectCRT,
-        researchGroupId,
+        researchGroup,
         timezone
     });
 

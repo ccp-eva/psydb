@@ -5,11 +5,12 @@ var { deserializers, parseDefinedCSV } = require('../common');
 var parseLines = (bag) => {
     var { data, subjectCRT } = bag;
     
-    var combinedDefinitions = {
+    var combinedDefinitions = [
         ...subjectCRT.allCustomFields(),
+        ...commonExtraDefinitions,
         // TODO determine if testing permissions allowed
-        //...extraDefinitions
-    }
+        //...testingPermissiosExtraDefinitions
+    ]
     
     var combinedDeserializers = {
         ...deserializers,
@@ -26,7 +27,7 @@ var parseLines = (bag) => {
     return out;
 }
 
-var extraDefinitions = [
+var testingPermissionExtraDefinitions = [
     {
         csvColumnKey: 'testingPermissions.inhouse',
         systemType: 'InhousePermissionListItem',
@@ -47,6 +48,9 @@ var extraDefinitions = [
         systemType: 'OnlineSurveyPermissionListItem',
         pointer: '/scientific/state/testingPermissions/0/permissionList/-'
     },
+];
+
+var commonExtraDefinitions = [
     {
         csvColumnKey: 'comment',
         systemType: 'FullText',

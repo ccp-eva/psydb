@@ -3,5 +3,6 @@ module.exports = {
     matchSubjectCSVData: require('./match-subject-csv-data'),
 
     EVApeCognitionCSV: require('./evapecognition'),
+    SubjectDefaultCSV: require('./subject-default'),
     ...require('./errors'),
 }

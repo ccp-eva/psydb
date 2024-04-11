@@ -10,58 +10,35 @@ var {
     fetchAvailableCRTSettings,
 } = require('@mpieva/psydb-api-lib');
 
-var { verifyOneRecord } = require('@mpieva/psydb-api-message-handler-lib');
+var {
+    verifyOneRecord,
+    verifyOneCRT,
+} = require('@mpieva/psydb-api-message-handler-lib');
 
-var { checkAgeFrameIntervalIsPlausible } = require('../utils');
-
+var {
+    SubjectDefaultCSV,
+    CSVImportError
+} = require('@mpieva/psydb-api-lib/csv-import-utils');
 
 var compose_verifyAllowedAndPlausible = () => compose([
     verifyPermissions,
-    verifySubjectType,
-    verifyAccessRights,
+    
+    verifySubjectCRT,
+    verifyResearchGroupRecord,
+
+    //verifyAccessRights,
     verifyFileRecord,
     verifyFileMimeType,
 
     tryPrepareImport,
+    //verifyNoDuplicates // TODO
 ]);
-
-var verifyFileMimeType = async (context) => {
-    var { cache } = context;
-    var { file } = cache.get();
-    
-    if (file.mimetype !== 'text/csv') {
-        throw new ApiError(409, 'file mime-type is not "text/csv"');
-    }
-}
-
-var tryParseAndMatchCSV = async (context, next) => {
-    var { cache } = context;
-    var { file, subjectCRT } = cache.get();
-    
-    var parsed = parseOnlineParticipationCSV({
-        data: file.blob.toString()
-    })
-    
-    cache.merge({ parsed });
-}
-
-var tryMatchData = async (context, next) => {
-    var { db, cache } = context;
-    var { parsed, subjectCRT } = cache.get();
-
-    var matched = await matchOnlineParticipationCSV({
-        db, parsed, studyId
-    });
-
-    cache.merge({ matched });
-}
-
 
 var verifyPermissions = async (context, next) => {
     var { db, permissions, message } = context;
     
-    if (!permissions.hasCollectionFlag('subject', 'write')) {
-        throw new ApiError(403);
+    if (!permissions.isRoot()) {
+        throw new ApiError(403)
     }
     //if (!permissions.hasFlag('canImportSubjects')) {
     //    throw new ApiError(403);
@@ -70,26 +47,60 @@ var verifyPermissions = async (context, next) => {
     await next();
 }
 
-var verifySubjectType = async (context, next) => {
-    var { db, message, cache } = context;
-    var { studyId, subjectTypeKey } = message.payload;
+var verifyFileMimeType = async (context, next) => {
+    var { cache } = context;
+    var { file } = cache.get();
     
-    var subjectCRTs = await fetchAvailableCRTSettings({
-        db, collections: [ 'subject' ], permissions
-        wrap: false, asTree: false
-    });
-    // FIXME: move that into above when asTree is false
-    var subjectCRT = CRTSettingsList({ items: subjectCRTs }).find({
-        'type': subjectTypeKey
-    });
-
-    if (!subjectCRT) {
-        throw new ApiError(400, 'InvalidSubjectType');
+    if (file.mimetype !== 'text/csv') {
+        throw new ApiError(409, 'file mime-type is not "text/csv"');
     }
-
-    cache.merge({ subjectCRT });
+    
     await next();
 }
+
+var tryPrepareImport = async (context, next) => {
+    var { db, message, cache } = context;
+    var { timezone, payload: { labOperatorIds }} = message;
+    var { subjectCRT, researchGroup, file } = cache.get();
+
+    try {
+        var pipelineOutput = await SubjectDefaultCSV.runPipeline({
+            db,
+            csvLines: file.blob.toString(),
+
+            subjectCRT,
+            researchGroup,
+            timezone,
+        });
+
+        cache.merge({ pipelineOutput });
+    }
+    catch (e) {
+        if (e instanceof CSVImportError) {
+            // TODO
+            console.log(e);
+            console.log(e.getInfo());
+            throw new ApiError(409, 'cannot parse csv contents');
+        }
+        else {
+            throw e
+        }
+    }
+
+    await next();
+}
+
+var verifySubjectCRT = verifyOneCRT({
+    collection: 'subject',
+    by: '/payload/subjectType',
+    cache: true
+});
+
+var verifyResearchGroupRecord = verifyOneRecord({
+    collection: 'researchGroup',
+    by: '/payload/researchGroupId',
+    cache: true
+});
 
 var verifyFileRecord = verifyOneRecord({
     collection: 'file',

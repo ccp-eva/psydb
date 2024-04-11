@@ -2,7 +2,7 @@
 var makeSubject = require('./make-subject');
 
 var transformPrepared = (bag) => {
-    var { preparedObjects, subjectCRT, researchGroupId, timezone } = bag;
+    var { preparedObjects, subjectCRT, researchGroup, timezone } = bag;
 
     var transformed = {
         subjects: [],
@@ -12,7 +12,7 @@ var transformPrepared = (bag) => {
             preparedObject: obj,
            
             subjectCRT,
-            researchGroupId,
+            researchGroup,
             timezone
         });
         transformed.subjects.push({ record, parts });

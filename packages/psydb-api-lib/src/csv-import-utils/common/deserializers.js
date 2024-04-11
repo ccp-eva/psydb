@@ -40,13 +40,16 @@ var deserializers = {
             return (lcvalue === 'true');
         }
         else {
+            // XXX: should we check against ajv schema?
+            throw new Error('invalid value for DefaultBool'); // TODO
             return value;
         }
     },
     'Integer': ({ value, definition }) => {
         var i = parseInt(value);
         if (Number.isNaN(i)) {
-            return value;
+            throw new Error('invalid value for Integer'); // TODO
+            return i;
         }
         else {
             return i;

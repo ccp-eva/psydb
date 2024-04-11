@@ -3,6 +3,7 @@ var { expect } = require('@mpieva/psydb-api-mocha-test-tools/chai');
 
 var { ObjectId } = require('@cdxoo/mongo-test-helpers');
 var { ejson, omit } = require('@mpieva/psydb-core-utils');
+var { aggregateToArray } = require('@mpieva/psydb-api-lib');
 var { getContent: loadCSV } = require('@mpieva/psydb-fixtures/csv');
 
 var jsonify = (that) => (
@@ -11,7 +12,7 @@ var jsonify = (that) => (
 
 var RootHandler = require('../../../src/');
 
-describe('csv-import/subject/default fs-malaysia', function () {
+describe('csv-import/subject/create-default fs-malaysia', function () {
     var db, sendMessage, fileId;
     beforeEach(async function () {
         await this.restore('2024-03-29__1914_fieldsites');
@@ -46,11 +47,12 @@ describe('csv-import/subject/default fs-malaysia', function () {
         console.log(csvImportId);
         
         var imports = await db.collection('csvImport').find().toArray();
-        console.dir(ejson(imports), { depth: null });
+        //console.dir(ejson(imports), { depth: null });
         
-        var subjects = await aggregateToArray({ db, subject: [
-            { $match: { csvImportId }}
-        ]});
+        var subjects = await db.collection('subject').find().toArray();
+        //var subjects = await aggregateToArray({ db, subject: [
+        //    { $match: { csvImportId }}
+        //]});
         console.dir(ejson(subjects), { depth: null });
     })
 })

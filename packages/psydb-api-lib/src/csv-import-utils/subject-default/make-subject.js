@@ -8,7 +8,7 @@ var makeSubject = (bag) => {
         preparedObject,
 
         subjectCRT,
-        researchGroupId,
+        researchGroup,
         timezone
     } = bag;
 
@@ -22,9 +22,10 @@ var makeSubject = (bag) => {
     var gdprState = copy(preparedObject.gdpr?.state || {});
     var scientificState = copy(preparedObject.scientific?.state || {});
 
+    var researchGroupId = researchGroup._id;
     jsonpointer.set(
         scientificState,
-        '/internals/systemPermissions/accessRightsByResearchGroup/0',
+        '/systemPermissions/accessRightsByResearchGroup/0',
         { researchGroupId, permission: 'write' }
     );
 
@@ -49,3 +50,5 @@ var makeSubject = (bag) => {
         }
     }
 }
+
+module.exports = makeSubject;
