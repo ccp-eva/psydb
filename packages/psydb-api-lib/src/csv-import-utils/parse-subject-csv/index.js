@@ -1,7 +1,8 @@
 'use strict';
-var { CsvError, parse: parseCSV } = require('csv-parse/sync');
-var { ObjectId } = require('@mpieva/psydb-mongo-adapter');
+var { sift } = require('@mpieva/psydb-common-lib');
 var { UnknownCSVColumnKeys } = require('../errors');
+var { deserializers } = require('../common');
+//var dumbParseCSV = require('../dumb-parse-csv');
 
 var isUnsupportedType = (systemType) => {
     return [
@@ -11,26 +12,16 @@ var isUnsupportedType = (systemType) => {
 
 var parseSubjectCSV = (bag) => {
     var { data, subjectCRT } = bag;
+    
+    var definitions = {
+        ...subjectCRT.allCustomFields(),
+        ...extraDefinitions
+    };
 
-    var allFields = subjectCRT.allCustomFields();
-    var allRequired = subjectCRT.findRequiredCustomFields();
-    var missingRequired = [ ...allRequired ];
-   
-    var head, lines;
-    try {
-        ([ head, ...lines ] = parseCSV(data));
-    }
-    catch (e) {
-        if (e instanceof CsvError) {
-            throw e; // TODO wrap error
-        }
-        else {
-            throw e;
-        }
-    }
+    var { csvColumns, csvLines } = dumbParseCSV(data);
 
     var mapping = createCSVColumnMapping({
-        subjectCRT, csvColumns: head
+        definitions, csvColumns
     });
 
     var out = [];
@@ -49,65 +40,16 @@ var parseSubjectCSV = (bag) => {
             var deserialize = deserializers[systemType] || ((v) => (v));
             parsedline.push({
                 definition, realKey, extraPath,
-                value: deserialize(String(value).trim(), definition)
+                value: deserialize({
+                    value: String(value).trim(),
+                    definition
+                })
             });
         }
         out.push(parsedline);
     }
 
     return out;
-}
-
-var maybeAsObjectId = (value) => (
-    /[0-9A-Fa-f]{24}/.test(value)
-    ? ObjectId(value)
-    : value
-);
-var split = (value) => value.split(/\s*,\s*/);
-var deserializers = {
-    'HelperSetItemIdList': (value, definition) => (
-        split(value).map(maybeAsObjectId)
-    ),
-    'ForeignIdList': (value, definition) => (
-        split(value).map(maybeAsObjectId)
-    ),
-    'HelperSetItemId': (value, definition) => (
-        maybeAsObjectId(value)
-    ),
-    'ForeignId': (value, definition) => (
-        maybeAsObjectId(value)
-    ),
-    'EmailList': (value, definition) => (
-        split(value).map((it, ix) => ({
-            email: it, isPrimary: ix === 0,
-        }))
-    ),
-    'PhoneWithTypeList': (value, definition) => (
-        split(value).map((it, ix) => ({
-            number: it, type: 'private'
-        }))
-    ),
-    'PhoneList': split,
-    'SaneStringList': split,
-    'URLStringList': split,
-    'DefaultBool': (value, definition) => {
-        var lcvalue = value.toLowerCase();
-        if (['true', 'false'].includes(lcvalue)) {
-            return (lcvalue === 'true');
-        }
-        else {
-            return value;
-        }
-    },
-    'Integer': (value, definition) => {
-        var i = parseInt(value);
-        if (Number.isNaN(i)) {
-            return value;
-        }
-        else {
-            return i;
-        }
-    }
 }
 
 var createCSVColumnMapping = (bag) => {
@@ -164,6 +106,21 @@ var extraDefinitions = [
     {
         csvColumnKey: 'testingPermissions.inhouse',
         systemType: 'InhousePermissionListItem',
+        pointer: '/scientific/state/testingPermissions/0/permissionList/-'
+    },
+    {
+        csvColumnKey: 'testingPermissions.external',
+        systemType: 'AwayTeamPermissionListItem',
+        pointer: '/scientific/state/testingPermissions/0/permissionList/-'
+    },
+    {
+        csvColumnKey: 'testingPermissions.onlineVideoCall',
+        systemType: 'OnlineVideoCallPermissionListItem',
+        pointer: '/scientific/state/testingPermissions/0/permissionList/-'
+    },
+    {
+        csvColumnKey: 'testingPermissions.onlineSurvey',
+        systemType: 'OnlineSurveyPermissionListItem',
         pointer: '/scientific/state/testingPermissions/0/permissionList/-'
     },
     {

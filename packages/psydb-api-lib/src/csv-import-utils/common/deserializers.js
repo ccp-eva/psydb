@@ -9,32 +9,32 @@ var maybeAsObjectId = (value) => (
 var split = (value) => value.split(/\s*,\s*/);
 
 var deserializers = {
-    'HelperSetItemIdList': (value, definition) => (
+    'HelperSetItemIdList': ({ value, definition }) => (
         split(value).map(maybeAsObjectId)
     ),
-    'ForeignIdList': (value, definition) => (
+    'ForeignIdList': ({ value, definition }) => (
         split(value).map(maybeAsObjectId)
     ),
-    'HelperSetItemId': (value, definition) => (
+    'HelperSetItemId': ({ value, definition }) => (
         maybeAsObjectId(value)
     ),
-    'ForeignId': (value, definition) => (
+    'ForeignId': ({ value, definition }) => (
         maybeAsObjectId(value)
     ),
-    'EmailList': (value, definition) => (
+    'EmailList': ({ value, definition }) => (
         split(value).map((it, ix) => ({
             email: it, isPrimary: ix === 0,
         }))
     ),
-    'PhoneWithTypeList': (value, definition) => (
+    'PhoneWithTypeList': ({ value, definition }) => (
         split(value).map((it, ix) => ({
             number: it, type: 'private'
         }))
     ),
-    'PhoneList': split,
-    'SaneStringList': split,
-    'URLStringList': split,
-    'DefaultBool': (value, definition) => {
+    'PhoneList': ({ value }) => split(value),
+    'SaneStringList': ({ value }) => split(value),
+    'URLStringList': ({ value }) => split(value),
+    'DefaultBool': ({ value, definition }) => {
         var lcvalue = value.toLowerCase();
         if (['true', 'false'].includes(lcvalue)) {
             return (lcvalue === 'true');
@@ -43,7 +43,7 @@ var deserializers = {
             return value;
         }
     },
-    'Integer': (value, definition) => {
+    'Integer': ({ value, definition }) => {
         var i = parseInt(value);
         if (Number.isNaN(i)) {
             return value;
