@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
+import { Alert } from '@mpieva/psydb-ui-layout';
 import { UploadModalBody } from '@mpieva/psydb-ui-lib';
 import { withField, useFormikTheme } from '@mpieva/psydb-ui-lib';
 
@@ -34,8 +35,12 @@ const CSVUploadField = withField({
             <>
                 <div className='d-flex justify-content-between mb-1'>
                     <b>{ label }</b>
-                    <span>{ file ? file.originalFilename : '' }</span>
                 </div>
+                { file && (
+                    <Alert variant='info' className='mb-1'>
+                        <b>Uploaded: { file.originalFilename }</b>
+                    </Alert>
+                )}
                 <div className='border bg-white'>
                     <UploadModalBody
                         onHide={ () => {} }
