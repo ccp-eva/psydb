@@ -17,9 +17,10 @@ var remapMailData = async (context, next) => {
     var childBlockData = undefined;
     for (var [ ix, pair ] of pairs.entries()) {
         if ([
-            'Datenschspeicherung',
-            'Datenschutz',
-            'Bitte tragen Sie das Ergebnis der Rechnung in das Feld ein.'
+            //'Datenschspeicherung',
+            //'Datenschutz',
+            'Bitte tragen Sie das Ergebnis der Rechnung in das Feld ein.',
+            'Datenschutz & Einwilligungserklärung',
         ].includes(pair.key)) {
             continue;
         }

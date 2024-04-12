@@ -14,11 +14,13 @@ var AdultFields = {
         [ 'Adresszusatz', 'gdpr.custom.address.affix' ],
     ]),
     
-    'Sind Sie Mutter oder Vater?': (value) => {
+    //'Sind Sie Mutter oder Vater?': (value) => {
+    'Sind Sie Mutter, Vater oder Sorgeberechtigte/r?': (value) => {
         var mapped = {
             'Mutter': 'female',
             'Vater': 'male',
-            'Elternteil': 'other',
+            //'Elternteil': 'other',
+            'Sorgeberechtigte/r': 'other',
         }[value];
 
         if (!mapped) {
