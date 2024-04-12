@@ -37,6 +37,7 @@ const PreviewStage = (ps) => {
             fileId,
             subjectType,
             researchGroupId,
+            extraAxiosConfig: { disableErrorModal: [ 409 ]}
         })
     ), []);
     
@@ -52,9 +53,24 @@ const PreviewStage = (ps) => {
     if (!didFetch) {
         return <LoadingIndicator size='lg' />
     }
-    
-    var { previewRecords, related, crtSettings, csvErrors } = fetched.data;
-    
+
+    var { status } = (fetched.response || fetched.errorResponse)
+    if (status !== 200) {
+        return (
+            <>
+                <Button
+                    variant='outline-primary'
+                    onClick={ gotoPrepare }
+                >
+                    { translate('Back') }
+                </Button>
+                <hr />
+                <ErrorInfo fetched={ fetched } />
+            </>
+        )
+    }
+
+    var { previewRecords, related, crtSettings } = fetched.data;
     return (
         <>
             <SmallFormFooter>
@@ -122,4 +138,23 @@ const AComponent = (ps) => {
         </a>
     )
 }
+
+const ErrorInfo = (ps) => {
+    var { fetched } = ps;
+    var { apiStatus, data: {
+        message, stack, ...errorInfo
+    }} = fetched.errorResponse.data;
+
+    return (
+        <>
+            <Alert variant='danger' className='mb-3'>
+                <b>{ message }</b>
+            </Alert>
+            <pre className='bg-white border p-3'>
+                { JSON.stringify(errorInfo, null, 4) }
+            </pre>
+        </>
+    )
+}
+
 export default PreviewStage;
