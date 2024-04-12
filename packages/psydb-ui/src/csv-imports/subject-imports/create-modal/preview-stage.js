@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import classnames from 'classnames';
 
 import { only } from '@mpieva/psydb-core-utils';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
@@ -11,7 +12,10 @@ import {
     LoadingIndicator,
     SplitPartitioned,
     AsyncButton,
+    Icons,
 } from '@mpieva/psydb-ui-layout';
+
+import { RecordDetails } from '@mpieva/psydb-ui-record-views/subjects';
 
 const PreviewStage = (ps) => {
     var { formValues, gotoPrepare } = ps;
@@ -26,6 +30,7 @@ const PreviewStage = (ps) => {
     ]});
     
     var translate = useUITranslation();
+    var [ selectedIndex, setSelectedIndex ] = useState(0);
     
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.previewCSVSubjectImport({
@@ -48,7 +53,7 @@ const PreviewStage = (ps) => {
         return <LoadingIndicator size='lg' />
     }
     
-    var { previewRecords, related, csvErrors } = fetched.data;
+    var { previewRecords, related, crtSettings, csvErrors } = fetched.data;
     
     return (
         <>
@@ -65,34 +70,56 @@ const PreviewStage = (ps) => {
                 </Button>
             </SmallFormFooter>
             <hr />
-            <div className='d-flex flex-column gapy-2'>
-                { previewRecords.map((it, ix) => {
-                    return (
-                        <PreviewRecord
-                            key={ ix }
-                            previewRecord={ it }
-                            related={ related }
-                        />
-                    )
-                })}
-            </div>
+            <SplitPartitioned partitions={[ 4, 8 ]}>
+                <div className='d-flex flex-column gapy-2'>
+                    { previewRecords.map((it, ix) => {
+                        return (
+                            <AComponent
+                                key={ ix }
+                                previewRecord={ it }
+                                onClick={ () => setSelectedIndex(ix) }
+                                isActive={ selectedIndex === ix }
+                            >
+                                { it._recordLabel }
+                            </AComponent>
+                        )
+                    })}
+                </div>
+                <div className='border ml-3 px-3 py-1'>
+                    <RecordDetails.Body fetched={{
+                        record: previewRecords[selectedIndex],
+                        related,
+                        crtSettings,
+                    }} />
+                </div>
+            </SplitPartitioned>
         </>
     )
 }
 
-const PreviewRecord = (ps) => {
-    var { previewRecord, related } = ps;
+const AComponent = (ps) => {
     var {
-        _recordLabel
-    } = previewRecord;
+        isActive,
+        onClick,
+        children,
+    } = ps;
 
-    var translate = useUITranslation();
+    var className = classnames([
+        'd-flex justify-content-between align-items-center',
+        `bg-white px-3 py-2 border`
+    ]);
 
     return (
-        <div>
-            { _recordLabel }
-        </div>
+        <a 
+            className='link'
+            style={{ color: (isActive ? '#006c66' : '#212529') }}
+            onClick={ onClick }
+        >
+            <b className={ className } role='button'>
+                <span>{ children }</span>
+                <Icons.ChevronDoubleRight />
+            </b>
+        </a>
     )
 }
-
 export default PreviewStage;

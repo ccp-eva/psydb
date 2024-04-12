@@ -10,6 +10,7 @@ var {
     aggregateOne,
     fetchCRTSettings,
     fetchRelatedLabelsForMany,
+    createRecordLabel,
 
     findOne_RAW
 } = require('@mpieva/psydb-api-lib');
@@ -68,10 +69,23 @@ var preview = async (context, next) => {
 
     var { matchedData, preparedObjects, transformed } = pipelineOutput;
     
-    var previewRecords = transformed.subjects.map(it => ({
-        ...it.record,
-        csvImportId: null,
-    }));
+    var previewRecords = transformed.subjects.map(it => {
+        var previewRecord = {
+            ...it.record,
+            csvImportId: '0000',
+            sequenceNumber: '0000',
+            _id: '0000'
+        };
+
+        return {
+            ...previewRecord,
+            _recordLabel: createRecordLabel({
+                definition:  subjectCRT.getRecordLabelDefinition(),
+                record: previewRecord,
+                ...i18n
+            }),
+        }
+    });
 
     var related = fixRelated(
         await fetchRelatedLabelsForMany({
@@ -81,15 +95,18 @@ var preview = async (context, next) => {
     );
 
     context.body = ResponseBody({ data: {
-        matchedData,
-        preparedObjects,
+        //matchedData,
+        //preparedObjects,
         previewRecords,
         related,
-        displayFields: (
-            subjectCRT.augmentedDisplayFields('table').filter(sift({
-                key: { $nin: [ '_id', '_sequenceNumber', '_onlineId' ]}
-            }))
-        ),
+        //displayFields: (
+        //    subjectCRT.augmentedDisplayFields('table').filter(sift({
+        //        key: { $nin: [ '_id', '_sequenceNumber', '_onlineId' ]}
+        //    }))
+        //),
+
+        // FIXME: only for commentFieldIsSensitive which is obsolete
+        crtSettings: subjectCRT.getRaw(),
     }});
 
     await next();
