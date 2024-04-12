@@ -119,8 +119,6 @@ var withCSVImportErrorHandling = () => async (context, next) => {
     catch (e) {
         if (e instanceof CSVImportError) {
             // TODO
-            console.log(e);
-            console.log(e.getInfo())
             throw new ApiError(409, 'cannot parse csv contents');
         }
         else {
