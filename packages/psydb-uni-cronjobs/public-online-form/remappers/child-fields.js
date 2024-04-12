@@ -61,6 +61,12 @@ var ChildFields = {
     },
     'Zweitsprache des Kindes': (value, extra) => {
         var { languages } = extra;
+        var path = 'scientific.custom.otherLanguageIds';
+
+        if (value === 'Keine') {
+            return { path, value: [] };
+        }
+
         var id = (
             value === 'Andere'
             ? '#OTHER#'
@@ -70,7 +76,7 @@ var ChildFields = {
             throw new RemapPairError();
         }
         
-        return { path: 'scientific.custom.otherLanguageIds', value: [ id ] };
+        return { path, value: [ id ] };
     },
     'andere Zweitsprache': (value, extra) => {
         var { languages } = extra;

@@ -9,8 +9,9 @@ describe('public-online-form', function () {
         await this.restore('init-humankind-with-dummy-data');
         await this.setupInbox({ fixtures: [
             //'regform-mail-01',
-            'regform-mail-02',
-            'regform-mail-03',
+            //'regform-mail-02',
+            //'regform-mail-03',
+            'regform-mail-04',
         ]});
 
         this.createKoaApi();
@@ -29,10 +30,12 @@ describe('public-online-form', function () {
         await composition(context, async () => {});
 
         var adult = await this.getRecord('subject', {
-            firstname: 'TestFirstname'
+            firstname: 'Test',
+            lastname: 'Tester'
         });
         var childOne = await this.getRecord('subject', {
-            firstname: 'Eins'
+            firstname: 'Ralf',
+            lastname: 'Tester'
         });
         console.dir(ejson(childOne), { depth: null });
     })
