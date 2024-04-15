@@ -272,12 +272,14 @@ importers:
     specifiers:
       '@cdxoo/mongo-test-helpers': ~0.7.1
       '@cdxoo/mongodb-restore': 2.0.0-alpha.2
-      '@mpieva/psydb-api': workspace:~0.1.0-alpha
-      '@mpieva/psydb-axios-test-wrapper': workspace:~0.1.0-alpha
-      '@mpieva/psydb-common-lib': workspace:~0.1.0-alpha
-      '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
-      '@mpieva/psydb-driver-nodejs': workspace:~0.1.0-alpha
-      '@mpieva/psydb-fixtures': workspace:~0.1.0-alpha
+      '@mpieva/psydb-api': workspace:*
+      '@mpieva/psydb-api-lib': workspace:*
+      '@mpieva/psydb-api-mocha-test-tools': workspace:*
+      '@mpieva/psydb-axios-test-wrapper': workspace:*
+      '@mpieva/psydb-common-lib': workspace:*
+      '@mpieva/psydb-core-utils': workspace:*
+      '@mpieva/psydb-driver-nodejs': workspace:*
+      '@mpieva/psydb-fixtures': workspace:*
       axios: ~0.24.0
       chai: ~4.3.7
       co: ~4.6.0
@@ -297,6 +299,8 @@ importers:
       '@cdxoo/mongo-test-helpers': 0.7.1
       '@cdxoo/mongodb-restore': 2.0.0-alpha.2
       '@mpieva/psydb-api': link:../psydb-api
+      '@mpieva/psydb-api-lib': link:../psydb-api-lib
+      '@mpieva/psydb-api-mocha-test-tools': link:../psydb-api-mocha-test-tools
       '@mpieva/psydb-axios-test-wrapper': link:../psydb-axios-test-wrapper
       '@mpieva/psydb-fixtures': link:../psydb-fixtures
       chai: 4.3.10
