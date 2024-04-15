@@ -20,6 +20,7 @@ var collectionUIMapping = {
     'externalPerson': 'external-persons',
     'externalOrganization': 'external-organizations',
     'systemRole': 'system-roles',
+    'subjectGroup': 'subject-groups'
 }
 
 // TODO: put elsewhere
@@ -429,17 +430,28 @@ export const DefaultBool = (ps) => {
 }
 
 export const ForeignId = (ps) => {
-    var { value, props, related } = ps;
+    var { value, props, related, __useNewRelated, newTab = false } = ps;
     var { collection, recordType } = props;
     if (!value) {
         return <NoValue unknown={ props.displayEmptyAsUnknown } />
     }
     
-    var label = (
-        related
-        ? related.relatedRecordLabels[collection][value]._recordLabel
-        : value
-    );
+    // XXX
+    var label = 'ERROR';
+    if (__useNewRelated) {
+        label = (
+            related
+            ? related.records[collection][value]
+            : value
+        );
+    }
+    else {
+        label = (
+            related
+            ? related.relatedRecordLabels[collection][value]._recordLabel
+            : value
+        );
+    }
     
     var collectionUI = collectionUIMapping[collection];
     if (collectionUI) {
@@ -450,7 +462,9 @@ export const ForeignId = (ps) => {
         );
 
         return (
-            <a href={ uri }>{ label }</a>
+            <a target={ newTab ? '_blank' : undefined } href={ uri }>
+                { label }
+            </a>
         )
     }
     else {

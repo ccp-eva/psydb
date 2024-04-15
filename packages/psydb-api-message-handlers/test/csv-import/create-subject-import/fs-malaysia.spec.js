@@ -1,18 +1,18 @@
 'use strict';
-var { ejson, omit } = require('@mpieva/psydb-core-utils');
 var { expect } = require('@mpieva/psydb-api-mocha-test-tools/chai');
+
 var { ObjectId } = require('@cdxoo/mongo-test-helpers');
+var { ejson, omit } = require('@mpieva/psydb-core-utils');
+var { aggregateToArray } = require('@mpieva/psydb-api-lib');
+var { getContent: loadCSV } = require('@mpieva/psydb-fixtures/csv');
+
 var jsonify = (that) => (
     JSON.parse(JSON.stringify(that))
 );
 
-var RootHandler = require('../../src/');
+var RootHandler = require('../../../src/');
 
-var omitNonsense = ({ from }) => omit({
-    from, paths: [ '_id', '_rohrpostMetadata' ]
-});
-
-describe('csv-import/create-subject-import fs-malaysia', function () {
+describe('csv-import/subject/create-default fs-malaysia', function () {
     var db, sendMessage, fileId;
     beforeEach(async function () {
         await this.restore('2024-03-29__1914_fieldsites');
@@ -23,8 +23,8 @@ describe('csv-import/create-subject-import fs-malaysia', function () {
             ...(await this.createFakeLogin({ email: 'root@example.com' }))
         }));
 
-        var file = await createFakeFileUpload({
-            db, buffer: fs.readFileSync(__dirname + '/fs-malaysia.csv')
+        var file = await this.createFakeFileUpload({
+            db, buffer: loadCSV('subject-import/fs-malaysia'),
         });
         fileId = file._id;
     });
@@ -34,29 +34,25 @@ describe('csv-import/create-subject-import fs-malaysia', function () {
         var researchGroupId = ObjectId("66051bb1c1e37e5a99ee54c3");
 
         var koaContext = await sendMessage({
-            type: 'csv-import/subject/create',
+            type: 'csv-import/subject/create-default',
             timezone: 'UTC',
             payload: jsonify({
+                researchGroupId,
                 subjectType,
                 fileId,
-                accessRightsByResearchGroup: [
-                    { researchGroupId, permission: 'write' }
-                ]
             })
         });
 
-        var { body } = koaContext.response;
-        var [ ageFrameUpdate ] = body.data;
-
-        console.log(ageFrameUpdate);
-
-        var record = omitNonsense({
-            from: await this.getRecord('ageFrame', {
-                _id: ageFrameUpdate.channelId
-            })
-        });
-
-        console.dir(ejson(record), { depth: null });
-        expect(ejson(record)).toMatchSnapshot();
+        var { csvImportId } = koaContext.response.body.data;
+        console.log(csvImportId);
+        
+        var imports = await db.collection('csvImport').find().toArray();
+        //console.dir(ejson(imports), { depth: null });
+        
+        var subjects = await db.collection('subject').find().toArray();
+        //var subjects = await aggregateToArray({ db, subject: [
+        //    { $match: { csvImportId }}
+        //]});
+        console.dir(ejson(subjects), { depth: null });
     })
 })

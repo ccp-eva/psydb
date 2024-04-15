@@ -1,4 +1,5 @@
 module.exports = {
+    sift: require('sift'),
     inlineText: require('@cdxoo/inline-text'),
 
     CRTSettings: require('./crt-settings'),
@@ -32,6 +33,8 @@ module.exports = {
     groupBy: require('./group-by'),
     keyBy: require('./key-by'),
     compareIds: require('./compare-ids'),
+
+    maybeGetValueWhenUnspread: require('./maybe-get-value-when-unspread'),
 
     stringifyFieldValue: require('./stringify-field-value'),
     quicksort: require('./quicksort'),

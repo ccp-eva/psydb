@@ -16,6 +16,7 @@
     "@mpieva/psydb-schema-fields": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-schema-fields-special": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-schema-helpers": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-timezone-helpers": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-core-utils": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-common-verify-helpers": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-common-lib": "workspace:~0.1.0-alpha",

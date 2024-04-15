@@ -504,11 +504,16 @@ var createRouting = (bag = {}) => {
         endpoints.channelHistory
     );
 
+
+
     router.post('/file/upload',
         withSelfAuth(),
         withPermissions(),
         endpoints.file.upload
     );
+    router.post('/file/read', ...withPostStages({
+        endpoint: endpoints.file.read
+    }));
     
     router.post('/csv-import/preview',
         withSelfAuth(),
@@ -516,6 +521,21 @@ var createRouting = (bag = {}) => {
         withKoaBody(),
         endpoints.csvImport.preview
     );
+    router.post('/csv-import/experiment/search', ...withPostStages({
+        endpoint: endpoints.csvImport.experiment.search
+    }));
+    router.post('/csv-import/experiment/preview', ...withPostStages({
+        endpoint: endpoints.csvImport.experiment.preview
+    }));
+
+    router.post('/csv-import/subject/search', ...withPostStages({
+        endpoint: endpoints.csvImport.subject.search
+    }));
+    router.post('/csv-import/subject/preview', ...withPostStages({
+        endpoint: endpoints.csvImport.subject.preview
+    }));
+
+
 
     router.post('/researchGroup/search-metadata', ...withPostStages({
         endpoint: endpoints.researchGroup.searchMetadata
@@ -529,6 +549,12 @@ var createRouting = (bag = {}) => {
     }));
     router.post('/study/available-subject-crts', ...withPostStages({
         endpoint: endpoints.study.availableSubjectCRTs
+    }));
+    router.post('/study/enabled-subject-crts', ...withPostStages({
+        endpoint: endpoints.study.enabledSubjectCRTs
+    }));
+    router.post('/study/enabled-csv-importers', ...withPostStages({
+        endpoint: endpoints.study.enabledCSVImporters
     }));
     
     router.post('/experiment/read', ...withPostStages({

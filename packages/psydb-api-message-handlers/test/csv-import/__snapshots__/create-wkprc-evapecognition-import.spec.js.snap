@@ -1,0 +1,273 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`csv-import/experiment/create-wkprc-evapecognition does the thing 1`] = `
+Array [
+  Object {
+    "realType": "apestudies-wkprc-default",
+    "state": Object {
+      "color": "",
+      "experimentName": "choice_task",
+      "experimentOperatorIds": Array [
+        Object {
+          "$oid": "64d42ddf443aa279ca4cb2c9",
+        },
+        Object {
+          "$oid": "64d42ddf443aa279ca4cb2c5",
+        },
+      ],
+      "experimentOperatorTeamId": null,
+      "generalComment": "",
+      "interval": Object {
+        "end": Object {
+          "$date": "2023-03-22T11:00:00.000Z",
+        },
+        "start": Object {
+          "$date": "2023-03-22T11:00:00.000Z",
+        },
+      },
+      "isCanceled": false,
+      "isPostprocessed": true,
+      "locationId": Object {
+        "$oid": "64d42de0443aa279ca4cb2e8",
+      },
+      "locationRecordType": "wkprc_ape_location",
+      "roomOrEnclosure": "Observation Room",
+      "selectedSubjectGroupIds": Array [],
+      "selectedSubjectIds": Array [
+        Object {
+          "$oid": "64d42de0443aa279ca4cb2fd",
+        },
+      ],
+      "studyId": Object {
+        "$oid": "6566b5c26c830cb226c1389b",
+      },
+      "studyRecordType": "wkprc_study",
+      "subjectData": Array [
+        Object {
+          "comment": "focal_participant; Some Comment",
+          "excludeFromMoreExperimentsInStudy": false,
+          "invitationStatus": "scheduled",
+          "participationStatus": "participated",
+          "subjectId": Object {
+            "$oid": "64d42de0443aa279ca4cb2fd",
+          },
+        },
+      ],
+      "subjectGroupId": Object {
+        "$oid": "64d42de0443aa279ca4cb2ee",
+      },
+      "timezone": "Europe/Berlin",
+    },
+    "type": "manual",
+  },
+  Object {
+    "realType": "apestudies-wkprc-default",
+    "state": Object {
+      "color": "",
+      "experimentName": "choice_task",
+      "experimentOperatorIds": Array [
+        Object {
+          "$oid": "64d42ddf443aa279ca4cb2c9",
+        },
+        Object {
+          "$oid": "64d42ddf443aa279ca4cb2c5",
+        },
+      ],
+      "experimentOperatorTeamId": null,
+      "generalComment": "",
+      "interval": Object {
+        "end": Object {
+          "$date": "2023-03-23T11:00:00.000Z",
+        },
+        "start": Object {
+          "$date": "2023-03-23T11:00:00.000Z",
+        },
+      },
+      "isCanceled": false,
+      "isPostprocessed": true,
+      "locationId": Object {
+        "$oid": "64d42de0443aa279ca4cb2e8",
+      },
+      "locationRecordType": "wkprc_ape_location",
+      "roomOrEnclosure": "Observation Room",
+      "selectedSubjectGroupIds": Array [],
+      "selectedSubjectIds": Array [
+        Object {
+          "$oid": "64d42de0443aa279ca4cb2fd",
+        },
+      ],
+      "studyId": Object {
+        "$oid": "6566b5c26c830cb226c1389b",
+      },
+      "studyRecordType": "wkprc_study",
+      "subjectData": Array [
+        Object {
+          "comment": "focal_participant; Some Comment",
+          "excludeFromMoreExperimentsInStudy": false,
+          "invitationStatus": "scheduled",
+          "participationStatus": "participated",
+          "subjectId": Object {
+            "$oid": "64d42de0443aa279ca4cb2fd",
+          },
+        },
+      ],
+      "subjectGroupId": Object {
+        "$oid": "64d42de0443aa279ca4cb2ee",
+      },
+      "timezone": "Europe/Berlin",
+    },
+    "type": "manual",
+  },
+  Object {
+    "realType": "apestudies-wkprc-default",
+    "state": Object {
+      "color": "",
+      "experimentName": "choice_task",
+      "experimentOperatorIds": Array [
+        Object {
+          "$oid": "64d42ddf443aa279ca4cb2c9",
+        },
+        Object {
+          "$oid": "64d42ddf443aa279ca4cb2c5",
+        },
+      ],
+      "experimentOperatorTeamId": null,
+      "generalComment": "",
+      "interval": Object {
+        "end": Object {
+          "$date": "2023-03-24T11:00:00.000Z",
+        },
+        "start": Object {
+          "$date": "2023-03-24T11:00:00.000Z",
+        },
+      },
+      "isCanceled": false,
+      "isPostprocessed": true,
+      "locationId": Object {
+        "$oid": "64d42de0443aa279ca4cb2e8",
+      },
+      "locationRecordType": "wkprc_ape_location",
+      "roomOrEnclosure": "Outdoor Enclosure",
+      "selectedSubjectGroupIds": Array [],
+      "selectedSubjectIds": Array [
+        Object {
+          "$oid": "64d42de0443aa279ca4cb2fd",
+        },
+        Object {
+          "$oid": "64d42de0443aa279ca4cb301",
+        },
+      ],
+      "studyId": Object {
+        "$oid": "6566b5c26c830cb226c1389b",
+      },
+      "studyRecordType": "wkprc_study",
+      "subjectData": Array [
+        Object {
+          "comment": "partner; Some Comment",
+          "excludeFromMoreExperimentsInStudy": false,
+          "invitationStatus": "scheduled",
+          "participationStatus": "participated",
+          "subjectId": Object {
+            "$oid": "64d42de0443aa279ca4cb2fd",
+          },
+        },
+        Object {
+          "comment": "stooge; Some Comment",
+          "excludeFromMoreExperimentsInStudy": false,
+          "invitationStatus": "scheduled",
+          "participationStatus": "participated",
+          "subjectId": Object {
+            "$oid": "64d42de0443aa279ca4cb301",
+          },
+        },
+      ],
+      "subjectGroupId": Object {
+        "$oid": "64d42de0443aa279ca4cb2ee",
+      },
+      "timezone": "Europe/Berlin",
+    },
+    "type": "manual",
+  },
+]
+`;
+
+exports[`csv-import/experiment/create-wkprc-evapecognition does the thing 2`] = `
+Array [
+  Object {
+    "_P": Object {
+      "excludeFromMoreExperimentsInStudy": false,
+      "realType": "apestudies-wkprc-default",
+      "status": "participated",
+      "studyId": Object {
+        "$oid": "6566b5c26c830cb226c1389b",
+      },
+      "studyType": "wkprc_study",
+      "timestamp": Object {
+        "$date": "2023-03-22T11:00:00.000Z",
+      },
+      "timezone": "Europe/Berlin",
+      "type": "manual",
+    },
+    "_id": Object {
+      "$oid": "64d42de0443aa279ca4cb2fd",
+    },
+  },
+  Object {
+    "_P": Object {
+      "excludeFromMoreExperimentsInStudy": false,
+      "realType": "apestudies-wkprc-default",
+      "status": "participated",
+      "studyId": Object {
+        "$oid": "6566b5c26c830cb226c1389b",
+      },
+      "studyType": "wkprc_study",
+      "timestamp": Object {
+        "$date": "2023-03-23T11:00:00.000Z",
+      },
+      "timezone": "Europe/Berlin",
+      "type": "manual",
+    },
+    "_id": Object {
+      "$oid": "64d42de0443aa279ca4cb2fd",
+    },
+  },
+  Object {
+    "_P": Object {
+      "excludeFromMoreExperimentsInStudy": false,
+      "realType": "apestudies-wkprc-default",
+      "status": "participated",
+      "studyId": Object {
+        "$oid": "6566b5c26c830cb226c1389b",
+      },
+      "studyType": "wkprc_study",
+      "timestamp": Object {
+        "$date": "2023-03-24T11:00:00.000Z",
+      },
+      "timezone": "Europe/Berlin",
+      "type": "manual",
+    },
+    "_id": Object {
+      "$oid": "64d42de0443aa279ca4cb2fd",
+    },
+  },
+  Object {
+    "_P": Object {
+      "excludeFromMoreExperimentsInStudy": false,
+      "realType": "apestudies-wkprc-default",
+      "status": "participated",
+      "studyId": Object {
+        "$oid": "6566b5c26c830cb226c1389b",
+      },
+      "studyType": "wkprc_study",
+      "timestamp": Object {
+        "$date": "2023-03-24T11:00:00.000Z",
+      },
+      "timezone": "Europe/Berlin",
+      "type": "manual",
+    },
+    "_id": Object {
+      "$oid": "64d42de0443aa279ca4cb301",
+    },
+  },
+]
+`;

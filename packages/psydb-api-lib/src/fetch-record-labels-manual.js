@@ -87,7 +87,13 @@ var handleNoCRT = async (bag) => {
                         dataPointer: '/state/interval/start',
                     },
                 ]}
-            ]
+            ],
+            'subjectGroup': [
+                { 'state.name': true },
+                { format: '${#}', tokens: [
+                    { dataPointer: '/state/name' },
+                ]}
+            ],
         }[collection] || fallback;
 
         var records = await aggregateToArray({ db, [collection]: [
@@ -130,7 +136,7 @@ var handleWithCRT = async (bag) => {
         var ids = idsForCollection[collection];
 
         var recordLabelProjection = mergeRecordLabelProjections(
-            allCRTSettings[collection], { as: '_labelProjection' }
+            (allCRTSettings[collection] || []), { as: '_labelProjection' }
         );
 
         var records = await (

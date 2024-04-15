@@ -99,6 +99,8 @@ module.exports = {
     getMongoCollation: require('./get-mongo-collation'),
     aggregateToArray: require('./aggregate-to-array'),
     aggregateOne: require('./aggregate-one'),
+    
+    findOne_RAW: require('./find-one-raw'),
 
     mappifyPointer: require('./mappify-pointer'),
     SmartArray: require('./smart-array'),

@@ -1,0 +1,116 @@
+'use strict';
+var { only } = require('@mpieva/psydb-core-utils');
+var {
+    compose,
+    ApiError,
+    ResponseBody,
+    validateOrThrow,
+    withRetracedErrors,
+    aggregateOne,
+    fetchRecordLabelsManual,
+
+    findOne_RAW
+} = require('@mpieva/psydb-api-lib');
+
+var {
+    EVApeCognitionCSV,
+    CSVImportError
+} = require('@mpieva/psydb-api-lib/csv-import-utils');
+
+var Schema = require('./schema');
+
+var preview = async (context, next) => {
+    var { db, permissions, request } = context;
+    
+    var i18n = only({ from: context, keys: [
+        'language', 'locale', 'timezone'
+    ]});
+    
+    if (!permissions.isRoot()) {
+        throw new ApiError(403);
+    }
+
+    validateOrThrow({
+        schema: Schema(),
+        payload: request.body
+    });
+    
+    var {
+        csvImporter = 'wkprc-evapecognition', 
+        fileId,
+        subjectType,
+        locationId,
+        studyId,
+        labOperatorIds
+    } = request.body;
+
+    var file = await withRetracedErrors(
+        findOne_RAW({ db, file: { _id: fileId }})
+    );
+
+    var study = await withRetracedErrors(
+        findOne_RAW({ db, study: { _id: studyId }})
+    );
+    
+    var location = await withRetracedErrors(
+        findOne_RAW({ db, location: { _id: locationId }})
+    );
+
+    var pipelineOutput = await EVApeCognitionCSV.runPipeline({
+        db,
+        csvLines: file.blob.toString(),
+
+        subjectType,
+        study,
+        location,
+        labOperators: labOperatorIds.map(it => ({ _id: it})), // FIXME
+        timezone: i18n.timezone
+    });
+
+    var { matchedData, preparedObjects, transformed } = pipelineOutput;
+    
+    var previewRecords = transformed.experiments.map(it => ({
+        ...it.record,
+        csvImportId: null,
+    }));
+
+    var relatedIds = { subject: [], subjectGroup: [] };
+    for (var it of previewRecords) {
+        var { subjectGroupId, selectedSubjectIds } = it.state;
+        
+        relatedIds.subject.push(...selectedSubjectIds);
+        relatedIds.subjectGroup.push(subjectGroupId);
+    }
+    var related = {
+        records: await fetchRecordLabelsManual(db, relatedIds, i18n)
+    };
+
+    context.body = ResponseBody({ data: {
+        matchedData,
+        preparedObjects,
+        previewRecords,
+        related,
+    }});
+
+    await next();
+}
+
+var withCSVImportErrorHandling = () => async (context, next) => {
+    try {
+        await next();
+    }
+    catch (e) {
+        if (e instanceof CSVImportError) {
+            // TODO
+            throw new ApiError(409, 'cannot parse csv contents');
+        }
+        else {
+            throw e
+        }
+    }
+}
+
+module.exports = compose([
+    withCSVImportErrorHandling(),
+    preview
+]);

@@ -52,6 +52,9 @@ const useFetch = (...args) => {
                     dispatch({ type: 'rejected', payload: {
                         errorResponse: err.response,
                     }});
+                    if (!err.response) {
+                        throw err;
+                    }
                 })
             }
             else {
