@@ -14,6 +14,7 @@ const prohibitedFieldTypes = [
 
     'Address',
     'ForeignIdList',
+    'ForeignId',
     'HelperSetItemIdList',
     'DateSinceBirthInterval',
     //'DateOnlyServerSide',
@@ -22,6 +23,9 @@ const prohibitedFieldTypes = [
     'GeoCoords',
     'TimeInterval',
     'WeekdayBoolObject',
+    'Phone',
+    'PhoneList',
+    'Email',
     'ListOfObjects',
 
     'Password',
