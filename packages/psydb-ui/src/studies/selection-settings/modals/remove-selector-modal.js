@@ -8,13 +8,13 @@ const RemoveSelectorModalBody = (ps) => {
     var {
         onHide,
         modalPayloadData,
-        subjectTypeMap,
-
+        availableSubjectCRTs,
         onSuccessfulUpdate,
     } = ps;
 
-    var { index, selectorRecord } = modalPayloadData;
+    var { index, selectorRecord  } = modalPayloadData;
     var { _id: selectorId, subjectTypeKey } = selectorRecord;
+    var subjectCRT = availableSubjectCRTs.find({ type: subjectTypeKey });
 
     var translate = useUITranslation();
 
@@ -33,7 +33,7 @@ const RemoveSelectorModalBody = (ps) => {
                 </b>
             </div>
             <div className='p-3 border bg-white'>
-                { subjectTypeMap[subjectTypeKey].state.label }
+                { translate.crt(subjectCRT) }
             </div>
             <div className='mt-3 d-flex justify-content-end'>
                 <Button selector='danger' onClick={ send.exec }>

@@ -61,7 +61,7 @@ module.exports = async (context) => {
     
     await driver.sendMessage({
         type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, subChannelKey: 'scientific', props: {
+        payload: { id: crtId, subChannelKey: 'gdpr', props: {
             type: 'DateOnlyServerSide',
             key: 'dateOfBirth',
             displayName: 'Date of Birth',
@@ -72,7 +72,7 @@ module.exports = async (context) => {
     
     await driver.sendMessage({
         type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, subChannelKey: 'scientific', props: {
+        payload: { id: crtId, subChannelKey: 'gdpr', props: {
             type: 'BiologicalGender',
             key: 'gender',
             displayName: 'Gender',
@@ -161,7 +161,7 @@ module.exports = async (context) => {
     await driver.sendMessage({
         type: `custom-record-types/add-field-definition`,
         payload: { id: crtId, subChannelKey: 'scientific', props: {
-            type: 'DefaultBool',
+            type: 'ExtBool',
             key: 'canParticipateInStudiesWithHealthyChildren',
             displayName: (
                 'Can participate in studies with children that are healthy, born on schedule and developed age appropriatly?'
@@ -198,6 +198,21 @@ module.exports = async (context) => {
             props: {}
         }},
     }, { apiKey });
+    
+    await driver.sendMessage({
+        type: `custom-record-types/add-field-definition`,
+        payload: { id: crtId, subChannelKey: 'scientific', props: {
+            type: 'ExtBool',
+            key: 'didConsentToStayInDBAsAdult',
+            displayName: (
+                'Consent to Adult-DB'
+            ),
+            displayNameI18N: { 'de': (
+                'Zustimmung zu Erachsenen-DB'
+            )},
+            props: {}
+        }},
+    }, { apiKey });
      
     await driver.sendMessage({
         type: `custom-record-types/commit-settings`,
@@ -212,7 +227,7 @@ module.exports = async (context) => {
             tokens: [
                 '/gdpr/state/custom/lastname',
                 '/gdpr/state/custom/firstname',
-                '/scientific/state/custom/gender',
+                '/gdpr/state/custom/gender',
             ]
         }}
     }, { apiKey });
@@ -226,8 +241,8 @@ module.exports = async (context) => {
                 '/sequenceNumber',
                 '/gdpr/state/custom/lastname',
                 '/gdpr/state/custom/firstname',
-                '/scientific/state/custom/gender',
-                '/scientific/state/custom/dateOfBirth',
+                '/gdpr/state/custom/gender',
+                '/gdpr/state/custom/dateOfBirth',
             ]
         }
     }, { apiKey });
@@ -241,8 +256,8 @@ module.exports = async (context) => {
                 '/sequenceNumber',
                 '/gdpr/state/custom/lastname',
                 '/gdpr/state/custom/firstname',
-                '/scientific/state/custom/gender',
-                '/scientific/state/custom/dateOfBirth',
+                '/gdpr/state/custom/gender',
+                '/gdpr/state/custom/dateOfBirth',
             ]
         }
     }, { apiKey });
@@ -254,8 +269,8 @@ module.exports = async (context) => {
             '/onlineId',
             '/gdpr/state/custom/firstname',
             '/gdpr/state/custom/lastname',
-            '/scientific/state/custom/dateOfBirth',
-            '/scientific/state/custom/gender',
+            '/gdpr/state/custom/dateOfBirth',
+            '/gdpr/state/custom/gender',
             '/scientific/state/custom/siblingCount',
             '/scientific/state/custom/parentIds',
             '/scientific/state/custom/nativeLanguageId',
@@ -264,6 +279,7 @@ module.exports = async (context) => {
             '/scientific/state/custom/doesDBRegistrationConsentOnPaperExist',
             '/scientific/state/custom/canParticipateInStudiesWithHealthyChildren',
             '/scientific/state/custom/allowedToEat',
+            '/scientific/state/custom/didConsentToStayInDBAsAdult',
             '/scientific/state/custom/hasAwayTeamTestingPermissionForNextYear',
             '/scientific/state/testingPermissions',
             '/scientific/state/comment'
@@ -278,5 +294,18 @@ module.exports = async (context) => {
         ]}
     }, { apiKey });
     
+    await driver.sendMessage({
+        type: `custom-record-types/set-general-data`,
+        payload: {
+            id: crtId,
+            label: 'Humankind Children',
+            displayNameI18N: { 'de': 'Humankind Kinder' },
+            requiresTestingPermissions: true,
+            showSequenceNumber: true,
+            showOnlineId: true,
+            commentFieldIsSensitive: false,
+        }
+    }, { apiKey });
+
     return crtId;
 }

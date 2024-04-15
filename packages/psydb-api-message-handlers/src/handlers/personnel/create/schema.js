@@ -1,6 +1,8 @@
 'use strict';
 var {
     ClosedObject,
+    ExactObject,
+    DefaultBool,
 } = require('@mpieva/psydb-schema-fields');
 
 var { personnel } = require('@mpieva/psydb-schema-creators');
@@ -19,14 +21,18 @@ var Schema = async (context) => {
     var canAllowLogin = permissions.hasFlag('canAllowLogin');
     var isRoot = permissions.isRoot();
 
-    var schema = ClosedObject({
-        props: ClosedObject({
-            gdpr: GdprState(),
-            scientific: ScientificState({ extraOptions: {
-                enableCanLogIn: canAllowLogin,
-                enableHasRootAccess: isRoot,
-            }}),
-        }),
+    var schema = ExactObject({
+        properties: {
+            sendMail: DefaultBool(),
+            props: ClosedObject({
+                gdpr: GdprState(),
+                scientific: ScientificState({ extraOptions: {
+                    enableCanLogIn: canAllowLogin,
+                    enableHasRootAccess: isRoot,
+                }}),
+            }),
+        },
+        required: [ 'props' ],
     });
     return schema;
 }

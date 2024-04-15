@@ -1,34 +1,35 @@
 import React from 'react';
+import { only } from '@mpieva/psydb-core-utils';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 
-import {
-    InhouseSetting,
-    AwayTeamSetting,
-    OnlineVideoCallSetting,
-    OnlineSurveySetting,
-    ApestudiesWKPRCDefaultSetting,
-    ManualOnlyParticipationSetting,
-} from './setting-items';
+import LabWorkflowSetting from './lab-workflow-setting';
 
 const SettingList = (ps) => {
     var {
         variantRecord,
         settingRecords,
-       
-        allowedSubjectTypes,
-        existingSubjectTypes,
 
         onEditSetting,
         onRemoveSetting,
-        ...downstream
     } = ps;
+
+    var pass = only({ from: ps, keys: [
+        'settingRelated',
+        'availableSubjectCRTs',
+        'existingSubjectTypes',
+    ]});
 
     var { type: variantType } = variantRecord;
 
     var translate = useUITranslation();
     var permissions = usePermissions();
     var canWrite = permissions.hasFlag('canWriteStudies');
+
+    var handlers = canWrite ? {
+        onEdit: onEditSetting,
+        onRemove: onRemoveSetting,
+    } : {};
 
     if (settingRecords.length < 1) {
         return (
@@ -38,30 +39,19 @@ const SettingList = (ps) => {
         )
     }
 
-    var SettingComponent = ({
-        'inhouse': InhouseSetting,
-        'away-team': AwayTeamSetting,
-        'online-video-call': OnlineVideoCallSetting,
-        'online-survey': OnlineSurveySetting,
-        
-        'apestudies-wkprc-default': ApestudiesWKPRCDefaultSetting,
-        'manual-only-participation': ManualOnlyParticipationSetting,
-    })[variantType];
-
     return (
         <>
-            { settingRecords.map((settingRecord, index) => (
-                <SettingComponent key={ index } { ...({
-                    variantRecord,
-                    settingRecord,
-                    existingSubjectTypes,
-                    showButtons: !!canWrite,
-                    ...(canWrite && {
-                        onEdit: onEditSetting,
-                        onRemove: onRemoveSetting,
-                    }),
-                    ...downstream
-                })} />
+            { settingRecords.map((it, ix) => (
+                <LabWorkflowSetting
+                    type={ variantType }
+
+                    key={ ix }
+                    settingRecord={ it }
+                    variantRecord={ variantRecord }
+                    showButtons={ !!canWrite }
+                    { ...pass }
+                    { ...handlers }
+                />
             ))}
         </>
     )

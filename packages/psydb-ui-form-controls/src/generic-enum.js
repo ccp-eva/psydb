@@ -82,6 +82,19 @@ export const GenericEnum = (ps) => {
         )
     }
 
+    var renderedOptions = [];
+    for (var [ ix, key ] of enumeration.keys.entries()) {
+        if (!allowedValues.includes(key)) {
+            continue;
+        }
+
+        renderedOptions.push(
+            <option key={ ix } value={ useRawOnChange ? key : ix }>
+                { enumeration.labels[ix] }
+            </option>
+        );
+    }
+
     return (
         <Control
             as="select"
@@ -92,19 +105,8 @@ export const GenericEnum = (ps) => {
             { hasEmptyOption && (
                 <option></option>
             )}
-            {
-                enumeration.keys
-                .map((key, index) => ({ key, index }))
-                .filter(it => allowedValues.includes(it.key))
-                .map(({ key, index }) => (
-                    <option
-                        key={ index }
-                        value={ useRawOnChange ? key : index }
-                    >
-                        { enumeration.labels[index] }
-                    </option>
-                ))
-            }
+
+            { renderedOptions }
         </Control>
     )
 };

@@ -36,8 +36,8 @@ handler.checkAllowedAndPlausible = async ({
         crt: subjectTypeRecord,
         pointers: [ subjectLocationFieldPointer ],
         filters: {
-            type: 'ForeignId',
-            props: { collection: 'location' }
+            'systemType': 'ForeignId',
+            'props.collection': 'location',
         }
     });
 }

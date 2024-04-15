@@ -203,7 +203,9 @@ const SideNav = (ps) => {
                         <Link to='/custom-record-types'>
                             { translate('Record Types') }
                         </Link>
-                        {/*<Link to='/api-keys'>Api-Keys</Link>*/}
+                        <Link to='/api-keys'>
+                            { translate('API Keys') }
+                        </Link>
                         <Link to='/audit'>
                             { translate('Audit') }
                         </Link>

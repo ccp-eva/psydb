@@ -16,6 +16,7 @@ var sites = [
 var defaultSubjectFormOrder = [
     '/sequenceNumber',
     '/gdpr/state/custom/name',
+    '/scientific/state/custom/biologicalGender',
     '/scientific/state/custom/dateOfBirth',
     '/scientific/state/custom/isDateOfBirthReliable',
     '/scientific/state/custom/ethnologyId',

@@ -4,6 +4,7 @@ export * from './foreign-id';
 import { SaneString } from './sane-string';
 
 const Address = SaneString;
+const Email = SaneString;
 
 export {
     SaneString,

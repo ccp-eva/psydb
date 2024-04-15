@@ -44,7 +44,8 @@ var createSubjectCRT = async (bag) => {
             displayName: 'Gender',
             displayNameI18N: { 'de': 'Geschlecht' },
             props: {
-                enableUnknownValue: true
+                enableUnknownValue: true,
+                enableOtherValue: false,
             }
         }},
     }, { apiKey });

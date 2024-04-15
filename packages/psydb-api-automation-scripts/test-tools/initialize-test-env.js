@@ -4,8 +4,6 @@ var restore = require('@cdxoo/mongodb-restore');
 var fixtures = require('@mpieva/psydb-fixtures');
 var createAgent = require('@mpieva/psydb-axios-test-wrapper');
 
-var supertest = require('supertest');
-
 var Koa = require('koa');
 var withApi = require('@mpieva/psydb-api');
 var executeWithDriver = require('../src/execute-with-driver');
@@ -27,7 +25,7 @@ var beforeAll = async function () {
             con: this.context.mongo.client,
             database: this.context.mongo.dbName,
             clean: true,
-            from: fixtures(fixtureName, { db: true })
+            from: fixtures.get(fixtureName, { db: true })
         })
 
         return out;
@@ -46,13 +44,17 @@ var beforeAll = async function () {
                 url: mongo.uri,
                 dbName: mongo.dbName,
                 useUnifiedTopology: true,
+            },
+            apiKeyAuth: {
+                isEnabled: true,
+                allowedIps: [ '::/0' ]
             }
         }}));
 
         var agent = createAgent(app.callback());
         var out = await executeWithDriver({
             agent, apiKey, extraOptions: {
-                mongodbConnectString: `${mongo.uri}${mongo.dbName}`
+                mongodb: `${mongo.uri}${mongo.dbName}`
             },
             script,
         })

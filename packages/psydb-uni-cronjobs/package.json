@@ -4,7 +4,8 @@
   "description": "",
   "main": "./index.js",
   "scripts": {
-      "publicOnlineForm:createSubjectsFromImap": "node ./public-online-form/run"
+    "test": "npx mocha --config mocha.config.json test/",
+    "publicOnlineForm:createSubjectsFromImap": "node ./public-online-form/run"
   },
   "author": "Jan Schwalbe",
   "license": "MIT",
@@ -23,5 +24,18 @@
     "libqp": "~2.0.1",
     "common-tags": "~1.8.2",
     "html-entities": "~2.4.0"
+  },
+  "devDependencies": {
+    "mocha": "~10.2.0",
+    "chai": "~4.3.7",
+    "@mpieva/psydb-fixtures": "workspace:*",
+    "@mpieva/psydb-axios-test-wrapper": "workspace:*",
+    "@mpieva/psydb-api-mocha-test-tools": "workspace:*",
+    "@mpieva/psydb-api": "workspace:*"
+  },
+  "config": {
+    "mongodbMemoryServer": {
+      "downloadDir": "/tmp/mongodb-memory-server/"
+    }
   }
 }

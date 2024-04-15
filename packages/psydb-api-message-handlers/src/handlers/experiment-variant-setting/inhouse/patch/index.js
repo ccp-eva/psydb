@@ -18,12 +18,13 @@ var handler = SimpleHandler({
     createSchema,
 });
 
-handler.checkAllowedAndPlausible = async ({
-    db,
-    permissions,
-    message,
-    cache
-}) => {
+handler.checkAllowedAndPlausible = async (context) => {
+    var {
+        db,
+        permissions,
+        message,
+        cache
+    } = context;
 
     await checkBasics({
         db,

@@ -8,7 +8,17 @@ import {
 
 import PaddedText from './padded-text';
 
-const Pair = ({ label, className,  children, wLeft, wRight, textWrap }) => {
+const Pair = (ps) => {
+    var {
+        label,
+        className,
+        children,
+        wLeft,
+        wRight,
+        textWrap,
+        noPaddedText = false,
+    } = ps;
+
     wLeft = wLeft || 4;
     wRight = wRight || ( 12 - wLeft );
 
@@ -26,12 +36,20 @@ const Pair = ({ label, className,  children, wLeft, wRight, textWrap }) => {
     return (
         <Row className={ className }>
             <Col xs={ wLeft }>
-                <PaddedText>{ label }</PaddedText>
+                { noPaddedText ? (
+                    label
+                ) : (
+                    <PaddedText>{ label }</PaddedText>
+                )}
             </Col>
             <Col xs={ wRight }>
-                <PaddedText>
+                { noPaddedText ? (
                     <Wrap style={ style }>{ children }</Wrap>
-                </PaddedText>
+                ) : (
+                    <PaddedText>
+                        <Wrap style={ style }>{ children }</Wrap>
+                    </PaddedText>
+                )}
             </Col>
         </Row>
     );

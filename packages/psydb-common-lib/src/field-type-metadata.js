@@ -49,6 +49,22 @@ module.exports = {
         searchDisplayType: 'SaneString',
     },
 
+    PhoneList: {
+        canBeCustomField: true,
+        canBeDisplayField: true,
+        canBeLabelField: false,
+        canSearch: true,
+        searchDisplayType: 'SaneString',
+    },
+
+    Email: {
+        canBeCustomField: true,
+        canBeDisplayField: true,
+        canBeLabelField: false,
+        canSearch: true,
+        searchDisplayType: 'SaneString',
+    },
+
     FullText: {
         canBeCustomField: true,
         canBeDisplayField: true,

@@ -9,16 +9,23 @@ import * as ScalarFields from '../scalar';
 
 // all the non scalar types
 const prohibitedFieldTypes = [
+    'FullText',
+    'SaneString',
+
     'Address',
     'ForeignIdList',
+    'ForeignId',
     'HelperSetItemIdList',
     'DateSinceBirthInterval',
-    'DateOnlyServerSide',
+    //'DateOnlyServerSide',
     'EmailList',
     'PhoneWithTypeList',
     'GeoCoords',
     'TimeInterval',
     'WeekdayBoolObject',
+    'Phone',
+    'PhoneList',
+    'Email',
     'ListOfObjects',
 
     'Password',
@@ -35,7 +42,7 @@ const targetFieldTypeComponentMap = {
 
 const ConditionValueField = (ps) => {
     var {
-        subjectScientificFields,
+        crt,
         targetField = {},
         ...downstream
     } = ps;
@@ -55,6 +62,7 @@ const ConditionValueFieldList = factory({
     FieldComponent: ConditionValueField,
     ArrayContentWrapper: FormHelpers.ScalarArrayContentWrapper,
     ArrayItemWrapper: FormHelpers.ScalarArrayItemWrapper,
+    defaultItemValue: null,
 });
 
 const Control = (ps) => {
@@ -63,30 +71,27 @@ const Control = (ps) => {
         formikField,
         formikMeta,
         formikForm,
-        subjectScientificFields,
+        crt,
         disabled,
     } = ps;
 
     var translate = useUITranslation();
 
-    var { getFieldProps } = formikForm;
+    var { getFieldProps, values } = formikForm;
     var selectedPointer = (
         getFieldProps(`${dataXPath}.pointer`).value
     );
 
-    var filteredFields = (
-        subjectScientificFields
-        .filter(it => (
-            !it.isRemoved &&
-            !prohibitedFieldTypes.includes(it.type)
-        ))
-    );
+    var filteredFields = crt.findCustomFields({
+        'type': { $nin: prohibitedFieldTypes },
+        'props.isSpecialAgeFrameField': { $ne: true },
+        'isRemoved': { $ne: true }
+    });
 
-    var fieldOptions = {},
-        targetFields = {};
+    var fieldOptions = {};
+    var targetFields = {};
     for (var fieldData of filteredFields) {
-        var { key, type, displayName } = fieldData;
-        var pointer = `/scientific/state/custom/${key}`;
+        var { pointer, key, type, displayName } = fieldData;
         fieldOptions[pointer] = displayName;
         targetFields[pointer] = fieldData;
     }

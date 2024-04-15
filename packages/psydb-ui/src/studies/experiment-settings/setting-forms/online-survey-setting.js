@@ -1,7 +1,11 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
-import { useSend, useFetch } from '@mpieva/psydb-ui-hooks';
-import { Button } from '@mpieva/psydb-ui-layout';
+import { useUITranslation, useUILanguage } from '@mpieva/psydb-ui-contexts';
+import {
+    LoadingIndicator,
+    AsyncButton,
+    SmallFormFooter
+} from '@mpieva/psydb-ui-layout';
+
 import {
     DefaultForm,
     Fields,
@@ -9,15 +13,15 @@ import {
 
 export const OnlineSurveySetting = (ps) => {
     var {
-        op,
-        studyId,
-        variantId,
-        settingRecord,
+        onHide,
+        onSubmit,
+        isTransmitting,
 
-        allowedSubjectTypes,
-        onSuccessfulUpdate
+        settingRecord,
+        availableSubjectCRTs,
     } = ps;
 
+    var [ language ] = useUILanguage();
     var translate = useUITranslation();
 
     var settingId, settingState;
@@ -27,50 +31,53 @@ export const OnlineSurveySetting = (ps) => {
             state: settingState,
         } = settingRecord)
     }
-    if (![ 'create', 'patch' ].includes(op)) {
-        throw new Error(`unknown op "${op}"`);
-    }
 
-    var send = useSend((formData, formikProps) => {
-        var type = `experiment-variant-setting/online-survey/${op}`;
-        var message;
-        switch (op) {
-            case 'create':
-                message = { type, payload: {
-                    studyId,
-                    experimentVariantId: variantId,
-                    props: formData
-                } };
-                break;
-            case 'patch':
-                message = { type, payload: {
-                    id: settingId,
-                    props: formData
-                }};
-                break;
-            default:
-                throw new Error(`unknown op "${op}"`);
-        }
-        return message;
-    }, { onSuccessfulUpdate });
+    var bodyBag = {
+        availableSubjectCRTs,
+        isTransmitting,
+        onHide,
+    }
 
     return (
         <div>
-            <DefaultForm onSubmit={ send.exec }>
-                {(formikProps) => (
-                    <>
-                        <Fields.GenericEnum { ...({
-                            dataXPath: '$.subjectTypeKey',
-                            label: translate('Subject Type'),
-                            required: true,
-                            options: allowedSubjectTypes
-                        })} />
-                        <Button type='submit'>
-                            { translate('Save') }
-                        </Button>
-                    </>
+            <DefaultForm
+                onSubmit={ onSubmit }
+                initialValues={ settingState || {}}
+            >
+                {(formik) => (
+                    <FormBody formik={ formik } { ...bodyBag } />
                 )}
             </DefaultForm>
         </div>
     )
 };
+
+const FormBody = (ps) => {
+    var {
+        formik,
+        availableSubjectCRTs,
+
+        isTransmitting,
+        onHide,
+    } = ps;
+
+    var [ language ] = useUILanguage();
+    var translate = useUITranslation();
+
+    return (
+        <>
+            <Fields.GenericEnum { ...({
+                dataXPath: '$.subjectTypeKey',
+                label: translate('Subject Type'),
+                required: true,
+                options: availableSubjectCRTs.asOptions({ language })
+            })} />
+            
+                <SmallFormFooter extraClassName='pt-2'>
+                <AsyncButton type='submit' isTransmitting={ isTransmitting }>
+                    { translate('Save') }
+                </AsyncButton>
+            </SmallFormFooter>
+        </>
+    )
+}

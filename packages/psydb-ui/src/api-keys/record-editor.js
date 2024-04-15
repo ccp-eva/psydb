@@ -1,5 +1,6 @@
 import React from 'react';
 import { only } from '@mpieva/psydb-core-utils';
+import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { usePermissions, useSendPatch } from '@mpieva/psydb-ui-hooks';
 import { withRecordEditor } from '@mpieva/psydb-ui-lib';
 import MainForm from './main-form';
@@ -13,24 +14,27 @@ const EditForm = (ps) => {
     } = ps;
 
     var { record } = fetched;
+    var translate = useUITranslation();
 
     var send = useSendPatch({
         collection,
         record,
-        onSuccessfulUpdate
+        onSuccessfulUpdate,
+        autoPayload: false
     });
 
-    var initialValues = only({
+    var initialValues = { id: record._id, props: only({
         from: record.state,
         paths: [ 'label', 'isEnabled', 'permissions' ]
-    });
+    })};
 
     return (
         <>
             <MainForm.Component
-                title='Api-Key bearbeiten'
+                title={ translate('Edit API Key') }
                 initialValues={ initialValues }
                 onSubmit={ send.exec }
+                type='edit'
             />
         </>
     )

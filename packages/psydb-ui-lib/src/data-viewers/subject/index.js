@@ -6,7 +6,8 @@ import {
     SaneString,
     FullText,
     SystemPermissions,
-    createFullUserOrdered
+    createFullUserOrdered,
+    createDisplayOrdered,
 } from '../utility-components';
 
 import TestingPermissions from './testing-permissions';
@@ -62,6 +63,10 @@ addComponents(Subject, SubjectContext, labels, [
                 TestingPermissions: withPair(TestingPermissions)
             }
         })
+    },
+    {
+        cname: 'DisplayOrdered',
+        Component: createDisplayOrdered(),
     }
 ]);
 

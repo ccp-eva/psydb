@@ -4,8 +4,15 @@ var Cache = require('./cache');
 var WrappedCache = ({ driver }) => {
     var cache = Cache();
 
-    cache.addId = ({ collection, recordType, as }) => {
-        var id = driver.getCache().lastChannelIds[collection];
+    cache.addCRT = ({ _id, key, as }) => {
+        cache.merge({ 'customRecordType': {
+            [as || key]: _id
+        }});
+    }
+    cache.addId = ({ collection, recordType, id, as }) => {
+        if (!id) {
+            id = driver.getCache().lastChannelIds[collection];
+        }
         if (recordType) {
             cache.merge({ [collection]: { [recordType]: { [as]: id }}});
         }

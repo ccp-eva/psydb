@@ -19,4 +19,6 @@ module.exports = {
     ...require('./search-constraints'),
     ...require('./pagination'),
     ...require('./sort'),
+
+    ...require('./access-rights-by-research-group'),
 }

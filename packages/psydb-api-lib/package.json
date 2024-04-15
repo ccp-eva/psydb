@@ -28,6 +28,7 @@
     "@mpieva/psydb-common-verify-helpers": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-common-lib": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-api-config": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-mongo-adapter": "workspace:~0.1.0-alpha",
     "json-schema-traverse": "~1.0.0",
     "jsonpointer": "~5.0.1",
     "@cdxoo/inline-string": "~1.0.0",
@@ -46,12 +47,14 @@
     "koa-compose": "~4.1.0",
     "@cdxoo/switch-koa-compose": "~1.0.0",
     "diacritic-regex": "~1.1.0",
-    "nodemailer": "~6.8.0"
+    "nodemailer": "~6.8.0",
+    "csv-parse": "~5.5.5"
   },
   "devDependencies": {
     "mocha": "~10.2.0",
     "chai": "~4.3.7",
-    "snap-shot-it": "~7.9.6"
+    "snap-shot-it": "~7.9.6",
+    "@mpieva/psydb-fixtures": "workspace:~0.1.0-alpha"
   },
   "config": {
     "mongodbMemoryServer": {

@@ -7,8 +7,7 @@ export const AwayTeamSetting = (ps) => {
     var {
         settingRecord,
         settingRelated,
-        allCustomRecordTypes,
-        customRecordTypes,
+        availableSubjectCRTs,
     } = ps;
 
     var {
@@ -16,26 +15,19 @@ export const AwayTeamSetting = (ps) => {
         subjectLocationFieldPointer,
     } = settingRecord.state;
 
-    var translate = useUITranslation();
-    var subjectType = allCustomRecordTypes.find(it => (
-        it.collection === 'subject' && it.type === subjectTypeKey
-    ));
+    var subjectCRT = availableSubjectCRTs.find({
+        type: subjectTypeKey
+    });
+    var [ locationField ] = subjectCRT.findCustomFields({
+        'pointer': subjectLocationFieldPointer
+    });
 
-    var fieldLabels = (
-        subjectType.state.settings.subChannelFields.scientific
-        .reduce((acc, field) => {
-            var { key, displayName } = field;
-            var pointer = (
-                `/scientific/state/custom/${key}`
-            );
-            return { ...acc, [pointer]: translate.fieldDefinition(field) };
-        }, {})
-    );
+    var translate = useUITranslation();
 
     return (
         <DefaultSettingWrapper { ...ps }>
             <Pair label={ translate('Appointments In') }>
-                { fieldLabels[subjectLocationFieldPointer] }
+                { translate.fieldDefinition(locationField) }
             </Pair>
         </DefaultSettingWrapper>
     )

@@ -8,7 +8,6 @@ export const ManualOnlyParticipationSetting = (ps) => {
     var {
         settingRecord,
         settingRelated,
-        customRecordTypes,
     } = ps;
 
     var {

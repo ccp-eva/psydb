@@ -1,0 +1,14 @@
+name,biologicalGender,dateOfBirth,isDateOfBirthReliable,ethnologyId,mainLocationId,residenceHistory.timestamp,residenceHitory.householdNumber,comment
+"Bob", "m", "2012-12-29T00:00:00.000Z","y","cod_3","cod_5","2023-01-01T00:00:00.000Z,2023-02-02T00:00:00.000Z","123,234","some comment"
+
+name,biologicalGender,dateOfBirth,isDateOfBirthReliable,ethnologyId,mainLocationId,residenceHistory[timestamp|houseHoldnumber],comment
+"Bob", "m", "2012-12-29T00:00:00.000Z","y","cod_3","cod_5","[2023-01-01T00:00:00.000Z|123],[2023-02-02T00:00:00.000Z|234]","some comment"
+
+_index,name,biologicalGender,dateOfBirth,isDateOfBirthReliable,ethnologyId,mainLocationId,residenceHistory.timestamp,residenceHitory.householdNumber,comment
+1, "Bob", "m", "2012-12-29T00:00:00.000Z","y","cod_3","cod_5","2023-01-01T00:00:00.000Z","123","some comment"
+1,    "",  "",                         "", "",    "",      "","2023-02-02T00:00:00.000Z","234",            ""
+
+
+
+teilnahemn.inhouse,teilname.extern
+y,                 n
