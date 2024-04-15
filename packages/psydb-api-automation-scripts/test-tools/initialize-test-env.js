@@ -4,8 +4,6 @@ var restore = require('@cdxoo/mongodb-restore');
 var fixtures = require('@mpieva/psydb-fixtures');
 var createAgent = require('@mpieva/psydb-axios-test-wrapper');
 
-var supertest = require('supertest');
-
 var Koa = require('koa');
 var withApi = require('@mpieva/psydb-api');
 var executeWithDriver = require('../src/execute-with-driver');
@@ -56,7 +54,7 @@ var beforeAll = async function () {
         var agent = createAgent(app.callback());
         var out = await executeWithDriver({
             agent, apiKey, extraOptions: {
-                mongodbConnectString: `${mongo.uri}${mongo.dbName}`
+                mongodb: `${mongo.uri}${mongo.dbName}`
             },
             script,
         })
