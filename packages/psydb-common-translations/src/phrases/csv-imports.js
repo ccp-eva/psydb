@@ -25,4 +25,8 @@ module.exports = [
         en: 'Upload File',
         de: 'Datei Hochladen'
     },
+    {
+        en: 'CSV Import Details',
+        de: 'CSV-Import-Details'
+    }
 ]
