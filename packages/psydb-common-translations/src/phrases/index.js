@@ -12,6 +12,7 @@ module.exports = [
     ...require('./helper-tables'),
     ...require('./permissions'),
     ...require('./crt-editor'),
+    ...require('./csv-imports'),
 
     ...require('./_fieldtype'),
     ...require('./_participationStatus'),

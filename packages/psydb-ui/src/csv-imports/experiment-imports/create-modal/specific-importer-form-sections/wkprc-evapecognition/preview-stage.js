@@ -136,7 +136,7 @@ const PreviewRecord = (ps) => {
     return (
         <div className='bg-white py-2 px-3 border'>
             <SplitPartitioned partitions={[ 1, 1, 1, 1 ]}>
-                <span>Zeitpunkt:</span>
+                <span>{ translate('Date/Time') }</span>
                 <BE><DateTime value={ interval.start } /></BE>
 
                 <span>{ translate('Subject Group') }:</span>
