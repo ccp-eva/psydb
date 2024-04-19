@@ -1,6 +1,12 @@
 'use strict';
 var { sift } = require('@mpieva/psydb-common-lib');
-var { UnknownCSVColumnKeys } = require('../errors');
+
+var {
+    CSVImportError,
+    UnknownCSVColumnKeys,
+    MissingCSVColumnValues
+} = require('../errors');
+
 var dumbParseCSV = require('./dumb-parse-csv');
 var commonDeserializers = require('./deserializers');
 
@@ -8,6 +14,7 @@ var parseDefinedCSV = (bag) => {
     var {
         csvData,
         definitions,
+        required = [],
         deserializers = commonDeserializers,
         throwUnknown = true
     } = bag;
@@ -19,20 +26,28 @@ var parseDefinedCSV = (bag) => {
     });
 
     var out = [];
-    for (var linedata of csvLines) {
+    for (var [ lineIX, linedata ] of csvLines.entries()) {
+        var missingCSVColumnKeys = [ ...required ];
         var parsedline = [];
         for (var entry of linedata.entries()) {
-            var [ ix, value ] = entry;
-            var m = mapping[ix];
-
+            var [ columnIX, value ] = entry;
+            var m = mapping[columnIX];
+            
             // FIXME: naming of 'mapping' is off since we have unmapped
             var { isUnmapped } = m;
             if (isUnmapped) {
                 continue;
             }
             
-            var { definition, realKey, extraPath  } = m;
+            var { csvColumnKey, definition, realKey, extraPath  } = m;
             var { systemType } = definition;
+            
+            if (String(value).trim() !== '') {
+                missingCSVColumnKeys = missingCSVColumnKeys.filter((c) => (
+                    c !== csvColumnKey
+                ));
+            }
+
             
             if (isUnsupportedType(systemType)) {
                 // FIXME
@@ -49,6 +64,13 @@ var parseDefinedCSV = (bag) => {
                 })
             });
         }
+
+        if (missingCSVColumnKeys.length > 0) {
+            throw new MissingCSVColumnValues({
+                keys: missingCSVColumnKeys,
+                line: lineIX + 1
+            });
+        }
         out.push(parsedline);
     }
 
@@ -62,7 +84,7 @@ var createCSVColumnMapping = (bag) => {
     var unknownCSVColumnKeys = [];
     for (var entry of csvColumns.entries()) {
         var [ ix, csvColumnKey ] = entry;
-        
+
         var tokens = csvColumnKey.split(/\./);
         var [ realKey, ...extraPath ] = tokens;
 
@@ -79,11 +101,15 @@ var createCSVColumnMapping = (bag) => {
             );
         }
         else if (found < 1) {
-            infos.push({ realKey, extraPath, isUnmapped: true })
+            infos.push({
+                csvColumnKey, realKey, extraPath, isUnmapped: true
+            })
             unknownCSVColumnKeys.push(csvColumnKey);
         }
         else {
-            infos.push({ definition: found[0], realKey, extraPath });
+            infos.push({
+                csvColumnKey, definition: found[0], realKey, extraPath
+            });
         }
     }
     

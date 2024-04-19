@@ -12,13 +12,23 @@ class CSVImportError extends Error {
 class UnknownCSVColumnKeys extends CSVImportError {
     constructor (unknownCSVColumnKeys) {
         super(`unknown csv column keys: "${unknownCSVColumnKeys}"`, {
-            unknownCSVColumnKeys
+            keys: unknownCSVColumnKeys
         });
         this.name = 'UnknownCSVColumnKeys';
     }
 }
 
+class MissingCSVColumnValues extends CSVImportError {
+    constructor (bag) {
+        var { keys, line } = bag;
+        super(`missing csv column values for: "${keys}" in line ${line}`, {
+            keys, line
+        });
+        this.name = 'MissingCSVColumnValues';
+    }
+}
 module.exports = {
     CSVImportError,
     UnknownCSVColumnKeys,
+    MissingCSVColumnValues,
 }

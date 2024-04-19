@@ -1,5 +1,6 @@
 'use strict';
 var { CsvError, parse: parseCSV } = require('csv-parse/sync');
+var { CSVImportError } = require('../errors');
 
 var dumbParseCSV = (data) => {
     var csvColumns, csvLines;
@@ -8,7 +9,7 @@ var dumbParseCSV = (data) => {
     }
     catch (e) {
         if (e instanceof CsvError) {
-            throw e; // TODO wrap error
+            throw new CSVImportError(e.message)
         }
         else {
             throw e;

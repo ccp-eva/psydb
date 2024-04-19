@@ -6,6 +6,7 @@ var { swapTimezone } = require('@mpieva/psydb-timezone-helpers');
 var makeExperiment = (bag) => {
     var {
         preparedObject,
+        subjectType,
         study,
         location,
         labOperators,
@@ -47,6 +48,7 @@ var makeExperiment = (bag) => {
 
         selectedSubjectIds: subjectData.map(it => it.subjectId),
         subjectData: subjectData.map(it => ({
+            subjectType,
             ...omit({ from: it, paths: [ 'role' ]}),
             comment: it.role ? `${it.role}; ${comment}` : comment,
 

@@ -28,6 +28,7 @@ var runPipeline = async (bag) => {
     var transformed = transformPrepared({
         preparedObjects,
 
+        subjectType,
         study,
         location,
         labOperators,

@@ -3,7 +3,10 @@ var makeExperiment = require('./make-experiment');
 var makeParticipationItems = require('./make-participation-items');
 
 var transformPrepared = (bag) => {
-    var { preparedObjects, study, location, labOperators, timezone } = bag;
+    var {
+        preparedObjects,
+        subjectType, study, location, labOperators, timezone
+    } = bag;
 
     var transformed = {
         experiments: [],
@@ -13,6 +16,7 @@ var transformPrepared = (bag) => {
         var { record, parts } = makeExperiment({
             preparedObject: obj,
             
+            subjectType,
             study,
             location,
             labOperators,
