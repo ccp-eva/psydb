@@ -524,6 +524,9 @@ var createRouting = (bag = {}) => {
     router.post('/csv-import/experiment/search', ...withPostStages({
         endpoint: endpoints.csvImport.experiment.search
     }));
+    router.post('/csv-import/experiment/read', ...withPostStages({
+        endpoint: endpoints.csvImport.experiment.read
+    }));
     router.post('/csv-import/experiment/preview', ...withPostStages({
         endpoint: endpoints.csvImport.experiment.preview
     }));
