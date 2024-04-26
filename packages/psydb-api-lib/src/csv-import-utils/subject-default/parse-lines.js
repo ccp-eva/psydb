@@ -4,13 +4,22 @@ var { deserializers, parseDefinedCSV } = require('../common');
 
 var parseLines = (bag) => {
     var { data, subjectCRT } = bag;
-    
+   
+    console.log(subjectCRT.findRequiredCustomFields());
+
+
     var combinedDefinitions = [
         ...subjectCRT.allCustomFields(),
         ...commonExtraDefinitions,
         // TODO determine if testing permissions allowed
         //...testingPermissiosExtraDefinitions
-    ]
+    ];
+
+    var availableCSVColumnsForDefintiions = __getAvailable({
+        definitions: combinedDefinitions
+    });
+    
+    throw new Error();
     
     var combinedDeserializers = {
         ...deserializers,
@@ -75,6 +84,54 @@ var extraDeserializers = {
         labProcedureKey: 'online-video-call',
         value,
     }),
+}
+
+var __getAvailable = (bag) => {
+    var { definitions } = bag;
+
+    var csvColumnKeys = [];
+    for (var it of definitions) {
+        var defkeys = getCSVColumnKeysForSingleDefinition({
+            definition: it 
+        });
+        if (defkeys) {
+            csvColumnKeys.push(...defkeys);
+        }
+    }
+    return csvColumnKeys;
+}
+
+var getCSVColumnKeysForSingleDefinition = (bag) => {
+    var { definition } = bag;
+    var { csvColumnKey, key, systemType } = definition;
+
+    if (csvColumnKey) {
+        return [ csvColumnKey ];
+    }
+    
+    if (systemType === 'Lambda') {
+        return undefined; // NOTE: skip
+    }
+
+    if (systemType === 'Address') {
+        return [
+            `${key}.country`,
+            `${key}.city`,
+            `${key}.postcode`,
+            `${key}.street`,
+            `${key}.housenumber`,
+            `${key}.affix`,
+        ];
+    }
+    else if (systemType === 'GeoCoords') {
+        return [
+            `${key}.latitude`,
+            `${key}.longitude`,
+        ];
+    }
+    else {
+        return [ key ];
+    }
 }
 
 module.exports = parseLines;

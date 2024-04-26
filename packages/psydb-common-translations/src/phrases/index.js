@@ -1254,7 +1254,7 @@ module.exports = [
         de: 'Fehlerhafte Eingaben'
     },
     {
-        internal: '_XXX_system-error',
+        internal: '_XXX_system_error',
         en: 'System Error',
         de: 'System-Fehler'
     },

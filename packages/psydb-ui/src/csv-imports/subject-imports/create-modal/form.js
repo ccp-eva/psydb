@@ -20,9 +20,10 @@ const SubjectImportCreateForm = (ps) => {
     var [ stage, setStage ] = useState('prepare');
 
     var initialValues = {
-        //subjectType: 'fs_malaysia_subject',
-        //researchGroupId: '66051bb1c1e37e5a99ee54c3',
-        //fileId: '661841402e082ffc470d006f'
+        subjectType: 'fs_malaysia_subject',
+        researchGroupId: '66051bb1c1e37e5a99ee54c3',
+        //fileId: '661841402e082ffc470d006f',
+        fileId: '662aebf39d1d9d8b8eb3c5fc'
     }
 
     return (

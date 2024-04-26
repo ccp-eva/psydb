@@ -10,6 +10,14 @@ module.exports = [
         de: 'Teilnahme-Importe'
     },
     {
+        en: 'Participation Imports',
+        de: 'Teilnahme-Importe'
+    },
+    {
+        en: 'Subject Imports',
+        de: 'Proband:innen-Importe'
+    },
+    {
         en: 'New Import',
         de: 'Neuer Import'
     },

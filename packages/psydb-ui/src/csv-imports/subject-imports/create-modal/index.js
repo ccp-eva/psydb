@@ -21,7 +21,7 @@ const SubjectImportCreateModalBody = (ps) => {
 
 const SubjectImportCreateModal = WithDefaultModal({
     Body: SubjectImportCreateModalBody,
-    title: 'Import Subjects',
+    title: 'New Import',
     size: 'xl',
 });
 
