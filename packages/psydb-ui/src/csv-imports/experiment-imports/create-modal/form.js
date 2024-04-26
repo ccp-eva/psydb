@@ -20,10 +20,10 @@ const ExperimentImportCreateForm = (ps) => {
     var [ stage, setStage ] = useState('prepare');
 
     var [ studyType, setStudyType ] = useState(
-        // 'wkprc_study'
+        //'wkprc_study'
     );
     var [ studyRecord, setStudyRecord ] = useState(
-        // { _id: '6566b5c26c830cb226c1389b' }
+        //{ _id: '6566b5c26c830cb226c1389b' }
     );
     var [ subjectType, setSubjectType ] = useState();
     var [ csvImporter, setCSVImporter ] = useState();

@@ -4,6 +4,7 @@ module.exports = {
 
     CRTSettings: require('./crt-settings'),
     CRTSettingsList: require('./crt-settings-list'),
+    FieldDefinition: require('./field-definition'),
 
     intervalUtils: require('./interval-utils'),
     createSchemaForRecord: require('./create-schema-for-record-type'),

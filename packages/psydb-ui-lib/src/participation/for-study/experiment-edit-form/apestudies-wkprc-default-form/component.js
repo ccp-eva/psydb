@@ -13,6 +13,8 @@ import {
     Footer,
 } from '../shared';
 
+import PerSubjectFields from './per-subject-fields';
+
 export const Component = (ps) => {
     var {
         subjectType,
@@ -122,27 +124,24 @@ const FormBody = (ps) => {
             />
             { subjectGroupId && (
                 <>
-                    {/*<GroupExpSubjectFields
-                        label='Proband:innen'
+                    <hr />
+                    <PerSubjectFields
+                        label={ translate('Subjects') }
                         dataXPath='$.subjectData'
                         subjectType={ subjectType }
                         subjectConstraints={ subjectConstraints }
                         enableMove={ false }
-                    />*/}
-                    <Fields.ForeignId
+                    />
+                    <hr className='mt-0'/>
+                    {/*<Fields.ForeignId
                         label={ translate('Subject') }
                         dataXPath={`$.subjectData.0.subjectId`}
                         collection='subject'
                         recordType={ subjectType }
                         constraints={ subjectConstraints }
                         required
-                    />
+                    />*/}
                     <Fields.DateOnlyTimestamp required />
-                    
-                    <Fields.SaneString
-                        label={ translate('Comment') }
-                        dataXPath={`$.subjectData.0.comment`}
-                    />
                     
                     <Fields.SaneString
                         label={ translate('_wkprc_experimentName') }
@@ -183,14 +182,14 @@ const createInitialValues = (ps) => {
             'roomOrEnclosure',
         ]}),
         timestamp: interval.start,
-        subjectData: [{
+        subjectData: subjectData.map(it => ({
             ...only({
-                from: subjectData[0],
+                from: it,
                 paths: [ 'subjectId', 'comment' ],
             }),
             status: 'participated',
             excludeFromMoreExperimentsInStudy: false
-        }],
+        })),
         labOperatorIds: experimentOperatorIds,
     }
 

@@ -1,7 +1,7 @@
 'use strict';
 // XXX: stub
 var debug = require('debug')(
-    'psydb:api:endpoints:csvImport:experiment:search'
+    'psydb:api:endpoints:csvImport:experiment:read'
 );
 
 var { only } = require('@mpieva/psydb-core-utils');
@@ -9,13 +9,13 @@ var {
     ResponseBody,
     validateOrThrow,
     withRetracedErrors,
-    aggregateToArray,
+    aggregateOne,
     fetchRecordLabelsManual,
 } = require('@mpieva/psydb-api-lib');
 
 var Schema = require('./schema');
 
-var search = async (context, next) => {
+var read = async (context, next) => {
     var { db, permissions, request } = context;
     
     var i18n = only({ from: context, keys: [
@@ -31,29 +31,28 @@ var search = async (context, next) => {
         payload: request.body
     });
 
-    var records = await withRetracedErrors(
-        aggregateToArray({ db, csvImport: [
+    var { id: csvImportId } = request.body;
+
+    var record = await withRetracedErrors(
+        aggregateOne({ db, csvImport: [
             { $match: {
-                type: /^experiment\//
+                _id: csvImportId
             }},
-            { $sort: {
-                createdAt: -1
-            }}
         ]})
     );
 
     var relatedRecordLabels = await fetchRecordLabelsManual(db, {
-        study: records.map(it => it.studyId),
-        personnel: records.map(it => it.createdBy),
+        study: [ record.studyId ],
+        personnel: [ record.createdBy ],
     }, { oldWrappedLabels: false, ...i18n });
 
     context.body = ResponseBody({ data: {
-        records,
+        record,
         related: { records: relatedRecordLabels }
     }})
     
     await next();
 }
 
-module.exports = search;
+module.exports = read;
 

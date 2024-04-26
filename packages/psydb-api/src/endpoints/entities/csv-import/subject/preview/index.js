@@ -118,9 +118,9 @@ var withCSVImportErrorHandling = () => async (context, next) => {
     }
     catch (e) {
         if (e instanceof CSVImportError) {
-            throw new ApiError(409, {
-                apiStatus: e.name, data: e.getInfo()
-            });
+            throw new ApiError(409, { apiStatus: e.name, data: {
+                message: e.message
+            }});
         }
         else {
             throw e

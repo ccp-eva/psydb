@@ -1,6 +1,14 @@
 'use strict';
-var { sift } = require('@mpieva/psydb-common-lib');
-var { UnknownCSVColumnKeys } = require('../errors');
+var { without } = require('@mpieva/psydb-core-utils');
+var { FieldDefinition, sift } = require('@mpieva/psydb-common-lib');
+
+var {
+    CSVImportError,
+    UnknownCSVColumnKeys,
+    MissingCSVColumnKeys,
+    MissingCSVColumnValues
+} = require('../errors');
+
 var dumbParseCSV = require('./dumb-parse-csv');
 var commonDeserializers = require('./deserializers');
 
@@ -8,31 +16,49 @@ var parseDefinedCSV = (bag) => {
     var {
         csvData,
         definitions,
+        required = [],
         deserializers = commonDeserializers,
         throwUnknown = true
     } = bag;
 
     var { csvColumns, csvLines } = dumbParseCSV(csvData);
+
+    var missingRequiredColumnKeys = without({
+        that: required,
+        without: csvColumns
+    });
+
+    if (missingRequiredColumnKeys.length > 0) {
+        throw new MissingCSVColumnKeys(missingRequiredColumnKeys);
+    }
     
     var mapping = createCSVColumnMapping({
         definitions, csvColumns, throwUnknown,
     });
 
     var out = [];
-    for (var linedata of csvLines) {
+    for (var [ lineIX, linedata ] of csvLines.entries()) {
+        var missingCSVColumnKeys = [ ...required ];
         var parsedline = [];
         for (var entry of linedata.entries()) {
-            var [ ix, value ] = entry;
-            var m = mapping[ix];
-
+            var [ columnIX, value ] = entry;
+            var m = mapping[columnIX];
+            
             // FIXME: naming of 'mapping' is off since we have unmapped
             var { isUnmapped } = m;
             if (isUnmapped) {
                 continue;
             }
             
-            var { definition, realKey, extraPath  } = m;
+            var { csvColumnKey, definition, realKey, extraPath  } = m;
             var { systemType } = definition;
+            
+            if (String(value).trim() !== '') {
+                missingCSVColumnKeys = missingCSVColumnKeys.filter((c) => (
+                    c !== csvColumnKey
+                ));
+            }
+
             
             if (isUnsupportedType(systemType)) {
                 // FIXME
@@ -49,6 +75,13 @@ var parseDefinedCSV = (bag) => {
                 })
             });
         }
+
+        if (missingCSVColumnKeys.length > 0) {
+            throw new MissingCSVColumnValues({
+                keys: missingCSVColumnKeys,
+                line: lineIX + 1
+            });
+        }
         out.push(parsedline);
     }
 
@@ -57,14 +90,35 @@ var parseDefinedCSV = (bag) => {
 
 var createCSVColumnMapping = (bag) => {
     var { definitions, csvColumns, throwUnknown = true } = bag;
+
+    var available = [];
+    for (var it of definitions) {
+        var def = FieldDefinition({ data: it });
+        var keys = def.getCSVColumnKeys();
+        if (keys) {
+            available.push(...keys);
+        }
+    }
     
     var infos = [];
     var unknownCSVColumnKeys = [];
     for (var entry of csvColumns.entries()) {
         var [ ix, csvColumnKey ] = entry;
-        
+
         var tokens = csvColumnKey.split(/\./);
         var [ realKey, ...extraPath ] = tokens;
+
+        var sharedInfoBag = {
+            csvColumnKey,
+            realKey,
+            extraPath
+        };
+
+        if (!available.includes(csvColumnKey)) {
+            infos.push({ ...sharedInfoBag, isUnmapped: true });
+            unknownCSVColumnKeys.push(csvColumnKey);
+            continue;
+        }
 
         var found = definitions.filter(sift({
             $or: [
@@ -73,17 +127,18 @@ var createCSVColumnMapping = (bag) => {
             ]
         }));
 
-        if (found > 1) {
-            throw new Error(
+        if (found.length === 1) {
+            infos.push({ ...sharedInfoBag, definition: found[0] });
+        }
+        else if (found.length > 1) {
+            throw new CSVImportError(
                 `multiple fields match column key "${csvColumnKey}"`
             );
         }
-        else if (found < 1) {
-            infos.push({ realKey, extraPath, isUnmapped: true })
-            unknownCSVColumnKeys.push(csvColumnKey);
-        }
         else {
-            infos.push({ definition: found[0], realKey, extraPath });
+            throw new CSVImportError(
+                `unexpected error for column key "${csvColumnKey}"`
+            );
         }
     }
     

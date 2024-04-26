@@ -12,6 +12,7 @@ module.exports = [
     ...require('./helper-tables'),
     ...require('./permissions'),
     ...require('./crt-editor'),
+    ...require('./csv-imports'),
 
     ...require('./_fieldtype'),
     ...require('./_participationStatus'),
@@ -1253,7 +1254,7 @@ module.exports = [
         de: 'Fehlerhafte Eingaben'
     },
     {
-        internal: '_XXX_system-error',
+        internal: '_XXX_system_error',
         en: 'System Error',
         de: 'System-Fehler'
     },

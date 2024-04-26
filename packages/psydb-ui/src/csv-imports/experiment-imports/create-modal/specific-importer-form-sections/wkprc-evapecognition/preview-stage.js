@@ -42,6 +42,8 @@ const PreviewStage = (ps) => {
             subjectType,
             locationId,
             labOperatorIds,
+
+            extraAxiosConfig: { disableErrorModal: [ 409 ]}
         })
     ), []);
 
@@ -60,36 +62,63 @@ const PreviewStage = (ps) => {
         return <LoadingIndicator size='lg' />
     }
 
-    var { previewRecords, related, csvErrors } = fetched.data;
-    
-    return (
-        <>
-            <SmallFormFooter>
-                <AsyncButton { ...send.passthrough }>
-                    { translate('Import') }
-                </AsyncButton>
-                <Button
-                    disabled={ send.isTransmitting }
-                    variant='outline-primary'
-                    onClick={ gotoPrepare }
-                >
-                    { translate('Back') }
-                </Button>
-            </SmallFormFooter>
-            <hr />
-            <div className='d-flex flex-column gapy-2'>
-                { previewRecords.map((it, ix) => {
-                    return (
-                        <PreviewRecord
-                            key={ ix }
-                            previewRecord={ it }
-                            related={ related }
-                        />
-                    )
-                })}
-            </div>
-        </>
-    )
+    if (fetched.errorResponse) {
+        var { apiStatus, data } = fetched.errorResponse.data;
+        var { message } = data;
+        return (
+            <>
+                <SmallFormFooter>
+                    <AsyncButton { ...send.passthrough } disabled={ true }>
+                        { translate('Import') }
+                    </AsyncButton>
+                    <Button
+                        disabled={ send.isTransmitting }
+                        variant='outline-primary'
+                        onClick={ gotoPrepare }
+                    >
+                        { translate('Back') }
+                    </Button>
+                </SmallFormFooter>
+                <hr />
+                <Alert variant='danger'>
+                    <b>{ apiStatus }</b>
+                    <div>{ message }</div>
+                </Alert>
+            </>
+        )
+    }
+    else {
+        var { previewRecords, related, csvErrors } = fetched.data;
+        
+        return (
+            <>
+                <SmallFormFooter>
+                    <AsyncButton { ...send.passthrough }>
+                        { translate('Import') }
+                    </AsyncButton>
+                    <Button
+                        disabled={ send.isTransmitting }
+                        variant='outline-primary'
+                        onClick={ gotoPrepare }
+                    >
+                        { translate('Back') }
+                    </Button>
+                </SmallFormFooter>
+                <hr />
+                <div className='d-flex flex-column gapy-2'>
+                    { previewRecords.map((it, ix) => {
+                        return (
+                            <PreviewRecord
+                                key={ ix }
+                                previewRecord={ it }
+                                related={ related }
+                            />
+                        )
+                    })}
+                </div>
+            </>
+        )
+    }
 }
 
 const PreviewRecord = (ps) => {
@@ -107,7 +136,7 @@ const PreviewRecord = (ps) => {
     return (
         <div className='bg-white py-2 px-3 border'>
             <SplitPartitioned partitions={[ 1, 1, 1, 1 ]}>
-                <span>Zeitpunkt:</span>
+                <span>{ translate('Date/Time') }</span>
                 <BE><DateTime value={ interval.start } /></BE>
 
                 <span>{ translate('Subject Group') }:</span>

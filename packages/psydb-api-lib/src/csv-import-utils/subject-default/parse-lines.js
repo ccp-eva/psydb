@@ -1,16 +1,25 @@
 'use strict';
+var { FieldDefinition } = require('@mpieva/psydb-common-lib');
 var { UnknownCSVColumnKeys } = require('../errors');
 var { deserializers, parseDefinedCSV } = require('../common');
 
 var parseLines = (bag) => {
     var { data, subjectCRT } = bag;
-    
+   
     var combinedDefinitions = [
         ...subjectCRT.allCustomFields(),
         ...commonExtraDefinitions,
         // TODO determine if testing permissions allowed
         //...testingPermissiosExtraDefinitions
-    ]
+    ];
+
+    var available = __getAvailable({
+        definitions: combinedDefinitions
+    });
+
+    var required = __getRequired({
+        definitions: combinedDefinitions
+    });
     
     var combinedDeserializers = {
         ...deserializers,
@@ -20,6 +29,7 @@ var parseLines = (bag) => {
     var out = parseDefinedCSV({
         csvData: data,
         definitions: combinedDefinitions,
+        required: required,
         deserializers: combinedDeserializers,
         throwUnknown: true
     });
@@ -75,6 +85,34 @@ var extraDeserializers = {
         labProcedureKey: 'online-video-call',
         value,
     }),
+}
+
+var __getRequired = (bag) => {
+    var { definitions } = bag;
+    
+    var csvColumnKeys = [];
+    for (var it of definitions) {
+        var def = FieldDefinition({ data: it });
+        var keys = def.getRequiredCSVColumnKeys();
+        if (keys) {
+            csvColumnKeys.push(...keys);
+        }
+    }
+    return csvColumnKeys;
+}
+
+var __getAvailable = (bag) => {
+    var { definitions } = bag;
+
+    var csvColumnKeys = [];
+    for (var it of definitions) {
+        var def = FieldDefinition({ data: it });
+        var defkeys = def.getCSVColumnKeys();
+        if (defkeys) {
+            csvColumnKeys.push(...defkeys);
+        }
+    }
+    return csvColumnKeys;
 }
 
 module.exports = parseLines;

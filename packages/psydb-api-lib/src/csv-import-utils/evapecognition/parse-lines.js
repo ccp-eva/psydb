@@ -5,7 +5,18 @@ var parseLines = (bag) => {
     var { data } = bag;
 
     var out = parseDefinedCSV({
-        csvData: data, definitions, throwUnknown: false
+        csvData: data,
+        definitions,
+        required: [
+            'year',
+            'month',
+            'day',
+            'participant',
+            'role',
+            'experiment_name',
+            'room_or_enclosure',
+        ],
+        throwUnknown: false
     });
     
     return out;

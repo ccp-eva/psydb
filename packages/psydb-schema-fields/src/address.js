@@ -10,7 +10,7 @@ var Address = (bag = {}) => {
         ...additionalProperties
     } = bag;
 
-    console.log({ enableMigrationMode });
+    //console.log({ enableMigrationMode });
     if (!required) {
         if (enableMigrationMode) {
             required = [];

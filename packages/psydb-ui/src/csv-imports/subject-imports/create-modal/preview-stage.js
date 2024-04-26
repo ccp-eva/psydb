@@ -54,63 +54,90 @@ const PreviewStage = (ps) => {
         return <LoadingIndicator size='lg' />
     }
 
-    var { status } = (fetched.response || fetched.errorResponse)
-    if (status !== 200) {
+    //var { status } = (fetched.response || fetched.errorResponse)
+    //if (status !== 200) {
+    //    return (
+    //        <>
+    //            <Button
+    //                variant='outline-primary'
+    //                onClick={ gotoPrepare }
+    //            >
+    //                { translate('Back') }
+    //            </Button>
+    //            <hr />
+    //            <ErrorInfo fetched={ fetched } />
+    //        </>
+    //    )
+    //}
+
+    if (fetched.errorResponse) {
+        var { apiStatus, data } = fetched.errorResponse.data;
+        var { message } = data;
         return (
             <>
-                <Button
-                    variant='outline-primary'
-                    onClick={ gotoPrepare }
-                >
-                    { translate('Back') }
-                </Button>
+                <SmallFormFooter>
+                    <AsyncButton { ...send.passthrough } disabled={ true }>
+                        { translate('Import') }
+                    </AsyncButton>
+                    <Button
+                        disabled={ send.isTransmitting }
+                        variant='outline-primary'
+                        onClick={ gotoPrepare }
+                    >
+                        { translate('Back') }
+                    </Button>
+                </SmallFormFooter>
                 <hr />
-                <ErrorInfo fetched={ fetched } />
+                <Alert variant='danger'>
+                    <b>{ apiStatus }</b>
+                    <div>{ message }</div>
+                </Alert>
             </>
         )
     }
-
-    var { previewRecords, related, crtSettings } = fetched.data;
-    return (
-        <>
-            <SmallFormFooter>
-                <AsyncButton { ...send.passthrough }>
-                    { translate('Import') }
-                </AsyncButton>
-                <Button
-                    disabled={ send.isTransmitting }
-                    variant='outline-primary'
-                    onClick={ gotoPrepare }
-                >
-                    { translate('Back') }
-                </Button>
-            </SmallFormFooter>
-            <hr />
-            <SplitPartitioned partitions={[ 4, 8 ]}>
-                <div className='d-flex flex-column gapy-2'>
-                    { previewRecords.map((it, ix) => {
-                        return (
-                            <AComponent
-                                key={ ix }
-                                previewRecord={ it }
-                                onClick={ () => setSelectedIndex(ix) }
-                                isActive={ selectedIndex === ix }
-                            >
-                                { it._recordLabel }
-                            </AComponent>
-                        )
-                    })}
-                </div>
-                <div className='border ml-3 px-3 py-1'>
-                    <RecordDetails.Body fetched={{
-                        record: previewRecords[selectedIndex],
-                        related,
-                        crtSettings,
-                    }} />
-                </div>
-            </SplitPartitioned>
-        </>
-    )
+    else {
+        var { previewRecords, related, crtSettings } = fetched.data;
+        return (
+            <>
+                <SmallFormFooter>
+                    <AsyncButton { ...send.passthrough }>
+                        { translate('Import') }
+                    </AsyncButton>
+                    <Button
+                        disabled={ send.isTransmitting }
+                        variant='outline-primary'
+                        onClick={ gotoPrepare }
+                    >
+                        { translate('Back') }
+                    </Button>
+                </SmallFormFooter>
+                <hr />
+                <SplitPartitioned partitions={[ 4, 8 ]}>
+                    <div className='d-flex flex-column gapy-2'>
+                        { previewRecords.map((it, ix) => {
+                            return (
+                                <AComponent
+                                    key={ ix }
+                                    previewRecord={ it }
+                                    onClick={ () => setSelectedIndex(ix) }
+                                    isActive={ selectedIndex === ix }
+                                >
+                                    { it._recordLabel }
+                                </AComponent>
+                            )
+                        })}
+                    </div>
+                    <div className='border ml-3 px-3 py-1'>
+                        <RecordDetails.Body fetched={{
+                            record: previewRecords[selectedIndex],
+                            related,
+                            crtSettings,
+                        }} />
+                    </div>
+                </SplitPartitioned>
+            </>
+        )
+    }
 }
 
 const AComponent = (ps) => {
