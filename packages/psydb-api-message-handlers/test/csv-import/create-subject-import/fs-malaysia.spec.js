@@ -2,7 +2,7 @@
 var { expect } = require('@mpieva/psydb-api-mocha-test-tools/chai');
 
 var { ObjectId } = require('@cdxoo/mongo-test-helpers');
-var { ejson, omit } = require('@mpieva/psydb-core-utils');
+var { ejson, omit, without } = require('@mpieva/psydb-core-utils');
 var { aggregateToArray } = require('@mpieva/psydb-api-lib');
 var { getContent: loadCSV } = require('@mpieva/psydb-fixtures/csv');
 

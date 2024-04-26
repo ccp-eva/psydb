@@ -1,13 +1,11 @@
 'use strict';
+var { FieldDefinition } = require('@mpieva/psydb-common-lib');
 var { UnknownCSVColumnKeys } = require('../errors');
 var { deserializers, parseDefinedCSV } = require('../common');
 
 var parseLines = (bag) => {
     var { data, subjectCRT } = bag;
    
-    console.log(subjectCRT.findRequiredCustomFields());
-
-
     var combinedDefinitions = [
         ...subjectCRT.allCustomFields(),
         ...commonExtraDefinitions,
@@ -15,11 +13,13 @@ var parseLines = (bag) => {
         //...testingPermissiosExtraDefinitions
     ];
 
-    var availableCSVColumnsForDefintiions = __getAvailable({
+    var available = __getAvailable({
         definitions: combinedDefinitions
     });
-    
-    throw new Error();
+
+    var required = __getRequired({
+        definitions: combinedDefinitions
+    });
     
     var combinedDeserializers = {
         ...deserializers,
@@ -29,6 +29,7 @@ var parseLines = (bag) => {
     var out = parseDefinedCSV({
         csvData: data,
         definitions: combinedDefinitions,
+        required: required,
         deserializers: combinedDeserializers,
         throwUnknown: true
     });
@@ -86,52 +87,32 @@ var extraDeserializers = {
     }),
 }
 
-var __getAvailable = (bag) => {
+var __getRequired = (bag) => {
     var { definitions } = bag;
-
+    
     var csvColumnKeys = [];
     for (var it of definitions) {
-        var defkeys = getCSVColumnKeysForSingleDefinition({
-            definition: it 
-        });
-        if (defkeys) {
-            csvColumnKeys.push(...defkeys);
+        var def = FieldDefinition({ data: it });
+        var keys = def.getRequiredCSVColumnKeys();
+        if (keys) {
+            csvColumnKeys.push(...keys);
         }
     }
     return csvColumnKeys;
 }
 
-var getCSVColumnKeysForSingleDefinition = (bag) => {
-    var { definition } = bag;
-    var { csvColumnKey, key, systemType } = definition;
+var __getAvailable = (bag) => {
+    var { definitions } = bag;
 
-    if (csvColumnKey) {
-        return [ csvColumnKey ];
+    var csvColumnKeys = [];
+    for (var it of definitions) {
+        var def = FieldDefinition({ data: it });
+        var defkeys = def.getCSVColumnKeys();
+        if (defkeys) {
+            csvColumnKeys.push(...defkeys);
+        }
     }
-    
-    if (systemType === 'Lambda') {
-        return undefined; // NOTE: skip
-    }
-
-    if (systemType === 'Address') {
-        return [
-            `${key}.country`,
-            `${key}.city`,
-            `${key}.postcode`,
-            `${key}.street`,
-            `${key}.housenumber`,
-            `${key}.affix`,
-        ];
-    }
-    else if (systemType === 'GeoCoords') {
-        return [
-            `${key}.latitude`,
-            `${key}.longitude`,
-        ];
-    }
-    else {
-        return [ key ];
-    }
+    return csvColumnKeys;
 }
 
 module.exports = parseLines;
