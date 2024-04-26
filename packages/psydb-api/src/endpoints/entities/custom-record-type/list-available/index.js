@@ -29,16 +29,23 @@ var listAvailable = async (context, next) => {
     }
 
     var crts = undefined;
-    if (ignoreResearchGroups) {
-        crts = await fetchAllCRTSettings(db, [
-            ...collections.map(it => ({ collection: it }))
-        ], { wrap: false, asTree: false });
+    if (collections.length === 0) {
+        // NOTE: Controls.GenericTypeKey will query w/o collection
+        // in certain cases
+        crts = [];
     }
     else {
-        crts = await fetchAvailableCRTSettings({
-            db, permissions, collections,
-            wrap: false, asTree: false
-        });
+        if (ignoreResearchGroups) {
+            crts = await fetchAllCRTSettings(db, [
+                ...collections.map(it => ({ collection: it }))
+            ], { wrap: false, asTree: false });
+        }
+        else {
+            crts = await fetchAvailableCRTSettings({
+                db, permissions, collections,
+                wrap: false, asTree: false
+            });
+        }
     }
 
     context.body = ResponseBody({
