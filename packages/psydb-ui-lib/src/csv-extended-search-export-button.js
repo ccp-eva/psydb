@@ -27,6 +27,8 @@ const CSVExtendedSearchExportButton = (ps) => {
 
     var handleExport = () => {
         fetcher.exec().then((response) => {
+            console.log('AAAAAAAAAAAAAAAAAAA')
+            console.log(response);
             var { data } = response;
 
             var blob = new Blob(
