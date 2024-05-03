@@ -68,12 +68,12 @@ module.exports = async (context) => {
             displayName: 'Address',
             displayNameI18N: { 'de': 'Adresse' },
             props: {
-                isStreetRequired: true,
-                isHousenumberRequired: true,
+                isStreetRequired: false,
+                isHousenumberRequired: false,
                 isAffixRequired: false,
-                isPostcodeRequired: true,
-                isCityRequired: true,
-                isCountryRequired: true,
+                isPostcodeRequired: false,
+                isCityRequired: false,
+                isCountryRequired: false,
             }
         }},
     }, { apiKey });
