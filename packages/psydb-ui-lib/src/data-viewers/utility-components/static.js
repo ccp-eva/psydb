@@ -481,17 +481,30 @@ export const Integer = (ps) => {
 }
 
 export const CustomRecordTypeKey = (ps) => {
-    var { value, props, related } = ps;
+    var { value, props, related, __useNewRelated = false } = ps;
     var { collection } = props;
+
+    var translate = useUITranslation();
+
     if (!value) {
         return <NoValue />
     }
-   
-    var label = (
-        related
-        ? related.relatedCustomRecordTypes[collection][value].state.label
-        : value
-    );
+  
+    var label = 'ERROR';
+    if (__useNewRelated) {
+        label = (
+            related
+            ? translate.crt(related.crts[collection][value])
+            : value
+        );
+    }
+    else {
+        label = (
+            related
+            ? related.relatedCustomRecordTypes[collection][value].state.label
+            : value
+        );
+    }
 
     return label;
 }

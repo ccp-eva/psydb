@@ -1,6 +1,6 @@
 import React from 'react';
-
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useRouteMatch } from 'react-router-dom';
+import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
 import {
     useRevision,
     useModalReducer,
@@ -12,7 +12,10 @@ import {
     LoadingIndicator,
     Table,
     TableHead,
+    LinkTD
 } from '@mpieva/psydb-ui-layout';
+
+import { datefns } from '@mpieva/psydb-ui-lib';
 
 import CreateModal from './create-modal';
 
@@ -20,7 +23,7 @@ const List = (ps) => {
     var translate = useUITranslation();
     var revision = useRevision();
     var createModal = useModalReducer({
-        show: true
+        show: false
     });
 
     var [ didFetch, fetched ] = useFetch((agent) => (
@@ -38,7 +41,7 @@ const List = (ps) => {
                 onSuccessfulUpdate={ revision.up }
             />
             <Button onClick={ createModal.handleShow }>
-                { translate('Import Subjects') }
+                { translate('New Import') }
             </Button>
 
             <RecordTable { ...fetched.data } />
@@ -48,11 +51,17 @@ const List = (ps) => {
 
 const RecordTable = (ps) => {
     var { records, related } = ps;
+    var translate = useUITranslation();
     return (
-        <Table style={{ borderCollapse: 'separate', borderSpacing: 0 }}>
-
+        <Table
+            className='mt-3'
+            style={{ borderCollapse: 'separate', borderSpacing: 0 }}
+            hover={ true }
+        >
             <TableHead showActionColumn>
-                <th>FOFOFO</th>
+                <th>{ translate('Subject Type') }</th>
+                <th>{ translate('Imported At') }</th>
+                <th>{ translate('Imported By') }</th>
             </TableHead>
             <tbody>
                 { records.map((it, ix) => (
@@ -69,11 +78,33 @@ const RecordTable = (ps) => {
 
 const RecordRow = (ps) => {
     var { record, related } = ps;
+    var { _id, subjectType, createdAt, createdBy } = record;
+    
+    var { url } = useRouteMatch();
+    var translate = useUITranslation();
+    var locale = useUILocale();
+    
     return (
         <>
-            <td>XXX</td>
+            <LinkRow href={ `#${url}/${_id}` } values={[
+                translate.crt(related.crts.subject[subjectType]),
+                datefns.format(new Date(createdAt), 'P p', { locale }),
+                related.records.personnel[createdBy],
+            ]} />
         </>
     )
 }
 
+// FIXME: redundant
+var LinkRow = (ps) => {
+    var { href, values } = ps;
+
+    return (
+        <tr>
+            { values.map((it, ix) => (
+                <LinkTD key={ ix } href={ href }>{ it }</LinkTD>
+            ))}
+        </tr>
+    )
+}
 export default List;

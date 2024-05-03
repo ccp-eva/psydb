@@ -4,6 +4,7 @@ import {
     ForeignId,
     DefaultBool,
     DateTime,
+    CustomRecordTypeKey,
 } from '../utility-components';
 
 
@@ -11,7 +12,8 @@ const labels = {
     '/createdAt': 'Imported At',
     '/createdBy': 'Imported By',
     '/studyId': 'Study',
-    '/type': 'Type'
+    '/type': 'Type',
+    '/subjectType': 'Subject Type',
 }
 
 const [ CSVImport, Context ] = createBase();
@@ -46,6 +48,16 @@ addComponents(CSVImport, Context, labels, [
         path: '/type',
         Component: withPair((ps) => (
             asFriendlyType(ps.value)
+        ))
+    },
+    {
+        cname: 'SubjectType',
+        path: '/subjectType',
+        Component: withPair((ps) => (
+            <CustomRecordTypeKey
+                { ...ps }
+                props={{ collection: 'subject' }}
+            />
         ))
     }
 ]);
