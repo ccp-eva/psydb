@@ -54,10 +54,10 @@ const RecordTable = (ps) => {
     var translate = useUITranslation();
     return (
         <Table
+            className='mt-3'
             style={{ borderCollapse: 'separate', borderSpacing: 0 }}
             hover={ true }
         >
-
             <TableHead showActionColumn>
                 <th>{ translate('Study') }</th>
                 <th>{ translate('Imported At') }</th>
@@ -94,6 +94,7 @@ const RecordRow = (ps) => {
     )
 }
 
+// FIXME: redundant
 var LinkRow = (ps) => {
     var { href, values } = ps;
 

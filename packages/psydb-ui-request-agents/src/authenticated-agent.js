@@ -821,6 +821,9 @@ const createAgent = (options = {}) => {
     agent.searchCSVSubjectImports = dumpPOST({
         url: '/api/csv-import/subject/search',
     });
+    agent.readCSVSubjectImport = dumpPOST({
+        url: '/api/csv-import/subject/read',
+    });
     agent.previewCSVSubjectImport = dumpPOST({
         url: '/api/csv-import/subject/preview',
     });
