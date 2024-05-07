@@ -17,8 +17,8 @@ const TextColor = () => {
     var config = useUIConfig();
     var [ language ] = useUILanguage();
 
-    var design = config.whitelabelDesign || 'mpiccp';
-    var { logos, style } = branding[design].sidenav;
+    var theBranding = config.branding || 'mpiccp';
+    var { logos, style } = branding[theBranding].sidenav;
 
     return (
         <h2

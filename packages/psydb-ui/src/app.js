@@ -14,6 +14,9 @@ import {
     UILocaleContext,
     UILanguageContext,
     UITranslationContext,
+
+    useUIConfig,
+    useMergeUIConfig,
 } from '@mpieva/psydb-ui-contexts';
 
 import ErrorResponseModalSetup from './error-response-modal-setup';
@@ -96,10 +99,12 @@ const App = () => {
     if (authResponseStatus === 200 && self) {
         renderedView = (
             <CommonContexts { ...contextBag } agent={ agent }>
-                <ErrorResponseModalSetup />
-                <SelfContext.Provider value={{ ...self, setSelf }}>
-                    <Main onSignedOut={ onSuccessfulUpdate } />
-                </SelfContext.Provider>
+                <BrandingWrapper enableDevPanel={ false }>
+                    <ErrorResponseModalSetup />
+                    <SelfContext.Provider value={{ ...self, setSelf }}>
+                        <Main onSignedOut={ onSuccessfulUpdate } />
+                    </SelfContext.Provider>
+                </BrandingWrapper>
             </CommonContexts>
         )
     }
@@ -111,7 +116,9 @@ const App = () => {
         };
         renderedView = (
             <CommonContexts { ...contextBag } agent={ publicAgent }>
-                <PublicLanding { ...publicBag } />
+                <BrandingWrapper>
+                    <PublicLanding { ...publicBag } />
+                </BrandingWrapper>
             </CommonContexts>
         )
     }
@@ -144,6 +151,72 @@ var withCookiesProvider = (Component) => (ps) => {
         }}>
             <Component { ...ps} />
         </CookiesProvider>
+    )
+}
+
+const BrandingWrapper = (ps) => {
+    var { enableDevPanel = true, children } = ps;
+    
+    var config = useUIConfig();
+    var mergeUIConfig = useMergeUIConfig();
+
+    return (
+        <>
+            { enableDevPanel && (
+                <div className='border-left border-bottom bg-light p-3' style={{
+                    position: 'absolute',
+                    right: 0
+                }}>
+                    <h5 className='text-danger'>
+                        <b>DEV Panel</b>
+                    </h5>
+                    <div className='d-flex flex-column'>
+                        <header><b>Branding</b></header>
+                        <a onClick={() => mergeUIConfig({
+                            '/branding': 'mpiccp',
+                            '/disableLogoOverlay': false
+                        })}>
+                            MPI EVA
+                        </a>
+                        <a onClick={() => mergeUIConfig({
+                            '/branding': 'sunwayfull',
+                            '/disableLogoOverlay': true
+                        })}>
+                            Sunway Logo Full
+                        </a>
+                        <a onClick={() => mergeUIConfig({
+                            '/branding': 'sunwaywide',
+                            '/disableLogoOverlay': true
+                        })}>
+                            Sunway Logo Wide
+                        </a>
+                        <a onClick={() => mergeUIConfig({
+                            '/branding': 'sunwayadapted',
+                            '/disableLogoOverlay': true
+                        })}>
+                            Sunway Logo Adapted
+                        </a>
+                        <hr />
+
+                        <header><b>Copy Notice Orb</b></header>
+                        <a onClick={() => mergeUIConfig({
+                            '/copyNoticeGreyscale': true,
+                        })}>
+                            Greyscale
+                        </a>
+                        <a onClick={() => mergeUIConfig({
+                            '/copyNoticeGreyscale': false,
+                        })}>
+                            Color
+                        </a>
+
+                    </div>
+                </div>
+            )}
+            <div id={ config.branding || 'mpiccp' }>
+                { children }
+            </div>
+        </>
     )
 }
 

@@ -6,8 +6,8 @@ const LogoImage = (ps) => {
     var config = useUIConfig();
     var [ language ] = useUILanguage();
 
-    var design = config.whitelabelDesign || 'mpiccp';
-    var { logos, style } = branding[design].landing;
+    var theBranding = config.branding || 'mpiccp';
+    var { logos, style } = branding[theBranding].landing;
 
     return (
         <img

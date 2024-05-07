@@ -20,6 +20,6 @@ module.exports = {
         isEnabled: true,
         allowedIps: [ '::/0' ]
     },
-    whitelabelDesign: 'sunwayadapted',
+    branding: 'sunwayadapted',
     disableLogoOverlay: true,
 }
