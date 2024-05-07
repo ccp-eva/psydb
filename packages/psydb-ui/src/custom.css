@@ -25,6 +25,9 @@
     --form-control-focus: #89a3ca;
 }
 
+html, body {
+    height: 100%
+}
 
 .alert-info {
     color: var(--info-alert-text);

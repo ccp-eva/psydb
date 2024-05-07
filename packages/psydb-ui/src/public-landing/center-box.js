@@ -8,7 +8,7 @@ const CenterBox = (ps) => {
             position: 'absolute',
             top: '42%',
             left: '50%',
-            transform: 'translate(-50%, -50%)'
+            transform: 'translate(-50%, -50%)',
         }}>
             { children }
         </div>

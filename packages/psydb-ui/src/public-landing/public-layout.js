@@ -1,6 +1,9 @@
 import React from 'react';
 import { useUIConfig } from '@mpieva/psydb-ui-contexts';
 
+import ccporb from '../ccp-orb-grayscale2.svg';
+import CopyNotice from '../copy-notice';
+
 import CenterBox from './center-box';
 import LogoImage from './logo-image';
 import LogoImageOverlay from './logo-image-overlay';
@@ -15,26 +18,42 @@ const PublicLayout = (ps) => {
     );
 
     return (
-        <CenterBox>
-            <div style={{
-                position: 'relative',
-                //overflow: 'hidden'
+        <>
+            <CenterBox>
+                <div style={{
+                    position: 'relative',
+                    //overflow: 'hidden'
+                }}>
+                    { !config.disableLogoOverlay && (
+                        <LogoImageOverlay />
+                    )}
+                    <LogoImage />
+                </div>
+                <div
+                    className={ contentWrapperClassName }
+                    style={{ borderTop: '2px solid var(--primary)' }}
+                >
+                    { children }
+                </div>
+                <div className='d-flex justify-content-between flex-row-reverse'>
+                    { config.i18n.enableI18NSelect && (
+                        <LanguageSelection />
+                    )}
+                    {/*<div className='mt-2'>
+                        <CopyNotice />
+                    </div>*/}
+                </div>
+            </CenterBox>
+            <div className='border-top py-3' style={{
+                position: 'absolute',
+                bottom: '0px',
+                width: '500px',
+                left: '50%',
+                transform: 'translate(-50%, 0%)'
             }}>
-                { !config.disableLogoOverlay && (
-                    <LogoImageOverlay />
-                )}
-                <LogoImage />
+                <CopyNotice />
             </div>
-            <div
-                className={ contentWrapperClassName }
-                style={{ borderTop: '2px solid var(--primary)' }}
-            >
-                { children }
-            </div>
-            { config.i18n.enableI18NSelect && (
-                <LanguageSelection />
-            )}
-        </CenterBox>
+        </>
     )
 }
 
