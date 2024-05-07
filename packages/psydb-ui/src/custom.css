@@ -1,3 +1,42 @@
+/* FIXME: theese should have been #foo but bootstrap modals .... */
+/* mpi ccp */
+/*.mpiccp {
+    --primary: #006c66;
+    --primary-btn-hover: #007d77;
+    --primary-a-disabled: #227e77;
+    --primary-a-hover: #228e88;
+    
+    --info-alert-text: #0c5460;
+    --info-alert-bg: #d1ecf1;
+    --info-alert-border: #bee5eb;
+
+    --form-control-focus: #779799;
+}
+/* sunway */
+/*.sunwayadapted, .sunwayfull, .sunwaywide  {
+    --primary: #1c3a69;
+    --primary-btn-hover: #254b89;
+    --primary-a-disabled: #89a3ca;
+    --primary-a-hover: #254b89;
+    
+    --info-alert-text: #254b89;
+    --info-alert-bg: #d9e1f1;
+    --info-alert-border: #c7d3e6;
+    
+    --form-control-focus: #89a3ca;
+}*/
+/* see branding.js */
+
+html, body {
+    height: 100%
+}
+
+.alert-info {
+    color: var(--info-alert-text);
+    background-color: var(--info-alert-bg);
+    border-color: var(--info-alert-border);
+}
+
 .flex-core {
     align-items: stretch;
     display: flex;
@@ -23,17 +62,17 @@
 }
 
 a {
-    color: #006c66;
+    color: var(--primary);
 }
 a:hover {
-    color: #228e88;
+    color: var(--primary-a-hover);
 }
 
 .btn-link {
-    color: #006c66;
+    color: var(--primary);
 }
 .btn-link:hover {
-    color: #228e88;
+    color: var(--primary-a-hover);
 }
 /* removes wierd bootstrap outlines */
 *:focus {
@@ -42,17 +81,17 @@ a:hover {
 }
 
 .form-control:focus {
-    border-color: #779799!important;
+    border-color: var(--form-control-focus)!important;
 }
 
 .btn-primary {
-    background-color: #006c66!important;
-    border-color: #006c66!important;
+    background-color: var(--primary)!important;
+    border-color: var(--primary)!important;
 }
 
 .btn-primary:hover {
-    background-color: #007d77!important;
-    border-color: #007d77!important;
+    background-color: var(--primary-btn-hover)!important;
+    border-color: var(--primary-btn-hover)!important;
 }
 
 .btn-outline-secondary {
@@ -61,37 +100,37 @@ a:hover {
 
 .btn-outline-primary {
     background-color: white;
-    color: #006c66!important;
-    border-color: #006c66!important;
+    color: var(--primary)!important;
+    border-color: var(--primary)!important;
 }
 
 .btn-outline-primary:not(:disabled):not(.disabled):hover {
     color: white!important;
-    background-color: #006c66!important;
+    background-color: var(--primary)!important;
 }
 
 .btn-primary:disabled, .btn-primary.disabled {
-    background-color: #227e77!important;
-    border-color: #227e77!important;
+    background-color: var(--primary-btn-disabled)!important;
+    border-color: var(--primary-btn-disabled)!important;
 }
 
 .btn-primary:not(:disabled):not(.disabled).active,
 .btn-primary:not(:disabled):not(.disabled):active {
-    background-color: #006c66;
-    border-color: #006c66;
+    background-color: var(--primary);
+    border-color: var(--primary);
 }
 
 .text-primary {
-    color: #006c66!important;
+    color: var(--primary)!important;
 }
 
 .experiment-operator-team-list-item.active {
-    color: #006c66!important;
-    border-color: #006c66!important;
+    color: var(--primary)!important;
+    border-color: var(--primary)!important;
 }
 
 .experiment-operator-team-list-item.hover:hover {
-    color: #006c66!important;
+    color: var(--primary)!important;
 }
 
 .sticky-top {

@@ -27,6 +27,9 @@ var verifyNoDuplicateMails = async (context, next) => {
     var { emails } = message.payload.props.gdpr;
 
     var duplicates = await aggregateToArray({ db, personnel: [
+        { $match: {
+            'scientific.state.internals.isRemoved': { $ne: true }
+        }},
         { $unwind: '$gdpr.state.emails' },
         { $match: {
             'gdpr.state.emails.email': { $in: (

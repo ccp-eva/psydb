@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, lazy } from 'react';
 import { CookiesProvider } from 'react-cookie';
 import { HashRouter as Router } from 'react-router-dom';
 
-import createAgent, { simple as publicAgent } from '@mpieva/psydb-ui-request-agents';
-
+import { entries } from '@mpieva/psydb-core-utils';
 import config from '@mpieva/psydb-common-config';
 import { createTranslate } from '@mpieva/psydb-common-translations';
+
+import createAgent, { simple as publicAgent } from '@mpieva/psydb-ui-request-agents';
 
 import {
     SelfContext,
@@ -14,6 +15,9 @@ import {
     UILocaleContext,
     UILanguageContext,
     UITranslationContext,
+
+    useUIConfig,
+    useMergeUIConfig,
 } from '@mpieva/psydb-ui-contexts';
 
 import ErrorResponseModalSetup from './error-response-modal-setup';
@@ -24,6 +28,7 @@ import Main from './main'
 
 import { withContext, composeAsComponent } from './compose-react-contexts';
 import useCookieI18N from './use-cookie-i18n';
+import branding from './branding';
 
 const App = () => {
     var [ isInitialized, setIsInitialized ] = useState(false);
@@ -78,7 +83,7 @@ const App = () => {
     }, [ is200 ]);
 
     var contextBag = {
-        config,
+        //config,
         language: [ language, setI18N ],
         locale,
         translate,
@@ -96,10 +101,12 @@ const App = () => {
     if (authResponseStatus === 200 && self) {
         renderedView = (
             <CommonContexts { ...contextBag } agent={ agent }>
-                <ErrorResponseModalSetup />
-                <SelfContext.Provider value={{ ...self, setSelf }}>
-                    <Main onSignedOut={ onSuccessfulUpdate } />
-                </SelfContext.Provider>
+                <BrandingWrapper enableDevPanel={ false }>
+                    <ErrorResponseModalSetup />
+                    <SelfContext.Provider value={{ ...self, setSelf }}>
+                        <Main onSignedOut={ onSuccessfulUpdate } />
+                    </SelfContext.Provider>
+                </BrandingWrapper>
             </CommonContexts>
         )
     }
@@ -111,7 +118,9 @@ const App = () => {
         };
         renderedView = (
             <CommonContexts { ...contextBag } agent={ publicAgent }>
-                <PublicLanding { ...publicBag } />
+                <BrandingWrapper>
+                    <PublicLanding { ...publicBag } />
+                </BrandingWrapper>
             </CommonContexts>
         )
     }
@@ -130,7 +139,7 @@ const AppInitializing = () => (
 )
 
 var CommonContexts = composeAsComponent(
-    withContext(UIConfigContext, 'config'),
+    //withContext(UIConfigContext, 'config'),
     withContext(UILocaleContext, 'locale'),
     withContext(UILanguageContext, 'language'),
     withContext(UITranslationContext, 'translate'),
@@ -147,4 +156,98 @@ var withCookiesProvider = (Component) => (ps) => {
     )
 }
 
-export default withCookiesProvider(App);
+const BrandingWrapper = (ps) => {
+    var { enableDevPanel = true, children } = ps;
+    
+    var config = useUIConfig();
+    var mergeUIConfig = useMergeUIConfig();
+
+    var setBrandingBodyCSS = (theBranding) => {
+        var { cssvars } = branding[theBranding];
+        for (var [ key, value ] of entries(cssvars)) {
+            document.body.style.setProperty(key, value);
+        }
+    }
+
+    var [ isCSSDone, setCSSDone ] = useState(false);
+    useEffect(() => {
+        setBrandingBodyCSS(config.branding);
+        setCSSDone(true)
+    }, [ config.branding ]);
+
+    if (!isCSSDone) {
+        return null;
+    }
+
+    return (
+        <>
+            { enableDevPanel && (
+                <div className='border-left border-bottom bg-light p-3' style={{
+                    position: 'absolute',
+                    right: 0
+                }}>
+                    <h5 className='text-danger'>
+                        <b>DEV Panel</b>
+                    </h5>
+                    <div className='d-flex flex-column'>
+                        <header><b>Branding</b></header>
+                        <a onClick={() => mergeUIConfig({
+                            '/branding': 'mpiccp',
+                            '/disableLogoOverlay': false
+                        })}>
+                            MPI EVA
+                        </a>
+                        <a onClick={() => mergeUIConfig({
+                            '/branding': 'sunwayfull',
+                            '/disableLogoOverlay': true
+                        })}>
+                            Sunway Logo Full
+                        </a>
+                        <a onClick={() => mergeUIConfig({
+                            '/branding': 'sunwaywide',
+                            '/disableLogoOverlay': true
+                        })}>
+                            Sunway Logo Wide
+                        </a>
+                        <a onClick={() => mergeUIConfig({
+                            '/branding': 'sunwayadapted',
+                            '/disableLogoOverlay': true
+                        })}>
+                            Sunway Logo Adapted
+                        </a>
+                        <hr />
+
+                        <header><b>Copy Notice Orb</b></header>
+                        <a onClick={() => mergeUIConfig({
+                            '/copyNoticeGreyscale': true,
+                        })}>
+                            Greyscale
+                        </a>
+                        <a onClick={() => mergeUIConfig({
+                            '/copyNoticeGreyscale': false,
+                        })}>
+                            Color
+                        </a>
+
+                    </div>
+                </div>
+            )}
+            <div className={ config.branding || 'mpiccp' }>
+                { children }
+            </div>
+        </>
+    )
+}
+
+const CookieWrapped = withCookiesProvider(App);
+
+const ConfigWrapped = (ps) => {
+    return (
+        <UIConfigContext.Provider value={ config }>
+            <CookieWrapped />
+        </UIConfigContext.Provider>
+    )
+}
+
+export default ConfigWrapped;
+

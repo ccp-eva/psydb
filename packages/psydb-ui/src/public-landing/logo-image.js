@@ -1,26 +1,18 @@
 import React from 'react';
-import { useUILanguage } from '@mpieva/psydb-ui-contexts';
-
-import logoDETextColor from '../mp-logo-farbig-rgb.svg';
-import logoENTextColor from '../mp-logo-en-farbig-rgb.svg';
-
-const logosByLanguage = {
-    'en': logoENTextColor,
-    'de': logoDETextColor,
-}
+import { useUIConfig, useUILanguage } from '@mpieva/psydb-ui-contexts';
+import branding from '../branding';
 
 const LogoImage = (ps) => {
+    var config = useUIConfig();
     var [ language ] = useUILanguage();
+
+    var theBranding = config.branding || 'mpiccp';
+    var { logos, style } = branding[theBranding].landing;
+
     return (
         <img
-            style={{
-                marginLeft: '-20px',
-                marginRight: '-20px',
-                marginTop: '-30px',
-                //marginBottom: '-20px',
-                marginBottom: '-25px',
-            }}
-            src={ logosByLanguage[language] } alt=''
+            style={ style }
+            src={ logos[language] || logos.en } alt=''
         />
     )
 }
