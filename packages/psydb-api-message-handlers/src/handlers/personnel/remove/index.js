@@ -30,7 +30,10 @@ handler.checkAllowedAndPlausible = async ({
     var record = await (
         db.collection('personnel')
         .findOne(
-            { _id: id },
+            {
+                _id: id,
+                'scientific.state.internals.isRemoved': { $ne: true }
+            },
             { projection: {
                 'scientific.events': false,
                 'gdpr.events': false
