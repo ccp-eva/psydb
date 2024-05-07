@@ -9,20 +9,25 @@ import LanguageSelection from './language-selection';
 const PublicLayout = (ps) => {
     var { children } = ps;
     var config = useUIConfig();
-    
+
     var contentWrapperClassName = (
         'p-4 bg-light border-left border-bottom border-right'
     );
 
     return (
         <CenterBox>
-            <div style={{ position: 'relative', overflow: 'hidden' }}>
-                <LogoImageOverlay />
+            <div style={{
+                position: 'relative',
+                //overflow: 'hidden'
+            }}>
+                { !config.disableLogoOverlay && (
+                    <LogoImageOverlay />
+                )}
                 <LogoImage />
             </div>
             <div
                 className={ contentWrapperClassName }
-                style={{ borderTop: '2px solid #006c66' }}
+                style={{ borderTop: '2px solid var(--primary)' }}
             >
                 { children }
             </div>

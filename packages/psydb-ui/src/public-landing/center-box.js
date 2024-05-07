@@ -6,7 +6,7 @@ const CenterBox = (ps) => {
         <div style={{
             width: '500px',
             position: 'absolute',
-            top: '34%',
+            top: '42%',
             left: '50%',
             transform: 'translate(-50%, -50%)'
         }}>

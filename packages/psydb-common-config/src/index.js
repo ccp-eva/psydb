@@ -19,5 +19,7 @@ module.exports = {
     apiKeyAuth: {
         isEnabled: true,
         allowedIps: [ '::/0' ]
-    }
+    },
+    whitelabelDesign: 'sunwayadapted',
+    disableLogoOverlay: true,
 }
