@@ -7,7 +7,7 @@ const CopyNotice = (ps) => {
     var { copyNoticeGreyscale = true } = useUIConfig();
     return (
         <a
-            href='https://eva.mpg.de/comparative-cultural-psychology'
+            href='https://www.eva.mpg.de/comparative-cultural-psychology'
             className='text-light'
         >
             <div className='d-flex align-items-center'>
