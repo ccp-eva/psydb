@@ -7,6 +7,8 @@ import logoSunwayAdapted from './sunway-psydb.svg';
 
 const cssvars = {
     mpiccp: {
+        '--default-text': '#212529',
+
         '--primary': '#006c66',
         '--primary-btn-hover': '#007d77',
         '--primary-a-disabled': '#227e77',
@@ -17,9 +19,14 @@ const cssvars = {
         '--info-alert-border': '#bee5eb',
 
         '--form-control-focus': '#779799',
+        '--loader-base-color': '#006c6644',
+        '--loader-highlight-color': '#006c66',
     },
     sunway: {
-        '--primary': '#1c3a69',
+        '--default-text': '#000',
+
+        //'--primary': '#1c3a69',
+        '--primary': '#003572',
         '--primary-btn-hover': '#254b89',
         '--primary-a-disabled': '#89a3ca',
         '--primary-a-hover': '#254b89',
@@ -29,6 +36,9 @@ const cssvars = {
         '--info-alert-border': '#c7d3e6',
         
         '--form-control-focus': '#89a3ca',
+        
+        '--loader-base-color': '#00357244',
+        '--loader-highlight-color': '#003572',
     }
 }
 

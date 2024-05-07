@@ -11,7 +11,7 @@ var defaultIconStyle = {
     width: '16px',
     height: '16px',
     marginLeft: '7px',
-    color: '#006c66',
+    color: 'var(--primary)',
 }
 
 var UncollapseButton = (ps) => {
@@ -25,7 +25,7 @@ var UncollapseButton = (ps) => {
     var style = { ...defaultIconStyle, ...iconStyle };
     return (
         <a role='button' onClick={ onClick }>
-            <b style={{ color: '#006c66' }}>
+            <b style={{ color: 'var(--primary)' }}>
                 { translate('Details') }:
             </b>
             {

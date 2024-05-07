@@ -28,7 +28,8 @@
 /* see branding.js */
 
 html, body {
-    height: 100%
+    height: 100%;
+    color: var(--default-text);
 }
 
 .alert-info {

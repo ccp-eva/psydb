@@ -155,7 +155,7 @@ const AComponent = (ps) => {
     return (
         <a 
             className='link'
-            style={{ color: (isActive ? '#006c66' : '#212529') }}
+            style={{ color: (isActive ? 'var(--primary)' : 'var(--default-text)') }}
             onClick={ onClick }
         >
             <b className={ className } role='button'>

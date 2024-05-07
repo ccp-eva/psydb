@@ -26,7 +26,7 @@ const AComponent = (ps) => {
             style={{
                 color: (
                     isActive
-                    ? '#006c66'
+                    ? 'var(--primary)'
                     : '#212529'
                 )
             }}
@@ -59,7 +59,7 @@ export const BigNavItem = (ps) => {
             <LinkContainer
                 to={ to }
                 style={{ color: (
-                    isActive ? '#006c66' : '#212529'
+                    isActive ? 'var(--primary)' : '#212529'
                 )}}
                 className='big-nav'
             >
