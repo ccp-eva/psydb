@@ -1,46 +1,35 @@
 import React from 'react';
-import { useUILanguage } from '@mpieva/psydb-ui-contexts';
+import { useUIConfig, useUILanguage } from '@mpieva/psydb-ui-contexts';
 import { Nav, LinkContainer } from '@mpieva/psydb-ui-layout';
+import branding from './branding';
 
 //import logoOrb from './ccp-orb.svg';
 //import logoOrgWireframe from './ccp-orb-monochrome-white.svg';
 //import logoTextMono from './mp-logo-graustufen-negativ-rgb.svg';
 
-import logoDETextColor from './mp-logo-farbig-rgb.svg';
-import logoENTextColor from './mp-logo-en-farbig-rgb.svg';
-
-const logosByLanguage = {
-    'en': logoENTextColor,
-    'de': logoDETextColor,
-}
-
 const Link = ({
-    to,
-    className,
-    children
+    to, ...pass
 }) => (
-    <LinkContainer to={ to }>
-        <Nav.Link className={ className }>{ children }</Nav.Link>
-    </LinkContainer>
+    <a href={`#${to}`} className='nav-link' { ...pass } />
 )
 
 const TextColor = () => {
+    var config = useUIConfig();
     var [ language ] = useUILanguage();
+
+    var design = config.whitelabelDesign || 'mpiccp';
+    var { logos, style } = branding[design].sidenav;
+
     return (
         <h2
             className='text-center pt-3 pb-1 m-0 border-left border-right bg-white'
-            style={{ overflow: 'hidden' }}
+            style={{ overflow: 'show' }}
         >
-            <Link to='/'>
-                <div style={{ overflow: 'hidden' }}>
+            <Link to='/' style={{ padding: '8px 16px' }}>
+                <div style={{ overflow: 'show' }}>
                     <img
-                        style={{
-                            marginLeft: '-20px',
-                            marginRight: '-20px',
-                            marginTop: '-20px',
-                            //marginBottom: '-20px',
-                        }}
-                        src={ logosByLanguage[language] } alt=''
+                        style={ style }
+                        src={ logos[language] || logos.en } alt=''
                     />
                     <div
                         className='border-top pt-2'
