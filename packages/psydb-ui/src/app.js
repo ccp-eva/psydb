@@ -184,7 +184,8 @@ const BrandingWrapper = (ps) => {
             { enableDevPanel && (
                 <div className='border-left border-bottom bg-light p-3' style={{
                     position: 'absolute',
-                    right: 0
+                    right: 0,
+                    zIndex: 500,
                 }}>
                     <h5 className='text-danger'>
                         <b>DEV Panel</b>

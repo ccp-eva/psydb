@@ -4,6 +4,7 @@ const CenterBox = (ps) => {
     var { children } = ps;
     return (
         <div style={{
+            zIndex: '100',
             width: '500px',
             position: 'absolute',
             top: '42%',
