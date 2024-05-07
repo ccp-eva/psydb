@@ -1,5 +1,6 @@
+/* FIXME: theese should have been #foo but bootstrap modals .... */
 /* mpi ccp */
-#mpiccp {
+/*.mpiccp {
     --primary: #006c66;
     --primary-btn-hover: #007d77;
     --primary-a-disabled: #227e77;
@@ -12,7 +13,7 @@
     --form-control-focus: #779799;
 }
 /* sunway */
-#sunwayadapted, #sunwayfull, #sunwaywide  {
+/*.sunwayadapted, .sunwayfull, .sunwaywide  {
     --primary: #1c3a69;
     --primary-btn-hover: #254b89;
     --primary-a-disabled: #89a3ca;
@@ -23,7 +24,8 @@
     --info-alert-border: #c7d3e6;
     
     --form-control-focus: #89a3ca;
-}
+}*/
+/* see branding.js */
 
 html, body {
     height: 100%

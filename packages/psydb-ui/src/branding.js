@@ -5,8 +5,36 @@ import logoSunwayWide from './sunway-logo-wide.svg';
 import logoSunwayFull from './sunway-logo-full.svg';
 import logoSunwayAdapted from './sunway-psydb.svg';
 
+const cssvars = {
+    mpiccp: {
+        '--primary': '#006c66',
+        '--primary-btn-hover': '#007d77',
+        '--primary-a-disabled': '#227e77',
+        '--primary-a-hover': '#228e88',
+        
+        '--info-alert-text': '#0c5460',
+        '--info-alert-bg': '#d1ecf1',
+        '--info-alert-border': '#bee5eb',
+
+        '--form-control-focus': '#779799',
+    },
+    sunway: {
+        '--primary': '#1c3a69',
+        '--primary-btn-hover': '#254b89',
+        '--primary-a-disabled': '#89a3ca',
+        '--primary-a-hover': '#254b89',
+        
+        '--info-alert-text': '#254b89',
+        '--info-alert-bg': '#d9e1f1',
+        '--info-alert-border': '#c7d3e6',
+        
+        '--form-control-focus': '#89a3ca',
+    }
+}
+
 const branding = {
     mpiccp: {
+        cssvars: cssvars.mpiccp,
         landing: {
             logos: {
                 'en': logoENTextColor,
@@ -32,6 +60,7 @@ const branding = {
         }
     },
     sunwayadapted: {
+        cssvars: cssvars.sunway,
         landing: {
             logos: { 'en': logoSunwayAdapted },
             style: {
@@ -49,6 +78,7 @@ const branding = {
         }
     },
     sunwayfull: {
+        cssvars: cssvars.sunway,
         landing: {
             logos: { 'en': logoSunwayFull },
             style: {
@@ -67,6 +97,7 @@ const branding = {
         }
     },
     sunwaywide: {
+        cssvars: cssvars.sunway,
         landing: {
             logos: { 'en': logoSunwayWide },
             style: {

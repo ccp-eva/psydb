@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, lazy } from 'react';
 import { CookiesProvider } from 'react-cookie';
 import { HashRouter as Router } from 'react-router-dom';
 
-import createAgent, { simple as publicAgent } from '@mpieva/psydb-ui-request-agents';
-
+import { entries } from '@mpieva/psydb-core-utils';
 import config from '@mpieva/psydb-common-config';
 import { createTranslate } from '@mpieva/psydb-common-translations';
+
+import createAgent, { simple as publicAgent } from '@mpieva/psydb-ui-request-agents';
 
 import {
     SelfContext,
@@ -27,6 +28,7 @@ import Main from './main'
 
 import { withContext, composeAsComponent } from './compose-react-contexts';
 import useCookieI18N from './use-cookie-i18n';
+import branding from './branding';
 
 const App = () => {
     var [ isInitialized, setIsInitialized ] = useState(false);
@@ -81,7 +83,7 @@ const App = () => {
     }, [ is200 ]);
 
     var contextBag = {
-        config,
+        //config,
         language: [ language, setI18N ],
         locale,
         translate,
@@ -137,7 +139,7 @@ const AppInitializing = () => (
 )
 
 var CommonContexts = composeAsComponent(
-    withContext(UIConfigContext, 'config'),
+    //withContext(UIConfigContext, 'config'),
     withContext(UILocaleContext, 'locale'),
     withContext(UILanguageContext, 'language'),
     withContext(UITranslationContext, 'translate'),
@@ -159,6 +161,23 @@ const BrandingWrapper = (ps) => {
     
     var config = useUIConfig();
     var mergeUIConfig = useMergeUIConfig();
+
+    var setBrandingBodyCSS = (theBranding) => {
+        var { cssvars } = branding[theBranding];
+        for (var [ key, value ] of entries(cssvars)) {
+            document.body.style.setProperty(key, value);
+        }
+    }
+
+    var [ isCSSDone, setCSSDone ] = useState(false);
+    useEffect(() => {
+        setBrandingBodyCSS(config.branding);
+        setCSSDone(true)
+    }, [ config.branding ]);
+
+    if (!isCSSDone) {
+        return null;
+    }
 
     return (
         <>
@@ -213,11 +232,22 @@ const BrandingWrapper = (ps) => {
                     </div>
                 </div>
             )}
-            <div id={ config.branding || 'mpiccp' }>
+            <div className={ config.branding || 'mpiccp' }>
                 { children }
             </div>
         </>
     )
 }
 
-export default withCookiesProvider(App);
+const CookieWrapped = withCookiesProvider(App);
+
+const ConfigWrapped = (ps) => {
+    return (
+        <UIConfigContext.Provider value={ config }>
+            <CookieWrapped />
+        </UIConfigContext.Provider>
+    )
+}
+
+export default ConfigWrapped;
+
