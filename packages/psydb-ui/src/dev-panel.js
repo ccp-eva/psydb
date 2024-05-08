@@ -8,15 +8,24 @@ const DevPanel = (ps) => {
     var config = useUIConfig();
 
     return (
-        <div className='border-left border-bottom bg-light p-3' style={{
-            position: 'absolute',
-            right: 0,
-            zIndex: 500,
-            minWidth: '225px',
-        }}>
-            <h5 className='text-danger mb-3'>
+        <div
+            className='border border-right-0 bg-light border-danger p-3'
+            style={{
+                position: 'fixed',
+                right: 0,
+                zIndex: 500,
+                width: '225px',
+                top: '50%',
+                transform: 'translate(0, -50%)'
+            }}
+        >
+            <h5 className='text-danger mb-1'>
                 <b>DEV Panel</b>
             </h5>
+            <p className='text-danger text-small'>
+                This exists only for testing purposes
+                and will be removed again.
+            </p>
             <div className='d-flex flex-column'>
                 <header>
                     <b>Branding</b>
