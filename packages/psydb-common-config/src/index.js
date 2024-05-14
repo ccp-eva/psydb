@@ -19,5 +19,10 @@ module.exports = {
     apiKeyAuth: {
         isEnabled: true,
         allowedIps: [ '::/0' ]
-    }
+    },
+    branding: 'sunwaywide',
+    disableLogoOverlay: true,
+    
+    dev_enableDevPanel: true,
+    dev_copyNoticeGreyscale: true,
 }

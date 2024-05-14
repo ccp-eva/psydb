@@ -12,10 +12,13 @@
     "co": "~4.6.0",
     "mongodb": "~3.6.3",
     "axios": "~0.24.0",
+    "commander": "~10.0.1",
+    "debug": "~4.3.4",
     "@mpieva/psydb-core-utils": "workspace:*",
     "@mpieva/psydb-common-lib": "workspace:*",
     "@mpieva/psydb-driver-nodejs": "workspace:*",
-    "commander": "~10.0.1"
+    "@mpieva/psydb-fixtures": "workspace:*",
+    "@cdxoo/mongodb-restore": "2.0.0-alpha.2"
   },
   "devDependencies": {
     "mocha": "~10.2.0",
@@ -25,9 +28,7 @@
     "@mpieva/psydb-api-mocha-test-tools": "workspace:*",
     "@mpieva/psydb-api-lib": "workspace:*",
     "@mpieva/psydb-axios-test-wrapper": "workspace:*",
-    "@mpieva/psydb-fixtures": "workspace:*",
-    "@cdxoo/mongo-test-helpers": "~0.7.1",
-    "@cdxoo/mongodb-restore": "2.0.0-alpha.2"
+    "@cdxoo/mongo-test-helpers": "~0.7.1"
   },
   "config": {
     "mongodbMemoryServer": {

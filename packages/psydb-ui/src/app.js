@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, lazy } from 'react';
 import { CookiesProvider } from 'react-cookie';
 import { HashRouter as Router } from 'react-router-dom';
 
-import createAgent, { simple as publicAgent } from '@mpieva/psydb-ui-request-agents';
-
 import config from '@mpieva/psydb-common-config';
 import { createTranslate } from '@mpieva/psydb-common-translations';
+
+import createAgent, { simple as publicAgent } from '@mpieva/psydb-ui-request-agents';
 
 import {
     SelfContext,
@@ -14,11 +14,14 @@ import {
     UILocaleContext,
     UILanguageContext,
     UITranslationContext,
+
+    useUIConfig,
 } from '@mpieva/psydb-ui-contexts';
 
 import ErrorResponseModalSetup from './error-response-modal-setup';
 import ErrorBoundary from './error-boundary';
 
+import BrandingWrapper from './branding-wrapper';
 import PublicLanding from './public-landing';
 import Main from './main'
 
@@ -78,7 +81,7 @@ const App = () => {
     }, [ is200 ]);
 
     var contextBag = {
-        config,
+        //config,
         language: [ language, setI18N ],
         locale,
         translate,
@@ -96,10 +99,12 @@ const App = () => {
     if (authResponseStatus === 200 && self) {
         renderedView = (
             <CommonContexts { ...contextBag } agent={ agent }>
-                <ErrorResponseModalSetup />
-                <SelfContext.Provider value={{ ...self, setSelf }}>
-                    <Main onSignedOut={ onSuccessfulUpdate } />
-                </SelfContext.Provider>
+                <BrandingWrapper enableDevPanel={ false }>
+                    <ErrorResponseModalSetup />
+                    <SelfContext.Provider value={{ ...self, setSelf }}>
+                        <Main onSignedOut={ onSuccessfulUpdate } />
+                    </SelfContext.Provider>
+                </BrandingWrapper>
             </CommonContexts>
         )
     }
@@ -111,7 +116,9 @@ const App = () => {
         };
         renderedView = (
             <CommonContexts { ...contextBag } agent={ publicAgent }>
-                <PublicLanding { ...publicBag } />
+                <BrandingWrapper>
+                    <PublicLanding { ...publicBag } />
+                </BrandingWrapper>
             </CommonContexts>
         )
     }
@@ -130,7 +137,7 @@ const AppInitializing = () => (
 )
 
 var CommonContexts = composeAsComponent(
-    withContext(UIConfigContext, 'config'),
+    //withContext(UIConfigContext, 'config'),
     withContext(UILocaleContext, 'locale'),
     withContext(UILanguageContext, 'language'),
     withContext(UITranslationContext, 'translate'),
@@ -147,4 +154,15 @@ var withCookiesProvider = (Component) => (ps) => {
     )
 }
 
-export default withCookiesProvider(App);
+const CookieWrapped = withCookiesProvider(App);
+
+const ConfigWrapped = (ps) => {
+    return (
+        <UIConfigContext.Provider value={ config }>
+            <CookieWrapped />
+        </UIConfigContext.Provider>
+    )
+}
+
+export default ConfigWrapped;
+
