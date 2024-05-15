@@ -153,6 +153,9 @@ var Home = () => {
 
     // TODO: create simple home view
 
+    // XXX
+    return null;
+
     return (
         canViewAnyCalendar
         ? <Redirect to='/calendars' />
