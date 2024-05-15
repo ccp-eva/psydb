@@ -7,7 +7,10 @@ module.exports = async (bag) => {
         await driver.sendMessage({
             type: 'helperSetItem/create',
             payload: { setId, props: {
-                label: it
+                label: it,
+                displayNameI18N: {
+                    'de': it,
+                }
             }},
         }, { apiKey });
 
