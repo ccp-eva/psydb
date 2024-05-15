@@ -9,13 +9,15 @@ var createLocationCRT = require('./create-location-crt');
 var createSubjectCRT = require('./create-subject-crt');
 var createStudyCRT = require('./create-study-crt');
 
+var createResearchGroup = require('./create-research-group');
+
 var subjects = [
     {
         type: 'wkprc_chimpanzee',
         crtLabels: { en: 'Chimpanzees', de: 'Schimpansen' },
         speciesLabels: {
-            en: 'WKPRC Chimpanzee Sub-Species',
-            de: 'WKPRC Schimpanzen Sub-Species',
+            en: 'Chimpanzee Sub-Species',
+            de: 'Schimpansen Sub-Species',
         }
     },
     { type: 'wkprc_bonobo', label: 'Bonobo' },
@@ -29,43 +31,47 @@ module.exports = async (bag) => {
     var cache = WrappedCache({ driver });
     var context = { driver, cache };
 
-    await createRARole({ ...context, as: 'ra' });
-    await createScientistRole({ ...context, as: 'scientist' });
+    await createRARole({ ...context, as: 'wkprc_ra' });
+    await createScientistRole({ ...context, as: 'wkprc_scientist' });
 
     //await createLocationTypeSet({ ...context, as: 'locationType' });
     await driver.helperSet.create({ displayNames: {
-        'en': 'WKPRC Origin',
-        'de': 'WKPRC Herkunft'
+        'en': 'Origin',
+        'de': 'Herkunft'
     }});
-    cache.addId({ collection: 'helperSet', as: 'origin' });
+    cache.addId({ collection: 'helperSet', as: 'wkprc_origin' });
 
     await driver.helperSet.create({ displayNames: {
-        'en': 'WKPRC Rearing History',
-        'de': 'WKPRC Aufzucht'
+        'en': 'Rearing History',
+        'de': 'Aufzucht'
     }});
-    cache.addId({ collection: 'helperSet', as: 'rearingHistory' });
+    cache.addId({ collection: 'helperSet', as: 'wkprc_rearingHistory' });
 
-    await createLocationCRT({ driver, cache, as: 'location' });
+    await createLocationCRT({ driver, cache, as: 'wkprc_apeLocation' });
 
     for (var it of subjects) {
         var { type, label, crtLabels, speciesLabels } = it;
         
         await driver.helperSet.create({
-            displayNames: crtLabels || {
-                en: `WKPRC ${label} Sub-Species`,
-                de: `WKPRC ${label} Sub-Spezies`,
+            displayNames: speciesLabels || {
+                en: `${label} Sub-Species`,
+                de: `${label} Sub-Spezies`,
             }
         });
-        cache.addId({ collection: 'helperSet', as: `${type}SubSpecies` });
+        cache.addId({
+            collection: 'helperSet', as: `${type}SubSpecies`
+        });
 
         await createSubjectCRT({
             driver, cache,
-            type, displayNames: speciesLabels || {
+            type, displayNames: crtLabels || {
                 en: `${label}s`,
                 de: `${label}s`,
             },
         });
     }
 
-    await createStudyCRT({ driver, cache, as: 'study' });
+    await createStudyCRT({ driver, cache, as: 'wkprc_study' });
+
+    await createResearchGroup(context);
 }
