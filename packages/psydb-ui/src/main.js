@@ -121,7 +121,7 @@ const LayoutedRoutes = ({ onSignOut }) => {
                         <Routing />
                     </div>
                 </div>
-                {/* XXX */}}
+                {/* XXX */}
                 {/*<div style={{
                     position: 'sticky',
                     top: '100vh'
