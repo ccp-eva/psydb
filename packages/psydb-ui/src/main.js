@@ -121,14 +121,15 @@ const LayoutedRoutes = ({ onSignOut }) => {
                         <Routing />
                     </div>
                 </div>
-                <div style={{
+                {/* XXX */}}
+                {/*<div style={{
                     position: 'sticky',
                     top: '100vh'
                 }}>
                     <div className='ml-3 px-2 py-3 border-top'>
                         <CopyNotice />
                     </div>
-                </div>
+                </div>*/}
             </main>
         </div>
     );
