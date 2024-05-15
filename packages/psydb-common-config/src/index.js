@@ -6,12 +6,12 @@ module.exports = {
         defaultLocaleCode: 'en-US',
     },
     enabledLabMethods: [
-        'inhouse',
-        'away-team',
-        'online-video-call',
-        'online-survey',
+        //'inhouse',
+        //'away-team',
+        //'online-video-call',
+        //'online-survey',
         'apestudies-wkprc-default',
-        'manual-only-participation'
+        //'manual-only-participation'
     ],
     twoFactorAuth: { // FIXME: rename twoFactorAuth
         isEnabled: false,
