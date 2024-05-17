@@ -20,9 +20,9 @@ module.exports = {
         isEnabled: true,
         allowedIps: [ '::/0' ]
     },
-    branding: 'sunwaywide',
+    branding: 'humankind',
     disableLogoOverlay: true,
     
-    dev_enableDevPanel: true,
+    dev_enableDevPanel: false,
     dev_copyNoticeGreyscale: true,
 }
