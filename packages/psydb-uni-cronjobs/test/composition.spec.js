@@ -11,7 +11,8 @@ describe('public-online-form', function () {
             //'regform-mail-01',
             //'regform-mail-02',
             //'regform-mail-03',
-            'regform-mail-04',
+            //'regform-mail-04',
+            'regform-mail-05',
         ]});
 
         this.createKoaApi();
@@ -30,12 +31,12 @@ describe('public-online-form', function () {
         await composition(context, async () => {});
 
         var adult = await this.getRecord('subject', {
-            firstname: 'Test',
-            lastname: 'Tester'
+            firstname: 'Herbert',
+            lastname: 'Test'
         });
         var childOne = await this.getRecord('subject', {
-            firstname: 'Ralf',
-            lastname: 'Tester'
+            firstname: 'Bernhard',
+            lastname: 'Test'
         });
         console.dir(ejson(childOne), { depth: null });
     })
