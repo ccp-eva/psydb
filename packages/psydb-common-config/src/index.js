@@ -20,8 +20,8 @@ module.exports = {
         isEnabled: true,
         allowedIps: [ '::/0' ]
     },
-    branding: 'humankind',
-    disableLogoOverlay: true,
+    branding: 'mpiccp',
+    disableLogoOverlay: false,
     
     dev_enableDevPanel: false,
     dev_copyNoticeGreyscale: true,

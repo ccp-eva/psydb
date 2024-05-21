@@ -1,249 +1,190 @@
 'use strict';
+var PointerGen = require('./pointer-gen');
+
 module.exports = async (context) => {
-    var { apiKey, driver, cache, as } = context;
-
-    await driver.sendMessage({
-        type: `custom-record-types/create`,
-        payload: {
-            collection: 'subject',
-            type: 'humankindAdult',
-            props: {
-                label: 'Humankind Adults',
-                displayNameI18N: { 'de': 'Humankind Erwachsene' }
-            }
-        },
-    }, { apiKey });
-
-    var crtId = cache.addId({ collection: 'customRecordType', as });
-
-    await driver.sendMessage({
-        type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, subChannelKey: 'gdpr', props: {
-            type: 'SaneString',
-            key: 'lastname',
-            displayName: 'Lastname',
-            displayNameI18N: { 'de': 'Nachname' },
-            props: { minLength: 1 }
-        }},
-    }, { apiKey });
-
-    await driver.sendMessage({
-        type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, subChannelKey: 'gdpr', props: {
-            type: 'SaneString',
-            key: 'firstname',
-            displayName: 'Firstname',
-            displayNameI18N: { 'de': 'Vorname' },
-            props: { minLength: 1 }
-        }},
-    }, { apiKey });
-
-    await driver.sendMessage({
-        type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, subChannelKey: 'gdpr', props: {
-            type: 'PhoneList',
-            key: 'phones',
-            displayName: 'Phone',
-            displayNameI18N: { 'de': 'Telefon' },
-            props: { minItems: 1 }
-        }},
-    }, { apiKey });
-
-    await driver.sendMessage({
-        type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, subChannelKey: 'gdpr', props: {
-            type: 'Email',
-            key: 'email',
-            displayName: 'E-Mail',
-            displayNameI18N: { 'de': 'E-Mail' },
-            props: { minLength: 1 }
-        }},
-    }, { apiKey });
-
-    await driver.sendMessage({
-        type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, subChannelKey: 'gdpr', props: {
-            type: 'Address',
-            key: 'address',
-            displayName: 'Address',
-            displayNameI18N: { 'de': 'Adresse' },
-            props: {
-                isStreetRequired: false,
-                isHousenumberRequired: false,
-                isAffixRequired: false,
-                isPostcodeRequired: false,
-                isCityRequired: false,
-                isCountryRequired: false,
-            }
-        }},
-    }, { apiKey });
+    var { driver, cache, as } = context;
     
-    await driver.sendMessage({
-        type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, subChannelKey: 'gdpr', props: {
-            type: 'DateOnlyServerSide',
-            key: 'dateOfBirth',
-            displayName: 'Date of Birth',
-            displayNameI18N: { 'de': 'Geburtsdatum' },
-            props: { isNullable: false, isSpecialAgeFrameField: true }
-        }},
-    }, { apiKey });
-    
-    await driver.sendMessage({
-        type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, subChannelKey: 'gdpr', props: {
-            type: 'BiologicalGender',
-            key: 'gender',
-            displayName: 'Gender',
-            displayNameI18N: { 'de': 'Geschlecht' },
-            props: {
-                enableUnknownValue: false,
-                enableOtherValue: true,
-            }
-        }},
-    }, { apiKey });
-    
-    await driver.sendMessage({
-        type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, subChannelKey: 'scientific', props: {
-            type: 'DefaultBool',
-            key: 'doesDBRegistrationConsentOnPaperExist',
-            displayName: (
-                'DB-Consent (Paper)'
-            ),
-            displayNameI18N: { 'de': (
-                'DB-Einverständnis (Papier)'
-            )},
-            //displayName: (
-            //    'DB-Registration consent exists on paper?'
-            //),
-            //displayNameI18N: { 'de': (
-            //    'Einverständnis für DB-Registrierung in Papierform vorhanden?'
-            //)},
-            props: {}
-        }},
-    }, { apiKey });
+    var definitions = FieldDefinitions({ cache });
+    var asPointers = PointerGen(definitions);
 
-    await driver.sendMessage({
-        type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, subChannelKey: 'scientific', props: {
-            type: 'HelperSetItemId',
-            key: 'acquisitionId',
-            displayName: 'Acquisition',
-            displayNameI18N: { 'de': 'Akquise' },
-            props: {
-                setId: cache.get('/helperSet/acquisition'),
-                isNullable: true,
-                displayEmptyAsUnknown: false,
-            },
-        }},
-    }, { apiKey });
+    var crt = await driver.crt.create({
+        collection: 'subject', key: 'humankindAdult',
+        displayNames: {
+            'en': 'Humankind Adults',
+            'de': 'Humankind Erwachsene',
+        }
+    });
 
-    await driver.sendMessage({
-        type: `custom-record-types/add-field-definition`,
-        payload: { id: crtId, subChannelKey: 'scientific', props: {
-            type: 'ForeignIdList',
-            key: 'knownChildrenIds',
-            displayName: 'Children',
-            displayNameI18N: { de: 'Kinder' },
-            props: {
-                collection: 'subject',
-                recordType: `humankindChild`,
-                minItems: 0,
-                readOnly: true,
-                constraints: {},
-            },
-        }},
-    }, { apiKey });
-    
-    await driver.sendMessage({
-        type: `custom-record-types/commit-settings`,
-        payload: { id: crtId }
-    }, { apiKey });
+    cache.addCRT(crt.meta);
+    var { _id: crtId } = crt.meta;
 
+    await crt.addManyFields({ definitions: Object.values(definitions) });
+    await crt.commitFields();
 
-    await driver.sendMessage({
-        type: `custom-record-types/set-record-label-definition`,
-        payload: { id: crtId, props: {
+    await crt.setupDisplaySettings({
+        recordLabelDefinition: {
             format: '${#}, ${#} (${#})',
-            tokens: [
-                '/gdpr/state/custom/lastname',
-                '/gdpr/state/custom/firstname',
-                '/gdpr/state/custom/gender',
-            ]
-        }}
-    }, { apiKey });
-
-    await driver.sendMessage({
-        type: `custom-record-types/set-display-fields`,
-        payload: {
-            id: crtId,
-            target: 'table',
-            fieldPointers: [
-                '/sequenceNumber',
-                '/gdpr/state/custom/lastname',
-                '/gdpr/state/custom/firstname',
-                '/gdpr/state/custom/gender',
-                '/gdpr/state/custom/dateOfBirth',
-            ]
-        }
-    }, { apiKey });
-    
-    await driver.sendMessage({
-        type: `custom-record-types/set-display-fields`,
-        payload: {
-            id: crtId,
-            target: 'optionlist',
-            fieldPointers: [
-                '/sequenceNumber',
-                '/gdpr/state/custom/lastname',
-                '/gdpr/state/custom/firstname',
-                '/gdpr/state/custom/gender',
-                '/gdpr/state/custom/dateOfBirth',
-            ]
-        }
-    }, { apiKey });
-
-    await driver.sendMessage({
-        type: `custom-record-types/set-form-order`,
-        payload: { id: crtId, formOrder: [
+            tokens: asPointers([ 'lastname', 'firstname', 'gender' ])
+        },
+        displayFields: {
+            'table': [ '/sequenceNumber', ...asPointers([
+                'lastname', 'firstname', 'gender', 'dateOfBirth'
+            ])],
+            'optionlist': [ '/sequenceNumber', ...asPointers([
+                'lastname', 'firstname', 'gender', 'dateOfBirth'
+            ])],
+        },
+        formOrder: [
             '/sequenceNumber',
             '/onlineId',
-            '/gdpr/state/custom/firstname',
-            '/gdpr/state/custom/lastname',
-            '/gdpr/state/custom/phones',
-            '/gdpr/state/custom/email',
-            '/gdpr/state/custom/address',
-            '/gdpr/state/custom/dateOfBirth',
-            '/gdpr/state/custom/gender',
-            '/scientific/state/custom/doesDBRegistrationConsentOnPaperExist',
-            '/scientific/state/custom/acquisitionId',
-            '/scientific/state/custom/knownChildrenIds',
-            '/scientific/state/testingPermissions',
-            '/scientific/state/comment'
-        ]}
-    }, { apiKey });
 
+            ...asPointers(Object.keys(definitions)),
+
+            '/scientific/state/testingPermissions',
+            '/scientific/state/comment',
+        ]
+    })
+ 
     await driver.sendMessage({
         type: 'custom-record-types/set-duplicate-check-settings',
         payload: { id: crtId, fieldSettings: [
             { pointer: '/gdpr/state/custom/firstname', props: {}},
             { pointer: '/gdpr/state/custom/lastname', props: {}} ,
         ]}
-    }, { apiKey });
+    });
     
-    await driver.sendMessage({
-        type: `custom-record-types/set-general-data`,
-        payload: {
-            id: crtId,
-            label: 'Humankind Adults',
-            displayNameI18N: { 'de': 'Humankind Erwachsene' },
-            requiresTestingPermissions: true,
-            showSequenceNumber: true,
-            showOnlineId: true,
-            commentFieldIsSensitive: false,
-        }
-    }, { apiKey });
+    await crt.updateGeneralSettings({
+        displayNames: {
+            'en': 'Humankind Adults',
+            'de': 'Humankind Erwachsene',
+        },
+        requiresTestingPermissions: true,
+        showOnlineId: true,
+        showSequenceNumber: true,
+        commentFieldIsSensitive: false,
+    });
 
     return crtId;
 }
+
+var FieldDefinitions = ({ cache }) => ({
+
+    'lastname': {
+        __subChannelKey: 'gdpr',
+        type: 'SaneString',
+        key: 'lastname',
+        displayName: 'Lastname',
+        displayNameI18N: { 'de': 'Nachname' },
+        props: { minLength: 1 }
+    },
+
+    'firstname': {
+        __subChannelKey: 'gdpr',
+        type: 'SaneString',
+        key: 'firstname',
+        displayName: 'Firstname',
+        displayNameI18N: { 'de': 'Vorname' },
+        props: { minLength: 1 }
+    },
+
+    'phones': {
+        __subChannelKey: 'gdpr',
+        type: 'PhoneList',
+        key: 'phones',
+        displayName: 'Phone',
+        displayNameI18N: { 'de': 'Telefon' },
+        props: { minItems: 1 }
+    },
+
+    'email': {
+        __subChannelKey: 'gdpr',
+        type: 'Email',
+        key: 'email',
+        displayName: 'E-Mail',
+        displayNameI18N: { 'de': 'E-Mail' },
+        props: { minLength: 1 }
+    },
+
+    'address': {
+        __subChannelKey: 'gdpr',
+        type: 'Address',
+        key: 'address',
+        displayName: 'Address',
+        displayNameI18N: { 'de': 'Adresse' },
+        props: {
+            isStreetRequired: false,
+            isHousenumberRequired: false,
+            isAffixRequired: false,
+            isPostcodeRequired: false,
+            isCityRequired: false,
+            isCountryRequired: false,
+        }
+    },
+   
+    'dateOfBirth': {
+        __subChannelKey: 'gdpr',
+        type: 'DateOnlyServerSide',
+        key: 'dateOfBirth',
+        displayName: 'Date of Birth',
+        displayNameI18N: { 'de': 'Geburtsdatum' },
+        props: { isNullable: false, isSpecialAgeFrameField: true }
+    },
+   
+    'gender': {
+        __subChannelKey: 'gdpr',
+        type: 'BiologicalGender',
+        key: 'gender',
+        displayName: 'Gender',
+        displayNameI18N: { 'de': 'Geschlecht' },
+        props: {
+            enableUnknownValue: false,
+            enableOtherValue: true,
+        }
+    },
+   
+    /////////////////////////////////////////////////////////////////
+
+    'doesDBRegistrationConsentOnPaperExist': {
+        __subChannelKey: 'scientific',
+        type: 'DefaultBool',
+        key: 'doesDBRegistrationConsentOnPaperExist',
+        displayName: 'DB-Consent (Paper)',
+        displayNameI18N: { 'de': 'DB-Einverständnis (Papier)' },
+        //displayName: (
+        //    'DB-Registration consent exists on paper?'
+        //),
+        //displayNameI18N: { 'de': (
+        //    'Einverständnis für DB-Registrierung in Papierform vorhanden?'
+        //)},
+        props: {}
+    },
+
+    'acquisitionId': {
+        __subChannelKey: 'scientific',
+        type: 'HelperSetItemId',
+        key: 'acquisitionId',
+        displayName: 'Acquisition',
+        displayNameI18N: { 'de': 'Akquise' },
+        props: {
+            setId: cache.get('/helperSet/acquisition'),
+            isNullable: true,
+            displayEmptyAsUnknown: false,
+        },
+    },
+
+    'knownChildrenIds': {
+        __subChannelKey: 'scientific',
+        type: 'ForeignIdList',
+        key: 'knownChildrenIds',
+        displayName: 'Children',
+        displayNameI18N: { de: 'Kinder' },
+        props: {
+            collection: 'subject',
+            recordType: `humankindChild`,
+            minItems: 0,
+            readOnly: true,
+            constraints: {},
+        },
+    },
+})
+
