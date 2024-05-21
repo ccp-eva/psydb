@@ -55,8 +55,8 @@ module.exports = async (context) => {
     
     await crt.updateGeneralSettings({
         displayNames: {
-            'en': 'Children',
-            'de': 'Kinder'
+            'en': 'Humankind Adults',
+            'de': 'Humankind Erwachsene',
         },
         requiresTestingPermissions: true,
         showOnlineId: true,
@@ -86,8 +86,6 @@ var FieldDefinitions = ({ cache }) => ({
         displayNameI18N: { 'de': 'Vorname' },
         props: { minLength: 1 }
     },
-
-
 
     'phones': {
         __subChannelKey: 'gdpr',
