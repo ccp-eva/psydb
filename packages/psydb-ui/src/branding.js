@@ -26,6 +26,50 @@ const cssvars = {
         '--loader-highlight-color': '#006c66',
     },
     humankind: {
+        // base    #80cbdd
+        // light-1 #b0e4f0
+        // light-2 #e4f8fd
+        // dark-1  #57afc3
+        // dark-2  #358da2
+        '--default-text': '#212529',
+
+        '--primary': '#57afc3',
+        '--primary-btn-hover': '#358da2',
+        '--primary-btn-disabled': '#42939e',
+        '--primary-a-disabled': '#42939e',
+        '--primary-a-hover': '#358da2',
+        
+        '--info-alert-text': '#57afc3',
+        '--info-alert-bg': '#e4f8fd', // FIXME
+        '--info-alert-border': '#c0e2e7', // FIXME
+
+        '--form-control-focus': '#80cbdd',
+        '--loader-base-color': '#57afc344',
+        '--loader-highlight-color': '#57afc3',
+    },
+    humankind_zuhell: {
+        // base    #80cbdd
+        // light-1 #b0e4f0
+        // light-2 #e4f8fd
+        // dark-1  #57afc3
+        // dark-2  #358da2
+        '--default-text': '#212529',
+
+        '--primary': '#80cbdd',
+        '--primary-btn-hover': '#57afc3',
+        '--primary-btn-disabled': '#42939e',
+        '--primary-a-disabled': '#42939e',
+        '--primary-a-hover': '#57afc3',
+        
+        '--info-alert-text': '#80cbdd',
+        '--info-alert-bg': '#d6f1f5', // FIXME
+        '--info-alert-border': '#c0e2e7', // FIXME
+
+        '--form-control-focus': '#70b7c1',
+        '--loader-base-color': '#80cbdd44',
+        '--loader-highlight-color': '#80cbdd',
+    },
+    humankind_old: {
         // base    #2e919e
         // light-1 #42939e
         // light-2 #70b7c1
