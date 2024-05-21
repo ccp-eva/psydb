@@ -3,4 +3,4 @@ DEBUG="*psydb:driver*" node src/run.js \
     --restore-fixture 'init-minimal-with-api-key' \
     $@ \
     src/scripts/init-humankind-structure \
-    src/scripts/init-humankind-dummy-data
+    src/scripts/init-humankind-core-data
