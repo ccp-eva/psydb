@@ -15,6 +15,23 @@ else {
     var common = require('@mpieva/psydb-common-config');
     config = {
         ...common,
+        session: {
+            key: 'koa:sess-dev'
+        },
+        sessionSecret: [
+            '------------------------------------------',
+            'DO NOT USE IN PRODUCTION GENERATE YOUR OWN',
+            '------------------------------------------',
+        ].join(''),
+        sessionSig: {
+            keys: [
+                'ONLY FOR DEVELOPMENT',
+                'DO NOT USE IN PRODUCTION ENV',
+                'GENERATE YOUR OWN',
+                'AND MAKE THHEM REALLY LONG'
+            ],
+            digest: 'sha256', // thats also the default
+        },
         db: {
             url: 'mongodb://127.0.0.1:47017/psydb',
             dbName: 'psydb',
