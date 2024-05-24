@@ -187,9 +187,11 @@ importers:
       is-what: ~3.14.1
       json-schema-traverse: ~1.0.0
       jsonpointer: ~5.0.1
+      keygrip: ~1.1.0
       koa: ~2.14.2
       koa-body: ~4.2.0
       koa-compose: ~4.1.0
+      koa-encrypted-session: ~3.0.7
       koa-router: ~10.1.1
       koa-session: ^5.13.1
       mocha: ~10.2.0
@@ -248,9 +250,11 @@ importers:
       is-what: 3.14.1
       json-schema-traverse: 1.0.0
       jsonpointer: 5.0.1
+      keygrip: 1.1.0
       koa: 2.14.2
       koa-body: 4.2.0
       koa-compose: 4.1.0
+      koa-encrypted-session: 3.0.7
       koa-router: 10.1.1
       koa-session: 5.13.1
       mongodb: 3.6.12
@@ -4601,6 +4605,11 @@ packages:
   /base64-js/1.5.1:
     resolution: {integrity: sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==}
 
+  /base64url/3.0.1:
+    resolution: {integrity: sha512-ir1UPr3dkwexU7FdV8qBBbNDRUhMmIekYMFZfi+C/sLNnRESKPl23nB9b2pltqfOQNnGzsDdId90AEtG5tCx4A==}
+    engines: {node: '>=6.0.0'}
+    dev: false
+
   /batch/0.6.1:
     resolution: {integrity: sha512-x+VAiMRL6UPkx+kudNvxTl6hB2XNNCG2r+7wixVfIYwu/2HKRXimwQyaumLjMveWvT2Hkd/cAJw+QBMfJ/EKVw==}
     dev: true
@@ -8212,6 +8221,18 @@ packages:
       co: 4.6.0
       koa-compose: 4.1.0
 
+  /koa-encrypted-session/3.0.7:
+    resolution: {integrity: sha512-nBCL1mrvo0jsI2NGysejdOrbqNN8mp+a/ANkk1in46+wMZyiCtbYR7L03BnPUUiVrVpajQjKSiWewMQkU7Uakg==}
+    engines: {node: '>=16'}
+    hasBin: true
+    dependencies:
+      base64url: 3.0.1
+      koa-session: 6.4.0
+      sodium-native: 4.1.1
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
   /koa-mount/4.0.0:
     resolution: {integrity: sha512-rm71jaA/P+6HeCpoRhmCv8KVBIi0tfGuO/dMKicbQnQW/YJntJ6MnnspkodoA4QstMVEZArsCphmd0bJEtoMjQ==}
     engines: {node: '>= 7.6.0'}
@@ -8244,6 +8265,18 @@ packages:
       debug: 3.2.7
       is-type-of: 1.4.0
       uuid: 3.4.0
+    dev: false
+
+  /koa-session/6.4.0:
+    resolution: {integrity: sha512-h/dxmSOvNEXpHQPRs4TV03TZVFyZIjmYQiTAW5JBFTYBOZ0VdpZ8QEE6Dud75g8z9JNGXi3m++VqRmqToB+c2A==}
+    engines: {node: '>=8.0.0'}
+    dependencies:
+      crc: 3.8.0
+      debug: 4.3.4
+      is-type-of: 1.4.0
+      uuid: 8.3.2
+    transitivePeerDependencies:
+      - supports-color
     dev: false
 
   /koa-static-cache/5.1.4:
@@ -8764,7 +8797,7 @@ packages:
       uuid: 8.3.2
       yauzl: 2.10.0
     optionalDependencies:
-      mongodb: 3.6.12
+      mongodb: 3.7.4
     transitivePeerDependencies:
       - aws4
       - bson-ext
@@ -9030,6 +9063,11 @@ packages:
     resolution: {integrity: sha512-PPmu8eEeG9saEUvI97fm4OYxXVB6bFvyNTyiUOBichBpFG8A1Ljw3bY62+5oOjDEMHRnd0Y7HQ+x7uzxOzC6JA==}
     engines: {node: '>= 6.0.0'}
     dev: true
+
+  /node-gyp-build/4.8.1:
+    resolution: {integrity: sha512-OSs33Z9yWr148JZcbZd5WiAXhh/n9z8TxQcdMhIOlpN9AhWpLfvVFO73+m77bBABQMaY9XSvIa+qk0jlI7Gcaw==}
+    hasBin: true
+    dev: false
 
   /node-int64/0.4.0:
     resolution: {integrity: sha512-O5lz91xSOeoXP6DulyHfllpq+Eg00MWitZIbtPfoSEvqIHdl5gfcY6hYzDWnj0qD5tz52PI08u9qUvSVeUBeHw==}
@@ -10643,6 +10681,13 @@ packages:
     dependencies:
       ip-address: 9.0.5
       smart-buffer: 4.2.0
+    dev: false
+
+  /sodium-native/4.1.1:
+    resolution: {integrity: sha512-LXkAfRd4FHtkQS4X6g+nRcVaN7mWVNepV06phIsC6+IZFvGh1voW5TNQiQp2twVaMf05gZqQjuS+uWLM6gHhNQ==}
+    requiresBuild: true
+    dependencies:
+      node-gyp-build: 4.8.1
     dev: false
 
   /sonic-boom/3.8.1:
