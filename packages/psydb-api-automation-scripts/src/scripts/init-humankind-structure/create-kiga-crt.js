@@ -133,7 +133,7 @@ var FieldDefinitions = ({ cache }) => ({
         props: {
             collection: 'externalOrganization',
             recordType: 'kigaUmbrellaOrg',
-            isNullable: false,
+            isNullable: true,
             constraints: {},
             displayEmptyAsUnknown: false,
             addReferenceToTarget: false,
