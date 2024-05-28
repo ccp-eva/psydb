@@ -1,5 +1,5 @@
 'use strict';
-var Email = (keywords) => {
+var Email = (keywords = {}) => {
     var { minLength, ...extraKeywords } = keywords;
 
     return {
