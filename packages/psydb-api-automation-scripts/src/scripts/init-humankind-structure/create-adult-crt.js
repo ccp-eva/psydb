@@ -93,7 +93,7 @@ var FieldDefinitions = ({ cache }) => ({
         key: 'phones',
         displayName: 'Phone',
         displayNameI18N: { 'de': 'Telefon' },
-        props: { minItems: 1 }
+        props: { minItems: 0 }
     },
 
     'email': {
@@ -102,7 +102,7 @@ var FieldDefinitions = ({ cache }) => ({
         key: 'email',
         displayName: 'E-Mail',
         displayNameI18N: { 'de': 'E-Mail' },
-        props: { minLength: 1 }
+        props: { minLength: 0 }
     },
 
     'address': {
