@@ -1,9 +1,17 @@
-var Email = ({ ...keywords } = {}) => ({
-    type: 'string',
-    format: 'email',
-    title: 'Email',
-    systemType: 'Email',
-    ...keywords
-});
+'use strict';
+var Email = (keywords) => {
+    var { minLength, ...extraKeywords } = keywords;
+
+    return {
+        systemType: 'Email',
+        type: 'string',
+        ...((minLength === 0) ? {
+            format: 'email-optional',
+        } : {
+            format: 'email',
+        }),
+        ...extraKeywords
+    }
+}
 
 module.exports = Email;

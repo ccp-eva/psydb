@@ -38,6 +38,7 @@ var AjvWrapper = ({
         ...options,
     });
 
+    ajv.addFormat('email-optional', psydbFormats.emailOptional);
     ajv.addFormat('mongodb-object-id', psydbFormats.mongodbObjectId);
     ajv.addFormat('nanoid-default', psydbFormats.nanoidDefault);
     ajv.addFormat('phone-number', psydbFormats.germanPhoneNumber);
