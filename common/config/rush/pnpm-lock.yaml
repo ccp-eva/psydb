@@ -1218,6 +1218,7 @@ importers:
       '@cdxoo/formik-utils': ~0.10.0
       '@cdxoo/json-base64': ~1.0.0
       '@cdxoo/omit': ~1.0.1
+      '@cdxoo/react-compose-contexts': ~1.0.0-beta.0
       '@mpieva/psydb-api-endpoint-schemas': workspace:~0.1.0-alpha
       '@mpieva/psydb-common-config': workspace:~0.1.0-alpha
       '@mpieva/psydb-common-lib': workspace:~0.1.0-alpha
@@ -1278,6 +1279,7 @@ importers:
       '@cdxoo/formik-utils': 0.10.0_formik@2.4.6+react@17.0.2
       '@cdxoo/json-base64': 1.0.0
       '@cdxoo/omit': 1.0.1
+      '@cdxoo/react-compose-contexts': 1.0.0-beta.0_react@17.0.2
       '@mpieva/psydb-api-endpoint-schemas': link:../psydb-api-endpoint-schemas
       '@mpieva/psydb-common-config': link:../psydb-common-config
       '@mpieva/psydb-common-lib': link:../psydb-common-lib
@@ -3209,6 +3211,14 @@ packages:
   /@cdxoo/pick-random-item/0.0.2:
     resolution: {integrity: sha512-DnLA9K2dmVTKJBbLAXPmWfdNto+FjPQMg6QVXmiNRDU8iFZVMKSG40dPgpYdYOvLQaoDBCL+MWjQthgOhqqVWQ==}
     dev: false
+
+  /@cdxoo/react-compose-contexts/1.0.0-beta.0_react@17.0.2:
+    resolution: {integrity: sha512-Yg1ftBBmYWJSiytHtkxPfkoXA3ubDG+7W/cfrWSHDwYJMrtgo64yOLBmpbxEMn9wDlpMYHLv5gu8Lurp7y4Jvg==}
+    peerDependencies:
+      react: '>=16.8'
+    dependencies:
+      react: 17.0.2
+    dev: true
 
   /@cdxoo/react-router-url-search-params/1.2.0_react-router@5.2.1+react@17.0.2:
     resolution: {integrity: sha512-gG8CIinv4VzPu5FEm/XqLXaNOeduDZkFugfF1LSzTuBpxQBRLKXdUa5xBpz8MsUdBMmwII1zdWhbzLrpYNYXjw==}

@@ -2,6 +2,11 @@ import React, { useEffect, useState, lazy } from 'react';
 import { CookiesProvider } from 'react-cookie';
 import { HashRouter as Router } from 'react-router-dom';
 
+import {
+    withContext,
+    composeAsComponent
+} from '@cdxoo/react-compose-contexts';
+
 import config from '@mpieva/psydb-common-config';
 import { createTranslate } from '@mpieva/psydb-common-translations';
 
@@ -25,7 +30,6 @@ import BrandingWrapper from './branding-wrapper';
 import PublicLanding from './public-landing';
 import Main from './main'
 
-import { withContext, composeAsComponent } from './compose-react-contexts';
 import useCookieI18N from './use-cookie-i18n';
 
 const App = () => {
@@ -40,8 +44,6 @@ const App = () => {
     
     var translate = createTranslate(language);
     var agent = createAgent({ language, localeCode: locale.code });
-
-    console.log({ state });
 
     var onSuccessfulUpdate = (response) => {
         // FIXME: find better way to determine logout
@@ -158,7 +160,7 @@ var withCookiesProvider = (Component) => (ps) => {
         <CookiesProvider defaultSetOptions={{
             path: '/', maxAge: 365*24*60*60
         }}>
-            <Component { ...ps} />
+            <Component { ...ps } />
         </CookiesProvider>
     )
 }
