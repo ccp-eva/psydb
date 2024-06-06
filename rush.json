@@ -201,6 +201,11 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/psydb-api-self-auth",
+       "projectFolder": "packages/psydb-api-self-auth",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-api-message-handler-lib",
        "projectFolder": "packages/psydb-api-message-handler-lib",
        "reviewCategory": "production"

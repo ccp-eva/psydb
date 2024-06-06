@@ -37,8 +37,11 @@ var createRouting = (bag = {}) => {
         prefix: prefix.replace(/\/$/, ''),
     });
 
+    router.get('/init-ui', endpoints.publicInitUI);
+
     router.post('/sign-in', withKoaBody(), endpoints.publicSignIn);
     router.post('/sign-out', endpoints.publicSignOut);
+    
 
     router.post('/two-factor-code/match',
         withKoaBody(), endpoints.twoFactorCode.match

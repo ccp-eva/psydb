@@ -41,9 +41,18 @@ const App = () => {
     var translate = createTranslate(language);
     var agent = createAgent({ language, localeCode: locale.code });
 
+    console.log({ state });
+
     var onSuccessfulUpdate = (response) => {
         // FIXME: find better way to determine logout
-        if (response?.data?.data?.record) {
+        var data = response?.data?.data;
+        if (data?.authStatusCode) {
+            setState({
+                self: data.self,
+                authResponseStatus: data.authStatusCode,
+            })
+        }
+        else if (data?.record) {
             setState({
                 self: response.data.data,
                 authResponseStatus: response.status
@@ -68,7 +77,7 @@ const App = () => {
     var is200 = (authResponseStatus === 200);
     useEffect(() => {
         setIsInitialized(false)
-        publicAgent.get('/api/self').then(
+        publicAgent.get('/api/init-ui').then(
             (response) => {
                 onSuccessfulUpdate(response);
                 setIsInitialized(true);

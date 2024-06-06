@@ -153,6 +153,7 @@ importers:
       '@mpieva/psydb-api-lib-errors': workspace:~0.1.0-alpha
       '@mpieva/psydb-api-message-handlers': workspace:~0.1.0-alpha
       '@mpieva/psydb-api-mocha-test-tools': workspace:~0.1.0-alpha
+      '@mpieva/psydb-api-self-auth': workspace:~0.1.0-alpha
       '@mpieva/psydb-axios-test-wrapper': workspace:~0.1.0-alpha
       '@mpieva/psydb-common-lib': workspace:~0.1.0-alpha
       '@mpieva/psydb-common-utils': workspace:~0.1.0-alpha
@@ -219,6 +220,7 @@ importers:
       '@mpieva/psydb-api-lib': link:../psydb-api-lib
       '@mpieva/psydb-api-lib-errors': link:../psydb-api-lib-errors
       '@mpieva/psydb-api-message-handlers': link:../psydb-api-message-handlers
+      '@mpieva/psydb-api-self-auth': link:../psydb-api-self-auth
       '@mpieva/psydb-common-lib': link:../psydb-common-lib
       '@mpieva/psydb-common-utils': link:../psydb-common-utils
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
@@ -686,6 +688,25 @@ importers:
       chai: 4.3.10
       chai-subset: 1.6.0
       mocha-chai-jest-snapshot: 1.1.4_chai@4.3.10
+
+  ../../packages/psydb-api-self-auth:
+    specifiers:
+      '@cdxoo/check-ip-in-range': ~0.0.1
+      '@mpieva/psydb-api-lib': workspace:*
+      '@mpieva/psydb-api-mocha-test-tools': workspace:*
+      '@mpieva/psydb-core-utils': workspace:*
+      chai: ~4.3.7
+      debug: ~4.3.4
+      mocha: ~10.2.0
+    dependencies:
+      '@cdxoo/check-ip-in-range': 0.0.1
+      '@mpieva/psydb-api-lib': link:../psydb-api-lib
+      '@mpieva/psydb-core-utils': link:../psydb-core-utils
+      debug: 4.3.4
+    devDependencies:
+      '@mpieva/psydb-api-mocha-test-tools': link:../psydb-api-mocha-test-tools
+      chai: 4.3.10
+      mocha: 10.2.0
 
   ../../packages/psydb-axios-test-wrapper:
     specifiers:
@@ -7064,6 +7085,7 @@ packages:
 
   /inflight/1.0.6:
     resolution: {integrity: sha512-k92I/b08q4wvFscXCLvqfsHCrjrF7yiXsQuIVvVE7N82W3+aqpzuUdBbfhWcy/FZR3/4IgflMgKLOsvPDrGCJA==}
+    deprecated: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
     dependencies:
       once: 1.4.0
       wrappy: 1.0.2
