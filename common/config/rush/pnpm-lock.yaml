@@ -1407,6 +1407,7 @@ importers:
       mocha: ~10.2.0
       mocha-jsdom: ~2.0.0
       react: ~17.0.2
+      react-cookie: ~6.1.1
       react-dom: ~17.0.2
       react-router: ~5.2.0
     devDependencies:
@@ -1428,6 +1429,7 @@ importers:
       mocha: 10.2.0
       mocha-jsdom: 2.0.0_mocha@10.2.0
       react: 17.0.2
+      react-cookie: 6.1.3_react@17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-router: 5.2.1_react@17.0.2
 

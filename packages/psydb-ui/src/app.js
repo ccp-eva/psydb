@@ -13,15 +13,21 @@ import { createTranslate } from '@mpieva/psydb-common-translations';
 import createAgent, { simple as publicAgent } from '@mpieva/psydb-ui-request-agents';
 
 import {
+    UIConfigContext,
+
     SelfContext,
     AgentContext,
-    UIConfigContext,
+    I18NContext,
+    
     UILocaleContext,
     UILanguageContext,
     UITranslationContext,
 
     useUIConfig,
 } from '@mpieva/psydb-ui-contexts';
+
+import { useCookieI18N } from '@mpieva/psydb-ui-hooks';
+import { createI18N } from '@mpieva/psydb-ui-lib';
 
 import ErrorResponseModalSetup from './error-response-modal-setup';
 import ErrorBoundary from './error-boundary';
@@ -30,8 +36,6 @@ import BrandingWrapper from './branding-wrapper';
 import PublicLanding from './public-landing';
 import Main from './main'
 
-import useCookieI18N from './use-cookie-i18n';
-
 const App = () => {
     var [ isInitialized, setIsInitialized ] = useState(false);
 
@@ -39,11 +43,11 @@ const App = () => {
     var { authResponseStatus, self } = state;
     var setSelf = (nextSelf) => setState({ ...state, self: nextSelf });
 
-    var [ i18n, setI18N ] = useCookieI18N({ config });
-    var { language, locale } = i18n;
+    var [ cookieI18N, setCookieI18N ] = useCookieI18N({ config });
+    var i18n = createI18N({ ...cookieI18N });
+    var { language, translate, localeCode, locale } = i18n;
     
-    var translate = createTranslate(language);
-    var agent = createAgent({ language, localeCode: locale.code });
+    var agent = createAgent({ language, localeCode });
 
     var onSuccessfulUpdate = (response) => {
         // FIXME: find better way to determine logout
@@ -93,7 +97,8 @@ const App = () => {
 
     var contextBag = {
         //config,
-        language: [ language, setI18N ],
+        i18n: [ i18n, setCookieI18N ],
+        language: [ language, setCookieI18N ],
         locale,
         translate,
     }
@@ -149,6 +154,7 @@ const AppInitializing = () => (
 
 var CommonContexts = composeAsComponent(
     //withContext(UIConfigContext, 'config'),
+    withContext(I18NContext, 'i18n'),
     withContext(UILocaleContext, 'locale'),
     withContext(UILanguageContext, 'language'),
     withContext(UITranslationContext, 'translate'),
