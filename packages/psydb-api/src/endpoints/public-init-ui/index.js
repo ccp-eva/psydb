@@ -40,7 +40,8 @@ var publicInitUI = async (context, next) => {
         '/branding',
         '/disableLogoOverlay',
         '/dev_enableDevPanel',
-        '/dev_copyNoticeGreyScale'
+        '/dev_copyNoticeGreyScale',
+        '/dev_enableForeignIdRefLinkInForms',
     ]});
 
     var configHashSum = '';

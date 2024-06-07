@@ -1634,5 +1634,10 @@ module.exports = [
     {
         en: 'Account',
         de: 'Account'
+    },
+
+    {
+        en: 'Go to Record',
+        de: 'Zum Datensatz',
     }
 ]

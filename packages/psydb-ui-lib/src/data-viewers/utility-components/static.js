@@ -11,6 +11,7 @@ import {
 import { Icons } from '@mpieva/psydb-ui-layout';
 import datefns from '../../date-fns';
 
+// XXX
 var collectionUIMapping = {
     'subject': 'subjects',
     'researchGroup': 'research-groups',
