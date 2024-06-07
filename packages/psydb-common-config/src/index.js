@@ -7,11 +7,11 @@ module.exports = {
     },
     enabledLabMethods: [
         'inhouse',
-        //'away-team',
-        //'online-video-call',
-        //'online-survey',
-        //'apestudies-wkprc-default',
-        //'manual-only-participation'
+        'away-team',
+        'online-video-call',
+        'online-survey',
+        'apestudies-wkprc-default',
+        'manual-only-participation'
     ],
     twoFactorAuth: { // FIXME: rename twoFactorAuth
         isEnabled: false,
