@@ -24,5 +24,6 @@ module.exports = {
     disableLogoOverlay: true,
     
     dev_enableDevPanel: false,
-    dev_copyNoticeGreyscale: true,
+    dev_copyNoticeGreyscale: false,
+    dev_enableForeignIdRefLinkInForms: true,
 }

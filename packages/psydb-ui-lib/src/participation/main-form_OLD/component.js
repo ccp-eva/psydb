@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
-import jsonpointer from 'jsonpointer';
-
-import { keyBy } from '@mpieva/psydb-core-utils';
+import { jsonpointer, keyBy } from '@mpieva/psydb-core-utils';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useFetchAll } from '@mpieva/psydb-ui-hooks';
 import { Button } from '@mpieva/psydb-ui-layout';
-import * as enums from '@mpieva/psydb-schema-enums';
 
 import {
     DefaultForm,

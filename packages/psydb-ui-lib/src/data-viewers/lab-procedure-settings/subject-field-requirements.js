@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-    subjectFieldRequirementChecks as checksEnum,
-} from '@mpieva/psydb-schema-enums';
+import enums from '@mpieva/psydb-schema-enums';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
 
@@ -30,7 +28,7 @@ const SubjectFieldRequirements = (ps) => {
                         <span key={ index }>
                             { fieldLabels[pointer] }
                             {' - '}
-                            { checksEnum.mapping[check] }
+                            { enums.subjectFieldRequirementChecks.mapping[check] }
                         </span>
                     )
                 }) }

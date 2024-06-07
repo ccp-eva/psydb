@@ -1,5 +1,5 @@
 import React from 'react';
-import { collections as collectionEnum } from '@mpieva/psydb-schema-enums';
+import enums from '@mpieva/psydb-schema-enums';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
 export const CRTFieldRefList = (ps) => {
@@ -11,7 +11,7 @@ export const CRTFieldRefList = (ps) => {
             <div className='pl-3'>
                 { crtFieldRefs.map(it => (
                     <div>
-                        { collectionEnum.mapping[it.collection] }
+                        { enums.collections.mapping[it.collection] }
                         {' -> '}
                         { it.recordTypeLabel }
                         {' -> '}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { subjectFieldRequirementChecks } from '@mpieva/psydb-schema-enums';
+import enums from '@mpieva/psydb-schema-enums';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import WithField from '../../with-field';
 import { GenericEnum } from '../scalar';
@@ -24,7 +24,7 @@ const prohibitedFieldTypes = [
     'Password',
 ];
 
-var checkOptions = subjectFieldRequirementChecks.mapping;
+var checkOptions = enums.subjectFieldRequirementChecks.mapping;
 
 const Control = (ps) => {
     var {

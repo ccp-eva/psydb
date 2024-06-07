@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
+import enums from '@mpieva/psydb-schema-enums';
 import { unique, only } from '@mpieva/psydb-core-utils';
 import { fixRelated } from '@mpieva/psydb-ui-utils';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useUIConfig, useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch, usePermissions } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator, FormHelpers } from '@mpieva/psydb-ui-layout';
 import * as Controls from '@mpieva/psydb-ui-form-controls';
-import * as enums from '@mpieva/psydb-schema-enums';
 
 import maybeAutoSelect from './maybe-auto-select';
 
@@ -13,6 +13,7 @@ const withLabMethodSelect = (Component) => {
     var WithLabMethodSelect = (ps) => {
         var { studyId, preselectedSubject } = ps;
         
+        var config = useUIConfig();
         var permissions = usePermissions();
         var translate = useUITranslation();
         var [ labMethod, setLabMethod ] = useState();
@@ -36,7 +37,10 @@ const withLabMethodSelect = (Component) => {
             selectables: unique(
                 records
                 .map(it => it.type)
-                .filter(it => permissions.isLabMethodAvailable(it))
+                .filter(it => (
+                    config.enabledLabMethods.includes(it)
+                    && permissions.isLabMethodAvailable(it)
+                ))
             )
         });
         if (autoSelected) {

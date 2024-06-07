@@ -1,6 +1,7 @@
 import React from 'react';
 import { withField } from '@cdxoo/formik-utils';
 import { entries, jsonpointer } from '@mpieva/psydb-core-utils';
+import { useUIConfig, useUITranslation } from '@mpieva/psydb-ui-contexts';
 import RecordPicker from '../../../pickers/record-picker';
 
 export const ForeignId = withField({ Control: (ps) => {
@@ -24,6 +25,8 @@ export const ForeignId = withField({ Control: (ps) => {
 
         excludedIds
     } = ps;
+
+    var { dev_enableForeignIdRefLinkInForms } = useUIConfig();
 
     var { value: recordId } = formikField;
     var { values: formValues, setFieldValue } = formikForm;
@@ -77,24 +80,76 @@ export const ForeignId = withField({ Control: (ps) => {
 
 
     return (
-        <RecordPicker { ...({
-            ...formikField,
-            value: record,
-            onChange,
-            hasErrors: !!formikMeta.error,
+        <>
+            <RecordPicker { ...({
+                ...formikField,
+                value: record,
+                onChange,
+                hasErrors: !!formikMeta.error,
 
-            collection,
-            recordType,
-            constraints,
-            excludedIds,
+                collection,
+                recordType,
+                constraints,
+                excludedIds,
 
-            canClear,
-            disabled: disabled || hasMissingConstraintValues,
-            readOnly,
-            isFormik: true,
+                canClear,
+                disabled: disabled || hasMissingConstraintValues,
+                readOnly,
+                isFormik: true,
 
-            ...related,
-        })} />
+                ...related,
+            })} />
+            { dev_enableForeignIdRefLinkInForms && (
+                <RefLink
+                    record={ record }
+                    collection={ collection }
+                    recordType={ recordType }
+                />
+            )}
+        </>
     );
 }})
 
+// XXX
+var collectionUIMapping = {
+    'subject': 'subjects',
+    //'researchGroup': 'research-groups',
+    'location': 'locations',
+    'study': 'studies',
+    'personnel': 'personnel',
+    'externalPerson': 'external-persons',
+    'externalOrganization': 'external-organizations',
+    //'systemRole': 'system-roles',
+    'subjectGroup': 'subject-groups'
+}
+
+var RefLink = (ps) => {
+    var { record, collection, recordType } = ps;
+    var value = record?._id;
+
+    var translate = useUITranslation();
+
+    var collectionUI = collectionUIMapping[collection];
+    var uri = undefined;
+    if (collectionUI && value) {
+        uri = (
+            recordType
+            ? `#/${collectionUI}/${recordType}/${value}`
+            : `#/${collectionUI}/${value}`
+        );
+        
+        var label = translate('Go to Record');
+        return (
+            <small className='d-block'>
+                { uri ? (
+                    <a href={ uri } target='_blank'>-> { label }</a>
+                ) : (
+                    <span className='text-muted'>-> { label }</span>
+                )}
+            </small>
+        )
+    }
+    else {
+        return null;
+    }
+}

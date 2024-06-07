@@ -153,7 +153,9 @@ importers:
       '@mpieva/psydb-api-lib-errors': workspace:~0.1.0-alpha
       '@mpieva/psydb-api-message-handlers': workspace:~0.1.0-alpha
       '@mpieva/psydb-api-mocha-test-tools': workspace:~0.1.0-alpha
+      '@mpieva/psydb-api-self-auth': workspace:~0.1.0-alpha
       '@mpieva/psydb-axios-test-wrapper': workspace:~0.1.0-alpha
+      '@mpieva/psydb-common-config': workspace:~0.1.0-alpha
       '@mpieva/psydb-common-lib': workspace:~0.1.0-alpha
       '@mpieva/psydb-common-utils': workspace:~0.1.0-alpha
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
@@ -219,6 +221,8 @@ importers:
       '@mpieva/psydb-api-lib': link:../psydb-api-lib
       '@mpieva/psydb-api-lib-errors': link:../psydb-api-lib-errors
       '@mpieva/psydb-api-message-handlers': link:../psydb-api-message-handlers
+      '@mpieva/psydb-api-self-auth': link:../psydb-api-self-auth
+      '@mpieva/psydb-common-config': link:../psydb-common-config
       '@mpieva/psydb-common-lib': link:../psydb-common-lib
       '@mpieva/psydb-common-utils': link:../psydb-common-utils
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
@@ -687,6 +691,25 @@ importers:
       chai-subset: 1.6.0
       mocha-chai-jest-snapshot: 1.1.4_chai@4.3.10
 
+  ../../packages/psydb-api-self-auth:
+    specifiers:
+      '@cdxoo/check-ip-in-range': ~0.0.1
+      '@mpieva/psydb-api-lib': workspace:*
+      '@mpieva/psydb-api-mocha-test-tools': workspace:*
+      '@mpieva/psydb-core-utils': workspace:*
+      chai: ~4.3.7
+      debug: ~4.3.4
+      mocha: ~10.2.0
+    dependencies:
+      '@cdxoo/check-ip-in-range': 0.0.1
+      '@mpieva/psydb-api-lib': link:../psydb-api-lib
+      '@mpieva/psydb-core-utils': link:../psydb-core-utils
+      debug: 4.3.4
+    devDependencies:
+      '@mpieva/psydb-api-mocha-test-tools': link:../psydb-api-mocha-test-tools
+      chai: 4.3.10
+      mocha: 10.2.0
+
   ../../packages/psydb-axios-test-wrapper:
     specifiers:
       axios: ~0.24.0
@@ -1101,12 +1124,10 @@ importers:
 
   ../../packages/psydb-schema-enums:
     specifiers:
-      '@mpieva/psydb-common-config': workspace:~0.1.0-alpha
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
       chai: ~4.3.7
       mocha: ~10.2.0
     dependencies:
-      '@mpieva/psydb-common-config': link:../psydb-common-config
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
     devDependencies:
       chai: 4.3.10
@@ -1115,7 +1136,6 @@ importers:
   ../../packages/psydb-schema-fields:
     specifiers:
       '@cdxoo/inline-text': ~1.0.2
-      '@mpieva/psydb-common-config': workspace:~0.1.0-alpha
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
       '@mpieva/psydb-schema-enums': workspace:~0.1.0-alpha
       '@mpieva/psydb-schema-primitives': workspace:~0.1.0-alpha
@@ -1124,7 +1144,6 @@ importers:
       mocha: ~10.2.0
     dependencies:
       '@cdxoo/inline-text': 1.0.2
-      '@mpieva/psydb-common-config': link:../psydb-common-config
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
       '@mpieva/psydb-schema-enums': link:../psydb-schema-enums
       '@mpieva/psydb-schema-primitives': link:../psydb-schema-primitives
@@ -1153,14 +1172,12 @@ importers:
   ../../packages/psydb-schema-helpers:
     specifiers:
       '@cdxoo/inline-text': ~1.0.2
-      '@mpieva/psydb-common-config': workspace:~0.1.0-alpha
       '@mpieva/psydb-schema-fields': workspace:~0.1.0-alpha
       chai: ~4.3.7
       is-what: ~3.14.1
       mocha: ~10.2.0
     dependencies:
       '@cdxoo/inline-text': 1.0.2
-      '@mpieva/psydb-common-config': link:../psydb-common-config
       '@mpieva/psydb-schema-fields': link:../psydb-schema-fields
       is-what: 3.14.1
     devDependencies:
@@ -1197,8 +1214,8 @@ importers:
       '@cdxoo/formik-utils': ~0.10.0
       '@cdxoo/json-base64': ~1.0.0
       '@cdxoo/omit': ~1.0.1
+      '@cdxoo/react-compose-contexts': ~1.0.0-beta.0
       '@mpieva/psydb-api-endpoint-schemas': workspace:~0.1.0-alpha
-      '@mpieva/psydb-common-config': workspace:~0.1.0-alpha
       '@mpieva/psydb-common-lib': workspace:~0.1.0-alpha
       '@mpieva/psydb-common-translations': workspace:~0.1.0-alpha
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
@@ -1257,8 +1274,8 @@ importers:
       '@cdxoo/formik-utils': 0.10.0_formik@2.4.6+react@17.0.2
       '@cdxoo/json-base64': 1.0.0
       '@cdxoo/omit': 1.0.1
+      '@cdxoo/react-compose-contexts': 1.0.0-beta.0_react@17.0.2
       '@mpieva/psydb-api-endpoint-schemas': link:../psydb-api-endpoint-schemas
-      '@mpieva/psydb-common-config': link:../psydb-common-config
       '@mpieva/psydb-common-lib': link:../psydb-common-lib
       '@mpieva/psydb-common-translations': link:../psydb-common-translations
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
@@ -1384,6 +1401,7 @@ importers:
       mocha: ~10.2.0
       mocha-jsdom: ~2.0.0
       react: ~17.0.2
+      react-cookie: ~6.1.1
       react-dom: ~17.0.2
       react-router: ~5.2.0
     devDependencies:
@@ -1405,6 +1423,7 @@ importers:
       mocha: 10.2.0
       mocha-jsdom: 2.0.0_mocha@10.2.0
       react: 17.0.2
+      react-cookie: 6.1.3_react@17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-router: 5.2.1_react@17.0.2
 
@@ -3188,6 +3207,14 @@ packages:
   /@cdxoo/pick-random-item/0.0.2:
     resolution: {integrity: sha512-DnLA9K2dmVTKJBbLAXPmWfdNto+FjPQMg6QVXmiNRDU8iFZVMKSG40dPgpYdYOvLQaoDBCL+MWjQthgOhqqVWQ==}
     dev: false
+
+  /@cdxoo/react-compose-contexts/1.0.0-beta.0_react@17.0.2:
+    resolution: {integrity: sha512-Yg1ftBBmYWJSiytHtkxPfkoXA3ubDG+7W/cfrWSHDwYJMrtgo64yOLBmpbxEMn9wDlpMYHLv5gu8Lurp7y4Jvg==}
+    peerDependencies:
+      react: '>=16.8'
+    dependencies:
+      react: 17.0.2
+    dev: true
 
   /@cdxoo/react-router-url-search-params/1.2.0_react-router@5.2.1+react@17.0.2:
     resolution: {integrity: sha512-gG8CIinv4VzPu5FEm/XqLXaNOeduDZkFugfF1LSzTuBpxQBRLKXdUa5xBpz8MsUdBMmwII1zdWhbzLrpYNYXjw==}
@@ -7064,6 +7091,7 @@ packages:
 
   /inflight/1.0.6:
     resolution: {integrity: sha512-k92I/b08q4wvFscXCLvqfsHCrjrF7yiXsQuIVvVE7N82W3+aqpzuUdBbfhWcy/FZR3/4IgflMgKLOsvPDrGCJA==}
+    deprecated: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
     dependencies:
       once: 1.4.0
       wrappy: 1.0.2

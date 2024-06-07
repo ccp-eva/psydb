@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { withField } from '@cdxoo/formik-utils';
 
-import * as enums from '@mpieva/psydb-schema-enums';
+import enums from '@mpieva/psydb-schema-enums';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { SplitPartitioned } from '@mpieva/psydb-ui-layout';
 import * as Controls from '@mpieva/psydb-ui-form-controls';
@@ -134,7 +134,6 @@ export const SharedForeignIdProps = (ps) => {
             <Fields.GenericEnum
                 label={ translate('Main Table') }
                 dataXPath={ `${dataXPath}.props.collection` }
-                //enum={ enums.customRecordTypeCollections }
                 enum={ enums.foreignIdFieldCollections }
                 disabled={ !isUnrestricted }
                 required

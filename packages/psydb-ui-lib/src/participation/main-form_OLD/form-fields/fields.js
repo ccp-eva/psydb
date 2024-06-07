@@ -1,5 +1,5 @@
 import React from 'react';
-import * as enums from '@mpieva/psydb-schema-enums';
+import enums from '@mpieva/psydb-schema-enums';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
 
@@ -113,7 +113,7 @@ export const LabProcedureType = (ps) => {
             label={ translate('Lab Workflow') }
             dataXPath='$.labProcedureType'
             options={ types.reduce((acc, it) => ({
-                ...acc, [it]: enums.experimentVariants.getLabel(it)
+                ...acc, [it]: enums.LabMethods.getLabel(it)
             }), {}) }
             extraOnChange={(next) => {
                 if (next === 'online-survey') {

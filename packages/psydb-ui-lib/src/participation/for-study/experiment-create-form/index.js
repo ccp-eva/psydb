@@ -6,7 +6,6 @@ import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useSend } from '@mpieva/psydb-ui-hooks';
 import { LoadingIndicator, FormHelpers } from '@mpieva/psydb-ui-layout';
 import * as Controls from '@mpieva/psydb-ui-form-controls';
-import * as enums from '@mpieva/psydb-schema-enums';
 
 import {
     withLabMethodSelect,
