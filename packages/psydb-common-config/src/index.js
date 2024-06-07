@@ -22,7 +22,8 @@ module.exports = {
     },
     branding: 'mpiccp',
     disableLogoOverlay: false,
-    
+
+    dev_enableStagingBanner: true,
     dev_enableDevPanel: false,
     dev_copyNoticeGreyscale: false,
     dev_enableForeignIdRefLinkInForms: true,

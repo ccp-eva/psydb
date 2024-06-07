@@ -28,6 +28,14 @@ const BrandingWrapper = (ps) => {
 
     return (
         <>
+            { config.dev_enableStagingBanner && (
+                <h3
+                    className='pr-2 pl-2 border-right border-bottom text-danger border-danger'
+                    style={{ position: 'absolute', backgroundColor: '#ffffffaa'}}
+                >
+                    <b>STAGING-SYSTEM</b>
+                </h3>
+            )}
             { config.dev_enableDevPanel && (
                 <DevPanel />
             )}
