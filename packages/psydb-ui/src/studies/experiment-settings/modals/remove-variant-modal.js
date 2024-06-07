@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { labMethods } from '@mpieva/psydb-schema-enums';
+import enums from '@mpieva/psydb-schema-enums';
 import { hasNone } from '@mpieva/psydb-core-utils';
 import { demuxed } from '@mpieva/psydb-ui-utils';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
@@ -54,7 +54,7 @@ const RemoveVariantModalBody = (ps) => {
                 <div className='p-3 border bg-white'>
                     { translate('Lab Workflow') } { index + 1}
                     {' - '}
-                    { translate(labMethods.mapping[variantType]) }
+                    { translate(enums.labMethods.mapping[variantType]) }
                 </div>
                 <div className='mt-3 d-flex justify-content-end'>
                     <Button variant='danger' onClick={ send.exec }>

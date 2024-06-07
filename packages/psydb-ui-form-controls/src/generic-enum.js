@@ -43,6 +43,11 @@ export const GenericEnum = (ps) => {
         extraItemWrapperProps,
         readOnly,
 
+        saneFormikField,
+        enableOtherValue,
+        formGroupClassName,
+        uiSplit,
+
         ...pass
     } = ps;
 

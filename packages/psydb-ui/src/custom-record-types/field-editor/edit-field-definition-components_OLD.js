@@ -1,5 +1,4 @@
 import React from 'react';
-import * as enums from '@mpieva/psydb-schema-enums';
 import { Fields, useFormikContext } from '@mpieva/psydb-ui-lib';
 
 import {

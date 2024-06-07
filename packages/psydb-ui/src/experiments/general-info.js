@@ -1,4 +1,7 @@
 import React from 'react';
+
+import enums from '@mpieva/psydb-schema-enums';
+
 import {
     useUITranslation,
     useUILocale,
@@ -10,11 +13,6 @@ import {
     useModalReducer,
     useRevision,
 } from '@mpieva/psydb-ui-hooks';
-
-import {
-    experimentTypes,
-    inviteExperimentTypes
-} from '@mpieva/psydb-schema-enums';
 
 import {
     Container,
@@ -69,7 +67,7 @@ const General = (ps) => {
     );
 
     var isInviteExperiment = (
-        inviteExperimentTypes.keys.includes(experimentType)
+        enums.inviteLabMethods.keys.includes(experimentType)
     );
 
     var {
@@ -87,7 +85,7 @@ const General = (ps) => {
 
     var sharedBag = {
         experimentId: experimentRecord._id,
-        experimentTypeLabel: experimentTypes.mapping[t],
+        experimentTypeLabel: enums.labMethods.mapping[t],
         studyLabel: studyRecord.state.shorthand,
         firstResearchGroupId,
         researchGroupLabel,
@@ -149,7 +147,7 @@ const OnlineSurveyVariant = (ps) => {
                     { studyLabel }
                 </Pair>
                 <Pair label={ translate('Type') }>
-                    { experimentTypeLabel }
+                    { translate(experimentTypeLabel) }
                 </Pair>
             </Split>
 
@@ -226,7 +224,7 @@ const InviteVariant = (ps) => {
                     { researchGroupLabel }
                 </Pair>
                 <Pair label={ translate('Type') }>
-                    { experimentTypeLabel }
+                    { translate(experimentTypeLabel) }
                 </Pair>
             </Split>
             
@@ -304,7 +302,7 @@ const AwayTeamVariant = (ps) => {
                         { researchGroupLabel }
                     </Pair>
                     <Pair label={ translate('Type') }>
-                        { experimentTypeLabel }
+                        { translate(experimentTypeLabel) }
                     </Pair>
                 </div>
                 <div>

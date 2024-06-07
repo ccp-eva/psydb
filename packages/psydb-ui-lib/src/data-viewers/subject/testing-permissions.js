@@ -1,5 +1,5 @@
 import React from 'react';
-import * as enums from '@mpieva/psydb-schema-enums';
+import enums from '@mpieva/psydb-schema-enums';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { Icons } from '@mpieva/psydb-ui-layout';
 import {
@@ -81,7 +81,7 @@ const PermissionItem = (ps) => {
             />
             <span className='d-inline-block ml-2'>
                 { translate(
-                    enums.experimentVariants.getLabel(labProcedureTypeKey)
+                    enums.labMethods.getLabel(labProcedureTypeKey)
                 )}
             </span>
         </span>

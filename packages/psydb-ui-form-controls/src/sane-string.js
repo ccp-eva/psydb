@@ -7,6 +7,7 @@ export const SaneString = (ps) => {
         enableUnknownValue,
         extraContentWrapperProps,
         extraItemWrapperProps,
+        saneFormikField,
         ...pass
     } = ps;
     return (

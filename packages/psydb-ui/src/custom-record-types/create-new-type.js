@@ -1,5 +1,5 @@
 import React from 'react';
-import * as enums from '@mpieva/psydb-schema-enums';
+import enums from '@mpieva/psydb-schema-enums';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useSend } from '@mpieva/psydb-ui-hooks';
 import { Button, Row, Col } from '@mpieva/psydb-ui-layout';

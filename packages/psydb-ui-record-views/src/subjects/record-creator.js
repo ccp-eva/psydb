@@ -1,5 +1,6 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { intersect } from '@mpieva/psydb-core-utils';
+import { useUIConfig, useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { withRecordCreator } from '../lib';
 import MainForm from './main-form';
 
@@ -20,23 +21,24 @@ const CreateForm = (ps) => {
         requiresTestingPermissions
     } = crtSettings;
 
+    var { enabledLabMethods } = useUIConfig();
     var translate = useUITranslation();
 
     var initialValues = MainForm.createDefaults({
         fieldDefinitions,
         requiresTestingPermissions,
-        permissions
+        permissions,
     });
 
     if (requiresTestingPermissions) {
         initialValues.scientific.testingPermissions = [{
             permissionList: (
-                [
+                intersect(enabledLabMethods, [
                     'inhouse',
                     'online-video-call',
                     'away-team',
                     'online-survey'
-                ].map(it => ({
+                ]).map(it => ({
                     labProcedureTypeKey: it,
                     value: 'unknown'
                 }))
