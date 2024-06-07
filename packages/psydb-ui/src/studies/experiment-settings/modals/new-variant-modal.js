@@ -1,6 +1,5 @@
 import React from 'react';
 
-import * as enums from '@mpieva/psydb-schema-enums';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useSend } from '@mpieva/psydb-ui-hooks';
 import { WithDefaultModal, Button } from '@mpieva/psydb-ui-layout';
@@ -23,12 +22,9 @@ const Form = (ps) => {
         >
             {(formikProps) => (
                 <>
-                    <Fields.GenericEnum
+                    <Fields.LabMethodKey
                         label={ translate('Lab Workflow Type') }
                         dataXPath='$.type'
-                        options={ translate.options(
-                            enums.labMethods.mapping
-                        )}
                         allowedValues={ allowedLabOpsTypes }
                     />
                     <Button type='submit'>

@@ -6,6 +6,7 @@ var { Permissions } = require('@mpieva/psydb-common-lib');
 var { ApiError, ResponseBody } = require('@mpieva/psydb-api-lib');
 var { performSelfAuth } = require('@mpieva/psydb-api-self-auth');
 
+
 var publicInitUI = async (context, next) => {
     var { db, session, request, apiConfig } = context;
 
@@ -32,7 +33,16 @@ var publicInitUI = async (context, next) => {
         authStatusCode = 803;
     }
 
-    var config = {};
+    var config = only({ from: apiConfig, pointers: [
+        '/i18n',
+        '/enabledLabMethods',
+        '/twoFactorAuth',
+        '/branding',
+        '/disableLogoOverlay',
+        '/dev_enableDevPanel',
+        '/dev_copyNoticeGreyScale'
+    ]});
+
     var configHashSum = '';
 
     context.body = ResponseBody({ data: {

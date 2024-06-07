@@ -1,4 +1,4 @@
-import React, { useEffect, useState, lazy } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CookiesProvider } from 'react-cookie';
 import { HashRouter as Router } from 'react-router-dom';
 
@@ -7,14 +7,9 @@ import {
     composeAsComponent
 } from '@cdxoo/react-compose-contexts';
 
-import config from '@mpieva/psydb-common-config';
-import { createTranslate } from '@mpieva/psydb-common-translations';
-
 import createAgent, { simple as publicAgent } from '@mpieva/psydb-ui-request-agents';
 
 import {
-    UIConfigContext,
-
     SelfContext,
     AgentContext,
     I18NContext,
@@ -23,6 +18,7 @@ import {
     UILanguageContext,
     UITranslationContext,
 
+    UIConfigContext,
     useUIConfig,
 } from '@mpieva/psydb-ui-contexts';
 
@@ -40,7 +36,7 @@ const App = () => {
     var [ isInitialized, setIsInitialized ] = useState(false);
 
     var [ state, setState ] = useState({});
-    var { authResponseStatus, self } = state;
+    var { authResponseStatus, self, config = {} } = state;
     var setSelf = (nextSelf) => setState({ ...state, self: nextSelf });
 
     var [ cookieI18N, setCookieI18N ] = useCookieI18N({ config });
@@ -56,17 +52,19 @@ const App = () => {
             setState({
                 self: data.self,
                 authResponseStatus: data.authStatusCode,
+                config: data.config,
             })
         }
         else if (data?.record) {
             setState({
                 self: response.data.data,
-                authResponseStatus: response.status
+                authResponseStatus: response.status,
+                config,
             });
         }
         else {
             // NOTE: reset auth status on logout /api/self on logout
-            setState({});
+            setState({ config });
         }
     }
 
@@ -96,7 +94,7 @@ const App = () => {
     }, [ is200 ]);
 
     var contextBag = {
-        //config,
+        config,
         i18n: [ i18n, setCookieI18N ],
         language: [ language, setCookieI18N ],
         locale,
@@ -153,7 +151,7 @@ const AppInitializing = () => (
 )
 
 var CommonContexts = composeAsComponent(
-    //withContext(UIConfigContext, 'config'),
+    withContext(UIConfigContext, 'config'),
     withContext(I18NContext, 'i18n'),
     withContext(UILocaleContext, 'locale'),
     withContext(UILanguageContext, 'language'),
@@ -164,6 +162,9 @@ var CommonContexts = composeAsComponent(
 var withCookiesProvider = (Component) => (ps) => {
     return (
         <CookiesProvider defaultSetOptions={{
+            // FIXME: theese cannot currently controlled via
+            // config; im not sure that is an issue since we only
+            // use it for i18n
             path: '/', maxAge: 365*24*60*60
         }}>
             <Component { ...ps } />
@@ -173,13 +174,13 @@ var withCookiesProvider = (Component) => (ps) => {
 
 const CookieWrapped = withCookiesProvider(App);
 
-const ConfigWrapped = (ps) => {
-    return (
-        <UIConfigContext.Provider value={ config }>
-            <CookieWrapped />
-        </UIConfigContext.Provider>
-    )
-}
+//const ConfigWrapped = (ps) => {
+//    return (
+//        <UIConfigContext.Provider value={ config }>
+//            <CookieWrapped />
+//        </UIConfigContext.Provider>
+//    )
+//}
 
-export default ConfigWrapped;
+export default CookieWrapped;
 

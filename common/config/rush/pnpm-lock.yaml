@@ -155,6 +155,7 @@ importers:
       '@mpieva/psydb-api-mocha-test-tools': workspace:~0.1.0-alpha
       '@mpieva/psydb-api-self-auth': workspace:~0.1.0-alpha
       '@mpieva/psydb-axios-test-wrapper': workspace:~0.1.0-alpha
+      '@mpieva/psydb-common-config': workspace:~0.1.0-alpha
       '@mpieva/psydb-common-lib': workspace:~0.1.0-alpha
       '@mpieva/psydb-common-utils': workspace:~0.1.0-alpha
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
@@ -221,6 +222,7 @@ importers:
       '@mpieva/psydb-api-lib-errors': link:../psydb-api-lib-errors
       '@mpieva/psydb-api-message-handlers': link:../psydb-api-message-handlers
       '@mpieva/psydb-api-self-auth': link:../psydb-api-self-auth
+      '@mpieva/psydb-common-config': link:../psydb-common-config
       '@mpieva/psydb-common-lib': link:../psydb-common-lib
       '@mpieva/psydb-common-utils': link:../psydb-common-utils
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
@@ -1136,7 +1138,6 @@ importers:
   ../../packages/psydb-schema-fields:
     specifiers:
       '@cdxoo/inline-text': ~1.0.2
-      '@mpieva/psydb-common-config': workspace:~0.1.0-alpha
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
       '@mpieva/psydb-schema-enums': workspace:~0.1.0-alpha
       '@mpieva/psydb-schema-primitives': workspace:~0.1.0-alpha
@@ -1145,7 +1146,6 @@ importers:
       mocha: ~10.2.0
     dependencies:
       '@cdxoo/inline-text': 1.0.2
-      '@mpieva/psydb-common-config': link:../psydb-common-config
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
       '@mpieva/psydb-schema-enums': link:../psydb-schema-enums
       '@mpieva/psydb-schema-primitives': link:../psydb-schema-primitives
@@ -1220,7 +1220,6 @@ importers:
       '@cdxoo/omit': ~1.0.1
       '@cdxoo/react-compose-contexts': ~1.0.0-beta.0
       '@mpieva/psydb-api-endpoint-schemas': workspace:~0.1.0-alpha
-      '@mpieva/psydb-common-config': workspace:~0.1.0-alpha
       '@mpieva/psydb-common-lib': workspace:~0.1.0-alpha
       '@mpieva/psydb-common-translations': workspace:~0.1.0-alpha
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
@@ -1281,7 +1280,6 @@ importers:
       '@cdxoo/omit': 1.0.1
       '@cdxoo/react-compose-contexts': 1.0.0-beta.0_react@17.0.2
       '@mpieva/psydb-api-endpoint-schemas': link:../psydb-api-endpoint-schemas
-      '@mpieva/psydb-common-config': link:../psydb-common-config
       '@mpieva/psydb-common-lib': link:../psydb-common-lib
       '@mpieva/psydb-common-translations': link:../psydb-common-translations
       '@mpieva/psydb-core-utils': link:../psydb-core-utils

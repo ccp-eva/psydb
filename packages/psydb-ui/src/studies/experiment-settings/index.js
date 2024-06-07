@@ -1,17 +1,9 @@
 import React from 'react';
+import { useRouteMatch, useParams } from 'react-router-dom';
 
-import {
-    Route,
-    Switch,
-    Redirect,
-    useRouteMatch,
-    useHistory,
-    useParams
-} from 'react-router-dom';
-
-import * as enums from '@mpieva/psydb-schema-enums';
 import { without, only } from '@mpieva/psydb-core-utils';
 import { demuxed } from '@mpieva/psydb-ui-utils';
+import { useUIConfig } from '@mpieva/psydb-ui-contexts';
 
 import {
     useFetchAll,
@@ -45,6 +37,7 @@ const ExperimentSettings = (ps) => {
     var { id: studyId } = useParams();
     
     var revision = useRevision();
+    var { enabledLabMethods } = useUIConfig();
     var permissions = usePermissions();
     var [ modalHooks, modalCallbacks ] = useAllModals();
 
@@ -72,7 +65,7 @@ const ExperimentSettings = (ps) => {
     } = fetched.settings.data;
 
     var allowedLabOpsTypes = without(
-        enums.labMethods.keys.filter(it => (
+        enabledLabMethods.filter(it => (
             permissions.isLabMethodAvailable(it)
         )),
         variantRecords.map(it => it.type)
