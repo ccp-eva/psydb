@@ -39,6 +39,7 @@ var publicInitUI = async (context, next) => {
         '/twoFactorAuth',
         '/branding',
         '/disableLogoOverlay',
+        '/dev_enableStagingBanner',
         '/dev_enableDevPanel',
         '/dev_copyNoticeGreyScale',
         '/dev_enableForeignIdRefLinkInForms',
