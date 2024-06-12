@@ -41,7 +41,7 @@ var publicInitUI = async (context, next) => {
         '/disableLogoOverlay',
         '/dev_enableStagingBanner',
         '/dev_enableDevPanel',
-        '/dev_copyNoticeGreyScale',
+        '/dev_copyNoticeGreyscale',
         '/dev_enableForeignIdRefLinkInForms',
     ]});
 
