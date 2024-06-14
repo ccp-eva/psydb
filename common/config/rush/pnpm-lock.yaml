@@ -451,12 +451,14 @@ importers:
       ajv: ~6.12.6
       ajv-keywords: ~3.5.2
       chai: ~4.3.7
+      common-tags: ~1.8.2
       copy-anything: ~2.0.6
       csv-parse: ~5.5.5
       date-fns: ~2.30.0
       debug: ~4.3.4
       deep-diff: ~1.0.2
       diacritic-regex: ~1.1.0
+      encodeurl: ~2.0.0
       escape-string-regexp: ~4.0.0
       json-schema-traverse: ~1.0.0
       jsonpointer: ~5.0.1
@@ -466,6 +468,7 @@ importers:
       mongodb: ~3.6.3
       nanoid: ~3.3.6
       nodemailer: ~6.8.0
+      qs: ~6.12.1
       sift: ~16.0.1
       snap-shot-it: ~7.9.6
       statuses: ~2.0.1
@@ -494,12 +497,14 @@ importers:
       '@mpieva/psydb-timezone-helpers': link:../psydb-timezone-helpers
       ajv: 6.12.6
       ajv-keywords: 3.5.2_ajv@6.12.6
+      common-tags: 1.8.2
       copy-anything: 2.0.6
       csv-parse: 5.5.6
       date-fns: 2.30.0
       debug: 4.3.4
       deep-diff: 1.0.2
       diacritic-regex: 1.1.0
+      encodeurl: 2.0.0
       escape-string-regexp: 4.0.0
       json-schema-traverse: 1.0.0
       jsonpointer: 5.0.1
@@ -508,6 +513,7 @@ importers:
       mongodb: 3.6.12
       nanoid: 3.3.7
       nodemailer: 6.8.0
+      qs: 6.12.1
       sift: 16.0.1
       statuses: 2.0.1
     devDependencies:
@@ -5885,6 +5891,11 @@ packages:
   /encodeurl/1.0.2:
     resolution: {integrity: sha512-TPJXq8JqFaVYm2CWmPvnP2Iyo4ZSM7/QKcSmuMLDObfpH5fi7RUGmd/rTDf+rut/saiDiQEeVTNgAmJEdAOx0w==}
     engines: {node: '>= 0.8'}
+
+  /encodeurl/2.0.0:
+    resolution: {integrity: sha512-Q0n9HRi4m6JuGIV1eFlmvJB7ZEVxu93IrMyiMsGC0lrMJMWzRgx6WGquyfQgZVb31vhGgXnfmPNNXmxnOkRBrg==}
+    engines: {node: '>= 0.8'}
+    dev: false
 
   /encoding-japanese/2.0.0:
     resolution: {integrity: sha512-++P0RhebUC8MJAwJOsT93dT+5oc5oPImp1HubZpAuCZ5kTLnhuuBhKHj2jJeO/Gj93idPBWmIuQ9QWMe5rX3pQ==}
