@@ -11,10 +11,12 @@ var {
     getSystemTimezone,
 } = require('@mpieva/psydb-timezone-helpers');
 
-var AjvWrapper = ({
-    disableProhibitedKeyword = false,
-    ...options
-} = {}) => {
+var AjvWrapper = (bag = {}) => {
+    var {
+        disableProhibitedKeyword = false,
+        unmarshalClientTimezone, // used to unmarshal date only server side
+        ...options
+    } = bag;
 
     var wrapper = {
         errors: [],
@@ -79,6 +81,10 @@ var AjvWrapper = ({
         // rely on it being set in the keywords using clientTimezoneOffset
         if (IANAZones.includes(data.timezone)) {
             clientTimezone = data.timezone;
+        }
+
+        if (!clientTimezone) {
+            clientTimezone = unmarshalClientTimezone;
         }
 
         wrapper.validateContext = {

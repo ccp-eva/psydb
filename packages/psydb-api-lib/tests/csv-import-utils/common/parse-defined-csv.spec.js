@@ -6,10 +6,21 @@ var { expect } = require('@mpieva/psydb-api-mocha-test-tools/chai');
 var { ejson } = require('@mpieva/psydb-core-utils');
 var { getContent: loadCSV } = require('@mpieva/psydb-fixtures/csv');
 
+var {
+    ClosedObject,
+    DefaultArray,
+    Integer,
+    SaneString,
+    DateTime,
+    DateOnlyServerSide,
+} = require('@mpieva/psydb-schema-fields');
+
+
 var { fetchCRTSettings } = require('../../../src');
 var {
     dumbParseCSV,
-    parseDefinedCSV
+    parseDefinedCSV,
+    parseSchemaCSV,
 } = require('../../../src/csv-import-utils/common');
 
 describe('csv-import-utils/common/parseDefinedCSV()', function () {
@@ -19,94 +30,83 @@ describe('csv-import-utils/common/parseDefinedCSV()', function () {
     //    db = this.getDbHandle();
     //});
 
+    var csv4000;
+    before(async function () {
+        csv4000 = [ 'someAry[0],someAry[1],someNested[0].foo' ];
+        for (var i = 0; i < 4000; i += 1) {
+            csv4000.push('"9001","foo;bar",1');
+        }
+        csv4000 = csv4000.join("\n");
+    })
+
     it('simple', async function () {
         //var data = loadCSV('evapecognition/simple');
-        var parsedLines = parseDefinedCSV({
+        var parsed = parseSchemaCSV({
             csvData: stripIndents`
                 someInt,someString
                 9001,"foo,bar"
+                9001,""
             `,
-            definitions: [
-                {
-                    csvColumnKey: 'someInt',
-                    systemType: 'Integer', props: {},
-                    pointer: '/someInt'
-                },
-                {
-                    csvColumnKey: 'someString',
-                    systemType: 'SaneString', props: {},
-                    pointer: '/someString'
-                },
-            ],
-            required: [],
-            throwUnknown: true,
-        });
-        //console.dir(ejson(parsed), { depth: null });
-        console.dir(ejson(parsedLines), { depth: null });
+            schema: ClosedObject({
+                someInt: Integer(),
+                someString: SaneString({ minLength: 1 }),
+            })
+        })
+
+        console.dir(ejson(parsed), { depth: null })
     });
 
     it('ary', function () {
-        var s = qs.stringify({
-            someAry: [ '"foo;bar"',2 ],
-            someNested: [{ foo: 1, bar: [ 1,3 ]}]
-        }, {
-            encode: true,
-            delimiter: ';',
-            allowDots: true,
-            encodeValuesOnly: true,
-        });
-
-        console.log(s);
-        console.dir(qs.parse(s, {
-            encode: true,
-            delimiter: ';',
-            allowDots: true,
-            encodeValuesOnly: true,
-        }), { depth: null });
-
-        console.log('AAAAAAAAAAAAA')
-        console.log(encodeURIComponent('"foo;bar"'))
-
-        var { csvColumns, csvLines } = dumbParseCSV(
-            stripIndents`
+        var parsed = parseSchemaCSV({
+            csvData: stripIndents`
                 someAry[0],someAry[1],someNested[0].foo
                 "9001","foo;bar",1
             `,
-        );
-        for (var line of csvLines) {
-            var uline = [];
-            for (var [ix, value] of line.entries()) {
-                var u = `${csvColumns[ix]}=${encodeURIComponent(value)}`;
-                uline.push(u);
-            }
-            uline = uline.join(';');
-            var parsed = qs.parse(uline, {
-                encode: true,
-                delimiter: ';',
-                allowDots: true,
-                encodeValuesOnly: true,
+            schema: ClosedObject({
+                someAry: DefaultArray({
+                    items: SaneString(),
+                    minLength: 1
+                }),
+                someNested: DefaultArray({
+                    items: ClosedObject({
+                        foo: Integer(),
+                    }),
+                    minLength: 1
+                })
             })
-            console.log({ uline });
-            console.dir(parsed, { depth: null });
-        }
-        console.log(x);
-        return;
+        });
+        console.dir(ejson(parsed), { depth: null })
+    });
 
-
-        var parsedLines = parseDefinedCSV({
+    it('dates', function () {
+        var parsed = parseSchemaCSV({
             csvData: stripIndents`
-                someAry[0],someAry[1]
-                "9001","foo;bar"
+                someDate
+                "2012-11-30T23:00:00.000Z"
             `,
-            definitions: [
-                {
-                    csvColumnKey: 'someAry',
-                    systemType: 'SaneStringList', props: {},
-                    pointer: '/someAry'
-                },
-            ],
-            required: [],
-            throwUnknown: true,
+            schema: ClosedObject({
+                someDate: DateOnlyServerSide(),
+            }),
+            unmarshalClientTimezone: 'Europe/Berlin',
+        });
+        console.dir(ejson(parsed), { depth: null })
+    });
+
+    it('perf 4000', function () {
+        var parsed = parseSchemaCSV({
+            csvData: csv4000,
+            schema: ClosedObject({
+                someAry: DefaultArray({
+                    items: SaneString(),
+                    minLength: 1
+                }),
+                someNested: DefaultArray({
+                    items: ClosedObject({
+                        foo: Integer(),
+                    }),
+                    minLength: 1
+                })
+            })
         });
     })
 });
