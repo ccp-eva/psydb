@@ -125,5 +125,45 @@ describe('csv-import-utils/common/parseDefinedCSV()', function () {
                 })
             })
         });
+    });
+
+    it('array item skipping', function () {
+        var parsed = parseSchemaCSV({
+            csvData: stripIndents`
+                someEmail[0],someEmail[1]
+                "herp@derp.com","foo@bar.de"
+                "one@two.com",""
+                "",""
+            `,
+            schema: ClosedObject({
+                someEmail: DefaultArray({
+                    items: SaneString({ minLength: 1 }),
+                    minItems: 1,
+                })
+            }),
+            unmarshalClientTimezone: 'Europe/Berlin',
+        });
+        console.dir(ejson(parsed), { depth: null })
+        
+        var parsed = parseSchemaCSV({
+            csvData: stripIndents`
+                someAry[0].foo,someAry[0].bar
+                "100","200"
+                "101",""
+                "",""
+            `,
+            schema: ClosedObject({
+                someAry: DefaultArray({
+                    items: ClosedObject({
+                        foo: Integer(),
+                        bar: Integer(),
+                    }),
+                    minItems: 1,
+                })
+            }),
+            unmarshalClientTimezone: 'Europe/Berlin',
+        });
+        console.dir(ejson(parsed), { depth: null })
     })
+
 });

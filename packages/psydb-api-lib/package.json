@@ -52,7 +52,8 @@
     "common-tags": "~1.8.2",
     "qs": "~6.12.1",
     "encodeurl": "~2.0.0",
-    "@cdxoo/gather-possible-jss-paths": "~0.0.5"
+    "@cdxoo/gather-possible-jss-paths": "~0.0.5",
+    "clean-deep": "~3.4.0"
   },
   "devDependencies": {
     "mocha": "~10.2.0",
