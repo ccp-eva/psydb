@@ -426,6 +426,7 @@ importers:
   ../../packages/psydb-api-lib:
     specifiers:
       '@cdxoo/debug-js-fork': ~0.0.1
+      '@cdxoo/gather-possible-jss-paths': ~0.0.5
       '@cdxoo/inline-string': ~1.0.0
       '@cdxoo/inline-text': ~1.0.2
       '@cdxoo/mongodb-escape-keys': ~0.1.1
@@ -474,6 +475,7 @@ importers:
       statuses: ~2.0.1
     dependencies:
       '@cdxoo/debug-js-fork': 0.0.1
+      '@cdxoo/gather-possible-jss-paths': 0.0.5
       '@cdxoo/inline-string': 1.0.0
       '@cdxoo/inline-text': 1.0.2
       '@cdxoo/mongodb-escape-keys': 0.1.1
@@ -3080,6 +3082,16 @@ packages:
       react: 17.0.2
     dev: true
 
+  /@cdxoo/gather-possible-jss-paths/0.0.5:
+    resolution: {integrity: sha512-0Zx3YVrGooawtaRbNjtKxtllqv/6qGEJLXYpkmKzLDrpsfPY9gtBrLX11JPZQ6GF/BdZ40vFaAhGk0A8E2DCwg==}
+    dependencies:
+      '@cdxoo/stringify-path-perlstyle': 0.0.2
+      '@cdxoo/traverse': 0.0.2
+      debug: 4.3.4
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
   /@cdxoo/inline-string/1.0.0:
     resolution: {integrity: sha512-lsGS4ZnzLWAiJwz/S5DlnIUu6fecc2H6Bg8+m4kl/fkgR+0fg413xo4d4UCFB8fu5fWtFiHq5gGf+PYiwszwbQ==}
 
@@ -3232,6 +3244,10 @@ packages:
       react-router: 5.2.1_react@17.0.2
       url-search-params-polyfill: 8.2.5
     dev: true
+
+  /@cdxoo/stringify-path-perlstyle/0.0.2:
+    resolution: {integrity: sha512-s//+QrvfhsgVBRwf7KiYht9VrZLGLOZLomB0ca55HwFfLCdm9BkJ150A+xt10kFiJIdQUKReEwOje75BS5hDCg==}
+    dev: false
 
   /@cdxoo/switch-koa-compose/1.0.1:
     resolution: {integrity: sha512-LHgwdYcAARVLCI5iypnKAuKbAKArWPb5XHXPVZocYu0/QeQicZ8UvhWYlKXM/Uup2xnf8jv1l33dBOL6bgm1jQ==}

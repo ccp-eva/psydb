@@ -8,14 +8,26 @@ var parseSchemaCSV = (bag) => {
     var {
         csvData,
         schema,
-        unmarshalClientTimezone
+        unmarshalClientTimezone,
+        customColumnRemap,
         //deserializers = commonDeserializers,
     } = bag;
 
     var { csvColumns, csvLines } = dumbParseCSV(csvData);
-    var parsed = dumbMakeObjects({ csvColumns, csvLines });
 
-    var ajv = Ajv({ coerceTypes: true, unmarshalClientTimezone });
+    var parsed = dumbMakeObjects({
+        csvColumns: maybeRemapColumns({ csvColumns, customColumnRemap }),
+        csvLines
+    });
+
+    var ajv = Ajv({
+        coerceTypes: true,
+        unmarshalClientTimezone,
+        formatOverrides: {
+            // NOTE: to enable smart ref resolve
+            mongodbObjectId: { validate: /.*/ },
+        }
+    });
     var validation = [];
 
     for (var [ix, it] of parsed.entries()) {
@@ -29,9 +41,24 @@ var parseSchemaCSV = (bag) => {
 
     var out = [];
     for (var [ix, it] of csvLines.entries()) {
-        out.push({ csvLine: it, parsed: parsed[ix], ...validation[ix] });
+        out.push({ csvLine: it, obj: parsed[ix], ...validation[ix] });
     }
     return out;
+}
+
+var maybeRemapColumns = (bag) => {
+    var { csvColumns, customColumnRemap } = bag;
+
+    if (customColumnRemap) {
+        var remappedColumns = [];
+        for (var it of csvColumns) {
+            remappedColumns.push(customColumnRemap(it) || it);
+        }
+        return remappedColumns;
+    }
+    else {
+        return csvColumns;
+    }
 }
 
 module.exports = parseSchemaCSV;

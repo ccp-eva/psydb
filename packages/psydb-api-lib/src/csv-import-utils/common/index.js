@@ -9,4 +9,6 @@ module.exports = {
     parseDefinedCSV: require('./parse-defined-csv'), // FIXME make obs
     parseSchemaCSV: require('./parse-schema-csv'),
     deserializers: require('./deserializers'),
+
+    resolveSchemaRefs: require('./resolve-schema-refs'),
 }

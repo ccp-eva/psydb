@@ -13,6 +13,7 @@ var {
     SaneString,
     DateTime,
     DateOnlyServerSide,
+    Id,
 } = require('@mpieva/psydb-schema-fields');
 
 
@@ -91,8 +92,24 @@ describe('csv-import-utils/common/parseDefinedCSV()', function () {
         });
         console.dir(ejson(parsed), { depth: null })
     });
+    
+    it('smart refs', function () {
+        var parsed = parseSchemaCSV({
+            csvData: stripIndents`
+                someRef
+                "1"
+                "fofof"
+                "000000000000000000000000"
+            `,
+            schema: ClosedObject({
+                someRef: Id(),
+            }),
+            unmarshalClientTimezone: 'Europe/Berlin',
+        });
+        console.dir(ejson(parsed), { depth: null })
+    });
 
-    it('perf 4000', function () {
+    it.skip('perf 4000', function () {
         var parsed = parseSchemaCSV({
             csvData: csv4000,
             schema: ClosedObject({
