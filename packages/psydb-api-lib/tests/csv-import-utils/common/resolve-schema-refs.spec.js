@@ -6,7 +6,7 @@ var { getContent: loadCSV } = require('@mpieva/psydb-fixtures/csv');
 var { fetchCRTSettings } = require('../../../src');
 var {
     parseSchemaCSV,
-    resolveSchemaCSV
+    resolveSchemaRefs
 } = require('../../../src/csv-import-utils/common');
 
 var {
@@ -16,6 +16,7 @@ var {
     Integer,
     SaneString,
     MongoFk,
+    ForeignIdList,
 } = require('@mpieva/psydb-schema-fields');
 
 describe('csv-import-utils/common/resolveSchemaRefs', function () {
@@ -63,7 +64,7 @@ describe('csv-import-utils/common/resolveSchemaRefs', function () {
                             'role'
                         ],
                     }),
-                    minLength: 1
+                    minItems: 1
                 }),
                 'experimentName': SaneString({ minLength: 1 }),
                 'roomOrEnclosure': SaneString({ minLength: 1 }),
@@ -75,7 +76,6 @@ describe('csv-import-utils/common/resolveSchemaRefs', function () {
                 'subjectData',
                 'experimentName',
                 'roomOrEnclosure',
-                'fofofof'
             ]
         });
 
@@ -85,10 +85,13 @@ describe('csv-import-utils/common/resolveSchemaRefs', function () {
             unmarshalClientTimezone: 'Europe/Berlin',
             customColumnRemap,
         });
-        console.dir(ejson(parsed), { depth: null });
-        //var resolved = resolveSchemaRefs({
-        //    schema,
-        //});
+        //console.dir(ejson(parsed), { depth: null });
+        var resolved = resolveSchemaRefs({
+            fromItems: parsed.map(it => it.obj),
+            schema: ClosedObject({
+                rlist: ForeignIdList({ collection: 'subject' })
+            }),
+        });
     });
 
 });
