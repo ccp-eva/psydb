@@ -1,6 +1,13 @@
 'use strict';
 var gatherPossibleJSSPaths = require('@cdxoo/gather-possible-jss-paths');
-var { unwind, jsonpointer, forcePush } = require('@mpieva/psydb-core-utils');
+var perlify = require('@cdxoo/stringify-path-perlstyle');
+
+var {
+    isArray,
+    keyBy,
+    groupBy,
+    traverse,
+} = require('@mpieva/psydb-core-utils');
 
 var isRecordRef = (systemType) => (
     systemType === 'ForeignId' || systemType === 'ForeignIdList'
@@ -13,48 +20,74 @@ var isRefList = (systemType) => (
 )
 
 var gatherSchemaRefs = async (bag) => {
-    var { 
-        db, fromItems, schema,
-        extraRecordResolvePointers = {},
-    } = bag;
-   
+    var { fromItems, schema } = bag;
+
+    // XXX: in theory we have an issue
+    // in gatherPossibleJSSPaths() where ambigous paths could be created
+    // we weill be ignoring this for now as it seems a non issue here
     var resolveData = gatherResolveDataFromSchema({ schema });
+    var resolveDataByPerl = keyBy({ items: resolveData, byProp: 'perlpath' });
 
-    var recordRefs = {};
-    var hsiRefs = {};
-
+    var tokenMapping = [];
     for (var it of fromItems) {
-        for (var resdata of resolveData) {
-            var { schema, pointer, path } = resdata;
-            var { systemType, systemProps } = schema;
+        traverse(it, (context) => {
+            var { isLeaf, path, value } = context;
+            if (isLeaf) {
+                var csvColumn = urlify(path);
+                var dataPointer = pointerize(path);
+                
+                var strippedPath = path.filter(it => !it.isArrayItem);
+                var schemaPerlPath = perlify(strippedPath);
+
+                var resdata = resolveDataByPerl[schemaPerlPath];
+                if (resdata) {
+                    var { schema } = resdata;
+                    var { systemType, systemProps } = schema;
+                    
+                    var shared = {
+                        csvColumn,
+                        schemaPerlPath,
+                        dataPointer,
+                        dataPath: path,
+                        systemType,
+                        value
+                    };
             
-            var unwound = unwind({
-                items: [ it ],
-                byPath: path.replace(/\.[^\.]+$/, '')
-            });
-
-            var values = [];
-            for (var u of unwound) {
-                values.push(jsonpointer.get(u, pointer))
+                    if (isRecordRef(systemType)) {
+                        var { collection } = systemProps;
+                        tokenMapping.push({ ...shared, collection });
+                    }
+                    if (isHSIRef(systemType)) {
+                        var { setId } = systemProps;
+                        tokenMapping.push({
+                            ...shared, collection: 'helperSetItem', setId
+                        });
+                    }
+                }
             }
-
-            if (isRecordRef(systemType)) {
-                var { collection } = systemProps;
-                forcePush({
-                    into: recordRefs,  pointer: `/${collection}`, values
-                })
-            }
-            if (isHSIRef(systemType)) {
-                var { setId } = systemProps;
-                forcePush({
-                    into: hsiRefs,  pointer: `/${setId}`, values,
-                })
-            }
-
-        }
+        }, {
+            traverseArrays: true,
+            createPathToken: ({ parentNode, key, value }) => ({
+                key,
+                type: isArray(value) ? 'array' : typeof value,
+                isArrayItem: isArray(parentNode.value),
+            })
+        });
     }
 
-    return { recordRefs, hsiRefs }
+    var { helperSetItem: hsiIntermediate, ...recordRefs } = groupBy({
+        items: tokenMapping,
+        byProp: 'collection',
+        transform: it => (it.setId ? it : it.value)
+    });
+
+    var hsiRefs = groupBy({
+        items: hsiIntermediate || [],
+        byProp: 'setId',
+        transform: it => it.value
+    });
+
+    return { recordRefs, hsiRefs, tokenMapping }
 }
 
 var gatherResolveDataFromSchema = (bag) => {
@@ -68,20 +101,15 @@ var gatherResolveDataFromSchema = (bag) => {
     var resolveData = [];
     for (var it of paths) {
         var [ leaf ] = it.slice(-1);
-
         var { schema } = leaf;
+        var { systemType } = schema;
+
         if (isRefList(systemType)) {
             schema = leaf.schema.items;
         }
         
-        var data = {
-            schema,
-            pointer: pointerize(it),
-            path: pathify(it),
-            fullTokens: it
-        }
+        var data = { schema, perlpath: perlify(it), fullTokens: it }
         
-        var { systemType } = schema;
         if (isRecordRef(systemType) || isHSIRef(systemType)) {
             resolveData.push(data);
         }
@@ -99,8 +127,17 @@ var pointerize = (path) => {
     return out;
 }
 
-var pathify = (path) => {
-    var str = path.map(it => it.key).join('.');
+var urlify = (path) => {
+    var str = '';
+    for (var [ix, it] of path.entries()) {
+        var { key, isArrayItem } = it;
+        if (it.isArrayItem) {
+            str += `[${key}]`
+        }
+        else {
+            str += (ix !== 0 ? '.' : '') + key
+        }
+    }
     return str;
 }
 

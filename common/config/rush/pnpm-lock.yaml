@@ -820,6 +820,7 @@ importers:
       '@cdxoo/jsonpointer-to-objectpath': ~1.0.0
       '@cdxoo/objectpath-to-jsonpointer': ~1.0.0
       '@cdxoo/tiny-ejson': ~1.0.0
+      '@cdxoo/traverse': ~0.0.2
       chai: ~4.3.7
       deepmerge: ~4.2.2
       escape-string-regexp: ~4.0.0
@@ -831,6 +832,7 @@ importers:
       '@cdxoo/jsonpointer-to-objectpath': 1.0.0
       '@cdxoo/objectpath-to-jsonpointer': 1.0.0
       '@cdxoo/tiny-ejson': 1.0.0
+      '@cdxoo/traverse': 0.0.2
       deepmerge: 4.2.2
       escape-string-regexp: 4.0.0
       is-what: 3.14.1

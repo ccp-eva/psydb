@@ -48,6 +48,7 @@ var aggregateFromRefs = async (bag) => {
     var { db, pointers, extraMatch, ...rest } = bag;
     var [ collection, values ] = entries(rest)[0];
 
+    // NOTE: fire one query per possible pointer
     var resolved = await Promise.all(pointers.map(pointer => {
         var path = convertPointerToPath(pointer);
         return aggregateToArray({ db, [collection]: [
