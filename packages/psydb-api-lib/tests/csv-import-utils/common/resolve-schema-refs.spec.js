@@ -6,7 +6,8 @@ var { getContent: loadCSV } = require('@mpieva/psydb-fixtures/csv');
 var { fetchCRTSettings } = require('../../../src');
 var {
     parseSchemaCSV,
-    resolveSchemaRefs
+    gatherSchemaRefs,
+    resolveRefs,
 } = require('../../../src/csv-import-utils/common');
 
 var {
@@ -19,7 +20,7 @@ var {
     ForeignIdList,
 } = require('@mpieva/psydb-schema-fields');
 
-describe('csv-import-utils/common/resolveSchemaRefs', function () {
+describe('csv-import-utils/common/gatherSchemaRefs', function () {
     var db;
     beforeEach(async function () {
         await this.restore('2023-11-29__0517-wkprc-fieldsite');
@@ -86,12 +87,19 @@ describe('csv-import-utils/common/resolveSchemaRefs', function () {
             customColumnRemap,
         });
         //console.dir(ejson(parsed), { depth: null });
-        var resolved = resolveSchemaRefs({
+        var { recordRefs, hsiRefs } = await gatherSchemaRefs({
             fromItems: parsed.map(it => it.obj),
-            schema: ClosedObject({
-                rlist: ForeignIdList({ collection: 'subject' })
-            }),
+            schema,
         });
+
+        var { resolvedRecords, resolvedHSIs } = await resolveRefs({
+            db, recordRefs, hsiRefs,
+            extraRecordResolvePointers: { subject: [
+                '/scientific/state/custom/wkprcIdCode'
+            ]},
+        });
+
+        console.dir(ejson(resolvedRecords), { depth: null });
     });
 
 });

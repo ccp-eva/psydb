@@ -10,5 +10,5 @@ module.exports = {
     parseSchemaCSV: require('./parse-schema-csv'),
     deserializers: require('./deserializers'),
 
-    resolveSchemaRefs: require('./resolve-schema-refs'),
+    gatherSchemaRefs: require('./gather-schema-refs'),
 }

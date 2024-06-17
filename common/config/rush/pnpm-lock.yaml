@@ -430,6 +430,7 @@ importers:
       '@cdxoo/inline-string': ~1.0.0
       '@cdxoo/inline-text': ~1.0.2
       '@cdxoo/mongodb-escape-keys': ~0.1.1
+      '@cdxoo/stringify-path-perlstyle': ~0.0.3
       '@cdxoo/switch-koa-compose': ~1.0.0
       '@cdxoo/traverse': ~0.0.1
       '@mpieva/json-schema-convert-pointer': workspace:~0.1.0-alpha
@@ -480,6 +481,7 @@ importers:
       '@cdxoo/inline-string': 1.0.0
       '@cdxoo/inline-text': 1.0.2
       '@cdxoo/mongodb-escape-keys': 0.1.1
+      '@cdxoo/stringify-path-perlstyle': 0.0.3
       '@cdxoo/switch-koa-compose': 1.0.1
       '@cdxoo/traverse': 0.0.2
       '@mpieva/json-schema-convert-pointer': link:../json-schema-convert-pointer
@@ -3249,6 +3251,10 @@ packages:
 
   /@cdxoo/stringify-path-perlstyle/0.0.2:
     resolution: {integrity: sha512-s//+QrvfhsgVBRwf7KiYht9VrZLGLOZLomB0ca55HwFfLCdm9BkJ150A+xt10kFiJIdQUKReEwOje75BS5hDCg==}
+    dev: false
+
+  /@cdxoo/stringify-path-perlstyle/0.0.3:
+    resolution: {integrity: sha512-K0eS80F6P8TURiMXR4f1hohUgUJhwr5XEQ85oQQOWfghjOptRfxrAMnUrO0FbnX+1nI0b4bvmaajYGf1i9Me+Q==}
     dev: false
 
   /@cdxoo/switch-koa-compose/1.0.1:
