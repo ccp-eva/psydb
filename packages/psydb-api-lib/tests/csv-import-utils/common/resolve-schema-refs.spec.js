@@ -1,6 +1,10 @@
 'use strict';
 var { expect } = require('@mpieva/psydb-api-mocha-test-tools/chai');
-var { ejson } = require('@mpieva/psydb-core-utils');
+
+var {
+    ejson, entries, jsonpointer
+} = require('@mpieva/psydb-core-utils');
+
 var { getContent: loadCSV } = require('@mpieva/psydb-fixtures/csv');
 
 var { fetchCRTSettings } = require('../../../src');
@@ -86,20 +90,44 @@ describe('csv-import-utils/common/gatherSchemaRefs', function () {
             unmarshalClientTimezone: 'Europe/Berlin',
             customColumnRemap,
         });
+
+        var preparedObjects = parsed.map(it => it.obj);
+
         //console.dir(ejson(parsed), { depth: null });
-        var { recordRefs, hsiRefs } = await gatherSchemaRefs({
-            fromItems: parsed.map(it => it.obj),
+        var { tokenMapping } = await gatherSchemaRefs({
+            fromItems: preparedObjects,
             schema,
         });
 
         var { resolvedRecords, resolvedHSIs } = await resolveRefs({
-            db, recordRefs, hsiRefs,
+            db, tokenMapping,
             extraRecordResolvePointers: { subject: [
                 '/scientific/state/custom/wkprcIdCode'
             ]},
         });
-
+        
         console.dir(ejson(resolvedRecords), { depth: null });
+        console.log(tokenMapping);
+        
+        for (var [ix, recordTokenMapping] of tokenMapping.entries()) {
+            for (var m of recordTokenMapping) {
+                var { dataPointer, collection, value } = m;
+                var records = resolvedRecords[collection].filter(
+                    it => it.value === value
+                );
+                if (records.length !== 1) {
+                    throw new Error('multiple or non mappable records');
+                }
+
+                jsonpointer.set(
+                    preparedObjects[ix],
+                    dataPointer,
+                    records[0]._id
+                );
+            }
+        }
+
+        console.dir(ejson(preparedObjects), { depth: null });
     });
 
 });

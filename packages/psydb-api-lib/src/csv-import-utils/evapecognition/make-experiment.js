@@ -14,7 +14,7 @@ var makeExperiment = (bag) => {
     } = bag
     
     var { 
-        timestamp,
+        year, month, day,
         subjectData,
         experimentName,
         roomOrEnclosure,
@@ -23,8 +23,8 @@ var makeExperiment = (bag) => {
         subjectGroupId,
     } = preparedObject;
 
-    timestamp = convertYMDToClientNoon({
-        ...timestamp, clientTZ: timezone,
+    var timestamp = convertYMDToClientNoon({
+        year, month, day, clientTZ: timezone,
     });
 
     var experimentId = ObjectId();

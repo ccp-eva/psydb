@@ -29,7 +29,9 @@ var gatherSchemaRefs = async (bag) => {
     var resolveDataByPerl = keyBy({ items: resolveData, byProp: 'perlpath' });
 
     var tokenMapping = [];
-    for (var it of fromItems) {
+    for (var [ ix, it ] of fromItems.entries()) {
+        tokenMapping[ix] = [];
+
         traverse(it, (context) => {
             var { isLeaf, path, value } = context;
             if (isLeaf) {
@@ -55,11 +57,11 @@ var gatherSchemaRefs = async (bag) => {
             
                     if (isRecordRef(systemType)) {
                         var { collection } = systemProps;
-                        tokenMapping.push({ ...shared, collection });
+                        tokenMapping[ix].push({ ...shared, collection });
                     }
                     if (isHSIRef(systemType)) {
                         var { setId } = systemProps;
-                        tokenMapping.push({
+                        tokenMapping[ix].push({
                             ...shared, collection: 'helperSetItem', setId
                         });
                     }
