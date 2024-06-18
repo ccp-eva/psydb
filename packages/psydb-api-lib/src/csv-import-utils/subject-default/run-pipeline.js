@@ -4,10 +4,6 @@ var { parseSchemaCSV, injectRefIds } = require('../common');
 
 var CSVSchema = require('./csv-schema');
 var ColumnRemapper = require('./column-remapper');
-
-//var __parseLines = require('./parse-lines');
-//var matchData = require('./match-data');
-//var makeObjects = require('./make-objects');
 var transformPrepared = require('./transform-prepared');
 
 var runPipeline = async (bag) => {

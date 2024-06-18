@@ -1,16 +1,11 @@
 'use strict';
 module.exports = {
-    //parseLines: require('./parse-lines'),
-    //matchData: require('./match-data'),
-    //makeObjects: require('./make-objects'),
+    runPipeline: require('./run-pipeline'),
 
     verifySameSubjectType: require('./verify-same-subject-type'),
     verifySameSubjectGroup: require('./verify-same-subject-group'),
 
+    transformPrepared: require('./transform-prepared'),
     makeExperiment: require('./make-experiment'),
     makeParticipationItems: require('./make-participation-items'),
-
-    transformPrepared: require('./transform-prepared'),
-
-    runPipeline: require('./run-pipeline'),
 }
