@@ -1,12 +1,5 @@
 'use strict';
-var {
-    parseSchemaCSV,
-    gatherPossibleRefs,
-    createRefMappings,
-    
-    resolveRefs,
-    replaceRefsByMapping
-} = require('../common');
+var { parseSchemaCSV, injectRefIds } = require('../common');
 
 var CSVSchema = require('./csv-schema');
 var customColumnRemap = require('./custom-column-remap');
@@ -18,7 +11,7 @@ var transformPrepared = require('./transform-prepared');
 var runPipeline = async (bag) => {
     var {
         db,
-        csvLines,
+        csvLines: csvData,
    
         subjectType,
         study,
@@ -27,34 +20,22 @@ var runPipeline = async (bag) => {
         timezone
     } = bag;
 
-    var schema = CSVSchema();
-    
+    var schema = CSVSchema(); 
     var parsed = parseSchemaCSV({
-        csvData: csvLines,
-        schema,
-        unmarshalClientTimezone: timezone,
+        csvData, schema, unmarshalClientTimezone: timezone,
         customColumnRemap,
     });
 
     var parsedLines = parsed.map(it => it.csvLine);
     var preparedObjects = parsed.map(it => it.obj);
 
-    var refData = gatherPossibleRefs({ schema });
-    var refMappings = await createRefMappings({
-        refData, items: preparedObjects
-    });
-
-    var { resolvedRecords, resolvedHSIs } = await resolveRefs({
-        db, tokenMapping: refMappings,
+    await injectRefIds({ 
+        db, schema, into: preparedObjects,
         extraRecordResolvePointers: { subject: [
             '/scientific/state/custom/wkprcIdCode'
         ]},
     });
 
-    replaceRefsByMapping({
-        inItems: preparedObjects,
-        refMappings, resolvedRecords, resolvedHSIs
-    });
         
     await verifySameSubjectType({ db, subjectType, preparedObjects });
     await verifySameSubjectGroup({ db, preparedObjects });

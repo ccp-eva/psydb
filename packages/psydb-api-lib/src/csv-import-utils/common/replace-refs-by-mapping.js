@@ -10,19 +10,34 @@ var replaceRefs = (bag) => {
     for (var [ ix, itemRefMapping ] of refMappings.entries()) {
         for (var m of itemRefMapping) {
             var { dataPointer, collection, value } = m;
-            
-            var records = resolvedRecords[collection].filter(
-                it => it.value === value
-            );
-            if (records.length !== 1) {
-                throw new Error('multiple or no mappable records');
+          
+            if (collection === 'helperSetItem') {
+                var hsis = resolvedHSIs[m.setId].filter(
+                    it => it.value === value
+                );
+                if (hsis.length !== 1) {
+                    throw new Error('multiple or no mappable HSIs');
+                }
+                jsonpointer.set(
+                    targetObjects[ix],
+                    dataPointer,
+                    hsis[0]._id
+                );
             }
+            else {
+                var records = resolvedRecords[collection].filter(
+                    it => it.value === value
+                );
+                if (records.length !== 1) {
+                    throw new Error('multiple or no mappable records');
+                }
 
-            jsonpointer.set(
-                targetObjects[ix],
-                dataPointer,
-                records[0]._id
-            );
+                jsonpointer.set(
+                    targetObjects[ix],
+                    dataPointer,
+                    records[0]._id
+                );
+            }
         }
     }
 

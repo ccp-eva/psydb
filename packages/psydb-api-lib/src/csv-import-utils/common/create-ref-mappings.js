@@ -6,7 +6,7 @@ var {
     isRecordRef, isHSIRef, isRefList,
 } = require('@mpieva/psydb-schema-utils');
 
-var createRefMappings = async (bag) => {
+var createRefMappings = (bag) => {
     var { refData, items } = bag;
 
     // XXX: in theory we have an issue

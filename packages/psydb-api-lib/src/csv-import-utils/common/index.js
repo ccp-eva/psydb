@@ -1,8 +1,6 @@
 'use strict';
-var { gatherPossibleRefs } = require('@mpieva/psydb-schema-utils');
-
 module.exports = {
-    gatherPossibleRefs,
+    gatherPossibleRefs: require('./gather-possible-refs'),
 
     gatherRefs: require('./gather-refs'), // FIXME: make obs
     createRefMappings: require('./create-ref-mappings'),
@@ -18,4 +16,5 @@ module.exports = {
     parseSchemaCSV: require('./parse-schema-csv'),
     deserializers: require('./deserializers'), // FIXME: make obs
 
+    injectRefIds: require('./inject-ref-ids'),
 }

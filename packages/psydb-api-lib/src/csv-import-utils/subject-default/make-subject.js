@@ -21,6 +21,7 @@ var makeSubject = (bag) => {
     // FIXME: check ObjectIds/Dates
     var gdprState = copy(preparedObject.gdpr?.state || {});
     var scientificState = copy(preparedObject.scientific?.state || {});
+    // TODO: transform testingPermissions
 
     var researchGroupId = researchGroup._id;
     jsonpointer.set(

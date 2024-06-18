@@ -26,15 +26,17 @@ var parseLines = (bag) => {
         ...extraDeserializers,
     }
 
-    var out = parseDefinedCSV({
-        csvData: data,
-        definitions: combinedDefinitions,
-        required: required,
-        deserializers: combinedDeserializers,
-        throwUnknown: true
-    });
-    
-    return out;
+    console.log(combinedDefinitions);
+
+    //var out = parseDefinedCSV({
+    //    csvData: data,
+    //    definitions: combinedDefinitions,
+    //    required: required,
+    //    deserializers: combinedDeserializers,
+    //    throwUnknown: true
+    //});
+    //
+    //return out;
 }
 
 var testingPermissionExtraDefinitions = [
@@ -82,7 +84,7 @@ var extraDeserializers = {
         value,
     }),
     'OnlineSurveyPermissionListItem': ({ value, definition }) => ({
-        labProcedureKey: 'online-video-call',
+        labProcedureKey: 'online-survey',
         value,
     }),
 }
