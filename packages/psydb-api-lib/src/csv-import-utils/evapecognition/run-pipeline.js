@@ -1,7 +1,9 @@
 'use strict';
 var {
     parseSchemaCSV,
-    gatherSchemaRefs,
+    gatherPossibleRefs,
+    createRefMappings,
+    
     resolveRefs,
     replaceRefsByMapping
 } = require('../common');
@@ -37,19 +39,21 @@ var runPipeline = async (bag) => {
     var parsedLines = parsed.map(it => it.csvLine);
     var preparedObjects = parsed.map(it => it.obj);
 
-    var { tokenMapping } = await gatherSchemaRefs({
-        fromItems: preparedObjects, schema
+    var refData = gatherPossibleRefs({ schema });
+    var refMappings = await createRefMappings({
+        refData, items: preparedObjects
     });
 
     var { resolvedRecords, resolvedHSIs } = await resolveRefs({
-        db, tokenMapping, extraRecordResolvePointers: { subject: [
+        db, tokenMapping: refMappings,
+        extraRecordResolvePointers: { subject: [
             '/scientific/state/custom/wkprcIdCode'
         ]},
     });
 
     replaceRefsByMapping({
         inItems: preparedObjects,
-        tokenMapping, resolvedRecords, resolvedHSIs
+        refMappings, resolvedRecords, resolvedHSIs
     });
         
     await verifySameSubjectType({ db, subjectType, preparedObjects });

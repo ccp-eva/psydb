@@ -4,11 +4,11 @@ var { jsonpointer } = require('@mpieva/psydb-core-utils');
 var replaceRefs = (bag) => {
     var {
         inItems: targetObjects,
-        resolvedRecords, resolvedHSIs, tokenMapping
+        resolvedRecords, resolvedHSIs, refMappings
     } = bag;
 
-    for (var [ ix, recordTokenMapping ] of tokenMapping.entries()) {
-        for (var m of recordTokenMapping) {
+    for (var [ ix, itemRefMapping ] of refMappings.entries()) {
+        for (var m of itemRefMapping) {
             var { dataPointer, collection, value } = m;
             
             var records = resolvedRecords[collection].filter(

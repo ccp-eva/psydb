@@ -1,30 +1,22 @@
 'use strict';
 var perlify = require('@cdxoo/stringify-path-perlstyle');
-
-var {
-    isArray,
-    keyBy,
-    groupBy,
-    traverse,
-} = require('@mpieva/psydb-core-utils');
+var { isArray, keyBy, traverse } = require('@mpieva/psydb-core-utils');
 
 var {
     isRecordRef, isHSIRef, isRefList,
-    gatherPossibleRefs
 } = require('@mpieva/psydb-schema-utils');
 
-var gatherSchemaRefs = async (bag) => {
-    var { fromItems, schema } = bag;
+var createRefMappings = async (bag) => {
+    var { refData, items } = bag;
 
     // XXX: in theory we have an issue
     // in gatherPossibleJSSPaths() where ambigous paths could be created
     // we weill be ignoring this for now as it seems a non issue here
-    var refData = gatherPossibleRefs({ schema });
     var refDataByPerl = keyBy({ items: refData, byProp: 'perlpath' });
 
-    var tokenMapping = [];
-    for (var [ ix, it ] of fromItems.entries()) {
-        tokenMapping[ix] = [];
+    var refMappings = [];
+    for (var [ ix, it ] of items.entries()) {
+        refMappings[ix] = [];
 
         traverse(it, (context) => {
             var { isLeaf, path, value } = context;
@@ -51,11 +43,11 @@ var gatherSchemaRefs = async (bag) => {
             
                     if (isRecordRef(systemType)) {
                         var { collection } = systemProps;
-                        tokenMapping[ix].push({ ...shared, collection });
+                        refMappings[ix].push({ ...shared, collection });
                     }
                     if (isHSIRef(systemType)) {
                         var { setId } = systemProps;
-                        tokenMapping[ix].push({
+                        refMappings[ix].push({
                             ...shared, collection: 'helperSetItem', setId
                         });
                     }
@@ -71,19 +63,7 @@ var gatherSchemaRefs = async (bag) => {
         });
     }
 
-    var { helperSetItem: hsiIntermediate, ...recordRefs } = groupBy({
-        items: tokenMapping,
-        byProp: 'collection',
-        transform: it => (it.setId ? it : it.value)
-    });
-
-    var hsiRefs = groupBy({
-        items: hsiIntermediate || [],
-        byProp: 'setId',
-        transform: it => it.value
-    });
-
-    return { recordRefs, hsiRefs, tokenMapping }
+    return refMappings
 }
 
 var pointerize = (path) => {
@@ -109,4 +89,4 @@ var urlify = (path) => {
     return str;
 }
 
-module.exports = gatherSchemaRefs;
+module.exports = createRefMappings;
