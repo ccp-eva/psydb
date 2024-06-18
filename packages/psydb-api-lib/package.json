@@ -29,6 +29,7 @@
     "@mpieva/psydb-common-lib": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-api-config": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-mongo-adapter": "workspace:~0.1.0-alpha",
+    "@mpieva/psydb-schema-utils": "workspace:~0.1.0-alpha",
     "json-schema-traverse": "~1.0.0",
     "jsonpointer": "~5.0.1",
     "@cdxoo/inline-string": "~1.0.0",

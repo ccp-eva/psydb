@@ -449,6 +449,7 @@ importers:
       '@mpieva/psydb-mongo-stages': workspace:~0.1.0-alpha
       '@mpieva/psydb-schema-creators': workspace:~0.1.0-alpha
       '@mpieva/psydb-schema-fields': workspace:~0.1.0-alpha
+      '@mpieva/psydb-schema-utils': workspace:~0.1.0-alpha
       '@mpieva/psydb-timezone-helpers': workspace:~0.1.0-alpha
       ajv: ~6.12.6
       ajv-keywords: ~3.5.2
@@ -499,6 +500,7 @@ importers:
       '@mpieva/psydb-mongo-stages': link:../psydb-mongo-stages
       '@mpieva/psydb-schema-creators': link:../psydb-schema-creators
       '@mpieva/psydb-schema-fields': link:../psydb-schema-fields
+      '@mpieva/psydb-schema-utils': link:../psydb-schema-utils
       '@mpieva/psydb-timezone-helpers': link:../psydb-timezone-helpers
       ajv: 6.12.6
       ajv-keywords: 3.5.2_ajv@6.12.6
@@ -1202,6 +1204,23 @@ importers:
     specifiers:
       chai: ~4.3.7
       mocha: ~10.2.0
+    devDependencies:
+      chai: 4.3.10
+      mocha: 10.2.0
+
+  ../../packages/psydb-schema-utils:
+    specifiers:
+      '@cdxoo/debug-js-fork': ~0.0.1
+      '@cdxoo/gather-possible-jss-paths': ~0.0.5
+      '@cdxoo/stringify-path-perlstyle': ~0.0.3
+      '@mpieva/psydb-core-utils': workspace:*
+      chai: ~4.3.7
+      mocha: ~10.2.0
+    dependencies:
+      '@cdxoo/debug-js-fork': 0.0.1
+      '@cdxoo/gather-possible-jss-paths': 0.0.5
+      '@cdxoo/stringify-path-perlstyle': 0.0.3
+      '@mpieva/psydb-core-utils': link:../psydb-core-utils
     devDependencies:
       chai: 4.3.10
       mocha: 10.2.0

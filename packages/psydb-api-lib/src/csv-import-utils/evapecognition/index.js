@@ -1,8 +1,8 @@
 'use strict';
 module.exports = {
-    parseLines: require('./parse-lines'),
-    matchData: require('./match-data'),
-    makeObjects: require('./make-objects'),
+    //parseLines: require('./parse-lines'),
+    //matchData: require('./match-data'),
+    //makeObjects: require('./make-objects'),
 
     verifySameSubjectType: require('./verify-same-subject-type'),
     verifySameSubjectGroup: require('./verify-same-subject-group'),

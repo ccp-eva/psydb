@@ -1,5 +1,4 @@
 'use strict';
-var gatherPossibleJSSPaths = require('@cdxoo/gather-possible-jss-paths');
 var perlify = require('@cdxoo/stringify-path-perlstyle');
 
 var {
@@ -9,15 +8,10 @@ var {
     traverse,
 } = require('@mpieva/psydb-core-utils');
 
-var isRecordRef = (systemType) => (
-    systemType === 'ForeignId' || systemType === 'ForeignIdList'
-)
-var isHSIRef = (systemType) => (
-    systemType === 'HelperSetItemId' || systemType === 'HelperSetItemIdList'
-)
-var isRefList = (systemType) => (
-    systemType === 'ForeignIdList' || systemType === 'HelperSetItemIdList'
-)
+var {
+    isRecordRef, isHSIRef, isRefList,
+    gatherPossibleRefs
+} = require('@mpieva/psydb-schema-utils');
 
 var gatherSchemaRefs = async (bag) => {
     var { fromItems, schema } = bag;
@@ -25,8 +19,8 @@ var gatherSchemaRefs = async (bag) => {
     // XXX: in theory we have an issue
     // in gatherPossibleJSSPaths() where ambigous paths could be created
     // we weill be ignoring this for now as it seems a non issue here
-    var resolveData = gatherResolveDataFromSchema({ schema });
-    var resolveDataByPerl = keyBy({ items: resolveData, byProp: 'perlpath' });
+    var refData = gatherPossibleRefs({ schema });
+    var refDataByPerl = keyBy({ items: refData, byProp: 'perlpath' });
 
     var tokenMapping = [];
     for (var [ ix, it ] of fromItems.entries()) {
@@ -41,7 +35,7 @@ var gatherSchemaRefs = async (bag) => {
                 var strippedPath = path.filter(it => !it.isArrayItem);
                 var schemaPerlPath = perlify(strippedPath);
 
-                var resdata = resolveDataByPerl[schemaPerlPath];
+                var resdata = refDataByPerl[schemaPerlPath];
                 if (resdata) {
                     var { schema } = resdata;
                     var { systemType, systemProps } = schema;
@@ -90,34 +84,6 @@ var gatherSchemaRefs = async (bag) => {
     });
 
     return { recordRefs, hsiRefs, tokenMapping }
-}
-
-var gatherResolveDataFromSchema = (bag) => {
-    var { schema } = bag;
-    var paths = gatherPossibleJSSPaths(
-        schema, { includeSchemaInPathTokens: true }
-    );
-
-    // XXX: we have allOf in SaneString and that will create
-    // extra paths; we will add a naively filter this for now
-    var resolveData = [];
-    for (var it of paths) {
-        var [ leaf ] = it.slice(-1);
-        var { schema } = leaf;
-        var { systemType } = schema;
-
-        if (isRefList(systemType)) {
-            schema = leaf.schema.items;
-        }
-        
-        var data = { schema, perlpath: perlify(it), fullTokens: it }
-        
-        if (isRecordRef(systemType) || isHSIRef(systemType)) {
-            resolveData.push(data);
-        }
-    }
-
-    return resolveData
 }
 
 var pointerize = (path) => {
