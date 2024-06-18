@@ -1,8 +1,7 @@
 'use strict';
-var Ajv = require('../../ajv');
-
 var dumbParseCSV = require('./dumb-parse-csv');
 var dumbMakeObjects = require('./dumb-make-objects');
+var validateMany = require('./validate-many');
 
 var parseSchemaCSV = (bag) => {
     var {
@@ -20,24 +19,14 @@ var parseSchemaCSV = (bag) => {
         csvLines
     });
 
-    var ajv = Ajv({
+    var validation = validateMany({ schema, items: parsed, ajvOptions: {
         coerceTypes: true,
         unmarshalClientTimezone,
         formatOverrides: {
             // NOTE: to enable smart ref resolve
             mongodbObjectId: { validate: /.*/ },
         }
-    });
-    var validation = [];
-
-    for (var [ix, it] of parsed.entries()) {
-        var isValid = ajv.validate(schema, it);
-        validation.push(
-            isValid
-            ? ({ isValid })
-            : ({ isValid, errors: ajv.errors })
-        );
-    }
+    }});
 
     var out = [];
     for (var [ix, it] of csvLines.entries()) {

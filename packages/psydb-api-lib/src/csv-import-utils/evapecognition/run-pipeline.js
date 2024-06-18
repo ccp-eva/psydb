@@ -1,5 +1,5 @@
 'use strict';
-var { parseSchemaCSV, injectRefIds } = require('../common');
+var { runDefaultPipeline } = require('../common');
 
 var CSVSchema = require('./csv-schema');
 var customColumnRemap = require('./custom-column-remap');
@@ -17,26 +17,14 @@ var runPipeline = async (bag) => {
         study,
         location,
         labOperators,
-        timezone
+        timezone: unmarshalClientTimezone
     } = bag;
 
-    var schema = CSVSchema(); 
-    var parsed = parseSchemaCSV({
-        csvData, schema, unmarshalClientTimezone: timezone,
-        customColumnRemap,
+    var schema = CSVSchema();
+    var { pipelineData, preparedObjects } = await runDefaultPipeline({
+        db, csvData, schema, customColumnRemap, unmarshalClientTimezone
     });
 
-    var parsedLines = parsed.map(it => it.csvLine);
-    var preparedObjects = parsed.map(it => it.obj);
-
-    await injectRefIds({ 
-        db, schema, into: preparedObjects,
-        extraRecordResolvePointers: { subject: [
-            '/scientific/state/custom/wkprcIdCode'
-        ]},
-    });
-
-        
     await verifySameSubjectType({ db, subjectType, preparedObjects });
     await verifySameSubjectGroup({ db, preparedObjects });
 
@@ -47,12 +35,11 @@ var runPipeline = async (bag) => {
         study,
         location,
         labOperators,
-        timezone
+        timezone: unmarshalClientTimezone
     });
 
     return {
-        parsedLines,
-        preparedObjects,
+        pipelineData,
         transformed
     }
 }

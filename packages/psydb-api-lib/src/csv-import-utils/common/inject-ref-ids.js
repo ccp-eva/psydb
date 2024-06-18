@@ -15,10 +15,12 @@ var injectRefIds = async (bag) => {
         extraRecordResolvePointers,
     });
 
-    replaceRefsByMapping({
+    var replacementData = replaceRefsByMapping({
         inItems: items,
         refMappings, resolvedRecords, resolvedHSIs
     });
+
+    return replacementData;
 }
 
 module.exports = injectRefIds;

@@ -1,5 +1,7 @@
 'use strict';
 module.exports = {
+    runDefaultPipeline: require('./run-default-pipeline'),
+
     parseSchemaCSV: require('./parse-schema-csv'),
     injectRefIds: require('./inject-ref-ids'),
  

@@ -12,14 +12,25 @@ var ColumnRemapper = ({ subjectCRT }) => {
         groupBy({ items: definitions, byProp: 'key' })
     ).filter(([key, items]) => items.length > 1).map(it => it.key);
 
-    var mapping = {};
+    var staticMapping = {
+        'comment': 'scientific.state.comment',
+    };
+
+    var customMapping = {};
     for (var it of subjectCRT.allCustomFields()) {
         var { key, subChannel, pointer } = it;
-        var mkey = dups.includes(key) ? `subChannel.${key}` : key
-
-        mapping[mkey] = convertPointerToPath(pointer);
+        var mkey = (
+            dups.includes(key) || staticMapping[key]
+            ? `subChannel.${key}`
+            : key
+        );
+        customMapping[mkey] = convertPointerToPath(pointer);
     }
 
+    var mapping = {
+        ...staticMapping,
+        ...customMapping,
+    }
     var remap = (col) => {
         return mapping[col]
     }
