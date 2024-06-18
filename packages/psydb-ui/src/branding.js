@@ -95,6 +95,7 @@ const cssvars = {
 
         //'--primary': '#1c3a69',
         '--primary': '#003572',
+        '--primary-btn-disabled': '#89a3ca',
         '--primary-btn-hover': '#254b89',
         '--primary-a-disabled': '#89a3ca',
         '--primary-a-hover': '#254b89',

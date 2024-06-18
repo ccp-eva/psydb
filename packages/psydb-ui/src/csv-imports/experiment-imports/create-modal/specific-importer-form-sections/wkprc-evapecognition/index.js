@@ -23,13 +23,14 @@ export const WKPRCEVApeCognition = (ps) => {
 
     var translate = useUITranslation();
     var initialValues = {
-        //locationId: '64d42de0443aa279ca4cb2e8',
-        //labOperatorIds: [
-        //    '64d42ddf443aa279ca4cb2c9',
-        //    '64d42ddf443aa279ca4cb2c5',
-        //],
-        //fileId: '66152c723bc29dc9ae566c78',
-        labOperatorIds: []
+        locationId: '64d42de0443aa279ca4cb2e8',
+        labOperatorIds: [
+            '64d42ddf443aa279ca4cb2c9',
+            '64d42ddf443aa279ca4cb2c5',
+        ],
+        //fileId: '6671e48d90dbc5f198044a6e',
+        fileId: '6671e49790dbc5f198044a7a',
+        //labOperatorIds: []
     }
 
     return (
