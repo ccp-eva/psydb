@@ -194,9 +194,9 @@ var ReplacementError = (ps) => {
             {' - '}"{ it }" reference value "{ value }"
             {' '}
             { matchingItems.length === 0 ? (
-                'could not be matched'
+                'did not match any database record'
             ) : (
-                'must match exactly one record'
+                'must match exactly one database record'
             )}
         </b></div>
     ))
