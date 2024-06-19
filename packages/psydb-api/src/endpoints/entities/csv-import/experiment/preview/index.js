@@ -13,7 +13,7 @@ var {
 } = require('@mpieva/psydb-api-lib');
 
 var {
-    EVApeCognitionCSV,
+    WKPRCApestudiesDefaultCSV,
     CSVImportError
 } = require('@mpieva/psydb-api-lib/csv-import-utils');
 
@@ -36,7 +36,7 @@ var preview = async (context, next) => {
     });
     
     var {
-        csvImporter = 'wkprc-evapecognition', 
+        csvImporter = 'wkprc-apestudies-default', 
         fileId,
         subjectType,
         locationId,
@@ -56,7 +56,7 @@ var preview = async (context, next) => {
         findOne_RAW({ db, location: { _id: locationId }})
     );
 
-    var pipelineOutput = await EVApeCognitionCSV.runPipeline({
+    var pipelineOutput = await WKPRCApestudiesDefaultCSV.runPipeline({
         db,
         csvLines: file.blob.toString(),
 
@@ -67,27 +67,36 @@ var preview = async (context, next) => {
         timezone: i18n.timezone
     });
 
-    var { matchedData, preparedObjects, transformed } = pipelineOutput;
+    var { pipelineData, transformed } = pipelineOutput;
     
     var previewRecords = transformed.experiments.map(it => ({
         ...it.record,
         csvImportId: null,
     }));
 
-    var relatedIds = { subject: [], subjectGroup: [] };
+    var relatedIds = {
+        subject: [],
+        subjectGroup: [],
+        location: [],
+        personnel: [],
+    };
     for (var it of previewRecords) {
-        var { subjectGroupId, selectedSubjectIds } = it.state;
+        var {
+            subjectGroupId, selectedSubjectIds,
+            locationId, experimentOperatorIds
+        } = it.state;
         
         relatedIds.subject.push(...selectedSubjectIds);
         relatedIds.subjectGroup.push(subjectGroupId);
+        relatedIds.location.push(locationId);
+        relatedIds.personnel.push(...experimentOperatorIds);
     }
     var related = {
         records: await fetchRecordLabelsManual(db, relatedIds, i18n)
     };
 
     context.body = ResponseBody({ data: {
-        matchedData,
-        preparedObjects,
+        pipelineData,
         previewRecords,
         related,
     }});
@@ -101,8 +110,9 @@ var withCSVImportErrorHandling = () => async (context, next) => {
     }
     catch (e) {
         if (e instanceof CSVImportError) {
-            // TODO
-            throw new ApiError(409, 'cannot parse csv contents');
+            throw new ApiError(409, { apiStatus: e.name, data: {
+                message: e.message
+            }});
         }
         else {
             throw e

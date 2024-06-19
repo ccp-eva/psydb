@@ -37,8 +37,11 @@ var createRouting = (bag = {}) => {
         prefix: prefix.replace(/\/$/, ''),
     });
 
+    router.get('/init-ui', endpoints.publicInitUI);
+
     router.post('/sign-in', withKoaBody(), endpoints.publicSignIn);
     router.post('/sign-out', endpoints.publicSignOut);
+    
 
     router.post('/two-factor-code/match',
         withKoaBody(), endpoints.twoFactorCode.match
@@ -504,6 +507,8 @@ var createRouting = (bag = {}) => {
         endpoints.channelHistory
     );
 
+
+
     router.post('/file/upload',
         withSelfAuth(),
         withPermissions(),
@@ -522,9 +527,23 @@ var createRouting = (bag = {}) => {
     router.post('/csv-import/experiment/search', ...withPostStages({
         endpoint: endpoints.csvImport.experiment.search
     }));
+    router.post('/csv-import/experiment/read', ...withPostStages({
+        endpoint: endpoints.csvImport.experiment.read
+    }));
     router.post('/csv-import/experiment/preview', ...withPostStages({
         endpoint: endpoints.csvImport.experiment.preview
     }));
+
+    router.post('/csv-import/subject/search', ...withPostStages({
+        endpoint: endpoints.csvImport.subject.search
+    }));
+    router.post('/csv-import/subject/read', ...withPostStages({
+        endpoint: endpoints.csvImport.subject.read
+    }));
+    router.post('/csv-import/subject/preview', ...withPostStages({
+        endpoint: endpoints.csvImport.subject.preview
+    }));
+
 
 
     router.post('/researchGroup/search-metadata', ...withPostStages({

@@ -7,7 +7,7 @@ const createAgent = (options = {}) => {
 
     const axios = Axios.create();
 
-    const dumpPOST = ({ url }) => (bag) => {
+    const dumpPOST = ({ url }) => (bag = {}) => {
         var { extraAxiosConfig, ...payload } = bag;
         return axios.post(
             url,
@@ -808,25 +808,25 @@ const createAgent = (options = {}) => {
         );
     }
 
-    agent.searchCSVExperimentImports = (bag = {}) => {
-        var {
-            extraAxiosConfig,
-        } = bag;
+    agent.searchCSVExperimentImports = dumpPOST({
+        url: '/api/csv-import/experiment/search',
+    });
+    agent.readCSVExperimentImport = dumpPOST({
+        url: '/api/csv-import/experiment/read',
+    });
+    agent.previewCSVExperimentImport = dumpPOST({
+        url: '/api/csv-import/experiment/preview',
+    });
 
-        return axios.post(
-            '/api/csv-import/experiment/search',
-            {}, extraAxiosConfig,
-        );
-    }
-    
-    agent.previewCSVExperimentImport = (bag = {}) => {
-        var { extraAxiosConfig, ...payload } = bag;
-
-        return axios.post(
-            '/api/csv-import/experiment/preview',
-            payload, extraAxiosConfig,
-        );
-    }
+    agent.searchCSVSubjectImports = dumpPOST({
+        url: '/api/csv-import/subject/search',
+    });
+    agent.readCSVSubjectImport = dumpPOST({
+        url: '/api/csv-import/subject/read',
+    });
+    agent.previewCSVSubjectImport = dumpPOST({
+        url: '/api/csv-import/subject/preview',
+    });
 
     agent.fetchStudySubjectTypeInfos = (bag) => {
         var {

@@ -29,12 +29,31 @@ const Control = (ps) => {
                     recordType={ subjectType }
                     constraints={ subjectConstraints }
                     canClear={ false }
+                    required
                 />
                 <Fields.DateOnlyTimestamp
                     formGroupClassName='w-50 m-0'
-                    labelClassName='text-center'
+                    labelClassName='pl-5'
                     uiSplit={[4,8]}
                     dataXPath={`${dataXPath}.timestamp`}
+                    required
+                />
+            </div>
+            <div className='d-flex pt-2'>
+                <Fields.SaneString
+                    formGroupClassName='w-50 m-0'
+                    uiSplit={[4,8]}
+                    label={ translate('_wkprc_subjectRole') }
+                    dataXPath={`${dataXPath}.role`}
+                    required
+                />
+                <Fields.Integer
+                    formGroupClassName='w-50 m-0'
+                    labelClassName='pl-5'
+                    uiSplit={[8,4]}
+                    label={ translate('_wkprc_intradaySeqNumber') }
+                    dataXPath={ `${dataXPath}.intradaySeqNumber` }
+                    required
                 />
             </div>
             <div className='pt-2 pb-3 border-bottom'>

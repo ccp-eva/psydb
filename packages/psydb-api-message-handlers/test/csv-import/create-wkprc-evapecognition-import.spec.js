@@ -12,10 +12,6 @@ var jsonify = (that) => (
 
 var RootHandler = require('../../src/');
 
-var omitNonsense = (from) => omit({
-    from, paths: [ '_id', '_rohrpostMetadata' ]
-});
-
 describe('csv-import/experiment/create-wkprc-evapecognition', function () {
     var db, sendMessage, fileId;
     beforeEach(async function () {

@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/cdxOo/psydb#readme",
   "devDependencies": {
-    "react": "~17.0.2"
+    "react": "~17.0.2",
+    "@mpieva/psydb-core-utils": "workspace:*"
   }
 }

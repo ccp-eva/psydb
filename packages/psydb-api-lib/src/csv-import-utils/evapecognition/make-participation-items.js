@@ -8,6 +8,10 @@ var makeParticipationItems = (bag) => {
         studyRecordType,
         interval,
         subjectData,
+        locationId,
+        locationRecordType,
+        experimentName,
+        roomOrEnclosure,
         timezone,
     } = experimentParts.state;
 
@@ -22,9 +26,14 @@ var makeParticipationItems = (bag) => {
 
             studyId,
             studyType: studyRecordType,
+            locationId,
+            locationType: locationRecordType,
             timestamp: interval.start,
             timezone,
             
+            experimentName,
+            roomOrEnclosure,
+
             status: 'participated',
             excludeFromMoreExperimentsInStudy: false,
         };

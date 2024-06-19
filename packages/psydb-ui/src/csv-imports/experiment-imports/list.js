@@ -1,5 +1,6 @@
 import React from 'react';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useRouteMatch } from 'react-router-dom';
+import { useUITranslation, useUILocale } from '@mpieva/psydb-ui-contexts';
 import {
     useRevision,
     useModalReducer,
@@ -11,14 +12,19 @@ import {
     LoadingIndicator,
     Table,
     TableHead,
+    LinkTD
 } from '@mpieva/psydb-ui-layout';
+
+import { datefns } from '@mpieva/psydb-ui-lib';
 
 import CreateModal from './create-modal';
 
 const List = (ps) => {
     var translate = useUITranslation();
     var revision = useRevision();
-    var createModal = useModalReducer({ show: true });
+    var createModal = useModalReducer({
+        show: true
+    });
 
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.searchCSVExperimentImports()
@@ -45,11 +51,18 @@ const List = (ps) => {
 
 const RecordTable = (ps) => {
     var { records, related } = ps;
+    var translate = useUITranslation();
     return (
-        <Table style={{ borderCollapse: 'separate', borderSpacing: 0 }}>
-
+        <Table
+            className='mt-3'
+            style={{ borderCollapse: 'separate', borderSpacing: 0 }}
+            hover={ true }
+        >
             <TableHead showActionColumn>
-                <th>FOFOFO</th>
+                <th>{ translate('Study') }</th>
+                <th>{ translate('Imported At') }</th>
+                <th>{ translate('Type') }</th>
+                <th>{ translate('Imported By') }</th>
             </TableHead>
             <tbody>
                 { records.map((it, ix) => (
@@ -66,11 +79,37 @@ const RecordTable = (ps) => {
 
 const RecordRow = (ps) => {
     var { record, related } = ps;
+    var { _id, type, studyId, createdAt, createdBy } = record;
+    
+    var { url } = useRouteMatch();
+    var locale = useUILocale();
+    
     return (
-        <>
-            <td>XXX</td>
-        </>
+        <LinkRow href={ `#${url}/${_id}` } values={[
+            related.records.study[studyId],
+            datefns.format(new Date(createdAt), 'P p', { locale }),
+            asFriendlyType(type),
+            related.records.personnel[createdBy],
+        ]} />
     )
 }
+
+// FIXME: redundant
+var LinkRow = (ps) => {
+    var { href, values } = ps;
+
+    return (
+        <tr>
+            { values.map((it, ix) => (
+                <LinkTD key={ ix } href={ href }>{ it }</LinkTD>
+            ))}
+        </tr>
+    )
+}
+
+const asFriendlyType = (type) => ({
+    'experiment/wkprc-evapecognition': 'WKPRC EVApeCognition',
+    'experiment/wkprc-apestudies-default': 'WKPRC'
+}[type] || type);
 
 export default List;

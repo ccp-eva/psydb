@@ -1,7 +1,7 @@
 'use strict';
 process.env.TZ = 'UTC';
 
-require('debug').enable('psydb:*');
+//require('debug').enable('psydb:*');
 
 var expect = require('chai').expect,
     supertest = require('supertest'),

@@ -11,7 +11,7 @@ import {
     Fields
 } from '@mpieva/psydb-ui-lib/src/formik';
 
-import { CSVUploadField } from '../helper-fields';
+import CSVUploadField from '../../../../csv-upload-field';
 import WKPRCWorkflowLocationTypeSelect from './wkprc-workflow-location-type-select';
 import PreviewStage from './preview-stage';
 
@@ -28,7 +28,13 @@ export const WKPRCEVApeCognition = (ps) => {
             '64d42ddf443aa279ca4cb2c9',
             '64d42ddf443aa279ca4cb2c5',
         ],
-        fileId: '66152c723bc29dc9ae566c78',
+        //fileId: '6671e48d90dbc5f198044a6e',
+        //fileId: '6671e49790dbc5f198044a7a',
+        //fileId: '667231822fd79bfccf89aa85',
+        //fileId: '667233192fd79bfccf89aa87',
+        //fileId: '66723d1b817c2304eae90802',
+        fileId: '667264deb4217b27fb46948a',
+        //labOperatorIds: []
     }
 
     return (
@@ -58,7 +64,7 @@ export const WKPRCEVApeCognition = (ps) => {
     )
 }
 
-var PrepareStage = (ps) => {
+const PrepareStage = (ps) => {
     var { studyId, subjectType, formValues, gotoPreview } = ps;
     var {
         locationType,
@@ -71,7 +77,7 @@ var PrepareStage = (ps) => {
 
     return (
         <>
-            <WKPRCWorkflowLocationTypeSelect
+            {/*<WKPRCWorkflowLocationTypeSelect
                 label={ translate('Location Type') }
                 dataXPath='$.locationType'
                 studyId={ studyId }
@@ -88,7 +94,7 @@ var PrepareStage = (ps) => {
                 dataXPath='$.labOperatorIds'
                 collection='personnel'
             />
-            <hr />
+            <hr />*/}
             { (locationId && filterTruthy(labOperatorIds).length > 0) ? (
                 <CSVUploadField
                     label={ translate('Upload File') }

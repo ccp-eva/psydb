@@ -5,11 +5,7 @@ import { WithDefaultModal } from '@mpieva/psydb-ui-layout';
 import ExperimentImportCreateForm from './form';
 
 const ExperimentImportCreateModalBody = (ps) => {
-    var {
-        subjectId,
-        onHide,
-        onSuccessfulUpdate
-    } = ps;
+    var { onHide, onSuccessfulUpdate } = ps;
 
     return (
         <>

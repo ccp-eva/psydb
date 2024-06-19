@@ -1,4 +1,5 @@
 'use strict';
+var debug = require('debug')('psydb:uni-cronjobs:regform:fetchMails');
 
 var fetchMails = async (context, next) => {
     var { imap } = context;
@@ -6,7 +7,7 @@ var fetchMails = async (context, next) => {
     var lock = await imap.getMailboxLock('INBOX');
     try {
         var fetched = imap.fetch(
-            { subject: '[DB-Registration]' },
+            { subject: 'Anmeldung Datenbank' },
             { envelope: true, bodyStructure: true, bodyParts: [ '2' ] }
         );
         
@@ -19,7 +20,7 @@ var fetchMails = async (context, next) => {
 
             // NOTE: imap search is very limited see:
             // https://github.com/postalsys/imapflow/issues/154
-            if (!/^\[DB-Registration\]/.test(subject)) {
+            if (!/^Anmeldung Datenbank/.test(subject)) {
                 continue;
             }
 
@@ -37,7 +38,8 @@ var fetchMails = async (context, next) => {
                 htmlPart
             });
         }
-    
+  
+        debug('fetched mails:', preprocessedMails.length);
         context.mails = preprocessedMails;
     }
     finally {

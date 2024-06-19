@@ -67,3 +67,5 @@ export const RecordDetails = withRecordReader({
     collection: 'subject',
     shouldFetchSchema: false
 });
+
+RecordDetails.Body = DetailsBody;

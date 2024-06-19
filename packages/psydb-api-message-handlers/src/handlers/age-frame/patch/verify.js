@@ -56,9 +56,6 @@ var verifyPermissions = async (context, next) => {
         // TODO: check individual study
         throw new ApiError(403);
     }
-    if (!permissions.hasCollectionFlag('ageFrame', 'write')) {
-        throw new ApiError(403);
-    }
 
     await next();
 }

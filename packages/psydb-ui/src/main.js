@@ -21,6 +21,7 @@ import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 import ErrorBoundary from './error-boundary';
 import ServerTimezoneContext from '@mpieva/psydb-ui-lib/src/server-timezone-context';
 
+import CopyNotice from './copy-notice';
 import SideNav from './side-nav';
 import TopFunctions from './top-functions';
 
@@ -120,6 +121,15 @@ const LayoutedRoutes = ({ onSignOut }) => {
                         <Routing />
                     </div>
                 </div>
+                {/* XXX */}
+                {/*<div style={{
+                    position: 'sticky',
+                    top: '100vh'
+                }}>
+                    <div className='ml-3 px-2 py-3 border-top'>
+                        <CopyNotice />
+                    </div>
+                </div>*/}
             </main>
         </div>
     );

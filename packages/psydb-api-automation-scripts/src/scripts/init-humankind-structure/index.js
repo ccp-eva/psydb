@@ -2,14 +2,8 @@
 var { ejson } = require('@mpieva/psydb-core-utils');
 var WrappedCache = require('../../wrapped-cache');
 
-var createRARole = require('./create-ra-role');
-var createScientistRole = require('./create-scientist-role');
-var createHiwiRole = require('./create-hiwi-role');
-var createReceptionRole = require('./create-reception-role');
-var createRegistrationBotRole = require('./create-registration-bot-role');
-
-var createLanguageSet = require('./create-language-set');
-var createAcquisitionSet = require('./create-acquisition-set');
+var createSystemRoles = require('./create-system-roles');
+var createHelperSets = require('./create-helper-sets');
 
 var createKigaUmbrellaOrgCRT = require('./create-kiga-umbrella-org-crt');
 var createKigaCRT = require('./create-kiga-crt');
@@ -24,14 +18,8 @@ module.exports = async (bag) => {
     var cache = WrappedCache({ driver });
     var context = { apiKey, driver, cache };
 
-    await createRARole({ ...context, as: 'ra' });
-    await createScientistRole({ ...context, as: 'scientist' });
-    await createHiwiRole({ ...context, as: 'hiwi' });
-    await createReceptionRole({ ...context, as: 'reception' });
-    await createRegistrationBotRole({ ...context, as: 'registration' });
-
-    await createLanguageSet({ ...context, as: 'language' });
-    await createAcquisitionSet({ ...context, as: 'acquisition' });
+    await createSystemRoles({ ...context });
+    await createHelperSets({ ...context });
 
     await createKigaUmbrellaOrgCRT({ ...context, as: 'kigaUmbrellaOrg' });
     await createKigaCRT({ ...context, as: 'kiga' });

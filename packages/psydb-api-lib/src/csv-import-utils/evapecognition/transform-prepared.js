@@ -1,29 +1,45 @@
 'use strict';
+var { ejson, groupBy } = require('@mpieva/psydb-core-utils');
 var makeExperiment = require('./make-experiment');
 var makeParticipationItems = require('./make-participation-items');
 
 var transformPrepared = (bag) => {
-    var { preparedObjects, study, location, labOperators, timezone } = bag;
+    var {
+        pipelineData,
+        subjectType, study,
+        //location, labOperators,
+        timezone
+    } = bag;
+
+    var groupedPipelineData = groupBy({
+        items: pipelineData,
+        createKey: (it) => {
+            var { obj } = it;
+            var { year, month, day, intradaySeqNumber } = obj;
+            return [ year, month, day, intradaySeqNumber ].join('_');
+        }
+    });
 
     var transformed = {
         experiments: [],
         participations: [],
     }
-    for (var obj of preparedObjects) {
+    for (var it of Object.values(groupedPipelineData)) {
         var { record, parts } = makeExperiment({
-            preparedObject: obj,
+            pipelineItemGroup: it,
             
+            subjectType,
             study,
-            location,
-            labOperators,
+            //location,
+            //labOperators,
             timezone
         });
         transformed.experiments.push({ record, parts });
 
-        var items = makeParticipationItems({
+        var participationItems = makeParticipationItems({
             experimentParts: parts,
         });
-        transformed.participations.push(...items);
+        transformed.participations.push(...participationItems);
     }
     return transformed;
 }

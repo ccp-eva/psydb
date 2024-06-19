@@ -35,6 +35,9 @@ var search = async (context, next) => {
         aggregateToArray({ db, csvImport: [
             { $match: {
                 type: /^experiment\//
+            }},
+            { $sort: {
+                createdAt: -1
             }}
         ]})
     );

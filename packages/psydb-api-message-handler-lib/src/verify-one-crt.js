@@ -36,13 +36,13 @@ var verifyOneCRT = (bag) => {
     );
 
     return async (context, next = noop) => {
-        var { db, message, cache } = context;
+        var { db, message, cache, permissions } = context;
         
         var recordType = resolveRecordType({ message });
         var studyId = resolveStudyId({ message });
 
         var crts = await fetchAvailableCRTSettings({
-            db, collections: [ collection ],
+            db, permissions, collections: [ collection ],
             ...(studyId && {
                 byStudyId: studyId
             }),

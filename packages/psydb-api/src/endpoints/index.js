@@ -1,5 +1,6 @@
 'use strict';
 module.exports = {
+    publicInitUI: require('./public-init-ui'),
     publicSignIn: require('./public-sign-in'),
     publicSignOut: require('./public-sign-out'),
     event: require('./event'),

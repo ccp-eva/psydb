@@ -11,6 +11,7 @@ import {
 import { Icons } from '@mpieva/psydb-ui-layout';
 import datefns from '../../date-fns';
 
+// XXX
 var collectionUIMapping = {
     'subject': 'subjects',
     'researchGroup': 'research-groups',
@@ -181,7 +182,7 @@ export const HelperSetItemId = (ps) => {
 }
 
 export const ForeignIdList = (ps) => {
-    var { value, props, related } = ps;
+    var { value, props, related, __useNewRelated, newTab = false } = ps;
     var { collection, recordType } = props;
     
     if (!(Array.isArray(value) && value.length)) {
@@ -196,6 +197,8 @@ export const ForeignIdList = (ps) => {
                 value={ it }
                 props={ props }
                 related={ related }
+                __useNewRelated={ __useNewRelated }
+                newTab={ newTab }
             />
         ))
     );
@@ -481,17 +484,30 @@ export const Integer = (ps) => {
 }
 
 export const CustomRecordTypeKey = (ps) => {
-    var { value, props, related } = ps;
+    var { value, props, related, __useNewRelated = false } = ps;
     var { collection } = props;
+
+    var translate = useUITranslation();
+
     if (!value) {
         return <NoValue />
     }
-   
-    var label = (
-        related
-        ? related.relatedCustomRecordTypes[collection][value].state.label
-        : value
-    );
+  
+    var label = 'ERROR';
+    if (__useNewRelated) {
+        label = (
+            related
+            ? translate.crt(related.crts[collection][value])
+            : value
+        );
+    }
+    else {
+        label = (
+            related
+            ? related.relatedCustomRecordTypes[collection][value].state.label
+            : value
+        );
+    }
 
     return label;
 }

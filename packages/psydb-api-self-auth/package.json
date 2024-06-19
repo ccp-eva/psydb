@@ -1,0 +1,35 @@
+{
+  "name": "@mpieva/psydb-api-self-auth",
+  "version": "0.1.0-alpha",
+  "description": "",
+  "main": "./src/index",
+  "scripts": {
+    "test": "npx mocha --config mocha.config.json test/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cdxOo/psydb.git"
+  },
+  "author": "Jan Schwalbe",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cdxOo/psydb/issues"
+  },
+  "homepage": "https://github.com/cdxOo/psydb#readme",
+  "dependencies": {
+    "debug": "~4.3.4",
+    "@cdxoo/check-ip-in-range": "~0.0.1",
+    "@mpieva/psydb-core-utils": "workspace:*",
+    "@mpieva/psydb-api-lib": "workspace:*"
+  },
+  "devDependencies": {
+    "mocha": "~10.2.0",
+    "chai": "~4.3.7",
+    "@mpieva/psydb-api-mocha-test-tools": "workspace:*"
+  },
+  "config": {
+    "mongodbMemoryServer": {
+      "downloadDir": "/tmp/mongodb-memory-server/"
+    }
+  }
+}

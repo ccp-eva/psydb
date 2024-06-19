@@ -19,7 +19,7 @@ export const GenericTypeKey = (ps) => {
     
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.fetchAvailableCRTs({
-            collections: [ collection ],
+            collections: collection ? [ collection ] : [],
             ignoreResearchGroups,
         })
     ), [ collection ]);

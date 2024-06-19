@@ -13,6 +13,8 @@ import {
     Footer,
 } from '../shared';
 
+import PerSubjectFields from './per-subject-fields';
+
 export const Component = (ps) => {
     var {
         subjectType,
@@ -122,33 +124,18 @@ const FormBody = (ps) => {
             />
             { subjectGroupId && (
                 <>
-                    {/*<GroupExpSubjectFields
-                        label='Proband:innen'
-                        dataXPath='$.subjectData'
-                        subjectType={ subjectType }
-                        subjectConstraints={ subjectConstraints }
-                        enableMove={ false }
-                    />*/}
-                    <Fields.ForeignId
-                        label={ translate('Subject') }
-                        dataXPath={`$.subjectData.0.subjectId`}
-                        collection='subject'
-                        recordType={ subjectType }
-                        constraints={ subjectConstraints }
-                        required
-                    />
-                    <Fields.DateOnlyTimestamp required />
-                    
-                    <Fields.SaneString
-                        label={ translate('Comment') }
-                        dataXPath={`$.subjectData.0.comment`}
-                    />
-                    
                     <Fields.SaneString
                         label={ translate('_wkprc_experimentName') }
                         dataXPath='$.experimentName'
                         required
                     />
+                    <Fields.DateOnlyTimestamp required />
+                    <Fields.Integer
+                        label={ translate('_wkprc_intradaySeqNumber') }
+                        dataXPath='$.intradaySeqNumber'
+                        required
+                    />
+                    
                     <Fields.GenericEnum
                         label={ translate('_wkprc_roomOrEnclosure') }
                         dataXPath='$.roomOrEnclosure'
@@ -160,6 +147,31 @@ const FormBody = (ps) => {
                             'Indoor Enclosure': 'Indoor Enclosure',
                         }}
                     />
+                    <hr />
+                    <PerSubjectFields
+                        label={ translate('Subjects') }
+                        dataXPath='$.subjectData'
+                        subjectType={ subjectType }
+                        subjectConstraints={ subjectConstraints }
+                        enableMove={ false }
+                    />
+                   
+                    <hr className='mt-0'/>
+                    
+                    <Fields.Integer
+                        label={ translate('_wkprc_totalSubjectCount') }
+                        dataXPath='$.totalSubjectCount'
+                        required
+                    />
+                    {/*<Fields.ForeignId
+                        label={ translate('Subject') }
+                        dataXPath={`$.subjectData.0.subjectId`}
+                        collection='subject'
+                        recordType={ subjectType }
+                        constraints={ subjectConstraints }
+                        required
+                    />*/}
+                    
                     <Fields.ExperimentOperators />
                     
                     <Footer { ...footerPass } />
@@ -181,16 +193,18 @@ const createInitialValues = (ps) => {
             'subjectGroupId',
             'experimentName',
             'roomOrEnclosure',
+            'intradaySeqNumber',
+            'totalSubjectCount',
         ]}),
         timestamp: interval.start,
-        subjectData: [{
+        subjectData: subjectData.map(it => ({
             ...only({
-                from: subjectData[0],
-                paths: [ 'subjectId', 'comment' ],
+                from: it,
+                paths: [ 'subjectId', 'role', 'comment' ],
             }),
             status: 'participated',
             excludeFromMoreExperimentsInStudy: false
-        }],
+        })),
         labOperatorIds: experimentOperatorIds,
     }
 

@@ -5,7 +5,7 @@ var {
 } = require('@mpieva/psydb-api-message-handler-compat');
 
 var handler = MessageHandler({
-    type: 'csv-import/experiment/create-wkprc-evapecognition',
+    type: 'csv-import/experiment/create-wkprc-apestudies-default',
     stages: {
         ...presets.default({
             createMessagePayloadSchema: require('./schema')

@@ -1,61 +1,16 @@
 'use strict';
-var fspath = require('path');
+var debug = require('debug')('psydb:api-automation');
 var co = require('co');
-var { program } = require('commander');
-var pkg = require('../package.json');
+var fspath = require('path');
+var { MongoClient } = require('mongodb');
+
+var restore = require('@cdxoo/mongodb-restore');
+var fixtures = require('@mpieva/psydb-fixtures');
+
+var cli = require('./cli-setup');
 var execute = require('./execute-with-driver');
 
 var cwd = process.cwd();
-
-program
-    .version(pkg.version)
-    .description('some description')
-    .usage('some usage')
-
-var cliOptions = [
-    {
-        long: 'api-key',
-        arg: 'apiKey',
-        description: 'api key to authenticate with',
-    },
-    {
-        long: 'url',
-        arg: 'url',
-        description: 'psydb url',
-        defaults: 'http://127.0.0.1:8080/api/',
-    },
-    {
-        long: 'mongodb',
-        arg: 'mongodbConnectString',
-        description: 'mongodb connect string; some scripts require that',
-        defaults: 'mongodb://127.0.0.1:47017/psydb',
-    }
-];
-
-for (var it of cliOptions) {
-    var {
-        long,
-        short,
-        arg,
-        description,
-        defaults,
-        parse = (x) => (x)
-    } = it;
-
-    short = short ? `-${short}, ` : '';
-    long = `--${long}`;
-    arg = arg ? ` <${arg}>` : '';
-
-    var def = `${short}${long}${arg}`;
-    program.option(
-        def,
-        description,
-        parse,
-        defaults
-    )
-}
-
-program.parse(process.argv);
 
 var developmentApiKey = [
     'xA3S5M1_2uEhgelRVaZyYjg5qw_UehHV',
@@ -63,17 +18,53 @@ var developmentApiKey = [
 ].join('');
 
 co(async () => {
-    var scripts = [];
-    for (var it of program.args) {
-        var path = fspath.join(cwd, it);
-        scripts.push(require(path));
-    }
+    var cliOptions = cli.opts();
+    console.log(cliOptions);
 
     var {
         url,
         apiKey = developmentApiKey,
+        restoreFixture: fixturePath,
         ...extraOptions
-    } = program.opts();
+    } = cliOptions;
+
+
+    var scripts = [];
+    for (var it of cli.args) {
+        var path = fspath.join(cwd, it);
+        scripts.push(require(path));
+    }
+
+    if (fixturePath) {
+        var {
+            mongodb: mongodbConnectString,
+        } = extraOptions
+
+        if (!mongodbConnectString) {
+            throw new Error('script requires mongodb connect string');
+        }
+        var mongo = await MongoClient.connect(
+            mongodbConnectString,
+            { useUnifiedTopology: true }
+        );
+        try {
+            var db = mongo.db();
+            debug('cleaning db ...');
+            await db.dropDatabase();
+            
+            debug('restoring fixture ...');
+
+            await restore.database({
+                con: mongo,
+                database: db.databaseName,
+                from: fixtures.get(fixturePath, { db: true }),
+                clean: true
+            });
+        }
+        finally {
+            mongo.close()
+        }
+    }
 
     for (var it of scripts) {
         await execute({
