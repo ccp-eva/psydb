@@ -8,7 +8,8 @@ var runDefaultPipeline = async (bag) => {
         csvData,
         schema,
         customColumnRemap,
-        unmarshalClientTimezone
+        unmarshalClientTimezone,
+        extraRecordResolvePointers,
     } = bag;
 
     var parsed = parseSchemaCSV({
@@ -27,9 +28,7 @@ var runDefaultPipeline = async (bag) => {
 
     var injectionData = await injectRefIds({ 
         db, schema, into: validObjects,
-        extraRecordResolvePointers: { subject: [
-            '/scientific/state/custom/wkprcIdCode'
-        ]},
+        extraRecordResolvePointers,
     });
 
     // NOTE: im not happy with this block

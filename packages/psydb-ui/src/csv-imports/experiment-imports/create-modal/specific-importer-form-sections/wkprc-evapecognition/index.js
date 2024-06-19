@@ -77,7 +77,7 @@ const PrepareStage = (ps) => {
 
     return (
         <>
-            <WKPRCWorkflowLocationTypeSelect
+            {/*<WKPRCWorkflowLocationTypeSelect
                 label={ translate('Location Type') }
                 dataXPath='$.locationType'
                 studyId={ studyId }
@@ -94,7 +94,7 @@ const PrepareStage = (ps) => {
                 dataXPath='$.labOperatorIds'
                 collection='personnel'
             />
-            <hr />
+            <hr />*/}
             { (locationId && filterTruthy(labOperatorIds).length > 0) ? (
                 <CSVUploadField
                     label={ translate('Upload File') }

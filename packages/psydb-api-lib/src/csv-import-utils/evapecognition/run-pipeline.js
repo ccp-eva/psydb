@@ -20,7 +20,11 @@ var runPipeline = async (bag) => {
 
     var schema = CSVSchema();
     var { pipelineData, preparedObjects } = await runDefaultPipeline({
-        db, csvData, schema, customColumnRemap, unmarshalClientTimezone
+        db, csvData, schema, customColumnRemap, unmarshalClientTimezone,
+        extraRecordResolvePointers: {
+            subject: [ '/scientific/state/custom/wkprcIdCode'],
+            location: [ '/state/custom/name' ],
+        },
     });
 
     var okPipelineData = (
