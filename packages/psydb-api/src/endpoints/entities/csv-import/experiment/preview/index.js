@@ -13,7 +13,7 @@ var {
 } = require('@mpieva/psydb-api-lib');
 
 var {
-    EVApeCognitionCSV,
+    WKPRCApestudiesDefaultCSV,
     CSVImportError
 } = require('@mpieva/psydb-api-lib/csv-import-utils');
 
@@ -36,7 +36,7 @@ var preview = async (context, next) => {
     });
     
     var {
-        csvImporter = 'wkprc-evapecognition', 
+        csvImporter = 'wkprc-apestudies-default', 
         fileId,
         subjectType,
         locationId,
@@ -56,7 +56,7 @@ var preview = async (context, next) => {
         findOne_RAW({ db, location: { _id: locationId }})
     );
 
-    var pipelineOutput = await EVApeCognitionCSV.runPipeline({
+    var pipelineOutput = await WKPRCApestudiesDefaultCSV.runPipeline({
         db,
         csvLines: file.blob.toString(),
 

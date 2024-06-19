@@ -22,7 +22,7 @@ var executeSystemEvents = async (context) => {
     var csvImportId = await createId();
     await db.collection('csvImport').insert({
         _id: csvImportId,
-        type: 'experiment/wkprc-evapecognition',
+        type: 'experiment/wkprc-apestudies-default',
         createdBy: personnelId,
         createdAt: now,
         fileId: file._id,

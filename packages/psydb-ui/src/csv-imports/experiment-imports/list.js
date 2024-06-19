@@ -108,7 +108,8 @@ var LinkRow = (ps) => {
 }
 
 const asFriendlyType = (type) => ({
-    'experiment/wkprc-evapecognition': 'WKPRC EVApeCognition'
+    'experiment/wkprc-evapecognition': 'WKPRC EVApeCognition',
+    'experiment/wkprc-apestudies-default': 'WKPRC'
 }[type] || type);
 
 export default List;

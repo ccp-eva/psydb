@@ -13,7 +13,7 @@ var {
 } = require('@mpieva/psydb-api-message-handler-lib');
 
 var {
-    EVApeCognitionCSV,
+    WKPRCApestudiesDefaultCSV,
     CSVImportError
 } = require('@mpieva/psydb-api-lib/csv-import-utils');
 
@@ -75,7 +75,7 @@ var tryPrepareImport = async (context, next) => {
     var { subjectCRT, study, location, file } = cache.get();
 
     try {
-        var pipelineOutput = await EVApeCognitionCSV.runPipeline({
+        var pipelineOutput = await WKPRCApestudiesDefaultCSV.runPipeline({
             db,
             csvLines: file.blob.toString(),
 

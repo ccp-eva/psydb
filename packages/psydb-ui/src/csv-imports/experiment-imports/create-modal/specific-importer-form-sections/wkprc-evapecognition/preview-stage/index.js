@@ -43,7 +43,7 @@ const PreviewStage = (ps) => {
     ), []);
 
     var send = useSend(() => ({
-        type: 'csv-import/experiment/create-wkprc-evapecognition',
+        type: 'csv-import/experiment/create-wkprc-apestudies-default',
         payload: { ...commonPayload }
     }), { ...triggerBag })
 
