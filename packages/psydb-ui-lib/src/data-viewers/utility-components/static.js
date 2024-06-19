@@ -182,7 +182,7 @@ export const HelperSetItemId = (ps) => {
 }
 
 export const ForeignIdList = (ps) => {
-    var { value, props, related } = ps;
+    var { value, props, related, __useNewRelated, newTab = false } = ps;
     var { collection, recordType } = props;
     
     if (!(Array.isArray(value) && value.length)) {
@@ -197,6 +197,8 @@ export const ForeignIdList = (ps) => {
                 value={ it }
                 props={ props }
                 related={ related }
+                __useNewRelated={ __useNewRelated }
+                newTab={ newTab }
             />
         ))
     );

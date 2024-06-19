@@ -74,12 +74,22 @@ var preview = async (context, next) => {
         csvImportId: null,
     }));
 
-    var relatedIds = { subject: [], subjectGroup: [] };
+    var relatedIds = {
+        subject: [],
+        subjectGroup: [],
+        location: [],
+        personnel: [],
+    };
     for (var it of previewRecords) {
-        var { subjectGroupId, selectedSubjectIds } = it.state;
+        var {
+            subjectGroupId, selectedSubjectIds,
+            locationId, experimentOperatorIds
+        } = it.state;
         
         relatedIds.subject.push(...selectedSubjectIds);
         relatedIds.subjectGroup.push(subjectGroupId);
+        relatedIds.location.push(locationId);
+        relatedIds.personnel.push(...experimentOperatorIds);
     }
     var related = {
         records: await fetchRecordLabelsManual(db, relatedIds, i18n)

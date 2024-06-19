@@ -8,25 +8,32 @@ import {
 
 import * as Fields from '../../form-fields';
 
+const FullWidthSubjectId = withField({
+    Control: Fields.ForeignId.Control,
+    // FIXME: why does that not work as function?
+    DefaultWrapper: 'NoneWrapper',
+    //DefaultWrapper: ({ children }) => (<>{ children }</>),
+})
+
 const Control = (ps) => {
     var {
         dataXPath,
         subjectType,
         subjectConstraints,
+        isFixedIndex,
     } = ps;
 
     var translate = useUITranslation();
 
     return (
-        <div className=''>
+        <>
             <div className='mb-3'>
-                <Fields.ForeignId
-                    label={ translate('Subject') }
+                <FullWidthSubjectId
                     dataXPath={`${dataXPath}.subjectId`}
                     collection='subject'
                     recordType={ subjectType }
                     constraints={ subjectConstraints }
-                    required
+                    readOnly={ isFixedIndex }
                 />
             </div>
             <Fields.SaneString
@@ -38,23 +45,27 @@ const Control = (ps) => {
                 label={ translate('Comment') }
                 dataXPath={`${dataXPath}.comment`}
             />
-        </div>
+        </>
     )
 }
 
 const FieldComponent = withField({
     Control,
+    // FIXME: why does this work here?????????
+    // EDIT: oh its maybe because its never atually used in
+    // defautl context but only in array context
     DefaultWrapper: ({ children }) => (<>{ children }</>),
 });
 
-const PerSubjectFields = withFieldArray({
+const GroupExpSubjectFields = withFieldArray({
     FieldComponent,
-    ArrayContentWrapper: 'ObjectArrayContentWrapper',
-    ArrayItemWrapper: 'ObjectArrayItemWrapper',
+    //ArrayContentWrapper: 'ScalarArrayContentWrapper',
+    ArrayItemWrapper: 'ScalarArrayItemWrapper',
     defaultItemValue: {
+        comment: '',
         status: 'participated',
         excludeFromMoreExperimentsInStudy: false
     }
 })
 
-export default PerSubjectFields;
+export default GroupExpSubjectFields;

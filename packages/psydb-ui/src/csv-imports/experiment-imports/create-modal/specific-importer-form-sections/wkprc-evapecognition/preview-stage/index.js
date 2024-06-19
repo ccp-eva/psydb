@@ -72,23 +72,15 @@ const PreviewStage = (ps) => {
     else {
         var { previewRecords, related, pipelineData } = fetched.data;
 
-        var { invalid } = groupBy({
+        var { invalid = [] } = groupBy({
             items: pipelineData,
             createKey: (it) => (
                 (!it.isValid || !it.isRefReplacementOk) ? 'invalid' : 'ok'
             )
         })
 
-        var allOk = (
-            invalid.length === 0
-            && unresolved.length === 0
-            && previewRecords.length > 0
-        );
-
-        var canForceImport = (
-            previewRecords.length > 0
-        );
-
+        var allOk = (invalid.length === 0 && previewRecords.length > 0);
+        var canForceImport = (previewRecords.length > 0);
         var forceImport = false;
 
         return (

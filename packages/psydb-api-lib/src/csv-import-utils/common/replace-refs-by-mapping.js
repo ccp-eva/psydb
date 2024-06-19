@@ -1,13 +1,11 @@
 'use strict';
-var { ejson, jsonpointer } = require('@mpieva/psydb-core-utils');
+var { jsonpointer } = require('@mpieva/psydb-core-utils');
 
 var replaceRefs = (bag) => {
     var {
         inItems: targetObjects,
         resolvedRecords, resolvedHSIs, refMappings,
     } = bag;
-
-    console.log(resolvedRecords);
 
     var replacementStatuses = [];
     for (var [ ix, itemRefMapping ] of refMappings.entries()) {
@@ -51,7 +49,6 @@ var replaceRefs = (bag) => {
 
     // NOTE: even though we operator in situ we return obj
     // for completeness;
-    console.dir(ejson(replacementStatuses), { depth: null });
     var out = [];
     for (var [ ix, obj ] of targetObjects.entries()) {
         out.push({ obj, ...replacementStatuses[ix] });

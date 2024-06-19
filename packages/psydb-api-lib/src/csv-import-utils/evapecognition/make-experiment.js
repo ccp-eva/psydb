@@ -13,7 +13,8 @@ var onlyRelevant = ({ from }) => only({ from, keys: [
     'roomOrEnclosure',
     'experimentOperatorIds',
     'subjectData',
-    'totalSubjectCount'
+    'totalSubjectCount',
+    'subjectGroupId',
 ]});
 
 var makeExperiment = (bag) => {
@@ -52,6 +53,7 @@ var makeExperiment = (bag) => {
             mergedSubjectIds.push(it.subjectId)
             mergedSubjectData.push({
                 subjectType,
+                comment: '', // XXX: forceing default, can ajv do that?
                 ...it,
 
                 invitationStatus: 'scheduled',
@@ -60,8 +62,6 @@ var makeExperiment = (bag) => {
             })
         }
     }
-
-    console.log(mergedSubjectData);
 
     var experimentId = ObjectId();
     var experimentCore = {

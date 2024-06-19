@@ -5,6 +5,7 @@ var {
     Integer,
     SaneString,
     ForeignId,
+    ForeignIdList,
 } = require('@mpieva/psydb-schema-fields');
 
 var CSVSchema = () => {
@@ -23,9 +24,8 @@ var CSVSchema = () => {
             }),
             'roomOrEnclosure': SaneString({ minLength: 1 }),
             
-            'experimentOperatorIds': DefaultArray({
-                items: ForeignId({ collection: 'personnel' }),
-                minItems: 1,
+            'experimentOperatorIds': ForeignIdList({
+                collection: 'personnel', minItems: 1,
             }),
 
             'subjectData': DefaultArray({

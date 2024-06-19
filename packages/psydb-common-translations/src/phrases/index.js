@@ -1397,6 +1397,21 @@ module.exports = [
         en: 'Room/Enclosure',
         de: 'Raum/Gehege'
     },
+    {
+        internal: '_wkprc_subjectRole',
+        en: 'Role',
+        de: 'Rolle'
+    },
+    {
+        internal: '_wkprc_intradaySeqNumber',
+        en: 'Daily Running No.',
+        de: 'Laufende Nummer (am Tag)'
+    },
+    {
+        internal: '_wkprc_totalSubjectCount',
+        en: 'Trial Participants',
+        de: 'Trial Participants' // FIXME
+    },
     
     // Field sites
 

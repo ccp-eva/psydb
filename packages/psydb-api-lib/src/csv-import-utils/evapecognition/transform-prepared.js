@@ -20,8 +20,6 @@ var transformPrepared = (bag) => {
         }
     });
 
-    console.dir(ejson(groupedPipelineData), { depth: null });
-
     var transformed = {
         experiments: [],
         participations: [],

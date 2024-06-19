@@ -12,11 +12,12 @@ import {
 
     SubjectsAreTestedTogetherField,
     //SplitExpSubjectFields,
-    GroupExpSubjectFields
+    //GroupExpSubjectFields
 } from '../shared';
 
 import useCustomFetchChain from './use-custom-fetch-chain';
 import SplitExpSubjectFields from './wkprc-split-exp-subject-fields';
+import GroupExpSubjectFields from './wkprc-group-exp-subject-fields';
 
 export const Component = (ps) => {
     var { initialValues } = ps;
@@ -117,18 +118,14 @@ const FormBody = (ps) => {
 
             { subjectGroupId && (
                 <>
-                    {/*<SubjectsAreTestedTogetherField />*/}
+                    <SubjectsAreTestedTogetherField />
 
-                    <BranchFields
-                        { ...ps }
-                        subjectConstraints={ subjectConstraints }
-                    />
-                    
                     <Fields.SaneString
                         label={ translate('_wkprc_experimentName') }
                         dataXPath='$.experimentName'
                         required
                     />
+
                     <Fields.GenericEnum
                         label={ translate('_wkprc_roomOrEnclosure') }
                         dataXPath='$.roomOrEnclosure'
@@ -139,6 +136,20 @@ const FormBody = (ps) => {
                             'Outdoor Enclosure': 'Outdoor Enclosure',
                             'Indoor Enclosure': 'Indoor Enclosure',
                         }}
+                    />
+                    
+                    <BranchFields
+                        { ...ps }
+                        subjectConstraints={ subjectConstraints }
+                        subjectsAreTestedTogether={
+                            subjectsAreTestedTogether
+                        }
+                    />
+                    
+                    <Fields.Integer
+                        label={ translate('_wkprc_totalSubjectCount') }
+                        dataXPath='$.totalSubjectCount'
+                        required
                     />
 
                     <Fields.ExperimentOperators />
@@ -164,6 +175,13 @@ const BranchFields = (ps) => {
     if (preselectedSubject) {
         return (
             <>
+                <Fields.DateOnlyTimestamp required />
+                <Fields.Integer
+                    label={ translate('_wkprc_intradaySeqNumber') }
+                    dataXPath='$.intradaySeqNumber'
+                    required
+                />
+
                 <Fields.ForeignId
                     label={ translate('Subject') }
                     dataXPath='$.subjectData.0.subjectId'
@@ -172,18 +190,33 @@ const BranchFields = (ps) => {
                     //constraints={ subjectConstraints }
                     readOnly={ true }
                 />
-                <Fields.DateOnlyTimestamp required />
+                
+                <Fields.SaneString
+                    label={ translate('_wkprc_subjectRole') }
+                    dataXPath='$.subjectData.0.role'
+                    required
+                />
+
+                <Fields.SaneString
+                    label={ translate('Comment') }
+                    dataXPath={`$subjectData.0.comment`}
+                />
             </>
         )
     }
     else if (subjectsAreTestedTogether) {
         return (
             <>
+                <Fields.DateOnlyTimestamp required />
+                <Fields.Integer
+                    label={ translate('_wkprc_intradaySeqNumber') }
+                    dataXPath='$.intradaySeqNumber'
+                    required
+                />
                 <GroupExpSubjectFields
                     label={ translate('Subjects') }
                     { ...getMultiSubjectsBag(ps) }
                 />
-                <Fields.DateOnlyTimestamp required />
             </>
         )
     }
