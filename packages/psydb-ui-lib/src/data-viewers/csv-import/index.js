@@ -63,7 +63,8 @@ addComponents(CSVImport, Context, labels, [
 ]);
 
 const asFriendlyType = (type) => ({
-    'experiment/wkprc-evapecognition': 'EVApeCognition'
+    'experiment/wkprc-evapecognition': 'WKPRC EVApeCognition',
+    'experiment/wkprc-apestudies-default': 'WKPRC',
 }[type] || type)
 
 export default CSVImport;
