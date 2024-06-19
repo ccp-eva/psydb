@@ -1,5 +1,5 @@
 'use strict';
-var { jsonpointer } = require('@mpieva/psydb-core-utils');
+var { ejson, jsonpointer } = require('@mpieva/psydb-core-utils');
 
 var replaceRefs = (bag) => {
     var {
@@ -7,8 +7,11 @@ var replaceRefs = (bag) => {
         resolvedRecords, resolvedHSIs, refMappings,
     } = bag;
 
+    console.log(resolvedRecords);
+
     var replacementStatuses = [];
     for (var [ ix, itemRefMapping ] of refMappings.entries()) {
+        var itemReplacements = [];
         var itemReplacementErrors = [];
         for (var m of itemRefMapping) {
             var { dataPointer, collection, setId = undefined, value } = m;
@@ -20,8 +23,9 @@ var replaceRefs = (bag) => {
           
             var matchingItems = bucket.filter(it => it.value === value);
             if (matchingItems.length === 1) {
-                var [{ _id }] = matchingItems;
-                jsonpointer.set(targetObjects[ix], dataPointer, _id);
+                var [ matched ] = matchingItems;
+                jsonpointer.set(targetObjects[ix], dataPointer, matched._id);
+                itemReplacements.push(matched);
             }
             else {
                 itemReplacementErrors.push({
@@ -33,13 +37,21 @@ var replaceRefs = (bag) => {
         }
         replacementStatuses.push(
             itemReplacementErrors.length > 0
-            ? ({ isOk: false, errors: itemReplacementErrors })
-            : ({ isOk: true })
+            ? ({
+                isOk: false,
+                replacements: itemReplacements,
+                errors: itemReplacementErrors
+            })
+            : ({
+                isOk: true,
+                replacements: itemReplacements
+            })
         );
     }
 
     // NOTE: even though we operator in situ we return obj
     // for completeness;
+    console.dir(ejson(replacementStatuses), { depth: null });
     var out = [];
     for (var [ ix, obj ] of targetObjects.entries()) {
         out.push({ obj, ...replacementStatuses[ix] });

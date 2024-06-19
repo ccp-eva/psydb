@@ -15,7 +15,10 @@ var resolveRefs = async (bag) => {
     if (tokenMapping) {
         var { helperSetItem: hsiIntermediate, ...recordRefs } = groupBy({
             items: SmartArray(tokenMapping, { spreadArrayItems: true }),
-            byProp: 'collection',
+            createKey: (it) => (
+                it.recordType
+                ? `${it.collection}#${it.recordType}` : it.collection
+            ),
             transform: it => (it.setId ? it : it.value)
         });
 
@@ -27,12 +30,21 @@ var resolveRefs = async (bag) => {
     }
 
     var resolvedRecords = {};
-    for (var [ collection, refs ] of entries(recordRefs)) {
+    for (var [ key, refs ] of entries(recordRefs)) {
+        // XXX
+        var [ collection, recordType = undefined ] = key.split('#');
+
         var extraPointers = extraRecordResolvePointers[collection] || [];
         resolvedRecords[collection] = await withRetracedErrors(
-            aggregateFromRefs({ db, [collection]: refs, pointers: [
-                '/_id', '/sequenceNumber', ...extraPointers
-            ]})
+            aggregateFromRefs({
+                db, [collection]: refs,
+                pointers: [
+                    '/_id', '/sequenceNumber', ...extraPointers
+                ],
+                ...(recordType && {
+                    extraMatch: { type: recordType }
+                })
+            })
         )
     }
 

@@ -9,12 +9,12 @@ var { runPipeline } = require('../../../src/csv-import-utils/evapecognition');
 describe('csv-import-utils/evapecognition/runPipeline()', function () {
     var db;
     beforeEach(async function () {
-        await this.restore('2023-11-29__0517-wkprc-fieldsite');
+        await this.restore('2024-06-19__0601_wkprc-fieldsite');
         db = this.getDbHandle();
     });
 
-    it.skip('simple', async function () {
-        var data = loadCSV('evapecognition/simple');
+    it('simple', async function () {
+        var data = loadCSV('wkprc-apestudies-default/simple');
         var out = await runPipeline({
             db,
             csvLines: data,
@@ -22,15 +22,15 @@ describe('csv-import-utils/evapecognition/runPipeline()', function () {
             timezone: 'Europe/Berlin',
             subjectType: 'wkprc_chimpanzee',
             study: ObjectId("6566b5c26c830cb226c1389b"),
-            location: ObjectId("64d42ddf443aa279ca4cb2e5"),
-            labOperators: [ ObjectId("64d42ddf443aa279ca4cb2c9") ],
+            //location: ObjectId("64d42ddf443aa279ca4cb2e5"),
+            //labOperators: [ ObjectId("64d42ddf443aa279ca4cb2c9") ],
         });
         //console.dir(ejson(parsed), { depth: null });
         console.dir(ejson(out), { depth: null });
     });
 
-    it('invalid-value', async function () {
-        var data = loadCSV('evapecognition/invalid-value');
+    it.skip('invalid-value', async function () {
+        var data = loadCSV('wkprc-apestudies-default/simple');
         var out = await runPipeline({
             db,
             csvLines: data,

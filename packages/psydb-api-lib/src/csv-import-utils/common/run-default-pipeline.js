@@ -36,13 +36,15 @@ var runDefaultPipeline = async (bag) => {
     var preparedObjects = [];
     for (var it of parsed) {
         if (it.isValid) {
-            var { obj, isOk, errors } = injectionData.shift();
+            var { obj, isOk, replacements, errors } = injectionData.shift();
             if (isOk) {
                 it.isRefReplacementOk = true;
+                it.replacements = replacements;
                 preparedObjects.push(obj)
             }
             else {
                 it.isRefReplacementOk = false;
+                it.replacements = replacements;
                 it.replacementErrors = errors;
             }
         }

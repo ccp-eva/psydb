@@ -15,8 +15,8 @@ var runPipeline = async (bag) => {
    
         subjectType,
         study,
-        location,
-        labOperators,
+        //location,
+        //labOperators,
         timezone: unmarshalClientTimezone
     } = bag;
 
@@ -25,16 +25,21 @@ var runPipeline = async (bag) => {
         db, csvData, schema, customColumnRemap, unmarshalClientTimezone
     });
 
+    console.log(pipelineData);
+    var okPipelineData = (
+        pipelineData.filter(it => it.isValid && it.isRefReplacementOk)
+    );
+
     await verifySameSubjectType({ db, subjectType, preparedObjects });
     await verifySameSubjectGroup({ db, preparedObjects });
 
     var transformed = transformPrepared({
-        preparedObjects,
+        pipelineData: okPipelineData,
 
         subjectType,
         study,
-        location,
-        labOperators,
+        //location,
+        //labOperators,
         timezone: unmarshalClientTimezone
     });
 

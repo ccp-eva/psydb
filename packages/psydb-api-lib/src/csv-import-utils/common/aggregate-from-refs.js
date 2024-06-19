@@ -16,6 +16,9 @@ var aggregateFromRefs = async (bag) => {
             }},
             { $project: {
                 _id: true,
+                // NOTE: we use this for multi typed collections
+                // easily access recordType in dwn stream operations
+                type: true,
                 [pointer]: '$' + path
             }}
         ]})
@@ -24,9 +27,9 @@ var aggregateFromRefs = async (bag) => {
     var out = [];
     for (var r of resolved) {
         out.push(...r.map(it => {
-            var { _id, ...rest } = it;
+            var { _id, type, ...rest } = it;
             var [ pointer, value ] = entries(rest)[0];
-            return { _id, pointer, value }
+            return { _id, type, pointer, value }
         }))
     }
     return out;

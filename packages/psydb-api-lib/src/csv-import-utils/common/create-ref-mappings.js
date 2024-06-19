@@ -42,8 +42,10 @@ var createRefMappings = (bag) => {
                     };
             
                     if (isRecordRef(systemType)) {
-                        var { collection } = systemProps;
-                        refMappings[ix].push({ ...shared, collection });
+                        var { collection, recordType } = systemProps;
+                        refMappings[ix].push({
+                            ...shared, collection, recordType
+                        });
                     }
                     if (isHSIRef(systemType)) {
                         var { setId } = systemProps;
