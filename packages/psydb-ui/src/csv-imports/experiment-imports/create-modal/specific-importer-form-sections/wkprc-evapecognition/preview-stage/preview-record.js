@@ -48,7 +48,7 @@ const PreviewRecord = (ps) => {
                 { subjectData.map((it, ix) => {
                     var { subjectId, comment } = it;
                     return (
-                        <SplitPartitioned partitions={[ 1, 1 ]}>
+                        <SplitPartitioned key={ ix } partitions={[ 1, 1 ]}>
                             <ForeignId
                                 value={ subjectId }
                                 props={{ collection: 'subject' }}

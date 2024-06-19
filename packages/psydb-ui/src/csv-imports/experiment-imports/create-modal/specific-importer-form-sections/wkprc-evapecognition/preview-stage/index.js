@@ -72,12 +72,10 @@ const PreviewStage = (ps) => {
     else {
         var { previewRecords, related, pipelineData } = fetched.data;
 
-        var { invalid, unresolved } = groupBy({
+        var { invalid } = groupBy({
             items: pipelineData,
             createKey: (it) => (
-                !it.isValid ? 'invalid' : (
-                    !it.isRefReplacementOk ? 'unresolved' : 'ok'
-                )
+                (!it.isValid || !it.isRefReplacementOk) ? 'invalid' : 'ok'
             )
         })
 
@@ -102,10 +100,7 @@ const PreviewStage = (ps) => {
                 />
                 <hr />
                 { !allOk && (
-                    <IssueItemsAlert
-                        invalid={ invalid }
-                        unresolved={ unresolved }
-                    />
+                    <IssueItemsAlert invalid={ invalid } />
                 )}
                 { (allOk || canForceImport) && (
                     <div className='d-flex flex-column gapy-2'>

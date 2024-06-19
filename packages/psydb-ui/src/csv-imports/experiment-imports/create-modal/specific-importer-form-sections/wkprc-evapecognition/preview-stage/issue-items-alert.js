@@ -6,16 +6,11 @@ import {
 } from '@mpieva/psydb-ui-layout';
 
 const IssueItemsAlert = (ps) => {
-    var { invalid = [], unresolved = [] } = ps;
+    var { invalid } = ps;
 
     return (
         <Alert variant='danger'>
-            { invalid.length > 0 && (
-                <InvalidItemList items={ invalid } />
-            )}
-            { unresolved.length > 0 && (
-                <b>refIssueItems</b>
-            )}
+            <InvalidItemList items={ invalid } />
         </Alert>
     )
 }
@@ -29,32 +24,71 @@ const InvalidItemList = (ps) => {
             <b>{ 'Invalid Rows' }</b>
             <div className='d-flex flex-column gapy-2'>
                 { items.map((it, ix) => (
-                    <InvalidItem key={ ix } item={ it } />
+                    it.replacementErrors ? (
+                        <RefIssueItem key={ ix } item={ it } />
+                    ) : (
+                        <DataIssueItem key={ ix } item={ it } />
+                    )
                 ))}
             </div>
         </div>
     )
 }
 
-const InvalidItem = (ps) => {
+const CSVLine = (ps) => {
+    var { values } = ps;
+    return (
+        <span>{
+            JSON.stringify(values)
+            .replace(/(^\[|\]$)/g, '')
+            .replace(/","/g, '", "')
+        }</span>
+    )
+}
+
+const IssueItemWrapper = (ps) => {
+    var { index, children } = ps;
+    return (
+        <div className='d-flex'>
+            <b style={{ display: 'block', minWidth: '70px' }}>
+                Line { index + 1 }
+            </b>
+            <div className='flex-grow-1'>
+                { children }
+            </div>
+        </div>
+    )
+}
+
+const RefIssueItem = (ps) => {
+    var { item } = ps;
+    var { index, csvLine, replacementErrors } = item;
+    console.log(item);
+    
+    return (
+        <IssueItemWrapper index={ index }>
+            <CSVLine values={ csvLine } />
+            <div>
+                { replacementErrors.map((it, ix) => (
+                    <ReplacementError key={ ix } error={ it } />
+                ))}
+            </div>
+        </IssueItemWrapper>
+    )
+}
+
+const DataIssueItem = (ps) => {
     var { item } = ps;
     var { index, csvLine, validationErrors } = item
     return (
-        <div className='d-flex'>
-            <b style={{ display: 'block', minWidth: '70px' }}>Line { index + 1 }</b>
-            <div className='flex-grow-1'>
-                <span>{
-                    JSON.stringify(csvLine)
-                    .replace(/(^\[|\]$)/g, '')
-                    .replace(/","/g, '", "')
-                }</span>
-                <div>
-                    { validationErrors.map((it, ix) => (
-                        <ValidationError key={ ix} error={ it } />
-                    ))}
-                </div>
+        <IssueItemWrapper index={ index }>
+            <CSVLine values={ csvLine } />
+            <div>
+                { validationErrors.map((it, ix) => (
+                    <ValidationError key={ ix } error={ it } />
+                ))}
             </div>
-        </div>
+        </IssueItemWrapper>
     )
 }
 
@@ -148,4 +182,23 @@ var ValidationError = (ps) => {
     }
 }
 
+var ReplacementError = (ps) => {
+    var { error } = ps;
+    var { matchingItems, mapping } = error;
+    var { csvColumn, value } = mapping;
+    
+    var cols = demap({ dataPath: csvColumn, demapping });
+
+    return cols.map(it => (
+        <div><b>
+            {' - '}"{ it }" reference value "{ value }"
+            {' '}
+            { matchingItems.length === 0 ? (
+                'could not be matched'
+            ) : (
+                'must match exactly one record'
+            )}
+        </b></div>
+    ))
+}
 export default IssueItemsAlert;
