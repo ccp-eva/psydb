@@ -20,8 +20,10 @@ module.exports = {
         isEnabled: true,
         allowedIps: [ '::/0' ]
     },
-    branding: 'sunway',
-    disableLogoOverlay: true,
+    //branding: 'sunway',
+    //disableLogoOverlay: true,
+    branding: 'mpiccp',
+    disableLogoOverlay: false,
 
     dev_enableStagingBanner: true,
     dev_enableDevPanel: false,

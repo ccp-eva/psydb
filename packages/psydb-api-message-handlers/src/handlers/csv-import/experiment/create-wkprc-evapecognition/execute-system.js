@@ -9,13 +9,10 @@ var executeSystemEvents = async (context) => {
         dispatch, dispatchProps
     } = context;
 
-    var { timezone, payload: { labOperatorIds }} = message;
-    var {
-        study, location, file, labOperators,
-        pipelineOutput
-    } = cache.get();
+    var { timezone } = message;
+    var { study, file, pipelineOutput } = cache.get();
 
-    var { matchedData, preparedObjects, transformed } = pipelineOutput;
+    var { pipelineData, transformed } = pipelineOutput;
     var { experiments, participations } = transformed;
 
     var now = new Date();
@@ -26,10 +23,8 @@ var executeSystemEvents = async (context) => {
         createdBy: personnelId,
         createdAt: now,
         fileId: file._id,
-        locationId: location._id,
         studyId: study._id,
-        matchedData,
-        preparedObjects,
+        pipelineData,
     });
 
     for (var it of experiments) {
@@ -48,7 +43,7 @@ var executeSystemEvents = async (context) => {
 
     for (var it of participations) {
         var [ subjectId, data ] = it;
-        console.log({ subjectId, data });
+        //console.log({ subjectId, data });
         await dispatch({
             collection: 'subject',
             channelId: subjectId,
@@ -62,30 +57,6 @@ var executeSystemEvents = async (context) => {
     }
 
     cache.merge({ csvImportId });
-}
-
-var convertYMDToClientNoon = (bag) => {
-    var { year, month, day, clientTZ } = bag;
-    if (year <= 1894) {
-        // FIXME:
-        // on 1894-04-01 something wird happened
-        // also all dates before 100 AD cannot be timezone corrected properly
-        throw new Error('dates in 1894 or earlier cannot be converted')
-    }
-
-    var date = new Date();
-    date.setUTCHours(12,0,0,0); // NOTE: 12:00 for safety reasons
-    date.setUTCFullYear(year);
-    date.setUTCMonth(month - 1);
-    date.setUTCDate(day);
-
-    var swapped = swapTimezone({
-        date,
-        sourceTZ: 'UTC',
-        targetTZ: clientTZ,
-    });
-
-    return swapped;
 }
 
 module.exports = { executeSystemEvents }
