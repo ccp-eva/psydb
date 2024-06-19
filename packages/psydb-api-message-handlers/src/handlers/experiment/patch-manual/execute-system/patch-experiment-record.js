@@ -1,6 +1,6 @@
 'use strict';
 var { compose, switchComposition } = require('@mpieva/psydb-api-lib');
-var { keyBy } = require('@mpieva/psydb-core-utils');
+var { only, keyBy } = require('@mpieva/psydb-core-utils');
 
 var compose_createExperimentRecord = () => compose([
     setupExperimentStateUpdate,
@@ -126,17 +126,16 @@ var replaceOperatorState = async (context, next) => {
 var replaceApestudiesWKPRCDefaultExtraState = async (context, next) => {
     var { message, cache } = context;
     var { experimentUpdate } = cache.get();
-    var {
-        subjectGroupId,
-        experimentName,
-        roomOrEnclosure,
-    } = message.payload;
+    var { subjectGroupId } = message.payload;
+    
+    var pass = only({ from: message.payload, keys: [
+        'experimentName', 'roomOrEnclosure',
+        'intradaySeqNumber', 'totalSubjectCount',
+    ]})
 
     experimentUpdate = {
         ...experimentUpdate,
-        subjectGroupId,
-        experimentName,
-        roomOrEnclosure,
+        ...pass,
         subjectData: experimentUpdate.subjectData.map(it => ({
             ...it, subjectGroupId
         }))
