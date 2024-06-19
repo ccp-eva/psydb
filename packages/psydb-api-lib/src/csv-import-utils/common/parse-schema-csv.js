@@ -30,7 +30,10 @@ var parseSchemaCSV = (bag) => {
 
     var out = [];
     for (var [ix, it] of csvLines.entries()) {
-        out.push({ csvLine: it, obj: parsed[ix], ...validation[ix] });
+        out.push({
+            index: ix, csvLine: it,
+            obj: parsed[ix], ...validation[ix]
+        });
     }
     return out;
 }

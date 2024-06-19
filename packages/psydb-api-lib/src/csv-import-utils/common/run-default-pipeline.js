@@ -35,7 +35,7 @@ var runDefaultPipeline = async (bag) => {
     // NOTE: im not happy with this block
     var preparedObjects = [];
     for (var it of parsed) {
-        if (isValid) {
+        if (it.isValid) {
             var { obj, isOk, errors } = injectionData.shift();
             if (isOk) {
                 it.isRefReplacementOk = true;
