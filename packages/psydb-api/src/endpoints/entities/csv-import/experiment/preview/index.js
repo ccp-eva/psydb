@@ -39,9 +39,7 @@ var preview = async (context, next) => {
         csvImporter = 'wkprc-apestudies-default', 
         fileId,
         subjectType,
-        locationId,
         studyId,
-        labOperatorIds
     } = request.body;
 
     var file = await withRetracedErrors(
@@ -52,18 +50,12 @@ var preview = async (context, next) => {
         findOne_RAW({ db, study: { _id: studyId }})
     );
     
-    var location = await withRetracedErrors(
-        findOne_RAW({ db, location: { _id: locationId }})
-    );
-
     var pipelineOutput = await WKPRCApestudiesDefaultCSV.runPipeline({
         db,
         csvLines: file.blob.toString(),
 
         subjectType,
         study,
-        location,
-        labOperators: labOperatorIds.map(it => ({ _id: it})), // FIXME
         timezone: i18n.timezone
     });
 

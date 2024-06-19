@@ -10,9 +10,7 @@ var Schema = (context) => {
     var schema = ClosedObject({
         'fileId': ForeignId({ collection: 'file' }),
         'subjectType': CustomRecordTypeKey({ collection: 'subject' }),
-        'locationId': ForeignId({ collection: 'location' }),
         'studyId': ForeignId({ collection: 'study' }),
-        'labOperatorIds': ForeignIdList({ collection: 'pesonnel' }),
     });
 
     return schema;

@@ -21,9 +21,6 @@ var compose_verifyAllowedAndPlausible = () => compose([
     verifyPermissions,
 
     verifyStudyRecord,
-    verifyLocationRecord,
-    //verifyLabOperatorRecords, // TODO
-
     verifyFileRecord,
     verifyFileMimeType,
     
@@ -39,12 +36,6 @@ var verifyPermissions = async (context, next) => {
 
     await next();
 }
-
-var verifyLocationRecord = verifyOneRecord({
-    collection: 'location',
-    by: '/payload/locationId',
-    cache: true
-});
 
 var verifyStudyRecord = verifyOneRecord({
     collection: 'study',
@@ -81,8 +72,6 @@ var tryPrepareImport = async (context, next) => {
 
             subjectType: subjectCRT.getType(),
             study,
-            location,
-            labOperators: labOperatorIds.map(it => ({ _id: it })), // FIXME
             timezone,
         });
 

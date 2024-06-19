@@ -23,17 +23,17 @@ export const WKPRCEVApeCognition = (ps) => {
 
     var translate = useUITranslation();
     var initialValues = {
-        locationId: '64d42de0443aa279ca4cb2e8',
-        labOperatorIds: [
-            '64d42ddf443aa279ca4cb2c9',
-            '64d42ddf443aa279ca4cb2c5',
-        ],
+        //locationId: '64d42de0443aa279ca4cb2e8',
+        //labOperatorIds: [
+        //    '64d42ddf443aa279ca4cb2c9',
+        //    '64d42ddf443aa279ca4cb2c5',
+        //],
         //fileId: '6671e48d90dbc5f198044a6e',
         //fileId: '6671e49790dbc5f198044a7a',
         //fileId: '667231822fd79bfccf89aa85',
         //fileId: '667233192fd79bfccf89aa87',
         //fileId: '66723d1b817c2304eae90802',
-        fileId: '667264deb4217b27fb46948a',
+        //fileId: '667264deb4217b27fb46948a',
         //labOperatorIds: []
     }
 
@@ -95,7 +95,7 @@ const PrepareStage = (ps) => {
                 collection='personnel'
             />
             <hr />*/}
-            { (locationId && filterTruthy(labOperatorIds).length > 0) ? (
+            {/*{ (locationId && filterTruthy(labOperatorIds).length > 0) ? (
                 <CSVUploadField
                     label={ translate('Upload File') }
                     dataXPath='$.fileId'
@@ -106,7 +106,11 @@ const PrepareStage = (ps) => {
                         Please select Location and Experimenters
                     </i>
                 </Alert>
-            )}
+            )}*/}
+            <CSVUploadField
+                label={ translate('Upload File') }
+                dataXPath='$.fileId'
+            />
             <hr />
             <SmallFormFooter>
                 <Button disabled={ !fileId } onClick={ gotoPreview }>

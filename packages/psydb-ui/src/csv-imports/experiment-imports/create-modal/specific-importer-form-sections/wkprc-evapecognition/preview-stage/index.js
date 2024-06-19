@@ -18,22 +18,23 @@ import IssueItemsAlert from './issue-items-alert';
 const PreviewStage = (ps) => {
     var { studyId, subjectType, formValues, gotoPrepare } = ps;
     var {
-        locationType,
-        locationId,
-        labOperatorIds = [],
+        //locationType,
+        //locationId,
+        //labOperatorIds = [],
         fileId,
     } = formValues['$'];
 
     var translate = useUITranslation();
 
-    var saneLabOperatorIds = filterTruthy(labOperatorIds);
+    //var saneLabOperatorIds = filterTruthy(labOperatorIds);
     var triggerBag = only({ from: ps, keys: [
         'onSuccessfulUpdate', 'onFailedUpdate'
     ]});
 
     var commonPayload = {
-        fileId, studyId, subjectType, locationId,
-        labOperatorIds: filterTruthy(labOperatorIds)
+        fileId, studyId, subjectType, 
+        //locationId,
+        //labOperatorIds: filterTruthy(labOperatorIds)
     }
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.previewCSVExperimentImport({
