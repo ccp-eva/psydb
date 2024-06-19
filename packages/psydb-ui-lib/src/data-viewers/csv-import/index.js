@@ -5,6 +5,7 @@ import {
     DefaultBool,
     DateTime,
     CustomRecordTypeKey,
+    SaneString,
 } from '../utility-components';
 
 
@@ -36,12 +37,13 @@ addComponents(CSVImport, Context, labels, [
     {
         cname: 'StudyId',
         path: '/studyId',
-        Component: withPair((ps) => (
+        Component: withPair(SaneString),
+        /*Component: withPair((ps) => (
             <ForeignId
                 { ...ps }
                 props={{ collection: 'study' }}
             />
-        ))
+        ))*/
     },
     {
         cname: 'Type',
