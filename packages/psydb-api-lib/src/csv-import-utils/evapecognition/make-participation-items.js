@@ -29,7 +29,7 @@ var makeParticipationItems = (bag) => {
             locationId,
             locationType: locationRecordType,
             timestamp: interval.start,
-            timezone,
+            timezone, // FIXME: ????
             
             experimentName,
             roomOrEnclosure,

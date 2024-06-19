@@ -78,6 +78,7 @@ var makeExperiment = (bag) => {
         subjectData: mergedSubjectData,
 
         interval: { start: timestamp, end: timestamp },
+        timezone, // FIXME: ????
 
         studyId: study._id,
         studyRecordType: study.type,
