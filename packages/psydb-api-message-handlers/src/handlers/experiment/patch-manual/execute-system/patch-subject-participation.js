@@ -173,15 +173,16 @@ var addOperators = async (context, next) => {
 
 var addApestudiesWKPRCDefaultExtraData = async (context, next) => {
     var { message, cache } = context;
-    var pass = only({ from: message.payload, keys: [
-        'subjectGroupId', 'experimentName', 'roomOrEnclosure',
-        'intradaySeqNumber', 'totalSubjectCount',
-    ]})
-
+    
     var {
         participationCreateUpdates,
         participationPatchUpdates,
     } = cache.get();
+
+    var pass = only({ from: message.payload, keys: [
+        'subjectGroupId', 'experimentName', 'roomOrEnclosure',
+        'intradaySeqNumber', 'totalSubjectCount',
+    ]})
 
     var mapped = mapAll({
         lists: {

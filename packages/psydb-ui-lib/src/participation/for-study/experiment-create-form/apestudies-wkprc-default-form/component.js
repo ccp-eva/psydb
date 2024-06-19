@@ -118,7 +118,7 @@ const FormBody = (ps) => {
 
             { subjectGroupId && (
                 <>
-                    <SubjectsAreTestedTogetherField />
+                    {/*<SubjectsAreTestedTogetherField />*/}
 
                     <Fields.SaneString
                         label={ translate('_wkprc_experimentName') }
@@ -199,7 +199,7 @@ const BranchFields = (ps) => {
 
                 <Fields.SaneString
                     label={ translate('Comment') }
-                    dataXPath={`$subjectData.0.comment`}
+                    dataXPath={`$.subjectData.0.comment`}
                 />
             </>
         )

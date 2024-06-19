@@ -126,12 +126,12 @@ var replaceOperatorState = async (context, next) => {
 var replaceApestudiesWKPRCDefaultExtraState = async (context, next) => {
     var { message, cache } = context;
     var { experimentUpdate } = cache.get();
-    var { subjectGroupId } = message.payload;
-    
+
     var pass = only({ from: message.payload, keys: [
-        'experimentName', 'roomOrEnclosure',
+        'subjectGroupId', 'experimentName', 'roomOrEnclosure',
         'intradaySeqNumber', 'totalSubjectCount',
     ]})
+    var { subjectGroupId } = pass; 
 
     experimentUpdate = {
         ...experimentUpdate,
