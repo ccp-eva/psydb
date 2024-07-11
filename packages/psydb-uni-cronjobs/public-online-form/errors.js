@@ -1,3 +1,4 @@
+var debug = require('debug')('psydb:humankind-cronjobs:error');
 var { oneLine } = require('common-tags');
 var { omit } = require('@mpieva/psydb-core-utils');
 
@@ -6,9 +7,12 @@ class RemapMailError extends Error {
         var { mail, pair } = bag;
         var message = oneLine`
             Cannot Remap Pair "${pair.key}=${pair.value}"
-        `
+        `;
+
         super(message);
         this.name = 'RemapMailError';
+        
+        debug(`${this.name}: ${message}`);
 
         this.getExtraInfo = () => ({
             ...bag
@@ -41,6 +45,7 @@ class CreateSubjectError extends Error {
         super(message);
         this.name = 'CreateSubjectError';
 
+        debug(`${this.name}: ${message}`);
         this.getExtraInfo = () => ({
             ...bag
         })

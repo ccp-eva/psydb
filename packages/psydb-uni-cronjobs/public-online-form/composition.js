@@ -34,11 +34,11 @@ var Composition = (cliOptions) => {
         forEachMail([
             parseMailHtml,
             remapMailData,
-            createSubjectsInPsydb,
-            moveProcessedMail
+            createSubjectsInPsydb(cliOptions),
+            moveProcessedMail(cliOptions)
         ]),
 
-        maybeMoveErroneousMails,
+        maybeMoveErroneousMails(cliOptions),
     ]);
 
     return c;

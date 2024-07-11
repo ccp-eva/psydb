@@ -1,5 +1,7 @@
 'use strict';
-var maybeMoveErroneousMails = async (context, next) => {
+var debug = require('debug')('psydb:humankind-cronjobs:maybeMoveErroneousMails');
+var maybeMoveErroneousMails = (cliOptions) => async (context, next) => {
+    var { dry = false, dryNoMoveMails = false } = cliOptions;
     var { imap, caughtErrors } = context;
     
     if (caughtErrors.length > 0) {
@@ -8,9 +10,17 @@ var maybeMoveErroneousMails = async (context, next) => {
             mailUIDs.push(mail.uid);
         }
 
-        await imap.messageMove(mailUIDs, 'PUBLIC_REGISTRATION_ERRORS', {
-            uid: true
-        });
+        if (dry || dryNoMoveMails) {
+            console.log(
+                `DRY: Skipped moving of ${mailUIDs.length} erroneous Mails`
+            );
+            debug('UIDs', mailUIDs);
+        }
+        else {
+            await imap.messageMove(mailUIDs, 'PUBLIC_REGISTRATION_ERRORS', {
+                uid: true
+            });
+        }
     }
 }
 
