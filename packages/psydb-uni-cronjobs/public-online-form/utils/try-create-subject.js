@@ -2,13 +2,18 @@
 var { CreateSubjectError } = require('../errors');
 
 var tryCreateSubject = async (bag) => {
-    var { mail, driver, recordType, props } = bag;
+    var { mail, driver, recordType, props, dry = false } = bag;
 
     try {
-        await driver.sendMessage({
-            type: `subject/${recordType}/create`,
-            payload: { props },
-        }, { forceTZ: 'UTC' });
+        if (dry) {
+            console.log(`DRY: Skipping create of "${recordType}" in DB`);
+        }
+        else {
+            await driver.sendMessage({
+                type: `subject/${recordType}/create`,
+                payload: { props },
+            }, { forceTZ: 'UTC' });
+        }
     }
     catch (e) {
         if (e.response) {
