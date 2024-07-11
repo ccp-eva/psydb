@@ -153,14 +153,14 @@ const StudyParticipation = (ps) => {
                             </Button>
                         )}
                         
-                        { canImportCSV && (
+                        {/* canImportCSV && (
                             <Button
                                 className='ml-2'
                                 onClick={ csvImportModal.handleShow }
                             >
                                 { translate('CSV Import') }
                             </Button>
-                        )}
+                        )*/}
                     </div>
                 </div>
 

@@ -1,5 +1,5 @@
 module.exports = {
-    EVApeCognitionCSV: require('./evapecognition'),
+    WKPRCApestudiesDefaultCSV: require('./evapecognition'),
     SubjectDefaultCSV: require('./subject-default'),
     ...require('./errors'),
 }

@@ -91,6 +91,11 @@
        "reviewCategory": "production"
     },
     {
+       "packageName": "@mpieva/psydb-schema-utils",
+       "projectFolder": "packages/psydb-schema-utils",
+       "reviewCategory": "production"
+    },
+    {
        "packageName": "@mpieva/psydb-schema-primitives",
        "projectFolder": "packages/psydb-schema-primitives",
        "reviewCategory": "production"

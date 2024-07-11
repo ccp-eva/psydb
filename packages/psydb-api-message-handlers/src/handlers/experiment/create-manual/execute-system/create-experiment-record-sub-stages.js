@@ -1,5 +1,5 @@
 'use strict';
-var { keyBy } = require('@mpieva/psydb-core-utils');
+var { only, keyBy } = require('@mpieva/psydb-core-utils');
 var { createId } = require('@mpieva/psydb-api-lib');
 
 var setupBaseExperimentState = async (context, next) => {
@@ -72,15 +72,16 @@ var addLocationAndOperatorState = async (context, next) => {
 var addApestudiesWKPRCDefaultExtraState = async (context, next) => {
     var { message, cache } = context;
     var { experimentState } = cache.get();
-    var {
-        subjectGroupId,
-        experimentName
-    } = message.payload;
+    
+    var pass = only({ from: message.payload, keys: [
+        'subjectGroupId', 'experimentName', 'roomOrEnclosure',
+        'intradaySeqNumber', 'totalSubjectCount',
+    ]})
+    var { subjectGroupId } = pass; 
 
     experimentState = {
         ...experimentState,
-        subjectGroupId,
-        experimentName,
+        ...pass,
         subjectData: experimentState.subjectData.map(it => ({
             ...it, subjectGroupId
         }))

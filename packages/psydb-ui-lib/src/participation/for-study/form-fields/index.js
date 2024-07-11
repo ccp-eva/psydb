@@ -10,6 +10,7 @@ export const GenericEnum = Fields.GenericEnum;
 export const ForeignId = Fields.ForeignId;
 export const ForeignIdList = Fields.ForeignIdList;
 export const DefaultBool = Fields.DefaultBool;
+export const Integer = Fields.Integer;
 
 export const DateOnlyTimestamp = (ps) => {
     var { ...pass } = ps;

@@ -290,7 +290,7 @@ importers:
       '@mpieva/psydb-core-utils': workspace:*
       '@mpieva/psydb-driver-nodejs': workspace:*
       '@mpieva/psydb-fixtures': workspace:*
-      axios: ~0.24.0
+      axios: ~0.28.1
       chai: ~4.3.7
       co: ~4.6.0
       commander: ~10.0.1
@@ -304,7 +304,7 @@ importers:
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
       '@mpieva/psydb-driver-nodejs': link:../psydb-driver-nodejs
       '@mpieva/psydb-fixtures': link:../psydb-fixtures
-      axios: 0.24.0_debug@4.3.4
+      axios: 0.28.1_debug@4.3.4
       co: 4.6.0
       commander: 10.0.1
       debug: 4.3.4
@@ -426,9 +426,11 @@ importers:
   ../../packages/psydb-api-lib:
     specifiers:
       '@cdxoo/debug-js-fork': ~0.0.1
+      '@cdxoo/gather-possible-jss-paths': ~0.0.5
       '@cdxoo/inline-string': ~1.0.0
       '@cdxoo/inline-text': ~1.0.2
       '@cdxoo/mongodb-escape-keys': ~0.1.1
+      '@cdxoo/stringify-path-perlstyle': ~0.0.3
       '@cdxoo/switch-koa-compose': ~1.0.0
       '@cdxoo/traverse': ~0.0.1
       '@mpieva/json-schema-convert-pointer': workspace:~0.1.0-alpha
@@ -447,16 +449,20 @@ importers:
       '@mpieva/psydb-mongo-stages': workspace:~0.1.0-alpha
       '@mpieva/psydb-schema-creators': workspace:~0.1.0-alpha
       '@mpieva/psydb-schema-fields': workspace:~0.1.0-alpha
+      '@mpieva/psydb-schema-utils': workspace:~0.1.0-alpha
       '@mpieva/psydb-timezone-helpers': workspace:~0.1.0-alpha
       ajv: ~6.12.6
       ajv-keywords: ~3.5.2
       chai: ~4.3.7
+      clean-deep: ~3.4.0
+      common-tags: ~1.8.2
       copy-anything: ~2.0.6
       csv-parse: ~5.5.5
       date-fns: ~2.30.0
       debug: ~4.3.4
       deep-diff: ~1.0.2
       diacritic-regex: ~1.1.0
+      encodeurl: ~2.0.0
       escape-string-regexp: ~4.0.0
       json-schema-traverse: ~1.0.0
       jsonpointer: ~5.0.1
@@ -465,15 +471,18 @@ importers:
       mocha: ~10.2.0
       mongodb: ~3.6.3
       nanoid: ~3.3.6
-      nodemailer: ~6.8.0
+      nodemailer: ~6.9.14
+      qs: ~6.12.1
       sift: ~16.0.1
       snap-shot-it: ~7.9.6
       statuses: ~2.0.1
     dependencies:
       '@cdxoo/debug-js-fork': 0.0.1
+      '@cdxoo/gather-possible-jss-paths': 0.0.5
       '@cdxoo/inline-string': 1.0.0
       '@cdxoo/inline-text': 1.0.2
       '@cdxoo/mongodb-escape-keys': 0.1.1
+      '@cdxoo/stringify-path-perlstyle': 0.0.3
       '@cdxoo/switch-koa-compose': 1.0.1
       '@cdxoo/traverse': 0.0.2
       '@mpieva/json-schema-convert-pointer': link:../json-schema-convert-pointer
@@ -491,15 +500,19 @@ importers:
       '@mpieva/psydb-mongo-stages': link:../psydb-mongo-stages
       '@mpieva/psydb-schema-creators': link:../psydb-schema-creators
       '@mpieva/psydb-schema-fields': link:../psydb-schema-fields
+      '@mpieva/psydb-schema-utils': link:../psydb-schema-utils
       '@mpieva/psydb-timezone-helpers': link:../psydb-timezone-helpers
       ajv: 6.12.6
       ajv-keywords: 3.5.2_ajv@6.12.6
+      clean-deep: 3.4.0
+      common-tags: 1.8.2
       copy-anything: 2.0.6
       csv-parse: 5.5.6
       date-fns: 2.30.0
       debug: 4.3.4
       deep-diff: 1.0.2
       diacritic-regex: 1.1.0
+      encodeurl: 2.0.0
       escape-string-regexp: 4.0.0
       json-schema-traverse: 1.0.0
       jsonpointer: 5.0.1
@@ -507,7 +520,8 @@ importers:
       map-obj: 4.3.0
       mongodb: 3.6.12
       nanoid: 3.3.7
-      nodemailer: 6.8.0
+      nodemailer: 6.9.14
+      qs: 6.12.1
       sift: 16.0.1
       statuses: 2.0.1
     devDependencies:
@@ -557,7 +571,7 @@ importers:
       mocha: ~10.2.0
       mongodb-memory-server: ~6.9.2
       nanoid: ~3.3.6
-      nodemailer: ~6.8.0
+      nodemailer: ~6.9.14
     dependencies:
       '@cdxoo/inline-text': 1.0.2
       '@cdxoo/omit': 1.0.1
@@ -581,7 +595,7 @@ importers:
       is-subset: 0.1.1
       jsonpointer: 5.0.1
       nanoid: 3.3.7
-      nodemailer: 6.8.0
+      nodemailer: 6.9.14
     devDependencies:
       '@mpieva/psydb-fixtures': link:../psydb-fixtures
       chai: 4.3.10
@@ -626,7 +640,7 @@ importers:
       mocha-chai-jest-snapshot: ~1.1.4
       mongodb-memory-server: ~6.9.2
       nanoid: ~3.3.6
-      nodemailer: ~6.8.0
+      nodemailer: ~6.9.14
       sift: ~16.0.1
     dependencies:
       '@cdxoo/inline-text': 1.0.2
@@ -657,7 +671,7 @@ importers:
       is-subset: 0.1.1
       jsonpointer: 5.0.1
       nanoid: 3.3.7
-      nodemailer: 6.8.0
+      nodemailer: 6.9.14
       sift: 16.0.1
     devDependencies:
       '@cdxoo/mongo-test-helpers': 0.7.1
@@ -712,12 +726,12 @@ importers:
 
   ../../packages/psydb-axios-test-wrapper:
     specifiers:
-      axios: ~0.24.0
+      axios: ~0.28.1
       axios-cookiejar-support: ~4.0.7
       tough-cookie: ~4.1.3
     dependencies:
-      axios: 0.24.0
-      axios-cookiejar-support: 4.0.7_axios@0.24.0+tough-cookie@4.1.4
+      axios: 0.28.1
+      axios-cookiejar-support: 4.0.7_axios@0.28.1+tough-cookie@4.1.4
       tough-cookie: 4.1.4
 
   ../../packages/psydb-common-config:
@@ -808,6 +822,7 @@ importers:
       '@cdxoo/jsonpointer-to-objectpath': ~1.0.0
       '@cdxoo/objectpath-to-jsonpointer': ~1.0.0
       '@cdxoo/tiny-ejson': ~1.0.0
+      '@cdxoo/traverse': ~0.0.2
       chai: ~4.3.7
       deepmerge: ~4.2.2
       escape-string-regexp: ~4.0.0
@@ -819,6 +834,7 @@ importers:
       '@cdxoo/jsonpointer-to-objectpath': 1.0.0
       '@cdxoo/objectpath-to-jsonpointer': 1.0.0
       '@cdxoo/tiny-ejson': 1.0.0
+      '@cdxoo/traverse': 0.0.2
       deepmerge: 4.2.2
       escape-string-regexp: 4.0.0
       is-what: 3.14.1
@@ -955,10 +971,10 @@ importers:
 
   ../../packages/psydb-fixtures-extra:
     specifiers:
-      axios: ~0.24.0
+      axios: ~0.28.1
       co: ~4.6.0
     dependencies:
-      axios: 0.24.0
+      axios: 0.28.1
       co: 4.6.0
 
   ../../packages/psydb-i18n:
@@ -1188,6 +1204,23 @@ importers:
     specifiers:
       chai: ~4.3.7
       mocha: ~10.2.0
+    devDependencies:
+      chai: 4.3.10
+      mocha: 10.2.0
+
+  ../../packages/psydb-schema-utils:
+    specifiers:
+      '@cdxoo/debug-js-fork': ~0.0.1
+      '@cdxoo/gather-possible-jss-paths': ~0.0.5
+      '@cdxoo/stringify-path-perlstyle': ~0.0.3
+      '@mpieva/psydb-core-utils': workspace:*
+      chai: ~4.3.7
+      mocha: ~10.2.0
+    dependencies:
+      '@cdxoo/debug-js-fork': 0.0.1
+      '@cdxoo/gather-possible-jss-paths': 0.0.5
+      '@cdxoo/stringify-path-perlstyle': 0.0.3
+      '@mpieva/psydb-core-utils': link:../psydb-core-utils
     devDependencies:
       chai: 4.3.10
       mocha: 10.2.0
@@ -1583,13 +1616,13 @@ importers:
     specifiers:
       '@mpieva/psydb-common-lib': workspace:*
       '@mpieva/psydb-timezone-helpers': workspace:*
-      axios: ~0.24.0
+      axios: ~0.28.1
       chai: ~4.3.7
       mocha: ~10.2.0
     devDependencies:
       '@mpieva/psydb-common-lib': link:../psydb-common-lib
       '@mpieva/psydb-timezone-helpers': link:../psydb-timezone-helpers
-      axios: 0.24.0
+      axios: 0.28.1
       chai: 4.3.10
       mocha: 10.2.0
 
@@ -1624,7 +1657,7 @@ importers:
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
       '@mpieva/psydb-driver-nodejs': workspace:~0.1.0-alpha
       '@mpieva/psydb-fixtures': workspace:*
-      axios: ~0.24.0
+      axios: ~0.28.1
       chai: ~4.3.7
       co: ~4.6.0
       commander: ~10.0.1
@@ -1636,12 +1669,12 @@ importers:
       koa-compose: ~4.1.0
       libqp: ~2.0.1
       mocha: ~10.2.0
-      nodemailer: ~6.8.0
+      nodemailer: ~6.9.14
     dependencies:
       '@mpieva/psydb-common-lib': link:../psydb-common-lib
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
       '@mpieva/psydb-driver-nodejs': link:../psydb-driver-nodejs
-      axios: 0.24.0_debug@4.3.4
+      axios: 0.28.1_debug@4.3.4
       co: 4.6.0
       commander: 10.0.1
       common-tags: 1.8.2
@@ -1651,7 +1684,7 @@ importers:
       imapflow: 1.0.162
       koa-compose: 4.1.0
       libqp: 2.0.1
-      nodemailer: 6.8.0
+      nodemailer: 6.9.14
     devDependencies:
       '@mpieva/psydb-api': link:../psydb-api
       '@mpieva/psydb-api-mocha-test-tools': link:../psydb-api-mocha-test-tools
@@ -3074,6 +3107,16 @@ packages:
       react: 17.0.2
     dev: true
 
+  /@cdxoo/gather-possible-jss-paths/0.0.5:
+    resolution: {integrity: sha512-0Zx3YVrGooawtaRbNjtKxtllqv/6qGEJLXYpkmKzLDrpsfPY9gtBrLX11JPZQ6GF/BdZ40vFaAhGk0A8E2DCwg==}
+    dependencies:
+      '@cdxoo/stringify-path-perlstyle': 0.0.2
+      '@cdxoo/traverse': 0.0.2
+      debug: 4.3.4
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
   /@cdxoo/inline-string/1.0.0:
     resolution: {integrity: sha512-lsGS4ZnzLWAiJwz/S5DlnIUu6fecc2H6Bg8+m4kl/fkgR+0fg413xo4d4UCFB8fu5fWtFiHq5gGf+PYiwszwbQ==}
 
@@ -3226,6 +3269,14 @@ packages:
       react-router: 5.2.1_react@17.0.2
       url-search-params-polyfill: 8.2.5
     dev: true
+
+  /@cdxoo/stringify-path-perlstyle/0.0.2:
+    resolution: {integrity: sha512-s//+QrvfhsgVBRwf7KiYht9VrZLGLOZLomB0ca55HwFfLCdm9BkJ150A+xt10kFiJIdQUKReEwOje75BS5hDCg==}
+    dev: false
+
+  /@cdxoo/stringify-path-perlstyle/0.0.3:
+    resolution: {integrity: sha512-K0eS80F6P8TURiMXR4f1hohUgUJhwr5XEQ85oQQOWfghjOptRfxrAMnUrO0FbnX+1nI0b4bvmaajYGf1i9Me+Q==}
+    dev: false
 
   /@cdxoo/switch-koa-compose/1.0.1:
     resolution: {integrity: sha512-LHgwdYcAARVLCI5iypnKAuKbAKArWPb5XHXPVZocYu0/QeQicZ8UvhWYlKXM/Uup2xnf8jv1l33dBOL6bgm1jQ==}
@@ -4437,14 +4488,14 @@ packages:
     resolution: {integrity: sha512-NmWvPnx0F1SfrQbYwOi7OeaNGokp9XhzNioJ/CSBs8Qa4vxug81mhJEAVZwxXuBmYB5KDRfMq/F3RR0BIU7sWg==}
     dev: true
 
-  /axios-cookiejar-support/4.0.7_axios@0.24.0+tough-cookie@4.1.4:
+  /axios-cookiejar-support/4.0.7_axios@0.28.1+tough-cookie@4.1.4:
     resolution: {integrity: sha512-9vpE3y/a2l2Vs2XEJE4L2z0GWnlpJ4Xj+kDaoCtrpPfS1J3oikXBrxRJX6H62/ZcelOGe+519yW7mqXCIoPXuw==}
     engines: {node: '>=14.18.0 <15.0.0 || >=16.0.0'}
     peerDependencies:
       axios: '>=0.20.0'
       tough-cookie: '>=4.0.0'
     dependencies:
-      axios: 0.24.0
+      axios: 0.28.1
       http-cookie-agent: 5.0.4_tough-cookie@4.1.4
       tough-cookie: 4.1.4
     transitivePeerDependencies:
@@ -4453,17 +4504,21 @@ packages:
       - undici
     dev: false
 
-  /axios/0.24.0:
-    resolution: {integrity: sha512-Q6cWsys88HoPgAaFAVUb0WpPk0O8iTeisR9IMqy9G8AbO4NlpVknrnQS03zzF9PGAWgO3cgletO3VjV/P7VztA==}
+  /axios/0.28.1:
+    resolution: {integrity: sha512-iUcGA5a7p0mVb4Gm/sy+FSECNkPFT4y7wt6OM/CDpO/OnNCvSs3PoMG8ibrC9jRoGYU0gUK5pXVC4NPXq6lHRQ==}
     dependencies:
       follow-redirects: 1.15.6_debug@4.3.4
+      form-data: 4.0.0
+      proxy-from-env: 1.1.0
     transitivePeerDependencies:
       - debug
 
-  /axios/0.24.0_debug@4.3.4:
-    resolution: {integrity: sha512-Q6cWsys88HoPgAaFAVUb0WpPk0O8iTeisR9IMqy9G8AbO4NlpVknrnQS03zzF9PGAWgO3cgletO3VjV/P7VztA==}
+  /axios/0.28.1_debug@4.3.4:
+    resolution: {integrity: sha512-iUcGA5a7p0mVb4Gm/sy+FSECNkPFT4y7wt6OM/CDpO/OnNCvSs3PoMG8ibrC9jRoGYU0gUK5pXVC4NPXq6lHRQ==}
     dependencies:
       follow-redirects: 1.15.6_debug@4.3.4
+      form-data: 4.0.0
+      proxy-from-env: 1.1.0
     transitivePeerDependencies:
       - debug
     dev: false
@@ -5032,6 +5087,15 @@ packages:
     dependencies:
       source-map: 0.6.1
     dev: true
+
+  /clean-deep/3.4.0:
+    resolution: {integrity: sha512-Lo78NV5ItJL/jl+B5w0BycAisaieJGXK1qYi/9m4SjR8zbqmrUtO7Yhro40wEShGmmxs/aJLI/A+jNhdkXK8mw==}
+    engines: {node: '>=4'}
+    dependencies:
+      lodash.isempty: 4.4.0
+      lodash.isplainobject: 4.0.6
+      lodash.transform: 4.6.0
+    dev: false
 
   /cliui/5.0.0:
     resolution: {integrity: sha512-PYeGSEmmHM6zvoef2w8TPzlrnNpXIjTipYK780YswmIP9vjxmd6Y2a3CB2Ks6/AU8NHjZugXvo8w3oWM2qnwXA==}
@@ -5886,6 +5950,11 @@ packages:
     resolution: {integrity: sha512-TPJXq8JqFaVYm2CWmPvnP2Iyo4ZSM7/QKcSmuMLDObfpH5fi7RUGmd/rTDf+rut/saiDiQEeVTNgAmJEdAOx0w==}
     engines: {node: '>= 0.8'}
 
+  /encodeurl/2.0.0:
+    resolution: {integrity: sha512-Q0n9HRi4m6JuGIV1eFlmvJB7ZEVxu93IrMyiMsGC0lrMJMWzRgx6WGquyfQgZVb31vhGgXnfmPNNXmxnOkRBrg==}
+    engines: {node: '>= 0.8'}
+    dev: false
+
   /encoding-japanese/2.0.0:
     resolution: {integrity: sha512-++P0RhebUC8MJAwJOsT93dT+5oc5oPImp1HubZpAuCZ5kTLnhuuBhKHj2jJeO/Gj93idPBWmIuQ9QWMe5rX3pQ==}
     engines: {node: '>=8.10.0'}
@@ -6457,6 +6526,14 @@ packages:
 
   /form-data/3.0.1:
     resolution: {integrity: sha512-RHkBKtLWUVwd7SqRIvCZMEvAMoGUp0XU+seQiZejj0COz3RI3hWP4sCv3gZWWLjJTd7rGwcsF5eKZGii0r/hbg==}
+    engines: {node: '>= 6'}
+    dependencies:
+      asynckit: 0.4.0
+      combined-stream: 1.0.8
+      mime-types: 2.1.35
+
+  /form-data/4.0.0:
+    resolution: {integrity: sha512-ETEklSGi5t0QMZuiXoA/Q6vcnxcLQP5vdugSpuAyi6SVGi2clPPp+xgEhuMaHC+zGgn31Kd235W35f7Hykkaww==}
     engines: {node: '>= 6'}
     dependencies:
       asynckit: 0.4.0
@@ -8460,9 +8537,21 @@ packages:
     resolution: {integrity: sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow==}
     dev: true
 
+  /lodash.isempty/4.4.0:
+    resolution: {integrity: sha512-oKMuF3xEeqDltrGMfDxAPGIVMSSRv8tbRSODbrs4KGsRRLEhrW8N8Rd4DRgB2+621hY8A8XwwrTVhXWpxFvMzg==}
+    dev: false
+
+  /lodash.isplainobject/4.0.6:
+    resolution: {integrity: sha512-oSXzaWypCMHkPC3NvBEaPHf0KsA5mvPrOPgQWDsbg8n7orZ290M0BmC/jgRZ4vcJ6DTAhjrsSYgdsW/F+MFOBA==}
+    dev: false
+
   /lodash.sortby/4.7.0:
     resolution: {integrity: sha512-HDWXG8isMntAyRF5vZ7xKuEvOhT4AhlRt/3czTSjvGUxjYCBVRQY48ViDHyfYz9VIoBkW4TMGQNapx+l3RUwdA==}
     dev: true
+
+  /lodash.transform/4.6.0:
+    resolution: {integrity: sha512-LO37ZnhmBVx0GvOU/caQuipEh4GN82TcWv3yHlebGDgOxbxiwwzW5Pcx2AcvpIv2WmvmSMoC492yQFNhy/l/UQ==}
+    dev: false
 
   /lodash/4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
@@ -9103,13 +9192,13 @@ packages:
   /node-releases/2.0.14:
     resolution: {integrity: sha512-y10wOWt8yZpqXmOgRo77WaHEmhYQYGNA6y421PKsKYWEK8aW+cqAphborZDhqfyKrbZEN92CN1X2KbafY2s7Yw==}
 
-  /nodemailer/6.8.0:
-    resolution: {integrity: sha512-EjYvSmHzekz6VNkNd12aUqAco+bOkRe3Of5jVhltqKhEsjw/y0PYPJfp83+s9Wzh1dspYAkUW/YNQ350NATbSQ==}
+  /nodemailer/6.9.13:
+    resolution: {integrity: sha512-7o38Yogx6krdoBf3jCAqnIN4oSQFx+fMa0I7dK1D+me9kBxx12D+/33wSb+fhOCtIxvYJ+4x4IMEhmhCKfAiOA==}
     engines: {node: '>=6.0.0'}
     dev: false
 
-  /nodemailer/6.9.13:
-    resolution: {integrity: sha512-7o38Yogx6krdoBf3jCAqnIN4oSQFx+fMa0I7dK1D+me9kBxx12D+/33wSb+fhOCtIxvYJ+4x4IMEhmhCKfAiOA==}
+  /nodemailer/6.9.14:
+    resolution: {integrity: sha512-Dobp/ebDKBvz91sbtRKhcznLThrKxKt97GI2FAlAyy+fk19j73Uz3sBXolVtmcXjaorivqsbbbjDY+Jkt4/bQA==}
     engines: {node: '>=6.0.0'}
     dev: false
 
@@ -9715,6 +9804,9 @@ packages:
       forwarded: 0.2.0
       ipaddr.js: 1.9.1
     dev: true
+
+  /proxy-from-env/1.1.0:
+    resolution: {integrity: sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==}
 
   /prr/1.0.1:
     resolution: {integrity: sha512-yPw4Sng1gWghHQWj0B3ZggWUm4qVbPwPFcRG8KyxiU7J2OHFSoEHKS+EZ3fv5l1t9CyCiop6l/ZYeWbrgoQejw==}

@@ -1,10 +1,17 @@
+'use strict';
 module.exports = {
-    gatherRefs: require('./gather-refs'),
-    resolveRefs: require('./resolve-refs'),
-    replaceRefs: require('./replace-refs'),
-    makeObjects: require('./make-objects'),
+    runDefaultPipeline: require('./run-default-pipeline'),
 
+    parseSchemaCSV: require('./parse-schema-csv'),
+    injectRefIds: require('./inject-ref-ids'),
+ 
     dumbParseCSV: require('./dumb-parse-csv'),
-    parseDefinedCSV: require('./parse-defined-csv'),
-    deserializers: require('./deserializers'),
+    dumbMakeObjects: require('./dumb-make-objects'),
+    
+    gatherPossibleRefs: require('./gather-possible-refs'),
+    createRefMappings: require('./create-ref-mappings'),
+    resolveRefs: require('./resolve-refs'),
+    replaceRefsByMapping: require('./replace-refs-by-mapping'),
+    
+    //deserializers: require('./deserializers'), // FIXME: make obs
 }

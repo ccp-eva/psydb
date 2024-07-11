@@ -38,11 +38,11 @@ const SideNav = (ps) => {
             >
                 <div className='navbar-nav'>
                     
-                    {/*<WhenAllowed isRoot>
+                    <WhenAllowed isRoot>
                         <Link to='/csv-imports'><b>
                             { translate('CSV Imports') }
                         </b></Link>
-                    </WhenAllowed>*/}
+                    </WhenAllowed>
 
                     <WhenAllowed flags={[
                         'canReadSubjects', 'canWriteSubjects'

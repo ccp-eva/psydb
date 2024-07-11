@@ -19,12 +19,20 @@ const Control = (ps) => {
 
     return (
         <div className=''>
-            <Fields.ForeignId
-                label={ translate('Subject') }
-                dataXPath={`${dataXPath}.subjectId`}
-                collection='subject'
-                recordType={ subjectType }
-                constraints={ subjectConstraints }
+            <div className='mb-3'>
+                <Fields.ForeignId
+                    label={ translate('Subject') }
+                    dataXPath={`${dataXPath}.subjectId`}
+                    collection='subject'
+                    recordType={ subjectType }
+                    constraints={ subjectConstraints }
+                    required
+                />
+            </div>
+            <Fields.SaneString
+                label={ translate('_wkprc_subjectRole') }
+                dataXPath={`${dataXPath}.role`}
+                required
             />
             <Fields.SaneString
                 label={ translate('Comment') }

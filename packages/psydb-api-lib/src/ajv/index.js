@@ -11,10 +11,13 @@ var {
     getSystemTimezone,
 } = require('@mpieva/psydb-timezone-helpers');
 
-var AjvWrapper = ({
-    disableProhibitedKeyword = false,
-    ...options
-} = {}) => {
+var AjvWrapper = (bag = {}) => {
+    var {
+        disableProhibitedKeyword = false,
+        unmarshalClientTimezone, // used to unmarshal date only server side
+        formatOverrides = {},
+        ...options
+    } = bag;
 
     var wrapper = {
         errors: [],
@@ -38,11 +41,13 @@ var AjvWrapper = ({
         ...options,
     });
 
-    ajv.addFormat('email-optional', psydbFormats.emailOptional);
-    ajv.addFormat('mongodb-object-id', psydbFormats.mongodbObjectId);
-    ajv.addFormat('nanoid-default', psydbFormats.nanoidDefault);
-    ajv.addFormat('phone-number', psydbFormats.germanPhoneNumber);
-    ajv.addFormat('hex-color', psydbFormats.hexColor);
+    var mergedFormats = { ...psydbFormats, ...formatOverrides };
+
+    ajv.addFormat('email-optional', mergedFormats.emailOptional);
+    ajv.addFormat('mongodb-object-id', mergedFormats.mongodbObjectId);
+    ajv.addFormat('nanoid-default', mergedFormats.nanoidDefault);
+    ajv.addFormat('phone-number', mergedFormats.germanPhoneNumber);
+    ajv.addFormat('hex-color', mergedFormats.hexColor);
     
     ajvKeywords(ajv, [
         'uniqueItemProperties',
@@ -79,6 +84,10 @@ var AjvWrapper = ({
         // rely on it being set in the keywords using clientTimezoneOffset
         if (IANAZones.includes(data.timezone)) {
             clientTimezone = data.timezone;
+        }
+
+        if (!clientTimezone) {
+            clientTimezone = unmarshalClientTimezone;
         }
 
         wrapper.validateContext = {

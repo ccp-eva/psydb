@@ -74,6 +74,12 @@ var addLocationAndOperatorState = async (context, next) => {
 var addApestudiesWKPRCDefaultExtraState = async (context, next) => {
     var { message, cache } = context;
     var { experimentStateList } = cache.get();
+    
+    var pass = only({ from: message.payload, keys: [
+        'subjectGroupId', 'experimentName', 'roomOrEnclosure',
+        'intradaySeqNumber', 'totalSubjectCount',
+    ]})
+    var { subjectGroupId } = pass; 
     var {
         subjectGroupId,
         experimentName,

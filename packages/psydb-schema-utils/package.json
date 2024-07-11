@@ -1,0 +1,26 @@
+{
+  "name": "@mpieva/psydb-schema-utils",
+  "version": "0.1.0-alpha",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "npx mocha --config ./mocha.config.json tests"
+  },
+  "author": "Jan Schwalbe",
+  "license": "MIT",
+  "dependencies": {
+    "@cdxoo/debug-js-fork": "~0.0.1",
+    "@cdxoo/gather-possible-jss-paths": "~0.0.5",
+    "@cdxoo/stringify-path-perlstyle": "~0.0.3",
+    "@mpieva/psydb-core-utils": "workspace:*"
+  },
+  "devDependencies": {
+    "mocha": "~10.2.0",
+    "chai": "~4.3.7"
+  },
+  "config": {
+    "mongodbMemoryServer": {
+      "downloadDir": "/tmp/mongodb-memory-server/"
+    }
+  }
+}

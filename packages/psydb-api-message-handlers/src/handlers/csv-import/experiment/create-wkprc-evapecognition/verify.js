@@ -13,7 +13,7 @@ var {
 } = require('@mpieva/psydb-api-message-handler-lib');
 
 var {
-    EVApeCognitionCSV,
+    WKPRCApestudiesDefaultCSV,
     CSVImportError
 } = require('@mpieva/psydb-api-lib/csv-import-utils');
 
@@ -21,9 +21,6 @@ var compose_verifyAllowedAndPlausible = () => compose([
     verifyPermissions,
 
     verifyStudyRecord,
-    verifyLocationRecord,
-    //verifyLabOperatorRecords, // TODO
-
     verifyFileRecord,
     verifyFileMimeType,
     
@@ -39,12 +36,6 @@ var verifyPermissions = async (context, next) => {
 
     await next();
 }
-
-var verifyLocationRecord = verifyOneRecord({
-    collection: 'location',
-    by: '/payload/locationId',
-    cache: true
-});
 
 var verifyStudyRecord = verifyOneRecord({
     collection: 'study',
@@ -75,14 +66,12 @@ var tryPrepareImport = async (context, next) => {
     var { subjectCRT, study, location, file } = cache.get();
 
     try {
-        var pipelineOutput = await EVApeCognitionCSV.runPipeline({
+        var pipelineOutput = await WKPRCApestudiesDefaultCSV.runPipeline({
             db,
             csvLines: file.blob.toString(),
 
             subjectType: subjectCRT.getType(),
             study,
-            location,
-            labOperators: labOperatorIds.map(it => ({ _id: it })), // FIXME
             timezone,
         });
 

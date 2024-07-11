@@ -20,11 +20,13 @@ module.exports = {
         isEnabled: true,
         allowedIps: [ '::/0' ]
     },
-    branding: 'humankind',
-    disableLogoOverlay: true,
-    
+    //branding: 'sunway',
+    //disableLogoOverlay: true,
+    branding: 'mpiccp',
+    disableLogoOverlay: false,
+
     dev_enableStagingBanner: true,
     dev_enableDevPanel: false,
-    dev_copyNoticeGreyscale: false,
-    dev_enableForeignIdRefLinkInForms: true,
+    dev_copyNoticeGreyscale: true,
+    //dev_enableForeignIdRefLinkInForms: true,
 }

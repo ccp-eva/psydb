@@ -4,7 +4,6 @@ import logoENTextColor from './mp-logo-en-farbig-rgb.svg';
 import logoHumankindDE from './humankind-logo-de.svg';
 
 import logoSunwayWide from './sunway-logo-wide.svg';
-import logoSunwayFull from './sunway-logo-full.svg';
 import logoSunwayAdapted from './sunway-psydb.svg';
 
 const cssvars = {
@@ -96,6 +95,7 @@ const cssvars = {
 
         //'--primary': '#1c3a69',
         '--primary': '#003572',
+        '--primary-btn-disabled': '#89a3ca',
         '--primary-btn-hover': '#254b89',
         '--primary-a-disabled': '#89a3ca',
         '--primary-a-hover': '#254b89',
@@ -119,10 +119,10 @@ const branding = {
                 'de': logoDETextColor,
             },
             style: {
-                marginLeft: '-20px',
-                marginRight: '-20px',
                 marginTop: '-30px',
+                marginRight: '-20px',
                 marginBottom: '-25px',
+                marginLeft: '-20px',
             }
         },
         sidenav: {
@@ -157,59 +157,15 @@ const branding = {
             }
         }
     },
-    sunwayadapted: {
-        cssvars: cssvars.sunway,
-        landing: {
-            logos: { 'en': logoSunwayAdapted },
-            style: {
-                width: '500px',
-                marginBottom: '-10px',
-            }
-        },
-        sidenav: {
-            logos: { 'en': logoSunwayAdapted },
-            style: {
-                width: '193px',
-                marginBottom: '10px',
-                marginTop: '-15px',
-            }
-        }
-    },
-    sunwayfull: {
-        cssvars: cssvars.sunway,
-        landing: {
-            logos: { 'en': logoSunwayFull },
-            style: {
-                width: '400px',
-                marginLeft: '50px',
-                marginBottom: '15px',
-            }
-        },
-        sidenav: {
-            logos: { 'en': logoSunwayFull },
-            style: {
-                width: '193px',
-                marginBottom: '10px',
-                marginTop: '-15px',
-            }
-        }
-    },
-    sunwaywide: {
+    sunway: {
         cssvars: cssvars.sunway,
         landing: {
             logos: { 'en': logoSunwayWide },
-            style: {
-                width: '500px',
-                marginBottom: '15px',
-            }
+            style: { width: '500px', marginBottom: '15px' }
         },
         sidenav: {
-            logos: { 'en': logoSunwayFull },
-            style: {
-                width: '193px',
-                marginBottom: '10px',
-                marginTop: '-15px',
-            }
+            logos: { 'en': logoSunwayAdapted },
+            style: { width: '193px', margin: '-15px 0 10px 0' }
         }
     },
 }
