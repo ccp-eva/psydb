@@ -11,7 +11,7 @@
   "dependencies": {
     "co": "~4.6.0",
     "mongodb": "~3.6.3",
-    "axios": "~0.24.0",
+    "axios": "~0.28.1",
     "commander": "~10.0.1",
     "debug": "~4.3.4",
     "@mpieva/psydb-core-utils": "workspace:*",

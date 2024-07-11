@@ -290,7 +290,7 @@ importers:
       '@mpieva/psydb-core-utils': workspace:*
       '@mpieva/psydb-driver-nodejs': workspace:*
       '@mpieva/psydb-fixtures': workspace:*
-      axios: ~0.24.0
+      axios: ~0.28.1
       chai: ~4.3.7
       co: ~4.6.0
       commander: ~10.0.1
@@ -304,7 +304,7 @@ importers:
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
       '@mpieva/psydb-driver-nodejs': link:../psydb-driver-nodejs
       '@mpieva/psydb-fixtures': link:../psydb-fixtures
-      axios: 0.24.0_debug@4.3.4
+      axios: 0.28.1_debug@4.3.4
       co: 4.6.0
       commander: 10.0.1
       debug: 4.3.4
@@ -726,12 +726,12 @@ importers:
 
   ../../packages/psydb-axios-test-wrapper:
     specifiers:
-      axios: ~0.24.0
+      axios: ~0.28.1
       axios-cookiejar-support: ~4.0.7
       tough-cookie: ~4.1.3
     dependencies:
-      axios: 0.24.0
-      axios-cookiejar-support: 4.0.7_axios@0.24.0+tough-cookie@4.1.4
+      axios: 0.28.1
+      axios-cookiejar-support: 4.0.7_axios@0.28.1+tough-cookie@4.1.4
       tough-cookie: 4.1.4
 
   ../../packages/psydb-common-config:
@@ -971,10 +971,10 @@ importers:
 
   ../../packages/psydb-fixtures-extra:
     specifiers:
-      axios: ~0.24.0
+      axios: ~0.28.1
       co: ~4.6.0
     dependencies:
-      axios: 0.24.0
+      axios: 0.28.1
       co: 4.6.0
 
   ../../packages/psydb-i18n:
@@ -1616,13 +1616,13 @@ importers:
     specifiers:
       '@mpieva/psydb-common-lib': workspace:*
       '@mpieva/psydb-timezone-helpers': workspace:*
-      axios: ~0.24.0
+      axios: ~0.28.1
       chai: ~4.3.7
       mocha: ~10.2.0
     devDependencies:
       '@mpieva/psydb-common-lib': link:../psydb-common-lib
       '@mpieva/psydb-timezone-helpers': link:../psydb-timezone-helpers
-      axios: 0.24.0
+      axios: 0.28.1
       chai: 4.3.10
       mocha: 10.2.0
 
@@ -1657,7 +1657,7 @@ importers:
       '@mpieva/psydb-core-utils': workspace:~0.1.0-alpha
       '@mpieva/psydb-driver-nodejs': workspace:~0.1.0-alpha
       '@mpieva/psydb-fixtures': workspace:*
-      axios: ~0.24.0
+      axios: ~0.28.1
       chai: ~4.3.7
       co: ~4.6.0
       commander: ~10.0.1
@@ -1674,7 +1674,7 @@ importers:
       '@mpieva/psydb-common-lib': link:../psydb-common-lib
       '@mpieva/psydb-core-utils': link:../psydb-core-utils
       '@mpieva/psydb-driver-nodejs': link:../psydb-driver-nodejs
-      axios: 0.24.0_debug@4.3.4
+      axios: 0.28.1_debug@4.3.4
       co: 4.6.0
       commander: 10.0.1
       common-tags: 1.8.2
@@ -4488,14 +4488,14 @@ packages:
     resolution: {integrity: sha512-NmWvPnx0F1SfrQbYwOi7OeaNGokp9XhzNioJ/CSBs8Qa4vxug81mhJEAVZwxXuBmYB5KDRfMq/F3RR0BIU7sWg==}
     dev: true
 
-  /axios-cookiejar-support/4.0.7_axios@0.24.0+tough-cookie@4.1.4:
+  /axios-cookiejar-support/4.0.7_axios@0.28.1+tough-cookie@4.1.4:
     resolution: {integrity: sha512-9vpE3y/a2l2Vs2XEJE4L2z0GWnlpJ4Xj+kDaoCtrpPfS1J3oikXBrxRJX6H62/ZcelOGe+519yW7mqXCIoPXuw==}
     engines: {node: '>=14.18.0 <15.0.0 || >=16.0.0'}
     peerDependencies:
       axios: '>=0.20.0'
       tough-cookie: '>=4.0.0'
     dependencies:
-      axios: 0.24.0
+      axios: 0.28.1
       http-cookie-agent: 5.0.4_tough-cookie@4.1.4
       tough-cookie: 4.1.4
     transitivePeerDependencies:
@@ -4504,17 +4504,21 @@ packages:
       - undici
     dev: false
 
-  /axios/0.24.0:
-    resolution: {integrity: sha512-Q6cWsys88HoPgAaFAVUb0WpPk0O8iTeisR9IMqy9G8AbO4NlpVknrnQS03zzF9PGAWgO3cgletO3VjV/P7VztA==}
+  /axios/0.28.1:
+    resolution: {integrity: sha512-iUcGA5a7p0mVb4Gm/sy+FSECNkPFT4y7wt6OM/CDpO/OnNCvSs3PoMG8ibrC9jRoGYU0gUK5pXVC4NPXq6lHRQ==}
     dependencies:
       follow-redirects: 1.15.6_debug@4.3.4
+      form-data: 4.0.0
+      proxy-from-env: 1.1.0
     transitivePeerDependencies:
       - debug
 
-  /axios/0.24.0_debug@4.3.4:
-    resolution: {integrity: sha512-Q6cWsys88HoPgAaFAVUb0WpPk0O8iTeisR9IMqy9G8AbO4NlpVknrnQS03zzF9PGAWgO3cgletO3VjV/P7VztA==}
+  /axios/0.28.1_debug@4.3.4:
+    resolution: {integrity: sha512-iUcGA5a7p0mVb4Gm/sy+FSECNkPFT4y7wt6OM/CDpO/OnNCvSs3PoMG8ibrC9jRoGYU0gUK5pXVC4NPXq6lHRQ==}
     dependencies:
       follow-redirects: 1.15.6_debug@4.3.4
+      form-data: 4.0.0
+      proxy-from-env: 1.1.0
     transitivePeerDependencies:
       - debug
     dev: false
@@ -6522,6 +6526,14 @@ packages:
 
   /form-data/3.0.1:
     resolution: {integrity: sha512-RHkBKtLWUVwd7SqRIvCZMEvAMoGUp0XU+seQiZejj0COz3RI3hWP4sCv3gZWWLjJTd7rGwcsF5eKZGii0r/hbg==}
+    engines: {node: '>= 6'}
+    dependencies:
+      asynckit: 0.4.0
+      combined-stream: 1.0.8
+      mime-types: 2.1.35
+
+  /form-data/4.0.0:
+    resolution: {integrity: sha512-ETEklSGi5t0QMZuiXoA/Q6vcnxcLQP5vdugSpuAyi6SVGi2clPPp+xgEhuMaHC+zGgn31Kd235W35f7Hykkaww==}
     engines: {node: '>= 6'}
     dependencies:
       asynckit: 0.4.0
@@ -9792,6 +9804,9 @@ packages:
       forwarded: 0.2.0
       ipaddr.js: 1.9.1
     dev: true
+
+  /proxy-from-env/1.1.0:
+    resolution: {integrity: sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==}
 
   /prr/1.0.1:
     resolution: {integrity: sha512-yPw4Sng1gWghHQWj0B3ZggWUm4qVbPwPFcRG8KyxiU7J2OHFSoEHKS+EZ3fv5l1t9CyCiop6l/ZYeWbrgoQejw==}
