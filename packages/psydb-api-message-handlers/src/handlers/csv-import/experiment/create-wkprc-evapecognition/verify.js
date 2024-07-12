@@ -13,7 +13,7 @@ var {
 } = require('@mpieva/psydb-api-message-handler-lib');
 
 var {
-    WKPRCApestudiesDefaultCSV,
+    ExperimentCSV,
     CSVImportError
 } = require('@mpieva/psydb-api-lib/csv-import-utils');
 
@@ -63,17 +63,19 @@ var verifyFileMimeType = async (context, next) => {
 var tryPrepareImport = async (context, next) => {
     var { db, message, cache } = context;
     var { timezone, payload: { labOperatorIds }} = message;
-    var { subjectCRT, study, location, file } = cache.get();
+    var { subjectCRT, study, file } = cache.get();
 
     try {
-        var pipelineOutput = await WKPRCApestudiesDefaultCSV.runPipeline({
-            db,
-            csvLines: file.blob.toString(),
+        var pipelineOutput = await (
+            ExperimentCSV.WKPRCApestudiesDefault.runPipeline({
+                db,
+                csvLines: file.blob.toString(),
 
-            subjectType: subjectCRT.getType(),
-            study,
-            timezone,
-        });
+                subjectType: subjectCRT.getType(),
+                study,
+                timezone,
+            })
+        );
 
         cache.merge({ pipelineOutput });
     }

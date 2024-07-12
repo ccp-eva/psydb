@@ -13,7 +13,7 @@ var {
 } = require('@mpieva/psydb-api-lib');
 
 var {
-    WKPRCApestudiesDefaultCSV,
+    ExperimentCSV,
     CSVImportError
 } = require('@mpieva/psydb-api-lib/csv-import-utils');
 
@@ -50,14 +50,16 @@ var preview = async (context, next) => {
         findOne_RAW({ db, study: { _id: studyId }})
     );
     
-    var pipelineOutput = await WKPRCApestudiesDefaultCSV.runPipeline({
-        db,
-        csvLines: file.blob.toString(),
+    var pipelineOutput = await (
+        ExperimentCSV.WKPRCApestudiesDefault.runPipeline({
+            db,
+            csvLines: file.blob.toString(),
 
-        subjectType,
-        study,
-        timezone: i18n.timezone
-    });
+            subjectType,
+            study,
+            timezone: i18n.timezone
+        })
+    );
 
     var { pipelineData, transformed } = pipelineOutput;
     

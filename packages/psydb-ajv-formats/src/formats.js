@@ -58,6 +58,9 @@ module.exports = {
     },
     emailOptional: {
         validate: regexes.emailOptional,
+    },
+    timeHM: {
+        validate: regexes.timeHM,
     }
     /*dateTime: {
         validate: dateTime,
