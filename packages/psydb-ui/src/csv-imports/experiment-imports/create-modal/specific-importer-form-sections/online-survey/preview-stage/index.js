@@ -3,13 +3,7 @@ import React, { useState } from 'react';
 import { only, groupBy } from '@mpieva/psydb-core-utils';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useSend } from '@mpieva/psydb-ui-hooks';
-import {
-    Alert,
-    Button,
-    SmallFormFooter,
-    LoadingIndicator,
-    AsyncButton,
-} from '@mpieva/psydb-ui-layout';
+import { Alert, LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
 import PreviewRecord from './preview-record';
 import ButtonHeader from './button-header';
@@ -26,18 +20,18 @@ const PreviewStage = (ps) => {
     ]});
 
     var commonPayload = {
-        fileId, studyId, subjectType, 
+        fileId, studyId, subjectType
     }
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.previewCSVExperimentImport({
-            importType: 'wkprc-apestudies-default',
+            importType: 'online-survey',
             ...commonPayload,
             extraAxiosConfig: { disableErrorModal: [ 409 ]}
         })
     ), []);
 
     var send = useSend(() => ({
-        type: 'csv-import/experiment/create-wkprc-apestudies-default',
+        type: 'csv-import/experiment/create-online-survey',
         payload: { ...commonPayload }
     }), { ...triggerBag })
 
@@ -105,7 +99,5 @@ const PreviewStage = (ps) => {
         )
     }
 }
-
-var filterTruthy = (ary) => ary.filter(it => !!it);
 
 export default PreviewStage;

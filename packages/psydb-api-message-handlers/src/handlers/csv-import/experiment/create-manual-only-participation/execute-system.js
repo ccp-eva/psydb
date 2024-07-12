@@ -10,7 +10,7 @@ var executeSystemEvents = async (context) => {
     } = context;
 
     var { timezone, payload } = message;
-    var { subjectType  } = payload;
+    var { subjectType, locationType } = payload;
 
     var { study, file, pipelineOutput } = cache.get();
 
@@ -21,11 +21,12 @@ var executeSystemEvents = async (context) => {
     var csvImportId = await createId();
     await db.collection('csvImport').insert({
         _id: csvImportId,
-        type: 'experiment/wkprc-apestudies-default',
+        type: 'experiment/manual-only-participation',
         createdBy: personnelId,
         createdAt: now,
         fileId: file._id,
         studyId: study._id,
+        locationType,
         subjectType,
         pipelineData,
     });

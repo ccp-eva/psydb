@@ -93,18 +93,9 @@ const DataIssueItem = (ps) => {
 }
 
 var demapping = {
-    year: [{ key: 'year', type: 'scalar' }],
-    month: [{ key: 'month', type: 'scalar' }],
-    day: [{ key: 'day', type: 'scalar' }],
+    date: [{ key: 'date', type: 'scalar' }],
+    time: [{ key: 'time', type: 'scalar' }],
     subject: [{ key: 'subjectData', type: 'array' }, { key: 'subjectId', type: 'scalar' }],
-    role: [{ key: 'subjectData', type: 'array' }, { key: 'role', type: 'scalar' }],
-    comment: [{ key: 'subjectData', type: 'array' }, { key: 'comment', type: 'scalar' }],
-    experiment_name: [{ key: 'experimentName', type: 'scalar' }],
-    room_enclosure: [{ key: 'roomOrEnclosure', type: 'scalar' }],
-    daily_running_No: [{ key: 'intradaySeqNumber', type: 'scalar' }],
-    location: [{ key: 'locationId', type: 'scalar' }],
-    trial_participants: [{ key: 'totalSubjectCount', type: 'scalar' }],
-    experimenter_id: [{ key: 'experimentOperatorIds', type: 'array' }],
 }
 
 var demap = ({ dataPath, demapping }) => {

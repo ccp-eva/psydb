@@ -17,7 +17,7 @@ import IssueItemsAlert from './issue-items-alert';
 
 const PreviewStage = (ps) => {
     var { studyId, subjectType, formValues, gotoPrepare } = ps;
-    var { fileId } = formValues['$'];
+    var { fileId, locationType } = formValues['$'];
 
     var translate = useUITranslation();
 
@@ -26,18 +26,18 @@ const PreviewStage = (ps) => {
     ]});
 
     var commonPayload = {
-        fileId, studyId, subjectType, 
+        fileId, studyId, subjectType, locationType,
     }
     var [ didFetch, fetched ] = useFetch((agent) => (
         agent.previewCSVExperimentImport({
-            importType: 'wkprc-apestudies-default',
+            importType: 'manual-only-participation',
             ...commonPayload,
             extraAxiosConfig: { disableErrorModal: [ 409 ]}
         })
     ), []);
 
     var send = useSend(() => ({
-        type: 'csv-import/experiment/create-wkprc-apestudies-default',
+        type: 'csv-import/experiment/create-manual-only-participation',
         payload: { ...commonPayload }
     }), { ...triggerBag })
 
