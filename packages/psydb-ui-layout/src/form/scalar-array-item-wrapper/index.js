@@ -32,7 +32,7 @@ export const ScalarArrayItemWrapper = (ps) => {
 
     return (
         <li className={ className }>
-            <div className='d-flex align-items-center'>
+            <div className='d-flex align-items-top'>
                 <div className='flex-grow mr-3'>
                     { children }
                 </div>

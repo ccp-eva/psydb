@@ -89,6 +89,11 @@ var CRTSettings = ({ data }) => {
                 ]},
                 'props.isNullable': { $ne: true }
             },
+            // FIXME: should maybe have an optonal
+            // or a 'default unknwon' flag or something
+            { 'systemType': { $in: [
+                'BiologicalGender'
+            ]}}
         ]});
         return required;
     }

@@ -1,9 +1,9 @@
 import React from 'react';
 import { createTranslate } from '@mpieva/psydb-common-translations';
+import { useUIConfig, useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { usePermissions } from '@mpieva/psydb-ui-hooks';
 import { Nav, LinkContainer } from '@mpieva/psydb-ui-layout';
 import { WhenAllowed } from '@mpieva/psydb-ui-lib';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 
 import Logo from './main-logo';
 
@@ -20,6 +20,11 @@ const Link = ({
 const SideNav = (ps) => {
     var translate = useUITranslation();
     
+    var {
+        dev_enableCSVSubjectImport = false,
+        dev_enableCSVParticipationImport = false,
+    } = useUIConfig();
+
     var permissions = usePermissions();
     var canViewAnyCalendar = (
         permissions.hasSomeLabOperationFlags({
@@ -38,6 +43,17 @@ const SideNav = (ps) => {
             >
                 <div className='navbar-nav'>
                     
+                    {(
+                        dev_enableCSVSubjectImport
+                        || dev_enableCSVParticipationImport
+                    ) && (
+                        <WhenAllowed isRoot>
+                            <Link to='/csv-imports'><b>
+                                { translate('CSV Imports') }
+                            </b></Link>
+                        </WhenAllowed>
+                    )}
+
                     <WhenAllowed flags={[
                         'canReadSubjects', 'canWriteSubjects'
                     ]}>

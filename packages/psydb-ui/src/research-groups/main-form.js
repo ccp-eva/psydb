@@ -126,6 +126,7 @@ var AssignedType = withField({
             <GenericTypeKey
                 collection={ collection }
                 dataXPath={ `${dataXPath}.key` }
+                ignoreResearchGroups={ true }
             />
         )
     },

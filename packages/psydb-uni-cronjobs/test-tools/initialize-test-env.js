@@ -51,7 +51,12 @@ var beforeAll = async function () {
                 dbName: mongo.dbName,
                 useUnifiedTopology: true,
             },
-            apiKeyAuth: { isEnabled: true, allowedIps: [ '::/0' ] }
+            apiKeyAuth: { isEnabled: true, allowedIps: [ '::/0' ] },
+            sessionSecret: [
+                '------------------------------------------',
+                'DO NOT USE IN PRODUCTION GENERATE YOUR OWN',
+                '------------------------------------------',
+            ].join(''),
         }}));
         
         var agent = createAgent(app.callback(), { enableCookies: true });

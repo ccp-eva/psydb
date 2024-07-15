@@ -18,6 +18,7 @@ const Control = (ps) => {
     var {
         dataXPath,
         subjectType,
+        subjectConstraints,
     } = ps;
 
     return (
@@ -25,15 +26,13 @@ const Control = (ps) => {
             dataXPath={`${dataXPath}.subjectId`}
             collection='subject'
             recordType={ subjectType }
+            constraints={ subjectConstraints }
         />
     )
 }
 
 const FieldComponent = withField({
     Control,
-    // FIXME: why does this work here?????????
-    // EDIT: oh its maybe because its never atually used in
-    // defautl context but only in array context
     DefaultWrapper: ({ children }) => (<>{ children }</>),
 });
 

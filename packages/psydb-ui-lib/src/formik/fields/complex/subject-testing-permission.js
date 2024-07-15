@@ -1,11 +1,11 @@
 import React from 'react';
 import inline from '@cdxoo/inline-string';
-import { useUITranslation } from '@mpieva/psydb-ui-contexts';
+import { useUITranslation, useUIConfig } from '@mpieva/psydb-ui-contexts';
 import { withField, withFieldArray } from '@cdxoo/formik-utils';
 
 import { without, jsonpointer } from '@mpieva/psydb-core-utils';
 import { SplitPartitioned } from '@mpieva/psydb-ui-layout';
-import { experimentVariants } from '@mpieva/psydb-schema-enums';
+import enums from '@mpieva/psydb-schema-enums';
 import * as ScalarFields from '../scalar';
 
 const LabProcedurePermission = withField({
@@ -19,12 +19,13 @@ const LabProcedurePermission = withField({
             existingTypeValues,
         } = ps;
         
+        var { enabledLabMethods } = useUIConfig();
         var translate = useUITranslation();
 
         var { value } = formikField;
         var allowedValues = [
             ...without(
-                experimentVariants.keys,
+                enabledLabMethods,
                 existingTypeValues
             ),
             value.labProcedureTypeKey
@@ -32,11 +33,8 @@ const LabProcedurePermission = withField({
 
         return (
             <SplitPartitioned partitions={[ 3, 2 ]}>
-                <ScalarFields.GenericEnum
+                <ScalarFields.LabMethodKey
                     dataXPath={ `${dataXPath}.labProcedureTypeKey` }
-                    //label={ translate('_testing_permission_for') }
-                    options={ translate.options(experimentVariants.mapping) }
-
                     allowedValues={ allowedValues }
                     formGroupClassName='m-0'
                     uiSplit={[ 0,12 ]}

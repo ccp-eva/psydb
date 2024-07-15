@@ -1,9 +1,6 @@
 import React from 'react';
 
-import {
-    inviteExperimentTypes
-} from '@mpieva/psydb-schema-enums';
-
+import enums from '@mpieva/psydb-schema-enums';
 import { demuxed } from '@mpieva/psydb-ui-utils';
 import {
     useFetch,
@@ -91,7 +88,7 @@ const FollowUpExperimentModalBody = (ps) => {
             })} />
         )
     }
-    else if (inviteExperimentTypes.keys.includes(experimentType)) {
+    else if (enums.inviteLabMethods.keys.includes(experimentType)) {
          prerenderedCalendar = (
             <StudyInhouseLocations { ...({
                 studyId,

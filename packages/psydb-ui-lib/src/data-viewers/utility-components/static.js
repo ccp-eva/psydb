@@ -11,6 +11,7 @@ import {
 import { Icons } from '@mpieva/psydb-ui-layout';
 import datefns from '../../date-fns';
 
+// XXX
 var collectionUIMapping = {
     'subject': 'subjects',
     'researchGroup': 'research-groups',
@@ -20,6 +21,7 @@ var collectionUIMapping = {
     'externalPerson': 'external-persons',
     'externalOrganization': 'external-organizations',
     'systemRole': 'system-roles',
+    'subjectGroup': 'subject-groups'
 }
 
 // TODO: put elsewhere
@@ -180,7 +182,7 @@ export const HelperSetItemId = (ps) => {
 }
 
 export const ForeignIdList = (ps) => {
-    var { value, props, related } = ps;
+    var { value, props, related, __useNewRelated, newTab = false } = ps;
     var { collection, recordType } = props;
     
     if (!(Array.isArray(value) && value.length)) {
@@ -195,6 +197,8 @@ export const ForeignIdList = (ps) => {
                 value={ it }
                 props={ props }
                 related={ related }
+                __useNewRelated={ __useNewRelated }
+                newTab={ newTab }
             />
         ))
     );
@@ -429,17 +433,28 @@ export const DefaultBool = (ps) => {
 }
 
 export const ForeignId = (ps) => {
-    var { value, props, related } = ps;
+    var { value, props, related, __useNewRelated, newTab = false } = ps;
     var { collection, recordType } = props;
     if (!value) {
         return <NoValue unknown={ props.displayEmptyAsUnknown } />
     }
     
-    var label = (
-        related
-        ? related.relatedRecordLabels[collection][value]._recordLabel
-        : value
-    );
+    // XXX
+    var label = 'ERROR';
+    if (__useNewRelated) {
+        label = (
+            related
+            ? related.records[collection][value]
+            : value
+        );
+    }
+    else {
+        label = (
+            related
+            ? related.relatedRecordLabels[collection][value]._recordLabel
+            : value
+        );
+    }
     
     var collectionUI = collectionUIMapping[collection];
     if (collectionUI) {
@@ -450,7 +465,9 @@ export const ForeignId = (ps) => {
         );
 
         return (
-            <a href={ uri }>{ label }</a>
+            <a target={ newTab ? '_blank' : undefined } href={ uri }>
+                { label }
+            </a>
         )
     }
     else {
@@ -467,17 +484,30 @@ export const Integer = (ps) => {
 }
 
 export const CustomRecordTypeKey = (ps) => {
-    var { value, props, related } = ps;
+    var { value, props, related, __useNewRelated = false } = ps;
     var { collection } = props;
+
+    var translate = useUITranslation();
+
     if (!value) {
         return <NoValue />
     }
-   
-    var label = (
-        related
-        ? related.relatedCustomRecordTypes[collection][value].state.label
-        : value
-    );
+  
+    var label = 'ERROR';
+    if (__useNewRelated) {
+        label = (
+            related
+            ? translate.crt(related.crts[collection][value])
+            : value
+        );
+    }
+    else {
+        label = (
+            related
+            ? related.relatedCustomRecordTypes[collection][value].state.label
+            : value
+        );
+    }
 
     return label;
 }

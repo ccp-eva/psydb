@@ -161,6 +161,14 @@ module.exports = {
         },
         availableStaticDisplayFields: [
             {
+                key: '_sequenceNumber',
+                systemType: 'SaneString',
+                dataPointer: '/sequenceNumber',
+                displayName: 'ID No.',
+                displayNameI18N: { de: 'ID Nr.' },
+                props: {},
+            },
+            {
                 key: '_firstname',
                 systemType: 'SaneString',
                 dataPointer: '/gdpr/state/firstname',
@@ -211,6 +219,10 @@ module.exports = {
             },
         ],
         staticDisplayFields: [
+            {
+                systemType: 'SaneString',
+                dataPointer: '/sequenceNumber',
+            },
             {
                 systemType: 'SaneString',
                 dataPointer: '/gdpr/state/lastname',

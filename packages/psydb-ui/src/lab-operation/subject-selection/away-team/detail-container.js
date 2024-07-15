@@ -227,7 +227,7 @@ const SubjectTableBody = (ps) => {
                 <td
                     className='user-select-none'
                     colSpan={ subjectMetadata.displayFieldData.length + 4 }
-                    style={{ color: '#006c66' }}
+                    style={{ color: 'var(--primary)' }}
                     role='button'
                     onClick={ () => {
                         onSelectManySubjects(quickSelectSubjects)

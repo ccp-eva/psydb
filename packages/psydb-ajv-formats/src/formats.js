@@ -56,6 +56,12 @@ module.exports = {
     hexColor: {
         validate: regexes.hexColor,
     },
+    emailOptional: {
+        validate: regexes.emailOptional,
+    },
+    timeHM: {
+        validate: regexes.timeHM,
+    }
     /*dateTime: {
         validate: dateTime,
         compare: util.compareDateTime,

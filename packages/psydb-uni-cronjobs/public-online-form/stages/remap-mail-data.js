@@ -24,6 +24,17 @@ var remapMailData = async (context, next) => {
         ].includes(pair.key)) {
             continue;
         }
+        
+        // NOTE: this is required due to an error in the
+        // online-form that existed for a certain time
+        // when all the erroneous mails have been processed
+        // this can be removed
+        if ([
+            'Bitte wählen'
+        ].includes(pair.value)) {
+            continue;
+        }
+        ///////////
 
         if (/Wieviele Kinder/.test(pair.key)) {
             inAdultBlock = false;

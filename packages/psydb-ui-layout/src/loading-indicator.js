@@ -6,13 +6,13 @@ const colors = {
         highlightColor: '#ffffff',
     },
     primary: {
-        baseColor: '#006c6644',
-        highlightColor: '#006c66',
+        baseColor: 'var(--loader-base-color)',
+        highlightColor: 'var(--loader-highlight-color)',
     },
     // FIXME: aaaa
     default: {
-        baseColor: '#006c6644',
-        highlightColor: '#006c66',
+        baseColor: 'var(--loader-base-color)',
+        highlightColor: 'var(--loader-highlight-color)',
     },
     danger: {
         highlightColor: '#eb394b',

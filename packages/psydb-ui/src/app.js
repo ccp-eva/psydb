@@ -2,53 +2,69 @@ import React, { useEffect, useState } from 'react';
 import { CookiesProvider } from 'react-cookie';
 import { HashRouter as Router } from 'react-router-dom';
 
-import createAgent, { simple as publicAgent } from '@mpieva/psydb-ui-request-agents';
+import {
+    withContext,
+    composeAsComponent
+} from '@cdxoo/react-compose-contexts';
 
-import config from '@mpieva/psydb-common-config';
-import { createTranslate } from '@mpieva/psydb-common-translations';
+import createAgent, { simple as publicAgent } from '@mpieva/psydb-ui-request-agents';
 
 import {
     SelfContext,
     AgentContext,
-    UIConfigContext,
+    I18NContext,
+    
     UILocaleContext,
     UILanguageContext,
     UITranslationContext,
+
+    UIConfigContext,
+    useUIConfig,
 } from '@mpieva/psydb-ui-contexts';
+
+import { useCookieI18N } from '@mpieva/psydb-ui-hooks';
+import { createI18N } from '@mpieva/psydb-ui-lib';
 
 import ErrorResponseModalSetup from './error-response-modal-setup';
 import ErrorBoundary from './error-boundary';
 
+import BrandingWrapper from './branding-wrapper';
 import PublicLanding from './public-landing';
 import Main from './main'
-
-import { withContext, composeAsComponent } from './compose-react-contexts';
-import useCookieI18N from './use-cookie-i18n';
 
 const App = () => {
     var [ isInitialized, setIsInitialized ] = useState(false);
 
     var [ state, setState ] = useState({});
-    var { authResponseStatus, self } = state;
+    var { authResponseStatus, self, config = {} } = state;
     var setSelf = (nextSelf) => setState({ ...state, self: nextSelf });
 
-    var [ i18n, setI18N ] = useCookieI18N({ config });
-    var { language, locale } = i18n;
+    var [ cookieI18N, setCookieI18N ] = useCookieI18N({ config });
+    var i18n = createI18N({ ...cookieI18N });
+    var { language, translate, localeCode, locale } = i18n;
     
-    var translate = createTranslate(language);
-    var agent = createAgent({ language, localeCode: locale.code });
+    var agent = createAgent({ language, localeCode });
 
     var onSuccessfulUpdate = (response) => {
         // FIXME: find better way to determine logout
-        if (response?.data?.data?.record) {
+        var data = response?.data?.data;
+        if (data?.authStatusCode) {
+            setState({
+                self: data.self,
+                authResponseStatus: data.authStatusCode,
+                config: data.config,
+            })
+        }
+        else if (data?.record) {
             setState({
                 self: response.data.data,
-                authResponseStatus: response.status
+                authResponseStatus: response.status,
+                config,
             });
         }
         else {
             // NOTE: reset auth status on logout /api/self on logout
-            setState({});
+            setState({ config });
         }
     }
 
@@ -65,7 +81,7 @@ const App = () => {
     var is200 = (authResponseStatus === 200);
     useEffect(() => {
         setIsInitialized(false)
-        publicAgent.get('/api/self').then(
+        publicAgent.get('/api/init-ui').then(
             (response) => {
                 onSuccessfulUpdate(response);
                 setIsInitialized(true);
@@ -79,7 +95,8 @@ const App = () => {
 
     var contextBag = {
         config,
-        language: [ language, setI18N ],
+        i18n: [ i18n, setCookieI18N ],
+        language: [ language, setCookieI18N ],
         locale,
         translate,
     }
@@ -96,10 +113,12 @@ const App = () => {
     if (authResponseStatus === 200 && self) {
         renderedView = (
             <CommonContexts { ...contextBag } agent={ agent }>
-                <ErrorResponseModalSetup />
-                <SelfContext.Provider value={{ ...self, setSelf }}>
-                    <Main onSignedOut={ onSuccessfulUpdate } />
-                </SelfContext.Provider>
+                <BrandingWrapper enableDevPanel={ false }>
+                    <ErrorResponseModalSetup />
+                    <SelfContext.Provider value={{ ...self, setSelf }}>
+                        <Main onSignedOut={ onSuccessfulUpdate } />
+                    </SelfContext.Provider>
+                </BrandingWrapper>
             </CommonContexts>
         )
     }
@@ -111,7 +130,9 @@ const App = () => {
         };
         renderedView = (
             <CommonContexts { ...contextBag } agent={ publicAgent }>
-                <PublicLanding { ...publicBag } />
+                <BrandingWrapper>
+                    <PublicLanding { ...publicBag } />
+                </BrandingWrapper>
             </CommonContexts>
         )
     }
@@ -131,6 +152,7 @@ const AppInitializing = () => (
 
 var CommonContexts = composeAsComponent(
     withContext(UIConfigContext, 'config'),
+    withContext(I18NContext, 'i18n'),
     withContext(UILocaleContext, 'locale'),
     withContext(UILanguageContext, 'language'),
     withContext(UITranslationContext, 'translate'),
@@ -140,11 +162,25 @@ var CommonContexts = composeAsComponent(
 var withCookiesProvider = (Component) => (ps) => {
     return (
         <CookiesProvider defaultSetOptions={{
+            // FIXME: theese cannot currently controlled via
+            // config; im not sure that is an issue since we only
+            // use it for i18n
             path: '/', maxAge: 365*24*60*60
         }}>
-            <Component { ...ps} />
+            <Component { ...ps } />
         </CookiesProvider>
     )
 }
 
-export default withCookiesProvider(App);
+const CookieWrapped = withCookiesProvider(App);
+
+//const ConfigWrapped = (ps) => {
+//    return (
+//        <UIConfigContext.Provider value={ config }>
+//            <CookieWrapped />
+//        </UIConfigContext.Provider>
+//    )
+//}
+
+export default CookieWrapped;
+

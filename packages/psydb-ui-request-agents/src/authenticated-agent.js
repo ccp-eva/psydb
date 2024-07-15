@@ -7,7 +7,7 @@ const createAgent = (options = {}) => {
 
     const axios = Axios.create();
 
-    const dumpPOST = ({ url }) => (bag) => {
+    const dumpPOST = ({ url }) => (bag = {}) => {
         var { extraAxiosConfig, ...payload } = bag;
         return axios.post(
             url,
@@ -557,7 +557,7 @@ const createAgent = (options = {}) => {
             {
                 studyIds: studyIds || (studyId ? [ studyId ] : undefined),
                 types: types || (type ? [ type ] : undefined),
-                subjectTypes: (subjectTypes || subjectType ? [ subjectType ] : undefined)
+                subjectTypes: (subjectTypes || (subjectType ? [ subjectType ] : undefined))
             }
         );
     }
@@ -808,6 +808,26 @@ const createAgent = (options = {}) => {
         );
     }
 
+    agent.searchCSVExperimentImports = dumpPOST({
+        url: '/api/csv-import/experiment/search',
+    });
+    agent.readCSVExperimentImport = dumpPOST({
+        url: '/api/csv-import/experiment/read',
+    });
+    agent.previewCSVExperimentImport = ({ importType, ...pass }) => dumpPOST({
+        url: `/api/csv-import/experiment/preview/${importType}`,
+    })(pass);
+
+    agent.searchCSVSubjectImports = dumpPOST({
+        url: '/api/csv-import/subject/search',
+    });
+    agent.readCSVSubjectImport = dumpPOST({
+        url: '/api/csv-import/subject/read',
+    });
+    agent.previewCSVSubjectImport = dumpPOST({
+        url: '/api/csv-import/subject/preview',
+    });
+
     agent.fetchStudySubjectTypeInfos = (bag) => {
         var {
             studyId,
@@ -838,6 +858,35 @@ const createAgent = (options = {}) => {
             CRTSettingsList.wrapResponsePromise(p);
         }
         return p;
+    }
+
+    agent.fetchStudyEnabledSubjectCRTs = (bag) => {
+        var {
+            studyId,
+            wrap = true,
+            extraAxiosConfig,
+        } = bag;
+
+        var p =  axios.post(
+            '/api/study/enabled-subject-crts',
+            { studyId },
+            extraAxiosConfig,
+        );
+
+        if (wrap) {
+            CRTSettingsList.wrapResponsePromise(p);
+        }
+        return p;
+    }
+
+    agent.fetchStudyEnabledCSVImporters = (bag) => {
+        var { studyId, subjectType, importType, extraAxiosConfig } = bag;
+
+        return axios.post(
+            '/api/study/enabled-csv-importers',
+            { studyId, subjectType, importType },
+            extraAxiosConfig,
+        );
     }
 
     agent.fetchOneRecord = (bag) => {

@@ -36,12 +36,14 @@ module.exports = {
     PhoneList: require('./phone-list'),
     Phone: require('./phone'),
     ForeignId: require('./foreign-id'),
+    MongoFk: require('./foreign-id'), // NOTE: new
     ForeignIdList: require('./foreign-id-list'),
     FullText: require('./full-text'),
     GeoCoords: require('./geo-coords'),
     HelperSetItemId: require('./helper-set-item-id'),
     HelperSetItemIdList: require('./helper-set-item-id-list'),
     Id: require('./id'),
+    MongoId: require('./id'), // NOTE: new
     IdList: require('./id-list'),
     IdentifierString: require('./identifier-string'),
     JsonPointer: require('./json-pointer'),

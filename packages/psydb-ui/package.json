@@ -46,14 +46,13 @@
     "react-datetime": "~3.1.1",
     "moment": "~2.29.1",
     "@cdxoo/omit": "~1.0.1",
-    "@cdxoo/formik-utils": "~0.8.0",
+    "@cdxoo/formik-utils": "~0.10.0",
     "jsonpointer": "~5.0.1",
     "date-fns": "~2.30.0",
     "js-base64": "~3.7.5",
     "@mpieva/psydb-timezone-helpers": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-core-utils": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-date-interval-fns": "workspace:~0.1.0-alpha",
-    "@mpieva/psydb-common-config": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-common-lib": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-common-translations": "workspace:~0.1.0-alpha",
     "@mpieva/psydb-schema-fields": "workspace:~0.1.0-alpha",
@@ -79,7 +78,8 @@
     "react-cookie": "~6.1.1",
     "svg-url-loader": "~8.0.0",
     "react-diff-viewer": "~3.1.1",
-    "@cdxoo/json-base64": "~1.0.0"
+    "@cdxoo/json-base64": "~1.0.0",
+    "@cdxoo/react-compose-contexts": "~1.0.0-beta.0"
   },
   "config": {
     "mongodbMemoryServer": {

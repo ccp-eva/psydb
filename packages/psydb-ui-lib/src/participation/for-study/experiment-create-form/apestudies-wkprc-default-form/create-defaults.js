@@ -6,7 +6,7 @@ export const createDefaults = (options = {}) => {
 
     return {
         subjectsAreTestedTogether: (
-            subjectsAreTestedTogetherOverride || false
+            subjectsAreTestedTogetherOverride || true
         ),
         subjectData: [
             {

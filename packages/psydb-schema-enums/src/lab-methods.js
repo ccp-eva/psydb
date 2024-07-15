@@ -1,7 +1,5 @@
 'use strict';
 var { only } = require('@mpieva/psydb-core-utils');
-var config = require('@mpieva/psydb-common-config');
-
 var createEnum = require('./create-enum');
 
 var allLabMethodsMapping = {
@@ -13,22 +11,13 @@ var allLabMethodsMapping = {
     'manual-only-participation': 'Field Sites',
 }
 
-var sharedLabMethodMapping = (
-    config.enabledLabMethods
-    ? only({
-        from: allLabMethodsMapping,
-        paths: config.enabledLabMethods
-    })
-    : allLabMethodsMapping
-);
-
 var inviteLabMethods = createEnum.fromMap(only({
-    from: sharedLabMethodMapping,
+    from: allLabMethodsMapping,
     paths: [ 'inhouse', 'online-video-call' ],
 }));
 
 var labMethods = createEnum.fromMap({
-    ...sharedLabMethodMapping,
+    ...allLabMethodsMapping,
 });
 
 module.exports = {

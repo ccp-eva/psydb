@@ -1,4 +1,5 @@
 'use strict';
+var { only } = require('@mpieva/psydb-core-utils');
 var { createId } = require('@mpieva/psydb-api-lib');
 
 var createBaseParticipationItems = async (context, next) => {
@@ -15,8 +16,10 @@ var createBaseParticipationItems = async (context, next) => {
         var {
             subjectId,
             status = 'participated',
-            excludeFromMoreExperimentsInStudy = false
+            excludeFromMoreExperimentsInStudy = false,
+            role = undefined,
         } = it;
+
         return {
             type: 'manual',
             realType: labMethod,
@@ -25,9 +28,9 @@ var createBaseParticipationItems = async (context, next) => {
             timestamp,
             status,
             excludeFromMoreExperimentsInStudy,
-            ...(experimentId && {
-                experimentId
-            }),
+
+            ...(experimentId && { experimentId }),
+            ...(role && ({ role })),
 
             subjectId,
         }
@@ -59,16 +62,15 @@ var addLocationAndOperators = async (context, next) => {
 
 var addApestudiesWKPRCDefaultExtraData = async (context, next) => {
     var { message, cache } = context;
-    var {
-        subjectGroupId,
-        experimentName
-    } = message.payload;
     var { participationItems } = cache.get();
+    
+    var pass = only({ from: message.payload, keys: [
+        'subjectGroupId', 'experimentName', 'roomOrEnclosure',
+        'intradaySeqNumber', 'totalSubjectCount',
+    ]})
 
     participationItems = participationItems.map(it => ({
-        ...it,
-        subjectGroupId,
-        experimentName,
+        ...it, ...pass
     }))
 
     cache.merge({ participationItems });
