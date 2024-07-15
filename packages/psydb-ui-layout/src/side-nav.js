@@ -21,8 +21,8 @@ const styleDisabled = {
 
 const styleActive = {
     ...styleBase,
-    color: '#006c66',
-    borderRight: '3px solid #006c66',
+    color: 'var(--primary)',
+    borderRight: '3px solid var(--primary)',
 }
 
 const styleInactive = {

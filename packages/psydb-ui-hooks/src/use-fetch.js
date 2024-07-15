@@ -52,6 +52,9 @@ const useFetch = (...args) => {
                     dispatch({ type: 'rejected', payload: {
                         errorResponse: err.response,
                     }});
+                    if (!err.response) {
+                        throw err;
+                    }
                 })
             }
             else {
@@ -66,12 +69,13 @@ const useFetch = (...args) => {
         var exec = () => {
             dispatch({ type: 'set-transmitting' });
             return createPromise(contextAgent).then((response) => {
-                console.log(response);
+                //console.log(response);
                 dispatch({ type: 'init-data', payload: {
                     response: response,
                     data: response.data.data
                 }})
-                return response.data.data
+                // NOTE: csv export requires response.data
+                return response;
             })
         };
         return { exec, isTransmitting: state.isTransmitting };

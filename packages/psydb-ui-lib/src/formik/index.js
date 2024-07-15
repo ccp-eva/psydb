@@ -5,4 +5,9 @@ export * as QuickSearchFields from './quick-search-fields';
 export * as ExtendedSearchFields from './extended-search-fields';
 
 export { useFormikContext } from 'formik';
-export { withField, withFieldArray } from '@cdxoo/formik-utils';
+export {
+    withField,
+    withFieldArray,
+    useTheme as useFormikTheme,
+    fakeControlledInput
+} from '@cdxoo/formik-utils';

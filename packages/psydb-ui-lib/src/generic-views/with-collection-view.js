@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRouteMatch } from 'react-router-dom';
 
-import * as enums from '@mpieva/psydb-schema-enums';
+import enums from '@mpieva/psydb-schema-enums';
 import allSchemaCreators from '@mpieva/psydb-schema-creators';
 
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';

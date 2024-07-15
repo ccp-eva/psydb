@@ -12,6 +12,7 @@ module.exports = [
     ...require('./helper-tables'),
     ...require('./permissions'),
     ...require('./crt-editor'),
+    ...require('./csv-imports'),
 
     ...require('./_fieldtype'),
     ...require('./_participationStatus'),
@@ -1253,7 +1254,7 @@ module.exports = [
         de: 'Fehlerhafte Eingaben'
     },
     {
-        internal: '_XXX_system-error',
+        internal: '_XXX_system_error',
         en: 'System Error',
         de: 'System-Fehler'
     },
@@ -1395,6 +1396,21 @@ module.exports = [
         internal: '_wkprc_roomOrEnclosure',
         en: 'Room/Enclosure',
         de: 'Raum/Gehege'
+    },
+    {
+        internal: '_wkprc_subjectRole',
+        en: 'Role',
+        de: 'Rolle'
+    },
+    {
+        internal: '_wkprc_intradaySeqNumber',
+        en: 'Daily Running No.',
+        de: 'Laufende Nummer (am Tag)'
+    },
+    {
+        internal: '_wkprc_totalSubjectCount',
+        en: 'Trial Participants',
+        de: 'Trial Participants' // FIXME
     },
     
     // Field sites
@@ -1633,5 +1649,10 @@ module.exports = [
     {
         en: 'Account',
         de: 'Account'
+    },
+
+    {
+        en: 'Go to Record',
+        de: 'Zum Datensatz',
     }
 ]

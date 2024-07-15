@@ -12,6 +12,10 @@ var {
     hasNone, hasOnlyOne, flatten, entries
 } = require('@mpieva/psydb-core-utils');
 
+var {
+    compose, createId, Self, withRetracedErrors
+} = require('@mpieva/psydb-api-lib');
+
 var createAgent = require('@mpieva/psydb-axios-test-wrapper');
 var Driver = require('@mpieva/psydb-driver-nodejs');
 var withApi = require('../src/middleware/api');
@@ -142,6 +146,34 @@ var beforeAll = async function () {
     this.getId = async (...args) => {
         var record = await this.getRecord(...args);
         return record._id;
+    }
+    
+    this.createFakeFileUpload = async (bag) => {
+        var {
+            buffer,
+            mimetype = 'text/csv',
+            originalFilename = 'import.csv',
+        } = bag;
+
+        var db = this.getDbHandle();
+
+        var mongoDoc = {
+            _id: await createId(),
+            correlationId: await createId(),
+            createdBy: await createId(),
+            createdAt: new Date(),
+            uploadKey: 'import',
+            hash: 'xxx',
+            mimetype,
+            originalFilename,
+            blob: buffer
+        }
+
+        await withRetracedErrors(
+            db.collection('file').insertOne(mongoDoc)
+        );
+
+        return mongoDoc;
     }
 }
 

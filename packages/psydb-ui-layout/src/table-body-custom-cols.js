@@ -1,5 +1,6 @@
 import React from 'react';
 import { jsonpointer } from '@mpieva/psydb-core-utils';
+import { LinkTD } from './link-td';
 
 export const TableBodyCustomCols = (ps) => {
     var {
@@ -29,19 +30,4 @@ export const TableBodyCustomCols = (ps) => {
         )
     })
 
-}
-
-const LinkTD = (ps) => {
-    var { href, children } = ps;
-    return (
-        <td className='p-0'>
-            <a
-                href={ href }
-                className='d-block text-reset'
-                style={{ textDecoration: 'none', padding: '0.75rem' }}
-            >
-                { children }
-            </a>
-        </td>
-    )
 }

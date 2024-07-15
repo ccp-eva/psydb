@@ -19,7 +19,7 @@
   "devDependencies": {
     "mocha": "~10.2.0",
     "chai": "~4.3.7",
-    "axios": "~0.24.0",
+    "axios": "~0.28.1",
     "@mpieva/psydb-timezone-helpers": "workspace:*",
     "@mpieva/psydb-common-lib": "workspace:*"
   },

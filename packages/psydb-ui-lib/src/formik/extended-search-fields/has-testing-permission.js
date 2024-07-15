@@ -1,6 +1,6 @@
 import React from 'react';
 import { withField } from '@cdxoo/formik-utils';
-import * as enums from '@mpieva/psydb-schema-enums';
+import enums from '@mpieva/psydb-schema-enums';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import * as CoreFields from '../fields';
 
@@ -12,9 +12,8 @@ export const HasTestingPermission = withField({ Control: (ps) => {
     
     return (
         <div className='border p-3'>
-            <CoreFields.GenericEnum
+            <CoreFields.LabMethodKey
                 dataXPath={ `${dataXPath}.labMethod` }
-                options={ translate.options(enums.labMethods.mapping) }
                 alwaysIncludeEmptyOption
                 label={ translate('Lab Workflow') }
             />

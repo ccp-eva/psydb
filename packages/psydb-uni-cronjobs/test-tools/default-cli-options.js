@@ -14,5 +14,9 @@ module.exports = {
     smtpPassword: 'test1234',
     errorMailVerbose: true,
     errorMailFrom: 'db-humankind-registration@example.com',
-    errorMailTo: 'root@example.com'
+    errorMailTo: 'root@example.com',
+
+    dryNoMoveMails: false,
+    dryNoErrorMails: false,
+    dryNoCreateSubjects: false,
 }

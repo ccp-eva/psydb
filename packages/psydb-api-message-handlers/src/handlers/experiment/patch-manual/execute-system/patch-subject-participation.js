@@ -1,7 +1,7 @@
 'use strict';
 var sift = require('sift');
 
-var { keyBy, entries, pathify } = require('@mpieva/psydb-core-utils');
+var { only, keyBy, entries, pathify } = require('@mpieva/psydb-core-utils');
 var { compose, switchComposition } = require('@mpieva/psydb-api-lib');
 var { createId } = require('@mpieva/psydb-api-lib');
 
@@ -67,6 +67,7 @@ var setupParticipationBaseUpdates = async (context, next) => {
             subjectId,
             status = 'participated',
             excludeFromMoreExperimentsInStudy = false,
+            role = undefined, // FIXME apestudies
             comment,
         } = it;
         
@@ -78,6 +79,7 @@ var setupParticipationBaseUpdates = async (context, next) => {
             excludeFromMoreExperimentsInStudy,
             experimentId,
             subjectId,
+            ...(role !== undefined && { role }), // FIXME: apestudies
             ...(comment !== undefined && { comment }),
         }
 
@@ -171,16 +173,16 @@ var addOperators = async (context, next) => {
 
 var addApestudiesWKPRCDefaultExtraData = async (context, next) => {
     var { message, cache } = context;
-    var {
-        subjectGroupId,
-        experimentName,
-        roomOrEnclosure,
-    } = message.payload;
-
+    
     var {
         participationCreateUpdates,
         participationPatchUpdates,
     } = cache.get();
+
+    var pass = only({ from: message.payload, keys: [
+        'subjectGroupId', 'experimentName', 'roomOrEnclosure',
+        'intradaySeqNumber', 'totalSubjectCount',
+    ]})
 
     var mapped = mapAll({
         lists: {
@@ -188,10 +190,7 @@ var addApestudiesWKPRCDefaultExtraData = async (context, next) => {
             participationPatchUpdates,
         },
         lambda: (it) => ({
-            ...it,
-            subjectGroupId,
-            experimentName,
-            roomOrEnclosure,
+            ...it, ...pass
         })
     });
 

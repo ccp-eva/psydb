@@ -17,6 +17,7 @@ var WrappedDriver = (bag) => {
 
     driver.crt = withDriver(driver, utils.crt);
     driver.helperSet = withDriver(driver, utils.helperSet);
+    driver.systemRole = withDriver(driver, utils.systemRole);
 
     return driver;
 }

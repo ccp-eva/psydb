@@ -10,6 +10,8 @@ export { default as useSendRemove } from './use-send-remove';
 export { default as useSend } from './use-send';
 export { default as useWriteRequest } from './use-write-request';
 
+export { default as useCookieI18N } from './use-cookie-i18n';
+
 export { default as usePermissions } from './use-permissions';
 export { default as useRevision } from './use-revision';
 export { default as useModalReducer } from './use-modal-reducer';

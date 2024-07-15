@@ -11,7 +11,7 @@ var HelperSetItemId = (bag) => {
     return Id({
         systemType: 'HelperSetItemId',
         systemProps: {
-            setId,
+            setId: String(setId),
             ...systemProps,
         },
         ...additionalKeywords

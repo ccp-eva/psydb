@@ -1,7 +1,9 @@
 'use strict';
 var arrify = require('./arrify');
 
-var unwind = ({ items, byPath }) => {
+var unwind = (bag) => {
+    var { items, byPath } = bag;
+
     items = arrify(items);
     
     if (byPath.indexOf('.') !== -1) {
@@ -12,48 +14,50 @@ var unwind = ({ items, byPath }) => {
     }
 }
 
-var unwindShallow = ({ items, prop }) => (
-    items.reduce((acc, obj) => ([
-        ...acc,
-        ...createManyFromOne({ obj, key: prop })
-    ]), [])
-)
+var unwindShallow = (bag) => {
+    var { items, prop } = bag;
+    var out = [];
+    for (var it of items) {
+        out.push(...createManyFromOne({ obj: it, key: prop }))
+    }
+    return out;
+}
 
-var unwindDeep = ({ items, path }) => {
+var unwindDeep = (bag) => {
+    var { items, path } = bag;
+
     var [ currentProp, ...rest ] = path.split('.');
     var innerPath = rest.join('.');
 
-    return (
-        items.reduce((acc, obj) => {
-            var innerItems = obj[currentProp];
+    var out = [];
+    for (var it of items) {
+        var innerItems = it[currentProp];
 
-            var augmentedObj = {
-                ...obj,
-                [currentProp]: unwind({
-                    items: innerItems,
-                    byPath: innerPath,
-                })
-            }
+        var augmented = {
+            ...it,
+            [currentProp]: unwind({
+                items: innerItems,
+                byPath: innerPath,
+            })
+        }
 
-            return [
-                ...acc,
-                ...createManyFromOne({
-                    obj: augmentedObj,
-                    key: currentProp
-                })
-            ]
-        }, [])
-    );
+        out.push(...createManyFromOne({
+            obj: augmented,
+            key: currentProp
+        }))
+    }
+
+    return out;
 }
 
-var createManyFromOne = ({ obj, key, values }) => {
-    var values = values || obj[key];
-    return (
-        values.map(value => ({
-            ...obj,
-            [key]: value
-        }))
-    )
+var createManyFromOne = (bag) => {
+    var { obj, key, values } = bag;
+    
+    var out = [];
+    for (var v of (values || obj[key])) {
+        out.push({ ...obj, [key]: v });
+    }
+    return out;
 }
 
 module.exports = unwind;

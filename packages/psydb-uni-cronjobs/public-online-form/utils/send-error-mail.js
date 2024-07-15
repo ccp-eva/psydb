@@ -1,4 +1,5 @@
 'use strict';
+var debug = require('debug')('psydb:humankind-cronjobs:sendErrorMail');
 var nodemailer = require('nodemailer');
 var { encode: encodeHtml } = require('html-entities');
 
@@ -6,7 +7,8 @@ var sendErrorMail = async (bag) => {
     var { cliOptions, caughtErrors } = bag;
     var {
         smtpHost, smtpPort, smtpSsl, smtpUser, smtpPassword,
-        errorMailFrom, errorMailTo, errorMailVerbose = false
+        errorMailFrom, errorMailTo, errorMailVerbose = false,
+        dry = false, dryNoErrorMails = false
     } = cliOptions;
 
     var items = caughtErrors.map(({ mail, e }) => {
@@ -47,23 +49,31 @@ var sendErrorMail = async (bag) => {
         </body></html>
     `;
 
-    var transport = nodemailer.createTransport({
-        host: smtpHost,
-        port: smtpPort,
-        secure: smtpSsl,
-        auth: {
-            user: smtpUser,
-            pass: smtpPassword
-        }
-    });
+    var subject = 'PsyDB - Online Registration Errors';
 
-    await transport.sendMail({
-        from: errorMailFrom,
-        to: errorMailTo,
-        subject: 'PsyDB - Online Registration Errors',
-        text: '',
-        html
-    })
+    if (dry || dryNoErrorMails) {
+        console.log('DRY: Skipping Error Mail');
+        debug(subject, html);
+    }
+    else {
+        var transport = nodemailer.createTransport({
+            host: smtpHost,
+            port: smtpPort,
+            secure: smtpSsl,
+            auth: {
+                user: smtpUser,
+                pass: smtpPassword
+            }
+        });
+
+        await transport.sendMail({
+            from: errorMailFrom,
+            to: errorMailTo,
+            subject,
+            text: '',
+            html
+        })
+    }
 }
 
 module.exports = { sendErrorMail }

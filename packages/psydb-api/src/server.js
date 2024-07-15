@@ -7,11 +7,21 @@ process.env.TZ = 'UTC';
 //require('debug').enable('json-schema-lazy-resolve-oneof*,psydb:*');
 require('debug').enable('psydb:*');
 
-var Koa = require('koa'),
-    psydbConfig = require('@mpieva/psydb-api-config'),
-    createApi = require('./middleware/api');
+var Koa = require('koa');
+var KeyGrip = require('keygrip');
+var psydbConfig = require('@mpieva/psydb-api-config');
+var createApi = require('./middleware/api');
 
 var app = new Koa();
+
+var { sessionSig = {} } = psydbConfig;
+
+if (sessionSig.keys) {
+    app.keys = new KeyGrip(
+        sessionSig.keys,
+        sessionSig.digest || 'sha256'
+    );
+}
 
 app.use(
     createApi({

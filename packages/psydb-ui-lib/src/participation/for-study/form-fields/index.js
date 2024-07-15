@@ -1,8 +1,8 @@
 import React from 'react';
+import enums from '@mpieva/psydb-schema-enums';
 import { unique } from '@mpieva/psydb-core-utils';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch } from '@mpieva/psydb-ui-hooks';
-import * as enums from '@mpieva/psydb-schema-enums';
 
 import { Fields, useFormikContext } from '../../../formik';
 export const SaneString = Fields.SaneString;
@@ -10,6 +10,7 @@ export const GenericEnum = Fields.GenericEnum;
 export const ForeignId = Fields.ForeignId;
 export const ForeignIdList = Fields.ForeignIdList;
 export const DefaultBool = Fields.DefaultBool;
+export const Integer = Fields.Integer;
 
 export const DateOnlyTimestamp = (ps) => {
     var { ...pass } = ps;
@@ -156,7 +157,7 @@ export const ExperimentOperators = (ps) => {
     )
 }
 
-export const LabProcedureType = (ps) => {
+export const LabProcedureType_OLD = (ps) => {
     var { settingsByType, types, disabled } = ps;
     
     var translate = useUITranslation();

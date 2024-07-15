@@ -1,15 +1,17 @@
 'use strict';
 var compose = require('koa-compose');
 var { ObjectId } = require('mongodb');
-var withVanillaSession = require('koa-session');
+//var withVanillaSession = require('koa-session');
+var withEncryptedSession = require('koa-encrypted-session');
 
 var withSession = (app, config) => {
     var composition = compose([
-        withVanillaSession({
-            ...(config.session || {}),
-            signed: false, // i think this requires app.keys to be set
+        withEncryptedSession({
+            signed: app.keys ? true : false, // config.keygrip
             //rolling: true, // reset cookie/ttl every request
             renew: true, // renew session when close to ttl end
+            ...(config.session || {}),
+            secret: config.sessionSecret,
         }, app),
         async (context, next) => {
             var { session } = context;

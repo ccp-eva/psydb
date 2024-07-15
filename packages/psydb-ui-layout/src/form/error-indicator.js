@@ -68,7 +68,7 @@ const createFriendlyMessage = (err, translate) => {
             if (['mongodb-object-id'].includes(params.format)) {
                 return translate('This Field is Required. Please provide a value.');
             }
-            else if (['email'].includes(params.format)) {
+            else if (['email', 'email-optional'].includes(params.format)) {
                 return translate('This is not a valid e-mail address.')
             }
             else {

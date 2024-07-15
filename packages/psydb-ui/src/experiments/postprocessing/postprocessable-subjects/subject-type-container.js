@@ -1,6 +1,4 @@
 import React from 'react';
-import enums from '@mpieva/psydb-schema-enums';
-
 import SubjectList from './subject-list';
 
 const SubjectTypeContainer = ({

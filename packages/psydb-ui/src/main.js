@@ -21,6 +21,7 @@ import { LoadingIndicator } from '@mpieva/psydb-ui-layout';
 import ErrorBoundary from './error-boundary';
 import ServerTimezoneContext from '@mpieva/psydb-ui-lib/src/server-timezone-context';
 
+import CopyNotice from './copy-notice';
 import SideNav from './side-nav';
 import TopFunctions from './top-functions';
 
@@ -36,6 +37,8 @@ import SystemRoles from './system-roles';
 import ExternalPersons from './external-persons';
 import ExternalOrganizations from './external-organizations';
 import HelperSets from './helper-sets';
+
+import CSVImports from './csv-imports';
 
 import Calendars from './calendars';
 import LabOperation from './lab-operation';
@@ -118,6 +121,15 @@ const LayoutedRoutes = ({ onSignOut }) => {
                         <Routing />
                     </div>
                 </div>
+                {/* XXX */}
+                {/*<div style={{
+                    position: 'sticky',
+                    top: '100vh'
+                }}>
+                    <div className='ml-3 px-2 py-3 border-top'>
+                        <CopyNotice />
+                    </div>
+                </div>*/}
             </main>
         </div>
     );
@@ -163,6 +175,8 @@ var Routing = () => (
     <Route path='/external-persons' component={ withEB(ExternalPersons) } />
     <Route path='/external-organizations' component={ withEB(ExternalOrganizations) } />
     <Route path='/helper-sets' component={ withEB(HelperSets) } />
+    
+    <Route path='/csv-imports' component={ withEB(CSVImports) } />
 
     <Route path='/calendars' component={ withEB(Calendars) } />
     <Route path='/lab-operation' component={ withEB(LabOperation) } />
