@@ -817,6 +817,11 @@ const createAgent = (options = {}) => {
     agent.previewCSVExperimentImport = ({ importType, ...pass }) => dumpPOST({
         url: `/api/csv-import/experiment/preview/${importType}`,
     })(pass);
+    agent.fetchCSVExperimentImportExperiments = (
+        ({ out = 'full', ...pass }) => dumpPOST({
+            url: '/api/csv-import/experiment/related-experiments',
+        })({ out, ...pass })
+    );
 
     agent.searchCSVSubjectImports = dumpPOST({
         url: '/api/csv-import/subject/search',

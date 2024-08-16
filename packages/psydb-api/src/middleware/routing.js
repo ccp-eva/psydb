@@ -531,6 +531,12 @@ var createRouting = (bag = {}) => {
         endpoint: endpoints.csvImport.experiment.read
     }));
     router.post(
+        '/csv-import/experiment/related-experiments',
+        ...withPostStages({
+            endpoint: endpoints.csvImport.experiment.relatedExperiments
+        })
+    );
+    router.post(
         '/csv-import/experiment/preview/wkprc-apestudies-default',
         ...withPostStages({
             endpoint: endpoints.csvImport.experiment.preview[
