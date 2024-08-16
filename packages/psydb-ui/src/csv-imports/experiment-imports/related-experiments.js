@@ -63,7 +63,7 @@ const Item = (ps) => {
     var { startDate, startTime } = formatDateInterval(interval, { locale });
    
     var type = record.realType || record.type;
-    var uri = `#/experiments/${type}/${record._id}`;
+    var uri = `/experiments/${type}/${record._id}`;
 
     return (
         <>
