@@ -37,13 +37,12 @@ addComponents(CSVImport, Context, labels, [
     {
         cname: 'StudyId',
         path: '/studyId',
-        Component: withPair(SaneString),
-        /*Component: withPair((ps) => (
+        Component: withPair((ps) => (
             <ForeignId
                 { ...ps }
                 props={{ collection: 'study' }}
             />
-        ))*/
+        ))
     },
     {
         cname: 'Type',

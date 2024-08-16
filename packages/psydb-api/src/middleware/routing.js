@@ -571,6 +571,9 @@ var createRouting = (bag = {}) => {
         endpoint: endpoints.researchGroup.searchMetadata
     }));
 
+    router.post('/study/read', ...withPostStages({
+        endpoint: endpoints.study.read
+    }));
     router.post('/study/read-many', ...withPostStages({
         endpoint: endpoints.study.readMany
     }));

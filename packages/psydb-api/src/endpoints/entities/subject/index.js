@@ -1,5 +1,5 @@
 module.exports = {
-    read: require('./read'),
+    read: require('./read'), // XXX stub
     readMany: require('./read-many'),
     readForInviteMail: require('./read-for-invite-mail'),
     relatedExperiments: require('./related-experiments'),
