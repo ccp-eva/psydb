@@ -16,6 +16,7 @@ var handlers = {
         scientific: {
             custom: {
                 doesDBRegistrationConsentOnPaperExist: false,
+                consent_for_adult_db: false, // XXX
             },
             comment: 'via Online-Registrierung',
             testingPermissions: TestingPermissions({
