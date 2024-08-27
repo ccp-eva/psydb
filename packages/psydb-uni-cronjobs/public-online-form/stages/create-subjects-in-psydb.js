@@ -77,6 +77,7 @@ var createManyChildren = async (bag) => {
         if (Object.keys(it).length < 1) {
             // XXX because 'expected date of birth' creates empty blocks
             debug('skipping child as data is empty');
+            continue;
         }
         var props = unflatten({
             ...staticProps,
