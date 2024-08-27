@@ -39,6 +39,9 @@ var handlers = {
                 didConsentToStayInDBAsAdult: 'unknown',
                 allowedToEat: 'unknown',
                 kigaId: null,
+
+                otherLanguageIds: [], // FIXME: fallback when no value
+                                      // not even 'Keine' in DB
             },
             comment: 'via Online-Registrierung',
 
