@@ -12,6 +12,7 @@ var handlers = {
         gdpr: { custom: {
             address: { country: 'DE' },
             dateOfBirth: '1900-01-01T00:00:00.000Z', // XXX
+            expectedDateofBirth: null, // fallback
         }},
         scientific: {
             custom: {
