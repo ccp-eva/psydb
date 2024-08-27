@@ -59,7 +59,9 @@ var remapMailData = async (context, next) => {
                 || /Auf welchem/.test(pair.key)
                 || pair.key === 'errechneter Geburtstermin'
             ) {
-                debug("\n", 'found late adult pair at', pair)
+                if (!inAdultBlock) {
+                    debug("\n", 'found late adult pair at', pair)
+                }
                 remapHandler = AdultFields[pair.key];
                 targetBucket = adultData;
             }
