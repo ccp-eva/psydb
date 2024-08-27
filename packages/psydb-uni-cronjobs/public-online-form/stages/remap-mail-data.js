@@ -42,6 +42,12 @@ var remapMailData = async (context, next) => {
             debug({ childBlockFirstKey });
             continue;
         }
+        else if (/errechneter Geburtstermin/.test(pair.key)) {
+            inAdultBlock = false;
+            childBlockFirstKey = pairs[ix + 1].key;
+            debug({ childBlockFirstKey });
+            continue;
+        }
         else {
             debug(`raw pair is "${pair.key}" = "${pair.value}"`);
 
