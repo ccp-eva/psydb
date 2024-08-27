@@ -42,14 +42,15 @@ var remapMailData = async (context, next) => {
             debug({ childBlockFirstKey });
             continue;
         }
-        else if (/errechneter Geburtstermin/.test(pair.key)) {
-            inAdultBlock = false;
-            childBlockFirstKey = pairs[ix + 1].key;
-            debug({ childBlockFirstKey });
-            continue;
-        }
         else {
             debug(`raw pair is "${pair.key}" = "${pair.value}"`);
+
+            // XXX because we now have an optional extra pair in adult block
+            var isLastAdultBlock = false;
+            if (/errechneter Geburtstermin/.test(pair.key)) {
+                inAdultBlock = true;
+                isLastAdultBlock = true;
+            }
 
             if (pair.key === childBlockFirstKey) {
                 debug("\n", 'found child block at', pair,)
@@ -92,6 +93,13 @@ var remapMailData = async (context, next) => {
                 throw new RemapMailError(errorBag);
             }
             targetBucket[path] = value;
+
+            if (isLastAdultBlock) {
+                debug('was last adult block');
+                inAdultBlock = false;
+                childBlockFirstKey = pairs[ix + 1].key;
+                debug({ childBlockFirstKey });
+            }
         }
     }
 
