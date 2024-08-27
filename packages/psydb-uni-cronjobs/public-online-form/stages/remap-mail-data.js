@@ -82,7 +82,7 @@ var remapMailData = async (context, next) => {
                     throw e
                 }
             }
-            if (!path || !value) {
+            if (!path || value === undefined) {
                 throw new RemapMailError(errorBag);
             }
             targetBucket[path] = value;
