@@ -45,15 +45,8 @@ var remapMailData = async (context, next) => {
         else {
             debug(`raw pair is "${pair.key}" = "${pair.value}"`);
 
-            // XXX because we now have an optional extra pair in adult block
-            var isLastAdultBlock = false;
-            if (/errechneter Geburtstermin/.test(pair.key)) {
-                inAdultBlock = true;
-                isLastAdultBlock = true;
-            }
-
             if (pair.key === childBlockFirstKey) {
-                debug("\n", 'found child block at', pair,)
+                debug("\n", 'found child block at', pair)
                 if (childBlockData) {
                     childrenData.push(childBlockData);
                 }
@@ -61,7 +54,12 @@ var remapMailData = async (context, next) => {
             }
 
             var remapHandler, targetBucket;
-            if (inAdultBlock || /Auf welchem/.test(pair.key)) {
+            if (
+                inAdultBlock
+                || /Auf welchem/.test(pair.key)
+                || pair.key === 'errechneter Geburtstermin'
+            ) {
+                debug("\n", 'found late adult pair at', pair)
                 remapHandler = AdultFields[pair.key];
                 targetBucket = adultData;
             }
@@ -93,13 +91,6 @@ var remapMailData = async (context, next) => {
                 throw new RemapMailError(errorBag);
             }
             targetBucket[path] = value;
-
-            if (isLastAdultBlock) {
-                debug('was last adult block');
-                inAdultBlock = false;
-                childBlockFirstKey = pairs[ix + 1].key;
-                debug({ childBlockFirstKey });
-            }
         }
     }
 
