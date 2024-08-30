@@ -1,4 +1,6 @@
 'use strict';
+var debug = require('debug')('psydb:humankind-cronjobs:createSubjectsInPsydb');
+
 var { flatten, unflatten } = require('@mpieva/psydb-core-utils');
 var { CreateSubjectError } = require('../errors');
 var { createSubjectStaticProps, tryCreateSubject } = require('../utils');
@@ -72,6 +74,11 @@ var createManyChildren = async (bag) => {
     });
 
     for (var it of childrenData) {
+        if (Object.keys(it).length < 1) {
+            // XXX because 'expected date of birth' creates empty blocks
+            debug('skipping child as data is empty');
+            continue;
+        }
         var props = unflatten({
             ...staticProps,
             ...it,

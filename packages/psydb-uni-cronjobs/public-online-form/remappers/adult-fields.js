@@ -42,6 +42,25 @@ var AdultFields = {
         }
 
         return { path: 'scientific.custom.acquisitionId', value: id }
+    },
+
+    'errechneter Geburtstermin': (value) => {
+        var path = 'gdpr.custom.expectedDateofBirth';
+        if (value && /^[0-9]+\.[0-9]+\.[0-9]+$/.test(String(value))) {
+            var [ y, m, d] = (
+                value.split(/\./g).map((it) => parseInt(it)).reverse()
+            );
+
+            var date = new Date(0);
+            date.setUTCFullYear(y);
+            date.setUTCMonth(m - 1);
+            date.setUTCDate(d);
+
+            return { path, value: date.toISOString() }
+        }
+        else {
+            return { path: null }
+        }
     }
 }
 
