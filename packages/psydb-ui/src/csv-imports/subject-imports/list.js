@@ -23,7 +23,7 @@ const List = (ps) => {
     var translate = useUITranslation();
     var revision = useRevision();
     var createModal = useModalReducer({
-        show: false
+        show: true
     });
 
     var [ didFetch, fetched ] = useFetch((agent) => (

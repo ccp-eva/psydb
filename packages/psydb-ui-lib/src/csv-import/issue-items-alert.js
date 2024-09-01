@@ -4,30 +4,34 @@ import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { Alert } from '@mpieva/psydb-ui-layout';
 
 const IssueItemsAlert = (ps) => {
-    var { invalid } = ps;
+    var { invalid, demapping = {}} = ps;
 
     return (
         <Alert variant='danger'>
-            <InvalidItemList items={ invalid } />
+            <InvalidItemList
+                items={ invalid }
+                demapping={ demapping }
+            />
         </Alert>
     )
 }
 
 const InvalidItemList = (ps) => {
-    var { style, className, items } = ps;
+    var { style, className, items, demapping } = ps;
     var translate = useUITranslation();
 
     return (
         <div style={ style } className={ className }>
             <b>{ 'Invalid Rows' }</b>
             <div className='d-flex flex-column gapy-2'>
-                { items.map((it, ix) => (
-                    it.replacementErrors ? (
-                        <RefIssueItem key={ ix } item={ it } />
+                { items.map((it, ix) => {
+                    var bag = { key: ix, item: it, demapping };
+                    return (it.replacementErrors ? (
+                        <RefIssueItem { ...bag } />
                     ) : (
-                        <DataIssueItem key={ ix } item={ it } />
-                    )
-                ))}
+                        <DataIssueItem { ...bag } />
+                    ))
+                })}
             </div>
         </div>
     )
@@ -45,7 +49,7 @@ const CSVLine = (ps) => {
 }
 
 const IssueItemWrapper = (ps) => {
-    var { index, children } = ps;
+    var { index, demapping, children } = ps;
     return (
         <div className='d-flex'>
             <b style={{ display: 'block', minWidth: '70px' }}>
@@ -59,16 +63,17 @@ const IssueItemWrapper = (ps) => {
 }
 
 const RefIssueItem = (ps) => {
-    var { item } = ps;
+    var { item, demapping } = ps;
     var { index, csvLine, replacementErrors } = item;
-    console.log(item);
     
     return (
         <IssueItemWrapper index={ index }>
             <CSVLine values={ csvLine } />
             <div>
                 { replacementErrors.map((it, ix) => (
-                    <ReplacementError key={ ix } error={ it } />
+                    <ReplacementError
+                        key={ ix } error={ it } demapping={ demapping }
+                    />
                 ))}
             </div>
         </IssueItemWrapper>
@@ -76,25 +81,27 @@ const RefIssueItem = (ps) => {
 }
 
 const DataIssueItem = (ps) => {
-    var { item } = ps;
+    var { item, demapping } = ps;
     var { index, csvLine, validationErrors } = item
     return (
         <IssueItemWrapper index={ index }>
             <CSVLine values={ csvLine } />
             <div>
                 { validationErrors.map((it, ix) => (
-                    <ValidationError key={ ix } error={ it } />
+                    <ValidationError
+                        key={ ix } error={ it } demapping={ demapping }
+                    />
                 ))}
             </div>
         </IssueItemWrapper>
     )
 }
 
-var demapping = {
-    date: [{ key: 'date', type: 'scalar' }],
-    time: [{ key: 'time', type: 'scalar' }],
-    subject: [{ key: 'subjectData', type: 'array' }, { key: 'subjectId', type: 'scalar' }],
-}
+/*var demapping = {
+    //date: [{ key: 'date', type: 'scalar' }],
+    //time: [{ key: 'time', type: 'scalar' }],
+    //subject: [{ key: 'subjectData', type: 'array' }, { key: 'subjectId', type: 'scalar' }],
+}*/
 
 var demap = ({ dataPath, demapping }) => {
     if (dataPath[0] === '.') {
@@ -139,6 +146,11 @@ var demap = ({ dataPath, demapping }) => {
         }
     }
 
+    // XXX
+    if (matchCounts.length < 1) {
+        return [ dataPath ];
+    }
+
     var grouped = groupBy({
         items: matchCounts,
         byProp: 'count'
@@ -154,8 +166,11 @@ var demap = ({ dataPath, demapping }) => {
 }
 
 var ValidationError = (ps) => {
-    var { error } = ps;
+    var { error, demapping } = ps;
     var { dataPath, keyword, params, message } = error;
+    
+    console.log({ error });
+
     if (keyword === 'required') {
         var { missingProperty } = params;
         dataPath = (
@@ -168,6 +183,13 @@ var ValidationError = (ps) => {
             <div><b>{' - '}"{ it }" is required</b></div>
         ))
     }
+    else if (keyword === 'additionalProperties') {
+        var { additionalProperty } = params;
+        var cols = demap({ dataPath: additionalProperty, demapping });
+        return cols.map(it => (
+            <div><b>{' - '}"{ it }" is unknown</b></div>
+        ))
+    }
     else {
         var cols = demap({ dataPath, demapping });
         return cols.map(it => (
@@ -177,7 +199,7 @@ var ValidationError = (ps) => {
 }
 
 var ReplacementError = (ps) => {
-    var { error } = ps;
+    var { error, demapping } = ps;
     var { matchingItems, mapping } = error;
     var { csvColumn, value } = mapping;
     

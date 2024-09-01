@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import classnames from 'classnames';
 
-import { only } from '@mpieva/psydb-core-utils';
+import { only, groupBy } from '@mpieva/psydb-core-utils';
 import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useSend } from '@mpieva/psydb-ui-hooks';
+import { IssueItemsAlert } from '@mpieva/psydb-ui-lib/csv-import';
 
 import {
     Alert,
@@ -96,7 +97,24 @@ const PreviewStage = (ps) => {
         )
     }
     else {
-        var { previewRecords, related, crtSettings } = fetched.data;
+        var {
+            previewRecords, pipelineData,
+            related, crtSettings
+        } = fetched.data;
+
+        console.log(pipelineData);
+        var { invalid = [] } = groupBy({
+            items: pipelineData,
+            createKey: (it) => (
+                (!it.isValid || !it.isRefReplacementOk) ? 'invalid' : 'ok'
+            )
+        });
+        console.log(invalid);
+
+        var allOk = (invalid.length === 0 && previewRecords.length > 0);
+        var canForceImport = (previewRecords.length > 0);
+        var forceImport = false;
+
         return (
             <>
                 <SmallFormFooter>
@@ -112,6 +130,19 @@ const PreviewStage = (ps) => {
                     </Button>
                 </SmallFormFooter>
                 <hr />
+                { !allOk && (
+                    <IssueItemsAlert
+                        invalid={ invalid }
+                        demapping={{
+                            'ethnologyId': [
+                                { key: 'scientific', type: 'object' },
+                                { key: 'state', type: 'object' },
+                                { key: 'custom', type: 'object' },
+                                { key: 'ethnologyId', type: 'scalar' },
+                            ]
+                        }}
+                    />
+                )}
                 <SplitPartitioned partitions={[ 4, 8 ]}>
                     <div className='d-flex flex-column gapy-2'>
                         { previewRecords.map((it, ix) => {
@@ -128,11 +159,13 @@ const PreviewStage = (ps) => {
                         })}
                     </div>
                     <div className='border ml-3 px-3 py-1'>
-                        <RecordDetails.Body fetched={{
-                            record: previewRecords[selectedIndex],
-                            related,
-                            crtSettings,
-                        }} />
+                        { previewRecords[selectedIndex] && (
+                            <RecordDetails.Body fetched={{
+                                record: previewRecords[selectedIndex],
+                                related,
+                                crtSettings,
+                            }} />
+                        )}
                     </div>
                 </SplitPartitioned>
             </>

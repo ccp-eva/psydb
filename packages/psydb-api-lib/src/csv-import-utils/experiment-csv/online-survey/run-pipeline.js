@@ -16,10 +16,10 @@ var runPipeline = async (bag) => {
     } = bag;
 
     var schema = CSVSchema();
-    var { pipelineData, preparedObjects } = await runDefaultPipeline({
+    var { pipelineData } = await runDefaultPipeline({
         db, csvData, schema, customColumnRemap, unmarshalClientTimezone,
         extraRecordResolvePointers: {
-            subject: [ '/onlineId'],
+            subject: [ '/onlineId' ],
         },
     });
 

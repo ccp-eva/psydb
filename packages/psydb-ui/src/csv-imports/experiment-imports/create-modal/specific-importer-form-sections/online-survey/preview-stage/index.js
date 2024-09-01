@@ -5,9 +5,10 @@ import { useUITranslation } from '@mpieva/psydb-ui-contexts';
 import { useFetch, useSend } from '@mpieva/psydb-ui-hooks';
 import { Alert, LoadingIndicator } from '@mpieva/psydb-ui-layout';
 
+import { IssueItemsAlert } from '@mpieva/psydb-ui-lib/csv-import';
+
 import PreviewRecord from './preview-record';
 import ButtonHeader from './button-header';
-import IssueItemsAlert from './issue-items-alert';
 
 const PreviewStage = (ps) => {
     var { studyId, subjectType, formValues, gotoPrepare } = ps;
